@@ -1,0 +1,15 @@
+application.version: ${version}
+
+spring:
+  #  cache:
+  #    caffeine-spec: maximumSize=500,expireAfterWrite=300s
+  h2:
+    console:
+      enabled: true
+
+management:
+  endpoints.web.exposure.include: "*"
+  endpoint:
+    health:
+      roles: ADMIN
+      show-details: when_authorized
