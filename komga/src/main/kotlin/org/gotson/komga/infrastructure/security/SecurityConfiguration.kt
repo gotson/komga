@@ -52,6 +52,7 @@ class SecurityConfiguration : WebSecurityConfigurerAdapter() {
   override fun configure(auth: AuthenticationManagerBuilder) {
     auth.inMemoryAuthentication()
         .withUser("admin").password("{noop}admin").roles("ADMIN", "USER")
+        .and().withUser("user").password("{noop}user").roles("USER")
   }
 
   @Bean

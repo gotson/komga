@@ -24,7 +24,8 @@ class FileSystemScanner(
                     name = it.nameWithoutExtension,
                     url = it.toURI().toURL()
                 )
-              } ?: return@mapNotNull null
+              }
+          if (books.isNullOrEmpty()) return@mapNotNull null
           Serie(
               name = dir.name,
               url = dir.toURI().toURL(),
