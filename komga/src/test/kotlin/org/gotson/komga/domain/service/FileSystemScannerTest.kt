@@ -35,8 +35,8 @@ class FileSystemScannerTest {
       val series = scanner.scanRootFolder(root)
 
       assertThat(series).hasSize(1)
-      assertThat(series[0].books).hasSize(2)
-      assertThat(series[0].books.map { it.name }).containsExactlyInAnyOrderElementsOf(files.map { FilenameUtils.removeExtension(it) })
+      assertThat(series.first().books).hasSize(2)
+      assertThat(series.first().books.map { it.name }).containsExactlyInAnyOrderElementsOf(files.map { FilenameUtils.removeExtension(it) })
     }
   }
 
@@ -52,8 +52,8 @@ class FileSystemScannerTest {
       val series = scanner.scanRootFolder(root)
 
       assertThat(series).hasSize(1)
-      assertThat(series[0].books).hasSize(1)
-      assertThat(series[0].books.map { it.name }).containsExactly("file1")
+      assertThat(series.first().books).hasSize(1)
+      assertThat(series.first().books.map { it.name }).containsExactly("file1")
     }
   }
 
