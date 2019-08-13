@@ -52,6 +52,8 @@ dependencies {
 
   implementation("com.github.klinq:klinq-jpaspec:0.8")
 
+  implementation("commons-io:commons-io:2.6")
+
   runtimeOnly("com.h2database:h2:1.4.199")
 
   testImplementation("org.springframework.boot:spring-boot-starter-test") {
@@ -62,6 +64,7 @@ dependencies {
   testImplementation("org.junit.jupiter:junit-jupiter:5.5.0")
   testImplementation("com.ninja-squad:springmockk:1.1.2")
   testImplementation("io.mockk:mockk:1.9.3")
+  testImplementation("com.google.jimfs:jimfs:1.1")
 }
 
 tasks {

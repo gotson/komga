@@ -1,34 +1,43 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
+import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.Serie
 import org.springframework.stereotype.Service
-import java.io.File
+import java.nio.file.Files
+import java.nio.file.Path
+import kotlin.streams.asSequence
+import kotlin.streams.toList
 
 private val logger = KotlinLogging.logger {}
 
 @Service
 class FileSystemScanner(
 ) {
-  fun scanRootFolder(root: String): List<Serie> {
+
+  val supportedExtensions = listOf("cbr", "rar", "cbz", "zip")
+
+  fun scanRootFolder(root: Path): List<Serie> {
     logger.info { "Scanning folder: $root" }
-    return File(root).walk()
-        .filter { !it.isHidden }
-        .filter { it.isDirectory }
-        .filter { it.path != root }
+
+    return Files.walk(root).asSequence()
+        .filter { !Files.isHidden(it) }
+        .filter { Files.isDirectory(it) }
         .mapNotNull { dir ->
-          val books = dir.listFiles { f -> f.isFile }
-              ?.map {
+          val books = Files.list(dir)
+              .filter { Files.isRegularFile(it) }
+              .filter { supportedExtensions.contains(FilenameUtils.getExtension(it.fileName.toString())) }
+              .map {
                 Book(
-                    name = it.nameWithoutExtension,
-                    url = it.toURI().toURL()
+                    name = FilenameUtils.getBaseName(it.fileName.toString()),
+                    url = it.toUri().toURL()
                 )
-              }
+              }.toList()
           if (books.isNullOrEmpty()) return@mapNotNull null
           Serie(
-              name = dir.name,
-              url = dir.toURI().toURL(),
+              name = dir.fileName.toString(),
+              url = dir.toUri().toURL(),
               books = books
           ).also { serie ->
             serie.books.forEach { it.serie = serie }

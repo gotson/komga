@@ -20,4 +20,8 @@ data class Book(
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonManagedReference
     var serie: Serie? = null
-)
+) {
+    override fun toString(): String {
+        return "Book((id=$id, name=$name, url=$url)"
+    }
+}

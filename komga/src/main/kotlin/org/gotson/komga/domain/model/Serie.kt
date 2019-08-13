@@ -21,4 +21,8 @@ data class Serie(
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER, mappedBy = "serie")
     @JsonBackReference
     val books: List<Book> = emptyList()
-)
+) {
+    override fun toString(): String {
+        return "Serie(id=$id, name=$name, url=$url)"
+    }
+}
