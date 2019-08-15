@@ -43,11 +43,8 @@ class FileSystemScanner(
           Serie(
               name = dir.fileName.toString(),
               url = dir.toUri().toURL(),
-              updated = dir.getUpdatedTime(),
-              books = books
-          ).also { serie ->
-            serie.books.forEach { it.serie = serie }
-          }
+              updated = dir.getUpdatedTime()
+          ).also { it.books = books.toMutableList() }
         }.toList()
   }
 }
