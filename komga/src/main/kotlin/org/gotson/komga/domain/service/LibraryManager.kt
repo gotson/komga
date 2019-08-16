@@ -19,15 +19,22 @@ class LibraryManager(
 
   @Transactional
   fun scanRootFolder(library: Library) {
-    logger.info { "Scanning ${library.name}'s root folder: ${library.root}" }
+    logger.info { "Updating library: ${library.name}, root folder: ${library.root}" }
     measureTimeMillis {
       val series = fileSystemScanner.scanRootFolder(library.fileSystem.getPath(library.root))
 
       // delete series that don't exist anymore
-      if (series.isEmpty())
+      if (series.isEmpty()) {
+        logger.info { "Scan returned no series, deleting all existing series" }
         serieRepository.deleteAll()
-      else
-        serieRepository.deleteAllByUrlNotIn(series.map { it.url })
+      } else {
+        val urls = series.map { it.url }
+        val countOfSeriesToDelete = serieRepository.countByUrlNotIn(urls)
+        if (countOfSeriesToDelete > 0) {
+          logger.info { "Deleting $countOfSeriesToDelete series not on disk anymore" }
+          serieRepository.deleteAllByUrlNotIn(urls)
+        }
+      }
 
       // match IDs for existing entities
       series.forEach { newSerie ->
@@ -36,6 +43,11 @@ class LibraryManager(
           newSerie.books.forEach { newBook ->
             bookRepository.findByUrl(newBook.url)?.let { existingBook ->
               newBook.id = existingBook.id
+              // conserve metadata if book has not changed
+              if (newBook.updated == existingBook.updated)
+                newBook.metadata = existingBook.metadata
+              else
+                logger.info { "Book changed on disk, reset metadata status: ${newBook.url}" }
             }
           }
         }
@@ -43,6 +55,6 @@ class LibraryManager(
 
       serieRepository.saveAll(series)
 
-    }.also { logger.info { "Scan finished in $it ms" } }
+    }.also { logger.info { "Update finished in $it ms" } }
   }
 }

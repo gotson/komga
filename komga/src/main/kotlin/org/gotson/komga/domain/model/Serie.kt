@@ -11,21 +11,28 @@ import javax.persistence.OneToMany
 import javax.validation.constraints.NotBlank
 
 @Entity
-data class Serie(
-    @Id
-    @GeneratedValue
-    var id: Long? = null,
-
+class Serie(
     @NotBlank
     val name: String,
 
     val url: URL,
     val updated: LocalDateTime
 ) {
+  @Id
+  @GeneratedValue
+  var id: Long = 0
+
   @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, mappedBy = "serie", orphanRemoval = true)
-  var books: MutableList<Book> = mutableListOf()
+  private var _books: MutableList<Book> = mutableListOf()
     set(value) {
       value.forEach { it.serie = this }
       field = value
     }
+
+  val books: List<Book>
+    get() = _books.toList()
+
+  fun setBooks(books: List<Book>) {
+    _books = books.toMutableList()
+  }
 }

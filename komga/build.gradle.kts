@@ -54,6 +54,9 @@ dependencies {
 
   implementation("commons-io:commons-io:2.6")
 
+  implementation("org.apache.tika:tika-core:1.22")
+  implementation("net.lingala.zip4j:zip4j:2.1.2")
+
   runtimeOnly("com.h2database:h2:1.4.199")
 
   testImplementation("org.springframework.boot:spring-boot-starter-test") {

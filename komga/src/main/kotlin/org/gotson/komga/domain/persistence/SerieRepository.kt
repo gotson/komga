@@ -8,5 +8,6 @@ import java.net.URL
 @Repository
 interface SerieRepository : JpaRepository<Serie, Long> {
   fun deleteAllByUrlNotIn(urls: Iterable<URL>)
+  fun countByUrlNotIn(urls: Iterable<URL>): Long
   fun findByUrl(url: URL): Serie?
 }
