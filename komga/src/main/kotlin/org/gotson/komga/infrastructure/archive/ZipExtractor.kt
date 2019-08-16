@@ -9,7 +9,10 @@ import java.nio.file.Path
 class ZipExtractor : ArchiveExtractor() {
 
   override fun getFilenames(path: Path) =
-      ZipFile(path.toFile()).fileHeaders.map { it.fileName }.sortedWith(natSortComparator)
+      ZipFile(path.toFile()).fileHeaders
+          .filter { !it.isDirectory }
+          .map { it.fileName }
+          .sortedWith(natSortComparator)
 
   override fun getEntryStream(path: Path, entryName: String): InputStream =
       ZipFile(path.toFile()).let {
