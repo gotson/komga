@@ -36,4 +36,11 @@ class ContentDetector(
       return mediaType.toString()
     }
   }
+
+  fun isImage(stream: InputStream): Boolean =
+      try {
+        detectMediaType(stream).startsWith("image/")
+      } catch (ex: Exception) {
+        false
+      }
 }

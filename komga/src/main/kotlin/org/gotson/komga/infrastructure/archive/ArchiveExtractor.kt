@@ -6,7 +6,6 @@ import java.nio.file.Path
 import java.util.*
 
 abstract class ArchiveExtractor {
-
   protected val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
 
   abstract fun getFilenames(path: Path): List<String>
