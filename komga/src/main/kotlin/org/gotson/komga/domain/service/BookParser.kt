@@ -6,6 +6,7 @@ import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.model.path
 import org.gotson.komga.infrastructure.archive.ContentDetector
+import org.gotson.komga.infrastructure.archive.RarExtractor
 import org.gotson.komga.infrastructure.archive.ZipExtractor
 import org.springframework.stereotype.Service
 import java.io.InputStream
@@ -15,11 +16,13 @@ private val logger = KotlinLogging.logger {}
 @Service
 class BookParser(
     private val contentDetector: ContentDetector,
-    private val zipExtractor: ZipExtractor
+    private val zipExtractor: ZipExtractor,
+    private val rarExtractor: RarExtractor
 ) {
 
-  val supportedMimeTypes = listOf(
-      "application/zip"
+  val supportedMediaTypes = mapOf(
+      "application/zip" to zipExtractor,
+      "application/x-rar-compressed" to rarExtractor
   )
 
   fun parse(book: Book): BookMetadata {
@@ -27,10 +30,10 @@ class BookParser(
 
     val mediaType = contentDetector.detectMediaType(book.path())
     logger.info { "Detected media type: $mediaType" }
-    if (!supportedMimeTypes.contains(mediaType))
+    if (!supportedMediaTypes.keys.contains(mediaType))
       throw UnsupportedMediaTypeException("Unsupported mime type: $mediaType. File: ${book.url}", mediaType)
 
-    val pageNames = zipExtractor.getFilenames(book.path())
+    val pageNames = supportedMediaTypes.getValue(mediaType).getFilenames(book.path())
     logger.info { "Book has ${pageNames.size} pages" }
 
     return BookMetadata(mediaType = mediaType, status = Status.READY, pages = pageNames)
@@ -49,7 +52,7 @@ class BookParser(
       throw ArrayIndexOutOfBoundsException("Page $number does not exist")
     }
 
-    return zipExtractor.getEntryStream(book.path(), book.metadata.pages[number - 1])
+    return supportedMediaTypes.getValue(book.metadata.mediaType!!).getEntryStream(book.path(), book.metadata.pages[number - 1])
   }
 }
 

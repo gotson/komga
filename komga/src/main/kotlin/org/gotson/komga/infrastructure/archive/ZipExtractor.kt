@@ -6,12 +6,12 @@ import java.io.InputStream
 import java.nio.file.Path
 
 @Service
-class ZipExtractor {
+class ZipExtractor : ArchiveExtractor() {
 
-  fun getFilenames(path: Path) =
-      ZipFile(path.toFile()).fileHeaders.map { it.fileName }.toMutableList()
+  override fun getFilenames(path: Path) =
+      ZipFile(path.toFile()).fileHeaders.map { it.fileName }.sortedWith(natSortComparator)
 
-  fun getEntryStream(path: Path, entryName: String): InputStream =
+  override fun getEntryStream(path: Path, entryName: String): InputStream =
       ZipFile(path.toFile()).let {
         it.getInputStream(it.getFileHeader(entryName))
       }
