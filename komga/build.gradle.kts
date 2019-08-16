@@ -55,7 +55,6 @@ dependencies {
   implementation("commons-io:commons-io:2.6")
 
   implementation("org.apache.tika:tika-core:1.22")
-  implementation("net.lingala.zip4j:zip4j:2.1.2")
   implementation("com.github.junrar:junrar:4.0.0")
   implementation("net.grey-panther:natural-comparator:1.1")
 
