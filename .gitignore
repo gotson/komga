@@ -11,6 +11,7 @@
 
 ### IntelliJ IDEA ###
 .idea
+!/.idea/runConfigurations/
 *.iws
 *.iml
 *.ipr
@@ -23,4 +24,3 @@ dist/
 nbdist/
 .nb-gradle/
 
-/nestor/src/main/resources/public
