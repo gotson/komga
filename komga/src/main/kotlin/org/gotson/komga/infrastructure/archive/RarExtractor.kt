@@ -1,7 +1,6 @@
 package org.gotson.komga.infrastructure.archive
 
 import com.github.junrar.Archive
-import com.github.junrar.Junrar
 import org.springframework.stereotype.Service
 import java.io.InputStream
 import java.nio.file.Files
@@ -11,9 +10,12 @@ import java.nio.file.Path
 class RarExtractor : ArchiveExtractor() {
 
   override fun getFilenames(path: Path): List<String> {
-    val contentsDescription = Junrar.getContentsDescription(path.toFile())
+    val archive = Archive(Files.newInputStream(path))
 
-    return contentsDescription.map { it.path }.sortedWith(natSortComparator)
+    return archive.fileHeaders
+        .filter { !it.isDirectory }
+        .map { it.fileNameString }
+        .sortedWith(natSortComparator)
   }
 
   override fun getEntryStream(path: Path, entryName: String): InputStream {
