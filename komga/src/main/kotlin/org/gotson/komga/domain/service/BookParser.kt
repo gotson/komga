@@ -39,7 +39,7 @@ class BookParser(
     return BookMetadata(mediaType = mediaType, status = Status.READY, pages = pages)
   }
 
-  fun getPageStrema(book: Book, number: Int): InputStream {
+  fun getPageStream(book: Book, number: Int): InputStream {
     logger.info { "Get page #$number for book: ${book.url}" }
 
     if (book.metadata.status != Status.READY) {

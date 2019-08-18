@@ -29,19 +29,4 @@ class BookManager(
     bookRepository.save(book)
   }
 
-  fun getPageContent(book: Book, number: Int): ByteArray {
-    logger.info { "Get page #$number for book: ${book.url}" }
-
-    if (book.metadata.status == Status.UNKNOWN) {
-      logger.info { "Book metadata is unknown, parsing it now" }
-      parseAndPersist(book)
-    }
-
-    if (book.metadata.status != Status.READY) {
-      logger.warn { "Book metadata is not ready, cannot get pages" }
-      throw MetadataNotReadyException()
-    }
-
-    return bookParser.getPageStrema(book, number).readBytes()
-  }
 }

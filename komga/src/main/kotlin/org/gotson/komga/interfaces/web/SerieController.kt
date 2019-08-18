@@ -5,7 +5,7 @@ import org.gotson.komga.domain.model.Serie
 import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SerieRepository
-import org.gotson.komga.domain.service.BookManager
+import org.gotson.komga.domain.service.BookParser
 import org.gotson.komga.domain.service.MetadataNotReadyException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -26,7 +26,7 @@ import java.io.File
 class SerieController(
     private val serieRepository: SerieRepository,
     private val bookRepository: BookRepository,
-    private val bookManager: BookManager
+    private val bookParser: BookParser
 ) {
 
   @GetMapping
@@ -98,10 +98,10 @@ class SerieController(
 
     try {
       return bookRepository.findByIdOrNull((bookId))?.let { book ->
-        val pageContent = bookManager.getPageContent(book, pageNumber)
+        val pageContent = bookParser.getPageStream(book, pageNumber).readBytes()
 
         val mediaType = try {
-          MediaType.parseMediaType(book.metadata.mediaType!!)
+          MediaType.parseMediaType(book.metadata.pages[pageNumber - 1].mediaType)
         } catch (ex: Exception) {
           MediaType.APPLICATION_OCTET_STREAM
         }
