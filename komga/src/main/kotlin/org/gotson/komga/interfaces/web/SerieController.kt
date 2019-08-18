@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import java.io.File
-import java.net.URL
 
 @RestController
 @RequestMapping("api/v1/series")
@@ -115,16 +114,20 @@ class SerieController(
 data class SerieDto(
     val id: Long,
     val name: String,
-    val url: URL
+    val url: String
 )
 
-fun Serie.toDto() = SerieDto(id = id, name = name, url = url)
+fun Serie.toDto() = SerieDto(
+    id = id,
+    name = name,
+    url = url.toString()
+)
 
 
 data class BookDto(
     val id: Long,
     val name: String,
-    val url: URL,
+    val url: String,
     val metadata: BookMetadataDto
 )
 
@@ -137,7 +140,7 @@ fun Book.toDto() =
     BookDto(
         id = id,
         name = name,
-        url = url,
+        url = url.toString(),
         metadata = BookMetadataDto(
             status = metadata.status.toString(),
             mediaType = metadata.mediaType ?: ""
