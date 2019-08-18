@@ -19,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.transaction.annotation.Transactional
+import javax.persistence.EntityManager
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
@@ -28,7 +29,8 @@ class LibraryManagerTest(
     @Autowired private val serieRepository: SerieRepository,
     @Autowired private val bookRepository: BookRepository,
     @Autowired private val libraryManager: LibraryManager,
-    @Autowired private val bookManager: BookManager
+    @Autowired private val bookManager: BookManager,
+    @Autowired private val entityManager: EntityManager
 ) {
 
   @MockkBean
@@ -40,8 +42,8 @@ class LibraryManagerTest(
   private val library = Library(name = "test", root = "/root")
 
   @AfterEach
-  fun `clear repository`() {
-    serieRepository.deleteAll()
+  fun `clear repositories`() {
+    entityManager.clear()
   }
 
   @Test
