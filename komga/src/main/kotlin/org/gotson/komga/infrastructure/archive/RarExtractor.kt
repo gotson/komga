@@ -1,6 +1,7 @@
 package org.gotson.komga.infrastructure.archive
 
 import com.github.junrar.Archive
+import org.gotson.komga.domain.model.BookPage
 import org.springframework.stereotype.Service
 import java.io.InputStream
 import java.nio.file.Files
@@ -11,17 +12,24 @@ class RarExtractor(
     private val contentDetector: ContentDetector
 ) : ArchiveExtractor() {
 
-  override fun getFilenames(path: Path): List<String> {
-    val archive = Archive(Files.newInputStream(path))
+  override fun getPagesList(path: Path): List<BookPage> {
+    val rar = Archive(Files.newInputStream(path))
 
-    return archive.fileHeaders
+    return rar.fileHeaders
         .filter { !it.isDirectory }
-        .filter { contentDetector.isImage(archive.getInputStream(it)) }
-        .map { it.fileNameString }
-        .sortedWith(natSortComparator)
+        .map {
+          BookPage(
+              it.fileNameString,
+              contentDetector.detectMediaType(rar.getInputStream(it))
+          )
+        }
+        .filter { contentDetector.isImage(it.mediaType) }
+        .sortedWith(
+            compareBy(natSortComparator) { it.fileName }
+        )
   }
 
-  override fun getEntryStream(path: Path, entryName: String): InputStream {
+  override fun getPageStream(path: Path, entryName: String): InputStream {
     val archive = Archive(Files.newInputStream(path))
     val header = archive.fileHeaders.find { it.fileNameString == entryName }
     return archive.getInputStream(header)

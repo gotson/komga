@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.model.makeBook
+import org.gotson.komga.domain.model.makeBookPage
 import org.gotson.komga.domain.model.makeSerie
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -51,7 +52,7 @@ class PersistenceTest(
 
     // when
     val book = bookRepository.findAll().first()
-    book.metadata = BookMetadata(status = Status.READY, mediaType = "test", pages = listOf("page1"))
+    book.metadata = BookMetadata(status = Status.READY, mediaType = "test", pages = listOf(makeBookPage("page1")))
 
     bookRepository.save(book)
 
@@ -62,9 +63,8 @@ class PersistenceTest(
     bookMetadataRepository.findAll().first().let {
       assertThat(it.status == Status.READY)
       assertThat(it.mediaType == "test")
-      assertThat(it.pages)
-          .hasSize(1)
-          .containsExactly("page1")
+      assertThat(it.pages).hasSize(1)
+      assertThat(it.pages.first().fileName).isEqualTo("page1")
     }
   }
 }

@@ -24,5 +24,8 @@ class RootScannerController(
   fun scanRootFolder() {
     logger.info { "Starting periodic library scan" }
     libraryManager.scanRootFolder(Library("default", komgaProperties.rootFolder))
+
+    logger.info { "Starting periodic book parsing" }
+    libraryManager.parseUnparsedBooks()
   }
 }

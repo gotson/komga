@@ -8,6 +8,7 @@ import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.model.makeBook
+import org.gotson.komga.domain.model.makeBookPage
 import org.gotson.komga.domain.model.makeSerie
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SerieRepository
@@ -156,7 +157,7 @@ class LibraryManagerTest(
         )
     libraryManager.scanRootFolder(library)
 
-    every { mockParser.parse(any()) } returns BookMetadata(status = Status.READY, mediaType = "application/zip", pages = listOf("1.jpg", "2.jpg"))
+    every { mockParser.parse(any()) } returns BookMetadata(status = Status.READY, mediaType = "application/zip", pages = listOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")))
     bookRepository.findAll().forEach { bookManager.parseAndPersist(it) }
 
     // when
@@ -169,8 +170,7 @@ class LibraryManagerTest(
     val book = bookRepository.findAll().first()
     assertThat(book.metadata.status).isEqualTo(Status.READY)
     assertThat(book.metadata.mediaType).isEqualTo("application/zip")
-    assertThat(book.metadata.pages)
-        .hasSize(2)
-        .containsExactly("1.jpg", "2.jpg")
+    assertThat(book.metadata.pages).hasSize(2)
+    assertThat(book.metadata.pages.map { it.fileName }).containsExactly("1.jpg", "2.jpg")
   }
 }

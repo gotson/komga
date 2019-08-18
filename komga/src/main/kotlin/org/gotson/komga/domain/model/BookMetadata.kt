@@ -16,7 +16,7 @@ class BookMetadata(
     @Enumerated(EnumType.STRING)
     val status: Status = Status.UNKNOWN,
     val mediaType: String? = null,
-    pages: List<String> = emptyList()
+    pages: List<BookPage> = emptyList()
 ) {
   @Id
   @GeneratedValue
@@ -28,9 +28,9 @@ class BookMetadata(
   @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(name = "book_metadata_pages")
   @Column(name = "pages")
-  private val _pages: MutableList<String> = mutableListOf()
+  private val _pages: MutableList<BookPage> = mutableListOf()
 
-  val pages: List<String>
+  val pages: List<BookPage>
     get() = _pages.toList()
 
   init {

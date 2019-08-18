@@ -8,3 +8,6 @@ fun makeBook(name: String, url: String = "file:/$name") =
 
 fun makeSerie(name: String, url: String = "file:/$name", books: List<Book> = listOf()) =
     Serie(name = name, url = URL(url), updated = LocalDateTime.now()).also { it.setBooks(books) }
+
+fun makeBookPage(name: String) =
+    BookPage(name, "image/png")

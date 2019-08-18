@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import java.io.File
@@ -41,10 +42,15 @@ class SerieController(
   @GetMapping("{id}/books")
   fun getAllBooksBySerie(
       @PathVariable id: Long,
+      @RequestParam(value = "readyonly", defaultValue = "true") readyFilter: Boolean,
       page: Pageable
   ): Page<BookDto> {
     if (!serieRepository.existsById(id)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    return bookRepository.findAllBySerieId(id, page).map { it.toDto() }
+    return if (readyFilter) {
+      bookRepository.findAllByMetadataStatusAndSerieId(Status.READY, id, page)
+    } else {
+      bookRepository.findAllBySerieId(id, page)
+    }.map { it.toDto() }
   }
 
   @GetMapping("{serieId}/books/{bookId}")
@@ -73,11 +79,12 @@ class SerieController(
       @PathVariable bookId: Long
   ): List<PageDto> {
     if (!serieRepository.existsById(serieId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
     return bookRepository.findByIdOrNull((bookId))?.let {
-      if (it.metadata.status == Status.UNKNOWN) bookManager.parseAndPersist(it)
+      if (it.metadata.status == Status.UNKNOWN) throw ResponseStatusException(HttpStatus.NO_CONTENT, "Book is not parsed yet")
       if (it.metadata.status in listOf(Status.ERROR, Status.UNSUPPORTED)) throw ResponseStatusException(HttpStatus.NO_CONTENT, "Book cannot be parsed")
 
-      it.metadata.pages.mapIndexed { index, s -> PageDto(index + 1, s) }
+      it.metadata.pages.mapIndexed { index, s -> PageDto(index + 1, s.fileName, s.mediaType) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -91,17 +98,17 @@ class SerieController(
 
     try {
       return bookRepository.findByIdOrNull((bookId))?.let { book ->
-        val page = bookManager.getPage(book, pageNumber)
+        val pageContent = bookManager.getPageContent(book, pageNumber)
 
         val mediaType = try {
-          MediaType.parseMediaType(page.mediaType)
+          MediaType.parseMediaType(book.metadata.mediaType!!)
         } catch (ex: Exception) {
           MediaType.APPLICATION_OCTET_STREAM
         }
 
         ResponseEntity.ok()
             .contentType(mediaType)
-            .body(page.content)
+            .body(pageContent)
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     } catch (ex: ArrayIndexOutOfBoundsException) {
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number does not exist")
@@ -149,5 +156,6 @@ fun Book.toDto() =
 
 data class PageDto(
     val number: Int,
-    val fileName: String
+    val fileName: String,
+    val mediaType: String
 )

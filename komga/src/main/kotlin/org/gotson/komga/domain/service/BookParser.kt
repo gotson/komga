@@ -33,13 +33,13 @@ class BookParser(
     if (!supportedMediaTypes.keys.contains(mediaType))
       throw UnsupportedMediaTypeException("Unsupported mime type: $mediaType. File: ${book.url}", mediaType)
 
-    val pageNames = supportedMediaTypes.getValue(mediaType).getFilenames(book.path())
-    logger.info { "Book has ${pageNames.size} pages" }
+    val pages = supportedMediaTypes.getValue(mediaType).getPagesList(book.path())
+    logger.info { "Book has ${pages.size} pages" }
 
-    return BookMetadata(mediaType = mediaType, status = Status.READY, pages = pageNames)
+    return BookMetadata(mediaType = mediaType, status = Status.READY, pages = pages)
   }
 
-  fun getPage(book: Book, number: Int): InputStream {
+  fun getPageStrema(book: Book, number: Int): InputStream {
     logger.info { "Get page #$number for book: ${book.url}" }
 
     if (book.metadata.status != Status.READY) {
@@ -52,7 +52,7 @@ class BookParser(
       throw ArrayIndexOutOfBoundsException("Page $number does not exist")
     }
 
-    return supportedMediaTypes.getValue(book.metadata.mediaType!!).getEntryStream(book.path(), book.metadata.pages[number - 1])
+    return supportedMediaTypes.getValue(book.metadata.mediaType!!).getPageStream(book.path(), book.metadata.pages[number - 1].fileName)
   }
 }
 

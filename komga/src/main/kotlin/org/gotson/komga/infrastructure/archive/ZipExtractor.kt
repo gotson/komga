@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.archive
 
+import org.gotson.komga.domain.model.BookPage
 import org.springframework.stereotype.Service
 import java.io.InputStream
 import java.nio.file.Path
@@ -10,16 +11,23 @@ class ZipExtractor(
     private val contentDetector: ContentDetector
 ) : ArchiveExtractor() {
 
-  override fun getFilenames(path: Path): List<String> {
+  override fun getPagesList(path: Path): List<BookPage> {
     val zip = ZipFile(path.toFile())
     return zip.entries().toList()
         .filter { !it.isDirectory }
-        .filter { contentDetector.isImage(zip.getInputStream(it)) }
-        .map { it.name }
-        .sortedWith(natSortComparator)
+        .map {
+          BookPage(
+              it.name,
+              contentDetector.detectMediaType(zip.getInputStream(it))
+          )
+        }
+        .filter { contentDetector.isImage(it.mediaType) }
+        .sortedWith(
+            compareBy(natSortComparator) { it.fileName }
+        )
   }
 
-  override fun getEntryStream(path: Path, entryName: String): InputStream =
+  override fun getPageStream(path: Path, entryName: String): InputStream =
       ZipFile(path.toFile()).let {
         it.getInputStream(it.getEntry(entryName))
       }

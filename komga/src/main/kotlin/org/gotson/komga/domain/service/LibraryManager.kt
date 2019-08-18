@@ -2,6 +2,7 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Library
+import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SerieRepository
 import org.springframework.stereotype.Service
@@ -14,7 +15,8 @@ private val logger = KotlinLogging.logger {}
 class LibraryManager(
     private val fileSystemScanner: FileSystemScanner,
     private val serieRepository: SerieRepository,
-    private val bookRepository: BookRepository
+    private val bookRepository: BookRepository,
+    private val bookManager: BookManager
 ) {
 
   @Transactional
@@ -55,6 +57,15 @@ class LibraryManager(
 
       serieRepository.saveAll(series)
 
-    }.also { logger.info { "Update finished in $it ms" } }
+    }.also { logger.info { "Library update finished in $it ms" } }
+  }
+
+  @Transactional
+  fun parseUnparsedBooks() {
+    logger.info { "Parsing all books in status: unkown" }
+    val booksToParse = bookRepository.findAllByMetadataStatus(Status.UNKNOWN)
+    measureTimeMillis {
+      booksToParse.forEach { bookManager.parseAndPersist(it) }
+    }.also { logger.info { "Parsed ${booksToParse.size} books in $it ms" } }
   }
 }
