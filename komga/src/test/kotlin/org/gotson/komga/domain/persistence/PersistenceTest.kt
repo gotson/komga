@@ -33,7 +33,7 @@ class PersistenceTest(
   @Test
   fun `given serie with book when saving then metadata is also saved`() {
     // given
-    val serie = makeSerie(name = "serie", books = mutableListOf(makeBook("book1")))
+    val serie = makeSerie(name = "serie", books = listOf(makeBook("book1")))
 
     // when
     serieRepository.save(serie)
@@ -47,7 +47,7 @@ class PersistenceTest(
   @Test
   fun `given existing book when updating metadata then new metadata is saved`() {
     // given
-    val serie = makeSerie(name = "serie", books = mutableListOf(makeBook("book1")))
+    val serie = makeSerie(name = "serie", books = listOf(makeBook("book1")))
     serieRepository.save(serie)
 
     // when
