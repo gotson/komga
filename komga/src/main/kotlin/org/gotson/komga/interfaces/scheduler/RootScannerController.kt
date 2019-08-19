@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller
 
 private val logger = KotlinLogging.logger {}
 
-@Profile("!test")
+@Profile("dev", "prod")
 @Controller
 class RootScannerController(
     private val libraryManager: LibraryManager,
