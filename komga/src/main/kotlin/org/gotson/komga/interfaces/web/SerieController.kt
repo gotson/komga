@@ -1,5 +1,6 @@
 package org.gotson.komga.interfaces.web
 
+import com.github.klinq.jpaspec.likeLower
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.Serie
 import org.gotson.komga.domain.model.Status
@@ -30,8 +31,18 @@ class SerieController(
 ) {
 
   @GetMapping
-  fun getAllSeries(page: Pageable) =
-      serieRepository.findAll(page).map { it.toDto() }
+  fun getAllSeries(
+      @RequestParam("search")
+      searchTerm: String?,
+
+      page: Pageable
+  ): Page<SerieDto> =
+      if (!searchTerm.isNullOrEmpty()) {
+        val spec = Serie::name.likeLower("%$searchTerm%")
+        serieRepository.findAll(spec, page)
+      } else {
+        serieRepository.findAll(page)
+      }.map { it.toDto() }
 
   @GetMapping("{id}")
   fun getOneSerie(
