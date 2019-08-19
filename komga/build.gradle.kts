@@ -58,6 +58,8 @@ dependencies {
   implementation("com.github.junrar:junrar:4.0.0")
   implementation("net.grey-panther:natural-comparator:1.1")
 
+  implementation("net.coobird:thumbnailator:0.4.8")
+
   runtimeOnly("com.h2database:h2:1.4.199")
 
   testImplementation("org.springframework.boot:spring-boot-starter-test") {

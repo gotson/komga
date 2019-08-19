@@ -73,6 +73,18 @@ class SerieController(
     return bookRepository.findByIdOrNull(bookId)?.toDto() ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @GetMapping(value = ["{serieId}/books/{bookId}/thumbnail"], produces = [MediaType.IMAGE_PNG_VALUE])
+  fun getBookThumbnail(
+      @PathVariable serieId: Long,
+      @PathVariable bookId: Long
+  ): ByteArray {
+    if (!serieRepository.existsById(serieId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+    return bookRepository.findByIdOrNull(bookId)?.let {
+      it.metadata.thumbnail ?: throw ResponseStatusException(HttpStatus.NO_CONTENT)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
   @GetMapping(value = ["{serieId}/books/{bookId}/content"], produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
   fun getBookContent(
       @PathVariable serieId: Long,

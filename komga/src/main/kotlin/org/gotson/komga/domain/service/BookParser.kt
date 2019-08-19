@@ -1,6 +1,7 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
+import net.coobird.thumbnailator.Thumbnails
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Status
@@ -9,6 +10,7 @@ import org.gotson.komga.infrastructure.archive.ContentDetector
 import org.gotson.komga.infrastructure.archive.RarExtractor
 import org.gotson.komga.infrastructure.archive.ZipExtractor
 import org.springframework.stereotype.Service
+import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
 private val logger = KotlinLogging.logger {}
@@ -25,6 +27,9 @@ class BookParser(
       "application/x-rar-compressed" to rarExtractor
   )
 
+  private val thumbnailSize = 300
+  private val thumbnailFormat = "png"
+
   fun parse(book: Book): BookMetadata {
     logger.info { "Trying to parse book: ${book.url}" }
 
@@ -36,7 +41,20 @@ class BookParser(
     val pages = supportedMediaTypes.getValue(mediaType).getPagesList(book.path())
     logger.info { "Book has ${pages.size} pages" }
 
-    return BookMetadata(mediaType = mediaType, status = Status.READY, pages = pages)
+    val thumbnail = try {
+      ByteArrayOutputStream().let {
+        Thumbnails.of(supportedMediaTypes.getValue(mediaType).getPageStream(book.path(), pages.first().fileName))
+            .size(thumbnailSize, thumbnailSize)
+            .outputFormat(thumbnailFormat)
+            .toOutputStream(it)
+        it.toByteArray()
+      }
+    } catch (ex: Exception) {
+      logger.warn(ex) { "Could not generate thumbnail for book: ${book.url}" }
+      null
+    }
+
+    return BookMetadata(mediaType = mediaType, status = Status.READY, pages = pages, thumbnail = thumbnail)
   }
 
   fun getPageStream(book: Book, number: Int): InputStream {

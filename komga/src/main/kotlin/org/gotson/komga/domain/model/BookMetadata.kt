@@ -10,6 +10,7 @@ import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.JoinColumn
+import javax.persistence.Lob
 import javax.persistence.OneToOne
 import javax.persistence.Table
 
@@ -22,6 +23,10 @@ class BookMetadata(
 
     @Column(name = "media_type")
     val mediaType: String? = null,
+
+    @Column(name = "thumbnail")
+    @Lob
+    val thumbnail: ByteArray? = null,
 
     pages: List<BookPage> = emptyList()
 ) {
