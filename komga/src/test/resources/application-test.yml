@@ -1,6 +1,11 @@
 application.version: TESTING
 
 spring:
+  flyway:
+    enabled: true
+    jpa:
+      hibernate:
+        ddl-auto: validate
   jpa:
     properties:
       hibernate:

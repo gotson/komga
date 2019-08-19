@@ -39,8 +39,7 @@ class BookMetadata(
   lateinit var book: Book
 
   @ElementCollection(fetch = FetchType.EAGER)
-  @CollectionTable(name = "book_metadata_pages", joinColumns = [JoinColumn(name = "book_metadata_id")])
-  @Column(name = "pages")
+  @CollectionTable(name = "book_metadata_page", joinColumns = [JoinColumn(name = "book_metadata_id")])
   private val _pages: MutableList<BookPage> = mutableListOf()
 
   val pages: List<BookPage>

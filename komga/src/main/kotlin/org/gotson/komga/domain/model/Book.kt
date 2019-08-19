@@ -33,7 +33,7 @@ class Book(
 ) {
   @Id
   @GeneratedValue
-  @Column(name = "id", nullable = false, unique = true)
+  @Column(name = "id", nullable = false)
   @PrimaryKeyJoinColumn
   var id: Long = 0
 

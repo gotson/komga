@@ -38,6 +38,8 @@ dependencies {
 
   kapt("org.springframework.boot:spring-boot-configuration-processor")
 
+  implementation("org.flywaydb:flyway-core:5.2.4")
+
 //  implementation("com.github.ben-manes.caffeine:caffeine:2.7.0")
 
   implementation("io.github.microutils:kotlin-logging:1.6.26")

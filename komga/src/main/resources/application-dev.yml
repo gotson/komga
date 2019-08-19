@@ -2,3 +2,6 @@
 komga:
   root-folder: D:\\files
 #  root-folder-scan-cron: 0 0 * * * ?
+spring:
+  profiles:
+    include: flyway

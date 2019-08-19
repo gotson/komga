@@ -2,6 +2,8 @@ spring:
   flyway:
     enabled: false
   jpa:
+    hibernate:
+      ddl-auto: none
     properties:
       javax:
         persistence:
