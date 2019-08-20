@@ -8,8 +8,6 @@ import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.JoinTable
 import javax.persistence.OneToMany
 import javax.persistence.Table
 import javax.validation.constraints.NotBlank
@@ -27,7 +25,7 @@ class Serie(
     @Column(name = "file_last_modified", nullable = false)
     var fileLastModified: LocalDateTime,
 
-    books: MutableList<Book>
+    books: Iterable<Book>
 
 ) : AuditableEntity() {
   @Id
@@ -35,15 +33,18 @@ class Serie(
   @Column(name = "id", nullable = false, unique = true)
   var id: Long = 0
 
-  @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, orphanRemoval = true)
-  @JoinTable(name = "serie_books_mapping", joinColumns = [JoinColumn(name = "serie_id")], inverseJoinColumns = [JoinColumn(name = "book_id")])
-  var books: MutableList<Book> = mutableListOf()
+  @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "serie")
+  private var _books: MutableList<Book> = mutableListOf()
+
+  var books: List<Book>
+    get() = _books.toList()
     set(value) {
-      books.clear()
-      books.addAll(value)
+      _books.clear()
+      value.forEach { it.serie = this }
+      _books.addAll(value)
     }
 
   init {
-    this.books = books
+    this.books = books.toMutableList()
   }
 }

@@ -9,6 +9,7 @@ create table book
     name               varchar   not null,
     url                varchar   not null,
     book_metadata_id   bigint    not null,
+    serie_id           bigint    not null,
     primary key (id)
 );
 
@@ -39,26 +40,14 @@ create table serie
     primary key (id)
 );
 
-create table serie_books_mapping
-(
-    serie_id bigint not null,
-    book_id  bigint not null
-);
-
 alter table book
     add constraint uk_book_book_metadata_id unique (book_metadata_id);
-
-alter table serie_books_mapping
-    add constraint UK_ya6l4fjcs4rlhwx1fwqwsmm unique (book_id);
 
 alter table book
     add constraint fk_book_book_metadata_book_metadata_id foreign key (book_metadata_id) references book_metadata (id);
 
+alter table book
+    add constraint fk_book_serie_serie_id foreign key (serie_id) references serie (id);
+
 alter table book_metadata_page
     add constraint fk_book_metadata_page_book_metadata_book_metadata_id foreign key (book_metadata_id) references book_metadata (id);
-
-alter table serie_books_mapping
-    add constraint fk_serie_books_mapping_book_book_id foreign key (book_id) references book (id);
-
-alter table serie_books_mapping
-    add constraint fk_serie_books_mapping_serie_serie_id foreign key (serie_id) references serie (id);

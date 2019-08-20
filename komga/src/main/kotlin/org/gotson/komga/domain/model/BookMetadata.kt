@@ -28,9 +28,7 @@ class BookMetadata(
     @Lob
     var thumbnail: ByteArray? = null,
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "book_metadata_page", joinColumns = [JoinColumn(name = "book_metadata_id")])
-    var pages: MutableList<BookPage> = mutableListOf()
+    pages: Iterable<BookPage> = emptyList()
 ) {
   @Id
   @GeneratedValue
@@ -40,11 +38,23 @@ class BookMetadata(
   @OneToOne(optional = false, fetch = FetchType.LAZY, mappedBy = "metadata")
   lateinit var book: Book
 
+  @ElementCollection(fetch = FetchType.EAGER)
+  @CollectionTable(name = "book_metadata_page", joinColumns = [JoinColumn(name = "book_metadata_id")])
+  var pages: MutableList<BookPage> = mutableListOf()
+    set(value) {
+      pages.clear()
+      pages.addAll(value)
+    }
+
   fun reset() {
     status = Status.UNKNOWN
     mediaType = null
     thumbnail = null
-    pages = mutableListOf()
+    pages.clear()
+  }
+
+  init {
+    this.pages = pages.toMutableList()
   }
 }
 
