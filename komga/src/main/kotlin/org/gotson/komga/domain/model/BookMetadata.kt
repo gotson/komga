@@ -19,16 +19,18 @@ import javax.persistence.Table
 class BookMetadata(
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    val status: Status = Status.UNKNOWN,
+    var status: Status = Status.UNKNOWN,
 
     @Column(name = "media_type")
-    val mediaType: String? = null,
+    var mediaType: String? = null,
 
     @Column(name = "thumbnail")
     @Lob
-    val thumbnail: ByteArray? = null,
+    var thumbnail: ByteArray? = null,
 
-    pages: List<BookPage> = emptyList()
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "book_metadata_page", joinColumns = [JoinColumn(name = "book_metadata_id")])
+    var pages: MutableList<BookPage> = mutableListOf()
 ) {
   @Id
   @GeneratedValue
@@ -38,15 +40,11 @@ class BookMetadata(
   @OneToOne(optional = false, fetch = FetchType.LAZY, mappedBy = "metadata")
   lateinit var book: Book
 
-  @ElementCollection(fetch = FetchType.EAGER)
-  @CollectionTable(name = "book_metadata_page", joinColumns = [JoinColumn(name = "book_metadata_id")])
-  private val _pages: MutableList<BookPage> = mutableListOf()
-
-  val pages: List<BookPage>
-    get() = _pages.toList()
-
-  init {
-    _pages.addAll(pages)
+  fun reset() {
+    status = Status.UNKNOWN
+    mediaType = null
+    thumbnail = null
+    pages = mutableListOf()
   }
 }
 

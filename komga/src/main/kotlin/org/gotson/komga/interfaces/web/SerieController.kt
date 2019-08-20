@@ -53,14 +53,16 @@ class SerieController(
   @GetMapping("{id}/books")
   fun getAllBooksBySerie(
       @PathVariable id: Long,
-      @RequestParam(value = "readyonly", defaultValue = "true") readyFilter: Boolean,
-      page: Pageable
-  ): Page<BookDto> {
-    if (!serieRepository.existsById(id)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
+      @RequestParam(value = "readyonly", defaultValue = "true") readyFilter: Boolean
+//      page: Pageable
+  ): List<BookDto> {
+    val serie = serieRepository.findByIdOrNull(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     return if (readyFilter) {
-      bookRepository.findAllByMetadataStatusAndSerieId(Status.READY, id, page)
+//      bookRepository.findAllByMetadataStatusAndSerieId(Status.READY, id, page)
+      serie.books.filter { it.metadata.status == Status.READY }
     } else {
-      bookRepository.findAllBySerieId(id, page)
+//      bookRepository.findAllBySerieId(id, page)
+      serie.books
     }.map { it.toDto() }
   }
 

@@ -52,7 +52,7 @@ class PersistenceTest(
 
     // when
     val book = bookRepository.findAll().first()
-    book.metadata = BookMetadata(status = Status.READY, mediaType = "test", pages = listOf(makeBookPage("page1")))
+    book.metadata = BookMetadata(status = Status.READY, mediaType = "test", pages = mutableListOf(makeBookPage("page1")))
 
     bookRepository.save(book)
 

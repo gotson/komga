@@ -54,7 +54,7 @@ class BookParser(
       null
     }
 
-    return BookMetadata(mediaType = mediaType, status = Status.READY, pages = pages, thumbnail = thumbnail)
+    return BookMetadata(mediaType = mediaType, status = Status.READY, pages = pages.toMutableList(), thumbnail = thumbnail)
   }
 
   fun getPageStream(book: Book, number: Int): InputStream {

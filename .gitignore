@@ -10,7 +10,8 @@
 .springBeans
 
 ### IntelliJ IDEA ###
-.idea
+!.idea/
+.idea/*
 !/.idea/runConfigurations/
 *.iws
 *.iml

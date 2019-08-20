@@ -11,36 +11,29 @@ import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.JoinColumn
-import javax.persistence.ManyToOne
 import javax.persistence.OneToOne
 import javax.persistence.PrimaryKeyJoinColumn
 import javax.persistence.Table
 import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name = "book")
 class Book(
     @NotBlank
     @Column(name = "name", nullable = false)
-    val name: String,
+    var name: String,
 
     @Column(name = "url", nullable = false)
-    val url: URL,
+    var url: URL,
 
-    @Column(name = "updated", nullable = false)
-    val updated: LocalDateTime
-) {
+    @Column(name = "file_last_modified", nullable = false)
+    var fileLastModified: LocalDateTime
+) : AuditableEntity() {
   @Id
   @GeneratedValue
   @Column(name = "id", nullable = false)
   @PrimaryKeyJoinColumn
   var id: Long = 0
-
-  @NotNull
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "serie_id", nullable = false)
-  lateinit var serie: Serie
 
   @OneToOne(optional = false, orphanRemoval = true, cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
   @JoinColumn(name = "book_metadata_id", nullable = false)

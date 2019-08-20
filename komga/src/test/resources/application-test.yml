@@ -2,10 +2,10 @@ application.version: TESTING
 
 spring:
   flyway:
-    enabled: true
+    enabled: false
     jpa:
       hibernate:
-        ddl-auto: validate
+        ddl-auto: none
   jpa:
     properties:
       hibernate:

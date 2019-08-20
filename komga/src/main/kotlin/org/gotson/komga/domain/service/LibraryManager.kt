@@ -5,6 +5,7 @@ import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SerieRepository
+import org.springframework.data.auditing.AuditingHandler
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.system.measureTimeMillis
@@ -16,7 +17,8 @@ class LibraryManager(
     private val fileSystemScanner: FileSystemScanner,
     private val serieRepository: SerieRepository,
     private val bookRepository: BookRepository,
-    private val bookManager: BookManager
+    private val bookManager: BookManager,
+    private val auditingHandler: AuditingHandler
 ) {
 
   @Transactional
@@ -30,33 +32,49 @@ class LibraryManager(
         logger.info { "Scan returned no series, deleting all existing series" }
         serieRepository.deleteAll()
       } else {
-        val urls = series.map { it.url }
-        val countOfSeriesToDelete = serieRepository.countByUrlNotIn(urls)
-        if (countOfSeriesToDelete > 0) {
-          logger.info { "Deleting $countOfSeriesToDelete series not on disk anymore" }
-          serieRepository.deleteAllByUrlNotIn(urls)
-        }
-      }
-
-      // match IDs for existing entities
-      series.forEach { newSerie ->
-        serieRepository.findByUrl(newSerie.url)?.let { existingSerie ->
-          newSerie.id = existingSerie.id
-          newSerie.books.forEach { newBook ->
-            bookRepository.findByUrl(newBook.url)?.let { existingBook ->
-              newBook.id = existingBook.id
-              // conserve metadata if book has not changed
-              if (newBook.updated == existingBook.updated)
-                newBook.metadata = existingBook.metadata
-              else
-                logger.info { "Book changed on disk, reset metadata status: ${newBook.url}" }
-            }
+        series.map { it.url }.let { urls ->
+          serieRepository.findByUrlNotIn(urls).forEach {
+            urls.forEach { logger.info { "Deleting serie not on disk anymore: $it" } }
+            serieRepository.delete(it)
           }
         }
       }
 
-      serieRepository.saveAll(series)
+      series.forEach { newSerie ->
+        val existingSerie = serieRepository.findByUrl(newSerie.url)
 
+        // if serie does not exist, save it
+        if (existingSerie == null) {
+          serieRepository.save(newSerie)
+        } else {
+          // if serie already exists, update it
+          if (newSerie.fileLastModified != existingSerie.fileLastModified) {
+            logger.info { "Serie changed on disk, updating: ${newSerie.url}" }
+            existingSerie.name = newSerie.name
+
+            var anyBookchanged = false
+            // update list of books with existing entities if they exist
+            existingSerie.books = newSerie.books.map { newBook ->
+              val existingBook = bookRepository.findByUrl(newBook.url) ?: newBook
+
+              if (newBook.fileLastModified != existingBook.fileLastModified) {
+                logger.info { "Book changed on disk, update and reset metadata status: ${newBook.url}" }
+                existingBook.fileLastModified = newBook.fileLastModified
+                existingBook.name = newBook.name
+                existingBook.metadata.reset()
+                anyBookchanged = true
+              }
+              existingBook
+            }.toMutableList()
+
+            // propagate modification of any of the books to the serie, so that LastModifiedDate is updated
+            if (anyBookchanged)
+              auditingHandler.markModified(existingSerie)
+
+            serieRepository.save(existingSerie)
+          }
+        }
+      }
     }.also { logger.info { "Library update finished in $it ms" } }
   }
 

@@ -44,7 +44,7 @@ class FileSystemScanner {
                   Book(
                       name = FilenameUtils.getBaseName(it.fileName.toString()),
                       url = it.toUri().toURL(),
-                      updated = it.getUpdatedTime()
+                      fileLastModified = it.getUpdatedTime()
                   )
                 }.toList()
                 .sortedWith(
@@ -54,8 +54,9 @@ class FileSystemScanner {
             Serie(
                 name = dir.fileName.toString(),
                 url = dir.toUri().toURL(),
-                updated = dir.getUpdatedTime()
-            ).also { it.setBooks(books) }
+                fileLastModified = dir.getUpdatedTime(),
+                books = books.toMutableList()
+            )
           }.toList()
     }.also {
       val countOfBooks = scannedSeries.sumBy { it.books.size }

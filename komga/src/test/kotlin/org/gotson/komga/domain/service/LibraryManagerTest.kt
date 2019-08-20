@@ -69,7 +69,7 @@ class LibraryManagerTest(
 
     assertThat(series).hasSize(1)
     assertThat(series.first().books).hasSize(2)
-    assertThat(series.first().books.map { it.name }).containsExactlyInAnyOrder("book1", "book2")
+    assertThat(series.first().books.map { it.name }).containsExactly("book1", "book2")
   }
 
   @Test
@@ -95,7 +95,7 @@ class LibraryManagerTest(
 
     assertThat(series).hasSize(1)
     assertThat(series.first().books).hasSize(1)
-    assertThat(series.first().books.map { it.name }).containsExactlyInAnyOrder("book1")
+    assertThat(series.first().books.map { it.name }).containsExactly("book1")
     assertThat(bookRepository.count()).describedAs("Orphan book has been removed").isEqualTo(1)
   }
 
@@ -121,8 +121,10 @@ class LibraryManagerTest(
     verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
 
     assertThat(series).hasSize(1)
+    assertThat(series.first().lastModifiedDate).isNotEqualTo(series.first().createdDate)
     assertThat(series.first().books).hasSize(1)
-    assertThat(series.first().books.map { it.name }).containsExactlyInAnyOrder("book1updated")
+    assertThat(series.first().books.map { it.name }).containsExactly("book1updated")
+    assertThat(series.first().books.first().lastModifiedDate).isNotEqualTo(series.first().books.first().createdDate)
   }
 
   @Test
@@ -150,14 +152,15 @@ class LibraryManagerTest(
   @Test
   fun `given existing Book with metadata when rescanning then metadata is kept intact`() {
     //given
+    val book1 = makeBook("book1")
     every { mockScanner.scanRootFolder(any()) }
         .returnsMany(
-            listOf(makeSerie(name = "serie", books = listOf(makeBook("book1")))),
-            listOf(makeSerie(name = "serie", books = listOf(makeBook("book1"))))
+            listOf(makeSerie(name = "serie", books = listOf(book1))),
+            listOf(makeSerie(name = "serie", books = listOf(makeBook(name = "book1", fileLastModified = book1.fileLastModified))))
         )
     libraryManager.scanRootFolder(library)
 
-    every { mockParser.parse(any()) } returns BookMetadata(status = Status.READY, mediaType = "application/zip", pages = listOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")))
+    every { mockParser.parse(any()) } returns BookMetadata(status = Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")))
     bookRepository.findAll().forEach { bookManager.parseAndPersist(it) }
 
     // when
@@ -172,5 +175,6 @@ class LibraryManagerTest(
     assertThat(book.metadata.mediaType).isEqualTo("application/zip")
     assertThat(book.metadata.pages).hasSize(2)
     assertThat(book.metadata.pages.map { it.fileName }).containsExactly("1.jpg", "2.jpg")
+    assertThat(book.lastModifiedDate).isNotEqualTo(book.createdDate)
   }
 }
