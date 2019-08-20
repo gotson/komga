@@ -1,7 +1,7 @@
 #logging.level.org.springframework.security.web.FilterChainProxy: DEBUG
 komga:
   root-folder: D:\\files
-#  root-folder-scan-cron: 0 0 * * * ?
+#  root-folder-scan-cron: "*/10 * * * * ?"
 spring:
   profiles:
     include: flyway

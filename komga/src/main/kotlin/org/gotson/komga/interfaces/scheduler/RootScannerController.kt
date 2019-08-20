@@ -21,6 +21,7 @@ class RootScannerController(
 
   @EventListener(ApplicationReadyEvent::class)
   @Scheduled(cron = "#{@komgaProperties.rootFolderScanCron ?: '-'}")
+  @Synchronized
   fun scanRootFolder() {
     logger.info { "Starting periodic library scan" }
     libraryManager.scanRootFolder(Library("default", komgaProperties.rootFolder))
