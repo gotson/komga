@@ -40,6 +40,7 @@ class BookParser(
     val pages = supportedMediaTypes.getValue(mediaType).getPagesList(book.path())
     logger.info { "Book has ${pages.size} pages" }
 
+    logger.info { "Trying to generate cover for book: ${book.url}" }
     val thumbnail = try {
       ByteArrayOutputStream().use {
         supportedMediaTypes.getValue(mediaType).getPageStream(book.path(), pages.first().fileName).let { cover ->

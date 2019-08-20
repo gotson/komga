@@ -1,6 +1,7 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
+import org.apache.commons.lang3.time.DurationFormatUtils
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.persistence.BookRepository
@@ -75,15 +76,14 @@ class LibraryManager(
           }
         }
       }
-    }.also { logger.info { "Library update finished in $it ms" } }
+    }.also { logger.info { "Library update finished in ${DurationFormatUtils.formatDurationHMS(it)}" } }
   }
 
-  @Transactional
   fun parseUnparsedBooks() {
     logger.info { "Parsing all books in status: unkown" }
     val booksToParse = bookRepository.findAllByMetadataStatus(Status.UNKNOWN)
     measureTimeMillis {
       booksToParse.forEach { bookManager.parseAndPersist(it) }
-    }.also { logger.info { "Parsed ${booksToParse.size} books in $it ms" } }
+    }.also { logger.info { "Parsed ${booksToParse.size} books in ${DurationFormatUtils.formatDurationHMS(it)}" } }
   }
 }

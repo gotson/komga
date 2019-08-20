@@ -3,6 +3,7 @@ package org.gotson.komga.domain.service
 import mu.KotlinLogging
 import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.apache.commons.io.FilenameUtils
+import org.apache.commons.lang3.time.DurationFormatUtils
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.Serie
 import org.springframework.stereotype.Service
@@ -60,7 +61,7 @@ class FileSystemScanner {
           }.toList()
     }.also {
       val countOfBooks = scannedSeries.sumBy { it.books.size }
-      logger.info { "Scanned ${scannedSeries.size} series and $countOfBooks books in $it ms" }
+      logger.info { "Scanned ${scannedSeries.size} series and $countOfBooks books in ${DurationFormatUtils.formatDurationHMS(it)}" }
     }
 
     return scannedSeries
