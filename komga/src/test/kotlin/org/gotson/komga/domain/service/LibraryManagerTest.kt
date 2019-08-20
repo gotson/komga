@@ -25,7 +25,6 @@ import javax.persistence.EntityManager
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
 @AutoConfigureTestDatabase
-@Transactional
 class LibraryManagerTest(
     @Autowired private val serieRepository: SerieRepository,
     @Autowired private val bookRepository: BookRepository,
@@ -48,6 +47,7 @@ class LibraryManagerTest(
   }
 
   @Test
+  @Transactional
   fun `given existing Serie when adding files and scanning then only updated Books are persisted`() {
     //given
     val serie = makeSerie(name = "serie", books = listOf(makeBook("book1")))
@@ -73,6 +73,7 @@ class LibraryManagerTest(
   }
 
   @Test
+  @Transactional
   fun `given existing Serie when removing files and scanning then only updated Books are persisted`() {
     //given
     val serie = makeSerie(name = "serie", books = listOf(makeBook("book1"), makeBook("book2")))
@@ -100,6 +101,7 @@ class LibraryManagerTest(
   }
 
   @Test
+  @Transactional
   fun `given existing Serie when updating files and scanning then Books are updated`() {
     //given
     val serie = makeSerie(name = "serie", books = listOf(makeBook("book1")))
@@ -161,7 +163,7 @@ class LibraryManagerTest(
     libraryManager.scanRootFolder(library)
 
     every { mockParser.parse(any()) } returns BookMetadata(status = Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")))
-    bookRepository.findAll().forEach { bookManager.parseAndPersist(it) }
+    bookRepository.findAll().map { bookManager.parseAndPersist(it) }.map { it.get() }
 
     // when
     libraryManager.scanRootFolder(library)

@@ -6,8 +6,11 @@ import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.persistence.BookRepository
+import org.springframework.scheduling.annotation.Async
+import org.springframework.scheduling.annotation.AsyncResult
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.concurrent.Future
 import kotlin.system.measureTimeMillis
 
 private val logger = KotlinLogging.logger {}
@@ -19,9 +22,10 @@ class BookManager(
 ) {
 
   @Transactional
-  fun parseAndPersist(book: Book) {
+  @Async("parseBookTaskExecutor")
+  fun parseAndPersist(book: Book): Future<Long> {
     logger.info { "Parse and persist book: ${book.url}" }
-    measureTimeMillis {
+    return AsyncResult(measureTimeMillis {
       try {
         book.metadata = bookParser.parse(book)
       } catch (ex: UnsupportedMediaTypeException) {
@@ -32,7 +36,7 @@ class BookManager(
         book.metadata = BookMetadata(status = Status.ERROR)
       }
       bookRepository.save(book)
-    }.also { logger.info { "Parsing finished in ${DurationFormatUtils.formatDurationHMS(it)}" } }
+    }.also { logger.info { "Parsing finished in ${DurationFormatUtils.formatDurationHMS(it)}" } })
   }
 
 }

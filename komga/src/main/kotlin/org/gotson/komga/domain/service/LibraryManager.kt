@@ -80,10 +80,17 @@ class LibraryManager(
   }
 
   fun parseUnparsedBooks() {
-    logger.info { "Parsing all books in status: unkown" }
+    logger.info { "Parsing all books in status: unknown" }
     val booksToParse = bookRepository.findAllByMetadataStatus(Status.UNKNOWN)
+
+    var sumOfTasksTime = 0L
     measureTimeMillis {
-      booksToParse.forEach { bookManager.parseAndPersist(it) }
-    }.also { logger.info { "Parsed ${booksToParse.size} books in ${DurationFormatUtils.formatDurationHMS(it)}" } }
+      sumOfTasksTime = booksToParse
+          .map { bookManager.parseAndPersist(it) }
+          .map { it.get() }
+          .sum()
+    }.also {
+      logger.info { "Parsed ${booksToParse.size} books in ${DurationFormatUtils.formatDurationHMS(it)} (virtual: ${DurationFormatUtils.formatDurationHMS(sumOfTasksTime)})" }
+    }
   }
 }
