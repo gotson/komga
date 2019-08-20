@@ -13,6 +13,6 @@ class AsyncConfiguration {
   @Bean
   fun parseBookTaskExecutor(): Executor =
       ThreadPoolTaskExecutor().apply {
-        corePoolSize = 5
+        corePoolSize = 2
       }
 }
