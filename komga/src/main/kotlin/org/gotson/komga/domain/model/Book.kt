@@ -13,7 +13,6 @@ import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.OneToOne
-import javax.persistence.PrimaryKeyJoinColumn
 import javax.persistence.Table
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
@@ -34,7 +33,6 @@ class Book(
   @Id
   @GeneratedValue
   @Column(name = "id", nullable = false)
-  @PrimaryKeyJoinColumn
   var id: Long = 0
 
   @NotNull
