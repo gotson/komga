@@ -9,7 +9,9 @@ import org.gotson.komga.domain.persistence.SerieRepository
 import org.gotson.komga.domain.service.BookParser
 import org.gotson.komga.domain.service.MetadataNotReadyException
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -121,7 +123,7 @@ class SerieController(
 
     try {
       return bookRepository.findByIdOrNull((bookId))?.let { book ->
-        val pageContent = bookParser.getPageStream(book, pageNumber).readBytes()
+        val pageContent = bookParser.getPageContent(book, pageNumber)
 
         val mediaType = try {
           MediaType.parseMediaType(book.metadata.pages[pageNumber - 1].mediaType)

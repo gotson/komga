@@ -11,7 +11,6 @@ import org.gotson.komga.infrastructure.archive.RarExtractor
 import org.gotson.komga.infrastructure.archive.ZipExtractor
 import org.springframework.stereotype.Service
 import java.io.ByteArrayOutputStream
-import java.io.InputStream
 
 private val logger = KotlinLogging.logger {}
 
@@ -42,12 +41,14 @@ class BookParser(
     logger.info { "Book has ${pages.size} pages" }
 
     val thumbnail = try {
-      ByteArrayOutputStream().let {
-        Thumbnails.of(supportedMediaTypes.getValue(mediaType).getPageStream(book.path(), pages.first().fileName))
-            .size(thumbnailSize, thumbnailSize)
-            .outputFormat(thumbnailFormat)
-            .toOutputStream(it)
-        it.toByteArray()
+      ByteArrayOutputStream().use {
+        supportedMediaTypes.getValue(mediaType).getPageStream(book.path(), pages.first().fileName).let { cover ->
+          Thumbnails.of(cover.inputStream())
+              .size(thumbnailSize, thumbnailSize)
+              .outputFormat(thumbnailFormat)
+              .toOutputStream(it)
+          it.toByteArray()
+        }
       }
     } catch (ex: Exception) {
       logger.warn(ex) { "Could not generate thumbnail for book: ${book.url}" }
@@ -57,7 +58,7 @@ class BookParser(
     return BookMetadata(mediaType = mediaType, status = Status.READY, pages = pages.toMutableList(), thumbnail = thumbnail)
   }
 
-  fun getPageStream(book: Book, number: Int): InputStream {
+  fun getPageContent(book: Book, number: Int): ByteArray {
     logger.info { "Get page #$number for book: ${book.url}" }
 
     if (book.metadata.status != Status.READY) {

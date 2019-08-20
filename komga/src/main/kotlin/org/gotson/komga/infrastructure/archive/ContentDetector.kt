@@ -19,17 +19,20 @@ class ContentDetector(
     val metadata = Metadata().also {
       it[Metadata.RESOURCE_NAME_KEY] = path.fileName.toString()
     }
-    val mediaType = tika.detector.detect(TikaInputStream.get(path), metadata)
 
-    return mediaType.toString()
-  }
-
-  fun detectMediaType(stream: InputStream): String {
-    stream.use {
-      val mediaType = tika.detector.detect(TikaInputStream.get(it), Metadata())
-      return mediaType.toString()
+    return TikaInputStream.get(path).use {
+      val mediaType = tika.detector.detect(it, metadata)
+      mediaType.toString()
     }
   }
+
+  fun detectMediaType(stream: InputStream): String =
+      stream.use {
+        TikaInputStream.get(it).use { tikaStream ->
+          val mediaType = tika.detector.detect(tikaStream, Metadata())
+          mediaType.toString()
+        }
+      }
 
   fun isImage(mediaType: String): Boolean =
       mediaType.startsWith("image/")
