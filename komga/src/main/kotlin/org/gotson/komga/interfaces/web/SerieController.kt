@@ -46,6 +46,18 @@ class SerieController(
         serieRepository.findAll(page)
       }.map { it.toDto() }
 
+  @GetMapping("/latest")
+  fun getLatestSeries(
+      page: Pageable
+  ): Page<SerieDto> {
+    val pageRequest = PageRequest.of(
+        page.pageNumber,
+        page.pageSize,
+        Sort(Sort.Direction.DESC, "lastModifiedDate")
+    )
+    return serieRepository.findAll(pageRequest).map { it.toDto() }
+  }
+
   @GetMapping("{id}")
   fun getOneSerie(
       @PathVariable id: Long
