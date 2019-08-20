@@ -64,6 +64,15 @@ class SerieController(
   ): SerieDto =
       serieRepository.findByIdOrNull(id)?.toDto() ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @GetMapping(value = ["{serieId}/thumbnail"], produces = [MediaType.IMAGE_PNG_VALUE])
+  fun getSerieThumbnail(
+      @PathVariable serieId: Long
+  ): ByteArray {
+    return serieRepository.findByIdOrNull(serieId)?.let {
+      it.books.firstOrNull()?.metadata?.thumbnail ?: throw ResponseStatusException(HttpStatus.NO_CONTENT)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
   @GetMapping("{id}/books")
   fun getAllBooksBySerie(
       @PathVariable id: Long,
