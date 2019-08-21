@@ -38,13 +38,20 @@ class SerieController(
       searchTerm: String?,
 
       page: Pageable
-  ): Page<SerieDto> =
-      if (!searchTerm.isNullOrEmpty()) {
-        val spec = Serie::name.likeLower("%$searchTerm%")
-        serieRepository.findAll(spec, page)
-      } else {
-        serieRepository.findAll(page)
-      }.map { it.toDto() }
+  ): Page<SerieDto> {
+    val pageRequest = PageRequest.of(
+        page.pageNumber,
+        page.pageSize,
+        if (page.sort.isSorted) page.sort
+        else Sort.by(Sort.Order.asc("name").ignoreCase())
+    )
+    return if (!searchTerm.isNullOrEmpty()) {
+      val spec = Serie::name.likeLower("%$searchTerm%")
+      serieRepository.findAll(spec, pageRequest)
+    } else {
+      serieRepository.findAll(pageRequest)
+    }.map { it.toDto() }
+  }
 
   @GetMapping("/latest")
   fun getLatestSeries(
