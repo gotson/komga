@@ -8,5 +8,7 @@ import org.springframework.stereotype.Component
 class KomgaProperties {
   var rootFolder: String = ""
   var rootFolderScanCron: String = ""
+  var userPassword: String = "user"
+  var adminPassword: String = "admin"
 }
 

@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.security
 
+import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Bean
@@ -15,7 +16,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-class SecurityConfiguration : WebSecurityConfigurerAdapter() {
+class SecurityConfiguration(
+    private val komgaProperties: KomgaProperties
+) : WebSecurityConfigurerAdapter() {
   override fun configure(http: HttpSecurity) {
     http
         .cors().and()
@@ -51,8 +54,8 @@ class SecurityConfiguration : WebSecurityConfigurerAdapter() {
 
   override fun configure(auth: AuthenticationManagerBuilder) {
     auth.inMemoryAuthentication()
-        .withUser("admin").password("{noop}admin").roles("ADMIN", "USER")
-        .and().withUser("user").password("{noop}user").roles("USER")
+        .withUser("admin").password("{noop}${komgaProperties.adminPassword}").roles("ADMIN", "USER")
+        .and().withUser("user").password("{noop}${komgaProperties.userPassword}").roles("USER")
   }
 
   @Bean
