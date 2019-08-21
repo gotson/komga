@@ -1,7 +1,6 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
-import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.apache.commons.io.FilenameUtils
 import org.apache.commons.lang3.time.DurationFormatUtils
 import org.gotson.komga.domain.model.Book
@@ -13,7 +12,6 @@ import java.nio.file.attribute.BasicFileAttributes
 import java.nio.file.attribute.FileTime
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.util.*
 import kotlin.streams.asSequence
 import kotlin.streams.toList
 import kotlin.system.measureTimeMillis
@@ -24,8 +22,6 @@ private val logger = KotlinLogging.logger {}
 class FileSystemScanner {
 
   val supportedExtensions = listOf("cbz", "zip", "cbr", "rar")
-
-  private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
 
   fun scanRootFolder(root: Path): List<Serie> {
     logger.info { "Scanning folder: $root" }
@@ -48,9 +44,6 @@ class FileSystemScanner {
                       fileLastModified = it.getUpdatedTime()
                   )
                 }.toList()
-                .sortedWith(
-                    compareBy(natSortComparator) { it.name }
-                )
             if (books.isNullOrEmpty()) return@mapNotNull null
             Serie(
                 name = dir.fileName.toString(),

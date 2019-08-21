@@ -52,8 +52,8 @@ class LibraryManager(
           if (newSerie.fileLastModified != existingSerie.fileLastModified) {
             logger.info { "Serie changed on disk, updating: ${newSerie.url}" }
             existingSerie.name = newSerie.name
+            existingSerie.fileLastModified = newSerie.fileLastModified
 
-            var anyBookchanged = false
             // update list of books with existing entities if they exist
             existingSerie.books = newSerie.books.map { newBook ->
               val existingBook = bookRepository.findByUrl(newBook.url) ?: newBook
@@ -63,14 +63,9 @@ class LibraryManager(
                 existingBook.fileLastModified = newBook.fileLastModified
                 existingBook.name = newBook.name
                 existingBook.metadata.reset()
-                anyBookchanged = true
               }
               existingBook
             }.toMutableList()
-
-            // propagate modification of any of the books to the serie, so that LastModifiedDate is updated
-            if (anyBookchanged)
-              auditingHandler.markModified(existingSerie)
 
             serieRepository.save(existingSerie)
           }

@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import java.io.File
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
 
 @RestController
 @RequestMapping("api/v1/series")
@@ -87,10 +90,16 @@ class SerieController(
       page: Pageable
   ): Page<BookDto> {
     if (!serieRepository.existsById(id)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    val pageRequest = PageRequest.of(
+        page.pageNumber,
+        page.pageSize,
+        if (page.sort.isSorted) page.sort
+        else Sort.by(Sort.Order.asc("name").ignoreCase())
+    )
     return if (readyFilter) {
-      bookRepository.findAllByMetadataStatusAndSerieId(Status.READY, id, page)
+      bookRepository.findAllByMetadataStatusAndSerieId(Status.READY, id, pageRequest)
     } else {
-      bookRepository.findAllBySerieId(id, page)
+      bookRepository.findAllBySerieId(id, pageRequest)
     }.map { it.toDto() }
   }
 
@@ -174,13 +183,15 @@ class SerieController(
 data class SerieDto(
     val id: Long,
     val name: String,
-    val url: String
+    val url: String,
+    val lastModified: LocalDateTime?
 )
 
 fun Serie.toDto() = SerieDto(
     id = id,
     name = name,
-    url = url.toString()
+    url = url.toString(),
+    lastModified = lastModifiedDate?.toUTC()
 )
 
 
@@ -188,6 +199,7 @@ data class BookDto(
     val id: Long,
     val name: String,
     val url: String,
+    val lastModified: LocalDateTime?,
     val metadata: BookMetadataDto
 )
 
@@ -201,6 +213,7 @@ fun Book.toDto() =
         id = id,
         name = name,
         url = url.toString(),
+        lastModified = lastModifiedDate?.toUTC(),
         metadata = BookMetadataDto(
             status = metadata.status.toString(),
             mediaType = metadata.mediaType ?: ""
@@ -212,3 +225,6 @@ data class PageDto(
     val fileName: String,
     val mediaType: String
 )
+
+fun LocalDateTime.toUTC() =
+    atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime()
