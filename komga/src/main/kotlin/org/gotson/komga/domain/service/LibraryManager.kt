@@ -87,7 +87,13 @@ class LibraryManager(
     measureTimeMillis {
       sumOfTasksTime = booksToParse
           .map { bookManager.parseAndPersist(it) }
-          .map { it.get() }
+          .map {
+            try {
+              it.get()
+            } catch (ex: Exception) {
+              0L
+            }
+          }
           .sum()
     }.also {
       logger.info { "Parsed ${booksToParse.size} books in ${DurationFormatUtils.formatDurationHMS(it)} (virtual: ${DurationFormatUtils.formatDurationHMS(sumOfTasksTime)})" }
