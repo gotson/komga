@@ -14,7 +14,7 @@ services:
       - SPRING_PROFILES_ACTIVE=prod
       - SPRING_DATASOURCE_URL=jdbc:h2:/config/database.h2;DB_CLOSE_DELAY=-1
       - KOMGA_ROOT_FOLDER=/books
-      - KOMGA_ROOT_FOLDER_SCAN_CRON="0 0 * * * ?" # periodic scan every hour
+      - KOMGA_ROOT_FOLDER_SCAN_CRON=0 0 * * * ? # periodic scan every hour
       - KOMGA_USER_PASSWORD=your-admin-password
       - KOMGA_ADMIN_PASSWORD=your-user-password
     restart: unless-stopped
