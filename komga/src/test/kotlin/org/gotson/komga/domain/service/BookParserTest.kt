@@ -31,7 +31,7 @@ class BookParserTest {
     //when
     val thumbnailFile = slot<String>()
     every { mockZip.getPageStream(book.path(), capture(thumbnailFile)) } returns ByteArray(1)
-    val metadata = bookParser.parse(book)
+    bookParser.parse(book)
 
     // then
     assertThat(thumbnailFile.captured).isEqualTo("01")

@@ -2,6 +2,7 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import net.coobird.thumbnailator.Thumbnails
+import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Status
@@ -11,6 +12,7 @@ import org.gotson.komga.infrastructure.archive.RarExtractor
 import org.gotson.komga.infrastructure.archive.ZipExtractor
 import org.springframework.stereotype.Service
 import java.io.ByteArrayOutputStream
+import java.util.*
 
 private val logger = KotlinLogging.logger {}
 
@@ -26,6 +28,8 @@ class BookParser(
       "application/x-rar-compressed" to rarExtractor
   )
 
+  private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
+
   private val thumbnailSize = 300
   private val thumbnailFormat = "png"
 
@@ -38,6 +42,7 @@ class BookParser(
       throw UnsupportedMediaTypeException("Unsupported mime type: $mediaType. File: ${book.url}", mediaType)
 
     val pages = supportedMediaTypes.getValue(mediaType).getPagesList(book.path())
+        .sortedWith(compareBy(natSortComparator) { it.fileName })
     logger.info { "Book has ${pages.size} pages" }
 
     logger.info { "Trying to generate cover for book: ${book.url}" }
