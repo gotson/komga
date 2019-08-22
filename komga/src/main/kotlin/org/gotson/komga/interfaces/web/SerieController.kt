@@ -1,6 +1,7 @@
 package org.gotson.komga.interfaces.web
 
 import com.github.klinq.jpaspec.likeLower
+import mu.KotlinLogging
 import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.Serie
@@ -26,9 +27,13 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import java.io.File
+import java.io.FileNotFoundException
+import java.nio.file.NoSuchFileException
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
+
+private val logger = KotlinLogging.logger {}
 
 @RestController
 @RequestMapping("api/v1/series")
@@ -135,14 +140,19 @@ class SerieController(
         MediaType.APPLICATION_OCTET_STREAM
       }
 
-      ResponseEntity.ok()
-          .headers(HttpHeaders().apply {
-            contentDisposition = ContentDisposition.builder("attachment")
-                .filename(FilenameUtils.getName(book.url.toString()))
-                .build()
-          })
-          .contentType(mediaType)
-          .body(File(book.url.toURI()).readBytes())
+      try {
+        ResponseEntity.ok()
+            .headers(HttpHeaders().apply {
+              contentDisposition = ContentDisposition.builder("attachment")
+                  .filename(FilenameUtils.getName(book.url.toString()))
+                  .build()
+            })
+            .contentType(mediaType)
+            .body(File(book.url.toURI()).readBytes())
+      } catch (ex: FileNotFoundException) {
+        logger.warn(ex) { "File not found: ${book.url}" }
+        throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
+      }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -169,8 +179,8 @@ class SerieController(
   ): ResponseEntity<ByteArray> {
     if (!serieRepository.existsById(serieId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    try {
-      return bookRepository.findByIdOrNull((bookId))?.let { book ->
+    return bookRepository.findByIdOrNull((bookId))?.let { book ->
+      try {
         val pageContent = bookParser.getPageContent(book, pageNumber)
 
         val mediaType = try {
@@ -182,12 +192,15 @@ class SerieController(
         ResponseEntity.ok()
             .contentType(mediaType)
             .body(pageContent)
-      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    } catch (ex: ArrayIndexOutOfBoundsException) {
-      throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number does not exist")
-    } catch (ex: MetadataNotReadyException) {
-      throw ResponseStatusException(HttpStatus.NO_CONTENT, "Book cannot be parsed")
-    }
+      } catch (ex: ArrayIndexOutOfBoundsException) {
+        throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number does not exist")
+      } catch (ex: MetadataNotReadyException) {
+        throw ResponseStatusException(HttpStatus.NO_CONTENT, "Book cannot be parsed")
+      } catch (ex: NoSuchFileException) {
+        logger.warn(ex) { "File not found: ${book.url}" }
+        throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
+      }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 }
 
