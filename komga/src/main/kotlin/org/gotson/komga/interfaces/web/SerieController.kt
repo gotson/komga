@@ -1,6 +1,7 @@
 package org.gotson.komga.interfaces.web
 
 import com.github.klinq.jpaspec.likeLower
+import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.Serie
 import org.gotson.komga.domain.model.Status
@@ -13,6 +14,8 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.ContentDisposition
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -118,14 +121,28 @@ class SerieController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
-  @GetMapping(value = ["{serieId}/books/{bookId}/content"], produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
-  fun getBookContent(
+  @GetMapping("{serieId}/books/{bookId}/file")
+  fun getBookFile(
       @PathVariable serieId: Long,
       @PathVariable bookId: Long
-  ): ByteArray {
+  ): ResponseEntity<ByteArray> {
     if (!serieRepository.existsById(serieId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    return bookRepository.findByIdOrNull(bookId)?.let {
-      File(it.url.toURI()).readBytes()
+    return bookRepository.findByIdOrNull(bookId)?.let { book ->
+
+      val mediaType = try {
+        MediaType.parseMediaType(book.metadata.mediaType!!)
+      } catch (ex: Exception) {
+        MediaType.APPLICATION_OCTET_STREAM
+      }
+
+      ResponseEntity.ok()
+          .headers(HttpHeaders().apply {
+            contentDisposition = ContentDisposition.builder("attachment")
+                .filename(FilenameUtils.getName(book.url.toString()))
+                .build()
+          })
+          .contentType(mediaType)
+          .body(File(book.url.toURI()).readBytes())
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
