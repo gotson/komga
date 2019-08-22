@@ -24,6 +24,10 @@ Future versions may bring:
 
 The long term vision is to offer something similar to Plex, but for comics!
 
+## Installation
+
+The easiest way to install Komga is to use Docker. You can have a look at the sample [docker-compose.yml](./doc/docker-compose.yml).
+
 ## Credits
 
 The Komga icon is based on an icon made by [Freepik](https://www.freepik.com/home) from www.flaticon.com
