@@ -6,7 +6,7 @@ Komga is a free an open source comics/mangas server.
 
 Komga just started, and for now it can:
 
-- scan and index a folder containing comic book archives in `cbz` and `cbr` format
+- scan and index a folder containing comic book archives in `cbz` and `cbr` format. Rescan periodically.
 - serve the individual pages of those books via an API
 - serve the complete file via an API
 
