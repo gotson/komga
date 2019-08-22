@@ -94,4 +94,26 @@ class LibraryManager(
       logger.info { "Parsed ${booksToParse.size} books in ${DurationFormatUtils.formatDurationHMS(it)} (virtual: ${DurationFormatUtils.formatDurationHMS(sumOfTasksTime)})" }
     }
   }
+
+  @Synchronized
+  fun regenerateAllThumbnails() {
+    logger.info { "Regenerate thumbnail for all books" }
+    val booksToProcess = bookRepository.findAll()
+
+    var sumOfTasksTime = 0L
+    measureTimeMillis {
+      sumOfTasksTime = booksToProcess
+          .map { bookManager.regenerateThumbnailAndPersist(it) }
+          .map {
+            try {
+              it.get()
+            } catch (ex: Exception) {
+              0L
+            }
+          }
+          .sum()
+    }.also {
+      logger.info { "Generated ${booksToProcess.size} thumbnails in ${DurationFormatUtils.formatDurationHMS(it)} (virtual: ${DurationFormatUtils.formatDurationHMS(sumOfTasksTime)})" }
+    }
+  }
 }

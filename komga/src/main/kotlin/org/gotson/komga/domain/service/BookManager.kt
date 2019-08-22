@@ -39,4 +39,18 @@ class BookManager(
     }.also { logger.info { "Parsing finished in ${DurationFormatUtils.formatDurationHMS(it)}" } })
   }
 
+  @Transactional
+  @Async("parseBookTaskExecutor")
+  fun regenerateThumbnailAndPersist(book: Book): Future<Long> {
+    logger.info { "Regenerate thumbnail and persist book: ${book.url}" }
+    return AsyncResult(measureTimeMillis {
+      try {
+        book.metadata = bookParser.regenerateThumbnail(book)
+      } catch (ex: Exception) {
+        logger.error(ex) { "Error while recreating thumbnail" }
+        book.metadata = BookMetadata(status = Status.ERROR)
+      }
+      bookRepository.save(book)
+    }.also { logger.info { "Thumbnail generated in ${DurationFormatUtils.formatDurationHMS(it)}" } })
+  }
 }

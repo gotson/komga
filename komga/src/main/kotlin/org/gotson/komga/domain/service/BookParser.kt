@@ -46,23 +46,44 @@ class BookParser(
     logger.info { "Book has ${pages.size} pages" }
 
     logger.info { "Trying to generate cover for book: ${book.url}" }
-    val thumbnail = try {
-      ByteArrayOutputStream().use {
-        supportedMediaTypes.getValue(mediaType).getPageStream(book.path(), pages.first().fileName).let { cover ->
-          Thumbnails.of(cover.inputStream())
-              .size(thumbnailSize, thumbnailSize)
-              .outputFormat(thumbnailFormat)
-              .toOutputStream(it)
-          it.toByteArray()
-        }
-      }
-    } catch (ex: Exception) {
-      logger.warn(ex) { "Could not generate thumbnail for book: ${book.url}" }
-      null
-    }
+    val thumbnail = generateThumbnail(book, mediaType, pages.first().fileName)
 
     return BookMetadata(mediaType = mediaType, status = Status.READY, pages = pages, thumbnail = thumbnail)
   }
+
+  fun regenerateThumbnail(book: Book): BookMetadata {
+    logger.info { "Regenerate thumbnail for book: ${book.url}" }
+
+    if (book.metadata.status != Status.READY) {
+      logger.warn { "Book metadata is not ready, cannot generate thumbnail" }
+      throw MetadataNotReadyException()
+    }
+
+    val thumbnail = generateThumbnail(book, book.metadata.mediaType!!, book.metadata.pages.first().fileName)
+
+    return BookMetadata(
+        mediaType = book.metadata.mediaType,
+        status = Status.READY,
+        pages = book.metadata.pages,
+        thumbnail = thumbnail
+    )
+  }
+
+  private fun generateThumbnail(book: Book, mediaType: String, entry: String): ByteArray? =
+      try {
+        ByteArrayOutputStream().use {
+          supportedMediaTypes.getValue(mediaType).getPageStream(book.path(), entry).let { cover ->
+            Thumbnails.of(cover.inputStream())
+                .size(thumbnailSize, thumbnailSize)
+                .outputFormat(thumbnailFormat)
+                .toOutputStream(it)
+            it.toByteArray()
+          }
+        }
+      } catch (ex: Exception) {
+        logger.warn(ex) { "Could not generate thumbnail for book: ${book.url}" }
+        null
+      }
 
   fun getPageContent(book: Book, number: Int): ByteArray {
     logger.info { "Get page #$number for book: ${book.url}" }
