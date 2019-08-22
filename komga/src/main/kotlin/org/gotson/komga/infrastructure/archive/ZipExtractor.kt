@@ -21,9 +21,6 @@ class ZipExtractor(
               )
             }
             .filter { contentDetector.isImage(it.mediaType) }
-            .sortedWith(
-                compareBy(natSortComparator) { it.fileName }
-            )
       }
 
   override fun getPageStream(path: Path, entryName: String): ByteArray =

@@ -56,7 +56,7 @@ class BookParser(
       null
     }
 
-    return BookMetadata(mediaType = mediaType, status = Status.READY, pages = pages.toMutableList(), thumbnail = thumbnail)
+    return BookMetadata(mediaType = mediaType, status = Status.READY, pages = pages, thumbnail = thumbnail)
   }
 
   fun getPageContent(book: Book, number: Int): ByteArray {

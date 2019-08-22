@@ -1,5 +1,7 @@
 package org.gotson.komga.domain.model
 
+import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
+import java.util.*
 import javax.persistence.CollectionTable
 import javax.persistence.Column
 import javax.persistence.ElementCollection
@@ -12,7 +14,10 @@ import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.Lob
 import javax.persistence.OneToOne
+import javax.persistence.OrderColumn
 import javax.persistence.Table
+
+private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
 
 @Entity
 @Table(name = "book_metadata")
@@ -40,21 +45,26 @@ class BookMetadata(
 
   @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(name = "book_metadata_page", joinColumns = [JoinColumn(name = "book_metadata_id")])
-  var pages: MutableList<BookPage> = mutableListOf()
+  @OrderColumn(name = "number")
+  private var _pages: MutableList<BookPage> = mutableListOf()
+
+  var pages: List<BookPage>
+    get() = _pages.toList()
     set(value) {
-      pages.clear()
-      pages.addAll(value)
+      _pages.clear()
+      _pages.addAll(value.sortedWith(compareBy(natSortComparator) { it.fileName }))
     }
+
 
   fun reset() {
     status = Status.UNKNOWN
     mediaType = null
     thumbnail = null
-    pages.clear()
+    _pages.clear()
   }
 
   init {
-    this.pages = pages.toMutableList()
+    this.pages = pages.toList()
   }
 }
 

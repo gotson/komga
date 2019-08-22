@@ -10,6 +10,7 @@ create table book
     url                varchar   not null,
     book_metadata_id   bigint    not null,
     serie_id           bigint    not null,
+    index              integer,
     primary key (id)
 );
 
@@ -26,7 +27,8 @@ create table book_metadata_page
 (
     book_metadata_id bigint  not null,
     file_name        varchar not null,
-    media_type       varchar not null
+    media_type       varchar not null,
+    number           integer
 );
 
 create table serie

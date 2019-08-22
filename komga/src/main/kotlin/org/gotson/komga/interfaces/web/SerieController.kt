@@ -90,16 +90,10 @@ class SerieController(
       page: Pageable
   ): Page<BookDto> {
     if (!serieRepository.existsById(id)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    val pageRequest = PageRequest.of(
-        page.pageNumber,
-        page.pageSize,
-        if (page.sort.isSorted) page.sort
-        else Sort.by(Sort.Order.asc("name").ignoreCase())
-    )
     return if (readyFilter) {
-      bookRepository.findAllByMetadataStatusAndSerieId(Status.READY, id, pageRequest)
+      bookRepository.findAllByMetadataStatusAndSerieId(Status.READY, id, page)
     } else {
-      bookRepository.findAllBySerieId(id, pageRequest)
+      bookRepository.findAllBySerieId(id, page)
     }.map { it.toDto() }
   }
 
