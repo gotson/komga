@@ -1,0 +1,10 @@
+komga:
+  root-folder: /your/library/root/directory
+  root-folder-scan-cron: "* */15 * * * ?" #periodic scan every 15 minutes
+  user-password: user-password
+  admin-password: admin-password
+spring:
+  datasource:
+    url: jdbc:h2:/config/database.h2;DB_CLOSE_DELAY=-1
+  profiles:
+    active: prod
