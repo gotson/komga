@@ -35,7 +35,7 @@ class LibraryManager(
       } else {
         series.map { it.url }.let { urls ->
           serieRepository.findByUrlNotIn(urls).forEach {
-            urls.forEach { logger.info { "Deleting serie not on disk anymore: $it" } }
+            logger.info { "Deleting serie not on disk anymore: $it" }
             serieRepository.delete(it)
           }
         }
