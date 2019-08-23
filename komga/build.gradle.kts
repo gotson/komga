@@ -63,6 +63,7 @@ dependencies {
   implementation("net.grey-panther:natural-comparator:1.1")
 
   implementation("net.coobird:thumbnailator:0.4.8")
+  implementation("com.twelvemonkeys.imageio:imageio-jpeg:3.4.2")
 
   runtimeOnly("com.h2database:h2:1.4.199")
 
