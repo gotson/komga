@@ -24,15 +24,15 @@ class BookManager(
   @Transactional
   @Async("parseBookTaskExecutor")
   fun parseAndPersist(book: Book): Future<Long> {
-    logger.info { "Parse and persist book: ${book.url}" }
+    logger.info { "Parse and persist book: $book" }
     return AsyncResult(measureTimeMillis {
       try {
         book.metadata = bookParser.parse(book)
       } catch (ex: UnsupportedMediaTypeException) {
-        logger.info(ex) { "Unsupported media type: ${ex.mediaType}. Book: ${book.url}" }
+        logger.info(ex) { "Unsupported media type: ${ex.mediaType}. Book: $book" }
         book.metadata = BookMetadata(status = Status.UNSUPPORTED, mediaType = ex.mediaType)
       } catch (ex: Exception) {
-        logger.error(ex) { "Error while parsing. Book: ${book.url}" }
+        logger.error(ex) { "Error while parsing. Book: $book" }
         book.metadata = BookMetadata(status = Status.ERROR)
       }
       bookRepository.save(book)
@@ -42,7 +42,7 @@ class BookManager(
   @Transactional
   @Async("parseBookTaskExecutor")
   fun regenerateThumbnailAndPersist(book: Book): Future<Long> {
-    logger.info { "Regenerate thumbnail and persist book: ${book.url}" }
+    logger.info { "Regenerate thumbnail and persist book: $book" }
     return AsyncResult(measureTimeMillis {
       try {
         book.metadata = bookParser.regenerateThumbnail(book)

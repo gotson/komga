@@ -61,7 +61,7 @@ class LibraryManager(
               val existingBook = bookRepository.findByUrl(newBook.url) ?: newBook
 
               if (newBook.fileLastModified != existingBook.fileLastModified) {
-                logger.info { "Book changed on disk, update and reset metadata status: ${newBook.url}" }
+                logger.info { "Book changed on disk, update and reset metadata status: ${newBook}" }
                 existingBook.fileLastModified = newBook.fileLastModified
                 existingBook.name = newBook.name
                 existingBook.metadata.reset()

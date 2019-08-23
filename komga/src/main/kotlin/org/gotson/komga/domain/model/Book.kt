@@ -47,6 +47,8 @@ class Book(
       value.book = this
       field = value
     }
+
+  override fun toString(): String = url.toURI().path
 }
 
 fun Book.path(): Path = Paths.get(this.url.toURI())

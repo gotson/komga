@@ -150,7 +150,7 @@ class SerieController(
             .contentType(mediaType)
             .body(File(book.url.toURI()).readBytes())
       } catch (ex: FileNotFoundException) {
-        logger.warn(ex) { "File not found: ${book.url}" }
+        logger.warn(ex) { "File not found: $book" }
         throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -197,7 +197,7 @@ class SerieController(
       } catch (ex: MetadataNotReadyException) {
         throw ResponseStatusException(HttpStatus.NO_CONTENT, "Book cannot be parsed")
       } catch (ex: NoSuchFileException) {
-        logger.warn(ex) { "File not found: ${book.url}" }
+        logger.warn(ex) { "File not found: $book" }
         throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -236,7 +236,7 @@ fun Book.toDto() =
     BookDto(
         id = id,
         name = name,
-        url = url.toString(),
+        url = url.toURI().path,
         lastModified = lastModifiedDate?.toUTC(),
         metadata = BookMetadataDto(
             status = metadata.status.toString(),

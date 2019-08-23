@@ -34,28 +34,28 @@ class BookParser(
   private val thumbnailFormat = "png"
 
   fun parse(book: Book): BookMetadata {
-    logger.info { "Trying to parse book: ${book.url}" }
+    logger.info { "Trying to parse book: $book" }
 
     val mediaType = contentDetector.detectMediaType(book.path())
     logger.info { "Detected media type: $mediaType" }
     if (!supportedMediaTypes.keys.contains(mediaType))
-      throw UnsupportedMediaTypeException("Unsupported mime type: $mediaType. File: ${book.url}", mediaType)
+      throw UnsupportedMediaTypeException("Unsupported mime type: $mediaType. File: $book", mediaType)
 
     val pages = supportedMediaTypes.getValue(mediaType).getPagesList(book.path())
         .sortedWith(compareBy(natSortComparator) { it.fileName })
     logger.info { "Book has ${pages.size} pages" }
 
-    logger.info { "Trying to generate cover for book: ${book.url}" }
+    logger.info { "Trying to generate cover for book: $book" }
     val thumbnail = generateThumbnail(book, mediaType, pages.first().fileName)
 
     return BookMetadata(mediaType = mediaType, status = Status.READY, pages = pages, thumbnail = thumbnail)
   }
 
   fun regenerateThumbnail(book: Book): BookMetadata {
-    logger.info { "Regenerate thumbnail for book: ${book.url}" }
+    logger.info { "Regenerate thumbnail for book: $book" }
 
     if (book.metadata.status != Status.READY) {
-      logger.warn { "Book metadata is not ready, cannot generate thumbnail. Book: ${book.url}" }
+      logger.warn { "Book metadata is not ready, cannot generate thumbnail. Book: $book" }
       throw MetadataNotReadyException()
     }
 
@@ -81,12 +81,12 @@ class BookParser(
           }
         }
       } catch (ex: Exception) {
-        logger.warn(ex) { "Could not generate thumbnail for book: ${book.url}" }
+        logger.warn(ex) { "Could not generate thumbnail for book: $book" }
         null
       }
 
   fun getPageContent(book: Book, number: Int): ByteArray {
-    logger.info { "Get page #$number for book: ${book.url}" }
+    logger.info { "Get page #$number for book: $book" }
 
     if (book.metadata.status != Status.READY) {
       logger.warn { "Book metadata is not ready, cannot get pages" }
