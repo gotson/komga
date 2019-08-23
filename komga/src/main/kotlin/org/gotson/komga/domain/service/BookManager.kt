@@ -29,10 +29,10 @@ class BookManager(
       try {
         book.metadata = bookParser.parse(book)
       } catch (ex: UnsupportedMediaTypeException) {
-        logger.info(ex) { "Unsupported media type: ${ex.mediaType}" }
+        logger.info(ex) { "Unsupported media type: ${ex.mediaType}. Book: ${book.url}" }
         book.metadata = BookMetadata(status = Status.UNSUPPORTED, mediaType = ex.mediaType)
       } catch (ex: Exception) {
-        logger.error(ex) { "Error while parsing" }
+        logger.error(ex) { "Error while parsing. Book: ${book.url}" }
         book.metadata = BookMetadata(status = Status.ERROR)
       }
       bookRepository.save(book)

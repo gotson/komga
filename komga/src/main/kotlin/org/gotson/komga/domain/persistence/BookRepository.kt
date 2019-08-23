@@ -14,4 +14,5 @@ interface BookRepository : JpaRepository<Book, Long> {
   fun findByUrl(url: URL): Book?
   fun findAllByMetadataStatus(status: Status): List<Book>
   fun findAllByMetadataStatusAndSerieId(status: Status, serieId: Long, pageable: Pageable): Page<Book>
+  fun findAllByMetadataThumbnailIsNull(): List<Book>
 }

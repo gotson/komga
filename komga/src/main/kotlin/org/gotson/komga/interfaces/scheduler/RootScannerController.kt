@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Profile
 import org.springframework.context.event.EventListener
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Controller
+import java.util.concurrent.RejectedExecutionException
 
 private val logger = KotlinLogging.logger {}
 
@@ -21,12 +22,11 @@ class RootScannerController(
 
   @EventListener(ApplicationReadyEvent::class)
   @Scheduled(cron = "#{@komgaProperties.rootFolderScanCron ?: '-'}")
-  @Synchronized
   fun scanRootFolder() {
-    logger.info { "Starting periodic library scan" }
-    libraryManager.scanRootFolder(Library("default", komgaProperties.rootFolder))
-
-    logger.info { "Starting periodic book parsing" }
-    libraryManager.parseUnparsedBooks()
+    try {
+      libraryManager.scanAndParse(Library("default", komgaProperties.rootFolder))
+    } catch (e: RejectedExecutionException) {
+      logger.warn { "Another scan is already running, skipping" }
+    }
   }
 }

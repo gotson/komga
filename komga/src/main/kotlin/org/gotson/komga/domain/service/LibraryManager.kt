@@ -2,11 +2,13 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import org.apache.commons.lang3.time.DurationFormatUtils
+import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SerieRepository
 import org.springframework.data.auditing.AuditingHandler
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.system.measureTimeMillis
@@ -95,14 +97,31 @@ class LibraryManager(
     }
   }
 
-  @Synchronized
+  @Async("periodicScanTaskExecutor")
+  fun scanAndParse(library: Library) {
+    logger.info { "Starting periodic library scan" }
+    scanRootFolder(library)
+
+    logger.info { "Starting periodic book parsing" }
+    parseUnparsedBooks()
+  }
+
+  @Async("regenerateThumbnailsTaskExecutor")
   fun regenerateAllThumbnails() {
     logger.info { "Regenerate thumbnail for all books" }
-    val booksToProcess = bookRepository.findAll()
+    generateThumbnails(bookRepository.findAll())
+  }
 
+  @Async("regenerateThumbnailsTaskExecutor")
+  fun regenerateMissingThumbnails() {
+    logger.info { "Regenerate missing thumbnails" }
+    generateThumbnails(bookRepository.findAllByMetadataThumbnailIsNull())
+  }
+
+  private fun generateThumbnails(books: List<Book>) {
     var sumOfTasksTime = 0L
     measureTimeMillis {
-      sumOfTasksTime = booksToProcess
+      sumOfTasksTime = books
           .map { bookManager.regenerateThumbnailAndPersist(it) }
           .map {
             try {
@@ -113,7 +132,7 @@ class LibraryManager(
           }
           .sum()
     }.also {
-      logger.info { "Generated ${booksToProcess.size} thumbnails in ${DurationFormatUtils.formatDurationHMS(it)} (virtual: ${DurationFormatUtils.formatDurationHMS(sumOfTasksTime)})" }
+      logger.info { "Generated ${books.size} thumbnails in ${DurationFormatUtils.formatDurationHMS(it)} (virtual: ${DurationFormatUtils.formatDurationHMS(sumOfTasksTime)})" }
     }
   }
 }

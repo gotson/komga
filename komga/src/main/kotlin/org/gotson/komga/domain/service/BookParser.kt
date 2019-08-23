@@ -55,7 +55,7 @@ class BookParser(
     logger.info { "Regenerate thumbnail for book: ${book.url}" }
 
     if (book.metadata.status != Status.READY) {
-      logger.warn { "Book metadata is not ready, cannot generate thumbnail" }
+      logger.warn { "Book metadata is not ready, cannot generate thumbnail. Book: ${book.url}" }
       throw MetadataNotReadyException()
     }
 
