@@ -1,7 +1,7 @@
 package org.gotson.komga.interfaces.web
 
 import mu.KotlinLogging
-import org.gotson.komga.domain.service.LibraryManager
+import org.gotson.komga.domain.service.AsyncOrchestrator
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.PostMapping
@@ -17,14 +17,14 @@ private val logger = KotlinLogging.logger {}
 @RequestMapping("api/v1/admin")
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 class AdminController(
-    private val libraryManager: LibraryManager
+    private val asyncOrchestrator: AsyncOrchestrator
 ) {
 
   @PostMapping("rpc/thumbnails/regenerate/all")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun regenerateAllThumbnails() {
     try {
-      libraryManager.regenerateAllThumbnails()
+      asyncOrchestrator.regenerateAllThumbnails()
     } catch (e: RejectedExecutionException) {
       throw ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Thumbnail regeneration task is already running")
     }
@@ -34,7 +34,7 @@ class AdminController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun regenerateMissingThumbnails() {
     try {
-      libraryManager.regenerateMissingThumbnails()
+      asyncOrchestrator.regenerateMissingThumbnails()
     } catch (e: RejectedExecutionException) {
       throw ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Thumbnail regeneration task is already running")
     }
