@@ -99,7 +99,7 @@ class SerieController(
   ): Page<BookDto> {
     if (!serieRepository.existsById(id)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
     return if (readyFilter) {
-      bookRepository.findAllByMetadataStatusAndSerieId(Status.READY, id, page)
+      bookRepository.findAllByMetadataStatusAndSerieId(Status.READY.name, id, page)
     } else {
       bookRepository.findAllBySerieId(id, page)
     }.map { it.toDto() }
