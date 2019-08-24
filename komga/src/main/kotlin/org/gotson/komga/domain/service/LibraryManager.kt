@@ -44,11 +44,12 @@ class LibraryManager(
 
         // if serie does not exist, save it
         if (existingSerie == null) {
+          logger.info { "Adding new serie: $newSerie" }
           serieRepository.save(newSerie)
         } else {
           // if serie already exists, update it
           if (newSerie.fileLastModified != existingSerie.fileLastModified) {
-            logger.info { "Serie changed on disk, updating: ${newSerie.url}" }
+            logger.info { "Serie changed on disk, updating: $newSerie" }
             existingSerie.name = newSerie.name
             existingSerie.fileLastModified = newSerie.fileLastModified
 

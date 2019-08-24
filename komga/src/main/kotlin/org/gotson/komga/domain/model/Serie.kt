@@ -53,4 +53,6 @@ class Serie(
   init {
     this.books = books.toList()
   }
+
+  override fun toString(): String = url.toURI().path
 }
