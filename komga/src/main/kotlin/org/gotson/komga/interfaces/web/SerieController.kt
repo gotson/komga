@@ -1,5 +1,6 @@
 package org.gotson.komga.interfaces.web
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.github.klinq.jpaspec.likeLower
 import mu.KotlinLogging
 import org.apache.commons.io.FilenameUtils
@@ -208,6 +209,7 @@ data class SerieDto(
     val id: Long,
     val name: String,
     val url: String,
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     val lastModified: LocalDateTime?
 )
 
@@ -223,6 +225,7 @@ data class BookDto(
     val id: Long,
     val name: String,
     val url: String,
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     val lastModified: LocalDateTime?,
     val metadata: BookMetadataDto
 )
@@ -250,5 +253,5 @@ data class PageDto(
     val mediaType: String
 )
 
-fun LocalDateTime.toUTC() =
+fun LocalDateTime.toUTC(): LocalDateTime =
     atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime()
