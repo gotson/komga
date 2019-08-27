@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    include: prod
+  datasource:
+    url: jdbc:h2:/config/database.h2;DB_CLOSE_DELAY=-1
+komga:
+  root-folder: /books
+  root-folder-scan-cron: "0 */15 * * * ?"
