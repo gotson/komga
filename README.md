@@ -1,6 +1,6 @@
 # ![app icon](./.github/readme-images/app-icon.png) Komga
 
-Komga is a free an open source comics/mangas server.
+Komga is a free and open source comics/mangas server.
 
 ## Features
 
