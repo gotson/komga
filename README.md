@@ -58,7 +58,9 @@ In order to access the API, you will need to authenticate using Basic Authentica
 
 The easiest way to install Komga is to use Docker. You can have a look at the sample [`docker-compose.yml`](./doc/docker-compose.yml).
 
-Alternatively you can run it from a `jar` file. I don't provide one at the moment, but I could if people are interested. You can also build it yourself by using `gradlew bootJar` to generate it.
+Alternatively you can run it from the fat `jar` file. You can find them in the [releases](./releases) section.
+
+You can also build it yourself by using `gradlew bootJar` to generate it.
 
 ## Configuration
 
