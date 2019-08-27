@@ -70,7 +70,7 @@ Each configuration key can have a different format depending if it's from the en
 
 ### Mandatory configuration
 
-In order to make Komga run, you need to specify some mandatory configuration keys:
+In order to make Komga run, you need to specify some mandatory configuration keys (unless you use Docker, in which case defaults are setup):
 
 - `SPRING_PROFILES_ACTIVE` / `spring.profiles.active`: `prod` - this will enable the database management and upgrades for new versions.
 - `SPRING_DATASOURCE_URL` / `spring.datasource.url`: the path of the database file. For Docker I use `jdbc:h2:/config/database.h2;DB_CLOSE_DELAY=-1`, where `/config/database.h2` is the actual file inside the docker container. You can customize this part if running without docker.
