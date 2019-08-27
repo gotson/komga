@@ -8,6 +8,7 @@ import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.model.path
 import org.gotson.komga.infrastructure.archive.ContentDetector
+import org.gotson.komga.infrastructure.archive.PdfExtractor
 import org.gotson.komga.infrastructure.archive.RarExtractor
 import org.gotson.komga.infrastructure.archive.ZipExtractor
 import org.springframework.stereotype.Service
@@ -20,12 +21,14 @@ private val logger = KotlinLogging.logger {}
 class BookParser(
     private val contentDetector: ContentDetector,
     private val zipExtractor: ZipExtractor,
-    private val rarExtractor: RarExtractor
+    private val rarExtractor: RarExtractor,
+    private val pdfExtractor: PdfExtractor
 ) {
 
   val supportedMediaTypes = mapOf(
       "application/zip" to zipExtractor,
-      "application/x-rar-compressed" to rarExtractor
+      "application/x-rar-compressed" to rarExtractor,
+      "application/pdf" to pdfExtractor
   )
 
   private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
