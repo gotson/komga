@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
@@ -41,7 +42,7 @@ class SecurityConfiguration(
         .and().headers().frameOptions().sameOrigin()
 
         .and().httpBasic()
-//        .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
   }
 
   override fun configure(web: WebSecurity) {
