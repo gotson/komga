@@ -1,3 +1,4 @@
+import com.github.breadmoirai.githubreleaseplugin.GithubReleaseTask
 import com.palantir.gradle.docker.DockerExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -13,6 +14,7 @@ plugins {
   id("io.spring.dependency-management") version "1.0.8.RELEASE"
   id("com.github.ben-manes.versions") version "0.22.0"
   id("com.palantir.docker") version "0.22.1"
+  id("com.github.breadmoirai.github-release") version "2.2.9"
   jacoco
 }
 
@@ -114,3 +116,12 @@ configure<DockerExtension> {
   dependsOn(tasks.getByName("clean"), tasks.getByName("test"))
 }
 
+githubRelease {
+  token(findProperty("github.token")?.toString())
+  owner("gotson")
+  repo("komga")
+  releaseAssets(tasks.getByName("bootJar").outputs.files.singleFile)
+}
+tasks.withType<GithubReleaseTask> {
+  dependsOn(tasks.getByName("bootJar"))
+}
