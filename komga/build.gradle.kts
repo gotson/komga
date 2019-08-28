@@ -113,7 +113,6 @@ configure<DockerExtension> {
   tag("beta", "$name:beta")
   copySpec.from(tasks.getByName("unpack").outputs).into("dependency")
   buildArgs(mapOf("DEPENDENCY" to "dependency"))
-  dependsOn(tasks.getByName("clean"), tasks.getByName("test"))
 }
 
 githubRelease {
@@ -123,5 +122,18 @@ githubRelease {
   releaseAssets(tasks.getByName("bootJar").outputs.files.singleFile)
 }
 tasks.withType<GithubReleaseTask> {
-  dependsOn(tasks.getByName("bootJar"))
+  dependsOn(tasks.bootJar)
+}
+
+tasks.register("release") {
+  description = "Performs a release on Github as well as Docker for tags latest and semVer"
+  group = "publishing"
+  dependsOn(
+      tasks.clean,
+      tasks.test,
+      tasks.getByName("dockerPushLatest"),
+      tasks.getByName("dockerPushSemVer"),
+      tasks.githubRelease
+  )
+  doLast { println("release") }
 }
