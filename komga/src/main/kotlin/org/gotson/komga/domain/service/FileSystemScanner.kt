@@ -21,7 +21,7 @@ private val logger = KotlinLogging.logger {}
 @Service
 class FileSystemScanner {
 
-  val supportedExtensions = listOf("cbz", "zip", "cbr", "rar")
+  val supportedExtensions = listOf("cbz", "zip", "cbr", "rar", "pdf")
 
   fun scanRootFolder(root: Path): List<Serie> {
     logger.info { "Scanning folder: $root" }

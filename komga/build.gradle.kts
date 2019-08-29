@@ -62,6 +62,7 @@ dependencies {
 
   implementation("org.apache.tika:tika-core:1.22")
   implementation("com.github.junrar:junrar:4.0.0")
+  implementation("org.apache.pdfbox:pdfbox:2.0.16")
   implementation("net.grey-panther:natural-comparator:1.1")
 
   implementation("net.coobird:thumbnailator:0.4.8")
