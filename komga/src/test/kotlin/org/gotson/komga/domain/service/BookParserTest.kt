@@ -8,6 +8,7 @@ import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeBookPage
 import org.gotson.komga.domain.model.path
 import org.gotson.komga.infrastructure.archive.ContentDetector
+import org.gotson.komga.infrastructure.archive.PdfExtractor
 import org.gotson.komga.infrastructure.archive.RarExtractor
 import org.gotson.komga.infrastructure.archive.ZipExtractor
 import org.junit.jupiter.api.Test
@@ -16,8 +17,9 @@ class BookParserTest {
   private val mockContent = mockk<ContentDetector>()
   private val mockZip = mockk<ZipExtractor>()
   private val mockRar = mockk<RarExtractor>()
+  private val mockPDf = mockk<PdfExtractor>()
 
-  private val bookParser = BookParser(mockContent, mockZip, mockRar)
+  private val bookParser = BookParser(mockContent, mockZip, mockRar, mockPDf)
 
   @Test
   fun `given book with unordered pages when parsing then thumbnail should always be the first in natural order`() {
