@@ -9,8 +9,9 @@ import org.gotson.komga.domain.model.Serie
 import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SerieRepository
-import org.gotson.komga.domain.service.BookParser
+import org.gotson.komga.domain.service.BookManager
 import org.gotson.komga.domain.service.MetadataNotReadyException
+import org.gotson.komga.infrastructure.image.ImageType
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -41,7 +42,7 @@ private val logger = KotlinLogging.logger {}
 class SerieController(
     private val serieRepository: SerieRepository,
     private val bookRepository: BookRepository,
-    private val bookParser: BookParser
+    private val bookManager: BookManager
 ) {
 
   @GetMapping
@@ -134,13 +135,6 @@ class SerieController(
   ): ResponseEntity<ByteArray> {
     if (!serieRepository.existsById(serieId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
     return bookRepository.findByIdOrNull(bookId)?.let { book ->
-
-      val mediaType = try {
-        MediaType.parseMediaType(book.metadata.mediaType!!)
-      } catch (ex: Exception) {
-        MediaType.APPLICATION_OCTET_STREAM
-      }
-
       try {
         ResponseEntity.ok()
             .headers(HttpHeaders().apply {
@@ -148,7 +142,7 @@ class SerieController(
                   .filename(FilenameUtils.getName(book.url.toString()))
                   .build()
             })
-            .contentType(mediaType)
+            .contentType(getMediaTypeOrDefault(book.metadata.mediaType))
             .body(File(book.url.toURI()).readBytes())
       } catch (ex: FileNotFoundException) {
         logger.warn(ex) { "File not found: $book" }
@@ -176,23 +170,23 @@ class SerieController(
   fun getBookPage(
       @PathVariable serieId: Long,
       @PathVariable bookId: Long,
-      @PathVariable pageNumber: Int
+      @PathVariable pageNumber: Int,
+      @RequestParam(value = "convert") convertTo: String?
   ): ResponseEntity<ByteArray> {
     if (!serieRepository.existsById(serieId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return bookRepository.findByIdOrNull((bookId))?.let { book ->
       try {
-        val pageContent = bookParser.getPageContent(book, pageNumber)
-
-        val mediaType = try {
-          MediaType.parseMediaType(book.metadata.pages[pageNumber - 1].mediaType)
-        } catch (ex: Exception) {
-          MediaType.APPLICATION_OCTET_STREAM
+        val convertFormat = when (convertTo?.toLowerCase()) {
+          "jpg", "jpeg" -> ImageType.JPEG
+          "png" -> ImageType.PNG
+          else -> ImageType.ORIGINAL
         }
+        val pageContent = bookManager.getBookPage(book, pageNumber, convertFormat)
 
         ResponseEntity.ok()
-            .contentType(mediaType)
-            .body(pageContent)
+            .contentType(getMediaTypeOrDefault(pageContent.mediaType))
+            .body(pageContent.content)
       } catch (ex: ArrayIndexOutOfBoundsException) {
         throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number does not exist")
       } catch (ex: MetadataNotReadyException) {
@@ -202,6 +196,16 @@ class SerieController(
         throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  private fun getMediaTypeOrDefault(mediaTypeString: String?): MediaType {
+    mediaTypeString?.let {
+      try {
+        return MediaType.parseMediaType(mediaTypeString)
+      } catch (ex: Exception) {
+      }
+    }
+    return MediaType.APPLICATION_OCTET_STREAM
   }
 }
 

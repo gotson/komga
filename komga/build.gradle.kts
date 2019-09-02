@@ -67,6 +67,7 @@ dependencies {
 
   implementation("net.coobird:thumbnailator:0.4.8")
   implementation("com.twelvemonkeys.imageio:imageio-jpeg:3.4.2")
+  implementation("com.twelvemonkeys.imageio:imageio-tiff:3.4.2")
 
   runtimeOnly("com.h2database:h2:1.4.199")
 
