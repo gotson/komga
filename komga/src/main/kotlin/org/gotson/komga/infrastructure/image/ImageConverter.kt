@@ -11,15 +11,16 @@ private val logger = KotlinLogging.logger {}
 class ImageConverter {
 
   val supportedReadFormats = ImageIO.getReaderFormatNames().toList()
+  val supportedReadMediaTypes = ImageIO.getReaderMIMETypes().toList()
   val supportedWriteFormats = ImageIO.getWriterFormatNames().toList()
+  val supportedWriteMediaTypes = ImageIO.getWriterMIMETypes().toList()
 
   init {
     logger.info { "Supported read formats: $supportedReadFormats" }
+    logger.info { "Supported read mediaTypes: $supportedReadMediaTypes" }
     logger.info { "Supported write formats: $supportedWriteFormats" }
+    logger.info { "Supported write mediaTypes: $supportedWriteMediaTypes" }
   }
-
-  fun canConvert(from: String, to: String) =
-      supportedReadFormats.contains(from) && supportedWriteFormats.contains(to)
 
   fun convertImage(imageBytes: ByteArray, format: String): ByteArray =
       ByteArrayOutputStream().use {
@@ -28,9 +29,3 @@ class ImageConverter {
         it.toByteArray()
       }
 }
-
-fun mediaTypeToImageIOFormat(mediaType: String): String? =
-    if (mediaType.startsWith("image/", ignoreCase = true))
-      mediaType.toLowerCase().substringAfter("/")
-    else
-      null

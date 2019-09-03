@@ -1,19 +1,6 @@
 package org.gotson.komga.infrastructure.image
 
-enum class ImageType {
-  ORIGINAL, PNG, JPEG
+enum class ImageType(val mediaType: String, val imageIOFormat: String) {
+  PNG("image/png", "png"),
+  JPEG("image/jpeg", "jpeg")
 }
-
-fun ImageType.toMediaType(): String? =
-    when (this) {
-      ImageType.ORIGINAL -> null
-      ImageType.PNG -> "image/png"
-      ImageType.JPEG -> "image/jpeg"
-    }
-
-fun ImageType.toImageIOFormat(): String? =
-    when (this) {
-      ImageType.ORIGINAL -> null
-      ImageType.PNG -> "png"
-      ImageType.JPEG -> "jpeg"
-    }

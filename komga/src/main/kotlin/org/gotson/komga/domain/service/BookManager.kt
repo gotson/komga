@@ -6,12 +6,10 @@ import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.BookPageContent
 import org.gotson.komga.domain.model.Status
+import org.gotson.komga.domain.model.UnsupportedMediaTypeException
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
-import org.gotson.komga.infrastructure.image.mediaTypeToImageIOFormat
-import org.gotson.komga.infrastructure.image.toImageIOFormat
-import org.gotson.komga.infrastructure.image.toMediaType
 import org.springframework.scheduling.annotation.Async
 import org.springframework.scheduling.annotation.AsyncResult
 import org.springframework.stereotype.Service
@@ -61,28 +59,32 @@ class BookManager(
     }.also { logger.info { "Thumbnail generated in ${DurationFormatUtils.formatDurationHMS(it)}" } })
   }
 
-  fun getBookPage(book: Book, number: Int, convertTo: ImageType = ImageType.ORIGINAL): BookPageContent {
+  @Throws(UnsupportedMediaTypeException::class)
+  fun getBookPage(book: Book, number: Int, convertTo: ImageType? = null): BookPageContent {
     val pageContent = bookParser.getPageContent(book, number)
     val pageMediaType = book.metadata.pages[number - 1].mediaType
 
-    if (convertTo != ImageType.ORIGINAL) {
-      val pageFormat = mediaTypeToImageIOFormat(pageMediaType)
-      val convertFormat = convertTo.toImageIOFormat()
-      if (pageFormat != null && convertFormat != null && imageConverter.canConvert(pageFormat, convertFormat)) {
-        if (pageFormat != convertFormat) {
-          try {
-            logger.info { "Trying to convert page #$number of book $book from $pageFormat to $convertFormat" }
-            val convertedPage = imageConverter.convertImage(pageContent, convertFormat)
-            return BookPageContent(number, convertedPage, convertTo.toMediaType() ?: "application/octet-stream")
-          } catch (ex: Exception) {
-            logger.error(ex) { "Failed to convert page #$number of book $book to $convertFormat" }
-          }
-        } else {
-          logger.warn { "Cannot convert page #$number of book $book from $pageFormat to $convertFormat: same format" }
-        }
-      } else {
-        logger.warn { "Cannot convert page #$number of book $book to $convertFormat: unsupported format" }
+    convertTo?.let {
+      val msg = "Convert page #$number of book $book from $pageMediaType to ${it.mediaType}"
+      if (!imageConverter.supportedReadMediaTypes.contains(pageMediaType)) {
+        throw UnsupportedMediaTypeException("$msg: unsupported read format $pageMediaType", pageMediaType)
       }
+      if (!imageConverter.supportedWriteMediaTypes.contains(it.mediaType)) {
+        throw UnsupportedMediaTypeException("$msg: unsupported cannot write format ${it.mediaType}", it.mediaType)
+      }
+      if (pageMediaType == it.mediaType) {
+        logger.warn { "$msg: same format, no need for conversion" }
+        return@let
+      }
+
+      logger.info { msg }
+      val convertedPage = try {
+        imageConverter.convertImage(pageContent, it.imageIOFormat)
+      } catch (e: Exception) {
+        logger.error(e) { "$msg: conversion failed" }
+        throw e
+      }
+      return BookPageContent(number, convertedPage, it.mediaType)
     }
 
     return BookPageContent(number, pageContent, pageMediaType)

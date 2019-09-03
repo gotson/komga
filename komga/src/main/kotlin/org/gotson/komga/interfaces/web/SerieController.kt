@@ -5,12 +5,13 @@ import com.github.klinq.jpaspec.likeLower
 import mu.KotlinLogging
 import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.domain.model.Book
+import org.gotson.komga.domain.model.MetadataNotReadyException
 import org.gotson.komga.domain.model.Serie
 import org.gotson.komga.domain.model.Status
+import org.gotson.komga.domain.model.UnsupportedMediaTypeException
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SerieRepository
 import org.gotson.komga.domain.service.BookManager
-import org.gotson.komga.domain.service.MetadataNotReadyException
 import org.gotson.komga.infrastructure.image.ImageType
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -178,11 +179,19 @@ class SerieController(
     return bookRepository.findByIdOrNull((bookId))?.let { book ->
       try {
         val convertFormat = when (convertTo?.toLowerCase()) {
-          "jpg", "jpeg" -> ImageType.JPEG
+          "jpeg" -> ImageType.JPEG
           "png" -> ImageType.PNG
-          else -> ImageType.ORIGINAL
+          "", null -> null
+          else -> throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid conversion format: $convertTo")
         }
-        val pageContent = bookManager.getBookPage(book, pageNumber, convertFormat)
+
+        val pageContent = try {
+          bookManager.getBookPage(book, pageNumber, convertFormat)
+        } catch (e: UnsupportedMediaTypeException) {
+          throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
+        } catch (e: Exception) {
+          throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
 
         ResponseEntity.ok()
             .contentType(getMediaTypeOrDefault(pageContent.mediaType))

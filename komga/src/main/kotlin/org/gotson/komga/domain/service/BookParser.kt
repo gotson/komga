@@ -5,7 +5,9 @@ import net.coobird.thumbnailator.Thumbnails
 import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadata
+import org.gotson.komga.domain.model.MetadataNotReadyException
 import org.gotson.komga.domain.model.Status
+import org.gotson.komga.domain.model.UnsupportedMediaTypeException
 import org.gotson.komga.domain.model.path
 import org.gotson.komga.infrastructure.archive.ContentDetector
 import org.gotson.komga.infrastructure.archive.PdfExtractor
@@ -36,6 +38,7 @@ class BookParser(
   private val thumbnailSize = 300
   private val thumbnailFormat = "png"
 
+  @Throws(UnsupportedMediaTypeException::class)
   fun parse(book: Book): BookMetadata {
     logger.info { "Trying to parse book: $book" }
 
@@ -54,6 +57,7 @@ class BookParser(
     return BookMetadata(mediaType = mediaType, status = Status.READY, pages = pages, thumbnail = thumbnail)
   }
 
+  @Throws(MetadataNotReadyException::class)
   fun regenerateThumbnail(book: Book): BookMetadata {
     logger.info { "Regenerate thumbnail for book: $book" }
 
@@ -88,6 +92,7 @@ class BookParser(
         null
       }
 
+  @Throws(MetadataNotReadyException::class)
   fun getPageContent(book: Book, number: Int): ByteArray {
     logger.info { "Get page #$number for book: $book" }
 
@@ -98,12 +103,9 @@ class BookParser(
 
     if (number > book.metadata.pages.size || number <= 0) {
       logger.error { "Page number #$number is out of bounds. Book has ${book.metadata.pages.size} pages" }
-      throw ArrayIndexOutOfBoundsException("Page $number does not exist")
+      throw IndexOutOfBoundsException("Page $number does not exist")
     }
 
     return supportedMediaTypes.getValue(book.metadata.mediaType!!).getPageStream(book.path(), book.metadata.pages[number - 1].fileName)
   }
 }
-
-class MetadataNotReadyException : Exception()
-class UnsupportedMediaTypeException(msg: String, val mediaType: String) : Exception(msg)
