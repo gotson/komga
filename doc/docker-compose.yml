@@ -10,6 +10,7 @@ services:
       - /etc/timezone:/etc/timezone:ro
     ports:
       - 8090:8080
+    user: "1000:1000"
     environment:
       - KOMGA_USER_PASSWORD=your-user-password
       - KOMGA_ADMIN_PASSWORD=your-admin-password
