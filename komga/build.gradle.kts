@@ -4,15 +4,15 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   run {
-    val kotlinVersion = "1.3.41"
+    val kotlinVersion = "1.3.50"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     kotlin("plugin.jpa") version kotlinVersion
     kotlin("kapt") version kotlinVersion
   }
-  id("org.springframework.boot") version "2.1.6.RELEASE"
+  id("org.springframework.boot") version "2.1.7.RELEASE"
   id("io.spring.dependency-management") version "1.0.8.RELEASE"
-  id("com.github.ben-manes.versions") version "0.22.0"
+  id("com.github.ben-manes.versions") version "0.24.0"
   id("com.palantir.docker") version "0.22.1"
   id("com.github.breadmoirai.github-release") version "2.2.9"
   jacoco
@@ -30,7 +30,7 @@ repositories {
 dependencies {
   implementation(kotlin("stdlib-jdk8"))
   implementation(kotlin("reflect"))
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0-M2")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0")
 
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-data-jpa")
