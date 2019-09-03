@@ -11,6 +11,6 @@ services:
     ports:
       - 8090:8080
     environment:
-      - KOMGA_USER_PASSWORD=your-admin-password
-      - KOMGA_ADMIN_PASSWORD=your-user-password
+      - KOMGA_USER_PASSWORD=your-user-password
+      - KOMGA_ADMIN_PASSWORD=your-admin-password
     restart: unless-stopped
