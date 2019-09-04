@@ -19,7 +19,7 @@ plugins {
 }
 
 group = "org.gotson"
-version = "0.2.0"
+version = "0.2.1"
 
 repositories {
   jcenter()
@@ -125,17 +125,4 @@ githubRelease {
 }
 tasks.withType<GithubReleaseTask> {
   dependsOn(tasks.bootJar)
-}
-
-tasks.register("release") {
-  description = "Performs a release on Github as well as Docker for tags latest and semVer"
-  group = "publishing"
-  dependsOn(
-      tasks.clean,
-      tasks.test,
-      tasks.getByName("dockerPushLatest"),
-      tasks.getByName("dockerPushSemVer"),
-      tasks.githubRelease
-  )
-  doLast { println("release") }
 }
