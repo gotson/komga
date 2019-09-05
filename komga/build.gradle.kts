@@ -118,7 +118,7 @@ configure<DockerExtension> {
 }
 
 githubRelease {
-  token(findProperty("github.token")?.toString())
+  token(findProperty("github.token")?.toString() ?: System.getenv("GITHUB_TOKEN"))
   owner("gotson")
   repo("komga")
   releaseAssets(tasks.getByName("bootJar").outputs.files.singleFile)

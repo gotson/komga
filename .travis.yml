@@ -13,7 +13,29 @@ jdk: openjdk8
 before_deploy: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 deploy:
-  provider: script
-  script: ./gradlew dockerPushBeta
-  on:
-    branch: master
+  - provider: script
+    script: ./gradlew dockerPushBeta
+    skip_cleanup: true
+    on:
+      branch: master
+
+  - provider: script
+    script: ./gradlew dockerPushLatest
+    skip_cleanup: true
+    on:
+      tags: true
+      condition: $TRAVIS_TAG = latest
+
+  - provider: script
+    script: ./gradlew dockerPushSemVer
+    skip_cleanup: true
+    on:
+      tags: true
+      condition: $TRAVIS_TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+
+
+  - provider: script
+    script: ./gradlew githubRelease
+    skip_cleanup: true
+    on:
+      tags: true
+      condition: $TRAVIS_TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+
