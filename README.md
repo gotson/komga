@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/gotson/komga.svg?branch=master)](https://travis-ci.org/gotson/komga)
+[![Build Status](https://travis-ci.com/gotson/komga.svg?branch=master)](https://travis-ci.org/gotson/komga)
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/gotson/komga?color=blue&label=download&sort=semver)](https://github.com/gotson/komga/releases)
 [![Docker Pulls](https://img.shields.io/docker/pulls/gotson/komga)](https://hub.docker.com/r/gotson/komga)
 
