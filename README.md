@@ -59,7 +59,7 @@ In order to access the API, you will need to authenticate using Basic Authentica
 
 ## Installation
 
-The easiest way to install Komga is to use Docker. You can have a look at the sample [`docker-compose.yml`](./doc/docker-compose.yml).
+The easiest way to install Komga is to use Docker ([instructions on how to use the image](https://hub.docker.com/r/gotson/komga)). You can have a look at the sample [`docker-compose.yml`](./doc/docker-compose.yml).
 
 Alternatively you can run it from the fat `jar` file. You can find them in the [releases](https://github.com/gotson/komga/releases) section.
 
