@@ -68,7 +68,7 @@ dependencies {
   implementation("net.coobird:thumbnailator:0.4.8")
   implementation("com.twelvemonkeys.imageio:imageio-jpeg:3.4.2")
   implementation("com.twelvemonkeys.imageio:imageio-tiff:3.4.2")
-  implementation(files("/libs/webp-imageio-decoder-plugin-0.2.jar"))
+  implementation(files("$projectDir/libs/webp-imageio-decoder-plugin-0.2.jar"))
 
   runtimeOnly("com.h2database:h2:1.4.199")
 
