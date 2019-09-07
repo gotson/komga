@@ -19,7 +19,7 @@ class PdfExtractor : ArchiveExtractor() {
 
   override fun getPagesList(path: Path): List<BookPage> =
       PDDocument.load(Files.newInputStream(path)).use { pdf ->
-        (1..pdf.numberOfPages).map { index ->
+        (0 until pdf.numberOfPages).map { index ->
           BookPage(index.toString(), mediaType)
         }
       }
