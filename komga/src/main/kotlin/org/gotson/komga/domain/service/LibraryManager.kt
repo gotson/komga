@@ -48,7 +48,8 @@ class LibraryManager(
           serieRepository.save(newSerie)
         } else {
           // if serie already exists, update it
-          if (newSerie.fileLastModified != existingSerie.fileLastModified) {
+          if (newSerie.fileLastModified != existingSerie.fileLastModified
+              || newSerie.books.size != existingSerie.books.size) {
             logger.info { "Serie changed on disk, updating: $newSerie" }
             existingSerie.name = newSerie.name
             existingSerie.fileLastModified = newSerie.fileLastModified
