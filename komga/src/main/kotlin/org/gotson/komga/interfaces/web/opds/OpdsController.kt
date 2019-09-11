@@ -42,7 +42,7 @@ private const val ID_SERIES_ALL = "allSeries"
 private const val ID_SERIES_LATEST = "latestSeries"
 
 @RestController
-@RequestMapping(value = [ROUTE_BASE], produces = [MediaType.TEXT_XML_VALUE])
+@RequestMapping(value = [ROUTE_BASE], produces = [MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE])
 class OpdsController(
     private val serieRepository: SerieRepository
 ) {
