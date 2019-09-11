@@ -35,7 +35,10 @@ class SecurityConfiguration(
         .requestMatchers(PathRequest.toH2Console()).hasRole("ADMIN")
 
         // all other endpoints are restricted to authenticated users
-        .antMatchers("/api/**").hasRole("USER")
+        .antMatchers(
+            "/api/**",
+            "/opds/**"
+        ).hasRole("USER")
 
         // authorize frames for H2 console
         .and().headers().frameOptions().sameOrigin()

@@ -56,6 +56,7 @@ dependencies {
   }
 
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.9")
+  implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.9")
 
   implementation("com.github.klinq:klinq-jpaspec:0.8")
 

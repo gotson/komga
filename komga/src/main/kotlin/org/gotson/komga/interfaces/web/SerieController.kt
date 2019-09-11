@@ -39,7 +39,7 @@ import java.time.ZoneOffset
 private val logger = KotlinLogging.logger {}
 
 @RestController
-@RequestMapping("api/v1/series")
+@RequestMapping("api/v1/series", produces = [MediaType.APPLICATION_JSON_VALUE])
 class SerieController(
     private val serieRepository: SerieRepository,
     private val bookRepository: BookRepository,
@@ -172,7 +172,8 @@ class SerieController(
       @PathVariable serieId: Long,
       @PathVariable bookId: Long,
       @PathVariable pageNumber: Int,
-      @RequestParam(value = "convert") convertTo: String?
+      @RequestParam(value = "convert") convertTo: String?,
+      @RequestParam(value = "zerobased", defaultValue = "false") zeroBasedIndex: Boolean
   ): ResponseEntity<ByteArray> {
     if (!serieRepository.existsById(serieId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
@@ -185,8 +186,10 @@ class SerieController(
           else -> throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid conversion format: $convertTo")
         }
 
+        val pageNum = if (zeroBasedIndex) pageNumber + 1 else pageNumber
+
         val pageContent = try {
-          bookManager.getBookPage(book, pageNumber, convertFormat)
+          bookManager.getBookPage(book, pageNum, convertFormat)
         } catch (e: UnsupportedMediaTypeException) {
           throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
         } catch (e: Exception) {
