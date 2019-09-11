@@ -1,4 +1,4 @@
-package org.gotson.komga.interfaces.web
+package org.gotson.komga.interfaces.web.rest
 
 import mu.KotlinLogging
 import org.gotson.komga.domain.service.AsyncOrchestrator

@@ -1,4 +1,4 @@
-package org.gotson.komga.interfaces.web
+package org.gotson.komga.interfaces.web.rest
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.github.klinq.jpaspec.likeLower
