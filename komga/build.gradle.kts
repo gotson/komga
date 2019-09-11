@@ -21,6 +21,9 @@ plugins {
 group = "org.gotson"
 version = "0.3.4"
 
+val developmentOnly = configurations.create("developmentOnly")
+configurations.runtimeClasspath.get().extendsFrom(developmentOnly)
+
 repositories {
   jcenter()
   mavenCentral()
@@ -81,6 +84,8 @@ dependencies {
   testImplementation("com.ninja-squad:springmockk:1.1.2")
   testImplementation("io.mockk:mockk:1.9.3")
   testImplementation("com.google.jimfs:jimfs:1.1")
+
+  developmentOnly("org.springframework.boot:spring-boot-devtools")
 }
 
 tasks {

@@ -1,4 +1,6 @@
-#logging.level.org.springframework.security.web.FilterChainProxy: DEBUG
+logging.level:
+  web: DEBUG
+#  org.springframework.security.web.FilterChainProxy: DEBUG
 komga:
   root-folder: D:\\files\\pdf
   threads:
