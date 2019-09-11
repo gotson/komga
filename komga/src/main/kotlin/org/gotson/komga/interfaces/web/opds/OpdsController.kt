@@ -84,11 +84,12 @@ class OpdsController(
       @RequestParam("search")
       searchTerm: String?
   ): OpdsFeed {
+    val sort = Sort.by(Sort.Order.asc("name").ignoreCase())
     val series = if (!searchTerm.isNullOrEmpty()) {
       val spec = Serie::name.likeLower("%$searchTerm%")
-      serieRepository.findAll(spec)
+      serieRepository.findAll(spec, sort)
     } else {
-      serieRepository.findAll()
+      serieRepository.findAll(sort)
     }
 
     return OpdsFeedNavigation(
