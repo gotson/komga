@@ -1,0 +1,32 @@
+name: Deploy to DockerHub
+
+on:
+  push:
+    branches:
+    - master
+    paths:
+    - '*'
+    - '!*.md'
+    - '!.travis.yml
+    - '!./github/*/*'
+    - '!./doc/*'
+    - '!.idea/runConfigurations/*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '1.8'
+    - run: ./gradlew build
+    
+  deploy_dockerhub:
+    name: Deploy to DockerHub
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+    - run: echo Triggered by ${{ github.ref }}
