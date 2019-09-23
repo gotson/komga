@@ -19,7 +19,7 @@ plugins {
 }
 
 group = "org.gotson"
-version = "0.3.4"
+version = "0.4.0"
 
 val developmentOnly = configurations.create("developmentOnly")
 configurations.runtimeClasspath.get().extendsFrom(developmentOnly)
