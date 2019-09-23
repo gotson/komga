@@ -6,11 +6,11 @@ on:
     - master
     paths:
     - '*'
-    - '!*.md'
-    - '!.travis.yml'
-    - '!./github/*/*'
-    - '!./doc/*'
-    - '!.idea/runConfigurations/*'
+#     - '!*.md'
+#     - '!.travis.yml'
+#     - '!./github/*/*'
+#     - '!./doc/*'
+#     - '!.idea/runConfigurations/*'
 
 
 jobs:
