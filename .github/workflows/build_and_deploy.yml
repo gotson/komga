@@ -12,6 +12,7 @@ on:
     - '!./doc/*'
     - '!.idea/runConfigurations/*'
 
+
 jobs:
   build:
     runs-on: ubuntu-latest
