@@ -17,12 +17,11 @@ Komga just started, and for now it can:
 
 ## Status & vision
 
-The first version is a simple server with only an API and no UI.
-It's aimed to work with [Tachiyomi](https://github.com/inorichi/tachiyomi) through an extension.
+For now Komga is a simple server without user interface, providing an API and OPDS feed. It can work with [Tachiyomi](https://github.com/inorichi/tachiyomi) through the official extension, as well as most OPDS readers.
 
 Future versions may bring:
 
-- support for multiple libraries (multiple folders)
+- support for multiple libraries (multiple root folders)
 - a web UI to administrate the server
 - matching with online metadata sources (like ComicVine) to enrich information like description or genre
 
@@ -98,6 +97,13 @@ Komga will generate:
 On rescans, Komga will update Series and Books, add new ones, and remove the ones for which files don't exist anymore.
 
 Then it will _parse_ each book, which consist of indexing pages (images in the archive), and generating a thumbnail.
+
+## Tachiyomi configuration
+
+Komga has an official extension for [Tachiyomi](https://github.com/inorichi/tachiyomi), available from within Tachiyomi's extension menu.
+The extension is configurable, you need to specify the `server address`, `username`, and `password`.
+
+![tachiyomi extension configuration screenshot](./.github/readme-images/tachiyomi-extension-configuration.jpg)
 
 ## APIs
 
