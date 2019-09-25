@@ -4,8 +4,8 @@ on:
   push:
     branches:
     - master
-    paths:
-    - '*'
+#     paths:
+#     - '*'
 #    - '!*.md'
 #    - '!.travis.yml'
 #    - '!./github/*/*'
@@ -13,7 +13,7 @@ on:
 #    - '!.idea/runConfigurations/*'
 
 jobs:
-  build:
+  build-and-publish:
     runs-on: ubuntu-latest
     
     steps:
@@ -22,11 +22,4 @@ jobs:
       with:
         java-version: '1.8'
     - run: ./gradlew build
-    
-  deploy_dockerhub:
-    name: Deploy to DockerHub
-    needs: build
-    runs-on: ubuntu-latest
-    
-    steps:
     - run: echo Triggered by ${{ github.ref }}
