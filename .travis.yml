@@ -20,14 +20,7 @@ deploy:
       branch: master
 
   - provider: script
-    script: ./gradlew dockerPushLatest
-    skip_cleanup: true
-    on:
-      tags: true
-      condition: $TRAVIS_TAG = latest
-
-  - provider: script
-    script: ./gradlew dockerPushSemVer
+    script: bash ./.travis/deploy-semver.sh
     skip_cleanup: true
     on:
       tags: true
