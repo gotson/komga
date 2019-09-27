@@ -5,13 +5,15 @@ import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeBookPage
+import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSerie
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.transaction.annotation.Transactional
 
@@ -22,18 +24,30 @@ class PersistenceTest(
     @Autowired private val serieRepository: SerieRepository,
     @Autowired private val bookRepository: BookRepository,
     @Autowired private val bookMetadataRepository: BookMetadataRepository,
-    @Autowired private val entityManager: TestEntityManager
+    @Autowired private val libraryRepository: LibraryRepository
 ) {
+
+  private val library = makeLibrary()
+
+  @BeforeAll
+  fun `setup library`() {
+    libraryRepository.save(library)
+  }
+
+  @AfterAll
+  fun `teardown library`() {
+    libraryRepository.deleteAll()
+  }
 
   @AfterEach
   fun `clear repository`() {
-    entityManager.clear()
+    serieRepository.deleteAll()
   }
 
   @Test
   fun `given serie with book when saving then metadata is also saved`() {
     // given
-    val serie = makeSerie(name = "serie", books = listOf(makeBook("book1")))
+    val serie = makeSerie(name = "serie", books = listOf(makeBook("book1"))).also { it.library = library }
 
     // when
     serieRepository.save(serie)
@@ -52,7 +66,7 @@ class PersistenceTest(
         makeBook("book 05"),
         makeBook("book 6"),
         makeBook("book 002")
-    ))
+    )).also { it.library = library }
 
     // when
     serieRepository.save(serie)
@@ -67,7 +81,7 @@ class PersistenceTest(
   @Test
   fun `given existing book when updating metadata then new metadata is saved`() {
     // given
-    val serie = makeSerie(name = "serie", books = listOf(makeBook("book1")))
+    val serie = makeSerie(name = "serie", books = listOf(makeBook("book1"))).also { it.library = library }
     serieRepository.save(serie)
 
     // when
@@ -91,7 +105,7 @@ class PersistenceTest(
   @Test
   fun `given book pages unordered when saving then pages are ordered with natural sort`() {
     // given
-    val serie = makeSerie(name = "serie", books = listOf(makeBook("book1")))
+    val serie = makeSerie(name = "serie", books = listOf(makeBook("book1"))).also { it.library = library }
     serieRepository.save(serie)
 
     // when

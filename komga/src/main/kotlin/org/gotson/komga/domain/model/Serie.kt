@@ -10,10 +10,13 @@ import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 import javax.persistence.OrderColumn
 import javax.persistence.Table
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotNull
 
 private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
 
@@ -37,6 +40,11 @@ class Serie(
   @GeneratedValue
   @Column(name = "id", nullable = false, unique = true)
   var id: Long = 0
+
+  @NotNull
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "library_id", nullable = false)
+  lateinit var library: Library
 
   @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "serie")
   @OrderColumn(name = "index")

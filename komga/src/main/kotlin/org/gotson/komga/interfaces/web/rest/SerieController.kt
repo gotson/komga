@@ -11,7 +11,7 @@ import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.model.UnsupportedMediaTypeException
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SerieRepository
-import org.gotson.komga.domain.service.BookManager
+import org.gotson.komga.domain.service.BookLifecyle
 import org.gotson.komga.infrastructure.image.ImageType
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -43,7 +43,7 @@ private val logger = KotlinLogging.logger {}
 class SerieController(
     private val serieRepository: SerieRepository,
     private val bookRepository: BookRepository,
-    private val bookManager: BookManager
+    private val bookLifecyle: BookLifecyle
 ) {
 
   @GetMapping
@@ -189,7 +189,7 @@ class SerieController(
         val pageNum = if (zeroBasedIndex) pageNumber + 1 else pageNumber
 
         val pageContent = try {
-          bookManager.getBookPage(book, pageNum, convertFormat)
+          bookLifecyle.getBookPage(book, pageNum, convertFormat)
         } catch (e: UnsupportedMediaTypeException) {
           throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
         } catch (e: Exception) {

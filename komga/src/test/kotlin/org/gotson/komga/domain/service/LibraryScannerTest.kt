@@ -5,12 +5,13 @@ import io.mockk.every
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.BookMetadata
-import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeBookPage
+import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSerie
 import org.gotson.komga.domain.persistence.BookRepository
+import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SerieRepository
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -20,17 +21,17 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.transaction.annotation.Transactional
-import javax.persistence.EntityManager
+import java.nio.file.Paths
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
 @AutoConfigureTestDatabase
-class LibraryManagerTest(
+class LibraryScannerTest(
     @Autowired private val serieRepository: SerieRepository,
+    @Autowired private val libraryRepository: LibraryRepository,
     @Autowired private val bookRepository: BookRepository,
-    @Autowired private val libraryManager: LibraryManager,
-    @Autowired private val bookManager: BookManager,
-    @Autowired private val entityManager: EntityManager
+    @Autowired private val libraryScanner: LibraryScanner,
+    @Autowired private val bookLifecyle: BookLifecyle
 ) {
 
   @MockkBean
@@ -39,17 +40,18 @@ class LibraryManagerTest(
   @MockkBean
   private lateinit var mockParser: BookParser
 
-  private val library = Library(name = "test", root = "/root")
-
   @AfterEach
   fun `clear repositories`() {
-    entityManager.clear()
+    serieRepository.deleteAll()
+    libraryRepository.deleteAll()
   }
 
   @Test
   @Transactional
   fun `given existing Serie when adding files and scanning then only updated Books are persisted`() {
-    //given
+    // given
+    val library = libraryRepository.save(makeLibrary())
+
     val serie = makeSerie(name = "serie", books = listOf(makeBook("book1")))
     val serieWithMoreBooks = makeSerie(name = "serie", books = listOf(makeBook("book1"), makeBook("book2")))
 
@@ -57,10 +59,10 @@ class LibraryManagerTest(
         listOf(serie),
         listOf(serieWithMoreBooks)
     )
-    libraryManager.scanRootFolder(library)
+    libraryScanner.scanRootFolder(library)
 
     // when
-    libraryManager.scanRootFolder(library)
+    libraryScanner.scanRootFolder(library)
 
     // then
     val series = serieRepository.findAll()
@@ -75,7 +77,9 @@ class LibraryManagerTest(
   @Test
   @Transactional
   fun `given existing Serie when removing files and scanning then only updated Books are persisted`() {
-    //given
+    // given
+    val library = libraryRepository.save(makeLibrary())
+
     val serie = makeSerie(name = "serie", books = listOf(makeBook("book1"), makeBook("book2")))
     val serieWithLessBooks = makeSerie(name = "serie", books = listOf(makeBook("book1")))
 
@@ -84,10 +88,10 @@ class LibraryManagerTest(
             listOf(serie),
             listOf(serieWithLessBooks)
         )
-    libraryManager.scanRootFolder(library)
+    libraryScanner.scanRootFolder(library)
 
     // when
-    libraryManager.scanRootFolder(library)
+    libraryScanner.scanRootFolder(library)
 
     // then
     val series = serieRepository.findAll()
@@ -103,7 +107,9 @@ class LibraryManagerTest(
   @Test
   @Transactional
   fun `given existing Serie when updating files and scanning then Books are updated`() {
-    //given
+    // given
+    val library = libraryRepository.save(makeLibrary())
+
     val serie = makeSerie(name = "serie", books = listOf(makeBook("book1")))
     val serieWithUpdatedBooks = makeSerie(name = "serie", books = listOf(makeBook("book1updated", "file:/book1")))
 
@@ -112,10 +118,10 @@ class LibraryManagerTest(
             listOf(serie),
             listOf(serieWithUpdatedBooks)
         )
-    libraryManager.scanRootFolder(library)
+    libraryScanner.scanRootFolder(library)
 
     // when
-    libraryManager.scanRootFolder(library)
+    libraryScanner.scanRootFolder(library)
 
     // then
     val series = serieRepository.findAll()
@@ -131,18 +137,18 @@ class LibraryManagerTest(
 
   @Test
   fun `given existing Serie when deleting all books and scanning then Series and Books are removed`() {
-    //given
-    val serie = makeSerie(name = "serie", books = listOf(makeBook("book1")))
+    // given
+    val library = libraryRepository.save(makeLibrary())
 
     every { mockScanner.scanRootFolder(any()) }
         .returnsMany(
-            listOf(serie),
+            listOf(makeSerie(name = "serie", books = listOf(makeBook("book1")))),
             emptyList()
         )
-    libraryManager.scanRootFolder(library)
+    libraryScanner.scanRootFolder(library)
 
     // when
-    libraryManager.scanRootFolder(library)
+    libraryScanner.scanRootFolder(library)
 
     // then
     verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
@@ -152,21 +158,45 @@ class LibraryManagerTest(
   }
 
   @Test
+  fun `given existing Series when deleting all books of one serie and scanning then Serie and its Books are removed`() {
+    // given
+    val library = libraryRepository.save(makeLibrary())
+
+    every { mockScanner.scanRootFolder(any()) }
+        .returnsMany(
+            listOf(makeSerie(name = "serie", books = listOf(makeBook("book1"))), makeSerie(name = "serie2", books = listOf(makeBook("book2")))),
+            listOf(makeSerie(name = "serie", books = listOf(makeBook("book1"))))
+        )
+    libraryScanner.scanRootFolder(library)
+
+    // when
+    libraryScanner.scanRootFolder(library)
+
+    // then
+    verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
+
+    assertThat(serieRepository.count()).describedAs("Serie repository should be empty").isEqualTo(1)
+    assertThat(bookRepository.count()).describedAs("Book repository should be empty").isEqualTo(1)
+  }
+
+  @Test
   fun `given existing Book with metadata when rescanning then metadata is kept intact`() {
-    //given
+    // given
+    val library = libraryRepository.save(makeLibrary())
+
     val book1 = makeBook("book1")
     every { mockScanner.scanRootFolder(any()) }
         .returnsMany(
             listOf(makeSerie(name = "serie", books = listOf(book1))),
             listOf(makeSerie(name = "serie", books = listOf(makeBook(name = "book1", fileLastModified = book1.fileLastModified))))
         )
-    libraryManager.scanRootFolder(library)
+    libraryScanner.scanRootFolder(library)
 
     every { mockParser.parse(any()) } returns BookMetadata(status = Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")))
-    bookRepository.findAll().map { bookManager.parseAndPersist(it) }.map { it.get() }
+    bookRepository.findAll().map { bookLifecyle.parseAndPersist(it) }.map { it.get() }
 
     // when
-    libraryManager.scanRootFolder(library)
+    libraryScanner.scanRootFolder(library)
 
     // then
     verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
@@ -178,5 +208,36 @@ class LibraryManagerTest(
     assertThat(book.metadata.pages).hasSize(2)
     assertThat(book.metadata.pages.map { it.fileName }).containsExactly("1.jpg", "2.jpg")
     assertThat(book.lastModifiedDate).isNotEqualTo(book.createdDate)
+  }
+
+  @Test
+  fun `given 2 libraries when deleting all books of one and scanning then the other library is kept intact`() {
+    // given
+    val library1 = libraryRepository.save(makeLibrary(name = "library1"))
+    val library2 = libraryRepository.save(makeLibrary(name = "library2"))
+
+    every { mockScanner.scanRootFolder(Paths.get(library1.root.toURI())) } returns
+        listOf(makeSerie(name = "serie1", books = listOf(makeBook("book1"))))
+
+    every { mockScanner.scanRootFolder(Paths.get(library2.root.toURI())) }.returnsMany(
+        listOf(makeSerie(name = "serie2", books = listOf(makeBook("book2")))),
+        emptyList()
+    )
+
+    libraryScanner.scanRootFolder(library1)
+    libraryScanner.scanRootFolder(library2)
+
+    assertThat(serieRepository.count()).describedAs("Serie repository should be empty").isEqualTo(2)
+    assertThat(bookRepository.count()).describedAs("Book repository should be empty").isEqualTo(2)
+
+    // when
+    libraryScanner.scanRootFolder(library2)
+
+    // then
+    verify(exactly = 1) { mockScanner.scanRootFolder(Paths.get(library1.root.toURI())) }
+    verify(exactly = 2) { mockScanner.scanRootFolder(Paths.get(library2.root.toURI())) }
+
+    assertThat(serieRepository.count()).describedAs("Serie repository should be empty").isEqualTo(1)
+    assertThat(bookRepository.count()).describedAs("Book repository should be empty").isEqualTo(1)
   }
 }

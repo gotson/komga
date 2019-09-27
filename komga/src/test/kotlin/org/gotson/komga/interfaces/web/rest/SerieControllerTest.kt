@@ -1,15 +1,16 @@
-package org.gotson.komga.interfaces.web
+package org.gotson.komga.interfaces.web.rest
 
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.model.makeBook
+import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSerie
-import org.gotson.komga.domain.persistence.BookRepository
+import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SerieRepository
-import org.gotson.komga.domain.service.BookManager
-import org.gotson.komga.domain.service.LibraryManager
 import org.hamcrest.CoreMatchers.equalTo
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,7 +22,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import javax.persistence.EntityManager
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
@@ -29,17 +29,26 @@ import javax.persistence.EntityManager
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
 class SerieControllerTest(
     @Autowired private val serieRepository: SerieRepository,
-    @Autowired private val bookRepository: BookRepository,
-    @Autowired private val libraryManager: LibraryManager,
-    @Autowired private val bookManager: BookManager,
-    @Autowired private val entityManager: EntityManager,
+    @Autowired private val libraryRepository: LibraryRepository,
     @Autowired private val mockMvc: MockMvc
 
 ) {
 
+  private val library = makeLibrary()
+
+  @BeforeAll
+  fun `setup library`() {
+    libraryRepository.save(library)
+  }
+
+  @AfterAll
+  fun `teardown library`() {
+    libraryRepository.deleteAll()
+  }
+
   @AfterEach
-  fun `clear repositories`() {
-    entityManager.clear()
+  fun `clear repository`() {
+    serieRepository.deleteAll()
   }
 
   @Test
@@ -48,7 +57,7 @@ class SerieControllerTest(
     val serie = makeSerie(
         name = "serie",
         books = listOf(makeBook("1"), makeBook("3"))
-    )
+    ).also { it.library = library }
     serieRepository.save(serie)
 
     serie.books = serie.books.toMutableList().also { it.add(makeBook("2")) }
@@ -67,7 +76,7 @@ class SerieControllerTest(
     val serie = makeSerie(
         name = "serie",
         books = (1..100 step 2).map { makeBook("$it") }
-    )
+    ).also { it.library = library }
     serieRepository.save(serie)
 
     serie.books = serie.books.toMutableList().also { it.add(makeBook("2")) }
@@ -90,7 +99,7 @@ class SerieControllerTest(
     val serie = makeSerie(
         name = "serie",
         books = (1..100 step 2).map { makeBook("$it") }
-    )
+    ).also { it.library = library }
     serieRepository.save(serie)
 
     serie.books = serie.books.toMutableList().also { it.add(makeBook("2")) }

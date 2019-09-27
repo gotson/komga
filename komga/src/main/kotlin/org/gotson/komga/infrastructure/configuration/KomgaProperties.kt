@@ -1,6 +1,7 @@
 package org.gotson.komga.infrastructure.configuration
 
 import org.springframework.boot.context.properties.ConfigurationProperties
+import org.springframework.boot.context.properties.DeprecatedConfigurationProperty
 import org.springframework.stereotype.Component
 import org.springframework.validation.annotation.Validated
 import javax.validation.constraints.Min
@@ -10,8 +11,20 @@ import javax.validation.constraints.NotBlank
 @ConfigurationProperties(prefix = "komga")
 @Validated
 class KomgaProperties {
+  @get:DeprecatedConfigurationProperty(reason = "As of v0.5.0 Komga supports multiple libraries, which must be created via the API")
   var rootFolder: String = ""
+
+  @get:DeprecatedConfigurationProperty(
+      reason = "As of v0.5.0 Komga supports multiple libraries, which must be created via the API",
+      replacement = "komga.libraries-scan-cron"
+  )
   var rootFolderScanCron: String = ""
+
+  var librariesScanCron: String = ""
+    get() {
+      if (field.isBlank()) return rootFolderScanCron
+      return field
+    }
 
   @NotBlank
   var userPassword: String = "user"

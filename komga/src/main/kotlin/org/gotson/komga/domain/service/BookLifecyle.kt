@@ -20,7 +20,7 @@ import kotlin.system.measureTimeMillis
 private val logger = KotlinLogging.logger {}
 
 @Service
-class BookManager(
+class BookLifecyle(
     private val bookRepository: BookRepository,
     private val bookParser: BookParser,
     private val imageConverter: ImageConverter

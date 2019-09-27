@@ -4,13 +4,15 @@ import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.model.makeBook
+import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSerie
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.transaction.annotation.Transactional
@@ -21,12 +23,24 @@ import org.springframework.transaction.annotation.Transactional
 class BookRepositoryTest(
     @Autowired private val serieRepository: SerieRepository,
     @Autowired private val bookRepository: BookRepository,
-    @Autowired private val entityManager: TestEntityManager
+    @Autowired private val libraryRepository: LibraryRepository
 ) {
+
+  private val library = makeLibrary()
+
+  @BeforeAll
+  fun `setup library`() {
+    libraryRepository.save(library)
+  }
+
+  @AfterAll
+  fun `teardown library`() {
+    libraryRepository.deleteAll()
+  }
 
   @AfterEach
   fun `clear repository`() {
-    entityManager.clear()
+    serieRepository.deleteAll()
   }
 
   @Test
@@ -34,7 +48,7 @@ class BookRepositoryTest(
     val serie = makeSerie(
         name = "serie",
         books = (1..100 step 2).map { makeBook("$it") }
-    )
+    ).also { it.library = library }
     serieRepository.save(serie)
 
     serie.books = serie.books.toMutableList().also { it.add(makeBook("2")) }
@@ -56,7 +70,7 @@ class BookRepositoryTest(
     val serie = makeSerie(
         name = "serie",
         books = (1..100 step 2).map { makeBook("$it") }
-    )
+    ).also { it.library = library }
     serieRepository.save(serie)
 
     serie.books = serie.books.toMutableList().also { it.add(makeBook("2")) }

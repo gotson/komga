@@ -2,10 +2,9 @@ logging.level:
   web: DEBUG
 #  org.springframework.security.web.FilterChainProxy: DEBUG
 komga:
-  root-folder: D:\\files\\pdf
   threads:
     parse: 1
-#  root-folder-scan-cron: "*/5 * * * * ?"
+#  libraries-scan-cron: "*/5 * * * * ?"
 spring:
   profiles:
     include: flyway

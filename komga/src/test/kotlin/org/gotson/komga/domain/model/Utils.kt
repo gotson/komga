@@ -13,5 +13,9 @@ fun makeSerie(name: String, url: String = "file:/$name", books: List<Book> = lis
   return Serie(name = name, url = URL(url), fileLastModified = LocalDateTime.now(), books = books.toMutableList())
 }
 
+fun makeLibrary(name: String = "default", url: String = "file:/$name"): Library {
+  return Library(name, URL(url))
+}
+
 fun makeBookPage(name: String) =
     BookPage(name, "image/png")

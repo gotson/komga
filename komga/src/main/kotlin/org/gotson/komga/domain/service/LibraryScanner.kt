@@ -8,31 +8,32 @@ import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SerieRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.nio.file.Paths
 import kotlin.system.measureTimeMillis
 
 private val logger = KotlinLogging.logger {}
 
 @Service
-class LibraryManager(
+class LibraryScanner(
     private val fileSystemScanner: FileSystemScanner,
     private val serieRepository: SerieRepository,
     private val bookRepository: BookRepository,
-    private val bookManager: BookManager
+    private val bookLifecyle: BookLifecyle
 ) {
 
   @Transactional
   fun scanRootFolder(library: Library) {
     logger.info { "Updating library: ${library.name}, root folder: ${library.root}" }
     measureTimeMillis {
-      val series = fileSystemScanner.scanRootFolder(library.fileSystem.getPath(library.root))
+      val series = fileSystemScanner.scanRootFolder(Paths.get(library.root.toURI()))
 
       // delete series that don't exist anymore
       if (series.isEmpty()) {
         logger.info { "Scan returned no series, deleting all existing series" }
-        serieRepository.deleteAll()
+        serieRepository.deleteByLibraryId(library.id)
       } else {
         series.map { it.url }.let { urls ->
-          serieRepository.findByUrlNotIn(urls).forEach {
+          serieRepository.findByLibraryIdAndUrlNotIn(library.id, urls).forEach {
             logger.info { "Deleting serie not on disk anymore: $it" }
             serieRepository.delete(it)
           }
@@ -40,12 +41,12 @@ class LibraryManager(
       }
 
       series.forEach { newSerie ->
-        val existingSerie = serieRepository.findByUrl(newSerie.url)
+        val existingSerie = serieRepository.findByLibraryIdAndUrl(library.id, newSerie.url)
 
         // if serie does not exist, save it
         if (existingSerie == null) {
           logger.info { "Adding new serie: $newSerie" }
-          serieRepository.save(newSerie)
+          serieRepository.save(newSerie.also { it.library = library })
         } else {
           // if serie already exists, update it
           if (newSerie.fileLastModified != existingSerie.fileLastModified) {
@@ -80,7 +81,7 @@ class LibraryManager(
     var sumOfTasksTime = 0L
     measureTimeMillis {
       sumOfTasksTime = booksToParse
-          .map { bookManager.parseAndPersist(it) }
+          .map { bookLifecyle.parseAndPersist(it) }
           .map {
             try {
               it.get()
