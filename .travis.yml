@@ -18,6 +18,7 @@ jobs:
   include:
     - stage: deploy
       jdk: openjdk8
+      script: skip   # do not rerun any tests
       deploy:
         - provider: script
           script: ./gradlew dockerPushBeta
