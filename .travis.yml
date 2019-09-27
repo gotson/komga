@@ -17,6 +17,7 @@ before_deploy: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --pa
 jobs:
   include:
     - stage: deploy
+      jdk: openjdk8
       deploy:
         - provider: script
           script: ./gradlew dockerPushBeta
