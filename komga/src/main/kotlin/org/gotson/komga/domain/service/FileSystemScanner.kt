@@ -30,28 +30,31 @@ class FileSystemScanner {
     lateinit var scannedSeries: List<Serie>
 
     measureTimeMillis {
-      scannedSeries = Files.walk(root).asSequence()
-          .filter { !Files.isHidden(it) }
-          .filter { Files.isDirectory(it) }
-          .mapNotNull { dir ->
-            val books = Files.list(dir)
-                .filter { Files.isRegularFile(it) }
-                .filter { supportedExtensions.contains(FilenameUtils.getExtension(it.fileName.toString())) }
-                .map {
-                  Book(
-                      name = FilenameUtils.getBaseName(it.fileName.toString()),
-                      url = it.toUri().toURL(),
-                      fileLastModified = it.getUpdatedTime()
-                  )
-                }.toList()
-            if (books.isNullOrEmpty()) return@mapNotNull null
-            Serie(
-                name = dir.fileName.toString(),
-                url = dir.toUri().toURL(),
-                fileLastModified = dir.getUpdatedTime(),
-                books = books.toMutableList()
-            )
-          }.toList()
+      scannedSeries = Files.walk(root).use { dirsStream ->
+        dirsStream.asSequence()
+            .filter { !Files.isHidden(it) }
+            .filter { Files.isDirectory(it) }
+            .mapNotNull { dir ->
+              val books = Files.list(dir).use { dirStream ->
+                dirStream.filter { Files.isRegularFile(it) }
+                    .filter { supportedExtensions.contains(FilenameUtils.getExtension(it.fileName.toString())) }
+                    .map {
+                      Book(
+                          name = FilenameUtils.getBaseName(it.fileName.toString()),
+                          url = it.toUri().toURL(),
+                          fileLastModified = it.getUpdatedTime()
+                      )
+                    }.toList()
+              }
+              if (books.isNullOrEmpty()) return@mapNotNull null
+              Serie(
+                  name = dir.fileName.toString(),
+                  url = dir.toUri().toURL(),
+                  fileLastModified = dir.getUpdatedTime(),
+                  books = books.toMutableList()
+              )
+            }.toList()
+      }
     }.also {
       val countOfBooks = scannedSeries.sumBy { it.books.size }
       logger.info { "Scanned ${scannedSeries.size} series and $countOfBooks books in ${DurationFormatUtils.formatDurationHMS(it)}" }
