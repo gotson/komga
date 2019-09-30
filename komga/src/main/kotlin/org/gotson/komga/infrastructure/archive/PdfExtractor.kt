@@ -18,21 +18,25 @@ class PdfExtractor : ArchiveExtractor() {
   private val resolution = 1536F
 
   override fun getPagesList(path: Path): List<BookPage> =
-      PDDocument.load(Files.newInputStream(path)).use { pdf ->
-        (0 until pdf.numberOfPages).map { index ->
-          BookPage(index.toString(), mediaType)
+      Files.newInputStream(path).use { inputStream ->
+        PDDocument.load(inputStream).use { pdf ->
+          (0 until pdf.numberOfPages).map { index ->
+            BookPage(index.toString(), mediaType)
+          }
         }
       }
 
   override fun getPageStream(path: Path, entryName: String): ByteArray =
-      PDDocument.load(Files.newInputStream(path)).use { pdf ->
-        val pageNumber = entryName.toInt()
-        val page = pdf.getPage(pageNumber)
-        val scale = resolution / minOf(page.cropBox.width, page.cropBox.height)
-        val image = PDFRenderer(pdf).renderImage(pageNumber, scale, ImageType.RGB)
-        ByteArrayOutputStream().use { out ->
-          ImageIO.write(image, imageIOFormat, out)
-          out.toByteArray()
+      Files.newInputStream(path).use { inputStream ->
+        PDDocument.load(inputStream).use { pdf ->
+          val pageNumber = entryName.toInt()
+          val page = pdf.getPage(pageNumber)
+          val scale = resolution / minOf(page.cropBox.width, page.cropBox.height)
+          val image = PDFRenderer(pdf).renderImage(pageNumber, scale, ImageType.RGB)
+          ByteArrayOutputStream().use { out ->
+            ImageIO.write(image, imageIOFormat, out)
+            out.toByteArray()
+          }
         }
       }
 }
