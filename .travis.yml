@@ -18,7 +18,10 @@ jobs:
   include:
     - stage: deploy
       jdk: openjdk8
-      script: skip   # do not rerun any tests
+      install:
+        - ./gradlew copyWebDist
+        - ./gradlew assemble
+      script: skip
       deploy:
         - provider: script
           script: ./gradlew dockerPushBeta

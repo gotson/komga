@@ -1,5 +1,6 @@
 import com.github.breadmoirai.githubreleaseplugin.GithubReleaseTask
 import com.palantir.gradle.docker.DockerExtension
+import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -112,6 +113,42 @@ tasks {
     dependsOn(bootJar)
     from(zipTree(getByName("bootJar").outputs.files.singleFile))
     into("$buildDir/dependency")
+  }
+
+  register<Delete>("deletePublic") {
+    delete("$projectDir/src/main/resources/public/")
+  }
+
+  register<Exec>("npmInstall") {
+    workingDir("$rootDir/komga-webui")
+    commandLine(
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+          "npm.cmd"
+        } else {
+          "npm"
+        },
+        "install"
+    )
+  }
+
+  register<Exec>("npmBuild") {
+    dependsOn("npmInstall")
+    workingDir("$rootDir/komga-webui")
+    commandLine(
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+          "npm.cmd"
+        } else {
+          "npm"
+        },
+        "run",
+        "build"
+    )
+  }
+
+  register<Copy>("copyWebDist") {
+    dependsOn("deletePublic", "npmBuild")
+    from("$rootDir/komga-webui/dist/")
+    into("$projectDir/src/main/resources/public/")
   }
 }
 
