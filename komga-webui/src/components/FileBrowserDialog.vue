@@ -1,0 +1,127 @@
+<template>
+  <v-dialog v-model="modalFileBrowser"
+            max-width="450"
+            scrollable
+  >
+    <v-card>
+
+      <v-card-title>{{ dialogTitle }}</v-card-title>
+
+      <v-card-text style="height: 450px">
+        <v-text-field
+          v-model="selectedPath"
+          readonly
+        ></v-text-field>
+
+        <v-list elevation="3" dense>
+
+          <template v-if="directoryListing.hasOwnProperty('parent')">
+            <v-list-item
+              @click.prevent="select(directoryListing.parent)"
+            >
+              <v-list-item-icon>
+                <v-icon>mdi-arrow-left</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>
+                  Parent
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider></v-divider>
+          </template>
+
+          <div v-for="(d, index) in directoryListing.directories" :key="index">
+            <v-list-item
+              @click.prevent="select(d.path)"
+            >
+              <v-list-item-icon>
+                <v-icon>{{ d.type === 'directory' ? 'mdi-folder' : 'mdi-file' }}</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ d.name }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-divider v-if="index !== directoryListing.directories.length-1"></v-divider>
+          </div>
+        </v-list>
+      </v-card-text>
+
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn text @click="dialogCancel">Cancel</v-btn>
+        <v-btn text class="primary--text"
+               @click="dialogConfirm"
+               :disabled="!selectedPath"
+        >{{ confirmText }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
+  name: 'FileBrowserDialog',
+  data: () => {
+    return {
+      directoryListing: {} as DirectoryListingDto,
+      selectedPath: '',
+      modalFileBrowser: false
+    }
+  },
+  watch: {
+    value (val) {
+      this.modalFileBrowser = val
+    },
+    modalFileBrowser (val) {
+      !val && this.dialogCancel()
+    }
+  },
+  props: {
+    value: Boolean,
+    path: {
+      type: String,
+      required: false
+    },
+    dialogTitle: {
+      type: String,
+      default: 'File Browser'
+    },
+    confirmText: {
+      type: String,
+      default: 'Choose'
+    }
+  },
+  async mounted () {
+    this.getDirs()
+  },
+  methods: {
+    dialogCancel () {
+      this.$emit('input', false)
+    },
+    dialogConfirm () {
+      this.$emit('input', false)
+      this.$emit('update:path', this.selectedPath)
+    },
+    async getDirs (path?: string) {
+      this.directoryListing = await this.$komgaFileSystem.getDirectoryListing(path)
+    },
+    select (path: string) {
+      this.selectedPath = path
+      this.getDirs(path)
+    }
+  }
+})
+</script>
+
+<style scoped>
+
+</style>
