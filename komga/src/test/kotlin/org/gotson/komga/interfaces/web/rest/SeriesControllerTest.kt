@@ -63,7 +63,7 @@ class SeriesControllerTest(
     series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
     seriesRepository.save(series)
 
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books?readyonly=false"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books?ready_only=false"))
         .andExpect(MockMvcResultMatchers.status().isOk)
         .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", equalTo("1")))
         .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].name", equalTo("2")))
@@ -82,7 +82,7 @@ class SeriesControllerTest(
     series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
     seriesRepository.save(series)
 
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books?readyonly=false"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books?ready_only=false"))
         .andExpect(MockMvcResultMatchers.status().isOk)
         .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", equalTo("1")))
         .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].name", equalTo("2")))
@@ -106,7 +106,7 @@ class SeriesControllerTest(
     series.books.forEach { it.metadata = BookMetadata(Status.READY) }
     seriesRepository.save(series)
 
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books?readyonly=true"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books?ready_only=true"))
         .andExpect(MockMvcResultMatchers.status().isOk)
         .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", equalTo("1")))
         .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].name", equalTo("2")))
