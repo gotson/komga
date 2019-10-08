@@ -1,6 +1,7 @@
 package org.gotson.komga.interfaces.web.rest
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import com.github.klinq.jpaspec.equal
 import com.github.klinq.jpaspec.likeLower
 import mu.KotlinLogging
 import org.apache.commons.io.FilenameUtils
@@ -10,6 +11,7 @@ import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.model.UnsupportedMediaTypeException
 import org.gotson.komga.domain.persistence.BookRepository
+import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.infrastructure.image.ImageType
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.ContentDisposition
 import org.springframework.http.HttpHeaders
@@ -42,6 +45,7 @@ private val logger = KotlinLogging.logger {}
 @RequestMapping("api/v1/series", produces = [MediaType.APPLICATION_JSON_VALUE])
 class SeriesController(
     private val seriesRepository: SeriesRepository,
+    private val libraryRepository: LibraryRepository,
     private val bookRepository: BookRepository,
     private val bookLifecycle: BookLifecycle
 ) {
@@ -51,6 +55,9 @@ class SeriesController(
       @RequestParam("search")
       searchTerm: String?,
 
+      @RequestParam("library_id")
+      libraryId: Long?,
+
       page: Pageable
   ): Page<SeriesDto> {
     val pageRequest = PageRequest.of(
@@ -59,11 +66,23 @@ class SeriesController(
         if (page.sort.isSorted) page.sort
         else Sort.by(Sort.Order.asc("name").ignoreCase())
     )
-    return if (!searchTerm.isNullOrEmpty()) {
-      val spec = Series::name.likeLower("%$searchTerm%")
-      seriesRepository.findAll(spec, pageRequest)
-    } else {
-      seriesRepository.findAll(pageRequest)
+
+    return mutableListOf<Specification<Series>>().let { specs ->
+      if (!searchTerm.isNullOrEmpty()) {
+        specs.add(Series::name.likeLower("%$searchTerm%"))
+      }
+
+      if (libraryId != null) {
+        libraryRepository.findByIdOrNull(libraryId)?.let {
+          specs.add(Series::library.equal(it))
+        }
+      }
+
+      if (specs.isNotEmpty()) {
+        seriesRepository.findAll(specs.reduce { acc, spec -> acc.and(spec) }, pageRequest)
+      } else {
+        seriesRepository.findAll(pageRequest)
+      }
     }.map { it.toDto() }
   }
 
@@ -97,7 +116,7 @@ class SeriesController(
   @GetMapping("{id}/books")
   fun getAllBooksBySeries(
       @PathVariable id: Long,
-      @RequestParam(value = "readyonly", defaultValue = "true") readyFilter: Boolean,
+      @RequestParam(value = "ready_only", defaultValue = "true") readyFilter: Boolean,
       page: Pageable
   ): Page<BookDto> {
     if (!seriesRepository.existsById(id)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -173,7 +192,7 @@ class SeriesController(
       @PathVariable bookId: Long,
       @PathVariable pageNumber: Int,
       @RequestParam(value = "convert") convertTo: String?,
-      @RequestParam(value = "zerobased", defaultValue = "false") zeroBasedIndex: Boolean
+      @RequestParam(value = "zero_based", defaultValue = "false") zeroBasedIndex: Boolean
   ): ResponseEntity<ByteArray> {
     if (!seriesRepository.existsById(seriesId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
