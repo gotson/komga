@@ -6,12 +6,12 @@ import mu.KotlinLogging
 import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.MetadataNotReadyException
-import org.gotson.komga.domain.model.Serie
+import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.model.UnsupportedMediaTypeException
 import org.gotson.komga.domain.persistence.BookRepository
-import org.gotson.komga.domain.persistence.SerieRepository
-import org.gotson.komga.domain.service.BookLifecyle
+import org.gotson.komga.domain.persistence.SeriesRepository
+import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.infrastructure.image.ImageType
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -40,10 +40,10 @@ private val logger = KotlinLogging.logger {}
 
 @RestController
 @RequestMapping("api/v1/series", produces = [MediaType.APPLICATION_JSON_VALUE])
-class SerieController(
-    private val serieRepository: SerieRepository,
+class SeriesController(
+    private val seriesRepository: SeriesRepository,
     private val bookRepository: BookRepository,
-    private val bookLifecyle: BookLifecyle
+    private val bookLifecycle: BookLifecycle
 ) {
 
   @GetMapping
@@ -52,7 +52,7 @@ class SerieController(
       searchTerm: String?,
 
       page: Pageable
-  ): Page<SerieDto> {
+  ): Page<SeriesDto> {
     val pageRequest = PageRequest.of(
         page.pageNumber,
         page.pageSize,
@@ -60,81 +60,81 @@ class SerieController(
         else Sort.by(Sort.Order.asc("name").ignoreCase())
     )
     return if (!searchTerm.isNullOrEmpty()) {
-      val spec = Serie::name.likeLower("%$searchTerm%")
-      serieRepository.findAll(spec, pageRequest)
+      val spec = Series::name.likeLower("%$searchTerm%")
+      seriesRepository.findAll(spec, pageRequest)
     } else {
-      serieRepository.findAll(pageRequest)
+      seriesRepository.findAll(pageRequest)
     }.map { it.toDto() }
   }
 
   @GetMapping("/latest")
   fun getLatestSeries(
       page: Pageable
-  ): Page<SerieDto> {
+  ): Page<SeriesDto> {
     val pageRequest = PageRequest.of(
         page.pageNumber,
         page.pageSize,
         Sort(Sort.Direction.DESC, "lastModifiedDate")
     )
-    return serieRepository.findAll(pageRequest).map { it.toDto() }
+    return seriesRepository.findAll(pageRequest).map { it.toDto() }
   }
 
   @GetMapping("{id}")
-  fun getOneSerie(
+  fun getOneSeries(
       @PathVariable id: Long
-  ): SerieDto =
-      serieRepository.findByIdOrNull(id)?.toDto() ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  ): SeriesDto =
+      seriesRepository.findByIdOrNull(id)?.toDto() ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  @GetMapping(value = ["{serieId}/thumbnail"], produces = [MediaType.IMAGE_PNG_VALUE])
-  fun getSerieThumbnail(
-      @PathVariable serieId: Long
+  @GetMapping(value = ["{seriesId}/thumbnail"], produces = [MediaType.IMAGE_PNG_VALUE])
+  fun getSeriesThumbnail(
+      @PathVariable seriesId: Long
   ): ByteArray {
-    return serieRepository.findByIdOrNull(serieId)?.let {
+    return seriesRepository.findByIdOrNull(seriesId)?.let {
       it.books.firstOrNull()?.metadata?.thumbnail ?: throw ResponseStatusException(HttpStatus.NO_CONTENT)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
   @GetMapping("{id}/books")
-  fun getAllBooksBySerie(
+  fun getAllBooksBySeries(
       @PathVariable id: Long,
       @RequestParam(value = "readyonly", defaultValue = "true") readyFilter: Boolean,
       page: Pageable
   ): Page<BookDto> {
-    if (!serieRepository.existsById(id)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    if (!seriesRepository.existsById(id)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
     return if (readyFilter) {
-      bookRepository.findAllByMetadataStatusAndSerieId(Status.READY.name, id, page)
+      bookRepository.findAllByMetadataStatusAndSeriesId(Status.READY.name, id, page)
     } else {
-      bookRepository.findAllBySerieId(id, page)
+      bookRepository.findAllBySeriesId(id, page)
     }.map { it.toDto() }
   }
 
-  @GetMapping("{serieId}/books/{bookId}")
+  @GetMapping("{seriesId}/books/{bookId}")
   fun getOneBook(
-      @PathVariable serieId: Long,
+      @PathVariable seriesId: Long,
       @PathVariable bookId: Long
   ): BookDto {
-    if (!serieRepository.existsById(serieId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    if (!seriesRepository.existsById(seriesId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
     return bookRepository.findByIdOrNull(bookId)?.toDto() ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
-  @GetMapping(value = ["{serieId}/books/{bookId}/thumbnail"], produces = [MediaType.IMAGE_PNG_VALUE])
+  @GetMapping(value = ["{seriesId}/books/{bookId}/thumbnail"], produces = [MediaType.IMAGE_PNG_VALUE])
   fun getBookThumbnail(
-      @PathVariable serieId: Long,
+      @PathVariable seriesId: Long,
       @PathVariable bookId: Long
   ): ByteArray {
-    if (!serieRepository.existsById(serieId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    if (!seriesRepository.existsById(seriesId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return bookRepository.findByIdOrNull(bookId)?.let {
       it.metadata.thumbnail ?: throw ResponseStatusException(HttpStatus.NO_CONTENT)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
-  @GetMapping("{serieId}/books/{bookId}/file")
+  @GetMapping("{seriesId}/books/{bookId}/file")
   fun getBookFile(
-      @PathVariable serieId: Long,
+      @PathVariable seriesId: Long,
       @PathVariable bookId: Long
   ): ResponseEntity<ByteArray> {
-    if (!serieRepository.existsById(serieId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    if (!seriesRepository.existsById(seriesId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
     return bookRepository.findByIdOrNull(bookId)?.let { book ->
       try {
         ResponseEntity.ok()
@@ -152,12 +152,12 @@ class SerieController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
-  @GetMapping("{serieId}/books/{bookId}/pages")
+  @GetMapping("{seriesId}/books/{bookId}/pages")
   fun getBookPages(
-      @PathVariable serieId: Long,
+      @PathVariable seriesId: Long,
       @PathVariable bookId: Long
   ): List<PageDto> {
-    if (!serieRepository.existsById(serieId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    if (!seriesRepository.existsById(seriesId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return bookRepository.findByIdOrNull((bookId))?.let {
       if (it.metadata.status == Status.UNKNOWN) throw ResponseStatusException(HttpStatus.NO_CONTENT, "Book is not parsed yet")
@@ -167,15 +167,15 @@ class SerieController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
-  @GetMapping("{serieId}/books/{bookId}/pages/{pageNumber}")
+  @GetMapping("{seriesId}/books/{bookId}/pages/{pageNumber}")
   fun getBookPage(
-      @PathVariable serieId: Long,
+      @PathVariable seriesId: Long,
       @PathVariable bookId: Long,
       @PathVariable pageNumber: Int,
       @RequestParam(value = "convert") convertTo: String?,
       @RequestParam(value = "zerobased", defaultValue = "false") zeroBasedIndex: Boolean
   ): ResponseEntity<ByteArray> {
-    if (!serieRepository.existsById(serieId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    if (!seriesRepository.existsById(seriesId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return bookRepository.findByIdOrNull((bookId))?.let { book ->
       try {
@@ -189,7 +189,7 @@ class SerieController(
         val pageNum = if (zeroBasedIndex) pageNumber + 1 else pageNumber
 
         val pageContent = try {
-          bookLifecyle.getBookPage(book, pageNum, convertFormat)
+          bookLifecycle.getBookPage(book, pageNum, convertFormat)
         } catch (e: UnsupportedMediaTypeException) {
           throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
         } catch (e: Exception) {
@@ -221,7 +221,7 @@ class SerieController(
   }
 }
 
-data class SerieDto(
+data class SeriesDto(
     val id: Long,
     val name: String,
     val url: String,
@@ -229,7 +229,7 @@ data class SerieDto(
     val lastModified: LocalDateTime?
 )
 
-fun Serie.toDto() = SerieDto(
+fun Series.toDto() = SeriesDto(
     id = id,
     name = name,
     url = url.toString(),

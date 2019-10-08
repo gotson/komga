@@ -4,7 +4,7 @@ import mu.KotlinLogging
 import org.apache.commons.io.FilenameUtils
 import org.apache.commons.lang3.time.DurationFormatUtils
 import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.Serie
+import org.gotson.komga.domain.model.Series
 import org.springframework.stereotype.Service
 import java.nio.file.Files
 import java.nio.file.Path
@@ -23,11 +23,11 @@ class FileSystemScanner {
 
   val supportedExtensions = listOf("cbz", "zip", "cbr", "rar", "pdf")
 
-  fun scanRootFolder(root: Path): List<Serie> {
+  fun scanRootFolder(root: Path): List<Series> {
     logger.info { "Scanning folder: $root" }
     logger.info { "Supported extensions: $supportedExtensions" }
 
-    lateinit var scannedSeries: List<Serie>
+    lateinit var scannedSeries: List<Series>
 
     measureTimeMillis {
       scannedSeries = Files.walk(root).use { dirsStream ->
@@ -47,7 +47,7 @@ class FileSystemScanner {
                     }.toList()
               }
               if (books.isNullOrEmpty()) return@mapNotNull null
-              Serie(
+              Series(
                   name = dir.fileName.toString(),
                   url = dir.toUri().toURL(),
                   fileLastModified = dir.getUpdatedTime(),

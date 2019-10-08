@@ -5,7 +5,7 @@ import org.apache.commons.lang3.time.DurationFormatUtils
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.persistence.BookRepository
-import org.gotson.komga.domain.persistence.SerieRepository
+import org.gotson.komga.domain.persistence.SeriesRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.nio.file.Paths
@@ -16,46 +16,46 @@ private val logger = KotlinLogging.logger {}
 @Service
 class LibraryScanner(
     private val fileSystemScanner: FileSystemScanner,
-    private val serieRepository: SerieRepository,
+    private val seriesRepository: SeriesRepository,
     private val bookRepository: BookRepository,
-    private val bookLifecyle: BookLifecyle
+    private val bookLifecycle: BookLifecycle
 ) {
 
   @Transactional
   fun scanRootFolder(library: Library) {
     logger.info { "Updating library: ${library.name}, root folder: ${library.root}" }
     measureTimeMillis {
-      val series = fileSystemScanner.scanRootFolder(Paths.get(library.root.toURI()))
+      val scannedSeries = fileSystemScanner.scanRootFolder(Paths.get(library.root.toURI()))
 
       // delete series that don't exist anymore
-      if (series.isEmpty()) {
+      if (scannedSeries.isEmpty()) {
         logger.info { "Scan returned no series, deleting all existing series" }
-        serieRepository.deleteByLibraryId(library.id)
+        seriesRepository.deleteByLibraryId(library.id)
       } else {
-        series.map { it.url }.let { urls ->
-          serieRepository.findByLibraryIdAndUrlNotIn(library.id, urls).forEach {
-            logger.info { "Deleting serie not on disk anymore: $it" }
-            serieRepository.delete(it)
+        scannedSeries.map { it.url }.let { urls ->
+          seriesRepository.findByLibraryIdAndUrlNotIn(library.id, urls).forEach {
+            logger.info { "Deleting series not on disk anymore: $it" }
+            seriesRepository.delete(it)
           }
         }
       }
 
-      series.forEach { newSerie ->
-        val existingSerie = serieRepository.findByLibraryIdAndUrl(library.id, newSerie.url)
+      scannedSeries.forEach { newSeries ->
+        val existingSeries = seriesRepository.findByLibraryIdAndUrl(library.id, newSeries.url)
 
-        // if serie does not exist, save it
-        if (existingSerie == null) {
-          logger.info { "Adding new serie: $newSerie" }
-          serieRepository.save(newSerie.also { it.library = library })
+        // if series does not exist, save it
+        if (existingSeries == null) {
+          logger.info { "Adding new series: $newSeries" }
+          seriesRepository.save(newSeries.also { it.library = library })
         } else {
-          // if serie already exists, update it
-          if (newSerie.fileLastModified != existingSerie.fileLastModified) {
-            logger.info { "Serie changed on disk, updating: $newSerie" }
-            existingSerie.name = newSerie.name
-            existingSerie.fileLastModified = newSerie.fileLastModified
+          // if series already exists, update it
+          if (newSeries.fileLastModified != existingSeries.fileLastModified) {
+            logger.info { "Series changed on disk, updating: $newSeries" }
+            existingSeries.name = newSeries.name
+            existingSeries.fileLastModified = newSeries.fileLastModified
 
             // update list of books with existing entities if they exist
-            existingSerie.books = newSerie.books.map { newBook ->
+            existingSeries.books = newSeries.books.map { newBook ->
               val existingBook = bookRepository.findByUrl(newBook.url) ?: newBook
 
               if (newBook.fileLastModified != existingBook.fileLastModified) {
@@ -67,7 +67,7 @@ class LibraryScanner(
               existingBook
             }.toMutableList()
 
-            serieRepository.save(existingSerie)
+            seriesRepository.save(existingSeries)
           }
         }
       }
@@ -81,7 +81,7 @@ class LibraryScanner(
     var sumOfTasksTime = 0L
     measureTimeMillis {
       sumOfTasksTime = booksToParse
-          .map { bookLifecyle.parseAndPersist(it) }
+          .map { bookLifecycle.parseAndPersist(it) }
           .map {
             try {
               it.get()

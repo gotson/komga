@@ -7,7 +7,7 @@ import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.PathContainedInPath
 import org.gotson.komga.domain.model.path
 import org.gotson.komga.domain.persistence.LibraryRepository
-import org.gotson.komga.domain.persistence.SerieRepository
+import org.gotson.komga.domain.persistence.SeriesRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.io.FileNotFoundException
@@ -19,7 +19,7 @@ private val logger = KotlinLogging.logger {}
 @Service
 class LibraryLifecycle(
     private val libraryRepository: LibraryRepository,
-    private val serieRepository: SerieRepository,
+    private val seriesRepository: SeriesRepository,
     private val asyncOrchestrator: AsyncOrchestrator
 ) {
 
@@ -64,7 +64,7 @@ class LibraryLifecycle(
   @Transactional
   fun deleteLibrary(library: Library) {
     logger.info { "Deleting library: ${library.name} with root folder: ${library.root}" }
-    serieRepository.deleteByLibraryId(library.id)
+    seriesRepository.deleteByLibraryId(library.id)
     libraryRepository.delete(library)
   }
 }

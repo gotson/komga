@@ -2,8 +2,8 @@ package org.gotson.komga.interfaces.web.opds
 
 import com.github.klinq.jpaspec.likeLower
 import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.Serie
-import org.gotson.komga.domain.persistence.SerieRepository
+import org.gotson.komga.domain.model.Series
+import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.interfaces.web.opds.dto.OpdsAuthor
 import org.gotson.komga.interfaces.web.opds.dto.OpdsEntryAcquisition
 import org.gotson.komga.interfaces.web.opds.dto.OpdsEntryNavigation
@@ -44,7 +44,7 @@ private const val ID_SERIES_LATEST = "latestSeries"
 @RestController
 @RequestMapping(value = [ROUTE_BASE], produces = [MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE])
 class OpdsController(
-    private val serieRepository: SerieRepository
+    private val seriesRepository: SeriesRepository
 ) {
 
   private val komgaAuthor = OpdsAuthor("Komga", URI("https://github.com/gotson/komga"))
@@ -86,10 +86,10 @@ class OpdsController(
   ): OpdsFeed {
     val sort = Sort.by(Sort.Order.asc("name").ignoreCase())
     val series = if (!searchTerm.isNullOrEmpty()) {
-      val spec = Serie::name.likeLower("%$searchTerm%")
-      serieRepository.findAll(spec, sort)
+      val spec = Series::name.likeLower("%$searchTerm%")
+      seriesRepository.findAll(spec, sort)
     } else {
-      serieRepository.findAll(sort)
+      seriesRepository.findAll(sort)
     }
 
     return OpdsFeedNavigation(
@@ -107,7 +107,7 @@ class OpdsController(
 
   @GetMapping(ROUTE_SERIES_LATEST)
   fun getLatestSeries(): OpdsFeed {
-    val series = serieRepository.findAll(Sort(Sort.Direction.DESC, "lastModifiedDate"))
+    val series = seriesRepository.findAll(Sort(Sort.Direction.DESC, "lastModifiedDate"))
     return OpdsFeedNavigation(
         id = ID_SERIES_LATEST,
         title = "Latest series",
@@ -122,24 +122,24 @@ class OpdsController(
   }
 
   @GetMapping("series/{id}")
-  fun getOneSerie(
+  fun getOneSeries(
       @PathVariable id: Long
   ): OpdsFeed =
-      serieRepository.findByIdOrNull(id)?.let {
+      seriesRepository.findByIdOrNull(id)?.let { series ->
         OpdsFeedAcquisition(
-            id = it.id.toString(),
-            title = it.name,
-            updated = it.lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
+            id = series.id.toString(),
+            title = series.name,
+            updated = series.lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
             author = komgaAuthor,
             links = listOf(
                 OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "${ROUTE_BASE}series/$id"),
                 linkStart
             ),
-            entries = it.books.map { it.toOpdsEntry() }
+            entries = series.books.map { it.toOpdsEntry() }
         )
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  private fun Serie.toOpdsEntry() =
+  private fun Series.toOpdsEntry() =
       OpdsEntryNavigation(
           title = name,
           updated = lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
@@ -155,11 +155,11 @@ class OpdsController(
           id = id.toString(),
           content = "",
           links = listOf(
-              OpdsLinkImageThumbnail("image/png", "/api/v1/series/${serie.id}/books/$id/thumbnail"),
-              OpdsLinkImage(metadata.pages[0].mediaType, "/api/v1/series/${serie.id}/books/$id/pages/1"),
+              OpdsLinkImageThumbnail("image/png", "/api/v1/series/${series.id}/books/$id/thumbnail"),
+              OpdsLinkImage(metadata.pages[0].mediaType, "/api/v1/series/${series.id}/books/$id/pages/1"),
               OpdsLinkFileAcquisition(metadata.mediaType
-                  ?: "application/octet-stream", "/api/v1/series/${serie.id}/books/$id/file"),
-              OpdsLinkPageStreaming("image/jpeg", "/api/v1/series/${serie.id}/books/$id/pages/{pageNumber}?convert=jpeg&amp;zerobased=true", metadata.pages.size)
+                  ?: "application/octet-stream", "/api/v1/series/${series.id}/books/$id/file"),
+              OpdsLinkPageStreaming("image/jpeg", "/api/v1/series/${series.id}/books/$id/pages/{pageNumber}?convert=jpeg&amp;zerobased=true", metadata.pages.size)
           )
       )
 }

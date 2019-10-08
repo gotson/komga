@@ -8,9 +8,9 @@ fun makeBook(name: String, url: String = "file:/$name", fileLastModified: LocalD
   return Book(name = name, url = URL(url), fileLastModified = fileLastModified)
 }
 
-fun makeSerie(name: String, url: String = "file:/$name", books: List<Book> = listOf()): Serie {
+fun makeSeries(name: String, url: String = "file:/$name", books: List<Book> = listOf()): Series {
   Thread.sleep(5)
-  return Serie(name = name, url = URL(url), fileLastModified = LocalDateTime.now(), books = books.toMutableList())
+  return Series(name = name, url = URL(url), fileLastModified = LocalDateTime.now(), books = books.toMutableList())
 }
 
 fun makeLibrary(name: String = "default", url: String = "file:/$name"): Library {

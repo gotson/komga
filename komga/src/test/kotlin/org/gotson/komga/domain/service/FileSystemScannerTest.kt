@@ -24,7 +24,7 @@ class FileSystemScannerTest {
   }
 
   @Test
-  fun `given root directory with only files when scanning then return 1 serie containing those files as books`() {
+  fun `given root directory with only files when scanning then return 1 series containing those files as books`() {
     Jimfs.newFileSystem(Configuration.unix()).use { fs ->
       val root = fs.getPath("/root")
       Files.createDirectory(root)
@@ -41,7 +41,7 @@ class FileSystemScannerTest {
   }
 
   @Test
-  fun `given directory with unsupported files when scanning then return a serie excluding those files as books`() {
+  fun `given directory with unsupported files when scanning then return a series excluding those files as books`() {
     Jimfs.newFileSystem(Configuration.unix()).use { fs ->
       val root = fs.getPath("/root")
       Files.createDirectory(root)
@@ -58,14 +58,14 @@ class FileSystemScannerTest {
   }
 
   @Test
-  fun `given directory with sub-directories containing files when scanning then return 1 serie per folder containing direct files as books`() {
+  fun `given directory with sub-directories containing files when scanning then return 1 series per folder containing direct files as books`() {
     Jimfs.newFileSystem(Configuration.unix()).use { fs ->
       val root = fs.getPath("/root")
       Files.createDirectory(root)
 
       val subDirs = listOf(
-          "serie1" to listOf("volume1.cbz", "volume2.cbz"),
-          "serie2" to listOf("book1.cbz", "book2.cbz")
+          "series1" to listOf("volume1.cbz", "volume2.cbz"),
+          "series2" to listOf("book1.cbz", "book2.cbz")
       ).toMap()
 
       subDirs.forEach { (dir, files) ->
@@ -73,13 +73,13 @@ class FileSystemScannerTest {
         files.forEach { Files.createFile(root.resolve(fs.getPath(dir, it))) }
       }
 
-      val series = scanner.scanRootFolder(root)
+      val scannedSeries = scanner.scanRootFolder(root)
 
-      assertThat(series).hasSize(2)
+      assertThat(scannedSeries).hasSize(2)
 
-      assertThat(series.map { it.name }).containsExactlyInAnyOrderElementsOf(subDirs.keys)
-      series.forEach { serie ->
-        assertThat(serie.books.map { it.name }).containsExactlyInAnyOrderElementsOf(subDirs[serie.name]?.map { FilenameUtils.removeExtension(it) })
+      assertThat(scannedSeries.map { it.name }).containsExactlyInAnyOrderElementsOf(subDirs.keys)
+      scannedSeries.forEach { series ->
+        assertThat(series.books.map { it.name }).containsExactlyInAnyOrderElementsOf(subDirs[series.name]?.map { FilenameUtils.removeExtension(it) })
       }
     }
   }

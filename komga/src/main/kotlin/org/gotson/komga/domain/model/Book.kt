@@ -37,8 +37,8 @@ class Book(
 
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "serie_id", nullable = false)
-  lateinit var serie: Serie
+  @JoinColumn(name = "series_id", nullable = false)
+  lateinit var series: Series
 
   @OneToOne(optional = false, orphanRemoval = true, cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
   @JoinColumn(name = "book_metadata_id", nullable = false)

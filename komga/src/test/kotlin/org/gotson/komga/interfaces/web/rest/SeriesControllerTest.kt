@@ -4,9 +4,9 @@ import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
-import org.gotson.komga.domain.model.makeSerie
+import org.gotson.komga.domain.model.makeSeries
 import org.gotson.komga.domain.persistence.LibraryRepository
-import org.gotson.komga.domain.persistence.SerieRepository
+import org.gotson.komga.domain.persistence.SeriesRepository
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
@@ -27,8 +27,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 @SpringBootTest
 @AutoConfigureTestDatabase
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
-class SerieControllerTest(
-    @Autowired private val serieRepository: SerieRepository,
+class SeriesControllerTest(
+    @Autowired private val seriesRepository: SeriesRepository,
     @Autowired private val libraryRepository: LibraryRepository,
     @Autowired private val mockMvc: MockMvc
 
@@ -48,22 +48,22 @@ class SerieControllerTest(
 
   @AfterEach
   fun `clear repository`() {
-    serieRepository.deleteAll()
+    seriesRepository.deleteAll()
   }
 
   @Test
   @WithMockUser
   fun `given books with unordered index when requesting via api then books are ordered`() {
-    val serie = makeSerie(
-        name = "serie",
+    val series = makeSeries(
+        name = "series",
         books = listOf(makeBook("1"), makeBook("3"))
     ).also { it.library = library }
-    serieRepository.save(serie)
+    seriesRepository.save(series)
 
-    serie.books = serie.books.toMutableList().also { it.add(makeBook("2")) }
-    serieRepository.save(serie)
+    series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
+    seriesRepository.save(series)
 
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${serie.id}/books?readyonly=false"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books?readyonly=false"))
         .andExpect(MockMvcResultMatchers.status().isOk)
         .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", equalTo("1")))
         .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].name", equalTo("2")))
@@ -73,16 +73,16 @@ class SerieControllerTest(
   @Test
   @WithMockUser
   fun `given many books with unordered index when requesting via api then books are ordered and paged`() {
-    val serie = makeSerie(
-        name = "serie",
+    val series = makeSeries(
+        name = "series",
         books = (1..100 step 2).map { makeBook("$it") }
     ).also { it.library = library }
-    serieRepository.save(serie)
+    seriesRepository.save(series)
 
-    serie.books = serie.books.toMutableList().also { it.add(makeBook("2")) }
-    serieRepository.save(serie)
+    series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
+    seriesRepository.save(series)
 
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${serie.id}/books?readyonly=false"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books?readyonly=false"))
         .andExpect(MockMvcResultMatchers.status().isOk)
         .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", equalTo("1")))
         .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].name", equalTo("2")))
@@ -96,17 +96,17 @@ class SerieControllerTest(
   @Test
   @WithMockUser
   fun `given many books in ready state with unordered index when requesting via api then books are ordered and paged`() {
-    val serie = makeSerie(
-        name = "serie",
+    val series = makeSeries(
+        name = "series",
         books = (1..100 step 2).map { makeBook("$it") }
     ).also { it.library = library }
-    serieRepository.save(serie)
+    seriesRepository.save(series)
 
-    serie.books = serie.books.toMutableList().also { it.add(makeBook("2")) }
-    serie.books.forEach { it.metadata = BookMetadata(Status.READY) }
-    serieRepository.save(serie)
+    series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
+    series.books.forEach { it.metadata = BookMetadata(Status.READY) }
+    seriesRepository.save(series)
 
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${serie.id}/books?readyonly=true"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books?readyonly=true"))
         .andExpect(MockMvcResultMatchers.status().isOk)
         .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", equalTo("1")))
         .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].name", equalTo("2")))

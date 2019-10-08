@@ -70,10 +70,10 @@ class OpdsLinkPageStreaming(
 
 class OpdsLinkRel {
   companion object {
-    val SELF = "self"
-    val START = "start"
-    val SUBSECTION = "subsection"
-    val SORT_NEW = "http://opds-spec.org/sort/new"
-    val SORT_POPULAR = "http://opds-spec.org/sort/popular"
+    const val SELF = "self"
+    const val START = "start"
+    const val SUBSECTION = "subsection"
+    const val SORT_NEW = "http://opds-spec.org/sort/new"
+    const val SORT_POPULAR = "http://opds-spec.org/sort/popular"
   }
 }

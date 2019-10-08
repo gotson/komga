@@ -21,8 +21,8 @@ import javax.validation.constraints.NotNull
 private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
 
 @Entity
-@Table(name = "serie")
-class Serie(
+@Table(name = "series")
+class Series(
     @NotBlank
     @Column(name = "name", nullable = false)
     var name: String,
@@ -46,7 +46,7 @@ class Serie(
   @JoinColumn(name = "library_id", nullable = false)
   lateinit var library: Library
 
-  @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "serie")
+  @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "series")
   @OrderColumn(name = "index")
   private var _books: MutableList<Book> = mutableListOf()
 
@@ -54,7 +54,7 @@ class Serie(
     get() = _books.toList()
     set(value) {
       _books.clear()
-      value.forEach { it.serie = this }
+      value.forEach { it.series = this }
       _books.addAll(value.sortedWith(compareBy(natSortComparator) { it.name }))
     }
 

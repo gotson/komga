@@ -5,7 +5,7 @@ import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
-import org.gotson.komga.domain.model.makeSerie
+import org.gotson.komga.domain.model.makeSeries
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional
 @DataJpaTest
 @Transactional
 class BookRepositoryTest(
-    @Autowired private val serieRepository: SerieRepository,
+    @Autowired private val seriesRepository: SeriesRepository,
     @Autowired private val bookRepository: BookRepository,
     @Autowired private val libraryRepository: LibraryRepository
 ) {
@@ -40,22 +40,22 @@ class BookRepositoryTest(
 
   @AfterEach
   fun `clear repository`() {
-    serieRepository.deleteAll()
+    seriesRepository.deleteAll()
   }
 
   @Test
   fun `given many books with unordered index when fetching then books are ordered and paged`() {
-    val serie = makeSerie(
-        name = "serie",
+    val series = makeSeries(
+        name = "series",
         books = (1..100 step 2).map { makeBook("$it") }
     ).also { it.library = library }
-    serieRepository.save(serie)
+    seriesRepository.save(series)
 
-    serie.books = serie.books.toMutableList().also { it.add(makeBook("2")) }
-    serieRepository.save(serie)
+    series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
+    seriesRepository.save(series)
 
     val pageable = PageRequest.of(0, 20)
-    val pageOfBooks = bookRepository.findAllBySerieId(serie.id, pageable)
+    val pageOfBooks = bookRepository.findAllBySeriesId(series.id, pageable)
 
     assertThat(pageOfBooks.isFirst).isTrue()
     assertThat(pageOfBooks.isLast).isFalse()
@@ -67,18 +67,18 @@ class BookRepositoryTest(
 
   @Test
   fun `given many books in ready state with unordered index when fetching then books are ordered and paged`() {
-    val serie = makeSerie(
-        name = "serie",
+    val series = makeSeries(
+        name = "series",
         books = (1..100 step 2).map { makeBook("$it") }
     ).also { it.library = library }
-    serieRepository.save(serie)
+    seriesRepository.save(series)
 
-    serie.books = serie.books.toMutableList().also { it.add(makeBook("2")) }
-    serie.books.forEach { it.metadata = BookMetadata(Status.READY) }
-    serieRepository.save(serie)
+    series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
+    series.books.forEach { it.metadata = BookMetadata(Status.READY) }
+    seriesRepository.save(series)
 
     val pageable = PageRequest.of(0, 20)
-    val pageOfBooks = bookRepository.findAllBySerieId(serie.id, pageable)
+    val pageOfBooks = bookRepository.findAllBySeriesId(series.id, pageable)
 
     assertThat(pageOfBooks.isFirst).isTrue()
     assertThat(pageOfBooks.isLast).isFalse()

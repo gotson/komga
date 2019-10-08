@@ -3,7 +3,7 @@ package org.gotson.komga.domain.persistence
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
-import org.gotson.komga.domain.model.makeSerie
+import org.gotson.komga.domain.model.makeSeries
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
@@ -19,7 +19,7 @@ import java.time.LocalDateTime
 @DataJpaTest
 @Transactional
 class AuditableEntityTest(
-    @Autowired private val serieRepository: SerieRepository,
+    @Autowired private val seriesRepository: SeriesRepository,
     @Autowired private val libraryRepository: LibraryRepository
 ) {
 
@@ -37,80 +37,80 @@ class AuditableEntityTest(
 
   @AfterEach
   fun `clear repository`() {
-    serieRepository.deleteAll()
+    seriesRepository.deleteAll()
   }
 
   @Test
-  fun `given serie with book when saving then created and modified date is also saved`() {
+  fun `given series with book when saving then created and modified date is also saved`() {
     // given
-    val serie = makeSerie(name = "serie", books = listOf(makeBook("book1"))).also { it.library = library }
+    val series = makeSeries(name = "series", books = listOf(makeBook("book1"))).also { it.library = library }
 
     // when
-    serieRepository.save(serie)
+    seriesRepository.save(series)
 
     // then
-    assertThat(serie.createdDate).isBefore(LocalDateTime.now())
-    assertThat(serie.lastModifiedDate).isBefore(LocalDateTime.now())
-    assertThat(serie.books.first().createdDate).isBefore(LocalDateTime.now())
-    assertThat(serie.books.first().lastModifiedDate).isBefore(LocalDateTime.now())
+    assertThat(series.createdDate).isBefore(LocalDateTime.now())
+    assertThat(series.lastModifiedDate).isBefore(LocalDateTime.now())
+    assertThat(series.books.first().createdDate).isBefore(LocalDateTime.now())
+    assertThat(series.books.first().lastModifiedDate).isBefore(LocalDateTime.now())
   }
 
   @Test
-  fun `given existing serie with book when updating serie only then created date is kept and modified date is changed for serie only`() {
+  fun `given existing series with book when updating series only then created date is kept and modified date is changed for series only`() {
     // given
-    val serie = makeSerie(name = "serie", books = listOf(makeBook("book1"))).also { it.library = library }
+    val series = makeSeries(name = "series", books = listOf(makeBook("book1"))).also { it.library = library }
 
-    serieRepository.save(serie)
+    seriesRepository.save(series)
 
     val creationTimeApprox = LocalDateTime.now()
 
     Thread.sleep(1000)
 
     // when
-    serie.name = "serieUpdated"
-    serieRepository.saveAndFlush(serie)
+    series.name = "seriesUpdated"
+    seriesRepository.saveAndFlush(series)
 
     val modificationTimeApprox = LocalDateTime.now()
 
     // then
-    assertThat(serie.createdDate)
+    assertThat(series.createdDate)
         .isBefore(creationTimeApprox)
-        .isNotEqualTo(serie.lastModifiedDate)
-    assertThat(serie.lastModifiedDate)
+        .isNotEqualTo(series.lastModifiedDate)
+    assertThat(series.lastModifiedDate)
         .isAfter(creationTimeApprox)
         .isBefore(modificationTimeApprox)
 
-    assertThat(serie.books.first().createdDate)
+    assertThat(series.books.first().createdDate)
         .isBefore(creationTimeApprox)
-        .isEqualTo(serie.books.first().lastModifiedDate)
+        .isEqualTo(series.books.first().lastModifiedDate)
   }
 
   @Test
-  fun `given existing serie with book when updating book only then created date is kept and modified date is changed for book only`() {
+  fun `given existing series with book when updating book only then created date is kept and modified date is changed for book only`() {
     // given
-    val serie = makeSerie(name = "serie", books = listOf(makeBook("book1"))).also { it.library = library }
+    val series = makeSeries(name = "series", books = listOf(makeBook("book1"))).also { it.library = library }
 
-    serieRepository.save(serie)
+    seriesRepository.save(series)
 
     val creationTimeApprox = LocalDateTime.now()
 
     Thread.sleep(1000)
 
     // when
-    serie.books.first().name = "bookUpdated"
-    serieRepository.saveAndFlush(serie)
+    series.books.first().name = "bookUpdated"
+    seriesRepository.saveAndFlush(series)
 
     val modificationTimeApprox = LocalDateTime.now()
 
     // then
-    assertThat(serie.createdDate)
+    assertThat(series.createdDate)
         .isBefore(creationTimeApprox)
-        .isEqualTo(serie.lastModifiedDate)
+        .isEqualTo(series.lastModifiedDate)
 
-    assertThat(serie.books.first().createdDate)
+    assertThat(series.books.first().createdDate)
         .isBefore(creationTimeApprox)
-        .isNotEqualTo(serie.books.first().lastModifiedDate)
-    assertThat(serie.books.first().lastModifiedDate)
+        .isNotEqualTo(series.books.first().lastModifiedDate)
+    assertThat(series.books.first().lastModifiedDate)
         .isAfter(creationTimeApprox)
         .isBefore(modificationTimeApprox)
   }

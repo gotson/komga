@@ -16,7 +16,7 @@ class AsyncOrchestrator(
     private val libraryScanner: LibraryScanner,
     private val libraryRepository: LibraryRepository,
     private val bookRepository: BookRepository,
-    private val bookLifecyle: BookLifecyle
+    private val bookLifecycle: BookLifecycle
 ) {
 
   @Async("periodicScanTaskExecutor")
@@ -52,7 +52,7 @@ class AsyncOrchestrator(
     var sumOfTasksTime = 0L
     measureTimeMillis {
       sumOfTasksTime = books
-          .map { bookLifecyle.regenerateThumbnailAndPersist(it) }
+          .map { bookLifecycle.regenerateThumbnailAndPersist(it) }
           .map {
             try {
               it.get()
