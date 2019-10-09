@@ -5,6 +5,7 @@ import org.apache.commons.io.FilenameUtils
 import org.apache.commons.lang3.time.DurationFormatUtils
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.Series
+import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.springframework.stereotype.Service
 import java.nio.file.Files
 import java.nio.file.Path
@@ -19,7 +20,9 @@ import kotlin.system.measureTimeMillis
 private val logger = KotlinLogging.logger {}
 
 @Service
-class FileSystemScanner {
+class FileSystemScanner(
+    private val komgaProperties: KomgaProperties
+) {
 
   val supportedExtensions = listOf("cbz", "zip", "cbr", "rar", "pdf")
 
@@ -34,6 +37,11 @@ class FileSystemScanner {
         dirsStream.asSequence()
             .filter { !Files.isHidden(it) }
             .filter { Files.isDirectory(it) }
+            .filter { path ->
+              komgaProperties.librariesScanDirectoryExclusions.none { exclude ->
+                path.toString().contains(exclude, true)
+              }
+            }
             .mapNotNull { dir ->
               val books = Files.list(dir).use { dirStream ->
                 dirStream.filter { Files.isRegularFile(it) }

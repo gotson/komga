@@ -26,6 +26,8 @@ class KomgaProperties {
       return field
     }
 
+  var librariesScanDirectoryExclusions: List<String> = emptyList()
+
   @NotBlank
   var userPassword: String = "user"
 
