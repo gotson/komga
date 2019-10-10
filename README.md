@@ -14,12 +14,7 @@ Features include:
 - serve the individual pages of those books via an API
 - serve the complete file via an API
 - provide OPDS feed
-
-## Status & vision
-
-For now Komga is a simple server without user interface, providing an API and OPDS feed. It can work with [Tachiyomi](https://github.com/inorichi/tachiyomi) through the official extension, as well as most OPDS readers.
-
-The long term vision is to offer something similar to Plex, but for comics!
+- web interface for administration
 
 ## Installation
 
@@ -114,7 +109,13 @@ Tested readers:
 - iOS
   - :white_check_mark: [KyBook 3](http://kybook-reader.com/)
 
+## Web interface
+
+The web interface is available on port `8080`.
+
 ## APIs
+
+Default port for APIs is `8080`.
 
 ### Native API
 
