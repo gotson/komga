@@ -113,6 +113,12 @@ Tested readers:
 
 The web interface is available on port `8080`.
 
+Features:
+
+- add and remove libraries
+
+[![webui_screenshot](./.github/readme-images/webui_small.png)](./.github/readme-images/webui.png)
+
 ## APIs
 
 Default port for APIs is `8080`.
