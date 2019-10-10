@@ -36,7 +36,7 @@ class BookParser(
   private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
 
   private val thumbnailSize = 300
-  private val thumbnailFormat = "png"
+  private val thumbnailFormat = "jpeg"
 
   @Throws(UnsupportedMediaTypeException::class)
   fun parse(book: Book): BookMetadata {

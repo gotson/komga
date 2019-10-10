@@ -104,7 +104,7 @@ class SeriesController(
   ): SeriesDto =
       seriesRepository.findByIdOrNull(id)?.toDto() ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  @GetMapping(value = ["{seriesId}/thumbnail"], produces = [MediaType.IMAGE_PNG_VALUE])
+  @GetMapping(value = ["{seriesId}/thumbnail"], produces = [MediaType.IMAGE_JPEG_VALUE])
   fun getSeriesThumbnail(
       @PathVariable seriesId: Long
   ): ByteArray {
