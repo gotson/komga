@@ -117,7 +117,9 @@ Features:
 
 - add and remove libraries
 
-[![webui_screenshot](./.github/readme-images/webui_small.png)](./.github/readme-images/webui.png)
+Screenshots:
+
+[![webui_screenshot](./.github/readme-images/webui_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui.png)
 
 ## APIs
 
