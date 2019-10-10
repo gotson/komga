@@ -1,6 +1,8 @@
 komga:
-  root-folder: D:\\your\\library\\root\\directory
-  root-folder-scan-cron: "* */15 * * * ?" #periodic scan every 15 minutes
+  libraries-scan-cron: "* */15 * * * ?" #periodic scan every 15 minutes
+  libraries-scan-directory-exclusions: #patterns to exclude directories from the scan
+    - "#recycle" #synology NAS recycle bin
+    - "@eaDir"   #synology NAS index/metadata folders
   user-password: user-password
   admin-password: admin-password
 spring:

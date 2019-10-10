@@ -4,9 +4,9 @@ logging.level:
 komga:
   threads:
     parse: 1
-  libraries-scan-directory-exclusions:
-    - "#recycle"
-    - "@eaDir"
+#  libraries-scan-directory-exclusions:
+#    - "#recycle"
+#    - "@eaDir"
 #  libraries-scan-cron: "*/5 * * * * ?"
 spring:
   profiles:

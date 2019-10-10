@@ -8,22 +8,16 @@ Komga is a free and open source comics/mangas server.
 
 ## Features
 
-Komga just started, and for now it can:
+Features include:
 
-- scan and index a root folder containing sub-folders with comic book archives in `cbz` and `cbr` format, as well as `pdf`. Rescan periodically.
+- scan and index libraries (local folders) containing sub-folders with comic book archives in `cbz` and `cbr` format, as well as `pdf`. Rescan periodically.
 - serve the individual pages of those books via an API
 - serve the complete file via an API
-- support for OPDS feed
+- provide OPDS feed
 
 ## Status & vision
 
 For now Komga is a simple server without user interface, providing an API and OPDS feed. It can work with [Tachiyomi](https://github.com/inorichi/tachiyomi) through the official extension, as well as most OPDS readers.
-
-Future versions may bring:
-
-- support for multiple libraries (multiple root folders)
-- a web UI to administrate the server
-- matching with online metadata sources (like ComicVine) to enrich information like description or genre
 
 The long term vision is to offer something similar to Plex, but for comics!
 
@@ -43,7 +37,7 @@ In order to run Komga, use the following command:
 java -jar komga-x.y.z.jar
 ```
 
-Note that you **need** to have a valid `application.yml` configuration file for Komga to run properly, read on to the next section to find out more.
+Note that you **need** to have a valid `application.yml` configuration file (or environment variables) for Komga to run properly, read on to the next section to find out more.
 
 ## Configuration
 
@@ -61,8 +55,7 @@ In order to make Komga run, you need to specify some mandatory configuration key
 
 - `SPRING_PROFILES_ACTIVE` / `spring.profiles.active`: `prod` - this will enable the database management and upgrades for new versions.
 - `SPRING_DATASOURCE_URL` / `spring.datasource.url`: the path of the database file. For Docker I use `jdbc:h2:/config/database.h2;DB_CLOSE_DELAY=-1`, where `/config/database.h2` is the actual file inside the docker container. You can customize this part if running without docker.
-- `KOMGA_ROOT_FOLDER` / `komga.root-folder`: the root folder of your library, this is what Komga will scan.
-- `KOMGA_ROOT_FOLDER_SCAN_CRON` / `komga.root-folder-scan-cron`: a [Spring cron expression](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/scheduling/support/CronSequenceGenerator.html) for root folder periodic rescans. `0 0 * * * ?` will rescan every hour. `0 */15 * * * ?` will rescan every 15 minutes.
+- `KOMGA_LIBRARIES_SCAN_CRON` / `komga.libraries-scan-cron`: a [Spring cron expression](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/scheduling/support/CronSequenceGenerator.html) for libraries periodic rescans. `0 0 * * * ?` will rescan every hour. `0 */15 * * * ?` will rescan every 15 minutes.
 
 ### Optional configuration
 
@@ -71,39 +64,55 @@ You can also use some optional configuration keys:
 - `KOMGA_USER_PASSWORD` / `komga.user-password`: the password for the user `user`. Defaults to `user`.
 - `KOMGA_ADMIN_PASSWORD` / `komga.admin-password`: the password for the user `admin`. Defaults to `admin`.
 - `KOMGA_THREADS_PARSE` / `komga.threads.parse`: the number of worker threads used for book parsing. Defaults to `2`. You can experiment to get better performance.
+- `KOMGA_LIBRARIES_SCAN_DIRECTORY_EXCLUSIONS` / `komga.libraries-scan-directory-exclusions`: a list of patterns to exclude directories from the scan. If the full path contains any of the patterns, the directory will be ignored. If using the environment variable form use a comma-separated list. 
 
 ## What does it do?
 
-Komga will scan your library's root folder for directories containing supported files (at the moment `cbz`, `zip`, `cbr`, `rar` and `pdf`):
+Komga will scan your libraries for directories containing supported files (at the moment `cbz`, `zip`, `cbr`, `rar` and `pdf`):
 
-- each folder containing comic books will be made as a `Serie`
-- each comic book file inside a `Serie` will be made as a `Book`
+- each folder containing comic books will be made as a `Series`
+- each comic book file inside a `Series` will be made as a `Book`
 
-It works with subfolders too, so if you have a structure like this:
+It works with sub-folders too, so if you have a structure like this:
 
 ```
-Parent/
-├── SubFolder/
-│   ├── file1.cbz
-│   └── file2.cbz
-└── direct1.cbz
+Comics/
+├── Private Eye/
+│   ├── Volume 1.cbz
+│   └── Volume 2.cbz
+└── One Shot.cbz
 ```
 
 Komga will generate:
 
-- a `Serie` called _Parent_, containing a `Book` called _direct1_
-- a `Serie` called _SubFolder_, containing two `Book`s called _file1_ and _file2_
+- a `Series` called _Comics_, containing a `Book` called _One Shot_
+- a `Series` called _Private Eye_, containing two `Book`s called _Volume 1_ and _Volume 2_
 
 On rescans, Komga will update Series and Books, add new ones, and remove the ones for which files don't exist anymore.
 
 Then it will _parse_ each book, which consist of indexing pages (images in the archive), and generating a thumbnail.
 
-## Tachiyomi configuration
+## Clients
+
+### Tachiyomi
 
 Komga has an official extension for [Tachiyomi](https://github.com/inorichi/tachiyomi), available from within Tachiyomi's extension menu.
 The extension is configurable, you need to specify the `server address`, `username`, and `password`.
 
 ![tachiyomi extension configuration screenshot](./.github/readme-images/tachiyomi-extension-configuration.jpg)
+
+### OPDS readers
+
+Komga works with most of the OPDS readers on Android/iOS.
+
+Tested readers:
+
+- Android
+  - :white_check_mark: [FBReader: Favorite Book Reader](https://play.google.com/store/apps/details?id=org.geometerplus.zlibrary.ui.android)
+  - :x: [Moon+ reader](https://play.google.com/store/apps/details?id=com.flyersoft.moonreader) - Authentication is not working
+
+- iOS
+  - :white_check_mark: [KyBook 3](http://kybook-reader.com/)
 
 ## APIs
 
@@ -119,7 +128,7 @@ Komga offers a standard OPDS feed, it is available at `/opds/v1.2/catalog`.
 
 The OPDS feed also supports:
 
-- OpenSearch functionality, to search by `Serie`
+- OpenSearch functionality, to search by `Series`
 - [OPDS Page Streaming Extension 1.0](https://vaemendis.net/opds-pse/) 
 
 ## Credits

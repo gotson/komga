@@ -18,7 +18,7 @@
             Komga
           </v-list-item-title>
           <v-list-item-subtitle>
-            Plex for comics!
+            Comic books media server
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>

@@ -29,6 +29,7 @@ class FileSystemScanner(
   fun scanRootFolder(root: Path): List<Series> {
     logger.info { "Scanning folder: $root" }
     logger.info { "Supported extensions: $supportedExtensions" }
+    logger.info { "Excluded patterns: ${komgaProperties.librariesScanDirectoryExclusions}" }
 
     lateinit var scannedSeries: List<Series>
 

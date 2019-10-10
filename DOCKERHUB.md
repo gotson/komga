@@ -29,6 +29,7 @@ docker create \
   -p 8080:8080 \
   -e KOMGA_USER_PASSWORD=your-user-password
   -e KOMGA_ADMIN_PASSWORD=your-admin-password
+  -e KOMGA_LIBRARIES_SCAN_DIRECTORY_EXCLUSIONS=#recycle,@eaDir
   -v path/to/data:/config \
   -v path/to/books:/books \
   --restart unless-stopped \
@@ -54,6 +55,7 @@ services:
     environment:
       - KOMGA_USER_PASSWORD=your-user-password
       - KOMGA_ADMIN_PASSWORD=your-admin-password
+      - KOMGA_LIBRARIES_SCAN_DIRECTORY_EXCLUSIONS=#recycle,@eaDir
     restart: unless-stopped
 ```
 
@@ -63,14 +65,15 @@ Container images are configured using parameters passed at runtime (such as thos
 These parameters are separated by a colon and indicate `external:internal` respectively.
 For example, `-p 8080:80` would expose port `80` from inside the container to be accessible from the host's IP on port `8080` outside the container.
 
-|         Parameter         | Function                                          |
-|:-------------------------:|---------------------------------------------------|
-| `-p 8080`                 | The port for the Komga API                        |
-| `--user: 1000:1000`       | User:Group identifier - see below for explanation |
-| `-v /config`              | Database and Komga configs                        |
-| `-v /books`               | Location of books library on disk                 |
-| `-e KOMGA_USER_PASSWORD`  | Password for the `user` user                      |
-| `-e KOMGA_ADMIN_PASSWORD` | Password for the `admin` user                     |
+|                    Parameter                   | Function                                                              |
+|:----------------------------------------------:|-----------------------------------------------------------------------|
+| `-p 8080`                                      | The port for the Komga API                                            |
+| `--user: 1000:1000`                            | User:Group identifier - see below for explanation                     |
+| `-v /config`                                   | Database and Komga configs                                            |
+| `-v /books`                                    | Location of books library on disk                                     |
+| `-e KOMGA_USER_PASSWORD`                       | Password for the `user` user                                          |
+| `-e KOMGA_ADMIN_PASSWORD`                      | Password for the `admin` user                                         |
+| `-e KOMGA_LIBRARIES_SCAN_DIRECTORY_EXCLUSIONS` | Comma-separated list of patterns to exclude directories from the scan |
 
 ## User / Group Identifiers
 
