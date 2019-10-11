@@ -11,7 +11,7 @@ import org.springframework.web.server.ResponseStatusException
 import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.streams.toList
+import kotlin.streams.asSequence
 
 @RestController
 @RequestMapping("api/v1/filesystem", produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -34,9 +34,9 @@ class FileSystemController {
           DirectoryListingDto(
               parent = (p.parent ?: "").toString(),
               directories = Files.list(p).use { dirStream ->
-                dirStream
+                dirStream.asSequence()
                     .filter { Files.isDirectory(it) }
-                    .sorted()
+                    .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.toString() })
                     .map { it.toDto() }
                     .toList()
               }
