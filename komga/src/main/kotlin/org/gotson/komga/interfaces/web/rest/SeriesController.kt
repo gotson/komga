@@ -1,7 +1,7 @@
 package org.gotson.komga.interfaces.web.rest
 
 import com.fasterxml.jackson.annotation.JsonFormat
-import com.github.klinq.jpaspec.equal
+import com.github.klinq.jpaspec.`in`
 import com.github.klinq.jpaspec.likeLower
 import mu.KotlinLogging
 import org.apache.commons.io.FilenameUtils
@@ -56,7 +56,7 @@ class SeriesController(
       searchTerm: String?,
 
       @RequestParam("library_id")
-      libraryId: Long?,
+      libraryIds: List<Long>?,
 
       page: Pageable
   ): Page<SeriesDto> {
@@ -72,10 +72,9 @@ class SeriesController(
         specs.add(Series::name.likeLower("%$searchTerm%"))
       }
 
-      if (libraryId != null) {
-        libraryRepository.findByIdOrNull(libraryId)?.let {
-          specs.add(Series::library.equal(it))
-        }
+      if (!libraryIds.isNullOrEmpty()) {
+        val libraries = libraryRepository.findAllById(libraryIds)
+        specs.add(Series::library.`in`(libraries))
       }
 
       if (specs.isNotEmpty()) {
