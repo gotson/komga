@@ -98,16 +98,19 @@ The extension is configurable, you need to specify the `server address`, `userna
 
 ### OPDS readers
 
-Komga works with most of the OPDS readers on Android/iOS.
+Komga should work with any OPDS reader, unfortunately most readers badly implement the OPDS protocol :disappointed:.
 
-Tested readers:
+Here is a list of reader applications I have tested:
 
-- Android
-  - :white_check_mark: [FBReader: Favorite Book Reader](https://play.google.com/store/apps/details?id=org.geometerplus.zlibrary.ui.android)
-  - :x: [Moon+ reader](https://play.google.com/store/apps/details?id=com.flyersoft.moonreader) - Authentication is not working
+| OS      | App name                                                                                                             | Status                                                                       | OpenSearch support | Page streaming support |
+|---------|----------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|--------------------|------------------------|
+| Android | [FBReader: Favorite Book Reader](https://play.google.com/store/apps/details?id=org.geometerplus.zlibrary.ui.android) | :x: Can't download CBR/CBZ, only PDF. PDF only supported in Premium version. | No                 | No                     |
+| Android | [Moon+ reader](https://play.google.com/store/apps/details?id=com.flyersoft.moonreader)                               | :x: Cannot access CBR/CBZ, get an error 401                                  | No                 | No                     |
+| Android | [Librera](https://play.google.com/store/apps/details?id=com.foobnix.pdf.reader)                                      | :x: Doesn't open CBR/CBZ                                                     | No                 | No                     |
+| Android | [PocketBook](https://play.google.com/store/apps/details?id=com.obreey.reader)                                        | :x: Doesn't show CBR/CBZ                                                     | No                 | No                     |
+| iOS     | [KyBook 3](http://kybook-reader.com/)                                                                                | :white_check_mark:                                                           | Yes                | No                     |
 
-- iOS
-  - :white_check_mark: [KyBook 3](http://kybook-reader.com/)
+Feel free to report your findings with other readers (by sending a PR)!
 
 ## Web interface
 
