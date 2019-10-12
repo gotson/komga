@@ -44,7 +44,7 @@ class OpdsLinkImageThumbnail(mediaType: String, href: String) : OpdsLink(
 
 @JsonSerialize(`as` = OpdsLink::class)
 class OpdsLinkFileAcquisition(mediaType: String?, href: String) : OpdsLink(
-    type = mediaType ?: "application/octet-stream",
+    type = if (mediaType == "application/pdf") mediaType else "application/octet-stream",
     rel = "http://opds-spec.org/acquisition",
     href = href
 )
