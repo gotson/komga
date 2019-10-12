@@ -215,10 +215,9 @@ class OpdsController(
           id = id.toString(),
           content = "",
           links = listOf(
-              OpdsLinkImageThumbnail("image/png", "/api/v1/series/${series.id}/books/$id/thumbnail"),
+              OpdsLinkImageThumbnail("image/jpeg", "/api/v1/series/${series.id}/books/$id/thumbnail"),
               OpdsLinkImage(metadata.pages[0].mediaType, "/api/v1/series/${series.id}/books/$id/pages/1"),
-              OpdsLinkFileAcquisition(metadata.mediaType
-                  ?: "application/octet-stream", "/api/v1/series/${series.id}/books/$id/file"),
+              OpdsLinkFileAcquisition(metadata.mediaType, "/api/v1/series/${series.id}/books/$id/file"),
               OpdsLinkPageStreaming("image/jpeg", "/api/v1/series/${series.id}/books/$id/pages/{pageNumber}?convert=jpeg&amp;zero_based=true", metadata.pages.size)
           )
       )
