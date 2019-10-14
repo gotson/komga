@@ -108,7 +108,8 @@ Here is a list of reader applications I have tested:
 | Android | [Moon+ reader](https://play.google.com/store/apps/details?id=com.flyersoft.moonreader)                               | :x: Cannot access CBR/CBZ, get an error 401                                  | No                 | No                     |
 | Android | [Librera](https://play.google.com/store/apps/details?id=com.foobnix.pdf.reader)                                      | :x: Doesn't open CBR/CBZ                                                     | No                 | No                     |
 | Android | [PocketBook](https://play.google.com/store/apps/details?id=com.obreey.reader)                                        | :x: Doesn't show CBR/CBZ                                                     | No                 | No                     |
-| iOS     | [KyBook 3](http://kybook-reader.com/)                                                                                | :white_check_mark:                                                           | Yes                | No                     |
+| iOS     | [KyBook 3](http://kybook-reader.com/)                                                                                | :heavy_check_mark:                                                           | **Yes**            | No                     |
+| iOS     | [Chunky Comic Reader](http://chunkyreader.com/)                                                                      | :warning: Cannot download CBR/CBZ, but can stream pages                      | No                 | **Yes**                |
 
 Feel free to report your findings with other readers (by sending a PR)!
 
