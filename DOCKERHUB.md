@@ -67,9 +67,9 @@ For example, `-p 8080:80` would expose port `80` from inside the container to be
 
 |                    Parameter                   | Function                                                              |
 |:----------------------------------------------:|-----------------------------------------------------------------------|
-| `-p 8080`                                      | The port for the Komga API                                            |
+| `-p 8080`                                      | The port for the Komga APIs and web interface                         |
 | `--user: 1000:1000`                            | User:Group identifier - see below for explanation                     |
-| `-v /config`                                   | Database and Komga configs                                            |
+| `-v /config`                                   | Database and Komga configurations                                     |
 | `-v /books`                                    | Location of books library on disk                                     |
 | `-e KOMGA_USER_PASSWORD`                       | Password for the `user` user                                          |
 | `-e KOMGA_ADMIN_PASSWORD`                      | Password for the `admin` user                                         |
