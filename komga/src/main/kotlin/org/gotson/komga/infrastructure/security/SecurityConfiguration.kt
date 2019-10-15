@@ -5,14 +5,16 @@ import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointR
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpMethod
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -54,12 +56,6 @@ class SecurityConfiguration(
             "/index.html")
   }
 
-  override fun configure(auth: AuthenticationManagerBuilder) {
-    auth.inMemoryAuthentication()
-        .withUser("admin").password("{noop}${komgaProperties.adminPassword}").roles("ADMIN", "USER")
-        .and().withUser("user").password("{noop}${komgaProperties.userPassword}").roles("USER")
-  }
-
   @Bean
   fun corsConfigurationSource(): UrlBasedCorsConfigurationSource =
       UrlBasedCorsConfigurationSource().apply {
@@ -71,4 +67,7 @@ class SecurityConfiguration(
             }
         )
       }
+
+  @Bean
+  fun getEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 }

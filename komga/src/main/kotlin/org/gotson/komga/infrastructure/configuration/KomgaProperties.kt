@@ -5,7 +5,6 @@ import org.springframework.boot.context.properties.DeprecatedConfigurationProper
 import org.springframework.stereotype.Component
 import org.springframework.validation.annotation.Validated
 import javax.validation.constraints.Min
-import javax.validation.constraints.NotBlank
 
 @Component
 @ConfigurationProperties(prefix = "komga")
@@ -28,11 +27,11 @@ class KomgaProperties {
 
   var librariesScanDirectoryExclusions: List<String> = emptyList()
 
-  @NotBlank
-  var userPassword: String = "user"
+  @get:DeprecatedConfigurationProperty(reason = "As of v0.7.0 Komga supports user creation via the API/UI")
+  var userPassword: String = ""
 
-  @NotBlank
-  var adminPassword: String = "admin"
+  @get:DeprecatedConfigurationProperty(reason = "As of v0.7.0 Komga supports user creation via the API/UI")
+  var adminPassword: String = ""
 
   var threads = Threads()
 
