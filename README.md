@@ -11,10 +11,10 @@ Komga is a free and open source comics/mangas server.
 Features include:
 
 - scan and index libraries (local folders) containing sub-folders with comic book archives in `cbz` and `cbr` format, as well as `pdf`. Rescan periodically.
-- serve the individual pages of those books via an API
-- serve the complete file via an API
+- serve the individual pages of those books via API. It can convert pages to different image format on the fly.
+- serve the complete file via API
 - provide OPDS feed
-- web interface for administration
+- web interface
 
 ## Installation
 
@@ -49,15 +49,13 @@ Each configuration key can have a different format depending if it's from the en
 In order to make Komga run, you need to specify some mandatory configuration keys (unless you use Docker, in which case defaults are setup):
 
 - `SPRING_PROFILES_ACTIVE` / `spring.profiles.active`: `prod` - this will enable the database management and upgrades for new versions.
-- `SPRING_DATASOURCE_URL` / `spring.datasource.url`: the path of the database file. For Docker I use `jdbc:h2:/config/database.h2;DB_CLOSE_DELAY=-1`, where `/config/database.h2` is the actual file inside the docker container. You can customize this part if running without docker.
+- `SPRING_DATASOURCE_URL` / `spring.datasource.url`: the path of the database file. For Docker I use `jdbc:h2:/config/database.h2`, where `/config/database.h2` is the actual file inside the docker container. You can customize this part if running without docker.
 - `KOMGA_LIBRARIES_SCAN_CRON` / `komga.libraries-scan-cron`: a [Spring cron expression](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/scheduling/support/CronSequenceGenerator.html) for libraries periodic rescans. `0 0 * * * ?` will rescan every hour. `0 */15 * * * ?` will rescan every 15 minutes.
 
 ### Optional configuration
 
 You can also use some optional configuration keys:
 
-- `KOMGA_USER_PASSWORD` / `komga.user-password`: the password for the user `user`. Defaults to `user`.
-- `KOMGA_ADMIN_PASSWORD` / `komga.admin-password`: the password for the user `admin`. Defaults to `admin`.
 - `KOMGA_THREADS_PARSE` / `komga.threads.parse`: the number of worker threads used for book parsing. Defaults to `2`. You can experiment to get better performance.
 - `KOMGA_LIBRARIES_SCAN_DIRECTORY_EXCLUSIONS` / `komga.libraries-scan-directory-exclusions`: a list of patterns to exclude directories from the scan. If the full path contains any of the patterns, the directory will be ignored. If using the environment variable form use a comma-separated list. 
 
@@ -86,6 +84,26 @@ Komga will generate:
 On rescans, Komga will update Series and Books, add new ones, and remove the ones for which files don't exist anymore.
 
 Then it will _parse_ each book, which consist of indexing pages (images in the archive), and generating a thumbnail.
+
+## Security
+
+### User accounts
+
+At startup, if no user account exists in database, Komga will generate an initial administrator account with a random password, and will output the login and password in the logs:
+
+```
+2019-10-15 17:15:31.483  INFO 18808 --- [  restartedMain] o.g.k.i.scheduler.InitialUserController  : Initial user created. Login: admin@example.org, Password: 2Qf8l85xOB8o
+```
+
+:exclamation: It is strongly advised to create your own account, and delete the generated account!
+
+### HTTPS
+
+If you want to open your Komga server outside your local network, it is strongly advised to secure it with `https` (especially due to the use of http basic authentication).
+
+Spring Boot supports `https` out of the box, but you will have to configure it, and `https` is most useful only with valid certificates (not self-signed), which most people don't readily have available.
+
+I recommend using [Caddy](https://caddyserver.com/) as a reverse proxy, as it supports the automatic generation of [Let's Encrypt](https://letsencrypt.org/) certificates.
 
 ## Clients
 
@@ -119,11 +137,18 @@ The web interface is available on port `8080`.
 
 Features:
 
-- add and remove libraries
+- add and remove libraries (for administrators only)
+- server settings (for administrators only)
+    - users management
+- account settings
+    - change password
 
 Screenshots:
 
-[![webui_screenshot](./.github/readme-images/webui_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui.png)
+|Home page | Users management |
+|---|---|
+| [![webui_screenshot](./.github/readme-images/webui_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui.png) | [![webui-settings-users_screenshot](./.github/readme-images/webui-settings-users_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui-settings-users.png) |
+
 
 ## APIs
 
@@ -133,7 +158,7 @@ Default port for APIs is `8080`.
 
 Komga offers a REST API, which you can browse using Swagger. It's available at `/swagger-ui.html`. The API offers __file download__ and __page streaming__.
 
-In order to access the API, you will need to authenticate using Basic Authentication, with one of the 2 built-in users (`admin` or `user`).
+In order to access the API, you will need to authenticate using Basic Authentication.
 
 ### OPDS
 

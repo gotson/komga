@@ -27,8 +27,6 @@ docker create \
   --name=komga \
   --user 1000:1000 \
   -p 8080:8080 \
-  -e KOMGA_USER_PASSWORD=your-user-password
-  -e KOMGA_ADMIN_PASSWORD=your-admin-password
   -e KOMGA_LIBRARIES_SCAN_DIRECTORY_EXCLUSIONS=#recycle,@eaDir
   -v path/to/data:/config \
   -v path/to/books:/books \
@@ -53,8 +51,6 @@ services:
       - 8080:8080
     user: "1000:1000"
     environment:
-      - KOMGA_USER_PASSWORD=your-user-password
-      - KOMGA_ADMIN_PASSWORD=your-admin-password
       - KOMGA_LIBRARIES_SCAN_DIRECTORY_EXCLUSIONS=#recycle,@eaDir
     restart: unless-stopped
 ```
@@ -71,8 +67,6 @@ For example, `-p 8080:80` would expose port `80` from inside the container to be
 | `--user: 1000:1000`                            | User:Group identifier - see below for explanation                     |
 | `-v /config`                                   | Database and Komga configurations                                     |
 | `-v /books`                                    | Location of books library on disk                                     |
-| `-e KOMGA_USER_PASSWORD`                       | Password for the `user` user                                          |
-| `-e KOMGA_ADMIN_PASSWORD`                      | Password for the `admin` user                                         |
 | `-e KOMGA_LIBRARIES_SCAN_DIRECTORY_EXCLUSIONS` | Comma-separated list of patterns to exclude directories from the scan |
 
 ## User / Group Identifiers

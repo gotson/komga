@@ -3,10 +3,8 @@ komga:
   libraries-scan-directory-exclusions: #patterns to exclude directories from the scan
     - "#recycle" #synology NAS recycle bin
     - "@eaDir"   #synology NAS index/metadata folders
-  user-password: user-password
-  admin-password: admin-password
 spring:
   datasource:
-    url: jdbc:h2:./komga-database.h2;DB_CLOSE_DELAY=-1 #database will be located in the current directory
+    url: jdbc:h2:./komga-database.h2 #database will be located in the current directory
   profiles:
     active: prod
