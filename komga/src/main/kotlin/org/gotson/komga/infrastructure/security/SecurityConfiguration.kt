@@ -14,6 +14,7 @@ import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.core.session.SessionRegistryImpl
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
@@ -23,8 +24,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 class SecurityConfiguration(
     private val komgaProperties: KomgaProperties
 ) : WebSecurityConfigurerAdapter() {
+
   override fun configure(http: HttpSecurity) {
     http
+        .addFilterAt(LoggingBasicAuthFilter(this.authenticationManager()), BasicAuthenticationFilter::class.java)
         .cors().and()
         .csrf().disable()
         .authorizeRequests()
