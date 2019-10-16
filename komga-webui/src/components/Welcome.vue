@@ -9,7 +9,7 @@
       <div class="text-center">
         <h1 class="headline mt-4">Welcome to Komga</h1>
         <p class="body-1">The user interface is quite new, more features will come in future releases!</p>
-        <v-btn color="primary" :to="{name: 'addlibrary'}">Add library</v-btn>
+        <v-btn color="primary" :to="{name: 'addlibrary'}" v-if="isAdmin">Add library</v-btn>
       </div>
     </v-row>
   </div>
@@ -19,7 +19,12 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'Welcome'
+  name: 'Welcome',
+  computed: {
+    isAdmin (): boolean {
+      return this.$store.getters.meAdmin
+    }
+  }
 })
 </script>
 

@@ -10,10 +10,20 @@ export default class KomgaFilesystemService {
   }
 
   async getDirectoryListing (path: String = ''): Promise<DirectoryListingDto> {
-    return (await this.http.get(API_FILESYSTEM, {
-      params: {
-        path: path
+    try {
+      return (await this.http.get(API_FILESYSTEM,
+        {
+          params: {
+            path: path
+          }
+        }
+      )).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve directory listing'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
       }
-    })).data
+      throw new Error(msg)
+    }
   }
 }

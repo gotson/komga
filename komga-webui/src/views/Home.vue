@@ -5,6 +5,14 @@
       hide-on-scroll
     >
       <v-app-bar-nav-icon @click.stop="toggleDrawer"></v-app-bar-nav-icon>
+
+      <v-tabs v-if="tabs.length > 0">
+        <v-tab v-for="(t, index) in tabs" :key="index"
+               :id="t.id"
+               :to="{name: t.route}"
+        >{{ t.name }}
+        </v-tab>
+      </v-tabs>
     </v-app-bar>
 
     <v-navigation-drawer app v-model="drawerVisible">
@@ -39,37 +47,48 @@
           <v-list-item-content>
             <v-list-item-title>Libraries</v-list-item-title>
           </v-list-item-content>
-          <v-btn icon :to="{name: 'addlibrary'}" exact>
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
+          <v-list-item-action v-if="isAdmin">
+            <v-btn icon :to="{name: 'addlibrary'}" exact>
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </v-list-item-action>
         </v-list-item>
 
         <v-list-item v-for="(l, index) in libraries" :key="index" dense>
           <v-list-item-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-tooltip bottom>
+            <v-tooltip bottom :disabled="!isAdmin">
               <template v-slot:activator="{ on }">
                 <v-list-item-title v-on="on">{{ l.name }}</v-list-item-title>
               </template>
               <span>{{ l.root }}</span>
             </v-tooltip>
           </v-list-item-content>
-          <v-list-item-action>
+          <v-list-item-action v-if="isAdmin">
             <v-btn icon @click="promptDeleteLibrary(l)">
               <v-icon>mdi-delete</v-icon>
             </v-btn>
           </v-list-item-action>
         </v-list-item>
 
-        <!--        <v-list-item :to="{name: 'settings'}">-->
-        <!--          <v-list-item-action>-->
-        <!--            <v-icon>mdi-settings</v-icon>-->
-        <!--          </v-list-item-action>-->
-        <!--          <v-list-item-content>-->
-        <!--            <v-list-item-title>Settings</v-list-item-title>-->
-        <!--          </v-list-item-content>-->
-        <!--        </v-list-item>-->
+        <v-list-item :to="{name: 'settings'}" v-if="isAdmin">
+          <v-list-item-action>
+            <v-icon>mdi-settings</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Server settings</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item :to="{name: 'account'}">
+          <v-list-item-action>
+            <v-icon>mdi-account</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Account settings</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
 
         <!--        <v-list-item @click="logout">-->
         <!--          <v-list-item-icon>-->
@@ -126,10 +145,25 @@ export default Vue.extend({
   computed: {
     libraries (): LibraryDto[] {
       return this.$store.state.komgaLibraries.libraries
+    },
+    isAdmin (): boolean {
+      return this.$store.getters.meAdmin
+    },
+    tabs () {
+      if (this.$store.state.route.name) {
+        if (this.$store.state.route.name.startsWith('settings')) {
+          return [
+            { id: 'tab-users', route: 'settings-users', name: 'Users' }
+          ]
+        }
+        return []
+      }
+      return []
     }
   },
   async mounted () {
     try {
+      await this.$store.dispatch('getMe')
       await this.$store.dispatch('getLibraries')
     } catch (e) {
       this.showSnack(e.message)
