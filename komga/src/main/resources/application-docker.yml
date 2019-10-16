@@ -2,6 +2,7 @@ spring:
   profiles:
     include: prod
   datasource:
-    url: jdbc:h2:/config/database.h2;DB_CLOSE_DELAY=-1
+    url: jdbc:h2:/config/database.h2
+logging.file: /config/logs/komga.log
 komga:
   libraries-scan-cron: "0 */15 * * * ?"

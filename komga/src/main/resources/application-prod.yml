@@ -1,3 +1,6 @@
 spring:
   profiles:
     include: flyway
+logging.file: komga.log
+logging:
+  file.max-history: 10
