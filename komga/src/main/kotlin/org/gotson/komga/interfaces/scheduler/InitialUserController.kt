@@ -2,6 +2,7 @@ package org.gotson.komga.interfaces.scheduler
 
 import mu.KotlinLogging
 import org.apache.commons.lang3.RandomStringUtils
+import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.infrastructure.security.KomgaUserDetailsLifecycle
 import org.springframework.boot.context.event.ApplicationReadyEvent
@@ -18,37 +19,43 @@ private val logger = KotlinLogging.logger {}
 @Controller
 class InitialUserController(
     private val userDetailsLifecycle: KomgaUserDetailsLifecycle,
-    private val initialUserPassword: String
+    private val initialUsers: List<KomgaUser>
 ) {
 
   @EventListener(ApplicationReadyEvent::class)
   fun createInitialUserOnStartupIfNoneExist() {
     if (userDetailsLifecycle.countUsers() == 0L) {
-      logger.info { "No users exist in database, creating an initial user" }
+      logger.info { "No users exist in database, creating initial users" }
 
-      val initialUser = User
-          .withUsername("admin@example.org")
-          .password(initialUserPassword)
-          .roles(UserRoles.ADMIN.name)
-          .build()
-
-      userDetailsLifecycle.createUser(initialUser)
-
-      logger.info { "Initial user created. Login: ${initialUser.username}, Password: ${initialUser.password}" }
+      initialUsers
+          .map {
+            User.withUsername(it.email)
+                .password(it.password)
+                .roles(*it.roles.map { it.name }.toTypedArray())
+                .build()
+          }.forEach {
+            userDetailsLifecycle.createUser(it)
+            logger.info { "Initial user created. Login: ${it.username}, Password: ${it.password}" }
+          }
     }
   }
 }
 
 @Configuration
 @Profile("dev")
-class InitialUserPasswordDevConfiguration {
+class InitialUsersDevConfiguration {
   @Bean
-  fun initialUserPassword() = "admin"
+  fun initialUsers() = listOf(
+      KomgaUser("admin@example.org", "admin", mutableSetOf(UserRoles.ADMIN)),
+      KomgaUser("user@example.org", "user")
+  )
 }
 
 @Configuration
 @Profile("prod")
-class InitialUserPasswordProdConfiguration {
+class InitialUsersProdConfiguration {
   @Bean
-  fun initialUserPassword(): String = RandomStringUtils.randomAlphanumeric(12)
+  fun initialUsers() = listOf(
+      KomgaUser("admin@example.org", RandomStringUtils.randomAlphanumeric(12), mutableSetOf(UserRoles.ADMIN))
+  )
 }

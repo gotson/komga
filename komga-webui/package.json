@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --host 127.0.0.1 --port 8081",
+    "serve2": "vue-cli-service serve --host 127.0.0.1 --port 8082 --mode development2",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test:e2e": "vue-cli-service test:e2e",

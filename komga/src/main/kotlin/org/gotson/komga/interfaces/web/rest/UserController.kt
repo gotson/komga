@@ -6,6 +6,7 @@ import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.security.KomgaUserDetailsLifecycle
 import org.gotson.komga.infrastructure.security.UserEmailAlreadyExistsException
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -45,7 +46,7 @@ class UserController(
       @AuthenticationPrincipal principal: KomgaPrincipal,
       @Valid @RequestBody newPasswordDto: PasswordUpdateDto
   ) {
-    userDetailsLifecycle.updatePassword(principal, newPasswordDto.password)
+    userDetailsLifecycle.updatePassword(principal, newPasswordDto.password, false)
   }
 
   @GetMapping
@@ -67,10 +68,9 @@ class UserController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PreAuthorize("hasRole('ADMIN')")
   fun delete(@PathVariable id: Long) {
-    if (userRepository.existsById(id))
-      userRepository.deleteById(id)
-    else
-      throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    userRepository.findByIdOrNull(id)?.let {
+      userDetailsLifecycle.deleteUser(it)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 }
 

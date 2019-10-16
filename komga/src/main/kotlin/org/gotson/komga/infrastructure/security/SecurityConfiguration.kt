@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.core.session.SessionRegistry
+import org.springframework.security.core.session.SessionRegistryImpl
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.cors.CorsConfiguration
@@ -46,6 +48,10 @@ class SecurityConfiguration(
         .and().headers().frameOptions().sameOrigin()
 
         .and().httpBasic()
+
+        .and().sessionManagement()
+        .maximumSessions(10)
+        .sessionRegistry(sessionRegistry())
   }
 
   override fun configure(web: WebSecurity) {
@@ -70,4 +76,9 @@ class SecurityConfiguration(
 
   @Bean
   fun getEncoder(): PasswordEncoder = BCryptPasswordEncoder()
+
+  @Bean
+  fun sessionRegistry(): SessionRegistry {
+    return SessionRegistryImpl()
+  }
 }
