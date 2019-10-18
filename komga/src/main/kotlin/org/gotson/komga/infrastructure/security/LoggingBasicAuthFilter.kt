@@ -39,14 +39,16 @@ class LoggingBasicAuthFilter(
 
 data class RequestInfo(
     val ip: String,
-    val userAgent: String,
+    val userAgent: String?,
     val method: String,
-    val url: String
+    val url: String,
+    val query: String?
 )
 
 fun HttpServletRequest.extractInfo() = RequestInfo(
     ip = remoteAddr,
     userAgent = getHeader("User-Agent"),
     method = method,
-    url = requestURL.toString()
+    url = requestURL.toString(),
+    query = queryString
 )
