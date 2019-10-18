@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface KomgaUserRepository : CrudRepository<KomgaUser, Long> {
-  fun existsByEmail(email: String): Boolean
-  fun findByEmail(email: String): KomgaUser?
+  fun existsByEmailIgnoreCase(email: String): Boolean
+  fun findByEmailIgnoreCase(email: String): KomgaUser?
 }

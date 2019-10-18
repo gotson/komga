@@ -24,13 +24,13 @@ class KomgaUserDetailsLifecycle(
 ) : UserDetailsService {
 
   override fun loadUserByUsername(username: String): UserDetails =
-      userRepository.findByEmail(username)?.let {
+      userRepository.findByEmailIgnoreCase(username)?.let {
         KomgaPrincipal(it)
       } ?: throw UsernameNotFoundException(username)
 
   @Transactional
   fun updatePassword(user: UserDetails, newPassword: String, expireSessions: Boolean): UserDetails {
-    userRepository.findByEmail(user.username)?.let { komgaUser ->
+    userRepository.findByEmailIgnoreCase(user.username)?.let { komgaUser ->
       logger.info { "Changing password for user ${user.username}" }
       komgaUser.password = passwordEncoder.encode(newPassword)
       userRepository.save(komgaUser)
@@ -46,7 +46,7 @@ class KomgaUserDetailsLifecycle(
   @Transactional
   @Throws(UserEmailAlreadyExistsException::class)
   fun createUser(user: UserDetails): UserDetails {
-    if (userRepository.existsByEmail(user.username)) throw UserEmailAlreadyExistsException("A user with the same email already exists: ${user.username}")
+    if (userRepository.existsByEmailIgnoreCase(user.username)) throw UserEmailAlreadyExistsException("A user with the same email already exists: ${user.username}")
 
     val komgaUser = KomgaUser(
         email = user.username,
