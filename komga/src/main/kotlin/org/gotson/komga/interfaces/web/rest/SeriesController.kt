@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat
 import com.github.klinq.jpaspec.`in`
 import com.github.klinq.jpaspec.likeLower
 import mu.KotlinLogging
-import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.MetadataNotReadyException
 import org.gotson.komga.domain.model.Series
@@ -147,7 +146,10 @@ class SeriesController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
-  @GetMapping("{seriesId}/books/{bookId}/file")
+  @GetMapping(value = [
+    "{seriesId}/books/{bookId}/file",
+    "{seriesId}/books/{bookId}/file/*"
+  ])
   fun getBookFile(
       @PathVariable seriesId: Long,
       @PathVariable bookId: Long
@@ -158,7 +160,7 @@ class SeriesController(
         ResponseEntity.ok()
             .headers(HttpHeaders().apply {
               contentDisposition = ContentDisposition.builder("attachment")
-                  .filename(FilenameUtils.getName(book.url.toString()))
+                  .filename(book.filename())
                   .build()
             })
             .contentType(getMediaTypeOrDefault(book.metadata.mediaType))

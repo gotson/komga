@@ -6,7 +6,6 @@ import io.mockk.slot
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeBookPage
-import org.gotson.komga.domain.model.path
 import org.gotson.komga.infrastructure.archive.ContentDetector
 import org.gotson.komga.infrastructure.archive.PdfExtractor
 import org.gotson.komga.infrastructure.archive.RarExtractor

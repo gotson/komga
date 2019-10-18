@@ -8,7 +8,6 @@ import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.MetadataNotReadyException
 import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.model.UnsupportedMediaTypeException
-import org.gotson.komga.domain.model.path
 import org.gotson.komga.infrastructure.archive.ContentDetector
 import org.gotson.komga.infrastructure.archive.PdfExtractor
 import org.gotson.komga.infrastructure.archive.RarExtractor

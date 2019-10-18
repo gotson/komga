@@ -1,5 +1,6 @@
 package org.gotson.komga.domain.model
 
+import org.apache.commons.io.FilenameUtils
 import java.net.URL
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -48,7 +49,9 @@ class Book(
       field = value
     }
 
+  fun filename(): String = FilenameUtils.getName(url.toString())
+
+  fun path(): Path = Paths.get(this.url.toURI())
+
   override fun toString(): String = url.toURI().path
 }
-
-fun Book.path(): Path = Paths.get(this.url.toURI())

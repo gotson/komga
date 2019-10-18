@@ -27,6 +27,6 @@ class Library(
   var id: Long = 0
 
   constructor(name: String, root: String) : this(name, Paths.get(root).toUri().toURL())
-}
 
-fun Library.path(): Path = Paths.get(this.root.toURI())
+  fun path(): Path = Paths.get(this.root.toURI())
+}
