@@ -50,7 +50,7 @@
 
               <v-row>
                 <v-col>
-                  <p>Roles</p>
+                  <span>Roles</span>
                   <v-checkbox
                     v-model="form.admin"
                     label="Administrator"

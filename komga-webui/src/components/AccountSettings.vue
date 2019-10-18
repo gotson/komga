@@ -4,16 +4,20 @@
       <span class="headline">Account Settings</span>
     </v-row>
     <v-row align="center">
-      <v-col cols="2">Email</v-col>
-      <v-col>
-        <v-text-field readonly v-model="me.email"></v-text-field>
+      <v-col cols="12" md="8" lg="6" xl="4">
+        <span>Email</span>
+        <v-text-field readonly
+                      v-model="me.email"
+        ></v-text-field>
       </v-col>
     </v-row>
     <v-row align="center">
-      <v-col cols="2">Roles</v-col>
       <v-col>
+        <span>Roles</span>
         <v-chip-group>
-          <v-chip v-for="role in me.roles" :key="role">{{ role }}</v-chip>
+          <v-chip v-for="role in me.roles" :key="role"
+          >{{ role }}
+          </v-chip>
         </v-chip-group>
       </v-col>
     </v-row>
