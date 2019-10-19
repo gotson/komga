@@ -218,7 +218,7 @@ class OpdsController(
               OpdsLinkImageThumbnail("image/jpeg", "/api/v1/series/${series.id}/books/$id/thumbnail"),
               OpdsLinkImage(metadata.pages[0].mediaType, "/api/v1/series/${series.id}/books/$id/pages/1"),
               OpdsLinkFileAcquisition(metadata.mediaType, "/api/v1/series/${series.id}/books/$id/file/${filename()}"),
-              OpdsLinkPageStreaming("image/jpeg", "/api/v1/series/${series.id}/books/$id/pages/{pageNumber}?convert=jpeg&amp;zero_based=true", metadata.pages.size)
+              OpdsLinkPageStreaming("image/jpeg", "/api/v1/series/${series.id}/books/$id/pages/{pageNumber}?convert=jpeg&zero_based=true", metadata.pages.size)
           )
       )
 
