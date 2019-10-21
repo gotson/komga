@@ -91,7 +91,7 @@ import Vue from 'vue'
 import { email, required } from 'vuelidate/lib/validators'
 
 export default Vue.extend({
-  name: 'AddUserDialog',
+  name: 'UserAddDialog',
   data: () => {
     return {
       modalAddUser: true,

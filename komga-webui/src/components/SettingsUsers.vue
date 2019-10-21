@@ -29,6 +29,17 @@
                 </v-list-item-content>
 
                 <v-list-item-action>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <v-btn icon @click="editUser(u)" :disabled="u.roles.includes('ADMIN')" v-on="on">
+                        <v-icon>mdi-library-books</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Edit shared libraries</span>
+                  </v-tooltip>
+                </v-list-item-action>
+
+                <v-list-item-action>
                   <v-btn icon @click="promptDeleteUser(u)">
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
@@ -41,13 +52,18 @@
 
           <v-btn fab absolute bottom right color="primary"
                  class="mr-6"
+                 small
                  :to="{name: 'settings-users-add'}">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
 
-          <delete-user-dialog v-model="modalDeleteUser"
+          <user-shared-libraries-edit-dialog v-model="modalUserSharedLibraries"
+                                             :user="userToEditSharedLibraries"
+          ></user-shared-libraries-edit-dialog>
+
+          <user-delete-dialog v-model="modalDeleteUser"
                               :user="userToDelete">
-          </delete-user-dialog>
+          </user-delete-dialog>
 
           <router-view></router-view>
         </div>
@@ -57,19 +73,22 @@
 </template>
 
 <script lang="ts">
-import DeleteUserDialog from '@/components/DeleteUserDialog.vue'
+import UserDeleteDialog from '@/components/UserDeleteDialog.vue'
+import UserSharedLibrariesEditDialog from '@/components/UserSharedLibrariesEditDialog.vue'
 import Vue from 'vue'
 
 export default Vue.extend({
   name: 'SettingsUsers',
-  components: { DeleteUserDialog },
+  components: { UserSharedLibrariesEditDialog, UserDeleteDialog },
   data: () => ({
     modalDeleteUser: false,
     modalAddUser: false,
-    userToDelete: {} as UserDto
+    userToDelete: {} as UserDto,
+    modalUserSharedLibraries: false,
+    userToEditSharedLibraries: {} as UserWithSharedLibrariesDto
   }),
   computed: {
-    users (): UserDto[] {
+    users (): UserWithSharedLibrariesDto[] {
       return this.$store.state.komgaUsers.users
     }
   },
@@ -80,6 +99,10 @@ export default Vue.extend({
     promptDeleteUser (user: UserDto) {
       this.userToDelete = user
       this.modalDeleteUser = true
+    },
+    editUser (user: UserWithSharedLibrariesDto) {
+      this.userToEditSharedLibraries = user
+      this.modalUserSharedLibraries = true
     }
   }
 })

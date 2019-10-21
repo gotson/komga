@@ -4,14 +4,13 @@
               max-width="450"
     >
       <v-card>
-        <v-card-title>Delete Library</v-card-title>
+        <v-card-title>Delete User</v-card-title>
 
         <v-card-text>
           <v-container fluid>
             <v-row>
-              <v-col>The library <b>{{ library.name }}</b> will be removed from this server. Your media files will not
-                be
-                affected. This <b>cannot</b> be undone. Continue ?
+              <v-col>The user <b>{{ user.email }}</b> will be deleted from this server. This <b>cannot</b> be undone.
+                Continue ?
               </v-col>
             </v-row>
 
@@ -19,7 +18,7 @@
               <v-col>
                 <v-checkbox v-model="confirmDelete" color="red">
                   <template v-slot:label>
-                    Yes, delete the library "{{ library.name }}"
+                    Yes, delete the user "{{ user.email }}"
                   </template>
                 </v-checkbox>
               </v-col>
@@ -59,7 +58,7 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'DeleteLibraryDialog',
+  name: 'UserDeleteDialog',
   data: () => {
     return {
       confirmDelete: false,
@@ -70,7 +69,7 @@ export default Vue.extend({
   },
   props: {
     value: Boolean,
-    library: {
+    user: {
       type: Object,
       required: true
     }
@@ -89,16 +88,16 @@ export default Vue.extend({
       this.confirmDelete = false
     },
     dialogConfirm () {
-      this.deleteLibrary()
+      this.deleteUser()
       this.$emit('input', false)
     },
     showSnack (message: string) {
       this.snackText = message
       this.snackbar = true
     },
-    async deleteLibrary () {
+    async deleteUser () {
       try {
-        await this.$store.dispatch('deleteLibrary', this.library)
+        await this.$store.dispatch('deleteUser', this.user)
       } catch (e) {
         this.showSnack(e.message)
       }

@@ -21,7 +21,7 @@ export default class KomgaUsersService {
     }
   }
 
-  async getAll (): Promise<UserDto[]> {
+  async getAll (): Promise<UserWithSharedLibrariesDto[]> {
     try {
       return (await this.http.get(`${API_USERS}`)).data
     } catch (e) {
@@ -62,6 +62,18 @@ export default class KomgaUsersService {
       return (await this.http.patch(`${API_USERS}/me/password`, newPassword)).data
     } catch (e) {
       let msg = `An error occurred while trying to update password for current user`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async patchUserSharedLibraries (user: UserDto, sharedLibrariesUpdateDto: SharedLibrariesUpdateDto) {
+    try {
+      return (await this.http.patch(`${API_USERS}/${user.id}/shared-libraries`, sharedLibrariesUpdateDto)).data
+    } catch (e) {
+      let msg = `An error occurred while trying to update shared libraries for user ${user.email}`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

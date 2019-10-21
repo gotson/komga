@@ -107,9 +107,9 @@
       </v-container>
     </v-content>
 
-    <delete-library-dialog v-model="modalDeleteLibrary"
+    <library-delete-dialog v-model="modalDeleteLibrary"
                            :library="libraryToDelete">
-    </delete-library-dialog>
+    </library-delete-dialog>
 
     <v-snackbar
       v-model="snackbar"
@@ -128,12 +128,12 @@
 </template>
 
 <script lang="ts">
-import DeleteLibraryDialog from '@/components/DeleteLibraryDialog.vue'
+import LibraryDeleteDialog from '@/components/LibraryDeleteDialog.vue'
 import Vue from 'vue'
 
 export default Vue.extend({
   name: 'home',
-  components: { DeleteLibraryDialog },
+  components: { LibraryDeleteDialog },
   data: () => ({
     drawerVisible: true,
     modalAddLibrary: false,

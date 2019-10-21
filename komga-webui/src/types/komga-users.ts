@@ -4,6 +4,19 @@ interface UserDto {
   roles: string[]
 }
 
+interface UserWithSharedLibrariesDto {
+  id: number,
+  email: string,
+  roles: string[],
+  sharedAllLibraries: boolean,
+  sharedLibraries: SharedLibraryDto[]
+}
+
+interface SharedLibraryDto {
+  id: number,
+  name: string
+}
+
 interface UserCreationDto {
   email: string,
   roles: string[]
@@ -11,4 +24,9 @@ interface UserCreationDto {
 
 interface PasswordUpdateDto {
   password: string
+}
+
+interface SharedLibrariesUpdateDto {
+  all: boolean,
+  libraryIds: number[]
 }

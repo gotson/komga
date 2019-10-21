@@ -90,7 +90,7 @@ import FileBrowserDialog from '@/components/FileBrowserDialog.vue'
 import { required } from 'vuelidate/lib/validators'
 
 export default Vue.extend({
-  name: 'AddLibraryDialog',
+  name: 'LibraryAddDialog',
   components: { FileBrowserDialog },
   data: () => {
     return {

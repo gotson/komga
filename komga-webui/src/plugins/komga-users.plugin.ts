@@ -8,7 +8,7 @@ let service: KomgaUsersService
 const vuexModule: Module<any, any> = {
   state: {
     me: {} as UserDto,
-    users: [] as UserDto[]
+    users: [] as UserWithSharedLibrariesDto[]
   },
   getters: {
     meAdmin: state => state.me.hasOwnProperty('roles') && state.me.roles.includes('ADMIN')
@@ -17,7 +17,7 @@ const vuexModule: Module<any, any> = {
     setMe (state, user: UserDto) {
       state.me = user
     },
-    setAllUsers (state, users: UserDto[]) {
+    setAllUsers (state, users: UserWithSharedLibrariesDto[]) {
       state.users = users
     }
   },
@@ -37,6 +37,10 @@ const vuexModule: Module<any, any> = {
     },
     async deleteUser ({ dispatch }, user: UserDto) {
       await service.deleteUser(user)
+      dispatch('getAllUsers')
+    },
+    async updateUserSharedLibraries ({ dispatch }, { user, sharedLibraries }: { user: UserDto, sharedLibraries: SharedLibrariesUpdateDto }) {
+      await service.patchUserSharedLibraries(user, sharedLibraries)
       dispatch('getAllUsers')
     }
   }

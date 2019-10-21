@@ -25,7 +25,7 @@ export default new Router({
           path: '/libraries/add',
           name: 'addlibrary',
           beforeEnter: adminGuard,
-          component: () => import(/* webpackChunkName: "addlibrary" */ './components/AddLibraryDialog.vue')
+          component: () => import(/* webpackChunkName: "addlibrary" */ './components/LibraryAddDialog.vue')
         },
         {
           path: '/welcome',
@@ -46,7 +46,7 @@ export default new Router({
             {
               path: '/settings/users/add',
               name: 'settings-users-add',
-              component: () => import(/* webpackChunkName: "settings-user" */ './components/AddUserDialog.vue')
+              component: () => import(/* webpackChunkName: "settings-user" */ './components/UserAddDialog.vue')
             }
           ]
         },
