@@ -4,6 +4,7 @@ import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Profile
 import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -66,13 +67,15 @@ class SecurityConfiguration(
   }
 
   @Bean
+  @Profile("dev")
   fun corsConfigurationSource(): UrlBasedCorsConfigurationSource =
       UrlBasedCorsConfigurationSource().apply {
         registerCorsConfiguration(
             "/**",
             CorsConfiguration().applyPermitDefaultValues().apply {
-              addExposedHeader("Authorization")
-              HttpMethod.values().forEach { addAllowedMethod(it) }
+              allowedOrigins = listOf("http://localhost:8081")
+              allowedMethods = HttpMethod.values().map { it.name }
+              allowCredentials = true
             }
         )
       }
