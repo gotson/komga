@@ -14,6 +14,7 @@ import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.infrastructure.image.ImageType
+import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -25,6 +26,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -51,12 +53,9 @@ class SeriesController(
 
   @GetMapping
   fun getAllSeries(
-      @RequestParam("search")
-      searchTerm: String?,
-
-      @RequestParam("library_id")
-      libraryIds: List<Long>?,
-
+      @AuthenticationPrincipal principal: KomgaPrincipal,
+      @RequestParam("search") searchTerm: String?,
+      @RequestParam("library_id") libraryIds: List<Long>?,
       page: Pageable
   ): Page<SeriesDto> {
     val pageRequest = PageRequest.of(
@@ -67,6 +66,10 @@ class SeriesController(
     )
 
     return mutableListOf<Specification<Series>>().let { specs ->
+      if (!principal.user.sharedAllLibraries) {
+        specs.add(Series::library.`in`(principal.user.sharedLibraries))
+      }
+
       if (!searchTerm.isNullOrEmpty()) {
         specs.add(Series::name.likeLower("%$searchTerm%"))
       }
@@ -86,6 +89,7 @@ class SeriesController(
 
   @GetMapping("/latest")
   fun getLatestSeries(
+      @AuthenticationPrincipal principal: KomgaPrincipal,
       page: Pageable
   ): Page<SeriesDto> {
     val pageRequest = PageRequest.of(
@@ -93,31 +97,46 @@ class SeriesController(
         page.pageSize,
         Sort(Sort.Direction.DESC, "lastModifiedDate")
     )
-    return seriesRepository.findAll(pageRequest).map { it.toDto() }
+
+    return if (principal.user.sharedAllLibraries) {
+      seriesRepository.findAll(pageRequest)
+    } else {
+      seriesRepository.findByLibraryIn(principal.user.sharedLibraries, pageRequest)
+    }.map { it.toDto() }
   }
 
   @GetMapping("{id}")
   fun getOneSeries(
+      @AuthenticationPrincipal principal: KomgaPrincipal,
       @PathVariable id: Long
   ): SeriesDto =
-      seriesRepository.findByIdOrNull(id)?.toDto() ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+      seriesRepository.findByIdOrNull(id)?.let {
+        if (!principal.user.canAccessSeries(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+        it.toDto()
+      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  @GetMapping(value = ["{seriesId}/thumbnail"], produces = [MediaType.IMAGE_JPEG_VALUE])
+  @GetMapping(value = ["{id}/thumbnail"], produces = [MediaType.IMAGE_JPEG_VALUE])
   fun getSeriesThumbnail(
-      @PathVariable seriesId: Long
-  ): ByteArray {
-    return seriesRepository.findByIdOrNull(seriesId)?.let {
-      it.books.firstOrNull()?.metadata?.thumbnail ?: throw ResponseStatusException(HttpStatus.NO_CONTENT)
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-  }
+      @AuthenticationPrincipal principal: KomgaPrincipal,
+      @PathVariable id: Long
+  ): ByteArray =
+      seriesRepository.findByIdOrNull(id)?.let {
+        if (!principal.user.canAccessSeries(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+
+        it.books.firstOrNull()?.metadata?.thumbnail ?: throw ResponseStatusException(HttpStatus.NO_CONTENT)
+      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping("{id}/books")
   fun getAllBooksBySeries(
+      @AuthenticationPrincipal principal: KomgaPrincipal,
       @PathVariable id: Long,
       @RequestParam(value = "ready_only", defaultValue = "true") readyFilter: Boolean,
       page: Pageable
   ): Page<BookDto> {
-    if (!seriesRepository.existsById(id)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    seriesRepository.findByIdOrNull(id)?.let {
+      if (!principal.user.canAccessSeries(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
     return if (readyFilter) {
       bookRepository.findAllByMetadataStatusAndSeriesId(Status.READY.name, id, page)
     } else {
@@ -127,19 +146,26 @@ class SeriesController(
 
   @GetMapping("{seriesId}/books/{bookId}")
   fun getOneBook(
+      @AuthenticationPrincipal principal: KomgaPrincipal,
       @PathVariable seriesId: Long,
       @PathVariable bookId: Long
   ): BookDto {
-    if (!seriesRepository.existsById(seriesId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    seriesRepository.findByIdOrNull(seriesId)?.let {
+      if (!principal.user.canAccessSeries(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
     return bookRepository.findByIdOrNull(bookId)?.toDto() ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
   @GetMapping(value = ["{seriesId}/books/{bookId}/thumbnail"], produces = [MediaType.IMAGE_PNG_VALUE])
   fun getBookThumbnail(
+      @AuthenticationPrincipal principal: KomgaPrincipal,
       @PathVariable seriesId: Long,
       @PathVariable bookId: Long
   ): ByteArray {
-    if (!seriesRepository.existsById(seriesId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    seriesRepository.findByIdOrNull(seriesId)?.let {
+      if (!principal.user.canAccessSeries(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return bookRepository.findByIdOrNull(bookId)?.let {
       it.metadata.thumbnail ?: throw ResponseStatusException(HttpStatus.NO_CONTENT)
@@ -151,10 +177,14 @@ class SeriesController(
     "{seriesId}/books/{bookId}/file/*"
   ])
   fun getBookFile(
+      @AuthenticationPrincipal principal: KomgaPrincipal,
       @PathVariable seriesId: Long,
       @PathVariable bookId: Long
   ): ResponseEntity<ByteArray> {
-    if (!seriesRepository.existsById(seriesId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    seriesRepository.findByIdOrNull(seriesId)?.let {
+      if (!principal.user.canAccessSeries(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
     return bookRepository.findByIdOrNull(bookId)?.let { book ->
       try {
         ResponseEntity.ok()
@@ -174,10 +204,13 @@ class SeriesController(
 
   @GetMapping("{seriesId}/books/{bookId}/pages")
   fun getBookPages(
+      @AuthenticationPrincipal principal: KomgaPrincipal,
       @PathVariable seriesId: Long,
       @PathVariable bookId: Long
   ): List<PageDto> {
-    if (!seriesRepository.existsById(seriesId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    seriesRepository.findByIdOrNull(seriesId)?.let {
+      if (!principal.user.canAccessSeries(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return bookRepository.findByIdOrNull((bookId))?.let {
       if (it.metadata.status == Status.UNKNOWN) throw ResponseStatusException(HttpStatus.NO_CONTENT, "Book is not parsed yet")
@@ -189,13 +222,16 @@ class SeriesController(
 
   @GetMapping("{seriesId}/books/{bookId}/pages/{pageNumber}")
   fun getBookPage(
+      @AuthenticationPrincipal principal: KomgaPrincipal,
       @PathVariable seriesId: Long,
       @PathVariable bookId: Long,
       @PathVariable pageNumber: Int,
       @RequestParam(value = "convert") convertTo: String?,
       @RequestParam(value = "zero_based", defaultValue = "false") zeroBasedIndex: Boolean
   ): ResponseEntity<ByteArray> {
-    if (!seriesRepository.existsById(seriesId)) throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    seriesRepository.findByIdOrNull(seriesId)?.let {
+      if (!principal.user.canAccessSeries(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return bookRepository.findByIdOrNull((bookId))?.let { book ->
       try {

@@ -3,6 +3,7 @@ package org.gotson.komga.interfaces.web.rest
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.persistence.KomgaUserRepository
+import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.security.KomgaUserDetailsLifecycle
 import org.gotson.komga.infrastructure.security.UserEmailAlreadyExistsException
@@ -33,7 +34,8 @@ private val logger = KotlinLogging.logger {}
 @RequestMapping("api/v1/users", produces = [MediaType.APPLICATION_JSON_VALUE])
 class UserController(
     private val userDetailsLifecycle: KomgaUserDetailsLifecycle,
-    private val userRepository: KomgaUserRepository
+    private val userRepository: KomgaUserRepository,
+    private val libraryRepository: LibraryRepository
 ) {
 
   @GetMapping("me")
@@ -51,8 +53,8 @@ class UserController(
 
   @GetMapping
   @PreAuthorize("hasRole('ADMIN')")
-  fun getAll(): List<UserDto> =
-      userRepository.findAll().map { it.toDto() }
+  fun getAll(): List<UserWithSharedLibrariesDto> =
+      userRepository.findAll().map { it.toWithSharedLibrariesDto() }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
@@ -72,6 +74,25 @@ class UserController(
       userDetailsLifecycle.deleteUser(it)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
+
+  @PatchMapping("{id}/shared-libraries")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @PreAuthorize("hasRole('ADMIN')")
+  fun updateSharesLibraries(
+      @PathVariable id: Long,
+      @Valid @RequestBody sharedLibrariesUpdateDto: SharedLibrariesUpdateDto
+  ) {
+    userRepository.findByIdOrNull(id)?.let { user ->
+      if (sharedLibrariesUpdateDto.all) {
+        user.sharedAllLibraries = true
+        user.sharedLibraries = mutableSetOf()
+      } else {
+        user.sharedAllLibraries = false
+        user.sharedLibraries = libraryRepository.findAllById(sharedLibrariesUpdateDto.libraryIds).toMutableSet()
+      }
+      userRepository.save(user)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
 }
 
 data class UserDto(
@@ -85,6 +106,28 @@ fun KomgaUser.toDto() =
         id = id,
         email = email,
         roles = roles.map { it.name }
+    )
+
+data class UserWithSharedLibrariesDto(
+    val id: Long,
+    val email: String,
+    val roles: List<String>,
+    val sharedAllLibraries: Boolean,
+    val sharedLibraries: List<SharedLibraryDto>
+)
+
+data class SharedLibraryDto(
+    val id: Long,
+    val name: String
+)
+
+fun KomgaUser.toWithSharedLibrariesDto() =
+    UserWithSharedLibrariesDto(
+        id = id,
+        email = email,
+        roles = roles.map { it.name },
+        sharedAllLibraries = sharedAllLibraries,
+        sharedLibraries = sharedLibraries.map { SharedLibraryDto(it.id, it.name) }
     )
 
 fun KomgaPrincipal.toDto() = user.toDto()
@@ -103,4 +146,9 @@ data class UserCreationDto(
 
 data class PasswordUpdateDto(
     @get:NotBlank val password: String
+)
+
+data class SharedLibrariesUpdateDto(
+    val all: Boolean,
+    val libraryIds: Set<Long>
 )

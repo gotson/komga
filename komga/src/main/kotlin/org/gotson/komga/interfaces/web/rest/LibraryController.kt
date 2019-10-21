@@ -7,10 +7,12 @@ import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.PathContainedInPath
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.service.LibraryLifecycle
+import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -34,8 +36,12 @@ class LibraryController(
 ) {
 
   @GetMapping
-  fun getAll() =
-      libraryRepository.findAll().map { it.toDto() }
+  fun getAll(@AuthenticationPrincipal principal: KomgaPrincipal): List<LibraryDto> =
+      if (principal.user.sharedAllLibraries) {
+        libraryRepository.findAll()
+      } else {
+        principal.user.sharedLibraries
+      }.map { it.toDto() }
 
   @PostMapping
   @PreAuthorize("hasRole('ADMIN')")

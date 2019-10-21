@@ -10,9 +10,12 @@ import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.JoinColumn
+import javax.persistence.JoinTable
+import javax.persistence.ManyToMany
 import javax.persistence.Table
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name = "user")
@@ -37,6 +40,31 @@ class KomgaUser(
   @GeneratedValue
   @Column(name = "id", nullable = false)
   var id: Long = 0
+
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+      name = "user_library_sharing",
+      joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
+      inverseJoinColumns = [JoinColumn(name = "library_id", referencedColumnName = "id")]
+  )
+  var sharedLibraries: MutableSet<Library> = mutableSetOf()
+
+  @NotNull
+  @Column(name = "shared_all_libraries", nullable = false)
+  var sharedAllLibraries: Boolean = true
+    get() = if (roles.contains(UserRoles.ADMIN)) true else field
+    set(value) {
+      field = if (roles.contains(UserRoles.ADMIN)) true else value
+    }
+
+
+  fun canAccessSeries(series: Series): Boolean {
+    return sharedAllLibraries || sharedLibraries.any { it.id == series.library.id }
+  }
+
+  fun canAccessLibrary(library: Library): Boolean {
+    return sharedAllLibraries || sharedLibraries.any { it.id == library.id }
+  }
 }
 
 enum class UserRoles {

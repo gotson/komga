@@ -1,11 +1,13 @@
 package org.gotson.komga.interfaces.web.opds
 
+import com.github.klinq.jpaspec.`in`
 import com.github.klinq.jpaspec.likeLower
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
+import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.interfaces.web.opds.dto.OpdsAuthor
 import org.gotson.komga.interfaces.web.opds.dto.OpdsEntryAcquisition
 import org.gotson.komga.interfaces.web.opds.dto.OpdsEntryNavigation
@@ -21,9 +23,11 @@ import org.gotson.komga.interfaces.web.opds.dto.OpdsLinkRel
 import org.gotson.komga.interfaces.web.opds.dto.OpdsLinkSearch
 import org.gotson.komga.interfaces.web.opds.dto.OpenSearchDescription
 import org.springframework.data.domain.Sort
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -105,16 +109,26 @@ class OpdsController(
 
   @GetMapping(ROUTE_SERIES_ALL)
   fun getAllSeries(
-      @RequestParam("search")
-      searchTerm: String?
+      @AuthenticationPrincipal principal: KomgaPrincipal,
+      @RequestParam("search") searchTerm: String?
   ): OpdsFeed {
     val sort = Sort.by(Sort.Order.asc("name").ignoreCase())
-    val series = if (!searchTerm.isNullOrEmpty()) {
-      val spec = Series::name.likeLower("%$searchTerm%")
-      seriesRepository.findAll(spec, sort)
-    } else {
-      seriesRepository.findAll(sort)
-    }
+    val series =
+        mutableListOf<Specification<Series>>().let { specs ->
+          if (!principal.user.sharedAllLibraries) {
+            specs.add(Series::library.`in`(principal.user.sharedLibraries))
+          }
+
+          if (!searchTerm.isNullOrEmpty()) {
+            specs.add(Series::name.likeLower("%$searchTerm%"))
+          }
+
+          if (specs.isNotEmpty()) {
+            seriesRepository.findAll(specs.reduce { acc, spec -> acc.and(spec) }, sort)
+          } else {
+            seriesRepository.findAll(sort)
+          }
+        }
 
     return OpdsFeedNavigation(
         id = ID_SERIES_ALL,
@@ -130,8 +144,17 @@ class OpdsController(
   }
 
   @GetMapping(ROUTE_SERIES_LATEST)
-  fun getLatestSeries(): OpdsFeed {
-    val series = seriesRepository.findAll(Sort(Sort.Direction.DESC, "lastModifiedDate"))
+  fun getLatestSeries(
+      @AuthenticationPrincipal principal: KomgaPrincipal
+  ): OpdsFeed {
+    val sort = Sort(Sort.Direction.DESC, "lastModifiedDate")
+    val series =
+        if (principal.user.sharedAllLibraries) {
+          seriesRepository.findAll(sort)
+        } else {
+          seriesRepository.findByLibraryIn(principal.user.sharedLibraries, sort)
+        }
+
     return OpdsFeedNavigation(
         id = ID_SERIES_LATEST,
         title = "Latest series",
@@ -146,8 +169,15 @@ class OpdsController(
   }
 
   @GetMapping(ROUTE_LIBRARIES_ALL)
-  fun getLibraries(): OpdsFeed {
-    val libraries = libraryRepository.findAll()
+  fun getLibraries(
+      @AuthenticationPrincipal principal: KomgaPrincipal
+  ): OpdsFeed {
+    val libraries =
+        if (principal.user.sharedAllLibraries) {
+          libraryRepository.findAll()
+        } else {
+          principal.user.sharedLibraries
+        }
     return OpdsFeedNavigation(
         id = ID_LIBRARIES_ALL,
         title = "All libraries",
@@ -163,9 +193,12 @@ class OpdsController(
 
   @GetMapping("series/{id}")
   fun getOneSeries(
+      @AuthenticationPrincipal principal: KomgaPrincipal,
       @PathVariable id: Long
   ): OpdsFeed =
       seriesRepository.findByIdOrNull(id)?.let { series ->
+        if (!principal.user.canAccessSeries(series)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+
         OpdsFeedAcquisition(
             id = series.id.toString(),
             title = series.name,
@@ -181,9 +214,12 @@ class OpdsController(
 
   @GetMapping("libraries/{id}")
   fun getOneLibrary(
+      @AuthenticationPrincipal principal: KomgaPrincipal,
       @PathVariable id: Long
   ): OpdsFeed =
       libraryRepository.findByIdOrNull(id)?.let { library ->
+        if (!principal.user.canAccessLibrary(library)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+
         OpdsFeedNavigation(
             id = library.id.toString(),
             title = library.name,
@@ -196,7 +232,6 @@ class OpdsController(
             entries = seriesRepository.findByLibraryId(library.id, Sort.by(Sort.Order.asc("name").ignoreCase())).map { it.toOpdsEntry() }
         )
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-
 
 
   private fun Series.toOpdsEntry() =
