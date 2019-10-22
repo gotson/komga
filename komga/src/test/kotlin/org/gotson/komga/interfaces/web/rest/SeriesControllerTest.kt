@@ -7,17 +7,18 @@ import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
+import org.gotson.komga.interfaces.web.WithMockCustomUser
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -51,69 +52,211 @@ class SeriesControllerTest(
     seriesRepository.deleteAll()
   }
 
-  @Test
-  @WithMockUser
-  fun `given books with unordered index when requesting via api then books are ordered`() {
-    val series = makeSeries(
-        name = "series",
-        books = listOf(makeBook("1"), makeBook("3"))
-    ).also { it.library = library }
-    seriesRepository.save(series)
+  @Nested
+  inner class BookOrdering {
+    @Test
+    @WithMockCustomUser
+    fun `given books with unordered index when requesting via api then books are ordered`() {
+      val series = makeSeries(
+          name = "series",
+          books = listOf(makeBook("1"), makeBook("3"))
+      ).also { it.library = library }
+      seriesRepository.save(series)
 
-    series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
-    seriesRepository.save(series)
+      series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
+      seriesRepository.save(series)
 
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books?ready_only=false"))
-        .andExpect(MockMvcResultMatchers.status().isOk)
-        .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", equalTo("1")))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].name", equalTo("2")))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.content[2].name", equalTo("3")))
+      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books?ready_only=false"))
+          .andExpect(MockMvcResultMatchers.status().isOk)
+          .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", equalTo("1")))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].name", equalTo("2")))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.content[2].name", equalTo("3")))
+    }
+
+    @Test
+    @WithMockCustomUser
+    fun `given many books with unordered index when requesting via api then books are ordered and paged`() {
+      val series = makeSeries(
+          name = "series",
+          books = (1..100 step 2).map { makeBook("$it") }
+      ).also { it.library = library }
+      seriesRepository.save(series)
+
+      series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
+      seriesRepository.save(series)
+
+      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books?ready_only=false"))
+          .andExpect(MockMvcResultMatchers.status().isOk)
+          .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", equalTo("1")))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].name", equalTo("2")))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.content[2].name", equalTo("3")))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.content[3].name", equalTo("5")))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.size", equalTo(20)))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.first", equalTo(true)))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.number", equalTo(0)))
+    }
+
+    @Test
+    @WithMockCustomUser
+    fun `given many books in ready state with unordered index when requesting via api then books are ordered and paged`() {
+      val series = makeSeries(
+          name = "series",
+          books = (1..100 step 2).map { makeBook("$it") }
+      ).also { it.library = library }
+      seriesRepository.save(series)
+
+      series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
+      series.books.forEach { it.metadata = BookMetadata(Status.READY) }
+      seriesRepository.save(series)
+
+      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books?ready_only=true"))
+          .andExpect(MockMvcResultMatchers.status().isOk)
+          .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", equalTo("1")))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].name", equalTo("2")))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.content[2].name", equalTo("3")))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.content[3].name", equalTo("5")))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.size", equalTo(20)))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.first", equalTo(true)))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.number", equalTo(0)))
+    }
   }
 
-  @Test
-  @WithMockUser
-  fun `given many books with unordered index when requesting via api then books are ordered and paged`() {
-    val series = makeSeries(
-        name = "series",
-        books = (1..100 step 2).map { makeBook("$it") }
-    ).also { it.library = library }
-    seriesRepository.save(series)
+  @Nested
+  inner class LimitedUser {
+    @Test
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [1])
+    fun `given user with access to a single library when getting series then only gets series from this library`() {
+      val series = makeSeries(
+          name = "series",
+          books = listOf(makeBook("1"))
+      ).also { it.library = library }
+      seriesRepository.save(series)
 
-    series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
-    seriesRepository.save(series)
+      val otherLibrary = makeLibrary("other")
+      libraryRepository.save(otherLibrary)
 
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books?ready_only=false"))
-        .andExpect(MockMvcResultMatchers.status().isOk)
-        .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", equalTo("1")))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].name", equalTo("2")))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.content[2].name", equalTo("3")))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.content[3].name", equalTo("5")))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.size", equalTo(20)))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.first", equalTo(true)))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.number", equalTo(0)))
+      val otherSeries = makeSeries(
+          name = "otherSeries",
+          books = listOf(makeBook("2"))
+      ).also { it.library = otherLibrary }
+      seriesRepository.save(otherSeries)
+
+      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series"))
+          .andExpect(MockMvcResultMatchers.status().isOk)
+          .andExpect(MockMvcResultMatchers.jsonPath("$.content.length()", equalTo(1)))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", equalTo("series")))
+    }
   }
 
-  @Test
-  @WithMockUser
-  fun `given many books in ready state with unordered index when requesting via api then books are ordered and paged`() {
-    val series = makeSeries(
-        name = "series",
-        books = (1..100 step 2).map { makeBook("$it") }
-    ).also { it.library = library }
-    seriesRepository.save(series)
+  @Nested
+  inner class UserWithoutLibraryAccess {
+    @Test
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
+    fun `given user with no access to any library when getting specific series then returns unauthorized`() {
+      val series = makeSeries(
+          name = "series",
+          books = listOf(makeBook("1"))
+      ).also { it.library = library }
+      seriesRepository.save(series)
 
-    series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
-    series.books.forEach { it.metadata = BookMetadata(Status.READY) }
-    seriesRepository.save(series)
+      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}"))
+          .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+    }
 
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books?ready_only=true"))
-        .andExpect(MockMvcResultMatchers.status().isOk)
-        .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", equalTo("1")))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].name", equalTo("2")))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.content[2].name", equalTo("3")))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.content[3].name", equalTo("5")))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.size", equalTo(20)))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.first", equalTo(true)))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.number", equalTo(0)))
+    @Test
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
+    fun `given user with no access to any library when getting specific series thumbnail then returns unauthorized`() {
+      val series = makeSeries(
+          name = "series",
+          books = listOf(makeBook("1"))
+      ).also { it.library = library }
+      seriesRepository.save(series)
+
+      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/thumbnail"))
+          .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+    }
+
+    @Test
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
+    fun `given user with no access to any library when getting specific series books then returns unauthorized`() {
+      val series = makeSeries(
+          name = "series",
+          books = listOf(makeBook("1"))
+      ).also { it.library = library }
+      seriesRepository.save(series)
+
+      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books"))
+          .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+    }
+
+    @Test
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
+    fun `given user with no access to any library when getting specific book then returns unauthorized`() {
+      val series = makeSeries(
+          name = "series",
+          books = listOf(makeBook("1"))
+      ).also { it.library = library }
+      seriesRepository.save(series)
+      val book = series.books.first()
+
+      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books/${book.id}"))
+          .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+    }
+
+    @Test
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
+    fun `given user with no access to any library when getting specific book thumbnail then returns unauthorized`() {
+      val series = makeSeries(
+          name = "series",
+          books = listOf(makeBook("1"))
+      ).also { it.library = library }
+      seriesRepository.save(series)
+      val book = series.books.first()
+
+      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books/${book.id}/thumbnail"))
+          .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+    }
+
+    @Test
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
+    fun `given user with no access to any library when getting specific book file then returns unauthorized`() {
+      val series = makeSeries(
+          name = "series",
+          books = listOf(makeBook("1"))
+      ).also { it.library = library }
+      seriesRepository.save(series)
+      val book = series.books.first()
+
+      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books/${book.id}/file"))
+          .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+    }
+
+    @Test
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
+    fun `given user with no access to any library when getting specific book pages then returns unauthorized`() {
+      val series = makeSeries(
+          name = "series",
+          books = listOf(makeBook("1"))
+      ).also { it.library = library }
+      seriesRepository.save(series)
+      val book = series.books.first()
+
+      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books/${book.id}/pages"))
+          .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+    }
+
+    @Test
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
+    fun `given user with no access to any library when getting specific book page then returns unauthorized`() {
+      val series = makeSeries(
+          name = "series",
+          books = listOf(makeBook("1"))
+      ).also { it.library = library }
+      seriesRepository.save(series)
+      val book = series.books.first()
+
+      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books/${book.id}/pages/1"))
+          .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+    }
   }
 }

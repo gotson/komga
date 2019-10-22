@@ -1,5 +1,7 @@
 package org.gotson.komga.interfaces.web.rest
 
+import org.gotson.komga.interfaces.web.WithMockCustomUser
+import org.hamcrest.CoreMatchers
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -46,8 +48,8 @@ class LibraryControllerTest(
   @Nested
   inner class UserRole {
     @Test
-    @WithMockUser(roles = ["USER"])
-    fun `given user with USER role when getAll then return ok`() {
+    @WithMockCustomUser
+    fun `given user with access to all libraries when getAll then return ok`() {
       mockMvc.perform(MockMvcRequestBuilders.get(route))
           .andExpect(MockMvcResultMatchers.status().isOk)
     }
@@ -61,6 +63,18 @@ class LibraryControllerTest(
           .contentType(MediaType.APPLICATION_JSON)
           .content(jsonString))
           .andExpect(MockMvcResultMatchers.status().isForbidden)
+    }
+  }
+
+  @Nested
+  inner class LimitedUser {
+    @Test
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [1])
+    fun `given user with access to a single library when getAll then only gets this library`() {
+      mockMvc.perform(MockMvcRequestBuilders.get(route))
+          .andExpect(MockMvcResultMatchers.status().isOk)
+          .andExpect(MockMvcResultMatchers.jsonPath("$.length()", CoreMatchers.equalTo(1)))
+          .andExpect(MockMvcResultMatchers.jsonPath("$[0].id", CoreMatchers.equalTo(1)))
     }
   }
 }
