@@ -11,10 +11,11 @@ Komga is a free and open source comics/mangas server.
 Features include:
 
 - scan and index libraries (local folders) containing sub-folders with comic book archives in `cbz` and `cbr` format, as well as `pdf`. Rescan periodically.
-- serve the individual pages of those books via an API
-- serve the complete file via an API
-- provide OPDS feed
-- web interface for administration
+- API to serve the individual pages of those books. It can convert pages to different image format on the fly.
+- API to serve the complete file for download
+- OPDS feed
+- web interface
+- user management, with per-library access control
 
 ## Installation
 
@@ -49,15 +50,13 @@ Each configuration key can have a different format depending if it's from the en
 In order to make Komga run, you need to specify some mandatory configuration keys (unless you use Docker, in which case defaults are setup):
 
 - `SPRING_PROFILES_ACTIVE` / `spring.profiles.active`: `prod` - this will enable the database management and upgrades for new versions.
-- `SPRING_DATASOURCE_URL` / `spring.datasource.url`: the path of the database file. For Docker I use `jdbc:h2:/config/database.h2;DB_CLOSE_DELAY=-1`, where `/config/database.h2` is the actual file inside the docker container. You can customize this part if running without docker.
+- `SPRING_DATASOURCE_URL` / `spring.datasource.url`: the path of the database file. For Docker I use `jdbc:h2:/config/database.h2`, where `/config/database.h2` is the actual file inside the docker container. You can customize this part if running without docker.
 - `KOMGA_LIBRARIES_SCAN_CRON` / `komga.libraries-scan-cron`: a [Spring cron expression](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/scheduling/support/CronSequenceGenerator.html) for libraries periodic rescans. `0 0 * * * ?` will rescan every hour. `0 */15 * * * ?` will rescan every 15 minutes.
 
 ### Optional configuration
 
 You can also use some optional configuration keys:
 
-- `KOMGA_USER_PASSWORD` / `komga.user-password`: the password for the user `user`. Defaults to `user`.
-- `KOMGA_ADMIN_PASSWORD` / `komga.admin-password`: the password for the user `admin`. Defaults to `admin`.
 - `KOMGA_THREADS_PARSE` / `komga.threads.parse`: the number of worker threads used for book parsing. Defaults to `2`. You can experiment to get better performance.
 - `KOMGA_LIBRARIES_SCAN_DIRECTORY_EXCLUSIONS` / `komga.libraries-scan-directory-exclusions`: a list of patterns to exclude directories from the scan. If the full path contains any of the patterns, the directory will be ignored. If using the environment variable form use a comma-separated list. 
 
@@ -87,6 +86,26 @@ On rescans, Komga will update Series and Books, add new ones, and remove the one
 
 Then it will _parse_ each book, which consist of indexing pages (images in the archive), and generating a thumbnail.
 
+## Security
+
+### User accounts
+
+At startup, if no user account exists in database, Komga will generate an initial administrator account with a random password, and will output the login and password in the logs:
+
+```
+2019-10-15 17:15:31.483  INFO 18808 --- [  restartedMain] o.g.k.i.scheduler.InitialUserController  : Initial user created. Login: admin@example.org, Password: 2Qf8l85xOB8o
+```
+
+:exclamation: It is strongly advised to create your own account, and delete the generated account!
+
+### HTTPS
+
+If you want to open your Komga server outside your local network, it is strongly advised to secure it with `https` (especially due to the use of http basic authentication).
+
+Spring Boot supports `https` out of the box, but you will have to configure it, and `https` is most useful only with valid certificates (not self-signed), which most people don't readily have available.
+
+I recommend using [Caddy](https://caddyserver.com/) as a reverse proxy, as it supports the automatic generation of [Let's Encrypt](https://letsencrypt.org/) certificates.
+
 ## Clients
 
 ### Tachiyomi
@@ -102,14 +121,14 @@ Komga should work with any OPDS reader, unfortunately most readers badly impleme
 
 Here is a list of reader applications I have tested:
 
-| OS      | App name                                                                                                             | Status                                                                       | OpenSearch support | Page streaming support |
-|---------|----------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|--------------------|------------------------|
-| Android | [FBReader: Favorite Book Reader](https://play.google.com/store/apps/details?id=org.geometerplus.zlibrary.ui.android) | :x: Can't download CBR/CBZ, only PDF. PDF only supported in Premium version. | No                 | No                     |
-| Android | [Moon+ reader](https://play.google.com/store/apps/details?id=com.flyersoft.moonreader)                               | :x: Cannot access CBR/CBZ, get an error 401                                  | No                 | No                     |
-| Android | [Librera](https://play.google.com/store/apps/details?id=com.foobnix.pdf.reader)                                      | :x: Doesn't open CBR/CBZ                                                     | No                 | No                     |
-| Android | [PocketBook](https://play.google.com/store/apps/details?id=com.obreey.reader)                                        | :x: Doesn't show CBR/CBZ                                                     | No                 | No                     |
-| iOS     | [KyBook 3](http://kybook-reader.com/)                                                                                | :heavy_check_mark:                                                           | **Yes**            | No                     |
-| iOS     | [Chunky Comic Reader](http://chunkyreader.com/)                                                                      | :warning: Cannot download CBR/CBZ, but can stream pages                      | No                 | **Yes**                |
+| OS      | App name                                                                                                             | Status                                                                                                   | OpenSearch support | Page streaming support |
+|---------|----------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|--------------------|------------------------|
+| Android | [FBReader: Favorite Book Reader](https://play.google.com/store/apps/details?id=org.geometerplus.zlibrary.ui.android) | :x: Can't download CBR/CBZ, only PDF. PDF only supported in Premium version. Does not remember password. | No                 | No                     |
+| Android | [Moon+ reader](https://play.google.com/store/apps/details?id=com.flyersoft.moonreader)                               | :x: Cannot download files. Does not remember password.                                                   | No                 | No                     |
+| Android | [Librera](https://play.google.com/store/apps/details?id=com.foobnix.pdf.reader)                                      | :x: Doesn't save CBR/CBZ with proper file extension                                                      | No                 | No                     |
+| Android | [PocketBook](https://play.google.com/store/apps/details?id=com.obreey.reader)                                        | :x: Doesn't show CBR/CBZ                                                                                 | No                 | No                     |
+| iOS     | [KyBook 3](http://kybook-reader.com/)                                                                                | :heavy_check_mark:                                                                                       | **Yes**            | No                     |
+| iOS     | [Chunky Comic Reader](http://chunkyreader.com/)                                                                      | :heavy_check_mark:                                                                                       | No                 | **Yes**                |
 
 Feel free to report your findings with other readers (by sending a PR)!
 
@@ -117,13 +136,23 @@ Feel free to report your findings with other readers (by sending a PR)!
 
 The web interface is available on port `8080`.
 
-Features:
+### Features
 
-- add and remove libraries
+- add and remove libraries (for administrators only)
+- server settings (for administrators only)
+    - users management (add and remove user, edit user's shared libraries access)
+- account settings
+    - change password
 
-Screenshots:
+### Screenshots
 
-[![webui_screenshot](./.github/readme-images/webui_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui.png)
+|Home page | Account settings |
+|---|---|
+| [![webui_screenshot](./.github/readme-images/webui_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui.png) | [![webui-settings-users_screenshot](./.github/readme-images/webui-account-settings_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui-account-settings.png) |
+
+| Users management | User rights |
+|---|---|
+| [![webui-settings-users_screenshot](./.github/readme-images/webui-settings-users_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui-settings-users.png) | [![webui-settings-users_screenshot](./.github/readme-images/webui-settings-users-libraries.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui-settings-users-libraries.png) |
 
 ## APIs
 
@@ -133,7 +162,7 @@ Default port for APIs is `8080`.
 
 Komga offers a REST API, which you can browse using Swagger. It's available at `/swagger-ui.html`. The API offers __file download__ and __page streaming__.
 
-In order to access the API, you will need to authenticate using Basic Authentication, with one of the 2 built-in users (`admin` or `user`).
+In order to access the API, you will need to authenticate using Basic Authentication.
 
 ### OPDS
 
