@@ -115,10 +115,12 @@ tasks {
   }
 
   register<Delete>("deletePublic") {
+    group = "web"
     delete("$projectDir/src/main/resources/public/")
   }
 
   register<Exec>("npmInstall") {
+    group = "web"
     workingDir("$rootDir/komga-webui")
     commandLine(
         if (Os.isFamily(Os.FAMILY_WINDOWS)) {
@@ -131,6 +133,7 @@ tasks {
   }
 
   register<Exec>("npmBuild") {
+    group = "web"
     dependsOn("npmInstall")
     workingDir("$rootDir/komga-webui")
     commandLine(
@@ -145,6 +148,7 @@ tasks {
   }
 
   register<Copy>("copyWebDist") {
+    group = "web"
     dependsOn("deletePublic", "npmBuild")
     from("$rootDir/komga-webui/dist/")
     into("$projectDir/src/main/resources/public/")
