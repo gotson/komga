@@ -11,10 +11,11 @@ Komga is a free and open source comics/mangas server.
 Features include:
 
 - scan and index libraries (local folders) containing sub-folders with comic book archives in `cbz` and `cbr` format, as well as `pdf`. Rescan periodically.
-- serve the individual pages of those books via API. It can convert pages to different image format on the fly.
-- serve the complete file via API
-- provide OPDS feed
+- API to serve the individual pages of those books. It can convert pages to different image format on the fly.
+- API to serve the complete file for download
+- OPDS feed
 - web interface
+- user management, with per-library access control
 
 ## Installation
 
@@ -120,14 +121,14 @@ Komga should work with any OPDS reader, unfortunately most readers badly impleme
 
 Here is a list of reader applications I have tested:
 
-| OS      | App name                                                                                                             | Status                                                                       | OpenSearch support | Page streaming support |
-|---------|----------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|--------------------|------------------------|
-| Android | [FBReader: Favorite Book Reader](https://play.google.com/store/apps/details?id=org.geometerplus.zlibrary.ui.android) | :x: Can't download CBR/CBZ, only PDF. PDF only supported in Premium version. | No                 | No                     |
-| Android | [Moon+ reader](https://play.google.com/store/apps/details?id=com.flyersoft.moonreader)                               | :x: Cannot access CBR/CBZ, get an error 401                                  | No                 | No                     |
-| Android | [Librera](https://play.google.com/store/apps/details?id=com.foobnix.pdf.reader)                                      | :x: Doesn't open CBR/CBZ                                                     | No                 | No                     |
-| Android | [PocketBook](https://play.google.com/store/apps/details?id=com.obreey.reader)                                        | :x: Doesn't show CBR/CBZ                                                     | No                 | No                     |
-| iOS     | [KyBook 3](http://kybook-reader.com/)                                                                                | :heavy_check_mark:                                                           | **Yes**            | No                     |
-| iOS     | [Chunky Comic Reader](http://chunkyreader.com/)                                                                      | :warning: Cannot download CBR/CBZ, but can stream pages                      | No                 | **Yes**                |
+| OS      | App name                                                                                                             | Status                                                                                                   | OpenSearch support | Page streaming support |
+|---------|----------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|--------------------|------------------------|
+| Android | [FBReader: Favorite Book Reader](https://play.google.com/store/apps/details?id=org.geometerplus.zlibrary.ui.android) | :x: Can't download CBR/CBZ, only PDF. PDF only supported in Premium version. Does not remember password. | No                 | No                     |
+| Android | [Moon+ reader](https://play.google.com/store/apps/details?id=com.flyersoft.moonreader)                               | :x: Cannot download files. Does not remember password.                                                   | No                 | No                     |
+| Android | [Librera](https://play.google.com/store/apps/details?id=com.foobnix.pdf.reader)                                      | :x: Doesn't save CBR/CBZ with proper file extension                                                      | No                 | No                     |
+| Android | [PocketBook](https://play.google.com/store/apps/details?id=com.obreey.reader)                                        | :x: Doesn't show CBR/CBZ                                                                                 | No                 | No                     |
+| iOS     | [KyBook 3](http://kybook-reader.com/)                                                                                | :heavy_check_mark:                                                                                       | **Yes**            | No                     |
+| iOS     | [Chunky Comic Reader](http://chunkyreader.com/)                                                                      | :heavy_check_mark:                                                                                       | No                 | **Yes**                |
 
 Feel free to report your findings with other readers (by sending a PR)!
 
@@ -135,20 +136,23 @@ Feel free to report your findings with other readers (by sending a PR)!
 
 The web interface is available on port `8080`.
 
-Features:
+### Features
 
 - add and remove libraries (for administrators only)
 - server settings (for administrators only)
-    - users management
+    - users management (add and remove user, edit user's shared libraries access)
 - account settings
     - change password
 
-Screenshots:
+### Screenshots
 
-|Home page | Users management |
+|Home page | Account settings |
 |---|---|
-| [![webui_screenshot](./.github/readme-images/webui_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui.png) | [![webui-settings-users_screenshot](./.github/readme-images/webui-settings-users_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui-settings-users.png) |
+| [![webui_screenshot](./.github/readme-images/webui_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui.png) | [![webui-settings-users_screenshot](./.github/readme-images/webui-account-settings_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui-account-settings.png) |
 
+| Users management | User rights |
+|---|---|
+| [![webui-settings-users_screenshot](./.github/readme-images/webui-settings-users_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui-settings-users.png) | [![webui-settings-users_screenshot](./.github/readme-images/webui-settings-users-libraries.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui-settings-users-libraries.png) |
 
 ## APIs
 
