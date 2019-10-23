@@ -5,6 +5,7 @@ import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.PathContainedInPath
+import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.springframework.stereotype.Service
@@ -19,6 +20,7 @@ private val logger = KotlinLogging.logger {}
 class LibraryLifecycle(
     private val libraryRepository: LibraryRepository,
     private val seriesRepository: SeriesRepository,
+    private val userRepository: KomgaUserRepository,
     private val asyncOrchestrator: AsyncOrchestrator
 ) {
 
@@ -63,7 +65,16 @@ class LibraryLifecycle(
   @Transactional
   fun deleteLibrary(library: Library) {
     logger.info { "Deleting library: ${library.name} with root folder: ${library.root}" }
+
+    logger.info { "Delete all series for this library" }
     seriesRepository.deleteByLibraryId(library.id)
+
+    logger.info { "Remove shared library access for all users" }
+    userRepository.findBySharedLibrariesContaining(library).let { users ->
+      users.forEach { user -> user.sharedLibraries.removeIf { it.id == library.id } }
+      userRepository.saveAll(users)
+    }
+
     libraryRepository.delete(library)
   }
 }
