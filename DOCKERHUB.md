@@ -28,8 +28,8 @@ docker create \
   --user 1000:1000 \
   -p 8080:8080 \
   -e KOMGA_LIBRARIES_SCAN_DIRECTORY_EXCLUSIONS=#recycle,@eaDir
-  -v path/to/data:/config \
-  -v path/to/books:/books \
+  --mount type=bind,source=/path/to/config,target=/config \
+  --mount type=bind,source=/path/to/books,target=/books \
   --restart unless-stopped \
   gotson/komga
 ```
@@ -38,15 +38,22 @@ docker create \
 
 ```
 ---
-version: '3'
+version: '3.3'
 services:
   komga:
     image: gotson/komga
     container_name: komga
     volumes:
-      - path/to/data:/config
-      - path/to/books:/books
-      - /etc/timezone:/etc/timezone:ro
+      - type: bind
+        source: /path/to/data
+        target: /config
+      - type: bind
+        source: /path/to/books
+        target: /books
+      - type: bind
+        source: /etc/timezone
+        target: /etc/timezone
+        read_only: true
     ports:
       - 8080:8080
     user: "1000:1000"
@@ -61,13 +68,13 @@ Container images are configured using parameters passed at runtime (such as thos
 These parameters are separated by a colon and indicate `external:internal` respectively.
 For example, `-p 8080:80` would expose port `80` from inside the container to be accessible from the host's IP on port `8080` outside the container.
 
-|                    Parameter                   | Function                                                              |
-|:----------------------------------------------:|-----------------------------------------------------------------------|
-| `-p 8080`                                      | The port for the Komga APIs and web interface                         |
-| `--user: 1000:1000`                            | User:Group identifier - see below for explanation                     |
-| `-v /config`                                   | Database and Komga configurations                                     |
-| `-v /books`                                    | Location of books library on disk                                     |
-| `-e KOMGA_LIBRARIES_SCAN_DIRECTORY_EXCLUSIONS` | Comma-separated list of patterns to exclude directories from the scan |
+|                          Parameter                        | Function                                                              |
+|:---------------------------------------------------------:|-----------------------------------------------------------------------|
+| `-p 8080`                                                 | The port for the Komga APIs and web interface                         |
+| `--user: 1000:1000`                                       | User:Group identifier - see below for explanation                     |
+| `--mount type=bind,source=/path/to/config,target=/config` | Database and Komga configurations                                     |
+| `--mount type=bind,source=/path/to/books,target=/books`   | Location of books library on disk                                     |
+| `-e KOMGA_LIBRARIES_SCAN_DIRECTORY_EXCLUSIONS`            | Comma-separated list of patterns to exclude directories from the scan |
 
 ## User / Group Identifiers
 
