@@ -13,3 +13,4 @@ management:
     health:
       roles: ADMIN
       show-details: when_authorized
+management.metrics.export.humio.enabled: false
