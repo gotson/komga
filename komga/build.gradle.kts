@@ -16,6 +16,7 @@ plugins {
   id("com.github.ben-manes.versions") version "0.25.0"
   id("com.palantir.docker") version "0.22.1"
   id("com.github.breadmoirai.github-release") version "2.2.9"
+  id("com.gorylenko.gradle-git-properties") version "2.2.0"
   jacoco
 }
 
@@ -172,4 +173,8 @@ githubRelease {
 }
 tasks.withType<GithubReleaseTask> {
   dependsOn(tasks.bootJar)
+}
+
+springBoot {
+  buildInfo()
 }
