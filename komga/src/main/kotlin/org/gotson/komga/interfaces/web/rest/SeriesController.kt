@@ -54,8 +54,8 @@ class SeriesController(
   @GetMapping
   fun getAllSeries(
       @AuthenticationPrincipal principal: KomgaPrincipal,
-      @RequestParam("search") searchTerm: String?,
-      @RequestParam("library_id") libraryIds: List<Long>?,
+      @RequestParam(name = "search", required = false) searchTerm: String?,
+      @RequestParam(name = "library_id", required = false) libraryIds: List<Long>?,
       page: Pageable
   ): Page<SeriesDto> {
     val pageRequest = PageRequest.of(
@@ -105,20 +105,20 @@ class SeriesController(
     }.map { it.toDto() }
   }
 
-  @GetMapping("{id}")
+  @GetMapping("{seriesId}")
   fun getOneSeries(
       @AuthenticationPrincipal principal: KomgaPrincipal,
-      @PathVariable id: Long
+      @PathVariable(name = "seriesId") id: Long
   ): SeriesDto =
       seriesRepository.findByIdOrNull(id)?.let {
         if (!principal.user.canAccessSeries(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
         it.toDto()
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  @GetMapping(value = ["{id}/thumbnail"], produces = [MediaType.IMAGE_JPEG_VALUE])
+  @GetMapping(value = ["{seriesId}/thumbnail"], produces = [MediaType.IMAGE_JPEG_VALUE])
   fun getSeriesThumbnail(
       @AuthenticationPrincipal principal: KomgaPrincipal,
-      @PathVariable id: Long
+      @PathVariable(name = "seriesId") id: Long
   ): ByteArray =
       seriesRepository.findByIdOrNull(id)?.let {
         if (!principal.user.canAccessSeries(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
@@ -126,10 +126,10 @@ class SeriesController(
         it.books.firstOrNull()?.metadata?.thumbnail ?: throw ResponseStatusException(HttpStatus.NO_CONTENT)
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  @GetMapping("{id}/books")
+  @GetMapping("{seriesId}/books")
   fun getAllBooksBySeries(
       @AuthenticationPrincipal principal: KomgaPrincipal,
-      @PathVariable id: Long,
+      @PathVariable(name = "seriesId") id: Long,
       @RequestParam(value = "ready_only", defaultValue = "true") readyFilter: Boolean,
       page: Pageable
   ): Page<BookDto> {
@@ -226,7 +226,7 @@ class SeriesController(
       @PathVariable seriesId: Long,
       @PathVariable bookId: Long,
       @PathVariable pageNumber: Int,
-      @RequestParam(value = "convert") convertTo: String?,
+      @RequestParam(value = "convert", required = false) convertTo: String?,
       @RequestParam(value = "zero_based", defaultValue = "false") zeroBasedIndex: Boolean
   ): ResponseEntity<ByteArray> {
     seriesRepository.findByIdOrNull(seriesId)?.let {
