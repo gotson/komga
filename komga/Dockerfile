@@ -1,4 +1,4 @@
-FROM openjdk:11-jre-slim
+FROM adoptopenjdk:11-jre-hotspot
 VOLUME /tmp
 ARG DEPENDENCY=target/dependency
 COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
