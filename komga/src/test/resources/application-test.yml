@@ -2,7 +2,7 @@ application.version: TESTING
 
 spring:
   flyway:
-    enabled: false
+    enabled: true
     jpa:
       hibernate:
         ddl-auto: none
