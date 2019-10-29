@@ -9,6 +9,7 @@ import org.gotson.komga.domain.persistence.SeriesRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.nio.file.Paths
+import java.time.temporal.ChronoUnit
 import kotlin.system.measureTimeMillis
 
 private val logger = KotlinLogging.logger {}
@@ -49,7 +50,7 @@ class LibraryScanner(
           seriesRepository.save(newSeries.also { it.library = library })
         } else {
           // if series already exists, update it
-          if (newSeries.fileLastModified != existingSeries.fileLastModified) {
+          if (newSeries.fileLastModified.truncatedTo(ChronoUnit.MILLIS) != existingSeries.fileLastModified.truncatedTo(ChronoUnit.MILLIS)) {
             logger.info { "Series changed on disk, updating: $newSeries" }
             existingSeries.name = newSeries.name
             existingSeries.fileLastModified = newSeries.fileLastModified
@@ -58,7 +59,7 @@ class LibraryScanner(
             existingSeries.books = newSeries.books.map { newBook ->
               val existingBook = bookRepository.findByUrl(newBook.url) ?: newBook
 
-              if (newBook.fileLastModified != existingBook.fileLastModified) {
+              if (newBook.fileLastModified.truncatedTo(ChronoUnit.MILLIS) != existingBook.fileLastModified.truncatedTo(ChronoUnit.MILLIS)) {
                 logger.info { "Book changed on disk, update and reset metadata status: $newBook" }
                 existingBook.fileLastModified = newBook.fileLastModified
                 existingBook.name = newBook.name
