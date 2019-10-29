@@ -1,5 +1,6 @@
 package org.gotson.komga.domain.model
 
+import com.jakewharton.byteunits.BinaryByteUnit
 import org.apache.commons.io.FilenameUtils
 import java.net.URL
 import java.nio.file.Path
@@ -29,7 +30,10 @@ class Book(
     var url: URL,
 
     @Column(name = "file_last_modified", nullable = false)
-    var fileLastModified: LocalDateTime
+    var fileLastModified: LocalDateTime,
+
+    @Column(name = "file_size", nullable = false)
+    var fileSize: Long = 0
 ) : AuditableEntity() {
   @Id
   @GeneratedValue
@@ -49,9 +53,13 @@ class Book(
       field = value
     }
 
-  fun filename(): String = FilenameUtils.getName(url.toString())
+  fun fileName(): String = FilenameUtils.getName(url.toString())
+
+  fun fileExtension(): String = FilenameUtils.getExtension(url.toString())
 
   fun path(): Path = Paths.get(this.url.toURI())
+
+  fun fileSizeHumanReadable(): String = BinaryByteUnit.format(fileSize)
 
   override fun toString(): String = url.toURI().path
 }

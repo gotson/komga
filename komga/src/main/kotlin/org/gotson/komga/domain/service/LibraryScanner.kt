@@ -63,6 +63,7 @@ class LibraryScanner(
                 logger.info { "Book changed on disk, update and reset metadata status: $newBook" }
                 existingBook.fileLastModified = newBook.fileLastModified
                 existingBook.name = newBook.name
+                existingBook.fileSize = newBook.fileSize
                 existingBook.metadata.reset()
               }
               existingBook

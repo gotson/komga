@@ -190,7 +190,7 @@ class SeriesController(
         ResponseEntity.ok()
             .headers(HttpHeaders().apply {
               contentDisposition = ContentDisposition.builder("attachment")
-                  .filename(book.filename())
+                  .filename(book.fileName())
                   .build()
             })
             .contentType(getMediaTypeOrDefault(book.metadata.mediaType))
@@ -299,6 +299,8 @@ data class BookDto(
     val url: String,
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     val lastModified: LocalDateTime?,
+    val sizeBytes: Long,
+    val size: String,
     val metadata: BookMetadataDto
 )
 
@@ -313,6 +315,8 @@ fun Book.toDto() =
         name = name,
         url = url.toURI().path,
         lastModified = lastModifiedDate?.toUTC(),
+        sizeBytes = fileSize,
+        size = fileSizeHumanReadable(),
         metadata = BookMetadataDto(
             status = metadata.status.toString(),
             mediaType = metadata.mediaType ?: ""

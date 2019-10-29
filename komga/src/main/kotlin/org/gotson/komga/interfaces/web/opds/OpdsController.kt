@@ -75,21 +75,21 @@ class OpdsController(
               title = "All series",
               updated = ZonedDateTime.now(),
               id = ID_SERIES_ALL,
-              content = "All series.",
+              content = "Browse by series",
               link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "${ROUTE_BASE}${ROUTE_SERIES_ALL}")
           ),
           OpdsEntryNavigation(
               title = "Latest series",
               updated = ZonedDateTime.now(),
               id = ID_SERIES_LATEST,
-              content = "Latest series.",
+              content = "Browse latest series",
               link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "${ROUTE_BASE}${ROUTE_SERIES_LATEST}")
           ),
           OpdsEntryNavigation(
               title = "All libraries",
               updated = ZonedDateTime.now(),
               id = ID_LIBRARIES_ALL,
-              content = "All libraries.",
+              content = "Browse by library",
               link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "${ROUTE_BASE}${ROUTE_LIBRARIES_ALL}")
           )
       )
@@ -248,11 +248,11 @@ class OpdsController(
           title = name,
           updated = lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
           id = id.toString(),
-          content = "",
+          content = "$name (${fileExtension().toUpperCase()}) (${fileSizeHumanReadable()})",
           links = listOf(
               OpdsLinkImageThumbnail("image/jpeg", "/api/v1/series/${series.id}/books/$id/thumbnail"),
               OpdsLinkImage(metadata.pages[0].mediaType, "/api/v1/series/${series.id}/books/$id/pages/1"),
-              OpdsLinkFileAcquisition(metadata.mediaType, "/api/v1/series/${series.id}/books/$id/file/${filename()}"),
+              OpdsLinkFileAcquisition(metadata.mediaType, "/api/v1/series/${series.id}/books/$id/file/${fileName()}"),
               OpdsLinkPageStreaming("image/jpeg", "/api/v1/series/${series.id}/books/$id/pages/{pageNumber}?convert=jpeg&zero_based=true", metadata.pages.size)
           )
       )

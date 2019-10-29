@@ -51,7 +51,8 @@ class FileSystemScanner(
                       Book(
                           name = FilenameUtils.getBaseName(it.fileName.toString()),
                           url = it.toUri().toURL(),
-                          fileLastModified = it.getUpdatedTime()
+                          fileLastModified = it.getUpdatedTime(),
+                          fileSize = Files.readAttributes(it, BasicFileAttributes::class.java).size()
                       )
                     }.toList()
               }

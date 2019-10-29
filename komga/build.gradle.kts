@@ -76,6 +76,8 @@ dependencies {
   implementation("com.twelvemonkeys.imageio:imageio-tiff:3.4.2")
   implementation(files("$projectDir/libs/webp-imageio-decoder-plugin-0.2.jar"))
 
+  implementation("com.jakewharton.byteunits:byteunits:0.9.1")
+
   runtimeOnly("com.h2database:h2")
 
   testImplementation("org.springframework.boot:spring-boot-starter-test") {
