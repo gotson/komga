@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletRequest
 
 @Component
 class SPAErrorViewResolver : ErrorViewResolver {
-  override fun resolveErrorView(request: HttpServletRequest, status: HttpStatus, model: MutableMap<String, Any>): ModelAndView =
-      if (status == HttpStatus.NOT_FOUND) {
-        ModelAndView("/", HttpStatus.TEMPORARY_REDIRECT)
-      } else {
-        ModelAndView("/error", status)
+  override fun resolveErrorView(request: HttpServletRequest, status: HttpStatus, model: MutableMap<String, Any>): ModelAndView? =
+      when {
+        request.requestURL.toString() == "/error" -> null
+        status == HttpStatus.NOT_FOUND -> ModelAndView("/", HttpStatus.TEMPORARY_REDIRECT)
+        else -> ModelAndView("/error", status)
       }
 }
