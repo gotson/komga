@@ -3,9 +3,9 @@ package org.gotson.komga.interfaces.web.opds
 import com.github.klinq.jpaspec.`in`
 import com.github.klinq.jpaspec.likeLower
 import org.gotson.komga.domain.model.Book
+import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Series
-import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
@@ -209,7 +209,7 @@ class OpdsController(
                 OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "${ROUTE_BASE}series/$id"),
                 linkStart
             ),
-            entries = series.books.filter { it.metadata.status == Status.READY }.map { it.toOpdsEntry() }
+            entries = series.books.filter { it.metadata.status == BookMetadata.Status.READY }.map { it.toOpdsEntry() }
         )
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 

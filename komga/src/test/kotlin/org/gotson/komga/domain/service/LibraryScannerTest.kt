@@ -5,7 +5,6 @@ import io.mockk.every
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.BookMetadata
-import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeBookPage
 import org.gotson.komga.domain.model.makeLibrary
@@ -192,7 +191,7 @@ class LibraryScannerTest(
         )
     libraryScanner.scanRootFolder(library)
 
-    every { mockParser.parse(any()) } returns BookMetadata(status = Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")))
+    every { mockParser.parse(any()) } returns BookMetadata(status = BookMetadata.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")))
     bookRepository.findAll().map { bookLifecycle.parseAndPersist(it) }.map { it.get() }
 
     // when
@@ -203,7 +202,7 @@ class LibraryScannerTest(
     verify(exactly = 1) { mockParser.parse(any()) }
 
     val book = bookRepository.findAll().first()
-    assertThat(book.metadata.status).isEqualTo(Status.READY)
+    assertThat(book.metadata.status).isEqualTo(BookMetadata.Status.READY)
     assertThat(book.metadata.mediaType).isEqualTo("application/zip")
     assertThat(book.metadata.pages).hasSize(2)
     assertThat(book.metadata.pages.map { it.fileName }).containsExactly("1.jpg", "2.jpg")

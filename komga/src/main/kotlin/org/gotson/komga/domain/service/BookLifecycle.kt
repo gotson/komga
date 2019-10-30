@@ -5,7 +5,7 @@ import org.apache.commons.lang3.time.DurationFormatUtils
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.BookPageContent
-import org.gotson.komga.domain.model.Status
+import org.gotson.komga.domain.model.MetadataNotReadyException
 import org.gotson.komga.domain.model.UnsupportedMediaTypeException
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.infrastructure.image.ImageConverter
@@ -35,10 +35,10 @@ class BookLifecycle(
         book.metadata = bookParser.parse(book)
       } catch (ex: UnsupportedMediaTypeException) {
         logger.info(ex) { "Unsupported media type: ${ex.mediaType}. Book: $book" }
-        book.metadata = BookMetadata(status = Status.UNSUPPORTED, mediaType = ex.mediaType)
+        book.metadata = BookMetadata(status = BookMetadata.Status.UNSUPPORTED, mediaType = ex.mediaType)
       } catch (ex: Exception) {
         logger.error(ex) { "Error while parsing. Book: $book" }
-        book.metadata = BookMetadata(status = Status.ERROR)
+        book.metadata = BookMetadata(status = BookMetadata.Status.ERROR)
       }
       bookRepository.save(book)
     }.also { logger.info { "Parsing finished in ${DurationFormatUtils.formatDurationHMS(it)}" } })
@@ -53,13 +53,17 @@ class BookLifecycle(
         book.metadata = bookParser.regenerateThumbnail(book)
       } catch (ex: Exception) {
         logger.error(ex) { "Error while recreating thumbnail" }
-        book.metadata = BookMetadata(status = Status.ERROR)
+        book.metadata = BookMetadata(status = BookMetadata.Status.ERROR)
       }
       bookRepository.save(book)
     }.also { logger.info { "Thumbnail generated in ${DurationFormatUtils.formatDurationHMS(it)}" } })
   }
 
-  @Throws(UnsupportedMediaTypeException::class)
+  @Throws(
+      UnsupportedMediaTypeException::class,
+      MetadataNotReadyException::class,
+      IndexOutOfBoundsException::class
+  )
   fun getBookPage(book: Book, number: Int, convertTo: ImageType? = null): BookPageContent {
     val pageContent = bookParser.getPageContent(book, number)
     val pageMediaType = book.metadata.pages[number - 1].mediaType

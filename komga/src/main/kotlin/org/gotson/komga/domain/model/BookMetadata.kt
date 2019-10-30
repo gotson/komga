@@ -66,8 +66,9 @@ class BookMetadata(
   init {
     this.pages = pages.toList()
   }
-}
 
-enum class Status {
-  UNKNOWN, ERROR, READY, UNSUPPORTED
+  enum class Status {
+    UNKNOWN, ERROR, READY, UNSUPPORTED
+  }
+
 }

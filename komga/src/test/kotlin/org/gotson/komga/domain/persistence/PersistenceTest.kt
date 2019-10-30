@@ -2,7 +2,6 @@ package org.gotson.komga.domain.persistence
 
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.BookMetadata
-import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeBookPage
 import org.gotson.komga.domain.model.makeLibrary
@@ -86,7 +85,7 @@ class PersistenceTest(
 
     // when
     val book = bookRepository.findAll().first()
-    book.metadata = BookMetadata(status = Status.READY, mediaType = "test", pages = mutableListOf(makeBookPage("page1")))
+    book.metadata = BookMetadata(status = BookMetadata.Status.READY, mediaType = "test", pages = mutableListOf(makeBookPage("page1")))
 
     bookRepository.save(book)
 
@@ -95,7 +94,7 @@ class PersistenceTest(
     assertThat(bookRepository.count()).isEqualTo(1)
     assertThat(bookMetadataRepository.count()).isEqualTo(1)
     bookMetadataRepository.findAll().first().let {
-      assertThat(it.status == Status.READY)
+      assertThat(it.status == BookMetadata.Status.READY)
       assertThat(it.mediaType == "test")
       assertThat(it.pages).hasSize(1)
       assertThat(it.pages.first().fileName).isEqualTo("page1")
@@ -110,7 +109,7 @@ class PersistenceTest(
 
     // when
     val book = bookRepository.findAll().first()
-    book.metadata = BookMetadata(status = Status.READY, mediaType = "test", pages = listOf(
+    book.metadata = BookMetadata(status = BookMetadata.Status.READY, mediaType = "test", pages = listOf(
         makeBookPage("2"),
         makeBookPage("003"),
         makeBookPage("001")
@@ -123,7 +122,7 @@ class PersistenceTest(
     assertThat(bookRepository.count()).isEqualTo(1)
     assertThat(bookMetadataRepository.count()).isEqualTo(1)
     bookMetadataRepository.findAll().first().let { metadata ->
-      assertThat(metadata.status == Status.READY)
+      assertThat(metadata.status == BookMetadata.Status.READY)
       assertThat(metadata.mediaType == "test")
       assertThat(metadata.pages).hasSize(3)
       assertThat(metadata.pages.map { it.fileName }).containsExactly("001", "2", "003")

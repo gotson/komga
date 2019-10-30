@@ -5,10 +5,9 @@ import com.github.klinq.jpaspec.`in`
 import com.github.klinq.jpaspec.likeLower
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
+import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.MetadataNotReadyException
 import org.gotson.komga.domain.model.Series
-import org.gotson.komga.domain.model.Status
-import org.gotson.komga.domain.model.UnsupportedMediaTypeException
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
@@ -138,7 +137,7 @@ class SeriesController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return if (readyFilter) {
-      bookRepository.findAllByMetadataStatusAndSeriesId(Status.READY.name, id, page)
+      bookRepository.findAllByMetadataStatusAndSeriesId(BookMetadata.Status.READY.name, id, page)
     } else {
       bookRepository.findAllBySeriesId(id, page)
     }.map { it.toDto() }
@@ -168,7 +167,7 @@ class SeriesController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return bookRepository.findByIdOrNull(bookId)?.let {
-      it.metadata.thumbnail ?: throw ResponseStatusException(HttpStatus.NO_CONTENT)
+      it.metadata.thumbnail ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -213,8 +212,8 @@ class SeriesController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return bookRepository.findByIdOrNull((bookId))?.let {
-      if (it.metadata.status == Status.UNKNOWN) throw ResponseStatusException(HttpStatus.NO_CONTENT, "Book is not parsed yet")
-      if (it.metadata.status in listOf(Status.ERROR, Status.UNSUPPORTED)) throw ResponseStatusException(HttpStatus.NO_CONTENT, "Book cannot be parsed")
+      if (it.metadata.status == BookMetadata.Status.UNKNOWN) throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book is not parsed yet")
+      if (it.metadata.status in listOf(BookMetadata.Status.ERROR, BookMetadata.Status.UNSUPPORTED)) throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book cannot be parsed")
 
       it.metadata.pages.mapIndexed { index, s -> PageDto(index + 1, s.fileName, s.mediaType) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -244,21 +243,15 @@ class SeriesController(
 
         val pageNum = if (zeroBasedIndex) pageNumber + 1 else pageNumber
 
-        val pageContent = try {
-          bookLifecycle.getBookPage(book, pageNum, convertFormat)
-        } catch (e: UnsupportedMediaTypeException) {
-          throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
-        } catch (e: Exception) {
-          throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
-        }
+        val pageContent = bookLifecycle.getBookPage(book, pageNum, convertFormat)
 
         ResponseEntity.ok()
             .contentType(getMediaTypeOrDefault(pageContent.mediaType))
             .body(pageContent.content)
-      } catch (ex: ArrayIndexOutOfBoundsException) {
+      } catch (ex: IndexOutOfBoundsException) {
         throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number does not exist")
       } catch (ex: MetadataNotReadyException) {
-        throw ResponseStatusException(HttpStatus.NO_CONTENT, "Book cannot be parsed")
+        throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book cannot be parsed")
       } catch (ex: NoSuchFileException) {
         logger.warn(ex) { "File not found: $book" }
         throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")

@@ -2,8 +2,8 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import org.apache.commons.lang3.time.DurationFormatUtils
+import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Library
-import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.springframework.stereotype.Service
@@ -78,7 +78,7 @@ class LibraryScanner(
 
   fun parseUnparsedBooks() {
     logger.info { "Parsing all books in status: unknown" }
-    val booksToParse = bookRepository.findAllByMetadataStatus(Status.UNKNOWN)
+    val booksToParse = bookRepository.findAllByMetadataStatus(BookMetadata.Status.UNKNOWN)
 
     var sumOfTasksTime = 0L
     measureTimeMillis {

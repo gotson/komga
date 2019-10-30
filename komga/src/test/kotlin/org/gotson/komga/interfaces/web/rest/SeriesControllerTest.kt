@@ -1,7 +1,7 @@
 package org.gotson.komga.interfaces.web.rest
 
 import org.gotson.komga.domain.model.BookMetadata
-import org.gotson.komga.domain.model.Status
+import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -15,6 +15,9 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
+import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -106,7 +109,7 @@ class SeriesControllerTest(
       seriesRepository.save(series)
 
       series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
-      series.books.forEach { it.metadata = BookMetadata(Status.READY) }
+      series.books.forEach { it.metadata = BookMetadata(BookMetadata.Status.READY) }
       seriesRepository.save(series)
 
       mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books?ready_only=true"))
@@ -258,5 +261,84 @@ class SeriesControllerTest(
       mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books/${book.id}/pages/1"))
           .andExpect(MockMvcResultMatchers.status().isUnauthorized)
     }
+  }
+
+  @Nested
+  inner class BookMetadataNotReady {
+    @Test
+    @WithMockCustomUser
+    fun `given book without thumbnail when getting book thumbnail then returns not found`() {
+      val series = makeSeries(
+          name = "series",
+          books = listOf(makeBook("1"))
+      ).also { it.library = library }
+      seriesRepository.save(series)
+      val book = series.books.first()
+
+      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books/${book.id}/thumbnail"))
+          .andExpect(MockMvcResultMatchers.status().isNotFound)
+    }
+
+    @Test
+    @WithMockCustomUser
+    fun `given book without file when getting book file then returns not found`() {
+      val series = makeSeries(
+          name = "series",
+          books = listOf(makeBook("1"))
+      ).also { it.library = library }
+      seriesRepository.save(series)
+      val book = series.books.first()
+
+      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books/${book.id}/file"))
+          .andExpect(MockMvcResultMatchers.status().isNotFound)
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = BookMetadata.Status::class, names = ["READY"], mode = EnumSource.Mode.EXCLUDE)
+    @WithMockCustomUser
+    fun `given book with metadata status not ready when getting book pages then returns not found`(status: BookMetadata.Status) {
+      val series = makeSeries(
+          name = "series",
+          books = listOf(makeBook("1").also { it.metadata.status = status })
+      ).also { it.library = library }
+      seriesRepository.save(series)
+      val book = series.books.first()
+
+      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books/${book.id}/pages"))
+          .andExpect(MockMvcResultMatchers.status().isNotFound)
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = BookMetadata.Status::class, names = ["READY"], mode = EnumSource.Mode.EXCLUDE)
+    @WithMockCustomUser
+    fun `given book with metadata status not ready when getting specific book page then returns not found`(status: BookMetadata.Status) {
+      val series = makeSeries(
+          name = "series",
+          books = listOf(makeBook("1").also { it.metadata.status = status })
+      ).also { it.library = library }
+      seriesRepository.save(series)
+      val book = series.books.first()
+
+      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books/${book.id}/pages/1"))
+          .andExpect(MockMvcResultMatchers.status().isNotFound)
+    }
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = ["25", "-5", "0"])
+  @WithMockCustomUser
+  fun `given book with pages when getting non-existent page then returns bad request`(page: String) {
+    val series = makeSeries(
+        name = "series",
+        books = listOf(makeBook("1").also {
+          it.metadata.pages = listOf(BookPage("file", "image/jpeg"))
+          it.metadata.status = BookMetadata.Status.READY
+        })
+    ).also { it.library = library }
+    seriesRepository.save(series)
+    val book = series.books.first()
+
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books/${book.id}/pages/$page"))
+        .andExpect(MockMvcResultMatchers.status().isBadRequest)
   }
 }

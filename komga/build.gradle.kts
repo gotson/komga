@@ -86,6 +86,7 @@ dependencies {
   }
   testImplementation("org.springframework.security:spring-security-test")
   testImplementation("org.junit.jupiter:junit-jupiter-engine")
+  testImplementation("org.junit.jupiter:junit-jupiter-params")
   testImplementation("com.ninja-squad:springmockk:1.1.3")
   testImplementation("io.mockk:mockk:1.9.3")
   testImplementation("com.google.jimfs:jimfs:1.1")

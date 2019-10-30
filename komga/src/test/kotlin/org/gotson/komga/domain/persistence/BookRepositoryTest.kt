@@ -2,7 +2,6 @@ package org.gotson.komga.domain.persistence
 
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.BookMetadata
-import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -74,7 +73,7 @@ class BookRepositoryTest(
     seriesRepository.save(series)
 
     series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
-    series.books.forEach { it.metadata = BookMetadata(Status.READY) }
+    series.books.forEach { it.metadata = BookMetadata(BookMetadata.Status.READY) }
     seriesRepository.save(series)
 
     val pageable = PageRequest.of(0, 20)

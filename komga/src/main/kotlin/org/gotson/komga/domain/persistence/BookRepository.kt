@@ -1,7 +1,7 @@
 package org.gotson.komga.domain.persistence
 
 import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.Status
+import org.gotson.komga.domain.model.BookMetadata
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -25,6 +25,6 @@ interface BookRepository : JpaRepository<Book, Long> {
   fun findAllByMetadataStatusAndSeriesId(status: String, seriesId: Long, pageable: Pageable): Page<Book>
 
   fun findByUrl(url: URL): Book?
-  fun findAllByMetadataStatus(status: Status): List<Book>
+  fun findAllByMetadataStatus(status: BookMetadata.Status): List<Book>
   fun findAllByMetadataThumbnailIsNull(): List<Book>
 }

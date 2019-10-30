@@ -6,7 +6,6 @@ import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.MetadataNotReadyException
-import org.gotson.komga.domain.model.Status
 import org.gotson.komga.domain.model.UnsupportedMediaTypeException
 import org.gotson.komga.infrastructure.archive.ContentDetector
 import org.gotson.komga.infrastructure.archive.PdfExtractor
@@ -53,14 +52,14 @@ class BookParser(
     logger.info { "Trying to generate cover for book: $book" }
     val thumbnail = generateThumbnail(book, mediaType, pages.first().fileName)
 
-    return BookMetadata(mediaType = mediaType, status = Status.READY, pages = pages, thumbnail = thumbnail)
+    return BookMetadata(mediaType = mediaType, status = BookMetadata.Status.READY, pages = pages, thumbnail = thumbnail)
   }
 
   @Throws(MetadataNotReadyException::class)
   fun regenerateThumbnail(book: Book): BookMetadata {
     logger.info { "Regenerate thumbnail for book: $book" }
 
-    if (book.metadata.status != Status.READY) {
+    if (book.metadata.status != BookMetadata.Status.READY) {
       logger.warn { "Book metadata is not ready, cannot generate thumbnail. Book: $book" }
       throw MetadataNotReadyException()
     }
@@ -69,7 +68,7 @@ class BookParser(
 
     return BookMetadata(
         mediaType = book.metadata.mediaType,
-        status = Status.READY,
+        status = BookMetadata.Status.READY,
         pages = book.metadata.pages,
         thumbnail = thumbnail
     )
@@ -91,11 +90,14 @@ class BookParser(
         null
       }
 
-  @Throws(MetadataNotReadyException::class)
+  @Throws(
+      MetadataNotReadyException::class,
+      IndexOutOfBoundsException::class
+  )
   fun getPageContent(book: Book, number: Int): ByteArray {
     logger.info { "Get page #$number for book: $book" }
 
-    if (book.metadata.status != Status.READY) {
+    if (book.metadata.status != BookMetadata.Status.READY) {
       logger.warn { "Book metadata is not ready, cannot get pages" }
       throw MetadataNotReadyException()
     }
