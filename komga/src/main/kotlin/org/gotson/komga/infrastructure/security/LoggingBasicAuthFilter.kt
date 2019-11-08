@@ -46,7 +46,7 @@ data class RequestInfo(
 )
 
 fun HttpServletRequest.extractInfo() = RequestInfo(
-    ip = remoteAddr,
+    ip = getHeader("X-Real-IP") ?: getHeader("X-Forwarded-For") ?: remoteAddr,
     userAgent = getHeader("User-Agent"),
     method = method,
     url = requestURL.toString(),
