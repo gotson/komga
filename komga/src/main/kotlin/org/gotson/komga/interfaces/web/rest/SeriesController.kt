@@ -79,7 +79,7 @@ class SeriesController(
       }
 
       if (specs.isNotEmpty()) {
-        seriesRepository.findAll(specs.reduce { acc, spec -> acc.and(spec) }, pageRequest)
+        seriesRepository.findAll(specs.reduce { acc, spec -> acc.and(spec)!! }, pageRequest)
       } else {
         seriesRepository.findAll(pageRequest)
       }
@@ -94,7 +94,7 @@ class SeriesController(
     val pageRequest = PageRequest.of(
         page.pageNumber,
         page.pageSize,
-        Sort(Sort.Direction.DESC, "lastModifiedDate")
+        Sort.by(Sort.Direction.DESC, "lastModifiedDate")
     )
 
     return if (principal.user.sharedAllLibraries) {

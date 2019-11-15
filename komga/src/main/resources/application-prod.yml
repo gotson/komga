@@ -1,6 +1,9 @@
 spring:
   profiles:
     include: flyway
-logging.file: komga.log
 logging:
-  file.max-history: 10
+  file:
+    max-history: 10
+    name: komga.log
+komga:
+  libraries-scan-cron: "0 */15 * * * ?"

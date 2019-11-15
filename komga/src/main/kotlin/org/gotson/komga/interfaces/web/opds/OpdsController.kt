@@ -125,7 +125,7 @@ class OpdsController(
           }
 
           if (specs.isNotEmpty()) {
-            seriesRepository.findAll(specs.reduce { acc, spec -> acc.and(spec) }, sort)
+            seriesRepository.findAll(specs.reduce { acc, spec -> acc.and(spec)!! }, sort)
           } else {
             seriesRepository.findAll(sort)
           }
@@ -148,7 +148,7 @@ class OpdsController(
   fun getLatestSeries(
       @AuthenticationPrincipal principal: KomgaPrincipal
   ): OpdsFeed {
-    val sort = Sort(Sort.Direction.DESC, "lastModifiedDate")
+    val sort = Sort.by(Sort.Direction.DESC, "lastModifiedDate")
     val series =
         if (principal.user.sharedAllLibraries) {
           seriesRepository.findAll(sort)

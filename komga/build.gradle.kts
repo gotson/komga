@@ -11,9 +11,9 @@ plugins {
     kotlin("plugin.jpa") version kotlinVersion
     kotlin("kapt") version kotlinVersion
   }
-  id("org.springframework.boot") version "2.1.9.RELEASE"
+  id("org.springframework.boot") version "2.2.1.RELEASE"
   id("io.spring.dependency-management") version "1.0.8.RELEASE"
-  id("com.github.ben-manes.versions") version "0.25.0"
+  id("com.github.ben-manes.versions") version "0.27.0"
   id("com.palantir.docker") version "0.22.1"
   id("com.github.breadmoirai.github-release") version "2.2.9"
   id("com.gorylenko.gradle-git-properties") version "2.2.0"
@@ -81,12 +81,9 @@ dependencies {
   runtimeOnly("com.h2database:h2")
 
   testImplementation("org.springframework.boot:spring-boot-starter-test") {
-    exclude(module = "junit")
     exclude(module = "mockito-core")
   }
   testImplementation("org.springframework.security:spring-security-test")
-  testImplementation("org.junit.jupiter:junit-jupiter-engine")
-  testImplementation("org.junit.jupiter:junit-jupiter-params")
   testImplementation("com.ninja-squad:springmockk:1.1.3")
   testImplementation("io.mockk:mockk:1.9.3")
   testImplementation("com.google.jimfs:jimfs:1.1")

@@ -11,8 +11,9 @@ komga:
 spring:
   profiles:
     include: flyway
-logging.file: komga-dev.log
 logging:
-  file.max-history: 1
+  file:
+    max-history: 1
+    name: komga-dev.log
   level:
     org.gotson.komga: debug
