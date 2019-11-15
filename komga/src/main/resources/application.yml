@@ -17,5 +17,3 @@ management:
     export:
       influx:
         enabled: false
-      humio:
-        enabled: false

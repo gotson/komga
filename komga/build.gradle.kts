@@ -50,7 +50,6 @@ dependencies {
 //  implementation("com.github.ben-manes.caffeine:caffeine:2.7.0")
 
   implementation("io.github.microutils:kotlin-logging:1.7.6")
-  implementation("io.micrometer:micrometer-registry-humio")
   implementation("io.micrometer:micrometer-registry-influx")
 
   run {
