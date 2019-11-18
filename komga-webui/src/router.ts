@@ -54,6 +54,12 @@ export default new Router({
           path: '/account',
           name: 'account',
           component: () => import(/* webpackChunkName: "account" */ './components/AccountSettings.vue')
+        },
+        {
+          path: '/browse/:libraryId',
+          name: 'browse-library',
+          component: () => import(/* webpackChunkName: "browse" */ './components/BrowseLibraries.vue'),
+          props: (route) => ({ libraryId: Number(route.params.libraryId) })
         }
       ]
     },

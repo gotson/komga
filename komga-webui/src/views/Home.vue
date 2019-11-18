@@ -54,13 +54,18 @@
           </v-list-item-action>
         </v-list-item>
 
-        <v-list-item v-for="(l, index) in libraries" :key="index" dense>
+        <v-list-item v-for="(l, index) in libraries"
+                     :key="index"
+                     dense
+                     :to="{name:'browse-library', params: {libraryId: l.id}}"
+        >
           <v-list-item-icon>
           </v-list-item-icon>
           <v-list-item-content>
             <v-tooltip bottom :disabled="!isAdmin">
               <template v-slot:activator="{ on }">
-                <v-list-item-title v-on="on">{{ l.name }}</v-list-item-title>
+                <v-list-item-title v-on="on">{{ l.name }}
+                </v-list-item-title>
               </template>
               <span>{{ l.root }}</span>
             </v-tooltip>
