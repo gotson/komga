@@ -3,7 +3,7 @@
   >
     <v-img
       :src="getThumbnailUrl()"
-      lazy-src="../assets/cover.png"
+      lazy-src="../assets/cover.svg"
       max-width="210px"
       height="300px"
     >
