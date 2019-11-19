@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.CacheControl
 import org.springframework.http.ContentDisposition
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -38,6 +39,7 @@ import java.nio.file.NoSuchFileException
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
+import java.util.concurrent.TimeUnit
 
 private val logger = KotlinLogging.logger {}
 
@@ -114,15 +116,24 @@ class SeriesController(
         it.toDto()
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  private val thumbnailsCache = CacheControl
+      .maxAge(4, TimeUnit.HOURS)
+      .cachePrivate()
+
   @GetMapping(value = ["{seriesId}/thumbnail"], produces = [MediaType.IMAGE_JPEG_VALUE])
   fun getSeriesThumbnail(
       @AuthenticationPrincipal principal: KomgaPrincipal,
       @PathVariable(name = "seriesId") id: Long
-  ): ByteArray =
-      seriesRepository.findByIdOrNull(id)?.let {
-        if (!principal.user.canAccessSeries(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+  ): ResponseEntity<ByteArray> =
+      seriesRepository.findByIdOrNull(id)?.let { series ->
+        if (!principal.user.canAccessSeries(series)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
 
-        it.books.firstOrNull()?.metadata?.thumbnail ?: throw ResponseStatusException(HttpStatus.NO_CONTENT)
+        val thumbnail = series.books.firstOrNull()?.metadata?.thumbnail
+        if (thumbnail != null) {
+          ResponseEntity.ok()
+              .cacheControl(thumbnailsCache)
+              .body(thumbnail)
+        } else throw ResponseStatusException(HttpStatus.NO_CONTENT)
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping("{seriesId}/books")
@@ -161,13 +172,17 @@ class SeriesController(
       @AuthenticationPrincipal principal: KomgaPrincipal,
       @PathVariable seriesId: Long,
       @PathVariable bookId: Long
-  ): ByteArray {
+  ): ResponseEntity<ByteArray> {
     seriesRepository.findByIdOrNull(seriesId)?.let {
       if (!principal.user.canAccessSeries(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return bookRepository.findByIdOrNull(bookId)?.let {
-      it.metadata.thumbnail ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+      if (it.metadata.thumbnail != null) {
+        ResponseEntity.ok()
+            .cacheControl(thumbnailsCache)
+            .body(it.metadata.thumbnail)
+      } else throw ResponseStatusException(HttpStatus.NO_CONTENT)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
