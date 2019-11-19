@@ -27,35 +27,43 @@ class SecurityConfiguration(
 ) : WebSecurityConfigurerAdapter() {
 
   override fun configure(http: HttpSecurity) {
+    // @formatter:off
+
     http
         .addFilterAt(LoggingBasicAuthFilter(this.authenticationManager()), BasicAuthenticationFilter::class.java)
-        .cors().and()
-        .csrf().disable()
+        .cors()
+        .and()
+          .csrf().disable()
+
         .authorizeRequests()
+          // unrestricted endpoints
+          .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
 
-        // unrestricted endpoints
-        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+          // restrict all actuator endpoints to ADMIN only
+          .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ADMIN")
 
-        // restrict all actuator endpoints to ADMIN only
-        .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ADMIN")
+          // restrict H2 console to ADMIN only
+          .requestMatchers(PathRequest.toH2Console()).hasRole("ADMIN")
 
-        // restrict H2 console to ADMIN only
-        .requestMatchers(PathRequest.toH2Console()).hasRole("ADMIN")
-
-        // all other endpoints are restricted to authenticated users
-        .antMatchers(
-            "/api/**",
-            "/opds/**"
-        ).hasRole("USER")
+          // all other endpoints are restricted to authenticated users
+          .antMatchers(
+              "/api/**",
+              "/opds/**"
+          ).hasRole("USER")
 
         // authorize frames for H2 console
-        .and().headers().frameOptions().sameOrigin()
+        .and()
+          .headers().frameOptions().sameOrigin()
 
-        .and().httpBasic()
+        .and()
+          .httpBasic()
 
-        .and().sessionManagement()
-        .maximumSessions(10)
-        .sessionRegistry(sessionRegistry())
+        .and()
+          .sessionManagement()
+          .maximumSessions(10)
+          .sessionRegistry(sessionRegistry())
+
+    // @formatter:on
   }
 
   override fun configure(web: WebSecurity) {
