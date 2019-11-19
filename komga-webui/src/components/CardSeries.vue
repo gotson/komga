@@ -1,15 +1,18 @@
 <template>
-  <v-card width="210px"
+  <v-card :width="width"
   >
     <v-img
       :src="getThumbnailUrl()"
       lazy-src="../assets/cover.svg"
-      max-width="210px"
-      height="300px"
+      aspect-ratio="0.7071"
     >
     </v-img>
 
-    <v-card-title>{{ series.name }}</v-card-title>
+    <v-card-subtitle class="text-truncate d-inline-block pa-2 pb-1"
+                     :style="{'max-width': width-16 + 'px'}"
+    >
+      {{ series.name }}
+    </v-card-subtitle>
 
   </v-card>
 </template>
@@ -28,6 +31,11 @@ export default Vue.extend({
     series: {
       type: Object as () => SeriesDto,
       required: true
+    },
+    width: {
+      type: [String, Number],
+      required: false,
+      default: 125
     }
   },
   methods: {
@@ -39,5 +47,4 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-
 </style>

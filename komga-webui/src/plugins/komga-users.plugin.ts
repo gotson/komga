@@ -59,6 +59,6 @@ export default {
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $$komgaUsers: KomgaUsersService;
+    $komgaUsers: KomgaUsersService
   }
 }

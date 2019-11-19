@@ -1,3 +1,4 @@
+import _, { LoDashStatic } from 'lodash'
 import Vue from 'vue'
 import Vuelidate from 'vuelidate'
 import { sync } from 'vuex-router-sync'
@@ -19,6 +20,8 @@ Vue.use(komgaSeries, { http: Vue.prototype.$http })
 Vue.use(komgaUsers, { store: store, http: Vue.prototype.$http })
 Vue.use(komgaLibraries, { store: store, http: Vue.prototype.$http })
 
+Vue.prototype.$_ = _
+
 Vue.config.productionTip = false
 
 sync(store, router)
@@ -29,3 +32,9 @@ new Vue({
   vuetify,
   render: h => h(App)
 }).$mount('#app')
+
+declare module 'vue/types/vue' {
+  interface Vue {
+    $_: LoDashStatic;
+  }
+}
