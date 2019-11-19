@@ -290,14 +290,16 @@ data class SeriesDto(
     val name: String,
     val url: String,
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    val lastModified: LocalDateTime?
+    val lastModified: LocalDateTime?,
+    val booksCount: Int
 )
 
 fun Series.toDto() = SeriesDto(
     id = id,
     name = name,
     url = url.toString(),
-    lastModified = lastModifiedDate?.toUTC()
+    lastModified = lastModifiedDate?.toUTC(),
+    booksCount = books.size
 )
 
 
@@ -314,7 +316,8 @@ data class BookDto(
 
 data class BookMetadataDto(
     val status: String,
-    val mediaType: String
+    val mediaType: String,
+    val pagesCount: Int
 )
 
 fun Book.toDto() =
@@ -327,7 +330,8 @@ fun Book.toDto() =
         size = fileSizeHumanReadable(),
         metadata = BookMetadataDto(
             status = metadata.status.toString(),
-            mediaType = metadata.mediaType ?: ""
+            mediaType = metadata.mediaType ?: "",
+            pagesCount = metadata.pages.size
         )
     )
 
