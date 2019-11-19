@@ -133,7 +133,7 @@ class SeriesController(
           ResponseEntity.ok()
               .cacheControl(thumbnailsCache)
               .body(thumbnail)
-        } else throw ResponseStatusException(HttpStatus.NO_CONTENT)
+        } else throw ResponseStatusException(HttpStatus.NOT_FOUND)
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping("{seriesId}/books")
@@ -182,7 +182,7 @@ class SeriesController(
         ResponseEntity.ok()
             .cacheControl(thumbnailsCache)
             .body(it.metadata.thumbnail)
-      } else throw ResponseStatusException(HttpStatus.NO_CONTENT)
+      } else throw ResponseStatusException(HttpStatus.NOT_FOUND)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 

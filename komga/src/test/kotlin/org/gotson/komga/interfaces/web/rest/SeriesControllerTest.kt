@@ -267,6 +267,19 @@ class SeriesControllerTest(
   inner class BookMetadataNotReady {
     @Test
     @WithMockCustomUser
+    fun `given book without thumbnail when getting series thumbnail then returns not found`() {
+      val series = makeSeries(
+          name = "series",
+          books = listOf(makeBook("1"))
+      ).also { it.library = library }
+      seriesRepository.save(series)
+
+      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/thumbnail"))
+          .andExpect(MockMvcResultMatchers.status().isNotFound)
+    }
+
+    @Test
+    @WithMockCustomUser
     fun `given book without thumbnail when getting book thumbnail then returns not found`() {
       val series = makeSeries(
           name = "series",
