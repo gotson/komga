@@ -2,5 +2,23 @@ interface SeriesDto {
   id: number,
   name: string,
   url: string,
-  lastModified: string
+  lastModified: string,
+  booksCount: number
+}
+
+interface BookDto {
+  id: number,
+  name: string,
+  url: string,
+  lastModified: string,
+  sizeBytes: number,
+  size: string,
+  metadata: BookMetadataDto,
+  seriesId?: number
+}
+
+interface BookMetadataDto {
+  status: string,
+  mediaType: string,
+  pagesCount: number
 }

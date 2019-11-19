@@ -1,5 +1,7 @@
 <template>
   <div>
+    <div class="display-1">{{ libraryName }}</div>
+
     <v-container fluid>
       <v-row justify="start">
 
@@ -7,7 +9,7 @@
                      :key="s.id"
                      justify-self="start"
                      :series="s"
-                     class="ma-3"
+                     class="ma-3 ml-2 mr-2"
         ></card-series>
 
       </v-row>
@@ -40,20 +42,25 @@ export default Vue.extend({
     return {
       series: [] as SeriesDto[],
       seriesPage: {} as Page<SeriesDto>,
-      infiniteId: +new Date()
+      infiniteId: +new Date(),
+      libraryName: ''
     }
   },
   props: {
     libraryId: {
       type: Number,
-      required: true
+      required: false
     }
+  },
+  created () {
+    this.libraryName = this.getLibraryName()
   },
   watch: {
     libraryId (val) {
       this.series = []
       this.seriesPage = {} as Page<SeriesDto>
       this.infiniteId += 1
+      this.libraryName = this.getLibraryName()
     }
   },
   mounted (): void {
@@ -71,11 +78,18 @@ export default Vue.extend({
       if (this.$_.get(this.seriesPage, 'last', false) !== true) {
         const pageRequest = {
           page: this.$_.get(this.seriesPage, 'number', -1) + 1,
-          size: 20
+          size: 50
         } as PageRequest
 
         this.seriesPage = await this.$komgaSeries.getSeries(this.libraryId, pageRequest)
         this.series = this.series.concat(this.seriesPage.content)
+      }
+    },
+    getLibraryName (): string {
+      if (this.libraryId) {
+        return this.$store.getters.getLibraryById(this.libraryId).name
+      } else {
+        return 'All libraries'
       }
     }
   }

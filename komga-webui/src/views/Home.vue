@@ -40,7 +40,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item>
+        <v-list-item :to="{name:'browse-libraries'}" exact>
           <v-list-item-icon>
             <v-icon>mdi-book-multiple</v-icon>
           </v-list-item-icon>
@@ -57,7 +57,7 @@
         <v-list-item v-for="(l, index) in libraries"
                      :key="index"
                      dense
-                     :to="{name:'browse-library', params: {libraryId: l.id}}"
+                     :to="{name:'browse-libraries', params: {libraryId: l.id}}"
         >
           <v-list-item-icon>
           </v-list-item-icon>

@@ -56,10 +56,16 @@ export default new Router({
           component: () => import(/* webpackChunkName: "account" */ './components/AccountSettings.vue')
         },
         {
-          path: '/library/:libraryId',
-          name: 'browse-library',
+          path: '/libraries/:libraryId?',
+          name: 'browse-libraries',
           component: () => import(/* webpackChunkName: "browse" */ './components/BrowseLibraries.vue'),
           props: (route) => ({ libraryId: Number(route.params.libraryId) })
+        },
+        {
+          path: '/series/:seriesId',
+          name: 'browse-series',
+          component: () => import(/* webpackChunkName: "browse" */ './components/BrowseSeries.vue'),
+          props: (route) => ({ seriesId: Number(route.params.seriesId) })
         }
       ]
     },

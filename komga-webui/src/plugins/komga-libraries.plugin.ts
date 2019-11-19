@@ -7,7 +7,12 @@ let service: KomgaLibrariesService
 
 const vuexModule: Module<any, any> = {
   state: {
-    libraries: {} as LibraryDto
+    libraries: [] as LibraryDto[]
+  },
+  getters: {
+    getLibraryById: (state) => (id: number) => {
+      return state.libraries.find((l: any) => l.id === id)
+    }
   },
   mutations: {
     setLibraries (state, libraries) {

@@ -1,5 +1,7 @@
 import _, { LoDashStatic } from 'lodash'
 import Vue from 'vue'
+// @ts-ignore
+import * as lineClamp from 'vue-line-clamp'
 import Vuelidate from 'vuelidate'
 import { sync } from 'vuex-router-sync'
 import App from './App.vue'
@@ -13,6 +15,7 @@ import router from './router'
 import store from './store'
 
 Vue.use(Vuelidate)
+Vue.use(lineClamp)
 
 Vue.use(httpPlugin)
 Vue.use(komgaFileSystem, { http: Vue.prototype.$http })

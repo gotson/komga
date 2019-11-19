@@ -15,6 +15,7 @@
     "qs": "^6.9.1",
     "vue": "^2.6.10",
     "vue-infinite-loading": "^2.4.4",
+    "vue-line-clamp": "^1.3.2",
     "vue-router": "^3.0.3",
     "vuelidate": "^0.7.4",
     "vuetify": "^2.1.10",

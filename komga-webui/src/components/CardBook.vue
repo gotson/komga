@@ -1,8 +1,6 @@
 <template>
   <v-card :width="width"
-          :to="{name:'browse-series', params: {seriesId: series.id}}"
   >
-
     <v-img
       :src="getThumbnailUrl()"
       lazy-src="../assets/cover.svg"
@@ -11,20 +9,21 @@
       <span class="white--text pa-1 px-2 subtitle-2"
             style="background: darkorange; position: absolute; right: 0"
       >
-        {{ series.booksCount }}
+        {{ getFormat() }}
       </span>
     </v-img>
 
     <v-card-subtitle class="pa-2 pb-1 text--primary"
                      v-line-clamp="2"
     >
-      {{ series.name }}
+      {{ book.name }}
     </v-card-subtitle>
 
     <v-card-text class="px-2"
     >
-      <span v-if="series.booksCount === 1">{{ series.booksCount }} book</span>
-      <span v-else>{{ series.booksCount }} books</span>
+      <div>{{ book.size }}</div>
+      <div v-if="book.metadata.pagesCount === 1">{{ book.metadata.pagesCount }} page</div>
+      <div v-else>{{ book.metadata.pagesCount }} pages</div>
     </v-card-text>
 
   </v-card>
@@ -34,15 +33,15 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'CardSeries',
+  name: 'CardBook',
   data: () => {
     return {
       baseURL: process.env.VUE_APP_KOMGA_API_URL ? process.env.VUE_APP_KOMGA_API_URL : window.location.origin
     }
   },
   props: {
-    series: {
-      type: Object as () => SeriesDto,
+    book: {
+      type: Object as () => BookDto,
       required: true
     },
     width: {
@@ -53,7 +52,19 @@ export default Vue.extend({
   },
   methods: {
     getThumbnailUrl () {
-      return `${this.baseURL}/api/v1/series/${this.series.id}/thumbnail`
+      return `${this.baseURL}/api/v1/series/${this.book.seriesId}/books/${this.book.id}/thumbnail`
+    },
+    getFormat () {
+      switch (this.book.metadata.mediaType) {
+        case 'application/x-rar-compressed':
+          return 'CBR'
+        case 'application/zip':
+          return 'CBZ'
+        case 'application/pdf':
+          return 'PDF'
+        default:
+          return 'UNKNOWN'
+      }
     }
   }
 })
