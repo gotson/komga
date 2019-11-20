@@ -44,6 +44,13 @@ class LibraryController(
         principal.user.sharedLibraries
       }.map { it.toDto() }
 
+  @GetMapping("{id}")
+  fun getOne(@AuthenticationPrincipal principal: KomgaPrincipal, @PathVariable id: Long): LibraryDto =
+      libraryRepository.findByIdOrNull(id)?.let {
+        if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+        it.toDto()
+      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
   @PostMapping
   @PreAuthorize("hasRole('ADMIN')")
   fun addOne(
