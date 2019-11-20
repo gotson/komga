@@ -12,6 +12,7 @@ import java.net.URL
 
 @Repository
 interface SeriesRepository : JpaRepository<Series, Long>, JpaSpecificationExecutor<Series> {
+  fun findByLibraryIn(libraries: Collection<Library>): List<Series>
   fun findByLibraryIn(libraries: Collection<Library>, sort: Sort): List<Series>
   fun findByLibraryIn(libraries: Collection<Library>, page: Pageable): Page<Series>
   fun findByLibraryId(libraryId: Long, sort: Sort): List<Series>

@@ -2,15 +2,17 @@ package org.gotson.komga.domain.persistence
 
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadata
+import org.gotson.komga.domain.model.Library
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
 import java.net.URL
 
 @Repository
-interface BookRepository : JpaRepository<Book, Long> {
+interface BookRepository : JpaRepository<Book, Long>, JpaSpecificationExecutor<Book> {
   @Query(
       value = "select * from Book b where b.series_id = ?1 order by b.index",
       countQuery = "select count(*) from Book where series_id = ?1",
@@ -27,4 +29,5 @@ interface BookRepository : JpaRepository<Book, Long> {
   fun findByUrl(url: URL): Book?
   fun findAllByMetadataStatus(status: BookMetadata.Status): List<Book>
   fun findAllByMetadataThumbnailIsNull(): List<Book>
+  fun findBySeriesLibraryIn(seriesLibrary: Collection<Library>, pageable: Pageable): Page<Book>
 }
