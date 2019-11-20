@@ -15,7 +15,7 @@
 
     <v-card-subtitle class="pa-2 pb-1 text--primary"
                      v-line-clamp="2"
-                     style="word-break: normal;"
+                     style="word-break: normal !important;"
                      :title="book.name"
     >
       {{ book.name }}
@@ -54,7 +54,7 @@ export default Vue.extend({
   },
   methods: {
     getThumbnailUrl () {
-      return `${this.baseURL}/api/v1/series/${this.book.seriesId}/books/${this.book.id}/thumbnail`
+      return `${this.baseURL}/api/v1/books/${this.book.id}/thumbnail`
     },
     getFormat () {
       switch (this.book.metadata.mediaType) {
