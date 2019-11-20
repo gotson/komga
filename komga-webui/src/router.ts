@@ -56,10 +56,13 @@ export default new Router({
           component: () => import(/* webpackChunkName: "account" */ './components/AccountSettings.vue')
         },
         {
-          path: '/libraries/:libraryId?',
+          path: '/libraries/:libraryId/:page?',
           name: 'browse-libraries',
           component: () => import(/* webpackChunkName: "browse" */ './components/BrowseLibraries.vue'),
-          props: (route) => ({ libraryId: Number(route.params.libraryId) })
+          props: (route) => (
+            {
+              libraryId: Number(route.params.libraryId)
+            })
         },
         {
           path: '/series/:seriesId',
@@ -76,5 +79,18 @@ export default new Router({
       component:
         () => import(/* webpackChunkName: "notfound" */ './views/PageNotFound.vue')
     }
-  ]
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(savedPosition)
+        }, 2000)
+      })
+    } else {
+      if (to.name !== from.name) {
+        return { x: 0, y: 0 }
+      }
+    }
+  }
 })

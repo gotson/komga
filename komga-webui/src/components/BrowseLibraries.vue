@@ -42,52 +42,85 @@ export default Vue.extend({
     return {
       libraryName: '',
       series: [] as SeriesDto[],
-      seriesPage: {} as Page<SeriesDto>,
+      lastPage: false,
+      page: null as number | null,
       infiniteId: +new Date()
     }
   },
   props: {
     libraryId: {
       type: Number,
-      required: false
+      default: 0
     }
   },
   async created () {
     this.libraryName = await this.getLibraryName()
   },
-  watch: {
-    async libraryId (val) {
-      this.libraryName = await this.getLibraryName()
+  beforeRouteUpdate (to, from, next) {
+    if (to.params.libraryId !== from.params.libraryId) {
+      this.libraryName = this.getLibraryNameLazy(Number(to.params.libraryId))
       this.series = []
-      this.seriesPage = {} as Page<SeriesDto>
+      this.lastPage = false
+      this.page = null
       this.infiniteId += 1
     }
-  },
-  mounted (): void {
+
+    next()
   },
   methods: {
     async infiniteHandler ($state: any) {
       await this.loadNextPage()
-      if (this.seriesPage.last) {
+      if (this.lastPage) {
         $state.complete()
       } else {
         $state.loaded()
       }
     },
     async loadNextPage () {
-      if (this.$_.get(this.seriesPage, 'last', false) !== true) {
+      if (!this.lastPage) {
+        let updateRoute = true
+        const pageSize = 50
         const pageRequest = {
-          page: this.$_.get(this.seriesPage, 'number', -1) + 1,
-          size: 50
+          page: 0,
+          size: pageSize
         } as PageRequest
 
-        this.seriesPage = await this.$komgaSeries.getSeries(this.libraryId, pageRequest)
-        this.series = this.series.concat(this.seriesPage.content)
+        if (this.page != null) {
+          pageRequest.page = this.page! + 1
+        } else if (this.$route.params.page) {
+          pageRequest.size = (Number(this.$route.params.page) + 1) * pageSize
+          updateRoute = false
+        }
+
+        let libraryId
+        if (this.libraryId !== 0) {
+          libraryId = this.libraryId
+        }
+        const newPage = await this.$komgaSeries.getSeries(libraryId, pageRequest)
+        this.lastPage = newPage.last
+        this.series = this.series.concat(newPage.content)
+
+        if (updateRoute) {
+          this.page = newPage.number
+          this.$router.replace({
+            name: this.$route.name,
+            params: { libraryId: this.$route.params.libraryId, page: newPage.number.toString() }
+          })
+        } else {
+          this.page = Number(this.$route.params.page)
+        }
       }
     },
     async getLibraryName (): Promise<string> {
-      if (this.libraryId) {
+      if (this.libraryId !== 0) {
         return (await this.$komgaLibraries.getLibrary(this.libraryId)).name
+      } else {
+        return 'All libraries'
+      }
+    },
+    getLibraryNameLazy (libraryId: any): string {
+      if (libraryId !== 0) {
+        return (this.$store.getters.getLibraryById(libraryId)).name
       } else {
         return 'All libraries'
       }

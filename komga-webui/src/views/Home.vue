@@ -2,7 +2,6 @@
   <div>
     <v-app-bar
       app
-      hide-on-scroll
     >
       <v-app-bar-nav-icon @click.stop="toggleDrawer"></v-app-bar-nav-icon>
 
@@ -40,7 +39,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="{name:'browse-libraries'}" exact>
+        <v-list-item :to="{name:'browse-libraries', params: {libraryId: 0}}">
           <v-list-item-icon>
             <v-icon>mdi-book-multiple</v-icon>
           </v-list-item-icon>
