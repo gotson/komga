@@ -78,7 +78,7 @@ export default Vue.extend({
       if (this.$_.get(this.booksPage, 'last', false) !== true) {
         const pageRequest = {
           page: this.$_.get(this.booksPage, 'number', -1) + 1,
-          size: 20
+          size: 50
         } as PageRequest
 
         this.booksPage = await this.$komgaSeries.getBooks(this.seriesId, pageRequest)
