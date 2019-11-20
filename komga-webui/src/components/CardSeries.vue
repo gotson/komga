@@ -17,6 +17,7 @@
 
     <v-card-subtitle class="pa-2 pb-1 text--primary"
                      v-line-clamp="2"
+                     style="word-break: break-word"
                      :title="series.name"
     >
       {{ series.name }}
