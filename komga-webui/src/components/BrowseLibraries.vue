@@ -40,10 +40,10 @@ export default Vue.extend({
   components: { CardSeries, InfiniteLoading },
   data: () => {
     return {
+      libraryName: '',
       series: [] as SeriesDto[],
       seriesPage: {} as Page<SeriesDto>,
-      infiniteId: +new Date(),
-      libraryName: ''
+      infiniteId: +new Date()
     }
   },
   props: {
@@ -52,15 +52,15 @@ export default Vue.extend({
       required: false
     }
   },
-  created () {
-    this.libraryName = this.getLibraryName()
+  async created () {
+    this.libraryName = await this.getLibraryName()
   },
   watch: {
-    libraryId (val) {
+    async libraryId (val) {
+      this.libraryName = await this.getLibraryName()
       this.series = []
       this.seriesPage = {} as Page<SeriesDto>
       this.infiniteId += 1
-      this.libraryName = this.getLibraryName()
     }
   },
   mounted (): void {
@@ -85,9 +85,9 @@ export default Vue.extend({
         this.series = this.series.concat(this.seriesPage.content)
       }
     },
-    getLibraryName (): string {
+    async getLibraryName (): Promise<string> {
       if (this.libraryId) {
-        return this.$store.getters.getLibraryById(this.libraryId).name
+        return (await this.$komgaLibraries.getLibrary(this.libraryId)).name
       } else {
         return 'All libraries'
       }

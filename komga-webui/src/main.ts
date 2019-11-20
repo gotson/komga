@@ -6,6 +6,7 @@ import Vuelidate from 'vuelidate'
 import { sync } from 'vuex-router-sync'
 import App from './App.vue'
 import httpPlugin from './plugins/http.plugin'
+import komgaBooks from './plugins/komga-books.plugin'
 import komgaFileSystem from './plugins/komga-filesystem.plugin'
 import komgaLibraries from './plugins/komga-libraries.plugin'
 import komgaSeries from './plugins/komga-series.plugin'
@@ -20,6 +21,7 @@ Vue.use(lineClamp)
 Vue.use(httpPlugin)
 Vue.use(komgaFileSystem, { http: Vue.prototype.$http })
 Vue.use(komgaSeries, { http: Vue.prototype.$http })
+Vue.use(komgaBooks, { http: Vue.prototype.$http })
 Vue.use(komgaUsers, { store: store, http: Vue.prototype.$http })
 Vue.use(komgaLibraries, { store: store, http: Vue.prototype.$http })
 

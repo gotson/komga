@@ -21,6 +21,18 @@ export default class KomgaLibrariesService {
     }
   }
 
+  async getLibrary (libraryId: number): Promise<LibraryDto> {
+    try {
+      return (await this.http.get(`${API_LIBRARIES}/${libraryId}`)).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve library'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
   async postLibrary (library: LibraryCreationDto): Promise<LibraryDto> {
     try {
       return (await this.http.post(API_LIBRARIES, library)).data
