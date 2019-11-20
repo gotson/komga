@@ -44,7 +44,10 @@ export default class KomgaSeriesService {
 
   async getBooks (seriesId: number, pageRequest?: PageRequest): Promise<Page<BookDto>> {
     try {
-      const data = (await this.http.get(`${API_SERIES}/${seriesId}/books`)).data
+      const data = (await this.http.get(`${API_SERIES}/${seriesId}/books`, {
+        params: { ...pageRequest },
+        paramsSerializer: params => qs.stringify(params, { indices: false })
+      })).data
       data.content.forEach(function (b: any) {
         b.seriesId = seriesId
       })
