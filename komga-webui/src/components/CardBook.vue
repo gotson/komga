@@ -15,6 +15,7 @@
 
     <v-card-subtitle class="pa-2 pb-1 text--primary"
                      v-line-clamp="2"
+                     :title="book.name"
     >
       {{ book.name }}
     </v-card-subtitle>
