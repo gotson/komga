@@ -5,6 +5,8 @@
     >
       <v-app-bar-nav-icon @click.stop="toggleDrawer"></v-app-bar-nav-icon>
 
+      <v-spacer/>
+
       <v-tabs v-if="tabs.length > 0">
         <v-tab v-for="(t, index) in tabs" :key="index"
                :id="t.id"
@@ -106,9 +108,7 @@
     </v-navigation-drawer>
 
     <v-content>
-      <v-container fluid>
-        <router-view/>
-      </v-container>
+      <router-view/>
     </v-content>
 
     <library-delete-dialog v-model="modalDeleteLibrary"

@@ -1,8 +1,10 @@
 <template>
   <div>
-    <div class="display-1">{{ $_.get(series, 'name', '') }}</div>
+    <v-toolbar flat color="grey lighten-4">
+      <v-toolbar-title>{{ $_.get(series, 'name', '') }}</v-toolbar-title>
+    </v-toolbar>
 
-    <v-container fluid>
+    <v-container fluid class="mx-3">
       <v-row justify="start">
 
         <card-book v-for="b in books"

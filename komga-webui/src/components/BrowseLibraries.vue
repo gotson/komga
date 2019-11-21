@@ -1,8 +1,10 @@
 <template>
   <div>
-    <div class="display-1">{{ libraryName }}</div>
+    <v-toolbar flat color="grey lighten-4">
+      <v-toolbar-title>{{ libraryName }}</v-toolbar-title>
+    </v-toolbar>
 
-    <v-container fluid>
+    <v-container fluid class="mx-3">
       <v-row justify="start">
 
         <card-series v-for="s in series"
