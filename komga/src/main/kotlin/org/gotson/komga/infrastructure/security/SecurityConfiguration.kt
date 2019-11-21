@@ -36,9 +36,6 @@ class SecurityConfiguration(
           .csrf().disable()
 
         .authorizeRequests()
-          // unrestricted endpoints
-          .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-
           // restrict all actuator endpoints to ADMIN only
           .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ADMIN")
 
@@ -70,6 +67,10 @@ class SecurityConfiguration(
     web.ignoring()
         .antMatchers(
             "/error**",
+            "/css/**",
+            "/img/**",
+            "/js/**",
+            "/favicon.ico",
             "/",
             "/index.html")
   }
