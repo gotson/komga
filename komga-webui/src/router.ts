@@ -85,7 +85,7 @@ export default new Router({
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve(savedPosition)
-        }, 2000)
+        }, 1000)
       })
     } else {
       if (to.name !== from.name) {
