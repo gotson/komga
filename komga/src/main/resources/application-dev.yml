@@ -1,6 +1,3 @@
-logging.level:
-  web: DEBUG
-#  org.springframework.security.web.FilterChainProxy: DEBUG
 komga:
   threads:
     parse: 1
@@ -11,9 +8,16 @@ komga:
 spring:
   profiles:
     include: flyway
+  jpa:
+    properties:
+      hibernate:
+        generate_statistics: true
 logging:
   file:
     max-history: 1
     name: komga-dev.log
   level:
-    org.gotson.komga: debug
+    org.gotson.komga: DEBUG
+    web: DEBUG
+    org.hibernate.stat: DEBUG
+    #  org.springframework.security.web.FilterChainProxy: DEBUG
