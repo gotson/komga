@@ -1,5 +1,6 @@
 <template>
   <v-card :width="width"
+          :to="{name:'browse-book', params: {bookId: book.id}}"
   >
     <v-img
       :src="getThumbnailUrl()"

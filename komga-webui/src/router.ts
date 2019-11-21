@@ -58,14 +58,20 @@ export default new Router({
         {
           path: '/libraries/:libraryId/:page?',
           name: 'browse-libraries',
-          component: () => import(/* webpackChunkName: "browse" */ './components/BrowseLibraries.vue'),
+          component: () => import(/* webpackChunkName: "browse-libraries" */ './components/BrowseLibraries.vue'),
           props: (route) => ({ libraryId: Number(route.params.libraryId) })
         },
         {
           path: '/series/:seriesId/:page?',
           name: 'browse-series',
-          component: () => import(/* webpackChunkName: "browse" */ './components/BrowseSeries.vue'),
+          component: () => import(/* webpackChunkName: "browse-series" */ './components/BrowseSeries.vue'),
           props: (route) => ({ seriesId: Number(route.params.seriesId) })
+        },
+        {
+          path: '/book/:bookId',
+          name: 'browse-book',
+          component: () => import(/* webpackChunkName: "browse-book" */ './components/BrowseBook.vue'),
+          props: (route) => ({ bookId: Number(route.params.bookId) })
         }
       ]
     },
