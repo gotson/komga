@@ -6,6 +6,11 @@ spring:
   h2:
     console:
       enabled: true
+  resources:
+    cache:
+      cachecontrol:
+        cache-public: true
+        max-age: 365d
 
 management:
   endpoints.web.exposure.include: "*"
