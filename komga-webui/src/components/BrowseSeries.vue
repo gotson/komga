@@ -42,7 +42,8 @@ export default Vue.extend({
     return {
       series: {} as SeriesDto,
       books: [] as BookDto[],
-      booksPage: {} as Page<BookDto>,
+      lastPage: false,
+      page: null as number | null,
       infiniteId: +new Date()
     }
   },
@@ -55,34 +56,55 @@ export default Vue.extend({
       required: true
     }
   },
-  watch: {
-    async seriesId (val) {
+  async beforeRouteUpdate (to, from, next) {
+    if (to.params.seriesId !== from.params.seriesId) {
       this.series = await this.$komgaSeries.getOneSeries(this.seriesId)
       this.books = []
-      this.booksPage = {} as Page<BookDto>
+      this.lastPage = false
+      this.page = null
       this.infiniteId += 1
     }
-  },
-  mounted (): void {
+
+    next()
   },
   methods: {
     async infiniteHandler ($state: any) {
       await this.loadNextPage()
-      if (this.booksPage.last) {
+      if (this.lastPage) {
         $state.complete()
       } else {
         $state.loaded()
       }
     },
     async loadNextPage () {
-      if (this.$_.get(this.booksPage, 'last', false) !== true) {
+      if (!this.lastPage) {
+        let updateRoute = true
+        const pageSize = 50
         const pageRequest = {
-          page: this.$_.get(this.booksPage, 'number', -1) + 1,
-          size: 50
+          page: 0,
+          size: pageSize
         } as PageRequest
 
-        this.booksPage = await this.$komgaSeries.getBooks(this.seriesId, pageRequest)
-        this.books = this.books.concat(this.booksPage.content)
+        if (this.page != null) {
+          pageRequest.page = this.page! + 1
+        } else if (this.$route.params.page) {
+          pageRequest.size = (Number(this.$route.params.page) + 1) * pageSize
+          updateRoute = false
+        }
+
+        const newPage = await this.$komgaSeries.getBooks(this.seriesId, pageRequest)
+        this.lastPage = newPage.last
+        this.books = this.books.concat(newPage.content)
+
+        if (updateRoute) {
+          this.page = newPage.number
+          this.$router.replace({
+            name: this.$route.name,
+            params: { seriesId: this.$route.params.seriesId, page: newPage.number.toString() }
+          })
+        } else {
+          this.page = Number(this.$route.params.page)
+        }
       }
     }
   }

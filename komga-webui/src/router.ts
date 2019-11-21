@@ -59,13 +59,10 @@ export default new Router({
           path: '/libraries/:libraryId/:page?',
           name: 'browse-libraries',
           component: () => import(/* webpackChunkName: "browse" */ './components/BrowseLibraries.vue'),
-          props: (route) => (
-            {
-              libraryId: Number(route.params.libraryId)
-            })
+          props: (route) => ({ libraryId: Number(route.params.libraryId) })
         },
         {
-          path: '/series/:seriesId',
+          path: '/series/:seriesId/:page?',
           name: 'browse-series',
           component: () => import(/* webpackChunkName: "browse" */ './components/BrowseSeries.vue'),
           props: (route) => ({ seriesId: Number(route.params.seriesId) })
