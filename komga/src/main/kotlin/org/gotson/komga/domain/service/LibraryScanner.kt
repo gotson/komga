@@ -52,7 +52,6 @@ class LibraryScanner(
           // if series already exists, update it
           if (newSeries.fileLastModified.truncatedTo(ChronoUnit.MILLIS) != existingSeries.fileLastModified.truncatedTo(ChronoUnit.MILLIS)) {
             logger.info { "Series changed on disk, updating: $newSeries" }
-            existingSeries.name = newSeries.name
             existingSeries.fileLastModified = newSeries.fileLastModified
 
             // update list of books with existing entities if they exist
@@ -62,7 +61,6 @@ class LibraryScanner(
               if (newBook.fileLastModified.truncatedTo(ChronoUnit.MILLIS) != existingBook.fileLastModified.truncatedTo(ChronoUnit.MILLIS)) {
                 logger.info { "Book changed on disk, update and reset metadata status: $newBook" }
                 existingBook.fileLastModified = newBook.fileLastModified
-                existingBook.name = newBook.name
                 existingBook.fileSize = newBook.fileSize
                 existingBook.metadata.reset()
               }

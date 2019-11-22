@@ -110,7 +110,7 @@ class LibraryScannerTest(
     val library = libraryRepository.save(makeLibrary())
 
     val series = makeSeries(name = "series", books = listOf(makeBook("book1")))
-    val seriesWithUpdatedBooks = makeSeries(name = "series", books = listOf(makeBook("book1updated", "file:/book1")))
+    val seriesWithUpdatedBooks = makeSeries(name = "series", books = listOf(makeBook("book1")))
 
     every { mockScanner.scanRootFolder(any()) }
         .returnsMany(
@@ -130,7 +130,7 @@ class LibraryScannerTest(
     assertThat(allSeries).hasSize(1)
     assertThat(allSeries.first().lastModifiedDate).isNotEqualTo(allSeries.first().createdDate)
     assertThat(allSeries.first().books).hasSize(1)
-    assertThat(allSeries.first().books.map { it.name }).containsExactly("book1updated")
+    assertThat(allSeries.first().books.map { it.name }).containsExactly("book1")
     assertThat(allSeries.first().books.first().lastModifiedDate).isNotEqualTo(allSeries.first().books.first().createdDate)
   }
 

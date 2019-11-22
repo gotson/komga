@@ -13,7 +13,6 @@ import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
-import javax.persistence.OrderColumn
 import javax.persistence.Table
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
@@ -47,7 +46,6 @@ class Series(
   lateinit var library: Library
 
   @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "series")
-  @OrderColumn(name = "index")
   private var _books: MutableList<Book> = mutableListOf()
 
   var books: List<Book>
@@ -56,6 +54,7 @@ class Series(
       _books.clear()
       value.forEach { it.series = this }
       _books.addAll(value.sortedWith(compareBy(natSortComparator) { it.name }))
+      _books.forEachIndexed { index, book -> book.number = index + 1F }
     }
 
   init {

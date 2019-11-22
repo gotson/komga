@@ -28,6 +28,7 @@ data class BookDto(
     val id: Long,
     val name: String,
     val url: String,
+    val number: Float,
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     val lastModified: LocalDateTime?,
     val sizeBytes: Long,
@@ -46,6 +47,7 @@ fun Book.toDto() =
         id = id,
         name = name,
         url = url.toURI().path,
+        number = number,
         lastModified = lastModifiedDate?.toUTC(),
         sizeBytes = fileSize,
         size = fileSizeHumanReadable(),

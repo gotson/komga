@@ -131,10 +131,17 @@ class SeriesController(
       if (!principal.user.canAccessSeries(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+    val pageRequest = PageRequest.of(
+        page.pageNumber,
+        page.pageSize,
+        if (page.sort.isSorted) page.sort
+        else Sort.by(Sort.Order.asc("number"))
+    )
+
     return if (readyFilter) {
-      bookRepository.findAllByMetadataStatusAndSeriesId(BookMetadata.Status.READY.name, id, page)
+      bookRepository.findAllByMetadataStatusAndSeriesId(BookMetadata.Status.READY, id, pageRequest)
     } else {
-      bookRepository.findAllBySeriesId(id, page)
+      bookRepository.findAllBySeriesId(id, pageRequest)
     }.map { it.toDto() }
   }
 }

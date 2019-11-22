@@ -53,6 +53,9 @@ class Book(
       field = value
     }
 
+  @Column(name = "number", nullable = false, columnDefinition = "REAL")
+  var number: Float = 0F
+
   fun fileName(): String = FilenameUtils.getName(url.toString())
 
   fun fileExtension(): String = FilenameUtils.getExtension(url.toString())
