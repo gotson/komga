@@ -1,6 +1,10 @@
 <template>
   <div>
-    <v-toolbar flat color="grey lighten-4">
+    <v-toolbar flat
+               color="grey lighten-4"
+               class="sticky-bar"
+               :style="barStyle"
+    >
       <v-toolbar-title>{{ libraryName }}</v-toolbar-title>
     </v-toolbar>
 
@@ -47,6 +51,15 @@ export default Vue.extend({
       lastPage: false,
       page: null as number | null,
       infiniteId: +new Date()
+    }
+  },
+  computed: {
+    barStyle (): any {
+      if (this.$vuetify.breakpoint.name === 'xs') {
+        return { 'top': '56px' }
+      } else {
+        return { 'top': '64px' }
+      }
     }
   },
   props: {
@@ -132,5 +145,9 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-
+.sticky-bar {
+  position: -webkit-sticky;
+  position: sticky;
+  z-index: 2
+}
 </style>

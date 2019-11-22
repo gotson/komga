@@ -1,6 +1,10 @@
 <template>
   <div>
-    <v-toolbar flat color="grey lighten-4">
+    <v-toolbar flat
+               color="grey lighten-4"
+               class="sticky-bar"
+               :style="barStyle"
+    >
       <v-toolbar-title>{{ $_.get(series, 'name', '') }}</v-toolbar-title>
     </v-toolbar>
 
@@ -51,6 +55,15 @@ export default Vue.extend({
   },
   async created () {
     this.series = await this.$komgaSeries.getOneSeries(this.seriesId)
+  },
+  computed: {
+    barStyle (): any {
+      if (this.$vuetify.breakpoint.name === 'xs') {
+        return { 'top': '56px' }
+      } else {
+        return { 'top': '64px' }
+      }
+    }
   },
   props: {
     seriesId: {
@@ -114,5 +127,10 @@ export default Vue.extend({
 </script>
 
 <style scoped>
+.sticky-bar {
+  position: -webkit-sticky;
+  position: sticky;
+  z-index: 2
+}
 
 </style>
