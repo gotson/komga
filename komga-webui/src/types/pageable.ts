@@ -32,3 +32,13 @@ interface PageRequest {
   page?: number,
   sort?: string[]
 }
+
+interface SortOption {
+  name: string,
+  key: string
+}
+
+interface SortActive {
+  key: string,
+  order: string
+}

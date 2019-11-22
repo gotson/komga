@@ -5,7 +5,44 @@
                class="sticky-bar"
                :style="barStyle"
     >
-      <v-toolbar-title>{{ libraryName }}</v-toolbar-title>
+      <v-toolbar-title>
+        <span>{{ libraryName }}</span>
+        <span class="ml-4 badge-count"
+              v-if="totalElements"
+        >
+          {{ totalElements }}
+        </span>
+      </v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-toolbar-items>
+        <v-menu offset-y>
+          <template v-slot:activator="{on}">
+            <v-btn icon v-on="on">
+              <v-icon :color="sortCustom ? 'secondary' : null"
+              >mdi-sort-variant
+              </v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item v-for="(item, index) in sortOptions"
+                         :key="index"
+                         @click="setSort(item)"
+            >
+              <v-list-item-icon>
+                <v-icon color="secondary" v-if="item.key === sortActive.key && sortActive.order === 'asc'">
+                  mdi-chevron-up
+                </v-icon>
+                <v-icon color="secondary" v-if="item.key === sortActive.key && sortActive.order === 'desc'">
+                  mdi-chevron-down
+                </v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>{{ item.name }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-toolbar-items>
     </v-toolbar>
 
     <v-container fluid class="mx-3">
@@ -50,10 +87,17 @@ export default Vue.extend({
       series: [] as SeriesDto[],
       lastPage: false,
       page: null as number | null,
-      infiniteId: +new Date()
+      totalElements: null as number | null,
+      infiniteId: +new Date(),
+      sortOptions: [{ name: 'Name', key: 'name' }, { name: 'Date added', key: 'createdDate' }] as SortOption[],
+      sortActive: { key: 'name', order: 'asc' } as SortActive as SortActive,
+      sortDefault: { key: 'name', order: 'asc' } as SortActive as SortActive
     }
   },
   computed: {
+    sortCustom (): boolean {
+      return this.sortActive.key !== this.sortDefault.key || this.sortActive.order !== this.sortDefault.order
+    },
     barStyle (): any {
       if (this.$vuetify.breakpoint.name === 'xs') {
         return { 'top': '56px' }
@@ -74,15 +118,32 @@ export default Vue.extend({
   beforeRouteUpdate (to, from, next) {
     if (to.params.libraryId !== from.params.libraryId) {
       this.libraryName = this.getLibraryNameLazy(Number(to.params.libraryId))
-      this.series = []
-      this.lastPage = false
-      this.page = null
-      this.infiniteId += 1
+      this.sortActive = this.$_.clone(this.sortDefault)
+      this.resetData()
     }
 
     next()
   },
   methods: {
+    resetData () {
+      this.series = []
+      this.lastPage = false
+      this.totalElements = null
+      this.page = null
+      this.infiniteId += 1
+    },
+    setSort (sort: SortOption) {
+      if (this.sortActive.key === sort.key) {
+        if (this.sortActive.order === 'desc') {
+          this.sortActive.order = 'asc'
+        } else {
+          this.sortActive.order = 'desc'
+        }
+      } else {
+        this.sortActive = { key: sort.key, order: 'desc' }
+      }
+      this.resetData()
+    },
     async infiniteHandler ($state: any) {
       await this.loadNextPage()
       if (this.lastPage) {
@@ -107,12 +168,17 @@ export default Vue.extend({
           updateRoute = false
         }
 
+        if (this.sortActive != null) {
+          pageRequest.sort = [`${this.sortActive.key},${this.sortActive.order}`]
+        }
+
         let libraryId
         if (this.libraryId !== 0) {
           libraryId = this.libraryId
         }
         const newPage = await this.$komgaSeries.getSeries(libraryId, pageRequest)
         this.lastPage = newPage.last
+        this.totalElements = newPage.totalElements
         this.series = this.series.concat(newPage.content)
 
         if (updateRoute) {
@@ -145,9 +211,6 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.sticky-bar {
-  position: -webkit-sticky;
-  position: sticky;
-  z-index: 2
-}
+@import "../assets/css/badge.css";
+@import "../assets/css/sticky-bar.css";
 </style>

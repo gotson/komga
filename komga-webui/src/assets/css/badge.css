@@ -1,0 +1,10 @@
+.badge-count {
+    background-color: #E0E0E0;
+    border-radius: 4px;
+    color: black;
+    display: inline-block;
+    padding: 1px 8px;
+    text-align: center;
+    font-size: .8em;
+    font-weight: normal;
+}

@@ -8,9 +8,9 @@
       <v-toolbar-title>
         <span v-if="series.name">{{ series.name }}</span>
         <span class="ml-4 badge-count"
-              v-if="series.booksCount"
+              v-if="totalElements"
         >
-          {{ series.booksCount }}
+          {{ totalElements }}
         </span>
       </v-toolbar-title>
 
@@ -58,6 +58,7 @@ export default Vue.extend({
       books: [] as BookDto[],
       lastPage: false,
       page: null as number | null,
+      totalElements: null as number | null,
       infiniteId: +new Date()
     }
   },
@@ -82,15 +83,19 @@ export default Vue.extend({
   async beforeRouteUpdate (to, from, next) {
     if (to.params.seriesId !== from.params.seriesId) {
       this.series = await this.$komgaSeries.getOneSeries(this.seriesId)
-      this.books = []
-      this.lastPage = false
-      this.page = null
-      this.infiniteId += 1
+      this.resetData()
     }
 
     next()
   },
   methods: {
+    resetData () {
+      this.books = []
+      this.lastPage = false
+      this.totalElements = null
+      this.page = null
+      this.infiniteId += 1
+    },
     async infiniteHandler ($state: any) {
       await this.loadNextPage()
       if (this.lastPage) {
@@ -117,6 +122,7 @@ export default Vue.extend({
 
         const newPage = await this.$komgaSeries.getBooks(this.seriesId, pageRequest)
         this.lastPage = newPage.last
+        this.totalElements = newPage.totalElements
         this.books = this.books.concat(newPage.content)
 
         if (updateRoute) {
@@ -135,20 +141,6 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.sticky-bar {
-  position: -webkit-sticky;
-  position: sticky;
-  z-index: 2
-}
-
-.badge-count {
-  background-color: #E0E0E0;
-  border-radius: 4px;
-  color: black;
-  display: inline-block;
-  padding: 1px 8px;
-  text-align: center;
-  font-size: .8em;
-  font-weight: normal;
-}
+@import "../assets/css/badge.css";
+@import "../assets/css/sticky-bar.css";
 </style>
