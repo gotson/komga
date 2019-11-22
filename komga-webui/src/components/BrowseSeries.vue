@@ -5,7 +5,15 @@
                class="sticky-bar"
                :style="barStyle"
     >
-      <v-toolbar-title>{{ $_.get(series, 'name', '') }}</v-toolbar-title>
+      <v-toolbar-title>
+        <span v-if="series.name">{{ series.name }}</span>
+        <span class="ml-4 badge-count"
+              v-if="series.booksCount"
+        >
+          {{ series.booksCount }}
+        </span>
+      </v-toolbar-title>
+
     </v-toolbar>
 
     <v-container fluid class="mx-3">
@@ -133,4 +141,14 @@ export default Vue.extend({
   z-index: 2
 }
 
+.badge-count {
+  background-color: #E0E0E0;
+  border-radius: 4px;
+  color: black;
+  display: inline-block;
+  padding: 1px 8px;
+  text-align: center;
+  font-size: .8em;
+  font-weight: normal;
+}
 </style>
