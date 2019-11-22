@@ -14,6 +14,35 @@
         </span>
       </v-toolbar-title>
 
+      <v-spacer></v-spacer>
+
+      <v-toolbar-items>
+        <v-menu offset-y>
+          <template v-slot:activator="{on}">
+            <v-btn icon v-on="on">
+              <v-icon :color="sortCustom ? 'secondary' : null"
+              >mdi-sort-variant
+              </v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item v-for="(item, index) in sortOptions"
+                         :key="index"
+                         @click="setSort(item)"
+            >
+              <v-list-item-icon>
+                <v-icon color="secondary" v-if="item.key === sortActive.key && sortActive.order === 'asc'">
+                  mdi-chevron-up
+                </v-icon>
+                <v-icon color="secondary" v-if="item.key === sortActive.key && sortActive.order === 'desc'">
+                  mdi-chevron-down
+                </v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>{{ item.name }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-toolbar-items>
     </v-toolbar>
 
     <v-container fluid class="mx-3">
@@ -59,13 +88,19 @@ export default Vue.extend({
       lastPage: false,
       page: null as number | null,
       totalElements: null as number | null,
-      infiniteId: +new Date()
+      infiniteId: +new Date(),
+      sortOptions: [{ name: 'Number', key: 'number' }, { name: 'Date added', key: 'createdDate' }] as SortOption[],
+      sortActive: { key: 'number', order: 'asc' } as SortActive as SortActive,
+      sortDefault: { key: 'number', order: 'asc' } as SortActive as SortActive
     }
   },
   async created () {
     this.series = await this.$komgaSeries.getOneSeries(this.seriesId)
   },
   computed: {
+    sortCustom (): boolean {
+      return this.sortActive.key !== this.sortDefault.key || this.sortActive.order !== this.sortDefault.order
+    },
     barStyle (): any {
       if (this.$vuetify.breakpoint.name === 'xs') {
         return { 'top': '56px' }
@@ -83,18 +118,31 @@ export default Vue.extend({
   async beforeRouteUpdate (to, from, next) {
     if (to.params.seriesId !== from.params.seriesId) {
       this.series = await this.$komgaSeries.getOneSeries(this.seriesId)
-      this.resetData()
+      this.sortActive = this.$_.clone(this.sortDefault)
+      this.reloadData()
     }
 
     next()
   },
   methods: {
-    resetData () {
+    reloadData () {
       this.books = []
       this.lastPage = false
       this.totalElements = null
       this.page = null
       this.infiniteId += 1
+    },
+    setSort (sort: SortOption) {
+      if (this.sortActive.key === sort.key) {
+        if (this.sortActive.order === 'desc') {
+          this.sortActive.order = 'asc'
+        } else {
+          this.sortActive.order = 'desc'
+        }
+      } else {
+        this.sortActive = { key: sort.key, order: 'desc' }
+      }
+      this.reloadData()
     },
     async infiniteHandler ($state: any) {
       await this.loadNextPage()
@@ -118,6 +166,10 @@ export default Vue.extend({
         } else if (this.$route.params.page) {
           pageRequest.size = (Number(this.$route.params.page) + 1) * pageSize
           updateRoute = false
+        }
+
+        if (this.sortActive != null) {
+          pageRequest.sort = [`${this.sortActive.key},${this.sortActive.order}`]
         }
 
         const newPage = await this.$komgaSeries.getBooks(this.seriesId, pageRequest)

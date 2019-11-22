@@ -19,7 +19,7 @@
                      style="word-break: normal !important;"
                      :title="book.name"
     >
-      {{ book.name }}
+      #{{ book.number }} - {{ book.name }}
     </v-card-subtitle>
 
     <v-card-text class="px-2"

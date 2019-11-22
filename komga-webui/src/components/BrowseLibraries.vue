@@ -119,13 +119,13 @@ export default Vue.extend({
     if (to.params.libraryId !== from.params.libraryId) {
       this.libraryName = this.getLibraryNameLazy(Number(to.params.libraryId))
       this.sortActive = this.$_.clone(this.sortDefault)
-      this.resetData()
+      this.reloadData()
     }
 
     next()
   },
   methods: {
-    resetData () {
+    reloadData () {
       this.series = []
       this.lastPage = false
       this.totalElements = null
@@ -142,7 +142,7 @@ export default Vue.extend({
       } else {
         this.sortActive = { key: sort.key, order: 'desc' }
       }
-      this.resetData()
+      this.reloadData()
     },
     async infiniteHandler ($state: any) {
       await this.loadNextPage()
