@@ -4,7 +4,7 @@
   >
 
     <v-img
-      :src="getThumbnailUrl()"
+      :src="thumbnailUrl"
       lazy-src="../assets/cover.svg"
       aspect-ratio="0.7071"
     >
@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue, { PropType } from 'vue'
 
 export default Vue.extend({
   name: 'CardSeries',
@@ -44,7 +44,7 @@ export default Vue.extend({
   },
   props: {
     series: {
-      type: Object as () => SeriesDto,
+      type: Object as PropType<SeriesDto>,
       required: true
     },
     width: {
@@ -53,8 +53,8 @@ export default Vue.extend({
       default: 150
     }
   },
-  methods: {
-    getThumbnailUrl () {
+  computed: {
+    thumbnailUrl (): string {
       return `${this.baseURL}/api/v1/series/${this.series.id}/thumbnail`
     }
   }

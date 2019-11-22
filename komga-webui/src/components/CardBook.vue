@@ -3,14 +3,14 @@
           :to="{name:'browse-book', params: {bookId: book.id}}"
   >
     <v-img
-      :src="getThumbnailUrl()"
+      :src="thumbnailUrl"
       lazy-src="../assets/cover.svg"
       aspect-ratio="0.7071"
     >
       <span class="white--text pa-1 px-2 subtitle-2"
-            style="background: darkorange; position: absolute; right: 0"
+            :style="{background: format.color, position: 'absolute', right: 0}"
       >
-        {{ getFormat() }}
+        {{ format.type }}
       </span>
     </v-img>
 
@@ -33,7 +33,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue, { PropType } from 'vue'
+
+interface BookFormat {
+  type: string,
+  color: string
+}
 
 export default Vue.extend({
   name: 'CardBook',
@@ -44,7 +49,7 @@ export default Vue.extend({
   },
   props: {
     book: {
-      type: Object as () => BookDto,
+      type: Object as PropType<BookDto>,
       required: true
     },
     width: {
@@ -53,20 +58,20 @@ export default Vue.extend({
       default: 150
     }
   },
-  methods: {
-    getThumbnailUrl () {
+  computed: {
+    thumbnailUrl (): string {
       return `${this.baseURL}/api/v1/books/${this.book.id}/thumbnail`
     },
-    getFormat () {
+    format (): BookFormat {
       switch (this.book.metadata.mediaType) {
         case 'application/x-rar-compressed':
-          return 'CBR'
+          return { type: 'CBR', color: '#03A9F4' }
         case 'application/zip':
-          return 'CBZ'
+          return { type: 'CBZ', color: '#4CAF50' }
         case 'application/pdf':
-          return 'PDF'
+          return { type: 'PDF', color: '#FF5722' }
         default:
-          return 'UNKNOWN'
+          return { type: '?', color: '#000000' }
       }
     }
   }
