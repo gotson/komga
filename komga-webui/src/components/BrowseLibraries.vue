@@ -14,7 +14,7 @@
         </span>
       </v-toolbar-title>
 
-      <v-spacer></v-spacer>
+      <v-spacer/>
 
       <v-toolbar-items>
         <v-menu offset-y>
@@ -48,47 +48,46 @@
     <v-container fluid class="mx-3">
       <v-row justify="start">
 
-        <card-series v-for="s in series"
-                     :key="s.id"
-                     justify-self="start"
-                     :series="s"
-                     class="ma-3 ml-2 mr-2"
-        ></card-series>
+        <v-skeleton-loader v-for="(s, i) in series"
+                           :key="i"
+                           width="150"
+                           :loading="s === null"
+                           type="card, text"
+                           class="ma-3 ml-2 mr-2"
+                           v-intersect="onCardIntersect"
+                           :data-index="i"
+        >
+          <card-series justify-self="start"
+                       :series="s"
+          />
+        </v-skeleton-loader>
 
       </v-row>
     </v-container>
-
-    <infinite-loading @infinite="infiniteHandler"
-                      :identifier="infiniteId"
-    >
-      <div slot="spinner">
-        <v-progress-circular
-          indeterminate
-          color="primary"
-        ></v-progress-circular>
-      </div>
-      <div slot="no-more"></div>
-      <div slot="no-results"></div>
-    </infinite-loading>
   </div>
 </template>
 
 <script lang="ts">
 import CardSeries from '@/components/CardSeries.vue'
 import Vue from 'vue'
-import InfiniteLoading from 'vue-infinite-loading'
+
+enum LoadState {
+  Loaded,
+  NotLoaded,
+  Loading
+}
 
 export default Vue.extend({
   name: 'BrowseLibraries',
-  components: { CardSeries, InfiniteLoading },
+  components: { CardSeries },
   data: () => {
     return {
       libraryName: '',
       series: [] as SeriesDto[],
-      lastPage: false,
-      page: null as number | null,
+      pagesState: [] as LoadState[],
+      pageSize: 20,
+      visibleCards: [] as number[],
       totalElements: null as number | null,
-      infiniteId: +new Date(),
       sortOptions: [{ name: 'Name', key: 'name' }, { name: 'Date added', key: 'createdDate' }] as SortOption[],
       sortActive: { key: 'name', order: 'asc' } as SortActive as SortActive,
       sortDefault: { key: 'name', order: 'asc' } as SortActive as SortActive
@@ -115,22 +114,60 @@ export default Vue.extend({
   async created () {
     this.libraryName = await this.getLibraryName()
   },
+  mounted () {
+    // fill series skeletons if an index is provided, so scroll position can be restored
+    if (this.$route.params.index) {
+      this.series = Array(Number(this.$route.params.index)).fill(null)
+    } else { // else fill one page of skeletons
+      this.series = Array(this.pageSize).fill(null)
+    }
+
+    let pageToLoad = 0
+    if (this.$route.params.index) {
+      // floor down to get a zero-based page number
+      pageToLoad = Math.floor(Number(this.$route.params.index) / this.pageSize)
+    }
+    this.loadInitialData(this.libraryId, pageToLoad)
+  },
   beforeRouteUpdate (to, from, next) {
     if (to.params.libraryId !== from.params.libraryId) {
       this.libraryName = this.getLibraryNameLazy(Number(to.params.libraryId))
       this.sortActive = this.$_.clone(this.sortDefault)
-      this.reloadData()
+      this.reloadData(Number(to.params.libraryId))
     }
 
     next()
   },
   methods: {
-    reloadData () {
-      this.series = []
-      this.lastPage = false
+    async onCardIntersect (entries: any, observer: any, isIntersecting: boolean) {
+      const elementIndex = Number(entries[0].target.dataset['index'])
+      if (isIntersecting) {
+        this.visibleCards.push(elementIndex)
+        const pageNumber = Math.floor(elementIndex / this.pageSize)
+        if (this.pagesState[pageNumber] === undefined || this.pagesState[pageNumber] === LoadState.NotLoaded) {
+          this.pagesState[pageNumber] = LoadState.Loading
+          this.processPage(await this.loadPage(pageNumber, this.libraryId))
+        }
+      } else {
+        this.$_.pull(this.visibleCards, elementIndex)
+      }
+
+      const max = this.$_.max(this.visibleCards)
+      const index = (max === undefined ? 0 : max).toString()
+
+      if (this.$route.params.index !== index) {
+        this.$router.replace({
+          name: this.$route.name,
+          params: { libraryId: this.$route.params.libraryId, index: index }
+        })
+      }
+    },
+    reloadData (libraryId: number) {
+      this.series = Array(this.pageSize).fill(null)
       this.totalElements = null
-      this.page = null
-      this.infiniteId += 1
+      this.pagesState = []
+      this.visibleCards = []
+      this.loadInitialData(libraryId)
     },
     setSort (sort: SortOption) {
       if (this.sortActive.key === sort.key) {
@@ -142,55 +179,38 @@ export default Vue.extend({
       } else {
         this.sortActive = { key: sort.key, order: 'desc' }
       }
-      this.reloadData()
+      this.reloadData(this.libraryId)
     },
-    async infiniteHandler ($state: any) {
-      await this.loadNextPage()
-      if (this.lastPage) {
-        $state.complete()
-      } else {
-        $state.loaded()
-      }
+    async loadInitialData (libraryId: number, pageToLoad: number = 0) {
+      const page = await this.loadPage(pageToLoad, libraryId)
+
+      // initialize page data
+      this.totalElements = page.totalElements
+      this.series = Array(this.totalElements).fill(null)
+      this.pagesState = Array(page.totalPages).fill(LoadState.NotLoaded)
+
+      // process page data
+      this.processPage(page)
     },
-    async loadNextPage () {
-      if (!this.lastPage) {
-        let updateRoute = true
-        const pageSize = 50
-        const pageRequest = {
-          page: 0,
-          size: pageSize
-        } as PageRequest
+    async loadPage (page: number, libraryId: number): Promise<Page<SeriesDto>> {
+      const pageRequest = {
+        page: page,
+        size: this.pageSize
+      } as PageRequest
 
-        if (this.page != null) {
-          pageRequest.page = this.page! + 1
-        } else if (this.$route.params.page) {
-          pageRequest.size = (Number(this.$route.params.page) + 1) * pageSize
-          updateRoute = false
-        }
-
-        if (this.sortActive != null) {
-          pageRequest.sort = [`${this.sortActive.key},${this.sortActive.order}`]
-        }
-
-        let libraryId
-        if (this.libraryId !== 0) {
-          libraryId = this.libraryId
-        }
-        const newPage = await this.$komgaSeries.getSeries(libraryId, pageRequest)
-        this.lastPage = newPage.last
-        this.totalElements = newPage.totalElements
-        this.series = this.series.concat(newPage.content)
-
-        if (updateRoute) {
-          this.page = newPage.number
-          this.$router.replace({
-            name: this.$route.name,
-            params: { libraryId: this.$route.params.libraryId, page: newPage.number.toString() }
-          })
-        } else {
-          this.page = Number(this.$route.params.page)
-        }
+      if (this.sortActive != null) {
+        pageRequest.sort = [`${this.sortActive.key},${this.sortActive.order}`]
       }
+
+      let requestLibraryId
+      if (libraryId !== 0) {
+        requestLibraryId = libraryId
+      }
+      return this.$komgaSeries.getSeries(requestLibraryId, pageRequest)
+    },
+    processPage (page: Page<SeriesDto>) {
+      this.series.splice(page.number * page.size, page.size, ...page.content)
+      this.pagesState[page.number] = LoadState.Loaded
     },
     async getLibraryName (): Promise<string> {
       if (this.libraryId !== 0) {

@@ -56,7 +56,7 @@ export default new Router({
           component: () => import(/* webpackChunkName: "account" */ './components/AccountSettings.vue')
         },
         {
-          path: '/libraries/:libraryId/:page?',
+          path: '/libraries/:libraryId/:index?',
           name: 'browse-libraries',
           component: () => import(/* webpackChunkName: "browse-libraries" */ './components/BrowseLibraries.vue'),
           props: (route) => ({ libraryId: Number(route.params.libraryId) })
@@ -86,9 +86,7 @@ export default new Router({
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {
       return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve(savedPosition)
-        }, 1000)
+        resolve(savedPosition)
       })
     } else {
       if (to.name !== from.name) {
