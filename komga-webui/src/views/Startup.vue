@@ -17,7 +17,7 @@ export default Vue.extend({
     try {
       await this.$store.dispatch('getMe')
       await this.$store.dispatch('getLibraries')
-      this.$router.push({ name: 'home' })
+      this.$router.back()
     } catch (e) {
       this.$router.push({ name: 'login' })
     }
