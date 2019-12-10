@@ -5,7 +5,8 @@ export default {
   install (Vue: typeof _Vue) {
     Vue.prototype.$http = axios.create({
       baseURL: process.env.VUE_APP_KOMGA_API_URL ? process.env.VUE_APP_KOMGA_API_URL : window.location.origin,
-      withCredentials: true
+      withCredentials: true,
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
     } as AxiosRequestConfig)
   }
 }

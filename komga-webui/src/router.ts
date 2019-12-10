@@ -11,7 +11,7 @@ const adminGuard = (to: any, from: any, next: any) => {
   else next()
 }
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -76,11 +76,19 @@ export default new Router({
       ]
     },
     {
+      path: '/startup',
+      name: 'startup',
+      component: () => import(/* webpackChunkName: "startup" */ './views/Startup.vue')
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import(/* webpackChunkName: "login" */ './views/Login.vue')
+    },
+    {
       path: '*',
-      name:
-        'notfound',
-      component:
-        () => import(/* webpackChunkName: "notfound" */ './views/PageNotFound.vue')
+      name: 'notfound',
+      component: () => import(/* webpackChunkName: "notfound" */ './views/PageNotFound.vue')
     }
   ],
   scrollBehavior (to, from, savedPosition) {
@@ -93,3 +101,10 @@ export default new Router({
     }
   }
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'startup' && to.name !== 'login' && !lStore.getters.authenticated) next({ name: 'startup' })
+  else next()
+})
+
+export default router

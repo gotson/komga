@@ -9,6 +9,31 @@ export default class KomgaUsersService {
     this.http = http
   }
 
+  async getMeWithAuth (login: string, password: string): Promise<UserDto> {
+    try {
+      return (await this.http.get(
+        `${API_USERS}/me`,
+        {
+          auth: {
+            username: login,
+            password: password
+          }
+        }
+      )).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to login'
+      if (e.response) {
+        if (e.response.status === 401) {
+          msg = 'Invalid authentication'
+        }
+      }
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
   async getMe (): Promise<UserDto> {
     try {
       return (await this.http.get(`${API_USERS}/me`)).data

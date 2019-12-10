@@ -112,7 +112,7 @@ export default Vue.extend({
     }
   },
   async created () {
-    this.libraryName = await this.getLibraryName()
+    this.libraryName = await this.getLibraryNameLazy(this.libraryId)
   },
   mounted () {
     // fill series skeletons if an index is provided, so scroll position can be restored
@@ -225,13 +225,6 @@ export default Vue.extend({
       }
       this.series.splice(page.number * page.size, page.size, ...page.content)
       this.pagesState[page.number] = LoadState.Loaded
-    },
-    async getLibraryName (): Promise<string> {
-      if (this.libraryId !== 0) {
-        return (await this.$komgaLibraries.getLibrary(this.libraryId)).name
-      } else {
-        return 'All libraries'
-      }
     },
     getLibraryNameLazy (libraryId: any): string {
       if (libraryId !== 0) {

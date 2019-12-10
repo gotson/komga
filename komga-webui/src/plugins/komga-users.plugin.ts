@@ -11,7 +11,8 @@ const vuexModule: Module<any, any> = {
     users: [] as UserWithSharedLibrariesDto[]
   },
   getters: {
-    meAdmin: state => state.me.hasOwnProperty('roles') && state.me.roles.includes('ADMIN')
+    meAdmin: state => state.me.hasOwnProperty('roles') && state.me.roles.includes('ADMIN'),
+    authenticated: state => state.me.hasOwnProperty('id')
   },
   mutations: {
     setMe (state, user: UserDto) {
@@ -22,6 +23,16 @@ const vuexModule: Module<any, any> = {
     }
   },
   actions: {
+    async getMeWithAuth ({ commit }, { login, password }: { login: string, password: string }) {
+      commit('setMe', await service.getMeWithAuth(login, password))
+    },
+    async logout ({ commit }) {
+      try {
+        await service.getMeWithAuth('', '')
+      } catch (e) {
+      }
+      commit('setMe', {})
+    },
     async getMe ({ commit }) {
       commit('setMe', await service.getMe())
     },

@@ -96,14 +96,14 @@
           </v-list-item-content>
         </v-list-item>
 
-        <!--        <v-list-item @click="logout">-->
-        <!--          <v-list-item-icon>-->
-        <!--            <v-icon>mdi-power</v-icon>-->
-        <!--          </v-list-item-icon>-->
-        <!--          <v-list-item-content>-->
-        <!--            <v-list-item-title>Log out</v-list-item-title>-->
-        <!--          </v-list-item-content>-->
-        <!--        </v-list-item>-->
+        <v-list-item @click="logout">
+          <v-list-item-icon>
+            <v-icon>mdi-power</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Log out</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -114,20 +114,6 @@
     <library-delete-dialog v-model="modalDeleteLibrary"
                            :library="libraryToDelete">
     </library-delete-dialog>
-
-    <v-snackbar
-      v-model="snackbar"
-      bottom
-      color="error"
-    >
-      {{ snackText }}
-      <v-btn
-        text
-        @click="snackbar = false"
-      >
-        Close
-      </v-btn>
-    </v-snackbar>
   </div>
 </template>
 
@@ -142,9 +128,7 @@ export default Vue.extend({
     drawerVisible: true,
     modalAddLibrary: false,
     modalDeleteLibrary: false,
-    libraryToDelete: {} as LibraryDto,
-    snackbar: false,
-    snackText: ''
+    libraryToDelete: {} as LibraryDto
   }),
   computed: {
     libraries (): LibraryDto[] {
@@ -165,27 +149,17 @@ export default Vue.extend({
       return []
     }
   },
-  async mounted () {
-    try {
-      await this.$store.dispatch('getMe')
-      await this.$store.dispatch('getLibraries')
-    } catch (e) {
-      this.showSnack(e.message)
-    }
-  },
   methods: {
     toggleDrawer () {
       this.drawerVisible = !this.drawerVisible
-    },
-    showSnack (message: string) {
-      this.snackText = message
-      this.snackbar = true
     },
     promptDeleteLibrary (library: LibraryDto) {
       this.libraryToDelete = library
       this.modalDeleteLibrary = true
     },
     logout () {
+      this.$store.dispatch('logout')
+      this.$router.push({ name: 'login' })
     }
   }
 })

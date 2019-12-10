@@ -98,13 +98,6 @@ export default Vue.extend({
       this.dialogReset(val)
     }
   },
-  async mounted () {
-    try {
-      await this.$store.dispatch('getLibraries')
-    } catch (e) {
-      this.showSnack(e.message)
-    }
-  },
   computed: {
     libraries (): LibraryDto[] {
       return this.$store.state.komgaLibraries.libraries
