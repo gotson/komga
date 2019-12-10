@@ -18,7 +18,7 @@ const router = new Router({
     {
       path: '/',
       name: 'home',
-      redirect: { name: 'welcome' },
+      redirect: { name: 'dashboard' },
       component: () => import(/* webpackChunkName: "home" */ './views/Home.vue'),
       children: [
         {
@@ -31,6 +31,11 @@ const router = new Router({
           path: '/welcome',
           name: 'welcome',
           component: () => import(/* webpackChunkName: "welcome" */ './components/Welcome.vue')
+        },
+        {
+          path: '/dashboard',
+          name: 'dashboard',
+          component: () => import(/* webpackChunkName: "dashboard" */ './components/Dashboard.vue')
         },
         {
           path: '/settings',
