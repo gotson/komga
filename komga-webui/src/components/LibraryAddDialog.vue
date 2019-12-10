@@ -11,7 +11,7 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
           <v-toolbar-title>{{ dialogTitle }}</v-toolbar-title>
-          <v-spacer></v-spacer>
+          <v-spacer/>
           <v-toolbar-items>
             <v-btn text color="primary" @click="dialogConfirm">{{ confirmText }}</v-btn>
           </v-toolbar-items>
@@ -30,7 +30,7 @@
                                 :error-messages="getErrors('name')"
                                 @input="$v.form.name.$touch()"
                                 @blur="$v.form.name.$touch()"
-                  ></v-text-field>
+                  />
                 </v-col>
               </v-row>
 
@@ -41,7 +41,7 @@
                     :path.sync="form.path"
                     confirm-text="Choose"
                     dialog-title="Library's root folder"
-                  ></file-browser-dialog>
+                  />
 
                   <v-text-field v-model="form.path"
                                 label="Root folder"
@@ -49,7 +49,7 @@
                                 :error-messages="getErrors('path')"
                                 @input="$v.form.path.$touch()"
                                 @blur="$v.form.path.$touch()"
-                  ></v-text-field>
+                  />
                 </v-col>
                 <v-col cols="4">
                   <v-btn @click="modalFileBrowser = true">Browse</v-btn>
@@ -61,7 +61,7 @@
         </v-card-text>
 
         <v-card-actions class="hidden-xs-only">
-          <v-spacer></v-spacer>
+          <v-spacer/>
           <v-btn text @click="dialogCancel">Cancel</v-btn>
           <v-btn text class="primary--text" @click="dialogConfirm">{{ confirmText }}</v-btn>
         </v-card-actions>
@@ -135,10 +135,9 @@ export default Vue.extend({
       this.snackbar = true
     },
     dialogCancel () {
-      this.$router.push({ name: 'home' })
+      this.$router.back()
     },
     dialogConfirm () {
-      // this.$router.push({ name: 'home' })
       this.addLibrary()
     },
     validateLibrary () {
