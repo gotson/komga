@@ -15,3 +15,8 @@ interface BookMetadataDto {
   mediaType: string,
   pagesCount: number
 }
+
+interface BookFormat {
+  type: string,
+  color: string
+}

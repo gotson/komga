@@ -1,10 +1,36 @@
 <template>
   <v-container fluid class="ma-3">
-    <div>{{ $_.get(book, 'name', '') }}</div>
+    <v-row v-if="!$_.isEmpty(book)">
+      <v-col cols="2">
+        <v-img :src="thumbnailUrl"
+               lazy-src="../assets/cover.svg"
+               height="300"
+               max-width="212"
+        >
+          <span class="white--text pa-1 px-2 subtitle-2"
+                :style="{background: format.color, position: 'absolute', right: 0}"
+          >
+            {{ format.type }}
+          </span>
+        </v-img>
+        <v-btn :href="fileUrl" class="mt-2">
+          <v-icon left>mdi-file-download</v-icon>
+          Download
+        </v-btn>
+      </v-col>
+      <v-col cols="10">
+        <div class="title">#{{ book.number }} - {{ book.name }}</div>
+        <div class="caption">Filepath: {{ book.url }}</div>
+        <div>{{ book.size }}</div>
+        <div>{{ book.metadata.pagesCount }} pages</div>
+
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script lang="ts">
+import { getBookFormatFromMediaType } from '@/functions/book-format'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -31,21 +57,15 @@ export default Vue.extend({
 
     next()
   },
-  methods: {
-    getThumbnailUrl () {
+  computed: {
+    thumbnailUrl (): string {
       return `${this.baseURL}/api/v1/books/${this.book.id}/thumbnail`
     },
-    getFormat () {
-      switch (this.book.metadata.mediaType) {
-        case 'application/x-rar-compressed':
-          return 'CBR'
-        case 'application/zip':
-          return 'CBZ'
-        case 'application/pdf':
-          return 'PDF'
-        default:
-          return 'UNKNOWN'
-      }
+    fileUrl (): string {
+      return `${this.baseURL}/api/v1/books/${this.book.id}/file`
+    },
+    format (): BookFormat {
+      return getBookFormatFromMediaType(this.book.metadata.mediaType)
     }
   }
 })
