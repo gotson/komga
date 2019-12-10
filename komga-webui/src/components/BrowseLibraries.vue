@@ -55,7 +55,7 @@
                            justify-self="start"
                            :loading="s === null"
                            type="card, text"
-                           class="ma-3 ml-2 mr-2"
+                           class="ma-3 mx-2"
                            v-intersect="onCardIntersect"
                            :data-index="i"
         >
