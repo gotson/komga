@@ -8,7 +8,7 @@
         <span>Email</span>
         <v-text-field readonly
                       v-model="me.email"
-        ></v-text-field>
+        />
       </v-col>
     </v-row>
     <v-row align="center">
@@ -32,7 +32,7 @@
 
     <password-change-dialog v-model="modalPasswordChange"
                             :user="me"
-    ></password-change-dialog>
+    />
 
   </v-container>
 </template>

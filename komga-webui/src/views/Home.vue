@@ -3,7 +3,7 @@
     <v-app-bar
       app
     >
-      <v-app-bar-nav-icon @click.stop="toggleDrawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click.stop="toggleDrawer"/>
 
       <v-spacer/>
 
@@ -19,7 +19,7 @@
     <v-navigation-drawer app v-model="drawerVisible">
       <v-list-item>
         <v-list-item-avatar>
-          <v-img src="../assets/logo.svg"></v-img>
+          <v-img src="../assets/logo.svg"/>
         </v-list-item-avatar>
 
         <v-list-item-content>
@@ -29,7 +29,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-divider></v-divider>
+      <v-divider/>
 
       <v-list>
         <v-list-item :to="{name: 'home'}" exact>

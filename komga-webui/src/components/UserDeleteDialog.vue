@@ -27,7 +27,7 @@
         </v-card-text>
 
         <v-card-actions>
-          <v-spacer></v-spacer>
+          <v-spacer/>
           <v-btn text @click="dialogCancel">Cancel</v-btn>
           <v-btn text class="red--text"
                  @click="dialogConfirm"

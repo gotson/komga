@@ -19,8 +19,8 @@
                 <v-checkbox v-model="allLibraries"
                             label="All libraries"
                             hide-details
-                            class="mt-0 mb-0 pt-0 pb-0"
-                ></v-checkbox>
+                            class="my-0 py-0"
+                />
               </v-col>
             </v-row>
 
@@ -31,8 +31,8 @@
                               :label="l.name"
                               :value="l.id"
                               hide-details
-                              class="mt-0 mb-0 pt-0 pb-0"
-                  ></v-checkbox>
+                              class="my-0 py-0"
+                  />
                 </v-col>
               </v-row>
             </template>
@@ -40,7 +40,7 @@
         </v-card-text>
 
         <v-card-actions>
-          <v-spacer></v-spacer>
+          <v-spacer/>
           <v-btn text @click="dialogCancel">Cancel</v-btn>
           <v-btn text class="primary--text"
                  @click="dialogConfirm"

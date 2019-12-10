@@ -11,7 +11,7 @@
         <v-text-field
           v-model="selectedPath"
           readonly
-        ></v-text-field>
+        />
 
         <v-list elevation="3" dense>
 
@@ -29,7 +29,7 @@
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-divider></v-divider>
+            <v-divider/>
           </template>
 
           <div v-for="(d, index) in directoryListing.directories" :key="index">
@@ -47,13 +47,13 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-divider v-if="index !== directoryListing.directories.length-1"></v-divider>
+            <v-divider v-if="index !== directoryListing.directories.length-1"/>
           </div>
         </v-list>
       </v-card-text>
 
       <v-card-actions>
-        <v-spacer></v-spacer>
+        <v-spacer/>
         <v-btn text @click="dialogCancel">Cancel</v-btn>
         <v-btn text class="primary--text"
                @click="dialogConfirm"

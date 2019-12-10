@@ -46,7 +46,7 @@
                 </v-list-item-action>
               </v-list-item>
 
-              <v-divider v-if="index !== users.length-1"></v-divider>
+              <v-divider v-if="index !== users.length-1"/>
             </div>
           </v-list>
 
@@ -59,13 +59,13 @@
 
           <user-shared-libraries-edit-dialog v-model="modalUserSharedLibraries"
                                              :user="userToEditSharedLibraries"
-          ></user-shared-libraries-edit-dialog>
+          />
 
           <user-delete-dialog v-model="modalDeleteUser"
                               :user="userToDelete">
           </user-delete-dialog>
 
-          <router-view></router-view>
+          <router-view/>
         </div>
       </v-col>
     </v-row>

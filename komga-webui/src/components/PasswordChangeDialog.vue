@@ -20,7 +20,7 @@
                                 :error-messages="getErrors('newPassword')"
                                 @input="$v.form.newPassword.$touch()"
                                 @blur="$v.form.newPassword.$touch()"
-                  ></v-text-field>
+                  />
                 </v-col>
               </v-row>
 
@@ -35,7 +35,7 @@
                                 :error-messages="getErrors('repeatPassword')"
                                 @input="$v.form.repeatPassword.$touch()"
                                 @blur="$v.form.repeatPassword.$touch()"
-                  ></v-text-field>
+                  />
                 </v-col>
               </v-row>
             </v-container>
@@ -43,7 +43,7 @@
         </v-card-text>
 
         <v-card-actions>
-          <v-spacer></v-spacer>
+          <v-spacer/>
           <v-btn text @click="dialogCancel">Cancel</v-btn>
           <v-btn text class="primary--text"
                  @click="dialogConfirm"

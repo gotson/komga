@@ -11,7 +11,7 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
           <v-toolbar-title>{{ dialogTitle }}</v-toolbar-title>
-          <v-spacer></v-spacer>
+          <v-spacer/>
           <v-toolbar-items>
             <v-btn text color="primary" @click="dialogConfirm">{{ confirmText }}</v-btn>
           </v-toolbar-items>
@@ -29,7 +29,7 @@
                                 label="Email"
                                 :error-messages="getErrors('email')"
                                 @blur="$v.form.email.$touch()"
-                  ></v-text-field>
+                  />
                 </v-col>
               </v-row>
 
@@ -44,7 +44,7 @@
                                 :error-messages="getErrors('password')"
                                 @input="$v.form.password.$touch()"
                                 @blur="$v.form.password.$touch()"
-                  ></v-text-field>
+                  />
                 </v-col>
               </v-row>
 
@@ -54,7 +54,7 @@
                   <v-checkbox
                     v-model="form.admin"
                     label="Administrator"
-                  ></v-checkbox>
+                  />
                 </v-col>
               </v-row>
             </v-container>
@@ -63,7 +63,7 @@
         </v-card-text>
 
         <v-card-actions class="hidden-xs-only">
-          <v-spacer></v-spacer>
+          <v-spacer/>
           <v-btn text @click="dialogCancel">Cancel</v-btn>
           <v-btn text class="primary--text" @click="dialogConfirm">{{ confirmText }}</v-btn>
         </v-card-actions>
