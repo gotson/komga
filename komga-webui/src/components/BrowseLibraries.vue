@@ -69,13 +69,8 @@
 
 <script lang="ts">
 import CardSeries from '@/components/CardSeries.vue'
+import { LoadState } from '@/types/common'
 import Vue from 'vue'
-
-enum LoadState {
-  Loaded,
-  NotLoaded,
-  Loading
-}
 
 export default Vue.extend({
   name: 'BrowseLibraries',
