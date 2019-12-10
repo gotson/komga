@@ -1,5 +1,5 @@
 <template>
-  <v-layout justify-center>
+  <v-row justify="center">
     <div class="text-center">
       <v-avatar color="grey lighten-3" size="400">
         <div>
@@ -10,7 +10,7 @@
         </div>
       </v-avatar>
     </div>
-  </v-layout>
+  </v-row>
 </template>
 
 <script lang="ts">
