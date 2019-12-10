@@ -72,7 +72,7 @@
             </v-tooltip>
           </v-list-item-content>
           <v-list-item-action v-if="isAdmin">
-            <v-btn icon @click="promptDeleteLibrary(l)">
+            <v-btn icon @click.prevent="promptDeleteLibrary(l)">
               <v-icon>mdi-delete</v-icon>
             </v-btn>
           </v-list-item-action>
