@@ -14,7 +14,7 @@
         </span>
       </v-toolbar-title>
 
-      <v-spacer></v-spacer>
+      <v-spacer/>
 
       <v-toolbar-items>
         <v-menu offset-y>
@@ -48,54 +48,50 @@
     <v-container fluid class="mx-3">
       <v-row justify="start">
 
-        <card-book v-for="b in books"
-                   :key="b.id"
-                   justify-self="start"
-                   :book="b"
-                   class="ma-3 ml-2 mr-2"
-        ></card-book>
+        <v-skeleton-loader v-for="(b, i) in books"
+                           :key="i"
+                           width="150"
+                           height="328.13"
+                           justify-self="start"
+                           :loading="b === null"
+                           type="card, text"
+                           class="ma-3 ml-2 mr-2"
+                           v-intersect="onCardIntersect"
+                           :data-index="i"
+        >
+          <card-book :book="b"/>
+        </v-skeleton-loader>
 
       </v-row>
     </v-container>
-
-    <infinite-loading @infinite="infiniteHandler"
-                      :identifier="infiniteId"
-    >
-      <div slot="spinner">
-        <v-progress-circular
-          indeterminate
-          color="primary"
-        ></v-progress-circular>
-      </div>
-      <div slot="no-more"></div>
-      <div slot="no-results"></div>
-    </infinite-loading>
   </div>
 </template>
 
 <script lang="ts">
 import CardBook from '@/components/CardBook.vue'
 import Vue from 'vue'
-import InfiniteLoading from 'vue-infinite-loading'
+
+enum LoadState {
+  Loaded,
+  NotLoaded,
+  Loading
+}
 
 export default Vue.extend({
   name: 'BrowseSeries',
-  components: { CardBook, InfiniteLoading },
+  components: { CardBook },
   data: () => {
     return {
       series: {} as SeriesDto,
       books: [] as BookDto[],
-      lastPage: false,
-      page: null as number | null,
+      pagesState: [] as LoadState[],
+      pageSize: 20,
+      visibleCards: [] as number[],
       totalElements: null as number | null,
-      infiniteId: +new Date(),
       sortOptions: [{ name: 'Number', key: 'number' }, { name: 'Date added', key: 'createdDate' }] as SortOption[],
-      sortActive: { key: 'number', order: 'asc' } as SortActive as SortActive,
+      sortActive: {} as SortActive as SortActive,
       sortDefault: { key: 'number', order: 'asc' } as SortActive as SortActive
     }
-  },
-  async created () {
-    this.series = await this.$komgaSeries.getOneSeries(this.seriesId)
   },
   computed: {
     sortCustom (): boolean {
@@ -115,22 +111,73 @@ export default Vue.extend({
       required: true
     }
   },
+  async created () {
+    this.series = await this.$komgaSeries.getOneSeries(this.seriesId)
+  },
+  mounted () {
+    // fill books skeletons if an index is provided, so scroll position can be restored
+    if (this.$route.params.index) {
+      this.books = Array(Number(this.$route.params.index)).fill(null)
+    } else { // else fill one page of skeletons
+      this.books = Array(this.pageSize).fill(null)
+    }
+
+    // restore sort from query param
+    this.sortActive = this.parseQuerySortOrDefault(this.$route.query.sort)
+  },
   async beforeRouteUpdate (to, from, next) {
     if (to.params.seriesId !== from.params.seriesId) {
       this.series = await this.$komgaSeries.getOneSeries(this.seriesId)
-      this.sortActive = this.$_.clone(this.sortDefault)
+      this.sortActive = this.parseQuerySortOrDefault(to.query.sort)
       this.reloadData()
     }
 
     next()
   },
   methods: {
+    parseQuerySortOrDefault (querySort: any): SortActive {
+      let customSort = null
+      if (querySort) {
+        const split = querySort.split(',')
+        if (split.length === 2 && this.$_.map(this.sortOptions, 'key').includes(split[0]) && ['asc', 'desc'].includes(split[1])) {
+          customSort = { key: split[0], order: split[1] }
+        }
+      }
+      if (customSort !== null) {
+        return customSort
+      } else {
+        return this.$_.clone(this.sortDefault)
+      }
+    },
+    async onCardIntersect (entries: any, observer: any, isIntersecting: boolean) {
+      const elementIndex = Number(entries[0].target.dataset['index'])
+      if (isIntersecting) {
+        this.visibleCards.push(elementIndex)
+        const pageNumber = Math.floor(elementIndex / this.pageSize)
+        if (this.pagesState[pageNumber] === undefined || this.pagesState[pageNumber] === LoadState.NotLoaded) {
+          this.processPage(await this.loadPage(pageNumber))
+        }
+      } else {
+        this.$_.pull(this.visibleCards, elementIndex)
+      }
+
+      const max = this.$_.max(this.visibleCards)
+      const index = (max === undefined ? 0 : max).toString()
+
+      if (this.$route.params.index !== index) {
+        this.$router.replace({
+          name: this.$route.name,
+          params: { seriesId: this.$route.params.seriesId, index: index },
+          query: { sort: `${this.sortActive.key},${this.sortActive.order}` }
+        })
+      }
+    },
     reloadData () {
-      this.books = []
-      this.lastPage = false
       this.totalElements = null
-      this.page = null
-      this.infiniteId += 1
+      this.pagesState = []
+      this.visibleCards = []
+      this.books = Array(this.pageSize).fill(null)
+      this.loadInitialData()
     },
     setSort (sort: SortOption) {
       if (this.sortActive.key === sort.key) {
@@ -142,51 +189,37 @@ export default Vue.extend({
       } else {
         this.sortActive = { key: sort.key, order: 'desc' }
       }
+      this.$router.replace({
+        name: this.$route.name,
+        params: { seriesId: this.$route.params.seriesId, index: this.$route.params.index },
+        query: { sort: `${this.sortActive.key},${this.sortActive.order}` }
+      })
       this.reloadData()
     },
-    async infiniteHandler ($state: any) {
-      await this.loadNextPage()
-      if (this.lastPage) {
-        $state.complete()
-      } else {
-        $state.loaded()
-      }
+    async loadInitialData (pageToLoad: number = 0) {
+      this.processPage(await this.loadPage(pageToLoad))
     },
-    async loadNextPage () {
-      if (!this.lastPage) {
-        let updateRoute = true
-        const pageSize = 50
-        const pageRequest = {
-          page: 0,
-          size: pageSize
-        } as PageRequest
+    async loadPage (page: number): Promise<Page<BookDto>> {
+      this.pagesState[page] = LoadState.Loading
+      const pageRequest = {
+        page: page,
+        size: this.pageSize
+      } as PageRequest
 
-        if (this.page != null) {
-          pageRequest.page = this.page! + 1
-        } else if (this.$route.params.page) {
-          pageRequest.size = (Number(this.$route.params.page) + 1) * pageSize
-          updateRoute = false
-        }
-
-        if (this.sortActive != null) {
-          pageRequest.sort = [`${this.sortActive.key},${this.sortActive.order}`]
-        }
-
-        const newPage = await this.$komgaSeries.getBooks(this.seriesId, pageRequest)
-        this.lastPage = newPage.last
-        this.totalElements = newPage.totalElements
-        this.books = this.books.concat(newPage.content)
-
-        if (updateRoute) {
-          this.page = newPage.number
-          this.$router.replace({
-            name: this.$route.name,
-            params: { seriesId: this.$route.params.seriesId, page: newPage.number.toString() }
-          })
-        } else {
-          this.page = Number(this.$route.params.page)
-        }
+      if (this.sortActive != null) {
+        pageRequest.sort = [`${this.sortActive.key},${this.sortActive.order}`]
       }
+      return this.$komgaSeries.getBooks(this.seriesId, pageRequest)
+    },
+    processPage (page: Page<BookDto>) {
+      if (this.totalElements === null) {
+        // initialize page data
+        this.totalElements = page.totalElements
+        this.books = Array(this.totalElements).fill(null)
+        this.pagesState = Array(page.totalPages).fill(LoadState.NotLoaded)
+      }
+      this.books.splice(page.number * page.size, page.size, ...page.content)
+      this.pagesState[page.number] = LoadState.Loaded
     }
   }
 })

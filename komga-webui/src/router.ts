@@ -62,7 +62,7 @@ export default new Router({
           props: (route) => ({ libraryId: Number(route.params.libraryId) })
         },
         {
-          path: '/series/:seriesId/:page?',
+          path: '/series/:seriesId/:index?',
           name: 'browse-series',
           component: () => import(/* webpackChunkName: "browse-series" */ './components/BrowseSeries.vue'),
           props: (route) => ({ seriesId: Number(route.params.seriesId) })
@@ -85,9 +85,7 @@ export default new Router({
   ],
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {
-      return new Promise((resolve, reject) => {
-        resolve(savedPosition)
-      })
+      return savedPosition
     } else {
       if (to.name !== from.name) {
         return { x: 0, y: 0 }

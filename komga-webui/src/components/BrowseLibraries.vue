@@ -51,15 +51,15 @@
         <v-skeleton-loader v-for="(s, i) in series"
                            :key="i"
                            width="150"
+                           height="306.14"
+                           justify-self="start"
                            :loading="s === null"
                            type="card, text"
                            class="ma-3 ml-2 mr-2"
                            v-intersect="onCardIntersect"
                            :data-index="i"
         >
-          <card-series justify-self="start"
-                       :series="s"
-          />
+          <card-series :series="s"/>
         </v-skeleton-loader>
 
       </v-row>
@@ -89,7 +89,7 @@ export default Vue.extend({
       visibleCards: [] as number[],
       totalElements: null as number | null,
       sortOptions: [{ name: 'Name', key: 'name' }, { name: 'Date added', key: 'createdDate' }] as SortOption[],
-      sortActive: { key: 'name', order: 'asc' } as SortActive as SortActive,
+      sortActive: {} as SortActive as SortActive,
       sortDefault: { key: 'name', order: 'asc' } as SortActive as SortActive
     }
   },
@@ -122,30 +122,39 @@ export default Vue.extend({
       this.series = Array(this.pageSize).fill(null)
     }
 
-    let pageToLoad = 0
-    if (this.$route.params.index) {
-      // floor down to get a zero-based page number
-      pageToLoad = Math.floor(Number(this.$route.params.index) / this.pageSize)
-    }
-    this.loadInitialData(this.libraryId, pageToLoad)
+    // restore sort from query param
+    this.sortActive = this.parseQuerySortOrDefault(this.$route.query.sort)
   },
   beforeRouteUpdate (to, from, next) {
     if (to.params.libraryId !== from.params.libraryId) {
       this.libraryName = this.getLibraryNameLazy(Number(to.params.libraryId))
-      this.sortActive = this.$_.clone(this.sortDefault)
+      this.sortActive = this.parseQuerySortOrDefault(to.query.sort)
       this.reloadData(Number(to.params.libraryId))
     }
 
     next()
   },
   methods: {
+    parseQuerySortOrDefault (querySort: any): SortActive {
+      let customSort = null
+      if (querySort) {
+        const split = querySort.split(',')
+        if (split.length === 2 && this.$_.map(this.sortOptions, 'key').includes(split[0]) && ['asc', 'desc'].includes(split[1])) {
+          customSort = { key: split[0], order: split[1] }
+        }
+      }
+      if (customSort !== null) {
+        return customSort
+      } else {
+        return this.$_.clone(this.sortDefault)
+      }
+    },
     async onCardIntersect (entries: any, observer: any, isIntersecting: boolean) {
       const elementIndex = Number(entries[0].target.dataset['index'])
       if (isIntersecting) {
         this.visibleCards.push(elementIndex)
         const pageNumber = Math.floor(elementIndex / this.pageSize)
         if (this.pagesState[pageNumber] === undefined || this.pagesState[pageNumber] === LoadState.NotLoaded) {
-          this.pagesState[pageNumber] = LoadState.Loading
           this.processPage(await this.loadPage(pageNumber, this.libraryId))
         }
       } else {
@@ -158,15 +167,16 @@ export default Vue.extend({
       if (this.$route.params.index !== index) {
         this.$router.replace({
           name: this.$route.name,
-          params: { libraryId: this.$route.params.libraryId, index: index }
+          params: { libraryId: this.$route.params.libraryId, index: index },
+          query: { sort: `${this.sortActive.key},${this.sortActive.order}` }
         })
       }
     },
     reloadData (libraryId: number) {
-      this.series = Array(this.pageSize).fill(null)
       this.totalElements = null
       this.pagesState = []
       this.visibleCards = []
+      this.series = Array(this.pageSize).fill(null)
       this.loadInitialData(libraryId)
     },
     setSort (sort: SortOption) {
@@ -179,20 +189,18 @@ export default Vue.extend({
       } else {
         this.sortActive = { key: sort.key, order: 'desc' }
       }
+      this.$router.replace({
+        name: this.$route.name,
+        params: { libraryId: this.$route.params.libraryId, index: this.$route.params.index },
+        query: { sort: `${this.sortActive.key},${this.sortActive.order}` }
+      })
       this.reloadData(this.libraryId)
     },
     async loadInitialData (libraryId: number, pageToLoad: number = 0) {
-      const page = await this.loadPage(pageToLoad, libraryId)
-
-      // initialize page data
-      this.totalElements = page.totalElements
-      this.series = Array(this.totalElements).fill(null)
-      this.pagesState = Array(page.totalPages).fill(LoadState.NotLoaded)
-
-      // process page data
-      this.processPage(page)
+      this.processPage(await this.loadPage(pageToLoad, libraryId))
     },
     async loadPage (page: number, libraryId: number): Promise<Page<SeriesDto>> {
+      this.pagesState[page] = LoadState.Loading
       const pageRequest = {
         page: page,
         size: this.pageSize
@@ -209,6 +217,12 @@ export default Vue.extend({
       return this.$komgaSeries.getSeries(requestLibraryId, pageRequest)
     },
     processPage (page: Page<SeriesDto>) {
+      if (this.totalElements === null) {
+        // initialize page data
+        this.totalElements = page.totalElements
+        this.series = Array(this.totalElements).fill(null)
+        this.pagesState = Array(page.totalPages).fill(LoadState.NotLoaded)
+      }
       this.series.splice(page.number * page.size, page.size, ...page.content)
       this.pagesState[page.number] = LoadState.Loaded
     },
