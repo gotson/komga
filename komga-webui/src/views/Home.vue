@@ -4,16 +4,6 @@
       app
     >
       <v-app-bar-nav-icon @click.stop="toggleDrawer"/>
-
-      <v-spacer/>
-
-      <v-tabs v-if="tabs.length > 0">
-        <v-tab v-for="(t, index) in tabs" :key="index"
-               :id="t.id"
-               :to="{name: t.route}"
-        >{{ t.name }}
-        </v-tab>
-      </v-tabs>
     </v-app-bar>
 
     <v-navigation-drawer app v-model="drawerVisible">
@@ -138,17 +128,6 @@ export default Vue.extend({
     },
     isAdmin (): boolean {
       return this.$store.getters.meAdmin
-    },
-    tabs () {
-      if (this.$store.state.route.name) {
-        if (this.$store.state.route.name.startsWith('settings')) {
-          return [
-            { id: 'tab-users', route: 'settings-users', name: 'Users' }
-          ]
-        }
-        return []
-      }
-      return []
     }
   },
   methods: {

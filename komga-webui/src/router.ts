@@ -40,18 +40,21 @@ const router = new Router({
         {
           path: '/settings',
           name: 'settings',
-          redirect: { name: 'settings-users' }
-        },
-        {
-          path: '/settings/users',
-          name: 'settings-users',
-          beforeEnter: adminGuard,
-          component: () => import(/* webpackChunkName: "settings-users" */ './components/SettingsUsers.vue'),
+          redirect: { name: 'settings-users' },
+          component: () => import(/* webpackChunkName: "settings" */ './views/Settings.vue'),
           children: [
             {
-              path: '/settings/users/add',
-              name: 'settings-users-add',
-              component: () => import(/* webpackChunkName: "settings-user" */ './components/UserAddDialog.vue')
+              path: '/settings/users',
+              name: 'settings-users',
+              beforeEnter: adminGuard,
+              component: () => import(/* webpackChunkName: "settings-users" */ './components/SettingsUsers.vue'),
+              children: [
+                {
+                  path: '/settings/users/add',
+                  name: 'settings-users-add',
+                  component: () => import(/* webpackChunkName: "settings-user" */ './components/UserAddDialog.vue')
+                }
+              ]
             }
           ]
         },
