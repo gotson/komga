@@ -8,7 +8,7 @@
 
     <form novalidate @submit.prevent="performLogin">
       <v-row justify="center">
-        <v-col cols="3" xs="12">
+        <v-col cols="12" sm="8" md="6" lg="4" xl="2">
           <v-text-field v-model="form.login"
                         label="Login"
                         autocomplete="username"
@@ -17,7 +17,7 @@
       </v-row>
 
       <v-row justify="center">
-        <v-col cols="3" xs="12">
+        <v-col cols="12" sm="8" md="6" lg="4" xl="2">
           <v-text-field v-model="form.password"
                         label="Password"
                         type="password"
@@ -27,7 +27,7 @@
       </v-row>
 
       <v-row justify="center">
-        <v-col cols="3" xs="12">
+        <v-col cols="12" sm="8" md="6" lg="4" xl="2">
           <v-btn color="primary"
                  type="submit"
           >Login
