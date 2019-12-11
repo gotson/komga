@@ -124,12 +124,14 @@ import Vue from 'vue'
 export default Vue.extend({
   name: 'home',
   components: { LibraryDeleteDialog },
-  data: () => ({
-    drawerVisible: true,
-    modalAddLibrary: false,
-    modalDeleteLibrary: false,
-    libraryToDelete: {} as LibraryDto
-  }),
+  data: function () {
+    return {
+      drawerVisible: this.$vuetify.breakpoint.lgAndUp,
+      modalAddLibrary: false,
+      modalDeleteLibrary: false,
+      libraryToDelete: {} as LibraryDto
+    }
+  },
   computed: {
     libraries (): LibraryDto[] {
       return this.$store.state.komgaLibraries.libraries
