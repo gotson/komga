@@ -9,6 +9,7 @@ import java.time.ZoneOffset
 
 data class SeriesDto(
     val id: Long,
+    val libraryId: Long,
     val name: String,
     val url: String,
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
@@ -18,6 +19,7 @@ data class SeriesDto(
 
 fun Series.toDto() = SeriesDto(
     id = id,
+    libraryId = library.id,
     name = name,
     url = url.toString(),
     lastModified = lastModifiedDate?.toUTC(),
@@ -26,6 +28,7 @@ fun Series.toDto() = SeriesDto(
 
 data class BookDto(
     val id: Long,
+    val seriesId: Long,
     val name: String,
     val url: String,
     val number: Float,
@@ -45,6 +48,7 @@ data class BookMetadataDto(
 fun Book.toDto() =
     BookDto(
         id = id,
+        seriesId = series.id,
         name = name,
         url = url.toURI().path,
         number = number,

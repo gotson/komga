@@ -1,13 +1,13 @@
 interface BookDto {
   id: number,
+  seriesId: number,
   name: string,
   url: string,
   number: number,
   lastModified: string,
   sizeBytes: number,
   size: string,
-  metadata: BookMetadataDto,
-  seriesId?: number
+  metadata: BookMetadataDto
 }
 
 interface BookMetadataDto {
