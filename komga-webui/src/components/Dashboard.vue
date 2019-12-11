@@ -1,29 +1,39 @@
 <template>
   <div class="ma-3">
 
-    <div class="title">Recently added series</div>
+    <div class="title">Recently Added Series</div>
 
     <v-slide-group show-arrows>
-      <v-slide-item v-for="s in series"
-                    :key="s.id"
+      <v-slide-item v-for="(s, i) in series"
+                    :key="i"
       >
-        <card-series :series="s"
-                     class="ma-2"
-        />
+        <v-skeleton-loader :loading="s === null"
+                           type="card, text"
+                           width="150"
+                           height="306.14"
+                           class="ma-2"
+        >
+          <card-series :series="s"/>
+        </v-skeleton-loader>
       </v-slide-item>
     </v-slide-group>
 
     <br>
 
-    <div class="title">Recently added books</div>
+    <div class="title">Recently Added Books</div>
 
     <v-slide-group show-arrows>
-      <v-slide-item v-for="b in books"
-                    :key="b.id"
+      <v-slide-item v-for="(b, i) in books"
+                    :key="i"
       >
-        <card-book :book="b"
-                   class="ma-2"
-        />
+        <v-skeleton-loader :loading="b === null"
+                           type="card, text"
+                           width="150"
+                           height="328.13"
+                           class="ma-2"
+        >
+          <card-book :book="b"/>
+        </v-skeleton-loader>
       </v-slide-item>
     </v-slide-group>
 
@@ -40,8 +50,8 @@ export default Vue.extend({
   components: { CardSeries, CardBook },
   data: () => {
     return {
-      series: [] as SeriesDto[],
-      books: [] as BookDto[],
+      series: Array(20).fill(null) as SeriesDto[],
+      books: Array(20).fill(null) as BookDto[],
       pageSize: 20
     }
   },
