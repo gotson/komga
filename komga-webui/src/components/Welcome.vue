@@ -24,6 +24,11 @@ export default Vue.extend({
     isAdmin (): boolean {
       return this.$store.getters.meAdmin
     }
+  },
+  mounted () {
+    if (this.$store.state.komgaLibraries.libraries.length !== 0) {
+      this.$router.push({ name: 'dashboard' })
+    }
   }
 })
 </script>
