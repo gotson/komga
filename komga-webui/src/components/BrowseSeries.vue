@@ -5,6 +5,13 @@
                class="sticky-bar"
                :style="barStyle"
     >
+      <v-btn icon
+             title="Go to library"
+             :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }}"
+      >
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
+
       <v-toolbar-title>
         <span v-if="series.name">{{ series.name }}</span>
         <span class="ml-4 badge-count"
@@ -16,33 +23,31 @@
 
       <v-spacer/>
 
-      <v-toolbar-items>
-        <v-menu offset-y>
-          <template v-slot:activator="{on}">
-            <v-btn icon v-on="on">
-              <v-icon :color="sortCustom ? 'secondary' : null"
-              >mdi-sort-variant
+      <v-menu offset-y>
+        <template v-slot:activator="{on}">
+          <v-btn icon v-on="on">
+            <v-icon :color="sortCustom ? 'secondary' : null"
+            >mdi-sort-variant
+            </v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item v-for="(item, index) in sortOptions"
+                       :key="index"
+                       @click="setSort(item)"
+          >
+            <v-list-item-icon>
+              <v-icon color="secondary" v-if="item.key === sortActive.key && sortActive.order === 'asc'">
+                mdi-chevron-up
               </v-icon>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item v-for="(item, index) in sortOptions"
-                         :key="index"
-                         @click="setSort(item)"
-            >
-              <v-list-item-icon>
-                <v-icon color="secondary" v-if="item.key === sortActive.key && sortActive.order === 'asc'">
-                  mdi-chevron-up
-                </v-icon>
-                <v-icon color="secondary" v-if="item.key === sortActive.key && sortActive.order === 'desc'">
-                  mdi-chevron-down
-                </v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>{{ item.name }}</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </v-toolbar-items>
+              <v-icon color="secondary" v-if="item.key === sortActive.key && sortActive.order === 'desc'">
+                mdi-chevron-down
+              </v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>{{ item.name }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-toolbar>
 
     <v-container fluid class="mx-3">
