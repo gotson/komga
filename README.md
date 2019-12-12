@@ -138,6 +138,9 @@ The web interface is available on port `8080`.
 
 ### Features
 
+- browse libraries, series, and books
+- search series and books
+- download book file
 - add and remove libraries (for administrators only)
 - server settings (for administrators only)
     - users management (add and remove user, edit user's shared libraries access)
@@ -146,13 +149,13 @@ The web interface is available on port `8080`.
 
 ### Screenshots
 
-|Home page | Account settings |
+|Home page | Browse Series |
 |---|---|
-| [![webui_screenshot](./.github/readme-images/webui_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui.png) | [![webui-settings-users_screenshot](./.github/readme-images/webui-account-settings_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui-account-settings.png) |
+| [![webui_screenshot](./.github/readme-images/webui-dashboard_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui-dashboard.png) | [![webui-settings-users_screenshot](./.github/readme-images/webui-browse-series_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui-browse-series.png) |
 
-| Users management | User rights |
-|---|---|
-| [![webui-settings-users_screenshot](./.github/readme-images/webui-settings-users_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui-settings-users.png) | [![webui-settings-users_screenshot](./.github/readme-images/webui-settings-users-libraries.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui-settings-users-libraries.png) |
+| Account settings | Users management | User rights |
+|---|---|---|
+| [![webui-settings-users_screenshot](./.github/readme-images/webui-account-settings_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui-account-settings.png) | [![webui-settings-users_screenshot](./.github/readme-images/webui-settings-users_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui-settings-users.png) | [![webui-settings-users_screenshot](./.github/readme-images/webui-settings-users-libraries.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui-settings-users-libraries.png) |
 
 ## APIs
 
