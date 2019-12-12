@@ -12,6 +12,8 @@ spring:
         cache-public: true
         max-age: 365d
 
+server.servlet.session.timeout: 7d
+
 management:
   endpoints.web.exposure.include: "*"
   endpoint:
