@@ -127,9 +127,9 @@ export default Vue.extend({
   },
   async beforeRouteUpdate (to, from, next) {
     if (to.params.seriesId !== from.params.seriesId) {
-      this.series = await this.$komgaSeries.getOneSeries(this.seriesId)
+      this.series = await this.$komgaSeries.getOneSeries(Number(to.params.seriesId))
       this.sortActive = this.parseQuerySortOrDefault(to.query.sort)
-      this.reloadData()
+      this.reloadData(Number(to.params.seriesId))
     }
 
     next()
@@ -155,7 +155,7 @@ export default Vue.extend({
         this.visibleCards.push(elementIndex)
         const pageNumber = Math.floor(elementIndex / this.pageSize)
         if (this.pagesState[pageNumber] === undefined || this.pagesState[pageNumber] === LoadState.NotLoaded) {
-          this.processPage(await this.loadPage(pageNumber))
+          this.processPage(await this.loadPage(pageNumber, this.seriesId))
         }
       } else {
         this.$_.pull(this.visibleCards, elementIndex)
@@ -172,12 +172,12 @@ export default Vue.extend({
         })
       }
     },
-    reloadData () {
+    reloadData (seriesId: number) {
       this.totalElements = null
       this.pagesState = []
       this.visibleCards = []
       this.books = Array(this.pageSize).fill(null)
-      this.loadInitialData()
+      this.loadInitialData(seriesId)
     },
     setSort (sort: SortOption) {
       if (this.sortActive.key === sort.key) {
@@ -194,12 +194,12 @@ export default Vue.extend({
         params: { seriesId: this.$route.params.seriesId, index: this.$route.params.index },
         query: { sort: `${this.sortActive.key},${this.sortActive.order}` }
       })
-      this.reloadData()
+      this.reloadData(this.seriesId)
     },
-    async loadInitialData (pageToLoad: number = 0) {
-      this.processPage(await this.loadPage(pageToLoad))
+    async loadInitialData (seriesId: number, pageToLoad: number = 0) {
+      this.processPage(await this.loadPage(pageToLoad, seriesId))
     },
-    async loadPage (page: number): Promise<Page<BookDto>> {
+    async loadPage (page: number, seriesId: number): Promise<Page<BookDto>> {
       this.pagesState[page] = LoadState.Loading
       const pageRequest = {
         page: page,
@@ -209,7 +209,7 @@ export default Vue.extend({
       if (this.sortActive != null) {
         pageRequest.sort = [`${this.sortActive.key},${this.sortActive.order}`]
       }
-      return this.$komgaSeries.getBooks(this.seriesId, pageRequest)
+      return this.$komgaSeries.getBooks(seriesId, pageRequest)
     },
     processPage (page: Page<BookDto>) {
       if (this.totalElements === null) {
