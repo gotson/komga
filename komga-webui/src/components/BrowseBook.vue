@@ -93,17 +93,17 @@ export default Vue.extend({
   },
   async beforeRouteUpdate (to, from, next) {
     if (to.params.bookId !== from.params.bookId) {
-      this.book = await this.$komgaBooks.getBook(this.bookId)
+      this.book = await this.$komgaBooks.getBook(Number(to.params.bookId))
     }
 
     next()
   },
   computed: {
     thumbnailUrl (): string {
-      return `${this.baseURL}/api/v1/books/${this.book.id}/thumbnail`
+      return `${this.baseURL}/api/v1/books/${this.bookId}/thumbnail`
     },
     fileUrl (): string {
-      return `${this.baseURL}/api/v1/books/${this.book.id}/file`
+      return `${this.baseURL}/api/v1/books/${this.bookId}/file`
     },
     format (): BookFormat {
       return getBookFormatFromMediaType(this.book.metadata.mediaType)
