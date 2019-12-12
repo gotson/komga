@@ -11,11 +11,14 @@ export default class KomgaBooksService {
     this.http = http
   }
 
-  async getBooks (libraryId?: number, pageRequest?: PageRequest): Promise<Page<BookDto>> {
+  async getBooks (libraryId?: number, pageRequest?: PageRequest, search?: string): Promise<Page<BookDto>> {
     try {
       const params = { ...pageRequest } as any
       if (libraryId) {
         params.library_id = libraryId
+      }
+      if (search) {
+        params.search = search
       }
       return (await this.http.get(API_BOOKS, {
         params: params,

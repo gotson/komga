@@ -4,6 +4,9 @@
       app
     >
       <v-app-bar-nav-icon @click.stop="toggleDrawer"/>
+
+      <search-box class="flex-fill"/>
+
     </v-app-bar>
 
     <v-navigation-drawer app v-model="drawerVisible">
@@ -109,11 +112,12 @@
 
 <script lang="ts">
 import LibraryDeleteDialog from '@/components/LibraryDeleteDialog.vue'
+import SearchBox from '@/components/SearchBox.vue'
 import Vue from 'vue'
 
 export default Vue.extend({
   name: 'home',
-  components: { LibraryDeleteDialog },
+  components: { LibraryDeleteDialog, SearchBox },
   data: function () {
     return {
       drawerVisible: this.$vuetify.breakpoint.lgAndUp,
