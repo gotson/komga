@@ -75,7 +75,7 @@ export default Vue.extend({
       loading: false,
       series: [] as SeriesDto[],
       books: [] as BookDto[],
-      pageSize: 5
+      pageSize: 10
     }
   },
   watch: {
