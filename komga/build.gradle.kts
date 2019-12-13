@@ -7,6 +7,7 @@ plugins {
   run {
     val kotlinVersion = "1.3.50"
     kotlin("jvm") version kotlinVersion
+    kotlin("plugin.allopen") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     kotlin("plugin.jpa") version kotlinVersion
     kotlin("kapt") version kotlinVersion
@@ -40,14 +41,16 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-data-jpa")
   implementation("org.springframework.boot:spring-boot-starter-actuator")
-//  implementation("org.springframework.boot:spring-boot-starter-cache")
+  implementation("org.springframework.boot:spring-boot-starter-cache")
   implementation("org.springframework.boot:spring-boot-starter-security")
 
   kapt("org.springframework.boot:spring-boot-configuration-processor")
 
   implementation("org.flywaydb:flyway-core")
+  implementation("org.hibernate:hibernate-jcache")
 
-//  implementation("com.github.ben-manes.caffeine:caffeine:2.7.0")
+  implementation("com.github.ben-manes.caffeine:caffeine")
+  implementation("com.github.ben-manes.caffeine:jcache")
 
   implementation("io.github.microutils:kotlin-logging:1.7.6")
   implementation("io.micrometer:micrometer-registry-influx")
@@ -178,4 +181,10 @@ tasks.withType<GithubReleaseTask> {
 
 springBoot {
   buildInfo()
+}
+
+allOpen {
+  annotation("javax.persistence.Entity")
+  annotation("javax.persistence.MappedSuperclass")
+  annotation("javax.persistence.Embeddable")
 }

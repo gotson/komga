@@ -2,10 +2,13 @@ package org.gotson.komga.domain.model
 
 import com.jakewharton.byteunits.BinaryByteUnit
 import org.apache.commons.io.FilenameUtils
+import org.hibernate.annotations.Cache
+import org.hibernate.annotations.CacheConcurrencyStrategy
 import java.net.URL
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.time.LocalDateTime
+import javax.persistence.Cacheable
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -21,6 +24,8 @@ import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name = "book")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 class Book(
     @NotBlank
     @Column(name = "name", nullable = false)
@@ -45,7 +50,7 @@ class Book(
   @JoinColumn(name = "series_id", nullable = false)
   lateinit var series: Series
 
-  @OneToOne(optional = false, orphanRemoval = true, cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+  @OneToOne(optional = false, orphanRemoval = true, cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
   @JoinColumn(name = "book_metadata_id", nullable = false)
   var metadata: BookMetadata = BookMetadata().also { it.book = this }
     set(value) {

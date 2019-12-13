@@ -12,6 +12,7 @@ spring:
     properties:
       hibernate:
         generate_statistics: true
+        format_sql: true
 logging:
   file:
     max-history: 1
@@ -19,5 +20,8 @@ logging:
   level:
     org.gotson.komga: DEBUG
     web: DEBUG
-    org.hibernate.stat: DEBUG
+    org.hibernate:
+      stat: DEBUG
+      SQL: DEBUG
+      type.descriptor.sql.BasicBinder: TRACE
     #  org.springframework.security.web.FilterChainProxy: DEBUG

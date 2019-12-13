@@ -3,6 +3,7 @@ package org.gotson.komga.domain.persistence
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Library
+import org.gotson.komga.domain.model.Series
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -19,4 +20,6 @@ interface BookRepository : JpaRepository<Book, Long>, JpaSpecificationExecutor<B
   fun findAllByMetadataStatus(status: BookMetadata.Status): List<Book>
   fun findAllByMetadataThumbnailIsNull(): List<Book>
   fun findBySeriesLibraryIn(seriesLibrary: Collection<Library>, pageable: Pageable): Page<Book>
+
+  fun countBySeries(series: Series): Int
 }

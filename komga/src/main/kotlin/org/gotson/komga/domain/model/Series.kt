@@ -1,9 +1,12 @@
 package org.gotson.komga.domain.model
 
 import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
+import org.hibernate.annotations.Cache
+import org.hibernate.annotations.CacheConcurrencyStrategy
 import java.net.URL
 import java.time.LocalDateTime
 import java.util.*
+import javax.persistence.Cacheable
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -21,6 +24,8 @@ private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNatural
 
 @Entity
 @Table(name = "series")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 class Series(
     @NotBlank
     @Column(name = "name", nullable = false)

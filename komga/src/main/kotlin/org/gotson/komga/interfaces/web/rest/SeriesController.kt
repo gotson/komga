@@ -53,12 +53,12 @@ class SeriesController(
     )
 
     return mutableListOf<Specification<Series>>().let { specs ->
-      if (!principal.user.sharedAllLibraries) {
-        specs.add(Series::library.`in`(principal.user.sharedLibraries))
-      }
-
       if (!searchTerm.isNullOrEmpty()) {
         specs.add(Series::name.likeLower("%$searchTerm%"))
+      }
+
+      if (!principal.user.sharedAllLibraries) {
+        specs.add(Series::library.`in`(principal.user.sharedLibraries))
       }
 
       if (!libraryIds.isNullOrEmpty()) {
@@ -71,7 +71,7 @@ class SeriesController(
       } else {
         seriesRepository.findAll(pageRequest)
       }
-    }.map { it.toDto() }
+    }.map { it.toDto(bookRepository.countBySeries(it)) }
   }
 
   @GetMapping("/latest")
@@ -89,7 +89,7 @@ class SeriesController(
       seriesRepository.findAll(pageRequest)
     } else {
       seriesRepository.findByLibraryIn(principal.user.sharedLibraries, pageRequest)
-    }.map { it.toDto() }
+    }.map { it.toDto(bookRepository.countBySeries(it)) }
   }
 
   @GetMapping("{seriesId}")
@@ -99,7 +99,7 @@ class SeriesController(
   ): SeriesDto =
       seriesRepository.findByIdOrNull(id)?.let {
         if (!principal.user.canAccessSeries(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
-        it.toDto()
+        it.toDto(bookRepository.countBySeries(it))
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping(value = ["{seriesId}/thumbnail"], produces = [MediaType.IMAGE_JPEG_VALUE])

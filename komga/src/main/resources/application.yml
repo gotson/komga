@@ -11,6 +11,15 @@ spring:
       cachecontrol:
         cache-public: true
         max-age: 365d
+  jpa.properties:
+    javax.persistence.sharedCache.mode: ENABLE_SELECTIVE
+    hibernate.generate_statistics: true
+  hibernate:
+    cache:
+      use_second_level_cache: true
+      use_query_cache: true
+      region.factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
+    javax.cache.provider: com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider
 
 server.servlet.session.timeout: 7d
 
