@@ -53,17 +53,23 @@ class SeriesController(
     )
 
     return mutableListOf<Specification<Series>>().let { specs ->
+      when {
+        !principal.user.sharedAllLibraries && !libraryIds.isNullOrEmpty() -> {
+          val authorizedLibraryIDs = libraryIds.intersect(principal.user.sharedLibraries.map { it.id })
+          if (authorizedLibraryIDs.isEmpty()) return@let Page.empty<Series>(pageRequest)
+          else specs.add(Series::library.`in`(libraryRepository.findAllById(authorizedLibraryIDs)))
+        }
+
+        !principal.user.sharedAllLibraries -> specs.add(Series::library.`in`(principal.user.sharedLibraries))
+
+        !libraryIds.isNullOrEmpty() -> {
+          val values = libraryRepository.findAllById(libraryIds)
+          specs.add(Series::library.`in`(values))
+        }
+      }
+
       if (!searchTerm.isNullOrEmpty()) {
         specs.add(Series::name.likeLower("%$searchTerm%"))
-      }
-
-      if (!principal.user.sharedAllLibraries) {
-        specs.add(Series::library.`in`(principal.user.sharedLibraries))
-      }
-
-      if (!libraryIds.isNullOrEmpty()) {
-        val libraries = libraryRepository.findAllById(libraryIds)
-        specs.add(Series::library.`in`(libraries))
       }
 
       if (specs.isNotEmpty()) {
