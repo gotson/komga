@@ -25,7 +25,7 @@ private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNatural
 @Entity
 @Table(name = "series")
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "cache.series")
 class Series(
     @NotBlank
     @Column(name = "name", nullable = false)

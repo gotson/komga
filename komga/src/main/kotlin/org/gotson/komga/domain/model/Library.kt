@@ -1,8 +1,11 @@
 package org.gotson.komga.domain.model
 
+import org.hibernate.annotations.Cache
+import org.hibernate.annotations.CacheConcurrencyStrategy
 import java.net.URL
 import java.nio.file.Path
 import java.nio.file.Paths
+import javax.persistence.Cacheable
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -12,6 +15,8 @@ import javax.validation.constraints.NotBlank
 
 @Entity
 @Table(name = "library")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "cache.library")
 class Library(
     @NotBlank
     @Column(name = "name", nullable = false, unique = true)

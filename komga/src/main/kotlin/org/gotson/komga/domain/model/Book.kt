@@ -25,7 +25,7 @@ import javax.validation.constraints.NotNull
 @Entity
 @Table(name = "book")
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "cache.book")
 class Book(
     @NotBlank
     @Column(name = "name", nullable = false)
@@ -50,7 +50,7 @@ class Book(
   @JoinColumn(name = "series_id", nullable = false)
   lateinit var series: Series
 
-  @OneToOne(optional = false, orphanRemoval = true, cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+  @OneToOne(optional = false, orphanRemoval = true, cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
   @JoinColumn(name = "book_metadata_id", nullable = false)
   var metadata: BookMetadata = BookMetadata().also { it.book = this }
     set(value) {
