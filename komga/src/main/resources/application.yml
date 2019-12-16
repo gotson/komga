@@ -13,7 +13,9 @@ spring:
         max-age: 365d
   jpa.properties:
     javax.persistence.sharedCache.mode: ENABLE_SELECTIVE
-    hibernate.generate_statistics: true
+    hibernate:
+      generate_statistics: true
+      session.events.log: false
   hibernate:
     cache:
       use_second_level_cache: true

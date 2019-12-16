@@ -12,6 +12,7 @@ spring:
     properties:
       hibernate:
         generate_statistics: true
+        session.events.log: true
         format_sql: true
 logging:
   file:
@@ -23,5 +24,6 @@ logging:
     org.hibernate:
       stat: DEBUG
       SQL: DEBUG
+      cache: DEBUG
       type.descriptor.sql.BasicBinder: TRACE
     #  org.springframework.security.web.FilterChainProxy: DEBUG
