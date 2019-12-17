@@ -17,13 +17,13 @@ data class SeriesDto(
     val booksCount: Int
 )
 
-fun Series.toDto(booksCount: Int) = SeriesDto(
+fun Series.toDto() = SeriesDto(
     id = id,
     libraryId = library.id,
     name = name,
     url = url.toString(),
     lastModified = lastModifiedDate?.toUTC(),
-    booksCount = booksCount
+    booksCount = books.size
 )
 
 data class BookDto(

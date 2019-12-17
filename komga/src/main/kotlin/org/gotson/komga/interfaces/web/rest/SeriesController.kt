@@ -63,8 +63,8 @@ class SeriesController(
         !principal.user.sharedAllLibraries -> specs.add(Series::library.`in`(principal.user.sharedLibraries))
 
         !libraryIds.isNullOrEmpty() -> {
-          val values = libraryRepository.findAllById(libraryIds)
-          specs.add(Series::library.`in`(values))
+          val libraries = libraryRepository.findAllById(libraryIds)
+          specs.add(Series::library.`in`(libraries))
         }
       }
 
@@ -77,7 +77,7 @@ class SeriesController(
       } else {
         seriesRepository.findAll(pageRequest)
       }
-    }.map { it.toDto(bookRepository.countBySeries(it)) }
+    }.map { it.toDto() }
   }
 
   @GetMapping("/latest")
@@ -95,7 +95,7 @@ class SeriesController(
       seriesRepository.findAll(pageRequest)
     } else {
       seriesRepository.findByLibraryIn(principal.user.sharedLibraries, pageRequest)
-    }.map { it.toDto(bookRepository.countBySeries(it)) }
+    }.map { it.toDto() }
   }
 
   @GetMapping("{seriesId}")
@@ -105,7 +105,7 @@ class SeriesController(
   ): SeriesDto =
       seriesRepository.findByIdOrNull(id)?.let {
         if (!principal.user.canAccessSeries(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
-        it.toDto(bookRepository.countBySeries(it))
+        it.toDto()
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping(value = ["{seriesId}/thumbnail"], produces = [MediaType.IMAGE_JPEG_VALUE])
@@ -116,7 +116,7 @@ class SeriesController(
       seriesRepository.findByIdOrNull(id)?.let { series ->
         if (!principal.user.canAccessSeries(series)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
 
-        val thumbnail = series.books.firstOrNull()?.metadata?.thumbnail
+        val thumbnail = series.books.minBy { it.number }?.metadata?.thumbnail
         if (thumbnail != null) {
           ResponseEntity.ok()
               .cacheControl(CacheControl

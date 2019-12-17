@@ -62,17 +62,23 @@ class BookController(
     )
 
     return mutableListOf<Specification<Book>>().let { specs ->
-      if (!principal.user.sharedAllLibraries) {
-        specs.add(Book::series.`in`(seriesRepository.findByLibraryIn(principal.user.sharedLibraries)))
+      when {
+        !principal.user.sharedAllLibraries && !libraryIds.isNullOrEmpty() -> {
+          val authorizedLibraryIDs = libraryIds.intersect(principal.user.sharedLibraries.map { it.id })
+          if (authorizedLibraryIDs.isEmpty()) return@let Page.empty<Book>(pageRequest)
+          else specs.add(Book::series.`in`(seriesRepository.findByLibraryIdIn(authorizedLibraryIDs)))
+        }
+
+        !principal.user.sharedAllLibraries -> specs.add(Book::series.`in`(seriesRepository.findByLibraryIn(principal.user.sharedLibraries)))
+
+        !libraryIds.isNullOrEmpty() -> {
+          val libraries = libraryRepository.findAllById(libraryIds)
+          specs.add(Book::series.`in`(seriesRepository.findByLibraryIn(libraries)))
+        }
       }
 
       if (!searchTerm.isNullOrEmpty()) {
         specs.add(Book::name.likeLower("%$searchTerm%"))
-      }
-
-      if (!libraryIds.isNullOrEmpty()) {
-        val libraries = libraryRepository.findAllById(libraryIds)
-        specs.add(Book::series.`in`(seriesRepository.findByLibraryIn(libraries)))
       }
 
       if (specs.isNotEmpty()) {

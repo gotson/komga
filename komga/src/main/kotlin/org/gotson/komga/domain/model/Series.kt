@@ -51,6 +51,7 @@ class Series(
   lateinit var library: Library
 
   @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "series")
+  @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "cache.series.collection.books")
   private var _books: MutableList<Book> = mutableListOf()
 
   var books: List<Book>

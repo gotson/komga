@@ -1,7 +1,10 @@
 package org.gotson.komga.domain.model
 
 import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
+import org.hibernate.annotations.Cache
+import org.hibernate.annotations.CacheConcurrencyStrategy
 import java.util.*
+import javax.persistence.Cacheable
 import javax.persistence.CollectionTable
 import javax.persistence.Column
 import javax.persistence.ElementCollection
@@ -21,6 +24,8 @@ private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNatural
 
 @Entity
 @Table(name = "book_metadata")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "cache.bookmetadata")
 class BookMetadata(
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -43,9 +48,10 @@ class BookMetadata(
   @OneToOne(optional = false, fetch = FetchType.LAZY, mappedBy = "metadata")
   lateinit var book: Book
 
-  @ElementCollection(fetch = FetchType.EAGER)
+  @ElementCollection(fetch = FetchType.LAZY)
   @CollectionTable(name = "book_metadata_page", joinColumns = [JoinColumn(name = "book_metadata_id")])
   @OrderColumn(name = "number")
+  @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "cache.bookmetadata.collection.pages")
   private var _pages: MutableList<BookPage> = mutableListOf()
 
   var pages: List<BookPage>

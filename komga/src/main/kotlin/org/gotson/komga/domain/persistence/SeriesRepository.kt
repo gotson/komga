@@ -19,4 +19,5 @@ interface SeriesRepository : JpaRepository<Series, Long>, JpaSpecificationExecut
   fun findByLibraryIdAndUrlNotIn(libraryId: Long, urls: Collection<URL>): List<Series>
   fun findByLibraryIdAndUrl(libraryId: Long, url: URL): Series?
   fun deleteByLibraryId(libraryId: Long)
+  fun findByLibraryIdIn(libraryIDs: Collection<Long>): List<Series>
 }

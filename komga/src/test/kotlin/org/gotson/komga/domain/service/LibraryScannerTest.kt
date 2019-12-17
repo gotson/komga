@@ -19,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.support.TransactionTemplate
 import java.nio.file.Paths
 
 @ExtendWith(SpringExtension::class)
@@ -30,7 +32,8 @@ class LibraryScannerTest(
     @Autowired private val libraryRepository: LibraryRepository,
     @Autowired private val bookRepository: BookRepository,
     @Autowired private val libraryScanner: LibraryScanner,
-    @Autowired private val bookLifecycle: BookLifecycle
+    @Autowired private val bookLifecycle: BookLifecycle,
+    @Autowired private val transactionManager: PlatformTransactionManager
 ) {
 
   @MockkBean
@@ -201,12 +204,14 @@ class LibraryScannerTest(
     verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
     verify(exactly = 1) { mockParser.parse(any()) }
 
-    val book = bookRepository.findAll().first()
-    assertThat(book.metadata.status).isEqualTo(BookMetadata.Status.READY)
-    assertThat(book.metadata.mediaType).isEqualTo("application/zip")
-    assertThat(book.metadata.pages).hasSize(2)
-    assertThat(book.metadata.pages.map { it.fileName }).containsExactly("1.jpg", "2.jpg")
-    assertThat(book.lastModifiedDate).isNotEqualTo(book.createdDate)
+    TransactionTemplate(transactionManager).execute {
+      val book = bookRepository.findAll().first()
+      assertThat(book.metadata.status).isEqualTo(BookMetadata.Status.READY)
+      assertThat(book.metadata.mediaType).isEqualTo("application/zip")
+      assertThat(book.metadata.pages).hasSize(2)
+      assertThat(book.metadata.pages.map { it.fileName }).containsExactly("1.jpg", "2.jpg")
+      assertThat(book.lastModifiedDate).isNotEqualTo(book.createdDate)
+    }
   }
 
   @Test
