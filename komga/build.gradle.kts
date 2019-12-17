@@ -5,18 +5,18 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   run {
-    val kotlinVersion = "1.3.50"
+    val kotlinVersion = "1.3.61"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.allopen") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     kotlin("plugin.jpa") version kotlinVersion
     kotlin("kapt") version kotlinVersion
   }
-  id("org.springframework.boot") version "2.2.1.RELEASE"
+  id("org.springframework.boot") version "2.2.2.RELEASE"
   id("io.spring.dependency-management") version "1.0.8.RELEASE"
   id("com.github.ben-manes.versions") version "0.27.0"
   id("com.palantir.docker") version "0.22.1"
-  id("com.github.breadmoirai.github-release") version "2.2.9"
+  id("com.github.breadmoirai.github-release") version "2.2.10"
   id("com.gorylenko.gradle-git-properties") version "2.2.0"
   jacoco
 }
@@ -36,7 +36,6 @@ repositories {
 dependencies {
   implementation(kotlin("stdlib-jdk8"))
   implementation(kotlin("reflect"))
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2")
 
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -52,7 +51,7 @@ dependencies {
   implementation("com.github.ben-manes.caffeine:caffeine")
   implementation("com.github.ben-manes.caffeine:jcache")
 
-  implementation("io.github.microutils:kotlin-logging:1.7.6")
+  implementation("io.github.microutils:kotlin-logging:1.7.8")
   implementation("io.micrometer:micrometer-registry-influx")
 
   run {
@@ -69,7 +68,7 @@ dependencies {
   implementation("commons-io:commons-io:2.6")
   implementation("org.apache.commons:commons-lang3:3.9")
 
-  implementation("org.apache.tika:tika-core:1.22")
+  implementation("org.apache.tika:tika-core:1.23")
   implementation("com.github.junrar:junrar:4.0.0")
   implementation("org.apache.pdfbox:pdfbox:2.0.17")
   implementation("net.grey-panther:natural-comparator:1.1")
@@ -87,7 +86,7 @@ dependencies {
     exclude(module = "mockito-core")
   }
   testImplementation("org.springframework.security:spring-security-test")
-  testImplementation("com.ninja-squad:springmockk:1.1.3")
+  testImplementation("com.ninja-squad:springmockk:2.0.0")
   testImplementation("io.mockk:mockk:1.9.3")
   testImplementation("com.google.jimfs:jimfs:1.1")
 
