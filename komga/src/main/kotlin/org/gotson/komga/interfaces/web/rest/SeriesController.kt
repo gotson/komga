@@ -79,6 +79,7 @@ class SeriesController(
     }.map { it.toDto() }
   }
 
+  // all updated series, whether newly added or updated
   @GetMapping("/latest")
   fun getLatestSeries(
       @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -94,6 +95,44 @@ class SeriesController(
       seriesRepository.findAll(pageRequest)
     } else {
       seriesRepository.findByLibraryIn(principal.user.sharedLibraries, pageRequest)
+    }.map { it.toDto() }
+  }
+
+  // new series only, doesn't contain existing updated series
+  @GetMapping("/new")
+  fun getNewSeries(
+      @AuthenticationPrincipal principal: KomgaPrincipal,
+      page: Pageable
+  ): Page<SeriesDto> {
+    val pageRequest = PageRequest.of(
+        page.pageNumber,
+        page.pageSize,
+        Sort.by(Sort.Direction.DESC, "createdDate")
+    )
+
+    return if (principal.user.sharedAllLibraries) {
+      seriesRepository.findAll(pageRequest)
+    } else {
+      seriesRepository.findByLibraryIn(principal.user.sharedLibraries, pageRequest)
+    }.map { it.toDto() }
+  }
+
+  // updated series only, doesn't contain new series
+  @GetMapping("/updated")
+  fun getUpdatedSeries(
+      @AuthenticationPrincipal principal: KomgaPrincipal,
+      page: Pageable
+  ): Page<SeriesDto> {
+    val pageRequest = PageRequest.of(
+        page.pageNumber,
+        page.pageSize,
+        Sort.by(Sort.Direction.DESC, "lastModifiedDate")
+    )
+
+    return if (principal.user.sharedAllLibraries) {
+      seriesRepository.findRecentlyUpdated(pageRequest)
+    } else {
+      seriesRepository.findRecentlyUpdatedByLibraryIn(principal.user.sharedLibraries, pageRequest)
     }.map { it.toDto() }
   }
 

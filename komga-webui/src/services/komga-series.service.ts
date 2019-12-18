@@ -33,6 +33,36 @@ export default class KomgaSeriesService {
     }
   }
 
+  async getNewSeries (pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
+    try {
+      const params = { ...pageRequest } as any
+      return (await this.http.get(`${API_SERIES}/new`, {
+        params: params
+      })).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve new series'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async getUpdatedSeries (pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
+    try {
+      const params = { ...pageRequest } as any
+      return (await this.http.get(`${API_SERIES}/updated`, {
+        params: params
+      })).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve new series'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
   async getOneSeries (seriesId: number): Promise<SeriesDto> {
     try {
       return (await this.http.get(`${API_SERIES}/${seriesId}`)).data
