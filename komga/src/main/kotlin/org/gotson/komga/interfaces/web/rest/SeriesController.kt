@@ -63,8 +63,7 @@ class SeriesController(
         !principal.user.sharedAllLibraries -> specs.add(Series::library.`in`(principal.user.sharedLibraries))
 
         !libraryIds.isNullOrEmpty() -> {
-          val libraries = libraryRepository.findAllById(libraryIds)
-          specs.add(Series::library.`in`(libraries))
+          specs.add(Series::library.`in`(libraryRepository.findAllById(libraryIds)))
         }
       }
 

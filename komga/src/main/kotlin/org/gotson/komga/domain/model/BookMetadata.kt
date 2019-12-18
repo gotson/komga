@@ -16,7 +16,6 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.Lob
-import javax.persistence.OneToOne
 import javax.persistence.OrderColumn
 import javax.persistence.Table
 
@@ -44,9 +43,6 @@ class BookMetadata(
   @GeneratedValue
   @Column(name = "id", nullable = false, unique = true)
   val id: Long = 0
-
-  @OneToOne(optional = false, fetch = FetchType.LAZY, mappedBy = "metadata")
-  lateinit var book: Book
 
   @ElementCollection(fetch = FetchType.LAZY)
   @CollectionTable(name = "book_metadata_page", joinColumns = [JoinColumn(name = "book_metadata_id")])

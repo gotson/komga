@@ -52,11 +52,7 @@ class Book(
 
   @OneToOne(optional = false, orphanRemoval = true, cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
   @JoinColumn(name = "book_metadata_id", nullable = false)
-  var metadata: BookMetadata = BookMetadata().also { it.book = this }
-    set(value) {
-      value.book = this
-      field = value
-    }
+  var metadata: BookMetadata = BookMetadata()
 
   @Column(name = "number", nullable = false, columnDefinition = "REAL")
   var number: Float = 0F

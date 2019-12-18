@@ -12,16 +12,16 @@ spring:
         cache-public: true
         max-age: 365d
   jpa.properties:
-    javax.persistence.sharedCache.mode: ENABLE_SELECTIVE
+    javax:
+      persistence.sharedCache.mode: ENABLE_SELECTIVE
+      cache.provider: com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider
     hibernate:
       generate_statistics: true
       session.events.log: false
-  hibernate:
-    cache:
-      use_second_level_cache: true
-      use_query_cache: true
-      region.factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
-    javax.cache.provider: com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider
+      cache:
+        use_second_level_cache: true
+        use_query_cache: true
+        region.factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
 
 server.servlet.session.timeout: 7d
 
