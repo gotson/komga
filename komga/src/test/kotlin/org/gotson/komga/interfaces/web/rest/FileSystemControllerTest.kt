@@ -9,8 +9,7 @@ import org.springframework.security.test.context.support.WithAnonymousUser
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.get
 import java.nio.file.Files
 
 @ExtendWith(SpringExtension::class)
@@ -24,16 +23,16 @@ class FileSystemControllerTest(
   @Test
   @WithAnonymousUser
   fun `given anonymous user when getDirectoryListing then return unauthorized`() {
-    mockMvc.perform(MockMvcRequestBuilders.get(route))
-        .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+    mockMvc.get(route)
+        .andExpect { status { isUnauthorized } }
   }
 
   @Test
   @WithMockUser(roles = ["USER"])
   fun `given relative path param when getDirectoryListing then return bad request`() {
-    mockMvc.perform(MockMvcRequestBuilders.get(route)
-        .param("path", "."))
-        .andExpect(MockMvcResultMatchers.status().isBadRequest)
+    mockMvc.get(route) {
+      param("path", ".")
+    }.andExpect { status { isBadRequest } }
   }
 
   @Test
@@ -42,8 +41,8 @@ class FileSystemControllerTest(
     val parent = Files.createTempDirectory(null)
     Files.delete(parent)
 
-    mockMvc.perform(MockMvcRequestBuilders.get(route)
-        .param("path", parent.toString()))
-        .andExpect(MockMvcResultMatchers.status().isBadRequest)
+    mockMvc.get(route) {
+      param("path", parent.toString())
+    }.andExpect { status { isBadRequest } }
   }
 }

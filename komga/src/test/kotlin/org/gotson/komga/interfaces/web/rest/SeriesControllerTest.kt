@@ -7,7 +7,6 @@ import org.gotson.komga.domain.model.makeSeries
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.interfaces.web.WithMockCustomUser
-import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
@@ -21,8 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.get
 import javax.sql.DataSource
 
 @ExtendWith(SpringExtension::class)
@@ -75,11 +73,13 @@ class SeriesControllerTest(
       series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
       seriesRepository.save(series)
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books?ready_only=false"))
-          .andExpect(MockMvcResultMatchers.status().isOk)
-          .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", equalTo("1")))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].name", equalTo("2")))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.content[2].name", equalTo("3")))
+      mockMvc.get("/api/v1/series/${series.id}/books?ready_only=false")
+          .andExpect {
+            status { isOk }
+            jsonPath("$.content[0].name") { value("1") }
+            jsonPath("$.content[1].name") { value("2") }
+            jsonPath("$.content[2].name") { value("3") }
+          }
     }
 
     @Test
@@ -94,15 +94,17 @@ class SeriesControllerTest(
       series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
       seriesRepository.save(series)
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books?ready_only=false"))
-          .andExpect(MockMvcResultMatchers.status().isOk)
-          .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", equalTo("1")))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].name", equalTo("2")))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.content[2].name", equalTo("3")))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.content[3].name", equalTo("5")))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.size", equalTo(20)))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.first", equalTo(true)))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.number", equalTo(0)))
+      mockMvc.get("/api/v1/series/${series.id}/books?ready_only=false")
+          .andExpect {
+            status { isOk }
+            jsonPath("$.content[0].name") { value("1") }
+            jsonPath("$.content[1].name") { value("2") }
+            jsonPath("$.content[2].name") { value("3") }
+            jsonPath("$.content[3].name") { value("5") }
+            jsonPath("$.size") { value(20) }
+            jsonPath("$.first") { value(true) }
+            jsonPath("$.number") { value(0) }
+          }
     }
 
     @Test
@@ -118,15 +120,17 @@ class SeriesControllerTest(
       series.books.forEach { it.metadata = BookMetadata(BookMetadata.Status.READY) }
       seriesRepository.save(series)
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books?ready_only=true"))
-          .andExpect(MockMvcResultMatchers.status().isOk)
-          .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", equalTo("1")))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].name", equalTo("2")))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.content[2].name", equalTo("3")))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.content[3].name", equalTo("5")))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.size", equalTo(20)))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.first", equalTo(true)))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.number", equalTo(0)))
+      mockMvc.get("/api/v1/series/${series.id}/books?ready_only=true")
+          .andExpect {
+            status { isOk }
+            jsonPath("$.content[0].name") { value("1") }
+            jsonPath("$.content[1].name") { value("2") }
+            jsonPath("$.content[2].name") { value("3") }
+            jsonPath("$.content[3].name") { value("5") }
+            jsonPath("$.size") { value(20) }
+            jsonPath("$.first") { value(true) }
+            jsonPath("$.number") { value(0) }
+          }
     }
   }
 
@@ -150,10 +154,12 @@ class SeriesControllerTest(
       ).also { it.library = otherLibrary }
       seriesRepository.save(otherSeries)
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series"))
-          .andExpect(MockMvcResultMatchers.status().isOk)
-          .andExpect(MockMvcResultMatchers.jsonPath("$.content.length()", equalTo(1)))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", equalTo("series")))
+      mockMvc.get("/api/v1/series")
+          .andExpect {
+            status { isOk }
+            jsonPath("$.content.length()") { value(1) }
+            jsonPath("$.content[0].name") { value("series") }
+          }
     }
   }
 
@@ -168,8 +174,8 @@ class SeriesControllerTest(
       ).also { it.library = library }
       seriesRepository.save(series)
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}"))
-          .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+      mockMvc.get("/api/v1/series/${series.id}")
+          .andExpect { status { isUnauthorized } }
     }
 
     @Test
@@ -181,8 +187,8 @@ class SeriesControllerTest(
       ).also { it.library = library }
       seriesRepository.save(series)
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/thumbnail"))
-          .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+      mockMvc.get("/api/v1/series/${series.id}/thumbnail")
+          .andExpect { status { isUnauthorized } }
     }
 
     @Test
@@ -194,8 +200,8 @@ class SeriesControllerTest(
       ).also { it.library = library }
       seriesRepository.save(series)
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books"))
-          .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+      mockMvc.get("/api/v1/series/${series.id}/books")
+          .andExpect { status { isUnauthorized } }
     }
   }
 
@@ -210,8 +216,8 @@ class SeriesControllerTest(
       ).also { it.library = library }
       seriesRepository.save(series)
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/thumbnail"))
-          .andExpect(MockMvcResultMatchers.status().isNotFound)
+      mockMvc.get("/api/v1/series/${series.id}/thumbnail")
+          .andExpect { status { isNotFound } }
     }
   }
 }

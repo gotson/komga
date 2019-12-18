@@ -8,7 +8,6 @@ import org.gotson.komga.domain.model.makeSeries
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.interfaces.web.WithMockCustomUser
-import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
@@ -25,8 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.get
 import javax.sql.DataSource
 
 @ExtendWith(SpringExtension::class)
@@ -85,10 +83,13 @@ class BookControllerTest(
       ).also { it.library = otherLibrary }
       seriesRepository.save(otherSeries)
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/books"))
-          .andExpect(MockMvcResultMatchers.status().isOk)
-          .andExpect(MockMvcResultMatchers.jsonPath("$.content.length()", equalTo(1)))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name", equalTo("1")))
+      mockMvc.get("/api/v1/books")
+          .andExpect {
+            status { isOk }
+            jsonPath("$.content.length()") { value(1) }
+            jsonPath("\$.content[0].name") { value("1") }
+          }
+
     }
   }
 
@@ -104,11 +105,11 @@ class BookControllerTest(
       seriesRepository.save(series)
       val book = series.books.first()
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books/${book.id}"))
-          .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+      mockMvc.get("/api/v1/series/${series.id}/books/${book.id}")
+          .andExpect { status { isUnauthorized } }
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/books/${book.id}"))
-          .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+      mockMvc.get("/api/v1/books/${book.id}")
+          .andExpect { status { isUnauthorized } }
     }
 
     @Test
@@ -121,11 +122,11 @@ class BookControllerTest(
       seriesRepository.save(series)
       val book = series.books.first()
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books/${book.id}/thumbnail"))
-          .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+      mockMvc.get("/api/v1/series/${series.id}/books/${book.id}/thumbnail")
+          .andExpect { status { isUnauthorized } }
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/books/${book.id}/thumbnail"))
-          .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+      mockMvc.get("/api/v1/books/${book.id}/thumbnail")
+          .andExpect { status { isUnauthorized } }
     }
 
     @Test
@@ -138,11 +139,11 @@ class BookControllerTest(
       seriesRepository.save(series)
       val book = series.books.first()
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books/${book.id}/file"))
-          .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+      mockMvc.get("/api/v1/series/${series.id}/books/${book.id}/file")
+          .andExpect { status { isUnauthorized } }
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/books/${book.id}/file"))
-          .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+      mockMvc.get("/api/v1/books/${book.id}/file")
+          .andExpect { status { isUnauthorized } }
     }
 
     @Test
@@ -155,11 +156,11 @@ class BookControllerTest(
       seriesRepository.save(series)
       val book = series.books.first()
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books/${book.id}/pages"))
-          .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+      mockMvc.get("/api/v1/series/${series.id}/books/${book.id}/pages")
+          .andExpect { status { isUnauthorized } }
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/books/${book.id}/pages"))
-          .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+      mockMvc.get("/api/v1/books/${book.id}/pages")
+          .andExpect { status { isUnauthorized } }
     }
 
     @Test
@@ -172,11 +173,11 @@ class BookControllerTest(
       seriesRepository.save(series)
       val book = series.books.first()
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books/${book.id}/pages/1"))
-          .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+      mockMvc.get("/api/v1/series/${series.id}/books/${book.id}/pages/1")
+          .andExpect { status { isUnauthorized } }
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/books/${book.id}/pages/1"))
-          .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+      mockMvc.get("/api/v1/books/${book.id}/pages/1")
+          .andExpect { status { isUnauthorized } }
     }
   }
 
@@ -192,11 +193,11 @@ class BookControllerTest(
       seriesRepository.save(series)
       val book = series.books.first()
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books/${book.id}/thumbnail"))
-          .andExpect(MockMvcResultMatchers.status().isNotFound)
+      mockMvc.get("/api/v1/series/${series.id}/books/${book.id}/thumbnail")
+          .andExpect { status { isNotFound } }
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/books/${book.id}/thumbnail"))
-          .andExpect(MockMvcResultMatchers.status().isNotFound)
+      mockMvc.get("/api/v1/books/${book.id}/thumbnail")
+          .andExpect { status { isNotFound } }
     }
 
     @Test
@@ -209,11 +210,11 @@ class BookControllerTest(
       seriesRepository.save(series)
       val book = series.books.first()
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books/${book.id}/file"))
-          .andExpect(MockMvcResultMatchers.status().isNotFound)
+      mockMvc.get("/api/v1/series/${series.id}/books/${book.id}/file")
+          .andExpect { status { isNotFound } }
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/books/${book.id}/file"))
-          .andExpect(MockMvcResultMatchers.status().isNotFound)
+      mockMvc.get("/api/v1/books/${book.id}/file")
+          .andExpect { status { isNotFound } }
     }
 
     @ParameterizedTest
@@ -227,11 +228,11 @@ class BookControllerTest(
       seriesRepository.save(series)
       val book = series.books.first()
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books/${book.id}/pages"))
-          .andExpect(MockMvcResultMatchers.status().isNotFound)
+      mockMvc.get("/api/v1/series/${series.id}/books/${book.id}/pages")
+          .andExpect { status { isNotFound } }
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/books/${book.id}/pages"))
-          .andExpect(MockMvcResultMatchers.status().isNotFound)
+      mockMvc.get("/api/v1/books/${book.id}/pages")
+          .andExpect { status { isNotFound } }
     }
 
     @ParameterizedTest
@@ -245,11 +246,11 @@ class BookControllerTest(
       seriesRepository.save(series)
       val book = series.books.first()
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books/${book.id}/pages/1"))
-          .andExpect(MockMvcResultMatchers.status().isNotFound)
+      mockMvc.get("/api/v1/series/${series.id}/books/${book.id}/pages/1")
+          .andExpect { status { isNotFound } }
 
-      mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/books/${book.id}/pages/1"))
-          .andExpect(MockMvcResultMatchers.status().isNotFound)
+      mockMvc.get("/api/v1/books/${book.id}/pages/1")
+          .andExpect { status { isNotFound } }
     }
   }
 
@@ -267,10 +268,10 @@ class BookControllerTest(
     seriesRepository.save(series)
     val book = series.books.first()
 
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/series/${series.id}/books/${book.id}/pages/$page"))
-        .andExpect(MockMvcResultMatchers.status().isBadRequest)
+    mockMvc.get("/api/v1/series/${series.id}/books/${book.id}/pages/$page")
+        .andExpect { status { isBadRequest } }
 
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/books/${book.id}/pages/$page"))
-        .andExpect(MockMvcResultMatchers.status().isBadRequest)
+    mockMvc.get("/api/v1/books/${book.id}/pages/$page")
+        .andExpect { status { isBadRequest } }
   }
 }
