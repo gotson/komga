@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!$_.isEmpty(book)">
     <v-toolbar flat
                color="grey lighten-4"
                class="sticky-bar"
@@ -13,7 +13,7 @@
       </v-btn>
     </v-toolbar>
 
-    <v-container fluid class="ma-3" v-if="!$_.isEmpty(book)">
+    <v-container fluid class="ma-3">
       <v-row>
         <v-col cols="4" sm="4" md="auto" lg="auto" xl="auto">
           <v-img :src="thumbnailUrl"
