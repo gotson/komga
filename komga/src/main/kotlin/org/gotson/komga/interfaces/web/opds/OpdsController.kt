@@ -251,10 +251,10 @@ class OpdsController(
           id = id.toString(),
           content = "$name (${fileExtension().toUpperCase()}) (${fileSizeHumanReadable()})",
           links = listOf(
-              OpdsLinkImageThumbnail("image/jpeg", "/api/v1/series/${series.id}/books/$id/thumbnail"),
-              OpdsLinkImage(metadata.pages[0].mediaType, "/api/v1/series/${series.id}/books/$id/pages/1"),
-              OpdsLinkFileAcquisition(metadata.mediaType, "/api/v1/series/${series.id}/books/$id/file/${fileName()}"),
-              OpdsLinkPageStreaming("image/jpeg", "/api/v1/series/${series.id}/books/$id/pages/{pageNumber}?convert=jpeg&zero_based=true", metadata.pages.size)
+              OpdsLinkImageThumbnail("image/jpeg", "${ROUTE_BASE}books/$id/thumbnail"),
+              OpdsLinkImage(metadata.pages[0].mediaType, "${ROUTE_BASE}books/$id/pages/1"),
+              OpdsLinkFileAcquisition(metadata.mediaType, "${ROUTE_BASE}books/$id/file/${fileName()}"),
+              OpdsLinkPageStreaming("image/jpeg", "${ROUTE_BASE}books/$id/pages/{pageNumber}?convert=jpeg&zero_based=true", metadata.pages.size)
           )
       )
 

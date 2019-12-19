@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit
 private val logger = KotlinLogging.logger {}
 
 @RestController
-@RequestMapping("api/v1", produces = [MediaType.APPLICATION_JSON_VALUE])
+@RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
 class BookController(
     private val libraryRepository: LibraryRepository,
     private val seriesRepository: SeriesRepository,
@@ -47,7 +47,7 @@ class BookController(
     private val bookLifecycle: BookLifecycle
 ) {
 
-  @GetMapping("books")
+  @GetMapping("api/v1/books")
   fun getAllBooks(
       @AuthenticationPrincipal principal: KomgaPrincipal,
       @RequestParam(name = "search", required = false) searchTerm: String?,
@@ -89,7 +89,7 @@ class BookController(
   }
 
 
-  @GetMapping("books/latest")
+  @GetMapping("api/v1/books/latest")
   fun getLatestSeries(
       @AuthenticationPrincipal principal: KomgaPrincipal,
       page: Pageable
@@ -109,14 +109,14 @@ class BookController(
 
 
   @Deprecated("since 0.9.0 the /books/{bookId} is preferred")
-  @GetMapping("series/{seriesId}/books/{bookId}")
+  @GetMapping("api/v1/series/{seriesId}/books/{bookId}")
   fun getOneBookFromSeries(
       @AuthenticationPrincipal principal: KomgaPrincipal,
       @PathVariable seriesId: Long,
       @PathVariable bookId: Long
   ): BookDto = getOneBook(principal, bookId)
 
-  @GetMapping("books/{bookId}")
+  @GetMapping("api/v1/books/{bookId}")
   fun getOneBook(
       @AuthenticationPrincipal principal: KomgaPrincipal,
       @PathVariable bookId: Long
@@ -128,14 +128,17 @@ class BookController(
 
 
   @Deprecated("since 0.9.0 the /books/{bookId}/thumbnail is preferred")
-  @GetMapping(value = ["series/{seriesId}/books/{bookId}/thumbnail"], produces = [MediaType.IMAGE_PNG_VALUE])
+  @GetMapping(value = ["api/v1/series/{seriesId}/books/{bookId}/thumbnail"], produces = [MediaType.IMAGE_PNG_VALUE])
   fun getBookThumbnailFromSeries(
       @AuthenticationPrincipal principal: KomgaPrincipal,
       @PathVariable seriesId: Long,
       @PathVariable bookId: Long
   ): ResponseEntity<ByteArray> = getBookThumbnail(principal, bookId)
 
-  @GetMapping(value = ["books/{bookId}/thumbnail"], produces = [MediaType.IMAGE_PNG_VALUE])
+  @GetMapping(value = [
+    "api/v1/books/{bookId}/thumbnail",
+    "opds/v1.2/books/{bookId}/thumbnail"
+  ], produces = [MediaType.IMAGE_PNG_VALUE])
   fun getBookThumbnail(
       @AuthenticationPrincipal principal: KomgaPrincipal,
       @PathVariable bookId: Long
@@ -154,8 +157,8 @@ class BookController(
 
   @Deprecated("since 0.9.0 the /books/{bookId}/file is preferred")
   @GetMapping(value = [
-    "series/{seriesId}/books/{bookId}/file",
-    "series/{seriesId}/books/{bookId}/file/*"
+    "api/v1/series/{seriesId}/books/{bookId}/file",
+    "api/v1/series/{seriesId}/books/{bookId}/file/*"
   ])
   fun getBookFileFromSeries(
       @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -164,8 +167,9 @@ class BookController(
   ): ResponseEntity<ByteArray> = getBookFile(principal, bookId)
 
   @GetMapping(value = [
-    "books/{bookId}/file",
-    "books/{bookId}/file/*"
+    "api/v1/books/{bookId}/file",
+    "api/v1/books/{bookId}/file/*",
+    "opds/v1.2/books/{bookId}/file/*"
   ])
   fun getBookFile(
       @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -190,14 +194,14 @@ class BookController(
 
 
   @Deprecated("since 0.9.0 the /books/{bookId}/pages is preferred")
-  @GetMapping("series/{seriesId}/books/{bookId}/pages")
+  @GetMapping("api/v1/series/{seriesId}/books/{bookId}/pages")
   fun getBookPagesFromSeries(
       @AuthenticationPrincipal principal: KomgaPrincipal,
       @PathVariable seriesId: Long,
       @PathVariable bookId: Long
   ): List<PageDto> = getBookPages(principal, bookId)
 
-  @GetMapping("books/{bookId}/pages")
+  @GetMapping("api/v1/books/{bookId}/pages")
   fun getBookPages(
       @AuthenticationPrincipal principal: KomgaPrincipal,
       @PathVariable bookId: Long
@@ -212,7 +216,7 @@ class BookController(
 
 
   @Deprecated("since 0.9.0 the /books/{bookId}/page/{pageNumber} is preferred")
-  @GetMapping("series/{seriesId}/books/{bookId}/pages/{pageNumber}")
+  @GetMapping("api/v1/series/{seriesId}/books/{bookId}/pages/{pageNumber}")
   fun getBookPageFromSeries(
       @AuthenticationPrincipal principal: KomgaPrincipal,
       @PathVariable seriesId: Long,
@@ -222,7 +226,10 @@ class BookController(
       @RequestParam(value = "zero_based", defaultValue = "false") zeroBasedIndex: Boolean
   ): ResponseEntity<ByteArray> = getBookPage(principal, bookId, pageNumber, convertTo, zeroBasedIndex)
 
-  @GetMapping("books/{bookId}/pages/{pageNumber}")
+  @GetMapping(value = [
+    "api/v1/books/{bookId}/pages/{pageNumber}",
+    "opds/v1.2/books/{bookId}/pages/{pageNumber}"
+  ])
   fun getBookPage(
       @AuthenticationPrincipal principal: KomgaPrincipal,
       @PathVariable bookId: Long,
