@@ -85,7 +85,7 @@ class BookController(
       } else {
         bookRepository.findAll(pageRequest)
       }
-    }.map { it.toDto() }
+    }.map { it.toDto(includeFullUrl = principal.user.isAdmin()) }
   }
 
 
@@ -104,7 +104,7 @@ class BookController(
       bookRepository.findAll(pageRequest)
     } else {
       bookRepository.findBySeriesLibraryIn(principal.user.sharedLibraries, pageRequest)
-    }.map { it.toDto() }
+    }.map { it.toDto(includeFullUrl = principal.user.isAdmin()) }
   }
 
 
@@ -123,7 +123,7 @@ class BookController(
   ): BookDto =
       bookRepository.findByIdOrNull(bookId)?.let {
         if (!principal.user.canAccessBook(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
-        it.toDto()
+        it.toDto(includeFullUrl = principal.user.isAdmin())
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
 

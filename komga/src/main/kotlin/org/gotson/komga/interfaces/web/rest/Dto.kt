@@ -1,6 +1,7 @@
 package org.gotson.komga.interfaces.web.rest
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.Series
 import java.time.LocalDateTime
@@ -17,11 +18,11 @@ data class SeriesDto(
     val booksCount: Int
 )
 
-fun Series.toDto() = SeriesDto(
+fun Series.toDto(includeUrl: Boolean) = SeriesDto(
     id = id,
     libraryId = library.id,
     name = name,
-    url = url.toString(),
+    url = if (includeUrl) url.toURI().path else "",
     lastModified = lastModifiedDate?.toUTC(),
     booksCount = books.size
 )
@@ -45,12 +46,12 @@ data class BookMetadataDto(
     val pagesCount: Int
 )
 
-fun Book.toDto() =
+fun Book.toDto(includeFullUrl: Boolean) =
     BookDto(
         id = id,
         seriesId = series.id,
         name = name,
-        url = url.toURI().path,
+        url = if (includeFullUrl) url.toURI().path else FilenameUtils.getName(url.toURI().path),
         number = number,
         lastModified = lastModifiedDate?.toUTC(),
         sizeBytes = fileSize,

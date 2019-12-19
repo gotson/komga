@@ -57,6 +57,8 @@ class KomgaUser(
       field = if (roles.contains(UserRoles.ADMIN)) true else value
     }
 
+  fun isAdmin() = roles.contains(UserRoles.ADMIN)
+
   fun canAccessBook(book: Book): Boolean {
     return sharedAllLibraries || sharedLibraries.any { it.id == book.series.library.id }
   }

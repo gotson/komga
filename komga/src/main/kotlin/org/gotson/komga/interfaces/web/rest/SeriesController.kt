@@ -76,7 +76,7 @@ class SeriesController(
       } else {
         seriesRepository.findAll(pageRequest)
       }
-    }.map { it.toDto() }
+    }.map { it.toDto(includeUrl = principal.user.isAdmin()) }
   }
 
   // all updated series, whether newly added or updated
@@ -95,7 +95,7 @@ class SeriesController(
       seriesRepository.findAll(pageRequest)
     } else {
       seriesRepository.findByLibraryIn(principal.user.sharedLibraries, pageRequest)
-    }.map { it.toDto() }
+    }.map { it.toDto(includeUrl = principal.user.isAdmin()) }
   }
 
   // new series only, doesn't contain existing updated series
@@ -114,7 +114,7 @@ class SeriesController(
       seriesRepository.findAll(pageRequest)
     } else {
       seriesRepository.findByLibraryIn(principal.user.sharedLibraries, pageRequest)
-    }.map { it.toDto() }
+    }.map { it.toDto(includeUrl = principal.user.isAdmin()) }
   }
 
   // updated series only, doesn't contain new series
@@ -133,7 +133,7 @@ class SeriesController(
       seriesRepository.findRecentlyUpdated(pageRequest)
     } else {
       seriesRepository.findRecentlyUpdatedByLibraryIn(principal.user.sharedLibraries, pageRequest)
-    }.map { it.toDto() }
+    }.map { it.toDto(includeUrl = principal.user.isAdmin()) }
   }
 
   @GetMapping("{seriesId}")
@@ -143,7 +143,7 @@ class SeriesController(
   ): SeriesDto =
       seriesRepository.findByIdOrNull(id)?.let {
         if (!principal.user.canAccessSeries(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
-        it.toDto()
+        it.toDto(includeUrl = principal.user.isAdmin())
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping(value = ["{seriesId}/thumbnail"], produces = [MediaType.IMAGE_JPEG_VALUE])
@@ -186,6 +186,6 @@ class SeriesController(
       bookRepository.findAllByMetadataStatusAndSeriesId(BookMetadata.Status.READY, id, pageRequest)
     } else {
       bookRepository.findAllBySeriesId(id, pageRequest)
-    }.map { it.toDto() }
+    }.map { it.toDto(includeFullUrl = principal.user.isAdmin()) }
   }
 }
