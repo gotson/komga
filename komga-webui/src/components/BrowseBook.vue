@@ -58,7 +58,15 @@
 
       <v-row>
         <v-col cols="2" md="1" lg="1" xl="1" class="body-2">FORMAT</v-col>
-        <v-col cols="10" class="body-2">{{ format.type }}</v-col>
+        <v-col cols="10" class="body-2">
+          <template v-if="book.metadata.status === 'ERROR'">
+            <span class="error--text font-weight-bold">Book could not be parsed</span>
+          </template>
+          <template v-else-if="book.metadata.status === 'UNSUPPORTED'">
+            <span class="error--text font-weight-bold">File type not supported: {{ book.metadata.mediaType }}</span>
+          </template>
+          <template v-else>{{ format.type }}</template>
+        </v-col>
       </v-row>
 
       <v-row align="center">

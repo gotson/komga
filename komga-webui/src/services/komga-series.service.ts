@@ -75,10 +75,10 @@ export default class KomgaSeriesService {
     }
   }
 
-  async getBooks (seriesId: number, pageRequest?: PageRequest): Promise<Page<BookDto>> {
+  async getBooks (seriesId: number, pageRequest?: PageRequest, readyOnly: boolean = true): Promise<Page<BookDto>> {
     try {
       return (await this.http.get(`${API_SERIES}/${seriesId}/books`, {
-        params: { ...pageRequest },
+        params: { ...pageRequest, ready_only: readyOnly },
         paramsSerializer: params => qs.stringify(params, { indices: false })
       })).data
     } catch (e) {

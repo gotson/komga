@@ -12,6 +12,13 @@
       >
         {{ format.type }}
       </span>
+
+      <span v-if="book.metadata.status !== 'READY'"
+            class="white--text pa-1 px-2 subtitle-2"
+            :style="{background: statusColor, position: 'absolute', bottom: 0, width: `${width}px`}"
+      >
+        {{ book.metadata.status }}
+      </span>
     </v-img>
 
     <v-card-subtitle class="pa-2 pb-1 text--primary"
@@ -60,6 +67,18 @@ export default Vue.extend({
     },
     format (): BookFormat {
       return getBookFormatFromMediaType(this.book.metadata.mediaType)
+    },
+    statusColor (): string {
+      switch (this.book.metadata.status) {
+        case 'ERROR':
+          return 'red'
+        case 'UNKOWN':
+          return 'grey'
+        case 'UNSUPPORTED':
+          return 'orange'
+        default:
+          return 'black'
+      }
     }
   }
 })
