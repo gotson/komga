@@ -1,6 +1,11 @@
 package org.gotson.komga.interfaces.web.rest
 
+import org.gotson.komga.domain.model.UserRoles
+import org.gotson.komga.domain.model.makeLibrary
+import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.interfaces.web.WithMockCustomUser
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -19,9 +24,22 @@ import org.springframework.test.web.servlet.post
 @SpringBootTest
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
 class LibraryControllerTest(
-    @Autowired private val mockMvc: MockMvc
+    @Autowired private val mockMvc: MockMvc,
+    @Autowired private val libraryRepository: LibraryRepository
 ) {
   private val route = "/api/v1/libraries"
+
+  private val library = makeLibrary(url = "file:/library1")
+
+  @BeforeAll
+  fun `setup library`() {
+    libraryRepository.save(library)
+  }
+
+  @AfterAll
+  fun `teardown library`() {
+    libraryRepository.deleteAll()
+  }
 
   @Nested
   inner class AnonymousUser {
@@ -75,6 +93,41 @@ class LibraryControllerTest(
             status { isOk }
             jsonPath("$.length()") { value(1) }
             jsonPath("$[0].id") { value(1) }
+          }
+    }
+  }
+
+  @Nested
+  inner class DtoRootSanitization {
+    @Test
+    @WithMockCustomUser
+    fun `given regular user when getting libraries then root is hidden`() {
+      mockMvc.get(route)
+          .andExpect {
+            status { isOk }
+            jsonPath("$[0].root") { value("") }
+          }
+
+      mockMvc.get("${route}/${library.id}")
+          .andExpect {
+            status { isOk }
+            jsonPath("$.root") { value("") }
+          }
+    }
+
+    @Test
+    @WithMockCustomUser(roles = [UserRoles.ADMIN])
+    fun `given admin user when getting books then root is available`() {
+      mockMvc.get(route)
+          .andExpect {
+            status { isOk }
+            jsonPath("$[0].root") { value("/library1") }
+          }
+
+      mockMvc.get("${route}/${library.id}")
+          .andExpect {
+            status { isOk }
+            jsonPath("$.root") { value("/library1") }
           }
     }
   }

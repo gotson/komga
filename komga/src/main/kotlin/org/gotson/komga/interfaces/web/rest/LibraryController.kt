@@ -37,27 +37,33 @@ class LibraryController(
 ) {
 
   @GetMapping
-  fun getAll(@AuthenticationPrincipal principal: KomgaPrincipal): List<LibraryDto> =
+  fun getAll(
+      @AuthenticationPrincipal principal: KomgaPrincipal
+  ): List<LibraryDto> =
       if (principal.user.sharedAllLibraries) {
         libraryRepository.findAll(Sort.by("name"))
       } else {
         principal.user.sharedLibraries
-      }.map { it.toDto() }
+      }.map { it.toDto(includeRoot = principal.user.isAdmin()) }
 
   @GetMapping("{id}")
-  fun getOne(@AuthenticationPrincipal principal: KomgaPrincipal, @PathVariable id: Long): LibraryDto =
+  fun getOne(
+      @AuthenticationPrincipal principal: KomgaPrincipal,
+      @PathVariable id: Long
+  ): LibraryDto =
       libraryRepository.findByIdOrNull(id)?.let {
         if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
-        it.toDto()
+        it.toDto(includeRoot = principal.user.isAdmin())
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @PostMapping
   @PreAuthorize("hasRole('ADMIN')")
   fun addOne(
+      @AuthenticationPrincipal principal: KomgaPrincipal,
       @Valid @RequestBody library: LibraryCreationDto
   ): LibraryDto =
       try {
-        libraryLifecycle.addLibrary(Library(library.name, library.root)).toDto()
+        libraryLifecycle.addLibrary(Library(library.name, library.root)).toDto(includeRoot = principal.user.isAdmin())
       } catch (e: Exception) {
         when (e) {
           is FileNotFoundException,
@@ -90,8 +96,8 @@ data class LibraryDto(
     val root: String
 )
 
-fun Library.toDto() = LibraryDto(
+fun Library.toDto(includeRoot: Boolean) = LibraryDto(
     id = id,
     name = name,
-    root = root.toString()
+    root = if (includeRoot) root.toURI().path else ""
 )
