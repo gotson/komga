@@ -51,20 +51,20 @@
     </v-toolbar>
 
     <v-container fluid class="mx-3">
-      <v-row justify="start">
+      <v-row justify="start" ref="content" v-resize="updateCardWidth">
 
         <v-skeleton-loader v-for="(b, i) in books"
                            :key="i"
-                           width="150"
+                           :width="cardWidth"
                            height="328.13"
                            justify-self="start"
                            :loading="b === null"
                            type="card, text"
-                           class="ma-3 ml-2 mr-2"
+                           class="ma-3 mx-2"
                            v-intersect="onCardIntersect"
                            :data-index="i"
         >
-          <card-book :book="b"/>
+          <card-book :book="b" :width="cardWidth"/>
         </v-skeleton-loader>
 
       </v-row>
@@ -93,7 +93,8 @@ export default Vue.extend({
         key: 'fileSize'
       }] as SortOption[],
       sortActive: {} as SortActive as SortActive,
-      sortDefault: { key: 'number', order: 'asc' } as SortActive as SortActive
+      sortDefault: { key: 'number', order: 'asc' } as SortActive as SortActive,
+      cardWidth: 150
     }
   },
   computed: {
@@ -138,6 +139,20 @@ export default Vue.extend({
     next()
   },
   methods: {
+    updateCardWidth () {
+      const content = this.$refs.content as HTMLElement
+      console.log(content.clientWidth)
+      switch (this.$vuetify.breakpoint.name) {
+        case 'xs':
+          this.cardWidth = (content.clientWidth - (16 * 2 + 2 * 12)) / 2
+          break
+        case 'sm':
+          this.cardWidth = (content.clientWidth - (16 * 3 + 2 * 12)) / 3
+          break
+        default:
+          this.cardWidth = 150
+      }
+    },
     parseQuerySortOrDefault (querySort: any): SortActive {
       let customSort = null
       if (querySort) {
