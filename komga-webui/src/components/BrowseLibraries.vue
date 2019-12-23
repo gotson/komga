@@ -83,7 +83,10 @@ export default Vue.extend({
       pageSize: 20,
       visibleCards: [] as number[],
       totalElements: null as number | null,
-      sortOptions: [{ name: 'Name', key: 'name' }, { name: 'Date added', key: 'createdDate' }] as SortOption[],
+      sortOptions: [{ name: 'Name', key: 'name' }, { name: 'Date added', key: 'createdDate' }, {
+        name: 'Date updated',
+        key: 'lastModifiedDate'
+      }] as SortOption[],
       sortActive: {} as SortActive as SortActive,
       sortDefault: { key: 'name', order: 'asc' } as SortActive as SortActive
     }
