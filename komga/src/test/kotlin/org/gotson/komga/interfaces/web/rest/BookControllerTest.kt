@@ -2,6 +2,7 @@ package org.gotson.komga.interfaces.web.rest
 
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.BookPage
+import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -24,6 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.MockMvcResultMatchersDsl
 import org.springframework.test.web.servlet.get
 import javax.sql.DataSource
 
@@ -87,7 +89,7 @@ class BookControllerTest(
           .andExpect {
             status { isOk }
             jsonPath("$.content.length()") { value(1) }
-            jsonPath("\$.content[0].name") { value("1") }
+            jsonPath("$.content[0].name") { value("1") }
           }
 
     }
@@ -273,5 +275,69 @@ class BookControllerTest(
 
     mockMvc.get("/api/v1/books/${book.id}/pages/$page")
         .andExpect { status { isBadRequest } }
+  }
+
+  @Nested
+  inner class DtoUrlSanitization {
+    @Test
+    @WithMockCustomUser
+    fun `given regular user when getting books then full url is hidden`() {
+      val series = makeSeries(
+          name = "series",
+          books = listOf(makeBook("1.cbr"))
+      ).also { it.library = library }
+      seriesRepository.save(series)
+
+      val validation: MockMvcResultMatchersDsl.() -> Unit = {
+        status { isOk }
+        jsonPath("$.content[0].url") { value("1.cbr") }
+      }
+
+      mockMvc.get("/api/v1/books")
+          .andExpect(validation)
+
+      mockMvc.get("/api/v1/books/latest")
+          .andExpect(validation)
+
+      mockMvc.get("/api/v1/series/${series.id}/books?ready_only=false")
+          .andExpect(validation)
+
+      mockMvc.get("/api/v1/books/${series.books.first().id}")
+          .andExpect {
+            status { isOk }
+            jsonPath("$.url") { value("1.cbr") }
+          }
+    }
+
+    @Test
+    @WithMockCustomUser(roles = [UserRoles.ADMIN])
+    fun `given admin user when getting books then full url is available`() {
+      val series = makeSeries(
+          name = "series",
+          books = listOf(makeBook("1.cbr"))
+      ).also { it.library = library }
+      seriesRepository.save(series)
+
+      val url = "/1.cbr"
+      val validation: MockMvcResultMatchersDsl.() -> Unit = {
+        status { isOk }
+        jsonPath("$.content[0].url") { value(url) }
+      }
+
+      mockMvc.get("/api/v1/books")
+          .andExpect(validation)
+
+      mockMvc.get("/api/v1/books/latest")
+          .andExpect(validation)
+
+      mockMvc.get("/api/v1/series/${series.id}/books?ready_only=false")
+          .andExpect(validation)
+
+      mockMvc.get("/api/v1/books/${series.books.first().id}")
+          .andExpect {
+            status { isOk }
+            jsonPath("$.url") { value(url) }
+          }
+    }
   }
 }

@@ -1,6 +1,7 @@
 package org.gotson.komga.interfaces.web.rest
 
 import org.gotson.komga.domain.model.BookMetadata
+import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -20,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.MockMvcResultMatchersDsl
 import org.springframework.test.web.servlet.get
 import javax.sql.DataSource
 
@@ -218,6 +220,70 @@ class SeriesControllerTest(
 
       mockMvc.get("/api/v1/series/${series.id}/thumbnail")
           .andExpect { status { isNotFound } }
+    }
+  }
+
+  @Nested
+  inner class DtoUrlSanitization {
+    @Test
+    @WithMockCustomUser
+    fun `given regular user when getting series then url is hidden`() {
+      val series = makeSeries(
+          name = "series",
+          books = listOf(makeBook("1.cbr"))
+      ).also { it.library = library }
+      seriesRepository.save(series)
+
+      val validation: MockMvcResultMatchersDsl.() -> Unit = {
+        status { isOk }
+        jsonPath("$.content[0].url") { value("") }
+      }
+
+      mockMvc.get("/api/v1/series")
+          .andExpect(validation)
+
+      mockMvc.get("/api/v1/series/latest")
+          .andExpect(validation)
+
+      mockMvc.get("/api/v1/series/new")
+          .andExpect(validation)
+
+      mockMvc.get("/api/v1/series/${series.id}")
+          .andExpect {
+            status { isOk }
+            jsonPath("$.url") { value("") }
+          }
+    }
+
+    @Test
+    @WithMockCustomUser(roles = [UserRoles.ADMIN])
+    fun `given admin user when getting series then url is available`() {
+      val series = makeSeries(
+          name = "series",
+          books = listOf(makeBook("1.cbr"))
+      ).also { it.library = library }
+      seriesRepository.save(series)
+
+      val url = "/series"
+      val validation: MockMvcResultMatchersDsl.() -> Unit = {
+        status { isOk }
+        jsonPath("$.content[0].url") { value(url) }
+      }
+
+      mockMvc.get("/api/v1/series")
+          .andExpect(validation)
+
+      mockMvc.get("/api/v1/series/latest")
+          .andExpect(validation)
+
+      mockMvc.get("/api/v1/series/new")
+          .andExpect(validation)
+
+      mockMvc.get("/api/v1/series/${series.id}")
+          .andExpect {
+            status { isOk }
+            jsonPath("$.url") { value(url) }
+          }
     }
   }
 }
