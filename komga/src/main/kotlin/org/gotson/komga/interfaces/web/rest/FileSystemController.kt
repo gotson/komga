@@ -3,6 +3,7 @@ package org.gotson.komga.interfaces.web.rest
 import com.fasterxml.jackson.annotation.JsonInclude
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -15,6 +16,7 @@ import kotlin.streams.asSequence
 
 @RestController
 @RequestMapping("api/v1/filesystem", produces = [MediaType.APPLICATION_JSON_VALUE])
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 class FileSystemController {
 
   private val fs = FileSystems.getDefault()
