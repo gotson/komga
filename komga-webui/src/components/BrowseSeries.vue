@@ -50,7 +50,7 @@
       </v-menu>
     </v-toolbar>
 
-    <v-container fluid class="mx-3">
+    <v-container fluid class="px-6">
       <v-row justify="start" ref="content" v-resize="updateCardWidth">
 
         <v-skeleton-loader v-for="(b, i) in books"
@@ -144,10 +144,10 @@ export default Vue.extend({
       console.log(content.clientWidth)
       switch (this.$vuetify.breakpoint.name) {
         case 'xs':
-          this.cardWidth = (content.clientWidth - (16 * 2 + 2 * 12)) / 2
+          this.cardWidth = (content.clientWidth - (16 * 2)) / 2
           break
         case 'sm':
-          this.cardWidth = (content.clientWidth - (16 * 3 + 2 * 12)) / 3
+          this.cardWidth = (content.clientWidth - (16 * 3)) / 3
           break
         default:
           this.cardWidth = 150

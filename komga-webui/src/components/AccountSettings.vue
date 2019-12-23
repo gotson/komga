@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="ma-3">
+  <v-container fluid class="pa-6">
     <v-row>
       <span class="headline">Account Settings</span>
     </v-row>

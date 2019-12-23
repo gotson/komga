@@ -13,7 +13,7 @@
       </v-btn>
     </v-toolbar>
 
-    <v-container fluid class="ma-3">
+    <v-container fluid class="pa-6">
       <v-row>
         <v-col cols="4" sm="4" md="auto" lg="auto" xl="auto">
           <v-img :src="thumbnailUrl"
