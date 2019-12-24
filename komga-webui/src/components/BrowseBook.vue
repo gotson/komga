@@ -38,8 +38,16 @@
             <v-icon>mdi-file-download</v-icon>
           </v-btn>
         </v-col>
+        <v-col cols="1">
+          <v-btn icon
+                 title="Read book"
+                 class="pb-1"
+                 :to="{name: 'read-book', params: { bookId: bookId}}">
+            <v-icon>mdi-book-open-page-variant</v-icon>
+          </v-btn>
+        </v-col>
         <v-col>
-          <v-icon class="mr-2 pb-1">mdi-book-open-page-variant</v-icon>
+          <v-icon class="mr-2 pb-1">mdi-book-open</v-icon>
           <span class="body-2">{{ book.metadata.pagesCount }} pages</span>
         </v-col>
       </v-row>

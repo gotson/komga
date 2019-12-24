@@ -94,6 +94,12 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "login" */ './views/Login.vue')
     },
     {
+      path: '/book/:bookId/read',
+      name: 'read-book',
+      component: () => import(/* webpackChunkName: "read-book" */ './views/BookReader.vue'),
+      props: (route) => ({ bookId: Number(route.params.bookId) })
+    },
+    {
       path: '*',
       name: 'notfound',
       component: () => import(/* webpackChunkName: "notfound" */ './views/PageNotFound.vue')
