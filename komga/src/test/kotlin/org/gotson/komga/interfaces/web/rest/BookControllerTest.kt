@@ -27,6 +27,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.MockMvcResultMatchersDsl
 import org.springframework.test.web.servlet.get
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 import javax.sql.DataSource
 
 @ExtendWith(SpringExtension::class)
@@ -338,6 +340,45 @@ class BookControllerTest(
             status { isOk }
             jsonPath("$.url") { value(url) }
           }
+    }
+  }
+
+  @Nested
+  inner class HttpCache {
+    @Test
+    @WithMockCustomUser
+    fun `given request with If-Modified-Since headers when getting thumbnail then returns 304 not modified`() {
+      val series = makeSeries(
+          name = "series",
+          books = listOf(makeBook("1.cbr"))
+      ).also { it.library = library }
+      seriesRepository.save(series)
+
+      mockMvc.get("/api/v1/books/${series.books.first().id}/thumbnail") {
+        headers {
+          ifModifiedSince = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()
+        }
+      }.andExpect {
+        status { isNotModified }
+      }
+    }
+
+    @Test
+    @WithMockCustomUser
+    fun `given request with If-Modified-Since headers when getting page then returns 304 not modified`() {
+      val series = makeSeries(
+          name = "series",
+          books = listOf(makeBook("1.cbr"))
+      ).also { it.library = library }
+      seriesRepository.save(series)
+
+      mockMvc.get("/api/v1/books/${series.books.first().id}/pages/1") {
+        headers {
+          ifModifiedSince = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()
+        }
+      }.andExpect {
+        status { isNotModified }
+      }
     }
   }
 }

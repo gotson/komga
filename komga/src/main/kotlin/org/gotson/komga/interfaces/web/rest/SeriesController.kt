@@ -15,7 +15,6 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -25,8 +24,8 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.context.request.WebRequest
 import org.springframework.web.server.ResponseStatusException
-import java.util.concurrent.TimeUnit
 
 private val logger = KotlinLogging.logger {}
 
@@ -35,7 +34,8 @@ private val logger = KotlinLogging.logger {}
 class SeriesController(
     private val seriesRepository: SeriesRepository,
     private val libraryRepository: LibraryRepository,
-    private val bookRepository: BookRepository
+    private val bookRepository: BookRepository,
+    private val bookController: BookController
 ) {
 
   @GetMapping
@@ -149,19 +149,15 @@ class SeriesController(
   @GetMapping(value = ["{seriesId}/thumbnail"], produces = [MediaType.IMAGE_JPEG_VALUE])
   fun getSeriesThumbnail(
       @AuthenticationPrincipal principal: KomgaPrincipal,
+      request: WebRequest,
       @PathVariable(name = "seriesId") id: Long
   ): ResponseEntity<ByteArray> =
       seriesRepository.findByIdOrNull(id)?.let { series ->
         if (!principal.user.canAccessSeries(series)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
 
-        val thumbnail = series.books.minBy { it.number }?.metadata?.thumbnail
-        if (thumbnail != null) {
-          ResponseEntity.ok()
-              .cacheControl(CacheControl
-                  .maxAge(4, TimeUnit.HOURS)
-                  .cachePrivate())
-              .body(thumbnail)
-        } else throw ResponseStatusException(HttpStatus.NOT_FOUND)
+        series.books.minBy { it.number }?.let { firstBook ->
+          bookController.getBookThumbnail(principal, request, firstBook.id)
+        } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping("{seriesId}/books")

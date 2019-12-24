@@ -30,10 +30,12 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.context.request.WebRequest
 import org.springframework.web.server.ResponseStatusException
 import java.io.File
 import java.io.FileNotFoundException
 import java.nio.file.NoSuchFileException
+import java.time.ZoneOffset
 import java.util.concurrent.TimeUnit
 
 private val logger = KotlinLogging.logger {}
@@ -131,9 +133,10 @@ class BookController(
   @GetMapping(value = ["api/v1/series/{seriesId}/books/{bookId}/thumbnail"], produces = [MediaType.IMAGE_PNG_VALUE])
   fun getBookThumbnailFromSeries(
       @AuthenticationPrincipal principal: KomgaPrincipal,
+      request: WebRequest,
       @PathVariable seriesId: Long,
       @PathVariable bookId: Long
-  ): ResponseEntity<ByteArray> = getBookThumbnail(principal, bookId)
+  ): ResponseEntity<ByteArray> = getBookThumbnail(principal, request, bookId)
 
   @GetMapping(value = [
     "api/v1/books/{bookId}/thumbnail",
@@ -141,16 +144,21 @@ class BookController(
   ], produces = [MediaType.IMAGE_PNG_VALUE])
   fun getBookThumbnail(
       @AuthenticationPrincipal principal: KomgaPrincipal,
+      request: WebRequest,
       @PathVariable bookId: Long
   ): ResponseEntity<ByteArray> =
-      bookRepository.findByIdOrNull(bookId)?.let {
-        if (!principal.user.canAccessBook(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
-        if (it.metadata.thumbnail != null) {
+      bookRepository.findByIdOrNull(bookId)?.let { book ->
+        if (request.checkNotModified(getBookLastModified(book))) {
+          return@let ResponseEntity
+              .status(HttpStatus.NOT_MODIFIED)
+              .setNotModified(book)
+              .body(ByteArray(0))
+        }
+        if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+        if (book.metadata.thumbnail != null) {
           ResponseEntity.ok()
-              .cacheControl(CacheControl
-                  .maxAge(4, TimeUnit.HOURS)
-                  .cachePrivate())
-              .body(it.metadata.thumbnail)
+              .setNotModified(book)
+              .body(book.metadata.thumbnail)
         } else throw ResponseStatusException(HttpStatus.NOT_FOUND)
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
@@ -219,12 +227,13 @@ class BookController(
   @GetMapping("api/v1/series/{seriesId}/books/{bookId}/pages/{pageNumber}")
   fun getBookPageFromSeries(
       @AuthenticationPrincipal principal: KomgaPrincipal,
+      request: WebRequest,
       @PathVariable seriesId: Long,
       @PathVariable bookId: Long,
       @PathVariable pageNumber: Int,
       @RequestParam(value = "convert", required = false) convertTo: String?,
       @RequestParam(value = "zero_based", defaultValue = "false") zeroBasedIndex: Boolean
-  ): ResponseEntity<ByteArray> = getBookPage(principal, bookId, pageNumber, convertTo, zeroBasedIndex)
+  ): ResponseEntity<ByteArray> = getBookPage(principal, request, bookId, pageNumber, convertTo, zeroBasedIndex)
 
   @GetMapping(value = [
     "api/v1/books/{bookId}/pages/{pageNumber}",
@@ -232,12 +241,19 @@ class BookController(
   ])
   fun getBookPage(
       @AuthenticationPrincipal principal: KomgaPrincipal,
+      request: WebRequest,
       @PathVariable bookId: Long,
       @PathVariable pageNumber: Int,
       @RequestParam(value = "convert", required = false) convertTo: String?,
       @RequestParam(value = "zero_based", defaultValue = "false") zeroBasedIndex: Boolean
   ): ResponseEntity<ByteArray> =
       bookRepository.findByIdOrNull((bookId))?.let { book ->
+        if (request.checkNotModified(getBookLastModified(book))) {
+          return@let ResponseEntity
+              .status(HttpStatus.NOT_MODIFIED)
+              .setNotModified(book)
+              .body(ByteArray(0))
+        }
         if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
         try {
           val convertFormat = when (convertTo?.toLowerCase()) {
@@ -253,6 +269,7 @@ class BookController(
 
           ResponseEntity.ok()
               .contentType(getMediaTypeOrDefault(pageContent.mediaType))
+              .setNotModified(book)
               .body(pageContent.content)
         } catch (ex: IndexOutOfBoundsException) {
           throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number does not exist")
@@ -263,6 +280,15 @@ class BookController(
           throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
         }
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  private fun ResponseEntity.BodyBuilder.setNotModified(book: Book) =
+      this.cacheControl(CacheControl.maxAge(0, TimeUnit.SECONDS)
+          .cachePrivate()
+          .mustRevalidate()
+      ).lastModified(getBookLastModified(book))
+
+  private fun getBookLastModified(book: Book) =
+      book.fileLastModified.toInstant(ZoneOffset.UTC).toEpochMilli()
 
 
   private fun getMediaTypeOrDefault(mediaTypeString: String?): MediaType {
