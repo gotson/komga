@@ -30,7 +30,7 @@
       </v-row>
 
       <v-row align="center">
-        <v-col cols="1">
+        <v-col cols="auto">
           <v-btn icon
                  title="Download file"
                  class="pb-1"
@@ -38,15 +38,16 @@
             <v-icon>mdi-file-download</v-icon>
           </v-btn>
         </v-col>
-        <v-col cols="1">
+        <v-col cols="auto">
           <v-btn icon
+                 color="primary"
                  title="Read book"
                  class="pb-1"
                  :to="{name: 'read-book', params: { bookId: bookId}}">
             <v-icon>mdi-book-open-page-variant</v-icon>
           </v-btn>
         </v-col>
-        <v-col>
+        <v-col cols="auto">
           <v-icon class="mr-2 pb-1">mdi-book-open</v-icon>
           <span class="body-2">{{ book.metadata.pagesCount }} pages</span>
         </v-col>
