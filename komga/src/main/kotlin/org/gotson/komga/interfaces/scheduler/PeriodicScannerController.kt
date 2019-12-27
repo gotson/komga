@@ -26,13 +26,4 @@ class PeriodicScannerController(
       logger.warn { "Another scan is already running, skipping" }
     }
   }
-
-  @EventListener(ApplicationReadyEvent::class)
-  fun regenerateMissingThumbnails() {
-    try {
-      asyncOrchestrator.regenerateMissingThumbnails()
-    } catch (e: RejectedExecutionException) {
-      logger.warn { "Thumbnail regeneration task is already running" }
-    }
-  }
 }
