@@ -154,6 +154,11 @@ The web interface is available on port `8080`.
 |---|---|
 | [![webui_screenshot](./.github/readme-images/webui-dashboard_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui-dashboard.png) | [![webui-settings-users_screenshot](./.github/readme-images/webui-browse-series_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui-browse-series.png) |
 
+|Web reader | Web reader menu |
+|---|---|
+| [![webreader_screenshot](./.github/readme-images/webreader_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webreader.png) | [![webreader-menu_screenshot](./.github/readme-images/webreader-menu_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webreader-menu.png) |
+
+
 | Account settings | Users management | User rights |
 |---|---|---|
 | [![webui-settings-users_screenshot](./.github/readme-images/webui-account-settings_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui-account-settings.png) | [![webui-settings-users_screenshot](./.github/readme-images/webui-settings-users_small.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui-settings-users.png) | [![webui-settings-users_screenshot](./.github/readme-images/webui-settings-users-libraries.png)](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/webui-settings-users-libraries.png) |
