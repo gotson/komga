@@ -1,33 +1,186 @@
 <template>
   <div v-if="pages.length > 0">
-    <v-btn icon @click="closeBook">
-      <v-icon>mdi-close</v-icon>
-    </v-btn>
-
-    <v-btn icon @click="prev" :disabled="!canPrev">
-      <v-icon>mdi-chevron-left</v-icon>
-    </v-btn>
-
-    <v-btn icon @click="next" :disabled="!canNext">
-      <v-icon>mdi-chevron-right</v-icon>
-    </v-btn>
-
-    <transition name="slide-x-transition">
-      <v-img :src="getPageUrl(currentPage)"
-             :key="getPageUrl(currentPage)"
-             contain
-             :max-height="$vuetify.breakpoint.height"
+    <!--  Carousel  -->
+    <slick ref="slick"
+           :options="slickOptions"
+           @afterChange="slickAfterChange"
+    >
+      <!--  Carousel: pages  -->
+      <v-img v-for="p in pages"
+             :key="p.number"
+             :data-lazy="getPageUrl(p)"
+             :src="getPageUrl(p)"
+             :max-height="maxHeight"
              :max-width="$vuetify.breakpoint.width"
-      />
-    </transition>
+             :contain="true"
+      >
+        <!--  clickable zone: previous page  -->
+        <div @click="prev"
+             class="left-quarter full-height"
+             style="z-index: 1; position: absolute"
+        />
+
+        <!--  clickable zone: menu  -->
+        <div @click="showMenu = true"
+             class="center-half full-height"
+             style="z-index: 1; position: absolute"
+        />
+
+        <!--  clickable zone: next page  -->
+        <div @click="next"
+             class="right-quarter full-height"
+             style="z-index: 1; position: absolute"
+        />
+      </v-img>
+    </slick>
+
+    <!--  Menu  -->
+    <v-overlay :value="showMenu"
+               opacity=".8"
+    >
+      <!--   Menu: left zone with arrow   -->
+      <div class="fixed-position full-height left-quarter"
+           style="display: flex; align-items: center; justify-content: center"
+      >
+        <v-icon size="8em">
+          mdi-chevron-left
+        </v-icon>
+      </div>
+
+      <!--   Menu: central zone   -->
+      <div class="dashed-x fixed-position center-half full-height"
+           @click.self="showMenu = false"
+      >
+        <v-btn icon
+               @click="showMenu = false"
+               absolute
+               top
+               right
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+
+        <v-container fluid
+                     class="pa-6 pt-12"
+                     style="border-bottom: 4px dashed"
+        >
+          <!--  Menu: number of pages  -->
+          <v-row>
+            <v-col class="text-center title">
+              Page {{ currentPage }} of {{ book.metadata.pagesCount }}
+            </v-col>
+          </v-row>
+
+          <!--  Menu: progress bar  -->
+          <v-row>
+            <v-col cols="12">
+              <v-progress-linear :value="progress"
+                                 height="20"
+                                 background-color="white"
+                                 color="secondary"
+                                 rounded
+              />
+            </v-col>
+          </v-row>
+
+          <!--  Menu: page slider  -->
+          <v-row align="baseline">
+            <v-col cols="11">
+              <v-slider
+                v-model="goToPage"
+                class="align-center"
+                :max="book.metadata.pagesCount"
+                min="1"
+                hide-details
+                @change="goTo"
+              >
+                <template v-slot:prepend>
+                  <v-btn icon @click="goToFirst">
+                    <v-icon>mdi-arrow-collapse-left</v-icon>
+                  </v-btn>
+                </template>
+                <template v-slot:append>
+                  <v-btn icon @click="goToLast">
+                    <v-icon>mdi-arrow-collapse-right</v-icon>
+                  </v-btn>
+                </template>
+              </v-slider>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="goToPage"
+                hide-details
+                single-line
+                type="number"
+                @change="goTo"
+              />
+            </v-col>
+          </v-row>
+
+          <!--  Menu: buttons Close and Fit  -->
+          <v-row>
+            <v-col class="text-center">
+              <v-btn @click="closeBook"
+                     color="primary"
+              >
+                Close book
+              </v-btn>
+            </v-col>
+
+            <v-col class="text-center">
+              <v-btn-toggle v-model="fitButtons" dense mandatory>
+                <v-btn @click="fitHeight = false" color="primary">
+                  Fit to width
+                </v-btn>
+
+                <v-btn @click="fitHeight = true" color="primary">
+                  Fit to height
+                </v-btn>
+              </v-btn-toggle>
+            </v-col>
+          </v-row>
+
+          <!--  Menu: keyboard shortcuts  -->
+          <v-row>
+            <v-col cols="auto">
+              <div><kbd>←</kbd> / <kbd>⇞</kbd></div>
+              <div><kbd>→</kbd> / <kbd>⇟</kbd></div>
+              <div><kbd>space</kbd></div>
+              <div><kbd>m</kbd></div>
+              <div><kbd>esc</kbd></div>
+            </v-col>
+            <v-col>
+              <div>Previous page</div>
+              <div>Next page</div>
+              <div>Scroll down</div>
+              <div>Show / hide menu</div>
+              <div>Close book</div>
+            </v-col>
+          </v-row>
+        </v-container>
+      </div>
+
+      <!--   Menu: right zone with arrow   -->
+      <div class="fixed-position full-height right-quarter"
+           style="display: flex; align-items: center; justify-content: center"
+      >
+        <v-icon size="8em">
+          mdi-chevron-right
+        </v-icon>
+      </div>
+
+    </v-overlay>
+
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import Slick from 'vue-slick'
 
 export default Vue.extend({
   name: 'BookReader',
+  components: { Slick },
   data: () => {
     return {
       baseURL: process.env.VUE_APP_KOMGA_API_URL ? process.env.VUE_APP_KOMGA_API_URL : window.location.origin,
@@ -35,12 +188,26 @@ export default Vue.extend({
       pages: [] as PageDto[],
       supportedMediaTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
       convertTo: 'png',
-      currentPage: 1
+      currentPage: 1,
+      goToPage: 1,
+      showMenu: false,
+      fitButtons: 1,
+      fitHeight: true,
+      slickOptions: {
+        infinite: false,
+        arrows: false,
+        variableWidth: false,
+        adaptiveHeight: false,
+        initialSlide: 0
+      }
     }
   },
-  async created () {
-    this.book = await this.$komgaBooks.getBook(this.bookId)
-    this.pages = await this.$komgaBooks.getBookPages(this.bookId)
+  async mounted () {
+    window.addEventListener('keydown', this.keyPressed)
+    this.setup(this.bookId, Number(this.$route.query.page))
+  },
+  destroyed () {
+    window.removeEventListener('keydown', this.keyPressed)
   },
   props: {
     bookId: {
@@ -50,14 +217,14 @@ export default Vue.extend({
   },
   async beforeRouteUpdate (to, from, next) {
     if (to.params.bookId !== from.params.bookId) {
-      this.book = await this.$komgaBooks.getBook(Number(to.params.bookId))
+      this.setup(Number(to.params.bookId), Number(to.query.page))
     }
     next()
   },
   watch: {
     currentPage (val) {
       this.updateRoute()
-      this.preloadNext()
+      this.goToPage = val
     }
   },
   computed: {
@@ -66,11 +233,45 @@ export default Vue.extend({
     },
     canNext (): boolean {
       return this.currentPage < this.book.metadata.pagesCount
+    },
+    progress (): number {
+      return this.currentPage / this.book.metadata.pagesCount * 100
+    },
+    maxHeight (): number | undefined {
+      return this.fitHeight ? this.$vuetify.breakpoint.height - 7 : undefined
     }
   },
   methods: {
-    getPageUrl (pageNum: number): string {
-      const page = this.pages[pageNum - 1]
+    keyPressed (e: KeyboardEvent) {
+      switch (e.key) {
+        case 'PageUp':
+        case 'ArrowRight':
+          this.next()
+          break
+        case 'PageDown':
+        case 'ArrowLeft':
+          this.prev()
+          break
+        case 'm':
+          this.showMenu = !this.showMenu
+          break
+        case 'Escape':
+          this.closeBook()
+          break
+      }
+    },
+    async setup (bookId: number, page: number) {
+      this.book = await this.$komgaBooks.getBook(bookId)
+      this.pages = await this.$komgaBooks.getBookPages(bookId)
+      if (page >= 1 && page <= this.book.metadata.pagesCount) {
+        this.currentPage = page
+        this.slickOptions.initialSlide = page - 1
+      } else {
+        this.currentPage = 1
+        this.updateRoute()
+      }
+    },
+    getPageUrl (page: PageDto): string {
       let url = `${this.baseURL}/api/v1/books/${this.bookId}/pages/${page.number}`
       if (!this.supportedMediaTypes.includes(page.mediaType)) {
         url += `?convert=${this.convertTo}`
@@ -79,34 +280,77 @@ export default Vue.extend({
     },
     prev () {
       if (this.canPrev) {
-        this.currentPage -= 1
+        (this.$refs.slick as any).prev()
+        window.scrollTo(0, 0)
       }
     },
     next () {
       if (this.canNext) {
-        this.currentPage += 1
+        (this.$refs.slick as any).next()
+        window.scrollTo(0, 0)
+      } else {
+        this.showMenu = true
       }
     },
-    preloadNext () {
-      if (this.canNext) {
-        const img = new Image()
-        img.src = this.getPageUrl(this.currentPage + 1)
-      }
+    goTo (page: number) {
+      (this.$refs.slick as any).$el.slick.slickGoTo(page - 1, true)
+    },
+    goToFirst () {
+      this.goToPage = 1
+      this.goTo(this.goToPage)
+    },
+    goToLast () {
+      this.goToPage = this.book.metadata.pagesCount
+      this.goTo(this.goToPage)
     },
     updateRoute () {
       this.$router.replace({
         name: this.$route.name,
         params: { bookId: this.$route.params.bookId },
-        query: { page: this.currentPage.toString() }
+        query: {
+          page: this.currentPage.toString()
+        }
       })
     },
     closeBook () {
-      this.$router.back()
+      this.$router.push({ name: 'browse-book', params: { bookId: this.bookId.toString() } })
+    },
+    slickAfterChange (event: any, slick: any, currentSlide: any) {
+      this.currentPage = currentSlide + 1
     }
   }
 })
 </script>
 
 <style scoped>
+@import "../../node_modules/slick-carousel/slick/slick.css";
 
+.fixed-position {
+  position: fixed;
+}
+
+.full-height {
+  top: 0;
+  height: 100%;
+}
+
+.left-quarter {
+  left: 0;
+  width: 20%;
+}
+
+.right-quarter {
+  right: 0;
+  width: 20%;
+}
+
+.center-half {
+  left: 20%;
+  width: 60%;
+}
+
+.dashed-x {
+  border-left: 4px dashed;
+  border-right: 4px dashed;
+}
 </style>
