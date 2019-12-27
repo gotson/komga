@@ -20,8 +20,6 @@
                  lazy-src="../assets/cover.svg"
                  max-height="300"
                  max-width="212"
-                 aspect-ratio="0.7071"
-                 contain
           />
 
         </v-col>

@@ -7,7 +7,6 @@
       :src="thumbnailUrl"
       lazy-src="../assets/cover.svg"
       aspect-ratio="0.7071"
-      contain
     >
       <span class="white--text pa-1 px-2 subtitle-2"
             style="background: darkorange; position: absolute; right: 0"
