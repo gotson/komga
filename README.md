@@ -15,6 +15,7 @@ Features include:
 - API to serve the complete file for download
 - OPDS feed
 - web interface
+- web reader
 - user management, with per-library access control
 
 ## Installation
