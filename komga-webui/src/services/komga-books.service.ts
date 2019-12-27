@@ -44,4 +44,16 @@ export default class KomgaBooksService {
       throw new Error(msg)
     }
   }
+
+  async getBookPages (bookId: number): Promise<PageDto[]> {
+    try {
+      return (await this.http.get(`${API_BOOKS}/${bookId}/pages`)).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve book pages'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
 }
