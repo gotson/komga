@@ -1,5 +1,5 @@
 <template>
-  <div v-if="pages.length > 0" style="background: black">
+  <div v-if="pages.length > 0" style="background: black; width: 100%; height: 100%">
     <!--  Carousel  -->
     <slick ref="slick"
            :options="slickOptions"
