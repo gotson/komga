@@ -24,18 +24,19 @@
               </v-col>
             </v-row>
 
-            <template v-if="!allLibraries">
-              <v-row v-for="(l, index) in libraries" :key="index">
-                <v-col>
-                  <v-checkbox v-model="selectedLibraries"
-                              :label="l.name"
-                              :value="l.id"
-                              hide-details
-                              class="my-0 py-0"
-                  />
-                </v-col>
-              </v-row>
-            </template>
+            <v-divider/>
+
+            <v-row v-for="(l, index) in libraries" :key="index">
+              <v-col>
+                <v-checkbox v-model="selectedLibraries"
+                            :label="l.name"
+                            :value="l.id"
+                            :disabled="allLibraries"
+                            hide-details
+                            class="my-0 py-0"
+                />
+              </v-col>
+            </v-row>
           </v-container>
         </v-card-text>
 
