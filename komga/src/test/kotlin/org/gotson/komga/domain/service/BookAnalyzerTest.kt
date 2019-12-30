@@ -12,16 +12,16 @@ import org.gotson.komga.infrastructure.archive.RarExtractor
 import org.gotson.komga.infrastructure.archive.ZipExtractor
 import org.junit.jupiter.api.Test
 
-class BookParserTest {
+class BookAnalyzerTest {
   private val mockContent = mockk<ContentDetector>()
   private val mockZip = mockk<ZipExtractor>()
   private val mockRar = mockk<RarExtractor>()
   private val mockPDf = mockk<PdfExtractor>()
 
-  private val bookParser = BookParser(mockContent, mockZip, mockRar, mockPDf)
+  private val bookAnalyzer = BookAnalyzer(mockContent, mockZip, mockRar, mockPDf)
 
   @Test
-  fun `given book with unordered pages when parsing then thumbnail should always be the first in natural order`() {
+  fun `given book with unordered pages when analyzing then thumbnail should always be the first in natural order`() {
     // given
     val book = makeBook("book")
     every { mockContent.detectMediaType(book.path()) } returns "application/zip"
@@ -32,7 +32,7 @@ class BookParserTest {
     //when
     val thumbnailFile = slot<String>()
     every { mockZip.getPageStream(book.path(), capture(thumbnailFile)) } returns ByteArray(1)
-    bookParser.parse(book)
+    bookAnalyzer.analyze(book)
 
     // then
     assertThat(thumbnailFile.captured).isEqualTo("01")

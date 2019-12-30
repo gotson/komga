@@ -43,7 +43,9 @@
                  color="primary"
                  title="Read book"
                  class="pb-1"
-                 :to="{name: 'read-book', params: { bookId: bookId}}">
+                 :to="{name: 'read-book', params: { bookId: bookId}}"
+                 :disabled="book.media.status !== 'READY'"
+          >
             <v-icon>mdi-book-open-page-variant</v-icon>
           </v-btn>
         </v-col>

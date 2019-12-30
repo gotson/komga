@@ -1,6 +1,6 @@
 package org.gotson.komga.interfaces.web.rest
 
-import org.gotson.komga.domain.model.BookMetadata
+import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
@@ -75,7 +75,7 @@ class SeriesControllerTest(
       series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
       seriesRepository.save(series)
 
-      mockMvc.get("/api/v1/series/${series.id}/books?ready_only=false")
+      mockMvc.get("/api/v1/series/${series.id}/books")
           .andExpect {
             status { isOk }
             jsonPath("$.content[0].name") { value("1") }
@@ -96,7 +96,7 @@ class SeriesControllerTest(
       series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
       seriesRepository.save(series)
 
-      mockMvc.get("/api/v1/series/${series.id}/books?ready_only=false")
+      mockMvc.get("/api/v1/series/${series.id}/books")
           .andExpect {
             status { isOk }
             jsonPath("$.content[0].name") { value("1") }
@@ -119,10 +119,10 @@ class SeriesControllerTest(
       seriesRepository.save(series)
 
       series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
-      series.books.forEach { it.metadata = BookMetadata(BookMetadata.Status.READY) }
+      series.books.forEach { it.media = Media(Media.Status.READY) }
       seriesRepository.save(series)
 
-      mockMvc.get("/api/v1/series/${series.id}/books?ready_only=true")
+      mockMvc.get("/api/v1/series/${series.id}/books?mediaStatus=READY")
           .andExpect {
             status { isOk }
             jsonPath("$.content[0].name") { value("1") }
@@ -208,7 +208,7 @@ class SeriesControllerTest(
   }
 
   @Nested
-  inner class BookMetadataNotReady {
+  inner class MediaNotReady {
     @Test
     @WithMockCustomUser
     fun `given book without thumbnail when getting series thumbnail then returns not found`() {

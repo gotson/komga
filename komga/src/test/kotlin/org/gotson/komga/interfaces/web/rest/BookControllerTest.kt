@@ -1,7 +1,7 @@
 package org.gotson.komga.interfaces.web.rest
 
-import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.BookPage
+import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
@@ -186,7 +186,7 @@ class BookControllerTest(
   }
 
   @Nested
-  inner class BookMetadataNotReady {
+  inner class MediaNotReady {
     @Test
     @WithMockCustomUser
     fun `given book without thumbnail when getting book thumbnail then returns not found`() {
@@ -222,12 +222,12 @@ class BookControllerTest(
     }
 
     @ParameterizedTest
-    @EnumSource(value = BookMetadata.Status::class, names = ["READY"], mode = EnumSource.Mode.EXCLUDE)
+    @EnumSource(value = Media.Status::class, names = ["READY"], mode = EnumSource.Mode.EXCLUDE)
     @WithMockCustomUser
-    fun `given book with metadata status not ready when getting book pages then returns not found`(status: BookMetadata.Status) {
+    fun `given book with media status not ready when getting book pages then returns not found`(status: Media.Status) {
       val series = makeSeries(
           name = "series",
-          books = listOf(makeBook("1").also { it.metadata.status = status })
+          books = listOf(makeBook("1").also { it.media.status = status })
       ).also { it.library = library }
       seriesRepository.save(series)
       val book = series.books.first()
@@ -240,12 +240,12 @@ class BookControllerTest(
     }
 
     @ParameterizedTest
-    @EnumSource(value = BookMetadata.Status::class, names = ["READY"], mode = EnumSource.Mode.EXCLUDE)
+    @EnumSource(value = Media.Status::class, names = ["READY"], mode = EnumSource.Mode.EXCLUDE)
     @WithMockCustomUser
-    fun `given book with metadata status not ready when getting specific book page then returns not found`(status: BookMetadata.Status) {
+    fun `given book with media status not ready when getting specific book page then returns not found`(status: Media.Status) {
       val series = makeSeries(
           name = "series",
-          books = listOf(makeBook("1").also { it.metadata.status = status })
+          books = listOf(makeBook("1").also { it.media.status = status })
       ).also { it.library = library }
       seriesRepository.save(series)
       val book = series.books.first()
@@ -265,8 +265,8 @@ class BookControllerTest(
     val series = makeSeries(
         name = "series",
         books = listOf(makeBook("1").also {
-          it.metadata.pages = listOf(BookPage("file", "image/jpeg"))
-          it.metadata.status = BookMetadata.Status.READY
+          it.media.pages = listOf(BookPage("file", "image/jpeg"))
+          it.media.status = Media.Status.READY
         })
     ).also { it.library = library }
     seriesRepository.save(series)
@@ -301,7 +301,7 @@ class BookControllerTest(
       mockMvc.get("/api/v1/books/latest")
           .andExpect(validation)
 
-      mockMvc.get("/api/v1/series/${series.id}/books?ready_only=false")
+      mockMvc.get("/api/v1/series/${series.id}/books")
           .andExpect(validation)
 
       mockMvc.get("/api/v1/books/${series.books.first().id}")
@@ -332,7 +332,7 @@ class BookControllerTest(
       mockMvc.get("/api/v1/books/latest")
           .andExpect(validation)
 
-      mockMvc.get("/api/v1/series/${series.id}/books?ready_only=false")
+      mockMvc.get("/api/v1/series/${series.id}/books")
           .andExpect(validation)
 
       mockMvc.get("/api/v1/books/${series.books.first().id}")

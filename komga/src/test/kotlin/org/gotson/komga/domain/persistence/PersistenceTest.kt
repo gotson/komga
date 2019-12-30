@@ -1,7 +1,7 @@
 package org.gotson.komga.domain.persistence
 
 import org.assertj.core.api.Assertions.assertThat
-import org.gotson.komga.domain.model.BookMetadata
+import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeBookPage
 import org.gotson.komga.domain.model.makeLibrary
@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional
 class PersistenceTest(
     @Autowired private val seriesRepository: SeriesRepository,
     @Autowired private val bookRepository: BookRepository,
-    @Autowired private val bookMetadataRepository: BookMetadataRepository,
+    @Autowired private val mediaRepository: MediaRepository,
     @Autowired private val libraryRepository: LibraryRepository
 ) {
 
@@ -44,7 +44,7 @@ class PersistenceTest(
   }
 
   @Test
-  fun `given series with book when saving then metadata is also saved`() {
+  fun `given series with book when saving then media is also saved`() {
     // given
     val series = makeSeries(name = "series", books = listOf(makeBook("book1"))).also { it.library = library }
 
@@ -54,7 +54,7 @@ class PersistenceTest(
     // then
     assertThat(seriesRepository.count()).isEqualTo(1)
     assertThat(bookRepository.count()).isEqualTo(1)
-    assertThat(bookMetadataRepository.count()).isEqualTo(1)
+    assertThat(mediaRepository.count()).isEqualTo(1)
   }
 
   @Test
@@ -78,23 +78,23 @@ class PersistenceTest(
   }
 
   @Test
-  fun `given existing book when updating metadata then new metadata is saved`() {
+  fun `given existing book when updating media then new media is saved`() {
     // given
     val series = makeSeries(name = "series", books = listOf(makeBook("book1"))).also { it.library = library }
     seriesRepository.save(series)
 
     // when
     val book = bookRepository.findAll().first()
-    book.metadata = BookMetadata(status = BookMetadata.Status.READY, mediaType = "test", pages = mutableListOf(makeBookPage("page1")))
+    book.media = Media(status = Media.Status.READY, mediaType = "test", pages = mutableListOf(makeBookPage("page1")))
 
     bookRepository.save(book)
 
     // then
     assertThat(seriesRepository.count()).isEqualTo(1)
     assertThat(bookRepository.count()).isEqualTo(1)
-    assertThat(bookMetadataRepository.count()).isEqualTo(1)
-    bookMetadataRepository.findAll().first().let {
-      assertThat(it.status == BookMetadata.Status.READY)
+    assertThat(mediaRepository.count()).isEqualTo(1)
+    mediaRepository.findAll().first().let {
+      assertThat(it.status == Media.Status.READY)
       assertThat(it.mediaType == "test")
       assertThat(it.pages).hasSize(1)
       assertThat(it.pages.first().fileName).isEqualTo("page1")
@@ -109,7 +109,7 @@ class PersistenceTest(
 
     // when
     val book = bookRepository.findAll().first()
-    book.metadata = BookMetadata(status = BookMetadata.Status.READY, mediaType = "test", pages = listOf(
+    book.media = Media(status = Media.Status.READY, mediaType = "test", pages = listOf(
         makeBookPage("2"),
         makeBookPage("003"),
         makeBookPage("001")
@@ -120,12 +120,12 @@ class PersistenceTest(
     // then
     assertThat(seriesRepository.count()).isEqualTo(1)
     assertThat(bookRepository.count()).isEqualTo(1)
-    assertThat(bookMetadataRepository.count()).isEqualTo(1)
-    bookMetadataRepository.findAll().first().let { metadata ->
-      assertThat(metadata.status == BookMetadata.Status.READY)
-      assertThat(metadata.mediaType == "test")
-      assertThat(metadata.pages).hasSize(3)
-      assertThat(metadata.pages.map { it.fileName }).containsExactly("001", "2", "003")
+    assertThat(mediaRepository.count()).isEqualTo(1)
+    mediaRepository.findAll().first().let { media ->
+      assertThat(media.status == Media.Status.READY)
+      assertThat(media.mediaType == "test")
+      assertThat(media.pages).hasSize(3)
+      assertThat(media.pages.map { it.fileName }).containsExactly("001", "2", "003")
     }
   }
 }

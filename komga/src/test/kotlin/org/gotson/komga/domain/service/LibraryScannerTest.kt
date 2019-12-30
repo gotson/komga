@@ -4,7 +4,7 @@ import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
-import org.gotson.komga.domain.model.BookMetadata
+import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeBookPage
 import org.gotson.komga.domain.model.makeLibrary
@@ -40,7 +40,7 @@ class LibraryScannerTest(
   private lateinit var mockScanner: FileSystemScanner
 
   @MockkBean
-  private lateinit var mockParser: BookParser
+  private lateinit var mockAnalyzer: BookAnalyzer
 
   @AfterEach
   fun `clear repositories`() {
@@ -182,7 +182,7 @@ class LibraryScannerTest(
   }
 
   @Test
-  fun `given existing Book with metadata when rescanning then metadata is kept intact`() {
+  fun `given existing Book with media when rescanning then media is kept intact`() {
     // given
     val library = libraryRepository.save(makeLibrary())
 
@@ -194,22 +194,22 @@ class LibraryScannerTest(
         )
     libraryScanner.scanRootFolder(library)
 
-    every { mockParser.parse(any()) } returns BookMetadata(status = BookMetadata.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")))
-    bookRepository.findAll().map { bookLifecycle.parseAndPersist(it) }.map { it.get() }
+    every { mockAnalyzer.analyze(any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")))
+    bookRepository.findAll().map { bookLifecycle.analyzeAndPersist(it) }.map { it.get() }
 
     // when
     libraryScanner.scanRootFolder(library)
 
     // then
     verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
-    verify(exactly = 1) { mockParser.parse(any()) }
+    verify(exactly = 1) { mockAnalyzer.analyze(any()) }
 
     TransactionTemplate(transactionManager).execute {
       val book = bookRepository.findAll().first()
-      assertThat(book.metadata.status).isEqualTo(BookMetadata.Status.READY)
-      assertThat(book.metadata.mediaType).isEqualTo("application/zip")
-      assertThat(book.metadata.pages).hasSize(2)
-      assertThat(book.metadata.pages.map { it.fileName }).containsExactly("1.jpg", "2.jpg")
+      assertThat(book.media.status).isEqualTo(Media.Status.READY)
+      assertThat(book.media.mediaType).isEqualTo("application/zip")
+      assertThat(book.media.pages).hasSize(2)
+      assertThat(book.media.pages.map { it.fileName }).containsExactly("1.jpg", "2.jpg")
       assertThat(book.lastModifiedDate).isNotEqualTo(book.createdDate)
     }
   }
