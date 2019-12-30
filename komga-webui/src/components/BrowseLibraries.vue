@@ -136,7 +136,6 @@ export default Vue.extend({
   methods: {
     updateCardWidth () {
       const content = this.$refs.content as HTMLElement
-      console.log(content.clientWidth)
       switch (this.$vuetify.breakpoint.name) {
         case 'xs':
           this.cardWidth = (content.clientWidth - (16 * 2)) / 2
