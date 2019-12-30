@@ -3,6 +3,7 @@ komga:
   libraries-scan-directory-exclusions: #patterns to exclude directories from the scan
     - "#recycle" #synology NAS recycle bin
     - "@eaDir"   #synology NAS index/metadata folders
+  filesystem-scanner-force-directory-modified-time: false #set to true only if newly added books in existing series are not scanned (ie Google Drive)
 spring:
   datasource:
     url: jdbc:h2:./komga-database.h2 #database will be located in the current directory

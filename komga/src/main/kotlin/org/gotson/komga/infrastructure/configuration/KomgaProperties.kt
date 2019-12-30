@@ -13,6 +13,8 @@ class KomgaProperties {
 
   var librariesScanDirectoryExclusions: List<String> = emptyList()
 
+  var filesystemScannerForceDirectoryModifiedTime: Boolean = false
+
   var threads = Threads()
 
   class Threads {
