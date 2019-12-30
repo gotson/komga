@@ -1,5 +1,23 @@
 <template>
   <div v-if="pages.length > 0" style="background: black; width: 100%; height: 100%">
+    <!--  clickable zone: previous page  -->
+    <div @click="prev"
+         class="left-quarter full-height"
+         style="z-index: 1; position: absolute"
+    />
+
+    <!--  clickable zone: menu  -->
+    <div @click="showMenu = true"
+         class="center-half full-height"
+         style="z-index: 1; position: absolute"
+    />
+
+    <!--  clickable zone: next page  -->
+    <div @click="next"
+         class="right-quarter full-height"
+         style="z-index: 1; position: absolute"
+    />
+
     <!--  Carousel  -->
     <slick ref="slick"
            :options="slickOptions"
@@ -10,28 +28,11 @@
              :key="p.number"
              :data-lazy="getPageUrl(p)"
              :src="getPageUrl(p)"
+             lazy-src="../assets/loading.svg"
              :max-height="maxHeight"
              :max-width="$vuetify.breakpoint.width"
              :contain="true"
-      >
-        <!--  clickable zone: previous page  -->
-        <div @click="prev"
-             class="left-quarter full-height"
-             style="z-index: 1; position: absolute"
-        />
-
-        <!--  clickable zone: menu  -->
-        <div @click="showMenu = true"
-             class="center-half full-height"
-             style="z-index: 1; position: absolute"
-        />
-
-        <!--  clickable zone: next page  -->
-        <div @click="next"
-             class="right-quarter full-height"
-             style="z-index: 1; position: absolute"
-        />
-      </v-img>
+      />
     </slick>
 
     <!--  Menu  -->
@@ -51,6 +52,13 @@
       <div class="dashed-x fixed-position center-half full-height"
            @click.self="showMenu = false"
       >
+        <v-btn @click="closeBook"
+               color="primary"
+               absolute top left
+        >
+          Close book
+        </v-btn>
+
         <v-btn icon
                @click="showMenu = false"
                absolute
@@ -83,9 +91,26 @@
             </v-col>
           </v-row>
 
+          <!--  Menu: go to page  -->
+          <v-row align="baseline" justify="center">
+            <v-col cols="auto">
+              Go to page
+            </v-col>
+            <v-col cols="auto">
+              <v-text-field
+                v-model="goToPage"
+                hide-details
+                single-line
+                type="number"
+                @change="goTo"
+                style="width: 4em"
+              />
+            </v-col>
+          </v-row>
+
           <!--  Menu: page slider  -->
           <v-row align="baseline">
-            <v-col cols="11">
+            <v-col cols="12">
               <v-slider
                 v-model="goToPage"
                 class="align-center"
@@ -106,28 +131,11 @@
                 </template>
               </v-slider>
             </v-col>
-            <v-col>
-              <v-text-field
-                v-model="goToPage"
-                hide-details
-                single-line
-                type="number"
-                @change="goTo"
-              />
-            </v-col>
           </v-row>
 
-          <!--  Menu: buttons Close and Fit  -->
-          <v-row>
-            <v-col class="text-center">
-              <v-btn @click="closeBook"
-                     color="primary"
-              >
-                Close book
-              </v-btn>
-            </v-col>
-
-            <v-col class="text-center">
+          <!--  Menu: fit buttons  -->
+          <v-row justify="center">
+            <v-col cols="auto">
               <v-btn-toggle v-model="fitButtons" dense mandatory>
                 <v-btn @click="fitHeight = false" color="primary">
                   Fit to width
@@ -145,6 +153,8 @@
             <v-col cols="auto">
               <div><kbd>←</kbd> / <kbd>⇞</kbd></div>
               <div><kbd>→</kbd> / <kbd>⇟</kbd></div>
+              <div><kbd>home</kbd></div>
+              <div><kbd>end</kbd></div>
               <div><kbd>space</kbd></div>
               <div><kbd>m</kbd></div>
               <div><kbd>esc</kbd></div>
@@ -152,6 +162,8 @@
             <v-col>
               <div>Previous page</div>
               <div>Next page</div>
+              <div>First page</div>
+              <div>Last page</div>
               <div>Scroll down</div>
               <div>Show / hide menu</div>
               <div>Close book</div>
@@ -198,6 +210,10 @@ export default Vue.extend({
         arrows: false,
         variableWidth: false,
         adaptiveHeight: false,
+        swipe: false,
+        touchMove: false,
+        cssEase: 'cubic-bezier(0.250, 0.100, 0.250, 1.000)',
+        speed: 150,
         initialSlide: 0
       }
     }
@@ -251,6 +267,12 @@ export default Vue.extend({
         case 'PageDown':
         case 'ArrowLeft':
           this.prev()
+          break
+        case 'Home':
+          this.goToFirst()
+          break
+        case 'End':
+          this.goToLast()
           break
         case 'm':
           this.showMenu = !this.showMenu
