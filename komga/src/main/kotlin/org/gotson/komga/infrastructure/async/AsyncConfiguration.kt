@@ -13,10 +13,10 @@ class AsyncConfiguration(
     private val komgaProperties: KomgaProperties
 ) {
 
-  @Bean("parseBookTaskExecutor")
-  fun parseBookTaskExecutor(): Executor =
+  @Bean("analyzeBookTaskExecutor")
+  fun analyzeBookTaskExecutor(): Executor =
       ThreadPoolTaskExecutor().apply {
-        corePoolSize = komgaProperties.threads.parse
+        corePoolSize = komgaProperties.threads.analyzer
       }
 
   @Bean("periodicScanTaskExecutor")

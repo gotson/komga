@@ -7,10 +7,10 @@ interface BookDto {
   lastModified: string,
   sizeBytes: number,
   size: string,
-  metadata: BookMetadataDto
+  media: MediaDto
 }
 
-interface BookMetadataDto {
+interface MediaDto {
   status: string,
   mediaType: string,
   pagesCount: number

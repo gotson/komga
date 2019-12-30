@@ -1,6 +1,7 @@
 komga:
   threads:
-    parse: 1
+    analyzer: 1
+  filesystem-scanner-force-directory-modified-time: false
 #  libraries-scan-directory-exclusions:
 #    - "#recycle"
 #    - "@eaDir"

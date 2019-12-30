@@ -20,7 +20,7 @@ class AsyncOrchestrator(
 ) {
 
   @Async("periodicScanTaskExecutor")
-  fun scanAndParse() {
+  fun scanAndAnalyze() {
     logger.info { "Starting periodic libraries scan" }
     val libraries = libraryRepository.findAll()
 
@@ -32,7 +32,7 @@ class AsyncOrchestrator(
       }
 
       logger.info { "Starting periodic book parsing" }
-      libraryScanner.parseUnparsedBooks()
+      libraryScanner.analyzeUnknownBooks()
     }
   }
 
@@ -45,7 +45,7 @@ class AsyncOrchestrator(
   @Async("regenerateThumbnailsTaskExecutor")
   fun regenerateMissingThumbnails() {
     logger.info { "Regenerate missing thumbnails" }
-    generateThumbnails(bookRepository.findAllByMetadataThumbnailIsNull())
+    generateThumbnails(bookRepository.findAllByMediaThumbnailIsNull())
   }
 
   private fun generateThumbnails(books: List<Book>) {

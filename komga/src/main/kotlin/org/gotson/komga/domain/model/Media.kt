@@ -22,10 +22,10 @@ import javax.persistence.Table
 private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
 
 @Entity
-@Table(name = "book_metadata")
+@Table(name = "media")
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "cache.bookmetadata")
-class BookMetadata(
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "cache.media")
+class Media(
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     var status: Status = Status.UNKNOWN,
@@ -45,9 +45,9 @@ class BookMetadata(
   val id: Long = 0
 
   @ElementCollection(fetch = FetchType.LAZY)
-  @CollectionTable(name = "book_metadata_page", joinColumns = [JoinColumn(name = "book_metadata_id")])
+  @CollectionTable(name = "media_page", joinColumns = [JoinColumn(name = "media_id")])
   @OrderColumn(name = "number")
-  @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "cache.bookmetadata.collection.pages")
+  @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "cache.media.collection.pages")
   private var _pages: MutableList<BookPage> = mutableListOf()
 
   var pages: List<BookPage>

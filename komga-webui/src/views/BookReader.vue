@@ -75,7 +75,7 @@
           <!--  Menu: number of pages  -->
           <v-row>
             <v-col class="text-center title">
-              Page {{ currentPage }} of {{ book.metadata.pagesCount }}
+              Page {{ currentPage }} of {{ book.media.pagesCount }}
             </v-col>
           </v-row>
 
@@ -114,7 +114,7 @@
               <v-slider
                 v-model="goToPage"
                 class="align-center"
-                :max="book.metadata.pagesCount"
+                :max="book.media.pagesCount"
                 min="1"
                 hide-details
                 @change="goTo"
@@ -248,10 +248,10 @@ export default Vue.extend({
       return this.currentPage > 1
     },
     canNext (): boolean {
-      return this.currentPage < this.book.metadata.pagesCount
+      return this.currentPage < this.book.media.pagesCount
     },
     progress (): number {
-      return this.currentPage / this.book.metadata.pagesCount * 100
+      return this.currentPage / this.book.media.pagesCount * 100
     },
     maxHeight (): number | undefined {
       return this.fitHeight ? this.$vuetify.breakpoint.height - 7 : undefined
@@ -285,7 +285,7 @@ export default Vue.extend({
     async setup (bookId: number, page: number) {
       this.book = await this.$komgaBooks.getBook(bookId)
       this.pages = await this.$komgaBooks.getBookPages(bookId)
-      if (page >= 1 && page <= this.book.metadata.pagesCount) {
+      if (page >= 1 && page <= this.book.media.pagesCount) {
         this.currentPage = page
         this.slickOptions.initialSlide = page - 1
       } else {
@@ -322,7 +322,7 @@ export default Vue.extend({
       this.goTo(this.goToPage)
     },
     goToLast () {
-      this.goToPage = this.book.metadata.pagesCount
+      this.goToPage = this.book.media.pagesCount
       this.goTo(this.goToPage)
     },
     updateRoute () {

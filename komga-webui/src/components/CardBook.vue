@@ -13,11 +13,11 @@
         {{ format.type }}
       </span>
 
-      <span v-if="book.metadata.status !== 'READY'"
+      <span v-if="book.media.status !== 'READY'"
             class="white--text pa-1 px-2 subtitle-2"
             :style="{background: statusColor, position: 'absolute', bottom: 0, width: `${width}px`}"
       >
-        {{ book.metadata.status }}
+        {{ book.media.status }}
       </span>
     </v-img>
 
@@ -32,8 +32,8 @@
     <v-card-text class="px-2"
     >
       <div>{{ book.size }}</div>
-      <div v-if="book.metadata.pagesCount === 1">{{ book.metadata.pagesCount }} page</div>
-      <div v-else>{{ book.metadata.pagesCount }} pages</div>
+      <div v-if="book.media.pagesCount === 1">{{ book.media.pagesCount }} page</div>
+      <div v-else>{{ book.media.pagesCount }} pages</div>
     </v-card-text>
 
   </v-card>
@@ -66,10 +66,10 @@ export default Vue.extend({
       return `${this.baseURL}/api/v1/books/${this.book.id}/thumbnail`
     },
     format (): BookFormat {
-      return getBookFormatFromMediaType(this.book.metadata.mediaType)
+      return getBookFormatFromMediaType(this.book.media.mediaType)
     },
     statusColor (): string {
-      switch (this.book.metadata.status) {
+      switch (this.book.media.status) {
         case 'ERROR':
           return 'red'
         case 'UNKOWN':

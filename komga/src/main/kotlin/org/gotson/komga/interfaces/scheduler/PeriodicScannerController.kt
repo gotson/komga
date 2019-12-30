@@ -21,7 +21,7 @@ class PeriodicScannerController(
   @Scheduled(cron = "#{@komgaProperties.librariesScanCron ?: '-'}")
   fun scanRootFolder() {
     try {
-      asyncOrchestrator.scanAndParse()
+      asyncOrchestrator.scanAndAnalyze()
     } catch (e: RejectedExecutionException) {
       logger.warn { "Another scan is already running, skipping" }
     }

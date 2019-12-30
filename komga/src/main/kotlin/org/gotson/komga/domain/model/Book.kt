@@ -51,8 +51,8 @@ class Book(
   lateinit var series: Series
 
   @OneToOne(optional = false, orphanRemoval = true, cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-  @JoinColumn(name = "book_metadata_id", nullable = false)
-  var metadata: BookMetadata = BookMetadata()
+  @JoinColumn(name = "media_id", nullable = false)
+  var media: Media = Media()
 
   @Column(name = "number", nullable = false, columnDefinition = "REAL")
   var number: Float = 0F

@@ -2,8 +2,8 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import org.apache.commons.lang3.time.DurationFormatUtils
-import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Library
+import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.springframework.stereotype.Service
@@ -59,10 +59,10 @@ class LibraryScanner(
               val existingBook = bookRepository.findByUrl(newBook.url) ?: newBook
 
               if (newBook.fileLastModified.truncatedTo(ChronoUnit.MILLIS) != existingBook.fileLastModified.truncatedTo(ChronoUnit.MILLIS)) {
-                logger.info { "Book changed on disk, update and reset metadata status: $newBook" }
+                logger.info { "Book changed on disk, update and reset media status: $newBook" }
                 existingBook.fileLastModified = newBook.fileLastModified
                 existingBook.fileSize = newBook.fileSize
-                existingBook.metadata.reset()
+                existingBook.media.reset()
               }
               existingBook
             }.toMutableList()
@@ -74,14 +74,14 @@ class LibraryScanner(
     }.also { logger.info { "Library update finished in ${DurationFormatUtils.formatDurationHMS(it)}" } }
   }
 
-  fun parseUnparsedBooks() {
-    logger.info { "Parsing all books in status: unknown" }
-    val booksToParse = bookRepository.findAllByMetadataStatus(BookMetadata.Status.UNKNOWN)
+  fun analyzeUnknownBooks() {
+    logger.info { "Analyze all books in status: unknown" }
+    val booksToAnalyze = bookRepository.findAllByMediaStatus(Media.Status.UNKNOWN)
 
     var sumOfTasksTime = 0L
     measureTimeMillis {
-      sumOfTasksTime = booksToParse
-          .map { bookLifecycle.parseAndPersist(it) }
+      sumOfTasksTime = booksToAnalyze
+          .map { bookLifecycle.analyzeAndPersist(it) }
           .map {
             try {
               it.get()
@@ -91,7 +91,7 @@ class LibraryScanner(
           }
           .sum()
     }.also {
-      logger.info { "Parsed ${booksToParse.size} books in ${DurationFormatUtils.formatDurationHMS(it)} (virtual: ${DurationFormatUtils.formatDurationHMS(sumOfTasksTime)})" }
+      logger.info { "Analyzed ${booksToAnalyze.size} books in ${DurationFormatUtils.formatDurationHMS(it)} (virtual: ${DurationFormatUtils.formatDurationHMS(sumOfTasksTime)})" }
     }
   }
 

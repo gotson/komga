@@ -4,8 +4,8 @@ import mu.KotlinLogging
 import net.coobird.thumbnailator.Thumbnails
 import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.BookMetadata
-import org.gotson.komga.domain.model.MetadataNotReadyException
+import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.UnsupportedMediaTypeException
 import org.gotson.komga.infrastructure.archive.ContentDetector
 import org.gotson.komga.infrastructure.archive.PdfExtractor
@@ -18,7 +18,7 @@ import java.util.*
 private val logger = KotlinLogging.logger {}
 
 @Service
-class BookParser(
+class BookAnalyzer(
     private val contentDetector: ContentDetector,
     private val zipExtractor: ZipExtractor,
     private val rarExtractor: RarExtractor,
@@ -37,8 +37,8 @@ class BookParser(
   private val thumbnailFormat = "jpeg"
 
   @Throws(UnsupportedMediaTypeException::class)
-  fun parse(book: Book): BookMetadata {
-    logger.info { "Trying to parse book: $book" }
+  fun analyze(book: Book): Media {
+    logger.info { "Trying to analyze book: $book" }
 
     val mediaType = contentDetector.detectMediaType(book.path())
     logger.info { "Detected media type: $mediaType" }
@@ -52,24 +52,24 @@ class BookParser(
     logger.info { "Trying to generate cover for book: $book" }
     val thumbnail = generateThumbnail(book, mediaType, pages.first().fileName)
 
-    return BookMetadata(mediaType = mediaType, status = BookMetadata.Status.READY, pages = pages, thumbnail = thumbnail)
+    return Media(mediaType = mediaType, status = Media.Status.READY, pages = pages, thumbnail = thumbnail)
   }
 
-  @Throws(MetadataNotReadyException::class)
-  fun regenerateThumbnail(book: Book): BookMetadata {
+  @Throws(MediaNotReadyException::class)
+  fun regenerateThumbnail(book: Book): Media {
     logger.info { "Regenerate thumbnail for book: $book" }
 
-    if (book.metadata.status != BookMetadata.Status.READY) {
-      logger.warn { "Book metadata is not ready, cannot generate thumbnail. Book: $book" }
-      throw MetadataNotReadyException()
+    if (book.media.status != Media.Status.READY) {
+      logger.warn { "Book media is not ready, cannot generate thumbnail. Book: $book" }
+      throw MediaNotReadyException()
     }
 
-    val thumbnail = generateThumbnail(book, book.metadata.mediaType!!, book.metadata.pages.first().fileName)
+    val thumbnail = generateThumbnail(book, book.media.mediaType!!, book.media.pages.first().fileName)
 
-    return BookMetadata(
-        mediaType = book.metadata.mediaType,
-        status = BookMetadata.Status.READY,
-        pages = book.metadata.pages,
+    return Media(
+        mediaType = book.media.mediaType,
+        status = Media.Status.READY,
+        pages = book.media.pages,
         thumbnail = thumbnail
     )
   }
@@ -91,22 +91,22 @@ class BookParser(
       }
 
   @Throws(
-      MetadataNotReadyException::class,
+      MediaNotReadyException::class,
       IndexOutOfBoundsException::class
   )
   fun getPageContent(book: Book, number: Int): ByteArray {
     logger.info { "Get page #$number for book: $book" }
 
-    if (book.metadata.status != BookMetadata.Status.READY) {
-      logger.warn { "Book metadata is not ready, cannot get pages" }
-      throw MetadataNotReadyException()
+    if (book.media.status != Media.Status.READY) {
+      logger.warn { "Book media is not ready, cannot get pages" }
+      throw MediaNotReadyException()
     }
 
-    if (number > book.metadata.pages.size || number <= 0) {
-      logger.error { "Page number #$number is out of bounds. Book has ${book.metadata.pages.size} pages" }
+    if (number > book.media.pages.size || number <= 0) {
+      logger.error { "Page number #$number is out of bounds. Book has ${book.media.pages.size} pages" }
       throw IndexOutOfBoundsException("Page $number does not exist")
     }
 
-    return supportedMediaTypes.getValue(book.metadata.mediaType!!).getPageStream(book.path(), book.metadata.pages[number - 1].fileName)
+    return supportedMediaTypes.getValue(book.media.mediaType!!).getPageStream(book.path(), book.media.pages[number - 1].fileName)
   }
 }

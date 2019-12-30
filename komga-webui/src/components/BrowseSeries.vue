@@ -226,7 +226,7 @@ export default Vue.extend({
       if (this.sortActive != null) {
         pageRequest.sort = [`${this.sortActive.key},${this.sortActive.order}`]
       }
-      return this.$komgaSeries.getBooks(seriesId, pageRequest, false)
+      return this.$komgaSeries.getBooks(seriesId, pageRequest)
     },
     processPage (page: Page<BookDto>) {
       if (this.totalElements === null) {

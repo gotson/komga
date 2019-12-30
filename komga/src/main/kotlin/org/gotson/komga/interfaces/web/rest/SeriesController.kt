@@ -3,7 +3,7 @@ package org.gotson.komga.interfaces.web.rest
 import com.github.klinq.jpaspec.`in`
 import com.github.klinq.jpaspec.likeLower
 import mu.KotlinLogging
-import org.gotson.komga.domain.model.BookMetadata
+import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
@@ -164,7 +164,9 @@ class SeriesController(
   fun getAllBooksBySeries(
       @AuthenticationPrincipal principal: KomgaPrincipal,
       @PathVariable(name = "seriesId") id: Long,
-      @RequestParam(value = "ready_only", defaultValue = "true") readyFilter: Boolean,
+      @RequestParam(name = "ready_only", defaultValue = "true")
+      readyFilter: Boolean,
+      @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
       page: Pageable
   ): Page<BookDto> {
     seriesRepository.findByIdOrNull(id)?.let {
@@ -178,8 +180,8 @@ class SeriesController(
         else Sort.by(Sort.Order.asc("number"))
     )
 
-    return if (readyFilter) {
-      bookRepository.findAllByMetadataStatusAndSeriesId(BookMetadata.Status.READY, id, pageRequest)
+    return if (!mediaStatus.isNullOrEmpty()) {
+      bookRepository.findAllByMediaStatusInAndSeriesId(mediaStatus, id, pageRequest)
     } else {
       bookRepository.findAllBySeriesId(id, pageRequest)
     }.map { it.toDto(includeFullUrl = principal.user.isAdmin()) }

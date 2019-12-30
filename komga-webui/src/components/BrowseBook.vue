@@ -51,7 +51,7 @@
         </v-col>
         <v-col cols="auto">
           <v-icon class="mr-2 pb-1">mdi-book-open</v-icon>
-          <span class="body-2">{{ book.metadata.pagesCount }} pages</span>
+          <span class="body-2">{{ book.media.pagesCount }} pages</span>
         </v-col>
       </v-row>
 
@@ -70,11 +70,11 @@
       <v-row>
         <v-col cols="2" md="1" lg="1" xl="1" class="body-2">FORMAT</v-col>
         <v-col cols="10" class="body-2">
-          <template v-if="book.metadata.status === 'ERROR'">
-            <span class="error--text font-weight-bold">Book could not be parsed</span>
+          <template v-if="book.media.status === 'ERROR'">
+            <span class="error--text font-weight-bold">Book analysis failed</span>
           </template>
-          <template v-else-if="book.metadata.status === 'UNSUPPORTED'">
-            <span class="error--text font-weight-bold">File type not supported: {{ book.metadata.mediaType }}</span>
+          <template v-else-if="book.media.status === 'UNSUPPORTED'">
+            <span class="error--text font-weight-bold">File type not supported: {{ book.media.mediaType }}</span>
           </template>
           <template v-else>{{ format.type }}</template>
         </v-col>
@@ -125,7 +125,7 @@ export default Vue.extend({
       return `${this.baseURL}/api/v1/books/${this.bookId}/file`
     },
     format (): BookFormat {
-      return getBookFormatFromMediaType(this.book.metadata.mediaType)
+      return getBookFormatFromMediaType(this.book.media.mediaType)
     },
     barStyle (): any {
       if (this.$vuetify.breakpoint.name === 'xs') {

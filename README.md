@@ -58,7 +58,7 @@ In order to make Komga run, you need to specify some mandatory configuration key
 You can also use some optional configuration keys:
 
 - `KOMGA_LIBRARIES_SCAN_CRON` / `komga.libraries-scan-cron`: a [Spring cron expression](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/scheduling/support/CronSequenceGenerator.html) for libraries periodic rescans. `0 0 * * * ?` will rescan every hour. `0 */15 * * * ?` will rescan every 15 minutes. Defaults to `0 */15 * * * ?` in `prod` profile.
-- `KOMGA_THREADS_PARSE` / `komga.threads.parse`: the number of worker threads used for book parsing. Defaults to `2`. You can experiment to get better performance.
+- `KOMGA_THREADS_ANALYZER` / `komga.threads.analyzer`: the number of worker threads used for analyzing books. Defaults to `2`. You can experiment to get better performance.
 - `KOMGA_LIBRARIES_SCAN_DIRECTORY_EXCLUSIONS` / `komga.libraries-scan-directory-exclusions`: a list of patterns to exclude directories from the scan. If the full path contains any of the patterns, the directory will be ignored. If using the environment variable form use a comma-separated list.
 - `KOMGA_FILESYSTEM_SCANNER_FORCE_DIRECTORY_MODIFIED_TIME` / `komga.filesystem-scanner-force-directory-modified-time`: if set to `true`, it will force the last modified time of a directory as the maximum from its own last modified time and the last modified time from all the books inside the directory. This should be used only if your filesystem does not update the last modified time of a directory when files inside it are modified (Google Drive for instance).   
 
@@ -86,7 +86,7 @@ Komga will generate:
 
 On rescans, Komga will update Series and Books, add new ones, and remove the ones for which files don't exist anymore.
 
-Then it will _parse_ each book, which consist of indexing pages (images in the archive), and generating a thumbnail.
+Then it will _analyze_ each book, which consist of indexing pages (images in the archive), and generating a thumbnail.
 
 ## Security
 

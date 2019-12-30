@@ -4,8 +4,8 @@ import com.github.klinq.jpaspec.`in`
 import com.github.klinq.jpaspec.likeLower
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.BookMetadata
-import org.gotson.komga.domain.model.MetadataNotReadyException
+import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
@@ -155,10 +155,10 @@ class BookController(
               .body(ByteArray(0))
         }
         if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
-        if (book.metadata.thumbnail != null) {
+        if (book.media.thumbnail != null) {
           ResponseEntity.ok()
               .setNotModified(book)
-              .body(book.metadata.thumbnail)
+              .body(book.media.thumbnail)
         } else throw ResponseStatusException(HttpStatus.NOT_FOUND)
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
@@ -192,7 +192,7 @@ class BookController(
                     .filename(book.fileName())
                     .build()
               })
-              .contentType(getMediaTypeOrDefault(book.metadata.mediaType))
+              .contentType(getMediaTypeOrDefault(book.media.mediaType))
               .body(File(book.url.toURI()).readBytes())
         } catch (ex: FileNotFoundException) {
           logger.warn(ex) { "File not found: $book" }
@@ -216,10 +216,10 @@ class BookController(
   ): List<PageDto> =
       bookRepository.findByIdOrNull((bookId))?.let {
         if (!principal.user.canAccessBook(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
-        if (it.metadata.status == BookMetadata.Status.UNKNOWN) throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book has not been parsed yet")
-        if (it.metadata.status in listOf(BookMetadata.Status.ERROR, BookMetadata.Status.UNSUPPORTED)) throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book cannot be parsed")
+        if (it.media.status == Media.Status.UNKNOWN) throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book has not been analyzed yet")
+        if (it.media.status in listOf(Media.Status.ERROR, Media.Status.UNSUPPORTED)) throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
 
-        it.metadata.pages.mapIndexed { index, s -> PageDto(index + 1, s.fileName, s.mediaType) }
+        it.media.pages.mapIndexed { index, s -> PageDto(index + 1, s.fileName, s.mediaType) }
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
 
@@ -273,8 +273,8 @@ class BookController(
               .body(pageContent.content)
         } catch (ex: IndexOutOfBoundsException) {
           throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number does not exist")
-        } catch (ex: MetadataNotReadyException) {
-          throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book cannot be parsed")
+        } catch (ex: MediaNotReadyException) {
+          throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
         } catch (ex: NoSuchFileException) {
           logger.warn(ex) { "File not found: $book" }
           throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")

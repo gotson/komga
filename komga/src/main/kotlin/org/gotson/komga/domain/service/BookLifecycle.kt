@@ -3,9 +3,9 @@ package org.gotson.komga.domain.service
 import mu.KotlinLogging
 import org.apache.commons.lang3.time.DurationFormatUtils
 import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.BookPageContent
-import org.gotson.komga.domain.model.MetadataNotReadyException
+import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.UnsupportedMediaTypeException
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.infrastructure.image.ImageConverter
@@ -22,38 +22,38 @@ private val logger = KotlinLogging.logger {}
 @Service
 class BookLifecycle(
     private val bookRepository: BookRepository,
-    private val bookParser: BookParser,
+    private val bookAnalyzer: BookAnalyzer,
     private val imageConverter: ImageConverter
 ) {
 
   @Transactional
-  @Async("parseBookTaskExecutor")
-  fun parseAndPersist(book: Book): Future<Long> {
-    logger.info { "Parse and persist book: $book" }
+  @Async("analyzeBookTaskExecutor")
+  fun analyzeAndPersist(book: Book): Future<Long> {
+    logger.info { "Analyze and persist book: $book" }
     return AsyncResult(measureTimeMillis {
       try {
-        book.metadata = bookParser.parse(book)
+        book.media = bookAnalyzer.analyze(book)
       } catch (ex: UnsupportedMediaTypeException) {
         logger.info(ex) { "Unsupported media type: ${ex.mediaType}. Book: $book" }
-        book.metadata = BookMetadata(status = BookMetadata.Status.UNSUPPORTED, mediaType = ex.mediaType)
+        book.media = Media(status = Media.Status.UNSUPPORTED, mediaType = ex.mediaType)
       } catch (ex: Exception) {
         logger.error(ex) { "Error while parsing. Book: $book" }
-        book.metadata = BookMetadata(status = BookMetadata.Status.ERROR)
+        book.media = Media(status = Media.Status.ERROR)
       }
       bookRepository.save(book)
     }.also { logger.info { "Parsing finished in ${DurationFormatUtils.formatDurationHMS(it)}" } })
   }
 
   @Transactional
-  @Async("parseBookTaskExecutor")
+  @Async("analyzeBookTaskExecutor")
   fun regenerateThumbnailAndPersist(book: Book): Future<Long> {
     logger.info { "Regenerate thumbnail and persist book: $book" }
     return AsyncResult(measureTimeMillis {
       try {
-        book.metadata = bookParser.regenerateThumbnail(book)
+        book.media = bookAnalyzer.regenerateThumbnail(book)
       } catch (ex: Exception) {
         logger.error(ex) { "Error while recreating thumbnail" }
-        book.metadata = BookMetadata(status = BookMetadata.Status.ERROR)
+        book.media = Media(status = Media.Status.ERROR)
       }
       bookRepository.save(book)
     }.also { logger.info { "Thumbnail generated in ${DurationFormatUtils.formatDurationHMS(it)}" } })
@@ -61,12 +61,12 @@ class BookLifecycle(
 
   @Throws(
       UnsupportedMediaTypeException::class,
-      MetadataNotReadyException::class,
+      MediaNotReadyException::class,
       IndexOutOfBoundsException::class
   )
   fun getBookPage(book: Book, number: Int, convertTo: ImageType? = null): BookPageContent {
-    val pageContent = bookParser.getPageContent(book, number)
-    val pageMediaType = book.metadata.pages[number - 1].mediaType
+    val pageContent = bookAnalyzer.getPageContent(book, number)
+    val pageMediaType = book.media.pages[number - 1].mediaType
 
     convertTo?.let {
       val msg = "Convert page #$number of book $book from $pageMediaType to ${it.mediaType}"

@@ -19,6 +19,10 @@ class KomgaProperties {
 
   class Threads {
     @Min(1)
+    @Deprecated("Deprecated since 0.10", ReplaceWith("analyzer"))
     var parse: Int = 2
+
+    @Min(1)
+    var analyzer: Int = 2
   }
 }

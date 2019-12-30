@@ -3,8 +3,8 @@ package org.gotson.komga.interfaces.web.opds
 import com.github.klinq.jpaspec.`in`
 import com.github.klinq.jpaspec.likeLower
 import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Library
+import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
@@ -209,7 +209,7 @@ class OpdsController(
                 OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "${ROUTE_BASE}series/$id"),
                 linkStart
             ),
-            entries = series.books.filter { it.metadata.status == BookMetadata.Status.READY }.map { it.toOpdsEntry() }
+            entries = series.books.filter { it.media.status == Media.Status.READY }.map { it.toOpdsEntry() }
         )
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
@@ -252,9 +252,9 @@ class OpdsController(
           content = "$name (${fileExtension().toUpperCase()}) (${fileSizeHumanReadable()})",
           links = listOf(
               OpdsLinkImageThumbnail("image/jpeg", "${ROUTE_BASE}books/$id/thumbnail"),
-              OpdsLinkImage(metadata.pages[0].mediaType, "${ROUTE_BASE}books/$id/pages/1"),
-              OpdsLinkFileAcquisition(metadata.mediaType, "${ROUTE_BASE}books/$id/file/${fileName()}"),
-              OpdsLinkPageStreaming("image/jpeg", "${ROUTE_BASE}books/$id/pages/{pageNumber}?convert=jpeg&zero_based=true", metadata.pages.size)
+              OpdsLinkImage(media.pages[0].mediaType, "${ROUTE_BASE}books/$id/pages/1"),
+              OpdsLinkFileAcquisition(media.mediaType, "${ROUTE_BASE}books/$id/file/${fileName()}"),
+              OpdsLinkPageStreaming("image/jpeg", "${ROUTE_BASE}books/$id/pages/{pageNumber}?convert=jpeg&zero_based=true", media.pages.size)
           )
       )
 
