@@ -75,7 +75,7 @@ class SeriesControllerTest(
       series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
       seriesRepository.save(series)
 
-      mockMvc.get("/api/v1/series/${series.id}/books")
+      mockMvc.get("/api/v1/series/${series.id}/books?media_status=UNKNOWN")
           .andExpect {
             status { isOk }
             jsonPath("$.content[0].name") { value("1") }
@@ -96,7 +96,7 @@ class SeriesControllerTest(
       series.books = series.books.toMutableList().also { it.add(makeBook("2")) }
       seriesRepository.save(series)
 
-      mockMvc.get("/api/v1/series/${series.id}/books")
+      mockMvc.get("/api/v1/series/${series.id}/books?media_status=UNKNOWN")
           .andExpect {
             status { isOk }
             jsonPath("$.content[0].name") { value("1") }

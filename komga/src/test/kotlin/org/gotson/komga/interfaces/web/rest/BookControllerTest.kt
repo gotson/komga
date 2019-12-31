@@ -301,7 +301,7 @@ class BookControllerTest(
       mockMvc.get("/api/v1/books/latest")
           .andExpect(validation)
 
-      mockMvc.get("/api/v1/series/${series.id}/books")
+      mockMvc.get("/api/v1/series/${series.id}/books?media_status=UNKNOWN")
           .andExpect(validation)
 
       mockMvc.get("/api/v1/books/${series.books.first().id}")
@@ -332,7 +332,7 @@ class BookControllerTest(
       mockMvc.get("/api/v1/books/latest")
           .andExpect(validation)
 
-      mockMvc.get("/api/v1/series/${series.id}/books")
+      mockMvc.get("/api/v1/series/${series.id}/books?media_status=UNKNOWN")
           .andExpect(validation)
 
       mockMvc.get("/api/v1/books/${series.books.first().id}")

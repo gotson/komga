@@ -164,8 +164,8 @@ class SeriesController(
   fun getAllBooksBySeries(
       @AuthenticationPrincipal principal: KomgaPrincipal,
       @PathVariable(name = "seriesId") id: Long,
-      @RequestParam(name = "ready_only", defaultValue = "true")
-      readyFilter: Boolean,
+      // deprecated, to remove once Tachiyomi update has been published
+      @RequestParam(name = "ready_only", defaultValue = "true") readyFilter: Boolean,
       @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
       page: Pageable
   ): Page<BookDto> {
@@ -180,10 +180,10 @@ class SeriesController(
         else Sort.by(Sort.Order.asc("number"))
     )
 
-    return if (!mediaStatus.isNullOrEmpty()) {
-      bookRepository.findAllByMediaStatusInAndSeriesId(mediaStatus, id, pageRequest)
-    } else {
-      bookRepository.findAllBySeriesId(id, pageRequest)
+    return when {
+      !mediaStatus.isNullOrEmpty() -> bookRepository.findAllByMediaStatusInAndSeriesId(mediaStatus, id, pageRequest)
+      readyFilter -> bookRepository.findAllByMediaStatusInAndSeriesId(listOf(Media.Status.READY), id, pageRequest)
+      else -> bookRepository.findAllBySeriesId(id, pageRequest)
     }.map { it.toDto(includeFullUrl = principal.user.isAdmin()) }
   }
 }
