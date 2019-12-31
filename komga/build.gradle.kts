@@ -1,4 +1,3 @@
-import com.github.breadmoirai.githubreleaseplugin.GithubReleaseTask
 import com.palantir.gradle.docker.DockerExtension
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -16,7 +15,6 @@ plugins {
   id("io.spring.dependency-management") version "1.0.8.RELEASE"
   id("com.github.ben-manes.versions") version "0.27.0"
   id("com.palantir.docker") version "0.22.1"
-  id("com.github.breadmoirai.github-release") version "2.2.10"
   id("com.gorylenko.gradle-git-properties") version "2.2.0"
   jacoco
 }
@@ -165,16 +163,6 @@ configure<DockerExtension> {
   tag("beta", "$name:beta")
   copySpec.from(tasks.getByName("unpack").outputs).into("dependency")
   buildArgs(mapOf("DEPENDENCY" to "dependency"))
-}
-
-githubRelease {
-  token(findProperty("github.token")?.toString() ?: System.getenv("GITHUB_TOKEN"))
-  owner("gotson")
-  repo("komga")
-  releaseAssets(tasks.getByName("bootJar").outputs.files.singleFile)
-}
-tasks.withType<GithubReleaseTask> {
-  dependsOn(tasks.bootJar)
 }
 
 springBoot {
