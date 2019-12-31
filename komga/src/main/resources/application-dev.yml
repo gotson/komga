@@ -13,7 +13,7 @@ spring:
     properties:
       hibernate:
         generate_statistics: true
-        session.events.log: true
+        session.events.log: false
         format_sql: true
 logging:
   file:
@@ -22,9 +22,13 @@ logging:
   level:
     org.gotson.komga: DEBUG
     web: DEBUG
-    org.hibernate:
-      stat: DEBUG
-      SQL: DEBUG
-      cache: DEBUG
-      type.descriptor.sql.BasicBinder: TRACE
+    #    org.hibernate:
+    #      stat: DEBUG
+    #      SQL: DEBUG
+    #      cache: DEBUG
+    #      type.descriptor.sql.BasicBinder: TRACE
     #  org.springframework.security.web.FilterChainProxy: DEBUG
+
+management.metrics.export.influx:
+  #  enabled: true
+  uri: http://localhost:8086
