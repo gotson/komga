@@ -12,33 +12,18 @@ jdk:
   - openjdk8
   - openjdk11
 
-before_deploy: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-
 jobs:
   include:
     - stage: deploy
       jdk: openjdk8
       install:
         - ./gradlew copyWebDist
-        - ./gradlew assemble
+        - npm install --only=production
+        - npx semantic-release
       script: skip
       deploy:
         - provider: script
-          script: ./gradlew dockerPushBeta
+          script: .travis/deploy-dockerhub-dev.sh
           skip_cleanup: true
           on:
-            branch: master
-
-        - provider: script
-          script: bash ./.travis/deploy-semver.sh
-          skip_cleanup: true
-          on:
-            tags: true
-            condition: $TRAVIS_TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+
-
-        - provider: script
-          script: ./gradlew githubRelease
-          skip_cleanup: true
-          on:
-            tags: true
-            condition: $TRAVIS_TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+
+            branch: dev
