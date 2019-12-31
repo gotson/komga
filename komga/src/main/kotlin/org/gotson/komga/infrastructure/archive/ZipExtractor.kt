@@ -1,9 +1,9 @@
 package org.gotson.komga.infrastructure.archive
 
+import org.apache.commons.compress.archivers.zip.ZipFile
 import org.gotson.komga.domain.model.BookPage
 import org.springframework.stereotype.Service
 import java.nio.file.Path
-import java.util.zip.ZipFile
 
 @Service
 class ZipExtractor(
@@ -12,7 +12,7 @@ class ZipExtractor(
 
   override fun getPagesList(path: Path): List<BookPage> =
       ZipFile(path.toFile()).use { zip ->
-        zip.entries().toList()
+        zip.entries.toList()
             .filter { !it.isDirectory }
             .map {
               BookPage(

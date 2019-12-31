@@ -66,6 +66,7 @@ dependencies {
   implementation("org.apache.commons:commons-lang3:3.9")
 
   implementation("org.apache.tika:tika-core:1.23")
+  implementation("org.apache.commons:commons-compress:1.19")
   implementation("com.github.junrar:junrar:4.0.0")
   implementation("org.apache.pdfbox:pdfbox:2.0.17")
   implementation("net.grey-panther:natural-comparator:1.1")
