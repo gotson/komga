@@ -17,7 +17,6 @@ jobs:
     - stage: deploy
       jdk: openjdk8
       install:
-        - ./gradlew copyWebDist
         - npm install --only=production
         - npx semantic-release
       script: skip
