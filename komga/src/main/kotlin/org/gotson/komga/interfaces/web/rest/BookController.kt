@@ -110,14 +110,6 @@ class BookController(
   }
 
 
-  @Deprecated("since 0.9.0 the /books/{bookId} is preferred")
-  @GetMapping("api/v1/series/{seriesId}/books/{bookId}")
-  fun getOneBookFromSeries(
-      @AuthenticationPrincipal principal: KomgaPrincipal,
-      @PathVariable seriesId: Long,
-      @PathVariable bookId: Long
-  ): BookDto = getOneBook(principal, bookId)
-
   @GetMapping("api/v1/books/{bookId}")
   fun getOneBook(
       @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -128,15 +120,6 @@ class BookController(
         it.toDto(includeFullUrl = principal.user.isAdmin())
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-
-  @Deprecated("since 0.9.0 the /books/{bookId}/thumbnail is preferred")
-  @GetMapping(value = ["api/v1/series/{seriesId}/books/{bookId}/thumbnail"], produces = [MediaType.IMAGE_PNG_VALUE])
-  fun getBookThumbnailFromSeries(
-      @AuthenticationPrincipal principal: KomgaPrincipal,
-      request: WebRequest,
-      @PathVariable seriesId: Long,
-      @PathVariable bookId: Long
-  ): ResponseEntity<ByteArray> = getBookThumbnail(principal, request, bookId)
 
   @GetMapping(value = [
     "api/v1/books/{bookId}/thumbnail",
@@ -161,18 +144,6 @@ class BookController(
               .body(book.media.thumbnail)
         } else throw ResponseStatusException(HttpStatus.NOT_FOUND)
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-
-
-  @Deprecated("since 0.9.0 the /books/{bookId}/file is preferred")
-  @GetMapping(value = [
-    "api/v1/series/{seriesId}/books/{bookId}/file",
-    "api/v1/series/{seriesId}/books/{bookId}/file/*"
-  ])
-  fun getBookFileFromSeries(
-      @AuthenticationPrincipal principal: KomgaPrincipal,
-      @PathVariable seriesId: Long,
-      @PathVariable bookId: Long
-  ): ResponseEntity<ByteArray> = getBookFile(principal, bookId)
 
   @GetMapping(value = [
     "api/v1/books/{bookId}/file",
@@ -201,14 +172,6 @@ class BookController(
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
 
-  @Deprecated("since 0.9.0 the /books/{bookId}/pages is preferred")
-  @GetMapping("api/v1/series/{seriesId}/books/{bookId}/pages")
-  fun getBookPagesFromSeries(
-      @AuthenticationPrincipal principal: KomgaPrincipal,
-      @PathVariable seriesId: Long,
-      @PathVariable bookId: Long
-  ): List<PageDto> = getBookPages(principal, bookId)
-
   @GetMapping("api/v1/books/{bookId}/pages")
   fun getBookPages(
       @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -221,19 +184,6 @@ class BookController(
 
         it.media.pages.mapIndexed { index, s -> PageDto(index + 1, s.fileName, s.mediaType) }
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-
-
-  @Deprecated("since 0.9.0 the /books/{bookId}/page/{pageNumber} is preferred")
-  @GetMapping("api/v1/series/{seriesId}/books/{bookId}/pages/{pageNumber}")
-  fun getBookPageFromSeries(
-      @AuthenticationPrincipal principal: KomgaPrincipal,
-      request: WebRequest,
-      @PathVariable seriesId: Long,
-      @PathVariable bookId: Long,
-      @PathVariable pageNumber: Int,
-      @RequestParam(value = "convert", required = false) convertTo: String?,
-      @RequestParam(value = "zero_based", defaultValue = "false") zeroBasedIndex: Boolean
-  ): ResponseEntity<ByteArray> = getBookPage(principal, request, bookId, pageNumber, convertTo, zeroBasedIndex)
 
   @GetMapping(value = [
     "api/v1/books/{bookId}/pages/{pageNumber}",

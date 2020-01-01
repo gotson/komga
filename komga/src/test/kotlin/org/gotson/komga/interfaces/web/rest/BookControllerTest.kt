@@ -109,9 +109,6 @@ class BookControllerTest(
       seriesRepository.save(series)
       val book = series.books.first()
 
-      mockMvc.get("/api/v1/series/${series.id}/books/${book.id}")
-          .andExpect { status { isUnauthorized } }
-
       mockMvc.get("/api/v1/books/${book.id}")
           .andExpect { status { isUnauthorized } }
     }
@@ -125,9 +122,6 @@ class BookControllerTest(
       ).also { it.library = library }
       seriesRepository.save(series)
       val book = series.books.first()
-
-      mockMvc.get("/api/v1/series/${series.id}/books/${book.id}/thumbnail")
-          .andExpect { status { isUnauthorized } }
 
       mockMvc.get("/api/v1/books/${book.id}/thumbnail")
           .andExpect { status { isUnauthorized } }
@@ -143,9 +137,6 @@ class BookControllerTest(
       seriesRepository.save(series)
       val book = series.books.first()
 
-      mockMvc.get("/api/v1/series/${series.id}/books/${book.id}/file")
-          .andExpect { status { isUnauthorized } }
-
       mockMvc.get("/api/v1/books/${book.id}/file")
           .andExpect { status { isUnauthorized } }
     }
@@ -160,9 +151,6 @@ class BookControllerTest(
       seriesRepository.save(series)
       val book = series.books.first()
 
-      mockMvc.get("/api/v1/series/${series.id}/books/${book.id}/pages")
-          .andExpect { status { isUnauthorized } }
-
       mockMvc.get("/api/v1/books/${book.id}/pages")
           .andExpect { status { isUnauthorized } }
     }
@@ -176,9 +164,6 @@ class BookControllerTest(
       ).also { it.library = library }
       seriesRepository.save(series)
       val book = series.books.first()
-
-      mockMvc.get("/api/v1/series/${series.id}/books/${book.id}/pages/1")
-          .andExpect { status { isUnauthorized } }
 
       mockMvc.get("/api/v1/books/${book.id}/pages/1")
           .andExpect { status { isUnauthorized } }
@@ -197,9 +182,6 @@ class BookControllerTest(
       seriesRepository.save(series)
       val book = series.books.first()
 
-      mockMvc.get("/api/v1/series/${series.id}/books/${book.id}/thumbnail")
-          .andExpect { status { isNotFound } }
-
       mockMvc.get("/api/v1/books/${book.id}/thumbnail")
           .andExpect { status { isNotFound } }
     }
@@ -213,9 +195,6 @@ class BookControllerTest(
       ).also { it.library = library }
       seriesRepository.save(series)
       val book = series.books.first()
-
-      mockMvc.get("/api/v1/series/${series.id}/books/${book.id}/file")
-          .andExpect { status { isNotFound } }
 
       mockMvc.get("/api/v1/books/${book.id}/file")
           .andExpect { status { isNotFound } }
@@ -232,9 +211,6 @@ class BookControllerTest(
       seriesRepository.save(series)
       val book = series.books.first()
 
-      mockMvc.get("/api/v1/series/${series.id}/books/${book.id}/pages")
-          .andExpect { status { isNotFound } }
-
       mockMvc.get("/api/v1/books/${book.id}/pages")
           .andExpect { status { isNotFound } }
     }
@@ -249,9 +225,6 @@ class BookControllerTest(
       ).also { it.library = library }
       seriesRepository.save(series)
       val book = series.books.first()
-
-      mockMvc.get("/api/v1/series/${series.id}/books/${book.id}/pages/1")
-          .andExpect { status { isNotFound } }
 
       mockMvc.get("/api/v1/books/${book.id}/pages/1")
           .andExpect { status { isNotFound } }
@@ -271,9 +244,6 @@ class BookControllerTest(
     ).also { it.library = library }
     seriesRepository.save(series)
     val book = series.books.first()
-
-    mockMvc.get("/api/v1/series/${series.id}/books/${book.id}/pages/$page")
-        .andExpect { status { isBadRequest } }
 
     mockMvc.get("/api/v1/books/${book.id}/pages/$page")
         .andExpect { status { isBadRequest } }
@@ -301,7 +271,7 @@ class BookControllerTest(
       mockMvc.get("/api/v1/books/latest")
           .andExpect(validation)
 
-      mockMvc.get("/api/v1/series/${series.id}/books?media_status=UNKNOWN")
+      mockMvc.get("/api/v1/series/${series.id}/books")
           .andExpect(validation)
 
       mockMvc.get("/api/v1/books/${series.books.first().id}")
@@ -332,7 +302,7 @@ class BookControllerTest(
       mockMvc.get("/api/v1/books/latest")
           .andExpect(validation)
 
-      mockMvc.get("/api/v1/series/${series.id}/books?media_status=UNKNOWN")
+      mockMvc.get("/api/v1/series/${series.id}/books")
           .andExpect(validation)
 
       mockMvc.get("/api/v1/books/${series.books.first().id}")
