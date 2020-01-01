@@ -24,6 +24,7 @@
     "vuex-router-sync": "^5.0.0"
   },
   "devDependencies": {
+    "@mdi/font": "^4.7.95",
     "@types/jest": "^23.1.4",
     "@types/lodash": "^4.14.149",
     "@types/vuelidate": "^0.7.9",
@@ -42,6 +43,7 @@
     "sass": "^1.24.0",
     "sass-loader": "^7.1.0",
     "ts-jest": "^23.0.0",
+    "typeface-roboto": "0.0.75",
     "typescript": "^3.7.4",
     "vue-cli-plugin-vuetify": "^0.6.3",
     "vue-template-compiler": "^2.6.11",
