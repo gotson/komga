@@ -38,7 +38,7 @@ class Media(
     var thumbnail: ByteArray? = null,
 
     pages: Iterable<BookPage> = emptyList()
-) {
+) : AuditableEntity() {
   @Id
   @GeneratedValue
   @Column(name = "id", nullable = false, unique = true)

@@ -238,7 +238,7 @@ class BookController(
       ).lastModified(getBookLastModified(book))
 
   private fun getBookLastModified(book: Book) =
-      book.fileLastModified.toInstant(ZoneOffset.UTC).toEpochMilli()
+      book.media.lastModifiedDate!!.toInstant(ZoneOffset.UTC).toEpochMilli()
 
 
   private fun getMediaTypeOrDefault(mediaTypeString: String?): MediaType {
