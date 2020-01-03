@@ -24,11 +24,14 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.server.ResponseStatusException
@@ -36,6 +39,7 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.nio.file.NoSuchFileException
 import java.time.ZoneOffset
+import java.util.concurrent.RejectedExecutionException
 import java.util.concurrent.TimeUnit
 
 private val logger = KotlinLogging.logger {}
@@ -230,6 +234,19 @@ class BookController(
           throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
         }
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  @PostMapping("api/v1/books/{bookId}/analyze")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun analyze(@PathVariable bookId: Long) {
+    bookRepository.findByIdOrNull((bookId))?.let { book ->
+      try {
+        bookLifecycle.analyzeAndPersist(book)
+      } catch (e: RejectedExecutionException) {
+        throw ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Another book analysis task is already running")
+      }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
 
   private fun ResponseEntity.BodyBuilder.setNotModified(book: Book) =
       this.cacheControl(CacheControl.maxAge(0, TimeUnit.SECONDS)
