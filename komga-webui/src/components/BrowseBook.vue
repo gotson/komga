@@ -11,6 +11,23 @@
       >
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
+
+      <v-spacer/>
+
+      <v-toolbar-items>
+        <v-menu offset-y>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on">
+              <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item @click="analyze()">
+              <v-list-item-title>Analyze</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-toolbar-items>
     </v-toolbar>
 
     <v-container fluid class="pa-6">
@@ -133,6 +150,11 @@ export default Vue.extend({
       } else {
         return { 'top': '64px' }
       }
+    }
+  },
+  methods: {
+    analyze () {
+      this.$komgaBooks.analyzeBook(this.book)
     }
   }
 })
