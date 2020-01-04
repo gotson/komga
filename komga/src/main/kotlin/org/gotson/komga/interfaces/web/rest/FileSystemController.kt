@@ -38,6 +38,7 @@ class FileSystemController {
               directories = Files.list(p).use { dirStream ->
                 dirStream.asSequence()
                     .filter { Files.isDirectory(it) }
+                    .filter { !Files.isHidden(it) }
                     .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.toString() })
                     .map { it.toDto() }
                     .toList()
