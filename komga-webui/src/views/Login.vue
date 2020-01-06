@@ -12,6 +12,7 @@
           <v-text-field v-model="form.login"
                         label="Login"
                         autocomplete="username"
+                        autofocus
           />
         </v-col>
       </v-row>
