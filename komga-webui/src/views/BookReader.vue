@@ -198,7 +198,7 @@ export default Vue.extend({
       baseURL: process.env.VUE_APP_KOMGA_API_URL ? process.env.VUE_APP_KOMGA_API_URL : window.location.origin,
       book: {} as BookDto,
       pages: [] as PageDto[],
-      supportedMediaTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
+      supportedMediaTypes: ['image/jpeg', 'image/png', 'image/gif'],
       convertTo: 'png',
       currentPage: 1,
       goToPage: 1,
