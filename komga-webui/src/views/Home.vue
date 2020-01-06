@@ -96,6 +96,16 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+
+      <v-spacer/>
+
+      <template v-slot:append>
+        <div v-if="isAdmin && !$_.isEmpty(info)"
+             class="pa-2 pb-6 caption"
+        >
+          <div>v{{ info.build.version }}-{{ info.git.branch }}</div>
+        </div>
+      </template>
     </v-navigation-drawer>
 
     <v-content>
@@ -115,7 +125,13 @@ export default Vue.extend({
   data: function () {
     return {
       drawerVisible: this.$vuetify.breakpoint.lgAndUp,
-      modalAddLibrary: false
+      modalAddLibrary: false,
+      info: {} as ActuatorInfo
+    }
+  },
+  async created () {
+    if (this.isAdmin) {
+      this.info = await this.$actuator.getInfo()
     }
   },
   computed: {

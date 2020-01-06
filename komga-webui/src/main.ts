@@ -5,6 +5,7 @@ import * as lineClamp from 'vue-line-clamp'
 import Vuelidate from 'vuelidate'
 import { sync } from 'vuex-router-sync'
 import App from './App.vue'
+import actuator from './plugins/actuator.plugin'
 import httpPlugin from './plugins/http.plugin'
 import komgaBooks from './plugins/komga-books.plugin'
 import komgaFileSystem from './plugins/komga-filesystem.plugin'
@@ -24,6 +25,7 @@ Vue.use(komgaSeries, { http: Vue.prototype.$http })
 Vue.use(komgaBooks, { http: Vue.prototype.$http })
 Vue.use(komgaUsers, { store: store, http: Vue.prototype.$http })
 Vue.use(komgaLibraries, { store: store, http: Vue.prototype.$http })
+Vue.use(actuator, { http: Vue.prototype.$http })
 
 Vue.prototype.$_ = _
 
