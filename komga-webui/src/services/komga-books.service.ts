@@ -58,14 +58,14 @@ export default class KomgaBooksService {
   }
 
   async analyzeBook (book: BookDto) {
-      try {
-        await this.http.post(`${API_BOOKS}/${book.id}/analyze`)
-      } catch (e) {
-        let msg = `An error occurred while trying to analyze book '${book.name}'`
-        if (e.response.data.message) {
-          msg += `: ${e.response.data.message}`
-        }
-        throw new Error(msg)
+    try {
+      await this.http.post(`${API_BOOKS}/${book.id}/analyze`)
+    } catch (e) {
+      let msg = `An error occurred while trying to analyze book '${book.name}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
       }
+      throw new Error(msg)
     }
+  }
 }
