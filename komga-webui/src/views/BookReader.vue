@@ -1,7 +1,7 @@
 <template>
   <div v-if="pages.length > 0" style="background: black; width: 100%; height: 100%">
-    <!--  clickable zone: previous page  -->
-    <div @click="prev"
+    <!--  clickable zone: left  -->
+    <div @click="rtl ? next() : prev()"
          class="left-quarter full-height"
          style="z-index: 1; position: absolute"
     />
@@ -12,8 +12,8 @@
          style="z-index: 1; position: absolute"
     />
 
-    <!--  clickable zone: next page  -->
-    <div @click="next"
+    <!--  clickable zone: right  -->
+    <div @click="rtl ? prev() : next()"
          class="right-quarter full-height"
          style="z-index: 1; position: absolute"
     />
@@ -22,6 +22,7 @@
     <slick ref="slick"
            :options="slickOptions"
            @afterChange="slickAfterChange"
+           :dir="rtl ? 'rtl' : 'ltr'"
     >
       <!--  Carousel: pages  -->
       <v-img v-for="p in pages"
@@ -136,13 +137,28 @@
           <!--  Menu: fit buttons  -->
           <v-row justify="center">
             <v-col cols="auto">
-              <v-btn-toggle v-model="fitButtons" dense mandatory>
-                <v-btn @click="fitHeight = false" color="primary">
+              <v-btn-toggle v-model="fitButtons" dense mandatory active-class="primary">
+                <v-btn @click="fitHeight = false">
                   Fit to width
                 </v-btn>
 
-                <v-btn @click="fitHeight = true" color="primary">
+                <v-btn @click="fitHeight = true">
                   Fit to height
+                </v-btn>
+              </v-btn-toggle>
+            </v-col>
+          </v-row>
+
+          <!--  Menu: RTL buttons  -->
+          <v-row justify="center">
+            <v-col cols="auto">
+              <v-btn-toggle v-model="rtlButtons" dense mandatory active-class="primary">
+                <v-btn @click="setRtl(false)">
+                  Left to right
+                </v-btn>
+
+                <v-btn @click="setRtl(true)">
+                  Right to left
                 </v-btn>
               </v-btn-toggle>
             </v-col>
@@ -160,8 +176,10 @@
               <div><kbd>esc</kbd></div>
             </v-col>
             <v-col>
-              <div>Previous page</div>
-              <div>Next page</div>
+              <div v-if="!rtl">Previous page</div>
+              <div v-else>Next page</div>
+              <div v-if="!rtl">Next page</div>
+              <div v-else>Previous page</div>
               <div>First page</div>
               <div>Last page</div>
               <div>Scroll down</div>
@@ -205,6 +223,8 @@ export default Vue.extend({
       showMenu: false,
       fitButtons: 1,
       fitHeight: true,
+      rtlButtons: 0,
+      rtl: false,
       slickOptions: {
         infinite: false,
         arrows: false,
@@ -214,7 +234,8 @@ export default Vue.extend({
         touchMove: false,
         cssEase: 'cubic-bezier(0.250, 0.100, 0.250, 1.000)',
         speed: 150,
-        initialSlide: 0
+        initialSlide: 0,
+        rtl: false
       }
     }
   },
@@ -262,11 +283,11 @@ export default Vue.extend({
       switch (e.key) {
         case 'PageUp':
         case 'ArrowRight':
-          this.next()
+          this.rtl ? this.prev() : this.next()
           break
         case 'PageDown':
         case 'ArrowLeft':
-          this.prev()
+          this.rtl ? this.next() : this.prev()
           break
         case 'Home':
           this.goToFirst()
@@ -339,6 +360,11 @@ export default Vue.extend({
     },
     slickAfterChange (event: any, slick: any, currentSlide: any) {
       this.currentPage = currentSlide + 1
+    },
+    setRtl (rtl: boolean) {
+      this.rtl = rtl
+      this.slickOptions.rtl = rtl;
+      (this.$refs.slick as any).setOption('rtl', rtl, true)
     }
   }
 })
