@@ -48,6 +48,19 @@
           </v-list-item>
         </v-list>
       </v-menu>
+
+      <v-menu offset-y>
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item @click="analyze()">
+            <v-list-item-title>Analyze</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-toolbar>
 
     <v-container fluid class="px-6">
@@ -237,6 +250,9 @@ export default Vue.extend({
       }
       this.books.splice(page.number * page.size, page.size, ...page.content)
       this.pagesState[page.number] = LoadState.Loaded
+    },
+    analyze () {
+      this.$komgaSeries.analyzeSeries(this.series)
     }
   }
 })

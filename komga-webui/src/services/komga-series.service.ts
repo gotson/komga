@@ -89,4 +89,16 @@ export default class KomgaSeriesService {
       throw new Error(msg)
     }
   }
+
+  async analyzeSeries (series: SeriesDto) {
+    try {
+      await this.http.post(`${API_SERIES}/${series.id}/analyze`)
+    } catch (e) {
+      let msg = `An error occurred while trying to analyze series '${series.name}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
 }
