@@ -48,7 +48,7 @@ class FileSystemScanner(
             .mapNotNull { dir ->
               val books = Files.list(dir).use { dirStream ->
                 dirStream.filter { Files.isRegularFile(it) }
-                    .filter { supportedExtensions.contains(FilenameUtils.getExtension(it.fileName.toString())) }
+                  .filter { supportedExtensions.contains(FilenameUtils.getExtension(it.fileName.toString()).toLowerCase()) }
                     .map {
                       Book(
                           name = FilenameUtils.getBaseName(it.fileName.toString()),
