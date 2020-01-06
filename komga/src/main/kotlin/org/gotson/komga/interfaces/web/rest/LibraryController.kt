@@ -5,7 +5,9 @@ import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.PathContainedInPath
+import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
+import org.gotson.komga.domain.service.AsyncOrchestrator
 import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.springframework.data.domain.Sort
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import java.io.FileNotFoundException
+import java.util.concurrent.RejectedExecutionException
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
 
@@ -32,8 +35,10 @@ private val logger = KotlinLogging.logger {}
 @RestController
 @RequestMapping("api/v1/libraries", produces = [MediaType.APPLICATION_JSON_VALUE])
 class LibraryController(
-    private val libraryLifecycle: LibraryLifecycle,
-    private val libraryRepository: LibraryRepository
+  private val libraryLifecycle: LibraryLifecycle,
+  private val libraryRepository: LibraryRepository,
+  private val bookRepository: BookRepository,
+  private val asyncOrchestrator: AsyncOrchestrator
 ) {
 
   @GetMapping
@@ -81,6 +86,19 @@ class LibraryController(
   fun deleteOne(@PathVariable id: Long) {
     libraryRepository.findByIdOrNull(id)?.let {
       libraryLifecycle.deleteLibrary(it)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @PostMapping("{libraryId}/analyze")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun analyze(@PathVariable libraryId: Long) {
+    libraryRepository.findByIdOrNull(libraryId)?.let { library ->
+      try {
+        asyncOrchestrator.reAnalyzeBooks(bookRepository.findBySeriesLibraryIn(listOf(library)))
+      } catch (e: RejectedExecutionException) {
+        throw ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Another book analysis task is already running")
+      }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 }
