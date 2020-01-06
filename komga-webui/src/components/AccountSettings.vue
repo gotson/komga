@@ -18,6 +18,7 @@
           <v-chip v-for="role in me.roles" :key="role"
           >{{ role }}
           </v-chip>
+          <v-chip v-if="me.roles.length === 0">USER</v-chip>
         </v-chip-group>
       </v-col>
     </v-row>
