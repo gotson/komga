@@ -8,6 +8,7 @@ import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
+import org.gotson.komga.domain.service.AsyncOrchestrator
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -18,24 +19,29 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.server.ResponseStatusException
+import java.util.concurrent.RejectedExecutionException
 
 private val logger = KotlinLogging.logger {}
 
 @RestController
 @RequestMapping("api/v1/series", produces = [MediaType.APPLICATION_JSON_VALUE])
 class SeriesController(
-    private val seriesRepository: SeriesRepository,
-    private val libraryRepository: LibraryRepository,
-    private val bookRepository: BookRepository,
-    private val bookController: BookController
+  private val seriesRepository: SeriesRepository,
+  private val libraryRepository: LibraryRepository,
+  private val bookRepository: BookRepository,
+  private val bookController: BookController,
+  private val asyncOrchestrator: AsyncOrchestrator
 ) {
 
   @GetMapping
@@ -173,14 +179,27 @@ class SeriesController(
 
     val pageRequest = PageRequest.of(
         page.pageNumber,
-        page.pageSize,
-        if (page.sort.isSorted) page.sort
-        else Sort.by(Sort.Order.asc("number"))
+      page.pageSize,
+      if (page.sort.isSorted) page.sort
+      else Sort.by(Sort.Order.asc("number"))
     )
 
     return (if (!mediaStatus.isNullOrEmpty())
       bookRepository.findAllByMediaStatusInAndSeriesId(mediaStatus, id, pageRequest)
     else
       bookRepository.findAllBySeriesId(id, pageRequest)).map { it.toDto(includeFullUrl = principal.user.isAdmin()) }
+  }
+
+  @PostMapping("{seriesId}/analyze")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun analyze(@PathVariable seriesId: Long) {
+    seriesRepository.findByIdOrNull(seriesId)?.let { series ->
+      try {
+        asyncOrchestrator.reAnalyzeBooks(series.books)
+      } catch (e: RejectedExecutionException) {
+        throw ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Another book analysis task is already running")
+      }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 }
