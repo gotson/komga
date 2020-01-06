@@ -4,6 +4,7 @@ import mu.KotlinLogging
 import net.coobird.thumbnailator.Thumbnails
 import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.gotson.komga.domain.model.Book
+import org.gotson.komga.domain.model.EmptyBookException
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.UnsupportedMediaTypeException
@@ -19,16 +20,16 @@ private val logger = KotlinLogging.logger {}
 
 @Service
 class BookAnalyzer(
-    private val contentDetector: ContentDetector,
-    private val zipExtractor: ZipExtractor,
-    private val rarExtractor: RarExtractor,
-    private val pdfExtractor: PdfExtractor
+  private val contentDetector: ContentDetector,
+  private val zipExtractor: ZipExtractor,
+  private val rarExtractor: RarExtractor,
+  private val pdfExtractor: PdfExtractor
 ) {
 
   val supportedMediaTypes = mapOf(
-      "application/zip" to zipExtractor,
-      "application/x-rar-compressed" to rarExtractor,
-      "application/pdf" to pdfExtractor
+    "application/zip" to zipExtractor,
+    "application/x-rar-compressed" to rarExtractor,
+    "application/pdf" to pdfExtractor
   )
 
   private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
@@ -36,7 +37,10 @@ class BookAnalyzer(
   private val thumbnailSize = 300
   private val thumbnailFormat = "jpeg"
 
-  @Throws(UnsupportedMediaTypeException::class)
+  @Throws(
+    UnsupportedMediaTypeException::class,
+    EmptyBookException::class
+  )
   fun analyze(book: Book): Media {
     logger.info { "Trying to analyze book: $book" }
 
@@ -46,7 +50,8 @@ class BookAnalyzer(
       throw UnsupportedMediaTypeException("Unsupported mime type: $mediaType. File: $book", mediaType)
 
     val pages = supportedMediaTypes.getValue(mediaType).getPagesList(book.path())
-        .sortedWith(compareBy(natSortComparator) { it.fileName })
+      .sortedWith(compareBy(natSortComparator) { it.fileName })
+    if (pages.isEmpty()) throw EmptyBookException(mediaType)
     logger.info { "Book has ${pages.size} pages" }
 
     logger.info { "Trying to generate cover for book: $book" }
@@ -67,32 +72,32 @@ class BookAnalyzer(
     val thumbnail = generateThumbnail(book, book.media.mediaType!!, book.media.pages.first().fileName)
 
     return Media(
-        mediaType = book.media.mediaType,
-        status = Media.Status.READY,
-        pages = book.media.pages,
-        thumbnail = thumbnail
+      mediaType = book.media.mediaType,
+      status = Media.Status.READY,
+      pages = book.media.pages,
+      thumbnail = thumbnail
     )
   }
 
   private fun generateThumbnail(book: Book, mediaType: String, entry: String): ByteArray? =
-      try {
-        ByteArrayOutputStream().use {
-          supportedMediaTypes.getValue(mediaType).getPageStream(book.path(), entry).let { cover ->
-            Thumbnails.of(cover.inputStream())
-                .size(thumbnailSize, thumbnailSize)
-                .outputFormat(thumbnailFormat)
-                .toOutputStream(it)
-            it.toByteArray()
-          }
+    try {
+      ByteArrayOutputStream().use {
+        supportedMediaTypes.getValue(mediaType).getPageStream(book.path(), entry).let { cover ->
+          Thumbnails.of(cover.inputStream())
+            .size(thumbnailSize, thumbnailSize)
+            .outputFormat(thumbnailFormat)
+            .toOutputStream(it)
+          it.toByteArray()
         }
-      } catch (ex: Exception) {
-        logger.warn(ex) { "Could not generate thumbnail for book: $book" }
-        null
       }
+    } catch (ex: Exception) {
+      logger.warn(ex) { "Could not generate thumbnail for book: $book" }
+      null
+    }
 
   @Throws(
-      MediaNotReadyException::class,
-      IndexOutOfBoundsException::class
+    MediaNotReadyException::class,
+    IndexOutOfBoundsException::class
   )
   fun getPageContent(book: Book, number: Int): ByteArray {
     logger.info { "Get page #$number for book: $book" }

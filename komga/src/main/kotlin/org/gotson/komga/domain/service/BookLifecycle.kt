@@ -4,6 +4,7 @@ import mu.KotlinLogging
 import org.apache.commons.lang3.time.DurationFormatUtils
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookPageContent
+import org.gotson.komga.domain.model.EmptyBookException
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.UnsupportedMediaTypeException
@@ -34,8 +35,11 @@ class BookLifecycle(
       try {
         book.media = bookAnalyzer.analyze(book)
       } catch (ex: UnsupportedMediaTypeException) {
-        logger.info(ex) { "Unsupported media type: ${ex.mediaType}. Book: $book" }
+        logger.warn { "Unsupported media type: ${ex.mediaType}. Book: $book" }
         book.media = Media(status = Media.Status.UNSUPPORTED, mediaType = ex.mediaType)
+      } catch (ex: EmptyBookException) {
+        logger.warn { "Book does not contain any images: $book" }
+        book.media = Media(status = Media.Status.ERROR, mediaType = ex.mediaType)
       } catch (ex: Exception) {
         logger.error(ex) { "Error while parsing. Book: $book" }
         book.media = Media(status = Media.Status.ERROR)
