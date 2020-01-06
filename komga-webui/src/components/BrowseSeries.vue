@@ -5,12 +5,27 @@
                class="sticky-bar"
                :style="barStyle"
     >
+      <!--   Go back to parent library   -->
       <v-btn icon
              title="Go to library"
              :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }}"
       >
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
+
+      <!--   Action menu   -->
+      <v-menu offset-y v-if="isAdmin">
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item @click="analyze()">
+            <v-list-item-title>Analyze</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
 
       <v-toolbar-title>
         <span v-if="series.name">{{ series.name }}</span>
@@ -23,6 +38,7 @@
 
       <v-spacer/>
 
+      <!--   Sort menu   -->
       <v-menu offset-y>
         <template v-slot:activator="{on}">
           <v-btn icon v-on="on">
@@ -45,19 +61,6 @@
               </v-icon>
             </v-list-item-icon>
             <v-list-item-title>{{ item.name }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-
-      <v-menu offset-y>
-        <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
-        </template>
-        <v-list>
-          <v-list-item @click="analyze()">
-            <v-list-item-title>Analyze</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -111,6 +114,9 @@ export default Vue.extend({
     }
   },
   computed: {
+    isAdmin (): boolean {
+      return this.$store.getters.meAdmin
+    },
     sortCustom (): boolean {
       return this.sortActive.key !== this.sortDefault.key || this.sortActive.order !== this.sortDefault.order
     },

@@ -5,6 +5,7 @@
                class="sticky-bar"
                :style="barStyle"
     >
+      <!--   Go back to parent series   -->
       <v-btn icon
              title="Go to series"
              :to="{name:'browse-series', params: {seriesId: book.seriesId}}"
@@ -14,7 +15,8 @@
 
       <v-spacer/>
 
-      <v-menu offset-y>
+      <!--   Action menu   -->
+      <v-menu offset-y v-if="isAdmin">
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
             <v-icon>mdi-dots-vertical</v-icon>
@@ -133,6 +135,9 @@ export default Vue.extend({
     next()
   },
   computed: {
+    isAdmin (): boolean {
+      return this.$store.getters.meAdmin
+    },
     thumbnailUrl (): string {
       return `${this.baseURL}/api/v1/books/${this.bookId}/thumbnail`
     },
