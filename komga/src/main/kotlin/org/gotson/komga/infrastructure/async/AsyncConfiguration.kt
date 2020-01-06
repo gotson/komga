@@ -29,9 +29,15 @@ class AsyncConfiguration(
 
   @Bean("regenerateThumbnailsTaskExecutor")
   fun regenerateThumbnailsTaskExecutor(): Executor =
-      ThreadPoolTaskExecutor().apply {
-        corePoolSize = 1
-        maxPoolSize = 1
-        setQueueCapacity(0)
-      }
+    ThreadPoolTaskExecutor().apply {
+      corePoolSize = 1
+      maxPoolSize = 1
+      setQueueCapacity(0)
+    }
+
+  @Bean("reAnalyzeBooksTaskExecutor")
+  fun reAnalyzeBooksTaskExecutor(): Executor =
+    ThreadPoolTaskExecutor().apply {
+      corePoolSize = 1
+    }
 }

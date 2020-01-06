@@ -7,16 +7,17 @@ import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import kotlin.system.measureTimeMillis
 
 private val logger = KotlinLogging.logger {}
 
 @Service
 class AsyncOrchestrator(
-    private val libraryScanner: LibraryScanner,
-    private val libraryRepository: LibraryRepository,
-    private val bookRepository: BookRepository,
-    private val bookLifecycle: BookLifecycle
+  private val libraryScanner: LibraryScanner,
+  private val libraryRepository: LibraryRepository,
+  private val bookRepository: BookRepository,
+  private val bookLifecycle: BookLifecycle
 ) {
 
   @Async("periodicScanTaskExecutor")
@@ -52,17 +53,27 @@ class AsyncOrchestrator(
     var sumOfTasksTime = 0L
     measureTimeMillis {
       sumOfTasksTime = books
-          .map { bookLifecycle.regenerateThumbnailAndPersist(it) }
-          .map {
-            try {
-              it.get()
-            } catch (ex: Exception) {
-              0L
-            }
+        .map { bookLifecycle.regenerateThumbnailAndPersist(it) }
+        .map {
+          try {
+            it.get()
+          } catch (ex: Exception) {
+            0L
           }
-          .sum()
+        }
+        .sum()
     }.also {
       logger.info { "Generated ${books.size} thumbnails in ${DurationFormatUtils.formatDurationHMS(it)} (virtual: ${DurationFormatUtils.formatDurationHMS(sumOfTasksTime)})" }
     }
+  }
+
+  @Async("reAnalyzeBooksTaskExecutor")
+  @Transactional
+  fun reAnalyzeBooks(books: List<Book>) {
+    val loadedBooks = bookRepository.findAllById(books.map { it.id })
+    loadedBooks.forEach { it.media.reset() }
+    bookRepository.saveAll(loadedBooks)
+
+    loadedBooks.map { bookLifecycle.analyzeAndPersist(it) }
   }
 }
