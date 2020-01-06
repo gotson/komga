@@ -54,7 +54,7 @@ class LibraryLifecycle(
 
     logger.info { "Trying to launch a scan for the newly added library: ${library.name}" }
     try {
-      asyncOrchestrator.scanAndAnalyze()
+      asyncOrchestrator.scanAndAnalyzeAllLibraries()
     } catch (e: RejectedExecutionException) {
       logger.warn { "Another scan is already running, skipping" }
     }

@@ -65,9 +65,7 @@
             </v-tooltip>
           </v-list-item-content>
           <v-list-item-action v-if="isAdmin">
-            <v-btn icon @click.prevent="promptDeleteLibrary(l)">
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
+            <library-actions-menu :library="l"/>
           </v-list-item-action>
         </v-list-item>
 
@@ -103,27 +101,21 @@
     <v-content>
       <router-view/>
     </v-content>
-
-    <library-delete-dialog v-model="modalDeleteLibrary"
-                           :library="libraryToDelete">
-    </library-delete-dialog>
   </div>
 </template>
 
 <script lang="ts">
-import LibraryDeleteDialog from '@/components/LibraryDeleteDialog.vue'
+import LibraryActionsMenu from '@/components/LibraryActionsMenu.vue'
 import SearchBox from '@/components/SearchBox.vue'
 import Vue from 'vue'
 
 export default Vue.extend({
   name: 'home',
-  components: { LibraryDeleteDialog, SearchBox },
+  components: { LibraryActionsMenu, SearchBox },
   data: function () {
     return {
       drawerVisible: this.$vuetify.breakpoint.lgAndUp,
-      modalAddLibrary: false,
-      modalDeleteLibrary: false,
-      libraryToDelete: {} as LibraryDto
+      modalAddLibrary: false
     }
   },
   computed: {
@@ -137,10 +129,6 @@ export default Vue.extend({
   methods: {
     toggleDrawer () {
       this.drawerVisible = !this.drawerVisible
-    },
-    promptDeleteLibrary (library: LibraryDto) {
-      this.libraryToDelete = library
-      this.modalDeleteLibrary = true
     },
     logout () {
       this.$store.dispatch('logout')

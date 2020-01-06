@@ -89,6 +89,19 @@ class LibraryController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @PostMapping("{libraryId}/scan")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun scan(@PathVariable libraryId: Long) {
+    libraryRepository.findByIdOrNull(libraryId)?.let { library ->
+      try {
+        asyncOrchestrator.scanAndAnalyzeOneLibrary(library)
+      } catch (e: RejectedExecutionException) {
+        throw ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Another scan task is already running")
+      }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
   @PostMapping("{libraryId}/analyze")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)

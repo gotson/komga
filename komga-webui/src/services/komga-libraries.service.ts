@@ -57,11 +57,23 @@ export default class KomgaLibrariesService {
     }
   }
 
-  async analyzeLibrary (libraryId: number) {
+  async scanLibrary (library: LibraryDto) {
     try {
-      await this.http.post(`${API_LIBRARIES}/${libraryId}/analyze`)
+      await this.http.post(`${API_LIBRARIES}/${library.id}/scan`)
     } catch (e) {
-      let msg = `An error occurred while trying to analyze library`
+      let msg = `An error occurred while trying to scan library '${library.name}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async analyzeLibrary (library: LibraryDto) {
+    try {
+      await this.http.post(`${API_LIBRARIES}/${library.id}/analyze`)
+    } catch (e) {
+      let msg = `An error occurred while trying to analyze library '${library.name}'`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

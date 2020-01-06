@@ -5,8 +5,12 @@
                class="sticky-bar"
                :style="barStyle"
     >
+      <!--   Action menu   -->
+      <library-actions-menu v-if="library"
+                            :library="library"/>
+
       <v-toolbar-title>
-        <span>{{ libraryName }}</span>
+        <span>{{ library ? library.name : 'All libraries' }}</span>
         <span class="ml-4 badge-count"
               v-if="totalElements"
         >
@@ -16,6 +20,7 @@
 
       <v-spacer/>
 
+      <!--   Sort menu   -->
       <v-menu offset-y>
         <template v-slot:activator="{on}">
           <v-btn icon v-on="on">
@@ -38,19 +43,6 @@
               </v-icon>
             </v-list-item-icon>
             <v-list-item-title>{{ item.name }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-
-      <v-menu offset-y v-if="libraryId !== 0">
-        <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
-        </template>
-        <v-list>
-          <v-list-item @click="analyze()">
-            <v-list-item-title>Analyze</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -80,15 +72,16 @@
 
 <script lang="ts">
 import CardSeries from '@/components/CardSeries.vue'
+import LibraryActionsMenu from '@/components/LibraryActionsMenu.vue'
 import { LoadState } from '@/types/common'
 import Vue from 'vue'
 
 export default Vue.extend({
   name: 'BrowseLibraries',
-  components: { CardSeries },
+  components: { LibraryActionsMenu, CardSeries },
   data: () => {
     return {
-      libraryName: '',
+      library: undefined as LibraryDto | undefined,
       series: [] as SeriesDto[],
       pagesState: [] as LoadState[],
       pageSize: 20,
@@ -122,7 +115,7 @@ export default Vue.extend({
     }
   },
   async created () {
-    this.libraryName = await this.getLibraryNameLazy(this.libraryId)
+    this.library = await this.getLibraryLazy(this.libraryId)
   },
   mounted () {
     // fill series skeletons if an index is provided, so scroll position can be restored
@@ -137,7 +130,7 @@ export default Vue.extend({
   },
   beforeRouteUpdate (to, from, next) {
     if (to.params.libraryId !== from.params.libraryId) {
-      this.libraryName = this.getLibraryNameLazy(Number(to.params.libraryId))
+      this.library = this.getLibraryLazy(Number(to.params.libraryId))
       this.sortActive = this.parseQuerySortOrDefault(to.query.sort)
       this.reloadData(Number(to.params.libraryId))
     }
@@ -249,20 +242,16 @@ export default Vue.extend({
       this.series.splice(page.number * page.size, page.size, ...page.content)
       this.pagesState[page.number] = LoadState.Loaded
     },
-    getLibraryNameLazy (libraryId: any): string {
+    getLibraryLazy (libraryId: any): LibraryDto | undefined {
       if (libraryId !== 0) {
-        return (this.$store.getters.getLibraryById(libraryId)).name
+        return this.$store.getters.getLibraryById(libraryId)
       } else {
-        return 'All libraries'
+        return undefined
       }
-    },
-    analyze () {
-      this.$komgaLibraries.analyzeLibrary(this.libraryId)
     }
   }
 })
 </script>
-
 <style scoped>
 @import "../assets/css/badge.css";
 @import "../assets/css/sticky-bar.css";

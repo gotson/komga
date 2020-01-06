@@ -3,6 +3,7 @@ package org.gotson.komga.domain.service
 import mu.KotlinLogging
 import org.apache.commons.lang3.time.DurationFormatUtils
 import org.gotson.komga.domain.model.Book
+import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.springframework.scheduling.annotation.Async
@@ -21,7 +22,7 @@ class AsyncOrchestrator(
 ) {
 
   @Async("periodicScanTaskExecutor")
-  fun scanAndAnalyze() {
+  fun scanAndAnalyzeAllLibraries() {
     logger.info { "Starting periodic libraries scan" }
     val libraries = libraryRepository.findAll()
 
@@ -35,6 +36,12 @@ class AsyncOrchestrator(
       logger.info { "Starting periodic book parsing" }
       libraryScanner.analyzeUnknownBooks()
     }
+  }
+
+  @Async("periodicScanTaskExecutor")
+  fun scanAndAnalyzeOneLibrary(library: Library) {
+    libraryScanner.scanRootFolder(library)
+    libraryScanner.analyzeUnknownBooks()
   }
 
   @Async("regenerateThumbnailsTaskExecutor")
