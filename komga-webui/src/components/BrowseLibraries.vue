@@ -41,6 +41,19 @@
           </v-list-item>
         </v-list>
       </v-menu>
+
+      <v-menu offset-y v-if="libraryId !== 0">
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item @click="analyze()">
+            <v-list-item-title>Analyze</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-toolbar>
 
     <v-container fluid class="px-6">
@@ -242,6 +255,9 @@ export default Vue.extend({
       } else {
         return 'All libraries'
       }
+    },
+    analyze () {
+      this.$komgaLibraries.analyzeLibrary(this.libraryId)
     }
   }
 })

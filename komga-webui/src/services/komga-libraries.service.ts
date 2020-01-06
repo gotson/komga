@@ -56,4 +56,16 @@ export default class KomgaLibrariesService {
       throw new Error(msg)
     }
   }
+
+  async analyzeLibrary (libraryId: number) {
+    try {
+      await this.http.post(`${API_LIBRARIES}/${libraryId}/analyze`)
+    } catch (e) {
+      let msg = `An error occurred while trying to analyze library`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
 }
