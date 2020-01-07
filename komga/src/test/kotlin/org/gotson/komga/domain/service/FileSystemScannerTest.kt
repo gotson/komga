@@ -124,6 +124,26 @@ class FileSystemScannerTest {
     }
   }
 
+  @Test
+  fun `given file with mixed-case extension when scanning then files are returned`() {
+    Jimfs.newFileSystem(Configuration.unix()).use { fs ->
+      // given
+      val root = fs.getPath("/root")
+      Files.createDirectory(root)
+
+      val dir1 = makeSubDir(root, "dir1", listOf("comic.Cbz", "comic2.CBR"))
+
+      // when
+      val scannedSeries = scanner.scanRootFolder(root)
+
+      // then
+      assertThat(scannedSeries).hasSize(1)
+
+      assertThat(scannedSeries.map { it.name }).containsExactlyInAnyOrder("dir1")
+      assertThat(scannedSeries.flatMap { it.books }.map { it.name }).containsExactlyInAnyOrder("comic", "comic2")
+    }
+  }
+
   private fun makeSubDir(root: Path, name: String, files: List<String>): Path {
     val dir = root.resolve(name)
     Files.createDirectory(dir)
