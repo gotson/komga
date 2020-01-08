@@ -217,7 +217,7 @@ export default Vue.extend({
       book: {} as BookDto,
       pages: [] as PageDto[],
       supportedMediaTypes: ['image/jpeg', 'image/png', 'image/gif'],
-      convertTo: 'png',
+      convertTo: 'jpeg',
       currentPage: 1,
       goToPage: 1,
       showMenu: false,
