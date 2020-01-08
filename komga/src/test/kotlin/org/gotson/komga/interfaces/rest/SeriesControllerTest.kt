@@ -1,4 +1,4 @@
-package org.gotson.komga.interfaces.web.rest
+package org.gotson.komga.interfaces.rest
 
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.UserRoles
@@ -7,7 +7,6 @@ import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
-import org.gotson.komga.interfaces.web.WithMockCustomUser
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll

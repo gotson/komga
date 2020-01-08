@@ -1,4 +1,4 @@
-package org.gotson.komga.interfaces.web.rest
+package org.gotson.komga.interfaces.rest
 
 import com.github.klinq.jpaspec.`in`
 import com.github.klinq.jpaspec.likeLower

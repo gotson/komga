@@ -1,4 +1,4 @@
-package org.gotson.komga.interfaces.web.opds.dto
+package org.gotson.komga.interfaces.opds.dto
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty

@@ -1,4 +1,4 @@
-package org.gotson.komga.interfaces.web
+package org.gotson.komga.interfaces.rest
 
 import io.mockk.every
 import io.mockk.mockk

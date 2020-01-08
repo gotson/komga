@@ -1,4 +1,4 @@
-package org.gotson.komga.interfaces.web.rest
+package org.gotson.komga.interfaces.rest
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith

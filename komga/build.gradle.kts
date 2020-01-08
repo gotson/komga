@@ -91,6 +91,12 @@ dependencies {
   testImplementation("io.mockk:mockk:1.9.3")
   testImplementation("com.google.jimfs:jimfs:1.1")
 
+  run {
+    val archunitVersion = "0.12.0"
+    testImplementation("com.tngtech.archunit:archunit-junit5-api:$archunitVersion")
+    testRuntime("com.tngtech.archunit:archunit-junit5-engine:$archunitVersion")
+  }
+
   developmentOnly("org.springframework.boot:spring-boot-devtools")
 }
 

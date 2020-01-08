@@ -1,4 +1,4 @@
-package org.gotson.komga.interfaces.web.rest
+package org.gotson.komga.interfaces.rest
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import org.springframework.http.HttpStatus
