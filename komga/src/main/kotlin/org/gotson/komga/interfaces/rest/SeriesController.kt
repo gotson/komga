@@ -3,12 +3,12 @@ package org.gotson.komga.interfaces.rest
 import com.github.klinq.jpaspec.`in`
 import com.github.klinq.jpaspec.likeLower
 import mu.KotlinLogging
+import org.gotson.komga.application.service.AsyncOrchestrator
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
-import org.gotson.komga.domain.service.AsyncOrchestrator
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.SeriesDto

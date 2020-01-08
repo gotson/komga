@@ -4,6 +4,7 @@ import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
+import org.gotson.komga.application.service.BookLifecycle
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeBookPage
@@ -28,12 +29,12 @@ import java.nio.file.Paths
 @SpringBootTest
 @AutoConfigureTestDatabase
 class LibraryScannerTest(
-    @Autowired private val seriesRepository: SeriesRepository,
-    @Autowired private val libraryRepository: LibraryRepository,
-    @Autowired private val bookRepository: BookRepository,
-    @Autowired private val libraryScanner: LibraryScanner,
-    @Autowired private val bookLifecycle: BookLifecycle,
-    @Autowired private val transactionManager: PlatformTransactionManager
+  @Autowired private val seriesRepository: SeriesRepository,
+  @Autowired private val libraryRepository: LibraryRepository,
+  @Autowired private val bookRepository: BookRepository,
+  @Autowired private val libraryScanner: LibraryScanner,
+  @Autowired private val bookLifecycle: BookLifecycle,
+  @Autowired private val transactionManager: PlatformTransactionManager
 ) {
 
   @MockkBean

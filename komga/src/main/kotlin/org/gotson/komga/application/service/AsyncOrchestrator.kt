@@ -1,4 +1,4 @@
-package org.gotson.komga.domain.service
+package org.gotson.komga.application.service
 
 import mu.KotlinLogging
 import org.apache.commons.lang3.time.DurationFormatUtils
@@ -6,6 +6,7 @@ import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
+import org.gotson.komga.domain.service.LibraryScanner
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

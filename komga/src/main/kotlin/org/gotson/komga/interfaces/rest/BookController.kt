@@ -3,14 +3,14 @@ package org.gotson.komga.interfaces.rest
 import com.github.klinq.jpaspec.`in`
 import com.github.klinq.jpaspec.likeLower
 import mu.KotlinLogging
+import org.gotson.komga.application.service.AsyncOrchestrator
+import org.gotson.komga.application.service.BookLifecycle
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.ImageConversionException
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
-import org.gotson.komga.domain.service.AsyncOrchestrator
-import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.interfaces.rest.dto.BookDto

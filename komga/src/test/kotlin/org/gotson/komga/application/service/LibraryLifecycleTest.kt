@@ -1,4 +1,4 @@
-package org.gotson.komga.domain.service
+package org.gotson.komga.application.service
 
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable

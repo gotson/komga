@@ -2,6 +2,7 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import org.apache.commons.lang3.time.DurationFormatUtils
+import org.gotson.komga.application.service.BookLifecycle
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.persistence.BookRepository

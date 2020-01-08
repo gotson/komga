@@ -1,4 +1,4 @@
-package org.gotson.komga.domain.service
+package org.gotson.komga.application.service
 
 import mu.KotlinLogging
 import org.apache.commons.lang3.time.DurationFormatUtils
@@ -8,6 +8,7 @@ import org.gotson.komga.domain.model.ImageConversionException
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.persistence.BookRepository
+import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
 import org.springframework.scheduling.annotation.Async
@@ -21,9 +22,9 @@ private val logger = KotlinLogging.logger {}
 
 @Service
 class BookLifecycle(
-    private val bookRepository: BookRepository,
-    private val bookAnalyzer: BookAnalyzer,
-    private val imageConverter: ImageConverter
+  private val bookRepository: BookRepository,
+  private val bookAnalyzer: BookAnalyzer,
+  private val imageConverter: ImageConverter
 ) {
 
   @Transactional

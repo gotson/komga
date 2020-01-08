@@ -1,7 +1,7 @@
 package org.gotson.komga.interfaces.rest
 
 import mu.KotlinLogging
-import org.gotson.komga.domain.service.AsyncOrchestrator
+import org.gotson.komga.application.service.AsyncOrchestrator
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.PostMapping

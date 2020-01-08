@@ -21,9 +21,9 @@ class NamingConventionTest {
       .should().haveNameMatching(".*Repository")
 
   @ArchTest
-  val domain_service_should_not_have_names_containing_service_or_manager: ArchRule =
+  val services_should_not_have_names_containing_service_or_manager: ArchRule =
     noClasses()
-      .that().resideInAPackage("..domain.service..")
+      .that().resideInAnyPackage("..domain..service..", "..application..service..")
       .should().haveSimpleNameContaining("service")
       .orShould().haveSimpleNameContaining("Service")
       .orShould().haveSimpleNameContaining("manager")

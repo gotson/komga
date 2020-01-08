@@ -1,4 +1,4 @@
-package org.gotson.komga.domain.service
+package org.gotson.komga.application.service
 
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.DirectoryNotFoundException

@@ -1,7 +1,7 @@
 package org.gotson.komga.interfaces.scheduler
 
 import mu.KotlinLogging
-import org.gotson.komga.domain.service.AsyncOrchestrator
+import org.gotson.komga.application.service.AsyncOrchestrator
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.annotation.Profile
 import org.springframework.context.event.EventListener
