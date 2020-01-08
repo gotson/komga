@@ -205,6 +205,7 @@
 </template>
 
 <script lang="ts">
+import { checkWebpFeature } from '@/functions/check-webp'
 import Vue from 'vue'
 import Slick from 'vue-slick'
 
@@ -238,6 +239,13 @@ export default Vue.extend({
         rtl: false
       }
     }
+  },
+  created () {
+    checkWebpFeature('lossy', (feature, isSupported) => {
+      if (isSupported) {
+        this.supportedMediaTypes.push('image/webp')
+      }
+    })
   },
   async mounted () {
     window.addEventListener('keydown', this.keyPressed)
