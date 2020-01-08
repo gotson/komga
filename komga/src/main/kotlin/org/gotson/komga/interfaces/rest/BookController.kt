@@ -4,6 +4,7 @@ import com.github.klinq.jpaspec.`in`
 import com.github.klinq.jpaspec.likeLower
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
+import org.gotson.komga.domain.model.ImageConversionException
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.persistence.BookRepository
@@ -227,6 +228,8 @@ class BookController(
           .body(pageContent.content)
       } catch (ex: IndexOutOfBoundsException) {
         throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number does not exist")
+      } catch (ex: ImageConversionException) {
+        throw ResponseStatusException(HttpStatus.NOT_FOUND, ex.message)
       } catch (ex: MediaNotReadyException) {
         throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
       } catch (ex: NoSuchFileException) {

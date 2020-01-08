@@ -4,10 +4,8 @@ import mu.KotlinLogging
 import net.coobird.thumbnailator.Thumbnails
 import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.EmptyBookException
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
-import org.gotson.komga.domain.model.UnsupportedMediaTypeException
 import org.gotson.komga.infrastructure.archive.ContentDetector
 import org.gotson.komga.infrastructure.archive.PdfExtractor
 import org.gotson.komga.infrastructure.archive.RarExtractor
@@ -37,21 +35,25 @@ class BookAnalyzer(
   private val thumbnailSize = 300
   private val thumbnailFormat = "jpeg"
 
-  @Throws(
-    UnsupportedMediaTypeException::class,
-    EmptyBookException::class
-  )
   fun analyze(book: Book): Media {
     logger.info { "Trying to analyze book: $book" }
 
     val mediaType = contentDetector.detectMediaType(book.path())
     logger.info { "Detected media type: $mediaType" }
     if (!supportedMediaTypes.keys.contains(mediaType))
-      throw UnsupportedMediaTypeException("Unsupported mime type: $mediaType. File: $book", mediaType)
+      return Media(mediaType = mediaType, status = Media.Status.UNSUPPORTED, comment = "Media type $mediaType is not supported")
 
-    val pages = supportedMediaTypes.getValue(mediaType).getPagesList(book.path())
-      .sortedWith(compareBy(natSortComparator) { it.fileName })
-    if (pages.isEmpty()) throw EmptyBookException(mediaType)
+    val pages = try {
+      supportedMediaTypes.getValue(mediaType).getPagesList(book.path()).sortedWith(compareBy(natSortComparator) { it.fileName })
+    } catch (ex: Exception) {
+      logger.error(ex) { "Error while analyzing book: $book" }
+      return Media(mediaType = mediaType, status = Media.Status.ERROR, comment = ex.message)
+    }
+
+    if (pages.isEmpty()) {
+      logger.warn { "Book $book does not contain any pages" }
+      return Media(mediaType = mediaType, status = Media.Status.ERROR, comment = "Book does not contain any pages")
+    }
     logger.info { "Book has ${pages.size} pages" }
 
     logger.info { "Trying to generate cover for book: $book" }

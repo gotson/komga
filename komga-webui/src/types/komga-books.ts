@@ -13,7 +13,8 @@ interface BookDto {
 interface MediaDto {
   status: string,
   mediaType: string,
-  pagesCount: number
+  pagesCount: number,
+  comment: string
 }
 
 interface PageDto {

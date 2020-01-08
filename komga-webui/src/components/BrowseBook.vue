@@ -84,16 +84,17 @@
         <v-col cols="10" class="body-2">{{ book.size }}</v-col>
       </v-row>
 
+      <v-row v-if="book.media.comment">
+        <v-col cols="2" md="1" lg="1" xl="1" class="body-2">COMMENT</v-col>
+        <v-col cols="10" class="body-2">
+          <span class="error--text font-weight-bold">{{ book.media.comment }}</span>
+        </v-col>
+      </v-row>
+
       <v-row>
         <v-col cols="2" md="1" lg="1" xl="1" class="body-2">FORMAT</v-col>
         <v-col cols="10" class="body-2">
-          <template v-if="book.media.status === 'ERROR'">
-            <span class="error--text font-weight-bold">Book analysis failed</span>
-          </template>
-          <template v-else-if="book.media.status === 'UNSUPPORTED'">
-            <span class="error--text font-weight-bold">File type not supported: {{ book.media.mediaType }}</span>
-          </template>
-          <template v-else>{{ format.type }}</template>
+          <span>{{ format.type }}</span>
         </v-col>
       </v-row>
 

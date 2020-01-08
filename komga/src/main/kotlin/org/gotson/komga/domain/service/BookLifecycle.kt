@@ -4,10 +4,9 @@ import mu.KotlinLogging
 import org.apache.commons.lang3.time.DurationFormatUtils
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookPageContent
-import org.gotson.komga.domain.model.EmptyBookException
+import org.gotson.komga.domain.model.ImageConversionException
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
-import org.gotson.komga.domain.model.UnsupportedMediaTypeException
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
@@ -34,15 +33,9 @@ class BookLifecycle(
     return AsyncResult(measureTimeMillis {
       try {
         book.media = bookAnalyzer.analyze(book)
-      } catch (ex: UnsupportedMediaTypeException) {
-        logger.warn { "Unsupported media type: ${ex.mediaType}. Book: $book" }
-        book.media = Media(status = Media.Status.UNSUPPORTED, mediaType = ex.mediaType)
-      } catch (ex: EmptyBookException) {
-        logger.warn { "Book does not contain any images: $book" }
-        book.media = Media(status = Media.Status.ERROR, mediaType = ex.mediaType)
       } catch (ex: Exception) {
-        logger.error(ex) { "Error while parsing. Book: $book" }
-        book.media = Media(status = Media.Status.ERROR)
+        logger.error(ex) { "Error while analyzing book: $book" }
+        book.media = Media(status = Media.Status.ERROR, comment = ex.message)
       }
       bookRepository.save(book)
     }.also { logger.info { "Parsing finished in ${DurationFormatUtils.formatDurationHMS(it)}" } })
@@ -64,9 +57,9 @@ class BookLifecycle(
   }
 
   @Throws(
-      UnsupportedMediaTypeException::class,
-      MediaNotReadyException::class,
-      IndexOutOfBoundsException::class
+    ImageConversionException::class,
+    MediaNotReadyException::class,
+    IndexOutOfBoundsException::class
   )
   fun getBookPage(book: Book, number: Int, convertTo: ImageType? = null): BookPageContent {
     val pageContent = bookAnalyzer.getPageContent(book, number)
@@ -75,10 +68,10 @@ class BookLifecycle(
     convertTo?.let {
       val msg = "Convert page #$number of book $book from $pageMediaType to ${it.mediaType}"
       if (!imageConverter.supportedReadMediaTypes.contains(pageMediaType)) {
-        throw UnsupportedMediaTypeException("$msg: unsupported read format $pageMediaType", pageMediaType)
+        throw ImageConversionException("$msg: unsupported read format $pageMediaType")
       }
       if (!imageConverter.supportedWriteMediaTypes.contains(it.mediaType)) {
-        throw UnsupportedMediaTypeException("$msg: unsupported cannot write format ${it.mediaType}", it.mediaType)
+        throw ImageConversionException("$msg: unsupported write format ${it.mediaType}")
       }
       if (pageMediaType == it.mediaType) {
         logger.warn { "$msg: same format, no need for conversion" }
