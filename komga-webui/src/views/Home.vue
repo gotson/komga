@@ -10,11 +10,9 @@
     </v-app-bar>
 
     <v-navigation-drawer app v-model="drawerVisible">
-      <v-list-item>
+      <v-list-item :to="{name: 'home'}" exact exact-active-class="false">
         <v-list-item-avatar>
-          <v-img src="../assets/logo.svg"
-                 @click="$router.push({name:'home'})"
-          />
+          <v-img src="../assets/logo.svg"/>
         </v-list-item-avatar>
 
         <v-list-item-content>
