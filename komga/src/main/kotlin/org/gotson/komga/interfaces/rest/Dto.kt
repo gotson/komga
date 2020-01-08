@@ -47,8 +47,6 @@ data class BookDto(
   val fileLastModified: LocalDateTime,
   val sizeBytes: Long,
   val size: String,
-  @Deprecated("Deprecated since 0.10", ReplaceWith("media"))
-  val metadata: MediaDto,
   val media: MediaDto
 )
 
@@ -71,12 +69,6 @@ fun Book.toDto(includeFullUrl: Boolean) =
     fileLastModified = fileLastModified.toUTC(),
     sizeBytes = fileSize,
     size = fileSizeHumanReadable(),
-    metadata = MediaDto(
-      status = media.status.toString(),
-      mediaType = media.mediaType ?: "",
-      pagesCount = media.pages.size,
-      comment = media.comment ?: ""
-    ),
     media = MediaDto(
       status = media.status.toString(),
       mediaType = media.mediaType ?: "",
