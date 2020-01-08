@@ -13,6 +13,9 @@ import org.gotson.komga.domain.service.AsyncOrchestrator
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
+import org.gotson.komga.interfaces.rest.dto.BookDto
+import org.gotson.komga.interfaces.rest.dto.PageDto
+import org.gotson.komga.interfaces.rest.dto.toDto
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable

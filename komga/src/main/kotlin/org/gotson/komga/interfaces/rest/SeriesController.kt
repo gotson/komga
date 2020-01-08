@@ -10,6 +10,9 @@ import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.AsyncOrchestrator
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
+import org.gotson.komga.interfaces.rest.dto.BookDto
+import org.gotson.komga.interfaces.rest.dto.SeriesDto
+import org.gotson.komga.interfaces.rest.dto.toDto
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
