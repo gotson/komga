@@ -10,7 +10,7 @@
     </v-app-bar>
 
     <v-navigation-drawer app v-model="drawerVisible">
-      <v-list-item :to="{name: 'home'}" exact exact-active-class="false">
+      <v-list-item @click="$router.push({name: 'home'})" inactive class="pb-2">
         <v-list-item-avatar>
           <v-img src="../assets/logo.svg"/>
         </v-list-item-avatar>
@@ -22,7 +22,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-divider class="mt-2"/>
+      <v-divider/>
 
       <v-list>
         <v-list-item :to="{name: 'home'}" exact>
