@@ -131,7 +131,7 @@ class FileSystemScannerTest {
       val root = fs.getPath("/root")
       Files.createDirectory(root)
 
-      val dir1 = makeSubDir(root, "dir1", listOf("comic.Cbz", "comic2.CBR"))
+      makeSubDir(root, "dir1", listOf("comic.Cbz", "comic2.CBR"))
 
       // when
       val scannedSeries = scanner.scanRootFolder(root)
