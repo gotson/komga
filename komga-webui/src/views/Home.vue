@@ -12,7 +12,9 @@
     <v-navigation-drawer app v-model="drawerVisible">
       <v-list-item>
         <v-list-item-avatar>
-          <v-img src="../assets/logo.svg"/>
+          <v-img src="../assets/logo.svg"
+                 @click="$router.push({name:'home'})"
+          />
         </v-list-item-avatar>
 
         <v-list-item-content>
@@ -22,7 +24,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-divider/>
+      <v-divider class="mt-2"/>
 
       <v-list>
         <v-list-item :to="{name: 'home'}" exact>
