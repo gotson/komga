@@ -164,6 +164,21 @@
             </v-col>
           </v-row>
 
+          <!--  Menu: double pages buttons  -->
+          <v-row justify="center">
+            <v-col cols="auto">
+              <v-btn-toggle v-model="doublePagesButtons" dense mandatory active-class="primary">
+                <v-btn @click="setDoublePages(false)">
+                  Single page
+                </v-btn>
+
+                <v-btn @click="setDoublePages(true)">
+                  Double pages
+                </v-btn>
+              </v-btn-toggle>
+            </v-col>
+          </v-row>
+
           <!--  Menu: keyboard shortcuts  -->
           <v-row>
             <v-col cols="auto">
@@ -226,6 +241,8 @@ export default Vue.extend({
       fitHeight: true,
       rtlButtons: 0,
       rtl: false,
+      doublePages: false,
+      doublePagesButtons: 0,
       slickOptions: {
         infinite: false,
         arrows: false,
@@ -236,7 +253,9 @@ export default Vue.extend({
         cssEase: 'cubic-bezier(0.250, 0.100, 0.250, 1.000)',
         speed: 150,
         initialSlide: 0,
-        rtl: false
+        rtl: false,
+        slidesToShow: 1,
+        slidesToScroll: 1
       }
     }
   },
@@ -373,6 +392,11 @@ export default Vue.extend({
       this.rtl = rtl
       this.slickOptions.rtl = rtl;
       (this.$refs.slick as any).setOption('rtl', rtl, true)
+    },
+    setDoublePages (doublePages: boolean) {
+      this.doublePages = doublePages
+      this.slickOptions.slidesToShow = doublePages ? 2 : 1;
+      (this.$refs.slick as any).setOption('slidesToShow', doublePages ? 2 : 1, true)
     }
   }
 })
