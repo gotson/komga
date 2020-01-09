@@ -53,12 +53,20 @@
       <div class="dashed-x fixed-position center-half full-height"
            @click.self="showMenu = false"
       >
-        <v-btn @click="closeBook"
-               color="primary"
-               absolute top left
-        >
-          Close book
-        </v-btn>
+        <div style="position: absolute; top: 1em; left: 1em">
+          <v-btn @click="closeBook"
+                 color="primary"
+          >
+            Close book
+          </v-btn>
+
+          <v-btn @click="showMenu = false; showThumbnailsExplorer = true"
+                 color="primary"
+                 class="ml-2"
+          >
+            <v-icon>mdi-view-grid</v-icon>
+          </v-btn>
+        </div>
 
         <v-btn icon
                @click="showMenu = false"
@@ -188,6 +196,7 @@
               <div><kbd>end</kbd></div>
               <div><kbd>space</kbd></div>
               <div><kbd>m</kbd></div>
+              <div><kbd>t</kbd></div>
               <div><kbd>esc</kbd></div>
             </v-col>
             <v-col>
@@ -199,6 +208,7 @@
               <div>Last page</div>
               <div>Scroll down</div>
               <div>Show / hide menu</div>
+              <div>Show / hide thumbnails</div>
               <div>Close book</div>
             </v-col>
           </v-row>
@@ -215,6 +225,30 @@
       </div>
 
     </v-overlay>
+
+    <v-dialog v-model="showThumbnailsExplorer">
+      <v-card :max-height="$vuetify.breakpoint.height * .9"
+              dark
+      >
+        <v-container fluid>
+          <v-row>
+            <v-img v-for="p in pages"
+                   :key="p.number"
+                   :src="getPageUrl(p)"
+                   lazy-src="../assets/cover.svg"
+                   aspect-ratio="0.7071"
+                   :contain="true"
+                   max-height="200"
+                   max-width="140"
+                   class="ma-2"
+                   @click="showThumbnailsExplorer = false; goTo(p.number)"
+                   :title="`Page ${p.number}`"
+                   style="cursor: pointer"
+            />
+          </v-row>
+        </v-container>
+      </v-card>
+    </v-dialog>
 
   </div>
 </template>
@@ -243,6 +277,7 @@ export default Vue.extend({
       rtl: false,
       doublePages: false,
       doublePagesButtons: 0,
+      showThumbnailsExplorer: false,
       slickOptions: {
         infinite: false,
         arrows: false,
@@ -324,6 +359,9 @@ export default Vue.extend({
           break
         case 'm':
           this.showMenu = !this.showMenu
+          break
+        case 't':
+          this.showThumbnailsExplorer = !this.showThumbnailsExplorer
           break
         case 'Escape':
           this.closeBook()
