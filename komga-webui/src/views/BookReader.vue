@@ -226,27 +226,34 @@
 
     </v-overlay>
 
-    <v-dialog v-model="showThumbnailsExplorer">
+    <v-dialog v-model="showThumbnailsExplorer" scrollable>
       <v-card :max-height="$vuetify.breakpoint.height * .9"
               dark
       >
-        <v-container fluid>
-          <v-row>
-            <v-img v-for="p in pages"
+        <v-card-text>
+          <v-container fluid>
+            <v-row>
+              <div v-for="p in pages"
                    :key="p.number"
-                   :src="getPageUrl(p)"
-                   lazy-src="../assets/cover.svg"
-                   aspect-ratio="0.7071"
-                   :contain="true"
-                   max-height="200"
-                   max-width="140"
-                   class="ma-2"
-                   @click="showThumbnailsExplorer = false; goTo(p.number)"
-                   :title="`Page ${p.number}`"
-                   style="cursor: pointer"
-            />
-          </v-row>
-        </v-container>
+                   style="min-height: 220px; max-width: 140px"
+                   class="mb-2"
+              >
+                <v-img
+                  :src="getThumbnailUrl(p)"
+                  lazy-src="../assets/cover.svg"
+                  aspect-ratio="0.7071"
+                  :contain="true"
+                  max-height="200"
+                  max-width="140"
+                  class="ma-2"
+                  @click="showThumbnailsExplorer = false; goTo(p.number)"
+                  style="cursor: pointer"
+                />
+                <div class="white--text text-center font-weight-bold">{{p.number}}</div>
+              </div>
+            </v-row>
+          </v-container>
+        </v-card-text>
       </v-card>
     </v-dialog>
 
@@ -385,6 +392,9 @@ export default Vue.extend({
         url += `?convert=${this.convertTo}`
       }
       return url
+    },
+    getThumbnailUrl (page: PageDto): string {
+      return `${this.baseURL}/api/v1/books/${this.bookId}/pages/${page.number}/thumbnail`
     },
     prev () {
       if (this.canPrev) {
