@@ -146,11 +146,11 @@
           <v-row justify="center">
             <v-col cols="auto">
               <v-btn-toggle v-model="fitButtons" dense mandatory active-class="primary">
-                <v-btn @click="fitHeight = false">
+                <v-btn @click="setFitHeight(false)">
                   Fit to width
                 </v-btn>
 
-                <v-btn @click="fitHeight = true">
+                <v-btn @click="setFitHeight(true)">
                   Fit to height
                 </v-btn>
               </v-btn-toggle>
@@ -311,6 +311,17 @@ export default Vue.extend({
   async mounted () {
     window.addEventListener('keydown', this.keyPressed)
     this.setup(this.bookId, Number(this.$route.query.page))
+
+    if (this.$cookies.isKey('webreader.rtl')) {
+      if (this.$cookies.get('webreader.rtl') === 'true') {
+        this.setRtl(true)
+      }
+    }
+    if (this.$cookies.isKey('webreader.fitHeight')) {
+      if (this.$cookies.get('webreader.fitHeight') === 'false') {
+        this.setFitHeight(false)
+      }
+    }
   },
   destroyed () {
     window.removeEventListener('keydown', this.keyPressed)
@@ -438,8 +449,18 @@ export default Vue.extend({
     },
     setRtl (rtl: boolean) {
       this.rtl = rtl
-      this.slickOptions.rtl = rtl;
-      (this.$refs.slick as any).setOption('rtl', rtl, true)
+      this.slickOptions.rtl = rtl
+      this.rtlButtons = rtl ? 1 : 0
+      try {
+        (this.$refs.slick as any).setOption('rtl', rtl, true)
+      } catch (e) {
+      }
+      this.$cookies.set('webreader.rtl', rtl, Infinity)
+    },
+    setFitHeight (fitHeight: boolean) {
+      this.fitHeight = fitHeight
+      this.fitButtons = fitHeight ? 1 : 0
+      this.$cookies.set('webreader.fitHeight', fitHeight, Infinity)
     },
     setDoublePages (doublePages: boolean) {
       this.doublePages = doublePages

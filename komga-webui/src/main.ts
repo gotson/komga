@@ -1,5 +1,6 @@
 import _, { LoDashStatic } from 'lodash'
 import Vue from 'vue'
+import VueCookies from 'vue-cookies'
 // @ts-ignore
 import * as lineClamp from 'vue-line-clamp'
 import Vuelidate from 'vuelidate'
@@ -18,6 +19,7 @@ import store from './store'
 
 Vue.use(Vuelidate)
 Vue.use(lineClamp)
+Vue.use(VueCookies)
 
 Vue.use(httpPlugin)
 Vue.use(komgaFileSystem, { http: Vue.prototype.$http })
