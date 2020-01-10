@@ -241,6 +241,40 @@ class BookController(
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @GetMapping("api/v1/books/{bookId}/pages/{pageNumber}/thumbnail")
+  fun getBookPageThumbnail(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    request: WebRequest,
+    @PathVariable bookId: Long,
+    @PathVariable pageNumber: Int
+  ): ResponseEntity<ByteArray> =
+    bookRepository.findByIdOrNull((bookId))?.let { book ->
+      if (request.checkNotModified(getBookLastModified(book))) {
+        return@let ResponseEntity
+          .status(HttpStatus.NOT_MODIFIED)
+          .setNotModified(book)
+          .body(ByteArray(0))
+      }
+      if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+      try {
+        val pageContent = bookLifecycle.getBookPage(book, pageNumber, resizeTo = 300)
+
+        ResponseEntity.ok()
+          .contentType(getMediaTypeOrDefault(pageContent.mediaType))
+          .setNotModified(book)
+          .body(pageContent.content)
+      } catch (ex: IndexOutOfBoundsException) {
+        throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number does not exist")
+      } catch (ex: ImageConversionException) {
+        throw ResponseStatusException(HttpStatus.NOT_FOUND, ex.message)
+      } catch (ex: MediaNotReadyException) {
+        throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
+      } catch (ex: NoSuchFileException) {
+        logger.warn(ex) { "File not found: $book" }
+        throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
+      }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
   @PostMapping("api/v1/books/{bookId}/analyze")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)

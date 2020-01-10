@@ -62,33 +62,44 @@ class BookLifecycle(
     MediaNotReadyException::class,
     IndexOutOfBoundsException::class
   )
-  fun getBookPage(book: Book, number: Int, convertTo: ImageType? = null): BookPageContent {
+  fun getBookPage(book: Book, number: Int, convertTo: ImageType? = null, resizeTo: Int? = null): BookPageContent {
     val pageContent = bookAnalyzer.getPageContent(book, number)
     val pageMediaType = book.media.pages[number - 1].mediaType
 
-    convertTo?.let {
-      val msg = "Convert page #$number of book $book from $pageMediaType to ${it.mediaType}"
-      if (!imageConverter.supportedReadMediaTypes.contains(pageMediaType)) {
-        throw ImageConversionException("$msg: unsupported read format $pageMediaType")
-      }
-      if (!imageConverter.supportedWriteMediaTypes.contains(it.mediaType)) {
-        throw ImageConversionException("$msg: unsupported write format ${it.mediaType}")
-      }
-      if (pageMediaType == it.mediaType) {
-        logger.warn { "$msg: same format, no need for conversion" }
-        return@let
-      }
-
-      logger.info { msg }
+    if (resizeTo != null) {
+      val targetFormat = ImageType.JPEG
       val convertedPage = try {
-        imageConverter.convertImage(pageContent, it.imageIOFormat)
+        imageConverter.resizeImage(pageContent, targetFormat.imageIOFormat, resizeTo)
       } catch (e: Exception) {
-        logger.error(e) { "$msg: conversion failed" }
+        logger.error(e) { "Resize page #$number of book $book to $resizeTo: failed" }
         throw e
       }
-      return BookPageContent(number, convertedPage, it.mediaType)
-    }
+      return BookPageContent(number, convertedPage, targetFormat.mediaType)
+    } else {
+      convertTo?.let {
+        val msg = "Convert page #$number of book $book from $pageMediaType to ${it.mediaType}"
+        if (!imageConverter.supportedReadMediaTypes.contains(pageMediaType)) {
+          throw ImageConversionException("$msg: unsupported read format $pageMediaType")
+        }
+        if (!imageConverter.supportedWriteMediaTypes.contains(it.mediaType)) {
+          throw ImageConversionException("$msg: unsupported write format ${it.mediaType}")
+        }
+        if (pageMediaType == it.mediaType) {
+          logger.warn { "$msg: same format, no need for conversion" }
+          return@let
+        }
 
-    return BookPageContent(number, pageContent, pageMediaType)
+        logger.info { msg }
+        val convertedPage = try {
+          imageConverter.convertImage(pageContent, it.imageIOFormat)
+        } catch (e: Exception) {
+          logger.error(e) { "$msg: conversion failed" }
+          throw e
+        }
+        return BookPageContent(number, convertedPage, it.mediaType)
+      }
+
+      return BookPageContent(number, pageContent, pageMediaType)
+    }
   }
 }
