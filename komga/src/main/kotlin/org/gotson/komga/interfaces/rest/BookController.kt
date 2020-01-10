@@ -128,6 +128,37 @@ class BookController(
       it.toDto(includeFullUrl = principal.user.isAdmin())
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @GetMapping("api/v1/books/{bookId}/previous")
+  fun getBookSiblingPrevious(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: Long
+  ): BookDto =
+    bookRepository.findByIdOrNull(bookId)?.let { book ->
+      if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+
+      val previousBook = book.series.books
+        .sortedByDescending { it.number }
+        .find { it.number < book.number }
+
+      previousBook?.toDto(includeFullUrl = principal.user.isAdmin())
+        ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  @GetMapping("api/v1/books/{bookId}/next")
+  fun getBookSiblingNext(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: Long
+  ): BookDto =
+    bookRepository.findByIdOrNull(bookId)?.let { book ->
+      if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+
+      val nextBook = book.series.books
+        .sortedBy { it.number }
+        .find { it.number > book.number }
+
+      nextBook?.toDto(includeFullUrl = principal.user.isAdmin()) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
 
   @GetMapping(value = [
     "api/v1/books/{bookId}/thumbnail",

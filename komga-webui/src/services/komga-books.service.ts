@@ -45,6 +45,30 @@ export default class KomgaBooksService {
     }
   }
 
+  async getBookSiblingNext (bookId: number): Promise<BookDto> {
+    try {
+      return (await this.http.get(`${API_BOOKS}/${bookId}/next`)).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve book'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async getBookSiblingPrevious (bookId: number): Promise<BookDto> {
+    try {
+      return (await this.http.get(`${API_BOOKS}/${bookId}/previous`)).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve book'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
   async getBookPages (bookId: number): Promise<PageDto[]> {
     try {
       return (await this.http.get(`${API_BOOKS}/${bookId}/pages`)).data
