@@ -1,3 +1,21 @@
+# [0.12.0](https://github.com/gotson/komga/compare/v0.11.0...v0.12.0) (2020-01-14)
+
+
+### Bug Fixes
+
+* **scanner:** compare file extensions with case insensitive ([91c9cdd](https://github.com/gotson/komga/commit/91c9cdd8323d02c792728ed20bb3a4589694bdf0)), closes [#59](https://github.com/gotson/komga/issues/59)
+* **web reader:** conditional webp support ([ad21152](https://github.com/gotson/komga/commit/ad2115244aaf5dea0b2f5f667451d62d6c15069c)), closes [#65](https://github.com/gotson/komga/issues/65)
+
+
+### Features
+
+* **api:** add endpoints to get previous/next book of a book ([54f583f](https://github.com/gotson/komga/commit/54f583f0ce22e105a0bddde0287cc276dbbc12c9))
+* **api:** on-th-fly thumbnail generation for any page ([7167f3e](https://github.com/gotson/komga/commit/7167f3ea24cd222ab023838d42231f8560a733e5))
+* **web reader:** double page support ([77c9004](https://github.com/gotson/komga/commit/77c9004d5772bb623c27aebe764cbd155a9562cb)), closes [#61](https://github.com/gotson/komga/issues/61)
+* **web reader:** remember fit and rtl ([78c181e](https://github.com/gotson/komga/commit/78c181e130b6085a45755aefec61ad181a0802be)), closes [#66](https://github.com/gotson/komga/issues/66)
+* **web reader:** thumbnails explorer ([ec06955](https://github.com/gotson/komga/commit/ec06955e22f72e161ebe8c8b1f485b8139e03076)), closes [#62](https://github.com/gotson/komga/issues/62)
+* better management of book analysis errors ([8c26a31](https://github.com/gotson/komga/commit/8c26a318fe84ced77fe763711dec78575073678f))
+
 # [0.11.0](https://github.com/gotson/komga/compare/v0.10.1...v0.11.0) (2020-01-06)
 
 
