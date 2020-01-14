@@ -19,22 +19,59 @@
     />
 
     <!--  Carousel  -->
-    <slick ref="slick"
-           :options="slickOptions"
-           @afterChange="slickAfterChange"
-           :dir="rtl ? 'rtl' : 'ltr'"
+    <v-carousel v-model="carouselPage"
+                :show-arrows="false"
+                hide-delimiters
+                :continuous="false"
+                height="auto"
+                touchless
     >
       <!--  Carousel: pages  -->
-      <v-img v-for="p in pages"
-             :key="p.number"
-             :data-lazy="getPageUrl(p)"
-             :src="getPageUrl(p)"
-             lazy-src="../assets/loading.svg"
-             :max-height="maxHeight"
-             :max-width="$vuetify.breakpoint.width"
-             :contain="true"
-      />
-    </slick>
+      <!--  Replace transition and reverse-transition with 'reverse' on v-carousel once https://github.com/vuetifyjs/vuetify/issues/10182 is delivered  -->
+      <v-carousel-item v-for="p in slidesRange"
+                       :key="doublePages ? `db${p}` : `sp${p}`"
+                       :transition="rtl ? 'v-window-x-reverse-transition' : 'v-window-x-transition'"
+                       :reverse-transition="rtl ? 'v-window-x-transition' : 'v-window-x-reverse-transition'"
+                       :eager="eagerLoad(p)"
+      >
+        <div :class="`d-flex flex-row${rtl ? '-reverse' : ''} justify-center`">
+          <v-img :src="getPageUrl(p)"
+                 :max-height="maxHeight"
+                 :max-width="$vuetify.breakpoint.width / (doublePages ? 2 : 1)"
+                 :contain="true"
+                 :eager="eagerLoad(p)"
+          >
+            <template v-slot:placeholder>
+              <v-row
+                class="fill-height ma-0"
+                align="center"
+                justify="center"
+              >
+                <v-progress-circular indeterminate color="grey lighten-5"/>
+              </v-row>
+            </template>
+          </v-img>
+
+          <v-img v-if="doublePages && p !== 1 && p !== pagesCount && p+1 !== pagesCount"
+                 :src="getPageUrl(p+1)"
+                 :max-height="maxHeight"
+                 :max-width="$vuetify.breakpoint.width / (doublePages ? 2 : 1)"
+                 :contain="true"
+                 :eager="eagerLoad(p)"
+          >
+            <template v-slot:placeholder>
+              <v-row
+                class="fill-height ma-0"
+                align="center"
+                justify="center"
+              >
+                <v-progress-circular indeterminate color="grey lighten-5"/>
+              </v-row>
+            </template>
+          </v-img>
+        </div>
+      </v-carousel-item>
+    </v-carousel>
 
     <!--  Menu  -->
     <v-overlay :value="showMenu"
@@ -84,7 +121,7 @@
           <!--  Menu: number of pages  -->
           <v-row>
             <v-col class="text-center title">
-              Page {{ currentPage }} of {{ book.media.pagesCount }}
+              Page {{ currentPage }} of {{ pagesCount }}
             </v-col>
           </v-row>
 
@@ -123,7 +160,7 @@
               <v-slider
                 v-model="goToPage"
                 class="align-center"
-                :max="book.media.pagesCount"
+                :max="pagesCount"
                 min="1"
                 hide-details
                 @change="goTo"
@@ -233,8 +270,8 @@
         <v-card-text>
           <v-container fluid>
             <v-row>
-              <div v-for="p in pages"
-                   :key="p.number"
+              <div v-for="p in pagesCount"
+                   :key="p"
                    style="min-height: 220px; max-width: 140px"
                    class="mb-2"
               >
@@ -246,10 +283,10 @@
                   max-height="200"
                   max-width="140"
                   class="ma-2"
-                  @click="showThumbnailsExplorer = false; goTo(p.number)"
+                  @click="showThumbnailsExplorer = false; goTo(p)"
                   style="cursor: pointer"
                 />
-                <div class="white--text text-center font-weight-bold">{{p.number}}</div>
+                <div class="white--text text-center font-weight-bold">{{p}}</div>
               </div>
             </v-row>
           </v-container>
@@ -257,25 +294,63 @@
       </v-card>
     </v-dialog>
 
+    <v-snackbar
+      v-model="jumpToPreviousBook"
+      :timeout="jumpConfirmationDelay"
+      vertical
+      top
+      color="rgba(0, 0, 0, 0.7)"
+      multi-line
+      class="mt-12"
+    >
+      <div class="title pa-6">
+        <p>You're at the beginning<br/>of the book.</p>
+        <p v-if="!$_.isEmpty(siblingPrevious)">Click or press previous again<br/>to move to the previous book.</p>
+      </div>
+    </v-snackbar>
+
+    <v-snackbar
+      v-model="jumpToNextBook"
+      :timeout="jumpConfirmationDelay"
+      vertical
+      top
+      color="rgba(0, 0, 0, 0.7)"
+      multi-line
+      class="mt-12"
+    >
+      <div class="title pa-6">
+        <p>You've reached the end<br/>of the book.</p>
+        <p v-if="!$_.isEmpty(siblingNext)">Click or press next again<br/>to move to the next book.</p>
+        <p v-else>Click or press next again<br/>to exit the reader.</p>
+      </div>
+    </v-snackbar>
+
   </div>
 </template>
 
 <script lang="ts">
 import { checkWebpFeature } from '@/functions/check-webp'
 import Vue from 'vue'
-import Slick from 'vue-slick'
+
+const cookieFitHeight = 'webreader.fitHeight'
+const cookieRtl = 'webreader.rtl'
+const cookieDoublePages = 'webreader.doublePages'
 
 export default Vue.extend({
   name: 'BookReader',
-  components: { Slick },
   data: () => {
     return {
       baseURL: process.env.VUE_APP_KOMGA_API_URL ? process.env.VUE_APP_KOMGA_API_URL : window.location.origin,
       book: {} as BookDto,
+      siblingPrevious: {} as BookDto,
+      siblingNext: {} as BookDto,
+      jumpToNextBook: false,
+      jumpToPreviousBook: false,
+      jumpConfirmationDelay: 3000,
       pages: [] as PageDto[],
       supportedMediaTypes: ['image/jpeg', 'image/png', 'image/gif'],
       convertTo: 'jpeg',
-      currentPage: 1,
+      carouselPage: 0,
       goToPage: 1,
       showMenu: false,
       fitButtons: 1,
@@ -284,21 +359,7 @@ export default Vue.extend({
       rtl: false,
       doublePages: false,
       doublePagesButtons: 0,
-      showThumbnailsExplorer: false,
-      slickOptions: {
-        infinite: false,
-        arrows: false,
-        variableWidth: false,
-        adaptiveHeight: false,
-        swipe: false,
-        touchMove: false,
-        cssEase: 'cubic-bezier(0.250, 0.100, 0.250, 1.000)',
-        speed: 150,
-        initialSlide: 0,
-        rtl: false,
-        slidesToShow: 1,
-        slidesToScroll: 1
-      }
+      showThumbnailsExplorer: false
     }
   },
   created () {
@@ -312,14 +373,20 @@ export default Vue.extend({
     window.addEventListener('keydown', this.keyPressed)
     this.setup(this.bookId, Number(this.$route.query.page))
 
-    if (this.$cookies.isKey('webreader.rtl')) {
-      if (this.$cookies.get('webreader.rtl') === 'true') {
+    // restore options for RTL, fit, and double pages
+    if (this.$cookies.isKey(cookieRtl)) {
+      if (this.$cookies.get(cookieRtl) === 'true') {
         this.setRtl(true)
       }
     }
-    if (this.$cookies.isKey('webreader.fitHeight')) {
-      if (this.$cookies.get('webreader.fitHeight') === 'false') {
+    if (this.$cookies.isKey(cookieFitHeight)) {
+      if (this.$cookies.get(cookieFitHeight) === 'false') {
         this.setFitHeight(false)
+      }
+    }
+    if (this.$cookies.isKey(cookieDoublePages)) {
+      if (this.$cookies.get(cookieDoublePages) === 'true') {
+        this.setDoublePages(true)
       }
     }
   },
@@ -334,7 +401,8 @@ export default Vue.extend({
   },
   async beforeRouteUpdate (to, from, next) {
     if (to.params.bookId !== from.params.bookId) {
-      this.setup(Number(to.params.bookId), Number(to.query.page))
+      // route update means going to previous/next book, in this case we start from first page
+      this.setup(Number(to.params.bookId), 1)
     }
     next()
   },
@@ -345,17 +413,39 @@ export default Vue.extend({
     }
   },
   computed: {
+    currentSlide (): number {
+      return this.carouselPage + 1
+    },
+    currentPage (): number {
+      return this.doublePages ? this.toSinglePages(this.currentSlide) : this.currentSlide
+    },
     canPrev (): boolean {
-      return this.currentPage > 1
+      return this.currentSlide > 1
     },
     canNext (): boolean {
-      return this.currentPage < this.book.media.pagesCount
+      return this.currentSlide < this.slidesCount
     },
     progress (): number {
-      return this.currentPage / this.book.media.pagesCount * 100
+      return this.currentPage / this.pagesCount * 100
     },
     maxHeight (): number | undefined {
-      return this.fitHeight ? this.$vuetify.breakpoint.height - 7 : undefined
+      return this.fitHeight ? this.$vuetify.breakpoint.height : undefined
+    },
+    slidesRange (): number[] {
+      if (!this.doublePages) {
+        return this.$_.range(1, this.pagesCount + 1)
+      }
+      // for double pages the first and last pages are shown as single, while others are doubled
+      const ret = this.$_.range(2, this.pagesCount, 2)
+      ret.unshift(1)
+      ret.push(this.pagesCount)
+      return ret
+    },
+    slidesCount (): number {
+      return this.slidesRange.length
+    },
+    pagesCount (): number {
+      return this.pages.length
     }
   },
   methods: {
@@ -389,48 +479,73 @@ export default Vue.extend({
     async setup (bookId: number, page: number) {
       this.book = await this.$komgaBooks.getBook(bookId)
       this.pages = await this.$komgaBooks.getBookPages(bookId)
-      if (page >= 1 && page <= this.book.media.pagesCount) {
-        this.currentPage = page
-        this.slickOptions.initialSlide = page - 1
+      if (page >= 1 && page <= this.pagesCount) {
+        this.goTo(page)
       } else {
-        this.currentPage = 1
-        this.updateRoute()
+        this.goToFirst()
+      }
+
+      try {
+        this.siblingNext = await this.$komgaBooks.getBookSiblingNext(bookId)
+      } catch (e) {
+        this.siblingNext = {} as BookDto
+      }
+      try {
+        this.siblingPrevious = await this.$komgaBooks.getBookSiblingPrevious(bookId)
+      } catch (e) {
+        this.siblingPrevious = {} as BookDto
       }
     },
-    getPageUrl (page: PageDto): string {
-      let url = `${this.baseURL}/api/v1/books/${this.bookId}/pages/${page.number}`
-      if (!this.supportedMediaTypes.includes(page.mediaType)) {
+    getPageUrl (page: number): string {
+      let url = `${this.baseURL}/api/v1/books/${this.bookId}/pages/${page}`
+      if (!this.supportedMediaTypes.includes(this.pages[page - 1].mediaType)) {
         url += `?convert=${this.convertTo}`
       }
       return url
     },
-    getThumbnailUrl (page: PageDto): string {
-      return `${this.baseURL}/api/v1/books/${this.bookId}/pages/${page.number}/thumbnail`
+    getThumbnailUrl (page: number): string {
+      return `${this.baseURL}/api/v1/books/${this.bookId}/pages/${page}/thumbnail`
     },
     prev () {
       if (this.canPrev) {
-        (this.$refs.slick as any).prev()
+        this.carouselPage--
         window.scrollTo(0, 0)
+      } else {
+        if (this.jumpToPreviousBook) {
+          if (!this.$_.isEmpty(this.siblingPrevious)) {
+            this.jumpToPreviousBook = false
+            this.$router.push({ name: 'read-book', params: { bookId: this.siblingPrevious.id.toString() } })
+          }
+        } else {
+          this.jumpToPreviousBook = true
+        }
       }
     },
     next () {
       if (this.canNext) {
-        (this.$refs.slick as any).next()
+        this.carouselPage++
         window.scrollTo(0, 0)
       } else {
-        this.showMenu = true
+        if (this.jumpToNextBook) {
+          if (this.$_.isEmpty(this.siblingNext)) {
+            this.closeBook()
+          } else {
+            this.jumpToNextBook = false
+            this.$router.push({ name: 'read-book', params: { bookId: this.siblingNext.id.toString() } })
+          }
+        } else {
+          this.jumpToNextBook = true
+        }
       }
     },
     goTo (page: number) {
-      (this.$refs.slick as any).$el.slick.slickGoTo(page - 1, true)
+      this.carouselPage = this.doublePages ? this.toDoublePages(page) - 1 : page - 1
     },
     goToFirst () {
-      this.goToPage = 1
-      this.goTo(this.goToPage)
+      this.goTo(1)
     },
     goToLast () {
-      this.goToPage = this.book.media.pagesCount
-      this.goTo(this.goToPage)
+      this.goTo(this.pagesCount)
     },
     updateRoute () {
       this.$router.replace({
@@ -444,36 +559,43 @@ export default Vue.extend({
     closeBook () {
       this.$router.push({ name: 'browse-book', params: { bookId: this.bookId.toString() } })
     },
-    slickAfterChange (event: any, slick: any, currentSlide: any) {
-      this.currentPage = currentSlide + 1
-    },
     setRtl (rtl: boolean) {
       this.rtl = rtl
-      this.slickOptions.rtl = rtl
       this.rtlButtons = rtl ? 1 : 0
-      try {
-        (this.$refs.slick as any).setOption('rtl', rtl, true)
-      } catch (e) {
-      }
-      this.$cookies.set('webreader.rtl', rtl, Infinity)
+      this.$cookies.set(cookieRtl, rtl, Infinity)
     },
     setFitHeight (fitHeight: boolean) {
       this.fitHeight = fitHeight
       this.fitButtons = fitHeight ? 1 : 0
-      this.$cookies.set('webreader.fitHeight', fitHeight, Infinity)
+      this.$cookies.set(cookieFitHeight, fitHeight, Infinity)
     },
     setDoublePages (doublePages: boolean) {
+      const current = this.currentPage
       this.doublePages = doublePages
-      this.slickOptions.slidesToShow = doublePages ? 2 : 1;
-      (this.$refs.slick as any).setOption('slidesToShow', doublePages ? 2 : 1, true)
+      this.goTo(current)
+      this.doublePagesButtons = doublePages ? 1 : 0
+      this.$cookies.set(cookieDoublePages, doublePages, Infinity)
+    },
+    toSinglePages (i: number): number {
+      if (i === 1) return 1
+      if (i === this.slidesCount) return this.pagesCount
+      return (i - 1) * 2
+    },
+    toDoublePages (i: number): number {
+      let ret = Math.floor(i / 2) + 1
+      if (i === this.pagesCount && this.pagesCount % 2 === 1) {
+        ret++
+      }
+      return ret
+    },
+    eagerLoad (p: number): boolean {
+      return Math.abs(this.currentPage - p) <= 2
     }
   }
 })
 </script>
 
 <style scoped>
-@import "../../node_modules/slick-carousel/slick/slick.css";
-
 .fixed-position {
   position: fixed;
 }
