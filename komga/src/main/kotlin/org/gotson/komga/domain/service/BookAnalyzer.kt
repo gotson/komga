@@ -4,12 +4,13 @@ import mu.KotlinLogging
 import net.coobird.thumbnailator.Thumbnails
 import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.gotson.komga.domain.model.Book
+import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
-import org.gotson.komga.infrastructure.archive.ContentDetector
-import org.gotson.komga.infrastructure.archive.PdfExtractor
-import org.gotson.komga.infrastructure.archive.RarExtractor
-import org.gotson.komga.infrastructure.archive.ZipExtractor
+import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
+import org.gotson.komga.infrastructure.mediacontainer.PdfExtractor
+import org.gotson.komga.infrastructure.mediacontainer.RarExtractor
+import org.gotson.komga.infrastructure.mediacontainer.ZipExtractor
 import org.springframework.stereotype.Service
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -43,12 +44,30 @@ class BookAnalyzer(
     if (!supportedMediaTypes.keys.contains(mediaType))
       return Media(mediaType = mediaType, status = Media.Status.UNSUPPORTED, comment = "Media type $mediaType is not supported")
 
-    val pages = try {
-      supportedMediaTypes.getValue(mediaType).getPagesList(book.path()).sortedWith(compareBy(natSortComparator) { it.fileName })
+    val entries = try {
+      supportedMediaTypes.getValue(mediaType).getEntries(book.path())
     } catch (ex: Exception) {
       logger.error(ex) { "Error while analyzing book: $book" }
       return Media(mediaType = mediaType, status = Media.Status.ERROR, comment = ex.message)
     }
+
+    val (pages, others) = entries
+      .partition { entry ->
+        entry.mediaType?.let { contentDetector.isImage(it) } ?: false
+      }.let { (images, others) ->
+        Pair(
+          images
+            .map { BookPage(it.name, it.mediaType!!) }
+            .sortedWith(compareBy(natSortComparator) { it.fileName }),
+          others
+        )
+      }
+
+    val entriesErrorSummary = others
+      .filter { it.mediaType.isNullOrBlank() }
+      .map { it.name }
+      .ifEmpty { null }
+      ?.joinToString(prefix = "Some entries could not be analyzed: [", postfix = "]") { it }
 
     if (pages.isEmpty()) {
       logger.warn { "Book $book does not contain any pages" }
@@ -59,7 +78,7 @@ class BookAnalyzer(
     logger.info { "Trying to generate cover for book: $book" }
     val thumbnail = generateThumbnail(book, mediaType, pages.first().fileName)
 
-    return Media(mediaType = mediaType, status = Media.Status.READY, pages = pages, thumbnail = thumbnail)
+    return Media(mediaType = mediaType, status = Media.Status.READY, pages = pages, thumbnail = thumbnail, comment = entriesErrorSummary)
   }
 
   @Throws(MediaNotReadyException::class)
@@ -84,7 +103,7 @@ class BookAnalyzer(
   private fun generateThumbnail(book: Book, mediaType: String, entry: String): ByteArray? =
     try {
       ByteArrayOutputStream().use {
-        supportedMediaTypes.getValue(mediaType).getPageStream(book.path(), entry).let { cover ->
+        supportedMediaTypes.getValue(mediaType).getEntryStream(book.path(), entry).let { cover ->
           Thumbnails.of(cover.inputStream())
             .size(thumbnailSize, thumbnailSize)
             .outputFormat(thumbnailFormat)
@@ -114,6 +133,6 @@ class BookAnalyzer(
       throw IndexOutOfBoundsException("Page $number does not exist")
     }
 
-    return supportedMediaTypes.getValue(book.media.mediaType!!).getPageStream(book.path(), book.media.pages[number - 1].fileName)
+    return supportedMediaTypes.getValue(book.media.mediaType!!).getEntryStream(book.path(), book.media.pages[number - 1].fileName)
   }
 }

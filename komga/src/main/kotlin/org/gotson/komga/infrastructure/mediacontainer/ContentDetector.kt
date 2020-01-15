@@ -1,4 +1,4 @@
-package org.gotson.komga.infrastructure.archive
+package org.gotson.komga.infrastructure.mediacontainer
 
 import mu.KotlinLogging
 import org.apache.tika.config.TikaConfig

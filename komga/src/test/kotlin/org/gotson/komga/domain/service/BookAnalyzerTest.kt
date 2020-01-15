@@ -4,12 +4,12 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
 import org.assertj.core.api.Assertions.assertThat
+import org.gotson.komga.domain.model.MediaContainerEntry
 import org.gotson.komga.domain.model.makeBook
-import org.gotson.komga.domain.model.makeBookPage
-import org.gotson.komga.infrastructure.archive.ContentDetector
-import org.gotson.komga.infrastructure.archive.PdfExtractor
-import org.gotson.komga.infrastructure.archive.RarExtractor
-import org.gotson.komga.infrastructure.archive.ZipExtractor
+import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
+import org.gotson.komga.infrastructure.mediacontainer.PdfExtractor
+import org.gotson.komga.infrastructure.mediacontainer.RarExtractor
+import org.gotson.komga.infrastructure.mediacontainer.ZipExtractor
 import org.junit.jupiter.api.Test
 
 class BookAnalyzerTest {
@@ -25,13 +25,14 @@ class BookAnalyzerTest {
     // given
     val book = makeBook("book")
     every { mockContent.detectMediaType(book.path()) } returns "application/zip"
+    every { mockContent.isImage(any()) } returns true
 
-    val unorderedPages = listOf("08", "01", "02").map { makeBookPage(it) }
-    every { mockZip.getPagesList(book.path()) } returns unorderedPages
+    val unorderedPages = listOf("08", "01", "02").map { MediaContainerEntry(it, "image/png") }
+    every { mockZip.getEntries(book.path()) } returns unorderedPages
 
     //when
     val thumbnailFile = slot<String>()
-    every { mockZip.getPageStream(book.path(), capture(thumbnailFile)) } returns ByteArray(1)
+    every { mockZip.getEntryStream(book.path(), capture(thumbnailFile)) } returns ByteArray(1)
     bookAnalyzer.analyze(book)
 
     // then
