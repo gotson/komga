@@ -25,13 +25,11 @@
                 :continuous="false"
                 height="auto"
                 touchless
+                :reverse="rtl"
     >
       <!--  Carousel: pages  -->
-      <!--  Replace transition and reverse-transition with 'reverse' on v-carousel once https://github.com/vuetifyjs/vuetify/issues/10182 is delivered  -->
       <v-carousel-item v-for="p in slidesRange"
                        :key="doublePages ? `db${p}` : `sp${p}`"
-                       :transition="rtl ? 'v-window-x-reverse-transition' : 'v-window-x-transition'"
-                       :reverse-transition="rtl ? 'v-window-x-transition' : 'v-window-x-reverse-transition'"
                        :eager="eagerLoad(p)"
       >
         <div :class="`d-flex flex-row${rtl ? '-reverse' : ''} justify-center`">
