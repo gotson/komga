@@ -35,7 +35,7 @@
         <div :class="`d-flex flex-row${rtl ? '-reverse' : ''} justify-center`">
           <v-img :src="getPageUrl(p)"
                  :max-height="maxHeight"
-                 :max-width="$vuetify.breakpoint.width / (doublePages ? 2 : 1)"
+                 :max-width="$vuetify.breakpoint.width / (doublePages && p !== 1 && p !== pagesCount ? 2 : 1)"
                  :contain="true"
                  :eager="eagerLoad(p)"
           >
