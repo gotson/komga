@@ -33,11 +33,31 @@
     <v-container fluid class="pa-6">
       <v-row>
         <v-col cols="4" sm="4" md="auto" lg="auto" xl="auto">
-          <v-img :src="thumbnailUrl"
-                 lazy-src="../assets/cover.svg"
-                 max-height="300"
-                 max-width="212"
-          />
+          <v-hover>
+            <template v-slot:default="{ hover }">
+              <v-img :src="thumbnailUrl"
+                     lazy-src="../assets/cover.svg"
+                     max-height="300"
+                     max-width="212"
+              >
+                <v-fade-transition>
+                  <v-overlay
+                    v-if="hover && book.media.status === 'READY'"
+                    absolute
+                    color="grey darken-4"
+                  >
+                    <v-btn fab
+                           x-large
+                           color="accent"
+                           :to="{name: 'read-book', params: { bookId: bookId}}"
+                    >
+                      <v-icon>mdi-book-open-page-variant</v-icon>
+                    </v-btn>
+                  </v-overlay>
+                </v-fade-transition>
+              </v-img>
+            </template>
+          </v-hover>
 
         </v-col>
         <v-col cols="8" sm="8" md="auto" lg="auto" xl="auto">
