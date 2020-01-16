@@ -8,10 +8,11 @@ import org.gotson.komga.application.service.AsyncOrchestrator
 import org.gotson.komga.application.service.BookLifecycle
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.ImageConversionException
+import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
+import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.persistence.BookRepository
-import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.interfaces.rest.dto.BookDto
@@ -46,13 +47,13 @@ import java.nio.file.NoSuchFileException
 import java.time.ZoneOffset
 import java.util.concurrent.RejectedExecutionException
 import java.util.concurrent.TimeUnit
+import javax.persistence.criteria.JoinType
 
 private val logger = KotlinLogging.logger {}
 
 @RestController
 @RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
 class BookController(
-  private val seriesRepository: SeriesRepository,
   private val bookRepository: BookRepository,
   private val bookLifecycle: BookLifecycle,
   private val asyncOrchestrator: AsyncOrchestrator
@@ -75,16 +76,19 @@ class BookController(
 
     return mutableListOf<Specification<Book>>().let { specs ->
       when {
+        // limited user & libraryIds are specified: filter on provided libraries intersecting user's authorized libraries
         !principal.user.sharedAllLibraries && !libraryIds.isNullOrEmpty() -> {
           val authorizedLibraryIDs = libraryIds.intersect(principal.user.sharedLibraries.map { it.id })
           if (authorizedLibraryIDs.isEmpty()) return@let Page.empty<Book>(pageRequest)
-          else specs.add(Book::series.`in`(seriesRepository.findByLibraryIdIn(authorizedLibraryIDs)))
+          else specs.add(Book::series.toJoin().join(Series::library, JoinType.INNER).where(Library::id).`in`(authorizedLibraryIDs))
         }
 
-        !principal.user.sharedAllLibraries -> specs.add(Book::series.`in`(seriesRepository.findByLibraryIn(principal.user.sharedLibraries)))
+        // limited user: filter on user's authorized libraries
+        !principal.user.sharedAllLibraries -> specs.add(Book::series.toJoin().where(Series::library).`in`(principal.user.sharedLibraries))
 
+        // non-limited user: filter on provided libraries
         !libraryIds.isNullOrEmpty() -> {
-          specs.add(Book::series.`in`(seriesRepository.findByLibraryIdIn(libraryIds)))
+          specs.add(Book::series.toJoin().join(Series::library, JoinType.INNER).where(Library::id).`in`(libraryIds))
         }
       }
 

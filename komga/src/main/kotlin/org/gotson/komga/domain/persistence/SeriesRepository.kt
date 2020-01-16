@@ -20,9 +20,6 @@ interface SeriesRepository : JpaRepository<Series, Long>, JpaSpecificationExecut
   override fun findAll(pageable: Pageable): Page<Series>
 
   @QueryHints(QueryHint(name = CACHEABLE, value = "true"))
-  fun findByLibraryIn(libraries: Collection<Library>): List<Series>
-
-  @QueryHints(QueryHint(name = CACHEABLE, value = "true"))
   fun findByLibraryIn(libraries: Collection<Library>, sort: Sort): List<Series>
 
   @QueryHints(QueryHint(name = CACHEABLE, value = "true"))
@@ -30,9 +27,6 @@ interface SeriesRepository : JpaRepository<Series, Long>, JpaSpecificationExecut
 
   @QueryHints(QueryHint(name = CACHEABLE, value = "true"))
   fun findByLibraryId(libraryId: Long, sort: Sort): List<Series>
-
-  @QueryHints(QueryHint(name = CACHEABLE, value = "true"))
-  fun findByLibraryIdIn(libraryIDs: Collection<Long>): List<Series>
 
   @Query("select s from Series s where s.createdDate <> s.lastModifiedDate")
   @QueryHints(QueryHint(name = CACHEABLE, value = "true"))

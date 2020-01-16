@@ -2,12 +2,13 @@ package org.gotson.komga.interfaces.rest
 
 import com.github.klinq.jpaspec.`in`
 import com.github.klinq.jpaspec.likeLower
+import com.github.klinq.jpaspec.toJoin
 import mu.KotlinLogging
 import org.gotson.komga.application.service.AsyncOrchestrator
+import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.persistence.BookRepository
-import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.interfaces.rest.dto.BookDto
@@ -41,7 +42,6 @@ private val logger = KotlinLogging.logger {}
 @RequestMapping("api/v1/series", produces = [MediaType.APPLICATION_JSON_VALUE])
 class SeriesController(
   private val seriesRepository: SeriesRepository,
-  private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
   private val bookController: BookController,
   private val asyncOrchestrator: AsyncOrchestrator
@@ -63,16 +63,19 @@ class SeriesController(
 
     return mutableListOf<Specification<Series>>().let { specs ->
       when {
+        // limited user & libraryIds are specified: filter on provided libraries intersecting user's authorized libraries
         !principal.user.sharedAllLibraries && !libraryIds.isNullOrEmpty() -> {
           val authorizedLibraryIDs = libraryIds.intersect(principal.user.sharedLibraries.map { it.id })
           if (authorizedLibraryIDs.isEmpty()) return@let Page.empty<Series>(pageRequest)
-          else specs.add(Series::library.`in`(libraryRepository.findAllById(authorizedLibraryIDs)))
+          else specs.add(Series::library.toJoin().where(Library::id).`in`(authorizedLibraryIDs))
         }
 
+        // limited user: filter on user's authorized libraries
         !principal.user.sharedAllLibraries -> specs.add(Series::library.`in`(principal.user.sharedLibraries))
 
+        // non-limited user: filter on provided libraries
         !libraryIds.isNullOrEmpty() -> {
-          specs.add(Series::library.`in`(libraryRepository.findAllById(libraryIds)))
+          specs.add(Series::library.toJoin().where(Library::id).`in`(libraryIds))
         }
       }
 
