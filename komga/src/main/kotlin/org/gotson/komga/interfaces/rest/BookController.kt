@@ -2,6 +2,7 @@ package org.gotson.komga.interfaces.rest
 
 import com.github.klinq.jpaspec.`in`
 import com.github.klinq.jpaspec.likeLower
+import com.github.klinq.jpaspec.toJoin
 import mu.KotlinLogging
 import org.gotson.komga.application.service.AsyncOrchestrator
 import org.gotson.komga.application.service.BookLifecycle
@@ -62,6 +63,7 @@ class BookController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) searchTerm: String?,
     @RequestParam(name = "library_id", required = false) libraryIds: List<Long>?,
+    @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
     page: Pageable
   ): Page<BookDto> {
     val pageRequest = PageRequest.of(
@@ -88,6 +90,10 @@ class BookController(
 
       if (!searchTerm.isNullOrEmpty()) {
         specs.add(Book::name.likeLower("%$searchTerm%"))
+      }
+
+      if (!mediaStatus.isNullOrEmpty()) {
+        specs.add(Book::media.toJoin().where(Media::status).`in`(mediaStatus))
       }
 
       if (specs.isNotEmpty()) {
