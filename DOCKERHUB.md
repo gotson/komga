@@ -76,6 +76,8 @@ For example, `-p 8080:80` would expose port `80` from inside the container to be
 | `--mount type=bind,source=/path/to/books,target=/books`   | Location of books library on disk                                     |
 | `-e KOMGA_LIBRARIES_SCAN_DIRECTORY_EXCLUSIONS`            | Comma-separated list of patterns to exclude directories from the scan |
 
+Please check the Komga [documentation](https://github.com/gotson/komga#configuration) for an exhaustive list of supported parameters.
+
 ## User / Group Identifiers
 
 When using volumes (`-v` flags) permissions issues can arise between the host OS and the container, we avoid this issue by allowing you to specify the user ID and group ID.
