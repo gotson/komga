@@ -23,7 +23,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfiguration(
-    private val komgaProperties: KomgaProperties
+  private val komgaProperties: KomgaProperties,
+  private val sessionRegistry: SessionRegistry
 ) : WebSecurityConfigurerAdapter() {
 
   override fun configure(http: HttpSecurity) {
@@ -58,42 +59,34 @@ class SecurityConfiguration(
         .and()
           .sessionManagement()
           .maximumSessions(10)
-          .sessionRegistry(sessionRegistry())
+          .sessionRegistry(sessionRegistry)
 
     // @formatter:on
   }
 
   override fun configure(web: WebSecurity) {
     web.ignoring()
-        .antMatchers(
-            "/error**",
-            "/css/**",
-            "/img/**",
-            "/js/**",
-            "/favicon.ico",
-            "/",
-            "/index.html")
+      .antMatchers(
+        "/error**",
+        "/css/**",
+        "/img/**",
+        "/js/**",
+        "/favicon.ico",
+        "/",
+        "/index.html")
   }
 
   @Bean
   @Profile("dev")
   fun corsConfigurationSource(): UrlBasedCorsConfigurationSource =
-      UrlBasedCorsConfigurationSource().apply {
-        registerCorsConfiguration(
-            "/**",
-            CorsConfiguration().applyPermitDefaultValues().apply {
-              allowedOrigins = listOf("http://localhost:8081")
-              allowedMethods = HttpMethod.values().map { it.name }
-              allowCredentials = true
-            }
-        )
-      }
-
-  @Bean
-  fun getEncoder(): PasswordEncoder = BCryptPasswordEncoder()
-
-  @Bean
-  fun sessionRegistry(): SessionRegistry {
-    return SessionRegistryImpl()
-  }
+    UrlBasedCorsConfigurationSource().apply {
+      registerCorsConfiguration(
+        "/**",
+        CorsConfiguration().applyPermitDefaultValues().apply {
+          allowedOrigins = listOf("http://localhost:8081")
+          allowedMethods = HttpMethod.values().map { it.name }
+          allowCredentials = true
+        }
+      )
+    }
 }
