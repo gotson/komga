@@ -157,12 +157,16 @@
           <v-row justify="center">
             <v-col cols="auto">
               <v-btn-toggle v-model="fitButtons" dense mandatory active-class="primary">
-                <v-btn @click="setFitHeight(false)">
+                <v-btn @click="setFit(ImageFit.Width)">
                   Fit to width
                 </v-btn>
 
-                <v-btn @click="setFitHeight(true)">
+                <v-btn @click="setFit(ImageFit.Height)">
                   Fit to height
+                </v-btn>
+
+                <v-btn @click="setFit(ImageFit.Original)">
+                  Original
                 </v-btn>
               </v-btn-toggle>
             </v-col>
@@ -304,9 +308,10 @@
 
 <script lang="ts">
 import { checkWebpFeature } from '@/functions/check-webp'
+import { ImageFit } from '@/types/common'
 import Vue from 'vue'
 
-const cookieFitHeight = 'webreader.fitHeight'
+const cookieFit = 'webreader.fit'
 const cookieRtl = 'webreader.rtl'
 const cookieDoublePages = 'webreader.doublePages'
 
@@ -314,6 +319,7 @@ export default Vue.extend({
   name: 'BookReader',
   data: () => {
     return {
+      ImageFit,
       baseURL: process.env.VUE_APP_KOMGA_API_URL ? process.env.VUE_APP_KOMGA_API_URL : window.location.origin,
       book: {} as BookDto,
       siblingPrevious: {} as BookDto,
@@ -328,7 +334,7 @@ export default Vue.extend({
       goToPage: 1,
       showMenu: false,
       fitButtons: 1,
-      fitHeight: true,
+      fit: ImageFit.Height,
       rtlButtons: 0,
       rtl: false,
       doublePages: false,
@@ -353,10 +359,8 @@ export default Vue.extend({
         this.setRtl(true)
       }
     }
-    if (this.$cookies.isKey(cookieFitHeight)) {
-      if (this.$cookies.get(cookieFitHeight) === 'false') {
-        this.setFitHeight(false)
-      }
+    if (this.$cookies.isKey(cookieFit)) {
+      this.setFit(this.$cookies.get(cookieFit))
     }
     if (this.$cookies.isKey(cookieDoublePages)) {
       if (this.$cookies.get(cookieDoublePages) === 'true') {
@@ -403,7 +407,7 @@ export default Vue.extend({
       return this.currentPage / this.pagesCount * 100
     },
     maxHeight (): number | string {
-      return this.fitHeight ? this.$vuetify.breakpoint.height : 'auto'
+      return this.fit === ImageFit.Height ? this.$vuetify.breakpoint.height : 'auto'
     },
     slidesRange (): number[] {
       if (!this.doublePages) {
@@ -538,10 +542,20 @@ export default Vue.extend({
       this.rtlButtons = rtl ? 1 : 0
       this.$cookies.set(cookieRtl, rtl, Infinity)
     },
-    setFitHeight (fitHeight: boolean) {
-      this.fitHeight = fitHeight
-      this.fitButtons = fitHeight ? 1 : 0
-      this.$cookies.set(cookieFitHeight, fitHeight, Infinity)
+    setFit (fit: ImageFit) {
+      this.fit = fit
+      switch (fit) {
+        case ImageFit.Width:
+          this.fitButtons = 0
+          break
+        case ImageFit.Height:
+          this.fitButtons = 1
+          break
+        case ImageFit.Original:
+          this.fitButtons = 2
+          break
+      }
+      this.$cookies.set(cookieFit, fit, Infinity)
     },
     setDoublePages (doublePages: boolean) {
       const current = this.currentPage
@@ -566,7 +580,7 @@ export default Vue.extend({
       return Math.abs(this.currentPage - p) <= 2
     },
     maxWidth (p: number): number | string {
-      if (this.fitHeight) {
+      if (this.fit !== ImageFit.Width) {
         return 'auto'
       }
       if (this.doublePages && p !== 1 && p !== this.pagesCount) {

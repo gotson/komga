@@ -3,3 +3,9 @@ export enum LoadState {
   NotLoaded,
   Loading
 }
+
+export enum ImageFit {
+  Width = 'width',
+  Height = 'height',
+  Original = 'original'
+}
