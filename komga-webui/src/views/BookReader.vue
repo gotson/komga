@@ -33,40 +33,16 @@
                        :eager="eagerLoad(p)"
       >
         <div :class="`d-flex flex-row${rtl ? '-reverse' : ''} justify-center`">
-          <v-img :src="getPageUrl(p)"
-                 :max-height="maxHeight"
-                 :max-width="$vuetify.breakpoint.width / (doublePages && p !== 1 && p !== pagesCount ? 2 : 1)"
-                 :contain="true"
-                 :eager="eagerLoad(p)"
-          >
-            <template v-slot:placeholder>
-              <v-row
-                class="fill-height ma-0"
-                align="center"
-                justify="center"
-              >
-                <v-progress-circular indeterminate color="grey lighten-5"/>
-              </v-row>
-            </template>
-          </v-img>
+          <img :src="getPageUrl(p)"
+               :height="maxHeight"
+               :width="maxWidth(p)"
+          />
 
-          <v-img v-if="doublePages && p !== 1 && p !== pagesCount && p+1 !== pagesCount"
-                 :src="getPageUrl(p+1)"
-                 :max-height="maxHeight"
-                 :max-width="$vuetify.breakpoint.width / (doublePages ? 2 : 1)"
-                 :contain="true"
-                 :eager="eagerLoad(p)"
-          >
-            <template v-slot:placeholder>
-              <v-row
-                class="fill-height ma-0"
-                align="center"
-                justify="center"
-              >
-                <v-progress-circular indeterminate color="grey lighten-5"/>
-              </v-row>
-            </template>
-          </v-img>
+          <img v-if="doublePages && p !== 1 && p !== pagesCount && p+1 !== pagesCount"
+               :src="getPageUrl(p+1)"
+               :height="maxHeight"
+               :width="maxWidth(p+1)"
+          />
         </div>
       </v-carousel-item>
     </v-carousel>
@@ -426,8 +402,8 @@ export default Vue.extend({
     progress (): number {
       return this.currentPage / this.pagesCount * 100
     },
-    maxHeight (): number | undefined {
-      return this.fitHeight ? this.$vuetify.breakpoint.height : undefined
+    maxHeight (): number | string {
+      return this.fitHeight ? this.$vuetify.breakpoint.height : 'auto'
     },
     slidesRange (): number[] {
       if (!this.doublePages) {
@@ -588,6 +564,15 @@ export default Vue.extend({
     },
     eagerLoad (p: number): boolean {
       return Math.abs(this.currentPage - p) <= 2
+    },
+    maxWidth (p: number): number | string {
+      if (this.fitHeight) {
+        return 'auto'
+      }
+      if (this.doublePages && p !== 1 && p !== this.pagesCount) {
+        return this.$vuetify.breakpoint.width / 2
+      }
+      return this.$vuetify.breakpoint.width
     }
   }
 })
