@@ -1,18 +1,17 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
-import net.coobird.thumbnailator.Thumbnails
 import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
+import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.mediacontainer.PdfExtractor
 import org.gotson.komga.infrastructure.mediacontainer.RarExtractor
 import org.gotson.komga.infrastructure.mediacontainer.ZipExtractor
 import org.springframework.stereotype.Service
-import java.io.ByteArrayOutputStream
 import java.util.*
 
 private val logger = KotlinLogging.logger {}
@@ -22,7 +21,8 @@ class BookAnalyzer(
   private val contentDetector: ContentDetector,
   private val zipExtractor: ZipExtractor,
   private val rarExtractor: RarExtractor,
-  private val pdfExtractor: PdfExtractor
+  private val pdfExtractor: PdfExtractor,
+  private val imageConverter: ImageConverter
 ) {
 
   val supportedMediaTypes = mapOf(
@@ -76,7 +76,7 @@ class BookAnalyzer(
     logger.info { "Book has ${pages.size} pages" }
 
     logger.info { "Trying to generate cover for book: $book" }
-    val thumbnail = generateThumbnail(book, mediaType, pages.first().fileName)
+    val thumbnail = generateThumbnail(book)
 
     return Media(mediaType = mediaType, status = Media.Status.READY, pages = pages, thumbnail = thumbnail, comment = entriesErrorSummary)
   }
@@ -90,7 +90,7 @@ class BookAnalyzer(
       throw MediaNotReadyException()
     }
 
-    val thumbnail = generateThumbnail(book, book.media.mediaType!!, book.media.pages.first().fileName)
+    val thumbnail = generateThumbnail(book)
 
     return Media(
       mediaType = book.media.mediaType,
@@ -100,16 +100,10 @@ class BookAnalyzer(
     )
   }
 
-  private fun generateThumbnail(book: Book, mediaType: String, entry: String): ByteArray? =
+  private fun generateThumbnail(book: Book): ByteArray? =
     try {
-      ByteArrayOutputStream().use {
-        supportedMediaTypes.getValue(mediaType).getEntryStream(book.path(), entry).let { cover ->
-          Thumbnails.of(cover.inputStream())
-            .size(thumbnailSize, thumbnailSize)
-            .outputFormat(thumbnailFormat)
-            .toOutputStream(it)
-          it.toByteArray()
-        }
+      getPageContent(book, 1).let { cover ->
+        imageConverter.resizeImage(cover, thumbnailFormat, thumbnailSize)
       }
     } catch (ex: Exception) {
       logger.warn(ex) { "Could not generate thumbnail for book: $book" }

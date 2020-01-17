@@ -71,7 +71,7 @@ dependencies {
   implementation("org.apache.pdfbox:pdfbox:2.0.17")
   implementation("net.grey-panther:natural-comparator:1.1")
 
-  implementation("net.coobird:thumbnailator:0.4.8")
+  implementation("org.imgscalr:imgscalr-lib:4.2")
   implementation("com.twelvemonkeys.imageio:imageio-jpeg:3.4.2")
   implementation("com.twelvemonkeys.imageio:imageio-tiff:3.4.2")
   implementation(files("$projectDir/libs/webp-imageio-decoder-plugin-0.2.jar"))
