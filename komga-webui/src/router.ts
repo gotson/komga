@@ -40,7 +40,7 @@ const router = new Router({
         {
           path: '/settings',
           name: 'settings',
-          redirect: { name: 'settings-users' },
+          redirect: { name: 'settings-analysis' },
           component: () => import(/* webpackChunkName: "settings" */ './views/Settings.vue'),
           children: [
             {
@@ -55,6 +55,12 @@ const router = new Router({
                   component: () => import(/* webpackChunkName: "settings-user" */ './components/UserAddDialog.vue')
                 }
               ]
+            },
+            {
+              path: '/settings/analysis',
+              name: 'settings-analysis',
+              beforeEnter: adminGuard,
+              component: () => import(/* webpackChunkName: "settings-users" */ './components/SettingsMediaAnalysis.vue')
             }
           ]
         },
