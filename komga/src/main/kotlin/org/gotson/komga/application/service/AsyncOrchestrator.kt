@@ -46,21 +46,12 @@ class AsyncOrchestrator(
   }
 
   @Async("regenerateThumbnailsTaskExecutor")
-  fun regenerateAllThumbnails() {
-    logger.info { "Regenerate thumbnail for all books" }
-    generateThumbnails(bookRepository.findAll())
-  }
-
-  @Async("regenerateThumbnailsTaskExecutor")
-  fun regenerateMissingThumbnails() {
-    logger.info { "Regenerate missing thumbnails" }
-    generateThumbnails(bookRepository.findAllByMediaThumbnailIsNull())
-  }
-
-  private fun generateThumbnails(books: List<Book>) {
+  @Transactional
+  fun generateThumbnails(books: List<Book>) {
+    val loadedBooks = bookRepository.findAllById(books.map { it.id })
     var sumOfTasksTime = 0L
     measureTimeMillis {
-      sumOfTasksTime = books
+      sumOfTasksTime = loadedBooks
         .map { bookLifecycle.regenerateThumbnailAndPersist(it) }
         .map {
           try {
@@ -71,7 +62,7 @@ class AsyncOrchestrator(
         }
         .sum()
     }.also {
-      logger.info { "Generated ${books.size} thumbnails in ${DurationFormatUtils.formatDurationHMS(it)} (virtual: ${DurationFormatUtils.formatDurationHMS(sumOfTasksTime)})" }
+      logger.info { "Generated ${loadedBooks.size} thumbnails in ${DurationFormatUtils.formatDurationHMS(it)} (virtual: ${DurationFormatUtils.formatDurationHMS(sumOfTasksTime)})" }
     }
   }
 
