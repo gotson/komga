@@ -65,6 +65,7 @@ class Media(
     status = Status.UNKNOWN
     mediaType = null
     thumbnail = null
+    comment = null
     _pages.clear()
   }
 
