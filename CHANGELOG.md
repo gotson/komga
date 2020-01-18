@@ -1,3 +1,24 @@
+# [0.13.0](https://github.com/gotson/komga/compare/v0.12.0...v0.13.0) (2020-01-18)
+
+
+### Bug Fixes
+
+* **admin rpc:** fix transaction issues on thumbnails regeneration ([af8e3ea](https://github.com/gotson/komga/commit/af8e3ea433944922eafb8ecc1490d332e27d6c0d))
+* **thumbnails:** fix wrong color in thumbnails ([1d5500d](https://github.com/gotson/komga/commit/1d5500d5606c816fc94953adc263f9905c1b3881)), closes [#77](https://github.com/gotson/komga/issues/77)
+* media comment was not reset properly ([b42eadf](https://github.com/gotson/komga/commit/b42eadf182a51c3cd073c6195c5da3fd6bcf0b7e))
+* **web reader:** first/last display to full height in double pages mode ([a7548e2](https://github.com/gotson/komga/commit/a7548e298a24704780e4bed460656a8d78573749))
+* **web reader:** remove blank space between images in double pages mode ([b65b009](https://github.com/gotson/komga/commit/b65b009e0d5e0a7c13ef63ab69030e3223730592)), closes [#72](https://github.com/gotson/komga/issues/72)
+
+
+### Features
+
+* **api:** search books by media status ([0790501](https://github.com/gotson/komga/commit/07905018e5bad44c8f29a3fd8da0c08326e674f5))
+* **book analyzer:** partial handling of archives with errors ([2605b1d](https://github.com/gotson/komga/commit/2605b1d943148e1c71856b35028563be3ca86b26)), closes [#57](https://github.com/gotson/komga/issues/57)
+* **browse book:** add button to read book when hovering on thumbnail ([c490e79](https://github.com/gotson/komga/commit/c490e799ba20e66c66f88d4381ad830eca3eaf77)), closes [#67](https://github.com/gotson/komga/issues/67)
+* **security:** add remember-me option ([003452b](https://github.com/gotson/komga/commit/003452bd26a7a56387d563abca2f6ee5a7f62d13)), closes [#39](https://github.com/gotson/komga/issues/39)
+* **web reader:** add 'original' fit option ([d030044](https://github.com/gotson/komga/commit/d030044df35b09522e5038254a9384c53cecd5ee)), closes [#71](https://github.com/gotson/komga/issues/71)
+* **webui:** add Media Analysis screen showing all books in error ([27d46d5](https://github.com/gotson/komga/commit/27d46d57cbec468ac08e1cf061b77e0b616807d4)), closes [#26](https://github.com/gotson/komga/issues/26)
+
 # [0.12.0](https://github.com/gotson/komga/compare/v0.11.0...v0.12.0) (2020-01-14)
 
 
