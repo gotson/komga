@@ -1,3 +1,15 @@
+## [0.13.1](https://github.com/gotson/komga/compare/v0.13.0...v0.13.1) (2020-01-18)
+
+
+### Bug Fixes
+
+* trigger release ([b45a23c](https://github.com/gotson/komga/commit/b45a23c8c04b30af6d8a1df345aa29d8875a2b11))
+
+
+### Reverts
+
+* revert thumbnails library ([a685475](https://github.com/gotson/komga/commit/a6854753d2a40ea71868fc31ba170ca257495d6f))
+
 # [0.13.0](https://github.com/gotson/komga/compare/v0.12.0...v0.13.0) (2020-01-18)
 
 
