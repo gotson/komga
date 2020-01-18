@@ -76,7 +76,7 @@ class BookAnalyzer(
     logger.info { "Book has ${pages.size} pages" }
 
     logger.info { "Trying to generate cover for book: $book" }
-    val thumbnail = generateThumbnail(book)
+    val thumbnail = generateThumbnail(book, mediaType, pages.first().fileName)
 
     return Media(mediaType = mediaType, status = Media.Status.READY, pages = pages, thumbnail = thumbnail, comment = entriesErrorSummary)
   }
@@ -90,7 +90,7 @@ class BookAnalyzer(
       throw MediaNotReadyException()
     }
 
-    val thumbnail = generateThumbnail(book)
+    val thumbnail = generateThumbnail(book, book.media.mediaType!!, book.media.pages.first().fileName)
 
     return Media(
       mediaType = book.media.mediaType,
@@ -100,9 +100,9 @@ class BookAnalyzer(
     )
   }
 
-  private fun generateThumbnail(book: Book): ByteArray? =
+  private fun generateThumbnail(book: Book, mediaType: String, entry: String): ByteArray? =
     try {
-      getPageContent(book, 1).let { cover ->
+      supportedMediaTypes.getValue(mediaType).getEntryStream(book.path(), entry).let { cover ->
         imageConverter.resizeImage(cover, thumbnailFormat, thumbnailSize)
       }
     } catch (ex: Exception) {
