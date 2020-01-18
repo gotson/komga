@@ -1,7 +1,7 @@
 package org.gotson.komga.infrastructure.image
 
 import mu.KotlinLogging
-import org.imgscalr.Scalr
+import net.coobird.thumbnailator.Thumbnails
 import org.springframework.stereotype.Service
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
@@ -32,7 +32,10 @@ class ImageConverter {
 
   fun resizeImage(imageBytes: ByteArray, format: String, size: Int): ByteArray =
     ByteArrayOutputStream().use {
-      ImageIO.write(Scalr.resize(ImageIO.read(imageBytes.inputStream()), Scalr.Method.AUTOMATIC, size), format, it)
+      Thumbnails.of(imageBytes.inputStream())
+        .size(size, size)
+        .outputFormat(format)
+        .toOutputStream(it)
       it.toByteArray()
     }
 }
