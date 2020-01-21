@@ -16,6 +16,7 @@ import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
+import javax.persistence.OneToOne
 import javax.persistence.Table
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
@@ -62,6 +63,10 @@ class Series(
       _books.addAll(value.sortedWith(compareBy(natSortComparator) { it.name }))
       _books.forEachIndexed { index, book -> book.number = index + 1F }
     }
+
+  @OneToOne(optional = false, orphanRemoval = true, cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+  @JoinColumn(name = "metadata_id", nullable = false)
+  var metadata: SeriesMetadata = SeriesMetadata()
 
   init {
     this.books = books.toList()

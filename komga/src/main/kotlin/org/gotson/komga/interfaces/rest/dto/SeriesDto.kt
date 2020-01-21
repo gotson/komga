@@ -15,7 +15,16 @@ data class SeriesDto(
   val lastModified: LocalDateTime?,
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val fileLastModified: LocalDateTime,
-  val booksCount: Int
+  val booksCount: Int,
+  val metadata: SeriesMetadataDto
+)
+
+data class SeriesMetadataDto(
+  val status: String,
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  val created: LocalDateTime?,
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  val lastModified: LocalDateTime?
 )
 
 fun Series.toDto(includeUrl: Boolean) = SeriesDto(
@@ -26,5 +35,10 @@ fun Series.toDto(includeUrl: Boolean) = SeriesDto(
   created = createdDate?.toUTC(),
   lastModified = lastModifiedDate?.toUTC(),
   fileLastModified = fileLastModified.toUTC(),
-  booksCount = books.size
+  booksCount = books.size,
+  metadata = SeriesMetadataDto(
+    status = metadata.status.name,
+    created = metadata.createdDate?.toUTC(),
+    lastModified = metadata.lastModifiedDate?.toUTC()
+  )
 )
