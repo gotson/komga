@@ -30,12 +30,12 @@ const router = new Router({
         {
           path: '/welcome',
           name: 'welcome',
-          component: () => import(/* webpackChunkName: "welcome" */ './components/Welcome.vue')
+          component: () => import(/* webpackChunkName: "welcome" */ './views/Welcome.vue')
         },
         {
           path: '/dashboard',
           name: 'dashboard',
-          component: () => import(/* webpackChunkName: "dashboard" */ './components/Dashboard.vue')
+          component: () => import(/* webpackChunkName: "dashboard" */ './views/Dashboard.vue')
         },
         {
           path: '/settings',
@@ -47,7 +47,7 @@ const router = new Router({
               path: '/settings/users',
               name: 'settings-users',
               beforeEnter: adminGuard,
-              component: () => import(/* webpackChunkName: "settings-users" */ './components/SettingsUsers.vue'),
+              component: () => import(/* webpackChunkName: "settings-users" */ './views/SettingsUsers.vue'),
               children: [
                 {
                   path: '/settings/users/add',
@@ -60,31 +60,31 @@ const router = new Router({
               path: '/settings/analysis',
               name: 'settings-analysis',
               beforeEnter: adminGuard,
-              component: () => import(/* webpackChunkName: "settings-users" */ './components/SettingsMediaAnalysis.vue')
+              component: () => import(/* webpackChunkName: "settings-users" */ './views/SettingsMediaAnalysis.vue')
             }
           ]
         },
         {
           path: '/account',
           name: 'account',
-          component: () => import(/* webpackChunkName: "account" */ './components/AccountSettings.vue')
+          component: () => import(/* webpackChunkName: "account" */ './views/AccountSettings.vue')
         },
         {
           path: '/libraries/:libraryId/:index?',
           name: 'browse-libraries',
-          component: () => import(/* webpackChunkName: "browse-libraries" */ './components/BrowseLibraries.vue'),
+          component: () => import(/* webpackChunkName: "browse-libraries" */ './views/BrowseLibraries.vue'),
           props: (route) => ({ libraryId: Number(route.params.libraryId) })
         },
         {
           path: '/series/:seriesId/:index?',
           name: 'browse-series',
-          component: () => import(/* webpackChunkName: "browse-series" */ './components/BrowseSeries.vue'),
+          component: () => import(/* webpackChunkName: "browse-series" */ './views/BrowseSeries.vue'),
           props: (route) => ({ seriesId: Number(route.params.seriesId) })
         },
         {
           path: '/book/:bookId',
           name: 'browse-book',
-          component: () => import(/* webpackChunkName: "browse-book" */ './components/BrowseBook.vue'),
+          component: () => import(/* webpackChunkName: "browse-book" */ './views/BrowseBook.vue'),
           props: (route) => ({ bookId: Number(route.params.bookId) })
         }
       ]
