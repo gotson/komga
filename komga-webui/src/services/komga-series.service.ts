@@ -11,7 +11,7 @@ export default class KomgaSeriesService {
     this.http = http
   }
 
-  async getSeries (libraryId?: number, pageRequest?: PageRequest, search?: string): Promise<Page<SeriesDto>> {
+  async getSeries (libraryId?: number, pageRequest?: PageRequest, search?: string, status?: string[]): Promise<Page<SeriesDto>> {
     try {
       const params = { ...pageRequest } as any
       if (libraryId) {
@@ -19,6 +19,9 @@ export default class KomgaSeriesService {
       }
       if (search) {
         params.search = search
+      }
+      if (status) {
+        params.status = status
       }
       return (await this.http.get(API_SERIES, {
         params: params,
