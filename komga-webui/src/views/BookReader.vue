@@ -157,15 +157,15 @@
           <v-row justify="center">
             <v-col cols="auto">
               <v-btn-toggle v-model="fitButtons" dense mandatory active-class="primary">
-                <v-btn @click="setFit(ImageFit.Width)">
+                <v-btn @click="setFit(ImageFit.WIDTH)">
                   Fit to width
                 </v-btn>
 
-                <v-btn @click="setFit(ImageFit.Height)">
+                <v-btn @click="setFit(ImageFit.HEIGHT)">
                   Fit to height
                 </v-btn>
 
-                <v-btn @click="setFit(ImageFit.Original)">
+                <v-btn @click="setFit(ImageFit.ORIGINAL)">
                   Original
                 </v-btn>
               </v-btn-toggle>
@@ -334,7 +334,7 @@ export default Vue.extend({
       goToPage: 1,
       showMenu: false,
       fitButtons: 1,
-      fit: ImageFit.Height,
+      fit: ImageFit.HEIGHT,
       rtlButtons: 0,
       rtl: false,
       doublePages: false,
@@ -407,7 +407,7 @@ export default Vue.extend({
       return this.currentPage / this.pagesCount * 100
     },
     maxHeight (): number | string {
-      return this.fit === ImageFit.Height ? this.$vuetify.breakpoint.height : 'auto'
+      return this.fit === ImageFit.HEIGHT ? this.$vuetify.breakpoint.height : 'auto'
     },
     slidesRange (): number[] {
       if (!this.doublePages) {
@@ -545,13 +545,13 @@ export default Vue.extend({
     setFit (fit: ImageFit) {
       this.fit = fit
       switch (fit) {
-        case ImageFit.Width:
+        case ImageFit.WIDTH:
           this.fitButtons = 0
           break
-        case ImageFit.Height:
+        case ImageFit.HEIGHT:
           this.fitButtons = 1
           break
-        case ImageFit.Original:
+        case ImageFit.ORIGINAL:
           this.fitButtons = 2
           break
       }
@@ -580,7 +580,7 @@ export default Vue.extend({
       return Math.abs(this.currentPage - p) <= 2
     },
     maxWidth (p: number): number | string {
-      if (this.fit !== ImageFit.Width) {
+      if (this.fit !== ImageFit.WIDTH) {
         return 'auto'
       }
       if (this.doublePages && p !== 1 && p !== this.pagesCount) {

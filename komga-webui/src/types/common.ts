@@ -5,16 +5,16 @@ export enum LoadState {
 }
 
 export enum ImageFit {
-  Width = 'width',
-  Height = 'height',
-  Original = 'original'
+  WIDTH = 'width',
+  HEIGHT = 'height',
+  ORIGINAL = 'original'
 }
 
 export enum MediaStatus {
-  Ready = 'READY',
-  Unknown = 'UNKNOWN',
-  Error = 'ERROR',
-  Unsupported = 'UNSUPPORTED'
+  READY = 'READY',
+  UNKNOWN = 'UNKNOWN',
+  ERROR = 'ERROR',
+  UNSUPPORTED = 'UNSUPPORTED'
 }
 
 export enum SeriesStatus {

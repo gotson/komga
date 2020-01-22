@@ -65,7 +65,7 @@ export default Vue.extend({
         pageRequest.sort!!.push(`${sortBy[i]},${sortDesc[i] ? 'desc' : 'asc'}`)
       }
 
-      const booksPage = await this.$komgaBooks.getBooks(undefined, pageRequest, undefined, [MediaStatus.Error, MediaStatus.Unsupported])
+      const booksPage = await this.$komgaBooks.getBooks(undefined, pageRequest, undefined, [MediaStatus.ERROR, MediaStatus.UNSUPPORTED])
       this.totalBooks = booksPage.totalElements
       this.books = booksPage.content
 
