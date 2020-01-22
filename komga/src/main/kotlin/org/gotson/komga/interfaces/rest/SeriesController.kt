@@ -8,6 +8,7 @@ import org.gotson.komga.application.service.AsyncOrchestrator
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.Series
+import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
@@ -55,6 +56,7 @@ class SeriesController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) searchTerm: String?,
     @RequestParam(name = "library_id", required = false) libraryIds: List<Long>?,
+    @RequestParam(name = "status", required = false) metadataStatus: List<SeriesMetadata.Status>?,
     page: Pageable
   ): Page<SeriesDto> {
     val pageRequest = PageRequest.of(
@@ -84,6 +86,10 @@ class SeriesController(
 
       if (!searchTerm.isNullOrEmpty()) {
         specs.add(Series::name.likeLower("%$searchTerm%"))
+      }
+
+      if (!metadataStatus.isNullOrEmpty()) {
+        specs.add(Series::metadata.toJoin().where(SeriesMetadata::status).`in`(metadataStatus))
       }
 
       if (specs.isNotEmpty()) {
