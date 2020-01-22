@@ -97,16 +97,13 @@ import { SeriesStatus } from '@/types/common'
 
       <!--  Empty state if filter returns no books  -->
       <v-row justify="center" v-else>
-        <div class="text-center">
-          <v-avatar color="grey lighten-3" size="400">
-            <div>
-              <v-icon color="primary" size="140">mdi-book-multiple</v-icon>
-              <h1 class="headline">The active filter has no matches</h1>
-              <p class="body-1">Use the menu above to change the active filter</p>
-              <v-btn color="primary" @click="filterStatus = []">Clear filter</v-btn>
-            </div>
-          </v-avatar>
-        </div>
+        <empty-state title="The active filter has no matches"
+                     sub-title="Use the menu above to change the active filter"
+                     icon="mdi-book-multiple"
+                     icon-color="secondary"
+        >
+          <v-btn @click="filterStatus = []">Clear filter</v-btn>
+        </empty-state>
       </v-row>
     </v-container>
   </div>
@@ -114,13 +111,14 @@ import { SeriesStatus } from '@/types/common'
 
 <script lang="ts">
 import CardSeries from '@/components/CardSeries.vue'
+import EmptyState from '@/components/EmptyState.vue'
 import LibraryActionsMenu from '@/components/LibraryActionsMenu.vue'
 import { LoadState, SeriesStatus } from '@/types/common'
 import Vue from 'vue'
 
 export default Vue.extend({
   name: 'BrowseLibraries',
-  components: { LibraryActionsMenu, CardSeries },
+  components: { LibraryActionsMenu, CardSeries, EmptyState },
   data: () => {
     return {
       library: undefined as LibraryDto | undefined,
