@@ -67,6 +67,33 @@
     </v-toolbar>
 
     <v-container fluid class="px-6">
+      <v-row>
+        <v-col cols="4" sm="4" md="auto" lg="auto" xl="auto">
+          <v-img :src="thumbnailUrl"
+                 lazy-src="../assets/cover.svg"
+                 max-height="300"
+                 max-width="212"
+          />
+
+        </v-col>
+        <v-col cols="8">
+          <v-row>
+            <v-col>
+              <div class="headline" v-if="series.name">{{ series.name }}</div>
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <v-col cols="2" lg="1" xl="1" class="body-2">STATUS</v-col>
+            <v-col cols="auto" class="body-2 text-capitalize" v-if="series.metadata">{{
+              series.metadata.status.toLowerCase() }}
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+
+      <v-divider class="my-4"/>
+
       <v-row justify="start" ref="content" v-resize="updateCardWidth">
 
         <v-skeleton-loader v-for="(b, i) in books"
@@ -98,6 +125,7 @@ export default Vue.extend({
   components: { CardBook },
   data: () => {
     return {
+      baseURL: process.env.VUE_APP_KOMGA_API_URL ? process.env.VUE_APP_KOMGA_API_URL : window.location.origin,
       series: {} as SeriesDto,
       books: [] as BookDto[],
       pagesState: [] as LoadState[],
@@ -119,6 +147,9 @@ export default Vue.extend({
     },
     sortCustom (): boolean {
       return this.sortActive.key !== this.sortDefault.key || this.sortActive.order !== this.sortDefault.order
+    },
+    thumbnailUrl (): string {
+      return `${this.baseURL}/api/v1/series/${this.seriesId}/thumbnail`
     },
     barStyle (): any {
       if (this.$vuetify.breakpoint.name === 'xs') {

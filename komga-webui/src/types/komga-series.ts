@@ -4,5 +4,12 @@ interface SeriesDto {
   name: string,
   url: string,
   lastModified: string,
-  booksCount: number
+  booksCount: number,
+  metadata: SeriesMetadata
+}
+
+interface SeriesMetadata {
+  status: string,
+  created: string,
+  lastModified: string
 }
