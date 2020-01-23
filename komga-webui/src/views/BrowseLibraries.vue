@@ -89,6 +89,7 @@ import EmptyState from '@/components/EmptyState.vue'
 import LibraryActionsMenu from '@/components/LibraryActionsMenu.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
+import { parseQuerySort } from '@/functions/query-params'
 import { LoadState, SeriesStatus } from '@/types/common'
 import Vue from 'vue'
 
@@ -172,18 +173,7 @@ export default Vue.extend({
       }
     },
     parseQuerySortOrDefault (querySort: any): SortActive {
-      let customSort = null
-      if (querySort) {
-        const split = querySort.split(',')
-        if (split.length === 2 && this.$_.map(this.sortOptions, 'key').includes(split[0]) && ['asc', 'desc'].includes(split[1])) {
-          customSort = { key: split[0], order: split[1] }
-        }
-      }
-      if (customSort !== null) {
-        return customSort
-      } else {
-        return this.$_.clone(this.sortDefault)
-      }
+      return parseQuerySort(querySort, this.sortOptions) || this.$_.clone(this.sortDefault)
     },
     parseQueryFilterStatus (queryStatus: any): string[] {
       return queryStatus ? queryStatus.toString().split(',').filter((x: string) => Object.keys(SeriesStatus).includes(x)) : []
