@@ -7,11 +7,7 @@
 
       <v-toolbar-title>
         <span>{{ library ? library.name : 'All libraries' }}</span>
-        <span class="ml-4 badge-count"
-              v-if="totalElements !== null"
-        >
-          {{ totalElements }}
-        </span>
+        <badge class="ml-4" v-if="totalElements" v-model="totalElements"/>
       </v-toolbar-title>
 
       <v-spacer/>
@@ -84,6 +80,7 @@
 </template>
 
 <script lang="ts">
+import Badge from '@/components/Badge.vue'
 import CardSeries from '@/components/CardSeries.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import LibraryActionsMenu from '@/components/LibraryActionsMenu.vue'
@@ -95,7 +92,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'BrowseLibraries',
-  components: { LibraryActionsMenu, CardSeries, EmptyState, ToolbarSticky, SortMenuButton },
+  components: { LibraryActionsMenu, CardSeries, EmptyState, ToolbarSticky, SortMenuButton, Badge },
   data: () => {
     return {
       library: undefined as LibraryDto | undefined,
@@ -255,5 +252,4 @@ export default Vue.extend({
 })
 </script>
 <style scoped>
-@import "../assets/css/badge.css";
 </style>

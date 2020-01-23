@@ -25,11 +25,7 @@
 
       <v-toolbar-title>
         <span v-if="series.name">{{ series.name }}</span>
-        <span class="ml-4 badge-count"
-              v-if="totalElements"
-        >
-          {{ totalElements }}
-        </span>
+        <badge class="ml-4" v-if="totalElements" v-model="totalElements"/>
       </v-toolbar-title>
 
       <v-spacer/>
@@ -91,6 +87,7 @@
 </template>
 
 <script lang="ts">
+import Badge from '@/components/Badge.vue'
 import CardBook from '@/components/CardBook.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
@@ -101,7 +98,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'BrowseSeries',
-  components: { CardBook, ToolbarSticky, SortMenuButton },
+  components: { CardBook, ToolbarSticky, SortMenuButton, Badge },
   data: () => {
     return {
       series: {} as SeriesDto,
@@ -250,5 +247,4 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-@import "../assets/css/badge.css";
 </style>
