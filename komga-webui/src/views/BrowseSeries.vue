@@ -84,7 +84,7 @@
           </v-row>
 
           <v-row>
-            <v-col cols="2" lg="1" xl="1" class="body-2">STATUS</v-col>
+            <v-col cols="auto" class="body-2">STATUS</v-col>
             <v-col cols="auto" class="body-2 text-capitalize" v-if="series.metadata">{{
               series.metadata.status.toLowerCase() }}
             </v-col>
