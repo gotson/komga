@@ -27,7 +27,7 @@
                        link
                        :to="{name: 'browse-series', params: {seriesId: item.id}}"
           >
-            <v-img :src="baseURL + '/api/v1/series/' + item.id + '/thumbnail'"
+            <v-img :src="seriesThumbnailUrl(item.id)"
                    height="50"
                    max-width="35"
                    class="ma-1 mr-3"
@@ -45,7 +45,7 @@
                        link
                        :to="{name: 'browse-book', params: {bookId: item.id}}"
           >
-            <v-img :src="baseURL + '/api/v1/books/' + item.id + '/thumbnail'"
+            <v-img :src="bookThumbnailUrl(item.id)"
                    height="50"
                    max-width="35"
                    class="ma-1 mr-3"
@@ -62,6 +62,7 @@
 </template>
 
 <script lang="ts">
+import { bookThumbnailUrl, seriesThumbnailUrl } from '@/functions/urls'
 import { debounce } from 'lodash'
 import Vue from 'vue'
 
@@ -69,7 +70,6 @@ export default Vue.extend({
   name: 'SearchBox',
   data: function () {
     return {
-      baseURL: process.env.VUE_APP_KOMGA_API_URL ? process.env.VUE_APP_KOMGA_API_URL : window.location.origin,
       search: null,
       showResults: false,
       loading: false,
@@ -103,6 +103,12 @@ export default Vue.extend({
       this.showResults = false
       this.series = []
       this.books = []
+    },
+    seriesThumbnailUrl (seriesId: number): string {
+      return seriesThumbnailUrl(seriesId)
+    },
+    bookThumbnailUrl (bookId: number): string {
+      return bookThumbnailUrl(bookId)
     }
   }
 })

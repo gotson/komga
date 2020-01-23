@@ -41,15 +41,11 @@
 
 <script lang="ts">
 import { getBookFormatFromMediaType } from '@/functions/book-format'
+import { bookThumbnailUrl } from '@/functions/urls'
 import Vue, { PropType } from 'vue'
 
 export default Vue.extend({
   name: 'CardBook',
-  data: () => {
-    return {
-      baseURL: process.env.VUE_APP_KOMGA_API_URL ? process.env.VUE_APP_KOMGA_API_URL : window.location.origin
-    }
-  },
   props: {
     book: {
       type: Object as PropType<BookDto>,
@@ -63,7 +59,7 @@ export default Vue.extend({
   },
   computed: {
     thumbnailUrl (): string {
-      return `${this.baseURL}/api/v1/books/${this.book.id}/thumbnail`
+      return bookThumbnailUrl(this.book.id)
     },
     format (): BookFormat {
       return getBookFormatFromMediaType(this.book.media.mediaType)

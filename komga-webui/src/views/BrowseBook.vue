@@ -126,6 +126,7 @@
 <script lang="ts">
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { getBookFormatFromMediaType } from '@/functions/book-format'
+import { bookFileUrl, bookThumbnailUrl } from '@/functions/urls'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -133,7 +134,6 @@ export default Vue.extend({
   components: { ToolbarSticky },
   data: () => {
     return {
-      baseURL: process.env.VUE_APP_KOMGA_API_URL ? process.env.VUE_APP_KOMGA_API_URL : window.location.origin,
       book: {} as BookDto
     }
   },
@@ -158,10 +158,10 @@ export default Vue.extend({
       return this.$store.getters.meAdmin
     },
     thumbnailUrl (): string {
-      return `${this.baseURL}/api/v1/books/${this.bookId}/thumbnail`
+      return bookThumbnailUrl(this.bookId)
     },
     fileUrl (): string {
-      return `${this.baseURL}/api/v1/books/${this.bookId}/file`
+      return bookFileUrl(this.bookId)
     },
     format (): BookFormat {
       return getBookFormatFromMediaType(this.book.media.mediaType)

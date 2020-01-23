@@ -114,6 +114,7 @@
 <script lang="ts">
 import CardBook from '@/components/CardBook.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
+import { seriesThumbnailUrl } from '@/functions/urls'
 import { LoadState } from '@/types/common'
 import Vue from 'vue'
 
@@ -122,7 +123,6 @@ export default Vue.extend({
   components: { CardBook, ToolbarSticky },
   data: () => {
     return {
-      baseURL: process.env.VUE_APP_KOMGA_API_URL ? process.env.VUE_APP_KOMGA_API_URL : window.location.origin,
       series: {} as SeriesDto,
       books: [] as BookDto[],
       pagesState: [] as LoadState[],
@@ -146,7 +146,7 @@ export default Vue.extend({
       return this.sortActive.key !== this.sortDefault.key || this.sortActive.order !== this.sortDefault.order
     },
     thumbnailUrl (): string {
-      return `${this.baseURL}/api/v1/series/${this.seriesId}/thumbnail`
+      return seriesThumbnailUrl(this.seriesId)
     }
   },
   props: {

@@ -2,7 +2,6 @@
   <v-card :width="width"
           :to="{name:'browse-series', params: {seriesId: series.id}}"
   >
-
     <v-img
       :src="thumbnailUrl"
       lazy-src="../assets/cover.svg"
@@ -33,15 +32,11 @@
 </template>
 
 <script lang="ts">
+import { seriesThumbnailUrl } from '@/functions/urls'
 import Vue, { PropType } from 'vue'
 
 export default Vue.extend({
   name: 'CardSeries',
-  data: () => {
-    return {
-      baseURL: process.env.VUE_APP_KOMGA_API_URL ? process.env.VUE_APP_KOMGA_API_URL : window.location.origin
-    }
-  },
   props: {
     series: {
       type: Object as PropType<SeriesDto>,
@@ -55,7 +50,7 @@ export default Vue.extend({
   },
   computed: {
     thumbnailUrl (): string {
-      return `${this.baseURL}/api/v1/series/${this.series.id}/thumbnail`
+      return seriesThumbnailUrl(this.series.id)
     }
   }
 })

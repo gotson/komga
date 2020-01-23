@@ -308,6 +308,7 @@
 
 <script lang="ts">
 import { checkWebpFeature } from '@/functions/check-webp'
+import { bookPageThumbnailUrl, bookPageUrl } from '@/functions/urls'
 import { ImageFit } from '@/types/common'
 import Vue from 'vue'
 
@@ -320,7 +321,6 @@ export default Vue.extend({
   data: () => {
     return {
       ImageFit,
-      baseURL: process.env.VUE_APP_KOMGA_API_URL ? process.env.VUE_APP_KOMGA_API_URL : window.location.origin,
       book: {} as BookDto,
       siblingPrevious: {} as BookDto,
       siblingNext: {} as BookDto,
@@ -475,14 +475,14 @@ export default Vue.extend({
       }
     },
     getPageUrl (page: number): string {
-      let url = `${this.baseURL}/api/v1/books/${this.bookId}/pages/${page}`
       if (!this.supportedMediaTypes.includes(this.pages[page - 1].mediaType)) {
-        url += `?convert=${this.convertTo}`
+        return bookPageUrl(this.bookId, page, this.convertTo)
+      } else {
+        return bookPageUrl(this.bookId, page)
       }
-      return url
     },
     getThumbnailUrl (page: number): string {
-      return `${this.baseURL}/api/v1/books/${this.bookId}/pages/${page}/thumbnail`
+      return bookPageThumbnailUrl(this.bookId, page)
     },
     prev () {
       if (this.canPrev) {
