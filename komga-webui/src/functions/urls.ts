@@ -9,7 +9,11 @@ export function bookFileUrl (bookId: number): string {
 }
 
 export function bookPageUrl (bookId: number, page: number, convertTo?: string): string {
-  return `${baseURL}/api/v1/books/${bookId}/pages/${page}` + convertTo ? `?convert=${convertTo}` : ''
+  let url = `${baseURL}/api/v1/books/${bookId}/pages/${page}`
+  if (convertTo) {
+    url += `?convert=${convertTo}`
+  }
+  return url
 }
 
 export function bookPageThumbnailUrl (bookId: number, page: number): string {
