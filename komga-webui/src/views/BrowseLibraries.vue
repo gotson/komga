@@ -86,6 +86,7 @@ import EmptyState from '@/components/EmptyState.vue'
 import LibraryActionsMenu from '@/components/LibraryActionsMenu.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
+import { computeCardWidth } from '@/functions/grid-utilities'
 import { parseQuerySort } from '@/functions/query-params'
 import { LoadState, SeriesStatus } from '@/types/common'
 import Vue from 'vue'
@@ -158,16 +159,7 @@ export default Vue.extend({
   methods: {
     updateCardWidth () {
       const content = this.$refs.content as HTMLElement
-      switch (this.$vuetify.breakpoint.name) {
-        case 'xs':
-          this.cardWidth = (content.clientWidth - (16 * 2)) / 2
-          break
-        case 'sm':
-          this.cardWidth = (content.clientWidth - (16 * 3)) / 3
-          break
-        default:
-          this.cardWidth = 150
-      }
+      this.cardWidth = computeCardWidth(content.clientWidth, this.$vuetify.breakpoint.name)
     },
     parseQuerySortOrDefault (querySort: any): SortActive {
       return parseQuerySort(querySort, this.sortOptions) || this.$_.clone(this.sortDefault)
