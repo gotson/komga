@@ -35,31 +35,10 @@
       <v-spacer/>
 
       <!--   Sort menu   -->
-      <v-menu offset-y>
-        <template v-slot:activator="{on}">
-          <v-btn icon v-on="on">
-            <v-icon :color="sortCustom ? 'secondary' : null"
-            >mdi-sort-variant
-            </v-icon>
-          </v-btn>
-        </template>
-        <v-list>
-          <v-list-item v-for="(item, index) in sortOptions"
-                       :key="index"
-                       @click="setSort(item)"
-          >
-            <v-list-item-icon>
-              <v-icon color="secondary" v-if="item.key === sortActive.key && sortActive.order === 'asc'">
-                mdi-chevron-up
-              </v-icon>
-              <v-icon color="secondary" v-if="item.key === sortActive.key && sortActive.order === 'desc'">
-                mdi-chevron-down
-              </v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>{{ item.name }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+      <sort-menu-button :sort-default="sortDefault"
+                        :sort-options="sortOptions"
+                        :sort-active.sync="sortActive"
+      />
     </toolbar-sticky>
 
     <v-container fluid class="px-6">
@@ -113,6 +92,7 @@
 
 <script lang="ts">
 import CardBook from '@/components/CardBook.vue'
+import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { seriesThumbnailUrl } from '@/functions/urls'
 import { LoadState } from '@/types/common'
@@ -120,7 +100,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'BrowseSeries',
-  components: { CardBook, ToolbarSticky },
+  components: { CardBook, ToolbarSticky, SortMenuButton },
   data: () => {
     return {
       series: {} as SeriesDto,
@@ -133,8 +113,8 @@ export default Vue.extend({
         name: 'File size',
         key: 'fileSize'
       }] as SortOption[],
-      sortActive: {} as SortActive as SortActive,
-      sortDefault: { key: 'number', order: 'asc' } as SortActive as SortActive,
+      sortActive: {} as SortActive,
+      sortDefault: { key: 'number', order: 'asc' } as SortActive,
       cardWidth: 150
     }
   },
@@ -153,6 +133,16 @@ export default Vue.extend({
     seriesId: {
       type: Number,
       required: true
+    }
+  },
+  watch: {
+    sortActive () {
+      this.$router.replace({
+        name: this.$route.name,
+        params: { seriesId: this.$route.params.seriesId, index: this.$route.params.index },
+        query: { sort: `${this.sortActive.key},${this.sortActive.order}` }
+      })
+      this.reloadData(this.seriesId)
     }
   },
   async created () {
@@ -235,23 +225,6 @@ export default Vue.extend({
       this.visibleCards = []
       this.books = Array(this.pageSize).fill(null)
       this.loadInitialData(seriesId)
-    },
-    setSort (sort: SortOption) {
-      if (this.sortActive.key === sort.key) {
-        if (this.sortActive.order === 'desc') {
-          this.sortActive.order = 'asc'
-        } else {
-          this.sortActive.order = 'desc'
-        }
-      } else {
-        this.sortActive = { key: sort.key, order: 'desc' }
-      }
-      this.$router.replace({
-        name: this.$route.name,
-        params: { seriesId: this.$route.params.seriesId, index: this.$route.params.index },
-        query: { sort: `${this.sortActive.key},${this.sortActive.order}` }
-      })
-      this.reloadData(this.seriesId)
     },
     async loadInitialData (seriesId: number, pageToLoad: number = 0) {
       this.processPage(await this.loadPage(pageToLoad, seriesId))

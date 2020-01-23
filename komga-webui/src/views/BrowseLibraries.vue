@@ -44,31 +44,10 @@
       </v-menu>
 
       <!--   Sort menu   -->
-      <v-menu offset-y>
-        <template v-slot:activator="{on}">
-          <v-btn icon v-on="on">
-            <v-icon :color="sortCustom ? 'secondary' : null"
-            >mdi-sort-variant
-            </v-icon>
-          </v-btn>
-        </template>
-        <v-list>
-          <v-list-item v-for="(item, index) in sortOptions"
-                       :key="index"
-                       @click="setSort(item)"
-          >
-            <v-list-item-icon>
-              <v-icon color="secondary" v-if="item.key === sortActive.key && sortActive.order === 'asc'">
-                mdi-chevron-up
-              </v-icon>
-              <v-icon color="secondary" v-if="item.key === sortActive.key && sortActive.order === 'desc'">
-                mdi-chevron-down
-              </v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>{{ item.name }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+      <sort-menu-button :sort-default="sortDefault"
+                        :sort-options="sortOptions"
+                        :sort-active.sync="sortActive"
+      />
     </toolbar-sticky>
 
     <v-container fluid class="px-6">
@@ -108,13 +87,14 @@
 import CardSeries from '@/components/CardSeries.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import LibraryActionsMenu from '@/components/LibraryActionsMenu.vue'
+import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { LoadState, SeriesStatus } from '@/types/common'
 import Vue from 'vue'
 
 export default Vue.extend({
   name: 'BrowseLibraries',
-  components: { LibraryActionsMenu, CardSeries, EmptyState, ToolbarSticky },
+  components: { LibraryActionsMenu, CardSeries, EmptyState, ToolbarSticky, SortMenuButton },
   data: () => {
     return {
       library: undefined as LibraryDto | undefined,
@@ -127,16 +107,11 @@ export default Vue.extend({
         name: 'Date updated',
         key: 'lastModifiedDate'
       }] as SortOption[],
-      sortActive: {} as SortActive as SortActive,
-      sortDefault: { key: 'name', order: 'asc' } as SortActive as SortActive,
+      sortActive: {} as SortActive,
+      sortDefault: { key: 'name', order: 'asc' } as SortActive,
       filterStatus: [] as string[],
       SeriesStatus,
       cardWidth: 150
-    }
-  },
-  computed: {
-    sortCustom (): boolean {
-      return this.sortActive.key !== this.sortDefault.key || this.sortActive.order !== this.sortDefault.order
     }
   },
   props: {
@@ -147,6 +122,10 @@ export default Vue.extend({
   },
   watch: {
     filterStatus () {
+      this.updateRoute()
+      this.reloadData(this.libraryId)
+    },
+    sortActive () {
       this.updateRoute()
       this.reloadData(this.libraryId)
     }
@@ -244,19 +223,6 @@ export default Vue.extend({
           status: `${this.filterStatus}`
         }
       })
-    },
-    setSort (sort: SortOption) {
-      if (this.sortActive.key === sort.key) {
-        if (this.sortActive.order === 'desc') {
-          this.sortActive.order = 'asc'
-        } else {
-          this.sortActive.order = 'desc'
-        }
-      } else {
-        this.sortActive = { key: sort.key, order: 'desc' }
-      }
-      this.updateRoute()
-      this.reloadData(this.libraryId)
     },
     async loadInitialData (libraryId: number, pageToLoad: number = 0) {
       this.processPage(await this.loadPage(pageToLoad, libraryId))
