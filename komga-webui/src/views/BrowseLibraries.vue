@@ -1,11 +1,7 @@
 import { SeriesStatus } from '@/types/common'
 <template>
   <div>
-    <v-toolbar flat
-               color="grey lighten-4"
-               class="sticky-bar"
-               :style="barStyle"
-    >
+    <toolbar-sticky>
       <!--   Action menu   -->
       <library-actions-menu v-if="library"
                             :library="library"/>
@@ -74,7 +70,7 @@ import { SeriesStatus } from '@/types/common'
           </v-list-item>
         </v-list>
       </v-menu>
-    </v-toolbar>
+    </toolbar-sticky>
 
     <v-container fluid class="px-6">
       <v-row justify="start" ref="content" v-resize="updateCardWidth" v-if="totalElements !== 0">
@@ -113,12 +109,13 @@ import { SeriesStatus } from '@/types/common'
 import CardSeries from '@/components/CardSeries.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import LibraryActionsMenu from '@/components/LibraryActionsMenu.vue'
+import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { LoadState, SeriesStatus } from '@/types/common'
 import Vue from 'vue'
 
 export default Vue.extend({
   name: 'BrowseLibraries',
-  components: { LibraryActionsMenu, CardSeries, EmptyState },
+  components: { LibraryActionsMenu, CardSeries, EmptyState, ToolbarSticky },
   data: () => {
     return {
       library: undefined as LibraryDto | undefined,
@@ -141,13 +138,6 @@ export default Vue.extend({
   computed: {
     sortCustom (): boolean {
       return this.sortActive.key !== this.sortDefault.key || this.sortActive.order !== this.sortDefault.order
-    },
-    barStyle (): any {
-      if (this.$vuetify.breakpoint.name === 'xs') {
-        return { 'top': '56px' }
-      } else {
-        return { 'top': '64px' }
-      }
     }
   },
   props: {
@@ -311,5 +301,4 @@ export default Vue.extend({
 </script>
 <style scoped>
 @import "../assets/css/badge.css";
-@import "../assets/css/sticky-bar.css";
 </style>

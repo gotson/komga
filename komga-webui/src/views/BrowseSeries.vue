@@ -1,10 +1,6 @@
 <template>
   <div>
-    <v-toolbar flat
-               color="grey lighten-4"
-               class="sticky-bar"
-               :style="barStyle"
-    >
+    <toolbar-sticky>
       <!--   Go back to parent library   -->
       <v-btn icon
              title="Go to library"
@@ -64,7 +60,7 @@
           </v-list-item>
         </v-list>
       </v-menu>
-    </v-toolbar>
+    </toolbar-sticky>
 
     <v-container fluid class="px-6">
       <v-row>
@@ -117,12 +113,13 @@
 
 <script lang="ts">
 import CardBook from '@/components/CardBook.vue'
+import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { LoadState } from '@/types/common'
 import Vue from 'vue'
 
 export default Vue.extend({
   name: 'BrowseSeries',
-  components: { CardBook },
+  components: { CardBook, ToolbarSticky },
   data: () => {
     return {
       baseURL: process.env.VUE_APP_KOMGA_API_URL ? process.env.VUE_APP_KOMGA_API_URL : window.location.origin,
@@ -150,13 +147,6 @@ export default Vue.extend({
     },
     thumbnailUrl (): string {
       return `${this.baseURL}/api/v1/series/${this.seriesId}/thumbnail`
-    },
-    barStyle (): any {
-      if (this.$vuetify.breakpoint.name === 'xs') {
-        return { 'top': '56px' }
-      } else {
-        return { 'top': '64px' }
-      }
     }
   },
   props: {
@@ -297,5 +287,4 @@ export default Vue.extend({
 
 <style scoped>
 @import "../assets/css/badge.css";
-@import "../assets/css/sticky-bar.css";
 </style>

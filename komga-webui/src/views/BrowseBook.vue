@@ -1,10 +1,6 @@
 <template>
   <div v-if="!$_.isEmpty(book)">
-    <v-toolbar flat
-               color="grey lighten-4"
-               class="sticky-bar"
-               :style="barStyle"
-    >
+    <toolbar-sticky>
       <!--   Go back to parent series   -->
       <v-btn icon
              title="Go to series"
@@ -28,7 +24,7 @@
           </v-list-item>
         </v-list>
       </v-menu>
-    </v-toolbar>
+    </toolbar-sticky>
 
     <v-container fluid class="pa-6">
       <v-row>
@@ -128,11 +124,13 @@
 </template>
 
 <script lang="ts">
+import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { getBookFormatFromMediaType } from '@/functions/book-format'
 import Vue from 'vue'
 
 export default Vue.extend({
   name: 'BrowseBook',
+  components: { ToolbarSticky },
   data: () => {
     return {
       baseURL: process.env.VUE_APP_KOMGA_API_URL ? process.env.VUE_APP_KOMGA_API_URL : window.location.origin,
@@ -167,13 +165,6 @@ export default Vue.extend({
     },
     format (): BookFormat {
       return getBookFormatFromMediaType(this.book.media.mediaType)
-    },
-    barStyle (): any {
-      if (this.$vuetify.breakpoint.name === 'xs') {
-        return { 'top': '56px' }
-      } else {
-        return { 'top': '64px' }
-      }
     }
   },
   methods: {
@@ -185,5 +176,4 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-@import "../assets/css/sticky-bar.css";
 </style>
