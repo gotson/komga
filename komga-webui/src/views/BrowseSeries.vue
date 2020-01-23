@@ -137,11 +137,7 @@ export default Vue.extend({
   },
   watch: {
     sortActive () {
-      this.$router.replace({
-        name: this.$route.name,
-        params: { seriesId: this.$route.params.seriesId, index: this.$route.params.index },
-        query: { sort: `${this.sortActive.key},${this.sortActive.order}` }
-      })
+      this.updateRoute()
       this.reloadData(this.seriesId)
     }
   },
@@ -212,12 +208,17 @@ export default Vue.extend({
       const index = (max === undefined ? 0 : max).toString()
 
       if (this.$route.params.index !== index) {
-        this.$router.replace({
-          name: this.$route.name,
-          params: { seriesId: this.$route.params.seriesId, index: index },
-          query: { sort: `${this.sortActive.key},${this.sortActive.order}` }
-        })
+        this.updateRoute(index)
       }
+    },
+    updateRoute (index?: string) {
+      this.$router.replace({
+        name: this.$route.name,
+        params: { seriesId: this.$route.params.seriesId, index: index || this.$route.params.index },
+        query: {
+          sort: `${this.sortActive.key},${this.sortActive.order}`
+        }
+      })
     },
     reloadData (seriesId: number) {
       this.totalElements = null
