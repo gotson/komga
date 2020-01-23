@@ -205,6 +205,7 @@ export default Vue.extend({
         query: {
           sort: `${this.sortActive.key},${this.sortActive.order}`
         }
+      }).catch(_ => {
       })
     },
     reloadData (seriesId: number) {

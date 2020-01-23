@@ -209,6 +209,7 @@ export default Vue.extend({
           sort: `${this.sortActive.key},${this.sortActive.order}`,
           status: `${this.filterStatus}`
         }
+      }).catch(_ => {
       })
     },
     async loadInitialData (libraryId: number, pageToLoad: number = 0) {
