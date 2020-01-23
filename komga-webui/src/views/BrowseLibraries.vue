@@ -1,4 +1,3 @@
-import { SeriesStatus } from '@/types/common'
 <template>
   <div>
     <toolbar-sticky>
