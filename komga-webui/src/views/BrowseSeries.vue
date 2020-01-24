@@ -138,6 +138,21 @@ export default Vue.extend({
     sortActive () {
       this.updateRoute()
       this.reloadData(this.seriesId)
+    },
+    async visibleCards (val) {
+      for (const i of val) {
+        const pageNumber = Math.floor(i / this.pageSize)
+        if (this.pagesState[pageNumber] === undefined || this.pagesState[pageNumber] === LoadState.NotLoaded) {
+          this.processPage(await this.loadPage(pageNumber, this.seriesId))
+        }
+      }
+
+      const max = this.$_.max(val) as number | undefined
+      const index = (max === undefined ? 0 : max).toString()
+
+      if (this.$route.params.index !== index) {
+        this.updateRoute(index)
+      }
     }
   },
   async created () {
@@ -175,19 +190,8 @@ export default Vue.extend({
       const elementIndex = Number(entries[0].target.dataset['index'])
       if (isIntersecting) {
         this.visibleCards.push(elementIndex)
-        const pageNumber = Math.floor(elementIndex / this.pageSize)
-        if (this.pagesState[pageNumber] === undefined || this.pagesState[pageNumber] === LoadState.NotLoaded) {
-          this.processPage(await this.loadPage(pageNumber, this.seriesId))
-        }
       } else {
         this.$_.pull(this.visibleCards, elementIndex)
-      }
-
-      const max = this.$_.max(this.visibleCards)
-      const index = (max === undefined ? 0 : max).toString()
-
-      if (this.$route.params.index !== index) {
-        this.updateRoute(index)
       }
     },
     updateRoute (index?: string) {
