@@ -57,7 +57,7 @@
                            :loading="s === null"
                            type="card, text"
                            class="ma-3 mx-2"
-                           v-intersect="onCardIntersect"
+                           v-intersect="onElementIntersect"
                            :data-index="i"
         >
           <card-series :series="s" :width="cardWidth"/>
@@ -88,10 +88,11 @@ import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { computeCardWidth } from '@/functions/grid-utilities'
 import { parseQuerySort } from '@/functions/query-params'
+import VisibleElements from '@/mixins/VisibleElements'
 import { LoadState, SeriesStatus } from '@/types/common'
-import Vue from 'vue'
+import mixins from 'vue-typed-mixins'
 
-export default Vue.extend({
+export default mixins(VisibleElements).extend({
   name: 'BrowseLibraries',
   components: { LibraryActionsMenu, CardSeries, EmptyState, ToolbarSticky, SortMenuButton, Badge },
   data: () => {
@@ -100,7 +101,6 @@ export default Vue.extend({
       series: [] as SeriesDto[],
       pagesState: [] as LoadState[],
       pageSize: 20,
-      visibleCards: [] as number[],
       totalElements: null as number | null,
       sortOptions: [{ name: 'Name', key: 'name' }, { name: 'Date added', key: 'createdDate' }, {
         name: 'Date updated',
@@ -128,7 +128,7 @@ export default Vue.extend({
       this.updateRoute()
       this.reloadData(this.libraryId)
     },
-    async visibleCards (val) {
+    async visibleElements (val) {
       for (const i of val) {
         const pageNumber = Math.floor(i / this.pageSize)
         if (this.pagesState[pageNumber] === undefined || this.pagesState[pageNumber] === LoadState.NotLoaded) {
@@ -182,18 +182,10 @@ export default Vue.extend({
     parseQueryFilterStatus (queryStatus: any): string[] {
       return queryStatus ? queryStatus.toString().split(',').filter((x: string) => Object.keys(SeriesStatus).includes(x)) : []
     },
-    async onCardIntersect (entries: any, observer: any, isIntersecting: boolean) {
-      const elementIndex = Number(entries[0].target.dataset['index'])
-      if (isIntersecting) {
-        this.visibleCards.push(elementIndex)
-      } else {
-        this.$_.pull(this.visibleCards, elementIndex)
-      }
-    },
     reloadData (libraryId: number) {
       this.totalElements = null
       this.pagesState = []
-      this.visibleCards = []
+      this.visibleElements = []
       this.series = Array(this.pageSize).fill(null)
       this.loadInitialData(libraryId)
     },

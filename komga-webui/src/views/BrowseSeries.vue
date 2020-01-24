@@ -75,7 +75,7 @@
                            :loading="b === null"
                            type="card, text"
                            class="ma-3 mx-2"
-                           v-intersect="onCardIntersect"
+                           v-intersect="onElementIntersect"
                            :data-index="i"
         >
           <card-book :book="b" :width="cardWidth"/>
@@ -94,10 +94,11 @@ import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { computeCardWidth } from '@/functions/grid-utilities'
 import { parseQuerySort } from '@/functions/query-params'
 import { seriesThumbnailUrl } from '@/functions/urls'
+import VisibleElements from '@/mixins/VisibleElements'
 import { LoadState } from '@/types/common'
-import Vue from 'vue'
+import mixins from 'vue-typed-mixins'
 
-export default Vue.extend({
+export default mixins(VisibleElements).extend({
   name: 'BrowseSeries',
   components: { CardBook, ToolbarSticky, SortMenuButton, Badge },
   data: () => {
@@ -106,7 +107,6 @@ export default Vue.extend({
       books: [] as BookDto[],
       pagesState: [] as LoadState[],
       pageSize: 20,
-      visibleCards: [] as number[],
       totalElements: null as number | null,
       sortOptions: [{ name: 'Number', key: 'number' }, { name: 'Date added', key: 'createdDate' }, {
         name: 'File size',
@@ -139,7 +139,7 @@ export default Vue.extend({
       this.updateRoute()
       this.reloadData(this.seriesId)
     },
-    async visibleCards (val) {
+    async visibleElements (val) {
       for (const i of val) {
         const pageNumber = Math.floor(i / this.pageSize)
         if (this.pagesState[pageNumber] === undefined || this.pagesState[pageNumber] === LoadState.NotLoaded) {
@@ -186,14 +186,6 @@ export default Vue.extend({
     parseQuerySortOrDefault (querySort: any): SortActive {
       return parseQuerySort(querySort, this.sortOptions) || this.$_.clone(this.sortDefault)
     },
-    async onCardIntersect (entries: any, observer: any, isIntersecting: boolean) {
-      const elementIndex = Number(entries[0].target.dataset['index'])
-      if (isIntersecting) {
-        this.visibleCards.push(elementIndex)
-      } else {
-        this.$_.pull(this.visibleCards, elementIndex)
-      }
-    },
     updateRoute (index?: string) {
       this.$router.replace({
         name: this.$route.name,
@@ -207,7 +199,7 @@ export default Vue.extend({
     reloadData (seriesId: number) {
       this.totalElements = null
       this.pagesState = []
-      this.visibleCards = []
+      this.visibleElements = []
       this.books = Array(this.pageSize).fill(null)
       this.loadInitialData(seriesId)
     },
