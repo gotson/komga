@@ -70,7 +70,7 @@
         <v-skeleton-loader v-for="(b, i) in books"
                            :key="i"
                            :width="cardWidth"
-                           height="328.13"
+                           :height="cardWidth / .7071 + 116"
                            justify-self="start"
                            :loading="b === null"
                            type="card, text"

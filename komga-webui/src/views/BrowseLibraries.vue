@@ -52,7 +52,7 @@
         <v-skeleton-loader v-for="(s, i) in series"
                            :key="i"
                            :width="cardWidth"
-                           height="306.14"
+                           :height="cardWidth / .7071 + 94"
                            justify-self="start"
                            :loading="s === null"
                            type="card, text"
