@@ -123,7 +123,8 @@ export default mixins(VisibleElements).extend({
       sortActive: {} as SortActive,
       sortDefault: { key: 'number', order: 'asc' } as SortActive,
       cardWidth: 150,
-      dialogEdit: false
+      dialogEdit: false,
+      sortUnwatch: null as any
     }
   },
   computed: {
@@ -144,10 +145,6 @@ export default mixins(VisibleElements).extend({
     }
   },
   watch: {
-    sortActive () {
-      this.updateRoute()
-      this.reloadData(this.seriesId)
-    },
     async visibleElements (val) {
       for (const i of val) {
         const pageNumber = Math.floor(i / this.pageSize)
@@ -182,17 +179,40 @@ export default mixins(VisibleElements).extend({
 
     // restore sort from query param
     this.sortActive = this.parseQuerySortOrDefault(this.$route.query.sort)
+
+    this.setWatches()
   },
   async beforeRouteUpdate (to, from, next) {
     if (to.params.seriesId !== from.params.seriesId) {
+      this.unsetWatches()
+
       this.series = await this.$komgaSeries.getOneSeries(Number(to.params.seriesId))
+
+      if (to.params.index) {
+        this.books = Array(Number(to.params.index)).fill(null)
+      } else { // else fill one page of skeletons
+        this.books = Array(this.pageSize).fill(null)
+      }
+
       this.sortActive = this.parseQuerySortOrDefault(to.query.sort)
-      this.reloadData(Number(to.params.seriesId))
+      this.reloadData(Number(to.params.seriesId), this.books.length)
+
+      this.setWatches()
     }
 
     next()
   },
   methods: {
+    setWatches () {
+      this.sortUnwatch = this.$watch('sortActive', this.updateRouteAndReload)
+    },
+    unsetWatches () {
+      this.sortUnwatch()
+    },
+    updateRouteAndReload () {
+      this.updateRoute()
+      this.reloadData(this.seriesId)
+    },
     async loadSeries () {
       this.series = await this.$komgaSeries.getOneSeries(this.seriesId)
     },
@@ -213,11 +233,11 @@ export default mixins(VisibleElements).extend({
       }).catch(_ => {
       })
     },
-    reloadData (seriesId: number) {
+    reloadData (seriesId: number, countItem?: number) {
       this.totalElements = null
       this.pagesState = []
       this.visibleElements = []
-      this.books = Array(this.pageSize).fill(null)
+      this.books = Array(countItem || this.pageSize).fill(null)
       this.loadInitialData(seriesId)
     },
     async loadInitialData (seriesId: number, pageToLoad: number = 0) {

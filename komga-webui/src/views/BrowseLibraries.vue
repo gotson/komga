@@ -108,7 +108,9 @@ export default mixins(VisibleElements).extend({
       sortDefault: { key: 'name', order: 'asc' } as SortActive,
       filterStatus: [] as string[],
       SeriesStatus,
-      cardWidth: 150
+      cardWidth: 150,
+      sortUnwatch: null as any,
+      filterUnwatch: null as any
     }
   },
   props: {
@@ -118,14 +120,6 @@ export default mixins(VisibleElements).extend({
     }
   },
   watch: {
-    filterStatus () {
-      this.updateRoute()
-      this.reloadData(this.libraryId)
-    },
-    sortActive () {
-      this.updateRoute()
-      this.reloadData(this.libraryId)
-    },
     async visibleElements (val) {
       for (const i of val) {
         const pageNumber = Math.floor(i / this.pageSize)
@@ -158,18 +152,42 @@ export default mixins(VisibleElements).extend({
 
     // restore filter status from query params
     this.filterStatus = this.parseQueryFilterStatus(this.$route.query.status)
+
+    this.setWatches()
   },
   beforeRouteUpdate (to, from, next) {
     if (to.params.libraryId !== from.params.libraryId) {
+      this.unsetWatches()
+
       this.library = this.getLibraryLazy(Number(to.params.libraryId))
+
+      if (to.params.index) {
+        this.series = Array(Number(to.params.index)).fill(null)
+      } else { // else fill one page of skeletons
+        this.series = Array(this.pageSize).fill(null)
+      }
       this.sortActive = this.parseQuerySortOrDefault(to.query.sort)
       this.filterStatus = this.parseQueryFilterStatus(to.query.status)
-      this.reloadData(Number(to.params.libraryId))
+      this.reloadData(Number(to.params.libraryId), this.series.length)
+
+      this.setWatches()
     }
 
     next()
   },
   methods: {
+    setWatches () {
+      this.sortUnwatch = this.$watch('sortActive', this.updateRouteAndReload)
+      this.filterUnwatch = this.$watch('filterStatus', this.updateRouteAndReload)
+    },
+    unsetWatches () {
+      this.sortUnwatch()
+      this.filterUnwatch()
+    },
+    updateRouteAndReload () {
+      this.updateRoute()
+      this.reloadData(this.libraryId)
+    },
     updateCardWidth () {
       const content = this.$refs.content as HTMLElement
       this.cardWidth = computeCardWidth(content.clientWidth, this.$vuetify.breakpoint.name)
@@ -180,11 +198,11 @@ export default mixins(VisibleElements).extend({
     parseQueryFilterStatus (queryStatus: any): string[] {
       return queryStatus ? queryStatus.toString().split(',').filter((x: string) => Object.keys(SeriesStatus).includes(x)) : []
     },
-    reloadData (libraryId: number) {
+    reloadData (libraryId: number, countItem?: number) {
       this.totalElements = null
       this.pagesState = []
       this.visibleElements = []
-      this.series = Array(this.pageSize).fill(null)
+      this.series = Array(countItem || this.pageSize).fill(null)
       this.loadInitialData(libraryId)
     },
     updateRoute (index?: string) {
