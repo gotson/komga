@@ -13,9 +13,7 @@
       <v-spacer/>
 
       <!--   Filter menu   -->
-      <v-menu offset-y
-              :close-on-content-click="false"
-      >
+      <v-menu offset-y>
         <template v-slot:activator="{on}">
           <v-btn icon v-on="on">
             <v-icon :color="$_.isEmpty(filterStatus) ? null : 'secondary'"
