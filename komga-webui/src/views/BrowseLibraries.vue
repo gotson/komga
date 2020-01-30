@@ -153,6 +153,8 @@ export default mixins(VisibleElements).extend({
     // restore filter status from query params
     this.filterStatus = this.parseQueryFilterStatus(this.$route.query.status)
 
+    this.reloadData(Number(this.$route.params.libraryId), this.series.length)
+
     this.setWatches()
   },
   beforeRouteUpdate (to, from, next) {

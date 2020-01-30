@@ -180,6 +180,8 @@ export default mixins(VisibleElements).extend({
     // restore sort from query param
     this.sortActive = this.parseQuerySortOrDefault(this.$route.query.sort)
 
+    this.reloadData(Number(this.$route.params.seriesId), this.books.length)
+
     this.setWatches()
   },
   async beforeRouteUpdate (to, from, next) {
