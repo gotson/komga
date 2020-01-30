@@ -3,7 +3,7 @@ import { AxiosInstance } from 'axios'
 const API_USERS = '/api/v1/users'
 
 export default class KomgaUsersService {
-  private http: AxiosInstance;
+  private http: AxiosInstance
 
   constructor (http: AxiosInstance) {
     this.http = http
@@ -99,6 +99,18 @@ export default class KomgaUsersService {
       return (await this.http.patch(`${API_USERS}/${user.id}/shared-libraries`, sharedLibrariesUpdateDto)).data
     } catch (e) {
       let msg = `An error occurred while trying to update shared libraries for user ${user.email}`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async logout () {
+    try {
+      await this.http.post(`${API_USERS}/logout`)
+    } catch (e) {
+      let msg = `An error occurred while trying to logout`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

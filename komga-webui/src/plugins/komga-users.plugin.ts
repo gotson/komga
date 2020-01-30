@@ -28,7 +28,7 @@ const vuexModule: Module<any, any> = {
     },
     async logout ({ commit }) {
       try {
-        await service.getMeWithAuth('', '')
+        await service.logout()
       } catch (e) {
       }
       commit('setMe', {})

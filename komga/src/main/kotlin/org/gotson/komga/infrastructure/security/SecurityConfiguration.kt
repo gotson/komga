@@ -56,6 +56,11 @@ class SecurityConfiguration(
         .httpBasic()
 
       .and()
+        .logout()
+          .logoutUrl("/api/v1/users/logout")
+          .deleteCookies("JSESSIONID")
+
+      .and()
         .sessionManagement()
         .maximumSessions(10)
         .sessionRegistry(sessionRegistry)
