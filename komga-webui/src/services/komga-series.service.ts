@@ -5,7 +5,7 @@ const qs = require('qs')
 const API_SERIES = '/api/v1/series'
 
 export default class KomgaSeriesService {
-  private http: AxiosInstance;
+  private http: AxiosInstance
 
   constructor (http: AxiosInstance) {
     this.http = http
@@ -98,6 +98,18 @@ export default class KomgaSeriesService {
       await this.http.post(`${API_SERIES}/${series.id}/analyze`)
     } catch (e) {
       let msg = `An error occurred while trying to analyze series '${series.name}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async updateMetadata (seriesId: number, metadata: SeriesMetadataUpdateDto) {
+    try {
+      await this.http.patch(`${API_SERIES}/${seriesId}/metadata`, metadata)
+    } catch (e) {
+      let msg = `An error occurred while trying to update series metadata`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

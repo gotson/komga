@@ -30,6 +30,10 @@
 
       <v-spacer/>
 
+      <v-btn icon @click="dialogEdit = true" v-if="isAdmin">
+        <v-icon>mdi-pencil</v-icon>
+      </v-btn>
+
       <!--   Sort menu   -->
       <sort-menu-button :sort-default="sortDefault"
                         :sort-options="sortOptions"
@@ -83,12 +87,16 @@
 
       </v-row>
     </v-container>
+
+    <edit-series-dialog v-model="dialogEdit"
+                        :series="series"/>
   </div>
 </template>
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
 import CardBook from '@/components/CardBook.vue'
+import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { computeCardWidth } from '@/functions/grid-utilities'
@@ -100,7 +108,7 @@ import mixins from 'vue-typed-mixins'
 
 export default mixins(VisibleElements).extend({
   name: 'BrowseSeries',
-  components: { CardBook, ToolbarSticky, SortMenuButton, Badge },
+  components: { CardBook, ToolbarSticky, SortMenuButton, Badge, EditSeriesDialog },
   data: () => {
     return {
       series: {} as SeriesDto,
@@ -114,7 +122,8 @@ export default mixins(VisibleElements).extend({
       }] as SortOption[],
       sortActive: {} as SortActive,
       sortDefault: { key: 'number', order: 'asc' } as SortActive,
-      cardWidth: 150
+      cardWidth: 150,
+      dialogEdit: false
     }
   },
   computed: {
@@ -153,10 +162,15 @@ export default mixins(VisibleElements).extend({
       if (this.$route.params.index !== index) {
         this.updateRoute(index)
       }
+    },
+    dialogEdit (val) {
+      if (!val) {
+        this.loadSeries()
+      }
     }
   },
   async created () {
-    this.series = await this.$komgaSeries.getOneSeries(this.seriesId)
+    this.loadSeries()
   },
   mounted () {
     // fill books skeletons if an index is provided, so scroll position can be restored
@@ -179,6 +193,9 @@ export default mixins(VisibleElements).extend({
     next()
   },
   methods: {
+    async loadSeries () {
+      this.series = await this.$komgaSeries.getOneSeries(this.seriesId)
+    },
     updateCardWidth () {
       const content = this.$refs.content as HTMLElement
       this.cardWidth = computeCardWidth(content.clientWidth, this.$vuetify.breakpoint.name)

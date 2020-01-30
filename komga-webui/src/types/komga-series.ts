@@ -13,3 +13,7 @@ interface SeriesMetadata {
   created: string,
   lastModified: string
 }
+
+interface SeriesMetadataUpdateDto {
+  status?: string
+}
