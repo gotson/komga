@@ -63,7 +63,7 @@ class SeriesController(
       page.pageNumber,
       page.pageSize,
       if (page.sort.isSorted) page.sort
-      else Sort.by(Sort.Order.asc("name").ignoreCase())
+      else Sort.by(Sort.Order.asc("metadata.titleSort").ignoreCase())
     )
 
     return mutableListOf<Specification<Series>>().let { specs ->
@@ -226,6 +226,15 @@ class SeriesController(
   ): SeriesDto =
     seriesRepository.findByIdOrNull(seriesId)?.let { series ->
       newMetadata.status?.let { series.metadata.status = newMetadata.status }
+      newMetadata.statusLock?.let { series.metadata.statusLock = newMetadata.statusLock }
+      if (!newMetadata.title.isNullOrBlank()) {
+        series.metadata.title = newMetadata.title
+      }
+      newMetadata.titleLock?.let { series.metadata.titleLock = newMetadata.titleLock }
+      if (!newMetadata.titleSort.isNullOrBlank()) {
+        series.metadata.titleSort = newMetadata.titleSort
+      }
+      newMetadata.titleSortLock?.let { series.metadata.titleSortLock = newMetadata.titleSortLock }
       seriesRepository.save(series).toDto(includeUrl = true)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 

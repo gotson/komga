@@ -17,9 +17,9 @@
     <v-card-subtitle class="pa-2 pb-1 text--primary"
                      v-line-clamp="2"
                      style="word-break: normal !important; height: 4em"
-                     :title="series.name"
+                     :title="series.metadata.title"
     >
-      {{ series.name }}
+      {{ series.metadata.title }}
     </v-card-subtitle>
 
     <v-card-text class="px-2"

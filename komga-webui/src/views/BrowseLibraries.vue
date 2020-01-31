@@ -100,12 +100,13 @@ export default mixins(VisibleElements).extend({
       pagesState: [] as LoadState[],
       pageSize: 20,
       totalElements: null as number | null,
-      sortOptions: [{ name: 'Name', key: 'name' }, { name: 'Date added', key: 'createdDate' }, {
-        name: 'Date updated',
-        key: 'lastModifiedDate'
-      }] as SortOption[],
+      sortOptions: [
+        { name: 'Name', key: 'metadata.titleSort' },
+        { name: 'Date added', key: 'createdDate' },
+        { name: 'Date updated', key: 'lastModifiedDate' }
+      ] as SortOption[],
       sortActive: {} as SortActive,
-      sortDefault: { key: 'name', order: 'asc' } as SortActive,
+      sortDefault: { key: 'metadata.titleSort', order: 'asc' } as SortActive,
       filterStatus: [] as string[],
       SeriesStatus,
       cardWidth: 150,

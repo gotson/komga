@@ -29,9 +29,9 @@ import javax.sql.DataSource
 @AutoConfigureTestDatabase
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
 class SeriesControllerTest(
-    @Autowired private val seriesRepository: SeriesRepository,
-    @Autowired private val libraryRepository: LibraryRepository,
-    @Autowired private val mockMvc: MockMvc
+  @Autowired private val seriesRepository: SeriesRepository,
+  @Autowired private val libraryRepository: LibraryRepository,
+  @Autowired private val mockMvc: MockMvc
 ) {
 
   lateinit var jdbcTemplate: JdbcTemplate
@@ -61,13 +61,35 @@ class SeriesControllerTest(
   }
 
   @Nested
+  inner class SeriesSort {
+    @Test
+    @WithMockCustomUser
+    fun `given series with titleSort when requesting via api then series are sorted by titleSort`() {
+      val alpha = makeSeries("The Alpha").also {
+        it.metadata.titleSort = "Alpha, The"
+        it.library = library
+      }
+      seriesRepository.save(alpha)
+      val beta = makeSeries("Beta").also { it.library = library }
+      seriesRepository.save(beta)
+
+      mockMvc.get("/api/v1/series")
+        .andExpect {
+          status { isOk }
+          jsonPath("$.content[0].metadata.title") { value("The Alpha") }
+          jsonPath("$.content[1].metadata.title") { value("Beta") }
+        }
+    }
+  }
+
+  @Nested
   inner class BookOrdering {
     @Test
     @WithMockCustomUser
     fun `given books with unordered index when requesting via api then books are ordered`() {
       val series = makeSeries(
-          name = "series",
-          books = listOf(makeBook("1"), makeBook("3"))
+        name = "series",
+        books = listOf(makeBook("1"), makeBook("3"))
       ).also { it.library = library }
       seriesRepository.save(series)
 
@@ -75,20 +97,20 @@ class SeriesControllerTest(
       seriesRepository.save(series)
 
       mockMvc.get("/api/v1/series/${series.id}/books")
-          .andExpect {
-            status { isOk }
-            jsonPath("$.content[0].name") { value("1") }
-            jsonPath("$.content[1].name") { value("2") }
-            jsonPath("$.content[2].name") { value("3") }
-          }
+        .andExpect {
+          status { isOk }
+          jsonPath("$.content[0].name") { value("1") }
+          jsonPath("$.content[1].name") { value("2") }
+          jsonPath("$.content[2].name") { value("3") }
+        }
     }
 
     @Test
     @WithMockCustomUser
     fun `given many books with unordered index when requesting via api then books are ordered and paged`() {
       val series = makeSeries(
-          name = "series",
-          books = (1..100 step 2).map { makeBook("$it") }
+        name = "series",
+        books = (1..100 step 2).map { makeBook("$it") }
       ).also { it.library = library }
       seriesRepository.save(series)
 
@@ -96,24 +118,24 @@ class SeriesControllerTest(
       seriesRepository.save(series)
 
       mockMvc.get("/api/v1/series/${series.id}/books")
-          .andExpect {
-            status { isOk }
-            jsonPath("$.content[0].name") { value("1") }
-            jsonPath("$.content[1].name") { value("2") }
-            jsonPath("$.content[2].name") { value("3") }
-            jsonPath("$.content[3].name") { value("5") }
-            jsonPath("$.size") { value(20) }
-            jsonPath("$.first") { value(true) }
-            jsonPath("$.number") { value(0) }
-          }
+        .andExpect {
+          status { isOk }
+          jsonPath("$.content[0].name") { value("1") }
+          jsonPath("$.content[1].name") { value("2") }
+          jsonPath("$.content[2].name") { value("3") }
+          jsonPath("$.content[3].name") { value("5") }
+          jsonPath("$.size") { value(20) }
+          jsonPath("$.first") { value(true) }
+          jsonPath("$.number") { value(0) }
+        }
     }
 
     @Test
     @WithMockCustomUser
     fun `given many books in ready state with unordered index when requesting via api then books are ordered and paged`() {
       val series = makeSeries(
-          name = "series",
-          books = (1..100 step 2).map { makeBook("$it") }
+        name = "series",
+        books = (1..100 step 2).map { makeBook("$it") }
       ).also { it.library = library }
       seriesRepository.save(series)
 
@@ -122,16 +144,16 @@ class SeriesControllerTest(
       seriesRepository.save(series)
 
       mockMvc.get("/api/v1/series/${series.id}/books?mediaStatus=READY")
-          .andExpect {
-            status { isOk }
-            jsonPath("$.content[0].name") { value("1") }
-            jsonPath("$.content[1].name") { value("2") }
-            jsonPath("$.content[2].name") { value("3") }
-            jsonPath("$.content[3].name") { value("5") }
-            jsonPath("$.size") { value(20) }
-            jsonPath("$.first") { value(true) }
-            jsonPath("$.number") { value(0) }
-          }
+        .andExpect {
+          status { isOk }
+          jsonPath("$.content[0].name") { value("1") }
+          jsonPath("$.content[1].name") { value("2") }
+          jsonPath("$.content[2].name") { value("3") }
+          jsonPath("$.content[3].name") { value("5") }
+          jsonPath("$.size") { value(20) }
+          jsonPath("$.first") { value(true) }
+          jsonPath("$.number") { value(0) }
+        }
     }
   }
 
@@ -141,8 +163,8 @@ class SeriesControllerTest(
     @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [1])
     fun `given user with access to a single library when getting series then only gets series from this library`() {
       val series = makeSeries(
-          name = "series",
-          books = listOf(makeBook("1"))
+        name = "series",
+        books = listOf(makeBook("1"))
       ).also { it.library = library }
       seriesRepository.save(series)
 
@@ -150,17 +172,17 @@ class SeriesControllerTest(
       libraryRepository.save(otherLibrary)
 
       val otherSeries = makeSeries(
-          name = "otherSeries",
-          books = listOf(makeBook("2"))
+        name = "otherSeries",
+        books = listOf(makeBook("2"))
       ).also { it.library = otherLibrary }
       seriesRepository.save(otherSeries)
 
       mockMvc.get("/api/v1/series")
-          .andExpect {
-            status { isOk }
-            jsonPath("$.content.length()") { value(1) }
-            jsonPath("$.content[0].name") { value("series") }
-          }
+        .andExpect {
+          status { isOk }
+          jsonPath("$.content.length()") { value(1) }
+          jsonPath("$.content[0].name") { value("series") }
+        }
     }
   }
 
@@ -170,39 +192,39 @@ class SeriesControllerTest(
     @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
     fun `given user with no access to any library when getting specific series then returns unauthorized`() {
       val series = makeSeries(
-          name = "series",
-          books = listOf(makeBook("1"))
+        name = "series",
+        books = listOf(makeBook("1"))
       ).also { it.library = library }
       seriesRepository.save(series)
 
       mockMvc.get("/api/v1/series/${series.id}")
-          .andExpect { status { isUnauthorized } }
+        .andExpect { status { isUnauthorized } }
     }
 
     @Test
     @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
     fun `given user with no access to any library when getting specific series thumbnail then returns unauthorized`() {
       val series = makeSeries(
-          name = "series",
-          books = listOf(makeBook("1"))
+        name = "series",
+        books = listOf(makeBook("1"))
       ).also { it.library = library }
       seriesRepository.save(series)
 
       mockMvc.get("/api/v1/series/${series.id}/thumbnail")
-          .andExpect { status { isUnauthorized } }
+        .andExpect { status { isUnauthorized } }
     }
 
     @Test
     @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
     fun `given user with no access to any library when getting specific series books then returns unauthorized`() {
       val series = makeSeries(
-          name = "series",
-          books = listOf(makeBook("1"))
+        name = "series",
+        books = listOf(makeBook("1"))
       ).also { it.library = library }
       seriesRepository.save(series)
 
       mockMvc.get("/api/v1/series/${series.id}/books")
-          .andExpect { status { isUnauthorized } }
+        .andExpect { status { isUnauthorized } }
     }
   }
 
@@ -212,13 +234,13 @@ class SeriesControllerTest(
     @WithMockCustomUser
     fun `given book without thumbnail when getting series thumbnail then returns not found`() {
       val series = makeSeries(
-          name = "series",
-          books = listOf(makeBook("1"))
+        name = "series",
+        books = listOf(makeBook("1"))
       ).also { it.library = library }
       seriesRepository.save(series)
 
       mockMvc.get("/api/v1/series/${series.id}/thumbnail")
-          .andExpect { status { isNotFound } }
+        .andExpect { status { isNotFound } }
     }
   }
 
@@ -228,8 +250,8 @@ class SeriesControllerTest(
     @WithMockCustomUser
     fun `given regular user when getting series then url is hidden`() {
       val series = makeSeries(
-          name = "series",
-          books = listOf(makeBook("1.cbr"))
+        name = "series",
+        books = listOf(makeBook("1.cbr"))
       ).also { it.library = library }
       seriesRepository.save(series)
 
@@ -239,27 +261,27 @@ class SeriesControllerTest(
       }
 
       mockMvc.get("/api/v1/series")
-          .andExpect(validation)
+        .andExpect(validation)
 
       mockMvc.get("/api/v1/series/latest")
-          .andExpect(validation)
+        .andExpect(validation)
 
       mockMvc.get("/api/v1/series/new")
-          .andExpect(validation)
+        .andExpect(validation)
 
       mockMvc.get("/api/v1/series/${series.id}")
-          .andExpect {
-            status { isOk }
-            jsonPath("$.url") { value("") }
-          }
+        .andExpect {
+          status { isOk }
+          jsonPath("$.url") { value("") }
+        }
     }
 
     @Test
     @WithMockCustomUser(roles = [UserRoles.ADMIN])
     fun `given admin user when getting series then url is available`() {
       val series = makeSeries(
-          name = "series",
-          books = listOf(makeBook("1.cbr"))
+        name = "series",
+        books = listOf(makeBook("1.cbr"))
       ).also { it.library = library }
       seriesRepository.save(series)
 
@@ -270,19 +292,19 @@ class SeriesControllerTest(
       }
 
       mockMvc.get("/api/v1/series")
-          .andExpect(validation)
+        .andExpect(validation)
 
       mockMvc.get("/api/v1/series/latest")
-          .andExpect(validation)
+        .andExpect(validation)
 
       mockMvc.get("/api/v1/series/new")
-          .andExpect(validation)
+        .andExpect(validation)
 
       mockMvc.get("/api/v1/series/${series.id}")
-          .andExpect {
-            status { isOk }
-            jsonPath("$.url") { value(url) }
-          }
+        .andExpect {
+          status { isOk }
+          jsonPath("$.url") { value(url) }
+        }
     }
   }
 }

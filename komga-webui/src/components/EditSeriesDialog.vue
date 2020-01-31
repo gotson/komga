@@ -9,7 +9,7 @@
           <v-btn icon @click="dialogCancel">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Edit {{ series.name }}</v-toolbar-title>
+          <v-toolbar-title>Edit {{ $_.get(series, 'metadata.title') }}</v-toolbar-title>
           <v-spacer/>
           <v-toolbar-items>
             <v-btn text color="primary" @click="dialogConfirm">Save changes</v-btn>
@@ -18,7 +18,7 @@
 
         <v-card-title class="hidden-xs-only">
           <v-icon class="mr-4">mdi-pencil</v-icon>
-          Edit {{ series.name }}
+          Edit {{ $_.get(series, 'metadata.title') }}
         </v-card-title>
 
         <v-tabs :vertical="$vuetify.breakpoint.smAndUp">
@@ -32,13 +32,59 @@
             <v-card flat>
               <form novalidate>
                 <v-container fluid>
+
+                  <!--  Title  -->
+                  <v-row>
+                    <v-col cols="12">
+                      <v-text-field v-model="form.title"
+                                    label="Title"
+                                    @change="form.titleLock = true"
+                      >
+                        <template v-slot:prepend>
+                          <v-icon :color="form.titleLock ? 'secondary' : ''"
+                                  @click="form.titleLock = !form.titleLock"
+                          >
+                            {{ form.titleLock ? 'mdi-lock' : 'mdi-lock-open' }}
+                          </v-icon>
+                        </template>
+                      </v-text-field>
+                    </v-col>
+                  </v-row>
+
+                  <!--  Sort Title  -->
+                  <v-row>
+                    <v-col cols="12">
+                      <v-text-field v-model="form.titleSort"
+                                    label="Sort Title"
+                                    @change="form.titleSortLock = true"
+                      >
+                        <template v-slot:prepend>
+                          <v-icon :color="form.titleSortLock ? 'secondary' : ''"
+                                  @click="form.titleSortLock = !form.titleSortLock"
+                          >
+                            {{ form.titleSortLock ? 'mdi-lock' : 'mdi-lock-open' }}
+                          </v-icon>
+                        </template>
+                      </v-text-field>
+                    </v-col>
+                  </v-row>
+
+                  <!--  Status  -->
                   <v-row>
                     <v-col cols="auto">
-                      <v-select
-                        :items="seriesStatus"
-                        v-model="form.status"
-                        label="Status"
-                      />
+                      <v-select :items="seriesStatus"
+                                v-model="form.status"
+                                label="Status"
+                                @change="form.statusLock = true"
+                      >
+                        <template v-slot:prepend>
+                          <v-icon :color="form.statusLock ? 'secondary' : ''"
+                                  @click="form.statusLock = !form.statusLock"
+                          >
+                            {{ form.statusLock ? 'mdi-lock' : 'mdi-lock-open' }}
+                          </v-icon>
+                        </template>
+                      </v-select>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -86,7 +132,12 @@ export default Vue.extend({
       snackText: '',
       seriesStatus: Object.keys(SeriesStatus).map(x => capitalize(x)),
       form: {
-        status: ''
+        status: '',
+        statusLock: false,
+        title: '',
+        titleLock: false,
+        titleSort: '',
+        titleSortLock: false
       }
     }
   },
@@ -116,15 +167,19 @@ export default Vue.extend({
   methods: {
     dialogReset (series: SeriesDto) {
       this.form.status = capitalize(series.metadata.status)
+      this.form.statusLock = series.metadata.statusLock
+      this.form.title = series.metadata.title
+      this.form.titleLock = series.metadata.titleLock
+      this.form.titleSort = series.metadata.titleSort
+      this.form.titleSortLock = series.metadata.titleSortLock
     },
     dialogCancel () {
       this.$emit('input', false)
       this.dialogReset(this.series)
     },
-    dialogConfirm () {
-      this.editSeries()
+    async dialogConfirm () {
+      await this.editSeries()
       this.$emit('input', false)
-      this.dialogReset(this.series)
     },
     showSnack (message: string) {
       this.snackText = message
@@ -133,10 +188,16 @@ export default Vue.extend({
     async editSeries () {
       try {
         const metadata = {
-          status: this.form.status.toUpperCase()
+          status: this.form.status.toUpperCase(),
+          statusLock: this.form.statusLock,
+          title: this.form.title,
+          titleLock: this.form.titleLock,
+          titleSort: this.form.titleSort,
+          titleSortLock: this.form.titleSortLock
         } as SeriesMetadataUpdateDto
 
-        await this.$komgaSeries.updateMetadata(this.series.id, metadata)
+        const updatedSeries = await this.$komgaSeries.updateMetadata(this.series.id, metadata)
+        this.$emit('update:series', updatedSeries)
       } catch (e) {
         this.showSnack(e.message)
       }

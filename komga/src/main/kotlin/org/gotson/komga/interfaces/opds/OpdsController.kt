@@ -113,16 +113,16 @@ class OpdsController(
       @AuthenticationPrincipal principal: KomgaPrincipal,
       @RequestParam("search") searchTerm: String?
   ): OpdsFeed {
-    val sort = Sort.by(Sort.Order.asc("name").ignoreCase())
+    val sort = Sort.by(Sort.Order.asc("metadata.titleSort").ignoreCase())
     val series =
-        mutableListOf<Specification<Series>>().let { specs ->
-          if (!principal.user.sharedAllLibraries) {
-            specs.add(Series::library.`in`(principal.user.sharedLibraries))
-          }
+      mutableListOf<Specification<Series>>().let { specs ->
+        if (!principal.user.sharedAllLibraries) {
+          specs.add(Series::library.`in`(principal.user.sharedLibraries))
+        }
 
-          if (!searchTerm.isNullOrEmpty()) {
-            specs.add(Series::name.likeLower("%$searchTerm%"))
-          }
+        if (!searchTerm.isNullOrEmpty()) {
+          specs.add(Series::name.likeLower("%$searchTerm%"))
+        }
 
           if (specs.isNotEmpty()) {
             seriesRepository.findAll(specs.reduce { acc, spec -> acc.and(spec)!! }, sort)
@@ -230,14 +230,14 @@ class OpdsController(
             OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "${ROUTE_BASE}libraries/$id"),
             linkStart
           ),
-          entries = seriesRepository.findByLibraryId(library.id, Sort.by(Sort.Order.asc("name").ignoreCase())).map { it.toOpdsEntry() }
+          entries = seriesRepository.findByLibraryId(library.id, Sort.by(Sort.Order.asc("metadata.titleSort").ignoreCase())).map { it.toOpdsEntry() }
         )
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
 
   private fun Series.toOpdsEntry() =
     OpdsEntryNavigation(
-      title = name,
+      title = metadata.title,
       updated = lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
       id = id.toString(),
       content = "",

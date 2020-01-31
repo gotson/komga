@@ -21,10 +21,15 @@ data class SeriesDto(
 
 data class SeriesMetadataDto(
   val status: String,
+  val statusLock: Boolean,
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val created: LocalDateTime?,
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-  val lastModified: LocalDateTime?
+  val lastModified: LocalDateTime?,
+  val title: String,
+  val titleLock: Boolean,
+  val titleSort: String,
+  val titleSortLock: Boolean
 )
 
 fun Series.toDto(includeUrl: Boolean) = SeriesDto(
@@ -38,7 +43,12 @@ fun Series.toDto(includeUrl: Boolean) = SeriesDto(
   booksCount = books.size,
   metadata = SeriesMetadataDto(
     status = metadata.status.name,
+    statusLock = metadata.statusLock,
     created = metadata.createdDate?.toUTC(),
-    lastModified = metadata.lastModifiedDate?.toUTC()
+    lastModified = metadata.lastModifiedDate?.toUTC(),
+    title = metadata.title,
+    titleLock = metadata.titleLock,
+    titleSort = metadata.titleSort,
+    titleSortLock = metadata.titleSortLock
   )
 )

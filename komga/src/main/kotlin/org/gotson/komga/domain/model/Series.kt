@@ -66,7 +66,7 @@ class Series(
 
   @OneToOne(optional = false, orphanRemoval = true, cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
   @JoinColumn(name = "metadata_id", nullable = false)
-  var metadata: SeriesMetadata = SeriesMetadata()
+  var metadata: SeriesMetadata = SeriesMetadata(title = name, titleSort = name)
 
   init {
     this.books = books.toList()

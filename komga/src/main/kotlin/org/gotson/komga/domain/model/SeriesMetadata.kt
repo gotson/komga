@@ -18,13 +18,28 @@ import javax.persistence.Table
 class SeriesMetadata(
   @Enumerated(EnumType.STRING)
   @Column(name = "status", nullable = false)
-  var status: Status = Status.ONGOING
+  var status: Status = Status.ONGOING,
+
+  @Column(name = "title", nullable = false)
+  var title: String,
+
+  @Column(name = "title_sort", nullable = false)
+  var titleSort: String
 
 ) : AuditableEntity() {
   @Id
   @GeneratedValue
   @Column(name = "id", nullable = false, unique = true)
   val id: Long = 0
+
+  @Column(name = "status_lock", nullable = false)
+  var statusLock: Boolean = false
+
+  @Column(name = "title_lock", nullable = false)
+  var titleLock: Boolean = false
+
+  @Column(name = "title_sort_lock", nullable = false)
+  var titleSortLock: Boolean = false
 
   enum class Status {
     ENDED, ONGOING, ABANDONED, HIATUS

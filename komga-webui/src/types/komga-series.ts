@@ -10,10 +10,20 @@ interface SeriesDto {
 
 interface SeriesMetadata {
   status: string,
+  statusLock: boolean,
   created: string,
-  lastModified: string
+  lastModified: string,
+  title: string,
+  titleLock: boolean,
+  titleSort: string,
+  titleSortLock: boolean
 }
 
 interface SeriesMetadataUpdateDto {
-  status?: string
+  status?: string,
+  statusLock?: boolean,
+  title?: string,
+  titleLock?: boolean,
+  titleSort?: string,
+  titleSortLock?: boolean
 }

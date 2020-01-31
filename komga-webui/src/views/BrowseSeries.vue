@@ -24,7 +24,7 @@
       </v-menu>
 
       <v-toolbar-title>
-        <span v-if="series.name">{{ series.name }}</span>
+        <span v-if="$_.get(series, 'metadata.title')">{{ series.metadata.title }}</span>
         <badge class="ml-4" v-if="totalElements" v-model="totalElements"/>
       </v-toolbar-title>
 
@@ -54,7 +54,7 @@
         <v-col cols="8">
           <v-row>
             <v-col>
-              <div class="headline" v-if="series.name">{{ series.name }}</div>
+              <div class="headline" v-if="$_.get(series, 'metadata.title')">{{ series.metadata.title }}</div>
             </v-col>
           </v-row>
 
@@ -89,7 +89,7 @@
     </v-container>
 
     <edit-series-dialog v-model="dialogEdit"
-                        :series="series"/>
+                        :series.sync="series"/>
   </div>
 </template>
 
@@ -158,11 +158,6 @@ export default mixins(VisibleElements).extend({
 
       if (this.$route.params.index !== index) {
         this.updateRoute(index)
-      }
-    },
-    dialogEdit (val) {
-      if (!val) {
-        this.loadSeries()
       }
     }
   },

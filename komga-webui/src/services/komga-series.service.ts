@@ -105,9 +105,9 @@ export default class KomgaSeriesService {
     }
   }
 
-  async updateMetadata (seriesId: number, metadata: SeriesMetadataUpdateDto) {
+  async updateMetadata (seriesId: number, metadata: SeriesMetadataUpdateDto): Promise<SeriesDto> {
     try {
-      await this.http.patch(`${API_SERIES}/${seriesId}/metadata`, metadata)
+      return (await this.http.patch(`${API_SERIES}/${seriesId}/metadata`, metadata)).data
     } catch (e) {
       let msg = `An error occurred while trying to update series metadata`
       if (e.response.data.message) {
