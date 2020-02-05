@@ -1,3 +1,25 @@
+# [0.14.0](https://github.com/gotson/komga/compare/v0.13.1...v0.14.0) (2020-02-05)
+
+
+### Bug Fixes
+
+* **api:** sort series properly ignoring case ([16dfe91](https://github.com/gotson/komga/commit/16dfe91140b1140c38a5b4e686bea6295a33dad0)), closes [#85](https://github.com/gotson/komga/issues/85)
+* **webui:** hide filter menu after click ([2ded39f](https://github.com/gotson/komga/commit/2ded39f6d6b265b826aad67b9a8a05ba4fc93700))
+* **webui:** missing data on back navigation with filters ([f1952ee](https://github.com/gotson/komga/commit/f1952eee4a4f920f4d1ec9f73f19cf0da9c32c16))
+* **webui:** scrolling position was not restored properly ([be6a7fc](https://github.com/gotson/komga/commit/be6a7fc7174b0331d02af90bd6b8fd6d8d87225c))
+* incorrect placeholder card height on xs and sm screens ([0f50a76](https://github.com/gotson/komga/commit/0f50a7690f609884abd9b902290a138cdb2f2f75))
+* logout was broken after remember-me was added ([8b02471](https://github.com/gotson/komga/commit/8b02471be1f2eb9ea78ea112388a2ec003c180ba))
+
+
+### Features
+
+* add more series metadata fields ([8f08ce8](https://github.com/gotson/komga/commit/8f08ce82e1dd6f888d9e06eb09e29a13e84a6741))
+* **api:** ability to filter series by status ([c96bf19](https://github.com/gotson/komga/commit/c96bf19048ba8de3d7b1370d68e2b52fc3c69f3f)), closes [#48](https://github.com/gotson/komga/issues/48)
+* **webui:** add thumbnail and status on Series view ([0fc8b01](https://github.com/gotson/komga/commit/0fc8b0137feae0307b4d16ece4f135cdbec5aa13))
+* **webui:** filter series by status ([c540e56](https://github.com/gotson/komga/commit/c540e56c088419b48e7fc686e0440b2a65b83dd9)), closes [#48](https://github.com/gotson/komga/issues/48)
+* **webui):** edit series metadata ([5f0ccc5](https://github.com/gotson/komga/commit/5f0ccc5bfc35456908c7cc5435511589f23c0512))
+* add Series Metadata status ([f522142](https://github.com/gotson/komga/commit/f5221420fd1388cbdd43b497c5470125577bbd2e)), closes [#48](https://github.com/gotson/komga/issues/48)
+
 ## [0.13.1](https://github.com/gotson/komga/compare/v0.13.0...v0.13.1) (2020-01-18)
 
 
