@@ -62,7 +62,7 @@ class SeriesController(
     val pageRequest = PageRequest.of(
       page.pageNumber,
       page.pageSize,
-      if (page.sort.isSorted) page.sort
+      if (page.sort.isSorted) Sort.by(page.sort.map { it.ignoreCase() }.toList())
       else Sort.by(Sort.Order.asc("metadata.titleSort").ignoreCase())
     )
 

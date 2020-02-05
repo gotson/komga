@@ -7,6 +7,7 @@ import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
+import org.hamcrest.Matchers
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
@@ -78,6 +79,24 @@ class SeriesControllerTest(
           status { isOk }
           jsonPath("$.content[0].metadata.title") { value("The Alpha") }
           jsonPath("$.content[1].metadata.title") { value("Beta") }
+        }
+    }
+
+    @Test
+    @WithMockCustomUser
+    fun `given series when requesting via api then series are sorted insensitive of case`() {
+      val series = listOf("a", "b", "B", "C").map { makeSeries(it).also { it.library = library } }
+      seriesRepository.saveAll(series)
+
+      mockMvc.get("/api/v1/series") {
+        param("sort", "metadata.titleSort,asc")
+      }
+        .andExpect {
+          status { isOk }
+          jsonPath("$.content[0].metadata.title") { value("a") }
+          jsonPath("$.content[1].metadata.title") { value(Matchers.equalToIgnoringCase("b")) }
+          jsonPath("$.content[2].metadata.title") { value(Matchers.equalToIgnoringCase("b")) }
+          jsonPath("$.content[3].metadata.title") { value("C") }
         }
     }
   }
