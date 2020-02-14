@@ -14,6 +14,9 @@ jdk:
 
 jobs:
   include:
+    - stage: test webui builds
+      jdk: openjdk8
+      script: ./gradlew npmBuild
     - stage: deploy
       jdk: openjdk8
       install:
@@ -23,6 +26,5 @@ jobs:
       deploy:
         - provider: script
           script: .travis/deploy-dockerhub-dev.sh
-          skip_cleanup: true
           on:
             branch: dev
