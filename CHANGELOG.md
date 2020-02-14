@@ -1,3 +1,10 @@
+## [0.14.1](https://github.com/gotson/komga/compare/v0.14.0...v0.14.1) (2020-02-14)
+
+
+### Bug Fixes
+
+* **webui:** make overlay buttons more responsive on smaller screens ([0c03950](https://github.com/gotson/komga/commit/0c0395060a7d6c3a2ef8feef79474d9149013e80))
+
 # [0.14.0](https://github.com/gotson/komga/compare/v0.13.1...v0.14.0) (2020-02-05)
 
 
