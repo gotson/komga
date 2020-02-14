@@ -156,7 +156,7 @@
           <!--  Menu: fit buttons  -->
           <v-row justify="center">
             <v-col cols="auto">
-              <v-btn-toggle v-model="fitButtons" dense mandatory active-class="primary">
+              <v-btn-toggle v-model="fitButtons" dense mandatory active-class="primary" class="flex-column flex-md-row">
                 <v-btn @click="setFit(ImageFit.WIDTH)">
                   Fit to width
                 </v-btn>
@@ -175,7 +175,7 @@
           <!--  Menu: RTL buttons  -->
           <v-row justify="center">
             <v-col cols="auto">
-              <v-btn-toggle v-model="rtlButtons" dense mandatory active-class="primary">
+              <v-btn-toggle v-model="rtlButtons" dense mandatory active-class="primary" class="flex-column flex-md-row">
                 <v-btn @click="setRtl(false)">
                   Left to right
                 </v-btn>
@@ -190,7 +190,7 @@
           <!--  Menu: double pages buttons  -->
           <v-row justify="center">
             <v-col cols="auto">
-              <v-btn-toggle v-model="doublePagesButtons" dense mandatory active-class="primary">
+              <v-btn-toggle v-model="doublePagesButtons" dense mandatory active-class="primary" class="flex-column flex-md-row">
                 <v-btn @click="setDoublePages(false)">
                   Single page
                 </v-btn>
