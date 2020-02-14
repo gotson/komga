@@ -16,7 +16,8 @@ jobs:
   include:
     - stage: test webui builds
       jdk: openjdk8
-      install: ./gradlew npmBuild
+      install: skip
+      script: ./gradlew npmBuild
     - stage: deploy
       jdk: openjdk8
       install:
