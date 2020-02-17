@@ -22,10 +22,5 @@ jobs:
       jdk: openjdk8
       install:
         - npm install --only=production
+      script:
         - npx semantic-release
-      script: skip
-      deploy:
-        - provider: script
-          script: .travis/deploy-dockerhub-dev.sh
-          on:
-            branch: dev

@@ -10,10 +10,11 @@
 
 This image provides various versions that are available via tags.
 
+:warning: the `beta` tag has been removed, use `latest` instead.
+
 |**Tag** |**Description**         |
 |:------:|------------------------|
-|`beta`  |build from latest commit|
-|`latest`|latest stable release   |
+|`latest`  |build from latest commit|
 |`x.y.z` |version `x.y.z`         |
 
 ## Usage

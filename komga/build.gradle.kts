@@ -170,7 +170,6 @@ configure<DockerExtension> {
   name = "gotson/komga"
   tag("latest", "$name:latest")
   tag("semVer", "$name:$version")
-  tag("beta", "$name:beta")
   copySpec.from(tasks.getByName("unpack").outputs).into("dependency")
   buildArgs(mapOf("DEPENDENCY" to "dependency"))
 }
