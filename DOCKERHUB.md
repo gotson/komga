@@ -10,7 +10,7 @@
 
 This image provides various versions that are available via tags.
 
-:warning: the `beta` tag has been removed, use `latest` instead.
+**WARNING**: the `beta` tag has been removed, use `latest` instead.
 
 |**Tag** |**Description**         |
 |:------:|------------------------|
