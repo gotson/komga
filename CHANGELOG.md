@@ -1,3 +1,10 @@
+## [0.14.2](https://github.com/gotson/komga/compare/v0.14.1...v0.14.2) (2020-02-20)
+
+
+### Bug Fixes
+
+* webui works with baseUrl ([bb18382](https://github.com/gotson/komga/commit/bb183828a189ce5908d21304bbf1592ae074afc5))
+
 ## [0.14.1](https://github.com/gotson/komga/compare/v0.14.0...v0.14.1) (2020-02-14)
 
 
