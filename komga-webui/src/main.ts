@@ -1,3 +1,4 @@
+import './public-path'
 import _, { LoDashStatic } from 'lodash'
 import Vue from 'vue'
 import VueCookies from 'vue-cookies'
@@ -45,5 +46,11 @@ new Vue({
 declare module 'vue/types/vue' {
   interface Vue {
     $_: LoDashStatic;
+  }
+}
+
+declare global {
+  interface Window {
+    resourceBaseUrl: string
   }
 }

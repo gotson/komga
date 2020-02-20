@@ -1,3 +1,4 @@
+import urls from '@/functions/urls'
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from './store'
@@ -13,7 +14,7 @@ const adminGuard = (to: any, from: any, next: any) => {
 
 const router = new Router({
   mode: 'history',
-  base: process.env.BASE_URL,
+  base: urls.base,
   routes: [
     {
       path: '/',

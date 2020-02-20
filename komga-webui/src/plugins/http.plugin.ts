@@ -1,10 +1,11 @@
+import urls from '@/functions/urls'
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
 import _Vue from 'vue'
 
 export default {
   install (Vue: typeof _Vue) {
     Vue.prototype.$http = axios.create({
-      baseURL: process.env.VUE_APP_KOMGA_API_URL ? process.env.VUE_APP_KOMGA_API_URL : window.location.origin,
+      baseURL: urls.origin,
       withCredentials: true,
       headers: { 'X-Requested-With': 'XMLHttpRequest' }
     } as AxiosRequestConfig)

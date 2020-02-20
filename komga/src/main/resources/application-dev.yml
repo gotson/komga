@@ -35,3 +35,7 @@ logging:
 management.metrics.export.influx:
   #  enabled: true
   uri: http://localhost:8086
+
+#server:
+#  servlet:
+#    context-path: /komga

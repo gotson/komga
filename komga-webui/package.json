@@ -43,6 +43,7 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "html-webpack-inject-attributes-plugin": "^1.0.2",
     "sass": "^1.24.4",
     "sass-loader": "^8.0.2",
     "ts-jest": "^23.0.0",
