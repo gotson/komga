@@ -13,3 +13,4 @@ spring:
   #    url: jdbc:h2:D:\\komga\komga-database.h2 #database absolute path, uncomment if necessary and comment above line
   profiles:
     active: prod
+#server.servlet.context-path: /komga #server base url, uncomment if needed
