@@ -14,14 +14,13 @@ import java.nio.file.attribute.FileTime
 import java.time.LocalDateTime
 import java.time.ZoneId
 import kotlin.streams.asSequence
-import kotlin.streams.toList
 import kotlin.system.measureTimeMillis
 
 private val logger = KotlinLogging.logger {}
 
 @Service
 class FileSystemScanner(
-    private val komgaProperties: KomgaProperties
+  private val komgaProperties: KomgaProperties
 ) {
 
   val supportedExtensions = listOf("cbz", "zip", "cbr", "rar", "pdf")
@@ -38,37 +37,45 @@ class FileSystemScanner(
     measureTimeMillis {
       scannedSeries = Files.walk(root).use { dirsStream ->
         dirsStream.asSequence()
-            .filter { !Files.isHidden(it) }
-            .filter { Files.isDirectory(it) }
-            .filter { path ->
-              komgaProperties.librariesScanDirectoryExclusions.none { exclude ->
-                path.toString().contains(exclude, true)
-              }
+          .onEach { logger.trace { "GetSeries file: $it" } }
+          .filter { !Files.isHidden(it) }
+          .filter { Files.isDirectory(it) }
+          .filter { path ->
+            komgaProperties.librariesScanDirectoryExclusions.none { exclude ->
+              path.toString().contains(exclude, true)
             }
-            .mapNotNull { dir ->
-              val books = Files.list(dir).use { dirStream ->
-                dirStream.filter { Files.isRegularFile(it) }
-                  .filter { supportedExtensions.contains(FilenameUtils.getExtension(it.fileName.toString()).toLowerCase()) }
-                    .map {
-                      Book(
-                          name = FilenameUtils.getBaseName(it.fileName.toString()),
-                          url = it.toUri().toURL(),
-                          fileLastModified = it.getUpdatedTime(),
-                          fileSize = Files.readAttributes(it, BasicFileAttributes::class.java).size()
-                      )
-                    }.toList()
-              }
-              if (books.isNullOrEmpty()) return@mapNotNull null
-              Series(
-                  name = dir.fileName.toString(),
-                  url = dir.toUri().toURL(),
-                  fileLastModified =
-                  if (komgaProperties.filesystemScannerForceDirectoryModifiedTime)
-                    maxOf(dir.getUpdatedTime(), books.map { it.fileLastModified }.max()!!)
-                  else dir.getUpdatedTime(),
-                  books = books.toMutableList()
-              )
-            }.toList()
+          }
+          .mapNotNull { dir ->
+            logger.debug { "Processing directory: $dir" }
+            val books = Files.list(dir).use { dirStream ->
+              dirStream.asSequence()
+                .onEach { logger.trace { "GetBooks file: $it" } }
+                .filter { Files.isRegularFile(it) }
+                .filter { supportedExtensions.contains(FilenameUtils.getExtension(it.fileName.toString()).toLowerCase()) }
+                .map {
+                  logger.debug { "Processing file: $it" }
+                  Book(
+                    name = FilenameUtils.getBaseName(it.fileName.toString()),
+                    url = it.toUri().toURL(),
+                    fileLastModified = it.getUpdatedTime(),
+                    fileSize = Files.readAttributes(it, BasicFileAttributes::class.java).size()
+                  )
+                }.toList()
+            }
+            if (books.isNullOrEmpty()) {
+              logger.debug { "No books in directory: $dir" }
+              return@mapNotNull null
+            }
+            Series(
+              name = dir.fileName.toString(),
+              url = dir.toUri().toURL(),
+              fileLastModified =
+              if (komgaProperties.filesystemScannerForceDirectoryModifiedTime)
+                maxOf(dir.getUpdatedTime(), books.map { it.fileLastModified }.max()!!)
+              else dir.getUpdatedTime(),
+              books = books.toMutableList()
+            )
+          }.toList()
       }
     }.also {
       val countOfBooks = scannedSeries.sumBy { it.books.size }
@@ -80,9 +87,9 @@ class FileSystemScanner(
 }
 
 fun Path.getUpdatedTime(): LocalDateTime =
-    Files.readAttributes(this, BasicFileAttributes::class.java).let {
-      maxOf(it.creationTime(), it.lastModifiedTime()).toLocalDateTime()
-    }
+  Files.readAttributes(this, BasicFileAttributes::class.java).let {
+    maxOf(it.creationTime(), it.lastModifiedTime()).toLocalDateTime()
+  }
 
 fun FileTime.toLocalDateTime(): LocalDateTime =
-    LocalDateTime.ofInstant(this.toInstant(), ZoneId.systemDefault())
+  LocalDateTime.ofInstant(this.toInstant(), ZoneId.systemDefault())
