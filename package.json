@@ -1,15 +1,15 @@
 {
   "dependencies": {
-    "@semantic-release/changelog": "^3.0.6",
-    "@semantic-release/exec": "^3.3.8",
-    "@semantic-release/git": "^7.0.18",
-    "semantic-release": "^15.14.0"
+    "@semantic-release/changelog": "^5.0.0",
+    "@semantic-release/exec": "^5.0.0",
+    "@semantic-release/git": "^9.0.0",
+    "semantic-release": "^17.0.4"
   },
   "devDependencies": {
-    "@commitlint/cli": "^8.2.0",
-    "@commitlint/config-conventional": "^8.2.0",
-    "commitlint": "^8.2.0",
-    "husky": "^3.1.0"
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "commitlint": "^8.3.5",
+    "husky": "^4.2.3"
   },
   "husky": {
     "hooks": {
