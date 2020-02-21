@@ -11,11 +11,11 @@ plugins {
     kotlin("plugin.jpa") version kotlinVersion
     kotlin("kapt") version kotlinVersion
   }
-  id("org.springframework.boot") version "2.2.2.RELEASE"
-  id("io.spring.dependency-management") version "1.0.8.RELEASE"
+  id("org.springframework.boot") version "2.2.4.RELEASE"
+  id("io.spring.dependency-management") version "1.0.9.RELEASE"
   id("com.github.ben-manes.versions") version "0.27.0"
-  id("com.palantir.docker") version "0.22.1"
-  id("com.gorylenko.gradle-git-properties") version "2.2.0"
+  id("com.palantir.docker") version "0.25.0"
+  id("com.gorylenko.gradle-git-properties") version "2.2.1"
   jacoco
 }
 
@@ -61,20 +61,20 @@ dependencies {
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
 
-  implementation("com.github.klinq:klinq-jpaspec:0.8")
+  implementation("com.github.klinq:klinq-jpaspec:0.9")
 
   implementation("commons-io:commons-io:2.6")
   implementation("org.apache.commons:commons-lang3:3.9")
 
   implementation("org.apache.tika:tika-core:1.23")
-  implementation("org.apache.commons:commons-compress:1.19")
+  implementation("org.apache.commons:commons-compress:1.20")
   implementation("com.github.junrar:junrar:4.0.0")
-  implementation("org.apache.pdfbox:pdfbox:2.0.17")
+  implementation("org.apache.pdfbox:pdfbox:2.0.18")
   implementation("net.grey-panther:natural-comparator:1.1")
 
-  implementation("net.coobird:thumbnailator:0.4.8")
-  implementation("com.twelvemonkeys.imageio:imageio-jpeg:3.4.2")
-  implementation("com.twelvemonkeys.imageio:imageio-tiff:3.4.2")
+  implementation("net.coobird:thumbnailator:0.4.9")
+  implementation("com.twelvemonkeys.imageio:imageio-jpeg:3.5")
+  implementation("com.twelvemonkeys.imageio:imageio-tiff:3.5")
   implementation(files("$projectDir/libs/webp-imageio-decoder-plugin-0.2.jar"))
   // support for jpeg2000
   implementation("com.github.jai-imageio:jai-imageio-jpeg2000:1.3.0")
@@ -92,11 +92,7 @@ dependencies {
   testImplementation("io.mockk:mockk:1.9.3")
   testImplementation("com.google.jimfs:jimfs:1.1")
 
-  run {
-    val archunitVersion = "0.12.0"
-    testImplementation("com.tngtech.archunit:archunit-junit5-api:$archunitVersion")
-    testRuntime("com.tngtech.archunit:archunit-junit5-engine:$archunitVersion")
-  }
+  testCompile("com.tngtech.archunit:archunit-junit5:0.13.1")
 
   developmentOnly("org.springframework.boot:spring-boot-devtools")
 }
