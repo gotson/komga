@@ -124,6 +124,7 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
+  document.title = 'Komga'
   if (to.name !== 'startup' && to.name !== 'login' && !lStore.getters.authenticated) next({ name: 'startup' })
   else next()
 })
