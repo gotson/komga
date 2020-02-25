@@ -159,12 +159,17 @@ export default mixins(VisibleElements).extend({
       if (this.$route.params.index !== index) {
         this.updateRoute(index)
       }
+    },
+    series (val) {
+      if (this.$_.has(val, 'name')) {
+        document.title = `Komga - ${val.name}`
+      }
     }
   },
   async created () {
     this.loadSeries()
   },
-  async mounted () {
+  mounted () {
     // fill books skeletons if an index is provided, so scroll position can be restored
     if (this.$route.params.index) {
       this.books = Array(Number(this.$route.params.index)).fill(null)
@@ -178,8 +183,7 @@ export default mixins(VisibleElements).extend({
     this.reloadData(Number(this.$route.params.seriesId), this.books.length)
 
     this.setWatches()
-    await this.loadSeries()
-    document.title = `Komga - ${this.series.name}`
+    this.loadSeries()
   },
   async beforeRouteUpdate (to, from, next) {
     if (to.params.seriesId !== from.params.seriesId) {

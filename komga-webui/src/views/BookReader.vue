@@ -92,6 +92,13 @@
                      class="pa-6 pt-12"
                      style="border-bottom: 4px dashed"
         >
+          <!--  Menu: book title  -->
+          <v-row>
+            <v-col class="text-center title">
+              {{ bookTitle }}
+            </v-col>
+          </v-row>
+
           <!--  Menu: number of pages  -->
           <v-row>
             <v-col class="text-center title">
@@ -311,7 +318,7 @@ import { checkWebpFeature } from '@/functions/check-webp'
 import { bookPageThumbnailUrl, bookPageUrl } from '@/functions/urls'
 import { ImageFit } from '@/types/common'
 import Vue from 'vue'
-import { getBookTitle } from '@/functions/meta-utilities'
+import { getBookTitleCompact } from '@/functions/book-title'
 
 const cookieFit = 'webreader.fit'
 const cookieRtl = 'webreader.rtl'
@@ -323,6 +330,7 @@ export default Vue.extend({
     return {
       ImageFit,
       book: {} as BookDto,
+      series: {} as SeriesDto,
       siblingPrevious: {} as BookDto,
       siblingNext: {} as BookDto,
       jumpToNextBook: false,
@@ -389,6 +397,12 @@ export default Vue.extend({
     currentPage (val) {
       this.updateRoute()
       this.goToPage = val
+    },
+    async book (val) {
+      if (this.$_.has(val, 'name')) {
+        this.series = await this.$komgaSeries.getOneSeries(val.seriesId)
+        document.title = `Komga - ${getBookTitleCompact(val.name, this.series.name)}`
+      }
     }
   },
   computed: {
@@ -425,6 +439,9 @@ export default Vue.extend({
     },
     pagesCount (): number {
       return this.pages.length
+    },
+    bookTitle (): string {
+      return getBookTitleCompact(this.book.name, this.series.name)
     }
   },
   methods: {
@@ -458,7 +475,6 @@ export default Vue.extend({
     async setup (bookId: number, page: number) {
       this.book = await this.$komgaBooks.getBook(bookId)
       this.pages = await this.$komgaBooks.getBookPages(bookId)
-      this.updateTitle()
       if (page >= 1 && page <= this.pagesCount) {
         this.goTo(page)
       } else {
@@ -493,6 +509,7 @@ export default Vue.extend({
       } else {
         if (this.jumpToPreviousBook) {
           if (!this.$_.isEmpty(this.siblingPrevious)) {
+            console.log(this.siblingPrevious)
             this.jumpToPreviousBook = false
             this.$router.push({ name: 'read-book', params: { bookId: this.siblingPrevious.id.toString() } })
           }
@@ -535,10 +552,6 @@ export default Vue.extend({
           page: this.currentPage.toString()
         }
       })
-    },
-    async updateTitle () {
-      let title: string = await getBookTitle(this.$komgaSeries, this.book)
-      document.title = `Komga - ${title}`
     },
     closeBook () {
       this.$router.push({ name: 'browse-book', params: { bookId: this.bookId.toString() } })
