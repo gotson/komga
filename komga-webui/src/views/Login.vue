@@ -67,17 +67,17 @@ export default Vue.extend({
     snackText: ''
   }),
   computed: {
-    logoWidth (): string {
+    logoWidth (): number {
       switch (this.$vuetify.breakpoint.name) {
         case 'xs':
-          return '100'
+          return 100
         case 'sm':
         case 'md':
-          return '200'
+          return 200
         case 'lg':
         case 'xl':
         default:
-          return '400'
+          return 400
       }
     }
   },
