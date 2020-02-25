@@ -128,17 +128,27 @@ import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { getBookFormatFromMediaType } from '@/functions/book-format'
 import { bookFileUrl, bookThumbnailUrl } from '@/functions/urls'
 import Vue from 'vue'
+import { getBookTitleCompact } from '@/functions/book-title'
 
 export default Vue.extend({
   name: 'BrowseBook',
   components: { ToolbarSticky },
   data: () => {
     return {
-      book: {} as BookDto
+      book: {} as BookDto,
+      series: {} as SeriesDto
     }
   },
   async created () {
     this.book = await this.$komgaBooks.getBook(this.bookId)
+  },
+  watch: {
+    async book (val) {
+      if (this.$_.has(val, 'name')) {
+        this.series = await this.$komgaSeries.getOneSeries(val.seriesId)
+        document.title = `Komga - ${getBookTitleCompact(val.name, this.series.name)}`
+      }
+    }
   },
   props: {
     bookId: {

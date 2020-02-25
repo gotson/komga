@@ -159,6 +159,11 @@ export default mixins(VisibleElements).extend({
       if (this.$route.params.index !== index) {
         this.updateRoute(index)
       }
+    },
+    series (val) {
+      if (this.$_.has(val, 'name')) {
+        document.title = `Komga - ${val.name}`
+      }
     }
   },
   async created () {
@@ -178,6 +183,7 @@ export default mixins(VisibleElements).extend({
     this.reloadData(Number(this.$route.params.seriesId), this.books.length)
 
     this.setWatches()
+    this.loadSeries()
   },
   async beforeRouteUpdate (to, from, next) {
     if (to.params.seriesId !== from.params.seriesId) {
