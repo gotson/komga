@@ -2,7 +2,7 @@
   <div class="ma-3">
     <v-row align="center" justify="center">
       <v-img src="../assets/logo.svg"
-             max-width="400"
+             :max-width="logoWidth"
       />
     </v-row>
 
@@ -66,6 +66,21 @@ export default Vue.extend({
     snackbar: false,
     snackText: ''
   }),
+  computed: {
+    logoWidth (): number {
+      switch (this.$vuetify.breakpoint.name) {
+        case 'xs':
+          return 100
+        case 'sm':
+        case 'md':
+          return 200
+        case 'lg':
+        case 'xl':
+        default:
+          return 400
+      }
+    }
+  },
   methods: {
     async performLogin () {
       try {
