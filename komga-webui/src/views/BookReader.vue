@@ -311,6 +311,7 @@ import { checkWebpFeature } from '@/functions/check-webp'
 import { bookPageThumbnailUrl, bookPageUrl } from '@/functions/urls'
 import { ImageFit } from '@/types/common'
 import Vue from 'vue'
+import { getBookTitle } from '@/functions/meta-utilities'
 
 const cookieFit = 'webreader.fit'
 const cookieRtl = 'webreader.rtl'
@@ -457,6 +458,7 @@ export default Vue.extend({
     async setup (bookId: number, page: number) {
       this.book = await this.$komgaBooks.getBook(bookId)
       this.pages = await this.$komgaBooks.getBookPages(bookId)
+      this.updateTitle()
       if (page >= 1 && page <= this.pagesCount) {
         this.goTo(page)
       } else {
@@ -533,6 +535,10 @@ export default Vue.extend({
           page: this.currentPage.toString()
         }
       })
+    },
+    async updateTitle () {
+      let title: string = await getBookTitle(this.$komgaSeries, this.book)
+      document.title = `Komga - ${title}`
     },
     closeBook () {
       this.$router.push({ name: 'browse-book', params: { bookId: this.bookId.toString() } })

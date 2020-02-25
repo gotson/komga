@@ -128,6 +128,7 @@ import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { getBookFormatFromMediaType } from '@/functions/book-format'
 import { bookFileUrl, bookThumbnailUrl } from '@/functions/urls'
 import Vue from 'vue'
+import { getBookTitle } from '@/functions/meta-utilities'
 
 export default Vue.extend({
   name: 'BrowseBook',
@@ -139,6 +140,7 @@ export default Vue.extend({
   },
   async created () {
     this.book = await this.$komgaBooks.getBook(this.bookId)
+    this.updateTitle()
   },
   props: {
     bookId: {
@@ -170,6 +172,10 @@ export default Vue.extend({
   methods: {
     analyze () {
       this.$komgaBooks.analyzeBook(this.book)
+    },
+    async updateTitle () {
+      let title: string = await getBookTitle(this.$komgaSeries, this.book)
+      document.title = `Komga - ${title}`
     }
   }
 })
