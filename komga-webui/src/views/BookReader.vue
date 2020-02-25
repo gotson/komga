@@ -509,7 +509,6 @@ export default Vue.extend({
       } else {
         if (this.jumpToPreviousBook) {
           if (!this.$_.isEmpty(this.siblingPrevious)) {
-            console.log(this.siblingPrevious)
             this.jumpToPreviousBook = false
             this.$router.push({ name: 'read-book', params: { bookId: this.siblingPrevious.id.toString() } })
           }
