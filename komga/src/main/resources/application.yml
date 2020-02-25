@@ -7,10 +7,7 @@ spring:
     console:
       enabled: true
   resources:
-    cache:
-      cachecontrol:
-        cache-public: true
-        max-age: 365d
+    add-mappings: false
   jpa.properties:
     javax:
       persistence.sharedCache.mode: ENABLE_SELECTIVE
@@ -24,6 +21,8 @@ spring:
         region.factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
   thymeleaf:
     prefix: classpath:/public/
+  mvc:
+    throw-exception-if-no-handler-found: true
 server.servlet.session.timeout: 7d
 
 management:

@@ -1,15 +1,14 @@
 package org.gotson.komga.infrastructure.web
 
-import org.springframework.boot.web.server.ErrorPage
-import org.springframework.boot.web.server.WebServerFactoryCustomizer
-import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.CacheControl
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
+import org.springframework.web.bind.annotation.ControllerAdvice
+import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.servlet.NoHandlerFoundException
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+import java.util.concurrent.TimeUnit
 
 
 @Configuration
@@ -25,18 +24,29 @@ class StaticResourceConfiguration : WebMvcConfigurer {
         "classpath:public/favicon.ico"
       )
       .setCacheControl(CacheControl.noStore())
-  }
 
-  override fun addViewControllers(registry: ViewControllerRegistry) {
-    registry.addViewController("/notFound")
-      .setStatusCode(HttpStatus.OK)
-      .setViewName("forward:/")
+    registry
+      .addResourceHandler(
+        "/css/**",
+        "/fonts/**",
+        "/img/**",
+        "/js/**"
+      )
+      .addResourceLocations(
+        "classpath:public/css/",
+        "classpath:public/fonts/",
+        "classpath:public/img/",
+        "classpath:public/js/"
+      )
+      .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS).cachePublic())
   }
 }
 
 @Component
-class CustomContainer : WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> {
-  override fun customize(factory: ConfigurableServletWebServerFactory) {
-    factory.addErrorPages(ErrorPage(HttpStatus.NOT_FOUND, "/notFound"))
+@ControllerAdvice
+class Customizer {
+  @ExceptionHandler(NoHandlerFoundException::class)
+  fun notFound(): String {
+    return "forward:/"
   }
 }
