@@ -3,6 +3,7 @@
     <template v-slot:default="{ hover }">
       <v-card :width="width"
               :to="{name:'browse-series', params: {seriesId: series.id}}"
+              :ripple="false"
       >
         <v-img
           :src="thumbnailUrl"
