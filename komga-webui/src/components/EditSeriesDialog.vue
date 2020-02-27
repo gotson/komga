@@ -3,6 +3,7 @@
     <v-dialog v-model="modal"
               :fullscreen="$vuetify.breakpoint.xsOnly"
               max-width="800"
+              @keydown.esc="dialogCancel"
     >
       <v-card>
         <v-toolbar class="hidden-sm-and-up">
