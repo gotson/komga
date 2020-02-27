@@ -1,6 +1,10 @@
 <template>
   <div class="ma-3">
 
+    <edit-series-dialog v-model="dialogEditSingle"
+                        :series.sync="editSeriesSingle"
+    />
+
     <horizontal-scroller>
       <template v-slot:prepend>
         <div class="title">Recently Added Series</div>
@@ -18,6 +22,7 @@
           <card-series v-else
                        :series="s"
                        class="ma-2 card"
+                       :edit="singleEdit"
           />
         </div>
       </template>
@@ -42,6 +47,7 @@
           <card-series v-else
                        :series="s"
                        class="ma-2 card"
+                       :edit="singleEdit"
           />
         </div>
       </template>
@@ -80,17 +86,20 @@ import CardBook from '@/components/CardBook.vue'
 import CardSeries from '@/components/CardSeries.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import Vue from 'vue'
+import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 
 export default Vue.extend({
   name: 'Dashboard',
-  components: { CardSeries, CardBook, HorizontalScroller },
+  components: { CardSeries, CardBook, HorizontalScroller, EditSeriesDialog },
   data: () => {
     const pageSize = 20
     return {
       newSeries: Array(pageSize).fill(null) as SeriesDto[],
       updatedSeries: Array(pageSize).fill(null) as SeriesDto[],
       books: Array(pageSize).fill(null) as BookDto[],
-      pageSize: pageSize
+      pageSize: pageSize,
+      editSeriesSingle: [] as SeriesDto[],
+      dialogEditSingle: false
     }
   },
   mounted () {
@@ -100,6 +109,16 @@ export default Vue.extend({
       this.loadNewSeries()
       this.loadUpdatedSeries()
       this.loadLatestBooks()
+    }
+  },
+  watch: {
+    editSeriesSingle (val: SeriesDto[]) {
+      val.forEach(s => {
+        const index = this.newSeries.findIndex(x => x.id === s.id)
+        if (index !== -1) {
+          this.newSeries[index] = s
+        }
+      })
     }
   },
   methods: {
@@ -116,6 +135,10 @@ export default Vue.extend({
       } as PageRequest
 
       this.books = (await this.$komgaBooks.getBooks(undefined, pageRequest)).content
+    },
+    singleEdit (series: SeriesDto) {
+      this.editSeriesSingle = [series]
+      this.dialogEditSingle = true
     }
   }
 })

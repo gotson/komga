@@ -1,8 +1,9 @@
 <template>
   <v-toolbar flat
-             color="grey lighten-4"
+             :color="color"
              class="sticky-bar"
              :style="barStyle"
+             :elevation="elevation"
   >
     <slot/>
   </v-toolbar>
@@ -15,11 +16,21 @@ export default Vue.extend({
   name: 'ToolbarSticky',
   computed: {
     barStyle (): any {
-      if (this.$vuetify.breakpoint.name === 'xs') {
+      if (['xs', 'sm'].includes(this.$vuetify.breakpoint.name)) {
         return { 'top': '56px' }
       } else {
         return { 'top': '64px' }
       }
+    }
+  },
+  props: {
+    elevation: {
+      type: Number,
+      default: undefined
+    },
+    color: {
+      type: String,
+      default: 'grey lighten-4'
     }
   }
 })

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <toolbar-sticky>
+    <toolbar-sticky v-if="selected.length === 0">
       <!--   Action menu   -->
       <library-actions-menu v-if="library"
                             :library="library"/>
@@ -44,36 +44,69 @@
       />
     </toolbar-sticky>
 
-    <v-container fluid class="px-6">
-      <v-row justify="start" ref="content" v-resize="updateCardWidth" v-if="totalElements !== 0">
+    <v-scroll-y-transition hide-on-leave>
+      <toolbar-sticky v-if="selected.length > 0" :elevation="5" color="white">
+        <v-btn icon @click="selected=[]">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <v-toolbar-title>
+          <span>{{ selected.length }} selected</span>
+        </v-toolbar-title>
 
-        <v-skeleton-loader v-for="(s, i) in series"
-                           :key="i"
+        <v-spacer/>
+
+        <v-btn icon @click="dialogEdit = true" v-if="isAdmin">
+          <v-icon>mdi-pencil</v-icon>
+        </v-btn>
+      </toolbar-sticky>
+    </v-scroll-y-transition>
+
+    <edit-series-dialog v-model="dialogEdit"
+                        :series.sync="selectedSeries"
+    />
+
+    <edit-series-dialog v-model="dialogEditSingle"
+                        :series.sync="editSeriesSingle"
+    />
+
+    <v-item-group multiple v-model="selected">
+      <v-container fluid class="px-6">
+        <v-row justify="start" ref="content" v-resize="updateCardWidth" v-if="totalElements !== 0">
+          <v-skeleton-loader v-for="(s, i) in series"
+                             :key="i"
+                             :width="cardWidth"
+                             :height="cardWidth / .7071 + 94"
+                             justify-self="start"
+                             :loading="s === null"
+                             type="card, text"
+                             class="ma-3 mx-2"
+                             v-intersect="onElementIntersect"
+                             :data-index="i"
+          >
+            <v-item v-slot:default="{ active, toggle }" :value="$_.get(s, 'id', 0)">
+              <card-series :series="s"
                            :width="cardWidth"
-                           :height="cardWidth / .7071 + 94"
-                           justify-self="start"
-                           :loading="s === null"
-                           type="card, text"
-                           class="ma-3 mx-2"
-                           v-intersect="onElementIntersect"
-                           :data-index="i"
-        >
-          <card-series :series="s" :width="cardWidth"/>
-        </v-skeleton-loader>
+                           :selected="active"
+                           :select="toggle"
+                           :showEdit="selected.length === 0"
+                           :edit="singleEdit"
+              />
+            </v-item>
+          </v-skeleton-loader>
+        </v-row>
 
-      </v-row>
-
-      <!--  Empty state if filter returns no books  -->
-      <v-row justify="center" v-else>
-        <empty-state title="The active filter has no matches"
-                     sub-title="Use the menu above to change the active filter"
-                     icon="mdi-book-multiple"
-                     icon-color="secondary"
-        >
-          <v-btn @click="filterStatus = []">Clear filter</v-btn>
-        </empty-state>
-      </v-row>
-    </v-container>
+        <!--  Empty state if filter returns no books  -->
+        <v-row justify="center" v-else>
+          <empty-state title="The active filter has no matches"
+                       sub-title="Use the menu above to change the active filter"
+                       icon="mdi-book-multiple"
+                       icon-color="secondary"
+          >
+            <v-btn @click="filterStatus = []">Clear filter</v-btn>
+          </empty-state>
+        </v-row>
+      </v-container>
+    </v-item-group>
   </div>
 </template>
 
@@ -81,6 +114,7 @@
 import Badge from '@/components/Badge.vue'
 import CardSeries from '@/components/CardSeries.vue'
 import EmptyState from '@/components/EmptyState.vue'
+import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 import LibraryActionsMenu from '@/components/LibraryActionsMenu.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
@@ -92,11 +126,13 @@ import mixins from 'vue-typed-mixins'
 
 export default mixins(VisibleElements).extend({
   name: 'BrowseLibraries',
-  components: { LibraryActionsMenu, CardSeries, EmptyState, ToolbarSticky, SortMenuButton, Badge },
+  components: { LibraryActionsMenu, CardSeries, EmptyState, ToolbarSticky, SortMenuButton, Badge, EditSeriesDialog },
   data: () => {
     return {
       library: undefined as LibraryDto | undefined,
       series: [] as SeriesDto[],
+      selectedSeries: [] as SeriesDto[],
+      editSeriesSingle: [] as SeriesDto[],
       pagesState: [] as LoadState[],
       pageSize: 20,
       totalElements: null as number | null,
@@ -111,7 +147,10 @@ export default mixins(VisibleElements).extend({
       SeriesStatus,
       cardWidth: 150,
       sortUnwatch: null as any,
-      filterUnwatch: null as any
+      filterUnwatch: null as any,
+      selected: [],
+      dialogEdit: false,
+      dialogEditSingle: false
     }
   },
   props: {
@@ -135,6 +174,26 @@ export default mixins(VisibleElements).extend({
       if (this.$route.params.index !== index) {
         this.updateRoute(index)
       }
+    },
+    selected (val: number[]) {
+      this.selectedSeries = val.map(id => this.series.find(s => s.id === id))
+        .filter(x => x !== undefined) as SeriesDto[]
+    },
+    selectedSeries (val: SeriesDto[]) {
+      val.forEach(s => {
+        const index = this.series.findIndex(x => x.id === s.id)
+        if (index !== -1) {
+          this.series[index] = s
+        }
+      })
+    },
+    editSeriesSingle (val: SeriesDto[]) {
+      val.forEach(s => {
+        const index = this.series.findIndex(x => x.id === s.id)
+        if (index !== -1) {
+          this.series[index] = s
+        }
+      })
     }
   },
   async created () {
@@ -177,6 +236,11 @@ export default mixins(VisibleElements).extend({
     }
 
     next()
+  },
+  computed: {
+    isAdmin (): boolean {
+      return this.$store.getters.meAdmin
+    }
   },
   methods: {
     setWatches () {
@@ -255,6 +319,10 @@ export default mixins(VisibleElements).extend({
       } else {
         return undefined
       }
+    },
+    singleEdit (series: SeriesDto) {
+      this.editSeriesSingle = [series]
+      this.dialogEditSingle = true
     }
   }
 })

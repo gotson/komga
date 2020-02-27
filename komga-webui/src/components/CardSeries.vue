@@ -1,34 +1,61 @@
 <template>
-  <v-card :width="width"
-          :to="{name:'browse-series', params: {seriesId: series.id}}"
-  >
-    <v-img
-      :src="thumbnailUrl"
-      lazy-src="../assets/cover.svg"
-      aspect-ratio="0.7071"
-    >
-      <span class="white--text pa-1 px-2 subtitle-2"
-            style="background: darkorange; position: absolute; right: 0"
+  <v-hover :disabled="!overlay">
+    <template v-slot:default="{ hover }">
+      <v-card :width="width"
+              :to="{name:'browse-series', params: {seriesId: series.id}}"
       >
-        {{ series.booksCount }}
-      </span>
-    </v-img>
+        <v-img
+          :src="thumbnailUrl"
+          lazy-src="../assets/cover.svg"
+          aspect-ratio="0.7071"
+        >
+          <span class="white--text pa-1 px-2 subtitle-2"
+                style="background: darkorange; position: absolute; right: 0"
+          >
+            {{ series.booksCount }}
+          </span>
+          <v-fade-transition>
+            <v-overlay
+              v-if="hover || selected"
+              absolute
+              :opacity="hover ? 0.3 : 0"
+              :class="`item-border${hover ? '-darken' : ''} overlay-full`"
+            >
+              <v-icon v-if="select"
+                      :color="selected ? 'secondary' : ''"
+                      style="position: absolute; top: 5px; left: 10px"
+                      @click.prevent="selectItem"
+              >
+                {{ selected ? 'mdi-checkbox-marked-circle' : 'mdi-checkbox-blank-circle-outline' }}
+              </v-icon>
 
-    <v-card-subtitle class="pa-2 pb-1 text--primary"
-                     v-line-clamp="2"
-                     style="word-break: normal !important; height: 4em"
-                     :title="series.metadata.title"
-    >
-      {{ series.metadata.title }}
-    </v-card-subtitle>
+              <v-icon v-if="!selected && showEdit && edit"
+                      style="position: absolute; bottom: 10px; left: 10px"
+                      @click.prevent="editItem"
+              >
+                mdi-pencil
+              </v-icon>
+            </v-overlay>
+          </v-fade-transition>
+        </v-img>
 
-    <v-card-text class="px-2"
-    >
-      <span v-if="series.booksCount === 1">{{ series.booksCount }} book</span>
-      <span v-else>{{ series.booksCount }} books</span>
-    </v-card-text>
+        <v-card-subtitle class="pa-2 pb-1 text--primary"
+                         v-line-clamp="2"
+                         style="word-break: normal !important; height: 4em"
+                         :title="series.metadata.title"
+        >
+          {{ series.metadata.title }}
+        </v-card-subtitle>
 
-  </v-card>
+        <v-card-text class="px-2"
+        >
+          <span v-if="series.booksCount === 1">{{ series.booksCount }} book</span>
+          <span v-else>{{ series.booksCount }} books</span>
+        </v-card-text>
+
+      </v-card>
+    </template>
+  </v-hover>
 </template>
 
 <script lang="ts">
@@ -46,15 +73,58 @@ export default Vue.extend({
       type: [String, Number],
       required: false,
       default: 150
+    },
+    selected: {
+      type: Boolean,
+      default: false
+    },
+    showEdit: {
+      type: Boolean,
+      default: true
+    },
+    select: {
+      type: Function,
+      required: false
+    },
+    edit: {
+      type: Function,
+      required: false
     }
   },
   computed: {
     thumbnailUrl (): string {
       return seriesThumbnailUrl(this.series.id)
+    },
+    overlay (): boolean {
+      return this.edit !== undefined || this.select !== undefined
+    }
+  },
+  methods: {
+    selectItem () {
+      if (this.select !== undefined) {
+        this.select()
+      }
+    },
+    editItem () {
+      if (this.edit !== undefined) {
+        this.edit(this.series)
+      }
     }
   }
 })
 </script>
 
-<style scoped>
+<style>
+.item-border {
+  border: 3px solid var(--v-secondary-base);
+}
+
+.item-border-darken {
+  border: 3px solid var(--v-secondary-darken2);
+}
+
+.overlay-full .v-overlay__content {
+  width: 100%;
+  height: 100%;
+}
 </style>
