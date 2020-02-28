@@ -98,7 +98,7 @@ export default Vue.extend({
       updatedSeries: Array(pageSize).fill(null) as SeriesDto[],
       books: Array(pageSize).fill(null) as BookDto[],
       pageSize: pageSize,
-      editSeriesSingle: [] as SeriesDto[],
+      editSeriesSingle: {} as SeriesDto,
       dialogEditSingle: false
     }
   },
@@ -112,13 +112,15 @@ export default Vue.extend({
     }
   },
   watch: {
-    editSeriesSingle (val: SeriesDto[]) {
-      val.forEach(s => {
-        const index = this.newSeries.findIndex(x => x.id === s.id)
-        if (index !== -1) {
-          this.newSeries[index] = s
-        }
-      })
+    editSeriesSingle (val: SeriesDto) {
+      let index = this.newSeries.findIndex(x => x.id === val.id)
+      if (index !== -1) {
+        this.newSeries.splice(index, 1, val)
+      }
+      index = this.updatedSeries.findIndex(x => x.id === val.id)
+      if (index !== -1) {
+        this.updatedSeries.splice(index, 1, val)
+      }
     }
   },
   methods: {
@@ -137,7 +139,7 @@ export default Vue.extend({
       this.books = (await this.$komgaBooks.getBooks(undefined, pageRequest)).content
     },
     singleEdit (series: SeriesDto) {
-      this.editSeriesSingle = [series]
+      this.editSeriesSingle = series
       this.dialogEditSingle = true
     }
   }

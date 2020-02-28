@@ -89,7 +89,7 @@
     </v-container>
 
     <edit-series-dialog v-model="dialogEdit"
-                        :series.sync="seriesArray"/>
+                        :series.sync="series"/>
   </div>
 </template>
 
@@ -136,14 +136,6 @@ export default mixins(VisibleElements).extend({
     },
     thumbnailUrl (): string {
       return seriesThumbnailUrl(this.seriesId)
-    },
-    seriesArray: {
-      get (): SeriesDto[] {
-        return [this.series]
-      },
-      set (val: SeriesDto[]) {
-        this.series = val[0]
-      }
     }
   },
   props: {

@@ -144,7 +144,7 @@ export default Vue.extend({
   props: {
     value: Boolean,
     series: {
-      type: Array as () => SeriesDto[],
+      type: [Object as () => SeriesDto, Array as () => SeriesDto[]],
       required: true
     }
   },
@@ -161,32 +161,33 @@ export default Vue.extend({
   },
   computed: {
     multiple (): boolean {
-      return this.series.length > 1
+      return Array.isArray(this.series)
     },
     seriesStatus (): string[] {
       return Object.keys(SeriesStatus).map(x => capitalize(x))
     },
     dialogTitle (): string {
       return this.multiple
-        ? `Edit ${this.series.length} series`
-        : `Edit ${this.$_.get(this.series[0], 'metadata.title')}`
+        ? `Edit ${(this.series as SeriesDto[]).length} series`
+        : `Edit ${this.$_.get(this.series, 'metadata.title')}`
     }
   },
   methods: {
-    dialogReset (series: SeriesDto[]) {
-      if (series.length === 0) return
-      if (series.length > 1) {
+    dialogReset (series: SeriesDto | SeriesDto[]) {
+      if (Array.isArray(series) && series.length === 0) return
+      if (Array.isArray(series) && series.length > 0) {
         const status = this.$_.uniq(series.map(x => x.metadata.status))
         this.form.status = status.length > 1 ? '' : capitalize(status[0])
         const statusLock = this.$_.uniq(series.map(x => x.metadata.statusLock))
         this.form.statusLock = statusLock.length > 1 ? false : statusLock[0]
       } else {
-        this.form.status = capitalize(series[0].metadata.status)
-        this.form.statusLock = series[0].metadata.statusLock
-        this.form.title = series[0].metadata.title
-        this.form.titleLock = series[0].metadata.titleLock
-        this.form.titleSort = series[0].metadata.titleSort
-        this.form.titleSortLock = series[0].metadata.titleSortLock
+        const s = series as SeriesDto
+        this.form.status = capitalize(s.metadata.status)
+        this.form.statusLock = s.metadata.statusLock
+        this.form.title = s.metadata.title
+        this.form.titleLock = s.metadata.titleLock
+        this.form.titleSort = s.metadata.titleSort
+        this.form.titleSortLock = s.metadata.titleSortLock
       }
     },
     dialogCancel () {
@@ -203,7 +204,8 @@ export default Vue.extend({
     },
     async editSeries () {
       const updated = [] as SeriesDto[]
-      for (const s of this.series) {
+      const toUpdate = (this.multiple ? this.series : [this.series]) as SeriesDto[]
+      for (const s of toUpdate) {
         try {
           if (this.form.status === '') {
             return
@@ -229,7 +231,7 @@ export default Vue.extend({
           updated.push(s)
         }
       }
-      this.$emit('update:series', updated)
+      this.$emit('update:series', this.multiple ? updated : updated[0])
     }
   }
 })

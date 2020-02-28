@@ -132,7 +132,7 @@ export default mixins(VisibleElements).extend({
       library: undefined as LibraryDto | undefined,
       series: [] as SeriesDto[],
       selectedSeries: [] as SeriesDto[],
-      editSeriesSingle: [] as SeriesDto[],
+      editSeriesSingle: {} as SeriesDto,
       pagesState: [] as LoadState[],
       pageSize: 20,
       totalElements: null as number | null,
@@ -183,17 +183,15 @@ export default mixins(VisibleElements).extend({
       val.forEach(s => {
         const index = this.series.findIndex(x => x.id === s.id)
         if (index !== -1) {
-          this.series[index] = s
+          this.series.splice(index, 1, s)
         }
       })
     },
-    editSeriesSingle (val: SeriesDto[]) {
-      val.forEach(s => {
-        const index = this.series.findIndex(x => x.id === s.id)
-        if (index !== -1) {
-          this.series[index] = s
-        }
-      })
+    editSeriesSingle (val: SeriesDto) {
+      const index = this.series.findIndex(x => x.id === val.id)
+      if (index !== -1) {
+        this.series.splice(index, 1, val)
+      }
     }
   },
   async created () {
@@ -321,7 +319,7 @@ export default mixins(VisibleElements).extend({
       }
     },
     singleEdit (series: SeriesDto) {
-      this.editSeriesSingle = [series]
+      this.editSeriesSingle = series
       this.dialogEditSingle = true
     }
   }
