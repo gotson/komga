@@ -88,7 +88,7 @@
                            :width="cardWidth"
                            :selected="active"
                            :select="toggle"
-                           :showEdit="selected.length === 0"
+                           :preSelect="selected.length > 0"
                            :edit="singleEdit"
               />
             </v-item>

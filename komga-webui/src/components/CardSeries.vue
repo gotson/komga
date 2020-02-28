@@ -2,8 +2,8 @@
   <v-hover :disabled="!overlay">
     <template v-slot:default="{ hover }">
       <v-card :width="width"
-              :to="{name:'browse-series', params: {seriesId: series.id}}"
               :ripple="false"
+              @click="cardClick"
       >
         <v-img
           :src="thumbnailUrl"
@@ -17,7 +17,7 @@
           </span>
           <v-fade-transition>
             <v-overlay
-              v-if="hover || selected"
+              v-if="hover || selected || preSelect"
               absolute
               :opacity="hover ? 0.3 : 0"
               :class="`item-border${hover ? '-darken' : ''} overlay-full`"
@@ -25,14 +25,15 @@
               <v-icon v-if="select"
                       :color="selected ? 'secondary' : ''"
                       style="position: absolute; top: 5px; left: 10px"
-                      @click.prevent="selectItem"
+                      @click.stop="selectItem"
               >
-                {{ selected ? 'mdi-checkbox-marked-circle' : 'mdi-checkbox-blank-circle-outline' }}
+                {{ selected || (preSelect && hover) ? 'mdi-checkbox-marked-circle' : 'mdi-checkbox-blank-circle-outline'
+                }}
               </v-icon>
 
-              <v-icon v-if="!selected && showEdit && edit"
+              <v-icon v-if="!selected && !preSelect && edit"
                       style="position: absolute; bottom: 10px; left: 10px"
-                      @click.prevent="editItem"
+                      @click.stop="editItem"
               >
                 mdi-pencil
               </v-icon>
@@ -79,9 +80,9 @@ export default Vue.extend({
       type: Boolean,
       default: false
     },
-    showEdit: {
+    preSelect: {
       type: Boolean,
-      default: true
+      default: false
     },
     select: {
       type: Function,
@@ -109,6 +110,13 @@ export default Vue.extend({
     editItem () {
       if (this.edit !== undefined) {
         this.edit(this.series)
+      }
+    },
+    cardClick () {
+      if (this.preSelect && this.select !== undefined) {
+        this.select()
+      } else {
+        this.$router.push({ name: 'browse-series', params: { seriesId: this.series.id.toString() } })
       }
     }
   }
