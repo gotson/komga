@@ -20,7 +20,7 @@
               v-if="hover || selected || preSelect"
               absolute
               :opacity="hover ? 0.3 : 0"
-              :class="`item-border${hover ? '-darken' : ''} overlay-full`"
+              :class="`${hover ? 'item-border-darken' : selected ? 'item-border' : 'item-border-transparent'} overlay-full`"
             >
               <v-icon v-if="select"
                       :color="selected ? 'secondary' : ''"
@@ -126,6 +126,10 @@ export default Vue.extend({
 <style>
 .item-border {
   border: 3px solid var(--v-secondary-base);
+}
+
+.item-border-transparent {
+  border: 3px solid transparent;
 }
 
 .item-border-darken {
