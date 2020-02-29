@@ -14,7 +14,18 @@ import java.util.concurrent.TimeUnit
 @Configuration
 class StaticResourceConfiguration : WebMvcConfigurer {
   override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
-    registry//.setOrder(Ordered.HIGHEST_PRECEDENCE)
+    if (!registry.hasMappingForPattern("/webjars/**")) {
+      registry.addResourceHandler("/webjars/**")
+        .addResourceLocations("classpath:/META-INF/resources/webjars/")
+    }
+
+    if (!registry.hasMappingForPattern("/swagger-ui.html**")) {
+      registry
+        .addResourceHandler("/swagger-ui.html**")
+        .addResourceLocations("classpath:/META-INF/resources/swagger-ui.html")
+    }
+
+    registry
       .addResourceHandler(
         "/index.html",
         "/favicon.ico"
