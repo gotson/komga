@@ -1,3 +1,10 @@
+## [0.16.4](https://github.com/gotson/komga/compare/v0.16.3...v0.16.4) (2020-02-29)
+
+
+### Bug Fixes
+
+* swagger-ui and h2-console work again ([626f047](https://github.com/gotson/komga/commit/626f04769630a8b02f04e796ffb299c12168686d)), closes [#99](https://github.com/gotson/komga/issues/99)
+
 ## [0.16.3](https://github.com/gotson/komga/compare/v0.16.2...v0.16.3) (2020-02-28)
 
 
