@@ -1,18 +1,20 @@
 <template>
-  <v-layout class="flex-row justify-sm-left justify-md-center">
-    <v-flex xs6 md2 class="text-left d-flex flex-column justify-center">
+  <v-row justify-md="center" justify-sm="start">
+    <v-col cols="5" md="3" align-self="center">
       <v-label> {{ label }} </v-label>
-    </v-flex>
-    <v-flex xs6 md2 >
+    </v-col>
+    <v-col cols="4" md="3" align-self="center" class="text-right">
+      <v-label> {{ status }} </v-label>
+    </v-col>
+    <v-col cols="3" md="2" align-self="center">
       <v-switch v-model="input"
-                label=""
                 @input="updateInput"
                 @change="updateInput"
                 class="float-right"
       >
       </v-switch>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">
@@ -26,6 +28,9 @@ export default Vue.extend({
     },
     value: {
       type: Boolean
+    },
+    status: {
+      type: String
     }
   },
   data () {

@@ -2,155 +2,99 @@
   <v-container class="ma-0 pa-0 full-height" fluid v-if="pages.length > 0" style="width: 100%;"
        v-touch="{
        left: () => next(),
-      right: () => prev(),
-      }"
+       right: () => prev(),
+       }"
   >
     <div>
-    <v-toolbar
-      dense elevation="1"
-      :class="`settings ${toolbar ? '' : 'd-none'}`"
-      width="100%"
-      absolute
-
-    >
-      <v-btn
-        icon
-        @click="closeBook"
-      >
-        <v-icon>mdi-arrow-left</v-icon>
-      </v-btn>
-      <v-toolbar-title> {{ this.bookTitle }}</v-toolbar-title>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        icon
-        @click="showThumbnailsExplorer = !showThumbnailsExplorer"
-      >
-        <v-icon>mdi-image-multiple</v-icon>
-      </v-btn>
-
-      <v-dialog
-        v-model="menu"
-        :close-on-content-click="false"
-        fullscreen
-        hide-overlay
-        bottom
-        transition="dialog-bottom-transition"
-      >
-        <template v-slot:activator="{ on }">
+      <v-slide-y-transition>
+        <v-toolbar
+          dense elevation="1"
+          v-if="toolbar"
+          class="settings full-width"
+          absolute
+        >
           <v-btn
             icon
-            v-on="on"
+            @click="closeBook"
+          >
+            <v-icon>mdi-arrow-left</v-icon>
+          </v-btn>
+          <v-toolbar-title> {{ this.bookTitle }}</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn
+            icon
+            @click="showThumbnailsExplorer = !showThumbnailsExplorer"
+          >
+            <v-icon>mdi-image-multiple</v-icon>
+          </v-btn>
+          <v-btn
+            icon
+            @click="menu = !menu"
           >
             <v-icon>mdi-settings</v-icon>
           </v-btn>
-        </template>
-
-        <v-toolbar dark color="primary">
-          <v-btn icon dark @click="menu = false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-          <v-toolbar-title>Reader Settings</v-toolbar-title>
         </v-toolbar>
-
-        <v-layout class="full-height d-flex flex-column justify-center">
-          <v-flex>
-            <v-list class="full-height">
-              <v-list-item class="">
-                <settings-switch v-model="doublePages" :label="`${ doublePages ? 'Double Pages' : 'Single Page'}`"></settings-switch>
-              </v-list-item>
-              <v-list-item class="">
-                <settings-switch v-model="flipDirection" :label="`${!flipDirection ? 'Right to left' : 'Left to right'}`"></settings-switch>
-              </v-list-item>
-              <v-list-item class="">
-                <settings-switch v-model="animations" label="Animations"></settings-switch>
-              </v-list-item>
-              <v-list-item class="">
-                <settings-combo
-                  :items="settings.imageFits"
-                  v-model="imageFit"
-                  label="Scaling"
-                >
-                  <template slot="item" slot-scope="data">
-                    <div class="text-capitalize">
-                      {{ imageFitDisplay(data.item) }}
-                    </div>
-                  </template>
-                  <template slot="selection" slot-scope="data">
-                    <div class="text-capitalize">
-                      {{ imageFitDisplay(data.item)  }}
-                    </div>
-                  </template>
-                </settings-combo>
-              </v-list-item>
-            </v-list>
-          </v-flex>
-        </v-layout>
-      </v-dialog>
-
-    </v-toolbar>
-    <v-bottom-navigation
-      dense
-      elevation="1"
-      :class="`settings ${toolbar ? '' : 'd-none'}`"
-      absolute
-      horizontal
-    >
-      <v-layout class="flex-column justify-center">
-        <v-flex class="text-center font-weight-light">
-          {{ currentPage }}/{{ pagesCount }}
-        </v-flex>
-         <!--  Menu: page slider  -->
-        <v-flex>
-          <v-layout>
-            <v-flex>
+      </v-slide-y-transition>
+      <v-slide-y-reverse-transition>
+        <v-toolbar
+          dense
+          elevation="1"
+          class="settings full-width"
+          absolute
+          bottom
+          horizontal
+          v-if="toolbar"
+        >
+          <v-row justify="center">
+              <!--  Menu: page slider  -->
+            <v-col>
               <v-slider
+                hide-details
+                thumb-label
+                @change="goTo"
                 v-model="goToPage"
                 class="align-center"
-                :max="pagesCount"
                 min="1"
-                hide-details
-                @change="goTo"
-                thumb-label
+                :max="pagesCount"
               >
                 <template v-slot:prepend>
+                  <v-label>
+                    {{ currentPage }}/{{ pagesCount }}
+                  </v-label>
+
                   <v-icon  @click="goToFirst" class="ml-2">mdi-arrow-collapse-left</v-icon>
                 </template>
                 <template v-slot:append>
                   <v-icon @click="goToLast"   class="mr-2">mdi-arrow-collapse-right</v-icon>
                 </template>
               </v-slider>
-            </v-flex>
-            <v-flex xs2 md1 class="d-flex flex-row justify-center">
-              <v-dialog v-model="dialogGoto" persistent max-width="290">
-                <template v-slot:activator="{ on }">
-                  <v-icon large class="ma-auto" v-on="on">mdi-arrow-right-bold-circle</v-icon>
-                </template>
-                <v-card >
-                  <v-card-text class="d-flex flex-row">
-                    <v-text-field
-                      v-model="goToPage"
-                      hide-details
-                      single-line
-                      type="number"
-                      autofocus
-                    />
-                  </v-card-text>
+    <!--              <v-dialog v-model="dialogGoto" persistent max-width="290">-->
+    <!--                <template v-slot:activator="{ on }">-->
+    <!--                  <v-icon large class="ma-auto" v-on="on">mdi-arrow-right-bold-circle</v-icon>-->
+    <!--                </template>-->
+    <!--                <v-card >-->
+    <!--                  <v-card-text class="d-flex flex-row">-->
+    <!--                    <v-text-field-->
+    <!--                      v-model="goToPage"-->
+    <!--                      hide-details-->
+    <!--                      single-line-->
+    <!--                      type="number"-->
+    <!--                      autofocus-->
+    <!--                    />-->
+    <!--                  </v-card-text>-->
 
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="darken-1" text @click="dialogGoto = false">Close</v-btn>
-                    <v-btn color="green darken-1" text @click="goTo(goToPage)">Go To</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-            </v-flex>
-          </v-layout>
-        </v-flex>
-      </v-layout>
+    <!--                  <v-card-actions>-->
+    <!--                    <v-spacer></v-spacer>-->
+    <!--                    <v-btn color="darken-1" text @click="dialogGoto = false">Close</v-btn>-->
+    <!--                    <v-btn color="green darken-1" text @click="goTo(goToPage)">Go To</v-btn>-->
+    <!--                  </v-card-actions>-->
+    <!--                </v-card>-->
+    <!--              </v-dialog>-->
+            </v-col>
+          </v-row>
 
-    </v-bottom-navigation>
+        </v-toolbar>
+      </v-slide-y-reverse-transition>
     </div>
 
     <!--  clickable zone: left  -->
@@ -211,6 +155,52 @@
       :bookId="bookId"
       :pagesCount="pagesCount"
     ></thumbnail-explorer-dialog>
+
+    <v-dialog
+      v-model="menu"
+      :close-on-content-click="false"
+      transition="dialog-bottom-transition"
+      :width="$vuetify.breakpoint.width * ($vuetify.breakpoint.smAndUp ? 0.5 : 1)"
+    >
+      <v-container fluid class="pa-0">
+        <v-toolbar dark color="primary">
+          <v-btn icon dark @click="menu = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Reader Settings</v-toolbar-title>
+        </v-toolbar>
+
+        <v-list class="full-height full-width">
+          <v-list-item class="">
+            <settings-switch v-model="doublePages" label="Page Layout" :status="`${ doublePages ? 'Double Pages' : 'Single Page'}`"></settings-switch>
+          </v-list-item>
+          <v-list-item class="">
+            <settings-switch v-model="flipDirection" label="Turn Direction" :status="`${!flipDirection ? 'Right to left' : 'Left to right'}`"></settings-switch>
+          </v-list-item>
+          <v-list-item class="">
+            <settings-switch v-model="animations" label="Animations"></settings-switch>
+          </v-list-item>
+          <v-list-item class="">
+            <settings-combo
+              :items="settings.imageFits"
+              v-model="imageFit"
+              label="Scaling"
+            >
+              <template slot="item" slot-scope="data">
+                <div class="text-capitalize">
+                  {{ imageFitDisplay(data.item) }}
+                </div>
+              </template>
+              <template slot="selection" slot-scope="data">
+                <div class="text-capitalize">
+                  {{ imageFitDisplay(data.item)  }}
+                </div>
+              </template>
+            </settings-combo>
+          </v-list-item>
+        </v-list>
+      </v-container>
+    </v-dialog>
     <v-snackbar
       v-model="jumpToPreviousBook"
       :timeout="jumpConfirmationDelay"
@@ -278,7 +268,7 @@ export default Vue.extend({
       convertTo: 'jpeg',
       carouselPage: 0,
       showThumbnailsExplorer: false,
-      toolbar: true,
+      toolbar: false,
       menu: false,
       dialogGoto: false,
       goToPage: 1,
@@ -584,6 +574,10 @@ export default Vue.extend({
 
 .full-height {
   height: 100%;
+}
+
+.full-width {
+  width: 100%;
 }
 
 .left-quarter {

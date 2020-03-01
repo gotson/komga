@@ -1,9 +1,9 @@
 <template>
-  <v-layout class="flex-row justify-sm-left justify-md-center">
-    <v-flex xs6 md2 class="text-left d-flex flex-column justify-center">
+  <v-row justify-md="center" justify-sm="start">
+    <v-col cols="5" md="4" class="text-left" align-self="center">
       <v-label class=""> {{ label }} </v-label>
-    </v-flex>
-    <v-flex xs6 md2 >
+    </v-col>
+    <v-col cols="7" md="4" >
       <v-combobox
         filled
         dense
@@ -22,8 +22,8 @@
           <slot name="selection" v-bind="data"></slot>
         </template>
       </v-combobox>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">
