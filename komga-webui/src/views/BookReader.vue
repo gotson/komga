@@ -58,14 +58,16 @@
                 :max="pagesCount"
               >
                 <template v-slot:prepend>
+                  <v-icon  @click="goToFirst" class="mx-2">mdi-arrow-collapse-left</v-icon>
                   <v-label>
-                    {{ currentPage }}/{{ pagesCount }}
+                    {{ currentPage }}
                   </v-label>
-
-                  <v-icon  @click="goToFirst" class="ml-2">mdi-arrow-collapse-left</v-icon>
                 </template>
                 <template v-slot:append>
-                  <v-icon @click="goToLast"   class="mr-2">mdi-arrow-collapse-right</v-icon>
+                  <v-label>
+                    {{ pagesCount }}
+                  </v-label>
+                  <v-icon @click="goToLast"   class="mx-2">mdi-arrow-collapse-right</v-icon>
                 </template>
               </v-slider>
     <!--              <v-dialog v-model="dialogGoto" persistent max-width="290">-->
