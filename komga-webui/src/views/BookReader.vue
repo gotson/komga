@@ -92,27 +92,51 @@
           {{ currentPage }}/{{ pagesCount }}
         </v-flex>
          <!--  Menu: page slider  -->
-        <v-flex class="">
-          <v-slider
-            v-model="goToPage"
-            class="align-center"
-            :max="pagesCount"
-            min="1"
-            hide-details
-            @change="goTo"
-            thumb-label
-          >
-            <template v-slot:prepend>
-              <v-btn icon @click="goToFirst">
-                <v-icon>mdi-arrow-collapse-left</v-icon>
-              </v-btn>
-            </template>
-            <template v-slot:append>
-              <v-btn icon @click="goToLast">
-                <v-icon>mdi-arrow-collapse-right</v-icon>
-              </v-btn>
-            </template>
-          </v-slider>
+        <v-flex>
+          <v-layout>
+            <v-flex>
+              <v-slider
+                v-model="goToPage"
+                class="align-center"
+                :max="pagesCount"
+                min="1"
+                hide-details
+                @change="goTo"
+                thumb-label
+              >
+                <template v-slot:prepend>
+                  <v-icon  @click="goToFirst" class="ml-2">mdi-arrow-collapse-left</v-icon>
+                </template>
+                <template v-slot:append>
+                  <v-icon @click="goToLast"   class="mr-2">mdi-arrow-collapse-right</v-icon>
+                </template>
+              </v-slider>
+            </v-flex>
+            <v-flex xs2 md1 class="d-flex flex-row justify-center">
+              <v-dialog v-model="dialogGoto" persistent max-width="290">
+                <template v-slot:activator="{ on }">
+                  <v-icon large class="ma-auto" v-on="on">mdi-arrow-right-bold-circle</v-icon>
+                </template>
+                <v-card >
+                  <v-card-text class="d-flex flex-row">
+                    <v-text-field
+                      v-model="goToPage"
+                      hide-details
+                      single-line
+                      type="number"
+                      autofocus
+                    />
+                  </v-card-text>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="darken-1" text @click="dialogGoto = false">Close</v-btn>
+                    <v-btn color="green darken-1" text @click="goTo(goToPage)">Go To</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-flex>
+          </v-layout>
         </v-flex>
       </v-layout>
 
@@ -265,10 +289,11 @@ export default Vue.extend({
       supportedMediaTypes: ['image/jpeg', 'image/png', 'image/gif'],
       convertTo: 'jpeg',
       carouselPage: 0,
-      goToPage: 1,
       showThumbnailsExplorer: false,
       toolbar: true,
       menu: false,
+      dialogGoto: false,
+      goToPage: 1,
       pageLayout: {
         doublePages: false,
         imageFits: Object.values(ImageFit),
