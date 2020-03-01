@@ -57,6 +57,9 @@
                 <settings-switch v-model="flipDirection" :label="`${!flipDirection ? 'Right to left' : 'Left to right'}`"></settings-switch>
               </v-list-item>
               <v-list-item class="">
+                <settings-switch v-model="animations" label="Animations"></settings-switch>
+              </v-list-item>
+              <v-list-item class="">
                 <settings-combo
                   :items="settings.imageFits"
                   v-model="imageFit"
@@ -163,35 +166,37 @@
 
     <div class="full-height">
     <!--  Carousel  -->
-    <v-carousel v-model="carouselPage"
-                :show-arrows="false"
-                hide-delimiters
-                :continuous="false"
-                touchless
-                :reverse="flipDirection"
-                height="100%"
-    >
-      <!--  Carousel: pages  -->
-      <v-carousel-item v-for="p in slidesRange"
-                       :key="doublePages ? `db${p}` : `sp${p}`"
-                       :eager="eagerLoad(p)"
-                       class="full-height"
+      <v-carousel v-model="carouselPage"
+                  :show-arrows="false"
+                  :continuous="false"
+                  :reverse="flipDirection"
+                  hide-delimiters
+                  touchless
+                  height="100%"
       >
-        <div class="full-height d-flex flex-column justify-center reader-background">
-          <div :class="`d-flex flex-row${flipDirection ? '-reverse' : ''} justify-center px-0 mx-0` " >
-            <img :src="getPageUrl(p)"
-                 :height="maxHeight"
-                 :width="maxWidth(p)"
-            />
-            <img v-if="doublePages && p !== 1 && p !== pagesCount && p+1 !== pagesCount"
-                 :src="getPageUrl(p+1)"
-                 :height="maxHeight"
-                 :width="maxWidth(p+1)"
-            />
+        <!--  Carousel: pages  -->
+        <v-carousel-item v-for="p in slidesRange"
+                         :key="doublePages ? `db${p}` : `sp${p}`"
+                         :eager="eagerLoad(p)"
+                         class="full-height"
+                         :transition="animations ? undefined : false"
+                         :reverse-transition="animations ? undefined : false"
+        >
+          <div class="full-height d-flex flex-column justify-center reader-background">
+            <div :class="`d-flex flex-row${flipDirection ? '-reverse' : ''} justify-center px-0 mx-0` " >
+              <img :src="getPageUrl(p)"
+                   :height="maxHeight"
+                   :width="maxWidth(p)"
+              />
+              <img v-if="doublePages && p !== 1 && p !== pagesCount && p+1 !== pagesCount"
+                   :src="getPageUrl(p+1)"
+                   :height="maxHeight"
+                   :width="maxWidth(p+1)"
+              />
+            </div>
           </div>
-        </div>
-      </v-carousel-item>
-    </v-carousel>
+        </v-carousel-item>
+      </v-carousel>
     </div>
 
     <v-dialog v-model="showThumbnailsExplorer" scrollable>
@@ -271,6 +276,7 @@ import { getBookTitleCompact } from '@/functions/book-title'
 const cookieFit = 'webreader.fit'
 const cookieRtl = 'webreader.flipDirection'
 const cookieDoublePages = 'webreader.doublePages'
+const cookieAnimations = 'webreader.animations'
 
 export default Vue.extend({
   name: 'BookReader',
@@ -298,7 +304,8 @@ export default Vue.extend({
         doublePages: false,
         imageFits: Object.values(ImageFit),
         fit: ImageFit.HEIGHT,
-        flipDirection: false
+        flipDirection: false,
+        animations: true
       }
     }
   },
@@ -314,6 +321,7 @@ export default Vue.extend({
     this.setup(this.bookId, Number(this.$route.query.page))
 
     this.loadFromCookie(cookieRtl, (v) => { this.flipDirection = (v === 'true') })
+    this.loadFromCookie(cookieAnimations, (v) => { this.animations = (v === 'true') })
     this.loadFromCookie(cookieDoublePages, (v) => { this.doublePages = (v === 'true') })
     this.loadFromCookie(cookieFit, (v) => { if (v) { this.imageFit = v } })
   },
@@ -382,6 +390,15 @@ export default Vue.extend({
     },
     bookTitle (): string {
       return getBookTitleCompact(this.book.name, this.series.name)
+    },
+    animations: {
+      get: function (): boolean {
+        return this.settings.animations
+      },
+      set: function (animations: boolean): void {
+        this.settings.animations = animations
+        this.$cookies.set(cookieAnimations, animations, Infinity)
+      }
     },
     flipDirection: {
       get: function (): boolean {
