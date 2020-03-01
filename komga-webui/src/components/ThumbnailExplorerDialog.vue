@@ -52,9 +52,6 @@ export default Vue.extend({
     },
     bookId: {
       type: Number
-    },
-    goToPage: {
-      type: Number
     }
   },
   data: () => {
