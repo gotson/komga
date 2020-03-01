@@ -24,7 +24,7 @@
                 max-height="200"
                 max-width="140"
                 class="ma-2"
-                @click="this.input = false; goTo(((page - 1 ) * perPage + i + 1))"
+                @click="input = false; goTo(((page - 1 ) * perPage + i + 1))"
                 style="cursor: pointer"
               />
               <div class="white--text text-center font-weight-bold">{{ (page - 1 ) * perPage + i + 1 }}</div>
