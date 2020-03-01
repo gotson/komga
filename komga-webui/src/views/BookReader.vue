@@ -23,6 +23,13 @@
 
       <v-spacer></v-spacer>
 
+      <v-btn
+        icon
+        @click="showThumbnailsExplorer = !showThumbnailsExplorer"
+      >
+        <v-icon>mdi-image-multiple</v-icon>
+      </v-btn>
+
       <v-dialog
         v-model="menu"
         :close-on-content-click="false"
@@ -199,37 +206,11 @@
       </v-carousel>
     </div>
 
-    <v-dialog v-model="showThumbnailsExplorer" scrollable>
-      <v-card :max-height="$vuetify.breakpoint.height * .9"
-              dark
-      >
-        <v-card-text>
-          <v-container fluid>
-            <v-row>
-              <div v-for="p in pagesCount"
-                   :key="p"
-                   style="min-height: 220px; max-width: 140px"
-                   class="mb-2"
-              >
-                <v-img
-                  :src="getThumbnailUrl(p)"
-                  lazy-src="../assets/cover.svg"
-                  aspect-ratio="0.7071"
-                  :contain="true"
-                  max-height="200"
-                  max-width="140"
-                  class="ma-2"
-                  @click="showThumbnailsExplorer = false; goTo(p)"
-                  style="cursor: pointer"
-                />
-                <div class="white--text text-center font-weight-bold">{{p}}</div>
-              </div>
-            </v-row>
-          </v-container>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-
+    <thumbnail-explorer-dialog
+      v-model="showThumbnailsExplorer"
+      :bookId="bookId"
+      :pagesCount="pagesCount"
+    ></thumbnail-explorer-dialog>
     <v-snackbar
       v-model="jumpToPreviousBook"
       :timeout="jumpConfirmationDelay"
@@ -266,9 +247,10 @@
 <script lang="ts">
 import SettingsSwitch from '@/components/SettingsSwitch.vue'
 import SettingsCombo from '@/components/SettingsCombo.vue'
+import ThumbnailExplorerDialog from '@/components/ThumbnailExplorerDialog.vue'
 
 import { checkWebpFeature } from '@/functions/check-webp'
-import { bookPageThumbnailUrl, bookPageUrl } from '@/functions/urls'
+import { bookPageUrl } from '@/functions/urls'
 import { ImageFit } from '@/types/common'
 import Vue from 'vue'
 import { getBookTitleCompact } from '@/functions/book-title'
@@ -280,7 +262,7 @@ const cookieAnimations = 'webreader.animations'
 
 export default Vue.extend({
   name: 'BookReader',
-  components: { SettingsSwitch, SettingsCombo },
+  components: { SettingsSwitch, SettingsCombo, ThumbnailExplorerDialog },
   data: () => {
     return {
       ImageFit,
@@ -391,6 +373,7 @@ export default Vue.extend({
     bookTitle (): string {
       return getBookTitleCompact(this.book.name, this.series.name)
     },
+
     animations: {
       get: function (): boolean {
         return this.settings.animations
@@ -488,9 +471,7 @@ export default Vue.extend({
         return bookPageUrl(this.bookId, page)
       }
     },
-    getThumbnailUrl (page: number): string {
-      return bookPageThumbnailUrl(this.bookId, page)
-    },
+
     prev () {
       if (this.canPrev) {
         this.carouselPage--
