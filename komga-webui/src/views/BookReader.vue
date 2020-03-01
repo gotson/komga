@@ -155,6 +155,7 @@
     <thumbnail-explorer-dialog
       v-model="showThumbnailsExplorer"
       :bookId="bookId"
+      @goToPage="goTo($event)"
       :pagesCount="pagesCount"
     ></thumbnail-explorer-dialog>
 

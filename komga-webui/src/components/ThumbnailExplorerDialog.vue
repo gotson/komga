@@ -24,7 +24,7 @@
                 max-height="200"
                 max-width="140"
                 class="ma-2"
-                @click="showThumbnailsExplorer = false; goTo(i + 1)"
+                @click="this.input = false; goTo(((page - 1 ) * perPage + i + 1))"
                 style="cursor: pointer"
               />
               <div class="white--text text-center font-weight-bold">{{ (page - 1 ) * perPage + i + 1 }}</div>
@@ -51,6 +51,9 @@ export default Vue.extend({
       type: Boolean
     },
     bookId: {
+      type: Number
+    },
+    goToPage: {
       type: Number
     }
   },
@@ -86,6 +89,9 @@ export default Vue.extend({
     },
     updateInput () {
       this.$emit('input', this.input)
+    },
+    goTo (page: number) {
+      this.$emit('goToPage', page)
     },
     getThumbnailUrl (page: number): string {
       return bookPageThumbnailUrl(this.bookId, page)
