@@ -58,7 +58,7 @@
               </v-list-item>
               <v-list-item class="">
                 <settings-combo
-                  :items="pageLayout.imageFits"
+                  :items="settings.imageFits"
                   v-model="imageFit"
                   label="Scaling"
                 >
@@ -294,7 +294,7 @@ export default Vue.extend({
       menu: false,
       dialogGoto: false,
       goToPage: 1,
-      pageLayout: {
+      settings: {
         doublePages: false,
         imageFits: Object.values(ImageFit),
         fit: ImageFit.HEIGHT,
@@ -385,29 +385,29 @@ export default Vue.extend({
     },
     flipDirection: {
       get: function (): boolean {
-        return this.pageLayout.flipDirection
+        return this.settings.flipDirection
       },
       set: function (flipDirection: boolean): void {
-        this.pageLayout.flipDirection = flipDirection
+        this.settings.flipDirection = flipDirection
         this.$cookies.set(cookieRtl, flipDirection, Infinity)
       }
     },
     imageFit: {
       get: function (): ImageFit {
-        return this.pageLayout.fit
+        return this.settings.fit
       },
       set: function (fit: ImageFit): void {
-        this.pageLayout.fit = fit
+        this.settings.fit = fit
         this.$cookies.set(cookieFit, fit, Infinity)
       }
     },
     doublePages: {
       get: function (): boolean {
-        return this.pageLayout.doublePages
+        return this.settings.doublePages
       },
       set: function (doublePages: boolean): void {
         const current = this.currentPage
-        this.pageLayout.doublePages = doublePages
+        this.settings.doublePages = doublePages
         this.goTo(current)
         this.$cookies.set(cookieDoublePages, doublePages, Infinity)
       }
@@ -421,11 +421,11 @@ export default Vue.extend({
       switch (e.key) {
         case 'PageUp':
         case 'ArrowRight':
-          this.pageLayout.flipDirection ? this.prev() : this.next()
+          this.settings.flipDirection ? this.prev() : this.next()
           break
         case 'PageDown':
         case 'ArrowLeft':
-          this.pageLayout.flipDirection ? this.next() : this.prev()
+          this.settings.flipDirection ? this.next() : this.prev()
           break
         case 'Home':
           this.goToFirst()
