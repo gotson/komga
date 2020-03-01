@@ -25,7 +25,7 @@
             icon
             @click="showThumbnailsExplorer = !showThumbnailsExplorer"
           >
-            <v-icon>mdi-image-multiple</v-icon>
+            <v-icon>mdi-view-grid</v-icon>
           </v-btn>
           <v-btn
             icon
@@ -173,16 +173,31 @@
         </v-toolbar>
 
         <v-list class="full-height full-width">
-          <v-list-item class="">
+          <v-list-item>
             <settings-switch v-model="doublePages" label="Page Layout" :status="`${ doublePages ? 'Double Pages' : 'Single Page'}`"></settings-switch>
           </v-list-item>
-          <v-list-item class="">
-            <settings-switch v-model="flipDirection" label="Turn Direction" :status="`${!flipDirection ? 'Right to left' : 'Left to right'}`"></settings-switch>
+          <v-list-item>
+            <settings-switch v-model="animations" label="Page Transitions"></settings-switch>
           </v-list-item>
-          <v-list-item class="">
-            <settings-switch v-model="animations" label="Animations"></settings-switch>
+          <v-list-item>
+            <settings-combo
+              :items="settings.readingDirections"
+              v-model="readingDirection"
+              label="Reading Direction"
+            >
+              <template slot="item" slot-scope="data">
+                <div class="text-capitalize">
+                  {{ readingDirectionDisplay(data.item) }}
+                </div>
+              </template>
+              <template slot="selection" slot-scope="data">
+                <div class="text-capitalize">
+                  {{ readingDirectionDisplay(data.item)  }}
+                </div>
+              </template>
+            </settings-combo>
           </v-list-item>
-          <v-list-item class="">
+          <v-list-item>
             <settings-combo
               :items="settings.imageFits"
               v-model="imageFit"
@@ -243,14 +258,24 @@ import ThumbnailExplorerDialog from '@/components/ThumbnailExplorerDialog.vue'
 
 import { checkWebpFeature } from '@/functions/check-webp'
 import { bookPageUrl } from '@/functions/urls'
-import { ImageFit } from '@/types/common'
+import { ImageFit, ReadingDirection } from '@/types/common'
 import Vue from 'vue'
 import { getBookTitleCompact } from '@/functions/book-title'
 
 const cookieFit = 'webreader.fit'
-const cookieRtl = 'webreader.flipDirection'
+const cookieReadingDirection = 'webreader.readingDirection'
 const cookieDoublePages = 'webreader.doublePages'
 const cookieAnimations = 'webreader.animations'
+
+const fitDisplay = {
+  [ImageFit.HEIGHT]: 'fit to height',
+  [ImageFit.WIDTH]: 'fit to width',
+  [ImageFit.ORIGINAL]: 'original'
+}
+const dirDisplay = {
+  [ReadingDirection.RightToLeft]: 'right to left',
+  [ReadingDirection.LeftToRight]: 'left to right'
+}
 
 export default Vue.extend({
   name: 'BookReader',
@@ -278,7 +303,8 @@ export default Vue.extend({
         doublePages: false,
         imageFits: Object.values(ImageFit),
         fit: ImageFit.HEIGHT,
-        flipDirection: false,
+        readingDirections: Object.values(ReadingDirection),
+        readingDirection: ReadingDirection.RightToLeft,
         animations: true
       }
     }
@@ -294,7 +320,7 @@ export default Vue.extend({
     window.addEventListener('keydown', this.keyPressed)
     this.setup(this.bookId, Number(this.$route.query.page))
 
-    this.loadFromCookie(cookieRtl, (v) => { this.flipDirection = (v === 'true') })
+    this.loadFromCookie(cookieReadingDirection, (v) => { this.readingDirection = v })
     this.loadFromCookie(cookieAnimations, (v) => { this.animations = (v === 'true') })
     this.loadFromCookie(cookieDoublePages, (v) => { this.doublePages = (v === 'true') })
     this.loadFromCookie(cookieFit, (v) => { if (v) { this.imageFit = v } })
@@ -375,13 +401,22 @@ export default Vue.extend({
         this.$cookies.set(cookieAnimations, animations, Infinity)
       }
     },
-    flipDirection: {
-      get: function (): boolean {
-        return this.settings.flipDirection
+    readingDirection: {
+      get: function (): ReadingDirection {
+        return this.settings.readingDirection
       },
-      set: function (flipDirection: boolean): void {
-        this.settings.flipDirection = flipDirection
-        this.$cookies.set(cookieRtl, flipDirection, Infinity)
+      set: function (readingDirection: ReadingDirection): void {
+        this.settings.readingDirection = readingDirection
+        this.$cookies.set(cookieReadingDirection, readingDirection, Infinity)
+      }
+    },
+    flipDirection (): boolean {
+      switch (this.readingDirection) {
+        case ReadingDirection.LeftToRight:
+          return true
+        case ReadingDirection.RightToLeft:
+        default:
+          return false
       }
     },
     imageFit: {
@@ -413,11 +448,11 @@ export default Vue.extend({
       switch (e.key) {
         case 'PageUp':
         case 'ArrowRight':
-          this.settings.flipDirection ? this.prev() : this.next()
+          this.flipDirection ? this.prev() : this.next()
           break
         case 'PageDown':
         case 'ArrowLeft':
-          this.settings.flipDirection ? this.next() : this.prev()
+          this.flipDirection ? this.next() : this.prev()
           break
         case 'Home':
           this.goToFirst()
@@ -542,12 +577,10 @@ export default Vue.extend({
       return this.$vuetify.breakpoint.width
     },
     imageFitDisplay (fit: ImageFit): string {
-      let display = {
-        [ImageFit.HEIGHT]: 'fit to height',
-        [ImageFit.WIDTH]: 'fit to width',
-        [ImageFit.ORIGINAL]: 'original'
-      }
-      return display[fit]
+      return fitDisplay[fit]
+    },
+    readingDirectionDisplay (dir: ReadingDirection): string {
+      return dirDisplay[dir]
     },
     loadFromCookie (cookieKey: string, setter: (value: any) => void): void {
       if (this.$cookies.isKey(cookieKey)) {

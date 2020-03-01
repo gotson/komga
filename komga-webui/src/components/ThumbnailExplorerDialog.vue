@@ -4,6 +4,13 @@
       <v-card-text>
         <v-container fluid>
           <v-row class="mb-2 d-flex flex-sm-row flex-column align-center justify-space-around">
+
+            <v-pagination
+              v-model="page"
+              :total-visible="perPage"
+              :length="Math.ceil(thumbnails.length/perPage)"
+            ></v-pagination>
+
             <div v-for="(url, i) in visibleThumbnails()"
                  :key="i"
                  style="min-height: 220px; max-width: 140px"
@@ -20,13 +27,9 @@
                 @click="showThumbnailsExplorer = false; goTo(i + 1)"
                 style="cursor: pointer"
               />
-              <div class="white--text text-center font-weight-bold">{{ i + 1 }}</div>
+              <div class="white--text text-center font-weight-bold">{{ (page - 1 ) * perPage + i + 1 }}</div>
             </div>
-            <v-pagination
-              v-model="page"
-              :total-visible="perPage"
-              :length="Math.ceil(thumbnails.length/perPage)"
-            ></v-pagination>
+
           </v-row>
         </v-container>
       </v-card-text>

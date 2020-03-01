@@ -10,6 +10,11 @@ export enum ImageFit {
   ORIGINAL = 'original'
 }
 
+export enum ReadingDirection {
+  LeftToRight = 'ltl',
+  RightToLeft = 'rtl'
+}
+
 export enum MediaStatus {
   READY = 'READY',
   UNKNOWN = 'UNKNOWN',
