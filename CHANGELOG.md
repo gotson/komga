@@ -1,3 +1,10 @@
+## [0.16.5](https://github.com/gotson/komga/compare/v0.16.4...v0.16.5) (2020-03-02)
+
+
+### Bug Fixes
+
+* prevent user self-deletion ([3d9b78d](https://github.com/gotson/komga/commit/3d9b78d364c07b4c7f9bd1923c36943bbe5147f6)), closes [#100](https://github.com/gotson/komga/issues/100)
+
 ## [0.16.4](https://github.com/gotson/komga/compare/v0.16.3...v0.16.4) (2020-02-29)
 
 
