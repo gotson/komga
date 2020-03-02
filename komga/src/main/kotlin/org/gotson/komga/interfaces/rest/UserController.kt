@@ -33,20 +33,20 @@ private val logger = KotlinLogging.logger {}
 @RestController
 @RequestMapping("api/v1/users", produces = [MediaType.APPLICATION_JSON_VALUE])
 class UserController(
-    private val userDetailsLifecycle: KomgaUserDetailsLifecycle,
-    private val userRepository: KomgaUserRepository,
-    private val libraryRepository: LibraryRepository
+  private val userDetailsLifecycle: KomgaUserDetailsLifecycle,
+  private val userRepository: KomgaUserRepository,
+  private val libraryRepository: LibraryRepository
 ) {
 
   @GetMapping("me")
   fun getMe(@AuthenticationPrincipal principal: KomgaPrincipal): UserDto =
-      principal.user.toDto()
+    principal.user.toDto()
 
   @PatchMapping("me/password")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updatePassword(
-      @AuthenticationPrincipal principal: KomgaPrincipal,
-      @Valid @RequestBody newPasswordDto: PasswordUpdateDto
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @Valid @RequestBody newPasswordDto: PasswordUpdateDto
   ) {
     userDetailsLifecycle.updatePassword(principal, newPasswordDto.password, false)
   }
@@ -54,22 +54,25 @@ class UserController(
   @GetMapping
   @PreAuthorize("hasRole('ADMIN')")
   fun getAll(): List<UserWithSharedLibrariesDto> =
-      userRepository.findAll().map { it.toWithSharedLibrariesDto() }
+    userRepository.findAll().map { it.toWithSharedLibrariesDto() }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @PreAuthorize("hasRole('ADMIN')")
   fun addOne(@Valid @RequestBody newUser: UserCreationDto): UserDto =
-      try {
-        (userDetailsLifecycle.createUser(newUser.toUserDetails()) as KomgaPrincipal).toDto()
-      } catch (e: UserEmailAlreadyExistsException) {
-        throw ResponseStatusException(HttpStatus.BAD_REQUEST, "A user with this email already exists")
-      }
+    try {
+      (userDetailsLifecycle.createUser(newUser.toUserDetails()) as KomgaPrincipal).toDto()
+    } catch (e: UserEmailAlreadyExistsException) {
+      throw ResponseStatusException(HttpStatus.BAD_REQUEST, "A user with this email already exists")
+    }
 
   @DeleteMapping("{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  @PreAuthorize("hasRole('ADMIN')")
-  fun delete(@PathVariable id: Long) {
+  @PreAuthorize("hasRole('ADMIN') and #principal.user.id != #id")
+  fun delete(
+    @PathVariable id: Long,
+    @AuthenticationPrincipal principal: KomgaPrincipal
+  ) {
     userRepository.findByIdOrNull(id)?.let {
       userDetailsLifecycle.deleteUser(it)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -79,8 +82,8 @@ class UserController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PreAuthorize("hasRole('ADMIN')")
   fun updateSharesLibraries(
-      @PathVariable id: Long,
-      @Valid @RequestBody sharedLibrariesUpdateDto: SharedLibrariesUpdateDto
+    @PathVariable id: Long,
+    @Valid @RequestBody sharedLibrariesUpdateDto: SharedLibrariesUpdateDto
   ) {
     userRepository.findByIdOrNull(id)?.let { user ->
       if (sharedLibrariesUpdateDto.all) {
@@ -96,59 +99,59 @@ class UserController(
 }
 
 data class UserDto(
-    val id: Long,
-    val email: String,
-    val roles: List<String>
+  val id: Long,
+  val email: String,
+  val roles: List<String>
 )
 
 fun KomgaUser.toDto() =
-    UserDto(
-        id = id,
-        email = email,
-        roles = roles.map { it.name }
-    )
+  UserDto(
+    id = id,
+    email = email,
+    roles = roles.map { it.name }
+  )
 
 data class UserWithSharedLibrariesDto(
-    val id: Long,
-    val email: String,
-    val roles: List<String>,
-    val sharedAllLibraries: Boolean,
-    val sharedLibraries: List<SharedLibraryDto>
+  val id: Long,
+  val email: String,
+  val roles: List<String>,
+  val sharedAllLibraries: Boolean,
+  val sharedLibraries: List<SharedLibraryDto>
 )
 
 data class SharedLibraryDto(
-    val id: Long,
-    val name: String
+  val id: Long,
+  val name: String
 )
 
 fun KomgaUser.toWithSharedLibrariesDto() =
-    UserWithSharedLibrariesDto(
-        id = id,
-        email = email,
-        roles = roles.map { it.name },
-        sharedAllLibraries = sharedAllLibraries,
-        sharedLibraries = sharedLibraries.map { SharedLibraryDto(it.id, it.name) }
-    )
+  UserWithSharedLibrariesDto(
+    id = id,
+    email = email,
+    roles = roles.map { it.name },
+    sharedAllLibraries = sharedAllLibraries,
+    sharedLibraries = sharedLibraries.map { SharedLibraryDto(it.id, it.name) }
+  )
 
 fun KomgaPrincipal.toDto() = user.toDto()
 
 data class UserCreationDto(
-    @get:Email val email: String,
-    @get:NotBlank val password: String,
-    val roles: List<String> = emptyList()
+  @get:Email val email: String,
+  @get:NotBlank val password: String,
+  val roles: List<String> = emptyList()
 ) {
   fun toUserDetails(): UserDetails =
-      User.withUsername(email)
-          .password(password)
-          .roles(*roles.toTypedArray())
-          .build()
+    User.withUsername(email)
+      .password(password)
+      .roles(*roles.toTypedArray())
+      .build()
 }
 
 data class PasswordUpdateDto(
-    @get:NotBlank val password: String
+  @get:NotBlank val password: String
 )
 
 data class SharedLibrariesUpdateDto(
-    val all: Boolean,
-    val libraryIds: Set<Long>
+  val all: Boolean,
+  val libraryIds: Set<Long>
 )

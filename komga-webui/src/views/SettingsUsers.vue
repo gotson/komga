@@ -40,7 +40,9 @@
                 </v-list-item-action>
 
                 <v-list-item-action>
-                  <v-btn icon @click="promptDeleteUser(u)">
+                  <v-btn icon @click="promptDeleteUser(u)"
+                         :disabled="u.id === me.id"
+                  >
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </v-list-item-action>
@@ -90,6 +92,9 @@ export default Vue.extend({
   computed: {
     users (): UserWithSharedLibrariesDto[] {
       return this.$store.state.komgaUsers.users
+    },
+    me (): UserDto {
+      return this.$store.state.komgaUsers.me
     }
   },
   async mounted () {
