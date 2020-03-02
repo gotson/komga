@@ -1,10 +1,19 @@
+### Gradle
 .gradle
 !gradle/wrapper/gradle-wrapper.jar
 
+### NodeJS
 node_modules
-*.log
 
-### STS ###
+### Logs
+*.log
+*.log.*.gz
+
+### H2 databases
+*.mv.db
+*.trace.db
+
+### STS
 .apt_generated
 .classpath
 .factorypath
@@ -12,7 +21,7 @@ node_modules
 .settings
 .springBeans
 
-### IntelliJ IDEA ###
+### IntelliJ IDEA
 !.idea/
 .idea/*
 !/.idea/runConfigurations/
@@ -20,7 +29,7 @@ node_modules
 *.iml
 *.ipr
 
-### NetBeans ###
+### NetBeans
 nbproject/private/
 build/
 nbbuild/
@@ -28,4 +37,5 @@ dist/
 nbdist/
 .nb-gradle/
 
+### Komga
 /komga/src/main/resources/public/
