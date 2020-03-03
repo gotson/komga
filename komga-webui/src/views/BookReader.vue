@@ -474,6 +474,9 @@ export default Vue.extend({
         case 'm':
           this.toolbar = !this.toolbar
           break
+        case 's':
+          this.menu = !this.menu
+          break
         case 't':
           this.showThumbnailsExplorer = !this.showThumbnailsExplorer
           break
