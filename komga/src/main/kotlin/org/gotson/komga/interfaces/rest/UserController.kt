@@ -7,6 +7,7 @@ import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.security.KomgaUserDetailsLifecycle
 import org.gotson.komga.infrastructure.security.UserEmailAlreadyExistsException
+import org.gotson.komga.interfaces.rest.dto.toDto
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -104,13 +105,6 @@ data class UserDto(
   val roles: List<String>
 )
 
-fun KomgaUser.toDto() =
-  UserDto(
-    id = id,
-    email = email,
-    roles = roles.map { it.name }
-  )
-
 data class UserWithSharedLibrariesDto(
   val id: Long,
   val email: String,
@@ -132,8 +126,6 @@ fun KomgaUser.toWithSharedLibrariesDto() =
     sharedAllLibraries = sharedAllLibraries,
     sharedLibraries = sharedLibraries.map { SharedLibraryDto(it.id, it.name) }
   )
-
-fun KomgaPrincipal.toDto() = user.toDto()
 
 data class UserCreationDto(
   @get:Email val email: String,

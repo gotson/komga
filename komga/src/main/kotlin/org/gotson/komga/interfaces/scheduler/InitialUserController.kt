@@ -15,7 +15,7 @@ import org.springframework.stereotype.Controller
 
 private val logger = KotlinLogging.logger {}
 
-@Profile("dev", "prod")
+@Profile("(dev | prod) & !claim")
 @Controller
 class InitialUserController(
     private val userDetailsLifecycle: KomgaUserDetailsLifecycle,

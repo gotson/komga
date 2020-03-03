@@ -87,7 +87,9 @@ class SecurityConfiguration(
         "/js/**",
         "/favicon.ico",
         "/",
-        "/index.html")
+        "/index.html",
+        "/api/v1/claim"
+      )
   }
 
   @Bean
