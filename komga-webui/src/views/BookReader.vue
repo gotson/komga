@@ -163,6 +163,7 @@
       :close-on-content-click="false"
       transition="dialog-bottom-transition"
       :width="$vuetify.breakpoint.width * ($vuetify.breakpoint.smAndUp ? 0.5 : 1)"
+      @keydown.esc.stop=""
     >
       <v-container fluid class="pa-0">
         <v-toolbar dark color="primary">
@@ -477,6 +478,14 @@ export default Vue.extend({
           this.showThumbnailsExplorer = !this.showThumbnailsExplorer
           break
         case 'Escape':
+          if (this.showThumbnailsExplorer) {
+            this.showThumbnailsExplorer = false
+            break
+          }
+          if (this.menu) {
+            this.menu = false
+            break
+          }
           this.closeBook()
           break
       }

@@ -1,7 +1,9 @@
 <template>
-  <v-dialog v-model="input" scrollable>
+  <v-dialog v-model="input" scrollable
+            @keydown.esc.stop=""
+  >
     <v-card :max-height="$vuetify.breakpoint.height * .9" dark>
-<v-card-title>
+      <v-card-title>
         <v-pagination
           v-model="page"
           :total-visible="perPage"
