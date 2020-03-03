@@ -1,3 +1,10 @@
+# [0.18.0](https://github.com/gotson/komga/compare/v0.17.0...v0.18.0) (2020-03-03)
+
+
+### Features
+
+* add claim profile ([b7eeb4c](https://github.com/gotson/komga/commit/b7eeb4c6cbac9207578e6d303b361dad70a1a646)), closes [#104](https://github.com/gotson/komga/issues/104)
+
 # [0.17.0](https://github.com/gotson/komga/compare/v0.16.5...v0.17.0) (2020-03-03)
 
 
