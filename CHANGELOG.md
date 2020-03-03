@@ -1,3 +1,17 @@
+# [0.17.0](https://github.com/gotson/komga/compare/v0.16.5...v0.17.0) (2020-03-03)
+
+
+### Bug Fixes
+
+* **webreader:** defaults to LTR and fix touch ([2eae83f](https://github.com/gotson/komga/commit/2eae83f561ef2fc0009770d1fbc21ff2fff56b78))
+
+
+### Features
+
+* **webreader:** add 's' keyboard shortcut to show settings ([99b14cb](https://github.com/gotson/komga/commit/99b14cb80c65c42a1955b53df012cb1e213ffc48))
+* **webreader:** escape closes dialogs ([9e44571](https://github.com/gotson/komga/commit/9e44571af53673c5acbee2fced22f047bad3316e))
+* **webui:** redesign reader to follow material design ([7f0ab5f](https://github.com/gotson/komga/commit/7f0ab5fde3119abff1b0ba88b6e958a0c5645369)), closes [#74](https://github.com/gotson/komga/issues/74)
+
 ## [0.16.5](https://github.com/gotson/komga/compare/v0.16.4...v0.16.5) (2020-03-02)
 
 
