@@ -11,7 +11,7 @@ export enum ImageFit {
 }
 
 export enum ReadingDirection {
-  LeftToRight = 'ltl',
+  LeftToRight = 'ltr',
   RightToLeft = 'rtl'
 }
 
