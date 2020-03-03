@@ -40,8 +40,7 @@
           dense
           elevation="1"
           class="settings full-width"
-          absolute
-          bottom
+          style="position: fixed; bottom: 0"
           horizontal
           v-if="toolbar"
         >
@@ -155,7 +154,7 @@
     <thumbnail-explorer-dialog
       v-model="showThumbnailsExplorer"
       :bookId="bookId"
-      @goToPage="goTo($event)"
+      @goToPage="goTo"
       :pagesCount="pagesCount"
     ></thumbnail-explorer-dialog>
 

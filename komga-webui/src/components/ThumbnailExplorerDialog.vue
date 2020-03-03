@@ -1,18 +1,19 @@
 <template>
   <v-dialog v-model="input" scrollable>
     <v-card :max-height="$vuetify.breakpoint.height * .9" dark>
+<v-card-title>
+        <v-pagination
+          v-model="page"
+          :total-visible="perPage"
+          :length="Math.ceil(thumbnails.length/perPage)"
+        ></v-pagination>
+      </v-card-title>
       <v-card-text>
         <v-container fluid>
-          <v-row class="mb-2 d-flex flex-sm-row flex-column align-center justify-space-around">
-
-            <v-pagination
-              v-model="page"
-              :total-visible="perPage"
-              :length="Math.ceil(thumbnails.length/perPage)"
-            ></v-pagination>
+          <v-row class="mb-2 align-center justify-space-around">
 
             <div v-for="(url, i) in visibleThumbnails()"
-                 :key="i"
+                 :key="url"
                  style="min-height: 220px; max-width: 140px"
                  class="d-flex flex-column justify-center"
             >
@@ -62,11 +63,11 @@ export default Vue.extend({
     }
   },
   watch: {
-    value: {
-      handler (after) {
-        this.input = after
-      },
-      immediate: true
+    value (val) {
+      this.input = val
+    },
+    input (val) {
+      !val && this.$emit('input', false)
     }
   },
   computed: {
