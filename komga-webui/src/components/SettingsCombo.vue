@@ -15,10 +15,10 @@
         @change="updateInput"
         hide-details="true"
       >
-        <template slot="item" slot-scope="data">
+        <template v-slot:item="{ data }">
           <slot name="item" v-bind="data"></slot>
         </template>
-        <template slot="selection" slot-scope="data">
+        <template v-slot:selection="{ data }">
           <slot name="selection" v-bind="data"></slot>
         </template>
       </v-combobox>

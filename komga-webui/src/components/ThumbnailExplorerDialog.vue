@@ -77,14 +77,14 @@ export default Vue.extend({
         thumbnails.push(this.getThumbnailUrl(p))
       }
       return thumbnails
-    }
-  },
-  methods: {
+    },
     visibleThumbnails (): String[] {
       let a : number = (this.page - 1) * this.perPage
       let b : number = this.page * this.perPage
       return this.thumbnails.slice(a, b)
-    },
+    }
+  },
+  methods: {
     updateInput () {
       this.$emit('input', this.input)
     },
