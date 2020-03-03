@@ -1,284 +1,223 @@
 <template>
-  <div v-if="pages.length > 0" style="background: black; width: 100%; height: 100%">
-    <!--  clickable zone: left  -->
-    <div @click="rtl ? next() : prev()"
-         class="left-quarter full-height"
-         style="z-index: 1; position: absolute"
-    />
-
-    <!--  clickable zone: menu  -->
-    <div @click="showMenu = true"
-         class="center-half full-height"
-         style="z-index: 1; position: absolute"
-    />
-
-    <!--  clickable zone: right  -->
-    <div @click="rtl ? prev() : next()"
-         class="right-quarter full-height"
-         style="z-index: 1; position: absolute"
-    />
-
-    <!--  Carousel  -->
-    <v-carousel v-model="carouselPage"
-                :show-arrows="false"
-                hide-delimiters
-                :continuous="false"
-                height="auto"
-                touchless
-                :reverse="rtl"
-    >
-      <!--  Carousel: pages  -->
-      <v-carousel-item v-for="p in slidesRange"
-                       :key="doublePages ? `db${p}` : `sp${p}`"
-                       :eager="eagerLoad(p)"
-      >
-        <div :class="`d-flex flex-row${rtl ? '-reverse' : ''} justify-center`">
-          <img :src="getPageUrl(p)"
-               :height="maxHeight"
-               :width="maxWidth(p)"
-          />
-
-          <img v-if="doublePages && p !== 1 && p !== pagesCount && p+1 !== pagesCount"
-               :src="getPageUrl(p+1)"
-               :height="maxHeight"
-               :width="maxWidth(p+1)"
-          />
-        </div>
-      </v-carousel-item>
-    </v-carousel>
-
-    <!--  Menu  -->
-    <v-overlay :value="showMenu"
-               opacity=".8"
-    >
-      <!--   Menu: left zone with arrow   -->
-      <div class="fixed-position full-height left-quarter"
-           style="display: flex; align-items: center; justify-content: center"
-      >
-        <v-icon size="8em">
-          mdi-chevron-left
-        </v-icon>
-      </div>
-
-      <!--   Menu: central zone   -->
-      <div class="dashed-x fixed-position center-half full-height"
-           @click.self="showMenu = false"
-      >
-        <div style="position: absolute; top: 1em; left: 1em">
-          <v-btn @click="closeBook"
-                 color="primary"
+  <v-container class="ma-0 pa-0 full-height" fluid v-if="pages.length > 0" style="width: 100%;"
+       v-touch="{
+       left: () => turnLeft(),
+       right: () => turnRight(),
+       }"
+  >
+    <div>
+      <v-slide-y-transition>
+        <v-toolbar
+          dense elevation="1"
+          v-if="toolbar"
+          class="settings full-width"
+          style="position: fixed; top: 0"
+        >
+          <v-btn
+            icon
+            @click="closeBook"
           >
-            Close book
+            <v-icon>mdi-arrow-left</v-icon>
           </v-btn>
-
-          <v-btn @click="showMenu = false; showThumbnailsExplorer = true"
-                 color="primary"
-                 class="ml-2"
+          <v-toolbar-title> {{ this.bookTitle }}</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn
+            icon
+            @click="showThumbnailsExplorer = !showThumbnailsExplorer"
           >
             <v-icon>mdi-view-grid</v-icon>
           </v-btn>
-        </div>
-
-        <v-btn icon
-               @click="showMenu = false"
-               absolute
-               top
-               right
+          <v-btn
+            icon
+            @click="menu = !menu"
+          >
+            <v-icon>mdi-settings</v-icon>
+          </v-btn>
+        </v-toolbar>
+      </v-slide-y-transition>
+      <v-slide-y-reverse-transition>
+        <v-toolbar
+          dense
+          elevation="1"
+          class="settings full-width"
+          style="position: fixed; bottom: 0"
+          horizontal
+          v-if="toolbar"
         >
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-
-        <v-container fluid
-                     class="pa-6 pt-12"
-                     style="border-bottom: 4px dashed"
-        >
-          <!--  Menu: book title  -->
-          <v-row>
-            <v-col class="text-center title">
-              {{ bookTitle }}
-            </v-col>
-          </v-row>
-
-          <!--  Menu: number of pages  -->
-          <v-row>
-            <v-col class="text-center title">
-              Page {{ currentPage }} of {{ pagesCount }}
-            </v-col>
-          </v-row>
-
-          <!--  Menu: progress bar  -->
-          <v-row>
-            <v-col cols="12">
-              <v-progress-linear :value="progress"
-                                 height="20"
-                                 background-color="white"
-                                 color="secondary"
-                                 rounded
-              />
-            </v-col>
-          </v-row>
-
-          <!--  Menu: go to page  -->
-          <v-row align="baseline" justify="center">
-            <v-col cols="auto">
-              Go to page
-            </v-col>
-            <v-col cols="auto">
-              <v-text-field
-                v-model="goToPage"
-                hide-details
-                single-line
-                type="number"
-                @change="goTo"
-                style="width: 4em"
-              />
-            </v-col>
-          </v-row>
-
-          <!--  Menu: page slider  -->
-          <v-row align="baseline">
-            <v-col cols="12">
+          <v-row justify="center">
+              <!--  Menu: page slider  -->
+            <v-col>
               <v-slider
+                hide-details
+                thumb-label
+                @change="goTo"
                 v-model="goToPage"
                 class="align-center"
-                :max="pagesCount"
                 min="1"
-                hide-details
-                @change="goTo"
+                :max="pagesCount"
               >
                 <template v-slot:prepend>
-                  <v-btn icon @click="goToFirst">
-                    <v-icon>mdi-arrow-collapse-left</v-icon>
-                  </v-btn>
+                  <v-icon  @click="goToFirst" class="mx-2">mdi-arrow-collapse-left</v-icon>
+                  <v-label>
+                    {{ currentPage }}
+                  </v-label>
                 </template>
                 <template v-slot:append>
-                  <v-btn icon @click="goToLast">
-                    <v-icon>mdi-arrow-collapse-right</v-icon>
-                  </v-btn>
+                  <v-label>
+                    {{ pagesCount }}
+                  </v-label>
+                  <v-icon @click="goToLast"   class="mx-2">mdi-arrow-collapse-right</v-icon>
                 </template>
               </v-slider>
+    <!--              <v-dialog v-model="dialogGoto" persistent max-width="290">-->
+    <!--                <template v-slot:activator="{ on }">-->
+    <!--                  <v-icon large class="ma-auto" v-on="on">mdi-arrow-right-bold-circle</v-icon>-->
+    <!--                </template>-->
+    <!--                <v-card >-->
+    <!--                  <v-card-text class="d-flex flex-row">-->
+    <!--                    <v-text-field-->
+    <!--                      v-model="goToPage"-->
+    <!--                      hide-details-->
+    <!--                      single-line-->
+    <!--                      type="number"-->
+    <!--                      autofocus-->
+    <!--                    />-->
+    <!--                  </v-card-text>-->
+
+    <!--                  <v-card-actions>-->
+    <!--                    <v-spacer></v-spacer>-->
+    <!--                    <v-btn color="darken-1" text @click="dialogGoto = false">Close</v-btn>-->
+    <!--                    <v-btn color="green darken-1" text @click="goTo(goToPage)">Go To</v-btn>-->
+    <!--                  </v-card-actions>-->
+    <!--                </v-card>-->
+    <!--              </v-dialog>-->
             </v-col>
           </v-row>
 
-          <!--  Menu: fit buttons  -->
-          <v-row justify="center">
-            <v-col cols="auto">
-              <v-btn-toggle v-model="fitButtons" dense mandatory active-class="primary" class="flex-column flex-md-row">
-                <v-btn @click="setFit(ImageFit.WIDTH)">
-                  Fit to width
-                </v-btn>
+        </v-toolbar>
+      </v-slide-y-reverse-transition>
+    </div>
 
-                <v-btn @click="setFit(ImageFit.HEIGHT)">
-                  Fit to height
-                </v-btn>
+    <!--  clickable zone: left  -->
+    <div @click="turnLeft()"
+         class="left-quarter full-height top"
+         style="z-index: 1;"
+    />
 
-                <v-btn @click="setFit(ImageFit.ORIGINAL)">
-                  Original
-                </v-btn>
-              </v-btn-toggle>
-            </v-col>
-          </v-row>
+    <!--  clickable zone: menu  -->
+    <div @click="toolbar = !toolbar"
+         class="center-half full-height top"
+         style="z-index: 1;"
+    />
 
-          <!--  Menu: RTL buttons  -->
-          <v-row justify="center">
-            <v-col cols="auto">
-              <v-btn-toggle v-model="rtlButtons" dense mandatory active-class="primary" class="flex-column flex-md-row">
-                <v-btn @click="setRtl(false)">
-                  Left to right
-                </v-btn>
+    <!--  clickable zone: right  -->
+    <div @click="turnRight()"
+         class="right-quarter full-height top"
+         style="z-index: 1;"
+    />
 
-                <v-btn @click="setRtl(true)">
-                  Right to left
-                </v-btn>
-              </v-btn-toggle>
-            </v-col>
-          </v-row>
-
-          <!--  Menu: double pages buttons  -->
-          <v-row justify="center">
-            <v-col cols="auto">
-              <v-btn-toggle v-model="doublePagesButtons" dense mandatory active-class="primary" class="flex-column flex-md-row">
-                <v-btn @click="setDoublePages(false)">
-                  Single page
-                </v-btn>
-
-                <v-btn @click="setDoublePages(true)">
-                  Double pages
-                </v-btn>
-              </v-btn-toggle>
-            </v-col>
-          </v-row>
-
-          <!--  Menu: keyboard shortcuts  -->
-          <v-row>
-            <v-col cols="auto">
-              <div><kbd>←</kbd> / <kbd>⇞</kbd></div>
-              <div><kbd>→</kbd> / <kbd>⇟</kbd></div>
-              <div><kbd>home</kbd></div>
-              <div><kbd>end</kbd></div>
-              <div><kbd>space</kbd></div>
-              <div><kbd>m</kbd></div>
-              <div><kbd>t</kbd></div>
-              <div><kbd>esc</kbd></div>
-            </v-col>
-            <v-col>
-              <div v-if="!rtl">Previous page</div>
-              <div v-else>Next page</div>
-              <div v-if="!rtl">Next page</div>
-              <div v-else>Previous page</div>
-              <div>First page</div>
-              <div>Last page</div>
-              <div>Scroll down</div>
-              <div>Show / hide menu</div>
-              <div>Show / hide thumbnails</div>
-              <div>Close book</div>
-            </v-col>
-          </v-row>
-        </v-container>
-      </div>
-
-      <!--   Menu: right zone with arrow   -->
-      <div class="fixed-position full-height right-quarter"
-           style="display: flex; align-items: center; justify-content: center"
+    <div class="full-height">
+    <!--  Carousel  -->
+      <v-carousel v-model="carouselPage"
+                  :show-arrows="false"
+                  :continuous="false"
+                  :reverse="flipDirection"
+                  hide-delimiters
+                  touchless
+                  height="100%"
       >
-        <v-icon size="8em">
-          mdi-chevron-right
-        </v-icon>
-      </div>
+        <!--  Carousel: pages  -->
+        <v-carousel-item v-for="p in slidesRange"
+                         :key="doublePages ? `db${p}` : `sp${p}`"
+                         :eager="eagerLoad(p)"
+                         class="full-height"
+                         :transition="animations ? undefined : false"
+                         :reverse-transition="animations ? undefined : false"
+        >
+          <div class="full-height d-flex flex-column justify-center reader-background">
+            <div :class="`d-flex flex-row${flipDirection ? '-reverse' : ''} justify-center px-0 mx-0` " >
+              <img :src="getPageUrl(p)"
+                   :height="maxHeight"
+                   :width="maxWidth(p)"
+              />
+              <img v-if="doublePages && p !== 1 && p !== pagesCount && p+1 !== pagesCount"
+                   :src="getPageUrl(p+1)"
+                   :height="maxHeight"
+                   :width="maxWidth(p+1)"
+              />
+            </div>
+          </div>
+        </v-carousel-item>
+      </v-carousel>
+    </div>
 
-    </v-overlay>
+    <thumbnail-explorer-dialog
+      v-model="showThumbnailsExplorer"
+      :bookId="bookId"
+      @goToPage="goTo"
+      :pagesCount="pagesCount"
+    ></thumbnail-explorer-dialog>
 
-    <v-dialog v-model="showThumbnailsExplorer" scrollable>
-      <v-card :max-height="$vuetify.breakpoint.height * .9"
-              dark
-      >
-        <v-card-text>
-          <v-container fluid>
-            <v-row>
-              <div v-for="p in pagesCount"
-                   :key="p"
-                   style="min-height: 220px; max-width: 140px"
-                   class="mb-2"
-              >
-                <v-img
-                  :src="getThumbnailUrl(p)"
-                  lazy-src="../assets/cover.svg"
-                  aspect-ratio="0.7071"
-                  :contain="true"
-                  max-height="200"
-                  max-width="140"
-                  class="ma-2"
-                  @click="showThumbnailsExplorer = false; goTo(p)"
-                  style="cursor: pointer"
-                />
-                <div class="white--text text-center font-weight-bold">{{p}}</div>
-              </div>
-            </v-row>
-          </v-container>
-        </v-card-text>
-      </v-card>
+    <v-dialog
+      v-model="menu"
+      :close-on-content-click="false"
+      transition="dialog-bottom-transition"
+      :width="$vuetify.breakpoint.width * ($vuetify.breakpoint.smAndUp ? 0.5 : 1)"
+    >
+      <v-container fluid class="pa-0">
+        <v-toolbar dark color="primary">
+          <v-btn icon dark @click="menu = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Reader Settings</v-toolbar-title>
+        </v-toolbar>
+
+        <v-list class="full-height full-width">
+          <v-list-item>
+            <settings-switch v-model="doublePages" label="Page Layout" :status="`${ doublePages ? 'Double Pages' : 'Single Page'}`"></settings-switch>
+          </v-list-item>
+          <v-list-item>
+            <settings-switch v-model="animations" label="Page Transitions"></settings-switch>
+          </v-list-item>
+          <v-list-item>
+            <settings-select
+              :items="settings.readingDirections"
+              v-model="readingDirection"
+              label="Reading Direction"
+            >
+              <template v-slot:item="data" >
+                <div class="text-capitalize">
+                  {{ readingDirectionDisplay(data.item) }}
+                </div>
+              </template>
+              <template v-slot:selection="data">
+                <div class="text-capitalize">
+                  {{ readingDirectionDisplay(data.item)  }}
+                </div>
+              </template>
+            </settings-select>
+          </v-list-item>
+          <v-list-item>
+            <settings-select
+              :items="settings.imageFits"
+              v-model="imageFit"
+              label="Scaling"
+            >
+              <template v-slot:item="data">
+                <div class="text-capitalize">
+                  {{ imageFitDisplay(data.item) }}
+                </div>
+              </template>
+              <template v-slot:selection="data">
+                <div class="text-capitalize">
+                  {{ imageFitDisplay(data.item)  }}
+                </div>
+              </template>
+            </settings-select>
+          </v-list-item>
+        </v-list>
+      </v-container>
     </v-dialog>
-
     <v-snackbar
       v-model="jumpToPreviousBook"
       :timeout="jumpConfirmationDelay"
@@ -309,23 +248,38 @@
         <p v-else>Click or press next again<br/>to exit the reader.</p>
       </div>
     </v-snackbar>
-
-  </div>
+  </v-container>
 </template>
 
 <script lang="ts">
+import SettingsSwitch from '@/components/SettingsSwitch.vue'
+import SettingsSelect from '@/components/SettingsSelect.vue'
+import ThumbnailExplorerDialog from '@/components/ThumbnailExplorerDialog.vue'
+
 import { checkWebpFeature } from '@/functions/check-webp'
-import { bookPageThumbnailUrl, bookPageUrl } from '@/functions/urls'
-import { ImageFit } from '@/types/common'
+import { bookPageUrl } from '@/functions/urls'
+import { ImageFit, ReadingDirection } from '@/types/common'
 import Vue from 'vue'
 import { getBookTitleCompact } from '@/functions/book-title'
 
 const cookieFit = 'webreader.fit'
-const cookieRtl = 'webreader.rtl'
+const cookieReadingDirection = 'webreader.readingDirection'
 const cookieDoublePages = 'webreader.doublePages'
+const cookieAnimations = 'webreader.animations'
+
+const fitDisplay = {
+  [ImageFit.HEIGHT]: 'fit to height',
+  [ImageFit.WIDTH]: 'fit to width',
+  [ImageFit.ORIGINAL]: 'original'
+}
+const dirDisplay = {
+  [ReadingDirection.RightToLeft]: 'right to left',
+  [ReadingDirection.LeftToRight]: 'left to right'
+}
 
 export default Vue.extend({
   name: 'BookReader',
+  components: { SettingsSwitch, SettingsSelect, ThumbnailExplorerDialog },
   data: () => {
     return {
       ImageFit,
@@ -340,15 +294,19 @@ export default Vue.extend({
       supportedMediaTypes: ['image/jpeg', 'image/png', 'image/gif'],
       convertTo: 'jpeg',
       carouselPage: 0,
+      showThumbnailsExplorer: false,
+      toolbar: false,
+      menu: false,
+      dialogGoto: false,
       goToPage: 1,
-      showMenu: false,
-      fitButtons: 1,
-      fit: ImageFit.HEIGHT,
-      rtlButtons: 0,
-      rtl: false,
-      doublePages: false,
-      doublePagesButtons: 0,
-      showThumbnailsExplorer: false
+      settings: {
+        doublePages: false,
+        imageFits: Object.values(ImageFit),
+        fit: ImageFit.HEIGHT,
+        readingDirections: Object.values(ReadingDirection),
+        readingDirection: ReadingDirection.RightToLeft,
+        animations: true
+      }
     }
   },
   created () {
@@ -362,20 +320,10 @@ export default Vue.extend({
     window.addEventListener('keydown', this.keyPressed)
     this.setup(this.bookId, Number(this.$route.query.page))
 
-    // restore options for RTL, fit, and double pages
-    if (this.$cookies.isKey(cookieRtl)) {
-      if (this.$cookies.get(cookieRtl) === 'true') {
-        this.setRtl(true)
-      }
-    }
-    if (this.$cookies.isKey(cookieFit)) {
-      this.setFit(this.$cookies.get(cookieFit))
-    }
-    if (this.$cookies.isKey(cookieDoublePages)) {
-      if (this.$cookies.get(cookieDoublePages) === 'true') {
-        this.setDoublePages(true)
-      }
-    }
+    this.loadFromCookie(cookieReadingDirection, (v) => { this.readingDirection = v })
+    this.loadFromCookie(cookieAnimations, (v) => { this.animations = (v === 'true') })
+    this.loadFromCookie(cookieDoublePages, (v) => { this.doublePages = (v === 'true') })
+    this.loadFromCookie(cookieFit, (v) => { if (v) { this.imageFit = v } })
   },
   destroyed () {
     window.removeEventListener('keydown', this.keyPressed)
@@ -421,8 +369,8 @@ export default Vue.extend({
     progress (): number {
       return this.currentPage / this.pagesCount * 100
     },
-    maxHeight (): number | string {
-      return this.fit === ImageFit.HEIGHT ? this.$vuetify.breakpoint.height : 'auto'
+    maxHeight (): number | null {
+      return this.imageFit === ImageFit.HEIGHT ? this.$vuetify.breakpoint.height : null
     },
     slidesRange (): number[] {
       if (!this.doublePages) {
@@ -442,18 +390,69 @@ export default Vue.extend({
     },
     bookTitle (): string {
       return getBookTitleCompact(this.book.name, this.series.name)
+    },
+
+    animations: {
+      get: function (): boolean {
+        return this.settings.animations
+      },
+      set: function (animations: boolean): void {
+        this.settings.animations = animations
+        this.$cookies.set(cookieAnimations, animations, Infinity)
+      }
+    },
+    readingDirection: {
+      get: function (): ReadingDirection {
+        return this.settings.readingDirection
+      },
+      set: function (readingDirection: ReadingDirection): void {
+        this.settings.readingDirection = readingDirection
+        this.$cookies.set(cookieReadingDirection, readingDirection, Infinity)
+      }
+    },
+    flipDirection (): boolean {
+      switch (this.readingDirection) {
+        case ReadingDirection.LeftToRight:
+          return false
+        case ReadingDirection.RightToLeft:
+        default:
+          return true
+      }
+    },
+    imageFit: {
+      get: function (): ImageFit {
+        return this.settings.fit
+      },
+      set: function (fit: ImageFit): void {
+        this.settings.fit = fit
+        this.$cookies.set(cookieFit, fit, Infinity)
+      }
+    },
+    doublePages: {
+      get: function (): boolean {
+        return this.settings.doublePages
+      },
+      set: function (doublePages: boolean): void {
+        const current = this.currentPage
+        this.settings.doublePages = doublePages
+        this.goTo(current)
+        this.$cookies.set(cookieDoublePages, doublePages, Infinity)
+      }
     }
   },
   methods: {
+    swipe (direction: string) {
+      alert(direction)
+    },
     keyPressed (e: KeyboardEvent) {
       switch (e.key) {
         case 'PageUp':
         case 'ArrowRight':
-          this.rtl ? this.prev() : this.next()
+          this.flipDirection ? this.prev() : this.next()
           break
         case 'PageDown':
         case 'ArrowLeft':
-          this.rtl ? this.next() : this.prev()
+          this.flipDirection ? this.next() : this.prev()
           break
         case 'Home':
           this.goToFirst()
@@ -462,7 +461,7 @@ export default Vue.extend({
           this.goToLast()
           break
         case 'm':
-          this.showMenu = !this.showMenu
+          this.toolbar = !this.toolbar
           break
         case 't':
           this.showThumbnailsExplorer = !this.showThumbnailsExplorer
@@ -499,8 +498,11 @@ export default Vue.extend({
         return bookPageUrl(this.bookId, page)
       }
     },
-    getThumbnailUrl (page: number): string {
-      return bookPageThumbnailUrl(this.bookId, page)
+    turnRight () {
+      return this.flipDirection ? this.prev() : this.next()
+    },
+    turnLeft () {
+      return this.flipDirection ? this.next() : this.prev()
     },
     prev () {
       if (this.canPrev) {
@@ -555,33 +557,6 @@ export default Vue.extend({
     closeBook () {
       this.$router.push({ name: 'browse-book', params: { bookId: this.bookId.toString() } })
     },
-    setRtl (rtl: boolean) {
-      this.rtl = rtl
-      this.rtlButtons = rtl ? 1 : 0
-      this.$cookies.set(cookieRtl, rtl, Infinity)
-    },
-    setFit (fit: ImageFit) {
-      this.fit = fit
-      switch (fit) {
-        case ImageFit.WIDTH:
-          this.fitButtons = 0
-          break
-        case ImageFit.HEIGHT:
-          this.fitButtons = 1
-          break
-        case ImageFit.ORIGINAL:
-          this.fitButtons = 2
-          break
-      }
-      this.$cookies.set(cookieFit, fit, Infinity)
-    },
-    setDoublePages (doublePages: boolean) {
-      const current = this.currentPage
-      this.doublePages = doublePages
-      this.goTo(current)
-      this.doublePagesButtons = doublePages ? 1 : 0
-      this.$cookies.set(cookieDoublePages, doublePages, Infinity)
-    },
     toSinglePages (i: number): number {
       if (i === 1) return 1
       if (i === this.slidesCount) return this.pagesCount
@@ -597,46 +572,69 @@ export default Vue.extend({
     eagerLoad (p: number): boolean {
       return Math.abs(this.currentPage - p) <= 2
     },
-    maxWidth (p: number): number | string {
-      if (this.fit !== ImageFit.WIDTH) {
-        return 'auto'
+    maxWidth (p: number): number | null {
+      if (this.imageFit !== ImageFit.WIDTH) {
+        return null
       }
       if (this.doublePages && p !== 1 && p !== this.pagesCount) {
         return this.$vuetify.breakpoint.width / 2
       }
       return this.$vuetify.breakpoint.width
+    },
+    imageFitDisplay (fit: ImageFit): string {
+      return fitDisplay[fit]
+    },
+    readingDirectionDisplay (dir: ReadingDirection): string {
+      return dirDisplay[dir]
+    },
+    loadFromCookie (cookieKey: string, setter: (value: any) => void): void {
+      if (this.$cookies.isKey(cookieKey)) {
+        let value = this.$cookies.get(cookieKey)
+        setter(value)
+      }
     }
   }
 })
 </script>
 
 <style scoped>
-.fixed-position {
-  position: fixed;
+
+.reader-background {
+     background-color: white; /* TODO add a setting for this, some books might not be white */
+}
+
+.settings {
+  /*position: absolute;*/
+  z-index: 2;
+}
+
+.top {
+  top: 0;
 }
 
 .full-height {
-  top: 0;
   height: 100%;
+}
+
+.full-width {
+  width: 100%;
 }
 
 .left-quarter {
   left: 0;
   width: 20%;
+  position: absolute;
 }
 
 .right-quarter {
   right: 0;
   width: 20%;
+  position: absolute;
 }
 
 .center-half {
   left: 20%;
   width: 60%;
-}
-
-.dashed-x {
-  border-left: 4px dashed;
-  border-right: 4px dashed;
+  position: absolute;
 }
 </style>
