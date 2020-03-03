@@ -12,7 +12,7 @@
         <v-container fluid>
           <v-row class="mb-2 align-center justify-space-around">
 
-            <div v-for="(url, i) in visibleThumbnails()"
+            <div v-for="(url, i) in visibleThumbnails"
                  :key="url"
                  style="min-height: 220px; max-width: 140px"
                  class="d-flex flex-column justify-center"

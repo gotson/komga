@@ -185,12 +185,12 @@
               v-model="readingDirection"
               label="Reading Direction"
             >
-              <template v-slot:item="{ data }" >
+              <template v-slot:item="data" >
                 <div class="text-capitalize">
                   {{ readingDirectionDisplay(data.item) }}
                 </div>
               </template>
-              <template v-slot:selection="{ data }">
+              <template v-slot:selection="data">
                 <div class="text-capitalize">
                   {{ readingDirectionDisplay(data.item)  }}
                 </div>
@@ -203,12 +203,12 @@
               v-model="imageFit"
               label="Scaling"
             >
-              <template v-slot:item="{ data }">
+              <template v-slot:item="data">
                 <div class="text-capitalize">
                   {{ imageFitDisplay(data.item) }}
                 </div>
               </template>
-              <template v-slot:selection="{ data }">
+              <template v-slot:selection="data">
                 <div class="text-capitalize">
                   {{ imageFitDisplay(data.item)  }}
                 </div>
