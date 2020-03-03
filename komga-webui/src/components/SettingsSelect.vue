@@ -10,7 +10,6 @@
         solo
         :items="items"
         v-model="input"
-        hide-selected
         @input="updateInput"
         @change="updateInput"
         hide-details="true"
