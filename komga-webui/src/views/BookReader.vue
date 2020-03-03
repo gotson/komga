@@ -1,8 +1,8 @@
 <template>
   <v-container class="ma-0 pa-0 full-height" fluid v-if="pages.length > 0" style="width: 100%;"
        v-touch="{
-       left: () => next(),
-       right: () => prev(),
+       left: () => turnLeft(),
+       right: () => turnRight(),
        }"
   >
     <div>
@@ -11,7 +11,7 @@
           dense elevation="1"
           v-if="toolbar"
           class="settings full-width"
-          absolute
+          style="position: fixed; top: 0"
         >
           <v-btn
             icon
@@ -99,7 +99,7 @@
     </div>
 
     <!--  clickable zone: left  -->
-    <div @click="flipDirection ? next() : prev()"
+    <div @click="turnLeft()"
          class="left-quarter full-height top"
          style="z-index: 1;"
     />
@@ -111,7 +111,7 @@
     />
 
     <!--  clickable zone: right  -->
-    <div @click="flipDirection ? prev() : next()"
+    <div @click="turnRight()"
          class="right-quarter full-height top"
          style="z-index: 1;"
     />
@@ -180,7 +180,7 @@
             <settings-switch v-model="animations" label="Page Transitions"></settings-switch>
           </v-list-item>
           <v-list-item>
-            <settings-combo
+            <settings-select
               :items="settings.readingDirections"
               v-model="readingDirection"
               label="Reading Direction"
@@ -195,10 +195,10 @@
                   {{ readingDirectionDisplay(data.item)  }}
                 </div>
               </template>
-            </settings-combo>
+            </settings-select>
           </v-list-item>
           <v-list-item>
-            <settings-combo
+            <settings-select
               :items="settings.imageFits"
               v-model="imageFit"
               label="Scaling"
@@ -213,7 +213,7 @@
                   {{ imageFitDisplay(data.item)  }}
                 </div>
               </template>
-            </settings-combo>
+            </settings-select>
           </v-list-item>
         </v-list>
       </v-container>
@@ -253,7 +253,7 @@
 
 <script lang="ts">
 import SettingsSwitch from '@/components/SettingsSwitch.vue'
-import SettingsCombo from '@/components/SettingsCombo.vue'
+import SettingsSelect from '@/components/SettingsSelect.vue'
 import ThumbnailExplorerDialog from '@/components/ThumbnailExplorerDialog.vue'
 
 import { checkWebpFeature } from '@/functions/check-webp'
@@ -279,7 +279,7 @@ const dirDisplay = {
 
 export default Vue.extend({
   name: 'BookReader',
-  components: { SettingsSwitch, SettingsCombo, ThumbnailExplorerDialog },
+  components: { SettingsSwitch, SettingsSelect, ThumbnailExplorerDialog },
   data: () => {
     return {
       ImageFit,
@@ -413,10 +413,10 @@ export default Vue.extend({
     flipDirection (): boolean {
       switch (this.readingDirection) {
         case ReadingDirection.LeftToRight:
-          return true
+          return false
         case ReadingDirection.RightToLeft:
         default:
-          return false
+          return true
       }
     },
     imageFit: {
@@ -498,7 +498,12 @@ export default Vue.extend({
         return bookPageUrl(this.bookId, page)
       }
     },
-
+    turnRight () {
+      return this.flipDirection ? this.prev() : this.next()
+    },
+    turnLeft () {
+      return this.flipDirection ? this.next() : this.prev()
+    },
     prev () {
       if (this.canPrev) {
         this.carouselPage--

@@ -4,7 +4,7 @@
       <v-label class=""> {{ label }} </v-label>
     </v-col>
     <v-col cols="7" md="4" >
-      <v-combobox
+      <v-select
         filled
         dense
         solo
@@ -21,7 +21,7 @@
         <template v-slot:selection="data">
           <slot name="selection" v-bind="data"></slot>
         </template>
-      </v-combobox>
+      </v-select>
     </v-col>
   </v-row>
 </template>
@@ -30,7 +30,7 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'SettingsCombo',
+  name: 'SettingsSelect',
   props: {
     items: null as any,
     label: {
