@@ -1,5 +1,16 @@
 application.version: ${version}
 
+logging:
+  file:
+    max-history: 10
+    name: komga.log
+
+komga:
+  libraries-scan-cron: "0 */15 * * * ?"
+  libraries-scan-directory-exclusions:
+    - "#recycle"
+    - "@eaDir"
+
 spring:
   #  cache:
   #    caffeine-spec: maximumSize=500,expireAfterWrite=300s

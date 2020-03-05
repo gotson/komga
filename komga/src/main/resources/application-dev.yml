@@ -5,10 +5,8 @@ komga:
   remember-me:
     key: changeMe!
     validity: 2592000 # 1 month
-#  libraries-scan-directory-exclusions:
-#    - "#recycle"
-#    - "@eaDir"
-#  libraries-scan-cron: "*/5 * * * * ?"
+  #  libraries-scan-cron: "*/5 * * * * ?" #every 5 seconds
+  libraries-scan-cron: "-" #disable
 spring:
   jpa:
     properties:

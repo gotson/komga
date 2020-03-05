@@ -11,7 +11,7 @@ import java.util.concurrent.RejectedExecutionException
 
 private val logger = KotlinLogging.logger {}
 
-@Profile("dev", "prod")
+@Profile("!test")
 @Controller
 class PeriodicScannerController(
     private val asyncOrchestrator: AsyncOrchestrator

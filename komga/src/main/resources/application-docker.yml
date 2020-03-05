@@ -2,5 +2,3 @@ spring:
   datasource:
     url: jdbc:h2:/config/database.h2
 logging.file.name: /config/logs/komga.log
-komga:
-  libraries-scan-cron: "0 */15 * * * ?"
