@@ -8,6 +8,8 @@ komga:
   #  libraries-scan-cron: "*/5 * * * * ?" #every 5 seconds
   libraries-scan-cron: "-" #disable
 spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
   jpa:
     properties:
       hibernate:
