@@ -1,3 +1,10 @@
+# [0.20.0](https://github.com/gotson/komga/compare/v0.19.0...v0.20.0) (2020-03-05)
+
+
+### Features
+
+* add default location for database ([ce50403](https://github.com/gotson/komga/commit/ce50403a86cb14de5edba34a0ac9f34b1b586af5))
+
 # [0.19.0](https://github.com/gotson/komga/compare/v0.18.0...v0.19.0) (2020-03-05)
 
 
