@@ -1,71 +1,63 @@
 <template>
-  <v-hover :disabled="!overlay">
-    <template v-slot:default="{ hover }">
-      <v-card :width="width"
-              :ripple="false"
-              @click="cardClick"
-      >
-        <v-img
-          :src="thumbnailUrl"
-          lazy-src="../assets/cover.svg"
-          aspect-ratio="0.7071"
-        >
-          <span class="white--text pa-1 px-2 subtitle-2"
-                style="background: darkorange; position: absolute; right: 0"
-          >
-            {{ series.booksCount }}
-          </span>
-          <v-fade-transition>
-            <v-overlay
-              v-if="hover || selected || preSelect"
-              absolute
-              :opacity="hover ? 0.3 : 0"
-              :class="`${hover ? 'item-border-darken' : selected ? 'item-border' : 'item-border-transparent'} overlay-full`"
-            >
-              <v-icon v-if="select"
-                      :color="selected ? 'secondary' : ''"
-                      style="position: absolute; top: 5px; left: 10px"
-                      @click.stop="selectItem"
-              >
-                {{ selected || (preSelect && hover) ? 'mdi-checkbox-marked-circle' : 'mdi-checkbox-blank-circle-outline'
-                }}
-              </v-icon>
+  <card-thumbnail
+    :thumbnail="thumbnail"
+    :width="width"
+    :selection="selection"
+    :edit="edit"
+    :preSelect="preSelect"
+    :select="select"
+    :selected="selected"
+    @editItem="editItem"
+    @selectItem="selectItem"
+    @goTo="goTo"
+  >
 
-              <v-icon v-if="!selected && !preSelect && edit"
-                      style="position: absolute; bottom: 10px; left: 10px"
-                      @click.stop="editItem"
-              >
-                mdi-pencil
-              </v-icon>
-            </v-overlay>
-          </v-fade-transition>
-        </v-img>
-
-        <v-card-subtitle class="pa-2 pb-1 text--primary"
-                         v-line-clamp="2"
-                         style="word-break: normal !important; height: 4em"
-                         :title="series.metadata.title"
-        >
-          {{ series.metadata.title }}
-        </v-card-subtitle>
-
-        <v-card-text class="px-2"
-        >
-          <span v-if="series.booksCount === 1">{{ series.booksCount }} book</span>
-          <span v-else>{{ series.booksCount }} books</span>
-        </v-card-text>
-
-      </v-card>
+    <template v-slot:topright>
+       <span class="white--text pt-2 pb-1 px-2 subtitle-2" style="background: darkorange none repeat scroll 0% 0%;">
+         {{ series.booksCount }}
+       </span>
     </template>
-  </v-hover>
+    <template #subtitle>
+      {{ title }}
+    </template>
+    <template #description>
+      <span v-if="series.booksCount === 1">{{ series.booksCount }} book</span>
+      <span v-else>{{ series.booksCount }} books</span>
+    </template>
+  </card-thumbnail>
 </template>
 
 <script lang="ts">
 import { seriesThumbnailUrl } from '@/functions/urls'
 import Vue, { PropType } from 'vue'
+import CardThumbnail from '@/components/CardThumbnail.vue'
 
 export default Vue.extend({
   name: 'CardSeries',
+  components: { CardThumbnail },
+  computed: {
+    thumbnail (): string {
+      return seriesThumbnailUrl(this.series.id)
+    },
+    title (): string {
+      return this.series.metadata.title
+    }
+  },
+  methods: {
+    editItem () {
+      if (this.edit) {
+        this.edit(this.series)
+      }
+    },
+    selectItem () {
+      if (this.select) {
+        this.select()
+      }
+    },
+    goTo () {
+      this.$router.push({ name: 'browse-series', params: { seriesId: this.series.id.toString() } })
+    }
+  },
   props: {
     series: {
       type: Object as PropType<SeriesDto>,
@@ -75,6 +67,10 @@ export default Vue.extend({
       type: [String, Number],
       required: false,
       default: 150
+    },
+    selection: {
+      type: Boolean,
+      default: true
     },
     selected: {
       type: Boolean,
@@ -92,52 +88,6 @@ export default Vue.extend({
       type: Function,
       required: false
     }
-  },
-  computed: {
-    thumbnailUrl (): string {
-      return seriesThumbnailUrl(this.series.id)
-    },
-    overlay (): boolean {
-      return this.edit !== undefined || this.select !== undefined
-    }
-  },
-  methods: {
-    selectItem () {
-      if (this.select !== undefined) {
-        this.select()
-      }
-    },
-    editItem () {
-      if (this.edit !== undefined) {
-        this.edit(this.series)
-      }
-    },
-    cardClick () {
-      if (this.preSelect && this.select !== undefined) {
-        this.select()
-      } else {
-        this.$router.push({ name: 'browse-series', params: { seriesId: this.series.id.toString() } })
-      }
-    }
   }
 })
 </script>
-
-<style>
-.item-border {
-  border: 3px solid var(--v-secondary-base);
-}
-
-.item-border-transparent {
-  border: 3px solid transparent;
-}
-
-.item-border-darken {
-  border: 3px solid var(--v-secondary-darken2);
-}
-
-.overlay-full .v-overlay__content {
-  width: 100%;
-  height: 100%;
-}
-</style>

@@ -71,15 +71,17 @@
       </template>
       <template v-slot:item="{ pre, items }">
         <grid-cards :items="items">
-          <template v-slot:card="{ item, width, pre }" >
+          <template v-slot:card="{ item, width }" >
             <v-item v-slot:default="{ active, toggle }" :value="item">
               <div>
-                <card-series :series="item"
-                             :width="width"
-                             :selected="active"
-                             :select="toggle"
-                             :preSelect="pre"
-                             :edit="singleEdit">
+                <card-series
+                  :series="item"
+                  :width="width"
+                  :selected="active"
+                  :preSelect="pre"
+                  :edit="singleEdit"
+                  :select="toggle"
+                >
                 </card-series>
               </div>
             </v-item>
@@ -112,14 +114,13 @@ import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import GridCards from '@/components/GridCards.vue'
 import MultipleSelect from '@/components/MultipleSelect.vue'
-
 import { parseQuerySort } from '@/functions/query-params'
 import { LoadState, SeriesStatus } from '@/types/common'
 import EmptyState from '@/components/EmptyState.vue'
 
 export default Vue.extend({
   name: 'BrowseLibraries',
-  components: { MultipleSelect, EmptyState, GridCards, LibraryActionsMenu, CardSeries, ToolbarSticky, SortMenuButton, Badge, EditSeriesDialog },
+  components: { CardSeries, MultipleSelect, EmptyState, GridCards, LibraryActionsMenu, ToolbarSticky, SortMenuButton, Badge, EditSeriesDialog },
   data: () => {
     return {
       library: undefined as LibraryDto | undefined,
