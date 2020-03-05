@@ -28,7 +28,6 @@ docker create \
   --name=komga \
   --user 1000:1000 \
   -p 8080:8080 \
-  -e KOMGA_LIBRARIES_SCAN_DIRECTORY_EXCLUSIONS=#recycle,@eaDir
   --mount type=bind,source=/path/to/config,target=/config \
   --mount type=bind,source=/path/to/books,target=/books \
   --restart unless-stopped \
@@ -58,8 +57,6 @@ services:
     ports:
       - 8080:8080
     user: "1000:1000"
-    environment:
-      - KOMGA_LIBRARIES_SCAN_DIRECTORY_EXCLUSIONS=#recycle,@eaDir
     restart: unless-stopped
 ```
 
@@ -75,9 +72,8 @@ For example, `-p 8080:80` would expose port `80` from inside the container to be
 | `--user: 1000:1000`                                       | User:Group identifier - see below for explanation                     |
 | `--mount type=bind,source=/path/to/config,target=/config` | Database and Komga configurations                                     |
 | `--mount type=bind,source=/path/to/books,target=/books`   | Location of books library on disk                                     |
-| `-e KOMGA_LIBRARIES_SCAN_DIRECTORY_EXCLUSIONS`            | Comma-separated list of patterns to exclude directories from the scan |
+| `-e ENV_VAR=value`            | Any [configuration](https://komga.org/configuration/) environment variable |
 
-Please check the Komga [documentation](https://github.com/gotson/komga#configuration) for an exhaustive list of supported parameters.
 
 ## User / Group Identifiers
 
@@ -85,11 +81,11 @@ When using volumes (`-v` flags) permissions issues can arise between the host OS
 
 Ensure any volume directories on the host are owned by the same user you specify and any permissions issues will vanish like magic.
 
-In this instance `UID=1000` and `GID=1000`, to find yours use id user as below:
+In this instance `UID=1000` and `GID=1000`, to find yours use `id <your_user>` as below:
 
 ```
-$ id username
-  uid=1000(dockeruser) gid=1000(dockergroup) groups=1000(dockergroup)
+$ id <your_user>
+  uid=1000(jdoe) gid=1000(jdgroup) groups=1000(jdgroup)
 ```
 
 ## Support info
