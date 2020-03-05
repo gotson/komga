@@ -1,3 +1,10 @@
+# [0.19.0](https://github.com/gotson/komga/compare/v0.18.0...v0.19.0) (2020-03-05)
+
+
+### Features
+
+* demo profile ([24b2125](https://github.com/gotson/komga/commit/24b21250be81789ffd2897cb95c56959bf1ee0af))
+
 # [0.18.0](https://github.com/gotson/komga/compare/v0.17.0...v0.18.0) (2020-03-03)
 
 
