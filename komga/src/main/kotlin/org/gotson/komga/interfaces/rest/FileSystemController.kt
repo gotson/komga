@@ -16,7 +16,7 @@ import kotlin.streams.asSequence
 
 @RestController
 @RequestMapping("api/v1/filesystem", produces = [MediaType.APPLICATION_JSON_VALUE])
-@PreAuthorize("hasRole('ROLE_ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 class FileSystemController {
 
   private val fs = FileSystems.getDefault()

@@ -206,7 +206,7 @@ class SeriesController(
   }
 
   @PostMapping("{seriesId}/analyze")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable seriesId: Long) {
     seriesRepository.findByIdOrNull(seriesId)?.let { series ->
@@ -219,7 +219,7 @@ class SeriesController(
   }
 
   @PatchMapping("{seriesId}/metadata")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   fun updateMetadata(
     @PathVariable seriesId: Long,
     @RequestBody newMetadata: SeriesMetadataUpdateDto

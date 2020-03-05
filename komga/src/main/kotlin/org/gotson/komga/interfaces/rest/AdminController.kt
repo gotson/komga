@@ -16,7 +16,7 @@ private val logger = KotlinLogging.logger {}
 
 @RestController
 @RequestMapping("api/v1/admin")
-@PreAuthorize("hasRole('ROLE_ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 class AdminController(
   private val asyncOrchestrator: AsyncOrchestrator,
   private val bookRepository: BookRepository

@@ -317,7 +317,7 @@ class BookController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @PostMapping("api/v1/books/{bookId}/analyze")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable bookId: Long) {
     bookRepository.findByIdOrNull(bookId)?.let { book ->

@@ -90,7 +90,7 @@ class LibraryController(
   }
 
   @PostMapping("{libraryId}/scan")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun scan(@PathVariable libraryId: Long) {
     libraryRepository.findByIdOrNull(libraryId)?.let { library ->
@@ -103,7 +103,7 @@ class LibraryController(
   }
 
   @PostMapping("{libraryId}/analyze")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable libraryId: Long) {
     libraryRepository.findByIdOrNull(libraryId)?.let { library ->
