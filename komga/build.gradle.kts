@@ -4,18 +4,18 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   run {
-    val kotlinVersion = "1.3.61"
+    val kotlinVersion = "1.3.70"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.allopen") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     kotlin("plugin.jpa") version kotlinVersion
     kotlin("kapt") version kotlinVersion
   }
-  id("org.springframework.boot") version "2.2.4.RELEASE"
+  id("org.springframework.boot") version "2.2.5.RELEASE"
   id("io.spring.dependency-management") version "1.0.9.RELEASE"
-  id("com.github.ben-manes.versions") version "0.27.0"
+  id("com.github.ben-manes.versions") version "0.28.0"
   id("com.palantir.docker") version "0.25.0"
-  id("com.gorylenko.gradle-git-properties") version "2.2.1"
+  id("com.gorylenko.gradle-git-properties") version "2.2.2"
   jacoco
 }
 
@@ -69,10 +69,10 @@ dependencies {
   implementation("org.apache.tika:tika-core:1.23")
   implementation("org.apache.commons:commons-compress:1.20")
   implementation("com.github.junrar:junrar:4.0.0")
-  implementation("org.apache.pdfbox:pdfbox:2.0.18")
+  implementation("org.apache.pdfbox:pdfbox:2.0.19")
   implementation("net.grey-panther:natural-comparator:1.1")
 
-  implementation("net.coobird:thumbnailator:0.4.9")
+  implementation("net.coobird:thumbnailator:0.4.11")
   implementation("com.twelvemonkeys.imageio:imageio-jpeg:3.5")
   implementation("com.twelvemonkeys.imageio:imageio-tiff:3.5")
   implementation(files("$projectDir/libs/webp-imageio-decoder-plugin-0.2.jar"))
@@ -92,7 +92,7 @@ dependencies {
   testImplementation("io.mockk:mockk:1.9.3")
   testImplementation("com.google.jimfs:jimfs:1.1")
 
-  testCompile("com.tngtech.archunit:archunit-junit5:0.13.1")
+  testImplementation("com.tngtech.archunit:archunit-junit5:0.13.1")
 
   developmentOnly("org.springframework.boot:spring-boot-devtools")
 }
