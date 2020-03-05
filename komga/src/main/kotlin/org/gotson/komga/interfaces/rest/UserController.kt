@@ -8,6 +8,7 @@ import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.security.KomgaUserDetailsLifecycle
 import org.gotson.komga.infrastructure.security.UserEmailAlreadyExistsException
 import org.gotson.komga.interfaces.rest.dto.toDto
+import org.springframework.core.env.Environment
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -36,8 +37,11 @@ private val logger = KotlinLogging.logger {}
 class UserController(
   private val userDetailsLifecycle: KomgaUserDetailsLifecycle,
   private val userRepository: KomgaUserRepository,
-  private val libraryRepository: LibraryRepository
+  private val libraryRepository: LibraryRepository,
+  env: Environment
 ) {
+
+  private val demo = env.activeProfiles.contains("demo")
 
   @GetMapping("me")
   fun getMe(@AuthenticationPrincipal principal: KomgaPrincipal): UserDto =
@@ -49,6 +53,7 @@ class UserController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @Valid @RequestBody newPasswordDto: PasswordUpdateDto
   ) {
+    if (demo) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     userDetailsLifecycle.updatePassword(principal, newPasswordDto.password, false)
   }
 
