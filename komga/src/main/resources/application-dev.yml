@@ -10,8 +10,6 @@ komga:
 #    - "@eaDir"
 #  libraries-scan-cron: "*/5 * * * * ?"
 spring:
-  profiles:
-    include: flyway
   jpa:
     properties:
       hibernate:

@@ -3,10 +3,9 @@ application.version: TESTING
 spring:
   flyway:
     enabled: true
-    jpa:
-      hibernate:
-        ddl-auto: none
   jpa:
+    hibernate:
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true

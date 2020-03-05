@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    include: flyway
   datasource:
     url: jdbc:h2:/config/database.h2
 logging.file.name: /config/logs/komga.log
