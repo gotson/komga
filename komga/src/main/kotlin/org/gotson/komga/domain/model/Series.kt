@@ -61,7 +61,7 @@ class Series(
       _books.clear()
       value.forEach { it.series = this }
       _books.addAll(value.sortedWith(compareBy(natSortComparator) { it.name }))
-      _books.forEachIndexed { index, book -> book.number = index + 1F }
+      _books.forEachIndexed { index, book -> book.number = index + 1 }
     }
 
   @OneToOne(optional = false, orphanRemoval = true, cascade = [CascadeType.ALL], fetch = FetchType.LAZY)

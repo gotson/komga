@@ -10,7 +10,7 @@ data class BookDto(
   val seriesId: Long,
   val name: String,
   val url: String,
-  val number: Float,
+  val number: Int,
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val created: LocalDateTime?,
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")

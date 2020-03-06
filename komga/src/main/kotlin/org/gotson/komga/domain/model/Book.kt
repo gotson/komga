@@ -54,8 +54,8 @@ class Book(
   @JoinColumn(name = "media_id", nullable = false)
   var media: Media = Media()
 
-  @Column(name = "number", nullable = false, columnDefinition = "REAL")
-  var number: Float = 0F
+  @Column(name = "number", nullable = false)
+  var number: Int = 0
 
   fun fileName(): String = FilenameUtils.getName(url.toString())
 
