@@ -24,7 +24,7 @@ class SeriesMetadata(
   var title: String,
 
   @Column(name = "title_sort", nullable = false)
-  var titleSort: String
+  var titleSort: String = title
 
 ) : AuditableEntity() {
   @Id
