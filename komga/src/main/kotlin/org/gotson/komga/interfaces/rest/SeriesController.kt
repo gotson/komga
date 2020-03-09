@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.server.ResponseStatusException
 import java.util.concurrent.RejectedExecutionException
+import javax.validation.Valid
 
 private val logger = KotlinLogging.logger {}
 
@@ -222,19 +223,17 @@ class SeriesController(
   @PreAuthorize("hasRole('ADMIN')")
   fun updateMetadata(
     @PathVariable seriesId: Long,
-    @RequestBody newMetadata: SeriesMetadataUpdateDto
+    @Valid @RequestBody newMetadata: SeriesMetadataUpdateDto
   ): SeriesDto =
     seriesRepository.findByIdOrNull(seriesId)?.let { series ->
-      newMetadata.status?.let { series.metadata.status = newMetadata.status }
-      newMetadata.statusLock?.let { series.metadata.statusLock = newMetadata.statusLock }
-      if (!newMetadata.title.isNullOrBlank()) {
-        series.metadata.title = newMetadata.title
+      with(newMetadata) {
+        status?.let { series.metadata.status = it }
+        statusLock?.let { series.metadata.statusLock = it }
+        title?.let { series.metadata.title = it }
+        titleLock?.let { series.metadata.titleLock = it }
+        titleSort?.let { series.metadata.titleSort = it }
+        titleSortLock?.let { series.metadata.titleSortLock = it }
       }
-      newMetadata.titleLock?.let { series.metadata.titleLock = newMetadata.titleLock }
-      if (!newMetadata.titleSort.isNullOrBlank()) {
-        series.metadata.titleSort = newMetadata.titleSort
-      }
-      newMetadata.titleSortLock?.let { series.metadata.titleSortLock = newMetadata.titleSortLock }
       seriesRepository.save(series).toDto(includeUrl = true)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
