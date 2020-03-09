@@ -2,6 +2,7 @@ package org.gotson.komga.interfaces.rest.dto
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import org.gotson.komga.domain.model.Series
+import org.gotson.komga.domain.model.SeriesMetadata
 import java.time.LocalDateTime
 
 data class SeriesDto(
@@ -41,14 +42,16 @@ fun Series.toDto(includeUrl: Boolean) = SeriesDto(
   lastModified = lastModifiedDate?.toUTC(),
   fileLastModified = fileLastModified.toUTC(),
   booksCount = books.size,
-  metadata = SeriesMetadataDto(
-    status = metadata.status.name,
-    statusLock = metadata.statusLock,
-    created = metadata.createdDate?.toUTC(),
-    lastModified = metadata.lastModifiedDate?.toUTC(),
-    title = metadata.title,
-    titleLock = metadata.titleLock,
-    titleSort = metadata.titleSort,
-    titleSortLock = metadata.titleSortLock
-  )
+  metadata = metadata.toDto()
+)
+
+fun SeriesMetadata.toDto() = SeriesMetadataDto(
+  status = status.name,
+  statusLock = statusLock,
+  created = createdDate?.toUTC(),
+  lastModified = lastModifiedDate?.toUTC(),
+  title = title,
+  titleLock = titleLock,
+  titleSort = titleSort,
+  titleSortLock = titleSortLock
 )
