@@ -10,6 +10,7 @@ import javax.persistence.Enumerated
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.Table
+import javax.validation.constraints.NotBlank
 
 @Entity
 @Table(name = "series_metadata")
@@ -20,9 +21,11 @@ class SeriesMetadata(
   @Column(name = "status", nullable = false)
   var status: Status = Status.ONGOING,
 
+  @NotBlank
   @Column(name = "title", nullable = false)
   var title: String,
 
+  @NotBlank
   @Column(name = "title_sort", nullable = false)
   var titleSort: String = title
 
