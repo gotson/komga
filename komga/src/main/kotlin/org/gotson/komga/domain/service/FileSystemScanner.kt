@@ -7,6 +7,7 @@ import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.springframework.stereotype.Service
+import java.nio.file.FileVisitOption
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.attribute.BasicFileAttributes
@@ -35,7 +36,7 @@ class FileSystemScanner(
     lateinit var scannedSeries: List<Series>
 
     measureTimeMillis {
-      scannedSeries = Files.walk(root).use { dirsStream ->
+      scannedSeries = Files.walk(root, FileVisitOption.FOLLOW_LINKS).use { dirsStream ->
         dirsStream.asSequence()
           .onEach { logger.trace { "GetSeries file: $it" } }
           .filter { !Files.isHidden(it) }
