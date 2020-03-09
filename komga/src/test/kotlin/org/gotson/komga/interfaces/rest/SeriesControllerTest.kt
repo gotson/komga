@@ -1,6 +1,8 @@
 package org.gotson.komga.interfaces.rest
 
+import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
@@ -14,15 +16,21 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.MediaType
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.MockMvcResultMatchersDsl
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.patch
+import org.springframework.transaction.annotation.Transactional
 import javax.sql.DataSource
 
 @ExtendWith(SpringExtension::class)
@@ -89,8 +97,8 @@ class SeriesControllerTest(
       seriesRepository.saveAll(series)
 
       mockMvc.get("/api/v1/series") {
-        param("sort", "metadata.titleSort,asc")
-      }
+          param("sort", "metadata.titleSort,asc")
+        }
         .andExpect {
           status { isOk }
           jsonPath("$.content[0].metadata.title") { value("a") }
@@ -326,4 +334,74 @@ class SeriesControllerTest(
         }
     }
   }
+
+  @Nested
+  inner class MetadataUpdate {
+    @Test
+    @WithMockCustomUser
+    fun `given non-admin user when updating metadata then raise forbidden`() {
+      mockMvc.patch("/api/v1/series/1/metadata") {
+        contentType = MediaType.APPLICATION_JSON
+        content = "{}"
+      }.andExpect {
+        status { isForbidden }
+      }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = [
+      """{"title":""}""",
+      """{"titleSort":""}"""
+    ])
+    @WithMockCustomUser(roles = [UserRoles.ADMIN])
+    fun `given invalid json when updating metadata then raise validation error`(jsonString: String) {
+      mockMvc.patch("/api/v1/series/1/metadata") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
+        status { isBadRequest }
+      }
+    }
+  }
+
+  //Not part of the above @Nested class because @Transactional fails
+  @Test
+  @Transactional
+  @WithMockCustomUser(roles = [UserRoles.ADMIN])
+  fun `given valid json when updating metadata then fields are updated`() {
+    val series = makeSeries(
+      name = "series",
+      books = listOf(makeBook("1.cbr"))
+    ).also { it.library = library }
+    seriesRepository.save(series)
+
+    val jsonString = """
+        {
+          "title":"newTitle",
+          "titleSort":"newTitleSort",
+          "status":"HIATUS",
+          "titleLock":true,
+          "titleSortLock":true,
+          "statusLock":true
+        }
+      """.trimIndent()
+
+    mockMvc.patch("/api/v1/series/${series.id}/metadata") {
+      contentType = MediaType.APPLICATION_JSON
+      content = jsonString
+    }.andExpect {
+      status { isOk }
+    }
+
+    val updatedSeries = seriesRepository.findByIdOrNull(series.id)
+    with(updatedSeries!!.metadata) {
+      assertThat(title).isEqualTo("newTitle")
+      assertThat(titleSort).isEqualTo("newTitleSort")
+      assertThat(status).isEqualTo(SeriesMetadata.Status.HIATUS)
+      assertThat(titleLock).isEqualTo(true)
+      assertThat(titleSortLock).isEqualTo(true)
+      assertThat(statusLock).isEqualTo(true)
+    }
+  }
+
 }
