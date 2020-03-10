@@ -1,3 +1,15 @@
+# [0.21.0](https://github.com/gotson/komga/compare/v0.20.0...v0.21.0) (2020-03-10)
+
+
+### Bug Fixes
+
+* **scanner:** follow symlinks when scanning libraries ([1044262](https://github.com/gotson/komga/commit/1044262a1c2c7be47002a1128b2374051fa4f7fc)), closes [#96](https://github.com/gotson/komga/issues/96)
+
+
+### Features
+
+* docker multi-arch images ([d54c67b](https://github.com/gotson/komga/commit/d54c67b3df0d0c4d753e0057d3349720e819eca5))
+
 # [0.20.0](https://github.com/gotson/komga/compare/v0.19.0...v0.20.0) (2020-03-05)
 
 
