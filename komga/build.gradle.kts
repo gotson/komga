@@ -1,4 +1,3 @@
-import com.palantir.gradle.docker.DockerExtension
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -14,7 +13,6 @@ plugins {
   id("org.springframework.boot") version "2.2.5.RELEASE"
   id("io.spring.dependency-management") version "1.0.9.RELEASE"
   id("com.github.ben-manes.versions") version "0.28.0"
-  id("com.palantir.docker") version "0.25.0"
   id("com.gorylenko.gradle-git-properties") version "2.2.2"
   jacoco
 }
@@ -161,14 +159,6 @@ tasks {
     from("$rootDir/komga-webui/dist/")
     into("$projectDir/src/main/resources/public/")
   }
-}
-
-configure<DockerExtension> {
-  name = "gotson/komga"
-  tag("latest", "$name:latest")
-  tag("semVer", "$name:$version")
-  copySpec.from(tasks.getByName("unpack").outputs).into("dependency")
-  buildArgs(mapOf("DEPENDENCY" to "dependency"))
 }
 
 springBoot {

@@ -29,8 +29,8 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "echo version=${nextRelease.version}> gradle.properties && ./gradlew copyWebDist && ./gradlew assemble",
-          "publishCmd": ".travis/deploy-dockerhub-prod.sh"
+          "prepareCmd": ".travis/prepare-release.sh ${nextRelease.version}",
+          "publishCmd": ".travis/publish-dockerhub.sh ${nextRelease.version}"
         }
       ],
       [

@@ -1,3 +1,4 @@
+os: linux
 language: java
 
 before_install:
