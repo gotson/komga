@@ -1,6 +1,6 @@
 <template>
     <span class="badge">
-      {{ value }}
+      <slot/>
     </span>
 </template>
 
@@ -8,13 +8,7 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'Badge',
-  props: {
-    value: {
-      type: [String, Number],
-      required: true
-    }
-  }
+  name: 'Badge'
 })
 </script>
 

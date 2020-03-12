@@ -25,7 +25,7 @@
 
       <v-toolbar-title>
         <span v-if="$_.get(series, 'metadata.title')">{{ series.metadata.title }}</span>
-        <badge class="ml-4" v-if="totalElements" v-model="totalElements"/>
+        <badge class="ml-4" v-if="totalElements">{{ totalElements }}</badge>
       </v-toolbar-title>
 
       <v-spacer/>
