@@ -69,7 +69,7 @@
   </div>
 </template>
 
-<script lang="js">
+<script lang="ts">
 import Vue from 'vue'
 import { required, sameAs } from 'vuelidate/lib/validators'
 
@@ -114,9 +114,9 @@ export default Vue.extend({
     }
   },
   methods: {
-    getErrors (fieldName) {
-      const errors = []
-      const field = this.$v.form[fieldName]
+    getErrors (fieldName: string): string[] {
+      const errors = [] as string[]
+      const field = this.$v.form!![fieldName] as any
       if (field && field.$invalid && field.$dirty) {
         if (fieldName === 'newPassword') {
           if (!field.required) errors.push(`New password is required.`)
@@ -127,7 +127,7 @@ export default Vue.extend({
       }
       return errors
     },
-    showSnack (message) {
+    showSnack (message: string) {
       this.snackText = message
       this.snackbar = true
     },
