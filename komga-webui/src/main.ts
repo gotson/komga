@@ -21,6 +21,7 @@ import store from './store'
 Vue.use(Vuelidate)
 Vue.use(lineClamp)
 Vue.use(VueCookies)
+Vue.use(require('vue-moment'))
 
 Vue.use(httpPlugin)
 Vue.use(komgaFileSystem, { http: Vue.prototype.$http })
