@@ -259,7 +259,7 @@ import ThumbnailExplorerDialog from '@/components/ThumbnailExplorerDialog.vue'
 
 import { checkWebpFeature } from '@/functions/check-webp'
 import { bookPageUrl } from '@/functions/urls'
-import { ImageFit, ReadingDirection } from '@/types/common'
+import { ImageFit, ReaderReadingDirection } from '@/types/common'
 import Vue from 'vue'
 import { getBookTitleCompact } from '@/functions/book-title'
 
@@ -274,8 +274,8 @@ const fitDisplay = {
   [ImageFit.ORIGINAL]: 'original'
 }
 const dirDisplay = {
-  [ReadingDirection.RightToLeft]: 'right to left',
-  [ReadingDirection.LeftToRight]: 'left to right'
+  [ReaderReadingDirection.RightToLeft]: 'right to left',
+  [ReaderReadingDirection.LeftToRight]: 'left to right'
 }
 
 export default Vue.extend({
@@ -304,8 +304,8 @@ export default Vue.extend({
         doublePages: false,
         imageFits: Object.values(ImageFit),
         fit: ImageFit.HEIGHT,
-        readingDirections: Object.values(ReadingDirection),
-        readingDirection: ReadingDirection.LeftToRight,
+        readingDirections: Object.values(ReaderReadingDirection),
+        readingDirection: ReaderReadingDirection.LeftToRight,
         animations: true
       }
     }
@@ -413,19 +413,19 @@ export default Vue.extend({
       }
     },
     readingDirection: {
-      get: function (): ReadingDirection {
+      get: function (): ReaderReadingDirection {
         return this.settings.readingDirection
       },
-      set: function (readingDirection: ReadingDirection): void {
+      set: function (readingDirection: ReaderReadingDirection): void {
         this.settings.readingDirection = readingDirection
         this.$cookies.set(cookieReadingDirection, readingDirection, Infinity)
       }
     },
     flipDirection (): boolean {
       switch (this.readingDirection) {
-        case ReadingDirection.LeftToRight:
+        case ReaderReadingDirection.LeftToRight:
           return false
-        case ReadingDirection.RightToLeft:
+        case ReaderReadingDirection.RightToLeft:
         default:
           return true
       }
@@ -606,7 +606,7 @@ export default Vue.extend({
     imageFitDisplay (fit: ImageFit): string {
       return fitDisplay[fit]
     },
-    readingDirectionDisplay (dir: ReadingDirection): string {
+    readingDirectionDisplay (dir: ReaderReadingDirection): string {
       return dirDisplay[dir]
     },
     loadFromCookie (cookieKey: string, setter: (value: any) => void): void {

@@ -10,7 +10,7 @@ export enum ImageFit {
   ORIGINAL = 'original'
 }
 
-export enum ReadingDirection {
+export enum ReaderReadingDirection {
   LeftToRight = 'ltr',
   RightToLeft = 'rtl'
 }
