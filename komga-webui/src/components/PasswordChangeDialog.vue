@@ -35,6 +35,7 @@
                                 :error-messages="getErrors('repeatPassword')"
                                 @input="$v.form.repeatPassword.$touch()"
                                 @blur="$v.form.repeatPassword.$touch()"
+                                @keydown.enter="dialogConfirm"
                   />
                 </v-col>
               </v-row>
