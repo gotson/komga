@@ -86,7 +86,7 @@
   </div>
 </template>
 
-<script lang="js">
+<script lang="ts">
 import Vue from 'vue'
 import { email, required } from 'vuelidate/lib/validators'
 
@@ -120,10 +120,10 @@ export default Vue.extend({
     }
   },
   methods: {
-    getErrors (fieldName) {
-      const errors = []
+    getErrors (fieldName: string): string[] {
+      const errors = [] as string[]
 
-      const field = this.$v.form[fieldName]
+      const field = this.$v.form!![fieldName] as any
       if (field && field.$invalid && field.$dirty) {
         const properName = this.validationFieldNames.has(fieldName)
           ? this.validationFieldNames.get(fieldName) : fieldName.charAt(0).toUpperCase() + fieldName.substring(1)
@@ -132,7 +132,7 @@ export default Vue.extend({
       }
       return errors
     },
-    showSnack (message) {
+    showSnack (message: string) {
       this.snackText = message
       this.snackbar = true
     },
