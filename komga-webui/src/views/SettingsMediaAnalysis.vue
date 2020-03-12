@@ -18,8 +18,8 @@
 </template>
 
 <script lang="ts">
-import { MediaStatus } from '@/types/common'
 import Vue from 'vue'
+import { MediaStatus } from '@/types/enum-books'
 
 export default Vue.extend({
   name: 'SettingsMediaAnalysis',

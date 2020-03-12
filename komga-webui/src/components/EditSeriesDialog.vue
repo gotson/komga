@@ -121,8 +121,8 @@
 
 <script lang="ts">
 import { capitalize } from '@/functions/text'
-import { SeriesStatus } from '@/types/common'
 import Vue from 'vue'
+import { SeriesStatus } from '@/types/enum-series'
 
 export default Vue.extend({
   name: 'EditSeriesDialog',

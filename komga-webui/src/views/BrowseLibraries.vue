@@ -121,8 +121,9 @@ import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { computeCardWidth } from '@/functions/grid-utilities'
 import { parseQuerySort } from '@/functions/query-params'
 import VisibleElements from '@/mixins/VisibleElements'
-import { LoadState, SeriesStatus } from '@/types/common'
+import { LoadState } from '@/types/common'
 import mixins from 'vue-typed-mixins'
+import { SeriesStatus } from '@/types/enum-series'
 
 export default mixins(VisibleElements).extend({
   name: 'BrowseLibraries',
