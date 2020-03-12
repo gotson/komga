@@ -120,7 +120,6 @@
 </template>
 
 <script lang="ts">
-import { capitalize } from '@/functions/text'
 import Vue from 'vue'
 import { SeriesStatus } from '@/types/enum-series'
 
@@ -165,7 +164,7 @@ export default Vue.extend({
     },
     seriesStatus (): any[] {
       return Object.keys(SeriesStatus).map(x => ({
-        text: capitalize(x),
+        text: this.$_.capitalize(x),
         value: x
       }))
     },
