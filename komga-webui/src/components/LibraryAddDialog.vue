@@ -84,7 +84,7 @@
   </div>
 </template>
 
-<script lang="js">
+<script lang="ts">
 import Vue from 'vue'
 import FileBrowserDialog from '@/components/FileBrowserDialog.vue'
 import { required } from 'vuelidate/lib/validators'
@@ -119,10 +119,10 @@ export default Vue.extend({
     }
   },
   methods: {
-    getErrors (fieldName) {
+    getErrors (fieldName: string) {
       const errors = []
 
-      const field = this.$v.form[fieldName]
+      const field = this.$v.form!![fieldName] as any
       if (field && field.$invalid && field.$dirty) {
         const properName = this.validationFieldNames.has(fieldName)
           ? this.validationFieldNames.get(fieldName) : fieldName.charAt(0).toUpperCase() + fieldName.substring(1)
@@ -130,7 +130,7 @@ export default Vue.extend({
       }
       return errors
     },
-    showSnack (message) {
+    showSnack (message: string) {
       this.snackText = message
       this.snackbar = true
     },
