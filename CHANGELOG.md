@@ -1,3 +1,10 @@
+# [0.22.0](https://github.com/gotson/komga/compare/v0.21.0...v0.22.0) (2020-03-17)
+
+
+### Features
+
+* support for book metadata ([6a53e8f](https://github.com/gotson/komga/commit/6a53e8fd6b53533020b9e06a14028f9776e641af)), closes [#48](https://github.com/gotson/komga/issues/48) [#43](https://github.com/gotson/komga/issues/43)
+
 # [0.21.0](https://github.com/gotson/komga/compare/v0.20.0...v0.21.0) (2020-03-10)
 
 
