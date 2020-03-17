@@ -16,8 +16,20 @@ class V20200306175848__create_book_metadata_from_book : BaseJavaMigration() {
     val now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"))
     books.forEach { book ->
       val metadataId = jdbcTemplate.queryForObject("SELECT NEXTVAL('hibernate_sequence')", Int::class.java)
-      jdbcTemplate.execute("INSERT INTO book_metadata (ID, CREATED_DATE, LAST_MODIFIED_DATE, TITLE, NUMBER, NUMBER_SORT) VALUES ($metadataId, '$now', '$now', '${book["name"]}', '${book["number"]}', '${book["number"]}')")
-      jdbcTemplate.execute("UPDATE book SET metadata_id = $metadataId WHERE id = ${book["id"]}")
+      jdbcTemplate.update(
+        "INSERT INTO book_metadata (ID, CREATED_DATE, LAST_MODIFIED_DATE, TITLE, NUMBER, NUMBER_SORT) VALUES (?, ?, ?, ?, ?, ?)",
+        metadataId,
+        now,
+        now,
+        book["name"],
+        book["number"],
+        book["number"]
+      )
+      jdbcTemplate.update(
+        "UPDATE book SET metadata_id = ? WHERE id = ?",
+        metadataId,
+        book["id"]
+      )
     }
 
     jdbcTemplate.execute("alter table book alter column metadata_id set not null")
