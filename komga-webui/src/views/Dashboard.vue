@@ -1,8 +1,12 @@
 <template>
   <div class="ma-3">
 
-    <edit-series-dialog v-model="dialogEditSingle"
+    <edit-series-dialog v-model="dialogEditSeriesSingle"
                         :series.sync="editSeriesSingle"
+    />
+
+    <edit-books-dialog v-model="dialogEditBookSingle"
+                       :books.sync="editBookSingle"
     />
 
     <horizontal-scroller>
@@ -22,7 +26,7 @@
           <card-series v-else
                        :series="s"
                        class="ma-2 card"
-                       :edit="singleEdit"
+                       :edit="singleEditSeries"
           />
         </div>
       </template>
@@ -47,7 +51,7 @@
           <card-series v-else
                        :series="s"
                        class="ma-2 card"
-                       :edit="singleEdit"
+                       :edit="singleEditSeries"
           />
         </div>
       </template>
@@ -73,6 +77,7 @@
           <card-book v-else
                      :book="b"
                      class="ma-2 card"
+                     :edit="singleEditBook"
           />
         </div>
       </template>
@@ -87,10 +92,11 @@ import CardSeries from '@/components/CardSeries.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import Vue from 'vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
+import EditBooksDialog from '@/components/EditBooksDialog.vue'
 
 export default Vue.extend({
   name: 'Dashboard',
-  components: { CardSeries, CardBook, HorizontalScroller, EditSeriesDialog },
+  components: { CardSeries, CardBook, HorizontalScroller, EditSeriesDialog, EditBooksDialog },
   data: () => {
     const pageSize = 20
     return {
@@ -99,7 +105,9 @@ export default Vue.extend({
       books: Array(pageSize).fill(null) as BookDto[],
       pageSize: pageSize,
       editSeriesSingle: {} as SeriesDto,
-      dialogEditSingle: false
+      dialogEditSeriesSingle: false,
+      editBookSingle: {} as BookDto,
+      dialogEditBookSingle: false
     }
   },
   mounted () {
@@ -121,6 +129,12 @@ export default Vue.extend({
       if (index !== -1) {
         this.updatedSeries.splice(index, 1, val)
       }
+    },
+    editBookSingle (val: BookDto) {
+      let index = this.books.findIndex(x => x.id === val.id)
+      if (index !== -1) {
+        this.books.splice(index, 1, val)
+      }
     }
   },
   methods: {
@@ -138,9 +152,13 @@ export default Vue.extend({
 
       this.books = (await this.$komgaBooks.getBooks(undefined, pageRequest)).content
     },
-    singleEdit (series: SeriesDto) {
+    singleEditSeries (series: SeriesDto) {
       this.editSeriesSingle = series
-      this.dialogEditSingle = true
+      this.dialogEditSeriesSingle = true
+    },
+    singleEditBook (book: BookDto) {
+      this.editBookSingle = book
+      this.dialogEditBookSingle = true
     }
   }
 })

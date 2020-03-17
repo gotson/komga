@@ -27,18 +27,18 @@ import javax.validation.constraints.NotNull
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "cache.book")
 class Book(
-    @NotBlank
-    @Column(name = "name", nullable = false)
-    var name: String,
+  @NotBlank
+  @Column(name = "name", nullable = false)
+  var name: String,
 
-    @Column(name = "url", nullable = false)
-    var url: URL,
+  @Column(name = "url", nullable = false)
+  var url: URL,
 
-    @Column(name = "file_last_modified", nullable = false)
-    var fileLastModified: LocalDateTime,
+  @Column(name = "file_last_modified", nullable = false)
+  var fileLastModified: LocalDateTime,
 
-    @Column(name = "file_size", nullable = false)
-    var fileSize: Long = 0
+  @Column(name = "file_size", nullable = false)
+  var fileSize: Long = 0
 ) : AuditableEntity() {
   @Id
   @GeneratedValue
@@ -56,6 +56,20 @@ class Book(
 
   @Column(name = "number", nullable = false)
   var number: Int = 0
+    set(value) {
+      field = value
+      if (!metadata.numberLock) metadata.number = value.toString()
+      if (!metadata.numberSortLock) metadata.numberSort = value.toFloat()
+    }
+
+  @OneToOne(optional = false, orphanRemoval = true, cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+  @JoinColumn(name = "metadata_id", nullable = false)
+  var metadata: BookMetadata =
+    BookMetadata(
+      title = name,
+      number = number.toString(),
+      numberSort = number.toFloat()
+    )
 
   fun fileName(): String = FilenameUtils.getName(url.toString())
 

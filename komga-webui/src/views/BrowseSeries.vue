@@ -41,6 +41,31 @@
       />
     </toolbar-sticky>
 
+    <v-scroll-y-transition hide-on-leave>
+      <toolbar-sticky v-if="selected.length > 0" :elevation="5" color="white">
+        <v-btn icon @click="selected=[]">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <v-toolbar-title>
+          <span>{{ selected.length }} selected</span>
+        </v-toolbar-title>
+
+        <v-spacer/>
+
+        <v-btn icon @click="dialogEditBooks = true" v-if="isAdmin">
+          <v-icon>mdi-pencil</v-icon>
+        </v-btn>
+      </toolbar-sticky>
+    </v-scroll-y-transition>
+
+    <edit-books-dialog v-model="dialogEditBooks"
+                       :books.sync="selectedBooks"
+    />
+
+    <edit-books-dialog v-model="dialogEditBookSingle"
+                       :books.sync="editBookSingle"
+    />
+
     <v-container fluid class="px-6">
       <v-row>
         <v-col cols="4" sm="4" md="auto" lg="auto" xl="auto">
@@ -69,23 +94,33 @@
 
       <v-divider class="my-4"/>
 
-      <v-row justify="start" ref="content" v-resize="updateCardWidth">
+      <v-item-group multiple v-model="selected">
+        <v-row justify="start" ref="content" v-resize="updateCardWidth">
 
-        <v-skeleton-loader v-for="(b, i) in books"
-                           :key="i"
-                           :width="cardWidth"
-                           :height="cardWidth / .7071 + 116"
-                           justify-self="start"
-                           :loading="b === null"
-                           type="card, text"
-                           class="ma-3 mx-2"
-                           v-intersect="onElementIntersect"
-                           :data-index="i"
-        >
-          <card-book :book="b" :width="cardWidth"/>
-        </v-skeleton-loader>
+          <v-skeleton-loader v-for="(b, i) in books"
+                             :key="i"
+                             :width="cardWidth"
+                             :height="cardWidth / .7071 + 116"
+                             justify-self="start"
+                             :loading="b === null"
+                             type="card, text"
+                             class="ma-3 mx-2"
+                             v-intersect="onElementIntersect"
+                             :data-index="i"
+          >
+            <v-item v-slot:default="{ active, toggle }" :value="$_.get(b, 'id', 0)">
+              <card-book :book="b"
+                         :width="cardWidth"
+                         :selected="active"
+                         :select="toggle"
+                         :preSelect="selected.length > 0"
+                         :edit="singleEdit"
+              />
+            </v-item>
+          </v-skeleton-loader>
 
-      </v-row>
+        </v-row>
+      </v-item-group>
     </v-container>
 
     <edit-series-dialog v-model="dialogEdit"
@@ -96,7 +131,6 @@
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
 import CardBook from '@/components/CardBook.vue'
-import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { computeCardWidth } from '@/functions/grid-utilities'
@@ -105,26 +139,33 @@ import { seriesThumbnailUrl } from '@/functions/urls'
 import VisibleElements from '@/mixins/VisibleElements'
 import { LoadState } from '@/types/common'
 import mixins from 'vue-typed-mixins'
+import EditBooksDialog from '@/components/EditBooksDialog.vue'
+import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 
 export default mixins(VisibleElements).extend({
   name: 'BrowseSeries',
-  components: { CardBook, ToolbarSticky, SortMenuButton, Badge, EditSeriesDialog },
+  components: { CardBook, ToolbarSticky, SortMenuButton, Badge, EditSeriesDialog, EditBooksDialog },
   data: () => {
     return {
       series: {} as SeriesDto,
       books: [] as BookDto[],
+      selectedBooks: [] as BookDto[],
+      editBookSingle: {} as BookDto,
       pagesState: [] as LoadState[],
       pageSize: 20,
       totalElements: null as number | null,
-      sortOptions: [{ name: 'Number', key: 'number' }, { name: 'Date added', key: 'createdDate' }, {
+      sortOptions: [{ name: 'Number', key: 'metadata.numberSort' }, { name: 'Date added', key: 'createdDate' }, {
         name: 'File size',
         key: 'fileSize'
       }] as SortOption[],
       sortActive: {} as SortActive,
-      sortDefault: { key: 'number', order: 'asc' } as SortActive,
+      sortDefault: { key: 'metadata.numberSort', order: 'asc' } as SortActive,
       cardWidth: 150,
       dialogEdit: false,
-      sortUnwatch: null as any
+      sortUnwatch: null as any,
+      selected: [],
+      dialogEditBooks: false,
+      dialogEditBookSingle: false
     }
   },
   computed: {
@@ -163,6 +204,24 @@ export default mixins(VisibleElements).extend({
     series (val) {
       if (this.$_.has(val, 'name')) {
         document.title = `Komga - ${val.name}`
+      }
+    },
+    selected (val: number[]) {
+      this.selectedBooks = val.map(id => this.books.find(s => s.id === id))
+        .filter(x => x !== undefined) as BookDto[]
+    },
+    selectedBooks (val: BookDto[]) {
+      val.forEach(s => {
+        const index = this.books.findIndex(x => x.id === s.id)
+        if (index !== -1) {
+          this.books.splice(index, 1, s)
+        }
+      })
+    },
+    editBookSingle (val: BookDto) {
+      const index = this.books.findIndex(x => x.id === val.id)
+      if (index !== -1) {
+        this.books.splice(index, 1, val)
       }
     }
   },
@@ -270,6 +329,10 @@ export default mixins(VisibleElements).extend({
     },
     analyze () {
       this.$komgaSeries.analyzeSeries(this.series)
+    },
+    singleEdit (book: BookDto) {
+      this.editBookSingle = book
+      this.dialogEditBookSingle = true
     }
   }
 })

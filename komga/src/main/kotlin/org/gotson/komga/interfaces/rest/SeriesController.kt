@@ -196,8 +196,8 @@ class SeriesController(
     val pageRequest = PageRequest.of(
       page.pageNumber,
       page.pageSize,
-      if (page.sort.isSorted) page.sort
-      else Sort.by(Sort.Order.asc("number"))
+      if (page.sort.isSorted) Sort.by(page.sort.map { it.ignoreCase() }.toList())
+      else Sort.by(Sort.Order.asc("metadata.numberSort"))
     )
 
     return (if (!mediaStatus.isNullOrEmpty())

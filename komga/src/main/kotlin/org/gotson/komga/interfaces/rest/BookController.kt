@@ -6,6 +6,7 @@ import com.github.klinq.jpaspec.toJoin
 import mu.KotlinLogging
 import org.gotson.komga.application.service.AsyncOrchestrator
 import org.gotson.komga.application.service.BookLifecycle
+import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.ImageConversionException
 import org.gotson.komga.domain.model.Library
@@ -16,6 +17,7 @@ import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.interfaces.rest.dto.BookDto
+import org.gotson.komga.interfaces.rest.dto.BookMetadataUpdateDto
 import org.gotson.komga.interfaces.rest.dto.PageDto
 import org.gotson.komga.interfaces.rest.dto.toDto
 import org.springframework.data.domain.Page
@@ -33,8 +35,10 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -48,6 +52,7 @@ import java.time.ZoneOffset
 import java.util.concurrent.RejectedExecutionException
 import java.util.concurrent.TimeUnit
 import javax.persistence.criteria.JoinType
+import javax.validation.Valid
 
 private val logger = KotlinLogging.logger {}
 
@@ -70,8 +75,8 @@ class BookController(
     val pageRequest = PageRequest.of(
       page.pageNumber,
       page.pageSize,
-      if (page.sort.isSorted) page.sort
-      else Sort.by(Sort.Order.asc("name").ignoreCase())
+      if (page.sort.isSorted) Sort.by(page.sort.map { it.ignoreCase() }.toList())
+      else Sort.by(Sort.Order.asc("metadata.title").ignoreCase())
     )
 
     return mutableListOf<Specification<Book>>().let { specs ->
@@ -328,6 +333,42 @@ class BookController(
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
+
+  @PatchMapping("api/v1/books/{bookId}/metadata")
+  @PreAuthorize("hasRole('ADMIN')")
+  fun updateMetadata(
+    @PathVariable bookId: Long,
+    @Valid @RequestBody newMetadata: BookMetadataUpdateDto
+  ): BookDto =
+    bookRepository.findByIdOrNull(bookId)?.let { book ->
+      with(newMetadata) {
+        title?.let { book.metadata.title = it }
+        titleLock?.let { book.metadata.titleLock = it }
+        summary?.let { book.metadata.summary = it }
+        summaryLock?.let { book.metadata.summaryLock = it }
+        number?.let { book.metadata.number = it }
+        numberLock?.let { book.metadata.numberLock = it }
+        numberSort?.let { book.metadata.numberSort = it }
+        numberSortLock?.let { book.metadata.numberSortLock = it }
+        if (isSet("readingDirection")) book.metadata.readingDirection = newMetadata.readingDirection
+        readingDirectionLock?.let { book.metadata.readingDirectionLock = it }
+        publisher?.let { book.metadata.publisher = it }
+        publisherLock?.let { book.metadata.publisherLock = it }
+        if (isSet("ageRating")) book.metadata.ageRating = newMetadata.ageRating
+        ageRatingLock?.let { book.metadata.ageRatingLock = it }
+        if (isSet("releaseDate")) {
+          book.metadata.releaseDate = newMetadata.releaseDate
+        }
+        releaseDateLock?.let { book.metadata.releaseDateLock = it }
+        if (authors != null) {
+          book.metadata.authors = authors!!.map {
+            Author(it.name ?: "", it.role ?: "")
+          }.toMutableList()
+        } else book.metadata.authors = mutableListOf()
+        authorsLock?.let { book.metadata.authorsLock = it }
+      }
+      bookRepository.save(book).toDto(includeFullUrl = true)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   private fun ResponseEntity.BodyBuilder.setNotModified(book: Book) =
     this.cacheControl(CacheControl.maxAge(0, TimeUnit.SECONDS)

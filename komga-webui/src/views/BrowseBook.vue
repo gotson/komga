@@ -11,6 +11,10 @@
 
       <v-spacer/>
 
+      <v-btn icon @click="dialogEdit = true" v-if="isAdmin">
+        <v-icon>mdi-pencil</v-icon>
+      </v-btn>
+
       <!--   Action menu   -->
       <v-menu offset-y v-if="isAdmin">
         <template v-slot:activator="{ on }">
@@ -56,9 +60,48 @@
           </v-hover>
 
         </v-col>
-        <v-col cols="8" sm="8" md="auto" lg="auto" xl="auto">
-          <div class="headline">{{ book.name }}</div>
-          <div>#{{ book.number }}</div>
+
+        <v-col cols="8">
+          <v-row>
+            <v-col>
+              <div class="headline">{{ book.metadata.title }}</div>
+            </v-col>
+          </v-row>
+
+          <v-row class="body-2">
+            <v-col>
+              <span class="mr-3">#{{ book.metadata.number }}</span>
+              <badge v-if="book.metadata.ageRating">{{ book.metadata.ageRating }}+</badge>
+            </v-col>
+            <v-col cols="auto" v-if="book.metadata.releaseDate">
+              {{ book.metadata.releaseDate | moment('MMMM DD, YYYY') }}
+            </v-col>
+          </v-row>
+
+          <v-divider/>
+
+          <v-row class="body-2" v-if="book.metadata.publisher">
+            <v-col cols="6" sm="4" md="2">PUBLISHER</v-col>
+            <v-col>{{ book.metadata.publisher }}</v-col>
+          </v-row>
+
+          <v-row class="body-2"
+                 v-for="(names, key) in authorsByRole"
+                 :key="key"
+          >
+            <v-col cols="6" sm="4" md="2" class="py-1 text-uppercase">{{ key }}</v-col>
+            <v-col class="py-1">
+              <span v-for="(name, i) in names"
+                    :key="name"
+              >{{ i === 0 ? '' : ', ' }}{{ name }}</span>
+            </v-col>
+          </v-row>
+
+          <v-row class="mt-3">
+            <v-col>
+              <div class="body-1">{{ book.metadata.summary }}</div>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
 
@@ -88,13 +131,6 @@
         </v-col>
       </v-row>
 
-      <!--    <v-row>-->
-      <!--      <v-col>-->
-      <!--        <div class="body-1">Description will go here-->
-      <!--        </div>-->
-      <!--      </v-col>-->
-      <!--    </v-row>-->
-
       <v-row>
         <v-col cols="2" md="1" lg="1" xl="1" class="body-2">SIZE</v-col>
         <v-col cols="10" class="body-2">{{ book.size }}</v-col>
@@ -114,12 +150,21 @@
         </v-col>
       </v-row>
 
+      <v-row v-if="book.metadata.readingDirection">
+        <v-col cols="2" md="1" lg="1" xl="1" class="body-2">READING DIRECTION</v-col>
+        <v-col cols="10" class="body-2">{{ $_.capitalize(book.metadata.readingDirection.replace(/_/g, ' ')) }}</v-col>
+      </v-row>
+
       <v-row align="center">
         <v-col cols="2" md="1" lg="1" xl="1" class="body-2">FILE</v-col>
         <v-col cols="10" class="body-2">{{ book.url }}</v-col>
       </v-row>
 
     </v-container>
+
+    <edit-books-dialog v-model="dialogEdit"
+                       :books.sync="book"
+    />
   </div>
 </template>
 
@@ -129,14 +174,18 @@ import { getBookFormatFromMediaType } from '@/functions/book-format'
 import { bookFileUrl, bookThumbnailUrl } from '@/functions/urls'
 import Vue from 'vue'
 import { getBookTitleCompact } from '@/functions/book-title'
+import Badge from '@/components/Badge.vue'
+import EditBooksDialog from '@/components/EditBooksDialog.vue'
+import { groupAuthorsByRolePlural } from '@/functions/authors'
 
 export default Vue.extend({
   name: 'BrowseBook',
-  components: { ToolbarSticky },
+  components: { ToolbarSticky, Badge, EditBooksDialog },
   data: () => {
     return {
       book: {} as BookDto,
-      series: {} as SeriesDto
+      series: {} as SeriesDto,
+      dialogEdit: false
     }
   },
   async created () {
@@ -146,7 +195,7 @@ export default Vue.extend({
     async book (val) {
       if (this.$_.has(val, 'name')) {
         this.series = await this.$komgaSeries.getOneSeries(val.seriesId)
-        document.title = `Komga - ${getBookTitleCompact(val.name, this.series.name)}`
+        document.title = `Komga - ${getBookTitleCompact(val.metadata.title, this.series.name)}`
       }
     }
   },
@@ -175,6 +224,9 @@ export default Vue.extend({
     },
     format (): BookFormat {
       return getBookFormatFromMediaType(this.book.media.mediaType)
+    },
+    authorsByRole (): any {
+      return groupAuthorsByRolePlural(this.book.metadata.authors)
     }
   },
   methods: {
