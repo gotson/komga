@@ -1,3 +1,10 @@
+## [0.22.1](https://github.com/gotson/komga/compare/v0.22.0...v0.22.1) (2020-03-17)
+
+
+### Bug Fixes
+
+* use JDBC update statements for database migration ([f68e035](https://github.com/gotson/komga/commit/f68e0352fdfd6d4683d4015c4b21bad6bcd070dc))
+
 # [0.22.0](https://github.com/gotson/komga/compare/v0.21.0...v0.22.0) (2020-03-17)
 
 
