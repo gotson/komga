@@ -28,17 +28,17 @@ private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNatural
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "cache.series")
 class Series(
-    @NotBlank
-    @Column(name = "name", nullable = false)
-    var name: String,
+  @NotBlank
+  @Column(name = "name", nullable = false)
+  var name: String,
 
-    @Column(name = "url", nullable = false)
-    var url: URL,
+  @Column(name = "url", nullable = false)
+  var url: URL,
 
-    @Column(name = "file_last_modified", nullable = false)
-    var fileLastModified: LocalDateTime,
+  @Column(name = "file_last_modified", nullable = false)
+  var fileLastModified: LocalDateTime,
 
-    books: Iterable<Book>
+  books: Iterable<Book>
 
 ) : AuditableEntity() {
   @Id
