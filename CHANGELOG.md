@@ -1,3 +1,10 @@
+## [0.22.2](https://github.com/gotson/komga/compare/v0.22.1...v0.22.2) (2020-03-17)
+
+
+### Bug Fixes
+
+* **webui:** change page size on media analysis screen ([afc2cd4](https://github.com/gotson/komga/commit/afc2cd4e7002aeea440477203af0ac9d67cbdbb3))
+
 ## [0.22.1](https://github.com/gotson/komga/compare/v0.22.0...v0.22.1) (2020-03-17)
 
 
