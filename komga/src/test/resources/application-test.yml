@@ -1,6 +1,8 @@
 application.version: TESTING
 
 spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
   flyway:
     enabled: true
   jpa:
