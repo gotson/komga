@@ -559,7 +559,6 @@ export default Vue.extend({
       Promise<boolean> {
       const metadata = this.validateForm()
       if (metadata) {
-        console.log(metadata)
         const updated = [] as BookDto[]
         const toUpdate = (this.single ? [this.books] : this.books) as BookDto[]
         for (const b of toUpdate) {
@@ -571,7 +570,6 @@ export default Vue.extend({
             updated.push(b)
           }
         }
-        console.log(updated)
         this.$emit('update:books', this.single ? updated[0] : updated)
         return true
       } else return false
