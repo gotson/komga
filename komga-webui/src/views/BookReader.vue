@@ -1,9 +1,12 @@
 <template>
-  <v-container class="ma-0 pa-0 full-height" fluid v-if="pages.length > 0" style="width: 100%;"
+  <v-container class="ma-0 pa-0 full-height" fluid v-if="pages.length > 0"
+               :style="`width: 100%; background-color: ${backgroundColor}`"
                v-touch="{
-       left: () => turnRight(),
-       right: () => turnLeft(),
-       }"
+                 left: () => turnRight(),
+                 right: () => turnLeft(),
+                 up: () => verticalNext(),
+                 down: () => verticalPrev()
+                 }"
   >
     <div>
       <v-slide-y-transition>
@@ -122,6 +125,7 @@
                   :show-arrows="false"
                   :continuous="false"
                   :reverse="flipDirection"
+                  :vertical="vertical"
                   hide-delimiters
                   touchless
                   height="100%"
@@ -134,9 +138,7 @@
                          :transition="animations ? undefined : false"
                          :reverse-transition="animations ? undefined : false"
         >
-          <div class="full-height d-flex flex-column justify-center"
-               :style="`background-color: ${backgroundColor}`"
-          >
+          <div class="full-height d-flex flex-column justify-center">
             <div :class="`d-flex flex-row${flipDirection ? '-reverse' : ''} justify-center px-0 mx-0` ">
               <img :src="getPageUrl(p)"
                    :height="maxHeight"
@@ -317,7 +319,8 @@ export default Vue.extend({
       },
       readingDirs: [
         { text: 'Left to right', value: ReadingDirection.LEFT_TO_RIGHT },
-        { text: 'Right to left', value: ReadingDirection.RIGHT_TO_LEFT }
+        { text: 'Right to left', value: ReadingDirection.RIGHT_TO_LEFT },
+        { text: 'Vertical', value: ReadingDirection.VERTICAL }
       ],
       imageFits: [
         { text: 'Fit to height', value: ImageFit.HEIGHT },
@@ -450,6 +453,9 @@ export default Vue.extend({
     flipDirection (): boolean {
       return this.readingDirection === ReadingDirection.RIGHT_TO_LEFT
     },
+    vertical (): boolean {
+      return this.readingDirection === ReadingDirection.VERTICAL
+    },
     imageFit: {
       get: function (): ImageFit {
         return this.settings.fit
@@ -490,6 +496,12 @@ export default Vue.extend({
         case 'PageDown':
         case 'ArrowLeft':
           this.flipDirection ? this.next() : this.prev()
+          break
+        case 'ArrowDown':
+          if (this.vertical) this.next()
+          break
+        case 'ArrowUp':
+          if (this.vertical) this.prev()
           break
         case 'Home':
           this.goToFirst()
@@ -532,9 +544,11 @@ export default Vue.extend({
         this.goToFirst()
       }
 
+      // set non-persistent reading direction if exists in metadata
       switch (this.book.metadata.readingDirection) {
         case ReadingDirection.LEFT_TO_RIGHT:
         case ReadingDirection.RIGHT_TO_LEFT:
+        case ReadingDirection.VERTICAL:
           // bypass setter so cookies aren't set
           this.settings.readingDirection = this.book.metadata.readingDirection
           this.snackReadingDirection = true
@@ -560,10 +574,18 @@ export default Vue.extend({
       }
     },
     turnRight () {
+      if (this.vertical) return
       return this.flipDirection ? this.prev() : this.next()
     },
     turnLeft () {
+      if (this.vertical) return
       return this.flipDirection ? this.next() : this.prev()
+    },
+    verticalPrev () {
+      if (this.vertical) this.prev()
+    },
+    verticalNext () {
+      if (this.vertical) this.next()
     },
     prev () {
       if (this.canPrev) {
