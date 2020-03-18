@@ -448,13 +448,7 @@ export default Vue.extend({
       }
     },
     flipDirection (): boolean {
-      switch (this.readingDirection) {
-        case ReadingDirection.LEFT_TO_RIGHT:
-          return false
-        case ReadingDirection.RIGHT_TO_LEFT:
-        default:
-          return true
-      }
+      return this.readingDirection === ReadingDirection.RIGHT_TO_LEFT
     },
     imageFit: {
       get: function (): ImageFit {
