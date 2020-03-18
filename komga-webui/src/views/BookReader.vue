@@ -258,9 +258,9 @@ import ThumbnailExplorerDialog from '@/components/ThumbnailExplorerDialog.vue'
 
 import { checkWebpFeature } from '@/functions/check-webp'
 import { bookPageUrl } from '@/functions/urls'
-import { ImageFit, ReaderReadingDirection } from '@/types/common'
 import Vue from 'vue'
 import { getBookTitleCompact } from '@/functions/book-title'
+import { ReadingDirection } from '@/types/enum-books'
 
 const cookieFit = 'webreader.fit'
 const cookieReadingDirection = 'webreader.readingDirection'
@@ -486,6 +486,10 @@ export default Vue.extend({
           }
           if (this.menu) {
             this.menu = false
+            break
+          }
+          if (this.toolbar) {
+            this.toolbar = false
             break
           }
           this.closeBook()
