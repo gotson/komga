@@ -1,3 +1,11 @@
+# [0.23.0](https://github.com/gotson/komga/compare/v0.22.2...v0.23.0) (2020-03-18)
+
+
+### Features
+
+* **book reader:** background color settings ([2c87e7b](https://github.com/gotson/komga/commit/2c87e7bba6f33c52313d5b28690cf179eaac8c85)), closes [#113](https://github.com/gotson/komga/issues/113)
+* **book reader:** pressing ESC will close the toolbars ([791f5df](https://github.com/gotson/komga/commit/791f5dff0878a72a5d34f8e201090e656492784c))
+
 ## [0.22.2](https://github.com/gotson/komga/compare/v0.22.1...v0.22.2) (2020-03-17)
 
 
