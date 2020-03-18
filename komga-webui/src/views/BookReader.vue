@@ -240,6 +240,24 @@
         <p v-else>Click or press next again<br/>to exit the reader.</p>
       </div>
     </v-snackbar>
+
+    <v-snackbar v-model="snackReadingDirection"
+                color="info"
+                multi-line
+                vertical
+                top
+    >
+      <div>This book has specific reading direction set.</div>
+      <div>Reading direction has been set to <span class="font-weight-bold">{{ readingDirs.find(x => x.value === readingDirection).text }}</span>.
+      </div>
+      <div>This only applies to this book and will not overwrite your settings.</div>
+      <v-btn
+        text
+        @click="snackReadingDirection = false"
+      >
+        Dismiss
+      </v-btn>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -279,6 +297,7 @@ export default Vue.extend({
       jumpToNextBook: false,
       jumpToPreviousBook: false,
       jumpConfirmationDelay: 3000,
+      snackReadingDirection: false,
       pages: [] as PageDto[],
       supportedMediaTypes: ['image/jpeg', 'image/png', 'image/gif'],
       convertTo: 'jpeg',
@@ -320,7 +339,6 @@ export default Vue.extend({
   },
   async mounted () {
     window.addEventListener('keydown', this.keyPressed)
-    this.setup(this.bookId, Number(this.$route.query.page))
 
     this.loadFromCookie(cookieReadingDirection, (v) => {
       this.readingDirection = v
@@ -341,6 +359,8 @@ export default Vue.extend({
         this.backgroundColor = v
       }
     })
+
+    this.setup(this.bookId, Number(this.$route.query.page))
   },
   destroyed () {
     window.removeEventListener('keydown', this.keyPressed)
@@ -516,6 +536,15 @@ export default Vue.extend({
         this.goTo(page)
       } else {
         this.goToFirst()
+      }
+
+      switch (this.book.metadata.readingDirection) {
+        case ReadingDirection.LEFT_TO_RIGHT:
+        case ReadingDirection.RIGHT_TO_LEFT:
+          // bypass setter so cookies aren't set
+          this.settings.readingDirection = this.book.metadata.readingDirection
+          this.snackReadingDirection = true
+          break
       }
 
       try {
