@@ -134,7 +134,9 @@
                          :transition="animations ? undefined : false"
                          :reverse-transition="animations ? undefined : false"
         >
-          <div class="full-height d-flex flex-column justify-center reader-background">
+          <div class="full-height d-flex flex-column justify-center"
+               :style="`background-color: ${backgroundColor}`"
+          >
             <div :class="`d-flex flex-row${flipDirection ? '-reverse' : ''} justify-center px-0 mx-0` ">
               <img :src="getPageUrl(p)"
                    :height="maxHeight"
@@ -180,6 +182,16 @@
           <v-list-item>
             <settings-switch v-model="animations" label="Page Transitions"></settings-switch>
           </v-list-item>
+
+          <v-list-item>
+            <settings-select
+              :items="backgroundColors"
+              v-model="backgroundColor"
+              label="Background color"
+            >
+            </settings-select>
+          </v-list-item>
+
           <v-list-item>
             <settings-select
               :items="readingDirs"
@@ -246,6 +258,7 @@ const cookieFit = 'webreader.fit'
 const cookieReadingDirection = 'webreader.readingDirection'
 const cookieDoublePages = 'webreader.doublePages'
 const cookieAnimations = 'webreader.animations'
+const cookieBackground = 'webreader.background'
 
 enum ImageFit {
   WIDTH = 'width',
@@ -280,7 +293,8 @@ export default Vue.extend({
         imageFits: Object.values(ImageFit),
         fit: ImageFit.HEIGHT,
         readingDirection: ReadingDirection.LEFT_TO_RIGHT,
-        animations: true
+        animations: true,
+        backgroundColor: 'black'
       },
       readingDirs: [
         { text: 'Left to right', value: ReadingDirection.LEFT_TO_RIGHT },
@@ -290,6 +304,10 @@ export default Vue.extend({
         { text: 'Fit to height', value: ImageFit.HEIGHT },
         { text: 'Fit to width', value: ImageFit.WIDTH },
         { text: 'Original', value: ImageFit.ORIGINAL }
+      ],
+      backgroundColors: [
+        { text: 'White', value: 'white' },
+        { text: 'Black', value: 'black' }
       ]
     }
   },
@@ -316,6 +334,11 @@ export default Vue.extend({
     this.loadFromCookie(cookieFit, (v) => {
       if (v) {
         this.imageFit = v
+      }
+    })
+    this.loadFromCookie(cookieBackground, (v) => {
+      if (v) {
+        this.backgroundColor = v
       }
     })
   },
@@ -420,6 +443,15 @@ export default Vue.extend({
       set: function (fit: ImageFit): void {
         this.settings.fit = fit
         this.$cookies.set(cookieFit, fit, Infinity)
+      }
+    },
+    backgroundColor: {
+      get: function (): string {
+        return this.settings.backgroundColor
+      },
+      set: function (color: string): void {
+        this.settings.backgroundColor = color
+        this.$cookies.set(cookieBackground, color, Infinity)
       }
     },
     doublePages: {
@@ -601,11 +633,6 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-
-.reader-background {
-  background-color: white; /* TODO add a setting for this, some books might not be white */
-}
-
 .settings {
   /*position: absolute;*/
   z-index: 2;
