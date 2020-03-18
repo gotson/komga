@@ -1,3 +1,16 @@
+# [0.24.0](https://github.com/gotson/komga/compare/v0.23.0...v0.24.0) (2020-03-18)
+
+
+### Bug Fixes
+
+* **add library:** special characters handling ([15afa93](https://github.com/gotson/komga/commit/15afa9343155aecee4132cb0ceedbfb5bf22b229))
+
+
+### Features
+
+* **book reader:** set reading direction from metadata ([30e766b](https://github.com/gotson/komga/commit/30e766be16dff121577ebb24d11881f73450c5cd))
+* **book reader:** vertical reading mode ([ca03111](https://github.com/gotson/komga/commit/ca03111b0b4246239bad84b79d7d179975d722aa))
+
 # [0.23.0](https://github.com/gotson/komga/compare/v0.22.2...v0.23.0) (2020-03-18)
 
 
