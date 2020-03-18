@@ -174,46 +174,26 @@
 
         <v-list class="full-height full-width">
           <v-list-item>
-            <settings-switch v-model="doublePages" label="Page Layout" :status="`${ doublePages ? 'Double Pages' : 'Single Page'}`"></settings-switch>
+            <settings-switch v-model="doublePages" label="Page Layout"
+                             :status="`${ doublePages ? 'Double Pages' : 'Single Page'}`"></settings-switch>
           </v-list-item>
           <v-list-item>
             <settings-switch v-model="animations" label="Page Transitions"></settings-switch>
           </v-list-item>
           <v-list-item>
             <settings-select
-              :items="settings.readingDirections"
+              :items="readingDirs"
               v-model="readingDirection"
               label="Reading Direction"
-            >
-              <template v-slot:item="data">
-                <div class="text-capitalize">
-                  {{ readingDirectionDisplay(data.item) }}
-                </div>
-              </template>
-              <template v-slot:selection="data">
-                <div class="text-capitalize">
-                  {{ readingDirectionDisplay(data.item) }}
-                </div>
-              </template>
-            </settings-select>
+            />
           </v-list-item>
+
           <v-list-item>
             <settings-select
-              :items="settings.imageFits"
+              :items="imageFits"
               v-model="imageFit"
               label="Scaling"
-            >
-              <template v-slot:item="data">
-                <div class="text-capitalize">
-                  {{ imageFitDisplay(data.item) }}
-                </div>
-              </template>
-              <template v-slot:selection="data">
-                <div class="text-capitalize">
-                  {{ imageFitDisplay(data.item) }}
-                </div>
-              </template>
-            </settings-select>
+            />
           </v-list-item>
         </v-list>
       </v-container>
@@ -267,14 +247,10 @@ const cookieReadingDirection = 'webreader.readingDirection'
 const cookieDoublePages = 'webreader.doublePages'
 const cookieAnimations = 'webreader.animations'
 
-const fitDisplay = {
-  [ImageFit.HEIGHT]: 'fit to height',
-  [ImageFit.WIDTH]: 'fit to width',
-  [ImageFit.ORIGINAL]: 'original'
-}
-const dirDisplay = {
-  [ReaderReadingDirection.RightToLeft]: 'right to left',
-  [ReaderReadingDirection.LeftToRight]: 'left to right'
+enum ImageFit {
+  WIDTH = 'width',
+  HEIGHT = 'height',
+  ORIGINAL = 'original'
 }
 
 export default Vue.extend({
@@ -303,10 +279,18 @@ export default Vue.extend({
         doublePages: false,
         imageFits: Object.values(ImageFit),
         fit: ImageFit.HEIGHT,
-        readingDirections: Object.values(ReaderReadingDirection),
-        readingDirection: ReaderReadingDirection.LeftToRight,
+        readingDirection: ReadingDirection.LEFT_TO_RIGHT,
         animations: true
-      }
+      },
+      readingDirs: [
+        { text: 'Left to right', value: ReadingDirection.LEFT_TO_RIGHT },
+        { text: 'Right to left', value: ReadingDirection.RIGHT_TO_LEFT }
+      ],
+      imageFits: [
+        { text: 'Fit to height', value: ImageFit.HEIGHT },
+        { text: 'Fit to width', value: ImageFit.WIDTH },
+        { text: 'Original', value: ImageFit.ORIGINAL }
+      ]
     }
   },
   created () {
@@ -412,19 +396,19 @@ export default Vue.extend({
       }
     },
     readingDirection: {
-      get: function (): ReaderReadingDirection {
+      get: function (): ReadingDirection {
         return this.settings.readingDirection
       },
-      set: function (readingDirection: ReaderReadingDirection): void {
+      set: function (readingDirection: ReadingDirection): void {
         this.settings.readingDirection = readingDirection
         this.$cookies.set(cookieReadingDirection, readingDirection, Infinity)
       }
     },
     flipDirection (): boolean {
       switch (this.readingDirection) {
-        case ReaderReadingDirection.LeftToRight:
+        case ReadingDirection.LEFT_TO_RIGHT:
           return false
-        case ReaderReadingDirection.RightToLeft:
+        case ReadingDirection.RIGHT_TO_LEFT:
         default:
           return true
       }
@@ -605,12 +589,6 @@ export default Vue.extend({
         return this.$vuetify.breakpoint.width / 2
       }
       return this.$vuetify.breakpoint.width
-    },
-    imageFitDisplay (fit: ImageFit): string {
-      return fitDisplay[fit]
-    },
-    readingDirectionDisplay (dir: ReaderReadingDirection): string {
-      return dirDisplay[dir]
     },
     loadFromCookie (cookieKey: string, setter: (value: any) => void): void {
       if (this.$cookies.isKey(cookieKey)) {
