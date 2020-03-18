@@ -467,9 +467,6 @@ export default Vue.extend({
     }
   },
   methods: {
-    swipe (direction: string) {
-      alert(direction)
-    },
     keyPressed (e: KeyboardEvent) {
       switch (e.key) {
         case 'PageUp':
