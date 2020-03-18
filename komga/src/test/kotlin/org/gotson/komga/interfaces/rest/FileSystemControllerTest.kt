@@ -5,11 +5,12 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithAnonymousUser
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.post
 import java.nio.file.Files
 
 @ExtendWith(SpringExtension::class)
@@ -23,22 +24,23 @@ class FileSystemControllerTest(
   @Test
   @WithAnonymousUser
   fun `given anonymous user when getDirectoryListing then return unauthorized`() {
-    mockMvc.get(route)
+    mockMvc.post(route)
         .andExpect { status { isUnauthorized } }
   }
 
   @Test
   @WithMockUser
   fun `given regular user when getDirectoryListing then return forbidden`() {
-    mockMvc.get(route)
+    mockMvc.post(route)
         .andExpect { status { isForbidden } }
   }
 
   @Test
   @WithMockUser(roles = ["USER", "ADMIN"])
   fun `given relative path param when getDirectoryListing then return bad request`() {
-    mockMvc.get(route) {
-      param("path", ".")
+    mockMvc.post(route) {
+      contentType = MediaType.APPLICATION_JSON
+      content = "."
     }.andExpect { status { isBadRequest } }
   }
 
@@ -48,8 +50,9 @@ class FileSystemControllerTest(
     val parent = Files.createTempDirectory(null)
     Files.delete(parent)
 
-    mockMvc.get(route) {
-      param("path", parent.toString())
+    mockMvc.post(route) {
+      contentType = MediaType.APPLICATION_JSON
+      content = parent.toString()
     }.andExpect { status { isBadRequest } }
   }
 }
