@@ -158,10 +158,9 @@
       :pagesCount="pagesCount"
     ></thumbnail-explorer-dialog>
 
-    <v-dialog
+    <v-bottom-sheet
       v-model="menu"
       :close-on-content-click="false"
-      transition="dialog-bottom-transition"
       :width="$vuetify.breakpoint.width * ($vuetify.breakpoint.smAndUp ? 0.5 : 1)"
       @keydown.esc.stop=""
     >
@@ -218,7 +217,7 @@
           </v-list-item>
         </v-list>
       </v-container>
-    </v-dialog>
+    </v-bottom-sheet>
     <v-snackbar
       v-model="jumpToPreviousBook"
       :timeout="jumpConfirmationDelay"
