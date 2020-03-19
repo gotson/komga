@@ -1,3 +1,14 @@
+## [0.24.1](https://github.com/gotson/komga/compare/v0.24.0...v0.24.1) (2020-03-19)
+
+
+### Bug Fixes
+
+* **api:** search books by metadata title ([487b18d](https://github.com/gotson/komga/commit/487b18d15b04e86eacf55bfda5b286456d36e563))
+* **api:** search series by metadata title ([51dd917](https://github.com/gotson/komga/commit/51dd91724976a14a029d69c04f2483b7072778b6))
+* **book card:** use book metadata ([ea1bdc6](https://github.com/gotson/komga/commit/ea1bdc646af70be647dc9b1709817dcfd657aa15))
+* **browse series:** hide toolbar on selection ([e6d014f](https://github.com/gotson/komga/commit/e6d014f1ac29c6e02537eaf0c4be636785f69ab5))
+* **searchbox:** display book metadata title instead of name ([26d37a0](https://github.com/gotson/komga/commit/26d37a0fc91c476e246ba09a7ae9f8c71f0b82b5))
+
 # [0.24.0](https://github.com/gotson/komga/compare/v0.23.0...v0.24.0) (2020-03-18)
 
 
