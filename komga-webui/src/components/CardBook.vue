@@ -52,9 +52,9 @@
         <v-card-subtitle class="pa-2 pb-1 text--primary"
                          v-line-clamp="2"
                          style="word-break: normal !important; height: 4em"
-                         :title="book.name"
+                         :title="book.metadata.title"
         >
-          #{{ book.number }} - {{ book.name }}
+          #{{ book.metadata.number }} - {{ book.metadata.title }}
         </v-card-subtitle>
 
         <v-card-text class="px-2"
