@@ -1,3 +1,10 @@
+## [0.24.2](https://github.com/gotson/komga/compare/v0.24.1...v0.24.2) (2020-03-19)
+
+
+### Bug Fixes
+
+* **webui:** use metadata title for display name ([64c3356](https://github.com/gotson/komga/commit/64c33565c5648154a7ede69f7f5f8de69b6697c3))
+
 ## [0.24.1](https://github.com/gotson/komga/compare/v0.24.0...v0.24.1) (2020-03-19)
 
 
