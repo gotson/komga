@@ -1,6 +1,6 @@
 <template>
   <div>
-    <toolbar-sticky>
+    <toolbar-sticky v-if="selected.length === 0">
       <!--   Go back to parent library   -->
       <v-btn icon
              title="Go to library"
