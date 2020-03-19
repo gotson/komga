@@ -86,7 +86,7 @@ class SeriesController(
       }
 
       if (!searchTerm.isNullOrEmpty()) {
-        specs.add(Series::name.likeLower("%$searchTerm%"))
+        specs.add(Series::metadata.toJoin().where(SeriesMetadata::title).likeLower("%$searchTerm%"))
       }
 
       if (!metadataStatus.isNullOrEmpty()) {
