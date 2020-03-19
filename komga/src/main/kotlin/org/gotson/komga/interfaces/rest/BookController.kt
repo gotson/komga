@@ -8,6 +8,7 @@ import org.gotson.komga.application.service.AsyncOrchestrator
 import org.gotson.komga.application.service.BookLifecycle
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.Book
+import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.ImageConversionException
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
@@ -98,7 +99,7 @@ class BookController(
       }
 
       if (!searchTerm.isNullOrEmpty()) {
-        specs.add(Book::name.likeLower("%$searchTerm%"))
+        specs.add(Book::metadata.toJoin().where(BookMetadata::title).likeLower("%$searchTerm%"))
       }
 
       if (!mediaStatus.isNullOrEmpty()) {
