@@ -202,8 +202,8 @@ export default mixins(VisibleElements).extend({
       }
     },
     series (val) {
-      if (this.$_.has(val, 'name')) {
-        document.title = `Komga - ${val.name}`
+      if (this.$_.has(val, 'metadata.title')) {
+        document.title = `Komga - ${val.metadata.title}`
       }
     },
     selected (val: number[]) {

@@ -22,7 +22,7 @@
           >
             <v-icon>mdi-arrow-left</v-icon>
           </v-btn>
-          <v-toolbar-title> {{ this.bookTitle }}</v-toolbar-title>
+          <v-toolbar-title> {{ bookTitle }}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn
             icon
@@ -389,7 +389,7 @@ export default Vue.extend({
     async book (val) {
       if (this.$_.has(val, 'name')) {
         this.series = await this.$komgaSeries.getOneSeries(val.seriesId)
-        document.title = `Komga - ${getBookTitleCompact(val.name, this.series.name)}`
+        document.title = `Komga - ${this.bookTitle}`
       }
     }
   },
@@ -429,7 +429,7 @@ export default Vue.extend({
       return this.pages.length
     },
     bookTitle (): string {
-      return getBookTitleCompact(this.book.name, this.series.name)
+      return getBookTitleCompact(this.book.metadata.title, this.series.metadata.title)
     },
 
     animations: {
