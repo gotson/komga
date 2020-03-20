@@ -251,10 +251,10 @@ class OpdsController(
 
   private fun Book.toOpdsEntry() =
     OpdsEntryAcquisition(
-      title = name,
+      title = metadata.title,
       updated = lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
       id = id.toString(),
-      content = "$name (${fileExtension().toUpperCase()}) (${fileSizeHumanReadable()})",
+      content = "${metadata.title} (${fileExtension().toUpperCase()}) (${fileSizeHumanReadable()})",
       links = listOf(
         OpdsLinkImageThumbnail("image/jpeg", "${ROUTE_BASE}books/$id/thumbnail"),
         OpdsLinkImage(media.pages[0].mediaType, "${ROUTE_BASE}books/$id/pages/1"),
