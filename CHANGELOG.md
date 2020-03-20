@@ -1,3 +1,14 @@
+## [0.24.5](https://github.com/gotson/komga/compare/v0.24.4...v0.24.5) (2020-03-20)
+
+
+### Bug Fixes
+
+* **api:** find book siblings by metadata.numberSort ([1902e72](https://github.com/gotson/komga/commit/1902e72f86c1fcaca8492d828a8fc19dbc0fac9c))
+* **api:** series thumbnail is of first book by metadata.numberSort ([0721f31](https://github.com/gotson/komga/commit/0721f31e2faa0123b1c581afe28c042947bd8e0b))
+* **opds:** books are ordered by metadata.numberSort ([60edbe1](https://github.com/gotson/komga/commit/60edbe1090f99575bc209a3c439f41158398b7a6))
+* **opds:** display book metadata title instead of name ([d06da57](https://github.com/gotson/komga/commit/d06da572b64caca6fbed00606c6aae73fa8c40f8))
+* **opds:** search series by metadata.title ([f4466b4](https://github.com/gotson/komga/commit/f4466b45bfc374724d48008c642cad295e444b4d))
+
 ## [0.24.4](https://github.com/gotson/komga/compare/v0.24.3...v0.24.4) (2020-03-20)
 
 
