@@ -389,7 +389,7 @@ export default Vue.extend({
     async book (val) {
       if (this.$_.has(val, 'name')) {
         this.series = await this.$komgaSeries.getOneSeries(val.seriesId)
-        document.title = `Komga - ${this.bookTitle}`
+        document.title = `Komga - ${getBookTitleCompact(val.metadata.title, this.series.metadata.title)}`
       }
     }
   },
