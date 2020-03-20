@@ -1,3 +1,10 @@
+## [0.24.3](https://github.com/gotson/komga/compare/v0.24.2...v0.24.3) (2020-03-20)
+
+
+### Bug Fixes
+
+* **webui:** change page title on book change ([2d0e21b](https://github.com/gotson/komga/commit/2d0e21b0b8d36a81e17417db01545cc3e51f61b2))
+
 ## [0.24.2](https://github.com/gotson/komga/compare/v0.24.1...v0.24.2) (2020-03-19)
 
 
