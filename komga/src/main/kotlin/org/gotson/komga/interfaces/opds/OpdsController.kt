@@ -2,10 +2,12 @@ package org.gotson.komga.interfaces.opds
 
 import com.github.klinq.jpaspec.`in`
 import com.github.klinq.jpaspec.likeLower
+import com.github.klinq.jpaspec.toJoin
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.Series
+import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
@@ -121,7 +123,7 @@ class OpdsController(
         }
 
         if (!searchTerm.isNullOrEmpty()) {
-          specs.add(Series::name.likeLower("%$searchTerm%"))
+          specs.add(Series::metadata.toJoin().where(SeriesMetadata::title).likeLower("%$searchTerm%"))
         }
 
           if (specs.isNotEmpty()) {
@@ -202,7 +204,7 @@ class OpdsController(
 
         OpdsFeedAcquisition(
           id = series.id.toString(),
-          title = series.name,
+          title = series.metadata.title,
           updated = series.lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
           author = komgaAuthor,
           links = listOf(
