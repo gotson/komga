@@ -1,3 +1,10 @@
+## [0.24.4](https://github.com/gotson/komga/compare/v0.24.3...v0.24.4) (2020-03-20)
+
+
+### Bug Fixes
+
+* **edit series dialog:** better form handling ([c225829](https://github.com/gotson/komga/commit/c2258294ced569310d21b5c8e03e455408b18d22))
+
 ## [0.24.3](https://github.com/gotson/komga/compare/v0.24.2...v0.24.3) (2020-03-20)
 
 
