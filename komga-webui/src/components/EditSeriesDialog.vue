@@ -5,40 +5,47 @@
               max-width="800"
               @keydown.esc="dialogCancel"
     >
-      <v-card>
-        <v-toolbar class="hidden-sm-and-up">
-          <v-btn icon @click="dialogCancel">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-          <v-toolbar-title>{{ dialogTitle }}</v-toolbar-title>
-          <v-spacer/>
-          <v-toolbar-items>
-            <v-btn text color="primary" @click="dialogConfirm">Save changes</v-btn>
-          </v-toolbar-items>
-        </v-toolbar>
+      <form novalidate>
+        <v-card>
+          <v-toolbar class="hidden-sm-and-up">
+            <v-btn icon @click="dialogCancel">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+            <v-toolbar-title>{{ dialogTitle }}</v-toolbar-title>
+            <v-spacer/>
+            <v-toolbar-items>
+              <v-btn text color="primary" @click="dialogConfirm">Save changes</v-btn>
+            </v-toolbar-items>
+          </v-toolbar>
 
-        <v-card-title class="hidden-xs-only">
-          <v-icon class="mr-4">mdi-pencil</v-icon>
-          {{ dialogTitle }}
-        </v-card-title>
+          <v-card-title class="hidden-xs-only">
+            <v-icon class="mr-4">mdi-pencil</v-icon>
+            {{ dialogTitle }}
+          </v-card-title>
 
-        <v-tabs :vertical="$vuetify.breakpoint.smAndUp">
-          <v-tab class="justify-start">
-            <v-icon left class="hidden-xs-only">mdi-format-align-center</v-icon>
-            General
-          </v-tab>
+          <v-tabs :vertical="$vuetify.breakpoint.smAndUp">
+            <v-tab class="justify-start">
+              <v-icon left class="hidden-xs-only">mdi-format-align-center</v-icon>
+              General
+            </v-tab>
 
-          <!--  General  -->
-          <v-tab-item>
-            <v-card flat>
-              <form novalidate>
+            <!--  General  -->
+            <v-tab-item
+              :style="$vuetify.breakpoint.smAndUp ? `max-height: ${$vuetify.breakpoint.height * .5}px;overflow-y: scroll` : ''"
+            >
+              <v-card flat>
                 <v-container fluid>
 
                   <!--  Title  -->
-                  <v-row v-if="!multiple">
+                  <v-row v-if="single">
                     <v-col cols="12">
                       <v-text-field v-model="form.title"
                                     label="Title"
+                                    filled
+                                    dense
+                                    :error-messages="requiredErrors('title')"
+                                    @input="$v.form.title.$touch()"
+                                    @blur="$v.form.title.$touch()"
                                     @change="form.titleLock = true"
                       >
                         <template v-slot:prepend>
@@ -53,10 +60,15 @@
                   </v-row>
 
                   <!--  Sort Title  -->
-                  <v-row v-if="!multiple">
+                  <v-row v-if="single">
                     <v-col cols="12">
                       <v-text-field v-model="form.titleSort"
                                     label="Sort Title"
+                                    filled
+                                    dense
+                                    :error-messages="requiredErrors('titleSort')"
+                                    @input="$v.form.titleSort.$touch()"
+                                    @blur="$v.form.titleSort.$touch()"
                                     @change="form.titleSortLock = true"
                       >
                         <template v-slot:prepend>
@@ -76,6 +88,9 @@
                       <v-select :items="seriesStatus"
                                 v-model="form.status"
                                 label="Status"
+                                filled
+                                :placeholder="mixed.status ? 'MIXED' : ''"
+                                @input="$v.form.status.$touch()"
                                 @change="form.statusLock = true"
                       >
                         <template v-slot:prepend>
@@ -89,18 +104,18 @@
                     </v-col>
                   </v-row>
                 </v-container>
-              </form>
-            </v-card>
-          </v-tab-item>
+              </v-card>
+            </v-tab-item>
 
-        </v-tabs>
+          </v-tabs>
 
-        <v-card-actions class="hidden-xs-only">
-          <v-spacer/>
-          <v-btn text @click="dialogCancel">Cancel</v-btn>
-          <v-btn text class="primary--text" @click="dialogConfirm">Save changes</v-btn>
-        </v-card-actions>
-      </v-card>
+          <v-card-actions class="hidden-xs-only">
+            <v-spacer/>
+            <v-btn text @click="dialogCancel">Cancel</v-btn>
+            <v-btn text class="primary--text" @click="dialogConfirm">Save changes</v-btn>
+          </v-card-actions>
+        </v-card>
+      </form>
     </v-dialog>
 
     <v-snackbar
@@ -122,6 +137,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { SeriesStatus } from '@/types/enum-series'
+import { requiredIf } from 'vuelidate/lib/validators'
 
 export default Vue.extend({
   name: 'EditSeriesDialog',
@@ -137,6 +153,9 @@ export default Vue.extend({
         titleLock: false,
         titleSort: '',
         titleSortLock: false
+      },
+      mixed: {
+        status: false
       }
     }
   },
@@ -158,9 +177,28 @@ export default Vue.extend({
       this.dialogReset(val)
     }
   },
+  validations: {
+    form: {
+      title: {
+        required: requiredIf(function (this: any, model: any) {
+          return this.single
+        })
+      },
+      titleSort: {
+        required: requiredIf(function (this: any, model: any) {
+          return this.single
+        })
+      },
+      status: {
+        required: requiredIf(function (this: any, model: any) {
+          return this.single
+        })
+      }
+    }
+  },
   computed: {
-    multiple (): boolean {
-      return Array.isArray(this.series)
+    single (): boolean {
+      return !Array.isArray(this.series)
     },
     seriesStatus (): any[] {
       return Object.keys(SeriesStatus).map(x => ({
@@ -169,17 +207,27 @@ export default Vue.extend({
       }))
     },
     dialogTitle (): string {
-      return this.multiple
-        ? `Edit ${(this.series as SeriesDto[]).length} series`
-        : `Edit ${this.$_.get(this.series, 'metadata.title')}`
+      return this.single
+        ? `Edit ${this.$_.get(this.series, 'metadata.title')}`
+        : `Edit ${(this.series as SeriesDto[]).length} series`
     }
   },
   methods: {
+    requiredErrors (fieldName: string): string[] {
+      const errors = [] as string[]
+      const formField = this.$v.form!![fieldName] as any
+      if (!formField.$dirty) return errors
+      !formField.required && errors.push('Required')
+      return errors
+    },
     dialogReset (series: SeriesDto | SeriesDto[]) {
+      this.$v.$reset()
       if (Array.isArray(series) && series.length === 0) return
       if (Array.isArray(series) && series.length > 0) {
         const status = this.$_.uniq(series.map(x => x.metadata.status))
         this.form.status = status.length > 1 ? '' : status[0]
+        this.mixed.status = status.length > 1
+
         const statusLock = this.$_.uniq(series.map(x => x.metadata.statusLock))
         this.form.statusLock = statusLock.length > 1 ? false : statusLock[0]
       } else {
@@ -191,43 +239,60 @@ export default Vue.extend({
       this.dialogReset(this.series)
     },
     async dialogConfirm () {
-      await this.editSeries()
-      this.$emit('input', false)
+      if (await this.editSeries()) {
+        this.$emit('input', false)
+      }
     },
     showSnack (message: string) {
       this.snackText = message
       this.snackbar = true
     },
-    async editSeries () {
-      const updated = [] as SeriesDto[]
-      const toUpdate = (this.multiple ? this.series : [this.series]) as SeriesDto[]
-      for (const s of toUpdate) {
-        try {
-          if (this.form.status === '') {
-            return
-          }
-          const metadata = {
-            status: this.form.status,
-            statusLock: this.form.statusLock
-          } as SeriesMetadataUpdateDto
-
-          if (!this.multiple) {
-            this.$_.merge(metadata, {
-              title: this.form.title,
-              titleLock: this.form.titleLock,
-              titleSort: this.form.titleSort,
-              titleSortLock: this.form.titleSortLock
-            })
-          }
-
-          const updatedSeries = await this.$komgaSeries.updateMetadata(s.id, metadata)
-          updated.push(updatedSeries)
-        } catch (e) {
-          this.showSnack(e.message)
-          updated.push(s)
+    validateForm (): any {
+      if (!this.$v.$invalid) {
+        const metadata = {
+          statusLock: this.form.statusLock
         }
+
+        if (this.$v.form?.status?.$dirty) {
+          this.$_.merge(metadata, { status: this.form.status })
+        }
+
+        if (this.single) {
+          this.$_.merge(metadata, {
+            titleLock: this.form.titleLock,
+            titleSortLock: this.form.titleSortLock
+          })
+
+          if (this.$v.form?.title?.$dirty) {
+            this.$_.merge(metadata, { title: this.form.title })
+          }
+
+          if (this.$v.form?.titleSort?.$dirty) {
+            this.$_.merge(metadata, { titleSort: this.form.titleSort })
+          }
+        }
+
+        return metadata
       }
-      this.$emit('update:series', this.multiple ? updated : updated[0])
+      return null
+    },
+    async editSeries (): Promise<boolean> {
+      const metadata = this.validateForm()
+      if (metadata) {
+        const updated = [] as SeriesDto[]
+        const toUpdate = (this.single ? [this.series] : this.series) as SeriesDto[]
+        for (const s of toUpdate) {
+          try {
+            const updatedSeries = await this.$komgaSeries.updateMetadata(s.id, metadata)
+            updated.push(updatedSeries)
+          } catch (e) {
+            this.showSnack(e.message)
+            updated.push(s)
+          }
+        }
+        this.$emit('update:series', this.single ? updated[0] : updated)
+        return true
+      } else return false
     }
   }
 })

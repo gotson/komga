@@ -554,9 +554,7 @@ export default Vue.extend({
       }
       return null
     },
-    async editBooks ()
-      :
-      Promise<boolean> {
+    async editBooks (): Promise<boolean> {
       const metadata = this.validateForm()
       if (metadata) {
         const updated = [] as BookDto[]
