@@ -211,7 +211,10 @@ class OpdsController(
             OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "${ROUTE_BASE}series/$id"),
             linkStart
           ),
-          entries = series.books.filter { it.media.status == Media.Status.READY }.map { it.toOpdsEntry() }
+          entries = series.books
+            .filter { it.media.status == Media.Status.READY }
+            .sortedBy { it.metadata.numberSort }
+            .map { it.toOpdsEntry() }
         )
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
