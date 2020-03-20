@@ -153,8 +153,8 @@ class BookController(
       if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
 
       val previousBook = book.series.books
-        .sortedByDescending { it.number }
-        .find { it.number < book.number }
+        .sortedByDescending { it.metadata.numberSort }
+        .find { it.metadata.numberSort < book.metadata.numberSort }
 
       previousBook?.toDto(includeFullUrl = principal.user.isAdmin())
         ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -169,8 +169,8 @@ class BookController(
       if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
 
       val nextBook = book.series.books
-        .sortedBy { it.number }
-        .find { it.number > book.number }
+        .sortedBy { it.metadata.numberSort }
+        .find { it.metadata.numberSort > book.metadata.numberSort }
 
       nextBook?.toDto(includeFullUrl = principal.user.isAdmin()) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
