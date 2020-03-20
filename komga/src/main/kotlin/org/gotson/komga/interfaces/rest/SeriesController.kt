@@ -177,7 +177,7 @@ class SeriesController(
     seriesRepository.findByIdOrNull(id)?.let { series ->
       if (!principal.user.canAccessSeries(series)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
 
-      series.books.minBy { it.number }?.let { firstBook ->
+      series.books.minBy { it.metadata.numberSort }?.let { firstBook ->
         bookController.getBookThumbnail(principal, request, firstBook.id)
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
