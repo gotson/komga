@@ -1,3 +1,10 @@
+## [0.24.6](https://github.com/gotson/komga/compare/v0.24.5...v0.24.6) (2020-03-21)
+
+
+### Bug Fixes
+
+* **api:** use etag on book thumbnails ([871a92a](https://github.com/gotson/komga/commit/871a92a7835333ea11014ac06ead5b434a44c23d)), closes [#117](https://github.com/gotson/komga/issues/117)
+
 ## [0.24.5](https://github.com/gotson/komga/compare/v0.24.4...v0.24.5) (2020-03-20)
 
 
