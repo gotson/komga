@@ -179,22 +179,25 @@ class BookController(
   @GetMapping(value = [
     "api/v1/books/{bookId}/thumbnail",
     "opds/v1.2/books/{bookId}/thumbnail"
-  ], produces = [MediaType.IMAGE_PNG_VALUE])
+  ], produces = [MediaType.IMAGE_JPEG_VALUE])
   fun getBookThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     request: WebRequest,
     @PathVariable bookId: Long
   ): ResponseEntity<ByteArray> =
     bookRepository.findByIdOrNull(bookId)?.let { book ->
-      if (request.checkNotModified(getBookLastModified(book))) {
+      val etag = book.id.toString()
+      if (request.checkNotModified(etag, getBookLastModified(book))) {
         return@let ResponseEntity
           .status(HttpStatus.NOT_MODIFIED)
+          .eTag(etag)
           .setNotModified(book)
           .body(ByteArray(0))
       }
       if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
       if (book.media.thumbnail != null) {
         ResponseEntity.ok()
+          .eTag(etag)
           .setNotModified(book)
           .body(book.media.thumbnail)
       } else throw ResponseStatusException(HttpStatus.NOT_FOUND)
