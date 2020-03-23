@@ -56,8 +56,11 @@ class BookMetadataUpdateDto {
 
   var releaseDateLock: Boolean? = null
 
-  @Valid
-  var authors: List<AuthorUpdateDto>? = null
+  @get:Valid
+  var authors: List<AuthorUpdateDto>?
+    by Delegates.observable<List<AuthorUpdateDto>?>(null) { prop, _, _ ->
+      isSet[prop.name] = true
+    }
 
   var authorsLock: Boolean? = null
 }

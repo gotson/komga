@@ -364,11 +364,13 @@ class BookController(
           book.metadata.releaseDate = newMetadata.releaseDate
         }
         releaseDateLock?.let { book.metadata.releaseDateLock = it }
-        if (authors != null) {
-          book.metadata.authors = authors!!.map {
-            Author(it.name ?: "", it.role ?: "")
-          }.toMutableList()
-        } else book.metadata.authors = mutableListOf()
+        if (isSet("authors")) {
+          if (authors != null) {
+            book.metadata.authors = authors!!.map {
+              Author(it.name ?: "", it.role ?: "")
+            }.toMutableList()
+          } else book.metadata.authors = mutableListOf()
+        }
         authorsLock?.let { book.metadata.authorsLock = it }
       }
       bookRepository.save(book).toDto(includeFullUrl = true)

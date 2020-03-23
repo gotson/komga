@@ -524,4 +524,58 @@ class BookControllerTest(
       assertThat(releaseDate).isNull()
     }
   }
+
+  //Not part of the above @Nested class because @Transactional fails
+  @Test
+  @Transactional
+  @WithMockCustomUser(roles = [UserRoles.ADMIN])
+  fun `given json without fields when updating metadata then existing fields are untouched`() {
+    val testDate = LocalDate.of(2020, 1, 1)
+    val series = makeSeries(
+      name = "series",
+      books = listOf(makeBook("1.cbr").also {
+        with(it.metadata)
+        {
+          ageRating = 12
+          readingDirection = BookMetadata.ReadingDirection.LEFT_TO_RIGHT
+          authors.add(Author("Author", "role"))
+          releaseDate = testDate
+          summary = "summary"
+          number = "number"
+          numberLock = true
+          numberSort = 2F
+          numberSortLock = true
+          publisher = "publisher"
+          title = "title"
+        }
+      })
+    ).also { it.library = library }
+    seriesRepository.save(series)
+    val bookId = series.books.first().id
+
+    val jsonString = """
+        {
+        }
+      """.trimIndent()
+
+    mockMvc.patch("/api/v1/books/${bookId}/metadata") {
+      contentType = MediaType.APPLICATION_JSON
+      content = jsonString
+    }.andExpect {
+      status { isOk }
+    }
+
+    val updatedBook = bookRepository.findByIdOrNull(bookId)
+    with(updatedBook!!.metadata) {
+      assertThat(readingDirection).isEqualTo(BookMetadata.ReadingDirection.LEFT_TO_RIGHT)
+      assertThat(ageRating).isEqualTo(12)
+      assertThat(authors).hasSize(1)
+      assertThat(releaseDate).isEqualTo(testDate)
+      assertThat(summary).isEqualTo("summary")
+      assertThat(number).isEqualTo("number")
+      assertThat(numberSort).isEqualTo(2F)
+      assertThat(publisher).isEqualTo("publisher")
+      assertThat(title).isEqualTo("title")
+    }
+  }
 }
