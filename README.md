@@ -31,6 +31,10 @@ Head over to our [website](https://komga.org) for more information.
 
 Check the [development guidelines](./DEVELOPING.md).
 
+## Sponsors
+
+[![Jetbrains_logo](./.github/readme-images/jetbrains.png)](https://www.jetbrains.com/?from=Komga)
+
 ## Credits
 
 The Komga icon is based on an icon made by [Freepik](https://www.freepik.com/home) from www.flaticon.com
