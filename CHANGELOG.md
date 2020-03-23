@@ -1,3 +1,10 @@
+## [0.24.7](https://github.com/gotson/komga/compare/v0.24.6...v0.24.7) (2020-03-23)
+
+
+### Bug Fixes
+
+* **webui:** fix metadata dialogs on xs screens ([112837a](https://github.com/gotson/komga/commit/112837a163a2a123b421cf8cebef15d431f67367))
+
 ## [0.24.6](https://github.com/gotson/komga/compare/v0.24.5...v0.24.6) (2020-03-21)
 
 
