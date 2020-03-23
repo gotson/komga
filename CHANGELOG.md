@@ -1,3 +1,10 @@
+## [0.24.8](https://github.com/gotson/komga/compare/v0.24.7...v0.24.8) (2020-03-23)
+
+
+### Bug Fixes
+
+* **api:** check if authors field is set ([9218e6b](https://github.com/gotson/komga/commit/9218e6bb265b32fbd28d61ef797e7a1d93cb9a1c)), closes [#120](https://github.com/gotson/komga/issues/120)
+
 ## [0.24.7](https://github.com/gotson/komga/compare/v0.24.6...v0.24.7) (2020-03-23)
 
 
