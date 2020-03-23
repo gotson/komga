@@ -1,0 +1,11 @@
+@import '~vuetify/src/styles/styles.sass'
+
+@media #{map-get($display-breakpoints, 'xs-only')}
+  .v-tabs-items .v-window-item
+    height: calc(100vh - 104px)
+    overflow-y: scroll
+
+@media #{map-get($display-breakpoints, 'sm-and-up')}
+  .v-tabs-items .v-window-item
+    max-height: 50vh
+    overflow-y: scroll

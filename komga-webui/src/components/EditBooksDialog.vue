@@ -34,8 +34,7 @@
             </v-tab>
 
             <!--  Tab: General  -->
-            <v-tab-item
-              :style="$vuetify.breakpoint.smAndUp ? `max-height: ${$vuetify.breakpoint.height * .5}px;overflow-y: scroll` : ''">
+            <v-tab-item>
               <v-card flat>
                 <v-container fluid>
 
@@ -229,8 +228,7 @@
             </v-tab-item>
 
             <!--  Tab: Authors  -->
-            <v-tab-item
-              :style="$vuetify.breakpoint.smAndUp ? `max-height: ${$vuetify.breakpoint.height * .5}px;overflow-y: scroll` : ''">
+            <v-tab-item>
               <v-card flat>
                 <v-container fluid>
                   <v-alert v-if="!single"
@@ -576,6 +574,6 @@ export default Vue.extend({
 })
 </script>
 
-<style scoped>
-
+<style lang="sass" scoped>
+@import '../styles/tabbed-dialog.sass'
 </style>

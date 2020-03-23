@@ -30,9 +30,7 @@
             </v-tab>
 
             <!--  General  -->
-            <v-tab-item
-              :style="$vuetify.breakpoint.smAndUp ? `max-height: ${$vuetify.breakpoint.height * .5}px;overflow-y: scroll` : ''"
-            >
+            <v-tab-item>
               <v-card flat>
                 <v-container fluid>
 
@@ -298,6 +296,6 @@ export default Vue.extend({
 })
 </script>
 
-<style scoped>
-
+<style lang="sass" scoped>
+@import '../styles/tabbed-dialog.sass'
 </style>
