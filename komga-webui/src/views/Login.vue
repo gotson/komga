@@ -93,7 +93,11 @@ export default Vue.extend({
 
         await this.$store.dispatch('getLibraries')
 
-        this.$router.push({ name: 'home' })
+        if (this.$route.query.redirect) {
+          this.$router.push({ path: this.$route.query.redirect.toString() })
+        } else {
+          this.$router.push({ name: 'home' })
+        }
       } catch (e) {
         this.showSnack(e.message)
       }

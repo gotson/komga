@@ -19,7 +19,7 @@ export default Vue.extend({
       await this.$store.dispatch('getLibraries')
       this.$router.back()
     } catch (e) {
-      this.$router.push({ name: 'login' })
+      this.$router.push({ name: 'login', query: { redirect: this.$route.query.redirect } })
     }
   },
 })
