@@ -1,3 +1,10 @@
+## [0.24.9](https://github.com/gotson/komga/compare/v0.24.8...v0.24.9) (2020-03-24)
+
+
+### Bug Fixes
+
+* **webui:** redirect to initial page after login ([5f61597](https://github.com/gotson/komga/commit/5f6159712515d0df128443dbec5cc01b9dadff07)), closes [#122](https://github.com/gotson/komga/issues/122)
+
 ## [0.24.8](https://github.com/gotson/komga/compare/v0.24.7...v0.24.8) (2020-03-23)
 
 
