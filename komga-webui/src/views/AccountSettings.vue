@@ -48,14 +48,14 @@ export default Vue.extend({
   data: () => {
     return {
       modalPasswordChange: false,
-      newPassword: ''
+      newPassword: '',
     }
   },
   computed: {
     me (): UserDto {
       return this.$store.state.komgaUsers.me
-    }
-  }
+    },
+  },
 })
 </script>
 

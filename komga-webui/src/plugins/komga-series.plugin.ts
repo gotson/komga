@@ -7,7 +7,7 @@ export default {
     Vue: typeof _Vue,
     { http }: { http: AxiosInstance }) {
     Vue.prototype.$komgaSeries = new KomgaSeriesService(http)
-  }
+  },
 }
 
 declare module 'vue/types/vue' {

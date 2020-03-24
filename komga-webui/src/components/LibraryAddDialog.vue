@@ -102,21 +102,21 @@ export default Vue.extend({
       confirmText: 'Add',
       form: {
         name: '',
-        path: ''
+        path: '',
       },
-      validationFieldNames: new Map([])
+      validationFieldNames: new Map([]),
     }
   },
   watch: {
     modalAddLibrary (val) {
       !val && this.dialogCancel()
-    }
+    },
   },
   validations: {
     form: {
       name: { required },
-      path: { required }
-    }
+      path: { required },
+    },
   },
   methods: {
     getErrors (fieldName: string) {
@@ -146,7 +146,7 @@ export default Vue.extend({
       if (!this.$v.$invalid) {
         return {
           name: this.form.name,
-          root: this.form.path
+          root: this.form.path,
         }
       }
       return null
@@ -161,8 +161,8 @@ export default Vue.extend({
           this.showSnack(e.message)
         }
       }
-    }
-  }
+    },
+  },
 })
 </script>
 

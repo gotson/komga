@@ -103,21 +103,21 @@ export default Vue.extend({
       form: {
         email: '',
         password: '',
-        admin: false
+        admin: false,
       },
-      validationFieldNames: new Map([])
+      validationFieldNames: new Map([]),
     }
   },
   watch: {
     modalAddUser (val) {
       !val && this.dialogCancel()
-    }
+    },
   },
   validations: {
     form: {
       email: { required, email },
-      password: { required }
-    }
+      password: { required },
+    },
   },
   methods: {
     getErrors (fieldName: string): string[] {
@@ -149,7 +149,7 @@ export default Vue.extend({
         return {
           email: this.form.email,
           password: this.form.password,
-          roles: this.form.admin ? ['ADMIN'] : []
+          roles: this.form.admin ? ['ADMIN'] : [],
         }
       }
       return null
@@ -164,8 +164,8 @@ export default Vue.extend({
           this.showSnack(e.message)
         }
       }
-    }
-  }
+    },
+  },
 })
 </script>
 

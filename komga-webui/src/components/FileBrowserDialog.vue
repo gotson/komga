@@ -74,7 +74,7 @@ export default Vue.extend({
     return {
       directoryListing: {} as DirectoryListingDto,
       selectedPath: '',
-      modalFileBrowser: false
+      modalFileBrowser: false,
     }
   },
   watch: {
@@ -83,22 +83,22 @@ export default Vue.extend({
     },
     modalFileBrowser (val) {
       !val && this.dialogCancel()
-    }
+    },
   },
   props: {
     value: Boolean,
     path: {
       type: String,
-      required: false
+      required: false,
     },
     dialogTitle: {
       type: String,
-      default: 'File Browser'
+      default: 'File Browser',
     },
     confirmText: {
       type: String,
-      default: 'Choose'
-    }
+      default: 'Choose',
+    },
   },
   async mounted () {
     this.getDirs()
@@ -117,8 +117,8 @@ export default Vue.extend({
     select (path: string) {
       this.selectedPath = path
       this.getDirs(path)
-    }
-  }
+    },
+  },
 })
 </script>
 

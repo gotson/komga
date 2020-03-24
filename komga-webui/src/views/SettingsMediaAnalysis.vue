@@ -37,16 +37,16 @@ export default Vue.extend({
       { text: 'Comment', value: 'media.comment' },
       { text: 'Media Type', value: 'media.mediaType' },
       { text: 'URL', value: 'url' },
-      { text: 'Size', value: 'size', sortable: false }
-    ]
+      { text: 'Size', value: 'size', sortable: false },
+    ],
   }),
   watch: {
     options: {
       handler () {
         this.loadBooks()
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   computed: {},
   async mounted () {
@@ -61,7 +61,7 @@ export default Vue.extend({
       const pageRequest = {
         page: page - 1,
         size: itemsPerPage,
-        sort: []
+        sort: [],
       } as PageRequest
 
       for (let i = 0; i < sortBy.length; i++) {
@@ -73,8 +73,8 @@ export default Vue.extend({
       this.books = booksPage.content
 
       this.loading = false
-    }
-  }
+    },
+  },
 })
 </script>
 

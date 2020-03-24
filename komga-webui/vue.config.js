@@ -22,7 +22,7 @@ module.exports = {
               return `@{${tag.attributes.src}}`
             }
             return false
-          }
+          },
         }
         return args
       })
@@ -33,5 +33,5 @@ module.exports = {
 
     config.plugin('momentLocalesPlugin')
       .use(momentLocalesPlugin)
-  }
+  },
 }

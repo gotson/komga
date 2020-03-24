@@ -7,25 +7,25 @@ import { Touch } from 'vuetify/lib/directives'
 
 Vue.use(Vuetify, {
   directives: {
-    Touch
-  }
+    Touch,
+  },
 })
 
 export default new Vuetify({
   icons: {
-    iconfont: 'mdi'
+    iconfont: 'mdi',
   },
 
   theme: {
     options: {
-      customProperties: true
+      customProperties: true,
     },
     themes: {
       light: {
         primary: '#005ed3',
         secondary: '#fec000',
-        accent: '#ff0335'
-      }
-    }
-  }
+        accent: '#ff0335',
+      },
+    },
+  },
 })

@@ -78,15 +78,15 @@ export default Vue.extend({
       snackText: '',
       modal: false,
       allLibraries: true,
-      selectedLibraries: [] as number[]
+      selectedLibraries: [] as number[],
     }
   },
   props: {
     value: Boolean,
     user: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   watch: {
     value (val) {
@@ -97,12 +97,12 @@ export default Vue.extend({
     },
     user (val) {
       this.dialogReset(val)
-    }
+    },
   },
   computed: {
     libraries (): LibraryDto[] {
       return this.$store.state.komgaLibraries.libraries
-    }
+    },
   },
   methods: {
     dialogReset (user: UserWithSharedLibrariesDto) {
@@ -130,15 +130,15 @@ export default Vue.extend({
       try {
         const sharedLibraries = {
           all: this.allLibraries,
-          libraryIds: this.selectedLibraries
+          libraryIds: this.selectedLibraries,
         } as SharedLibrariesUpdateDto
 
         await this.$store.dispatch('updateUserSharedLibraries', { user: this.user, sharedLibraries: sharedLibraries })
       } catch (e) {
         this.showSnack(e.message)
       }
-    }
-  }
+    },
+  },
 })
 </script>
 

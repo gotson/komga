@@ -7,7 +7,7 @@ export default {
     Vue: typeof _Vue,
     { http }: { http: AxiosInstance }) {
     Vue.prototype.$komgaFileSystem = new KomgaFilesystemService(http)
-  }
+  },
 }
 
 declare module 'vue/types/vue' {

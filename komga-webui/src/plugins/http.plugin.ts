@@ -7,9 +7,9 @@ export default {
     Vue.prototype.$http = axios.create({
       baseURL: urls.origin,
       withCredentials: true,
-      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      headers: { 'X-Requested-With': 'XMLHttpRequest' },
     } as AxiosRequestConfig)
-  }
+  },
 }
 
 declare module 'vue/types/vue' {

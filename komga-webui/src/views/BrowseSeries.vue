@@ -156,7 +156,7 @@ export default mixins(VisibleElements).extend({
       totalElements: null as number | null,
       sortOptions: [{ name: 'Number', key: 'metadata.numberSort' }, { name: 'Date added', key: 'createdDate' }, {
         name: 'File size',
-        key: 'fileSize'
+        key: 'fileSize',
       }] as SortOption[],
       sortActive: {} as SortActive,
       sortDefault: { key: 'metadata.numberSort', order: 'asc' } as SortActive,
@@ -165,7 +165,7 @@ export default mixins(VisibleElements).extend({
       sortUnwatch: null as any,
       selected: [],
       dialogEditBooks: false,
-      dialogEditBookSingle: false
+      dialogEditBookSingle: false,
     }
   },
   computed: {
@@ -177,13 +177,13 @@ export default mixins(VisibleElements).extend({
     },
     thumbnailUrl (): string {
       return seriesThumbnailUrl(this.seriesId)
-    }
+    },
   },
   props: {
     seriesId: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   watch: {
     async visibleElements (val) {
@@ -223,7 +223,7 @@ export default mixins(VisibleElements).extend({
       if (index !== -1) {
         this.books.splice(index, 1, val)
       }
-    }
+    },
   },
   async created () {
     this.loadSeries()
@@ -290,8 +290,8 @@ export default mixins(VisibleElements).extend({
         name: this.$route.name,
         params: { seriesId: this.$route.params.seriesId, index: index || this.$route.params.index },
         query: {
-          sort: `${this.sortActive.key},${this.sortActive.order}`
-        }
+          sort: `${this.sortActive.key},${this.sortActive.order}`,
+        },
       }).catch(_ => {
       })
     },
@@ -309,7 +309,7 @@ export default mixins(VisibleElements).extend({
       this.pagesState[page] = LoadState.Loading
       const pageRequest = {
         page: page,
-        size: this.pageSize
+        size: this.pageSize,
       } as PageRequest
 
       if (this.sortActive != null) {
@@ -333,8 +333,8 @@ export default mixins(VisibleElements).extend({
     singleEdit (book: BookDto) {
       this.editBookSingle = book
       this.dialogEditBookSingle = true
-    }
-  }
+    },
+  },
 })
 </script>
 

@@ -27,13 +27,13 @@ export default Vue.extend({
     iconColor: String,
     iconSize: {
       type: [Number, String],
-      default: 140
+      default: 140,
     },
     size: {
       type: [Number, String],
-      default: 400
-    }
-  }
+      default: 400,
+    },
+  },
 })
 </script>
 

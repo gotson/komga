@@ -24,18 +24,18 @@ export default Vue.extend({
   name: 'SettingsSwitch',
   props: {
     label: {
-      type: String
+      type: String,
     },
     value: {
-      type: Boolean
+      type: Boolean,
     },
     status: {
-      type: String
-    }
+      type: String,
+    },
   },
   data () {
     return {
-      input: ''
+      input: '',
     }
   },
   watch: {
@@ -43,13 +43,13 @@ export default Vue.extend({
       handler (after) {
         this.input = after
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   methods: {
     updateInput () {
       this.$emit('input', this.input)
-    }
-  }
+    },
+  },
 })
 </script>

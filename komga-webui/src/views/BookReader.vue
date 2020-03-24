@@ -315,22 +315,22 @@ export default Vue.extend({
         fit: ImageFit.HEIGHT,
         readingDirection: ReadingDirection.LEFT_TO_RIGHT,
         animations: true,
-        backgroundColor: 'black'
+        backgroundColor: 'black',
       },
       readingDirs: [
         { text: 'Left to right', value: ReadingDirection.LEFT_TO_RIGHT },
         { text: 'Right to left', value: ReadingDirection.RIGHT_TO_LEFT },
-        { text: 'Vertical', value: ReadingDirection.VERTICAL }
+        { text: 'Vertical', value: ReadingDirection.VERTICAL },
       ],
       imageFits: [
         { text: 'Fit to height', value: ImageFit.HEIGHT },
         { text: 'Fit to width', value: ImageFit.WIDTH },
-        { text: 'Original', value: ImageFit.ORIGINAL }
+        { text: 'Original', value: ImageFit.ORIGINAL },
       ],
       backgroundColors: [
         { text: 'White', value: 'white' },
-        { text: 'Black', value: 'black' }
-      ]
+        { text: 'Black', value: 'black' },
+      ],
     }
   },
   created () {
@@ -371,8 +371,8 @@ export default Vue.extend({
   props: {
     bookId: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   async beforeRouteUpdate (to, from, next) {
     if (to.params.bookId !== from.params.bookId) {
@@ -391,7 +391,7 @@ export default Vue.extend({
         this.series = await this.$komgaSeries.getOneSeries(val.seriesId)
         document.title = `Komga - ${getBookTitleCompact(val.metadata.title, this.series.metadata.title)}`
       }
-    }
+    },
   },
   computed: {
     currentSlide (): number {
@@ -439,7 +439,7 @@ export default Vue.extend({
       set: function (animations: boolean): void {
         this.settings.animations = animations
         this.$cookies.set(cookieAnimations, animations, Infinity)
-      }
+      },
     },
     readingDirection: {
       get: function (): ReadingDirection {
@@ -448,7 +448,7 @@ export default Vue.extend({
       set: function (readingDirection: ReadingDirection): void {
         this.settings.readingDirection = readingDirection
         this.$cookies.set(cookieReadingDirection, readingDirection, Infinity)
-      }
+      },
     },
     flipDirection (): boolean {
       return this.readingDirection === ReadingDirection.RIGHT_TO_LEFT
@@ -463,7 +463,7 @@ export default Vue.extend({
       set: function (fit: ImageFit): void {
         this.settings.fit = fit
         this.$cookies.set(cookieFit, fit, Infinity)
-      }
+      },
     },
     backgroundColor: {
       get: function (): string {
@@ -472,7 +472,7 @@ export default Vue.extend({
       set: function (color: string): void {
         this.settings.backgroundColor = color
         this.$cookies.set(cookieBackground, color, Infinity)
-      }
+      },
     },
     doublePages: {
       get: function (): boolean {
@@ -483,8 +483,8 @@ export default Vue.extend({
         this.settings.doublePages = doublePages
         this.goTo(current)
         this.$cookies.set(cookieDoublePages, doublePages, Infinity)
-      }
-    }
+      },
+    },
   },
   methods: {
     keyPressed (e: KeyboardEvent) {
@@ -633,8 +633,8 @@ export default Vue.extend({
         name: this.$route.name,
         params: { bookId: this.$route.params.bookId },
         query: {
-          page: this.currentPage.toString()
-        }
+          page: this.currentPage.toString(),
+        },
       })
     },
     closeBook () {
@@ -669,8 +669,8 @@ export default Vue.extend({
         let value = this.$cookies.get(cookieKey)
         setter(value)
       }
-    }
-  }
+    },
+  },
 })
 </script>
 

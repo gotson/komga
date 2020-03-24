@@ -35,19 +35,19 @@ export default Vue.extend({
   components: { LibraryDeleteDialog },
   data: function () {
     return {
-      modalDeleteLibrary: false
+      modalDeleteLibrary: false,
     }
   },
   props: {
     library: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     isAdmin (): boolean {
       return this.$store.getters.meAdmin
-    }
+    },
   },
   methods: {
     scan () {
@@ -61,8 +61,8 @@ export default Vue.extend({
     },
     navigateHome () {
       this.$router.push({ name: 'home' })
-    }
-  }
+    },
+  },
 })
 </script>
 <style scoped>

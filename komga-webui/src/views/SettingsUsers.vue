@@ -87,7 +87,7 @@ export default Vue.extend({
     modalAddUser: false,
     userToDelete: {} as UserDto,
     modalUserSharedLibraries: false,
-    userToEditSharedLibraries: {} as UserWithSharedLibrariesDto
+    userToEditSharedLibraries: {} as UserWithSharedLibrariesDto,
   }),
   computed: {
     users (): UserWithSharedLibrariesDto[] {
@@ -95,7 +95,7 @@ export default Vue.extend({
     },
     me (): UserDto {
       return this.$store.state.komgaUsers.me
-    }
+    },
   },
   async mounted () {
     await this.$store.dispatch('getAllUsers')
@@ -108,8 +108,8 @@ export default Vue.extend({
     editUser (user: UserWithSharedLibrariesDto) {
       this.userToEditSharedLibraries = user
       this.modalUserSharedLibraries = true
-    }
-  }
+    },
+  },
 })
 </script>
 

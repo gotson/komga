@@ -3,7 +3,7 @@ import Vue from 'vue'
 const visibleElements = Vue.extend({
   data: () => {
     return {
-      visibleElements: [] as number[]
+      visibleElements: [] as number[],
     }
   },
   methods: {
@@ -14,8 +14,8 @@ const visibleElements = Vue.extend({
       } else {
         this.$_.pull(this.visibleElements, elementIndex)
       }
-    }
-  }
+    },
+  },
 })
 
 export default visibleElements

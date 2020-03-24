@@ -85,20 +85,20 @@ export default Vue.extend({
       snackText: '',
       form: {
         newPassword: '',
-        repeatPassword: ''
+        repeatPassword: '',
       },
       validationFieldNames: new Map([
         ['newPassword', 'Password'],
-        ['confirmPassword', 'Password confirmation']
-      ])
+        ['confirmPassword', 'Password confirmation'],
+      ]),
     }
   },
   props: {
     value: Boolean,
     user: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   watch: {
     value (val) {
@@ -106,13 +106,13 @@ export default Vue.extend({
     },
     modal (val) {
       !val && this.dialogCancel()
-    }
+    },
   },
   validations: {
     form: {
       newPassword: { required },
-      repeatPassword: { sameAsPassword: sameAs('newPassword') }
-    }
+      repeatPassword: { sameAsPassword: sameAs('newPassword') },
+    },
   },
   methods: {
     getErrors (fieldName: string): string[] {
@@ -158,8 +158,8 @@ export default Vue.extend({
       } catch (e) {
         this.showSnack(e.message)
       }
-    }
-  }
+    },
+  },
 })
 </script>
 

@@ -21,18 +21,18 @@ export default Vue.extend({
       } else {
         return { 'top': '64px' }
       }
-    }
+    },
   },
   props: {
     elevation: {
       type: Number,
-      default: undefined
+      default: undefined,
     },
     color: {
       type: String,
-      default: 'grey lighten-4'
-    }
-  }
+      default: 'grey lighten-4',
+    },
+  },
 })
 </script>
 

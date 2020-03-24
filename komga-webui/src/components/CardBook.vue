@@ -79,29 +79,29 @@ export default Vue.extend({
   props: {
     book: {
       type: Object as PropType<BookDto>,
-      required: true
+      required: true,
     },
     width: {
       type: [String, Number],
       required: false,
-      default: 150
+      default: 150,
     },
     selected: {
       type: Boolean,
-      default: false
+      default: false,
     },
     preSelect: {
       type: Boolean,
-      default: false
+      default: false,
     },
     select: {
       type: Function,
-      required: false
+      required: false,
     },
     edit: {
       type: Function,
-      required: false
-    }
+      required: false,
+    },
   },
   computed: {
     thumbnailUrl (): string {
@@ -124,7 +124,7 @@ export default Vue.extend({
     },
     overlay (): boolean {
       return this.edit !== undefined || this.select !== undefined
-    }
+    },
   },
   methods: {
     selectItem () {
@@ -143,8 +143,8 @@ export default Vue.extend({
       } else {
         this.$router.push({ name: 'browse-book', params: { bookId: this.book.id.toString() } })
       }
-    }
-  }
+    },
+  },
 })
 </script>
 

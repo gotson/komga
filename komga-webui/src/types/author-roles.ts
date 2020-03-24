@@ -5,5 +5,5 @@ export const authorRoles = [
   { role: 'colorist', plural: 'colorists' },
   { role: 'letterer', plural: 'letterers' },
   { role: 'cover', plural: 'cover' },
-  { role: 'editor', plural: 'editors' }
+  { role: 'editor', plural: 'editors' },
 ]

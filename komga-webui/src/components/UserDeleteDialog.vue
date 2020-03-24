@@ -64,15 +64,15 @@ export default Vue.extend({
       confirmDelete: false,
       snackbar: false,
       snackText: '',
-      modal: false
+      modal: false,
     }
   },
   props: {
     value: Boolean,
     user: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   watch: {
     value (val) {
@@ -80,7 +80,7 @@ export default Vue.extend({
     },
     modal (val) {
       !val && this.dialogCancel()
-    }
+    },
   },
   methods: {
     dialogCancel () {
@@ -101,8 +101,8 @@ export default Vue.extend({
       } catch (e) {
         this.showSnack(e.message)
       }
-    }
-  }
+    },
+  },
 })
 </script>
 

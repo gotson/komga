@@ -107,7 +107,7 @@ export default Vue.extend({
       editSeriesSingle: {} as SeriesDto,
       dialogEditSeriesSingle: false,
       editBookSingle: {} as BookDto,
-      dialogEditBookSingle: false
+      dialogEditBookSingle: false,
     }
   },
   mounted () {
@@ -135,7 +135,7 @@ export default Vue.extend({
       if (index !== -1) {
         this.books.splice(index, 1, val)
       }
-    }
+    },
   },
   methods: {
     async loadNewSeries () {
@@ -147,7 +147,7 @@ export default Vue.extend({
     async loadLatestBooks () {
       const pageRequest = {
         size: this.pageSize,
-        sort: ['createdDate,desc']
+        sort: ['createdDate,desc'],
       } as PageRequest
 
       this.books = (await this.$komgaBooks.getBooks(undefined, pageRequest)).content
@@ -159,8 +159,8 @@ export default Vue.extend({
     singleEditBook (book: BookDto) {
       this.editBookSingle = book
       this.dialogEditBookSingle = true
-    }
-  }
+    },
+  },
 })
 </script>
 

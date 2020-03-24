@@ -75,7 +75,7 @@ export default Vue.extend({
       loading: false,
       series: [] as SeriesDto[],
       books: [] as BookDto[],
-      pageSize: 10
+      pageSize: 10,
     }
   },
   watch: {
@@ -84,7 +84,7 @@ export default Vue.extend({
     },
     showResults (val) {
       !val && this.clear()
-    }
+    },
   },
   methods: {
     searchItems: debounce(async function (this: any, query: string) {
@@ -109,8 +109,8 @@ export default Vue.extend({
     },
     bookThumbnailUrl (bookId: number): string {
       return bookThumbnailUrl(bookId)
-    }
-  }
+    },
+  },
 })
 </script>
 

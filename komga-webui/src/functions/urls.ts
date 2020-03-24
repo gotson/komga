@@ -7,7 +7,7 @@ const urls = {
   origin: !fullUrl.endsWith('/') ? `${fullUrl}/` : fullUrl,
   originNoSlash: fullUrl.endsWith('/') ? fullUrl.slice(0, -1) : fullUrl,
   base: !baseUrl.endsWith('/') ? `${baseUrl}/` : baseUrl,
-  baseNoSlash: baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl
+  baseNoSlash: baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl,
 } as Urls
 
 export default urls

@@ -48,20 +48,20 @@ export default Vue.extend({
   name: 'ThumbnailExplorerDialog',
   props: {
     pagesCount: {
-      type: Number
+      type: Number,
     },
     value: {
-      type: Boolean
+      type: Boolean,
     },
     bookId: {
-      type: Number
-    }
+      type: Number,
+    },
   },
   data: () => {
     return {
       input: '',
       page: 1,
-      perPage: 8
+      perPage: 8,
     }
   },
   watch: {
@@ -70,7 +70,7 @@ export default Vue.extend({
     },
     input (val) {
       !val && this.$emit('input', false)
-    }
+    },
   },
   computed: {
     thumbnails (): string[] {
@@ -81,10 +81,10 @@ export default Vue.extend({
       return thumbnails
     },
     visibleThumbnails (): String[] {
-      let a : number = (this.page - 1) * this.perPage
-      let b : number = this.page * this.perPage
+      let a: number = (this.page - 1) * this.perPage
+      let b: number = this.page * this.perPage
       return this.thumbnails.slice(a, b)
-    }
+    },
   },
   methods: {
     updateInput () {
@@ -95,8 +95,8 @@ export default Vue.extend({
     },
     getThumbnailUrl (page: number): string {
       return bookPageThumbnailUrl(this.bookId, page)
-    }
-  }
+    },
+  },
 
 })
 </script>

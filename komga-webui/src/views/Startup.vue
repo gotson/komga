@@ -21,7 +21,7 @@ export default Vue.extend({
     } catch (e) {
       this.$router.push({ name: 'login' })
     }
-  }
+  },
 })
 </script>
 

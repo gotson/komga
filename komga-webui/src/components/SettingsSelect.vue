@@ -26,18 +26,18 @@ export default Vue.extend({
   props: {
     items: null as any,
     label: {
-      type: String
+      type: String,
     },
     value: {
-      type: String
+      type: String,
     },
     display: {
-      type: String
-    }
+      type: String,
+    },
   },
   data () {
     return {
-      input: ''
+      input: '',
     }
   },
   watch: {
@@ -45,14 +45,14 @@ export default Vue.extend({
       handler (after) {
         this.input = after
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   methods: {
     updateInput () {
       this.$emit('input', this.input)
-    }
-  }
+    },
+  },
 })
 </script>
 

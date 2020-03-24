@@ -126,7 +126,7 @@ export default Vue.extend({
     return {
       drawerVisible: this.$vuetify.breakpoint.lgAndUp,
       modalAddLibrary: false,
-      info: {} as ActuatorInfo
+      info: {} as ActuatorInfo,
     }
   },
   async created () {
@@ -140,7 +140,7 @@ export default Vue.extend({
     },
     isAdmin (): boolean {
       return this.$store.getters.meAdmin
-    }
+    },
   },
   methods: {
     toggleDrawer () {
@@ -149,7 +149,7 @@ export default Vue.extend({
     logout () {
       this.$store.dispatch('logout')
       this.$router.push({ name: 'login' })
-    }
-  }
+    },
+  },
 })
 </script>

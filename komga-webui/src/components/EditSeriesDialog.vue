@@ -150,19 +150,19 @@ export default Vue.extend({
         title: '',
         titleLock: false,
         titleSort: '',
-        titleSortLock: false
+        titleSortLock: false,
       },
       mixed: {
-        status: false
-      }
+        status: false,
+      },
     }
   },
   props: {
     value: Boolean,
     series: {
       type: [Object as () => SeriesDto, Array as () => SeriesDto[]],
-      required: true
-    }
+      required: true,
+    },
   },
   watch: {
     value (val) {
@@ -173,26 +173,26 @@ export default Vue.extend({
     },
     series (val) {
       this.dialogReset(val)
-    }
+    },
   },
   validations: {
     form: {
       title: {
         required: requiredIf(function (this: any, model: any) {
           return this.single
-        })
+        }),
       },
       titleSort: {
         required: requiredIf(function (this: any, model: any) {
           return this.single
-        })
+        }),
       },
       status: {
         required: requiredIf(function (this: any, model: any) {
           return this.single
-        })
-      }
-    }
+        }),
+      },
+    },
   },
   computed: {
     single (): boolean {
@@ -201,14 +201,14 @@ export default Vue.extend({
     seriesStatus (): any[] {
       return Object.keys(SeriesStatus).map(x => ({
         text: this.$_.capitalize(x),
-        value: x
+        value: x,
       }))
     },
     dialogTitle (): string {
       return this.single
         ? `Edit ${this.$_.get(this.series, 'metadata.title')}`
         : `Edit ${(this.series as SeriesDto[]).length} series`
-    }
+    },
   },
   methods: {
     requiredErrors (fieldName: string): string[] {
@@ -248,7 +248,7 @@ export default Vue.extend({
     validateForm (): any {
       if (!this.$v.$invalid) {
         const metadata = {
-          statusLock: this.form.statusLock
+          statusLock: this.form.statusLock,
         }
 
         if (this.$v.form?.status?.$dirty) {
@@ -258,7 +258,7 @@ export default Vue.extend({
         if (this.single) {
           this.$_.merge(metadata, {
             titleLock: this.form.titleLock,
-            titleSortLock: this.form.titleSortLock
+            titleSortLock: this.form.titleSortLock,
           })
 
           if (this.$v.form?.title?.$dirty) {
@@ -291,8 +291,8 @@ export default Vue.extend({
         this.$emit('update:series', this.single ? updated[0] : updated)
         return true
       } else return false
-    }
-  }
+    },
+  },
 })
 </script>
 

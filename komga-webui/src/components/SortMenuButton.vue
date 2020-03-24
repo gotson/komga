@@ -34,21 +34,21 @@ export default Vue.extend({
   props: {
     sortOptions: {
       type: Array,
-      required: true
+      required: true,
     },
     sortDefault: {
       type: Object,
-      required: true
+      required: true,
     },
     sortActive: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     sortCustom (): boolean {
       return this.sortActive.key !== this.sortDefault.key || this.sortActive.order !== this.sortDefault.order
-    }
+    },
   },
   methods: {
     setSort (sort: SortOption) {
@@ -61,8 +61,8 @@ export default Vue.extend({
       } else {
         this.$emit('update:sortActive', { key: sort.key, order: 'desc' })
       }
-    }
-  }
+    },
+  },
 })
 </script>
 

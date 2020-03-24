@@ -16,9 +16,9 @@ export default class KomgaUsersService {
         {
           auth: {
             username: login,
-            password: password
-          }
-        }
+            password: password,
+          },
+        },
       )).data
     } catch (e) {
       let msg = 'An error occurred while trying to login'

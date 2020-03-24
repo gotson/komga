@@ -8,11 +8,11 @@ let service: KomgaUsersService
 const vuexModule: Module<any, any> = {
   state: {
     me: {} as UserDto,
-    users: [] as UserWithSharedLibrariesDto[]
+    users: [] as UserWithSharedLibrariesDto[],
   },
   getters: {
     meAdmin: state => state.me.hasOwnProperty('roles') && state.me.roles.includes('ADMIN'),
-    authenticated: state => state.me.hasOwnProperty('id')
+    authenticated: state => state.me.hasOwnProperty('id'),
   },
   mutations: {
     setMe (state, user: UserDto) {
@@ -20,7 +20,7 @@ const vuexModule: Module<any, any> = {
     },
     setAllUsers (state, users: UserWithSharedLibrariesDto[]) {
       state.users = users
-    }
+    },
   },
   actions: {
     async getMeWithAuth ({ commit }, { login, password }: { login: string, password: string }) {
@@ -53,8 +53,8 @@ const vuexModule: Module<any, any> = {
     async updateUserSharedLibraries ({ dispatch }, { user, sharedLibraries }: { user: UserDto, sharedLibraries: SharedLibrariesUpdateDto }) {
       await service.patchUserSharedLibraries(user, sharedLibraries)
       dispatch('getAllUsers')
-    }
-  }
+    },
+  },
 }
 
 export default {
@@ -65,7 +65,7 @@ export default {
     Vue.prototype.$komgaUsers = service
 
     store.registerModule('komgaUsers', vuexModule)
-  }
+  },
 }
 
 declare module 'vue/types/vue' {

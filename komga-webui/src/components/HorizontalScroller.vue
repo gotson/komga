@@ -37,7 +37,7 @@ export default Vue.extend({
       canScrollLeft: false,
       canScrollRight: true,
       container: this.$refs[uniqueId] as HTMLElement,
-      adjustment: 100
+      adjustment: 100,
     }
   },
   mounted () {
@@ -60,11 +60,11 @@ export default Vue.extend({
         this.container.scrollTo({
           top: 0,
           left: target,
-          behavior: 'smooth'
+          behavior: 'smooth',
         })
       }
-    }
-  }
+    },
+  },
 })
 </script>
 

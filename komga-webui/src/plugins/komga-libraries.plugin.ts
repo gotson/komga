@@ -7,17 +7,17 @@ let service: KomgaLibrariesService
 
 const vuexModule: Module<any, any> = {
   state: {
-    libraries: [] as LibraryDto[]
+    libraries: [] as LibraryDto[],
   },
   getters: {
     getLibraryById: (state) => (id: number) => {
       return state.libraries.find((l: any) => l.id === id)
-    }
+    },
   },
   mutations: {
     setLibraries (state, libraries) {
       state.libraries = libraries
-    }
+    },
   },
   actions: {
     async getLibraries ({ commit }) {
@@ -30,8 +30,8 @@ const vuexModule: Module<any, any> = {
     async deleteLibrary ({ dispatch }, library) {
       await service.deleteLibrary(library)
       dispatch('getLibraries')
-    }
-  }
+    },
+  },
 }
 
 export default {
@@ -42,7 +42,7 @@ export default {
     Vue.prototype.$komgaLibraries = service
 
     store.registerModule('komgaLibraries', vuexModule)
-  }
+  },
 }
 
 declare module 'vue/types/vue' {

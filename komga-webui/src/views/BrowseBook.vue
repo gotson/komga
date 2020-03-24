@@ -185,7 +185,7 @@ export default Vue.extend({
     return {
       book: {} as BookDto,
       series: {} as SeriesDto,
-      dialogEdit: false
+      dialogEdit: false,
     }
   },
   async created () {
@@ -197,13 +197,13 @@ export default Vue.extend({
         this.series = await this.$komgaSeries.getOneSeries(val.seriesId)
         document.title = `Komga - ${getBookTitleCompact(val.metadata.title, this.series.metadata.title)}`
       }
-    }
+    },
   },
   props: {
     bookId: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   async beforeRouteUpdate (to, from, next) {
     if (to.params.bookId !== from.params.bookId) {
@@ -227,13 +227,13 @@ export default Vue.extend({
     },
     authorsByRole (): any {
       return groupAuthorsByRolePlural(this.book.metadata.authors)
-    }
+    },
   },
   methods: {
     analyze () {
       this.$komgaBooks.analyzeBook(this.book)
-    }
-  }
+    },
+  },
 })
 </script>
 

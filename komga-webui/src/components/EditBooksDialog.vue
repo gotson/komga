@@ -332,24 +332,24 @@ export default Vue.extend({
         releaseDate: '',
         releaseDateLock: false,
         authors: {},
-        authorsLock: false
+        authorsLock: false,
       },
       mixed: {
         readingDirection: false,
         publisher: false,
-        ageRating: false
+        ageRating: false,
       },
       authorRoles,
       authorSearch: [],
-      authorSearchResults: [] as string[]
+      authorSearchResults: [] as string[],
     }
   },
   props: {
     value: Boolean,
     books: {
       type: [Object as () => BookDto, Array as () => BookDto[]],
-      required: true
-    }
+      required: true,
+    },
   },
   watch: {
     value (val) {
@@ -362,40 +362,40 @@ export default Vue.extend({
       immediate: true,
       handler (val) {
         this.dialogReset(val)
-      }
+      },
     },
     authorSearch: {
       deep: true,
       async handler (val: []) {
         const index = val.findIndex(x => x !== null)
         this.authorSearchResults = await this.$komgaReferential.getAuthors(val[index])
-      }
-    }
+      },
+    },
   },
   validations: {
     form: {
       title: {
         required: requiredIf(function (this: any, model: any) {
           return this.single
-        })
+        }),
       },
       number: {
         required: requiredIf(function (this: any, model: any) {
           return this.single
-        })
+        }),
       },
       numberSort: {
         required: requiredIf(function (this: any, model: any) {
           return this.single
-        })
+        }),
       },
       ageRating: { minValue: minValue(0) },
       releaseDate: { validDate },
       summary: {},
       readingDirection: {},
       publisher: {},
-      authors: {}
-    }
+      authors: {},
+    },
   },
   computed: {
     single (): boolean {
@@ -405,7 +405,7 @@ export default Vue.extend({
       return Object.keys(ReadingDirection).map(x => (
         {
           text: this.$_.capitalize(x.replace(/_/g, ' ')),
-          value: x
+          value: x,
         })
       )
     },
@@ -430,7 +430,7 @@ export default Vue.extend({
       if (!this.$v.form?.releaseDate?.$dirty) return errors
       !this.$v?.form?.releaseDate?.validDate && errors.push('Must be a valid date in YYYY-MM-DD format')
       return errors
-    }
+    },
   },
   methods: {
     requiredErrors (fieldName: string): string[] {
@@ -495,7 +495,7 @@ export default Vue.extend({
           readingDirectionLock: this.form.readingDirectionLock,
           ageRatingLock: this.form.ageRatingLock,
           publisherLock: this.form.publisherLock,
-          authorsLock: this.form.authorsLock
+          authorsLock: this.form.authorsLock,
         }
 
         if (this.$v.form?.readingDirection?.$dirty) {
@@ -513,8 +513,8 @@ export default Vue.extend({
         if (this.$v.form?.authors?.$dirty) {
           this.$_.merge(metadata, {
             authors: this.$_.keys(this.form.authors).flatMap((role: string) =>
-              this.$_.get(this.form.authors, role).map((name: string) => ({ name: name, role: role }))
-            )
+              this.$_.get(this.form.authors, role).map((name: string) => ({ name: name, role: role })),
+            ),
           })
         }
 
@@ -524,7 +524,7 @@ export default Vue.extend({
             numberLock: this.form.numberLock,
             numberSortLock: this.form.numberSortLock,
             summaryLock: this.form.summaryLock,
-            releaseDateLock: this.form.releaseDateLock
+            releaseDateLock: this.form.releaseDateLock,
           })
 
           if (this.$v.form?.title?.$dirty) {
@@ -569,8 +569,8 @@ export default Vue.extend({
         this.$emit('update:books', this.single ? updated[0] : updated)
         return true
       } else return false
-    }
-  }
+    },
+  },
 })
 </script>
 

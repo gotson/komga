@@ -25,7 +25,7 @@ export default class KomgaBooksService {
       }
       return (await this.http.get(API_BOOKS, {
         params: params,
-        paramsSerializer: params => qs.stringify(params, { indices: false })
+        paramsSerializer: params => qs.stringify(params, { indices: false }),
       })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve books'

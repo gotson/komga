@@ -16,7 +16,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'PageNotFound',
-  components: { EmptyState }
+  components: { EmptyState },
 })
 </script>
 

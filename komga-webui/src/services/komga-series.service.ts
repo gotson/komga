@@ -25,7 +25,7 @@ export default class KomgaSeriesService {
       }
       return (await this.http.get(API_SERIES, {
         params: params,
-        paramsSerializer: params => qs.stringify(params, { indices: false })
+        paramsSerializer: params => qs.stringify(params, { indices: false }),
       })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve series'
@@ -40,7 +40,7 @@ export default class KomgaSeriesService {
     try {
       const params = { ...pageRequest } as any
       return (await this.http.get(`${API_SERIES}/new`, {
-        params: params
+        params: params,
       })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve new series'
@@ -55,7 +55,7 @@ export default class KomgaSeriesService {
     try {
       const params = { ...pageRequest } as any
       return (await this.http.get(`${API_SERIES}/updated`, {
-        params: params
+        params: params,
       })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve new series'
@@ -82,7 +82,7 @@ export default class KomgaSeriesService {
     try {
       return (await this.http.get(`${API_SERIES}/${seriesId}/books`, {
         params: { ...pageRequest },
-        paramsSerializer: params => qs.stringify(params, { indices: false })
+        paramsSerializer: params => qs.stringify(params, { indices: false }),
       })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve books'

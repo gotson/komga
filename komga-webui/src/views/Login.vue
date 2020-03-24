@@ -61,10 +61,10 @@ export default Vue.extend({
   data: () => ({
     form: {
       login: '',
-      password: ''
+      password: '',
     },
     snackbar: false,
-    snackText: ''
+    snackText: '',
   }),
   computed: {
     logoWidth (): number {
@@ -79,7 +79,7 @@ export default Vue.extend({
         default:
           return 400
       }
-    }
+    },
   },
   methods: {
     async performLogin () {
@@ -88,7 +88,7 @@ export default Vue.extend({
           'getMeWithAuth',
           {
             login: this.form.login,
-            password: this.form.password
+            password: this.form.password,
           })
 
         await this.$store.dispatch('getLibraries')
@@ -101,8 +101,8 @@ export default Vue.extend({
     showSnack (message: string) {
       this.snackText = message
       this.snackbar = true
-    }
-  }
+    },
+  },
 })
 </script>
 

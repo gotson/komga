@@ -140,7 +140,7 @@ export default mixins(VisibleElements).extend({
       sortOptions: [
         { name: 'Name', key: 'metadata.titleSort' },
         { name: 'Date added', key: 'createdDate' },
-        { name: 'Date updated', key: 'lastModifiedDate' }
+        { name: 'Date updated', key: 'lastModifiedDate' },
       ] as SortOption[],
       sortActive: {} as SortActive,
       sortDefault: { key: 'metadata.titleSort', order: 'asc' } as SortActive,
@@ -151,14 +151,14 @@ export default mixins(VisibleElements).extend({
       filterUnwatch: null as any,
       selected: [],
       dialogEdit: false,
-      dialogEditSingle: false
+      dialogEditSingle: false,
     }
   },
   props: {
     libraryId: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
   watch: {
     async visibleElements (val) {
@@ -193,7 +193,7 @@ export default mixins(VisibleElements).extend({
       if (index !== -1) {
         this.series.splice(index, 1, val)
       }
-    }
+    },
   },
   async created () {
     this.library = await this.getLibraryLazy(this.libraryId)
@@ -239,7 +239,7 @@ export default mixins(VisibleElements).extend({
   computed: {
     isAdmin (): boolean {
       return this.$store.getters.meAdmin
-    }
+    },
   },
   methods: {
     setWatches () {
@@ -277,8 +277,8 @@ export default mixins(VisibleElements).extend({
         params: { libraryId: this.$route.params.libraryId, index: index || this.$route.params.index },
         query: {
           sort: `${this.sortActive.key},${this.sortActive.order}`,
-          status: `${this.filterStatus}`
-        }
+          status: `${this.filterStatus}`,
+        },
       }).catch(_ => {
       })
     },
@@ -289,7 +289,7 @@ export default mixins(VisibleElements).extend({
       this.pagesState[page] = LoadState.Loading
       const pageRequest = {
         page: page,
-        size: this.pageSize
+        size: this.pageSize,
       } as PageRequest
 
       if (this.sortActive != null) {
@@ -322,8 +322,8 @@ export default mixins(VisibleElements).extend({
     singleEdit (series: SeriesDto) {
       this.editSeriesSingle = series
       this.dialogEditSingle = true
-    }
-  }
+    },
+  },
 })
 </script>
 <style scoped>
