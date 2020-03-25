@@ -254,7 +254,13 @@ class OpdsController(
       title = metadata.title,
       updated = lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
       id = id.toString(),
-      content = "${metadata.title} (${fileExtension().toUpperCase()}) (${fileSizeHumanReadable()})",
+      content = run {
+        var content = "${fileExtension().toUpperCase()} - ${fileSizeHumanReadable()}"
+        if (metadata.summary.isNotBlank())
+          content += "\n\n${metadata.summary}"
+        content
+      },
+      authors = metadata.authors.map { OpdsAuthor(it.name) },
       links = listOf(
         OpdsLinkImageThumbnail("image/jpeg", "${ROUTE_BASE}books/$id/thumbnail"),
         OpdsLinkImage(media.pages[0].mediaType, "${ROUTE_BASE}books/$id/pages/1"),
