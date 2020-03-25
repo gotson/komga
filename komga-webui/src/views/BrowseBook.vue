@@ -99,7 +99,10 @@
 
           <v-row class="mt-3">
             <v-col>
-              <div class="body-1">{{ book.metadata.summary }}</div>
+              <div class="body-1"
+                   style="white-space: pre-wrap"
+              >{{ book.metadata.summary }}
+              </div>
             </v-col>
           </v-row>
         </v-col>
