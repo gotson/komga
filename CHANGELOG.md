@@ -1,3 +1,11 @@
+## [0.24.10](https://github.com/gotson/komga/compare/v0.24.9...v0.24.10) (2020-03-25)
+
+
+### Bug Fixes
+
+* **opds:** add summary and authors to book entries ([2414792](https://github.com/gotson/komga/commit/241479292ae1adc50ab45b03e39ef27d25f7847a))
+* **webui:** properly display newline in book summary ([15d95ac](https://github.com/gotson/komga/commit/15d95ac442bba89e2fb98bf064995526d9dd6725))
+
 ## [0.24.9](https://github.com/gotson/komga/compare/v0.24.8...v0.24.9) (2020-03-24)
 
 
