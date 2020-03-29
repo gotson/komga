@@ -1,0 +1,21 @@
+{ 
+
+  "name": "Komga", 
+
+  "short_name": "Komga", 
+
+  "start_url": "index.html", 
+
+  "display": "standalone", 
+
+  "icons": [{ 
+
+    "src": "/pwa-logo-192x192.png", 
+
+    "sizes": "192x192", 
+
+    "type": "image/png" 
+
+  }] 
+
+} 
