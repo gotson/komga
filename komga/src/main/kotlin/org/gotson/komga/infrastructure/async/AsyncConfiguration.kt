@@ -40,4 +40,16 @@ class AsyncConfiguration(
     ThreadPoolTaskExecutor().apply {
       corePoolSize = 1
     }
+
+  @Bean("refreshMetadataTaskExecutor")
+  fun refreshMetadataTaskExecutor(): Executor =
+    ThreadPoolTaskExecutor().apply {
+      corePoolSize = 1
+    }
+
+  @Bean("reRefreshMetadataTaskExecutor")
+  fun reRefreshMetadataTaskExecutor(): Executor =
+    ThreadPoolTaskExecutor().apply {
+      corePoolSize = 1
+    }
 }

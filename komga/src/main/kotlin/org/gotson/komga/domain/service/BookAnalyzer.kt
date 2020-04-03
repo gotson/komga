@@ -72,7 +72,9 @@ class BookAnalyzer(
     logger.info { "Trying to generate cover for book: $book" }
     val thumbnail = generateThumbnail(book, mediaType, pages.first().fileName)
 
-    return Media(mediaType = mediaType, status = Media.Status.READY, pages = pages, thumbnail = thumbnail, comment = entriesErrorSummary)
+    val files = others.map { it.name }
+
+    return Media(mediaType = mediaType, status = Media.Status.READY, pages = pages, files = files, thumbnail = thumbnail, comment = entriesErrorSummary)
   }
 
   @Throws(MediaNotReadyException::class)
@@ -122,5 +124,19 @@ class BookAnalyzer(
     }
 
     return supportedMediaTypes.getValue(book.media.mediaType!!).getEntryStream(book.path(), book.media.pages[number - 1].fileName)
+  }
+
+  @Throws(
+    MediaNotReadyException::class
+  )
+  fun getFileContent(book: Book, fileName: String): ByteArray {
+    logger.info { "Get file $fileName for book: $book" }
+
+    if (book.media.status != Media.Status.READY) {
+      logger.warn { "Book media is not ready, cannot get files" }
+      throw MediaNotReadyException()
+    }
+
+    return supportedMediaTypes.getValue(book.media.mediaType!!).getEntryStream(book.path(), fileName)
   }
 }

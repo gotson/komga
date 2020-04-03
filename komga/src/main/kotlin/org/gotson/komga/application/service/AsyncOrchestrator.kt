@@ -4,8 +4,10 @@ import mu.KotlinLogging
 import org.apache.commons.lang3.time.DurationFormatUtils
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.Library
+import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
+import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.LibraryScanner
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
@@ -19,7 +21,9 @@ class AsyncOrchestrator(
   private val libraryScanner: LibraryScanner,
   private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
-  private val bookLifecycle: BookLifecycle
+  private val bookLifecycle: BookLifecycle,
+  private val seriesRepository: SeriesRepository,
+  private val metadataLifecycle: MetadataLifecycle
 ) {
 
   @Async("periodicScanTaskExecutor")
@@ -74,5 +78,13 @@ class AsyncOrchestrator(
     bookRepository.saveAll(loadedBooks)
 
     loadedBooks.map { bookLifecycle.analyzeAndPersist(it) }
+  }
+
+  @Async("reRefreshMetadataTaskExecutor")
+  @Transactional
+  fun refreshBooksMetadata(books: List<Book>) {
+    bookRepository
+      .findAllById(books.map { it.id })
+      .forEach { metadataLifecycle.refreshMetadata(it) }
   }
 }

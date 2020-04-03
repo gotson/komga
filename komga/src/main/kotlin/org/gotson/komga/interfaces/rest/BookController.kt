@@ -341,6 +341,19 @@ class BookController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @PostMapping("api/v1/books/{bookId}/metadata/refresh")
+  @PreAuthorize("hasRole('ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun refreshMetadata(@PathVariable bookId: Long) {
+    bookRepository.findByIdOrNull(bookId)?.let { book ->
+      try {
+        asyncOrchestrator.refreshBooksMetadata(listOf(book))
+      } catch (e: RejectedExecutionException) {
+        throw ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Another metadata refresh task is already running")
+      }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
   @PatchMapping("api/v1/books/{bookId}/metadata")
   @PreAuthorize("hasRole('ADMIN')")
   fun updateMetadata(

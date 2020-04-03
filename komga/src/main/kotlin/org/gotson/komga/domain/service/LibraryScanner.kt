@@ -3,6 +3,7 @@ package org.gotson.komga.domain.service
 import mu.KotlinLogging
 import org.apache.commons.lang3.time.DurationFormatUtils
 import org.gotson.komga.application.service.BookLifecycle
+import org.gotson.komga.application.service.MetadataLifecycle
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.persistence.BookRepository
@@ -20,7 +21,8 @@ class LibraryScanner(
     private val fileSystemScanner: FileSystemScanner,
     private val seriesRepository: SeriesRepository,
     private val bookRepository: BookRepository,
-    private val bookLifecycle: BookLifecycle
+    private val bookLifecycle: BookLifecycle,
+    private val metadataLifecycle: MetadataLifecycle
 ) {
 
   @Transactional
@@ -94,7 +96,10 @@ class LibraryScanner(
     }.also {
       logger.info { "Analyzed ${booksToAnalyze.size} books in ${DurationFormatUtils.formatDurationHMS(it)} (virtual: ${DurationFormatUtils.formatDurationHMS(sumOfTasksTime)})" }
     }
+
+    logger.info { "Refresh metadata for all books analyzed" }
+    booksToAnalyze.forEach {
+      metadataLifecycle.refreshMetadata(it)
+    }
   }
-
-
 }

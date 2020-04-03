@@ -129,12 +129,12 @@ tasks {
     group = "web"
     workingDir("$rootDir/komga-webui")
     commandLine(
-        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-          "npm.cmd"
-        } else {
-          "npm"
-        },
-        "install"
+      if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        "npm.cmd"
+      } else {
+        "npm"
+      },
+      "install"
     )
   }
 
@@ -143,13 +143,13 @@ tasks {
     dependsOn("npmInstall")
     workingDir("$rootDir/komga-webui")
     commandLine(
-        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-          "npm.cmd"
-        } else {
-          "npm"
-        },
-        "run",
-        "build"
+      if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        "npm.cmd"
+      } else {
+        "npm"
+      },
+      "run",
+      "build"
     )
   }
 

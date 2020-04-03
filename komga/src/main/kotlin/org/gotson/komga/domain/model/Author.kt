@@ -27,4 +27,5 @@ class Author {
       field = value.trim().toLowerCase()
     }
 
+  override fun toString(): String = "Author($name, $role)"
 }

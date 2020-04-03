@@ -219,6 +219,19 @@ class SeriesController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @PostMapping("{seriesId}/metadata/refresh")
+  @PreAuthorize("hasRole('ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun refreshMetadata(@PathVariable seriesId: Long) {
+    seriesRepository.findByIdOrNull(seriesId)?.let { series ->
+      try {
+        asyncOrchestrator.refreshBooksMetadata(series.books)
+      } catch (e: RejectedExecutionException) {
+        throw ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Another metadata refresh task is already running")
+      }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
   @PatchMapping("{seriesId}/metadata")
   @PreAuthorize("hasRole('ADMIN')")
   fun updateMetadata(

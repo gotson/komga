@@ -26,21 +26,23 @@ private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNatural
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "cache.media")
 class Media(
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    var status: Status = Status.UNKNOWN,
+  @Enumerated(EnumType.STRING)
+  @Column(name = "status", nullable = false)
+  var status: Status = Status.UNKNOWN,
 
-    @Column(name = "media_type")
-    var mediaType: String? = null,
+  @Column(name = "media_type")
+  var mediaType: String? = null,
 
-    @Column(name = "thumbnail")
-    @Lob
-    var thumbnail: ByteArray? = null,
+  @Column(name = "thumbnail")
+  @Lob
+  var thumbnail: ByteArray? = null,
 
-    pages: Iterable<BookPage> = emptyList(),
+  pages: Iterable<BookPage> = emptyList(),
 
-    @Column(name = "comment")
-    var comment: String? = null
+  files: Iterable<String> = emptyList(),
+
+  @Column(name = "comment")
+  var comment: String? = null
 ) : AuditableEntity() {
   @Id
   @GeneratedValue
@@ -60,6 +62,17 @@ class Media(
       _pages.addAll(value.sortedWith(compareBy(natSortComparator) { it.fileName }))
     }
 
+  @ElementCollection(fetch = FetchType.LAZY)
+  @CollectionTable(name = "media_file", joinColumns = [JoinColumn(name = "media_id")])
+  @Column(name = "files")
+  private var _files: MutableList<String> = mutableListOf()
+
+  var files: List<String>
+    get() = _files.toList()
+    set(value) {
+      _files.clear()
+      _files.addAll(value)
+    }
 
   fun reset() {
     status = Status.UNKNOWN
@@ -67,10 +80,12 @@ class Media(
     thumbnail = null
     comment = null
     _pages.clear()
+    _files.clear()
   }
 
   init {
     this.pages = pages.toList()
+    this.files = files.toList()
   }
 
   enum class Status {

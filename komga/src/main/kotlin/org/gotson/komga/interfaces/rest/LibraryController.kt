@@ -114,6 +114,19 @@ class LibraryController(
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
+
+  @PostMapping("{libraryId}/metadata/refresh")
+  @PreAuthorize("hasRole('ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun refreshMetadata(@PathVariable libraryId: Long) {
+    libraryRepository.findByIdOrNull(libraryId)?.let { library ->
+      try {
+        asyncOrchestrator.refreshBooksMetadata(bookRepository.findBySeriesLibraryIn(listOf(library)))
+      } catch (e: RejectedExecutionException) {
+        throw ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Another metadata refresh task is already running")
+      }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
 }
 
 data class LibraryCreationDto(
