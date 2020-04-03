@@ -1,3 +1,16 @@
+# [0.25.0](https://github.com/gotson/komga/compare/v0.24.10...v0.25.0) (2020-04-03)
+
+
+### Bug Fixes
+
+* **api:** book file download uses streaming ([74be1f0](https://github.com/gotson/komga/commit/74be1f0face9b910cf9fa25c2379b3c8eaefaab6))
+
+
+### Features
+
+* **webui:** action menu to refresh metadata ([6ad59c4](https://github.com/gotson/komga/commit/6ad59c4efb28517d9aabc1c67e240d0939493cf9))
+* retrieve metadata from ComicInfo.xml ([af01d25](https://github.com/gotson/komga/commit/af01d25ede29feb5159e8a800b789f200e6e7e5c))
+
 ## [0.24.10](https://github.com/gotson/komga/compare/v0.24.9...v0.24.10) (2020-03-25)
 
 
