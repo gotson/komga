@@ -21,6 +21,7 @@ import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.BookMetadataUpdateDto
 import org.gotson.komga.interfaces.rest.dto.PageDto
 import org.gotson.komga.interfaces.rest.dto.toDto
+import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -46,7 +47,6 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.server.ResponseStatusException
-import java.io.File
 import java.io.FileNotFoundException
 import java.nio.file.NoSuchFileException
 import java.time.ZoneOffset
@@ -211,18 +211,21 @@ class BookController(
   fun getBookFile(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: Long
-  ): ResponseEntity<ByteArray> =
+  ): ResponseEntity<FileSystemResource> =
     bookRepository.findByIdOrNull(bookId)?.let { book ->
       if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
       try {
-        ResponseEntity.ok()
-          .headers(HttpHeaders().apply {
-            contentDisposition = ContentDisposition.builder("attachment")
-              .filename(book.fileName())
-              .build()
-          })
-          .contentType(getMediaTypeOrDefault(book.media.mediaType))
-          .body(File(book.url.toURI()).readBytes())
+        with(FileSystemResource(book.path())) {
+          if (!exists()) throw FileNotFoundException(path)
+          ResponseEntity.ok()
+            .headers(HttpHeaders().apply {
+              contentDisposition = ContentDisposition.builder("attachment")
+                .filename(book.fileName())
+                .build()
+            })
+            .contentType(getMediaTypeOrDefault(book.media.mediaType))
+            .body(this)
+        }
       } catch (ex: FileNotFoundException) {
         logger.warn(ex) { "File not found: $book" }
         throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
