@@ -26,6 +26,9 @@
           <v-list-item @click="analyze()">
             <v-list-item-title>Analyze</v-list-item-title>
           </v-list-item>
+          <v-list-item @click="refreshMetadata()">
+            <v-list-item-title>Refresh metadata</v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-menu>
     </toolbar-sticky>
@@ -235,6 +238,9 @@ export default Vue.extend({
   methods: {
     analyze () {
       this.$komgaBooks.analyzeBook(this.book)
+    },
+    refreshMetadata () {
+      this.$komgaBooks.refreshMetadata(this.book)
     },
   },
 })

@@ -105,6 +105,18 @@ export default class KomgaSeriesService {
     }
   }
 
+  async refreshMetadata (series: SeriesDto) {
+    try {
+      await this.http.post(`${API_SERIES}/${series.id}/metadata/refresh`)
+    } catch (e) {
+      let msg = `An error occurred while trying to refresh metadata for series '${series.name}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
   async updateMetadata (seriesId: number, metadata: SeriesMetadataUpdateDto): Promise<SeriesDto> {
     try {
       return (await this.http.patch(`${API_SERIES}/${seriesId}/metadata`, metadata)).data

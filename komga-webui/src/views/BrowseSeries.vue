@@ -20,6 +20,9 @@
           <v-list-item @click="analyze()">
             <v-list-item-title>Analyze</v-list-item-title>
           </v-list-item>
+          <v-list-item @click="refreshMetadata()">
+            <v-list-item-title>Refresh metadata</v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-menu>
 
@@ -329,6 +332,9 @@ export default mixins(VisibleElements).extend({
     },
     analyze () {
       this.$komgaSeries.analyzeSeries(this.series)
+    },
+    refreshMetadata () {
+      this.$komgaSeries.refreshMetadata(this.series)
     },
     singleEdit (book: BookDto) {
       this.editBookSingle = book

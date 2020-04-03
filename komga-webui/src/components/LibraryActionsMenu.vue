@@ -13,6 +13,9 @@
         <v-list-item @click="analyze">
           <v-list-item-title>Analyze</v-list-item-title>
         </v-list-item>
+        <v-list-item @click="refreshMetadata">
+          <v-list-item-title>Refresh metadata</v-list-item-title>
+        </v-list-item>
         <v-list-item @click="promptDeleteLibrary"
                      class="list-warning">
           <v-list-item-title>Delete</v-list-item-title>
@@ -55,6 +58,9 @@ export default Vue.extend({
     },
     analyze () {
       this.$komgaLibraries.analyzeLibrary(this.library)
+    },
+    refreshMetadata () {
+      this.$komgaLibraries.refreshMetadata(this.library)
     },
     promptDeleteLibrary () {
       this.modalDeleteLibrary = true
