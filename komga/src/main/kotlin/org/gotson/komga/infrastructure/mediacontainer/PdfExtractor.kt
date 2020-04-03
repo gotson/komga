@@ -11,11 +11,13 @@ import java.nio.file.Path
 import javax.imageio.ImageIO
 
 @Service
-class PdfExtractor : MediaContainerExtractor() {
+class PdfExtractor : MediaContainerExtractor {
 
   private val mediaType = "image/jpeg"
   private val imageIOFormat = "jpeg"
   private val resolution = 1536F
+
+  override fun mediaTypes(): List<String> = listOf("application/pdf")
 
   override fun getEntries(path: Path): List<MediaContainerEntry> =
     Files.newInputStream(path).use { inputStream ->

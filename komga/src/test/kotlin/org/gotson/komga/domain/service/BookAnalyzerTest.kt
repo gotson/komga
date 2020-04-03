@@ -8,19 +8,17 @@ import org.gotson.komga.domain.model.MediaContainerEntry
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
-import org.gotson.komga.infrastructure.mediacontainer.PdfExtractor
-import org.gotson.komga.infrastructure.mediacontainer.RarExtractor
-import org.gotson.komga.infrastructure.mediacontainer.ZipExtractor
+import org.gotson.komga.infrastructure.mediacontainer.MediaContainerExtractor
 import org.junit.jupiter.api.Test
 
 class BookAnalyzerTest {
   private val mockContent = mockk<ContentDetector>()
-  private val mockZip = mockk<ZipExtractor>()
-  private val mockRar = mockk<RarExtractor>()
-  private val mockPDf = mockk<PdfExtractor>()
+  private val mockZip = mockk<MediaContainerExtractor>().also {
+    every { it.mediaTypes() } returns listOf("application/zip")
+  }
   private val mockImageConverter = mockk<ImageConverter>()
 
-  private val bookAnalyzer = BookAnalyzer(mockContent, mockZip, mockRar, mockPDf, mockImageConverter)
+  private val bookAnalyzer = BookAnalyzer(mockContent, listOf(mockZip), mockImageConverter)
 
   @Test
   fun `given book with unordered pages when analyzing then thumbnail should always be the first in natural order`() {

@@ -11,7 +11,9 @@ private val logger = KotlinLogging.logger {}
 @Service
 class ZipExtractor(
   private val contentDetector: ContentDetector
-) : MediaContainerExtractor() {
+) : MediaContainerExtractor {
+
+  override fun mediaTypes(): List<String> = listOf("application/zip")
 
   override fun getEntries(path: Path): List<MediaContainerEntry> =
     ZipFile(path.toFile()).use { zip ->

@@ -12,7 +12,9 @@ private val logger = KotlinLogging.logger {}
 @Service
 class RarExtractor(
   private val contentDetector: ContentDetector
-) : MediaContainerExtractor() {
+) : MediaContainerExtractor {
+
+  override fun mediaTypes(): List<String> = listOf("application/x-rar-compressed")
 
   override fun getEntries(path: Path): List<MediaContainerEntry> =
     Archive(Files.newInputStream(path)).use { rar ->

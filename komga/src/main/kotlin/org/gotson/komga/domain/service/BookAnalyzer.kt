@@ -8,9 +8,7 @@ import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
-import org.gotson.komga.infrastructure.mediacontainer.PdfExtractor
-import org.gotson.komga.infrastructure.mediacontainer.RarExtractor
-import org.gotson.komga.infrastructure.mediacontainer.ZipExtractor
+import org.gotson.komga.infrastructure.mediacontainer.MediaContainerExtractor
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -19,17 +17,13 @@ private val logger = KotlinLogging.logger {}
 @Service
 class BookAnalyzer(
   private val contentDetector: ContentDetector,
-  private val zipExtractor: ZipExtractor,
-  private val rarExtractor: RarExtractor,
-  private val pdfExtractor: PdfExtractor,
+  extractors: List<MediaContainerExtractor>,
   private val imageConverter: ImageConverter
 ) {
 
-  val supportedMediaTypes = mapOf(
-    "application/zip" to zipExtractor,
-    "application/x-rar-compressed" to rarExtractor,
-    "application/pdf" to pdfExtractor
-  )
+  val supportedMediaTypes = extractors
+    .flatMap { e -> e.mediaTypes().map { it to e } }
+    .toMap()
 
   private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
 
@@ -41,7 +35,7 @@ class BookAnalyzer(
 
     val mediaType = contentDetector.detectMediaType(book.path())
     logger.info { "Detected media type: $mediaType" }
-    if (!supportedMediaTypes.keys.contains(mediaType))
+    if (!supportedMediaTypes.containsKey(mediaType))
       return Media(mediaType = mediaType, status = Media.Status.UNSUPPORTED, comment = "Media type $mediaType is not supported")
 
     val entries = try {
