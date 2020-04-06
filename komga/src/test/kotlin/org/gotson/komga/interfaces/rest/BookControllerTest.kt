@@ -27,6 +27,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.context.junit.jupiter.SpringExtension
@@ -36,9 +37,8 @@ import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZoneOffset
 import javax.sql.DataSource
+import kotlin.random.Random
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
@@ -327,16 +327,23 @@ class BookControllerTest(
   inner class HttpCache {
     @Test
     @WithMockCustomUser
-    fun `given request with If-Modified-Since headers when getting thumbnail then returns 304 not modified`() {
+    fun `given request with cache headers when getting thumbnail then returns 304 not modified`() {
       val series = makeSeries(
         name = "series",
-        books = listOf(makeBook("1.cbr"))
+        books = listOf(makeBook("1.cbr").also {
+          it.media.thumbnail = Random.nextBytes(100)
+        })
       ).also { it.library = library }
       seriesRepository.save(series)
 
-      mockMvc.get("/api/v1/books/${series.books.first().id}/thumbnail") {
+      val url = "/api/v1/books/${series.books.first().id}/thumbnail"
+
+      val response = mockMvc.get(url)
+        .andReturn().response
+
+      mockMvc.get(url) {
         headers {
-          ifModifiedSince = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()
+          ifNoneMatch = listOf(response.getHeader(HttpHeaders.ETAG)!!)
         }
       }.andExpect {
         status { isNotModified }
@@ -352,13 +359,50 @@ class BookControllerTest(
       ).also { it.library = library }
       seriesRepository.save(series)
 
-      mockMvc.get("/api/v1/books/${series.books.first().id}/pages/1") {
+      val url = "/api/v1/books/${series.books.first().id}/pages/1"
+
+      val lastModified = mockMvc.get(url)
+        .andReturn().response.getHeader(HttpHeaders.LAST_MODIFIED)
+
+      mockMvc.get(url) {
         headers {
-          ifModifiedSince = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()
+          set(HttpHeaders.IF_MODIFIED_SINCE, lastModified!!)
         }
       }.andExpect {
         status { isNotModified }
       }
+    }
+  }
+
+  //Not part of the above @Nested class because @Transactional fails
+  @Test
+  @WithMockCustomUser
+  @Transactional
+  fun `given request with cache headers and modified resource when getting thumbnail then returns 200 ok`() {
+    val book = makeBook("1.cbr").also {
+      it.media.thumbnail = Random.nextBytes(1)
+    }
+    val series = makeSeries(
+      name = "series",
+      books = listOf(book)
+    ).also { it.library = library }
+    seriesRepository.save(series)
+
+    val url = "/api/v1/books/${series.books.first().id}/thumbnail"
+
+    val response = mockMvc.get(url)
+      .andReturn().response
+
+    Thread.sleep(100)
+    book.media.thumbnail = Random.nextBytes(1)
+    bookRepository.saveAndFlush(book)
+
+    mockMvc.get(url) {
+      headers {
+        ifNoneMatch = listOf(response.getHeader(HttpHeaders.ETAG)!!)
+      }
+    }.andExpect {
+      status { isOk }
     }
   }
 

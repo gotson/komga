@@ -186,19 +186,10 @@ class BookController(
     @PathVariable bookId: Long
   ): ResponseEntity<ByteArray> =
     bookRepository.findByIdOrNull(bookId)?.let { book ->
-      val etag = book.id.toString()
-      if (request.checkNotModified(etag, getBookLastModified(book))) {
-        return@let ResponseEntity
-          .status(HttpStatus.NOT_MODIFIED)
-          .eTag(etag)
-          .setNotModified(book)
-          .body(ByteArray(0))
-      }
       if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
       if (book.media.thumbnail != null) {
         ResponseEntity.ok()
-          .eTag(etag)
-          .setNotModified(book)
+          .setCachePrivate()
           .body(book.media.thumbnail)
       } else throw ResponseStatusException(HttpStatus.NOT_FOUND)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -392,11 +383,14 @@ class BookController(
       bookRepository.save(book).toDto(includeFullUrl = true)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  private fun ResponseEntity.BodyBuilder.setNotModified(book: Book) =
+  private fun ResponseEntity.BodyBuilder.setCachePrivate() =
     this.cacheControl(CacheControl.maxAge(0, TimeUnit.SECONDS)
       .cachePrivate()
       .mustRevalidate()
-    ).lastModified(getBookLastModified(book))
+    )
+
+  private fun ResponseEntity.BodyBuilder.setNotModified(book: Book) =
+    this.setCachePrivate().lastModified(getBookLastModified(book))
 
   private fun getBookLastModified(book: Book) =
     book.media.lastModifiedDate!!.toInstant(ZoneOffset.UTC).toEpochMilli()

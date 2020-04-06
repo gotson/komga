@@ -7,6 +7,7 @@ import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
+import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.hamcrest.Matchers
@@ -23,6 +24,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.context.junit.jupiter.SpringExtension
@@ -32,6 +34,7 @@ import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.transaction.annotation.Transactional
 import javax.sql.DataSource
+import kotlin.random.Random
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
@@ -40,6 +43,7 @@ import javax.sql.DataSource
 class SeriesControllerTest(
   @Autowired private val seriesRepository: SeriesRepository,
   @Autowired private val libraryRepository: LibraryRepository,
+  @Autowired private val bookRepository: BookRepository,
   @Autowired private val mockMvc: MockMvc
 ) {
 
@@ -401,6 +405,66 @@ class SeriesControllerTest(
       assertThat(titleLock).isEqualTo(true)
       assertThat(titleSortLock).isEqualTo(true)
       assertThat(statusLock).isEqualTo(true)
+    }
+  }
+
+  @Test
+  @WithMockCustomUser
+  fun `given request with cache headers when getting series thumbnail then returns 304 not modified`() {
+    val book = makeBook("1.cbr").also {
+      it.media.thumbnail = Random.nextBytes(1)
+    }
+    val series = makeSeries(
+      name = "series",
+      books = listOf(book)
+    ).also { it.library = library }
+    seriesRepository.save(series)
+
+    val url = "/api/v1/series/${series.id}/thumbnail"
+
+    val response = mockMvc.get(url)
+      .andReturn().response
+
+    mockMvc.get(url) {
+      headers {
+        ifNoneMatch = listOf(response.getHeader(HttpHeaders.ETAG)!!)
+      }
+    }.andExpect {
+      status { isNotModified }
+    }
+  }
+
+  //Not part of the above @Nested class because @Transactional fails
+  @Test
+  @WithMockCustomUser
+  @Transactional
+  fun `given request with cache headers and modified first book when getting series thumbnail then returns 200 ok`() {
+    val book = makeBook("1.cbr").also {
+      it.media.thumbnail = Random.nextBytes(1)
+    }
+    val book2 = makeBook("2.cbr").also {
+      it.media.thumbnail = Random.nextBytes(1)
+    }
+    val series = makeSeries(
+      name = "series",
+      books = listOf(book, book2)
+    ).also { it.library = library }
+    seriesRepository.save(series)
+
+    val url = "/api/v1/series/${series.id}/thumbnail"
+
+    val response = mockMvc.get(url)
+      .andReturn().response
+
+    book.metadata.numberSort = 3F
+    bookRepository.saveAndFlush(book)
+
+    mockMvc.get(url) {
+      headers {
+        ifNoneMatch = listOf(response.getHeader(HttpHeaders.ETAG)!!)
+      }
+    }.andExpect {
+      status { isOk }
     }
   }
 
