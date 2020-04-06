@@ -1,3 +1,11 @@
+## [0.25.1](https://github.com/gotson/komga/compare/v0.25.0...v0.25.1) (2020-04-06)
+
+
+### Bug Fixes
+
+* **api:** thumbnails not updating properly ([a5bd908](https://github.com/gotson/komga/commit/a5bd9087df1e43be9bef5dea1039e1720f0f9541))
+* **opds:** prepend issue number for book titles for Chunky ([42cad8b](https://github.com/gotson/komga/commit/42cad8b4d572ee587b8b908662863f83f15f6349))
+
 # [0.25.0](https://github.com/gotson/komga/compare/v0.24.10...v0.25.0) (2020-04-03)
 
 
