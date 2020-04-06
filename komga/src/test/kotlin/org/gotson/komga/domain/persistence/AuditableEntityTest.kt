@@ -104,14 +104,49 @@ class AuditableEntityTest(
 
     // then
     assertThat(series.createdDate)
-        .isBefore(creationTimeApprox)
-        .isEqualTo(series.lastModifiedDate)
+      .isBefore(creationTimeApprox)
+      .isEqualTo(series.lastModifiedDate)
 
     assertThat(series.books.first().createdDate)
-        .isBefore(creationTimeApprox)
-        .isNotEqualTo(series.books.first().lastModifiedDate)
+      .isBefore(creationTimeApprox)
+      .isNotEqualTo(series.books.first().lastModifiedDate)
     assertThat(series.books.first().lastModifiedDate)
-        .isAfter(creationTimeApprox)
-        .isBefore(modificationTimeApprox)
+      .isAfter(creationTimeApprox)
+      .isBefore(modificationTimeApprox)
+  }
+
+  @Test
+  fun `given existing book with media when updating media only then created date is kept and modified date is changed for media only`() {
+    // given
+    val series = makeSeries(name = "series", books = listOf(makeBook("book1"))).also { it.library = library }
+
+    seriesRepository.save(series)
+
+    val creationTimeApprox = LocalDateTime.now()
+
+    Thread.sleep(1000)
+
+    // when
+    series.books.first().media.comment = "mediaUpdated"
+    seriesRepository.saveAndFlush(series)
+
+    val modificationTimeApprox = LocalDateTime.now()
+
+    // then
+    assertThat(series.createdDate)
+      .isBefore(creationTimeApprox)
+      .isEqualTo(series.lastModifiedDate)
+
+    assertThat(series.books.first().createdDate)
+      .isBefore(creationTimeApprox)
+      .isEqualTo(series.books.first().lastModifiedDate)
+
+    assertThat(series.books.first().media.createdDate)
+      .isBefore(creationTimeApprox)
+      .isNotEqualTo(series.books.first().media.lastModifiedDate)
+
+    assertThat(series.books.first().media.lastModifiedDate)
+      .isAfter(creationTimeApprox)
+      .isBefore(modificationTimeApprox)
   }
 }
