@@ -3,6 +3,7 @@ package org.gotson.komga.interfaces.opds
 import com.github.klinq.jpaspec.`in`
 import com.github.klinq.jpaspec.likeLower
 import com.github.klinq.jpaspec.toJoin
+import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
@@ -28,18 +29,23 @@ import org.gotson.komga.interfaces.opds.dto.OpenSearchDescription
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import java.net.URI
+import java.text.DecimalFormat
 import java.time.ZoneId
 import java.time.ZonedDateTime
+
+private val logger = KotlinLogging.logger {}
 
 private const val ROUTE_BASE = "/opds/v1.2/"
 private const val ROUTE_CATALOG = "catalog"
@@ -55,13 +61,15 @@ private const val ID_LIBRARIES_ALL = "allLibraries"
 @RestController
 @RequestMapping(value = [ROUTE_BASE], produces = [MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE])
 class OpdsController(
-    private val seriesRepository: SeriesRepository,
-    private val libraryRepository: LibraryRepository
+  private val seriesRepository: SeriesRepository,
+  private val libraryRepository: LibraryRepository
 ) {
 
   private val komgaAuthor = OpdsAuthor("Komga", URI("https://github.com/gotson/komga"))
   private val linkStart = OpdsLinkFeedNavigation(OpdsLinkRel.START, "$ROUTE_BASE$ROUTE_CATALOG")
   private val linkSearch = OpdsLinkSearch("$ROUTE_BASE$ROUTE_SEARCH")
+
+  private val decimalFormat = DecimalFormat("0.#")
 
   private val feedCatalog = OpdsFeedNavigation(
     id = "root",
@@ -112,8 +120,8 @@ class OpdsController(
 
   @GetMapping(ROUTE_SERIES_ALL)
   fun getAllSeries(
-      @AuthenticationPrincipal principal: KomgaPrincipal,
-      @RequestParam("search") searchTerm: String?
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestParam("search") searchTerm: String?
   ): OpdsFeed {
     val sort = Sort.by(Sort.Order.asc("metadata.titleSort").ignoreCase())
     val series =
@@ -126,12 +134,12 @@ class OpdsController(
           specs.add(Series::metadata.toJoin().where(SeriesMetadata::title).likeLower("%$searchTerm%"))
         }
 
-          if (specs.isNotEmpty()) {
-            seriesRepository.findAll(specs.reduce { acc, spec -> acc.and(spec)!! }, sort)
-          } else {
-            seriesRepository.findAll(sort)
-          }
+        if (specs.isNotEmpty()) {
+          seriesRepository.findAll(specs.reduce { acc, spec -> acc.and(spec)!! }, sort)
+        } else {
+          seriesRepository.findAll(sort)
         }
+      }
 
     return OpdsFeedNavigation(
       id = ID_SERIES_ALL,
@@ -148,15 +156,15 @@ class OpdsController(
 
   @GetMapping(ROUTE_SERIES_LATEST)
   fun getLatestSeries(
-      @AuthenticationPrincipal principal: KomgaPrincipal
+    @AuthenticationPrincipal principal: KomgaPrincipal
   ): OpdsFeed {
     val sort = Sort.by(Sort.Direction.DESC, "lastModifiedDate")
     val series =
-        if (principal.user.sharedAllLibraries) {
-          seriesRepository.findAll(sort)
-        } else {
-          seriesRepository.findByLibraryIn(principal.user.sharedLibraries, sort)
-        }
+      if (principal.user.sharedAllLibraries) {
+        seriesRepository.findAll(sort)
+      } else {
+        seriesRepository.findByLibraryIn(principal.user.sharedLibraries, sort)
+      }
 
     return OpdsFeedNavigation(
       id = ID_SERIES_LATEST,
@@ -173,14 +181,14 @@ class OpdsController(
 
   @GetMapping(ROUTE_LIBRARIES_ALL)
   fun getLibraries(
-      @AuthenticationPrincipal principal: KomgaPrincipal
+    @AuthenticationPrincipal principal: KomgaPrincipal
   ): OpdsFeed {
     val libraries =
-        if (principal.user.sharedAllLibraries) {
-          libraryRepository.findAll()
-        } else {
-          principal.user.sharedLibraries
-        }
+      if (principal.user.sharedAllLibraries) {
+        libraryRepository.findAll()
+      } else {
+        principal.user.sharedLibraries
+      }
     return OpdsFeedNavigation(
       id = ID_LIBRARIES_ALL,
       title = "All libraries",
@@ -196,48 +204,49 @@ class OpdsController(
 
   @GetMapping("series/{id}")
   fun getOneSeries(
-      @AuthenticationPrincipal principal: KomgaPrincipal,
-      @PathVariable id: Long
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestHeader(HttpHeaders.USER_AGENT) userAgent: String,
+    @PathVariable id: Long
   ): OpdsFeed =
-      seriesRepository.findByIdOrNull(id)?.let { series ->
-        if (!principal.user.canAccessSeries(series)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+    seriesRepository.findByIdOrNull(id)?.let { series ->
+      if (!principal.user.canAccessSeries(series)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
 
-        OpdsFeedAcquisition(
-          id = series.id.toString(),
-          title = series.metadata.title,
-          updated = series.lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
-          author = komgaAuthor,
-          links = listOf(
-            OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "${ROUTE_BASE}series/$id"),
-            linkStart
-          ),
-          entries = series.books
-            .filter { it.media.status == Media.Status.READY }
-            .sortedBy { it.metadata.numberSort }
-            .map { it.toOpdsEntry() }
-        )
-      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+      OpdsFeedAcquisition(
+        id = series.id.toString(),
+        title = series.metadata.title,
+        updated = series.lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
+        author = komgaAuthor,
+        links = listOf(
+          OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "${ROUTE_BASE}series/$id"),
+          linkStart
+        ),
+        entries = series.books
+          .filter { it.media.status == Media.Status.READY }
+          .sortedBy { it.metadata.numberSort }
+          .map { it.toOpdsEntry(shouldPrependBookNumbers(userAgent)) }
+      )
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping("libraries/{id}")
   fun getOneLibrary(
-      @AuthenticationPrincipal principal: KomgaPrincipal,
-      @PathVariable id: Long
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable id: Long
   ): OpdsFeed =
-      libraryRepository.findByIdOrNull(id)?.let { library ->
-        if (!principal.user.canAccessLibrary(library)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+    libraryRepository.findByIdOrNull(id)?.let { library ->
+      if (!principal.user.canAccessLibrary(library)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
 
-        OpdsFeedNavigation(
-          id = library.id.toString(),
-          title = library.name,
-          updated = library.lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
-          author = komgaAuthor,
-          links = listOf(
-            OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "${ROUTE_BASE}libraries/$id"),
-            linkStart
-          ),
-          entries = seriesRepository.findByLibraryId(library.id, Sort.by(Sort.Order.asc("metadata.titleSort").ignoreCase())).map { it.toOpdsEntry() }
-        )
-      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+      OpdsFeedNavigation(
+        id = library.id.toString(),
+        title = library.name,
+        updated = library.lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
+        author = komgaAuthor,
+        links = listOf(
+          OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "${ROUTE_BASE}libraries/$id"),
+          linkStart
+        ),
+        entries = seriesRepository.findByLibraryId(library.id, Sort.by(Sort.Order.asc("metadata.titleSort").ignoreCase())).map { it.toOpdsEntry() }
+      )
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
 
   private fun Series.toOpdsEntry() =
@@ -249,9 +258,9 @@ class OpdsController(
       link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "${ROUTE_BASE}series/$id")
     )
 
-  private fun Book.toOpdsEntry() =
+  private fun Book.toOpdsEntry(prependNumber: Boolean) =
     OpdsEntryAcquisition(
-      title = metadata.title,
+      title = "${if (prependNumber) "${decimalFormat.format(metadata.numberSort)} - " else ""}${metadata.title}",
       updated = lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
       id = id.toString(),
       content = run {
@@ -279,4 +288,6 @@ class OpdsController(
     )
   }
 
+  private fun shouldPrependBookNumbers(userAgent: String) =
+    userAgent.contains("chunky", ignoreCase = true)
 }
