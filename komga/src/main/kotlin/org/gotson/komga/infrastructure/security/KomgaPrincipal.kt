@@ -6,15 +6,15 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 class KomgaPrincipal(
-    val user: KomgaUser
+  val user: KomgaUser
 ) : UserDetails {
 
   override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
     return user.roles.map { it.name }
-        .toMutableSet()
-        .apply { add("USER") }
-        .map { SimpleGrantedAuthority("ROLE_$it") }
-        .toMutableSet()
+      .toMutableSet()
+      .apply { add("USER") }
+      .map { SimpleGrantedAuthority("ROLE_$it") }
+      .toMutableSet()
   }
 
   override fun isEnabled() = true

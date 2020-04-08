@@ -1,7 +1,6 @@
 package org.gotson.komga.infrastructure.metadata.comicinfo.dto
 
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 enum class AgeRating(val value: String, val ageRating: Int? = null) {
   UNKNOWN("Unknown"),
@@ -22,6 +21,7 @@ enum class AgeRating(val value: String, val ageRating: Int? = null) {
 
   companion object {
     private val map = values().associateBy(AgeRating::value)
+
     @JvmStatic
     @JsonCreator
     fun fromValue(value: String) = map[value]

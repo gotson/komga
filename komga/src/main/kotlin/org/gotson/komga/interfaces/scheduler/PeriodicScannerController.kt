@@ -14,7 +14,7 @@ private val logger = KotlinLogging.logger {}
 @Profile("!test")
 @Controller
 class PeriodicScannerController(
-    private val asyncOrchestrator: AsyncOrchestrator
+  private val asyncOrchestrator: AsyncOrchestrator
 ) {
 
   @EventListener(ApplicationReadyEvent::class)

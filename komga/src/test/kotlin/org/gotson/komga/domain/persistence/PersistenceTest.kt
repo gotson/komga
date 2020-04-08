@@ -20,10 +20,10 @@ import org.springframework.transaction.annotation.Transactional
 @DataJpaTest
 @Transactional
 class PersistenceTest(
-    @Autowired private val seriesRepository: SeriesRepository,
-    @Autowired private val bookRepository: BookRepository,
-    @Autowired private val mediaRepository: MediaRepository,
-    @Autowired private val libraryRepository: LibraryRepository
+  @Autowired private val seriesRepository: SeriesRepository,
+  @Autowired private val bookRepository: BookRepository,
+  @Autowired private val mediaRepository: MediaRepository,
+  @Autowired private val libraryRepository: LibraryRepository
 ) {
 
   private val library = makeLibrary()
@@ -61,10 +61,10 @@ class PersistenceTest(
   fun `given series with unordered books when saving then books are ordered with natural sort`() {
     // given
     val series = makeSeries(name = "series", books = listOf(
-        makeBook("book 1"),
-        makeBook("book 05"),
-        makeBook("book 6"),
-        makeBook("book 002")
+      makeBook("book 1"),
+      makeBook("book 05"),
+      makeBook("book 6"),
+      makeBook("book 002")
     )).also { it.library = library }
 
     // when
@@ -74,7 +74,7 @@ class PersistenceTest(
     assertThat(seriesRepository.count()).isEqualTo(1)
     assertThat(bookRepository.count()).isEqualTo(4)
     assertThat(seriesRepository.findAll().first().books.map { it.name })
-        .containsExactly("book 1", "book 002", "book 05", "book 6")
+      .containsExactly("book 1", "book 002", "book 05", "book 6")
   }
 
   @Test
@@ -110,9 +110,9 @@ class PersistenceTest(
     // when
     val book = bookRepository.findAll().first()
     book.media = Media(status = Media.Status.READY, mediaType = "test", pages = listOf(
-        makeBookPage("2"),
-        makeBookPage("003"),
-        makeBookPage("001")
+      makeBookPage("2"),
+      makeBookPage("003"),
+      makeBookPage("001")
     ))
 
     bookRepository.save(book)

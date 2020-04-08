@@ -10,22 +10,22 @@ import java.util.concurrent.Executor
 @Configuration
 @EnableAsync
 class AsyncConfiguration(
-    private val komgaProperties: KomgaProperties
+  private val komgaProperties: KomgaProperties
 ) {
 
   @Bean("analyzeBookTaskExecutor")
   fun analyzeBookTaskExecutor(): Executor =
-      ThreadPoolTaskExecutor().apply {
-        corePoolSize = komgaProperties.threads.analyzer
-      }
+    ThreadPoolTaskExecutor().apply {
+      corePoolSize = komgaProperties.threads.analyzer
+    }
 
   @Bean("periodicScanTaskExecutor")
   fun periodicScanTaskExecutor(): Executor =
-      ThreadPoolTaskExecutor().apply {
-        corePoolSize = 1
-        maxPoolSize = 1
-        setQueueCapacity(0)
-      }
+    ThreadPoolTaskExecutor().apply {
+      corePoolSize = 1
+      maxPoolSize = 1
+      setQueueCapacity(0)
+    }
 
   @Bean("regenerateThumbnailsTaskExecutor")
   fun regenerateThumbnailsTaskExecutor(): Executor =

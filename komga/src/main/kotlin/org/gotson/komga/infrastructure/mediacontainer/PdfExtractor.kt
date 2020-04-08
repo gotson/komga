@@ -39,6 +39,6 @@ class PdfExtractor : MediaContainerExtractor {
           ImageIO.write(image, imageIOFormat, out)
           out.toByteArray()
         }
-        }
       }
+    }
 }

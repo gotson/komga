@@ -18,11 +18,11 @@ private val logger = KotlinLogging.logger {}
 
 @Service
 class LibraryScanner(
-    private val fileSystemScanner: FileSystemScanner,
-    private val seriesRepository: SeriesRepository,
-    private val bookRepository: BookRepository,
-    private val bookLifecycle: BookLifecycle,
-    private val metadataLifecycle: MetadataLifecycle
+  private val fileSystemScanner: FileSystemScanner,
+  private val seriesRepository: SeriesRepository,
+  private val bookRepository: BookRepository,
+  private val bookLifecycle: BookLifecycle,
+  private val metadataLifecycle: MetadataLifecycle
 ) {
 
   @Transactional
@@ -84,15 +84,15 @@ class LibraryScanner(
     var sumOfTasksTime = 0L
     measureTimeMillis {
       sumOfTasksTime = booksToAnalyze
-          .map { bookLifecycle.analyzeAndPersist(it) }
-          .map {
-            try {
-              it.get()
-            } catch (ex: Exception) {
-              0L
-            }
+        .map { bookLifecycle.analyzeAndPersist(it) }
+        .map {
+          try {
+            it.get()
+          } catch (ex: Exception) {
+            0L
           }
-          .sum()
+        }
+        .sum()
     }.also {
       logger.info { "Analyzed ${booksToAnalyze.size} books in ${DurationFormatUtils.formatDurationHMS(it)} (virtual: ${DurationFormatUtils.formatDurationHMS(sumOfTasksTime)})" }
     }

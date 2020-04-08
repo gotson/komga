@@ -17,10 +17,10 @@ import java.net.URL
 @Retention(AnnotationRetention.RUNTIME)
 @WithSecurityContext(factory = WithMockCustomUserSecurityContextFactory::class, setupBefore = TestExecutionEvent.TEST_EXECUTION)
 annotation class WithMockCustomUser(
-    val email: String = "user@example.org",
-    val roles: Array<UserRoles> = [],
-    val sharedAllLibraries: Boolean = true,
-    val sharedLibraries: LongArray = []
+  val email: String = "user@example.org",
+  val roles: Array<UserRoles> = [],
+  val sharedAllLibraries: Boolean = true,
+  val sharedLibraries: LongArray = []
 )
 
 class WithMockCustomUserSecurityContextFactory : WithSecurityContextFactory<WithMockCustomUser> {
@@ -28,21 +28,21 @@ class WithMockCustomUserSecurityContextFactory : WithSecurityContextFactory<With
     val context = SecurityContextHolder.createEmptyContext()
 
     val principal = KomgaPrincipal(
-        KomgaUser(
-            email = customUser.email,
-            password = "",
-            roles = customUser.roles.toMutableSet()
-        ).also { user ->
-          user.sharedAllLibraries = customUser.sharedAllLibraries
-          user.sharedLibraries = customUser.sharedLibraries
-              .map {
-                val mock = mockk<Library>()
-                every { mock.id } returns it
-                every { mock.name } returns "Library #$it"
-                every { mock.root } returns URL("file:/library/$it")
-                mock
-              }.toMutableSet()
-        }
+      KomgaUser(
+        email = customUser.email,
+        password = "",
+        roles = customUser.roles.toMutableSet()
+      ).also { user ->
+        user.sharedAllLibraries = customUser.sharedAllLibraries
+        user.sharedLibraries = customUser.sharedLibraries
+          .map {
+            val mock = mockk<Library>()
+            every { mock.id } returns it
+            every { mock.name } returns "Library #$it"
+            every { mock.root } returns URL("file:/library/$it")
+            mock
+          }.toMutableSet()
+      }
     )
     val auth = UsernamePasswordAuthenticationToken(principal, "", principal.authorities)
     context.authentication = auth

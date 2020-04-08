@@ -80,8 +80,8 @@ class FileSystemScannerTest {
       Files.createDirectory(root)
 
       val subDirs = listOf(
-          "series1" to listOf("volume1.cbz", "volume2.cbz"),
-          "series2" to listOf("book1.cbz", "book2.cbz")
+        "series1" to listOf("volume1.cbz", "volume2.cbz"),
+        "series2" to listOf("book1.cbz", "book2.cbz")
       ).toMap()
 
       subDirs.forEach { (dir, files) ->

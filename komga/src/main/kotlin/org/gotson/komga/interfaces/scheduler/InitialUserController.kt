@@ -18,8 +18,8 @@ private val logger = KotlinLogging.logger {}
 @Profile("!(test | claim)")
 @Controller
 class InitialUserController(
-    private val userDetailsLifecycle: KomgaUserDetailsLifecycle,
-    private val initialUsers: List<KomgaUser>
+  private val userDetailsLifecycle: KomgaUserDetailsLifecycle,
+  private val initialUsers: List<KomgaUser>
 ) {
 
   @EventListener(ApplicationReadyEvent::class)
@@ -28,15 +28,15 @@ class InitialUserController(
       logger.info { "No users exist in database, creating initial users" }
 
       initialUsers
-          .map {
-            User.withUsername(it.email)
-                .password(it.password)
-                .roles(*it.roles.map { it.name }.toTypedArray())
-                .build()
-          }.forEach {
-            userDetailsLifecycle.createUser(it)
-            logger.info { "Initial user created. Login: ${it.username}, Password: ${it.password}" }
-          }
+        .map {
+          User.withUsername(it.email)
+            .password(it.password)
+            .roles(*it.roles.map { it.name }.toTypedArray())
+            .build()
+        }.forEach {
+          userDetailsLifecycle.createUser(it)
+          logger.info { "Initial user created. Login: ${it.username}, Password: ${it.password}" }
+        }
     }
   }
 }
@@ -46,8 +46,8 @@ class InitialUserController(
 class InitialUsersDevConfiguration {
   @Bean
   fun initialUsers() = listOf(
-      KomgaUser("admin@example.org", "admin", mutableSetOf(UserRoles.ADMIN)),
-      KomgaUser("user@example.org", "user")
+    KomgaUser("admin@example.org", "admin", mutableSetOf(UserRoles.ADMIN)),
+    KomgaUser("user@example.org", "user")
   )
 }
 
@@ -56,6 +56,6 @@ class InitialUsersDevConfiguration {
 class InitialUsersProdConfiguration {
   @Bean
   fun initialUsers() = listOf(
-      KomgaUser("admin@example.org", RandomStringUtils.randomAlphanumeric(12), mutableSetOf(UserRoles.ADMIN))
+    KomgaUser("admin@example.org", RandomStringUtils.randomAlphanumeric(12), mutableSetOf(UserRoles.ADMIN))
   )
 }

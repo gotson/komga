@@ -17,7 +17,7 @@ import java.nio.file.Files
 @SpringBootTest
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
 class FileSystemControllerTest(
-    @Autowired private val mockMvc: MockMvc
+  @Autowired private val mockMvc: MockMvc
 ) {
   private val route = "/api/v1/filesystem"
 
@@ -25,14 +25,14 @@ class FileSystemControllerTest(
   @WithAnonymousUser
   fun `given anonymous user when getDirectoryListing then return unauthorized`() {
     mockMvc.post(route)
-        .andExpect { status { isUnauthorized } }
+      .andExpect { status { isUnauthorized } }
   }
 
   @Test
   @WithMockUser
   fun `given regular user when getDirectoryListing then return forbidden`() {
     mockMvc.post(route)
-        .andExpect { status { isForbidden } }
+      .andExpect { status { isForbidden } }
   }
 
   @Test

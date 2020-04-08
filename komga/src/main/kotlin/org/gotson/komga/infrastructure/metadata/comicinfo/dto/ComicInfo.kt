@@ -2,11 +2,7 @@ package org.gotson.komga.infrastructure.metadata.comicinfo.dto
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import javax.xml.bind.annotation.XmlAccessType
-import javax.xml.bind.annotation.XmlAccessorType
-import javax.xml.bind.annotation.XmlElement
 import javax.xml.bind.annotation.XmlSchemaType
-import javax.xml.bind.annotation.XmlType
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 class ComicInfo {

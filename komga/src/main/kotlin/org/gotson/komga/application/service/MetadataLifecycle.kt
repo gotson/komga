@@ -2,7 +2,6 @@ package org.gotson.komga.application.service
 
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.MetadataApplier

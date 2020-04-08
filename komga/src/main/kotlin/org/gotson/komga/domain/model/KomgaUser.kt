@@ -20,19 +20,19 @@ import javax.validation.constraints.NotNull
 @Entity
 @Table(name = "user")
 class KomgaUser(
-    @Email
-    @NotBlank
-    @Column(name = "email", nullable = false, unique = true)
-    var email: String,
+  @Email
+  @NotBlank
+  @Column(name = "email", nullable = false, unique = true)
+  var email: String,
 
-    @NotBlank
-    @Column(name = "password", nullable = false)
-    var password: String,
+  @NotBlank
+  @Column(name = "password", nullable = false)
+  var password: String,
 
-    @Enumerated(EnumType.STRING)
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role", joinColumns = [JoinColumn(name = "user_id")])
-    var roles: MutableSet<UserRoles> = mutableSetOf()
+  @Enumerated(EnumType.STRING)
+  @ElementCollection(fetch = FetchType.EAGER)
+  @CollectionTable(name = "user_role", joinColumns = [JoinColumn(name = "user_id")])
+  var roles: MutableSet<UserRoles> = mutableSetOf()
 
 ) : AuditableEntity() {
 
@@ -43,9 +43,9 @@ class KomgaUser(
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
-      name = "user_library_sharing",
-      joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
-      inverseJoinColumns = [JoinColumn(name = "library_id", referencedColumnName = "id")]
+    name = "user_library_sharing",
+    joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
+    inverseJoinColumns = [JoinColumn(name = "library_id", referencedColumnName = "id")]
   )
   var sharedLibraries: MutableSet<Library> = mutableSetOf()
 

@@ -2,13 +2,10 @@ package org.gotson.komga.infrastructure.metadata.comicinfo.dto
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ClassPathResource
-import org.springframework.core.io.ResourceLoader
 
-class ComicInfoTest{
+class ComicInfoTest {
 
   @Test
   fun `given valid xml file when deserializing then properties are available`() {
@@ -16,7 +13,7 @@ class ComicInfoTest{
     val mapper = XmlMapper()
     val comicInfo = mapper.readValue(file.url, ComicInfo::class.java)
 
-    with(comicInfo){
+    with(comicInfo) {
       assertThat(title).isEqualTo("v01 - Preludes & Nocturnes - 30th Anniversary Edition")
       assertThat(series).isEqualTo("Sandman")
       assertThat(web).isEqualTo("https://www.comixology.com/Sandman/digital-comic/727888")
@@ -40,7 +37,7 @@ class ComicInfoTest{
     val mapper = XmlMapper()
     val comicInfo = mapper.readValue(file.url, ComicInfo::class.java)
 
-    with(comicInfo){
+    with(comicInfo) {
       assertThat(ageRating).isNull()
       assertThat(blackAndWhite).isNull()
       assertThat(manga).isNull()

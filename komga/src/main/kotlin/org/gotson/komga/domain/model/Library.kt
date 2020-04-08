@@ -18,13 +18,13 @@ import javax.validation.constraints.NotBlank
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "cache.library")
 class Library(
-    @NotBlank
-    @Column(name = "name", nullable = false, unique = true)
-    val name: String,
+  @NotBlank
+  @Column(name = "name", nullable = false, unique = true)
+  val name: String,
 
-    @NotBlank
-    @Column(name = "root", nullable = false)
-    val root: URL
+  @NotBlank
+  @Column(name = "root", nullable = false)
+  val root: URL
 ) : AuditableEntity() {
   @Id
   @GeneratedValue

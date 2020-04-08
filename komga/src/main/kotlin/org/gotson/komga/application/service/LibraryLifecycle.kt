@@ -18,17 +18,17 @@ private val logger = KotlinLogging.logger {}
 
 @Service
 class LibraryLifecycle(
-    private val libraryRepository: LibraryRepository,
-    private val seriesRepository: SeriesRepository,
-    private val userRepository: KomgaUserRepository,
-    private val asyncOrchestrator: AsyncOrchestrator
+  private val libraryRepository: LibraryRepository,
+  private val seriesRepository: SeriesRepository,
+  private val userRepository: KomgaUserRepository,
+  private val asyncOrchestrator: AsyncOrchestrator
 ) {
 
   @Throws(
-      FileNotFoundException::class,
-      DirectoryNotFoundException::class,
-      DuplicateNameException::class,
-      PathContainedInPath::class
+    FileNotFoundException::class,
+    DirectoryNotFoundException::class,
+    DuplicateNameException::class,
+    PathContainedInPath::class
   )
   fun addLibrary(library: Library): Library {
     logger.info { "Adding new library: ${library.name} with root folder: ${library.root}" }

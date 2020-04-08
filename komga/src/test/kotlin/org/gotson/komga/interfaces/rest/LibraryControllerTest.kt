@@ -23,8 +23,8 @@ import org.springframework.test.web.servlet.post
 @SpringBootTest
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
 class LibraryControllerTest(
-    @Autowired private val mockMvc: MockMvc,
-    @Autowired private val libraryRepository: LibraryRepository
+  @Autowired private val mockMvc: MockMvc,
+  @Autowired private val libraryRepository: LibraryRepository
 ) {
   private val route = "/api/v1/libraries"
 
@@ -46,7 +46,7 @@ class LibraryControllerTest(
     @WithAnonymousUser
     fun `given anonymous user when getAll then return unauthorized`() {
       mockMvc.get(route)
-          .andExpect { status { isUnauthorized } }
+        .andExpect { status { isUnauthorized } }
     }
 
     @Test
@@ -67,7 +67,7 @@ class LibraryControllerTest(
     @WithMockCustomUser
     fun `given user with access to all libraries when getAll then return ok`() {
       mockMvc.get(route)
-          .andExpect { status { isOk } }
+        .andExpect { status { isOk } }
     }
 
     @Test
@@ -88,11 +88,11 @@ class LibraryControllerTest(
     @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [1])
     fun `given user with access to a single library when getAll then only gets this library`() {
       mockMvc.get(route)
-          .andExpect {
-            status { isOk }
-            jsonPath("$.length()") { value(1) }
-            jsonPath("$[0].id") { value(1) }
-          }
+        .andExpect {
+          status { isOk }
+          jsonPath("$.length()") { value(1) }
+          jsonPath("$[0].id") { value(1) }
+        }
     }
   }
 
@@ -102,32 +102,32 @@ class LibraryControllerTest(
     @WithMockCustomUser
     fun `given regular user when getting libraries then root is hidden`() {
       mockMvc.get(route)
-          .andExpect {
-            status { isOk }
-            jsonPath("$[0].root") { value("") }
-          }
+        .andExpect {
+          status { isOk }
+          jsonPath("$[0].root") { value("") }
+        }
 
       mockMvc.get("${route}/${library.id}")
-          .andExpect {
-            status { isOk }
-            jsonPath("$.root") { value("") }
-          }
+        .andExpect {
+          status { isOk }
+          jsonPath("$.root") { value("") }
+        }
     }
 
     @Test
     @WithMockCustomUser(roles = [UserRoles.ADMIN])
     fun `given admin user when getting books then root is available`() {
       mockMvc.get(route)
-          .andExpect {
-            status { isOk }
-            jsonPath("$[0].root") { value("/library1") }
-          }
+        .andExpect {
+          status { isOk }
+          jsonPath("$[0].root") { value("/library1") }
+        }
 
       mockMvc.get("${route}/${library.id}")
-          .andExpect {
-            status { isOk }
-            jsonPath("$.root") { value("/library1") }
-          }
+        .andExpect {
+          status { isOk }
+          jsonPath("$.root") { value("/library1") }
+        }
     }
   }
 }

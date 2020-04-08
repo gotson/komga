@@ -18,4 +18,4 @@ fun makeLibrary(name: String = "default", url: String = "file:/$name"): Library 
 }
 
 fun makeBookPage(name: String) =
-    BookPage(name, "image/png")
+  BookPage(name, "image/png")

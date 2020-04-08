@@ -21,8 +21,8 @@ import java.nio.file.Files
 @SpringBootTest
 @AutoConfigureTestDatabase
 class LibraryLifecycleTest(
-    @Autowired private val libraryRepository: LibraryRepository,
-    @Autowired private val libraryLifecycle: LibraryLifecycle
+  @Autowired private val libraryRepository: LibraryRepository,
+  @Autowired private val libraryLifecycle: LibraryLifecycle
 ) {
 
   @AfterEach
@@ -78,8 +78,8 @@ class LibraryLifecycleTest(
 
     // then
     assertThat(thrown)
-        .isInstanceOf(PathContainedInPath::class.java)
-        .hasMessageContaining("child")
+      .isInstanceOf(PathContainedInPath::class.java)
+      .hasMessageContaining("child")
   }
 
   @Test
@@ -96,8 +96,8 @@ class LibraryLifecycleTest(
 
     // then
     assertThat(thrown)
-        .isInstanceOf(PathContainedInPath::class.java)
-        .hasMessageContaining("parent")
+      .isInstanceOf(PathContainedInPath::class.java)
+      .hasMessageContaining("parent")
   }
 
 }

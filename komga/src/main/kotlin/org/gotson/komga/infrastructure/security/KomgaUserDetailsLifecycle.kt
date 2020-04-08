@@ -17,16 +17,16 @@ private val logger = KotlinLogging.logger {}
 
 @Service
 class KomgaUserDetailsLifecycle(
-    private val userRepository: KomgaUserRepository,
-    private val passwordEncoder: PasswordEncoder,
-    private val sessionRegistry: SessionRegistry
+  private val userRepository: KomgaUserRepository,
+  private val passwordEncoder: PasswordEncoder,
+  private val sessionRegistry: SessionRegistry
 
 ) : UserDetailsService {
 
   override fun loadUserByUsername(username: String): UserDetails =
-      userRepository.findByEmailIgnoreCase(username)?.let {
-        KomgaPrincipal(it)
-      } ?: throw UsernameNotFoundException(username)
+    userRepository.findByEmailIgnoreCase(username)?.let {
+      KomgaPrincipal(it)
+    } ?: throw UsernameNotFoundException(username)
 
   @Transactional
   fun updatePassword(user: UserDetails, newPassword: String, expireSessions: Boolean): UserDetails {
@@ -49,9 +49,9 @@ class KomgaUserDetailsLifecycle(
     if (userRepository.existsByEmailIgnoreCase(user.username)) throw UserEmailAlreadyExistsException("A user with the same email already exists: ${user.username}")
 
     val komgaUser = KomgaUser(
-        email = user.username,
-        password = passwordEncoder.encode(user.password),
-        roles = user.authorities.toUserRoles()
+      email = user.username,
+      password = passwordEncoder.encode(user.password),
+      roles = user.authorities.toUserRoles()
     )
 
     userRepository.save(komgaUser)
@@ -68,27 +68,27 @@ class KomgaUserDetailsLifecycle(
   private fun expireSessions(user: KomgaUser) {
     logger.info { "Expiring all sessions for user: ${user.email}" }
     sessionRegistry.allPrincipals
-        .filterIsInstance<KomgaPrincipal>()
-        .filter { it.user.id == user.id }
-        .flatMap { sessionRegistry.getAllSessions(it, false) }
-        .forEach {
-          logger.info { "Expiring session: ${it.sessionId}" }
-          it.expireNow()
-        }
+      .filterIsInstance<KomgaPrincipal>()
+      .filter { it.user.id == user.id }
+      .flatMap { sessionRegistry.getAllSessions(it, false) }
+      .forEach {
+        logger.info { "Expiring session: ${it.sessionId}" }
+        it.expireNow()
+      }
   }
 
 }
 
 private fun Iterable<GrantedAuthority>.toUserRoles() =
-    this.filter { it.authority.startsWith("ROLE_") }
-        .map { it.authority.removePrefix("ROLE_") }
-        .mapNotNull {
-          try {
-            UserRoles.valueOf(it)
-          } catch (e: Exception) {
-            null
-          }
-        }
-        .toMutableSet()
+  this.filter { it.authority.startsWith("ROLE_") }
+    .map { it.authority.removePrefix("ROLE_") }
+    .mapNotNull {
+      try {
+        UserRoles.valueOf(it)
+      } catch (e: Exception) {
+        null
+      }
+    }
+    .toMutableSet()
 
 class UserEmailAlreadyExistsException(message: String) : Exception(message)

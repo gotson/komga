@@ -19,8 +19,8 @@ import java.time.LocalDateTime
 @DataJpaTest
 @Transactional
 class AuditableEntityTest(
-    @Autowired private val seriesRepository: SeriesRepository,
-    @Autowired private val libraryRepository: LibraryRepository
+  @Autowired private val seriesRepository: SeriesRepository,
+  @Autowired private val libraryRepository: LibraryRepository
 ) {
 
   private val library = makeLibrary()
@@ -74,15 +74,15 @@ class AuditableEntityTest(
 
     // then
     assertThat(series.createdDate)
-        .isBefore(creationTimeApprox)
-        .isNotEqualTo(series.lastModifiedDate)
+      .isBefore(creationTimeApprox)
+      .isNotEqualTo(series.lastModifiedDate)
     assertThat(series.lastModifiedDate)
-        .isAfter(creationTimeApprox)
-        .isBefore(modificationTimeApprox)
+      .isAfter(creationTimeApprox)
+      .isBefore(modificationTimeApprox)
 
     assertThat(series.books.first().createdDate)
-        .isBefore(creationTimeApprox)
-        .isEqualTo(series.books.first().lastModifiedDate)
+      .isBefore(creationTimeApprox)
+      .isEqualTo(series.books.first().lastModifiedDate)
   }
 
   @Test

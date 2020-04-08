@@ -59,8 +59,8 @@ class LibraryScannerTest(
     val seriesWithMoreBooks = makeSeries(name = "series", books = listOf(makeBook("book1"), makeBook("book2")))
 
     every { mockScanner.scanRootFolder(any()) }.returnsMany(
-        listOf(series),
-        listOf(seriesWithMoreBooks)
+      listOf(series),
+      listOf(seriesWithMoreBooks)
     )
     libraryScanner.scanRootFolder(library)
 
@@ -87,10 +87,10 @@ class LibraryScannerTest(
     val seriesWithLessBooks = makeSeries(name = "series", books = listOf(makeBook("book1")))
 
     every { mockScanner.scanRootFolder(any()) }
-        .returnsMany(
-            listOf(series),
-            listOf(seriesWithLessBooks)
-        )
+      .returnsMany(
+        listOf(series),
+        listOf(seriesWithLessBooks)
+      )
     libraryScanner.scanRootFolder(library)
 
     // when
@@ -117,10 +117,10 @@ class LibraryScannerTest(
     val seriesWithUpdatedBooks = makeSeries(name = "series", books = listOf(makeBook("book1")))
 
     every { mockScanner.scanRootFolder(any()) }
-        .returnsMany(
-            listOf(series),
-            listOf(seriesWithUpdatedBooks)
-        )
+      .returnsMany(
+        listOf(series),
+        listOf(seriesWithUpdatedBooks)
+      )
     libraryScanner.scanRootFolder(library)
 
     // when
@@ -144,10 +144,10 @@ class LibraryScannerTest(
     val library = libraryRepository.save(makeLibrary())
 
     every { mockScanner.scanRootFolder(any()) }
-        .returnsMany(
-            listOf(makeSeries(name = "series", books = listOf(makeBook("book1")))),
-            emptyList()
-        )
+      .returnsMany(
+        listOf(makeSeries(name = "series", books = listOf(makeBook("book1")))),
+        emptyList()
+      )
     libraryScanner.scanRootFolder(library)
 
     // when
@@ -166,10 +166,10 @@ class LibraryScannerTest(
     val library = libraryRepository.save(makeLibrary())
 
     every { mockScanner.scanRootFolder(any()) }
-        .returnsMany(
-            listOf(makeSeries(name = "series", books = listOf(makeBook("book1"))), makeSeries(name = "series2", books = listOf(makeBook("book2")))),
-            listOf(makeSeries(name = "series", books = listOf(makeBook("book1"))))
-        )
+      .returnsMany(
+        listOf(makeSeries(name = "series", books = listOf(makeBook("book1"))), makeSeries(name = "series2", books = listOf(makeBook("book2")))),
+        listOf(makeSeries(name = "series", books = listOf(makeBook("book1"))))
+      )
     libraryScanner.scanRootFolder(library)
 
     // when
@@ -189,10 +189,10 @@ class LibraryScannerTest(
 
     val book1 = makeBook("book1")
     every { mockScanner.scanRootFolder(any()) }
-        .returnsMany(
-            listOf(makeSeries(name = "series", books = listOf(book1))),
-            listOf(makeSeries(name = "series", books = listOf(makeBook(name = "book1", fileLastModified = book1.fileLastModified))))
-        )
+      .returnsMany(
+        listOf(makeSeries(name = "series", books = listOf(book1))),
+        listOf(makeSeries(name = "series", books = listOf(makeBook(name = "book1", fileLastModified = book1.fileLastModified))))
+      )
     libraryScanner.scanRootFolder(library)
 
     every { mockAnalyzer.analyze(any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")))
@@ -222,11 +222,11 @@ class LibraryScannerTest(
     val library2 = libraryRepository.save(makeLibrary(name = "library2"))
 
     every { mockScanner.scanRootFolder(Paths.get(library1.root.toURI())) } returns
-        listOf(makeSeries(name = "series1", books = listOf(makeBook("book1"))))
+      listOf(makeSeries(name = "series1", books = listOf(makeBook("book1"))))
 
     every { mockScanner.scanRootFolder(Paths.get(library2.root.toURI())) }.returnsMany(
-        listOf(makeSeries(name = "series2", books = listOf(makeBook("book2")))),
-        emptyList()
+      listOf(makeSeries(name = "series2", books = listOf(makeBook("book2")))),
+      emptyList()
     )
 
     libraryScanner.scanRootFolder(library1)

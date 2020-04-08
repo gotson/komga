@@ -33,39 +33,39 @@ class SecurityConfiguration(
     http
       .cors()
       .and()
-        .csrf().disable()
+      .csrf().disable()
 
       .authorizeRequests()
-        // restrict all actuator endpoints to ADMIN only
-        .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ADMIN")
+      // restrict all actuator endpoints to ADMIN only
+      .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ADMIN")
 
-        // restrict H2 console to ADMIN only
-        .requestMatchers(PathRequest.toH2Console()).hasRole("ADMIN")
+      // restrict H2 console to ADMIN only
+      .requestMatchers(PathRequest.toH2Console()).hasRole("ADMIN")
 
-        // all other endpoints are restricted to authenticated users
-        .antMatchers(
-            "/api/**",
-            "/opds/**"
-        ).hasRole("USER")
+      // all other endpoints are restricted to authenticated users
+      .antMatchers(
+        "/api/**",
+        "/opds/**"
+      ).hasRole("USER")
 
       // authorize frames for H2 console
       .and()
-        .headers().frameOptions().sameOrigin()
+      .headers().frameOptions().sameOrigin()
 
       .and()
-        .httpBasic()
+      .httpBasic()
 
       .and()
-        .logout()
-          .logoutUrl("/api/v1/users/logout")
-          .deleteCookies("JSESSIONID")
+      .logout()
+      .logoutUrl("/api/v1/users/logout")
+      .deleteCookies("JSESSIONID")
 
       .and()
-        .sessionManagement()
-        .maximumSessions(10)
-        .sessionRegistry(sessionRegistry)
+      .sessionManagement()
+      .maximumSessions(10)
+      .sessionRegistry(sessionRegistry)
 
-    if(!komgaProperties.rememberMe.key.isNullOrBlank()) {
+    if (!komgaProperties.rememberMe.key.isNullOrBlank()) {
       logger.info { "RememberMe is active, validity: ${komgaProperties.rememberMe.validity}s" }
 
       http

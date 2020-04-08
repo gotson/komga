@@ -101,8 +101,8 @@ class SeriesControllerTest(
       seriesRepository.saveAll(series)
 
       mockMvc.get("/api/v1/series") {
-          param("sort", "metadata.titleSort,asc")
-        }
+        param("sort", "metadata.titleSort,asc")
+      }
         .andExpect {
           status { isOk }
           jsonPath("$.content[0].metadata.title") { value("a") }

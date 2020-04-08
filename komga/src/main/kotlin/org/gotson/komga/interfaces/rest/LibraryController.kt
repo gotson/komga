@@ -43,42 +43,42 @@ class LibraryController(
 
   @GetMapping
   fun getAll(
-      @AuthenticationPrincipal principal: KomgaPrincipal
+    @AuthenticationPrincipal principal: KomgaPrincipal
   ): List<LibraryDto> =
-      if (principal.user.sharedAllLibraries) {
-        libraryRepository.findAll(Sort.by("name"))
-      } else {
-        principal.user.sharedLibraries
-      }.map { it.toDto(includeRoot = principal.user.isAdmin()) }
+    if (principal.user.sharedAllLibraries) {
+      libraryRepository.findAll(Sort.by("name"))
+    } else {
+      principal.user.sharedLibraries
+    }.map { it.toDto(includeRoot = principal.user.isAdmin()) }
 
   @GetMapping("{id}")
   fun getOne(
-      @AuthenticationPrincipal principal: KomgaPrincipal,
-      @PathVariable id: Long
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable id: Long
   ): LibraryDto =
-      libraryRepository.findByIdOrNull(id)?.let {
-        if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
-        it.toDto(includeRoot = principal.user.isAdmin())
-      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    libraryRepository.findByIdOrNull(id)?.let {
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+      it.toDto(includeRoot = principal.user.isAdmin())
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @PostMapping
   @PreAuthorize("hasRole('ADMIN')")
   fun addOne(
-      @AuthenticationPrincipal principal: KomgaPrincipal,
-      @Valid @RequestBody library: LibraryCreationDto
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @Valid @RequestBody library: LibraryCreationDto
   ): LibraryDto =
-      try {
-        libraryLifecycle.addLibrary(Library(library.name, library.root)).toDto(includeRoot = principal.user.isAdmin())
-      } catch (e: Exception) {
-        when (e) {
-          is FileNotFoundException,
-          is DirectoryNotFoundException,
-          is DuplicateNameException,
-          is PathContainedInPath ->
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
-          else -> throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
-        }
+    try {
+      libraryLifecycle.addLibrary(Library(library.name, library.root)).toDto(includeRoot = principal.user.isAdmin())
+    } catch (e: Exception) {
+      when (e) {
+        is FileNotFoundException,
+        is DirectoryNotFoundException,
+        is DuplicateNameException,
+        is PathContainedInPath ->
+          throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
+        else -> throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
       }
+    }
 
   @DeleteMapping("/{id}")
   @PreAuthorize("hasRole('ADMIN')")
@@ -130,18 +130,18 @@ class LibraryController(
 }
 
 data class LibraryCreationDto(
-    @get:NotBlank val name: String,
-    @get:NotBlank val root: String
+  @get:NotBlank val name: String,
+  @get:NotBlank val root: String
 )
 
 data class LibraryDto(
-    val id: Long,
-    val name: String,
-    val root: String
+  val id: Long,
+  val name: String,
+  val root: String
 )
 
 fun Library.toDto(includeRoot: Boolean) = LibraryDto(
-    id = id,
-    name = name,
-    root = if (includeRoot) root.toURI().path else ""
+  id = id,
+  name = name,
+  root = if (includeRoot) root.toURI().path else ""
 )
