@@ -36,7 +36,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.context.request.WebRequest
 import org.springframework.web.server.ResponseStatusException
 import java.util.concurrent.RejectedExecutionException
 import javax.validation.Valid
@@ -171,14 +170,13 @@ class SeriesController(
   @GetMapping(value = ["{seriesId}/thumbnail"], produces = [MediaType.IMAGE_JPEG_VALUE])
   fun getSeriesThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    request: WebRequest,
     @PathVariable(name = "seriesId") id: Long
   ): ResponseEntity<ByteArray> =
     seriesRepository.findByIdOrNull(id)?.let { series ->
       if (!principal.user.canAccessSeries(series)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
 
       series.books.minBy { it.metadata.numberSort }?.let { firstBook ->
-        bookController.getBookThumbnail(principal, request, firstBook.id)
+        bookController.getBookThumbnail(principal, firstBook.id)
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 

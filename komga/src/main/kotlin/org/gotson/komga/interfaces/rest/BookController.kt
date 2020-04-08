@@ -182,7 +182,6 @@ class BookController(
   ], produces = [MediaType.IMAGE_JPEG_VALUE])
   fun getBookThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    request: WebRequest,
     @PathVariable bookId: Long
   ): ResponseEntity<ByteArray> =
     bookRepository.findByIdOrNull(bookId)?.let { book ->
