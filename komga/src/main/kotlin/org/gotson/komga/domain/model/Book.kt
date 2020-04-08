@@ -79,5 +79,5 @@ class Book(
 
   fun fileSizeHumanReadable(): String = BinaryByteUnit.format(fileSize)
 
-  override fun toString(): String = url.toURI().path
+  override fun toString(): String = "Book($id, ${url.toURI().path})"
 }

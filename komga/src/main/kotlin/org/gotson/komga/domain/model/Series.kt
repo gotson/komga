@@ -72,5 +72,5 @@ class Series(
     this.books = books.toList()
   }
 
-  override fun toString(): String = url.toURI().path
+  override fun toString(): String = "Series($id, ${url.toURI().path})"
 }
