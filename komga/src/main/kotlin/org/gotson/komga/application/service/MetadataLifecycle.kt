@@ -27,19 +27,17 @@ class MetadataLifecycle(
     logger.info { "Refresh metadata for book: $book" }
     val loadedBook = bookRepository.findByIdOrNull(book.id)
 
-    loadedBook?.let { b ->
-      val patch = comicInfoProvider.getBookMetadataFromBook(b)
+    loadedBook?.let { bookToPatch ->
+      val patch = comicInfoProvider.getBookMetadataFromBook(bookToPatch)
 
-      patch?.let {
-        metadataApplier.apply(it, b)
-        bookRepository.save(b)
-      }
+      patch?.let { bPatch ->
+        metadataApplier.apply(bPatch, bookToPatch)
+        bookRepository.save(bookToPatch)
 
-      val seriesPatch = comicInfoProvider.getSeriesMetadataFromBook(b)
-
-      seriesPatch?.let {
-        metadataApplier.apply(it, b.series)
-        seriesRepository.save(b.series)
+        bPatch.series?.let { sPatch ->
+          metadataApplier.apply(sPatch, bookToPatch.series)
+          seriesRepository.save(bookToPatch.series)
+        }
       }
     }
   }

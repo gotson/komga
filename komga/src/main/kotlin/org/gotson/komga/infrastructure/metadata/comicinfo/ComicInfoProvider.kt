@@ -9,7 +9,6 @@ import org.gotson.komga.domain.model.BookMetadataPatch
 import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
-import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
 import org.gotson.komga.infrastructure.metadata.comicinfo.dto.ComicInfo
 import org.gotson.komga.infrastructure.metadata.comicinfo.dto.Manga
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,7 +23,7 @@ private const val COMIC_INFO = "ComicInfo.xml"
 class ComicInfoProvider(
   @Autowired(required = false) private val mapper: XmlMapper = XmlMapper(),
   private val bookAnalyzer: BookAnalyzer
-) : BookMetadataProvider, SeriesMetadataProvider {
+) : BookMetadataProvider {
 
   override fun getBookMetadataFromBook(book: Book): BookMetadataPatch? {
     getComicInfo(book)?.let { comicInfo ->
@@ -56,18 +55,12 @@ class ComicInfoProvider(
         comicInfo.publisher,
         comicInfo.ageRating?.ageRating,
         releaseDate,
-        if (authors.isEmpty()) null else authors
-      )
-    }
-    return null
-  }
-
-  override fun getSeriesMetadataFromBook(book: Book): SeriesMetadataPatch? {
-    getComicInfo(book)?.let { comicInfo ->
-      return SeriesMetadataPatch(
-        comicInfo.series,
-        comicInfo.series,
-        null
+        if (authors.isEmpty()) null else authors,
+        SeriesMetadataPatch(
+          comicInfo.series,
+          comicInfo.series,
+          null
+        )
       )
     }
     return null
@@ -76,7 +69,7 @@ class ComicInfoProvider(
   private fun getComicInfo(book: Book): ComicInfo? {
     try {
       if (book.media.files.none { it == COMIC_INFO }) {
-        logger.debug { "Book does not contain any $COMIC_INFO file: ${book.url}" }
+        logger.debug { "Book does not contain any $COMIC_INFO file: $book" }
         return null
       }
 
