@@ -1,10 +1,12 @@
 package org.gotson.komga.infrastructure.mediacontainer
 
 import mu.KotlinLogging
+import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.apache.commons.compress.archivers.zip.ZipFile
 import org.gotson.komga.domain.model.MediaContainerEntry
 import org.springframework.stereotype.Service
 import java.nio.file.Path
+import java.util.*
 
 private val logger = KotlinLogging.logger {}
 
@@ -12,6 +14,8 @@ private val logger = KotlinLogging.logger {}
 class ZipExtractor(
   private val contentDetector: ContentDetector
 ) : MediaContainerExtractor {
+
+  private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
 
   override fun mediaTypes(): List<String> = listOf("application/zip")
 
@@ -27,6 +31,7 @@ class ZipExtractor(
             MediaContainerEntry(name = it.name, comment = e.message)
           }
         }
+        .sortedWith(compareBy(natSortComparator) { it.name })
     }
 
   override fun getEntryStream(path: Path, entryName: String): ByteArray =

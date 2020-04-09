@@ -1,7 +1,6 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
-import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.Media
@@ -10,7 +9,6 @@ import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.mediacontainer.MediaContainerExtractor
 import org.springframework.stereotype.Service
-import java.util.*
 
 private val logger = KotlinLogging.logger {}
 
@@ -24,8 +22,6 @@ class BookAnalyzer(
   val supportedMediaTypes = extractors
     .flatMap { e -> e.mediaTypes().map { it to e } }
     .toMap()
-
-  private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
 
   private val thumbnailSize = 300
   private val thumbnailFormat = "jpeg"
@@ -50,9 +46,7 @@ class BookAnalyzer(
         entry.mediaType?.let { contentDetector.isImage(it) } ?: false
       }.let { (images, others) ->
         Pair(
-          images
-            .map { BookPage(it.name, it.mediaType!!) }
-            .sortedWith(compareBy(natSortComparator) { it.fileName }),
+          images.map { BookPage(it.name, it.mediaType!!) },
           others
         )
       }

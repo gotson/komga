@@ -2,10 +2,12 @@ package org.gotson.komga.infrastructure.mediacontainer
 
 import com.github.junrar.Archive
 import mu.KotlinLogging
+import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.gotson.komga.domain.model.MediaContainerEntry
 import org.springframework.stereotype.Service
 import java.nio.file.Files
 import java.nio.file.Path
+import java.util.*
 
 private val logger = KotlinLogging.logger {}
 
@@ -13,6 +15,8 @@ private val logger = KotlinLogging.logger {}
 class RarExtractor(
   private val contentDetector: ContentDetector
 ) : MediaContainerExtractor {
+
+  private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
 
   override fun mediaTypes(): List<String> = listOf("application/x-rar-compressed")
 
@@ -28,6 +32,7 @@ class RarExtractor(
             MediaContainerEntry(name = it.fileNameString, comment = e.message)
           }
         }
+        .sortedWith(compareBy(natSortComparator) { it.name })
     }
 
   override fun getEntryStream(path: Path, entryName: String): ByteArray =
