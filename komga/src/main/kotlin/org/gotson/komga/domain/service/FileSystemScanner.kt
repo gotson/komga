@@ -24,7 +24,7 @@ class FileSystemScanner(
   private val komgaProperties: KomgaProperties
 ) {
 
-  val supportedExtensions = listOf("cbz", "zip", "cbr", "rar", "pdf")
+  val supportedExtensions = listOf("cbz", "zip", "cbr", "rar", "pdf", "epub")
 
   fun scanRootFolder(root: Path): List<Series> {
     logger.info { "Scanning folder: $root" }
