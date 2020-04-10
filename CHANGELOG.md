@@ -1,3 +1,10 @@
+## [0.26.1](https://github.com/gotson/komga/compare/v0.26.0...v0.26.1) (2020-04-10)
+
+
+### Bug Fixes
+
+* **swagger:** parameters were not showing for claim method ([e5a0841](https://github.com/gotson/komga/commit/e5a084144dab96209ad55172cd4fe59fea08efe5))
+
 # [0.26.0](https://github.com/gotson/komga/compare/v0.25.1...v0.26.0) (2020-04-10)
 
 
