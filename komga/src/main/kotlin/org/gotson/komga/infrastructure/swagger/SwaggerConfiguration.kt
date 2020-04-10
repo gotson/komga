@@ -3,7 +3,6 @@ package org.gotson.komga.infrastructure.swagger
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.context.request.WebRequest
 import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spring.web.plugins.Docket
@@ -18,7 +17,6 @@ class SwaggerConfiguration {
     Docket(DocumentationType.SWAGGER_2)
       .ignoredParameterTypes(
         AuthenticationPrincipal::class.java,
-        WebRequest::class.java,
-        RequestHeader::class.java
+        WebRequest::class.java
       )
 }
