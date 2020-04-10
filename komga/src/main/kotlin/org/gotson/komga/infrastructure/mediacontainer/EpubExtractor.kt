@@ -49,6 +49,23 @@ class EpubExtractor(contentDetector: ContentDetector) : ZipExtractor(contentDete
     }
   }
 
+  private fun getPackagePath(zip: ZipFile): String =
+    zip.getEntry("META-INF/container.xml").let { entry ->
+      val container = zip.getInputStream(entry).use { Jsoup.parse(it, null, "") }
+      container.getElementsByTag("rootfile").first().attr("full-path")
+    }
+
+  fun getPackageFile(path: Path): String? =
+    ZipFile(path.toFile()).use {
+      try {
+        it.getInputStream(it.getEntry(getPackagePath(it))).reader().use { it.readText() }
+      } catch (e: Exception) {
+        null
+      }
+    }
+
+  fun Path.parentOrEmpty() = parent ?: Paths.get("")
+
   private data class ManifestItem(
     val id: String,
     val href: String,

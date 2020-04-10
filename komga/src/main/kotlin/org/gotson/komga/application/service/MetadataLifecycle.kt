@@ -5,6 +5,7 @@ import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.MetadataApplier
+import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
 import org.gotson.komga.infrastructure.metadata.comicinfo.ComicInfoProvider
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.scheduling.annotation.Async
@@ -16,6 +17,7 @@ private val logger = KotlinLogging.logger {}
 @Service
 class MetadataLifecycle(
   private val comicInfoProvider: ComicInfoProvider,
+  private val bookMetadataProviders: List<BookMetadataProvider>,
   private val metadataApplier: MetadataApplier,
   private val bookRepository: BookRepository,
   private val seriesRepository: SeriesRepository
@@ -28,15 +30,17 @@ class MetadataLifecycle(
     val loadedBook = bookRepository.findByIdOrNull(book.id)
 
     loadedBook?.let { bookToPatch ->
-      val patch = comicInfoProvider.getBookMetadataFromBook(bookToPatch)
+      bookMetadataProviders.forEach {
+        val patch = it.getBookMetadataFromBook(bookToPatch)
 
-      patch?.let { bPatch ->
-        metadataApplier.apply(bPatch, bookToPatch)
-        bookRepository.save(bookToPatch)
+        patch?.let { bPatch ->
+          metadataApplier.apply(bPatch, bookToPatch)
+          bookRepository.save(bookToPatch)
 
-        bPatch.series?.let { sPatch ->
-          metadataApplier.apply(sPatch, bookToPatch.series)
-          seriesRepository.save(bookToPatch.series)
+          bPatch.series?.let { sPatch ->
+            metadataApplier.apply(sPatch, bookToPatch.series)
+            seriesRepository.save(bookToPatch.series)
+          }
         }
       }
     }
