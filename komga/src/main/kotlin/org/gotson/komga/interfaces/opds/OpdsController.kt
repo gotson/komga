@@ -205,7 +205,7 @@ class OpdsController(
   @GetMapping("series/{id}")
   fun getOneSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestHeader(HttpHeaders.USER_AGENT) userAgent: String,
+    @RequestHeader(name = HttpHeaders.USER_AGENT, required = false, defaultValue = "") userAgent: String,
     @PathVariable id: Long
   ): OpdsFeed =
     seriesRepository.findByIdOrNull(id)?.let { series ->
