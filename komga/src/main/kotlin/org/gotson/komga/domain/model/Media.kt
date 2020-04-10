@@ -1,9 +1,7 @@
 package org.gotson.komga.domain.model
 
-import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.hibernate.annotations.Cache
 import org.hibernate.annotations.CacheConcurrencyStrategy
-import java.util.*
 import javax.persistence.Cacheable
 import javax.persistence.CollectionTable
 import javax.persistence.Column
@@ -18,8 +16,6 @@ import javax.persistence.JoinColumn
 import javax.persistence.Lob
 import javax.persistence.OrderColumn
 import javax.persistence.Table
-
-private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
 
 @Entity
 @Table(name = "media")
@@ -59,7 +55,7 @@ class Media(
     get() = _pages.toList()
     set(value) {
       _pages.clear()
-      _pages.addAll(value.sortedWith(compareBy(natSortComparator) { it.fileName }))
+      _pages.addAll(value)
     }
 
   @ElementCollection(fetch = FetchType.LAZY)
