@@ -18,12 +18,10 @@ class EpubExtractor(contentDetector: ContentDetector) : ZipExtractor(contentDete
   override fun getEntries(path: Path): List<MediaContainerEntry> {
     ZipFile(path.toFile()).use { zip ->
       try {
-        val packagePath = zip.getEntry("META-INF/container.xml").let { entry ->
-          val container = zip.getInputStream(entry).use { Jsoup.parse(it, null, "") }
-          container.getElementsByTag("rootfile").first().attr("full-path")
-        }
+        val packagePath = getPackagePath(zip)
 
         val opf = zip.getInputStream(zip.getEntry(packagePath)).use { Jsoup.parse(it, null, "") }
+        val opfPath = Paths.get(packagePath).parentOrEmpty()
 
         val manifest = opf.select("manifest > item")
           .associate { it.attr("id") to ManifestItem(it.attr("id"), it.attr("href"), it.attr("media-type")) }
@@ -32,15 +30,17 @@ class EpubExtractor(contentDetector: ContentDetector) : ZipExtractor(contentDete
           .mapNotNull { manifest[it] }
           .map { it.href }
 
-        val images = pages.flatMap { pagePath ->
-          val doc = zip.getInputStream(zip.getEntry(pagePath)).use { Jsoup.parse(it, null, "") }
-          doc.getElementsByTag("img")
-            .map { it.attr("src") }
-            .map { Paths.get(pagePath).parent?.resolve(it).toString() }
-        }
+        val images = pages
+          .map { opfPath.resolve(it).normalize() }
+          .flatMap { pagePath ->
+            val doc = zip.getInputStream(zip.getEntry(pagePath.toString())).use { Jsoup.parse(it, null, "") }
+            doc.getElementsByTag("img")
+              .map { it.attr("src") }
+              .map { pagePath.parentOrEmpty().resolve(it).normalize() }
+          }
 
         return images.map { image ->
-          MediaContainerEntry(image, manifest.values.first { it.href == image }.mediaType)
+          MediaContainerEntry(image.toString(), manifest.values.first { it.href == opfPath.relativize(image).toString() }.mediaType)
         }
       } catch (e: Exception) {
         logger.error(e) { "File is not a proper Epub, treating it as a zip file" }
