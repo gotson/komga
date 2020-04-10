@@ -1,3 +1,19 @@
+# [0.26.0](https://github.com/gotson/komga/compare/v0.25.1...v0.26.0) (2020-04-10)
+
+
+### Bug Fixes
+
+* **comicinfo:** avoid reading the file twice ([1dab826](https://github.com/gotson/komga/commit/1dab826622d6d4bc1121862bbc0acbdff7ff743b))
+* **epub:** some EPUB files would not be parsed correctly ([f0ff785](https://github.com/gotson/komga/commit/f0ff785d66f15bc93d27bb1ee6314e7940bbaa1c))
+* **swagger:** ignore non-functional parameters ([d1c8b23](https://github.com/gotson/komga/commit/d1c8b23f447e5b3bd196159692d43794d28cc44b))
+
+
+### Features
+
+* **metadata:** retrieve EPUB metadata ([a4f5015](https://github.com/gotson/komga/commit/a4f50154351818e42506cc31f414b51e06c14e23))
+* **scan:** force rescan of existing series to pickup EPUB files ([854f090](https://github.com/gotson/komga/commit/854f090415f47ff10704c714e69026a70b3d7bce))
+* support for EPUB format (comics only) ([0a06a6f](https://github.com/gotson/komga/commit/0a06a6f7995cf540d6cdabc8f8c058eef82e81e1)), closes [#119](https://github.com/gotson/komga/issues/119)
+
 ## [0.25.1](https://github.com/gotson/komga/compare/v0.25.0...v0.25.1) (2020-04-06)
 
 
