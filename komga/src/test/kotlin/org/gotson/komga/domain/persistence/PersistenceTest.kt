@@ -100,32 +100,4 @@ class PersistenceTest(
       assertThat(it.pages.first().fileName).isEqualTo("page1")
     }
   }
-
-  @Test
-  fun `given book pages unordered when saving then pages are ordered with natural sort`() {
-    // given
-    val series = makeSeries(name = "series", books = listOf(makeBook("book1"))).also { it.library = library }
-    seriesRepository.save(series)
-
-    // when
-    val book = bookRepository.findAll().first()
-    book.media = Media(status = Media.Status.READY, mediaType = "test", pages = listOf(
-      makeBookPage("2"),
-      makeBookPage("003"),
-      makeBookPage("001")
-    ))
-
-    bookRepository.save(book)
-
-    // then
-    assertThat(seriesRepository.count()).isEqualTo(1)
-    assertThat(bookRepository.count()).isEqualTo(1)
-    assertThat(mediaRepository.count()).isEqualTo(1)
-    mediaRepository.findAll().first().let { media ->
-      assertThat(media.status == Media.Status.READY)
-      assertThat(media.mediaType == "test")
-      assertThat(media.pages).hasSize(3)
-      assertThat(media.pages.map { it.fileName }).containsExactly("001", "2", "003")
-    }
-  }
 }
