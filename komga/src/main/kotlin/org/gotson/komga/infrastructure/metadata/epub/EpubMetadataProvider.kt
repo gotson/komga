@@ -21,7 +21,9 @@ class EpubMetadataProvider(
     "aut" to "writer",
     "clr" to "colorist",
     "cov" to "cover",
-    "edt" to "editor"
+    "edt" to "editor",
+    "art" to "penciller",
+    "ill" to "penciller"
   )
 
   override fun getBookMetadataFromBook(book: Book): BookMetadataPatch? {
