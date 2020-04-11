@@ -1,3 +1,10 @@
+## [0.26.2](https://github.com/gotson/komga/compare/v0.26.1...v0.26.2) (2020-04-11)
+
+
+### Bug Fixes
+
+* **swagger:** paging and sorting parameters showing incorrectly ([1e9407c](https://github.com/gotson/komga/commit/1e9407cfe25a6104150efe2b7892a9973878ef0a))
+
 ## [0.26.1](https://github.com/gotson/komga/compare/v0.26.0...v0.26.1) (2020-04-10)
 
 
