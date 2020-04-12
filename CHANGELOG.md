@@ -1,3 +1,11 @@
+## [0.26.3](https://github.com/gotson/komga/compare/v0.26.2...v0.26.3) (2020-04-12)
+
+
+### Bug Fixes
+
+* **epub:** add support for opf:role for authors ([30bf7f4](https://github.com/gotson/komga/commit/30bf7f469f0d9895646ade1b9b050975fc7228c5)), closes [#139](https://github.com/gotson/komga/issues/139)
+* **epub:** match artist and illustrator roles to penciller ([b7fe4bd](https://github.com/gotson/komga/commit/b7fe4bde749bb6fff2c8e81d9881cf70acb04d76))
+
 ## [0.26.2](https://github.com/gotson/komga/compare/v0.26.1...v0.26.2) (2020-04-11)
 
 
