@@ -36,7 +36,6 @@ class EpubMetadataProvider(
       val description = opf.selectFirst("metadata > dc|description")?.text()
       val date = opf.selectFirst("metadata > dc|date")?.text()?.let { parseDate(it) }
 
-
       val direction = opf.getElementsByTag("spine").first().attr("page-progression-direction")?.let {
         when (it) {
           "rtl" -> BookMetadata.ReadingDirection.RIGHT_TO_LEFT
@@ -45,14 +44,17 @@ class EpubMetadataProvider(
         }
       }
 
-      val creators = opf.select("metadata > dc|creator")
-        .associate { it.attr("id") to it.text() }
       val creatorRefines = opf.select("metadata > meta[property=role][scheme=marc:relators]")
         .associate { it.attr("refines").removePrefix("#") to it.text() }
-      val authors = creators.map { (id, name) ->
-        val role = relators[creatorRefines[id]] ?: "writer"
-        Author(name, role)
-      }
+      val authors = opf.select("metadata > dc|creator")
+        .map {
+          val name = it.text()
+          val opfRole = it.attr("opf|role").orNull()
+          val id = it.attr("id").orNull()
+          val refineRole = creatorRefines[id]
+          val role = opfRole ?: refineRole
+          Author(name, relators[role] ?: "writer")
+        }
 
       val series = opf.selectFirst("metadata > meta[property=belongs-to-collection]")?.text()
 
@@ -71,6 +73,8 @@ class EpubMetadataProvider(
     }
     return null
   }
+
+  private fun String.orNull() = if (isBlank()) null else this
 
   private fun parseDate(date: String): LocalDate? =
     try {
