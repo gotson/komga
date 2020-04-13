@@ -51,9 +51,11 @@ dependencies {
   implementation("io.micrometer:micrometer-registry-influx")
 
   run {
-    val springfoxVersion = "2.9.2"
-    implementation("io.springfox:springfox-swagger2:$springfoxVersion")
-    implementation("io.springfox:springfox-swagger-ui:$springfoxVersion")
+    val springdocVersion = "1.3.1"
+    implementation("org.springdoc:springdoc-openapi-ui:$springdocVersion")
+    implementation("org.springdoc:springdoc-openapi-data-rest:$springdocVersion")
+    implementation("org.springdoc:springdoc-openapi-security:$springdocVersion")
+    implementation("org.springdoc:springdoc-openapi-kotlin:$springdocVersion")
   }
 
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")

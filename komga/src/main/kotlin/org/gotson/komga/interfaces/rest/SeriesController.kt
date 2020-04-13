@@ -3,6 +3,8 @@ package org.gotson.komga.interfaces.rest
 import com.github.klinq.jpaspec.`in`
 import com.github.klinq.jpaspec.likeLower
 import com.github.klinq.jpaspec.toJoin
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import mu.KotlinLogging
 import org.gotson.komga.application.service.AsyncOrchestrator
 import org.gotson.komga.domain.model.Library
@@ -16,6 +18,7 @@ import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.SeriesDto
 import org.gotson.komga.interfaces.rest.dto.SeriesMetadataUpdateDto
 import org.gotson.komga.interfaces.rest.dto.toDto
+import org.springdoc.api.annotations.ParameterObject
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -57,7 +60,7 @@ class SeriesController(
     @RequestParam(name = "search", required = false) searchTerm: String?,
     @RequestParam(name = "library_id", required = false) libraryIds: List<Long>?,
     @RequestParam(name = "status", required = false) metadataStatus: List<SeriesMetadata.Status>?,
-    page: Pageable
+    @ParameterObject page: Pageable
   ): Page<SeriesDto> {
     val pageRequest = PageRequest.of(
       page.pageNumber,
@@ -100,11 +103,12 @@ class SeriesController(
     }.map { it.toDto(includeUrl = principal.user.isAdmin()) }
   }
 
-  // all updated series, whether newly added or updated
+  @Operation(description = "Return recently added or updated series.")
   @GetMapping("/latest")
+  @Parameter(name = "sort", hidden = true)
   fun getLatestSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    page: Pageable
+    @ParameterObject page: Pageable
   ): Page<SeriesDto> {
     val pageRequest = PageRequest.of(
       page.pageNumber,
@@ -119,11 +123,12 @@ class SeriesController(
     }.map { it.toDto(includeUrl = principal.user.isAdmin()) }
   }
 
-  // new series only, doesn't contain existing updated series
+  @Operation(description = "Return newly added series.")
   @GetMapping("/new")
+  @Parameter(name = "sort", hidden = true)
   fun getNewSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    page: Pageable
+    @ParameterObject page: Pageable
   ): Page<SeriesDto> {
     val pageRequest = PageRequest.of(
       page.pageNumber,
@@ -138,11 +143,12 @@ class SeriesController(
     }.map { it.toDto(includeUrl = principal.user.isAdmin()) }
   }
 
-  // updated series only, doesn't contain new series
+  @Operation(description = "Return recently updated series, but not newly added ones.")
   @GetMapping("/updated")
+  @Parameter(name = "sort", hidden = true)
   fun getUpdatedSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    page: Pageable
+    @ParameterObject page: Pageable
   ): Page<SeriesDto> {
     val pageRequest = PageRequest.of(
       page.pageNumber,
@@ -185,7 +191,7 @@ class SeriesController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") id: Long,
     @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
-    page: Pageable
+    @ParameterObject page: Pageable
   ): Page<BookDto> {
     seriesRepository.findByIdOrNull(id)?.let {
       if (!principal.user.canAccessSeries(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
@@ -234,6 +240,7 @@ class SeriesController(
   @PreAuthorize("hasRole('ADMIN')")
   fun updateMetadata(
     @PathVariable seriesId: Long,
+    @Parameter(description = "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don't want to update.")
     @Valid @RequestBody newMetadata: SeriesMetadataUpdateDto
   ): SeriesDto =
     seriesRepository.findByIdOrNull(seriesId)?.let { series ->

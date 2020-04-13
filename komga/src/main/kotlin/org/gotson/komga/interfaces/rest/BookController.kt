@@ -3,6 +3,8 @@ package org.gotson.komga.interfaces.rest
 import com.github.klinq.jpaspec.`in`
 import com.github.klinq.jpaspec.likeLower
 import com.github.klinq.jpaspec.toJoin
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import mu.KotlinLogging
 import org.gotson.komga.application.service.AsyncOrchestrator
 import org.gotson.komga.application.service.BookLifecycle
@@ -21,6 +23,7 @@ import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.BookMetadataUpdateDto
 import org.gotson.komga.interfaces.rest.dto.PageDto
 import org.gotson.komga.interfaces.rest.dto.toDto
+import org.springdoc.api.annotations.ParameterObject
 import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -71,7 +74,7 @@ class BookController(
     @RequestParam(name = "search", required = false) searchTerm: String?,
     @RequestParam(name = "library_id", required = false) libraryIds: List<Long>?,
     @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
-    page: Pageable
+    @ParameterObject page: Pageable
   ): Page<BookDto> {
     val pageRequest = PageRequest.of(
       page.pageNumber,
@@ -115,10 +118,12 @@ class BookController(
   }
 
 
+  @Operation(description = "Return newly added or updated books.")
   @GetMapping("api/v1/books/latest")
+  @Parameter(name = "sort", hidden = true)
   fun getLatestSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    page: Pageable
+    @ParameterObject page: Pageable
   ): Page<BookDto> {
     val pageRequest = PageRequest.of(
       page.pageNumber,
@@ -193,6 +198,7 @@ class BookController(
       } else throw ResponseStatusException(HttpStatus.NOT_FOUND)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @Operation(description = "Download the book file.")
   @GetMapping(value = [
     "api/v1/books/{bookId}/file",
     "api/v1/books/{bookId}/file/*",
@@ -348,6 +354,7 @@ class BookController(
   @PreAuthorize("hasRole('ADMIN')")
   fun updateMetadata(
     @PathVariable bookId: Long,
+    @Parameter(description = "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don't want to update.")
     @Valid @RequestBody newMetadata: BookMetadataUpdateDto
   ): BookDto =
     bookRepository.findByIdOrNull(bookId)?.let { book ->

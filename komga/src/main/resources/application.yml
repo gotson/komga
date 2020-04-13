@@ -53,3 +53,12 @@ management:
     export:
       influx:
         enabled: false
+springdoc:
+  group-configs:
+    - group: REST API
+      paths-to-match: /api/**
+    - group: OPDS
+      paths-to-match: /opds/**
+  swagger-ui:
+    groups-order: desc
+    operations-sorter: alpha

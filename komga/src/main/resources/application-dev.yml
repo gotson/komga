@@ -34,6 +34,10 @@ management.metrics.export.influx:
   #  enabled: true
   uri: http://localhost:8086
 
+springdoc:
+  cache:
+    disabled: true
+
 #server:
 #  servlet:
 #    context-path: /komga
