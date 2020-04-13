@@ -1,3 +1,15 @@
+# [0.27.0](https://github.com/gotson/komga/compare/v0.26.3...v0.27.0) (2020-04-13)
+
+
+### Bug Fixes
+
+* **api:** libraries are not sorted for restricted users ([1d58322](https://github.com/gotson/komga/commit/1d583229eeb4eb279c545b433e6160612df7a0b7)), closes [#140](https://github.com/gotson/komga/issues/140)
+
+
+### Features
+
+* **swagger:** update to OpenAPI 3 ([c9de7c8](https://github.com/gotson/komga/commit/c9de7c8074ec15a3a69db808c31bd3415c17ba15))
+
 ## [0.26.3](https://github.com/gotson/komga/compare/v0.26.2...v0.26.3) (2020-04-12)
 
 
