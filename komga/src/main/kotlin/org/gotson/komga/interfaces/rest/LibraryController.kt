@@ -10,7 +10,6 @@ import org.gotson.komga.domain.model.PathContainedInPath
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
-import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -46,10 +45,10 @@ class LibraryController(
     @AuthenticationPrincipal principal: KomgaPrincipal
   ): List<LibraryDto> =
     if (principal.user.sharedAllLibraries) {
-      libraryRepository.findAll(Sort.by("name"))
+      libraryRepository.findAll()
     } else {
       principal.user.sharedLibraries
-    }.map { it.toDto(includeRoot = principal.user.isAdmin()) }
+    }.sortedBy { it.name }.map { it.toDto(includeRoot = principal.user.isAdmin()) }
 
   @GetMapping("{id}")
   fun getOne(
