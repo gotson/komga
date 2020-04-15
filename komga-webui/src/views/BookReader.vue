@@ -143,11 +143,13 @@
               <img :src="getPageUrl(p)"
                    :height="maxHeight"
                    :width="maxWidth(p)"
+                   :style="imgStyle"
               />
               <img v-if="doublePages && p !== 1 && p !== pagesCount && p+1 !== pagesCount"
                    :src="getPageUrl(p+1)"
                    :height="maxHeight"
                    :width="maxWidth(p+1)"
+                   :style="imgStyle"
               />
             </div>
           </div>
@@ -411,6 +413,9 @@ export default Vue.extend({
     },
     maxHeight (): number | null {
       return this.imageFit === ImageFit.HEIGHT ? this.$vuetify.breakpoint.height : null
+    },
+    imgStyle (): string {
+      return this.imageFit === ImageFit.WIDTH ? 'height:intrinsic' : ''
     },
     slidesRange (): number[] {
       if (!this.doublePages) {
