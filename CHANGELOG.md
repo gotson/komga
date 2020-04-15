@@ -1,3 +1,10 @@
+## [0.27.2](https://github.com/gotson/komga/compare/v0.27.1...v0.27.2) (2020-04-15)
+
+
+### Bug Fixes
+
+* **webreader:** stretched images on Safari with fit to Width ([74f9305](https://github.com/gotson/komga/commit/74f9305e166482003f4ef3fc12f2a003d5ec468c))
+
 ## [0.27.1](https://github.com/gotson/komga/compare/v0.27.0...v0.27.1) (2020-04-15)
 
 
