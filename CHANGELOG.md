@@ -1,3 +1,10 @@
+## [0.27.1](https://github.com/gotson/komga/compare/v0.27.0...v0.27.1) (2020-04-15)
+
+
+### Bug Fixes
+
+* **swagger:** fix duplicated mapping key error ([face321](https://github.com/gotson/komga/commit/face321b0841b93b24b8e51bcce49f391a9aaeb8))
+
 # [0.27.0](https://github.com/gotson/komga/compare/v0.26.3...v0.27.0) (2020-04-13)
 
 
