@@ -176,10 +176,7 @@ class SeriesController(
       it.toDto(includeUrl = principal.user.isAdmin())
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  @ApiResponse(content = [Content(
-    mediaType = MediaType.IMAGE_JPEG_VALUE,
-    schema = Schema(type = "string", format = "binary")
-  )])
+  @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
   @GetMapping(value = ["{seriesId}/thumbnail"], produces = [MediaType.IMAGE_JPEG_VALUE])
   fun getSeriesThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,

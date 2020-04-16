@@ -184,10 +184,7 @@ class BookController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
 
-  @ApiResponse(content = [Content(
-    mediaType = MediaType.IMAGE_JPEG_VALUE,
-    schema = Schema(type = "string", format = "binary")
-  )])
+  @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
   @GetMapping(value = [
     "api/v1/books/{bookId}/thumbnail",
     "opds/v1.2/books/{bookId}/thumbnail"
@@ -305,10 +302,7 @@ class BookController(
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  @ApiResponse(content = [Content(
-    mediaType = MediaType.IMAGE_JPEG_VALUE,
-    schema = Schema(type = "string", format = "binary")
-  )])
+  @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
   @GetMapping(
     value = ["api/v1/books/{bookId}/pages/{pageNumber}/thumbnail"],
     produces = [MediaType.IMAGE_JPEG_VALUE]
