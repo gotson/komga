@@ -1,3 +1,10 @@
+## [0.27.3](https://github.com/gotson/komga/compare/v0.27.2...v0.27.3) (2020-04-16)
+
+
+### Bug Fixes
+
+* **analyzer:** regression in RAR handling ([b8462f3](https://github.com/gotson/komga/commit/b8462f3568a8d8428b88bb45f55a7e7fdf22497e))
+
 ## [0.27.2](https://github.com/gotson/komga/compare/v0.27.1...v0.27.2) (2020-04-15)
 
 
