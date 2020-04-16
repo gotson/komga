@@ -5,6 +5,9 @@ import com.github.klinq.jpaspec.likeLower
 import com.github.klinq.jpaspec.toJoin
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
 import org.gotson.komga.application.service.AsyncOrchestrator
 import org.gotson.komga.application.service.BookLifecycle
@@ -181,6 +184,10 @@ class BookController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
 
+  @ApiResponse(content = [Content(
+    mediaType = MediaType.IMAGE_JPEG_VALUE,
+    schema = Schema(type = "string", format = "binary")
+  )])
   @GetMapping(value = [
     "api/v1/books/{bookId}/thumbnail",
     "opds/v1.2/books/{bookId}/thumbnail"
@@ -199,11 +206,15 @@ class BookController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @Operation(description = "Download the book file.")
+  @ApiResponse(content = [Content(
+    mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE,
+    schema = Schema(type = "string", format = "binary")
+  )])
   @GetMapping(value = [
     "api/v1/books/{bookId}/file",
     "api/v1/books/{bookId}/file/*",
     "opds/v1.2/books/{bookId}/file/*"
-  ])
+  ], produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
   fun getBookFile(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: Long
@@ -242,6 +253,10 @@ class BookController(
       it.media.pages.mapIndexed { index, s -> PageDto(index + 1, s.fileName, s.mediaType) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @ApiResponse(content = [Content(
+    mediaType = "image/*",
+    schema = Schema(type = "string", format = "binary")
+  )])
   @GetMapping(value = [
     "api/v1/books/{bookId}/pages/{pageNumber}",
     "opds/v1.2/books/{bookId}/pages/{pageNumber}"
@@ -290,7 +305,14 @@ class BookController(
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  @GetMapping("api/v1/books/{bookId}/pages/{pageNumber}/thumbnail")
+  @ApiResponse(content = [Content(
+    mediaType = MediaType.IMAGE_JPEG_VALUE,
+    schema = Schema(type = "string", format = "binary")
+  )])
+  @GetMapping(
+    value = ["api/v1/books/{bookId}/pages/{pageNumber}/thumbnail"],
+    produces = [MediaType.IMAGE_JPEG_VALUE]
+  )
   fun getBookPageThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     request: WebRequest,

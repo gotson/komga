@@ -5,6 +5,9 @@ import com.github.klinq.jpaspec.likeLower
 import com.github.klinq.jpaspec.toJoin
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
 import org.gotson.komga.application.service.AsyncOrchestrator
 import org.gotson.komga.domain.model.Library
@@ -173,6 +176,10 @@ class SeriesController(
       it.toDto(includeUrl = principal.user.isAdmin())
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @ApiResponse(content = [Content(
+    mediaType = MediaType.IMAGE_JPEG_VALUE,
+    schema = Schema(type = "string", format = "binary")
+  )])
   @GetMapping(value = ["{seriesId}/thumbnail"], produces = [MediaType.IMAGE_JPEG_VALUE])
   fun getSeriesThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
