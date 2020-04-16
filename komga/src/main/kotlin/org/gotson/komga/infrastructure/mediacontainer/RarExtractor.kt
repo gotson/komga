@@ -18,7 +18,7 @@ class RarExtractor(
 
   private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
 
-  override fun mediaTypes(): List<String> = listOf("application/x-rar-compressed")
+  override fun mediaTypes(): List<String> = listOf("application/x-rar-compressed", "application/x-rar-compressed; version=4")
 
   override fun getEntries(path: Path): List<MediaContainerEntry> =
     Archive(Files.newInputStream(path)).use { rar ->

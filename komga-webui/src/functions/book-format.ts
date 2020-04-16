@@ -1,6 +1,7 @@
 export function getBookFormatFromMediaType (mediaType: string): BookFormat {
   switch (mediaType) {
     case 'application/x-rar-compressed':
+    case 'application/x-rar-compressed; version=4':
       return { type: 'CBR', color: '#03A9F4' }
     case 'application/zip':
       return { type: 'CBZ', color: '#4CAF50' }

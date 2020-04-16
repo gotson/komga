@@ -66,7 +66,7 @@ dependencies {
   implementation("commons-io:commons-io:2.6")
   implementation("org.apache.commons:commons-lang3:3.10")
 
-  implementation("org.apache.tika:tika-core:1.23")
+  implementation("org.apache.tika:tika-core:1.24")
   implementation("org.apache.commons:commons-compress:1.20")
   implementation("com.github.junrar:junrar:4.0.0")
   implementation("org.apache.pdfbox:pdfbox:2.0.19")
