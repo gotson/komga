@@ -1,3 +1,11 @@
+## [0.27.4](https://github.com/gotson/komga/compare/v0.27.3...v0.27.4) (2020-04-16)
+
+
+### Bug Fixes
+
+* **analyzer:** better rar5 detection ([b07e9b9](https://github.com/gotson/komga/commit/b07e9b9728f387c15fb22f970a42c5e484f22b7a))
+* **swagger:** correct response type for thumbnails and file ([07f634e](https://github.com/gotson/komga/commit/07f634e658b8ce74486dc5654518f65832602e99))
+
 ## [0.27.3](https://github.com/gotson/komga/compare/v0.27.2...v0.27.3) (2020-04-16)
 
 
