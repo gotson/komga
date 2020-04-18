@@ -1,3 +1,10 @@
+## [0.27.5](https://github.com/gotson/komga/compare/v0.27.4...v0.27.5) (2020-04-18)
+
+
+### Bug Fixes
+
+* set default forward headers strategy to framework ([b24fbe3](https://github.com/gotson/komga/commit/b24fbe3a1e206e35ea0da1223483d625eacaa323))
+
 ## [0.27.4](https://github.com/gotson/komga/compare/v0.27.3...v0.27.4) (2020-04-16)
 
 
