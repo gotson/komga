@@ -5,6 +5,8 @@ import com.github.klinq.jpaspec.likeLower
 import com.github.klinq.jpaspec.toJoin
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.Parameters
+import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -21,7 +23,6 @@ import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.SeriesDto
 import org.gotson.komga.interfaces.rest.dto.SeriesMetadataUpdateDto
 import org.gotson.komga.interfaces.rest.dto.toDto
-import org.springdoc.api.annotations.ParameterObject
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -57,13 +58,21 @@ class SeriesController(
   private val asyncOrchestrator: AsyncOrchestrator
 ) {
 
+  @Parameters(
+    Parameter(description = "Zero-based page index (0..N)", name = "page", schema = Schema(type = "integer", defaultValue = "0")),
+    Parameter(description = "The size of the page to be returned", name = "size", schema = Schema(type = "integer", defaultValue = "20")),
+    Parameter(description = "Sorting criteria in the format: property(,asc|desc). "
+      + "Default sort order is ascending. " + "Multiple sort criteria are supported."
+      , name = "sort"
+      , array = ArraySchema(schema = Schema(type = "string")))
+  )
   @GetMapping
   fun getAllSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) searchTerm: String?,
     @RequestParam(name = "library_id", required = false) libraryIds: List<Long>?,
     @RequestParam(name = "status", required = false) metadataStatus: List<SeriesMetadata.Status>?,
-    @ParameterObject page: Pageable
+    @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> {
     val pageRequest = PageRequest.of(
       page.pageNumber,
@@ -107,11 +116,14 @@ class SeriesController(
   }
 
   @Operation(description = "Return recently added or updated series.")
+  @Parameters(
+    Parameter(description = "Zero-based page index (0..N)", name = "page", schema = Schema(type = "integer", defaultValue = "0")),
+    Parameter(description = "The size of the page to be returned", name = "size", schema = Schema(type = "integer", defaultValue = "20"))
+  )
   @GetMapping("/latest")
-  @Parameter(name = "sort", hidden = true)
   fun getLatestSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @ParameterObject page: Pageable
+    @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> {
     val pageRequest = PageRequest.of(
       page.pageNumber,
@@ -127,11 +139,14 @@ class SeriesController(
   }
 
   @Operation(description = "Return newly added series.")
+  @Parameters(
+    Parameter(description = "Zero-based page index (0..N)", name = "page", schema = Schema(type = "integer", defaultValue = "0")),
+    Parameter(description = "The size of the page to be returned", name = "size", schema = Schema(type = "integer", defaultValue = "20"))
+  )
   @GetMapping("/new")
-  @Parameter(name = "sort", hidden = true)
   fun getNewSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @ParameterObject page: Pageable
+    @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> {
     val pageRequest = PageRequest.of(
       page.pageNumber,
@@ -147,11 +162,14 @@ class SeriesController(
   }
 
   @Operation(description = "Return recently updated series, but not newly added ones.")
+  @Parameters(
+    Parameter(description = "Zero-based page index (0..N)", name = "page", schema = Schema(type = "integer", defaultValue = "0")),
+    Parameter(description = "The size of the page to be returned", name = "size", schema = Schema(type = "integer", defaultValue = "20"))
+  )
   @GetMapping("/updated")
-  @Parameter(name = "sort", hidden = true)
   fun getUpdatedSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @ParameterObject page: Pageable
+    @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> {
     val pageRequest = PageRequest.of(
       page.pageNumber,
@@ -190,12 +208,20 @@ class SeriesController(
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @Parameters(
+    Parameter(description = "Zero-based page index (0..N)", name = "page", schema = Schema(type = "integer", defaultValue = "0")),
+    Parameter(description = "The size of the page to be returned", name = "size", schema = Schema(type = "integer", defaultValue = "20")),
+    Parameter(description = "Sorting criteria in the format: property(,asc|desc). "
+      + "Default sort order is ascending. " + "Multiple sort criteria are supported."
+      , name = "sort"
+      , array = ArraySchema(schema = Schema(type = "string")))
+  )
   @GetMapping("{seriesId}/books")
   fun getAllBooksBySeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") id: Long,
     @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
-    @ParameterObject page: Pageable
+    @Parameter(hidden = true) page: Pageable
   ): Page<BookDto> {
     seriesRepository.findByIdOrNull(id)?.let {
       if (!principal.user.canAccessSeries(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
