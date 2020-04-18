@@ -1,3 +1,10 @@
+## [0.27.6](https://github.com/gotson/komga/compare/v0.27.5...v0.27.6) (2020-04-18)
+
+
+### Bug Fixes
+
+* **swagger:** better pageable support ([6401dc9](https://github.com/gotson/komga/commit/6401dc9b9b051ed49b1341891383e6015fd77fc9))
+
 ## [0.27.5](https://github.com/gotson/komga/compare/v0.27.4...v0.27.5) (2020-04-18)
 
 
