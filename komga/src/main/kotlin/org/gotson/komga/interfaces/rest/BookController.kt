@@ -5,8 +5,6 @@ import com.github.klinq.jpaspec.likeLower
 import com.github.klinq.jpaspec.toJoin
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
-import io.swagger.v3.oas.annotations.Parameters
-import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -24,10 +22,12 @@ import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
+import org.gotson.komga.infrastructure.swagger.PageableWithoutSort
 import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.BookMetadataUpdateDto
 import org.gotson.komga.interfaces.rest.dto.PageDto
 import org.gotson.komga.interfaces.rest.dto.toDto
+import org.springdoc.api.annotations.ParameterObject
 import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -72,21 +72,13 @@ class BookController(
   private val asyncOrchestrator: AsyncOrchestrator
 ) {
 
-  @Parameters(
-    Parameter(description = "Zero-based page index (0..N)", name = "page", schema = Schema(type = "integer", defaultValue = "0")),
-    Parameter(description = "The size of the page to be returned", name = "size", schema = Schema(type = "integer", defaultValue = "20")),
-    Parameter(description = "Sorting criteria in the format: property(,asc|desc). "
-      + "Default sort order is ascending. " + "Multiple sort criteria are supported."
-      , name = "sort"
-      , array = ArraySchema(schema = Schema(type = "string")))
-  )
   @GetMapping("api/v1/books")
   fun getAllBooks(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) searchTerm: String?,
     @RequestParam(name = "library_id", required = false) libraryIds: List<Long>?,
     @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
-    @Parameter(hidden = true) page: Pageable
+    @ParameterObject page: Pageable
   ): Page<BookDto> {
     val pageRequest = PageRequest.of(
       page.pageNumber,
@@ -131,10 +123,7 @@ class BookController(
 
 
   @Operation(description = "Return newly added or updated books.")
-  @Parameters(
-    Parameter(description = "Zero-based page index (0..N)", name = "page", schema = Schema(type = "integer", defaultValue = "0")),
-    Parameter(description = "The size of the page to be returned", name = "size", schema = Schema(type = "integer", defaultValue = "20"))
-  )
+  @PageableWithoutSort
   @GetMapping("api/v1/books/latest")
   fun getLatestSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -215,10 +204,6 @@ class BookController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @Operation(description = "Download the book file.")
-  @ApiResponse(content = [Content(
-    mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE,
-    schema = Schema(type = "string", format = "binary")
-  )])
   @GetMapping(value = [
     "api/v1/books/{bookId}/file",
     "api/v1/books/{bookId}/file/*",
@@ -275,7 +260,9 @@ class BookController(
     request: WebRequest,
     @PathVariable bookId: Long,
     @PathVariable pageNumber: Int,
+    @Parameter(description = "Convert the image to the provided format.", schema = Schema(allowableValues = ["jpeg", "png"]))
     @RequestParam(value = "convert", required = false) convertTo: String?,
+    @Parameter(description = "If set to true, pages will start at index 0. If set to false, pages will start at index 1.")
     @RequestParam(value = "zero_based", defaultValue = "false") zeroBasedIndex: Boolean
   ): ResponseEntity<ByteArray> =
     bookRepository.findByIdOrNull((bookId))?.let { book ->

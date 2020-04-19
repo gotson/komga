@@ -51,11 +51,10 @@ dependencies {
   implementation("io.micrometer:micrometer-registry-influx")
 
   run {
-    val springdocVersion = "1.3.2"
+    val springdocVersion = "1.3.3"
     implementation("org.springdoc:springdoc-openapi-ui:$springdocVersion")
     implementation("org.springdoc:springdoc-openapi-data-rest:$springdocVersion")
     implementation("org.springdoc:springdoc-openapi-security:$springdocVersion")
-    implementation("org.springdoc:springdoc-openapi-kotlin:$springdocVersion")
   }
 
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
