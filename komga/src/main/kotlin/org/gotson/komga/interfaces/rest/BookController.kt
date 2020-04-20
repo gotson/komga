@@ -22,12 +22,12 @@ import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
-import org.gotson.komga.infrastructure.swagger.PageableWithoutSort
+import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
+import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.BookMetadataUpdateDto
 import org.gotson.komga.interfaces.rest.dto.PageDto
 import org.gotson.komga.interfaces.rest.dto.toDto
-import org.springdoc.api.annotations.ParameterObject
 import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -72,13 +72,14 @@ class BookController(
   private val asyncOrchestrator: AsyncOrchestrator
 ) {
 
+  @PageableAsQueryParam
   @GetMapping("api/v1/books")
   fun getAllBooks(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) searchTerm: String?,
     @RequestParam(name = "library_id", required = false) libraryIds: List<Long>?,
     @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
-    @ParameterObject page: Pageable
+    @Parameter(hidden = true) page: Pageable
   ): Page<BookDto> {
     val pageRequest = PageRequest.of(
       page.pageNumber,
@@ -123,7 +124,7 @@ class BookController(
 
 
   @Operation(description = "Return newly added or updated books.")
-  @PageableWithoutSort
+  @PageableWithoutSortAsQueryParam
   @GetMapping("api/v1/books/latest")
   fun getLatestSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,

@@ -17,7 +17,8 @@ import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
-import org.gotson.komga.infrastructure.swagger.PageableWithoutSort
+import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
+import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.SeriesDto
 import org.gotson.komga.interfaces.rest.dto.SeriesMetadataUpdateDto
@@ -108,7 +109,7 @@ class SeriesController(
   }
 
   @Operation(description = "Return recently added or updated series.")
-  @PageableWithoutSort
+  @PageableWithoutSortAsQueryParam
   @GetMapping("/latest")
   fun getLatestSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -128,7 +129,7 @@ class SeriesController(
   }
 
   @Operation(description = "Return newly added series.")
-  @PageableWithoutSort
+  @PageableWithoutSortAsQueryParam
   @GetMapping("/new")
   fun getNewSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -148,7 +149,7 @@ class SeriesController(
   }
 
   @Operation(description = "Return recently updated series, but not newly added ones.")
-  @PageableWithoutSort
+  @PageableWithoutSortAsQueryParam
   @GetMapping("/updated")
   fun getUpdatedSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -191,12 +192,13 @@ class SeriesController(
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @PageableAsQueryParam
   @GetMapping("{seriesId}/books")
   fun getAllBooksBySeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") id: Long,
     @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
-    @ParameterObject page: Pageable
+    @Parameter(hidden = true) page: Pageable
   ): Page<BookDto> {
     seriesRepository.findByIdOrNull(id)?.let {
       if (!principal.user.canAccessSeries(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
