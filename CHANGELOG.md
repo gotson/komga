@@ -1,3 +1,10 @@
+## [0.27.7](https://github.com/gotson/komga/compare/v0.27.6...v0.27.7) (2020-04-20)
+
+
+### Bug Fixes
+
+* **swagger:** fix incorrect Pageable schema ([14bee56](https://github.com/gotson/komga/commit/14bee566b3b32659080e5b8f19e9b52f2ba8c4d1))
+
 ## [0.27.6](https://github.com/gotson/komga/compare/v0.27.5...v0.27.6) (2020-04-18)
 
 
