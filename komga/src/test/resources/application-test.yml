@@ -11,6 +11,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  artemis:
+    embedded:
+      persistent: false
 logging.level.org.hibernate:
   SQL: DEBUG
   type.descriptor.sql.BasicBinder: TRACE
