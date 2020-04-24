@@ -1,7 +1,6 @@
 package org.gotson.komga.application.service
 
 import mu.KotlinLogging
-import org.apache.commons.lang3.time.DurationFormatUtils
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookPageContent
 import org.gotson.komga.domain.model.ImageConversionException
@@ -11,12 +10,7 @@ import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
-import org.springframework.scheduling.annotation.Async
-import org.springframework.scheduling.annotation.AsyncResult
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
-import java.util.concurrent.Future
-import kotlin.system.measureTimeMillis
 
 private val logger = KotlinLogging.logger {}
 
@@ -27,34 +21,26 @@ class BookLifecycle(
   private val imageConverter: ImageConverter
 ) {
 
-  @Transactional
-  @Async("analyzeBookTaskExecutor")
-  fun analyzeAndPersist(book: Book): Future<Long> {
+  fun analyzeAndPersist(book: Book) {
     logger.info { "Analyze and persist book: $book" }
-    return AsyncResult(measureTimeMillis {
-      try {
-        book.media = bookAnalyzer.analyze(book)
-      } catch (ex: Exception) {
-        logger.error(ex) { "Error while analyzing book: $book" }
-        book.media = Media(status = Media.Status.ERROR, comment = ex.message)
-      }
-      bookRepository.save(book)
-    }.also { logger.info { "Parsing finished in ${DurationFormatUtils.formatDurationHMS(it)}" } })
+    try {
+      book.media = bookAnalyzer.analyze(book)
+    } catch (ex: Exception) {
+      logger.error(ex) { "Error while analyzing book: $book" }
+      book.media = Media(status = Media.Status.ERROR, comment = ex.message)
+    }
+    bookRepository.save(book)
   }
 
-  @Transactional
-  @Async("analyzeBookTaskExecutor")
-  fun regenerateThumbnailAndPersist(book: Book): Future<Long> {
+  fun regenerateThumbnailAndPersist(book: Book) {
     logger.info { "Regenerate thumbnail and persist book: $book" }
-    return AsyncResult(measureTimeMillis {
-      try {
-        book.media = bookAnalyzer.regenerateThumbnail(book)
-      } catch (ex: Exception) {
-        logger.error(ex) { "Error while recreating thumbnail" }
-        book.media = Media(status = Media.Status.ERROR)
-      }
-      bookRepository.save(book)
-    }.also { logger.info { "Thumbnail generated in ${DurationFormatUtils.formatDurationHMS(it)}" } })
+    try {
+      book.media = bookAnalyzer.regenerateThumbnail(book)
+    } catch (ex: Exception) {
+      logger.error(ex) { "Error while recreating thumbnail" }
+      book.media = Media(status = Media.Status.ERROR)
+    }
+    bookRepository.save(book)
   }
 
   @Throws(

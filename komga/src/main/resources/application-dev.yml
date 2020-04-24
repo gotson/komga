@@ -21,14 +21,15 @@ logging:
     max-history: 1
     name: komga-dev.log
   level:
-    org.gotson.komga: DEBUG
-    web: DEBUG
-    #    org.hibernate:
-    #      stat: DEBUG
-    #      SQL: DEBUG
-    #      cache: DEBUG
-    #      type.descriptor.sql.BasicBinder: TRACE
-    #  org.springframework.security.web.FilterChainProxy: DEBUG
+    org.apache.activemq.audit.message: WARN
+#    web: DEBUG
+#    org.gotson.komga: DEBUG
+#    org.springframework.jms: DEBUG
+#    org.springframework.security.web.FilterChainProxy: DEBUG
+#    org.hibernate.stat: DEBUG
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.cache: DEBUG
+#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
 management.metrics.export.influx:
   #  enabled: true

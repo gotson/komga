@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
-import org.gotson.komga.application.service.AsyncOrchestrator
+import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.Series
@@ -45,7 +45,6 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
-import java.util.concurrent.RejectedExecutionException
 import javax.validation.Valid
 
 private val logger = KotlinLogging.logger {}
@@ -56,7 +55,7 @@ class SeriesController(
   private val seriesRepository: SeriesRepository,
   private val bookRepository: BookRepository,
   private val bookController: BookController,
-  private val asyncOrchestrator: AsyncOrchestrator
+  private val taskReceiver: TaskReceiver
 ) {
 
   @GetMapping
@@ -222,11 +221,7 @@ class SeriesController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable seriesId: Long) {
     seriesRepository.findByIdOrNull(seriesId)?.let { series ->
-      try {
-        asyncOrchestrator.reAnalyzeBooks(series.books)
-      } catch (e: RejectedExecutionException) {
-        throw ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Another book analysis task is already running")
-      }
+      series.books.forEach { taskReceiver.analyzeBook(it) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -235,11 +230,7 @@ class SeriesController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun refreshMetadata(@PathVariable seriesId: Long) {
     seriesRepository.findByIdOrNull(seriesId)?.let { series ->
-      try {
-        asyncOrchestrator.refreshBooksMetadata(series.books)
-      } catch (e: RejectedExecutionException) {
-        throw ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Another metadata refresh task is already running")
-      }
+      series.books.forEach { taskReceiver.refreshBookMetadata(it) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 

@@ -1,8 +1,8 @@
 package org.gotson.komga.interfaces.rest
 
 import mu.KotlinLogging
-import org.gotson.komga.application.service.AsyncOrchestrator
 import org.gotson.komga.application.service.LibraryLifecycle
+import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.Library
@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import java.io.FileNotFoundException
-import java.util.concurrent.RejectedExecutionException
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
 
@@ -37,7 +36,7 @@ class LibraryController(
   private val libraryLifecycle: LibraryLifecycle,
   private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
-  private val asyncOrchestrator: AsyncOrchestrator
+  private val taskReceiver: TaskReceiver
 ) {
 
   @GetMapping
@@ -93,11 +92,7 @@ class LibraryController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun scan(@PathVariable libraryId: Long) {
     libraryRepository.findByIdOrNull(libraryId)?.let { library ->
-      try {
-        asyncOrchestrator.scanAndAnalyzeOneLibrary(library)
-      } catch (e: RejectedExecutionException) {
-        throw ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Another scan task is already running")
-      }
+      taskReceiver.scanLibrary(library)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -106,11 +101,7 @@ class LibraryController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable libraryId: Long) {
     libraryRepository.findByIdOrNull(libraryId)?.let { library ->
-      try {
-        asyncOrchestrator.reAnalyzeBooks(bookRepository.findBySeriesLibraryIn(listOf(library)))
-      } catch (e: RejectedExecutionException) {
-        throw ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Another book analysis task is already running")
-      }
+      bookRepository.findBySeriesLibrary(library).forEach { taskReceiver.analyzeBook(it) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -119,11 +110,7 @@ class LibraryController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun refreshMetadata(@PathVariable libraryId: Long) {
     libraryRepository.findByIdOrNull(libraryId)?.let { library ->
-      try {
-        asyncOrchestrator.refreshBooksMetadata(bookRepository.findBySeriesLibraryIn(listOf(library)))
-      } catch (e: RejectedExecutionException) {
-        throw ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Another metadata refresh task is already running")
-      }
+      bookRepository.findBySeriesLibrary(library).forEach { taskReceiver.refreshBookMetadata(it) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 }

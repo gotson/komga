@@ -1,6 +1,7 @@
 package org.gotson.komga.application.service
 
 import mu.KotlinLogging
+import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.Library
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.io.FileNotFoundException
 import java.nio.file.Files
-import java.util.concurrent.RejectedExecutionException
 
 private val logger = KotlinLogging.logger {}
 
@@ -21,7 +21,7 @@ class LibraryLifecycle(
   private val libraryRepository: LibraryRepository,
   private val seriesRepository: SeriesRepository,
   private val userRepository: KomgaUserRepository,
-  private val asyncOrchestrator: AsyncOrchestrator
+  private val taskReceiver: TaskReceiver
 ) {
 
   @Throws(
@@ -49,15 +49,8 @@ class LibraryLifecycle(
         throw PathContainedInPath("Library path ${library.path()} is a parent of existing library ${it.name}: ${it.path()}")
     }
 
-
     libraryRepository.save(library)
-
-    logger.info { "Trying to launch a scan for the newly added library: ${library.name}" }
-    try {
-      asyncOrchestrator.scanAndAnalyzeAllLibraries()
-    } catch (e: RejectedExecutionException) {
-      logger.warn { "Another scan is already running, skipping" }
-    }
+    taskReceiver.scanLibrary(library)
 
     return library
   }

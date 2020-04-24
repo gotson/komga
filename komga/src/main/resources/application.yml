@@ -4,6 +4,8 @@ logging:
   file:
     max-history: 10
     name: komga.log
+  level:
+    org.apache.activemq.audit.message: WARN
 
 komga:
   libraries-scan-cron: "0 */15 * * * ?"

@@ -9,8 +9,8 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
-import org.gotson.komga.application.service.AsyncOrchestrator
 import org.gotson.komga.application.service.BookLifecycle
+import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadata
@@ -57,7 +57,6 @@ import org.springframework.web.server.ResponseStatusException
 import java.io.FileNotFoundException
 import java.nio.file.NoSuchFileException
 import java.time.ZoneOffset
-import java.util.concurrent.RejectedExecutionException
 import java.util.concurrent.TimeUnit
 import javax.persistence.criteria.JoinType
 import javax.validation.Valid
@@ -69,7 +68,7 @@ private val logger = KotlinLogging.logger {}
 class BookController(
   private val bookRepository: BookRepository,
   private val bookLifecycle: BookLifecycle,
-  private val asyncOrchestrator: AsyncOrchestrator
+  private val taskReceiver: TaskReceiver
 ) {
 
   @PageableAsQueryParam
@@ -345,11 +344,7 @@ class BookController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable bookId: Long) {
     bookRepository.findByIdOrNull(bookId)?.let { book ->
-      try {
-        asyncOrchestrator.reAnalyzeBooks(listOf(book))
-      } catch (e: RejectedExecutionException) {
-        throw ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Another book analysis task is already running")
-      }
+      taskReceiver.analyzeBook(book)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -358,11 +353,7 @@ class BookController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun refreshMetadata(@PathVariable bookId: Long) {
     bookRepository.findByIdOrNull(bookId)?.let { book ->
-      try {
-        asyncOrchestrator.refreshBooksMetadata(listOf(book))
-      } catch (e: RejectedExecutionException) {
-        throw ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Another metadata refresh task is already running")
-      }
+      taskReceiver.refreshBookMetadata(book)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 

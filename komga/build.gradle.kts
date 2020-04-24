@@ -38,8 +38,11 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-cache")
   implementation("org.springframework.boot:spring-boot-starter-security")
   implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+  implementation("org.springframework.boot:spring-boot-starter-artemis")
 
   kapt("org.springframework.boot:spring-boot-configuration-processor")
+
+  implementation("org.apache.activemq:artemis-jms-server")
 
   implementation("org.flywaydb:flyway-core")
   implementation("org.hibernate:hibernate-jcache")
@@ -93,6 +96,7 @@ dependencies {
 
   testImplementation("com.tngtech.archunit:archunit-junit5:0.13.1")
 
+
   developmentOnly("org.springframework.boot:spring-boot-devtools")
 }
 
@@ -100,7 +104,7 @@ tasks {
   withType<KotlinCompile> {
     kotlinOptions {
       jvmTarget = "1.8"
-      freeCompilerArgs = listOf("-Xjsr305=strict")
+      freeCompilerArgs = listOf("-Xjsr305=strict", "-Xopt-in=kotlin.time.ExperimentalTime")
     }
   }
 

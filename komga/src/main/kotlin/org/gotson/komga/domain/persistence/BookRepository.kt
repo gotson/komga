@@ -28,8 +28,9 @@ interface BookRepository : JpaRepository<Book, Long>, JpaSpecificationExecutor<B
   fun findBySeriesLibraryIn(seriesLibrary: Collection<Library>, pageable: Pageable): Page<Book>
 
   fun findBySeriesLibraryIn(seriesLibrary: Collection<Library>): List<Book>
+  fun findBySeriesLibrary(seriesLibrary: Library): List<Book>
 
   fun findByUrl(url: URL): Book?
-  fun findAllByMediaStatus(status: Media.Status): List<Book>
+  fun findAllByMediaStatusAndSeriesLibrary(status: Media.Status, library: Library): List<Book>
   fun findAllByMediaThumbnailIsNull(): List<Book>
 }

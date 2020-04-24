@@ -196,7 +196,7 @@ class LibraryScannerTest(
     libraryScanner.scanRootFolder(library)
 
     every { mockAnalyzer.analyze(any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")))
-    bookRepository.findAll().map { bookLifecycle.analyzeAndPersist(it) }.map { it.get() }
+    bookRepository.findAll().map { bookLifecycle.analyzeAndPersist(it) }
 
     // when
     libraryScanner.scanRootFolder(library)
