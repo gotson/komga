@@ -2,7 +2,6 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import org.apache.commons.io.FilenameUtils
-import org.apache.commons.lang3.time.DurationFormatUtils
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
@@ -15,7 +14,7 @@ import java.nio.file.attribute.FileTime
 import java.time.LocalDateTime
 import java.time.ZoneId
 import kotlin.streams.asSequence
-import kotlin.system.measureTimeMillis
+import kotlin.time.measureTime
 
 private val logger = KotlinLogging.logger {}
 
@@ -35,7 +34,7 @@ class FileSystemScanner(
 
     lateinit var scannedSeries: List<Series>
 
-    measureTimeMillis {
+    measureTime {
       scannedSeries = Files.walk(root, FileVisitOption.FOLLOW_LINKS).use { dirsStream ->
         dirsStream.asSequence()
           .onEach { logger.trace { "GetSeries file: $it" } }
@@ -80,7 +79,7 @@ class FileSystemScanner(
       }
     }.also {
       val countOfBooks = scannedSeries.sumBy { it.books.size }
-      logger.info { "Scanned ${scannedSeries.size} series and $countOfBooks books in ${DurationFormatUtils.formatDurationHMS(it)}" }
+      logger.info { "Scanned ${scannedSeries.size} series and $countOfBooks books in $it" }
     }
 
     return scannedSeries
