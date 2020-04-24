@@ -52,6 +52,7 @@ dependencies {
 
   implementation("io.github.microutils:kotlin-logging:1.7.9")
   implementation("io.micrometer:micrometer-registry-influx")
+  implementation("io.hawt:hawtio-springboot:2.10.0")
 
   run {
     val springdocVersion = "1.3.3"
@@ -95,7 +96,6 @@ dependencies {
   testImplementation("com.google.jimfs:jimfs:1.1")
 
   testImplementation("com.tngtech.archunit:archunit-junit5:0.13.1")
-
 
   developmentOnly("org.springframework.boot:spring-boot-devtools")
 }
