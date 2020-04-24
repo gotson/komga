@@ -5,7 +5,7 @@ komga:
     validity: 2592000 # 1 month
   #  libraries-scan-cron: "*/5 * * * * ?" #every 5 seconds
   libraries-scan-cron: "-" #disable
-  libraries-scan-startup: true
+#  libraries-scan-startup: true
 spring:
   datasource:
     url: jdbc:h2:mem:testdb
@@ -15,6 +15,9 @@ spring:
         generate_statistics: true
         session.events.log: false
         format_sql: true
+  artemis:
+    embedded:
+      data-directory: ./artemis
 logging:
   file:
     max-history: 1

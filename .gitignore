@@ -39,3 +39,4 @@ nbdist/
 
 ### Komga
 /komga/src/main/resources/public/
+/komga/artemis/
