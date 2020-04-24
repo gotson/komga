@@ -1,12 +1,11 @@
 komga:
-  threads:
-    analyzer: 1
   filesystem-scanner-force-directory-modified-time: false
   remember-me:
     key: changeMe!
     validity: 2592000 # 1 month
   #  libraries-scan-cron: "*/5 * * * * ?" #every 5 seconds
   libraries-scan-cron: "-" #disable
+  libraries-scan-startup: true
 spring:
   datasource:
     url: jdbc:h2:mem:testdb

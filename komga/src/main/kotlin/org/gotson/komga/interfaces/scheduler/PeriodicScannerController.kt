@@ -16,7 +16,7 @@ class PeriodicScannerController(
   private val taskReceiver: TaskReceiver
 ) {
 
-  @EventListener(ApplicationReadyEvent::class)
+  @EventListener(classes = [ApplicationReadyEvent::class], condition = "@komgaProperties.librariesScanStartup")
   @Scheduled(cron = "#{@komgaProperties.librariesScanCron ?: '-'}")
   fun scanAllLibraries() {
     taskReceiver.scanLibraries()

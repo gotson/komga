@@ -13,6 +13,8 @@ import javax.validation.constraints.Positive
 class KomgaProperties {
   var librariesScanCron: String = ""
 
+  var librariesScanStartup: Boolean = false
+
   var librariesScanDirectoryExclusions: List<String> = emptyList()
 
   var filesystemScannerForceDirectoryModifiedTime: Boolean = false
@@ -21,10 +23,7 @@ class KomgaProperties {
 
   class Threads {
     @Min(1)
-    @Deprecated("Deprecated since 0.10", ReplaceWith("analyzer"))
-    var parse: Int = 2
-
-    @Min(1)
+    @Deprecated("Deprecated since 0.28")
     var analyzer: Int = 2
   }
 
