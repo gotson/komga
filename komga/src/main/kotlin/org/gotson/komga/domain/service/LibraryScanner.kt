@@ -20,7 +20,7 @@ class LibraryScanner(
 
   @Transactional
   fun scanRootFolder(library: Library) {
-    logger.info { "Updating library: ${library.name}, root folder: ${library.root}" }
+    logger.info { "Updating library: $library" }
     val scannedSeries = fileSystemScanner.scanRootFolder(Paths.get(library.root.toURI()))
 
     // delete series that don't exist anymore

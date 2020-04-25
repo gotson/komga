@@ -34,4 +34,6 @@ class Library(
   constructor(name: String, root: String) : this(name, Paths.get(root).toUri().toURL())
 
   fun path(): Path = Paths.get(this.root.toURI())
+
+  override fun toString() = "Library($id, $name, ${root.toURI().path})"
 }
