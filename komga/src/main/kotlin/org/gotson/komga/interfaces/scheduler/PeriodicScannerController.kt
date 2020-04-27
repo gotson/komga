@@ -19,6 +19,7 @@ class PeriodicScannerController(
   @EventListener(classes = [ApplicationReadyEvent::class], condition = "@komgaProperties.librariesScanStartup")
   @Scheduled(cron = "#{@komgaProperties.librariesScanCron ?: '-'}")
   fun scanAllLibraries() {
+    logger.info { "Periodic libraries scan starting" }
     taskReceiver.scanLibraries()
   }
 }

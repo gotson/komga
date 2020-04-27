@@ -46,7 +46,7 @@ class LibraryScanner(
       } else {
         // if series already exists, update it
         if (newSeries.fileLastModified.truncatedTo(ChronoUnit.MILLIS) != existingSeries.fileLastModified.truncatedTo(ChronoUnit.MILLIS)) {
-          logger.info { "Series changed on disk, updating: $newSeries" }
+          logger.info { "Series changed on disk, updating: $existingSeries" }
           existingSeries.fileLastModified = newSeries.fileLastModified
 
           // update list of books with existing entities if they exist
@@ -54,7 +54,7 @@ class LibraryScanner(
             val existingBook = bookRepository.findByUrl(newBook.url) ?: newBook
 
             if (newBook.fileLastModified.truncatedTo(ChronoUnit.MILLIS) != existingBook.fileLastModified.truncatedTo(ChronoUnit.MILLIS)) {
-              logger.info { "Book changed on disk, update and reset media status: $newBook" }
+              logger.info { "Book changed on disk, update and reset media status: $existingBook" }
               existingBook.fileLastModified = newBook.fileLastModified
               existingBook.fileSize = newBook.fileSize
               existingBook.media.reset()
