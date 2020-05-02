@@ -5,6 +5,7 @@ import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
+import org.gotson.komga.domain.model.MediaUnsupportedException
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.mediacontainer.MediaContainerExtractor
@@ -36,6 +37,8 @@ class BookAnalyzer(
 
     val entries = try {
       supportedMediaTypes.getValue(mediaType).getEntries(book.path())
+    } catch (ex: MediaUnsupportedException) {
+      return Media(mediaType = mediaType, status = Media.Status.UNSUPPORTED, comment = ex.message)
     } catch (ex: Exception) {
       logger.error(ex) { "Error while analyzing book: $book" }
       return Media(mediaType = mediaType, status = Media.Status.ERROR, comment = ex.message)

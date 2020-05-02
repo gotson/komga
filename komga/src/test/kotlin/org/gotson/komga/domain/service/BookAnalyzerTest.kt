@@ -21,30 +21,30 @@ class BookAnalyzerTest(
   @Autowired private val bookAnalyzer: BookAnalyzer
 ) {
 
-  @ParameterizedTest
-  @ValueSource(strings = [
-    "rar4.rar", "rar4-solid.rar"
-  ])
-  fun `given rar4 archive when analyzing then media status is READY`(fileName: String) {
-    val file = ClassPathResource("archives/$fileName")
+  @Test
+  fun `given rar4 archive when analyzing then media status is READY`() {
+    val file = ClassPathResource("archives/rar4.rar")
     val book = Book("book", file.url, LocalDateTime.now())
 
     val media = bookAnalyzer.analyze(book)
 
     assertThat(media.mediaType).isEqualTo("application/x-rar-compressed; version=4")
     assertThat(media.status).isEqualTo(Media.Status.READY)
-    assertThat(media.pages).hasSize(1)
+    assertThat(media.pages).hasSize(3)
   }
 
-  @Test
-  fun `given rar4 encrypted archive when analyzing then media status is ERROR`() {
-    val file = ClassPathResource("archives/rar4-encrypted.rar")
+  @ParameterizedTest
+  @ValueSource(strings = [
+    "rar4-solid.rar", "rar4-encrypted.rar"
+  ])
+  fun `given rar4 solid or encrypted archive when analyzing then media status is UNSUPPORTED`(fileName: String) {
+    val file = ClassPathResource("archives/rar4-solid.rar")
     val book = Book("book", file.url, LocalDateTime.now())
 
     val media = bookAnalyzer.analyze(book)
 
     assertThat(media.mediaType).isEqualTo("application/x-rar-compressed; version=4")
-    assertThat(media.status).isEqualTo(Media.Status.ERROR)
+    assertThat(media.status).isEqualTo(Media.Status.UNSUPPORTED)
   }
 
   @ParameterizedTest
@@ -112,5 +112,4 @@ class BookAnalyzerTest(
     assertThat(media.status).isEqualTo(Media.Status.READY)
     assertThat(media.pages).hasSize(1)
   }
-
 }
