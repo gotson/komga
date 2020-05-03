@@ -11,7 +11,6 @@ export function createItem (item: BookDto | SeriesDto): Item<BookDto | SeriesDto
   } else if ('libraryId' in item) {
     return new SeriesItem(item)
   } else {
-    console.log(item)
     throw new Error('The given item type is not known!')
   }
 }

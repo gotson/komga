@@ -308,7 +308,6 @@ export default mixins(VisibleElements).extend({
     },
     singleEdit (book: BookDto) {
       this.editBookSingle = book
-      console.log('singleEdit', book)
       this.dialogEditBookSingle = true
     },
   },
