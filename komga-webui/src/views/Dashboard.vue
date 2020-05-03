@@ -66,11 +66,7 @@
                              height="328.13"
                              class="ma-2 card"
           />
-          <card-book v-else
-                     :book="b"
-                     class="ma-2 card"
-                     :edit="singleEditBook"
-          />
+          <item-card v-else class="ma-2 card" :item="b" :on-edit="singleEditBook"/>
         </div>
       </template>
     </horizontal-scroller>
@@ -83,10 +79,11 @@ import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import Vue from 'vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 import EditBooksDialog from '@/components/EditBooksDialog.vue'
+import ItemCard from '@/components/ItemCard.vue'
 
 export default Vue.extend({
   name: 'Dashboard',
-  components: { CardSeries, CardBook, HorizontalScroller, EditSeriesDialog, EditBooksDialog },
+  components: { ItemCard, HorizontalScroller, EditSeriesDialog, EditBooksDialog },
   data: () => {
     const pageSize = 20
     return {
