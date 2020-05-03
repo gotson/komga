@@ -13,14 +13,14 @@
           <span class="white--text pa-1 px-2 subtitle-2"
                 :style="{background: format.color, position: 'absolute', right: 0}"
           >
-            {{ format.type }}
+            {{ format.type }} 1
           </span>
 
           <span v-if="book.media.status !== 'READY'"
                 class="white--text pa-1 px-2 subtitle-2"
                 :style="{background: statusColor, position: 'absolute', bottom: 0, width: `${width}px`}"
           >
-            {{ book.media.status }}
+            {{ book.media.status }} 2
           </span>
 
           <v-fade-transition>

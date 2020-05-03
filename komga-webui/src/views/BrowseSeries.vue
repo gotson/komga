@@ -96,17 +96,7 @@
       </v-row>
 
       <v-divider class="my-4"/>
-      <item-browser :items="books" :selected.sync="selected" class="px-6" :edit-function="this.singleEdit">
-        <template v-slot:item="{ data }">
-          <card-book :book="data.item"
-                     :width="data.itemWidth"
-                     :selected="data.active"
-                     :select="data.toggle"
-                     :preSelect="data.preselect"
-                     :edit="data.editItem"
-          />
-        </template>
-      </item-browser>
+      <item-browser :items="books" :selected.sync="selected" :edit-function="this.singleEdit" class="px-6" ></item-browser>
     </v-container>
     <edit-series-dialog v-model="dialogEdit"
                         :series.sync="series"/>
@@ -119,18 +109,20 @@ import CardBook from '@/components/CardBook.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
 
+import Vue from 'vue'
 import { parseQuerySort } from '@/functions/query-params'
 import { seriesThumbnailUrl } from '@/functions/urls'
-import VisibleElements from '@/mixins/VisibleElements'
 import { LoadState } from '@/types/common'
-import mixins from 'vue-typed-mixins'
 import EditBooksDialog from '@/components/EditBooksDialog.vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
+import ItemCard from '@/components/ItemCard.vue'
+import mixins from 'vue-typed-mixins'
+import VisibleElements from '@/mixins/VisibleElements'
 
 export default mixins(VisibleElements).extend({
   name: 'BrowseSeries',
-  components: { CardBook, ToolbarSticky, SortMenuButton, Badge, EditSeriesDialog, EditBooksDialog, ItemBrowser },
+  components: { ToolbarSticky, SortMenuButton, Badge, EditSeriesDialog, EditBooksDialog, ItemBrowser },
   data: () => {
     return {
       series: {} as SeriesDto,
@@ -146,7 +138,6 @@ export default mixins(VisibleElements).extend({
       }] as SortOption[],
       sortActive: {} as SortActive,
       sortDefault: { key: 'metadata.numberSort', order: 'asc' } as SortActive,
-
       dialogEdit: false,
       sortUnwatch: null as any,
       selected: [],
@@ -317,6 +308,7 @@ export default mixins(VisibleElements).extend({
     },
     singleEdit (book: BookDto) {
       this.editBookSingle = book
+      console.log('singleEdit', book)
       this.dialogEditBookSingle = true
     },
   },

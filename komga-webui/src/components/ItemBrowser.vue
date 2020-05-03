@@ -12,8 +12,17 @@
                          class="ma-3 mx-2"
                          :data-index="index"
       >
-        <v-item v-slot:default="state" :value="$_.get(item, 'id', 0)">
-          <slot name="item" v-bind:data="{ ...state, item, index, itemWidth, preselect: shouldPreselect(), editItem }"></slot>
+        <v-item v-slot:default="{ toggle, active }" :value="$_.get(item, 'id', 0)">
+          <slot name="item" v-bind:data="{ toggle, active, item, index, itemWidth, preselect: shouldPreselect(), editItem }">
+            <item-card
+              :item="item"
+              :width="itemWidth"
+              :selected="active"
+              :preselect="shouldPreselect()"
+              :onEdit="editItem"
+              :onSelected="toggle"
+            ></item-card>
+          </slot>
         </v-item>
       </v-skeleton-loader>
     </v-row>
@@ -26,9 +35,11 @@
 <script lang="ts">
 import Vue from 'vue'
 import { computeCardWidth } from '@/functions/grid-utilities'
+import ItemCard from '@/components/ItemCard.vue'
 
 export default Vue.extend({
   name: 'ItemBrowser',
+  components: { ItemCard },
   props: {
     items: {
       type: Array,

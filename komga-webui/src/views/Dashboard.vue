@@ -23,11 +23,7 @@
                              height="306.14"
                              class="ma-2 card"
           />
-          <card-series v-else
-                       :series="s"
-                       class="ma-2 card"
-                       :edit="singleEditSeries"
-          />
+          <item-card v-else class="ma-2 card" :item="s" :on-edit="singleEditSeries"/>
         </div>
       </template>
     </horizontal-scroller>
@@ -48,11 +44,7 @@
                              height="306.14"
                              class="ma-2 card"
           />
-          <card-series v-else
-                       :series="s"
-                       class="ma-2 card"
-                       :edit="singleEditSeries"
-          />
+          <item-card v-else class="ma-2 card" :item="s" :on-edit="singleEditSeries"/>
         </div>
       </template>
     </horizontal-scroller>
@@ -87,8 +79,6 @@
 </template>
 
 <script lang="ts">
-import CardBook from '@/components/CardBook.vue'
-import CardSeries from '@/components/CardSeries.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import Vue from 'vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'

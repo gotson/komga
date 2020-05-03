@@ -69,16 +69,7 @@
                         :series.sync="editSeriesSingle"
     />
 
-    <item-browser :items="series" :selected.sync="selected" class="px-6" :edit-function="this.singleEdit">
-      <template v-slot:item="{ data }">
-        <card-series :series="data.item"
-                     :width="data.itemWidth"
-                     :selected="data.active"
-                     :select="data.toggle"
-                     :preSelect="data.preselect"
-                     :edit="data.editItem"
-        />
-      </template>
+    <item-browser :items="series" :selected.sync="selected"  :edit-function="this.singleEdit" class="px-6">
       <template #empty v-if="filterStatus.length > 0">
         <empty-state title="The active filter has no matches"
                      sub-title="Use the menu above to change the active filter"
@@ -102,7 +93,6 @@
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
-import CardSeries from '@/components/CardSeries.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 import LibraryActionsMenu from '@/components/LibraryActionsMenu.vue'
@@ -117,7 +107,7 @@ import ItemBrowser from '@/components/ItemBrowser.vue'
 
 export default mixins(VisibleElements).extend({
   name: 'BrowseLibraries',
-  components: { LibraryActionsMenu, CardSeries, EmptyState, ToolbarSticky, SortMenuButton, Badge, EditSeriesDialog, ItemBrowser },
+  components: { LibraryActionsMenu, EmptyState, ToolbarSticky, SortMenuButton, Badge, EditSeriesDialog, ItemBrowser },
   data: () => {
     return {
       library: undefined as LibraryDto | undefined,
