@@ -1,3 +1,19 @@
+# [0.28.0](https://github.com/gotson/komga/compare/v0.27.7...v0.28.0) (2020-05-03)
+
+
+### Bug Fixes
+
+* **rar:** unsupported rar archives are marked as such ([6c0ebbe](https://github.com/gotson/komga/commit/6c0ebbeee126a77299d4198bb5ab1f03391e774f)), closes [#147](https://github.com/gotson/komga/issues/147)
+
+
+### Features
+
+* add hawt.io support ([dfa2405](https://github.com/gotson/komga/commit/dfa24057bbad382a2da54471b91db523f18545ba))
+* **docker:** persist artemis data in /config ([08e7f5d](https://github.com/gotson/komga/commit/08e7f5dbf26995fcf2b39818561c0259c473fd30))
+* **scan:** add configuration to disable startup scan ([37590dd](https://github.com/gotson/komga/commit/37590dd9129174c6be5f9e2e1509f79555bed207))
+* **tasks:** background tasks persistency ([1a31c89](https://github.com/gotson/komga/commit/1a31c8971269380d9fabef60dce881aee957c230))
+* **tasks:** replace background tasks management ([60ce87a](https://github.com/gotson/komga/commit/60ce87a25dd62a2d357ce3b62a03f03bbce43f1c))
+
 ## [0.27.7](https://github.com/gotson/komga/compare/v0.27.6...v0.27.7) (2020-04-20)
 
 
