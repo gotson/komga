@@ -96,36 +96,18 @@
       </v-row>
 
       <v-divider class="my-4"/>
-
-      <v-item-group multiple v-model="selected">
-        <v-row justify="start" ref="content" v-resize="updateCardWidth">
-
-          <v-skeleton-loader v-for="(b, i) in books"
-                             :key="i"
-                             :width="cardWidth"
-                             :height="cardWidth / .7071 + 116"
-                             justify-self="start"
-                             :loading="b === null"
-                             type="card, text"
-                             class="ma-3 mx-2"
-                             v-intersect="onElementIntersect"
-                             :data-index="i"
-          >
-            <v-item v-slot:default="{ active, toggle }" :value="$_.get(b, 'id', 0)">
-              <card-book :book="b"
-                         :width="cardWidth"
-                         :selected="active"
-                         :select="toggle"
-                         :preSelect="selected.length > 0"
-                         :edit="singleEdit"
-              />
-            </v-item>
-          </v-skeleton-loader>
-
-        </v-row>
-      </v-item-group>
+      <item-browser :items="books" :selected.sync="selected" class="px-6" :edit-function="this.singleEdit">
+        <template v-slot:item="{ data }">
+          <card-book :book="data.item"
+                     :width="data.itemWidth"
+                     :selected="data.active"
+                     :select="data.toggle"
+                     :preSelect="data.preselect"
+                     :edit="data.editItem"
+          />
+        </template>
+      </item-browser>
     </v-container>
-
     <edit-series-dialog v-model="dialogEdit"
                         :series.sync="series"/>
   </div>
@@ -136,7 +118,7 @@ import Badge from '@/components/Badge.vue'
 import CardBook from '@/components/CardBook.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
-import { computeCardWidth } from '@/functions/grid-utilities'
+
 import { parseQuerySort } from '@/functions/query-params'
 import { seriesThumbnailUrl } from '@/functions/urls'
 import VisibleElements from '@/mixins/VisibleElements'
@@ -144,10 +126,11 @@ import { LoadState } from '@/types/common'
 import mixins from 'vue-typed-mixins'
 import EditBooksDialog from '@/components/EditBooksDialog.vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
+import ItemBrowser from '@/components/ItemBrowser.vue'
 
 export default mixins(VisibleElements).extend({
   name: 'BrowseSeries',
-  components: { CardBook, ToolbarSticky, SortMenuButton, Badge, EditSeriesDialog, EditBooksDialog },
+  components: { CardBook, ToolbarSticky, SortMenuButton, Badge, EditSeriesDialog, EditBooksDialog, ItemBrowser },
   data: () => {
     return {
       series: {} as SeriesDto,
@@ -163,7 +146,7 @@ export default mixins(VisibleElements).extend({
       }] as SortOption[],
       sortActive: {} as SortActive,
       sortDefault: { key: 'metadata.numberSort', order: 'asc' } as SortActive,
-      cardWidth: 150,
+
       dialogEdit: false,
       sortUnwatch: null as any,
       selected: [],
@@ -280,10 +263,6 @@ export default mixins(VisibleElements).extend({
     },
     async loadSeries () {
       this.series = await this.$komgaSeries.getOneSeries(this.seriesId)
-    },
-    updateCardWidth () {
-      const content = this.$refs.content as HTMLElement
-      this.cardWidth = computeCardWidth(content.clientWidth, this.$vuetify.breakpoint.name)
     },
     parseQuerySortOrDefault (querySort: any): SortActive {
       return parseQuerySort(querySort, this.sortOptions) || this.$_.clone(this.sortDefault)
