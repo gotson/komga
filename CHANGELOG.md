@@ -1,3 +1,10 @@
+## [0.28.1](https://github.com/gotson/komga/compare/v0.28.0...v0.28.1) (2020-05-04)
+
+
+### Bug Fixes
+
+* **webui:** refactor Cards to a single dynamic component ([#148](https://github.com/gotson/komga/issues/148)) ([74a9f7e](https://github.com/gotson/komga/commit/74a9f7e628de95cd78902d539f858737bb5c1d61))
+
 # [0.28.0](https://github.com/gotson/komga/compare/v0.27.7...v0.28.0) (2020-05-03)
 
 
