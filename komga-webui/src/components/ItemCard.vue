@@ -41,7 +41,7 @@
       <v-card-subtitle
         v-line-clamp="2"
         v-bind="subtitleProps"
-        v-html="subtitle"
+        v-html="title"
       >
       </v-card-subtitle>
       <v-card-text class="px-2" v-html="body">
@@ -103,8 +103,8 @@ export default Vue.extend({
     thumbnailUrl (): string {
       return this.computedItem.thumbnailUrl()
     },
-    subtitle (): string {
-      return this.computedItem.subtitle()
+    title (): string {
+      return this.computedItem.title()
     },
     subtitleProps (): Object {
       return this.computedItem.subtitleProps()

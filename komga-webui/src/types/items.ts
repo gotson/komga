@@ -34,8 +34,6 @@ export abstract class Item<T> {
 
   abstract title(): string
 
-  abstract subtitle(): string
-
   abstract body(): string
 
   abstract goto(router: VueRouter): void
@@ -46,13 +44,9 @@ export class BookItem extends Item<BookDto> {
     return bookThumbnailUrl(this.item.id)
   }
 
-  subtitle (): string {
+  title (): string {
     const m = this.item.metadata
     return `#${m.number} - ${m.title}`
-  }
-
-  title (): string {
-    return this.item.metadata.title
   }
 
   body (): string {
@@ -71,10 +65,6 @@ export class BookItem extends Item<BookDto> {
 export class SeriesItem extends Item<SeriesDto> {
   thumbnailUrl (): string {
     return seriesThumbnailUrl(this.item.id)
-  }
-
-  subtitle (): string {
-    return this.title()
   }
 
   title (): string {
