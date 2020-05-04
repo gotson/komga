@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.mediacontainer
 
 import mu.KotlinLogging
 import org.apache.commons.compress.archivers.zip.ZipFile
+import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.domain.model.MediaContainerEntry
 import org.jsoup.Jsoup
 import org.springframework.stereotype.Service
@@ -18,29 +19,29 @@ class EpubExtractor(contentDetector: ContentDetector) : ZipExtractor(contentDete
   override fun getEntries(path: Path): List<MediaContainerEntry> {
     ZipFile(path.toFile()).use { zip ->
       try {
-        val packagePath = getPackagePath(zip)
+        val opfFile = getPackagePath(zip)
 
-        val opf = zip.getInputStream(zip.getEntry(packagePath)).use { Jsoup.parse(it, null, "") }
-        val opfPath = Paths.get(packagePath).parentOrEmpty()
+        val opfDoc = zip.getInputStream(zip.getEntry(opfFile)).use { Jsoup.parse(it, null, "") }
+        val opfDir = Paths.get(opfFile).parentOrEmpty()
 
-        val manifest = opf.select("manifest > item")
+        val manifest = opfDoc.select("manifest > item")
           .associate { it.attr("id") to ManifestItem(it.attr("id"), it.attr("href"), it.attr("media-type")) }
 
-        val pages = opf.select("spine > itemref").map { it.attr("idref") }
+        val pages = opfDoc.select("spine > itemref").map { it.attr("idref") }
           .mapNotNull { manifest[it] }
           .map { it.href }
 
         val images = pages
-          .map { opfPath.resolve(it).normalize() }
+          .map { opfDir.resolve(it).normalize() }
           .flatMap { pagePath ->
-            val doc = zip.getInputStream(zip.getEntry(pagePath.toString())).use { Jsoup.parse(it, null, "") }
+            val doc = zip.getInputStream(zip.getEntry(pagePath.separatorsToUnix())).use { Jsoup.parse(it, null, "") }
             doc.getElementsByTag("img")
               .map { it.attr("src") }
               .map { pagePath.parentOrEmpty().resolve(it).normalize() }
           }
 
         return images.map { image ->
-          MediaContainerEntry(image.toString(), manifest.values.first { it.href == opfPath.relativize(image).toString() }.mediaType)
+          MediaContainerEntry(image.toString(), manifest.values.first { it.href == opfDir.relativize(image).separatorsToUnix() }.mediaType)
         }
       } catch (e: Exception) {
         logger.error(e) { "File is not a proper Epub, treating it as a zip file" }
@@ -56,15 +57,17 @@ class EpubExtractor(contentDetector: ContentDetector) : ZipExtractor(contentDete
     }
 
   fun getPackageFile(path: Path): String? =
-    ZipFile(path.toFile()).use {
+    ZipFile(path.toFile()).use { zip ->
       try {
-        it.getInputStream(it.getEntry(getPackagePath(it))).reader().use { it.readText() }
+        zip.getInputStream(zip.getEntry(getPackagePath(zip))).reader().use { it.readText() }
       } catch (e: Exception) {
         null
       }
     }
 
-  fun Path.parentOrEmpty() = parent ?: Paths.get("")
+  fun Path.parentOrEmpty(): Path = parent ?: Paths.get("")
+
+  fun Path.separatorsToUnix(): String = FilenameUtils.separatorsToUnix(this.toString())
 
   private data class ManifestItem(
     val id: String,
