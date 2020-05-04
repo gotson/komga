@@ -1,3 +1,10 @@
+## [0.28.2](https://github.com/gotson/komga/compare/v0.28.1...v0.28.2) (2020-05-04)
+
+
+### Bug Fixes
+
+* **epub:** epub were not loading properly on Windows ([eca453c](https://github.com/gotson/komga/commit/eca453c5344ce7c0144f30b6c1c08aa9d2c79038)), closes [#149](https://github.com/gotson/komga/issues/149)
+
 ## [0.28.1](https://github.com/gotson/komga/compare/v0.28.0...v0.28.1) (2020-05-04)
 
 
