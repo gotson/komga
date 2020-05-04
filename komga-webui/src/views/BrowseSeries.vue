@@ -96,36 +96,8 @@
       </v-row>
 
       <v-divider class="my-4"/>
-
-      <v-item-group multiple v-model="selected">
-        <v-row justify="start" ref="content" v-resize="updateCardWidth">
-
-          <v-skeleton-loader v-for="(b, i) in books"
-                             :key="i"
-                             :width="cardWidth"
-                             :height="cardWidth / .7071 + 116"
-                             justify-self="start"
-                             :loading="b === null"
-                             type="card, text"
-                             class="ma-3 mx-2"
-                             v-intersect="onElementIntersect"
-                             :data-index="i"
-          >
-            <v-item v-slot:default="{ active, toggle }" :value="$_.get(b, 'id', 0)">
-              <card-book :book="b"
-                         :width="cardWidth"
-                         :selected="active"
-                         :select="toggle"
-                         :preSelect="selected.length > 0"
-                         :edit="singleEdit"
-              />
-            </v-item>
-          </v-skeleton-loader>
-
-        </v-row>
-      </v-item-group>
+      <item-browser :items="books" :selected.sync="selected" :edit-function="this.singleEdit" class="px-6" @update="updateVisible"></item-browser>
     </v-container>
-
     <edit-series-dialog v-model="dialogEdit"
                         :series.sync="series"/>
   </div>
@@ -133,21 +105,19 @@
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
-import CardBook from '@/components/CardBook.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
-import { computeCardWidth } from '@/functions/grid-utilities'
+import Vue from 'vue'
 import { parseQuerySort } from '@/functions/query-params'
 import { seriesThumbnailUrl } from '@/functions/urls'
-import VisibleElements from '@/mixins/VisibleElements'
 import { LoadState } from '@/types/common'
-import mixins from 'vue-typed-mixins'
 import EditBooksDialog from '@/components/EditBooksDialog.vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
+import ItemBrowser from '@/components/ItemBrowser.vue'
 
-export default mixins(VisibleElements).extend({
+export default Vue.extend({
   name: 'BrowseSeries',
-  components: { CardBook, ToolbarSticky, SortMenuButton, Badge, EditSeriesDialog, EditBooksDialog },
+  components: { ToolbarSticky, SortMenuButton, Badge, EditSeriesDialog, EditBooksDialog, ItemBrowser },
   data: () => {
     return {
       series: {} as SeriesDto,
@@ -163,7 +133,6 @@ export default mixins(VisibleElements).extend({
       }] as SortOption[],
       sortActive: {} as SortActive,
       sortDefault: { key: 'metadata.numberSort', order: 'asc' } as SortActive,
-      cardWidth: 150,
       dialogEdit: false,
       sortUnwatch: null as any,
       selected: [],
@@ -189,21 +158,6 @@ export default mixins(VisibleElements).extend({
     },
   },
   watch: {
-    async visibleElements (val) {
-      for (const i of val) {
-        const pageNumber = Math.floor(i / this.pageSize)
-        if (this.pagesState[pageNumber] === undefined || this.pagesState[pageNumber] === LoadState.NotLoaded) {
-          this.processPage(await this.loadPage(pageNumber, this.seriesId))
-        }
-      }
-
-      const max = this.$_.max(val) as number | undefined
-      const index = (max === undefined ? 0 : max).toString()
-
-      if (this.$route.params.index !== index) {
-        this.updateRoute(index)
-      }
-    },
     series (val) {
       if (this.$_.has(val, 'metadata.title')) {
         document.title = `Komga - ${val.metadata.title}`
@@ -268,6 +222,21 @@ export default mixins(VisibleElements).extend({
     next()
   },
   methods: {
+    async updateVisible (val: []) {
+      for (const i of val) {
+        const pageNumber = Math.floor(i / this.pageSize)
+        if (this.pagesState[pageNumber] === undefined || this.pagesState[pageNumber] === LoadState.NotLoaded) {
+          this.processPage(await this.loadPage(pageNumber, this.seriesId))
+        }
+      }
+
+      const max = this.$_.max(val) as number | undefined
+      const index = (max === undefined ? 0 : max).toString()
+
+      if (this.$route.params.index !== index) {
+        this.updateRoute(index)
+      }
+    },
     setWatches () {
       this.sortUnwatch = this.$watch('sortActive', this.updateRouteAndReload)
     },
@@ -280,10 +249,6 @@ export default mixins(VisibleElements).extend({
     },
     async loadSeries () {
       this.series = await this.$komgaSeries.getOneSeries(this.seriesId)
-    },
-    updateCardWidth () {
-      const content = this.$refs.content as HTMLElement
-      this.cardWidth = computeCardWidth(content.clientWidth, this.$vuetify.breakpoint.name)
     },
     parseQuerySortOrDefault (querySort: any): SortActive {
       return parseQuerySort(querySort, this.sortOptions) || this.$_.clone(this.sortDefault)
@@ -301,7 +266,6 @@ export default mixins(VisibleElements).extend({
     reloadData (seriesId: number, countItem?: number) {
       this.totalElements = null
       this.pagesState = []
-      this.visibleElements = []
       this.books = Array(countItem || this.pageSize).fill(null)
       this.loadInitialData(seriesId)
     },

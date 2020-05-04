@@ -51,7 +51,7 @@
     "sass-loader": "^8.0.2",
     "ts-jest": "^25.2.1",
     "typeface-roboto": "0.0.75",
-    "typescript": "^3.8.2",
+    "typescript": "^3.8.3",
     "vue-cli-plugin-vuetify": "^2.0.5",
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.4.3"

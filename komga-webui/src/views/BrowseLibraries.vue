@@ -69,65 +69,49 @@
                         :series.sync="editSeriesSingle"
     />
 
-    <v-item-group multiple v-model="selected">
-      <v-container fluid class="px-6">
-        <v-row justify="start" ref="content" v-resize="updateCardWidth" v-if="totalElements !== 0">
-          <v-skeleton-loader v-for="(s, i) in series"
-                             :key="i"
-                             :width="cardWidth"
-                             :height="cardWidth / .7071 + 94"
-                             justify-self="start"
-                             :loading="s === null"
-                             type="card, text"
-                             class="ma-3 mx-2"
-                             v-intersect="onElementIntersect"
-                             :data-index="i"
-          >
-            <v-item v-slot:default="{ active, toggle }" :value="$_.get(s, 'id', 0)">
-              <card-series :series="s"
-                           :width="cardWidth"
-                           :selected="active"
-                           :select="toggle"
-                           :preSelect="selected.length > 0"
-                           :edit="singleEdit"
-              />
-            </v-item>
-          </v-skeleton-loader>
-        </v-row>
-
-        <!--  Empty state if filter returns no books  -->
-        <v-row justify="center" v-else>
-          <empty-state title="The active filter has no matches"
-                       sub-title="Use the menu above to change the active filter"
-                       icon="mdi-book-multiple"
-                       icon-color="secondary"
-          >
-            <v-btn @click="filterStatus = []">Clear filter</v-btn>
-          </empty-state>
-        </v-row>
-      </v-container>
-    </v-item-group>
+    <item-browser :items="series"
+                  :selected.sync="selected"
+                  :edit-function="this.singleEdit"
+                  class="px-6"
+                  @update="updateVisible"
+    >
+      <template #empty v-if="filterStatus.length > 0">
+        <empty-state title="The active filter has no matches"
+                     sub-title="Use the menu above to change the active filter"
+                     icon="mdi-book-multiple"
+                     icon-color="secondary"
+        >
+          <v-btn @click="filterStatus = []">Clear filter</v-btn>
+        </empty-state>
+      </template>
+      <template #empty v-else>
+        <empty-state title="There are no current libraries"
+                     sub-title="Use the + button on the side bar to add a library"
+                     icon="mdi-book-multiple"
+                     icon-color="secondary"
+        >
+        </empty-state>
+      </template>
+    </item-browser>
   </div>
 </template>
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
-import CardSeries from '@/components/CardSeries.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 import LibraryActionsMenu from '@/components/LibraryActionsMenu.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
-import { computeCardWidth } from '@/functions/grid-utilities'
 import { parseQuerySort } from '@/functions/query-params'
-import VisibleElements from '@/mixins/VisibleElements'
 import { LoadState } from '@/types/common'
-import mixins from 'vue-typed-mixins'
 import { SeriesStatus } from '@/types/enum-series'
+import ItemBrowser from '@/components/ItemBrowser.vue'
+import Vue from 'vue'
 
-export default mixins(VisibleElements).extend({
+export default Vue.extend({
   name: 'BrowseLibraries',
-  components: { LibraryActionsMenu, CardSeries, EmptyState, ToolbarSticky, SortMenuButton, Badge, EditSeriesDialog },
+  components: { LibraryActionsMenu, EmptyState, ToolbarSticky, SortMenuButton, Badge, EditSeriesDialog, ItemBrowser },
   data: () => {
     return {
       library: undefined as LibraryDto | undefined,
@@ -146,7 +130,6 @@ export default mixins(VisibleElements).extend({
       sortDefault: { key: 'metadata.titleSort', order: 'asc' } as SortActive,
       filterStatus: [] as string[],
       SeriesStatus,
-      cardWidth: 150,
       sortUnwatch: null as any,
       filterUnwatch: null as any,
       selected: [],
@@ -161,21 +144,6 @@ export default mixins(VisibleElements).extend({
     },
   },
   watch: {
-    async visibleElements (val) {
-      for (const i of val) {
-        const pageNumber = Math.floor(i / this.pageSize)
-        if (this.pagesState[pageNumber] === undefined || this.pagesState[pageNumber] === LoadState.NotLoaded) {
-          this.processPage(await this.loadPage(pageNumber, this.libraryId))
-        }
-      }
-
-      const max = this.$_.max(val) as number | undefined
-      const index = (max === undefined ? 0 : max).toString()
-
-      if (this.$route.params.index !== index) {
-        this.updateRoute(index)
-      }
-    },
     selected (val: number[]) {
       this.selectedSeries = val.map(id => this.series.find(s => s.id === id))
         .filter(x => x !== undefined) as SeriesDto[]
@@ -242,6 +210,21 @@ export default mixins(VisibleElements).extend({
     },
   },
   methods: {
+    async updateVisible (val: []) {
+      for (const i of val) {
+        const pageNumber = Math.floor(i / this.pageSize)
+        if (this.pagesState[pageNumber] === undefined || this.pagesState[pageNumber] === LoadState.NotLoaded) {
+          this.processPage(await this.loadPage(pageNumber, this.libraryId))
+        }
+      }
+
+      const max = this.$_.max(val) as number | undefined
+      const index = (max === undefined ? 0 : max).toString()
+
+      if (this.$route.params.index !== index) {
+        this.updateRoute(index)
+      }
+    },
     setWatches () {
       this.sortUnwatch = this.$watch('sortActive', this.updateRouteAndReload)
       this.filterUnwatch = this.$watch('filterStatus', this.updateRouteAndReload)
@@ -254,10 +237,6 @@ export default mixins(VisibleElements).extend({
       this.updateRoute()
       this.reloadData(this.libraryId)
     },
-    updateCardWidth () {
-      const content = this.$refs.content as HTMLElement
-      this.cardWidth = computeCardWidth(content.clientWidth, this.$vuetify.breakpoint.name)
-    },
     parseQuerySortOrDefault (querySort: any): SortActive {
       return parseQuerySort(querySort, this.sortOptions) || this.$_.clone(this.sortDefault)
     },
@@ -267,7 +246,6 @@ export default mixins(VisibleElements).extend({
     reloadData (libraryId: number, countItem?: number) {
       this.totalElements = null
       this.pagesState = []
-      this.visibleElements = []
       this.series = Array(countItem || this.pageSize).fill(null)
       this.loadInitialData(libraryId)
     },
