@@ -26,7 +26,6 @@ export abstract class Item<T> {
     return {
       style: 'word-break: normal !important; height: 4em',
       'class': 'pa-2 pb-1 text--primary',
-      'v-line-clamp': 2,
       title: this.title(),
     }
   }
@@ -75,7 +74,7 @@ export class SeriesItem extends Item<SeriesDto> {
   }
 
   subtitle (): string {
-    return ''
+    return this.title()
   }
 
   title (): string {

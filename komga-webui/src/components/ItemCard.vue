@@ -18,7 +18,7 @@
             absolute
             :opacity="hover ? 0.3 : 0"
             :class="`${hover ? 'item-border-darken' : selected ? 'item-border' : 'item-border-transparent'} overlay-full`"
-          > {{ onSelected }}
+          >
             <v-icon v-if="onSelected"
                     :color="selected ? 'secondary' : ''"
                     style="position: absolute; top: 5px; left: 10px"
@@ -36,10 +36,11 @@
             </v-icon>
           </v-overlay>
         </v-fade-transition>
-
       </v-img>
       <!--      Description-->
+      {{ preselect }}
       <v-card-subtitle
+        v-line-clamp="2"
         v-bind="subtitleProps"
         v-html="subtitle"
       >
@@ -115,7 +116,11 @@ export default Vue.extend({
   },
   methods: {
     onClick () {
-      this.goto()
+      if (this.preselect && this.onSelected !== undefined) {
+        this.selectItem()
+      } else {
+        this.goto()
+      }
     },
     goto () {
       this.computedItem.goto(this.$router)

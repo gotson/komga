@@ -69,6 +69,12 @@ export default Vue.extend({
       },
       immediate: true,
     },
+    selected: {
+      handler () {
+        this.selectedItems = this.selected as []
+      },
+      immediate: true,
+    },
   },
   computed: {
     hasItems (): boolean {
