@@ -69,7 +69,12 @@
                         :series.sync="editSeriesSingle"
     />
 
-    <item-browser :items="series" :selected.sync="selected"  :edit-function="this.singleEdit" class="px-6">
+    <item-browser :items="series"
+                  :selected.sync="selected"
+                  :edit-function="this.singleEdit"
+                  class="px-6"
+                  @update="updateVisible"
+    >
       <template #empty v-if="filterStatus.length > 0">
         <empty-state title="The active filter has no matches"
                      sub-title="Use the menu above to change the active filter"
@@ -99,13 +104,12 @@ import LibraryActionsMenu from '@/components/LibraryActionsMenu.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { parseQuerySort } from '@/functions/query-params'
-import VisibleElements from '@/mixins/VisibleElements'
 import { LoadState } from '@/types/common'
-import mixins from 'vue-typed-mixins'
 import { SeriesStatus } from '@/types/enum-series'
 import ItemBrowser from '@/components/ItemBrowser.vue'
+import Vue from 'vue'
 
-export default mixins(VisibleElements).extend({
+export default Vue.extend({
   name: 'BrowseLibraries',
   components: { LibraryActionsMenu, EmptyState, ToolbarSticky, SortMenuButton, Badge, EditSeriesDialog, ItemBrowser },
   data: () => {
@@ -140,21 +144,6 @@ export default mixins(VisibleElements).extend({
     },
   },
   watch: {
-    async visibleElements (val) {
-      for (const i of val) {
-        const pageNumber = Math.floor(i / this.pageSize)
-        if (this.pagesState[pageNumber] === undefined || this.pagesState[pageNumber] === LoadState.NotLoaded) {
-          this.processPage(await this.loadPage(pageNumber, this.libraryId))
-        }
-      }
-
-      const max = this.$_.max(val) as number | undefined
-      const index = (max === undefined ? 0 : max).toString()
-
-      if (this.$route.params.index !== index) {
-        this.updateRoute(index)
-      }
-    },
     selected (val: number[]) {
       this.selectedSeries = val.map(id => this.series.find(s => s.id === id))
         .filter(x => x !== undefined) as SeriesDto[]
@@ -221,6 +210,21 @@ export default mixins(VisibleElements).extend({
     },
   },
   methods: {
+    async updateVisible (val: []) {
+      for (const i of val) {
+        const pageNumber = Math.floor(i / this.pageSize)
+        if (this.pagesState[pageNumber] === undefined || this.pagesState[pageNumber] === LoadState.NotLoaded) {
+          this.processPage(await this.loadPage(pageNumber, this.libraryId))
+        }
+      }
+
+      const max = this.$_.max(val) as number | undefined
+      const index = (max === undefined ? 0 : max).toString()
+
+      if (this.$route.params.index !== index) {
+        this.updateRoute(index)
+      }
+    },
     setWatches () {
       this.sortUnwatch = this.$watch('sortActive', this.updateRouteAndReload)
       this.filterUnwatch = this.$watch('filterStatus', this.updateRouteAndReload)
@@ -242,7 +246,6 @@ export default mixins(VisibleElements).extend({
     reloadData (libraryId: number, countItem?: number) {
       this.totalElements = null
       this.pagesState = []
-      this.visibleElements = []
       this.series = Array(countItem || this.pageSize).fill(null)
       this.loadInitialData(libraryId)
     },

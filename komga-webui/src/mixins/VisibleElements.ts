@@ -14,6 +14,7 @@ const visibleElements = Vue.extend({
       } else {
         this.$_.pull(this.visibleElements, elementIndex)
       }
+      this.$emit('update', this.visibleElements)
     },
   },
 })

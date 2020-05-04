@@ -1,7 +1,6 @@
 <template>
   <v-item-group multiple v-model="selectedItems">
     <v-row justify="start" ref="content" v-resize="onResize" v-if="hasItems">
-      <!--                         v-intersect="onElementIntersect"-->
       <v-skeleton-loader v-for="(item, index) in items"
                          :key="index"
                          :width="itemWidth"
@@ -11,6 +10,8 @@
                          type="card, text"
                          class="ma-3 mx-2"
                          :data-index="index"
+                         v-intersect="onElementIntersect"
+
       >
         <v-item v-slot:default="{ toggle, active }" :value="$_.get(item, 'id', 0)">
           <slot name="item" v-bind:data="{ toggle, active, item, index, itemWidth, preselect: shouldPreselect(), editItem }">
@@ -36,8 +37,10 @@
 import Vue from 'vue'
 import { computeCardWidth } from '@/functions/grid-utilities'
 import ItemCard from '@/components/ItemCard.vue'
+import mixins from 'vue-typed-mixins'
+import VisibleElements from '@/mixins/VisibleElements'
 
-export default Vue.extend({
+export default mixins(VisibleElements).extend({
   name: 'ItemBrowser',
   components: { ItemCard },
   props: {
@@ -63,6 +66,12 @@ export default Vue.extend({
     }
   },
   watch: {
+    series: {
+      handler () {
+        this.visibleElements = []
+      },
+      immediate: true,
+    },
     selectedItems: {
       handler () {
         this.$emit('update:selected', this.selectedItems)

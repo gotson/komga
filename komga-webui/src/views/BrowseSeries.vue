@@ -96,7 +96,7 @@
       </v-row>
 
       <v-divider class="my-4"/>
-      <item-browser :items="books" :selected.sync="selected" :edit-function="this.singleEdit" class="px-6" ></item-browser>
+      <item-browser :items="books" :selected.sync="selected" :edit-function="this.singleEdit" class="px-6" @update="updateVisible"></item-browser>
     </v-container>
     <edit-series-dialog v-model="dialogEdit"
                         :series.sync="series"/>
@@ -105,10 +105,8 @@
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
-import CardBook from '@/components/CardBook.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
-
 import Vue from 'vue'
 import { parseQuerySort } from '@/functions/query-params'
 import { seriesThumbnailUrl } from '@/functions/urls'
@@ -116,11 +114,8 @@ import { LoadState } from '@/types/common'
 import EditBooksDialog from '@/components/EditBooksDialog.vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
-import ItemCard from '@/components/ItemCard.vue'
-import mixins from 'vue-typed-mixins'
-import VisibleElements from '@/mixins/VisibleElements'
 
-export default mixins(VisibleElements).extend({
+export default Vue.extend({
   name: 'BrowseSeries',
   components: { ToolbarSticky, SortMenuButton, Badge, EditSeriesDialog, EditBooksDialog, ItemBrowser },
   data: () => {
@@ -163,21 +158,6 @@ export default mixins(VisibleElements).extend({
     },
   },
   watch: {
-    async visibleElements (val) {
-      for (const i of val) {
-        const pageNumber = Math.floor(i / this.pageSize)
-        if (this.pagesState[pageNumber] === undefined || this.pagesState[pageNumber] === LoadState.NotLoaded) {
-          this.processPage(await this.loadPage(pageNumber, this.seriesId))
-        }
-      }
-
-      const max = this.$_.max(val) as number | undefined
-      const index = (max === undefined ? 0 : max).toString()
-
-      if (this.$route.params.index !== index) {
-        this.updateRoute(index)
-      }
-    },
     series (val) {
       if (this.$_.has(val, 'metadata.title')) {
         document.title = `Komga - ${val.metadata.title}`
@@ -242,6 +222,21 @@ export default mixins(VisibleElements).extend({
     next()
   },
   methods: {
+    async updateVisible (val: []) {
+      for (const i of val) {
+        const pageNumber = Math.floor(i / this.pageSize)
+        if (this.pagesState[pageNumber] === undefined || this.pagesState[pageNumber] === LoadState.NotLoaded) {
+          this.processPage(await this.loadPage(pageNumber, this.seriesId))
+        }
+      }
+
+      const max = this.$_.max(val) as number | undefined
+      const index = (max === undefined ? 0 : max).toString()
+
+      if (this.$route.params.index !== index) {
+        this.updateRoute(index)
+      }
+    },
     setWatches () {
       this.sortUnwatch = this.$watch('sortActive', this.updateRouteAndReload)
     },
@@ -271,7 +266,6 @@ export default mixins(VisibleElements).extend({
     reloadData (seriesId: number, countItem?: number) {
       this.totalElements = null
       this.pagesState = []
-      this.visibleElements = []
       this.books = Array(countItem || this.pageSize).fill(null)
       this.loadInitialData(seriesId)
     },
