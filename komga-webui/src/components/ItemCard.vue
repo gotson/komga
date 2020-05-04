@@ -38,7 +38,6 @@
         </v-fade-transition>
       </v-img>
       <!--      Description-->
-      {{ preselect }}
       <v-card-subtitle
         v-line-clamp="2"
         v-bind="subtitleProps"
