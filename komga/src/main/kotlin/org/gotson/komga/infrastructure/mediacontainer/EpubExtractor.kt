@@ -22,7 +22,7 @@ class EpubExtractor(contentDetector: ContentDetector) : ZipExtractor(contentDete
         val opfFile = getPackagePath(zip)
 
         val opfDoc = zip.getInputStream(zip.getEntry(opfFile)).use { Jsoup.parse(it, null, "") }
-        val opfDir = Paths.get(opfFile).parentOrEmpty()
+        val opfDir = Paths.get(opfFile).parent
 
         val manifest = opfDoc.select("manifest > item")
           .associate { it.attr("id") to ManifestItem(it.attr("id"), it.attr("href"), it.attr("media-type")) }
@@ -32,16 +32,18 @@ class EpubExtractor(contentDetector: ContentDetector) : ZipExtractor(contentDete
           .map { it.href }
 
         val images = pages
-          .map { opfDir.resolve(it).normalize() }
+          .map { opfDir?.resolve(it)?.normalize() ?: Paths.get(it) }
           .flatMap { pagePath ->
             val doc = zip.getInputStream(zip.getEntry(pagePath.separatorsToUnix())).use { Jsoup.parse(it, null, "") }
             doc.getElementsByTag("img")
-              .map { it.attr("src") }
-              .map { pagePath.parentOrEmpty().resolve(it).normalize() }
+              .map { it.attr("src") } //get the src, which can be a relative path
+              .map { pagePath.parentOrEmpty().resolve(it).normalize() } //resolve it against the page folder
           }
 
         return images.map { image ->
-          MediaContainerEntry(image.toString(), manifest.values.first { it.href == opfDir.relativize(image).separatorsToUnix() }.mediaType)
+          MediaContainerEntry(image.separatorsToUnix(), manifest.values.first {
+            it.href == (opfDir?.relativize(image) ?: image).separatorsToUnix()
+          }.mediaType)
         }
       } catch (e: Exception) {
         logger.error(e) { "File is not a proper Epub, treating it as a zip file" }
