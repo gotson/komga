@@ -1,3 +1,10 @@
+## [0.28.4](https://github.com/gotson/komga/compare/v0.28.3...v0.28.4) (2020-05-06)
+
+
+### Bug Fixes
+
+* **tasks:** background tasks would stop running if disk is over 90% full ([dc33fb1](https://github.com/gotson/komga/commit/dc33fb1d10a72d0fc3bd6715f7fcd0c1dfead90b))
+
 ## [0.28.3](https://github.com/gotson/komga/compare/v0.28.2...v0.28.3) (2020-05-05)
 
 
