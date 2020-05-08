@@ -1,3 +1,10 @@
+## [0.28.6](https://github.com/gotson/komga/compare/v0.28.5...v0.28.6) (2020-05-08)
+
+
+### Bug Fixes
+
+* ignore alpha channel on image conversion ([9556ae5](https://github.com/gotson/komga/commit/9556ae51f262470b1fbb5fd9af2d8caeb3c1fa64)), closes [#153](https://github.com/gotson/komga/issues/153)
+
 ## [0.28.5](https://github.com/gotson/komga/compare/v0.28.4...v0.28.5) (2020-05-08)
 
 
