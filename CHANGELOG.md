@@ -1,3 +1,11 @@
+# [0.29.0](https://github.com/gotson/komga/compare/v0.28.6...v0.29.0) (2020-05-08)
+
+
+### Features
+
+* **webreader:** add setting to disable swipe navigation ([32170d4](https://github.com/gotson/komga/commit/32170d4d690fc047444e48ef3c71c640f3c45024))
+* **webreader:** do not always show reading direction pop ([dc7dc75](https://github.com/gotson/komga/commit/dc7dc75e317c904727045f9c9b818eb8dbd4d422)), closes [#151](https://github.com/gotson/komga/issues/151)
+
 ## [0.28.6](https://github.com/gotson/komga/compare/v0.28.5...v0.28.6) (2020-05-08)
 
 
