@@ -2,10 +2,10 @@
   <v-container class="ma-0 pa-0 full-height" fluid v-if="pages.length > 0"
                :style="`width: 100%; background-color: ${backgroundColor}`"
                v-touch="{
-                 left: () => turnRight(),
-                 right: () => turnLeft(),
-                 up: () => verticalNext(),
-                 down: () => verticalPrev()
+                 left: () => {if(swipe) {turnRight()}},
+                 right: () => {if(swipe) {turnLeft()}},
+                 up: () => {if(swipe) {verticalNext()}},
+                 down: () => {if(swipe) {verticalPrev()}}
                  }"
   >
     <div>
@@ -183,8 +183,13 @@
             <settings-switch v-model="doublePages" label="Page Layout"
                              :status="`${ doublePages ? 'Double Pages' : 'Single Page'}`"></settings-switch>
           </v-list-item>
+
           <v-list-item>
             <settings-switch v-model="animations" label="Page Transitions"></settings-switch>
+          </v-list-item>
+
+          <v-list-item>
+            <settings-switch v-model="swipe" label="Swipe navigation"></settings-switch>
           </v-list-item>
 
           <v-list-item>
@@ -279,6 +284,7 @@ import { ReadingDirection } from '@/types/enum-books'
 const cookieFit = 'webreader.fit'
 const cookieReadingDirection = 'webreader.readingDirection'
 const cookieDoublePages = 'webreader.doublePages'
+const cookieSwipe = 'webreader.swipe'
 const cookieAnimations = 'webreader.animations'
 const cookieBackground = 'webreader.background'
 
@@ -313,6 +319,7 @@ export default Vue.extend({
       goToPage: 1,
       settings: {
         doublePages: false,
+        swipe: true,
         imageFits: Object.values(ImageFit),
         fit: ImageFit.HEIGHT,
         readingDirection: ReadingDirection.LEFT_TO_RIGHT,
@@ -353,6 +360,9 @@ export default Vue.extend({
     })
     this.loadFromCookie(cookieDoublePages, (v) => {
       this.doublePages = (v === 'true')
+    })
+    this.loadFromCookie(cookieSwipe, (v) => {
+      this.swipe = (v === 'true')
     })
     this.loadFromCookie(cookieFit, (v) => {
       if (v) {
@@ -488,6 +498,15 @@ export default Vue.extend({
         this.settings.doublePages = doublePages
         this.goTo(current)
         this.$cookies.set(cookieDoublePages, doublePages, Infinity)
+      },
+    },
+    swipe: {
+      get: function (): boolean {
+        return this.settings.swipe
+      },
+      set: function (swipe: boolean): void {
+        this.settings.swipe = swipe
+        this.$cookies.set(cookieSwipe, swipe, Infinity)
       },
     },
   },
