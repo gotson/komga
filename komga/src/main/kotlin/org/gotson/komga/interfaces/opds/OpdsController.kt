@@ -71,6 +71,8 @@ class OpdsController(
 
   private val decimalFormat = DecimalFormat("0.#")
 
+  private val opdsPseSupportedFormats = listOf("image/jpeg", "image/png", "image/gif")
+
   private val feedCatalog = OpdsFeedNavigation(
     id = "root",
     title = "Komga OPDS catalog",
@@ -258,8 +260,16 @@ class OpdsController(
       link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "${ROUTE_BASE}series/$id")
     )
 
-  private fun Book.toOpdsEntry(prependNumber: Boolean) =
-    OpdsEntryAcquisition(
+  private fun Book.toOpdsEntry(prependNumber: Boolean): OpdsEntryAcquisition {
+    val mediaTypes = media.pages.map { it.mediaType }.distinct()
+
+    val opdsLinkPageStreaming = if (mediaTypes.size == 1 && mediaTypes.first() in opdsPseSupportedFormats) {
+      OpdsLinkPageStreaming(mediaTypes.first(), "${ROUTE_BASE}books/$id/pages/{pageNumber}?zero_based=true", media.pages.size)
+    } else {
+      OpdsLinkPageStreaming("image/jpeg", "${ROUTE_BASE}books/$id/pages/{pageNumber}?convert=jpeg&zero_based=true", media.pages.size)
+    }
+
+    return OpdsEntryAcquisition(
       title = "${if (prependNumber) "${decimalFormat.format(metadata.numberSort)} - " else ""}${metadata.title}",
       updated = lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
       id = id.toString(),
@@ -274,9 +284,10 @@ class OpdsController(
         OpdsLinkImageThumbnail("image/jpeg", "${ROUTE_BASE}books/$id/thumbnail"),
         OpdsLinkImage(media.pages[0].mediaType, "${ROUTE_BASE}books/$id/pages/1"),
         OpdsLinkFileAcquisition(media.mediaType, "${ROUTE_BASE}books/$id/file/${fileName()}"),
-        OpdsLinkPageStreaming("image/jpeg", "${ROUTE_BASE}books/$id/pages/{pageNumber}?convert=jpeg&zero_based=true", media.pages.size)
+        opdsLinkPageStreaming
       )
     )
+  }
 
   private fun Library.toOpdsEntry(): OpdsEntryNavigation {
     return OpdsEntryNavigation(
