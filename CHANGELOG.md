@@ -1,3 +1,10 @@
+## [0.28.5](https://github.com/gotson/komga/compare/v0.28.4...v0.28.5) (2020-05-08)
+
+
+### Bug Fixes
+
+* **opds:** do not always convert images ([6430c92](https://github.com/gotson/komga/commit/6430c92bcb11ef598e4c26eb61ad9fe6733a1d0d)), closes [#153](https://github.com/gotson/komga/issues/153)
+
 ## [0.28.4](https://github.com/gotson/komga/compare/v0.28.3...v0.28.4) (2020-05-06)
 
 
