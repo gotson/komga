@@ -573,9 +573,11 @@ export default Vue.extend({
         case ReadingDirection.LEFT_TO_RIGHT:
         case ReadingDirection.RIGHT_TO_LEFT:
         case ReadingDirection.VERTICAL:
-          // bypass setter so cookies aren't set
-          this.settings.readingDirection = this.book.metadata.readingDirection
-          this.snackReadingDirection = true
+          if (this.readingDirection !== this.book.metadata.readingDirection) {
+            // bypass setter so cookies aren't set
+            this.settings.readingDirection = this.book.metadata.readingDirection
+            this.snackReadingDirection = true
+          }
           break
       }
 
