@@ -1,3 +1,10 @@
+## [0.29.1](https://github.com/gotson/komga/compare/v0.29.0...v0.29.1) (2020-05-12)
+
+
+### Bug Fixes
+
+* **opds:** use servlet context path to build links ([d82eefe](https://github.com/gotson/komga/commit/d82eefe19a95950df72d1070fdf4c5194b377392)), closes [#156](https://github.com/gotson/komga/issues/156)
+
 # [0.29.0](https://github.com/gotson/komga/compare/v0.28.6...v0.29.0) (2020-05-08)
 
 
