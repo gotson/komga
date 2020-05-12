@@ -44,6 +44,7 @@ import java.net.URI
 import java.text.DecimalFormat
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import javax.servlet.ServletContext
 
 private val logger = KotlinLogging.logger {}
 
@@ -61,13 +62,16 @@ private const val ID_LIBRARIES_ALL = "allLibraries"
 @RestController
 @RequestMapping(value = [ROUTE_BASE], produces = [MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE])
 class OpdsController(
+  servletContext: ServletContext,
   private val seriesRepository: SeriesRepository,
   private val libraryRepository: LibraryRepository
 ) {
 
+  private val routeBase = "${servletContext.contextPath}$ROUTE_BASE"
+
   private val komgaAuthor = OpdsAuthor("Komga", URI("https://github.com/gotson/komga"))
-  private val linkStart = OpdsLinkFeedNavigation(OpdsLinkRel.START, "$ROUTE_BASE$ROUTE_CATALOG")
-  private val linkSearch = OpdsLinkSearch("$ROUTE_BASE$ROUTE_SEARCH")
+  private val linkStart = OpdsLinkFeedNavigation(OpdsLinkRel.START, "$routeBase$ROUTE_CATALOG")
+  private val linkSearch = OpdsLinkSearch("$routeBase$ROUTE_SEARCH")
 
   private val decimalFormat = DecimalFormat("0.#")
 
@@ -79,7 +83,7 @@ class OpdsController(
     updated = ZonedDateTime.now(),
     author = komgaAuthor,
     links = listOf(
-      OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "$ROUTE_BASE$ROUTE_CATALOG"),
+      OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "$routeBase$ROUTE_CATALOG"),
       linkStart,
       linkSearch
     ),
@@ -89,21 +93,21 @@ class OpdsController(
         updated = ZonedDateTime.now(),
         id = ID_SERIES_ALL,
         content = "Browse by series",
-        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "$ROUTE_BASE$ROUTE_SERIES_ALL")
+        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "$routeBase$ROUTE_SERIES_ALL")
       ),
       OpdsEntryNavigation(
         title = "Latest series",
         updated = ZonedDateTime.now(),
         id = ID_SERIES_LATEST,
         content = "Browse latest series",
-        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "$ROUTE_BASE$ROUTE_SERIES_LATEST")
+        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "$routeBase$ROUTE_SERIES_LATEST")
       ),
       OpdsEntryNavigation(
         title = "All libraries",
         updated = ZonedDateTime.now(),
         id = ID_LIBRARIES_ALL,
         content = "Browse by library",
-        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "$ROUTE_BASE$ROUTE_LIBRARIES_ALL")
+        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "$routeBase$ROUTE_LIBRARIES_ALL")
       )
     )
   )
@@ -111,7 +115,7 @@ class OpdsController(
   private val openSearchDescription = OpenSearchDescription(
     shortName = "Search",
     description = "Search for series",
-    url = OpenSearchDescription.OpenSearchUrl("$ROUTE_BASE$ROUTE_SERIES_ALL?search={searchTerms}")
+    url = OpenSearchDescription.OpenSearchUrl("$routeBase$ROUTE_SERIES_ALL?search={searchTerms}")
   )
 
   @GetMapping(ROUTE_CATALOG)
@@ -149,7 +153,7 @@ class OpdsController(
       updated = ZonedDateTime.now(),
       author = komgaAuthor,
       links = listOf(
-        OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "$ROUTE_BASE$ROUTE_SERIES_ALL"),
+        OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "$routeBase$ROUTE_SERIES_ALL"),
         linkStart
       ),
       entries = series.map { it.toOpdsEntry() }
@@ -174,7 +178,7 @@ class OpdsController(
       updated = ZonedDateTime.now(),
       author = komgaAuthor,
       links = listOf(
-        OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "$ROUTE_BASE$ROUTE_SERIES_LATEST"),
+        OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "$routeBase$ROUTE_SERIES_LATEST"),
         linkStart
       ),
       entries = series.map { it.toOpdsEntry() }
@@ -197,7 +201,7 @@ class OpdsController(
       updated = ZonedDateTime.now(),
       author = komgaAuthor,
       links = listOf(
-        OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "$ROUTE_BASE$ROUTE_LIBRARIES_ALL"),
+        OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "$routeBase$ROUTE_LIBRARIES_ALL"),
         linkStart
       ),
       entries = libraries.map { it.toOpdsEntry() }
@@ -219,7 +223,7 @@ class OpdsController(
         updated = series.lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
         author = komgaAuthor,
         links = listOf(
-          OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "${ROUTE_BASE}series/$id"),
+          OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "${routeBase}series/$id"),
           linkStart
         ),
         entries = series.books
@@ -243,7 +247,7 @@ class OpdsController(
         updated = library.lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
         author = komgaAuthor,
         links = listOf(
-          OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "${ROUTE_BASE}libraries/$id"),
+          OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "${routeBase}libraries/$id"),
           linkStart
         ),
         entries = seriesRepository.findByLibraryId(library.id, Sort.by(Sort.Order.asc("metadata.titleSort").ignoreCase())).map { it.toOpdsEntry() }
@@ -257,16 +261,16 @@ class OpdsController(
       updated = lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
       id = id.toString(),
       content = "",
-      link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "${ROUTE_BASE}series/$id")
+      link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "${routeBase}series/$id")
     )
 
   private fun Book.toOpdsEntry(prependNumber: Boolean): OpdsEntryAcquisition {
     val mediaTypes = media.pages.map { it.mediaType }.distinct()
 
     val opdsLinkPageStreaming = if (mediaTypes.size == 1 && mediaTypes.first() in opdsPseSupportedFormats) {
-      OpdsLinkPageStreaming(mediaTypes.first(), "${ROUTE_BASE}books/$id/pages/{pageNumber}?zero_based=true", media.pages.size)
+      OpdsLinkPageStreaming(mediaTypes.first(), "${routeBase}books/$id/pages/{pageNumber}?zero_based=true", media.pages.size)
     } else {
-      OpdsLinkPageStreaming("image/jpeg", "${ROUTE_BASE}books/$id/pages/{pageNumber}?convert=jpeg&zero_based=true", media.pages.size)
+      OpdsLinkPageStreaming("image/jpeg", "${routeBase}books/$id/pages/{pageNumber}?convert=jpeg&zero_based=true", media.pages.size)
     }
 
     return OpdsEntryAcquisition(
@@ -281,9 +285,9 @@ class OpdsController(
       },
       authors = metadata.authors.map { OpdsAuthor(it.name) },
       links = listOf(
-        OpdsLinkImageThumbnail("image/jpeg", "${ROUTE_BASE}books/$id/thumbnail"),
-        OpdsLinkImage(media.pages[0].mediaType, "${ROUTE_BASE}books/$id/pages/1"),
-        OpdsLinkFileAcquisition(media.mediaType, "${ROUTE_BASE}books/$id/file/${fileName()}"),
+        OpdsLinkImageThumbnail("image/jpeg", "${routeBase}books/$id/thumbnail"),
+        OpdsLinkImage(media.pages[0].mediaType, "${routeBase}books/$id/pages/1"),
+        OpdsLinkFileAcquisition(media.mediaType, "${routeBase}books/$id/file/${fileName()}"),
         opdsLinkPageStreaming
       )
     )
@@ -295,7 +299,7 @@ class OpdsController(
       updated = lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
       id = id.toString(),
       content = "",
-      link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "${ROUTE_BASE}libraries/$id")
+      link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "${routeBase}libraries/$id")
     )
   }
 
