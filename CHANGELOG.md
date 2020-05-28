@@ -1,3 +1,10 @@
+# [0.30.0](https://github.com/gotson/komga/compare/v0.29.1...v0.30.0) (2020-05-28)
+
+
+### Features
+
+* switch to JRE for docker image ([3206495](https://github.com/gotson/komga/commit/320649594f72563e41f0052fef26493f518fff55))
+
 ## [0.29.1](https://github.com/gotson/komga/compare/v0.29.0...v0.29.1) (2020-05-12)
 
 
