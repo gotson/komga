@@ -1,36 +1,26 @@
 package org.gotson.komga.domain.persistence
 
 import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.Library
-import org.gotson.komga.domain.model.Media
-import org.hibernate.annotations.QueryHints.CACHEABLE
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor
-import org.springframework.data.jpa.repository.QueryHints
-import org.springframework.stereotype.Repository
-import java.net.URL
-import javax.persistence.QueryHint
+import org.gotson.komga.domain.model.BookSearch
 
-@Repository
-interface BookRepository : JpaRepository<Book, Long>, JpaSpecificationExecutor<Book> {
-  @QueryHints(QueryHint(name = CACHEABLE, value = "true"))
-  override fun findAll(pageable: Pageable): Page<Book>
+interface BookRepository {
+  fun findByIdOrNull(bookId: Long): Book?
+  fun findBySeriesId(seriesId: Long): Collection<Book>
+  fun findAll(): Collection<Book>
+  fun findAll(bookSearch: BookSearch): Collection<Book>
 
-  @QueryHints(QueryHint(name = CACHEABLE, value = "true"))
-  fun findAllBySeriesId(seriesId: Long, pageable: Pageable): Page<Book>
+  fun getLibraryId(bookId: Long): Long?
+  fun findFirstIdInSeries(seriesId: Long): Long?
+  fun findAllIdBySeriesId(seriesId: Long): Collection<Long>
+  fun findAllIdByLibraryId(libraryId: Long): Collection<Long>
+  fun findAllId(bookSearch: BookSearch): Collection<Long>
 
-  @QueryHints(QueryHint(name = CACHEABLE, value = "true"))
-  fun findAllByMediaStatusInAndSeriesId(status: Collection<Media.Status>, seriesId: Long, pageable: Pageable): Page<Book>
+  fun insert(book: Book): Book
+  fun update(book: Book)
 
-  @QueryHints(QueryHint(name = CACHEABLE, value = "true"))
-  fun findBySeriesLibraryIn(seriesLibrary: Collection<Library>, pageable: Pageable): Page<Book>
+  fun delete(bookId: Long)
+  fun deleteAll(bookIds: List<Long>)
+  fun deleteAll()
 
-  fun findBySeriesLibraryIn(seriesLibrary: Collection<Library>): List<Book>
-  fun findBySeriesLibrary(seriesLibrary: Library): List<Book>
-
-  fun findByUrl(url: URL): Book?
-  fun findAllByMediaStatusAndSeriesLibrary(status: Media.Status, library: Library): List<Book>
-  fun findAllByMediaThumbnailIsNull(): List<Book>
+  fun count(): Long
 }

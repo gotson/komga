@@ -4,12 +4,14 @@ import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.verify
 import mu.KotlinLogging
-import org.gotson.komga.application.service.MetadataLifecycle
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
+import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
-import org.gotson.komga.domain.persistence.SeriesRepository
+import org.gotson.komga.domain.service.LibraryLifecycle
+import org.gotson.komga.domain.service.MetadataLifecycle
+import org.gotson.komga.domain.service.SeriesLifecycle
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
@@ -32,13 +34,15 @@ class TaskHandlerTest(
   @Autowired private val taskReceiver: TaskReceiver,
   @Autowired private val jmsTemplate: JmsTemplate,
   @Autowired private val libraryRepository: LibraryRepository,
-  @Autowired private val seriesRepository: SeriesRepository
+  @Autowired private val bookRepository: BookRepository,
+  @Autowired private val seriesLifecycle: SeriesLifecycle,
+  @Autowired private val libraryLifecycle: LibraryLifecycle
 ) {
 
   @MockkBean
   private lateinit var mockMetadataLifecycle: MetadataLifecycle
 
-  private val library = makeLibrary()
+  private var library = makeLibrary()
 
   init {
     jmsTemplate.receiveTimeout = JmsDestinationAccessor.RECEIVE_TIMEOUT_NO_WAIT
@@ -46,7 +50,7 @@ class TaskHandlerTest(
 
   @BeforeAll
   fun `setup library`() {
-    libraryRepository.save(library)
+    library = libraryRepository.insert(library)
   }
 
   @AfterAll
@@ -56,7 +60,7 @@ class TaskHandlerTest(
 
   @AfterEach
   fun `clear repository`() {
-    seriesRepository.deleteAll()
+    libraryLifecycle.deleteLibrary(library)
   }
 
   @AfterEach
@@ -68,14 +72,18 @@ class TaskHandlerTest(
 
   @Test
   fun `when similar tasks are submitted then only a few are executed`() {
-    val book = makeBook("book")
-    val series = makeSeries("series", listOf(book)).also { it.library = library }
-    seriesRepository.save(series)
+    val book = makeBook("book", libraryId = library.id)
+    val series = makeSeries("series", libraryId = library.id)
+    seriesLifecycle.createSeries(series).let {
+      seriesLifecycle.addBooks(it, listOf(book))
+    }
 
     every { mockMetadataLifecycle.refreshMetadata(any()) } answers { Thread.sleep(1_000) }
 
+    val createdBook = bookRepository.findAll().first()
+
     repeat(100) {
-      taskReceiver.refreshBookMetadata(book)
+      taskReceiver.refreshBookMetadata(createdBook)
     }
 
     Thread.sleep(5_000)

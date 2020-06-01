@@ -9,12 +9,6 @@ komga:
 spring:
   datasource:
     url: jdbc:h2:mem:testdb
-  jpa:
-    properties:
-      hibernate:
-        generate_statistics: true
-        session.events.log: false
-        format_sql: true
   artemis:
     embedded:
       data-directory: ./artemis
@@ -24,14 +18,11 @@ logging:
     name: komga-dev.log
   level:
     org.apache.activemq.audit.message: WARN
+#    org.jooq: DEBUG
 #    web: DEBUG
 #    org.gotson.komga: DEBUG
 #    org.springframework.jms: DEBUG
 #    org.springframework.security.web.FilterChainProxy: DEBUG
-#    org.hibernate.stat: DEBUG
-#    org.hibernate.SQL: DEBUG
-#    org.hibernate.cache: DEBUG
-#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
 management.metrics.export.influx:
   #  enabled: true

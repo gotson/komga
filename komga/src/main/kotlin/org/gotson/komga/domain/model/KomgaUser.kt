@@ -1,77 +1,55 @@
 package org.gotson.komga.domain.model
 
-import javax.persistence.CollectionTable
-import javax.persistence.Column
-import javax.persistence.ElementCollection
-import javax.persistence.Entity
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
-import javax.persistence.FetchType
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.JoinTable
-import javax.persistence.ManyToMany
-import javax.persistence.Table
+import java.time.LocalDateTime
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
 
-@Entity
-@Table(name = "user")
-class KomgaUser(
+data class KomgaUser(
   @Email
   @NotBlank
-  @Column(name = "email", nullable = false, unique = true)
-  var email: String,
-
+  val email: String,
   @NotBlank
-  @Column(name = "password", nullable = false)
-  var password: String,
+  val password: String,
+  val roleAdmin: Boolean,
+  val sharedLibrariesIds: Set<Long> = emptySet(),
+  val sharedAllLibraries: Boolean = true,
+  val id: Long = 0,
+  override val createdDate: LocalDateTime = LocalDateTime.now(),
+  override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
+) : Auditable() {
 
-  @Enumerated(EnumType.STRING)
-  @ElementCollection(fetch = FetchType.EAGER)
-  @CollectionTable(name = "user_role", joinColumns = [JoinColumn(name = "user_id")])
-  var roles: MutableSet<UserRoles> = mutableSetOf()
+  fun roles(): Set<String> {
+    val roles = mutableSetOf("USER")
+    if (roleAdmin) roles.add("ADMIN")
+    return roles
+  }
 
-) : AuditableEntity() {
+  fun getAuthorizedLibraryIds(libraryIds: Collection<Long>?) =
+    when {
+      // limited user & libraryIds are specified: filter on provided libraries intersecting user's authorized libraries
+      !sharedAllLibraries && !libraryIds.isNullOrEmpty() -> libraryIds.intersect(sharedLibrariesIds)
 
-  @Id
-  @GeneratedValue
-  @Column(name = "id", nullable = false)
-  var id: Long = 0
+      // limited user: filter on user's authorized libraries
+      !sharedAllLibraries -> sharedLibrariesIds
 
-  @ManyToMany(fetch = FetchType.EAGER)
-  @JoinTable(
-    name = "user_library_sharing",
-    joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
-    inverseJoinColumns = [JoinColumn(name = "library_id", referencedColumnName = "id")]
-  )
-  var sharedLibraries: MutableSet<Library> = mutableSetOf()
+      // non-limited user: filter on provided libraries
+      !libraryIds.isNullOrEmpty() -> libraryIds
 
-  @NotNull
-  @Column(name = "shared_all_libraries", nullable = false)
-  var sharedAllLibraries: Boolean = true
-    get() = if (roles.contains(UserRoles.ADMIN)) true else field
-    set(value) {
-      field = if (roles.contains(UserRoles.ADMIN)) true else value
+      else -> emptyList()
     }
 
-  fun isAdmin() = roles.contains(UserRoles.ADMIN)
-
   fun canAccessBook(book: Book): Boolean {
-    return sharedAllLibraries || sharedLibraries.any { it.id == book.series.library.id }
+    return sharedAllLibraries || sharedLibrariesIds.any { it == book.libraryId }
   }
 
   fun canAccessSeries(series: Series): Boolean {
-    return sharedAllLibraries || sharedLibraries.any { it.id == series.library.id }
+    return sharedAllLibraries || sharedLibrariesIds.any { it == series.libraryId }
   }
+
+  fun canAccessLibrary(libraryId: Long): Boolean =
+    sharedAllLibraries || sharedLibrariesIds.any { it == libraryId }
 
   fun canAccessLibrary(library: Library): Boolean {
-    return sharedAllLibraries || sharedLibraries.any { it.id == library.id }
+    return sharedAllLibraries || sharedLibrariesIds.any { it == library.id }
   }
-}
-
-enum class UserRoles {
-  ADMIN
 }

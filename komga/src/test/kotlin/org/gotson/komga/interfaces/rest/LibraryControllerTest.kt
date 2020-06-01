@@ -1,6 +1,5 @@
 package org.gotson.komga.interfaces.rest
 
-import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.junit.jupiter.api.AfterAll
@@ -28,11 +27,11 @@ class LibraryControllerTest(
 ) {
   private val route = "/api/v1/libraries"
 
-  private val library = makeLibrary(url = "file:/library1")
+  private var library = makeLibrary(url = "file:/library1")
 
   @BeforeAll
   fun `setup library`() {
-    libraryRepository.save(library)
+    library = libraryRepository.insert(library)
   }
 
   @AfterAll
@@ -115,7 +114,7 @@ class LibraryControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [UserRoles.ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given admin user when getting books then root is available`() {
       mockMvc.get(route)
         .andExpect {

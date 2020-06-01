@@ -13,8 +13,7 @@ interface UserWithSharedLibrariesDto {
 }
 
 interface SharedLibraryDto {
-  id: number,
-  name: string
+  id: number
 }
 
 interface UserCreationDto {

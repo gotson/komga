@@ -4,6 +4,7 @@ import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.BookMetadataPatch
+import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.gotson.komga.infrastructure.mediacontainer.EpubExtractor
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
@@ -26,8 +27,8 @@ class EpubMetadataProvider(
     "ill" to "penciller"
   )
 
-  override fun getBookMetadataFromBook(book: Book): BookMetadataPatch? {
-    if (book.media.mediaType != "application/epub+zip") return null
+  override fun getBookMetadataFromBook(book: Book, media: Media): BookMetadataPatch? {
+    if (media.mediaType != "application/epub+zip") return null
     epubExtractor.getPackageFile(book.path())?.let { packageFile ->
       val opf = Jsoup.parse(packageFile.toString())
 

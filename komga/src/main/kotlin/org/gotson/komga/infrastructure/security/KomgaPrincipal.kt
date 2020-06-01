@@ -9,13 +9,10 @@ class KomgaPrincipal(
   val user: KomgaUser
 ) : UserDetails {
 
-  override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-    return user.roles.map { it.name }
-      .toMutableSet()
-      .apply { add("USER") }
+  override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
+    user.roles()
       .map { SimpleGrantedAuthority("ROLE_$it") }
       .toMutableSet()
-  }
 
   override fun isEnabled() = true
 

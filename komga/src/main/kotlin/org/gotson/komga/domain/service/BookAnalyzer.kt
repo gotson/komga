@@ -6,6 +6,7 @@ import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaUnsupportedException
+import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.mediacontainer.MediaContainerExtractor
@@ -17,7 +18,8 @@ private val logger = KotlinLogging.logger {}
 class BookAnalyzer(
   private val contentDetector: ContentDetector,
   extractors: List<MediaContainerExtractor>,
-  private val imageConverter: ImageConverter
+  private val imageConverter: ImageConverter,
+  private val mediaRepository: MediaRepository
 ) {
 
   val supportedMediaTypes = extractors
@@ -78,17 +80,19 @@ class BookAnalyzer(
   fun regenerateThumbnail(book: Book): Media {
     logger.info { "Regenerate thumbnail for book: $book" }
 
-    if (book.media.status != Media.Status.READY) {
+    val media = mediaRepository.findById(book.id)
+
+    if (media.status != Media.Status.READY) {
       logger.warn { "Book media is not ready, cannot generate thumbnail. Book: $book" }
       throw MediaNotReadyException()
     }
 
-    val thumbnail = generateThumbnail(book, book.media.mediaType!!, book.media.pages.first().fileName)
+    val thumbnail = generateThumbnail(book, media.mediaType!!, media.pages.first().fileName)
 
     return Media(
-      mediaType = book.media.mediaType,
+      mediaType = media.mediaType,
       status = Media.Status.READY,
-      pages = book.media.pages,
+      pages = media.pages,
       thumbnail = thumbnail
     )
   }
@@ -110,17 +114,19 @@ class BookAnalyzer(
   fun getPageContent(book: Book, number: Int): ByteArray {
     logger.info { "Get page #$number for book: $book" }
 
-    if (book.media.status != Media.Status.READY) {
+    val media = mediaRepository.findById(book.id)
+
+    if (media.status != Media.Status.READY) {
       logger.warn { "Book media is not ready, cannot get pages" }
       throw MediaNotReadyException()
     }
 
-    if (number > book.media.pages.size || number <= 0) {
-      logger.error { "Page number #$number is out of bounds. Book has ${book.media.pages.size} pages" }
+    if (number > media.pages.size || number <= 0) {
+      logger.error { "Page number #$number is out of bounds. Book has ${media.pages.size} pages" }
       throw IndexOutOfBoundsException("Page $number does not exist")
     }
 
-    return supportedMediaTypes.getValue(book.media.mediaType!!).getEntryStream(book.path(), book.media.pages[number - 1].fileName)
+    return supportedMediaTypes.getValue(media.mediaType!!).getEntryStream(book.path(), media.pages[number - 1].fileName)
   }
 
   @Throws(
@@ -129,11 +135,13 @@ class BookAnalyzer(
   fun getFileContent(book: Book, fileName: String): ByteArray {
     logger.info { "Get file $fileName for book: $book" }
 
-    if (book.media.status != Media.Status.READY) {
+    val media = mediaRepository.findById(book.id)
+
+    if (media.status != Media.Status.READY) {
       logger.warn { "Book media is not ready, cannot get files" }
       throw MediaNotReadyException()
     }
 
-    return supportedMediaTypes.getValue(book.media.mediaType!!).getEntryStream(book.path(), fileName)
+    return supportedMediaTypes.getValue(media.mediaType!!).getEntryStream(book.path(), fileName)
   }
 }

@@ -1,4 +1,4 @@
-package org.gotson.komga.application.service
+package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
@@ -6,8 +6,9 @@ import org.gotson.komga.domain.model.BookPageContent
 import org.gotson.komga.domain.model.ImageConversionException
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
+import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
-import org.gotson.komga.domain.service.BookAnalyzer
+import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
 import org.springframework.stereotype.Service
@@ -17,30 +18,32 @@ private val logger = KotlinLogging.logger {}
 @Service
 class BookLifecycle(
   private val bookRepository: BookRepository,
+  private val mediaRepository: MediaRepository,
+  private val bookMetadataRepository: BookMetadataRepository,
   private val bookAnalyzer: BookAnalyzer,
   private val imageConverter: ImageConverter
 ) {
 
   fun analyzeAndPersist(book: Book) {
     logger.info { "Analyze and persist book: $book" }
-    try {
-      book.media = bookAnalyzer.analyze(book)
+    val media = try {
+      bookAnalyzer.analyze(book)
     } catch (ex: Exception) {
       logger.error(ex) { "Error while analyzing book: $book" }
-      book.media = Media(status = Media.Status.ERROR, comment = ex.message)
-    }
-    bookRepository.save(book)
+      Media(status = Media.Status.ERROR, comment = ex.message)
+    }.copy(bookId = book.id)
+    mediaRepository.update(media)
   }
 
   fun regenerateThumbnailAndPersist(book: Book) {
     logger.info { "Regenerate thumbnail and persist book: $book" }
-    try {
-      book.media = bookAnalyzer.regenerateThumbnail(book)
+    val media = try {
+      bookAnalyzer.regenerateThumbnail(book)
     } catch (ex: Exception) {
       logger.error(ex) { "Error while recreating thumbnail" }
-      book.media = Media(status = Media.Status.ERROR)
-    }
-    bookRepository.save(book)
+      Media(status = Media.Status.ERROR)
+    }.copy(bookId = book.id)
+    mediaRepository.update(media)
   }
 
   @Throws(
@@ -49,8 +52,9 @@ class BookLifecycle(
     IndexOutOfBoundsException::class
   )
   fun getBookPage(book: Book, number: Int, convertTo: ImageType? = null, resizeTo: Int? = null): BookPageContent {
+    val media = mediaRepository.findById(book.id)
     val pageContent = bookAnalyzer.getPageContent(book, number)
-    val pageMediaType = book.media.pages[number - 1].mediaType
+    val pageMediaType = media.pages[number - 1].mediaType
 
     if (resizeTo != null) {
       val targetFormat = ImageType.JPEG
@@ -87,5 +91,14 @@ class BookLifecycle(
 
       return BookPageContent(number, pageContent, pageMediaType)
     }
+  }
+
+  fun delete(bookId: Long) {
+    logger.info { "Delete book id: $bookId" }
+
+    mediaRepository.delete(bookId)
+    bookMetadataRepository.delete(bookId)
+
+    bookRepository.delete(bookId)
   }
 }

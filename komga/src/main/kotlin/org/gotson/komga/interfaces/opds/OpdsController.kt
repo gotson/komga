@@ -1,15 +1,19 @@
 package org.gotson.komga.interfaces.opds
 
-import com.github.klinq.jpaspec.`in`
-import com.github.klinq.jpaspec.likeLower
-import com.github.klinq.jpaspec.toJoin
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
+import org.gotson.komga.domain.model.BookMetadata
+import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesMetadata
+import org.gotson.komga.domain.model.SeriesSearch
+import org.gotson.komga.domain.persistence.BookMetadataRepository
+import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
+import org.gotson.komga.domain.persistence.MediaRepository
+import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.interfaces.opds.dto.OpdsAuthor
@@ -26,9 +30,6 @@ import org.gotson.komga.interfaces.opds.dto.OpdsLinkPageStreaming
 import org.gotson.komga.interfaces.opds.dto.OpdsLinkRel
 import org.gotson.komga.interfaces.opds.dto.OpdsLinkSearch
 import org.gotson.komga.interfaces.opds.dto.OpenSearchDescription
-import org.springframework.data.domain.Sort
-import org.springframework.data.jpa.domain.Specification
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -63,8 +64,12 @@ private const val ID_LIBRARIES_ALL = "allLibraries"
 @RequestMapping(value = [ROUTE_BASE], produces = [MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE])
 class OpdsController(
   servletContext: ServletContext,
+  private val libraryRepository: LibraryRepository,
   private val seriesRepository: SeriesRepository,
-  private val libraryRepository: LibraryRepository
+  private val seriesMetadataRepository: SeriesMetadataRepository,
+  private val bookRepository: BookRepository,
+  private val bookMetadataRepository: BookMetadataRepository,
+  private val mediaRepository: MediaRepository
 ) {
 
   private val routeBase = "${servletContext.contextPath}$ROUTE_BASE"
@@ -129,23 +134,16 @@ class OpdsController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam("search") searchTerm: String?
   ): OpdsFeed {
-    val sort = Sort.by(Sort.Order.asc("metadata.titleSort").ignoreCase())
-    val series =
-      mutableListOf<Specification<Series>>().let { specs ->
-        if (!principal.user.sharedAllLibraries) {
-          specs.add(Series::library.`in`(principal.user.sharedLibraries))
-        }
+    val seriesSearch = SeriesSearch(
+      libraryIds = if (!principal.user.sharedAllLibraries) principal.user.sharedLibrariesIds else emptySet(),
+      searchTerm = searchTerm
+    )
 
-        if (!searchTerm.isNullOrEmpty()) {
-          specs.add(Series::metadata.toJoin().where(SeriesMetadata::title).likeLower("%$searchTerm%"))
-        }
+    val entries = seriesRepository.findAll(seriesSearch)
+      .map { SeriesWithInfo(it, seriesMetadataRepository.findById(it.id)) }
+      .sortedBy { it.metadata.titleSort.toLowerCase() }
+      .map { it.toOpdsEntry() }
 
-        if (specs.isNotEmpty()) {
-          seriesRepository.findAll(specs.reduce { acc, spec -> acc.and(spec)!! }, sort)
-        } else {
-          seriesRepository.findAll(sort)
-        }
-      }
 
     return OpdsFeedNavigation(
       id = ID_SERIES_ALL,
@@ -156,7 +154,7 @@ class OpdsController(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "$routeBase$ROUTE_SERIES_ALL"),
         linkStart
       ),
-      entries = series.map { it.toOpdsEntry() }
+      entries = entries
     )
   }
 
@@ -164,13 +162,14 @@ class OpdsController(
   fun getLatestSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal
   ): OpdsFeed {
-    val sort = Sort.by(Sort.Direction.DESC, "lastModifiedDate")
-    val series =
-      if (principal.user.sharedAllLibraries) {
-        seriesRepository.findAll(sort)
-      } else {
-        seriesRepository.findByLibraryIn(principal.user.sharedLibraries, sort)
-      }
+    val seriesSearch = SeriesSearch(
+      libraryIds = if (!principal.user.sharedAllLibraries) principal.user.sharedLibrariesIds else emptySet()
+    )
+
+    val entries = seriesRepository.findAll(seriesSearch)
+      .map { SeriesWithInfo(it, seriesMetadataRepository.findById(it.id)) }
+      .sortedBy { it.series.lastModifiedDate }
+      .map { it.toOpdsEntry() }
 
     return OpdsFeedNavigation(
       id = ID_SERIES_LATEST,
@@ -181,7 +180,7 @@ class OpdsController(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "$routeBase$ROUTE_SERIES_LATEST"),
         linkStart
       ),
-      entries = series.map { it.toOpdsEntry() }
+      entries = entries
     )
   }
 
@@ -193,7 +192,7 @@ class OpdsController(
       if (principal.user.sharedAllLibraries) {
         libraryRepository.findAll()
       } else {
-        principal.user.sharedLibraries
+        libraryRepository.findAllById(principal.user.sharedLibrariesIds)
       }
     return OpdsFeedNavigation(
       id = ID_LIBRARIES_ALL,
@@ -217,19 +216,27 @@ class OpdsController(
     seriesRepository.findByIdOrNull(id)?.let { series ->
       if (!principal.user.canAccessSeries(series)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
 
+      val books = bookRepository.findAll(BookSearch(
+        seriesIds = listOf(id),
+        mediaStatus = setOf(Media.Status.READY)
+      ))
+      val metadata = seriesMetadataRepository.findById(series.id)
+
+      val entries = books
+        .map { BookWithInfo(it, mediaRepository.findById(it.id), bookMetadataRepository.findById(it.id)) }
+        .sortedBy { it.metadata.numberSort }
+        .map { it.toOpdsEntry(shouldPrependBookNumbers(userAgent)) }
+
       OpdsFeedAcquisition(
         id = series.id.toString(),
-        title = series.metadata.title,
-        updated = series.lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
+        title = metadata.title,
+        updated = series.lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
         author = komgaAuthor,
         links = listOf(
           OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "${routeBase}series/$id"),
           linkStart
         ),
-        entries = series.books
-          .filter { it.media.status == Media.Status.READY }
-          .sortedBy { it.metadata.numberSort }
-          .map { it.toOpdsEntry(shouldPrependBookNumbers(userAgent)) }
+        entries = entries
       )
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
@@ -241,53 +248,60 @@ class OpdsController(
     libraryRepository.findByIdOrNull(id)?.let { library ->
       if (!principal.user.canAccessLibrary(library)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
 
+      val seriesSearch = SeriesSearch(libraryIds = setOf(library.id))
+
+      val entries = seriesRepository.findAll(seriesSearch)
+        .map { SeriesWithInfo(it, seriesMetadataRepository.findById(it.id)) }
+        .sortedBy { it.metadata.titleSort.toLowerCase() }
+        .map { it.toOpdsEntry() }
+
       OpdsFeedNavigation(
         id = library.id.toString(),
         title = library.name,
-        updated = library.lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
+        updated = library.lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
         author = komgaAuthor,
         links = listOf(
           OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "${routeBase}libraries/$id"),
           linkStart
         ),
-        entries = seriesRepository.findByLibraryId(library.id, Sort.by(Sort.Order.asc("metadata.titleSort").ignoreCase())).map { it.toOpdsEntry() }
+        entries = entries
       )
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
 
-  private fun Series.toOpdsEntry() =
+  private fun SeriesWithInfo.toOpdsEntry(): OpdsEntryNavigation =
     OpdsEntryNavigation(
       title = metadata.title,
-      updated = lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
-      id = id.toString(),
+      updated = series.lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
+      id = series.id.toString(),
       content = "",
-      link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "${routeBase}series/$id")
+      link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "${routeBase}series/${series.id}")
     )
 
-  private fun Book.toOpdsEntry(prependNumber: Boolean): OpdsEntryAcquisition {
+  private fun BookWithInfo.toOpdsEntry(prependNumber: Boolean): OpdsEntryAcquisition {
     val mediaTypes = media.pages.map { it.mediaType }.distinct()
 
     val opdsLinkPageStreaming = if (mediaTypes.size == 1 && mediaTypes.first() in opdsPseSupportedFormats) {
-      OpdsLinkPageStreaming(mediaTypes.first(), "${routeBase}books/$id/pages/{pageNumber}?zero_based=true", media.pages.size)
+      OpdsLinkPageStreaming(mediaTypes.first(), "${routeBase}books/${book.id}/pages/{pageNumber}?zero_based=true", media.pages.size)
     } else {
-      OpdsLinkPageStreaming("image/jpeg", "${routeBase}books/$id/pages/{pageNumber}?convert=jpeg&zero_based=true", media.pages.size)
+      OpdsLinkPageStreaming("image/jpeg", "${routeBase}books/${book.id}/pages/{pageNumber}?convert=jpeg&zero_based=true", media.pages.size)
     }
 
     return OpdsEntryAcquisition(
       title = "${if (prependNumber) "${decimalFormat.format(metadata.numberSort)} - " else ""}${metadata.title}",
-      updated = lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
-      id = id.toString(),
+      updated = book.lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
+      id = book.id.toString(),
       content = run {
-        var content = "${fileExtension().toUpperCase()} - ${fileSizeHumanReadable()}"
+        var content = "${book.fileExtension().toUpperCase()} - ${book.fileSizeHumanReadable()}"
         if (metadata.summary.isNotBlank())
           content += "\n\n${metadata.summary}"
         content
       },
       authors = metadata.authors.map { OpdsAuthor(it.name) },
       links = listOf(
-        OpdsLinkImageThumbnail("image/jpeg", "${routeBase}books/$id/thumbnail"),
-        OpdsLinkImage(media.pages[0].mediaType, "${routeBase}books/$id/pages/1"),
-        OpdsLinkFileAcquisition(media.mediaType, "${routeBase}books/$id/file/${fileName()}"),
+        OpdsLinkImageThumbnail("image/jpeg", "${routeBase}books/${book.id}/thumbnail"),
+        OpdsLinkImage(media.pages[0].mediaType, "${routeBase}books/${book.id}/pages/1"),
+        OpdsLinkFileAcquisition(media.mediaType, "${routeBase}books/${book.id}/file/${book.fileName()}"),
         opdsLinkPageStreaming
       )
     )
@@ -296,7 +310,7 @@ class OpdsController(
   private fun Library.toOpdsEntry(): OpdsEntryNavigation {
     return OpdsEntryNavigation(
       title = name,
-      updated = lastModifiedDate?.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
+      updated = lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
       id = id.toString(),
       content = "",
       link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "${routeBase}libraries/$id")
@@ -305,4 +319,15 @@ class OpdsController(
 
   private fun shouldPrependBookNumbers(userAgent: String) =
     userAgent.contains("chunky", ignoreCase = true)
+
+  private data class BookWithInfo(
+    val book: Book,
+    val media: Media,
+    val metadata: BookMetadata
+  )
+
+  private data class SeriesWithInfo(
+    val series: Series,
+    val metadata: SeriesMetadata
+  )
 }

@@ -6,6 +6,7 @@ import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.BookMetadataPatch
+import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
@@ -25,8 +26,8 @@ class ComicInfoProvider(
   private val bookAnalyzer: BookAnalyzer
 ) : BookMetadataProvider {
 
-  override fun getBookMetadataFromBook(book: Book): BookMetadataPatch? {
-    getComicInfo(book)?.let { comicInfo ->
+  override fun getBookMetadataFromBook(book: Book, media: Media): BookMetadataPatch? {
+    getComicInfo(book, media)?.let { comicInfo ->
       val releaseDate = comicInfo.year?.let {
         LocalDate.of(comicInfo.year!!, comicInfo.month ?: 1, 1)
       }
@@ -66,9 +67,9 @@ class ComicInfoProvider(
     return null
   }
 
-  private fun getComicInfo(book: Book): ComicInfo? {
+  private fun getComicInfo(book: Book, media: Media): ComicInfo? {
     try {
-      if (book.media.files.none { it == COMIC_INFO }) {
+      if (media.files.none { it == COMIC_INFO }) {
         logger.debug { "Book does not contain any $COMIC_INFO file: $book" }
         return null
       }

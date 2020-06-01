@@ -1,6 +1,6 @@
 package org.gotson.komga.domain.model
 
-class MediaContainerEntry(
+data class MediaContainerEntry(
   val name: String,
   val mediaType: String? = null,
   val comment: String? = null

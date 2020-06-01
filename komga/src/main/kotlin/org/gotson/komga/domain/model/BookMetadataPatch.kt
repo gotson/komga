@@ -2,7 +2,7 @@ package org.gotson.komga.domain.model
 
 import java.time.LocalDate
 
-class BookMetadataPatch(
+data class BookMetadataPatch(
   val title: String?,
   val summary: String?,
   val number: String?,

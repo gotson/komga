@@ -7,17 +7,10 @@ import com.tngtech.archunit.lang.ArchRule
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses
 import org.gotson.komga.Application
-import javax.persistence.Entity
 
 
 @AnalyzeClasses(packagesOf = [Application::class], importOptions = [ImportOption.DoNotIncludeTests::class])
 class DomainDrivenDesignRulesTest {
-
-  @ArchTest
-  val entities_must_reside_in_a_domain_package: ArchRule =
-    classes()
-      .that().areAnnotatedWith(Entity::class.java)
-      .should().resideInAPackage("..domain..model..")
 
   @ArchTest
   val domain_persistence_can_only_contain_interfaces: ArchRule =

@@ -2,6 +2,7 @@ package org.gotson.komga.application.tasks
 
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
+import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.persistence.BookRepository
@@ -23,25 +24,36 @@ class TaskReceiver(
 ) {
 
   fun scanLibraries() {
-    libraryRepository.findAll().forEach { scanLibrary(it) }
+    libraryRepository.findAll().forEach { scanLibrary(it.id) }
   }
 
-  fun scanLibrary(library: Library) {
-    submitTask(Task.ScanLibrary(library.id))
+  fun scanLibrary(libraryId: Long) {
+    submitTask(Task.ScanLibrary(libraryId))
   }
 
   fun analyzeUnknownBooks(library: Library) {
-    bookRepository.findAllByMediaStatusAndSeriesLibrary(Media.Status.UNKNOWN, library).forEach {
-      submitTask(Task.AnalyzeBook(it.id))
+    bookRepository.findAllId(BookSearch(
+      libraryIds = listOf(library.id),
+      mediaStatus = listOf(Media.Status.UNKNOWN)
+    )).forEach {
+      submitTask(Task.AnalyzeBook(it))
     }
+  }
+
+  fun analyzeBook(bookId: Long) {
+    submitTask(Task.AnalyzeBook(bookId))
   }
 
   fun analyzeBook(book: Book) {
     submitTask(Task.AnalyzeBook(book.id))
   }
 
-  fun generateBookThumbnail(book: Book) {
-    submitTask(Task.GenerateBookThumbnail(book.id))
+  fun generateBookThumbnail(bookId: Long) {
+    submitTask(Task.GenerateBookThumbnail(bookId))
+  }
+
+  fun refreshBookMetadata(bookId: Long) {
+    submitTask(Task.RefreshBookMetadata(bookId))
   }
 
   fun refreshBookMetadata(book: Book) {

@@ -1,6 +1,5 @@
 package org.gotson.komga.interfaces.rest
 
-import org.gotson.komga.infrastructure.security.KomgaUserDetailsLifecycle
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,7 +18,6 @@ import org.springframework.test.web.servlet.patch
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
 @ActiveProfiles("demo")
 class UserControllerTest(
-  @Autowired private val userDetailsLifecycle: KomgaUserDetailsLifecycle,
   @Autowired private val mockMvc: MockMvc
 
 ) {

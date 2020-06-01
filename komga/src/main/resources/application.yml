@@ -23,20 +23,6 @@ spring:
       enabled: true
   resources:
     add-mappings: false
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    properties:
-      javax:
-        persistence.sharedCache.mode: ENABLE_SELECTIVE
-        cache.provider: com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider
-      hibernate:
-        generate_statistics: true
-        session.events.log: false
-        cache:
-          use_second_level_cache: true
-          use_query_cache: true
-          region.factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
   flyway:
     enabled: true
   thymeleaf:

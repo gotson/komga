@@ -25,10 +25,10 @@ class FileSystemScannerTest {
       Files.createDirectory(root)
 
       // when
-      val series = scanner.scanRootFolder(root)
+      val scan = scanner.scanRootFolder(root)
 
       // then
-      assertThat(series).isEmpty()
+      assertThat(scan).isEmpty()
     }
   }
 
@@ -43,12 +43,14 @@ class FileSystemScannerTest {
       files.forEach { Files.createFile(root.resolve(it)) }
 
       // when
-      val series = scanner.scanRootFolder(root)
+      val scan = scanner.scanRootFolder(root)
+      val series = scan.keys.first()
+      val books = scan.getValue(series)
 
       // then
-      assertThat(series).hasSize(1)
-      assertThat(series.first().books).hasSize(2)
-      assertThat(series.first().books.map { it.name }).containsExactlyInAnyOrderElementsOf(files.map { FilenameUtils.removeExtension(it) })
+      assertThat(scan).hasSize(1)
+      assertThat(books).hasSize(2)
+      assertThat(books.map { it.name }).containsExactlyInAnyOrderElementsOf(files.map { FilenameUtils.removeExtension(it) })
     }
   }
 
@@ -63,12 +65,14 @@ class FileSystemScannerTest {
       files.forEach { Files.createFile(root.resolve(it)) }
 
       // when
-      val series = scanner.scanRootFolder(root)
+      val scan = scanner.scanRootFolder(root)
+      val series = scan.keys.first()
+      val books = scan.getValue(series)
 
       // then
-      assertThat(series).hasSize(1)
-      assertThat(series.first().books).hasSize(1)
-      assertThat(series.first().books.map { it.name }).containsExactly("file1")
+      assertThat(scan).hasSize(1)
+      assertThat(books).hasSize(1)
+      assertThat(books.map { it.name }).containsExactly("file1")
     }
   }
 
@@ -89,14 +93,15 @@ class FileSystemScannerTest {
       }
 
       // when
-      val scannedSeries = scanner.scanRootFolder(root)
+      val scan = scanner.scanRootFolder(root)
+      val series = scan.keys
 
       // then
-      assertThat(scannedSeries).hasSize(2)
+      assertThat(scan).hasSize(2)
 
-      assertThat(scannedSeries.map { it.name }).containsExactlyInAnyOrderElementsOf(subDirs.keys)
-      scannedSeries.forEach { series ->
-        assertThat(series.books.map { it.name }).containsExactlyInAnyOrderElementsOf(subDirs[series.name]?.map { FilenameUtils.removeExtension(it) })
+      assertThat(series.map { it.name }).containsExactlyInAnyOrderElementsOf(subDirs.keys)
+      series.forEach { s ->
+        assertThat(scan.getValue(s).map { it.name }).containsExactlyInAnyOrderElementsOf(subDirs[s.name]?.map { FilenameUtils.removeExtension(it) })
       }
     }
   }
@@ -114,13 +119,13 @@ class FileSystemScannerTest {
       makeSubDir(recycle, "subtrash", listOf("trash2.cbz"))
 
       // when
-      val scannedSeries = scanner.scanRootFolder(root)
+      val scan = scanner.scanRootFolder(root)
 
       // then
-      assertThat(scannedSeries).hasSize(2)
+      assertThat(scan).hasSize(2)
 
-      assertThat(scannedSeries.map { it.name }).containsExactlyInAnyOrder("dir1", "subdir1")
-      assertThat(scannedSeries.flatMap { it.books }.map { it.name }).containsExactlyInAnyOrder("comic", "comic2")
+      assertThat(scan.keys.map { it.name }).containsExactlyInAnyOrder("dir1", "subdir1")
+      assertThat(scan.values.flatMap { list -> list.map { it.name } }).containsExactlyInAnyOrder("comic", "comic2")
     }
   }
 
@@ -134,13 +139,13 @@ class FileSystemScannerTest {
       makeSubDir(root, "dir1", listOf("comic.Cbz", "comic2.CBR"))
 
       // when
-      val scannedSeries = scanner.scanRootFolder(root)
+      val scan = scanner.scanRootFolder(root)
 
       // then
-      assertThat(scannedSeries).hasSize(1)
+      assertThat(scan).hasSize(1)
 
-      assertThat(scannedSeries.map { it.name }).containsExactlyInAnyOrder("dir1")
-      assertThat(scannedSeries.flatMap { it.books }.map { it.name }).containsExactlyInAnyOrder("comic", "comic2")
+      assertThat(scan.keys.map { it.name }).containsExactlyInAnyOrder("dir1")
+      assertThat(scan.values.flatMap { list -> list.map { it.name } }).containsExactlyInAnyOrder("comic", "comic2")
     }
   }
 

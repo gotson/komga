@@ -1,13 +1,19 @@
 package org.gotson.komga.domain.persistence
 
 import org.gotson.komga.domain.model.KomgaUser
-import org.gotson.komga.domain.model.Library
-import org.springframework.data.repository.CrudRepository
-import org.springframework.stereotype.Repository
 
-@Repository
-interface KomgaUserRepository : CrudRepository<KomgaUser, Long> {
+interface KomgaUserRepository {
+  fun count(): Long
+
+  fun findAll(): Collection<KomgaUser>
+  fun findByIdOrNull(id: Long): KomgaUser?
+
+  fun save(user: KomgaUser): KomgaUser
+  fun saveAll(users: Iterable<KomgaUser>): Collection<KomgaUser>
+
+  fun delete(user: KomgaUser)
+  fun deleteAll()
+
   fun existsByEmailIgnoreCase(email: String): Boolean
   fun findByEmailIgnoreCase(email: String): KomgaUser?
-  fun findBySharedLibrariesContaining(library: Library): List<KomgaUser>
 }

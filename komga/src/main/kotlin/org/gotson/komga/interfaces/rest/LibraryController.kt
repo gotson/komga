@@ -1,7 +1,6 @@
 package org.gotson.komga.interfaces.rest
 
 import mu.KotlinLogging
-import org.gotson.komga.application.service.LibraryLifecycle
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.domain.model.DuplicateNameException
@@ -9,8 +8,8 @@ import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.PathContainedInPath
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
+import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -33,10 +32,10 @@ private val logger = KotlinLogging.logger {}
 @RestController
 @RequestMapping("api/v1/libraries", produces = [MediaType.APPLICATION_JSON_VALUE])
 class LibraryController(
+  private val taskReceiver: TaskReceiver,
   private val libraryLifecycle: LibraryLifecycle,
   private val libraryRepository: LibraryRepository,
-  private val bookRepository: BookRepository,
-  private val taskReceiver: TaskReceiver
+  private val bookRepository: BookRepository
 ) {
 
   @GetMapping
@@ -46,8 +45,8 @@ class LibraryController(
     if (principal.user.sharedAllLibraries) {
       libraryRepository.findAll()
     } else {
-      principal.user.sharedLibraries
-    }.sortedBy { it.name }.map { it.toDto(includeRoot = principal.user.isAdmin()) }
+      libraryRepository.findAllById(principal.user.sharedLibrariesIds)
+    }.sortedBy { it.name }.map { it.toDto(includeRoot = principal.user.roleAdmin) }
 
   @GetMapping("{id}")
   fun getOne(
@@ -56,7 +55,7 @@ class LibraryController(
   ): LibraryDto =
     libraryRepository.findByIdOrNull(id)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
-      it.toDto(includeRoot = principal.user.isAdmin())
+      it.toDto(includeRoot = principal.user.roleAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @PostMapping
@@ -66,7 +65,7 @@ class LibraryController(
     @Valid @RequestBody library: LibraryCreationDto
   ): LibraryDto =
     try {
-      libraryLifecycle.addLibrary(Library(library.name, library.root)).toDto(includeRoot = principal.user.isAdmin())
+      libraryLifecycle.addLibrary(Library(library.name, library.root)).toDto(includeRoot = principal.user.roleAdmin)
     } catch (e: Exception) {
       when (e) {
         is FileNotFoundException,
@@ -92,7 +91,7 @@ class LibraryController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun scan(@PathVariable libraryId: Long) {
     libraryRepository.findByIdOrNull(libraryId)?.let { library ->
-      taskReceiver.scanLibrary(library)
+      taskReceiver.scanLibrary(library.id)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -100,18 +99,18 @@ class LibraryController(
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable libraryId: Long) {
-    libraryRepository.findByIdOrNull(libraryId)?.let { library ->
-      bookRepository.findBySeriesLibrary(library).forEach { taskReceiver.analyzeBook(it) }
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    bookRepository.findAllIdByLibraryId(libraryId).forEach {
+      taskReceiver.analyzeBook(it)
+    }
   }
 
   @PostMapping("{libraryId}/metadata/refresh")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun refreshMetadata(@PathVariable libraryId: Long) {
-    libraryRepository.findByIdOrNull(libraryId)?.let { library ->
-      bookRepository.findBySeriesLibrary(library).forEach { taskReceiver.refreshBookMetadata(it) }
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    bookRepository.findAllIdByLibraryId(libraryId).forEach {
+      taskReceiver.refreshBookMetadata(it)
+    }
   }
 }
 

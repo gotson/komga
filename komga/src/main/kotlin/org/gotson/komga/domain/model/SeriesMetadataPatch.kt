@@ -1,6 +1,6 @@
 package org.gotson.komga.domain.model
 
-class SeriesMetadataPatch(
+data class SeriesMetadataPatch(
   val title: String?,
   val titleSort: String?,
   val status: SeriesMetadata.Status?

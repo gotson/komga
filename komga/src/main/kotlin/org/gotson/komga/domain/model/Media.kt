@@ -1,91 +1,48 @@
 package org.gotson.komga.domain.model
 
-import org.hibernate.annotations.Cache
-import org.hibernate.annotations.CacheConcurrencyStrategy
-import javax.persistence.Cacheable
-import javax.persistence.CollectionTable
-import javax.persistence.Column
-import javax.persistence.ElementCollection
-import javax.persistence.Entity
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
-import javax.persistence.FetchType
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.Lob
-import javax.persistence.OrderColumn
-import javax.persistence.Table
+import java.time.LocalDateTime
 
-@Entity
-@Table(name = "media")
-@Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "cache.media")
 class Media(
-  @Enumerated(EnumType.STRING)
-  @Column(name = "status", nullable = false)
-  var status: Status = Status.UNKNOWN,
+  val status: Status = Status.UNKNOWN,
+  val mediaType: String? = null,
+  val thumbnail: ByteArray? = null,
+  val pages: List<BookPage> = emptyList(),
+  val files: List<String> = emptyList(),
+  val comment: String? = null,
+  val bookId: Long = 0,
+  override val createdDate: LocalDateTime = LocalDateTime.now(),
+  override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
+) : Auditable() {
 
-  @Column(name = "media_type")
-  var mediaType: String? = null,
+  fun reset() = Media(bookId = this.bookId)
 
-  @Column(name = "thumbnail")
-  @Lob
-  var thumbnail: ByteArray? = null,
-
-  pages: Iterable<BookPage> = emptyList(),
-
-  files: Iterable<String> = emptyList(),
-
-  @Column(name = "comment")
-  var comment: String? = null
-) : AuditableEntity() {
-  @Id
-  @GeneratedValue
-  @Column(name = "id", nullable = false, unique = true)
-  val id: Long = 0
-
-  @ElementCollection(fetch = FetchType.LAZY)
-  @CollectionTable(name = "media_page", joinColumns = [JoinColumn(name = "media_id")])
-  @OrderColumn(name = "number")
-  @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "cache.media.collection.pages")
-  private var _pages: MutableList<BookPage> = mutableListOf()
-
-  var pages: List<BookPage>
-    get() = _pages.toList()
-    set(value) {
-      _pages.clear()
-      _pages.addAll(value)
-    }
-
-  @ElementCollection(fetch = FetchType.LAZY)
-  @CollectionTable(name = "media_file", joinColumns = [JoinColumn(name = "media_id")])
-  @Column(name = "files")
-  private var _files: MutableList<String> = mutableListOf()
-
-  var files: List<String>
-    get() = _files.toList()
-    set(value) {
-      _files.clear()
-      _files.addAll(value)
-    }
-
-  fun reset() {
-    status = Status.UNKNOWN
-    mediaType = null
-    thumbnail = null
-    comment = null
-    _pages.clear()
-    _files.clear()
-  }
-
-  init {
-    this.pages = pages.toList()
-    this.files = files.toList()
-  }
+  fun copy(
+    status: Status = this.status,
+    mediaType: String? = this.mediaType,
+    thumbnail: ByteArray? = this.thumbnail,
+    pages: List<BookPage> = this.pages.toList(),
+    files: List<String> = this.files.toList(),
+    comment: String? = this.comment,
+    bookId: Long = this.bookId,
+    createdDate: LocalDateTime = this.createdDate,
+    lastModifiedDate: LocalDateTime = this.lastModifiedDate
+  ) =
+    Media(
+      status = status,
+      mediaType = mediaType,
+      thumbnail = thumbnail,
+      pages = pages,
+      files = files,
+      comment = comment,
+      bookId = bookId,
+      createdDate = createdDate,
+      lastModifiedDate = lastModifiedDate
+    )
 
   enum class Status {
     UNKNOWN, ERROR, READY, UNSUPPORTED
   }
 
+  override fun toString(): String =
+    "Media(status=$status, mediaType=$mediaType, pages=$pages, files=$files, comment=$comment, bookId=$bookId, createdDate=$createdDate, lastModifiedDate=$lastModifiedDate)"
 }
