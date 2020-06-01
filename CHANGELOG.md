@@ -1,3 +1,10 @@
+# [0.31.0](https://github.com/gotson/komga/compare/v0.30.0...v0.31.0) (2020-06-01)
+
+
+### Features
+
+* migrate DAO from Hibernate to jOOQ ([75e1079](https://github.com/gotson/komga/commit/75e1079992fdecfe51b0175ed0c19351cd7b3672))
+
 # [0.30.0](https://github.com/gotson/komga/compare/v0.29.1...v0.30.0) (2020-05-28)
 
 
