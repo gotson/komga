@@ -196,6 +196,7 @@ class SeriesController(
         seriesIds = listOf(seriesId),
         mediaStatus = mediaStatus ?: emptyList()
       ),
+      principal.user.id,
       pageRequest
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }

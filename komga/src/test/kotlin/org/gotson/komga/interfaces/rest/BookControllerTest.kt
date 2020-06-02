@@ -6,17 +6,21 @@ import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.BookSearch
+import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
+import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
+import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
+import org.hamcrest.core.IsNull
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
@@ -36,6 +40,7 @@ import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.MockMvcResultMatchersDsl
+import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import java.time.LocalDate
@@ -54,6 +59,8 @@ class BookControllerTest(
   @Autowired private val libraryRepository: LibraryRepository,
   @Autowired private val libraryLifecycle: LibraryLifecycle,
   @Autowired private val bookRepository: BookRepository,
+  @Autowired private val userRepository: KomgaUserRepository,
+  @Autowired private val userLifecycle: KomgaUserLifecycle,
   @Autowired private val mockMvc: MockMvc
 ) {
 
@@ -70,11 +77,15 @@ class BookControllerTest(
   fun `setup library`() {
     jdbcTemplate.execute("ALTER SEQUENCE hibernate_sequence RESTART WITH 1")
 
-    library = libraryRepository.insert(library)
+    library = libraryRepository.insert(library) // id = 1
+    userRepository.save(KomgaUser("user@example.org", "", false)) // id = 2
   }
 
   @AfterAll
   fun `teardown library`() {
+    userRepository.findAll().forEach {
+      userLifecycle.deleteUser(it)
+    }
     libraryRepository.findAll().forEach {
       libraryLifecycle.deleteLibrary(it)
     }
@@ -735,6 +746,150 @@ class BookControllerTest(
         assertThat(publisher).isEqualTo("publisher")
         assertThat(title).isEqualTo("title")
       }
+    }
+  }
+
+  @Nested
+  inner class ReadProgress {
+
+    @ParameterizedTest
+    @ValueSource(strings = [
+      """{"completed": false}""",
+      """{}""",
+      """{"page":0}"""
+    ])
+    @WithMockCustomUser
+    fun `given invalid payload when marking book in progress then validation error is returned`(jsonString: String) {
+      mockMvc.patch("/api/v1/books/1/read-progress") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
+        status { isBadRequest }
+      }
+    }
+
+    @Test
+    @WithMockCustomUser(id = 2)
+    fun `given user when marking book in progress with page read then progress is marked accordingly`() {
+      makeSeries(name = "series", libraryId = library.id).let { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(makeBook("1.cbr", libraryId = library.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+      }
+
+      val book = bookRepository.findAll().first()
+      mediaRepository.findById(book.id).let {
+        mediaRepository.update(it.copy(
+          status = Media.Status.READY,
+          pages = (1..10).map { BookPage("$it", "image/jpeg") }
+        ))
+      }
+
+      val jsonString = """
+        {
+          "page": 5
+        }
+      """.trimIndent()
+
+      mockMvc.patch("/api/v1/books/${book.id}/read-progress") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
+        status { isNoContent }
+      }
+
+      mockMvc.get("/api/v1/books/${book.id}")
+        .andExpect {
+          status { isOk }
+          jsonPath("$.readProgress.page") { value(5) }
+          jsonPath("$.readProgress.completed") { value(false) }
+        }
+    }
+
+    @Test
+    @WithMockCustomUser(id = 2)
+    fun `given user when marking book completed then progress is marked accordingly`() {
+      makeSeries(name = "series", libraryId = library.id).let { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(makeBook("1.cbr", libraryId = library.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+      }
+
+      val book = bookRepository.findAll().first()
+      mediaRepository.findById(book.id).let {
+        mediaRepository.update(it.copy(
+          status = Media.Status.READY,
+          pages = (1..10).map { BookPage("$it", "image/jpeg") }
+        ))
+      }
+
+      val jsonString = """
+        {
+          "completed": true
+        }
+      """.trimIndent()
+
+      mockMvc.patch("/api/v1/books/${book.id}/read-progress") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
+        status { isNoContent }
+      }
+
+      mockMvc.get("/api/v1/books/${book.id}")
+        .andExpect {
+          status { isOk }
+          jsonPath("$.readProgress.page") { value(10) }
+          jsonPath("$.readProgress.completed") { value(true) }
+        }
+    }
+
+    @Test
+    @WithMockCustomUser(id = 2)
+    fun `given user when deleting read progress then progress is removed`() {
+      makeSeries(name = "series", libraryId = library.id).let { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(makeBook("1.cbr", libraryId = library.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+      }
+
+      val book = bookRepository.findAll().first()
+      mediaRepository.findById(book.id).let { media ->
+        mediaRepository.update(media.copy(
+          status = Media.Status.READY,
+          pages = (1..10).map { BookPage("$it", "image/jpeg") }
+        ))
+      }
+
+      val jsonString = """
+        {
+          "page": 5,
+          "completed": false
+        }
+      """.trimIndent()
+
+      mockMvc.patch("/api/v1/books/${book.id}/read-progress") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
+        status { isNoContent }
+      }
+
+
+      mockMvc.delete("/api/v1/books/${book.id}/read-progress") {
+        contentType = MediaType.APPLICATION_JSON
+      }.andExpect {
+        status { isNoContent }
+      }
+
+      mockMvc.get("/api/v1/books/${book.id}")
+        .andExpect {
+          status { isOk }
+          jsonPath("$.readProgress") { value(IsNull.nullValue()) }
+        }
     }
   }
 }

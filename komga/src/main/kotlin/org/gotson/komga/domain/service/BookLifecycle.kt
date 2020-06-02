@@ -4,11 +4,14 @@ import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookPageContent
 import org.gotson.komga.domain.model.ImageConversionException
+import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
+import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
+import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
 import org.springframework.stereotype.Service
@@ -20,6 +23,7 @@ class BookLifecycle(
   private val bookRepository: BookRepository,
   private val mediaRepository: MediaRepository,
   private val bookMetadataRepository: BookMetadataRepository,
+  private val readProgressRepository: ReadProgressRepository,
   private val bookAnalyzer: BookAnalyzer,
   private val imageConverter: ImageConverter
 ) {
@@ -96,9 +100,27 @@ class BookLifecycle(
   fun delete(bookId: Long) {
     logger.info { "Delete book id: $bookId" }
 
+    readProgressRepository.deleteByBookId(bookId)
     mediaRepository.delete(bookId)
     bookMetadataRepository.delete(bookId)
 
     bookRepository.delete(bookId)
+  }
+
+  fun markReadProgress(book: Book, user: KomgaUser, page: Int) {
+    val media = mediaRepository.findById(book.id)
+    require(page >= 1 && page <= media.pages.size) { "Page argument ($page) must be within 1 and book page count (${media.pages.size})" }
+
+    readProgressRepository.save(ReadProgress(book.id, user.id, page, page == media.pages.size))
+  }
+
+  fun markReadProgressCompleted(book: Book, user: KomgaUser) {
+    val media = mediaRepository.findById(book.id)
+
+    readProgressRepository.save(ReadProgress(book.id, user.id, media.pages.size, true))
+  }
+
+  fun deleteReadProgress(book: Book, user: KomgaUser) {
+    readProgressRepository.delete(book.id, user.id)
   }
 }

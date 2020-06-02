@@ -5,12 +5,14 @@ import org.gotson.komga.interfaces.rest.dto.AuthorDto
 import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.BookMetadataDto
 import org.gotson.komga.interfaces.rest.dto.MediaDto
+import org.gotson.komga.interfaces.rest.dto.ReadProgressDto
 import org.gotson.komga.interfaces.rest.persistence.BookDtoRepository
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.BookMetadataAuthorRecord
 import org.gotson.komga.jooq.tables.records.BookMetadataRecord
 import org.gotson.komga.jooq.tables.records.BookRecord
 import org.gotson.komga.jooq.tables.records.MediaRecord
+import org.gotson.komga.jooq.tables.records.ReadProgressRecord
 import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.Record
@@ -31,6 +33,7 @@ class BookDtoDao(
   private val b = Tables.BOOK
   private val m = Tables.MEDIA
   private val d = Tables.BOOK_METADATA
+  private val r = Tables.READ_PROGRESS
   private val a = Tables.BOOK_METADATA_AUTHOR
 
   private val mediaFields = m.fields().filterNot { it.name == m.THUMBNAIL.name }.toTypedArray()
@@ -42,7 +45,7 @@ class BookDtoDao(
     "fileSize" to b.FILE_SIZE
   )
 
-  override fun findAll(search: BookSearch, pageable: Pageable): Page<BookDto> {
+  override fun findAll(search: BookSearch, userId: Long, pageable: Pageable): Page<BookDto> {
     val conditions = search.toCondition()
 
     val count = dsl.selectCount()
@@ -56,6 +59,7 @@ class BookDtoDao(
 
     val dtos = selectBase()
       .where(conditions)
+      .and(readProgressCondition(userId))
       .orderBy(orderBy)
       .limit(pageable.pageSize)
       .offset(pageable.offset)
@@ -68,18 +72,20 @@ class BookDtoDao(
     )
   }
 
-  override fun findByIdOrNull(bookId: Long): BookDto? =
+  override fun findByIdOrNull(bookId: Long, userId: Long): BookDto? =
     selectBase()
       .where(b.ID.eq(bookId))
+      .and(readProgressCondition(userId))
       .fetchAndMap()
       .firstOrNull()
 
-  override fun findPreviousInSeries(bookId: Long): BookDto? = findSibling(bookId, next = false)
+  override fun findPreviousInSeries(bookId: Long, userId: Long): BookDto? = findSibling(bookId, userId, next = false)
 
-  override fun findNextInSeries(bookId: Long): BookDto? = findSibling(bookId, next = true)
+  override fun findNextInSeries(bookId: Long, userId: Long): BookDto? = findSibling(bookId, userId, next = true)
 
+  private fun readProgressCondition(userId: Long): Condition = r.USER_ID.eq(userId).or(r.USER_ID.isNull)
 
-  private fun findSibling(bookId: Long, next: Boolean): BookDto? {
+  private fun findSibling(bookId: Long, userId: Long, next: Boolean): BookDto? {
     val record = dsl.select(b.SERIES_ID, d.NUMBER_SORT)
       .from(b)
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
@@ -90,6 +96,7 @@ class BookDtoDao(
 
     return selectBase()
       .where(b.SERIES_ID.eq(seriesId))
+      .and(readProgressCondition(userId))
       .orderBy(d.NUMBER_SORT.let { if (next) it.asc() else it.desc() })
       .seek(numberSort)
       .limit(1)
@@ -102,20 +109,23 @@ class BookDtoDao(
       *b.fields(),
       *mediaFields,
       *d.fields(),
-      *a.fields()
+      *a.fields(),
+      *r.fields()
     ).from(b)
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .leftJoin(a).on(d.BOOK_ID.eq(a.BOOK_ID))
+      .leftJoin(r).on(b.ID.eq(r.BOOK_ID))
 
   private fun ResultQuery<Record>.fetchAndMap() =
     fetchGroups(
-      { it.into(*b.fields(), *mediaFields, *d.fields()) }, { it.into(a) }
-    ).map { (r, ar) ->
-      val br = r.into(b)
-      val mr = r.into(m)
-      val dr = r.into(d)
-      br.toDto(mr.toDto(), dr.toDto(ar))
+      { it.into(*b.fields(), *mediaFields, *d.fields(), *r.fields()) }, { it.into(a) }
+    ).map { (rec, ar) ->
+      val br = rec.into(b)
+      val mr = rec.into(m)
+      val dr = rec.into(d)
+      val rr = rec.into(r)
+      br.toDto(mr.toDto(), dr.toDto(ar), if (rr.userId != null) rr.toDto() else null)
     }
 
   private fun BookSearch.toCondition(): Condition {
@@ -129,7 +139,7 @@ class BookDtoDao(
     return c
   }
 
-  private fun BookRecord.toDto(media: MediaDto, metadata: BookMetadataDto) =
+  private fun BookRecord.toDto(media: MediaDto, metadata: BookMetadataDto, readProgress: ReadProgressDto?) =
     BookDto(
       id = id,
       seriesId = seriesId,
@@ -142,7 +152,8 @@ class BookDtoDao(
       fileLastModified = fileLastModified.toUTC(),
       sizeBytes = fileSize,
       media = media,
-      metadata = metadata
+      metadata = metadata,
+      readProgress = readProgress
     )
 
   private fun MediaRecord.toDto() =
@@ -173,5 +184,13 @@ class BookDtoDao(
       releaseDateLock = releaseDateLock,
       authors = ar.filter { it.name != null }.map { AuthorDto(it.name, it.role) },
       authorsLock = authorsLock
+    )
+
+  private fun ReadProgressRecord.toDto() =
+    ReadProgressDto(
+      page = page,
+      completed = completed,
+      created = createdDate.toUTC(),
+      lastModified = lastModifiedDate.toUTC()
     )
 }

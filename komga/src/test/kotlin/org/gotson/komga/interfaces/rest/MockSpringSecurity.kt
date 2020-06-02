@@ -15,7 +15,8 @@ annotation class WithMockCustomUser(
   val email: String = "user@example.org",
   val roles: Array<String> = [],
   val sharedAllLibraries: Boolean = true,
-  val sharedLibraries: LongArray = []
+  val sharedLibraries: LongArray = [],
+  val id: Long = 0
 )
 
 class WithMockCustomUserSecurityContextFactory : WithSecurityContextFactory<WithMockCustomUser> {
@@ -28,7 +29,8 @@ class WithMockCustomUserSecurityContextFactory : WithSecurityContextFactory<With
         password = "",
         roleAdmin = customUser.roles.contains("ADMIN"),
         sharedAllLibraries = customUser.sharedAllLibraries,
-        sharedLibrariesIds = customUser.sharedLibraries.toSet()
+        sharedLibrariesIds = customUser.sharedLibraries.toSet(),
+        id = customUser.id
       )
     )
     val auth = UsernamePasswordAuthenticationToken(principal, "", principal.authorities)

@@ -23,6 +23,7 @@ import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.BookMetadataUpdateDto
 import org.gotson.komga.interfaces.rest.dto.PageDto
+import org.gotson.komga.interfaces.rest.dto.ReadProgressUpdateDto
 import org.gotson.komga.interfaces.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.rest.persistence.BookDtoRepository
 import org.springframework.core.io.FileSystemResource
@@ -38,6 +39,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -90,7 +92,7 @@ class BookController(
       mediaStatus = mediaStatus ?: emptyList()
     )
 
-    return bookDtoRepository.findAll(bookSearch, pageRequest)
+    return bookDtoRepository.findAll(bookSearch, principal.user.id, pageRequest)
       .map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
@@ -114,6 +116,7 @@ class BookController(
       BookSearch(
         libraryIds = libraryIds
       ),
+      principal.user.id,
       pageRequest
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
@@ -124,7 +127,7 @@ class BookController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: Long
   ): BookDto =
-    bookDtoRepository.findByIdOrNull(bookId)?.let {
+    bookDtoRepository.findByIdOrNull(bookId, principal.user.id)?.let {
       if (!principal.user.canAccessLibrary(it.libraryId)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
       it.restrictUrl(!principal.user.roleAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -138,7 +141,7 @@ class BookController(
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    return bookDtoRepository.findPreviousInSeries(bookId)
+    return bookDtoRepository.findPreviousInSeries(bookId, principal.user.id)
       ?.restrictUrl(!principal.user.roleAdmin)
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
@@ -152,7 +155,7 @@ class BookController(
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    return bookDtoRepository.findNextInSeries(bookId)
+    return bookDtoRepository.findNextInSeries(bookId, principal.user.id)
       ?.restrictUrl(!principal.user.roleAdmin)
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
@@ -342,7 +345,8 @@ class BookController(
   fun updateMetadata(
     @PathVariable bookId: Long,
     @Parameter(description = "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don't want to update.")
-    @Valid @RequestBody newMetadata: BookMetadataUpdateDto
+    @Valid @RequestBody newMetadata: BookMetadataUpdateDto,
+    @AuthenticationPrincipal principal: KomgaPrincipal
   ): BookDto =
     bookMetadataRepository.findByIdOrNull(bookId)?.let { existing ->
       val updated = with(newMetadata) {
@@ -370,8 +374,44 @@ class BookController(
         )
       }
       bookMetadataRepository.update(updated)
-      bookDtoRepository.findByIdOrNull(bookId)
+      bookDtoRepository.findByIdOrNull(bookId, principal.user.id)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  @PatchMapping("api/v1/books/{bookId}/read-progress")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  fun markReadProgress(
+    @PathVariable bookId: Long,
+    @Parameter(description = "page can be omitted if completed is set to true. completed can be omitted, and will be set accordingly depending on the page passed and the total number of pages in the book.")
+    @Valid @RequestBody readProgress: ReadProgressUpdateDto,
+    @AuthenticationPrincipal principal: KomgaPrincipal
+  ) {
+    bookRepository.findByIdOrNull(bookId)?.let { book ->
+      if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+
+      try {
+        if (readProgress.completed != null && readProgress.completed)
+          bookLifecycle.markReadProgressCompleted(book, principal.user)
+        else
+          bookLifecycle.markReadProgress(book, principal.user, readProgress.page!!)
+      } catch (e: IllegalArgumentException) {
+        throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
+      }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @DeleteMapping("api/v1/books/{bookId}/read-progress")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  fun deleteReadProgress(
+    @PathVariable bookId: Long,
+    @AuthenticationPrincipal principal: KomgaPrincipal
+  ) {
+    bookRepository.findByIdOrNull(bookId)?.let { book ->
+      if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+
+      bookLifecycle.deleteReadProgress(book, principal.user)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
 
   private fun ResponseEntity.BodyBuilder.setCachePrivate() =
     this.cacheControl(CacheControl.maxAge(0, TimeUnit.SECONDS)

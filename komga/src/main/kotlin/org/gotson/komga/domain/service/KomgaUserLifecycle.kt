@@ -4,6 +4,7 @@ import mu.KotlinLogging
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.UserEmailAlreadyExistsException
 import org.gotson.komga.domain.persistence.KomgaUserRepository
+import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.core.userdetails.UserDetails
@@ -17,6 +18,7 @@ private val logger = KotlinLogging.logger {}
 @Service
 class KomgaUserLifecycle(
   private val userRepository: KomgaUserRepository,
+  private val readProgressRepository: ReadProgressRepository,
   private val passwordEncoder: PasswordEncoder,
   private val sessionRegistry: SessionRegistry
 
@@ -52,6 +54,7 @@ class KomgaUserLifecycle(
 
   fun deleteUser(user: KomgaUser) {
     logger.info { "Deleting user: $user" }
+    readProgressRepository.deleteByUserId(user.id)
     userRepository.delete(user)
     expireSessions(user)
   }
