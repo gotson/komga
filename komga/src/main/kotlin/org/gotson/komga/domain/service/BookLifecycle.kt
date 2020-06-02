@@ -114,13 +114,13 @@ class BookLifecycle(
     readProgressRepository.save(ReadProgress(book.id, user.id, page, page == media.pages.size))
   }
 
-  fun markReadProgressCompleted(book: Book, user: KomgaUser) {
-    val media = mediaRepository.findById(book.id)
+  fun markReadProgressCompleted(bookId: Long, user: KomgaUser) {
+    val media = mediaRepository.findById(bookId)
 
-    readProgressRepository.save(ReadProgress(book.id, user.id, media.pages.size, true))
+    readProgressRepository.save(ReadProgress(bookId, user.id, media.pages.size, true))
   }
 
-  fun deleteReadProgress(book: Book, user: KomgaUser) {
-    readProgressRepository.delete(book.id, user.id)
+  fun deleteReadProgress(bookId: Long, user: KomgaUser) {
+    readProgressRepository.delete(bookId, user.id)
   }
 }

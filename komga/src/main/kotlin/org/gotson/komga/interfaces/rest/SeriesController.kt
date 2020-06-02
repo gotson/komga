@@ -14,6 +14,7 @@ import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
+import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
@@ -32,6 +33,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -53,6 +55,7 @@ class SeriesController(
   private val seriesRepository: SeriesRepository,
   private val seriesMetadataRepository: SeriesMetadataRepository,
   private val seriesDtoRepository: SeriesDtoRepository,
+  private val bookLifecycle: BookLifecycle,
   private val bookRepository: BookRepository,
   private val bookDtoRepository: BookDtoRepository,
   private val bookController: BookController
@@ -241,4 +244,33 @@ class SeriesController(
       seriesDtoRepository.findByIdOrNull(seriesId)!!
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @PostMapping("{seriesId}/read-progress")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  fun markAsRead(
+    @PathVariable seriesId: Long,
+    @AuthenticationPrincipal principal: KomgaPrincipal
+  ) {
+    seriesRepository.getLibraryId(seriesId)?.let {
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+    bookRepository.findAllIdBySeriesId(seriesId).forEach {
+      bookLifecycle.markReadProgressCompleted(it, principal.user)
+    }
+  }
+
+  @DeleteMapping("{seriesId}/read-progress")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  fun markAsUnread(
+    @PathVariable seriesId: Long,
+    @AuthenticationPrincipal principal: KomgaPrincipal
+  ) {
+    seriesRepository.getLibraryId(seriesId)?.let {
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+    bookRepository.findAllIdBySeriesId(seriesId).forEach {
+      bookLifecycle.deleteReadProgress(it, principal.user)
+    }
+  }
 }

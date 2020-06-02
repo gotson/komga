@@ -1,19 +1,25 @@
 package org.gotson.komga.interfaces.rest
 
 import org.assertj.core.api.Assertions.assertThat
+import org.gotson.komga.domain.model.BookPage
+import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
+import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
+import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
 import org.hamcrest.Matchers
+import org.hamcrest.core.IsNull
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
@@ -32,8 +38,10 @@ import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.MockMvcResultMatchersDsl
+import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
+import org.springframework.test.web.servlet.post
 import javax.sql.DataSource
 import kotlin.random.Random
 
@@ -50,6 +58,8 @@ class SeriesControllerTest(
   @Autowired private val bookRepository: BookRepository,
   @Autowired private val mediaRepository: MediaRepository,
   @Autowired private val bookMetadataRepository: BookMetadataRepository,
+  @Autowired private val userRepository: KomgaUserRepository,
+  @Autowired private val userLifecycle: KomgaUserLifecycle,
   @Autowired private val mockMvc: MockMvc
 ) {
 
@@ -66,11 +76,15 @@ class SeriesControllerTest(
   fun `setup library`() {
     jdbcTemplate.execute("ALTER SEQUENCE hibernate_sequence RESTART WITH 1")
 
-    library = libraryRepository.insert(library)
+    library = libraryRepository.insert(library) // id = 1
+    userRepository.save(KomgaUser("user@example.org", "", false)) // id = 2
   }
 
   @AfterAll
-  fun `teardown library`() {
+  fun `teardown`() {
+    userRepository.findAll().forEach {
+      userLifecycle.deleteUser(it)
+    }
     libraryRepository.findAll().forEach {
       libraryLifecycle.deleteLibrary(it)
     }
@@ -467,6 +481,80 @@ class SeriesControllerTest(
       }.andExpect {
         status { isOk }
       }
+    }
+  }
+
+  @Nested
+  inner class ReadProgress {
+    @Test
+    @WithMockCustomUser(id = 2)
+    fun `given user when marking series as read then progress is marked for all books`() {
+      val series = makeSeries(name = "series", libraryId = library.id).let { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(makeBook("1.cbr", libraryId = library.id), makeBook("2.cbr", libraryId = library.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+      }
+
+      bookRepository.findAll().forEach { book ->
+        mediaRepository.findById(book.id).let {
+          mediaRepository.update(it.copy(
+            status = Media.Status.READY,
+            pages = (1..10).map { BookPage("$it", "image/jpeg") }
+          ))
+        }
+      }
+
+      mockMvc.post("/api/v1/series/${series.id}/read-progress")
+        .andExpect {
+          status { isNoContent }
+        }
+
+      mockMvc.get("/api/v1/series/${series.id}/books")
+        .andExpect {
+          status { isOk }
+          jsonPath("$.content[0].readProgress.completed") { value(true) }
+          jsonPath("$.content[1].readProgress.completed") { value(true) }
+          jsonPath("$.numberOfElements") { value(2) }
+        }
+    }
+
+    @Test
+    @WithMockCustomUser(id = 2)
+    fun `given user when marking series as unread then progress is removed for all books`() {
+      val series = makeSeries(name = "series", libraryId = library.id).let { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(makeBook("1.cbr", libraryId = library.id), makeBook("2.cbr", libraryId = library.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+      }
+
+      bookRepository.findAll().forEach { book ->
+        mediaRepository.findById(book.id).let {
+          mediaRepository.update(it.copy(
+            status = Media.Status.READY,
+            pages = (1..10).map { BookPage("$it", "image/jpeg") }
+          ))
+        }
+      }
+
+      mockMvc.post("/api/v1/series/${series.id}/read-progress")
+        .andExpect {
+          status { isNoContent }
+        }
+
+      mockMvc.delete("/api/v1/series/${series.id}/read-progress")
+        .andExpect {
+          status { isNoContent }
+        }
+
+      mockMvc.get("/api/v1/series/${series.id}/books")
+        .andExpect {
+          status { isOk }
+          jsonPath("$.content[0].readProgress") { value(IsNull.nullValue()) }
+          jsonPath("$.content[1].readProgress") { value(IsNull.nullValue()) }
+          jsonPath("$.numberOfElements") { value(2) }
+        }
     }
   }
 }

@@ -390,7 +390,7 @@ class BookController(
 
       try {
         if (readProgress.completed != null && readProgress.completed)
-          bookLifecycle.markReadProgressCompleted(book, principal.user)
+          bookLifecycle.markReadProgressCompleted(book.id, principal.user)
         else
           bookLifecycle.markReadProgress(book, principal.user, readProgress.page!!)
       } catch (e: IllegalArgumentException) {
@@ -408,7 +408,7 @@ class BookController(
     bookRepository.findByIdOrNull(bookId)?.let { book ->
       if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
 
-      bookLifecycle.deleteReadProgress(book, principal.user)
+      bookLifecycle.deleteReadProgress(book.id, principal.user)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
