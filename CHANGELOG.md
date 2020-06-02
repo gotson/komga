@@ -1,3 +1,12 @@
+# [0.32.0](https://github.com/gotson/komga/compare/v0.31.0...v0.32.0) (2020-06-02)
+
+
+### Features
+
+* **api:** manage book read progress per user ([17c80cd](https://github.com/gotson/komga/commit/17c80cd1a1407de2de8a8341374f92dd2fe72cc7)), closes [#25](https://github.com/gotson/komga/issues/25)
+* **webreader:** mark progress while reading ([10895a3](https://github.com/gotson/komga/commit/10895a37f503503ad23a24632ad28eaeaf8db1de)), closes [#25](https://github.com/gotson/komga/issues/25)
+* **webui:** mark books as read or unread ([24c994f](https://github.com/gotson/komga/commit/24c994f840df95920e5a8d501e58a916eaea04cc)), closes [#25](https://github.com/gotson/komga/issues/25)
+
 # [0.31.0](https://github.com/gotson/komga/compare/v0.30.0...v0.31.0) (2020-06-01)
 
 
