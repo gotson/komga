@@ -119,4 +119,28 @@ export default class KomgaBooksService {
       throw new Error(msg)
     }
   }
+
+  async updateReadProgress (bookId: number, readProgress: ReadProgressUpdateDto) {
+    try {
+      await this.http.patch(`${API_BOOKS}/${bookId}/read-progress`, readProgress)
+    } catch (e) {
+      let msg = `An error occurred while trying to update read progress`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async deleteReadProgress (bookId: number) {
+    try {
+      await this.http.delete(`${API_BOOKS}/${bookId}/read-progress`)
+    } catch (e) {
+      let msg = `An error occurred while trying to delete read progress`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
 }

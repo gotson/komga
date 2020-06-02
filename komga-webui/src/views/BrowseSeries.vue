@@ -55,6 +55,14 @@
 
         <v-spacer/>
 
+        <v-btn @click="markSelectedRead()">
+          Mark as read
+        </v-btn>
+
+        <v-btn @click="markSelectedUnread()">
+          Mark as unread
+        </v-btn>
+
         <v-btn icon @click="dialogEditBooks = true" v-if="isAdmin">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
@@ -96,7 +104,8 @@
       </v-row>
 
       <v-divider class="my-4"/>
-      <item-browser :items="books" :selected.sync="selected" :edit-function="this.singleEdit" class="px-6" @update="updateVisible"></item-browser>
+      <item-browser :items="books" :selected.sync="selected" :edit-function="this.singleEdit" class="px-6"
+                    @update="updateVisible"></item-browser>
     </v-container>
     <edit-series-dialog v-model="dialogEdit"
                         :series.sync="series"/>
@@ -105,15 +114,15 @@
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
-import SortMenuButton from '@/components/SortMenuButton.vue'
-import ToolbarSticky from '@/components/ToolbarSticky.vue'
-import Vue from 'vue'
-import { parseQuerySort } from '@/functions/query-params'
-import { seriesThumbnailUrl } from '@/functions/urls'
-import { LoadState } from '@/types/common'
 import EditBooksDialog from '@/components/EditBooksDialog.vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
+import SortMenuButton from '@/components/SortMenuButton.vue'
+import ToolbarSticky from '@/components/ToolbarSticky.vue'
+import { parseQuerySort } from '@/functions/query-params'
+import { seriesThumbnailUrl } from '@/functions/urls'
+import { LoadState } from '@/types/common'
+import Vue from 'vue'
 
 export default Vue.extend({
   name: 'BrowseSeries',
@@ -303,6 +312,22 @@ export default Vue.extend({
     singleEdit (book: BookDto) {
       this.editBookSingle = book
       this.dialogEditBookSingle = true
+    },
+    async markSelectedRead () {
+      await Promise.all(this.selectedBooks.map(b =>
+        this.$komgaBooks.updateReadProgress(b.id, { completed: true }),
+      ))
+      this.selectedBooks = await Promise.all(this.selectedBooks.map(b =>
+        this.$komgaBooks.getBook(b.id),
+      ))
+    },
+    async markSelectedUnread () {
+      await Promise.all(this.selectedBooks.map(b =>
+        this.$komgaBooks.deleteReadProgress(b.id),
+      ))
+      this.selectedBooks = await Promise.all(this.selectedBooks.map(b =>
+        this.$komgaBooks.getBook(b.id),
+      ))
     },
   },
 })

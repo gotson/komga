@@ -11,3 +11,9 @@ export enum MediaStatus {
   ERROR = 'ERROR',
   UNSUPPORTED = 'UNSUPPORTED'
 }
+
+export enum ReadProgress {
+  UNREAD = 'UNREAD',
+  READ = 'READ',
+  IN_PROGRESS = 'IN_PROGRESS'
+}

@@ -29,6 +29,16 @@
           <v-list-item @click="refreshMetadata()">
             <v-list-item-title>Refresh metadata</v-list-item-title>
           </v-list-item>
+          <v-list-item
+            v-if="!isRead"
+            @click="markRead()">
+            <v-list-item-title>Mark as read</v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            v-if="!isUnread"
+            @click="markUnread()">
+            <v-list-item-title>Mark as unread</v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-menu>
     </toolbar-sticky>
@@ -43,6 +53,7 @@
                      max-height="300"
                      max-width="212"
               >
+                <div class="unread" v-if="isUnread"/>
                 <v-fade-transition>
                   <v-overlay
                     v-if="hover && book.media.status === 'READY'"
@@ -58,6 +69,13 @@
                     </v-btn>
                   </v-overlay>
                 </v-fade-transition>
+                <v-progress-linear
+                  v-if="isInProgress"
+                  :value="readProgressPercentage"
+                  color="orange"
+                  height="6"
+                  style="position: absolute; bottom: 0"
+                />
               </v-img>
             </template>
           </v-hover>
@@ -175,14 +193,16 @@
 </template>
 
 <script lang="ts">
-import ToolbarSticky from '@/components/ToolbarSticky.vue'
-import { getBookFormatFromMediaType } from '@/functions/book-format'
-import { bookFileUrl, bookThumbnailUrl } from '@/functions/urls'
-import Vue from 'vue'
-import { getBookTitleCompact } from '@/functions/book-title'
 import Badge from '@/components/Badge.vue'
 import EditBooksDialog from '@/components/EditBooksDialog.vue'
+import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { groupAuthorsByRolePlural } from '@/functions/authors'
+import { getBookFormatFromMediaType } from '@/functions/book-format'
+import { getReadProgress, getReadProgressPercentage } from '@/functions/book-progress'
+import { getBookTitleCompact } from '@/functions/book-title'
+import { bookFileUrl, bookThumbnailUrl } from '@/functions/urls'
+import { ReadProgress } from '@/types/enum-books'
+import Vue from 'vue'
 
 export default Vue.extend({
   name: 'BrowseBook',
@@ -234,6 +254,18 @@ export default Vue.extend({
     authorsByRole (): any {
       return groupAuthorsByRolePlural(this.book.metadata.authors)
     },
+    isRead (): boolean {
+      return getReadProgress(this.book) === ReadProgress.READ
+    },
+    isUnread (): boolean {
+      return getReadProgress(this.book) === ReadProgress.UNREAD
+    },
+    isInProgress (): boolean {
+      return getReadProgress(this.book) === ReadProgress.IN_PROGRESS
+    },
+    readProgressPercentage (): number {
+      return getReadProgressPercentage(this.book)
+    },
   },
   methods: {
     analyze () {
@@ -242,9 +274,19 @@ export default Vue.extend({
     refreshMetadata () {
       this.$komgaBooks.refreshMetadata(this.book)
     },
+    async markRead () {
+      const readProgress = { completed: true } as ReadProgressUpdateDto
+      await this.$komgaBooks.updateReadProgress(this.book.id, readProgress)
+      this.book = await this.$komgaBooks.getBook(this.bookId)
+    },
+    async markUnread () {
+      await this.$komgaBooks.deleteReadProgress(this.book.id)
+      this.book = await this.$komgaBooks.getBook(this.bookId)
+    },
   },
 })
 </script>
 
 <style scoped>
+@import "../styles/unread-triangle.css";
 </style>

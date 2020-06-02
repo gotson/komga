@@ -8,7 +8,8 @@ interface BookDto {
   sizeBytes: number,
   size: string,
   media: MediaDto,
-  metadata: BookMetadataDto
+  metadata: BookMetadataDto,
+  readProgress?: ReadProgressDto
 }
 
 interface MediaDto {
@@ -47,6 +48,13 @@ interface BookMetadataDto {
   authorsLock: boolean,
 }
 
+interface ReadProgressDto {
+  page: number,
+  completed: boolean,
+  created: string,
+  lastModified: string
+}
+
 interface BookMetadataUpdateDto {
   title?: string,
   titleLock?: boolean,
@@ -71,6 +79,11 @@ interface BookMetadataUpdateDto {
 interface AuthorDto {
   name: string,
   role: string
+}
+
+interface ReadProgressUpdateDto {
+  page?: number,
+  completed?: boolean
 }
 
 interface BookFormat {

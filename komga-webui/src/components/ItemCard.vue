@@ -12,6 +12,7 @@
         lazy-src="../assets/cover.svg"
         aspect-ratio="0.7071"
       >
+        <div class="unread" v-if="isUnread"/>
         <v-fade-transition>
           <v-overlay
             v-if="hover || selected || preselect"
@@ -36,6 +37,13 @@
             </v-icon>
           </v-overlay>
         </v-fade-transition>
+        <v-progress-linear
+          v-if="isInProgress"
+          :value="readProgressPercentage"
+          color="orange"
+          height="6"
+          style="position: absolute; bottom: 0"
+        />
       </v-img>
       <!--      Description-->
       <v-card-subtitle
@@ -52,8 +60,10 @@
 </template>
 
 <script lang="ts">
+import { getReadProgress, getReadProgressPercentage } from '@/functions/book-progress'
+import { ReadProgress } from '@/types/enum-books'
+import { createItem, Item } from '@/types/items'
 import Vue from 'vue'
-import { BookItem, createItem, Item } from '@/types/items'
 
 export default Vue.extend({
   name: 'ItemCard',
@@ -111,6 +121,18 @@ export default Vue.extend({
     },
     body (): string {
       return this.computedItem.body()
+    },
+    isInProgress (): boolean {
+      if ('seriesId' in this.item) return getReadProgress(this.item) === ReadProgress.IN_PROGRESS
+      return false
+    },
+    isUnread (): boolean {
+      if ('seriesId' in this.item) return getReadProgress(this.item) === ReadProgress.UNREAD
+      return false
+    },
+    readProgressPercentage (): number {
+      if ('seriesId' in this.item) return getReadProgressPercentage(this.item)
+      return 0
     },
   },
   methods: {
