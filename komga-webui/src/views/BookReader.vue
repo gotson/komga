@@ -271,15 +271,15 @@
 </template>
 
 <script lang="ts">
-import SettingsSwitch from '@/components/SettingsSwitch.vue'
 import SettingsSelect from '@/components/SettingsSelect.vue'
+import SettingsSwitch from '@/components/SettingsSwitch.vue'
 import ThumbnailExplorerDialog from '@/components/ThumbnailExplorerDialog.vue'
+import { getBookTitleCompact } from '@/functions/book-title'
 
 import { checkWebpFeature } from '@/functions/check-webp'
 import { bookPageUrl } from '@/functions/urls'
-import Vue from 'vue'
-import { getBookTitleCompact } from '@/functions/book-title'
 import { ReadingDirection } from '@/types/enum-books'
+import Vue from 'vue'
 
 const cookieFit = 'webreader.fit'
 const cookieReadingDirection = 'webreader.readingDirection'
@@ -397,6 +397,7 @@ export default Vue.extend({
     currentPage (val) {
       this.updateRoute()
       this.goToPage = val
+      this.markProgress(val)
     },
     async book (val) {
       if (this.$_.has(val, 'name')) {
@@ -564,6 +565,8 @@ export default Vue.extend({
       this.pages = await this.$komgaBooks.getBookPages(bookId)
       if (page >= 1 && page <= this.pagesCount) {
         this.goTo(page)
+      } else if (this.book.readProgress?.completed === false) {
+        this.goTo(this.book.readProgress?.page!!)
       } else {
         this.goToFirst()
       }
@@ -695,6 +698,9 @@ export default Vue.extend({
         let value = this.$cookies.get(cookieKey)
         setter(value)
       }
+    },
+    async markProgress (page: number) {
+      this.$komgaBooks.updateReadProgress(this.bookId, { page: page })
     },
   },
 })
