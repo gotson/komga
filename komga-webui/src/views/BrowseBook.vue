@@ -16,17 +16,17 @@
       </v-btn>
 
       <!--   Action menu   -->
-      <v-menu offset-y v-if="isAdmin">
+      <v-menu offset-y>
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
         <v-list>
-          <v-list-item @click="analyze()">
+          <v-list-item @click="analyze()" v-if="isAdmin">
             <v-list-item-title>Analyze</v-list-item-title>
           </v-list-item>
-          <v-list-item @click="refreshMetadata()">
+          <v-list-item @click="refreshMetadata()" v-if="isAdmin">
             <v-list-item-title>Refresh metadata</v-list-item-title>
           </v-list-item>
           <v-list-item
