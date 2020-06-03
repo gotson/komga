@@ -1,62 +1,62 @@
 <template>
-<v-hover :disabled="disableHover">
-  <template v-slot:default="{ hover }">
-    <v-card
-      :width="width"
-      @click="onClick"
-      :ripple="false"
-    >
-      <!--      Thumbnail-->
-      <v-img
-        :src="thumbnailUrl"
-        lazy-src="../assets/cover.svg"
-        aspect-ratio="0.7071"
+  <v-hover :disabled="disableHover">
+    <template v-slot:default="{ hover }">
+      <v-card
+        :width="width"
+        @click="onClick"
+        :ripple="false"
       >
-        <div class="unread" v-if="isUnread"/>
-        <v-fade-transition>
-          <v-overlay
-            v-if="hover || selected || preselect"
-            absolute
-            :opacity="hover ? 0.3 : 0"
-            :class="`${hover ? 'item-border-darken' : selected ? 'item-border' : 'item-border-transparent'} overlay-full`"
-          >
-            <v-icon v-if="onSelected"
-                    :color="selected ? 'secondary' : ''"
-                    style="position: absolute; top: 5px; left: 10px"
-                    @click.stop="selectItem"
+        <!--      Thumbnail-->
+        <v-img
+          :src="thumbnailUrl"
+          lazy-src="../assets/cover.svg"
+          aspect-ratio="0.7071"
+        >
+          <div class="unread" v-if="isUnread"/>
+          <v-fade-transition>
+            <v-overlay
+              v-if="hover || selected || preselect"
+              absolute
+              :opacity="hover ? 0.3 : 0"
+              :class="`${hover ? 'item-border-darken' : selected ? 'item-border' : 'item-border-transparent'} overlay-full`"
             >
-              {{ selected || (preselect && hover) ? 'mdi-checkbox-marked-circle' : 'mdi-checkbox-blank-circle-outline'
-              }}
-            </v-icon>
+              <v-icon v-if="onSelected"
+                      :color="selected ? 'secondary' : ''"
+                      style="position: absolute; top: 5px; left: 10px"
+                      @click.stop="selectItem"
+              >
+                {{ selected || (preselect && hover) ? 'mdi-checkbox-marked-circle' : 'mdi-checkbox-blank-circle-outline'
+                }}
+              </v-icon>
 
-            <v-icon v-if="!selected && !preselect && onEdit"
-                    style="position: absolute; bottom: 10px; left: 10px"
-                    @click.stop="editItem"
-            >
-              mdi-pencil
-            </v-icon>
-          </v-overlay>
-        </v-fade-transition>
-        <v-progress-linear
-          v-if="isInProgress"
-          :value="readProgressPercentage"
-          color="orange"
-          height="6"
-          style="position: absolute; bottom: 0"
-        />
-      </v-img>
-      <!--      Description-->
-      <v-card-subtitle
-        v-line-clamp="2"
-        v-bind="subtitleProps"
-        v-html="title"
-      >
-      </v-card-subtitle>
-      <v-card-text class="px-2" v-html="body">
-      </v-card-text>
-    </v-card>
-  </template>
-</v-hover>
+              <v-icon v-if="!selected && !preselect && onEdit"
+                      style="position: absolute; bottom: 10px; left: 10px"
+                      @click.stop="editItem"
+              >
+                mdi-pencil
+              </v-icon>
+            </v-overlay>
+          </v-fade-transition>
+          <v-progress-linear
+            v-if="isInProgress"
+            :value="readProgressPercentage"
+            color="orange"
+            height="6"
+            style="position: absolute; bottom: 0"
+          />
+        </v-img>
+        <!--      Description-->
+        <v-card-subtitle
+          v-line-clamp="2"
+          v-bind="subtitleProps"
+          v-html="title"
+        >
+        </v-card-subtitle>
+        <v-card-text class="px-2" v-html="body">
+        </v-card-text>
+      </v-card>
+    </template>
+  </v-hover>
 </template>
 
 <script lang="ts">
@@ -97,8 +97,7 @@ export default Vue.extend({
     },
   },
   data: () => {
-    return {
-    }
+    return {}
   },
   computed: {
     overlay (): boolean {
@@ -161,20 +160,22 @@ export default Vue.extend({
 </script>
 
 <style>
-  .item-border {
-    border: 3px solid var(--v-secondary-base);
-  }
+@import "../styles/unread-triangle.css";
 
-  .item-border-transparent {
-    border: 3px solid transparent;
-  }
+.item-border {
+  border: 3px solid var(--v-secondary-base);
+}
 
-  .item-border-darken {
-    border: 3px solid var(--v-secondary-darken2);
-  }
+.item-border-transparent {
+  border: 3px solid transparent;
+}
 
-  .overlay-full .v-overlay__content {
-    width: 100%;
-    height: 100%;
-  }
+.item-border-darken {
+  border: 3px solid var(--v-secondary-darken2);
+}
+
+.overlay-full .v-overlay__content {
+  width: 100%;
+  height: 100%;
+}
 </style>
