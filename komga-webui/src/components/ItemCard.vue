@@ -12,7 +12,17 @@
           lazy-src="../assets/cover.svg"
           aspect-ratio="0.7071"
         >
+          <!-- unread tick for books -->
           <div class="unread" v-if="isUnread"/>
+
+          <!-- unread count for series -->
+          <span v-if="unreadCount"
+                class="white--text pa-1 px-2 subtitle-2"
+                :style="{background: 'orange', position: 'absolute', right: 0}"
+          >
+            {{ unreadCount }}
+          </span>
+
           <v-fade-transition>
             <v-overlay
               v-if="hover || selected || preselect"
@@ -128,6 +138,10 @@ export default Vue.extend({
     isUnread (): boolean {
       if ('seriesId' in this.item) return getReadProgress(this.item) === ReadProgress.UNREAD
       return false
+    },
+    unreadCount (): number | undefined {
+      if (!('seriesId' in this.item)) return this.item.booksUnreadCount
+      return undefined
     },
     readProgressPercentage (): number {
       if ('seriesId' in this.item) return getReadProgressPercentage(this.item)

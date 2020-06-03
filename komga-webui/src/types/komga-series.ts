@@ -5,6 +5,8 @@ interface SeriesDto {
   url: string,
   lastModified: string,
   booksCount: number,
+  booksReadCount: number,
+  booksUnreadCount: number,
   metadata: SeriesMetadata
 }
 
