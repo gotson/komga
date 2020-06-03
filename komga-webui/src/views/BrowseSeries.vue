@@ -42,6 +42,9 @@
                         :sort-options="sortOptions"
                         :sort-active.sync="sortActive"
       />
+
+      <page-size-select v-model="pageSize"/>
+
     </toolbar-sticky>
 
     <v-scroll-y-transition hide-on-leave>
@@ -104,11 +107,18 @@
       </v-row>
 
       <v-divider class="my-4"/>
-      <item-browser :items="books" :selected.sync="selected" :edit-function="this.singleEdit" class="px-6"
-                    @update="updateVisible"></item-browser>
+
+      <v-pagination
+        v-model="page"
+        :total-visible="paginationVisible"
+        :length="totalPages"
+      />
+
+      <item-browser :items="books" :selected.sync="selected" :edit-function="this.singleEdit" class="px-6"/>
+
     </v-container>
-    <edit-series-dialog v-model="dialogEdit"
-                        :series.sync="series"/>
+
+    <edit-series-dialog v-model="dialogEdit" :series.sync="series"/>
   </div>
 </template>
 
@@ -117,24 +127,27 @@ import Badge from '@/components/Badge.vue'
 import EditBooksDialog from '@/components/EditBooksDialog.vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
+import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { parseQuerySort } from '@/functions/query-params'
 import { seriesThumbnailUrl } from '@/functions/urls'
-import { LoadState } from '@/types/common'
 import Vue from 'vue'
+
+const cookiePageSize = 'pagesize'
 
 export default Vue.extend({
   name: 'BrowseSeries',
-  components: { ToolbarSticky, SortMenuButton, Badge, EditSeriesDialog, EditBooksDialog, ItemBrowser },
+  components: { ToolbarSticky, SortMenuButton, Badge, EditSeriesDialog, EditBooksDialog, ItemBrowser, PageSizeSelect },
   data: () => {
     return {
       series: {} as SeriesDto,
       books: [] as BookDto[],
       selectedBooks: [] as BookDto[],
       editBookSingle: {} as BookDto,
-      pagesState: [] as LoadState[],
+      page: 1,
       pageSize: 20,
+      totalPages: 1,
       totalElements: null as number | null,
       sortOptions: [{ name: 'Number', key: 'metadata.numberSort' }, { name: 'Date added', key: 'createdDate' }, {
         name: 'File size',
@@ -144,6 +157,8 @@ export default Vue.extend({
       sortDefault: { key: 'metadata.numberSort', order: 'asc' } as SortActive,
       dialogEdit: false,
       sortUnwatch: null as any,
+      pageUnwatch: null as any,
+      pageSizeUnwatch: null as any,
       selected: [],
       dialogEditBooks: false,
       dialogEditBookSingle: false,
@@ -153,11 +168,21 @@ export default Vue.extend({
     isAdmin (): boolean {
       return this.$store.getters.meAdmin
     },
-    sortCustom (): boolean {
-      return this.sortActive.key !== this.sortDefault.key || this.sortActive.order !== this.sortDefault.order
-    },
     thumbnailUrl (): string {
       return seriesThumbnailUrl(this.seriesId)
+    },
+    paginationVisible (): number {
+      switch (this.$vuetify.breakpoint.name) {
+        case 'xs':
+          return 5
+        case 'sm':
+        case 'md':
+          return 10
+        case 'lg':
+        case 'xl':
+        default:
+          return 15
+      }
     },
   },
   props: {
@@ -191,39 +216,32 @@ export default Vue.extend({
       }
     },
   },
-  async created () {
-    this.loadSeries()
-  },
   mounted () {
-    // fill books skeletons if an index is provided, so scroll position can be restored
-    if (this.$route.params.index) {
-      this.books = Array(Number(this.$route.params.index)).fill(null)
-    } else { // else fill one page of skeletons
-      this.books = Array(this.pageSize).fill(null)
+    if (this.$cookies.isKey(cookiePageSize)) {
+      this.pageSize = Number(this.$cookies.get(cookiePageSize))
     }
 
-    // restore sort from query param
+    // restore from query param
     this.sortActive = this.parseQuerySortOrDefault(this.$route.query.sort)
+    if (this.$route.query.page) this.page = Number(this.$route.query.page)
+    if (this.$route.query.pageSize) this.pageSize = Number(this.$route.query.pageSize)
 
-    this.reloadData(Number(this.$route.params.seriesId), this.books.length)
+    this.loadSeries(this.seriesId)
 
     this.setWatches()
-    this.loadSeries()
   },
   async beforeRouteUpdate (to, from, next) {
     if (to.params.seriesId !== from.params.seriesId) {
       this.unsetWatches()
 
-      this.series = await this.$komgaSeries.getOneSeries(Number(to.params.seriesId))
-
-      if (to.params.index) {
-        this.books = Array(Number(to.params.index)).fill(null)
-      } else { // else fill one page of skeletons
-        this.books = Array(this.pageSize).fill(null)
-      }
-
+      // reset
       this.sortActive = this.parseQuerySortOrDefault(to.query.sort)
-      this.reloadData(Number(to.params.seriesId), this.books.length)
+      this.page = 1
+      this.totalPages = 1
+      this.totalElements = null
+      this.books = []
+
+      this.loadSeries(Number(to.params.seriesId))
 
       this.setWatches()
     }
@@ -231,33 +249,37 @@ export default Vue.extend({
     next()
   },
   methods: {
-    async updateVisible (val: []) {
-      for (const i of val) {
-        const pageNumber = Math.floor(i / this.pageSize)
-        if (this.pagesState[pageNumber] === undefined || this.pagesState[pageNumber] === LoadState.NotLoaded) {
-          this.processPage(await this.loadPage(pageNumber, this.seriesId))
-        }
-      }
-
-      const max = this.$_.max(val) as number | undefined
-      const index = (max === undefined ? 0 : max).toString()
-
-      if (this.$route.params.index !== index) {
-        this.updateRoute(index)
-      }
-    },
     setWatches () {
       this.sortUnwatch = this.$watch('sortActive', this.updateRouteAndReload)
+      this.pageSizeUnwatch = this.$watch('pageSize', (val) => {
+        this.$cookies.set(cookiePageSize, val, Infinity)
+        this.updateRouteAndReload()
+      })
+
+      this.pageUnwatch = this.$watch('page', (val) => {
+        this.updateRoute()
+        this.loadPage(this.seriesId, val, this.sortActive)
+      })
     },
     unsetWatches () {
       this.sortUnwatch()
+      this.pageUnwatch()
+      this.pageSizeUnwatch()
     },
     updateRouteAndReload () {
+      this.unsetWatches()
+
+      this.selected = []
+      this.page = 1
+
       this.updateRoute()
-      this.reloadData(this.seriesId)
+      this.loadPage(this.seriesId, this.page, this.sortActive)
+
+      this.setWatches()
     },
-    async loadSeries () {
-      this.series = await this.$komgaSeries.getOneSeries(this.seriesId)
+    async loadSeries (seriesId: number) {
+      this.series = await this.$komgaSeries.getOneSeries(seriesId)
+      await this.loadPage(seriesId, this.page, this.sortActive)
     },
     parseQuerySortOrDefault (querySort: any): SortActive {
       return parseQuerySort(querySort, this.sortOptions) || this.$_.clone(this.sortDefault)
@@ -265,43 +287,29 @@ export default Vue.extend({
     updateRoute (index?: string) {
       this.$router.replace({
         name: this.$route.name,
-        params: { seriesId: this.$route.params.seriesId, index: index || this.$route.params.index },
+        params: { seriesId: this.$route.params.seriesId },
         query: {
+          page: `${this.page}`,
+          pageSize: `${this.pageSize}`,
           sort: `${this.sortActive.key},${this.sortActive.order}`,
         },
       }).catch(_ => {
       })
     },
-    reloadData (seriesId: number, countItem?: number) {
-      this.totalElements = null
-      this.pagesState = []
-      this.books = Array(countItem || this.pageSize).fill(null)
-      this.loadInitialData(seriesId)
-    },
-    async loadInitialData (seriesId: number, pageToLoad: number = 0) {
-      this.processPage(await this.loadPage(pageToLoad, seriesId))
-    },
-    async loadPage (page: number, seriesId: number): Promise<Page<BookDto>> {
-      this.pagesState[page] = LoadState.Loading
+    async loadPage (seriesId: number, page: number, sort: SortActive) {
       const pageRequest = {
-        page: page,
+        page: page - 1,
         size: this.pageSize,
       } as PageRequest
 
-      if (this.sortActive != null) {
-        pageRequest.sort = [`${this.sortActive.key},${this.sortActive.order}`]
+      if (sort) {
+        pageRequest.sort = [`${sort.key},${sort.order}`]
       }
-      return this.$komgaSeries.getBooks(seriesId, pageRequest)
-    },
-    processPage (page: Page<BookDto>) {
-      if (this.totalElements === null) {
-        // initialize page data
-        this.totalElements = page.totalElements
-        this.books = Array(this.totalElements).fill(null)
-        this.pagesState = Array(page.totalPages).fill(LoadState.NotLoaded)
-      }
-      this.books.splice(page.number * page.size, page.size, ...page.content)
-      this.pagesState[page.number] = LoadState.Loaded
+      const booksPage = await this.$komgaSeries.getBooks(seriesId, pageRequest)
+
+      this.totalPages = booksPage.totalPages
+      this.totalElements = booksPage.totalElements
+      this.books = booksPage.content
     },
     analyze () {
       this.$komgaSeries.analyzeSeries(this.series)

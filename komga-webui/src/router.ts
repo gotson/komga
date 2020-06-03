@@ -5,11 +5,17 @@ import store from './store'
 
 Vue.use(Router)
 
-const lStore = store
+const lStore = store as any
 
 const adminGuard = (to: any, from: any, next: any) => {
   if (!lStore.getters.meAdmin) next({ name: 'home' })
   else next()
+}
+
+const noLibraryGuard = (to: any, from: any, next: any) => {
+  if (lStore.state.komgaLibraries.libraries.length === 0) {
+    next({ name: 'welcome' })
+  } else next()
 }
 
 const router = new Router({
@@ -36,6 +42,7 @@ const router = new Router({
         {
           path: '/dashboard',
           name: 'dashboard',
+          beforeEnter: noLibraryGuard,
           component: () => import(/* webpackChunkName: "dashboard" */ './views/Dashboard.vue'),
         },
         {
@@ -71,13 +78,14 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "account" */ './views/AccountSettings.vue'),
         },
         {
-          path: '/libraries/:libraryId/:index?',
+          path: '/libraries/:libraryId',
           name: 'browse-libraries',
+          beforeEnter: noLibraryGuard,
           component: () => import(/* webpackChunkName: "browse-libraries" */ './views/BrowseLibraries.vue'),
           props: (route) => ({ libraryId: Number(route.params.libraryId) }),
         },
         {
-          path: '/series/:seriesId/:index?',
+          path: '/series/:seriesId',
           name: 'browse-series',
           component: () => import(/* webpackChunkName: "browse-series" */ './views/BrowseSeries.vue'),
           props: (route) => ({ seriesId: Number(route.params.seriesId) }),

@@ -1,31 +1,24 @@
 <template>
   <v-item-group multiple v-model="selectedItems">
     <v-row justify="start" ref="content" v-resize="onResize" v-if="hasItems">
-      <v-skeleton-loader v-for="(item, index) in items"
-                         :key="index"
-                         :width="itemWidth"
-                         :height="itemHeight"
-                         justify-self="start"
-                         :loading="item === null"
-                         type="card, text"
-                         class="ma-3 mx-2"
-                         :data-index="index"
-                         v-intersect="onElementIntersect"
-
+      <v-item
+        v-for="(item, index) in items"
+        :key="index"
+        class="my-3 mx-2"
+        v-slot:default="{ toggle, active }" :value="$_.get(item, 'id', 0)"
       >
-        <v-item v-slot:default="{ toggle, active }" :value="$_.get(item, 'id', 0)">
-          <slot name="item" v-bind:data="{ toggle, active, item, index, itemWidth, preselect: shouldPreselect(), editItem }">
-            <item-card
-              :item="item"
-              :width="itemWidth"
-              :selected="active"
-              :preselect="shouldPreselect()"
-              :onEdit="editItem"
-              :onSelected="toggle"
-            ></item-card>
-          </slot>
-        </v-item>
-      </v-skeleton-loader>
+        <slot name="item"
+              v-bind:data="{ toggle, active, item, index, itemWidth, preselect: shouldPreselect(), editItem }">
+          <item-card
+            :item="item"
+            :width="itemWidth"
+            :selected="active"
+            :preselect="shouldPreselect()"
+            :onEdit="editItem"
+            :onSelected="toggle"
+          ></item-card>
+        </slot>
+      </v-item>
     </v-row>
     <v-row v-else justify="center">
       <slot name="empty"></slot>
@@ -34,13 +27,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { computeCardWidth } from '@/functions/grid-utilities'
 import ItemCard from '@/components/ItemCard.vue'
-import mixins from 'vue-typed-mixins'
-import VisibleElements from '@/mixins/VisibleElements'
+import { computeCardWidth } from '@/functions/grid-utilities'
+import Vue from 'vue'
 
-export default mixins(VisibleElements).extend({
+export default Vue.extend({
   name: 'ItemBrowser',
   components: { ItemCard },
   props: {
@@ -66,12 +57,6 @@ export default mixins(VisibleElements).extend({
     }
   },
   watch: {
-    series: {
-      handler () {
-        this.visibleElements = []
-      },
-      immediate: true,
-    },
     selectedItems: {
       handler () {
         this.$emit('update:selected', this.selectedItems)

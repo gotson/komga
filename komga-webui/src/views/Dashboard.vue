@@ -75,11 +75,11 @@
 </template>
 
 <script lang="ts">
-import HorizontalScroller from '@/components/HorizontalScroller.vue'
-import Vue from 'vue'
-import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 import EditBooksDialog from '@/components/EditBooksDialog.vue'
+import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
+import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import ItemCard from '@/components/ItemCard.vue'
+import Vue from 'vue'
 
 export default Vue.extend({
   name: 'Dashboard',
@@ -98,13 +98,9 @@ export default Vue.extend({
     }
   },
   mounted () {
-    if (this.$store.state.komgaLibraries.libraries.length === 0) {
-      this.$router.push({ name: 'welcome' })
-    } else {
-      this.loadNewSeries()
-      this.loadUpdatedSeries()
-      this.loadLatestBooks()
-    }
+    this.loadNewSeries()
+    this.loadUpdatedSeries()
+    this.loadLatestBooks()
   },
   watch: {
     editSeriesSingle (val: SeriesDto) {
