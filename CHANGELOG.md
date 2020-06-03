@@ -1,3 +1,18 @@
+# [0.33.0](https://github.com/gotson/komga/compare/v0.32.0...v0.33.0) (2020-06-03)
+
+
+### Bug Fixes
+
+* **webui:** action menu not showing for non-admin ([e60666c](https://github.com/gotson/komga/commit/e60666caa39e6f18446ebea2b7d910687da60ac1))
+* **webui:** replace mark as read/unread buttons with icons ([709ee1e](https://github.com/gotson/komga/commit/709ee1e29b7f98e733b5b2070fdabef3f6d4d171))
+* **webui:** use pagination for browsing screens ([5867db7](https://github.com/gotson/komga/commit/5867db77f5dc20181671fb5bf409941cf42591f7)), closes [#91](https://github.com/gotson/komga/issues/91)
+
+
+### Features
+
+* **api:** mark all books in series as read or unread ([75b7216](https://github.com/gotson/komga/commit/75b72164fe1b3784c5b40ba6aa923fe071f72b56)), closes [#25](https://github.com/gotson/komga/issues/25)
+* **webui:** mark series as read/unread ([4d7e243](https://github.com/gotson/komga/commit/4d7e243d3aa8729139d3311a8e670e101b3a1bbb)), closes [#25](https://github.com/gotson/komga/issues/25)
+
 # [0.32.0](https://github.com/gotson/komga/compare/v0.31.0...v0.32.0) (2020-06-02)
 
 
