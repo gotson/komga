@@ -58,12 +58,22 @@
 
         <v-spacer/>
 
-        <v-btn @click="markSelectedRead()">
-          Mark as read
+        <v-btn icon @click="markSelectedRead()">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on">mdi-bookmark-check</v-icon>
+            </template>
+            <span>Mark as Read</span>
+          </v-tooltip>
         </v-btn>
 
-        <v-btn @click="markSelectedUnread()">
-          Mark as unread
+        <v-btn icon @click="markSelectedUnread()">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on">mdi-bookmark-remove</v-icon>
+            </template>
+            <span>Mark as Unread</span>
+          </v-tooltip>
         </v-btn>
 
         <v-btn icon @click="dialogEditBooks = true" v-if="isAdmin">
