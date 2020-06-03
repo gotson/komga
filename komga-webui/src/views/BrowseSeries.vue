@@ -10,18 +10,26 @@
       </v-btn>
 
       <!--   Action menu   -->
-      <v-menu offset-y v-if="isAdmin">
+      <v-menu offset-y>
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
         <v-list>
-          <v-list-item @click="analyze()">
+          <v-list-item @click="analyze()" v-if="isAdmin">
             <v-list-item-title>Analyze</v-list-item-title>
           </v-list-item>
-          <v-list-item @click="refreshMetadata()">
+          <v-list-item @click="refreshMetadata()" v-if="isAdmin">
             <v-list-item-title>Refresh metadata</v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            @click="markRead()">
+            <v-list-item-title>Mark as read</v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            @click="markUnread()">
+            <v-list-item-title>Mark as unread</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -124,7 +132,7 @@
         :length="totalPages"
       />
 
-      <item-browser :items="books" :selected.sync="selected" :edit-function="this.singleEdit" class="px-6"/>
+      <item-browser :items="books" :selected.sync="selected" :edit-function="this.singleEdit" class="px-4"/>
 
     </v-container>
 
@@ -346,6 +354,14 @@ export default Vue.extend({
       this.selectedBooks = await Promise.all(this.selectedBooks.map(b =>
         this.$komgaBooks.getBook(b.id),
       ))
+    },
+    async markRead () {
+      await this.$komgaSeries.markAsRead(this.seriesId)
+      this.loadSeries(this.seriesId)
+    },
+    async markUnread () {
+      await this.$komgaSeries.markAsUnread(this.seriesId)
+      this.loadSeries(this.seriesId)
     },
   },
 })

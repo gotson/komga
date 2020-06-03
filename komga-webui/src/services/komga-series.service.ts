@@ -128,4 +128,28 @@ export default class KomgaSeriesService {
       throw new Error(msg)
     }
   }
+
+  async markAsRead (seriesId: number) {
+    try {
+      await this.http.post(`${API_SERIES}/${seriesId}/read-progress`)
+    } catch (e) {
+      let msg = `An error occurred while trying to mark as read for series '${seriesId}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async markAsUnread (seriesId: number) {
+    try {
+      await this.http.delete(`${API_SERIES}/${seriesId}/read-progress`)
+    } catch (e) {
+      let msg = `An error occurred while trying to mark as unread for series '${seriesId}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
 }

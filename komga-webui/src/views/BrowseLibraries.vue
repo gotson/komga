@@ -47,6 +47,7 @@
 
     </toolbar-sticky>
 
+    <!--  Selection sticky bar  -->
     <v-scroll-y-transition hide-on-leave>
       <toolbar-sticky v-if="selected.length > 0" :elevation="5" color="white">
         <v-btn icon @click="selected=[]">
@@ -57,6 +58,24 @@
         </v-toolbar-title>
 
         <v-spacer/>
+
+        <v-btn icon @click="markSelectedRead()">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on">mdi-bookmark-check</v-icon>
+            </template>
+            <span>Mark as Read</span>
+          </v-tooltip>
+        </v-btn>
+
+        <v-btn icon @click="markSelectedUnread()">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on">mdi-bookmark-remove</v-icon>
+            </template>
+            <span>Mark as Unread</span>
+          </v-tooltip>
+        </v-btn>
 
         <v-btn icon @click="dialogEdit = true" v-if="isAdmin">
           <v-icon>mdi-pencil</v-icon>
@@ -94,7 +113,7 @@
           :items="series"
           :selected.sync="selected"
           :edit-function="this.singleEdit"
-          class="px-6"
+          class="px-4"
         />
       </template>
     </v-container>
@@ -318,6 +337,22 @@ export default Vue.extend({
     singleEdit (series: SeriesDto) {
       this.editSeriesSingle = series
       this.dialogEditSingle = true
+    },
+    async markSelectedRead () {
+      await Promise.all(this.selectedSeries.map(s =>
+        this.$komgaSeries.markAsRead(s.id),
+      ))
+      this.selectedSeries = await Promise.all(this.selectedSeries.map(s =>
+        this.$komgaSeries.getOneSeries(s.id),
+      ))
+    },
+    async markSelectedUnread () {
+      await Promise.all(this.selectedSeries.map(s =>
+        this.$komgaSeries.markAsUnread(s.id),
+      ))
+      this.selectedSeries = await Promise.all(this.selectedSeries.map(s =>
+        this.$komgaSeries.getOneSeries(s.id),
+      ))
     },
   },
 })
