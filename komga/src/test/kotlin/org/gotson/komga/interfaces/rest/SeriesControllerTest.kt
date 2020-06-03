@@ -510,6 +510,13 @@ class SeriesControllerTest(
           status { isNoContent }
         }
 
+      mockMvc.get("/api/v1/series/${series.id}")
+        .andExpect {
+          status { isOk }
+          jsonPath("$.booksUnreadCount") { value(0) }
+          jsonPath("$.booksReadCount") { value(2) }
+        }
+
       mockMvc.get("/api/v1/series/${series.id}/books")
         .andExpect {
           status { isOk }
@@ -546,6 +553,13 @@ class SeriesControllerTest(
       mockMvc.delete("/api/v1/series/${series.id}/read-progress")
         .andExpect {
           status { isNoContent }
+        }
+
+      mockMvc.get("/api/v1/series/${series.id}")
+        .andExpect {
+          status { isOk }
+          jsonPath("$.booksUnreadCount") { value(2) }
+          jsonPath("$.booksReadCount") { value(0) }
         }
 
       mockMvc.get("/api/v1/series/${series.id}/books")

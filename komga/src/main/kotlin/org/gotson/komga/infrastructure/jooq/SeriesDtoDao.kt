@@ -28,6 +28,7 @@ class SeriesDtoDao(
   private val s = Tables.SERIES
   private val b = Tables.BOOK
   private val d = Tables.SERIES_METADATA
+  private val r = Tables.READ_PROGRESS
 
   private val groupFields = arrayOf(
     *s.fields(),
@@ -40,28 +41,29 @@ class SeriesDtoDao(
     "lastModifiedDate" to s.LAST_MODIFIED_DATE
   )
 
-  override fun findAll(search: SeriesSearch, pageable: Pageable): Page<SeriesDto> {
+  override fun findAll(search: SeriesSearch, userId: Long, pageable: Pageable): Page<SeriesDto> {
     val conditions = search.toCondition()
 
-    return findAll(conditions, pageable)
+    return findAll(conditions, userId, pageable)
   }
 
-  override fun findRecentlyUpdated(search: SeriesSearch, pageable: Pageable): Page<SeriesDto> {
+  override fun findRecentlyUpdated(search: SeriesSearch, userId: Long, pageable: Pageable): Page<SeriesDto> {
     val conditions = search.toCondition()
       .and(s.CREATED_DATE.ne(s.LAST_MODIFIED_DATE))
 
-    return findAll(conditions, pageable)
+    return findAll(conditions, userId, pageable)
   }
 
-  override fun findByIdOrNull(seriesId: Long): SeriesDto? =
+  override fun findByIdOrNull(seriesId: Long, userId: Long): SeriesDto? =
     selectBase()
       .where(s.ID.eq(seriesId))
+      .and(readProgressCondition(userId))
       .groupBy(*groupFields)
       .fetchAndMap()
       .firstOrNull()
 
 
-  private fun findAll(conditions: Condition, pageable: Pageable): Page<SeriesDto> {
+  private fun findAll(conditions: Condition, userId: Long, pageable: Pageable): Page<SeriesDto> {
     val count = dsl.selectCount()
       .from(s)
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
@@ -72,6 +74,7 @@ class SeriesDtoDao(
 
     val dtos = selectBase()
       .where(conditions)
+      .and(readProgressCondition(userId))
       .groupBy(*groupFields)
       .orderBy(orderBy)
       .limit(pageable.pageSize)
@@ -87,18 +90,23 @@ class SeriesDtoDao(
 
   private fun selectBase() =
     dsl.select(*groupFields)
-      .select(DSL.count(b.ID).`as`("bookCount"))
+      .select(DSL.count(b.ID).`as`("booksCount"))
+      .select(DSL.count(r.COMPLETED).`as`("booksReadCount"))
       .from(s)
       .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
+      .leftJoin(r).on(b.ID.eq(r.BOOK_ID))
+
+  private fun readProgressCondition(userId: Long): Condition = r.USER_ID.eq(userId).or(r.USER_ID.isNull)
 
   private fun ResultQuery<Record>.fetchAndMap() =
     fetch()
       .map { r ->
         val sr = r.into(s)
         val dr = r.into(d)
-        val bookCount = r["bookCount"] as Int
-        sr.toDto(bookCount, dr.toDto())
+        val booksCount = r["booksCount"] as Int
+        val booksReadCount = r["booksReadCount"] as Int
+        sr.toDto(booksCount, booksReadCount, dr.toDto())
       }
 
   private fun SeriesSearch.toCondition(): Condition {
@@ -111,7 +119,7 @@ class SeriesDtoDao(
     return c
   }
 
-  private fun SeriesRecord.toDto(bookCount: Int, metadata: SeriesMetadataDto) =
+  private fun SeriesRecord.toDto(booksCount: Int, booksReadCount: Int, metadata: SeriesMetadataDto) =
     SeriesDto(
       id = id,
       libraryId = libraryId,
@@ -120,7 +128,8 @@ class SeriesDtoDao(
       created = createdDate.toUTC(),
       lastModified = lastModifiedDate.toUTC(),
       fileLastModified = fileLastModified.toUTC(),
-      booksCount = bookCount,
+      booksCount = booksCount,
+      booksReadCount = booksReadCount,
       metadata = metadata
     )
 

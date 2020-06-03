@@ -83,7 +83,7 @@ class SeriesController(
       metadataStatus = metadataStatus ?: emptyList()
     )
 
-    return seriesDtoRepository.findAll(seriesSearch, pageRequest)
+    return seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageRequest)
       .map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
@@ -104,6 +104,7 @@ class SeriesController(
 
     return seriesDtoRepository.findAll(
       SeriesSearch(libraryIds = libraryIds),
+      principal.user.id,
       pageRequest
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
@@ -125,6 +126,7 @@ class SeriesController(
 
     return seriesDtoRepository.findAll(
       SeriesSearch(libraryIds = libraryIds),
+      principal.user.id,
       pageRequest
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
@@ -146,6 +148,7 @@ class SeriesController(
 
     return seriesDtoRepository.findRecentlyUpdated(
       SeriesSearch(libraryIds = libraryIds),
+      principal.user.id,
       pageRequest
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
@@ -155,7 +158,7 @@ class SeriesController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") id: Long
   ): SeriesDto =
-    seriesDtoRepository.findByIdOrNull(id)?.let {
+    seriesDtoRepository.findByIdOrNull(id, principal.user.id)?.let {
       if (!principal.user.canAccessLibrary(it.libraryId)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
       it.restrictUrl(!principal.user.roleAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -227,7 +230,8 @@ class SeriesController(
   fun updateMetadata(
     @PathVariable seriesId: Long,
     @Parameter(description = "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don't want to update.")
-    @Valid @RequestBody newMetadata: SeriesMetadataUpdateDto
+    @Valid @RequestBody newMetadata: SeriesMetadataUpdateDto,
+    @AuthenticationPrincipal principal: KomgaPrincipal
   ): SeriesDto =
     seriesMetadataRepository.findByIdOrNull(seriesId)?.let { existing ->
       val updated = with(newMetadata) {
@@ -241,7 +245,7 @@ class SeriesController(
         )
       }
       seriesMetadataRepository.update(updated)
-      seriesDtoRepository.findByIdOrNull(seriesId)!!
+      seriesDtoRepository.findByIdOrNull(seriesId, principal.user.id)!!
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @PostMapping("{seriesId}/read-progress")

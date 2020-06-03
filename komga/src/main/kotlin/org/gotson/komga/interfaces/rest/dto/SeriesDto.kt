@@ -15,8 +15,11 @@ data class SeriesDto(
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val fileLastModified: LocalDateTime,
   val booksCount: Int,
+  val booksReadCount: Int,
   val metadata: SeriesMetadataDto
-)
+) {
+  val booksUnreadCount: Int = booksCount - booksReadCount
+}
 
 fun SeriesDto.restrictUrl(restrict: Boolean) =
   if (restrict) copy(url = "") else this
