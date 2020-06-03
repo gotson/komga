@@ -8,7 +8,6 @@ import org.gotson.komga.interfaces.rest.dto.MediaDto
 import org.gotson.komga.interfaces.rest.dto.ReadProgressDto
 import org.gotson.komga.interfaces.rest.persistence.BookDtoRepository
 import org.gotson.komga.jooq.Tables
-import org.gotson.komga.jooq.tables.records.BookMetadataAuthorRecord
 import org.gotson.komga.jooq.tables.records.BookMetadataRecord
 import org.gotson.komga.jooq.tables.records.BookRecord
 import org.gotson.komga.jooq.tables.records.MediaRecord
@@ -109,24 +108,28 @@ class BookDtoDao(
       *b.fields(),
       *mediaFields,
       *d.fields(),
-      *a.fields(),
       *r.fields()
     ).from(b)
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
-      .leftJoin(a).on(d.BOOK_ID.eq(a.BOOK_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID))
 
   private fun ResultQuery<Record>.fetchAndMap() =
-    fetchGroups(
-      { it.into(*b.fields(), *mediaFields, *d.fields(), *r.fields()) }, { it.into(a) }
-    ).map { (rec, ar) ->
-      val br = rec.into(b)
-      val mr = rec.into(m)
-      val dr = rec.into(d)
-      val rr = rec.into(r)
-      br.toDto(mr.toDto(), dr.toDto(ar), if (rr.userId != null) rr.toDto() else null)
-    }
+    fetch()
+      .map { rec ->
+        val br = rec.into(b)
+        val mr = rec.into(m)
+        val dr = rec.into(d)
+        val rr = rec.into(r)
+
+        val authors = dsl.selectFrom(a)
+          .where(a.BOOK_ID.eq(br.id))
+          .fetchInto(a)
+          .filter { it.name != null }
+          .map { AuthorDto(it.name, it.role) }
+
+        br.toDto(mr.toDto(), dr.toDto(authors), if (rr.userId != null) rr.toDto() else null)
+      }
 
   private fun BookSearch.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()
@@ -164,7 +167,7 @@ class BookDtoDao(
       comment = comment ?: ""
     )
 
-  private fun BookMetadataRecord.toDto(ar: Collection<BookMetadataAuthorRecord>) =
+  private fun BookMetadataRecord.toDto(authors: List<AuthorDto>) =
     BookMetadataDto(
       title = title,
       titleLock = titleLock,
@@ -182,7 +185,7 @@ class BookDtoDao(
       ageRatingLock = ageRatingLock,
       releaseDate = releaseDate,
       releaseDateLock = releaseDateLock,
-      authors = ar.filter { it.name != null }.map { AuthorDto(it.name, it.role) },
+      authors = authors,
       authorsLock = authorsLock
     )
 
