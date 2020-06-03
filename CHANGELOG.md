@@ -1,3 +1,11 @@
+## [0.33.1](https://github.com/gotson/komga/compare/v0.33.0...v0.33.1) (2020-06-03)
+
+
+### Bug Fixes
+
+* **api:** incorrect number of books returned ([544c873](https://github.com/gotson/komga/commit/544c8731416276cc97125851e503008be3ea8769)), closes [#177](https://github.com/gotson/komga/issues/177)
+* **webui:** unread tick not showing properly on books ([0d0b998](https://github.com/gotson/komga/commit/0d0b9985c01764e707893fa66f1288f08276477b))
+
 # [0.33.0](https://github.com/gotson/komga/compare/v0.32.0...v0.33.0) (2020-06-03)
 
 
