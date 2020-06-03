@@ -91,7 +91,7 @@
                         :series.sync="editSeriesSingle"
     />
 
-    <v-container>
+    <v-container fluid class="px-6">
       <empty-state
         v-if="totalPages === 0"
         title="The active filter has no matches"
