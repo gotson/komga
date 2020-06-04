@@ -1,3 +1,21 @@
+# [0.34.0](https://github.com/gotson/komga/compare/v0.33.1...v0.34.0) (2020-06-04)
+
+
+### Bug Fixes
+
+* **webui:** adjust series unread count when marking books ([31e21fe](https://github.com/gotson/komga/commit/31e21fed45603c0e5ad6706e25aac5a863e42675))
+* **webui:** series grid not expanding to full width ([2f7d2a4](https://github.com/gotson/komga/commit/2f7d2a447f91a8af71a1a18d3d114035964c9ee4))
+
+
+### Features
+
+* **analysis:** handle read progress during book analysis ([1fc893e](https://github.com/gotson/komga/commit/1fc893ecb31138c3529ffb80a1c8fc05ea62bb07))
+* **api:** add read/unread books count in SeriesDto ([3ca50d7](https://github.com/gotson/komga/commit/3ca50d7b34c3fad99a162c09d417bd6dc42e9d54)), closes [#25](https://github.com/gotson/komga/issues/25)
+* **api:** search books by read status ([7f3c492](https://github.com/gotson/komga/commit/7f3c49280b48b38e9308025e4dd95b6f1cc921c0)), closes [#25](https://github.com/gotson/komga/issues/25)
+* **webui:** display unread count on series card ([4962f17](https://github.com/gotson/komga/commit/4962f170284c8d43961798a77b7c27a103977821)), closes [#25](https://github.com/gotson/komga/issues/25)
+* **webui:** keep reading section in dashboard ([7984cef](https://github.com/gotson/komga/commit/7984cef06664f84d1cb1f1336b34338f90c1c1a0)), closes [#131](https://github.com/gotson/komga/issues/131)
+* **webui:** read button on item card ([a59f263](https://github.com/gotson/komga/commit/a59f26365f660fbf0ca6ffa70df029bf14f07ba9)), closes [#133](https://github.com/gotson/komga/issues/133)
+
 ## [0.33.1](https://github.com/gotson/komga/compare/v0.33.0...v0.33.1) (2020-06-03)
 
 
