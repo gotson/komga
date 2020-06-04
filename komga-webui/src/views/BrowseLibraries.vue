@@ -223,6 +223,7 @@ export default Vue.extend({
 
       // reset
       this.sortActive = this.parseQuerySortOrDefault(to.query.sort)
+      this.filterStatus = this.parseQueryFilterStatus(to.query.status)
       this.page = 1
       this.totalPages = 1
       this.totalElements = null
