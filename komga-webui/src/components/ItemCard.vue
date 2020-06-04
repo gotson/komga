@@ -32,6 +32,7 @@
               :opacity="hover ? 0.3 : 0"
               :class="`${hover ? 'item-border-darken' : selected ? 'item-border' : 'item-border-transparent'} overlay-full`"
             >
+              <!-- Circle icon for selection (top left) -->
               <v-icon v-if="onSelected"
                       :color="selected ? 'secondary' : ''"
                       style="position: absolute; top: 5px; left: 10px"
@@ -41,6 +42,19 @@
                 }}
               </v-icon>
 
+              <!-- FAB reading (center) -->
+              <v-btn
+                v-if="bookReady && !selected && !preselect"
+                fab
+                x-large
+                color="accent"
+                style="position: absolute; top: 50%; left: 50%; margin-left: -36px; margin-top: -36px"
+                :to="{name: 'read-book', params: { bookId: item.id}}"
+              >
+                <v-icon>mdi-book-open-page-variant</v-icon>
+              </v-btn>
+
+              <!-- Pen icon for edition (bottom left) -->
               <v-icon v-if="!selected && !preselect && onEdit"
                       style="position: absolute; bottom: 10px; left: 10px"
                       @click.stop="editItem"
@@ -87,10 +101,12 @@ export default Vue.extend({
       type: Object as () => BookDto | SeriesDto,
       required: true,
     },
+    // hide the bottom part of the card
     thumbnailOnly: {
       type: Boolean,
       default: false,
     },
+    // disables the default link on clicking the card
     noLink: {
       type: Boolean,
       default: false,
@@ -100,19 +116,23 @@ export default Vue.extend({
       required: false,
       default: 150,
     },
+    // when true, card will show the active border and circle icon full
     selected: {
       type: Boolean,
       default: false,
     },
+    // when true, will display the border like if the card was hovered, and click anywhere will trigger onSelected
     preselect: {
       type: Boolean,
       required: false,
     },
+    // callback function to call when selecting the card
     onSelected: {
       type: Function,
       default: undefined,
       required: false,
     },
+    // callback function for the edit button
     onEdit: {
       type: Function,
       default: undefined,
@@ -124,7 +144,7 @@ export default Vue.extend({
   },
   computed: {
     overlay (): boolean {
-      return this.onEdit !== undefined || this.onSelected !== undefined
+      return this.onEdit !== undefined || this.onSelected !== undefined || this.bookReady
     },
     computedItem (): Item<BookDto | SeriesDto> {
       return createItem(this.item)
@@ -160,6 +180,12 @@ export default Vue.extend({
       if ('seriesId' in this.item) return getReadProgressPercentage(this.item)
       return 0
     },
+    bookReady (): boolean {
+      if ('seriesId' in this.item) {
+        return this.item.media.status === 'READY'
+      }
+      return false
+    },
   },
   methods: {
     onClick () {
@@ -187,9 +213,7 @@ export default Vue.extend({
 </script>
 
 <style>
-@import "../styles/unread-triangle.css";
-
-.no-link * {
+.no-link {
   cursor: default;
 }
 
@@ -209,4 +233,16 @@ export default Vue.extend({
   width: 100%;
   height: 100%;
 }
+
+.unread {
+  border-left: 25px solid transparent;
+  border-right: 25px solid orange;
+  border-bottom: 25px solid transparent;
+  height: 0;
+  width: 0;
+  position: absolute;
+  right: 0;
+  z-index: 2;
+}
+
 </style>

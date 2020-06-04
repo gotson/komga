@@ -46,40 +46,13 @@
     <v-container fluid class="pa-6">
       <v-row>
         <v-col cols="4" sm="4" md="auto" lg="auto" xl="auto">
-          <v-hover>
-            <template v-slot:default="{ hover }">
-              <v-img :src="thumbnailUrl"
-                     lazy-src="../assets/cover.svg"
-                     max-height="300"
-                     max-width="212"
-              >
-                <div class="unread" v-if="isUnread"/>
-                <v-fade-transition>
-                  <v-overlay
-                    v-if="hover && book.media.status === 'READY'"
-                    absolute
-                    color="grey darken-4"
-                  >
-                    <v-btn fab
-                           x-large
-                           color="accent"
-                           :to="{name: 'read-book', params: { bookId: bookId}}"
-                    >
-                      <v-icon>mdi-book-open-page-variant</v-icon>
-                    </v-btn>
-                  </v-overlay>
-                </v-fade-transition>
-                <v-progress-linear
-                  v-if="isInProgress"
-                  :value="readProgressPercentage"
-                  color="orange"
-                  height="6"
-                  style="position: absolute; bottom: 0"
-                />
-              </v-img>
-            </template>
-          </v-hover>
-
+          <item-card
+            v-if="book.hasOwnProperty('id')"
+            width="212"
+            :item="book"
+            thumbnail-only
+            no-link
+          ></item-card>
         </v-col>
 
         <v-col cols="8">
@@ -140,7 +113,7 @@
         </v-col>
         <v-col cols="auto">
           <v-btn icon
-                 color="primary"
+                 color="accent"
                  title="Read book"
                  class="pb-1"
                  :to="{name: 'read-book', params: { bookId: bookId}}"
@@ -195,6 +168,7 @@
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
 import EditBooksDialog from '@/components/EditBooksDialog.vue'
+import ItemCard from '@/components/ItemCard.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { groupAuthorsByRolePlural } from '@/functions/authors'
 import { getBookFormatFromMediaType } from '@/functions/book-format'
@@ -206,7 +180,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'BrowseBook',
-  components: { ToolbarSticky, Badge, EditBooksDialog },
+  components: { ToolbarSticky, Badge, EditBooksDialog, ItemCard },
   data: () => {
     return {
       book: {} as BookDto,
@@ -288,5 +262,4 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-@import "../styles/unread-triangle.css";
 </style>
