@@ -9,64 +9,65 @@
                        :books.sync="editBookSingle"
     />
 
-    <horizontal-scroller>
+    <empty-state v-if="allEmpty"
+                 title="Nothing to show"
+                 icon="mdi-help-circle"
+                 icon-color="secondary"
+    >
+    </empty-state>
+
+    <horizontal-scroller v-if="inProgressBooks.length !== 0">
+      <template v-slot:prepend>
+        <div class="title">Keep Reading</div>
+      </template>
+      <template v-slot:content>
+        <div v-for="(b, i) in inProgressBooks"
+             :key="i"
+        >
+          <item-card class="ma-2 card" :item="b" :on-edit="singleEditBook"/>
+        </div>
+      </template>
+    </horizontal-scroller>
+
+    <br>
+
+    <horizontal-scroller v-if="newSeries.length !== 0">
       <template v-slot:prepend>
         <div class="title">Recently Added Series</div>
       </template>
       <template v-slot:content>
         <div v-for="(s, i) in newSeries"
              :key="i">
-          <v-skeleton-loader v-if="s === null"
-                             :loading="s === null"
-                             type="card, text"
-                             width="150"
-                             height="306.14"
-                             class="ma-2 card"
-          />
-          <item-card v-else class="ma-2 card" :item="s" :on-edit="singleEditSeries"/>
+          <item-card class="ma-2 card" :item="s" :on-edit="singleEditSeries"/>
         </div>
       </template>
     </horizontal-scroller>
 
     <br>
 
-    <horizontal-scroller>
+    <horizontal-scroller v-if="updatedSeries.length !== 0">
       <template v-slot:prepend>
         <div class="title">Recently Updated Series</div>
       </template>
       <template v-slot:content>
         <div v-for="(s, i) in updatedSeries"
              :key="i">
-          <v-skeleton-loader v-if="s === null"
-                             :loading="s === null"
-                             type="card, text"
-                             width="150"
-                             height="306.14"
-                             class="ma-2 card"
-          />
-          <item-card v-else class="ma-2 card" :item="s" :on-edit="singleEditSeries"/>
+          <item-card class="ma-2 card" :item="s" :on-edit="singleEditSeries"/>
         </div>
       </template>
     </horizontal-scroller>
 
     <br>
 
-    <horizontal-scroller>
+    <horizontal-scroller v-if="latestBooks.length !== 0">
       <template v-slot:prepend>
         <div class="title">Recently Added Books</div>
       </template>
       <template v-slot:content>
-        <div v-for="(b, i) in books"
+        <div v-for="(b, i) in latestBooks"
              :key="i"
         >
-          <v-skeleton-loader v-if="b === null"
-                             :loading="b === null"
-                             type="card, text"
-                             width="150"
-                             height="328.13"
-                             class="ma-2 card"
-          />
-          <item-card v-else class="ma-2 card" :item="b" :on-edit="singleEditBook"/>
+          <item-card class="ma-2 card" :item="b" :on-edit="singleEditBook"/>
         </div>
       </template>
     </horizontal-scroller>
@@ -77,20 +78,21 @@
 <script lang="ts">
 import EditBooksDialog from '@/components/EditBooksDialog.vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
+import EmptyState from '@/components/EmptyState.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import ItemCard from '@/components/ItemCard.vue'
+import { ReadStatus } from '@/types/enum-books'
 import Vue from 'vue'
 
 export default Vue.extend({
   name: 'Dashboard',
-  components: { ItemCard, HorizontalScroller, EditSeriesDialog, EditBooksDialog },
+  components: { ItemCard, HorizontalScroller, EditSeriesDialog, EditBooksDialog, EmptyState },
   data: () => {
-    const pageSize = 20
     return {
-      newSeries: Array(pageSize).fill(null) as SeriesDto[],
-      updatedSeries: Array(pageSize).fill(null) as SeriesDto[],
-      books: Array(pageSize).fill(null) as BookDto[],
-      pageSize: pageSize,
+      newSeries: [] as SeriesDto[],
+      updatedSeries: [] as SeriesDto[],
+      latestBooks: [] as BookDto[],
+      inProgressBooks: [] as BookDto[],
       editSeriesSingle: {} as SeriesDto,
       dialogEditSeriesSingle: false,
       editBookSingle: {} as BookDto,
@@ -101,6 +103,7 @@ export default Vue.extend({
     this.loadNewSeries()
     this.loadUpdatedSeries()
     this.loadLatestBooks()
+    this.loadInProgressBooks()
   },
   watch: {
     editSeriesSingle (val: SeriesDto) {
@@ -114,10 +117,22 @@ export default Vue.extend({
       }
     },
     editBookSingle (val: BookDto) {
-      let index = this.books.findIndex(x => x.id === val.id)
+      let index = this.latestBooks.findIndex(x => x.id === val.id)
       if (index !== -1) {
-        this.books.splice(index, 1, val)
+        this.latestBooks.splice(index, 1, val)
       }
+      index = this.inProgressBooks.findIndex(x => x.id === val.id)
+      if (index !== -1) {
+        this.inProgressBooks.splice(index, 1, val)
+      }
+    },
+  },
+  computed: {
+    allEmpty (): boolean {
+      return this.newSeries.length === 0 &&
+        this.updatedSeries.length === 0 &&
+        this.latestBooks.length === 0 &&
+        this.inProgressBooks.length === 0
     },
   },
   methods: {
@@ -129,11 +144,17 @@ export default Vue.extend({
     },
     async loadLatestBooks () {
       const pageRequest = {
-        size: this.pageSize,
         sort: ['createdDate,desc'],
       } as PageRequest
 
-      this.books = (await this.$komgaBooks.getBooks(undefined, pageRequest)).content
+      this.latestBooks = (await this.$komgaBooks.getBooks(undefined, pageRequest)).content
+    },
+    async loadInProgressBooks () {
+      const pageRequest = {
+        sort: ['readProgress.lastModified,desc'],
+      } as PageRequest
+
+      this.inProgressBooks = (await this.$komgaBooks.getBooks(undefined, pageRequest, undefined, undefined, [ReadStatus.IN_PROGRESS])).content
     },
     singleEditSeries (series: SeriesDto) {
       this.editSeriesSingle = series

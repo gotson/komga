@@ -175,7 +175,7 @@ import { getBookFormatFromMediaType } from '@/functions/book-format'
 import { getReadProgress, getReadProgressPercentage } from '@/functions/book-progress'
 import { getBookTitleCompact } from '@/functions/book-title'
 import { bookFileUrl, bookThumbnailUrl } from '@/functions/urls'
-import { ReadProgress } from '@/types/enum-books'
+import { ReadStatus } from '@/types/enum-books'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -229,13 +229,13 @@ export default Vue.extend({
       return groupAuthorsByRolePlural(this.book.metadata.authors)
     },
     isRead (): boolean {
-      return getReadProgress(this.book) === ReadProgress.READ
+      return getReadProgress(this.book) === ReadStatus.READ
     },
     isUnread (): boolean {
-      return getReadProgress(this.book) === ReadProgress.UNREAD
+      return getReadProgress(this.book) === ReadStatus.UNREAD
     },
     isInProgress (): boolean {
-      return getReadProgress(this.book) === ReadProgress.IN_PROGRESS
+      return getReadProgress(this.book) === ReadStatus.IN_PROGRESS
     },
     readProgressPercentage (): number {
       return getReadProgressPercentage(this.book)

@@ -58,7 +58,7 @@ export default class KomgaSeriesService {
         params: params,
       })).data
     } catch (e) {
-      let msg = 'An error occurred while trying to retrieve new series'
+      let msg = 'An error occurred while trying to retrieve updated series'
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

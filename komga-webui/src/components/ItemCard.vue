@@ -90,7 +90,7 @@
 
 <script lang="ts">
 import { getReadProgress, getReadProgressPercentage } from '@/functions/book-progress'
-import { ReadProgress } from '@/types/enum-books'
+import { ReadStatus } from '@/types/enum-books'
 import { createItem, Item } from '@/types/items'
 import Vue from 'vue'
 
@@ -165,11 +165,11 @@ export default Vue.extend({
       return this.computedItem.body()
     },
     isInProgress (): boolean {
-      if ('seriesId' in this.item) return getReadProgress(this.item) === ReadProgress.IN_PROGRESS
+      if ('seriesId' in this.item) return getReadProgress(this.item) === ReadStatus.IN_PROGRESS
       return false
     },
     isUnread (): boolean {
-      if ('seriesId' in this.item) return getReadProgress(this.item) === ReadProgress.UNREAD
+      if ('seriesId' in this.item) return getReadProgress(this.item) === ReadStatus.UNREAD
       return false
     },
     unreadCount (): number | undefined {

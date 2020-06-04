@@ -1,9 +1,9 @@
-import { ReadProgress } from '@/types/enum-books'
+import { ReadStatus } from '@/types/enum-books'
 
-export function getReadProgress (book: BookDto): ReadProgress {
-  if (book.readProgress?.completed) return ReadProgress.READ
-  if (book.readProgress?.completed === false) return ReadProgress.IN_PROGRESS
-  return ReadProgress.UNREAD
+export function getReadProgress (book: BookDto): ReadStatus {
+  if (book.readProgress?.completed) return ReadStatus.READ
+  if (book.readProgress?.completed === false) return ReadStatus.IN_PROGRESS
+  return ReadStatus.UNREAD
 }
 
 export function getReadProgressPercentage (book: BookDto): number {
