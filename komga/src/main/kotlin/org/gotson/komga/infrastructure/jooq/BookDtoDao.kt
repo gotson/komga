@@ -1,6 +1,7 @@
 package org.gotson.komga.infrastructure.jooq
 
-import org.gotson.komga.domain.model.BookSearch
+import org.gotson.komga.domain.model.BookSearchWithReadProgress
+import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.interfaces.rest.dto.AuthorDto
 import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.BookMetadataDto
@@ -39,19 +40,24 @@ class BookDtoDao(
 
   private val sorts = mapOf(
     "metadata.numberSort" to d.NUMBER_SORT,
+    "created" to b.CREATED_DATE,
     "createdDate" to b.CREATED_DATE,
+    "lastModified" to b.LAST_MODIFIED_DATE,
     "lastModifiedDate" to b.LAST_MODIFIED_DATE,
-    "fileSize" to b.FILE_SIZE
+    "fileSize" to b.FILE_SIZE,
+    "readProgress.lastModified" to r.LAST_MODIFIED_DATE
   )
 
-  override fun findAll(search: BookSearch, userId: Long, pageable: Pageable): Page<BookDto> {
+  override fun findAll(search: BookSearchWithReadProgress, userId: Long, pageable: Pageable): Page<BookDto> {
     val conditions = search.toCondition()
 
     val count = dsl.selectCount()
       .from(b)
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
+      .leftJoin(r).on(b.ID.eq(r.BOOK_ID))
       .where(conditions)
+      .and(readProgressCondition(userId))
       .fetchOne(0, Long::class.java)
 
     val orderBy = pageable.sort.toOrderBy(sorts)
@@ -131,13 +137,25 @@ class BookDtoDao(
         br.toDto(mr.toDto(), dr.toDto(authors), if (rr.userId != null) rr.toDto() else null)
       }
 
-  private fun BookSearch.toCondition(): Condition {
+  private fun BookSearchWithReadProgress.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()
 
     if (libraryIds.isNotEmpty()) c = c.and(b.LIBRARY_ID.`in`(libraryIds))
     if (seriesIds.isNotEmpty()) c = c.and(b.SERIES_ID.`in`(seriesIds))
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
     if (mediaStatus.isNotEmpty()) c = c.and(m.STATUS.`in`(mediaStatus))
+
+    if (readStatus.isNotEmpty()) {
+      val cr = readStatus.map {
+        when (it) {
+          ReadStatus.UNREAD -> r.COMPLETED.isNull
+          ReadStatus.READ -> r.COMPLETED.isTrue
+          ReadStatus.IN_PROGRESS -> r.COMPLETED.isFalse
+        }
+      }.reduce { acc, condition -> acc.or(condition) }
+
+      c = c.and(cr)
+    }
 
     return c
   }

@@ -8,10 +8,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.Author
-import org.gotson.komga.domain.model.BookSearch
+import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.ImageConversionException
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
+import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
@@ -77,6 +78,7 @@ class BookController(
     @RequestParam(name = "search", required = false) searchTerm: String?,
     @RequestParam(name = "library_id", required = false) libraryIds: List<Long>?,
     @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
+    @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
     @Parameter(hidden = true) page: Pageable
   ): Page<BookDto> {
     val pageRequest = PageRequest.of(
@@ -86,10 +88,11 @@ class BookController(
       else Sort.by(Sort.Order.asc("metadata.title").ignoreCase())
     )
 
-    val bookSearch = BookSearch(
+    val bookSearch = BookSearchWithReadProgress(
       libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
       searchTerm = searchTerm,
-      mediaStatus = mediaStatus ?: emptyList()
+      mediaStatus = mediaStatus ?: emptyList(),
+      readStatus = readStatus ?: emptyList()
     )
 
     return bookDtoRepository.findAll(bookSearch, principal.user.id, pageRequest)
@@ -113,7 +116,7 @@ class BookController(
     val libraryIds = if (principal.user.sharedAllLibraries) emptyList<Long>() else principal.user.sharedLibrariesIds
 
     return bookDtoRepository.findAll(
-      BookSearch(
+      BookSearchWithReadProgress(
         libraryIds = libraryIds
       ),
       principal.user.id,

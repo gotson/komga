@@ -82,7 +82,7 @@ class BookControllerTest(
   }
 
   @AfterAll
-  fun `teardown`() {
+  fun teardown() {
     userRepository.findAll().forEach {
       userLifecycle.deleteUser(it)
     }
