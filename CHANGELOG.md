@@ -1,3 +1,10 @@
+## [0.34.1](https://github.com/gotson/komga/compare/v0.34.0...v0.34.1) (2020-06-04)
+
+
+### Bug Fixes
+
+* **webui:** filter status not reset properly when changing library ([fea5431](https://github.com/gotson/komga/commit/fea54313d3f7e635d131d0bd339c59123cfc8422))
+
 # [0.34.0](https://github.com/gotson/komga/compare/v0.33.1...v0.34.0) (2020-06-04)
 
 
