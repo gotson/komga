@@ -34,7 +34,7 @@ class TaskHandler(
           is Task.ScanLibrary ->
             libraryRepository.findByIdOrNull(task.libraryId)?.let {
               libraryScanner.scanRootFolder(it)
-              taskReceiver.analyzeUnknownBooks(it)
+              taskReceiver.analyzeUnknownAndOutdatedBooks(it)
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 
           is Task.AnalyzeBook ->

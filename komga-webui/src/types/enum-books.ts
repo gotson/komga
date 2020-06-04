@@ -9,7 +9,8 @@ export enum MediaStatus {
   READY = 'READY',
   UNKNOWN = 'UNKNOWN',
   ERROR = 'ERROR',
-  UNSUPPORTED = 'UNSUPPORTED'
+  UNSUPPORTED = 'UNSUPPORTED',
+  OUTDATED = 'OUTDATED'
 }
 
 export enum ReadProgress {

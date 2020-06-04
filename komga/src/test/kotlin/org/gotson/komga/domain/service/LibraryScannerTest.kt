@@ -220,6 +220,42 @@ class LibraryScannerTest(
   }
 
   @Test
+  fun `given existing Book with different last modified date when rescanning then media is marked as outdated`() {
+    // given
+    val library = libraryRepository.insert(makeLibrary())
+
+    val book1 = makeBook("book1")
+    every { mockScanner.scanRootFolder(any()) }
+      .returnsMany(
+        mapOf(makeSeries(name = "series") to listOf(book1)),
+        mapOf(makeSeries(name = "series") to listOf(makeBook(name = "book1")))
+      )
+    libraryScanner.scanRootFolder(library)
+
+    every { mockAnalyzer.analyze(any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")))
+    bookRepository.findAll().map { bookLifecycle.analyzeAndPersist(it) }
+
+    // when
+    libraryScanner.scanRootFolder(library)
+
+    // then
+    verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
+    verify(exactly = 1) { mockAnalyzer.analyze(any()) }
+
+    bookRepository.findAll().first().let { book ->
+      assertThat(book.lastModifiedDate).isNotEqualTo(book.createdDate)
+
+      mediaRepository.findById(book.id).let { media ->
+        assertThat(media.status).isEqualTo(Media.Status.OUTDATED)
+        assertThat(media.mediaType).isEqualTo("application/zip")
+        assertThat(media.pages).hasSize(2)
+        assertThat(media.pages.map { it.fileName }).containsExactly("1.jpg", "2.jpg")
+      }
+
+    }
+  }
+
+  @Test
   fun `given 2 libraries when deleting all books of one and scanning then the other library is kept intact`() {
     // given
     val library1 = libraryRepository.insert(makeLibrary(name = "library1"))

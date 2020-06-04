@@ -2,6 +2,7 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Library
+import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
@@ -74,7 +75,7 @@ class LibraryScanner(
                   fileSize = newBook.fileSize
                 )
                 mediaRepository.findById(existingBook.id).let {
-                  mediaRepository.update(it.reset())
+                  mediaRepository.update(it.copy(status = Media.Status.OUTDATED))
                 }
                 bookRepository.update(updatedBook)
               }

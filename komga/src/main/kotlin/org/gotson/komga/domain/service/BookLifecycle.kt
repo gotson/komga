@@ -36,6 +36,13 @@ class BookLifecycle(
       logger.error(ex) { "Error while analyzing book: $book" }
       Media(status = Media.Status.ERROR, comment = ex.message)
     }.copy(bookId = book.id)
+
+    // if the number of pages has changed, delete all read progress for that book
+    val previous = mediaRepository.findById(book.id)
+    if (previous.status == Media.Status.OUTDATED && previous.pages.size != media.pages.size) {
+      readProgressRepository.deleteByBookId(book.id)
+    }
+
     mediaRepository.update(media)
   }
 

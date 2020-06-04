@@ -222,10 +222,13 @@ class BookController(
       if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
 
       val media = mediaRepository.findById(book.id)
-      if (media.status == Media.Status.UNKNOWN) throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book has not been analyzed yet")
-      if (media.status in listOf(Media.Status.ERROR, Media.Status.UNSUPPORTED)) throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
-
-      media.pages.mapIndexed { index, s -> PageDto(index + 1, s.fileName, s.mediaType) }
+      when (media.status) {
+        Media.Status.UNKNOWN -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book has not been analyzed yet")
+        Media.Status.OUTDATED -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book is outdated and must be re-analyzed")
+        Media.Status.ERROR -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
+        Media.Status.UNSUPPORTED -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book format is not supported")
+        Media.Status.READY -> media.pages.mapIndexed { index, s -> PageDto(index + 1, s.fileName, s.mediaType) }
+      }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @ApiResponse(content = [Content(

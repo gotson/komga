@@ -14,8 +14,6 @@ class Media(
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
 ) : Auditable() {
 
-  fun reset() = Media(bookId = this.bookId)
-
   fun copy(
     status: Status = this.status,
     mediaType: String? = this.mediaType,
@@ -40,7 +38,7 @@ class Media(
     )
 
   enum class Status {
-    UNKNOWN, ERROR, READY, UNSUPPORTED
+    UNKNOWN, ERROR, READY, UNSUPPORTED, OUTDATED
   }
 
   override fun toString(): String =
