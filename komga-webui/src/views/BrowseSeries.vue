@@ -101,11 +101,13 @@
     <v-container fluid class="px-6">
       <v-row>
         <v-col cols="4" sm="4" md="auto" lg="auto" xl="auto">
-          <v-img :src="thumbnailUrl"
-                 lazy-src="../assets/cover.svg"
-                 max-height="300"
-                 max-width="212"
-          />
+          <item-card
+            v-if="series.hasOwnProperty('id')"
+            width="212"
+            :item="series"
+            thumbnail-only
+            no-link
+          ></item-card>
 
         </v-col>
         <v-col cols="8">
@@ -145,6 +147,7 @@ import Badge from '@/components/Badge.vue'
 import EditBooksDialog from '@/components/EditBooksDialog.vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
+import ItemCard from '@/components/ItemCard.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
@@ -156,7 +159,16 @@ const cookiePageSize = 'pagesize'
 
 export default Vue.extend({
   name: 'BrowseSeries',
-  components: { ToolbarSticky, SortMenuButton, Badge, EditSeriesDialog, EditBooksDialog, ItemBrowser, PageSizeSelect },
+  components: {
+    ToolbarSticky,
+    SortMenuButton,
+    Badge,
+    EditSeriesDialog,
+    EditBooksDialog,
+    ItemBrowser,
+    PageSizeSelect,
+    ItemCard,
+  },
   data: () => {
     return {
       series: {} as SeriesDto,

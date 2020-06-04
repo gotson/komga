@@ -4,6 +4,7 @@
       <v-card
         :width="width"
         @click="onClick"
+        :class="noLink ? 'no-link' : ''"
         :ripple="false"
       >
         <!--      Thumbnail-->
@@ -12,7 +13,7 @@
           lazy-src="../assets/cover.svg"
           aspect-ratio="0.7071"
         >
-          <!-- unread tick for books -->
+          <!-- unread tick for book -->
           <div class="unread" v-if="isUnread"/>
 
           <!-- unread count for series -->
@@ -23,6 +24,7 @@
             {{ unreadCount }}
           </span>
 
+          <!-- Thumbnail overlay -->
           <v-fade-transition>
             <v-overlay
               v-if="hover || selected || preselect"
@@ -55,15 +57,18 @@
             style="position: absolute; bottom: 0"
           />
         </v-img>
+
         <!--      Description-->
-        <v-card-subtitle
-          v-line-clamp="2"
-          v-bind="subtitleProps"
-          v-html="title"
-        >
-        </v-card-subtitle>
-        <v-card-text class="px-2" v-html="body">
-        </v-card-text>
+        <template v-if="!thumbnailOnly">
+          <v-card-subtitle
+            v-line-clamp="2"
+            v-bind="subtitleProps"
+            v-html="title"
+          >
+          </v-card-subtitle>
+          <v-card-text class="px-2" v-html="body">
+          </v-card-text>
+        </template>
       </v-card>
     </template>
   </v-hover>
@@ -81,6 +86,14 @@ export default Vue.extend({
     item: {
       type: Object as () => BookDto | SeriesDto,
       required: true,
+    },
+    thumbnailOnly: {
+      type: Boolean,
+      default: false,
+    },
+    noLink: {
+      type: Boolean,
+      default: false,
     },
     width: {
       type: [String, Number],
@@ -152,7 +165,7 @@ export default Vue.extend({
     onClick () {
       if (this.preselect && this.onSelected !== undefined) {
         this.selectItem()
-      } else {
+      } else if (!this.noLink) {
         this.goto()
       }
     },
@@ -175,6 +188,10 @@ export default Vue.extend({
 
 <style>
 @import "../styles/unread-triangle.css";
+
+.no-link * {
+  cursor: default;
+}
 
 .item-border {
   border: 3px solid var(--v-secondary-base);
