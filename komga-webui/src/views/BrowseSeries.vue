@@ -358,6 +358,7 @@ export default Vue.extend({
       this.selectedBooks = await Promise.all(this.selectedBooks.map(b =>
         this.$komgaBooks.getBook(b.id),
       ))
+      this.loadSeries(this.seriesId)
     },
     async markSelectedUnread () {
       await Promise.all(this.selectedBooks.map(b =>
@@ -366,6 +367,7 @@ export default Vue.extend({
       this.selectedBooks = await Promise.all(this.selectedBooks.map(b =>
         this.$komgaBooks.getBook(b.id),
       ))
+      this.loadSeries(this.seriesId)
     },
     async markRead () {
       await this.$komgaSeries.markAsRead(this.seriesId)
