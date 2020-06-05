@@ -9,6 +9,7 @@ import mu.KotlinLogging
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.persistence.BookRepository
@@ -184,6 +185,7 @@ class SeriesController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") seriesId: Long,
     @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
+    @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
     @Parameter(hidden = true) page: Pageable
   ): Page<BookDto> {
     seriesRepository.getLibraryId(seriesId)?.let {
@@ -200,7 +202,8 @@ class SeriesController(
     return bookDtoRepository.findAll(
       BookSearchWithReadProgress(
         seriesIds = listOf(seriesId),
-        mediaStatus = mediaStatus ?: emptyList()
+        mediaStatus = mediaStatus ?: emptyList(),
+        readStatus = readStatus ?: emptyList()
       ),
       principal.user.id,
       pageRequest
