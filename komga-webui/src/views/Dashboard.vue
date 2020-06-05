@@ -16,7 +16,7 @@
     >
     </empty-state>
 
-    <horizontal-scroller v-if="inProgressBooks.length !== 0">
+    <horizontal-scroller v-if="inProgressBooks.length !== 0" class="my-4">
       <template v-slot:prepend>
         <div class="title">Keep Reading</div>
       </template>
@@ -29,9 +29,7 @@
       </template>
     </horizontal-scroller>
 
-    <br>
-
-    <horizontal-scroller v-if="newSeries.length !== 0">
+    <horizontal-scroller v-if="newSeries.length !== 0" class="my-4">
       <template v-slot:prepend>
         <div class="title">Recently Added Series</div>
       </template>
@@ -43,9 +41,7 @@
       </template>
     </horizontal-scroller>
 
-    <br>
-
-    <horizontal-scroller v-if="updatedSeries.length !== 0">
+    <horizontal-scroller v-if="updatedSeries.length !== 0" class="my-4">
       <template v-slot:prepend>
         <div class="title">Recently Updated Series</div>
       </template>
@@ -57,9 +53,7 @@
       </template>
     </horizontal-scroller>
 
-    <br>
-
-    <horizontal-scroller v-if="latestBooks.length !== 0">
+    <horizontal-scroller v-if="latestBooks.length !== 0" class="my-4">
       <template v-slot:prepend>
         <div class="title">Recently Added Books</div>
       </template>

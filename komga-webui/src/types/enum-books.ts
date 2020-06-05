@@ -15,6 +15,6 @@ export enum MediaStatus {
 
 export enum ReadStatus {
   UNREAD = 'UNREAD',
-  READ = 'READ',
-  IN_PROGRESS = 'IN_PROGRESS'
+  IN_PROGRESS = 'IN_PROGRESS',
+  READ = 'READ'
 }

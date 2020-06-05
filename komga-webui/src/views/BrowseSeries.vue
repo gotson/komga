@@ -45,6 +45,11 @@
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
 
+      <!--   Filter menu   -->
+      <filter-menu-button :filters-options="filterOptions"
+                          :filters-active.sync="filters"
+      />
+
       <!--   Sort menu   -->
       <sort-menu-button :sort-default="sortDefault"
                         :sort-options="sortOptions"
@@ -128,13 +133,24 @@
 
       <v-divider class="my-4"/>
 
-      <v-pagination
-        v-model="page"
-        :total-visible="paginationVisible"
-        :length="totalPages"
-      />
+      <empty-state
+        v-if="totalPages === 0"
+        title="The active filter has no matches"
+        sub-title="Use the menu above to change the active filter"
+        icon="mdi-book-multiple"
+        icon-color="secondary"
+      >
+      </empty-state>
 
-      <item-browser :items="books" :selected.sync="selected" :edit-function="this.singleEdit" class="px-4"/>
+      <template v-else>
+        <v-pagination
+          v-model="page"
+          :total-visible="paginationVisible"
+          :length="totalPages"
+        />
+
+        <item-browser :items="books" :selected.sync="selected" :edit-function="this.singleEdit" class="px-4"/>
+      </template>
 
     </v-container>
 
@@ -146,6 +162,8 @@
 import Badge from '@/components/Badge.vue'
 import EditBooksDialog from '@/components/EditBooksDialog.vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
+import EmptyState from '@/components/EmptyState.vue'
+import FilterMenuButton from '@/components/FilterMenuButton.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
@@ -153,6 +171,7 @@ import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { parseQuerySort } from '@/functions/query-params'
 import { seriesThumbnailUrl } from '@/functions/urls'
+import { ReadStatus } from '@/types/enum-books'
 import Vue from 'vue'
 
 const cookiePageSize = 'pagesize'
@@ -162,12 +181,14 @@ export default Vue.extend({
   components: {
     ToolbarSticky,
     SortMenuButton,
+    FilterMenuButton,
     Badge,
     EditSeriesDialog,
     EditBooksDialog,
     ItemBrowser,
     PageSizeSelect,
     ItemCard,
+    EmptyState,
   },
   data: () => {
     return {
@@ -185,8 +206,11 @@ export default Vue.extend({
       }] as SortOption[],
       sortActive: {} as SortActive,
       sortDefault: { key: 'metadata.numberSort', order: 'asc' } as SortActive,
+      filterOptions: [{ name: 'READ STATUS', values: ReadStatus }],
+      filters: [[]] as any[],
       dialogEdit: false,
       sortUnwatch: null as any,
+      filterUnwatch: null as any,
       pageUnwatch: null as any,
       pageSizeUnwatch: null as any,
       selected: [],
@@ -253,6 +277,7 @@ export default Vue.extend({
 
     // restore from query param
     this.sortActive = this.parseQuerySortOrDefault(this.$route.query.sort)
+    this.filters.splice(0, 1, this.parseQueryFilterStatus(this.$route.query.readStatus))
     if (this.$route.query.page) this.page = Number(this.$route.query.page)
     if (this.$route.query.pageSize) this.pageSize = Number(this.$route.query.pageSize)
 
@@ -266,6 +291,7 @@ export default Vue.extend({
 
       // reset
       this.sortActive = this.parseQuerySortOrDefault(to.query.sort)
+      this.filters.splice(0, 1, this.parseQueryFilterStatus(to.query.readStatus))
       this.page = 1
       this.totalPages = 1
       this.totalElements = null
@@ -281,6 +307,7 @@ export default Vue.extend({
   methods: {
     setWatches () {
       this.sortUnwatch = this.$watch('sortActive', this.updateRouteAndReload)
+      this.filterUnwatch = this.$watch('filters', this.updateRouteAndReload)
       this.pageSizeUnwatch = this.$watch('pageSize', (val) => {
         this.$cookies.set(cookiePageSize, val, Infinity)
         this.updateRouteAndReload()
@@ -293,6 +320,7 @@ export default Vue.extend({
     },
     unsetWatches () {
       this.sortUnwatch()
+      this.filterUnwatch()
       this.pageUnwatch()
       this.pageSizeUnwatch()
     },
@@ -314,6 +342,9 @@ export default Vue.extend({
     parseQuerySortOrDefault (querySort: any): SortActive {
       return parseQuerySort(querySort, this.sortOptions) || this.$_.clone(this.sortDefault)
     },
+    parseQueryFilterStatus (queryStatus: any): string[] {
+      return queryStatus ? queryStatus.toString().split(',').filter((x: string) => Object.keys(ReadStatus).includes(x)) : []
+    },
     updateRoute (index?: string) {
       this.$router.replace({
         name: this.$route.name,
@@ -322,6 +353,7 @@ export default Vue.extend({
           page: `${this.page}`,
           pageSize: `${this.pageSize}`,
           sort: `${this.sortActive.key},${this.sortActive.order}`,
+          readStatus: `${this.filters[0]}`,
         },
       }).catch(_ => {
       })
@@ -335,7 +367,7 @@ export default Vue.extend({
       if (sort) {
         pageRequest.sort = [`${sort.key},${sort.order}`]
       }
-      const booksPage = await this.$komgaSeries.getBooks(seriesId, pageRequest)
+      const booksPage = await this.$komgaSeries.getBooks(seriesId, pageRequest, this.filters[0])
 
       this.totalPages = booksPage.totalPages
       this.totalElements = booksPage.totalElements
