@@ -13,29 +13,9 @@
       <v-spacer/>
 
       <!--   Filter menu   -->
-      <v-menu offset-y>
-        <template v-slot:activator="{on}">
-          <v-btn icon v-on="on">
-            <v-icon :color="$_.isEmpty(filterStatus) ? null : 'secondary'"
-            >mdi-filter-variant
-            </v-icon>
-          </v-btn>
-        </template>
-        <v-list>
-          <v-subheader>STATUS</v-subheader>
-          <v-list-item v-for="s in SeriesStatus"
-                       :key="s"
-          >
-            <v-list-item-title class="text-capitalize">
-              <v-checkbox v-model="filterStatus"
-                          :label="s.toString().toLowerCase()"
-                          color="secondary"
-                          class="mt-1 ml-2"
-                          :value="s"/>
-            </v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+      <filter-menu-button :filters-options="filterOptions"
+                          :filters-active.sync="filters"
+      />
 
       <!--   Sort menu   -->
       <sort-menu-button :sort-default="sortDefault"
@@ -99,7 +79,6 @@
         icon="mdi-book-multiple"
         icon-color="secondary"
       >
-        <v-btn @click="filterStatus = []">Clear filter</v-btn>
       </empty-state>
 
       <template v-else>
@@ -125,6 +104,7 @@
 import Badge from '@/components/Badge.vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 import EmptyState from '@/components/EmptyState.vue'
+import FilterMenuButton from '@/components/FilterMenuButton.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import LibraryActionsMenu from '@/components/LibraryActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
@@ -143,6 +123,7 @@ export default Vue.extend({
     EmptyState,
     ToolbarSticky,
     SortMenuButton,
+    FilterMenuButton,
     Badge,
     EditSeriesDialog,
     ItemBrowser,
@@ -165,8 +146,8 @@ export default Vue.extend({
       ] as SortOption[],
       sortActive: {} as SortActive,
       sortDefault: { key: 'metadata.titleSort', order: 'asc' } as SortActive,
-      filterStatus: [] as string[],
-      SeriesStatus,
+      filterOptions: [{ name: 'STATUS', values: SeriesStatus }],
+      filters: [[]] as any[],
       sortUnwatch: null as any,
       filterUnwatch: null as any,
       pageUnwatch: null as any,
@@ -209,7 +190,7 @@ export default Vue.extend({
 
     // restore from query param
     this.sortActive = this.parseQuerySortOrDefault(this.$route.query.sort)
-    this.filterStatus = this.parseQueryFilterStatus(this.$route.query.status)
+    this.filters.splice(0, 1, this.parseQueryFilterStatus(this.$route.query.status))
     if (this.$route.query.page) this.page = Number(this.$route.query.page)
     if (this.$route.query.pageSize) this.pageSize = Number(this.$route.query.pageSize)
 
@@ -223,7 +204,7 @@ export default Vue.extend({
 
       // reset
       this.sortActive = this.parseQuerySortOrDefault(to.query.sort)
-      this.filterStatus = this.parseQueryFilterStatus(to.query.status)
+      this.filters.splice(0, 1, this.parseQueryFilterStatus(to.query.status))
       this.page = 1
       this.totalPages = 1
       this.totalElements = null
@@ -257,7 +238,7 @@ export default Vue.extend({
   methods: {
     setWatches () {
       this.sortUnwatch = this.$watch('sortActive', this.updateRouteAndReload)
-      this.filterUnwatch = this.$watch('filterStatus', this.updateRouteAndReload)
+      this.filterUnwatch = this.$watch('filters', this.updateRouteAndReload)
       this.pageSizeUnwatch = this.$watch('pageSize', (val) => {
         this.$cookies.set(cookiePageSize, val, Infinity)
         this.updateRouteAndReload()
@@ -303,7 +284,7 @@ export default Vue.extend({
           page: `${this.page}`,
           pageSize: `${this.pageSize}`,
           sort: `${this.sortActive.key},${this.sortActive.order}`,
-          status: `${this.filterStatus}`,
+          status: `${this.filters[0]}`,
         },
       }).catch(_ => {
       })
@@ -322,7 +303,7 @@ export default Vue.extend({
       if (libraryId !== 0) {
         requestLibraryId = libraryId
       }
-      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filterStatus)
+      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters[0])
 
       this.totalPages = seriesPage.totalPages
       this.totalElements = seriesPage.totalElements
