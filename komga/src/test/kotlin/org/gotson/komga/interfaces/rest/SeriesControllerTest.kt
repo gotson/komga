@@ -570,5 +570,48 @@ class SeriesControllerTest(
           jsonPath("$.numberOfElements") { value(2) }
         }
     }
+
+    @Test
+    @WithMockCustomUser(id = 2)
+    fun `given user when marking book as in progress then progress series return books count accordingly`() {
+      val series = makeSeries(name = "series", libraryId = library.id).let { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(
+            makeBook("1.cbr", libraryId = library.id),
+            makeBook("2.cbr", libraryId = library.id),
+            makeBook("3.cbr", libraryId = library.id)
+          )
+          seriesLifecycle.addBooks(created, books)
+        }
+      }
+
+      bookRepository.findAll().forEach { book ->
+        mediaRepository.findById(book.id).let {
+          mediaRepository.update(it.copy(
+            status = Media.Status.READY,
+            pages = (1..10).map { BookPage("$it", "image/jpeg") }
+          ))
+        }
+      }
+
+      val books = bookRepository.findAll().sortedBy { it.name }
+
+      mockMvc.patch("/api/v1/books/${books.elementAt(0).id}/read-progress") {
+        contentType = MediaType.APPLICATION_JSON
+        content = """{"page": 5,"completed":false}"""
+      }
+      mockMvc.patch("/api/v1/books/${books.elementAt(1).id}/read-progress") {
+        contentType = MediaType.APPLICATION_JSON
+        content = """{"completed":true}"""
+      }
+
+      mockMvc.get("/api/v1/series/${series.id}")
+        .andExpect {
+          status { isOk }
+          jsonPath("$.booksUnreadCount") { value(1) }
+          jsonPath("$.booksReadCount") { value(1) }
+          jsonPath("$.booksInProgressCount") { value(1) }
+        }
+    }
   }
 }

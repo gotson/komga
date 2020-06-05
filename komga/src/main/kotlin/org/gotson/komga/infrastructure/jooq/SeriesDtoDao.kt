@@ -91,7 +91,8 @@ class SeriesDtoDao(
   private fun selectBase() =
     dsl.select(*groupFields)
       .select(DSL.count(b.ID).`as`("booksCount"))
-      .select(DSL.count(r.COMPLETED).`as`("booksReadCount"))
+      .select(DSL.sum(DSL.`when`(r.COMPLETED.isTrue, 1).otherwise(0)).`as`("booksReadCount"))
+      .select(DSL.sum(DSL.`when`(r.COMPLETED.isFalse, 1).otherwise(0)).`as`("booksInProgressCount"))
       .from(s)
       .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
@@ -104,9 +105,11 @@ class SeriesDtoDao(
       .map { r ->
         val sr = r.into(s)
         val dr = r.into(d)
-        val booksCount = r["booksCount"] as Int
-        val booksReadCount = r["booksReadCount"] as Int
-        sr.toDto(booksCount, booksReadCount, dr.toDto())
+        val booksCount = r.get("booksCount", Int::class.java)
+        val booksReadCount = r.get("booksReadCount", Int::class.java)
+        val booksInProgressCount = r.get("booksInProgressCount", Int::class.java)
+        val booksUnreadCount = booksCount - booksInProgressCount - booksReadCount
+        sr.toDto(booksCount, booksReadCount, booksUnreadCount, booksInProgressCount, dr.toDto())
       }
 
   private fun SeriesSearch.toCondition(): Condition {
@@ -119,7 +122,7 @@ class SeriesDtoDao(
     return c
   }
 
-  private fun SeriesRecord.toDto(booksCount: Int, booksReadCount: Int, metadata: SeriesMetadataDto) =
+  private fun SeriesRecord.toDto(booksCount: Int, booksReadCount: Int, booksUnreadCount: Int, booksInProgressCount: Int, metadata: SeriesMetadataDto) =
     SeriesDto(
       id = id,
       libraryId = libraryId,
@@ -130,6 +133,8 @@ class SeriesDtoDao(
       fileLastModified = fileLastModified.toUTC(),
       booksCount = booksCount,
       booksReadCount = booksReadCount,
+      booksUnreadCount = booksUnreadCount,
+      booksInProgressCount = booksInProgressCount,
       metadata = metadata
     )
 

@@ -7,6 +7,7 @@ interface SeriesDto {
   booksCount: number,
   booksReadCount: number,
   booksUnreadCount: number,
+  booksInProgressCount: number,
   metadata: SeriesMetadata
 }
 

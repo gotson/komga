@@ -16,10 +16,10 @@ data class SeriesDto(
   val fileLastModified: LocalDateTime,
   val booksCount: Int,
   val booksReadCount: Int,
+  val booksUnreadCount: Int,
+  val booksInProgressCount: Int,
   val metadata: SeriesMetadataDto
-) {
-  val booksUnreadCount: Int = booksCount - booksReadCount
-}
+)
 
 fun SeriesDto.restrictUrl(restrict: Boolean) =
   if (restrict) copy(url = "") else this
