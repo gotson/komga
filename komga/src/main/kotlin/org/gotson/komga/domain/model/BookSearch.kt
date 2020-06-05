@@ -15,6 +15,3 @@ class BookSearchWithReadProgress(
   val readStatus: Collection<ReadStatus> = emptyList()
 ) : BookSearch(libraryIds, seriesIds, searchTerm, mediaStatus)
 
-enum class ReadStatus {
-  UNREAD, READ, IN_PROGRESS
-}

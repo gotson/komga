@@ -11,7 +11,7 @@ import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesMetadata
-import org.gotson.komga.domain.model.SeriesSearch
+import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
@@ -69,6 +69,7 @@ class SeriesController(
     @RequestParam(name = "search", required = false) searchTerm: String?,
     @RequestParam(name = "library_id", required = false) libraryIds: List<Long>?,
     @RequestParam(name = "status", required = false) metadataStatus: List<SeriesMetadata.Status>?,
+    @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
     @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> {
     val pageRequest = PageRequest.of(
@@ -78,10 +79,11 @@ class SeriesController(
       else Sort.by(Sort.Order.asc("metadata.titleSort").ignoreCase())
     )
 
-    val seriesSearch = SeriesSearch(
+    val seriesSearch = SeriesSearchWithReadProgress(
       libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
       searchTerm = searchTerm,
-      metadataStatus = metadataStatus ?: emptyList()
+      metadataStatus = metadataStatus ?: emptyList(),
+      readStatus = readStatus ?: emptyList()
     )
 
     return seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageRequest)
@@ -104,7 +106,7 @@ class SeriesController(
     val libraryIds = if (principal.user.sharedAllLibraries) emptyList<Long>() else principal.user.sharedLibrariesIds
 
     return seriesDtoRepository.findAll(
-      SeriesSearch(libraryIds = libraryIds),
+      SeriesSearchWithReadProgress(libraryIds = libraryIds),
       principal.user.id,
       pageRequest
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
@@ -126,7 +128,7 @@ class SeriesController(
     val libraryIds = if (principal.user.sharedAllLibraries) emptyList<Long>() else principal.user.sharedLibrariesIds
 
     return seriesDtoRepository.findAll(
-      SeriesSearch(libraryIds = libraryIds),
+      SeriesSearchWithReadProgress(libraryIds = libraryIds),
       principal.user.id,
       pageRequest
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
@@ -148,7 +150,7 @@ class SeriesController(
     val libraryIds = if (principal.user.sharedAllLibraries) emptyList<Long>() else principal.user.sharedLibrariesIds
 
     return seriesDtoRepository.findRecentlyUpdated(
-      SeriesSearch(libraryIds = libraryIds),
+      SeriesSearchWithReadProgress(libraryIds = libraryIds),
       principal.user.id,
       pageRequest
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
