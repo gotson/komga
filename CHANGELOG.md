@@ -1,3 +1,10 @@
+## [0.35.1](https://github.com/gotson/komga/compare/v0.35.0...v0.35.1) (2020-06-05)
+
+
+### Bug Fixes
+
+* **api:** books could disappear for users if read by others ([3d1f0e0](https://github.com/gotson/komga/commit/3d1f0e0d058ba2d740e31c9185ff8c9e60e03131))
+
 # [0.35.0](https://github.com/gotson/komga/compare/v0.34.1...v0.35.0) (2020-06-05)
 
 
