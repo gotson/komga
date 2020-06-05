@@ -74,9 +74,8 @@ class SeriesDtoDao(
   }
 
   override fun findByIdOrNull(seriesId: Long, userId: Long): SeriesDto? =
-    selectBase()
+    selectBase(userId)
       .where(s.ID.eq(seriesId))
-      .and(readProgressCondition(userId))
       .groupBy(*groupFields)
       .fetchAndMap()
       .firstOrNull()
@@ -89,7 +88,6 @@ class SeriesDtoDao(
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID))
       .where(conditions)
-      .and(readProgressCondition(userId))
       .groupBy(s.ID)
       .having(having)
       .fetch()
@@ -97,9 +95,8 @@ class SeriesDtoDao(
 
     val orderBy = pageable.sort.toOrderBy(sorts)
 
-    val dtos = selectBase()
+    val dtos = selectBase(userId)
       .where(conditions)
-      .and(readProgressCondition(userId))
       .groupBy(*groupFields)
       .having(having)
       .orderBy(orderBy)
@@ -114,7 +111,7 @@ class SeriesDtoDao(
     )
   }
 
-  private fun selectBase(): SelectOnConditionStep<Record> =
+  private fun selectBase(userId: Long): SelectOnConditionStep<Record> =
     dsl.select(*groupFields)
       .select(DSL.count(b.ID).`as`(BOOKS_COUNT))
       .select(countUnread.`as`(BOOKS_UNREAD_COUNT))
@@ -124,6 +121,7 @@ class SeriesDtoDao(
       .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID))
+      .and(readProgressCondition(userId))
 
   private fun readProgressCondition(userId: Long): Condition = r.USER_ID.eq(userId).or(r.USER_ID.isNull)
 

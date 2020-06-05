@@ -20,6 +20,7 @@ import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
+import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.hamcrest.core.IsNull
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
@@ -37,12 +38,15 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.MockMvcResultMatchersDsl
 import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import java.time.LocalDate
 import javax.sql.DataSource
 import kotlin.random.Random
@@ -72,13 +76,16 @@ class BookControllerTest(
   }
 
   private var library = makeLibrary()
+  private lateinit var user2: KomgaUser
+  private lateinit var user3: KomgaUser
 
   @BeforeAll
   fun `setup library`() {
     jdbcTemplate.execute("ALTER SEQUENCE hibernate_sequence RESTART WITH 1")
 
     library = libraryRepository.insert(library) // id = 1
-    userRepository.save(KomgaUser("user@example.org", "", false)) // id = 2
+    user2 = userRepository.save(KomgaUser("user@example.org", "", false)) // id = 2
+    user3 = userRepository.save(KomgaUser("user2@example.org", "", false)) // id = 3
   }
 
   @AfterAll
@@ -891,5 +898,52 @@ class BookControllerTest(
           jsonPath("$.readProgress") { value(IsNull.nullValue()) }
         }
     }
+  }
+
+  @Test
+  fun `given a user with read progress when getting books for the other user then books are returned correctly`() {
+    makeSeries(name = "series", libraryId = library.id).let { series ->
+      seriesLifecycle.createSeries(series).also { created ->
+        val books = listOf(makeBook("1.cbr", libraryId = library.id), makeBook("2.cbr", libraryId = library.id))
+        seriesLifecycle.addBooks(created, books)
+      }
+    }
+
+    val book = bookRepository.findAll().first()
+    mediaRepository.findById(book.id).let {
+      mediaRepository.update(it.copy(
+        status = Media.Status.READY,
+        pages = (1..10).map { BookPage("$it", "image/jpeg") }
+      ))
+    }
+
+    val jsonString = """
+        {
+          "completed": true
+        }
+      """.trimIndent()
+
+    mockMvc.perform(MockMvcRequestBuilders
+      .patch("/api/v1/books/${book.id}/read-progress")
+      .with(user(KomgaPrincipal(user2)))
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(jsonString)
+    )
+
+    mockMvc.perform(MockMvcRequestBuilders
+      .get("/api/v1/books")
+      .with(user(KomgaPrincipal(user2)))
+      .contentType(MediaType.APPLICATION_JSON)
+    ).andExpect(
+      jsonPath("$.totalElements").value(2)
+    )
+
+    mockMvc.perform(MockMvcRequestBuilders
+      .get("/api/v1/books")
+      .with(user(KomgaPrincipal(user3)))
+      .contentType(MediaType.APPLICATION_JSON)
+    ).andExpect(
+      jsonPath("$.totalElements").value(2)
+    )
   }
 }

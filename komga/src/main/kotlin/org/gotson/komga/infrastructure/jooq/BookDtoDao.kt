@@ -56,15 +56,14 @@ class BookDtoDao(
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID))
-      .where(conditions)
       .and(readProgressCondition(userId))
+      .where(conditions)
       .fetchOne(0, Long::class.java)
 
     val orderBy = pageable.sort.toOrderBy(sorts)
 
-    val dtos = selectBase()
+    val dtos = selectBase(userId)
       .where(conditions)
-      .and(readProgressCondition(userId))
       .orderBy(orderBy)
       .limit(pageable.pageSize)
       .offset(pageable.offset)
@@ -78,9 +77,8 @@ class BookDtoDao(
   }
 
   override fun findByIdOrNull(bookId: Long, userId: Long): BookDto? =
-    selectBase()
+    selectBase(userId)
       .where(b.ID.eq(bookId))
-      .and(readProgressCondition(userId))
       .fetchAndMap()
       .firstOrNull()
 
@@ -99,9 +97,8 @@ class BookDtoDao(
     val seriesId = record.get(0, Long::class.java)
     val numberSort = record.get(1, Float::class.java)
 
-    return selectBase()
+    return selectBase(userId)
       .where(b.SERIES_ID.eq(seriesId))
-      .and(readProgressCondition(userId))
       .orderBy(d.NUMBER_SORT.let { if (next) it.asc() else it.desc() })
       .seek(numberSort)
       .limit(1)
@@ -109,7 +106,7 @@ class BookDtoDao(
       .firstOrNull()
   }
 
-  private fun selectBase() =
+  private fun selectBase(userId: Long) =
     dsl.select(
       *b.fields(),
       *mediaFields,
@@ -119,6 +116,7 @@ class BookDtoDao(
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID))
+      .and(readProgressCondition(userId))
 
   private fun ResultQuery<Record>.fetchAndMap() =
     fetch()
