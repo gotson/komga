@@ -1,3 +1,18 @@
+# [0.35.0](https://github.com/gotson/komga/compare/v0.34.1...v0.35.0) (2020-06-05)
+
+
+### Bug Fixes
+
+* **api:** add count of in progress books in SeriesDto ([0d2713a](https://github.com/gotson/komga/commit/0d2713a090257cf427cc71700fd2a9d42978001c)), closes [#25](https://github.com/gotson/komga/issues/25)
+
+
+### Features
+
+* **api:** add read_status parameter to series books ([fc5c502](https://github.com/gotson/komga/commit/fc5c50240e5311d476d235adff638b91e8826605)), closes [#25](https://github.com/gotson/komga/issues/25)
+* **api:** read progress as search criteria for Series ([885c891](https://github.com/gotson/komga/commit/885c89126700d6a5a2a153ffee346a1324d04e41)), closes [#25](https://github.com/gotson/komga/issues/25)
+* **webui:** add read status filter when browsing Series ([cc39ce8](https://github.com/gotson/komga/commit/cc39ce8b44f847501ac3600cd70b9503193dee67)), closes [#25](https://github.com/gotson/komga/issues/25)
+* **webui:** read progress filter for Series when browsing Libraries ([0c046a7](https://github.com/gotson/komga/commit/0c046a767db2bde801ea31ebfbbb2df7d6fac3c6)), closes [#25](https://github.com/gotson/komga/issues/25)
+
 ## [0.34.1](https://github.com/gotson/komga/compare/v0.34.0...v0.34.1) (2020-06-04)
 
 
