@@ -30,15 +30,16 @@
         </v-list-item>
       </div>
 
-      <v-list-item v-if="filterCustom"
-                   @click="clearAll()"
-                   dense
-      >
-        <v-list-item-icon>
-          <v-icon>mdi-close</v-icon>
-        </v-list-item-icon>
-        <v-list-item-title>Clear</v-list-item-title>
-      </v-list-item>
+      <template v-if="filterCustom">
+        <v-divider/>
+
+        <v-list-item @click="clearAll()" dense>
+          <v-list-item-icon>
+            <v-icon>mdi-close</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>Clear</v-list-item-title>
+        </v-list-item>
+      </template>
     </v-list>
   </v-menu>
 </template>

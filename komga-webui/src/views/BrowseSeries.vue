@@ -169,7 +169,7 @@ import ItemCard from '@/components/ItemCard.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
-import { parseQuerySort } from '@/functions/query-params'
+import { parseQueryFilter, parseQuerySort } from '@/functions/query-params'
 import { seriesThumbnailUrl } from '@/functions/urls'
 import { ReadStatus } from '@/types/enum-books'
 import Vue from 'vue'
@@ -277,7 +277,7 @@ export default Vue.extend({
 
     // restore from query param
     this.sortActive = this.parseQuerySortOrDefault(this.$route.query.sort)
-    this.filters.splice(0, 1, this.parseQueryFilterStatus(this.$route.query.readStatus))
+    this.filters.splice(0, 1, parseQueryFilter(this.$route.query.readStatus, ReadStatus))
     if (this.$route.query.page) this.page = Number(this.$route.query.page)
     if (this.$route.query.pageSize) this.pageSize = Number(this.$route.query.pageSize)
 
@@ -291,7 +291,7 @@ export default Vue.extend({
 
       // reset
       this.sortActive = this.parseQuerySortOrDefault(to.query.sort)
-      this.filters.splice(0, 1, this.parseQueryFilterStatus(to.query.readStatus))
+      this.filters.splice(0, 1, parseQueryFilter(to.query.readStatus, ReadStatus))
       this.page = 1
       this.totalPages = 1
       this.totalElements = null

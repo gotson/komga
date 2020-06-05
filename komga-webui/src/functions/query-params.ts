@@ -10,3 +10,7 @@ export function parseQuerySort (querySort: any, sortOptions: SortOption[]): Sort
   }
   return customSort
 }
+
+export function parseQueryFilter (queryStatus: any, enumeration: any): string[] {
+  return queryStatus ? queryStatus.toString().split(',').filter((x: string) => Object.keys(enumeration).includes(x)) : []
+}

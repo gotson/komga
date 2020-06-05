@@ -110,7 +110,8 @@ import LibraryActionsMenu from '@/components/LibraryActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
-import { parseQuerySort } from '@/functions/query-params'
+import { parseQueryFilter, parseQuerySort } from '@/functions/query-params'
+import { ReadStatus } from '@/types/enum-books'
 import { SeriesStatus } from '@/types/enum-series'
 import Vue from 'vue'
 
@@ -146,8 +147,8 @@ export default Vue.extend({
       ] as SortOption[],
       sortActive: {} as SortActive,
       sortDefault: { key: 'metadata.titleSort', order: 'asc' } as SortActive,
-      filterOptions: [{ name: 'STATUS', values: SeriesStatus }],
-      filters: [[]] as any[],
+      filterOptions: [{ name: 'STATUS', values: SeriesStatus }, { name: 'READ STATUS', values: ReadStatus }],
+      filters: [[], []] as any[],
       sortUnwatch: null as any,
       filterUnwatch: null as any,
       pageUnwatch: null as any,
@@ -190,7 +191,8 @@ export default Vue.extend({
 
     // restore from query param
     this.sortActive = this.parseQuerySortOrDefault(this.$route.query.sort)
-    this.filters.splice(0, 1, this.parseQueryFilterStatus(this.$route.query.status))
+    this.filters.splice(0, 1, parseQueryFilter(this.$route.query.status, SeriesStatus))
+    this.filters.splice(1, 1, parseQueryFilter(this.$route.query.readStatus, ReadStatus))
     if (this.$route.query.page) this.page = Number(this.$route.query.page)
     if (this.$route.query.pageSize) this.pageSize = Number(this.$route.query.pageSize)
 
@@ -204,7 +206,8 @@ export default Vue.extend({
 
       // reset
       this.sortActive = this.parseQuerySortOrDefault(to.query.sort)
-      this.filters.splice(0, 1, this.parseQueryFilterStatus(to.query.status))
+      this.filters.splice(0, 1, parseQueryFilter(to.query.status, SeriesStatus))
+      this.filters.splice(1, 1, parseQueryFilter(to.query.readStatus, ReadStatus))
       this.page = 1
       this.totalPages = 1
       this.totalElements = null
@@ -273,9 +276,6 @@ export default Vue.extend({
     parseQuerySortOrDefault (querySort: any): SortActive {
       return parseQuerySort(querySort, this.sortOptions) || this.$_.clone(this.sortDefault)
     },
-    parseQueryFilterStatus (queryStatus: any): string[] {
-      return queryStatus ? queryStatus.toString().split(',').filter((x: string) => Object.keys(SeriesStatus).includes(x)) : []
-    },
     updateRoute () {
       this.$router.replace({
         name: this.$route.name,
@@ -285,6 +285,7 @@ export default Vue.extend({
           pageSize: `${this.pageSize}`,
           sort: `${this.sortActive.key},${this.sortActive.order}`,
           status: `${this.filters[0]}`,
+          readStatus: `${this.filters[1]}`,
         },
       }).catch(_ => {
       })
@@ -303,7 +304,7 @@ export default Vue.extend({
       if (libraryId !== 0) {
         requestLibraryId = libraryId
       }
-      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters[0])
+      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters[0], this.filters[1])
 
       this.totalPages = seriesPage.totalPages
       this.totalElements = seriesPage.totalElements
