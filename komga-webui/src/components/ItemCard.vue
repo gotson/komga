@@ -12,6 +12,7 @@
           :src="thumbnailUrl"
           lazy-src="../assets/cover.svg"
           aspect-ratio="0.7071"
+          contain
         >
           <!-- unread tick for book -->
           <div class="unread" v-if="isUnread"/>
