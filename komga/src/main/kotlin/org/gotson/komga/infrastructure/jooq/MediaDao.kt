@@ -68,11 +68,12 @@ class MediaDao(
   }
 
   private fun insertPages(dsl: DSLContext, media: Media) {
-    media.pages.forEach {
+    media.pages.forEachIndexed { index, page ->
       dsl.insertInto(p)
         .set(p.BOOK_ID, media.bookId)
-        .set(p.FILE_NAME, it.fileName)
-        .set(p.MEDIA_TYPE, it.mediaType)
+        .set(p.FILE_NAME, page.fileName)
+        .set(p.MEDIA_TYPE, page.mediaType)
+        .set(p.NUMBER, index)
         .execute()
     }
   }
