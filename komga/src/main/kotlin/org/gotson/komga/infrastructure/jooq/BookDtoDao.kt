@@ -35,6 +35,7 @@ class BookDtoDao(
   private val d = Tables.BOOK_METADATA
   private val r = Tables.READ_PROGRESS
   private val a = Tables.BOOK_METADATA_AUTHOR
+  private val s = Tables.SERIES
 
   private val mediaFields = m.fields().filterNot { it.name == m.THUMBNAIL.name }.toTypedArray()
 
@@ -85,6 +86,43 @@ class BookDtoDao(
   override fun findPreviousInSeries(bookId: Long, userId: Long): BookDto? = findSibling(bookId, userId, next = false)
 
   override fun findNextInSeries(bookId: Long, userId: Long): BookDto? = findSibling(bookId, userId, next = true)
+
+
+  override fun findOnDeck(libraryIds: Collection<Long>, userId: Long, pageable: Pageable): Page<BookDto> {
+    val conditions = if (libraryIds.isEmpty()) DSL.trueCondition() else s.LIBRARY_ID.`in`(libraryIds)
+
+    val seriesIds = dsl.select(s.ID)
+      .from(s)
+      .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
+      .leftJoin(r).on(b.ID.eq(r.BOOK_ID))
+      .and(readProgressCondition(userId))
+      .where(conditions)
+      .groupBy(s.ID)
+      .having(SeriesDtoDao.countUnread.ge(1.toBigDecimal()))
+      .and(SeriesDtoDao.countRead.ge(1.toBigDecimal()))
+      .and(SeriesDtoDao.countInProgress.eq(0.toBigDecimal()))
+      .orderBy(DSL.max(r.LAST_MODIFIED_DATE).desc())
+      .fetchInto(Long::class.java)
+
+    val dtos = seriesIds
+      .drop(pageable.pageNumber * pageable.pageSize)
+      .take(pageable.pageSize)
+      .mapNotNull { seriesId ->
+        selectBase(userId)
+          .where(b.SERIES_ID.eq(seriesId))
+          .and(r.COMPLETED.isNull)
+          .orderBy(d.NUMBER_SORT.asc())
+          .limit(1)
+          .fetchAndMap()
+          .firstOrNull()
+      }
+
+    return PageImpl(
+      dtos,
+      PageRequest.of(pageable.pageNumber, pageable.pageSize, pageable.sort),
+      seriesIds.size.toLong()
+    )
+  }
 
   private fun readProgressCondition(userId: Long): Condition = r.USER_ID.eq(userId).or(r.USER_ID.isNull)
 

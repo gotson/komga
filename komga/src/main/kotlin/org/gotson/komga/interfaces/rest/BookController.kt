@@ -124,6 +124,22 @@ class BookController(
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
+  @Operation(description = "Return first unread book of series with at least one book read and no books in progress.")
+  @PageableWithoutSortAsQueryParam
+  @GetMapping("api/v1/books/ondeck")
+  fun getBooksOnDeck(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @Parameter(hidden = true) page: Pageable
+  ): Page<BookDto> {
+    val libraryIds = if (principal.user.sharedAllLibraries) emptyList<Long>() else principal.user.sharedLibrariesIds
+
+    return bookDtoRepository.findOnDeck(
+      libraryIds,
+      principal.user.id,
+      page
+    ).map { it.restrictUrl(!principal.user.roleAdmin) }
+  }
+
 
   @GetMapping("api/v1/books/{bookId}")
   fun getOneBook(

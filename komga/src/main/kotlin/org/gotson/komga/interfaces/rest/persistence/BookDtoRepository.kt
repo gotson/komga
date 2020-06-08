@@ -10,4 +10,5 @@ interface BookDtoRepository {
   fun findByIdOrNull(bookId: Long, userId: Long): BookDto?
   fun findPreviousInSeries(bookId: Long, userId: Long): BookDto?
   fun findNextInSeries(bookId: Long, userId: Long): BookDto?
+  fun findOnDeck(libraryIds: Collection<Long>, userId: Long, pageable: Pageable): Page<BookDto>
 }

@@ -34,19 +34,21 @@ class SeriesDtoDao(
   private val dsl: DSLContext
 ) : SeriesDtoRepository {
 
-  private val s = Tables.SERIES
-  private val b = Tables.BOOK
-  private val d = Tables.SERIES_METADATA
-  private val r = Tables.READ_PROGRESS
+  companion object {
+    private val s = Tables.SERIES
+    private val b = Tables.BOOK
+    private val d = Tables.SERIES_METADATA
+    private val r = Tables.READ_PROGRESS
+
+    val countUnread: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isNull, 1).otherwise(0))
+    val countRead: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isTrue, 1).otherwise(0))
+    val countInProgress: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isFalse, 1).otherwise(0))
+  }
 
   private val groupFields = arrayOf(
     *s.fields(),
     *d.fields()
   )
-
-  val countUnread: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isNull, 1).otherwise(0))
-  val countRead: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isTrue, 1).otherwise(0))
-  val countInProgress: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isFalse, 1).otherwise(0))
 
   private val sorts = mapOf(
     "metadata.titleSort" to DSL.lower(d.TITLE_SORT),
