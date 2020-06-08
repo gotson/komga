@@ -1,3 +1,10 @@
+## [0.35.2](https://github.com/gotson/komga/compare/v0.35.1...v0.35.2) (2020-06-08)
+
+
+### Bug Fixes
+
+* **analysis:** page number was not persisted ([99f800c](https://github.com/gotson/komga/commit/99f800ce8f40833588d3e937abba2e838a205218)), closes [#189](https://github.com/gotson/komga/issues/189)
+
 ## [0.35.1](https://github.com/gotson/komga/compare/v0.35.0...v0.35.1) (2020-06-05)
 
 
