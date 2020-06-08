@@ -60,6 +60,10 @@ class TaskReceiver(
     submitTask(Task.RefreshBookMetadata(book.id))
   }
 
+  fun databaseBackup() {
+    submitTask(Task.BackupDatabase)
+  }
+
   private fun submitTask(task: Task) {
     logger.info { "Sending task: $task" }
     jmsTemplate.convertAndSend(QUEUE_TASKS, task) {

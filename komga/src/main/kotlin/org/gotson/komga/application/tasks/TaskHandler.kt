@@ -6,6 +6,7 @@ import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.LibraryScanner
 import org.gotson.komga.domain.service.MetadataLifecycle
+import org.gotson.komga.infrastructure.h2.DatabaseBackuper
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS_SELECTOR
 import org.springframework.jms.annotation.JmsListener
@@ -21,7 +22,8 @@ class TaskHandler(
   private val bookRepository: BookRepository,
   private val libraryScanner: LibraryScanner,
   private val bookLifecycle: BookLifecycle,
-  private val metadataLifecycle: MetadataLifecycle
+  private val metadataLifecycle: MetadataLifecycle,
+  private val databaseBackuper: DatabaseBackuper
 ) {
 
   @JmsListener(destination = QUEUE_TASKS, selector = QUEUE_TASKS_SELECTOR)
@@ -52,6 +54,10 @@ class TaskHandler(
             bookRepository.findByIdOrNull(task.bookId)?.let {
               metadataLifecycle.refreshMetadata(it)
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
+
+          is Task.BackupDatabase -> {
+            databaseBackuper.backupDatabase()
+          }
 
         }
       }.also {

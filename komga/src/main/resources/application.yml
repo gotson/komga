@@ -12,6 +12,9 @@ komga:
   libraries-scan-directory-exclusions:
     - "#recycle"
     - "@eaDir"
+  database-backup:
+    path: ~/.komga/database-backup.zip
+    schedule: "0 0 */6 * * ?"
 
 spring:
   #  cache:
