@@ -1,3 +1,16 @@
+# [0.37.0](https://github.com/gotson/komga/compare/v0.36.0...v0.37.0) (2020-06-08)
+
+
+### Bug Fixes
+
+* **scanner:** add TRACE logs for file update times ([5433567](https://github.com/gotson/komga/commit/54335674eed6fccd626329248b532b791a133f60)), closes [#159](https://github.com/gotson/komga/issues/159)
+* order of pages is not loaded correctly from database ([d2288dd](https://github.com/gotson/komga/commit/d2288dda72b053821be5226e64dd460f5a97f2d0)), closes [#189](https://github.com/gotson/komga/issues/189)
+
+
+### Features
+
+* automatic database backup ([bbb9f7c](https://github.com/gotson/komga/commit/bbb9f7ce06a546768f662309bb635713aff70cb9)), closes [#138](https://github.com/gotson/komga/issues/138)
+
 # [0.36.0](https://github.com/gotson/komga/compare/v0.35.2...v0.36.0) (2020-06-08)
 
 
