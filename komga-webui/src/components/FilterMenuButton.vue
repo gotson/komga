@@ -11,7 +11,7 @@
       <div v-for="(f, i) in filtersOptions"
            :key="i"
       >
-        <v-subheader>{{ f.name }}</v-subheader>
+        <v-subheader v-if="f.name">{{ f.name }}</v-subheader>
         <v-list-item v-for="v in f.values"
                      :key="v"
                      @click.stop="click(i, v)"

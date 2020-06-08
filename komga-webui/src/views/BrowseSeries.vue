@@ -206,7 +206,7 @@ export default Vue.extend({
       }] as SortOption[],
       sortActive: {} as SortActive,
       sortDefault: { key: 'metadata.numberSort', order: 'asc' } as SortActive,
-      filterOptions: [{ name: 'READ STATUS', values: ReadStatus }],
+      filterOptions: [{ values: [ReadStatus.UNREAD] }],
       filters: [[]] as any[],
       dialogEdit: false,
       sortUnwatch: null as any,
