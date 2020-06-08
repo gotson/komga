@@ -3,7 +3,6 @@ package org.gotson.komga.infrastructure.configuration
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Component
 import org.springframework.validation.annotation.Validated
-import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Positive
 
@@ -18,14 +17,6 @@ class KomgaProperties {
   var librariesScanDirectoryExclusions: List<String> = emptyList()
 
   var filesystemScannerForceDirectoryModifiedTime: Boolean = false
-
-  var threads = Threads()
-
-  class Threads {
-    @Min(1)
-    @Deprecated("Deprecated since 0.28")
-    var analyzer: Int = 2
-  }
 
   var rememberMe = RememberMe()
 
