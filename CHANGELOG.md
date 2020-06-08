@@ -1,3 +1,17 @@
+# [0.36.0](https://github.com/gotson/komga/compare/v0.35.2...v0.36.0) (2020-06-08)
+
+
+### Bug Fixes
+
+* strip accented characters for title sort when creating series ([6f1e36e](https://github.com/gotson/komga/commit/6f1e36e7dc3087445a55c0b5a360a932c2a3778f)), closes [#188](https://github.com/gotson/komga/issues/188)
+* **webui:** prevent cropping on book thumbnails ([e038857](https://github.com/gotson/komga/commit/e038857887f180ed4fa147064cad84febf647567)), closes [#191](https://github.com/gotson/komga/issues/191)
+
+
+### Features
+
+* **api:** on deck books ([1b6a030](https://github.com/gotson/komga/commit/1b6a030ab568a657e9d7b3c89292ebd8e05d6611)), closes [#131](https://github.com/gotson/komga/issues/131)
+* **webui:** add On Deck section on dashboard ([37c935e](https://github.com/gotson/komga/commit/37c935ec9a0d5ada86eb0ee8f9b201422a532e6d)), closes [#131](https://github.com/gotson/komga/issues/131)
+
 ## [0.35.2](https://github.com/gotson/komga/compare/v0.35.1...v0.35.2) (2020-06-08)
 
 
