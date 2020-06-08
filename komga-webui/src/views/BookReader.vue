@@ -72,28 +72,6 @@
                   <v-icon @click="goToLast" class="mx-2">mdi-arrow-collapse-right</v-icon>
                 </template>
               </v-slider>
-              <!--              <v-dialog v-model="dialogGoto" persistent max-width="290">-->
-              <!--                <template v-slot:activator="{ on }">-->
-              <!--                  <v-icon large class="ma-auto" v-on="on">mdi-arrow-right-bold-circle</v-icon>-->
-              <!--                </template>-->
-              <!--                <v-card >-->
-              <!--                  <v-card-text class="d-flex flex-row">-->
-              <!--                    <v-text-field-->
-              <!--                      v-model="goToPage"-->
-              <!--                      hide-details-->
-              <!--                      single-line-->
-              <!--                      type="number"-->
-              <!--                      autofocus-->
-              <!--                    />-->
-              <!--                  </v-card-text>-->
-
-              <!--                  <v-card-actions>-->
-              <!--                    <v-spacer></v-spacer>-->
-              <!--                    <v-btn color="darken-1" text @click="dialogGoto = false">Close</v-btn>-->
-              <!--                    <v-btn color="green darken-1" text @click="goTo(goToPage)">Go To</v-btn>-->
-              <!--                  </v-card-actions>-->
-              <!--                </v-card>-->
-              <!--              </v-dialog>-->
             </v-col>
           </v-row>
 
