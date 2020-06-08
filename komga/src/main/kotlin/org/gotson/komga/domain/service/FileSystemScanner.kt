@@ -86,8 +86,9 @@ class FileSystemScanner(
 }
 
 fun Path.getUpdatedTime(): LocalDateTime =
-  Files.readAttributes(this, BasicFileAttributes::class.java).let {
-    maxOf(it.creationTime(), it.lastModifiedTime()).toLocalDateTime()
+  Files.readAttributes(this, BasicFileAttributes::class.java).let { b ->
+    maxOf(b.creationTime(), b.lastModifiedTime()).toLocalDateTime()
+      .also { logger.trace { "Get updated time for file $this. Creation time: ${b.creationTime()}, Last Modified Time: ${b.lastModifiedTime()}. Choosing the max (Local Time): $it" } }
   }
 
 fun FileTime.toLocalDateTime(): LocalDateTime =
