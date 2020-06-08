@@ -29,6 +29,19 @@
       </template>
     </horizontal-scroller>
 
+    <horizontal-scroller v-if="onDeckBooks.length !== 0" class="my-4">
+      <template v-slot:prepend>
+        <div class="title">On Deck</div>
+      </template>
+      <template v-slot:content>
+        <div v-for="(b, i) in onDeckBooks"
+             :key="i"
+        >
+          <item-card class="ma-2 card" :item="b" :on-edit="singleEditBook"/>
+        </div>
+      </template>
+    </horizontal-scroller>
+
     <horizontal-scroller v-if="newSeries.length !== 0" class="my-4">
       <template v-slot:prepend>
         <div class="title">Recently Added Series</div>
@@ -87,6 +100,7 @@ export default Vue.extend({
       updatedSeries: [] as SeriesDto[],
       latestBooks: [] as BookDto[],
       inProgressBooks: [] as BookDto[],
+      onDeckBooks: [] as BookDto[],
       editSeriesSingle: {} as SeriesDto,
       dialogEditSeriesSingle: false,
       editBookSingle: {} as BookDto,
@@ -98,6 +112,7 @@ export default Vue.extend({
     this.loadUpdatedSeries()
     this.loadLatestBooks()
     this.loadInProgressBooks()
+    this.loadOnDeckBooks()
   },
   watch: {
     editSeriesSingle (val: SeriesDto) {
@@ -119,6 +134,10 @@ export default Vue.extend({
       if (index !== -1) {
         this.inProgressBooks.splice(index, 1, val)
       }
+      index = this.onDeckBooks.findIndex(x => x.id === val.id)
+      if (index !== -1) {
+        this.onDeckBooks.splice(index, 1, val)
+      }
     },
   },
   computed: {
@@ -126,7 +145,8 @@ export default Vue.extend({
       return this.newSeries.length === 0 &&
         this.updatedSeries.length === 0 &&
         this.latestBooks.length === 0 &&
-        this.inProgressBooks.length === 0
+        this.inProgressBooks.length === 0 &&
+        this.onDeckBooks.length === 0
     },
   },
   methods: {
@@ -149,6 +169,9 @@ export default Vue.extend({
       } as PageRequest
 
       this.inProgressBooks = (await this.$komgaBooks.getBooks(undefined, pageRequest, undefined, undefined, [ReadStatus.IN_PROGRESS])).content
+    },
+    async loadOnDeckBooks () {
+      this.onDeckBooks = (await this.$komgaBooks.getBooksOnDeck()).content
     },
     singleEditSeries (series: SeriesDto) {
       this.editSeriesSingle = series
