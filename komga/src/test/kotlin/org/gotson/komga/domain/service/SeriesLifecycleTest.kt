@@ -6,6 +6,7 @@ import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
+import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
@@ -24,6 +25,7 @@ class SeriesLifecycleTest(
   @Autowired private val seriesLifecycle: SeriesLifecycle,
   @Autowired private val bookLifecycle: BookLifecycle,
   @Autowired private val seriesRepository: SeriesRepository,
+  @Autowired private val seriesMetadataRepository: SeriesMetadataRepository,
   @Autowired private val bookRepository: BookRepository,
   @Autowired private val libraryRepository: LibraryRepository
 ) {
@@ -129,5 +131,32 @@ class SeriesLifecycleTest(
     val savedBooks = bookRepository.findBySeriesId(createdSeries.id).sortedBy { it.number }
     assertThat(savedBooks.map { it.name }).containsExactly("book 1", "book 2", "book 3", "book 4", "book 5")
     assertThat(savedBooks.map { it.number }).containsExactly(1, 2, 3, 4, 5)
+  }
+
+  @Test
+  fun `given series name with diacritics when creating series then diacritics are stripped from metadata titlesort`() {
+    // given
+    val series1 = makeSeries("À l'assaut", library.id)
+    val series2 = makeSeries("Être ou ne pas être", library.id)
+    val series3 = makeSeries("Écarlate", library.id)
+
+    // when
+    val created1 = seriesLifecycle.createSeries(series1)
+    val created2 = seriesLifecycle.createSeries(series2)
+    val created3 = seriesLifecycle.createSeries(series3)
+
+    // then
+    with(seriesMetadataRepository.findById(created1.id)) {
+      assertThat(title).isEqualTo(series1.name)
+      assertThat(titleSort).isEqualTo("A l'assaut")
+    }
+    with(seriesMetadataRepository.findById(created2.id)) {
+      assertThat(title).isEqualTo(series2.name)
+      assertThat(titleSort).isEqualTo("Etre ou ne pas etre")
+    }
+    with(seriesMetadataRepository.findById(created3.id)) {
+      assertThat(title).isEqualTo(series3.name)
+      assertThat(titleSort).isEqualTo("Ecarlate")
+    }
   }
 }

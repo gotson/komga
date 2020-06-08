@@ -2,6 +2,7 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
+import org.apache.commons.lang3.StringUtils
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Media
@@ -13,7 +14,7 @@ import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.Comparator
 
 private val logger = KotlinLogging.logger {}
 private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
@@ -74,6 +75,7 @@ class SeriesLifecycle(
     seriesMetadataRepository.insert(
       SeriesMetadata(
         title = createdSeries.name,
+        titleSort = StringUtils.stripAccents(createdSeries.name),
         seriesId = createdSeries.id
       )
     )
