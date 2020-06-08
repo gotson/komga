@@ -27,6 +27,7 @@ class MediaDao(
       .leftJoin(p).on(m.BOOK_ID.eq(p.BOOK_ID))
       .where(m.BOOK_ID.eq(bookId))
       .groupBy(*groupFields)
+      .orderBy(p.NUMBER.asc())
       .fetchGroups(
         { it.into(m) }, { it.into(p) }
       ).map { (mr, pr) ->
