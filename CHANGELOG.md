@@ -1,3 +1,15 @@
+# [0.38.0](https://github.com/gotson/komga/compare/v0.37.0...v0.38.0) (2020-06-09)
+
+
+### Bug Fixes
+
+* **webui:** simplify unread filter ([bb60f10](https://github.com/gotson/komga/commit/bb60f10d49b41ac2288ad7fe6765cb2d783b41c1))
+
+
+### Features
+
+* **webui:** search results page ([89039a4](https://github.com/gotson/komga/commit/89039a4170b674adb0453e16e12ea54577abf473)), closes [#29](https://github.com/gotson/komga/issues/29)
+
 # [0.37.0](https://github.com/gotson/komga/compare/v0.36.0...v0.37.0) (2020-06-08)
 
 
