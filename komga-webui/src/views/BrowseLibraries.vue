@@ -91,7 +91,7 @@
         <item-browser
           :items="series"
           :selected.sync="selected"
-          :edit-function="this.singleEdit"
+          :edit-function="singleEdit"
           class="px-4"
         />
       </template>

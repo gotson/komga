@@ -96,6 +96,11 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "browse-book" */ './views/BrowseBook.vue'),
           props: (route) => ({ bookId: Number(route.params.bookId) }),
         },
+        {
+          path: '/search',
+          name: 'search',
+          component: () => import(/* webpackChunkName: "search" */ './views/Search.vue'),
+        },
       ],
     },
     {

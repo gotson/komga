@@ -9,6 +9,7 @@
                   :loading="loading"
                   @click:clear="clear"
                   @keydown.esc="clear"
+                  @keydown.enter="searchDetails"
     />
     <v-menu nudge-bottom="57"
             nudge-right="52"
@@ -103,6 +104,12 @@ export default Vue.extend({
       this.showResults = false
       this.series = []
       this.books = []
+    },
+    searchDetails () {
+      const s = this.search
+      this.clear()
+      this.$router.push({ name: 'search', query: { q: s } }).catch(e => {
+      })
     },
     seriesThumbnailUrl (seriesId: number): string {
       return seriesThumbnailUrl(seriesId)
