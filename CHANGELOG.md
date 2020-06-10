@@ -1,3 +1,11 @@
+# [0.39.0](https://github.com/gotson/komga/compare/v0.38.0...v0.39.0) (2020-06-10)
+
+
+### Features
+
+* **api:** restrict page streaming and file download with roles ([6291dab](https://github.com/gotson/komga/commit/6291dab86472be0f7d564c43914d20baec566c85)), closes [#146](https://github.com/gotson/komga/issues/146)
+* **webui:** restrict page streaming and file download per user ([381b196](https://github.com/gotson/komga/commit/381b1960330c97681c84b136d4a670c9dd295c46)), closes [#146](https://github.com/gotson/komga/issues/146)
+
 # [0.38.0](https://github.com/gotson/komga/compare/v0.37.0...v0.38.0) (2020-06-09)
 
 
