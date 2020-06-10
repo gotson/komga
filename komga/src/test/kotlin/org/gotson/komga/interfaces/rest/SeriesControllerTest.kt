@@ -225,7 +225,7 @@ class SeriesControllerTest(
   inner class UserWithoutLibraryAccess {
     @Test
     @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
-    fun `given user with no access to any library when getting specific series then returns unauthorized`() {
+    fun `given user with no access to any library when getting specific series then returns forbidden`() {
       val createdSeries = makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->
           val books = listOf(makeBook("1", libraryId = library.id))
@@ -234,12 +234,12 @@ class SeriesControllerTest(
       }
 
       mockMvc.get("/api/v1/series/${createdSeries.id}")
-        .andExpect { status { isUnauthorized } }
+        .andExpect { status { isForbidden } }
     }
 
     @Test
     @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
-    fun `given user with no access to any library when getting specific series thumbnail then returns unauthorized`() {
+    fun `given user with no access to any library when getting specific series thumbnail then returns forbidden`() {
       val createdSeries = makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->
           val books = listOf(makeBook("1", libraryId = library.id))
@@ -248,12 +248,12 @@ class SeriesControllerTest(
       }
 
       mockMvc.get("/api/v1/series/${createdSeries.id}/thumbnail")
-        .andExpect { status { isUnauthorized } }
+        .andExpect { status { isForbidden } }
     }
 
     @Test
     @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
-    fun `given user with no access to any library when getting specific series books then returns unauthorized`() {
+    fun `given user with no access to any library when getting specific series books then returns forbidden`() {
       val createdSeries = makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->
           val books = listOf(makeBook("1", libraryId = library.id))
@@ -262,7 +262,7 @@ class SeriesControllerTest(
       }
 
       mockMvc.get("/api/v1/series/${createdSeries.id}/books")
-        .andExpect { status { isUnauthorized } }
+        .andExpect { status { isForbidden } }
     }
   }
 

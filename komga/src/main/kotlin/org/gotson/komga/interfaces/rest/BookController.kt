@@ -150,7 +150,7 @@ class BookController(
     @PathVariable bookId: Long
   ): BookDto =
     bookDtoRepository.findByIdOrNull(bookId, principal.user.id)?.let {
-      if (!principal.user.canAccessLibrary(it.libraryId)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+      if (!principal.user.canAccessLibrary(it.libraryId)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
       it.restrictUrl(!principal.user.roleAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
@@ -160,7 +160,7 @@ class BookController(
     @PathVariable bookId: Long
   ): BookDto {
     bookRepository.getLibraryId(bookId)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return bookDtoRepository.findPreviousInSeries(bookId, principal.user.id)
@@ -174,7 +174,7 @@ class BookController(
     @PathVariable bookId: Long
   ): BookDto {
     bookRepository.getLibraryId(bookId)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return bookDtoRepository.findNextInSeries(bookId, principal.user.id)
@@ -193,7 +193,7 @@ class BookController(
     @PathVariable bookId: Long
   ): ResponseEntity<ByteArray> {
     bookRepository.getLibraryId(bookId)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return mediaRepository.getThumbnail(bookId)?.let {
@@ -215,7 +215,7 @@ class BookController(
     @PathVariable bookId: Long
   ): ResponseEntity<FileSystemResource> =
     bookRepository.findByIdOrNull(bookId)?.let { book ->
-      if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+      if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
       try {
         val media = mediaRepository.findById(book.id)
         with(FileSystemResource(book.path())) {
@@ -242,7 +242,7 @@ class BookController(
     @PathVariable bookId: Long
   ): List<PageDto> =
     bookRepository.findByIdOrNull((bookId))?.let { book ->
-      if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+      if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
 
       val media = mediaRepository.findById(book.id)
       when (media.status) {
@@ -281,7 +281,7 @@ class BookController(
           .setNotModified(media)
           .body(ByteArray(0))
       }
-      if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+      if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
       try {
         val convertFormat = when (convertTo?.toLowerCase()) {
           "jpeg" -> ImageType.JPEG
@@ -329,7 +329,7 @@ class BookController(
           .setNotModified(media)
           .body(ByteArray(0))
       }
-      if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+      if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
       try {
         val pageContent = bookLifecycle.getBookPage(book, pageNumber, resizeTo = 300)
 
@@ -413,7 +413,7 @@ class BookController(
     @AuthenticationPrincipal principal: KomgaPrincipal
   ) {
     bookRepository.findByIdOrNull(bookId)?.let { book ->
-      if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+      if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
 
       try {
         if (readProgress.completed != null && readProgress.completed)
@@ -433,7 +433,7 @@ class BookController(
     @AuthenticationPrincipal principal: KomgaPrincipal
   ) {
     bookRepository.findByIdOrNull(bookId)?.let { book ->
-      if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+      if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
 
       bookLifecycle.deleteReadProgress(book.id, principal.user)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)

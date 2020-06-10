@@ -163,7 +163,7 @@ class SeriesController(
     @PathVariable(name = "seriesId") id: Long
   ): SeriesDto =
     seriesDtoRepository.findByIdOrNull(id, principal.user.id)?.let {
-      if (!principal.user.canAccessLibrary(it.libraryId)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+      if (!principal.user.canAccessLibrary(it.libraryId)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
       it.restrictUrl(!principal.user.roleAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
@@ -174,7 +174,7 @@ class SeriesController(
     @PathVariable(name = "seriesId") seriesId: Long
   ): ResponseEntity<ByteArray> {
     seriesRepository.getLibraryId(seriesId)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return bookRepository.findFirstIdInSeries(seriesId)?.let {
@@ -192,7 +192,7 @@ class SeriesController(
     @Parameter(hidden = true) page: Pageable
   ): Page<BookDto> {
     seriesRepository.getLibraryId(seriesId)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     val pageRequest = PageRequest.of(
@@ -261,7 +261,7 @@ class SeriesController(
     @AuthenticationPrincipal principal: KomgaPrincipal
   ) {
     seriesRepository.getLibraryId(seriesId)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     bookRepository.findAllIdBySeriesId(seriesId).forEach {
@@ -276,7 +276,7 @@ class SeriesController(
     @AuthenticationPrincipal principal: KomgaPrincipal
   ) {
     seriesRepository.getLibraryId(seriesId)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     bookRepository.findAllIdBySeriesId(seriesId).forEach {

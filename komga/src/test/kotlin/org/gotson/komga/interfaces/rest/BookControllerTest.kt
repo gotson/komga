@@ -140,7 +140,7 @@ class BookControllerTest(
   inner class UserWithoutLibraryAccess {
     @Test
     @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
-    fun `given user with no access to any library when getting specific book then returns unauthorized`() {
+    fun `given user with no access to any library when getting specific book then returns forbidden`() {
       makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).let { created ->
           val books = listOf(makeBook("1", libraryId = library.id))
@@ -151,12 +151,12 @@ class BookControllerTest(
       val book = bookRepository.findAll().first()
 
       mockMvc.get("/api/v1/books/${book.id}")
-        .andExpect { status { isUnauthorized } }
+        .andExpect { status { isForbidden } }
     }
 
     @Test
     @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
-    fun `given user with no access to any library when getting specific book thumbnail then returns unauthorized`() {
+    fun `given user with no access to any library when getting specific book thumbnail then returns forbidden`() {
       makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).let { created ->
           val books = listOf(makeBook("1", libraryId = library.id))
@@ -167,12 +167,12 @@ class BookControllerTest(
       val book = bookRepository.findAll().first()
 
       mockMvc.get("/api/v1/books/${book.id}/thumbnail")
-        .andExpect { status { isUnauthorized } }
+        .andExpect { status { isForbidden } }
     }
 
     @Test
     @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
-    fun `given user with no access to any library when getting specific book file then returns unauthorized`() {
+    fun `given user with no access to any library when getting specific book file then returns forbidden`() {
       makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).let { created ->
           val books = listOf(makeBook("1", libraryId = library.id))
@@ -183,12 +183,12 @@ class BookControllerTest(
       val book = bookRepository.findAll().first()
 
       mockMvc.get("/api/v1/books/${book.id}/file")
-        .andExpect { status { isUnauthorized } }
+        .andExpect { status { isForbidden } }
     }
 
     @Test
     @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
-    fun `given user with no access to any library when getting specific book pages then returns unauthorized`() {
+    fun `given user with no access to any library when getting specific book pages then returns forbidden`() {
       makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).let { created ->
           val books = listOf(makeBook("1", libraryId = library.id))
@@ -199,12 +199,12 @@ class BookControllerTest(
       val book = bookRepository.findAll().first()
 
       mockMvc.get("/api/v1/books/${book.id}/pages")
-        .andExpect { status { isUnauthorized } }
+        .andExpect { status { isForbidden } }
     }
 
     @Test
     @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
-    fun `given user with no access to any library when getting specific book page then returns unauthorized`() {
+    fun `given user with no access to any library when getting specific book page then returns forbidden`() {
       makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).let { created ->
           val books = listOf(makeBook("1", libraryId = library.id))
@@ -215,7 +215,7 @@ class BookControllerTest(
       val book = bookRepository.findAll().first()
 
       mockMvc.get("/api/v1/books/${book.id}/pages/1")
-        .andExpect { status { isUnauthorized } }
+        .andExpect { status { isForbidden } }
     }
   }
 

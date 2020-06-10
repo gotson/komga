@@ -55,7 +55,7 @@ class LibraryController(
     @PathVariable id: Long
   ): LibraryDto =
     libraryRepository.findByIdOrNull(id)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
       it.toDto(includeRoot = principal.user.roleAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
