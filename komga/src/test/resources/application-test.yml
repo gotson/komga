@@ -1,5 +1,9 @@
 application.version: TESTING
 
+komga:
+  database-backup:
+    enabled: false
+
 spring:
   datasource:
     url: jdbc:h2:mem:testdb

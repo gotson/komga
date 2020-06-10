@@ -44,6 +44,8 @@ class KomgaUserDao(
           email = ur.email,
           password = ur.password,
           roleAdmin = ur.roleAdmin,
+          roleFileDownload = ur.roleFileDownload,
+          rolePageStreaming = ur.rolePageStreaming,
           sharedLibrariesIds = ulr.mapNotNull { it.libraryId }.toSet(),
           sharedAllLibraries = ur.sharedAllLibraries,
           id = ur.id,
@@ -65,10 +67,12 @@ class KomgaUserDao(
           .set(u.EMAIL, user.email)
           .set(u.PASSWORD, user.password)
           .set(u.ROLE_ADMIN, user.roleAdmin)
+          .set(u.ROLE_FILE_DOWNLOAD, user.roleFileDownload)
+          .set(u.ROLE_PAGE_STREAMING, user.rolePageStreaming)
           .set(u.SHARED_ALL_LIBRARIES, user.sharedAllLibraries)
           .set(u.LAST_MODIFIED_DATE, LocalDateTime.now())
-          .whenNotMatchedThenInsert(u.ID, u.EMAIL, u.PASSWORD, u.ROLE_ADMIN, u.SHARED_ALL_LIBRARIES)
-          .values(id, user.email, user.password, user.roleAdmin, user.sharedAllLibraries)
+          .whenNotMatchedThenInsert(u.ID, u.EMAIL, u.PASSWORD, u.ROLE_ADMIN, u.ROLE_FILE_DOWNLOAD, u.ROLE_PAGE_STREAMING, u.SHARED_ALL_LIBRARIES)
+          .values(id, user.email, user.password, user.roleAdmin, user.roleFileDownload, user.rolePageStreaming, user.sharedAllLibraries)
           .execute()
 
         deleteFrom(ul)

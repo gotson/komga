@@ -1,6 +1,9 @@
 package org.gotson.komga.interfaces.rest.dto
 
 import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.ROLE_ADMIN
+import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
+import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
@@ -47,7 +50,13 @@ data class UserCreationDto(
   val roles: List<String> = emptyList()
 ) {
   fun toDomain(): KomgaUser =
-    KomgaUser(email, password, roleAdmin = roles.contains("ADMIN"))
+    KomgaUser(
+      email,
+      password,
+      roleAdmin = roles.contains(ROLE_ADMIN),
+      roleFileDownload = roles.contains(ROLE_FILE_DOWNLOAD),
+      rolePageStreaming = roles.contains(ROLE_PAGE_STREAMING)
+    )
 }
 
 data class PasswordUpdateDto(
@@ -57,4 +66,8 @@ data class PasswordUpdateDto(
 data class SharedLibrariesUpdateDto(
   val all: Boolean,
   val libraryIds: Set<Long>
+)
+
+data class RolesUpdateDto(
+  val roles: List<String>
 )

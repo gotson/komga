@@ -6,6 +6,7 @@ import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.PathContainedInPath
+import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.service.LibraryLifecycle
@@ -59,7 +60,7 @@ class LibraryController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @PostMapping
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
   fun addOne(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @Valid @RequestBody library: LibraryCreationDto
@@ -78,7 +79,7 @@ class LibraryController(
     }
 
   @DeleteMapping("/{id}")
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun deleteOne(@PathVariable id: Long) {
     libraryRepository.findByIdOrNull(id)?.let {
@@ -87,7 +88,7 @@ class LibraryController(
   }
 
   @PostMapping("{libraryId}/scan")
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun scan(@PathVariable libraryId: Long) {
     libraryRepository.findByIdOrNull(libraryId)?.let { library ->
@@ -96,7 +97,7 @@ class LibraryController(
   }
 
   @PostMapping("{libraryId}/analyze")
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable libraryId: Long) {
     bookRepository.findAllIdByLibraryId(libraryId).forEach {
@@ -105,7 +106,7 @@ class LibraryController(
   }
 
   @PostMapping("{libraryId}/metadata/refresh")
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun refreshMetadata(@PathVariable libraryId: Long) {
     bookRepository.findAllIdByLibraryId(libraryId).forEach {

@@ -8,6 +8,7 @@ import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -219,6 +220,41 @@ class BookControllerTest(
   }
 
   @Nested
+  inner class RestrictedUserByRole {
+    @Test
+    @WithMockCustomUser(roles = [])
+    fun `given user without page streaming role when getting specific book page then returns unauthorized`() {
+      makeSeries(name = "series", libraryId = library.id).let { series ->
+        seriesLifecycle.createSeries(series).let { created ->
+          val books = listOf(makeBook("1", libraryId = library.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+      }
+
+      val book = bookRepository.findAll().first()
+
+      mockMvc.get("/api/v1/books/${book.id}/pages/1")
+        .andExpect { status { isForbidden } }
+    }
+
+    @Test
+    @WithMockCustomUser(roles = [])
+    fun `given user without file download role when getting specific book file then returns unauthorized`() {
+      makeSeries(name = "series", libraryId = library.id).let { series ->
+        seriesLifecycle.createSeries(series).let { created ->
+          val books = listOf(makeBook("1", libraryId = library.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+      }
+
+      val book = bookRepository.findAll().first()
+
+      mockMvc.get("/api/v1/books/${book.id}/file")
+        .andExpect { status { isForbidden } }
+    }
+  }
+
+  @Nested
   inner class MediaNotReady {
     @Test
     @WithMockCustomUser
@@ -404,7 +440,7 @@ class BookControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = ["ADMIN"])
+    @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given admin user when getting books then full url is available`() {
       val createdSeries = makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->
@@ -550,7 +586,7 @@ class BookControllerTest(
       """{"authors":"[{"name":""}]"}""",
       """{"ageRating":-1}"""
     ])
-    @WithMockCustomUser(roles = ["ADMIN"])
+    @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given invalid json when updating metadata then raise validation error`(jsonString: String) {
       mockMvc.patch("/api/v1/books/1/metadata") {
         contentType = MediaType.APPLICATION_JSON
@@ -561,7 +597,7 @@ class BookControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = ["ADMIN"])
+    @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given valid json when updating metadata then fields are updated`() {
       makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->
@@ -642,7 +678,7 @@ class BookControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = ["ADMIN"])
+    @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given json with null fields when updating metadata then fields with null are unset`() {
       val testDate = LocalDate.of(2020, 1, 1)
 
@@ -699,7 +735,7 @@ class BookControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = ["ADMIN"])
+    @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given json without fields when updating metadata then existing fields are untouched`() {
       val testDate = LocalDate.of(2020, 1, 1)
 

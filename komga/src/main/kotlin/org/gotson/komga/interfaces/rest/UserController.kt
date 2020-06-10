@@ -1,12 +1,16 @@
 package org.gotson.komga.interfaces.rest
 
 import mu.KotlinLogging
+import org.gotson.komga.domain.model.ROLE_ADMIN
+import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
+import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
 import org.gotson.komga.domain.model.UserEmailAlreadyExistsException
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.interfaces.rest.dto.PasswordUpdateDto
+import org.gotson.komga.interfaces.rest.dto.RolesUpdateDto
 import org.gotson.komga.interfaces.rest.dto.SharedLibrariesUpdateDto
 import org.gotson.komga.interfaces.rest.dto.UserCreationDto
 import org.gotson.komga.interfaces.rest.dto.UserDto
@@ -58,13 +62,13 @@ class UserController(
   }
 
   @GetMapping
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
   fun getAll(): List<UserWithSharedLibrariesDto> =
     userRepository.findAll().map { it.toWithSharedLibrariesDto() }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
   fun addOne(@Valid @RequestBody newUser: UserCreationDto): UserDto =
     try {
       userLifecycle.createUser(newUser.toDomain()).toDto()
@@ -74,7 +78,7 @@ class UserController(
 
   @DeleteMapping("{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  @PreAuthorize("hasRole('ADMIN') and #principal.user.id != #id")
+  @PreAuthorize("hasRole('$ROLE_ADMIN') and #principal.user.id != #id")
   fun delete(
     @PathVariable id: Long,
     @AuthenticationPrincipal principal: KomgaPrincipal
@@ -84,9 +88,29 @@ class UserController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @PatchMapping("{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @PreAuthorize("hasRole('$ROLE_ADMIN') and #principal.user.id != #id")
+  fun updateUserRoles(
+    @PathVariable id: Long,
+    @Valid @RequestBody patch: RolesUpdateDto,
+    @AuthenticationPrincipal principal: KomgaPrincipal
+  ) {
+    userRepository.findByIdOrNull(id)?.let { user ->
+      val updatedUser = user.copy(
+        roleAdmin = patch.roles.contains(ROLE_ADMIN),
+        roleFileDownload = patch.roles.contains(ROLE_FILE_DOWNLOAD),
+        rolePageStreaming = patch.roles.contains(ROLE_PAGE_STREAMING)
+      )
+      userRepository.save(updatedUser).also {
+        logger.info { "Updated user roles: $it" }
+      }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
   @PatchMapping("{id}/shared-libraries")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
   fun updateSharesLibraries(
     @PathVariable id: Long,
     @Valid @RequestBody sharedLibrariesUpdateDto: SharedLibrariesUpdateDto
@@ -99,7 +123,9 @@ class UserController(
           .map { it.id }
           .toSet()
       )
-      userRepository.save(updatedUser)
+      userRepository.save(updatedUser).also {
+        logger.info { "Updated user shared libraries: $it" }
+      }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 }

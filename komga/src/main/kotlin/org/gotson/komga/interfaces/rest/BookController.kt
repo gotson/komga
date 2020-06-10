@@ -12,6 +12,9 @@ import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.ImageConversionException
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
+import org.gotson.komga.domain.model.ROLE_ADMIN
+import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
+import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
@@ -206,6 +209,7 @@ class BookController(
     "api/v1/books/{bookId}/file/*",
     "opds/v1.2/books/{bookId}/file/*"
   ], produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
+  @PreAuthorize("hasRole('$ROLE_FILE_DOWNLOAD')")
   fun getBookFile(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: Long
@@ -258,6 +262,7 @@ class BookController(
     "api/v1/books/{bookId}/pages/{pageNumber}",
     "opds/v1.2/books/{bookId}/pages/{pageNumber}"
   ])
+  @PreAuthorize("hasRole('$ROLE_PAGE_STREAMING')")
   fun getBookPage(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     request: WebRequest,
@@ -345,7 +350,7 @@ class BookController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @PostMapping("api/v1/books/{bookId}/analyze")
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable bookId: Long) {
     bookRepository.findByIdOrNull(bookId)?.let { book ->
@@ -354,7 +359,7 @@ class BookController(
   }
 
   @PostMapping("api/v1/books/{bookId}/metadata/refresh")
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun refreshMetadata(@PathVariable bookId: Long) {
     bookRepository.findByIdOrNull(bookId)?.let { book ->
@@ -363,7 +368,7 @@ class BookController(
   }
 
   @PatchMapping("api/v1/books/{bookId}/metadata")
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
   fun updateMetadata(
     @PathVariable bookId: Long,
     @Parameter(description = "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don't want to update.")

@@ -1,6 +1,9 @@
 package org.gotson.komga.interfaces.rest
 
 import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.ROLE_ADMIN
+import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
+import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContext
@@ -13,7 +16,7 @@ import org.springframework.security.test.context.support.WithSecurityContextFact
 @WithSecurityContext(factory = WithMockCustomUserSecurityContextFactory::class, setupBefore = TestExecutionEvent.TEST_EXECUTION)
 annotation class WithMockCustomUser(
   val email: String = "user@example.org",
-  val roles: Array<String> = [],
+  val roles: Array<String> = [ROLE_FILE_DOWNLOAD, ROLE_PAGE_STREAMING],
   val sharedAllLibraries: Boolean = true,
   val sharedLibraries: LongArray = [],
   val id: Long = 0
@@ -27,7 +30,9 @@ class WithMockCustomUserSecurityContextFactory : WithSecurityContextFactory<With
       KomgaUser(
         email = customUser.email,
         password = "",
-        roleAdmin = customUser.roles.contains("ADMIN"),
+        roleAdmin = customUser.roles.contains(ROLE_ADMIN),
+        roleFileDownload = customUser.roles.contains(ROLE_FILE_DOWNLOAD),
+        rolePageStreaming = customUser.roles.contains(ROLE_PAGE_STREAMING),
         sharedAllLibraries = customUser.sharedAllLibraries,
         sharedLibrariesIds = customUser.sharedLibraries.toSet(),
         id = customUser.id

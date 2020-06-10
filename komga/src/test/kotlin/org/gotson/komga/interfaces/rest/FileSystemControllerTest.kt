@@ -1,5 +1,7 @@
 package org.gotson.komga.interfaces.rest
 
+import org.gotson.komga.domain.model.ROLE_ADMIN
+import org.gotson.komga.domain.model.ROLE_USER
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -36,7 +38,7 @@ class FileSystemControllerTest(
   }
 
   @Test
-  @WithMockUser(roles = ["USER", "ADMIN"])
+  @WithMockUser(roles = [ROLE_USER, ROLE_ADMIN])
   fun `given relative path param when getDirectoryListing then return bad request`() {
     mockMvc.post(route) {
       contentType = MediaType.APPLICATION_JSON
@@ -45,7 +47,7 @@ class FileSystemControllerTest(
   }
 
   @Test
-  @WithMockUser(roles = ["USER", "ADMIN"])
+  @WithMockUser(roles = [ROLE_USER, ROLE_ADMIN])
   fun `given non-existent path param when getDirectoryListing then return bad request`() {
     val parent = Files.createTempDirectory(null)
     Files.delete(parent)

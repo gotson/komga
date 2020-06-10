@@ -1,5 +1,7 @@
 package org.gotson.komga.interfaces.rest
 
+import org.gotson.komga.domain.model.ROLE_ADMIN
+import org.gotson.komga.domain.model.ROLE_USER
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.junit.jupiter.api.AfterAll
@@ -70,7 +72,7 @@ class LibraryControllerTest(
     }
 
     @Test
-    @WithMockUser(roles = ["USER"])
+    @WithMockUser(roles = [ROLE_USER])
     fun `given user with USER role when addOne then return forbidden`() {
       val jsonString = """{"name":"test", "root": "C:\\Temp"}"""
 
@@ -114,7 +116,7 @@ class LibraryControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = ["ADMIN"])
+    @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given admin user when getting books then root is available`() {
       mockMvc.get(route)
         .andExpect {

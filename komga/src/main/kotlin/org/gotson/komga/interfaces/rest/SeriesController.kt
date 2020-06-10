@@ -9,6 +9,7 @@ import mu.KotlinLogging
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
@@ -213,7 +214,7 @@ class SeriesController(
   }
 
   @PostMapping("{seriesId}/analyze")
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable seriesId: Long) {
     bookRepository.findAllIdBySeriesId(seriesId).forEach {
@@ -222,7 +223,7 @@ class SeriesController(
   }
 
   @PostMapping("{seriesId}/metadata/refresh")
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun refreshMetadata(@PathVariable seriesId: Long) {
     bookRepository.findAllIdBySeriesId(seriesId).forEach {
@@ -231,7 +232,7 @@ class SeriesController(
   }
 
   @PatchMapping("{seriesId}/metadata")
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
   fun updateMetadata(
     @PathVariable seriesId: Long,
     @Parameter(description = "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don't want to update.")

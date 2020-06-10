@@ -1,6 +1,8 @@
 package org.gotson.komga.infrastructure.security
 
 import mu.KotlinLogging
+import org.gotson.komga.domain.model.ROLE_ADMIN
+import org.gotson.komga.domain.model.ROLE_USER
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
@@ -37,16 +39,16 @@ class SecurityConfiguration(
 
       .authorizeRequests()
       // restrict all actuator endpoints to ADMIN only
-      .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ADMIN")
+      .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole(ROLE_ADMIN)
 
       // restrict H2 console to ADMIN only
-      .requestMatchers(PathRequest.toH2Console()).hasRole("ADMIN")
+      .requestMatchers(PathRequest.toH2Console()).hasRole(ROLE_ADMIN)
 
       // all other endpoints are restricted to authenticated users
       .antMatchers(
         "/api/**",
         "/opds/**"
-      ).hasRole("USER")
+      ).hasRole(ROLE_USER)
 
       // authorize frames for H2 console
       .and()

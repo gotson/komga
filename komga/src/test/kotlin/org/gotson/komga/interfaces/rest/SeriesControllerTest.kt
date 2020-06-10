@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
@@ -316,7 +317,7 @@ class SeriesControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = ["ADMIN"])
+    @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given admin user when getting series then url is available`() {
       val createdSeries = makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->
@@ -366,7 +367,7 @@ class SeriesControllerTest(
       """{"title":""}""",
       """{"titleSort":""}"""
     ])
-    @WithMockCustomUser(roles = ["ADMIN"])
+    @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given invalid json when updating metadata then raise validation error`(jsonString: String) {
       mockMvc.patch("/api/v1/series/1/metadata") {
         contentType = MediaType.APPLICATION_JSON
@@ -377,7 +378,7 @@ class SeriesControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = ["ADMIN"])
+    @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given valid json when updating metadata then fields are updated`() {
       val createdSeries = makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->
