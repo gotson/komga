@@ -1,4 +1,5 @@
 import KomgaUsersService from '@/services/komga-users.service'
+import { UserRoles } from '@/types/enum-users'
 import { AxiosInstance } from 'axios'
 import _Vue from 'vue'
 import { Module } from 'vuex/types'
@@ -11,7 +12,9 @@ const vuexModule: Module<any, any> = {
     users: [] as UserWithSharedLibrariesDto[],
   },
   getters: {
-    meAdmin: state => state.me.hasOwnProperty('roles') && state.me.roles.includes('ADMIN'),
+    meAdmin: state => state.me.hasOwnProperty('roles') && state.me.roles.includes(UserRoles.ADMIN),
+    meFileDownload: state => state.me.hasOwnProperty('roles') && state.me.roles.includes(UserRoles.FILE_DOWNLOAD),
+    mePageStreaming: state => state.me.hasOwnProperty('roles') && state.me.roles.includes(UserRoles.PAGE_STREAMING),
     authenticated: state => state.me.hasOwnProperty('id'),
   },
   mutations: {
@@ -44,6 +47,10 @@ const vuexModule: Module<any, any> = {
     },
     async postUser ({ dispatch }, user: UserCreationDto) {
       await service.postUser(user)
+      dispatch('getAllUsers')
+    },
+    async updateUserRoles ({ dispatch }, { userId, roles }: { userId: number, roles: RolesUpdateDto }) {
+      await service.patchUserRoles(userId, roles)
       dispatch('getAllUsers')
     },
     async deleteUser ({ dispatch }, user: UserDto) {

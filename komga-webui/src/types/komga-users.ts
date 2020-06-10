@@ -29,3 +29,7 @@ interface SharedLibrariesUpdateDto {
   all: boolean,
   libraryIds: number[]
 }
+
+interface RolesUpdateDto {
+  roles: string[]
+}

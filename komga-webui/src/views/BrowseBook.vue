@@ -107,6 +107,7 @@
           <v-btn icon
                  title="Download file"
                  class="pb-1"
+                 :disabled="!canDownload"
                  :href="fileUrl">
             <v-icon>mdi-file-download</v-icon>
           </v-btn>
@@ -117,7 +118,7 @@
                  title="Read book"
                  class="pb-1"
                  :to="{name: 'read-book', params: { bookId: bookId}}"
-                 :disabled="book.media.status !== 'READY'"
+                 :disabled="book.media.status !== 'READY' || !canReadPages"
           >
             <v-icon>mdi-book-open-page-variant</v-icon>
           </v-btn>
@@ -215,6 +216,12 @@ export default Vue.extend({
   computed: {
     isAdmin (): boolean {
       return this.$store.getters.meAdmin
+    },
+    canReadPages (): boolean {
+      return this.$store.getters.mePageStreaming
+    },
+    canDownload (): boolean {
+      return this.$store.getters.meFileDownload
     },
     thumbnailUrl (): string {
       return bookThumbnailUrl(this.bookId)

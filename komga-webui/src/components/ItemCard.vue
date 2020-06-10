@@ -45,7 +45,7 @@
 
               <!-- FAB reading (center) -->
               <v-btn
-                v-if="bookReady && !selected && !preselect"
+                v-if="bookReady && !selected && !preselect && canReadPages"
                 fab
                 x-large
                 color="accent"
@@ -144,8 +144,11 @@ export default Vue.extend({
     return {}
   },
   computed: {
+    canReadPages (): boolean {
+      return this.$store.getters.mePageStreaming
+    },
     overlay (): boolean {
-      return this.onEdit !== undefined || this.onSelected !== undefined || this.bookReady
+      return this.onEdit !== undefined || this.onSelected !== undefined || this.bookReady || this.canReadPages
     },
     computedItem (): Item<BookDto | SeriesDto> {
       return createItem(this.item)

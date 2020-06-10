@@ -15,11 +15,11 @@
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
                     <v-list-item-icon v-on="on">
-                      <v-icon v-if="u.roles.includes('ADMIN')" color="red">mdi-account-star</v-icon>
+                      <v-icon v-if="u.roles.includes(UserRoles.ADMIN)" color="red">mdi-account-star</v-icon>
                       <v-icon v-else>mdi-account</v-icon>
                     </v-list-item-icon>
                   </template>
-                  <span>{{ u.roles.includes('ADMIN') ? 'Administrator' : 'User' }}</span>
+                  <span>{{ u.roles.includes(UserRoles.ADMIN) ? 'Administrator' : 'User' }}</span>
                 </v-tooltip>
 
                 <v-list-item-content>
@@ -31,11 +31,23 @@
                 <v-list-item-action>
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on }">
-                      <v-btn icon @click="editUser(u)" :disabled="u.roles.includes('ADMIN')" v-on="on">
+                      <v-btn icon @click="editSharedLibraries(u)" :disabled="u.roles.includes(UserRoles.ADMIN)"
+                             v-on="on">
                         <v-icon>mdi-library-books</v-icon>
                       </v-btn>
                     </template>
                     <span>Edit shared libraries</span>
+                  </v-tooltip>
+                </v-list-item-action>
+
+                <v-list-item-action>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <v-btn icon @click="editUser(u)" :disabled="u.id === me.id" v-on="on">
+                        <v-icon>mdi-pencil</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Edit user</span>
                   </v-tooltip>
                 </v-list-item-action>
 
@@ -59,8 +71,12 @@
             <v-icon>mdi-plus</v-icon>
           </v-btn>
 
-          <user-shared-libraries-edit-dialog v-model="modalUserSharedLibraries"
+          <user-shared-libraries-edit-dialog v-model="modalEditSharedLibraries"
                                              :user="userToEditSharedLibraries"
+          />
+
+          <user-edit-dialog v-model="modalEditUser"
+                            :user="userToEdit"
           />
 
           <user-delete-dialog v-model="modalDeleteUser"
@@ -76,18 +92,23 @@
 
 <script lang="ts">
 import UserDeleteDialog from '@/components/UserDeleteDialog.vue'
+import UserEditDialog from '@/components/UserEditDialog.vue'
 import UserSharedLibrariesEditDialog from '@/components/UserSharedLibrariesEditDialog.vue'
+import { UserRoles } from '@/types/enum-users'
 import Vue from 'vue'
 
 export default Vue.extend({
   name: 'SettingsUsers',
-  components: { UserSharedLibrariesEditDialog, UserDeleteDialog },
+  components: { UserSharedLibrariesEditDialog, UserDeleteDialog, UserEditDialog },
   data: () => ({
-    modalDeleteUser: false,
+    UserRoles,
     modalAddUser: false,
+    modalDeleteUser: false,
     userToDelete: {} as UserDto,
-    modalUserSharedLibraries: false,
+    modalEditSharedLibraries: false,
     userToEditSharedLibraries: {} as UserWithSharedLibrariesDto,
+    modalEditUser: false,
+    userToEdit: {} as UserDto,
   }),
   computed: {
     users (): UserWithSharedLibrariesDto[] {
@@ -105,9 +126,13 @@ export default Vue.extend({
       this.userToDelete = user
       this.modalDeleteUser = true
     },
-    editUser (user: UserWithSharedLibrariesDto) {
+    editSharedLibraries (user: UserWithSharedLibrariesDto) {
       this.userToEditSharedLibraries = user
-      this.modalUserSharedLibraries = true
+      this.modalEditSharedLibraries = true
+    },
+    editUser (user: UserDto) {
+      this.userToEdit = user
+      this.modalEditUser = true
     },
   },
 })

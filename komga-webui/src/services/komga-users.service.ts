@@ -70,6 +70,18 @@ export default class KomgaUsersService {
     }
   }
 
+  async patchUserRoles (userId: number, roles: RolesUpdateDto): Promise<UserDto> {
+    try {
+      return (await this.http.patch(`${API_USERS}/${userId}`, roles)).data
+    } catch (e) {
+      let msg = `An error occurred while trying to patch user '${userId}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
   async deleteUser (user: UserDto) {
     try {
       await this.http.delete(`${API_USERS}/${user.id}`)

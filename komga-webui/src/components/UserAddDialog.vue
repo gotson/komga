@@ -52,8 +52,22 @@
                 <v-col>
                   <span>Roles</span>
                   <v-checkbox
-                    v-model="form.admin"
+                    v-model="form.roles"
                     label="Administrator"
+                    :value="UserRoles.ADMIN"
+                    hide-details
+                  />
+                  <v-checkbox
+                    v-model="form.roles"
+                    label="Page Streaming"
+                    :value="UserRoles.PAGE_STREAMING"
+                    hide-details
+                  />
+                  <v-checkbox
+                    v-model="form.roles"
+                    label="File Download"
+                    :value="UserRoles.FILE_DOWNLOAD"
+                    hide-details
                   />
                 </v-col>
               </v-row>
@@ -87,6 +101,7 @@
 </template>
 
 <script lang="ts">
+import { UserRoles } from '@/types/enum-users'
 import Vue from 'vue'
 import { email, required } from 'vuelidate/lib/validators'
 
@@ -94,6 +109,7 @@ export default Vue.extend({
   name: 'UserAddDialog',
   data: () => {
     return {
+      UserRoles,
       modalAddUser: true,
       showPassword: false,
       snackbar: false,
@@ -103,7 +119,7 @@ export default Vue.extend({
       form: {
         email: '',
         password: '',
-        admin: false,
+        roles: [UserRoles.PAGE_STREAMING, UserRoles.FILE_DOWNLOAD],
       },
       validationFieldNames: new Map([]),
     }
@@ -149,7 +165,7 @@ export default Vue.extend({
         return {
           email: this.form.email,
           password: this.form.password,
-          roles: this.form.admin ? ['ADMIN'] : [],
+          roles: this.form.roles,
         }
       }
       return null
