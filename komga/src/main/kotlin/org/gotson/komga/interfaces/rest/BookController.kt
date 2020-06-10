@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
+import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
@@ -52,13 +53,18 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.server.ResponseStatusException
+import java.io.File
 import java.io.FileNotFoundException
+import java.nio.file.Files
 import java.nio.file.NoSuchFileException
+import java.nio.file.Path
 import java.time.ZoneOffset
 import java.util.concurrent.TimeUnit
 import javax.validation.Valid
 
 private val logger = KotlinLogging.logger {}
+
+internal val COVER_EXTS = arrayOf("jpg", "jpeg", "png")
 
 @RestController
 @RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -192,6 +198,23 @@ class BookController(
     bookRepository.getLibraryId(bookId)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+    bookRepository.findByIdOrNull(bookId)?.let { book ->
+      val fileExtension = FilenameUtils.getExtension(book.fileName())
+      val filePath = book.path().toString()
+      val thumbPrefix = filePath.substring(0, filePath.lastIndexOf(".$fileExtension"))
+
+      val thumbExts = arrayOf("jpg", "png", "jpeg")
+      for (ext in thumbExts) {
+        val thumbFile = File("$thumbPrefix.$ext")
+        if (thumbFile.exists()) {
+          val fileBytes = thumbFile.toURI().toURL().readBytes()
+          return ResponseEntity.ok()
+            .setCachePrivate()
+            .body(fileBytes)
+        }
+      }
+    }
 
     return mediaRepository.getThumbnail(bookId)?.let {
       ResponseEntity.ok()

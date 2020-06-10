@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
+import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.Media
@@ -25,10 +26,12 @@ import org.gotson.komga.interfaces.rest.dto.SeriesMetadataUpdateDto
 import org.gotson.komga.interfaces.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.rest.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.rest.persistence.SeriesDtoRepository
+import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
+import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -45,6 +48,10 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
+import java.io.File
+import java.nio.file.Files
+import java.nio.file.Path
+import java.util.concurrent.TimeUnit
 import javax.validation.Valid
 
 private val logger = KotlinLogging.logger {}
@@ -177,7 +184,31 @@ class SeriesController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return bookRepository.findFirstIdInSeries(seriesId)?.let {
-      bookController.getBookThumbnail(principal, it)
+      bookRepository.findByIdOrNull(it)?.let { firstBook ->
+        var dirPath = firstBook.path().parent.toString()
+        if (dirPath.endsWith(File.separatorChar)) {
+          dirPath = dirPath.substring(0, dirPath.length - 1)
+        }
+
+        var response: ResponseEntity<ByteArray>? = null
+
+        for (ext in COVER_EXTS) {
+          val thumbFile = FileSystemResource(File("$dirPath.$ext").toPath())
+          if (thumbFile.exists()) {
+            val fileBytes = thumbFile.uri.toURL().readBytes()
+            response = ResponseEntity.ok()
+              .setCachePrivate()
+              .body(fileBytes)
+            break
+          }
+        }
+
+        if (response == null) {
+          response = bookController.getBookThumbnail(principal, it)
+        }
+
+        return response
+      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -282,4 +313,10 @@ class SeriesController(
       bookLifecycle.deleteReadProgress(it, principal.user)
     }
   }
+
+  private fun ResponseEntity.BodyBuilder.setCachePrivate() =
+    this.cacheControl(CacheControl.maxAge(0, TimeUnit.SECONDS)
+      .cachePrivate()
+      .mustRevalidate()
+    )
 }

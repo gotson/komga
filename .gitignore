@@ -8,6 +8,10 @@ node_modules
 ### Logs
 *.log
 *.log.*.gz
+*.log.*.tmp
+
+### Home-dir, TODO: use user.home var
+~
 
 ### H2 databases
 *.mv.db
