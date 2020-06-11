@@ -10,9 +10,7 @@ plugins {
   run {
     val kotlinVersion = "1.3.72"
     kotlin("jvm") version kotlinVersion
-    kotlin("plugin.allopen") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
-    kotlin("plugin.jpa") version kotlinVersion
     kotlin("kapt") version kotlinVersion
   }
   id("org.springframework.boot") version "2.2.6.RELEASE"
@@ -183,12 +181,6 @@ springBoot {
       time = null
     }
   }
-}
-
-allOpen {
-  annotation("javax.persistence.Entity")
-  annotation("javax.persistence.MappedSuperclass")
-  annotation("javax.persistence.Embeddable")
 }
 
 sourceSets {
