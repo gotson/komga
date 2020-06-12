@@ -83,8 +83,8 @@ class SeriesController(
     val seriesSearch = SeriesSearchWithReadProgress(
       libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
       searchTerm = searchTerm,
-      metadataStatus = metadataStatus ?: emptyList(),
-      readStatus = readStatus ?: emptyList()
+      metadataStatus = metadataStatus,
+      readStatus = readStatus
     )
 
     return seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageRequest)
@@ -104,10 +104,8 @@ class SeriesController(
       Sort.by(Sort.Direction.DESC, "lastModifiedDate")
     )
 
-    val libraryIds = if (principal.user.sharedAllLibraries) emptyList<Long>() else principal.user.sharedLibrariesIds
-
     return seriesDtoRepository.findAll(
-      SeriesSearchWithReadProgress(libraryIds = libraryIds),
+      SeriesSearchWithReadProgress(principal.user.getAuthorizedLibraryIds(null)),
       principal.user.id,
       pageRequest
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
@@ -126,10 +124,8 @@ class SeriesController(
       Sort.by(Sort.Direction.DESC, "createdDate")
     )
 
-    val libraryIds = if (principal.user.sharedAllLibraries) emptyList<Long>() else principal.user.sharedLibrariesIds
-
     return seriesDtoRepository.findAll(
-      SeriesSearchWithReadProgress(libraryIds = libraryIds),
+      SeriesSearchWithReadProgress(principal.user.getAuthorizedLibraryIds(null)),
       principal.user.id,
       pageRequest
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
@@ -148,10 +144,8 @@ class SeriesController(
       Sort.by(Sort.Direction.DESC, "lastModifiedDate")
     )
 
-    val libraryIds = if (principal.user.sharedAllLibraries) emptyList<Long>() else principal.user.sharedLibrariesIds
-
     return seriesDtoRepository.findRecentlyUpdated(
-      SeriesSearchWithReadProgress(libraryIds = libraryIds),
+      SeriesSearchWithReadProgress(principal.user.getAuthorizedLibraryIds(null)),
       principal.user.id,
       pageRequest
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
@@ -205,8 +199,8 @@ class SeriesController(
     return bookDtoRepository.findAll(
       BookSearchWithReadProgress(
         seriesIds = listOf(seriesId),
-        mediaStatus = mediaStatus ?: emptyList(),
-        readStatus = readStatus ?: emptyList()
+        mediaStatus = mediaStatus,
+        readStatus = readStatus
       ),
       principal.user.id,
       pageRequest

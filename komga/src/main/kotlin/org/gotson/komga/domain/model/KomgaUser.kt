@@ -33,18 +33,24 @@ data class KomgaUser(
     return roles
   }
 
-  fun getAuthorizedLibraryIds(libraryIds: Collection<Long>?) =
+  /**
+   * Return the list of LibraryIds this user is authorized to view, intersecting the provided list of LibraryIds.
+   *
+   * @return a list of authorised LibraryIds, or null if the user is authorized to see all libraries
+   */
+  fun getAuthorizedLibraryIds(libraryIds: Collection<Long>?): Collection<Long>? =
     when {
       // limited user & libraryIds are specified: filter on provided libraries intersecting user's authorized libraries
-      !sharedAllLibraries && !libraryIds.isNullOrEmpty() -> libraryIds.intersect(sharedLibrariesIds)
+      !sharedAllLibraries && libraryIds != null -> libraryIds.intersect(sharedLibrariesIds)
 
       // limited user: filter on user's authorized libraries
-      !sharedAllLibraries -> sharedLibrariesIds
+      !sharedAllLibraries && libraryIds == null -> sharedLibrariesIds
 
-      // non-limited user: filter on provided libraries
-      !libraryIds.isNullOrEmpty() -> libraryIds
+      // non-limited user & libraryIds are specified: filter on provided libraries
+      libraryIds != null -> libraryIds
 
-      else -> emptyList()
+      // non-limited user & no libraryIds specified: return null, meaning no filtering
+      else -> null
     }
 
   fun canAccessBook(book: Book): Boolean {

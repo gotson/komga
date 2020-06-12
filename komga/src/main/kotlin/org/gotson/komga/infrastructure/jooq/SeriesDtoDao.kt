@@ -61,7 +61,7 @@ class SeriesDtoDao(
   override fun findAll(search: SeriesSearchWithReadProgress, userId: Long, pageable: Pageable): Page<SeriesDto> {
     val conditions = search.toCondition()
 
-    val having = search.readStatus.toCondition()
+    val having = search.readStatus?.toCondition() ?: DSL.trueCondition()
 
     return findAll(conditions, having, userId, pageable)
   }
@@ -70,7 +70,7 @@ class SeriesDtoDao(
     val conditions = search.toCondition()
       .and(s.CREATED_DATE.ne(s.LAST_MODIFIED_DATE))
 
-    val having = search.readStatus.toCondition()
+    val having = search.readStatus?.toCondition() ?: DSL.trueCondition()
 
     return findAll(conditions, having, userId, pageable)
   }
@@ -142,23 +142,21 @@ class SeriesDtoDao(
   private fun SeriesSearchWithReadProgress.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()
 
-    if (libraryIds.isNotEmpty()) c = c.and(s.LIBRARY_ID.`in`(libraryIds))
-    searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(searchTerm)) }
-    if (metadataStatus.isNotEmpty()) c = c.and(d.STATUS.`in`(metadataStatus))
+    libraryIds?.let { c = c.and(s.LIBRARY_ID.`in`(it)) }
+    searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
+    metadataStatus?.let { c = c.and(d.STATUS.`in`(it)) }
 
     return c
   }
 
   private fun Collection<ReadStatus>.toCondition(): Condition =
-    if (isNotEmpty()) {
-      map {
-        when (it) {
-          ReadStatus.UNREAD -> countUnread.ge(1.toBigDecimal())
-          ReadStatus.READ -> countRead.ge(1.toBigDecimal())
-          ReadStatus.IN_PROGRESS -> countInProgress.ge(1.toBigDecimal())
-        }
-      }.reduce { acc, condition -> acc.or(condition) }
-    } else DSL.trueCondition()
+    map {
+      when (it) {
+        ReadStatus.UNREAD -> countUnread.ge(1.toBigDecimal())
+        ReadStatus.READ -> countRead.ge(1.toBigDecimal())
+        ReadStatus.IN_PROGRESS -> countInProgress.ge(1.toBigDecimal())
+      }
+    }.reduce { acc, condition -> acc.or(condition) }
 
   private fun SeriesRecord.toDto(booksCount: Int, booksReadCount: Int, booksUnreadCount: Int, booksInProgressCount: Int, metadata: SeriesMetadataDto) =
     SeriesDto(

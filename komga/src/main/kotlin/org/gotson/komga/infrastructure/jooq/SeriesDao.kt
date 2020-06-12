@@ -131,9 +131,9 @@ class SeriesDao(
   private fun SeriesSearch.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()
 
-    if (libraryIds.isNotEmpty()) c = c.and(s.LIBRARY_ID.`in`(libraryIds))
-    searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(searchTerm)) }
-    if (metadataStatus.isNotEmpty()) c = c.and(d.STATUS.`in`(metadataStatus))
+    libraryIds?.let { c = c.and(s.LIBRARY_ID.`in`(it)) }
+    searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
+    metadataStatus?.let { c = c.and(d.STATUS.`in`(it)) }
 
     return c
   }

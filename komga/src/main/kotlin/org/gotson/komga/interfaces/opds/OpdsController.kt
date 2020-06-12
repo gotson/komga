@@ -135,7 +135,7 @@ class OpdsController(
     @RequestParam("search") searchTerm: String?
   ): OpdsFeed {
     val seriesSearch = SeriesSearch(
-      libraryIds = if (!principal.user.sharedAllLibraries) principal.user.sharedLibrariesIds else emptySet(),
+      libraryIds = principal.user.getAuthorizedLibraryIds(null),
       searchTerm = searchTerm
     )
 
@@ -163,7 +163,7 @@ class OpdsController(
     @AuthenticationPrincipal principal: KomgaPrincipal
   ): OpdsFeed {
     val seriesSearch = SeriesSearch(
-      libraryIds = if (!principal.user.sharedAllLibraries) principal.user.sharedLibrariesIds else emptySet()
+      libraryIds = principal.user.getAuthorizedLibraryIds(null)
     )
 
     val entries = seriesRepository.findAll(seriesSearch)

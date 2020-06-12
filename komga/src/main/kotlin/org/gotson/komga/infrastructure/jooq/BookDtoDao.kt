@@ -176,12 +176,12 @@ class BookDtoDao(
   private fun BookSearchWithReadProgress.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()
 
-    if (libraryIds.isNotEmpty()) c = c.and(b.LIBRARY_ID.`in`(libraryIds))
-    if (seriesIds.isNotEmpty()) c = c.and(b.SERIES_ID.`in`(seriesIds))
+    libraryIds?.let { c = c.and(b.LIBRARY_ID.`in`(it)) }
+    seriesIds?.let { c = c.and(b.SERIES_ID.`in`(it)) }
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
-    if (mediaStatus.isNotEmpty()) c = c.and(m.STATUS.`in`(mediaStatus))
+    mediaStatus?.let { c = c.and(m.STATUS.`in`(it)) }
 
-    if (readStatus.isNotEmpty()) {
+    if (readStatus != null) {
       val cr = readStatus.map {
         when (it) {
           ReadStatus.UNREAD -> r.COMPLETED.isNull

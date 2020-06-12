@@ -94,8 +94,8 @@ class BookController(
     val bookSearch = BookSearchWithReadProgress(
       libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
       searchTerm = searchTerm,
-      mediaStatus = mediaStatus ?: emptyList(),
-      readStatus = readStatus ?: emptyList()
+      mediaStatus = mediaStatus,
+      readStatus = readStatus
     )
 
     return bookDtoRepository.findAll(bookSearch, principal.user.id, pageRequest)
@@ -116,11 +116,9 @@ class BookController(
       Sort.by(Sort.Direction.DESC, "lastModifiedDate")
     )
 
-    val libraryIds = if (principal.user.sharedAllLibraries) emptyList<Long>() else principal.user.sharedLibrariesIds
-
     return bookDtoRepository.findAll(
       BookSearchWithReadProgress(
-        libraryIds = libraryIds
+        libraryIds = principal.user.getAuthorizedLibraryIds(null)
       ),
       principal.user.id,
       pageRequest
