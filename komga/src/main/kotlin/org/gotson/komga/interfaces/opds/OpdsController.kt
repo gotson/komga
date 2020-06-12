@@ -214,7 +214,7 @@ class OpdsController(
     @PathVariable id: Long
   ): OpdsFeed =
     seriesRepository.findByIdOrNull(id)?.let { series ->
-      if (!principal.user.canAccessSeries(series)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+      if (!principal.user.canAccessSeries(series)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
 
       val books = bookRepository.findAll(BookSearch(
         seriesIds = listOf(id),
@@ -246,7 +246,7 @@ class OpdsController(
     @PathVariable id: Long
   ): OpdsFeed =
     libraryRepository.findByIdOrNull(id)?.let { library ->
-      if (!principal.user.canAccessLibrary(library)) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+      if (!principal.user.canAccessLibrary(library)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
 
       val seriesSearch = SeriesSearch(libraryIds = setOf(library.id))
 
