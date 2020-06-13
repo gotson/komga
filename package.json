@@ -38,7 +38,8 @@
         {
           "assets": [
             "gradle.properties",
-            "CHANGELOG.md"
+            "CHANGELOG.md",
+            "komga/docs/openapi.json"
           ]
         }
       ],
