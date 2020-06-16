@@ -1,4 +1,4 @@
-![Open Collective backers and sponsors](https://img.shields.io/opencollective/all/komga)
+[![Open Collective backers and sponsors](https://img.shields.io/opencollective/all/komga)](https://opencollective.com/komga)
 [![Discord](https://img.shields.io/discord/678794935368941569?label=Discord)](https://discord.gg/TdRpkDu)
 
 [![Build Status](https://travis-ci.com/gotson/komga.svg?branch=master)](https://travis-ci.com/gotson/komga)
