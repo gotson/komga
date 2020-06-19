@@ -113,7 +113,7 @@
 
           <v-row>
             <v-col>
-              <v-expansion-panels v-model="collectionPanel">
+              <v-expansion-panels v-model="collectionPanel" v-if="$vuetify.breakpoint.name !== 'xs'">
                 <v-expansion-panel v-for="(c, i) in collections"
                                    :key="i"
                 >
@@ -140,6 +140,33 @@
             </v-col>
           </v-row>
         </v-col>
+      </v-row>
+
+      <v-row v-if="$vuetify.breakpoint.name === 'xs'">
+        <v-expansion-panels v-model="collectionPanel">
+          <v-expansion-panel v-for="(c, i) in collections"
+                             :key="i"
+          >
+            <v-expansion-panel-header>{{ c.name }} collection</v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <horizontal-scroller>
+                <template v-slot:prepend>
+                  <router-link class="overline"
+                               :to="{name: 'browse-collection', params: {collectionId: c.id}}"
+                  >Manage collection
+                  </router-link>
+                </template>
+                <template v-slot:content>
+                  <div v-for="(s, i) in collectionsContent[c.id]"
+                       :key="i"
+                  >
+                    <item-card class="ma-2 card" :item="s"/>
+                  </div>
+                </template>
+              </horizontal-scroller>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </v-row>
 
       <v-divider class="my-4"/>
