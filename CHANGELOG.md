@@ -1,3 +1,16 @@
+# [0.40.0](https://github.com/gotson/komga/compare/v0.39.0...v0.40.0) (2020-06-19)
+
+
+### Bug Fixes
+
+* **api:** sort libraries case insensitive ([1650aec](https://github.com/gotson/komga/commit/1650aec75bd3f6b8cd1e58d2110761f9b59f5e42))
+
+
+### Features
+
+* **api:** collections management ([c2f9403](https://github.com/gotson/komga/commit/c2f940336ac455a7f7623d4367033b6b77cc23d9)), closes [#30](https://github.com/gotson/komga/issues/30)
+* **webui:** collections management ([2f8255a](https://github.com/gotson/komga/commit/2f8255a05fa0f477af764e72f95f6c28fe4ebfe3)), closes [#30](https://github.com/gotson/komga/issues/30)
+
 # [0.39.0](https://github.com/gotson/komga/compare/v0.38.0...v0.39.0) (2020-06-10)
 
 
