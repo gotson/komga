@@ -1,0 +1,20 @@
+{
+	"name": "Komga",
+	"short_name": "Komga",
+	"description": "Comics!",
+	"start_url": "index.html",
+	"display": "fullscreen",
+	"background_color": "#def2d9",
+	"theme_color": "#def2d9",
+	"icons": [
+		{
+			"src": "/img/logo.png",
+		    "type": "image/png",
+			"sizes": "144x144"
+		},
+		{
+			"src": "/favicon.ico",
+		    "sizes": "48x48"
+		}
+	]
+}
