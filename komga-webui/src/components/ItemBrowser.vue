@@ -6,6 +6,7 @@
     >
       <draggable v-model="localItems"
                  class="d-flex flex-wrap"
+                 handle=".handle"
                  v-bind="dragOptions"
       >
         <transition-group type="transition" :name="!draggable ? 'flip-list' : null"
@@ -22,6 +23,7 @@
                    :class="draggable ? 'draggable-item' : undefined"
               >
                 <item-card
+                  class="item-card"
                   :item="item"
                   :width="itemWidth"
                   :selected="active"
@@ -33,6 +35,7 @@
 
                 <v-slide-y-reverse-transition>
                   <v-icon v-if="draggable"
+                          class="handle"
                           style="position: absolute; bottom: 0; left: 50%; margin-left: -12px;"
                   >
                     mdi-drag-horizontal
@@ -169,20 +172,16 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.ghost * {
+.ghost .item-card {
   opacity: 0.5;
   background: #c8ebfb;
 }
 
-.draggable-item * {
-  cursor: move;
+.handle {
+  cursor: grab;
 }
 
 .flip-list-move {
   transition: transform 0.4s;
-}
-
-.fab-delete * {
-  cursor: pointer;
 }
 </style>
