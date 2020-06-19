@@ -1,3 +1,11 @@
+## [0.40.1](https://github.com/gotson/komga/compare/v0.40.0...v0.40.1) (2020-06-19)
+
+
+### Bug Fixes
+
+* **webui:** drag series by handle when editing collection ([e72f4ab](https://github.com/gotson/komga/commit/e72f4ab57e26405d9117da1c02c4efa6d4a6fa23)), closes [#214](https://github.com/gotson/komga/issues/214)
+* **webui:** wider display for collection expansion panel ([96c95ea](https://github.com/gotson/komga/commit/96c95ea0745d3bed9b0f618cb2aebdf8bde34a7f))
+
 # [0.40.0](https://github.com/gotson/komga/compare/v0.39.0...v0.40.0) (2020-06-19)
 
 
