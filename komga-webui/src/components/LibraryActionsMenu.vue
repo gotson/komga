@@ -34,7 +34,7 @@ import LibraryDeleteDialog from '@/components/LibraryDeleteDialog.vue'
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'library-actions-menu',
+  name: 'LibraryActionsMenu',
   components: { LibraryDeleteDialog },
   data: function () {
     return {

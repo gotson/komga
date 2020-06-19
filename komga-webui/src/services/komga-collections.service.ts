@@ -1,0 +1,92 @@
+import { AxiosInstance } from 'axios'
+
+const qs = require('qs')
+
+const API_COLLECTIONS = '/api/v1/collections'
+
+export default class KomgaCollectionsService {
+  private http: AxiosInstance
+
+  constructor (http: AxiosInstance) {
+    this.http = http
+  }
+
+  async getCollections (libraryIds?: number[]): Promise<CollectionDto[]> {
+    try {
+      const params = {} as any
+      if (libraryIds) {
+        params.library_id = libraryIds
+      }
+      return (await this.http.get(API_COLLECTIONS, {
+        params: params,
+        paramsSerializer: params => qs.stringify(params, { indices: false }),
+      })).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve collections'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async getOneCollection (collectionId: number): Promise<CollectionDto> {
+    try {
+      return (await this.http.get(`${API_COLLECTIONS}/${collectionId}`)).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve collection'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async postCollection (collection: CollectionCreationDto): Promise<CollectionDto> {
+    try {
+      return (await this.http.post(API_COLLECTIONS, collection)).data
+    } catch (e) {
+      let msg = `An error occurred while trying to add collection '${collection.name}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async patchCollection (collectionId: number, collection: CollectionUpdateDto) {
+    try {
+      await this.http.patch(`${API_COLLECTIONS}/${collectionId}`, collection)
+    } catch (e) {
+      let msg = `An error occurred while trying to update collection '${collectionId}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async deleteCollection (collectionId: number) {
+    try {
+      await this.http.delete(`${API_COLLECTIONS}/${collectionId}`)
+    } catch (e) {
+      let msg = `An error occurred while trying to delete collection '${collectionId}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async getSeries (collectionId: number, pageRequest?: PageRequest): Promise<SeriesDto[]> {
+    try {
+      return (await this.http.get(`${API_COLLECTIONS}/${collectionId}/series`)).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve series'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+}

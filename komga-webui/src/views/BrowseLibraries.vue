@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :style="$vuetify.breakpoint.name === 'xs' ? 'margin-bottom: 56px' : undefined">
     <toolbar-sticky v-if="selected.length === 0">
       <!--   Action menu   -->
       <library-actions-menu v-if="library"
@@ -57,11 +57,29 @@
           </v-tooltip>
         </v-btn>
 
+        <v-btn icon @click="addToCollection()">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on">mdi-playlist-plus</v-icon>
+            </template>
+            <span>Add to collection</span>
+          </v-tooltip>
+        </v-btn>
+
         <v-btn icon @click="dialogEdit = true" v-if="isAdmin">
-          <v-icon>mdi-pencil</v-icon>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on">mdi-pencil</v-icon>
+            </template>
+            <span>Edit metadata</span>
+          </v-tooltip>
         </v-btn>
       </toolbar-sticky>
     </v-scroll-y-transition>
+
+    <library-navigation v-if="collections.length > 0"
+                        :libraryId="libraryId"
+    />
 
     <edit-series-dialog v-model="dialogEdit"
                         :series.sync="selectedSeries"
@@ -69,6 +87,10 @@
 
     <edit-series-dialog v-model="dialogEditSingle"
                         :series.sync="editSeriesSingle"
+    />
+
+    <collection-add-to-dialog v-model="dialogAddToCollection"
+                              :series="selectedSeries"
     />
 
     <v-container fluid class="px-6">
@@ -102,11 +124,13 @@
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
+import CollectionAddToDialog from '@/components/CollectionAddToDialog.vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import FilterMenuButton from '@/components/FilterMenuButton.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import LibraryActionsMenu from '@/components/LibraryActionsMenu.vue'
+import LibraryNavigation from '@/components/LibraryNavigation.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
@@ -128,7 +152,9 @@ export default Vue.extend({
     Badge,
     EditSeriesDialog,
     ItemBrowser,
+    CollectionAddToDialog,
     PageSizeSelect,
+    LibraryNavigation,
   },
   data: () => {
     return {
@@ -156,6 +182,8 @@ export default Vue.extend({
       selected: [],
       dialogEdit: false,
       dialogEditSingle: false,
+      dialogAddToCollection: false,
+      collections: [] as CollectionDto[],
     }
   },
   props: {
@@ -212,6 +240,7 @@ export default Vue.extend({
       this.totalPages = 1
       this.totalElements = null
       this.series = []
+      this.collections = []
 
       this.loadLibrary(Number(to.params.libraryId))
 
@@ -271,6 +300,10 @@ export default Vue.extend({
     },
     async loadLibrary (libraryId: number) {
       this.library = this.getLibraryLazy(libraryId)
+
+      const lib = libraryId !== 0 ? [libraryId] : undefined
+      this.collections = await this.$komgaCollections.getCollections(lib)
+
       await this.loadPage(libraryId, this.page, this.sortActive)
     },
     parseQuerySortOrDefault (querySort: any): SortActive {
@@ -336,6 +369,9 @@ export default Vue.extend({
       this.selectedSeries = await Promise.all(this.selectedSeries.map(s =>
         this.$komgaSeries.getOneSeries(s.id),
       ))
+    },
+    addToCollection () {
+      this.dialogAddToCollection = true
     },
   },
 })

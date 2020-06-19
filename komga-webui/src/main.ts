@@ -1,4 +1,3 @@
-import './public-path'
 import _, { LoDashStatic } from 'lodash'
 import Vue from 'vue'
 import VueCookies from 'vue-cookies'
@@ -10,12 +9,14 @@ import App from './App.vue'
 import actuator from './plugins/actuator.plugin'
 import httpPlugin from './plugins/http.plugin'
 import komgaBooks from './plugins/komga-books.plugin'
-import komgaReferential from './plugins/komga-referential.plugin'
+import komgaCollections from './plugins/komga-collections.plugin'
 import komgaFileSystem from './plugins/komga-filesystem.plugin'
 import komgaLibraries from './plugins/komga-libraries.plugin'
+import komgaReferential from './plugins/komga-referential.plugin'
 import komgaSeries from './plugins/komga-series.plugin'
 import komgaUsers from './plugins/komga-users.plugin'
 import vuetify from './plugins/vuetify'
+import './public-path'
 import router from './router'
 import store from './store'
 
@@ -27,6 +28,7 @@ Vue.use(require('vue-moment'))
 Vue.use(httpPlugin)
 Vue.use(komgaFileSystem, { http: Vue.prototype.$http })
 Vue.use(komgaSeries, { http: Vue.prototype.$http })
+Vue.use(komgaCollections, { http: Vue.prototype.$http })
 Vue.use(komgaBooks, { http: Vue.prototype.$http })
 Vue.use(komgaReferential, { http: Vue.prototype.$http })
 Vue.use(komgaUsers, { store: store, http: Vue.prototype.$http })

@@ -92,14 +92,14 @@
 <script lang="ts">
 import { getReadProgress, getReadProgressPercentage } from '@/functions/book-progress'
 import { ReadStatus } from '@/types/enum-books'
-import { createItem, Item } from '@/types/items'
+import { createItem, Item, ItemTypes } from '@/types/items'
 import Vue from 'vue'
 
 export default Vue.extend({
   name: 'ItemCard',
   props: {
     item: {
-      type: Object as () => BookDto | SeriesDto,
+      type: Object as () => BookDto | SeriesDto | CollectionDto,
       required: true,
     },
     // hide the bottom part of the card
@@ -145,12 +145,12 @@ export default Vue.extend({
   },
   computed: {
     canReadPages (): boolean {
-      return this.$store.getters.mePageStreaming
+      return this.$store.getters.mePageStreaming && this.computedItem.type() === ItemTypes.BOOK
     },
     overlay (): boolean {
       return this.onEdit !== undefined || this.onSelected !== undefined || this.bookReady || this.canReadPages
     },
-    computedItem (): Item<BookDto | SeriesDto> {
+    computedItem (): Item<BookDto | SeriesDto | CollectionDto> {
       return createItem(this.item)
     },
     disableHover (): boolean {
@@ -169,24 +169,24 @@ export default Vue.extend({
       return this.computedItem.body()
     },
     isInProgress (): boolean {
-      if ('seriesId' in this.item) return getReadProgress(this.item) === ReadStatus.IN_PROGRESS
+      if (this.computedItem.type() === ItemTypes.BOOK) return getReadProgress(this.item as BookDto) === ReadStatus.IN_PROGRESS
       return false
     },
     isUnread (): boolean {
-      if ('seriesId' in this.item) return getReadProgress(this.item) === ReadStatus.UNREAD
+      if (this.computedItem.type() === ItemTypes.BOOK) return getReadProgress(this.item as BookDto) === ReadStatus.UNREAD
       return false
     },
     unreadCount (): number | undefined {
-      if (!('seriesId' in this.item)) return this.item.booksUnreadCount
+      if (this.computedItem.type() === ItemTypes.SERIES) return (this.item as SeriesDto).booksUnreadCount
       return undefined
     },
     readProgressPercentage (): number {
-      if ('seriesId' in this.item) return getReadProgressPercentage(this.item)
+      if (this.computedItem.type() === ItemTypes.BOOK) return getReadProgressPercentage(this.item as BookDto)
       return 0
     },
     bookReady (): boolean {
-      if ('seriesId' in this.item) {
-        return this.item.media.status === 'READY'
+      if (this.computedItem.type() === ItemTypes.BOOK) {
+        return (this.item as BookDto).media.status === 'READY'
       }
       return false
     },

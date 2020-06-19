@@ -35,3 +35,7 @@ export function bookPageThumbnailUrl (bookId: number, page: number): string {
 export function seriesThumbnailUrl (seriesId: number): string {
   return `${urls.originNoSlash}/api/v1/series/${seriesId}/thumbnail`
 }
+
+export function collectionThumbnailUrl (collectionId: number): string {
+  return `${urls.originNoSlash}/api/v1/collections/${collectionId}/thumbnail`
+}

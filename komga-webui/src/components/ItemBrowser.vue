@@ -1,25 +1,65 @@
 <template>
   <v-item-group multiple v-model="selectedItems">
-    <v-row justify="start" ref="content" v-resize="onResize" v-if="hasItems">
-      <v-item
-        v-for="(item, index) in items"
-        :key="index"
-        class="my-3 mx-2"
-        v-slot:default="{ toggle, active }" :value="$_.get(item, 'id', 0)"
+    <div v-if="hasItems"
+         ref="content"
+         v-resize="onResize"
+    >
+      <draggable v-model="localItems"
+                 class="d-flex flex-wrap"
+                 v-bind="dragOptions"
       >
-        <slot name="item"
-              v-bind:data="{ toggle, active, item, index, itemWidth, preselect: shouldPreselect(), editItem }">
-          <item-card
-            :item="item"
-            :width="itemWidth"
-            :selected="active"
-            :preselect="shouldPreselect()"
-            :onEdit="editItem"
-            :onSelected="toggle"
-          ></item-card>
-        </slot>
-      </v-item>
-    </v-row>
+        <transition-group type="transition" :name="!draggable ? 'flip-list' : null"
+                          class="d-flex flex-wrap"
+        >
+          <v-item
+            v-for="item in localItems"
+            :key="item.id"
+            class="my-3 mx-2"
+            v-slot:default="{ toggle, active }" :value="$_.get(item, 'id', 0)"
+          >
+            <slot name="item">
+              <div style="position: relative"
+                   :class="draggable ? 'draggable-item' : undefined"
+              >
+                <item-card
+                  :item="item"
+                  :width="itemWidth"
+                  :selected="active"
+                  :no-link="draggable || deletable"
+                  :preselect="shouldPreselect"
+                  :onEdit="(draggable || deletable) ? undefined : editFunction"
+                  :onSelected="(draggable || deletable) ? undefined : selectable ? toggle: undefined"
+                ></item-card>
+
+                <v-slide-y-reverse-transition>
+                  <v-icon v-if="draggable"
+                          style="position: absolute; bottom: 0; left: 50%; margin-left: -12px;"
+                  >
+                    mdi-drag-horizontal
+                  </v-icon>
+                </v-slide-y-reverse-transition>
+
+                <!-- FAB delete (center) -->
+                <v-fab-transition>
+                  <v-btn
+                    v-if="deletable"
+                    fab
+                    small
+                    color="accent"
+                    class="fab-delete"
+                    @click="deleteItem(item)"
+                    style="position: absolute; bottom: 10px; right: 10px;"
+                  >
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </v-fab-transition>
+
+              </div>
+            </slot>
+          </v-item>
+        </transition-group>
+      </draggable>
+    </div>
     <v-row v-else justify="center">
       <slot name="empty"></slot>
     </v-row>
@@ -30,18 +70,23 @@
 import ItemCard from '@/components/ItemCard.vue'
 import { computeCardWidth } from '@/functions/grid-utilities'
 import Vue from 'vue'
+import draggable from 'vuedraggable'
 
 export default Vue.extend({
   name: 'ItemBrowser',
-  components: { ItemCard },
+  components: { ItemCard, draggable },
   props: {
     items: {
       type: Array,
       required: true,
     },
+    selectable: {
+      type: Boolean,
+      default: true,
+    },
     selected: {
       type: Array,
-      required: true,
+      default: () => [],
     },
     editFunction: {
       type: Function,
@@ -49,10 +94,19 @@ export default Vue.extend({
     resizeFunction: {
       type: Function,
     },
+    draggable: {
+      type: Boolean,
+      default: false,
+    },
+    deletable: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: () => {
     return {
       selectedItems: [],
+      localItems: [],
       width: 150,
     }
   },
@@ -69,6 +123,18 @@ export default Vue.extend({
       },
       immediate: true,
     },
+    items: {
+      handler () {
+        this.localItems = this.items as []
+      },
+      immediate: true,
+    },
+    localItems: {
+      handler () {
+        this.$emit('update:items', this.localItems)
+      },
+      immediate: true,
+    },
   },
   computed: {
     hasItems (): boolean {
@@ -77,25 +143,46 @@ export default Vue.extend({
     itemWidth (): number {
       return this.width
     },
-    itemHeight (): number {
-      return this.width / 0.7071 + 116
-    },
-  },
-  methods: {
     shouldPreselect (): boolean {
       return this.selectedItems.length > 0
     },
-    editItem (item: any) {
-      this.editFunction(item)
+    dragOptions (): any {
+      return {
+        animation: 200,
+        group: 'item-cards',
+        disabled: !this.draggable,
+        ghostClass: 'ghost',
+      }
     },
+  },
+  methods: {
     onResize () {
       const content = this.$refs.content as HTMLElement
       this.width = computeCardWidth(content.clientWidth, this.$vuetify.breakpoint.name)
+    },
+    deleteItem (item: any) {
+      const index = this.localItems.findIndex((e: any) => e.id === item.id)
+      this.localItems.splice(index, 1)
     },
   },
 })
 </script>
 
 <style scoped>
+.ghost * {
+  opacity: 0.5;
+  background: #c8ebfb;
+}
 
+.draggable-item * {
+  cursor: move;
+}
+
+.flip-list-move {
+  transition: transform 0.4s;
+}
+
+.fab-delete * {
+  cursor: pointer;
+}
 </style>

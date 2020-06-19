@@ -1,12 +1,18 @@
-import { bookThumbnailUrl, seriesThumbnailUrl } from '@/functions/urls'
+import { bookThumbnailUrl, collectionThumbnailUrl, seriesThumbnailUrl } from '@/functions/urls'
 import { VueRouter } from 'vue-router/types/router'
 
 function plural (count: number, singular: string, plural: string) {
   return `${count} ${count === 1 ? singular : plural}`
 }
 
-export function createItem (item: BookDto | SeriesDto): Item<BookDto | SeriesDto> {
-  if ('seriesId' in item) {
+export enum ItemTypes {
+  BOOK, SERIES, COLLECTION
+}
+
+export function createItem (item: BookDto | SeriesDto | CollectionDto): Item<BookDto | SeriesDto | CollectionDto> {
+  if ('seriesIds' in item) {
+    return new CollectionItem(item)
+  } else if ('seriesId' in item) {
     return new BookItem(item)
   } else if ('libraryId' in item) {
     return new SeriesItem(item)
@@ -16,7 +22,7 @@ export function createItem (item: BookDto | SeriesDto): Item<BookDto | SeriesDto
 }
 
 export abstract class Item<T> {
-  item: T;
+  item: T
 
   constructor (item: T) {
     this.item = item
@@ -30,18 +36,24 @@ export abstract class Item<T> {
     }
   }
 
-  abstract thumbnailUrl(): string
+  abstract type (): ItemTypes
 
-  abstract title(): string
+  abstract thumbnailUrl (): string
 
-  abstract body(): string
+  abstract title (): string
 
-  abstract goto(router: VueRouter): void
+  abstract body (): string
+
+  abstract goto (router: VueRouter): void
 }
 
 export class BookItem extends Item<BookDto> {
   thumbnailUrl (): string {
     return bookThumbnailUrl(this.item.id)
+  }
+
+  type (): ItemTypes {
+    return ItemTypes.BOOK
   }
 
   title (): string {
@@ -51,10 +63,7 @@ export class BookItem extends Item<BookDto> {
 
   body (): string {
     let c = this.item.media.pagesCount
-    return `
-       <div>${this.item.size}</div>
-       <div>${plural(c, 'Page', 'Pages')}</div>
-    `
+    return `<span>${plural(c, 'Page', 'Pages')}</span>`
   }
 
   goto (router: VueRouter): void {
@@ -65,6 +74,10 @@ export class BookItem extends Item<BookDto> {
 export class SeriesItem extends Item<SeriesDto> {
   thumbnailUrl (): string {
     return seriesThumbnailUrl(this.item.id)
+  }
+
+  type (): ItemTypes {
+    return ItemTypes.SERIES
   }
 
   title (): string {
@@ -78,5 +91,28 @@ export class SeriesItem extends Item<SeriesDto> {
 
   goto (router: VueRouter): void {
     router.push({ name: 'browse-series', params: { seriesId: this.item.id.toString() } })
+  }
+}
+
+export class CollectionItem extends Item<CollectionDto> {
+  thumbnailUrl (): string {
+    return collectionThumbnailUrl(this.item.id)
+  }
+
+  type (): ItemTypes {
+    return ItemTypes.COLLECTION
+  }
+
+  title (): string {
+    return this.item.name
+  }
+
+  body (): string {
+    let c = this.item.seriesIds.length
+    return `<span>${c} Series</span>`
+  }
+
+  goto (router: VueRouter): void {
+    router.push({ name: 'browse-collection', params: { collectionId: this.item.id.toString() } })
   }
 }

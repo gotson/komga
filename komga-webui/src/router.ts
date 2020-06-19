@@ -85,6 +85,19 @@ const router = new Router({
           props: (route) => ({ libraryId: Number(route.params.libraryId) }),
         },
         {
+          path: '/libraries/:libraryId/collections',
+          name: 'browse-collections',
+          beforeEnter: noLibraryGuard,
+          component: () => import(/* webpackChunkName: "browse-collections" */ './views/BrowseCollections.vue'),
+          props: (route) => ({ libraryId: Number(route.params.libraryId) }),
+        },
+        {
+          path: '/collections/:collectionId',
+          name: 'browse-collection',
+          component: () => import(/* webpackChunkName: "browse-collection" */ './views/BrowseCollection.vue'),
+          props: (route) => ({ collectionId: Number(route.params.collectionId) }),
+        },
+        {
           path: '/series/:seriesId',
           name: 'browse-series',
           component: () => import(/* webpackChunkName: "browse-series" */ './views/BrowseSeries.vue'),

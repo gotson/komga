@@ -1,6 +1,8 @@
 <template>
   <div style="position: relative">
-    <slot name="prepend"/>
+    <div style="min-height: 36px">
+      <slot name="prepend"/>
+    </div>
     <div style="position: absolute; top: 0; right: 0">
       <v-btn icon
              :disabled="!canScrollLeft"

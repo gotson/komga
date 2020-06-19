@@ -9,30 +9,12 @@
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
 
-      <!--   Action menu   -->
-      <v-menu offset-y>
-        <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
-        </template>
-        <v-list>
-          <v-list-item @click="analyze()" v-if="isAdmin">
-            <v-list-item-title>Analyze</v-list-item-title>
-          </v-list-item>
-          <v-list-item @click="refreshMetadata()" v-if="isAdmin">
-            <v-list-item-title>Refresh metadata</v-list-item-title>
-          </v-list-item>
-          <v-list-item
-            @click="markRead()">
-            <v-list-item-title>Mark as read</v-list-item-title>
-          </v-list-item>
-          <v-list-item
-            @click="markUnread()">
-            <v-list-item-title>Mark as unread</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+      <series-actions-menu v-if="series"
+                           :series.sync="series"
+                           @add-to-collection="addToCollection"
+                           @mark-read="markRead"
+                           @mark-unread="markUnread"
+      />
 
       <v-toolbar-title>
         <span v-if="$_.get(series, 'metadata.title')">{{ series.metadata.title }}</span>
@@ -128,6 +110,35 @@
               series.metadata.status.toLowerCase() }}
             </v-col>
           </v-row>
+
+          <v-row>
+            <v-col>
+              <v-expansion-panels v-model="collectionPanel">
+                <v-expansion-panel v-for="(c, i) in collections"
+                                   :key="i"
+                >
+                  <v-expansion-panel-header>{{ c.name }} collection</v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <horizontal-scroller>
+                      <template v-slot:prepend>
+                        <router-link class="overline"
+                                     :to="{name: 'browse-collection', params: {collectionId: c.id}}"
+                        >Manage collection
+                        </router-link>
+                      </template>
+                      <template v-slot:content>
+                        <div v-for="(s, i) in collectionsContent[c.id]"
+                             :key="i"
+                        >
+                          <item-card class="ma-2 card" :item="s"/>
+                        </div>
+                      </template>
+                    </horizontal-scroller>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
 
@@ -155,18 +166,25 @@
     </v-container>
 
     <edit-series-dialog v-model="dialogEdit" :series.sync="series"/>
+
+    <collection-add-to-dialog v-model="dialogAddToCollection"
+                              :series="series"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
+import CollectionAddToDialog from '@/components/CollectionAddToDialog.vue'
 import EditBooksDialog from '@/components/EditBooksDialog.vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import FilterMenuButton from '@/components/FilterMenuButton.vue'
+import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
+import SeriesActionsMenu from '@/components/SeriesActionsMenu.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { parseQueryFilter, parseQuerySort } from '@/functions/query-params'
@@ -187,6 +205,9 @@ export default Vue.extend({
     EditBooksDialog,
     ItemBrowser,
     PageSizeSelect,
+    SeriesActionsMenu,
+    CollectionAddToDialog,
+    HorizontalScroller,
     ItemCard,
     EmptyState,
   },
@@ -216,6 +237,10 @@ export default Vue.extend({
       selected: [],
       dialogEditBooks: false,
       dialogEditBookSingle: false,
+      dialogAddToCollection: false,
+      collections: [] as CollectionDto[],
+      collectionsContent: [] as any[][],
+      collectionPanel: -1,
     }
   },
   computed: {
@@ -296,6 +321,8 @@ export default Vue.extend({
       this.totalPages = 1
       this.totalElements = null
       this.books = []
+      this.collections = []
+      this.collectionPanel = -1
 
       this.loadSeries(Number(to.params.seriesId))
 
@@ -337,6 +364,10 @@ export default Vue.extend({
     },
     async loadSeries (seriesId: number) {
       this.series = await this.$komgaSeries.getOneSeries(seriesId)
+      this.collections = await this.$komgaSeries.getCollections(seriesId)
+      for (const c of this.collections) {
+        this.collectionsContent[c.id] = await this.$komgaCollections.getSeries(c.id)
+      }
       await this.loadPage(seriesId, this.page, this.sortActive)
     },
     parseQuerySortOrDefault (querySort: any): SortActive {
@@ -401,12 +432,13 @@ export default Vue.extend({
       ))
       this.loadSeries(this.seriesId)
     },
+    addToCollection () {
+      this.dialogAddToCollection = true
+    },
     async markRead () {
-      await this.$komgaSeries.markAsRead(this.seriesId)
       this.loadSeries(this.seriesId)
     },
     async markUnread () {
-      await this.$komgaSeries.markAsUnread(this.seriesId)
       this.loadSeries(this.seriesId)
     },
   },
