@@ -11,6 +11,7 @@ import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
+import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.springframework.stereotype.Service
@@ -26,7 +27,8 @@ class SeriesLifecycle(
   private val mediaRepository: MediaRepository,
   private val bookMetadataRepository: BookMetadataRepository,
   private val seriesRepository: SeriesRepository,
-  private val seriesMetadataRepository: SeriesMetadataRepository
+  private val seriesMetadataRepository: SeriesMetadataRepository,
+  private val collectionRepository: SeriesCollectionRepository
 ) {
 
   fun sortBooks(series: Series) {
@@ -89,6 +91,8 @@ class SeriesLifecycle(
     bookRepository.findBySeriesId(seriesId).forEach {
       bookLifecycle.delete(it.id)
     }
+
+    collectionRepository.removeSeriesFromAll(seriesId)
 
     seriesRepository.delete(seriesId)
   }

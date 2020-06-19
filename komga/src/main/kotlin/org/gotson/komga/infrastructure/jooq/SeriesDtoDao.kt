@@ -82,6 +82,12 @@ class SeriesDtoDao(
       .fetchAndMap()
       .firstOrNull()
 
+  override fun findByIds(seriesIds: Collection<Long>, userId: Long): List<SeriesDto> =
+    selectBase(userId)
+      .where(s.ID.`in`(seriesIds))
+      .groupBy(*groupFields)
+      .fetchAndMap()
+
 
   private fun findAll(conditions: Condition, having: Condition, userId: Long, pageable: Pageable): Page<SeriesDto> {
     val count = dsl.select(s.ID)

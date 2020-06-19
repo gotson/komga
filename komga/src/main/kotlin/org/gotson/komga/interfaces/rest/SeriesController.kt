@@ -14,6 +14,7 @@ import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
 import org.gotson.komga.domain.persistence.BookRepository
+import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.BookLifecycle
@@ -21,9 +22,11 @@ import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.interfaces.rest.dto.BookDto
+import org.gotson.komga.interfaces.rest.dto.CollectionDto
 import org.gotson.komga.interfaces.rest.dto.SeriesDto
 import org.gotson.komga.interfaces.rest.dto.SeriesMetadataUpdateDto
 import org.gotson.komga.interfaces.rest.dto.restrictUrl
+import org.gotson.komga.interfaces.rest.dto.toDto
 import org.gotson.komga.interfaces.rest.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.rest.persistence.SeriesDtoRepository
 import org.springframework.data.domain.Page
@@ -60,7 +63,8 @@ class SeriesController(
   private val bookLifecycle: BookLifecycle,
   private val bookRepository: BookRepository,
   private val bookDtoRepository: BookDtoRepository,
-  private val bookController: BookController
+  private val bookController: BookController,
+  private val collectionRepository: SeriesCollectionRepository
 ) {
 
   @PageableAsQueryParam
@@ -205,6 +209,19 @@ class SeriesController(
       principal.user.id,
       pageRequest
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
+  }
+
+  @GetMapping("{seriesId}/collections")
+  fun getAllCollectionsBySeries(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable(name = "seriesId") seriesId: Long
+  ): List<CollectionDto> {
+    seriesRepository.getLibraryId(seriesId)?.let {
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+    return collectionRepository.findAllBySeries(seriesId, principal.user.getAuthorizedLibraryIds(null))
+      .map { it.toDto() }
   }
 
   @PostMapping("{seriesId}/analyze")
