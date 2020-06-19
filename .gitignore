@@ -9,6 +9,9 @@ node_modules
 *.log
 *.log.*.gz
 
+### Temporary files
+*.tmp
+
 ### H2 databases
 *.mv.db
 *.trace.db
