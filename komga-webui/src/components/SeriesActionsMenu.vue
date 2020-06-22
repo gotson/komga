@@ -33,7 +33,7 @@ export default Vue.extend({
   name: 'SeriesActionsMenu',
   props: {
     series: {
-      type: Object,
+      type: Object as () => SeriesDto,
       required: true,
     },
   },

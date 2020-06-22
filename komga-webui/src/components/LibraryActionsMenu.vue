@@ -43,7 +43,7 @@ export default Vue.extend({
   },
   props: {
     library: {
-      type: Object,
+      type: Object as () => LibraryDto,
       required: true,
     },
   },

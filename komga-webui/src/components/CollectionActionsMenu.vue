@@ -34,7 +34,7 @@ export default Vue.extend({
   },
   props: {
     collection: {
-      type: Object,
+      type: Object as () => CollectionDto,
       required: true,
     },
   },

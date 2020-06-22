@@ -10,10 +10,10 @@
       </v-btn>
 
       <series-actions-menu v-if="series"
-                           :series.sync="series"
+                           :series="series"
                            @add-to-collection="addToCollection"
-                           @mark-read="markRead"
-                           @mark-unread="markUnread"
+                           @mark-read="loadSeries(seriesId)"
+                           @mark-unread="loadSeries(seriesId)"
       />
 
       <v-toolbar-title>
@@ -461,12 +461,6 @@ export default Vue.extend({
     },
     addToCollection () {
       this.dialogAddToCollection = true
-    },
-    async markRead () {
-      this.loadSeries(this.seriesId)
-    },
-    async markUnread () {
-      this.loadSeries(this.seriesId)
     },
   },
 })
