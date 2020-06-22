@@ -196,6 +196,7 @@
 
     <collection-add-to-dialog v-model="dialogAddToCollection"
                               :series="series"
+                              @added="loadSeries(seriesId)"
     />
   </div>
 </template>
