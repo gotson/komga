@@ -16,31 +16,11 @@
       </v-btn>
 
       <!--   Action menu   -->
-      <v-menu offset-y>
-        <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
-        </template>
-        <v-list>
-          <v-list-item @click="analyze()" v-if="isAdmin">
-            <v-list-item-title>Analyze</v-list-item-title>
-          </v-list-item>
-          <v-list-item @click="refreshMetadata()" v-if="isAdmin">
-            <v-list-item-title>Refresh metadata</v-list-item-title>
-          </v-list-item>
-          <v-list-item
-            v-if="!isRead"
-            @click="markRead()">
-            <v-list-item-title>Mark as read</v-list-item-title>
-          </v-list-item>
-          <v-list-item
-            v-if="!isUnread"
-            @click="markUnread()">
-            <v-list-item-title>Mark as unread</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+      <book-actions-menu v-if="book"
+                         :book="book"
+                         @mark-read="loadBook(bookId)"
+                         @mark-unread="loadBook(bookId)"
+      />
     </toolbar-sticky>
 
     <v-container fluid class="pa-6">
@@ -168,6 +148,7 @@
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
+import BookActionsMenu from '@/components/BookActionsMenu.vue'
 import EditBooksDialog from '@/components/EditBooksDialog.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
@@ -181,7 +162,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'BrowseBook',
-  components: { ToolbarSticky, Badge, EditBooksDialog, ItemCard },
+  components: { ToolbarSticky, Badge, EditBooksDialog, ItemCard, BookActionsMenu },
   data: () => {
     return {
       book: {} as BookDto,
@@ -190,7 +171,7 @@ export default Vue.extend({
     }
   },
   async created () {
-    this.book = await this.$komgaBooks.getBook(this.bookId)
+    this.loadBook(this.bookId)
   },
   watch: {
     async book (val) {
@@ -208,7 +189,7 @@ export default Vue.extend({
   },
   async beforeRouteUpdate (to, from, next) {
     if (to.params.bookId !== from.params.bookId) {
-      this.book = await this.$komgaBooks.getBook(Number(to.params.bookId))
+      this.loadBook(Number(to.params.bookId))
     }
 
     next()
@@ -249,20 +230,14 @@ export default Vue.extend({
     },
   },
   methods: {
+    async loadBook (bookId: number) {
+      this.book = await this.$komgaBooks.getBook(bookId)
+    },
     analyze () {
       this.$komgaBooks.analyzeBook(this.book)
     },
     refreshMetadata () {
       this.$komgaBooks.refreshMetadata(this.book)
-    },
-    async markRead () {
-      const readProgress = { completed: true } as ReadProgressUpdateDto
-      await this.$komgaBooks.updateReadProgress(this.book.id, readProgress)
-      this.book = await this.$komgaBooks.getBook(this.bookId)
-    },
-    async markUnread () {
-      await this.$komgaBooks.deleteReadProgress(this.book.id)
-      this.book = await this.$komgaBooks.getBook(this.bookId)
     },
   },
 })
