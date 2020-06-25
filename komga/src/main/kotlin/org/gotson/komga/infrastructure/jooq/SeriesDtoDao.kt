@@ -39,6 +39,7 @@ class SeriesDtoDao(
     private val b = Tables.BOOK
     private val d = Tables.SERIES_METADATA
     private val r = Tables.READ_PROGRESS
+    private val cs = Tables.COLLECTION_SERIES
 
     val countUnread: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isNull, 1).otherwise(0))
     val countRead: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isTrue, 1).otherwise(0))
@@ -95,6 +96,7 @@ class SeriesDtoDao(
       .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID))
+      .leftJoin(cs).on(s.ID.eq(cs.SERIES_ID))
       .where(conditions)
       .groupBy(s.ID)
       .having(having)
@@ -129,6 +131,7 @@ class SeriesDtoDao(
       .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID))
+      .leftJoin(cs).on(s.ID.eq(cs.SERIES_ID))
       .and(readProgressCondition(userId))
 
   private fun readProgressCondition(userId: Long): Condition = r.USER_ID.eq(userId).or(r.USER_ID.isNull)
@@ -149,6 +152,7 @@ class SeriesDtoDao(
     var c: Condition = DSL.trueCondition()
 
     libraryIds?.let { c = c.and(s.LIBRARY_ID.`in`(it)) }
+    collectionIds?.let { c = c.and(cs.COLLECTION_ID.`in`(it)) }
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
     metadataStatus?.let { c = c.and(d.STATUS.`in`(it)) }
 

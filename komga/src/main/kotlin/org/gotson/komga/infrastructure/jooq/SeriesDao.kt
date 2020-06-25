@@ -21,6 +21,7 @@ class SeriesDao(
   private val s = Tables.SERIES
   private val d = Tables.SERIES_METADATA
   private val b = Tables.BOOK
+  private val cs = Tables.COLLECTION_SERIES
 
 
   override fun findAll(): Collection<Series> =
@@ -63,7 +64,10 @@ class SeriesDao(
   override fun findAll(search: SeriesSearch): Collection<Series> {
     val conditions = search.toCondition()
 
-    return dsl.selectFrom(s)
+    return dsl.select(*s.fields())
+      .from(s)
+      .leftJoin(cs).on(s.ID.eq(cs.SERIES_ID))
+      .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
       .where(conditions)
       .fetchInto(s)
       .map { it.toDomain() }
@@ -132,6 +136,7 @@ class SeriesDao(
     var c: Condition = DSL.trueCondition()
 
     libraryIds?.let { c = c.and(s.LIBRARY_ID.`in`(it)) }
+    collectionIds?.let { c = c.and(cs.COLLECTION_ID.`in`(it)) }
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
     metadataStatus?.let { c = c.and(d.STATUS.`in`(it)) }
 
