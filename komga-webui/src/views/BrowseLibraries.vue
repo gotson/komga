@@ -77,7 +77,7 @@
       </toolbar-sticky>
     </v-scroll-y-transition>
 
-    <library-navigation v-if="collections.length > 0"
+    <library-navigation v-if="collectionsCount > 0"
                         :libraryId="libraryId"
     />
 
@@ -178,7 +178,7 @@ export default Vue.extend({
       dialogEdit: false,
       dialogEditSingle: false,
       dialogAddToCollection: false,
-      collections: [] as CollectionDto[],
+      collectionsCount: 0,
     }
   },
   props: {
@@ -245,7 +245,7 @@ export default Vue.extend({
       this.totalPages = 1
       this.totalElements = null
       this.series = []
-      this.collections = []
+      this.collectionsCount = 0
 
       this.loadLibrary(Number(to.params.libraryId))
 
@@ -322,7 +322,7 @@ export default Vue.extend({
       this.library = this.getLibraryLazy(libraryId)
 
       const lib = libraryId !== 0 ? [libraryId] : undefined
-      this.collections = await this.$komgaCollections.getCollections(lib)
+      this.collectionsCount = (await this.$komgaCollections.getCollections(lib, { size: 1 })).totalElements
 
       await this.loadPage(libraryId, this.page, this.sortActive)
     },
@@ -353,10 +353,7 @@ export default Vue.extend({
         pageRequest.sort = [`${sort.key},${sort.order}`]
       }
 
-      let requestLibraryId
-      if (libraryId !== 0) {
-        requestLibraryId = libraryId
-      }
+      const requestLibraryId = libraryId !== 0 ? libraryId : undefined
       const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters[1], this.filters[0])
 
       this.totalPages = seriesPage.totalPages
