@@ -140,7 +140,7 @@ import CollectionEditDialog from '@/components/CollectionEditDialog.vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
-import { COLLECTION_CHANGED } from '@/types/events'
+import { COLLECTION_CHANGED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -205,9 +205,11 @@ export default Vue.extend({
   },
   created () {
     this.$eventHub.$on(COLLECTION_CHANGED, this.afterDelete)
+    this.$eventHub.$on(SERIES_CHANGED, this.reloadSeries)
   },
   beforeDestroy () {
     this.$eventHub.$off(COLLECTION_CHANGED, this.afterDelete)
+    this.$eventHub.$off(SERIES_CHANGED, this.reloadSeries)
   },
   mounted () {
     this.loadCollection(this.collectionId)
@@ -277,6 +279,9 @@ export default Vue.extend({
     },
     afterDelete () {
       this.$router.push({ name: 'browse-collections', params: { libraryId: '0' } })
+    },
+    reloadSeries (event: EventSeriesChanged) {
+      if (this.series.some(s => s.id === event.id)) this.loadCollection(this.collectionId)
     },
   },
 })
