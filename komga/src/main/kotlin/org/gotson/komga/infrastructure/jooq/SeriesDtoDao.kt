@@ -80,14 +80,14 @@ class SeriesDtoDao(
     selectBase(userId)
       .where(s.ID.eq(seriesId))
       .groupBy(*groupFields)
-      .fetchAndMap()
+      .fetchAndMap(userId)
       .firstOrNull()
 
   override fun findByIds(seriesIds: Collection<Long>, userId: Long): List<SeriesDto> =
     selectBase(userId)
       .where(s.ID.`in`(seriesIds))
       .groupBy(*groupFields)
-      .fetchAndMap()
+      .fetchAndMap(userId)
 
 
   private fun findAll(conditions: Condition, having: Condition, userId: Long, pageable: Pageable): Page<SeriesDto> {
@@ -112,7 +112,7 @@ class SeriesDtoDao(
       .orderBy(orderBy)
       .limit(pageable.pageSize)
       .offset(pageable.offset)
-      .fetchAndMap()
+      .fetchAndMap(userId)
 
     return PageImpl(
       dtos,
@@ -122,11 +122,8 @@ class SeriesDtoDao(
   }
 
   private fun selectBase(userId: Long): SelectOnConditionStep<Record> =
-    dsl.select(*groupFields)
-      .select(DSL.count(b.ID).`as`(BOOKS_COUNT))
-      .select(countUnread.`as`(BOOKS_UNREAD_COUNT))
-      .select(countRead.`as`(BOOKS_READ_COUNT))
-      .select(countInProgress.`as`(BOOKS_IN_PROGRESS_COUNT))
+    dsl.selectDistinct(*groupFields)
+      .select(DSL.countDistinct(b.ID).`as`(BOOKS_COUNT))
       .from(s)
       .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
@@ -136,15 +133,27 @@ class SeriesDtoDao(
 
   private fun readProgressCondition(userId: Long): Condition = r.USER_ID.eq(userId).or(r.USER_ID.isNull)
 
-  private fun ResultQuery<Record>.fetchAndMap() =
+  private fun ResultQuery<Record>.fetchAndMap(userId: Long) =
     fetch()
-      .map { r ->
-        val sr = r.into(s)
-        val dr = r.into(d)
-        val booksCount = r.get(BOOKS_COUNT, Int::class.java)
-        val booksUnreadCount = r.get(BOOKS_UNREAD_COUNT, Int::class.java)
-        val booksReadCount = r.get(BOOKS_READ_COUNT, Int::class.java)
-        val booksInProgressCount = r.get(BOOKS_IN_PROGRESS_COUNT, Int::class.java)
+      .map { rec ->
+        val sr = rec.into(s)
+        val dr = rec.into(d)
+        val booksCount = rec.get(BOOKS_COUNT, Int::class.java)
+
+        val booksCountRecord = dsl
+          .select(countUnread.`as`(BOOKS_UNREAD_COUNT))
+          .select(countRead.`as`(BOOKS_READ_COUNT))
+          .select(countInProgress.`as`(BOOKS_IN_PROGRESS_COUNT))
+          .from(b)
+          .leftJoin(r).on(b.ID.eq(r.BOOK_ID))
+          .and(readProgressCondition(userId))
+          .where(b.SERIES_ID.eq(sr.id))
+          .fetch()
+          .first()
+
+        val booksUnreadCount = booksCountRecord.get(BOOKS_UNREAD_COUNT, Int::class.java)
+        val booksReadCount = booksCountRecord.get(BOOKS_READ_COUNT, Int::class.java)
+        val booksInProgressCount = booksCountRecord.get(BOOKS_IN_PROGRESS_COUNT, Int::class.java)
         sr.toDto(booksCount, booksReadCount, booksUnreadCount, booksInProgressCount, dr.toDto())
       }
 
