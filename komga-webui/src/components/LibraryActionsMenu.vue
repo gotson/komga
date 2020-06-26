@@ -22,25 +22,13 @@
         </v-list-item>
       </v-list>
     </v-menu>
-
-    <library-delete-dialog v-model="modalDeleteLibrary"
-                           :library="library"
-                           @deleted="navigateHome"
-    />
   </div>
 </template>
 <script lang="ts">
-import LibraryDeleteDialog from '@/components/LibraryDeleteDialog.vue'
 import Vue from 'vue'
 
 export default Vue.extend({
   name: 'LibraryActionsMenu',
-  components: { LibraryDeleteDialog },
-  data: function () {
-    return {
-      modalDeleteLibrary: false,
-    }
-  },
   props: {
     library: {
       type: Object as () => LibraryDto,
@@ -63,20 +51,11 @@ export default Vue.extend({
       this.$komgaLibraries.refreshMetadata(this.library)
     },
     promptDeleteLibrary () {
-      this.modalDeleteLibrary = true
-    },
-    navigateHome () {
-      this.$router.push({ name: 'home' })
+      this.$store.dispatch('dialogDeleteLibrary', this.library)
     },
   },
 })
 </script>
 <style scoped>
-.list-warning:hover {
-  background: #F44336;
-}
-
-.list-warning:hover .v-list-item__title {
-  color: white;
-}
+@import "../styles/list-warning.css";
 </style>

@@ -132,7 +132,7 @@ import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { parseQueryFilter, parseQuerySort } from '@/functions/query-params'
 import { ReadStatus } from '@/types/enum-books'
 import { SeriesStatus } from '@/types/enum-series'
-import { COLLECTION_CHANGED, SERIES_CHANGED } from '@/types/events'
+import { COLLECTION_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 
 const cookiePageSize = 'pagesize'
@@ -210,10 +210,12 @@ export default Vue.extend({
   created () {
     this.$eventHub.$on(COLLECTION_CHANGED, this.reloadCollections)
     this.$eventHub.$on(SERIES_CHANGED, this.reloadSeries)
+    this.$eventHub.$on(LIBRARY_DELETED, this.libraryDeleted)
   },
   beforeDestroy () {
     this.$eventHub.$off(COLLECTION_CHANGED, this.reloadCollections)
     this.$eventHub.$off(SERIES_CHANGED, this.reloadSeries)
+    this.$eventHub.$off(LIBRARY_DELETED, this.libraryDeleted)
   },
   mounted () {
     if (this.$cookies.isKey(cookiePageSize)) {
@@ -271,6 +273,13 @@ export default Vue.extend({
     },
   },
   methods: {
+    libraryDeleted (event: EventLibraryDeleted) {
+      if (event.id === this.libraryId) {
+        this.$router.push({ name: 'home' })
+      } else if (this.libraryId === 0) {
+        this.loadLibrary(this.libraryId)
+      }
+    },
     setWatches () {
       this.sortUnwatch = this.$watch('sortActive', this.updateRouteAndReload)
       this.filterUnwatch = this.$watch('filters', this.updateRouteAndReload)

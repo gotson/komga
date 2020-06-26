@@ -157,7 +157,7 @@ import { getReadProgress, getReadProgressPercentage } from '@/functions/book-pro
 import { getBookTitleCompact } from '@/functions/book-title'
 import { bookFileUrl, bookThumbnailUrl } from '@/functions/urls'
 import { ReadStatus } from '@/types/enum-books'
-import { BOOK_CHANGED } from '@/types/events'
+import { BOOK_CHANGED, LIBRARY_DELETED } from '@/types/events'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -173,9 +173,11 @@ export default Vue.extend({
   async created () {
     this.loadBook(this.bookId)
     this.$eventHub.$on(BOOK_CHANGED, this.reloadBook)
+    this.$eventHub.$on(LIBRARY_DELETED, this.libraryDeleted)
   },
   beforeDestroy () {
     this.$eventHub.$off(BOOK_CHANGED, this.reloadBook)
+    this.$eventHub.$off(LIBRARY_DELETED, this.libraryDeleted)
   },
   watch: {
     async book (val) {
@@ -234,6 +236,11 @@ export default Vue.extend({
     },
   },
   methods: {
+    libraryDeleted (event: EventLibraryDeleted) {
+      if (event.id === this.book.libraryId) {
+        this.$router.push({ name: 'home' })
+      }
+    },
     reloadBook (event: EventBookChanged) {
       if (event.id === this.bookId) this.loadBook(this.bookId)
     },

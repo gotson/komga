@@ -1,0 +1,7 @@
+.list-warning:hover {
+    background: #F44336;
+}
+
+.list-warning:hover .v-list-item__title {
+    color: white;
+}

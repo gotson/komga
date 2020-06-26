@@ -9,6 +9,8 @@ export default new Vuex.Store({
     addToCollectionDialog: false,
     deleteCollection: {} as CollectionDto,
     deleteCollectionDialog: false,
+    deleteLibrary: {} as LibraryDto,
+    deleteLibraryDialog: false,
   },
   mutations: {
     setAddToCollectionSeries (state, series) {
@@ -22,6 +24,12 @@ export default new Vuex.Store({
     },
     setDeleteCollectionDialog (state, dialog) {
       state.deleteCollectionDialog = dialog
+    },
+    setDeleteLibrary (state, library) {
+      state.deleteLibrary = library
+    },
+    setDeleteLibraryDialog (state, dialog) {
+      state.deleteLibraryDialog = dialog
     },
   },
   actions: {
@@ -38,6 +46,13 @@ export default new Vuex.Store({
     },
     dialogDeleteCollectionDisplay ({ commit }, value) {
       commit('setDeleteCollectionDialog', value)
+    },
+    dialogDeleteLibrary ({ commit }, library) {
+      commit('setDeleteLibrary', library)
+      commit('setDeleteLibraryDialog', true)
+    },
+    dialogDeleteLibraryDisplay ({ commit }, value) {
+      commit('setDeleteLibraryDialog', value)
     },
   },
 })

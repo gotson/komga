@@ -11,18 +11,25 @@
       :collection="deleteCollection"
       @deleted="collectionDeleted"
     />
+
+    <library-delete-dialog
+      v-model="deleteLibraryDialog"
+      :library="deleteLibrary"
+      @deleted="libraryDeleted"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import CollectionAddToDialog from '@/components/CollectionAddToDialog.vue'
 import CollectionDeleteDialog from '@/components/CollectionDeleteDialog.vue'
-import { COLLECTION_CHANGED, SERIES_CHANGED } from '@/types/events'
+import LibraryDeleteDialog from '@/components/LibraryDeleteDialog.vue'
+import { COLLECTION_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 
 export default Vue.extend({
   name: 'Dialogs',
-  components: { CollectionAddToDialog, CollectionDeleteDialog },
+  components: { CollectionAddToDialog, CollectionDeleteDialog, LibraryDeleteDialog },
   computed: {
     addToCollectionDialog: {
       get (): boolean {
@@ -46,6 +53,17 @@ export default Vue.extend({
     deleteCollection (): CollectionDto {
       return this.$store.state.deleteCollection
     },
+    deleteLibraryDialog: {
+      get (): boolean {
+        return this.$store.state.deleteLibraryDialog
+      },
+      set (val) {
+        this.$store.dispatch('dialogDeleteLibraryDisplay', val)
+      },
+    },
+    deleteLibrary (): LibraryDto {
+      return this.$store.state.deleteLibrary
+    },
   },
   methods: {
     collectionAdded () {
@@ -66,6 +84,11 @@ export default Vue.extend({
     },
     collectionDeleted () {
       this.$eventHub.$emit(COLLECTION_CHANGED)
+    },
+    libraryDeleted () {
+      this.$eventHub.$emit(LIBRARY_DELETED, {
+        id: this.deleteLibrary.id,
+      } as EventLibraryDeleted)
     },
   },
 })

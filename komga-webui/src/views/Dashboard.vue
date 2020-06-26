@@ -89,6 +89,7 @@ import EmptyState from '@/components/EmptyState.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import { ReadStatus } from '@/types/enum-books'
+import { LIBRARY_DELETED } from '@/types/events'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -107,12 +108,14 @@ export default Vue.extend({
       dialogEditBookSingle: false,
     }
   },
+  created () {
+    this.$eventHub.$on(LIBRARY_DELETED, this.loadAll)
+  },
+  beforeDestroy () {
+    this.$eventHub.$off(LIBRARY_DELETED, this.loadAll)
+  },
   mounted () {
-    this.loadNewSeries()
-    this.loadUpdatedSeries()
-    this.loadLatestBooks()
-    this.loadInProgressBooks()
-    this.loadOnDeckBooks()
+    this.loadAll()
   },
   watch: {
     editSeriesSingle (val: SeriesDto) {
@@ -150,6 +153,13 @@ export default Vue.extend({
     },
   },
   methods: {
+    loadAll () {
+      this.loadNewSeries()
+      this.loadUpdatedSeries()
+      this.loadLatestBooks()
+      this.loadInProgressBooks()
+      this.loadOnDeckBooks()
+    },
     async loadNewSeries () {
       this.newSeries = (await this.$komgaSeries.getNewSeries()).content
     },

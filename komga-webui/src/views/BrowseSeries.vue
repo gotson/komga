@@ -211,7 +211,7 @@ import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { parseQueryFilter, parseQuerySort } from '@/functions/query-params'
 import { seriesThumbnailUrl } from '@/functions/urls'
 import { ReadStatus } from '@/types/enum-books'
-import { BOOK_CHANGED, SERIES_CHANGED } from '@/types/events'
+import { BOOK_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 
 const cookiePageSize = 'pagesize'
@@ -319,10 +319,12 @@ export default Vue.extend({
   created () {
     this.$eventHub.$on(SERIES_CHANGED, this.reloadSeries)
     this.$eventHub.$on(BOOK_CHANGED, this.reloadBooks)
+    this.$eventHub.$on(LIBRARY_DELETED, this.libraryDeleted)
   },
   beforeDestroy () {
     this.$eventHub.$off(SERIES_CHANGED, this.reloadSeries)
-    this.$eventHub.$on(BOOK_CHANGED, this.reloadBooks)
+    this.$eventHub.$off(BOOK_CHANGED, this.reloadBooks)
+    this.$eventHub.$off(LIBRARY_DELETED, this.libraryDeleted)
   },
   mounted () {
     if (this.$cookies.isKey(cookiePageSize)) {
@@ -390,6 +392,11 @@ export default Vue.extend({
       this.loadPage(this.seriesId, this.page, this.sortActive)
 
       this.setWatches()
+    },
+    libraryDeleted (event: EventLibraryDeleted) {
+      if (event.id === this.series.libraryId) {
+        this.$router.push({ name: 'home' })
+      }
     },
     reloadSeries (event: EventSeriesChanged) {
       if (event.id === this.seriesId) this.loadSeries(this.seriesId)

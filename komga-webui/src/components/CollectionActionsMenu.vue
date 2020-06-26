@@ -53,11 +53,5 @@ export default Vue.extend({
 })
 </script>
 <style scoped>
-.list-warning:hover {
-  background: #F44336;
-}
-
-.list-warning:hover .v-list-item__title {
-  color: white;
-}
+@import "../styles/list-warning.css";
 </style>
