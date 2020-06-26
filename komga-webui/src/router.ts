@@ -78,7 +78,7 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "account" */ './views/AccountSettings.vue'),
         },
         {
-          path: '/libraries/:libraryId',
+          path: '/libraries/:libraryId/series',
           name: 'browse-libraries',
           beforeEnter: noLibraryGuard,
           component: () => import(/* webpackChunkName: "browse-libraries" */ './views/BrowseLibraries.vue'),

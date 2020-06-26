@@ -2,7 +2,7 @@
   <v-bottom-navigation grow color="primary"
                        :fixed="$vuetify.breakpoint.name === 'xs'"
   >
-    <v-btn :to="{name: 'browse-libraries', params: {libraryId: libraryId}}" exact>
+    <v-btn :to="{name: 'browse-libraries', params: {libraryId: libraryId}}">
       <span>Browse</span>
       <v-icon>mdi-bookshelf</v-icon>
     </v-btn>
