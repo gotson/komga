@@ -23,9 +23,9 @@
             <div class="title">Series</div>
           </template>
           <template v-slot:content>
-            <div v-for="(s, i) in series"
-                 :key="i">
-              <item-card class="ma-2 card" :item="s"/>
+            <div v-for="(item, index) in series"
+                 :key="index">
+              <item-card class="ma-2 card" :item="item"/>
             </div>
           </template>
         </horizontal-scroller>
@@ -35,9 +35,21 @@
             <div class="title">Books</div>
           </template>
           <template v-slot:content>
-            <div v-for="(s, i) in books"
-                 :key="i">
-              <item-card class="ma-2 card" :item="s"/>
+            <div v-for="(item, index) in books"
+                 :key="index">
+              <item-card class="ma-2 card" :item="item"/>
+            </div>
+          </template>
+        </horizontal-scroller>
+
+        <horizontal-scroller v-if="collections.length !== 0" class="my-4">
+          <template v-slot:prepend>
+            <div class="title">Collections</div>
+          </template>
+          <template v-slot:content>
+            <div v-for="(item, index) in collections"
+                 :key="index">
+              <item-card class="ma-2 card" :item="item"/>
             </div>
           </template>
         </horizontal-scroller>
@@ -53,9 +65,8 @@ import EmptyState from '@/components/EmptyState.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
+import { BOOK_CHANGED, COLLECTION_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
-
-const cookiePageSize = 'pagesize'
 
 export default Vue.extend({
   name: 'Search',
@@ -69,9 +80,22 @@ export default Vue.extend({
     return {
       series: [] as SeriesDto[],
       books: [] as BookDto[],
+      collections: [] as CollectionDto[],
       pageSize: 50,
       loading: false,
     }
+  },
+  created () {
+    this.$eventHub.$on(LIBRARY_DELETED, this.reloadResults)
+    this.$eventHub.$on(SERIES_CHANGED, this.reloadResults)
+    this.$eventHub.$on(BOOK_CHANGED, this.reloadResults)
+    this.$eventHub.$on(COLLECTION_CHANGED, this.reloadResults)
+  },
+  beforeDestroy () {
+    this.$eventHub.$off(LIBRARY_DELETED, this.reloadResults)
+    this.$eventHub.$off(SERIES_CHANGED, this.reloadResults)
+    this.$eventHub.$off(BOOK_CHANGED, this.reloadResults)
+    this.$eventHub.$off(COLLECTION_CHANGED, this.reloadResults)
   },
   watch: {
     '$route.query.q': {
@@ -84,21 +108,26 @@ export default Vue.extend({
   },
   computed: {
     emptyResults (): boolean {
-      return !this.loading && this.series.length === 0 && this.books.length === 0
+      return !this.loading && this.series.length === 0 && this.books.length === 0 && this.collections.length === 0
     },
   },
   methods: {
+    reloadResults () {
+      this.loadResults(this.$route.query.q.toString())
+    },
     async loadResults (search: string) {
       if (search) {
         this.loading = true
 
         this.series = (await this.$komgaSeries.getSeries(undefined, { size: this.pageSize }, search)).content
         this.books = (await this.$komgaBooks.getBooks(undefined, { size: this.pageSize }, search)).content
+        this.collections = (await this.$komgaCollections.getCollections(undefined, { size: this.pageSize }, undefined, search)).content
 
         this.loading = false
       } else {
         this.series = []
         this.books = []
+        this.collections = []
       }
     },
   },

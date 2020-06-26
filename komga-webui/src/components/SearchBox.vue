@@ -19,7 +19,8 @@
             :min-width="$vuetify.breakpoint.mdAndUp ? $vuetify.breakpoint.width * .4 : $vuetify.breakpoint.width * .8"
     >
       <v-list>
-        <v-list-item v-if="series.length === 0 && books.length === 0">No results</v-list-item>
+        <v-list-item v-if="series.length === 0 && books.length === 0 && collections.length === 0">No results
+        </v-list-item>
 
         <template v-if="series.length !== 0">
           <v-subheader>SERIES</v-subheader>
@@ -57,13 +58,31 @@
           </v-list-item>
         </template>
 
+        <template v-if="collections.length !== 0">
+          <v-subheader>COLLECTIONS</v-subheader>
+          <v-list-item v-for="item in collections"
+                       :key="item.id"
+                       link
+                       :to="{name: 'browse-collection', params: {collectionId: item.id}}"
+          >
+            <v-img :src="collectionThumbnailUrl(item.id)"
+                   height="50"
+                   max-width="35"
+                   class="ma-1 mr-3"
+            />
+            <v-list-item-content>
+              <v-list-item-title v-text="item.name"/>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
+
       </v-list>
     </v-menu>
   </div>
 </template>
 
 <script lang="ts">
-import { bookThumbnailUrl, seriesThumbnailUrl } from '@/functions/urls'
+import { bookThumbnailUrl, collectionThumbnailUrl, seriesThumbnailUrl } from '@/functions/urls'
 import { debounce } from 'lodash'
 import Vue from 'vue'
 
@@ -76,6 +95,7 @@ export default Vue.extend({
       loading: false,
       series: [] as SeriesDto[],
       books: [] as BookDto[],
+      collections: [] as CollectionDto[],
       pageSize: 10,
     }
   },
@@ -93,6 +113,7 @@ export default Vue.extend({
         this.loading = true
         this.series = (await this.$komgaSeries.getSeries(undefined, { size: this.pageSize }, query)).content
         this.books = (await this.$komgaBooks.getBooks(undefined, { size: this.pageSize }, query)).content
+        this.collections = (await this.$komgaCollections.getCollections(undefined, { size: this.pageSize }, false, query)).content
         this.showResults = true
         this.loading = false
       } else {
@@ -104,6 +125,7 @@ export default Vue.extend({
       this.showResults = false
       this.series = []
       this.books = []
+      this.collections = []
     },
     searchDetails () {
       const s = this.search
@@ -116,6 +138,9 @@ export default Vue.extend({
     },
     bookThumbnailUrl (bookId: number): string {
       return bookThumbnailUrl(bookId)
+    },
+    collectionThumbnailUrl (collectionId: number): string {
+      return collectionThumbnailUrl(collectionId)
     },
   },
 })
