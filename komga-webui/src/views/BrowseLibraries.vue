@@ -89,7 +89,7 @@
                         :series.sync="editSeriesSingle"
     />
 
-    <v-container fluid class="px-6">
+    <v-container fluid>
       <empty-state
         v-if="totalPages === 0"
         title="The active filter has no matches"
@@ -111,7 +111,6 @@
           :items="series"
           :selected.sync="selected"
           :edit-function="singleEdit"
-          class="px-4"
         />
       </template>
     </v-container>

@@ -82,7 +82,7 @@
                        :books.sync="editBookSingle"
     />
 
-    <v-container fluid class="px-6">
+    <v-container fluid>
       <v-row>
         <v-col cols="4" sm="4" md="auto" lg="auto" xl="auto">
           <item-card
@@ -186,7 +186,10 @@
           :length="totalPages"
         />
 
-        <item-browser :items="books" :selected.sync="selected" :edit-function="this.singleEdit" class="px-4"/>
+        <item-browser :items="books"
+                      :selected.sync="selected"
+                      :edit-function="this.singleEdit"
+        />
       </template>
 
     </v-container>

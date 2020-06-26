@@ -21,7 +21,7 @@
       />
     </toolbar-sticky>
 
-    <v-container fluid class="pa-6">
+    <v-container fluid class="px-6">
       <v-row>
         <v-col cols="4" sm="4" md="auto" lg="auto" xl="auto">
           <item-card

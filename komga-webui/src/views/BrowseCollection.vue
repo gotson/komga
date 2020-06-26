@@ -117,7 +117,7 @@
                             @updated="loadCollection(collectionId)"
     />
 
-    <v-container fluid class="px-6">
+    <v-container fluid>
 
       <item-browser
         :items.sync="series"
