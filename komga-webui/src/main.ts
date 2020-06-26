@@ -36,6 +36,7 @@ Vue.use(komgaLibraries, { store: store, http: Vue.prototype.$http })
 Vue.use(actuator, { http: Vue.prototype.$http })
 
 Vue.prototype.$_ = _
+Vue.prototype.$eventHub = new Vue()
 
 Vue.config.productionTip = false
 
@@ -51,6 +52,7 @@ new Vue({
 declare module 'vue/types/vue' {
   interface Vue {
     $_: LoDashStatic;
+    $eventHub: Vue;
   }
 }
 

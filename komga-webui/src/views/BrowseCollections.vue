@@ -31,6 +31,7 @@ import ItemBrowser from '@/components/ItemBrowser.vue'
 import LibraryActionsMenu from '@/components/LibraryActionsMenu.vue'
 import LibraryNavigation from '@/components/LibraryNavigation.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
+import { COLLECTION_CHANGED } from '@/types/events'
 import Vue from 'vue'
 
 const cookiePageSize = 'pagesize'
@@ -56,6 +57,12 @@ export default Vue.extend({
       default: 0,
     },
   },
+  created () {
+    this.$eventHub.$on(COLLECTION_CHANGED, this.reloadCollections)
+  },
+  beforeDestroy () {
+    this.$eventHub.$off(COLLECTION_CHANGED, this.reloadCollections)
+  },
   mounted () {
     this.loadLibrary(this.libraryId)
   },
@@ -75,10 +82,16 @@ export default Vue.extend({
     },
   },
   methods: {
+    reloadCollections () {
+      this.loadLibrary(this.libraryId)
+    },
     async loadLibrary (libraryId: number) {
       this.library = this.getLibraryLazy(libraryId)
       const lib = libraryId !== 0 ? [libraryId] : undefined
       this.collections = await this.$komgaCollections.getCollections(lib)
+      if (this.collections.length === 0) {
+        await this.$router.push({ name: 'browse-libraries', params: { libraryId: libraryId.toString() } })
+      }
     },
     getLibraryLazy (libraryId: any): LibraryDto | undefined {
       if (libraryId !== 0) {

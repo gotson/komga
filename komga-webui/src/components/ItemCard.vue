@@ -28,10 +28,10 @@
           <!-- Thumbnail overlay -->
           <v-fade-transition>
             <v-overlay
-              v-if="hover || selected || preselect"
+              v-if="hover || selected || preselect || actionMenuState"
               absolute
-              :opacity="hover ? 0.3 : 0"
-              :class="`${hover ? 'item-border-darken' : selected ? 'item-border' : 'item-border-transparent'} overlay-full`"
+              :opacity="hover || actionMenuState ? 0.3 : 0"
+              :class="`${hover || actionMenuState ? 'item-border-darken' : selected ? 'item-border' : 'item-border-transparent'} overlay-full`"
             >
               <!-- Circle icon for selection (top left) -->
               <v-icon v-if="onSelected"
@@ -56,12 +56,31 @@
               </v-btn>
 
               <!-- Pen icon for edition (bottom left) -->
-              <v-icon v-if="!selected && !preselect && onEdit"
-                      style="position: absolute; bottom: 10px; left: 10px"
-                      @click.stop="editItem"
+              <v-btn icon
+                     v-if="!selected && !preselect && onEdit"
+                     style="position: absolute; bottom: 5px; left: 5px"
+                     @click.stop="editItem"
               >
-                mdi-pencil
-              </v-icon>
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+
+              <!-- Action menu (bottom right) -->
+              <div v-if="!selected && !preselect && actionMenu"
+                   style="position: absolute; bottom: 5px; right: 5px"
+              >
+                <book-actions-menu v-if="computedItem.type() === ItemTypes.BOOK"
+                                   :book="item"
+                                   :menu.sync="actionMenuState"
+                />
+                <series-actions-menu v-if="computedItem.type() === ItemTypes.SERIES"
+                                     :series="item"
+                                     :menu.sync="actionMenuState"
+                />
+                <collection-actions-menu v-if="computedItem.type() === ItemTypes.COLLECTION"
+                                         :collection="item"
+                                         :menu.sync="actionMenuState"
+                />
+              </div>
             </v-overlay>
           </v-fade-transition>
           <v-progress-linear
@@ -90,6 +109,9 @@
 </template>
 
 <script lang="ts">
+import BookActionsMenu from '@/components/BookActionsMenu.vue'
+import CollectionActionsMenu from '@/components/CollectionActionsMenu.vue'
+import SeriesActionsMenu from '@/components/SeriesActionsMenu.vue'
 import { getReadProgress, getReadProgressPercentage } from '@/functions/book-progress'
 import { ReadStatus } from '@/types/enum-books'
 import { createItem, Item, ItemTypes } from '@/types/items'
@@ -97,6 +119,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'ItemCard',
+  components: { BookActionsMenu, SeriesActionsMenu, CollectionActionsMenu },
   props: {
     item: {
       type: Object as () => BookDto | SeriesDto | CollectionDto,
@@ -139,16 +162,24 @@ export default Vue.extend({
       default: undefined,
       required: false,
     },
+    // action menu enabled or not
+    actionMenu: {
+      type: Boolean,
+      default: true,
+    },
   },
   data: () => {
-    return {}
+    return {
+      ItemTypes,
+      actionMenuState: false,
+    }
   },
   computed: {
     canReadPages (): boolean {
       return this.$store.getters.mePageStreaming && this.computedItem.type() === ItemTypes.BOOK
     },
     overlay (): boolean {
-      return this.onEdit !== undefined || this.onSelected !== undefined || this.bookReady || this.canReadPages
+      return this.onEdit !== undefined || this.onSelected !== undefined || this.bookReady || this.canReadPages || this.actionMenu
     },
     computedItem (): Item<BookDto | SeriesDto | CollectionDto> {
       return createItem(this.item)

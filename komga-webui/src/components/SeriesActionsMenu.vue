@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-menu offset-y>
+    <v-menu offset-y v-model="menuState">
       <template v-slot:activator="{ on }">
         <v-btn icon v-on="on" @click.prevent="">
           <v-icon>mdi-dots-vertical</v-icon>
@@ -27,14 +27,29 @@
   </div>
 </template>
 <script lang="ts">
+import { SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 
 export default Vue.extend({
   name: 'SeriesActionsMenu',
+  data: () => {
+    return {
+      menuState: false,
+    }
+  },
   props: {
     series: {
       type: Object as () => SeriesDto,
       required: true,
+    },
+    menu: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  watch: {
+    menuState (val) {
+      this.$emit('update:menu', val)
     },
   },
   computed: {
@@ -56,15 +71,21 @@ export default Vue.extend({
       this.$komgaSeries.refreshMetadata(this.series)
     },
     addToCollection () {
-      this.$emit('add-to-collection', true)
+      this.$store.dispatch('dialogAddSeriesToCollection', this.series)
     },
     async markRead () {
       await this.$komgaSeries.markAsRead(this.series.id)
-      this.$emit('mark-read', true)
+      this.$eventHub.$emit(SERIES_CHANGED, {
+        id: this.series.id,
+        libraryId: this.series.libraryId,
+      } as EventSeriesChanged)
     },
     async markUnread () {
       await this.$komgaSeries.markAsUnread(this.series.id)
-      this.$emit('mark-unread', true)
+      this.$eventHub.$emit(SERIES_CHANGED, {
+        id: this.series.id,
+        libraryId: this.series.libraryId,
+      } as EventSeriesChanged)
     },
   },
 })

@@ -4,7 +4,6 @@
 
       <collection-actions-menu v-if="collection"
                                :collection="collection"
-                               @deleted="afterDelete"
       />
 
       <v-toolbar-title v-if="collection">
@@ -141,6 +140,7 @@ import CollectionEditDialog from '@/components/CollectionEditDialog.vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
+import { COLLECTION_CHANGED } from '@/types/events'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -202,6 +202,12 @@ export default Vue.extend({
         this.seriesCopy.splice(index, 1, val)
       }
     },
+  },
+  created () {
+    this.$eventHub.$on(COLLECTION_CHANGED, this.afterDelete)
+  },
+  beforeDestroy () {
+    this.$eventHub.$off(COLLECTION_CHANGED, this.afterDelete)
   },
   mounted () {
     this.loadCollection(this.collectionId)

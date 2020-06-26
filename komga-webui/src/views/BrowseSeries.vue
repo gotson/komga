@@ -11,9 +11,6 @@
 
       <series-actions-menu v-if="series"
                            :series="series"
-                           @add-to-collection="addToCollection"
-                           @mark-read="loadSeries(seriesId)"
-                           @mark-unread="loadSeries(seriesId)"
       />
 
       <v-toolbar-title>
@@ -94,6 +91,7 @@
             :item="series"
             thumbnail-only
             no-link
+            :action-menu="false"
           ></item-card>
 
         </v-col>
@@ -194,16 +192,11 @@
 
     <edit-series-dialog v-model="dialogEdit" :series.sync="series"/>
 
-    <collection-add-to-dialog v-model="dialogAddToCollection"
-                              :series="series"
-                              @added="loadSeries(seriesId)"
-    />
   </div>
 </template>
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
-import CollectionAddToDialog from '@/components/CollectionAddToDialog.vue'
 import EditBooksDialog from '@/components/EditBooksDialog.vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 import EmptyState from '@/components/EmptyState.vue'
@@ -218,6 +211,7 @@ import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { parseQueryFilter, parseQuerySort } from '@/functions/query-params'
 import { seriesThumbnailUrl } from '@/functions/urls'
 import { ReadStatus } from '@/types/enum-books'
+import { BOOK_CHANGED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 
 const cookiePageSize = 'pagesize'
@@ -234,7 +228,6 @@ export default Vue.extend({
     ItemBrowser,
     PageSizeSelect,
     SeriesActionsMenu,
-    CollectionAddToDialog,
     HorizontalScroller,
     ItemCard,
     EmptyState,
@@ -323,6 +316,14 @@ export default Vue.extend({
       }
     },
   },
+  created () {
+    this.$eventHub.$on(SERIES_CHANGED, this.reloadSeries)
+    this.$eventHub.$on(BOOK_CHANGED, this.reloadBooks)
+  },
+  beforeDestroy () {
+    this.$eventHub.$off(SERIES_CHANGED, this.reloadSeries)
+    this.$eventHub.$on(BOOK_CHANGED, this.reloadBooks)
+  },
   mounted () {
     if (this.$cookies.isKey(cookiePageSize)) {
       this.pageSize = Number(this.$cookies.get(cookiePageSize))
@@ -389,6 +390,12 @@ export default Vue.extend({
       this.loadPage(this.seriesId, this.page, this.sortActive)
 
       this.setWatches()
+    },
+    reloadSeries (event: EventSeriesChanged) {
+      if (event.id === this.seriesId) this.loadSeries(this.seriesId)
+    },
+    reloadBooks (event: EventBookChanged) {
+      if (event.seriesId === this.seriesId) this.loadSeries(this.seriesId)
     },
     async loadSeries (seriesId: number) {
       this.series = await this.$komgaSeries.getOneSeries(seriesId)
@@ -459,9 +466,6 @@ export default Vue.extend({
         this.$komgaBooks.getBook(b.id),
       ))
       this.loadSeries(this.seriesId)
-    },
-    addToCollection () {
-      this.dialogAddToCollection = true
     },
   },
 })

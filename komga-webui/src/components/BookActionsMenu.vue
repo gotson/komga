@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-menu offset-y>
+    <v-menu offset-y v-model="menuState">
       <template v-slot:activator="{ on }">
         <v-btn icon v-on="on" @click.prevent="">
           <v-icon>mdi-dots-vertical</v-icon>
@@ -26,14 +26,29 @@
 <script lang="ts">
 import { getReadProgress } from '@/functions/book-progress'
 import { ReadStatus } from '@/types/enum-books'
+import { BOOK_CHANGED } from '@/types/events'
 import Vue from 'vue'
 
 export default Vue.extend({
   name: 'BookActionsMenu',
+  data: () => {
+    return {
+      menuState: false,
+    }
+  },
   props: {
     book: {
       type: Object as () => BookDto,
       required: true,
+    },
+    menu: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  watch: {
+    menuState (val) {
+      this.$emit('update:menu', val)
     },
   },
   computed: {
@@ -57,11 +72,17 @@ export default Vue.extend({
     async markRead () {
       const readProgress = { completed: true } as ReadProgressUpdateDto
       await this.$komgaBooks.updateReadProgress(this.book.id, readProgress)
-      this.$emit('mark-read', true)
+      this.$eventHub.$emit(BOOK_CHANGED, {
+        id: this.book.id,
+        seriesId: this.book.seriesId,
+      } as EventBookChanged)
     },
     async markUnread () {
       await this.$komgaBooks.deleteReadProgress(this.book.id)
-      this.$emit('mark-unread', true)
+      this.$eventHub.$emit(BOOK_CHANGED, {
+        id: this.book.id,
+        seriesId: this.book.seriesId,
+      } as EventBookChanged)
     },
   },
 })

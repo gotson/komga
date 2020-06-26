@@ -89,10 +89,6 @@
                         :series.sync="editSeriesSingle"
     />
 
-    <collection-add-to-dialog v-model="dialogAddToCollection"
-                              :series="selectedSeries"
-    />
-
     <v-container fluid class="px-6">
       <empty-state
         v-if="totalPages === 0"
@@ -124,7 +120,6 @@
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
-import CollectionAddToDialog from '@/components/CollectionAddToDialog.vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import FilterMenuButton from '@/components/FilterMenuButton.vue'
@@ -137,6 +132,7 @@ import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { parseQueryFilter, parseQuerySort } from '@/functions/query-params'
 import { ReadStatus } from '@/types/enum-books'
 import { SeriesStatus } from '@/types/enum-series'
+import { COLLECTION_CHANGED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 
 const cookiePageSize = 'pagesize'
@@ -152,7 +148,6 @@ export default Vue.extend({
     Badge,
     EditSeriesDialog,
     ItemBrowser,
-    CollectionAddToDialog,
     PageSizeSelect,
     LibraryNavigation,
   },
@@ -211,6 +206,14 @@ export default Vue.extend({
         this.series.splice(index, 1, val)
       }
     },
+  },
+  created () {
+    this.$eventHub.$on(COLLECTION_CHANGED, this.reloadCollections)
+    this.$eventHub.$on(SERIES_CHANGED, this.reloadSeries)
+  },
+  beforeDestroy () {
+    this.$eventHub.$off(COLLECTION_CHANGED, this.reloadCollections)
+    this.$eventHub.$off(SERIES_CHANGED, this.reloadSeries)
   },
   mounted () {
     if (this.$cookies.isKey(cookiePageSize)) {
@@ -298,6 +301,14 @@ export default Vue.extend({
 
       this.setWatches()
     },
+    reloadCollections () {
+      this.loadLibrary(this.libraryId)
+    },
+    reloadSeries (event: EventSeriesChanged) {
+      if (this.libraryId === 0 || event.libraryId === this.libraryId) {
+        this.loadPage(this.libraryId, this.page, this.sortActive)
+      }
+    },
     async loadLibrary (libraryId: number) {
       this.library = this.getLibraryLazy(libraryId)
 
@@ -371,7 +382,7 @@ export default Vue.extend({
       ))
     },
     addToCollection () {
-      this.dialogAddToCollection = true
+      this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries)
     },
   },
 })

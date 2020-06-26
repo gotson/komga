@@ -253,7 +253,6 @@ import SettingsSelect from '@/components/SettingsSelect.vue'
 import SettingsSwitch from '@/components/SettingsSwitch.vue'
 import ThumbnailExplorerDialog from '@/components/ThumbnailExplorerDialog.vue'
 import { getBookTitleCompact } from '@/functions/book-title'
-
 import { checkWebpFeature } from '@/functions/check-webp'
 import { bookPageUrl } from '@/functions/urls'
 import { ReadingDirection } from '@/types/enum-books'

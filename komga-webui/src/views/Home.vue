@@ -109,19 +109,21 @@
     </v-navigation-drawer>
 
     <v-content>
+      <dialogs/>
       <router-view/>
     </v-content>
   </div>
 </template>
 
 <script lang="ts">
+import Dialogs from '@/components/Dialogs.vue'
 import LibraryActionsMenu from '@/components/LibraryActionsMenu.vue'
 import SearchBox from '@/components/SearchBox.vue'
 import Vue from 'vue'
 
 export default Vue.extend({
   name: 'home',
-  components: { LibraryActionsMenu, SearchBox },
+  components: { LibraryActionsMenu, SearchBox, Dialogs },
   data: function () {
     return {
       drawerVisible: this.$vuetify.breakpoint.lgAndUp,

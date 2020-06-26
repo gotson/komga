@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-menu offset-y v-if="isAdmin">
+    <v-menu offset-y v-if="isAdmin" v-model="menuState">
       <template v-slot:activator="{ on }">
         <v-btn icon v-on="on" @click.prevent="">
           <v-icon>mdi-dots-vertical</v-icon>
@@ -13,29 +13,31 @@
         </v-list-item>
       </v-list>
     </v-menu>
-
-    <collection-delete-dialog v-model="modalDeleteCollection"
-                              :collection="collection"
-                              @deleted="afterDelete"
-    />
   </div>
 </template>
 <script lang="ts">
-import CollectionDeleteDialog from '@/components/CollectionDeleteDialog.vue'
 import Vue from 'vue'
 
 export default Vue.extend({
   name: 'CollectionActionsMenu',
-  components: { CollectionDeleteDialog },
   data: function () {
     return {
-      modalDeleteCollection: false,
+      menuState: false,
     }
   },
   props: {
     collection: {
       type: Object as () => CollectionDto,
       required: true,
+    },
+    menu: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  watch: {
+    menuState (val) {
+      this.$emit('update:menu', val)
     },
   },
   computed: {
@@ -45,10 +47,7 @@ export default Vue.extend({
   },
   methods: {
     promptDeleteCollection () {
-      this.modalDeleteCollection = true
-    },
-    afterDelete () {
-      this.$emit('deleted', true)
+      this.$store.dispatch('dialogDeleteCollection', this.collection)
     },
   },
 })
