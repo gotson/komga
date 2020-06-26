@@ -1,3 +1,29 @@
+# [0.41.0](https://github.com/gotson/komga/compare/v0.40.1...v0.41.0) (2020-06-26)
+
+
+### Bug Fixes
+
+* **api:** collection without element would return incorrect dto ([0891981](https://github.com/gotson/komga/commit/08919814d361aa11083ed7a5c3169d449e744d10))
+* **api:** incorrect number of books per series ([bf2d0ba](https://github.com/gotson/komga/commit/bf2d0ba1fad8cf193cc60d2680ad90226c49e93f))
+* **webui:** adjust padding for grids ([02e9168](https://github.com/gotson/komga/commit/02e916898e90db49b64bb59e90d152c92553b69c))
+* **webui:** display collection after adding in series browsing screen ([8ce5a39](https://github.com/gotson/komga/commit/8ce5a391e53b34c7c46e0c568e7438603c01302c))
+* **webui:** library navigation not highlighted correctly ([e28c070](https://github.com/gotson/komga/commit/e28c070e364a3fbae8836ad6b246ebe364c6271c))
+
+
+### Features
+
+* **api:** collections are pageable ([449a27e](https://github.com/gotson/komga/commit/449a27e13618815cbfd0cf8124dc00779f4d86ac)), closes [#216](https://github.com/gotson/komga/issues/216)
+* **api:** search series by collection ids ([ca91af7](https://github.com/gotson/komga/commit/ca91af7792559c54a9e1843368a29b7b9d7db3de))
+* **opds:** browse by collection ([15f9c82](https://github.com/gotson/komga/commit/15f9c8257eb120cb74d37226e37f6025cb9242a6))
+* **webui:** action menu on item cards ([37d790d](https://github.com/gotson/komga/commit/37d790d1fc222018f8d17344c03c26d71dcefae1))
+* **webui:** allow direct input of library path in add dialog ([6ece7b1](https://github.com/gotson/komga/commit/6ece7b12be582b97d82ae56dea73d29ae6bade11)), closes [#88](https://github.com/gotson/komga/issues/88)
+* **webui:** better handling of library deletion ([0297210](https://github.com/gotson/komga/commit/0297210dc2bc420fcfdd3d59bbd76dd254335c5b))
+* **webui:** display collections in search results and search box ([82aec45](https://github.com/gotson/komga/commit/82aec456606589d8d012715ad45a7c10d1b9ed51)), closes [#212](https://github.com/gotson/komga/issues/212)
+* **webui:** hide pagination when there is only 1 page ([675b4a1](https://github.com/gotson/komga/commit/675b4a16afdfad89be5391cafa32fdd430f49c48))
+* **webui:** pagination for collections ([50b516d](https://github.com/gotson/komga/commit/50b516d0c5772a15acdb69091ace788ed67fad13)), closes [#216](https://github.com/gotson/komga/issues/216)
+* **webui:** refresh browse collection screen on action menu actions ([8f2c453](https://github.com/gotson/komga/commit/8f2c4534c888e79ee377d0041390fa3fb1cfb90f))
+* **webui:** refresh dashboard on action menu actions ([b6bd735](https://github.com/gotson/komga/commit/b6bd735bdbce7c60f2e489b9f416b28669576228))
+
 ## [0.40.1](https://github.com/gotson/komga/compare/v0.40.0...v0.40.1) (2020-06-19)
 
 

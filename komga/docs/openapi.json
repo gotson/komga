@@ -33,12 +33,12 @@
             "format": "int32",
             "type": "integer"
           },
-          "last": {
-            "type": "boolean"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
+          },
+          "last": {
+            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -817,12 +817,12 @@
             "format": "int32",
             "type": "integer"
           },
-          "last": {
-            "type": "boolean"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
+          },
+          "last": {
+            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -845,6 +845,52 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/BookDto"
+            }
+          },
+          "totalElements": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageCollectionDto": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "numberOfElements": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "totalPages": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/Pageable"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CollectionDto"
             }
           },
           "totalElements": {
@@ -1089,6 +1135,36 @@
         },
         "tags": [
           "library-controller"
+        ]
+      }
+    },
+    "/opds/v1.2/collections": {
+      "get": {
+        "operationId": "getCollections",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "application/atom+xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "opds-controller"
         ]
       }
     },
@@ -2266,6 +2342,18 @@
             "schema": {
               "type": "array",
               "items": {
+                "format": "int64",
+                "type": "integer"
+              }
+            },
+            "in": "query",
+            "name": "collection_id",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
                 "type": "string",
                 "enum": [
                   "ENDED",
@@ -2412,6 +2500,47 @@
         ],
         "tags": [
           "series-controller"
+        ]
+      }
+    },
+    "/opds/v1.2/collections/{id}": {
+      "get": {
+        "operationId": "getOneCollection",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "application/atom+xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "tags": [
+          "opds-controller"
         ]
       }
     },
@@ -2728,16 +2857,21 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CollectionDto"
-                  }
+                  "$ref": "#/components/schemas/PageCollectionDto"
                 }
               }
             }
           }
         },
         "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
           {
             "schema": {
               "type": "array",
@@ -2749,6 +2883,30 @@
             "in": "query",
             "name": "library_id",
             "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "unpaged",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "page",
+            "description": "Zero-based page index (0..N)"
+          },
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "size",
+            "description": "The size of the page to be returned"
           }
         ],
         "tags": [
