@@ -79,6 +79,7 @@ export default Vue.extend({
   },
   watch: {
     value (val) {
+      if (val) this.dialogInit()
       this.modalFileBrowser = val
     },
     modalFileBrowser (val) {
@@ -100,10 +101,15 @@ export default Vue.extend({
       default: 'Choose',
     },
   },
-  async mounted () {
-    this.getDirs()
-  },
   methods: {
+    dialogInit () {
+      try {
+        this.getDirs(this.path)
+        this.selectedPath = this.path
+      } catch (e) {
+        this.getDirs()
+      }
+    },
     dialogCancel () {
       this.$emit('input', false)
     },

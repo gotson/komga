@@ -45,7 +45,6 @@
 
                   <v-text-field v-model="form.path"
                                 label="Root folder"
-                                disabled
                                 :error-messages="getErrors('path')"
                                 @input="$v.form.path.$touch()"
                                 @blur="$v.form.path.$touch()"
@@ -85,8 +84,8 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import FileBrowserDialog from '@/components/FileBrowserDialog.vue'
+import Vue from 'vue'
 import { required } from 'vuelidate/lib/validators'
 
 export default Vue.extend({
