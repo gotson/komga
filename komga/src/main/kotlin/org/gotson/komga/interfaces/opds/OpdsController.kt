@@ -17,6 +17,7 @@ import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
+import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.interfaces.opds.dto.OpdsAuthor
 import org.gotson.komga.interfaces.opds.dto.OpdsEntryAcquisition
@@ -32,6 +33,7 @@ import org.gotson.komga.interfaces.opds.dto.OpdsLinkPageStreaming
 import org.gotson.komga.interfaces.opds.dto.OpdsLinkRel
 import org.gotson.komga.interfaces.opds.dto.OpdsLinkSearch
 import org.gotson.komga.interfaces.opds.dto.OpenSearchDescription
+import org.springframework.data.domain.Sort
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -223,11 +225,12 @@ class OpdsController(
   fun getCollections(
     @AuthenticationPrincipal principal: KomgaPrincipal
   ): OpdsFeed {
+    val pageRequest = UnpagedSorted(Sort.by(Sort.Order.asc("name")))
     val collections =
       if (principal.user.sharedAllLibraries) {
-        collectionRepository.findAll()
+        collectionRepository.findAll(pageable = pageRequest)
       } else {
-        collectionRepository.findAllByLibraries(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds)
+        collectionRepository.findAllByLibraries(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, pageable = pageRequest)
       }
     return OpdsFeedNavigation(
       id = ID_COLLECTIONS_ALL,
@@ -238,7 +241,7 @@ class OpdsController(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "$routeBase$ROUTE_COLLECTIONS_ALL"),
         linkStart
       ),
-      entries = collections.map { it.toOpdsEntry() }
+      entries = collections.content.map { it.toOpdsEntry() }
     )
   }
 

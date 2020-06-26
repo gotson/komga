@@ -13,12 +13,6 @@ import org.gotson.komga.Application
 class DomainDrivenDesignRulesTest {
 
   @ArchTest
-  val domain_persistence_can_only_contain_interfaces: ArchRule =
-    classes()
-      .that().resideInAPackage("..domain..persistence..")
-      .should().beInterfaces()
-
-  @ArchTest
   val domain_model_should_not_access_other_packages: ArchRule =
     noClasses()
       .that().resideInAPackage("..domain..model..")

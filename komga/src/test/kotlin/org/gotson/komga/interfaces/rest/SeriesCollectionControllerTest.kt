@@ -114,10 +114,10 @@ class SeriesCollectionControllerTest(
       mockMvc.get("/api/v1/collections")
         .andExpect {
           status { isOk }
-          jsonPath("$.length()") { value(3) }
-          jsonPath("$[?(@.name == 'Lib1')].filtered") { value(false) }
-          jsonPath("$[?(@.name == 'Lib2')].filtered") { value(false) }
-          jsonPath("$[?(@.name == 'Lib1+2')].filtered") { value(false) }
+          jsonPath("$.totalElements") { value(3) }
+          jsonPath("$.content[?(@.name == 'Lib1')].filtered") { value(false) }
+          jsonPath("$.content[?(@.name == 'Lib2')].filtered") { value(false) }
+          jsonPath("$.content[?(@.name == 'Lib1+2')].filtered") { value(false) }
         }
     }
 
@@ -129,9 +129,9 @@ class SeriesCollectionControllerTest(
       mockMvc.get("/api/v1/collections")
         .andExpect {
           status { isOk }
-          jsonPath("$.length()") { value(2) }
-          jsonPath("$[?(@.name == 'Lib1')].filtered") { value(false) }
-          jsonPath("$[?(@.name == 'Lib1+2')].filtered") { value(true) }
+          jsonPath("$.totalElements") { value(2) }
+          jsonPath("$.content[?(@.name == 'Lib1')].filtered") { value(false) }
+          jsonPath("$.content[?(@.name == 'Lib1+2')].filtered") { value(true) }
         }
     }
 

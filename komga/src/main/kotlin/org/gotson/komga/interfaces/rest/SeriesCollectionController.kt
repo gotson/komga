@@ -11,8 +11,10 @@ import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.service.SeriesCollectionLifecycle
 import org.gotson.komga.infrastructure.image.MosaicGenerator
+import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
+import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.interfaces.rest.dto.CollectionCreationDto
 import org.gotson.komga.interfaces.rest.dto.CollectionDto
 import org.gotson.komga.interfaces.rest.dto.CollectionUpdateDto
@@ -20,7 +22,10 @@ import org.gotson.komga.interfaces.rest.dto.SeriesDto
 import org.gotson.komga.interfaces.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.rest.dto.toDto
 import org.gotson.komga.interfaces.rest.persistence.SeriesDtoRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -53,17 +58,30 @@ class SeriesCollectionController(
   private val mosaicGenerator: MosaicGenerator
 ) {
 
+  @PageableWithoutSortAsQueryParam
   @GetMapping
   fun getAll(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestParam(name = "library_id", required = false) libraryIds: List<Long>?
-  ): List<CollectionDto> =
-    when {
-      principal.user.sharedAllLibraries && libraryIds == null -> collectionRepository.findAll()
-      principal.user.sharedAllLibraries && libraryIds != null -> collectionRepository.findAllByLibraries(libraryIds, null)
-      !principal.user.sharedAllLibraries && libraryIds != null -> collectionRepository.findAllByLibraries(libraryIds, principal.user.sharedLibrariesIds)
-      else -> collectionRepository.findAllByLibraries(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds)
-    }.sortedBy { it.name.toLowerCase() }.map { it.toDto() }
+    @RequestParam(name = "search", required = false) searchTerm: String?,
+    @RequestParam(name = "library_id", required = false) libraryIds: List<Long>?,
+    @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
+    @Parameter(hidden = true) page: Pageable
+  ): Page<CollectionDto> {
+    val pageRequest =
+      if (unpaged) UnpagedSorted(Sort.by(Sort.Order.asc("name")))
+      else PageRequest.of(
+        page.pageNumber,
+        page.pageSize,
+        Sort.by(Sort.Order.asc("name"))
+      )
+
+    return when {
+      principal.user.sharedAllLibraries && libraryIds == null -> collectionRepository.findAll(searchTerm, pageable = pageRequest)
+      principal.user.sharedAllLibraries && libraryIds != null -> collectionRepository.findAllByLibraries(libraryIds, null, searchTerm, pageable = pageRequest)
+      !principal.user.sharedAllLibraries && libraryIds != null -> collectionRepository.findAllByLibraries(libraryIds, principal.user.sharedLibrariesIds, searchTerm, pageable = pageRequest)
+      else -> collectionRepository.findAllByLibraries(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, searchTerm, pageable = pageRequest)
+    }.map { it.toDto() }
+  }
 
   @GetMapping("{id}")
   fun getOne(

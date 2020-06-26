@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.domain.Pageable
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.time.LocalDateTime
 
@@ -164,11 +165,11 @@ class SeriesCollectionDaoTest(
     ))
 
     // when
-    val foundLibrary1Filtered = collectionDao.findAllByLibraries(listOf(library.id), listOf(library.id))
-    val foundLibrary1Unfiltered = collectionDao.findAllByLibraries(listOf(library.id), null)
-    val foundLibrary2Filtered = collectionDao.findAllByLibraries(listOf(library2.id), listOf(library2.id))
-    val foundLibrary2Unfiltered = collectionDao.findAllByLibraries(listOf(library2.id), null)
-    val foundBothUnfiltered = collectionDao.findAllByLibraries(listOf(library.id, library2.id), null)
+    val foundLibrary1Filtered = collectionDao.findAllByLibraries(listOf(library.id), listOf(library.id), pageable = Pageable.unpaged()).content
+    val foundLibrary1Unfiltered = collectionDao.findAllByLibraries(listOf(library.id), null, pageable = Pageable.unpaged()).content
+    val foundLibrary2Filtered = collectionDao.findAllByLibraries(listOf(library2.id), listOf(library2.id), pageable = Pageable.unpaged()).content
+    val foundLibrary2Unfiltered = collectionDao.findAllByLibraries(listOf(library2.id), null, pageable = Pageable.unpaged()).content
+    val foundBothUnfiltered = collectionDao.findAllByLibraries(listOf(library.id, library2.id), null, pageable = Pageable.unpaged()).content
 
     // then
     assertThat(foundLibrary1Filtered).hasSize(2)

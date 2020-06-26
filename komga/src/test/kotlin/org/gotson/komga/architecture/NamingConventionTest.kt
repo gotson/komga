@@ -15,12 +15,6 @@ import org.springframework.web.bind.annotation.RestController
 class NamingConventionTest {
 
   @ArchTest
-  val domain_persistence_should_have_names_ending_with_repository: ArchRule =
-    classes()
-      .that().resideInAPackage("..domain..persistence..")
-      .should().haveNameMatching(".*Repository")
-
-  @ArchTest
   val services_should_not_have_names_containing_service_or_manager: ArchRule =
     noClasses()
       .that().resideInAnyPackage("..domain..service..", "..application..service..")
