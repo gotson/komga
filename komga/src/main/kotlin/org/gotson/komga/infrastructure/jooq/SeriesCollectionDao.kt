@@ -92,7 +92,7 @@ class SeriesCollectionDao(
   private fun ResultQuery<Record>.fetchAndMap() =
     fetchGroups({ it.into(c) }, { it.into(cs) })
       .map { (cr, csr) ->
-        val seriesIds = csr.map { it.seriesId }
+        val seriesIds = csr.mapNotNull { it.seriesId }
         cr.toDomain(seriesIds)
       }
 
