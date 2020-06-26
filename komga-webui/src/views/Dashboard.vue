@@ -89,7 +89,7 @@ import EmptyState from '@/components/EmptyState.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import { ReadStatus } from '@/types/enum-books'
-import { LIBRARY_DELETED } from '@/types/events'
+import { BOOK_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -110,37 +110,23 @@ export default Vue.extend({
   },
   created () {
     this.$eventHub.$on(LIBRARY_DELETED, this.loadAll)
+    this.$eventHub.$on(SERIES_CHANGED, this.loadAll)
+    this.$eventHub.$on(BOOK_CHANGED, this.loadAll)
   },
   beforeDestroy () {
     this.$eventHub.$off(LIBRARY_DELETED, this.loadAll)
+    this.$eventHub.$off(SERIES_CHANGED, this.loadAll)
+    this.$eventHub.$off(BOOK_CHANGED, this.loadAll)
   },
   mounted () {
     this.loadAll()
   },
   watch: {
     editSeriesSingle (val: SeriesDto) {
-      let index = this.newSeries.findIndex(x => x.id === val.id)
-      if (index !== -1) {
-        this.newSeries.splice(index, 1, val)
-      }
-      index = this.updatedSeries.findIndex(x => x.id === val.id)
-      if (index !== -1) {
-        this.updatedSeries.splice(index, 1, val)
-      }
+      this.replaceSeries(val)
     },
     editBookSingle (val: BookDto) {
-      let index = this.latestBooks.findIndex(x => x.id === val.id)
-      if (index !== -1) {
-        this.latestBooks.splice(index, 1, val)
-      }
-      index = this.inProgressBooks.findIndex(x => x.id === val.id)
-      if (index !== -1) {
-        this.inProgressBooks.splice(index, 1, val)
-      }
-      index = this.onDeckBooks.findIndex(x => x.id === val.id)
-      if (index !== -1) {
-        this.onDeckBooks.splice(index, 1, val)
-      }
+      this.replaceBook(val)
     },
   },
   computed: {
@@ -159,6 +145,30 @@ export default Vue.extend({
       this.loadLatestBooks()
       this.loadInProgressBooks()
       this.loadOnDeckBooks()
+    },
+    replaceSeries (series: SeriesDto) {
+      let index = this.newSeries.findIndex(x => x.id === series.id)
+      if (index !== -1) {
+        this.newSeries.splice(index, 1, series)
+      }
+      index = this.updatedSeries.findIndex(x => x.id === series.id)
+      if (index !== -1) {
+        this.updatedSeries.splice(index, 1, series)
+      }
+    },
+    replaceBook (book: BookDto) {
+      let index = this.latestBooks.findIndex(x => x.id === book.id)
+      if (index !== -1) {
+        this.latestBooks.splice(index, 1, book)
+      }
+      index = this.inProgressBooks.findIndex(x => x.id === book.id)
+      if (index !== -1) {
+        this.inProgressBooks.splice(index, 1, book)
+      }
+      index = this.onDeckBooks.findIndex(x => x.id === book.id)
+      if (index !== -1) {
+        this.onDeckBooks.splice(index, 1, book)
+      }
     },
     async loadNewSeries () {
       this.newSeries = (await this.$komgaSeries.getNewSeries()).content
