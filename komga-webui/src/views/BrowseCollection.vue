@@ -108,10 +108,6 @@
                         :series.sync="editSeriesSingle"
     />
 
-    <collection-add-to-dialog v-model="dialogAddToCollection"
-                              :series="selectedSeries"
-    />
-
     <collection-edit-dialog v-model="dialogEditCollection"
                             :collection="collection"
                             @updated="loadCollection(collectionId)"
@@ -135,12 +131,11 @@
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
 import CollectionActionsMenu from '@/components/CollectionActionsMenu.vue'
-import CollectionAddToDialog from '@/components/CollectionAddToDialog.vue'
 import CollectionEditDialog from '@/components/CollectionEditDialog.vue'
 import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
-import { COLLECTION_CHANGED, SERIES_CHANGED } from '@/types/events'
+import { COLLECTION_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -149,7 +144,6 @@ export default Vue.extend({
     ToolbarSticky,
     ItemBrowser,
     EditSeriesDialog,
-    CollectionAddToDialog,
     CollectionEditDialog,
     CollectionActionsMenu,
     Badge,
@@ -204,11 +198,11 @@ export default Vue.extend({
     },
   },
   created () {
-    this.$eventHub.$on(COLLECTION_CHANGED, this.afterDelete)
+    this.$eventHub.$on(COLLECTION_DELETED, this.afterDelete)
     this.$eventHub.$on(SERIES_CHANGED, this.reloadSeries)
   },
   beforeDestroy () {
-    this.$eventHub.$off(COLLECTION_CHANGED, this.afterDelete)
+    this.$eventHub.$off(COLLECTION_DELETED, this.afterDelete)
     this.$eventHub.$off(SERIES_CHANGED, this.reloadSeries)
   },
   mounted () {
@@ -257,7 +251,7 @@ export default Vue.extend({
       ))
     },
     addToCollection () {
-      this.dialogAddToCollection = true
+      this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries)
     },
     startEditElements () {
       this.editElements = true

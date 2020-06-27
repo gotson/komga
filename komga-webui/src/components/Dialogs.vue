@@ -24,7 +24,7 @@
 import CollectionAddToDialog from '@/components/CollectionAddToDialog.vue'
 import CollectionDeleteDialog from '@/components/CollectionDeleteDialog.vue'
 import LibraryDeleteDialog from '@/components/LibraryDeleteDialog.vue'
-import { COLLECTION_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
+import { COLLECTION_CHANGED, COLLECTION_DELETED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -83,7 +83,9 @@ export default Vue.extend({
       this.$eventHub.$emit(COLLECTION_CHANGED)
     },
     collectionDeleted () {
-      this.$eventHub.$emit(COLLECTION_CHANGED)
+      this.$eventHub.$emit(COLLECTION_DELETED, {
+        id: this.deleteCollection.id,
+      } as EventCollectionDeleted)
     },
     libraryDeleted () {
       this.$eventHub.$emit(LIBRARY_DELETED, {

@@ -8,6 +8,10 @@ interface EventSeriesChanged {
   libraryId: number
 }
 
+interface EventCollectionDeleted {
+  id: number
+}
+
 interface EventLibraryDeleted {
   id: number
 }
