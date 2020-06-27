@@ -319,7 +319,9 @@ class OpdsController(
         if (!collection.ordered) series.sortedBy { it.metadata.titleSort }
         else series
 
-      val entries = sorted.map { it.toOpdsEntry() }
+      val entries = sorted.mapIndexed { index, it ->
+        it.toOpdsEntry(if (collection.ordered) index + 1 else null)
+      }
 
       OpdsFeedNavigation(
         id = collection.id.toString(),
@@ -336,14 +338,16 @@ class OpdsController(
   }
 
 
-  private fun SeriesWithInfo.toOpdsEntry(): OpdsEntryNavigation =
-    OpdsEntryNavigation(
-      title = metadata.title,
+  private fun SeriesWithInfo.toOpdsEntry(prepend: Int? = null): OpdsEntryNavigation {
+    val pre = prepend?.let { decimalFormat.format(it) + " - " } ?: ""
+    return OpdsEntryNavigation(
+      title = pre + metadata.title,
       updated = series.lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
       id = series.id.toString(),
       content = "",
       link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "${routeBase}series/${series.id}")
     )
+  }
 
   private fun BookWithInfo.toOpdsEntry(prependNumber: Boolean): OpdsEntryAcquisition {
     val mediaTypes = media.pages.map { it.mediaType }.distinct()
