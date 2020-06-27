@@ -1,3 +1,11 @@
+## [0.41.1](https://github.com/gotson/komga/compare/v0.41.0...v0.41.1) (2020-06-27)
+
+
+### Bug Fixes
+
+* **api:** pagination for collection's series ([6dd0704](https://github.com/gotson/komga/commit/6dd070436be7458eb3b3019d6286b8dd32d1b27d))
+* **opds:** prepend position for series in ordered collection ([7e5a141](https://github.com/gotson/komga/commit/7e5a1412ca1a0278f2f5169fa55d5e25fbb75480))
+
 # [0.41.0](https://github.com/gotson/komga/compare/v0.40.1...v0.41.0) (2020-06-26)
 
 
