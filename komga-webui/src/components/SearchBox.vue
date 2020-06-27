@@ -113,7 +113,7 @@ export default Vue.extend({
         this.loading = true
         this.series = (await this.$komgaSeries.getSeries(undefined, { size: this.pageSize }, query)).content
         this.books = (await this.$komgaBooks.getBooks(undefined, { size: this.pageSize }, query)).content
-        this.collections = (await this.$komgaCollections.getCollections(undefined, { size: this.pageSize }, false, query)).content
+        this.collections = (await this.$komgaCollections.getCollections(undefined, { size: this.pageSize }, query)).content
         this.showResults = true
         this.loading = false
       } else {

@@ -233,7 +233,7 @@ export default Vue.extend({
   methods: {
     async loadCollection (collectionId: number) {
       this.collection = await this.$komgaCollections.getOneCollection(collectionId)
-      this.series = await this.$komgaCollections.getSeries(collectionId)
+      this.series = (await this.$komgaCollections.getSeries(collectionId, { unpaged: true } as PageRequest)).content
       this.seriesCopy = [...this.series]
     },
     singleEdit (series: SeriesDto) {

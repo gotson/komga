@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
 
@@ -60,16 +61,17 @@ class SeriesCollectionDao(
       .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
       .fetchAndMap(null)
 
+    val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
     return PageImpl(
       items,
-      if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageable.sort)
-      else PageRequest.of(0, count.toInt(), pageable.sort),
+      if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
+      else PageRequest.of(0, count.toInt(), pageSort),
       count.toLong()
     )
   }
 
   override fun findAllByLibraries(belongsToLibraryIds: Collection<Long>, filterOnLibraryIds: Collection<Long>?, search: String?, pageable: Pageable): Page<SeriesCollection> {
-    val ids = dsl.select(c.ID)
+    val ids = dsl.selectDistinct(c.ID)
       .from(c)
       .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
       .leftJoin(s).on(cs.SERIES_ID.eq(s.ID))
@@ -77,10 +79,7 @@ class SeriesCollectionDao(
       .apply { search?.let { and(c.NAME.containsIgnoreCase(it)) } }
       .fetch(0, Long::class.java)
 
-    val count = dsl.selectCount()
-      .from(c)
-      .where(c.ID.`in`(ids))
-      .fetchOne(0, Long::class.java)
+    val count = ids.size
 
     val orderBy = pageable.sort.toOrderBy(sorts)
 
@@ -92,10 +91,11 @@ class SeriesCollectionDao(
       .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
       .fetchAndMap(filterOnLibraryIds)
 
+    val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
     return PageImpl(
       items,
-      if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageable.sort)
-      else PageRequest.of(0, count.toInt()),
+      if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
+      else PageRequest.of(0, count.toInt(), pageSort),
       count.toLong()
     )
   }

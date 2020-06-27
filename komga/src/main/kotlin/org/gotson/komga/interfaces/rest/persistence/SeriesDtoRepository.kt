@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable
 
 interface SeriesDtoRepository {
   fun findAll(search: SeriesSearchWithReadProgress, userId: Long, pageable: Pageable): Page<SeriesDto>
+  fun findByCollectionId(collectionId: Long, userId: Long, pageable: Pageable): Page<SeriesDto>
   fun findRecentlyUpdated(search: SeriesSearchWithReadProgress, userId: Long, pageable: Pageable): Page<SeriesDto>
   fun findByIdOrNull(seriesId: Long, userId: Long): SeriesDto?
-  fun findByIds(seriesIds: Collection<Long>, userId: Long): List<SeriesDto>
 }

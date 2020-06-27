@@ -106,7 +106,7 @@ export default Vue.extend({
       this.modal = val
       if (val) {
         this.newCollection = ''
-        this.collections = (await this.$komgaCollections.getCollections(undefined, undefined, true)).content
+        this.collections = (await this.$komgaCollections.getCollections(undefined, { unpaged: true } as PageRequest)).content
       }
     },
     modal (val) {

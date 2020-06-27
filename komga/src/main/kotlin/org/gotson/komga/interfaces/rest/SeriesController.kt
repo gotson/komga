@@ -18,6 +18,7 @@ import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.BookLifecycle
+import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
@@ -76,14 +77,20 @@ class SeriesController(
     @RequestParam(name = "collection_id", required = false) collectionIds: List<Long>?,
     @RequestParam(name = "status", required = false) metadataStatus: List<SeriesMetadata.Status>?,
     @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
+    @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> {
-    val pageRequest = PageRequest.of(
-      page.pageNumber,
-      page.pageSize,
-      if (page.sort.isSorted) Sort.by(page.sort.map { it.ignoreCase() }.toList())
-      else Sort.by(Sort.Order.asc("metadata.titleSort").ignoreCase())
-    )
+    val sort =
+      if (page.sort.isSorted) page.sort
+      else Sort.by(Sort.Order.asc("metadata.titleSort"))
+
+    val pageRequest =
+      if (unpaged) UnpagedSorted(sort)
+      else PageRequest.of(
+        page.pageNumber,
+        page.pageSize,
+        sort
+      )
 
     val seriesSearch = SeriesSearchWithReadProgress(
       libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
@@ -102,13 +109,18 @@ class SeriesController(
   @GetMapping("/latest")
   fun getLatestSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> {
-    val pageRequest = PageRequest.of(
-      page.pageNumber,
-      page.pageSize,
-      Sort.by(Sort.Direction.DESC, "lastModifiedDate")
-    )
+    val sort = Sort.by(Sort.Order.desc("lastModified"))
+
+    val pageRequest =
+      if (unpaged) UnpagedSorted(sort)
+      else PageRequest.of(
+        page.pageNumber,
+        page.pageSize,
+        sort
+      )
 
     return seriesDtoRepository.findAll(
       SeriesSearchWithReadProgress(principal.user.getAuthorizedLibraryIds(null)),
@@ -122,13 +134,18 @@ class SeriesController(
   @GetMapping("/new")
   fun getNewSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> {
-    val pageRequest = PageRequest.of(
-      page.pageNumber,
-      page.pageSize,
-      Sort.by(Sort.Direction.DESC, "createdDate")
-    )
+    val sort = Sort.by(Sort.Order.desc("created"))
+
+    val pageRequest =
+      if (unpaged) UnpagedSorted(sort)
+      else PageRequest.of(
+        page.pageNumber,
+        page.pageSize,
+        sort
+      )
 
     return seriesDtoRepository.findAll(
       SeriesSearchWithReadProgress(principal.user.getAuthorizedLibraryIds(null)),
@@ -142,13 +159,18 @@ class SeriesController(
   @GetMapping("/updated")
   fun getUpdatedSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> {
-    val pageRequest = PageRequest.of(
-      page.pageNumber,
-      page.pageSize,
-      Sort.by(Sort.Direction.DESC, "lastModifiedDate")
-    )
+    val sort = Sort.by(Sort.Order.desc("lastModified"))
+
+    val pageRequest =
+      if (unpaged) UnpagedSorted(sort)
+      else PageRequest.of(
+        page.pageNumber,
+        page.pageSize,
+        sort
+      )
 
     return seriesDtoRepository.findRecentlyUpdated(
       SeriesSearchWithReadProgress(principal.user.getAuthorizedLibraryIds(null)),

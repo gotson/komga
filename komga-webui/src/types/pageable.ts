@@ -30,7 +30,8 @@ interface Sort {
 interface PageRequest {
   size?: number,
   page?: number,
-  sort?: string[]
+  sort?: string[],
+  unpaged?: boolean
 }
 
 interface SortOption {

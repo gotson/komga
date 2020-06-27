@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
 import java.net.URL
@@ -56,7 +57,8 @@ class SeriesDtoDao(
     "createdDate" to s.CREATED_DATE,
     "created" to s.CREATED_DATE,
     "lastModifiedDate" to s.LAST_MODIFIED_DATE,
-    "lastModified" to s.LAST_MODIFIED_DATE
+    "lastModified" to s.LAST_MODIFIED_DATE,
+    "collection.number" to cs.NUMBER
   )
 
   override fun findAll(search: SeriesSearchWithReadProgress, userId: Long, pageable: Pageable): Page<SeriesDto> {
@@ -65,6 +67,13 @@ class SeriesDtoDao(
     val having = search.readStatus?.toCondition() ?: DSL.trueCondition()
 
     return findAll(conditions, having, userId, pageable)
+  }
+
+  override fun findByCollectionId(collectionId: Long, userId: Long, pageable: Pageable): Page<SeriesDto> {
+    val conditions = cs.COLLECTION_ID.eq(collectionId)
+    val having = DSL.trueCondition()
+
+    return findAll(conditions, having, userId, pageable, true)
   }
 
   override fun findRecentlyUpdated(search: SeriesSearchWithReadProgress, userId: Long, pageable: Pageable): Page<SeriesDto> {
@@ -83,19 +92,25 @@ class SeriesDtoDao(
       .fetchAndMap(userId)
       .firstOrNull()
 
-  override fun findByIds(seriesIds: Collection<Long>, userId: Long): List<SeriesDto> =
-    selectBase(userId)
-      .where(s.ID.`in`(seriesIds))
-      .groupBy(*groupFields)
-      .fetchAndMap(userId)
 
-
-  private fun findAll(conditions: Condition, having: Condition, userId: Long, pageable: Pageable): Page<SeriesDto> {
-    val count = dsl.select(s.ID)
+  private fun selectBase(userId: Long, selectCollectionNumber: Boolean = false): SelectOnConditionStep<Record> =
+    dsl.selectDistinct(*groupFields)
+      .select(DSL.countDistinct(b.ID).`as`(BOOKS_COUNT))
+      .apply { if (selectCollectionNumber) select(cs.NUMBER) }
       .from(s)
       .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID))
+      .and(readProgressCondition(userId))
+      .leftJoin(cs).on(s.ID.eq(cs.SERIES_ID))
+
+  private fun findAll(conditions: Condition, having: Condition, userId: Long, pageable: Pageable, selectCollectionNumber: Boolean = false): Page<SeriesDto> {
+    val count = dsl.selectDistinct(s.ID)
+      .from(s)
+      .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
+      .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
+      .leftJoin(r).on(b.ID.eq(r.BOOK_ID))
+      .and(readProgressCondition(userId))
       .leftJoin(cs).on(s.ID.eq(cs.SERIES_ID))
       .where(conditions)
       .groupBy(s.ID)
@@ -105,31 +120,22 @@ class SeriesDtoDao(
 
     val orderBy = pageable.sort.toOrderBy(sorts)
 
-    val dtos = selectBase(userId)
+    val dtos = selectBase(userId, selectCollectionNumber)
       .where(conditions)
       .groupBy(*groupFields)
       .having(having)
       .orderBy(orderBy)
-      .limit(pageable.pageSize)
-      .offset(pageable.offset)
+      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
       .fetchAndMap(userId)
 
+    val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
     return PageImpl(
       dtos,
-      PageRequest.of(pageable.pageNumber, pageable.pageSize, pageable.sort),
+      if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
+      else PageRequest.of(0, count.toInt(), pageSort),
       count.toLong()
     )
   }
-
-  private fun selectBase(userId: Long): SelectOnConditionStep<Record> =
-    dsl.selectDistinct(*groupFields)
-      .select(DSL.countDistinct(b.ID).`as`(BOOKS_COUNT))
-      .from(s)
-      .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
-      .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
-      .leftJoin(r).on(b.ID.eq(r.BOOK_ID))
-      .leftJoin(cs).on(s.ID.eq(cs.SERIES_ID))
-      .and(readProgressCondition(userId))
 
   private fun readProgressCondition(userId: Long): Condition = r.USER_ID.eq(userId).or(r.USER_ID.isNull)
 

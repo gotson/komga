@@ -117,7 +117,7 @@ export default Vue.extend({
     async dialogReset (collection: CollectionDto) {
       this.form.name = collection.name
       this.form.ordered = collection.ordered
-      this.collections = (await this.$komgaCollections.getCollections(undefined, undefined, true)).content
+      this.collections = (await this.$komgaCollections.getCollections(undefined, { unpaged: true } as PageRequest)).content
     },
     dialogCancel () {
       this.$emit('input', false)

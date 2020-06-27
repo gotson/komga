@@ -412,7 +412,7 @@ export default Vue.extend({
       this.series = await this.$komgaSeries.getOneSeries(seriesId)
       this.collections = await this.$komgaSeries.getCollections(seriesId)
       for (const c of this.collections) {
-        this.collectionsContent[c.id] = await this.$komgaCollections.getSeries(c.id)
+        this.collectionsContent[c.id] = (await this.$komgaCollections.getSeries(c.id, { unpaged: true } as PageRequest)).content
       }
       await this.loadPage(seriesId, this.page, this.sortActive)
     },

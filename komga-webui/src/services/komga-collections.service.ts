@@ -11,11 +11,10 @@ export default class KomgaCollectionsService {
     this.http = http
   }
 
-  async getCollections (libraryIds?: number[], pageRequest?: PageRequest, unpaged?: boolean, search?: string): Promise<Page<CollectionDto>> {
+  async getCollections (libraryIds?: number[], pageRequest?: PageRequest, search?: string): Promise<Page<CollectionDto>> {
     try {
       const params = { ...pageRequest } as any
       if (libraryIds) params.library_id = libraryIds
-      if (unpaged) params.unpaged = unpaged
       if (search) params.search = search
 
       return (await this.http.get(API_COLLECTIONS, {
@@ -79,7 +78,7 @@ export default class KomgaCollectionsService {
     }
   }
 
-  async getSeries (collectionId: number, pageRequest?: PageRequest): Promise<SeriesDto[]> {
+  async getSeries (collectionId: number, pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
     try {
       return (await this.http.get(`${API_COLLECTIONS}/${collectionId}/series`)).data
     } catch (e) {

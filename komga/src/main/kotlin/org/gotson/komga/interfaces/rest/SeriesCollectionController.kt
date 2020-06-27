@@ -13,7 +13,6 @@ import org.gotson.komga.domain.service.SeriesCollectionLifecycle
 import org.gotson.komga.infrastructure.image.MosaicGenerator
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
-import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.interfaces.rest.dto.CollectionCreationDto
 import org.gotson.komga.interfaces.rest.dto.CollectionDto
@@ -162,21 +161,29 @@ class SeriesCollectionController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
-  @PageableAsQueryParam
+  @PageableWithoutSortAsQueryParam
   @GetMapping("{id}/series")
   fun getSeriesForCollection(
     @PathVariable id: Long,
     @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
-  ): List<SeriesDto> =
+  ): Page<SeriesDto> =
     collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { collection ->
-      if (collection.ordered) {
-        // use map to ensure the order is conserved
-        collection.seriesIds.mapNotNull { seriesDtoRepository.findByIdOrNull(it, principal.user.id) }
-      } else {
-        seriesDtoRepository.findByIds(collection.seriesIds, principal.user.id)
-          .sortedBy { it.metadata.titleSort }
-      }.map { it.restrictUrl(!principal.user.roleAdmin) }
+      val sort =
+        if (collection.ordered) Sort.by(Sort.Order.asc("collection.number"))
+        else Sort.by(Sort.Order.asc("metadata.titleSort"))
+
+      val pageRequest =
+        if (unpaged) UnpagedSorted(sort)
+        else PageRequest.of(
+          page.pageNumber,
+          page.pageSize,
+          sort
+        )
+
+      seriesDtoRepository.findByCollectionId(collection.id, principal.user.id, pageRequest)
+        .map { it.restrictUrl(!principal.user.roleAdmin) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 }
 
