@@ -7,7 +7,7 @@
 
       <v-toolbar-title>
         <span>{{ library ? library.name : 'All libraries' }}</span>
-        <badge class="ml-4">{{ collections.length }}</badge>
+        <badge class="ml-4">{{ totalElements }}</badge>
       </v-toolbar-title>
 
       <v-spacer/>
