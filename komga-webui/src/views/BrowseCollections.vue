@@ -28,6 +28,7 @@
       <item-browser
         :items="collections"
         :selectable="false"
+        :edit-function="editSingleCollection"
       />
 
     </v-container>
@@ -192,6 +193,9 @@ export default Vue.extend({
       } else {
         return undefined
       }
+    },
+    editSingleCollection (collection: CollectionDto) {
+      this.$store.dispatch('dialogEditCollection', collection)
     },
   },
 })
