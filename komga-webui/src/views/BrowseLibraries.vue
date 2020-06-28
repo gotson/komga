@@ -39,7 +39,7 @@
 
         <v-spacer/>
 
-        <v-btn icon @click="markSelectedRead()">
+        <v-btn icon @click="markSelectedRead">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-icon v-on="on">mdi-bookmark-check</v-icon>
@@ -48,7 +48,7 @@
           </v-tooltip>
         </v-btn>
 
-        <v-btn icon @click="markSelectedUnread()">
+        <v-btn icon @click="markSelectedUnread">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-icon v-on="on">mdi-bookmark-remove</v-icon>
@@ -57,7 +57,7 @@
           </v-tooltip>
         </v-btn>
 
-        <v-btn icon @click="addToCollection()">
+        <v-btn icon @click="addToCollection">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-icon v-on="on">mdi-playlist-plus</v-icon>
@@ -66,7 +66,7 @@
           </v-tooltip>
         </v-btn>
 
-        <v-btn icon @click="dialogEdit = true" v-if="isAdmin">
+        <v-btn icon @click="editMultipleSeries" v-if="isAdmin">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-icon v-on="on">mdi-pencil</v-icon>
@@ -79,14 +79,6 @@
 
     <library-navigation v-if="collectionsCount > 0"
                         :libraryId="libraryId"
-    />
-
-    <edit-series-dialog v-model="dialogEdit"
-                        :series.sync="selectedSeries"
-    />
-
-    <edit-series-dialog v-model="dialogEditSingle"
-                        :series.sync="editSeriesSingle"
     />
 
     <v-container fluid>
@@ -110,7 +102,7 @@
         <item-browser
           :items="series"
           :selected.sync="selected"
-          :edit-function="singleEdit"
+          :edit-function="editSingleSeries"
         />
       </template>
     </v-container>
@@ -120,7 +112,6 @@
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
-import EditSeriesDialog from '@/components/dialogs/EditSeriesDialog.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import FilterMenuButton from '@/components/FilterMenuButton.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
@@ -146,7 +137,6 @@ export default Vue.extend({
     SortMenuButton,
     FilterMenuButton,
     Badge,
-    EditSeriesDialog,
     ItemBrowser,
     PageSizeSelect,
     LibraryNavigation,
@@ -175,9 +165,6 @@ export default Vue.extend({
       pageUnwatch: null as any,
       pageSizeUnwatch: null as any,
       selected: [],
-      dialogEdit: false,
-      dialogEditSingle: false,
-      dialogAddToCollection: false,
       collectionsCount: 0,
     }
   },
@@ -367,10 +354,6 @@ export default Vue.extend({
         return undefined
       }
     },
-    singleEdit (series: SeriesDto) {
-      this.editSeriesSingle = series
-      this.dialogEditSingle = true
-    },
     async markSelectedRead () {
       await Promise.all(this.selectedSeries.map(s =>
         this.$komgaSeries.markAsRead(s.id),
@@ -389,6 +372,12 @@ export default Vue.extend({
     },
     addToCollection () {
       this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries)
+    },
+    editSingleSeries (series: SeriesDto) {
+      this.$store.dispatch('dialogUpdateSeries', series)
+    },
+    editMultipleSeries () {
+      this.$store.dispatch('dialogUpdateSeries', this.selectedSeries)
     },
   },
 })

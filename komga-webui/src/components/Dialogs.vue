@@ -37,7 +37,17 @@
 import CollectionAddToDialog from '@/components/dialogs/CollectionAddToDialog.vue'
 import CollectionDeleteDialog from '@/components/dialogs/CollectionDeleteDialog.vue'
 import LibraryDeleteDialog from '@/components/dialogs/LibraryDeleteDialog.vue'
-import { BOOK_CHANGED, COLLECTION_CHANGED, COLLECTION_DELETED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
+import {
+  BOOK_CHANGED,
+  bookToEventBookChanged,
+  COLLECTION_CHANGED,
+  COLLECTION_DELETED,
+  collectionToEventCollectionDeleted,
+  LIBRARY_DELETED,
+  libraryToEventLibraryDeleted,
+  SERIES_CHANGED,
+  seriesToEventSeriesChanged,
+} from '@/types/events'
 import Vue from 'vue'
 import EditBooksDialog from '@/components/dialogs/EditBooksDialog.vue'
 import EditSeriesDialog from '@/components/dialogs/EditSeriesDialog.vue'
@@ -112,38 +122,24 @@ export default Vue.extend({
     collectionAdded () {
       if (Array.isArray(this.addToCollectionSeries)) {
         this.addToCollectionSeries.forEach(s => {
-          this.$eventHub.$emit(SERIES_CHANGED, {
-            id: s.id,
-            libraryId: s.libraryId,
-          } as EventSeriesChanged)
+          this.$eventHub.$emit(SERIES_CHANGED, seriesToEventSeriesChanged(s))
         })
       } else {
-        this.$eventHub.$emit(SERIES_CHANGED, {
-          id: this.addToCollectionSeries.id,
-          libraryId: this.addToCollectionSeries.libraryId,
-        } as EventSeriesChanged)
+        this.$eventHub.$emit(SERIES_CHANGED, seriesToEventSeriesChanged(this.addToCollectionSeries))
       }
       this.$eventHub.$emit(COLLECTION_CHANGED)
     },
     collectionDeleted () {
-      this.$eventHub.$emit(COLLECTION_DELETED, {
-        id: this.deleteCollection.id,
-      } as EventCollectionDeleted)
+      this.$eventHub.$emit(COLLECTION_DELETED, collectionToEventCollectionDeleted(this.deleteCollection))
     },
     libraryDeleted () {
-      this.$eventHub.$emit(LIBRARY_DELETED, {
-        id: this.deleteLibrary.id,
-      } as EventLibraryDeleted)
+      this.$eventHub.$emit(LIBRARY_DELETED, libraryToEventLibraryDeleted(this.deleteLibrary))
     },
     bookUpdated (book: BookDto) {
-      this.$eventHub.$emit(BOOK_CHANGED, {
-        id: book.id,
-      } as EventBookChanged)
+      this.$eventHub.$emit(BOOK_CHANGED, bookToEventBookChanged(book))
     },
     seriesUpdated (series: SeriesDto) {
-      this.$eventHub.$emit(SERIES_CHANGED, {
-        id: series.id,
-      } as EventSeriesChanged)
+      this.$eventHub.$emit(SERIES_CHANGED, seriesToEventSeriesChanged(series))
     },
   },
 })

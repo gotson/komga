@@ -68,19 +68,11 @@
           </v-tooltip>
         </v-btn>
 
-        <v-btn icon @click="dialogEditBooks = true" v-if="isAdmin">
+        <v-btn icon @click="editMultipleBooks" v-if="isAdmin">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
       </toolbar-sticky>
     </v-scroll-y-transition>
-
-    <edit-books-dialog v-model="dialogEditBooks"
-                       :books.sync="selectedBooks"
-    />
-
-    <edit-books-dialog v-model="dialogEditBookSingle"
-                       :books.sync="editBookSingle"
-    />
 
     <v-container fluid>
       <v-row>
@@ -188,7 +180,7 @@
 
         <item-browser :items="books"
                       :selected.sync="selected"
-                      :edit-function="this.singleEdit"
+                      :edit-function="editSingleBook"
         />
       </template>
 
@@ -199,7 +191,6 @@
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
-import EditBooksDialog from '@/components/dialogs/EditBooksDialog.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import FilterMenuButton from '@/components/FilterMenuButton.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
@@ -224,7 +215,6 @@ export default Vue.extend({
     SortMenuButton,
     FilterMenuButton,
     Badge,
-    EditBooksDialog,
     ItemBrowser,
     PageSizeSelect,
     SeriesActionsMenu,
@@ -237,7 +227,6 @@ export default Vue.extend({
       series: {} as SeriesDto,
       books: [] as BookDto[],
       selectedBooks: [] as BookDto[],
-      editBookSingle: {} as BookDto,
       page: 1,
       pageSize: 20,
       totalPages: 1,
@@ -256,9 +245,6 @@ export default Vue.extend({
       pageUnwatch: null as any,
       pageSizeUnwatch: null as any,
       selected: [],
-      dialogEditBooks: false,
-      dialogEditBookSingle: false,
-      dialogAddToCollection: false,
       collections: [] as CollectionDto[],
       collectionsContent: [] as any[][],
       collectionPanel: -1,
@@ -300,20 +286,6 @@ export default Vue.extend({
     selected (val: number[]) {
       this.selectedBooks = val.map(id => this.books.find(s => s.id === id))
         .filter(x => x !== undefined) as BookDto[]
-    },
-    selectedBooks (val: BookDto[]) {
-      val.forEach(s => {
-        const index = this.books.findIndex(x => x.id === s.id)
-        if (index !== -1) {
-          this.books.splice(index, 1, s)
-        }
-      })
-    },
-    editBookSingle (val: BookDto) {
-      const index = this.books.findIndex(x => x.id === val.id)
-      if (index !== -1) {
-        this.books.splice(index, 1, val)
-      }
     },
   },
   created () {
@@ -455,27 +427,23 @@ export default Vue.extend({
     editSeries () {
       this.$store.dispatch('dialogUpdateSeries', this.series)
     },
-    singleEdit (book: BookDto) {
-      this.editBookSingle = book
-      this.dialogEditBookSingle = true
+    editSingleBook (book: BookDto) {
+      this.$store.dispatch('dialogUpdateBooks', book)
+    },
+    editMultipleBooks () {
+      this.$store.dispatch('dialogUpdateBooks', this.selectedBooks)
     },
     async markSelectedRead () {
       await Promise.all(this.selectedBooks.map(b =>
         this.$komgaBooks.updateReadProgress(b.id, { completed: true }),
       ))
-      this.selectedBooks = await Promise.all(this.selectedBooks.map(b =>
-        this.$komgaBooks.getBook(b.id),
-      ))
-      this.loadSeries(this.seriesId)
+      await this.loadSeries(this.seriesId)
     },
     async markSelectedUnread () {
       await Promise.all(this.selectedBooks.map(b =>
         this.$komgaBooks.deleteReadProgress(b.id),
       ))
-      this.selectedBooks = await Promise.all(this.selectedBooks.map(b =>
-        this.$komgaBooks.getBook(b.id),
-      ))
-      this.loadSeries(this.seriesId)
+      await this.loadSeries(this.seriesId)
     },
   },
 })

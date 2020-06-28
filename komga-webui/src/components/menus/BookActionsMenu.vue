@@ -26,7 +26,7 @@
 <script lang="ts">
 import { getReadProgress } from '@/functions/book-progress'
 import { ReadStatus } from '@/types/enum-books'
-import { BOOK_CHANGED } from '@/types/events'
+import { BOOK_CHANGED, bookToEventBookChanged } from '@/types/events'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -72,17 +72,11 @@ export default Vue.extend({
     async markRead () {
       const readProgress = { completed: true } as ReadProgressUpdateDto
       await this.$komgaBooks.updateReadProgress(this.book.id, readProgress)
-      this.$eventHub.$emit(BOOK_CHANGED, {
-        id: this.book.id,
-        seriesId: this.book.seriesId,
-      } as EventBookChanged)
+      this.$eventHub.$emit(BOOK_CHANGED, bookToEventBookChanged(this.book))
     },
     async markUnread () {
       await this.$komgaBooks.deleteReadProgress(this.book.id)
-      this.$eventHub.$emit(BOOK_CHANGED, {
-        id: this.book.id,
-        seriesId: this.book.seriesId,
-      } as EventBookChanged)
+      this.$eventHub.$emit(BOOK_CHANGED, bookToEventBookChanged(this.book))
     },
   },
 })
