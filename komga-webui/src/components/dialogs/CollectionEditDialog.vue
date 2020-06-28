@@ -88,8 +88,12 @@ export default Vue.extend({
     },
   },
   watch: {
-    value (val) {
+    async value (val) {
       this.modal = val
+      if (val) {
+        this.collections = (await this.$komgaCollections.getCollections(undefined, { unpaged: true } as PageRequest)).content
+        this.dialogReset(this.collection)
+      }
     },
     modal (val) {
       !val && this.dialogCancel()
@@ -117,16 +121,13 @@ export default Vue.extend({
     async dialogReset (collection: CollectionDto) {
       this.form.name = collection.name
       this.form.ordered = collection.ordered
-      this.collections = (await this.$komgaCollections.getCollections(undefined, { unpaged: true } as PageRequest)).content
     },
     dialogCancel () {
       this.$emit('input', false)
-      this.dialogReset(this.collection)
     },
     dialogConfirm () {
       this.editCollection()
       this.$emit('input', false)
-      this.dialogReset(this.collection)
     },
     showSnack (message: string) {
       this.snackText = message
