@@ -23,10 +23,7 @@
             <div class="title">Series</div>
           </template>
           <template v-slot:content>
-            <div v-for="(item, index) in series"
-                 :key="index">
-              <item-card class="ma-2 card" :item="item" :on-edit="singleEditSeries"/>
-            </div>
+            <item-browser :items="series" nowrap :edit-function="singleEditSeries" :selectable="false"/>
           </template>
         </horizontal-scroller>
 
@@ -35,10 +32,7 @@
             <div class="title">Books</div>
           </template>
           <template v-slot:content>
-            <div v-for="(item, index) in books"
-                 :key="index">
-              <item-card class="ma-2 card" :item="item" :on-edit="singleEditBook"/>
-            </div>
+            <item-browser :items="books" nowrap :edit-function="singleEditBook" :selectable="false"/>
           </template>
         </horizontal-scroller>
 
@@ -47,10 +41,7 @@
             <div class="title">Collections</div>
           </template>
           <template v-slot:content>
-            <div v-for="(item, index) in collections"
-                 :key="index">
-              <item-card class="ma-2 card" :item="item" :on-edit="singleEditCollection"/>
-            </div>
+            <item-browser :items="collections" nowrap :edit-function="singleEditCollection" :selectable="false"/>
           </template>
         </horizontal-scroller>
 
@@ -63,10 +54,10 @@
 <script lang="ts">
 import EmptyState from '@/components/EmptyState.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
-import ItemCard from '@/components/ItemCard.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { BOOK_CHANGED, COLLECTION_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
+import ItemBrowser from '@/components/ItemBrowser.vue'
 
 export default Vue.extend({
   name: 'Search',
@@ -74,7 +65,7 @@ export default Vue.extend({
     EmptyState,
     ToolbarSticky,
     HorizontalScroller,
-    ItemCard,
+    ItemBrowser,
   },
   data: () => {
     return {

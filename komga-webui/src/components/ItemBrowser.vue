@@ -5,12 +5,13 @@
          v-resize="onResize"
     >
       <draggable v-model="localItems"
-                 class="d-flex flex-wrap"
+                 :class="flexClass"
                  handle=".handle"
                  v-bind="dragOptions"
       >
-        <transition-group type="transition" :name="!draggable ? 'flip-list' : null"
-                          class="d-flex flex-wrap"
+        <transition-group type="transition"
+                          :name="!draggable ? 'flip-list' : null"
+                          :class="flexClass"
         >
           <v-item
             v-for="item in localItems"
@@ -105,6 +106,10 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
+    nowrap: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: () => {
     return {
@@ -140,6 +145,9 @@ export default Vue.extend({
     },
   },
   computed: {
+    flexClass (): string {
+      return this.nowrap ? 'd-flex flex-nowrap' : 'd-flex flex-wrap'
+    },
     hasItems (): boolean {
       return this.items.length > 0
     },

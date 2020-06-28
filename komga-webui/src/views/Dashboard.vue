@@ -13,11 +13,7 @@
         <div class="title">Keep Reading</div>
       </template>
       <template v-slot:content>
-        <div v-for="(b, i) in inProgressBooks"
-             :key="i"
-        >
-          <item-card class="ma-2 card" :item="b" :on-edit="singleEditBook"/>
-        </div>
+        <item-browser :items="inProgressBooks" nowrap :edit-function="singleEditBook" :selectable="false"/>
       </template>
     </horizontal-scroller>
 
@@ -26,11 +22,7 @@
         <div class="title">On Deck</div>
       </template>
       <template v-slot:content>
-        <div v-for="(b, i) in onDeckBooks"
-             :key="i"
-        >
-          <item-card class="ma-2 card" :item="b" :on-edit="singleEditBook"/>
-        </div>
+        <item-browser :items="onDeckBooks" nowrap :edit-function="singleEditBook" :selectable="false"/>
       </template>
     </horizontal-scroller>
 
@@ -39,10 +31,7 @@
         <div class="title">Recently Added Series</div>
       </template>
       <template v-slot:content>
-        <div v-for="(s, i) in newSeries"
-             :key="i">
-          <item-card class="ma-2 card" :item="s" :on-edit="singleEditSeries"/>
-        </div>
+        <item-browser :items="newSeries" nowrap :edit-function="singleEditSeries" :selectable="false"/>
       </template>
     </horizontal-scroller>
 
@@ -51,10 +40,7 @@
         <div class="title">Recently Updated Series</div>
       </template>
       <template v-slot:content>
-        <div v-for="(s, i) in updatedSeries"
-             :key="i">
-          <item-card class="ma-2 card" :item="s" :on-edit="singleEditSeries"/>
-        </div>
+        <item-browser :items="updatedSeries" nowrap :edit-function="singleEditSeries" :selectable="false"/>
       </template>
     </horizontal-scroller>
 
@@ -63,11 +49,7 @@
         <div class="title">Recently Added Books</div>
       </template>
       <template v-slot:content>
-        <div v-for="(b, i) in latestBooks"
-             :key="i"
-        >
-          <item-card class="ma-2 card" :item="b" :on-edit="singleEditBook"/>
-        </div>
+        <item-browser :items="latestBooks" nowrap :edit-function="singleEditBook" :selectable="false"/>
       </template>
     </horizontal-scroller>
 
@@ -77,14 +59,14 @@
 <script lang="ts">
 import EmptyState from '@/components/EmptyState.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
-import ItemCard from '@/components/ItemCard.vue'
 import { ReadStatus } from '@/types/enum-books'
 import { BOOK_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
+import ItemBrowser from '@/components/ItemBrowser.vue'
 
 export default Vue.extend({
   name: 'Dashboard',
-  components: { ItemCard, HorizontalScroller, EmptyState },
+  components: { HorizontalScroller, EmptyState, ItemBrowser },
   data: () => {
     return {
       newSeries: [] as SeriesDto[],
