@@ -49,7 +49,7 @@
           <template v-slot:content>
             <div v-for="(item, index) in collections"
                  :key="index">
-              <item-card class="ma-2 card" :item="item"/>
+              <item-card class="ma-2 card" :item="item" :on-edit="singleEditCollection"/>
             </div>
           </template>
         </horizontal-scroller>
@@ -117,6 +117,9 @@ export default Vue.extend({
     },
     singleEditBook (book: BookDto) {
       this.$store.dispatch('dialogUpdateBooks', book)
+    },
+    singleEditCollection (collection: CollectionDto) {
+      this.$store.dispatch('dialogEditCollection', collection)
     },
     reloadResults () {
       this.loadResults(this.$route.query.q.toString())
