@@ -11,6 +11,10 @@ export default new Vuex.Store({
     deleteCollectionDialog: false,
     deleteLibrary: {} as LibraryDto,
     deleteLibraryDialog: false,
+    updateBooks: {} as BookDto | BookDto[],
+    updateBooksDialog: false,
+    updateSeries: {} as SeriesDto | SeriesDto[],
+    updateSeriesDialog: false,
   },
   mutations: {
     setAddToCollectionSeries (state, series) {
@@ -30,6 +34,18 @@ export default new Vuex.Store({
     },
     setDeleteLibraryDialog (state, dialog) {
       state.deleteLibraryDialog = dialog
+    },
+    setUpdateBooks (state, books) {
+      state.updateBooks = books
+    },
+    setUpdateBooksDialog (state, dialog) {
+      state.updateBooksDialog = dialog
+    },
+    setUpdateSeries (state, series) {
+      state.updateSeries = series
+    },
+    setUpdateSeriesDialog (state, dialog) {
+      state.updateSeriesDialog = dialog
     },
   },
   actions: {
@@ -53,6 +69,20 @@ export default new Vuex.Store({
     },
     dialogDeleteLibraryDisplay ({ commit }, value) {
       commit('setDeleteLibraryDialog', value)
+    },
+    dialogUpdateBooks ({ commit }, books) {
+      commit('setUpdateBooks', books)
+      commit('setUpdateBooksDialog', true)
+    },
+    dialogUpdateBooksDisplay ({ commit }, value) {
+      commit('setUpdateBooksDialog', value)
+    },
+    dialogUpdateSeries ({ commit }, series) {
+      commit('setUpdateSeries', series)
+      commit('setUpdateSeriesDialog', true)
+    },
+    dialogUpdateSeriesDisplay ({ commit }, value) {
+      commit('setUpdateSeriesDialog', value)
     },
   },
 })

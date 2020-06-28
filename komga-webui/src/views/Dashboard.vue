@@ -1,14 +1,6 @@
 <template>
   <div class="ma-3">
 
-    <edit-series-dialog v-model="dialogEditSeriesSingle"
-                        :series.sync="editSeriesSingle"
-    />
-
-    <edit-books-dialog v-model="dialogEditBookSingle"
-                       :books.sync="editBookSingle"
-    />
-
     <empty-state v-if="allEmpty"
                  title="Nothing to show"
                  icon="mdi-help-circle"
@@ -83,8 +75,6 @@
 </template>
 
 <script lang="ts">
-import EditBooksDialog from '@/components/dialogs/EditBooksDialog.vue'
-import EditSeriesDialog from '@/components/dialogs/EditSeriesDialog.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import ItemCard from '@/components/ItemCard.vue'
@@ -94,7 +84,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'Dashboard',
-  components: { ItemCard, HorizontalScroller, EditSeriesDialog, EditBooksDialog, EmptyState },
+  components: { ItemCard, HorizontalScroller, EmptyState },
   data: () => {
     return {
       newSeries: [] as SeriesDto[],
@@ -102,10 +92,6 @@ export default Vue.extend({
       latestBooks: [] as BookDto[],
       inProgressBooks: [] as BookDto[],
       onDeckBooks: [] as BookDto[],
-      editSeriesSingle: {} as SeriesDto,
-      dialogEditSeriesSingle: false,
-      editBookSingle: {} as BookDto,
-      dialogEditBookSingle: false,
     }
   },
   created () {
@@ -194,12 +180,10 @@ export default Vue.extend({
       this.onDeckBooks = (await this.$komgaBooks.getBooksOnDeck()).content
     },
     singleEditSeries (series: SeriesDto) {
-      this.editSeriesSingle = series
-      this.dialogEditSeriesSingle = true
+      this.$store.dispatch('dialogUpdateSeries', series)
     },
     singleEditBook (book: BookDto) {
-      this.editBookSingle = book
-      this.dialogEditBookSingle = true
+      this.$store.dispatch('dialogUpdateBooks', book)
     },
   },
 })

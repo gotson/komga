@@ -281,14 +281,12 @@ export default Vue.extend({
         const toUpdate = (this.single ? [this.series] : this.series) as SeriesDto[]
         for (const s of toUpdate) {
           try {
-            const updatedSeries = await this.$komgaSeries.updateMetadata(s.id, metadata)
-            updated.push(updatedSeries)
+            await this.$komgaSeries.updateMetadata(s.id, metadata)
+            this.$emit('updated', s)
           } catch (e) {
             this.showSnack(e.message)
-            updated.push(s)
           }
         }
-        this.$emit('update:series', this.single ? updated[0] : updated)
         return true
       } else return false
     },

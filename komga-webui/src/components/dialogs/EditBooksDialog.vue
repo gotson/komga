@@ -559,14 +559,12 @@ export default Vue.extend({
         const toUpdate = (this.single ? [this.books] : this.books) as BookDto[]
         for (const b of toUpdate) {
           try {
-            const updatedBooks = await this.$komgaBooks.updateMetadata(b.id, metadata)
-            updated.push(updatedBooks)
+            await this.$komgaBooks.updateMetadata(b.id, metadata)
+            this.$emit('updated', b)
           } catch (e) {
             this.showSnack(e.message)
-            updated.push(b)
           }
         }
-        this.$emit('update:books', this.single ? updated[0] : updated)
         return true
       } else return false
     },
@@ -575,5 +573,5 @@ export default Vue.extend({
 </script>
 
 <style lang="sass" scoped>
-@import 'src/styles/tabbed-dialog'
+@import '../../styles/tabbed-dialog'
 </style>

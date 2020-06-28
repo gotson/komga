@@ -125,9 +125,9 @@ export default class KomgaBooksService {
     }
   }
 
-  async updateMetadata (bookId: number, metadata: BookMetadataUpdateDto): Promise<BookDto> {
+  async updateMetadata (bookId: number, metadata: BookMetadataUpdateDto) {
     try {
-      return (await this.http.patch(`${API_BOOKS}/${bookId}/metadata`, metadata)).data
+      await this.http.patch(`${API_BOOKS}/${bookId}/metadata`, metadata)
     } catch (e) {
       let msg = `An error occurred while trying to update book metadata`
       if (e.response.data.message) {

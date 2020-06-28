@@ -11,7 +11,7 @@
 
       <v-spacer/>
 
-      <v-btn icon @click="dialogEdit = true" v-if="isAdmin">
+      <v-btn icon @click="editBook" v-if="isAdmin">
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
 
@@ -139,16 +139,12 @@
 
     </v-container>
 
-    <edit-books-dialog v-model="dialogEdit"
-                       :books.sync="book"
-    />
   </div>
 </template>
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
 import BookActionsMenu from '@/components/menus/BookActionsMenu.vue'
-import EditBooksDialog from '@/components/dialogs/EditBooksDialog.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { groupAuthorsByRolePlural } from '@/functions/authors'
@@ -162,12 +158,11 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'BrowseBook',
-  components: { ToolbarSticky, Badge, EditBooksDialog, ItemCard, BookActionsMenu },
+  components: { ToolbarSticky, Badge, ItemCard, BookActionsMenu },
   data: () => {
     return {
       book: {} as BookDto,
       series: {} as SeriesDto,
-      dialogEdit: false,
     }
   },
   async created () {
@@ -252,6 +247,9 @@ export default Vue.extend({
     },
     refreshMetadata () {
       this.$komgaBooks.refreshMetadata(this.book)
+    },
+    editBook () {
+      this.$store.dispatch('dialogUpdateBooks', this.book)
     },
   },
 })

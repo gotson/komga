@@ -20,7 +20,7 @@
 
       <v-spacer/>
 
-      <v-btn icon @click="dialogEdit = true" v-if="isAdmin">
+      <v-btn icon @click="editSeries" v-if="isAdmin">
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
 
@@ -194,15 +194,12 @@
 
     </v-container>
 
-    <edit-series-dialog v-model="dialogEdit" :series.sync="series"/>
-
   </div>
 </template>
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
 import EditBooksDialog from '@/components/dialogs/EditBooksDialog.vue'
-import EditSeriesDialog from '@/components/dialogs/EditSeriesDialog.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import FilterMenuButton from '@/components/FilterMenuButton.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
@@ -227,7 +224,6 @@ export default Vue.extend({
     SortMenuButton,
     FilterMenuButton,
     Badge,
-    EditSeriesDialog,
     EditBooksDialog,
     ItemBrowser,
     PageSizeSelect,
@@ -455,6 +451,9 @@ export default Vue.extend({
     },
     refreshMetadata () {
       this.$komgaSeries.refreshMetadata(this.series)
+    },
+    editSeries () {
+      this.$store.dispatch('dialogUpdateSeries', this.series)
     },
     singleEdit (book: BookDto) {
       this.editBookSingle = book

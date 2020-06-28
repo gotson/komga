@@ -17,6 +17,19 @@
       :library="deleteLibrary"
       @deleted="libraryDeleted"
     />
+
+    <edit-books-dialog
+      v-model="updateBooksDialog"
+      :books="updateBooks"
+      @updated="bookUpdated"
+    />
+
+    <edit-series-dialog
+      v-model="updateSeriesDialog"
+      :series="updateSeries"
+      @updated="seriesUpdated"
+    />
+
   </div>
 </template>
 
@@ -24,12 +37,20 @@
 import CollectionAddToDialog from '@/components/dialogs/CollectionAddToDialog.vue'
 import CollectionDeleteDialog from '@/components/dialogs/CollectionDeleteDialog.vue'
 import LibraryDeleteDialog from '@/components/dialogs/LibraryDeleteDialog.vue'
-import { COLLECTION_CHANGED, COLLECTION_DELETED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
+import { BOOK_CHANGED, COLLECTION_CHANGED, COLLECTION_DELETED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
+import EditBooksDialog from '@/components/dialogs/EditBooksDialog.vue'
+import EditSeriesDialog from '@/components/dialogs/EditSeriesDialog.vue'
 
 export default Vue.extend({
   name: 'Dialogs',
-  components: { CollectionAddToDialog, CollectionDeleteDialog, LibraryDeleteDialog },
+  components: {
+    CollectionAddToDialog,
+    CollectionDeleteDialog,
+    LibraryDeleteDialog,
+    EditBooksDialog,
+    EditSeriesDialog,
+  },
   computed: {
     addToCollectionDialog: {
       get (): boolean {
@@ -64,6 +85,28 @@ export default Vue.extend({
     deleteLibrary (): LibraryDto {
       return this.$store.state.deleteLibrary
     },
+    updateBooksDialog: {
+      get (): boolean {
+        return this.$store.state.updateBooksDialog
+      },
+      set (val) {
+        this.$store.dispatch('dialogUpdateBooksDisplay', val)
+      },
+    },
+    updateBooks (): BookDto | BookDto[] {
+      return this.$store.state.updateBooks
+    },
+    updateSeriesDialog: {
+      get (): boolean {
+        return this.$store.state.updateSeriesDialog
+      },
+      set (val) {
+        this.$store.dispatch('dialogUpdateSeriesDisplay', val)
+      },
+    },
+    updateSeries (): SeriesDto | SeriesDto[] {
+      return this.$store.state.updateSeries
+    },
   },
   methods: {
     collectionAdded () {
@@ -91,6 +134,16 @@ export default Vue.extend({
       this.$eventHub.$emit(LIBRARY_DELETED, {
         id: this.deleteLibrary.id,
       } as EventLibraryDeleted)
+    },
+    bookUpdated (book: BookDto) {
+      this.$eventHub.$emit(BOOK_CHANGED, {
+        id: book.id,
+      } as EventBookChanged)
+    },
+    seriesUpdated (series: SeriesDto) {
+      this.$eventHub.$emit(SERIES_CHANGED, {
+        id: series.id,
+      } as EventSeriesChanged)
     },
   },
 })

@@ -367,12 +367,13 @@ class BookController(
 
   @PatchMapping("api/v1/books/{bookId}/metadata")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateMetadata(
     @PathVariable bookId: Long,
     @Parameter(description = "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don't want to update.")
     @Valid @RequestBody newMetadata: BookMetadataUpdateDto,
     @AuthenticationPrincipal principal: KomgaPrincipal
-  ): BookDto =
+  ) =
     bookMetadataRepository.findByIdOrNull(bookId)?.let { existing ->
       val updated = with(newMetadata) {
         existing.copy(
@@ -399,7 +400,6 @@ class BookController(
         )
       }
       bookMetadataRepository.update(updated)
-      bookDtoRepository.findByIdOrNull(bookId, principal.user.id)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @PatchMapping("api/v1/books/{bookId}/read-progress")

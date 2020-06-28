@@ -268,12 +268,13 @@ class SeriesController(
 
   @PatchMapping("{seriesId}/metadata")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateMetadata(
     @PathVariable seriesId: Long,
     @Parameter(description = "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don't want to update.")
     @Valid @RequestBody newMetadata: SeriesMetadataUpdateDto,
     @AuthenticationPrincipal principal: KomgaPrincipal
-  ): SeriesDto =
+  ) =
     seriesMetadataRepository.findByIdOrNull(seriesId)?.let { existing ->
       val updated = with(newMetadata) {
         existing.copy(
@@ -286,7 +287,6 @@ class SeriesController(
         )
       }
       seriesMetadataRepository.update(updated)
-      seriesDtoRepository.findByIdOrNull(seriesId, principal.user.id)!!
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @PostMapping("{seriesId}/read-progress")
