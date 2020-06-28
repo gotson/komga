@@ -11,6 +11,7 @@ node_modules
 
 ### Temporary files
 *.tmp
+*.bak
 
 ### H2 databases
 *.mv.db
