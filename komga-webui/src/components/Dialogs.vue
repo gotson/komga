@@ -4,6 +4,13 @@
       v-model="addToCollectionDialog"
       :series="addToCollectionSeries"
       @added="collectionAdded"
+      @created="collectionAdded"
+    />
+
+    <collection-edit-dialog
+      v-model="editCollectionDialog"
+      :collection="editCollection"
+      @updated="collectionUpdated"
     />
 
     <collection-delete-dialog
@@ -42,6 +49,7 @@ import {
   bookToEventBookChanged,
   COLLECTION_CHANGED,
   COLLECTION_DELETED,
+  collectionToEventCollectionChanged,
   collectionToEventCollectionDeleted,
   LIBRARY_DELETED,
   libraryToEventLibraryDeleted,
@@ -51,11 +59,13 @@ import {
 import Vue from 'vue'
 import EditBooksDialog from '@/components/dialogs/EditBooksDialog.vue'
 import EditSeriesDialog from '@/components/dialogs/EditSeriesDialog.vue'
+import CollectionEditDialog from '@/components/dialogs/CollectionEditDialog.vue'
 
 export default Vue.extend({
   name: 'Dialogs',
   components: {
     CollectionAddToDialog,
+    CollectionEditDialog,
     CollectionDeleteDialog,
     LibraryDeleteDialog,
     EditBooksDialog,
@@ -72,6 +82,17 @@ export default Vue.extend({
     },
     addToCollectionSeries (): SeriesDto | SeriesDto[] {
       return this.$store.state.addToCollectionSeries
+    },
+    editCollectionDialog: {
+      get (): boolean {
+        return this.$store.state.editCollectionDialog
+      },
+      set (val) {
+        this.$store.dispatch('dialogEditCollectionDisplay', val)
+      },
+    },
+    editCollection (): CollectionDto {
+      return this.$store.state.editCollection
     },
     deleteCollectionDialog: {
       get (): boolean {
@@ -119,7 +140,7 @@ export default Vue.extend({
     },
   },
   methods: {
-    collectionAdded () {
+    collectionAdded (collection: CollectionDto) {
       if (Array.isArray(this.addToCollectionSeries)) {
         this.addToCollectionSeries.forEach(s => {
           this.$eventHub.$emit(SERIES_CHANGED, seriesToEventSeriesChanged(s))
@@ -127,7 +148,10 @@ export default Vue.extend({
       } else {
         this.$eventHub.$emit(SERIES_CHANGED, seriesToEventSeriesChanged(this.addToCollectionSeries))
       }
-      this.$eventHub.$emit(COLLECTION_CHANGED)
+      this.$eventHub.$emit(COLLECTION_CHANGED, collectionToEventCollectionChanged(collection))
+    },
+    collectionUpdated () {
+      this.$eventHub.$emit(COLLECTION_CHANGED, collectionToEventCollectionChanged(this.editCollection))
     },
     collectionDeleted () {
       this.$eventHub.$emit(COLLECTION_DELETED, collectionToEventCollectionDeleted(this.deleteCollection))

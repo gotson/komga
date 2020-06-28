@@ -7,6 +7,8 @@ export default new Vuex.Store({
   state: {
     addToCollectionSeries: {} as SeriesDto | SeriesDto[],
     addToCollectionDialog: false,
+    editCollection: {} as CollectionDto,
+    editCollectionDialog: false,
     deleteCollection: {} as CollectionDto,
     deleteCollectionDialog: false,
     deleteLibrary: {} as LibraryDto,
@@ -22,6 +24,12 @@ export default new Vuex.Store({
     },
     setAddToCollectionDialog (state, dialog) {
       state.addToCollectionDialog = dialog
+    },
+    setEditCollection (state, collection) {
+      state.editCollection = collection
+    },
+    setEditCollectionDialog (state, dialog) {
+      state.editCollectionDialog = dialog
     },
     setDeleteCollection (state, collection) {
       state.deleteCollection = collection
@@ -55,6 +63,13 @@ export default new Vuex.Store({
     },
     dialogAddSeriesToCollectionDisplay ({ commit }, value) {
       commit('setAddToCollectionDialog', value)
+    },
+    dialogEditCollection ({ commit }, collection) {
+      commit('setEditCollection', collection)
+      commit('setEditCollectionDialog', true)
+    },
+    dialogEditCollectionDisplay ({ commit }, value) {
+      commit('setEditCollectionDialog', value)
     },
     dialogDeleteCollection ({ commit }, collection) {
       commit('setDeleteCollection', collection)

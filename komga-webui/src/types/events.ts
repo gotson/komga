@@ -18,6 +18,12 @@ export function seriesToEventSeriesChanged (series: SeriesDto): EventSeriesChang
   } as EventSeriesChanged
 }
 
+export function collectionToEventCollectionChanged (collection: CollectionDto): EventCollectionChanged {
+  return {
+    id: collection.id,
+  } as EventCollectionChanged
+}
+
 export function collectionToEventCollectionDeleted (collection: CollectionDto): EventCollectionDeleted {
   return {
     id: collection.id,

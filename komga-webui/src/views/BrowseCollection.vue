@@ -100,11 +100,6 @@
       </toolbar-sticky>
     </v-scroll-y-transition>
 
-    <collection-edit-dialog v-model="dialogEditCollection"
-                            :collection="collection"
-                            @updated="loadCollection(collectionId)"
-    />
-
     <v-container fluid>
 
       <item-browser
@@ -123,10 +118,9 @@
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
 import CollectionActionsMenu from '@/components/menus/CollectionActionsMenu.vue'
-import CollectionEditDialog from '@/components/dialogs/CollectionEditDialog.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
-import { COLLECTION_DELETED, SERIES_CHANGED } from '@/types/events'
+import { COLLECTION_CHANGED, COLLECTION_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -134,7 +128,6 @@ export default Vue.extend({
   components: {
     ToolbarSticky,
     ItemBrowser,
-    CollectionEditDialog,
     CollectionActionsMenu,
     Badge,
   },
@@ -146,7 +139,6 @@ export default Vue.extend({
       selectedSeries: [] as SeriesDto[],
       editSeriesSingle: {} as SeriesDto,
       selected: [],
-      dialogEditCollection: false,
       editElements: false,
     }
   },
@@ -185,10 +177,12 @@ export default Vue.extend({
     },
   },
   created () {
+    this.$eventHub.$on(COLLECTION_CHANGED, this.collectionChanged)
     this.$eventHub.$on(COLLECTION_DELETED, this.afterDelete)
     this.$eventHub.$on(SERIES_CHANGED, this.reloadSeries)
   },
   beforeDestroy () {
+    this.$eventHub.$off(COLLECTION_CHANGED, this.collectionChanged)
     this.$eventHub.$off(COLLECTION_DELETED, this.afterDelete)
     this.$eventHub.$off(SERIES_CHANGED, this.reloadSeries)
   },
@@ -212,6 +206,11 @@ export default Vue.extend({
     },
   },
   methods: {
+    collectionChanged (event: EventCollectionChanged) {
+      if (event.id === this.collectionId) {
+        this.loadCollection(this.collectionId)
+      }
+    },
     async loadCollection (collectionId: number) {
       this.collection = await this.$komgaCollections.getOneCollection(collectionId)
       this.series = (await this.$komgaCollections.getSeries(collectionId, { unpaged: true } as PageRequest)).content
@@ -258,7 +257,7 @@ export default Vue.extend({
       this.loadCollection(this.collectionId)
     },
     editCollection () {
-      this.dialogEditCollection = true
+      this.$store.dispatch('dialogEditCollection', this.collection)
     },
     afterDelete () {
       this.$router.push({ name: 'browse-collections', params: { libraryId: '0' } })
