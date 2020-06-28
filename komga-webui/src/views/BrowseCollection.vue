@@ -62,7 +62,7 @@
 
         <v-spacer/>
 
-        <v-btn icon @click="markSelectedRead()">
+        <v-btn icon @click="markSelectedRead">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-icon v-on="on">mdi-bookmark-check</v-icon>
@@ -71,7 +71,7 @@
           </v-tooltip>
         </v-btn>
 
-        <v-btn icon @click="markSelectedUnread()">
+        <v-btn icon @click="markSelectedUnread">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-icon v-on="on">mdi-bookmark-remove</v-icon>
@@ -80,7 +80,7 @@
           </v-tooltip>
         </v-btn>
 
-        <v-btn icon @click="addToCollection()">
+        <v-btn icon @click="addToCollection">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-icon v-on="on">mdi-playlist-plus</v-icon>
@@ -89,7 +89,7 @@
           </v-tooltip>
         </v-btn>
 
-        <v-btn icon @click="dialogEdit = true" v-if="isAdmin">
+        <v-btn icon @click="editMultipleSeries" v-if="isAdmin">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-icon v-on="on">mdi-pencil</v-icon>
@@ -99,14 +99,6 @@
         </v-btn>
       </toolbar-sticky>
     </v-scroll-y-transition>
-
-    <edit-series-dialog v-model="dialogEdit"
-                        :series.sync="selectedSeries"
-    />
-
-    <edit-series-dialog v-model="dialogEditSingle"
-                        :series.sync="editSeriesSingle"
-    />
 
     <collection-edit-dialog v-model="dialogEditCollection"
                             :collection="collection"
@@ -118,7 +110,7 @@
       <item-browser
         :items.sync="series"
         :selected.sync="selected"
-        :edit-function="singleEdit"
+        :edit-function="editSingleSeries"
         :draggable="editElements && collection.ordered"
         :deletable="editElements"
       />
@@ -132,7 +124,6 @@
 import Badge from '@/components/Badge.vue'
 import CollectionActionsMenu from '@/components/menus/CollectionActionsMenu.vue'
 import CollectionEditDialog from '@/components/dialogs/CollectionEditDialog.vue'
-import EditSeriesDialog from '@/components/dialogs/EditSeriesDialog.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { COLLECTION_DELETED, SERIES_CHANGED } from '@/types/events'
@@ -143,7 +134,6 @@ export default Vue.extend({
   components: {
     ToolbarSticky,
     ItemBrowser,
-    EditSeriesDialog,
     CollectionEditDialog,
     CollectionActionsMenu,
     Badge,
@@ -156,9 +146,6 @@ export default Vue.extend({
       selectedSeries: [] as SeriesDto[],
       editSeriesSingle: {} as SeriesDto,
       selected: [],
-      dialogEdit: false,
-      dialogEditSingle: false,
-      dialogAddToCollection: false,
       dialogEditCollection: false,
       editElements: false,
     }
@@ -230,9 +217,11 @@ export default Vue.extend({
       this.series = (await this.$komgaCollections.getSeries(collectionId, { unpaged: true } as PageRequest)).content
       this.seriesCopy = [...this.series]
     },
-    singleEdit (series: SeriesDto) {
-      this.editSeriesSingle = series
-      this.dialogEditSingle = true
+    editSingleSeries (series: SeriesDto) {
+      this.$store.dispatch('dialogUpdateSeries', series)
+    },
+    editMultipleSeries () {
+      this.$store.dispatch('dialogUpdateSeries', this.selectedSeries)
     },
     async markSelectedRead () {
       await Promise.all(this.selectedSeries.map(s =>

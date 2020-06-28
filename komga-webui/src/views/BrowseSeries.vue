@@ -239,7 +239,6 @@ export default Vue.extend({
       sortDefault: { key: 'metadata.numberSort', order: 'asc' } as SortActive,
       filterOptions: [{ values: [ReadStatus.UNREAD] }],
       filters: [[]] as any[],
-      dialogEdit: false,
       sortUnwatch: null as any,
       filterUnwatch: null as any,
       pageUnwatch: null as any,
