@@ -1,6 +1,6 @@
 <template>
   <div>
-    <toolbar-sticky v-if="selected.length === 0">
+    <toolbar-sticky v-if="selectedBooks.length === 0">
       <!--   Go back to parent library   -->
       <v-btn icon
              title="Go to library"
@@ -39,40 +39,13 @@
 
     </toolbar-sticky>
 
-    <v-scroll-y-transition hide-on-leave>
-      <toolbar-sticky v-if="selected.length > 0" :elevation="5" color="white">
-        <v-btn icon @click="selected=[]">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-        <v-toolbar-title>
-          <span>{{ selected.length }} selected</span>
-        </v-toolbar-title>
-
-        <v-spacer/>
-
-        <v-btn icon @click="markSelectedRead()">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-icon v-on="on">mdi-bookmark-check</v-icon>
-            </template>
-            <span>Mark as Read</span>
-          </v-tooltip>
-        </v-btn>
-
-        <v-btn icon @click="markSelectedUnread()">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-icon v-on="on">mdi-bookmark-remove</v-icon>
-            </template>
-            <span>Mark as Unread</span>
-          </v-tooltip>
-        </v-btn>
-
-        <v-btn icon @click="editMultipleBooks" v-if="isAdmin">
-          <v-icon>mdi-pencil</v-icon>
-        </v-btn>
-      </toolbar-sticky>
-    </v-scroll-y-transition>
+    <books-multi-select-bar
+      v-model="selectedBooks"
+      @unselect-all="selectedBooks = []"
+      @mark-read="markSelectedRead"
+      @mark-unread="markSelectedUnread"
+      @edit="editMultipleBooks"
+    />
 
     <v-container fluid>
       <v-row>
@@ -179,7 +152,7 @@
         />
 
         <item-browser :items="books"
-                      :selected.sync="selected"
+                      :selected.sync="selectedBooks"
                       :edit-function="editSingleBook"
         />
       </template>
@@ -199,12 +172,13 @@ import ItemCard from '@/components/ItemCard.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import SeriesActionsMenu from '@/components/menus/SeriesActionsMenu.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
-import ToolbarSticky from '@/components/ToolbarSticky.vue'
+import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import { parseQueryFilter, parseQuerySort } from '@/functions/query-params'
 import { seriesThumbnailUrl } from '@/functions/urls'
 import { ReadStatus } from '@/types/enum-books'
 import { BOOK_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
+import BooksMultiSelectBar from '@/components/bars/BooksMultiSelectBar.vue'
 
 const cookiePageSize = 'pagesize'
 
@@ -221,6 +195,7 @@ export default Vue.extend({
     HorizontalScroller,
     ItemCard,
     EmptyState,
+    BooksMultiSelectBar,
   },
   data: () => {
     return {
@@ -243,7 +218,6 @@ export default Vue.extend({
       filterUnwatch: null as any,
       pageUnwatch: null as any,
       pageSizeUnwatch: null as any,
-      selected: [],
       collections: [] as CollectionDto[],
       collectionsContent: [] as any[][],
       collectionPanel: -1,
@@ -281,10 +255,6 @@ export default Vue.extend({
       if (this.$_.has(val, 'metadata.title')) {
         document.title = `Komga - ${val.metadata.title}`
       }
-    },
-    selected (val: number[]) {
-      this.selectedBooks = val.map(id => this.books.find(s => s.id === id))
-        .filter(x => x !== undefined) as BookDto[]
     },
   },
   created () {
@@ -356,7 +326,7 @@ export default Vue.extend({
     updateRouteAndReload () {
       this.unsetWatches()
 
-      this.selected = []
+      this.selectedBooks = []
       this.page = 1
 
       this.updateRoute()

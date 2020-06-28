@@ -42,7 +42,7 @@ import ItemBrowser from '@/components/ItemBrowser.vue'
 import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import LibraryNavigation from '@/components/LibraryNavigation.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
-import ToolbarSticky from '@/components/ToolbarSticky.vue'
+import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import { COLLECTION_CHANGED } from '@/types/events'
 import Vue from 'vue'
 

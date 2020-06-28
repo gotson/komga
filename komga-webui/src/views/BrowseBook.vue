@@ -146,7 +146,7 @@
 import Badge from '@/components/Badge.vue'
 import BookActionsMenu from '@/components/menus/BookActionsMenu.vue'
 import ItemCard from '@/components/ItemCard.vue'
-import ToolbarSticky from '@/components/ToolbarSticky.vue'
+import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import { groupAuthorsByRolePlural } from '@/functions/authors'
 import { getBookFormatFromMediaType } from '@/functions/book-format'
 import { getReadProgress, getReadProgressPercentage } from '@/functions/book-progress'

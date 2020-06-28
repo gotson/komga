@@ -17,7 +17,7 @@
             v-for="item in localItems"
             :key="item.id"
             class="my-3 mx-2"
-            v-slot:default="{ toggle, active }" :value="$_.get(item, 'id', 0)"
+            v-slot:default="{ toggle, active }" :value="item"
           >
             <slot name="item">
               <div style="position: relative"

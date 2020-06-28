@@ -54,7 +54,7 @@
 <script lang="ts">
 import EmptyState from '@/components/EmptyState.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
-import ToolbarSticky from '@/components/ToolbarSticky.vue'
+import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import { BOOK_CHANGED, COLLECTION_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'

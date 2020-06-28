@@ -1,6 +1,6 @@
 <template>
   <div :style="$vuetify.breakpoint.name === 'xs' ? 'margin-bottom: 56px' : undefined">
-    <toolbar-sticky v-if="selected.length === 0">
+    <toolbar-sticky v-if="selectedSeries.length === 0">
       <!--   Action menu   -->
       <library-actions-menu v-if="library"
                             :library="library"/>
@@ -24,58 +24,16 @@
       />
 
       <page-size-select v-model="pageSize"/>
-
     </toolbar-sticky>
 
-    <!--  Selection sticky bar  -->
-    <v-scroll-y-transition hide-on-leave>
-      <toolbar-sticky v-if="selected.length > 0" :elevation="5" color="white">
-        <v-btn icon @click="selected=[]">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-        <v-toolbar-title>
-          <span>{{ selected.length }} selected</span>
-        </v-toolbar-title>
-
-        <v-spacer/>
-
-        <v-btn icon @click="markSelectedRead">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-icon v-on="on">mdi-bookmark-check</v-icon>
-            </template>
-            <span>Mark as Read</span>
-          </v-tooltip>
-        </v-btn>
-
-        <v-btn icon @click="markSelectedUnread">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-icon v-on="on">mdi-bookmark-remove</v-icon>
-            </template>
-            <span>Mark as Unread</span>
-          </v-tooltip>
-        </v-btn>
-
-        <v-btn icon @click="addToCollection">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-icon v-on="on">mdi-playlist-plus</v-icon>
-            </template>
-            <span>Add to collection</span>
-          </v-tooltip>
-        </v-btn>
-
-        <v-btn icon @click="editMultipleSeries" v-if="isAdmin">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-icon v-on="on">mdi-pencil</v-icon>
-            </template>
-            <span>Edit metadata</span>
-          </v-tooltip>
-        </v-btn>
-      </toolbar-sticky>
-    </v-scroll-y-transition>
+    <series-multi-select-bar
+      v-model="selectedSeries"
+      @unselect-all="selectedSeries = []"
+      @mark-read="markSelectedRead"
+      @mark-unread="markSelectedUnread"
+      @add-to-collection="addToCollection"
+      @edit="editMultipleSeries"
+    />
 
     <library-navigation v-if="collectionsCount > 0"
                         :libraryId="libraryId"
@@ -101,7 +59,7 @@
 
         <item-browser
           :items="series"
-          :selected.sync="selected"
+          :selected.sync="selectedSeries"
           :edit-function="editSingleSeries"
         />
       </template>
@@ -119,12 +77,13 @@ import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import LibraryNavigation from '@/components/LibraryNavigation.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
-import ToolbarSticky from '@/components/ToolbarSticky.vue'
+import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import { parseQueryFilter, parseQuerySort } from '@/functions/query-params'
 import { ReadStatus } from '@/types/enum-books'
 import { SeriesStatus } from '@/types/enum-series'
 import { COLLECTION_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
+import SeriesMultiSelectBar from '@/components/bars/SeriesMultiSelectBar.vue'
 
 const cookiePageSize = 'pagesize'
 
@@ -140,13 +99,13 @@ export default Vue.extend({
     ItemBrowser,
     PageSizeSelect,
     LibraryNavigation,
+    SeriesMultiSelectBar,
   },
   data: () => {
     return {
       library: undefined as LibraryDto | undefined,
       series: [] as SeriesDto[],
       selectedSeries: [] as SeriesDto[],
-      editSeriesSingle: {} as SeriesDto,
       page: 1,
       pageSize: 20,
       totalPages: 1,
@@ -164,7 +123,6 @@ export default Vue.extend({
       filterUnwatch: null as any,
       pageUnwatch: null as any,
       pageSizeUnwatch: null as any,
-      selected: [],
       collectionsCount: 0,
     }
   },
@@ -175,10 +133,6 @@ export default Vue.extend({
     },
   },
   watch: {
-    selected (val: number[]) {
-      this.selectedSeries = val.map(id => this.series.find(s => s.id === id))
-        .filter(x => x !== undefined) as SeriesDto[]
-    },
     selectedSeries (val: SeriesDto[]) {
       val.forEach(s => {
         const index = this.series.findIndex(x => x.id === s.id)
@@ -186,12 +140,6 @@ export default Vue.extend({
           this.series.splice(index, 1, s)
         }
       })
-    },
-    editSeriesSingle (val: SeriesDto) {
-      const index = this.series.findIndex(x => x.id === val.id)
-      if (index !== -1) {
-        this.series.splice(index, 1, val)
-      }
     },
   },
   created () {
@@ -289,7 +237,7 @@ export default Vue.extend({
     updateRouteAndReload () {
       this.unsetWatches()
 
-      this.selected = []
+      this.selectedSeries = []
       this.page = 1
 
       this.updateRoute()

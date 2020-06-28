@@ -1,6 +1,6 @@
 <template>
   <div v-if="collection">
-    <toolbar-sticky v-if="!editElements && selected.length === 0">
+    <toolbar-sticky v-if="!editElements && selectedSeries.length === 0">
 
       <collection-actions-menu v-if="collection"
                                :collection="collection"
@@ -36,6 +36,15 @@
 
     </toolbar-sticky>
 
+    <series-multi-select-bar
+      v-model="selectedSeries"
+      @unselect-all="selectedSeries = []"
+      @mark-read="markSelectedRead"
+      @mark-unread="markSelectedUnread"
+      @add-to-collection="addToCollection"
+      @edit="editMultipleSeries"
+    />
+
     <!--  Edit elements sticky bar  -->
     <v-scroll-y-transition hide-on-leave>
       <toolbar-sticky v-if="editElements" :elevation="5" color="white">
@@ -50,61 +59,11 @@
       </toolbar-sticky>
     </v-scroll-y-transition>
 
-    <!--  Selection sticky bar  -->
-    <v-scroll-y-transition hide-on-leave>
-      <toolbar-sticky v-if="selected.length > 0" :elevation="5" color="white">
-        <v-btn icon @click="selected=[]">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-        <v-toolbar-title>
-          <span>{{ selected.length }} selected</span>
-        </v-toolbar-title>
-
-        <v-spacer/>
-
-        <v-btn icon @click="markSelectedRead">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-icon v-on="on">mdi-bookmark-check</v-icon>
-            </template>
-            <span>Mark as Read</span>
-          </v-tooltip>
-        </v-btn>
-
-        <v-btn icon @click="markSelectedUnread">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-icon v-on="on">mdi-bookmark-remove</v-icon>
-            </template>
-            <span>Mark as Unread</span>
-          </v-tooltip>
-        </v-btn>
-
-        <v-btn icon @click="addToCollection">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-icon v-on="on">mdi-playlist-plus</v-icon>
-            </template>
-            <span>Add to collection</span>
-          </v-tooltip>
-        </v-btn>
-
-        <v-btn icon @click="editMultipleSeries" v-if="isAdmin">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-icon v-on="on">mdi-pencil</v-icon>
-            </template>
-            <span>Edit metadata</span>
-          </v-tooltip>
-        </v-btn>
-      </toolbar-sticky>
-    </v-scroll-y-transition>
-
     <v-container fluid>
 
       <item-browser
         :items.sync="series"
-        :selected.sync="selected"
+        :selected.sync="selectedSeries"
         :edit-function="editSingleSeries"
         :draggable="editElements && collection.ordered"
         :deletable="editElements"
@@ -119,9 +78,10 @@
 import Badge from '@/components/Badge.vue'
 import CollectionActionsMenu from '@/components/menus/CollectionActionsMenu.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
-import ToolbarSticky from '@/components/ToolbarSticky.vue'
+import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import { COLLECTION_CHANGED, COLLECTION_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
+import SeriesMultiSelectBar from '@/components/bars/SeriesMultiSelectBar.vue'
 
 export default Vue.extend({
   name: 'BrowseCollection',
@@ -130,6 +90,7 @@ export default Vue.extend({
     ItemBrowser,
     CollectionActionsMenu,
     Badge,
+    SeriesMultiSelectBar,
   },
   data: () => {
     return {
@@ -137,8 +98,6 @@ export default Vue.extend({
       series: [] as SeriesDto[],
       seriesCopy: [] as SeriesDto[],
       selectedSeries: [] as SeriesDto[],
-      editSeriesSingle: {} as SeriesDto,
-      selected: [],
       editElements: false,
     }
   },
@@ -149,10 +108,6 @@ export default Vue.extend({
     },
   },
   watch: {
-    selected (val: number[]) {
-      this.selectedSeries = val.map(id => this.series.find(s => s.id === id))
-        .filter(x => x !== undefined) as SeriesDto[]
-    },
     selectedSeries (val: SeriesDto[]) {
       val.forEach(s => {
         let index = this.series.findIndex(x => x.id === s.id)
@@ -164,16 +119,6 @@ export default Vue.extend({
           this.seriesCopy.splice(index, 1, s)
         }
       })
-    },
-    editSeriesSingle (val: SeriesDto) {
-      let index = this.series.findIndex(x => x.id === val.id)
-      if (index !== -1) {
-        this.series.splice(index, 1, val)
-      }
-      index = this.seriesCopy.findIndex(x => x.id === val.id)
-      if (index !== -1) {
-        this.seriesCopy.splice(index, 1, val)
-      }
     },
   },
   created () {
