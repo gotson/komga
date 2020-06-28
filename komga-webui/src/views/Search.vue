@@ -1,10 +1,27 @@
 <template>
   <div>
-    <toolbar-sticky>
+    <toolbar-sticky v-if="showToolbar">
       <v-toolbar-title>
         <span>Search results for "{{ $route.query.q }}"</span>
       </v-toolbar-title>
     </toolbar-sticky>
+
+    <series-multi-select-bar
+      v-model="selectedSeries"
+      @unselect-all="selectedSeries = []"
+      @mark-read="markSelectedSeriesRead"
+      @mark-unread="markSelectedSeriesUnread"
+      @add-to-collection="addToCollection"
+      @edit="editMultipleSeries"
+    />
+
+    <books-multi-select-bar
+      v-model="selectedBooks"
+      @unselect-all="selectedBooks = []"
+      @mark-read="markSelectedBooksRead"
+      @mark-unread="markSelectedBooksUnread"
+      @edit="editMultipleBooks"
+    />
 
     <v-container fluid class="px-6">
       <empty-state
@@ -23,7 +40,12 @@
             <div class="title">Series</div>
           </template>
           <template v-slot:content>
-            <item-browser :items="series" nowrap :edit-function="singleEditSeries" :selectable="false"/>
+            <item-browser :items="series"
+                          nowrap
+                          :edit-function="singleEditSeries"
+                          :selected.sync="selectedSeries"
+                          :selectable="selectedBooks.length === 0"
+            />
           </template>
         </horizontal-scroller>
 
@@ -32,7 +54,12 @@
             <div class="title">Books</div>
           </template>
           <template v-slot:content>
-            <item-browser :items="books" nowrap :edit-function="singleEditBook" :selectable="false"/>
+            <item-browser :items="books"
+                          nowrap
+                          :edit-function="singleEditBook"
+                          :selected.sync="selectedBooks"
+                          :selectable="selectedSeries.length === 0"
+            />
           </template>
         </horizontal-scroller>
 
@@ -58,6 +85,8 @@ import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import { BOOK_CHANGED, COLLECTION_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
+import BooksMultiSelectBar from '@/components/bars/BooksMultiSelectBar.vue'
+import SeriesMultiSelectBar from '@/components/bars/SeriesMultiSelectBar.vue'
 
 export default Vue.extend({
   name: 'Search',
@@ -66,6 +95,8 @@ export default Vue.extend({
     ToolbarSticky,
     HorizontalScroller,
     ItemBrowser,
+    BooksMultiSelectBar,
+    SeriesMultiSelectBar,
   },
   data: () => {
     return {
@@ -74,6 +105,8 @@ export default Vue.extend({
       collections: [] as CollectionDto[],
       pageSize: 50,
       loading: false,
+      selectedSeries: [] as SeriesDto[],
+      selectedBooks: [] as BookDto[],
     }
   },
   created () {
@@ -96,8 +129,27 @@ export default Vue.extend({
       deep: true,
       immediate: true,
     },
+    selectedSeries (val: SeriesDto[]) {
+      val.forEach(s => {
+        const index = this.series.findIndex(x => x.id === s.id)
+        if (index !== -1) {
+          this.series.splice(index, 1, s)
+        }
+      })
+    },
+    selectedBooks (val: BookDto[]) {
+      val.forEach(b => {
+        const index = this.books.findIndex(x => x.id === b.id)
+        if (index !== -1) {
+          this.books.splice(index, 1, b)
+        }
+      })
+    },
   },
   computed: {
+    showToolbar (): boolean {
+      return this.selectedSeries.length === 0 && this.selectedBooks.length === 0
+    },
     emptyResults (): boolean {
       return !this.loading && this.series.length === 0 && this.books.length === 0 && this.collections.length === 0
     },
@@ -111,6 +163,47 @@ export default Vue.extend({
     },
     singleEditCollection (collection: CollectionDto) {
       this.$store.dispatch('dialogEditCollection', collection)
+    },
+    async markSelectedSeriesRead () {
+      await Promise.all(this.selectedSeries.map(s =>
+        this.$komgaSeries.markAsRead(s.id),
+      ))
+      this.selectedSeries = await Promise.all(this.selectedSeries.map(s =>
+        this.$komgaSeries.getOneSeries(s.id),
+      ))
+    },
+    async markSelectedSeriesUnread () {
+      await Promise.all(this.selectedSeries.map(s =>
+        this.$komgaSeries.markAsUnread(s.id),
+      ))
+      this.selectedSeries = await Promise.all(this.selectedSeries.map(s =>
+        this.$komgaSeries.getOneSeries(s.id),
+      ))
+    },
+    addToCollection () {
+      this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries)
+    },
+    editMultipleSeries () {
+      this.$store.dispatch('dialogUpdateSeries', this.selectedSeries)
+    },
+    editMultipleBooks () {
+      this.$store.dispatch('dialogUpdateBooks', this.selectedBooks)
+    },
+    async markSelectedBooksRead () {
+      await Promise.all(this.selectedBooks.map(b =>
+        this.$komgaBooks.updateReadProgress(b.id, { completed: true }),
+      ))
+      this.selectedBooks = await Promise.all(this.selectedBooks.map(b =>
+        this.$komgaBooks.getBook(b.id),
+      ))
+    },
+    async markSelectedBooksUnread () {
+      await Promise.all(this.selectedBooks.map(b =>
+        this.$komgaBooks.deleteReadProgress(b.id),
+      ))
+      this.selectedBooks = await Promise.all(this.selectedBooks.map(b =>
+        this.$komgaBooks.getBook(b.id),
+      ))
     },
     reloadResults () {
       this.loadResults(this.$route.query.q.toString())
