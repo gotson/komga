@@ -25,7 +25,7 @@
           <template v-slot:content>
             <div v-for="(item, index) in series"
                  :key="index">
-              <item-card class="ma-2 card" :item="item"/>
+              <item-card class="ma-2 card" :item="item" :on-edit="singleEditSeries"/>
             </div>
           </template>
         </horizontal-scroller>
@@ -37,7 +37,7 @@
           <template v-slot:content>
             <div v-for="(item, index) in books"
                  :key="index">
-              <item-card class="ma-2 card" :item="item"/>
+              <item-card class="ma-2 card" :item="item" :on-edit="singleEditBook"/>
             </div>
           </template>
         </horizontal-scroller>
@@ -112,6 +112,12 @@ export default Vue.extend({
     },
   },
   methods: {
+    singleEditSeries (series: SeriesDto) {
+      this.$store.dispatch('dialogUpdateSeries', series)
+    },
+    singleEditBook (book: BookDto) {
+      this.$store.dispatch('dialogUpdateBooks', book)
+    },
     reloadResults () {
       this.loadResults(this.$route.query.q.toString())
     },
