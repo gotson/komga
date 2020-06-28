@@ -109,9 +109,9 @@
 </template>
 
 <script lang="ts">
-import BookActionsMenu from '@/components/BookActionsMenu.vue'
-import CollectionActionsMenu from '@/components/CollectionActionsMenu.vue'
-import SeriesActionsMenu from '@/components/SeriesActionsMenu.vue'
+import BookActionsMenu from '@/components/menus/BookActionsMenu.vue'
+import CollectionActionsMenu from '@/components/menus/CollectionActionsMenu.vue'
+import SeriesActionsMenu from '@/components/menus/SeriesActionsMenu.vue'
 import { getReadProgress, getReadProgressPercentage } from '@/functions/book-progress'
 import { ReadStatus } from '@/types/enum-books'
 import { createItem, Item, ItemTypes } from '@/types/items'

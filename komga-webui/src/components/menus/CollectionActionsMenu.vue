@@ -53,5 +53,5 @@ export default Vue.extend({
 })
 </script>
 <style scoped>
-@import "../styles/list-warning.css";
+@import "../../styles/list-warning.css";
 </style>

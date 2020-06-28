@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import PasswordChangeDialog from '@/components/PasswordChangeDialog.vue'
+import PasswordChangeDialog from '@/components/dialogs/PasswordChangeDialog.vue'
 import Vue from 'vue'
 
 export default Vue.extend({

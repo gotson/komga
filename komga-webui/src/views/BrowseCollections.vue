@@ -38,7 +38,7 @@
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
-import LibraryActionsMenu from '@/components/LibraryActionsMenu.vue'
+import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import LibraryNavigation from '@/components/LibraryNavigation.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'

@@ -117,7 +117,7 @@
 
 <script lang="ts">
 import Dialogs from '@/components/Dialogs.vue'
-import LibraryActionsMenu from '@/components/LibraryActionsMenu.vue'
+import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import SearchBox from '@/components/SearchBox.vue'
 import Vue from 'vue'
 

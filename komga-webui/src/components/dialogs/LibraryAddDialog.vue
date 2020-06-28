@@ -84,7 +84,7 @@
 </template>
 
 <script lang="ts">
-import FileBrowserDialog from '@/components/FileBrowserDialog.vue'
+import FileBrowserDialog from '@/components/dialogs/FileBrowserDialog.vue'
 import Vue from 'vue'
 import { required } from 'vuelidate/lib/validators'
 

@@ -83,8 +83,8 @@
 </template>
 
 <script lang="ts">
-import EditBooksDialog from '@/components/EditBooksDialog.vue'
-import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
+import EditBooksDialog from '@/components/dialogs/EditBooksDialog.vue'
+import EditSeriesDialog from '@/components/dialogs/EditSeriesDialog.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import ItemCard from '@/components/ItemCard.vue'

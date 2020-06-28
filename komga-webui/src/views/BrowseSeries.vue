@@ -201,15 +201,15 @@
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
-import EditBooksDialog from '@/components/EditBooksDialog.vue'
-import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
+import EditBooksDialog from '@/components/dialogs/EditBooksDialog.vue'
+import EditSeriesDialog from '@/components/dialogs/EditSeriesDialog.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import FilterMenuButton from '@/components/FilterMenuButton.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
-import SeriesActionsMenu from '@/components/SeriesActionsMenu.vue'
+import SeriesActionsMenu from '@/components/menus/SeriesActionsMenu.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { parseQueryFilter, parseQuerySort } from '@/functions/query-params'

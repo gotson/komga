@@ -130,9 +130,9 @@
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
-import CollectionActionsMenu from '@/components/CollectionActionsMenu.vue'
-import CollectionEditDialog from '@/components/CollectionEditDialog.vue'
-import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
+import CollectionActionsMenu from '@/components/menus/CollectionActionsMenu.vue'
+import CollectionEditDialog from '@/components/dialogs/CollectionEditDialog.vue'
+import EditSeriesDialog from '@/components/dialogs/EditSeriesDialog.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { COLLECTION_DELETED, SERIES_CHANGED } from '@/types/events'

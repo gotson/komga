@@ -120,11 +120,11 @@
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
-import EditSeriesDialog from '@/components/EditSeriesDialog.vue'
+import EditSeriesDialog from '@/components/dialogs/EditSeriesDialog.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import FilterMenuButton from '@/components/FilterMenuButton.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
-import LibraryActionsMenu from '@/components/LibraryActionsMenu.vue'
+import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import LibraryNavigation from '@/components/LibraryNavigation.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'

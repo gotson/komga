@@ -147,8 +147,8 @@
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
-import BookActionsMenu from '@/components/BookActionsMenu.vue'
-import EditBooksDialog from '@/components/EditBooksDialog.vue'
+import BookActionsMenu from '@/components/menus/BookActionsMenu.vue'
+import EditBooksDialog from '@/components/dialogs/EditBooksDialog.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import ToolbarSticky from '@/components/ToolbarSticky.vue'
 import { groupAuthorsByRolePlural } from '@/functions/authors'

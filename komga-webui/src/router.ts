@@ -32,7 +32,7 @@ const router = new Router({
           path: '/libraries/add',
           name: 'addlibrary',
           beforeEnter: adminGuard,
-          component: () => import(/* webpackChunkName: "addlibrary" */ './components/LibraryAddDialog.vue'),
+          component: () => import(/* webpackChunkName: "addlibrary" */ './components/dialogs/LibraryAddDialog.vue'),
         },
         {
           path: '/welcome',
@@ -60,7 +60,7 @@ const router = new Router({
                 {
                   path: '/settings/users/add',
                   name: 'settings-users-add',
-                  component: () => import(/* webpackChunkName: "settings-user" */ './components/UserAddDialog.vue'),
+                  component: () => import(/* webpackChunkName: "settings-user" */ './components/dialogs/UserAddDialog.vue'),
                 },
               ],
             },

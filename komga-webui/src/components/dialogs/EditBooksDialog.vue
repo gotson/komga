@@ -575,5 +575,5 @@ export default Vue.extend({
 </script>
 
 <style lang="sass" scoped>
-@import '../styles/tabbed-dialog.sass'
+@import 'src/styles/tabbed-dialog'
 </style>

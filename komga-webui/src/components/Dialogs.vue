@@ -21,9 +21,9 @@
 </template>
 
 <script lang="ts">
-import CollectionAddToDialog from '@/components/CollectionAddToDialog.vue'
-import CollectionDeleteDialog from '@/components/CollectionDeleteDialog.vue'
-import LibraryDeleteDialog from '@/components/LibraryDeleteDialog.vue'
+import CollectionAddToDialog from '@/components/dialogs/CollectionAddToDialog.vue'
+import CollectionDeleteDialog from '@/components/dialogs/CollectionDeleteDialog.vue'
+import LibraryDeleteDialog from '@/components/dialogs/LibraryDeleteDialog.vue'
 import { COLLECTION_CHANGED, COLLECTION_DELETED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 

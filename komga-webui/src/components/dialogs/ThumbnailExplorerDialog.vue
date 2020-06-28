@@ -21,7 +21,7 @@
             >
               <v-img
                 :src="url"
-                lazy-src="../assets/cover.svg"
+                lazy-src="../../assets/cover.svg"
                 aspect-ratio="0.7071"
                 :contain="true"
                 max-height="200"

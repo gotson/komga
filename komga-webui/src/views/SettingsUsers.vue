@@ -91,9 +91,9 @@
 </template>
 
 <script lang="ts">
-import UserDeleteDialog from '@/components/UserDeleteDialog.vue'
-import UserEditDialog from '@/components/UserEditDialog.vue'
-import UserSharedLibrariesEditDialog from '@/components/UserSharedLibrariesEditDialog.vue'
+import UserDeleteDialog from '@/components/dialogs/UserDeleteDialog.vue'
+import UserEditDialog from '@/components/dialogs/UserEditDialog.vue'
+import UserSharedLibrariesEditDialog from '@/components/dialogs/UserSharedLibrariesEditDialog.vue'
 import { UserRoles } from '@/types/enum-users'
 import Vue from 'vue'
 
