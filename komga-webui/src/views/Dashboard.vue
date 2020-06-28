@@ -1,58 +1,100 @@
 <template>
-  <div class="ma-3">
+  <div>
+    <series-multi-select-bar
+      v-model="selectedSeries"
+      @unselect-all="selectedSeries = []"
+      @mark-read="markSelectedSeriesRead"
+      @mark-unread="markSelectedSeriesUnread"
+      @add-to-collection="addToCollection"
+      @edit="editMultipleSeries"
+    />
 
-    <empty-state v-if="allEmpty"
-                 title="Nothing to show"
-                 icon="mdi-help-circle"
-                 icon-color="secondary"
-    >
-    </empty-state>
+    <books-multi-select-bar
+      v-model="selectedBooks"
+      @unselect-all="selectedBooks = []"
+      @mark-read="markSelectedBooksRead"
+      @mark-unread="markSelectedBooksUnread"
+      @edit="editMultipleBooks"
+    />
 
-    <horizontal-scroller v-if="inProgressBooks.length !== 0" class="my-4">
-      <template v-slot:prepend>
-        <div class="title">Keep Reading</div>
-      </template>
-      <template v-slot:content>
-        <item-browser :items="inProgressBooks" nowrap :edit-function="singleEditBook" :selectable="false"/>
-      </template>
-    </horizontal-scroller>
+    <v-container fluid class="px-6">
+      <empty-state v-if="allEmpty"
+                   title="Nothing to show"
+                   icon="mdi-help-circle"
+                   icon-color="secondary"
+      >
+      </empty-state>
 
-    <horizontal-scroller v-if="onDeckBooks.length !== 0" class="my-4">
-      <template v-slot:prepend>
-        <div class="title">On Deck</div>
-      </template>
-      <template v-slot:content>
-        <item-browser :items="onDeckBooks" nowrap :edit-function="singleEditBook" :selectable="false"/>
-      </template>
-    </horizontal-scroller>
+      <horizontal-scroller v-if="inProgressBooks.length !== 0" class="my-4">
+        <template v-slot:prepend>
+          <div class="title">Keep Reading</div>
+        </template>
+        <template v-slot:content>
+          <item-browser :items="inProgressBooks"
+                        nowrap
+                        :edit-function="singleEditBook"
+                        :selected.sync="selectedBooks"
+                        :selectable="selectedSeries.length === 0"
+          />
+        </template>
+      </horizontal-scroller>
 
-    <horizontal-scroller v-if="newSeries.length !== 0" class="my-4">
-      <template v-slot:prepend>
-        <div class="title">Recently Added Series</div>
-      </template>
-      <template v-slot:content>
-        <item-browser :items="newSeries" nowrap :edit-function="singleEditSeries" :selectable="false"/>
-      </template>
-    </horizontal-scroller>
+      <horizontal-scroller v-if="onDeckBooks.length !== 0" class="my-4">
+        <template v-slot:prepend>
+          <div class="title">On Deck</div>
+        </template>
+        <template v-slot:content>
+          <item-browser :items="onDeckBooks"
+                        nowrap
+                        :edit-function="singleEditBook"
+                        :selected.sync="selectedBooks"
+                        :selectable="selectedSeries.length === 0"
+          />
+        </template>
+      </horizontal-scroller>
 
-    <horizontal-scroller v-if="updatedSeries.length !== 0" class="my-4">
-      <template v-slot:prepend>
-        <div class="title">Recently Updated Series</div>
-      </template>
-      <template v-slot:content>
-        <item-browser :items="updatedSeries" nowrap :edit-function="singleEditSeries" :selectable="false"/>
-      </template>
-    </horizontal-scroller>
+      <horizontal-scroller v-if="newSeries.length !== 0" class="my-4">
+        <template v-slot:prepend>
+          <div class="title">Recently Added Series</div>
+        </template>
+        <template v-slot:content>
+          <item-browser :items="newSeries"
+                        nowrap
+                        :edit-function="singleEditSeries"
+                        :selected.sync="selectedSeries"
+                        :selectable="selectedBooks.length === 0"
+          />
+        </template>
+      </horizontal-scroller>
 
-    <horizontal-scroller v-if="latestBooks.length !== 0" class="my-4">
-      <template v-slot:prepend>
-        <div class="title">Recently Added Books</div>
-      </template>
-      <template v-slot:content>
-        <item-browser :items="latestBooks" nowrap :edit-function="singleEditBook" :selectable="false"/>
-      </template>
-    </horizontal-scroller>
+      <horizontal-scroller v-if="updatedSeries.length !== 0" class="my-4">
+        <template v-slot:prepend>
+          <div class="title">Recently Updated Series</div>
+        </template>
+        <template v-slot:content>
+          <item-browser :items="updatedSeries"
+                        nowrap
+                        :edit-function="singleEditSeries"
+                        :selected.sync="selectedSeries"
+                        :selectable="selectedBooks.length === 0"
+          />
+        </template>
+      </horizontal-scroller>
 
+      <horizontal-scroller v-if="latestBooks.length !== 0" class="my-4">
+        <template v-slot:prepend>
+          <div class="title">Recently Added Books</div>
+        </template>
+        <template v-slot:content>
+          <item-browser :items="latestBooks"
+                        nowrap
+                        :edit-function="singleEditBook"
+                        :selected.sync="selectedBooks"
+                        :selectable="selectedSeries.length === 0"
+          />
+        </template>
+      </horizontal-scroller>
+    </v-container>
   </div>
 </template>
 
@@ -63,10 +105,18 @@ import { ReadStatus } from '@/types/enum-books'
 import { BOOK_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
+import SeriesMultiSelectBar from '@/components/bars/SeriesMultiSelectBar.vue'
+import BooksMultiSelectBar from '@/components/bars/BooksMultiSelectBar.vue'
 
 export default Vue.extend({
   name: 'Dashboard',
-  components: { HorizontalScroller, EmptyState, ItemBrowser },
+  components: {
+    HorizontalScroller,
+    EmptyState,
+    ItemBrowser,
+    BooksMultiSelectBar,
+    SeriesMultiSelectBar,
+  },
   data: () => {
     return {
       newSeries: [] as SeriesDto[],
@@ -74,6 +124,8 @@ export default Vue.extend({
       latestBooks: [] as BookDto[],
       inProgressBooks: [] as BookDto[],
       onDeckBooks: [] as BookDto[],
+      selectedSeries: [] as SeriesDto[],
+      selectedBooks: [] as BookDto[],
     }
   },
   created () {
@@ -90,11 +142,11 @@ export default Vue.extend({
     this.loadAll()
   },
   watch: {
-    editSeriesSingle (val: SeriesDto) {
-      this.replaceSeries(val)
+    selectedSeries (val: SeriesDto[]) {
+      val.forEach(i => this.replaceSeries(i))
     },
-    editBookSingle (val: BookDto) {
-      this.replaceBook(val)
+    selectedBooks (val: BookDto[]) {
+      val.forEach(i => this.replaceBook(i))
     },
   },
   computed: {
@@ -166,6 +218,47 @@ export default Vue.extend({
     },
     singleEditBook (book: BookDto) {
       this.$store.dispatch('dialogUpdateBooks', book)
+    },
+    async markSelectedSeriesRead () {
+      await Promise.all(this.selectedSeries.map(s =>
+        this.$komgaSeries.markAsRead(s.id),
+      ))
+      this.selectedSeries = await Promise.all(this.selectedSeries.map(s =>
+        this.$komgaSeries.getOneSeries(s.id),
+      ))
+    },
+    async markSelectedSeriesUnread () {
+      await Promise.all(this.selectedSeries.map(s =>
+        this.$komgaSeries.markAsUnread(s.id),
+      ))
+      this.selectedSeries = await Promise.all(this.selectedSeries.map(s =>
+        this.$komgaSeries.getOneSeries(s.id),
+      ))
+    },
+    addToCollection () {
+      this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries)
+    },
+    editMultipleSeries () {
+      this.$store.dispatch('dialogUpdateSeries', this.selectedSeries)
+    },
+    editMultipleBooks () {
+      this.$store.dispatch('dialogUpdateBooks', this.selectedBooks)
+    },
+    async markSelectedBooksRead () {
+      await Promise.all(this.selectedBooks.map(b =>
+        this.$komgaBooks.updateReadProgress(b.id, { completed: true }),
+      ))
+      this.selectedBooks = await Promise.all(this.selectedBooks.map(b =>
+        this.$komgaBooks.getBook(b.id),
+      ))
+    },
+    async markSelectedBooksUnread () {
+      await Promise.all(this.selectedBooks.map(b =>
+        this.$komgaBooks.deleteReadProgress(b.id),
+      ))
+      this.selectedBooks = await Promise.all(this.selectedBooks.map(b =>
+        this.$komgaBooks.getBook(b.id),
+      ))
     },
   },
 })
