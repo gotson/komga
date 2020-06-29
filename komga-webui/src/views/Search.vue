@@ -132,6 +132,8 @@ export default Vue.extend({
     '$route.query.q': {
       handler: function (val) {
         this.loadResults(val)
+        this.selectedBooks = []
+        this.selectedSeries = []
       },
       deep: true,
       immediate: true,
