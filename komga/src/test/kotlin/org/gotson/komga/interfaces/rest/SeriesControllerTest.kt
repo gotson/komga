@@ -402,7 +402,7 @@ class SeriesControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isOk }
+        status { isNoContent }
       }
 
       val updatedMetadata = seriesMetadataRepository.findById(createdSeries.id)

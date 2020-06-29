@@ -644,7 +644,7 @@ class BookControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isOk }
+        status { isNoContent }
       }
 
       val metadata = bookMetadataRepository.findById(bookId)
@@ -722,7 +722,7 @@ class BookControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isOk }
+        status { isNoContent }
       }
 
       val updatedMetadata = bookMetadataRepository.findById(bookId)
@@ -774,7 +774,7 @@ class BookControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isOk }
+        status { isNoContent }
       }
 
       val metadata = bookMetadataRepository.findById(bookId)
