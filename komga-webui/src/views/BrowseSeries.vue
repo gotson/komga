@@ -168,8 +168,12 @@ export default Vue.extend({
       }] as SortOption[],
       sortActive: {} as SortActive,
       sortDefault: { key: 'metadata.numberSort', order: 'asc' } as SortActive,
-      filterOptions: [{ values: [ReadStatus.UNREAD] }],
-      filters: [[]] as any[],
+      filterOptions: {
+        readStatus: {
+          values: [ReadStatus.UNREAD],
+        },
+      } as FiltersOptions,
+      filters: { readStatus: [] } as FiltersActive,
       sortUnwatch: null as any,
       filterUnwatch: null as any,
       pageUnwatch: null as any,
@@ -228,7 +232,7 @@ export default Vue.extend({
 
     // restore from query param
     this.sortActive = this.parseQuerySortOrDefault(this.$route.query.sort)
-    this.filters.splice(0, 1, parseQueryFilter(this.$route.query.readStatus, ReadStatus))
+    this.filters.readStatus = parseQueryFilter(this.$route.query.readStatus, ReadStatus)
     if (this.$route.query.page) this.page = Number(this.$route.query.page)
     if (this.$route.query.pageSize) this.pageSize = Number(this.$route.query.pageSize)
 
@@ -242,7 +246,7 @@ export default Vue.extend({
 
       // reset
       this.sortActive = this.parseQuerySortOrDefault(to.query.sort)
-      this.filters.splice(0, 1, parseQueryFilter(to.query.readStatus, ReadStatus))
+      this.filters.readStatus = parseQueryFilter(to.query.readStatus, ReadStatus)
       this.page = 1
       this.totalPages = 1
       this.totalElements = null
@@ -317,7 +321,7 @@ export default Vue.extend({
           page: `${this.page}`,
           pageSize: `${this.pageSize}`,
           sort: `${this.sortActive.key},${this.sortActive.order}`,
-          readStatus: `${this.filters[0]}`,
+          readStatus: `${this.filters.readStatus}`,
         },
       }).catch(_ => {
       })
@@ -331,7 +335,7 @@ export default Vue.extend({
       if (sort) {
         pageRequest.sort = [`${sort.key},${sort.order}`]
       }
-      const booksPage = await this.$komgaSeries.getBooks(seriesId, pageRequest, this.filters[0])
+      const booksPage = await this.$komgaSeries.getBooks(seriesId, pageRequest, this.filters.readStatus)
 
       this.totalPages = booksPage.totalPages
       this.totalElements = booksPage.totalElements

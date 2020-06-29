@@ -70,20 +70,20 @@
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
+import SeriesMultiSelectBar from '@/components/bars/SeriesMultiSelectBar.vue'
+import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import FilterMenuButton from '@/components/FilterMenuButton.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
-import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import LibraryNavigation from '@/components/LibraryNavigation.vue'
+import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
-import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import { parseQueryFilter, parseQuerySort } from '@/functions/query-params'
 import { ReadStatus } from '@/types/enum-books'
 import { SeriesStatus } from '@/types/enum-series'
 import { COLLECTION_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
-import SeriesMultiSelectBar from '@/components/bars/SeriesMultiSelectBar.vue'
 
 const cookiePageSize = 'pagesize'
 
@@ -117,8 +117,16 @@ export default Vue.extend({
       ] as SortOption[],
       sortActive: {} as SortActive,
       sortDefault: { key: 'metadata.titleSort', order: 'asc' } as SortActive,
-      filterOptions: [{ values: [ReadStatus.UNREAD] }, { name: 'STATUS', values: SeriesStatus }],
-      filters: [[], []] as any[],
+      filterOptions: {
+        readStatus: {
+          values: [ReadStatus.UNREAD],
+        },
+        status: {
+          name: 'STATUS',
+          values: Object.values(SeriesStatus),
+        },
+      } as FiltersOptions,
+      filters: { status: [], readStatus: [] } as FiltersActive,
       sortUnwatch: null as any,
       filterUnwatch: null as any,
       pageUnwatch: null as any,
@@ -158,9 +166,7 @@ export default Vue.extend({
     }
 
     // restore from query param
-    this.sortActive = this.parseQuerySortOrDefault(this.$route.query.sort)
-    this.filters.splice(1, 1, parseQueryFilter(this.$route.query.status, SeriesStatus))
-    this.filters.splice(0, 1, parseQueryFilter(this.$route.query.readStatus, ReadStatus))
+    this.resetParams(this.$route)
     if (this.$route.query.page) this.page = Number(this.$route.query.page)
     if (this.$route.query.pageSize) this.pageSize = Number(this.$route.query.pageSize)
 
@@ -173,9 +179,7 @@ export default Vue.extend({
       this.unsetWatches()
 
       // reset
-      this.sortActive = this.parseQuerySortOrDefault(to.query.sort)
-      this.filters.splice(1, 1, parseQueryFilter(to.query.status, SeriesStatus))
-      this.filters.splice(0, 1, parseQueryFilter(to.query.readStatus, ReadStatus))
+      this.resetParams(to)
       this.page = 1
       this.totalPages = 1
       this.totalElements = null
@@ -208,6 +212,25 @@ export default Vue.extend({
     },
   },
   methods: {
+    cookieSort (libraryId: number): string {
+      return `library.sort.${libraryId}`
+    },
+    cookieFilter (libraryId: number): string {
+      return `library.filter.${libraryId}`
+    },
+    resetParams (route: any) {
+      this.sortActive = parseQuerySort(route.query.sort, this.sortOptions) ||
+        this.$cookies.get(this.cookieSort(route.params.libraryId)) ||
+        this.$_.clone(this.sortDefault)
+
+      if (route.query.status || route.query.readStatus) {
+        this.filters.status = parseQueryFilter(route.query.status, SeriesStatus)
+        this.filters.readStatus = parseQueryFilter(route.query.readStatus, ReadStatus)
+      } else {
+        this.filters = this.$cookies.get(this.cookieFilter(route.params.libraryId)) ||
+          { status: [], readStatus: [] } as FiltersActive
+      }
+    },
     libraryDeleted (event: EventLibraryDeleted) {
       if (event.id === this.libraryId) {
         this.$router.push({ name: 'home' })
@@ -216,8 +239,14 @@ export default Vue.extend({
       }
     },
     setWatches () {
-      this.sortUnwatch = this.$watch('sortActive', this.updateRouteAndReload)
-      this.filterUnwatch = this.$watch('filters', this.updateRouteAndReload)
+      this.sortUnwatch = this.$watch('sortActive', (val) => {
+        this.$cookies.set(this.cookieSort(this.libraryId), val, Infinity)
+        this.updateRouteAndReload()
+      })
+      this.filterUnwatch = this.$watch('filters', (val) => {
+        this.$cookies.set(this.cookieFilter(this.libraryId), val, Infinity)
+        this.updateRouteAndReload()
+      })
       this.pageSizeUnwatch = this.$watch('pageSize', (val) => {
         this.$cookies.set(cookiePageSize, val, Infinity)
         this.updateRouteAndReload()
@@ -261,9 +290,6 @@ export default Vue.extend({
 
       await this.loadPage(libraryId, this.page, this.sortActive)
     },
-    parseQuerySortOrDefault (querySort: any): SortActive {
-      return parseQuerySort(querySort, this.sortOptions) || this.$_.clone(this.sortDefault)
-    },
     updateRoute () {
       this.$router.replace({
         name: this.$route.name,
@@ -272,8 +298,8 @@ export default Vue.extend({
           page: `${this.page}`,
           pageSize: `${this.pageSize}`,
           sort: `${this.sortActive.key},${this.sortActive.order}`,
-          status: `${this.filters[1]}`,
-          readStatus: `${this.filters[0]}`,
+          status: `${this.filters.status}`,
+          readStatus: `${this.filters.readStatus}`,
         },
       }).catch(_ => {
       })
@@ -289,7 +315,7 @@ export default Vue.extend({
       }
 
       const requestLibraryId = libraryId !== 0 ? libraryId : undefined
-      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters[1], this.filters[0])
+      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, this.filters.readStatus)
 
       this.totalPages = seriesPage.totalPages
       this.totalElements = seriesPage.totalElements

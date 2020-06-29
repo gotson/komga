@@ -8,16 +8,16 @@
       </v-btn>
     </template>
     <v-list>
-      <div v-for="(f, i) in filtersOptions"
-           :key="i"
+      <div v-for="(f, key) in filtersOptions"
+           :key="key"
       >
         <v-subheader v-if="f.name">{{ f.name }}</v-subheader>
         <v-list-item v-for="v in f.values"
                      :key="v"
-                     @click.stop="click(i, v)"
+                     @click.stop="click(key, v)"
         >
           <v-list-item-icon>
-            <v-icon v-if="filtersActive[i].includes(v)" color="secondary">
+            <v-icon v-if="filtersActive[key].includes(v)" color="secondary">
               mdi-checkbox-marked
             </v-icon>
             <v-icon v-else>
@@ -33,7 +33,7 @@
       <template v-if="filterCustom">
         <v-divider/>
 
-        <v-list-item @click="clearAll()" dense>
+        <v-list-item @click="clearAll" dense>
           <v-list-item-icon>
             <v-icon>mdi-close</v-icon>
           </v-list-item-icon>
@@ -50,39 +50,37 @@ import Vue from 'vue'
 export default Vue.extend({
   name: 'FilterMenuButton',
   props: {
-    // array of object: name, values[]
     filtersOptions: {
-      type: Array,
+      type: Object as () => FiltersOptions,
       required: true,
     },
-    // array of arrays containing the selection, use with sync
     filtersActive: {
-      type: Array,
+      type: Object as () => FiltersActive,
       required: true,
     },
   },
   computed: {
     filterCustom (): boolean {
       let r = false
-      this.filtersActive.forEach(x => {
-        if (!this.$_.isEmpty(x)) r = true
-      })
+      for (const [key, value] of Object.entries(this.filtersActive)) {
+        if (!this.$_.isEmpty(value)) r = true
+      }
       return r
     },
   },
   methods: {
     clearAll () {
-      let r = [] as any[]
-      this.$_.times(this.filtersActive.length, x => {
-        r.push([])
-      })
+      let r = this.$_.cloneDeep(this.filtersActive)
+      for (const key of Object.keys(r)) {
+        r[key] = []
+      }
 
       this.$emit('update:filtersActive', r)
     },
-    click (index: number, value: string) {
-      let r = this.$_.cloneDeep(this.filtersActive) as any[]
-      if (r[index].includes(value)) this.$_.pull(r[index], (value))
-      else r[index].push(value)
+    click (key: string, value: string) {
+      let r = this.$_.cloneDeep(this.filtersActive)
+      if (r[key].includes(value)) this.$_.pull(r[key], (value))
+      else r[key].push(value)
 
       this.$emit('update:filtersActive', r)
     },
