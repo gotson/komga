@@ -74,65 +74,21 @@
             </v-col>
           </v-row>
 
-          <v-row>
+          <v-row v-if="$vuetify.breakpoint.name !== 'xs'">
             <v-col>
-              <v-expansion-panels v-model="collectionPanel" v-if="$vuetify.breakpoint.name !== 'xs'">
-                <v-expansion-panel v-for="(c, i) in collections"
-                                   :key="i"
-                >
-                  <v-expansion-panel-header>{{ c.name }} collection</v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    <horizontal-scroller>
-                      <template v-slot:prepend>
-                        <router-link class="overline"
-                                     :to="{name: 'browse-collection', params: {collectionId: c.id}}"
-                        >Manage collection
-                        </router-link>
-                      </template>
-                      <template v-slot:content>
-                        <div v-for="(s, i) in collectionsContent[c.id]"
-                             :key="i"
-                        >
-                          <item-card class="ma-2 card" :item="s"/>
-                        </div>
-                      </template>
-                    </horizontal-scroller>
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-expansion-panels>
+              <collections-expansion-panels :collections="collections"/>
             </v-col>
           </v-row>
         </v-col>
       </v-row>
 
       <v-row v-if="$vuetify.breakpoint.name === 'xs'">
-        <v-expansion-panels v-model="collectionPanel">
-          <v-expansion-panel v-for="(c, i) in collections"
-                             :key="i"
-          >
-            <v-expansion-panel-header>{{ c.name }} collection</v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <horizontal-scroller>
-                <template v-slot:prepend>
-                  <router-link class="overline"
-                               :to="{name: 'browse-collection', params: {collectionId: c.id}}"
-                  >Manage collection
-                  </router-link>
-                </template>
-                <template v-slot:content>
-                  <div v-for="(s, i) in collectionsContent[c.id]"
-                       :key="i"
-                  >
-                    <item-card class="ma-2 card" :item="s"/>
-                  </div>
-                </template>
-              </horizontal-scroller>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
+        <v-col class="pt-0 py-1">
+          <collections-expansion-panels :collections="collections"/>
+        </v-col>
       </v-row>
 
-      <v-divider class="my-4"/>
+      <v-divider class="my-1"/>
 
       <empty-state
         v-if="totalPages === 0"
@@ -164,21 +120,21 @@
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
+import BooksMultiSelectBar from '@/components/bars/BooksMultiSelectBar.vue'
+import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
+import CollectionsExpansionPanels from '@/components/CollectionsExpansionPanels.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import FilterMenuButton from '@/components/FilterMenuButton.vue'
-import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import ItemCard from '@/components/ItemCard.vue'
-import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import SeriesActionsMenu from '@/components/menus/SeriesActionsMenu.vue'
+import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import SortMenuButton from '@/components/SortMenuButton.vue'
-import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import { parseQueryFilter, parseQuerySort } from '@/functions/query-params'
 import { seriesThumbnailUrl } from '@/functions/urls'
 import { ReadStatus } from '@/types/enum-books'
 import { BOOK_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
-import BooksMultiSelectBar from '@/components/bars/BooksMultiSelectBar.vue'
 
 const cookiePageSize = 'pagesize'
 
@@ -192,10 +148,10 @@ export default Vue.extend({
     ItemBrowser,
     PageSizeSelect,
     SeriesActionsMenu,
-    HorizontalScroller,
     ItemCard,
     EmptyState,
     BooksMultiSelectBar,
+    CollectionsExpansionPanels,
   },
   data: () => {
     return {
@@ -219,8 +175,6 @@ export default Vue.extend({
       pageUnwatch: null as any,
       pageSizeUnwatch: null as any,
       collections: [] as CollectionDto[],
-      collectionsContent: [] as any[][],
-      collectionPanel: -1,
     }
   },
   computed: {
@@ -294,7 +248,6 @@ export default Vue.extend({
       this.totalElements = null
       this.books = []
       this.collections = []
-      this.collectionPanel = -1
 
       this.loadSeries(Number(to.params.seriesId))
 
@@ -348,9 +301,6 @@ export default Vue.extend({
     async loadSeries (seriesId: number) {
       this.series = await this.$komgaSeries.getOneSeries(seriesId)
       this.collections = await this.$komgaSeries.getCollections(seriesId)
-      for (const c of this.collections) {
-        this.collectionsContent[c.id] = (await this.$komgaCollections.getSeries(c.id, { unpaged: true } as PageRequest)).content
-      }
       await this.loadPage(seriesId, this.page, this.sortActive)
     },
     parseQuerySortOrDefault (querySort: any): SortActive {

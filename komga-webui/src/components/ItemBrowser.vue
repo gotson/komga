@@ -14,24 +14,25 @@
                           :class="flexClass"
         >
           <v-item
-            v-for="item in localItems"
-            :key="item.id"
-            class="my-3 mx-2"
-            v-slot:default="{ toggle, active }" :value="item"
+                  v-for="item in localItems"
+                  :key="item.id"
+                  class="my-2 mx-2"
+                  v-slot:default="{ toggle, active }" :value="item"
           >
             <slot name="item">
               <div style="position: relative"
                    :class="draggable ? 'draggable-item' : undefined"
               >
                 <item-card
-                  class="item-card"
-                  :item="item"
-                  :width="itemWidth"
-                  :selected="active"
-                  :no-link="draggable || deletable"
-                  :preselect="shouldPreselect"
-                  :onEdit="(draggable || deletable) ? undefined : editFunction"
-                  :onSelected="(draggable || deletable) ? undefined : selectable ? toggle: undefined"
+                        class="item-card"
+                        :item="item"
+                        :width="itemWidth"
+                        :selected="active"
+                        :no-link="draggable || deletable"
+                        :preselect="shouldPreselect"
+                        :onEdit="(draggable || deletable) ? undefined : editFunction"
+                        :onSelected="(draggable || deletable) ? undefined : selectable ? toggle: undefined"
+                        :action-menu="actionMenu"
                 ></item-card>
 
                 <v-slide-y-reverse-transition>
@@ -84,6 +85,10 @@ export default Vue.extend({
       type: Array,
       required: true,
     },
+    fixedItemWidth: {
+      type: Number,
+      required: false,
+    },
     selectable: {
       type: Boolean,
       default: true,
@@ -109,6 +114,10 @@ export default Vue.extend({
     nowrap: {
       type: Boolean,
       default: false,
+    },
+    actionMenu: {
+      type: Boolean,
+      default: true,
     },
   },
   data: () => {
@@ -152,7 +161,7 @@ export default Vue.extend({
       return this.items.length > 0
     },
     itemWidth (): number {
-      return this.width
+      return this.fixedItemWidth ? this.fixedItemWidth : this.width
     },
     shouldPreselect (): boolean {
       return this.selectedItems.length > 0

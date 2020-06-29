@@ -23,7 +23,7 @@
       @edit="editMultipleBooks"
     />
 
-    <v-container fluid class="px-6">
+    <v-container fluid>
       <empty-state
         v-if="emptyResults"
         title="The search returned no results"
@@ -35,7 +35,7 @@
       </empty-state>
 
       <template v-else>
-        <horizontal-scroller v-if="series.length !== 0" class="my-4">
+        <horizontal-scroller v-if="series.length !== 0" class="mb-4">
           <template v-slot:prepend>
             <div class="title">Series</div>
           </template>
@@ -45,11 +45,12 @@
                           :edit-function="singleEditSeries"
                           :selected.sync="selectedSeries"
                           :selectable="selectedBooks.length === 0"
+                          :fixed-item-width="fixedCardWidth"
             />
           </template>
         </horizontal-scroller>
 
-        <horizontal-scroller v-if="books.length !== 0" class="my-4">
+        <horizontal-scroller v-if="books.length !== 0" class="mb-4">
           <template v-slot:prepend>
             <div class="title">Books</div>
           </template>
@@ -59,16 +60,22 @@
                           :edit-function="singleEditBook"
                           :selected.sync="selectedBooks"
                           :selectable="selectedSeries.length === 0"
+                          :fixed-item-width="fixedCardWidth"
             />
           </template>
         </horizontal-scroller>
 
-        <horizontal-scroller v-if="collections.length !== 0" class="my-4">
+        <horizontal-scroller v-if="collections.length !== 0" class="mb-4">
           <template v-slot:prepend>
             <div class="title">Collections</div>
           </template>
           <template v-slot:content>
-            <item-browser :items="collections" nowrap :edit-function="singleEditCollection" :selectable="false"/>
+            <item-browser :items="collections"
+                          nowrap
+                          :edit-function="singleEditCollection"
+                          :selectable="false"
+                          :fixed-item-width="fixedCardWidth"
+            />
           </template>
         </horizontal-scroller>
 
@@ -79,14 +86,14 @@
 </template>
 
 <script lang="ts">
-import EmptyState from '@/components/EmptyState.vue'
-import HorizontalScroller from '@/components/HorizontalScroller.vue'
-import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
-import { BOOK_CHANGED, COLLECTION_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
-import Vue from 'vue'
-import ItemBrowser from '@/components/ItemBrowser.vue'
 import BooksMultiSelectBar from '@/components/bars/BooksMultiSelectBar.vue'
 import SeriesMultiSelectBar from '@/components/bars/SeriesMultiSelectBar.vue'
+import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
+import EmptyState from '@/components/EmptyState.vue'
+import HorizontalScroller from '@/components/HorizontalScroller.vue'
+import ItemBrowser from '@/components/ItemBrowser.vue'
+import { BOOK_CHANGED, COLLECTION_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
+import Vue from 'vue'
 
 export default Vue.extend({
   name: 'Search',
@@ -147,6 +154,9 @@ export default Vue.extend({
     },
   },
   computed: {
+    fixedCardWidth (): number {
+      return this.$vuetify.breakpoint.name === 'xs' ? 120 : 150
+    },
     showToolbar (): boolean {
       return this.selectedSeries.length === 0 && this.selectedBooks.length === 0
     },

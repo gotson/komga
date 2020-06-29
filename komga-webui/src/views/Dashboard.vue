@@ -17,7 +17,7 @@
       @edit="editMultipleBooks"
     />
 
-    <v-container fluid class="px-6">
+    <v-container fluid>
       <empty-state v-if="allEmpty"
                    title="Nothing to show"
                    icon="mdi-help-circle"
@@ -25,7 +25,7 @@
       >
       </empty-state>
 
-      <horizontal-scroller v-if="inProgressBooks.length !== 0" class="my-4">
+      <horizontal-scroller v-if="inProgressBooks.length !== 0" class="mb-4">
         <template v-slot:prepend>
           <div class="title">Keep Reading</div>
         </template>
@@ -35,11 +35,12 @@
                         :edit-function="singleEditBook"
                         :selected.sync="selectedBooks"
                         :selectable="selectedSeries.length === 0"
+                        :fixed-item-width="fixedCardWidth"
           />
         </template>
       </horizontal-scroller>
 
-      <horizontal-scroller v-if="onDeckBooks.length !== 0" class="my-4">
+      <horizontal-scroller v-if="onDeckBooks.length !== 0" class="mb-4">
         <template v-slot:prepend>
           <div class="title">On Deck</div>
         </template>
@@ -49,11 +50,12 @@
                         :edit-function="singleEditBook"
                         :selected.sync="selectedBooks"
                         :selectable="selectedSeries.length === 0"
+                        :fixed-item-width="fixedCardWidth"
           />
         </template>
       </horizontal-scroller>
 
-      <horizontal-scroller v-if="newSeries.length !== 0" class="my-4">
+      <horizontal-scroller v-if="newSeries.length !== 0" class="mb-4">
         <template v-slot:prepend>
           <div class="title">Recently Added Series</div>
         </template>
@@ -63,11 +65,12 @@
                         :edit-function="singleEditSeries"
                         :selected.sync="selectedSeries"
                         :selectable="selectedBooks.length === 0"
+                        :fixed-item-width="fixedCardWidth"
           />
         </template>
       </horizontal-scroller>
 
-      <horizontal-scroller v-if="updatedSeries.length !== 0" class="my-4">
+      <horizontal-scroller v-if="updatedSeries.length !== 0" class="mb-4">
         <template v-slot:prepend>
           <div class="title">Recently Updated Series</div>
         </template>
@@ -77,11 +80,12 @@
                         :edit-function="singleEditSeries"
                         :selected.sync="selectedSeries"
                         :selectable="selectedBooks.length === 0"
+                        :fixed-item-width="fixedCardWidth"
           />
         </template>
       </horizontal-scroller>
 
-      <horizontal-scroller v-if="latestBooks.length !== 0" class="my-4">
+      <horizontal-scroller v-if="latestBooks.length !== 0" class="mb-4">
         <template v-slot:prepend>
           <div class="title">Recently Added Books</div>
         </template>
@@ -91,6 +95,7 @@
                         :edit-function="singleEditBook"
                         :selected.sync="selectedBooks"
                         :selectable="selectedSeries.length === 0"
+                        :fixed-item-width="fixedCardWidth"
           />
         </template>
       </horizontal-scroller>
@@ -99,14 +104,14 @@
 </template>
 
 <script lang="ts">
+import BooksMultiSelectBar from '@/components/bars/BooksMultiSelectBar.vue'
+import SeriesMultiSelectBar from '@/components/bars/SeriesMultiSelectBar.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
+import ItemBrowser from '@/components/ItemBrowser.vue'
 import { ReadStatus } from '@/types/enum-books'
 import { BOOK_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
-import ItemBrowser from '@/components/ItemBrowser.vue'
-import SeriesMultiSelectBar from '@/components/bars/SeriesMultiSelectBar.vue'
-import BooksMultiSelectBar from '@/components/bars/BooksMultiSelectBar.vue'
 
 export default Vue.extend({
   name: 'Dashboard',
@@ -150,6 +155,9 @@ export default Vue.extend({
     },
   },
   computed: {
+    fixedCardWidth (): number {
+      return this.$vuetify.breakpoint.name === 'xs' ? 120 : 150
+    },
     allEmpty (): boolean {
       return this.newSeries.length === 0 &&
         this.updatedSeries.length === 0 &&
