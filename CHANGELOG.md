@@ -1,3 +1,15 @@
+# [0.43.0](https://github.com/gotson/komga/compare/v0.42.0...v0.43.0) (2020-06-29)
+
+
+### Bug Fixes
+
+* **webui:** lazy load collections on browse series ([d89533d](https://github.com/gotson/komga/commit/d89533ded69f58a96a2c1062067858b589857b00))
+
+
+### Features
+
+* **webui:** sort/filter settings are persisted per library ([bf737de](https://github.com/gotson/komga/commit/bf737de91065e56fe1fe11b9ef27cfa913f0ab77)), closes [#190](https://github.com/gotson/komga/issues/190)
+
 # [0.42.0](https://github.com/gotson/komga/compare/v0.41.1...v0.42.0) (2020-06-29)
 
 
