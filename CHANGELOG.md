@@ -1,3 +1,20 @@
+# [0.42.0](https://github.com/gotson/komga/compare/v0.41.1...v0.42.0) (2020-06-29)
+
+
+### Bug Fixes
+
+* **webui:** incorrect count of collections in browse collections screen ([2254929](https://github.com/gotson/komga/commit/22549291d8798f62da4c387e75cec1ad23817c5a))
+* **webui:** lazy http call for CollectionEditDialog ([4716a1b](https://github.com/gotson/komga/commit/4716a1b22b873549e07e13f4c76b0caa0c597078))
+
+
+### Features
+
+* **webui:** collection edition on card in browse collections ([e45389d](https://github.com/gotson/komga/commit/e45389d77b8277fb4850be3f9349a1aa89ac97ca))
+* **webui:** collection edition on card in search results ([68fe4fd](https://github.com/gotson/komga/commit/68fe4fd23d4836b40be834201f84d70fb5ec2e7a))
+* **webui:** enable edit on books and series cards in search screen ([32dad62](https://github.com/gotson/komga/commit/32dad627773341fb4c070146a3eda4898409fc4a))
+* **webui:** multi-select in dashboard page ([8e33be7](https://github.com/gotson/komga/commit/8e33be78e22fa0b622d92606ec976d5756770445))
+* **webui:** multi-select in search results page ([c5417ac](https://github.com/gotson/komga/commit/c5417ac8da1dde26237e69561cc718a5882c2baf)), closes [#213](https://github.com/gotson/komga/issues/213)
+
 ## [0.41.1](https://github.com/gotson/komga/compare/v0.41.0...v0.41.1) (2020-06-27)
 
 
