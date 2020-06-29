@@ -1,3 +1,10 @@
+## [0.43.1](https://github.com/gotson/komga/compare/v0.43.0...v0.43.1) (2020-06-29)
+
+
+### Bug Fixes
+
+* **webui:** clear selection when reloading search results ([7d808c5](https://github.com/gotson/komga/commit/7d808c5dee753bcef8987ddeb66bb7086c4cb708))
+
 # [0.43.0](https://github.com/gotson/komga/compare/v0.42.0...v0.43.0) (2020-06-29)
 
 
