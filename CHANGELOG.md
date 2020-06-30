@@ -1,3 +1,10 @@
+## [0.43.3](https://github.com/gotson/komga/compare/v0.43.2...v0.43.3) (2020-06-30)
+
+
+### Bug Fixes
+
+* **api:** add missing sort fields for Books ([797535d](https://github.com/gotson/komga/commit/797535d71ff59f37ab49afc5383ed270ab45ac9b))
+
 ## [0.43.2](https://github.com/gotson/komga/compare/v0.43.1...v0.43.2) (2020-06-30)
 
 
