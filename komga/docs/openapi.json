@@ -3162,23 +3162,19 @@
         ]
       }
     },
-    "/api/v1/books/{bookId}/metadata": {
-      "patch": {
-        "requestBody": {
-          "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BookMetadataUpdateDto"
+    "/api/v1/books/{bookId}": {
+      "get": {
+        "operationId": "getOneBook",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookDto"
+                }
               }
             }
-          },
-          "required": true
-        },
-        "operationId": "updateMetadata",
-        "responses": {
-          "204": {
-            "description": "default response"
           }
         },
         "parameters": [
@@ -3197,19 +3193,23 @@
         ]
       }
     },
-    "/api/v1/books/{bookId}": {
-      "get": {
-        "operationId": "getOneBook",
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BookDto"
-                }
+    "/api/v1/books/{bookId}/metadata": {
+      "patch": {
+        "requestBody": {
+          "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookMetadataUpdateDto"
               }
             }
+          },
+          "required": true
+        },
+        "operationId": "updateMetadata",
+        "responses": {
+          "204": {
+            "description": "default response"
           }
         },
         "parameters": [

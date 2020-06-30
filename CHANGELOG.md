@@ -1,3 +1,10 @@
+## [0.43.2](https://github.com/gotson/komga/compare/v0.43.1...v0.43.2) (2020-06-30)
+
+
+### Bug Fixes
+
+* **api:** exception on unpaged empty content ([2cc27f2](https://github.com/gotson/komga/commit/2cc27f244ccf886b4c5d538d9cfdf61ec92f5478))
+
 ## [0.43.1](https://github.com/gotson/komga/compare/v0.43.0...v0.43.1) (2020-06-29)
 
 
