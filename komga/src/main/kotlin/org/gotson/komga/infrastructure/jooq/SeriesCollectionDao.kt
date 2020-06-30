@@ -65,7 +65,7 @@ class SeriesCollectionDao(
     return PageImpl(
       items,
       if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
-      else PageRequest.of(0, count.toInt(), pageSort),
+      else PageRequest.of(0, maxOf(count.toInt(), 20), pageSort),
       count.toLong()
     )
   }
@@ -95,7 +95,7 @@ class SeriesCollectionDao(
     return PageImpl(
       items,
       if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
-      else PageRequest.of(0, count.toInt(), pageSort),
+      else PageRequest.of(0, maxOf(count, 20), pageSort),
       count.toLong()
     )
   }
