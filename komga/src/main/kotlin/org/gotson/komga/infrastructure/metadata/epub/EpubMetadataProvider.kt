@@ -50,8 +50,8 @@ class EpubMetadataProvider(
       val authors = opf.select("metadata > dc|creator")
         .map {
           val name = it.text()
-          val opfRole = it.attr("opf|role").orNull()
-          val id = it.attr("id").orNull()
+          val opfRole = it.attr("opf|role").ifBlank { null }
+          val id = it.attr("id").ifBlank { null }
           val refineRole = creatorRefines[id]
           val role = opfRole ?: refineRole
           Author(name, relators[role] ?: "writer")
@@ -74,8 +74,6 @@ class EpubMetadataProvider(
     }
     return null
   }
-
-  private fun String.orNull() = if (isBlank()) null else this
 
   private fun parseDate(date: String): LocalDate? =
     try {

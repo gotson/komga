@@ -56,7 +56,7 @@ class ComicInfoProvider(
         comicInfo.publisher,
         comicInfo.ageRating?.ageRating,
         releaseDate,
-        if (authors.isEmpty()) null else authors,
+        authors.ifEmpty { null },
         SeriesMetadataPatch(
           comicInfo.series,
           comicInfo.series,

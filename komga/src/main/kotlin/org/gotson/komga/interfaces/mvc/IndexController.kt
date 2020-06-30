@@ -9,9 +9,7 @@ import javax.servlet.ServletContext
 class IndexController(
   servletContext: ServletContext
 ) {
-  private val baseUrl: String =
-    if (servletContext.contextPath.isBlank()) "/"
-    else "${servletContext.contextPath}/"
+  private val baseUrl: String = "${servletContext.contextPath}/"
 
   @GetMapping("/")
   fun index(model: Model): String {
