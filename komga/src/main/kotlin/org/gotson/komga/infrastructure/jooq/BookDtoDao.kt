@@ -40,12 +40,17 @@ class BookDtoDao(
   private val mediaFields = m.fields().filterNot { it.name == m.THUMBNAIL.name }.toTypedArray()
 
   private val sorts = mapOf(
-    "metadata.numberSort" to d.NUMBER_SORT,
+    "name" to DSL.lower(b.NAME),
     "created" to b.CREATED_DATE,
     "createdDate" to b.CREATED_DATE,
     "lastModified" to b.LAST_MODIFIED_DATE,
     "lastModifiedDate" to b.LAST_MODIFIED_DATE,
     "fileSize" to b.FILE_SIZE,
+    "url" to DSL.lower(b.URL),
+    "media.status" to DSL.lower(m.STATUS),
+    "media.comment" to DSL.lower(m.COMMENT),
+    "media.mediaType" to DSL.lower(m.MEDIA_TYPE),
+    "metadata.numberSort" to d.NUMBER_SORT,
     "readProgress.lastModified" to r.LAST_MODIFIED_DATE
   )
 
