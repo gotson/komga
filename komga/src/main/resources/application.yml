@@ -3,7 +3,7 @@ application.version: ${version}
 logging:
   file:
     max-history: 10
-    name: komga.log
+    name: \${user.home}/.komga/komga.log
   level:
     org.apache.activemq.audit.message: WARN
 
@@ -35,7 +35,7 @@ spring:
   artemis:
     embedded:
       persistent: true
-      data-directory: ~/.komga/artemis
+      data-directory: \${user.home}/.komga/artemis
 
 server:
   servlet.session.timeout: 7d
