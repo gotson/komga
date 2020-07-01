@@ -1,3 +1,10 @@
+## [0.43.4](https://github.com/gotson/komga/compare/v0.43.3...v0.43.4) (2020-07-01)
+
+
+### Bug Fixes
+
+* properly expand home dir in config ([5d86d3e](https://github.com/gotson/komga/commit/5d86d3ea0b3558d8bca2e7994049c1daed4d3fd6)), closes [#195](https://github.com/gotson/komga/issues/195) [#203](https://github.com/gotson/komga/issues/203)
+
 ## [0.43.3](https://github.com/gotson/komga/compare/v0.43.2...v0.43.3) (2020-06-30)
 
 
