@@ -94,12 +94,14 @@
 
         <!--      Description-->
         <template v-if="!thumbnailOnly">
-          <v-card-subtitle
-            v-line-clamp="2"
-            v-bind="subtitleProps"
-            v-html="title"
-          >
-          </v-card-subtitle>
+          <router-link :to="to">
+            <v-card-subtitle
+              v-line-clamp="2"
+              v-bind="subtitleProps"
+              v-html="title"
+            >
+            </v-card-subtitle>
+          </router-link>
           <v-card-text class="px-2" v-html="body">
           </v-card-text>
         </template>
@@ -116,6 +118,7 @@ import { getReadProgress, getReadProgressPercentage } from '@/functions/book-pro
 import { ReadStatus } from '@/types/enum-books'
 import { createItem, Item, ItemTypes } from '@/types/items'
 import Vue from 'vue'
+import { RawLocation } from 'vue-router'
 
 export default Vue.extend({
   name: 'ItemCard',
@@ -221,6 +224,9 @@ export default Vue.extend({
       }
       return false
     },
+    to (): RawLocation {
+      return this.computedItem.to()
+    },
   },
   methods: {
     onClick () {
@@ -231,7 +237,7 @@ export default Vue.extend({
       }
     },
     goto () {
-      this.computedItem.goto(this.$router)
+      this.$router.push(this.computedItem.to())
     },
     selectItem () {
       if (this.onSelected !== undefined) {
@@ -280,4 +286,12 @@ export default Vue.extend({
   z-index: 2;
 }
 
+.item-card a {
+  text-decoration: none;
+}
+
+.item-card a:hover {
+  text-decoration: underline;
+  text-decoration-color: black;
+}
 </style>

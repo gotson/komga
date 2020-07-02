@@ -1,5 +1,5 @@
 import { bookThumbnailUrl, collectionThumbnailUrl, seriesThumbnailUrl } from '@/functions/urls'
-import { VueRouter } from 'vue-router/types/router'
+import { RawLocation } from 'vue-router/types/router'
 
 function plural (count: number, singular: string, plural: string) {
   return `${count} ${count === 1 ? singular : plural}`
@@ -44,7 +44,7 @@ export abstract class Item<T> {
 
   abstract body (): string
 
-  abstract goto (router: VueRouter): void
+  abstract to (): RawLocation
 }
 
 export class BookItem extends Item<BookDto> {
@@ -66,8 +66,8 @@ export class BookItem extends Item<BookDto> {
     return `<span>${plural(c, 'Page', 'Pages')}</span>`
   }
 
-  goto (router: VueRouter): void {
-    router.push({ name: 'browse-book', params: { bookId: this.item.id.toString() } })
+  to (): RawLocation {
+    return { name: 'browse-book', params: { bookId: this.item.id.toString() } }
   }
 }
 
@@ -89,8 +89,8 @@ export class SeriesItem extends Item<SeriesDto> {
     return `<span>${plural(c, 'Book', 'Books')}</span>`
   }
 
-  goto (router: VueRouter): void {
-    router.push({ name: 'browse-series', params: { seriesId: this.item.id.toString() } })
+  to (): RawLocation {
+    return { name: 'browse-series', params: { seriesId: this.item.id.toString() } }
   }
 }
 
@@ -112,7 +112,7 @@ export class CollectionItem extends Item<CollectionDto> {
     return `<span>${c} Series</span>`
   }
 
-  goto (router: VueRouter): void {
-    router.push({ name: 'browse-collection', params: { collectionId: this.item.id.toString() } })
+  to (): RawLocation {
+    return { name: 'browse-collection', params: { collectionId: this.item.id.toString() } }
   }
 }
