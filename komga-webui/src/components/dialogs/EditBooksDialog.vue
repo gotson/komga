@@ -23,7 +23,7 @@
             {{ dialogTitle }}
           </v-card-title>
 
-          <v-tabs :vertical="$vuetify.breakpoint.smAndUp">
+          <v-tabs :vertical="$vuetify.breakpoint.smAndUp" v-model="tab">
             <v-tab class="justify-start">
               <v-icon left class="hidden-xs-only">mdi-format-align-center</v-icon>
               General
@@ -298,12 +298,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { helpers, minValue, requiredIf } from 'vuelidate/lib/validators'
+import { groupAuthorsByRole } from '@/functions/authors'
+import { authorRoles } from '@/types/author-roles'
 import { ReadingDirection } from '@/types/enum-books'
 import moment from 'moment'
-import { authorRoles } from '@/types/author-roles'
-import { groupAuthorsByRole } from '@/functions/authors'
+import Vue from 'vue'
+import { helpers, minValue, requiredIf } from 'vuelidate/lib/validators'
 
 const validDate = (value: any) => !helpers.req(value) || moment(value, 'YYYY-MM-DD', true).isValid()
 
@@ -314,6 +314,7 @@ export default Vue.extend({
       modal: false,
       snackbar: false,
       snackText: '',
+      tab: 0,
       form: {
         title: '',
         titleLock: false,
@@ -441,6 +442,7 @@ export default Vue.extend({
       return errors
     },
     dialogReset (books: BookDto | BookDto[]) {
+      this.tab = 0
       this.$v.$reset()
       if (Array.isArray(books) && books.length === 0) return
       else if (this.$_.isEmpty(books)) return
