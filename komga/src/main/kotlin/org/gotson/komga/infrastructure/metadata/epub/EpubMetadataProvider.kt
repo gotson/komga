@@ -8,6 +8,7 @@ import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.gotson.komga.infrastructure.mediacontainer.EpubExtractor
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
+import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
 import org.jsoup.Jsoup
 import org.springframework.stereotype.Service
 import java.time.LocalDate
@@ -16,7 +17,7 @@ import java.time.format.DateTimeFormatter
 @Service
 class EpubMetadataProvider(
   private val epubExtractor: EpubExtractor
-) : BookMetadataProvider {
+) : BookMetadataProvider, SeriesMetadataProvider {
 
   private val relators = mapOf(
     "aut" to "writer",
@@ -30,7 +31,7 @@ class EpubMetadataProvider(
   override fun getBookMetadataFromBook(book: Book, media: Media): BookMetadataPatch? {
     if (media.mediaType != "application/epub+zip") return null
     epubExtractor.getPackageFile(book.path())?.let { packageFile ->
-      val opf = Jsoup.parse(packageFile.toString())
+      val opf = Jsoup.parse(packageFile)
 
       val title = opf.selectFirst("metadata > dc|title")?.text()
       val publisher = opf.selectFirst("metadata > dc|publisher")?.text()
@@ -57,8 +58,6 @@ class EpubMetadataProvider(
           Author(name, relators[role] ?: "writer")
         }
 
-      val series = opf.selectFirst("metadata > meta[property=belongs-to-collection]")?.text()
-
       return BookMetadataPatch(
         title = title,
         summary = description,
@@ -68,9 +67,20 @@ class EpubMetadataProvider(
         publisher = publisher,
         ageRating = null,
         releaseDate = date,
-        authors = authors,
-        series = SeriesMetadataPatch(series, series, null)
+        authors = authors
       )
+    }
+    return null
+  }
+
+  override fun getSeriesMetadataFromBook(book: Book, media: Media): SeriesMetadataPatch? {
+    if (media.mediaType != "application/epub+zip") return null
+    epubExtractor.getPackageFile(book.path())?.let { packageFile ->
+      val opf = Jsoup.parse(packageFile)
+
+      val series = opf.selectFirst("metadata > meta[property=belongs-to-collection]")?.text()
+
+      return SeriesMetadataPatch(series, series, null)
     }
     return null
   }

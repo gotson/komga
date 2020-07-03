@@ -2,8 +2,12 @@ package org.gotson.komga.application.tasks
 
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
+import io.mockk.just
+import io.mockk.runs
 import io.mockk.verify
 import mu.KotlinLogging
+import org.gotson.komga.domain.model.Book
+import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -78,7 +82,8 @@ class TaskHandlerTest(
       seriesLifecycle.addBooks(it, listOf(book))
     }
 
-    every { mockMetadataLifecycle.refreshMetadata(any()) } answers { Thread.sleep(1_000) }
+    every { mockMetadataLifecycle.refreshMetadata(any<Book>()) } answers { Thread.sleep(1_000) }
+    every { mockMetadataLifecycle.refreshMetadata(any<Series>()) } just runs
 
     val createdBook = bookRepository.findAll().first()
 
@@ -88,6 +93,6 @@ class TaskHandlerTest(
 
     Thread.sleep(5_000)
 
-    verify(atLeast = 1, atMost = 3) { mockMetadataLifecycle.refreshMetadata(any()) }
+    verify(atLeast = 1, atMost = 3) { mockMetadataLifecycle.refreshMetadata(any<Book>()) }
   }
 }

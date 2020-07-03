@@ -8,12 +8,17 @@ import java.time.LocalDateTime
 data class Library(
   val name: String,
   val root: URL,
+  val importComicInfoBook: Boolean = true,
+  val importComicInfoSeries: Boolean = true,
+  val importComicInfoCollection: Boolean = true,
+  val importEpubBook: Boolean = true,
+  val importEpubSeries: Boolean = true,
+
   val id: Long = 0,
+
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
 ) : Auditable() {
-
-  constructor(name: String, root: String) : this(name, Paths.get(root).toUri().toURL())
 
   fun path(): Path = Paths.get(this.root.toURI())
 }

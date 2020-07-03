@@ -31,25 +31,39 @@ class LibraryLifecycle(
   fun addLibrary(library: Library): Library {
     logger.info { "Adding new library: ${library.name} with root folder: ${library.root}" }
 
+    val existing = libraryRepository.findAll()
+    checkLibraryValidity(library, existing)
+
+    return libraryRepository.insert(library).also {
+      taskReceiver.scanLibrary(it.id)
+    }
+  }
+
+  fun updateLibrary(toUpdate: Library) {
+    logger.info { "Updating library: ${toUpdate.id}" }
+
+    val existing = libraryRepository.findAll().filter { it.id != toUpdate.id }
+    checkLibraryValidity(toUpdate, existing)
+
+    libraryRepository.update(toUpdate)
+    taskReceiver.scanLibrary(toUpdate.id)
+  }
+
+  private fun checkLibraryValidity(library: Library, existing: Collection<Library>) {
     if (!Files.exists(library.path()))
       throw FileNotFoundException("Library root folder does not exist: ${library.root}")
 
     if (!Files.isDirectory(library.path()))
       throw DirectoryNotFoundException("Library root folder is not a folder: ${library.root}")
 
-    if (libraryRepository.existsByName(library.name))
+    if (existing.map { it.name }.contains(library.name))
       throw DuplicateNameException("Library name already exists")
 
-    libraryRepository.findAll().forEach {
+    existing.forEach {
       if (library.path().startsWith(it.path()))
         throw PathContainedInPath("Library path ${library.path()} is a child of existing library ${it.name}: ${it.path()}")
       if (it.path().startsWith(library.path()))
         throw PathContainedInPath("Library path ${library.path()} is a parent of existing library ${it.name}: ${it.path()}")
-    }
-
-    return libraryRepository.insert(library).let {
-      taskReceiver.scanLibrary(it.id)
-      it
     }
   }
 

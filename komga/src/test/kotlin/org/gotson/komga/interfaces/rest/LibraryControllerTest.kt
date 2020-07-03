@@ -4,6 +4,7 @@ import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_USER
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.persistence.LibraryRepository
+import org.hamcrest.Matchers
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Nested
@@ -136,13 +137,13 @@ class LibraryControllerTest(
       mockMvc.get(route)
         .andExpect {
           status { isOk }
-          jsonPath("$[0].root") { value("/library1") }
+          jsonPath("$[0].root") { value(Matchers.containsString("library1")) }
         }
 
       mockMvc.get("${route}/${library.id}")
         .andExpect {
           status { isOk }
-          jsonPath("$.root") { value("/library1") }
+          jsonPath("$.root") { value(Matchers.containsString("library1")) }
         }
     }
   }

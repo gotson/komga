@@ -10,6 +10,7 @@ import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
+import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
 import org.gotson.komga.infrastructure.metadata.comicinfo.dto.ComicInfo
 import org.gotson.komga.infrastructure.metadata.comicinfo.dto.Manga
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,7 +25,7 @@ private const val COMIC_INFO = "ComicInfo.xml"
 class ComicInfoProvider(
   @Autowired(required = false) private val mapper: XmlMapper = XmlMapper(),
   private val bookAnalyzer: BookAnalyzer
-) : BookMetadataProvider {
+) : BookMetadataProvider, SeriesMetadataProvider {
 
   override fun getBookMetadataFromBook(book: Book, media: Media): BookMetadataPatch? {
     getComicInfo(book, media)?.let { comicInfo ->
@@ -56,12 +57,18 @@ class ComicInfoProvider(
         comicInfo.publisher,
         comicInfo.ageRating?.ageRating,
         releaseDate,
-        authors.ifEmpty { null },
-        SeriesMetadataPatch(
-          comicInfo.series,
-          comicInfo.series,
-          null
-        )
+        authors.ifEmpty { null }
+      )
+    }
+    return null
+  }
+
+  override fun getSeriesMetadataFromBook(book: Book, media: Media): SeriesMetadataPatch? {
+    getComicInfo(book, media)?.let { comicInfo ->
+      return SeriesMetadataPatch(
+        comicInfo.series,
+        comicInfo.series,
+        null
       )
     }
     return null

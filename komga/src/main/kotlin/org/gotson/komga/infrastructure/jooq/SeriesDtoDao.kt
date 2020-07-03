@@ -22,6 +22,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
+import toFilePath
 import java.math.BigDecimal
 import java.net.URL
 
@@ -188,7 +189,7 @@ class SeriesDtoDao(
       id = id,
       libraryId = libraryId,
       name = name,
-      url = URL(url).toURI().path,
+      url = URL(url).toFilePath(),
       created = createdDate.toUTC(),
       lastModified = lastModifiedDate.toUTC(),
       fileLastModified = fileLastModified.toUTC(),

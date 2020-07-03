@@ -23,6 +23,7 @@ import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
+import toFilePath
 import java.net.URL
 
 @Component
@@ -207,7 +208,7 @@ class BookDtoDao(
       seriesId = seriesId,
       libraryId = libraryId,
       name = name,
-      url = URL(url).toURI().path,
+      url = URL(url).toFilePath(),
       number = number,
       created = createdDate.toUTC(),
       lastModified = lastModifiedDate.toUTC(),

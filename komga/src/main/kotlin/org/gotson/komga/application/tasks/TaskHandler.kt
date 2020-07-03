@@ -3,6 +3,7 @@ package org.gotson.komga.application.tasks
 import mu.KotlinLogging
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
+import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.LibraryScanner
 import org.gotson.komga.domain.service.MetadataLifecycle
@@ -20,6 +21,7 @@ class TaskHandler(
   private val taskReceiver: TaskReceiver,
   private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
+  private val seriesRepository: SeriesRepository,
   private val libraryScanner: LibraryScanner,
   private val bookLifecycle: BookLifecycle,
   private val metadataLifecycle: MetadataLifecycle,
@@ -53,7 +55,13 @@ class TaskHandler(
           is Task.RefreshBookMetadata ->
             bookRepository.findByIdOrNull(task.bookId)?.let {
               metadataLifecycle.refreshMetadata(it)
+              taskReceiver.refreshSeriesMetadata(it.seriesId)
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
+
+          is Task.RefreshSeriesMetadata ->
+            seriesRepository.findByIdOrNull(task.seriesId)?.let {
+              metadataLifecycle.refreshMetadata(it)
+            } ?: logger.warn { "Cannot execute task $task: Series does not exist" }
 
           is Task.BackupDatabase -> {
             databaseBackuper.backupDatabase()

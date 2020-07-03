@@ -22,6 +22,7 @@ import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
+import org.hamcrest.Matchers
 import org.hamcrest.core.IsNull
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
@@ -451,10 +452,9 @@ class BookControllerTest(
 
       val book = bookRepository.findAll().first()
 
-      val url = "/1.cbr"
       val validation: MockMvcResultMatchersDsl.() -> Unit = {
         status { isOk }
-        jsonPath("$.content[0].url") { value(url) }
+        jsonPath("$.content[0].url") { value(Matchers.containsString("1.cbr")) }
       }
 
       mockMvc.get("/api/v1/books")
@@ -469,7 +469,7 @@ class BookControllerTest(
       mockMvc.get("/api/v1/books/${book.id}")
         .andExpect {
           status { isOk }
-          jsonPath("$.url") { value(url) }
+          jsonPath("$.url") { value(Matchers.containsString("1.cbr")) }
         }
     }
   }

@@ -326,10 +326,9 @@ class SeriesControllerTest(
         }
       }
 
-      val url = "/series"
       val validation: MockMvcResultMatchersDsl.() -> Unit = {
         status { isOk }
-        jsonPath("$.content[0].url") { value(url) }
+        jsonPath("$.content[0].url") { value(Matchers.containsString("series")) }
       }
 
       mockMvc.get("/api/v1/series")
@@ -344,7 +343,7 @@ class SeriesControllerTest(
       mockMvc.get("/api/v1/series/${createdSeries.id}")
         .andExpect {
           status { isOk }
-          jsonPath("$.url") { value(url) }
+          jsonPath("$.url") { value(Matchers.containsString("series")) }
         }
     }
   }

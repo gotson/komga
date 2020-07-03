@@ -157,9 +157,9 @@ class ComicInfoProviderTest {
 
       every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
 
-      val patch = comicInfoProvider.getBookMetadataFromBook(book, media)!!.series
+      val patch = comicInfoProvider.getSeriesMetadataFromBook(book, media)!!
 
-      with(patch!!) {
+      with(patch) {
         assertThat(title).isEqualTo("series")
         assertThat(titleSort).isEqualTo("series")
         assertThat(status).isNull()

@@ -46,6 +46,46 @@ class LibraryDaoTest(
   }
 
   @Test
+  fun `given existing library when updating then it is persisted`() {
+    val library = Library(
+      name = "Library",
+      root = URL("file://library")
+    )
+    val created = libraryDao.insert(library)
+
+    Thread.sleep(5)
+
+    val modificationDate = LocalDateTime.now()
+
+    val updated = created.copy(
+      name = "LibraryUpdated",
+      root = URL("file://library2"),
+      importEpubSeries = false,
+      importEpubBook = false,
+      importComicInfoCollection = false,
+      importComicInfoSeries = false,
+      importComicInfoBook = false
+    )
+
+    libraryDao.update(updated)
+    val modified = libraryDao.findById(updated.id)
+
+    assertThat(modified.id).isEqualTo(updated.id)
+    assertThat(modified.createdDate).isEqualTo(updated.createdDate)
+    assertThat(modified.lastModifiedDate)
+      .isAfterOrEqualTo(modificationDate)
+      .isNotEqualTo(updated.lastModifiedDate)
+
+    assertThat(modified.name).isEqualTo(updated.name)
+    assertThat(modified.root).isEqualTo(updated.root)
+    assertThat(modified.importEpubSeries).isEqualTo(updated.importEpubSeries)
+    assertThat(modified.importEpubBook).isEqualTo(updated.importEpubBook)
+    assertThat(modified.importComicInfoCollection).isEqualTo(updated.importComicInfoCollection)
+    assertThat(modified.importComicInfoSeries).isEqualTo(updated.importComicInfoSeries)
+    assertThat(modified.importComicInfoBook).isEqualTo(updated.importComicInfoBook)
+  }
+
+  @Test
   fun `given a library when deleting then it is deleted`() {
     val library = Library(
       name = "Library",
@@ -140,20 +180,5 @@ class LibraryDaoTest(
     val found = libraryDao.findByIdOrNull(1287386)
 
     assertThat(found).isNull()
-  }
-
-  @Test
-  fun `given libraries when checking if exists by name then returns true or false`() {
-    val library = Library(
-      name = "Library",
-      root = URL("file://library")
-    )
-    libraryDao.insert(library)
-
-    val exists = libraryDao.existsByName("LIBRARY")
-    val notExists = libraryDao.existsByName("LIBRARY2")
-
-    assertThat(exists).isTrue()
-    assertThat(notExists).isFalse()
   }
 }

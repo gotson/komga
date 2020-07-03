@@ -1,5 +1,6 @@
 package org.gotson.komga.interfaces.rest
 
+import filePathToUrl
 import mu.KotlinLogging
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.DirectoryNotFoundException
@@ -19,11 +20,13 @@ import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
+import toFilePath
 import java.io.FileNotFoundException
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
@@ -66,7 +69,17 @@ class LibraryController(
     @Valid @RequestBody library: LibraryCreationDto
   ): LibraryDto =
     try {
-      libraryLifecycle.addLibrary(Library(library.name, library.root)).toDto(includeRoot = principal.user.roleAdmin)
+      libraryLifecycle.addLibrary(
+        Library(
+          name = library.name,
+          root = filePathToUrl(library.root),
+          importComicInfoBook = library.importComicInfoBook,
+          importComicInfoSeries = library.importComicInfoSeries,
+          importComicInfoCollection = library.importComicInfoCollection,
+          importEpubBook = library.importEpubBook,
+          importEpubSeries = library.importEpubSeries
+        )
+      ).toDto(includeRoot = principal.user.roleAdmin)
     } catch (e: Exception) {
       when (e) {
         is FileNotFoundException,
@@ -77,6 +90,28 @@ class LibraryController(
         else -> throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
       }
     }
+
+  @PutMapping("/{id}")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  fun updateOne(
+    @PathVariable id: Long,
+    @Valid @RequestBody library: LibraryUpdateDto
+  ) {
+    libraryRepository.findByIdOrNull(id)?.let {
+      val toUpdate = Library(
+        id = id,
+        name = library.name,
+        root = filePathToUrl(library.root),
+        importComicInfoBook = library.importComicInfoBook,
+        importComicInfoSeries = library.importComicInfoSeries,
+        importComicInfoCollection = library.importComicInfoCollection,
+        importEpubBook = library.importEpubBook,
+        importEpubSeries = library.importEpubSeries
+      )
+      libraryLifecycle.updateLibrary(toUpdate)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
 
   @DeleteMapping("/{id}")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
@@ -117,17 +152,42 @@ class LibraryController(
 
 data class LibraryCreationDto(
   @get:NotBlank val name: String,
-  @get:NotBlank val root: String
+  @get:NotBlank val root: String,
+  val importComicInfoBook: Boolean = true,
+  val importComicInfoSeries: Boolean = true,
+  val importComicInfoCollection: Boolean = true,
+  val importEpubBook: Boolean = true,
+  val importEpubSeries: Boolean = true
 )
 
 data class LibraryDto(
   val id: Long,
   val name: String,
-  val root: String
+  val root: String,
+  val importComicInfoBook: Boolean,
+  val importComicInfoSeries: Boolean,
+  val importComicInfoCollection: Boolean,
+  val importEpubBook: Boolean,
+  val importEpubSeries: Boolean
+)
+
+data class LibraryUpdateDto(
+  @get:NotBlank val name: String,
+  @get:NotBlank val root: String,
+  val importComicInfoBook: Boolean,
+  val importComicInfoSeries: Boolean,
+  val importComicInfoCollection: Boolean,
+  val importEpubBook: Boolean,
+  val importEpubSeries: Boolean
 )
 
 fun Library.toDto(includeRoot: Boolean) = LibraryDto(
   id = id,
   name = name,
-  root = if (includeRoot) root.toURI().path else ""
+  root = if (includeRoot) this.root.toFilePath() else "",
+  importComicInfoBook = importComicInfoBook,
+  importComicInfoSeries = importComicInfoSeries,
+  importComicInfoCollection = importComicInfoCollection,
+  importEpubBook = importEpubBook,
+  importEpubSeries = importEpubSeries
 )

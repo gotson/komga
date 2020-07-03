@@ -129,19 +129,17 @@ class MediaDaoTest(
 
     val modificationDate = LocalDateTime.now()
 
-    val updated = with(created) {
-      copy(
-        status = Media.Status.ERROR,
-        mediaType = "application/rar",
-        thumbnail = Random.nextBytes(1),
-        pages = listOf(BookPage(
-          fileName = "2.png",
-          mediaType = "image/png"
-        )),
-        files = listOf("id.txt"),
-        comment = "comment2"
-      )
-    }
+    val updated = created.copy(
+      status = Media.Status.ERROR,
+      mediaType = "application/rar",
+      thumbnail = Random.nextBytes(1),
+      pages = listOf(BookPage(
+        fileName = "2.png",
+        mediaType = "image/png"
+      )),
+      files = listOf("id.txt"),
+      comment = "comment2"
+    )
 
     mediaDao.update(updated)
     val modified = mediaDao.findById(updated.bookId)

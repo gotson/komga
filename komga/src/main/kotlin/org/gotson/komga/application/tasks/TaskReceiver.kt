@@ -60,6 +60,10 @@ class TaskReceiver(
     submitTask(Task.RefreshBookMetadata(book.id))
   }
 
+  fun refreshSeriesMetadata(seriesId: Long) {
+    submitTask(Task.RefreshSeriesMetadata(seriesId))
+  }
+
   fun databaseBackup() {
     submitTask(Task.BackupDatabase)
   }
