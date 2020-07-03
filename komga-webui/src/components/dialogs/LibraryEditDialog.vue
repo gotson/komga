@@ -87,11 +87,11 @@
                         label="Series title"
                         hide-details
                       />
-                      <!--                      <v-checkbox-->
-                      <!--                        v-model="form.importComicInfoCollection"-->
-                      <!--                        label="Collections"-->
-                      <!--                        hide-details-->
-                      <!--                      />-->
+                      <v-checkbox
+                        v-model="form.importComicInfoCollection"
+                        label="Collections"
+                        hide-details
+                      />
                     </v-col>
                   </v-row>
                   <v-row>

@@ -68,7 +68,8 @@ class ComicInfoProvider(
       return SeriesMetadataPatch(
         comicInfo.series,
         comicInfo.series,
-        null
+        null,
+        listOfNotNull(comicInfo.seriesGroup)
       )
     }
     return null

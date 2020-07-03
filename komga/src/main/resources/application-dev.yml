@@ -24,7 +24,7 @@ logging:
     org.apache.activemq.audit.message: WARN
 #    org.jooq: DEBUG
 #    web: DEBUG
-#    org.gotson.komga: DEBUG
+    org.gotson.komga: DEBUG
 #    org.springframework.jms: DEBUG
 #    org.springframework.security.web.FilterChainProxy: DEBUG
 

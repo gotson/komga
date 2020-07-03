@@ -113,6 +113,12 @@ class SeriesCollectionDao(
       .fetchAndMap(filterOnLibraryIds)
   }
 
+  override fun findByNameOrNull(name: String): SeriesCollection? =
+    selectBase()
+      .where(c.NAME.equalIgnoreCase(name))
+      .fetchAndMap(null)
+      .firstOrNull()
+
   private fun selectBase() =
     dsl.selectDistinct(*c.fields())
       .from(c)

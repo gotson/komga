@@ -28,6 +28,7 @@ class ComicInfoTest {
       assertThat(ageRating).isEqualTo(AgeRating.MATURE_17)
       assertThat(blackAndWhite).isEqualTo(YesNo.NO)
       assertThat(manga).isEqualTo(Manga.NO)
+      assertThat(seriesGroup).isEqualTo("Sandman")
     }
   }
 

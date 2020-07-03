@@ -26,6 +26,8 @@ interface SeriesCollectionRepository {
    */
   fun findAllBySeries(containsSeriesId: Long, filterOnLibraryIds: Collection<Long>?): Collection<SeriesCollection>
 
+  fun findByNameOrNull(name: String): SeriesCollection?
+
   fun insert(collection: SeriesCollection): SeriesCollection
   fun update(collection: SeriesCollection)
 

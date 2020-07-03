@@ -153,6 +153,7 @@ class ComicInfoProviderTest {
     fun `given comicInfo when getting series metadata then metadata patch is valid`() {
       val comicInfo = ComicInfo().apply {
         series = "series"
+        seriesGroup = "collection"
       }
 
       every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
@@ -163,7 +164,9 @@ class ComicInfoProviderTest {
         assertThat(title).isEqualTo("series")
         assertThat(titleSort).isEqualTo("series")
         assertThat(status).isNull()
+        assertThat(collections).containsExactly("collection")
       }
     }
+
   }
 }
