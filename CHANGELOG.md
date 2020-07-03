@@ -1,3 +1,18 @@
+# [0.44.0](https://github.com/gotson/komga/compare/v0.43.4...v0.44.0) (2020-07-03)
+
+
+### Bug Fixes
+
+* **webui:** make card title as link ([d6e4b80](https://github.com/gotson/komga/commit/d6e4b807dbcaa9c5ce91ed72ba88d8d8f3434f7e)), closes [#224](https://github.com/gotson/komga/issues/224)
+* **webui:** reset edit book dialog to first tab on reopen ([5760a06](https://github.com/gotson/komga/commit/5760a06b7a3496d9ec910697122abd51e2c5f9bd))
+
+
+### Features
+
+* generate collections from ComicInfo SeriesGroup ([277cdcd](https://github.com/gotson/komga/commit/277cdcd4e39c2ad1da84522de78d693a30c89788)), closes [#210](https://github.com/gotson/komga/issues/210)
+* **api:** metadata import settings per library ([6824212](https://github.com/gotson/komga/commit/6824212514d8586bdb47ac2c38d6e121be8db489)), closes [#199](https://github.com/gotson/komga/issues/199)
+* **webui:** metadata import settings per library ([521cc42](https://github.com/gotson/komga/commit/521cc42858415abde9a4eb378e5276578bdbed59)), closes [#199](https://github.com/gotson/komga/issues/199)
+
 ## [0.43.4](https://github.com/gotson/komga/compare/v0.43.3...v0.43.4) (2020-07-01)
 
 
