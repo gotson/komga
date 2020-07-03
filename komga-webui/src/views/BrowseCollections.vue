@@ -38,12 +38,12 @@
 
 <script lang="ts">
 import Badge from '@/components/Badge.vue'
-import ItemBrowser from '@/components/ItemBrowser.vue'
-import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
-import LibraryNavigation from '@/components/LibraryNavigation.vue'
-import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
-import { COLLECTION_CHANGED } from '@/types/events'
+import ItemBrowser from '@/components/ItemBrowser.vue'
+import LibraryNavigation from '@/components/LibraryNavigation.vue'
+import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
+import PageSizeSelect from '@/components/PageSizeSelect.vue'
+import { COLLECTION_CHANGED, LIBRARY_CHANGED } from '@/types/events'
 import Vue from 'vue'
 
 const cookiePageSize = 'pagesize'
@@ -78,9 +78,11 @@ export default Vue.extend({
   },
   created () {
     this.$eventHub.$on(COLLECTION_CHANGED, this.reloadCollections)
+    this.$eventHub.$on(LIBRARY_CHANGED, this.reloadLibrary)
   },
   beforeDestroy () {
     this.$eventHub.$off(COLLECTION_CHANGED, this.reloadCollections)
+    this.$eventHub.$off(LIBRARY_CHANGED, this.reloadLibrary)
   },
   mounted () {
     if (this.$cookies.isKey(cookiePageSize)) {
@@ -165,6 +167,11 @@ export default Vue.extend({
     },
     reloadCollections () {
       this.loadLibrary(this.libraryId)
+    },
+    reloadLibrary (event: EventLibraryChanged) {
+      if (event.id === this.libraryId) {
+        this.loadLibrary(this.libraryId)
+      }
     },
     async loadLibrary (libraryId: number) {
       this.library = this.getLibraryLazy(libraryId)

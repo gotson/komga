@@ -82,7 +82,7 @@ import SortMenuButton from '@/components/SortMenuButton.vue'
 import { parseQueryFilter, parseQuerySort } from '@/functions/query-params'
 import { ReadStatus } from '@/types/enum-books'
 import { SeriesStatus } from '@/types/enum-series'
-import { COLLECTION_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
+import { COLLECTION_CHANGED, LIBRARY_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 
 const cookiePageSize = 'pagesize'
@@ -154,11 +154,13 @@ export default Vue.extend({
     this.$eventHub.$on(COLLECTION_CHANGED, this.reloadCollections)
     this.$eventHub.$on(SERIES_CHANGED, this.reloadSeries)
     this.$eventHub.$on(LIBRARY_DELETED, this.libraryDeleted)
+    this.$eventHub.$on(LIBRARY_CHANGED, this.reloadLibrary)
   },
   beforeDestroy () {
     this.$eventHub.$off(COLLECTION_CHANGED, this.reloadCollections)
     this.$eventHub.$off(SERIES_CHANGED, this.reloadSeries)
     this.$eventHub.$off(LIBRARY_DELETED, this.libraryDeleted)
+    this.$eventHub.$off(LIBRARY_CHANGED, this.reloadLibrary)
   },
   mounted () {
     if (this.$cookies.isKey(cookiePageSize)) {
@@ -280,6 +282,11 @@ export default Vue.extend({
     reloadSeries (event: EventSeriesChanged) {
       if (this.libraryId === 0 || event.libraryId === this.libraryId) {
         this.loadPage(this.libraryId, this.page, this.sortActive)
+      }
+    },
+    reloadLibrary (event: EventLibraryChanged) {
+      if (this.libraryId === 0 || event.id === this.libraryId) {
+        this.loadLibrary(this.libraryId)
       }
     },
     async loadLibrary (libraryId: number) {

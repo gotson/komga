@@ -42,7 +42,7 @@
             <v-list-item-title>Libraries</v-list-item-title>
           </v-list-item-content>
           <v-list-item-action v-if="isAdmin">
-            <v-btn icon :to="{name: 'addlibrary'}" exact>
+            <v-btn icon @click.stop.capture.prevent="addLibrary">
               <v-icon>mdi-plus</v-icon>
             </v-btn>
           </v-list-item-action>
@@ -127,7 +127,6 @@ export default Vue.extend({
   data: function () {
     return {
       drawerVisible: this.$vuetify.breakpoint.lgAndUp,
-      modalAddLibrary: false,
       info: {} as ActuatorInfo,
     }
   },
@@ -151,6 +150,9 @@ export default Vue.extend({
     logout () {
       this.$store.dispatch('logout')
       this.$router.push({ name: 'login' })
+    },
+    addLibrary () {
+      this.$store.dispatch('dialogAddLibrary')
     },
   },
 })

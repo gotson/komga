@@ -29,12 +29,6 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "home" */ './views/Home.vue'),
       children: [
         {
-          path: '/libraries/add',
-          name: 'addlibrary',
-          beforeEnter: adminGuard,
-          component: () => import(/* webpackChunkName: "addlibrary" */ './components/dialogs/LibraryAddDialog.vue'),
-        },
-        {
           path: '/welcome',
           name: 'welcome',
           component: () => import(/* webpackChunkName: "welcome" */ './views/Welcome.vue'),

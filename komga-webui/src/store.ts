@@ -11,6 +11,8 @@ export default new Vuex.Store({
     editCollectionDialog: false,
     deleteCollection: {} as CollectionDto,
     deleteCollectionDialog: false,
+    editLibrary: {} as LibraryDto | undefined,
+    editLibraryDialog: false,
     deleteLibrary: {} as LibraryDto,
     deleteLibraryDialog: false,
     updateBooks: {} as BookDto | BookDto[],
@@ -33,6 +35,12 @@ export default new Vuex.Store({
     },
     setDeleteCollection (state, collection) {
       state.deleteCollection = collection
+    },
+    setEditLibrary (state, library) {
+      state.editLibrary = library
+    },
+    setEditLibraryDialog (state, dialog) {
+      state.editLibraryDialog = dialog
     },
     setDeleteCollectionDialog (state, dialog) {
       state.deleteCollectionDialog = dialog
@@ -77,6 +85,17 @@ export default new Vuex.Store({
     },
     dialogDeleteCollectionDisplay ({ commit }, value) {
       commit('setDeleteCollectionDialog', value)
+    },
+    dialogAddLibrary ({ commit }) {
+      commit('setEditLibrary', undefined)
+      commit('setEditLibraryDialog', true)
+    },
+    dialogEditLibrary ({ commit }, value) {
+      commit('setEditLibrary', value)
+      commit('setEditLibraryDialog', true)
+    },
+    dialogEditLibraryDisplay ({ commit }, value) {
+      commit('setEditLibraryDialog', value)
     },
     dialogDeleteLibrary ({ commit }, library) {
       commit('setDeleteLibrary', library)

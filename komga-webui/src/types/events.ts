@@ -2,6 +2,8 @@ export const BOOK_CHANGED = 'book-changed'
 export const SERIES_CHANGED = 'series-changed'
 export const COLLECTION_DELETED = 'collection-deleted'
 export const COLLECTION_CHANGED = 'collection-changed'
+export const LIBRARY_ADDED = 'library-added'
+export const LIBRARY_CHANGED = 'library-changed'
 export const LIBRARY_DELETED = 'library-deleted'
 
 export function bookToEventBookChanged (book: BookDto): EventBookChanged {
@@ -28,6 +30,18 @@ export function collectionToEventCollectionDeleted (collection: CollectionDto): 
   return {
     id: collection.id,
   } as EventCollectionDeleted
+}
+
+export function libraryToEventLibraryAdded (library: LibraryDto): EventLibraryAdded {
+  return {
+    id: library.id,
+  } as EventLibraryAdded
+}
+
+export function libraryToEventLibraryChanged (library: LibraryDto): EventLibraryChanged {
+  return {
+    id: library.id,
+  } as EventLibraryChanged
 }
 
 export function libraryToEventLibraryDeleted (library: LibraryDto): EventLibraryDeleted {

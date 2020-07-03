@@ -25,11 +25,15 @@ const vuexModule: Module<any, any> = {
     },
     async postLibrary ({ dispatch }, library) {
       await service.postLibrary(library)
-      dispatch('getLibraries')
+      await dispatch('getLibraries')
+    },
+    async updateLibrary ({ dispatch }, { libraryId, library }) {
+      await service.updateLibrary(libraryId, library)
+      await dispatch('getLibraries')
     },
     async deleteLibrary ({ dispatch }, library) {
       await service.deleteLibrary(library)
-      dispatch('getLibraries')
+      await dispatch('getLibraries')
     },
   },
 }

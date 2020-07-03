@@ -16,6 +16,14 @@ interface EventCollectionDeleted {
   id: number
 }
 
+interface EventLibraryAdded {
+  id: number
+}
+
+interface EventLibraryChanged {
+  id: number
+}
+
 interface EventLibraryDeleted {
   id: number
 }

@@ -16,6 +16,9 @@
         <v-list-item @click="refreshMetadata">
           <v-list-item-title>Refresh metadata</v-list-item-title>
         </v-list-item>
+        <v-list-item @click="edit">
+          <v-list-item-title>Edit</v-list-item-title>
+        </v-list-item>
         <v-list-item @click="promptDeleteLibrary"
                      class="list-warning">
           <v-list-item-title>Delete</v-list-item-title>
@@ -49,6 +52,9 @@ export default Vue.extend({
     },
     refreshMetadata () {
       this.$komgaLibraries.refreshMetadata(this.library)
+    },
+    edit () {
+      this.$store.dispatch('dialogEditLibrary', this.library)
     },
     promptDeleteLibrary () {
       this.$store.dispatch('dialogDeleteLibrary', this.library)

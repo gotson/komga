@@ -19,6 +19,11 @@
       @deleted="collectionDeleted"
     />
 
+    <library-edit-dialog
+      v-model="editLibraryDialog"
+      :library="editLibrary"
+    />
+
     <library-delete-dialog
       v-model="deleteLibraryDialog"
       :library="deleteLibrary"
@@ -43,7 +48,11 @@
 <script lang="ts">
 import CollectionAddToDialog from '@/components/dialogs/CollectionAddToDialog.vue'
 import CollectionDeleteDialog from '@/components/dialogs/CollectionDeleteDialog.vue'
+import CollectionEditDialog from '@/components/dialogs/CollectionEditDialog.vue'
+import EditBooksDialog from '@/components/dialogs/EditBooksDialog.vue'
+import EditSeriesDialog from '@/components/dialogs/EditSeriesDialog.vue'
 import LibraryDeleteDialog from '@/components/dialogs/LibraryDeleteDialog.vue'
+import LibraryEditDialog from '@/components/dialogs/LibraryEditDialog.vue'
 import {
   BOOK_CHANGED,
   bookToEventBookChanged,
@@ -57,9 +66,6 @@ import {
   seriesToEventSeriesChanged,
 } from '@/types/events'
 import Vue from 'vue'
-import EditBooksDialog from '@/components/dialogs/EditBooksDialog.vue'
-import EditSeriesDialog from '@/components/dialogs/EditSeriesDialog.vue'
-import CollectionEditDialog from '@/components/dialogs/CollectionEditDialog.vue'
 
 export default Vue.extend({
   name: 'Dialogs',
@@ -67,6 +73,7 @@ export default Vue.extend({
     CollectionAddToDialog,
     CollectionEditDialog,
     CollectionDeleteDialog,
+    LibraryEditDialog,
     LibraryDeleteDialog,
     EditBooksDialog,
     EditSeriesDialog,
@@ -104,6 +111,17 @@ export default Vue.extend({
     },
     deleteCollection (): CollectionDto {
       return this.$store.state.deleteCollection
+    },
+    editLibraryDialog: {
+      get (): boolean {
+        return this.$store.state.editLibraryDialog
+      },
+      set (val) {
+        this.$store.dispatch('dialogEditLibraryDisplay', val)
+      },
+    },
+    editLibrary (): LibraryDto | undefined {
+      return this.$store.state.editLibrary
     },
     deleteLibraryDialog: {
       get (): boolean {

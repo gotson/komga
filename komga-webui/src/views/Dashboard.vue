@@ -134,12 +134,12 @@ export default Vue.extend({
     }
   },
   created () {
-    this.$eventHub.$on(LIBRARY_DELETED, this.loadAll)
+    this.$eventHub.$on(LIBRARY_DELETED, this.libraryDeleted)
     this.$eventHub.$on(SERIES_CHANGED, this.loadAll)
     this.$eventHub.$on(BOOK_CHANGED, this.loadAll)
   },
   beforeDestroy () {
-    this.$eventHub.$off(LIBRARY_DELETED, this.loadAll)
+    this.$eventHub.$off(LIBRARY_DELETED, this.libraryDeleted)
     this.$eventHub.$off(SERIES_CHANGED, this.loadAll)
     this.$eventHub.$off(BOOK_CHANGED, this.loadAll)
   },
@@ -167,6 +167,13 @@ export default Vue.extend({
     },
   },
   methods: {
+    libraryDeleted () {
+      if (this.$store.state.komgaLibraries.libraries.length === 0) {
+        this.$router.push({ name: 'welcome' })
+      } else {
+        this.loadAll()
+      }
+    },
     loadAll () {
       this.loadNewSeries()
       this.loadUpdatedSeries()
