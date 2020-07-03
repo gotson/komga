@@ -233,7 +233,6 @@ export default Vue.extend({
     validateLibrary () {
       this.$v.$touch()
 
-      console.log(this.form)
       if (!this.$v.$invalid) {
         return {
           name: this.form.name,
@@ -250,7 +249,6 @@ export default Vue.extend({
     async addLibrary () {
       const library = this.validateLibrary()
       if (library) {
-        console.log(library)
         try {
           if (this.library) {
             await this.$store.dispatch('updateLibrary', { libraryId: this.library.id, library: library })
