@@ -13,6 +13,7 @@
   },
   "husky": {
     "hooks": {
+      "pre-commit": "npm run --prefix komga-webui lint",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
