@@ -1,3 +1,10 @@
+## [0.45.2](https://github.com/gotson/komga/compare/v0.45.1...v0.45.2) (2020-07-05)
+
+
+### Bug Fixes
+
+* **webui:** browse collection should show all series ([8629ea9](https://github.com/gotson/komga/commit/8629ea9936ecfcf118be82d7cbf9ad5c2db8035f)), closes [#226](https://github.com/gotson/komga/issues/226)
+
 ## [0.45.1](https://github.com/gotson/komga/compare/v0.45.0...v0.45.1) (2020-07-05)
 
 
