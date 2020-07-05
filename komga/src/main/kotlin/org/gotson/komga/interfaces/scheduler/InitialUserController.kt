@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
 
 private val logger = KotlinLogging.logger {}
 
-@Profile("!(test | claim)")
+@Profile("!test & noclaim")
 @Component
 class InitialUserController(
   private val userLifecycle: KomgaUserLifecycle,

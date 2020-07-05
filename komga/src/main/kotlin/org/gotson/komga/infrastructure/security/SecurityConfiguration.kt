@@ -44,6 +44,9 @@ class SecurityConfiguration(
       // restrict H2 console to ADMIN only
       .requestMatchers(PathRequest.toH2Console()).hasRole(ROLE_ADMIN)
 
+      // claim is unprotected
+      .antMatchers("/api/v1/claim").permitAll()
+
       // all other endpoints are restricted to authenticated users
       .antMatchers(
         "/api/**",
@@ -89,8 +92,7 @@ class SecurityConfiguration(
         "/js/**",
         "/favicon.ico",
         "/",
-        "/index.html",
-        "/api/v1/claim"
+        "/index.html"
       )
   }
 

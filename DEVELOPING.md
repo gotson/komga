@@ -28,6 +28,9 @@ Komga is composed of 2 projects:
 Komga uses Spring Profiles extensively:
 - `dev`: add more logging, disable periodic scanning, in-memory database
 - `localdb`: a dev profile that stores the database in `./testdb`.
+- `noclaim`: will create initial users at startup if none exist and output users and passwords in the standard output
+  - if `dev` is active, will create `admin@example.org` with password `admin`, and `user@example.org` with password `user`
+  - if `dev` is not active, will create `admin@example.org` with a random password
 
 ### Gradle tasks
 
@@ -40,8 +43,8 @@ Here is a list of useful tasks:
 - `jooq-codegen-primary`: generates the jOOQ DSL.
 
 `bootRun` needs to be run with a profile or list of profiles, usually:
-- `dev`: when testing with a blank database
-- `dev,localdb`: when testing with an existing database
+- `dev,noclaim`: when testing with a blank database
+- `dev,localdb,noclaim`: when testing with an existing database
 
 There are few ways you can run the task with a profile:
 - `./gradlew bootRun --args='--spring.profiles.active=dev'`

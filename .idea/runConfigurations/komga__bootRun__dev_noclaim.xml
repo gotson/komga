@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="komga [bootRun] dev,claim" type="GradleRunConfiguration" factoryName="Gradle">
+  <configuration default="false" name="komga [bootRun] dev,noclaim" type="GradleRunConfiguration" factoryName="Gradle">
     <ExternalSystemSettings>
       <option name="env">
         <map>
-          <entry key="SPRING_PROFILES_ACTIVE" value="dev,claim" />
+          <entry key="SPRING_PROFILES_ACTIVE" value="dev,noclaim" />
         </map>
       </option>
       <option name="executionName" />
