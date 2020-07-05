@@ -854,6 +854,14 @@
           }
         }
       },
+      "ClaimStatus": {
+        "type": "object",
+        "properties": {
+          "claimed": {
+            "type": "boolean"
+          }
+        }
+      },
       "SharedLibrariesUpdateDto": {
         "type": "object",
         "properties": {
@@ -3392,6 +3400,24 @@
             "required": true
           }
         ],
+        "tags": [
+          "claim-controller"
+        ]
+      },
+      "get": {
+        "operationId": "getClaimStatus",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClaimStatus"
+                }
+              }
+            }
+          }
+        },
         "tags": [
           "claim-controller"
         ]

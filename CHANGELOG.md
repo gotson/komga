@@ -1,3 +1,11 @@
+# [0.45.0](https://github.com/gotson/komga/compare/v0.44.0...v0.45.0) (2020-07-05)
+
+
+### Features
+
+* **api:** claim status ([47dd2f6](https://github.com/gotson/komga/commit/47dd2f66e0049e04cfda0f8d62ff9b7c2f207873)), closes [#207](https://github.com/gotson/komga/issues/207)
+* **webui:** claim server from login screen ([d4810bd](https://github.com/gotson/komga/commit/d4810bdc809d87cd94027566b0cbee10d6673a33)), closes [#207](https://github.com/gotson/komga/issues/207)
+
 # [0.44.0](https://github.com/gotson/komga/compare/v0.43.4...v0.44.0) (2020-07-03)
 
 
