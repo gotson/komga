@@ -94,7 +94,7 @@
 
         <!--      Description-->
         <template v-if="!thumbnailOnly">
-          <router-link :to="to">
+          <router-link :to="to" class="link-underline">
             <v-card-subtitle
               v-line-clamp="2"
               v-bind="subtitleProps"
@@ -286,11 +286,11 @@ export default Vue.extend({
   z-index: 2;
 }
 
-.item-card a {
+.link-underline {
   text-decoration: none;
 }
 
-.item-card a:hover {
+.link-underline:hover {
   text-decoration: underline;
   text-decoration-color: black;
 }
