@@ -80,7 +80,10 @@ export default class KomgaCollectionsService {
 
   async getSeries (collectionId: number, pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
     try {
-      return (await this.http.get(`${API_COLLECTIONS}/${collectionId}/series`)).data
+      const params = { ...pageRequest }
+      return (await this.http.get(`${API_COLLECTIONS}/${collectionId}/series`, {
+        params: params,
+      })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve series'
       if (e.response.data.message) {
