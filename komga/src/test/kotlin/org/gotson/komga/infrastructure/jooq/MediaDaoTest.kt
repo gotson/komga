@@ -58,7 +58,7 @@ class MediaDaoTest(
 
   @Test
   fun `given a media when inserting then it is persisted`() {
-    val now = LocalDateTime.now().minusSeconds(2)
+    val now = LocalDateTime.now()
     val media = Media(
       status = Media.Status.READY,
       mediaType = "application/zip",
@@ -75,8 +75,8 @@ class MediaDaoTest(
     val created = mediaDao.insert(media)
 
     assertThat(created.bookId).isEqualTo(book.id)
-    assertThat(created.createdDate).isAfter(now)
-    assertThat(created.lastModifiedDate).isAfter(now)
+    assertThat(created.createdDate).isCloseTo(now, offset)
+    assertThat(created.lastModifiedDate).isCloseTo(now, offset)
     assertThat(created.status).isEqualTo(media.status)
     assertThat(created.mediaType).isEqualTo(media.mediaType)
     assertThat(created.thumbnail).isEqualTo(media.thumbnail)
@@ -121,7 +121,7 @@ class MediaDaoTest(
     )
     val created = mediaDao.insert(media)
 
-    val modificationDate = LocalDateTime.now().minusSeconds(2)
+    val modificationDate = LocalDateTime.now()
 
     val updated = created.copy(
       status = Media.Status.ERROR,
@@ -141,7 +141,7 @@ class MediaDaoTest(
     assertThat(modified.bookId).isEqualTo(updated.bookId)
     assertThat(modified.createdDate).isEqualTo(updated.createdDate)
     assertThat(modified.lastModifiedDate)
-      .isAfterOrEqualTo(modificationDate)
+      .isCloseTo(modificationDate, offset)
       .isNotEqualTo(updated.lastModifiedDate)
     assertThat(modified.status).isEqualTo(updated.status)
     assertThat(modified.mediaType).isEqualTo(updated.mediaType)

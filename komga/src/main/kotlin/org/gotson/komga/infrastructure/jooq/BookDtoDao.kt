@@ -18,6 +18,7 @@ import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.ResultQuery
 import org.jooq.impl.DSL
+import org.jooq.impl.DSL.inline
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -104,9 +105,9 @@ class BookDtoDao(
       .and(readProgressCondition(userId))
       .where(conditions)
       .groupBy(s.ID)
-      .having(SeriesDtoDao.countUnread.ge(1.toBigDecimal()))
-      .and(SeriesDtoDao.countRead.ge(1.toBigDecimal()))
-      .and(SeriesDtoDao.countInProgress.eq(0.toBigDecimal()))
+      .having(SeriesDtoDao.countUnread.ge(inline(1.toBigDecimal())))
+      .and(SeriesDtoDao.countRead.ge(inline(1.toBigDecimal())))
+      .and(SeriesDtoDao.countInProgress.eq(inline(0.toBigDecimal())))
       .orderBy(DSL.max(r.LAST_MODIFIED_DATE).desc())
       .fetchInto(Long::class.java)
 
@@ -212,7 +213,7 @@ class BookDtoDao(
       number = number,
       created = createdDate,
       lastModified = lastModifiedDate,
-      fileLastModified = fileLastModified.toUTC(),
+      fileLastModified = fileLastModified,
       sizeBytes = fileSize,
       media = media,
       metadata = metadata,

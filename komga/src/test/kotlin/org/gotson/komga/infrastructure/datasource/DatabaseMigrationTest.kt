@@ -10,6 +10,7 @@ class DatabaseMigrationTest {
     @JvmStatic
     fun h2Urls () =
       listOf(
+        "not a jdbc url" to null,
         "jdbc:h2:./testdb" to "./testdb",
         "jdbc:h2:file:./testdb" to "./testdb",
         "jdbc:h2:~/.komga/database.h2" to "~/.komga/database.h2",

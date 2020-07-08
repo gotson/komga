@@ -49,7 +49,7 @@ class SeriesMetadataDaoTest(
       makeSeries("Series", libraryId = library.id)
     )
 
-    val now = LocalDateTime.now().minusSeconds(2)
+    val now = LocalDateTime.now()
     val metadata = SeriesMetadata(
       status = SeriesMetadata.Status.ENDED,
       title = "Series",
@@ -60,8 +60,8 @@ class SeriesMetadataDaoTest(
     val created = seriesMetadataDao.insert(metadata)
 
     assertThat(created.seriesId).isEqualTo(series.id)
-    assertThat(created.createdDate).isAfter(now)
-    assertThat(created.lastModifiedDate).isAfter(now)
+    assertThat(created.createdDate).isCloseTo(now, offset)
+    assertThat(created.lastModifiedDate).isCloseTo(now, offset)
     assertThat(created.title).isEqualTo("Series")
     assertThat(created.titleSort).isEqualTo("Series, The")
     assertThat(created.status).isEqualTo(SeriesMetadata.Status.ENDED)
@@ -119,7 +119,7 @@ class SeriesMetadataDaoTest(
     val created = seriesMetadataDao.insert(metadata)
 
 
-    val modificationDate = LocalDateTime.now().minusSeconds(2)
+    val modificationDate = LocalDateTime.now()
 
     val updated = with(created) {
       copy(
@@ -138,7 +138,7 @@ class SeriesMetadataDaoTest(
     assertThat(modified.seriesId).isEqualTo(series.id)
     assertThat(modified.createdDate).isEqualTo(updated.createdDate)
     assertThat(modified.lastModifiedDate)
-      .isAfterOrEqualTo(modificationDate)
+      .isCloseTo(modificationDate, offset)
       .isNotEqualTo(modified.createdDate)
     assertThat(modified.title).isEqualTo("Changed")
     assertThat(modified.titleSort).isEqualTo("Changed, The")

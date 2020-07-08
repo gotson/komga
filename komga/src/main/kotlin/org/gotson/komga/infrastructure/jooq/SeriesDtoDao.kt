@@ -4,7 +4,6 @@ import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
 import org.gotson.komga.interfaces.rest.dto.SeriesDto
 import org.gotson.komga.interfaces.rest.dto.SeriesMetadataDto
-import org.gotson.komga.interfaces.rest.dto.toUTC
 import org.gotson.komga.interfaces.rest.persistence.SeriesDtoRepository
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.SeriesMetadataRecord
@@ -16,6 +15,7 @@ import org.jooq.Record
 import org.jooq.ResultQuery
 import org.jooq.SelectOnConditionStep
 import org.jooq.impl.DSL
+import org.jooq.impl.DSL.inline
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -178,9 +178,9 @@ class SeriesDtoDao(
   private fun Collection<ReadStatus>.toCondition(): Condition =
     map {
       when (it) {
-        ReadStatus.UNREAD -> countUnread.ge(1.toBigDecimal())
-        ReadStatus.READ -> countRead.ge(1.toBigDecimal())
-        ReadStatus.IN_PROGRESS -> countInProgress.ge(1.toBigDecimal())
+        ReadStatus.UNREAD -> countUnread.ge(inline(1.toBigDecimal()))
+        ReadStatus.READ -> countRead.ge(inline(1.toBigDecimal()))
+        ReadStatus.IN_PROGRESS -> countInProgress.ge(inline(1.toBigDecimal()))
       }
     }.reduce { acc, condition -> acc.or(condition) }
 
@@ -192,7 +192,7 @@ class SeriesDtoDao(
       url = URL(url).toFilePath(),
       created = createdDate,
       lastModified = lastModifiedDate,
-      fileLastModified = fileLastModified.toUTC(),
+      fileLastModified = fileLastModified,
       booksCount = booksCount,
       booksReadCount = booksReadCount,
       booksUnreadCount = booksUnreadCount,

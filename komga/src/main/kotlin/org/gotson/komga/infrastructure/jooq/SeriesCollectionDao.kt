@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Component
 class SeriesCollectionDao(
@@ -172,7 +173,7 @@ class SeriesCollectionDao(
           .set(c.NAME, collection.name)
           .set(c.ORDERED, collection.ordered)
           .set(c.SERIES_COUNT, collection.seriesIds.size)
-          .set(c.LAST_MODIFIED_DATE, LocalDateTime.now())
+          .set(c.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
           .where(c.ID.eq(collection.id))
           .execute()
 

@@ -28,17 +28,11 @@ class KomgaProperties {
     @get:Positive
     var validity: Int = 1209600 // 2 weeks
   }
-  var databaseBackup = DatabaseBackup()
-
-  class DatabaseBackup {
-    var enabled: Boolean = true
-    var path: String = ""
-    var schedule: String = ""
-    var startup: Boolean = true
-  }
 
   class Database {
     @get:NotBlank
     var file: String = ""
+
+    var batchSize: Int = 500
   }
 }

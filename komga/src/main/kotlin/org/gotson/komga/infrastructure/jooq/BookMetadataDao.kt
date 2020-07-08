@@ -9,6 +9,7 @@ import org.gotson.komga.jooq.tables.records.BookMetadataRecord
 import org.jooq.DSLContext
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Component
 class BookMetadataDao(
@@ -100,7 +101,7 @@ class BookMetadataDao(
           .set(d.RELEASE_DATE, metadata.releaseDate)
           .set(d.RELEASE_DATE_LOCK, metadata.releaseDateLock)
           .set(d.AUTHORS_LOCK, metadata.authorsLock)
-          .set(d.LAST_MODIFIED_DATE, LocalDateTime.now())
+          .set(d.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
           .where(d.BOOK_ID.eq(metadata.bookId))
           .execute()
 

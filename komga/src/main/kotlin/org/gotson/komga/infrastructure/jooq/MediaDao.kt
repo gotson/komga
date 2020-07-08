@@ -9,6 +9,7 @@ import org.gotson.komga.jooq.tables.records.MediaRecord
 import org.jooq.DSLContext
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Component
 class MediaDao(
@@ -98,7 +99,7 @@ class MediaDao(
           .set(m.THUMBNAIL, media.thumbnail)
           .set(m.COMMENT, media.comment)
           .set(m.PAGE_COUNT, media.pages.size)
-          .set(m.LAST_MODIFIED_DATE, LocalDateTime.now())
+          .set(m.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
           .where(m.BOOK_ID.eq(media.bookId))
           .execute()
 

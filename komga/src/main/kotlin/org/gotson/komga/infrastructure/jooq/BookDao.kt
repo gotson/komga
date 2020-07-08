@@ -11,6 +11,7 @@ import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
 import java.net.URL
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Component
 class BookDao(
@@ -112,7 +113,7 @@ class BookDao(
       .set(b.FILE_SIZE, book.fileSize)
       .set(b.LIBRARY_ID, book.libraryId)
       .set(b.SERIES_ID, book.seriesId)
-      .set(b.LAST_MODIFIED_DATE, LocalDateTime.now())
+      .set(b.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(b.ID.eq(book.id))
       .execute()
   }

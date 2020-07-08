@@ -58,7 +58,7 @@ class SeriesCollectionDaoTest(
     )
 
     // when
-    val now = LocalDateTime.now().minusSeconds(2)
+    val now = LocalDateTime.now()
 
     val created = collectionDao.insert(collection)
 
@@ -67,7 +67,7 @@ class SeriesCollectionDaoTest(
     assertThat(created.ordered).isEqualTo(collection.ordered)
     assertThat(created.createdDate)
       .isEqualTo(created.lastModifiedDate)
-      .isAfterOrEqualTo(now)
+      .isCloseTo(now, offset)
     assertThat(created.seriesIds).containsExactlyElementsOf(series.map { it.id })
   }
 
@@ -92,7 +92,7 @@ class SeriesCollectionDaoTest(
       seriesIds = created.seriesIds.take(5)
     )
 
-    val now = LocalDateTime.now().minusSeconds(2)
+    val now = LocalDateTime.now()
     collectionDao.update(updatedCollection)
     val updated = collectionDao.findByIdOrNull(updatedCollection.id)!!
 
@@ -100,7 +100,7 @@ class SeriesCollectionDaoTest(
     assertThat(updated.name).isEqualTo(updatedCollection.name)
     assertThat(updated.ordered).isEqualTo(updatedCollection.ordered)
     assertThat(updated.createdDate).isNotEqualTo(updated.lastModifiedDate)
-    assertThat(updated.lastModifiedDate).isAfterOrEqualTo(now)
+    assertThat(updated.lastModifiedDate).isCloseTo(now, offset)
     assertThat(updated.seriesIds)
       .hasSize(5)
       .containsExactlyElementsOf(series.map { it.id }.take(5))

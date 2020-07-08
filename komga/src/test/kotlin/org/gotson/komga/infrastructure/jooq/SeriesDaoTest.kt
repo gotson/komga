@@ -44,7 +44,7 @@ class SeriesDaoTest(
 
   @Test
   fun `given a series when inserting then it is persisted`() {
-    val now = LocalDateTime.now().minusSeconds(2)
+    val now = LocalDateTime.now()
     val series = Series(
       name = "Series",
       url = URL("file://series"),
@@ -55,11 +55,11 @@ class SeriesDaoTest(
     val created = seriesDao.insert(series)
 
     assertThat(created.id).isNotEqualTo(0)
-    assertThat(created.createdDate).isAfter(now)
-    assertThat(created.lastModifiedDate).isAfter(now)
+    assertThat(created.createdDate).isCloseTo(now, offset)
+    assertThat(created.lastModifiedDate).isCloseTo(now, offset)
     assertThat(created.name).isEqualTo(series.name)
     assertThat(created.url).isEqualTo(series.url)
-    assertThat(created.fileLastModified).isEqualTo(series.fileLastModified)
+    assertThat(created.fileLastModified).isEqualToIgnoringNanos(series.fileLastModified)
   }
 
   @Test

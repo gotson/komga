@@ -11,6 +11,7 @@ import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
 import java.net.URL
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Component
 class SeriesDao(
@@ -91,7 +92,7 @@ class SeriesDao(
       .set(s.URL, series.url.toString())
       .set(s.FILE_LAST_MODIFIED, series.fileLastModified)
       .set(s.LIBRARY_ID, series.libraryId)
-      .set(s.LAST_MODIFIED_DATE, LocalDateTime.now())
+      .set(s.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(s.ID.eq(series.id))
       .execute()
   }

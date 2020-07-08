@@ -3,20 +3,24 @@ package org.gotson.komga.infrastructure.datasource
 import mu.KotlinLogging
 import org.flywaydb.core.Flyway
 import org.flywaydb.core.api.configuration.FluentConfiguration
-import org.gotson.komga.domain.persistence.KomgaUserRepository
+import org.gotson.komga.infrastructure.configuration.KomgaProperties
+import org.springframework.beans.factory.BeanInitializationException
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer
 import org.springframework.context.annotation.Profile
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.support.JdbcUtils
 import org.springframework.jms.config.JmsListenerEndpointRegistry
 import org.springframework.stereotype.Component
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.ResultSetMetaData
 import java.sql.Types
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.annotation.PostConstruct
 import javax.sql.DataSource
 import kotlin.time.measureTime
@@ -30,8 +34,7 @@ class DatabaseMigration(
   @Qualifier("sqliteDataSource") private val sqliteDataSource: DataSource,
   private val jmsListenerEndpointRegistry: JmsListenerEndpointRegistry,
   @Value("\${spring.datasource.url}") private val h2Url: String,
-  private val userRepository: KomgaUserRepository,
-  @Suppress("unused") private val flywayInitializer: FlywayMigrationInitializer // ensures the SQLite database is properly initialized
+  private val komgaProperties: KomgaProperties
 ) {
 
   // tables in order of creation, to ensure there is no missing foreign key
@@ -52,107 +55,171 @@ class DatabaseMigration(
     "COLLECTION_SERIES"
   )
 
+  lateinit var h2MigratedFilePath: Path
+  lateinit var sqlitePath: Path
+
   @PostConstruct
-  fun h2ToSqliteMigration() {
-    logger.info { "Initiating database migration from H2 to SQLite" }
-
-    logger.info { "H2 url: $h2Url" }
-    var h2Filename = extractH2Path(h2Url)
-    if (h2Filename == null) {
-      logger.warn { "The H2 URL ($h2Url) does not refer to a file database, aborting migration" }
-      return
-    }
-    h2Filename += ".mv.db"
-
-    logger.info { "H2 database file: $h2Filename" }
-
-    val h2Path = Paths.get(h2Filename)
-    val h2MigratedFile = Paths.get("$h2Filename.migrated")
-
-    if (Files.exists(h2MigratedFile)) {
-      logger.info { "The H2 database has already been migrated, aborting migration" }
-      return
-    }
-
-    if (!Files.exists(h2Path)) {
-      logger.warn { "The H2 database file does not exists: $h2Path, aborting migration" }
-      return
-    }
-
-    if (userRepository.count() != 0L) {
-      logger.warn { "The SQLite database already contains data, aborting migration" }
-      return
-    }
-
-
-    logger.info { "Stopping all JMS listeners" }
-    jmsListenerEndpointRegistry.stop()
-
+  fun init() {
     try {
+      logger.info { "Initiating database migration from H2 to SQLite" }
+
+      logger.info { "H2 url: $h2Url" }
+      val h2Filename =
+        extractH2Path(h2Url)
+          ?.plus(".mv.db")
+          ?.replaceFirst(Regex("^~"), System.getProperty("user.home"))
+      if (h2Filename == null) {
+        logger.warn { "The H2 URL ($h2Url) does not refer to a file database, skipping migration" }
+        return
+      }
+
+      logger.info { "H2 database file: $h2Filename" }
+      val h2Path = Paths.get(h2Filename)
+
+      if (Files.notExists(h2Path)) {
+        logger.warn { "The H2 database file does not exists: $h2Path, skipping migration" }
+        return
+      }
+
+      h2MigratedFilePath = Paths.get("$h2Filename.migrated")
+      if (Files.exists(h2MigratedFilePath)) {
+        logger.info { "The H2 database has already been migrated, skipping migration" }
+        return
+      }
+
+      h2Backup(h2Filename)
+
+      // make sure H2 database is at the latest migration
+      flywayMigrateH2()
+
+      sqlitePath = Paths.get(komgaProperties.database.file.replaceFirst(Regex("^~"), System.getProperty("user.home")))
+      // flyway Migrate must perform exactly one migration (target of one)
+      // if it performs 0, the database has already been migrated and probably has data in it
+      // it should never perform more than one with a target of 1 migration
+      if (flywayMigrateSqlite() != 1)
+        throw BeanInitializationException("The SQLite database ($sqlitePath) is not newly minted")
+
+      logger.info { "Stopping all JMS listeners" }
+      jmsListenerEndpointRegistry.stop()
+
+      var rows = 0
       measureTime {
-        performMigration()
-      }.also { logger.info { "Migration performed in $it" } }
+        rows = transferH2DataToSqlite()
+      }.also {
+        val insertsPerSecond = rows / it.inSeconds
+        logger.info { "Migration performed in $it ($rows rows). $insertsPerSecond inserts per second." }
+      }
+
+      logger.info { "Creating H2 migrated file: $h2MigratedFilePath" }
+      Files.createFile(h2MigratedFilePath)
+
+      logger.info { "Starting all JMS listeners" }
+      jmsListenerEndpointRegistry.start()
+
+      logger.info { "Migration finished" }
+
     } catch (e: Exception) {
-      logger.error(e) { "Error while trying to migrate from H2 to Sqlite" }
+      logger.error(e) { "Migration failed" }
+
+      if (this::sqlitePath.isInitialized) {
+        logger.info { "Deleting Sqlite database if exists" }
+        Files.deleteIfExists(sqlitePath)
+      }
+
+      if (this::h2MigratedFilePath.isInitialized) {
+        logger.info { "Deleting H2 migrated file if exists" }
+        Files.deleteIfExists(h2MigratedFilePath)
+      }
+
+      throw BeanInitializationException("Migration failed")
     }
-
-    logger.info { "Creating H2 migrated file: $h2MigratedFile" }
-    Files.createFile(h2MigratedFile)
-
-    logger.info { "Starting all JMS listeners" }
-    jmsListenerEndpointRegistry.start()
-
-    logger.info { "Migration finished" }
   }
 
-  private fun performMigration() {
+  private fun flywayMigrateSqlite(): Int {
+    logger.info { "Initialize SQLite database with initial migration: 20200706141854" }
+    return Flyway(FluentConfiguration()
+      .dataSource(sqliteDataSource)
+      .locations("classpath:db/migration/sqlite")
+      .target("20200706141854")
+    ).migrate()
+  }
+
+  private fun flywayMigrateH2(): Int {
     logger.info { "Migrating H2 database to the latest migration" }
-    Flyway(FluentConfiguration()
+    return Flyway(FluentConfiguration()
       .dataSource(h2DataSource)
       .locations("classpath:db/migration/h2")
     ).migrate()
+  }
 
-    val maxBatchSize = 500
-    tables.forEach { table ->
-      val sourceConnection = h2DataSource.connection
-      val destinationConnection = sqliteDataSource.connection
-      lateinit var resultSet: ResultSet
-      lateinit var selectStatement: PreparedStatement
-      lateinit var insertStatement: PreparedStatement
+  private fun h2Backup(h2Filename: String) {
+    val jdbcTemplate = JdbcTemplate(h2DataSource)
+    val timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd.HH-mm-ss"))
+    val backup = "$h2Filename.backup.$timestamp.zip"
+    logger.info { "Perform a specific backup of the H2 database to: $backup" }
+    jdbcTemplate.execute("BACKUP TO '$backup'")
+    logger.info { "Backup finished" }
+  }
 
-      try {
+  private fun transferH2DataToSqlite(): Int {
+    val maxBatchSize = komgaProperties.database.batchSize
+
+    val sourceConnection = h2DataSource.connection
+    val destinationConnection = sqliteDataSource.connection
+    var resultSet: ResultSet? = null
+    var selectStatement: PreparedStatement? = null
+    var insertStatement: PreparedStatement? = null
+
+    var totalRows = 0
+
+    destinationConnection.autoCommit = false
+    destinationConnection.transactionIsolation = 1
+
+    try {
+      tables.forEach { table ->
         logger.info { "Migrate table: $table" }
         selectStatement = sourceConnection.prepareStatement("select * from $table")
-        resultSet = selectStatement.executeQuery()
-        insertStatement = destinationConnection.prepareStatement(createInsert(resultSet.metaData, table))
+        resultSet = selectStatement!!.executeQuery()
+        insertStatement = destinationConnection.prepareStatement(createInsert(resultSet!!.metaData, table))
 
         var batchSize = 0
-        while (resultSet.next()) {
-          (1..resultSet.metaData.columnCount).forEach { i ->
-            if (resultSet.metaData.getColumnType(i) == Types.BLOB) {
-              val blob = resultSet.getBlob(i)
-              val byteArray = blob.binaryStream.readBytes()
-              insertStatement.setObject(i, byteArray)
+        var batchCount = 1
+        while (resultSet!!.next()) {
+          for (i in 1..resultSet!!.metaData.columnCount) {
+            if (resultSet!!.metaData.getColumnType(i) == Types.BLOB) {
+              val blob = resultSet!!.getBlob(i)
+              val byteArray = blob?.binaryStream?.readBytes()
+              insertStatement!!.setObject(i, byteArray)
             } else
-              insertStatement.setObject(i, resultSet.getObject(i))
+              insertStatement!!.setObject(i, resultSet!!.getObject(i))
           }
-          insertStatement.addBatch()
+          insertStatement!!.addBatch()
           batchSize++
+          totalRows++
 
           if (batchSize >= maxBatchSize) {
-            insertStatement.executeBatch()
+            insertStatement!!.executeBatch()
+            logger.info { "Insert batch #$batchCount ($batchSize rows)" }
             batchSize = 0
+            batchCount++
           }
         }
-        insertStatement.executeBatch()
-      } finally {
-        JdbcUtils.closeResultSet(resultSet)
-        JdbcUtils.closeStatement(selectStatement)
-        JdbcUtils.closeStatement(insertStatement)
-        JdbcUtils.closeConnection(sourceConnection)
-        JdbcUtils.closeConnection(destinationConnection)
+        insertStatement!!.executeBatch()
+        logger.info { "Insert batch #$batchCount ($batchSize rows)" }
       }
+    } catch (e: Exception) {
+      destinationConnection.rollback()
+      throw e
+    } finally {
+      destinationConnection.commit()
+      JdbcUtils.closeResultSet(resultSet)
+      JdbcUtils.closeStatement(selectStatement)
+      JdbcUtils.closeStatement(insertStatement)
+      JdbcUtils.closeConnection(sourceConnection)
+      JdbcUtils.closeConnection(destinationConnection)
     }
+
+    return totalRows
   }
 
   private fun createInsert(metadata: ResultSetMetaData, table: String): String {
@@ -167,6 +234,7 @@ class DatabaseMigration(
 val excludeH2Url = listOf(":mem:", ":ssl:", ":tcp:", ":zip:")
 
 fun extractH2Path(url: String): String? {
+  if (!url.startsWith("jdbc:h2:")) return null
   if (excludeH2Url.any { url.contains(it, ignoreCase = true) }) return null
   return url.split(":").last().split(";").first()
 }

@@ -8,6 +8,7 @@ import org.jooq.Record
 import org.jooq.ResultQuery
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Component
 class KomgaUserDao(
@@ -92,7 +93,7 @@ class KomgaUserDao(
           .set(u.ROLE_FILE_DOWNLOAD, user.roleFileDownload)
           .set(u.ROLE_PAGE_STREAMING, user.rolePageStreaming)
           .set(u.SHARED_ALL_LIBRARIES, user.sharedAllLibraries)
-          .set(u.LAST_MODIFIED_DATE, LocalDateTime.now())
+          .set(u.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
           .execute()
 
         deleteFrom(ul)

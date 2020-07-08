@@ -58,7 +58,7 @@ class BookMetadataDaoTest(
 
   @Test
   fun `given a metadata when inserting then it is persisted`() {
-    val now = LocalDateTime.now().minusSeconds(2)
+    val now = LocalDateTime.now()
     val metadata = BookMetadata(
       title = "Book",
       summary = "Summary",
@@ -84,8 +84,8 @@ class BookMetadataDaoTest(
     val created = bookMetadataDao.insert(metadata)
 
     assertThat(created.bookId).isEqualTo(book.id)
-    assertThat(created.createdDate).isAfter(now)
-    assertThat(created.lastModifiedDate).isAfter(now)
+    assertThat(created.createdDate).isCloseTo(now, offset)
+    assertThat(created.lastModifiedDate).isCloseTo(now, offset)
 
     assertThat(created.title).isEqualTo(metadata.title)
     assertThat(created.summary).isEqualTo(metadata.summary)
@@ -162,8 +162,7 @@ class BookMetadataDaoTest(
     )
     val created = bookMetadataDao.insert(metadata)
 
-    val modificationDate = LocalDateTime.now().minusSeconds(2)
-
+    val modificationDate = LocalDateTime.now()
     val updated = with(created) {
       copy(
         title = "BookUpdated",
@@ -193,7 +192,7 @@ class BookMetadataDaoTest(
     assertThat(modified.bookId).isEqualTo(updated.bookId)
     assertThat(modified.createdDate).isEqualTo(updated.createdDate)
     assertThat(modified.lastModifiedDate)
-      .isAfterOrEqualTo(modificationDate)
+      .isCloseTo(modificationDate, offset)
       .isNotEqualTo(updated.lastModifiedDate)
 
     assertThat(modified.title).isEqualTo(updated.title)

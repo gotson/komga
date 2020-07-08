@@ -41,7 +41,7 @@ class KomgaUserDaoTest(
 
   @Test
   fun `given a user when saving it then it is persisted`() {
-    val now = LocalDateTime.now().minusSeconds(2)
+    val now = LocalDateTime.now()
     val user = KomgaUser(
       email = "user@example.org",
       password = "password",
@@ -54,8 +54,8 @@ class KomgaUserDaoTest(
 
     with(created) {
       assertThat(id).isNotEqualTo(0)
-      assertThat(createdDate).isAfter(now)
-      assertThat(lastModifiedDate).isAfter(now)
+      assertThat(createdDate).isCloseTo(now, offset)
+      assertThat(lastModifiedDate).isCloseTo(now, offset)
       assertThat(email).isEqualTo("user@example.org")
       assertThat(password).isEqualTo("password")
       assertThat(roleAdmin).isFalse()
@@ -83,7 +83,7 @@ class KomgaUserDaoTest(
       sharedLibrariesIds = emptySet(),
       sharedAllLibraries = true
     )
-    val modifiedDate = LocalDateTime.now().minusSeconds(2)
+    val modifiedDate = LocalDateTime.now()
     komgaUserDao.update(modified)
     val modifiedSaved = komgaUserDao.findByIdOrNull(modified.id)!!
 
@@ -91,7 +91,7 @@ class KomgaUserDaoTest(
       assertThat(id).isEqualTo(created.id)
       assertThat(createdDate).isEqualTo(created.createdDate)
       assertThat(lastModifiedDate)
-        .isAfterOrEqualTo(modifiedDate)
+        .isCloseTo(modifiedDate, offset)
         .isNotEqualTo(modified.createdDate)
       assertThat(email).isEqualTo("user2@example.org")
       assertThat(password).isEqualTo("password2")

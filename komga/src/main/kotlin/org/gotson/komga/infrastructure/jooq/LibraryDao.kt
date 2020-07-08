@@ -8,6 +8,7 @@ import org.jooq.DSLContext
 import org.springframework.stereotype.Component
 import java.net.URL
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Component
 class LibraryDao(
@@ -85,7 +86,7 @@ class LibraryDao(
       .set(l.IMPORT_COMICINFO_COLLECTION, library.importComicInfoCollection)
       .set(l.IMPORT_EPUB_BOOK, library.importEpubBook)
       .set(l.IMPORT_EPUB_SERIES, library.importEpubSeries)
-      .set(l.LAST_MODIFIED_DATE, LocalDateTime.now())
+      .set(l.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(l.ID.eq(library.id))
       .execute()
   }

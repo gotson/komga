@@ -51,7 +51,7 @@ class BookDaoTest(
 
   @Test
   fun `given a book when inserting then it is persisted`() {
-    val now = LocalDateTime.now().minusSeconds(2)
+    val now = LocalDateTime.now()
     val book = Book(
       name = "Book",
       url = URL("file://book"),
@@ -64,11 +64,11 @@ class BookDaoTest(
     val created = bookDao.insert(book)
 
     assertThat(created.id).isNotEqualTo(0)
-    assertThat(created.createdDate).isAfter(now)
-    assertThat(created.lastModifiedDate).isAfter(now)
+    assertThat(created.createdDate).isCloseTo(now, offset)
+    assertThat(created.lastModifiedDate).isCloseTo(now, offset)
     assertThat(created.name).isEqualTo(book.name)
     assertThat(created.url).isEqualTo(book.url)
-    assertThat(created.fileLastModified).isEqualTo(book.fileLastModified)
+    assertThat(created.fileLastModified).isEqualToIgnoringNanos(book.fileLastModified)
     assertThat(created.fileSize).isEqualTo(book.fileSize)
   }
 
@@ -84,7 +84,7 @@ class BookDaoTest(
     )
     val created = bookDao.insert(book)
 
-    val modificationDate = LocalDateTime.now().minusSeconds(2)
+    val modificationDate = LocalDateTime.now()
 
     val updated = with(created) {
       copy(
@@ -101,11 +101,11 @@ class BookDaoTest(
     assertThat(modified.id).isEqualTo(updated.id)
     assertThat(modified.createdDate).isEqualTo(updated.createdDate)
     assertThat(modified.lastModifiedDate)
-      .isAfterOrEqualTo(modificationDate)
+      .isCloseTo(modificationDate, offset)
       .isNotEqualTo(updated.lastModifiedDate)
     assertThat(modified.name).isEqualTo("Updated")
     assertThat(modified.url).isEqualTo(URL("file://updated"))
-    assertThat(modified.fileLastModified).isEqualTo(modificationDate)
+    assertThat(modified.fileLastModified).isEqualToIgnoringNanos(modificationDate)
     assertThat(modified.fileSize).isEqualTo(5)
   }
 

@@ -19,6 +19,7 @@ node_modules
 
 ### SQLite databases
 *.sqlite
+*.sqlite-journal
 
 ### STS
 .apt_generated

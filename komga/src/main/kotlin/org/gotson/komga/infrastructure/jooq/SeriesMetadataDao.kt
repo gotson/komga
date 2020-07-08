@@ -7,6 +7,7 @@ import org.gotson.komga.jooq.tables.records.SeriesMetadataRecord
 import org.jooq.DSLContext
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Component
 class SeriesMetadataDao(
@@ -48,7 +49,7 @@ class SeriesMetadataDao(
       .set(d.STATUS_LOCK, metadata.statusLock)
       .set(d.TITLE_LOCK, metadata.titleLock)
       .set(d.TITLE_SORT_LOCK, metadata.titleSortLock)
-      .set(d.LAST_MODIFIED_DATE, LocalDateTime.now())
+      .set(d.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(d.SERIES_ID.eq(metadata.seriesId))
       .execute()
   }

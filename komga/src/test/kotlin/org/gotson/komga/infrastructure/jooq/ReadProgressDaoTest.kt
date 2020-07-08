@@ -63,7 +63,7 @@ class ReadProgressDaoTest(
 
   @Test
   fun `given book without user progress when saving progress then progress is saved`() {
-    val now = LocalDateTime.now().minusSeconds(2)
+    val now = LocalDateTime.now()
 
     readProgressDao.save(ReadProgress(
       book1.id,
@@ -80,7 +80,7 @@ class ReadProgressDaoTest(
       assertThat(completed).isEqualTo(false)
       assertThat(bookId).isEqualTo(book1.id)
       assertThat(createdDate)
-        .isAfterOrEqualTo(now)
+        .isCloseTo(now, offset)
         .isEqualTo(lastModifiedDate)
     }
   }
@@ -113,7 +113,7 @@ class ReadProgressDaoTest(
       assertThat(createdDate)
         .isBefore(modificationDate)
         .isNotEqualTo(lastModifiedDate)
-      assertThat(lastModifiedDate).isAfterOrEqualTo(modificationDate.minusSeconds(2))
+      assertThat(lastModifiedDate).isCloseTo(modificationDate, offset)
     }
   }
 }

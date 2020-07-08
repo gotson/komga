@@ -7,6 +7,7 @@ import org.gotson.komga.jooq.tables.records.ReadProgressRecord
 import org.jooq.DSLContext
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Component
 class ReadProgressDao(
@@ -71,7 +72,7 @@ class ReadProgressDao(
       .onDuplicateKeyUpdate()
       .set(r.PAGE, readProgress.page)
       .set(r.COMPLETED, readProgress.completed)
-      .set(r.LAST_MODIFIED_DATE, LocalDateTime.now())
+      .set(r.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .execute()
   }
 

@@ -25,7 +25,7 @@ class LibraryDaoTest(
 
   @Test
   fun `given a library when inserting then it is persisted`() {
-    val now = LocalDateTime.now().minusSeconds(2)
+    val now = LocalDateTime.now()
     val library = Library(
       name = "Library",
       root = URL("file://library")
@@ -34,8 +34,8 @@ class LibraryDaoTest(
     val created = libraryDao.insert(library)
 
     assertThat(created.id).isNotEqualTo(0)
-    assertThat(created.createdDate).isAfter(now)
-    assertThat(created.lastModifiedDate).isAfter(now)
+    assertThat(created.createdDate).isCloseTo(now, offset)
+    assertThat(created.lastModifiedDate).isCloseTo(now, offset)
     assertThat(created.name).isEqualTo(library.name)
     assertThat(created.root).isEqualTo(library.root)
   }
@@ -48,7 +48,7 @@ class LibraryDaoTest(
     )
     val created = libraryDao.insert(library)
 
-    val modificationDate = LocalDateTime.now().minusSeconds(2)
+    val modificationDate = LocalDateTime.now()
 
     val updated = created.copy(
       name = "LibraryUpdated",
@@ -66,7 +66,7 @@ class LibraryDaoTest(
     assertThat(modified.id).isEqualTo(updated.id)
     assertThat(modified.createdDate).isEqualTo(updated.createdDate)
     assertThat(modified.lastModifiedDate)
-      .isAfterOrEqualTo(modificationDate)
+      .isCloseTo(modificationDate, offset)
       .isNotEqualTo(updated.lastModifiedDate)
 
     assertThat(modified.name).isEqualTo(updated.name)
