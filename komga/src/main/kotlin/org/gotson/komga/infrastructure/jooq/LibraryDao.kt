@@ -2,7 +2,6 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.persistence.LibraryRepository
-import org.gotson.komga.jooq.Sequences.HIBERNATE_SEQUENCE
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.LibraryRecord
 import org.jooq.DSLContext
@@ -63,10 +62,7 @@ class LibraryDao(
   }
 
   override fun insert(library: Library): Library {
-    val id = dsl.nextval(HIBERNATE_SEQUENCE)
-
-    dsl.insertInto(l)
-      .set(l.ID, id)
+    val record = dsl.insertInto(l)
       .set(l.NAME, library.name)
       .set(l.ROOT, library.root.toString())
       .set(l.IMPORT_COMICINFO_BOOK, library.importComicInfoBook)
@@ -74,9 +70,10 @@ class LibraryDao(
       .set(l.IMPORT_COMICINFO_COLLECTION, library.importComicInfoCollection)
       .set(l.IMPORT_EPUB_BOOK, library.importEpubBook)
       .set(l.IMPORT_EPUB_SERIES, library.importEpubSeries)
-      .execute()
+      .returning(l.ID)
+      .fetchOne()
 
-    return findById(id)
+    return findById(record.id)
   }
 
   override fun update(library: Library) {
@@ -106,7 +103,7 @@ class LibraryDao(
       importEpubBook = importEpubBook,
       importEpubSeries = importEpubSeries,
       id = id,
-      createdDate = createdDate,
-      lastModifiedDate = lastModifiedDate
+      createdDate = createdDate.toCurrentTimeZone(),
+      lastModifiedDate = lastModifiedDate.toCurrentTimeZone()
     )
 }

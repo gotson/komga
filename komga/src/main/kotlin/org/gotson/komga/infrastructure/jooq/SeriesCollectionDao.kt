@@ -2,7 +2,6 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
-import org.gotson.komga.jooq.Sequences
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.CollectionRecord
 import org.jooq.DSLContext
@@ -140,17 +139,16 @@ class SeriesCollectionDao(
       }
 
   override fun insert(collection: SeriesCollection): SeriesCollection {
-    val id = dsl.nextval(Sequences.HIBERNATE_SEQUENCE)
-    val insert = collection.copy(id = id)
-
-    dsl.insertInto(c)
-      .set(c.ID, insert.id)
-      .set(c.NAME, insert.name)
-      .set(c.ORDERED, insert.ordered)
+    val record = dsl.insertInto(c)
+      .set(c.NAME, collection.name)
+      .set(c.ORDERED, collection.ordered)
       .set(c.SERIES_COUNT, collection.seriesIds.size)
-      .execute()
+      .returning(c.ID)
+      .fetchOne()
 
-    insertSeries(insert)
+    val id = record.id
+
+    insertSeries(collection.copy(id = id))
 
     return findByIdOrNull(id)!!
   }
@@ -224,8 +222,8 @@ class SeriesCollectionDao(
       ordered = ordered,
       seriesIds = seriesIds,
       id = id,
-      createdDate = createdDate,
-      lastModifiedDate = lastModifiedDate,
+      createdDate = createdDate.toCurrentTimeZone(),
+      lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
       filtered = seriesCount != seriesIds.size
     )
 }

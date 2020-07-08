@@ -210,8 +210,8 @@ class BookDtoDao(
       name = name,
       url = URL(url).toFilePath(),
       number = number,
-      created = createdDate.toUTC(),
-      lastModified = lastModifiedDate.toUTC(),
+      created = createdDate,
+      lastModified = lastModifiedDate,
       fileLastModified = fileLastModified.toUTC(),
       sizeBytes = fileSize,
       media = media,
@@ -253,7 +253,7 @@ class BookDtoDao(
     ReadProgressDto(
       page = page,
       completed = completed,
-      created = createdDate.toUTC(),
-      lastModified = lastModifiedDate.toUTC()
+      created = createdDate,
+      lastModified = lastModifiedDate
     )
 }

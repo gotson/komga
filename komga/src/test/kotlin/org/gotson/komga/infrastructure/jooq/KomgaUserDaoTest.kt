@@ -10,14 +10,12 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.time.LocalDateTime
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class KomgaUserDaoTest(
   @Autowired private val komgaUserDao: KomgaUserDao,
   @Autowired private val libraryRepository: LibraryRepository
@@ -43,7 +41,7 @@ class KomgaUserDaoTest(
 
   @Test
   fun `given a user when saving it then it is persisted`() {
-    val now = LocalDateTime.now()
+    val now = LocalDateTime.now().minusSeconds(2)
     val user = KomgaUser(
       email = "user@example.org",
       password = "password",
@@ -52,9 +50,7 @@ class KomgaUserDaoTest(
       sharedAllLibraries = false
     )
 
-    Thread.sleep(5)
-
-    val created = komgaUserDao.save(user)
+    val created = komgaUserDao.insert(user)
 
     with(created) {
       assertThat(id).isNotEqualTo(0)
@@ -78,11 +74,7 @@ class KomgaUserDaoTest(
       sharedAllLibraries = false
     )
 
-    Thread.sleep(5)
-
-    val created = komgaUserDao.save(user)
-
-    Thread.sleep(5)
+    val created = komgaUserDao.insert(user)
 
     val modified = created.copy(
       email = "user2@example.org",
@@ -91,8 +83,9 @@ class KomgaUserDaoTest(
       sharedLibrariesIds = emptySet(),
       sharedAllLibraries = true
     )
-    val modifiedDate = LocalDateTime.now()
-    val modifiedSaved = komgaUserDao.save(modified)
+    val modifiedDate = LocalDateTime.now().minusSeconds(2)
+    komgaUserDao.update(modified)
+    val modifiedSaved = komgaUserDao.findByIdOrNull(modified.id)!!
 
     with(modifiedSaved) {
       assertThat(id).isEqualTo(created.id)
@@ -110,10 +103,8 @@ class KomgaUserDaoTest(
 
   @Test
   fun `given multiple users when saving then they are persisted`() {
-    komgaUserDao.saveAll(listOf(
-      KomgaUser("user1@example.org", "p", false),
-      KomgaUser("user2@example.org", "p", true)
-    ))
+    komgaUserDao.insert(KomgaUser("user1@example.org", "p", false))
+    komgaUserDao.insert(KomgaUser("user2@example.org", "p", true))
 
     val users = komgaUserDao.findAll()
 
@@ -126,10 +117,8 @@ class KomgaUserDaoTest(
 
   @Test
   fun `given some users when counting then proper count is returned`() {
-    komgaUserDao.saveAll(listOf(
-      KomgaUser("user1@example.org", "p", false),
-      KomgaUser("user2@example.org", "p", true)
-    ))
+    komgaUserDao.insert(KomgaUser("user1@example.org", "p", false))
+    komgaUserDao.insert(KomgaUser("user2@example.org", "p", true))
 
     val count = komgaUserDao.count()
 
@@ -138,7 +127,7 @@ class KomgaUserDaoTest(
 
   @Test
   fun `given existing user when finding by id then user is returned`() {
-    val existing = komgaUserDao.save(
+    val existing = komgaUserDao.insert(
       KomgaUser("user1@example.org", "p", false)
     )
 
@@ -156,7 +145,7 @@ class KomgaUserDaoTest(
 
   @Test
   fun `given existing user when deleting then user is deleted`() {
-    val existing = komgaUserDao.save(
+    val existing = komgaUserDao.insert(
       KomgaUser("user1@example.org", "p", false)
     )
 
@@ -167,7 +156,7 @@ class KomgaUserDaoTest(
 
   @Test
   fun `given users when checking if exists by email then return true or false`() {
-    komgaUserDao.save(
+    komgaUserDao.insert(
       KomgaUser("user1@example.org", "p", false)
     )
 
@@ -180,7 +169,7 @@ class KomgaUserDaoTest(
 
   @Test
   fun `given users when finding by email then return user`() {
-    komgaUserDao.save(
+    komgaUserDao.insert(
       KomgaUser("user1@example.org", "p", false)
     )
 

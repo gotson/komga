@@ -34,18 +34,44 @@ class ReadProgressDao(
 
 
   override fun save(readProgress: ReadProgress) {
-    dsl.mergeInto(r)
-      .using(dsl.selectOne())
-      .on(r.BOOK_ID.eq(readProgress.bookId).and(r.USER_ID.eq(readProgress.userId)))
-      .whenMatchedThenUpdate()
+//    dsl.mergeInto(r)
+//      .using(dsl.selectOne())
+//      .on(r.BOOK_ID.eq(readProgress.bookId).and(r.USER_ID.eq(readProgress.userId)))
+//      .whenMatchedThenUpdate()
+//      .set(r.PAGE, readProgress.page)
+//      .set(r.COMPLETED, readProgress.completed)
+//      .set(r.LAST_MODIFIED_DATE, LocalDateTime.now())
+//      .whenNotMatchedThenInsert()
+//      .set(r.BOOK_ID, readProgress.bookId)
+//      .set(r.USER_ID, readProgress.userId)
+//      .set(r.PAGE, readProgress.page)
+//      .set(r.COMPLETED, readProgress.completed)
+//      .execute()
+
+//    val exists = dsl.fetchExists(
+//      dsl.selectOne()
+//        .from(r)
+//        .where(r.BOOK_ID.eq(readProgress.bookId))
+//        .and(r.USER_ID.eq(readProgress.userId))
+//    )
+//    if (exists) {
+//      dsl.insertInto(r, r.BOOK_ID, r.USER_ID, r.PAGE, r.COMPLETED)
+//        .values(readProgress.bookId, readProgress.userId, readProgress.page, readProgress.completed)
+//        .execute()
+//    } else {
+//      dsl.update(r)
+//        .set(r.PAGE, readProgress.page)
+//        .set(r.COMPLETED, readProgress.completed)
+//        .set(r.LAST_MODIFIED_DATE, LocalDateTime.now())
+//        .execute()
+//    }
+
+    dsl.insertInto(r, r.BOOK_ID, r.USER_ID, r.PAGE, r.COMPLETED)
+      .values(readProgress.bookId, readProgress.userId, readProgress.page, readProgress.completed)
+      .onDuplicateKeyUpdate()
       .set(r.PAGE, readProgress.page)
       .set(r.COMPLETED, readProgress.completed)
       .set(r.LAST_MODIFIED_DATE, LocalDateTime.now())
-      .whenNotMatchedThenInsert()
-      .set(r.BOOK_ID, readProgress.bookId)
-      .set(r.USER_ID, readProgress.userId)
-      .set(r.PAGE, readProgress.page)
-      .set(r.COMPLETED, readProgress.completed)
       .execute()
   }
 
@@ -85,7 +111,7 @@ class ReadProgressDao(
       userId = userId,
       page = page,
       completed = completed,
-      createdDate = createdDate,
-      lastModifiedDate = lastModifiedDate
+      createdDate = createdDate.toCurrentTimeZone(),
+      lastModifiedDate = lastModifiedDate.toCurrentTimeZone()
     )
 }

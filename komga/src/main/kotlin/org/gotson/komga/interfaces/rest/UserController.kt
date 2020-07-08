@@ -102,9 +102,8 @@ class UserController(
         roleFileDownload = patch.roles.contains(ROLE_FILE_DOWNLOAD),
         rolePageStreaming = patch.roles.contains(ROLE_PAGE_STREAMING)
       )
-      userRepository.save(updatedUser).also {
-        logger.info { "Updated user roles: $it" }
-      }
+      userRepository.update(updatedUser)
+      logger.info { "Updated user roles: $updatedUser" }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -123,9 +122,8 @@ class UserController(
           .map { it.id }
           .toSet()
       )
-      userRepository.save(updatedUser).also {
-        logger.info { "Updated user shared libraries: $it" }
-      }
+      userRepository.update(updatedUser)
+      logger.info { "Updated user shared libraries: $updatedUser" }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 }

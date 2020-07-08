@@ -12,7 +12,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.Pageable
 import org.springframework.test.context.junit.jupiter.SpringExtension
@@ -20,7 +19,6 @@ import java.time.LocalDateTime
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class SeriesCollectionDaoTest(
   @Autowired private val collectionDao: SeriesCollectionDao,
   @Autowired private val seriesRepository: SeriesRepository,
@@ -60,7 +58,8 @@ class SeriesCollectionDaoTest(
     )
 
     // when
-    val now = LocalDateTime.now()
+    val now = LocalDateTime.now().minusSeconds(2)
+
     val created = collectionDao.insert(collection)
 
     // then
@@ -93,7 +92,7 @@ class SeriesCollectionDaoTest(
       seriesIds = created.seriesIds.take(5)
     )
 
-    val now = LocalDateTime.now()
+    val now = LocalDateTime.now().minusSeconds(2)
     collectionDao.update(updatedCollection)
     val updated = collectionDao.findByIdOrNull(updatedCollection.id)!!
 

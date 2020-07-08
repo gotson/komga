@@ -16,7 +16,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.time.LocalDateTime
@@ -24,7 +23,6 @@ import kotlin.random.Random
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class MediaDaoTest(
   @Autowired private val mediaDao: MediaDao,
   @Autowired private val bookRepository: BookRepository,
@@ -60,7 +58,7 @@ class MediaDaoTest(
 
   @Test
   fun `given a media when inserting then it is persisted`() {
-    val now = LocalDateTime.now()
+    val now = LocalDateTime.now().minusSeconds(2)
     val media = Media(
       status = Media.Status.READY,
       mediaType = "application/zip",
@@ -73,8 +71,6 @@ class MediaDaoTest(
       comment = "comment",
       bookId = book.id
     )
-
-    Thread.sleep(5)
 
     val created = mediaDao.insert(media)
 
@@ -125,9 +121,7 @@ class MediaDaoTest(
     )
     val created = mediaDao.insert(media)
 
-    Thread.sleep(5)
-
-    val modificationDate = LocalDateTime.now()
+    val modificationDate = LocalDateTime.now().minusSeconds(2)
 
     val updated = created.copy(
       status = Media.Status.ERROR,

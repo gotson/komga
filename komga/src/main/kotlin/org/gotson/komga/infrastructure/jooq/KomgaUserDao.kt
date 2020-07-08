@@ -2,7 +2,6 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.persistence.KomgaUserRepository
-import org.gotson.komga.jooq.Sequences.HIBERNATE_SEQUENCE
 import org.gotson.komga.jooq.Tables
 import org.jooq.DSLContext
 import org.jooq.Record
@@ -49,35 +48,26 @@ class KomgaUserDao(
           sharedLibrariesIds = ulr.mapNotNull { it.libraryId }.toSet(),
           sharedAllLibraries = ur.sharedAllLibraries,
           id = ur.id,
-          createdDate = ur.createdDate,
-          lastModifiedDate = ur.lastModifiedDate
+          createdDate = ur.createdDate.toCurrentTimeZone(),
+          lastModifiedDate = ur.lastModifiedDate.toCurrentTimeZone()
         )
       }
 
-  override fun save(user: KomgaUser): KomgaUser {
-    val id = if (user.id == 0L) dsl.nextval(HIBERNATE_SEQUENCE) else user.id
-
-    dsl.transaction { config ->
+  override fun insert(user: KomgaUser): KomgaUser {
+    return dsl.transactionResult { config ->
       with(config.dsl())
       {
-        mergeInto(u)
-          .using(dsl.selectOne())
-          .on(u.ID.eq(id))
-          .whenMatchedThenUpdate()
+        val record = insertInto(u)
           .set(u.EMAIL, user.email)
           .set(u.PASSWORD, user.password)
           .set(u.ROLE_ADMIN, user.roleAdmin)
           .set(u.ROLE_FILE_DOWNLOAD, user.roleFileDownload)
           .set(u.ROLE_PAGE_STREAMING, user.rolePageStreaming)
           .set(u.SHARED_ALL_LIBRARIES, user.sharedAllLibraries)
-          .set(u.LAST_MODIFIED_DATE, LocalDateTime.now())
-          .whenNotMatchedThenInsert(u.ID, u.EMAIL, u.PASSWORD, u.ROLE_ADMIN, u.ROLE_FILE_DOWNLOAD, u.ROLE_PAGE_STREAMING, u.SHARED_ALL_LIBRARIES)
-          .values(id, user.email, user.password, user.roleAdmin, user.roleFileDownload, user.rolePageStreaming, user.sharedAllLibraries)
-          .execute()
+          .returning(u.ID)
+          .fetchOne()
 
-        deleteFrom(ul)
-          .where(ul.USER_ID.eq(id))
-          .execute()
+        val id = record.id
 
         user.sharedLibrariesIds.forEach {
           insertInto(ul)
@@ -85,14 +75,39 @@ class KomgaUserDao(
             .values(id, it)
             .execute()
         }
+
+        findByIdOrNull(id)!!
       }
     }
-
-    return findByIdOrNull(id)!!
   }
 
-  override fun saveAll(users: Iterable<KomgaUser>): Collection<KomgaUser> =
-    users.map { save(it) }
+  override fun update(user: KomgaUser) {
+    dsl.transaction { config ->
+      with(config.dsl())
+      {
+        update(u)
+          .set(u.EMAIL, user.email)
+          .set(u.PASSWORD, user.password)
+          .set(u.ROLE_ADMIN, user.roleAdmin)
+          .set(u.ROLE_FILE_DOWNLOAD, user.roleFileDownload)
+          .set(u.ROLE_PAGE_STREAMING, user.rolePageStreaming)
+          .set(u.SHARED_ALL_LIBRARIES, user.sharedAllLibraries)
+          .set(u.LAST_MODIFIED_DATE, LocalDateTime.now())
+          .execute()
+
+        deleteFrom(ul)
+          .where(ul.USER_ID.eq(user.id))
+          .execute()
+
+        user.sharedLibrariesIds.forEach {
+          insertInto(ul)
+            .columns(ul.USER_ID, ul.LIBRARY_ID)
+            .values(user.id, it)
+            .execute()
+        }
+      }
+    }
+  }
 
   override fun delete(user: KomgaUser) {
     dsl.transaction { config ->

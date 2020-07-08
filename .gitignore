@@ -17,6 +17,9 @@ node_modules
 *.mv.db
 *.trace.db
 
+### SQLite databases
+*.sqlite
+
 ### STS
 .apt_generated
 .classpath

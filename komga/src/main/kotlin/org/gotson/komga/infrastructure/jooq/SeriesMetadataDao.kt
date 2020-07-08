@@ -71,7 +71,7 @@ class SeriesMetadataDao(
       statusLock = statusLock,
       titleLock = titleLock,
       titleSortLock = titleSortLock,
-      createdDate = createdDate,
-      lastModifiedDate = lastModifiedDate
+      createdDate = createdDate.toCurrentTimeZone(),
+      lastModifiedDate = lastModifiedDate.toCurrentTimeZone()
     )
 }

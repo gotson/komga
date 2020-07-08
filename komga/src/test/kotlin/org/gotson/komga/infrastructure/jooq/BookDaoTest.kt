@@ -14,7 +14,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.net.URL
@@ -22,7 +21,6 @@ import java.time.LocalDateTime
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class BookDaoTest(
   @Autowired private val bookDao: BookDao,
   @Autowired private val seriesRepository: SeriesRepository,
@@ -53,7 +51,7 @@ class BookDaoTest(
 
   @Test
   fun `given a book when inserting then it is persisted`() {
-    val now = LocalDateTime.now()
+    val now = LocalDateTime.now().minusSeconds(2)
     val book = Book(
       name = "Book",
       url = URL("file://book"),
@@ -62,8 +60,6 @@ class BookDaoTest(
       seriesId = series.id,
       libraryId = library.id
     )
-
-    Thread.sleep(5)
 
     val created = bookDao.insert(book)
 
@@ -88,9 +84,7 @@ class BookDaoTest(
     )
     val created = bookDao.insert(book)
 
-    Thread.sleep(5)
-
-    val modificationDate = LocalDateTime.now()
+    val modificationDate = LocalDateTime.now().minusSeconds(2)
 
     val updated = with(created) {
       copy(

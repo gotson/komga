@@ -8,8 +8,8 @@ interface KomgaUserRepository {
   fun findAll(): Collection<KomgaUser>
   fun findByIdOrNull(id: Long): KomgaUser?
 
-  fun save(user: KomgaUser): KomgaUser
-  fun saveAll(users: Iterable<KomgaUser>): Collection<KomgaUser>
+  fun insert(user: KomgaUser): KomgaUser
+  fun update(user: KomgaUser)
 
   fun delete(user: KomgaUser)
   fun deleteAll()

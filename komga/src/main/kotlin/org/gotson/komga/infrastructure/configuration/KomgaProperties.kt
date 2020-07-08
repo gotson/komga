@@ -20,14 +20,14 @@ class KomgaProperties {
 
   var rememberMe = RememberMe()
 
-  class RememberMe {
-    @NotBlank
-    var key: String? = null
+  var database = Database()
 
-    @Positive
+  class RememberMe {
+    @get:NotBlank
+    var key: String? = null
+    @get:Positive
     var validity: Int = 1209600 // 2 weeks
   }
-
   var databaseBackup = DatabaseBackup()
 
   class DatabaseBackup {
@@ -35,5 +35,10 @@ class KomgaProperties {
     var path: String = ""
     var schedule: String = ""
     var startup: Boolean = true
+  }
+
+  class Database {
+    @get:NotBlank
+    var file: String = ""
   }
 }

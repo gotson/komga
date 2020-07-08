@@ -34,12 +34,10 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
-import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
@@ -50,12 +48,10 @@ import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import java.time.LocalDate
-import javax.sql.DataSource
 import kotlin.random.Random
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
 class BookControllerTest(
   @Autowired private val seriesRepository: SeriesRepository,
@@ -70,24 +66,15 @@ class BookControllerTest(
   @Autowired private val mockMvc: MockMvc
 ) {
 
-  lateinit var jdbcTemplate: JdbcTemplate
-
-  @Autowired
-  fun setDataSource(dataSource: DataSource) {
-    this.jdbcTemplate = JdbcTemplate(dataSource)
-  }
-
   private var library = makeLibrary()
   private lateinit var user2: KomgaUser
   private lateinit var user3: KomgaUser
 
   @BeforeAll
   fun `setup library`() {
-    jdbcTemplate.execute("ALTER SEQUENCE hibernate_sequence RESTART WITH 1")
-
     library = libraryRepository.insert(library) // id = 1
-    user2 = userRepository.save(KomgaUser("user@example.org", "", false)) // id = 2
-    user3 = userRepository.save(KomgaUser("user2@example.org", "", false)) // id = 3
+    user2 = userRepository.insert(KomgaUser("user@example.org", "", false)) // id = 1
+    user3 = userRepository.insert(KomgaUser("user2@example.org", "", false)) // id = 1
   }
 
   @AfterAll
@@ -812,7 +799,7 @@ class BookControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(id = 2)
+    @WithMockCustomUser(id = 1)
     fun `given user when marking book in progress with page read then progress is marked accordingly`() {
       makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->
@@ -851,7 +838,7 @@ class BookControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(id = 2)
+    @WithMockCustomUser(id = 1)
     fun `given user when marking book completed then progress is marked accordingly`() {
       makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->
@@ -890,7 +877,7 @@ class BookControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(id = 2)
+    @WithMockCustomUser(id = 1)
     fun `given user when deleting read progress then progress is removed`() {
       makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->

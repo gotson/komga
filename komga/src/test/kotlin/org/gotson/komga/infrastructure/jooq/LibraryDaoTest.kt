@@ -3,11 +3,9 @@ package org.gotson.komga.infrastructure.jooq
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.Library
 import org.junit.jupiter.api.AfterEach
-
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.net.URL
@@ -15,7 +13,6 @@ import java.time.LocalDateTime
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class LibraryDaoTest(
   @Autowired private val libraryDao: LibraryDao
 ) {
@@ -28,13 +25,11 @@ class LibraryDaoTest(
 
   @Test
   fun `given a library when inserting then it is persisted`() {
-    val now = LocalDateTime.now()
+    val now = LocalDateTime.now().minusSeconds(2)
     val library = Library(
       name = "Library",
       root = URL("file://library")
     )
-
-    Thread.sleep(5)
 
     val created = libraryDao.insert(library)
 
@@ -53,9 +48,7 @@ class LibraryDaoTest(
     )
     val created = libraryDao.insert(library)
 
-    Thread.sleep(5)
-
-    val modificationDate = LocalDateTime.now()
+    val modificationDate = LocalDateTime.now().minusSeconds(2)
 
     val updated = created.copy(
       name = "LibraryUpdated",

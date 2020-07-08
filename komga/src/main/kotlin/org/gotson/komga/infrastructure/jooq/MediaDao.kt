@@ -57,7 +57,7 @@ class MediaDao(
           .set(m.MEDIA_TYPE, media.mediaType)
           .set(m.THUMBNAIL, media.thumbnail)
           .set(m.COMMENT, media.comment)
-          .set(m.PAGE_COUNT, media.pages.size.toLong())
+          .set(m.PAGE_COUNT, media.pages.size)
           .execute()
 
         insertPages(this, media)
@@ -97,7 +97,7 @@ class MediaDao(
           .set(m.MEDIA_TYPE, media.mediaType)
           .set(m.THUMBNAIL, media.thumbnail)
           .set(m.COMMENT, media.comment)
-          .set(m.PAGE_COUNT, media.pages.size.toLong())
+          .set(m.PAGE_COUNT, media.pages.size)
           .set(m.LAST_MODIFIED_DATE, LocalDateTime.now())
           .where(m.BOOK_ID.eq(media.bookId))
           .execute()
@@ -136,8 +136,8 @@ class MediaDao(
       files = files,
       comment = comment,
       bookId = bookId,
-      createdDate = createdDate,
-      lastModifiedDate = lastModifiedDate
+      createdDate = createdDate.toCurrentTimeZone(),
+      lastModifiedDate = lastModifiedDate.toCurrentTimeZone()
     )
 
   private fun MediaPageRecord.toDomain() =

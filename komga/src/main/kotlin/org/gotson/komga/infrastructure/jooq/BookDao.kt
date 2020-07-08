@@ -3,7 +3,6 @@ package org.gotson.komga.infrastructure.jooq
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.persistence.BookRepository
-import org.gotson.komga.jooq.Sequences
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.BookRecord
 import org.jooq.Condition
@@ -21,7 +20,6 @@ class BookDao(
   private val b = Tables.BOOK
   private val m = Tables.MEDIA
   private val d = Tables.BOOK_METADATA
-  private val a = Tables.BOOK_METADATA_AUTHOR
 
   override fun findByIdOrNull(bookId: Long): Book? =
     dsl.selectFrom(b)
@@ -91,9 +89,7 @@ class BookDao(
 
 
   override fun insert(book: Book): Book {
-    val id = dsl.nextval(Sequences.HIBERNATE_SEQUENCE)
-    dsl.insertInto(b)
-      .set(b.ID, id)
+    val record = dsl.insertInto(b)
       .set(b.NAME, book.name)
       .set(b.URL, book.url.toString())
       .set(b.NUMBER, book.number)
@@ -101,9 +97,10 @@ class BookDao(
       .set(b.FILE_SIZE, book.fileSize)
       .set(b.LIBRARY_ID, book.libraryId)
       .set(b.SERIES_ID, book.seriesId)
-      .execute()
+      .returning(b.ID)
+      .fetchOne()
 
-    return findByIdOrNull(id)!!
+    return findByIdOrNull(record.id)!!
   }
 
   override fun update(book: Book) {
@@ -170,8 +167,8 @@ class BookDao(
       id = id,
       libraryId = libraryId,
       seriesId = seriesId,
-      createdDate = createdDate,
-      lastModifiedDate = lastModifiedDate,
+      createdDate = createdDate.toCurrentTimeZone(),
+      lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
       number = number
     )
 }

@@ -149,8 +149,8 @@ class BookMetadataDao(
 
       bookId = bookId,
 
-      createdDate = createdDate,
-      lastModifiedDate = lastModifiedDate,
+      createdDate = createdDate.toCurrentTimeZone(),
+      lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
 
       titleLock = titleLock,
       summaryLock = summaryLock,

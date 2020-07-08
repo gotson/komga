@@ -15,3 +15,6 @@ fun Sort.toOrderBy(sorts: Map<String, Field<out Any>>): List<SortField<out Any>>
     val f = sorts[it.property]
     if (it.isAscending) f?.asc() else f?.desc()
   }
+
+fun LocalDateTime.toCurrentTimeZone(): LocalDateTime =
+  this.atZone(ZoneId.of("Z")).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()

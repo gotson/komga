@@ -16,7 +16,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.time.LocalDate
@@ -24,7 +23,6 @@ import java.time.LocalDateTime
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class BookMetadataDaoTest(
   @Autowired private val bookMetadataDao: BookMetadataDao,
   @Autowired private val bookRepository: BookRepository,
@@ -60,7 +58,7 @@ class BookMetadataDaoTest(
 
   @Test
   fun `given a metadata when inserting then it is persisted`() {
-    val now = LocalDateTime.now()
+    val now = LocalDateTime.now().minusSeconds(2)
     val metadata = BookMetadata(
       title = "Book",
       summary = "Summary",
@@ -82,8 +80,6 @@ class BookMetadataDaoTest(
       releaseDateLock = true,
       authorsLock = true
     )
-
-    Thread.sleep(5)
 
     val created = bookMetadataDao.insert(metadata)
 
@@ -166,9 +162,7 @@ class BookMetadataDaoTest(
     )
     val created = bookMetadataDao.insert(metadata)
 
-    Thread.sleep(5)
-
-    val modificationDate = LocalDateTime.now()
+    val modificationDate = LocalDateTime.now().minusSeconds(2)
 
     val updated = with(created) {
       copy(

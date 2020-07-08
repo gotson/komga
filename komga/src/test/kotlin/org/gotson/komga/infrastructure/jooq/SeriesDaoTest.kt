@@ -7,12 +7,10 @@ import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
-
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.net.URL
@@ -20,7 +18,6 @@ import java.time.LocalDateTime
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class SeriesDaoTest(
   @Autowired private val seriesDao: SeriesDao,
   @Autowired private val libraryRepository: LibraryRepository
@@ -47,15 +44,13 @@ class SeriesDaoTest(
 
   @Test
   fun `given a series when inserting then it is persisted`() {
-    val now = LocalDateTime.now()
+    val now = LocalDateTime.now().minusSeconds(2)
     val series = Series(
       name = "Series",
       url = URL("file://series"),
       fileLastModified = now,
       libraryId = library.id
     )
-
-    Thread.sleep(5)
 
     val created = seriesDao.insert(series)
 

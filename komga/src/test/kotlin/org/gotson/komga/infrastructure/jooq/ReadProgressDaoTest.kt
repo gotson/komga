@@ -16,14 +16,12 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.time.LocalDateTime
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class ReadProgressDaoTest(
   @Autowired private val readProgressDao: ReadProgressDao,
   @Autowired private val userRepository: KomgaUserRepository,
@@ -44,8 +42,8 @@ class ReadProgressDaoTest(
   fun setup() {
     library = libraryRepository.insert(library)
     series = seriesRepository.insert(series.copy(libraryId = library.id))
-    user1 = userRepository.save(user1)
-    user2 = userRepository.save(user2)
+    user1 = userRepository.insert(user1)
+    user2 = userRepository.insert(user2)
     book1 = bookRepository.insert(book1.copy(libraryId = library.id, seriesId = series.id))
     book2 = bookRepository.insert(book2.copy(libraryId = library.id, seriesId = series.id))
   }
@@ -65,7 +63,7 @@ class ReadProgressDaoTest(
 
   @Test
   fun `given book without user progress when saving progress then progress is saved`() {
-    val now = LocalDateTime.now()
+    val now = LocalDateTime.now().minusSeconds(2)
 
     readProgressDao.save(ReadProgress(
       book1.id,
@@ -96,7 +94,6 @@ class ReadProgressDaoTest(
       false
     ))
 
-    Thread.sleep(5)
     val modificationDate = LocalDateTime.now()
 
     readProgressDao.save(ReadProgress(
@@ -116,7 +113,7 @@ class ReadProgressDaoTest(
       assertThat(createdDate)
         .isBefore(modificationDate)
         .isNotEqualTo(lastModifiedDate)
-      assertThat(lastModifiedDate).isAfterOrEqualTo(modificationDate)
+      assertThat(lastModifiedDate).isAfterOrEqualTo(modificationDate.minusSeconds(2))
     }
   }
 }

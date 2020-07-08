@@ -22,13 +22,11 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class BookLifecycleTest(
   @Autowired private val bookLifecycle: BookLifecycle,
   @Autowired private val bookRepository: BookRepository,
@@ -51,8 +49,8 @@ class BookLifecycleTest(
   fun `setup library`() {
     library = libraryRepository.insert(library)
 
-    user1 = userRepository.save(user1)
-    user2 = userRepository.save(user2)
+    user1 = userRepository.insert(user1)
+    user2 = userRepository.insert(user2)
   }
 
   @AfterAll

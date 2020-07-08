@@ -3,7 +3,6 @@ package org.gotson.komga.infrastructure.jooq
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.persistence.SeriesRepository
-import org.gotson.komga.jooq.Sequences
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.SeriesRecord
 import org.jooq.Condition
@@ -75,17 +74,15 @@ class SeriesDao(
 
 
   override fun insert(series: Series): Series {
-    val id = dsl.nextval(Sequences.HIBERNATE_SEQUENCE)
-
-    dsl.insertInto(s)
-      .set(s.ID, id)
+    val record = dsl.insertInto(s)
       .set(s.NAME, series.name)
       .set(s.URL, series.url.toString())
       .set(s.FILE_LAST_MODIFIED, series.fileLastModified)
       .set(s.LIBRARY_ID, series.libraryId)
-      .execute()
+      .returning(s.ID)
+      .fetchOne()
 
-    return findByIdOrNull(id)!!
+    return findByIdOrNull(record.id)!!
   }
 
   override fun update(series: Series) {
@@ -150,7 +147,7 @@ class SeriesDao(
       fileLastModified = fileLastModified,
       id = id,
       libraryId = libraryId,
-      createdDate = createdDate,
-      lastModifiedDate = lastModifiedDate
+      createdDate = createdDate.toCurrentTimeZone(),
+      lastModifiedDate = lastModifiedDate.toCurrentTimeZone()
     )
 }

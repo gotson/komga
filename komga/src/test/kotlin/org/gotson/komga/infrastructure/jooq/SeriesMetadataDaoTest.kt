@@ -13,14 +13,12 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.time.LocalDateTime
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class SeriesMetadataDaoTest(
   @Autowired private val seriesMetadataDao: SeriesMetadataDao,
   @Autowired private val seriesRepository: SeriesRepository,
@@ -51,15 +49,13 @@ class SeriesMetadataDaoTest(
       makeSeries("Series", libraryId = library.id)
     )
 
-    val now = LocalDateTime.now()
+    val now = LocalDateTime.now().minusSeconds(2)
     val metadata = SeriesMetadata(
       status = SeriesMetadata.Status.ENDED,
       title = "Series",
       titleSort = "Series, The",
       seriesId = series.id
     )
-
-    Thread.sleep(5)
 
     val created = seriesMetadataDao.insert(metadata)
 
@@ -122,9 +118,8 @@ class SeriesMetadataDaoTest(
     )
     val created = seriesMetadataDao.insert(metadata)
 
-    Thread.sleep(5)
 
-    val modificationDate = LocalDateTime.now()
+    val modificationDate = LocalDateTime.now().minusSeconds(2)
 
     val updated = with(created) {
       copy(
@@ -139,8 +134,6 @@ class SeriesMetadataDaoTest(
 
     seriesMetadataDao.update(updated)
     val modified = seriesMetadataDao.findById(updated.seriesId)
-
-    Thread.sleep(5)
 
     assertThat(modified.seriesId).isEqualTo(series.id)
     assertThat(modified.createdDate).isEqualTo(updated.createdDate)

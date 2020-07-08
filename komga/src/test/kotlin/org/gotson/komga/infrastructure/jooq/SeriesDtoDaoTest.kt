@@ -13,7 +13,6 @@ import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
-import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
@@ -23,18 +22,15 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class SeriesDtoDaoTest(
   @Autowired private val seriesDtoDao: SeriesDtoDao,
   @Autowired private val bookRepository: BookRepository,
-  @Autowired private val bookLifecycle: BookLifecycle,
   @Autowired private val seriesRepository: SeriesRepository,
   @Autowired private val seriesLifecycle: SeriesLifecycle,
   @Autowired private val libraryRepository: LibraryRepository,
@@ -50,7 +46,7 @@ class SeriesDtoDaoTest(
   @BeforeAll
   fun setup() {
     library = libraryRepository.insert(library)
-    user = userRepository.save(user)
+    user = userRepository.insert(user)
   }
 
   @AfterEach
