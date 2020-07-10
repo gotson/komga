@@ -12,4 +12,5 @@ interface BookMetadataRepository {
   fun update(metadata: BookMetadata)
 
   fun delete(bookId: Long)
+  fun deleteByBookIds(bookIds: Collection<Long>)
 }

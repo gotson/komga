@@ -71,6 +71,12 @@ class BookDao(
       .where(b.SERIES_ID.eq(seriesId))
       .fetch(0, Long::class.java)
 
+  override fun findAllIdBySeriesIds(seriesIds: Collection<Long>): Collection<Long> =
+    dsl.select(b.ID)
+      .from(b)
+      .where(b.SERIES_ID.`in`(seriesIds))
+      .fetch(0, Long::class.java)
+
   override fun findAllIdByLibraryId(libraryId: Long): Collection<Long> =
     dsl.select(b.ID)
       .from(b)
@@ -127,7 +133,7 @@ class BookDao(
     }
   }
 
-  override fun deleteAll(bookIds: List<Long>) {
+  override fun deleteByBookIds(bookIds: Collection<Long>) {
     dsl.transaction { config ->
       with(config.dsl())
       {

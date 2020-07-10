@@ -21,9 +21,9 @@ logging:
     name: komga-dev.log
   level:
     org.apache.activemq.audit.message: WARN
-    org.jooq: DEBUG
+#    org.jooq: DEBUG
 #    web: DEBUG
-    org.gotson.komga: DEBUG
+#    org.gotson.komga: DEBUG
 #    org.springframework.jms: DEBUG
 #    org.springframework.security.web.FilterChainProxy: DEBUG
 

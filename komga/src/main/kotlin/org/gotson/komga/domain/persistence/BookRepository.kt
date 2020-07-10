@@ -12,6 +12,7 @@ interface BookRepository {
   fun getLibraryId(bookId: Long): Long?
   fun findFirstIdInSeries(seriesId: Long): Long?
   fun findAllIdBySeriesId(seriesId: Long): Collection<Long>
+  fun findAllIdBySeriesIds(seriesIds: Collection<Long>): Collection<Long>
   fun findAllIdByLibraryId(libraryId: Long): Collection<Long>
   fun findAllId(bookSearch: BookSearch): Collection<Long>
 
@@ -19,7 +20,7 @@ interface BookRepository {
   fun update(book: Book)
 
   fun delete(bookId: Long)
-  fun deleteAll(bookIds: List<Long>)
+  fun deleteByBookIds(bookIds: Collection<Long>)
   fun deleteAll()
 
   fun count(): Long

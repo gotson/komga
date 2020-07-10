@@ -128,6 +128,17 @@ class MediaDao(
     }
   }
 
+  override fun deleteByBookIds(bookIds: Collection<Long>) {
+    dsl.transaction { config ->
+      with(config.dsl())
+      {
+        deleteFrom(p).where(p.BOOK_ID.`in`(bookIds)).execute()
+        deleteFrom(f).where(f.BOOK_ID.`in`(bookIds)).execute()
+        deleteFrom(m).where(m.BOOK_ID.`in`(bookIds)).execute()
+      }
+    }
+  }
+
   private fun MediaRecord.toDomain(pages: List<BookPage>, files: List<String>) =
     Media(
       status = Media.Status.valueOf(status),

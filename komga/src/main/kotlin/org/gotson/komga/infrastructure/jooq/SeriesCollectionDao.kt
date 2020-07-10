@@ -190,6 +190,12 @@ class SeriesCollectionDao(
       .execute()
   }
 
+  override fun removeSeriesFromAll(seriesIds: Collection<Long>) {
+    dsl.deleteFrom(cs)
+      .where(cs.SERIES_ID.`in`(seriesIds))
+      .execute()
+  }
+
   override fun delete(collectionId: Long) {
     dsl.transaction { config ->
       with(config.dsl())

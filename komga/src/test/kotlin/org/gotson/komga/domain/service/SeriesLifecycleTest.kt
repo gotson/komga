@@ -42,9 +42,7 @@ class SeriesLifecycleTest(
 
   @AfterEach
   fun `clear repository`() {
-    seriesRepository.findAll().forEach {
-      seriesLifecycle.deleteSeries(it.id)
-    }
+    seriesLifecycle.deleteMany(seriesRepository.findAll().map { it.id })
   }
 
   @Test
@@ -90,7 +88,7 @@ class SeriesLifecycleTest(
 
     // when
     val book = bookRepository.findBySeriesId(createdSeries.id).first { it.name == "book 2" }
-    bookLifecycle.delete(book.id)
+    bookLifecycle.deleteOne(book.id)
     seriesLifecycle.sortBooks(createdSeries)
 
     // then

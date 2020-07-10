@@ -70,9 +70,8 @@ class LibraryLifecycle(
   fun deleteLibrary(library: Library) {
     logger.info { "Deleting library: $library" }
 
-    seriesRepository.findByLibraryId(library.id).forEach {
-      seriesLifecycle.deleteSeries(it.id)
-    }
+    val seriesIds = seriesRepository.findByLibraryId(library.id).map { it.id }
+    seriesLifecycle.deleteMany(seriesIds)
 
     libraryRepository.delete(library.id)
   }

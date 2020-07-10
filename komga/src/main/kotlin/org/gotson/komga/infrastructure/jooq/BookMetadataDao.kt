@@ -134,6 +134,16 @@ class BookMetadataDao(
     }
   }
 
+  override fun deleteByBookIds(bookIds: Collection<Long>) {
+    dsl.transaction { config ->
+      with(config.dsl())
+      {
+        deleteFrom(a).where(a.BOOK_ID.`in`(bookIds)).execute()
+        deleteFrom(d).where(d.BOOK_ID.`in`(bookIds)).execute()
+      }
+    }
+  }
+
   private fun BookMetadataRecord.toDomain(authors: Collection<Author>) =
     BookMetadata(
       title = title,

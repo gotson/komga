@@ -15,7 +15,7 @@ import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.springframework.stereotype.Service
-import java.util.Comparator
+import java.util.*
 
 private val logger = KotlinLogging.logger {}
 private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
@@ -85,15 +85,25 @@ class SeriesLifecycle(
     return createdSeries
   }
 
-  fun deleteSeries(seriesId: Long) {
+  fun deleteOne(seriesId: Long) {
     logger.info { "Delete series id: $seriesId" }
 
-    bookRepository.findBySeriesId(seriesId).forEach {
-      bookLifecycle.delete(it.id)
-    }
+    val bookIds = bookRepository.findAllIdBySeriesId(seriesId)
+    bookLifecycle.deleteMany(bookIds)
 
     collectionRepository.removeSeriesFromAll(seriesId)
 
     seriesRepository.delete(seriesId)
+  }
+
+  fun deleteMany(seriesIds: Collection<Long>) {
+    logger.info { "Delete series ids: $seriesIds" }
+
+    val bookIds = bookRepository.findAllIdBySeriesIds(seriesIds)
+    bookLifecycle.deleteMany(bookIds)
+
+    collectionRepository.removeSeriesFromAll(seriesIds)
+
+    seriesRepository.deleteAll(seriesIds)
   }
 }

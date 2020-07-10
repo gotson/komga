@@ -104,7 +104,7 @@ class BookLifecycle(
     }
   }
 
-  fun delete(bookId: Long) {
+  fun deleteOne(bookId: Long) {
     logger.info { "Delete book id: $bookId" }
 
     readProgressRepository.deleteByBookId(bookId)
@@ -112,6 +112,16 @@ class BookLifecycle(
     bookMetadataRepository.delete(bookId)
 
     bookRepository.delete(bookId)
+  }
+
+  fun deleteMany(bookIds: Collection<Long>) {
+    logger.info { "Delete all books: $bookIds" }
+
+    readProgressRepository.deleteByBookIds(bookIds)
+    mediaRepository.deleteByBookIds(bookIds)
+    bookMetadataRepository.deleteByBookIds(bookIds)
+
+    bookRepository.deleteByBookIds(bookIds)
   }
 
   fun markReadProgress(book: Book, user: KomgaUser, page: Int) {

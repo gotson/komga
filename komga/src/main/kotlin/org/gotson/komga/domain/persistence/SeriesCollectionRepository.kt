@@ -32,9 +32,10 @@ interface SeriesCollectionRepository {
   fun update(collection: SeriesCollection)
 
   fun removeSeriesFromAll(seriesId: Long)
+  fun removeSeriesFromAll(seriesIds: Collection<Long>)
 
   fun delete(collectionId: Long)
-  fun deleteAll()
 
+  fun deleteAll()
   fun existsByName(name: String): Boolean
 }
