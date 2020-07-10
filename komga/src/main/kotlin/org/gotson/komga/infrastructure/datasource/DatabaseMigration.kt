@@ -64,17 +64,15 @@ class DatabaseMigration(
       logger.info { "Initiating database migration from H2 to SQLite" }
 
       logger.info { "H2 url: $h2Url" }
-      val h2Filename =
-        extractH2Path(h2Url)
-          ?.plus(".mv.db")
-          ?.replaceFirst(Regex("^~"), System.getProperty("user.home"))
+      var h2Filename = extractH2Path(h2Url)?.plus(".mv.db")
       if (h2Filename == null) {
         logger.warn { "The H2 URL ($h2Url) does not refer to a file database, skipping migration" }
         return
       }
 
+      val h2Path = convertHomeDir(h2Filename)
+      h2Filename = h2Path.toString()
       logger.info { "H2 database file: $h2Filename" }
-      val h2Path = Paths.get(h2Filename)
 
       if (Files.notExists(h2Path)) {
         logger.warn { "The H2 database file does not exists: $h2Path, skipping migration" }
@@ -92,7 +90,7 @@ class DatabaseMigration(
       // make sure H2 database is at the latest migration
       flywayMigrateH2()
 
-      sqlitePath = Paths.get(komgaProperties.database.file.replaceFirst(Regex("^~"), System.getProperty("user.home")))
+      sqlitePath = convertHomeDir(komgaProperties.database.file)
       // flyway Migrate must perform exactly one migration (target of one)
       // if it performs 0, the database has already been migrated and probably has data in it
       // it should never perform more than one with a target of 1 migration
@@ -237,4 +235,13 @@ fun extractH2Path(url: String): String? {
   if (!url.startsWith("jdbc:h2:")) return null
   if (excludeH2Url.any { url.contains(it, ignoreCase = true) }) return null
   return url.split(":").last().split(";").first()
+}
+
+fun convertHomeDir(path: String): Path {
+  val aPath = Paths.get(path)
+  val components = aPath.toList()
+
+  return if (components.first().toString() == "~") {
+    Paths.get(System.getProperty("user.home"), *components.drop(1).map { it.toString() }.toTypedArray())
+  } else aPath
 }
