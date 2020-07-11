@@ -18,11 +18,13 @@ class DataSourcesConfiguration(
   @Bean("sqliteDataSource")
   @Primary
   fun sqliteDataSource(): DataSource =
-    DataSourceBuilder.create()
+    (DataSourceBuilder.create()
       .apply {
         driverClassName("org.sqlite.JDBC")
-        url("jdbc:sqlite:${komgaProperties.database.file}")
-      }.build()
+        url("jdbc:sqlite:${komgaProperties.database.file}?foreign_keys=on;")
+      }.type(HikariDataSource::class.java)
+      .build() as HikariDataSource)
+      .apply { maximumPoolSize = 1 }
 
   @Bean
   @Primary

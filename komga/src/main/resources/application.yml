@@ -6,6 +6,7 @@ logging:
     name: \${user.home}/.komga/komga.log
   level:
     org.apache.activemq.audit.message: WARN
+    com.zaxxer.hikari: DEBUG
 
 komga:
   libraries-scan-cron: "0 */15 * * * ?"
