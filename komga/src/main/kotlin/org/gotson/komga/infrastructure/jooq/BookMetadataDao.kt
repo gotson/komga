@@ -22,16 +22,19 @@ class BookMetadataDao(
   private val groupFields = arrayOf(*d.fields(), *a.fields())
 
   override fun findById(bookId: Long): BookMetadata =
-    findOne(bookId).first()
+    find(dsl, listOf(bookId)).first()
 
   override fun findByIdOrNull(bookId: Long): BookMetadata? =
-    findOne(bookId).firstOrNull()
+    find(dsl, listOf(bookId)).firstOrNull()
 
-  private fun findOne(bookId: Long) =
+  override fun findByIds(bookIds: Collection<Long>): Collection<BookMetadata> =
+    find(dsl, bookIds)
+
+  private fun find(dsl: DSLContext, bookIds: Collection<Long>) =
     dsl.select(*groupFields)
       .from(d)
       .leftJoin(a).on(d.BOOK_ID.eq(a.BOOK_ID))
-      .where(d.BOOK_ID.eq(bookId))
+      .where(d.BOOK_ID.`in`(bookIds))
       .groupBy(*groupFields)
       .fetchGroups(
         { it.into(d) }, { it.into(a) }
@@ -47,71 +50,83 @@ class BookMetadataDao(
       .fetch(a.NAME)
   }
 
-  override fun insert(metadata: BookMetadata): BookMetadata {
-    dsl.transaction { config ->
-      with(config.dsl())
-      {
-        insertInto(d)
-          .set(d.BOOK_ID, metadata.bookId)
-          .set(d.TITLE, metadata.title)
-          .set(d.TITLE_LOCK, metadata.titleLock)
-          .set(d.SUMMARY, metadata.summary)
-          .set(d.SUMMARY_LOCK, metadata.summaryLock)
-          .set(d.NUMBER, metadata.number)
-          .set(d.NUMBER_LOCK, metadata.numberLock)
-          .set(d.NUMBER_SORT, metadata.numberSort)
-          .set(d.NUMBER_SORT_LOCK, metadata.numberSortLock)
-          .set(d.READING_DIRECTION, metadata.readingDirection?.toString())
-          .set(d.READING_DIRECTION_LOCK, metadata.readingDirectionLock)
-          .set(d.PUBLISHER, metadata.publisher)
-          .set(d.PUBLISHER_LOCK, metadata.publisherLock)
-          .set(d.AGE_RATING, metadata.ageRating)
-          .set(d.AGE_RATING_LOCK, metadata.ageRatingLock)
-          .set(d.RELEASE_DATE, metadata.releaseDate)
-          .set(d.RELEASE_DATE_LOCK, metadata.releaseDateLock)
-          .set(d.AUTHORS_LOCK, metadata.authorsLock)
-          .execute()
-
-        insertAuthors(this, metadata)
-      }
+  override fun insert(metadata: BookMetadata): BookMetadata =
+    dsl.transactionResult { config ->
+      insertMetadata(config.dsl(), metadata)
     }
 
-    return findById(metadata.bookId)
+  override fun insertMany(metadatas: Collection<BookMetadata>): Collection<BookMetadata> =
+    dsl.transactionResult { config ->
+      metadatas.map { insertMetadata(config.dsl(), it) }
+    }
+
+  private fun insertMetadata(dsl: DSLContext, metadata: BookMetadata): BookMetadata {
+    dsl.insertInto(d)
+      .set(d.BOOK_ID, metadata.bookId)
+      .set(d.TITLE, metadata.title)
+      .set(d.TITLE_LOCK, metadata.titleLock)
+      .set(d.SUMMARY, metadata.summary)
+      .set(d.SUMMARY_LOCK, metadata.summaryLock)
+      .set(d.NUMBER, metadata.number)
+      .set(d.NUMBER_LOCK, metadata.numberLock)
+      .set(d.NUMBER_SORT, metadata.numberSort)
+      .set(d.NUMBER_SORT_LOCK, metadata.numberSortLock)
+      .set(d.READING_DIRECTION, metadata.readingDirection?.toString())
+      .set(d.READING_DIRECTION_LOCK, metadata.readingDirectionLock)
+      .set(d.PUBLISHER, metadata.publisher)
+      .set(d.PUBLISHER_LOCK, metadata.publisherLock)
+      .set(d.AGE_RATING, metadata.ageRating)
+      .set(d.AGE_RATING_LOCK, metadata.ageRatingLock)
+      .set(d.RELEASE_DATE, metadata.releaseDate)
+      .set(d.RELEASE_DATE_LOCK, metadata.releaseDateLock)
+      .set(d.AUTHORS_LOCK, metadata.authorsLock)
+      .execute()
+
+    insertAuthors(dsl, metadata)
+
+    return find(dsl, listOf(metadata.bookId)).first()
   }
 
   override fun update(metadata: BookMetadata) {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
-        update(d)
-          .set(d.TITLE, metadata.title)
-          .set(d.TITLE_LOCK, metadata.titleLock)
-          .set(d.SUMMARY, metadata.summary)
-          .set(d.SUMMARY_LOCK, metadata.summaryLock)
-          .set(d.NUMBER, metadata.number)
-          .set(d.NUMBER_LOCK, metadata.numberLock)
-          .set(d.NUMBER_SORT, metadata.numberSort)
-          .set(d.NUMBER_SORT_LOCK, metadata.numberSortLock)
-          .set(d.READING_DIRECTION, metadata.readingDirection?.toString())
-          .set(d.READING_DIRECTION_LOCK, metadata.readingDirectionLock)
-          .set(d.PUBLISHER, metadata.publisher)
-          .set(d.PUBLISHER_LOCK, metadata.publisherLock)
-          .set(d.AGE_RATING, metadata.ageRating)
-          .set(d.AGE_RATING_LOCK, metadata.ageRatingLock)
-          .set(d.RELEASE_DATE, metadata.releaseDate)
-          .set(d.RELEASE_DATE_LOCK, metadata.releaseDateLock)
-          .set(d.AUTHORS_LOCK, metadata.authorsLock)
-          .set(d.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
-          .where(d.BOOK_ID.eq(metadata.bookId))
-          .execute()
-
-        deleteFrom(a)
-          .where(a.BOOK_ID.eq(metadata.bookId))
-          .execute()
-
-        insertAuthors(this, metadata)
-      }
+      updateMetadata(config.dsl(), metadata)
     }
+  }
+
+  override fun updateMany(metadatas: Collection<BookMetadata>) {
+    dsl.transaction { config ->
+      metadatas.forEach { updateMetadata(config.dsl(), it) }
+    }
+  }
+
+  private fun updateMetadata(dsl: DSLContext, metadata: BookMetadata) {
+    dsl.update(d)
+      .set(d.TITLE, metadata.title)
+      .set(d.TITLE_LOCK, metadata.titleLock)
+      .set(d.SUMMARY, metadata.summary)
+      .set(d.SUMMARY_LOCK, metadata.summaryLock)
+      .set(d.NUMBER, metadata.number)
+      .set(d.NUMBER_LOCK, metadata.numberLock)
+      .set(d.NUMBER_SORT, metadata.numberSort)
+      .set(d.NUMBER_SORT_LOCK, metadata.numberSortLock)
+      .set(d.READING_DIRECTION, metadata.readingDirection?.toString())
+      .set(d.READING_DIRECTION_LOCK, metadata.readingDirectionLock)
+      .set(d.PUBLISHER, metadata.publisher)
+      .set(d.PUBLISHER_LOCK, metadata.publisherLock)
+      .set(d.AGE_RATING, metadata.ageRating)
+      .set(d.AGE_RATING_LOCK, metadata.ageRatingLock)
+      .set(d.RELEASE_DATE, metadata.releaseDate)
+      .set(d.RELEASE_DATE_LOCK, metadata.releaseDateLock)
+      .set(d.AUTHORS_LOCK, metadata.authorsLock)
+      .set(d.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
+      .where(d.BOOK_ID.eq(metadata.bookId))
+      .execute()
+
+    dsl.deleteFrom(a)
+      .where(a.BOOK_ID.eq(metadata.bookId))
+      .execute()
+
+    insertAuthors(dsl, metadata)
   }
 
   private fun insertAuthors(dsl: DSLContext, metadata: BookMetadata) {
@@ -126,8 +141,7 @@ class BookMetadataDao(
 
   override fun delete(bookId: Long) {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         deleteFrom(a).where(a.BOOK_ID.eq(bookId)).execute()
         deleteFrom(d).where(d.BOOK_ID.eq(bookId)).execute()
       }
@@ -136,8 +150,7 @@ class BookMetadataDao(
 
   override fun deleteByBookIds(bookIds: Collection<Long>) {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         deleteFrom(a).where(a.BOOK_ID.`in`(bookIds)).execute()
         deleteFrom(d).where(d.BOOK_ID.`in`(bookIds)).execute()
       }

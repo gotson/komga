@@ -17,7 +17,9 @@ interface BookRepository {
   fun findAllId(bookSearch: BookSearch): Collection<Long>
 
   fun insert(book: Book): Book
+  fun insertMany(books: Collection<Book>): Collection<Book>
   fun update(book: Book)
+  fun updateMany(books: Collection<Book>)
 
   fun delete(bookId: Long)
   fun deleteByBookIds(bookIds: Collection<Long>)

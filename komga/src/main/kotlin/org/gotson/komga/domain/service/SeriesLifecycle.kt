@@ -33,21 +33,23 @@ class SeriesLifecycle(
 
   fun sortBooks(series: Series) {
     val books = bookRepository.findBySeriesId(series.id)
+    val metadatas = bookMetadataRepository.findByIds(books.map { it.id })
 
-    val sorted = books.sortedWith(compareBy(natSortComparator) { it.name })
-    sorted.forEachIndexed { index, book ->
-      val number = index + 1
-      bookRepository.update(book.copy(number = number))
+    val sorted = books
+      .sortedWith(compareBy(natSortComparator) { it.name })
+      .map { book -> book to metadatas.first { it.bookId == book.id } }
 
-      bookMetadataRepository.findById(book.id).let { metadata ->
-        val renumbered = metadata.copy(
-          number = if (!metadata.numberLock) number.toString() else metadata.number,
-          numberSort = if (!metadata.numberSortLock) number.toFloat() else metadata.numberSort
-        )
-        if (!metadata.numberLock || !metadata.numberSortLock)
-          bookMetadataRepository.update(renumbered)
-      }
-    }
+    bookRepository.updateMany(
+      sorted.mapIndexed { index, (book, _) -> book.copy(number = index + 1) }
+    )
+
+    sorted.mapIndexedNotNull { index, (_, metadata) ->
+      if (metadata.numberLock && metadata.numberSortLock) null
+      else metadata.copy(
+        number = if (!metadata.numberLock) (index + 1).toString() else metadata.number,
+        numberSort = if (!metadata.numberSortLock) (index + 1).toFloat() else metadata.numberSort
+      )
+    }.let { bookMetadataRepository.updateMany(it) }
   }
 
   fun addBooks(series: Series, booksToAdd: Collection<Book>) {
@@ -55,20 +57,22 @@ class SeriesLifecycle(
       check(it.libraryId == series.libraryId) { "Cannot add book to series if they don't share the same libraryId" }
     }
 
-    booksToAdd.forEach { book ->
-      val createdBook = bookRepository.insert(book.copy(seriesId = series.id))
+    val createdBooks = bookRepository.insertMany(
+      booksToAdd.map { it.copy(seriesId = series.id) }
+    )
 
-      // create associated media
-      mediaRepository.insert(Media(bookId = createdBook.id))
+    // create associated media
+    mediaRepository.insertMany(createdBooks.map { Media(bookId = it.id) })
 
-      // create associated metadata
-      bookMetadataRepository.insert(BookMetadata(
-        title = createdBook.name,
-        number = createdBook.number.toString(),
-        numberSort = createdBook.number.toFloat(),
-        bookId = createdBook.id
-      ))
-    }
+    // create associated metadata
+    createdBooks.map {
+      BookMetadata(
+        title = it.name,
+        number = it.number.toString(),
+        numberSort = it.number.toFloat(),
+        bookId = it.id
+      )
+    }.let { bookMetadataRepository.insertMany(it) }
   }
 
   fun createSeries(series: Series): Series {

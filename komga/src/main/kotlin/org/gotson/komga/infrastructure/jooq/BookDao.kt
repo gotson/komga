@@ -23,6 +23,9 @@ class BookDao(
   private val d = Tables.BOOK_METADATA
 
   override fun findByIdOrNull(bookId: Long): Book? =
+    findByIdOrNull(dsl, bookId)
+
+  private fun findByIdOrNull(dsl: DSLContext, bookId: Long): Book? =
     dsl.selectFrom(b)
       .where(b.ID.eq(bookId))
       .fetchOneInto(b)
@@ -95,7 +98,15 @@ class BookDao(
   }
 
 
-  override fun insert(book: Book): Book {
+  override fun insert(book: Book): Book =
+    insert(dsl, book)
+
+  override fun insertMany(books: Collection<Book>): Collection<Book> =
+    dsl.transactionResult { config ->
+      books.map { insert(config.dsl(), it) }
+    }
+
+  private fun insert(dsl: DSLContext, book: Book): Book {
     val record = dsl.insertInto(b)
       .set(b.NAME, book.name)
       .set(b.URL, book.url.toString())
@@ -107,10 +118,20 @@ class BookDao(
       .returning(b.ID)
       .fetchOne()
 
-    return findByIdOrNull(record.id)!!
+    return findByIdOrNull(dsl, record.id)!!
   }
 
   override fun update(book: Book) {
+    update(dsl, book)
+  }
+
+  override fun updateMany(books: Collection<Book>) {
+    dsl.transaction { config ->
+      books.map { update(config.dsl(), it) }
+    }
+  }
+
+  private fun update(dsl: DSLContext, book: Book) {
     dsl.update(b)
       .set(b.NAME, book.name)
       .set(b.URL, book.url.toString())
@@ -126,8 +147,7 @@ class BookDao(
 
   override fun delete(bookId: Long) {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         deleteFrom(b).where(b.ID.eq(bookId)).execute()
       }
     }
@@ -135,8 +155,7 @@ class BookDao(
 
   override fun deleteByBookIds(bookIds: Collection<Long>) {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         deleteFrom(b).where(b.ID.`in`(bookIds)).execute()
       }
     }
@@ -144,8 +163,7 @@ class BookDao(
 
   override fun deleteAll() {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         deleteFrom(b).execute()
       }
     }

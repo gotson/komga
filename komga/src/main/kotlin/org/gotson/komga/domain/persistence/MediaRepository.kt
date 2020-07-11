@@ -8,6 +8,7 @@ interface MediaRepository {
   fun getThumbnail(bookId: Long): ByteArray?
 
   fun insert(media: Media): Media
+  fun insertMany(medias: Collection<Media>): Collection<Media>
   fun update(media: Media)
 
   fun delete(bookId: Long)

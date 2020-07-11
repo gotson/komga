@@ -23,6 +23,9 @@ class MediaDao(
   private val groupFields = arrayOf(*m.fields(), *p.fields())
 
   override fun findById(bookId: Long): Media =
+    find(dsl, bookId)
+
+  private fun find(dsl: DSLContext, bookId: Long): Media =
     dsl.select(*groupFields)
       .from(m)
       .leftJoin(p).on(m.BOOK_ID.eq(p.BOOK_ID))
@@ -40,7 +43,6 @@ class MediaDao(
         mr.toDomain(pr.filterNot { it.bookId == null }.map { it.toDomain() }, files)
       }.first()
 
-
   override fun getThumbnail(bookId: Long): ByteArray? =
     dsl.select(m.THUMBNAIL)
       .from(m)
@@ -48,25 +50,30 @@ class MediaDao(
       .fetchOne(0, ByteArray::class.java)
 
 
-  override fun insert(media: Media): Media {
-    dsl.transaction { config ->
-      with(config.dsl())
-      {
-        insertInto(m)
-          .set(m.BOOK_ID, media.bookId)
-          .set(m.STATUS, media.status.toString())
-          .set(m.MEDIA_TYPE, media.mediaType)
-          .set(m.THUMBNAIL, media.thumbnail)
-          .set(m.COMMENT, media.comment)
-          .set(m.PAGE_COUNT, media.pages.size)
-          .execute()
-
-        insertPages(this, media)
-        insertFiles(this, media)
-      }
+  override fun insert(media: Media): Media =
+    dsl.transactionResult { config ->
+      insertMedia(config.dsl(), media)
     }
 
-    return findById(media.bookId)
+  override fun insertMany(medias: Collection<Media>): Collection<Media> =
+    dsl.transactionResult { config ->
+      medias.map { insertMedia(config.dsl(), it) }
+    }
+
+  private fun insertMedia(dsl: DSLContext, media: Media): Media {
+    dsl.insertInto(m)
+      .set(m.BOOK_ID, media.bookId)
+      .set(m.STATUS, media.status.toString())
+      .set(m.MEDIA_TYPE, media.mediaType)
+      .set(m.THUMBNAIL, media.thumbnail)
+      .set(m.COMMENT, media.comment)
+      .set(m.PAGE_COUNT, media.pages.size)
+      .execute()
+
+    insertPages(dsl, media)
+    insertFiles(dsl, media)
+
+    return find(dsl, media.bookId)
   }
 
   private fun insertPages(dsl: DSLContext, media: Media) {
