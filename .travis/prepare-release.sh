@@ -2,6 +2,7 @@
 
 # Update version for Gradle
 echo version=$1 >gradle.properties
+echo $2
 
 # Build jar
 ./gradlew copyWebDist
