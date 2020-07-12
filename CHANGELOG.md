@@ -1,3 +1,20 @@
+# [0.46.0-beta.1](https://github.com/gotson/komga/compare/v0.45.2...v0.46.0-beta.1) (2020-07-12)
+
+
+### Bug Fixes
+
+* error on author primary key ([b8b5136](https://github.com/gotson/komga/commit/b8b513692341d2492663b80213802906126ec531))
+* resolve user home on windows ([1f4cf2e](https://github.com/gotson/komga/commit/1f4cf2eeb9f3935e1270011bdea486504b06308d))
+* set max connection pool to 1 ([0c89e90](https://github.com/gotson/komga/commit/0c89e90dd78e2cf3208cfbf08d299197ab1a85cc))
+* speedup deletes with bulk operations ([92b8a20](https://github.com/gotson/komga/commit/92b8a20dac66982d48ea5aa952a21a0d3da01ad9))
+* speedup series creation/update with bulk operations ([cc43dd6](https://github.com/gotson/komga/commit/cc43dd65a5633cd8b7e027b3ad825b4ec941b8a0))
+
+
+### Features
+
+* change database from H2 to SQLite ([75c1c0b](https://github.com/gotson/komga/commit/75c1c0babb9d61aab6baf6684cc02301d43c7c74)), closes [#218](https://github.com/gotson/komga/issues/218)
+* change database from H2 to SQLite ([80f0a03](https://github.com/gotson/komga/commit/80f0a030628ab7784bc3074e90decdc051c4c63f)), closes [#218](https://github.com/gotson/komga/issues/218)
+
 ## [0.45.2](https://github.com/gotson/komga/compare/v0.45.1...v0.45.2) (2020-07-05)
 
 
