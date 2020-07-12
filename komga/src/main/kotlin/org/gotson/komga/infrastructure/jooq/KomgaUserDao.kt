@@ -94,6 +94,7 @@ class KomgaUserDao(
           .set(u.ROLE_PAGE_STREAMING, user.rolePageStreaming)
           .set(u.SHARED_ALL_LIBRARIES, user.sharedAllLibraries)
           .set(u.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
+          .where(u.ID.eq(user.id))
           .execute()
 
         deleteFrom(ul)
