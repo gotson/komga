@@ -5,14 +5,14 @@ import org.gotson.komga.domain.model.BookSearch
 
 interface BookRepository {
   fun findByIdOrNull(bookId: String): Book?
-  fun findBySeriesId(seriesId: Long): Collection<Book>
+  fun findBySeriesId(seriesId: String): Collection<Book>
   fun findAll(): Collection<Book>
   fun findAll(bookSearch: BookSearch): Collection<Book>
 
   fun getLibraryId(bookId: String): String?
-  fun findFirstIdInSeries(seriesId: Long): String?
-  fun findAllIdBySeriesId(seriesId: Long): Collection<String>
-  fun findAllIdBySeriesIds(seriesIds: Collection<Long>): Collection<String>
+  fun findFirstIdInSeries(seriesId: String): String?
+  fun findAllIdBySeriesId(seriesId: String): Collection<String>
+  fun findAllIdBySeriesIds(seriesIds: Collection<String>): Collection<String>
   fun findAllIdByLibraryId(libraryId: String): Collection<String>
   fun findAllId(bookSearch: BookSearch): Collection<String>
 

@@ -9,7 +9,7 @@ data class CollectionDto(
   val name: String,
   val ordered: Boolean,
 
-  val seriesIds: List<Long>,
+  val seriesIds: List<String>,
 
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val createdDate: LocalDateTime,

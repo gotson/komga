@@ -52,7 +52,8 @@ class SeriesDaoTest(
       libraryId = library.id
     )
 
-    val created = seriesDao.insert(series)
+    seriesDao.insert(series)
+    val created = seriesDao.findByIdOrNull(series.id)!!
 
     assertThat(created.id).isNotEqualTo(0)
     assertThat(created.createdDate).isCloseTo(now, offset)
@@ -71,10 +72,10 @@ class SeriesDaoTest(
       libraryId = library.id
     )
 
-    val created = seriesDao.insert(series)
+    seriesDao.insert(series)
     assertThat(seriesDao.count()).isEqualTo(1)
 
-    seriesDao.delete(created.id)
+    seriesDao.delete(series.id)
 
     assertThat(seriesDao.count()).isEqualTo(0)
   }
@@ -140,9 +141,9 @@ class SeriesDaoTest(
       libraryId = library.id
     )
 
-    val created = seriesDao.insert(series)
+    seriesDao.insert(series)
 
-    val found = seriesDao.findByIdOrNull(created.id)
+    val found = seriesDao.findByIdOrNull(series.id)
 
     assertThat(found).isNotNull
     assertThat(found?.name).isEqualTo("Series")
@@ -150,7 +151,7 @@ class SeriesDaoTest(
 
   @Test
   fun `given non-existing series when finding by id then null is returned`() {
-    val found = seriesDao.findByIdOrNull(1287746)
+    val found = seriesDao.findByIdOrNull("1287746")
 
     assertThat(found).isNull()
   }

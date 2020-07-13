@@ -98,7 +98,7 @@ class SeriesCollectionController(
     @PathVariable id: Long
   ): ResponseEntity<ByteArray> {
     collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
-      val ids = with(mutableListOf<Long>()) {
+      val ids = with(mutableListOf<String>()) {
         while (size < 4) {
           this += it.seriesIds.take(4)
         }

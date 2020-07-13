@@ -16,7 +16,7 @@ data class Book(
   val number: Int = 0,
 
   val id: String = TsidCreator.getTsidString(),
-  val seriesId: Long = 0,
+  val seriesId: String = "",
   val libraryId: String = "",
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),

@@ -249,7 +249,7 @@ class OpdsController(
   fun getOneSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestHeader(name = HttpHeaders.USER_AGENT, required = false, defaultValue = "") userAgent: String,
-    @PathVariable id: Long
+    @PathVariable id: String
   ): OpdsFeed =
     seriesRepository.findByIdOrNull(id)?.let { series ->
       if (!principal.user.canAccessSeries(series)) throw ResponseStatusException(HttpStatus.FORBIDDEN)

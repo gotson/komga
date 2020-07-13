@@ -95,7 +95,7 @@ const router = new Router({
           path: '/series/:seriesId',
           name: 'browse-series',
           component: () => import(/* webpackChunkName: "browse-series" */ './views/BrowseSeries.vue'),
-          props: (route) => ({ seriesId: Number(route.params.seriesId) }),
+          props: (route) => ({ seriesId: route.params.seriesId }),
         },
         {
           path: '/book/:bookId',

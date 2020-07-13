@@ -48,9 +48,8 @@ class SeriesCollectionDaoTest(
   @Test
   fun `given collection with series when inserting then it is persisted`() {
     // given
-    val series = (1..10)
-      .map { makeSeries("Series $it", library.id) }
-      .map { seriesRepository.insert(it) }
+    val series = (1..10).map { makeSeries("Series $it", library.id) }
+    series.forEach { seriesRepository.insert(it) }
 
     val collection = SeriesCollection(
       name = "MyCollection",
@@ -74,9 +73,8 @@ class SeriesCollectionDaoTest(
   @Test
   fun `given collection with updated series when updating then it is persisted`() {
     // given
-    val series = (1..10)
-      .map { makeSeries("Series $it", library.id) }
-      .map { seriesRepository.insert(it) }
+    val series = (1..10).map { makeSeries("Series $it", library.id) }
+    series.forEach { seriesRepository.insert(it) }
 
     val collection = SeriesCollection(
       name = "MyCollection",
@@ -109,9 +107,8 @@ class SeriesCollectionDaoTest(
   @Test
   fun `given collections with series when removing one series from all then it is removed from all`() {
     // given
-    val series = (1..10)
-      .map { makeSeries("Series $it", library.id) }
-      .map { seriesRepository.insert(it) }
+    val series = (1..10).map { makeSeries("Series $it", library.id) }
+    series.forEach { seriesRepository.insert(it) }
 
     val collection1 = collectionDao.insert(
       SeriesCollection(
@@ -145,8 +142,8 @@ class SeriesCollectionDaoTest(
   @Test
   fun `given collections spanning different libraries when finding by library then only matching collections are returned`() {
     // given
-    val seriesLibrary1 = seriesRepository.insert(makeSeries("Series1", library.id))
-    val seriesLibrary2 = seriesRepository.insert(makeSeries("Series2", library2.id))
+    val seriesLibrary1 = makeSeries("Series1", library.id).also { seriesRepository.insert(it) }
+    val seriesLibrary2 = makeSeries("Series2", library2.id).also { seriesRepository.insert(it) }
 
     collectionDao.insert(SeriesCollection(
       name = "collectionLibrary1",

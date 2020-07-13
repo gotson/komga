@@ -86,7 +86,7 @@ class SeriesDtoDao(
     return findAll(conditions, having, userId, pageable)
   }
 
-  override fun findByIdOrNull(seriesId: Long, userId: String): SeriesDto? =
+  override fun findByIdOrNull(seriesId: String, userId: String): SeriesDto? =
     selectBase(userId)
       .where(s.ID.eq(seriesId))
       .groupBy(*groupFields)

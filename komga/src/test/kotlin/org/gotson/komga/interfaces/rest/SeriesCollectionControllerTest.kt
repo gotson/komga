@@ -180,7 +180,7 @@ class SeriesCollectionControllerTest(
     @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given admin user when creating collection then return ok`() {
       val jsonString = """
-        {"name":"collection","ordered":false,"seriesIds":[${seriesLibrary1.first().id}]}
+        {"name":"collection","ordered":false,"seriesIds":["${seriesLibrary1.first().id}"]}
       """.trimIndent()
 
       mockMvc.post("/api/v1/collections") {
@@ -252,7 +252,7 @@ class SeriesCollectionControllerTest(
       makeCollections()
 
       val jsonString = """
-        {"name":"updated","ordered":true,"seriesIds":[${seriesLibrary1.first().id}]}
+        {"name":"updated","ordered":true,"seriesIds":["${seriesLibrary1.first().id}"]}
       """.trimIndent()
 
       mockMvc.patch("/api/v1/collections/${colLib1.id}") {
@@ -337,7 +337,7 @@ class SeriesCollectionControllerTest(
 
       mockMvc.patch("/api/v1/collections/${colLibBoth.id}") {
         contentType = MediaType.APPLICATION_JSON
-        content = """{"seriesIds":[${seriesLibrary1.first().id}]}"""
+        content = """{"seriesIds":["${seriesLibrary1.first().id}"]}"""
       }
 
       mockMvc.get("/api/v1/collections/${colLibBoth.id}")

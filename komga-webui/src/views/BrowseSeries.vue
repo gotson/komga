@@ -204,7 +204,7 @@ export default Vue.extend({
   },
   props: {
     seriesId: {
-      type: Number,
+      type: String,
       required: true,
     },
   },
@@ -253,7 +253,7 @@ export default Vue.extend({
       this.books = []
       this.collections = []
 
-      this.loadSeries(Number(to.params.seriesId))
+      this.loadSeries(to.params.seriesId)
 
       this.setWatches()
     }
@@ -302,7 +302,7 @@ export default Vue.extend({
     reloadBooks (event: EventBookChanged) {
       if (event.seriesId === this.seriesId) this.loadSeries(this.seriesId)
     },
-    async loadSeries (seriesId: number) {
+    async loadSeries (seriesId: string) {
       this.series = await this.$komgaSeries.getOneSeries(seriesId)
       this.collections = await this.$komgaSeries.getCollections(seriesId)
       await this.loadPage(seriesId, this.page, this.sortActive)
@@ -326,7 +326,7 @@ export default Vue.extend({
       }).catch(_ => {
       })
     },
-    async loadPage (seriesId: number, page: number, sort: SortActive) {
+    async loadPage (seriesId: string, page: number, sort: SortActive) {
       const pageRequest = {
         page: page - 1,
         size: this.pageSize,

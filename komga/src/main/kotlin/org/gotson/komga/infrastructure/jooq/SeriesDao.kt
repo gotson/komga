@@ -20,7 +20,6 @@ class SeriesDao(
 
   private val s = Tables.SERIES
   private val d = Tables.SERIES_METADATA
-  private val b = Tables.BOOK
   private val cs = Tables.COLLECTION_SERIES
 
 
@@ -29,7 +28,7 @@ class SeriesDao(
       .fetchInto(s)
       .map { it.toDomain() }
 
-  override fun findByIdOrNull(seriesId: Long): Series? =
+  override fun findByIdOrNull(seriesId: String): Series? =
     dsl.selectFrom(s)
       .where(s.ID.eq(seriesId))
       .fetchOneInto(s)
@@ -54,7 +53,7 @@ class SeriesDao(
       ?.toDomain()
 
 
-  override fun getLibraryId(seriesId: Long): String? =
+  override fun getLibraryId(seriesId: String): String? =
     dsl.select(s.LIBRARY_ID)
       .from(s)
       .where(s.ID.eq(seriesId))
@@ -74,16 +73,14 @@ class SeriesDao(
   }
 
 
-  override fun insert(series: Series): Series {
-    val record = dsl.insertInto(s)
+  override fun insert(series: Series) {
+    dsl.insertInto(s)
+      .set(s.ID, series.id)
       .set(s.NAME, series.name)
       .set(s.URL, series.url.toString())
       .set(s.FILE_LAST_MODIFIED, series.fileLastModified)
       .set(s.LIBRARY_ID, series.libraryId)
-      .returning(s.ID)
-      .fetchOne()
-
-    return findByIdOrNull(record.id)!!
+      .execute()
   }
 
   override fun update(series: Series) {
@@ -97,7 +94,7 @@ class SeriesDao(
       .execute()
   }
 
-  override fun delete(seriesId: Long) {
+  override fun delete(seriesId: String) {
     dsl.transaction { config ->
       with(config.dsl())
       {
@@ -117,7 +114,7 @@ class SeriesDao(
     }
   }
 
-  override fun deleteAll(seriesIds: Collection<Long>) {
+  override fun deleteAll(seriesIds: Collection<String>) {
     dsl.transaction { config ->
       with(config.dsl())
       {

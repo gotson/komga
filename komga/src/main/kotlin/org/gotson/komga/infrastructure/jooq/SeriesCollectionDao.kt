@@ -100,7 +100,7 @@ class SeriesCollectionDao(
     )
   }
 
-  override fun findAllBySeries(containsSeriesId: Long, filterOnLibraryIds: Collection<String>?): Collection<SeriesCollection> {
+  override fun findAllBySeries(containsSeriesId: String, filterOnLibraryIds: Collection<String>?): Collection<SeriesCollection> {
     val ids = dsl.select(c.ID)
       .from(c)
       .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
@@ -184,13 +184,13 @@ class SeriesCollectionDao(
     }
   }
 
-  override fun removeSeriesFromAll(seriesId: Long) {
+  override fun removeSeriesFromAll(seriesId: String) {
     dsl.deleteFrom(cs)
       .where(cs.SERIES_ID.eq(seriesId))
       .execute()
   }
 
-  override fun removeSeriesFromAll(seriesIds: Collection<Long>) {
+  override fun removeSeriesFromAll(seriesIds: Collection<String>) {
     dsl.deleteFrom(cs)
       .where(cs.SERIES_ID.`in`(seriesIds))
       .execute()
@@ -223,7 +223,7 @@ class SeriesCollectionDao(
     )
 
 
-  private fun CollectionRecord.toDomain(seriesIds: List<Long>) =
+  private fun CollectionRecord.toDomain(seriesIds: List<String>) =
     SeriesCollection(
       name = name,
       ordered = ordered,

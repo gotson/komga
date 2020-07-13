@@ -117,7 +117,7 @@ export default Vue.extend({
 
   },
   computed: {
-    seriesIds (): number[] {
+    seriesIds (): string[] {
       if (Array.isArray(this.series)) return this.series.map(s => s.id)
       else return [this.series.id]
     },

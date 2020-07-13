@@ -76,20 +76,20 @@ class SeriesLifecycle(
   }
 
   fun createSeries(series: Series): Series {
-    val createdSeries = seriesRepository.insert(series)
+    seriesRepository.insert(series)
 
     seriesMetadataRepository.insert(
       SeriesMetadata(
-        title = createdSeries.name,
-        titleSort = StringUtils.stripAccents(createdSeries.name),
-        seriesId = createdSeries.id
+        title = series.name,
+        titleSort = StringUtils.stripAccents(series.name),
+        seriesId = series.id
       )
     )
 
-    return createdSeries
+    return seriesRepository.findByIdOrNull(series.id)!!
   }
 
-  fun deleteOne(seriesId: Long) {
+  fun deleteOne(seriesId: String) {
     logger.info { "Delete series id: $seriesId" }
 
     val bookIds = bookRepository.findAllIdBySeriesId(seriesId)
@@ -100,7 +100,7 @@ class SeriesLifecycle(
     seriesRepository.delete(seriesId)
   }
 
-  fun deleteMany(seriesIds: Collection<Long>) {
+  fun deleteMany(seriesIds: Collection<String>) {
     logger.info { "Delete series ids: $seriesIds" }
 
     val bookIds = bookRepository.findAllIdBySeriesIds(seriesIds)

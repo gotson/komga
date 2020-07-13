@@ -30,14 +30,14 @@ class MediaDaoTest(
   @Autowired private val libraryRepository: LibraryRepository
 ) {
   private val library = makeLibrary()
-  private var series = makeSeries("Series")
-  private var book = makeBook("Book")
+  private val series = makeSeries("Series")
+  private val book = makeBook("Book")
 
   @BeforeAll
   fun setup() {
     libraryRepository.insert(library)
 
-    series = seriesRepository.insert(series.copy(libraryId = library.id))
+    seriesRepository.insert(series.copy(libraryId = library.id))
 
     bookRepository.insert(book.copy(libraryId = library.id, seriesId = series.id))
   }

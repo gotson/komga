@@ -60,7 +60,7 @@ class TaskReceiver(
     submitTask(Task.RefreshBookMetadata(book.id))
   }
 
-  fun refreshSeriesMetadata(seriesId: Long) {
+  fun refreshSeriesMetadata(seriesId: String) {
     submitTask(Task.RefreshSeriesMetadata(seriesId))
   }
 

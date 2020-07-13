@@ -100,7 +100,7 @@ class DatabaseMigration(
       logger.info { "Stopping all JMS listeners" }
       jmsListenerEndpointRegistry.stop()
 
-      var rows = 0
+      var rows: Int
       measureTime {
         rows = transferH2DataToSqlite()
       }.also {

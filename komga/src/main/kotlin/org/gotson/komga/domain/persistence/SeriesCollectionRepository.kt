@@ -24,15 +24,15 @@ interface SeriesCollectionRepository {
    * Find all SeriesCollection that contains the provided containsSeriesId,
    * optionally with only seriesId filtered by the provided filterOnLibraryIds.
    */
-  fun findAllBySeries(containsSeriesId: Long, filterOnLibraryIds: Collection<String>?): Collection<SeriesCollection>
+  fun findAllBySeries(containsSeriesId: String, filterOnLibraryIds: Collection<String>?): Collection<SeriesCollection>
 
   fun findByNameOrNull(name: String): SeriesCollection?
 
   fun insert(collection: SeriesCollection): SeriesCollection
   fun update(collection: SeriesCollection)
 
-  fun removeSeriesFromAll(seriesId: Long)
-  fun removeSeriesFromAll(seriesIds: Collection<Long>)
+  fun removeSeriesFromAll(seriesId: String)
+  fun removeSeriesFromAll(seriesIds: Collection<String>)
 
   fun delete(collectionId: Long)
 

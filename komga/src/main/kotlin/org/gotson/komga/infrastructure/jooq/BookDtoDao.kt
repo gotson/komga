@@ -109,7 +109,7 @@ class BookDtoDao(
       .and(SeriesDtoDao.countRead.ge(inline(1.toBigDecimal())))
       .and(SeriesDtoDao.countInProgress.eq(inline(0.toBigDecimal())))
       .orderBy(DSL.max(r.LAST_MODIFIED_DATE).desc())
-      .fetchInto(Long::class.java)
+      .fetchInto(String::class.java)
 
     val dtos = seriesIds
       .drop(pageable.pageNumber * pageable.pageSize)
@@ -139,7 +139,7 @@ class BookDtoDao(
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .where(b.ID.eq(bookId))
       .fetchOne()
-    val seriesId = record.get(0, Long::class.java)
+    val seriesId = record.get(0, String::class.java)
     val numberSort = record.get(1, Float::class.java)
 
     return selectBase(userId)

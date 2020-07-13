@@ -1,10 +1,10 @@
 interface EventBookChanged {
   id: string,
-  seriesId: number
+  seriesId: string
 }
 
 interface EventSeriesChanged {
-  id: number,
+  id: string,
   libraryId: string
 }
 

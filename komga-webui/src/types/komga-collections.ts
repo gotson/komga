@@ -3,7 +3,7 @@ interface CollectionDto {
   name: string,
   ordered: boolean,
   filtered: boolean,
-  seriesIds: number[],
+  seriesIds: string[],
   createdDate: string,
   lastModifiedDate: string
 }
@@ -11,11 +11,11 @@ interface CollectionDto {
 interface CollectionCreationDto {
   name: string,
   ordered: boolean,
-  seriesIds: number[]
+  seriesIds: string[]
 }
 
 interface CollectionUpdateDto {
   name?: string,
   ordered?: boolean,
-  seriesIds?: number[]
+  seriesIds?: string[]
 }

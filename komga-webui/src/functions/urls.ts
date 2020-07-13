@@ -28,11 +28,11 @@ export function bookPageUrl (bookId: string, page: number, convertTo?: string): 
   return url
 }
 
-export function bookPageThumbnailUrl (bookId: number, page: number): string {
+export function bookPageThumbnailUrl (bookId: string, page: number): string {
   return `${urls.originNoSlash}/api/v1/books/${bookId}/pages/${page}/thumbnail`
 }
 
-export function seriesThumbnailUrl (seriesId: number): string {
+export function seriesThumbnailUrl (seriesId: string): string {
   return `${urls.originNoSlash}/api/v1/series/${seriesId}/thumbnail`
 }
 

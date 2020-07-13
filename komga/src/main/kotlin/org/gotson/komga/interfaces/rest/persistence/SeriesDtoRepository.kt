@@ -9,5 +9,5 @@ interface SeriesDtoRepository {
   fun findAll(search: SeriesSearchWithReadProgress, userId: String, pageable: Pageable): Page<SeriesDto>
   fun findByCollectionId(collectionId: Long, userId: String, pageable: Pageable): Page<SeriesDto>
   fun findRecentlyUpdated(search: SeriesSearchWithReadProgress, userId: String, pageable: Pageable): Page<SeriesDto>
-  fun findByIdOrNull(seriesId: Long, userId: String): SeriesDto?
+  fun findByIdOrNull(seriesId: String, userId: String): SeriesDto?
 }

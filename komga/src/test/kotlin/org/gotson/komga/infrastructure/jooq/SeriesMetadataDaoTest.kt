@@ -45,9 +45,7 @@ class SeriesMetadataDaoTest(
 
   @Test
   fun `given a seriesMetadata when inserting then it is persisted`() {
-    val series = seriesRepository.insert(
-      makeSeries("Series", libraryId = library.id)
-    )
+    val series = makeSeries("Series", libraryId = library.id).also { seriesRepository.insert(it) }
 
     val now = LocalDateTime.now()
     val metadata = SeriesMetadata(
@@ -72,9 +70,8 @@ class SeriesMetadataDaoTest(
 
   @Test
   fun `given existing seriesMetadata when finding by id then metadata is returned`() {
-    val series = seriesRepository.insert(
-      makeSeries("Series", libraryId = library.id)
-    )
+    val series = makeSeries("Series", libraryId = library.id).also { seriesRepository.insert(it) }
+
     val metadata = SeriesMetadata(
       status = SeriesMetadata.Status.ENDED,
       title = "Series",
@@ -92,23 +89,21 @@ class SeriesMetadataDaoTest(
 
   @Test
   fun `given non-existing seriesMetadata when finding by id then exception is thrown`() {
-    val found = catchThrowable { seriesMetadataDao.findById(128742) }
+    val found = catchThrowable { seriesMetadataDao.findById("128742") }
 
     assertThat(found).isInstanceOf(Exception::class.java)
   }
 
   @Test
   fun `given non-existing seriesMetadata when findByIdOrNull then null is returned`() {
-    val found = seriesMetadataDao.findByIdOrNull(128742)
+    val found = seriesMetadataDao.findByIdOrNull("128742")
 
     assertThat(found).isNull()
   }
 
   @Test
   fun `given a seriesMetadata when updating then it is persisted`() {
-    val series = seriesRepository.insert(
-      makeSeries("Series", libraryId = library.id)
-    )
+    val series = makeSeries("Series", libraryId = library.id).also { seriesRepository.insert(it) }
 
     val metadata = SeriesMetadata(
       status = SeriesMetadata.Status.ENDED,

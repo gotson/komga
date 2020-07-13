@@ -21,7 +21,7 @@ sealed class Task : Serializable {
     override fun uniqueId() = "REFRESH_BOOK_METADATA_$bookId"
   }
 
-  data class RefreshSeriesMetadata(val seriesId: Long) : Task() {
+  data class RefreshSeriesMetadata(val seriesId: String) : Task() {
     override fun uniqueId() = "REFRESH_SERIES_METADATA_$seriesId"
   }
 }

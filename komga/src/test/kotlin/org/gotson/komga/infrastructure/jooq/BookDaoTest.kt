@@ -29,12 +29,12 @@ class BookDaoTest(
 ) {
 
   private val library = makeLibrary()
-  private var series = makeSeries("Series")
+  private val series = makeSeries("Series")
 
   @BeforeAll
   fun setup() {
     libraryRepository.insert(library)
-    series = seriesRepository.insert(series.copy(libraryId = library.id))
+    seriesRepository.insert(series.copy(libraryId = library.id))
   }
 
   @AfterEach

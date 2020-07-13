@@ -1,5 +1,5 @@
 interface SeriesDto {
-  id: number,
+  id: string,
   libraryId: string,
   name: string,
   url: string,

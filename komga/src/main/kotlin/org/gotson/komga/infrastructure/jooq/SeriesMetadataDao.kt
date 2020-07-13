@@ -16,13 +16,13 @@ class SeriesMetadataDao(
 
   private val d = Tables.SERIES_METADATA
 
-  override fun findById(seriesId: Long): SeriesMetadata =
+  override fun findById(seriesId: String): SeriesMetadata =
     findOne(seriesId).toDomain()
 
-  override fun findByIdOrNull(seriesId: Long): SeriesMetadata? =
+  override fun findByIdOrNull(seriesId: String): SeriesMetadata? =
     findOne(seriesId)?.toDomain()
 
-  private fun findOne(seriesId: Long) =
+  private fun findOne(seriesId: String) =
     dsl.selectFrom(d)
       .where(d.SERIES_ID.eq(seriesId))
       .fetchOneInto(d)
@@ -54,7 +54,7 @@ class SeriesMetadataDao(
       .execute()
   }
 
-  override fun delete(seriesId: Long) {
+  override fun delete(seriesId: String) {
     dsl.deleteFrom(d)
       .where(d.SERIES_ID.eq(seriesId))
       .execute()

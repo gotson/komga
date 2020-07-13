@@ -31,7 +31,7 @@ class BookDao(
       .fetchOneInto(b)
       ?.toDomain()
 
-  override fun findBySeriesId(seriesId: Long): Collection<Book> =
+  override fun findBySeriesId(seriesId: String): Collection<Book> =
     dsl.selectFrom(b)
       .where(b.SERIES_ID.eq(seriesId))
       .fetchInto(b)
@@ -59,7 +59,7 @@ class BookDao(
       .where(b.ID.eq(bookId))
       .fetchOne(0, String::class.java)
 
-  override fun findFirstIdInSeries(seriesId: Long): String? =
+  override fun findFirstIdInSeries(seriesId: String): String? =
     dsl.select(b.ID)
       .from(b)
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
@@ -68,13 +68,13 @@ class BookDao(
       .limit(1)
       .fetchOne(0, String::class.java)
 
-  override fun findAllIdBySeriesId(seriesId: Long): Collection<String> =
+  override fun findAllIdBySeriesId(seriesId: String): Collection<String> =
     dsl.select(b.ID)
       .from(b)
       .where(b.SERIES_ID.eq(seriesId))
       .fetch(0, String::class.java)
 
-  override fun findAllIdBySeriesIds(seriesIds: Collection<Long>): Collection<String> =
+  override fun findAllIdBySeriesIds(seriesIds: Collection<String>): Collection<String> =
     dsl.select(b.ID)
       .from(b)
       .where(b.SERIES_ID.`in`(seriesIds))

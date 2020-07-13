@@ -6,7 +6,7 @@ data class SeriesCollection(
   val name: String,
   val ordered: Boolean = false,
 
-  val seriesIds: List<Long> = emptyList(),
+  val seriesIds: List<String> = emptyList(),
 
   val id: Long = 0,
 

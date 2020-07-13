@@ -4,7 +4,7 @@ import com.github.f4b6a3.tsid.TsidCreator
 import java.net.URL
 import java.time.LocalDateTime
 
-fun makeBook(name: String, fileLastModified: LocalDateTime = LocalDateTime.now(), libraryId: String = "", seriesId: Long = 0): Book {
+fun makeBook(name: String, fileLastModified: LocalDateTime = LocalDateTime.now(), libraryId: String = "", seriesId: String = ""): Book {
   Thread.sleep(5)
   return Book(
     name = name,
