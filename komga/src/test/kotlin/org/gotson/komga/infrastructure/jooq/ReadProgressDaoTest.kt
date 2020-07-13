@@ -32,8 +32,8 @@ class ReadProgressDaoTest(
   private val library = makeLibrary()
   private var series = makeSeries("Series")
 
-  private var user1 = KomgaUser("user1@example.org", "", false)
-  private var user2 = KomgaUser("user2@example.org", "", false)
+  private val user1 = KomgaUser("user1@example.org", "", false)
+  private val user2 = KomgaUser("user2@example.org", "", false)
 
   private var book1 = makeBook("Book1")
   private var book2 = makeBook("Book2")
@@ -42,8 +42,8 @@ class ReadProgressDaoTest(
   fun setup() {
     libraryRepository.insert(library)
     series = seriesRepository.insert(series.copy(libraryId = library.id))
-    user1 = userRepository.insert(user1)
-    user2 = userRepository.insert(user2)
+    userRepository.insert(user1)
+    userRepository.insert(user2)
     bookRepository.insert(book1.copy(libraryId = library.id, seriesId = series.id))
     bookRepository.insert(book2.copy(libraryId = library.id, seriesId = series.id))
   }

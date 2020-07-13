@@ -1,11 +1,11 @@
 interface UserDto {
-  id: number,
+  id: string,
   email: string,
   roles: string[]
 }
 
 interface UserWithSharedLibrariesDto {
-  id: number,
+  id: string,
   email: string,
   roles: string[],
   sharedAllLibraries: boolean,

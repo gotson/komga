@@ -21,13 +21,13 @@ class ReadProgressDao(
       .fetchInto(r)
       .map { it.toDomain() }
 
-  override fun findByBookIdAndUserId(bookId: String, userId: Long): ReadProgress? =
+  override fun findByBookIdAndUserId(bookId: String, userId: String): ReadProgress? =
     dsl.selectFrom(r)
       .where(r.BOOK_ID.eq(bookId).and(r.USER_ID.eq(userId)))
       .fetchOneInto(r)
       ?.toDomain()
 
-  override fun findByUserId(userId: Long): Collection<ReadProgress> =
+  override fun findByUserId(userId: String): Collection<ReadProgress> =
     dsl.selectFrom(r)
       .where(r.USER_ID.eq(userId))
       .fetchInto(r)
@@ -45,13 +45,13 @@ class ReadProgressDao(
   }
 
 
-  override fun delete(bookId: String, userId: Long) {
+  override fun delete(bookId: String, userId: String) {
     dsl.deleteFrom(r)
       .where(r.BOOK_ID.eq(bookId).and(r.USER_ID.eq(userId)))
       .execute()
   }
 
-  override fun deleteByUserId(userId: Long) {
+  override fun deleteByUserId(userId: String) {
     dsl.deleteFrom(r)
       .where(r.USER_ID.eq(userId))
       .execute()

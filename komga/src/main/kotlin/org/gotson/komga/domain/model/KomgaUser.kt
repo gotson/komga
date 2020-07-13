@@ -1,5 +1,6 @@
 package org.gotson.komga.domain.model
 
+import com.github.f4b6a3.tsid.TsidCreator
 import java.time.LocalDateTime
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
@@ -20,7 +21,7 @@ data class KomgaUser(
   val rolePageStreaming: Boolean = true,
   val sharedLibrariesIds: Set<String> = emptySet(),
   val sharedAllLibraries: Boolean = true,
-  val id: Long = 0,
+  val id: String = TsidCreator.getTsidString(),
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
 ) : Auditable() {

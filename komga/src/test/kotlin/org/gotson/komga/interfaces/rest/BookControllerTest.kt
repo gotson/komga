@@ -67,14 +67,14 @@ class BookControllerTest(
 ) {
 
   private val library = makeLibrary(id = "1")
-  private lateinit var user2: KomgaUser
-  private lateinit var user3: KomgaUser
+  private val user = KomgaUser("user@example.org", "", false, id = "1")
+  private val user2 = KomgaUser("user2@example.org", "", false, id = "2")
 
   @BeforeAll
   fun `setup library`() {
     libraryRepository.insert(library)
-    user2 = userRepository.insert(KomgaUser("user@example.org", "", false)) // id = 1
-    user3 = userRepository.insert(KomgaUser("user2@example.org", "", false)) // id = 1
+    userRepository.insert(user)
+    userRepository.insert(user2)
   }
 
   @AfterAll
@@ -798,7 +798,7 @@ class BookControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(id = 1)
+    @WithMockCustomUser(id = "1")
     fun `given user when marking book in progress with page read then progress is marked accordingly`() {
       makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->
@@ -837,7 +837,7 @@ class BookControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(id = 1)
+    @WithMockCustomUser(id = "1")
     fun `given user when marking book completed then progress is marked accordingly`() {
       makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->
@@ -876,7 +876,7 @@ class BookControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(id = 1)
+    @WithMockCustomUser(id = "1")
     fun `given user when deleting read progress then progress is removed`() {
       makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->
@@ -947,14 +947,14 @@ class BookControllerTest(
 
     mockMvc.perform(MockMvcRequestBuilders
       .patch("/api/v1/books/${book.id}/read-progress")
-      .with(user(KomgaPrincipal(user2)))
+      .with(user(KomgaPrincipal(user)))
       .contentType(MediaType.APPLICATION_JSON)
       .content(jsonString)
     )
 
     mockMvc.perform(MockMvcRequestBuilders
       .get("/api/v1/books")
-      .with(user(KomgaPrincipal(user2)))
+      .with(user(KomgaPrincipal(user)))
       .contentType(MediaType.APPLICATION_JSON)
     ).andExpect(
       jsonPath("$.totalElements").value(2)
@@ -962,7 +962,7 @@ class BookControllerTest(
 
     mockMvc.perform(MockMvcRequestBuilders
       .get("/api/v1/books")
-      .with(user(KomgaPrincipal(user3)))
+      .with(user(KomgaPrincipal(user2)))
       .contentType(MediaType.APPLICATION_JSON)
     ).andExpect(
       jsonPath("$.totalElements").value(2)

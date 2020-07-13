@@ -65,7 +65,7 @@ class SeriesControllerTest(
   @BeforeAll
   fun `setup library`() {
     libraryRepository.insert(library)
-    userRepository.insert(KomgaUser("user@example.org", "", false)) // id = 1
+    userRepository.insert(KomgaUser("user@example.org", "", false, id = "1"))
   }
 
   @AfterAll
@@ -473,7 +473,7 @@ class SeriesControllerTest(
   @Nested
   inner class ReadProgress {
     @Test
-    @WithMockCustomUser(id = 1)
+    @WithMockCustomUser(id = "1")
     fun `given user when marking series as read then progress is marked for all books`() {
       val series = makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->
@@ -513,7 +513,7 @@ class SeriesControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(id = 1)
+    @WithMockCustomUser(id = "1")
     fun `given user when marking series as unread then progress is removed for all books`() {
       val series = makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->
@@ -558,7 +558,7 @@ class SeriesControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(id = 1)
+    @WithMockCustomUser(id = "1")
     fun `given user when marking book as in progress then progress series return books count accordingly`() {
       val series = makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->

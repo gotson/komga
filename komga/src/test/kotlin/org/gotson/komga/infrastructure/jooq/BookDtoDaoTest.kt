@@ -43,13 +43,13 @@ class BookDtoDaoTest(
 
   private val library = makeLibrary()
   private var series = makeSeries("Series")
-  private var user = KomgaUser("user@example.org", "", false)
+  private val user = KomgaUser("user@example.org", "", false)
 
   @BeforeAll
   fun setup() {
     libraryRepository.insert(library)
     series = seriesLifecycle.createSeries(series.copy(libraryId = library.id))
-    user = userRepository.insert(user)
+    userRepository.insert(user)
   }
 
   @AfterEach

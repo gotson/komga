@@ -50,7 +50,8 @@ class KomgaUserDaoTest(
       sharedAllLibraries = false
     )
 
-    val created = komgaUserDao.insert(user)
+    komgaUserDao.insert(user)
+    val created = komgaUserDao.findByIdOrNull(user.id)!!
 
     with(created) {
       assertThat(id).isNotEqualTo(0)
@@ -74,7 +75,8 @@ class KomgaUserDaoTest(
       sharedAllLibraries = false
     )
 
-    val created = komgaUserDao.insert(user)
+    komgaUserDao.insert(user)
+    val created = komgaUserDao.findByIdOrNull(user.id)!!
 
     val modified = created.copy(
       email = "user2@example.org",
@@ -127,9 +129,8 @@ class KomgaUserDaoTest(
 
   @Test
   fun `given existing user when finding by id then user is returned`() {
-    val existing = komgaUserDao.insert(
-      KomgaUser("user1@example.org", "p", false)
-    )
+    val existing = KomgaUser("user1@example.org", "p", false)
+    komgaUserDao.insert(existing)
 
     val user = komgaUserDao.findByIdOrNull(existing.id)
 
@@ -138,18 +139,17 @@ class KomgaUserDaoTest(
 
   @Test
   fun `given non-existent user when finding by id then null is returned`() {
-    val user = komgaUserDao.findByIdOrNull(38473)
+    val user = komgaUserDao.findByIdOrNull("38473")
 
     assertThat(user).isNull()
   }
 
   @Test
   fun `given existing user when deleting then user is deleted`() {
-    val existing = komgaUserDao.insert(
-      KomgaUser("user1@example.org", "p", false)
-    )
+    val existing = KomgaUser("user1@example.org", "p", false)
+    komgaUserDao.insert(existing)
 
-    komgaUserDao.delete(existing)
+    komgaUserDao.delete(existing.id)
 
     assertThat(komgaUserDao.count()).isEqualTo(0)
   }

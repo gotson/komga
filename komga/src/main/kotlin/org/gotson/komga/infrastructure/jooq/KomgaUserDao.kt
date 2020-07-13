@@ -24,7 +24,7 @@ class KomgaUserDao(
     selectBase()
       .fetchAndMap()
 
-  override fun findByIdOrNull(id: Long): KomgaUser? =
+  override fun findByIdOrNull(id: String): KomgaUser? =
     selectBase()
       .where(u.ID.equal(id))
       .fetchAndMap()
@@ -54,30 +54,26 @@ class KomgaUserDao(
         )
       }
 
-  override fun insert(user: KomgaUser): KomgaUser {
-    return dsl.transactionResult { config ->
+  override fun insert(user: KomgaUser) {
+    dsl.transaction { config ->
       with(config.dsl())
       {
-        val record = insertInto(u)
+        insertInto(u)
+          .set(u.ID, user.id)
           .set(u.EMAIL, user.email)
           .set(u.PASSWORD, user.password)
           .set(u.ROLE_ADMIN, user.roleAdmin)
           .set(u.ROLE_FILE_DOWNLOAD, user.roleFileDownload)
           .set(u.ROLE_PAGE_STREAMING, user.rolePageStreaming)
           .set(u.SHARED_ALL_LIBRARIES, user.sharedAllLibraries)
-          .returning(u.ID)
-          .fetchOne()
-
-        val id = record.id
+          .execute()
 
         user.sharedLibrariesIds.forEach {
           insertInto(ul)
             .columns(ul.USER_ID, ul.LIBRARY_ID)
-            .values(id, it)
+            .values(user.id, it)
             .execute()
         }
-
-        findByIdOrNull(id)!!
       }
     }
   }
@@ -111,12 +107,12 @@ class KomgaUserDao(
     }
   }
 
-  override fun delete(user: KomgaUser) {
+  override fun delete(userId: String) {
     dsl.transaction { config ->
       with(config.dsl())
       {
-        deleteFrom(ul).where(ul.USER_ID.equal(user.id)).execute()
-        deleteFrom(u).where(u.ID.equal(user.id)).execute()
+        deleteFrom(ul).where(ul.USER_ID.equal(userId)).execute()
+        deleteFrom(u).where(u.ID.equal(userId)).execute()
       }
     }
   }

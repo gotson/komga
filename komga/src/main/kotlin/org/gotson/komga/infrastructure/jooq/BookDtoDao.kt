@@ -56,7 +56,7 @@ class BookDtoDao(
     "readProgress.lastModified" to r.LAST_MODIFIED_DATE
   )
 
-  override fun findAll(search: BookSearchWithReadProgress, userId: Long, pageable: Pageable): Page<BookDto> {
+  override fun findAll(search: BookSearchWithReadProgress, userId: String, pageable: Pageable): Page<BookDto> {
     val conditions = search.toCondition()
 
     val count = dsl.selectCount()
@@ -84,18 +84,18 @@ class BookDtoDao(
     )
   }
 
-  override fun findByIdOrNull(bookId: String, userId: Long): BookDto? =
+  override fun findByIdOrNull(bookId: String, userId: String): BookDto? =
     selectBase(userId)
       .where(b.ID.eq(bookId))
       .fetchAndMap()
       .firstOrNull()
 
-  override fun findPreviousInSeries(bookId: String, userId: Long): BookDto? = findSibling(bookId, userId, next = false)
+  override fun findPreviousInSeries(bookId: String, userId: String): BookDto? = findSibling(bookId, userId, next = false)
 
-  override fun findNextInSeries(bookId: String, userId: Long): BookDto? = findSibling(bookId, userId, next = true)
+  override fun findNextInSeries(bookId: String, userId: String): BookDto? = findSibling(bookId, userId, next = true)
 
 
-  override fun findOnDeck(libraryIds: Collection<String>, userId: Long, pageable: Pageable): Page<BookDto> {
+  override fun findOnDeck(libraryIds: Collection<String>, userId: String, pageable: Pageable): Page<BookDto> {
     val conditions = if (libraryIds.isEmpty()) DSL.trueCondition() else s.LIBRARY_ID.`in`(libraryIds)
 
     val seriesIds = dsl.select(s.ID)
@@ -131,9 +131,9 @@ class BookDtoDao(
     )
   }
 
-  private fun readProgressCondition(userId: Long): Condition = r.USER_ID.eq(userId).or(r.USER_ID.isNull)
+  private fun readProgressCondition(userId: String): Condition = r.USER_ID.eq(userId).or(r.USER_ID.isNull)
 
-  private fun findSibling(bookId: String, userId: Long, next: Boolean): BookDto? {
+  private fun findSibling(bookId: String, userId: String, next: Boolean): BookDto? {
     val record = dsl.select(b.SERIES_ID, d.NUMBER_SORT)
       .from(b)
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
@@ -151,7 +151,7 @@ class BookDtoDao(
       .firstOrNull()
   }
 
-  private fun selectBase(userId: Long) =
+  private fun selectBase(userId: String) =
     dsl.select(
       *b.fields(),
       *mediaFields,

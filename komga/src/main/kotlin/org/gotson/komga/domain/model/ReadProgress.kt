@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 
 data class ReadProgress(
   val bookId: String,
-  val userId: Long,
+  val userId: String,
   val page: Int,
   val completed: Boolean,
 

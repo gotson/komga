@@ -80,7 +80,7 @@ class UserController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PreAuthorize("hasRole('$ROLE_ADMIN') and #principal.user.id != #id")
   fun delete(
-    @PathVariable id: Long,
+    @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal
   ) {
     userRepository.findByIdOrNull(id)?.let {
@@ -92,7 +92,7 @@ class UserController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PreAuthorize("hasRole('$ROLE_ADMIN') and #principal.user.id != #id")
   fun updateUserRoles(
-    @PathVariable id: Long,
+    @PathVariable id: String,
     @Valid @RequestBody patch: RolesUpdateDto,
     @AuthenticationPrincipal principal: KomgaPrincipal
   ) {
@@ -111,7 +111,7 @@ class UserController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   fun updateSharesLibraries(
-    @PathVariable id: Long,
+    @PathVariable id: String,
     @Valid @RequestBody sharedLibrariesUpdateDto: SharedLibrariesUpdateDto
   ) {
     userRepository.findByIdOrNull(id)?.let { user ->
