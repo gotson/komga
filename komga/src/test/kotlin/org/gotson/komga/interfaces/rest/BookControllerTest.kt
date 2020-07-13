@@ -66,13 +66,13 @@ class BookControllerTest(
   @Autowired private val mockMvc: MockMvc
 ) {
 
-  private var library = makeLibrary()
+  private val library = makeLibrary(id = "1")
   private lateinit var user2: KomgaUser
   private lateinit var user3: KomgaUser
 
   @BeforeAll
   fun `setup library`() {
-    library = libraryRepository.insert(library) // id = 1
+    libraryRepository.insert(library)
     user2 = userRepository.insert(KomgaUser("user@example.org", "", false)) // id = 1
     user3 = userRepository.insert(KomgaUser("user2@example.org", "", false)) // id = 1
   }
@@ -95,7 +95,7 @@ class BookControllerTest(
   @Nested
   inner class LimitedUser {
     @Test
-    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [1])
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = ["1"])
     fun `given user with access to a single library when getting books then only gets books from this library`() {
       makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).let { created ->
@@ -104,7 +104,8 @@ class BookControllerTest(
         }
       }
 
-      val otherLibrary = libraryRepository.insert(makeLibrary("other"))
+      val otherLibrary = makeLibrary("other")
+      libraryRepository.insert(otherLibrary)
       makeSeries(name = "otherSeries", libraryId = otherLibrary.id).let { series ->
         seriesLifecycle.createSeries(series).let { created ->
           val otherBooks = listOf(makeBook("2", libraryId = otherLibrary.id))

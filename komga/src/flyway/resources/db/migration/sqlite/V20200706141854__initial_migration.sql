@@ -1,6 +1,6 @@
 CREATE TABLE LIBRARY
 (
-    ID                          INTEGER  NOT NULL PRIMARY KEY,
+    ID                          varchar  NOT NULL PRIMARY KEY,
     CREATED_DATE                datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     LAST_MODIFIED_DATE          datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     NAME                        varchar  NOT NULL,
@@ -25,8 +25,8 @@ CREATE TABLE USER
 );
 CREATE TABLE USER_LIBRARY_SHARING
 (
-    USER_ID    int8 NOT NULL,
-    LIBRARY_ID int8 NOT NULL,
+    USER_ID    int8    NOT NULL,
+    LIBRARY_ID varchar NOT NULL,
     PRIMARY KEY (USER_ID, LIBRARY_ID),
     FOREIGN KEY (USER_ID) REFERENCES USER (ID),
     FOREIGN KEY (LIBRARY_ID) REFERENCES LIBRARY (ID)
@@ -39,7 +39,7 @@ CREATE TABLE SERIES
     FILE_LAST_MODIFIED datetime NOT NULL,
     NAME               varchar  NOT NULL,
     URL                varchar  NOT NULL,
-    LIBRARY_ID         int8     NOT NULL,
+    LIBRARY_ID         varchar  NOT NULL,
     FOREIGN KEY (LIBRARY_ID) REFERENCES LIBRARY (ID)
 );
 CREATE TABLE SERIES_METADATA
@@ -66,7 +66,7 @@ CREATE TABLE BOOK
     SERIES_ID          int8     NOT NULL,
     FILE_SIZE          int8     NOT NULL DEFAULT 0,
     NUMBER             int      NOT NULL DEFAULT 0,
-    LIBRARY_ID         int8     NOT NULL,
+    LIBRARY_ID         varchar  NOT NULL,
     FOREIGN KEY (LIBRARY_ID) REFERENCES LIBRARY (ID),
     FOREIGN KEY (SERIES_ID) REFERENCES SERIES (ID)
 );

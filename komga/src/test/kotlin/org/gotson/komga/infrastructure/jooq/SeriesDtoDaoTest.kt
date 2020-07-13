@@ -40,12 +40,12 @@ class SeriesDtoDaoTest(
   @Autowired private val userLifecycle: KomgaUserLifecycle
 ) {
 
-  private var library = makeLibrary()
+  private val library = makeLibrary()
   private var user = KomgaUser("user@example.org", "", false)
 
   @BeforeAll
   fun setup() {
-    library = libraryRepository.insert(library)
+    libraryRepository.insert(library)
     user = userRepository.insert(user)
   }
 

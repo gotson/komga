@@ -31,7 +31,8 @@ class LibraryDaoTest(
       root = URL("file://library")
     )
 
-    val created = libraryDao.insert(library)
+    libraryDao.insert(library)
+    val created = libraryDao.findById(library.id)
 
     assertThat(created.id).isNotEqualTo(0)
     assertThat(created.createdDate).isCloseTo(now, offset)
@@ -46,19 +47,21 @@ class LibraryDaoTest(
       name = "Library",
       root = URL("file://library")
     )
-    val created = libraryDao.insert(library)
+    libraryDao.insert(library)
 
     val modificationDate = LocalDateTime.now()
 
-    val updated = created.copy(
-      name = "LibraryUpdated",
-      root = URL("file://library2"),
-      importEpubSeries = false,
-      importEpubBook = false,
-      importComicInfoCollection = false,
-      importComicInfoSeries = false,
-      importComicInfoBook = false
-    )
+    val updated = with(libraryDao.findById(library.id)) {
+      copy(
+        name = "LibraryUpdated",
+        root = URL("file://library2"),
+        importEpubSeries = false,
+        importEpubBook = false,
+        importComicInfoCollection = false,
+        importComicInfoSeries = false,
+        importComicInfoBook = false
+      )
+    }
 
     libraryDao.update(updated)
     val modified = libraryDao.findById(updated.id)
@@ -85,10 +88,10 @@ class LibraryDaoTest(
       root = URL("file://library")
     )
 
-    val created = libraryDao.insert(library)
+    libraryDao.insert(library)
     assertThat(libraryDao.count()).isEqualTo(1)
 
-    libraryDao.delete(created.id)
+    libraryDao.delete(library.id)
 
     assertThat(libraryDao.count()).isEqualTo(0)
   }
@@ -144,10 +147,10 @@ class LibraryDaoTest(
       root = URL("file://library2")
     )
 
-    val created1 = libraryDao.insert(library)
-    val created2 = libraryDao.insert(library2)
+    libraryDao.insert(library)
+    libraryDao.insert(library2)
 
-    val all = libraryDao.findAllById(listOf(created1.id, created2.id))
+    val all = libraryDao.findAllById(listOf(library.id, library2.id))
 
     assertThat(all).hasSize(2)
     assertThat(all.map { it.name }).containsExactlyInAnyOrder("Library", "Library2")
@@ -160,9 +163,9 @@ class LibraryDaoTest(
       root = URL("file://library")
     )
 
-    val created = libraryDao.insert(library)
+    libraryDao.insert(library)
 
-    val found = libraryDao.findByIdOrNull(created.id)
+    val found = libraryDao.findByIdOrNull(library.id)
 
     assertThat(found).isNotNull
     assertThat(found?.name).isEqualTo("Library")
@@ -170,7 +173,7 @@ class LibraryDaoTest(
 
   @Test
   fun `given non-existing library when finding by id then null is returned`() {
-    val found = libraryDao.findByIdOrNull(1287386)
+    val found = libraryDao.findByIdOrNull("1287386")
 
     assertThat(found).isNull()
   }

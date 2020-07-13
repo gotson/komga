@@ -18,7 +18,7 @@ annotation class WithMockCustomUser(
   val email: String = "user@example.org",
   val roles: Array<String> = [ROLE_FILE_DOWNLOAD, ROLE_PAGE_STREAMING],
   val sharedAllLibraries: Boolean = true,
-  val sharedLibraries: LongArray = [],
+  val sharedLibraries: Array<String> = [],
   val id: Long = 0
 )
 

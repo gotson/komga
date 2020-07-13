@@ -31,11 +31,11 @@ class LibraryControllerTest(
 
   private val route = "/api/v1/libraries"
 
-  private var library = makeLibrary(url = "file:/library1")
+  private val library = makeLibrary(url = "file:/library1", id = "1")
 
   @BeforeAll
   fun `setup library`() {
-    library = libraryRepository.insert(library) // id = 1
+    libraryRepository.insert(library)
   }
 
   @AfterAll
@@ -88,7 +88,7 @@ class LibraryControllerTest(
   @Nested
   inner class LimitedUser {
     @Test
-    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [1])
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = ["1"])
     fun `given user with access to a single library when getAll then only gets this library`() {
       mockMvc.get(route)
         .andExpect {

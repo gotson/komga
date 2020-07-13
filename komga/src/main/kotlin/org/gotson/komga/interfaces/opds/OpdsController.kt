@@ -281,7 +281,7 @@ class OpdsController(
   @GetMapping("libraries/{id}")
   fun getOneLibrary(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @PathVariable id: Long
+    @PathVariable id: String
   ): OpdsFeed =
     libraryRepository.findByIdOrNull(id)?.let { library ->
       if (!principal.user.canAccessLibrary(library)) throw ResponseStatusException(HttpStatus.FORBIDDEN)

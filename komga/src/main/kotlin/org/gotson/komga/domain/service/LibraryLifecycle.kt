@@ -34,9 +34,10 @@ class LibraryLifecycle(
     val existing = libraryRepository.findAll()
     checkLibraryValidity(library, existing)
 
-    return libraryRepository.insert(library).also {
-      taskReceiver.scanLibrary(it.id)
-    }
+    libraryRepository.insert(library)
+    taskReceiver.scanLibrary(library.id)
+
+    return libraryRepository.findById(library.id)
   }
 
   fun updateLibrary(toUpdate: Library) {

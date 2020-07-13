@@ -76,14 +76,14 @@ const router = new Router({
           name: 'browse-libraries',
           beforeEnter: noLibraryGuard,
           component: () => import(/* webpackChunkName: "browse-libraries" */ './views/BrowseLibraries.vue'),
-          props: (route) => ({ libraryId: Number(route.params.libraryId) }),
+          props: (route) => ({ libraryId: route.params.libraryId }),
         },
         {
           path: '/libraries/:libraryId/collections',
           name: 'browse-collections',
           beforeEnter: noLibraryGuard,
           component: () => import(/* webpackChunkName: "browse-collections" */ './views/BrowseCollections.vue'),
-          props: (route) => ({ libraryId: Number(route.params.libraryId) }),
+          props: (route) => ({ libraryId: route.params.libraryId }),
         },
         {
           path: '/collections/:collectionId',

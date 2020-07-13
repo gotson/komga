@@ -37,7 +37,7 @@ class SeriesCollectionDao(
       .fetchAndMap(null)
       .firstOrNull()
 
-  override fun findByIdOrNull(collectionId: Long, filterOnLibraryIds: Collection<Long>?): SeriesCollection? =
+  override fun findByIdOrNull(collectionId: Long, filterOnLibraryIds: Collection<String>?): SeriesCollection? =
     selectBase()
       .where(c.ID.eq(collectionId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
@@ -70,7 +70,7 @@ class SeriesCollectionDao(
     )
   }
 
-  override fun findAllByLibraries(belongsToLibraryIds: Collection<Long>, filterOnLibraryIds: Collection<Long>?, search: String?, pageable: Pageable): Page<SeriesCollection> {
+  override fun findAllByLibraries(belongsToLibraryIds: Collection<String>, filterOnLibraryIds: Collection<String>?, search: String?, pageable: Pageable): Page<SeriesCollection> {
     val ids = dsl.selectDistinct(c.ID)
       .from(c)
       .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
@@ -100,7 +100,7 @@ class SeriesCollectionDao(
     )
   }
 
-  override fun findAllBySeries(containsSeriesId: Long, filterOnLibraryIds: Collection<Long>?): Collection<SeriesCollection> {
+  override fun findAllBySeries(containsSeriesId: Long, filterOnLibraryIds: Collection<String>?): Collection<SeriesCollection> {
     val ids = dsl.select(c.ID)
       .from(c)
       .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
@@ -125,7 +125,7 @@ class SeriesCollectionDao(
       .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
       .leftJoin(s).on(cs.SERIES_ID.eq(s.ID))
 
-  private fun ResultQuery<Record>.fetchAndMap(filterOnLibraryIds: Collection<Long>?): List<SeriesCollection> =
+  private fun ResultQuery<Record>.fetchAndMap(filterOnLibraryIds: Collection<String>?): List<SeriesCollection> =
     fetchInto(c)
       .map { cr ->
         val seriesIds = dsl.select(*cs.fields())

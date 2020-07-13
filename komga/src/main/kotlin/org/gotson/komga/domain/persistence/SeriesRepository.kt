@@ -7,12 +7,12 @@ import java.net.URL
 interface SeriesRepository {
   fun findAll(): Collection<Series>
   fun findByIdOrNull(seriesId: Long): Series?
-  fun findByLibraryId(libraryId: Long): Collection<Series>
-  fun findByLibraryIdAndUrlNotIn(libraryId: Long, urls: Collection<URL>): Collection<Series>
-  fun findByLibraryIdAndUrl(libraryId: Long, url: URL): Series?
+  fun findByLibraryId(libraryId: String): Collection<Series>
+  fun findByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): Collection<Series>
+  fun findByLibraryIdAndUrl(libraryId: String, url: URL): Series?
   fun findAll(search: SeriesSearch): Collection<Series>
 
-  fun getLibraryId(seriesId: Long): Long?
+  fun getLibraryId(seriesId: Long): String?
 
   fun insert(series: Series): Series
   fun update(series: Series)

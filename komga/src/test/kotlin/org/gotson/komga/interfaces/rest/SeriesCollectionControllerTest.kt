@@ -39,8 +39,8 @@ class SeriesCollectionControllerTest(
   @Autowired private val seriesLifecycle: SeriesLifecycle
 ) {
 
-  private var library1 = makeLibrary("Library1")
-  private var library2 = makeLibrary("Library2")
+  private val library1 = makeLibrary("Library1", id = "1")
+  private val library2 = makeLibrary("Library2", id = "2")
   private lateinit var seriesLibrary1: List<Series>
   private lateinit var seriesLibrary2: List<Series>
   private lateinit var colLib1: SeriesCollection
@@ -49,8 +49,8 @@ class SeriesCollectionControllerTest(
 
   @BeforeAll
   fun setup() {
-    library1 = libraryRepository.insert(library1) // id = 1
-    library2 = libraryRepository.insert(library2) // id = 2
+    libraryRepository.insert(library1)
+    libraryRepository.insert(library2)
 
     seriesLibrary1 = (1..5)
       .map { makeSeries("Series_$it", library1.id) }
@@ -108,7 +108,7 @@ class SeriesCollectionControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [1])
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = ["1"])
     fun `given user with access to a single library when getting collections then only get collections from this library`() {
       makeCollections()
 
@@ -135,7 +135,7 @@ class SeriesCollectionControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [1])
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = ["1"])
     fun `given user with access to a single library when getting single collection with items from 2 libraries then it is filtered`() {
       makeCollections()
 
@@ -148,7 +148,7 @@ class SeriesCollectionControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [1])
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = ["1"])
     fun `given user with access to a single library when getting single collection from another library then return not found`() {
       makeCollections()
 

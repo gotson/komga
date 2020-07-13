@@ -21,11 +21,11 @@ class KomgaUserDaoTest(
   @Autowired private val libraryRepository: LibraryRepository
 ) {
 
-  private var library = makeLibrary()
+  private val library = makeLibrary()
 
   @BeforeAll
   fun setup() {
-    library = libraryRepository.insert(library)
+    libraryRepository.insert(library)
   }
 
   @AfterEach

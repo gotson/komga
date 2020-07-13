@@ -95,7 +95,7 @@ class BookDtoDao(
   override fun findNextInSeries(bookId: String, userId: Long): BookDto? = findSibling(bookId, userId, next = true)
 
 
-  override fun findOnDeck(libraryIds: Collection<Long>, userId: Long, pageable: Pageable): Page<BookDto> {
+  override fun findOnDeck(libraryIds: Collection<String>, userId: Long, pageable: Pageable): Page<BookDto> {
     val conditions = if (libraryIds.isEmpty()) DSL.trueCondition() else s.LIBRARY_ID.`in`(libraryIds)
 
     val seriesIds = dsl.select(s.ID)

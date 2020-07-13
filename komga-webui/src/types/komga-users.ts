@@ -13,7 +13,7 @@ interface UserWithSharedLibrariesDto {
 }
 
 interface SharedLibraryDto {
-  id: number
+  id: string
 }
 
 interface UserCreationDto {
@@ -27,7 +27,7 @@ interface PasswordUpdateDto {
 
 interface SharedLibrariesUpdateDto {
   all: boolean,
-  libraryIds: number[]
+  libraryIds: string[]
 }
 
 interface RolesUpdateDto {

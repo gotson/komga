@@ -53,11 +53,11 @@ class BookDao(
       .map { it.toDomain() }
 
 
-  override fun getLibraryId(bookId: String): Long? =
+  override fun getLibraryId(bookId: String): String? =
     dsl.select(b.LIBRARY_ID)
       .from(b)
       .where(b.ID.eq(bookId))
-      .fetchOne(0, Long::class.java)
+      .fetchOne(0, String::class.java)
 
   override fun findFirstIdInSeries(seriesId: Long): String? =
     dsl.select(b.ID)
@@ -80,7 +80,7 @@ class BookDao(
       .where(b.SERIES_ID.`in`(seriesIds))
       .fetch(0, String::class.java)
 
-  override fun findAllIdByLibraryId(libraryId: Long): Collection<String> =
+  override fun findAllIdByLibraryId(libraryId: String): Collection<String> =
     dsl.select(b.ID)
       .from(b)
       .where(b.LIBRARY_ID.eq(libraryId))

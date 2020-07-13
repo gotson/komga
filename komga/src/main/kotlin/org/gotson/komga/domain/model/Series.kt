@@ -9,7 +9,7 @@ data class Series(
   val fileLastModified: LocalDateTime,
 
   val id: Long = 0,
-  val libraryId: Long = 0,
+  val libraryId: String = "",
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now()

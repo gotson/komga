@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 data class SeriesDto(
   val id: Long,
-  val libraryId: Long,
+  val libraryId: String,
   val name: String,
   val url: String,
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")

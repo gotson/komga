@@ -47,6 +47,7 @@ import { COLLECTION_CHANGED, LIBRARY_CHANGED } from '@/types/events'
 import Vue from 'vue'
 
 const cookiePageSize = 'pagesize'
+const all = 'all'
 
 export default Vue.extend({
   name: 'BrowseCollections',
@@ -72,8 +73,8 @@ export default Vue.extend({
   },
   props: {
     libraryId: {
-      type: Number,
-      default: 0,
+      type: String,
+      default: all,
     },
   },
   created () {
@@ -105,7 +106,7 @@ export default Vue.extend({
       this.totalElements = null
       this.collections = []
 
-      this.loadLibrary(Number(to.params.libraryId))
+      this.loadLibrary(to.params.libraryId)
     }
 
     next()
@@ -173,7 +174,7 @@ export default Vue.extend({
         this.loadLibrary(this.libraryId)
       }
     },
-    async loadLibrary (libraryId: number) {
+    async loadLibrary (libraryId: string) {
       this.library = this.getLibraryLazy(libraryId)
       await this.loadPage(libraryId, this.page)
 
@@ -181,21 +182,21 @@ export default Vue.extend({
         await this.$router.push({ name: 'browse-libraries', params: { libraryId: libraryId.toString() } })
       }
     },
-    async loadPage (libraryId: number, page: number) {
+    async loadPage (libraryId: string, page: number) {
       const pageRequest = {
         page: page - 1,
         size: this.pageSize,
       } as PageRequest
 
-      const lib = libraryId !== 0 ? [libraryId] : undefined
+      const lib = libraryId !== all ? [libraryId] : undefined
       const collectionsPage = await this.$komgaCollections.getCollections(lib, pageRequest)
 
       this.totalPages = collectionsPage.totalPages
       this.totalElements = collectionsPage.totalElements
       this.collections = collectionsPage.content
     },
-    getLibraryLazy (libraryId: any): LibraryDto | undefined {
-      if (libraryId !== 0) {
+    getLibraryLazy (libraryId: string): LibraryDto | undefined {
+      if (libraryId !== all) {
         return this.$store.getters.getLibraryById(libraryId)
       } else {
         return undefined

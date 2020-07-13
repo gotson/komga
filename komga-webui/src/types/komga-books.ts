@@ -1,7 +1,7 @@
 interface BookDto {
   id: string,
   seriesId: number,
-  libraryId: number,
+  libraryId: string,
   name: string,
   url: string,
   number: number,

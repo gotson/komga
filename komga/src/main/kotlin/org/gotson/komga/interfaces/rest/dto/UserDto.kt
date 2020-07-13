@@ -32,7 +32,7 @@ data class UserWithSharedLibrariesDto(
 )
 
 data class SharedLibraryDto(
-  val id: Long
+  val id: String
 )
 
 fun KomgaUser.toWithSharedLibrariesDto() =
@@ -65,7 +65,7 @@ data class PasswordUpdateDto(
 
 data class SharedLibrariesUpdateDto(
   val all: Boolean,
-  val libraryIds: Set<Long>
+  val libraryIds: Set<String>
 )
 
 data class RolesUpdateDto(

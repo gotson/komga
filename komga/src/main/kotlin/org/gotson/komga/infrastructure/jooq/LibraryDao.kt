@@ -18,15 +18,15 @@ class LibraryDao(
   private val l = Tables.LIBRARY
   private val ul = Tables.USER_LIBRARY_SHARING
 
-  override fun findByIdOrNull(libraryId: Long): Library? =
+  override fun findByIdOrNull(libraryId: String): Library? =
     findOne(libraryId)
       ?.toDomain()
 
-  override fun findById(libraryId: Long): Library =
+  override fun findById(libraryId: String): Library =
     findOne(libraryId)
       .toDomain()
 
-  private fun findOne(libraryId: Long) =
+  private fun findOne(libraryId: String) =
     dsl.selectFrom(l)
       .where(l.ID.eq(libraryId))
       .fetchOneInto(l)
@@ -36,13 +36,13 @@ class LibraryDao(
       .fetchInto(l)
       .map { it.toDomain() }
 
-  override fun findAllById(libraryIds: Collection<Long>): Collection<Library> =
+  override fun findAllById(libraryIds: Collection<String>): Collection<Library> =
     dsl.selectFrom(l)
       .where(l.ID.`in`(libraryIds))
       .fetchInto(l)
       .map { it.toDomain() }
 
-  override fun delete(libraryId: Long) {
+  override fun delete(libraryId: String) {
     dsl.transaction { config ->
       with(config.dsl())
       {
@@ -62,8 +62,9 @@ class LibraryDao(
     }
   }
 
-  override fun insert(library: Library): Library {
-    val record = dsl.insertInto(l)
+  override fun insert(library: Library) {
+    dsl.insertInto(l)
+      .set(l.ID, library.id)
       .set(l.NAME, library.name)
       .set(l.ROOT, library.root.toString())
       .set(l.IMPORT_COMICINFO_BOOK, library.importComicInfoBook)
@@ -71,10 +72,7 @@ class LibraryDao(
       .set(l.IMPORT_COMICINFO_COLLECTION, library.importComicInfoCollection)
       .set(l.IMPORT_EPUB_BOOK, library.importEpubBook)
       .set(l.IMPORT_EPUB_SERIES, library.importEpubSeries)
-      .returning(l.ID)
-      .fetchOne()
-
-    return findById(record.id)
+      .execute()
   }
 
   override fun update(library: Library) {

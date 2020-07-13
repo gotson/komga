@@ -27,7 +27,7 @@ class TaskReceiver(
     libraryRepository.findAll().forEach { scanLibrary(it.id) }
   }
 
-  fun scanLibrary(libraryId: Long) {
+  fun scanLibrary(libraryId: String) {
     submitTask(Task.ScanLibrary(libraryId))
   }
 

@@ -35,30 +35,30 @@ class SeriesDao(
       .fetchOneInto(s)
       ?.toDomain()
 
-  override fun findByLibraryId(libraryId: Long): List<Series> =
+  override fun findByLibraryId(libraryId: String): List<Series> =
     dsl.selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId))
       .fetchInto(s)
       .map { it.toDomain() }
 
-  override fun findByLibraryIdAndUrlNotIn(libraryId: Long, urls: Collection<URL>): List<Series> =
+  override fun findByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): List<Series> =
     dsl.selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId).and(s.URL.notIn(urls.map { it.toString() })))
       .fetchInto(s)
       .map { it.toDomain() }
 
-  override fun findByLibraryIdAndUrl(libraryId: Long, url: URL): Series? =
+  override fun findByLibraryIdAndUrl(libraryId: String, url: URL): Series? =
     dsl.selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId).and(s.URL.eq(url.toString())))
       .fetchOneInto(s)
       ?.toDomain()
 
 
-  override fun getLibraryId(seriesId: Long): Long? =
+  override fun getLibraryId(seriesId: Long): String? =
     dsl.select(s.LIBRARY_ID)
       .from(s)
       .where(s.ID.eq(seriesId))
-      .fetchOne(0, Long::class.java)
+      .fetchOne(0, String::class.java)
 
 
   override fun findAll(search: SeriesSearch): Collection<Series> {

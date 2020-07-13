@@ -5,7 +5,7 @@ import java.io.Serializable
 sealed class Task : Serializable {
   abstract fun uniqueId(): String
 
-  data class ScanLibrary(val libraryId: Long) : Task() {
+  data class ScanLibrary(val libraryId: String) : Task() {
     override fun uniqueId() = "SCAN_LIBRARY_$libraryId"
   }
 

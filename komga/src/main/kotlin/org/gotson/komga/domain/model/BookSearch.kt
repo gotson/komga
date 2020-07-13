@@ -1,14 +1,14 @@
 package org.gotson.komga.domain.model
 
 open class BookSearch(
-  val libraryIds: Collection<Long>? = null,
+  val libraryIds: Collection<String>? = null,
   val seriesIds: Collection<Long>? = null,
   val searchTerm: String? = null,
   val mediaStatus: Collection<Media.Status>? = null
 )
 
 class BookSearchWithReadProgress(
-  libraryIds: Collection<Long>? = null,
+  libraryIds: Collection<String>? = null,
   seriesIds: Collection<Long>? = null,
   searchTerm: String? = null,
   mediaStatus: Collection<Media.Status>? = null,

@@ -41,13 +41,13 @@ class BookDtoDaoTest(
   @Autowired private val userLifecycle: KomgaUserLifecycle
 ) {
 
-  private var library = makeLibrary()
+  private val library = makeLibrary()
   private var series = makeSeries("Series")
   private var user = KomgaUser("user@example.org", "", false)
 
   @BeforeAll
   fun setup() {
-    library = libraryRepository.insert(library)
+    libraryRepository.insert(library)
     series = seriesLifecycle.createSeries(series.copy(libraryId = library.id))
     user = userRepository.insert(user)
   }

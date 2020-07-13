@@ -44,7 +44,7 @@ class TaskHandlerTest(
   @MockkBean
   private lateinit var mockMetadataLifecycle: MetadataLifecycle
 
-  private var library = makeLibrary()
+  private val library = makeLibrary()
 
   init {
     jmsTemplate.receiveTimeout = JmsDestinationAccessor.RECEIVE_TIMEOUT_NO_WAIT
@@ -52,7 +52,7 @@ class TaskHandlerTest(
 
   @BeforeAll
   fun `setup library`() {
-    library = libraryRepository.insert(library)
+    libraryRepository.insert(library)
   }
 
   @AfterAll

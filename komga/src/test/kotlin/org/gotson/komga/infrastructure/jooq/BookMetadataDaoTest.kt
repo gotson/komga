@@ -29,13 +29,13 @@ class BookMetadataDaoTest(
   @Autowired private val seriesRepository: SeriesRepository,
   @Autowired private val libraryRepository: LibraryRepository
 ) {
-  private var library = makeLibrary()
+  private val library = makeLibrary()
   private var series = makeSeries("Series")
   private var book = makeBook("Book")
 
   @BeforeAll
   fun setup() {
-    library = libraryRepository.insert(library)
+    libraryRepository.insert(library)
 
     series = seriesRepository.insert(series.copy(libraryId = library.id))
 

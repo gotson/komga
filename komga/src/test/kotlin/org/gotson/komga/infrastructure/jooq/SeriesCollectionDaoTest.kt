@@ -25,13 +25,13 @@ class SeriesCollectionDaoTest(
   @Autowired private val libraryRepository: LibraryRepository
 ) {
 
-  private var library = makeLibrary()
-  private var library2 = makeLibrary("library2")
+  private val library = makeLibrary()
+  private val library2 = makeLibrary("library2")
 
   @BeforeAll
   fun setup() {
-    library = libraryRepository.insert(library)
-    library2 = libraryRepository.insert(library2)
+    libraryRepository.insert(library)
+    libraryRepository.insert(library2)
   }
 
   @AfterEach
