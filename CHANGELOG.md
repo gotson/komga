@@ -1,3 +1,10 @@
+# [0.46.0](https://github.com/gotson/komga/compare/v0.45.2...v0.46.0) (2020-07-13)
+
+
+### Features
+
+* **webui:** add simple next/previous book buttons to reader toolbar ([e428115](https://github.com/gotson/komga/commit/e4281156f5398d478257ee699d7016c1aa5ee81c)), closes [#233](https://github.com/gotson/komga/issues/233)
+
 ## [0.45.2](https://github.com/gotson/komga/compare/v0.45.1...v0.45.2) (2020-07-05)
 
 
