@@ -12,15 +12,15 @@ const urls = {
 
 export default urls
 
-export function bookThumbnailUrl (bookId: number): string {
+export function bookThumbnailUrl (bookId: string): string {
   return `${urls.originNoSlash}/api/v1/books/${bookId}/thumbnail`
 }
 
-export function bookFileUrl (bookId: number): string {
+export function bookFileUrl (bookId: string): string {
   return `${urls.originNoSlash}/api/v1/books/${bookId}/file`
 }
 
-export function bookPageUrl (bookId: number, page: number, convertTo?: string): string {
+export function bookPageUrl (bookId: string, page: number, convertTo?: string): string {
   let url = `${urls.originNoSlash}/api/v1/books/${bookId}/pages/${page}`
   if (convertTo) {
     url += `?convert=${convertTo}`

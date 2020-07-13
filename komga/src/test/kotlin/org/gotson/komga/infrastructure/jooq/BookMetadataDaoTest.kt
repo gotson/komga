@@ -39,7 +39,7 @@ class BookMetadataDaoTest(
 
     series = seriesRepository.insert(series.copy(libraryId = library.id))
 
-    book = bookRepository.insert(book.copy(libraryId = library.id, seriesId = series.id))
+    bookRepository.insert(book.copy(libraryId = library.id, seriesId = series.id))
   }
 
   @AfterEach
@@ -81,7 +81,8 @@ class BookMetadataDaoTest(
       authorsLock = true
     )
 
-    val created = bookMetadataDao.insert(metadata)
+    bookMetadataDao.insert(metadata)
+    val created = bookMetadataDao.findById(metadata.bookId)
 
     assertThat(created.bookId).isEqualTo(book.id)
     assertThat(created.createdDate).isCloseTo(now, offset)
@@ -121,7 +122,8 @@ class BookMetadataDaoTest(
       bookId = book.id
     )
 
-    val created = bookMetadataDao.insert(metadata)
+    bookMetadataDao.insert(metadata)
+    val created = bookMetadataDao.findById(metadata.bookId)
 
     assertThat(created.bookId).isEqualTo(book.id)
 
@@ -160,10 +162,10 @@ class BookMetadataDaoTest(
       authors = mutableListOf(Author("author", "role")),
       bookId = book.id
     )
-    val created = bookMetadataDao.insert(metadata)
+    bookMetadataDao.insert(metadata)
 
     val modificationDate = LocalDateTime.now()
-    val updated = with(created) {
+    val updated = with(bookMetadataDao.findById(metadata.bookId)) {
       copy(
         title = "BookUpdated",
         summary = "SummaryUpdated",
@@ -231,16 +233,16 @@ class BookMetadataDaoTest(
       authors = mutableListOf(Author("author", "role")),
       bookId = book.id
     )
-    val created = bookMetadataDao.insert(metadata)
+    bookMetadataDao.insert(metadata)
 
-    val found = catchThrowable { bookMetadataDao.findById(created.bookId) }
+    val found = catchThrowable { bookMetadataDao.findById(metadata.bookId) }
 
     assertThat(found).doesNotThrowAnyException()
   }
 
   @Test
   fun `given non-existing metadata when finding by id then exception is thrown`() {
-    val found = catchThrowable { bookMetadataDao.findById(128742) }
+    val found = catchThrowable { bookMetadataDao.findById("128742") }
 
     assertThat(found).isInstanceOf(Exception::class.java)
   }

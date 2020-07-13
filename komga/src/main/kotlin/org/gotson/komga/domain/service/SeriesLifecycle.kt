@@ -57,15 +57,15 @@ class SeriesLifecycle(
       check(it.libraryId == series.libraryId) { "Cannot add book to series if they don't share the same libraryId" }
     }
 
-    val createdBooks = bookRepository.insertMany(
+    bookRepository.insertMany(
       booksToAdd.map { it.copy(seriesId = series.id) }
     )
 
     // create associated media
-    mediaRepository.insertMany(createdBooks.map { Media(bookId = it.id) })
+    mediaRepository.insertMany(booksToAdd.map { Media(bookId = it.id) })
 
     // create associated metadata
-    createdBooks.map {
+    booksToAdd.map {
       BookMetadata(
         title = it.name,
         number = it.number.toString(),

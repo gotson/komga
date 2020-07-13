@@ -22,10 +22,10 @@ class BookDao(
   private val m = Tables.MEDIA
   private val d = Tables.BOOK_METADATA
 
-  override fun findByIdOrNull(bookId: Long): Book? =
+  override fun findByIdOrNull(bookId: String): Book? =
     findByIdOrNull(dsl, bookId)
 
-  private fun findByIdOrNull(dsl: DSLContext, bookId: Long): Book? =
+  private fun findByIdOrNull(dsl: DSLContext, bookId: String): Book? =
     dsl.selectFrom(b)
       .where(b.ID.eq(bookId))
       .fetchOneInto(b)
@@ -53,40 +53,40 @@ class BookDao(
       .map { it.toDomain() }
 
 
-  override fun getLibraryId(bookId: Long): Long? =
+  override fun getLibraryId(bookId: String): Long? =
     dsl.select(b.LIBRARY_ID)
       .from(b)
       .where(b.ID.eq(bookId))
       .fetchOne(0, Long::class.java)
 
-  override fun findFirstIdInSeries(seriesId: Long): Long? =
+  override fun findFirstIdInSeries(seriesId: Long): String? =
     dsl.select(b.ID)
       .from(b)
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .where(b.SERIES_ID.eq(seriesId))
       .orderBy(d.NUMBER_SORT)
       .limit(1)
-      .fetchOne(0, Long::class.java)
+      .fetchOne(0, String::class.java)
 
-  override fun findAllIdBySeriesId(seriesId: Long): Collection<Long> =
+  override fun findAllIdBySeriesId(seriesId: Long): Collection<String> =
     dsl.select(b.ID)
       .from(b)
       .where(b.SERIES_ID.eq(seriesId))
-      .fetch(0, Long::class.java)
+      .fetch(0, String::class.java)
 
-  override fun findAllIdBySeriesIds(seriesIds: Collection<Long>): Collection<Long> =
+  override fun findAllIdBySeriesIds(seriesIds: Collection<Long>): Collection<String> =
     dsl.select(b.ID)
       .from(b)
       .where(b.SERIES_ID.`in`(seriesIds))
-      .fetch(0, Long::class.java)
+      .fetch(0, String::class.java)
 
-  override fun findAllIdByLibraryId(libraryId: Long): Collection<Long> =
+  override fun findAllIdByLibraryId(libraryId: Long): Collection<String> =
     dsl.select(b.ID)
       .from(b)
       .where(b.LIBRARY_ID.eq(libraryId))
-      .fetch(0, Long::class.java)
+      .fetch(0, String::class.java)
 
-  override fun findAllId(bookSearch: BookSearch): Collection<Long> {
+  override fun findAllId(bookSearch: BookSearch): Collection<String> {
     val conditions = bookSearch.toCondition()
 
     return dsl.select(b.ID)
@@ -94,31 +94,45 @@ class BookDao(
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .where(conditions)
-      .fetch(0, Long::class.java)
+      .fetch(0, String::class.java)
   }
 
 
-  override fun insert(book: Book): Book =
-    insert(dsl, book)
+  override fun insert(book: Book) {
+    insertMany(listOf(book))
+  }
 
-  override fun insertMany(books: Collection<Book>): Collection<Book> =
-    dsl.transactionResult { config ->
-      books.map { insert(config.dsl(), it) }
+  override fun insertMany(books: Collection<Book>) {
+    if (books.isNotEmpty()) {
+      dsl.transaction { config ->
+        config.dsl().batch(
+          config.dsl().insertInto(
+            b,
+            b.ID,
+            b.NAME,
+            b.URL,
+            b.NUMBER,
+            b.FILE_LAST_MODIFIED,
+            b.FILE_SIZE,
+            b.LIBRARY_ID,
+            b.SERIES_ID
+          ).values(null as String?, null, null, null, null, null, null, null)
+        ).also { step ->
+          books.forEach {
+            step.bind(
+              it.id,
+              it.name,
+              it.url,
+              it.number,
+              it.fileLastModified,
+              it.fileSize,
+              it.libraryId,
+              it.seriesId
+            )
+          }
+        }.execute()
+      }
     }
-
-  private fun insert(dsl: DSLContext, book: Book): Book {
-    val record = dsl.insertInto(b)
-      .set(b.NAME, book.name)
-      .set(b.URL, book.url.toString())
-      .set(b.NUMBER, book.number)
-      .set(b.FILE_LAST_MODIFIED, book.fileLastModified)
-      .set(b.FILE_SIZE, book.fileSize)
-      .set(b.LIBRARY_ID, book.libraryId)
-      .set(b.SERIES_ID, book.seriesId)
-      .returning(b.ID)
-      .fetchOne()
-
-    return findByIdOrNull(dsl, record.id)!!
   }
 
   override fun update(book: Book) {
@@ -145,7 +159,7 @@ class BookDao(
       .execute()
   }
 
-  override fun delete(bookId: Long) {
+  override fun delete(bookId: String) {
     dsl.transaction { config ->
       with(config.dsl()) {
         deleteFrom(b).where(b.ID.eq(bookId)).execute()
@@ -153,7 +167,7 @@ class BookDao(
     }
   }
 
-  override fun deleteByBookIds(bookIds: Collection<Long>) {
+  override fun deleteByBookIds(bookIds: Collection<String>) {
     dsl.transaction { config ->
       with(config.dsl()) {
         deleteFrom(b).where(b.ID.`in`(bookIds)).execute()

@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.jooq
 
+import mu.KotlinLogging
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookSearch
@@ -61,7 +62,8 @@ class BookDaoTest(
       libraryId = library.id
     )
 
-    val created = bookDao.insert(book)
+    bookDao.insert(book)
+    val created = bookDao.findByIdOrNull(book.id)!!
 
     assertThat(created.id).isNotEqualTo(0)
     assertThat(created.createdDate).isCloseTo(now, offset)
@@ -82,11 +84,11 @@ class BookDaoTest(
       seriesId = series.id,
       libraryId = library.id
     )
-    val created = bookDao.insert(book)
+    bookDao.insert(book)
 
     val modificationDate = LocalDateTime.now()
 
-    val updated = with(created) {
+    val updated = with(bookDao.findByIdOrNull(book.id)!!) {
       copy(
         name = "Updated",
         url = URL("file://updated"),
@@ -119,9 +121,9 @@ class BookDaoTest(
       seriesId = series.id,
       libraryId = library.id
     )
-    val created = bookDao.insert(book)
+    bookDao.insert(book)
 
-    val found = bookDao.findByIdOrNull(created.id)
+    val found = bookDao.findByIdOrNull(book.id)
 
     assertThat(found).isNotNull
     assertThat(found?.name).isEqualTo("Book")
@@ -129,7 +131,7 @@ class BookDaoTest(
 
   @Test
   fun `given non-existing book when finding by id then null is returned`() {
-    val found = bookDao.findByIdOrNull(128742)
+    val found = bookDao.findByIdOrNull("128742")
 
     assertThat(found).isNull()
   }
@@ -187,4 +189,35 @@ class BookDaoTest(
 
     assertThat(bookDao.count()).isEqualTo(0)
   }
+
+
+  private val logger = KotlinLogging.logger {}
+
+//  @Test
+//  fun benchmark() {
+//    val books = (1..10000).map {
+//      makeBook(it.toString(), libraryId = library.id, seriesId = series.id)
+//    }
+//
+//    val single = measureTime {
+//      books.map { bookDao.insert(it) }
+//    }
+//    bookDao.deleteAll()
+//
+//    val singleBatch = measureTime {
+//      books.map { bookDao.insertBatch(it) }
+//    }
+//    bookDao.deleteAll()
+//
+//    val transaction = measureTime {
+//      bookDao.insertMany(books)
+//    }
+//    bookDao.deleteAll()
+//
+//    logger.info { "Single: $single" }
+//    logger.info { "SingleBatch: $singleBatch" }
+//    logger.info { "Transaction: $transaction" }
+//
+//    assertThat(single).isEqualTo(transaction)
+//  }
 }

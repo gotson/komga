@@ -40,7 +40,7 @@ class TaskReceiver(
     }
   }
 
-  fun analyzeBook(bookId: Long) {
+  fun analyzeBook(bookId: String) {
     submitTask(Task.AnalyzeBook(bookId))
   }
 
@@ -48,11 +48,11 @@ class TaskReceiver(
     submitTask(Task.AnalyzeBook(book.id))
   }
 
-  fun generateBookThumbnail(bookId: Long) {
+  fun generateBookThumbnail(bookId: String) {
     submitTask(Task.GenerateBookThumbnail(bookId))
   }
 
-  fun refreshBookMetadata(bookId: Long) {
+  fun refreshBookMetadata(bookId: String) {
     submitTask(Task.RefreshBookMetadata(bookId))
   }
 

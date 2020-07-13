@@ -84,12 +84,14 @@ class LibraryScanner(
             }
 
             // remove books not present anymore
+            val newBooksUrls = newBooks.map { it.url }
             existingBooks
-              .filterNot { existingBook -> newBooks.map { it.url }.contains(existingBook.url) }
+              .filterNot { existingBook -> newBooksUrls.contains(existingBook.url) }
               .let { books -> bookLifecycle.deleteMany(books.map { it.id }) }
 
             // add new books
-            val booksToAdd = newBooks.filterNot { newBook -> existingBooks.map { it.url }.contains(newBook.url) }
+            val existingBooksUrls = existingBooks.map { it.url }
+            val booksToAdd = newBooks.filterNot { newBook -> existingBooksUrls.contains(newBook.url) }
             seriesLifecycle.addBooks(existingSeries, booksToAdd)
 
             // sort all books

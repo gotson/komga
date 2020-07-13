@@ -93,6 +93,8 @@ dependencies {
 
   implementation("com.jakewharton.byteunits:byteunits:0.9.1")
 
+  implementation("com.github.f4b6a3:tsid-creator:2.1.1")
+
   runtimeOnly("com.h2database:h2:1.4.200")
   runtimeOnly("org.xerial:sqlite-jdbc:3.32.3")
   jooqGeneratorRuntime("org.xerial:sqlite-jdbc:3.32.3")

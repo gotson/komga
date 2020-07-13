@@ -44,8 +44,8 @@ class ReadProgressDaoTest(
     series = seriesRepository.insert(series.copy(libraryId = library.id))
     user1 = userRepository.insert(user1)
     user2 = userRepository.insert(user2)
-    book1 = bookRepository.insert(book1.copy(libraryId = library.id, seriesId = series.id))
-    book2 = bookRepository.insert(book2.copy(libraryId = library.id, seriesId = series.id))
+    bookRepository.insert(book1.copy(libraryId = library.id, seriesId = series.id))
+    bookRepository.insert(book2.copy(libraryId = library.id, seriesId = series.id))
   }
 
   @AfterEach

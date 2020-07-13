@@ -1,5 +1,5 @@
 interface EventBookChanged {
-  id: number,
+  id: string,
   seriesId: number
 }
 

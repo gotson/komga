@@ -101,7 +101,7 @@ const router = new Router({
           path: '/book/:bookId',
           name: 'browse-book',
           component: () => import(/* webpackChunkName: "browse-book" */ './views/BrowseBook.vue'),
-          props: (route) => ({ bookId: Number(route.params.bookId) }),
+          props: (route) => ({ bookId: route.params.bookId }),
         },
         {
           path: '/search',
@@ -124,7 +124,7 @@ const router = new Router({
       path: '/book/:bookId/read',
       name: 'read-book',
       component: () => import(/* webpackChunkName: "read-book" */ './views/BookReader.vue'),
-      props: (route) => ({ bookId: Number(route.params.bookId) }),
+      props: (route) => ({ bookId: route.params.bookId }),
     },
     {
       path: '*',

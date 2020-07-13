@@ -39,7 +39,7 @@ class MediaDaoTest(
 
     series = seriesRepository.insert(series.copy(libraryId = library.id))
 
-    book = bookRepository.insert(book.copy(libraryId = library.id, seriesId = series.id))
+    bookRepository.insert(book.copy(libraryId = library.id, seriesId = series.id))
   }
 
   @AfterEach
@@ -72,7 +72,8 @@ class MediaDaoTest(
       bookId = book.id
     )
 
-    val created = mediaDao.insert(media)
+    mediaDao.insert(media)
+    val created = mediaDao.findById(media.bookId)
 
     assertThat(created.bookId).isEqualTo(book.id)
     assertThat(created.createdDate).isCloseTo(now, offset)
@@ -94,7 +95,8 @@ class MediaDaoTest(
   fun `given a minimum media when inserting then it is persisted`() {
     val media = Media(bookId = book.id)
 
-    val created = mediaDao.insert(media)
+    mediaDao.insert(media)
+    val created = mediaDao.findById(media.bookId)
 
     assertThat(created.bookId).isEqualTo(book.id)
     assertThat(created.status).isEqualTo(Media.Status.UNKNOWN)
@@ -119,21 +121,23 @@ class MediaDaoTest(
       comment = "comment",
       bookId = book.id
     )
-    val created = mediaDao.insert(media)
+    mediaDao.insert(media)
 
     val modificationDate = LocalDateTime.now()
 
-    val updated = created.copy(
-      status = Media.Status.ERROR,
-      mediaType = "application/rar",
-      thumbnail = Random.nextBytes(1),
-      pages = listOf(BookPage(
-        fileName = "2.png",
-        mediaType = "image/png"
-      )),
-      files = listOf("id.txt"),
-      comment = "comment2"
-    )
+    val updated = with(mediaDao.findById(media.bookId)) {
+      copy(
+        status = Media.Status.ERROR,
+        mediaType = "application/rar",
+        thumbnail = Random.nextBytes(1),
+        pages = listOf(BookPage(
+          fileName = "2.png",
+          mediaType = "image/png"
+        )),
+        files = listOf("id.txt"),
+        comment = "comment2"
+      )
+    }
 
     mediaDao.update(updated)
     val modified = mediaDao.findById(updated.bookId)
@@ -166,16 +170,16 @@ class MediaDaoTest(
       comment = "comment",
       bookId = book.id
     )
-    val created = mediaDao.insert(media)
+    mediaDao.insert(media)
 
-    val found = catchThrowable { mediaDao.findById(created.bookId) }
+    val found = catchThrowable { mediaDao.findById(media.bookId) }
 
     assertThat(found).doesNotThrowAnyException()
   }
 
   @Test
   fun `given non-existing media when finding by id then exception is thrown`() {
-    val found = catchThrowable { mediaDao.findById(128742) }
+    val found = catchThrowable { mediaDao.findById("128742") }
 
     assertThat(found).isInstanceOf(Exception::class.java)
   }

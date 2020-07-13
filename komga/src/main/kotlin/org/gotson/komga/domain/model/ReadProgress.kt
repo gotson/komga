@@ -3,7 +3,7 @@ package org.gotson.komga.domain.model
 import java.time.LocalDateTime
 
 data class ReadProgress(
-  val bookId: Long,
+  val bookId: String,
   val userId: Long,
   val page: Int,
   val completed: Boolean,

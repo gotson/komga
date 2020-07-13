@@ -9,15 +9,15 @@ sealed class Task : Serializable {
     override fun uniqueId() = "SCAN_LIBRARY_$libraryId"
   }
 
-  data class AnalyzeBook(val bookId: Long) : Task() {
+  data class AnalyzeBook(val bookId: String) : Task() {
     override fun uniqueId() = "ANALYZE_BOOK_$bookId"
   }
 
-  data class GenerateBookThumbnail(val bookId: Long) : Task() {
+  data class GenerateBookThumbnail(val bookId: String) : Task() {
     override fun uniqueId() = "GENERATE_BOOK_THUMBNAIL_$bookId"
   }
 
-  data class RefreshBookMetadata(val bookId: Long) : Task() {
+  data class RefreshBookMetadata(val bookId: String) : Task() {
     override fun uniqueId() = "REFRESH_BOOK_METADATA_$bookId"
   }
 

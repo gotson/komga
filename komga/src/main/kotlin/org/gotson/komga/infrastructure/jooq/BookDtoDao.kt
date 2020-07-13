@@ -84,15 +84,15 @@ class BookDtoDao(
     )
   }
 
-  override fun findByIdOrNull(bookId: Long, userId: Long): BookDto? =
+  override fun findByIdOrNull(bookId: String, userId: Long): BookDto? =
     selectBase(userId)
       .where(b.ID.eq(bookId))
       .fetchAndMap()
       .firstOrNull()
 
-  override fun findPreviousInSeries(bookId: Long, userId: Long): BookDto? = findSibling(bookId, userId, next = false)
+  override fun findPreviousInSeries(bookId: String, userId: Long): BookDto? = findSibling(bookId, userId, next = false)
 
-  override fun findNextInSeries(bookId: Long, userId: Long): BookDto? = findSibling(bookId, userId, next = true)
+  override fun findNextInSeries(bookId: String, userId: Long): BookDto? = findSibling(bookId, userId, next = true)
 
 
   override fun findOnDeck(libraryIds: Collection<Long>, userId: Long, pageable: Pageable): Page<BookDto> {
@@ -133,7 +133,7 @@ class BookDtoDao(
 
   private fun readProgressCondition(userId: Long): Condition = r.USER_ID.eq(userId).or(r.USER_ID.isNull)
 
-  private fun findSibling(bookId: Long, userId: Long, next: Boolean): BookDto? {
+  private fun findSibling(bookId: String, userId: Long, next: Boolean): BookDto? {
     val record = dsl.select(b.SERIES_ID, d.NUMBER_SORT)
       .from(b)
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))

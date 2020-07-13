@@ -22,10 +22,10 @@ class MediaDao(
 
   private val groupFields = arrayOf(*m.fields(), *p.fields())
 
-  override fun findById(bookId: Long): Media =
+  override fun findById(bookId: String): Media =
     find(dsl, bookId)
 
-  private fun find(dsl: DSLContext, bookId: Long): Media =
+  private fun find(dsl: DSLContext, bookId: String): Media =
     dsl.select(*groupFields)
       .from(m)
       .leftJoin(p).on(m.BOOK_ID.eq(p.BOOK_ID))
@@ -43,56 +43,92 @@ class MediaDao(
         mr.toDomain(pr.filterNot { it.bookId == null }.map { it.toDomain() }, files)
       }.first()
 
-  override fun getThumbnail(bookId: Long): ByteArray? =
+  override fun getThumbnail(bookId: String): ByteArray? =
     dsl.select(m.THUMBNAIL)
       .from(m)
       .where(m.BOOK_ID.eq(bookId))
       .fetchOne(0, ByteArray::class.java)
 
 
-  override fun insert(media: Media): Media =
-    dsl.transactionResult { config ->
-      insertMedia(config.dsl(), media)
-    }
-
-  override fun insertMany(medias: Collection<Media>): Collection<Media> =
-    dsl.transactionResult { config ->
-      medias.map { insertMedia(config.dsl(), it) }
-    }
-
-  private fun insertMedia(dsl: DSLContext, media: Media): Media {
-    dsl.insertInto(m)
-      .set(m.BOOK_ID, media.bookId)
-      .set(m.STATUS, media.status.toString())
-      .set(m.MEDIA_TYPE, media.mediaType)
-      .set(m.THUMBNAIL, media.thumbnail)
-      .set(m.COMMENT, media.comment)
-      .set(m.PAGE_COUNT, media.pages.size)
-      .execute()
-
-    insertPages(dsl, media)
-    insertFiles(dsl, media)
-
-    return find(dsl, media.bookId)
+  override fun insert(media: Media) {
+    insertMany(listOf(media))
   }
 
-  private fun insertPages(dsl: DSLContext, media: Media) {
-    media.pages.forEachIndexed { index, page ->
-      dsl.insertInto(p)
-        .set(p.BOOK_ID, media.bookId)
-        .set(p.FILE_NAME, page.fileName)
-        .set(p.MEDIA_TYPE, page.mediaType)
-        .set(p.NUMBER, index)
-        .execute()
+  override fun insertMany(medias: Collection<Media>) {
+    if (medias.isNotEmpty()) {
+      dsl.transaction { config ->
+        config.dsl().batch(
+          config.dsl().insertInto(
+            m,
+            m.BOOK_ID,
+            m.STATUS,
+            m.MEDIA_TYPE,
+            m.THUMBNAIL,
+            m.COMMENT,
+            m.PAGE_COUNT
+          ).values(null as String?, null, null, null, null, null)
+        ).also { step ->
+          medias.forEach {
+            step.bind(
+              it.bookId,
+              it.status,
+              it.mediaType,
+              it.thumbnail,
+              it.comment,
+              it.pages.size
+            )
+          }
+        }.execute()
+
+        insertPages(config.dsl(), medias)
+        insertFiles(config.dsl(), medias)
+      }
     }
   }
 
-  private fun insertFiles(dsl: DSLContext, media: Media) {
-    media.files.forEach {
-      dsl.insertInto(f)
-        .set(f.BOOK_ID, media.bookId)
-        .set(f.FILE_NAME, it)
-        .execute()
+  private fun insertPages(dsl: DSLContext, medias: Collection<Media>) {
+    if (medias.any { it.pages.isNotEmpty() }) {
+      dsl.batch(
+        dsl.insertInto(
+          p,
+          p.BOOK_ID,
+          p.FILE_NAME,
+          p.MEDIA_TYPE,
+          p.NUMBER
+        ).values(null as String?, null, null, null)
+      ).also {
+        medias.forEach { media ->
+          media.pages.forEachIndexed { index, page ->
+            it.bind(
+              media.bookId,
+              page.fileName,
+              page.mediaType,
+              index
+            )
+          }
+        }
+      }.execute()
+    }
+  }
+
+  private fun insertFiles(dsl: DSLContext, medias: Collection<Media>) {
+    if (medias.any { it.files.isNotEmpty() }) {
+      dsl.batch(
+        dsl.insertInto(
+          f,
+          f.BOOK_ID,
+          f.FILE_NAME
+        ).values(null as String?, null)
+      ).also { step ->
+        medias.forEach { media ->
+          media.files.forEach {
+            step.bind(
+              media.bookId,
+              it
+            )
+          }
+        }
+      }.execute()
     }
   }
 
@@ -118,13 +154,13 @@ class MediaDao(
           .where(f.BOOK_ID.eq(media.bookId))
           .execute()
 
-        insertPages(this, media)
-        insertFiles(this, media)
+        insertPages(this, listOf(media))
+        insertFiles(this, listOf(media))
       }
     }
   }
 
-  override fun delete(bookId: Long) {
+  override fun delete(bookId: String) {
     dsl.transaction { config ->
       with(config.dsl())
       {
@@ -135,7 +171,7 @@ class MediaDao(
     }
   }
 
-  override fun deleteByBookIds(bookIds: Collection<Long>) {
+  override fun deleteByBookIds(bookIds: Collection<String>) {
     dsl.transaction { config ->
       with(config.dsl())
       {
