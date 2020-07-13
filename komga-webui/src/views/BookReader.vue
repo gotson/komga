@@ -10,6 +10,7 @@
   >
     <div>
       <v-slide-y-transition>
+        <!-- Top Toolbar-->
         <v-toolbar
           dense elevation="1"
           v-if="toolbar"
@@ -39,6 +40,7 @@
         </v-toolbar>
       </v-slide-y-transition>
       <v-slide-y-reverse-transition>
+        <!-- Bottom Toolbar-->
         <v-toolbar
           dense
           elevation="1"
@@ -49,29 +51,31 @@
         >
           <v-row justify="center">
             <!--  Menu: page slider  -->
-            <v-col>
-              <v-slider
-                hide-details
-                thumb-label
-                @change="goTo"
-                v-model="goToPage"
-                class="align-center"
-                min="1"
-                :max="pagesCount"
-              >
-                <template v-slot:prepend>
-                  <v-icon @click="goToFirst" class="mx-2">mdi-arrow-collapse-left</v-icon>
-                  <v-label>
-                    {{ currentPage }}
-                  </v-label>
-                </template>
-                <template v-slot:append>
-                  <v-label>
-                    {{ pagesCount }}
-                  </v-label>
-                  <v-icon @click="goToLast" class="mx-2">mdi-arrow-collapse-right</v-icon>
-                </template>
-              </v-slider>
+            <v-col class="px-0">
+                <v-slider
+                  hide-details
+                  thumb-label
+                  @change="goTo"
+                  v-model="goToPage"
+                  class="align-center"
+                  min="1"
+                  :max="pagesCount"
+                >
+                  <template v-slot:prepend>
+                    <v-icon @click="previousBook" class="">mdi-undo</v-icon>
+                    <v-icon @click="goToFirst" class="mx-2">mdi-skip-previous</v-icon>
+                    <v-label>
+                      {{ currentPage }}
+                    </v-label>
+                  </template>
+                  <template v-slot:append>
+                    <v-label>
+                      {{ pagesCount }}
+                    </v-label>
+                    <v-icon @click="goToLast" class="mx-1">mdi-skip-next</v-icon>
+                    <v-icon @click="nextBook" class="">mdi-redo</v-icon>
+                  </template>
+                </v-slider>
             </v-col>
           </v-row>
 
@@ -599,10 +603,7 @@ export default Vue.extend({
         window.scrollTo(0, 0)
       } else {
         if (this.jumpToPreviousBook) {
-          if (!this.$_.isEmpty(this.siblingPrevious)) {
-            this.jumpToPreviousBook = false
-            this.$router.push({ name: 'read-book', params: { bookId: this.siblingPrevious.id.toString() } })
-          }
+          this.previousBook()
         } else {
           this.jumpToPreviousBook = true
         }
@@ -614,15 +615,24 @@ export default Vue.extend({
         window.scrollTo(0, 0)
       } else {
         if (this.jumpToNextBook) {
-          if (this.$_.isEmpty(this.siblingNext)) {
-            this.closeBook()
-          } else {
-            this.jumpToNextBook = false
-            this.$router.push({ name: 'read-book', params: { bookId: this.siblingNext.id.toString() } })
-          }
+          this.nextBook()
         } else {
           this.jumpToNextBook = true
         }
+      }
+    },
+    nextBook () {
+      if (this.$_.isEmpty(this.siblingNext)) {
+        this.closeBook()
+      } else {
+        this.jumpToNextBook = false
+        this.$router.push({ name: 'read-book', params: { bookId: this.siblingNext.id.toString() } })
+      }
+    },
+    previousBook () {
+      if (!this.$_.isEmpty(this.siblingPrevious)) {
+        this.jumpToPreviousBook = false
+        this.$router.push({ name: 'read-book', params: { bookId: this.siblingPrevious.id.toString() } })
       }
     },
     goTo (page: number) {
