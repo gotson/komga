@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 data class Series(
   val name: String,
   val url: URL,
-  var fileLastModified: LocalDateTime,
+  val fileLastModified: LocalDateTime,
 
   val id: Long = 0,
   val libraryId: Long = 0,
