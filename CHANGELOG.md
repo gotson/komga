@@ -1,3 +1,10 @@
+# [0.47.0](https://github.com/gotson/komga/compare/v0.46.0...v0.47.0) (2020-07-14)
+
+
+### Features
+
+* **webui:** change internals for shortcuts. add new shortcuts for settings ([b402817](https://github.com/gotson/komga/commit/b402817edbface6d622d92c98347f6fe1914bf88)), closes [#172](https://github.com/gotson/komga/issues/172)
+
 # [0.46.0](https://github.com/gotson/komga/compare/v0.45.2...v0.46.0) (2020-07-13)
 
 

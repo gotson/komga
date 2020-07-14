@@ -33,12 +33,12 @@
             "format": "int32",
             "type": "integer"
           },
+          "last": {
+            "type": "boolean"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -885,12 +885,12 @@
             "format": "int32",
             "type": "integer"
           },
+          "last": {
+            "type": "boolean"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -931,12 +931,12 @@
             "format": "int32",
             "type": "integer"
           },
+          "last": {
+            "type": "boolean"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -1096,36 +1096,6 @@
         ]
       }
     },
-    "/opds/v1.2/search": {
-      "get": {
-        "operationId": "getSearch",
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/OpenSearchDescription"
-                }
-              },
-              "application/atom+xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/OpenSearchDescription"
-                }
-              },
-              "text/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/OpenSearchDescription"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "opds-controller"
-        ]
-      }
-    },
     "/opds/v1.2/series/latest": {
       "get": {
         "operationId": "getLatestSeries_1",
@@ -1146,6 +1116,36 @@
               "text/xml": {
                 "schema": {
                   "$ref": "#/components/schemas/OpdsFeed"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "opds-controller"
+        ]
+      }
+    },
+    "/opds/v1.2/search": {
+      "get": {
+        "operationId": "getSearch",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenSearchDescription"
+                }
+              },
+              "application/atom+xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenSearchDescription"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenSearchDescription"
                 }
               }
             }
@@ -3262,23 +3262,19 @@
         ]
       }
     },
-    "/api/v1/books/{bookId}/metadata": {
-      "patch": {
-        "requestBody": {
-          "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BookMetadataUpdateDto"
+    "/api/v1/books/{bookId}": {
+      "get": {
+        "operationId": "getOneBook",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookDto"
+                }
               }
             }
-          },
-          "required": true
-        },
-        "operationId": "updateMetadata",
-        "responses": {
-          "204": {
-            "description": "default response"
           }
         },
         "parameters": [
@@ -3297,19 +3293,23 @@
         ]
       }
     },
-    "/api/v1/books/{bookId}": {
-      "get": {
-        "operationId": "getOneBook",
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BookDto"
-                }
+    "/api/v1/books/{bookId}/metadata": {
+      "patch": {
+        "requestBody": {
+          "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookMetadataUpdateDto"
               }
             }
+          },
+          "required": true
+        },
+        "operationId": "updateMetadata",
+        "responses": {
+          "204": {
+            "description": "default response"
           }
         },
         "parameters": [
