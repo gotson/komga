@@ -1,5 +1,5 @@
 interface CollectionDto {
-  id: number,
+  id: string,
   name: string,
   ordered: boolean,
   filtered: boolean,

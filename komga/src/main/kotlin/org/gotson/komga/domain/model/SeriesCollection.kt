@@ -1,5 +1,6 @@
 package org.gotson.komga.domain.model
 
+import com.github.f4b6a3.tsid.TsidCreator
 import java.time.LocalDateTime
 
 data class SeriesCollection(
@@ -8,7 +9,7 @@ data class SeriesCollection(
 
   val seriesIds: List<String> = emptyList(),
 
-  val id: Long = 0,
+  val id: String = TsidCreator.getTsidString(),
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now(),

@@ -143,7 +143,7 @@ CREATE TABLE READ_PROGRESS
 );
 CREATE TABLE COLLECTION
 (
-    ID                 INTEGER  NOT NULL PRIMARY KEY,
+    ID                 varchar  NOT NULL PRIMARY KEY,
     NAME               varchar  NOT NULL,
     ORDERED            boolean  NOT NULL DEFAULT 0,
     SERIES_COUNT       int      NOT NULL,
@@ -152,7 +152,7 @@ CREATE TABLE COLLECTION
 );
 CREATE TABLE COLLECTION_SERIES
 (
-    COLLECTION_ID int8    NOT NULL,
+    COLLECTION_ID varchar NOT NULL,
     SERIES_ID     varchar NOT NULL,
     NUMBER        int     NOT NULL,
     PRIMARY KEY (COLLECTION_ID, SERIES_ID),

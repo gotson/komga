@@ -36,6 +36,6 @@ export function seriesThumbnailUrl (seriesId: string): string {
   return `${urls.originNoSlash}/api/v1/series/${seriesId}/thumbnail`
 }
 
-export function collectionThumbnailUrl (collectionId: number): string {
+export function collectionThumbnailUrl (collectionId: string): string {
   return `${urls.originNoSlash}/api/v1/collections/${collectionId}/thumbnail`
 }

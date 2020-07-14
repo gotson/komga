@@ -89,7 +89,7 @@ const router = new Router({
           path: '/collections/:collectionId',
           name: 'browse-collection',
           component: () => import(/* webpackChunkName: "browse-collection" */ './views/BrowseCollection.vue'),
-          props: (route) => ({ collectionId: Number(route.params.collectionId) }),
+          props: (route) => ({ collectionId: route.params.collectionId }),
         },
         {
           path: '/series/:seriesId',

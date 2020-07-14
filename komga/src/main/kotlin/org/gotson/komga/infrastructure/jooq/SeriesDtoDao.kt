@@ -70,7 +70,7 @@ class SeriesDtoDao(
     return findAll(conditions, having, userId, pageable)
   }
 
-  override fun findByCollectionId(collectionId: Long, userId: String, pageable: Pageable): Page<SeriesDto> {
+  override fun findByCollectionId(collectionId: String, userId: String, pageable: Pageable): Page<SeriesDto> {
     val conditions = cs.COLLECTION_ID.eq(collectionId)
     val having = DSL.trueCondition()
 

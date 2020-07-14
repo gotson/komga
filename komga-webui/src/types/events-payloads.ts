@@ -9,11 +9,11 @@ interface EventSeriesChanged {
 }
 
 interface EventCollectionChanged {
-  id: number
+  id: string
 }
 
 interface EventCollectionDeleted {
-  id: number
+  id: string
 }
 
 interface EventLibraryAdded {

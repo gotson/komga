@@ -309,7 +309,7 @@ class OpdsController(
   @GetMapping("collections/{id}")
   fun getOneCollection(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @PathVariable id: Long
+    @PathVariable id: String
   ): OpdsFeed {
     return collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { collection ->
       val series = collection.seriesIds.mapNotNull { seriesRepository.findByIdOrNull(it) }

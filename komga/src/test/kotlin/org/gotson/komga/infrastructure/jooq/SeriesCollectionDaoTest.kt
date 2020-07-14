@@ -59,7 +59,8 @@ class SeriesCollectionDaoTest(
     // when
     val now = LocalDateTime.now()
 
-    val created = collectionDao.insert(collection)
+    collectionDao.insert(collection)
+    val created = collectionDao.findByIdOrNull(collection.id)!!
 
     // then
     assertThat(created.name).isEqualTo(collection.name)
@@ -81,13 +82,13 @@ class SeriesCollectionDaoTest(
       seriesIds = series.map { it.id }
     )
 
-    val created = collectionDao.insert(collection)
+    collectionDao.insert(collection)
 
     // when
-    val updatedCollection = created.copy(
+    val updatedCollection = collection.copy(
       name = "UpdatedCollection",
       ordered = true,
-      seriesIds = created.seriesIds.take(5)
+      seriesIds = collection.seriesIds.take(5)
     )
 
     val now = LocalDateTime.now()
@@ -110,19 +111,17 @@ class SeriesCollectionDaoTest(
     val series = (1..10).map { makeSeries("Series $it", library.id) }
     series.forEach { seriesRepository.insert(it) }
 
-    val collection1 = collectionDao.insert(
-      SeriesCollection(
-        name = "MyCollection",
-        seriesIds = series.map { it.id }
-      )
+    val collection1 = SeriesCollection(
+      name = "MyCollection",
+      seriesIds = series.map { it.id }
     )
+    collectionDao.insert(collection1)
 
-    val collection2 = collectionDao.insert(
-      SeriesCollection(
-        name = "MyCollection2",
-        seriesIds = series.map { it.id }.take(5)
-      )
+    val collection2 = SeriesCollection(
+      name = "MyCollection2",
+      seriesIds = series.map { it.id }.take(5)
     )
+    collectionDao.insert(collection2)
 
     // when
     collectionDao.removeSeriesFromAll(series.first().id)

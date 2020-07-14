@@ -5,7 +5,7 @@ import org.gotson.komga.domain.model.SeriesCollection
 import java.time.LocalDateTime
 
 data class CollectionDto(
-  val id: Long,
+  val id: String,
   val name: String,
   val ordered: Boolean,
 

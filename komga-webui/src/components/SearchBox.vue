@@ -139,7 +139,7 @@ export default Vue.extend({
     bookThumbnailUrl (bookId: string): string {
       return bookThumbnailUrl(bookId)
     },
-    collectionThumbnailUrl (collectionId: number): string {
+    collectionThumbnailUrl (collectionId: string): string {
       return collectionThumbnailUrl(collectionId)
     },
   },

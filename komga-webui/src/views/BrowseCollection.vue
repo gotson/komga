@@ -103,7 +103,7 @@ export default Vue.extend({
   },
   props: {
     collectionId: {
-      type: Number,
+      type: String,
       required: true,
     },
   },
@@ -140,7 +140,7 @@ export default Vue.extend({
       this.series = []
       this.editElements = false
 
-      this.loadCollection(Number(to.params.collectionId))
+      this.loadCollection(to.params.collectionId)
     }
 
     next()
@@ -156,7 +156,7 @@ export default Vue.extend({
         this.loadCollection(this.collectionId)
       }
     },
-    async loadCollection (collectionId: number) {
+    async loadCollection (collectionId: string) {
       this.collection = await this.$komgaCollections.getOneCollection(collectionId)
       this.series = (await this.$komgaCollections.getSeries(collectionId, { unpaged: true } as PageRequest)).content
       this.seriesCopy = [...this.series]

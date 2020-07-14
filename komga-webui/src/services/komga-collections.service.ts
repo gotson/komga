@@ -30,7 +30,7 @@ export default class KomgaCollectionsService {
     }
   }
 
-  async getOneCollection (collectionId: number): Promise<CollectionDto> {
+  async getOneCollection (collectionId: string): Promise<CollectionDto> {
     try {
       return (await this.http.get(`${API_COLLECTIONS}/${collectionId}`)).data
     } catch (e) {
@@ -54,7 +54,7 @@ export default class KomgaCollectionsService {
     }
   }
 
-  async patchCollection (collectionId: number, collection: CollectionUpdateDto) {
+  async patchCollection (collectionId: string, collection: CollectionUpdateDto) {
     try {
       await this.http.patch(`${API_COLLECTIONS}/${collectionId}`, collection)
     } catch (e) {
@@ -66,7 +66,7 @@ export default class KomgaCollectionsService {
     }
   }
 
-  async deleteCollection (collectionId: number) {
+  async deleteCollection (collectionId: string) {
     try {
       await this.http.delete(`${API_COLLECTIONS}/${collectionId}`)
     } catch (e) {
@@ -78,7 +78,7 @@ export default class KomgaCollectionsService {
     }
   }
 
-  async getSeries (collectionId: number, pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
+  async getSeries (collectionId: string, pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
     try {
       const params = { ...pageRequest }
       return (await this.http.get(`${API_COLLECTIONS}/${collectionId}/series`, {
