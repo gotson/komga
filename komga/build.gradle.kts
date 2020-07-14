@@ -1,5 +1,4 @@
 import com.rohanprabhu.gradle.plugins.kdjooq.database
-import com.rohanprabhu.gradle.plugins.kdjooq.forcedTypes
 import com.rohanprabhu.gradle.plugins.kdjooq.generator
 import com.rohanprabhu.gradle.plugins.kdjooq.jdbc
 import com.rohanprabhu.gradle.plugins.kdjooq.jooqCodegenConfiguration
@@ -243,14 +242,7 @@ jooqGenerator {
 
         database {
           name = "org.jooq.meta.sqlite.SQLiteDatabase"
-
-          forcedTypes {
-            forcedType {
-              name = "BIGINT"
-              includeExpression = "ID"
-              includeTypes = "INTEGER"
-            }
-          }
+          d
         }
       }
     }
