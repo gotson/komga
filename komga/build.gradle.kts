@@ -242,7 +242,6 @@ jooqGenerator {
 
         database {
           name = "org.jooq.meta.sqlite.SQLiteDatabase"
-          d
         }
       }
     }
