@@ -1,3 +1,10 @@
+# [0.46.0-beta.2](https://github.com/gotson/komga/compare/v0.46.0-beta.1...v0.46.0-beta.2) (2020-07-14)
+
+
+### Bug Fixes
+
+* cannot update user ([bc322ac](https://github.com/gotson/komga/commit/bc322ac411bef6b59f7d5765411e914ace5dc8b6))
+
 # [0.46.0-beta.1](https://github.com/gotson/komga/compare/v0.45.2...v0.46.0-beta.1) (2020-07-12)
 
 

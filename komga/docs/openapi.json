@@ -83,15 +83,13 @@
             "type": "string"
           },
           "libraryId": {
-            "format": "int64",
-            "type": "integer"
+            "type": "string"
           },
           "media": {
             "$ref": "#/components/schemas/MediaDto"
           },
           "seriesId": {
-            "format": "int64",
-            "type": "integer"
+            "type": "string"
           },
           "url": {
             "type": "string"
@@ -118,8 +116,7 @@
             "type": "string"
           },
           "id": {
-            "format": "int64",
-            "type": "integer"
+            "type": "string"
           },
           "lastModified": {
             "format": "date-time",
@@ -137,8 +134,7 @@
             }
           },
           "id": {
-            "format": "int64",
-            "type": "integer"
+            "type": "string"
           },
           "email": {
             "type": "string"
@@ -252,8 +248,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "format": "int64",
-            "type": "integer"
+            "type": "string"
           }
         }
       },
@@ -295,8 +290,7 @@
             "type": "boolean"
           },
           "id": {
-            "format": "int64",
-            "type": "integer"
+            "type": "string"
           },
           "email": {
             "type": "string"
@@ -428,8 +422,7 @@
             "type": "string"
           },
           "id": {
-            "format": "int64",
-            "type": "integer"
+            "type": "string"
           },
           "importComicInfoCollection": {
             "type": "boolean"
@@ -574,8 +567,7 @@
           "seriesIds": {
             "type": "array",
             "items": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             }
           }
         }
@@ -611,8 +603,7 @@
           "seriesIds": {
             "type": "array",
             "items": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             }
           }
         }
@@ -638,14 +629,12 @@
             "type": "string"
           },
           "id": {
-            "format": "int64",
-            "type": "integer"
+            "type": "string"
           },
           "seriesIds": {
             "type": "array",
             "items": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             }
           }
         }
@@ -794,15 +783,13 @@
             "type": "integer"
           },
           "libraryId": {
-            "format": "int64",
-            "type": "integer"
+            "type": "string"
           },
           "name": {
             "type": "string"
           },
           "id": {
-            "format": "int64",
-            "type": "integer"
+            "type": "string"
           },
           "lastModified": {
             "format": "date-time",
@@ -872,8 +859,7 @@
             "uniqueItems": true,
             "type": "array",
             "items": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             }
           }
         }
@@ -1011,91 +997,6 @@
   ],
   "openapi": "3.0.1",
   "paths": {
-    "/api/v1/libraries/{id}": {
-      "get": {
-        "operationId": "getOne",
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LibraryDto"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "schema": {
-              "format": "int64",
-              "type": "integer"
-            },
-            "in": "path",
-            "name": "id",
-            "required": true
-          }
-        ],
-        "tags": [
-          "library-controller"
-        ]
-      },
-      "delete": {
-        "operationId": "deleteOne",
-        "responses": {
-          "204": {
-            "description": "default response"
-          }
-        },
-        "parameters": [
-          {
-            "schema": {
-              "format": "int64",
-              "type": "integer"
-            },
-            "in": "path",
-            "name": "id",
-            "required": true
-          }
-        ],
-        "tags": [
-          "library-controller"
-        ]
-      },
-      "put": {
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LibraryUpdateDto"
-              }
-            }
-          },
-          "required": true
-        },
-        "operationId": "updateOne",
-        "responses": {
-          "204": {
-            "description": "default response"
-          }
-        },
-        "parameters": [
-          {
-            "schema": {
-              "format": "int64",
-              "type": "integer"
-            },
-            "in": "path",
-            "name": "id",
-            "required": true
-          }
-        ],
-        "tags": [
-          "library-controller"
-        ]
-      }
-    },
     "/opds/v1.2/series/latest": {
       "get": {
         "operationId": "getLatestSeries_1",
@@ -1174,8 +1075,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -1346,8 +1246,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -1379,8 +1278,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -1411,8 +1309,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "seriesId",
@@ -1421,6 +1318,88 @@
         ],
         "tags": [
           "series-controller"
+        ]
+      }
+    },
+    "/api/v1/libraries/{libraryId}": {
+      "get": {
+        "operationId": "getOne",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LibraryDto"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "libraryId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "library-controller"
+        ]
+      },
+      "delete": {
+        "operationId": "deleteOne",
+        "responses": {
+          "204": {
+            "description": "default response"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "libraryId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "library-controller"
+        ]
+      },
+      "put": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LibraryUpdateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "operationId": "updateOne",
+        "responses": {
+          "204": {
+            "description": "default response"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "libraryId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "library-controller"
         ]
       }
     },
@@ -1491,8 +1470,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -1562,8 +1540,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -1595,8 +1572,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -1626,8 +1602,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -1674,8 +1649,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "seriesId",
@@ -1715,8 +1689,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -1750,8 +1723,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -1772,8 +1744,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -1847,8 +1818,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "seriesId",
@@ -1869,8 +1839,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "seriesId",
@@ -1919,8 +1888,7 @@
           },
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -1953,8 +1921,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "seriesId",
@@ -1977,8 +1944,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "seriesId",
@@ -2008,8 +1974,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "seriesId",
@@ -2101,8 +2066,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -2166,8 +2130,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -2195,8 +2158,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -2217,8 +2179,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -2241,8 +2202,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "libraryId",
@@ -2272,8 +2232,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -2336,8 +2295,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "libraryId",
@@ -2368,8 +2326,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -2440,8 +2397,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "format": "int64",
-                "type": "integer"
+                "type": "string"
               }
             },
             "in": "query",
@@ -2555,8 +2511,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -2577,8 +2532,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -2608,8 +2562,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "seriesId",
@@ -2649,8 +2602,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -2673,8 +2625,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -2714,8 +2665,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "format": "int64",
-                "type": "integer"
+                "type": "string"
               }
             },
             "in": "query",
@@ -2853,8 +2803,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "libraryId",
@@ -2888,8 +2837,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "seriesId",
@@ -2987,8 +2935,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "format": "int64",
-                "type": "integer"
+                "type": "string"
               }
             },
             "in": "query",
@@ -3076,8 +3023,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -3108,8 +3054,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -3140,8 +3085,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -3174,8 +3118,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -3240,8 +3183,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -3284,8 +3226,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -3315,8 +3256,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
