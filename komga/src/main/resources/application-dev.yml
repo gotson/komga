@@ -7,7 +7,7 @@ komga:
   libraries-scan-cron: "-" #disable
 #  libraries-scan-startup: true
   database:
-    file: ./dev.sqlite
+    file: ":memory:"
 
 spring:
   datasource:

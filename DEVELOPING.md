@@ -27,10 +27,10 @@ Komga is composed of 2 projects:
 
 Komga uses Spring Profiles extensively:
 - `dev`: add more logging, disable periodic scanning, in-memory database
-- `localdb`: a dev profile that stores the database in `./testdb`.
+- `localdb`: a dev profile that stores the database in `./localdb`.
 - `noclaim`: will create initial users at startup if none exist and output users and passwords in the standard output
   - if `dev` is active, will create `admin@example.org` with password `admin`, and `user@example.org` with password `user`
-  - if `dev` is not active, will create `admin@example.org` with a random password
+  - if `dev` is not active, will create `admin@example.org` with a random password that will be shown in the logs
 
 ### Gradle tasks
 

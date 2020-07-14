@@ -2,7 +2,7 @@ application.version: TESTING
 
 komga:
   database:
-    file: ./tests.sqlite
+    file: ":memory:"
 
 spring:
   datasource:
