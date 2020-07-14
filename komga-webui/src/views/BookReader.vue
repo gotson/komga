@@ -249,6 +249,20 @@
         Dismiss
       </v-btn>
     </v-snackbar>
+
+    <v-snackbar
+      v-model="notification.enabled"
+      class="mb-12"
+      color="rgba(0, 0, 0, 0.8)"
+      multi-line
+      vertical
+      centered
+      :timeout="notification.timeout"
+    >
+      <div class="title pa-2">
+        {{ notification.message }}
+      </div>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -260,6 +274,7 @@ import { getBookTitleCompact } from '@/functions/book-title'
 import { checkWebpFeature } from '@/functions/check-webp'
 import { bookPageUrl } from '@/functions/urls'
 import { ReadingDirection } from '@/types/enum-books'
+import { executeShortcut } from '@/functions/shortcuts'
 import Vue from 'vue'
 
 const cookieFit = 'webreader.fit'
@@ -301,11 +316,17 @@ export default Vue.extend({
       settings: {
         doublePages: false,
         swipe: true,
-        imageFits: Object.values(ImageFit),
         fit: ImageFit.HEIGHT,
         readingDirection: ReadingDirection.LEFT_TO_RIGHT,
         animations: true,
         backgroundColor: 'black',
+        imageFits: Object.values(ImageFit),
+        readingDirs: Object.values(ReadingDirection),
+      },
+      notification: {
+        enabled: false,
+        message: '',
+        timeout: 4000,
       },
       readingDirs: [
         { text: 'Left to right', value: ReadingDirection.LEFT_TO_RIGHT },
@@ -494,52 +515,7 @@ export default Vue.extend({
   },
   methods: {
     keyPressed (e: KeyboardEvent) {
-      switch (e.key) {
-        case 'PageUp':
-        case 'ArrowRight':
-          this.flipDirection ? this.prev() : this.next()
-          break
-        case 'PageDown':
-        case 'ArrowLeft':
-          this.flipDirection ? this.next() : this.prev()
-          break
-        case 'ArrowDown':
-          if (this.vertical) this.next()
-          break
-        case 'ArrowUp':
-          if (this.vertical) this.prev()
-          break
-        case 'Home':
-          this.goToFirst()
-          break
-        case 'End':
-          this.goToLast()
-          break
-        case 'm':
-          this.toolbar = !this.toolbar
-          break
-        case 's':
-          this.menu = !this.menu
-          break
-        case 't':
-          this.showThumbnailsExplorer = !this.showThumbnailsExplorer
-          break
-        case 'Escape':
-          if (this.showThumbnailsExplorer) {
-            this.showThumbnailsExplorer = false
-            break
-          }
-          if (this.menu) {
-            this.menu = false
-            break
-          }
-          if (this.toolbar) {
-            this.toolbar = false
-            break
-          }
-          this.closeBook()
-          break
-      }
+      executeShortcut(this, e)
     },
     async setup (bookId: number, page: number) {
       this.book = await this.$komgaBooks.getBook(bookId)
@@ -685,6 +661,29 @@ export default Vue.extend({
         let value = this.$cookies.get(cookieKey)
         setter(value)
       }
+    },
+    changeReadingDir (dir: ReadingDirection) {
+      this.readingDirection = dir
+      let i = this.settings.readingDirs.indexOf(this.readingDirection)
+      let text = this.readingDirs[i].text
+      this.sendNotification(`Changing Reading Direction to: ${text}`)
+    },
+    cycleScale () {
+      let fit: ImageFit = this.settings.fit
+      let i = (this.settings.imageFits.indexOf(fit) + 1) % (this.settings.imageFits.length)
+      this.settings.fit = this.settings.imageFits[i]
+      let text = this.imageFits[i].text
+      // The text here only works cause this.imageFits has the same index structure as the ImageFit enum
+      this.sendNotification(`Cycling Scale: ${text}`)
+    },
+    toggleDoublePages () {
+      this.doublePages = !this.doublePages
+      this.sendNotification(`${this.doublePages ? 'Enabled' : 'Disabled'} Double Pages`)
+    },
+    sendNotification (message:string, timeout: number = 4000) {
+      this.notification.timeout = 4000
+      this.notification.message = message
+      this.notification.enabled = true
     },
     async markProgress (page: number) {
       this.$komgaBooks.updateReadProgress(this.bookId, { page: page })
