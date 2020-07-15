@@ -1,3 +1,10 @@
+# [0.46.0-beta.3](https://github.com/gotson/komga/compare/v0.46.0-beta.2...v0.46.0-beta.3) (2020-07-15)
+
+
+### Bug Fixes
+
+* remove primary key on media_file ([15992ae](https://github.com/gotson/komga/commit/15992aeab7162a50630bb78d4d342521bfa8ef2e))
+
 # [0.46.0-beta.2](https://github.com/gotson/komga/compare/v0.46.0-beta.1...v0.46.0-beta.2) (2020-07-14)
 
 
