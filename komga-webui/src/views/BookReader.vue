@@ -384,14 +384,14 @@ export default Vue.extend({
   },
   props: {
     bookId: {
-      type: Number,
+      type: String,
       required: true,
     },
   },
   async beforeRouteUpdate (to, from, next) {
     if (to.params.bookId !== from.params.bookId) {
       // route update means going to previous/next book, in this case we start from first page
-      this.setup(Number(to.params.bookId), 1)
+      this.setup(to.params.bookId, 1)
     }
     next()
   },
@@ -517,7 +517,7 @@ export default Vue.extend({
     keyPressed (e: KeyboardEvent) {
       executeShortcut(this, e)
     },
-    async setup (bookId: number, page: number) {
+    async setup (bookId: string, page: number) {
       this.book = await this.$komgaBooks.getBook(bookId)
       this.pages = await this.$komgaBooks.getBookPages(bookId)
       if (page >= 1 && page <= this.pagesCount) {

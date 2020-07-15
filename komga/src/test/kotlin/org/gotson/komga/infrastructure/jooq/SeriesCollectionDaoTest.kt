@@ -12,7 +12,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.Pageable
 import org.springframework.test.context.junit.jupiter.SpringExtension
@@ -20,20 +19,19 @@ import java.time.LocalDateTime
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class SeriesCollectionDaoTest(
   @Autowired private val collectionDao: SeriesCollectionDao,
   @Autowired private val seriesRepository: SeriesRepository,
   @Autowired private val libraryRepository: LibraryRepository
 ) {
 
-  private var library = makeLibrary()
-  private var library2 = makeLibrary("library2")
+  private val library = makeLibrary()
+  private val library2 = makeLibrary("library2")
 
   @BeforeAll
   fun setup() {
-    library = libraryRepository.insert(library)
-    library2 = libraryRepository.insert(library2)
+    libraryRepository.insert(library)
+    libraryRepository.insert(library2)
   }
 
   @AfterEach
@@ -50,9 +48,8 @@ class SeriesCollectionDaoTest(
   @Test
   fun `given collection with series when inserting then it is persisted`() {
     // given
-    val series = (1..10)
-      .map { makeSeries("Series $it", library.id) }
-      .map { seriesRepository.insert(it) }
+    val series = (1..10).map { makeSeries("Series $it", library.id) }
+    series.forEach { seriesRepository.insert(it) }
 
     val collection = SeriesCollection(
       name = "MyCollection",
@@ -61,36 +58,37 @@ class SeriesCollectionDaoTest(
 
     // when
     val now = LocalDateTime.now()
-    val created = collectionDao.insert(collection)
+
+    collectionDao.insert(collection)
+    val created = collectionDao.findByIdOrNull(collection.id)!!
 
     // then
     assertThat(created.name).isEqualTo(collection.name)
     assertThat(created.ordered).isEqualTo(collection.ordered)
     assertThat(created.createdDate)
       .isEqualTo(created.lastModifiedDate)
-      .isAfterOrEqualTo(now)
+      .isCloseTo(now, offset)
     assertThat(created.seriesIds).containsExactlyElementsOf(series.map { it.id })
   }
 
   @Test
   fun `given collection with updated series when updating then it is persisted`() {
     // given
-    val series = (1..10)
-      .map { makeSeries("Series $it", library.id) }
-      .map { seriesRepository.insert(it) }
+    val series = (1..10).map { makeSeries("Series $it", library.id) }
+    series.forEach { seriesRepository.insert(it) }
 
     val collection = SeriesCollection(
       name = "MyCollection",
       seriesIds = series.map { it.id }
     )
 
-    val created = collectionDao.insert(collection)
+    collectionDao.insert(collection)
 
     // when
-    val updatedCollection = created.copy(
+    val updatedCollection = collection.copy(
       name = "UpdatedCollection",
       ordered = true,
-      seriesIds = created.seriesIds.take(5)
+      seriesIds = collection.seriesIds.take(5)
     )
 
     val now = LocalDateTime.now()
@@ -101,7 +99,7 @@ class SeriesCollectionDaoTest(
     assertThat(updated.name).isEqualTo(updatedCollection.name)
     assertThat(updated.ordered).isEqualTo(updatedCollection.ordered)
     assertThat(updated.createdDate).isNotEqualTo(updated.lastModifiedDate)
-    assertThat(updated.lastModifiedDate).isAfterOrEqualTo(now)
+    assertThat(updated.lastModifiedDate).isCloseTo(now, offset)
     assertThat(updated.seriesIds)
       .hasSize(5)
       .containsExactlyElementsOf(series.map { it.id }.take(5))
@@ -110,23 +108,20 @@ class SeriesCollectionDaoTest(
   @Test
   fun `given collections with series when removing one series from all then it is removed from all`() {
     // given
-    val series = (1..10)
-      .map { makeSeries("Series $it", library.id) }
-      .map { seriesRepository.insert(it) }
+    val series = (1..10).map { makeSeries("Series $it", library.id) }
+    series.forEach { seriesRepository.insert(it) }
 
-    val collection1 = collectionDao.insert(
-      SeriesCollection(
-        name = "MyCollection",
-        seriesIds = series.map { it.id }
-      )
+    val collection1 = SeriesCollection(
+      name = "MyCollection",
+      seriesIds = series.map { it.id }
     )
+    collectionDao.insert(collection1)
 
-    val collection2 = collectionDao.insert(
-      SeriesCollection(
-        name = "MyCollection2",
-        seriesIds = series.map { it.id }.take(5)
-      )
+    val collection2 = SeriesCollection(
+      name = "MyCollection2",
+      seriesIds = series.map { it.id }.take(5)
     )
+    collectionDao.insert(collection2)
 
     // when
     collectionDao.removeSeriesFromAll(series.first().id)
@@ -146,8 +141,8 @@ class SeriesCollectionDaoTest(
   @Test
   fun `given collections spanning different libraries when finding by library then only matching collections are returned`() {
     // given
-    val seriesLibrary1 = seriesRepository.insert(makeSeries("Series1", library.id))
-    val seriesLibrary2 = seriesRepository.insert(makeSeries("Series2", library2.id))
+    val seriesLibrary1 = makeSeries("Series1", library.id).also { seriesRepository.insert(it) }
+    val seriesLibrary2 = makeSeries("Series2", library2.id).also { seriesRepository.insert(it) }
 
     collectionDao.insert(SeriesCollection(
       name = "collectionLibrary1",

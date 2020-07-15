@@ -1,8 +1,8 @@
 application.version: TESTING
 
 komga:
-  database-backup:
-    enabled: false
+  database:
+    file: ":memory:"
 
 spring:
   datasource:

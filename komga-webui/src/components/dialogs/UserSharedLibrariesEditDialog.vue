@@ -78,7 +78,7 @@ export default Vue.extend({
       snackText: '',
       modal: false,
       allLibraries: true,
-      selectedLibraries: [] as number[],
+      selectedLibraries: [] as string[],
     }
   },
   props: {

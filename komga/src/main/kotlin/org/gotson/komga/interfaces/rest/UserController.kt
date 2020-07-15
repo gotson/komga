@@ -80,7 +80,7 @@ class UserController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PreAuthorize("hasRole('$ROLE_ADMIN') and #principal.user.id != #id")
   fun delete(
-    @PathVariable id: Long,
+    @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal
   ) {
     userRepository.findByIdOrNull(id)?.let {
@@ -92,7 +92,7 @@ class UserController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PreAuthorize("hasRole('$ROLE_ADMIN') and #principal.user.id != #id")
   fun updateUserRoles(
-    @PathVariable id: Long,
+    @PathVariable id: String,
     @Valid @RequestBody patch: RolesUpdateDto,
     @AuthenticationPrincipal principal: KomgaPrincipal
   ) {
@@ -102,9 +102,8 @@ class UserController(
         roleFileDownload = patch.roles.contains(ROLE_FILE_DOWNLOAD),
         rolePageStreaming = patch.roles.contains(ROLE_PAGE_STREAMING)
       )
-      userRepository.save(updatedUser).also {
-        logger.info { "Updated user roles: $it" }
-      }
+      userRepository.update(updatedUser)
+      logger.info { "Updated user roles: $updatedUser" }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -112,7 +111,7 @@ class UserController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   fun updateSharesLibraries(
-    @PathVariable id: Long,
+    @PathVariable id: String,
     @Valid @RequestBody sharedLibrariesUpdateDto: SharedLibrariesUpdateDto
   ) {
     userRepository.findByIdOrNull(id)?.let { user ->
@@ -123,9 +122,8 @@ class UserController(
           .map { it.id }
           .toSet()
       )
-      userRepository.save(updatedUser).also {
-        logger.info { "Updated user shared libraries: $it" }
-      }
+      userRepository.update(updatedUser)
+      logger.info { "Updated user shared libraries: $updatedUser" }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 }

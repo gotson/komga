@@ -1,9 +1,10 @@
 package org.gotson.komga.domain.model
 
+import com.github.f4b6a3.tsid.TsidCreator
 import java.net.URL
 import java.time.LocalDateTime
 
-fun makeBook(name: String, fileLastModified: LocalDateTime = LocalDateTime.now(), libraryId: Long = 0, seriesId: Long = 0): Book {
+fun makeBook(name: String, fileLastModified: LocalDateTime = LocalDateTime.now(), libraryId: String = "", seriesId: String = ""): Book {
   Thread.sleep(5)
   return Book(
     name = name,
@@ -14,7 +15,7 @@ fun makeBook(name: String, fileLastModified: LocalDateTime = LocalDateTime.now()
   )
 }
 
-fun makeSeries(name: String, libraryId: Long = 0): Series {
+fun makeSeries(name: String, libraryId: String = ""): Series {
   Thread.sleep(5)
   return Series(
     name = name,
@@ -24,8 +25,8 @@ fun makeSeries(name: String, libraryId: Long = 0): Series {
   )
 }
 
-fun makeLibrary(name: String = "default", url: String = "file:/$name"): Library {
-  return Library(name, URL(url))
+fun makeLibrary(name: String = "default", url: String = "file:/$name", id: String = TsidCreator.getTsidString256()): Library {
+  return Library(name, URL(url), id = id)
 }
 
 fun makeBookPage(name: String) =

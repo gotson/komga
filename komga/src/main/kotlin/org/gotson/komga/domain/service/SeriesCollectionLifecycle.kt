@@ -22,7 +22,9 @@ class SeriesCollectionLifecycle(
     if (collectionRepository.existsByName(collection.name))
       throw DuplicateNameException("Collection name already exists")
 
-    return collectionRepository.insert(collection)
+    collectionRepository.insert(collection)
+
+    return collectionRepository.findByIdOrNull(collection.id)!!
   }
 
   fun updateCollection(toUpdate: SeriesCollection) {
@@ -35,7 +37,7 @@ class SeriesCollectionLifecycle(
     collectionRepository.update(toUpdate)
   }
 
-  fun deleteCollection(collectionId: Long) {
+  fun deleteCollection(collectionId: String) {
     collectionRepository.delete(collectionId)
   }
 }

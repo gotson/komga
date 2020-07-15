@@ -92,8 +92,11 @@ dependencies {
 
   implementation("com.jakewharton.byteunits:byteunits:0.9.1")
 
+  implementation("com.github.f4b6a3:tsid-creator:2.2.4")
+
   runtimeOnly("com.h2database:h2:1.4.200")
-  jooqGeneratorRuntime("com.h2database:h2:1.4.200")
+  runtimeOnly("org.xerial:sqlite-jdbc:3.32.3")
+  jooqGeneratorRuntime("org.xerial:sqlite-jdbc:3.32.3")
 
   testImplementation("org.springframework.boot:spring-boot-starter-test") {
     exclude(module = "mockito-core")
@@ -197,42 +200,38 @@ sourceSets {
   }
 }
 
-val jooqDb = mapOf(
-  "url" to "jdbc:h2:${project.buildDir}/generated/flyway/h2",
-  "schema" to "PUBLIC",
-  "user" to "sa",
-  "password" to ""
+
+val dbSqlite = mapOf(
+  "url" to "jdbc:sqlite:${project.buildDir}/generated/flyway/database.sqlite"
 )
-val migrationDirs = listOf(
-  "$projectDir/src/flyway/resources/db/migration",
-  "$projectDir/src/flyway/kotlin/db/migration"
+val migrationDirsSqlite = listOf(
+  "$projectDir/src/flyway/resources/db/migration/sqlite"
+//  "$projectDir/src/flyway/kotlin/db/migration/sqlite"
 )
 flyway {
-  url = jooqDb["url"]
-  user = jooqDb["user"]
-  password = jooqDb["password"]
-  schemas = arrayOf(jooqDb["schema"])
-  locations = arrayOf("classpath:db/migration")
+  url = dbSqlite["url"]
+  locations = arrayOf("classpath:db/migration/sqlite")
 }
-//in order to include the Java migrations, flywayClasses must be run before flywayMigrate
 tasks.flywayMigrate {
+  //in order to include the Java migrations, flywayClasses must be run before flywayMigrate
   dependsOn("flywayClasses")
-  migrationDirs.forEach { inputs.dir(it) }
+  migrationDirsSqlite.forEach { inputs.dir(it) }
   outputs.dir("${project.buildDir}/generated/flyway")
-  doFirst { delete(outputs.files) }
+  doFirst {
+    delete(outputs.files)
+    mkdir("${project.buildDir}/generated/flyway")
+  }
 }
 
 jooqGenerator {
   jooqVersion = "3.13.1"
   configuration("primary", project.sourceSets.getByName("main")) {
-    databaseSources = migrationDirs
+    databaseSources = migrationDirsSqlite
 
     configuration = jooqCodegenConfiguration {
       jdbc {
-        username = jooqDb["user"]
-        password = jooqDb["password"]
-        driver = "org.h2.Driver"
-        url = jooqDb["url"]
+        driver = "org.sqlite.JDBC"
+        url = dbSqlite["url"]
       }
 
       generator {
@@ -242,8 +241,7 @@ jooqGenerator {
         }
 
         database {
-          name = "org.jooq.meta.h2.H2Database"
-          inputSchema = jooqDb["schema"]
+          name = "org.jooq.meta.sqlite.SQLiteDatabase"
         }
       }
     }

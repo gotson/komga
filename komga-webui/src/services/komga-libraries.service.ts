@@ -21,7 +21,7 @@ export default class KomgaLibrariesService {
     }
   }
 
-  async getLibrary (libraryId: number): Promise<LibraryDto> {
+  async getLibrary (libraryId: string): Promise<LibraryDto> {
     try {
       return (await this.http.get(`${API_LIBRARIES}/${libraryId}`)).data
     } catch (e) {
@@ -45,7 +45,7 @@ export default class KomgaLibrariesService {
     }
   }
 
-  async updateLibrary (libraryId: number, library: LibraryUpdateDto) {
+  async updateLibrary (libraryId: string, library: LibraryUpdateDto) {
     try {
       await this.http.put(`${API_LIBRARIES}/${libraryId}`, library)
     } catch (e) {

@@ -1,5 +1,6 @@
 package org.gotson.komga.domain.model
 
+import com.github.f4b6a3.tsid.TsidCreator
 import java.time.LocalDateTime
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
@@ -18,9 +19,9 @@ data class KomgaUser(
   val roleAdmin: Boolean,
   val roleFileDownload: Boolean = true,
   val rolePageStreaming: Boolean = true,
-  val sharedLibrariesIds: Set<Long> = emptySet(),
+  val sharedLibrariesIds: Set<String> = emptySet(),
   val sharedAllLibraries: Boolean = true,
-  val id: Long = 0,
+  val id: String = TsidCreator.getTsidString256(),
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
 ) : Auditable() {
@@ -38,7 +39,7 @@ data class KomgaUser(
    *
    * @return a list of authorised LibraryIds, or null if the user is authorized to see all libraries
    */
-  fun getAuthorizedLibraryIds(libraryIds: Collection<Long>?): Collection<Long>? =
+  fun getAuthorizedLibraryIds(libraryIds: Collection<String>?): Collection<String>? =
     when {
       // limited user & libraryIds are specified: filter on provided libraries intersecting user's authorized libraries
       !sharedAllLibraries && libraryIds != null -> libraryIds.intersect(sharedLibrariesIds)
@@ -61,7 +62,7 @@ data class KomgaUser(
     return sharedAllLibraries || sharedLibrariesIds.any { it == series.libraryId }
   }
 
-  fun canAccessLibrary(libraryId: Long): Boolean =
+  fun canAccessLibrary(libraryId: String): Boolean =
     sharedAllLibraries || sharedLibrariesIds.any { it == libraryId }
 
   fun canAccessLibrary(library: Library): Boolean {

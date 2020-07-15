@@ -10,24 +10,22 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.time.LocalDateTime
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class KomgaUserDaoTest(
   @Autowired private val komgaUserDao: KomgaUserDao,
   @Autowired private val libraryRepository: LibraryRepository
 ) {
 
-  private var library = makeLibrary()
+  private val library = makeLibrary()
 
   @BeforeAll
   fun setup() {
-    library = libraryRepository.insert(library)
+    libraryRepository.insert(library)
   }
 
   @AfterEach
@@ -52,14 +50,13 @@ class KomgaUserDaoTest(
       sharedAllLibraries = false
     )
 
-    Thread.sleep(5)
-
-    val created = komgaUserDao.save(user)
+    komgaUserDao.insert(user)
+    val created = komgaUserDao.findByIdOrNull(user.id)!!
 
     with(created) {
       assertThat(id).isNotEqualTo(0)
-      assertThat(createdDate).isAfter(now)
-      assertThat(lastModifiedDate).isAfter(now)
+      assertThat(createdDate).isCloseTo(now, offset)
+      assertThat(lastModifiedDate).isCloseTo(now, offset)
       assertThat(email).isEqualTo("user@example.org")
       assertThat(password).isEqualTo("password")
       assertThat(roleAdmin).isFalse()
@@ -78,11 +75,8 @@ class KomgaUserDaoTest(
       sharedAllLibraries = false
     )
 
-    Thread.sleep(5)
-
-    val created = komgaUserDao.save(user)
-
-    Thread.sleep(5)
+    komgaUserDao.insert(user)
+    val created = komgaUserDao.findByIdOrNull(user.id)!!
 
     val modified = created.copy(
       email = "user2@example.org",
@@ -92,13 +86,14 @@ class KomgaUserDaoTest(
       sharedAllLibraries = true
     )
     val modifiedDate = LocalDateTime.now()
-    val modifiedSaved = komgaUserDao.save(modified)
+    komgaUserDao.update(modified)
+    val modifiedSaved = komgaUserDao.findByIdOrNull(modified.id)!!
 
     with(modifiedSaved) {
       assertThat(id).isEqualTo(created.id)
       assertThat(createdDate).isEqualTo(created.createdDate)
       assertThat(lastModifiedDate)
-        .isAfterOrEqualTo(modifiedDate)
+        .isCloseTo(modifiedDate, offset)
         .isNotEqualTo(modified.createdDate)
       assertThat(email).isEqualTo("user2@example.org")
       assertThat(password).isEqualTo("password2")
@@ -110,10 +105,8 @@ class KomgaUserDaoTest(
 
   @Test
   fun `given multiple users when saving then they are persisted`() {
-    komgaUserDao.saveAll(listOf(
-      KomgaUser("user1@example.org", "p", false),
-      KomgaUser("user2@example.org", "p", true)
-    ))
+    komgaUserDao.insert(KomgaUser("user1@example.org", "p", false))
+    komgaUserDao.insert(KomgaUser("user2@example.org", "p", true))
 
     val users = komgaUserDao.findAll()
 
@@ -126,10 +119,8 @@ class KomgaUserDaoTest(
 
   @Test
   fun `given some users when counting then proper count is returned`() {
-    komgaUserDao.saveAll(listOf(
-      KomgaUser("user1@example.org", "p", false),
-      KomgaUser("user2@example.org", "p", true)
-    ))
+    komgaUserDao.insert(KomgaUser("user1@example.org", "p", false))
+    komgaUserDao.insert(KomgaUser("user2@example.org", "p", true))
 
     val count = komgaUserDao.count()
 
@@ -138,9 +129,8 @@ class KomgaUserDaoTest(
 
   @Test
   fun `given existing user when finding by id then user is returned`() {
-    val existing = komgaUserDao.save(
-      KomgaUser("user1@example.org", "p", false)
-    )
+    val existing = KomgaUser("user1@example.org", "p", false)
+    komgaUserDao.insert(existing)
 
     val user = komgaUserDao.findByIdOrNull(existing.id)
 
@@ -149,25 +139,24 @@ class KomgaUserDaoTest(
 
   @Test
   fun `given non-existent user when finding by id then null is returned`() {
-    val user = komgaUserDao.findByIdOrNull(38473)
+    val user = komgaUserDao.findByIdOrNull("38473")
 
     assertThat(user).isNull()
   }
 
   @Test
   fun `given existing user when deleting then user is deleted`() {
-    val existing = komgaUserDao.save(
-      KomgaUser("user1@example.org", "p", false)
-    )
+    val existing = KomgaUser("user1@example.org", "p", false)
+    komgaUserDao.insert(existing)
 
-    komgaUserDao.delete(existing)
+    komgaUserDao.delete(existing.id)
 
     assertThat(komgaUserDao.count()).isEqualTo(0)
   }
 
   @Test
   fun `given users when checking if exists by email then return true or false`() {
-    komgaUserDao.save(
+    komgaUserDao.insert(
       KomgaUser("user1@example.org", "p", false)
     )
 
@@ -180,7 +169,7 @@ class KomgaUserDaoTest(
 
   @Test
   fun `given users when finding by email then return user`() {
-    komgaUserDao.save(
+    komgaUserDao.insert(
       KomgaUser("user1@example.org", "p", false)
     )
 

@@ -54,7 +54,7 @@ export default Vue.extend({
       type: Boolean,
     },
     bookId: {
-      type: Number,
+      type: String,
     },
   },
   data: () => {

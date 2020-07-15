@@ -7,6 +7,7 @@ import org.gotson.komga.jooq.tables.records.ReadProgressRecord
 import org.jooq.DSLContext
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Component
 class ReadProgressDao(
@@ -20,13 +21,13 @@ class ReadProgressDao(
       .fetchInto(r)
       .map { it.toDomain() }
 
-  override fun findByBookIdAndUserId(bookId: Long, userId: Long): ReadProgress? =
+  override fun findByBookIdAndUserId(bookId: String, userId: String): ReadProgress? =
     dsl.selectFrom(r)
       .where(r.BOOK_ID.eq(bookId).and(r.USER_ID.eq(userId)))
       .fetchOneInto(r)
       ?.toDomain()
 
-  override fun findByUserId(userId: Long): Collection<ReadProgress> =
+  override fun findByUserId(userId: String): Collection<ReadProgress> =
     dsl.selectFrom(r)
       .where(r.USER_ID.eq(userId))
       .fetchInto(r)
@@ -34,41 +35,35 @@ class ReadProgressDao(
 
 
   override fun save(readProgress: ReadProgress) {
-    dsl.mergeInto(r)
-      .using(dsl.selectOne())
-      .on(r.BOOK_ID.eq(readProgress.bookId).and(r.USER_ID.eq(readProgress.userId)))
-      .whenMatchedThenUpdate()
+    dsl.insertInto(r, r.BOOK_ID, r.USER_ID, r.PAGE, r.COMPLETED)
+      .values(readProgress.bookId, readProgress.userId, readProgress.page, readProgress.completed)
+      .onDuplicateKeyUpdate()
       .set(r.PAGE, readProgress.page)
       .set(r.COMPLETED, readProgress.completed)
-      .set(r.LAST_MODIFIED_DATE, LocalDateTime.now())
-      .whenNotMatchedThenInsert()
-      .set(r.BOOK_ID, readProgress.bookId)
-      .set(r.USER_ID, readProgress.userId)
-      .set(r.PAGE, readProgress.page)
-      .set(r.COMPLETED, readProgress.completed)
+      .set(r.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .execute()
   }
 
 
-  override fun delete(bookId: Long, userId: Long) {
+  override fun delete(bookId: String, userId: String) {
     dsl.deleteFrom(r)
       .where(r.BOOK_ID.eq(bookId).and(r.USER_ID.eq(userId)))
       .execute()
   }
 
-  override fun deleteByUserId(userId: Long) {
+  override fun deleteByUserId(userId: String) {
     dsl.deleteFrom(r)
       .where(r.USER_ID.eq(userId))
       .execute()
   }
 
-  override fun deleteByBookId(bookId: Long) {
+  override fun deleteByBookId(bookId: String) {
     dsl.deleteFrom(r)
       .where(r.BOOK_ID.eq(bookId))
       .execute()
   }
 
-  override fun deleteByBookIds(bookIds: Collection<Long>) {
+  override fun deleteByBookIds(bookIds: Collection<String>) {
     dsl.deleteFrom(r)
       .where(r.BOOK_ID.`in`(bookIds))
       .execute()
@@ -85,7 +80,7 @@ class ReadProgressDao(
       userId = userId,
       page = page,
       completed = completed,
-      createdDate = createdDate,
-      lastModifiedDate = lastModifiedDate
+      createdDate = createdDate.toCurrentTimeZone(),
+      lastModifiedDate = lastModifiedDate.toCurrentTimeZone()
     )
 }

@@ -62,7 +62,7 @@ class SeriesCollectionController(
   fun getAll(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) searchTerm: String?,
-    @RequestParam(name = "library_id", required = false) libraryIds: List<Long>?,
+    @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<CollectionDto> {
@@ -85,7 +85,7 @@ class SeriesCollectionController(
   @GetMapping("{id}")
   fun getOne(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @PathVariable id: Long
+    @PathVariable id: String
   ): CollectionDto =
     collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))
       ?.toDto()
@@ -95,10 +95,10 @@ class SeriesCollectionController(
   @GetMapping(value = ["{id}/thumbnail"], produces = [MediaType.IMAGE_JPEG_VALUE])
   fun getCollectionThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @PathVariable id: Long
+    @PathVariable id: String
   ): ResponseEntity<ByteArray> {
     collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
-      val ids = with(mutableListOf<Long>()) {
+      val ids = with(mutableListOf<String>()) {
         while (size < 4) {
           this += it.seriesIds.take(4)
         }
@@ -133,7 +133,7 @@ class SeriesCollectionController(
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateOne(
-    @PathVariable id: Long,
+    @PathVariable id: String,
     @Valid @RequestBody collection: CollectionUpdateDto
   ) {
     collectionRepository.findByIdOrNull(id)?.let { existing ->
@@ -154,7 +154,7 @@ class SeriesCollectionController(
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun deleteOne(
-    @PathVariable id: Long
+    @PathVariable id: String
   ) {
     collectionRepository.findByIdOrNull(id)?.let {
       collectionLifecycle.deleteCollection(it.id)
@@ -164,7 +164,7 @@ class SeriesCollectionController(
   @PageableWithoutSortAsQueryParam
   @GetMapping("{id}/series")
   fun getSeriesForCollection(
-    @PathVariable id: Long,
+    @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable

@@ -19,7 +19,7 @@ interface LibraryUpdateDto {
 }
 
 interface LibraryDto {
-  id: number,
+  id: string,
   name: string,
   root: string,
   importComicInfoBook: boolean,

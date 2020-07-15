@@ -4,7 +4,6 @@ import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
 import org.gotson.komga.interfaces.rest.dto.SeriesDto
 import org.gotson.komga.interfaces.rest.dto.SeriesMetadataDto
-import org.gotson.komga.interfaces.rest.dto.toUTC
 import org.gotson.komga.interfaces.rest.persistence.SeriesDtoRepository
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.SeriesMetadataRecord
@@ -16,6 +15,7 @@ import org.jooq.Record
 import org.jooq.ResultQuery
 import org.jooq.SelectOnConditionStep
 import org.jooq.impl.DSL
+import org.jooq.impl.DSL.inline
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -62,7 +62,7 @@ class SeriesDtoDao(
     "collection.number" to cs.NUMBER
   )
 
-  override fun findAll(search: SeriesSearchWithReadProgress, userId: Long, pageable: Pageable): Page<SeriesDto> {
+  override fun findAll(search: SeriesSearchWithReadProgress, userId: String, pageable: Pageable): Page<SeriesDto> {
     val conditions = search.toCondition()
 
     val having = search.readStatus?.toCondition() ?: DSL.trueCondition()
@@ -70,14 +70,14 @@ class SeriesDtoDao(
     return findAll(conditions, having, userId, pageable)
   }
 
-  override fun findByCollectionId(collectionId: Long, userId: Long, pageable: Pageable): Page<SeriesDto> {
+  override fun findByCollectionId(collectionId: String, userId: String, pageable: Pageable): Page<SeriesDto> {
     val conditions = cs.COLLECTION_ID.eq(collectionId)
     val having = DSL.trueCondition()
 
     return findAll(conditions, having, userId, pageable, true)
   }
 
-  override fun findRecentlyUpdated(search: SeriesSearchWithReadProgress, userId: Long, pageable: Pageable): Page<SeriesDto> {
+  override fun findRecentlyUpdated(search: SeriesSearchWithReadProgress, userId: String, pageable: Pageable): Page<SeriesDto> {
     val conditions = search.toCondition()
       .and(s.CREATED_DATE.ne(s.LAST_MODIFIED_DATE))
 
@@ -86,7 +86,7 @@ class SeriesDtoDao(
     return findAll(conditions, having, userId, pageable)
   }
 
-  override fun findByIdOrNull(seriesId: Long, userId: Long): SeriesDto? =
+  override fun findByIdOrNull(seriesId: String, userId: String): SeriesDto? =
     selectBase(userId)
       .where(s.ID.eq(seriesId))
       .groupBy(*groupFields)
@@ -94,7 +94,7 @@ class SeriesDtoDao(
       .firstOrNull()
 
 
-  private fun selectBase(userId: Long, selectCollectionNumber: Boolean = false): SelectOnConditionStep<Record> =
+  private fun selectBase(userId: String, selectCollectionNumber: Boolean = false): SelectOnConditionStep<Record> =
     dsl.selectDistinct(*groupFields)
       .select(DSL.countDistinct(b.ID).`as`(BOOKS_COUNT))
       .apply { if (selectCollectionNumber) select(cs.NUMBER) }
@@ -105,7 +105,7 @@ class SeriesDtoDao(
       .and(readProgressCondition(userId))
       .leftJoin(cs).on(s.ID.eq(cs.SERIES_ID))
 
-  private fun findAll(conditions: Condition, having: Condition, userId: Long, pageable: Pageable, selectCollectionNumber: Boolean = false): Page<SeriesDto> {
+  private fun findAll(conditions: Condition, having: Condition, userId: String, pageable: Pageable, selectCollectionNumber: Boolean = false): Page<SeriesDto> {
     val count = dsl.selectDistinct(s.ID)
       .from(s)
       .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
@@ -138,9 +138,9 @@ class SeriesDtoDao(
     )
   }
 
-  private fun readProgressCondition(userId: Long): Condition = r.USER_ID.eq(userId).or(r.USER_ID.isNull)
+  private fun readProgressCondition(userId: String): Condition = r.USER_ID.eq(userId).or(r.USER_ID.isNull)
 
-  private fun ResultQuery<Record>.fetchAndMap(userId: Long) =
+  private fun ResultQuery<Record>.fetchAndMap(userId: String) =
     fetch()
       .map { rec ->
         val sr = rec.into(s)
@@ -178,9 +178,9 @@ class SeriesDtoDao(
   private fun Collection<ReadStatus>.toCondition(): Condition =
     map {
       when (it) {
-        ReadStatus.UNREAD -> countUnread.ge(1.toBigDecimal())
-        ReadStatus.READ -> countRead.ge(1.toBigDecimal())
-        ReadStatus.IN_PROGRESS -> countInProgress.ge(1.toBigDecimal())
+        ReadStatus.UNREAD -> countUnread.ge(inline(1.toBigDecimal()))
+        ReadStatus.READ -> countRead.ge(inline(1.toBigDecimal()))
+        ReadStatus.IN_PROGRESS -> countInProgress.ge(inline(1.toBigDecimal()))
       }
     }.reduce { acc, condition -> acc.or(condition) }
 
@@ -190,9 +190,9 @@ class SeriesDtoDao(
       libraryId = libraryId,
       name = name,
       url = URL(url).toFilePath(),
-      created = createdDate.toUTC(),
-      lastModified = lastModifiedDate.toUTC(),
-      fileLastModified = fileLastModified.toUTC(),
+      created = createdDate,
+      lastModified = lastModifiedDate,
+      fileLastModified = fileLastModified,
       booksCount = booksCount,
       booksReadCount = booksReadCount,
       booksUnreadCount = booksUnreadCount,
@@ -204,8 +204,8 @@ class SeriesDtoDao(
     SeriesMetadataDto(
       status = status,
       statusLock = statusLock,
-      created = createdDate.toUTC(),
-      lastModified = lastModifiedDate.toUTC(),
+      created = createdDate,
+      lastModified = lastModifiedDate,
       title = title,
       titleLock = titleLock,
       titleSort = titleSort,

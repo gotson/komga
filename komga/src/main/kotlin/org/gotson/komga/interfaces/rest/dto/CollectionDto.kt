@@ -5,11 +5,11 @@ import org.gotson.komga.domain.model.SeriesCollection
 import java.time.LocalDateTime
 
 data class CollectionDto(
-  val id: Long,
+  val id: String,
   val name: String,
   val ordered: Boolean,
 
-  val seriesIds: List<Long>,
+  val seriesIds: List<String>,
 
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val createdDate: LocalDateTime,

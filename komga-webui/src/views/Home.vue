@@ -34,7 +34,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="{name:'browse-libraries', params: {libraryId: 0}}">
+        <v-list-item :to="{name:'browse-libraries', params: {libraryId: 'all'}}">
           <v-list-item-icon>
             <v-icon>mdi-book-multiple</v-icon>
           </v-list-item-icon>

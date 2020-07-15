@@ -184,13 +184,13 @@ export default Vue.extend({
   },
   props: {
     bookId: {
-      type: Number,
+      type: String,
       required: true,
     },
   },
   async beforeRouteUpdate (to, from, next) {
     if (to.params.bookId !== from.params.bookId) {
-      this.loadBook(Number(to.params.bookId))
+      this.loadBook(to.params.bookId)
     }
 
     next()
@@ -239,7 +239,7 @@ export default Vue.extend({
     reloadBook (event: EventBookChanged) {
       if (event.id === this.bookId) this.loadBook(this.bookId)
     },
-    async loadBook (bookId: number) {
+    async loadBook (bookId: string) {
       this.book = await this.$komgaBooks.getBook(bookId)
     },
     analyze () {

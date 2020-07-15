@@ -16,14 +16,12 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.time.LocalDateTime
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class ReadProgressDaoTest(
   @Autowired private val readProgressDao: ReadProgressDao,
   @Autowired private val userRepository: KomgaUserRepository,
@@ -31,23 +29,23 @@ class ReadProgressDaoTest(
   @Autowired private val seriesRepository: SeriesRepository,
   @Autowired private val libraryRepository: LibraryRepository
 ) {
-  private var library = makeLibrary()
-  private var series = makeSeries("Series")
+  private val library = makeLibrary()
+  private val series = makeSeries("Series")
 
-  private var user1 = KomgaUser("user1@example.org", "", false)
-  private var user2 = KomgaUser("user2@example.org", "", false)
+  private val user1 = KomgaUser("user1@example.org", "", false)
+  private val user2 = KomgaUser("user2@example.org", "", false)
 
-  private var book1 = makeBook("Book1")
-  private var book2 = makeBook("Book2")
+  private val book1 = makeBook("Book1")
+  private val book2 = makeBook("Book2")
 
   @BeforeAll
   fun setup() {
-    library = libraryRepository.insert(library)
-    series = seriesRepository.insert(series.copy(libraryId = library.id))
-    user1 = userRepository.save(user1)
-    user2 = userRepository.save(user2)
-    book1 = bookRepository.insert(book1.copy(libraryId = library.id, seriesId = series.id))
-    book2 = bookRepository.insert(book2.copy(libraryId = library.id, seriesId = series.id))
+    libraryRepository.insert(library)
+    seriesRepository.insert(series.copy(libraryId = library.id))
+    userRepository.insert(user1)
+    userRepository.insert(user2)
+    bookRepository.insert(book1.copy(libraryId = library.id, seriesId = series.id))
+    bookRepository.insert(book2.copy(libraryId = library.id, seriesId = series.id))
   }
 
   @AfterEach
@@ -82,7 +80,7 @@ class ReadProgressDaoTest(
       assertThat(completed).isEqualTo(false)
       assertThat(bookId).isEqualTo(book1.id)
       assertThat(createdDate)
-        .isAfterOrEqualTo(now)
+        .isCloseTo(now, offset)
         .isEqualTo(lastModifiedDate)
     }
   }
@@ -96,7 +94,6 @@ class ReadProgressDaoTest(
       false
     ))
 
-    Thread.sleep(5)
     val modificationDate = LocalDateTime.now()
 
     readProgressDao.save(ReadProgress(
@@ -116,7 +113,7 @@ class ReadProgressDaoTest(
       assertThat(createdDate)
         .isBefore(modificationDate)
         .isNotEqualTo(lastModifiedDate)
-      assertThat(lastModifiedDate).isAfterOrEqualTo(modificationDate)
+      assertThat(lastModifiedDate).isCloseTo(modificationDate, offset)
     }
   }
 }

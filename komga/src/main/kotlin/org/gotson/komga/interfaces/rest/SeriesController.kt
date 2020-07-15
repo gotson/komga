@@ -73,7 +73,7 @@ class SeriesController(
   fun getAllSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) searchTerm: String?,
-    @RequestParam(name = "library_id", required = false) libraryIds: List<Long>?,
+    @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
     @RequestParam(name = "collection_id", required = false) collectionIds: List<Long>?,
     @RequestParam(name = "status", required = false) metadataStatus: List<SeriesMetadata.Status>?,
     @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
@@ -182,7 +182,7 @@ class SeriesController(
   @GetMapping("{seriesId}")
   fun getOneSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @PathVariable(name = "seriesId") id: Long
+    @PathVariable(name = "seriesId") id: String
   ): SeriesDto =
     seriesDtoRepository.findByIdOrNull(id, principal.user.id)?.let {
       if (!principal.user.canAccessLibrary(it.libraryId)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
@@ -193,7 +193,7 @@ class SeriesController(
   @GetMapping(value = ["{seriesId}/thumbnail"], produces = [MediaType.IMAGE_JPEG_VALUE])
   fun getSeriesThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @PathVariable(name = "seriesId") seriesId: Long
+    @PathVariable(name = "seriesId") seriesId: String
   ): ResponseEntity<ByteArray> {
     seriesRepository.getLibraryId(seriesId)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
@@ -208,7 +208,7 @@ class SeriesController(
   @GetMapping("{seriesId}/books")
   fun getAllBooksBySeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @PathVariable(name = "seriesId") seriesId: Long,
+    @PathVariable(name = "seriesId") seriesId: String,
     @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
     @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
     @Parameter(hidden = true) page: Pageable
@@ -238,7 +238,7 @@ class SeriesController(
   @GetMapping("{seriesId}/collections")
   fun getAllCollectionsBySeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @PathVariable(name = "seriesId") seriesId: Long
+    @PathVariable(name = "seriesId") seriesId: String
   ): List<CollectionDto> {
     seriesRepository.getLibraryId(seriesId)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
@@ -251,7 +251,7 @@ class SeriesController(
   @PostMapping("{seriesId}/analyze")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun analyze(@PathVariable seriesId: Long) {
+  fun analyze(@PathVariable seriesId: String) {
     bookRepository.findAllIdBySeriesId(seriesId).forEach {
       taskReceiver.analyzeBook(it)
     }
@@ -260,7 +260,7 @@ class SeriesController(
   @PostMapping("{seriesId}/metadata/refresh")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun refreshMetadata(@PathVariable seriesId: Long) {
+  fun refreshMetadata(@PathVariable seriesId: String) {
     bookRepository.findAllIdBySeriesId(seriesId).forEach {
       taskReceiver.refreshBookMetadata(it)
     }
@@ -270,7 +270,7 @@ class SeriesController(
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateMetadata(
-    @PathVariable seriesId: Long,
+    @PathVariable seriesId: String,
     @Parameter(description = "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don't want to update.")
     @Valid @RequestBody newMetadata: SeriesMetadataUpdateDto,
     @AuthenticationPrincipal principal: KomgaPrincipal
@@ -292,7 +292,7 @@ class SeriesController(
   @PostMapping("{seriesId}/read-progress")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun markAsRead(
-    @PathVariable seriesId: Long,
+    @PathVariable seriesId: String,
     @AuthenticationPrincipal principal: KomgaPrincipal
   ) {
     seriesRepository.getLibraryId(seriesId)?.let {
@@ -307,7 +307,7 @@ class SeriesController(
   @DeleteMapping("{seriesId}/read-progress")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun markAsUnread(
-    @PathVariable seriesId: Long,
+    @PathVariable seriesId: String,
     @AuthenticationPrincipal principal: KomgaPrincipal
   ) {
     seriesRepository.getLibraryId(seriesId)?.let {

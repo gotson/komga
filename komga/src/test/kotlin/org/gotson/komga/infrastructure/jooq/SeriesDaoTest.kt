@@ -7,12 +7,10 @@ import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
-
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.net.URL
@@ -20,17 +18,16 @@ import java.time.LocalDateTime
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class SeriesDaoTest(
   @Autowired private val seriesDao: SeriesDao,
   @Autowired private val libraryRepository: LibraryRepository
 ) {
 
-  private var library = makeLibrary()
+  private val library = makeLibrary()
 
   @BeforeAll
   fun setup() {
-    library = libraryRepository.insert(library)
+    libraryRepository.insert(library)
   }
 
   @AfterEach
@@ -55,16 +52,15 @@ class SeriesDaoTest(
       libraryId = library.id
     )
 
-    Thread.sleep(5)
-
-    val created = seriesDao.insert(series)
+    seriesDao.insert(series)
+    val created = seriesDao.findByIdOrNull(series.id)!!
 
     assertThat(created.id).isNotEqualTo(0)
-    assertThat(created.createdDate).isAfter(now)
-    assertThat(created.lastModifiedDate).isAfter(now)
+    assertThat(created.createdDate).isCloseTo(now, offset)
+    assertThat(created.lastModifiedDate).isCloseTo(now, offset)
     assertThat(created.name).isEqualTo(series.name)
     assertThat(created.url).isEqualTo(series.url)
-    assertThat(created.fileLastModified).isEqualTo(series.fileLastModified)
+    assertThat(created.fileLastModified).isEqualToIgnoringNanos(series.fileLastModified)
   }
 
   @Test
@@ -76,10 +72,10 @@ class SeriesDaoTest(
       libraryId = library.id
     )
 
-    val created = seriesDao.insert(series)
+    seriesDao.insert(series)
     assertThat(seriesDao.count()).isEqualTo(1)
 
-    seriesDao.delete(created.id)
+    seriesDao.delete(series.id)
 
     assertThat(seriesDao.count()).isEqualTo(0)
   }
@@ -145,9 +141,9 @@ class SeriesDaoTest(
       libraryId = library.id
     )
 
-    val created = seriesDao.insert(series)
+    seriesDao.insert(series)
 
-    val found = seriesDao.findByIdOrNull(created.id)
+    val found = seriesDao.findByIdOrNull(series.id)
 
     assertThat(found).isNotNull
     assertThat(found?.name).isEqualTo("Series")
@@ -155,7 +151,7 @@ class SeriesDaoTest(
 
   @Test
   fun `given non-existing series when finding by id then null is returned`() {
-    val found = seriesDao.findByIdOrNull(1287746)
+    val found = seriesDao.findByIdOrNull("1287746")
 
     assertThat(found).isNull()
   }

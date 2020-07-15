@@ -16,7 +16,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.time.LocalDate
@@ -24,24 +23,23 @@ import java.time.LocalDateTime
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class BookMetadataDaoTest(
   @Autowired private val bookMetadataDao: BookMetadataDao,
   @Autowired private val bookRepository: BookRepository,
   @Autowired private val seriesRepository: SeriesRepository,
   @Autowired private val libraryRepository: LibraryRepository
 ) {
-  private var library = makeLibrary()
-  private var series = makeSeries("Series")
-  private var book = makeBook("Book")
+  private val library = makeLibrary()
+  private val series = makeSeries("Series")
+  private val book = makeBook("Book")
 
   @BeforeAll
   fun setup() {
-    library = libraryRepository.insert(library)
+    libraryRepository.insert(library)
 
-    series = seriesRepository.insert(series.copy(libraryId = library.id))
+    seriesRepository.insert(series.copy(libraryId = library.id))
 
-    book = bookRepository.insert(book.copy(libraryId = library.id, seriesId = series.id))
+    bookRepository.insert(book.copy(libraryId = library.id, seriesId = series.id))
   }
 
   @AfterEach
@@ -83,13 +81,12 @@ class BookMetadataDaoTest(
       authorsLock = true
     )
 
-    Thread.sleep(5)
-
-    val created = bookMetadataDao.insert(metadata)
+    bookMetadataDao.insert(metadata)
+    val created = bookMetadataDao.findById(metadata.bookId)
 
     assertThat(created.bookId).isEqualTo(book.id)
-    assertThat(created.createdDate).isAfter(now)
-    assertThat(created.lastModifiedDate).isAfter(now)
+    assertThat(created.createdDate).isCloseTo(now, offset)
+    assertThat(created.lastModifiedDate).isCloseTo(now, offset)
 
     assertThat(created.title).isEqualTo(metadata.title)
     assertThat(created.summary).isEqualTo(metadata.summary)
@@ -125,7 +122,8 @@ class BookMetadataDaoTest(
       bookId = book.id
     )
 
-    val created = bookMetadataDao.insert(metadata)
+    bookMetadataDao.insert(metadata)
+    val created = bookMetadataDao.findById(metadata.bookId)
 
     assertThat(created.bookId).isEqualTo(book.id)
 
@@ -164,13 +162,10 @@ class BookMetadataDaoTest(
       authors = mutableListOf(Author("author", "role")),
       bookId = book.id
     )
-    val created = bookMetadataDao.insert(metadata)
-
-    Thread.sleep(5)
+    bookMetadataDao.insert(metadata)
 
     val modificationDate = LocalDateTime.now()
-
-    val updated = with(created) {
+    val updated = with(bookMetadataDao.findById(metadata.bookId)) {
       copy(
         title = "BookUpdated",
         summary = "SummaryUpdated",
@@ -199,7 +194,7 @@ class BookMetadataDaoTest(
     assertThat(modified.bookId).isEqualTo(updated.bookId)
     assertThat(modified.createdDate).isEqualTo(updated.createdDate)
     assertThat(modified.lastModifiedDate)
-      .isAfterOrEqualTo(modificationDate)
+      .isCloseTo(modificationDate, offset)
       .isNotEqualTo(updated.lastModifiedDate)
 
     assertThat(modified.title).isEqualTo(updated.title)
@@ -238,16 +233,16 @@ class BookMetadataDaoTest(
       authors = mutableListOf(Author("author", "role")),
       bookId = book.id
     )
-    val created = bookMetadataDao.insert(metadata)
+    bookMetadataDao.insert(metadata)
 
-    val found = catchThrowable { bookMetadataDao.findById(created.bookId) }
+    val found = catchThrowable { bookMetadataDao.findById(metadata.bookId) }
 
     assertThat(found).doesNotThrowAnyException()
   }
 
   @Test
   fun `given non-existing metadata when finding by id then exception is thrown`() {
-    val found = catchThrowable { bookMetadataDao.findById(128742) }
+    val found = catchThrowable { bookMetadataDao.findById("128742") }
 
     assertThat(found).isInstanceOf(Exception::class.java)
   }

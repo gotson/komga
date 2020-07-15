@@ -249,7 +249,7 @@ class OpdsController(
   fun getOneSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestHeader(name = HttpHeaders.USER_AGENT, required = false, defaultValue = "") userAgent: String,
-    @PathVariable id: Long
+    @PathVariable id: String
   ): OpdsFeed =
     seriesRepository.findByIdOrNull(id)?.let { series ->
       if (!principal.user.canAccessSeries(series)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
@@ -281,7 +281,7 @@ class OpdsController(
   @GetMapping("libraries/{id}")
   fun getOneLibrary(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @PathVariable id: Long
+    @PathVariable id: String
   ): OpdsFeed =
     libraryRepository.findByIdOrNull(id)?.let { library ->
       if (!principal.user.canAccessLibrary(library)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
@@ -309,7 +309,7 @@ class OpdsController(
   @GetMapping("collections/{id}")
   fun getOneCollection(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @PathVariable id: Long
+    @PathVariable id: String
   ): OpdsFeed {
     return collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { collection ->
       val series = collection.seriesIds.mapNotNull { seriesRepository.findByIdOrNull(it) }

@@ -9,7 +9,7 @@ import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 
 data class UserDto(
-  val id: Long,
+  val id: String,
   val email: String,
   val roles: List<String>
 )
@@ -24,7 +24,7 @@ fun KomgaUser.toDto() =
 fun KomgaPrincipal.toDto() = user.toDto()
 
 data class UserWithSharedLibrariesDto(
-  val id: Long,
+  val id: String,
   val email: String,
   val roles: List<String>,
   val sharedAllLibraries: Boolean,
@@ -32,7 +32,7 @@ data class UserWithSharedLibrariesDto(
 )
 
 data class SharedLibraryDto(
-  val id: Long
+  val id: String
 )
 
 fun KomgaUser.toWithSharedLibrariesDto() =
@@ -65,7 +65,7 @@ data class PasswordUpdateDto(
 
 data class SharedLibrariesUpdateDto(
   val all: Boolean,
-  val libraryIds: Set<Long>
+  val libraryIds: Set<String>
 )
 
 data class RolesUpdateDto(

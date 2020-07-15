@@ -23,7 +23,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.jms.support.destination.JmsDestinationAccessor
@@ -33,7 +32,6 @@ private val logger = KotlinLogging.logger {}
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class TaskHandlerTest(
   @Autowired private val taskReceiver: TaskReceiver,
   @Autowired private val jmsTemplate: JmsTemplate,
@@ -46,7 +44,7 @@ class TaskHandlerTest(
   @MockkBean
   private lateinit var mockMetadataLifecycle: MetadataLifecycle
 
-  private var library = makeLibrary()
+  private val library = makeLibrary()
 
   init {
     jmsTemplate.receiveTimeout = JmsDestinationAccessor.RECEIVE_TIMEOUT_NO_WAIT
@@ -54,7 +52,7 @@ class TaskHandlerTest(
 
   @BeforeAll
   fun `setup library`() {
-    library = libraryRepository.insert(library)
+    libraryRepository.insert(library)
   }
 
   @AfterAll

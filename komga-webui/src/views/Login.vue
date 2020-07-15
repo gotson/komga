@@ -130,7 +130,7 @@ export default Vue.extend({
           await this.$router.push({ name: 'home' })
         }
       } catch (e) {
-        this.showSnack(e.message)
+        this.showSnack(e?.message)
       }
     },
     showSnack (message: string) {

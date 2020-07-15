@@ -7,6 +7,7 @@ import org.gotson.komga.jooq.tables.records.SeriesMetadataRecord
 import org.jooq.DSLContext
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Component
 class SeriesMetadataDao(
@@ -15,13 +16,13 @@ class SeriesMetadataDao(
 
   private val d = Tables.SERIES_METADATA
 
-  override fun findById(seriesId: Long): SeriesMetadata =
+  override fun findById(seriesId: String): SeriesMetadata =
     findOne(seriesId).toDomain()
 
-  override fun findByIdOrNull(seriesId: Long): SeriesMetadata? =
+  override fun findByIdOrNull(seriesId: String): SeriesMetadata? =
     findOne(seriesId)?.toDomain()
 
-  private fun findOne(seriesId: Long) =
+  private fun findOne(seriesId: String) =
     dsl.selectFrom(d)
       .where(d.SERIES_ID.eq(seriesId))
       .fetchOneInto(d)
@@ -48,12 +49,12 @@ class SeriesMetadataDao(
       .set(d.STATUS_LOCK, metadata.statusLock)
       .set(d.TITLE_LOCK, metadata.titleLock)
       .set(d.TITLE_SORT_LOCK, metadata.titleSortLock)
-      .set(d.LAST_MODIFIED_DATE, LocalDateTime.now())
+      .set(d.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(d.SERIES_ID.eq(metadata.seriesId))
       .execute()
   }
 
-  override fun delete(seriesId: Long) {
+  override fun delete(seriesId: String) {
     dsl.deleteFrom(d)
       .where(d.SERIES_ID.eq(seriesId))
       .execute()
@@ -71,7 +72,7 @@ class SeriesMetadataDao(
       statusLock = statusLock,
       titleLock = titleLock,
       titleSortLock = titleSortLock,
-      createdDate = createdDate,
-      lastModifiedDate = lastModifiedDate
+      createdDate = createdDate.toCurrentTimeZone(),
+      lastModifiedDate = lastModifiedDate.toCurrentTimeZone()
     )
 }

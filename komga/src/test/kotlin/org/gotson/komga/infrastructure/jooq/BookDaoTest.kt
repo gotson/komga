@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.jooq
 
+import mu.KotlinLogging
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookSearch
@@ -14,7 +15,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.net.URL
@@ -22,20 +22,19 @@ import java.time.LocalDateTime
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class BookDaoTest(
   @Autowired private val bookDao: BookDao,
   @Autowired private val seriesRepository: SeriesRepository,
   @Autowired private val libraryRepository: LibraryRepository
 ) {
 
-  private var library = makeLibrary()
-  private var series = makeSeries("Series")
+  private val library = makeLibrary()
+  private val series = makeSeries("Series")
 
   @BeforeAll
   fun setup() {
-    library = libraryRepository.insert(library)
-    series = seriesRepository.insert(series.copy(libraryId = library.id))
+    libraryRepository.insert(library)
+    seriesRepository.insert(series.copy(libraryId = library.id))
   }
 
   @AfterEach
@@ -63,16 +62,15 @@ class BookDaoTest(
       libraryId = library.id
     )
 
-    Thread.sleep(5)
-
-    val created = bookDao.insert(book)
+    bookDao.insert(book)
+    val created = bookDao.findByIdOrNull(book.id)!!
 
     assertThat(created.id).isNotEqualTo(0)
-    assertThat(created.createdDate).isAfter(now)
-    assertThat(created.lastModifiedDate).isAfter(now)
+    assertThat(created.createdDate).isCloseTo(now, offset)
+    assertThat(created.lastModifiedDate).isCloseTo(now, offset)
     assertThat(created.name).isEqualTo(book.name)
     assertThat(created.url).isEqualTo(book.url)
-    assertThat(created.fileLastModified).isEqualTo(book.fileLastModified)
+    assertThat(created.fileLastModified).isEqualToIgnoringNanos(book.fileLastModified)
     assertThat(created.fileSize).isEqualTo(book.fileSize)
   }
 
@@ -86,13 +84,11 @@ class BookDaoTest(
       seriesId = series.id,
       libraryId = library.id
     )
-    val created = bookDao.insert(book)
-
-    Thread.sleep(5)
+    bookDao.insert(book)
 
     val modificationDate = LocalDateTime.now()
 
-    val updated = with(created) {
+    val updated = with(bookDao.findByIdOrNull(book.id)!!) {
       copy(
         name = "Updated",
         url = URL("file://updated"),
@@ -107,11 +103,11 @@ class BookDaoTest(
     assertThat(modified.id).isEqualTo(updated.id)
     assertThat(modified.createdDate).isEqualTo(updated.createdDate)
     assertThat(modified.lastModifiedDate)
-      .isAfterOrEqualTo(modificationDate)
+      .isCloseTo(modificationDate, offset)
       .isNotEqualTo(updated.lastModifiedDate)
     assertThat(modified.name).isEqualTo("Updated")
     assertThat(modified.url).isEqualTo(URL("file://updated"))
-    assertThat(modified.fileLastModified).isEqualTo(modificationDate)
+    assertThat(modified.fileLastModified).isEqualToIgnoringNanos(modificationDate)
     assertThat(modified.fileSize).isEqualTo(5)
   }
 
@@ -125,9 +121,9 @@ class BookDaoTest(
       seriesId = series.id,
       libraryId = library.id
     )
-    val created = bookDao.insert(book)
+    bookDao.insert(book)
 
-    val found = bookDao.findByIdOrNull(created.id)
+    val found = bookDao.findByIdOrNull(book.id)
 
     assertThat(found).isNotNull
     assertThat(found?.name).isEqualTo("Book")
@@ -135,7 +131,7 @@ class BookDaoTest(
 
   @Test
   fun `given non-existing book when finding by id then null is returned`() {
-    val found = bookDao.findByIdOrNull(128742)
+    val found = bookDao.findByIdOrNull("128742")
 
     assertThat(found).isNull()
   }
@@ -193,4 +189,35 @@ class BookDaoTest(
 
     assertThat(bookDao.count()).isEqualTo(0)
   }
+
+
+  private val logger = KotlinLogging.logger {}
+
+//  @Test
+//  fun benchmark() {
+//    val books = (1..10000).map {
+//      makeBook(it.toString(), libraryId = library.id, seriesId = series.id)
+//    }
+//
+//    val single = measureTime {
+//      books.map { bookDao.insert(it) }
+//    }
+//    bookDao.deleteAll()
+//
+//    val singleBatch = measureTime {
+//      books.map { bookDao.insertBatch(it) }
+//    }
+//    bookDao.deleteAll()
+//
+//    val transaction = measureTime {
+//      bookDao.insertMany(books)
+//    }
+//    bookDao.deleteAll()
+//
+//    logger.info { "Single: $single" }
+//    logger.info { "SingleBatch: $singleBatch" }
+//    logger.info { "Transaction: $transaction" }
+//
+//    assertThat(single).isEqualTo(transaction)
+//  }
 }

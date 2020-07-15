@@ -7,5 +7,5 @@ import org.gotson.komga.infrastructure.validation.Unique
 data class CollectionUpdateDto(
   @get:NullOrNotBlank val name: String?,
   val ordered: Boolean?,
-  @get:NullOrNotEmpty @get:Unique val seriesIds: List<Long>?
+  @get:NullOrNotEmpty @get:Unique val seriesIds: List<String>?
 )

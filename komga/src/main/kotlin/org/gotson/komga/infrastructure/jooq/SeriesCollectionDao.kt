@@ -2,7 +2,6 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
-import org.gotson.komga.jooq.Sequences
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.CollectionRecord
 import org.jooq.DSLContext
@@ -16,6 +15,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Component
 class SeriesCollectionDao(
@@ -31,13 +31,13 @@ class SeriesCollectionDao(
   )
 
 
-  override fun findByIdOrNull(collectionId: Long): SeriesCollection? =
+  override fun findByIdOrNull(collectionId: String): SeriesCollection? =
     selectBase()
       .where(c.ID.eq(collectionId))
       .fetchAndMap(null)
       .firstOrNull()
 
-  override fun findByIdOrNull(collectionId: Long, filterOnLibraryIds: Collection<Long>?): SeriesCollection? =
+  override fun findByIdOrNull(collectionId: String, filterOnLibraryIds: Collection<String>?): SeriesCollection? =
     selectBase()
       .where(c.ID.eq(collectionId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
@@ -70,14 +70,14 @@ class SeriesCollectionDao(
     )
   }
 
-  override fun findAllByLibraries(belongsToLibraryIds: Collection<Long>, filterOnLibraryIds: Collection<Long>?, search: String?, pageable: Pageable): Page<SeriesCollection> {
+  override fun findAllByLibraries(belongsToLibraryIds: Collection<String>, filterOnLibraryIds: Collection<String>?, search: String?, pageable: Pageable): Page<SeriesCollection> {
     val ids = dsl.selectDistinct(c.ID)
       .from(c)
       .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
       .leftJoin(s).on(cs.SERIES_ID.eq(s.ID))
       .where(s.LIBRARY_ID.`in`(belongsToLibraryIds))
       .apply { search?.let { and(c.NAME.containsIgnoreCase(it)) } }
-      .fetch(0, Long::class.java)
+      .fetch(0, String::class.java)
 
     val count = ids.size
 
@@ -100,12 +100,12 @@ class SeriesCollectionDao(
     )
   }
 
-  override fun findAllBySeries(containsSeriesId: Long, filterOnLibraryIds: Collection<Long>?): Collection<SeriesCollection> {
+  override fun findAllBySeries(containsSeriesId: String, filterOnLibraryIds: Collection<String>?): Collection<SeriesCollection> {
     val ids = dsl.select(c.ID)
       .from(c)
       .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
       .where(cs.SERIES_ID.eq(containsSeriesId))
-      .fetch(0, Long::class.java)
+      .fetch(0, String::class.java)
 
     return selectBase()
       .where(c.ID.`in`(ids))
@@ -125,7 +125,7 @@ class SeriesCollectionDao(
       .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
       .leftJoin(s).on(cs.SERIES_ID.eq(s.ID))
 
-  private fun ResultQuery<Record>.fetchAndMap(filterOnLibraryIds: Collection<Long>?): List<SeriesCollection> =
+  private fun ResultQuery<Record>.fetchAndMap(filterOnLibraryIds: Collection<String>?): List<SeriesCollection> =
     fetchInto(c)
       .map { cr ->
         val seriesIds = dsl.select(*cs.fields())
@@ -139,24 +139,21 @@ class SeriesCollectionDao(
         cr.toDomain(seriesIds)
       }
 
-  override fun insert(collection: SeriesCollection): SeriesCollection {
-    val id = dsl.nextval(Sequences.HIBERNATE_SEQUENCE)
-    val insert = collection.copy(id = id)
+  override fun insert(collection: SeriesCollection) {
+    dsl.transaction { config ->
+      config.dsl().insertInto(c)
+        .set(c.ID, collection.id)
+        .set(c.NAME, collection.name)
+        .set(c.ORDERED, collection.ordered)
+        .set(c.SERIES_COUNT, collection.seriesIds.size)
+        .execute()
 
-    dsl.insertInto(c)
-      .set(c.ID, insert.id)
-      .set(c.NAME, insert.name)
-      .set(c.ORDERED, insert.ordered)
-      .set(c.SERIES_COUNT, collection.seriesIds.size)
-      .execute()
-
-    insertSeries(insert)
-
-    return findByIdOrNull(id)!!
+      insertSeries(config.dsl(), collection)
+    }
   }
 
 
-  private fun insertSeries(collection: SeriesCollection) {
+  private fun insertSeries(dsl: DSLContext, collection: SeriesCollection) {
     collection.seriesIds.forEachIndexed { index, id ->
       dsl.insertInto(cs)
         .set(cs.COLLECTION_ID, collection.id)
@@ -168,30 +165,35 @@ class SeriesCollectionDao(
 
   override fun update(collection: SeriesCollection) {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         update(c)
           .set(c.NAME, collection.name)
           .set(c.ORDERED, collection.ordered)
           .set(c.SERIES_COUNT, collection.seriesIds.size)
-          .set(c.LAST_MODIFIED_DATE, LocalDateTime.now())
+          .set(c.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
           .where(c.ID.eq(collection.id))
           .execute()
 
         deleteFrom(cs).where(cs.COLLECTION_ID.eq(collection.id)).execute()
 
-        insertSeries(collection)
+        insertSeries(config.dsl(), collection)
       }
     }
   }
 
-  override fun removeSeriesFromAll(seriesId: Long) {
+  override fun removeSeriesFromAll(seriesId: String) {
     dsl.deleteFrom(cs)
       .where(cs.SERIES_ID.eq(seriesId))
       .execute()
   }
 
-  override fun delete(collectionId: Long) {
+  override fun removeSeriesFromAll(seriesIds: Collection<String>) {
+    dsl.deleteFrom(cs)
+      .where(cs.SERIES_ID.`in`(seriesIds))
+      .execute()
+  }
+
+  override fun delete(collectionId: String) {
     dsl.transaction { config ->
       with(config.dsl())
       {
@@ -218,14 +220,14 @@ class SeriesCollectionDao(
     )
 
 
-  private fun CollectionRecord.toDomain(seriesIds: List<Long>) =
+  private fun CollectionRecord.toDomain(seriesIds: List<String>) =
     SeriesCollection(
       name = name,
       ordered = ordered,
       seriesIds = seriesIds,
       id = id,
-      createdDate = createdDate,
-      lastModifiedDate = lastModifiedDate,
+      createdDate = createdDate.toCurrentTimeZone(),
+      lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
       filtered = seriesCount != seriesIds.size
     )
 }

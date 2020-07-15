@@ -1,5 +1,6 @@
 package org.gotson.komga.domain.model
 
+import com.github.f4b6a3.tsid.TsidCreator
 import java.net.URL
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -14,7 +15,7 @@ data class Library(
   val importEpubBook: Boolean = true,
   val importEpubSeries: Boolean = true,
 
-  val id: Long = 0,
+  val id: String = TsidCreator.getTsidString256(),
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now()

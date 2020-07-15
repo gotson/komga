@@ -3,7 +3,6 @@ package org.gotson.komga.infrastructure.jooq
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.persistence.SeriesRepository
-import org.gotson.komga.jooq.Sequences
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.SeriesRecord
 import org.jooq.Condition
@@ -12,6 +11,7 @@ import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
 import java.net.URL
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Component
 class SeriesDao(
@@ -20,7 +20,6 @@ class SeriesDao(
 
   private val s = Tables.SERIES
   private val d = Tables.SERIES_METADATA
-  private val b = Tables.BOOK
   private val cs = Tables.COLLECTION_SERIES
 
 
@@ -29,36 +28,36 @@ class SeriesDao(
       .fetchInto(s)
       .map { it.toDomain() }
 
-  override fun findByIdOrNull(seriesId: Long): Series? =
+  override fun findByIdOrNull(seriesId: String): Series? =
     dsl.selectFrom(s)
       .where(s.ID.eq(seriesId))
       .fetchOneInto(s)
       ?.toDomain()
 
-  override fun findByLibraryId(libraryId: Long): List<Series> =
+  override fun findByLibraryId(libraryId: String): List<Series> =
     dsl.selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId))
       .fetchInto(s)
       .map { it.toDomain() }
 
-  override fun findByLibraryIdAndUrlNotIn(libraryId: Long, urls: Collection<URL>): List<Series> =
+  override fun findByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): List<Series> =
     dsl.selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId).and(s.URL.notIn(urls.map { it.toString() })))
       .fetchInto(s)
       .map { it.toDomain() }
 
-  override fun findByLibraryIdAndUrl(libraryId: Long, url: URL): Series? =
+  override fun findByLibraryIdAndUrl(libraryId: String, url: URL): Series? =
     dsl.selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId).and(s.URL.eq(url.toString())))
       .fetchOneInto(s)
       ?.toDomain()
 
 
-  override fun getLibraryId(seriesId: Long): Long? =
+  override fun getLibraryId(seriesId: String): String? =
     dsl.select(s.LIBRARY_ID)
       .from(s)
       .where(s.ID.eq(seriesId))
-      .fetchOne(0, Long::class.java)
+      .fetchOne(0, String::class.java)
 
 
   override fun findAll(search: SeriesSearch): Collection<Series> {
@@ -74,18 +73,14 @@ class SeriesDao(
   }
 
 
-  override fun insert(series: Series): Series {
-    val id = dsl.nextval(Sequences.HIBERNATE_SEQUENCE)
-
+  override fun insert(series: Series) {
     dsl.insertInto(s)
-      .set(s.ID, id)
+      .set(s.ID, series.id)
       .set(s.NAME, series.name)
       .set(s.URL, series.url.toString())
       .set(s.FILE_LAST_MODIFIED, series.fileLastModified)
       .set(s.LIBRARY_ID, series.libraryId)
       .execute()
-
-    return findByIdOrNull(id)!!
   }
 
   override fun update(series: Series) {
@@ -94,12 +89,12 @@ class SeriesDao(
       .set(s.URL, series.url.toString())
       .set(s.FILE_LAST_MODIFIED, series.fileLastModified)
       .set(s.LIBRARY_ID, series.libraryId)
-      .set(s.LAST_MODIFIED_DATE, LocalDateTime.now())
+      .set(s.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(s.ID.eq(series.id))
       .execute()
   }
 
-  override fun delete(seriesId: Long) {
+  override fun delete(seriesId: String) {
     dsl.transaction { config ->
       with(config.dsl())
       {
@@ -119,7 +114,7 @@ class SeriesDao(
     }
   }
 
-  override fun deleteAll(seriesIds: Collection<Long>) {
+  override fun deleteAll(seriesIds: Collection<String>) {
     dsl.transaction { config ->
       with(config.dsl())
       {
@@ -150,7 +145,7 @@ class SeriesDao(
       fileLastModified = fileLastModified,
       id = id,
       libraryId = libraryId,
-      createdDate = createdDate,
-      lastModifiedDate = lastModifiedDate
+      createdDate = createdDate.toCurrentTimeZone(),
+      lastModifiedDate = lastModifiedDate.toCurrentTimeZone()
     )
 }

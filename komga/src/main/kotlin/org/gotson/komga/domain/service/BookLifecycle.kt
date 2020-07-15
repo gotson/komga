@@ -104,7 +104,7 @@ class BookLifecycle(
     }
   }
 
-  fun delete(bookId: Long) {
+  fun deleteOne(bookId: String) {
     logger.info { "Delete book id: $bookId" }
 
     readProgressRepository.deleteByBookId(bookId)
@@ -114,6 +114,16 @@ class BookLifecycle(
     bookRepository.delete(bookId)
   }
 
+  fun deleteMany(bookIds: Collection<String>) {
+    logger.info { "Delete all books: $bookIds" }
+
+    readProgressRepository.deleteByBookIds(bookIds)
+    mediaRepository.deleteByBookIds(bookIds)
+    bookMetadataRepository.deleteByBookIds(bookIds)
+
+    bookRepository.deleteByBookIds(bookIds)
+  }
+
   fun markReadProgress(book: Book, user: KomgaUser, page: Int) {
     val media = mediaRepository.findById(book.id)
     require(page >= 1 && page <= media.pages.size) { "Page argument ($page) must be within 1 and book page count (${media.pages.size})" }
@@ -121,13 +131,13 @@ class BookLifecycle(
     readProgressRepository.save(ReadProgress(book.id, user.id, page, page == media.pages.size))
   }
 
-  fun markReadProgressCompleted(bookId: Long, user: KomgaUser) {
+  fun markReadProgressCompleted(bookId: String, user: KomgaUser) {
     val media = mediaRepository.findById(bookId)
 
     readProgressRepository.save(ReadProgress(bookId, user.id, media.pages.size, true))
   }
 
-  fun deleteReadProgress(bookId: Long, user: KomgaUser) {
+  fun deleteReadProgress(bookId: String, user: KomgaUser) {
     readProgressRepository.delete(bookId, user.id)
   }
 }

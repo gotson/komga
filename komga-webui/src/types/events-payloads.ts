@@ -1,29 +1,29 @@
 interface EventBookChanged {
-  id: number,
-  seriesId: number
+  id: string,
+  seriesId: string
 }
 
 interface EventSeriesChanged {
-  id: number,
-  libraryId: number
+  id: string,
+  libraryId: string
 }
 
 interface EventCollectionChanged {
-  id: number
+  id: string
 }
 
 interface EventCollectionDeleted {
-  id: number
+  id: string
 }
 
 interface EventLibraryAdded {
-  id: number
+  id: string
 }
 
 interface EventLibraryChanged {
-  id: number
+  id: string
 }
 
 interface EventLibraryDeleted {
-  id: number
+  id: string
 }

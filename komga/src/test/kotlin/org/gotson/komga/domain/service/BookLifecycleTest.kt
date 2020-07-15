@@ -22,13 +22,11 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class BookLifecycleTest(
   @Autowired private val bookLifecycle: BookLifecycle,
   @Autowired private val bookRepository: BookRepository,
@@ -43,16 +41,16 @@ class BookLifecycleTest(
   @MockkBean
   private lateinit var mockAnalyzer: BookAnalyzer
 
-  private var library = makeLibrary()
-  private var user1 = KomgaUser("user1@example.org", "", false)
-  private var user2 = KomgaUser("user2@example.org", "", false)
+  private val library = makeLibrary()
+  private val user1 = KomgaUser("user1@example.org", "", false)
+  private val user2 = KomgaUser("user2@example.org", "", false)
 
   @BeforeAll
   fun `setup library`() {
-    library = libraryRepository.insert(library)
+    libraryRepository.insert(library)
 
-    user1 = userRepository.save(user1)
-    user2 = userRepository.save(user2)
+    userRepository.insert(user1)
+    userRepository.insert(user2)
   }
 
   @AfterAll
@@ -63,9 +61,7 @@ class BookLifecycleTest(
 
   @AfterEach
   fun `clear repository`() {
-    seriesRepository.findAll().forEach {
-      seriesLifecycle.deleteSeries(it.id)
-    }
+    seriesLifecycle.deleteMany(seriesRepository.findAll().map { it.id })
   }
 
   @Test

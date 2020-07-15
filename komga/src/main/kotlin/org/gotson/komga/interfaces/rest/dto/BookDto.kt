@@ -7,9 +7,9 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class BookDto(
-  val id: Long,
-  val seriesId: Long,
-  val libraryId: Long,
+  val id: String,
+  val seriesId: String,
+  val libraryId: String,
   val name: String,
   val url: String,
   val number: Int,

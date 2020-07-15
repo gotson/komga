@@ -6,12 +6,12 @@ interface KomgaUserRepository {
   fun count(): Long
 
   fun findAll(): Collection<KomgaUser>
-  fun findByIdOrNull(id: Long): KomgaUser?
+  fun findByIdOrNull(id: String): KomgaUser?
 
-  fun save(user: KomgaUser): KomgaUser
-  fun saveAll(users: Iterable<KomgaUser>): Collection<KomgaUser>
+  fun insert(user: KomgaUser)
+  fun update(user: KomgaUser)
 
-  fun delete(user: KomgaUser)
+  fun delete(userId: String)
   fun deleteAll()
 
   fun existsByEmailIgnoreCase(email: String): Boolean

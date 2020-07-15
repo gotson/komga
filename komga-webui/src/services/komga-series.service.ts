@@ -11,7 +11,7 @@ export default class KomgaSeriesService {
     this.http = http
   }
 
-  async getSeries (libraryId?: number, pageRequest?: PageRequest, search?: string, status?: string[], readStatus?: string[]): Promise<Page<SeriesDto>> {
+  async getSeries (libraryId?: string, pageRequest?: PageRequest, search?: string, status?: string[], readStatus?: string[]): Promise<Page<SeriesDto>> {
     try {
       const params = { ...pageRequest } as any
       if (libraryId) {
@@ -69,7 +69,7 @@ export default class KomgaSeriesService {
     }
   }
 
-  async getOneSeries (seriesId: number): Promise<SeriesDto> {
+  async getOneSeries (seriesId: string): Promise<SeriesDto> {
     try {
       return (await this.http.get(`${API_SERIES}/${seriesId}`)).data
     } catch (e) {
@@ -81,7 +81,7 @@ export default class KomgaSeriesService {
     }
   }
 
-  async getBooks (seriesId: number, pageRequest?: PageRequest, readStatus?: string[]): Promise<Page<BookDto>> {
+  async getBooks (seriesId: string, pageRequest?: PageRequest, readStatus?: string[]): Promise<Page<BookDto>> {
     try {
       const params = { ...pageRequest } as any
       if (readStatus) {
@@ -100,7 +100,7 @@ export default class KomgaSeriesService {
     }
   }
 
-  async getCollections (seriesId: number): Promise<CollectionDto[]> {
+  async getCollections (seriesId: string): Promise<CollectionDto[]> {
     try {
       return (await this.http.get(`${API_SERIES}/${seriesId}/collections`)).data
     } catch (e) {
@@ -136,7 +136,7 @@ export default class KomgaSeriesService {
     }
   }
 
-  async updateMetadata (seriesId: number, metadata: SeriesMetadataUpdateDto) {
+  async updateMetadata (seriesId: string, metadata: SeriesMetadataUpdateDto) {
     try {
       await this.http.patch(`${API_SERIES}/${seriesId}/metadata`, metadata)
     } catch (e) {
@@ -148,7 +148,7 @@ export default class KomgaSeriesService {
     }
   }
 
-  async markAsRead (seriesId: number) {
+  async markAsRead (seriesId: string) {
     try {
       await this.http.post(`${API_SERIES}/${seriesId}/read-progress`)
     } catch (e) {
@@ -160,7 +160,7 @@ export default class KomgaSeriesService {
     }
   }
 
-  async markAsUnread (seriesId: number) {
+  async markAsUnread (seriesId: string) {
     try {
       await this.http.delete(`${API_SERIES}/${seriesId}/read-progress`)
     } catch (e) {

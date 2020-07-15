@@ -12,15 +12,15 @@ komga:
   libraries-scan-directory-exclusions:
     - "#recycle"
     - "@eaDir"
-  database-backup:
-    path: ~/.komga/database-backup.zip
-    schedule: "0 0 */6 * * ?"
+  database:
+    file: \${user.home}/.komga/database.sqlite
 
 spring:
   #  cache:
   #    caffeine-spec: maximumSize=500,expireAfterWrite=300s
   datasource:
     url: jdbc:h2:~/.komga/database.h2
+    username: sa
   h2:
     console:
       enabled: true
@@ -28,6 +28,7 @@ spring:
     add-mappings: false
   flyway:
     enabled: true
+    locations: classpath:db/migration/{vendor}
   thymeleaf:
     prefix: classpath:/public/
   mvc:
