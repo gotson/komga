@@ -6,7 +6,6 @@ import org.apache.pdfbox.rendering.PDFRenderer
 import org.gotson.komga.domain.model.MediaContainerEntry
 import org.springframework.stereotype.Service
 import java.io.ByteArrayOutputStream
-import java.nio.file.Files
 import java.nio.file.Path
 import javax.imageio.ImageIO
 
@@ -20,25 +19,21 @@ class PdfExtractor : MediaContainerExtractor {
   override fun mediaTypes(): List<String> = listOf("application/pdf")
 
   override fun getEntries(path: Path): List<MediaContainerEntry> =
-    Files.newInputStream(path).use { inputStream ->
-      PDDocument.load(inputStream).use { pdf ->
-        (0 until pdf.numberOfPages).map { index ->
-          MediaContainerEntry(index.toString(), mediaType)
-        }
+    PDDocument.load(path.toFile()).use { pdf ->
+      (0 until pdf.numberOfPages).map { index ->
+        MediaContainerEntry(index.toString(), mediaType)
       }
     }
 
   override fun getEntryStream(path: Path, entryName: String): ByteArray =
-    Files.newInputStream(path).use { inputStream ->
-      PDDocument.load(inputStream).use { pdf ->
-        val pageNumber = entryName.toInt()
-        val page = pdf.getPage(pageNumber)
-        val scale = resolution / minOf(page.cropBox.width, page.cropBox.height)
-        val image = PDFRenderer(pdf).renderImage(pageNumber, scale, ImageType.RGB)
-        ByteArrayOutputStream().use { out ->
-          ImageIO.write(image, imageIOFormat, out)
-          out.toByteArray()
-        }
+    PDDocument.load(path.toFile()).use { pdf ->
+      val pageNumber = entryName.toInt()
+      val page = pdf.getPage(pageNumber)
+      val scale = resolution / minOf(page.cropBox.width, page.cropBox.height)
+      val image = PDFRenderer(pdf).renderImage(pageNumber, scale, ImageType.RGB)
+      ByteArrayOutputStream().use { out ->
+        ImageIO.write(image, imageIOFormat, out)
+        out.toByteArray()
       }
     }
 }
