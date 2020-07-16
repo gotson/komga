@@ -3,7 +3,7 @@
 # 1: next version
 # 2: channel
 
-source "$(dirname "$0")/docker-common.sh" $2
+source "$(dirname "$0")/docker-common.sh" $1 $2
 
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 

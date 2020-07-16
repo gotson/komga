@@ -3,7 +3,7 @@
 # 1: next version
 # 2: channel
 
-source "$(dirname "$0")/docker-common.sh" $2
+source "$(dirname "$0")/docker-common.sh" $1 $2
 
 # Update Docker CE
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
