@@ -97,6 +97,20 @@
         </v-list-item>
       </v-list>
 
+    <v-divider />
+
+    <v-list>
+        <v-list-item @click="toggleDarkMode">
+          <v-list-item-icon>
+            <v-icon>mdi-lightbulb</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title v-if="this.$vuetify.theme.dark">Dark mode off</v-list-item-title>
+            <v-list-item-title v-else>Dark mode on</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+    </v-list>
+
       <v-spacer/>
 
       <template v-slot:append>
@@ -121,18 +135,27 @@ import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import SearchBox from '@/components/SearchBox.vue'
 import Vue from 'vue'
 
+const cookieDarkMode = 'darkmode'
+
 export default Vue.extend({
   name: 'home',
   components: { LibraryActionsMenu, SearchBox, Dialogs },
   data: function () {
     return {
       drawerVisible: this.$vuetify.breakpoint.lgAndUp,
+      darkMode: false,
       info: {} as ActuatorInfo,
     }
   },
   async created () {
     if (this.isAdmin) {
       this.info = await this.$actuator.getInfo()
+    }
+
+    if (this.$cookies.isKey(cookieDarkMode)) {
+      const darkMode = Boolean(JSON.parse(this.$cookies.get(cookieDarkMode)))
+      this.darkMode = darkMode
+      this.$vuetify.theme.dark = darkMode
     }
   },
   computed: {
@@ -146,6 +169,12 @@ export default Vue.extend({
   methods: {
     toggleDrawer () {
       this.drawerVisible = !this.drawerVisible
+    },
+    toggleDarkMode () {
+      this.darkMode = !this.darkMode
+
+      this.$cookies.set(cookieDarkMode, JSON.stringify(this.darkMode), Infinity)
+      this.$vuetify.theme.dark = this.darkMode
     },
     logout () {
       this.$store.dispatch('logout')

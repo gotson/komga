@@ -178,7 +178,7 @@ export default Vue.extend({
   methods: {
     onResize () {
       const content = this.$refs.content as HTMLElement
-      this.width = computeCardWidth(content.clientWidth, this.$vuetify.breakpoint.name)
+      this.width = computeCardWidth(content.clientWidth, this.$vuetify.breakpoint.name as any)
     },
     deleteItem (item: any) {
       const index = this.localItems.findIndex((e: any) => e.id === item.id)

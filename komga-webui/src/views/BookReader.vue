@@ -627,7 +627,7 @@ export default Vue.extend({
         query: {
           page: this.currentPage.toString(),
         },
-      })
+      } as any)
     },
     closeBook () {
       this.$router.push({ name: 'browse-book', params: { bookId: this.bookId.toString() } })
