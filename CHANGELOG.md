@@ -1,3 +1,10 @@
+## [0.48.1](https://github.com/gotson/komga/compare/v0.48.0...v0.48.1) (2020-07-21)
+
+
+### Bug Fixes
+
+* fix database migration errors ([f84ba17](https://github.com/gotson/komga/commit/f84ba17079d1ba4bf320d923b971468d19f0aa1d)), closes [#239](https://github.com/gotson/komga/issues/239) [#238](https://github.com/gotson/komga/issues/238) [#237](https://github.com/gotson/komga/issues/237) [#240](https://github.com/gotson/komga/issues/240)
+
 # [0.48.0](https://github.com/gotson/komga/compare/v0.47.0...v0.48.0) (2020-07-16)
 
 
