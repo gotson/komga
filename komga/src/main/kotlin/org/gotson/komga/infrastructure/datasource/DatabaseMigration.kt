@@ -100,6 +100,8 @@ class DatabaseMigration(
       logger.info { "Stopping all JMS listeners" }
       jmsListenerEndpointRegistry.stop()
 
+      fixH2Database()
+
       var rows: Int
       measureTime {
         rows = transferH2DataToSqlite()
@@ -157,6 +159,44 @@ class DatabaseMigration(
     logger.info { "Perform a specific backup of the H2 database to: $backup" }
     jdbcTemplate.execute("BACKUP TO '$backup'")
     logger.info { "Backup finished" }
+  }
+
+  private fun fixH2Database() {
+    logger.info { "Checking H2 database for inconsistent data" }
+    val jdbc = JdbcTemplate(h2DataSource)
+
+    val countBook = jdbc.queryForObject("select count(distinct BOOK_ID) from media_page where number is null", Integer::class.java)!!
+    if (countBook > 0) {
+      logger.info { "Found $countBook books with missing page numbers, marking them as to be re-analyzed" }
+
+      jdbc.update("""
+        update media set STATUS='UNKNOWN'
+        where BOOK_ID in (
+            select distinct BOOK_ID from media_page where number is null
+        )""")
+      jdbc.update("delete from media_page where number is null")
+      jdbc.update("""
+        delete from media_page
+        where BOOK_ID in (
+            select distinct BOOK_ID from media_page where number is null
+        )""")
+    }
+
+    val invalidReadProgress = jdbc.query("""
+      select b.id as BOOK_ID, u.id as USER_ID, count(p.BOOK_ID)
+      from read_progress p left join user u on p.user_id = u.id left join book b on p.book_id = b.id
+      group by b.id, b.name, u.id, u.email
+      having count(p.book_id) > 1
+    """) { rs, _ -> Triple(rs.getLong(1), rs.getLong(2), rs.getLong(3)) }
+
+    if (invalidReadProgress.isNotEmpty()) {
+      logger.info { "Found ${invalidReadProgress.size} invalid read progress, removing extra rows and keep one per (book,user)" }
+      invalidReadProgress.forEach {
+        jdbc.update("delete from read_progress where book_id = ? and user_id = ? and rownum() < ?",
+          it.first, it.second, it.third
+        )
+      }
+    }
   }
 
   private fun transferH2DataToSqlite(): Int {
