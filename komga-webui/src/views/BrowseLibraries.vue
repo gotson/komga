@@ -309,7 +309,7 @@ export default Vue.extend({
           status: `${this.filters.status}`,
           readStatus: `${this.filters.readStatus}`,
         },
-      } as any).catch(_ => {
+      }).catch(_ => {
       })
     },
     async loadPage (libraryId: string, page: number, sort: SortActive) {

@@ -102,11 +102,12 @@
     <v-list>
         <v-list-item @click="toggleDarkMode">
           <v-list-item-icon>
-            <v-icon>mdi-lightbulb</v-icon>
+            <v-icon v-if="this.$vuetify.theme.dark">mdi-brightness-7</v-icon>
+            <v-icon v-else>mdi-brightness-3</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title v-if="this.$vuetify.theme.dark">Dark mode off</v-list-item-title>
-            <v-list-item-title v-else>Dark mode on</v-list-item-title>
+            <v-list-item-title v-if="this.$vuetify.theme.dark">Light theme</v-list-item-title>
+            <v-list-item-title v-else>Dark theme</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
     </v-list>
@@ -143,7 +144,6 @@ export default Vue.extend({
   data: function () {
     return {
       drawerVisible: this.$vuetify.breakpoint.lgAndUp,
-      darkMode: false,
       info: {} as ActuatorInfo,
     }
   },
@@ -153,9 +153,7 @@ export default Vue.extend({
     }
 
     if (this.$cookies.isKey(cookieDarkMode)) {
-      const darkMode = Boolean(JSON.parse(this.$cookies.get(cookieDarkMode)))
-      this.darkMode = darkMode
-      this.$vuetify.theme.dark = darkMode
+      this.$vuetify.theme.dark = JSON.parse(this.$cookies.get(cookieDarkMode))
     }
   },
   computed: {
@@ -171,10 +169,8 @@ export default Vue.extend({
       this.drawerVisible = !this.drawerVisible
     },
     toggleDarkMode () {
-      this.darkMode = !this.darkMode
-
-      this.$cookies.set(cookieDarkMode, JSON.stringify(this.darkMode), Infinity)
-      this.$vuetify.theme.dark = this.darkMode
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark
+      this.$cookies.set(cookieDarkMode, JSON.stringify(this.$vuetify.theme.dark), Infinity)
     },
     logout () {
       this.$store.dispatch('logout')

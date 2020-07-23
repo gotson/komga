@@ -163,7 +163,7 @@ export default Vue.extend({
           page: `${this.page}`,
           pageSize: `${this.pageSize}`,
         },
-      } as any).catch(_ => {
+      }).catch(_ => {
       })
     },
     reloadCollections () {

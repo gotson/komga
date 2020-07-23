@@ -323,7 +323,7 @@ export default Vue.extend({
           sort: `${this.sortActive.key},${this.sortActive.order}`,
           readStatus: `${this.filters.readStatus}`,
         },
-      } as any).catch(_ => {
+      }).catch(_ => {
       })
     },
     async loadPage (seriesId: string, page: number, sort: SortActive) {
