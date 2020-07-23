@@ -25,6 +25,54 @@
           </v-btn>
           <v-toolbar-title> {{ bookTitle }}</v-toolbar-title>
           <v-spacer></v-spacer>
+
+          <v-menu offset-y allow-overflow>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                icon
+                v-on="on"
+              >
+                <v-icon>mdi-information</v-icon>
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-text>
+                <v-row no-gutters>
+                  <template v-for="(item,i) in shortcutHelp.items()">
+                    <v-col :key="i" cols="4">
+                      <div class="text-center">
+                        {{ item.key }}
+                      </div>
+                      <v-simple-table>
+                        <template v-slot:default>
+                          <thead>
+
+                          <tr>
+                            <th class="text-left">Key</th>
+                            <th class="text-left">Description</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr v-for="(s,i) in item.value" :key="i">
+                            <td>
+                              <kbd style="height: 24px;" class="text-truncate">
+                                <v-icon class="white--text text-capitalize"  style="font-size: 1rem;">
+                                  {{ s.key }}
+                                </v-icon>
+                              </kbd>
+                            </td>
+                            <td>{{ s.desc }}</td>
+                          </tr>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+                    </v-col>
+                  </template>
+                </v-row>
+              </v-card-text>
+            </v-card>
+
+          </v-menu>
           <v-btn
             icon
             @click="showThumbnailsExplorer = !showThumbnailsExplorer"
@@ -274,7 +322,7 @@ import { getBookTitleCompact } from '@/functions/book-title'
 import { checkWebpFeature } from '@/functions/check-webp'
 import { bookPageUrl } from '@/functions/urls'
 import { ReadingDirection } from '@/types/enum-books'
-import { executeShortcut } from '@/functions/shortcuts'
+import { executeShortcut, shortcutHelp } from '@/functions/shortcuts'
 import Vue from 'vue'
 
 const cookieFit = 'webreader.fit'
@@ -313,6 +361,7 @@ export default Vue.extend({
       menu: false,
       dialogGoto: false,
       goToPage: 1,
+      shortcutHelp: shortcutHelp,
       settings: {
         doublePages: false,
         swipe: true,

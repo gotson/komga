@@ -1,78 +1,153 @@
 import { ReadingDirection } from '@/types/enum-books'
 
-enum Shortcut {
-  // Navigation
-  SEEK_FORWARD = 'seekForward',
-  SEEK_BACKWARD = 'seekBackward',
-  // Vertical mode
-  SEEK_UP = 'seekUp',
-  SEEK_DOWN = 'seekDown',
-  SEEK_BEGIN = 'seekBegin',
-  SEEK_END = 'seekEnd',
-  // SETTINGS
-  DIR_LTR = 'directionLTR',
-  DIR_RTL = 'directionRTL',
-  DIR_VRT = 'directionVRT',
-  TOGGLE_DOUBLE_PAGE = 'toggleDoublePage',
-  CYCLE_SCALE = 'cycleScale',
-  // OTHER
-  TOGGLE_TOOLBAR = 'toggleToolbar',
-  TOGGLE_MENU = 'toggleMenu',
-  TOGGLE_THUMBNAIL_EXPLORER = 'toggleExplorer',
-  ESCAPE = 'escape'
+interface Map<V> {
+  [key: string]: V
 }
+class MultiMap<V> {
+  dict: Map<V[]> = {}
 
-interface KeyMapping {
-  [key: string]: Shortcut
+  add (key:string, value: V) {
+    this.dict[key] = (this.dict[key]?.concat([value])) || [value]
+  }
+
+  get (key: string): V[] {
+    return this.dict[key]
+  }
+
+  items () {
+    return Object.keys(this.dict).map((k) => ({ key: k, value: this.dict[k] }))
+  }
 }
 
 type Action = (ctx: any) => void
 
-interface Shortcuts {
-  [key: string]: Action
+class Shortcut {
+  name: string
+  category: string
+  description: string
+  action: Action
+
+  keys: string[]
+
+  constructor (name: string, category: string, description: string, action: Action, keys: string[]) {
+    this.name = name
+    this.category = category
+    this.description = description
+    this.action = action
+    this.keys = keys
+  }
+
+  execute (ctx: any): boolean {
+    console.log(this.name)
+    this.action(ctx)
+    return true
+  }
 }
 
-// consider making this configurable on the server side?
-const keyMapping = {
-  'PageUp': Shortcut.SEEK_FORWARD,
-  'ArrowRight': Shortcut.SEEK_FORWARD,
-  'PageDown': Shortcut.SEEK_BACKWARD,
-  'ArrowLeft': Shortcut.SEEK_BACKWARD,
-  'ArrowDown': Shortcut.SEEK_DOWN,
-  'ArrowUp': Shortcut.SEEK_UP,
-  'Home': Shortcut.SEEK_BEGIN,
-  'End': Shortcut.SEEK_END,
-  'm': Shortcut.TOGGLE_TOOLBAR,
-  's': Shortcut.TOGGLE_MENU,
-  't': Shortcut.TOGGLE_THUMBNAIL_EXPLORER,
-  'Escape': Shortcut.ESCAPE,
-  'l': Shortcut.DIR_LTR,
-  'r': Shortcut.DIR_RTL,
-  'v': Shortcut.DIR_VRT,
-  'd': Shortcut.TOGGLE_DOUBLE_PAGE,
-  'f': Shortcut.CYCLE_SCALE,
-} as KeyMapping
+const KEY_DISPLAY = {
+  'ArrowRight': 'mdi-arrow-right',
+  'ArrowLeft': 'mdi-arrow-left',
+  'PageUp': 'PgUp',
+  'PageDown': 'PgDn',
+  'ArrowUp': 'mdi-arrow-up',
+  'ArrowDown': 'mdi-arrow-down',
+  'Escape': 'Esc',
+} as Map<string>
 
-const shortcuts = {
-  [Shortcut.SEEK_FORWARD]: (ctx: any) => {
+const SHORTCUTS: Shortcut[] = []
+
+function shortcut (name: string, category: string, description: string, action: Action, ...keys: string[]) {
+  SHORTCUTS.push(new Shortcut(name, category, description, action, keys))
+}
+
+enum ShortcutCategory {
+  READER_NAVIGATION = 'Reader Navigation',
+  READER_SETTINGS = 'Reader Settings',
+  MENUS = 'Menus'
+}
+
+// Reader Navigation
+shortcut('seekForward', ShortcutCategory.READER_NAVIGATION, 'Next Page',
+  (ctx: any) => {
     ctx.flipDirection ? ctx.prev() : ctx.next()
-  },
-  [Shortcut.SEEK_BACKWARD]: (ctx: any) => {
+  }, 'PageUp', 'ArrowRight')
+
+shortcut('seekBackward', ShortcutCategory.READER_NAVIGATION, 'Prev Page',
+  (ctx: any) => {
     ctx.flipDirection ? ctx.next() : ctx.prev()
+  }, 'PageDown', 'ArrowLeft')
+
+shortcut('seekUp', ShortcutCategory.READER_NAVIGATION, 'Prev Page (Vertical)',
+  (ctx: any) => {
+    if (ctx.vertical) {
+      ctx.prev()
+    }
+  }
+  , 'ArrowUp')
+
+shortcut('seekDown', ShortcutCategory.READER_NAVIGATION, 'Next Page (Vertical)',
+  (ctx: any) => {
+    if (ctx.vertical) {
+      ctx.next()
+    }
+  }
+  , 'ArrowDown')
+
+shortcut('seekBegin', ShortcutCategory.READER_NAVIGATION, 'Goto First Page',
+  (ctx: any) => {
+    ctx.goToFirst()
+  }
+  , 'Home')
+
+shortcut('seekEnd', ShortcutCategory.READER_NAVIGATION, 'Goto Last Page',
+  (ctx: any) => {
+    ctx.goToLast()
+  }
+  , 'End')
+
+// Reader Settings
+
+shortcut('directionLTR', ShortcutCategory.READER_SETTINGS, 'Direction: Left to Right',
+  (ctx: any) => ctx.changeReadingDir(ReadingDirection.LEFT_TO_RIGHT)
+  , 'l')
+
+shortcut('directionRTL', ShortcutCategory.READER_SETTINGS, 'Direction: Right to Left',
+  (ctx: any) => ctx.changeReadingDir(ReadingDirection.RIGHT_TO_LEFT)
+  , 'r')
+
+shortcut('directionVRT', ShortcutCategory.READER_SETTINGS, 'Direction: Vertical',
+  (ctx: any) => ctx.changeReadingDir(ReadingDirection.VERTICAL),
+  'v')
+
+shortcut('toggleDoublePage', ShortcutCategory.READER_SETTINGS, 'Toggle Double Page',
+  (ctx: any) => ctx.toggleDoublePages()
+  , 'd')
+
+shortcut('cycleScale', ShortcutCategory.READER_SETTINGS, 'Cycle Scale',
+  (ctx: any) => ctx.cycleScale()
+  , 'c')
+
+// Menus
+
+shortcut('toggleToolbar', ShortcutCategory.MENUS, 'Toggle Toolbar',
+  (ctx: any) => {
+    ctx.toolbar = !ctx.toolbar
   },
-  [Shortcut.SEEK_UP]: (ctx: any) => { if (ctx.vertical) ctx.prev() },
-  [Shortcut.SEEK_DOWN]: (ctx: any) => { if (ctx.vertical) ctx.next() },
-  [Shortcut.SEEK_BEGIN]: (ctx: any) => { ctx.goToFirst() },
-  [Shortcut.SEEK_END]: (ctx: any) => { ctx.goToLast() },
-  [Shortcut.TOGGLE_TOOLBAR]: (ctx: any) => { ctx.toolbar = !ctx.toolbar },
-  [Shortcut.TOGGLE_MENU]: (ctx: any) => { ctx.menu = !ctx.menu },
-  [Shortcut.TOGGLE_THUMBNAIL_EXPLORER]: (ctx: any) => { ctx.showThumbnailsExplorer = !ctx.showThumbnailsExplorer },
-  [Shortcut.TOGGLE_DOUBLE_PAGE]: (ctx: any) => ctx.toggleDoublePages(),
-  [Shortcut.CYCLE_SCALE]: (ctx: any) => ctx.cycleScale(),
-  [Shortcut.DIR_LTR]: (ctx: any) => ctx.changeReadingDir(ReadingDirection.LEFT_TO_RIGHT),
-  [Shortcut.DIR_RTL]: (ctx: any) => ctx.changeReadingDir(ReadingDirection.RIGHT_TO_LEFT),
-  [Shortcut.DIR_VRT]: (ctx: any) => ctx.changeReadingDir(ReadingDirection.VERTICAL),
-  [Shortcut.ESCAPE]: (ctx: any) => {
+  'm')
+
+shortcut('toggleMenu', ShortcutCategory.MENUS, 'Toggle Settings Menu',
+  (ctx: any) => {
+    ctx.menu = !ctx.menu
+  },
+  's')
+
+shortcut('toggleExplorer', ShortcutCategory.MENUS, 'Toggle Explorer',
+  (ctx: any) => {
+    ctx.showThumbnailsExplorer = !ctx.showThumbnailsExplorer
+  }, 't')
+
+shortcut('escape', ShortcutCategory.MENUS, 'Close',
+  (ctx: any) => {
     if (ctx.showThumbnailsExplorer) {
       ctx.showThumbnailsExplorer = false
       return
@@ -86,20 +161,26 @@ const shortcuts = {
       return
     }
     ctx.closeBook()
-  },
-} as Shortcuts
+  }, 'Escape')
+
+// Make sure all shortcuts are registered before this is called
+export const shortcutHelp = new MultiMap<object>()
+const keyMapping = {} as Map<Shortcut>
+
+function setupShortcuts () {
+  for (const s of SHORTCUTS) {
+    for (const key of s.keys) {
+      keyMapping[key] = s
+      shortcutHelp.add(s.category, {
+        key: KEY_DISPLAY[key] || key,
+        desc: s.description,
+      })
+    }
+  }
+}
+setupShortcuts()
 
 export function executeShortcut (ctx: any, e: KeyboardEvent): boolean {
   let k: string = e.key
-  if (k in keyMapping) {
-    let s: Shortcut = keyMapping[k]
-    if (s in shortcuts) {
-      let action: Action = shortcuts[s]
-      if (action) {
-        action(ctx)
-        return true
-      }
-    }
-  }
-  return false
+  return keyMapping[k]?.execute(ctx)
 }
