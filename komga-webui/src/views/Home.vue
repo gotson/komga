@@ -153,7 +153,7 @@ export default Vue.extend({
     }
 
     if (this.$cookies.isKey(cookieDarkMode)) {
-      this.$vuetify.theme.dark = JSON.parse(this.$cookies.get(cookieDarkMode))
+      this.$vuetify.theme.dark = (this.$cookies.get(cookieDarkMode) === 'true')
     }
   },
   computed: {
@@ -170,7 +170,7 @@ export default Vue.extend({
     },
     toggleDarkMode () {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark
-      this.$cookies.set(cookieDarkMode, JSON.stringify(this.$vuetify.theme.dark), Infinity)
+      this.$cookies.set(cookieDarkMode, this.$vuetify.theme.dark, Infinity)
     },
     logout () {
       this.$store.dispatch('logout')
