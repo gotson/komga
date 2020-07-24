@@ -47,7 +47,7 @@
 
     <!--  Edit elements sticky bar  -->
     <v-scroll-y-transition hide-on-leave>
-      <toolbar-sticky v-if="editElements" :elevation="5" color="white">
+      <toolbar-sticky v-if="editElements" :elevation="5">
         <v-btn icon @click="cancelEditElements">
           <v-icon>mdi-close</v-icon>
         </v-btn>

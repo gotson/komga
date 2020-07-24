@@ -1,15 +1,17 @@
 <template>
   <div class="text-center">
-    <div>
-      <v-icon v-if="icon !== ''"
-              :color="iconColor"
-              :size="iconSize"
-      >{{ icon }}
-      </v-icon>
-      <h1 class="headline">{{ title }}</h1>
-      <p class="body-1">{{ subTitle }}</p>
-      <slot/>
-    </div>
+    <v-avatar color="contrast-1" :size="size">
+      <div>
+        <v-icon v-if="icon !== ''"
+                :color="iconColor"
+                :size="iconSize"
+        >{{ icon }}
+        </v-icon>
+        <h1 class="headline">{{ title }}</h1>
+        <p class="body-1">{{ subTitle }}</p>
+        <slot/>
+      </div>
+    </v-avatar>
   </div>
 </template>
 
