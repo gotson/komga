@@ -38,7 +38,6 @@ class Shortcut {
   }
 
   execute (ctx: any): boolean {
-    console.log(this.name)
     this.action(ctx)
     return true
   }
