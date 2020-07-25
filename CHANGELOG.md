@@ -1,3 +1,11 @@
+# [0.49.0](https://github.com/gotson/komga/compare/v0.48.1...v0.49.0) (2020-07-25)
+
+
+### Features
+
+* **webreader:** add shortcut information menu ([1885f32](https://github.com/gotson/komga/commit/1885f32416635611e62795bdf22420006bb577ad))
+* **webui:** dark theme ([efe2021](https://github.com/gotson/komga/commit/efe2021bdcb28cbeac93cee8add6dc80a5708c60)), closes [#179](https://github.com/gotson/komga/issues/179)
+
 ## [0.48.1](https://github.com/gotson/komga/compare/v0.48.0...v0.48.1) (2020-07-21)
 
 
