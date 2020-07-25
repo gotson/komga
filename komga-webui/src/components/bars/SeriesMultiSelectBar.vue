@@ -1,6 +1,6 @@
 <template>
   <v-scroll-y-transition hide-on-leave>
-    <toolbar-sticky v-if="value.length > 0" :elevation="5" color="white">
+    <toolbar-sticky v-if="value.length > 0" :elevation="5" color="base">
       <v-btn icon @click="unselectAll">
         <v-icon>mdi-close</v-icon>
       </v-btn>

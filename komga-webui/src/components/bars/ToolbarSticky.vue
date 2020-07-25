@@ -30,7 +30,7 @@ export default Vue.extend({
     },
     color: {
       type: String,
-      default: 'grey lighten-4',
+      default: 'contrast-1',
     },
   },
 })

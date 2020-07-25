@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <v-avatar color="grey lighten-3" :size="size">
+    <v-avatar color="contrast-1" :size="size">
       <div>
         <v-icon v-if="icon !== ''"
                 :color="iconColor"
