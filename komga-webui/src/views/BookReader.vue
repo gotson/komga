@@ -25,6 +25,7 @@
           </v-btn>
           <v-toolbar-title> {{ bookTitle }}</v-toolbar-title>
           <v-spacer></v-spacer>
+          <shortcut-help-menu/>
           <v-btn
             icon
             @click="showThumbnailsExplorer = !showThumbnailsExplorer"
@@ -270,6 +271,7 @@
 import SettingsSelect from '@/components/SettingsSelect.vue'
 import SettingsSwitch from '@/components/SettingsSwitch.vue'
 import ThumbnailExplorerDialog from '@/components/dialogs/ThumbnailExplorerDialog.vue'
+import ShortcutHelpMenu from '@/components/menus/ShortcutHelpMenu.vue'
 import { getBookTitleCompact } from '@/functions/book-title'
 import { checkWebpFeature } from '@/functions/check-webp'
 import { bookPageUrl } from '@/functions/urls'
@@ -292,7 +294,7 @@ enum ImageFit {
 
 export default Vue.extend({
   name: 'BookReader',
-  components: { SettingsSwitch, SettingsSelect, ThumbnailExplorerDialog },
+  components: { SettingsSwitch, SettingsSelect, ThumbnailExplorerDialog, ShortcutHelpMenu },
   data: () => {
     return {
       ImageFit,
