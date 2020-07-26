@@ -1,5 +1,5 @@
 <template>
-  <v-container class="ma-0 pa-0 full-height" fluid v-if="pages.length > 0"
+  <v-container class="ma-0 pa-0 full-height" fluid v-if="pagesCount > 0"
                :style="`width: 100%; background-color: ${backgroundColor}`"
                v-touch="{
                  left: () => {if(swipe) {turnRight()}},
@@ -7,6 +7,7 @@
                  up: () => {if(swipe) {verticalNext()}},
                  down: () => {if(swipe) {verticalPrev()}}
                  }"
+               :key="this.bookId"
   >
     <div>
       <v-slide-y-transition>
@@ -53,30 +54,30 @@
           <v-row justify="center">
             <!--  Menu: page slider  -->
             <v-col class="px-0">
-                <v-slider
-                  hide-details
-                  thumb-label
-                  @change="goTo"
-                  v-model="goToPage"
-                  class="align-center"
-                  min="1"
-                  :max="pagesCount"
-                >
-                  <template v-slot:prepend>
-                    <v-icon @click="previousBook" class="">mdi-undo</v-icon>
-                    <v-icon @click="goToFirst" class="mx-2">mdi-skip-previous</v-icon>
-                    <v-label>
-                      {{ currentPage }}
-                    </v-label>
-                  </template>
-                  <template v-slot:append>
-                    <v-label>
-                      {{ pagesCount }}
-                    </v-label>
-                    <v-icon @click="goToLast" class="mx-1">mdi-skip-next</v-icon>
-                    <v-icon @click="nextBook" class="">mdi-redo</v-icon>
-                  </template>
-                </v-slider>
+              <v-slider
+                hide-details
+                thumb-label
+                @change="changeSlider"
+                v-model="goToPage"
+                class="align-center"
+                min="1"
+                :max="pagesCount"
+              >
+                <template v-slot:prepend>
+                  <v-icon @click="previousBook" class="">mdi-undo</v-icon>
+                  <v-icon @click="goToFirst" class="mx-2">mdi-skip-previous</v-icon>
+                  <v-label>
+                    {{ currentPage }}
+                  </v-label>
+                </template>
+                <template v-slot:append>
+                  <v-label>
+                    {{ pagesCount }}
+                  </v-label>
+                  <v-icon @click="goToLast" class="mx-1">mdi-skip-next</v-icon>
+                  <v-icon @click="nextBook" class="">mdi-redo</v-icon>
+                </template>
+              </v-slider>
             </v-col>
           </v-row>
 
@@ -105,6 +106,7 @@
     <div class="full-height">
       <!--  Carousel  -->
       <v-carousel v-model="carouselPage"
+                  :value="10"
                   :show-arrows="false"
                   :continuous="false"
                   :reverse="flipDirection"
@@ -142,8 +144,8 @@
 
     <thumbnail-explorer-dialog
       v-model="showThumbnailsExplorer"
-      :bookId="bookId"
       @goToPage="goTo"
+      :bookId="bookId"
       :pagesCount="pagesCount"
     ></thumbnail-explorer-dialog>
 
@@ -177,7 +179,7 @@
 
           <v-list-item>
             <settings-select
-              :items="backgroundColors"
+              :items="formValues.backgroundColors"
               v-model="backgroundColor"
               label="Background color"
             >
@@ -186,7 +188,7 @@
 
           <v-list-item>
             <settings-select
-              :items="readingDirs"
+              :items="formValues.readingDirs"
               v-model="readingDirection"
               label="Reading Direction"
             />
@@ -194,7 +196,7 @@
 
           <v-list-item>
             <settings-select
-              :items="imageFits"
+              :items="formValues.imageFits"
               v-model="imageFit"
               label="Scaling"
             />
@@ -203,6 +205,7 @@
       </v-container>
     </v-bottom-sheet>
     <v-snackbar
+      v-if="reader && reader.loaded"
       v-model="jumpToPreviousBook"
       :timeout="jumpConfirmationDelay"
       vertical
@@ -213,11 +216,12 @@
     >
       <div class="title pa-6">
         <p>You're at the beginning<br/>of the book.</p>
-        <p v-if="!$_.isEmpty(siblingPrevious)">Click or press previous again<br/>to move to the previous book.</p>
+        <p v-if="siblingPrevious">Click or press previous again<br/>to move to the previous book.</p>
       </div>
     </v-snackbar>
 
     <v-snackbar
+      v-if="reader && reader.loaded"
       v-model="jumpToNextBook"
       :timeout="jumpConfirmationDelay"
       vertical
@@ -228,7 +232,7 @@
     >
       <div class="title pa-6">
         <p>You've reached the end<br/>of the book.</p>
-        <p v-if="!$_.isEmpty(siblingNext)">Click or press next again<br/>to move to the next book.</p>
+        <p v-if="siblingNext">Click or press next again<br/>to move to the next book.</p>
         <p v-else>Click or press next again<br/>to exit the reader.</p>
       </div>
     </v-snackbar>
@@ -240,7 +244,7 @@
                 top
     >
       <div>This book has specific reading direction set.</div>
-      <div>Reading direction has been set to <span class="font-weight-bold">{{ readingDirs.find(x => x.value === readingDirection).text }}</span>.
+      <div>Reading direction has been set to <span class="font-weight-bold">{{ ReadingDirection.toString(readingDirection) }}</span>.
       </div>
       <div>This only applies to this book and will not overwrite your settings.</div>
       <v-btn
@@ -272,114 +276,52 @@ import SettingsSelect from '@/components/SettingsSelect.vue'
 import SettingsSwitch from '@/components/SettingsSwitch.vue'
 import ThumbnailExplorerDialog from '@/components/dialogs/ThumbnailExplorerDialog.vue'
 import ShortcutHelpMenu from '@/components/menus/ShortcutHelpMenu.vue'
-import { getBookTitleCompact } from '@/functions/book-title'
-import { checkWebpFeature } from '@/functions/check-webp'
-import { bookPageUrl } from '@/functions/urls'
-import { ReadingDirection } from '@/types/enum-books'
+import {
+  ReadingDirection,
+  ImageFit,
+  READING_DIR_ITEMS,
+  IMAGE_FIT_ITEMS,
+  BACKGROUND_COLOR_ITEMS,
+} from '@/types/enum-books'
 import { executeShortcut } from '@/functions/shortcuts'
+
+import { Reader, computedSetting, ReaderSettings } from '@/functions/reader'
 import Vue from 'vue'
 
-const cookieFit = 'webreader.fit'
-const cookieReadingDirection = 'webreader.readingDirection'
-const cookieDoublePages = 'webreader.doublePages'
-const cookieSwipe = 'webreader.swipe'
-const cookieAnimations = 'webreader.animations'
-const cookieBackground = 'webreader.background'
-
-enum ImageFit {
-  WIDTH = 'width',
-  HEIGHT = 'height',
-  ORIGINAL = 'original'
-}
+type _reader = Reader | undefined
 
 export default Vue.extend({
   name: 'BookReader',
   components: { SettingsSwitch, SettingsSelect, ThumbnailExplorerDialog, ShortcutHelpMenu },
   data: () => {
     return {
-      ImageFit,
-      book: {} as BookDto,
-      series: {} as SeriesDto,
-      siblingPrevious: {} as BookDto,
-      siblingNext: {} as BookDto,
+      reader: undefined as _reader,
+      carouselPage: 1,
+      goToPage: 1,
       jumpToNextBook: false,
       jumpToPreviousBook: false,
       jumpConfirmationDelay: 3000,
       snackReadingDirection: false,
-      pages: [] as PageDto[],
-      supportedMediaTypes: ['image/jpeg', 'image/png', 'image/gif'],
-      convertTo: 'jpeg',
-      carouselPage: 0,
       showThumbnailsExplorer: false,
       toolbar: false,
       menu: false,
       dialogGoto: false,
-      goToPage: 1,
-      settings: {
-        doublePages: false,
-        swipe: true,
-        fit: ImageFit.HEIGHT,
-        readingDirection: ReadingDirection.LEFT_TO_RIGHT,
-        animations: true,
-        backgroundColor: 'black',
-        imageFits: Object.values(ImageFit),
-        readingDirs: Object.values(ReadingDirection),
-      },
       notification: {
         enabled: false,
         message: '',
         timeout: 4000,
       },
-      readingDirs: [
-        { text: 'Left to right', value: ReadingDirection.LEFT_TO_RIGHT },
-        { text: 'Right to left', value: ReadingDirection.RIGHT_TO_LEFT },
-        { text: 'Vertical', value: ReadingDirection.VERTICAL },
-      ],
-      imageFits: [
-        { text: 'Fit to height', value: ImageFit.HEIGHT },
-        { text: 'Fit to width', value: ImageFit.WIDTH },
-        { text: 'Original', value: ImageFit.ORIGINAL },
-      ],
-      backgroundColors: [
-        { text: 'White', value: 'white' },
-        { text: 'Black', value: 'black' },
-      ],
+      formValues: {
+        readingDirs: READING_DIR_ITEMS,
+        imageFits: IMAGE_FIT_ITEMS,
+        backgroundColors: BACKGROUND_COLOR_ITEMS,
+      },
+      ReadingDirection,
     }
-  },
-  created () {
-    checkWebpFeature('lossy', (feature, isSupported) => {
-      if (isSupported) {
-        this.supportedMediaTypes.push('image/webp')
-      }
-    })
   },
   async mounted () {
     window.addEventListener('keydown', this.keyPressed)
-
-    this.loadFromCookie(cookieReadingDirection, (v) => {
-      this.readingDirection = v
-    })
-    this.loadFromCookie(cookieAnimations, (v) => {
-      this.animations = (v === 'true')
-    })
-    this.loadFromCookie(cookieDoublePages, (v) => {
-      this.doublePages = (v === 'true')
-    })
-    this.loadFromCookie(cookieSwipe, (v) => {
-      this.swipe = (v === 'true')
-    })
-    this.loadFromCookie(cookieFit, (v) => {
-      if (v) {
-        this.imageFit = v
-      }
-    })
-    this.loadFromCookie(cookieBackground, (v) => {
-      if (v) {
-        this.backgroundColor = v
-      }
-    })
-
-    this.setup(this.bookId, Number(this.$route.query.page))
+    await this.setup(this.bookId, Number(this.$route.query.page))
   },
   destroyed () {
     window.removeEventListener('keydown', this.keyPressed)
@@ -390,24 +332,21 @@ export default Vue.extend({
       required: true,
     },
   },
-  async beforeRouteUpdate (to, from, next) {
-    if (to.params.bookId !== from.params.bookId) {
-      // route update means going to previous/next book, in this case we start from first page
-      this.setup(to.params.bookId, 1)
-    }
-    next()
-  },
+  // async beforeRouteUpdate (to, from, next) {
+  //   if (to.params.bookId !== from.params.bookId) {
+  //     // route update means going to previous/next book, in this case we start from first page
+  //     this.setup(to.params.bookId, 0)
+  //   }
+  //   next()
+  // },
   watch: {
     currentPage (val) {
       this.updateRoute()
       this.goToPage = val
       this.markProgress(val)
     },
-    async book (val) {
-      if (this.$_.has(val, 'name')) {
-        this.series = await this.$komgaSeries.getOneSeries(val.seriesId)
-        document.title = `Komga - ${getBookTitleCompact(val.metadata.title, this.series.metadata.title)}`
-      }
+    async bookId (val) {
+      await this.setup(val, 0)
     },
   },
   computed: {
@@ -446,29 +385,10 @@ export default Vue.extend({
       return this.slidesRange.length
     },
     pagesCount (): number {
-      return this.pages.length
+      return this.reader?.pagesCount()!!
     },
     bookTitle (): string {
-      return getBookTitleCompact(this.book.metadata.title, this.series.metadata.title)
-    },
-
-    animations: {
-      get: function (): boolean {
-        return this.settings.animations
-      },
-      set: function (animations: boolean): void {
-        this.settings.animations = animations
-        this.$cookies.set(cookieAnimations, animations, Infinity)
-      },
-    },
-    readingDirection: {
-      get: function (): ReadingDirection {
-        return this.settings.readingDirection
-      },
-      set: function (readingDirection: ReadingDirection): void {
-        this.settings.readingDirection = readingDirection
-        this.$cookies.set(cookieReadingDirection, readingDirection, Infinity)
-      },
+      return this.reader?.bookTitle()!!
     },
     flipDirection (): boolean {
       return this.readingDirection === ReadingDirection.RIGHT_TO_LEFT
@@ -476,90 +396,33 @@ export default Vue.extend({
     vertical (): boolean {
       return this.readingDirection === ReadingDirection.VERTICAL
     },
-    imageFit: {
-      get: function (): ImageFit {
-        return this.settings.fit
-      },
-      set: function (fit: ImageFit): void {
-        this.settings.fit = fit
-        this.$cookies.set(cookieFit, fit, Infinity)
-      },
+    siblingPrevious (): BookDto {
+      return this.reader?.siblingPrev!!
     },
-    backgroundColor: {
-      get: function (): string {
-        return this.settings.backgroundColor
-      },
-      set: function (color: string): void {
-        this.settings.backgroundColor = color
-        this.$cookies.set(cookieBackground, color, Infinity)
-      },
+    siblingNext (): BookDto {
+      return this.reader?.siblingNext!!
     },
-    doublePages: {
-      get: function (): boolean {
-        return this.settings.doublePages
-      },
-      set: function (doublePages: boolean): void {
-        const current = this.currentPage
-        this.settings.doublePages = doublePages
-        this.goTo(current)
-        this.$cookies.set(cookieDoublePages, doublePages, Infinity)
-      },
-    },
-    swipe: {
-      get: function (): boolean {
-        return this.settings.swipe
-      },
-      set: function (swipe: boolean): void {
-        this.settings.swipe = swipe
-        this.$cookies.set(cookieSwipe, swipe, Infinity)
-      },
-    },
+    imageFit: computedSetting<ImageFit>(ReaderSettings.FIT),
+    backgroundColor: computedSetting<string>(ReaderSettings.BG_COLOR),
+    readingDirection: computedSetting<ReadingDirection>(ReaderSettings.READ_DIR),
+    doublePages: computedSetting<boolean>(ReaderSettings.DOUBLE_PAGES),
+    swipe: computedSetting<boolean>(ReaderSettings.SWIPE),
+    animations: computedSetting<boolean>(ReaderSettings.ANIMATIONS),
   },
   methods: {
     keyPressed (e: KeyboardEvent) {
       executeShortcut(this, e)
     },
     async setup (bookId: string, page: number) {
-      this.book = await this.$komgaBooks.getBook(bookId)
-      this.pages = await this.$komgaBooks.getBookPages(bookId)
-      if (page >= 1 && page <= this.pagesCount) {
-        this.goTo(page)
-      } else if (this.book.readProgress?.completed === false) {
-        this.goTo(this.book.readProgress?.page!!)
-      } else {
-        this.goToFirst()
-      }
-
-      // set non-persistent reading direction if exists in metadata
-      switch (this.book.metadata.readingDirection) {
-        case ReadingDirection.LEFT_TO_RIGHT:
-        case ReadingDirection.RIGHT_TO_LEFT:
-        case ReadingDirection.VERTICAL:
-          if (this.readingDirection !== this.book.metadata.readingDirection) {
-            // bypass setter so cookies aren't set
-            this.settings.readingDirection = this.book.metadata.readingDirection
-            this.snackReadingDirection = true
-          }
-          break
-      }
-
-      try {
-        this.siblingNext = await this.$komgaBooks.getBookSiblingNext(bookId)
-      } catch (e) {
-        this.siblingNext = {} as BookDto
-      }
-      try {
-        this.siblingPrevious = await this.$komgaBooks.getBookSiblingPrevious(bookId)
-      } catch (e) {
-        this.siblingPrevious = {} as BookDto
-      }
+      this.reader = new Reader(this.$komgaBooks, this.$komgaSeries, this.$cookies)
+      await this.reader.setup(this.bookId)
+      document.title = `Komga - ${this.reader.bookTitle()}`
+      this.snackReadingDirection = this.reader?.coerceReadingDirection()
+      const p = this.reader.determinePage(page)
+      this.goTo(p)
     },
     getPageUrl (page: number): string {
-      if (!this.supportedMediaTypes.includes(this.pages[page - 1].mediaType)) {
-        return bookPageUrl(this.bookId, page, this.convertTo)
-      } else {
-        return bookPageUrl(this.bookId, page)
-      }
+      return this.reader?.getPageUrl(page)!!
     },
     turnRight () {
       if (this.vertical) return
@@ -600,18 +463,21 @@ export default Vue.extend({
       }
     },
     nextBook () {
-      if (this.$_.isEmpty(this.siblingNext)) {
-        this.closeBook()
-      } else {
+      if (this.siblingNext) {
         this.jumpToNextBook = false
         this.$router.push({ name: 'read-book', params: { bookId: this.siblingNext.id.toString() } })
+      } else {
+        this.closeBook()
       }
     },
     previousBook () {
-      if (!this.$_.isEmpty(this.siblingPrevious)) {
+      if (this.siblingPrevious) {
         this.jumpToPreviousBook = false
         this.$router.push({ name: 'read-book', params: { bookId: this.siblingPrevious.id.toString() } })
       }
+    },
+    changeSlider (page: number) {
+      this.goTo(page)
     },
     goTo (page: number) {
       this.carouselPage = this.doublePages ? this.toDoublePages(page) - 1 : page - 1
@@ -658,75 +524,68 @@ export default Vue.extend({
       }
       return this.$vuetify.breakpoint.width
     },
-    loadFromCookie (cookieKey: string, setter: (value: any) => void): void {
-      if (this.$cookies.isKey(cookieKey)) {
-        let value = this.$cookies.get(cookieKey)
-        setter(value)
-      }
-    },
     changeReadingDir (dir: ReadingDirection) {
-      this.readingDirection = dir
-      let i = this.settings.readingDirs.indexOf(this.readingDirection)
-      let text = this.readingDirs[i].text
-      this.sendNotification(`Changing Reading Direction to: ${text}`)
+      this.reader?.set(ReaderSettings.READ_DIR, dir)
+      this.sendNotification(`Changing Reading Direction to: ${ReadingDirection.toString(dir)}`)
     },
     cycleScale () {
-      let fit: ImageFit = this.settings.fit
-      let i = (this.settings.imageFits.indexOf(fit) + 1) % (this.settings.imageFits.length)
-      this.settings.fit = this.settings.imageFits[i]
-      let text = this.imageFits[i].text
-      // The text here only works cause this.imageFits has the same index structure as the ImageFit enum
-      this.sendNotification(`Cycling Scale: ${text}`)
+      let fit: ImageFit = this.reader?.get<ImageFit>(ReaderSettings.FIT)!!
+      let next = ImageFit.next(fit)
+      this.reader?.set(ReaderSettings.READ_DIR, next)
+      this.sendNotification(`Cycling Scale: ${ImageFit.toString(next)}`)
     },
     toggleDoublePages () {
       this.doublePages = !this.doublePages
       this.sendNotification(`${this.doublePages ? 'Enabled' : 'Disabled'} Double Pages`)
     },
-    sendNotification (message:string, timeout: number = 4000) {
+    sendNotification (message: string, timeout: number = 4000) {
       this.notification.timeout = 4000
       this.notification.message = message
       this.notification.enabled = true
     },
     async markProgress (page: number) {
-      this.$komgaBooks.updateReadProgress(this.bookId, { page: page })
+      // TODO something is causing the initially loaded book to be a page that very much does not exist???
+      if (page <= this.pagesCount) {
+        this.$komgaBooks.updateReadProgress(this.bookId, { page: page })
+      }
     },
   },
 })
 </script>
 
 <style scoped>
-.settings {
-  /*position: absolute;*/
-  z-index: 2;
-}
+  .settings {
+    /*position: absolute;*/
+    z-index: 2;
+  }
 
-.top {
-  top: 0;
-}
+  .top {
+    top: 0;
+  }
 
-.full-height {
-  height: 100%;
-}
+  .full-height {
+    height: 100%;
+  }
 
-.full-width {
-  width: 100%;
-}
+  .full-width {
+    width: 100%;
+  }
 
-.left-quarter {
-  left: 0;
-  width: 20%;
-  position: absolute;
-}
+  .left-quarter {
+    left: 0;
+    width: 20%;
+    position: absolute;
+  }
 
-.right-quarter {
-  right: 0;
-  width: 20%;
-  position: absolute;
-}
+  .right-quarter {
+    right: 0;
+    width: 20%;
+    position: absolute;
+  }
 
-.center-half {
-  left: 20%;
-  width: 60%;
-  position: absolute;
-}
+  .center-half {
+    left: 20%;
+    width: 60%;
+    position: absolute;
+  }
 </style>

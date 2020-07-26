@@ -204,7 +204,7 @@
                   <v-row>
                     <v-col cols="">
                       <v-select v-model="form.readingDirection"
-                                :items="readingDirections"
+                                :items="formValues.readingDirections"
                                 label="Reading Direction"
                                 clearable
                                 filled
@@ -300,7 +300,7 @@
 <script lang="ts">
 import { groupAuthorsByRole } from '@/functions/authors'
 import { authorRoles } from '@/types/author-roles'
-import { ReadingDirection } from '@/types/enum-books'
+import { READING_DIR_ITEMS, ReadingDirection } from '@/types/enum-books'
 import moment from 'moment'
 import Vue from 'vue'
 import { helpers, minValue, requiredIf } from 'vuelidate/lib/validators'
@@ -343,6 +343,9 @@ export default Vue.extend({
       authorRoles,
       authorSearch: [],
       authorSearchResults: [] as string[],
+      formValues: {
+        readingDirections: READING_DIR_ITEMS,
+      },
     }
   },
   props: {
@@ -402,14 +405,7 @@ export default Vue.extend({
     single (): boolean {
       return !Array.isArray(this.books)
     },
-    readingDirections (): any[] {
-      return Object.keys(ReadingDirection).map(x => (
-        {
-          text: this.$_.capitalize(x.replace(/_/g, ' ')),
-          value: x,
-        })
-      )
-    },
+
     authorSearchResultsFull (): string[] {
       // merge local values with server search, so that already input value is available
       const local = (this.$_.values(this.form.authors).flat()) as unknown as string[]
