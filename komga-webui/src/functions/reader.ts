@@ -1,5 +1,5 @@
 import KomgaBooksService from '@/services/komga-books.service'
-import { ImageFit, ReadingDirection } from '@/types/enum-books'
+import { BackgroundColors, ImageFit, ReadingDirection } from '@/types/enum-books'
 import { Map } from '@/functions/forms'
 import KomgaSeriesService from '@/services/komga-series.service'
 import { getBookTitleCompact } from '@/functions/book-title'
@@ -68,7 +68,7 @@ export class Reader {
     this.addSetting(ReaderSettings.ANIMATIONS, true, TRUE_MAPPER)
     this.addSetting(ReaderSettings.FIT, ImageFit.HEIGHT, IDENTITY_MAPPER)
     this.addSetting(ReaderSettings.READ_DIR, ReadingDirection.LEFT_TO_RIGHT, IDENTITY_MAPPER)
-    this.addSetting(ReaderSettings.BG_COLOR, 'black', IDENTITY_MAPPER)
+    this.addSetting(ReaderSettings.BG_COLOR, BackgroundColors.BLACK, IDENTITY_MAPPER)
   }
 
   public async setup (bookId: string) {
