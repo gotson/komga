@@ -1,14 +1,10 @@
 <template>
-  <v-container class="ma-0 pa-0 full-height" fluid v-if="pagesCount > 0"
+  <v-container class="ma-0 pa-0 full-height" fluid v-if="isReady"
                :style="`width: 100%; background-color: ${backgroundColor}`"
-               v-touch="{
-                 left: () => {if(swipe) {turnRight()}},
-                 right: () => {if(swipe) {turnLeft()}},
-                 up: () => {if(swipe) {verticalNext()}},
-                 down: () => {if(swipe) {verticalPrev()}}
-                 }"
+               v-touch="nav.vtouch()"
                :key="this.bookId"
   >
+
     <div>
       <v-slide-y-transition>
         <!-- Top Toolbar-->
@@ -55,24 +51,25 @@
             <!--  Menu: page slider  -->
             <v-col class="px-0">
               <v-slider
+                v-if="nav"
                 hide-details
                 thumb-label
                 @change="changeSlider"
                 v-model="goToPage"
                 class="align-center"
                 min="1"
-                :max="pagesCount"
+                :max="realPageCount"
               >
                 <template v-slot:prepend>
                   <v-icon @click="previousBook" class="">mdi-undo</v-icon>
                   <v-icon @click="goToFirst" class="mx-2">mdi-skip-previous</v-icon>
                   <v-label>
-                    {{ currentPage }}
+                    {{ realPageNumber }}
                   </v-label>
                 </template>
                 <template v-slot:append>
                   <v-label>
-                    {{ pagesCount }}
+                    {{ realPageCount }}
                   </v-label>
                   <v-icon @click="goToLast" class="mx-1">mdi-skip-next</v-icon>
                   <v-icon @click="nextBook" class="">mdi-redo</v-icon>
@@ -86,7 +83,7 @@
     </div>
 
     <!--  clickable zone: left  -->
-    <div @click="turnLeft()"
+    <div @click="nav.backward(true)"
          class="left-quarter full-height top"
          style="z-index: 1;"
     />
@@ -98,55 +95,26 @@
     />
 
     <!--  clickable zone: right  -->
-    <div @click="turnRight()"
+    <div @click="nav.forward(true)"
          class="right-quarter full-height top"
          style="z-index: 1;"
     />
 
     <div class="full-height">
-      <!--  Carousel  -->
-      <v-carousel v-model="carouselPage"
-                  :value="10"
-                  :show-arrows="false"
-                  :continuous="false"
-                  :reverse="flipDirection"
-                  :vertical="vertical"
-                  hide-delimiters
-                  touchless
-                  height="100%"
-      >
-        <!--  Carousel: pages  -->
-        <v-carousel-item v-for="p in slidesRange"
-                         :key="doublePages ? `db${p}` : `sp${p}`"
-                         :eager="eagerLoad(p)"
-                         class="full-height"
-                         :transition="animations ? undefined : false"
-                         :reverse-transition="animations ? undefined : false"
-        >
-          <div class="full-height d-flex flex-column justify-center">
-            <div :class="`d-flex flex-row${flipDirection ? '-reverse' : ''} justify-center px-0 mx-0` ">
-              <img :src="getPageUrl(p)"
-                   :height="maxHeight"
-                   :width="maxWidth(p)"
-                   :style="imgStyle"
-              />
-              <img v-if="doublePages && p !== 1 && p !== pagesCount && p+1 !== pagesCount"
-                   :src="getPageUrl(p+1)"
-                   :height="maxHeight"
-                   :width="maxWidth(p+1)"
-                   :style="imgStyle"
-              />
-            </div>
-          </div>
-        </v-carousel-item>
-      </v-carousel>
+    <page-spread-carousel
+        v-if="isReady"
+        :spreads="reader.spreads"
+        :reader="this.reader"
+        :page-cursor="pageCursor"
+    ></page-spread-carousel>
     </div>
 
     <thumbnail-explorer-dialog
+      v-if="isReady"
       v-model="showThumbnailsExplorer"
-      @goToPage="goTo"
+      @goToPage="this.nav.goTo"
       :bookId="bookId"
-      :pagesCount="pagesCount"
+      :pagesCount="realPageCount"
     ></thumbnail-explorer-dialog>
 
     <v-bottom-sheet
@@ -274,6 +242,7 @@
 <script lang="ts">
 import SettingsSelect from '@/components/SettingsSelect.vue'
 import SettingsSwitch from '@/components/SettingsSwitch.vue'
+import PageSpreadCarousel from '@/components/PageSpreadCarousel.vue'
 import ThumbnailExplorerDialog from '@/components/dialogs/ThumbnailExplorerDialog.vue'
 import ShortcutHelpMenu from '@/components/menus/ShortcutHelpMenu.vue'
 import {
@@ -285,18 +254,17 @@ import {
 } from '@/types/enum-books'
 import { executeShortcut } from '@/functions/shortcuts'
 
-import { Reader, computedSetting, ReaderSettings } from '@/functions/reader'
+import { Navigator, Reader, computedSetting, ReaderSettings } from '@/functions/reader'
 import Vue from 'vue'
 
 type _reader = Reader | undefined
 
 export default Vue.extend({
   name: 'BookReader',
-  components: { SettingsSwitch, SettingsSelect, ThumbnailExplorerDialog, ShortcutHelpMenu },
+  components: { SettingsSwitch, SettingsSelect, ShortcutHelpMenu, ThumbnailExplorerDialog, PageSpreadCarousel },
   data: () => {
     return {
       reader: undefined as _reader,
-      carouselPage: 1,
       goToPage: 1,
       jumpToNextBook: false,
       jumpToPreviousBook: false,
@@ -332,60 +300,42 @@ export default Vue.extend({
       required: true,
     },
   },
-  // async beforeRouteUpdate (to, from, next) {
-  //   if (to.params.bookId !== from.params.bookId) {
-  //     // route update means going to previous/next book, in this case we start from first page
-  //     this.setup(to.params.bookId, 0)
-  //   }
-  //   next()
-  // },
   watch: {
-    currentPage (val) {
+    realPageNumber (val) {
       this.updateRoute()
       this.goToPage = val
-      this.markProgress(val)
+      this.reader?.markProgress(val)
     },
     async bookId (val) {
       await this.setup(val, 0)
     },
   },
   computed: {
-    currentSlide (): number {
-      return this.carouselPage + 1
+    isReady (): boolean {
+      return !!this.reader && !!this.reader.navigator && !!this.reader?.spreads && this.reader?.spreads?.spreads?.length!! > 0
     },
-    currentPage (): number {
-      return this.doublePages ? this.toSinglePages(this.currentSlide) : this.currentSlide
+    nav (): Navigator {
+      return this.reader?.navigator!
     },
-    canPrev (): boolean {
-      return this.currentSlide > 1
-    },
-    canNext (): boolean {
-      return this.currentSlide < this.slidesCount
+    pageCursor: {
+      get: function (): number {
+        return this.nav?.pageCursor || NaN
+      },
+      set: function (v: number): void {
+        this.nav.pageCursor = v
+      },
     },
     progress (): number {
-      return this.currentPage / this.pagesCount * 100
+      return this.nav.progress
     },
-    maxHeight (): number | null {
-      return this.imageFit === ImageFit.HEIGHT ? this.$vuetify.breakpoint.height : null
-    },
-    imgStyle (): string {
-      return this.imageFit === ImageFit.WIDTH ? 'height:intrinsic' : ''
-    },
-    slidesRange (): number[] {
-      if (!this.doublePages) {
-        return this.$_.range(1, this.pagesCount + 1)
+    realPageNumber (): number {
+      if (!this.isReady) {
+        return 0
       }
-      // for double pages the first and last pages are shown as single, while others are doubled
-      const ret = this.$_.range(2, this.pagesCount, 2)
-      ret.unshift(1)
-      ret.push(this.pagesCount)
-      return ret
+      return this.nav.realPageNumber
     },
-    slidesCount (): number {
-      return this.slidesRange.length
-    },
-    pagesCount (): number {
-      return this.reader?.pagesCount()!!
+    realPageCount (): number {
+      return this.reader?.pages.length!! + 1
     },
     bookTitle (): string {
       return this.reader?.bookTitle()!!
@@ -421,108 +371,69 @@ export default Vue.extend({
       const p = this.reader.determinePage(page)
       this.goTo(p)
     },
-    getPageUrl (page: number): string {
-      return this.reader?.getPageUrl(page)!!
-    },
-    turnRight () {
-      if (this.vertical) return
-      return this.flipDirection ? this.prev() : this.next()
-    },
-    turnLeft () {
-      if (this.vertical) return
-      return this.flipDirection ? this.next() : this.prev()
-    },
-    verticalPrev () {
-      if (this.vertical) this.prev()
-    },
-    verticalNext () {
-      if (this.vertical) this.next()
-    },
-    prev () {
-      if (this.canPrev) {
-        this.carouselPage--
-        window.scrollTo(0, 0)
-      } else {
-        if (this.jumpToPreviousBook) {
-          this.previousBook()
-        } else {
-          this.jumpToPreviousBook = true
-        }
-      }
-    },
-    next () {
-      if (this.canNext) {
-        this.carouselPage++
-        window.scrollTo(0, 0)
-      } else {
-        if (this.jumpToNextBook) {
-          this.nextBook()
-        } else {
-          this.jumpToNextBook = true
-        }
-      }
-    },
+    // prev () {
+    //   if (this.canPrev) {
+    //     this.carouselPage--
+    //     window.scrollTo(0, 0)
+    //   } else {
+    //     if (this.jumpToPreviousBook) {
+    //       this.previousBook()
+    //     } else {
+    //       this.jumpToPreviousBook = true
+    //     }
+    //   }
+    // },
+    // next () {
+    //   if (this.canNext) {
+    //     this.carouselPage++
+    //     window.scrollTo(0, 0)
+    //   } else {
+    //     if (this.jumpToNextBook) {
+    //       this.nextBook()
+    //     } else {
+    //       this.jumpToNextBook = true
+    //     }
+    //   }
+    // },
     nextBook () {
       if (this.siblingNext) {
         this.jumpToNextBook = false
-        this.$router.push({ name: 'read-book', params: { bookId: this.siblingNext.id.toString() } })
+        this.nav.goToBook(this.$router, this.siblingNext!!)
       } else {
         this.closeBook()
       }
     },
     previousBook () {
+      this.jumpToPreviousBook = false
       if (this.siblingPrevious) {
-        this.jumpToPreviousBook = false
-        this.$router.push({ name: 'read-book', params: { bookId: this.siblingPrevious.id.toString() } })
+        this.nav.goToBook(this.$router, this.siblingPrevious!!)
       }
     },
     changeSlider (page: number) {
       this.goTo(page)
     },
     goTo (page: number) {
-      this.carouselPage = this.doublePages ? this.toDoublePages(page) - 1 : page - 1
+      this.nav.goTo(page)
     },
     goToFirst () {
-      this.goTo(1)
+      this.nav.goToFirst()
     },
     goToLast () {
-      this.goTo(this.pagesCount)
+      this.nav.goToLast()
     },
     updateRoute () {
-      this.$router.replace({
-        name: this.$route.name,
-        params: { bookId: this.$route.params.bookId },
-        query: {
-          page: this.currentPage.toString(),
-        },
-      })
+      if (this.isReady) {
+        this.$router.replace({
+          name: this.$route.name,
+          params: { bookId: this.$route.params.bookId },
+          query: {
+            page: this.realPageNumber.toString(),
+          },
+        })
+      }
     },
     closeBook () {
       this.$router.push({ name: 'browse-book', params: { bookId: this.bookId.toString() } })
-    },
-    toSinglePages (i: number): number {
-      if (i === 1) return 1
-      if (i === this.slidesCount) return this.pagesCount
-      return (i - 1) * 2
-    },
-    toDoublePages (i: number): number {
-      let ret = Math.floor(i / 2) + 1
-      if (i === this.pagesCount && this.pagesCount % 2 === 1) {
-        ret++
-      }
-      return ret
-    },
-    eagerLoad (p: number): boolean {
-      return Math.abs(this.currentPage - p) <= 2
-    },
-    maxWidth (p: number): number | null {
-      if (this.imageFit !== ImageFit.WIDTH) {
-        return null
-      }
-      if (this.doublePages && p !== 1 && p !== this.pagesCount) {
-        return this.$vuetify.breakpoint.width / 2
-      }
-      return this.$vuetify.breakpoint.width
     },
     changeReadingDir (dir: ReadingDirection) {
       this.reader?.set(ReaderSettings.READ_DIR, dir)
@@ -531,7 +442,7 @@ export default Vue.extend({
     cycleScale () {
       let fit: ImageFit = this.reader?.get<ImageFit>(ReaderSettings.FIT)!!
       let next = ImageFit.next(fit)
-      this.reader?.set(ReaderSettings.READ_DIR, next)
+      this.reader?.set(ReaderSettings.FIT, next)
       this.sendNotification(`Cycling Scale: ${ImageFit.toString(next)}`)
     },
     toggleDoublePages () {
@@ -542,12 +453,6 @@ export default Vue.extend({
       this.notification.timeout = 4000
       this.notification.message = message
       this.notification.enabled = true
-    },
-    async markProgress (page: number) {
-      // TODO something is causing the initially loaded book to be a page that very much does not exist???
-      if (page <= this.pagesCount) {
-        this.$komgaBooks.updateReadProgress(this.bookId, { page: page })
-      }
     },
   },
 })

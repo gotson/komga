@@ -49,30 +49,17 @@ enum ShortcutCategory {
 
 // Reader Navigation
 shortcut('seekForward', ShortcutCategory.READER_NAVIGATION, 'Next Page',
-  (ctx: any) => {
-    ctx.flipDirection ? ctx.prev() : ctx.next()
-  }, 'PageUp', 'ArrowRight')
+  (ctx: any) => ctx.nav.forward(), 'PageUp', 'ArrowRight')
 
 shortcut('seekBackward', ShortcutCategory.READER_NAVIGATION, 'Prev Page',
-  (ctx: any) => {
-    ctx.flipDirection ? ctx.next() : ctx.prev()
-  }, 'PageDown', 'ArrowLeft')
+  (ctx: any) => ctx.nav.backward(), 'PageDown', 'ArrowLeft')
 
 shortcut('seekUp', ShortcutCategory.READER_NAVIGATION, 'Prev Page (Vertical)',
-  (ctx: any) => {
-    if (ctx.vertical) {
-      ctx.prev()
-    }
-  }
+  (ctx: any) => ctx.nav.up()
   , 'ArrowUp')
 
 shortcut('seekDown', ShortcutCategory.READER_NAVIGATION, 'Next Page (Vertical)',
-  (ctx: any) => {
-    if (ctx.vertical) {
-      ctx.next()
-    }
-  }
-  , 'ArrowDown')
+  (ctx: any) => ctx.nav.down(), 'ArrowDown')
 
 shortcut('seekBegin', ShortcutCategory.READER_NAVIGATION, 'Goto First Page',
   (ctx: any) => {

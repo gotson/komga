@@ -21,7 +21,10 @@ export namespace ReadingDirection {
   // eslint-disable-next-line no-inner-declarations
   export function toString (o: ReadingDirection): string {
     let i = READING_DIRECTIONS.indexOf(o)
-    return READING_DIR_ITEMS[i].text
+    if (i >= 0 && i < READING_DIR_ITEMS.length) {
+      return READING_DIR_ITEMS[i].text
+    }
+    return 'Unknown'
   }
 }
 
@@ -50,8 +53,8 @@ export enum ImageFit {
 export const IMAGE_FITS = Object.values(ImageFit)
 
 export const IMAGE_FIT_ITEMS = [
-  { text: 'Fit to height', value: ImageFit.HEIGHT },
   { text: 'Fit to width', value: ImageFit.WIDTH },
+  { text: 'Fit to height', value: ImageFit.HEIGHT },
   { text: 'Original', value: ImageFit.ORIGINAL },
 ] as SelectItem<ImageFit>[]
 
