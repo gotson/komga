@@ -40,6 +40,8 @@ export class Reader {
   $komgaBooks: KomgaBooksService
   $komgaSeries: KomgaSeriesService
   $cookie: VueCookies
+  $router: VueRouter
+
   readonly settings: Map<Cookie<any>> = {}
   public siblingPrev: Optional<BookDto>
   public siblingNext: Optional<BookDto>
@@ -55,11 +57,12 @@ export class Reader {
   convertTo: string = 'jpeg'
   SUPPORTED_MEDIA_TYPES = ['image/jpeg', 'image/png', 'image/gif']
 
-  constructor ($komgaBooks: KomgaBooksService, $komgaSeries: KomgaSeriesService, $cookie: VueCookies) {
+  constructor ($komgaBooks: KomgaBooksService, $komgaSeries: KomgaSeriesService, $cookie: VueCookies, $router: VueRouter) {
     // services
     this.$komgaBooks = $komgaBooks
     this.$komgaSeries = $komgaSeries
     this.$cookie = $cookie
+    this.$router = $router
     this.defaultSettings()
     this.pageSpreadBuild = new SingleSpreadBuilder(this.$komgaBooks)
 
@@ -214,15 +217,25 @@ export function computedSetting<V> (setting: string, save: boolean = true): any 
   }
 }
 
+interface Jump {
+  nextBook: boolean,
+  prevBook: boolean,
+}
+
 export class Navigator {
   private _pageCursor: number
-  private spreads : PageSpreads
+  private spreads: PageSpreads
   private reader: Reader
+  private _jump: Jump
 
   constructor (reader: Reader, spreads: PageSpreads) {
     this._pageCursor = 1
     this.reader = reader
     this.spreads = spreads
+    this._jump = {
+      nextBook: false,
+      prevBook: false,
+    }
   }
 
   get pageCursor (): number {
@@ -247,6 +260,10 @@ export class Navigator {
 
   get realPageCount (): number {
     return this.reader.pages.length
+  }
+
+  get jump (): Jump {
+    return this._jump
   }
 
   goToFirst (): void {
@@ -286,10 +303,26 @@ export class Navigator {
   vtouch () {
     let swipe = this.swipe()
     return {
-      left: () => { if (swipe) { this.forward() } },
-      right: () => { if (swipe) { this.backward() } },
-      up: () => { if (swipe) { this.down() } },
-      down: () => { if (swipe) { this.up() } },
+      left: () => {
+        if (swipe) {
+          this.forward()
+        }
+      },
+      right: () => {
+        if (swipe) {
+          this.backward()
+        }
+      },
+      up: () => {
+        if (swipe) {
+          this.down()
+        }
+      },
+      down: () => {
+        if (swipe) {
+          this.up()
+        }
+      },
     }
   }
 
@@ -316,16 +349,48 @@ export class Navigator {
   private next () {
     if (this.hasNext()) {
       this._pageCursor++
+    } else {
+      if (this.jump.nextBook) {
+        this.nextBook()
+      } else {
+        this.jump.nextBook = true
+      }
     }
   }
 
   private prev () {
     if (this.hasPrev()) {
       this._pageCursor--
+    } else {
+      if (this.jump.prevBook) {
+        this.prevBook()
+      } else {
+        this.jump.prevBook = true
+      }
     }
   }
 
-  goToBook ($router: VueRouter, sibling: BookDto) {
-    $router.push({ name: 'read-book', params: { bookId: sibling.id.toString()!! } })
+  nextBook () {
+    if (this.reader.siblingNext) {
+      this.jump.nextBook = false
+      this.goToBook(this.reader.siblingNext)
+    } else {
+      this.closeBook()
+    }
+  }
+
+  prevBook () {
+    if (this.reader.siblingPrev) {
+      this.jump.prevBook = false
+      this.goToBook(this.reader.siblingPrev)
+    }
+  }
+
+  goToBook (sibling: BookDto) {
+    this.reader.$router.push({ name: 'read-book', params: { bookId: sibling.id.toString()!! } })
+  }
+
+  closeBook () {
+    this.reader.$router.push({ name: 'browse-book', params: { bookId: this.reader.bookId.toString() } })
   }
 }

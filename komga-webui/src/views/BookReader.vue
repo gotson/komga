@@ -16,7 +16,7 @@
         >
           <v-btn
             icon
-            @click="closeBook"
+            @click="nav.closeBook"
           >
             <v-icon>mdi-arrow-left</v-icon>
           </v-btn>
@@ -61,7 +61,7 @@
                 :max="realPageCount"
               >
                 <template v-slot:prepend>
-                  <v-icon @click="previousBook" class="">mdi-undo</v-icon>
+                  <v-icon @click="nav.prevBook" class="">mdi-undo</v-icon>
                   <v-icon @click="goToFirst" class="mx-2">mdi-skip-previous</v-icon>
                   <v-label>
                     {{ realPageNumber }}
@@ -72,7 +72,7 @@
                     {{ realPageCount }}
                   </v-label>
                   <v-icon @click="goToLast" class="mx-1">mdi-skip-next</v-icon>
-                  <v-icon @click="nextBook" class="">mdi-redo</v-icon>
+                  <v-icon @click="nav.nextBook" class="">mdi-redo</v-icon>
                 </template>
               </v-slider>
             </v-col>
@@ -174,7 +174,7 @@
     </v-bottom-sheet>
     <v-snackbar
       v-if="reader && reader.loaded"
-      v-model="jumpToPreviousBook"
+      v-model="nav.jump.prevBook"
       :timeout="jumpConfirmationDelay"
       vertical
       top
@@ -190,7 +190,7 @@
 
     <v-snackbar
       v-if="reader && reader.loaded"
-      v-model="jumpToNextBook"
+      v-model="nav.jump.nextBook"
       :timeout="jumpConfirmationDelay"
       vertical
       top
@@ -364,50 +364,12 @@ export default Vue.extend({
       executeShortcut(this, e)
     },
     async setup (bookId: string, page: number) {
-      this.reader = new Reader(this.$komgaBooks, this.$komgaSeries, this.$cookies)
+      this.reader = new Reader(this.$komgaBooks, this.$komgaSeries, this.$cookies, this.$router)
       await this.reader.setup(this.bookId)
       document.title = `Komga - ${this.reader.bookTitle()}`
       this.snackReadingDirection = this.reader?.coerceReadingDirection()
       const p = this.reader.determinePage(page)
       this.goTo(p)
-    },
-    // prev () {
-    //   if (this.canPrev) {
-    //     this.carouselPage--
-    //     window.scrollTo(0, 0)
-    //   } else {
-    //     if (this.jumpToPreviousBook) {
-    //       this.previousBook()
-    //     } else {
-    //       this.jumpToPreviousBook = true
-    //     }
-    //   }
-    // },
-    // next () {
-    //   if (this.canNext) {
-    //     this.carouselPage++
-    //     window.scrollTo(0, 0)
-    //   } else {
-    //     if (this.jumpToNextBook) {
-    //       this.nextBook()
-    //     } else {
-    //       this.jumpToNextBook = true
-    //     }
-    //   }
-    // },
-    nextBook () {
-      if (this.siblingNext) {
-        this.jumpToNextBook = false
-        this.nav.goToBook(this.$router, this.siblingNext!!)
-      } else {
-        this.closeBook()
-      }
-    },
-    previousBook () {
-      this.jumpToPreviousBook = false
-      if (this.siblingPrevious) {
-        this.nav.goToBook(this.$router, this.siblingPrevious!!)
-      }
     },
     changeSlider (page: number) {
       this.goTo(page)
@@ -431,9 +393,6 @@ export default Vue.extend({
           },
         })
       }
-    },
-    closeBook () {
-      this.$router.push({ name: 'browse-book', params: { bookId: this.bookId.toString() } })
     },
     changeReadingDir (dir: ReadingDirection) {
       this.reader?.set(ReaderSettings.READ_DIR, dir)
