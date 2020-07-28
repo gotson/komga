@@ -83,12 +83,12 @@ dependencies {
   implementation("org.jsoup:jsoup:1.13.1")
 
   implementation("net.coobird:thumbnailator:0.4.11")
-  implementation("com.twelvemonkeys.imageio:imageio-jpeg:3.5")
-  implementation("com.twelvemonkeys.imageio:imageio-tiff:3.5")
-  implementation(files("$projectDir/libs/webp-imageio-decoder-plugin-0.2.jar"))
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.5")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.5")
+  runtimeOnly(files("$projectDir/libs/webp-imageio-decoder-plugin-0.2.jar"))
   // support for jpeg2000
-  implementation("com.github.jai-imageio:jai-imageio-jpeg2000:1.3.0")
-  implementation("org.apache.pdfbox:jbig2-imageio:3.0.3")
+  runtimeOnly("com.github.jai-imageio:jai-imageio-jpeg2000:1.3.0")
+  runtimeOnly("org.apache.pdfbox:jbig2-imageio:3.0.3")
 
   implementation("com.jakewharton.byteunits:byteunits:0.9.1")
 
