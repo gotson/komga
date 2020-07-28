@@ -77,7 +77,7 @@ dependencies {
 
   implementation("org.apache.tika:tika-core:1.24.1")
   implementation("org.apache.commons:commons-compress:1.20")
-  implementation("com.github.junrar:junrar:4.0.0")
+  implementation("com.github.junrar:junrar:7.2.0")
   implementation("org.apache.pdfbox:pdfbox:2.0.19")
   implementation("net.grey-panther:natural-comparator:1.1")
   implementation("org.jsoup:jsoup:1.13.1")
