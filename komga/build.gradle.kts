@@ -1,3 +1,4 @@
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import com.rohanprabhu.gradle.plugins.kdjooq.database
 import com.rohanprabhu.gradle.plugins.kdjooq.generator
 import com.rohanprabhu.gradle.plugins.kdjooq.jdbc
@@ -5,6 +6,7 @@ import com.rohanprabhu.gradle.plugins.kdjooq.jooqCodegenConfiguration
 import com.rohanprabhu.gradle.plugins.kdjooq.target
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 
 plugins {
   run {
@@ -253,4 +255,18 @@ val `jooq-codegen-primary` by project.tasks
 openApi {
   outputDir.set(file("$projectDir/docs"))
   forkProperties.set("-Dspring.profiles.active=claim")
+}
+
+fun isNonStable(version: String): Boolean {
+  val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+  val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+  val isStable = stableKeyword || regex.matches(version)
+  return isStable.not()
+}
+tasks.named("dependencyUpdates", DependencyUpdatesTask::class.java).configure {
+  // disallow release candidates as upgradable versions from stable versions
+  rejectVersionIf {
+    isNonStable(candidate.version) && !isNonStable(currentVersion)
+  }
+  gradleReleaseChannel = "current"
 }
