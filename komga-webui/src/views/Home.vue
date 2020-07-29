@@ -99,20 +99,25 @@
 
     <v-divider />
 
+    <v-spacer/>
+
     <v-list>
-        <v-list-item @click="toggleDarkMode">
-          <v-list-item-icon>
-            <v-icon v-if="this.$vuetify.theme.dark">mdi-brightness-7</v-icon>
-            <v-icon v-else>mdi-brightness-3</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title v-if="this.$vuetify.theme.dark">Light theme</v-list-item-title>
-            <v-list-item-title v-else>Dark theme</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+      <v-list-item>
+        <v-list-item-icon>
+          <v-icon v-if="activeTheme === theme.LIGHT">mdi-brightness-7</v-icon>
+          <v-icon v-if="activeTheme === theme.DARK">mdi-brightness-3</v-icon>
+          <v-icon v-if="activeTheme === theme.SYSTEM">mdi-brightness-auto</v-icon>
+        </v-list-item-icon>
+        <v-select
+          v-model="activeTheme"
+          :items="themeItems"
+          label="Select theme"
+          @change="setTheme"
+        ></v-select>
+      </v-list-item>
     </v-list>
 
-      <v-spacer/>
+    <v-spacer/>
 
       <template v-slot:append>
         <div v-if="isAdmin && !$_.isEmpty(info)"
@@ -134,17 +139,28 @@
 import Dialogs from '@/components/Dialogs.vue'
 import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import SearchBox from '@/components/SearchBox.vue'
+import { Theme } from '@/types/themes'
 import Vue from 'vue'
 
-const cookieDarkMode = 'darkmode'
+const cookieTheme = 'theme'
 
 export default Vue.extend({
   name: 'home',
   components: { LibraryActionsMenu, SearchBox, Dialogs },
   data: function () {
+    let activeTheme = Theme.LIGHT
+    if (this.$cookies.isKey(cookieTheme)) {
+      let theme = this.$cookies.get(cookieTheme)
+      if (Object.values(Theme).includes(theme)) {
+        activeTheme = theme
+      }
+    }
+
     return {
       drawerVisible: this.$vuetify.breakpoint.lgAndUp,
       info: {} as ActuatorInfo,
+      activeTheme,
+      theme: Theme,
     }
   },
   async created () {
@@ -152,9 +168,15 @@ export default Vue.extend({
       this.info = await this.$actuator.getInfo()
     }
 
-    if (this.$cookies.isKey(cookieDarkMode)) {
-      this.$vuetify.theme.dark = (this.$cookies.get(cookieDarkMode) === 'true')
+    if (this.$cookies.isKey(cookieTheme)) {
+      this.changeTheme(this.$cookies.get(cookieTheme))
     }
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (this.activeTheme === Theme.SYSTEM) {
+        this.changeTheme(this.activeTheme)
+      }
+    })
   },
   computed: {
     libraries (): LibraryDto[] {
@@ -163,14 +185,37 @@ export default Vue.extend({
     isAdmin (): boolean {
       return this.$store.getters.meAdmin
     },
+    themeItems (): any[] {
+      return Object.values(Theme).map(theme => (
+        {
+          text: theme,
+          value: theme,
+        }
+      ))
+    },
   },
   methods: {
     toggleDrawer () {
       this.drawerVisible = !this.drawerVisible
     },
-    toggleDarkMode () {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark
-      this.$cookies.set(cookieDarkMode, this.$vuetify.theme.dark, Infinity)
+    setTheme (e: string) {
+      this.$cookies.set(cookieTheme, e)
+      this.changeTheme(e as Theme)
+    },
+    changeTheme (theme: Theme) {
+      switch (theme) {
+        case Theme.DARK:
+          this.$vuetify.theme.dark = true
+          break
+
+        case Theme.SYSTEM:
+          this.$vuetify.theme.dark = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+          break
+
+        default:
+          this.$vuetify.theme.dark = false
+          break
+      }
     },
     logout () {
       this.$store.dispatch('logout')
