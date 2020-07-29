@@ -6,6 +6,7 @@ import com.rohanprabhu.gradle.plugins.kdjooq.jooqCodegenConfiguration
 import com.rohanprabhu.gradle.plugins.kdjooq.target
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 
 plugins {
@@ -15,20 +16,17 @@ plugins {
     kotlin("plugin.spring") version kotlinVersion
     kotlin("kapt") version kotlinVersion
   }
-  id("org.springframework.boot") version "2.2.6.RELEASE"
+  id("org.springframework.boot") version "2.3.2.RELEASE"
   id("com.github.ben-manes.versions") version "0.28.0"
   id("com.gorylenko.gradle-git-properties") version "2.2.2"
   id("com.rohanprabhu.kotlin-dsl-jooq") version "0.4.5"
-  id("org.flywaydb.flyway") version "6.4.0"
+  id("org.flywaydb.flyway") version "6.4.4"
   id("com.github.johnrengelman.processes") version "0.5.0"
   id("org.springdoc.openapi-gradle-plugin") version "1.3.0"
   jacoco
 }
 
 group = "org.gotson"
-
-val developmentOnly = configurations.create("developmentOnly")
-configurations.runtimeClasspath.get().extendsFrom(developmentOnly)
 
 repositories {
   jcenter()
@@ -39,15 +37,10 @@ dependencies {
   implementation(kotlin("stdlib-jdk8"))
   implementation(kotlin("reflect"))
 
-  constraints {
-    implementation("org.flywaydb:flyway-core:6.4.0") {
-      because("support for H2 1.4.200 requires 6.1.0+")
-    }
-  }
-
-  implementation(platform("org.springframework.boot:spring-boot-dependencies:2.2.6.RELEASE"))
+  implementation(platform("org.springframework.boot:spring-boot-dependencies:2.3.2.RELEASE"))
 
   implementation("org.springframework.boot:spring-boot-starter-web")
+  implementation("org.springframework.boot:spring-boot-starter-validation")
   implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
   implementation("org.springframework.boot:spring-boot-starter-actuator")
   implementation("org.springframework.boot:spring-boot-starter-security")
@@ -55,7 +48,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-artemis")
   implementation("org.springframework.boot:spring-boot-starter-jooq")
 
-  kapt("org.springframework.boot:spring-boot-configuration-processor:2.2.6.RELEASE")
+  kapt("org.springframework.boot:spring-boot-configuration-processor:2.3.2.RELEASE")
 
   implementation("org.apache.activemq:artemis-jms-server")
 
@@ -63,7 +56,7 @@ dependencies {
 
   implementation("io.github.microutils:kotlin-logging:1.7.9")
   implementation("io.micrometer:micrometer-registry-influx")
-  implementation("io.hawt:hawtio-springboot:2.10.0")
+  implementation("io.hawt:hawtio-springboot:2.10.1")
 
   run {
     val springdocVersion = "1.3.4"
@@ -110,7 +103,7 @@ dependencies {
 
   testImplementation("com.tngtech.archunit:archunit-junit5:0.13.1")
 
-  developmentOnly("org.springframework.boot:spring-boot-devtools")
+  developmentOnly("org.springframework.boot:spring-boot-devtools:2.3.2.RELEASE")
 }
 
 val webui = "$rootDir/komga-webui"
@@ -120,6 +113,10 @@ tasks {
       jvmTarget = "1.8"
       freeCompilerArgs = listOf("-Xjsr305=strict", "-Xopt-in=kotlin.time.ExperimentalTime")
     }
+  }
+
+  withType<BootJar> {
+    layered()
   }
 
   withType<Test> {
@@ -134,10 +131,14 @@ tasks {
   }
 
   //unpack Spring Boot's fat jar for better Docker image layering
-  register<Sync>("unpack") {
+  register<JavaExec>("unpack") {
     dependsOn(bootJar)
-    from(zipTree(getByName("bootJar").outputs.files.singleFile))
-    into("$buildDir/dependency")
+    classpath = files(jar)
+    jvmArgs = listOf("-Djarmode=layertools")
+    args = "extract --destination $buildDir/dependency".split(" ")
+    doFirst {
+      delete("$buildDir/dependency")
+    }
   }
 
   register<Exec>("npmInstall") {

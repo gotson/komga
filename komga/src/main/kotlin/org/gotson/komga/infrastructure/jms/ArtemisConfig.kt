@@ -1,7 +1,7 @@
 package org.gotson.komga.infrastructure.jms
 
+import org.apache.activemq.artemis.api.core.QueueConfiguration
 import org.apache.activemq.artemis.api.core.RoutingType
-import org.apache.activemq.artemis.core.config.CoreQueueConfiguration
 import org.apache.activemq.artemis.core.settings.impl.AddressSettings
 import org.springframework.boot.autoconfigure.jms.artemis.ArtemisConfigurationCustomizer
 import org.springframework.context.annotation.Configuration
@@ -24,9 +24,8 @@ class ArtemisConfig : ArtemisConfigurationCustomizer {
         defaultConsumerWindowSize = 0
       })
       it.addQueueConfiguration(
-        CoreQueueConfiguration()
+        QueueConfiguration(QUEUE_TASKS)
           .setAddress(QUEUE_TASKS)
-          .setName(QUEUE_TASKS)
           .setLastValueKey(QUEUE_UNIQUE_ID)
           .setRoutingType(RoutingType.ANYCAST)
       )

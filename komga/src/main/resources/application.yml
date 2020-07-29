@@ -41,6 +41,7 @@ spring:
 server:
   servlet.session.timeout: 7d
   forward-headers-strategy: framework
+  shutdown: graceful
 
 management:
   endpoints.web.exposure.include: "*"
