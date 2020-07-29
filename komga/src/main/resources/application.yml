@@ -62,3 +62,4 @@ springdoc:
   swagger-ui:
     groups-order: desc
     operations-sorter: alpha
+    disable-swagger-default-url: true
