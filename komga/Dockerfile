@@ -1,10 +1,11 @@
 FROM adoptopenjdk:11-jre-hotspot
 VOLUME /tmp
 ARG DEPENDENCY=build/dependency
-COPY ${DEPENDENCY}/dependencies/ /app/
-COPY ${DEPENDENCY}/spring-boot-loader/ /app/
-COPY ${DEPENDENCY}/snapshot-dependencies/ /app/
-COPY ${DEPENDENCY}/application/ /app/
+WORKDIR app
+COPY ${DEPENDENCY}/dependencies/ ./
+COPY ${DEPENDENCY}/spring-boot-loader/ ./
+COPY ${DEPENDENCY}/snapshot-dependencies/ ./
+COPY ${DEPENDENCY}/application/ ./
 ENV KOMGA_DATABASE_BACKUP_PATH="/config/database-backup.zip"
 ENV KOMGA_DATABASE_FILE="/config/database.sqlite"
 ENV SPRING_DATASOURCE_URL="jdbc:h2:/config/database.h2"
