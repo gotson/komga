@@ -1,3 +1,10 @@
+## [0.50.1](https://github.com/gotson/komga/compare/v0.50.0...v0.50.1) (2020-07-30)
+
+
+### Bug Fixes
+
+* **docker:** docker image doesn't start ([8bce80b](https://github.com/gotson/komga/commit/8bce80b408143416335a8afb356b8ea404b22369))
+
 # [0.50.0](https://github.com/gotson/komga/compare/v0.49.0...v0.50.0) (2020-07-30)
 
 
