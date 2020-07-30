@@ -671,10 +671,10 @@ export default Vue.extend({
       this.sendNotification(`Changing Reading Direction to: ${text}`)
     },
     cycleScale () {
-      let fit: ImageFit = this.settings.fit
-      let i = (this.settings.imageFits.indexOf(fit) + 1) % (this.settings.imageFits.length)
-      this.settings.fit = this.settings.imageFits[i]
-      let text = this.imageFits[i].text
+      const fit: ImageFit = this.settings.fit
+      const i = (this.settings.imageFits.indexOf(fit) + 1) % (this.settings.imageFits.length)
+      this.imageFit = this.settings.imageFits[i]
+      const text = this.imageFits[i].text
       // The text here only works cause this.imageFits has the same index structure as the ImageFit enum
       this.sendNotification(`Cycling Scale: ${text}`)
     },
