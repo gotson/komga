@@ -33,12 +33,12 @@
             "format": "int32",
             "type": "integer"
           },
-          "last": {
-            "type": "boolean"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
+          },
+          "last": {
+            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -444,6 +444,7 @@
         }
       },
       "BookMetadataUpdateDto": {
+        "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.",
         "type": "object",
         "properties": {
           "summary": {
@@ -640,6 +641,7 @@
         }
       },
       "ReadProgressUpdateDto": {
+        "description": "page can be omitted if completed is set to true. completed can be omitted, and will be set accordingly depending on the page passed and the total number of pages in the book.",
         "type": "object",
         "properties": {
           "page": {
@@ -813,6 +815,7 @@
         }
       },
       "SeriesMetadataUpdateDto": {
+        "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.",
         "type": "object",
         "properties": {
           "titleSort": {
@@ -871,12 +874,12 @@
             "format": "int32",
             "type": "integer"
           },
-          "last": {
-            "type": "boolean"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
+          },
+          "last": {
+            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -917,12 +920,12 @@
             "format": "int32",
             "type": "integer"
           },
-          "last": {
-            "type": "boolean"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
+          },
+          "last": {
+            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -1002,7 +1005,7 @@
         "operationId": "getSearch",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/xml": {
                 "schema": {
@@ -1032,7 +1035,7 @@
         "operationId": "getLatestSeries_1",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/xml": {
                 "schema": {
@@ -1062,7 +1065,7 @@
         "operationId": "getBookSiblingNext",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1102,7 +1105,7 @@
         "operationId": "addOne",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1120,7 +1123,7 @@
         "operationId": "getAll",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1143,7 +1146,7 @@
         "operationId": "getCollections",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/xml": {
                 "schema": {
@@ -1173,7 +1176,7 @@
         "operationId": "getMe",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1194,7 +1197,7 @@
         "operationId": "getLatestBooks",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1264,7 +1267,7 @@
         "operationId": "getBookFile",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -1326,7 +1329,7 @@
         "operationId": "getOne",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1354,7 +1357,7 @@
         "operationId": "deleteOne",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
@@ -1385,7 +1388,7 @@
         "operationId": "updateOne",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
@@ -1409,7 +1412,7 @@
         "operationId": "getLatestSeries",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1456,7 +1459,7 @@
         "operationId": "getBookFile_2",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -1488,7 +1491,7 @@
         "operationId": "getNewSeries",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1534,7 +1537,7 @@
         "operationId": "analyze_1",
         "responses": {
           "202": {
-            "description": "default response"
+            "description": "Accepted"
           }
         },
         "parameters": [
@@ -1558,7 +1561,7 @@
         "operationId": "getBookFile_1",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -1589,7 +1592,7 @@
         "operationId": "getSeriesForCollection",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1643,7 +1646,7 @@
         "operationId": "analyze_2",
         "responses": {
           "202": {
-            "description": "default response"
+            "description": "Accepted"
           }
         },
         "parameters": [
@@ -1666,7 +1669,7 @@
         "operationId": "getOneLibrary",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/xml": {
                 "schema": {
@@ -1704,7 +1707,6 @@
     "/api/v1/books/{bookId}/read-progress": {
       "patch": {
         "requestBody": {
-          "description": "page can be omitted if completed is set to true. completed can be omitted, and will be set accordingly depending on the page passed and the total number of pages in the book.",
           "content": {
             "application/json": {
               "schema": {
@@ -1717,7 +1719,7 @@
         "operationId": "markReadProgress",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
@@ -1738,7 +1740,7 @@
         "operationId": "deleteReadProgress",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
@@ -1771,7 +1773,7 @@
         "operationId": "addOne_2",
         "responses": {
           "201": {
-            "description": "default response",
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -1789,7 +1791,7 @@
         "operationId": "getAll_2",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1812,7 +1814,7 @@
         "operationId": "markAsRead",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
@@ -1833,7 +1835,7 @@
         "operationId": "markAsUnread",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
@@ -1856,7 +1858,7 @@
         "operationId": "getOneSeries_1",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/xml": {
                 "schema": {
@@ -1905,7 +1907,7 @@
         "operationId": "getAllCollectionsBySeries",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1938,7 +1940,7 @@
         "operationId": "refreshMetadata_2",
         "responses": {
           "202": {
-            "description": "default response"
+            "description": "Accepted"
           }
         },
         "parameters": [
@@ -1961,7 +1963,7 @@
         "operationId": "getAllBooksBySeries",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -2083,6 +2085,7 @@
           },
           {
             "schema": {
+              "type": "string",
               "enum": [
                 "jpeg",
                 "png"
@@ -2124,7 +2127,7 @@
         "operationId": "updateOne_1",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
@@ -2145,7 +2148,7 @@
         "operationId": "getOne_1",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -2173,7 +2176,7 @@
         "operationId": "deleteOne_1",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
@@ -2196,7 +2199,7 @@
         "operationId": "scan",
         "responses": {
           "202": {
-            "description": "default response"
+            "description": "Accepted"
           }
         },
         "parameters": [
@@ -2219,7 +2222,7 @@
         "operationId": "getBookSiblingPrevious",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -2249,7 +2252,7 @@
         "operationId": "getAllSeries_1",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/xml": {
                 "schema": {
@@ -2289,7 +2292,7 @@
         "operationId": "refreshMetadata",
         "responses": {
           "202": {
-            "description": "default response"
+            "description": "Accepted"
           }
         },
         "parameters": [
@@ -2343,6 +2346,7 @@
           },
           {
             "schema": {
+              "type": "string",
               "enum": [
                 "jpeg",
                 "png"
@@ -2374,7 +2378,7 @@
         "operationId": "getAllSeries",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -2505,7 +2509,7 @@
         "operationId": "updateUserRoles",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
@@ -2526,7 +2530,7 @@
         "operationId": "delete",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
@@ -2549,7 +2553,7 @@
         "operationId": "getOneSeries",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -2579,7 +2583,7 @@
         "operationId": "getOneCollection",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/xml": {
                 "schema": {
@@ -2619,7 +2623,7 @@
         "operationId": "refreshMetadata_1",
         "responses": {
           "202": {
-            "description": "default response"
+            "description": "Accepted"
           }
         },
         "parameters": [
@@ -2642,7 +2646,7 @@
         "operationId": "getAllBooks",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -2744,7 +2748,7 @@
         "operationId": "getLibraries",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/xml": {
                 "schema": {
@@ -2784,7 +2788,7 @@
         "operationId": "updatePassword",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "tags": [
@@ -2797,7 +2801,7 @@
         "operationId": "analyze",
         "responses": {
           "202": {
-            "description": "default response"
+            "description": "Accepted"
           }
         },
         "parameters": [
@@ -2818,7 +2822,6 @@
     "/api/v1/series/{seriesId}/metadata": {
       "patch": {
         "requestBody": {
-          "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.",
           "content": {
             "application/json": {
               "schema": {
@@ -2831,7 +2834,7 @@
         "operationId": "updateMetadata_1",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
@@ -2854,7 +2857,7 @@
         "operationId": "getCatalog",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/xml": {
                 "schema": {
@@ -2894,7 +2897,7 @@
         "operationId": "addOne_1",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -2912,7 +2915,7 @@
         "operationId": "getAll_1",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -2981,13 +2984,12 @@
                 "$ref": "#/components/schemas/DirectoryRequestDto"
               }
             }
-          },
-          "required": true
+          }
         },
         "operationId": "getDirectoryListing",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -3017,7 +3019,7 @@
         "operationId": "updateSharesLibraries",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
@@ -3102,7 +3104,7 @@
         "operationId": "getBookPages",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -3135,7 +3137,7 @@
         "operationId": "getAuthors",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -3207,7 +3209,6 @@
     "/api/v1/books/{bookId}/metadata": {
       "patch": {
         "requestBody": {
-          "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.",
           "content": {
             "application/json": {
               "schema": {
@@ -3220,7 +3221,7 @@
         "operationId": "updateMetadata",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
@@ -3243,7 +3244,7 @@
         "operationId": "getOneBook",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -3274,7 +3275,7 @@
         "operationId": "getBooksOnDeck",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -3312,7 +3313,7 @@
         "operationId": "claimAdmin",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -3348,7 +3349,7 @@
         "operationId": "getClaimStatus",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -3369,7 +3370,7 @@
         "operationId": "getUpdatedSeries",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {

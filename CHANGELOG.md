@@ -1,3 +1,10 @@
+# [0.50.0](https://github.com/gotson/komga/compare/v0.49.0...v0.50.0) (2020-07-30)
+
+
+### Features
+
+* **webui:** add system theme option ([8f22f01](https://github.com/gotson/komga/commit/8f22f01b3bdbfc8951bb291ef9c78f13dc61cbc0))
+
 # [0.49.0](https://github.com/gotson/komga/compare/v0.48.1...v0.49.0) (2020-07-25)
 
 
