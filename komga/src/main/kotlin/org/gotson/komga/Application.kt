@@ -9,5 +9,6 @@ import org.springframework.scheduling.annotation.EnableScheduling
 class Application
 
 fun main(args: Array<String>) {
+  System.setProperty("org.jooq.no-logo", "true")
   runApplication<Application>(*args)
 }
