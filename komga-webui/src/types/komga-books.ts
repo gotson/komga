@@ -23,7 +23,9 @@ interface MediaDto {
 interface PageDto {
   number: number,
   fileName: string,
-  mediaType: string
+  mediaType: string,
+  width?: number,
+  height?: number,
 }
 
 interface BookMetadataDto {

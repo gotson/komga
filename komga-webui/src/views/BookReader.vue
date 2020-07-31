@@ -53,30 +53,30 @@
           <v-row justify="center">
             <!--  Menu: page slider  -->
             <v-col class="px-0">
-                <v-slider
-                  hide-details
-                  thumb-label
-                  @change="goTo"
-                  v-model="goToPage"
-                  class="align-center"
-                  min="1"
-                  :max="pagesCount"
-                >
-                  <template v-slot:prepend>
-                    <v-icon @click="previousBook" class="">mdi-undo</v-icon>
-                    <v-icon @click="goToFirst" class="mx-2">mdi-skip-previous</v-icon>
-                    <v-label>
-                      {{ currentPage }}
-                    </v-label>
-                  </template>
-                  <template v-slot:append>
-                    <v-label>
-                      {{ pagesCount }}
-                    </v-label>
-                    <v-icon @click="goToLast" class="mx-1">mdi-skip-next</v-icon>
-                    <v-icon @click="nextBook" class="">mdi-redo</v-icon>
-                  </template>
-                </v-slider>
+              <v-slider
+                hide-details
+                thumb-label
+                @change="goTo"
+                v-model="goToPage"
+                class="align-center"
+                min="1"
+                :max="pagesCount"
+              >
+                <template v-slot:prepend>
+                  <v-icon @click="previousBook" class="">mdi-undo</v-icon>
+                  <v-icon @click="goToFirst" class="mx-2">mdi-skip-previous</v-icon>
+                  <v-label>
+                    {{ currentPage }}
+                  </v-label>
+                </template>
+                <template v-slot:append>
+                  <v-label>
+                    {{ pagesCount }}
+                  </v-label>
+                  <v-icon @click="goToLast" class="mx-1">mdi-skip-next</v-icon>
+                  <v-icon @click="nextBook" class="">mdi-redo</v-icon>
+                </template>
+              </v-slider>
             </v-col>
           </v-row>
 
@@ -114,24 +114,20 @@
                   height="100%"
       >
         <!--  Carousel: pages  -->
-        <v-carousel-item v-for="p in slidesRange"
-                         :key="doublePages ? `db${p}` : `sp${p}`"
-                         :eager="eagerLoad(p)"
+        <v-carousel-item v-for="(spread, i) in spreads"
+                         :key="`spread${i}`"
+                         :eager="eagerLoad(i)"
                          class="full-height"
                          :transition="animations ? undefined : false"
                          :reverse-transition="animations ? undefined : false"
         >
           <div class="full-height d-flex flex-column justify-center">
             <div :class="`d-flex flex-row${flipDirection ? '-reverse' : ''} justify-center px-0 mx-0` ">
-              <img :src="getPageUrl(p)"
+              <img v-for="(page, j) in spread"
+                   :key="`spread${i}-${j}`"
+                   :src="getPageUrl(page.number)"
                    :height="maxHeight"
-                   :width="maxWidth(p)"
-                   :style="imgStyle"
-              />
-              <img v-if="doublePages && p !== 1 && p !== pagesCount && p+1 !== pagesCount"
-                   :src="getPageUrl(p+1)"
-                   :height="maxHeight"
-                   :width="maxWidth(p+1)"
+                   :width="maxWidth(i)"
                    :style="imgStyle"
               />
             </div>
@@ -240,7 +236,8 @@
                 top
     >
       <div>This book has specific reading direction set.</div>
-      <div>Reading direction has been set to <span class="font-weight-bold">{{ readingDirs.find(x => x.value === readingDirection).text }}</span>.
+      <div>Reading direction has been set to <span
+        class="font-weight-bold">{{ readingDirectionText(readingDirection as ReadingDirection) }}</span>.
       </div>
       <div>This only applies to this book and will not overwrite your settings.</div>
       <v-btn
@@ -278,6 +275,7 @@ import { bookPageUrl } from '@/functions/urls'
 import { ReadingDirection } from '@/types/enum-books'
 import { executeShortcut } from '@/functions/shortcuts'
 import Vue from 'vue'
+import { isPageLandscape } from '@/functions/page'
 
 const cookieFit = 'webreader.fit'
 const cookieReadingDirection = 'webreader.readingDirection'
@@ -415,7 +413,10 @@ export default Vue.extend({
       return this.carouselPage + 1
     },
     currentPage (): number {
-      return this.doublePages ? this.toSinglePages(this.currentSlide) : this.currentSlide
+      if (this.carouselPage >= 0 && this.carouselPage < this.spreads.length && this.spreads.length > 0) {
+        return this.spreads[this.carouselPage][0].number
+      }
+      return 1
     },
     canPrev (): boolean {
       return this.currentSlide > 1
@@ -432,18 +433,8 @@ export default Vue.extend({
     imgStyle (): string {
       return this.imageFit === ImageFit.WIDTH ? 'height:intrinsic' : ''
     },
-    slidesRange (): number[] {
-      if (!this.doublePages) {
-        return this.$_.range(1, this.pagesCount + 1)
-      }
-      // for double pages the first and last pages are shown as single, while others are doubled
-      const ret = this.$_.range(2, this.pagesCount, 2)
-      ret.unshift(1)
-      ret.push(this.pagesCount)
-      return ret
-    },
     slidesCount (): number {
-      return this.slidesRange.length
+      return this.spreads.length
     },
     pagesCount (): number {
       return this.pages.length
@@ -514,6 +505,34 @@ export default Vue.extend({
         this.$cookies.set(cookieSwipe, swipe, Infinity)
       },
     },
+    spreads (): PageDto[][] {
+      if (this.pages.length === 0) return []
+      if (this.doublePages) {
+        const spreads = []
+        spreads.push([this.pages[0]])
+        const pages = this.$_.drop(this.$_.dropRight(this.pages)) as PageDto[]
+        while (pages.length > 0) {
+          const p = pages.shift() as PageDto
+          if (isPageLandscape(p)) {
+            spreads.push([p])
+          } else {
+            if (pages.length > 0) {
+              const p2 = pages.shift() as PageDto
+              if (isPageLandscape(p2)) {
+                spreads.push([p])
+                spreads.push([p2])
+              } else {
+                spreads.push([p, p2])
+              }
+            }
+          }
+        }
+        spreads.push([this.pages[this.pages.length - 1]])
+        return spreads
+      } else {
+        return this.pages.map(p => [p])
+      }
+    },
   },
   methods: {
     keyPressed (e: KeyboardEvent) {
@@ -553,6 +572,9 @@ export default Vue.extend({
       } catch (e) {
         this.siblingPrevious = {} as BookDto
       }
+    },
+    readingDirectionText (readingDirection: ReadingDirection): string {
+      return readingDirs.find(x => x.value === readingDirection).text
     },
     getPageUrl (page: number): string {
       if (!this.supportedMediaTypes.includes(this.pages[page - 1].mediaType)) {
@@ -614,7 +636,7 @@ export default Vue.extend({
       }
     },
     goTo (page: number) {
-      this.carouselPage = this.doublePages ? this.toDoublePages(page) - 1 : page - 1
+      this.carouselPage = this.toSpreadIndex(page)
     },
     goToFirst () {
       this.goTo(1)
@@ -639,35 +661,43 @@ export default Vue.extend({
       if (i === this.slidesCount) return this.pagesCount
       return (i - 1) * 2
     },
-    toDoublePages (i: number): number {
-      let ret = Math.floor(i / 2) + 1
-      if (i === this.pagesCount && this.pagesCount % 2 === 1) {
-        ret++
+    toSpreadIndex (i: number): number {
+      if (this.spreads.length > 0) {
+        if (this.doublePages) {
+          for (let j = 0; j < this.spreads.length; j++) {
+            for (let k = 0; k < this.spreads[j].length; k++) {
+              if (this.spreads[j][k].number === i) {
+                return j
+              }
+            }
+          }
+        } else {
+          return i - 1
+        }
       }
-      return ret
+      return i - 1
     },
-    eagerLoad (p: number): boolean {
-      return Math.abs(this.currentPage - p) <= 2
+    eagerLoad (spreadIndex: number): boolean {
+      return Math.abs(this.carouselPage - spreadIndex) <= 2
     },
-    maxWidth (p: number): number | null {
+    maxWidth (spreadIndex: number): number | null {
       if (this.imageFit !== ImageFit.WIDTH) {
         return null
       }
-      if (this.doublePages && p !== 1 && p !== this.pagesCount) {
+      if (this.doublePages && this.spreads[spreadIndex].length === 2) {
         return this.$vuetify.breakpoint.width / 2
       }
       return this.$vuetify.breakpoint.width
     },
     loadFromCookie (cookieKey: string, setter: (value: any) => void): void {
       if (this.$cookies.isKey(cookieKey)) {
-        let value = this.$cookies.get(cookieKey)
-        setter(value)
+        setter(this.$cookies.get(cookieKey))
       }
     },
     changeReadingDir (dir: ReadingDirection) {
       this.readingDirection = dir
-      let i = this.settings.readingDirs.indexOf(this.readingDirection)
-      let text = this.readingDirs[i].text
+      const i = this.settings.readingDirs.indexOf(this.readingDirection)
+      const text = this.readingDirs[i].text
       this.sendNotification(`Changing Reading Direction to: ${text}`)
     },
     cycleScale () {
@@ -682,13 +712,13 @@ export default Vue.extend({
       this.doublePages = !this.doublePages
       this.sendNotification(`${this.doublePages ? 'Enabled' : 'Disabled'} Double Pages`)
     },
-    sendNotification (message:string, timeout: number = 4000) {
+    sendNotification (message: string, timeout: number = 4000) {
       this.notification.timeout = 4000
       this.notification.message = message
       this.notification.enabled = true
     },
     async markProgress (page: number) {
-      this.$komgaBooks.updateReadProgress(this.bookId, { page: page })
+      await this.$komgaBooks.updateReadProgress(this.bookId, { page: page })
     },
   },
 })
