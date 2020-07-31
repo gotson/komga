@@ -1,6 +1,6 @@
 <template>
   <v-menu offset-y :max-height="$vuetify.breakpoint.height">
-    <template v-slot:activator="{ on, attrs }">
+    <template v-slot:activator="{ on }">
       <v-btn
         icon
         v-on="on"

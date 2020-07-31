@@ -180,6 +180,6 @@ function setupShortcuts () {
 setupShortcuts()
 
 export function executeShortcut (ctx: any, e: KeyboardEvent): boolean {
-  let k: string = e.key
+  const k: string = e.key
   return keyMapping[k]?.execute(ctx)
 }

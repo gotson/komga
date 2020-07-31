@@ -407,7 +407,7 @@ export default Vue.extend({
         {
           text: this.$_.capitalize(x.replace(/_/g, ' ')),
           value: x,
-        })
+        }),
       )
     },
     authorSearchResultsFull (): string[] {
