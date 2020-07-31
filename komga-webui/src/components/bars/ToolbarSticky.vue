@@ -16,7 +16,7 @@ export default Vue.extend({
   name: 'ToolbarSticky',
   computed: {
     barStyle (): any {
-      if (['xs', 'sm'].includes(this.$vuetify.breakpoint.name)) {
+      if (['xs', 'sm'].includes(this.$vuetify.breakpoint.name.toString())) {
         return { 'top': '56px' }
       } else {
         return { 'top': '64px' }

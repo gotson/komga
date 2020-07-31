@@ -242,7 +242,7 @@
                          :key="i"
                   >
                     <v-col cols="12">
-                      <span class="body-2">{{ $_.capitalize(role.plural) }}</span>
+                      <span class="text-body-2">{{ $_.capitalize(role.plural) }}</span>
                       <v-combobox v-model="form.authors[role.role]"
                                   :items="authorSearchResultsFull"
                                   :search-input.sync="authorSearch[i]"

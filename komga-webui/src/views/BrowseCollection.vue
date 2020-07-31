@@ -10,7 +10,7 @@
         <span>{{ collection.name }}</span>
         <badge class="mx-4">{{ collection.seriesIds.length }}</badge>
         <span v-if="collection.ordered"
-              class="font-italic overline"
+              class="font-italic text-overline"
         >(manual ordering)</span>
       </v-toolbar-title>
 

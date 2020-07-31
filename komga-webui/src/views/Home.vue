@@ -118,17 +118,17 @@
 
       <template v-slot:append>
         <div v-if="isAdmin && !$_.isEmpty(info)"
-             class="pa-2 pb-6 caption"
+             class="pa-2 pb-6 text-caption"
         >
           <div>v{{ info.build.version }}-{{ info.git.branch }}</div>
         </div>
       </template>
     </v-navigation-drawer>
 
-    <v-content>
+    <v-main>
       <dialogs/>
       <router-view/>
-    </v-content>
+    </v-main>
   </div>
 </template>
 

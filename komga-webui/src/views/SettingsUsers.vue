@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="pa-6">
     <v-row>
-      <span class="headline">Users</span>
+      <span class="text-h5">Users</span>
     </v-row>
     <v-row>
       <v-col cols="12" md="8" lg="6" xl="4">
@@ -33,7 +33,7 @@
                     <template v-slot:activator="{ on }">
                       <v-btn icon @click="editSharedLibraries(u)" :disabled="u.roles.includes(UserRoles.ADMIN)"
                              v-on="on">
-                        <v-icon>mdi-library-books</v-icon>
+                        <v-icon>mdi-book-lock</v-icon>
                       </v-btn>
                     </template>
                     <span>Edit shared libraries</span>

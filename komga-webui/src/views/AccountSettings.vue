@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="pa-6">
     <v-row>
-      <span class="headline">Account Settings</span>
+      <span class="text-h5">Account Settings</span>
     </v-row>
     <v-row align="center">
       <v-col cols="12" md="8" lg="6" xl="4">

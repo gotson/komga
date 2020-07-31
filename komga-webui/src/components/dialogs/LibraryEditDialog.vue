@@ -76,7 +76,7 @@
                 <v-container fluid>
                   <v-row>
                     <v-col>
-                      <span class="subtitle-2">Import metadata for CBR/CBZ containing a ComicInfo.xml file</span>
+                      <span class="text-subtitle-2">Import metadata for CBR/CBZ containing a ComicInfo.xml file</span>
                       <v-checkbox
                         v-model="form.importComicInfoBook"
                         label="Book metadata"
@@ -96,7 +96,7 @@
                   </v-row>
                   <v-row>
                     <v-col>
-                      <span class="subtitle-2">Import metadata from EPUB files</span>
+                      <span class="text-subtitle-2">Import metadata from EPUB files</span>
                       <v-checkbox
                         v-model="form.importEpubBook"
                         label="Book metadata"

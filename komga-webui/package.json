@@ -23,7 +23,7 @@
     "vue-typed-mixins": "^0.2.0",
     "vuedraggable": "^2.24.0",
     "vuelidate": "^0.7.5",
-    "vuetify": "^2.2.14",
+    "vuetify": "^2.3.7",
     "vuex": "^3.5.1",
     "vuex-router-sync": "^5.0.0"
   },
@@ -61,6 +61,6 @@
     "typescript": "^3.9.7",
     "vue-cli-plugin-vuetify": "^2.0.7",
     "vue-template-compiler": "^2.6.11",
-    "vuetify-loader": "^1.4.3"
+    "vuetify-loader": "^1.6.0"
   }
 }

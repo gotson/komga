@@ -7,8 +7,8 @@
                 :size="iconSize"
         >{{ icon }}
         </v-icon>
-        <h1 class="headline">{{ title }}</h1>
-        <p class="body-1">{{ subTitle }}</p>
+        <h1 class="text-h5">{{ title }}</h1>
+        <p class="text-body-1">{{ subTitle }}</p>
         <slot/>
       </div>
     </v-avatar>

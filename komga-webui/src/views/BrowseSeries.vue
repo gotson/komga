@@ -63,13 +63,13 @@
         <v-col cols="8">
           <v-row>
             <v-col>
-              <div class="headline" v-if="$_.get(series, 'metadata.title')">{{ series.metadata.title }}</div>
+              <div class="text-h5" v-if="$_.get(series, 'metadata.title')">{{ series.metadata.title }}</div>
             </v-col>
           </v-row>
 
           <v-row>
-            <v-col cols="auto" class="body-2">STATUS</v-col>
-            <v-col cols="auto" class="body-2 text-capitalize" v-if="series.metadata">{{
+            <v-col cols="auto" class="text-body-2">STATUS</v-col>
+            <v-col cols="auto" class="text-body-2 text-capitalize" v-if="series.metadata">{{
               series.metadata.status.toLowerCase() }}
             </v-col>
           </v-row>

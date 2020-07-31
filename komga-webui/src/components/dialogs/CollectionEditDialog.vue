@@ -19,7 +19,8 @@
 
             <v-row>
               <v-col>
-                <div class="body-2">By default, series in a collection will be ordered by name. You can enable manual
+                <div class="text-body-2">By default, series in a collection will be ordered by name. You can enable
+                  manual
                   ordering to define your own order.
                 </div>
                 <v-checkbox

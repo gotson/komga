@@ -10,7 +10,7 @@
           <v-container fluid>
             <v-row>
               <v-col>
-                <span class="subtitle-1">Roles for {{ user.email }}</span>
+                <span class="text-subtitle-1">Roles for {{ user.email }}</span>
               </v-col>
             </v-row>
 
