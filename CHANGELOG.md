@@ -1,3 +1,16 @@
+# [0.51.0](https://github.com/gotson/komga/compare/v0.50.1...v0.51.0) (2020-07-31)
+
+
+### Bug Fixes
+
+* **webreader:** cycle image fit would not persist setting ([e5272d2](https://github.com/gotson/komga/commit/e5272d224383d9afdc183dfc626937ba87fc27cf))
+
+
+### Features
+
+* **webreader:** better display of landscape images ([09984a4](https://github.com/gotson/komga/commit/09984a4284c6ee9a50c7457ea9271fc36c58b770)), closes [#123](https://github.com/gotson/komga/issues/123)
+* get images dimension during media analysis ([f9d55ec](https://github.com/gotson/komga/commit/f9d55ecfd0743a3c0e07f5f63725d25e6183af0c)), closes [#123](https://github.com/gotson/komga/issues/123)
+
 ## [0.50.1](https://github.com/gotson/komga/compare/v0.50.0...v0.50.1) (2020-07-30)
 
 

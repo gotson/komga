@@ -583,8 +583,16 @@
           "fileName": {
             "type": "string"
           },
+          "width": {
+            "format": "int32",
+            "type": "integer"
+          },
           "mediaType": {
             "type": "string"
+          },
+          "height": {
+            "format": "int32",
+            "type": "integer"
           }
         }
       },
