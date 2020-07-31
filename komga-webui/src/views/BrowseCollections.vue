@@ -45,6 +45,7 @@ import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import { COLLECTION_CHANGED, LIBRARY_CHANGED } from '@/types/events'
 import Vue from 'vue'
+import { Location } from 'vue-router'
 
 const cookiePageSize = 'pagesize'
 const all = 'all'
@@ -163,7 +164,7 @@ export default Vue.extend({
           page: `${this.page}`,
           pageSize: `${this.pageSize}`,
         },
-      }).catch(_ => {
+      } as Location).catch((_: any) => {
       })
     },
     reloadCollections () {

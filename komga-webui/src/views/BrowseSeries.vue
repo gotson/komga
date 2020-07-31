@@ -135,6 +135,7 @@ import { seriesThumbnailUrl } from '@/functions/urls'
 import { ReadStatus } from '@/types/enum-books'
 import { BOOK_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
+import { Location } from 'vue-router'
 
 const cookiePageSize = 'pagesize'
 
@@ -313,7 +314,7 @@ export default Vue.extend({
     parseQueryFilterStatus (queryStatus: any): string[] {
       return queryStatus ? queryStatus.toString().split(',').filter((x: string) => Object.keys(ReadStatus).includes(x)) : []
     },
-    updateRoute (index?: string) {
+    updateRoute () {
       this.$router.replace({
         name: this.$route.name,
         params: { seriesId: this.$route.params.seriesId },
@@ -323,7 +324,7 @@ export default Vue.extend({
           sort: `${this.sortActive.key},${this.sortActive.order}`,
           readStatus: `${this.filters.readStatus}`,
         },
-      }).catch(_ => {
+      } as Location).catch((_: any) => {
       })
     },
     async loadPage (seriesId: string, page: number, sort: SortActive) {

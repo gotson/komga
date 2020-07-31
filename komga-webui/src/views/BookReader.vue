@@ -237,7 +237,7 @@
     >
       <div>This book has specific reading direction set.</div>
       <div>Reading direction has been set to <span
-        class="font-weight-bold">{{ readingDirectionText(readingDirection as ReadingDirection) }}</span>.
+        class="font-weight-bold">{{ readingDirectionText }}</span>.
       </div>
       <div>This only applies to this book and will not overwrite your settings.</div>
       <v-btn
@@ -276,6 +276,7 @@ import { ReadingDirection } from '@/types/enum-books'
 import { executeShortcut } from '@/functions/shortcuts'
 import Vue from 'vue'
 import { isPageLandscape } from '@/functions/page'
+import { Location } from 'vue-router'
 
 const cookieFit = 'webreader.fit'
 const cookieReadingDirection = 'webreader.readingDirection'
@@ -461,6 +462,9 @@ export default Vue.extend({
         this.$cookies.set(cookieReadingDirection, readingDirection, Infinity)
       },
     },
+    readingDirectionText (): string {
+      return this.readingDirs.find(x => x.value === this.readingDirection)?.text ?? ''
+    },
     flipDirection (): boolean {
       return this.readingDirection === ReadingDirection.RIGHT_TO_LEFT
     },
@@ -573,9 +577,6 @@ export default Vue.extend({
         this.siblingPrevious = {} as BookDto
       }
     },
-    readingDirectionText (readingDirection: ReadingDirection): string {
-      return readingDirs.find(x => x.value === readingDirection).text
-    },
     getPageUrl (page: number): string {
       if (!this.supportedMediaTypes.includes(this.pages[page - 1].mediaType)) {
         return bookPageUrl(this.bookId, page, this.convertTo)
@@ -651,7 +652,7 @@ export default Vue.extend({
         query: {
           page: this.currentPage.toString(),
         },
-      })
+      } as Location)
     },
     closeBook () {
       this.$router.push({ name: 'browse-book', params: { bookId: this.bookId.toString() } })

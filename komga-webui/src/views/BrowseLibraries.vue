@@ -84,6 +84,7 @@ import { ReadStatus } from '@/types/enum-books'
 import { SeriesStatus } from '@/types/enum-series'
 import { COLLECTION_CHANGED, LIBRARY_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
+import { Location } from 'vue-router'
 
 const cookiePageSize = 'pagesize'
 const all = 'all'
@@ -309,7 +310,7 @@ export default Vue.extend({
           status: `${this.filters.status}`,
           readStatus: `${this.filters.readStatus}`,
         },
-      }).catch(_ => {
+      } as Location).catch((_: any) => {
       })
     },
     async loadPage (libraryId: string, page: number, sort: SortActive) {
