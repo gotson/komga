@@ -36,7 +36,7 @@
             icon
             @click="menu = !menu"
           >
-            <v-icon>mdi-settings</v-icon>
+            <v-icon>mdi-cog</v-icon>
           </v-btn>
         </v-toolbar>
       </v-slide-y-transition>
