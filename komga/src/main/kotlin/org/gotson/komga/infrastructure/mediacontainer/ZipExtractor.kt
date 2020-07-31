@@ -4,15 +4,17 @@ import mu.KotlinLogging
 import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.apache.commons.compress.archivers.zip.ZipFile
 import org.gotson.komga.domain.model.MediaContainerEntry
+import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.springframework.stereotype.Service
 import java.nio.file.Path
-import java.util.*
+import java.util.Comparator
 
 private val logger = KotlinLogging.logger {}
 
 @Service
 class ZipExtractor(
-  private val contentDetector: ContentDetector
+  private val contentDetector: ContentDetector,
+  private val imageAnalyzer: ImageAnalyzer
 ) : MediaContainerExtractor {
 
   private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
@@ -25,7 +27,12 @@ class ZipExtractor(
         .filter { !it.isDirectory }
         .map {
           try {
-            MediaContainerEntry(name = it.name, mediaType = contentDetector.detectMediaType(zip.getInputStream(it)))
+            val mediaType = contentDetector.detectMediaType(zip.getInputStream(it))
+            val dimension = if (contentDetector.isImage(mediaType))
+              imageAnalyzer.getDimension(zip.getInputStream(it))
+            else
+              null
+            MediaContainerEntry(name = it.name, mediaType = mediaType, dimension = dimension)
           } catch (e: Exception) {
             logger.warn(e) { "Could not analyze entry: ${it.name}" }
             MediaContainerEntry(name = it.name, comment = e.message)

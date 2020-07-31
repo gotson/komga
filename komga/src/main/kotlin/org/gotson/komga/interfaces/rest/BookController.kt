@@ -248,7 +248,9 @@ class BookController(
         Media.Status.OUTDATED -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book is outdated and must be re-analyzed")
         Media.Status.ERROR -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
         Media.Status.UNSUPPORTED -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book format is not supported")
-        Media.Status.READY -> media.pages.mapIndexed { index, s -> PageDto(index + 1, s.fileName, s.mediaType) }
+        Media.Status.READY -> media.pages.mapIndexed { index, s ->
+          PageDto(index + 1, s.fileName, s.mediaType, s.dimension?.width, s.dimension?.height)
+        }
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 

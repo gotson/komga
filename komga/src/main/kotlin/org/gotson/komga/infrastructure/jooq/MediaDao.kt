@@ -1,6 +1,7 @@
 package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.BookPage
+import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.jooq.Tables
@@ -94,8 +95,10 @@ class MediaDao(
           p.BOOK_ID,
           p.FILE_NAME,
           p.MEDIA_TYPE,
-          p.NUMBER
-        ).values(null as String?, null, null, null)
+          p.NUMBER,
+          p.WIDTH,
+          p.HEIGHT
+        ).values(null as String?, null, null, null, null, null)
       ).also {
         medias.forEach { media ->
           media.pages.forEachIndexed { index, page ->
@@ -103,7 +106,9 @@ class MediaDao(
               media.bookId,
               page.fileName,
               page.mediaType,
-              index
+              index,
+              page.dimension?.width,
+              page.dimension?.height
             )
           }
         }
@@ -198,6 +203,7 @@ class MediaDao(
   private fun MediaPageRecord.toDomain() =
     BookPage(
       fileName = fileName,
-      mediaType = mediaType
+      mediaType = mediaType,
+      dimension = if (width != null && height != null) Dimension(width, height) else null
     )
 }
