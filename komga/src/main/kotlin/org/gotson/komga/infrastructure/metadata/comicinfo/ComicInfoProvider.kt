@@ -30,7 +30,7 @@ class ComicInfoProvider(
   override fun getBookMetadataFromBook(book: Book, media: Media): BookMetadataPatch? {
     getComicInfo(book, media)?.let { comicInfo ->
       val releaseDate = comicInfo.year?.let {
-        LocalDate.of(comicInfo.year!!, comicInfo.month ?: 1, 1)
+        LocalDate.of(comicInfo.year!!, comicInfo.month ?: 1, comicInfo.day ?: 1)
       }
 
       val authors = mutableListOf<Author>()

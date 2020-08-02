@@ -43,6 +43,9 @@ class ComicInfo {
   @JsonProperty(value = "Month")
   var month: Int? = null
 
+  @JsonProperty(value = "Day")
+  var day: Int? = null
+
   @JsonProperty(value = "Writer")
   var writer: String? = null
 
