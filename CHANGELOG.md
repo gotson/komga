@@ -1,3 +1,10 @@
+## [0.51.1](https://github.com/gotson/komga/compare/v0.51.0...v0.51.1) (2020-08-03)
+
+
+### Bug Fixes
+
+* **metadata:** recognize ComicInfo Day tag and "MA15+" rating ([3ad438d](https://github.com/gotson/komga/commit/3ad438d53fadb4766d9167fbc45937455af95ddb))
+
 # [0.51.0](https://github.com/gotson/komga/compare/v0.50.1...v0.51.0) (2020-07-31)
 
 
