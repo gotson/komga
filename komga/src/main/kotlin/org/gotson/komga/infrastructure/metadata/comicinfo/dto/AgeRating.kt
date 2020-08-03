@@ -12,7 +12,6 @@ enum class AgeRating(val value: String, val ageRating: Int? = null) {
   KIDS_TO_ADULTS("Kids to Adults", 6),
   M("M", 17),
   MA_15("MA 15+", 15),
-  MA_15_NOSPACE("MA15+", 15),
   MATURE_17("Mature 17+", 17),
   PG("PG", 8),
   R_18("R18+", 18),
@@ -21,10 +20,12 @@ enum class AgeRating(val value: String, val ageRating: Int? = null) {
   X_18("X18+", 18);
 
   companion object {
-    private val map = values().associateBy(AgeRating::value)
+    private val map = values().associateBy { it.value.toLowerNoSpace() }
 
     @JvmStatic
     @JsonCreator
-    fun fromValue(value: String) = map[value]
+    fun fromValue(value: String) = map[value.toLowerNoSpace()]
+
+    private fun String.toLowerNoSpace() = toLowerCase().replace(" ", "")
   }
 }
