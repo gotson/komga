@@ -185,13 +185,12 @@
     <v-snackbar
       v-model="jumpToPreviousBook"
       :timeout="jumpConfirmationDelay"
-      vertical
       top
-      color="rgba(0, 0, 0, 0.7)"
+      color="rgba(0, 0, 0, 0.8)"
       multi-line
       class="mt-12"
     >
-      <div class="text-h6 pa-6">
+      <div class="body-1 pa-6">
         <p>You're at the beginning<br/>of the book.</p>
         <p v-if="!$_.isEmpty(siblingPrevious)">Click or press previous again<br/>to move to the previous book.</p>
       </div>
@@ -200,36 +199,27 @@
     <v-snackbar
       v-model="jumpToNextBook"
       :timeout="jumpConfirmationDelay"
-      vertical
       top
-      color="rgba(0, 0, 0, 0.7)"
+      color="rgba(0, 0, 0, 0.8)"
       multi-line
       class="mt-12"
     >
-      <div class="title pa-6">
+      <div class="text-body-1 pa-6">
         <p>You've reached the end<br/>of the book.</p>
         <p v-if="!$_.isEmpty(siblingNext)">Click or press next again<br/>to move to the next book.</p>
         <p v-else>Click or press next again<br/>to exit the reader.</p>
       </div>
     </v-snackbar>
 
-    <v-snackbar v-model="snackReadingDirection"
-                color="info"
-                multi-line
-                vertical
-                top
+    <v-snackbar
+      v-model="notificationReadingDirection.enabled"
+      color="rgba(0, 0, 0, 0.8)"
+      bottom
+      timeout="3000"
     >
-      <div>This book has specific reading direction set.</div>
-      <div>Reading direction has been set to <span
-        class="font-weight-bold">{{ readingDirectionText }}</span>.
-      </div>
-      <div>This only applies to this book and will not overwrite your settings.</div>
-      <v-btn
-        text
-        @click="snackReadingDirection = false"
-      >
-        Dismiss
-      </v-btn>
+      <p class="text-body-1 text-center ma-0">
+        {{ readingDirectionText }}{{ notificationReadingDirection.fromMetadata ? ' (from book metadata)' : '' }}
+      </p>
     </v-snackbar>
 
     <v-snackbar
@@ -238,9 +228,9 @@
       centered
       :timeout="notification.timeout"
     >
-      <span class="text-h6">
+      <p class="text-h6 text-center ma-0">
         {{ notification.message }}
-      </span>
+      </p>
     </v-snackbar>
 
     <shortcut-help-dialog
@@ -295,7 +285,10 @@ export default Vue.extend({
       jumpToNextBook: false,
       jumpToPreviousBook: false,
       jumpConfirmationDelay: 3000,
-      snackReadingDirection: false,
+      notificationReadingDirection: {
+        enabled: false,
+        fromMetadata: false,
+      },
       pages: [] as PageDtoWithUrl[],
       page: 1,
       supportedMediaTypes: ['image/jpeg', 'image/png', 'image/gif'],
@@ -514,7 +507,9 @@ export default Vue.extend({
       if (this.book.metadata.readingDirection in ReadingDirection && this.readingDirection !== this.book.metadata.readingDirection) {
         // bypass setter so cookies aren't set
         this.settings.readingDirection = this.book.metadata.readingDirection as ReadingDirection
-        this.snackReadingDirection = true
+        this.sendNotificationReadingDirection(true)
+      } else {
+        this.sendNotificationReadingDirection(false)
       }
 
       try {
@@ -633,6 +628,10 @@ export default Vue.extend({
         return
       }
       this.closeBook()
+    },
+    sendNotificationReadingDirection (fromMetadata: boolean) {
+      this.notificationReadingDirection.fromMetadata = fromMetadata
+      this.notificationReadingDirection.enabled = true
     },
     sendNotification (message: string, timeout: number = 4000) {
       this.notification.timeout = timeout
