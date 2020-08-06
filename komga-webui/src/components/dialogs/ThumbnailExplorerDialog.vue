@@ -91,7 +91,7 @@ export default Vue.extend({
       this.$emit('input', this.input)
     },
     goTo (page: number) {
-      this.$emit('goToPage', page)
+      this.$emit('go', page)
     },
     getThumbnailUrl (page: number): string {
       return bookPageThumbnailUrl(this.bookId, page)

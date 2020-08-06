@@ -28,6 +28,15 @@ interface PageDto {
   height?: number,
 }
 
+interface PageDtoWithUrl {
+  number: number,
+  fileName: string,
+  mediaType: string,
+  width?: number,
+  height?: number,
+  url: string,
+}
+
 interface BookMetadataDto {
   created: string,
   lastModified: string,

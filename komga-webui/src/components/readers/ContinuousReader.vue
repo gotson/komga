@@ -1,0 +1,159 @@
+<template>
+  <div>
+    <div :class="`d-flex flex-column px-0 mx-0` "
+         v-scroll="onScroll"
+    >
+      <img v-for="(page, i) in pages"
+           :key="`page${i}`"
+           :alt="`Page ${page.number}`"
+           :src="shouldLoad(i) ? page.url : undefined"
+           :height="page.height / (page.width / $vuetify.breakpoint.width)"
+           :width="$vuetify.breakpoint.width"
+           :id="`page${page.number}`"
+           v-intersect.once="onIntersect"
+      />
+    </div>
+
+    <!--  clickable zone: top  -->
+    <div @click="prev()"
+         class="top-quarter"
+         style="z-index: 1;"
+    />
+
+    <!--  clickable zone: bottom  -->
+    <div @click="next()"
+         class="bottom-quarter"
+         style="z-index: 1;"
+    />
+
+    <!--  clickable zone: menu  -->
+    <div @click="centerClick()"
+         class="center-vertical"
+         style="z-index: 1;"
+    />
+  </div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
+  name: 'ContinuousReader',
+  data: () => {
+    return {
+      offsetTop: 0,
+      totalHeight: 1000,
+      currentPage: 1,
+      seen: [] as boolean[],
+    }
+  },
+  props: {
+    pages: {
+      type: Array as () => PageDtoWithUrl[],
+      required: true,
+    },
+    animations: {
+      type: Boolean,
+      required: true,
+    },
+    page: {
+      type: Number,
+      required: true,
+    },
+  },
+  watch: {
+    pages: {
+      handler (val) {
+        this.seen = new Array(val.length).fill(false)
+      },
+      immediate: true,
+    },
+    page: {
+      handler (val) {
+        if (val != this.currentPage) {
+          this.$vuetify.goTo(`#page${val}`, {
+            duration: 0,
+          })
+        }
+      },
+      immediate: false,
+    },
+  },
+  mounted () {
+    if (this.page != this.currentPage) {
+      this.$vuetify.goTo(`#page${this.page}`, {
+        duration: 0,
+      })
+    }
+  },
+  computed: {
+    canPrev (): boolean {
+      return this.offsetTop > 0
+    },
+    canNext (): boolean {
+      return this.offsetTop + this.$vuetify.breakpoint.height < this.totalHeight
+    },
+    goToOptions (): object | undefined {
+      if (this.animations) return undefined
+      return { duration: 0 }
+    },
+  },
+  methods: {
+    onScroll (e: any) {
+      this.offsetTop = e.target.scrollingElement.scrollTop
+      this.totalHeight = e.target.scrollingElement.scrollHeight
+    },
+    onIntersect (entries: any) {
+      if (entries[0].isIntersecting) {
+        this.currentPage = parseInt(entries[0].target.id.replace('page', ''))
+        this.seen.splice(this.currentPage - 1, 1, true)
+        this.$emit('update:page', this.currentPage)
+      }
+    },
+    shouldLoad (page: number): boolean {
+      return this.seen[page] || Math.abs((this.currentPage - 1) - page) <= 2
+    },
+    centerClick () {
+      this.$emit('menu')
+    },
+    prev () {
+      if (this.canPrev) {
+        const step = this.$vuetify.breakpoint.height * 0.95
+        this.$vuetify.goTo(this.offsetTop - step, this.goToOptions)
+      } else {
+        this.$emit('jump-previous')
+      }
+    },
+    next () {
+      if (this.canNext) {
+        const step = this.$vuetify.breakpoint.height * 0.95
+        this.$vuetify.goTo(this.offsetTop + step, this.goToOptions)
+      } else {
+        this.$emit('jump-next')
+      }
+    },
+  },
+})
+</script>
+<style scoped>
+.top-quarter {
+  top: 0;
+  height: 25vh;
+  width: 100%;
+  position: fixed;
+}
+
+.bottom-quarter {
+  top: 75vh;
+  height: 25vh;
+  width: 100%;
+  position: fixed;
+}
+
+.center-vertical {
+  top: 25vh;
+  height: 50vh;
+  width: 100%;
+  position: fixed;
+}
+</style>

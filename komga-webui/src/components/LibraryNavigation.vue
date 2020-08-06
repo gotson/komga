@@ -22,7 +22,7 @@ export default Vue.extend({
   name: 'LibraryNavigation',
   props: {
     libraryId: {
-      type: Number,
+      type: String,
       required: true,
     },
   },
