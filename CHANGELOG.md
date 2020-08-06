@@ -1,3 +1,10 @@
+## [0.52.1](https://github.com/gotson/komga/compare/v0.52.0...v0.52.1) (2020-08-06)
+
+
+### Bug Fixes
+
+* **webreader:** webtoon reader not loading images ([1a030b4](https://github.com/gotson/komga/commit/1a030b4db558b02e996246670f6ce86094f00495)), closes [#259](https://github.com/gotson/komga/issues/259)
+
 # [0.52.0](https://github.com/gotson/komga/compare/v0.51.1...v0.52.0) (2020-08-06)
 
 
