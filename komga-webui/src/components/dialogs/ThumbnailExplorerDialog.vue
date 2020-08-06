@@ -3,7 +3,7 @@
             @keydown.esc.stop=""
   >
     <v-card :max-height="$vuetify.breakpoint.height * .9" dark>
-      <v-card-title>
+      <v-card-title class="justify-center">
         <v-pagination
           v-model="page"
           :total-visible="perPage"
