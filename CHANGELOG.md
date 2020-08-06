@@ -1,3 +1,16 @@
+# [0.52.0](https://github.com/gotson/komga/compare/v0.51.1...v0.52.0) (2020-08-06)
+
+
+### Bug Fixes
+
+* **webui:** missing settings icon in webreader ([9693829](https://github.com/gotson/komga/commit/969382988dbd40448a68fdf1b2586c527f2209f6))
+
+
+### Features
+
+* **webreader:** display reading direction on book opening ([ebf2aac](https://github.com/gotson/komga/commit/ebf2aac0ac44097da00a628e25ceb446b2fba9e4))
+* **webreader:** webtoon reader, fit to screen ([44c814a](https://github.com/gotson/komga/commit/44c814a5baeea9e6b715a63c31285b33cd2e6872)), closes [#81](https://github.com/gotson/komga/issues/81) [#145](https://github.com/gotson/komga/issues/145)
+
 ## [0.51.1](https://github.com/gotson/komga/compare/v0.51.0...v0.51.1) (2020-08-03)
 
 
