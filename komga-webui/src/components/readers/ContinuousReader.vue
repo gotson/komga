@@ -10,7 +10,7 @@
            :height="page.height / (page.width / $vuetify.breakpoint.width)"
            :width="$vuetify.breakpoint.width"
            :id="`page${page.number}`"
-           v-intersect.once="onIntersect"
+           v-intersect="onIntersect"
       />
     </div>
 
@@ -105,13 +105,14 @@ export default Vue.extend({
     },
     onIntersect (entries: any) {
       if (entries[0].isIntersecting) {
-        this.currentPage = parseInt(entries[0].target.id.replace('page', ''))
-        this.seen.splice(this.currentPage - 1, 1, true)
-        this.$emit('update:page', this.currentPage)
+        const page = parseInt(entries[0].target.id.replace('page', ''))
+        this.seen.splice(page - 1, 1, true)
+        this.currentPage = page
+        this.$emit('update:page', page)
       }
     },
     shouldLoad (page: number): boolean {
-      return this.seen[page] || Math.abs((this.currentPage - 1) - page) <= 2
+      return page == 0 || this.seen[page] || Math.abs((this.currentPage - 1) - page) <= 2
     },
     centerClick () {
       this.$emit('menu')
