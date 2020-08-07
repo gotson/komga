@@ -1,3 +1,13 @@
+## [0.52.2](https://github.com/gotson/komga/compare/v0.52.1...v0.52.2) (2020-08-07)
+
+
+### Bug Fixes
+
+* some PDF pages are blurry ([9ad1cfe](https://github.com/gotson/komga/commit/9ad1cfe80975639a349a99a45e874efd3aba7e1b)), closes [#260](https://github.com/gotson/komga/issues/260)
+* **webreader:** incorrect display on safari and firefox ([22b0b7e](https://github.com/gotson/komga/commit/22b0b7e7480d45728c92eb0f418b8143fb523de7)), closes [#262](https://github.com/gotson/komga/issues/262)
+* **webui:** missing settings icon in sidebar ([b9e4bea](https://github.com/gotson/komga/commit/b9e4bea71b3a1168312961e104109669feef8078))
+* **webui:** thumbnails explorer navigation misaligned ([2ffed28](https://github.com/gotson/komga/commit/2ffed282d705bb74336e191bb28708b1a0337da4))
+
 ## [0.52.1](https://github.com/gotson/komga/compare/v0.52.0...v0.52.1) (2020-08-06)
 
 
