@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
+import org.apache.commons.io.IOUtils
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
@@ -55,7 +56,9 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
 import java.io.FileNotFoundException
+import java.io.OutputStream
 import java.nio.file.NoSuchFileException
 import java.time.ZoneOffset
 import java.util.concurrent.TimeUnit
@@ -211,13 +214,19 @@ class BookController(
   fun getBookFile(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String
-  ): ResponseEntity<FileSystemResource> =
+  ): ResponseEntity<StreamingResponseBody> =
     bookRepository.findByIdOrNull(bookId)?.let { book ->
       if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
       try {
         val media = mediaRepository.findById(book.id)
         with(FileSystemResource(book.path())) {
           if (!exists()) throw FileNotFoundException(path)
+          val stream = StreamingResponseBody { os: OutputStream ->
+            this.inputStream.use {
+              IOUtils.copyLarge(it, os, ByteArray(8192))
+              os.close()
+            }
+          }
           ResponseEntity.ok()
             .headers(HttpHeaders().apply {
               contentDisposition = ContentDisposition.builder("attachment")
@@ -225,7 +234,8 @@ class BookController(
                 .build()
             })
             .contentType(getMediaTypeOrDefault(media.mediaType))
-            .body(this)
+            .contentLength(this.contentLength())
+            .body(stream)
         }
       } catch (ex: FileNotFoundException) {
         logger.warn(ex) { "File not found: $book" }

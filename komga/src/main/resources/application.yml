@@ -33,6 +33,8 @@ spring:
     prefix: classpath:/public/
   mvc:
     throw-exception-if-no-handler-found: true
+    async:
+      request-timeout: 3600000
   artemis:
     embedded:
       persistent: true
