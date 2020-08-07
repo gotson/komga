@@ -72,6 +72,9 @@
           }
         }
       },
+      "StreamingResponseBody": {
+        "type": "object"
+      },
       "BookDto": {
         "type": "object",
         "properties": {
@@ -1279,8 +1282,7 @@
             "content": {
               "application/octet-stream": {
                 "schema": {
-                  "format": "binary",
-                  "type": "string"
+                  "$ref": "#/components/schemas/StreamingResponseBody"
                 }
               }
             }
@@ -1471,8 +1473,7 @@
             "content": {
               "application/octet-stream": {
                 "schema": {
-                  "format": "binary",
-                  "type": "string"
+                  "$ref": "#/components/schemas/StreamingResponseBody"
                 }
               }
             }
@@ -1573,8 +1574,7 @@
             "content": {
               "application/octet-stream": {
                 "schema": {
-                  "format": "binary",
-                  "type": "string"
+                  "$ref": "#/components/schemas/StreamingResponseBody"
                 }
               }
             }
@@ -3214,22 +3214,19 @@
         ]
       }
     },
-    "/api/v1/books/{bookId}/metadata": {
-      "patch": {
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BookMetadataUpdateDto"
+    "/api/v1/books/{bookId}": {
+      "get": {
+        "operationId": "getOneBook",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookDto"
+                }
               }
             }
-          },
-          "required": true
-        },
-        "operationId": "updateMetadata",
-        "responses": {
-          "204": {
-            "description": "No Content"
           }
         },
         "parameters": [
@@ -3247,19 +3244,22 @@
         ]
       }
     },
-    "/api/v1/books/{bookId}": {
-      "get": {
-        "operationId": "getOneBook",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BookDto"
-                }
+    "/api/v1/books/{bookId}/metadata": {
+      "patch": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookMetadataUpdateDto"
               }
             }
+          },
+          "required": true
+        },
+        "operationId": "updateMetadata",
+        "responses": {
+          "204": {
+            "description": "No Content"
           }
         },
         "parameters": [

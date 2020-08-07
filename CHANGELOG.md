@@ -1,3 +1,10 @@
+## [0.52.3](https://github.com/gotson/komga/compare/v0.52.2...v0.52.3) (2020-08-07)
+
+
+### Bug Fixes
+
+* **api:** large file download ([d100db2](https://github.com/gotson/komga/commit/d100db22eb6505a182b6778d4d52de13ad8653eb))
+
 ## [0.52.2](https://github.com/gotson/komga/compare/v0.52.1...v0.52.2) (2020-08-07)
 
 
