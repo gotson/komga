@@ -339,14 +339,16 @@ export default Vue.extend({
 
 .img-fit-width {
   max-width: 100vw;
+  align-self: flex-start;
 }
 
 .img-double-fit-width {
   max-width: 50vw;
+  align-self: flex-start;
 }
 
 .img-fit-height {
-  max-height: 100vh;
+  height: 100vh;
 }
 
 .img-fit-screen {
@@ -357,5 +359,6 @@ export default Vue.extend({
 .img-double-fit-screen {
   max-width: 50vw;
   max-height: 100vh;
+  object-fit: contain;
 }
 </style>
