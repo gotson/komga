@@ -4,3 +4,8 @@ export enum ScaleType {
   HEIGHT = 'height',
   ORIGINAL = 'original'
 }
+
+export enum ContinuousScaleType {
+  WIDTH = 'width',
+  ORIGINAL = 'original'
+}

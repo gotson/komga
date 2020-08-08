@@ -7,9 +7,10 @@
            :key="`page${i}`"
            :alt="`Page ${page.number}`"
            :src="shouldLoad(i) ? page.url : undefined"
-           :height="page.height / (page.width / $vuetify.breakpoint.width)"
-           :width="$vuetify.breakpoint.width"
+           :height="calcHeight(page)"
+           :width="calcWidth(page)"
            :id="`page${page.number}`"
+           style="margin: 0 auto;"
            v-intersect="onIntersect"
       />
     </div>
@@ -36,6 +37,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { ScaleType } from '@/types/enum-reader'
 
 export default Vue.extend({
   name: 'ContinuousReader',
@@ -58,6 +60,10 @@ export default Vue.extend({
     },
     page: {
       type: Number,
+      required: true,
+    },
+    scale: {
+      type: String as () => ScaleType,
       required: true,
     },
   },
@@ -113,6 +119,30 @@ export default Vue.extend({
     },
     shouldLoad (page: number): boolean {
       return page == 0 || this.seen[page] || Math.abs((this.currentPage - 1) - page) <= 2
+    },
+    calcHeight (page: PageDtoWithUrl): number {
+      switch (this.scale) {
+        case ScaleType.WIDTH:
+            if(page.height && page.width)
+             return page.height / (page.width / this.$vuetify.breakpoint.width)
+          return 0;
+        case ScaleType.ORIGINAL:
+          return page.height || 0
+        default:
+          if(page.height && page.width)
+            return page.height / (page.width / this.$vuetify.breakpoint.width)
+          return 0;
+      }
+    },
+    calcWidth (page: PageDtoWithUrl): number {
+        switch (this.scale) {
+        case ScaleType.WIDTH:
+          return this.$vuetify.breakpoint.width
+        case ScaleType.ORIGINAL:
+          return page.width || this.$vuetify.breakpoint.width
+        default:
+          return this.$vuetify.breakpoint.width
+      }
     },
     centerClick () {
       this.$emit('menu')

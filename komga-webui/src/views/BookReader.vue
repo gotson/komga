@@ -91,6 +91,7 @@
         :pages="pages"
         :page.sync="page"
         :animations="animations"
+        :scale="continuousScale"
         @menu="toggleToolbars()"
         @jump-previous="jumpToPrevious()"
         @jump-next="jumpToNext()"
@@ -161,6 +162,16 @@
               >
               </settings-select>
             </v-list-item>
+
+            <div v-if="continuousReader">
+              <v-list-item>
+                <settings-select
+                  :items="continuousScaleTypes"
+                  v-model="continuousScale"
+                  label="Scale type"
+                />
+              </v-list-item>
+            </div>
 
             <div v-if="!continuousReader">
               <v-subheader class="font-weight-black text-h6">Paged</v-subheader>
@@ -253,13 +264,14 @@ import Vue from 'vue'
 import { Location } from 'vue-router'
 import PagedReader from '@/components/readers/PagedReader.vue'
 import ContinuousReader from '@/components/readers/ContinuousReader.vue'
-import { ScaleType } from '@/types/enum-reader'
+import { ScaleType, ContinuousScaleType } from '@/types/enum-reader'
 import { ReadingDirectionText, ScaleTypeText } from '@/functions/reader'
 import { shortcutsLTR, shortcutsRTL, shortcutsVertical } from '@/functions/shortcuts/paged-reader'
 import { shortcutsMenus, shortcutsSettings } from '@/functions/shortcuts/bookreader'
 import { shortcutsAll } from '@/functions/shortcuts/reader'
 
 const cookieFit = 'webreader.fit'
+const cookieContinuousReaderFit = 'webreader.continuousReaderFit'
 const cookieReadingDirection = 'webreader.readingDirection'
 const cookieDoublePages = 'webreader.doublePages'
 const cookieSwipe = 'webreader.swipe'
@@ -303,6 +315,7 @@ export default Vue.extend({
         swipe: true,
         animations: true,
         scale: ScaleType.SCREEN,
+        continuousScale: ContinuousScaleType.WIDTH,
         readingDirection: ReadingDirection.LEFT_TO_RIGHT,
         backgroundColor: 'black',
       },
@@ -317,6 +330,10 @@ export default Vue.extend({
         value: x,
       })),
       scaleTypes: Object.values(ScaleType).map(x => ({
+        text: ScaleTypeText[x],
+        value: x,
+      })),
+      continuousScaleTypes: Object.values(ContinuousScaleType).map(x => ({
         text: ScaleTypeText[x],
         value: x,
       })),
@@ -350,6 +367,9 @@ export default Vue.extend({
     })
     this.loadFromCookie(cookieFit, (v) => {
       this.scale = v
+    })
+     this.loadFromCookie(cookieContinuousReaderFit, (v) => {
+      this.continuousScale = v
     })
     this.loadFromCookie(cookieBackground, (v) => {
       this.backgroundColor = v
@@ -435,12 +455,23 @@ export default Vue.extend({
     },
     scale: {
       get: function (): ScaleType {
-        return this.settings.scale
+          return this.settings.scale
       },
       set: function (scale: ScaleType): void {
         if (Object.values(ScaleType).includes(scale)) {
           this.settings.scale = scale
           this.$cookies.set(cookieFit, scale, Infinity)
+        }
+      },
+    },
+    continuousScale: {
+      get: function (): ContinuousScaleType {
+        return this.settings.continuousScale
+      },
+      set: function (scale: ContinuousScaleType): void {
+        if (Object.values(ContinuousScaleType).includes(scale)) {
+          this.settings.continuousScale = scale
+          this.$cookies.set(cookieContinuousReaderFit, scale, Infinity)
         }
       },
     },
@@ -590,12 +621,19 @@ export default Vue.extend({
       this.sendNotification(`Changing Reading Direction to: ${text}`)
     },
     cycleScale () {
-      if (this.continuousReader) return
-      const enumValues = Object.values(ScaleType)
-      const i = (enumValues.indexOf(this.settings.scale) + 1) % (enumValues.length)
-      this.scale = enumValues[i]
-      const text = ScaleTypeText[this.scale]
-      this.sendNotification(`Cycling Scale: ${text}`)
+      if (this.continuousReader){
+        const enumValues = Object.values(ContinuousScaleType)
+        const i = (enumValues.indexOf(this.settings.continuousScale) + 1) % (enumValues.length)
+        this.continuousScale = enumValues[i]
+        const text = ScaleTypeText[this.continuousScale]
+        this.sendNotification(`Cycling Scale: ${text}`)
+      }else{
+        const enumValues = Object.values(ScaleType)
+        const i = (enumValues.indexOf(this.settings.scale) + 1) % (enumValues.length)
+        this.scale = enumValues[i]
+        const text = ScaleTypeText[this.scale]
+        this.sendNotification(`Cycling Scale: ${text}`)
+      }
     },
     toggleDoublePages () {
       if (this.continuousReader) return
