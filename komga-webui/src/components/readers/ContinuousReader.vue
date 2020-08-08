@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { ScaleType } from '@/types/enum-reader'
+import { ContinuousScaleType } from '@/types/enum-reader'
 
 export default Vue.extend({
   name: 'ContinuousReader',
@@ -63,7 +63,7 @@ export default Vue.extend({
       required: true,
     },
     scale: {
-      type: String as () => ScaleType,
+      type: String as () => ContinuousScaleType,
       required: true,
     },
   },
@@ -122,11 +122,11 @@ export default Vue.extend({
     },
     calcHeight (page: PageDtoWithUrl): number {
       switch (this.scale) {
-        case ScaleType.WIDTH:
+        case ContinuousScaleType.WIDTH:
             if(page.height && page.width)
              return page.height / (page.width / this.$vuetify.breakpoint.width)
           return 0;
-        case ScaleType.ORIGINAL:
+        case ContinuousScaleType.ORIGINAL:
           return page.height || 0
         default:
           if(page.height && page.width)
@@ -136,9 +136,9 @@ export default Vue.extend({
     },
     calcWidth (page: PageDtoWithUrl): number {
         switch (this.scale) {
-        case ScaleType.WIDTH:
+        case ContinuousScaleType.WIDTH:
           return this.$vuetify.breakpoint.width
-        case ScaleType.ORIGINAL:
+        case ContinuousScaleType.ORIGINAL:
           return page.width || this.$vuetify.breakpoint.width
         default:
           return this.$vuetify.breakpoint.width
