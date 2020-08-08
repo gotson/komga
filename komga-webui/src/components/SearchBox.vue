@@ -133,13 +133,13 @@ export default Vue.extend({
       this.$router.push({ name: 'search', query: { q: s } }).catch(e => {
       })
     },
-    seriesThumbnailUrl (seriesId: number): string {
+    seriesThumbnailUrl (seriesId: string): string {
       return seriesThumbnailUrl(seriesId)
     },
-    bookThumbnailUrl (bookId: number): string {
+    bookThumbnailUrl (bookId: string): string {
       return bookThumbnailUrl(bookId)
     },
-    collectionThumbnailUrl (collectionId: number): string {
+    collectionThumbnailUrl (collectionId: string): string {
       return collectionThumbnailUrl(collectionId)
     },
   },

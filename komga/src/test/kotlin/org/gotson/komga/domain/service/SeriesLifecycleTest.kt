@@ -14,13 +14,11 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class SeriesLifecycleTest(
   @Autowired private val seriesLifecycle: SeriesLifecycle,
   @Autowired private val bookLifecycle: BookLifecycle,
@@ -30,11 +28,11 @@ class SeriesLifecycleTest(
   @Autowired private val libraryRepository: LibraryRepository
 ) {
 
-  private var library = makeLibrary()
+  private val library = makeLibrary()
 
   @BeforeAll
   fun `setup library`() {
-    library = libraryRepository.insert(library)
+    libraryRepository.insert(library)
   }
 
   @AfterAll
@@ -44,9 +42,7 @@ class SeriesLifecycleTest(
 
   @AfterEach
   fun `clear repository`() {
-    seriesRepository.findAll().forEach {
-      seriesLifecycle.deleteSeries(it.id)
-    }
+    seriesLifecycle.deleteMany(seriesRepository.findAll().map { it.id })
   }
 
   @Test
@@ -92,7 +88,7 @@ class SeriesLifecycleTest(
 
     // when
     val book = bookRepository.findBySeriesId(createdSeries.id).first { it.name == "book 2" }
-    bookLifecycle.delete(book.id)
+    bookLifecycle.deleteOne(book.id)
     seriesLifecycle.sortBooks(createdSeries)
 
     // then

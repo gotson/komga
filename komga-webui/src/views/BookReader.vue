@@ -1,18 +1,13 @@
 <template>
   <v-container class="ma-0 pa-0 full-height" fluid v-if="pages.length > 0"
                :style="`width: 100%; background-color: ${backgroundColor}`"
-               v-touch="{
-                 left: () => {if(swipe) {turnRight()}},
-                 right: () => {if(swipe) {turnLeft()}},
-                 up: () => {if(swipe) {verticalNext()}},
-                 down: () => {if(swipe) {verticalPrev()}}
-                 }"
   >
     <div>
       <v-slide-y-transition>
+        <!-- Top Toolbar-->
         <v-toolbar
           dense elevation="1"
-          v-if="toolbar"
+          v-if="showToolbars"
           class="settings full-width"
           style="position: fixed; top: 0"
         >
@@ -24,32 +19,41 @@
           </v-btn>
           <v-toolbar-title> {{ bookTitle }}</v-toolbar-title>
           <v-spacer></v-spacer>
+
           <v-btn
             icon
-            @click="showThumbnailsExplorer = !showThumbnailsExplorer"
+            @click="showHelp = !showHelp">
+            <v-icon>mdi-help-circle</v-icon>
+          </v-btn>
+
+          <v-btn
+            icon
+            @click="showExplorer = !showExplorer"
           >
             <v-icon>mdi-view-grid</v-icon>
           </v-btn>
           <v-btn
             icon
-            @click="menu = !menu"
+            @click="showSettings = !showSettings"
           >
-            <v-icon>mdi-settings</v-icon>
+            <v-icon>mdi-cog</v-icon>
           </v-btn>
         </v-toolbar>
       </v-slide-y-transition>
+
       <v-slide-y-reverse-transition>
+        <!-- Bottom Toolbar-->
         <v-toolbar
           dense
           elevation="1"
           class="settings full-width"
           style="position: fixed; bottom: 0"
           horizontal
-          v-if="toolbar"
+          v-if="showToolbars"
         >
           <v-row justify="center">
             <!--  Menu: page slider  -->
-            <v-col>
+            <v-col class="px-0">
               <v-slider
                 hide-details
                 thumb-label
@@ -60,16 +64,18 @@
                 :max="pagesCount"
               >
                 <template v-slot:prepend>
-                  <v-icon @click="goToFirst" class="mx-2">mdi-arrow-collapse-left</v-icon>
+                  <v-icon @click="previousBook" class="">mdi-undo</v-icon>
+                  <v-icon @click="goToFirst" class="mx-2">mdi-skip-previous</v-icon>
                   <v-label>
-                    {{ currentPage }}
+                    {{ page }}
                   </v-label>
                 </template>
                 <template v-slot:append>
                   <v-label>
                     {{ pagesCount }}
                   </v-label>
-                  <v-icon @click="goToLast" class="mx-2">mdi-arrow-collapse-right</v-icon>
+                  <v-icon @click="goToLast" class="mx-1">mdi-skip-next</v-icon>
+                  <v-icon @click="nextBook" class="">mdi-redo</v-icon>
                 </template>
               </v-slider>
             </v-col>
@@ -79,134 +85,112 @@
       </v-slide-y-reverse-transition>
     </div>
 
-    <!--  clickable zone: left  -->
-    <div @click="turnLeft()"
-         class="left-quarter full-height top"
-         style="z-index: 1;"
-    />
-
-    <!--  clickable zone: menu  -->
-    <div @click="toolbar = !toolbar"
-         class="center-half full-height top"
-         style="z-index: 1;"
-    />
-
-    <!--  clickable zone: right  -->
-    <div @click="turnRight()"
-         class="right-quarter full-height top"
-         style="z-index: 1;"
-    />
-
     <div class="full-height">
-      <!--  Carousel  -->
-      <v-carousel v-model="carouselPage"
-                  :show-arrows="false"
-                  :continuous="false"
-                  :reverse="flipDirection"
-                  :vertical="vertical"
-                  hide-delimiters
-                  touchless
-                  height="100%"
-      >
-        <!--  Carousel: pages  -->
-        <v-carousel-item v-for="p in slidesRange"
-                         :key="doublePages ? `db${p}` : `sp${p}`"
-                         :eager="eagerLoad(p)"
-                         class="full-height"
-                         :transition="animations ? undefined : false"
-                         :reverse-transition="animations ? undefined : false"
-        >
-          <div class="full-height d-flex flex-column justify-center">
-            <div :class="`d-flex flex-row${flipDirection ? '-reverse' : ''} justify-center px-0 mx-0` ">
-              <img :src="getPageUrl(p)"
-                   :height="maxHeight"
-                   :width="maxWidth(p)"
-                   :style="imgStyle"
-              />
-              <img v-if="doublePages && p !== 1 && p !== pagesCount && p+1 !== pagesCount"
-                   :src="getPageUrl(p+1)"
-                   :height="maxHeight"
-                   :width="maxWidth(p+1)"
-                   :style="imgStyle"
-              />
-            </div>
-          </div>
-        </v-carousel-item>
-      </v-carousel>
+      <continuous-reader
+        v-if="continuousReader"
+        :pages="pages"
+        :page.sync="page"
+        :animations="animations"
+        @menu="toggleToolbars()"
+        @jump-previous="jumpToPrevious()"
+        @jump-next="jumpToNext()"
+      ></continuous-reader>
+
+      <paged-reader
+        v-else
+        :pages="pages"
+        :page.sync="page"
+        :reading-direction="readingDirection"
+        :double-pages="doublePages"
+        :scale="scale"
+        :animations="animations"
+        :swipe="swipe"
+        @menu="toggleToolbars()"
+        @jump-previous="jumpToPrevious()"
+        @jump-next="jumpToNext()"
+      ></paged-reader>
     </div>
 
     <thumbnail-explorer-dialog
-      v-model="showThumbnailsExplorer"
+      v-model="showExplorer"
       :bookId="bookId"
-      @goToPage="goTo"
+      @go="goTo"
       :pagesCount="pagesCount"
     ></thumbnail-explorer-dialog>
 
     <v-bottom-sheet
-      v-model="menu"
+      v-model="showSettings"
       :close-on-content-click="false"
-      :width="$vuetify.breakpoint.width * ($vuetify.breakpoint.smAndUp ? 0.5 : 1)"
+      max-width="500"
       @keydown.esc.stop=""
+      scrollable
     >
-      <v-container fluid class="pa-0">
+      <v-card>
         <v-toolbar dark color="primary">
-          <v-btn icon dark @click="menu = false">
+          <v-btn icon dark @click="showSettings = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
           <v-toolbar-title>Reader Settings</v-toolbar-title>
         </v-toolbar>
 
-        <v-list class="full-height full-width">
-          <v-list-item>
-            <settings-switch v-model="doublePages" label="Page Layout"
-                             :status="`${ doublePages ? 'Double Pages' : 'Single Page'}`"></settings-switch>
-          </v-list-item>
+        <v-card-text class="pa-0">
+          <v-list class="full-height full-width">
+            <v-subheader class="font-weight-black text-h6">General</v-subheader>
+            <v-list-item>
+              <settings-select
+                :items="readingDirs"
+                v-model="readingDirection"
+                label="Reading mode"
+              />
+            </v-list-item>
 
-          <v-list-item>
-            <settings-switch v-model="animations" label="Page Transitions"></settings-switch>
-          </v-list-item>
+            <v-list-item>
+              <settings-switch v-model="animations" label="Animate page transitions"></settings-switch>
+            </v-list-item>
 
-          <v-list-item>
-            <settings-switch v-model="swipe" label="Swipe navigation"></settings-switch>
-          </v-list-item>
+            <v-list-item>
+              <settings-switch v-model="swipe" label="Gestures"></settings-switch>
+            </v-list-item>
 
-          <v-list-item>
-            <settings-select
-              :items="backgroundColors"
-              v-model="backgroundColor"
-              label="Background color"
-            >
-            </settings-select>
-          </v-list-item>
+            <v-subheader class="font-weight-black text-h6">Display</v-subheader>
+            <v-list-item>
+              <settings-select
+                :items="backgroundColors"
+                v-model="backgroundColor"
+                label="Background color"
+              >
+              </settings-select>
+            </v-list-item>
 
-          <v-list-item>
-            <settings-select
-              :items="readingDirs"
-              v-model="readingDirection"
-              label="Reading Direction"
-            />
-          </v-list-item>
+            <div v-if="!continuousReader">
+              <v-subheader class="font-weight-black text-h6">Paged</v-subheader>
+              <v-list-item>
+                <settings-select
+                  :items="scaleTypes"
+                  v-model="scale"
+                  label="Scale type"
+                />
+              </v-list-item>
 
-          <v-list-item>
-            <settings-select
-              :items="imageFits"
-              v-model="imageFit"
-              label="Scaling"
-            />
-          </v-list-item>
-        </v-list>
-      </v-container>
+              <v-list-item>
+                <settings-switch v-model="doublePages" label="Double pages"></settings-switch>
+              </v-list-item>
+            </div>
+
+
+          </v-list>
+        </v-card-text>
+      </v-card>
     </v-bottom-sheet>
     <v-snackbar
       v-model="jumpToPreviousBook"
       :timeout="jumpConfirmationDelay"
-      vertical
       top
-      color="rgba(0, 0, 0, 0.7)"
+      color="rgba(0, 0, 0, 0.8)"
       multi-line
       class="mt-12"
     >
-      <div class="title pa-6">
+      <div class="body-1 pa-6">
         <p>You're at the beginning<br/>of the book.</p>
         <p v-if="!$_.isEmpty(siblingPrevious)">Click or press previous again<br/>to move to the previous book.</p>
       </div>
@@ -215,36 +199,44 @@
     <v-snackbar
       v-model="jumpToNextBook"
       :timeout="jumpConfirmationDelay"
-      vertical
       top
-      color="rgba(0, 0, 0, 0.7)"
+      color="rgba(0, 0, 0, 0.8)"
       multi-line
       class="mt-12"
     >
-      <div class="title pa-6">
+      <div class="text-body-1 pa-6">
         <p>You've reached the end<br/>of the book.</p>
         <p v-if="!$_.isEmpty(siblingNext)">Click or press next again<br/>to move to the next book.</p>
         <p v-else>Click or press next again<br/>to exit the reader.</p>
       </div>
     </v-snackbar>
 
-    <v-snackbar v-model="snackReadingDirection"
-                color="info"
-                multi-line
-                vertical
-                top
+    <v-snackbar
+      v-model="notificationReadingDirection.enabled"
+      color="rgba(0, 0, 0, 0.8)"
+      bottom
+      timeout="3000"
     >
-      <div>This book has specific reading direction set.</div>
-      <div>Reading direction has been set to <span class="font-weight-bold">{{ readingDirs.find(x => x.value === readingDirection).text }}</span>.
-      </div>
-      <div>This only applies to this book and will not overwrite your settings.</div>
-      <v-btn
-        text
-        @click="snackReadingDirection = false"
-      >
-        Dismiss
-      </v-btn>
+      <p class="text-body-1 text-center ma-0">
+        {{ readingDirectionText }}{{ notificationReadingDirection.fromMetadata ? ' (from book metadata)' : '' }}
+      </p>
     </v-snackbar>
+
+    <v-snackbar
+      v-model="notification.enabled"
+      color="rgba(0, 0, 0, 0.8)"
+      centered
+      :timeout="notification.timeout"
+    >
+      <p class="text-h6 text-center ma-0">
+        {{ notification.message }}
+      </p>
+    </v-snackbar>
+
+    <shortcut-help-dialog
+      v-model="showHelp"
+      :shortcuts="shortcutsHelp"
+    />
   </v-container>
 </template>
 
@@ -252,11 +244,20 @@
 import SettingsSelect from '@/components/SettingsSelect.vue'
 import SettingsSwitch from '@/components/SettingsSwitch.vue'
 import ThumbnailExplorerDialog from '@/components/dialogs/ThumbnailExplorerDialog.vue'
+import ShortcutHelpDialog from '@/components/dialogs/ShortcutHelpDialog.vue'
 import { getBookTitleCompact } from '@/functions/book-title'
 import { checkWebpFeature } from '@/functions/check-webp'
 import { bookPageUrl } from '@/functions/urls'
 import { ReadingDirection } from '@/types/enum-books'
 import Vue from 'vue'
+import { Location } from 'vue-router'
+import PagedReader from '@/components/readers/PagedReader.vue'
+import ContinuousReader from '@/components/readers/ContinuousReader.vue'
+import { ScaleType } from '@/types/enum-reader'
+import { ReadingDirectionText, ScaleTypeText } from '@/functions/reader'
+import { shortcutsLTR, shortcutsRTL, shortcutsVertical } from '@/functions/shortcuts/paged-reader'
+import { shortcutsMenus, shortcutsSettings } from '@/functions/shortcuts/bookreader'
+import { shortcutsAll } from '@/functions/shortcuts/reader'
 
 const cookieFit = 'webreader.fit'
 const cookieReadingDirection = 'webreader.readingDirection'
@@ -265,18 +266,18 @@ const cookieSwipe = 'webreader.swipe'
 const cookieAnimations = 'webreader.animations'
 const cookieBackground = 'webreader.background'
 
-enum ImageFit {
-  WIDTH = 'width',
-  HEIGHT = 'height',
-  ORIGINAL = 'original'
-}
-
 export default Vue.extend({
   name: 'BookReader',
-  components: { SettingsSwitch, SettingsSelect, ThumbnailExplorerDialog },
+  components: {
+    ContinuousReader,
+    PagedReader,
+    SettingsSwitch,
+    SettingsSelect,
+    ThumbnailExplorerDialog,
+    ShortcutHelpDialog,
+  },
   data: () => {
     return {
-      ImageFit,
       book: {} as BookDto,
       series: {} as SeriesDto,
       siblingPrevious: {} as BookDto,
@@ -284,35 +285,41 @@ export default Vue.extend({
       jumpToNextBook: false,
       jumpToPreviousBook: false,
       jumpConfirmationDelay: 3000,
-      snackReadingDirection: false,
-      pages: [] as PageDto[],
+      notificationReadingDirection: {
+        enabled: false,
+        fromMetadata: false,
+      },
+      pages: [] as PageDtoWithUrl[],
+      page: 1,
       supportedMediaTypes: ['image/jpeg', 'image/png', 'image/gif'],
       convertTo: 'jpeg',
-      carouselPage: 0,
-      showThumbnailsExplorer: false,
-      toolbar: false,
-      menu: false,
-      dialogGoto: false,
+      showExplorer: false,
+      showToolbars: false,
+      showSettings: false,
+      showHelp: false,
       goToPage: 1,
       settings: {
         doublePages: false,
         swipe: true,
-        imageFits: Object.values(ImageFit),
-        fit: ImageFit.HEIGHT,
-        readingDirection: ReadingDirection.LEFT_TO_RIGHT,
         animations: true,
+        scale: ScaleType.SCREEN,
+        readingDirection: ReadingDirection.LEFT_TO_RIGHT,
         backgroundColor: 'black',
       },
-      readingDirs: [
-        { text: 'Left to right', value: ReadingDirection.LEFT_TO_RIGHT },
-        { text: 'Right to left', value: ReadingDirection.RIGHT_TO_LEFT },
-        { text: 'Vertical', value: ReadingDirection.VERTICAL },
-      ],
-      imageFits: [
-        { text: 'Fit to height', value: ImageFit.HEIGHT },
-        { text: 'Fit to width', value: ImageFit.WIDTH },
-        { text: 'Original', value: ImageFit.ORIGINAL },
-      ],
+      shortcuts: {} as any,
+      notification: {
+        enabled: false,
+        message: '',
+        timeout: 4000,
+      },
+      readingDirs: Object.values(ReadingDirection).map(x => ({
+        text: ReadingDirectionText[x],
+        value: x,
+      })),
+      scaleTypes: Object.values(ScaleType).map(x => ({
+        text: ScaleTypeText[x],
+        value: x,
+      })),
       backgroundColors: [
         { text: 'White', value: 'white' },
         { text: 'Black', value: 'black' },
@@ -325,10 +332,10 @@ export default Vue.extend({
         this.supportedMediaTypes.push('image/webp')
       }
     })
+    this.shortcuts = this.$_.keyBy([...shortcutsSettings, ...shortcutsMenus, ...shortcutsAll], x => x.key)
+    window.addEventListener('keydown', this.keyPressed)
   },
   async mounted () {
-    window.addEventListener('keydown', this.keyPressed)
-
     this.loadFromCookie(cookieReadingDirection, (v) => {
       this.readingDirection = v
     })
@@ -342,14 +349,10 @@ export default Vue.extend({
       this.swipe = (v === 'true')
     })
     this.loadFromCookie(cookieFit, (v) => {
-      if (v) {
-        this.imageFit = v
-      }
+      this.scale = v
     })
     this.loadFromCookie(cookieBackground, (v) => {
-      if (v) {
-        this.backgroundColor = v
-      }
+      this.backgroundColor = v
     })
 
     this.setup(this.bookId, Number(this.$route.query.page))
@@ -359,19 +362,19 @@ export default Vue.extend({
   },
   props: {
     bookId: {
-      type: Number,
+      type: String,
       required: true,
     },
   },
   async beforeRouteUpdate (to, from, next) {
     if (to.params.bookId !== from.params.bookId) {
       // route update means going to previous/next book, in this case we start from first page
-      this.setup(Number(to.params.bookId), 1)
+      this.setup(to.params.bookId, 1)
     }
     next()
   },
   watch: {
-    currentPage (val) {
+    page (val) {
       this.updateRoute()
       this.goToPage = val
       this.markProgress(val)
@@ -384,45 +387,41 @@ export default Vue.extend({
     },
   },
   computed: {
-    currentSlide (): number {
-      return this.carouselPage + 1
-    },
-    currentPage (): number {
-      return this.doublePages ? this.toSinglePages(this.currentSlide) : this.currentSlide
-    },
-    canPrev (): boolean {
-      return this.currentSlide > 1
-    },
-    canNext (): boolean {
-      return this.currentSlide < this.slidesCount
+    continuousReader (): boolean {
+      return this.readingDirection === ReadingDirection.WEBTOON
     },
     progress (): number {
-      return this.currentPage / this.pagesCount * 100
-    },
-    maxHeight (): number | null {
-      return this.imageFit === ImageFit.HEIGHT ? this.$vuetify.breakpoint.height : null
-    },
-    imgStyle (): string {
-      return this.imageFit === ImageFit.WIDTH ? 'height:intrinsic' : ''
-    },
-    slidesRange (): number[] {
-      if (!this.doublePages) {
-        return this.$_.range(1, this.pagesCount + 1)
-      }
-      // for double pages the first and last pages are shown as single, while others are doubled
-      const ret = this.$_.range(2, this.pagesCount, 2)
-      ret.unshift(1)
-      ret.push(this.pagesCount)
-      return ret
-    },
-    slidesCount (): number {
-      return this.slidesRange.length
+      return this.page / this.pagesCount * 100
     },
     pagesCount (): number {
       return this.pages.length
     },
     bookTitle (): string {
       return getBookTitleCompact(this.book.metadata.title, this.series.metadata.title)
+    },
+    readingDirectionText (): string {
+      return ReadingDirectionText[this.readingDirection]
+    },
+    shortcutsHelp (): object {
+      let nav = []
+      switch (this.readingDirection) {
+        case ReadingDirection.LEFT_TO_RIGHT:
+          nav.push(...shortcutsLTR, ...shortcutsAll)
+          break
+        case ReadingDirection.RIGHT_TO_LEFT:
+          nav.push(...shortcutsRTL, ...shortcutsAll)
+          break
+        case ReadingDirection.VERTICAL:
+          nav.push(...shortcutsVertical, ...shortcutsAll)
+          break
+        default:
+          nav.push(...shortcutsAll)
+      }
+      return {
+        'Reader Navigation': nav,
+        'Settings': shortcutsSettings,
+        'Menus': shortcutsMenus,
+      }
     },
 
     animations: {
@@ -434,28 +433,15 @@ export default Vue.extend({
         this.$cookies.set(cookieAnimations, animations, Infinity)
       },
     },
-    readingDirection: {
-      get: function (): ReadingDirection {
-        return this.settings.readingDirection
+    scale: {
+      get: function (): ScaleType {
+        return this.settings.scale
       },
-      set: function (readingDirection: ReadingDirection): void {
-        this.settings.readingDirection = readingDirection
-        this.$cookies.set(cookieReadingDirection, readingDirection, Infinity)
-      },
-    },
-    flipDirection (): boolean {
-      return this.readingDirection === ReadingDirection.RIGHT_TO_LEFT
-    },
-    vertical (): boolean {
-      return this.readingDirection === ReadingDirection.VERTICAL
-    },
-    imageFit: {
-      get: function (): ImageFit {
-        return this.settings.fit
-      },
-      set: function (fit: ImageFit): void {
-        this.settings.fit = fit
-        this.$cookies.set(cookieFit, fit, Infinity)
+      set: function (scale: ScaleType): void {
+        if (Object.values(ScaleType).includes(scale)) {
+          this.settings.scale = scale
+          this.$cookies.set(cookieFit, scale, Infinity)
+        }
       },
     },
     backgroundColor: {
@@ -463,8 +449,21 @@ export default Vue.extend({
         return this.settings.backgroundColor
       },
       set: function (color: string): void {
-        this.settings.backgroundColor = color
-        this.$cookies.set(cookieBackground, color, Infinity)
+        if (this.backgroundColors.map(x => x.value).includes(color)) {
+          this.settings.backgroundColor = color
+          this.$cookies.set(cookieBackground, color, Infinity)
+        }
+      },
+    },
+    readingDirection: {
+      get: function (): ReadingDirection {
+        return this.settings.readingDirection
+      },
+      set: function (readingDirection: ReadingDirection): void {
+        if (Object.values(ReadingDirection).includes(readingDirection)) {
+          this.settings.readingDirection = readingDirection
+          this.$cookies.set(cookieReadingDirection, readingDirection, Infinity)
+        }
       },
     },
     doublePages: {
@@ -472,9 +471,7 @@ export default Vue.extend({
         return this.settings.doublePages
       },
       set: function (doublePages: boolean): void {
-        const current = this.currentPage
         this.settings.doublePages = doublePages
-        this.goTo(current)
         this.$cookies.set(cookieDoublePages, doublePages, Infinity)
       },
     },
@@ -490,56 +487,14 @@ export default Vue.extend({
   },
   methods: {
     keyPressed (e: KeyboardEvent) {
-      switch (e.key) {
-        case 'PageUp':
-        case 'ArrowRight':
-          this.flipDirection ? this.prev() : this.next()
-          break
-        case 'PageDown':
-        case 'ArrowLeft':
-          this.flipDirection ? this.next() : this.prev()
-          break
-        case 'ArrowDown':
-          if (this.vertical) this.next()
-          break
-        case 'ArrowUp':
-          if (this.vertical) this.prev()
-          break
-        case 'Home':
-          this.goToFirst()
-          break
-        case 'End':
-          this.goToLast()
-          break
-        case 'm':
-          this.toolbar = !this.toolbar
-          break
-        case 's':
-          this.menu = !this.menu
-          break
-        case 't':
-          this.showThumbnailsExplorer = !this.showThumbnailsExplorer
-          break
-        case 'Escape':
-          if (this.showThumbnailsExplorer) {
-            this.showThumbnailsExplorer = false
-            break
-          }
-          if (this.menu) {
-            this.menu = false
-            break
-          }
-          if (this.toolbar) {
-            this.toolbar = false
-            break
-          }
-          this.closeBook()
-          break
-      }
+      this.shortcuts[e.key]?.execute(this)
     },
-    async setup (bookId: number, page: number) {
+    async setup (bookId: string, page: number) {
       this.book = await this.$komgaBooks.getBook(bookId)
-      this.pages = await this.$komgaBooks.getBookPages(bookId)
+      const pageDtos = (await this.$komgaBooks.getBookPages(bookId))
+      pageDtos.forEach((p: any) => p['url'] = this.getPageUrl(p))
+      this.pages = pageDtos as PageDtoWithUrl[]
+
       if (page >= 1 && page <= this.pagesCount) {
         this.goTo(page)
       } else if (this.book.readProgress?.completed === false) {
@@ -549,16 +504,12 @@ export default Vue.extend({
       }
 
       // set non-persistent reading direction if exists in metadata
-      switch (this.book.metadata.readingDirection) {
-        case ReadingDirection.LEFT_TO_RIGHT:
-        case ReadingDirection.RIGHT_TO_LEFT:
-        case ReadingDirection.VERTICAL:
-          if (this.readingDirection !== this.book.metadata.readingDirection) {
-            // bypass setter so cookies aren't set
-            this.settings.readingDirection = this.book.metadata.readingDirection
-            this.snackReadingDirection = true
-          }
-          break
+      if (this.book.metadata.readingDirection in ReadingDirection && this.readingDirection !== this.book.metadata.readingDirection) {
+        // bypass setter so cookies aren't set
+        this.settings.readingDirection = this.book.metadata.readingDirection as ReadingDirection
+        this.sendNotificationReadingDirection(true)
+      } else {
+        this.sendNotificationReadingDirection(false)
       }
 
       try {
@@ -572,61 +523,43 @@ export default Vue.extend({
         this.siblingPrevious = {} as BookDto
       }
     },
-    getPageUrl (page: number): string {
-      if (!this.supportedMediaTypes.includes(this.pages[page - 1].mediaType)) {
-        return bookPageUrl(this.bookId, page, this.convertTo)
+    getPageUrl (page: PageDto): string {
+      if (!this.supportedMediaTypes.includes(page.mediaType)) {
+        return bookPageUrl(this.bookId, page.number, this.convertTo)
       } else {
-        return bookPageUrl(this.bookId, page)
+        return bookPageUrl(this.bookId, page.number)
       }
     },
-    turnRight () {
-      if (this.vertical) return
-      return this.flipDirection ? this.prev() : this.next()
-    },
-    turnLeft () {
-      if (this.vertical) return
-      return this.flipDirection ? this.next() : this.prev()
-    },
-    verticalPrev () {
-      if (this.vertical) this.prev()
-    },
-    verticalNext () {
-      if (this.vertical) this.next()
-    },
-    prev () {
-      if (this.canPrev) {
-        this.carouselPage--
-        window.scrollTo(0, 0)
+    jumpToPrevious () {
+      if (this.jumpToPreviousBook) {
+        this.previousBook()
       } else {
-        if (this.jumpToPreviousBook) {
-          if (!this.$_.isEmpty(this.siblingPrevious)) {
-            this.jumpToPreviousBook = false
-            this.$router.push({ name: 'read-book', params: { bookId: this.siblingPrevious.id.toString() } })
-          }
-        } else {
-          this.jumpToPreviousBook = true
-        }
+        this.jumpToPreviousBook = true
       }
     },
-    next () {
-      if (this.canNext) {
-        this.carouselPage++
-        window.scrollTo(0, 0)
+    jumpToNext () {
+      if (this.jumpToNextBook) {
+        this.nextBook()
       } else {
-        if (this.jumpToNextBook) {
-          if (this.$_.isEmpty(this.siblingNext)) {
-            this.closeBook()
-          } else {
-            this.jumpToNextBook = false
-            this.$router.push({ name: 'read-book', params: { bookId: this.siblingNext.id.toString() } })
-          }
-        } else {
-          this.jumpToNextBook = true
-        }
+        this.jumpToNextBook = true
+      }
+    },
+    previousBook () {
+      if (!this.$_.isEmpty(this.siblingPrevious)) {
+        this.jumpToPreviousBook = false
+        this.$router.push({ name: 'read-book', params: { bookId: this.siblingPrevious.id.toString() } })
+      }
+    },
+    nextBook () {
+      if (this.$_.isEmpty(this.siblingNext)) {
+        this.closeBook()
+      } else {
+        this.jumpToNextBook = false
+        this.$router.push({ name: 'read-book', params: { bookId: this.siblingNext.id.toString() } })
       }
     },
     goTo (page: number) {
-      this.carouselPage = this.doublePages ? this.toDoublePages(page) - 1 : page - 1
+      this.page = page
     },
     goToFirst () {
       this.goTo(1)
@@ -639,58 +572,81 @@ export default Vue.extend({
         name: this.$route.name,
         params: { bookId: this.$route.params.bookId },
         query: {
-          page: this.currentPage.toString(),
+          page: this.page.toString(),
         },
-      })
+      } as Location)
     },
     closeBook () {
       this.$router.push({ name: 'browse-book', params: { bookId: this.bookId.toString() } })
     },
-    toSinglePages (i: number): number {
-      if (i === 1) return 1
-      if (i === this.slidesCount) return this.pagesCount
-      return (i - 1) * 2
-    },
-    toDoublePages (i: number): number {
-      let ret = Math.floor(i / 2) + 1
-      if (i === this.pagesCount && this.pagesCount % 2 === 1) {
-        ret++
-      }
-      return ret
-    },
-    eagerLoad (p: number): boolean {
-      return Math.abs(this.currentPage - p) <= 2
-    },
-    maxWidth (p: number): number | null {
-      if (this.imageFit !== ImageFit.WIDTH) {
-        return null
-      }
-      if (this.doublePages && p !== 1 && p !== this.pagesCount) {
-        return this.$vuetify.breakpoint.width / 2
-      }
-      return this.$vuetify.breakpoint.width
-    },
     loadFromCookie (cookieKey: string, setter: (value: any) => void): void {
       if (this.$cookies.isKey(cookieKey)) {
-        let value = this.$cookies.get(cookieKey)
-        setter(value)
+        setter(this.$cookies.get(cookieKey))
       }
     },
+    changeReadingDir (dir: ReadingDirection) {
+      this.readingDirection = dir
+      const text = ReadingDirectionText[this.readingDirection]
+      this.sendNotification(`Changing Reading Direction to: ${text}`)
+    },
+    cycleScale () {
+      if (this.continuousReader) return
+      const enumValues = Object.values(ScaleType)
+      const i = (enumValues.indexOf(this.settings.scale) + 1) % (enumValues.length)
+      this.scale = enumValues[i]
+      const text = ScaleTypeText[this.scale]
+      this.sendNotification(`Cycling Scale: ${text}`)
+    },
+    toggleDoublePages () {
+      if (this.continuousReader) return
+      this.doublePages = !this.doublePages
+      this.sendNotification(`${this.doublePages ? 'Enabled' : 'Disabled'} Double Pages`)
+    },
+    toggleToolbars () {
+      this.showToolbars = !this.showToolbars
+    },
+    toggleExplorer () {
+      this.showExplorer = !this.showExplorer
+    },
+    toggleSettings () {
+      this.showSettings = !this.showSettings
+    },
+    toggleHelp () {
+      this.showHelp = !this.showHelp
+    },
+    closeDialog () {
+      if (this.showExplorer) {
+        this.showExplorer = false
+        return
+      }
+      if (this.showSettings) {
+        this.showSettings = false
+        return
+      }
+      if (this.showToolbars) {
+        this.showToolbars = false
+        return
+      }
+      this.closeBook()
+    },
+    sendNotificationReadingDirection (fromMetadata: boolean) {
+      this.notificationReadingDirection.fromMetadata = fromMetadata
+      this.notificationReadingDirection.enabled = true
+    },
+    sendNotification (message: string, timeout: number = 4000) {
+      this.notification.timeout = timeout
+      this.notification.message = message
+      this.notification.enabled = true
+    },
     async markProgress (page: number) {
-      this.$komgaBooks.updateReadProgress(this.bookId, { page: page })
+      await this.$komgaBooks.updateReadProgress(this.bookId, { page: page })
     },
   },
 })
 </script>
-
 <style scoped>
 .settings {
-  /*position: absolute;*/
   z-index: 2;
-}
-
-.top {
-  top: 0;
 }
 
 .full-height {
@@ -699,23 +655,5 @@ export default Vue.extend({
 
 .full-width {
   width: 100%;
-}
-
-.left-quarter {
-  left: 0;
-  width: 20%;
-  position: absolute;
-}
-
-.right-quarter {
-  right: 0;
-  width: 20%;
-  position: absolute;
-}
-
-.center-half {
-  left: 20%;
-  width: 60%;
-  position: absolute;
 }
 </style>

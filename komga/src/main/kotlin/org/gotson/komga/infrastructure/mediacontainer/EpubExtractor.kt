@@ -4,6 +4,7 @@ import mu.KotlinLogging
 import org.apache.commons.compress.archivers.zip.ZipFile
 import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.domain.model.MediaContainerEntry
+import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.jsoup.Jsoup
 import org.springframework.stereotype.Service
 import java.nio.file.Path
@@ -12,7 +13,11 @@ import java.nio.file.Paths
 private val logger = KotlinLogging.logger {}
 
 @Service
-class EpubExtractor(contentDetector: ContentDetector) : ZipExtractor(contentDetector) {
+class EpubExtractor(
+  private val zipExtractor: ZipExtractor,
+  private val contentDetector: ContentDetector,
+  private val imageAnalyzer: ImageAnalyzer
+) : MediaContainerExtractor {
 
   override fun mediaTypes(): List<String> = listOf("application/epub+zip")
 
@@ -41,15 +46,25 @@ class EpubExtractor(contentDetector: ContentDetector) : ZipExtractor(contentDete
           }
 
         return images.map { image ->
-          MediaContainerEntry(image.separatorsToUnix(), manifest.values.first {
+          val name = image.separatorsToUnix()
+          val mediaType = manifest.values.first {
             it.href == (opfDir?.relativize(image) ?: image).separatorsToUnix()
-          }.mediaType)
+          }.mediaType
+          val dimension = if (contentDetector.isImage(mediaType))
+            imageAnalyzer.getDimension(zip.getInputStream(zip.getEntry(name)))
+          else
+            null
+          MediaContainerEntry(name = name, mediaType = mediaType, dimension = dimension)
         }
       } catch (e: Exception) {
         logger.error(e) { "File is not a proper Epub, treating it as a zip file" }
-        return super.getEntries(path)
+        return zipExtractor.getEntries(path)
       }
     }
+  }
+
+  override fun getEntryStream(path: Path, entryName: String): ByteArray {
+    return zipExtractor.getEntryStream(path, entryName)
   }
 
   private fun getPackagePath(zip: ZipFile): String =

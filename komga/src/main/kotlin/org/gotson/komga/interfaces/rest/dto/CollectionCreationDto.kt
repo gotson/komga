@@ -7,5 +7,5 @@ import javax.validation.constraints.NotEmpty
 data class CollectionCreationDto(
   @get:NotBlank val name: String,
   val ordered: Boolean,
-  @get:NotEmpty @get:Unique val seriesIds: List<Long>
+  @get:NotEmpty @get:Unique val seriesIds: List<String>
 )

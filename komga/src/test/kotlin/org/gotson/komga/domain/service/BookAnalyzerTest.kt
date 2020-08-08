@@ -8,7 +8,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.io.ClassPathResource
 import org.springframework.test.context.junit.jupiter.SpringExtension
@@ -16,7 +15,6 @@ import java.time.LocalDateTime
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class BookAnalyzerTest(
   @Autowired private val bookAnalyzer: BookAnalyzer
 ) {

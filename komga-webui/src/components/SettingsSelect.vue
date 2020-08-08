@@ -1,9 +1,9 @@
 <template>
   <v-row justify-md="center" justify-sm="start">
-    <v-col cols="5" md="4" class="text-left" align-self="center">
-      <v-label class=""> {{ label }} </v-label>
+    <v-col cols="5" class="text-left" align-self="center">
+      <span class="">{{ label }}</span>
     </v-col>
-    <v-col cols="7" md="4" >
+    <v-col cols="7">
       <v-select
         filled
         dense

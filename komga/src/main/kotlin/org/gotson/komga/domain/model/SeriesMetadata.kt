@@ -11,7 +11,7 @@ class SeriesMetadata(
   val titleLock: Boolean = false,
   val titleSortLock: Boolean = false,
 
-  val seriesId: Long = 0,
+  val seriesId: String = "",
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
@@ -26,7 +26,7 @@ class SeriesMetadata(
     statusLock: Boolean = this.statusLock,
     titleLock: Boolean = this.titleLock,
     titleSortLock: Boolean = this.titleSortLock,
-    seriesId: Long = this.seriesId,
+    seriesId: String = this.seriesId,
     createdDate: LocalDateTime = this.createdDate,
     lastModifiedDate: LocalDateTime = this.lastModifiedDate
   ) =

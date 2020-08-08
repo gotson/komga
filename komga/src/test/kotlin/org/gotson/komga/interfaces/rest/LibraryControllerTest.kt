@@ -11,45 +11,31 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.security.test.context.support.WithAnonymousUser
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
-import javax.sql.DataSource
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
-@AutoConfigureTestDatabase
 class LibraryControllerTest(
   @Autowired private val mockMvc: MockMvc,
   @Autowired private val libraryRepository: LibraryRepository
 ) {
 
-  lateinit var jdbcTemplate: JdbcTemplate
-
-  @Autowired
-  fun setDataSource(dataSource: DataSource) {
-    jdbcTemplate = JdbcTemplate(dataSource)
-  }
-
-
   private val route = "/api/v1/libraries"
 
-  private var library = makeLibrary(url = "file:/library1")
+  private val library = makeLibrary(url = "file:/library1", id = "1")
 
   @BeforeAll
   fun `setup library`() {
-    jdbcTemplate.execute("ALTER SEQUENCE hibernate_sequence RESTART WITH 1")
-
-    library = libraryRepository.insert(library) // id = 1
+    libraryRepository.insert(library)
   }
 
   @AfterAll
@@ -102,7 +88,7 @@ class LibraryControllerTest(
   @Nested
   inner class LimitedUser {
     @Test
-    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [1])
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = ["1"])
     fun `given user with access to a single library when getAll then only gets this library`() {
       mockMvc.get(route)
         .andExpect {

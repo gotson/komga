@@ -33,7 +33,7 @@ class KomgaUserLifecycle(
     userRepository.findByEmailIgnoreCase(user.username)?.let { komgaUser ->
       logger.info { "Changing password for user ${user.username}" }
       val updatedUser = komgaUser.copy(password = passwordEncoder.encode(newPassword))
-      userRepository.save(updatedUser)
+      userRepository.update(updatedUser)
 
       if (expireSessions) expireSessions(updatedUser)
 
@@ -47,7 +47,9 @@ class KomgaUserLifecycle(
   fun createUser(komgaUser: KomgaUser): KomgaUser {
     if (userRepository.existsByEmailIgnoreCase(komgaUser.email)) throw UserEmailAlreadyExistsException("A user with the same email already exists: ${komgaUser.email}")
 
-    val createdUser = userRepository.save(komgaUser.copy(password = passwordEncoder.encode(komgaUser.password)))
+    userRepository.insert(komgaUser.copy(password = passwordEncoder.encode(komgaUser.password)))
+
+    val createdUser = userRepository.findByIdOrNull(komgaUser.id)!!
     logger.info { "User created: $createdUser" }
     return createdUser
   }
@@ -55,7 +57,7 @@ class KomgaUserLifecycle(
   fun deleteUser(user: KomgaUser) {
     logger.info { "Deleting user: $user" }
     readProgressRepository.deleteByUserId(user.id)
-    userRepository.delete(user)
+    userRepository.delete(user.id)
     expireSessions(user)
   }
 

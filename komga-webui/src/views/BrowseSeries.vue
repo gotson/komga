@@ -63,13 +63,13 @@
         <v-col cols="8">
           <v-row>
             <v-col>
-              <div class="headline" v-if="$_.get(series, 'metadata.title')">{{ series.metadata.title }}</div>
+              <div class="text-h5" v-if="$_.get(series, 'metadata.title')">{{ series.metadata.title }}</div>
             </v-col>
           </v-row>
 
           <v-row>
-            <v-col cols="auto" class="body-2">STATUS</v-col>
-            <v-col cols="auto" class="body-2 text-capitalize" v-if="series.metadata">{{
+            <v-col cols="auto" class="text-body-2">STATUS</v-col>
+            <v-col cols="auto" class="text-body-2 text-capitalize" v-if="series.metadata">{{
               series.metadata.status.toLowerCase() }}
             </v-col>
           </v-row>
@@ -135,6 +135,7 @@ import { seriesThumbnailUrl } from '@/functions/urls'
 import { ReadStatus } from '@/types/enum-books'
 import { BOOK_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
+import { Location } from 'vue-router'
 
 const cookiePageSize = 'pagesize'
 
@@ -204,7 +205,7 @@ export default Vue.extend({
   },
   props: {
     seriesId: {
-      type: Number,
+      type: String,
       required: true,
     },
   },
@@ -253,7 +254,7 @@ export default Vue.extend({
       this.books = []
       this.collections = []
 
-      this.loadSeries(Number(to.params.seriesId))
+      this.loadSeries(to.params.seriesId)
 
       this.setWatches()
     }
@@ -302,7 +303,7 @@ export default Vue.extend({
     reloadBooks (event: EventBookChanged) {
       if (event.seriesId === this.seriesId) this.loadSeries(this.seriesId)
     },
-    async loadSeries (seriesId: number) {
+    async loadSeries (seriesId: string) {
       this.series = await this.$komgaSeries.getOneSeries(seriesId)
       this.collections = await this.$komgaSeries.getCollections(seriesId)
       await this.loadPage(seriesId, this.page, this.sortActive)
@@ -313,7 +314,7 @@ export default Vue.extend({
     parseQueryFilterStatus (queryStatus: any): string[] {
       return queryStatus ? queryStatus.toString().split(',').filter((x: string) => Object.keys(ReadStatus).includes(x)) : []
     },
-    updateRoute (index?: string) {
+    updateRoute () {
       this.$router.replace({
         name: this.$route.name,
         params: { seriesId: this.$route.params.seriesId },
@@ -323,10 +324,10 @@ export default Vue.extend({
           sort: `${this.sortActive.key},${this.sortActive.order}`,
           readStatus: `${this.filters.readStatus}`,
         },
-      }).catch(_ => {
+      } as Location).catch((_: any) => {
       })
     },
-    async loadPage (seriesId: number, page: number, sort: SortActive) {
+    async loadPage (seriesId: string, page: number, sort: SortActive) {
       const pageRequest = {
         page: page - 1,
         size: this.pageSize,

@@ -1,7 +1,7 @@
 interface BookDto {
-  id: number,
-  seriesId: number,
-  libraryId: number,
+  id: string,
+  seriesId: string,
+  libraryId: string,
   name: string,
   url: string,
   number: number,
@@ -23,7 +23,18 @@ interface MediaDto {
 interface PageDto {
   number: number,
   fileName: string,
-  mediaType: string
+  mediaType: string,
+  width?: number,
+  height?: number,
+}
+
+interface PageDtoWithUrl {
+  number: number,
+  fileName: string,
+  mediaType: string,
+  width?: number,
+  height?: number,
+  url: string,
 }
 
 interface BookMetadataDto {

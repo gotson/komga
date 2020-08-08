@@ -27,7 +27,7 @@ class TaskReceiver(
     libraryRepository.findAll().forEach { scanLibrary(it.id) }
   }
 
-  fun scanLibrary(libraryId: Long) {
+  fun scanLibrary(libraryId: String) {
     submitTask(Task.ScanLibrary(libraryId))
   }
 
@@ -40,7 +40,7 @@ class TaskReceiver(
     }
   }
 
-  fun analyzeBook(bookId: Long) {
+  fun analyzeBook(bookId: String) {
     submitTask(Task.AnalyzeBook(bookId))
   }
 
@@ -48,11 +48,11 @@ class TaskReceiver(
     submitTask(Task.AnalyzeBook(book.id))
   }
 
-  fun generateBookThumbnail(bookId: Long) {
+  fun generateBookThumbnail(bookId: String) {
     submitTask(Task.GenerateBookThumbnail(bookId))
   }
 
-  fun refreshBookMetadata(bookId: Long) {
+  fun refreshBookMetadata(bookId: String) {
     submitTask(Task.RefreshBookMetadata(bookId))
   }
 
@@ -60,12 +60,8 @@ class TaskReceiver(
     submitTask(Task.RefreshBookMetadata(book.id))
   }
 
-  fun refreshSeriesMetadata(seriesId: Long) {
+  fun refreshSeriesMetadata(seriesId: String) {
     submitTask(Task.RefreshSeriesMetadata(seriesId))
-  }
-
-  fun databaseBackup() {
-    submitTask(Task.BackupDatabase)
   }
 
   private fun submitTask(task: Task) {

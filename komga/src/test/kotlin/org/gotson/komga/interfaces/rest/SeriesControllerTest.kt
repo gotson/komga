@@ -30,12 +30,10 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
-import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.MockMvcResultMatchersDsl
@@ -43,12 +41,10 @@ import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
-import javax.sql.DataSource
 import kotlin.random.Random
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
 class SeriesControllerTest(
   @Autowired private val seriesRepository: SeriesRepository,
@@ -64,25 +60,16 @@ class SeriesControllerTest(
   @Autowired private val mockMvc: MockMvc
 ) {
 
-  lateinit var jdbcTemplate: JdbcTemplate
-
-  @Autowired
-  fun setDataSource(dataSource: DataSource) {
-    this.jdbcTemplate = JdbcTemplate(dataSource)
-  }
-
-  private var library = makeLibrary()
+  private val library = makeLibrary(id = "1")
 
   @BeforeAll
   fun `setup library`() {
-    jdbcTemplate.execute("ALTER SEQUENCE hibernate_sequence RESTART WITH 1")
-
-    library = libraryRepository.insert(library) // id = 1
-    userRepository.save(KomgaUser("user@example.org", "", false)) // id = 2
+    libraryRepository.insert(library)
+    userRepository.insert(KomgaUser("user@example.org", "", false, id = "1"))
   }
 
   @AfterAll
-  fun `teardown`() {
+  fun teardown() {
     userRepository.findAll().forEach {
       userLifecycle.deleteUser(it)
     }
@@ -93,9 +80,7 @@ class SeriesControllerTest(
 
   @AfterEach
   fun `clear repository`() {
-    seriesRepository.findAll().forEach {
-      seriesLifecycle.deleteSeries(it.id)
-    }
+    seriesLifecycle.deleteMany(seriesRepository.findAll().map { it.id })
   }
 
   @Nested
@@ -195,7 +180,7 @@ class SeriesControllerTest(
   @Nested
   inner class LimitedUser {
     @Test
-    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [1])
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = ["1"])
     fun `given user with access to a single library when getting series then only gets series from this library`() {
       makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->
@@ -204,7 +189,8 @@ class SeriesControllerTest(
         }
       }
 
-      val otherLibrary = libraryRepository.insert(makeLibrary("other"))
+      val otherLibrary = makeLibrary("other")
+      libraryRepository.insert(otherLibrary)
       makeSeries(name = "otherSeries", libraryId = otherLibrary.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->
           val books = listOf(makeBook("2", libraryId = otherLibrary.id))
@@ -487,7 +473,7 @@ class SeriesControllerTest(
   @Nested
   inner class ReadProgress {
     @Test
-    @WithMockCustomUser(id = 2)
+    @WithMockCustomUser(id = "1")
     fun `given user when marking series as read then progress is marked for all books`() {
       val series = makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->
@@ -527,7 +513,7 @@ class SeriesControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(id = 2)
+    @WithMockCustomUser(id = "1")
     fun `given user when marking series as unread then progress is removed for all books`() {
       val series = makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->
@@ -572,7 +558,7 @@ class SeriesControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(id = 2)
+    @WithMockCustomUser(id = "1")
     fun `given user when marking book as in progress then progress series return books count accordingly`() {
       val series = makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->

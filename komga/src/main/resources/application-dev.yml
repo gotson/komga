@@ -6,10 +6,9 @@ komga:
   #  libraries-scan-cron: "*/5 * * * * ?" #every 5 seconds
   libraries-scan-cron: "-" #disable
   libraries-scan-startup: true
-  database-backup:
-    enabled: false
-    path: ./backup.zip
-    schedule: "*/15 * * * * ?"
+  database:
+    file: ":memory:"
+
 spring:
   datasource:
     url: jdbc:h2:mem:testdb

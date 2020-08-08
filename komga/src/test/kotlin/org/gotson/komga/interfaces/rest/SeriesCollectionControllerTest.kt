@@ -17,23 +17,19 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
-import javax.sql.DataSource
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
-@AutoConfigureTestDatabase
 class SeriesCollectionControllerTest(
   @Autowired private val mockMvc: MockMvc,
   @Autowired private val collectionLifecycle: SeriesCollectionLifecycle,
@@ -41,18 +37,10 @@ class SeriesCollectionControllerTest(
   @Autowired private val libraryLifecycle: LibraryLifecycle,
   @Autowired private val libraryRepository: LibraryRepository,
   @Autowired private val seriesLifecycle: SeriesLifecycle
-
 ) {
 
-  lateinit var jdbcTemplate: JdbcTemplate
-
-  @Autowired
-  fun setDataSource(dataSource: DataSource) {
-    jdbcTemplate = JdbcTemplate(dataSource)
-  }
-
-  private var library1 = makeLibrary("Library1")
-  private var library2 = makeLibrary("Library2")
+  private val library1 = makeLibrary("Library1", id = "1")
+  private val library2 = makeLibrary("Library2", id = "2")
   private lateinit var seriesLibrary1: List<Series>
   private lateinit var seriesLibrary2: List<Series>
   private lateinit var colLib1: SeriesCollection
@@ -61,10 +49,8 @@ class SeriesCollectionControllerTest(
 
   @BeforeAll
   fun setup() {
-    jdbcTemplate.execute("ALTER SEQUENCE hibernate_sequence RESTART WITH 1")
-
-    library1 = libraryRepository.insert(library1) // id = 1
-    library2 = libraryRepository.insert(library2) // id = 2
+    libraryRepository.insert(library1)
+    libraryRepository.insert(library2)
 
     seriesLibrary1 = (1..5)
       .map { makeSeries("Series_$it", library1.id) }
@@ -122,7 +108,7 @@ class SeriesCollectionControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [1])
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = ["1"])
     fun `given user with access to a single library when getting collections then only get collections from this library`() {
       makeCollections()
 
@@ -149,7 +135,7 @@ class SeriesCollectionControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [1])
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = ["1"])
     fun `given user with access to a single library when getting single collection with items from 2 libraries then it is filtered`() {
       makeCollections()
 
@@ -162,7 +148,7 @@ class SeriesCollectionControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [1])
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = ["1"])
     fun `given user with access to a single library when getting single collection from another library then return not found`() {
       makeCollections()
 
@@ -194,7 +180,7 @@ class SeriesCollectionControllerTest(
     @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given admin user when creating collection then return ok`() {
       val jsonString = """
-        {"name":"collection","ordered":false,"seriesIds":[${seriesLibrary1.first().id}]}
+        {"name":"collection","ordered":false,"seriesIds":["${seriesLibrary1.first().id}"]}
       """.trimIndent()
 
       mockMvc.post("/api/v1/collections") {
@@ -266,7 +252,7 @@ class SeriesCollectionControllerTest(
       makeCollections()
 
       val jsonString = """
-        {"name":"updated","ordered":true,"seriesIds":[${seriesLibrary1.first().id}]}
+        {"name":"updated","ordered":true,"seriesIds":["${seriesLibrary1.first().id}"]}
       """.trimIndent()
 
       mockMvc.patch("/api/v1/collections/${colLib1.id}") {
@@ -351,7 +337,7 @@ class SeriesCollectionControllerTest(
 
       mockMvc.patch("/api/v1/collections/${colLibBoth.id}") {
         contentType = MediaType.APPLICATION_JSON
-        content = """{"seriesIds":[${seriesLibrary1.first().id}]}"""
+        content = """{"seriesIds":["${seriesLibrary1.first().id}"]}"""
       }
 
       mockMvc.get("/api/v1/collections/${colLibBoth.id}")

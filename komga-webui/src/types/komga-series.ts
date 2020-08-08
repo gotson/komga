@@ -1,6 +1,6 @@
 interface SeriesDto {
-  id: number,
-  libraryId: number,
+  id: string,
+  libraryId: string,
   name: string,
   url: string,
   lastModified: string,

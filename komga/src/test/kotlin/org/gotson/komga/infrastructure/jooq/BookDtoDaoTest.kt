@@ -12,7 +12,6 @@ import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
-import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.domain.service.LibraryLifecycle
@@ -24,19 +23,16 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class BookDtoDaoTest(
   @Autowired private val bookDtoDao: BookDtoDao,
   @Autowired private val bookRepository: BookRepository,
   @Autowired private val bookLifecycle: BookLifecycle,
-  @Autowired private val seriesRepository: SeriesRepository,
   @Autowired private val seriesLifecycle: SeriesLifecycle,
   @Autowired private val libraryRepository: LibraryRepository,
   @Autowired private val libraryLifecycle: LibraryLifecycle,
@@ -45,22 +41,20 @@ class BookDtoDaoTest(
   @Autowired private val userLifecycle: KomgaUserLifecycle
 ) {
 
-  private var library = makeLibrary()
+  private val library = makeLibrary()
   private var series = makeSeries("Series")
-  private var user = KomgaUser("user@example.org", "", false)
+  private val user = KomgaUser("user@example.org", "", false)
 
   @BeforeAll
   fun setup() {
-    library = libraryRepository.insert(library)
+    libraryRepository.insert(library)
     series = seriesLifecycle.createSeries(series.copy(libraryId = library.id))
-    user = userRepository.save(user)
+    userRepository.insert(user)
   }
 
   @AfterEach
   fun deleteBooks() {
-    bookRepository.findAll().forEach {
-      bookLifecycle.delete(it.id)
-    }
+    bookLifecycle.deleteMany(bookRepository.findAll().map { it.id })
   }
 
   @AfterAll

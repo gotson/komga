@@ -7,8 +7,8 @@
     </v-row>
     <v-row align="center" justify="center">
       <div class="text-center">
-        <h1 class="headline mt-4">Welcome to Komga</h1>
-        <p class="body-1">No libraries have been added yet!</p>
+        <h1 class="text-h5 mt-4">Welcome to Komga</h1>
+        <p class="text-body-1">No libraries have been added yet!</p>
         <v-btn color="primary" @click="addLibrary" v-if="isAdmin">Add library</v-btn>
       </div>
     </v-row>

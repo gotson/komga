@@ -9,7 +9,7 @@ class Media(
   val pages: List<BookPage> = emptyList(),
   val files: List<String> = emptyList(),
   val comment: String? = null,
-  val bookId: Long = 0,
+  val bookId: String = "",
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
 ) : Auditable() {
@@ -21,7 +21,7 @@ class Media(
     pages: List<BookPage> = this.pages.toList(),
     files: List<String> = this.files.toList(),
     comment: String? = this.comment,
-    bookId: Long = this.bookId,
+    bookId: String = this.bookId,
     createdDate: LocalDateTime = this.createdDate,
     lastModifiedDate: LocalDateTime = this.lastModifiedDate
   ) =

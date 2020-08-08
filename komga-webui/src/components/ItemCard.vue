@@ -19,7 +19,7 @@
 
           <!-- unread count for series -->
           <span v-if="unreadCount"
-                class="white--text pa-1 px-2 subtitle-2"
+                class="white--text pa-1 px-2 text-subtitle-2"
                 :style="{background: 'orange', position: 'absolute', right: 0}"
           >
             {{ unreadCount }}

@@ -34,7 +34,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="{name:'browse-libraries', params: {libraryId: 0}}">
+        <v-list-item :to="{name:'browse-libraries', params: {libraryId: 'all'}}">
           <v-list-item-icon>
             <v-icon>mdi-book-multiple</v-icon>
           </v-list-item-icon>
@@ -71,7 +71,7 @@
 
         <v-list-item :to="{name: 'settings'}" v-if="isAdmin">
           <v-list-item-action>
-            <v-icon>mdi-settings</v-icon>
+            <v-icon>mdi-cog</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Server settings</v-list-item-title>
@@ -97,21 +97,38 @@
         </v-list-item>
       </v-list>
 
+      <v-divider/>
+
+      <v-list>
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon v-if="activeTheme === Theme.LIGHT">mdi-brightness-7</v-icon>
+            <v-icon v-if="activeTheme === Theme.DARK">mdi-brightness-3</v-icon>
+            <v-icon v-if="activeTheme === Theme.SYSTEM">mdi-brightness-auto</v-icon>
+          </v-list-item-icon>
+          <v-select
+            v-model="activeTheme"
+            :items="themes"
+            label="Theme"
+          ></v-select>
+        </v-list-item>
+      </v-list>
+
       <v-spacer/>
 
       <template v-slot:append>
         <div v-if="isAdmin && !$_.isEmpty(info)"
-             class="pa-2 pb-6 caption"
+             class="pa-2 pb-6 text-caption"
         >
           <div>v{{ info.build.version }}-{{ info.git.branch }}</div>
         </div>
       </template>
     </v-navigation-drawer>
 
-    <v-content>
+    <v-main>
       <dialogs/>
       <router-view/>
-    </v-content>
+    </v-main>
   </div>
 </template>
 
@@ -119,7 +136,10 @@
 import Dialogs from '@/components/Dialogs.vue'
 import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import SearchBox from '@/components/SearchBox.vue'
+import { Theme } from '@/types/themes'
 import Vue from 'vue'
+
+const cookieTheme = 'theme'
 
 export default Vue.extend({
   name: 'home',
@@ -128,12 +148,36 @@ export default Vue.extend({
     return {
       drawerVisible: this.$vuetify.breakpoint.lgAndUp,
       info: {} as ActuatorInfo,
+      activeTheme: Theme.LIGHT,
+      Theme,
+      themes: [
+        { text: Theme.LIGHT.valueOf(), value: Theme.LIGHT },
+        { text: Theme.DARK.valueOf(), value: Theme.DARK },
+        { text: Theme.SYSTEM.valueOf(), value: Theme.SYSTEM },
+      ],
     }
+  },
+  watch: {
+    activeTheme (val) {
+      this.changeTheme(val)
+    },
   },
   async created () {
     if (this.isAdmin) {
       this.info = await this.$actuator.getInfo()
     }
+
+    if (this.$cookies.isKey(cookieTheme)) {
+      const theme = this.$cookies.get(cookieTheme)
+      if (Object.values(Theme).includes(theme)) {
+        this.activeTheme = theme as Theme
+      }
+    }
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', this.systemThemeChange)
+  },
+  async beforeDestroy () {
+    window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', this.systemThemeChange)
   },
   computed: {
     libraries (): LibraryDto[] {
@@ -146,6 +190,27 @@ export default Vue.extend({
   methods: {
     toggleDrawer () {
       this.drawerVisible = !this.drawerVisible
+    },
+    systemThemeChange () {
+      if (this.activeTheme === Theme.SYSTEM) {
+        this.changeTheme(this.activeTheme)
+      }
+    },
+    changeTheme (theme: Theme) {
+      this.$cookies.set(cookieTheme, theme.valueOf())
+      switch (theme) {
+        case Theme.DARK:
+          this.$vuetify.theme.dark = true
+          break
+
+        case Theme.SYSTEM:
+          this.$vuetify.theme.dark = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+          break
+
+        default:
+          this.$vuetify.theme.dark = false
+          break
+      }
     },
     logout () {
       this.$store.dispatch('logout')

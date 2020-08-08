@@ -13,25 +13,23 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.time.LocalDateTime
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class SeriesMetadataDaoTest(
   @Autowired private val seriesMetadataDao: SeriesMetadataDao,
   @Autowired private val seriesRepository: SeriesRepository,
   @Autowired private val libraryRepository: LibraryRepository
 ) {
 
-  private var library = makeLibrary()
+  private val library = makeLibrary()
 
   @BeforeAll
   fun setup() {
-    library = libraryRepository.insert(library)
+    libraryRepository.insert(library)
   }
 
   @AfterEach
@@ -47,9 +45,7 @@ class SeriesMetadataDaoTest(
 
   @Test
   fun `given a seriesMetadata when inserting then it is persisted`() {
-    val series = seriesRepository.insert(
-      makeSeries("Series", libraryId = library.id)
-    )
+    val series = makeSeries("Series", libraryId = library.id).also { seriesRepository.insert(it) }
 
     val now = LocalDateTime.now()
     val metadata = SeriesMetadata(
@@ -59,13 +55,11 @@ class SeriesMetadataDaoTest(
       seriesId = series.id
     )
 
-    Thread.sleep(5)
-
     val created = seriesMetadataDao.insert(metadata)
 
     assertThat(created.seriesId).isEqualTo(series.id)
-    assertThat(created.createdDate).isAfter(now)
-    assertThat(created.lastModifiedDate).isAfter(now)
+    assertThat(created.createdDate).isCloseTo(now, offset)
+    assertThat(created.lastModifiedDate).isCloseTo(now, offset)
     assertThat(created.title).isEqualTo("Series")
     assertThat(created.titleSort).isEqualTo("Series, The")
     assertThat(created.status).isEqualTo(SeriesMetadata.Status.ENDED)
@@ -76,9 +70,8 @@ class SeriesMetadataDaoTest(
 
   @Test
   fun `given existing seriesMetadata when finding by id then metadata is returned`() {
-    val series = seriesRepository.insert(
-      makeSeries("Series", libraryId = library.id)
-    )
+    val series = makeSeries("Series", libraryId = library.id).also { seriesRepository.insert(it) }
+
     val metadata = SeriesMetadata(
       status = SeriesMetadata.Status.ENDED,
       title = "Series",
@@ -96,23 +89,21 @@ class SeriesMetadataDaoTest(
 
   @Test
   fun `given non-existing seriesMetadata when finding by id then exception is thrown`() {
-    val found = catchThrowable { seriesMetadataDao.findById(128742) }
+    val found = catchThrowable { seriesMetadataDao.findById("128742") }
 
     assertThat(found).isInstanceOf(Exception::class.java)
   }
 
   @Test
   fun `given non-existing seriesMetadata when findByIdOrNull then null is returned`() {
-    val found = seriesMetadataDao.findByIdOrNull(128742)
+    val found = seriesMetadataDao.findByIdOrNull("128742")
 
     assertThat(found).isNull()
   }
 
   @Test
   fun `given a seriesMetadata when updating then it is persisted`() {
-    val series = seriesRepository.insert(
-      makeSeries("Series", libraryId = library.id)
-    )
+    val series = makeSeries("Series", libraryId = library.id).also { seriesRepository.insert(it) }
 
     val metadata = SeriesMetadata(
       status = SeriesMetadata.Status.ENDED,
@@ -122,7 +113,6 @@ class SeriesMetadataDaoTest(
     )
     val created = seriesMetadataDao.insert(metadata)
 
-    Thread.sleep(5)
 
     val modificationDate = LocalDateTime.now()
 
@@ -140,12 +130,10 @@ class SeriesMetadataDaoTest(
     seriesMetadataDao.update(updated)
     val modified = seriesMetadataDao.findById(updated.seriesId)
 
-    Thread.sleep(5)
-
     assertThat(modified.seriesId).isEqualTo(series.id)
     assertThat(modified.createdDate).isEqualTo(updated.createdDate)
     assertThat(modified.lastModifiedDate)
-      .isAfterOrEqualTo(modificationDate)
+      .isCloseTo(modificationDate, offset)
       .isNotEqualTo(modified.createdDate)
     assertThat(modified.title).isEqualTo("Changed")
     assertThat(modified.titleSort).isEqualTo("Changed, The")

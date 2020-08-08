@@ -10,7 +10,7 @@
       <v-row justify="center" v-if="unclaimed">
         <v-col
           cols="12" sm="8" md="6" lg="4" xl="2"
-          class="body-1 mt-2"
+          class="text-body-1 mt-2"
         >
           <v-alert type="info"
                    icon="mdi-account-plus"
@@ -130,7 +130,7 @@ export default Vue.extend({
           await this.$router.push({ name: 'home' })
         }
       } catch (e) {
-        this.showSnack(e.message)
+        this.showSnack(e?.message)
       }
     },
     showSnack (message: string) {

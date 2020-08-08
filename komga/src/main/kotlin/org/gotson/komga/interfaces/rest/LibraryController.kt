@@ -52,12 +52,12 @@ class LibraryController(
       libraryRepository.findAllById(principal.user.sharedLibrariesIds)
     }.sortedBy { it.name.toLowerCase() }.map { it.toDto(includeRoot = principal.user.roleAdmin) }
 
-  @GetMapping("{id}")
+  @GetMapping("{libraryId}")
   fun getOne(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @PathVariable id: Long
+    @PathVariable libraryId: String
   ): LibraryDto =
-    libraryRepository.findByIdOrNull(id)?.let {
+    libraryRepository.findByIdOrNull(libraryId)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
       it.toDto(includeRoot = principal.user.roleAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -91,16 +91,16 @@ class LibraryController(
       }
     }
 
-  @PutMapping("/{id}")
+  @PutMapping("/{libraryId}")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateOne(
-    @PathVariable id: Long,
+    @PathVariable libraryId: String,
     @Valid @RequestBody library: LibraryUpdateDto
   ) {
-    libraryRepository.findByIdOrNull(id)?.let {
+    libraryRepository.findByIdOrNull(libraryId)?.let {
       val toUpdate = Library(
-        id = id,
+        id = libraryId,
         name = library.name,
         root = filePathToUrl(library.root),
         importComicInfoBook = library.importComicInfoBook,
@@ -113,11 +113,11 @@ class LibraryController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
-  @DeleteMapping("/{id}")
+  @DeleteMapping("/{libraryId}")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  fun deleteOne(@PathVariable id: Long) {
-    libraryRepository.findByIdOrNull(id)?.let {
+  fun deleteOne(@PathVariable libraryId: String) {
+    libraryRepository.findByIdOrNull(libraryId)?.let {
       libraryLifecycle.deleteLibrary(it)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
@@ -125,7 +125,7 @@ class LibraryController(
   @PostMapping("{libraryId}/scan")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun scan(@PathVariable libraryId: Long) {
+  fun scan(@PathVariable libraryId: String) {
     libraryRepository.findByIdOrNull(libraryId)?.let { library ->
       taskReceiver.scanLibrary(library.id)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -134,7 +134,7 @@ class LibraryController(
   @PostMapping("{libraryId}/analyze")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun analyze(@PathVariable libraryId: Long) {
+  fun analyze(@PathVariable libraryId: String) {
     bookRepository.findAllIdByLibraryId(libraryId).forEach {
       taskReceiver.analyzeBook(it)
     }
@@ -143,7 +143,7 @@ class LibraryController(
   @PostMapping("{libraryId}/metadata/refresh")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun refreshMetadata(@PathVariable libraryId: Long) {
+  fun refreshMetadata(@PathVariable libraryId: String) {
     bookRepository.findAllIdByLibraryId(libraryId).forEach {
       taskReceiver.refreshBookMetadata(it)
     }
@@ -161,7 +161,7 @@ data class LibraryCreationDto(
 )
 
 data class LibraryDto(
-  val id: Long,
+  val id: String,
   val name: String,
   val root: String,
   val importComicInfoBook: Boolean,

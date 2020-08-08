@@ -18,6 +18,7 @@ import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.ResultQuery
 import org.jooq.impl.DSL
+import org.jooq.impl.DSL.inline
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -55,7 +56,7 @@ class BookDtoDao(
     "readProgress.lastModified" to r.LAST_MODIFIED_DATE
   )
 
-  override fun findAll(search: BookSearchWithReadProgress, userId: Long, pageable: Pageable): Page<BookDto> {
+  override fun findAll(search: BookSearchWithReadProgress, userId: String, pageable: Pageable): Page<BookDto> {
     val conditions = search.toCondition()
 
     val count = dsl.selectCount()
@@ -83,18 +84,18 @@ class BookDtoDao(
     )
   }
 
-  override fun findByIdOrNull(bookId: Long, userId: Long): BookDto? =
+  override fun findByIdOrNull(bookId: String, userId: String): BookDto? =
     selectBase(userId)
       .where(b.ID.eq(bookId))
       .fetchAndMap()
       .firstOrNull()
 
-  override fun findPreviousInSeries(bookId: Long, userId: Long): BookDto? = findSibling(bookId, userId, next = false)
+  override fun findPreviousInSeries(bookId: String, userId: String): BookDto? = findSibling(bookId, userId, next = false)
 
-  override fun findNextInSeries(bookId: Long, userId: Long): BookDto? = findSibling(bookId, userId, next = true)
+  override fun findNextInSeries(bookId: String, userId: String): BookDto? = findSibling(bookId, userId, next = true)
 
 
-  override fun findOnDeck(libraryIds: Collection<Long>, userId: Long, pageable: Pageable): Page<BookDto> {
+  override fun findOnDeck(libraryIds: Collection<String>, userId: String, pageable: Pageable): Page<BookDto> {
     val conditions = if (libraryIds.isEmpty()) DSL.trueCondition() else s.LIBRARY_ID.`in`(libraryIds)
 
     val seriesIds = dsl.select(s.ID)
@@ -104,11 +105,11 @@ class BookDtoDao(
       .and(readProgressCondition(userId))
       .where(conditions)
       .groupBy(s.ID)
-      .having(SeriesDtoDao.countUnread.ge(1.toBigDecimal()))
-      .and(SeriesDtoDao.countRead.ge(1.toBigDecimal()))
-      .and(SeriesDtoDao.countInProgress.eq(0.toBigDecimal()))
+      .having(SeriesDtoDao.countUnread.ge(inline(1.toBigDecimal())))
+      .and(SeriesDtoDao.countRead.ge(inline(1.toBigDecimal())))
+      .and(SeriesDtoDao.countInProgress.eq(inline(0.toBigDecimal())))
       .orderBy(DSL.max(r.LAST_MODIFIED_DATE).desc())
-      .fetchInto(Long::class.java)
+      .fetchInto(String::class.java)
 
     val dtos = seriesIds
       .drop(pageable.pageNumber * pageable.pageSize)
@@ -130,15 +131,15 @@ class BookDtoDao(
     )
   }
 
-  private fun readProgressCondition(userId: Long): Condition = r.USER_ID.eq(userId).or(r.USER_ID.isNull)
+  private fun readProgressCondition(userId: String): Condition = r.USER_ID.eq(userId).or(r.USER_ID.isNull)
 
-  private fun findSibling(bookId: Long, userId: Long, next: Boolean): BookDto? {
+  private fun findSibling(bookId: String, userId: String, next: Boolean): BookDto? {
     val record = dsl.select(b.SERIES_ID, d.NUMBER_SORT)
       .from(b)
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .where(b.ID.eq(bookId))
       .fetchOne()
-    val seriesId = record.get(0, Long::class.java)
+    val seriesId = record.get(0, String::class.java)
     val numberSort = record.get(1, Float::class.java)
 
     return selectBase(userId)
@@ -150,7 +151,7 @@ class BookDtoDao(
       .firstOrNull()
   }
 
-  private fun selectBase(userId: Long) =
+  private fun selectBase(userId: String) =
     dsl.select(
       *b.fields(),
       *mediaFields,
@@ -210,9 +211,9 @@ class BookDtoDao(
       name = name,
       url = URL(url).toFilePath(),
       number = number,
-      created = createdDate.toUTC(),
-      lastModified = lastModifiedDate.toUTC(),
-      fileLastModified = fileLastModified.toUTC(),
+      created = createdDate,
+      lastModified = lastModifiedDate,
+      fileLastModified = fileLastModified,
       sizeBytes = fileSize,
       media = media,
       metadata = metadata,
@@ -253,7 +254,7 @@ class BookDtoDao(
     ReadProgressDto(
       page = page,
       completed = completed,
-      created = createdDate.toUTC(),
-      lastModified = lastModifiedDate.toUTC()
+      created = createdDate,
+      lastModified = lastModifiedDate
     )
 }

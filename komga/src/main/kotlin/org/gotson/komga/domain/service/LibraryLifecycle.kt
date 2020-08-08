@@ -34,9 +34,10 @@ class LibraryLifecycle(
     val existing = libraryRepository.findAll()
     checkLibraryValidity(library, existing)
 
-    return libraryRepository.insert(library).also {
-      taskReceiver.scanLibrary(it.id)
-    }
+    libraryRepository.insert(library)
+    taskReceiver.scanLibrary(library.id)
+
+    return libraryRepository.findById(library.id)
   }
 
   fun updateLibrary(toUpdate: Library) {
@@ -70,9 +71,8 @@ class LibraryLifecycle(
   fun deleteLibrary(library: Library) {
     logger.info { "Deleting library: $library" }
 
-    seriesRepository.findByLibraryId(library.id).forEach {
-      seriesLifecycle.deleteSeries(it.id)
-    }
+    val seriesIds = seriesRepository.findByLibraryId(library.id).map { it.id }
+    seriesLifecycle.deleteMany(seriesIds)
 
     libraryRepository.delete(library.id)
   }

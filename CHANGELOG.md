@@ -1,3 +1,110 @@
+## [0.52.3](https://github.com/gotson/komga/compare/v0.52.2...v0.52.3) (2020-08-07)
+
+
+### Bug Fixes
+
+* **api:** large file download ([d100db2](https://github.com/gotson/komga/commit/d100db22eb6505a182b6778d4d52de13ad8653eb))
+
+## [0.52.2](https://github.com/gotson/komga/compare/v0.52.1...v0.52.2) (2020-08-07)
+
+
+### Bug Fixes
+
+* some PDF pages are blurry ([9ad1cfe](https://github.com/gotson/komga/commit/9ad1cfe80975639a349a99a45e874efd3aba7e1b)), closes [#260](https://github.com/gotson/komga/issues/260)
+* **webreader:** incorrect display on safari and firefox ([22b0b7e](https://github.com/gotson/komga/commit/22b0b7e7480d45728c92eb0f418b8143fb523de7)), closes [#262](https://github.com/gotson/komga/issues/262)
+* **webui:** missing settings icon in sidebar ([b9e4bea](https://github.com/gotson/komga/commit/b9e4bea71b3a1168312961e104109669feef8078))
+* **webui:** thumbnails explorer navigation misaligned ([2ffed28](https://github.com/gotson/komga/commit/2ffed282d705bb74336e191bb28708b1a0337da4))
+
+## [0.52.1](https://github.com/gotson/komga/compare/v0.52.0...v0.52.1) (2020-08-06)
+
+
+### Bug Fixes
+
+* **webreader:** webtoon reader not loading images ([1a030b4](https://github.com/gotson/komga/commit/1a030b4db558b02e996246670f6ce86094f00495)), closes [#259](https://github.com/gotson/komga/issues/259)
+
+# [0.52.0](https://github.com/gotson/komga/compare/v0.51.1...v0.52.0) (2020-08-06)
+
+
+### Bug Fixes
+
+* **webui:** missing settings icon in webreader ([9693829](https://github.com/gotson/komga/commit/969382988dbd40448a68fdf1b2586c527f2209f6))
+
+
+### Features
+
+* **webreader:** display reading direction on book opening ([ebf2aac](https://github.com/gotson/komga/commit/ebf2aac0ac44097da00a628e25ceb446b2fba9e4))
+* **webreader:** webtoon reader, fit to screen ([44c814a](https://github.com/gotson/komga/commit/44c814a5baeea9e6b715a63c31285b33cd2e6872)), closes [#81](https://github.com/gotson/komga/issues/81) [#145](https://github.com/gotson/komga/issues/145)
+
+## [0.51.1](https://github.com/gotson/komga/compare/v0.51.0...v0.51.1) (2020-08-03)
+
+
+### Bug Fixes
+
+* **metadata:** recognize ComicInfo Day tag and "MA15+" rating ([3ad438d](https://github.com/gotson/komga/commit/3ad438d53fadb4766d9167fbc45937455af95ddb))
+
+# [0.51.0](https://github.com/gotson/komga/compare/v0.50.1...v0.51.0) (2020-07-31)
+
+
+### Bug Fixes
+
+* **webreader:** cycle image fit would not persist setting ([e5272d2](https://github.com/gotson/komga/commit/e5272d224383d9afdc183dfc626937ba87fc27cf))
+
+
+### Features
+
+* **webreader:** better display of landscape images ([09984a4](https://github.com/gotson/komga/commit/09984a4284c6ee9a50c7457ea9271fc36c58b770)), closes [#123](https://github.com/gotson/komga/issues/123)
+* get images dimension during media analysis ([f9d55ec](https://github.com/gotson/komga/commit/f9d55ecfd0743a3c0e07f5f63725d25e6183af0c)), closes [#123](https://github.com/gotson/komga/issues/123)
+
+## [0.50.1](https://github.com/gotson/komga/compare/v0.50.0...v0.50.1) (2020-07-30)
+
+
+### Bug Fixes
+
+* **docker:** docker image doesn't start ([8bce80b](https://github.com/gotson/komga/commit/8bce80b408143416335a8afb356b8ea404b22369))
+
+# [0.50.0](https://github.com/gotson/komga/compare/v0.49.0...v0.50.0) (2020-07-30)
+
+
+### Features
+
+* **webui:** add system theme option ([8f22f01](https://github.com/gotson/komga/commit/8f22f01b3bdbfc8951bb291ef9c78f13dc61cbc0))
+
+# [0.49.0](https://github.com/gotson/komga/compare/v0.48.1...v0.49.0) (2020-07-25)
+
+
+### Features
+
+* **webreader:** add shortcut information menu ([1885f32](https://github.com/gotson/komga/commit/1885f32416635611e62795bdf22420006bb577ad))
+* **webui:** dark theme ([efe2021](https://github.com/gotson/komga/commit/efe2021bdcb28cbeac93cee8add6dc80a5708c60)), closes [#179](https://github.com/gotson/komga/issues/179)
+
+## [0.48.1](https://github.com/gotson/komga/compare/v0.48.0...v0.48.1) (2020-07-21)
+
+
+### Bug Fixes
+
+* fix database migration errors ([f84ba17](https://github.com/gotson/komga/commit/f84ba17079d1ba4bf320d923b971468d19f0aa1d)), closes [#239](https://github.com/gotson/komga/issues/239) [#238](https://github.com/gotson/komga/issues/238) [#237](https://github.com/gotson/komga/issues/237) [#240](https://github.com/gotson/komga/issues/240)
+
+# [0.48.0](https://github.com/gotson/komga/compare/v0.47.0...v0.48.0) (2020-07-16)
+
+
+### Features
+
+* change database from H2 to SQLite ([20b2b39](https://github.com/gotson/komga/commit/20b2b39d364a04a4b73b8f8bea2f86ae4c6e0304)), closes [#218](https://github.com/gotson/komga/issues/218)
+
+# [0.47.0](https://github.com/gotson/komga/compare/v0.46.0...v0.47.0) (2020-07-14)
+
+
+### Features
+
+* **webui:** change internals for shortcuts. add new shortcuts for settings ([b402817](https://github.com/gotson/komga/commit/b402817edbface6d622d92c98347f6fe1914bf88)), closes [#172](https://github.com/gotson/komga/issues/172)
+
+# [0.46.0](https://github.com/gotson/komga/compare/v0.45.2...v0.46.0) (2020-07-13)
+
+
+### Features
+
+* **webui:** add simple next/previous book buttons to reader toolbar ([e428115](https://github.com/gotson/komga/commit/e4281156f5398d478257ee699d7016c1aa5ee81c)), closes [#233](https://github.com/gotson/komga/issues/233)
+
 ## [0.45.2](https://github.com/gotson/komga/compare/v0.45.1...v0.45.2) (2020-07-05)
 
 

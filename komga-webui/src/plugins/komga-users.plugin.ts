@@ -49,7 +49,7 @@ const vuexModule: Module<any, any> = {
       await service.postUser(user)
       dispatch('getAllUsers')
     },
-    async updateUserRoles ({ dispatch }, { userId, roles }: { userId: number, roles: RolesUpdateDto }) {
+    async updateUserRoles ({ dispatch }, { userId, roles }: { userId: string, roles: RolesUpdateDto }) {
       await service.patchUserRoles(userId, roles)
       dispatch('getAllUsers')
     },

@@ -16,7 +16,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.time.LocalDateTime
@@ -24,24 +23,23 @@ import kotlin.random.Random
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class MediaDaoTest(
   @Autowired private val mediaDao: MediaDao,
   @Autowired private val bookRepository: BookRepository,
   @Autowired private val seriesRepository: SeriesRepository,
   @Autowired private val libraryRepository: LibraryRepository
 ) {
-  private var library = makeLibrary()
-  private var series = makeSeries("Series")
-  private var book = makeBook("Book")
+  private val library = makeLibrary()
+  private val series = makeSeries("Series")
+  private val book = makeBook("Book")
 
   @BeforeAll
   fun setup() {
-    library = libraryRepository.insert(library)
+    libraryRepository.insert(library)
 
-    series = seriesRepository.insert(series.copy(libraryId = library.id))
+    seriesRepository.insert(series.copy(libraryId = library.id))
 
-    book = bookRepository.insert(book.copy(libraryId = library.id, seriesId = series.id))
+    bookRepository.insert(book.copy(libraryId = library.id, seriesId = series.id))
   }
 
   @AfterEach
@@ -74,13 +72,12 @@ class MediaDaoTest(
       bookId = book.id
     )
 
-    Thread.sleep(5)
-
-    val created = mediaDao.insert(media)
+    mediaDao.insert(media)
+    val created = mediaDao.findById(media.bookId)
 
     assertThat(created.bookId).isEqualTo(book.id)
-    assertThat(created.createdDate).isAfter(now)
-    assertThat(created.lastModifiedDate).isAfter(now)
+    assertThat(created.createdDate).isCloseTo(now, offset)
+    assertThat(created.lastModifiedDate).isCloseTo(now, offset)
     assertThat(created.status).isEqualTo(media.status)
     assertThat(created.mediaType).isEqualTo(media.mediaType)
     assertThat(created.thumbnail).isEqualTo(media.thumbnail)
@@ -98,7 +95,8 @@ class MediaDaoTest(
   fun `given a minimum media when inserting then it is persisted`() {
     val media = Media(bookId = book.id)
 
-    val created = mediaDao.insert(media)
+    mediaDao.insert(media)
+    val created = mediaDao.findById(media.bookId)
 
     assertThat(created.bookId).isEqualTo(book.id)
     assertThat(created.status).isEqualTo(Media.Status.UNKNOWN)
@@ -123,23 +121,23 @@ class MediaDaoTest(
       comment = "comment",
       bookId = book.id
     )
-    val created = mediaDao.insert(media)
-
-    Thread.sleep(5)
+    mediaDao.insert(media)
 
     val modificationDate = LocalDateTime.now()
 
-    val updated = created.copy(
-      status = Media.Status.ERROR,
-      mediaType = "application/rar",
-      thumbnail = Random.nextBytes(1),
-      pages = listOf(BookPage(
-        fileName = "2.png",
-        mediaType = "image/png"
-      )),
-      files = listOf("id.txt"),
-      comment = "comment2"
-    )
+    val updated = with(mediaDao.findById(media.bookId)) {
+      copy(
+        status = Media.Status.ERROR,
+        mediaType = "application/rar",
+        thumbnail = Random.nextBytes(1),
+        pages = listOf(BookPage(
+          fileName = "2.png",
+          mediaType = "image/png"
+        )),
+        files = listOf("id.txt"),
+        comment = "comment2"
+      )
+    }
 
     mediaDao.update(updated)
     val modified = mediaDao.findById(updated.bookId)
@@ -147,7 +145,7 @@ class MediaDaoTest(
     assertThat(modified.bookId).isEqualTo(updated.bookId)
     assertThat(modified.createdDate).isEqualTo(updated.createdDate)
     assertThat(modified.lastModifiedDate)
-      .isAfterOrEqualTo(modificationDate)
+      .isCloseTo(modificationDate, offset)
       .isNotEqualTo(updated.lastModifiedDate)
     assertThat(modified.status).isEqualTo(updated.status)
     assertThat(modified.mediaType).isEqualTo(updated.mediaType)
@@ -172,16 +170,16 @@ class MediaDaoTest(
       comment = "comment",
       bookId = book.id
     )
-    val created = mediaDao.insert(media)
+    mediaDao.insert(media)
 
-    val found = catchThrowable { mediaDao.findById(created.bookId) }
+    val found = catchThrowable { mediaDao.findById(media.bookId) }
 
     assertThat(found).doesNotThrowAnyException()
   }
 
   @Test
   fun `given non-existing media when finding by id then exception is thrown`() {
-    val found = catchThrowable { mediaDao.findById(128742) }
+    val found = catchThrowable { mediaDao.findById("128742") }
 
     assertThat(found).isInstanceOf(Exception::class.java)
   }

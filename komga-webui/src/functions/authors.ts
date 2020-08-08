@@ -10,7 +10,7 @@ export function groupAuthorsByRole (authors: AuthorDto[]): any {
 // return an object where keys are roles (plural form), and values are string[]
 export function groupAuthorsByRolePlural (authors: AuthorDto[]): any {
   const r = mapKeys(groupAuthorsByRole(authors),
-    (v, k) => get(authorRoles.find(x => x.role === k), 'plural', k)
+    (v, k) => get(authorRoles.find(x => x.role === k), 'plural', k),
   )
 
   // sort object keys according to the order of keys in authorRoles
@@ -19,8 +19,8 @@ export function groupAuthorsByRolePlural (authors: AuthorDto[]): any {
   const o = {} as any
   Object.keys(r)
     .sort((a, b) => {
-      let index1 = roles.indexOf(a)
-      let index2 = roles.indexOf(b)
+      const index1 = roles.indexOf(a)
+      const index2 = roles.indexOf(b)
       return (index1 === -1 ? Infinity : index1) - (index2 === -1 ? Infinity : index2)
     })
     .forEach((key: string) => {

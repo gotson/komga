@@ -7,7 +7,7 @@
       <v-expansion-panel-content>
         <horizontal-scroller>
           <template v-slot:prepend>
-            <router-link class="overline"
+            <router-link class="text-overline"
                          :to="{name: 'browse-collection', params: {collectionId: c.id}}"
             >Manage collection
             </router-link>

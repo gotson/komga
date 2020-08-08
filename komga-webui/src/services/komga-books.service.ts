@@ -11,7 +11,7 @@ export default class KomgaBooksService {
     this.http = http
   }
 
-  async getBooks (libraryId?: number, pageRequest?: PageRequest, search?: string, mediaStatus?: string[], readStatus?: string[]): Promise<Page<BookDto>> {
+  async getBooks (libraryId?: string, pageRequest?: PageRequest, search?: string, mediaStatus?: string[], readStatus?: string[]): Promise<Page<BookDto>> {
     try {
       const params = { ...pageRequest } as any
       if (libraryId) {
@@ -53,7 +53,7 @@ export default class KomgaBooksService {
     }
   }
 
-  async getBook (bookId: number): Promise<BookDto> {
+  async getBook (bookId: string): Promise<BookDto> {
     try {
       return (await this.http.get(`${API_BOOKS}/${bookId}`)).data
     } catch (e) {
@@ -65,7 +65,7 @@ export default class KomgaBooksService {
     }
   }
 
-  async getBookSiblingNext (bookId: number): Promise<BookDto> {
+  async getBookSiblingNext (bookId: string): Promise<BookDto> {
     try {
       return (await this.http.get(`${API_BOOKS}/${bookId}/next`)).data
     } catch (e) {
@@ -77,7 +77,7 @@ export default class KomgaBooksService {
     }
   }
 
-  async getBookSiblingPrevious (bookId: number): Promise<BookDto> {
+  async getBookSiblingPrevious (bookId: string): Promise<BookDto> {
     try {
       return (await this.http.get(`${API_BOOKS}/${bookId}/previous`)).data
     } catch (e) {
@@ -89,7 +89,7 @@ export default class KomgaBooksService {
     }
   }
 
-  async getBookPages (bookId: number): Promise<PageDto[]> {
+  async getBookPages (bookId: string): Promise<PageDto[]> {
     try {
       return (await this.http.get(`${API_BOOKS}/${bookId}/pages`)).data
     } catch (e) {
@@ -125,7 +125,7 @@ export default class KomgaBooksService {
     }
   }
 
-  async updateMetadata (bookId: number, metadata: BookMetadataUpdateDto) {
+  async updateMetadata (bookId: string, metadata: BookMetadataUpdateDto) {
     try {
       await this.http.patch(`${API_BOOKS}/${bookId}/metadata`, metadata)
     } catch (e) {
@@ -137,7 +137,7 @@ export default class KomgaBooksService {
     }
   }
 
-  async updateReadProgress (bookId: number, readProgress: ReadProgressUpdateDto) {
+  async updateReadProgress (bookId: string, readProgress: ReadProgressUpdateDto) {
     try {
       await this.http.patch(`${API_BOOKS}/${bookId}/read-progress`, readProgress)
     } catch (e) {
@@ -149,7 +149,7 @@ export default class KomgaBooksService {
     }
   }
 
-  async deleteReadProgress (bookId: number) {
+  async deleteReadProgress (bookId: string) {
     try {
       await this.http.delete(`${API_BOOKS}/${bookId}/read-progress`)
     } catch (e) {

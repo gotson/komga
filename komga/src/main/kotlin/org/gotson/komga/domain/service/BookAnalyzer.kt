@@ -51,7 +51,7 @@ class BookAnalyzer(
         entry.mediaType?.let { contentDetector.isImage(it) } ?: false
       }.let { (images, others) ->
         Pair(
-          images.map { BookPage(it.name, it.mediaType!!) },
+          images.map { BookPage(it.name, it.mediaType!!, it.dimension) },
           others
         )
       }

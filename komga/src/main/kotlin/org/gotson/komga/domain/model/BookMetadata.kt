@@ -24,7 +24,7 @@ class BookMetadata(
   val releaseDateLock: Boolean = false,
   val authorsLock: Boolean = false,
 
-  val bookId: Long = 0,
+  val bookId: String = "",
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
@@ -54,7 +54,7 @@ class BookMetadata(
     ageRatingLock: Boolean = this.ageRatingLock,
     releaseDateLock: Boolean = this.releaseDateLock,
     authorsLock: Boolean = this.authorsLock,
-    bookId: Long = this.bookId,
+    bookId: String = this.bookId,
     createdDate: LocalDateTime = this.createdDate,
     lastModifiedDate: LocalDateTime = this.lastModifiedDate
   ) =

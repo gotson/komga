@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
-source "$(dirname "$0")/docker-common.sh"
+# Arguments:
+# 1: next version
+# 2: channel
+
+source "$(dirname "$0")/docker-common.sh" $1 $2
 
 # Update Docker CE
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -18,8 +22,8 @@ docker buildx inspect --bootstrap
 # Build docker images (no push)
 cd komga
 docker buildx build \
---platform $PLATFORMS \
---cache-from gotson/komga:latest \
---tag gotson/komga:latest \
---tag gotson/komga:$1 \
---file ./Dockerfile .
+    --platform $PLATFORMS \
+    --cache-from gotson/komga:$DOCKER_CHANNEL \
+    --tag gotson/komga:$DOCKER_CHANNEL \
+    --tag gotson/komga:$1 \
+    --file ./Dockerfile .

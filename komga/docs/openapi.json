@@ -72,6 +72,9 @@
           }
         }
       },
+      "StreamingResponseBody": {
+        "type": "object"
+      },
       "BookDto": {
         "type": "object",
         "properties": {
@@ -83,15 +86,13 @@
             "type": "string"
           },
           "libraryId": {
-            "format": "int64",
-            "type": "integer"
+            "type": "string"
           },
           "media": {
             "$ref": "#/components/schemas/MediaDto"
           },
           "seriesId": {
-            "format": "int64",
-            "type": "integer"
+            "type": "string"
           },
           "url": {
             "type": "string"
@@ -118,8 +119,7 @@
             "type": "string"
           },
           "id": {
-            "format": "int64",
-            "type": "integer"
+            "type": "string"
           },
           "lastModified": {
             "format": "date-time",
@@ -137,8 +137,7 @@
             }
           },
           "id": {
-            "format": "int64",
-            "type": "integer"
+            "type": "string"
           },
           "email": {
             "type": "string"
@@ -252,8 +251,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "format": "int64",
-            "type": "integer"
+            "type": "string"
           }
         }
       },
@@ -295,8 +293,7 @@
             "type": "boolean"
           },
           "id": {
-            "format": "int64",
-            "type": "integer"
+            "type": "string"
           },
           "email": {
             "type": "string"
@@ -428,8 +425,7 @@
             "type": "string"
           },
           "id": {
-            "format": "int64",
-            "type": "integer"
+            "type": "string"
           },
           "importComicInfoCollection": {
             "type": "boolean"
@@ -451,6 +447,7 @@
         }
       },
       "BookMetadataUpdateDto": {
+        "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.",
         "type": "object",
         "properties": {
           "summary": {
@@ -574,8 +571,7 @@
           "seriesIds": {
             "type": "array",
             "items": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             }
           }
         }
@@ -590,8 +586,16 @@
           "fileName": {
             "type": "string"
           },
+          "width": {
+            "format": "int32",
+            "type": "integer"
+          },
           "mediaType": {
             "type": "string"
+          },
+          "height": {
+            "format": "int32",
+            "type": "integer"
           }
         }
       },
@@ -611,8 +615,7 @@
           "seriesIds": {
             "type": "array",
             "items": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             }
           }
         }
@@ -638,19 +641,18 @@
             "type": "string"
           },
           "id": {
-            "format": "int64",
-            "type": "integer"
+            "type": "string"
           },
           "seriesIds": {
             "type": "array",
             "items": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             }
           }
         }
       },
       "ReadProgressUpdateDto": {
+        "description": "page can be omitted if completed is set to true. completed can be omitted, and will be set accordingly depending on the page passed and the total number of pages in the book.",
         "type": "object",
         "properties": {
           "page": {
@@ -794,15 +796,13 @@
             "type": "integer"
           },
           "libraryId": {
-            "format": "int64",
-            "type": "integer"
+            "type": "string"
           },
           "name": {
             "type": "string"
           },
           "id": {
-            "format": "int64",
-            "type": "integer"
+            "type": "string"
           },
           "lastModified": {
             "format": "date-time",
@@ -826,6 +826,7 @@
         }
       },
       "SeriesMetadataUpdateDto": {
+        "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.",
         "type": "object",
         "properties": {
           "titleSort": {
@@ -872,8 +873,7 @@
             "uniqueItems": true,
             "type": "array",
             "items": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             }
           }
         }
@@ -1011,97 +1011,12 @@
   ],
   "openapi": "3.0.1",
   "paths": {
-    "/api/v1/libraries/{id}": {
-      "get": {
-        "operationId": "getOne",
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LibraryDto"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "schema": {
-              "format": "int64",
-              "type": "integer"
-            },
-            "in": "path",
-            "name": "id",
-            "required": true
-          }
-        ],
-        "tags": [
-          "library-controller"
-        ]
-      },
-      "delete": {
-        "operationId": "deleteOne",
-        "responses": {
-          "204": {
-            "description": "default response"
-          }
-        },
-        "parameters": [
-          {
-            "schema": {
-              "format": "int64",
-              "type": "integer"
-            },
-            "in": "path",
-            "name": "id",
-            "required": true
-          }
-        ],
-        "tags": [
-          "library-controller"
-        ]
-      },
-      "put": {
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LibraryUpdateDto"
-              }
-            }
-          },
-          "required": true
-        },
-        "operationId": "updateOne",
-        "responses": {
-          "204": {
-            "description": "default response"
-          }
-        },
-        "parameters": [
-          {
-            "schema": {
-              "format": "int64",
-              "type": "integer"
-            },
-            "in": "path",
-            "name": "id",
-            "required": true
-          }
-        ],
-        "tags": [
-          "library-controller"
-        ]
-      }
-    },
     "/opds/v1.2/series/latest": {
       "get": {
         "operationId": "getLatestSeries_1",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/xml": {
                 "schema": {
@@ -1131,7 +1046,7 @@
         "operationId": "getSearch",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/xml": {
                 "schema": {
@@ -1161,7 +1076,7 @@
         "operationId": "getBookSiblingNext",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1174,8 +1089,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -1202,7 +1116,7 @@
         "operationId": "addOne",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1220,7 +1134,7 @@
         "operationId": "getAll",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1243,7 +1157,7 @@
         "operationId": "getCollections",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/xml": {
                 "schema": {
@@ -1273,7 +1187,7 @@
         "operationId": "getMe",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1294,7 +1208,7 @@
         "operationId": "getLatestBooks",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1346,8 +1260,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -1365,12 +1278,11 @@
         "operationId": "getBookFile",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/octet-stream": {
                 "schema": {
-                  "format": "binary",
-                  "type": "string"
+                  "$ref": "#/components/schemas/StreamingResponseBody"
                 }
               }
             }
@@ -1379,8 +1291,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -1411,8 +1322,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "seriesId",
@@ -1424,13 +1334,95 @@
         ]
       }
     },
+    "/api/v1/libraries/{libraryId}": {
+      "get": {
+        "operationId": "getOne",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LibraryDto"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "libraryId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "library-controller"
+        ]
+      },
+      "delete": {
+        "operationId": "deleteOne",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "libraryId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "library-controller"
+        ]
+      },
+      "put": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LibraryUpdateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "operationId": "updateOne",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "libraryId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "library-controller"
+        ]
+      }
+    },
     "/api/v1/series/latest": {
       "get": {
         "description": "Return recently added or updated series.",
         "operationId": "getLatestSeries",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1477,12 +1469,11 @@
         "operationId": "getBookFile_2",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/octet-stream": {
                 "schema": {
-                  "format": "binary",
-                  "type": "string"
+                  "$ref": "#/components/schemas/StreamingResponseBody"
                 }
               }
             }
@@ -1491,8 +1482,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -1510,7 +1500,7 @@
         "operationId": "getNewSeries",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1556,14 +1546,13 @@
         "operationId": "analyze_1",
         "responses": {
           "202": {
-            "description": "default response"
+            "description": "Accepted"
           }
         },
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -1581,12 +1570,11 @@
         "operationId": "getBookFile_1",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/octet-stream": {
                 "schema": {
-                  "format": "binary",
-                  "type": "string"
+                  "$ref": "#/components/schemas/StreamingResponseBody"
                 }
               }
             }
@@ -1595,8 +1583,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -1613,7 +1600,7 @@
         "operationId": "getSeriesForCollection",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1626,8 +1613,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -1668,14 +1654,13 @@
         "operationId": "analyze_2",
         "responses": {
           "202": {
-            "description": "default response"
+            "description": "Accepted"
           }
         },
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "seriesId",
@@ -1692,7 +1677,7 @@
         "operationId": "getOneLibrary",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/xml": {
                 "schema": {
@@ -1715,8 +1700,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -1731,7 +1715,6 @@
     "/api/v1/books/{bookId}/read-progress": {
       "patch": {
         "requestBody": {
-          "description": "page can be omitted if completed is set to true. completed can be omitted, and will be set accordingly depending on the page passed and the total number of pages in the book.",
           "content": {
             "application/json": {
               "schema": {
@@ -1744,14 +1727,13 @@
         "operationId": "markReadProgress",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -1766,14 +1748,13 @@
         "operationId": "deleteReadProgress",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -1800,7 +1781,7 @@
         "operationId": "addOne_2",
         "responses": {
           "201": {
-            "description": "default response",
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -1818,7 +1799,7 @@
         "operationId": "getAll_2",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1841,14 +1822,13 @@
         "operationId": "markAsRead",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "seriesId",
@@ -1863,14 +1843,13 @@
         "operationId": "markAsUnread",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "seriesId",
@@ -1887,7 +1866,7 @@
         "operationId": "getOneSeries_1",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/xml": {
                 "schema": {
@@ -1919,8 +1898,7 @@
           },
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -1937,7 +1915,7 @@
         "operationId": "getAllCollectionsBySeries",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1953,8 +1931,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "seriesId",
@@ -1971,14 +1948,13 @@
         "operationId": "refreshMetadata_2",
         "responses": {
           "202": {
-            "description": "default response"
+            "description": "Accepted"
           }
         },
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "seriesId",
@@ -1995,7 +1971,7 @@
         "operationId": "getAllBooksBySeries",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -2008,8 +1984,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "seriesId",
@@ -2101,8 +2076,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -2119,6 +2093,7 @@
           },
           {
             "schema": {
+              "type": "string",
               "enum": [
                 "jpeg",
                 "png"
@@ -2160,14 +2135,13 @@
         "operationId": "updateOne_1",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -2182,7 +2156,7 @@
         "operationId": "getOne_1",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -2195,8 +2169,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -2211,14 +2184,13 @@
         "operationId": "deleteOne_1",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -2235,14 +2207,13 @@
         "operationId": "scan",
         "responses": {
           "202": {
-            "description": "default response"
+            "description": "Accepted"
           }
         },
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "libraryId",
@@ -2259,7 +2230,7 @@
         "operationId": "getBookSiblingPrevious",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -2272,8 +2243,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -2290,7 +2260,7 @@
         "operationId": "getAllSeries_1",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/xml": {
                 "schema": {
@@ -2330,14 +2300,13 @@
         "operationId": "refreshMetadata",
         "responses": {
           "202": {
-            "description": "default response"
+            "description": "Accepted"
           }
         },
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "libraryId",
@@ -2368,8 +2337,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -2386,6 +2354,7 @@
           },
           {
             "schema": {
+              "type": "string",
               "enum": [
                 "jpeg",
                 "png"
@@ -2417,7 +2386,7 @@
         "operationId": "getAllSeries",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -2440,8 +2409,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "format": "int64",
-                "type": "integer"
+                "type": "string"
               }
             },
             "in": "query",
@@ -2549,14 +2517,13 @@
         "operationId": "updateUserRoles",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -2571,14 +2538,13 @@
         "operationId": "delete",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -2595,7 +2561,7 @@
         "operationId": "getOneSeries",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -2608,8 +2574,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "seriesId",
@@ -2626,7 +2591,7 @@
         "operationId": "getOneCollection",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/xml": {
                 "schema": {
@@ -2649,8 +2614,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -2667,14 +2631,13 @@
         "operationId": "refreshMetadata_1",
         "responses": {
           "202": {
-            "description": "default response"
+            "description": "Accepted"
           }
         },
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -2691,7 +2654,7 @@
         "operationId": "getAllBooks",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -2714,8 +2677,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "format": "int64",
-                "type": "integer"
+                "type": "string"
               }
             },
             "in": "query",
@@ -2794,7 +2756,7 @@
         "operationId": "getLibraries",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/xml": {
                 "schema": {
@@ -2834,7 +2796,7 @@
         "operationId": "updatePassword",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "tags": [
@@ -2847,14 +2809,13 @@
         "operationId": "analyze",
         "responses": {
           "202": {
-            "description": "default response"
+            "description": "Accepted"
           }
         },
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "libraryId",
@@ -2869,7 +2830,6 @@
     "/api/v1/series/{seriesId}/metadata": {
       "patch": {
         "requestBody": {
-          "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.",
           "content": {
             "application/json": {
               "schema": {
@@ -2882,14 +2842,13 @@
         "operationId": "updateMetadata_1",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "seriesId",
@@ -2906,7 +2865,7 @@
         "operationId": "getCatalog",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/xml": {
                 "schema": {
@@ -2946,7 +2905,7 @@
         "operationId": "addOne_1",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -2964,7 +2923,7 @@
         "operationId": "getAll_1",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -2987,8 +2946,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "format": "int64",
-                "type": "integer"
+                "type": "string"
               }
             },
             "in": "query",
@@ -3034,13 +2992,12 @@
                 "$ref": "#/components/schemas/DirectoryRequestDto"
               }
             }
-          },
-          "required": true
+          }
         },
         "operationId": "getDirectoryListing",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -3070,14 +3027,13 @@
         "operationId": "updateSharesLibraries",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -3108,8 +3064,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "id",
@@ -3140,8 +3095,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -3158,7 +3112,7 @@
         "operationId": "getBookPages",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -3174,8 +3128,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -3192,7 +3145,7 @@
         "operationId": "getAuthors",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -3240,8 +3193,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -3267,7 +3219,7 @@
         "operationId": "getOneBook",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -3280,8 +3232,7 @@
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -3296,7 +3247,6 @@
     "/api/v1/books/{bookId}/metadata": {
       "patch": {
         "requestBody": {
-          "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.",
           "content": {
             "application/json": {
               "schema": {
@@ -3309,14 +3259,13 @@
         "operationId": "updateMetadata",
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         },
         "parameters": [
           {
             "schema": {
-              "format": "int64",
-              "type": "integer"
+              "type": "string"
             },
             "in": "path",
             "name": "bookId",
@@ -3334,7 +3283,7 @@
         "operationId": "getBooksOnDeck",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -3372,7 +3321,7 @@
         "operationId": "claimAdmin",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -3408,7 +3357,7 @@
         "operationId": "getClaimStatus",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -3429,7 +3378,7 @@
         "operationId": "getUpdatedSeries",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {

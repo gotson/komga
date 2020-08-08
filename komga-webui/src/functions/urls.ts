@@ -12,15 +12,15 @@ const urls = {
 
 export default urls
 
-export function bookThumbnailUrl (bookId: number): string {
+export function bookThumbnailUrl (bookId: string): string {
   return `${urls.originNoSlash}/api/v1/books/${bookId}/thumbnail`
 }
 
-export function bookFileUrl (bookId: number): string {
+export function bookFileUrl (bookId: string): string {
   return `${urls.originNoSlash}/api/v1/books/${bookId}/file`
 }
 
-export function bookPageUrl (bookId: number, page: number, convertTo?: string): string {
+export function bookPageUrl (bookId: string, page: number, convertTo?: string): string {
   let url = `${urls.originNoSlash}/api/v1/books/${bookId}/pages/${page}`
   if (convertTo) {
     url += `?convert=${convertTo}`
@@ -28,14 +28,14 @@ export function bookPageUrl (bookId: number, page: number, convertTo?: string): 
   return url
 }
 
-export function bookPageThumbnailUrl (bookId: number, page: number): string {
+export function bookPageThumbnailUrl (bookId: string, page: number): string {
   return `${urls.originNoSlash}/api/v1/books/${bookId}/pages/${page}/thumbnail`
 }
 
-export function seriesThumbnailUrl (seriesId: number): string {
+export function seriesThumbnailUrl (seriesId: string): string {
   return `${urls.originNoSlash}/api/v1/series/${seriesId}/thumbnail`
 }
 
-export function collectionThumbnailUrl (collectionId: number): string {
+export function collectionThumbnailUrl (collectionId: string): string {
   return `${urls.originNoSlash}/api/v1/collections/${collectionId}/thumbnail`
 }

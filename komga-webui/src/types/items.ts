@@ -62,7 +62,7 @@ export class BookItem extends Item<BookDto> {
   }
 
   body (): string {
-    let c = this.item.media.pagesCount
+    const c = this.item.media.pagesCount
     return `<span>${plural(c, 'Page', 'Pages')}</span>`
   }
 
@@ -85,7 +85,7 @@ export class SeriesItem extends Item<SeriesDto> {
   }
 
   body (): string {
-    let c = this.item.booksCount
+    const c = this.item.booksCount
     return `<span>${plural(c, 'Book', 'Books')}</span>`
   }
 
@@ -108,7 +108,7 @@ export class CollectionItem extends Item<CollectionDto> {
   }
 
   body (): string {
-    let c = this.item.seriesIds.length
+    const c = this.item.seriesIds.length
     return `<span>${c} Series</span>`
   }
 

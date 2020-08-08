@@ -1,5 +1,6 @@
 package org.gotson.komga.domain.model
 
+import com.github.f4b6a3.tsid.TsidCreator
 import com.jakewharton.byteunits.BinaryByteUnit
 import org.apache.commons.io.FilenameUtils
 import java.net.URL
@@ -14,9 +15,9 @@ data class Book(
   val fileSize: Long = 0,
   val number: Int = 0,
 
-  val id: Long = 0,
-  val seriesId: Long = 0,
-  val libraryId: Long = 0,
+  val id: String = TsidCreator.getTsidString256(),
+  val seriesId: String = "",
+  val libraryId: String = "",
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now()

@@ -70,7 +70,7 @@ export default class KomgaUsersService {
     }
   }
 
-  async patchUserRoles (userId: number, roles: RolesUpdateDto): Promise<UserDto> {
+  async patchUserRoles (userId: string, roles: RolesUpdateDto): Promise<UserDto> {
     try {
       return (await this.http.patch(`${API_USERS}/${userId}`, roles)).data
     } catch (e) {

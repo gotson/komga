@@ -3,11 +3,9 @@ package org.gotson.komga.infrastructure.jooq
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.Library
 import org.junit.jupiter.api.AfterEach
-
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.net.URL
@@ -15,7 +13,6 @@ import java.time.LocalDateTime
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 class LibraryDaoTest(
   @Autowired private val libraryDao: LibraryDao
 ) {
@@ -34,13 +31,12 @@ class LibraryDaoTest(
       root = URL("file://library")
     )
 
-    Thread.sleep(5)
-
-    val created = libraryDao.insert(library)
+    libraryDao.insert(library)
+    val created = libraryDao.findById(library.id)
 
     assertThat(created.id).isNotEqualTo(0)
-    assertThat(created.createdDate).isAfter(now)
-    assertThat(created.lastModifiedDate).isAfter(now)
+    assertThat(created.createdDate).isCloseTo(now, offset)
+    assertThat(created.lastModifiedDate).isCloseTo(now, offset)
     assertThat(created.name).isEqualTo(library.name)
     assertThat(created.root).isEqualTo(library.root)
   }
@@ -51,21 +47,21 @@ class LibraryDaoTest(
       name = "Library",
       root = URL("file://library")
     )
-    val created = libraryDao.insert(library)
-
-    Thread.sleep(5)
+    libraryDao.insert(library)
 
     val modificationDate = LocalDateTime.now()
 
-    val updated = created.copy(
-      name = "LibraryUpdated",
-      root = URL("file://library2"),
-      importEpubSeries = false,
-      importEpubBook = false,
-      importComicInfoCollection = false,
-      importComicInfoSeries = false,
-      importComicInfoBook = false
-    )
+    val updated = with(libraryDao.findById(library.id)) {
+      copy(
+        name = "LibraryUpdated",
+        root = URL("file://library2"),
+        importEpubSeries = false,
+        importEpubBook = false,
+        importComicInfoCollection = false,
+        importComicInfoSeries = false,
+        importComicInfoBook = false
+      )
+    }
 
     libraryDao.update(updated)
     val modified = libraryDao.findById(updated.id)
@@ -73,7 +69,7 @@ class LibraryDaoTest(
     assertThat(modified.id).isEqualTo(updated.id)
     assertThat(modified.createdDate).isEqualTo(updated.createdDate)
     assertThat(modified.lastModifiedDate)
-      .isAfterOrEqualTo(modificationDate)
+      .isCloseTo(modificationDate, offset)
       .isNotEqualTo(updated.lastModifiedDate)
 
     assertThat(modified.name).isEqualTo(updated.name)
@@ -92,10 +88,10 @@ class LibraryDaoTest(
       root = URL("file://library")
     )
 
-    val created = libraryDao.insert(library)
+    libraryDao.insert(library)
     assertThat(libraryDao.count()).isEqualTo(1)
 
-    libraryDao.delete(created.id)
+    libraryDao.delete(library.id)
 
     assertThat(libraryDao.count()).isEqualTo(0)
   }
@@ -151,10 +147,10 @@ class LibraryDaoTest(
       root = URL("file://library2")
     )
 
-    val created1 = libraryDao.insert(library)
-    val created2 = libraryDao.insert(library2)
+    libraryDao.insert(library)
+    libraryDao.insert(library2)
 
-    val all = libraryDao.findAllById(listOf(created1.id, created2.id))
+    val all = libraryDao.findAllById(listOf(library.id, library2.id))
 
     assertThat(all).hasSize(2)
     assertThat(all.map { it.name }).containsExactlyInAnyOrder("Library", "Library2")
@@ -167,9 +163,9 @@ class LibraryDaoTest(
       root = URL("file://library")
     )
 
-    val created = libraryDao.insert(library)
+    libraryDao.insert(library)
 
-    val found = libraryDao.findByIdOrNull(created.id)
+    val found = libraryDao.findByIdOrNull(library.id)
 
     assertThat(found).isNotNull
     assertThat(found?.name).isEqualTo("Library")
@@ -177,7 +173,7 @@ class LibraryDaoTest(
 
   @Test
   fun `given non-existing library when finding by id then null is returned`() {
-    val found = libraryDao.findByIdOrNull(1287386)
+    val found = libraryDao.findByIdOrNull("1287386")
 
     assertThat(found).isNull()
   }
