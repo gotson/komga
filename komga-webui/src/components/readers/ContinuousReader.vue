@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { ContinuousScaleType } from '@/types/enum-reader'
+import { ContinuousScaleType, PaddingPercentage } from '@/types/enum-reader'
 
 export default Vue.extend({
   name: 'ContinuousReader',
@@ -64,6 +64,10 @@ export default Vue.extend({
     },
     scale: {
       type: String as () => ContinuousScaleType,
+      required: true,
+    },
+    sidePadding: {
+      type: String as () => PaddingPercentage,
       required: true,
     },
   },
@@ -121,27 +125,29 @@ export default Vue.extend({
       return page == 0 || this.seen[page] || Math.abs((this.currentPage - 1) - page) <= 2
     },
     calcHeight (page: PageDtoWithUrl): number {
+    const totalSidePadding = parseInt(this.sidePadding) * 2;
       switch (this.scale) {
         case ContinuousScaleType.WIDTH:
             if(page.height && page.width)
-             return page.height / (page.width / this.$vuetify.breakpoint.width)
+              return page.height / (page.width / (this.$vuetify.breakpoint.width - (this.$vuetify.breakpoint.width * totalSidePadding) / 100))
           return 0;
         case ContinuousScaleType.ORIGINAL:
           return page.height || 0
         default:
           if(page.height && page.width)
-            return page.height / (page.width / this.$vuetify.breakpoint.width)
+            return page.height / (page.width / (this.$vuetify.breakpoint.width - (this.$vuetify.breakpoint.width * totalSidePadding) / 100))
           return 0;
       }
     },
     calcWidth (page: PageDtoWithUrl): number {
+        const totalSidePadding = parseInt(this.sidePadding) * 2;
         switch (this.scale) {
         case ContinuousScaleType.WIDTH:
-          return this.$vuetify.breakpoint.width
+          return this.$vuetify.breakpoint.width - (this.$vuetify.breakpoint.width * totalSidePadding) / 100
         case ContinuousScaleType.ORIGINAL:
           return page.width || this.$vuetify.breakpoint.width
         default:
-          return this.$vuetify.breakpoint.width
+          return this.$vuetify.breakpoint.width - (this.$vuetify.breakpoint.width * totalSidePadding) / 100
       }
     },
     centerClick () {

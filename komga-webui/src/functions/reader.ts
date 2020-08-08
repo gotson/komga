@@ -1,4 +1,4 @@
-import { ScaleType } from '@/types/enum-reader'
+import { ScaleType, PaddingPercentage } from '@/types/enum-reader'
 import { ReadingDirection } from '@/types/enum-books'
 
 export const ScaleTypeText = {
@@ -6,6 +6,14 @@ export const ScaleTypeText = {
   [ScaleType.HEIGHT]: 'Fit height',
   [ScaleType.WIDTH]: 'Fit width',
   [ScaleType.ORIGINAL]: 'Original',
+}
+
+export const PaddingPercentageText = {
+  [PaddingPercentage.NONE]: 'None',
+  [PaddingPercentage.TEN]: '10%',
+  [PaddingPercentage.FIFTEEN]: '15%',
+  [PaddingPercentage.TWENTY]: '20%',
+  [PaddingPercentage.TWENTYFIVE]: '25%',
 }
 
 export const ReadingDirectionText = {

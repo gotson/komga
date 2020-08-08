@@ -92,6 +92,7 @@
         :page.sync="page"
         :animations="animations"
         :scale="continuousScale"
+        :sidePadding="sidePadding"
         @menu="toggleToolbars()"
         @jump-previous="jumpToPrevious()"
         @jump-next="jumpToNext()"
@@ -164,13 +165,21 @@
             </v-list-item>
 
             <div v-if="continuousReader">
-              <v-list-item>
-                <settings-select
-                  :items="continuousScaleTypes"
-                  v-model="continuousScale"
-                  label="Scale type"
-                />
-              </v-list-item>
+              <v-subheader class="font-weight-black text-h6">Webtoon</v-subheader>
+                <v-list-item>
+                  <settings-select
+                    :items="continuousScaleTypes"
+                    v-model="continuousScale"
+                    label="Scale type"
+                  />
+                </v-list-item>
+                <v-list-item v-if="fullWidthReader">
+                  <settings-select
+                    :items="paddingPercentages"
+                    v-model="sidePadding"
+                    label="Side padding"
+                  />
+                </v-list-item>
             </div>
 
             <div v-if="!continuousReader">
@@ -264,14 +273,15 @@ import Vue from 'vue'
 import { Location } from 'vue-router'
 import PagedReader from '@/components/readers/PagedReader.vue'
 import ContinuousReader from '@/components/readers/ContinuousReader.vue'
-import { ScaleType, ContinuousScaleType } from '@/types/enum-reader'
-import { ReadingDirectionText, ScaleTypeText } from '@/functions/reader'
+import { ScaleType, ContinuousScaleType, PaddingPercentage } from '@/types/enum-reader'
+import { ReadingDirectionText, ScaleTypeText, PaddingPercentageText } from '@/functions/reader'
 import { shortcutsLTR, shortcutsRTL, shortcutsVertical } from '@/functions/shortcuts/paged-reader'
 import { shortcutsMenus, shortcutsSettings } from '@/functions/shortcuts/bookreader'
 import { shortcutsAll } from '@/functions/shortcuts/reader'
 
 const cookieFit = 'webreader.fit'
 const cookieContinuousReaderFit = 'webreader.continuousReaderFit'
+const cookieContinuousReaderPadding = 'webreader.continuousReaderPadding'
 const cookieReadingDirection = 'webreader.readingDirection'
 const cookieDoublePages = 'webreader.doublePages'
 const cookieSwipe = 'webreader.swipe'
@@ -316,6 +326,7 @@ export default Vue.extend({
         animations: true,
         scale: ScaleType.SCREEN,
         continuousScale: ContinuousScaleType.WIDTH,
+        sidePadding: PaddingPercentage.NONE,
         readingDirection: ReadingDirection.LEFT_TO_RIGHT,
         backgroundColor: 'black',
       },
@@ -335,6 +346,10 @@ export default Vue.extend({
       })),
       continuousScaleTypes: Object.values(ContinuousScaleType).map(x => ({
         text: ScaleTypeText[x],
+        value: x,
+      })),
+      paddingPercentages: Object.values(PaddingPercentage).map(x => ({
+        text: PaddingPercentageText[x],
         value: x,
       })),
       backgroundColors: [
@@ -368,8 +383,11 @@ export default Vue.extend({
     this.loadFromCookie(cookieFit, (v) => {
       this.scale = v
     })
-     this.loadFromCookie(cookieContinuousReaderFit, (v) => {
+    this.loadFromCookie(cookieContinuousReaderFit, (v) => {
       this.continuousScale = v
+    })
+    this.loadFromCookie(cookieContinuousReaderPadding, (v) => {
+      this.sidePadding = v
     })
     this.loadFromCookie(cookieBackground, (v) => {
       this.backgroundColor = v
@@ -409,6 +427,12 @@ export default Vue.extend({
   computed: {
     continuousReader (): boolean {
       return this.readingDirection === ReadingDirection.WEBTOON
+    },
+    fullWidthReader(): boolean {
+      if(this.continuousReader){
+        return this.continuousScale === ContinuousScaleType.WIDTH
+      }
+      return this.scale === ScaleType.WIDTH
     },
     progress (): number {
       return this.page / this.pagesCount * 100
@@ -472,6 +496,17 @@ export default Vue.extend({
         if (Object.values(ContinuousScaleType).includes(scale)) {
           this.settings.continuousScale = scale
           this.$cookies.set(cookieContinuousReaderFit, scale, Infinity)
+        }
+      },
+    },
+    sidePadding: {
+      get: function (): PaddingPercentage {
+        return this.settings.sidePadding
+      },
+      set: function (padding: PaddingPercentage): void {
+        if (Object.values(PaddingPercentage).includes(padding)) {
+          this.settings.sidePadding = padding
+          this.$cookies.set(cookieContinuousReaderPadding, padding, Infinity)
         }
       },
     },
