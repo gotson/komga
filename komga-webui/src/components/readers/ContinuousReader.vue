@@ -67,7 +67,7 @@ export default Vue.extend({
       required: true,
     },
     sidePadding: {
-      type: String as () => PaddingPercentage,
+      type: Number,
       required: true,
     },
   },

@@ -500,10 +500,10 @@ export default Vue.extend({
       },
     },
     sidePadding: {
-      get: function (): PaddingPercentage {
+      get: function (): number {
         return this.settings.sidePadding
       },
-      set: function (padding: PaddingPercentage): void {
+      set: function (padding: number): void {
         if (PaddingPercentage.includes(padding)) {
           this.settings.sidePadding = padding
           this.$cookies.set(cookieContinuousReaderPadding, padding, Infinity)
