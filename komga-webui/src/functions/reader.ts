@@ -14,6 +14,11 @@ export const PaddingPercentageText = {
   [PaddingPercentage.FIFTEEN]: '15%',
   [PaddingPercentage.TWENTY]: '20%',
   [PaddingPercentage.TWENTYFIVE]: '25%',
+  [PaddingPercentage.THIRTY]: '30%',
+  [PaddingPercentage.THIRTYFIVE]: '35%',
+  [PaddingPercentage.FOURTY]: '40%',
+  [PaddingPercentage.FOURTYFIVE]: '45%',
+  [PaddingPercentage.FIFTY]: '50%',
 }
 
 export const ReadingDirectionText = {

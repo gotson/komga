@@ -670,6 +670,14 @@ export default Vue.extend({
         this.sendNotification(`Cycling Scale: ${text}`)
       }
     },
+    cycleSidePadding() {
+      if (!(this.continuousReader && this.fullWidthReader)) return
+        const enumValues = Object.values(PaddingPercentage)
+        const i = (enumValues.indexOf(this.settings.sidePadding) + 1) % (enumValues.length)
+        this.sidePadding = enumValues[i]
+        const text = PaddingPercentageText[this.sidePadding]
+        this.sendNotification(`Cycling Scale: ${text}`)
+    },
     toggleDoublePages () {
       if (this.continuousReader) return
       this.doublePages = !this.doublePages

@@ -20,6 +20,9 @@ export const shortcutsSettings = [
   new Shortcut('Cycle scale',
     (ctx: any) => ctx.cycleScale()
     , 'c'),
+  new Shortcut('Cycle side padding',
+    (ctx: any) => ctx.cycleSidePadding()
+    , 'p'),
 ]
 
 export const shortcutsMenus = [
