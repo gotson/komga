@@ -274,7 +274,7 @@ import { Location } from 'vue-router'
 import PagedReader from '@/components/readers/PagedReader.vue'
 import ContinuousReader from '@/components/readers/ContinuousReader.vue'
 import { ScaleType, ContinuousScaleType, PaddingPercentage } from '@/types/enum-reader'
-import { ReadingDirectionText, ScaleTypeText, PaddingPercentageText } from '@/functions/reader'
+import { ReadingDirectionText, ScaleTypeText } from '@/functions/reader'
 import { shortcutsLTR, shortcutsRTL, shortcutsVertical } from '@/functions/shortcuts/paged-reader'
 import { shortcutsMenus, shortcutsSettings } from '@/functions/shortcuts/bookreader'
 import { shortcutsAll } from '@/functions/shortcuts/reader'
@@ -326,7 +326,7 @@ export default Vue.extend({
         animations: true,
         scale: ScaleType.SCREEN,
         continuousScale: ContinuousScaleType.WIDTH,
-        sidePadding: PaddingPercentage.NONE,
+        sidePadding: 0,
         readingDirection: ReadingDirection.LEFT_TO_RIGHT,
         backgroundColor: 'black',
       },
@@ -349,7 +349,7 @@ export default Vue.extend({
         value: x,
       })),
       paddingPercentages: Object.values(PaddingPercentage).map(x => ({
-        text: PaddingPercentageText[x],
+        text: x === 0 ? 'None' : `${x}%`,
         value: x,
       })),
       backgroundColors: [
@@ -387,7 +387,7 @@ export default Vue.extend({
       this.continuousScale = v
     })
     this.loadFromCookie(cookieContinuousReaderPadding, (v) => {
-      this.sidePadding = v
+      this.sidePadding = parseInt(v)
     })
     this.loadFromCookie(cookieBackground, (v) => {
       this.backgroundColor = v
@@ -504,7 +504,7 @@ export default Vue.extend({
         return this.settings.sidePadding
       },
       set: function (padding: PaddingPercentage): void {
-        if (Object.values(PaddingPercentage).includes(padding)) {
+        if (PaddingPercentage.includes(padding)) {
           this.settings.sidePadding = padding
           this.$cookies.set(cookieContinuousReaderPadding, padding, Infinity)
         }
@@ -672,11 +672,10 @@ export default Vue.extend({
     },
     cycleSidePadding() {
       if (!(this.continuousReader && this.fullWidthReader)) return
-        const enumValues = Object.values(PaddingPercentage)
-        const i = (enumValues.indexOf(this.settings.sidePadding) + 1) % (enumValues.length)
-        this.sidePadding = enumValues[i]
-        const text = PaddingPercentageText[this.sidePadding]
-        this.sendNotification(`Cycling Scale: ${text}`)
+        const i = (PaddingPercentage.indexOf(this.settings.sidePadding) + 1) % (PaddingPercentage.length)
+        this.sidePadding = PaddingPercentage[i]
+        const text = this.sidePadding === 0 ? 'None' : `${this.sidePadding}%`;
+        this.sendNotification(`Cycling Side Padding: ${text}`)
     },
     toggleDoublePages () {
       if (this.continuousReader) return

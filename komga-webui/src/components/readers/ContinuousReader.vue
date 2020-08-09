@@ -125,7 +125,7 @@ export default Vue.extend({
       return page == 0 || this.seen[page] || Math.abs((this.currentPage - 1) - page) <= 2
     },
     calcHeight (page: PageDtoWithUrl): number {
-    const totalSidePadding = parseInt(this.sidePadding) * 2;
+    const totalSidePadding = this.sidePadding * 2;
       switch (this.scale) {
         case ContinuousScaleType.WIDTH:
             if(page.height && page.width)
@@ -140,7 +140,7 @@ export default Vue.extend({
       }
     },
     calcWidth (page: PageDtoWithUrl): number {
-        const totalSidePadding = parseInt(this.sidePadding) * 2;
+        const totalSidePadding = this.sidePadding * 2;
         switch (this.scale) {
         case ContinuousScaleType.WIDTH:
           return this.$vuetify.breakpoint.width - (this.$vuetify.breakpoint.width * totalSidePadding) / 100
