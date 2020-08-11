@@ -208,8 +208,8 @@ val dbSqlite = mapOf(
   "url" to "jdbc:sqlite:${project.buildDir}/generated/flyway/database.sqlite"
 )
 val migrationDirsSqlite = listOf(
-  "$projectDir/src/flyway/resources/db/migration/sqlite"
-//  "$projectDir/src/flyway/kotlin/db/migration/sqlite"
+  "$projectDir/src/flyway/resources/db/migration/sqlite",
+  "$projectDir/src/flyway/kotlin/db/migration/sqlite"
 )
 flyway {
   url = dbSqlite["url"]
@@ -224,6 +224,7 @@ tasks.flywayMigrate {
     delete(outputs.files)
     mkdir("${project.buildDir}/generated/flyway")
   }
+  mixed = true
 }
 
 jooqGenerator {

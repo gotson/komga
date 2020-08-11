@@ -39,8 +39,6 @@ class BookDtoDao(
   private val a = Tables.BOOK_METADATA_AUTHOR
   private val s = Tables.SERIES
 
-  private val mediaFields = m.fields().filterNot { it.name == m.THUMBNAIL.name }.toTypedArray()
-
   private val sorts = mapOf(
     "name" to DSL.lower(b.NAME),
     "created" to b.CREATED_DATE,
@@ -154,7 +152,7 @@ class BookDtoDao(
   private fun selectBase(userId: String) =
     dsl.select(
       *b.fields(),
-      *mediaFields,
+      *m.fields(),
       *d.fields(),
       *r.fields()
     ).from(b)

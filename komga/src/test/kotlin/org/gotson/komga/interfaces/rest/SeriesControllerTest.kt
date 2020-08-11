@@ -6,6 +6,7 @@ import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.SeriesMetadata
+import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -16,6 +17,7 @@ import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
+import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
@@ -53,6 +55,7 @@ class SeriesControllerTest(
   @Autowired private val libraryRepository: LibraryRepository,
   @Autowired private val libraryLifecycle: LibraryLifecycle,
   @Autowired private val bookRepository: BookRepository,
+  @Autowired private val bookLifecycle: BookLifecycle,
   @Autowired private val mediaRepository: MediaRepository,
   @Autowired private val bookMetadataRepository: BookMetadataRepository,
   @Autowired private val userRepository: KomgaUserRepository,
@@ -415,9 +418,11 @@ class SeriesControllerTest(
       }
 
       bookRepository.findAll().first().let { book ->
-        mediaRepository.findById(book.id).let {
-          mediaRepository.update(it.copy(thumbnail = Random.nextBytes(1)))
-        }
+        bookLifecycle.addThumbnailForBook(ThumbnailBook(
+          thumbnail = Random.nextBytes(1),
+          bookId = book.id,
+          type = ThumbnailBook.Type.GENERATED
+        ))
       }
 
       val url = "/api/v1/series/${createdSeries.id}/thumbnail"
@@ -445,9 +450,11 @@ class SeriesControllerTest(
       }
 
       bookRepository.findAll().forEach { book ->
-        mediaRepository.findById(book.id).let {
-          mediaRepository.update(it.copy(thumbnail = Random.nextBytes(1)))
-        }
+        bookLifecycle.addThumbnailForBook(ThumbnailBook(
+          thumbnail = Random.nextBytes(1),
+          bookId = book.id,
+          type = ThumbnailBook.Type.GENERATED
+        ))
       }
 
       val url = "/api/v1/series/${createdSeries.id}/thumbnail"
@@ -483,8 +490,8 @@ class SeriesControllerTest(
       }
 
       bookRepository.findAll().forEach { book ->
-        mediaRepository.findById(book.id).let {
-          mediaRepository.update(it.copy(
+        mediaRepository.findById(book.id).let { media ->
+          mediaRepository.update(media.copy(
             status = Media.Status.READY,
             pages = (1..10).map { BookPage("$it", "image/jpeg") }
           ))
@@ -523,8 +530,8 @@ class SeriesControllerTest(
       }
 
       bookRepository.findAll().forEach { book ->
-        mediaRepository.findById(book.id).let {
-          mediaRepository.update(it.copy(
+        mediaRepository.findById(book.id).let { media ->
+          mediaRepository.update(media.copy(
             status = Media.Status.READY,
             pages = (1..10).map { BookPage("$it", "image/jpeg") }
           ))
@@ -572,8 +579,8 @@ class SeriesControllerTest(
       }
 
       bookRepository.findAll().forEach { book ->
-        mediaRepository.findById(book.id).let {
-          mediaRepository.update(it.copy(
+        mediaRepository.findById(book.id).let { media ->
+          mediaRepository.update(media.copy(
             status = Media.Status.READY,
             pages = (1..10).map { BookPage("$it", "image/jpeg") }
           ))

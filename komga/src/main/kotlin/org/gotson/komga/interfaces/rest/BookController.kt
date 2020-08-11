@@ -197,10 +197,10 @@ class BookController(
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    return mediaRepository.getThumbnail(bookId)?.let {
+    return bookLifecycle.getThumbnail(bookId)?.let {
       ResponseEntity.ok()
-        .setCachePrivate()
-        .body(it)
+        .setCachePrivate() //TODO: this won't work with changing covers
+        .body(it.thumbnail)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 

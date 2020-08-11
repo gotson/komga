@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.time.LocalDateTime
-import kotlin.random.Random
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
@@ -62,7 +61,6 @@ class MediaDaoTest(
     val media = Media(
       status = Media.Status.READY,
       mediaType = "application/zip",
-      thumbnail = Random.nextBytes(1),
       pages = listOf(BookPage(
         fileName = "1.jpg",
         mediaType = "image/jpeg"
@@ -80,7 +78,6 @@ class MediaDaoTest(
     assertThat(created.lastModifiedDate).isCloseTo(now, offset)
     assertThat(created.status).isEqualTo(media.status)
     assertThat(created.mediaType).isEqualTo(media.mediaType)
-    assertThat(created.thumbnail).isEqualTo(media.thumbnail)
     assertThat(created.comment).isEqualTo(media.comment)
     assertThat(created.pages).hasSize(1)
     with(created.pages.first()) {
@@ -101,7 +98,6 @@ class MediaDaoTest(
     assertThat(created.bookId).isEqualTo(book.id)
     assertThat(created.status).isEqualTo(Media.Status.UNKNOWN)
     assertThat(created.mediaType).isNull()
-    assertThat(created.thumbnail).isNull()
     assertThat(created.comment).isNull()
     assertThat(created.pages).isEmpty()
     assertThat(created.files).isEmpty()
@@ -112,7 +108,6 @@ class MediaDaoTest(
     val media = Media(
       status = Media.Status.READY,
       mediaType = "application/zip",
-      thumbnail = Random.nextBytes(1),
       pages = listOf(BookPage(
         fileName = "1.jpg",
         mediaType = "image/jpeg"
@@ -129,7 +124,6 @@ class MediaDaoTest(
       copy(
         status = Media.Status.ERROR,
         mediaType = "application/rar",
-        thumbnail = Random.nextBytes(1),
         pages = listOf(BookPage(
           fileName = "2.png",
           mediaType = "image/png"
@@ -149,7 +143,6 @@ class MediaDaoTest(
       .isNotEqualTo(updated.lastModifiedDate)
     assertThat(modified.status).isEqualTo(updated.status)
     assertThat(modified.mediaType).isEqualTo(updated.mediaType)
-    assertThat(modified.thumbnail).isEqualTo(updated.thumbnail)
     assertThat(modified.comment).isEqualTo(updated.comment)
     assertThat(modified.pages.first().fileName).isEqualTo(updated.pages.first().fileName)
     assertThat(modified.pages.first().mediaType).isEqualTo(updated.pages.first().mediaType)
@@ -161,7 +154,6 @@ class MediaDaoTest(
     val media = Media(
       status = Media.Status.READY,
       mediaType = "application/zip",
-      thumbnail = Random.nextBytes(1),
       pages = listOf(BookPage(
         fileName = "1.jpg",
         mediaType = "image/jpeg"

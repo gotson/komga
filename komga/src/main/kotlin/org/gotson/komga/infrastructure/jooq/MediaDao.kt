@@ -44,13 +44,6 @@ class MediaDao(
         mr.toDomain(pr.filterNot { it.bookId == null }.map { it.toDomain() }, files)
       }.first()
 
-  override fun getThumbnail(bookId: String): ByteArray? =
-    dsl.select(m.THUMBNAIL)
-      .from(m)
-      .where(m.BOOK_ID.eq(bookId))
-      .fetchOne(0, ByteArray::class.java)
-
-
   override fun insert(media: Media) {
     insertMany(listOf(media))
   }
@@ -64,17 +57,15 @@ class MediaDao(
             m.BOOK_ID,
             m.STATUS,
             m.MEDIA_TYPE,
-            m.THUMBNAIL,
             m.COMMENT,
             m.PAGE_COUNT
-          ).values(null as String?, null, null, null, null, null)
+          ).values(null as String?, null, null, null, null)
         ).also { step ->
           medias.forEach {
             step.bind(
               it.bookId,
               it.status,
               it.mediaType,
-              it.thumbnail,
               it.comment,
               it.pages.size
             )
@@ -144,7 +135,6 @@ class MediaDao(
         update(m)
           .set(m.STATUS, media.status.toString())
           .set(m.MEDIA_TYPE, media.mediaType)
-          .set(m.THUMBNAIL, media.thumbnail)
           .set(m.COMMENT, media.comment)
           .set(m.PAGE_COUNT, media.pages.size)
           .set(m.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
@@ -191,7 +181,6 @@ class MediaDao(
     Media(
       status = Media.Status.valueOf(status),
       mediaType = mediaType,
-      thumbnail = thumbnail,
       pages = pages,
       files = files,
       comment = comment,

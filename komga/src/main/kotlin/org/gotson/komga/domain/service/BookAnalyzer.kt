@@ -6,6 +6,7 @@ import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaUnsupportedException
+import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
@@ -68,17 +69,14 @@ class BookAnalyzer(
     }
     logger.info { "Book has ${pages.size} pages" }
 
-    logger.info { "Trying to generate cover for book: $book" }
-    val thumbnail = generateThumbnail(book, mediaType, pages.first().fileName)
-
     val files = others.map { it.name }
 
-    return Media(mediaType = mediaType, status = Media.Status.READY, pages = pages, files = files, thumbnail = thumbnail, comment = entriesErrorSummary)
+    return Media(mediaType = mediaType, status = Media.Status.READY, pages = pages, files = files, comment = entriesErrorSummary)
   }
 
   @Throws(MediaNotReadyException::class)
-  fun regenerateThumbnail(book: Book): Media {
-    logger.info { "Regenerate thumbnail for book: $book" }
+  fun generateThumbnail(book: Book): ThumbnailBook {
+    logger.info { "Generate thumbnail for book: $book" }
 
     val media = mediaRepository.findById(book.id)
 
@@ -87,25 +85,21 @@ class BookAnalyzer(
       throw MediaNotReadyException()
     }
 
-    val thumbnail = generateThumbnail(book, media.mediaType!!, media.pages.first().fileName)
-
-    return Media(
-      mediaType = media.mediaType,
-      status = Media.Status.READY,
-      pages = media.pages,
-      thumbnail = thumbnail
-    )
-  }
-
-  private fun generateThumbnail(book: Book, mediaType: String, entry: String): ByteArray? =
-    try {
-      supportedMediaTypes.getValue(mediaType).getEntryStream(book.path(), entry).let { cover ->
+    val thumbnail = try {
+      supportedMediaTypes.getValue(media.mediaType!!).getEntryStream(book.path(), media.pages.first().fileName).let { cover ->
         imageConverter.resizeImage(cover, thumbnailFormat, thumbnailSize)
       }
     } catch (ex: Exception) {
       logger.warn(ex) { "Could not generate thumbnail for book: $book" }
       null
     }
+
+    return ThumbnailBook(
+      thumbnail = thumbnail,
+      type = ThumbnailBook.Type.GENERATED,
+      bookId = book.id
+    )
+  }
 
   @Throws(
     MediaNotReadyException::class,

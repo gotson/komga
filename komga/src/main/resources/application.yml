@@ -29,6 +29,7 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration/{vendor}
+    mixed: true
   thymeleaf:
     prefix: classpath:/public/
   mvc:

@@ -8,13 +8,17 @@ import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.ReadProgress
+import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
+import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
 import org.springframework.stereotype.Service
+import java.nio.file.Files
+import java.nio.file.Paths
 
 private val logger = KotlinLogging.logger {}
 
@@ -24,6 +28,7 @@ class BookLifecycle(
   private val mediaRepository: MediaRepository,
   private val bookMetadataRepository: BookMetadataRepository,
   private val readProgressRepository: ReadProgressRepository,
+  private val thumbnailBookRepository: ThumbnailBookRepository,
   private val bookAnalyzer: BookAnalyzer,
   private val imageConverter: ImageConverter
 ) {
@@ -46,15 +51,85 @@ class BookLifecycle(
     mediaRepository.update(media)
   }
 
-  fun regenerateThumbnailAndPersist(book: Book) {
-    logger.info { "Regenerate thumbnail and persist book: $book" }
-    val media = try {
-      bookAnalyzer.regenerateThumbnail(book)
+  fun generateThumbnailAndPersist(book: Book) {
+    logger.info { "Generate thumbnail and persist for book: $book" }
+    val thumbnailBook = try {
+      bookAnalyzer.generateThumbnail(book)
     } catch (ex: Exception) {
-      logger.error(ex) { "Error while recreating thumbnail" }
-      Media(status = Media.Status.ERROR)
-    }.copy(bookId = book.id)
-    mediaRepository.update(media)
+      logger.error(ex) { "Error while creating thumbnail" }
+      null
+    }
+    thumbnailBook?.let {
+      addThumbnailForBook(it)
+    }
+  }
+
+  fun addThumbnailForBook(thumbnail: ThumbnailBook) {
+    when (thumbnail.type) {
+      ThumbnailBook.Type.GENERATED -> {
+        // only one generated thumbnail is allowed
+        thumbnailBookRepository.deleteByBookIdAndType(thumbnail.bookId, ThumbnailBook.Type.GENERATED)
+        thumbnailBookRepository.insert(thumbnail)
+      }
+      ThumbnailBook.Type.SIDECAR -> {
+        // delete existing thumbnail with the same url
+        thumbnailBookRepository.findByBookIdAndType(thumbnail.bookId, ThumbnailBook.Type.SIDECAR)
+          .filter { it.url == thumbnail.url }
+          .forEach {
+            thumbnailBookRepository.delete(it.id)
+          }
+        thumbnailBookRepository.insert(thumbnail)
+      }
+    }
+
+    if (thumbnail.selected)
+      thumbnailBookRepository.markSelected(thumbnail)
+    else
+      thumbnailsHouseKeeping(thumbnail.bookId)
+  }
+
+  fun getThumbnail(bookId: String): ThumbnailBook? {
+    val selected = thumbnailBookRepository.findSelectedByBookId(bookId)
+
+    if (selected == null || !thumbnailExists(selected)) {
+      thumbnailsHouseKeeping(bookId)
+      return thumbnailBookRepository.findSelectedByBookId(bookId)
+    }
+
+    return selected
+  }
+
+  private fun thumbnailsHouseKeeping(bookId: String) {
+    logger.info { "House keeping thumbnails for book: $bookId" }
+    val all = thumbnailBookRepository.findByBookId(bookId)
+      .mapNotNull {
+        if (!thumbnailExists(it)) {
+          logger.warn { "Thumbnail doesn't exist, removing entry" }
+          thumbnailBookRepository.delete(it.id)
+          null
+        } else it
+      }
+
+    val selected = all.filter { it.selected }
+    when {
+      selected.size > 1 -> {
+        logger.info { "More than one thumbnail is selected, removing extra ones" }
+        thumbnailBookRepository.markSelected(selected[0])
+      }
+      selected.isEmpty() && all.isNotEmpty() -> {
+        logger.info { "Book has bo selected thumbnail, choosing one automatically" }
+        thumbnailBookRepository.markSelected(all.first())
+      }
+    }
+  }
+
+  private fun thumbnailExists(thumbnailBook: ThumbnailBook): Boolean {
+    if (thumbnailBook.type == ThumbnailBook.Type.SIDECAR) {
+      if (thumbnailBook.url != null)
+        return Files.exists(Paths.get(thumbnailBook.url.toURI()))
+      return false
+    }
+    return true
   }
 
   @Throws(
@@ -109,6 +184,7 @@ class BookLifecycle(
 
     readProgressRepository.deleteByBookId(bookId)
     mediaRepository.delete(bookId)
+    thumbnailBookRepository.deleteByBookId(bookId)
     bookMetadataRepository.delete(bookId)
 
     bookRepository.delete(bookId)
@@ -119,6 +195,7 @@ class BookLifecycle(
 
     readProgressRepository.deleteByBookIds(bookIds)
     mediaRepository.deleteByBookIds(bookIds)
+    thumbnailBookRepository.deleteByBookIds(bookIds)
     bookMetadataRepository.deleteByBookIds(bookIds)
 
     bookRepository.deleteByBookIds(bookIds)
