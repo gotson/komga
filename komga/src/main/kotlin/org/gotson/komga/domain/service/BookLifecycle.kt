@@ -92,7 +92,7 @@ class BookLifecycle(
   fun getThumbnail(bookId: String): ThumbnailBook? {
     val selected = thumbnailBookRepository.findSelectedByBookId(bookId)
 
-    if (selected == null || !thumbnailExists(selected)) {
+    if (selected == null || !selected.exists()) {
       thumbnailsHouseKeeping(bookId)
       return thumbnailBookRepository.findSelectedByBookId(bookId)
     }
@@ -115,7 +115,7 @@ class BookLifecycle(
     logger.info { "House keeping thumbnails for book: $bookId" }
     val all = thumbnailBookRepository.findByBookId(bookId)
       .mapNotNull {
-        if (!thumbnailExists(it)) {
+        if (!it.exists()) {
           logger.warn { "Thumbnail doesn't exist, removing entry" }
           thumbnailBookRepository.delete(it.id)
           null
@@ -135,10 +135,10 @@ class BookLifecycle(
     }
   }
 
-  private fun thumbnailExists(thumbnailBook: ThumbnailBook): Boolean {
-    if (thumbnailBook.type == ThumbnailBook.Type.SIDECAR) {
-      if (thumbnailBook.url != null)
-        return Files.exists(Paths.get(thumbnailBook.url.toURI()))
+  private fun ThumbnailBook.exists(): Boolean {
+    if (type == ThumbnailBook.Type.SIDECAR) {
+      if (url != null)
+        return Files.exists(Paths.get(url.toURI()))
       return false
     }
     return true

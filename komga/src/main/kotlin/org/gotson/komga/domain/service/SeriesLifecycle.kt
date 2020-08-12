@@ -8,13 +8,18 @@ import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesMetadata
+import org.gotson.komga.domain.model.ThumbnailSeries
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
+import org.gotson.komga.domain.persistence.ThumbnailSeriesRepository
 import org.springframework.stereotype.Service
+import java.io.File
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.Comparator
 
 private val logger = KotlinLogging.logger {}
@@ -27,6 +32,7 @@ class SeriesLifecycle(
   private val mediaRepository: MediaRepository,
   private val bookMetadataRepository: BookMetadataRepository,
   private val seriesRepository: SeriesRepository,
+  private val thumbnailsSeriesRepository: ThumbnailSeriesRepository,
   private val seriesMetadataRepository: SeriesMetadataRepository,
   private val collectionRepository: SeriesCollectionRepository
 ) {
@@ -96,6 +102,7 @@ class SeriesLifecycle(
     bookLifecycle.deleteMany(bookIds)
 
     collectionRepository.removeSeriesFromAll(seriesId)
+    thumbnailsSeriesRepository.deleteBySeriesId(seriesId)
 
     seriesRepository.delete(seriesId)
   }
@@ -107,14 +114,69 @@ class SeriesLifecycle(
     bookLifecycle.deleteMany(bookIds)
 
     collectionRepository.removeSeriesFromAll(seriesIds)
+    thumbnailsSeriesRepository.deleteBySeriesIds(seriesIds)
 
     seriesRepository.deleteAll(seriesIds)
   }
 
+  fun getThumbnail(seriesId: String): ThumbnailSeries? {
+    val selected = thumbnailsSeriesRepository.findSelectedBySeriesId(seriesId)
+
+    if (selected == null || !selected.exists()) {
+      thumbnailsHouseKeeping(seriesId)
+      return thumbnailsSeriesRepository.findSelectedBySeriesId(seriesId)
+    }
+
+    return selected
+  }
+
   fun getThumbnailBytes(seriesId: String): ByteArray? {
+    getThumbnail(seriesId)?.let {
+      return File(it.url.toURI()).readBytes()
+    }
+
     bookRepository.findFirstIdInSeries(seriesId)?.let { bookId ->
       return bookLifecycle.getThumbnailBytes(bookId)
     }
     return null
   }
+
+  fun addThumbnailForSeries(thumbnail: ThumbnailSeries) {
+    // delete existing thumbnail with the same url
+    thumbnailsSeriesRepository.findBySeriesId(thumbnail.seriesId)
+      .filter { it.url == thumbnail.url }
+      .forEach {
+        thumbnailsSeriesRepository.delete(it.id)
+      }
+    thumbnailsSeriesRepository.insert(thumbnail)
+
+    if (thumbnail.selected)
+      thumbnailsSeriesRepository.markSelected(thumbnail)
+  }
+
+  private fun thumbnailsHouseKeeping(seriesId: String) {
+    logger.info { "House keeping thumbnails for series: $seriesId" }
+    val all = thumbnailsSeriesRepository.findBySeriesId(seriesId)
+      .mapNotNull {
+        if (!it.exists()) {
+          logger.warn { "Thumbnail doesn't exist, removing entry" }
+          thumbnailsSeriesRepository.delete(it.id)
+          null
+        } else it
+      }
+
+    val selected = all.filter { it.selected }
+    when {
+      selected.size > 1 -> {
+        logger.info { "More than one thumbnail is selected, removing extra ones" }
+        thumbnailsSeriesRepository.markSelected(selected[0])
+      }
+      selected.isEmpty() && all.isNotEmpty() -> {
+        logger.info { "Series has bo selected thumbnail, choosing one automatically" }
+        thumbnailsSeriesRepository.markSelected(all.first())
+      }
+    }
+  }
+
+  private fun ThumbnailSeries.exists(): Boolean = Files.exists(Paths.get(url.toURI()))
 }
