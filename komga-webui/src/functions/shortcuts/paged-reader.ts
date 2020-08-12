@@ -32,3 +32,9 @@ export const shortcutsVertical = [
       ctx.verticalNext()
     }, 'ArrowDown', '↓'),
 ]
+
+export const shortcutsSettingsPaged = [
+  new Shortcut('Toggle double pages',
+    (ctx: any) => ctx.toggleDoublePages()
+    , 'd'),
+]

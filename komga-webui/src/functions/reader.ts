@@ -1,11 +1,13 @@
-import { ScaleType } from '@/types/enum-reader'
+import { ContinuousScaleType, ScaleType } from '@/types/enum-reader'
 import { ReadingDirection } from '@/types/enum-books'
 
 export const ScaleTypeText = {
   [ScaleType.SCREEN]: 'Fit screen',
   [ScaleType.HEIGHT]: 'Fit height',
   [ScaleType.WIDTH]: 'Fit width',
+  [ContinuousScaleType.WIDTH]: 'Fit width',
   [ScaleType.ORIGINAL]: 'Original',
+  [ContinuousScaleType.ORIGINAL]: 'Original',
 }
 
 export const ReadingDirectionText = {

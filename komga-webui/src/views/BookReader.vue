@@ -91,6 +91,8 @@
         :pages="pages"
         :page.sync="page"
         :animations="animations"
+        :scale="continuousScale"
+        :sidePadding="sidePadding"
         @menu="toggleToolbars()"
         @jump-previous="jumpToPrevious()"
         @jump-next="jumpToNext()"
@@ -161,6 +163,24 @@
               >
               </settings-select>
             </v-list-item>
+
+            <div v-if="continuousReader">
+              <v-subheader class="font-weight-black text-h6">Webtoon</v-subheader>
+              <v-list-item>
+                <settings-select
+                  :items="continuousScaleTypes"
+                  v-model="continuousScale"
+                  label="Scale type"
+                />
+              </v-list-item>
+              <v-list-item>
+                <settings-select
+                  :items="paddingPercentages"
+                  v-model="sidePadding"
+                  label="Side padding"
+                />
+              </v-list-item>
+            </div>
 
             <div v-if="!continuousReader">
               <v-subheader class="font-weight-black text-h6">Paged</v-subheader>
@@ -253,13 +273,21 @@ import Vue from 'vue'
 import { Location } from 'vue-router'
 import PagedReader from '@/components/readers/PagedReader.vue'
 import ContinuousReader from '@/components/readers/ContinuousReader.vue'
-import { ScaleType } from '@/types/enum-reader'
+import { ContinuousScaleType, PaddingPercentage, ScaleType } from '@/types/enum-reader'
 import { ReadingDirectionText, ScaleTypeText } from '@/functions/reader'
-import { shortcutsLTR, shortcutsRTL, shortcutsVertical } from '@/functions/shortcuts/paged-reader'
+import {
+  shortcutsLTR,
+  shortcutsRTL,
+  shortcutsSettingsPaged,
+  shortcutsVertical,
+} from '@/functions/shortcuts/paged-reader'
 import { shortcutsMenus, shortcutsSettings } from '@/functions/shortcuts/bookreader'
 import { shortcutsAll } from '@/functions/shortcuts/reader'
+import { shortcutsSettingsContinuous } from '@/functions/shortcuts/continuous-reader'
 
 const cookieFit = 'webreader.fit'
+const cookieContinuousReaderFit = 'webreader.continuousReaderFit'
+const cookieContinuousReaderPadding = 'webreader.continuousReaderPadding'
 const cookieReadingDirection = 'webreader.readingDirection'
 const cookieDoublePages = 'webreader.doublePages'
 const cookieSwipe = 'webreader.swipe'
@@ -303,6 +331,8 @@ export default Vue.extend({
         swipe: true,
         animations: true,
         scale: ScaleType.SCREEN,
+        continuousScale: ContinuousScaleType.WIDTH,
+        sidePadding: 0,
         readingDirection: ReadingDirection.LEFT_TO_RIGHT,
         backgroundColor: 'black',
       },
@@ -320,6 +350,14 @@ export default Vue.extend({
         text: ScaleTypeText[x],
         value: x,
       })),
+      continuousScaleTypes: Object.values(ContinuousScaleType).map(x => ({
+        text: ScaleTypeText[x],
+        value: x,
+      })),
+      paddingPercentages: Object.values(PaddingPercentage).map(x => ({
+        text: x === 0 ? 'None' : `${x}%`,
+        value: x,
+      })),
       backgroundColors: [
         { text: 'White', value: 'white' },
         { text: 'Black', value: 'black' },
@@ -332,7 +370,7 @@ export default Vue.extend({
         this.supportedMediaTypes.push('image/webp')
       }
     })
-    this.shortcuts = this.$_.keyBy([...shortcutsSettings, ...shortcutsMenus, ...shortcutsAll], x => x.key)
+    this.shortcuts = this.$_.keyBy([...shortcutsSettings, ...shortcutsSettingsPaged, ...shortcutsSettingsContinuous, ...shortcutsMenus, ...shortcutsAll], x => x.key)
     window.addEventListener('keydown', this.keyPressed)
   },
   async mounted () {
@@ -350,6 +388,12 @@ export default Vue.extend({
     })
     this.loadFromCookie(cookieFit, (v) => {
       this.scale = v
+    })
+    this.loadFromCookie(cookieContinuousReaderFit, (v) => {
+      this.continuousScale = v
+    })
+    this.loadFromCookie(cookieContinuousReaderPadding, (v) => {
+      this.sidePadding = parseInt(v)
     })
     this.loadFromCookie(cookieBackground, (v) => {
       this.backgroundColor = v
@@ -390,6 +434,12 @@ export default Vue.extend({
     continuousReader (): boolean {
       return this.readingDirection === ReadingDirection.WEBTOON
     },
+    fullWidthReader (): boolean {
+      if (this.continuousReader) {
+        return this.continuousScale === ContinuousScaleType.WIDTH
+      }
+      return this.scale === ScaleType.WIDTH
+    },
     progress (): number {
       return this.page / this.pagesCount * 100
     },
@@ -417,9 +467,15 @@ export default Vue.extend({
         default:
           nav.push(...shortcutsAll)
       }
+      let settings = [...shortcutsSettings]
+      if (this.continuousReader) {
+        settings.push(...shortcutsSettingsContinuous)
+      } else {
+        settings.push(...shortcutsSettingsPaged)
+      }
       return {
         'Reader Navigation': nav,
-        'Settings': shortcutsSettings,
+        'Settings': settings,
         'Menus': shortcutsMenus,
       }
     },
@@ -441,6 +497,28 @@ export default Vue.extend({
         if (Object.values(ScaleType).includes(scale)) {
           this.settings.scale = scale
           this.$cookies.set(cookieFit, scale, Infinity)
+        }
+      },
+    },
+    continuousScale: {
+      get: function (): ContinuousScaleType {
+        return this.settings.continuousScale
+      },
+      set: function (scale: ContinuousScaleType): void {
+        if (Object.values(ContinuousScaleType).includes(scale)) {
+          this.settings.continuousScale = scale
+          this.$cookies.set(cookieContinuousReaderFit, scale, Infinity)
+        }
+      },
+    },
+    sidePadding: {
+      get: function (): number {
+        return this.settings.sidePadding
+      },
+      set: function (padding: number): void {
+        if (PaddingPercentage.includes(padding)) {
+          this.settings.sidePadding = padding
+          this.$cookies.set(cookieContinuousReaderPadding, padding, Infinity)
         }
       },
     },
@@ -590,12 +668,27 @@ export default Vue.extend({
       this.sendNotification(`Changing Reading Direction to: ${text}`)
     },
     cycleScale () {
-      if (this.continuousReader) return
-      const enumValues = Object.values(ScaleType)
-      const i = (enumValues.indexOf(this.settings.scale) + 1) % (enumValues.length)
-      this.scale = enumValues[i]
-      const text = ScaleTypeText[this.scale]
-      this.sendNotification(`Cycling Scale: ${text}`)
+      if (this.continuousReader) {
+        const enumValues = Object.values(ContinuousScaleType)
+        const i = (enumValues.indexOf(this.settings.continuousScale) + 1) % (enumValues.length)
+        this.continuousScale = enumValues[i]
+        const text = ScaleTypeText[this.continuousScale]
+        this.sendNotification(`Cycling Scale: ${text}`)
+      } else {
+        const enumValues = Object.values(ScaleType)
+        const i = (enumValues.indexOf(this.settings.scale) + 1) % (enumValues.length)
+        this.scale = enumValues[i]
+        const text = ScaleTypeText[this.scale]
+        this.sendNotification(`Cycling Scale: ${text}`)
+      }
+    },
+    cycleSidePadding () {
+      if (this.continuousReader) {
+        const i = (PaddingPercentage.indexOf(this.settings.sidePadding) + 1) % (PaddingPercentage.length)
+        this.sidePadding = PaddingPercentage[i]
+        const text = this.sidePadding === 0 ? 'None' : `${this.sidePadding}%`
+        this.sendNotification(`Cycling Side Padding: ${text}`)
+      }
     },
     toggleDoublePages () {
       if (this.continuousReader) return
