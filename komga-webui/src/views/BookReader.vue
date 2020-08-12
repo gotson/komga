@@ -166,20 +166,20 @@
 
             <div v-if="continuousReader">
               <v-subheader class="font-weight-black text-h6">Webtoon</v-subheader>
-                <v-list-item>
-                  <settings-select
-                    :items="continuousScaleTypes"
-                    v-model="continuousScale"
-                    label="Scale type"
-                  />
-                </v-list-item>
-                <v-list-item v-if="fullWidthReader">
-                  <settings-select
-                    :items="paddingPercentages"
-                    v-model="sidePadding"
-                    label="Side padding"
-                  />
-                </v-list-item>
+              <v-list-item>
+                <settings-select
+                  :items="continuousScaleTypes"
+                  v-model="continuousScale"
+                  label="Scale type"
+                />
+              </v-list-item>
+              <v-list-item>
+                <settings-select
+                  :items="paddingPercentages"
+                  v-model="sidePadding"
+                  label="Side padding"
+                />
+              </v-list-item>
             </div>
 
             <div v-if="!continuousReader">
@@ -670,12 +670,13 @@ export default Vue.extend({
         this.sendNotification(`Cycling Scale: ${text}`)
       }
     },
-    cycleSidePadding() {
-      if (!(this.continuousReader && this.fullWidthReader)) return
+    cycleSidePadding () {
+      if (this.continuousReader) {
         const i = (PaddingPercentage.indexOf(this.settings.sidePadding) + 1) % (PaddingPercentage.length)
         this.sidePadding = PaddingPercentage[i]
-        const text = this.sidePadding === 0 ? 'None' : `${this.sidePadding}%`;
+        const text = this.sidePadding === 0 ? 'None' : `${this.sidePadding}%`
         this.sendNotification(`Cycling Side Padding: ${text}`)
+      }
     },
     toggleDoublePages () {
       if (this.continuousReader) return
