@@ -1,3 +1,10 @@
+# [0.53.0](https://github.com/gotson/komga/compare/v0.52.3...v0.53.0) (2020-08-12)
+
+
+### Features
+
+* sidecar thumbnails for books ([d01b29f](https://github.com/gotson/komga/commit/d01b29f28098102804c0bddd29c6e0867c560c01))
+
 ## [0.52.3](https://github.com/gotson/komga/compare/v0.52.2...v0.52.3) (2020-08-07)
 
 
