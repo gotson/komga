@@ -1,3 +1,10 @@
+# [0.54.0](https://github.com/gotson/komga/compare/v0.53.0...v0.54.0) (2020-08-12)
+
+
+### Features
+
+* custom thumbnails for series ([f5f423f](https://github.com/gotson/komga/commit/f5f423f05f3d3bf824bc10c9d1dcc712fbaa98fe)), closes [#63](https://github.com/gotson/komga/issues/63)
+
 # [0.53.0](https://github.com/gotson/komga/compare/v0.52.3...v0.53.0) (2020-08-12)
 
 
