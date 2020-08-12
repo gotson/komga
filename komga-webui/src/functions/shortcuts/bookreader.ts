@@ -14,15 +14,9 @@ export const shortcutsSettings = [
   new Shortcut('Webtoon',
     (ctx: any) => ctx.changeReadingDir(ReadingDirection.WEBTOON)
     , 'w'),
-  new Shortcut('Toggle double pages',
-    (ctx: any) => ctx.toggleDoublePages()
-    , 'd'),
   new Shortcut('Cycle scale',
     (ctx: any) => ctx.cycleScale()
     , 'c'),
-  new Shortcut('Cycle side padding',
-    (ctx: any) => ctx.cycleSidePadding()
-    , 'p'),
 ]
 
 export const shortcutsMenus = [
