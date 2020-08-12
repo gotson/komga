@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { ContinuousScaleType, PaddingPercentage } from '@/types/enum-reader'
+import { ContinuousScaleType } from '@/types/enum-reader'
 
 export default Vue.extend({
   name: 'ContinuousReader',
@@ -107,6 +107,9 @@ export default Vue.extend({
       if (this.animations) return undefined
       return { duration: 0 }
     },
+    totalSidePadding (): number {
+      return this.sidePadding * 2
+    },
   },
   methods: {
     onScroll (e: any) {
@@ -124,30 +127,26 @@ export default Vue.extend({
     shouldLoad (page: number): boolean {
       return page == 0 || this.seen[page] || Math.abs((this.currentPage - 1) - page) <= 2
     },
-    calcHeight (page: PageDtoWithUrl): number {
-    const totalSidePadding = this.sidePadding * 2;
+    calcHeight (page: PageDtoWithUrl): number | undefined {
       switch (this.scale) {
         case ContinuousScaleType.WIDTH:
-            if(page.height && page.width)
-              return page.height / (page.width / (this.$vuetify.breakpoint.width - (this.$vuetify.breakpoint.width * totalSidePadding) / 100))
-          return 0;
+          if (page.height && page.width)
+            return page.height / (page.width / (this.$vuetify.breakpoint.width - (this.$vuetify.breakpoint.width * this.totalSidePadding) / 100))
+          return undefined
         case ContinuousScaleType.ORIGINAL:
-          return page.height || 0
+          return page.height || undefined
         default:
-          if(page.height && page.width)
-            return page.height / (page.width / (this.$vuetify.breakpoint.width - (this.$vuetify.breakpoint.width * totalSidePadding) / 100))
-          return 0;
+          return undefined
       }
     },
-    calcWidth (page: PageDtoWithUrl): number {
-        const totalSidePadding = this.sidePadding * 2;
-        switch (this.scale) {
+    calcWidth (page: PageDtoWithUrl): number | undefined {
+      switch (this.scale) {
         case ContinuousScaleType.WIDTH:
-          return this.$vuetify.breakpoint.width - (this.$vuetify.breakpoint.width * totalSidePadding) / 100
+          return this.$vuetify.breakpoint.width - (this.$vuetify.breakpoint.width * this.totalSidePadding) / 100
         case ContinuousScaleType.ORIGINAL:
-          return page.width || this.$vuetify.breakpoint.width
+          return page.width || undefined
         default:
-          return this.$vuetify.breakpoint.width - (this.$vuetify.breakpoint.width * totalSidePadding) / 100
+          return undefined
       }
     },
     centerClick () {
