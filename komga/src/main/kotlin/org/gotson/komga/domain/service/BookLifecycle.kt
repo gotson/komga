@@ -17,6 +17,7 @@ import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
 import org.springframework.stereotype.Service
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -97,6 +98,17 @@ class BookLifecycle(
     }
 
     return selected
+  }
+
+  fun getThumbnailBytes(bookId: String): ByteArray? {
+    getThumbnail(bookId)?.let {
+      return when {
+        it.thumbnail != null -> it.thumbnail
+        it.url != null -> File(it.url.toURI()).readBytes()
+        else -> null
+      }
+    }
+    return null
   }
 
   private fun thumbnailsHouseKeeping(bookId: String) {

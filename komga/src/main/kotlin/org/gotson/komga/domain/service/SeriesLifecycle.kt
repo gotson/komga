@@ -15,7 +15,7 @@ import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.Comparator
 
 private val logger = KotlinLogging.logger {}
 private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
@@ -109,5 +109,12 @@ class SeriesLifecycle(
     collectionRepository.removeSeriesFromAll(seriesIds)
 
     seriesRepository.deleteAll(seriesIds)
+  }
+
+  fun getThumbnailBytes(seriesId: String): ByteArray? {
+    bookRepository.findFirstIdInSeries(seriesId)?.let { bookId ->
+      return bookLifecycle.getThumbnailBytes(bookId)
+    }
+    return null
   }
 }

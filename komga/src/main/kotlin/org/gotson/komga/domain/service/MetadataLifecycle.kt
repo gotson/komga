@@ -15,6 +15,7 @@ import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
 import org.gotson.komga.infrastructure.metadata.comicinfo.ComicInfoProvider
 import org.gotson.komga.infrastructure.metadata.epub.EpubMetadataProvider
+import org.gotson.komga.infrastructure.metadata.localmediaassets.LocalMediaAssetsProvider
 import org.springframework.stereotype.Service
 
 private val logger = KotlinLogging.logger {}
@@ -29,8 +30,10 @@ class MetadataLifecycle(
   private val seriesMetadataRepository: SeriesMetadataRepository,
   private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
+  private val bookLifecycle: BookLifecycle,
   private val collectionRepository: SeriesCollectionRepository,
-  private val collectionLifecycle: SeriesCollectionLifecycle
+  private val collectionLifecycle: SeriesCollectionLifecycle,
+  private val localMediaAssetsProvider: LocalMediaAssetsProvider
 ) {
 
   fun refreshMetadata(book: Book) {
@@ -57,6 +60,10 @@ class MetadataLifecycle(
           }
         }
       }
+    }
+
+    localMediaAssetsProvider.getBookThumbnails(book).forEach {
+      bookLifecycle.addThumbnailForBook(it)
     }
   }
 

@@ -98,19 +98,9 @@ class SeriesCollectionController(
     @PathVariable id: String
   ): ResponseEntity<ByteArray> {
     collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
-      val ids = with(mutableListOf<String>()) {
-        while (size < 4) {
-          this += it.seriesIds.take(4)
-        }
-        this.take(4)
-      }
-
-      val images = ids.mapNotNull { seriesController.getSeriesThumbnail(principal, it).body }
-      val thumbnail = mosaicGenerator.createMosaic(images)
-
       return ResponseEntity.ok()
         .cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS).cachePrivate())
-        .body(thumbnail)
+        .body(collectionLifecycle.getThumbnailBytes(it))
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 

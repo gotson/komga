@@ -4,13 +4,16 @@ import mu.KotlinLogging
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
+import org.gotson.komga.infrastructure.image.MosaicGenerator
 import org.springframework.stereotype.Service
 
 private val logger = KotlinLogging.logger {}
 
 @Service
 class SeriesCollectionLifecycle(
-  private val collectionRepository: SeriesCollectionRepository
+  private val collectionRepository: SeriesCollectionRepository,
+  private val seriesLifecycle: SeriesLifecycle,
+  private val mosaicGenerator: MosaicGenerator
 ) {
 
   @Throws(
@@ -39,5 +42,17 @@ class SeriesCollectionLifecycle(
 
   fun deleteCollection(collectionId: String) {
     collectionRepository.delete(collectionId)
+  }
+
+  fun getThumbnailBytes(collection: SeriesCollection): ByteArray {
+    val ids = with(mutableListOf<String>()) {
+      while (size < 4) {
+        this += collection.seriesIds.take(4)
+      }
+      this.take(4)
+    }
+
+    val images = ids.mapNotNull { seriesLifecycle.getThumbnailBytes(it) }
+    return mosaicGenerator.createMosaic(images)
   }
 }

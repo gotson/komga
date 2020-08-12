@@ -25,6 +25,7 @@ import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
+import org.gotson.komga.infrastructure.web.setCachePrivate
 import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.BookMetadataUpdateDto
 import org.gotson.komga.interfaces.rest.dto.PageDto
@@ -36,7 +37,6 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
-import org.springframework.http.CacheControl
 import org.springframework.http.ContentDisposition
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -61,7 +61,6 @@ import java.io.FileNotFoundException
 import java.io.OutputStream
 import java.nio.file.NoSuchFileException
 import java.time.ZoneOffset
-import java.util.concurrent.TimeUnit
 import javax.validation.Valid
 
 private val logger = KotlinLogging.logger {}
@@ -197,10 +196,10 @@ class BookController(
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    return bookLifecycle.getThumbnail(bookId)?.let {
+    return bookLifecycle.getThumbnailBytes(bookId)?.let {
       ResponseEntity.ok()
-        .setCachePrivate() //TODO: this won't work with changing covers
-        .body(it.thumbnail)
+        .setCachePrivate()
+        .body(it)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -448,13 +447,6 @@ class BookController(
       bookLifecycle.deleteReadProgress(book.id, principal.user)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
-
-
-  private fun ResponseEntity.BodyBuilder.setCachePrivate() =
-    this.cacheControl(CacheControl.maxAge(0, TimeUnit.SECONDS)
-      .cachePrivate()
-      .mustRevalidate()
-    )
 
   private fun ResponseEntity.BodyBuilder.setNotModified(media: Media) =
     this.setCachePrivate().lastModified(getBookLastModified(media))
