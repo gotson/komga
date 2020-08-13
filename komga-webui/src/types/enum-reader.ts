@@ -10,4 +10,5 @@ export enum ContinuousScaleType {
   ORIGINAL = 'original'
 }
 
+
 export const PaddingPercentage: number[] = [0, 5, 10, 15, 20, 25, 30, 35, 40]
