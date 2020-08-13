@@ -1,3 +1,10 @@
+# [0.55.0](https://github.com/gotson/komga/compare/v0.54.0...v0.55.0) (2020-08-13)
+
+
+### Features
+
+* **webreader:** side padding, original scaling for Webtoon ([6499788](https://github.com/gotson/komga/commit/6499788543e9487c90f2b38b9b2eb354aaf802c2)), closes [#266](https://github.com/gotson/komga/issues/266) [#264](https://github.com/gotson/komga/issues/264)
+
 # [0.54.0](https://github.com/gotson/komga/compare/v0.53.0...v0.54.0) (2020-08-12)
 
 
