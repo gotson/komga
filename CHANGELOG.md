@@ -1,3 +1,21 @@
+# [0.56.0](https://github.com/gotson/komga/compare/v0.55.1...v0.56.0) (2020-08-14)
+
+
+### Bug Fixes
+
+* **webui:** change grid size for sm screens ([18280be](https://github.com/gotson/komga/commit/18280beb95b44bb9dfeec9f81cfe04b97c225fdd))
+
+
+### Features
+
+* **api:** unpaged queries for books ([8f8054e](https://github.com/gotson/komga/commit/8f8054e1d859928cc249cb5631283da498be908d))
+* **webui:** library option to import local artwork ([cba0a2e](https://github.com/gotson/komga/commit/cba0a2e701e4d508d2a1b68da7ae7e6c5673846c))
+* **webui:** navigate to series books from book details screen ([48e92c7](https://github.com/gotson/komga/commit/48e92c7580f93e01d9e90a43870d3c1ed04c66cf)), closes [#272](https://github.com/gotson/komga/issues/272)
+* library option to import local artwork ([eefb802](https://github.com/gotson/komga/commit/eefb80213a89903a01ca0114d319feb1e83bb041))
+* **webui:** scanner option per library ([fca0180](https://github.com/gotson/komga/commit/fca018033dd094e0ddf6b0ca3a447b65d492aaa4))
+* scanner option per library ([4da6ff9](https://github.com/gotson/komga/commit/4da6ff9fd44d2283c31adc5a3185e0ad642255f3))
+* **api:** http eTag caching for all API calls ([fe22cb5](https://github.com/gotson/komga/commit/fe22cb5ce6157a23d9b01cd6fb2139555d5a2da5))
+
 ## [0.55.1](https://github.com/gotson/komga/compare/v0.55.0...v0.55.1) (2020-08-14)
 
 

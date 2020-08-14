@@ -400,6 +400,15 @@
           },
           "importComicInfoCollection": {
             "type": "boolean"
+          },
+          "importLocalArtwork": {
+            "type": "boolean"
+          },
+          "scanDeep": {
+            "type": "boolean"
+          },
+          "scanForceModifiedTime": {
+            "type": "boolean"
           }
         }
       },
@@ -428,6 +437,15 @@
             "type": "string"
           },
           "importComicInfoCollection": {
+            "type": "boolean"
+          },
+          "importLocalArtwork": {
+            "type": "boolean"
+          },
+          "scanDeep": {
+            "type": "boolean"
+          },
+          "scanForceModifiedTime": {
             "type": "boolean"
           }
         }
@@ -761,6 +779,15 @@
             "type": "string"
           },
           "importComicInfoCollection": {
+            "type": "boolean"
+          },
+          "importLocalArtwork": {
+            "type": "boolean"
+          },
+          "scanDeep": {
+            "type": "boolean"
+          },
+          "scanForceModifiedTime": {
             "type": "boolean"
           }
         }
@@ -1219,6 +1246,14 @@
           }
         },
         "parameters": [
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "unpaged",
+            "required": false
+          },
           {
             "schema": {
               "type": "integer"
@@ -2026,6 +2061,14 @@
           },
           {
             "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "unpaged",
+            "required": false
+          },
+          {
+            "schema": {
               "type": "integer"
             },
             "in": "query",
@@ -2716,6 +2759,14 @@
             },
             "in": "query",
             "name": "read_status",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "unpaged",
             "required": false
           },
           {
