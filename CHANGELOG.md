@@ -1,3 +1,10 @@
+## [0.55.1](https://github.com/gotson/komga/compare/v0.55.0...v0.55.1) (2020-08-14)
+
+
+### Bug Fixes
+
+* incorrect book number after adding book in series ([3b1eb36](https://github.com/gotson/komga/commit/3b1eb368ca022268be7beed7aa8c9d8e1d89657d)), closes [#269](https://github.com/gotson/komga/issues/269)
+
 # [0.55.0](https://github.com/gotson/komga/compare/v0.54.0...v0.55.0) (2020-08-13)
 
 
