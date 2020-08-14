@@ -58,6 +58,7 @@ class LibraryScanner(
           seriesLifecycle.sortBooks(createdSeries)
         } else {
           // if series already exists, update it
+          logger.debug { "Scanned series already exists. Scanned: $newSeries, Existing: $existingSeries" }
           if (newSeries.fileLastModified.truncatedTo(ChronoUnit.MILLIS) != existingSeries.fileLastModified.truncatedTo(ChronoUnit.MILLIS)) {
             logger.info { "Series changed on disk, updating: $existingSeries" }
 
@@ -65,10 +66,13 @@ class LibraryScanner(
 
             // update list of books with existing entities if they exist
             val existingBooks = bookRepository.findBySeriesId(existingSeries.id)
+            logger.debug { "Existing books: $existingBooks" }
 
             // update existing books
             newBooks.forEach { newBook ->
+              logger.debug { "Trying to match scanned book by url: $newBook" }
               existingBooks.find { it.url == newBook.url }?.let { existingBook ->
+                logger.debug { "Matched existing book: $existingBook" }
                 if (newBook.fileLastModified.truncatedTo(ChronoUnit.MILLIS) != existingBook.fileLastModified.truncatedTo(ChronoUnit.MILLIS)) {
                   logger.info { "Book changed on disk, update and reset media status: $existingBook" }
                   val updatedBook = existingBook.copy(
@@ -87,11 +91,15 @@ class LibraryScanner(
             val newBooksUrls = newBooks.map { it.url }
             existingBooks
               .filterNot { existingBook -> newBooksUrls.contains(existingBook.url) }
-              .let { books -> bookLifecycle.deleteMany(books.map { it.id }) }
+              .let { books ->
+                logger.info { "Deleting books not on disk anymore: $books" }
+                bookLifecycle.deleteMany(books.map { it.id })
+              }
 
             // add new books
             val existingBooksUrls = existingBooks.map { it.url }
             val booksToAdd = newBooks.filterNot { newBook -> existingBooksUrls.contains(newBook.url) }
+            logger.info { "Adding new books: $booksToAdd" }
             seriesLifecycle.addBooks(existingSeries, booksToAdd)
 
             // sort all books

@@ -38,12 +38,17 @@ class SeriesLifecycle(
 ) {
 
   fun sortBooks(series: Series) {
+    logger.debug { "Sorting books for $series" }
+
     val books = bookRepository.findBySeriesId(series.id)
     val metadatas = bookMetadataRepository.findByIds(books.map { it.id })
+    logger.debug { "Existing books: $books" }
+    logger.debug { "Existing metadata: $metadatas" }
 
     val sorted = books
       .sortedWith(compareBy(natSortComparator) { it.name })
       .map { book -> book to metadatas.first { it.bookId == book.id } }
+    logger.debug { "Sorted books: $sorted" }
 
     bookRepository.updateMany(
       sorted.mapIndexed { index, (book, _) -> book.copy(number = index + 1) }
