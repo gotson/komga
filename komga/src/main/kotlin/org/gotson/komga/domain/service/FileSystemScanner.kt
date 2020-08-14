@@ -25,12 +25,11 @@ class FileSystemScanner(
 
   val supportedExtensions = listOf("cbz", "zip", "cbr", "rar", "pdf", "epub")
 
-  fun scanRootFolder(root: Path): Map<Series, List<Book>> {
+  fun scanRootFolder(root: Path, forceDirectoryModifiedTime: Boolean = false): Map<Series, List<Book>> {
     logger.info { "Scanning folder: $root" }
     logger.info { "Supported extensions: $supportedExtensions" }
     logger.info { "Excluded patterns: ${komgaProperties.librariesScanDirectoryExclusions}" }
-    if (komgaProperties.filesystemScannerForceDirectoryModifiedTime)
-      logger.info { "Force directory modified time: active" }
+    logger.info { "Force directory modified time: $forceDirectoryModifiedTime" }
 
     lateinit var scannedSeries: Map<Series, List<Book>>
 
@@ -70,7 +69,7 @@ class FileSystemScanner(
               name = dir.fileName.toString(),
               url = dir.toUri().toURL(),
               fileLastModified =
-              if (komgaProperties.filesystemScannerForceDirectoryModifiedTime)
+              if (forceDirectoryModifiedTime)
                 maxOf(dir.getUpdatedTime(), books.map { it.fileLastModified }.max()!!)
               else dir.getUpdatedTime()
             ) to books

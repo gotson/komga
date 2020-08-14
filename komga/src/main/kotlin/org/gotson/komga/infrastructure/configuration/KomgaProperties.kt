@@ -16,6 +16,7 @@ class KomgaProperties {
 
   var librariesScanDirectoryExclusions: List<String> = emptyList()
 
+  @Deprecated("Deprecated since 0.56.0. Use per-library option instead")
   var filesystemScannerForceDirectoryModifiedTime: Boolean = false
 
   var rememberMe = RememberMe()

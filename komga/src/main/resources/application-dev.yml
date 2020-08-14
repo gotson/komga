@@ -1,5 +1,4 @@
 komga:
-  filesystem-scanner-force-directory-modified-time: false
   remember-me:
     key: changeMe!
     validity: 2592000 # 1 month

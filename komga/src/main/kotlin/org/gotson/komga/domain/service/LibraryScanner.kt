@@ -27,7 +27,7 @@ class LibraryScanner(
     logger.info { "Updating library: $library" }
     measureTime {
       val scannedSeries =
-        fileSystemScanner.scanRootFolder(Paths.get(library.root.toURI()))
+        fileSystemScanner.scanRootFolder(Paths.get(library.root.toURI()), library.scanForceModifiedTime)
           .map { (series, books) ->
             series.copy(libraryId = library.id) to books.map { it.copy(libraryId = library.id) }
           }.toMap()
@@ -59,15 +59,15 @@ class LibraryScanner(
         } else {
           // if series already exists, update it
           logger.debug { "Scanned series already exists. Scanned: $newSeries, Existing: $existingSeries" }
-          if (newSeries.fileLastModified.truncatedTo(ChronoUnit.MILLIS) != existingSeries.fileLastModified.truncatedTo(ChronoUnit.MILLIS)) {
+          val seriesChanged = newSeries.fileLastModified.truncatedTo(ChronoUnit.MILLIS) != existingSeries.fileLastModified.truncatedTo(ChronoUnit.MILLIS)
+          if (seriesChanged) {
             logger.info { "Series changed on disk, updating: $existingSeries" }
-
             seriesRepository.update(existingSeries.copy(fileLastModified = newSeries.fileLastModified))
-
+          }
+          if (library.scanDeep || seriesChanged) {
             // update list of books with existing entities if they exist
             val existingBooks = bookRepository.findBySeriesId(existingSeries.id)
             logger.debug { "Existing books: $existingBooks" }
-
             // update existing books
             newBooks.forEach { newBook ->
               logger.debug { "Trying to match scanned book by url: $newBook" }

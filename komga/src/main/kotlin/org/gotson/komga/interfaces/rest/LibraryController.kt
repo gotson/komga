@@ -77,7 +77,9 @@ class LibraryController(
           importComicInfoSeries = library.importComicInfoSeries,
           importComicInfoCollection = library.importComicInfoCollection,
           importEpubBook = library.importEpubBook,
-          importEpubSeries = library.importEpubSeries
+          importEpubSeries = library.importEpubSeries,
+          scanForceModifiedTime = library.scanForceModifiedTime,
+          scanDeep = library.scanDeep
         )
       ).toDto(includeRoot = principal.user.roleAdmin)
     } catch (e: Exception) {
@@ -107,7 +109,9 @@ class LibraryController(
         importComicInfoSeries = library.importComicInfoSeries,
         importComicInfoCollection = library.importComicInfoCollection,
         importEpubBook = library.importEpubBook,
-        importEpubSeries = library.importEpubSeries
+        importEpubSeries = library.importEpubSeries,
+        scanForceModifiedTime = library.scanForceModifiedTime,
+        scanDeep = library.scanDeep
       )
       libraryLifecycle.updateLibrary(toUpdate)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -157,7 +161,9 @@ data class LibraryCreationDto(
   val importComicInfoSeries: Boolean = true,
   val importComicInfoCollection: Boolean = true,
   val importEpubBook: Boolean = true,
-  val importEpubSeries: Boolean = true
+  val importEpubSeries: Boolean = true,
+  val scanForceModifiedTime: Boolean = false,
+  val scanDeep: Boolean = false
 )
 
 data class LibraryDto(
@@ -168,7 +174,9 @@ data class LibraryDto(
   val importComicInfoSeries: Boolean,
   val importComicInfoCollection: Boolean,
   val importEpubBook: Boolean,
-  val importEpubSeries: Boolean
+  val importEpubSeries: Boolean,
+  val scanForceModifiedTime: Boolean,
+  val scanDeep: Boolean
 )
 
 data class LibraryUpdateDto(
@@ -178,7 +186,9 @@ data class LibraryUpdateDto(
   val importComicInfoSeries: Boolean,
   val importComicInfoCollection: Boolean,
   val importEpubBook: Boolean,
-  val importEpubSeries: Boolean
+  val importEpubSeries: Boolean,
+  val scanForceModifiedTime: Boolean,
+  val scanDeep: Boolean
 )
 
 fun Library.toDto(includeRoot: Boolean) = LibraryDto(
@@ -189,5 +199,7 @@ fun Library.toDto(includeRoot: Boolean) = LibraryDto(
   importComicInfoSeries = importComicInfoSeries,
   importComicInfoCollection = importComicInfoCollection,
   importEpubBook = importEpubBook,
-  importEpubSeries = importEpubSeries
+  importEpubSeries = importEpubSeries,
+  scanForceModifiedTime = scanForceModifiedTime,
+  scanDeep = scanDeep
 )

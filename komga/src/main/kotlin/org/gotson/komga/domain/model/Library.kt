@@ -14,6 +14,8 @@ data class Library(
   val importComicInfoCollection: Boolean = true,
   val importEpubBook: Boolean = true,
   val importEpubSeries: Boolean = true,
+  val scanForceModifiedTime: Boolean = false,
+  val scanDeep: Boolean = false,
 
   val id: String = TsidCreator.getTsidString256(),
 
