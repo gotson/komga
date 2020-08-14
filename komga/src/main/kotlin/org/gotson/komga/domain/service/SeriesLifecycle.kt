@@ -3,6 +3,7 @@ package org.gotson.komga.domain.service
 import mu.KotlinLogging
 import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.apache.commons.lang3.StringUtils
+import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Media
@@ -34,7 +35,8 @@ class SeriesLifecycle(
   private val seriesRepository: SeriesRepository,
   private val thumbnailsSeriesRepository: ThumbnailSeriesRepository,
   private val seriesMetadataRepository: SeriesMetadataRepository,
-  private val collectionRepository: SeriesCollectionRepository
+  private val collectionRepository: SeriesCollectionRepository,
+  private val taskReceiver: TaskReceiver
 ) {
 
   fun sortBooks(series: Series) {
@@ -54,13 +56,21 @@ class SeriesLifecycle(
       sorted.mapIndexed { index, (book, _) -> book.copy(number = index + 1) }
     )
 
-    sorted.mapIndexedNotNull { index, (_, metadata) ->
+    val oldToNew = sorted.mapIndexedNotNull { index, (_, metadata) ->
       if (metadata.numberLock && metadata.numberSortLock) null
-      else metadata.copy(
+      else metadata to metadata.copy(
         number = if (!metadata.numberLock) (index + 1).toString() else metadata.number,
         numberSort = if (!metadata.numberSortLock) (index + 1).toFloat() else metadata.numberSort
       )
-    }.let { bookMetadataRepository.updateMany(it) }
+    }
+    bookMetadataRepository.updateMany(oldToNew.map { it.second })
+
+    oldToNew.forEach { (old, new) ->
+      if (old.number != new.number || old.numberSort != new.numberSort) {
+        logger.debug { "Metadata numbering has changed, refreshing metadata for book ${new.bookId} " }
+        taskReceiver.refreshBookMetadata(new.bookId)
+      }
+    }
   }
 
   fun addBooks(series: Series, booksToAdd: Collection<Book>) {
