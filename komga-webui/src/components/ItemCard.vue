@@ -285,13 +285,4 @@ export default Vue.extend({
   right: 0;
   z-index: 2;
 }
-
-.link-underline {
-  text-decoration: none;
-}
-
-.link-underline:hover {
-  text-decoration: underline;
-  text-decoration-color: black;
-}
 </style>

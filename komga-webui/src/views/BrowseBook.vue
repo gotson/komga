@@ -1,24 +1,59 @@
 <template>
   <div v-if="!$_.isEmpty(book)">
     <toolbar-sticky>
-      <!--   Go back to parent series   -->
-      <v-btn icon
-             title="Go to series"
-             :to="{name:'browse-series', params: {seriesId: book.seriesId}}"
-      >
-        <v-icon>mdi-arrow-left</v-icon>
-      </v-btn>
-
-      <v-spacer/>
+      <!--   Action menu   -->
+      <book-actions-menu v-if="book"
+                         :book="book"
+      />
 
       <v-btn icon @click="editBook" v-if="isAdmin">
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
 
-      <!--   Action menu   -->
-      <book-actions-menu v-if="book"
-                         :book="book"
-      />
+      <v-spacer/>
+
+      <v-btn
+        icon
+        :disabled="$_.isEmpty(siblingPrevious)"
+        :to="{ name: 'browse-book', params: { bookId: previousId } }"
+      >
+        <v-icon>mdi-chevron-left</v-icon>
+      </v-btn>
+
+      <v-menu bottom
+              offset-y
+              :max-height="$vuetify.breakpoint.height * .7"
+              :max-width="250"
+      >
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on">
+            <v-icon>mdi-menu</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list
+          flat
+        >
+          <v-list-item-group color="primary">
+            <v-list-item
+              v-for="(book, i) in siblings"
+              :key="i"
+              :to="{ name: 'browse-book', params: { bookId: book.id } }"
+            >
+              <v-list-item-title class="text-wrap text-body-2">{{ book.metadata.number }} - {{ book.metadata.title }}
+              </v-list-item-title>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-menu>
+
+      <v-btn
+        icon
+        :disabled="$_.isEmpty(siblingNext)"
+        :to="{ name: 'browse-book', params: { bookId: nextId } }"
+      >
+        <v-icon>mdi-chevron-right</v-icon>
+      </v-btn>
     </toolbar-sticky>
 
     <v-container fluid class="px-6">
@@ -36,8 +71,15 @@
 
         <v-col cols="8">
           <v-row>
-            <v-col>
-              <div class="text-h5">{{ book.metadata.title }}</div>
+            <v-col class="py-1">
+              <router-link :to="{name:'browse-series', params: {seriesId: book.seriesId}}" class="link-underline">
+                <span class="text-h5" v-if="!$_.isEmpty(series)">{{ series.metadata.title }}</span>
+              </router-link>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col class="py-1">
+              <div class="text-h6">{{ book.metadata.title }}</div>
             </v-col>
           </v-row>
 
@@ -165,6 +207,9 @@ export default Vue.extend({
     return {
       book: {} as BookDto,
       series: {} as SeriesDto,
+      siblings: [] as BookDto[],
+      siblingPrevious: {} as BookDto,
+      siblingNext: {} as BookDto,
     }
   },
   async created () {
@@ -175,14 +220,6 @@ export default Vue.extend({
   beforeDestroy () {
     this.$eventHub.$off(BOOK_CHANGED, this.reloadBook)
     this.$eventHub.$off(LIBRARY_DELETED, this.libraryDeleted)
-  },
-  watch: {
-    async book (val) {
-      if (this.$_.has(val, 'metadata.title')) {
-        this.series = await this.$komgaSeries.getOneSeries(val.seriesId)
-        document.title = `Komga - ${getBookTitleCompact(val.metadata.title, this.series.metadata.title)}`
-      }
-    },
   },
   props: {
     bookId: {
@@ -234,6 +271,12 @@ export default Vue.extend({
     readingDirection (): string {
       return this.$_.capitalize(this.book.metadata.readingDirection.replace(/_/g, ' '))
     },
+    previousId (): string {
+      return this.siblingPrevious?.id?.toString() || '0'
+    },
+    nextId (): string {
+      return this.siblingNext?.id?.toString() || '0'
+    },
   },
   methods: {
     libraryDeleted (event: EventLibraryDeleted) {
@@ -246,6 +289,23 @@ export default Vue.extend({
     },
     async loadBook (bookId: string) {
       this.book = await this.$komgaBooks.getBook(bookId)
+      this.series = await this.$komgaSeries.getOneSeries(this.book.seriesId)
+      this.siblings = (await this.$komgaSeries.getBooks(this.book.seriesId, { unpaged: true } as PageRequest)).content
+
+      if (this.$_.has(this.book, 'metadata.title')) {
+        document.title = `Komga - ${getBookTitleCompact(this.book.metadata.title, this.series.metadata.title)}`
+      }
+
+      try {
+        this.siblingNext = await this.$komgaBooks.getBookSiblingNext(bookId)
+      } catch (e) {
+        this.siblingNext = {} as BookDto
+      }
+      try {
+        this.siblingPrevious = await this.$komgaBooks.getBookSiblingPrevious(bookId)
+      } catch (e) {
+        this.siblingPrevious = {} as BookDto
+      }
     },
     analyze () {
       this.$komgaBooks.analyzeBook(this.book)
