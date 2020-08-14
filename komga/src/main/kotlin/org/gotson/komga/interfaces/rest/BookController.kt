@@ -22,6 +22,7 @@ import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.infrastructure.image.ImageType
+import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
@@ -84,14 +85,20 @@ class BookController(
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
     @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
     @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
+    @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<BookDto> {
-    val pageRequest = PageRequest.of(
-      page.pageNumber,
-      page.pageSize,
-      if (page.sort.isSorted) Sort.by(page.sort.map { it.ignoreCase() }.toList())
-      else Sort.by(Sort.Order.asc("metadata.title").ignoreCase())
-    )
+    val sort =
+      if (page.sort.isSorted) page.sort
+      else Sort.by(Sort.Order.asc("metadata.title"))
+
+    val pageRequest =
+      if (unpaged) UnpagedSorted(sort)
+      else PageRequest.of(
+        page.pageNumber,
+        page.pageSize,
+        sort
+      )
 
     val bookSearch = BookSearchWithReadProgress(
       libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
@@ -110,13 +117,18 @@ class BookController(
   @GetMapping("api/v1/books/latest")
   fun getLatestBooks(
     @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<BookDto> {
-    val pageRequest = PageRequest.of(
-      page.pageNumber,
-      page.pageSize,
-      Sort.by(Sort.Direction.DESC, "lastModifiedDate")
-    )
+    val sort = Sort.by(Sort.Order.desc("lastModifiedDate"))
+
+    val pageRequest =
+      if (unpaged) UnpagedSorted(sort)
+      else PageRequest.of(
+        page.pageNumber,
+        page.pageSize,
+        sort
+      )
 
     return bookDtoRepository.findAll(
       BookSearchWithReadProgress(

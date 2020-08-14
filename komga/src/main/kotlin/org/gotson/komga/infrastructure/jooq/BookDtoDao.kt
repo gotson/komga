@@ -24,6 +24,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
 import java.net.URL
 
@@ -71,13 +72,14 @@ class BookDtoDao(
     val dtos = selectBase(userId)
       .where(conditions)
       .orderBy(orderBy)
-      .limit(pageable.pageSize)
-      .offset(pageable.offset)
+      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
       .fetchAndMap()
 
+    val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
     return PageImpl(
       dtos,
-      PageRequest.of(pageable.pageNumber, pageable.pageSize, pageable.sort),
+      if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
+      else PageRequest.of(0, maxOf(count.toInt(), 20), pageSort),
       count.toLong()
     )
   }

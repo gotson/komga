@@ -209,18 +209,23 @@ class SeriesController(
     @PathVariable(name = "seriesId") seriesId: String,
     @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
     @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
+    @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<BookDto> {
     seriesRepository.getLibraryId(seriesId)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-
-    val pageRequest = PageRequest.of(
-      page.pageNumber,
-      page.pageSize,
-      if (page.sort.isSorted) Sort.by(page.sort.map { it.ignoreCase() }.toList())
+    val sort =
+      if (page.sort.isSorted) page.sort
       else Sort.by(Sort.Order.asc("metadata.numberSort"))
-    )
+
+    val pageRequest =
+      if (unpaged) UnpagedSorted(sort)
+      else PageRequest.of(
+        page.pageNumber,
+        page.pageSize,
+        sort
+      )
 
     return bookDtoRepository.findAll(
       BookSearchWithReadProgress(
