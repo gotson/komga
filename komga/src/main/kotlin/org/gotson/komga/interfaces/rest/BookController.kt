@@ -191,16 +191,12 @@ class BookController(
   fun getBookThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String
-  ): ResponseEntity<ByteArray> {
+  ): ByteArray {
     bookRepository.getLibraryId(bookId)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    return bookLifecycle.getThumbnailBytes(bookId)?.let {
-      ResponseEntity.ok()
-        .setCachePrivate()
-        .body(it)
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    return bookLifecycle.getThumbnailBytes(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
   @Operation(description = "Download the book file.")

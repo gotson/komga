@@ -6,13 +6,15 @@ import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.NoHandlerFoundException
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+import org.springframework.web.servlet.mvc.WebContentInterceptor
 import java.util.concurrent.TimeUnit
 
 
 @Configuration
-class StaticResourceConfiguration : WebMvcConfigurer {
+class WebMvcConfiguration : WebMvcConfigurer {
   override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
     if (!registry.hasMappingForPattern("/webjars/**")) {
       registry.addResourceHandler("/webjars/**")
@@ -50,6 +52,17 @@ class StaticResourceConfiguration : WebMvcConfigurer {
         "classpath:public/js/"
       )
       .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS).cachePublic())
+  }
+
+  override fun addInterceptors(registry: InterceptorRegistry) {
+    registry.addInterceptor(
+      WebContentInterceptor().apply {
+        addCacheMapping(
+          cachePrivate,
+          "/api/**", "/opds/**"
+        )
+      }
+    )
   }
 }
 

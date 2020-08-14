@@ -55,9 +55,11 @@ class SecurityConfiguration(
 
       // authorize frames for H2 console
       .and()
-      .headers().frameOptions().sameOrigin()
+      .headers {
+        it.frameOptions().sameOrigin()
+        it.cacheControl().disable() //headers are set in WebMvcConfiguration
+      }
 
-      .and()
       .httpBasic()
 
       .and()

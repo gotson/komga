@@ -23,7 +23,6 @@ import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
-import org.gotson.komga.infrastructure.web.setCachePrivate
 import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.CollectionDto
 import org.gotson.komga.interfaces.rest.dto.SeriesDto
@@ -38,7 +37,6 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -196,16 +194,12 @@ class SeriesController(
   fun getSeriesThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") seriesId: String
-  ): ResponseEntity<ByteArray> {
+  ): ByteArray {
     seriesRepository.getLibraryId(seriesId)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    return seriesLifecycle.getThumbnailBytes(seriesId)?.let {
-      ResponseEntity.ok()
-        .setCachePrivate()
-        .body(it)
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    return seriesLifecycle.getThumbnailBytes(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
   @PageableAsQueryParam

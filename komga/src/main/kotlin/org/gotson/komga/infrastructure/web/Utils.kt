@@ -13,7 +13,10 @@ fun filePathToUrl(filePath: String): URL =
   Paths.get(filePath).toUri().toURL()
 
 fun ResponseEntity.BodyBuilder.setCachePrivate() =
-  this.cacheControl(CacheControl.maxAge(0, TimeUnit.SECONDS)
-    .cachePrivate()
-    .mustRevalidate()
-  )
+  this.cacheControl(cachePrivate)
+
+val cachePrivate = CacheControl
+  .maxAge(0, TimeUnit.SECONDS)
+  .noTransform()
+  .cachePrivate()
+  .mustRevalidate()
