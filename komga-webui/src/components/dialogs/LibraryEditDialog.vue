@@ -109,6 +109,21 @@
                       />
                     </v-col>
                   </v-row>
+                  <v-row>
+                    <v-col cols="auto">
+                      <span class="text-subtitle-2">Scanner</span>
+                      <v-checkbox
+                        v-model="form.scanForceModifiedTime"
+                        label="Force directory modified time"
+                        hide-details
+                      />
+                      <v-checkbox
+                        v-model="form.scanDeep"
+                        label="Deep scan"
+                        hide-details
+                      />
+                    </v-col>
+                  </v-row>
                 </v-container>
               </v-card>
             </v-tab-item>
@@ -163,6 +178,8 @@ export default Vue.extend({
         importComicInfoCollection: true,
         importEpubBook: true,
         importEpubSeries: true,
+        scanForceModifiedTime: false,
+        scanDeep: false,
       },
       validationFieldNames: new Map([]),
     }
@@ -228,6 +245,8 @@ export default Vue.extend({
       this.form.importComicInfoCollection = library ? library.importComicInfoCollection : true
       this.form.importEpubBook = library ? library.importEpubBook : true
       this.form.importEpubSeries = library ? library.importEpubSeries : true
+      this.form.scanForceModifiedTime = library ? library.scanForceModifiedTime : false
+      this.form.scanDeep = library ? library.scanDeep : false
       this.$v.$reset()
     },
     validateLibrary () {
@@ -242,6 +261,8 @@ export default Vue.extend({
           importComicInfoCollection: this.form.importComicInfoCollection,
           importEpubBook: this.form.importEpubBook,
           importEpubSeries: this.form.importEpubSeries,
+          scanForceModifiedTime: this.form.scanForceModifiedTime,
+          scanDeep: this.form.scanDeep,
         }
       }
       return null
