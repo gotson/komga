@@ -14,6 +14,7 @@ data class Library(
   val importComicInfoCollection: Boolean = true,
   val importEpubBook: Boolean = true,
   val importEpubSeries: Boolean = true,
+  val importLocalArtwork: Boolean = true,
   val scanForceModifiedTime: Boolean = false,
   val scanDeep: Boolean = false,
 

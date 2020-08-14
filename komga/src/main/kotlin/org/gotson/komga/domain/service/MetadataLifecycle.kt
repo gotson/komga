@@ -63,9 +63,10 @@ class MetadataLifecycle(
       }
     }
 
-    localArtworkProvider.getBookThumbnails(book).forEach {
-      bookLifecycle.addThumbnailForBook(it)
-    }
+    if (library.importLocalArtwork)
+      localArtworkProvider.getBookThumbnails(book).forEach {
+        bookLifecycle.addThumbnailForBook(it)
+      }
   }
 
   fun refreshMetadata(series: Series) {
@@ -133,9 +134,10 @@ class MetadataLifecycle(
       }
     }
 
-    localArtworkProvider.getSeriesThumbnails(series).forEach {
-      seriesLifecycle.addThumbnailForSeries(it)
-    }
+    if (library.importLocalArtwork)
+      localArtworkProvider.getSeriesThumbnails(series).forEach {
+        seriesLifecycle.addThumbnailForSeries(it)
+      }
   }
 
   private fun <T, R : Any> Iterable<T>.uniqueOrNull(transform: (T) -> R?): R? {

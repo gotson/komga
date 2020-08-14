@@ -72,6 +72,7 @@ class LibraryDao(
       .set(l.IMPORT_COMICINFO_COLLECTION, library.importComicInfoCollection)
       .set(l.IMPORT_EPUB_BOOK, library.importEpubBook)
       .set(l.IMPORT_EPUB_SERIES, library.importEpubSeries)
+      .set(l.IMPORT_LOCAL_ARTWORK, library.importLocalArtwork)
       .set(l.SCAN_FORCE_MODIFIED_TIME, library.scanForceModifiedTime)
       .set(l.SCAN_DEEP, library.scanDeep)
       .execute()
@@ -86,6 +87,7 @@ class LibraryDao(
       .set(l.IMPORT_COMICINFO_COLLECTION, library.importComicInfoCollection)
       .set(l.IMPORT_EPUB_BOOK, library.importEpubBook)
       .set(l.IMPORT_EPUB_SERIES, library.importEpubSeries)
+      .set(l.IMPORT_LOCAL_ARTWORK, library.importLocalArtwork)
       .set(l.SCAN_FORCE_MODIFIED_TIME, library.scanForceModifiedTime)
       .set(l.SCAN_DEEP, library.scanDeep)
       .set(l.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
@@ -105,6 +107,7 @@ class LibraryDao(
       importComicInfoCollection = importComicinfoCollection,
       importEpubBook = importEpubBook,
       importEpubSeries = importEpubSeries,
+      importLocalArtwork = importLocalArtwork,
       scanForceModifiedTime = scanForceModifiedTime,
       scanDeep = scanDeep,
       id = id,
