@@ -6,6 +6,7 @@ interface LibraryCreationDto {
   importComicInfoCollection: boolean,
   importEpubBook: boolean,
   importEpubSeries: boolean,
+  importLocalArtwork: boolean,
   scanForceModifiedTime: boolean,
   scanDeep: boolean
 }
@@ -18,6 +19,7 @@ interface LibraryUpdateDto {
   importComicInfoCollection: boolean,
   importEpubBook: boolean,
   importEpubSeries: boolean,
+  importLocalArtwork: boolean,
   scanForceModifiedTime: boolean,
   scanDeep: boolean
 }
@@ -31,6 +33,7 @@ interface LibraryDto {
   importComicInfoCollection: boolean,
   importEpubBook: boolean,
   importEpubSeries: boolean,
+  importLocalArtwork: boolean,
   scanForceModifiedTime: boolean,
   scanDeep: boolean
 }

@@ -110,6 +110,16 @@
                     </v-col>
                   </v-row>
                   <v-row>
+                    <v-col>
+                      <span class="text-subtitle-2">Import local media assets</span>
+                      <v-checkbox
+                        v-model="form.importLocalArtwork"
+                        label="Local artwork"
+                        hide-details
+                      />
+                    </v-col>
+                  </v-row>
+                  <v-row>
                     <v-col cols="auto">
                       <span class="text-subtitle-2">Scanner</span>
                       <v-checkbox
@@ -178,6 +188,7 @@ export default Vue.extend({
         importComicInfoCollection: true,
         importEpubBook: true,
         importEpubSeries: true,
+        importLocalArtwork: true,
         scanForceModifiedTime: false,
         scanDeep: false,
       },
@@ -245,6 +256,7 @@ export default Vue.extend({
       this.form.importComicInfoCollection = library ? library.importComicInfoCollection : true
       this.form.importEpubBook = library ? library.importEpubBook : true
       this.form.importEpubSeries = library ? library.importEpubSeries : true
+      this.form.importLocalArtwork = library ? library.importLocalArtwork : true
       this.form.scanForceModifiedTime = library ? library.scanForceModifiedTime : false
       this.form.scanDeep = library ? library.scanDeep : false
       this.$v.$reset()
@@ -261,6 +273,7 @@ export default Vue.extend({
           importComicInfoCollection: this.form.importComicInfoCollection,
           importEpubBook: this.form.importEpubBook,
           importEpubSeries: this.form.importEpubSeries,
+          importLocalArtwork: this.form.importLocalArtwork,
           scanForceModifiedTime: this.form.scanForceModifiedTime,
           scanDeep: this.form.scanDeep,
         }
