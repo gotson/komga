@@ -30,10 +30,12 @@ import org.gotson.komga.interfaces.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.rest.dto.toDto
 import org.gotson.komga.interfaces.rest.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.rest.persistence.SeriesDtoRepository
+import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
+import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -50,6 +52,8 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
+import java.io.File
+import java.util.concurrent.TimeUnit
 import javax.validation.Valid
 
 private val logger = KotlinLogging.logger {}
@@ -197,10 +201,26 @@ class SeriesController(
   ): ResponseEntity<ByteArray> {
     seriesRepository.getLibraryId(seriesId)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-
-    return bookRepository.findFirstIdInSeries(seriesId)?.let {
-      bookController.getBookThumbnail(principal, it)
+      bookRepository.findFirstIdInSeries(seriesId)?.let { firstBookId ->
+        val firstBook = bookRepository.findByIdOrNull(firstBookId)
+        var response: ResponseEntity<ByteArray>? = null
+        if (firstBook != null) {
+          var dirPath = firstBook.path().parent.toString()
+          if (dirPath.endsWith(File.separatorChar)) {
+            dirPath = dirPath.substring(0, dirPath.length - 1)
+          }
+          val thumbFile = FileSystemResource(File("$dirPath/cover.jpg").toPath())
+          if (thumbFile.exists()) {
+            val fileBytes = thumbFile.uri.toURL().readBytes()
+            response = ResponseEntity.ok()
+              .body(fileBytes)
+          }
+        }
+        if (response == null) {
+          response = bookController.getBookThumbnail(principal, firstBookId)
+        }
+        return response
+      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
