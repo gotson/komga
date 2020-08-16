@@ -20,7 +20,7 @@ class V20200810154730__thumbnails_part_2 : BaseJavaMigration() {
       }
 
       jdbcTemplate.batchUpdate(
-        "INSERT INTO THUMBNAIL_BOOK(ID, THUMBNAIL, SELECTED, TYPE, BOOK_ID) values (?, ?, TRUE, 'GENERATED', ?)",
+        "INSERT INTO THUMBNAIL_BOOK(ID, THUMBNAIL, SELECTED, TYPE, BOOK_ID) values (?, ?, 1, 'GENERATED', ?)",
         parameters
       )
     }
