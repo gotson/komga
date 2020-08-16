@@ -1,3 +1,10 @@
+## [0.56.1](https://github.com/gotson/komga/compare/v0.56.0...v0.56.1) (2020-08-16)
+
+
+### Bug Fixes
+
+* database migration could fail ([1c9f3d0](https://github.com/gotson/komga/commit/1c9f3d0e804631a8a3437473b181f389a7d73814))
+
 # [0.56.0](https://github.com/gotson/komga/compare/v0.55.1...v0.56.0) (2020-08-14)
 
 
