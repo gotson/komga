@@ -70,6 +70,7 @@ class LibraryDao(
       .set(l.IMPORT_COMICINFO_BOOK, library.importComicInfoBook)
       .set(l.IMPORT_COMICINFO_SERIES, library.importComicInfoSeries)
       .set(l.IMPORT_COMICINFO_COLLECTION, library.importComicInfoCollection)
+      .set(l.IMPORT_COMICINFO_READLIST, library.importComicInfoReadList)
       .set(l.IMPORT_EPUB_BOOK, library.importEpubBook)
       .set(l.IMPORT_EPUB_SERIES, library.importEpubSeries)
       .set(l.IMPORT_LOCAL_ARTWORK, library.importLocalArtwork)
@@ -85,6 +86,7 @@ class LibraryDao(
       .set(l.IMPORT_COMICINFO_BOOK, library.importComicInfoBook)
       .set(l.IMPORT_COMICINFO_SERIES, library.importComicInfoSeries)
       .set(l.IMPORT_COMICINFO_COLLECTION, library.importComicInfoCollection)
+      .set(l.IMPORT_COMICINFO_READLIST, library.importComicInfoReadList)
       .set(l.IMPORT_EPUB_BOOK, library.importEpubBook)
       .set(l.IMPORT_EPUB_SERIES, library.importEpubSeries)
       .set(l.IMPORT_LOCAL_ARTWORK, library.importLocalArtwork)
@@ -105,6 +107,7 @@ class LibraryDao(
       importComicInfoBook = importComicinfoBook,
       importComicInfoSeries = importComicinfoSeries,
       importComicInfoCollection = importComicinfoCollection,
+      importComicInfoReadList = importComicinfoReadlist,
       importEpubBook = importEpubBook,
       importEpubSeries = importEpubSeries,
       importLocalArtwork = importLocalArtwork,

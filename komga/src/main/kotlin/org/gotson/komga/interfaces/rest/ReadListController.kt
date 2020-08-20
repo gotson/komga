@@ -7,19 +7,20 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.ROLE_ADMIN
-import org.gotson.komga.domain.model.SeriesCollection
-import org.gotson.komga.domain.persistence.SeriesCollectionRepository
-import org.gotson.komga.domain.service.SeriesCollectionLifecycle
+import org.gotson.komga.domain.model.ReadList
+import org.gotson.komga.domain.persistence.ReadListRepository
+import org.gotson.komga.domain.service.ReadListLifecycle
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
+import org.gotson.komga.infrastructure.language.toIndexedMap
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
-import org.gotson.komga.interfaces.rest.dto.CollectionCreationDto
-import org.gotson.komga.interfaces.rest.dto.CollectionDto
-import org.gotson.komga.interfaces.rest.dto.CollectionUpdateDto
-import org.gotson.komga.interfaces.rest.dto.SeriesDto
+import org.gotson.komga.interfaces.rest.dto.BookDto
+import org.gotson.komga.interfaces.rest.dto.ReadListCreationDto
+import org.gotson.komga.interfaces.rest.dto.ReadListDto
+import org.gotson.komga.interfaces.rest.dto.ReadListUpdateDto
 import org.gotson.komga.interfaces.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.rest.dto.toDto
-import org.gotson.komga.interfaces.rest.persistence.SeriesDtoRepository
+import org.gotson.komga.interfaces.rest.persistence.BookDtoRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -47,11 +48,11 @@ import javax.validation.Valid
 private val logger = KotlinLogging.logger {}
 
 @RestController
-@RequestMapping("api/v1/collections", produces = [MediaType.APPLICATION_JSON_VALUE])
-class SeriesCollectionController(
-  private val collectionRepository: SeriesCollectionRepository,
-  private val collectionLifecycle: SeriesCollectionLifecycle,
-  private val seriesDtoRepository: SeriesDtoRepository
+@RequestMapping("api/v1/readlists", produces = [MediaType.APPLICATION_JSON_VALUE])
+class ReadListController(
+  private val readListRepository: ReadListRepository,
+  private val readListLifecycle: ReadListLifecycle,
+  private val bookDtoRepository: BookDtoRepository
 ) {
 
   @PageableWithoutSortAsQueryParam
@@ -62,7 +63,7 @@ class SeriesCollectionController(
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
-  ): Page<CollectionDto> {
+  ): Page<ReadListDto> {
     val pageRequest =
       if (unpaged) UnpagedSorted(Sort.by(Sort.Order.asc("name")))
       else PageRequest.of(
@@ -72,10 +73,10 @@ class SeriesCollectionController(
       )
 
     return when {
-      principal.user.sharedAllLibraries && libraryIds == null -> collectionRepository.findAll(searchTerm, pageable = pageRequest)
-      principal.user.sharedAllLibraries && libraryIds != null -> collectionRepository.findAllByLibraries(libraryIds, null, searchTerm, pageable = pageRequest)
-      !principal.user.sharedAllLibraries && libraryIds != null -> collectionRepository.findAllByLibraries(libraryIds, principal.user.sharedLibrariesIds, searchTerm, pageable = pageRequest)
-      else -> collectionRepository.findAllByLibraries(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, searchTerm, pageable = pageRequest)
+      principal.user.sharedAllLibraries && libraryIds == null -> readListRepository.findAll(searchTerm, pageable = pageRequest)
+      principal.user.sharedAllLibraries && libraryIds != null -> readListRepository.findAllByLibraries(libraryIds, null, searchTerm, pageable = pageRequest)
+      !principal.user.sharedAllLibraries && libraryIds != null -> readListRepository.findAllByLibraries(libraryIds, principal.user.sharedLibrariesIds, searchTerm, pageable = pageRequest)
+      else -> readListRepository.findAllByLibraries(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, searchTerm, pageable = pageRequest)
     }.map { it.toDto() }
   }
 
@@ -83,34 +84,33 @@ class SeriesCollectionController(
   fun getOne(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String
-  ): CollectionDto =
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))
+  ): ReadListDto =
+    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))
       ?.toDto()
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
   @GetMapping(value = ["{id}/thumbnail"], produces = [MediaType.IMAGE_JPEG_VALUE])
-  fun getCollectionThumbnail(
+  fun getReadListThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String
   ): ResponseEntity<ByteArray> {
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
+    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
       return ResponseEntity.ok()
         .cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS).cachePrivate())
-        .body(collectionLifecycle.getThumbnailBytes(it))
+        .body(readListLifecycle.getThumbnailBytes(it))
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
   @PostMapping
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   fun addOne(
-    @Valid @RequestBody collection: CollectionCreationDto
-  ): CollectionDto =
+    @Valid @RequestBody readList: ReadListCreationDto
+  ): ReadListDto =
     try {
-      collectionLifecycle.addCollection(SeriesCollection(
-        name = collection.name,
-        ordered = collection.ordered,
-        seriesIds = collection.seriesIds
+      readListLifecycle.addReadList(ReadList(
+        name = readList.name,
+        bookIds = readList.bookIds.toIndexedMap()
       )).toDto()
     } catch (e: DuplicateNameException) {
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
@@ -121,16 +121,15 @@ class SeriesCollectionController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateOne(
     @PathVariable id: String,
-    @Valid @RequestBody collection: CollectionUpdateDto
+    @Valid @RequestBody readList: ReadListUpdateDto
   ) {
-    collectionRepository.findByIdOrNull(id)?.let { existing ->
+    readListRepository.findByIdOrNull(id)?.let { existing ->
       val updated = existing.copy(
-        name = collection.name ?: existing.name,
-        ordered = collection.ordered ?: existing.ordered,
-        seriesIds = collection.seriesIds ?: existing.seriesIds
+        name = readList.name ?: existing.name,
+        bookIds = readList.bookIds?.toIndexedMap() ?: existing.bookIds
       )
       try {
-        collectionLifecycle.updateCollection(updated)
+        readListLifecycle.updateReadList(updated)
       } catch (e: DuplicateNameException) {
         throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
       }
@@ -143,23 +142,21 @@ class SeriesCollectionController(
   fun deleteOne(
     @PathVariable id: String
   ) {
-    collectionRepository.findByIdOrNull(id)?.let {
-      collectionLifecycle.deleteCollection(it.id)
+    readListRepository.findByIdOrNull(id)?.let {
+      readListLifecycle.deleteReadList(it.id)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
   @PageableWithoutSortAsQueryParam
-  @GetMapping("{id}/series")
-  fun getSeriesForCollection(
+  @GetMapping("{id}/books")
+  fun getBooksForReadList(
     @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
-  ): Page<SeriesDto> =
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { collection ->
-      val sort =
-        if (collection.ordered) Sort.by(Sort.Order.asc("collection.number"))
-        else Sort.by(Sort.Order.asc("metadata.titleSort"))
+  ): Page<BookDto> =
+    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
+      val sort = Sort.by(Sort.Order.asc("readList.number"))
 
       val pageRequest =
         if (unpaged) UnpagedSorted(sort)
@@ -169,7 +166,7 @@ class SeriesCollectionController(
           sort
         )
 
-      seriesDtoRepository.findByCollectionId(collection.id, principal.user.id, pageRequest)
+      bookDtoRepository.findByReadListId(readList.id, principal.user.id, pageRequest)
         .map { it.restrictUrl(!principal.user.roleAdmin) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 }

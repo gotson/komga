@@ -49,15 +49,17 @@ class ComicInfoProvider(
       }
 
       return BookMetadataPatch(
-        comicInfo.title,
-        comicInfo.summary,
-        comicInfo.number,
-        comicInfo.number?.toFloatOrNull(),
-        readingDirection,
-        comicInfo.publisher,
-        comicInfo.ageRating?.ageRating,
-        releaseDate,
-        authors.ifEmpty { null }
+        title = comicInfo.title,
+        summary = comicInfo.summary,
+        number = comicInfo.number,
+        numberSort = comicInfo.number?.toFloatOrNull(),
+        readingDirection = readingDirection,
+        publisher = comicInfo.publisher,
+        ageRating = comicInfo.ageRating?.ageRating,
+        releaseDate = releaseDate,
+        authors = authors.ifEmpty { null },
+        readList = comicInfo.alternateSeries ?: comicInfo.storyArc,
+        readListNumber = comicInfo.alternateNumber?.toIntOrNull() ?: comicInfo.storyArcNumber?.toIntOrNull()
       )
     }
     return null

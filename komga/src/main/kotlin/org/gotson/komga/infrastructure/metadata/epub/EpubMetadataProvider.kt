@@ -67,7 +67,9 @@ class EpubMetadataProvider(
         publisher = publisher,
         ageRating = null,
         releaseDate = date,
-        authors = authors
+        authors = authors,
+        readList = null,
+        readListNumber = null
       )
     }
     return null

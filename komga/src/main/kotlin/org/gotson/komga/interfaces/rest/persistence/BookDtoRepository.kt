@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable
 
 interface BookDtoRepository {
   fun findAll(search: BookSearchWithReadProgress, userId: String, pageable: Pageable): Page<BookDto>
+  fun findByReadListId(readListId: String, userId: String, pageable: Pageable): Page<BookDto>
   fun findByIdOrNull(bookId: String, userId: String): BookDto?
   fun findPreviousInSeries(bookId: String, userId: String): BookDto?
   fun findNextInSeries(bookId: String, userId: String): BookDto?

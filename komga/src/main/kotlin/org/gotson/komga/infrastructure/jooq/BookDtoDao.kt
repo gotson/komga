@@ -39,6 +39,7 @@ class BookDtoDao(
   private val r = Tables.READ_PROGRESS
   private val a = Tables.BOOK_METADATA_AUTHOR
   private val s = Tables.SERIES
+  private val rlb = Tables.READLIST_BOOK
 
   private val sorts = mapOf(
     "name" to DSL.lower(b.NAME),
@@ -52,24 +53,38 @@ class BookDtoDao(
     "media.comment" to DSL.lower(m.COMMENT),
     "media.mediaType" to DSL.lower(m.MEDIA_TYPE),
     "metadata.numberSort" to d.NUMBER_SORT,
-    "readProgress.lastModified" to r.LAST_MODIFIED_DATE
+    "readProgress.lastModified" to r.LAST_MODIFIED_DATE,
+    "readList.number" to rlb.NUMBER
   )
 
   override fun findAll(search: BookSearchWithReadProgress, userId: String, pageable: Pageable): Page<BookDto> {
     val conditions = search.toCondition()
 
-    val count = dsl.selectCount()
+    return findAll(conditions, userId, pageable)
+  }
+
+  override fun findByReadListId(readListId: String, userId: String, pageable: Pageable): Page<BookDto> {
+    val conditions = rlb.READLIST_ID.eq(readListId)
+
+    return findAll(conditions, userId, pageable, selectReadListNumber = true)
+  }
+
+  private fun findAll(conditions: Condition, userId: String, pageable: Pageable, selectReadListNumber: Boolean = false): Page<BookDto> {
+    val count = dsl.selectDistinct(b.ID)
       .from(b)
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID))
       .and(readProgressCondition(userId))
+      .leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID))
       .where(conditions)
-      .fetchOne(0, Long::class.java)
+      .groupBy(b.ID)
+      .fetch()
+      .size
 
     val orderBy = pageable.sort.toOrderBy(sorts)
 
-    val dtos = selectBase(userId)
+    val dtos = selectBase(userId, selectReadListNumber)
       .where(conditions)
       .orderBy(orderBy)
       .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
@@ -79,7 +94,7 @@ class BookDtoDao(
     return PageImpl(
       dtos,
       if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
-      else PageRequest.of(0, maxOf(count.toInt(), 20), pageSort),
+      else PageRequest.of(0, maxOf(count, 20), pageSort),
       count.toLong()
     )
   }
@@ -151,17 +166,19 @@ class BookDtoDao(
       .firstOrNull()
   }
 
-  private fun selectBase(userId: String) =
-    dsl.select(
+  private fun selectBase(userId: String, selectReadListNumber: Boolean = false) =
+    dsl.selectDistinct(
       *b.fields(),
       *m.fields(),
       *d.fields(),
       *r.fields()
-    ).from(b)
+    ).apply { if (selectReadListNumber) select(rlb.NUMBER) }
+      .from(b)
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID))
       .and(readProgressCondition(userId))
+      .leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID))
 
   private fun ResultQuery<Record>.fetchAndMap() =
     fetch()

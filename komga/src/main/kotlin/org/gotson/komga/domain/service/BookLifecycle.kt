@@ -12,6 +12,7 @@ import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
+import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.infrastructure.image.ImageConverter
@@ -30,6 +31,7 @@ class BookLifecycle(
   private val bookMetadataRepository: BookMetadataRepository,
   private val readProgressRepository: ReadProgressRepository,
   private val thumbnailBookRepository: ThumbnailBookRepository,
+  private val readListRepository: ReadListRepository,
   private val bookAnalyzer: BookAnalyzer,
   private val imageConverter: ImageConverter
 ) {
@@ -195,6 +197,8 @@ class BookLifecycle(
     logger.info { "Delete book id: $bookId" }
 
     readProgressRepository.deleteByBookId(bookId)
+    readListRepository.removeBookFromAll(bookId)
+
     mediaRepository.delete(bookId)
     thumbnailBookRepository.deleteByBookId(bookId)
     bookMetadataRepository.delete(bookId)
@@ -206,6 +210,8 @@ class BookLifecycle(
     logger.info { "Delete all books: $bookIds" }
 
     readProgressRepository.deleteByBookIds(bookIds)
+    readListRepository.removeBookFromAll(bookIds)
+
     mediaRepository.deleteByBookIds(bookIds)
     thumbnailBookRepository.deleteByBookIds(bookIds)
     bookMetadataRepository.deleteByBookIds(bookIds)

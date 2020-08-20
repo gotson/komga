@@ -20,6 +20,7 @@ import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
+import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
@@ -30,8 +31,10 @@ import org.gotson.komga.infrastructure.web.setCachePrivate
 import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.BookMetadataUpdateDto
 import org.gotson.komga.interfaces.rest.dto.PageDto
+import org.gotson.komga.interfaces.rest.dto.ReadListDto
 import org.gotson.komga.interfaces.rest.dto.ReadProgressUpdateDto
 import org.gotson.komga.interfaces.rest.dto.restrictUrl
+import org.gotson.komga.interfaces.rest.dto.toDto
 import org.gotson.komga.interfaces.rest.persistence.BookDtoRepository
 import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Page
@@ -74,7 +77,8 @@ class BookController(
   private val bookRepository: BookRepository,
   private val bookMetadataRepository: BookMetadataRepository,
   private val mediaRepository: MediaRepository,
-  private val bookDtoRepository: BookDtoRepository
+  private val bookDtoRepository: BookDtoRepository,
+  private val readListRepository: ReadListRepository
 ) {
 
   @PageableAsQueryParam
@@ -192,6 +196,20 @@ class BookController(
     return bookDtoRepository.findNextInSeries(bookId, principal.user.id)
       ?.restrictUrl(!principal.user.roleAdmin)
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+
+  @GetMapping("api/v1/books/{bookId}/readlists")
+  fun getAllReadListsByBook(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable(name = "bookId") bookId: String
+  ): List<ReadListDto> {
+    bookRepository.getLibraryId(bookId)?.let {
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+    return readListRepository.findAllByBook(bookId, principal.user.getAuthorizedLibraryIds(null))
+      .map { it.toDto() }
   }
 
 

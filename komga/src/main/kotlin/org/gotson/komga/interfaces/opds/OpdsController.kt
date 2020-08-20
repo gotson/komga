@@ -6,6 +6,7 @@ import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.SeriesMetadata
@@ -14,6 +15,7 @@ import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
+import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
@@ -59,12 +61,14 @@ private const val ROUTE_SERIES_ALL = "series"
 private const val ROUTE_SERIES_LATEST = "series/latest"
 private const val ROUTE_LIBRARIES_ALL = "libraries"
 private const val ROUTE_COLLECTIONS_ALL = "collections"
+private const val ROUTE_READLISTS_ALL = "readlists"
 private const val ROUTE_SEARCH = "search"
 
 private const val ID_SERIES_ALL = "allSeries"
 private const val ID_SERIES_LATEST = "latestSeries"
 private const val ID_LIBRARIES_ALL = "allLibraries"
 private const val ID_COLLECTIONS_ALL = "allCollections"
+private const val ID_READLISTS_ALL = "allReadLists"
 
 @RestController
 @RequestMapping(value = [ROUTE_BASE], produces = [MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE])
@@ -72,6 +76,7 @@ class OpdsController(
   servletContext: ServletContext,
   private val libraryRepository: LibraryRepository,
   private val collectionRepository: SeriesCollectionRepository,
+  private val readListRepository: ReadListRepository,
   private val seriesRepository: SeriesRepository,
   private val seriesMetadataRepository: SeriesMetadataRepository,
   private val bookRepository: BookRepository,
@@ -127,6 +132,13 @@ class OpdsController(
         id = ID_COLLECTIONS_ALL,
         content = "Browse by collection",
         link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "$routeBase$ROUTE_COLLECTIONS_ALL")
+      ),
+      OpdsEntryNavigation(
+        title = "All read lists",
+        updated = ZonedDateTime.now(),
+        id = ID_READLISTS_ALL,
+        content = "Browse by read lists",
+        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "$routeBase$ROUTE_READLISTS_ALL")
       )
     )
   )
@@ -245,6 +257,30 @@ class OpdsController(
     )
   }
 
+  @GetMapping(ROUTE_READLISTS_ALL)
+  fun getReadLists(
+    @AuthenticationPrincipal principal: KomgaPrincipal
+  ): OpdsFeed {
+    val pageRequest = UnpagedSorted(Sort.by(Sort.Order.asc("name")))
+    val readLists =
+      if (principal.user.sharedAllLibraries) {
+        readListRepository.findAll(pageable = pageRequest)
+      } else {
+        readListRepository.findAllByLibraries(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, pageable = pageRequest)
+      }
+    return OpdsFeedNavigation(
+      id = ID_READLISTS_ALL,
+      title = "All read lists",
+      updated = ZonedDateTime.now(),
+      author = komgaAuthor,
+      links = listOf(
+        OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "$routeBase$ROUTE_READLISTS_ALL"),
+        linkStart
+      ),
+      entries = readLists.content.map { it.toOpdsEntry() }
+    )
+  }
+
   @GetMapping("series/{id}")
   fun getOneSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -266,7 +302,7 @@ class OpdsController(
         .map { it.toOpdsEntry(shouldPrependBookNumbers(userAgent)) }
 
       OpdsFeedAcquisition(
-        id = series.id.toString(),
+        id = series.id,
         title = metadata.title,
         updated = series.lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
         author = komgaAuthor,
@@ -294,7 +330,7 @@ class OpdsController(
         .map { it.toOpdsEntry() }
 
       OpdsFeedNavigation(
-        id = library.id.toString(),
+        id = library.id,
         title = library.name,
         updated = library.lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
         author = komgaAuthor,
@@ -324,12 +360,39 @@ class OpdsController(
       }
 
       OpdsFeedNavigation(
-        id = collection.id.toString(),
+        id = collection.id,
         title = collection.name,
         updated = collection.lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
         author = komgaAuthor,
         links = listOf(
           OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "${routeBase}collections/$id"),
+          linkStart
+        ),
+        entries = entries
+      )
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @GetMapping("readlists/{id}")
+  fun getOneReadList(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable id: String
+  ): OpdsFeed {
+    return readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
+      val books = readList.bookIds.values.mapNotNull { bookRepository.findByIdOrNull(it) }
+        .map { BookWithInfo(it, mediaRepository.findById(it.id), bookMetadataRepository.findById(it.id)) }
+
+      val entries = books.mapIndexed { index, it ->
+        it.toOpdsEntry(prependNumber = false, prepend = index + 1)
+      }
+
+      OpdsFeedAcquisition(
+        id = readList.id,
+        title = readList.name,
+        updated = readList.lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
+        author = komgaAuthor,
+        links = listOf(
+          OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "${routeBase}readlists/$id"),
           linkStart
         ),
         entries = entries
@@ -343,13 +406,13 @@ class OpdsController(
     return OpdsEntryNavigation(
       title = pre + metadata.title,
       updated = series.lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
-      id = series.id.toString(),
+      id = series.id,
       content = "",
       link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "${routeBase}series/${series.id}")
     )
   }
 
-  private fun BookWithInfo.toOpdsEntry(prependNumber: Boolean): OpdsEntryAcquisition {
+  private fun BookWithInfo.toOpdsEntry(prependNumber: Boolean, prepend: Int? = null): OpdsEntryAcquisition {
     val mediaTypes = media.pages.map { it.mediaType }.distinct()
 
     val opdsLinkPageStreaming = if (mediaTypes.size == 1 && mediaTypes.first() in opdsPseSupportedFormats) {
@@ -358,10 +421,11 @@ class OpdsController(
       OpdsLinkPageStreaming("image/jpeg", "${routeBase}books/${book.id}/pages/{pageNumber}?convert=jpeg&zero_based=true", media.pages.size)
     }
 
+    val pre = prepend?.let { decimalFormat.format(it) + " - " } ?: ""
     return OpdsEntryAcquisition(
-      title = "${if (prependNumber) "${decimalFormat.format(metadata.numberSort)} - " else ""}${metadata.title}",
+      title = "$pre${if (prependNumber) "${decimalFormat.format(metadata.numberSort)} - " else ""}${metadata.title}",
       updated = book.lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
-      id = book.id.toString(),
+      id = book.id,
       content = run {
         var content = "${book.fileExtension().toUpperCase()} - ${book.fileSizeHumanReadable()}"
         if (metadata.summary.isNotBlank())
@@ -378,25 +442,32 @@ class OpdsController(
     )
   }
 
-  private fun Library.toOpdsEntry(): OpdsEntryNavigation {
-    return OpdsEntryNavigation(
+  private fun Library.toOpdsEntry(): OpdsEntryNavigation =
+    OpdsEntryNavigation(
       title = name,
       updated = lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
-      id = id.toString(),
+      id = id,
       content = "",
       link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "${routeBase}libraries/$id")
     )
-  }
 
-  private fun SeriesCollection.toOpdsEntry(): OpdsEntryNavigation {
-    return OpdsEntryNavigation(
+  private fun SeriesCollection.toOpdsEntry(): OpdsEntryNavigation =
+    OpdsEntryNavigation(
       title = name,
       updated = lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
-      id = id.toString(),
+      id = id,
       content = "",
       link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "${routeBase}collections/$id")
     )
-  }
+
+  private fun ReadList.toOpdsEntry(): OpdsEntryNavigation =
+    OpdsEntryNavigation(
+      title = name,
+      updated = lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
+      id = id,
+      content = "",
+      link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "${routeBase}readlists/$id")
+    )
 
   private fun shouldPrependBookNumbers(userAgent: String) =
     userAgent.contains("chunky", ignoreCase = true)

@@ -11,5 +11,8 @@ data class BookMetadataPatch(
   val publisher: String?,
   val ageRating: Int?,
   val releaseDate: LocalDate?,
-  val authors: List<Author>?
+  val authors: List<Author>?,
+
+  val readList: String?,
+  val readListNumber: Int?
 )

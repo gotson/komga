@@ -12,6 +12,7 @@ data class Library(
   val importComicInfoBook: Boolean = true,
   val importComicInfoSeries: Boolean = true,
   val importComicInfoCollection: Boolean = true,
+  val importComicInfoReadList: Boolean = true,
   val importEpubBook: Boolean = true,
   val importEpubSeries: Boolean = true,
   val importLocalArtwork: Boolean = true,

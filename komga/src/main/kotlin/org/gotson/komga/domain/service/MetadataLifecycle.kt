@@ -2,6 +2,7 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
+import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.SeriesMetadataPatch
@@ -9,6 +10,7 @@ import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
+import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
@@ -34,6 +36,8 @@ class MetadataLifecycle(
   private val seriesLifecycle: SeriesLifecycle,
   private val collectionRepository: SeriesCollectionRepository,
   private val collectionLifecycle: SeriesCollectionLifecycle,
+  private val readListRepository: ReadListRepository,
+  private val readListLifecycle: ReadListLifecycle,
   private val localArtworkProvider: LocalArtworkProvider
 ) {
 
@@ -45,20 +49,64 @@ class MetadataLifecycle(
 
     bookMetadataProviders.forEach { provider ->
       when {
-        provider is ComicInfoProvider && !library.importComicInfoBook -> logger.info { "Library is not set to import book metadata from ComicInfo, skipping" }
+        provider is ComicInfoProvider && !library.importComicInfoBook && !library.importComicInfoReadList -> logger.info { "Library is not set to import book and read lists metadata from ComicInfo, skipping" }
         provider is EpubMetadataProvider && !library.importEpubBook -> logger.info { "Library is not set to import book metadata from Epub, skipping" }
         else -> {
           logger.debug { "Provider: $provider" }
-          provider.getBookMetadataFromBook(book, media)?.let { bPatch ->
+          val patch = provider.getBookMetadataFromBook(book, media)
 
-            bookMetadataRepository.findById(book.id).let {
-              logger.debug { "Original metadata: $it" }
-              val patched = metadataApplier.apply(bPatch, it)
-              logger.debug { "Patched metadata: $patched" }
+          // handle book metadata
+          if ((provider is ComicInfoProvider && library.importComicInfoBook) ||
+            (provider is EpubMetadataProvider && library.importEpubBook)) {
+            patch?.let { bPatch ->
+              bookMetadataRepository.findById(book.id).let {
+                logger.debug { "Original metadata: $it" }
+                val patched = metadataApplier.apply(bPatch, it)
+                logger.debug { "Patched metadata: $patched" }
 
-              bookMetadataRepository.update(patched)
+                bookMetadataRepository.update(patched)
+              }
             }
           }
+
+          // handle read lists
+          if (provider is ComicInfoProvider && library.importComicInfoReadList) {
+            patch?.let { bPatch ->
+              val readList = bPatch.readList
+              val readListNumber = bPatch.readListNumber
+
+
+              if (readList != null) {
+                readListRepository.findByNameOrNull(readList).let { existing ->
+                  if (existing != null) {
+                    if (existing.bookIds.containsValue(book.id))
+                      logger.debug { "Book is already in existing readlist '${existing.name}'" }
+                    else {
+                      val map = existing.bookIds.toSortedMap()
+                      val key = if (readListNumber != null && existing.bookIds.containsKey(readListNumber)) {
+                        logger.debug { "Existing readlist '${existing.name}' already contains a book at position $readListNumber, adding book '${book.name}' at the end" }
+                        existing.bookIds.lastKey() + 1
+                      } else {
+                        logger.debug { "Adding book '${book.name}' to existing readlist '${existing.name}'" }
+                        readListNumber ?: existing.bookIds.lastKey() + 1
+                      }
+                      map[key] = book.id
+                      readListLifecycle.updateReadList(
+                        existing.copy(bookIds = map)
+                      )
+                    }
+                  } else {
+                    logger.debug { "Adding book '${book.name}' to new readlist '$readList'" }
+                    readListLifecycle.addReadList(ReadList(
+                      name = readList,
+                      bookIds = mapOf((readListNumber ?: 0) to book.id).toSortedMap()
+                    ))
+                  }
+                }
+              }
+            }
+          }
+
         }
       }
     }
@@ -85,7 +133,7 @@ class MetadataLifecycle(
 
           // handle series metadata
           if ((provider is ComicInfoProvider && library.importComicInfoSeries) ||
-            (provider is EpubMetadataProvider && !library.importEpubSeries)) {
+            (provider is EpubMetadataProvider && library.importEpubSeries)) {
             val title = patches.uniqueOrNull { it.title }
             val titleSort = patches.uniqueOrNull { it.titleSort }
             val status = patches.uniqueOrNull { it.status }
@@ -113,15 +161,15 @@ class MetadataLifecycle(
               collectionRepository.findByNameOrNull(collection).let { existing ->
                 if (existing != null) {
                   if (existing.seriesIds.contains(series.id))
-                    logger.debug { "Series is already in existing  collection ${existing.name}" }
+                    logger.debug { "Series is already in existing collection '${existing.name}'" }
                   else {
-                    logger.debug { "Adding series ${series.name} to existing collection ${existing.name}" }
+                    logger.debug { "Adding series '${series.name}' to existing collection '${existing.name}'" }
                     collectionLifecycle.updateCollection(
                       existing.copy(seriesIds = existing.seriesIds + series.id)
                     )
                   }
                 } else {
-                  logger.debug { "Adding series ${series.name} to new collection $collection" }
+                  logger.debug { "Adding series '${series.name}' to new collection '$collection'" }
                   collectionLifecycle.addCollection(SeriesCollection(
                     name = collection,
                     seriesIds = listOf(series.id)
