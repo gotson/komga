@@ -35,9 +35,7 @@
       @edit="editMultipleSeries"
     />
 
-    <library-navigation v-if="collectionsCount > 0"
-                        :libraryId="libraryId"
-    />
+    <library-navigation :libraryId="libraryId"/>
 
     <v-container fluid>
       <empty-state
@@ -82,12 +80,12 @@ import SortMenuButton from '@/components/SortMenuButton.vue'
 import { parseQueryFilter, parseQuerySort } from '@/functions/query-params'
 import { ReadStatus } from '@/types/enum-books'
 import { SeriesStatus } from '@/types/enum-series'
-import { COLLECTION_CHANGED, LIBRARY_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
+import { LIBRARY_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 import { Location } from 'vue-router'
+import { LIBRARIES_ALL } from '@/types/library'
 
 const cookiePageSize = 'pagesize'
-const all = 'all'
 
 export default Vue.extend({
   name: 'BrowseLibraries',
@@ -133,13 +131,12 @@ export default Vue.extend({
       filterUnwatch: null as any,
       pageUnwatch: null as any,
       pageSizeUnwatch: null as any,
-      collectionsCount: 0,
     }
   },
   props: {
     libraryId: {
       type: String,
-      default: all,
+      default: LIBRARIES_ALL,
     },
   },
   watch: {
@@ -153,13 +150,11 @@ export default Vue.extend({
     },
   },
   created () {
-    this.$eventHub.$on(COLLECTION_CHANGED, this.reloadCollections)
     this.$eventHub.$on(SERIES_CHANGED, this.reloadSeries)
     this.$eventHub.$on(LIBRARY_DELETED, this.libraryDeleted)
     this.$eventHub.$on(LIBRARY_CHANGED, this.reloadLibrary)
   },
   beforeDestroy () {
-    this.$eventHub.$off(COLLECTION_CHANGED, this.reloadCollections)
     this.$eventHub.$off(SERIES_CHANGED, this.reloadSeries)
     this.$eventHub.$off(LIBRARY_DELETED, this.libraryDeleted)
     this.$eventHub.$off(LIBRARY_CHANGED, this.reloadLibrary)
@@ -188,7 +183,6 @@ export default Vue.extend({
       this.totalPages = 1
       this.totalElements = null
       this.series = []
-      this.collectionsCount = 0
 
       this.loadLibrary(to.params.libraryId)
 
@@ -238,7 +232,7 @@ export default Vue.extend({
     libraryDeleted (event: EventLibraryDeleted) {
       if (event.id === this.libraryId) {
         this.$router.push({ name: 'home' })
-      } else if (this.libraryId === all) {
+      } else if (this.libraryId === LIBRARIES_ALL) {
         this.loadLibrary(this.libraryId)
       }
     },
@@ -278,24 +272,18 @@ export default Vue.extend({
 
       this.setWatches()
     },
-    reloadCollections () {
-      this.loadLibrary(this.libraryId)
-    },
     reloadSeries (event: EventSeriesChanged) {
-      if (this.libraryId === all || event.libraryId === this.libraryId) {
+      if (this.libraryId === LIBRARIES_ALL || event.libraryId === this.libraryId) {
         this.loadPage(this.libraryId, this.page, this.sortActive)
       }
     },
     reloadLibrary (event: EventLibraryChanged) {
-      if (this.libraryId === all || event.id === this.libraryId) {
+      if (this.libraryId === LIBRARIES_ALL || event.id === this.libraryId) {
         this.loadLibrary(this.libraryId)
       }
     },
     async loadLibrary (libraryId: string) {
       this.library = this.getLibraryLazy(libraryId)
-
-      const lib = libraryId !== all ? [libraryId] : undefined
-      this.collectionsCount = (await this.$komgaCollections.getCollections(lib, { size: 1 })).totalElements
 
       await this.loadPage(libraryId, this.page, this.sortActive)
     },
@@ -323,7 +311,7 @@ export default Vue.extend({
         pageRequest.sort = [`${sort.key},${sort.order}`]
       }
 
-      const requestLibraryId = libraryId !== all ? libraryId : undefined
+      const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
       const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, this.filters.readStatus)
 
       this.totalPages = seriesPage.totalPages

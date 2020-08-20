@@ -39,3 +39,7 @@ export function seriesThumbnailUrl (seriesId: string): string {
 export function collectionThumbnailUrl (collectionId: string): string {
   return `${urls.originNoSlash}/api/v1/collections/${collectionId}/thumbnail`
 }
+
+export function readListThumbnailUrl (readListId: string): string {
+  return `${urls.originNoSlash}/api/v1/readlists/${readListId}/thumbnail`
+}

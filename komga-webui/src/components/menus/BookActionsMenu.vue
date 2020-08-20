@@ -6,12 +6,15 @@
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
       </template>
-      <v-list>
+      <v-list dense>
         <v-list-item @click="analyze" v-if="isAdmin">
           <v-list-item-title>Analyze</v-list-item-title>
         </v-list-item>
         <v-list-item @click="refreshMetadata" v-if="isAdmin">
           <v-list-item-title>Refresh metadata</v-list-item-title>
+        </v-list-item>
+        <v-list-item @click="addToReadList" v-if="isAdmin">
+          <v-list-item-title>Add to read list</v-list-item-title>
         </v-list-item>
         <v-list-item @click="markRead" v-if="!isRead">
           <v-list-item-title>Mark as read</v-list-item-title>
@@ -68,6 +71,9 @@ export default Vue.extend({
     },
     refreshMetadata () {
       this.$komgaBooks.refreshMetadata(this.book)
+    },
+    addToReadList () {
+      this.$store.dispatch('dialogAddBooksToReadList', this.book)
     },
     async markRead () {
       const readProgress = { completed: true } as ReadProgressUpdateDto

@@ -16,6 +16,14 @@ interface EventCollectionDeleted {
   id: string
 }
 
+interface EventReadListChanged {
+  id: string
+}
+
+interface EventReadListDeleted {
+  id: string
+}
+
 interface EventLibraryAdded {
   id: string
 }

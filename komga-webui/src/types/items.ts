@@ -1,4 +1,4 @@
-import { bookThumbnailUrl, collectionThumbnailUrl, seriesThumbnailUrl } from '@/functions/urls'
+import { bookThumbnailUrl, collectionThumbnailUrl, readListThumbnailUrl, seriesThumbnailUrl } from '@/functions/urls'
 import { RawLocation } from 'vue-router/types/router'
 
 function plural (count: number, singular: string, plural: string) {
@@ -6,11 +6,13 @@ function plural (count: number, singular: string, plural: string) {
 }
 
 export enum ItemTypes {
-  BOOK, SERIES, COLLECTION
+  BOOK, SERIES, COLLECTION, READLIST
 }
 
-export function createItem (item: BookDto | SeriesDto | CollectionDto): Item<BookDto | SeriesDto | CollectionDto> {
-  if ('seriesIds' in item) {
+export function createItem (item: BookDto | SeriesDto | CollectionDto | ReadListDto): Item<BookDto | SeriesDto | CollectionDto | ReadListDto> {
+  if ('bookIds' in item) {
+    return new ReadListItem(item)
+  } else if ('seriesIds' in item) {
     return new CollectionItem(item)
   } else if ('seriesId' in item) {
     return new BookItem(item)
@@ -114,5 +116,28 @@ export class CollectionItem extends Item<CollectionDto> {
 
   to (): RawLocation {
     return { name: 'browse-collection', params: { collectionId: this.item.id.toString() } }
+  }
+}
+
+export class ReadListItem extends Item<ReadListDto> {
+  thumbnailUrl (): string {
+    return readListThumbnailUrl(this.item.id)
+  }
+
+  type (): ItemTypes {
+    return ItemTypes.READLIST
+  }
+
+  title (): string {
+    return this.item.name
+  }
+
+  body (): string {
+    const c = this.item.bookIds.length
+    return `<span>${c} Books</span>`
+  }
+
+  to (): RawLocation {
+    return { name: 'browse-readlist', params: { readListId: this.item.id.toString() } }
   }
 }

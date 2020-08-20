@@ -19,6 +19,25 @@
       @deleted="collectionDeleted"
     />
 
+    <read-list-add-to-dialog
+      v-model="addToReadListDialog"
+      :books="addToReadListBooks"
+      @added="readListAdded"
+      @created="readListAdded"
+    />
+
+    <read-list-edit-dialog
+      v-model="editReadListDialog"
+      :read-list="editReadList"
+      @updated="readListUpdated"
+    />
+
+    <read-list-delete-dialog
+      v-model="deleteReadListDialog"
+      :read-list="deleteReadList"
+      @deleted="readListDeleted"
+    />
+
     <library-edit-dialog
       v-model="editLibraryDialog"
       :library="editLibrary"
@@ -62,10 +81,17 @@ import {
   collectionToEventCollectionDeleted,
   LIBRARY_DELETED,
   libraryToEventLibraryDeleted,
+  READLIST_CHANGED,
+  READLIST_DELETED,
+  readListToEventReadListChanged,
+  readListToEventReadListDeleted,
   SERIES_CHANGED,
   seriesToEventSeriesChanged,
 } from '@/types/events'
 import Vue from 'vue'
+import ReadListAddToDialog from '@/components/dialogs/ReadListAddToDialog.vue'
+import ReadListDeleteDialog from '@/components/dialogs/ReadListDeleteDialog.vue'
+import ReadListEditDialog from '@/components/dialogs/ReadListEditDialog.vue'
 
 export default Vue.extend({
   name: 'Dialogs',
@@ -73,12 +99,16 @@ export default Vue.extend({
     CollectionAddToDialog,
     CollectionEditDialog,
     CollectionDeleteDialog,
+    ReadListAddToDialog,
+    ReadListEditDialog,
+    ReadListDeleteDialog,
     LibraryEditDialog,
     LibraryDeleteDialog,
     EditBooksDialog,
     EditSeriesDialog,
   },
   computed: {
+    // collections
     addToCollectionDialog: {
       get (): boolean {
         return this.$store.state.addToCollectionDialog
@@ -112,6 +142,41 @@ export default Vue.extend({
     deleteCollection (): CollectionDto {
       return this.$store.state.deleteCollection
     },
+    // read lists
+    addToReadListDialog: {
+      get (): boolean {
+        return this.$store.state.addToReadListDialog
+      },
+      set (val) {
+        this.$store.dispatch('dialogAddBooksToReadListDisplay', val)
+      },
+    },
+    addToReadListBooks (): BookDto | BookDto[] {
+      return this.$store.state.addToReadListBooks
+    },
+    editReadListDialog: {
+      get (): boolean {
+        return this.$store.state.editReadListDialog
+      },
+      set (val) {
+        this.$store.dispatch('dialogEditReadListDisplay', val)
+      },
+    },
+    editReadList (): ReadListDto {
+      return this.$store.state.editReadList
+    },
+    deleteReadListDialog: {
+      get (): boolean {
+        return this.$store.state.deleteReadListDialog
+      },
+      set (val) {
+        this.$store.dispatch('dialogDeleteReadListDisplay', val)
+      },
+    },
+    deleteReadList (): ReadListDto {
+      return this.$store.state.deleteReadList
+    },
+    // libraries
     editLibraryDialog: {
       get (): boolean {
         return this.$store.state.editLibraryDialog
@@ -134,6 +199,7 @@ export default Vue.extend({
     deleteLibrary (): LibraryDto {
       return this.$store.state.deleteLibrary
     },
+    // books
     updateBooksDialog: {
       get (): boolean {
         return this.$store.state.updateBooksDialog
@@ -145,6 +211,7 @@ export default Vue.extend({
     updateBooks (): BookDto | BookDto[] {
       return this.$store.state.updateBooks
     },
+    // series
     updateSeriesDialog: {
       get (): boolean {
         return this.$store.state.updateSeriesDialog
@@ -173,6 +240,22 @@ export default Vue.extend({
     },
     collectionDeleted () {
       this.$eventHub.$emit(COLLECTION_DELETED, collectionToEventCollectionDeleted(this.deleteCollection))
+    },
+    readListAdded (readList: ReadListDto) {
+      if (Array.isArray(this.addToReadListBooks)) {
+        this.addToReadListBooks.forEach(b => {
+          this.$eventHub.$emit(BOOK_CHANGED, bookToEventBookChanged(b))
+        })
+      } else {
+        this.$eventHub.$emit(BOOK_CHANGED, bookToEventBookChanged(this.addToReadListBooks))
+      }
+      this.$eventHub.$emit(READLIST_CHANGED, readListToEventReadListChanged(readList))
+    },
+    readListUpdated () {
+      this.$eventHub.$emit(READLIST_CHANGED, readListToEventReadListChanged(this.editReadList))
+    },
+    readListDeleted () {
+      this.$eventHub.$emit(READLIST_DELETED, readListToEventReadListDeleted(this.deleteReadList))
     },
     libraryDeleted () {
       this.$eventHub.$emit(LIBRARY_DELETED, libraryToEventLibraryDeleted(this.deleteLibrary))

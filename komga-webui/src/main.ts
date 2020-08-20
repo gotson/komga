@@ -11,6 +11,7 @@ import httpPlugin from './plugins/http.plugin'
 import komgaBooks from './plugins/komga-books.plugin'
 import komgaClaim from './plugins/komga-claim.plugin'
 import komgaCollections from './plugins/komga-collections.plugin'
+import komgaReadLists from './plugins/komga-readlists.plugin'
 import komgaFileSystem from './plugins/komga-filesystem.plugin'
 import komgaLibraries from './plugins/komga-libraries.plugin'
 import komgaReferential from './plugins/komga-referential.plugin'
@@ -30,6 +31,7 @@ Vue.use(httpPlugin)
 Vue.use(komgaFileSystem, { http: Vue.prototype.$http })
 Vue.use(komgaSeries, { http: Vue.prototype.$http })
 Vue.use(komgaCollections, { http: Vue.prototype.$http })
+Vue.use(komgaReadLists, { http: Vue.prototype.$http })
 Vue.use(komgaBooks, { http: Vue.prototype.$http })
 Vue.use(komgaReferential, { http: Vue.prototype.$http })
 Vue.use(komgaClaim, { http: Vue.prototype.$http })

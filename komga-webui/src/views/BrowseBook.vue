@@ -89,8 +89,7 @@
               <badge v-if="book.metadata.ageRating">{{ book.metadata.ageRating }}+</badge>
             </v-col>
             <v-col cols="auto" v-if="book.metadata.releaseDate">
-              {{ book.metadata.releaseDate | moment
-            ('MMMM DD, YYYY') }}
+              {{ book.metadata.releaseDate | moment('MMMM DD, YYYY') }}
             </v-col>
           </v-row>
 
@@ -121,6 +120,18 @@
               </div>
             </v-col>
           </v-row>
+
+          <v-row v-if="$vuetify.breakpoint.name !== 'xs'">
+            <v-col>
+              <read-lists-expansion-panels :read-lists="readLists"/>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+
+      <v-row v-if="$vuetify.breakpoint.name === 'xs'">
+        <v-col class="pt-0 py-1">
+          <read-lists-expansion-panels :read-lists="readLists"/>
         </v-col>
       </v-row>
 
@@ -199,10 +210,11 @@ import { bookFileUrl, bookThumbnailUrl } from '@/functions/urls'
 import { ReadStatus } from '@/types/enum-books'
 import { BOOK_CHANGED, LIBRARY_DELETED } from '@/types/events'
 import Vue from 'vue'
+import ReadListsExpansionPanels from '@/components/ReadListsExpansionPanels.vue'
 
 export default Vue.extend({
   name: 'BrowseBook',
-  components: { ToolbarSticky, Badge, ItemCard, BookActionsMenu },
+  components: { ToolbarSticky, Badge, ItemCard, BookActionsMenu, ReadListsExpansionPanels },
   data: () => {
     return {
       book: {} as BookDto,
@@ -210,6 +222,7 @@ export default Vue.extend({
       siblings: [] as BookDto[],
       siblingPrevious: {} as BookDto,
       siblingNext: {} as BookDto,
+      readLists: [] as ReadListDto[],
     }
   },
   async created () {
@@ -291,6 +304,7 @@ export default Vue.extend({
       this.book = await this.$komgaBooks.getBook(bookId)
       this.series = await this.$komgaSeries.getOneSeries(this.book.seriesId)
       this.siblings = (await this.$komgaSeries.getBooks(this.book.seriesId, { unpaged: true } as PageRequest)).content
+      this.readLists = await this.$komgaBooks.getReadLists(this.bookId)
 
       if (this.$_.has(this.book, 'metadata.title')) {
         document.title = `Komga - ${getBookTitleCompact(this.book.metadata.title, this.series.metadata.title)}`

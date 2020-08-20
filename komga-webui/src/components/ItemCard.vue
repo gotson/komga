@@ -80,6 +80,10 @@
                                          :collection="item"
                                          :menu.sync="actionMenuState"
                 />
+                <read-list-actions-menu v-if="computedItem.type() === ItemTypes.READLIST"
+                                        :read-list="item"
+                                        :menu.sync="actionMenuState"
+                />
               </div>
             </v-overlay>
           </v-fade-transition>
@@ -119,13 +123,14 @@ import { ReadStatus } from '@/types/enum-books'
 import { createItem, Item, ItemTypes } from '@/types/items'
 import Vue from 'vue'
 import { RawLocation } from 'vue-router'
+import ReadListActionsMenu from '@/components/menus/ReadListActionsMenu.vue'
 
 export default Vue.extend({
   name: 'ItemCard',
-  components: { BookActionsMenu, SeriesActionsMenu, CollectionActionsMenu },
+  components: { BookActionsMenu, SeriesActionsMenu, CollectionActionsMenu, ReadListActionsMenu },
   props: {
     item: {
-      type: Object as () => BookDto | SeriesDto | CollectionDto,
+      type: Object as () => BookDto | SeriesDto | CollectionDto | ReadListDto,
       required: true,
     },
     // hide the bottom part of the card
@@ -184,7 +189,7 @@ export default Vue.extend({
     overlay (): boolean {
       return this.onEdit !== undefined || this.onSelected !== undefined || this.bookReady || this.canReadPages || this.actionMenu
     },
-    computedItem (): Item<BookDto | SeriesDto | CollectionDto> {
+    computedItem (): Item<BookDto | SeriesDto | CollectionDto | ReadListDto> {
       return createItem(this.item)
     },
     disableHover (): boolean {

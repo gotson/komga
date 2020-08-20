@@ -20,6 +20,7 @@
       @unselect-all="selectedBooks = []"
       @mark-read="markSelectedBooksRead"
       @mark-unread="markSelectedBooksUnread"
+      @add-to-readlist="addToReadList"
       @edit="editMultipleBooks"
     />
 
@@ -79,6 +80,20 @@
           </template>
         </horizontal-scroller>
 
+        <horizontal-scroller v-if="readLists.length !== 0" class="mb-4">
+          <template v-slot:prepend>
+            <div class="title">Read Lists</div>
+          </template>
+          <template v-slot:content>
+            <item-browser :items="readLists"
+                          nowrap
+                          :edit-function="singleEditReadList"
+                          :selectable="false"
+                          :fixed-item-width="fixedCardWidth"
+            />
+          </template>
+        </horizontal-scroller>
+
       </template>
     </v-container>
 
@@ -92,7 +107,15 @@ import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
-import { BOOK_CHANGED, COLLECTION_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
+import {
+  BOOK_CHANGED,
+  COLLECTION_CHANGED,
+  COLLECTION_DELETED,
+  LIBRARY_DELETED,
+  READLIST_CHANGED,
+  READLIST_DELETED,
+  SERIES_CHANGED,
+} from '@/types/events'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -110,6 +133,7 @@ export default Vue.extend({
       series: [] as SeriesDto[],
       books: [] as BookDto[],
       collections: [] as CollectionDto[],
+      readLists: [] as ReadListDto[],
       pageSize: 50,
       loading: false,
       selectedSeries: [] as SeriesDto[],
@@ -121,12 +145,18 @@ export default Vue.extend({
     this.$eventHub.$on(SERIES_CHANGED, this.reloadResults)
     this.$eventHub.$on(BOOK_CHANGED, this.reloadResults)
     this.$eventHub.$on(COLLECTION_CHANGED, this.reloadResults)
+    this.$eventHub.$on(COLLECTION_DELETED, this.reloadResults)
+    this.$eventHub.$on(READLIST_CHANGED, this.reloadResults)
+    this.$eventHub.$on(READLIST_DELETED, this.reloadResults)
   },
   beforeDestroy () {
     this.$eventHub.$off(LIBRARY_DELETED, this.reloadResults)
     this.$eventHub.$off(SERIES_CHANGED, this.reloadResults)
     this.$eventHub.$off(BOOK_CHANGED, this.reloadResults)
     this.$eventHub.$off(COLLECTION_CHANGED, this.reloadResults)
+    this.$eventHub.$off(COLLECTION_DELETED, this.reloadResults)
+    this.$eventHub.$off(READLIST_CHANGED, this.reloadResults)
+    this.$eventHub.$off(READLIST_DELETED, this.reloadResults)
   },
   watch: {
     '$route.query.q': {
@@ -163,7 +193,7 @@ export default Vue.extend({
       return this.selectedSeries.length === 0 && this.selectedBooks.length === 0
     },
     emptyResults (): boolean {
-      return !this.loading && this.series.length === 0 && this.books.length === 0 && this.collections.length === 0
+      return !this.loading && this.series.length === 0 && this.books.length === 0 && this.collections.length === 0 && this.readLists.length === 0
     },
   },
   methods: {
@@ -175,6 +205,9 @@ export default Vue.extend({
     },
     singleEditCollection (collection: CollectionDto) {
       this.$store.dispatch('dialogEditCollection', collection)
+    },
+    singleEditReadList (readList: ReadListDto) {
+      this.$store.dispatch('dialogEditReadList', readList)
     },
     async markSelectedSeriesRead () {
       await Promise.all(this.selectedSeries.map(s =>
@@ -194,6 +227,9 @@ export default Vue.extend({
     },
     addToCollection () {
       this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries)
+    },
+    addToReadList () {
+      this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks)
     },
     editMultipleSeries () {
       this.$store.dispatch('dialogUpdateSeries', this.selectedSeries)
@@ -227,12 +263,14 @@ export default Vue.extend({
         this.series = (await this.$komgaSeries.getSeries(undefined, { size: this.pageSize }, search)).content
         this.books = (await this.$komgaBooks.getBooks(undefined, { size: this.pageSize }, search)).content
         this.collections = (await this.$komgaCollections.getCollections(undefined, { size: this.pageSize }, search)).content
+        this.readLists = (await this.$komgaReadLists.getReadLists(undefined, { size: this.pageSize }, search)).content
 
         this.loading = false
       } else {
         this.series = []
         this.books = []
         this.collections = []
+        this.readLists = []
       }
     },
   },

@@ -28,6 +28,15 @@
         </v-tooltip>
       </v-btn>
 
+      <v-btn icon @click="addToReadList" v-if="isAdmin">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on">mdi-book-plus-multiple</v-icon>
+          </template>
+          <span>Add to read list</span>
+        </v-tooltip>
+      </v-btn>
+
       <v-btn icon @click="edit" v-if="isAdmin">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
@@ -70,6 +79,9 @@ export default Vue.extend({
     },
     markUnread () {
       this.$emit('mark-unread')
+    },
+    addToReadList () {
+      this.$emit('add-to-readlist')
     },
     edit () {
       this.$emit('edit')

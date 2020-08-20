@@ -6,7 +6,7 @@
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
       </template>
-      <v-list>
+      <v-list dense>
         <v-list-item @click="scan">
           <v-list-item-title>Scan library files</v-list-item-title>
         </v-list-item>

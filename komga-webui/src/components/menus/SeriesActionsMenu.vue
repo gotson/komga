@@ -6,7 +6,7 @@
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
       </template>
-      <v-list>
+      <v-list dense>
         <v-list-item @click="analyze" v-if="isAdmin">
           <v-list-item-title>Analyze</v-list-item-title>
         </v-list-item>

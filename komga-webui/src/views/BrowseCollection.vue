@@ -82,6 +82,7 @@ import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import { COLLECTION_CHANGED, COLLECTION_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 import SeriesMultiSelectBar from '@/components/bars/SeriesMultiSelectBar.vue'
+import { LIBRARIES_ALL } from '@/types/library'
 
 export default Vue.extend({
   name: 'BrowseCollection',
@@ -205,7 +206,7 @@ export default Vue.extend({
       this.$store.dispatch('dialogEditCollection', this.collection)
     },
     afterDelete () {
-      this.$router.push({ name: 'browse-collections', params: { libraryId: '0' } })
+      this.$router.push({ name: 'browse-collections', params: { libraryId: LIBRARIES_ALL } })
     },
     reloadSeries (event: EventSeriesChanged) {
       if (this.series.some(s => s.id === event.id)) this.loadCollection(this.collectionId)

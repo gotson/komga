@@ -86,10 +86,23 @@ const router = new Router({
           props: (route) => ({ libraryId: route.params.libraryId }),
         },
         {
+          path: '/libraries/:libraryId/readlists',
+          name: 'browse-readlists',
+          beforeEnter: noLibraryGuard,
+          component: () => import(/* webpackChunkName: "browse-readlists" */ './views/BrowseReadLists.vue'),
+          props: (route) => ({ libraryId: route.params.libraryId }),
+        },
+        {
           path: '/collections/:collectionId',
           name: 'browse-collection',
           component: () => import(/* webpackChunkName: "browse-collection" */ './views/BrowseCollection.vue'),
           props: (route) => ({ collectionId: route.params.collectionId }),
+        },
+        {
+          path: '/readlists/:readListId',
+          name: 'browse-readlist',
+          component: () => import(/* webpackChunkName: "browse-readlist" */ './views/BrowseReadList.vue'),
+          props: (route) => ({ readListId: route.params.readListId }),
         },
         {
           path: '/series/:seriesId',

@@ -44,6 +44,7 @@
       @unselect-all="selectedBooks = []"
       @mark-read="markSelectedRead"
       @mark-unread="markSelectedUnread"
+      @add-to-readlist="addToReadList"
       @edit="editMultipleBooks"
     />
 
@@ -133,7 +134,7 @@ import SortMenuButton from '@/components/SortMenuButton.vue'
 import { parseQueryFilter, parseQuerySort } from '@/functions/query-params'
 import { seriesThumbnailUrl } from '@/functions/urls'
 import { ReadStatus } from '@/types/enum-books'
-import { BOOK_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
+import { BOOK_CHANGED, LIBRARY_DELETED, READLIST_CHANGED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 import { Location } from 'vue-router'
 
@@ -218,11 +219,13 @@ export default Vue.extend({
   },
   created () {
     this.$eventHub.$on(SERIES_CHANGED, this.reloadSeries)
+    this.$eventHub.$on(READLIST_CHANGED, this.reloadSeries)
     this.$eventHub.$on(BOOK_CHANGED, this.reloadBooks)
     this.$eventHub.$on(LIBRARY_DELETED, this.libraryDeleted)
   },
   beforeDestroy () {
     this.$eventHub.$off(SERIES_CHANGED, this.reloadSeries)
+    this.$eventHub.$off(READLIST_CHANGED, this.reloadSeries)
     this.$eventHub.$off(BOOK_CHANGED, this.reloadBooks)
     this.$eventHub.$off(LIBRARY_DELETED, this.libraryDeleted)
   },
@@ -356,6 +359,9 @@ export default Vue.extend({
     },
     editMultipleBooks () {
       this.$store.dispatch('dialogUpdateBooks', this.selectedBooks)
+    },
+    addToReadList () {
+      this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks)
     },
     async markSelectedRead () {
       await Promise.all(this.selectedBooks.map(b =>

@@ -26,9 +26,9 @@
       />
 
       <item-browser
-        :items="collections"
+        :items="readLists"
         :selectable="false"
-        :edit-function="editSingleCollection"
+        :edit-function="editSingle"
       />
 
     </v-container>
@@ -43,7 +43,7 @@ import ItemBrowser from '@/components/ItemBrowser.vue'
 import LibraryNavigation from '@/components/LibraryNavigation.vue'
 import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
-import { COLLECTION_CHANGED, COLLECTION_DELETED, LIBRARY_CHANGED } from '@/types/events'
+import { LIBRARY_CHANGED, READLIST_CHANGED, READLIST_DELETED } from '@/types/events'
 import Vue from 'vue'
 import { Location } from 'vue-router'
 import { LIBRARIES_ALL } from '@/types/library'
@@ -51,7 +51,7 @@ import { LIBRARIES_ALL } from '@/types/library'
 const cookiePageSize = 'pagesize'
 
 export default Vue.extend({
-  name: 'BrowseCollections',
+  name: 'BrowseReadLists',
   components: {
     LibraryActionsMenu,
     ToolbarSticky,
@@ -63,7 +63,7 @@ export default Vue.extend({
   data: () => {
     return {
       library: undefined as LibraryDto | undefined,
-      collections: [] as CollectionDto[],
+      readLists: [] as ReadListDto[],
       page: 1,
       pageSize: 20,
       totalPages: 1,
@@ -79,13 +79,13 @@ export default Vue.extend({
     },
   },
   created () {
-    this.$eventHub.$on(COLLECTION_CHANGED, this.reloadCollections)
-    this.$eventHub.$on(COLLECTION_DELETED, this.reloadCollections)
+    this.$eventHub.$on(READLIST_CHANGED, this.reloadElements)
+    this.$eventHub.$on(READLIST_DELETED, this.reloadElements)
     this.$eventHub.$on(LIBRARY_CHANGED, this.reloadLibrary)
   },
   beforeDestroy () {
-    this.$eventHub.$off(COLLECTION_CHANGED, this.reloadCollections)
-    this.$eventHub.$off(COLLECTION_DELETED, this.reloadCollections)
+    this.$eventHub.$off(READLIST_CHANGED, this.reloadElements)
+    this.$eventHub.$off(READLIST_DELETED, this.reloadElements)
     this.$eventHub.$off(LIBRARY_CHANGED, this.reloadLibrary)
   },
   mounted () {
@@ -107,7 +107,7 @@ export default Vue.extend({
       this.page = 1
       this.totalPages = 1
       this.totalElements = null
-      this.collections = []
+      this.readLists = []
 
       this.loadLibrary(to.params.libraryId)
     }
@@ -169,7 +169,7 @@ export default Vue.extend({
       } as Location).catch((_: any) => {
       })
     },
-    reloadCollections () {
+    reloadElements () {
       this.loadLibrary(this.libraryId)
     },
     reloadLibrary (event: EventLibraryChanged) {
@@ -192,11 +192,11 @@ export default Vue.extend({
       } as PageRequest
 
       const lib = libraryId !== LIBRARIES_ALL ? [libraryId] : undefined
-      const collectionsPage = await this.$komgaCollections.getCollections(lib, pageRequest)
+      const elementsPage = await this.$komgaReadLists.getReadLists(lib, pageRequest)
 
-      this.totalPages = collectionsPage.totalPages
-      this.totalElements = collectionsPage.totalElements
-      this.collections = collectionsPage.content
+      this.totalPages = elementsPage.totalPages
+      this.totalElements = elementsPage.totalElements
+      this.readLists = elementsPage.content
     },
     getLibraryLazy (libraryId: string): LibraryDto | undefined {
       if (libraryId !== LIBRARIES_ALL) {
@@ -205,8 +205,8 @@ export default Vue.extend({
         return undefined
       }
     },
-    editSingleCollection (collection: CollectionDto) {
-      this.$store.dispatch('dialogEditCollection', collection)
+    editSingle (element: ReadListDto) {
+      this.$store.dispatch('dialogEditReadList', element)
     },
   },
 })

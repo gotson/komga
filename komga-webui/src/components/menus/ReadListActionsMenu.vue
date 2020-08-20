@@ -7,7 +7,7 @@
         </v-btn>
       </template>
       <v-list dense>
-        <v-list-item @click="promptDeleteCollection"
+        <v-list-item @click="promptDeleteReadList"
                      class="list-warning">
           <v-list-item-title>Delete</v-list-item-title>
         </v-list-item>
@@ -19,15 +19,15 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'CollectionActionsMenu',
+  name: 'ReadListActionsMenu',
   data: function () {
     return {
       menuState: false,
     }
   },
   props: {
-    collection: {
-      type: Object as () => CollectionDto,
+    readList: {
+      type: Object as () => ReadListDto,
       required: true,
     },
     menu: {
@@ -46,8 +46,8 @@ export default Vue.extend({
     },
   },
   methods: {
-    promptDeleteCollection () {
-      this.$store.dispatch('dialogDeleteCollection', this.collection)
+    promptDeleteReadList () {
+      this.$store.dispatch('dialogDeleteReadList', this.readList)
     },
   },
 })

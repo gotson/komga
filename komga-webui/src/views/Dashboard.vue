@@ -14,6 +14,7 @@
       @unselect-all="selectedBooks = []"
       @mark-read="markSelectedBooksRead"
       @mark-unread="markSelectedBooksUnread"
+      @add-to-readlist="addToReadList"
       @edit="editMultipleBooks"
     />
 
@@ -258,6 +259,9 @@ export default Vue.extend({
     },
     editMultipleBooks () {
       this.$store.dispatch('dialogUpdateBooks', this.selectedBooks)
+    },
+    addToReadList () {
+      this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks)
     },
     async markSelectedBooksRead () {
       await Promise.all(this.selectedBooks.map(b =>

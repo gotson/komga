@@ -92,6 +92,11 @@
                         label="Collections"
                         hide-details
                       />
+                      <v-checkbox
+                        v-model="form.importComicInfoReadList"
+                        label="Read lists"
+                        hide-details
+                      />
                     </v-col>
                   </v-row>
                   <v-row>
@@ -186,6 +191,7 @@ export default Vue.extend({
         importComicInfoBook: true,
         importComicInfoSeries: true,
         importComicInfoCollection: true,
+        importComicInfoReadList: true,
         importEpubBook: true,
         importEpubSeries: true,
         importLocalArtwork: true,
@@ -254,6 +260,7 @@ export default Vue.extend({
       this.form.importComicInfoBook = library ? library.importComicInfoBook : true
       this.form.importComicInfoSeries = library ? library.importComicInfoSeries : true
       this.form.importComicInfoCollection = library ? library.importComicInfoCollection : true
+      this.form.importComicInfoReadList = library ? library.importComicInfoReadList : true
       this.form.importEpubBook = library ? library.importEpubBook : true
       this.form.importEpubSeries = library ? library.importEpubSeries : true
       this.form.importLocalArtwork = library ? library.importLocalArtwork : true
@@ -271,6 +278,7 @@ export default Vue.extend({
           importComicInfoBook: this.form.importComicInfoBook,
           importComicInfoSeries: this.form.importComicInfoSeries,
           importComicInfoCollection: this.form.importComicInfoCollection,
+          importComicInfoReadList: this.form.importComicInfoReadList,
           importEpubBook: this.form.importEpubBook,
           importEpubSeries: this.form.importEpubSeries,
           importLocalArtwork: this.form.importLocalArtwork,
