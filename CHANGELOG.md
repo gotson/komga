@@ -1,3 +1,11 @@
+# [0.57.0](https://github.com/gotson/komga/compare/v0.56.1...v0.57.0) (2020-08-20)
+
+
+### Features
+
+* **webui:** read lists ([27edf17](https://github.com/gotson/komga/commit/27edf17424ff7a53ccfb272b877cf452c95f1158)), closes [#106](https://github.com/gotson/komga/issues/106)
+* read lists ([f0c864f](https://github.com/gotson/komga/commit/f0c864f4eba8c70bdac8f92171bfb03edabcea53)), closes [#106](https://github.com/gotson/komga/issues/106)
+
 ## [0.56.1](https://github.com/gotson/komga/compare/v0.56.0...v0.56.1) (2020-08-16)
 
 

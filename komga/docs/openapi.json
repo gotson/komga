@@ -144,6 +144,20 @@
           }
         }
       },
+      "ReadListUpdateDto": {
+        "type": "object",
+        "properties": {
+          "bookIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
       "OpdsEntry": {
         "type": "object",
         "properties": {
@@ -383,6 +397,9 @@
           "importEpubSeries": {
             "type": "boolean"
           },
+          "importComicInfoReadList": {
+            "type": "boolean"
+          },
           "importComicInfoSeries": {
             "type": "boolean"
           },
@@ -416,6 +433,9 @@
         "type": "object",
         "properties": {
           "importEpubSeries": {
+            "type": "boolean"
+          },
+          "importComicInfoReadList": {
             "type": "boolean"
           },
           "importComicInfoSeries": {
@@ -638,6 +658,34 @@
           }
         }
       },
+      "ReadListDto": {
+        "type": "object",
+        "properties": {
+          "createdDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "filtered": {
+            "type": "boolean"
+          },
+          "bookIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "lastModifiedDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          }
+        }
+      },
       "CollectionDto": {
         "type": "object",
         "properties": {
@@ -678,6 +726,52 @@
             "type": "integer"
           },
           "completed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageReadListDto": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "numberOfElements": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "totalPages": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/Pageable"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReadListDto"
+            }
+          },
+          "totalElements": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "empty": {
             "type": "boolean"
           }
         }
@@ -753,6 +847,24 @@
           }
         }
       },
+      "ReadListCreationDto": {
+        "type": "object",
+        "required": [
+          "bookIds",
+          "name"
+        ],
+        "properties": {
+          "bookIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
       "LibraryCreationDto": {
         "type": "object",
         "required": [
@@ -761,6 +873,9 @@
         ],
         "properties": {
           "importEpubSeries": {
+            "type": "boolean"
+          },
+          "importComicInfoReadList": {
             "type": "boolean"
           },
           "importComicInfoSeries": {
@@ -1038,36 +1153,6 @@
   ],
   "openapi": "3.0.1",
   "paths": {
-    "/opds/v1.2/search": {
-      "get": {
-        "operationId": "getSearch",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/OpenSearchDescription"
-                }
-              },
-              "application/atom+xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/OpenSearchDescription"
-                }
-              },
-              "text/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/OpenSearchDescription"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "opds-controller"
-        ]
-      }
-    },
     "/opds/v1.2/series/latest": {
       "get": {
         "operationId": "getLatestSeries_1",
@@ -1088,6 +1173,36 @@
               "text/xml": {
                 "schema": {
                   "$ref": "#/components/schemas/OpdsFeed"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "opds-controller"
+        ]
+      }
+    },
+    "/opds/v1.2/search": {
+      "get": {
+        "operationId": "getSearch",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenSearchDescription"
+                }
+              },
+              "application/atom+xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenSearchDescription"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenSearchDescription"
                 }
               }
             }
@@ -1366,6 +1481,36 @@
         ],
         "tags": [
           "series-controller"
+        ]
+      }
+    },
+    "/opds/v1.2/readlists": {
+      "get": {
+        "operationId": "getReadLists",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "application/atom+xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "opds-controller"
         ]
       }
     },
@@ -1813,7 +1958,7 @@
           },
           "required": true
         },
-        "operationId": "addOne_2",
+        "operationId": "addOne_3",
         "responses": {
           "201": {
             "description": "Created",
@@ -1831,7 +1976,7 @@
         ]
       },
       "get": {
-        "operationId": "getAll_2",
+        "operationId": "getAll_3",
         "responses": {
           "200": {
             "description": "OK",
@@ -2245,6 +2390,46 @@
         ]
       }
     },
+    "/opds/v1.2/readlists/{id}": {
+      "get": {
+        "operationId": "getOneReadList",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "application/atom+xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "tags": [
+          "opds-controller"
+        ]
+      }
+    },
     "/api/v1/libraries/{libraryId}/scan": {
       "post": {
         "operationId": "scan",
@@ -2295,6 +2480,70 @@
         ],
         "tags": [
           "book-controller"
+        ]
+      }
+    },
+    "/api/v1/books/{bookId}/readlists": {
+      "get": {
+        "operationId": "getAllReadListsByBook",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReadListDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "bookId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "book-controller"
+        ]
+      }
+    },
+    "/api/v1/readlists/{id}/thumbnail": {
+      "get": {
+        "operationId": "getReadListThumbnail",
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "format": "binary",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "tags": [
+          "read-list-controller"
         ]
       }
     },
@@ -2692,6 +2941,99 @@
         ]
       }
     },
+    "/api/v1/readlists": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReadListCreationDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "operationId": "addOne_2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadListDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "read-list-controller"
+        ]
+      },
+      "get": {
+        "operationId": "getAll_2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageReadListDto"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "in": "query",
+            "name": "library_id",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "unpaged",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "page",
+            "description": "Zero-based page index (0..N)"
+          },
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "size",
+            "description": "The size of the page to be returned"
+          }
+        ],
+        "tags": [
+          "read-list-controller"
+        ]
+      }
+    },
     "/api/v1/books": {
       "get": {
         "operationId": "getAllBooks",
@@ -3034,6 +3376,88 @@
         ]
       }
     },
+    "/api/v1/readlists/{id}": {
+      "patch": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReadListUpdateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "operationId": "updateOne_2",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "tags": [
+          "read-list-controller"
+        ]
+      },
+      "get": {
+        "operationId": "getOne_2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadListDto"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "tags": [
+          "read-list-controller"
+        ]
+      },
+      "delete": {
+        "operationId": "deleteOne_2",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "tags": [
+          "read-list-controller"
+        ]
+      }
+    },
     "/api/v1/filesystem": {
       "post": {
         "requestBody": {
@@ -3191,6 +3615,60 @@
         ]
       }
     },
+    "/api/v1/readlists/{id}/books": {
+      "get": {
+        "operationId": "getBooksForReadList",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageBookDto"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "unpaged",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "page",
+            "description": "Zero-based page index (0..N)"
+          },
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "size",
+            "description": "The size of the page to be returned"
+          }
+        ],
+        "tags": [
+          "read-list-controller"
+        ]
+      }
+    },
     "/api/v1/authors": {
       "get": {
         "operationId": "getAuthors",
@@ -3265,19 +3743,22 @@
         ]
       }
     },
-    "/api/v1/books/{bookId}": {
-      "get": {
-        "operationId": "getOneBook",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BookDto"
-                }
+    "/api/v1/books/{bookId}/metadata": {
+      "patch": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookMetadataUpdateDto"
               }
             }
+          },
+          "required": true
+        },
+        "operationId": "updateMetadata",
+        "responses": {
+          "204": {
+            "description": "No Content"
           }
         },
         "parameters": [
@@ -3295,22 +3776,19 @@
         ]
       }
     },
-    "/api/v1/books/{bookId}/metadata": {
-      "patch": {
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BookMetadataUpdateDto"
+    "/api/v1/books/{bookId}": {
+      "get": {
+        "operationId": "getOneBook",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookDto"
+                }
               }
             }
-          },
-          "required": true
-        },
-        "operationId": "updateMetadata",
-        "responses": {
-          "204": {
-            "description": "No Content"
           }
         },
         "parameters": [
