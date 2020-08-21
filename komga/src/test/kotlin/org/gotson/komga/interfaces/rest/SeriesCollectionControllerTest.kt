@@ -165,7 +165,7 @@ class SeriesCollectionControllerTest(
     @WithMockCustomUser
     fun `given non-admin user when creating collection then return forbidden`() {
       val jsonString = """
-        {"name":"collection","ordered":false,"seriesIds":[3]}
+        {"name":"collection","ordered":false,"seriesIds":["3"]}
       """.trimIndent()
 
       mockMvc.post("/api/v1/collections") {
@@ -200,7 +200,7 @@ class SeriesCollectionControllerTest(
       makeCollections()
 
       val jsonString = """
-        {"name":"Lib1","ordered":false,"seriesIds":[${seriesLibrary1.first().id}]}
+        {"name":"Lib1","ordered":false,"seriesIds":["${seriesLibrary1.first().id}"]}
       """.trimIndent()
 
       mockMvc.post("/api/v1/collections") {
@@ -214,10 +214,8 @@ class SeriesCollectionControllerTest(
     @Test
     @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given collection with duplicate seriesIds when creating collection then return bad request`() {
-      makeCollections()
-
       val jsonString = """
-        {"name":"Lib1","ordered":false,"seriesIds":[${seriesLibrary1.first().id},${seriesLibrary1.first().id}]}
+        {"name":"Lib1","ordered":false,"seriesIds":["${seriesLibrary1.first().id}","${seriesLibrary1.first().id}"]}
       """.trimIndent()
 
       mockMvc.post("/api/v1/collections") {
@@ -235,7 +233,7 @@ class SeriesCollectionControllerTest(
     @WithMockCustomUser
     fun `given non-admin user when updating collection then return forbidden`() {
       val jsonString = """
-        {"name":"collection","ordered":false,"seriesIds":[3]}
+        {"name":"collection","ordered":false,"seriesIds":["3"]}
       """.trimIndent()
 
       mockMvc.patch("/api/v1/collections/5") {
@@ -292,7 +290,7 @@ class SeriesCollectionControllerTest(
     fun `given existing collection when updating collection with duplicate seriesIds then return bad request`() {
       makeCollections()
 
-      val jsonString = """{"seriesIds":[${seriesLibrary1.first().id},${seriesLibrary1.first().id}]}"""
+      val jsonString = """{"seriesIds":["${seriesLibrary1.first().id}","${seriesLibrary1.first().id}"]}"""
 
       mockMvc.patch("/api/v1/collections/${colLib1.id}") {
         contentType = MediaType.APPLICATION_JSON

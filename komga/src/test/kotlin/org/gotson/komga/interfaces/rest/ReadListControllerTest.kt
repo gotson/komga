@@ -170,7 +170,7 @@ class ReadListControllerTest(
     @WithMockCustomUser
     fun `given non-admin user when creating read list then return forbidden`() {
       val jsonString = """
-        {"name":"readlist","bookIds":[3]}
+        {"name":"readlist","bookIds":["3"]}
       """.trimIndent()
 
       mockMvc.post("/api/v1/readlists") {
@@ -204,7 +204,7 @@ class ReadListControllerTest(
       makeReadLists()
 
       val jsonString = """
-        {"name":"Lib1","bookIds":[${booksLibrary1.first().id}]}
+        {"name":"Lib1","bookIds":["${booksLibrary1.first().id}"]}
       """.trimIndent()
 
       mockMvc.post("/api/v1/readlists") {
@@ -218,10 +218,8 @@ class ReadListControllerTest(
     @Test
     @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given read list with duplicate bookIds when creating read list then return bad request`() {
-      makeReadLists()
-
       val jsonString = """
-        {"name":"Lib1","bookIds":[${booksLibrary1.first().id},${booksLibrary1.first().id}]}
+        {"name":"Lib1","bookIds":["${booksLibrary1.first().id}","${booksLibrary1.first().id}"]}
       """.trimIndent()
 
       mockMvc.post("/api/v1/readlists") {
@@ -239,7 +237,7 @@ class ReadListControllerTest(
     @WithMockCustomUser
     fun `given non-admin user when updating read list then return forbidden`() {
       val jsonString = """
-        {"name":"readlist","bookIds":[3]}
+        {"name":"readlist","bookIds":["3"]}
       """.trimIndent()
 
       mockMvc.patch("/api/v1/readlists/5") {
@@ -295,7 +293,7 @@ class ReadListControllerTest(
     fun `given existing read list when updating read list with duplicate bookIds then return bad request`() {
       makeReadLists()
 
-      val jsonString = """{"bookIds":[${booksLibrary1.first().id},${booksLibrary1.first().id}]}"""
+      val jsonString = """{"bookIds":["${booksLibrary1.first().id}","${booksLibrary1.first().id}"]}"""
 
       mockMvc.patch("/api/v1/readlists/${rlLib1.id}") {
         contentType = MediaType.APPLICATION_JSON
