@@ -26,7 +26,7 @@ left join BOOK B on B.ID = m.BOOK_ID"""
             v.filter { (it["PUBLISHER"] as String).isNotEmpty() }
               .sortedByDescending { it["NUMBER_SORT"] as Double? }
               .map { it["PUBLISHER"] as String }
-              .firstOrNull()
+              .firstOrNull() ?: ""
           val publisherLock = v.mapNotNull { it["PUBLISHER_LOCK"] as Int? }.max()
 
           val readingDir =
