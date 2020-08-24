@@ -72,7 +72,11 @@
 
           <v-row class="text-body-2">
             <v-col>
-              <v-chip label small>{{ series.metadata.status }}</v-chip>
+              <v-chip label small
+                      :color="statusChip.color"
+                      :text-color="statusChip.text"
+              >{{ series.metadata.status }}
+              </v-chip>
               <v-chip label small v-if="series.metadata.ageRating" class="ml-2">{{
                   series.metadata.ageRating
                 }}+
@@ -187,6 +191,7 @@ import { ReadStatus } from '@/types/enum-books'
 import { BOOK_CHANGED, LIBRARY_DELETED, READLIST_CHANGED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 import { Location } from 'vue-router'
+import { SeriesStatus } from '@/types/enum-series'
 
 const tags = require('language-tags')
 
@@ -259,6 +264,17 @@ export default Vue.extend({
     },
     languageDisplay (): string {
       return tags(this.series.metadata.language).language().descriptions()[0]
+    },
+    statusChip (): object {
+      switch (this.series.metadata.status) {
+        case SeriesStatus.ABANDONED:
+          return { color: 'red darken-4', text: 'white' }
+        case SeriesStatus.ENDED:
+          return { color: 'green darken-4', text: 'white' }
+        case SeriesStatus.HIATUS:
+          return { color: 'orange darken-4', text: 'white' }
+      }
+      return { color: undefined, text: undefined }
     },
   },
   props: {
