@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
 import org.gotson.komga.application.tasks.TaskReceiver
-import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ROLE_ADMIN
@@ -78,6 +77,7 @@ class SeriesController(
     @RequestParam(name = "collection_id", required = false) collectionIds: List<Long>?,
     @RequestParam(name = "status", required = false) metadataStatus: List<SeriesMetadata.Status>?,
     @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
+    @RequestParam(name = "publisher", required = false) publishers: List<String>?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> {
@@ -98,7 +98,8 @@ class SeriesController(
       collectionIds = collectionIds,
       searchTerm = searchTerm,
       metadataStatus = metadataStatus,
-      readStatus = readStatus
+      readStatus = readStatus,
+      publishers = publishers
     )
 
     return seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageRequest)

@@ -17,6 +17,7 @@ import org.jooq.ResultQuery
 import org.jooq.SelectOnConditionStep
 import org.jooq.impl.DSL
 import org.jooq.impl.DSL.inline
+import org.jooq.impl.DSL.lower
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -184,6 +185,7 @@ class SeriesDtoDao(
     collectionIds?.let { c = c.and(cs.COLLECTION_ID.`in`(it)) }
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
     metadataStatus?.let { c = c.and(d.STATUS.`in`(it)) }
+    publishers?.let { publishers -> c = c.and(lower(d.PUBLISHER).`in`(publishers.map { it.toLowerCase() })) }
 
     return c
   }
