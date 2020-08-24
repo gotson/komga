@@ -78,6 +78,7 @@ class SeriesController(
     @RequestParam(name = "status", required = false) metadataStatus: List<SeriesMetadata.Status>?,
     @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
     @RequestParam(name = "publisher", required = false) publishers: List<String>?,
+    @RequestParam(name = "language", required = false) languages: List<String>?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> {
@@ -99,7 +100,8 @@ class SeriesController(
       searchTerm = searchTerm,
       metadataStatus = metadataStatus,
       readStatus = readStatus,
-      publishers = publishers
+      publishers = publishers,
+      languages = languages
     )
 
     return seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageRequest)

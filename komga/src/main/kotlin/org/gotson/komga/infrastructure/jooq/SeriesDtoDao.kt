@@ -186,6 +186,7 @@ class SeriesDtoDao(
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
     metadataStatus?.let { c = c.and(d.STATUS.`in`(it)) }
     publishers?.let { publishers -> c = c.and(lower(d.PUBLISHER).`in`(publishers.map { it.toLowerCase() })) }
+    languages?.let { languages -> c = c.and(lower(d.LANGUAGE).`in`(languages.map { it.toLowerCase() })) }
 
     return c
   }
