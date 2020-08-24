@@ -105,6 +105,7 @@ class SeriesDtoDao(
       .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID))
+      .leftJoin(g).on(s.ID.eq(g.SERIES_ID))
       .leftJoin(st).on(s.ID.eq(st.SERIES_ID))
       .and(readProgressCondition(userId))
       .leftJoin(cs).on(s.ID.eq(cs.SERIES_ID))
@@ -115,6 +116,7 @@ class SeriesDtoDao(
       .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID))
+      .leftJoin(g).on(s.ID.eq(g.SERIES_ID))
       .leftJoin(st).on(s.ID.eq(st.SERIES_ID))
       .and(readProgressCondition(userId))
       .leftJoin(cs).on(s.ID.eq(cs.SERIES_ID))
@@ -189,6 +191,7 @@ class SeriesDtoDao(
     metadataStatus?.let { c = c.and(d.STATUS.`in`(it)) }
     publishers?.let { publishers -> c = c.and(lower(d.PUBLISHER).`in`(publishers.map { it.toLowerCase() })) }
     languages?.let { languages -> c = c.and(lower(d.LANGUAGE).`in`(languages.map { it.toLowerCase() })) }
+    genres?.let { genres -> c = c.and(lower(g.GENRE).`in`(genres.map { it.toLowerCase() })) }
     tags?.let { tags -> c = c.and(lower(st.TAG).`in`(tags.map { it.toLowerCase() })) }
 
     return c

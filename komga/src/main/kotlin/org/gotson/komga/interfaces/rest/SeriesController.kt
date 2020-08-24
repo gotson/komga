@@ -79,6 +79,7 @@ class SeriesController(
     @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
     @RequestParam(name = "publisher", required = false) publishers: List<String>?,
     @RequestParam(name = "language", required = false) languages: List<String>?,
+    @RequestParam(name = "genre", required = false) genres: List<String>?,
     @RequestParam(name = "tag", required = false) tags: List<String>?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
@@ -103,6 +104,7 @@ class SeriesController(
       readStatus = readStatus,
       publishers = publishers,
       languages = languages,
+      genres = genres,
       tags = tags
     )
 
