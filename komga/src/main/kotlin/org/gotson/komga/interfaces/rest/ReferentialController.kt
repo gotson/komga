@@ -27,4 +27,8 @@ class ReferentialController(
   @GetMapping("/tags")
   fun getTags(): Set<String> =
     referentialRepository.findAllTags()
+
+  @GetMapping("/languages")
+  fun getLanguages(): Set<String> =
+    referentialRepository.findAllLanguages()
 }

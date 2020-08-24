@@ -3,10 +3,7 @@ package org.gotson.komga.infrastructure.jooq
 import org.gotson.komga.domain.persistence.ReferentialRepository
 import org.gotson.komga.jooq.Tables
 import org.jooq.DSLContext
-import org.jooq.impl.DSL
-import org.jooq.impl.DSL.field
 import org.jooq.impl.DSL.lower
-import org.jooq.impl.DSL.one
 import org.jooq.impl.DSL.select
 import org.springframework.stereotype.Component
 
@@ -16,6 +13,7 @@ class ReferentialDao(
 ) : ReferentialRepository {
 
   private val a = Tables.BOOK_METADATA_AUTHOR
+  private val sd = Tables.SERIES_METADATA
   private val g = Tables.SERIES_METADATA_GENRE
   private val bt = Tables.BOOK_METADATA_TAG
   private val st = Tables.SERIES_METADATA_TAG
@@ -42,4 +40,10 @@ class ReferentialDao(
       .fetchSet(0, String::class.java)
       .sortedBy { it.toLowerCase() }
       .toSet()
+
+  override fun findAllLanguages(): Set<String> =
+    dsl.selectDistinct(sd.LANGUAGE)
+      .from(sd)
+      .orderBy(sd.LANGUAGE)
+      .fetchSet(sd.LANGUAGE)
 }
