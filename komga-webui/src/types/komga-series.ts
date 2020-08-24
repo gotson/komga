@@ -19,7 +19,21 @@ interface SeriesMetadata {
   title: string,
   titleLock: boolean,
   titleSort: string,
-  titleSortLock: boolean
+  titleSortLock: boolean,
+  summary: string,
+  summaryLock: boolean,
+  readingDirection: string,
+  readingDirectionLock: boolean,
+  publisher: string,
+  publisherLock: boolean,
+  ageRating: number,
+  ageRatingLock: boolean,
+  language: string,
+  languageLock: boolean,
+  genres: string[],
+  genresLock: boolean,
+  tags: String[],
+  tagsLock: boolean
 }
 
 interface SeriesMetadataUpdateDto {
@@ -28,5 +42,19 @@ interface SeriesMetadataUpdateDto {
   title?: string,
   titleLock?: boolean,
   titleSort?: string,
-  titleSortLock?: boolean
+  titleSortLock?: boolean,
+  summary?: string,
+  summaryLock?: boolean,
+  readingDirection?: string,
+  readingDirectionLock?: boolean,
+  publisher?: string,
+  publisherLock?: boolean,
+  ageRating?: number,
+  ageRatingLock?: boolean,
+  language?: string,
+  languageLock?: boolean,
+  genres?: string[],
+  genresLock?: boolean,
+  tags?: String[],
+  tagsLock?: boolean
 }

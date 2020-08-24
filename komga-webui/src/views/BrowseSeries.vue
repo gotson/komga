@@ -63,17 +63,66 @@
           ></item-card>
 
         </v-col>
-        <v-col cols="8">
+        <v-col cols="8" v-if="series.metadata">
           <v-row>
             <v-col>
               <div class="text-h5" v-if="$_.get(series, 'metadata.title')">{{ series.metadata.title }}</div>
             </v-col>
           </v-row>
 
+          <v-row class="text-body-2">
+            <v-col>
+              <v-chip label small>{{ series.metadata.status }}</v-chip>
+              <v-chip label small v-if="series.metadata.ageRating" class="ml-2">{{
+                  series.metadata.ageRating
+                }}+
+              </v-chip>
+              <v-chip label small v-if="series.metadata.language" class="ml-2">{{ languageDisplay }}</v-chip>
+              <v-chip label small v-if="series.metadata.readingDirection" class="ml-2">{{ readingDirection }}</v-chip>
+            </v-col>
+          </v-row>
+
+          <v-row class="mt-3">
+            <v-col>
+              <div class="text-body-1"
+                   style="white-space: pre-wrap"
+              >{{ series.metadata.summary }}
+              </div>
+            </v-col>
+          </v-row>
+
           <v-row>
-            <v-col cols="auto" class="text-body-2">STATUS</v-col>
-            <v-col cols="auto" class="text-body-2 text-capitalize" v-if="series.metadata">{{
-              series.metadata.status.toLowerCase() }}
+            <v-col cols="6" sm="4" md="2" class="text-body-2 py-1">PUBLISHER</v-col>
+            <v-col class="text-body-2 text-capitalize py-1" v-if="series.metadata.publisher">
+              {{ series.metadata.publisher }}
+            </v-col>
+          </v-row>
+
+          <v-row v-if="series.metadata.genres.length > 0">
+            <v-col cols="6" sm="4" md="2" class="text-body-2 py-1">GENRE</v-col>
+            <v-col class="text-body-2 text-capitalize py-1">
+              <v-chip v-for="(t, i) in series.metadata.genres"
+                      :key="i"
+                      class="mr-2"
+                      label
+                      small
+                      outlined
+              >{{ t }}
+              </v-chip>
+            </v-col>
+          </v-row>
+
+          <v-row v-if="series.metadata.tags.length > 0">
+            <v-col cols="6" sm="4" md="2" class="text-body-2 py-1">TAGS</v-col>
+            <v-col class="text-body-2 text-capitalize py-1">
+              <v-chip v-for="(t, i) in series.metadata.tags"
+                      :key="i"
+                      class="mr-2"
+                      label
+                      small
+                      outlined
+              >{{ t }}
+              </v-chip>
             </v-col>
           </v-row>
 
@@ -204,6 +253,12 @@ export default Vue.extend({
         default:
           return 15
       }
+    },
+    readingDirection (): string {
+      return this.$_.capitalize(this.series.metadata.readingDirection.replace(/_/g, ' '))
+    },
+    languageDisplay (): string {
+      return tags(this.series.metadata.language).language().descriptions()[0]
     },
   },
   props: {

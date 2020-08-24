@@ -86,7 +86,6 @@
           <v-row class="text-body-2">
             <v-col>
               <span class="mr-3">#{{ book.metadata.number }}</span>
-              <badge v-if="book.metadata.ageRating">{{ book.metadata.ageRating }}+</badge>
             </v-col>
             <v-col cols="auto" v-if="book.metadata.releaseDate">
               {{ book.metadata.releaseDate | moment('MMMM DD, YYYY') }}
@@ -94,11 +93,6 @@
           </v-row>
 
           <v-divider/>
-
-          <v-row class="text-body-2" v-if="book.metadata.publisher">
-            <v-col cols="6" sm="4" md="2">PUBLISHER</v-col>
-            <v-col>{{ book.metadata.publisher }}</v-col>
-          </v-row>
 
           <v-row class="text-body-2"
                  v-for="(names, key) in authorsByRole"
@@ -118,6 +112,20 @@
                    style="white-space: pre-wrap"
               >{{ book.metadata.summary }}
               </div>
+            </v-col>
+          </v-row>
+
+          <v-row v-if="book.metadata.tags.length > 0">
+            <v-col cols="6" sm="4" md="2" class="text-body-2 py-1">TAGS</v-col>
+            <v-col class="text-body-2 text-capitalize py-1">
+              <v-chip v-for="(t, i) in book.metadata.tags"
+                      :key="i"
+                      class="mr-2"
+                      label
+                      small
+                      outlined
+              >{{ t }}
+              </v-chip>
             </v-col>
           </v-row>
 
@@ -181,12 +189,6 @@
         </v-col>
       </v-row>
 
-      <v-row v-if="book.metadata.readingDirection">
-        <v-col cols="2" md="1" lg="1" xl="1" class="text-body-2">READING DIRECTION</v-col>
-        <v-col cols="10" class="text-body-2">{{ readingDirection }}
-        </v-col>
-      </v-row>
-
       <v-row align="center">
         <v-col cols="2" md="1" lg="1" xl="1" class="text-body-2">FILE</v-col>
         <v-col cols="10" class="text-body-2">{{ book.url }}</v-col>
@@ -198,7 +200,6 @@
 </template>
 
 <script lang="ts">
-import Badge from '@/components/Badge.vue'
 import BookActionsMenu from '@/components/menus/BookActionsMenu.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
@@ -214,7 +215,7 @@ import ReadListsExpansionPanels from '@/components/ReadListsExpansionPanels.vue'
 
 export default Vue.extend({
   name: 'BrowseBook',
-  components: { ToolbarSticky, Badge, ItemCard, BookActionsMenu, ReadListsExpansionPanels },
+  components: { ToolbarSticky, ItemCard, BookActionsMenu, ReadListsExpansionPanels },
   data: () => {
     return {
       book: {} as BookDto,
@@ -280,9 +281,6 @@ export default Vue.extend({
     },
     readProgressPercentage (): number {
       return getReadProgressPercentage(this.book)
-    },
-    readingDirection (): string {
-      return this.$_.capitalize(this.book.metadata.readingDirection.replace(/_/g, ' '))
     },
     previousId (): string {
       return this.siblingPrevious?.id?.toString() || '0'

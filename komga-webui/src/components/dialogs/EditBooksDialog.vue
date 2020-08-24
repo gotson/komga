@@ -24,7 +24,7 @@
           </v-card-title>
 
           <v-tabs :vertical="$vuetify.breakpoint.smAndUp" v-model="tab">
-            <v-tab class="justify-start">
+            <v-tab class="justify-start" v-if="single">
               <v-icon left class="hidden-xs-only">mdi-format-align-center</v-icon>
               General
             </v-tab>
@@ -32,9 +32,13 @@
               <v-icon left class="hidden-xs-only">mdi-account-multiple</v-icon>
               Authors
             </v-tab>
+            <v-tab class="justify-start">
+              <v-icon left class="hidden-xs-only">mdi-tag-multiple</v-icon>
+              Tags
+            </v-tab>
 
             <!--  Tab: General  -->
-            <v-tab-item>
+            <v-tab-item v-if="single">
               <v-card flat>
                 <v-container fluid>
 
@@ -130,52 +134,6 @@
                     </v-col>
                   </v-row>
 
-                  <!--  Publisher  -->
-                  <v-row>
-                    <v-col cols="6">
-                      <v-text-field v-model="form.publisher"
-                                    label="Publisher"
-                                    filled
-                                    dense
-                                    :placeholder="mixed.publisher ? 'MIXED' : ''"
-                                    @input="$v.form.publisher.$touch()"
-                                    @change="form.publisherLock = true"
-                      >
-                        <template v-slot:prepend>
-                          <v-icon :color="form.publisherLock ? 'secondary' : ''"
-                                  @click="form.publisherLock = !form.publisherLock"
-                          >
-                            {{ form.publisherLock ? 'mdi-lock' : 'mdi-lock-open' }}
-                          </v-icon>
-                        </template>
-                      </v-text-field>
-                    </v-col>
-
-                    <!--  Age Rating  -->
-                    <v-col cols="6">
-                      <v-text-field v-model="form.ageRating"
-                                    label="Age Rating"
-                                    clearable
-                                    filled
-                                    dense
-                                    type="number"
-                                    :placeholder="mixed.ageRating ? 'MIXED' : ''"
-                                    :error-messages="ageRatingErrors"
-                                    @input="$v.form.ageRating.$touch()"
-                                    @blur="$v.form.ageRating.$touch()"
-                                    @change="form.ageRatingLock = true"
-                      >
-                        <template v-slot:prepend>
-                          <v-icon :color="form.ageRatingLock ? 'secondary' : ''"
-                                  @click="form.ageRatingLock = !form.ageRatingLock"
-                          >
-                            {{ form.ageRatingLock ? 'mdi-lock' : 'mdi-lock-open' }}
-                          </v-icon>
-                        </template>
-                      </v-text-field>
-                    </v-col>
-                  </v-row>
-
                   <!--  Release Date  -->
                   <v-row v-if="single">
                     <v-col cols="12">
@@ -197,29 +155,6 @@
                           </v-icon>
                         </template>
                       </v-text-field>
-                    </v-col>
-                  </v-row>
-
-                  <!--  Reading Direction  -->
-                  <v-row>
-                    <v-col cols="">
-                      <v-select v-model="form.readingDirection"
-                                :items="readingDirections"
-                                label="Reading Direction"
-                                clearable
-                                filled
-                                :placeholder="mixed.readingDirection ? 'MIXED' : ''"
-                                @input="$v.form.readingDirection.$touch()"
-                                @change="form.readingDirectionLock = true"
-                      >
-                        <template v-slot:prepend>
-                          <v-icon :color="form.readingDirectionLock ? 'secondary' : ''"
-                                  @click="form.readingDirectionLock = !form.readingDirectionLock"
-                          >
-                            {{ form.readingDirectionLock ? 'mdi-lock' : 'mdi-lock-open' }}
-                          </v-icon>
-                        </template>
-                      </v-select>
                     </v-col>
                   </v-row>
 
@@ -270,6 +205,47 @@
               </v-card>
             </v-tab-item>
 
+            <!--  Tab: Tags  -->
+            <v-tab-item>
+              <v-card flat>
+                <v-container fluid>
+                  <v-alert v-if="!single"
+                           type="warning"
+                           outlined
+                           dense
+                  >
+                    You are editing tags for multiple books. This will override existing tags of each book.
+                  </v-alert>
+
+                  <!-- Tags -->
+                  <v-row>
+                    <v-col cols="12">
+                      <span class="text-body-2">Tags</span>
+                      <v-combobox v-model="form.tags"
+                                  :items="tagsAvailable"
+                                  @input="$v.form.tags.$touch()"
+                                  @change="form.tagsLock = true"
+                                  hide-selected
+                                  chips
+                                  deletable-chips
+                                  multiple
+                                  filled
+                                  dense
+                      >
+                        <template v-slot:prepend>
+                          <v-icon :color="form.tagsLock ? 'secondary' : ''"
+                                  @click="form.tagsLock = !form.tagsLock"
+                          >
+                            {{ form.tagsLock ? 'mdi-lock' : 'mdi-lock-open' }}
+                          </v-icon>
+                        </template>
+                      </v-combobox>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card>
+            </v-tab-item>
+
           </v-tabs>
 
           <v-card-actions class="hidden-xs-only">
@@ -300,10 +276,9 @@
 <script lang="ts">
 import { groupAuthorsByRole } from '@/functions/authors'
 import { authorRoles } from '@/types/author-roles'
-import { ReadingDirection } from '@/types/enum-books'
 import moment from 'moment'
 import Vue from 'vue'
-import { helpers, minValue, requiredIf } from 'vuelidate/lib/validators'
+import { helpers, requiredIf } from 'vuelidate/lib/validators'
 
 const validDate = (value: any) => !helpers.req(value) || moment(value, 'YYYY-MM-DD', true).isValid()
 
@@ -324,25 +299,17 @@ export default Vue.extend({
         numberLock: false,
         numberSort: 0,
         numberSortLock: false,
-        readingDirection: '',
-        readingDirectionLock: false,
-        publisher: '',
-        publisherLock: false,
-        ageRating: undefined as unknown as number,
-        ageRatingLock: false,
         releaseDate: '',
         releaseDateLock: false,
         authors: {},
         authorsLock: false,
-      },
-      mixed: {
-        readingDirection: false,
-        publisher: false,
-        ageRating: false,
+        tags: [] as string[],
+        tagsLock: false,
       },
       authorRoles,
       authorSearch: [],
       authorSearchResults: [] as string[],
+      tagsAvailable: [] as string[],
     }
   },
   props: {
@@ -390,25 +357,18 @@ export default Vue.extend({
           return this.single
         }),
       },
-      ageRating: { minValue: minValue(0) },
+      tags: {},
       releaseDate: { validDate },
       summary: {},
-      readingDirection: {},
-      publisher: {},
       authors: {},
     },
+  },
+  async created () {
+    this.tagsAvailable = await this.$komgaReferential.getTags()
   },
   computed: {
     single (): boolean {
       return !Array.isArray(this.books)
-    },
-    readingDirections (): any[] {
-      return Object.keys(ReadingDirection).map(x => (
-        {
-          text: this.$_.capitalize(x.replace(/_/g, ' ')),
-          value: x,
-        }),
-      )
     },
     authorSearchResultsFull (): string[] {
       // merge local values with server search, so that already input value is available
@@ -419,12 +379,6 @@ export default Vue.extend({
       return this.single
         ? `Edit ${this.$_.get(this.books, 'metadata.title')}`
         : `Edit ${(this.books as BookDto[]).length} books`
-    },
-    ageRatingErrors (): string[] {
-      const errors = [] as string[]
-      if (!this.$v.form?.ageRating?.$dirty) return errors
-      !this.$v?.form?.ageRating?.minValue && errors.push('Age rating must be 0 or more')
-      return errors
     },
     releaseDateErrors (): string[] {
       const errors = [] as string[]
@@ -438,7 +392,7 @@ export default Vue.extend({
       const errors = [] as string[]
       const formField = this.$v.form!![fieldName] as any
       if (!formField.$dirty) return errors
-      !formField.required && errors.push('Required')
+      !formField.required && errors.push('Requiredb')
       return errors
     },
     dialogReset (books: BookDto | BookDto[]) {
@@ -447,32 +401,17 @@ export default Vue.extend({
       if (Array.isArray(books) && books.length === 0) return
       else if (this.$_.isEmpty(books)) return
       if (Array.isArray(books) && books.length > 0) {
-        const readingDirection = this.$_.uniq(books.map(x => x.metadata.readingDirection))
-        this.form.readingDirection = readingDirection.length > 1 ? '' : readingDirection[0]
-        this.mixed.readingDirection = readingDirection.length > 1
-
-        const readingDirectionLock = this.$_.uniq(books.map(x => x.metadata.readingDirectionLock))
-        this.form.readingDirectionLock = readingDirectionLock.length > 1 ? false : readingDirectionLock[0]
-
-        const ageRating = this.$_.uniq(books.map(x => x.metadata.ageRating))
-        this.form.ageRating = ageRating.length > 1 ? undefined as unknown as number : ageRating[0]
-        this.mixed.ageRating = ageRating.length > 1
-
-        const ageRatingLock = this.$_.uniq(books.map(x => x.metadata.ageRatingLock))
-        this.form.ageRatingLock = ageRatingLock.length > 1 ? false : ageRatingLock[0]
-
-        const publisher = this.$_.uniq(books.map(x => x.metadata.publisher))
-        this.form.publisher = publisher.length > 1 ? '' : publisher[0]
-        this.mixed.publisher = publisher.length > 1
-
-        const publisherLock = this.$_.uniq(books.map(x => x.metadata.publisherLock))
-        this.form.publisherLock = publisherLock.length > 1 ? false : publisherLock[0]
-
         this.form.authors = {}
 
         const authorsLock = this.$_.uniq(books.map(x => x.metadata.authorsLock))
         this.form.authorsLock = authorsLock.length > 1 ? false : authorsLock[0]
+
+        this.form.tags = []
+
+        const tagsLock = this.$_.uniq(books.map(x => x.metadata.tagsLock))
+        this.form.tagsLock = tagsLock.length > 1 ? false : tagsLock[0]
       } else {
+        this.form.tags = []
         const book = books as BookDto
         this.$_.merge(this.form, book.metadata)
         this.form.authors = groupAuthorsByRole(book.metadata.authors)
@@ -494,22 +433,8 @@ export default Vue.extend({
     validateForm (): any {
       if (!this.$v.$invalid) {
         const metadata = {
-          readingDirectionLock: this.form.readingDirectionLock,
-          ageRatingLock: this.form.ageRatingLock,
-          publisherLock: this.form.publisherLock,
           authorsLock: this.form.authorsLock,
-        }
-
-        if (this.$v.form?.readingDirection?.$dirty) {
-          this.$_.merge(metadata, { readingDirection: this.form.readingDirection ? this.form.readingDirection : null })
-        }
-
-        if (this.$v.form?.ageRating?.$dirty) {
-          this.$_.merge(metadata, { ageRating: this.form.ageRating })
-        }
-
-        if (this.$v.form?.publisher?.$dirty) {
-          this.$_.merge(metadata, { publisher: this.form.publisher })
+          tagsLock: this.form.tagsLock,
         }
 
         if (this.$v.form?.authors?.$dirty) {
@@ -518,6 +443,10 @@ export default Vue.extend({
               this.$_.get(this.form.authors, role).map((name: string) => ({ name: name, role: role })),
             ),
           })
+        }
+
+        if (this.$v.form?.tags?.$dirty) {
+          this.$_.merge(metadata, { tags: this.form.tags })
         }
 
         if (this.single) {

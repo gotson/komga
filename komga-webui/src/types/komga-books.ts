@@ -48,16 +48,12 @@ interface BookMetadataDto {
   numberLock: boolean,
   numberSort: number,
   numberSortLock: boolean,
-  readingDirection: string,
-  readingDirectionLock: boolean,
-  publisher: string,
-  publisherLock: boolean,
-  ageRating: number,
-  ageRatingLock: boolean,
   releaseDate: string,
   releaseDateLock: boolean,
   authors: AuthorDto[],
   authorsLock: boolean,
+  tags: String[],
+  tagsLock: boolean
 }
 
 interface ReadProgressDto {
@@ -76,16 +72,12 @@ interface BookMetadataUpdateDto {
   numberLock?: boolean,
   numberSort?: number,
   numberSortLock?: boolean,
-  readingDirection?: string,
-  readingDirectionLock?: boolean,
-  publisher?: string,
-  publisherLock?: boolean,
-  ageRating?: number,
-  ageRatingLock?: boolean,
   releaseDate?: string,
   releaseDateLock?: boolean,
   authors?: AuthorDto[],
   authorsLock?: boolean,
+  tags?: String[],
+  tagsLock?: boolean
 }
 
 interface AuthorDto {

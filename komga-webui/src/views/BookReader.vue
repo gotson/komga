@@ -238,7 +238,7 @@
       timeout="3000"
     >
       <p class="text-body-1 text-center ma-0">
-        {{ readingDirectionText }}{{ notificationReadingDirection.fromMetadata ? ' (from book metadata)' : '' }}
+        {{ readingDirectionText }}{{ notificationReadingDirection.fromMetadata ? ' (from series metadata)' : '' }}
       </p>
     </v-snackbar>
 
@@ -576,9 +576,9 @@ export default Vue.extend({
       }
 
       // set non-persistent reading direction if exists in metadata
-      if (this.book.metadata.readingDirection in ReadingDirection && this.readingDirection !== this.book.metadata.readingDirection) {
+      if (this.series.metadata.readingDirection in ReadingDirection && this.readingDirection !== this.series.metadata.readingDirection) {
         // bypass setter so cookies aren't set
-        this.settings.readingDirection = this.book.metadata.readingDirection as ReadingDirection
+        this.settings.readingDirection = this.series.metadata.readingDirection as ReadingDirection
         this.sendNotificationReadingDirection(true)
       } else {
         this.sendNotificationReadingDirection(false)

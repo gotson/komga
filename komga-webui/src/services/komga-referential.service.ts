@@ -27,4 +27,28 @@ export default class KomgaReferentialService {
       throw new Error(msg)
     }
   }
+
+  async getGenres (): Promise<string[]> {
+    try {
+      return (await this.http.get('/api/v1/genres')).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve genres'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async getTags (): Promise<string[]> {
+    try {
+      return (await this.http.get('/api/v1/tags')).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve tags'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
 }
