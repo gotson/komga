@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
 import org.gotson.komga.application.tasks.TaskReceiver
+import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ROLE_ADMIN
@@ -286,7 +287,25 @@ class SeriesController(
           title = title ?: existing.title,
           titleLock = titleLock ?: existing.titleLock,
           titleSort = titleSort ?: existing.titleSort,
-          titleSortLock = titleSortLock ?: existing.titleSortLock
+          titleSortLock = titleSortLock ?: existing.titleSortLock,
+          summary = summary ?: existing.summary,
+          summaryLock = summaryLock ?: existing.summaryLock,
+          language = language ?: existing.language,
+          languageLock = languageLock ?: existing.languageLock,
+          readingDirection = if (isSet("readingDirection")) readingDirection else existing.readingDirection,
+          readingDirectionLock = readingDirectionLock ?: existing.readingDirectionLock,
+          publisher = publisher ?: existing.publisher,
+          publisherLock = publisherLock ?: existing.publisherLock,
+          ageRating = if (isSet("ageRating")) ageRating else existing.ageRating,
+          ageRatingLock = ageRatingLock ?: existing.ageRatingLock,
+          genres = if (isSet("genres")) {
+            if (genres != null) genres!! else emptySet()
+          } else existing.genres,
+          genresLock = genresLock ?: existing.genresLock,
+          tags = if(isSet("tags")) {
+            if(tags != null) tags!! else emptySet()
+          } else existing.tags,
+          tagsLock = tagsLock ?: existing.tagsLock
         )
       }
       seriesMetadataRepository.update(updated)

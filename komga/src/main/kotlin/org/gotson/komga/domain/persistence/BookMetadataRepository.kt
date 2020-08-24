@@ -7,8 +7,6 @@ interface BookMetadataRepository {
   fun findByIdOrNull(bookId: String): BookMetadata?
   fun findByIds(bookIds: Collection<String>): Collection<BookMetadata>
 
-  fun findAuthorsByName(search: String): List<String>
-
   fun insert(metadata: BookMetadata)
   fun insertMany(metadatas: Collection<BookMetadata>)
   fun update(metadata: BookMetadata)

@@ -98,7 +98,6 @@ class SeriesDao(
     dsl.transaction { config ->
       with(config.dsl())
       {
-        deleteFrom(d).where(d.SERIES_ID.eq(seriesId)).execute()
         deleteFrom(s).where(s.ID.eq(seriesId)).execute()
       }
     }
@@ -108,7 +107,6 @@ class SeriesDao(
     dsl.transaction { config ->
       with(config.dsl())
       {
-        deleteFrom(d).execute()
         deleteFrom(s).execute()
       }
     }
@@ -118,7 +116,6 @@ class SeriesDao(
     dsl.transaction { config ->
       with(config.dsl())
       {
-        deleteFrom(d).where(d.SERIES_ID.`in`(seriesIds)).execute()
         deleteFrom(s).where(s.ID.`in`(seriesIds)).execute()
       }
     }

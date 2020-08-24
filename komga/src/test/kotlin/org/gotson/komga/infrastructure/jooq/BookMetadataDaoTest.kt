@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookMetadata
+import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -64,21 +65,17 @@ class BookMetadataDaoTest(
       summary = "Summary",
       number = "1",
       numberSort = 1F,
-      readingDirection = BookMetadata.ReadingDirection.LEFT_TO_RIGHT,
-      publisher = "publisher",
-      ageRating = 18,
       releaseDate = LocalDate.now(),
-      authors = mutableListOf(Author("author", "role")),
+      authors = listOf(Author("author", "role")),
+      tags = setOf("tag", "another"),
       bookId = book.id,
       titleLock = true,
       summaryLock = true,
       numberLock = true,
       numberSortLock = true,
-      readingDirectionLock = true,
-      publisherLock = true,
-      ageRatingLock = true,
       releaseDateLock = true,
-      authorsLock = true
+      authorsLock = true,
+      tagsLock = true
     )
 
     bookMetadataDao.insert(metadata)
@@ -92,25 +89,21 @@ class BookMetadataDaoTest(
     assertThat(created.summary).isEqualTo(metadata.summary)
     assertThat(created.number).isEqualTo(metadata.number)
     assertThat(created.numberSort).isEqualTo(metadata.numberSort)
-    assertThat(created.readingDirection).isEqualTo(metadata.readingDirection)
-    assertThat(created.publisher).isEqualTo(metadata.publisher)
-    assertThat(created.ageRating).isEqualTo(metadata.ageRating)
     assertThat(created.releaseDate).isEqualTo(metadata.releaseDate)
     assertThat(created.authors).hasSize(1)
     with(created.authors.first()) {
       assertThat(name).isEqualTo(metadata.authors.first().name)
       assertThat(role).isEqualTo(metadata.authors.first().role)
     }
+    assertThat(created.tags).containsAll(metadata.tags)
 
     assertThat(created.titleLock).isEqualTo(metadata.titleLock)
     assertThat(created.summaryLock).isEqualTo(metadata.summaryLock)
     assertThat(created.numberLock).isEqualTo(metadata.numberLock)
     assertThat(created.numberSortLock).isEqualTo(metadata.numberSortLock)
-    assertThat(created.readingDirectionLock).isEqualTo(metadata.readingDirectionLock)
-    assertThat(created.publisherLock).isEqualTo(metadata.publisherLock)
-    assertThat(created.ageRatingLock).isEqualTo(metadata.ageRatingLock)
     assertThat(created.releaseDateLock).isEqualTo(metadata.releaseDateLock)
     assertThat(created.authorsLock).isEqualTo(metadata.authorsLock)
+    assertThat(created.tagsLock).isEqualTo(metadata.tagsLock)
   }
 
   @Test
@@ -131,21 +124,17 @@ class BookMetadataDaoTest(
     assertThat(created.summary).isBlank()
     assertThat(created.number).isEqualTo(metadata.number)
     assertThat(created.numberSort).isEqualTo(metadata.numberSort)
-    assertThat(created.readingDirection).isNull()
-    assertThat(created.publisher).isBlank()
-    assertThat(created.ageRating).isNull()
     assertThat(created.releaseDate).isNull()
     assertThat(created.authors).isEmpty()
+    assertThat(created.tags).isEmpty()
 
     assertThat(created.titleLock).isFalse()
     assertThat(created.summaryLock).isFalse()
     assertThat(created.numberLock).isFalse()
     assertThat(created.numberSortLock).isFalse()
-    assertThat(created.readingDirectionLock).isFalse()
-    assertThat(created.publisherLock).isFalse()
-    assertThat(created.ageRatingLock).isFalse()
     assertThat(created.releaseDateLock).isFalse()
     assertThat(created.authorsLock).isFalse()
+    assertThat(created.tagsLock).isFalse()
   }
 
   @Test
@@ -155,11 +144,9 @@ class BookMetadataDaoTest(
       summary = "Summary",
       number = "1",
       numberSort = 1F,
-      readingDirection = BookMetadata.ReadingDirection.LEFT_TO_RIGHT,
-      publisher = "publisher",
-      ageRating = 18,
       releaseDate = LocalDate.now(),
-      authors = mutableListOf(Author("author", "role")),
+      authors = listOf(Author("author", "role")),
+      tags = setOf("tag"),
       bookId = book.id
     )
     bookMetadataDao.insert(metadata)
@@ -171,20 +158,16 @@ class BookMetadataDaoTest(
         summary = "SummaryUpdated",
         number = "2",
         numberSort = 2F,
-        readingDirection = BookMetadata.ReadingDirection.RIGHT_TO_LEFT,
-        publisher = "publisher2",
-        ageRating = 15,
         releaseDate = LocalDate.now(),
-        authors = mutableListOf(Author("author2", "role2")),
+        authors = listOf(Author("author2", "role2")),
+        tags = setOf("another"),
         titleLock = true,
         summaryLock = true,
         numberLock = true,
         numberSortLock = true,
-        readingDirectionLock = true,
-        publisherLock = true,
-        ageRatingLock = true,
         releaseDateLock = true,
-        authorsLock = true
+        authorsLock = true,
+        tagsLock = true
       )
     }
 
@@ -201,20 +184,16 @@ class BookMetadataDaoTest(
     assertThat(modified.summary).isEqualTo(updated.summary)
     assertThat(modified.number).isEqualTo(updated.number)
     assertThat(modified.numberSort).isEqualTo(updated.numberSort)
-    assertThat(modified.readingDirection).isEqualTo(updated.readingDirection)
-    assertThat(modified.publisher).isEqualTo(updated.publisher)
-    assertThat(modified.ageRating).isEqualTo(updated.ageRating)
 
     assertThat(modified.titleLock).isEqualTo(updated.titleLock)
     assertThat(modified.summaryLock).isEqualTo(updated.summaryLock)
     assertThat(modified.numberLock).isEqualTo(updated.numberLock)
     assertThat(modified.numberSortLock).isEqualTo(updated.numberSortLock)
-    assertThat(modified.readingDirectionLock).isEqualTo(updated.readingDirectionLock)
-    assertThat(modified.publisherLock).isEqualTo(updated.publisherLock)
-    assertThat(modified.ageRatingLock).isEqualTo(updated.ageRatingLock)
     assertThat(modified.releaseDateLock).isEqualTo(updated.releaseDateLock)
     assertThat(modified.authorsLock).isEqualTo(updated.authorsLock)
+    assertThat(modified.tagsLock).isEqualTo(updated.tagsLock)
 
+    assertThat(modified.tags).containsAll(updated.tags)
     assertThat(modified.authors.first().name).isEqualTo(updated.authors.first().name)
     assertThat(modified.authors.first().role).isEqualTo(updated.authors.first().role)
   }
@@ -226,11 +205,8 @@ class BookMetadataDaoTest(
       summary = "Summary",
       number = "1",
       numberSort = 1F,
-      readingDirection = BookMetadata.ReadingDirection.LEFT_TO_RIGHT,
-      publisher = "publisher",
-      ageRating = 18,
       releaseDate = LocalDate.now(),
-      authors = mutableListOf(Author("author", "role")),
+      authors = listOf(Author("author", "role")),
       bookId = book.id
     )
     bookMetadataDao.insert(metadata)

@@ -134,15 +134,19 @@ class MetadataLifecycle(
           // handle series metadata
           if ((provider is ComicInfoProvider && library.importComicInfoSeries) ||
             (provider is EpubMetadataProvider && library.importEpubSeries)) {
-            val title = patches.uniqueOrNull { it.title }
-            val titleSort = patches.uniqueOrNull { it.titleSort }
-            val status = patches.uniqueOrNull { it.status }
 
-            if (title == null) logger.debug { "Ignoring title, values are not unique within series books" }
-            if (titleSort == null) logger.debug { "Ignoring sort title, values are not unique within series books" }
-            if (status == null) logger.debug { "Ignoring status, values are not unique within series books" }
-
-            val aggregatedPatch = SeriesMetadataPatch(title, titleSort, status)
+            val aggregatedPatch = SeriesMetadataPatch(
+              title = patches.mostFrequent { it.title },
+              titleSort = patches.mostFrequent { it.titleSort },
+              status = patches.mostFrequent { it.status },
+              genres = patches.flatMap { it.genres }.toSet(),
+              language = patches.mostFrequent { it.language },
+              summary = null,
+              readingDirection = patches.mostFrequent { it.readingDirection },
+              ageRating = patches.mapNotNull { it.ageRating }.max(),
+              publisher = patches.mostFrequent { it.publisher },
+              collections = emptyList()
+            )
 
             seriesMetadataRepository.findById(series.id).let {
               logger.debug { "Apply metadata for series: $series" }
@@ -188,13 +192,12 @@ class MetadataLifecycle(
       }
   }
 
-  private fun <T, R : Any> Iterable<T>.uniqueOrNull(transform: (T) -> R?): R? {
+  private fun <T, R : Any> Iterable<T>.mostFrequent(transform: (T) -> R?): R? {
     return this
       .mapNotNull(transform)
-      .distinct()
-      .let {
-        if (it.size == 1) it.first() else null
-      }
+      .groupingBy { it }
+      .eachCount()
+      .maxBy { it.value }?.key
   }
 }
 

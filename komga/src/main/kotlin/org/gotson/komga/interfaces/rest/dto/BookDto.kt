@@ -45,17 +45,18 @@ data class BookMetadataDto(
   val numberLock: Boolean,
   val numberSort: Float,
   val numberSortLock: Boolean,
-  val readingDirection: String,
-  val readingDirectionLock: Boolean,
-  val publisher: String,
-  val publisherLock: Boolean,
-  val ageRating: Int?,
-  val ageRatingLock: Boolean,
   @JsonFormat(pattern = "yyyy-MM-dd")
   val releaseDate: LocalDate?,
   val releaseDateLock: Boolean,
   val authors: List<AuthorDto>,
-  val authorsLock: Boolean
+  val authorsLock: Boolean,
+  val tags: Set<String>,
+  val tagsLock: Boolean,
+
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  val created: LocalDateTime,
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  val lastModified: LocalDateTime
 )
 
 data class AuthorDto(

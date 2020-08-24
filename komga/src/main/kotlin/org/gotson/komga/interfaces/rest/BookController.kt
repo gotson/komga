@@ -422,18 +422,16 @@ class BookController(
           numberLock = numberLock ?: existing.numberLock,
           numberSort = numberSort ?: existing.numberSort,
           numberSortLock = numberSortLock ?: existing.numberSortLock,
-          readingDirection = if (isSet("readingDirection")) readingDirection else existing.readingDirection,
-          readingDirectionLock = readingDirectionLock ?: existing.readingDirectionLock,
-          publisher = publisher ?: existing.publisher,
-          publisherLock = publisherLock ?: existing.publisherLock,
-          ageRating = if (isSet("ageRating")) ageRating else existing.ageRating,
-          ageRatingLock = ageRatingLock ?: existing.ageRatingLock,
           releaseDate = if (isSet("releaseDate")) releaseDate else existing.releaseDate,
           releaseDateLock = releaseDateLock ?: existing.releaseDateLock,
           authors = if (isSet("authors")) {
             if (authors != null) authors!!.map { Author(it.name ?: "", it.role ?: "") } else emptyList()
           } else existing.authors,
-          authorsLock = authorsLock ?: existing.authorsLock
+          authorsLock = authorsLock ?: existing.authorsLock,
+          tags = if(isSet("tags")) {
+            if(tags != null) tags!! else emptySet()
+          } else existing.tags,
+          tagsLock = tagsLock ?: existing.tagsLock
         )
       }
       bookMetadataRepository.update(updated)

@@ -42,6 +42,8 @@ class SeriesDtoDao(
     private val d = Tables.SERIES_METADATA
     private val r = Tables.READ_PROGRESS
     private val cs = Tables.COLLECTION_SERIES
+    private val g = Tables.SERIES_METADATA_GENRE
+    private val st = Tables.SERIES_METADATA_TAG
 
     val countUnread: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isNull, 1).otherwise(0))
     val countRead: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isTrue, 1).otherwise(0))
@@ -161,7 +163,18 @@ class SeriesDtoDao(
         val booksUnreadCount = booksCountRecord.get(BOOKS_UNREAD_COUNT, Int::class.java)
         val booksReadCount = booksCountRecord.get(BOOKS_READ_COUNT, Int::class.java)
         val booksInProgressCount = booksCountRecord.get(BOOKS_IN_PROGRESS_COUNT, Int::class.java)
-        sr.toDto(booksCount, booksReadCount, booksUnreadCount, booksInProgressCount, dr.toDto())
+
+        val genres = dsl.select(g.GENRE)
+          .from(g)
+          .where(g.SERIES_ID.eq(sr.id))
+          .fetchSet(g.GENRE)
+
+        val tags = dsl.select(st.TAG)
+          .from(st)
+          .where(st.SERIES_ID.eq(sr.id))
+          .fetchSet(st.TAG)
+
+        sr.toDto(booksCount, booksReadCount, booksUnreadCount, booksInProgressCount, dr.toDto(genres, tags))
       }
 
   private fun SeriesSearchWithReadProgress.toCondition(): Condition {
@@ -200,7 +213,7 @@ class SeriesDtoDao(
       metadata = metadata
     )
 
-  private fun SeriesMetadataRecord.toDto() =
+  private fun SeriesMetadataRecord.toDto(genres: Set<String>, tags: Set<String>) =
     SeriesMetadataDto(
       status = status,
       statusLock = statusLock,
@@ -209,7 +222,21 @@ class SeriesDtoDao(
       title = title,
       titleLock = titleLock,
       titleSort = titleSort,
-      titleSortLock = titleSortLock
+      titleSortLock = titleSortLock,
+      summary = summary,
+      summaryLock = summaryLock,
+      readingDirection = readingDirection ?: "",
+      readingDirectionLock = readingDirectionLock,
+      publisher = publisher,
+      publisherLock = publisherLock,
+      ageRating = ageRating,
+      ageRatingLock = ageRatingLock,
+      language = language,
+      languageLock = languageLock,
+      genres = genres,
+      genresLock = genresLock,
+      tags = tags,
+      tagsLock = tagsLock
     )
 }
 

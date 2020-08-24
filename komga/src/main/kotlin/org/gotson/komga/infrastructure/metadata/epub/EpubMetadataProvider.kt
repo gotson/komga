@@ -2,13 +2,14 @@ package org.gotson.komga.infrastructure.metadata.epub
 
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.BookMetadataPatch
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.gotson.komga.infrastructure.mediacontainer.EpubExtractor
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
+import org.gotson.komga.infrastructure.validation.BCP47TagValidator
 import org.jsoup.Jsoup
 import org.springframework.stereotype.Service
 import java.time.LocalDate
@@ -34,17 +35,8 @@ class EpubMetadataProvider(
       val opf = Jsoup.parse(packageFile)
 
       val title = opf.selectFirst("metadata > dc|title")?.text()
-      val publisher = opf.selectFirst("metadata > dc|publisher")?.text()
       val description = opf.selectFirst("metadata > dc|description")?.text()
       val date = opf.selectFirst("metadata > dc|date")?.text()?.let { parseDate(it) }
-
-      val direction = opf.getElementsByTag("spine").first().attr("page-progression-direction")?.let {
-        when (it) {
-          "rtl" -> BookMetadata.ReadingDirection.RIGHT_TO_LEFT
-          "ltr" -> BookMetadata.ReadingDirection.LEFT_TO_RIGHT
-          else -> null
-        }
-      }
 
       val creatorRefines = opf.select("metadata > meta[property=role][scheme=marc:relators]")
         .associate { it.attr("refines").removePrefix("#") to it.text() }
@@ -63,9 +55,6 @@ class EpubMetadataProvider(
         summary = description,
         number = null,
         numberSort = null,
-        readingDirection = direction,
-        publisher = publisher,
-        ageRating = null,
         releaseDate = date,
         authors = authors,
         readList = null,
@@ -81,8 +70,30 @@ class EpubMetadataProvider(
       val opf = Jsoup.parse(packageFile)
 
       val series = opf.selectFirst("metadata > meta[property=belongs-to-collection]")?.text()
+      val publisher = opf.selectFirst("metadata > dc|publisher")?.text()
+      val language = opf.selectFirst("metadata > dc|language")?.text()
+      val genre = opf.selectFirst("metadata > dc|subject")?.text()
 
-      return SeriesMetadataPatch(series, series, null)
+      val direction = opf.getElementsByTag("spine").first().attr("page-progression-direction")?.let {
+        when (it) {
+          "rtl" -> SeriesMetadata.ReadingDirection.RIGHT_TO_LEFT
+          "ltr" -> SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT
+          else -> null
+        }
+      }
+
+      return SeriesMetadataPatch(
+        title = series,
+        titleSort = series,
+        status = null,
+        readingDirection = direction,
+        publisher = publisher,
+        ageRating = null,
+        summary = null,
+        language = if(language != null && BCP47TagValidator.isValid(language)) language else null,
+        genres = if(genre != null) setOf(genre) else emptySet(),
+        collections = emptyList()
+      )
     }
     return null
   }

@@ -70,6 +70,8 @@ dependencies {
   implementation("commons-io:commons-io:2.7")
   implementation("org.apache.commons:commons-lang3:3.11")
 
+  implementation("com.ibm.icu:icu4j:67.1")
+
   implementation("org.apache.tika:tika-core:1.24.1")
   implementation("org.apache.commons:commons-compress:1.20")
   implementation("com.github.junrar:junrar:7.2.0")

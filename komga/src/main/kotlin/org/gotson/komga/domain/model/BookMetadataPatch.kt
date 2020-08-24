@@ -7,9 +7,6 @@ data class BookMetadataPatch(
   val summary: String?,
   val number: String?,
   val numberSort: Float?,
-  val readingDirection: BookMetadata.ReadingDirection?,
-  val publisher: String?,
-  val ageRating: Int?,
   val releaseDate: LocalDate?,
   val authors: List<Author>?,
 

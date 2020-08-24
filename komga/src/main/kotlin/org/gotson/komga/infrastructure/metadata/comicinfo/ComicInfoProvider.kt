@@ -4,15 +4,16 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.BookMetadataPatch
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
 import org.gotson.komga.infrastructure.metadata.comicinfo.dto.ComicInfo
 import org.gotson.komga.infrastructure.metadata.comicinfo.dto.Manga
+import org.gotson.komga.infrastructure.validation.BCP47TagValidator
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDate
@@ -42,20 +43,11 @@ class ComicInfoProvider(
       comicInfo.coverArtist?.let { authors += it.splitWithRole("cover") }
       comicInfo.editor?.let { authors += it.splitWithRole("editor") }
 
-      val readingDirection = when (comicInfo.manga) {
-        Manga.NO -> BookMetadata.ReadingDirection.LEFT_TO_RIGHT
-        Manga.YES_AND_RIGHT_TO_LEFT -> BookMetadata.ReadingDirection.RIGHT_TO_LEFT
-        else -> null
-      }
-
       return BookMetadataPatch(
         title = comicInfo.title,
         summary = comicInfo.summary,
         number = comicInfo.number,
         numberSort = comicInfo.number?.toFloatOrNull(),
-        readingDirection = readingDirection,
-        publisher = comicInfo.publisher,
-        ageRating = comicInfo.ageRating?.ageRating,
         releaseDate = releaseDate,
         authors = authors.ifEmpty { null },
         readList = comicInfo.alternateSeries ?: comicInfo.storyArc,
@@ -67,11 +59,25 @@ class ComicInfoProvider(
 
   override fun getSeriesMetadataFromBook(book: Book, media: Media): SeriesMetadataPatch? {
     getComicInfo(book, media)?.let { comicInfo ->
+      val readingDirection = when (comicInfo.manga) {
+        Manga.NO -> SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT
+        Manga.YES_AND_RIGHT_TO_LEFT -> SeriesMetadata.ReadingDirection.RIGHT_TO_LEFT
+        else -> null
+      }
+
+      val genres = comicInfo.genre?.split(',')?.map { it.trim() }?.toSet() ?: emptySet()
+
       return SeriesMetadataPatch(
-        comicInfo.series,
-        comicInfo.series,
-        null,
-        listOfNotNull(comicInfo.seriesGroup)
+        title = comicInfo.series,
+        titleSort = comicInfo.series,
+        status = null,
+        summary = null,
+        readingDirection = readingDirection,
+        publisher = comicInfo.publisher,
+        ageRating = comicInfo.ageRating?.ageRating,
+        language = if(comicInfo.languageISO != null && BCP47TagValidator.isValid(comicInfo.languageISO!!)) comicInfo.languageISO else null,
+        genres = genres,
+        collections = listOfNotNull(comicInfo.seriesGroup)
       )
     }
     return null

@@ -34,6 +34,9 @@ class SeriesMetadataDaoTest(
 
   @AfterEach
   fun deleteSeries() {
+    seriesRepository.findAll().forEach {
+      seriesMetadataDao.delete(it.id)
+    }
     seriesRepository.deleteAll()
   }
 
@@ -52,20 +55,93 @@ class SeriesMetadataDaoTest(
       status = SeriesMetadata.Status.ENDED,
       title = "Series",
       titleSort = "Series, The",
+      summary = "Summary",
+      readingDirection = SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT,
+      publisher = "publisher",
+      ageRating = 18,
+      genres = setOf("Action", "Adventure"),
+      tags = setOf("tag","another"),
+      language = "en",
+      titleLock = true,
+      titleSortLock = true,
+      summaryLock = true,
+      readingDirectionLock = true,
+      publisherLock = true,
+      ageRatingLock = true,
+      genresLock = true,
+      languageLock = true,
+      tagsLock = true,
       seriesId = series.id
     )
 
-    val created = seriesMetadataDao.insert(metadata)
+    seriesMetadataDao.insert(metadata)
+    val created = seriesMetadataDao.findById(metadata.seriesId)
 
     assertThat(created.seriesId).isEqualTo(series.id)
     assertThat(created.createdDate).isCloseTo(now, offset)
     assertThat(created.lastModifiedDate).isCloseTo(now, offset)
-    assertThat(created.title).isEqualTo("Series")
-    assertThat(created.titleSort).isEqualTo("Series, The")
+
+    assertThat(created.title).isEqualTo(metadata.title)
+    assertThat(created.titleSort).isEqualTo(metadata.titleSort)
+    assertThat(created.summary).isEqualTo(metadata.summary)
     assertThat(created.status).isEqualTo(SeriesMetadata.Status.ENDED)
+    assertThat(created.readingDirection).isEqualTo(metadata.readingDirection)
+    assertThat(created.publisher).isEqualTo(metadata.publisher)
+    assertThat(created.ageRating).isEqualTo(metadata.ageRating)
+    assertThat(created.language).isEqualTo(metadata.language)
+    assertThat(created.genres).containsAll(metadata.genres)
+    assertThat(created.tags).containsAll(metadata.tags)
+
+    assertThat(created.titleLock).isEqualTo(metadata.titleLock)
+    assertThat(created.titleSortLock).isEqualTo(metadata.titleSortLock)
+    assertThat(created.statusLock).isEqualTo(metadata.statusLock)
+    assertThat(created.summaryLock).isEqualTo(metadata.summaryLock)
+    assertThat(created.readingDirectionLock).isEqualTo(metadata.readingDirectionLock)
+    assertThat(created.publisherLock).isEqualTo(metadata.publisherLock)
+    assertThat(created.ageRatingLock).isEqualTo(metadata.ageRatingLock)
+    assertThat(created.genresLock).isEqualTo(metadata.genresLock)
+    assertThat(created.languageLock).isEqualTo(metadata.languageLock)
+    assertThat(created.tagsLock).isEqualTo(metadata.tagsLock)
+  }
+
+  @Test
+  fun `given a minimum seriesMetadata when inserting then it is persisted`() {
+    val series = makeSeries("Series", libraryId = library.id).also { seriesRepository.insert(it) }
+
+    val now = LocalDateTime.now()
+    val metadata = SeriesMetadata(
+      title = "Series",
+      seriesId = series.id
+    )
+
+    seriesMetadataDao.insert(metadata)
+    val created = seriesMetadataDao.findById(metadata.seriesId)
+
+    assertThat(created.seriesId).isEqualTo(series.id)
+    assertThat(created.createdDate).isCloseTo(now, offset)
+    assertThat(created.lastModifiedDate).isCloseTo(now, offset)
+
+    assertThat(created.title).isEqualTo(metadata.title)
+    assertThat(created.titleSort).isEqualTo(metadata.title)
+    assertThat(created.summary).isBlank()
+    assertThat(created.status).isEqualTo(SeriesMetadata.Status.ONGOING)
+    assertThat(created.readingDirection).isNull()
+    assertThat(created.publisher).isBlank()
+    assertThat(created.language).isBlank()
+    assertThat(created.ageRating).isNull()
+    assertThat(created.genres).isEmpty()
+    assertThat(created.tags).isEmpty()
+
     assertThat(created.titleLock).isFalse()
     assertThat(created.titleSortLock).isFalse()
     assertThat(created.statusLock).isFalse()
+    assertThat(created.summaryLock).isFalse()
+    assertThat(created.readingDirectionLock).isFalse()
+    assertThat(created.publisherLock).isFalse()
+    assertThat(created.ageRatingLock).isFalse()
+    assertThat(created.genresLock).isFalse()
+    assertThat(created.languageLock).isFalse()
+    assertThat(created.tagsLock).isFalse()
   }
 
   @Test
@@ -109,9 +185,17 @@ class SeriesMetadataDaoTest(
       status = SeriesMetadata.Status.ENDED,
       title = "Series",
       titleSort = "Series, The",
+      summary = "Summary",
+      readingDirection = SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT,
+      publisher = "publisher",
+      ageRating = 18,
+      language = "en",
+      genres = setOf("Action"),
+      tags = setOf("tag"),
       seriesId = series.id
     )
-    val created = seriesMetadataDao.insert(metadata)
+    seriesMetadataDao.insert(metadata)
+    val created = seriesMetadataDao.findById(metadata.seriesId)
 
 
     val modificationDate = LocalDateTime.now()
@@ -121,9 +205,23 @@ class SeriesMetadataDaoTest(
         status = SeriesMetadata.Status.HIATUS,
         title = "Changed",
         titleSort = "Changed, The",
+        summary = "SummaryUpdated",
+        readingDirection = SeriesMetadata.ReadingDirection.RIGHT_TO_LEFT,
+        publisher = "publisher2",
+        ageRating = 15,
+        language = "jp",
+        genres = setOf("Adventure"),
+        tags = setOf("Another"),
         statusLock = true,
         titleLock = true,
-        titleSortLock = true
+        titleSortLock = true,
+        summaryLock = true,
+        readingDirectionLock = true,
+        publisherLock = true,
+        ageRatingLock = true,
+        languageLock = true,
+        genresLock = true,
+        tagsLock = true
       )
     }
 
@@ -135,11 +233,26 @@ class SeriesMetadataDaoTest(
     assertThat(modified.lastModifiedDate)
       .isCloseTo(modificationDate, offset)
       .isNotEqualTo(modified.createdDate)
-    assertThat(modified.title).isEqualTo("Changed")
-    assertThat(modified.titleSort).isEqualTo("Changed, The")
-    assertThat(modified.status).isEqualTo(SeriesMetadata.Status.HIATUS)
+    assertThat(modified.title).isEqualTo(updated.title)
+    assertThat(modified.titleSort).isEqualTo(updated.titleSort)
+    assertThat(modified.summary).isEqualTo(updated.summary)
+    assertThat(modified.status).isEqualTo(updated.status)
+    assertThat(modified.readingDirection).isEqualTo(updated.readingDirection)
+    assertThat(modified.publisher).isEqualTo(updated.publisher)
+    assertThat(modified.ageRating).isEqualTo(updated.ageRating)
+    assertThat(modified.language).isEqualTo(updated.language)
+    assertThat(modified.genres).containsAll(updated.genres)
+    assertThat(modified.tags).containsAll(updated.tags)
+
     assertThat(modified.titleLock).isTrue()
     assertThat(modified.titleSortLock).isTrue()
     assertThat(modified.statusLock).isTrue()
+    assertThat(modified.summaryLock).isTrue()
+    assertThat(modified.readingDirectionLock).isTrue()
+    assertThat(modified.ageRatingLock).isTrue()
+    assertThat(modified.languageLock).isTrue()
+    assertThat(modified.genresLock).isTrue()
+    assertThat(modified.publisherLock).isTrue()
+    assertThat(modified.tagsLock).isTrue()
   }
 }

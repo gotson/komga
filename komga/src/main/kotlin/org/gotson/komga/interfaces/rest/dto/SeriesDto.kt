@@ -27,12 +27,27 @@ fun SeriesDto.restrictUrl(restrict: Boolean) =
 data class SeriesMetadataDto(
   val status: String,
   val statusLock: Boolean,
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-  val created: LocalDateTime,
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-  val lastModified: LocalDateTime,
   val title: String,
   val titleLock: Boolean,
   val titleSort: String,
-  val titleSortLock: Boolean
+  val titleSortLock: Boolean,
+  val summary: String,
+  val summaryLock: Boolean,
+  val readingDirection: String,
+  val readingDirectionLock: Boolean,
+  val publisher: String,
+  val publisherLock: Boolean,
+  val ageRating: Int?,
+  val ageRatingLock: Boolean,
+  val language: String,
+  val languageLock: Boolean,
+  val genres: Set<String>,
+  val genresLock: Boolean,
+  val tags: Set<String>,
+  val tagsLock: Boolean,
+
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  val created: LocalDateTime,
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  val lastModified: LocalDateTime
 )

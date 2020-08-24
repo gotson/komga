@@ -43,6 +43,7 @@ import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
+import java.time.LocalDate
 import kotlin.random.Random
 
 @ExtendWith(SpringExtension::class)
@@ -353,7 +354,9 @@ class SeriesControllerTest(
     @ParameterizedTest
     @ValueSource(strings = [
       """{"title":""}""",
-      """{"titleSort":""}"""
+      """{"titleSort":""}""",
+      """{"ageRating":-1}""",
+      """{"language":"japanese"}"""
     ])
     @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given invalid json when updating metadata then raise validation error`(jsonString: String) {
@@ -378,11 +381,25 @@ class SeriesControllerTest(
       val jsonString = """
         {
           "title":"newTitle",
-          "titleSort":"newTitleSort",
-          "status":"HIATUS",
           "titleLock":true,
+          "titleSort":"newTitleSort",
           "titleSortLock":true,
-          "statusLock":true
+          "status":"HIATUS",
+          "statusLock":true,
+          "summary":"newSummary",
+          "summaryLock":true,
+          "readingDirection":"LEFT_TO_RIGHT",
+          "readingDirectionLock":true,
+          "ageRating":12,
+          "ageRatingLock":true,
+          "publisher":"newPublisher",
+          "publisherLock":true,
+          "language":"ja",
+          "languageLock":true,
+          "genres":["Action"],
+          "genresLock":true,
+          "tags":["tag"],
+          "tagsLock":true
         }
       """.trimIndent()
 
@@ -398,9 +415,77 @@ class SeriesControllerTest(
         assertThat(title).isEqualTo("newTitle")
         assertThat(titleSort).isEqualTo("newTitleSort")
         assertThat(status).isEqualTo(SeriesMetadata.Status.HIATUS)
+        assertThat(readingDirection).isEqualTo(SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT)
+        assertThat(publisher).isEqualTo("newPublisher")
+        assertThat(summary).isEqualTo("newSummary")
+        assertThat(language).isEqualTo("ja")
+        assertThat(ageRating).isEqualTo(12)
+        assertThat(genres).containsExactly("Action")
+        assertThat(tags).containsExactly("tag")
+
         assertThat(titleLock).isEqualTo(true)
         assertThat(titleSortLock).isEqualTo(true)
         assertThat(statusLock).isEqualTo(true)
+        assertThat(readingDirectionLock).isEqualTo(true)
+        assertThat(publisherLock).isEqualTo(true)
+        assertThat(ageRatingLock).isEqualTo(true)
+        assertThat(languageLock).isEqualTo(true)
+        assertThat(summaryLock).isEqualTo(true)
+        assertThat(genresLock).isEqualTo(true)
+        assertThat(tagsLock).isEqualTo(true)
+      }
+    }
+
+    @Test
+    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    fun `given json with null fields when updating metadata then fields with null are unset`() {
+      val createdSeries = makeSeries(name = "series", libraryId = library.id).let { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(makeBook("1", libraryId = library.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+      }
+
+      seriesMetadataRepository.findById(createdSeries.id).let { metadata ->
+        val updated = metadata.copy(
+          ageRating = 12,
+          readingDirection = SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT,
+          genres = setOf("Action"),
+          tags = setOf("tag")
+        )
+
+        seriesMetadataRepository.update(updated)
+      }
+
+      val metadata = seriesMetadataRepository.findById(createdSeries.id)
+      with(metadata) {
+        assertThat(readingDirection).isEqualTo(SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT)
+        assertThat(ageRating).isEqualTo(12)
+        assertThat(genres).hasSize(1)
+      }
+
+      val jsonString = """
+        {
+          "readingDirection":null,
+          "ageRating":null,
+          "genres":null,
+          "tags":null
+        }
+      """.trimIndent()
+
+      mockMvc.patch("/api/v1/series/${createdSeries.id}/metadata") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
+        status { isNoContent }
+      }
+
+      val updatedMetadata = seriesMetadataRepository.findById(createdSeries.id)
+      with(updatedMetadata) {
+        assertThat(readingDirection).isNull()
+        assertThat(ageRating).isNull()
+        assertThat(genres).isEmpty()
+        assertThat(tags).isEmpty()
       }
     }
   }

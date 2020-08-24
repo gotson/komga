@@ -5,10 +5,12 @@ import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.infrastructure.metadata.comicinfo.dto.AgeRating
 import org.gotson.komga.infrastructure.metadata.comicinfo.dto.ComicInfo
+import org.gotson.komga.infrastructure.metadata.comicinfo.dto.Manga
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
@@ -38,10 +40,10 @@ class ComicInfoProviderTest {
         title = "title"
         summary = "summary"
         number = "010"
-        publisher = "publisher"
-        ageRating = AgeRating.MA_15
         year = 2020
         month = 2
+        alternateSeries = "story arc"
+        alternateNumber = "5"
       }
 
       every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
@@ -53,10 +55,9 @@ class ComicInfoProviderTest {
         assertThat(summary).isEqualTo("summary")
         assertThat(number).isEqualTo("010")
         assertThat(numberSort).isEqualTo(10F)
-        assertThat(publisher).isEqualTo("publisher")
-        assertThat(ageRating).isEqualTo(15)
+        assertThat(readList).isEqualTo("story arc")
+        assertThat(readListNumber).isEqualTo(5)
         assertThat(releaseDate).isEqualTo(LocalDate.of(2020, 2, 1))
-        assertThat(readingDirection).isNull()
       }
     }
 
@@ -154,6 +155,11 @@ class ComicInfoProviderTest {
       val comicInfo = ComicInfo().apply {
         series = "series"
         seriesGroup = "collection"
+        publisher = "publisher"
+        ageRating = AgeRating.MA_15
+        manga = Manga.YES_AND_RIGHT_TO_LEFT
+        languageISO = "en"
+        genre = "Action, Adventure"
       }
 
       every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
@@ -165,6 +171,27 @@ class ComicInfoProviderTest {
         assertThat(titleSort).isEqualTo("series")
         assertThat(status).isNull()
         assertThat(collections).containsExactly("collection")
+        assertThat(publisher).isEqualTo("publisher")
+        assertThat(ageRating).isEqualTo(15)
+        assertThat(readingDirection).isEqualTo(SeriesMetadata.ReadingDirection.RIGHT_TO_LEFT)
+        assertThat(language).isEqualTo("en")
+        assertThat(summary).isBlank()
+        assertThat(genres).containsExactlyInAnyOrder("Action", "Adventure")
+      }
+    }
+
+    @Test
+    fun `given comicInfo with incorrect values when getting series metadata then metadata patch is valid`() {
+      val comicInfo = ComicInfo().apply {
+        languageISO = "japanese"
+      }
+
+      every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
+
+      val patch = comicInfoProvider.getSeriesMetadataFromBook(book, media)!!
+
+      with(patch) {
+        assertThat(language).isNull()
       }
     }
 

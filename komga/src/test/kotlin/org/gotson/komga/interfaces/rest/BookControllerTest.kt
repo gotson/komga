@@ -3,12 +3,12 @@ package org.gotson.komga.interfaces.rest
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.groups.Tuple.tuple
 import org.gotson.komga.domain.model.Author
-import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ROLE_ADMIN
+import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
@@ -577,8 +577,7 @@ class BookControllerTest(
     @ValueSource(strings = [
       """{"title":""}""",
       """{"number":""}""",
-      """{"authors":"[{"name":""}]"}""",
-      """{"ageRating":-1}"""
+      """{"authors":"[{"name":""}]"}"""
     ])
     @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given invalid json when updating metadata then raise validation error`(jsonString: String) {
@@ -612,12 +611,6 @@ class BookControllerTest(
           "numberLock":true,
           "numberSort": 1.0,
           "numberSortLock":true,
-          "readingDirection":"LEFT_TO_RIGHT",
-          "readingDirectionLock":true,
-          "publisher":"newPublisher",
-          "publisherLock":true,
-          "ageRating":12,
-          "ageRatingLock":true,
           "releaseDate":"2020-01-01",
           "releaseDateLock":true,
           "authors":[
@@ -630,7 +623,9 @@ class BookControllerTest(
               "role":"newAuthorRole2"
             }
           ],
-          "authorsLock":true
+          "authorsLock":true,
+          "tags":["tag"],
+          "tagsLock":true
         }
       """.trimIndent()
 
@@ -647,9 +642,6 @@ class BookControllerTest(
         assertThat(summary).isEqualTo("newSummary")
         assertThat(number).isEqualTo("newNumber")
         assertThat(numberSort).isEqualTo(1F)
-        assertThat(readingDirection).isEqualTo(BookMetadata.ReadingDirection.LEFT_TO_RIGHT)
-        assertThat(publisher).isEqualTo("newPublisher")
-        assertThat(ageRating).isEqualTo(12)
         assertThat(releaseDate).isEqualTo(LocalDate.of(2020, 1, 1))
         assertThat(authors)
           .hasSize(2)
@@ -658,16 +650,15 @@ class BookControllerTest(
             tuple("newAuthor", "newauthorrole"),
             tuple("newAuthor2", "newauthorrole2")
           )
+        assertThat(tags).containsExactly("tag")
 
         assertThat(titleLock).isEqualTo(true)
         assertThat(summaryLock).isEqualTo(true)
         assertThat(numberLock).isEqualTo(true)
         assertThat(numberSortLock).isEqualTo(true)
-        assertThat(readingDirectionLock).isEqualTo(true)
-        assertThat(publisherLock).isEqualTo(true)
-        assertThat(ageRatingLock).isEqualTo(true)
         assertThat(releaseDateLock).isEqualTo(true)
         assertThat(authorsLock).isEqualTo(true)
+        assertThat(tagsLock).isEqualTo(true)
       }
     }
 
@@ -686,10 +677,9 @@ class BookControllerTest(
       val bookId = bookRepository.findAll().first().id
       bookMetadataRepository.findById(bookId).let { metadata ->
         val updated = metadata.copy(
-          ageRating = 12,
-          readingDirection = BookMetadata.ReadingDirection.LEFT_TO_RIGHT,
           authors = metadata.authors.toMutableList().also { it.add(Author("Author", "role")) },
-          releaseDate = testDate
+          releaseDate = testDate,
+          tags = setOf("tag")
         )
 
         bookMetadataRepository.update(updated)
@@ -697,18 +687,15 @@ class BookControllerTest(
 
       val metadata = bookMetadataRepository.findById(bookId)
       with(metadata) {
-        assertThat(readingDirection).isEqualTo(BookMetadata.ReadingDirection.LEFT_TO_RIGHT)
-        assertThat(ageRating).isEqualTo(12)
         assertThat(authors).hasSize(1)
         assertThat(releaseDate).isEqualTo(testDate)
       }
 
       val jsonString = """
         {
-          "readingDirection":null,
-          "ageRating":null,
           "authors":null,
-          "releaseDate":null
+          "releaseDate":null,
+          "tags":null
         }
       """.trimIndent()
 
@@ -721,10 +708,9 @@ class BookControllerTest(
 
       val updatedMetadata = bookMetadataRepository.findById(bookId)
       with(updatedMetadata) {
-        assertThat(readingDirection).isNull()
-        assertThat(ageRating).isNull()
         assertThat(authors).isEmpty()
         assertThat(releaseDate).isNull()
+        assertThat(tags).isEmpty()
       }
     }
 
@@ -743,8 +729,6 @@ class BookControllerTest(
       val bookId = bookRepository.findAll().first().id
       bookMetadataRepository.findById(bookId).let { metadata ->
         val updated = metadata.copy(
-          ageRating = 12,
-          readingDirection = BookMetadata.ReadingDirection.LEFT_TO_RIGHT,
           authors = metadata.authors.toMutableList().also { it.add(Author("Author", "role")) },
           releaseDate = testDate,
           summary = "summary",
@@ -752,7 +736,6 @@ class BookControllerTest(
           numberLock = true,
           numberSort = 2F,
           numberSortLock = true,
-          publisher = "publisher",
           title = "title"
         )
 
@@ -773,14 +756,11 @@ class BookControllerTest(
 
       val metadata = bookMetadataRepository.findById(bookId)
       with(metadata) {
-        assertThat(readingDirection).isEqualTo(BookMetadata.ReadingDirection.LEFT_TO_RIGHT)
-        assertThat(ageRating).isEqualTo(12)
         assertThat(authors).hasSize(1)
         assertThat(releaseDate).isEqualTo(testDate)
         assertThat(summary).isEqualTo("summary")
         assertThat(number).isEqualTo("number")
         assertThat(numberSort).isEqualTo(2F)
-        assertThat(publisher).isEqualTo("publisher")
         assertThat(title).isEqualTo("title")
       }
     }

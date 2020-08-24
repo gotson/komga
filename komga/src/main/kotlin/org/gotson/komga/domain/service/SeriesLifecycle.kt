@@ -118,6 +118,7 @@ class SeriesLifecycle(
 
     collectionRepository.removeSeriesFromAll(seriesId)
     thumbnailsSeriesRepository.deleteBySeriesId(seriesId)
+    seriesMetadataRepository.delete(seriesId)
 
     seriesRepository.delete(seriesId)
   }
@@ -130,6 +131,7 @@ class SeriesLifecycle(
 
     collectionRepository.removeSeriesFromAll(seriesIds)
     thumbnailsSeriesRepository.deleteBySeriesIds(seriesIds)
+    seriesMetadataRepository.delete(seriesIds)
 
     seriesRepository.deleteAll(seriesIds)
   }

@@ -23,10 +23,7 @@ class MetadataApplier {
         summary = getIfNotLocked(summary, patch.summary, summaryLock),
         number = getIfNotLocked(number, patch.number, numberLock),
         numberSort = getIfNotLocked(numberSort, patch.numberSort, numberSortLock),
-        readingDirection = getIfNotLocked(readingDirection, patch.readingDirection, readingDirectionLock),
         releaseDate = getIfNotLocked(releaseDate, patch.releaseDate, releaseDateLock),
-        ageRating = getIfNotLocked(ageRating, patch.ageRating, ageRatingLock),
-        publisher = getIfNotLocked(publisher, patch.publisher, publisherLock),
         authors = getIfNotLocked(authors, patch.authors, authorsLock)
       )
     }
@@ -36,7 +33,13 @@ class MetadataApplier {
       copy(
         status = getIfNotLocked(status, patch.status, statusLock),
         title = getIfNotLocked(title, patch.title, titleLock),
-        titleSort = getIfNotLocked(titleSort, patch.titleSort, titleSortLock)
+        titleSort = getIfNotLocked(titleSort, patch.titleSort, titleSortLock),
+        summary = getIfNotLocked(summary, patch.summary, summaryLock),
+        readingDirection = getIfNotLocked(readingDirection, patch.readingDirection, readingDirectionLock),
+        ageRating = getIfNotLocked(ageRating, patch.ageRating, ageRatingLock),
+        publisher = getIfNotLocked(publisher, patch.publisher, publisherLock),
+        language = getIfNotLocked(language, patch.language, languageLock),
+        genres = getIfNotLocked(genres, patch.genres, genresLock)
       )
     }
 

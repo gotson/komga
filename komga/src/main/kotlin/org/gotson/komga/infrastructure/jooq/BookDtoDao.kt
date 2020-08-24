@@ -40,6 +40,7 @@ class BookDtoDao(
   private val a = Tables.BOOK_METADATA_AUTHOR
   private val s = Tables.SERIES
   private val rlb = Tables.READLIST_BOOK
+  private val bt = Tables.BOOK_METADATA_TAG
 
   private val sorts = mapOf(
     "name" to DSL.lower(b.NAME),
@@ -194,7 +195,12 @@ class BookDtoDao(
           .filter { it.name != null }
           .map { AuthorDto(it.name, it.role) }
 
-        br.toDto(mr.toDto(), dr.toDto(authors), if (rr.userId != null) rr.toDto() else null)
+        val tags = dsl.select(bt.TAG)
+          .from(bt)
+          .where(bt.BOOK_ID.eq(br.id))
+          .fetchSet(bt.TAG)
+
+        br.toDto(mr.toDto(), dr.toDto(authors, tags), if (rr.userId != null) rr.toDto() else null)
       }
 
   private fun BookSearchWithReadProgress.toCondition(): Condition {
@@ -245,7 +251,7 @@ class BookDtoDao(
       comment = comment ?: ""
     )
 
-  private fun BookMetadataRecord.toDto(authors: List<AuthorDto>) =
+  private fun BookMetadataRecord.toDto(authors: List<AuthorDto>, tags: Set<String>) =
     BookMetadataDto(
       title = title,
       titleLock = titleLock,
@@ -255,16 +261,14 @@ class BookDtoDao(
       numberLock = numberLock,
       numberSort = numberSort,
       numberSortLock = numberSortLock,
-      readingDirection = readingDirection ?: "",
-      readingDirectionLock = readingDirectionLock,
-      publisher = publisher,
-      publisherLock = publisherLock,
-      ageRating = ageRating,
-      ageRatingLock = ageRatingLock,
       releaseDate = releaseDate,
       releaseDateLock = releaseDateLock,
       authors = authors,
-      authorsLock = authorsLock
+      authorsLock = authorsLock,
+      tags = tags,
+      tagsLock = tagsLock,
+      created = createdDate,
+      lastModified = lastModifiedDate
     )
 
   private fun ReadProgressRecord.toDto() =

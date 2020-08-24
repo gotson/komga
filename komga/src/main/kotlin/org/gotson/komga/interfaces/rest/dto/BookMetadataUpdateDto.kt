@@ -1,6 +1,6 @@
 package org.gotson.komga.interfaces.rest.dto
 
-import org.gotson.komga.domain.model.BookMetadata
+import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.infrastructure.validation.NullOrNotBlank
 import java.time.LocalDate
 import javax.validation.Valid
@@ -30,25 +30,6 @@ class BookMetadataUpdateDto {
 
   var numberSortLock: Boolean? = null
 
-  var readingDirection: BookMetadata.ReadingDirection?
-    by Delegates.observable<BookMetadata.ReadingDirection?>(null) { prop, _, _ ->
-      isSet[prop.name] = true
-    }
-
-  var readingDirectionLock: Boolean? = null
-
-  var publisher: String? = null
-
-  var publisherLock: Boolean? = null
-
-  @get:PositiveOrZero
-  var ageRating: Int?
-    by Delegates.observable<Int?>(null) { prop, _, _ ->
-      isSet[prop.name] = true
-    }
-
-  var ageRatingLock: Boolean? = null
-
   var releaseDate: LocalDate?
     by Delegates.observable<LocalDate?>(null) { prop, _, _ ->
       isSet[prop.name] = true
@@ -63,6 +44,13 @@ class BookMetadataUpdateDto {
     }
 
   var authorsLock: Boolean? = null
+
+  var tags: Set<String>?
+    by Delegates.observable<Set<String>?>(null) { prop, _, _ ->
+      isSet[prop.name] = true
+    }
+
+  var tagsLock: Boolean? = null
 }
 
 class AuthorUpdateDto {
