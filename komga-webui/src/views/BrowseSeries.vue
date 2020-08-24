@@ -82,7 +82,7 @@
             </v-col>
           </v-row>
 
-          <v-row class="mt-3">
+          <v-row class="mt-3" v-if="series.metadata.summary">
             <v-col>
               <div class="text-body-1"
                    style="white-space: pre-wrap"
@@ -91,9 +91,9 @@
             </v-col>
           </v-row>
 
-          <v-row>
+          <v-row v-if="series.metadata.publisher">
             <v-col cols="6" sm="4" md="2" class="text-body-2 py-1">PUBLISHER</v-col>
-            <v-col class="text-body-2 text-capitalize py-1" v-if="series.metadata.publisher">
+            <v-col class="text-body-2 text-capitalize py-1">
               {{ series.metadata.publisher }}
             </v-col>
           </v-row>
