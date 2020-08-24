@@ -434,12 +434,6 @@ export default Vue.extend({
     continuousReader (): boolean {
       return this.readingDirection === ReadingDirection.WEBTOON
     },
-    fullWidthReader (): boolean {
-      if (this.continuousReader) {
-        return this.continuousScale === ContinuousScaleType.WIDTH
-      }
-      return this.scale === ScaleType.WIDTH
-    },
     progress (): number {
       return this.page / this.pagesCount * 100
     },
