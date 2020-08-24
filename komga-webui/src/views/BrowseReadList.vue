@@ -8,7 +8,9 @@
 
       <v-toolbar-title v-if="readList">
         <span>{{ readList.name }}</span>
-        <badge class="mx-4">{{ readList.bookIds.length }}</badge>
+        <v-chip label class="ml-4">
+          <span style="font-size: 1.1rem">{{ readList.bookIds.length }}</span>
+        </v-chip>
       </v-toolbar-title>
 
       <v-spacer/>
@@ -72,7 +74,6 @@
 </template>
 
 <script lang="ts">
-import Badge from '@/components/Badge.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import { BOOK_CHANGED, READLIST_CHANGED, READLIST_DELETED } from '@/types/events'
@@ -86,7 +87,6 @@ export default Vue.extend({
     ToolbarSticky,
     ItemBrowser,
     ReadListActionsMenu,
-    Badge,
     BooksMultiSelectBar,
   },
   data: () => {

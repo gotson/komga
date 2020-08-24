@@ -7,7 +7,9 @@
 
       <v-toolbar-title>
         <span>{{ library ? library.name : 'All libraries' }}</span>
-        <badge class="ml-4">{{ totalElements }}</badge>
+        <v-chip label class="ml-4" v-if="totalElements">
+          <span style="font-size: 1.1rem">{{ totalElements }}</span>
+        </v-chip>
       </v-toolbar-title>
 
       <v-spacer/>
@@ -37,7 +39,6 @@
 </template>
 
 <script lang="ts">
-import Badge from '@/components/Badge.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import LibraryNavigation from '@/components/LibraryNavigation.vue'
@@ -57,7 +58,6 @@ export default Vue.extend({
     ToolbarSticky,
     LibraryNavigation,
     ItemBrowser,
-    Badge,
     PageSizeSelect,
   },
   data: () => {

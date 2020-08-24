@@ -8,7 +8,9 @@
 
       <v-toolbar-title v-if="collection">
         <span>{{ collection.name }}</span>
-        <badge class="mx-4">{{ collection.seriesIds.length }}</badge>
+        <v-chip label class="ml-4">
+          <span style="font-size: 1.1rem">{{ collection.seriesIds.length }}</span>
+        </v-chip>
         <span v-if="collection.ordered"
               class="font-italic text-overline"
         >(manual ordering)</span>
@@ -75,7 +77,6 @@
 </template>
 
 <script lang="ts">
-import Badge from '@/components/Badge.vue'
 import CollectionActionsMenu from '@/components/menus/CollectionActionsMenu.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
@@ -90,7 +91,6 @@ export default Vue.extend({
     ToolbarSticky,
     ItemBrowser,
     CollectionActionsMenu,
-    Badge,
     SeriesMultiSelectBar,
   },
   data: () => {

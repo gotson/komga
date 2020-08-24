@@ -15,7 +15,9 @@
 
       <v-toolbar-title>
         <span v-if="$_.get(series, 'metadata.title')">{{ series.metadata.title }}</span>
-        <badge class="ml-4" v-if="totalElements">{{ totalElements }}</badge>
+        <v-chip label class="ml-4" v-if="totalElements">
+          <span style="font-size: 1.1rem">{{ totalElements }}</span>
+        </v-chip>
       </v-toolbar-title>
 
       <v-spacer/>
@@ -120,7 +122,6 @@
 </template>
 
 <script lang="ts">
-import Badge from '@/components/Badge.vue'
 import BooksMultiSelectBar from '@/components/bars/BooksMultiSelectBar.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import CollectionsExpansionPanels from '@/components/CollectionsExpansionPanels.vue'
@@ -138,6 +139,8 @@ import { BOOK_CHANGED, LIBRARY_DELETED, READLIST_CHANGED, SERIES_CHANGED } from 
 import Vue from 'vue'
 import { Location } from 'vue-router'
 
+const tags = require('language-tags')
+
 const cookiePageSize = 'pagesize'
 
 export default Vue.extend({
@@ -146,7 +149,6 @@ export default Vue.extend({
     ToolbarSticky,
     SortMenuButton,
     FilterMenuButton,
-    Badge,
     ItemBrowser,
     PageSizeSelect,
     SeriesActionsMenu,
