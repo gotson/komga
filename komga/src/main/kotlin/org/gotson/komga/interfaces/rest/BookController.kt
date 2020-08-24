@@ -89,6 +89,7 @@ class BookController(
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
     @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
     @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
+    @RequestParam(name = "tag", required = false) tags: List<String>?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<BookDto> {
@@ -108,7 +109,8 @@ class BookController(
       libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
       searchTerm = searchTerm,
       mediaStatus = mediaStatus,
-      readStatus = readStatus
+      readStatus = readStatus,
+      tags = tags
     )
 
     return bookDtoRepository.findAll(bookSearch, principal.user.id, pageRequest)

@@ -20,6 +20,7 @@ import org.jooq.Record
 import org.jooq.ResultQuery
 import org.jooq.impl.DSL
 import org.jooq.impl.DSL.inline
+import org.jooq.impl.DSL.lower
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -76,6 +77,7 @@ class BookDtoDao(
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID))
+      .leftJoin(bt).on(b.ID.eq(bt.BOOK_ID))
       .and(readProgressCondition(userId))
       .leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID))
       .where(conditions)
@@ -178,6 +180,7 @@ class BookDtoDao(
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID))
+      .leftJoin(bt).on(b.ID.eq(bt.BOOK_ID))
       .and(readProgressCondition(userId))
       .leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID))
 
@@ -210,6 +213,7 @@ class BookDtoDao(
     seriesIds?.let { c = c.and(b.SERIES_ID.`in`(it)) }
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
     mediaStatus?.let { c = c.and(m.STATUS.`in`(it)) }
+    tags?.let { tags -> c = c.and(lower(bt.TAG).`in`(tags.map { it.toLowerCase() })) }
 
     if (readStatus != null) {
       val cr = readStatus.map {
