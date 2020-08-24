@@ -84,7 +84,7 @@
                       />
                       <v-checkbox
                         v-model="form.importComicInfoSeries"
-                        label="Series title"
+                        label="Series metadata"
                         hide-details
                       />
                       <v-checkbox
