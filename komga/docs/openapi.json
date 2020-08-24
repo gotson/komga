@@ -185,8 +185,15 @@
           "numberSortLock": {
             "type": "boolean"
           },
+          "tagsLock": {
+            "type": "boolean"
+          },
           "releaseDate": {
             "format": "date",
+            "type": "string"
+          },
+          "created": {
+            "format": "date-time",
             "type": "string"
           },
           "numberLock": {
@@ -195,21 +202,18 @@
           "releaseDateLock": {
             "type": "boolean"
           },
-          "ageRating": {
-            "format": "int32",
-            "type": "integer"
-          },
           "title": {
             "type": "string"
           },
           "titleLock": {
             "type": "boolean"
           },
-          "readingDirection": {
-            "type": "string"
-          },
-          "ageRatingLock": {
-            "type": "boolean"
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "number": {
             "type": "string"
@@ -217,21 +221,16 @@
           "summaryLock": {
             "type": "boolean"
           },
-          "readingDirectionLock": {
-            "type": "boolean"
-          },
-          "publisherLock": {
-            "type": "boolean"
-          },
           "numberSort": {
             "format": "float",
             "type": "number"
           },
-          "publisher": {
-            "type": "string"
-          },
           "authorsLock": {
             "type": "boolean"
+          },
+          "lastModified": {
+            "format": "date-time",
+            "type": "string"
           },
           "authors": {
             "type": "array",
@@ -494,6 +493,9 @@
           "numberSortLock": {
             "type": "boolean"
           },
+          "tagsLock": {
+            "type": "boolean"
+          },
           "releaseDate": {
             "format": "date",
             "type": "string"
@@ -504,27 +506,18 @@
           "releaseDateLock": {
             "type": "boolean"
           },
-          "ageRating": {
-            "format": "int32",
-            "type": "integer"
-          },
           "title": {
             "type": "string"
           },
           "titleLock": {
             "type": "boolean"
           },
-          "ageRatingLock": {
-            "type": "boolean"
-          },
-          "readingDirection": {
-            "type": "string",
-            "enum": [
-              "LEFT_TO_RIGHT",
-              "RIGHT_TO_LEFT",
-              "VERTICAL",
-              "WEBTOON"
-            ]
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "number": {
             "type": "string"
@@ -532,18 +525,9 @@
           "summaryLock": {
             "type": "boolean"
           },
-          "readingDirectionLock": {
-            "type": "boolean"
-          },
-          "publisherLock": {
-            "type": "boolean"
-          },
           "numberSort": {
             "format": "float",
             "type": "number"
-          },
-          "publisher": {
-            "type": "string"
           },
           "authorsLock": {
             "type": "boolean"
@@ -799,19 +783,25 @@
       "SeriesMetadataDto": {
         "type": "object",
         "properties": {
+          "summary": {
+            "type": "string"
+          },
           "titleSort": {
             "type": "string"
+          },
+          "tagsLock": {
+            "type": "boolean"
           },
           "created": {
             "format": "date-time",
             "type": "string"
           },
-          "statusLock": {
-            "type": "boolean"
-          },
-          "lastModified": {
-            "format": "date-time",
+          "language": {
             "type": "string"
+          },
+          "ageRating": {
+            "format": "int32",
+            "type": "integer"
           },
           "title": {
             "type": "string"
@@ -819,7 +809,52 @@
           "titleLock": {
             "type": "boolean"
           },
+          "readingDirection": {
+            "type": "string"
+          },
+          "ageRatingLock": {
+            "type": "boolean"
+          },
+          "languageLock": {
+            "type": "boolean"
+          },
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "summaryLock": {
+            "type": "boolean"
+          },
+          "readingDirectionLock": {
+            "type": "boolean"
+          },
+          "genres": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "publisherLock": {
+            "type": "boolean"
+          },
+          "statusLock": {
+            "type": "boolean"
+          },
+          "publisher": {
+            "type": "string"
+          },
+          "lastModified": {
+            "format": "date-time",
+            "type": "string"
+          },
           "titleSortLock": {
+            "type": "boolean"
+          },
+          "genresLock": {
             "type": "boolean"
           },
           "status": {
@@ -971,11 +1006,21 @@
         "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.",
         "type": "object",
         "properties": {
+          "summary": {
+            "type": "string"
+          },
           "titleSort": {
             "type": "string"
           },
-          "statusLock": {
+          "tagsLock": {
             "type": "boolean"
+          },
+          "language": {
+            "type": "string"
+          },
+          "ageRating": {
+            "format": "int32",
+            "type": "integer"
           },
           "title": {
             "type": "string"
@@ -983,7 +1028,54 @@
           "titleLock": {
             "type": "boolean"
           },
+          "ageRatingLock": {
+            "type": "boolean"
+          },
+          "languageLock": {
+            "type": "boolean"
+          },
+          "readingDirection": {
+            "type": "string",
+            "enum": [
+              "LEFT_TO_RIGHT",
+              "RIGHT_TO_LEFT",
+              "VERTICAL",
+              "WEBTOON"
+            ]
+          },
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "summaryLock": {
+            "type": "boolean"
+          },
+          "readingDirectionLock": {
+            "type": "boolean"
+          },
+          "genres": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "publisherLock": {
+            "type": "boolean"
+          },
+          "statusLock": {
+            "type": "boolean"
+          },
+          "publisher": {
+            "type": "string"
+          },
           "titleSortLock": {
+            "type": "boolean"
+          },
+          "genresLock": {
             "type": "boolean"
           },
           "status": {
@@ -1994,6 +2086,30 @@
         },
         "tags": [
           "user-controller"
+        ]
+      }
+    },
+    "/api/v1/genres": {
+      "get": {
+        "operationId": "getGenres",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "uniqueItems": true,
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "referential-controller"
         ]
       }
     },
@@ -3520,6 +3636,30 @@
         ]
       }
     },
+    "/api/v1/tags": {
+      "get": {
+        "operationId": "getTags",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "uniqueItems": true,
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "referential-controller"
+        ]
+      }
+    },
     "/api/v1/collections/{id}/thumbnail": {
       "get": {
         "operationId": "getCollectionThumbnail",
@@ -3743,22 +3883,19 @@
         ]
       }
     },
-    "/api/v1/books/{bookId}/metadata": {
-      "patch": {
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BookMetadataUpdateDto"
+    "/api/v1/books/{bookId}": {
+      "get": {
+        "operationId": "getOneBook",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookDto"
+                }
               }
             }
-          },
-          "required": true
-        },
-        "operationId": "updateMetadata",
-        "responses": {
-          "204": {
-            "description": "No Content"
           }
         },
         "parameters": [
@@ -3776,19 +3913,22 @@
         ]
       }
     },
-    "/api/v1/books/{bookId}": {
-      "get": {
-        "operationId": "getOneBook",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BookDto"
-                }
+    "/api/v1/books/{bookId}/metadata": {
+      "patch": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookMetadataUpdateDto"
               }
             }
+          },
+          "required": true
+        },
+        "operationId": "updateMetadata",
+        "responses": {
+          "204": {
+            "description": "No Content"
           }
         },
         "parameters": [

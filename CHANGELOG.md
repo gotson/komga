@@ -1,3 +1,16 @@
+# [0.58.0](https://github.com/gotson/komga/compare/v0.57.0...v0.58.0) (2020-08-24)
+
+
+### Bug Fixes
+
+* **webui:** update option title in library dialog ([29d9726](https://github.com/gotson/komga/commit/29d97266137a4f38497e75f1a1f24fbf9ae96f46))
+
+
+### Features
+
+* **webui:** handle new metadata fields ([5567adc](https://github.com/gotson/komga/commit/5567adc9460a20373e3a63f48995d1bbaca5bf50)), closes [#276](https://github.com/gotson/komga/issues/276)
+* add/rearrange metadata fields ([9e406e3](https://github.com/gotson/komga/commit/9e406e33167284f3803beb45243bf11992ec7e83)), closes [#276](https://github.com/gotson/komga/issues/276)
+
 # [0.57.0](https://github.com/gotson/komga/compare/v0.56.1...v0.57.0) (2020-08-20)
 
 
