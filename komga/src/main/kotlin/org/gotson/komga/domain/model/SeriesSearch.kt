@@ -6,7 +6,8 @@ open class SeriesSearch(
   val searchTerm: String? = null,
   val metadataStatus: Collection<SeriesMetadata.Status>? = null,
   val publishers: Collection<String>? = null,
-  val languages: Collection<String>? = null
+  val languages: Collection<String>? = null,
+  val tags: Collection<String>? = null
 )
 
 class SeriesSearchWithReadProgress(
@@ -16,5 +17,6 @@ class SeriesSearchWithReadProgress(
   metadataStatus: Collection<SeriesMetadata.Status>? = null,
   publishers: Collection<String>? = null,
   languages: Collection<String>? = null,
+  tags: Collection<String>? = null,
   val readStatus: Collection<ReadStatus>? = null
-) : SeriesSearch(libraryIds, collectionIds, searchTerm, metadataStatus, publishers, languages)
+) : SeriesSearch(libraryIds, collectionIds, searchTerm, metadataStatus, publishers, languages, tags)
