@@ -31,4 +31,8 @@ class ReferentialController(
   @GetMapping("/languages")
   fun getLanguages(): Set<String> =
     referentialRepository.findAllLanguages()
+
+  @GetMapping("/publishers")
+  fun getPublishers(): Set<String> =
+    referentialRepository.findAllPublishers()
 }

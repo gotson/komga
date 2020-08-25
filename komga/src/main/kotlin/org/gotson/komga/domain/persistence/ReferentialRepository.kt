@@ -5,4 +5,5 @@ interface ReferentialRepository {
   fun findAllGenres(): Set<String>
   fun findAllTags(): Set<String>
   fun findAllLanguages(): Set<String>
+  fun findAllPublishers(): Set<String>
 }

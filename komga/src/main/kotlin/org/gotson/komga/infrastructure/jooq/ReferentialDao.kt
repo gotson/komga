@@ -46,4 +46,11 @@ class ReferentialDao(
       .from(sd)
       .orderBy(sd.LANGUAGE)
       .fetchSet(sd.LANGUAGE)
+
+  override fun findAllPublishers(): Set<String> =
+    dsl.selectDistinct(sd.PUBLISHER)
+      .from(sd)
+      .where(sd.PUBLISHER.ne(""))
+      .orderBy(sd.PUBLISHER)
+      .fetchSet(sd.PUBLISHER)
 }
