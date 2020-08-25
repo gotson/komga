@@ -1,3 +1,10 @@
+## [0.59.1](https://github.com/gotson/komga/compare/v0.59.0...v0.59.1) (2020-08-25)
+
+
+### Bug Fixes
+
+* incorrect read progress for books ([107d7db](https://github.com/gotson/komga/commit/107d7db3946012c4d634300e75e3118cc3d90cf2)), closes [#286](https://github.com/gotson/komga/issues/286)
+
 # [0.59.0](https://github.com/gotson/komga/compare/v0.58.1...v0.59.0) (2020-08-25)
 
 
