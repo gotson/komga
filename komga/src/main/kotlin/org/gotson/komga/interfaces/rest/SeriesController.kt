@@ -217,6 +217,7 @@ class SeriesController(
     @PathVariable(name = "seriesId") seriesId: String,
     @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
     @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
+    @RequestParam(name = "tag", required = false) tags: List<String>?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<BookDto> {
@@ -239,7 +240,8 @@ class SeriesController(
       BookSearchWithReadProgress(
         seriesIds = listOf(seriesId),
         mediaStatus = mediaStatus,
-        readStatus = readStatus
+        readStatus = readStatus,
+        tags = tags
       ),
       principal.user.id,
       pageRequest
