@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="fill-height">
     <v-app-bar
       app
     >
@@ -125,7 +125,7 @@
       </template>
     </v-navigation-drawer>
 
-    <v-main>
+    <v-main class="fill-height">
       <dialogs/>
       <router-view/>
     </v-main>

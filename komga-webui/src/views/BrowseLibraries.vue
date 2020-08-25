@@ -14,18 +14,11 @@
 
       <v-spacer/>
 
-      <!--   Filter menu   -->
-      <filter-menu-button :filters-options="filterOptions"
-                          :filters-active.sync="filters"
-      />
-
-      <!--   Sort menu   -->
-      <sort-menu-button :sort-default="sortDefault"
-                        :sort-options="sortOptions"
-                        :sort-active.sync="sortActive"
-      />
-
       <page-size-select v-model="pageSize"/>
+
+      <v-btn icon @click="drawer = !drawer">
+        <v-icon :color="sortOrFilterActive ? 'secondary' : ''">mdi-filter-variant</v-icon>
+      </v-btn>
     </toolbar-sticky>
 
     <series-multi-select-bar
@@ -39,11 +32,35 @@
 
     <library-navigation :libraryId="libraryId"/>
 
+    <filter-drawer v-model="drawer">
+      <template v-slot:default>
+        <filter-list
+          :filters-options="filterOptionsList"
+          :filters-active.sync="filters"
+        />
+      </template>
+
+      <template v-slot:filter>
+        <filter-panels
+          :filters-options="filterOptionsPanel"
+          :filters-active.sync="filters"
+        />
+      </template>
+
+      <template v-slot:sort>
+        <sort-list
+          :sort-default="sortDefault"
+          :sort-options="sortOptions"
+          :sort-active.sync="sortActive"
+        />
+      </template>
+    </filter-drawer>
+
     <v-container fluid>
       <empty-state
         v-if="totalPages === 0"
         title="The active filter has no matches"
-        sub-title="Use the menu above to change the active filter"
+        sub-title="Use the filter panel to change the active filter"
         icon="mdi-book-multiple"
         icon-color="secondary"
       >
@@ -72,12 +89,10 @@
 import SeriesMultiSelectBar from '@/components/bars/SeriesMultiSelectBar.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import EmptyState from '@/components/EmptyState.vue'
-import FilterMenuButton from '@/components/FilterMenuButton.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import LibraryNavigation from '@/components/LibraryNavigation.vue'
 import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
-import SortMenuButton from '@/components/SortMenuButton.vue'
 import { parseQueryFilter, parseQuerySort } from '@/functions/query-params'
 import { ReadStatus } from '@/types/enum-books'
 import { SeriesStatus } from '@/types/enum-series'
@@ -85,6 +100,11 @@ import { LIBRARY_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events
 import Vue from 'vue'
 import { Location } from 'vue-router'
 import { LIBRARIES_ALL } from '@/types/library'
+import FilterDrawer from '@/components/FilterDrawer.vue'
+import SortList from '@/components/SortList.vue'
+import FilterPanels from '@/components/FilterPanels.vue'
+import FilterList from '@/components/FilterList.vue'
+import { sortOrFilterActive } from '@/functions/filter'
 
 const cookiePageSize = 'pagesize'
 
@@ -94,12 +114,14 @@ export default Vue.extend({
     LibraryActionsMenu,
     EmptyState,
     ToolbarSticky,
-    SortMenuButton,
-    FilterMenuButton,
     ItemBrowser,
     PageSizeSelect,
     LibraryNavigation,
     SeriesMultiSelectBar,
+    FilterDrawer,
+    FilterPanels,
+    FilterList,
+    SortList,
   },
   data: () => {
     return {
@@ -117,10 +139,12 @@ export default Vue.extend({
       ] as SortOption[],
       sortActive: {} as SortActive,
       sortDefault: { key: 'metadata.titleSort', order: 'asc' } as SortActive,
-      filterOptions: {
+      filterOptionsList: {
         readStatus: {
           values: [ReadStatus.UNREAD],
         },
+      } as FiltersOptions,
+      filterOptionsPanel: {
         status: {
           name: 'STATUS',
           values: Object.values(SeriesStatus),
@@ -131,6 +155,7 @@ export default Vue.extend({
       filterUnwatch: null as any,
       pageUnwatch: null as any,
       pageSizeUnwatch: null as any,
+      drawer: false,
     }
   },
   props: {
@@ -207,6 +232,9 @@ export default Vue.extend({
         default:
           return 15
       }
+    },
+    sortOrFilterActive (): boolean {
+      return sortOrFilterActive(this.sortActive, this.sortDefault, this.filters)
     },
   },
   methods: {

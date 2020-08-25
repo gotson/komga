@@ -26,19 +26,11 @@
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
 
-      <!--   Filter menu   -->
-      <filter-menu-button :filters-options="filterOptions"
-                          :filters-active.sync="filters"
-      />
-
-      <!--   Sort menu   -->
-      <sort-menu-button :sort-default="sortDefault"
-                        :sort-options="sortOptions"
-                        :sort-active.sync="sortActive"
-      />
-
       <page-size-select v-model="pageSize"/>
 
+      <v-btn icon @click="drawer = !drawer">
+        <v-icon :color="sortOrFilterActive ? 'secondary' : ''">mdi-filter-variant</v-icon>
+      </v-btn>
     </toolbar-sticky>
 
     <books-multi-select-bar
@@ -49,6 +41,30 @@
       @add-to-readlist="addToReadList"
       @edit="editMultipleBooks"
     />
+
+    <filter-drawer v-model="drawer">
+      <template v-slot:default>
+        <filter-list
+          :filters-options="filterOptionsList"
+          :filters-active.sync="filters"
+        />
+      </template>
+
+      <!--      <template v-slot:filter>-->
+      <!--        <filter-panels-->
+      <!--          :filters-options="filterOptionsPanels"-->
+      <!--          :filters-active.sync="filters"-->
+      <!--        />-->
+      <!--      </template>-->
+
+      <template v-slot:sort>
+        <sort-list
+          :sort-default="sortDefault"
+          :sort-options="sortOptions"
+          :sort-active.sync="sortActive"
+        />
+      </template>
+    </filter-drawer>
 
     <v-container fluid>
       <v-row>
@@ -149,7 +165,7 @@
       <empty-state
         v-if="totalPages === 0"
         title="The active filter has no matches"
-        sub-title="Use the menu above to change the active filter"
+        sub-title="Use the filter panel to change the active filter"
         icon="mdi-book-multiple"
         icon-color="secondary"
       >
@@ -179,12 +195,10 @@ import BooksMultiSelectBar from '@/components/bars/BooksMultiSelectBar.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import CollectionsExpansionPanels from '@/components/CollectionsExpansionPanels.vue'
 import EmptyState from '@/components/EmptyState.vue'
-import FilterMenuButton from '@/components/FilterMenuButton.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import SeriesActionsMenu from '@/components/menus/SeriesActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
-import SortMenuButton from '@/components/SortMenuButton.vue'
 import { parseQueryFilter, parseQuerySort } from '@/functions/query-params'
 import { seriesThumbnailUrl } from '@/functions/urls'
 import { ReadStatus } from '@/types/enum-books'
@@ -192,6 +206,10 @@ import { BOOK_CHANGED, LIBRARY_DELETED, READLIST_CHANGED, SERIES_CHANGED } from 
 import Vue from 'vue'
 import { Location } from 'vue-router'
 import { SeriesStatus } from '@/types/enum-series'
+import FilterDrawer from '@/components/FilterDrawer.vue'
+import FilterList from '@/components/FilterList.vue'
+import SortList from '@/components/SortList.vue'
+import { sortOrFilterActive } from '@/functions/filter'
 
 const tags = require('language-tags')
 
@@ -201,8 +219,6 @@ export default Vue.extend({
   name: 'BrowseSeries',
   components: {
     ToolbarSticky,
-    SortMenuButton,
-    FilterMenuButton,
     ItemBrowser,
     PageSizeSelect,
     SeriesActionsMenu,
@@ -210,6 +226,9 @@ export default Vue.extend({
     EmptyState,
     BooksMultiSelectBar,
     CollectionsExpansionPanels,
+    FilterDrawer,
+    FilterList,
+    SortList,
   },
   data: () => {
     return {
@@ -226,7 +245,7 @@ export default Vue.extend({
       }] as SortOption[],
       sortActive: {} as SortActive,
       sortDefault: { key: 'metadata.numberSort', order: 'asc' } as SortActive,
-      filterOptions: {
+      filterOptionsList: {
         readStatus: {
           values: [ReadStatus.UNREAD],
         },
@@ -237,6 +256,7 @@ export default Vue.extend({
       pageUnwatch: null as any,
       pageSizeUnwatch: null as any,
       collections: [] as CollectionDto[],
+      drawer: false,
     }
   },
   computed: {
@@ -275,6 +295,9 @@ export default Vue.extend({
           return { color: 'orange darken-4', text: 'white' }
       }
       return { color: undefined, text: undefined }
+    },
+    sortOrFilterActive (): boolean {
+      return sortOrFilterActive(this.sortActive, this.sortDefault, this.filters)
     },
   },
   props: {
