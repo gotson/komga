@@ -44,6 +44,7 @@ class ReferentialDao(
   override fun findAllLanguages(): Set<String> =
     dsl.selectDistinct(sd.LANGUAGE)
       .from(sd)
+      .where(sd.LANGUAGE.ne(""))
       .orderBy(sd.LANGUAGE)
       .fetchSet(sd.LANGUAGE)
 
