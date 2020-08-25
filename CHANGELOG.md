@@ -1,3 +1,26 @@
+# [0.59.0](https://github.com/gotson/komga/compare/v0.58.1...v0.59.0) (2020-08-25)
+
+
+### Bug Fixes
+
+* **api:** do not return empty language ([2ab3c9c](https://github.com/gotson/komga/commit/2ab3c9ca957b1ec578d2fec8dd0d3afbb94416dd))
+* **webui:** field should not display if empty ([968e297](https://github.com/gotson/komga/commit/968e297af0e0ee4ffaf7e76e52071f19699df223))
+
+
+### Features
+
+* **api:** get all languages ([115ad42](https://github.com/gotson/komga/commit/115ad42d9c463d4489f00936372dc580e8b1013b))
+* **api:** get all publishers ([1929061](https://github.com/gotson/komga/commit/1929061393d97324fd61139929b6011114810021))
+* **api:** search books by tag ([f46f1a0](https://github.com/gotson/komga/commit/f46f1a0e9655247fe70a8b3b874d045b75ec9d53))
+* **api:** search series by genre ([da4a0aa](https://github.com/gotson/komga/commit/da4a0aa10b27fb1ca24c9c848de3f6ae3ac418e4))
+* **api:** search series by language ([723d7c1](https://github.com/gotson/komga/commit/723d7c1fe9bb877b4e4b446196095e0d138830b6))
+* **api:** search series by publisher ([e4b0b2d](https://github.com/gotson/komga/commit/e4b0b2d1f7890a93371e534cf2b4836ed0a72a1d))
+* **api:** search series by tag ([7bd1de6](https://github.com/gotson/komga/commit/7bd1de6f78a768a605a47bac7a966ea22d4236af))
+* **api:** search series' books by tag ([940d5d3](https://github.com/gotson/komga/commit/940d5d341087965f0e307ce8418e1e14f338a984))
+* **webui:** color coded chips for series status ([fb8a8c4](https://github.com/gotson/komga/commit/fb8a8c4228048e37ab3638f1fe44c39e514cab16))
+* **webui:** more filter criteria ([4d22d9c](https://github.com/gotson/komga/commit/4d22d9c8e88108afac6d82991aa51fd4f0fed88b)), closes [#283](https://github.com/gotson/komga/issues/283) [#34](https://github.com/gotson/komga/issues/34)
+* **webui:** navigation drawer for sort/filter ([28598cb](https://github.com/gotson/komga/commit/28598cbef585bc644518270dbae5d99f32779ee9)), closes [#283](https://github.com/gotson/komga/issues/283)
+
 ## [0.58.1](https://github.com/gotson/komga/compare/v0.58.0...v0.58.1) (2020-08-24)
 
 
