@@ -11,21 +11,18 @@ export default class KomgaSeriesService {
     this.http = http
   }
 
-  async getSeries (libraryId?: string, pageRequest?: PageRequest, search?: string, status?: string[], readStatus?: string[]): Promise<Page<SeriesDto>> {
+  async getSeries (libraryId?: string, pageRequest?: PageRequest, search?: string, status?: string[], readStatus?: string[], genre?: string[], tag?: string[], language?: string[], publisher?: string[]): Promise<Page<SeriesDto>> {
     try {
       const params = { ...pageRequest } as any
-      if (libraryId) {
-        params.library_id = libraryId
-      }
-      if (search) {
-        params.search = search
-      }
-      if (status) {
-        params.status = status
-      }
-      if (readStatus) {
-        params.read_status = readStatus
-      }
+      if (libraryId) params.library_id = libraryId
+      if (search) params.search = search
+      if (status) params.status = status
+      if (readStatus) params.read_status = readStatus
+      if (genre) params.genre = genre
+      if (tag) params.tag = tag
+      if (language) params.language = language
+      if (publisher) params.publisher = publisher
+
       return (await this.http.get(API_SERIES, {
         params: params,
         paramsSerializer: params => qs.stringify(params, { indices: false }),
@@ -81,12 +78,12 @@ export default class KomgaSeriesService {
     }
   }
 
-  async getBooks (seriesId: string, pageRequest?: PageRequest, readStatus?: string[]): Promise<Page<BookDto>> {
+  async getBooks (seriesId: string, pageRequest?: PageRequest, readStatus?: string[], tag?: string[]): Promise<Page<BookDto>> {
     try {
       const params = { ...pageRequest } as any
-      if (readStatus) {
-        params.read_status = readStatus
-      }
+      if (readStatus) params.read_status = readStatus
+      if (tag) params.tag = tag
+
       return (await this.http.get(`${API_SERIES}/${seriesId}/books`, {
         params: params,
         paramsSerializer: params => qs.stringify(params, { indices: false }),

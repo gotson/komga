@@ -95,7 +95,7 @@ import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import { parseQueryFilter, parseQuerySort } from '@/functions/query-params'
 import { ReadStatus } from '@/types/enum-books'
-import { SeriesStatus } from '@/types/enum-series'
+import { SeriesStatus, SeriesStatusKeyValue } from '@/types/enum-series'
 import { LIBRARY_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 import { Location } from 'vue-router'
@@ -104,7 +104,7 @@ import FilterDrawer from '@/components/FilterDrawer.vue'
 import SortList from '@/components/SortList.vue'
 import FilterPanels from '@/components/FilterPanels.vue'
 import FilterList from '@/components/FilterList.vue'
-import { sortOrFilterActive } from '@/functions/filter'
+import { mergeFilterParams, sortOrFilterActive, toNameValue } from '@/functions/filter'
 
 const cookiePageSize = 'pagesize'
 
@@ -140,17 +140,16 @@ export default Vue.extend({
       sortActive: {} as SortActive,
       sortDefault: { key: 'metadata.titleSort', order: 'asc' } as SortActive,
       filterOptionsList: {
-        readStatus: {
-          values: [ReadStatus.UNREAD],
-        },
+        readStatus: { values: [{ name: 'Unread', value: ReadStatus.UNREAD }] },
       } as FiltersOptions,
       filterOptionsPanel: {
-        status: {
-          name: 'STATUS',
-          values: Object.values(SeriesStatus),
-        },
+        status: { name: 'STATUS', values: SeriesStatusKeyValue },
+        genre: { name: 'GENRE', values: [] },
+        tag: { name: 'TAG', values: [] },
+        publisher: { name: 'PUBLISHER', values: [] },
+        language: { name: 'LANGUAGE', values: [] },
       } as FiltersOptions,
-      filters: { status: [], readStatus: [] } as FiltersActive,
+      filters: {} as FiltersActive,
       sortUnwatch: null as any,
       filterUnwatch: null as any,
       pageUnwatch: null as any,
@@ -184,10 +183,15 @@ export default Vue.extend({
     this.$eventHub.$off(LIBRARY_DELETED, this.libraryDeleted)
     this.$eventHub.$off(LIBRARY_CHANGED, this.reloadLibrary)
   },
-  mounted () {
+  async mounted () {
     if (this.$cookies.isKey(cookiePageSize)) {
       this.pageSize = Number(this.$cookies.get(cookiePageSize))
     }
+
+    this.filterOptionsPanel.genre.values.push(...toNameValue(await this.$komgaReferential.getGenres()))
+    this.filterOptionsPanel.tag.values.push(...toNameValue(await this.$komgaReferential.getTags()))
+    this.filterOptionsPanel.publisher.values.push(...toNameValue(await this.$komgaReferential.getPublishers()))
+    this.filterOptionsPanel.language.values.push(...(await this.$komgaReferential.getLanguages()))
 
     // restore from query param
     this.resetParams(this.$route)
@@ -249,12 +253,13 @@ export default Vue.extend({
         this.$cookies.get(this.cookieSort(route.params.libraryId)) ||
         this.$_.clone(this.sortDefault)
 
-      if (route.query.status || route.query.readStatus) {
-        this.filters.status = parseQueryFilter(route.query.status, SeriesStatus)
-        this.filters.readStatus = parseQueryFilter(route.query.readStatus, ReadStatus)
+      if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag) {
+        this.filters.status = parseQueryFilter(route.query.status, Object.keys(SeriesStatus))
+        this.filters.readStatus = parseQueryFilter(route.query.readStatus, Object.keys(ReadStatus))
+        this.filters.genre = parseQueryFilter(route.query.genre, this.filterOptionsPanel.genre.values.map(x => x.value))
+        this.filters.tag = parseQueryFilter(route.query.tag, this.filterOptionsPanel.tag.values.map(x => x.value))
       } else {
-        this.filters = this.$cookies.get(this.cookieFilter(route.params.libraryId)) ||
-          { status: [], readStatus: [] } as FiltersActive
+        this.filters = this.$cookies.get(this.cookieFilter(route.params.libraryId)) || {} as FiltersActive
       }
     },
     libraryDeleted (event: EventLibraryDeleted) {
@@ -316,17 +321,17 @@ export default Vue.extend({
       await this.loadPage(libraryId, this.page, this.sortActive)
     },
     updateRoute () {
-      this.$router.replace({
+      const loc = {
         name: this.$route.name,
         params: { libraryId: this.$route.params.libraryId },
         query: {
           page: `${this.page}`,
           pageSize: `${this.pageSize}`,
           sort: `${this.sortActive.key},${this.sortActive.order}`,
-          status: `${this.filters.status}`,
-          readStatus: `${this.filters.readStatus}`,
         },
-      } as Location).catch((_: any) => {
+      } as Location
+      mergeFilterParams(this.filters, loc.query)
+      this.$router.replace(loc).catch((_: any) => {
       })
     },
     async loadPage (libraryId: string, page: number, sort: SortActive) {
@@ -340,7 +345,7 @@ export default Vue.extend({
       }
 
       const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
-      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, this.filters.readStatus)
+      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, this.filters.readStatus, this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher)
 
       this.totalPages = seriesPage.totalPages
       this.totalElements = seriesPage.totalElements

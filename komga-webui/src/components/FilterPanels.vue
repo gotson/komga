@@ -1,5 +1,5 @@
 <template>
-  <v-expansion-panels accordion multiple flat tile hover>
+  <v-expansion-panels accordion flat tile hover>
     <v-expansion-panel
       v-for="(f, key) in filtersOptions"
       :key="key"
@@ -17,20 +17,18 @@
       <v-expansion-panel-content class="no-padding">
         <v-list dense>
           <v-list-item v-for="v in f.values"
-                       :key="v"
-                       @click.stop="click(key, v)"
+                       :key="v.value"
+                       @click.stop="click(key, v.value)"
           >
             <v-list-item-icon>
-              <v-icon v-if="filtersActive[key].includes(v)" color="secondary">
+              <v-icon v-if="key in filtersActive && filtersActive[key].includes(v.value)" color="secondary">
                 mdi-checkbox-marked
               </v-icon>
               <v-icon v-else>
                 mdi-checkbox-blank-outline
               </v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-capitalize">
-              {{ v.toString().toLowerCase().replace('_', ' ') }}
-            </v-list-item-title>
+            <v-list-item-title>{{ v.name }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-expansion-panel-content>
@@ -61,8 +59,9 @@ export default Vue.extend({
       this.$emit('update:filtersActive', r)
     },
     groupActive (key: string): boolean {
+      if (!(key in this.filtersActive)) return false
       for (let v of this.filtersOptions[key].values) {
-        if (this.filtersActive[key].includes(v)) {
+        if (this.filtersActive[key].includes(v.value)) {
           return true
         }
       }
@@ -70,6 +69,7 @@ export default Vue.extend({
     },
     click (key: string, value: string) {
       let r = this.$_.cloneDeep(this.filtersActive)
+      if (!(key in r)) r[key] = []
       if (r[key].includes(value)) this.$_.pull(r[key], (value))
       else r[key].push(value)
 

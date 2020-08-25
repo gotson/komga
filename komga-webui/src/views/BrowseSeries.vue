@@ -50,12 +50,12 @@
         />
       </template>
 
-      <!--      <template v-slot:filter>-->
-      <!--        <filter-panels-->
-      <!--          :filters-options="filterOptionsPanels"-->
-      <!--          :filters-active.sync="filters"-->
-      <!--        />-->
-      <!--      </template>-->
+      <template v-slot:filter>
+        <filter-panels
+          :filters-options="filterOptionsPanel"
+          :filters-active.sync="filters"
+        />
+      </template>
 
       <template v-slot:sort>
         <sort-list
@@ -209,7 +209,8 @@ import { SeriesStatus } from '@/types/enum-series'
 import FilterDrawer from '@/components/FilterDrawer.vue'
 import FilterList from '@/components/FilterList.vue'
 import SortList from '@/components/SortList.vue'
-import { sortOrFilterActive } from '@/functions/filter'
+import { mergeFilterParams, sortOrFilterActive, toNameValue } from '@/functions/filter'
+import FilterPanels from '@/components/FilterPanels.vue'
 
 const tags = require('language-tags')
 
@@ -228,6 +229,7 @@ export default Vue.extend({
     CollectionsExpansionPanels,
     FilterDrawer,
     FilterList,
+    FilterPanels,
     SortList,
   },
   data: () => {
@@ -246,11 +248,12 @@ export default Vue.extend({
       sortActive: {} as SortActive,
       sortDefault: { key: 'metadata.numberSort', order: 'asc' } as SortActive,
       filterOptionsList: {
-        readStatus: {
-          values: [ReadStatus.UNREAD],
-        },
+        readStatus: { values: [{ name: 'Unread', value: ReadStatus.UNREAD }] },
       } as FiltersOptions,
-      filters: { readStatus: [] } as FiltersActive,
+      filterOptionsPanel: {
+        tag: { name: 'TAG', values: [] },
+      } as FiltersOptions,
+      filters: {} as FiltersActive,
       sortUnwatch: null as any,
       filterUnwatch: null as any,
       pageUnwatch: null as any,
@@ -325,14 +328,19 @@ export default Vue.extend({
     this.$eventHub.$off(BOOK_CHANGED, this.reloadBooks)
     this.$eventHub.$off(LIBRARY_DELETED, this.libraryDeleted)
   },
-  mounted () {
+  async mounted () {
     if (this.$cookies.isKey(cookiePageSize)) {
       this.pageSize = Number(this.$cookies.get(cookiePageSize))
     }
 
+    this.filterOptionsPanel.tag.values.push(...toNameValue(await this.$komgaReferential.getTags()))
+
     // restore from query param
     this.sortActive = this.parseQuerySortOrDefault(this.$route.query.sort)
-    this.filters.readStatus = parseQueryFilter(this.$route.query.readStatus, ReadStatus)
+
+    this.filters.readStatus = parseQueryFilter(this.$route.query.readStatus, Object.keys(ReadStatus))
+    this.filters.tag = parseQueryFilter(this.$route.query.tag, this.filterOptionsPanel.tag.values.map(x => x.value))
+
     if (this.$route.query.page) this.page = Number(this.$route.query.page)
     if (this.$route.query.pageSize) this.pageSize = Number(this.$route.query.pageSize)
 
@@ -346,7 +354,7 @@ export default Vue.extend({
 
       // reset
       this.sortActive = this.parseQuerySortOrDefault(to.query.sort)
-      this.filters.readStatus = parseQueryFilter(to.query.readStatus, ReadStatus)
+      this.filters.readStatus = parseQueryFilter(to.query.readStatus, Object.keys(ReadStatus))
       this.page = 1
       this.totalPages = 1
       this.totalElements = null
@@ -414,16 +422,17 @@ export default Vue.extend({
       return queryStatus ? queryStatus.toString().split(',').filter((x: string) => Object.keys(ReadStatus).includes(x)) : []
     },
     updateRoute () {
-      this.$router.replace({
+      const loc = {
         name: this.$route.name,
         params: { seriesId: this.$route.params.seriesId },
         query: {
           page: `${this.page}`,
           pageSize: `${this.pageSize}`,
           sort: `${this.sortActive.key},${this.sortActive.order}`,
-          readStatus: `${this.filters.readStatus}`,
         },
-      } as Location).catch((_: any) => {
+      } as Location
+      mergeFilterParams(this.filters, loc.query)
+      this.$router.replace(loc).catch((_: any) => {
       })
     },
     async loadPage (seriesId: string, page: number, sort: SortActive) {
@@ -435,7 +444,7 @@ export default Vue.extend({
       if (sort) {
         pageRequest.sort = [`${sort.key},${sort.order}`]
       }
-      const booksPage = await this.$komgaSeries.getBooks(seriesId, pageRequest, this.filters.readStatus)
+      const booksPage = await this.$komgaSeries.getBooks(seriesId, pageRequest, this.filters.readStatus, this.filters.tag)
 
       this.totalPages = booksPage.totalPages
       this.totalElements = booksPage.totalElements
