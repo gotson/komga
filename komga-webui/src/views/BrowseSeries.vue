@@ -333,8 +333,6 @@ export default Vue.extend({
       this.pageSize = Number(this.$cookies.get(cookiePageSize))
     }
 
-    this.filterOptionsPanel.tag.values.push(...toNameValue(await this.$komgaReferential.getTags()))
-
     // restore from query param
     this.sortActive = this.parseQuerySortOrDefault(this.$route.query.sort)
 
@@ -360,6 +358,7 @@ export default Vue.extend({
       this.totalElements = null
       this.books = []
       this.collections = []
+      this.filterOptionsPanel.tag.values = []
 
       this.loadSeries(to.params.seriesId)
 
@@ -413,6 +412,9 @@ export default Vue.extend({
     async loadSeries (seriesId: string) {
       this.series = await this.$komgaSeries.getOneSeries(seriesId)
       this.collections = await this.$komgaSeries.getCollections(seriesId)
+
+      this.filterOptionsPanel.tag.values.push(...toNameValue(await this.$komgaReferential.getTags(undefined, this.seriesId)))
+
       await this.loadPage(seriesId, this.page, this.sortActive)
     },
     parseQuerySortOrDefault (querySort: any): SortActive {

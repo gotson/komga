@@ -29,9 +29,15 @@ export default class KomgaReferentialService {
     }
   }
 
-  async getGenres (): Promise<string[]> {
+  async getGenres (libraryId?: string): Promise<string[]> {
     try {
-      return (await this.http.get('/api/v1/genres')).data
+      const params = {} as any
+      if (libraryId) params.library_id = libraryId
+
+      return (await this.http.get('/api/v1/genres', {
+        params: params,
+        paramsSerializer: params => qs.stringify(params, { indices: false }),
+      })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve genres'
       if (e.response.data.message) {
@@ -41,9 +47,16 @@ export default class KomgaReferentialService {
     }
   }
 
-  async getTags (): Promise<string[]> {
+  async getTags (libraryId?: string, seriesId?: string): Promise<string[]> {
     try {
-      return (await this.http.get('/api/v1/tags')).data
+      const params = {} as any
+      if (libraryId) params.library_id = libraryId
+      if (seriesId) params.series_id = seriesId
+
+      return (await this.http.get('/api/v1/tags', {
+        params: params,
+        paramsSerializer: params => qs.stringify(params, { indices: false }),
+      })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve tags'
       if (e.response.data.message) {
@@ -53,9 +66,15 @@ export default class KomgaReferentialService {
     }
   }
 
-  async getPublishers (): Promise<string[]> {
+  async getPublishers (libraryId?: string): Promise<string[]> {
     try {
-      return (await this.http.get('/api/v1/publishers')).data
+      const params = {} as any
+      if (libraryId) params.library_id = libraryId
+
+      return (await this.http.get('/api/v1/publishers', {
+        params: params,
+        paramsSerializer: params => qs.stringify(params, { indices: false }),
+      })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve publishers'
       if (e.response.data.message) {
@@ -65,9 +84,15 @@ export default class KomgaReferentialService {
     }
   }
 
-  async getLanguages (): Promise<NameValue[]> {
+  async getLanguages (libraryId?: string): Promise<NameValue[]> {
     try {
-      const data = (await this.http.get('/api/v1/languages')).data
+      const params = {} as any
+      if (libraryId) params.library_id = libraryId
+
+      const data = (await this.http.get('/api/v1/languages', {
+        params: params,
+        paramsSerializer: params => qs.stringify(params, { indices: false }),
+      })).data
       const ret = [] as NameValue[]
       for (const code of data) {
         const tag = tags(code)

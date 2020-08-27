@@ -188,11 +188,6 @@ export default Vue.extend({
       this.pageSize = Number(this.$cookies.get(cookiePageSize))
     }
 
-    this.filterOptionsPanel.genre.values.push(...toNameValue(await this.$komgaReferential.getGenres()))
-    this.filterOptionsPanel.tag.values.push(...toNameValue(await this.$komgaReferential.getTags()))
-    this.filterOptionsPanel.publisher.values.push(...toNameValue(await this.$komgaReferential.getPublishers()))
-    this.filterOptionsPanel.language.values.push(...(await this.$komgaReferential.getLanguages()))
-
     // restore from query param
     this.resetParams(this.$route)
     if (this.$route.query.page) this.page = Number(this.$route.query.page)
@@ -212,6 +207,10 @@ export default Vue.extend({
       this.totalPages = 1
       this.totalElements = null
       this.series = []
+      this.filterOptionsPanel.genre.values = []
+      this.filterOptionsPanel.tag.values = []
+      this.filterOptionsPanel.publisher.values = []
+      this.filterOptionsPanel.language.values = []
 
       this.loadLibrary(to.params.libraryId)
 
@@ -317,6 +316,12 @@ export default Vue.extend({
     },
     async loadLibrary (libraryId: string) {
       this.library = this.getLibraryLazy(libraryId)
+
+      const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
+      this.filterOptionsPanel.genre.values.push(...toNameValue(await this.$komgaReferential.getGenres(requestLibraryId)))
+      this.filterOptionsPanel.tag.values.push(...toNameValue(await this.$komgaReferential.getTags(requestLibraryId)))
+      this.filterOptionsPanel.publisher.values.push(...toNameValue(await this.$komgaReferential.getPublishers(requestLibraryId)))
+      this.filterOptionsPanel.language.values.push(...(await this.$komgaReferential.getLanguages(requestLibraryId)))
 
       await this.loadPage(libraryId, this.page, this.sortActive)
     },
