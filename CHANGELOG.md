@@ -1,3 +1,16 @@
+# [0.60.0](https://github.com/gotson/komga/compare/v0.59.2...v0.60.0) (2020-08-27)
+
+
+### Bug Fixes
+
+* ignore blank metadata fields ([c8c5df2](https://github.com/gotson/komga/commit/c8c5df27013719f533554ed8d2fe2d51b5ed9972)), closes [#288](https://github.com/gotson/komga/issues/288)
+* series genre is not imported from metadata ([d0815dd](https://github.com/gotson/komga/commit/d0815dd80ec246ad1c3c5dca70f49ed165fddf1f))
+
+
+### Features
+
+* handle multiple story arcs in ComicInfoProvider ([f4451bf](https://github.com/gotson/komga/commit/f4451bfd413f78598fe5760345b9c2a4864b3054)), closes [#282](https://github.com/gotson/komga/issues/282)
+
 ## [0.59.2](https://github.com/gotson/komga/compare/v0.59.1...v0.59.2) (2020-08-27)
 
 
