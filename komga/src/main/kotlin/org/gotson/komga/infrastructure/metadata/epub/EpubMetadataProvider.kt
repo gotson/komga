@@ -88,8 +88,8 @@ class EpubMetadataProvider(
         publisher = publisher,
         ageRating = null,
         summary = null,
-        language = if(language != null && BCP47TagValidator.isValid(language)) language else null,
-        genres = if(genre != null) setOf(genre) else emptySet(),
+        language = if (language != null && BCP47TagValidator.isValid(language)) language else null,
+        genres = genre?.let { setOf(genre) },
         collections = emptyList()
       )
     }
