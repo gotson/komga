@@ -109,7 +109,7 @@
                       />
                       <v-checkbox
                         v-model="form.importEpubSeries"
-                        label="Series title"
+                        label="Series metadata"
                         hide-details
                       />
                     </v-col>
