@@ -111,9 +111,6 @@ class ComicInfo {
   @JsonProperty(value = "StoryArc")
   var storyArc: String? = null
 
-  @JsonProperty(value = "StoryArcNumber")
-  var storyArcNumber: String? = null
-
   @JsonProperty(value = "SeriesGroup")
   var seriesGroup: String? = null
 

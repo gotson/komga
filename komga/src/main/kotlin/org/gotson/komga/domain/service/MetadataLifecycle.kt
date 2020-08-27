@@ -71,37 +71,32 @@ class MetadataLifecycle(
 
           // handle read lists
           if (provider is ComicInfoProvider && library.importComicInfoReadList) {
-            patch?.let { bPatch ->
-              val readList = bPatch.readList
-              val readListNumber = bPatch.readListNumber
+            patch?.readLists?.forEach { readList ->
 
-
-              if (readList != null) {
-                readListRepository.findByNameOrNull(readList).let { existing ->
-                  if (existing != null) {
-                    if (existing.bookIds.containsValue(book.id))
-                      logger.debug { "Book is already in existing readlist '${existing.name}'" }
-                    else {
-                      val map = existing.bookIds.toSortedMap()
-                      val key = if (readListNumber != null && existing.bookIds.containsKey(readListNumber)) {
-                        logger.debug { "Existing readlist '${existing.name}' already contains a book at position $readListNumber, adding book '${book.name}' at the end" }
-                        existing.bookIds.lastKey() + 1
-                      } else {
-                        logger.debug { "Adding book '${book.name}' to existing readlist '${existing.name}'" }
-                        readListNumber ?: existing.bookIds.lastKey() + 1
-                      }
-                      map[key] = book.id
-                      readListLifecycle.updateReadList(
-                        existing.copy(bookIds = map)
-                      )
+              readListRepository.findByNameOrNull(readList.name).let { existing ->
+                if (existing != null) {
+                  if (existing.bookIds.containsValue(book.id))
+                    logger.debug { "Book is already in existing readlist '${existing.name}'" }
+                  else {
+                    val map = existing.bookIds.toSortedMap()
+                    val key = if (readList.number != null && existing.bookIds.containsKey(readList.number)) {
+                      logger.debug { "Existing readlist '${existing.name}' already contains a book at position ${readList.number}, adding book '${book.name}' at the end" }
+                      existing.bookIds.lastKey() + 1
+                    } else {
+                      logger.debug { "Adding book '${book.name}' to existing readlist '${existing.name}'" }
+                      readList.number ?: existing.bookIds.lastKey() + 1
                     }
-                  } else {
-                    logger.debug { "Adding book '${book.name}' to new readlist '$readList'" }
-                    readListLifecycle.addReadList(ReadList(
-                      name = readList,
-                      bookIds = mapOf((readListNumber ?: 0) to book.id).toSortedMap()
-                    ))
+                    map[key] = book.id
+                    readListLifecycle.updateReadList(
+                      existing.copy(bookIds = map)
+                    )
                   }
+                } else {
+                  logger.debug { "Adding book '${book.name}' to new readlist '$readList'" }
+                  readListLifecycle.addReadList(ReadList(
+                    name = readList.name,
+                    bookIds = mapOf((readList.number ?: 0) to book.id).toSortedMap()
+                  ))
                 }
               }
             }

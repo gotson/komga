@@ -44,6 +44,7 @@ class ComicInfoProviderTest {
         month = 2
         alternateSeries = "story arc"
         alternateNumber = "5"
+        storyArc = "one, two, three"
       }
 
       every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
@@ -55,9 +56,15 @@ class ComicInfoProviderTest {
         assertThat(summary).isEqualTo("summary")
         assertThat(number).isEqualTo("010")
         assertThat(numberSort).isEqualTo(10F)
-        assertThat(readList).isEqualTo("story arc")
-        assertThat(readListNumber).isEqualTo(5)
         assertThat(releaseDate).isEqualTo(LocalDate.of(2020, 2, 1))
+        with(readLists) {
+          assertThat(this).hasSize(4)
+          assertThat(this.map { it.name }).containsExactly("story arc", "one", "two", "three")
+          this.first { it.number != null }.let {
+            assertThat(it.name).isEqualTo("story arc")
+            assertThat(it.number).isEqualTo(5)
+          }
+        }
       }
     }
 

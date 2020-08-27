@@ -10,6 +10,10 @@ data class BookMetadataPatch(
   val releaseDate: LocalDate?,
   val authors: List<Author>?,
 
-  val readList: String?,
-  val readListNumber: Int?
-)
+  val readLists: List<ReadListEntry> = emptyList()
+) {
+  data class ReadListEntry(
+    val name: String,
+    val number: Int? = null
+  )
+}

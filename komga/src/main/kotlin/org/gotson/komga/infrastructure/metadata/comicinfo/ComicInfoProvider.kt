@@ -43,6 +43,15 @@ class ComicInfoProvider(
       comicInfo.coverArtist?.let { authors += it.splitWithRole("cover") }
       comicInfo.editor?.let { authors += it.splitWithRole("editor") }
 
+      val readLists = mutableListOf<BookMetadataPatch.ReadListEntry>()
+      comicInfo.alternateSeries?.let { readLists.add(BookMetadataPatch.ReadListEntry(it, comicInfo.alternateNumber?.toIntOrNull())) }
+
+      comicInfo.storyArc?.let { value ->
+        val arcs = value.split(",").map { it.trim() }
+        readLists.addAll(arcs.map { BookMetadataPatch.ReadListEntry(it) })
+      }
+
+
       return BookMetadataPatch(
         title = comicInfo.title,
         summary = comicInfo.summary,
@@ -50,8 +59,7 @@ class ComicInfoProvider(
         numberSort = comicInfo.number?.toFloatOrNull(),
         releaseDate = releaseDate,
         authors = authors.ifEmpty { null },
-        readList = comicInfo.alternateSeries ?: comicInfo.storyArc,
-        readListNumber = comicInfo.alternateNumber?.toIntOrNull() ?: comicInfo.storyArcNumber?.toIntOrNull()
+        readLists = readLists
       )
     }
     return null
