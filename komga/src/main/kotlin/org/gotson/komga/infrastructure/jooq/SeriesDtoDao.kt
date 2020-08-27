@@ -67,17 +67,16 @@ class SeriesDtoDao(
 
   override fun findAll(search: SeriesSearchWithReadProgress, userId: String, pageable: Pageable): Page<SeriesDto> {
     val conditions = search.toCondition()
-
     val having = search.readStatus?.toCondition() ?: DSL.trueCondition()
 
-    return findAll(conditions, having, userId, pageable)
+    return findAll(conditions, having, userId, pageable, search.toJoinConditions())
   }
 
   override fun findByCollectionId(collectionId: String, userId: String, pageable: Pageable): Page<SeriesDto> {
     val conditions = cs.COLLECTION_ID.eq(collectionId)
     val having = DSL.trueCondition()
 
-    return findAll(conditions, having, userId, pageable, true)
+    return findAll(conditions, having, userId, pageable, JoinConditions(selectCollectionNumber = true, collection = true))
   }
 
   override fun findRecentlyUpdated(search: SeriesSearchWithReadProgress, userId: String, pageable: Pageable): Page<SeriesDto> {
@@ -86,7 +85,7 @@ class SeriesDtoDao(
 
     val having = search.readStatus?.toCondition() ?: DSL.trueCondition()
 
-    return findAll(conditions, having, userId, pageable)
+    return findAll(conditions, having, userId, pageable, search.toJoinConditions())
   }
 
   override fun findByIdOrNull(seriesId: String, userId: String): SeriesDto? =
@@ -97,27 +96,36 @@ class SeriesDtoDao(
       .firstOrNull()
 
 
-  private fun selectBase(userId: String, selectCollectionNumber: Boolean = false): SelectOnConditionStep<Record> =
+  private fun selectBase(
+    userId: String,
+    joinConditions: JoinConditions = JoinConditions()
+  ): SelectOnConditionStep<Record> =
     dsl.selectDistinct(*groupFields)
       .select(DSL.countDistinct(b.ID).`as`(BOOKS_COUNT))
-      .apply { if (selectCollectionNumber) select(cs.NUMBER) }
+      .apply { if (joinConditions.selectCollectionNumber) select(cs.NUMBER) }
       .from(s)
       .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
-      .leftJoin(g).on(s.ID.eq(g.SERIES_ID))
-      .leftJoin(st).on(s.ID.eq(st.SERIES_ID))
-      .leftJoin(cs).on(s.ID.eq(cs.SERIES_ID))
+      .apply { if (joinConditions.genre) leftJoin(g).on(s.ID.eq(g.SERIES_ID)) }
+      .apply { if (joinConditions.tag) leftJoin(st).on(s.ID.eq(st.SERIES_ID)) }
+      .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
 
-  private fun findAll(conditions: Condition, having: Condition, userId: String, pageable: Pageable, selectCollectionNumber: Boolean = false): Page<SeriesDto> {
+  private fun findAll(
+    conditions: Condition,
+    having: Condition,
+    userId: String,
+    pageable: Pageable,
+    joinConditions: JoinConditions = JoinConditions()
+  ): Page<SeriesDto> {
     val count = dsl.selectDistinct(s.ID)
       .from(s)
       .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
-      .leftJoin(g).on(s.ID.eq(g.SERIES_ID))
-      .leftJoin(st).on(s.ID.eq(st.SERIES_ID))
-      .leftJoin(cs).on(s.ID.eq(cs.SERIES_ID))
+      .apply { if (joinConditions.genre) leftJoin(g).on(s.ID.eq(g.SERIES_ID)) }
+      .apply { if (joinConditions.tag) leftJoin(st).on(s.ID.eq(st.SERIES_ID)) }
+      .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
       .where(conditions)
       .groupBy(s.ID)
       .having(having)
@@ -126,7 +134,7 @@ class SeriesDtoDao(
 
     val orderBy = pageable.sort.toOrderBy(sorts)
 
-    val dtos = selectBase(userId, selectCollectionNumber)
+    val dtos = selectBase(userId, joinConditions)
       .where(conditions)
       .groupBy(*groupFields)
       .having(having)
@@ -182,17 +190,31 @@ class SeriesDtoDao(
   private fun SeriesSearchWithReadProgress.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()
 
-    libraryIds?.let { c = c.and(s.LIBRARY_ID.`in`(it)) }
-    collectionIds?.let { c = c.and(cs.COLLECTION_ID.`in`(it)) }
+    if (!libraryIds.isNullOrEmpty()) c = c.and(s.LIBRARY_ID.`in`(libraryIds))
+    if (!collectionIds.isNullOrEmpty()) c = c.and(cs.COLLECTION_ID.`in`(collectionIds))
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
-    metadataStatus?.let { c = c.and(d.STATUS.`in`(it)) }
-    publishers?.let { publishers -> c = c.and(lower(d.PUBLISHER).`in`(publishers.map { it.toLowerCase() })) }
-    languages?.let { languages -> c = c.and(lower(d.LANGUAGE).`in`(languages.map { it.toLowerCase() })) }
-    genres?.let { genres -> c = c.and(lower(g.GENRE).`in`(genres.map { it.toLowerCase() })) }
-    tags?.let { tags -> c = c.and(lower(st.TAG).`in`(tags.map { it.toLowerCase() })) }
+    if (!metadataStatus.isNullOrEmpty()) c = c.and(d.STATUS.`in`(metadataStatus))
+    if (!publishers.isNullOrEmpty()) c = c.and(lower(d.PUBLISHER).`in`(publishers.map { it.toLowerCase() }))
+    if (!languages.isNullOrEmpty()) c = c.and(lower(d.LANGUAGE).`in`(languages.map { it.toLowerCase() }))
+    if (!genres.isNullOrEmpty()) c = c.and(lower(g.GENRE).`in`(genres.map { it.toLowerCase() }))
+    if (!tags.isNullOrEmpty()) c = c.and(lower(st.TAG).`in`(tags.map { it.toLowerCase() }))
 
     return c
   }
+
+  private fun SeriesSearchWithReadProgress.toJoinConditions() =
+    JoinConditions(
+      genre = !genres.isNullOrEmpty(),
+      tag = !tags.isNullOrEmpty(),
+      collection = !collectionIds.isNullOrEmpty()
+    )
+
+  private data class JoinConditions(
+    val selectCollectionNumber: Boolean = false,
+    val genre: Boolean = false,
+    val tag: Boolean = false,
+    val collection: Boolean = false
+  )
 
   private fun Collection<ReadStatus>.toCondition(): Condition =
     map {

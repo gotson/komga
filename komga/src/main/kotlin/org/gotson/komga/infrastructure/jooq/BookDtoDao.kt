@@ -62,23 +62,23 @@ class BookDtoDao(
   override fun findAll(search: BookSearchWithReadProgress, userId: String, pageable: Pageable): Page<BookDto> {
     val conditions = search.toCondition()
 
-    return findAll(conditions, userId, pageable)
+    return findAll(conditions, userId, pageable, search.toJoinConditions())
   }
 
   override fun findByReadListId(readListId: String, userId: String, pageable: Pageable): Page<BookDto> {
     val conditions = rlb.READLIST_ID.eq(readListId)
 
-    return findAll(conditions, userId, pageable, selectReadListNumber = true)
+    return findAll(conditions, userId, pageable, JoinConditions(selectReadListNumber = true))
   }
 
-  private fun findAll(conditions: Condition, userId: String, pageable: Pageable, selectReadListNumber: Boolean = false): Page<BookDto> {
+  private fun findAll(conditions: Condition, userId: String, pageable: Pageable, joinConditions: JoinConditions = JoinConditions()): Page<BookDto> {
     val count = dsl.selectDistinct(b.ID)
       .from(b)
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
-      .leftJoin(bt).on(b.ID.eq(bt.BOOK_ID))
-      .leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID))
+      .apply { if (joinConditions.tag) leftJoin(bt).on(b.ID.eq(bt.BOOK_ID)) }
+      .apply { if (joinConditions.selectReadListNumber) leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID)) }
       .where(conditions)
       .groupBy(b.ID)
       .fetch()
@@ -86,7 +86,7 @@ class BookDtoDao(
 
     val orderBy = pageable.sort.toOrderBy(sorts)
 
-    val dtos = selectBase(userId, selectReadListNumber)
+    val dtos = selectBase(userId, joinConditions)
       .where(conditions)
       .orderBy(orderBy)
       .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
@@ -167,19 +167,19 @@ class BookDtoDao(
       .firstOrNull()
   }
 
-  private fun selectBase(userId: String, selectReadListNumber: Boolean = false) =
+  private fun selectBase(userId: String, joinConditions: JoinConditions = JoinConditions()) =
     dsl.selectDistinct(
       *b.fields(),
       *m.fields(),
       *d.fields(),
       *r.fields()
-    ).apply { if (selectReadListNumber) select(rlb.NUMBER) }
+    ).apply { if (joinConditions.selectReadListNumber) select(rlb.NUMBER) }
       .from(b)
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
-      .leftJoin(bt).on(b.ID.eq(bt.BOOK_ID))
-      .leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID))
+      .apply { if (joinConditions.tag) leftJoin(bt).on(b.ID.eq(bt.BOOK_ID)) }
+      .apply { if (joinConditions.selectReadListNumber) leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID)) }
 
   private fun ResultQuery<Record>.fetchAndMap() =
     fetch()
@@ -206,11 +206,11 @@ class BookDtoDao(
   private fun BookSearchWithReadProgress.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()
 
-    libraryIds?.let { c = c.and(b.LIBRARY_ID.`in`(it)) }
-    seriesIds?.let { c = c.and(b.SERIES_ID.`in`(it)) }
+    if (!libraryIds.isNullOrEmpty()) c = c.and(b.LIBRARY_ID.`in`(libraryIds))
+    if (!seriesIds.isNullOrEmpty()) c = c.and(b.SERIES_ID.`in`(seriesIds))
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
-    mediaStatus?.let { c = c.and(m.STATUS.`in`(it)) }
-    tags?.let { tags -> c = c.and(lower(bt.TAG).`in`(tags.map { it.toLowerCase() })) }
+    if (!mediaStatus.isNullOrEmpty()) c = c.and(m.STATUS.`in`(mediaStatus))
+    if (!tags.isNullOrEmpty()) c = c.and(lower(bt.TAG).`in`(tags.map { it.toLowerCase() }))
 
     if (readStatus != null) {
       val cr = readStatus.map {
@@ -226,6 +226,16 @@ class BookDtoDao(
 
     return c
   }
+
+  private fun BookSearchWithReadProgress.toJoinConditions() =
+    JoinConditions(
+      tag = !tags.isNullOrEmpty()
+    )
+
+  private data class JoinConditions(
+    val selectReadListNumber: Boolean = false,
+    val tag: Boolean = false
+  )
 
   private fun BookRecord.toDto(media: MediaDto, metadata: BookMetadataDto, readProgress: ReadProgressDto?) =
     BookDto(
