@@ -10,5 +10,11 @@ export enum ContinuousScaleType {
   ORIGINAL = 'original'
 }
 
+export enum PagedReaderLayout {
+  SINGLE_PAGE = 'single',
+  DOUBLE_PAGES = 'double',
+  DOUBLE_NO_COVER = 'double_no_cover'
+}
+
 
 export const PaddingPercentage: number[] = [0, 5, 10, 15, 20, 25, 30, 35, 40]

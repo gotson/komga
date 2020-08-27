@@ -34,7 +34,7 @@ export const shortcutsVertical = [
 ]
 
 export const shortcutsSettingsPaged = [
-  new Shortcut('Toggle double pages',
-    (ctx: any) => ctx.toggleDoublePages()
+  new Shortcut('Cycle page layout',
+    (ctx: any) => ctx.cyclePageLayout()
     , 'd'),
 ]

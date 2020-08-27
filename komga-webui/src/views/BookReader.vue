@@ -103,7 +103,7 @@
         :pages="pages"
         :page.sync="page"
         :reading-direction="readingDirection"
-        :double-pages="doublePages"
+        :page-layout="pageLayout"
         :scale="scale"
         :animations="animations"
         :swipe="swipe"
@@ -193,7 +193,11 @@
               </v-list-item>
 
               <v-list-item>
-                <settings-switch v-model="doublePages" label="Double pages"></settings-switch>
+                <settings-select
+                  :items="pageLayouts"
+                  v-model="pageLayout"
+                  label="Page layout"
+                />
               </v-list-item>
             </div>
 
@@ -273,8 +277,8 @@ import Vue from 'vue'
 import { Location } from 'vue-router'
 import PagedReader from '@/components/readers/PagedReader.vue'
 import ContinuousReader from '@/components/readers/ContinuousReader.vue'
-import { ContinuousScaleType, PaddingPercentage, ScaleType } from '@/types/enum-reader'
-import { ReadingDirectionText, ScaleTypeText } from '@/functions/reader'
+import { ContinuousScaleType, PaddingPercentage, PagedReaderLayout, ScaleType } from '@/types/enum-reader'
+import { PagedReaderLayoutText, ReadingDirectionText, ScaleTypeText } from '@/functions/reader'
 import {
   shortcutsLTR,
   shortcutsRTL,
@@ -289,7 +293,7 @@ const cookieFit = 'webreader.fit'
 const cookieContinuousReaderFit = 'webreader.continuousReaderFit'
 const cookieContinuousReaderPadding = 'webreader.continuousReaderPadding'
 const cookieReadingDirection = 'webreader.readingDirection'
-const cookieDoublePages = 'webreader.doublePages'
+const cookiePageLayout = 'webreader.pageLayout'
 const cookieSwipe = 'webreader.swipe'
 const cookieAnimations = 'webreader.animations'
 const cookieBackground = 'webreader.background'
@@ -327,7 +331,7 @@ export default Vue.extend({
       showHelp: false,
       goToPage: 1,
       settings: {
-        doublePages: false,
+        pageLayout: PagedReaderLayout.SINGLE_PAGE,
         swipe: true,
         animations: true,
         scale: ScaleType.SCREEN,
@@ -352,6 +356,10 @@ export default Vue.extend({
       })),
       continuousScaleTypes: Object.values(ContinuousScaleType).map(x => ({
         text: ScaleTypeText[x],
+        value: x,
+      })),
+      pageLayouts: Object.values(PagedReaderLayout).map(x => ({
+        text: PagedReaderLayoutText[x],
         value: x,
       })),
       paddingPercentages: Object.values(PaddingPercentage).map(x => ({
@@ -380,8 +388,8 @@ export default Vue.extend({
     this.loadFromCookie(cookieAnimations, (v) => {
       this.animations = (v === 'true')
     })
-    this.loadFromCookie(cookieDoublePages, (v) => {
-      this.doublePages = (v === 'true')
+    this.loadFromCookie(cookiePageLayout, (v) => {
+      this.pageLayout = v
     })
     this.loadFromCookie(cookieSwipe, (v) => {
       this.swipe = (v === 'true')
@@ -422,12 +430,6 @@ export default Vue.extend({
       this.updateRoute()
       this.goToPage = val
       this.markProgress(val)
-    },
-    async book (val) {
-      if (this.$_.has(val, 'name')) {
-        this.series = await this.$komgaSeries.getOneSeries(val.seriesId)
-        document.title = `Komga - ${getBookTitleCompact(val.metadata.title, this.series.metadata.title)}`
-      }
     },
   },
   computed: {
@@ -538,13 +540,15 @@ export default Vue.extend({
         }
       },
     },
-    doublePages: {
-      get: function (): boolean {
-        return this.settings.doublePages
+    pageLayout: {
+      get: function (): PagedReaderLayout {
+        return this.settings.pageLayout
       },
-      set: function (doublePages: boolean): void {
-        this.settings.doublePages = doublePages
-        this.$cookies.set(cookieDoublePages, doublePages, Infinity)
+      set: function (pageLayout: PagedReaderLayout): void {
+        if (Object.values(PagedReaderLayout).includes(pageLayout)) {
+          this.settings.pageLayout = pageLayout
+          this.$cookies.set(cookiePageLayout, pageLayout, Infinity)
+        }
       },
     },
     swipe: {
@@ -563,6 +567,9 @@ export default Vue.extend({
     },
     async setup (bookId: string, page: number) {
       this.book = await this.$komgaBooks.getBook(bookId)
+      this.series = await this.$komgaSeries.getOneSeries(this.book.seriesId)
+      document.title = `Komga - ${getBookTitleCompact(this.book.metadata.title, this.series.metadata.title)}`
+
       const pageDtos = (await this.$komgaBooks.getBookPages(bookId))
       pageDtos.forEach((p: any) => p['url'] = this.getPageUrl(p))
       this.pages = pageDtos as PageDtoWithUrl[]
@@ -684,10 +691,13 @@ export default Vue.extend({
         this.sendNotification(`Cycling Side Padding: ${text}`)
       }
     },
-    toggleDoublePages () {
+    cyclePageLayout () {
       if (this.continuousReader) return
-      this.doublePages = !this.doublePages
-      this.sendNotification(`${this.doublePages ? 'Enabled' : 'Disabled'} Double Pages`)
+      const enumValues = Object.values(PagedReaderLayout)
+      const i = (enumValues.indexOf(this.settings.pageLayout) + 1) % (enumValues.length)
+      this.pageLayout = enumValues[i]
+      const text = PagedReaderLayoutText[this.pageLayout]
+      this.sendNotification(`Cycling Page Layout: ${text}`)
     },
     toggleToolbars () {
       this.showToolbars = !this.showToolbars

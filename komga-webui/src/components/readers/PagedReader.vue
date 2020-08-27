@@ -77,7 +77,7 @@
 import { isPageLandscape } from '@/functions/page'
 import Vue from 'vue'
 import { ReadingDirection } from '@/types/enum-books'
-import { ScaleType } from '@/types/enum-reader'
+import { PagedReaderLayout, ScaleType } from '@/types/enum-reader'
 import { shortcutsLTR, shortcutsRTL, shortcutsVertical } from '@/functions/shortcuts/paged-reader'
 
 export default Vue.extend({
@@ -97,8 +97,8 @@ export default Vue.extend({
       type: Number,
       required: true,
     },
-    doublePages: {
-      type: Boolean,
+    pageLayout: {
+      type: String as () => PagedReaderLayout,
       required: true,
     },
     animations: {
@@ -131,7 +131,7 @@ export default Vue.extend({
     page (val) {
       this.carouselPage = this.toSpreadIndex(val)
     },
-    doublePages: {
+    pageLayout: {
       handler () {
         const current = this.page
         this.spreads = this.buildSpreads()
@@ -186,6 +186,9 @@ export default Vue.extend({
     canNext (): boolean {
       return this.currentSlide < this.slidesCount
     },
+    isDoublePages (): boolean {
+      return this.pageLayout === PagedReaderLayout.DOUBLE_PAGES || this.pageLayout === PagedReaderLayout.DOUBLE_NO_COVER
+    },
   },
   methods: {
     keyPressed (e: KeyboardEvent) {
@@ -193,10 +196,15 @@ export default Vue.extend({
     },
     buildSpreads (): PageDtoWithUrl[][] {
       if (this.pages.length === 0) return []
-      if (this.doublePages) {
+      if (this.isDoublePages) {
         const spreads = []
-        spreads.push([this.pages[0]])
-        const pages = this.$_.drop(this.$_.dropRight(this.pages)) as PageDtoWithUrl[]
+        let pages: PageDtoWithUrl[]
+        if (this.pageLayout === PagedReaderLayout.DOUBLE_PAGES) {
+          spreads.push([this.pages[0]])
+          pages = this.$_.drop(this.$_.dropRight(this.pages))
+        } else {
+          pages = this.$_.cloneDeep(this.pages)
+        }
         while (pages.length > 0) {
           const p = pages.shift() as PageDtoWithUrl
           if (isPageLandscape(p)) {
@@ -210,10 +218,14 @@ export default Vue.extend({
               } else {
                 spreads.push([p, p2])
               }
+            } else {
+              spreads.push([p])
             }
           }
         }
-        spreads.push([this.pages[this.pages.length - 1]])
+        if (this.pageLayout === PagedReaderLayout.DOUBLE_PAGES) {
+          spreads.push([this.pages[this.pages.length - 1]])
+        }
         return spreads
       } else {
         return this.pages.map(p => [p])
@@ -270,7 +282,7 @@ export default Vue.extend({
     },
     toSpreadIndex (i: number): number {
       if (this.spreads.length > 0) {
-        if (this.doublePages) {
+        if (this.isDoublePages) {
           for (let j = 0; j < this.spreads.length; j++) {
             for (let k = 0; k < this.spreads[j].length; k++) {
               if (this.spreads[j][k].number === i) {
