@@ -3,6 +3,7 @@
     <v-expansion-panel
       v-for="(f, key) in filtersOptions"
       :key="key"
+      :disabled="f.values.length === 0"
     >
       <v-expansion-panel-header>
         <v-icon
