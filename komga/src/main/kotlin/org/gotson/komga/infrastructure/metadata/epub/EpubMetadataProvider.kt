@@ -34,20 +34,23 @@ class EpubMetadataProvider(
     epubExtractor.getPackageFile(book.path())?.let { packageFile ->
       val opf = Jsoup.parse(packageFile)
 
-      val title = opf.selectFirst("metadata > dc|title")?.text()
-      val description = opf.selectFirst("metadata > dc|description")?.text()
+      val title = opf.selectFirst("metadata > dc|title")?.text()?.ifBlank { null }
+      val description = opf.selectFirst("metadata > dc|description")?.text()?.ifBlank { null }
       val date = opf.selectFirst("metadata > dc|date")?.text()?.let { parseDate(it) }
 
       val creatorRefines = opf.select("metadata > meta[property=role][scheme=marc:relators]")
         .associate { it.attr("refines").removePrefix("#") to it.text() }
       val authors = opf.select("metadata > dc|creator")
-        .map {
-          val name = it.text()
-          val opfRole = it.attr("opf|role").ifBlank { null }
-          val id = it.attr("id").ifBlank { null }
-          val refineRole = creatorRefines[id]
-          val role = opfRole ?: refineRole
-          Author(name, relators[role] ?: "writer")
+        .mapNotNull {
+          val name = it.text()?.ifBlank { null }
+          if (name == null) null
+          else {
+            val opfRole = it.attr("opf|role").ifBlank { null }
+            val id = it.attr("id").ifBlank { null }
+            val refineRole = creatorRefines[id]?.ifBlank { null }
+            val role = opfRole ?: refineRole
+            Author(name, relators[role] ?: "writer")
+          }
         }
 
       return BookMetadataPatch(
@@ -67,10 +70,10 @@ class EpubMetadataProvider(
     epubExtractor.getPackageFile(book.path())?.let { packageFile ->
       val opf = Jsoup.parse(packageFile)
 
-      val series = opf.selectFirst("metadata > meta[property=belongs-to-collection]")?.text()
-      val publisher = opf.selectFirst("metadata > dc|publisher")?.text()
-      val language = opf.selectFirst("metadata > dc|language")?.text()
-      val genre = opf.selectFirst("metadata > dc|subject")?.text()
+      val series = opf.selectFirst("metadata > meta[property=belongs-to-collection]")?.text()?.ifBlank { null }
+      val publisher = opf.selectFirst("metadata > dc|publisher")?.text()?.ifBlank { null }
+      val language = opf.selectFirst("metadata > dc|language")?.text()?.ifBlank { null }
+      val genre = opf.selectFirst("metadata > dc|subject")?.text()?.ifBlank { null }
 
       val direction = opf.getElementsByTag("spine").first().attr("page-progression-direction")?.let {
         when (it) {

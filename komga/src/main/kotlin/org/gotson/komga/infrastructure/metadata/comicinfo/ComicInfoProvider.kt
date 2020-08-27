@@ -35,27 +35,29 @@ class ComicInfoProvider(
       }
 
       val authors = mutableListOf<Author>()
-      comicInfo.writer?.let { authors += it.splitWithRole("writer") }
-      comicInfo.penciller?.let { authors += it.splitWithRole("penciller") }
-      comicInfo.inker?.let { authors += it.splitWithRole("inker") }
-      comicInfo.colorist?.let { authors += it.splitWithRole("colorist") }
-      comicInfo.letterer?.let { authors += it.splitWithRole("letterer") }
-      comicInfo.coverArtist?.let { authors += it.splitWithRole("cover") }
-      comicInfo.editor?.let { authors += it.splitWithRole("editor") }
+      comicInfo.writer?.splitWithRole("writer")?.let { authors += it }
+      comicInfo.penciller?.splitWithRole("penciller")?.let { authors += it }
+      comicInfo.inker?.splitWithRole("inker")?.let { authors += it }
+      comicInfo.colorist?.splitWithRole("colorist")?.let { authors += it }
+      comicInfo.letterer?.splitWithRole("letterer")?.let { authors += it }
+      comicInfo.coverArtist?.splitWithRole("cover")?.let { authors += it }
+      comicInfo.editor?.splitWithRole("editor")?.let { authors += it }
 
       val readLists = mutableListOf<BookMetadataPatch.ReadListEntry>()
-      comicInfo.alternateSeries?.let { readLists.add(BookMetadataPatch.ReadListEntry(it, comicInfo.alternateNumber?.toIntOrNull())) }
+      if (!comicInfo.alternateSeries.isNullOrBlank()) {
+        readLists.add(BookMetadataPatch.ReadListEntry(comicInfo.alternateSeries!!, comicInfo.alternateNumber?.toIntOrNull()))
+      }
 
       comicInfo.storyArc?.let { value ->
-        val arcs = value.split(",").map { it.trim() }
+        val arcs = value.split(",").mapNotNull { it.trim().ifBlank { null } }
         readLists.addAll(arcs.map { BookMetadataPatch.ReadListEntry(it) })
       }
 
 
       return BookMetadataPatch(
-        title = comicInfo.title,
-        summary = comicInfo.summary,
-        number = comicInfo.number,
+        title = comicInfo.title?.ifBlank { null },
+        summary = comicInfo.summary?.ifBlank { null },
+        number = comicInfo.number?.ifBlank { null },
         numberSort = comicInfo.number?.toFloatOrNull(),
         releaseDate = releaseDate,
         authors = authors.ifEmpty { null },
@@ -73,19 +75,19 @@ class ComicInfoProvider(
         else -> null
       }
 
-      val genres = comicInfo.genre?.split(',')?.map { it.trim() }?.toSet()
+      val genres = comicInfo.genre?.split(',')?.mapNotNull { it.trim().ifBlank { null } }
 
       return SeriesMetadataPatch(
-        title = comicInfo.series,
-        titleSort = comicInfo.series,
+        title = comicInfo.series?.ifBlank { null },
+        titleSort = comicInfo.series?.ifBlank { null },
         status = null,
         summary = null,
         readingDirection = readingDirection,
-        publisher = comicInfo.publisher,
+        publisher = comicInfo.publisher?.ifBlank { null },
         ageRating = comicInfo.ageRating?.ageRating,
-        language = if(comicInfo.languageISO != null && BCP47TagValidator.isValid(comicInfo.languageISO!!)) comicInfo.languageISO else null,
-        genres = genres,
-        collections = listOfNotNull(comicInfo.seriesGroup)
+        language = if (comicInfo.languageISO != null && BCP47TagValidator.isValid(comicInfo.languageISO!!)) comicInfo.languageISO else null,
+        genres = if (!genres.isNullOrEmpty()) genres.toSet() else null,
+        collections = listOfNotNull(comicInfo.seriesGroup?.ifBlank { null })
       )
     }
     return null
@@ -107,5 +109,7 @@ class ComicInfoProvider(
   }
 
   private fun String.splitWithRole(role: String) =
-    split(',').map { Author(it, role) }
+    split(',').mapNotNull { it.trim().ifBlank { null } }.let { list ->
+      if (list.isNotEmpty()) list.map { Author(it, role) } else null
+    }
 }

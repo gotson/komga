@@ -69,6 +69,32 @@ class ComicInfoProviderTest {
     }
 
     @Test
+    fun `given comicInfo with blank values when getting series metadata then blank values are omitted`() {
+      val comicInfo = ComicInfo().apply {
+        title = ""
+        summary = ""
+        number = ""
+        alternateSeries = ""
+        alternateNumber = ""
+        storyArc = ""
+        penciller = ""
+      }
+
+      every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
+
+      val patch = comicInfoProvider.getBookMetadataFromBook(book, media)
+
+      with(patch!!) {
+        assertThat(title).isNull()
+        assertThat(summary).isNull()
+        assertThat(number).isNull()
+        assertThat(numberSort).isNull()
+        assertThat(authors).isNull()
+        assertThat(readLists).isEmpty()
+      }
+    }
+
+    @Test
     fun `given comicInfo without year when getting book metadata then release date is null`() {
       val comicInfo = ComicInfo().apply {
         month = 2
@@ -199,6 +225,31 @@ class ComicInfoProviderTest {
 
       with(patch) {
         assertThat(language).isNull()
+      }
+    }
+
+    @Test
+    fun `given comicInfo with blank values when getting series metadata then blank values are omitted`() {
+      val comicInfo = ComicInfo().apply {
+        title = ""
+        storyArc = ""
+        genre = ""
+        languageISO = ""
+        publisher = ""
+        seriesGroup = ""
+      }
+
+      every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
+
+      val patch = comicInfoProvider.getSeriesMetadataFromBook(book, media)!!
+
+      with(patch) {
+        assertThat(title).isNull()
+        assertThat(titleSort).isNull()
+        assertThat(genres).isNull()
+        assertThat(language).isNull()
+        assertThat(publisher).isNull()
+        assertThat(collections).isEmpty()
       }
     }
 
