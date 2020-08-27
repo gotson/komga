@@ -1,3 +1,16 @@
+## [0.59.2](https://github.com/gotson/komga/compare/v0.59.1...v0.59.2) (2020-08-27)
+
+
+### Bug Fixes
+
+* potential incorrect read progress for series ([7b90244](https://github.com/gotson/komga/commit/7b90244bdda9a06bc1a40f9aa5f6a719b54f5169))
+
+
+### Performance Improvements
+
+* add sql indexes ([41f3e8d](https://github.com/gotson/komga/commit/41f3e8dc638178846f37da21f17d2a314692b33e))
+* lazy sql joins ([6eb7669](https://github.com/gotson/komga/commit/6eb76698583255ce408ec9c660ef697bb4f05f5a))
+
 ## [0.59.1](https://github.com/gotson/komga/compare/v0.59.0...v0.59.1) (2020-08-25)
 
 
