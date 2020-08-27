@@ -1564,6 +1564,16 @@
             }
           }
         },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "library_id",
+            "required": false
+          }
+        ],
         "tags": [
           "referential-controller"
         ]
@@ -2132,6 +2142,16 @@
             }
           }
         },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "library_id",
+            "required": false
+          }
+        ],
         "tags": [
           "referential-controller"
         ]
@@ -3745,6 +3765,24 @@
             }
           }
         },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "library_id",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "series_id",
+            "required": false
+          }
+        ],
         "tags": [
           "referential-controller"
         ]
@@ -3992,6 +4030,16 @@
             }
           }
         },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "library_id",
+            "required": false
+          }
+        ],
         "tags": [
           "referential-controller"
         ]

@@ -1,3 +1,17 @@
+# [0.61.0](https://github.com/gotson/komga/compare/v0.60.0...v0.61.0) (2020-08-27)
+
+
+### Bug Fixes
+
+* **webui:** contextual filters ([f515819](https://github.com/gotson/komga/commit/f5158197ded703d57c3c0fb7eb6c31dae1629d03)), closes [#290](https://github.com/gotson/komga/issues/290)
+* **webui:** disable filter panels with no values ([57cc6c4](https://github.com/gotson/komga/commit/57cc6c48d3249f80756bb2a8c4a79b590c514a42))
+
+
+### Features
+
+* **api:** filter referential data by library or series ([982983e](https://github.com/gotson/komga/commit/982983e3db0ca0e4fa143ef510f4a61ff2bd0d57)), closes [#290](https://github.com/gotson/komga/issues/290)
+* **webreader:** add double page no cover layout ([5fe015e](https://github.com/gotson/komga/commit/5fe015ede0329ed85b39b78f11d55150214f65bf)), closes [#103](https://github.com/gotson/komga/issues/103)
+
 # [0.60.0](https://github.com/gotson/komga/compare/v0.59.2...v0.60.0) (2020-08-27)
 
 
