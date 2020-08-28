@@ -254,11 +254,13 @@ export default Vue.extend({
         this.$cookies.get(this.cookieSort(route.params.libraryId)) ||
         this.$_.clone(this.sortDefault)
 
-      if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag) {
+      if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating) {
         this.filters.status = parseQueryFilter(route.query.status, Object.keys(SeriesStatus))
         this.filters.readStatus = parseQueryFilter(route.query.readStatus, Object.keys(ReadStatus))
         this.filters.genre = parseQueryFilter(route.query.genre, this.filterOptionsPanel.genre.values.map(x => x.value))
         this.filters.tag = parseQueryFilter(route.query.tag, this.filterOptionsPanel.tag.values.map(x => x.value))
+        this.filters.language = parseQueryFilter(route.query.language, this.filterOptionsPanel.language.values.map(x => x.value))
+        this.filters.ageRating = parseQueryFilter(route.query.ageRating, this.filterOptionsPanel.ageRating.values.map(x => x.value))
       } else {
         this.filters = this.$cookies.get(this.cookieFilter(route.params.libraryId)) || {} as FiltersActive
       }
