@@ -81,6 +81,7 @@ class SeriesController(
     @RequestParam(name = "language", required = false) languages: List<String>?,
     @RequestParam(name = "genre", required = false) genres: List<String>?,
     @RequestParam(name = "tag", required = false) tags: List<String>?,
+    @RequestParam(name = "age_rating", required = false) ageRatings: List<String>?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> {
@@ -105,7 +106,8 @@ class SeriesController(
       publishers = publishers,
       languages = languages,
       genres = genres,
-      tags = tags
+      tags = tags,
+      ageRatings = ageRatings?.map { it.toIntOrNull() }
     )
 
     return seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageRequest)
@@ -311,8 +313,8 @@ class SeriesController(
             if (genres != null) genres!! else emptySet()
           } else existing.genres,
           genresLock = genresLock ?: existing.genresLock,
-          tags = if(isSet("tags")) {
-            if(tags != null) tags!! else emptySet()
+          tags = if (isSet("tags")) {
+            if (tags != null) tags!! else emptySet()
           } else existing.tags,
           tagsLock = tagsLock ?: existing.tagsLock
         )
