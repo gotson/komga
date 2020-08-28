@@ -44,19 +44,20 @@ export default Vue.extend({
   },
   mounted () {
     this.container = this.$refs[this.id] as HTMLElement
+    this.computeScrollability()
   },
   methods: {
     computeScrollability () {
       if (this.container !== undefined) {
-        this.canScrollLeft = this.container.scrollLeft > 0
-        this.canScrollRight = (this.container.scrollLeft + this.container.clientWidth) < this.container.scrollWidth
+        this.canScrollLeft = Math.round(this.container.scrollLeft) > 0
+        this.canScrollRight = (Math.round(this.container.scrollLeft) + this.container.clientWidth) < this.container.scrollWidth
       }
     },
     doScroll (direction: string) {
       if (this.container !== undefined) {
-        let target = this.container.scrollLeft + (this.container.clientWidth - this.adjustment)
+        let target = Math.round(this.container.scrollLeft) + (this.container.clientWidth - this.adjustment)
         if (direction === 'left') {
-          target = this.container.scrollLeft - (this.container.clientWidth - this.adjustment)
+          target = Math.round(this.container.scrollLeft) - (this.container.clientWidth - this.adjustment)
         }
         const scrollMax = this.container.clientWidth
         this.container.scrollTo({
