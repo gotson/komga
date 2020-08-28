@@ -19,6 +19,7 @@ class ReferentialDao(
   private val g = Tables.SERIES_METADATA_GENRE
   private val bt = Tables.BOOK_METADATA_TAG
   private val st = Tables.SERIES_METADATA_TAG
+  private val cs = Tables.COLLECTION_SERIES
 
   override fun findAuthorsByName(search: String): List<String> =
     dsl.selectDistinct(a.NAME)
@@ -38,6 +39,14 @@ class ReferentialDao(
       .from(g)
       .leftJoin(s).on(g.SERIES_ID.eq(s.ID))
       .where(s.LIBRARY_ID.eq(libraryId))
+      .orderBy(lower(g.GENRE))
+      .fetchSet(g.GENRE)
+
+  override fun findAllGenresByCollection(collectionId: String): Set<String> =
+    dsl.selectDistinct(g.GENRE)
+      .from(g)
+      .leftJoin(cs).on(g.SERIES_ID.eq(cs.SERIES_ID))
+      .where(cs.COLLECTION_ID.eq(collectionId))
       .orderBy(lower(g.GENRE))
       .fetchSet(g.GENRE)
 
@@ -67,6 +76,14 @@ class ReferentialDao(
       .orderBy(lower(bt.TAG))
       .fetchSet(bt.TAG)
 
+  override fun findAllTagsByCollection(collectionId: String): Set<String> =
+    dsl.select(st.TAG)
+      .from(st)
+      .leftJoin(cs).on(st.SERIES_ID.eq(cs.SERIES_ID))
+      .where(cs.COLLECTION_ID.eq(collectionId))
+      .orderBy(lower(st.TAG))
+      .fetchSet(st.TAG)
+
   override fun findAllLanguages(): Set<String> =
     dsl.selectDistinct(sd.LANGUAGE)
       .from(sd)
@@ -80,6 +97,15 @@ class ReferentialDao(
       .leftJoin(s).on(sd.SERIES_ID.eq(s.ID))
       .where(sd.LANGUAGE.ne(""))
       .and(s.LIBRARY_ID.eq(libraryId))
+      .orderBy(sd.LANGUAGE)
+      .fetchSet(sd.LANGUAGE)
+
+  override fun findAllLanguagesByCollection(collectionId: String): Set<String> =
+    dsl.selectDistinct(sd.LANGUAGE)
+      .from(sd)
+      .leftJoin(cs).on(sd.SERIES_ID.eq(cs.SERIES_ID))
+      .where(sd.LANGUAGE.ne(""))
+      .and(cs.COLLECTION_ID.eq(collectionId))
       .orderBy(sd.LANGUAGE)
       .fetchSet(sd.LANGUAGE)
 
@@ -99,6 +125,15 @@ class ReferentialDao(
       .orderBy(sd.PUBLISHER)
       .fetchSet(sd.PUBLISHER)
 
+  override fun findAllPublishersByCollection(collectionId: String): Set<String> =
+    dsl.selectDistinct(sd.PUBLISHER)
+      .from(sd)
+      .leftJoin(cs).on(sd.SERIES_ID.eq(cs.SERIES_ID))
+      .where(sd.PUBLISHER.ne(""))
+      .and(cs.COLLECTION_ID.eq(collectionId))
+      .orderBy(sd.PUBLISHER)
+      .fetchSet(sd.PUBLISHER)
+
   override fun findAllAgeRatings(): Set<Int> =
     dsl.selectDistinct(sd.AGE_RATING)
       .from(sd)
@@ -110,6 +145,14 @@ class ReferentialDao(
       .from(sd)
       .leftJoin(s).on(sd.SERIES_ID.eq(s.ID))
       .where(s.LIBRARY_ID.eq(libraryId))
+      .orderBy(sd.AGE_RATING)
+      .fetchSet(sd.AGE_RATING)
+
+  override fun findAllAgeRatingsByCollection(collectionId: String): Iterable<Int?> =
+    dsl.selectDistinct(sd.AGE_RATING)
+      .from(sd)
+      .leftJoin(cs).on(sd.SERIES_ID.eq(cs.SERIES_ID))
+      .where(cs.COLLECTION_ID.eq(collectionId))
       .orderBy(sd.AGE_RATING)
       .fetchSet(sd.AGE_RATING)
 }

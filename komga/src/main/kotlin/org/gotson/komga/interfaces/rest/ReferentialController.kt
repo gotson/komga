@@ -22,43 +22,58 @@ class ReferentialController(
 
   @GetMapping("/genres")
   fun getGenres(
-    @RequestParam(name = "library_id", required = false) libraryId: String?
+    @RequestParam(name = "library_id", required = false) libraryId: String?,
+    @RequestParam(name = "collection_id", required = false) collectionId: String?
   ): Set<String> =
-    if (libraryId != null) referentialRepository.findAllGenresByLibrary(libraryId)
-    else referentialRepository.findAllGenres()
+    when {
+      libraryId != null -> referentialRepository.findAllGenresByLibrary(libraryId)
+      collectionId != null -> referentialRepository.findAllGenresByCollection(collectionId)
+      else -> referentialRepository.findAllGenres()
+    }
 
   @GetMapping("/tags")
   fun getTags(
     @RequestParam(name = "library_id", required = false) libraryId: String?,
-    @RequestParam(name = "series_id", required = false) seriesId: String?
+    @RequestParam(name = "series_id", required = false) seriesId: String?,
+    @RequestParam(name = "collection_id", required = false) collectionId: String?
   ): Set<String> =
     when {
       libraryId != null -> referentialRepository.findAllTagsByLibrary(libraryId)
       seriesId != null -> referentialRepository.findAllTagsBySeries(seriesId)
+      collectionId != null -> referentialRepository.findAllTagsByCollection(collectionId)
       else -> referentialRepository.findAllTags()
     }
 
   @GetMapping("/languages")
   fun getLanguages(
-    @RequestParam(name = "library_id", required = false) libraryId: String?
+    @RequestParam(name = "library_id", required = false) libraryId: String?,
+    @RequestParam(name = "collection_id", required = false) collectionId: String?
   ): Set<String> =
-    if (libraryId != null) referentialRepository.findAllLanguagesByLibrary(libraryId)
-    else referentialRepository.findAllLanguages()
+    when {
+      libraryId != null -> referentialRepository.findAllLanguagesByLibrary(libraryId)
+      collectionId != null -> referentialRepository.findAllLanguagesByCollection(collectionId)
+      else -> referentialRepository.findAllLanguages()
+    }
 
   @GetMapping("/publishers")
   fun getPublishers(
-    @RequestParam(name = "library_id", required = false) libraryId: String?
+    @RequestParam(name = "library_id", required = false) libraryId: String?,
+    @RequestParam(name = "collection_id", required = false) collectionId: String?
   ): Set<String> =
-    if (libraryId != null) referentialRepository.findAllPublishersByLibrary(libraryId)
-    else referentialRepository.findAllPublishers()
+    when {
+      libraryId != null -> referentialRepository.findAllPublishersByLibrary(libraryId)
+      collectionId != null -> referentialRepository.findAllPublishersByCollection(collectionId)
+      else -> referentialRepository.findAllPublishers()
+    }
 
   @GetMapping("/age-ratings")
   fun getAgeRatings(
-    @RequestParam(name = "library_id", required = false) libraryId: String?
+    @RequestParam(name = "library_id", required = false) libraryId: String?,
+    @RequestParam(name = "collection_id", required = false) collectionId: String?
   ): Set<String> =
-    if (libraryId != null) {
-      referentialRepository.findAllAgeRatingsByLibrary(libraryId)
-    } else {
-      referentialRepository.findAllAgeRatings()
+    when {
+      libraryId != null -> referentialRepository.findAllAgeRatingsByLibrary(libraryId)
+      collectionId != null -> referentialRepository.findAllAgeRatingsByCollection(collectionId)
+      else -> referentialRepository.findAllAgeRatings()
     }.map { it?.toString() ?: "None" }.toSet()
 }
