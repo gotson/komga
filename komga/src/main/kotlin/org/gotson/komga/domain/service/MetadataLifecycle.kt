@@ -134,7 +134,7 @@ class MetadataLifecycle(
               title = patches.mostFrequent { it.title },
               titleSort = patches.mostFrequent { it.titleSort },
               status = patches.mostFrequent { it.status },
-              genres = patches.mapNotNull { it.genres }.flatten().toSet(),
+              genres = patches.mapNotNull { it.genres }.flatten().toSet().ifEmpty { null },
               language = patches.mostFrequent { it.language },
               summary = null,
               readingDirection = patches.mostFrequent { it.readingDirection },
