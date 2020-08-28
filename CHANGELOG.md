@@ -1,3 +1,21 @@
+# [0.62.0](https://github.com/gotson/komga/compare/v0.61.0...v0.62.0) (2020-08-28)
+
+
+### Bug Fixes
+
+* **webui:** correct label in library edit dialog ([c532e50](https://github.com/gotson/komga/commit/c532e50489aa5c873cc3c64da9918cd48f1d9ff7))
+* **webui:** restore library filter for language and age rating ([dc064f2](https://github.com/gotson/komga/commit/dc064f20ecd671e35b399b79263b180214ce6498))
+
+
+### Features
+
+* **api:** filter collection's series ([cfa06a9](https://github.com/gotson/komga/commit/cfa06a9d2bd890e37bf46ba70c8494e7a27a1a15))
+* **api:** get all age ratings ([be80d86](https://github.com/gotson/komga/commit/be80d86d6cba564293053f883c0ceda186652fe0))
+* **api:** get referential data by collection ([d7fd296](https://github.com/gotson/komga/commit/d7fd2964928530e221be800d4cafe4334dbbf368))
+* **api:** search series by age rating ([f51d575](https://github.com/gotson/komga/commit/f51d575bda49a89ff565009aec4a0b866095e2d9))
+* **webui:** filter collection content ([fc905ef](https://github.com/gotson/komga/commit/fc905ef9b5bda44e1da67299e9e87865a04652ab)), closes [#270](https://github.com/gotson/komga/issues/270)
+* **webui:** filter series by age rating ([01eef83](https://github.com/gotson/komga/commit/01eef838a20ee01b179bf3ad5dcd03b94f0e7a8b))
+
 # [0.61.0](https://github.com/gotson/komga/compare/v0.60.0...v0.61.0) (2020-08-27)
 
 

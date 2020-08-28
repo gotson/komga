@@ -1572,6 +1572,14 @@
             "in": "query",
             "name": "library_id",
             "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "collection_id",
+            "required": false
           }
         ],
         "tags": [
@@ -1927,6 +1935,105 @@
           },
           {
             "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "in": "query",
+            "name": "library_id",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ENDED",
+                  "ONGOING",
+                  "ABANDONED",
+                  "HIATUS"
+                ]
+              }
+            },
+            "in": "query",
+            "name": "status",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "UNREAD",
+                  "READ",
+                  "IN_PROGRESS"
+                ]
+              }
+            },
+            "in": "query",
+            "name": "read_status",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "in": "query",
+            "name": "publisher",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "in": "query",
+            "name": "language",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "in": "query",
+            "name": "genre",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "in": "query",
+            "name": "tag",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "in": "query",
+            "name": "age_rating",
+            "required": false
+          },
+          {
+            "schema": {
               "type": "boolean"
             },
             "in": "query",
@@ -2149,6 +2256,14 @@
             },
             "in": "query",
             "name": "library_id",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "collection_id",
             "required": false
           }
         ],
@@ -2781,6 +2896,48 @@
         ]
       }
     },
+    "/api/v1/age-ratings": {
+      "get": {
+        "operationId": "getAgeRatings",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "uniqueItems": true,
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "library_id",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "collection_id",
+            "required": false
+          }
+        ],
+        "tags": [
+          "referential-controller"
+        ]
+      }
+    },
     "/api/v1/books/{bookId}/pages/{pageNumber}": {
       "get": {
         "operationId": "getBookPage",
@@ -2966,6 +3123,17 @@
             },
             "in": "query",
             "name": "tag",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "in": "query",
+            "name": "age_rating",
             "required": false
           },
           {
@@ -3781,6 +3949,14 @@
             "in": "query",
             "name": "series_id",
             "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "collection_id",
+            "required": false
           }
         ],
         "tags": [
@@ -4037,6 +4213,14 @@
             },
             "in": "query",
             "name": "library_id",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "collection_id",
             "required": false
           }
         ],
