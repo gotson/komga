@@ -11,7 +11,9 @@ export default class KomgaSeriesService {
     this.http = http
   }
 
-  async getSeries (libraryId?: string, pageRequest?: PageRequest, search?: string, status?: string[], readStatus?: string[], genre?: string[], tag?: string[], language?: string[], publisher?: string[]): Promise<Page<SeriesDto>> {
+  async getSeries (libraryId?: string, pageRequest?: PageRequest, search?: string, status?: string[],
+                   readStatus?: string[], genre?: string[], tag?: string[], language?: string[],
+                   publisher?: string[], ageRating?: string[]): Promise<Page<SeriesDto>> {
     try {
       const params = { ...pageRequest } as any
       if (libraryId) params.library_id = libraryId
@@ -22,6 +24,7 @@ export default class KomgaSeriesService {
       if (tag) params.tag = tag
       if (language) params.language = language
       if (publisher) params.publisher = publisher
+      if (ageRating) params.age_rating = ageRating
 
       return (await this.http.get(API_SERIES, {
         params: params,

@@ -84,6 +84,24 @@ export default class KomgaReferentialService {
     }
   }
 
+  async getAgeRatings (libraryId?: string): Promise<string[]> {
+    try {
+      const params = {} as any
+      if (libraryId) params.library_id = libraryId
+
+      return (await this.http.get('/api/v1/age-ratings', {
+        params: params,
+        paramsSerializer: params => qs.stringify(params, { indices: false }),
+      })).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve age ratings'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
   async getLanguages (libraryId?: string): Promise<NameValue[]> {
     try {
       const params = {} as any

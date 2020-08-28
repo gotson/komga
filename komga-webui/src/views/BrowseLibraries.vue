@@ -148,6 +148,7 @@ export default Vue.extend({
         tag: { name: 'TAG', values: [] },
         publisher: { name: 'PUBLISHER', values: [] },
         language: { name: 'LANGUAGE', values: [] },
+        ageRating: { name: 'AGE RATING', values: [] },
       } as FiltersOptions,
       filters: {} as FiltersActive,
       sortUnwatch: null as any,
@@ -211,6 +212,7 @@ export default Vue.extend({
       this.filterOptionsPanel.tag.values = []
       this.filterOptionsPanel.publisher.values = []
       this.filterOptionsPanel.language.values = []
+      this.filterOptionsPanel.ageRating.values = []
 
       this.loadLibrary(to.params.libraryId)
 
@@ -322,6 +324,7 @@ export default Vue.extend({
       this.filterOptionsPanel.tag.values.push(...toNameValue(await this.$komgaReferential.getTags(requestLibraryId)))
       this.filterOptionsPanel.publisher.values.push(...toNameValue(await this.$komgaReferential.getPublishers(requestLibraryId)))
       this.filterOptionsPanel.language.values.push(...(await this.$komgaReferential.getLanguages(requestLibraryId)))
+      this.filterOptionsPanel.ageRating.values.push(...toNameValue(await this.$komgaReferential.getAgeRatings(requestLibraryId)))
 
       await this.loadPage(libraryId, this.page, this.sortActive)
     },
@@ -350,7 +353,7 @@ export default Vue.extend({
       }
 
       const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
-      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, this.filters.readStatus, this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher)
+      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, this.filters.readStatus, this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating)
 
       this.totalPages = seriesPage.totalPages
       this.totalElements = seriesPage.totalElements
