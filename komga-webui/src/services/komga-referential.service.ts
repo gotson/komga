@@ -29,10 +29,11 @@ export default class KomgaReferentialService {
     }
   }
 
-  async getGenres (libraryId?: string): Promise<string[]> {
+  async getGenres (libraryId?: string, collectionId?: string): Promise<string[]> {
     try {
       const params = {} as any
       if (libraryId) params.library_id = libraryId
+      if (collectionId) params.collection_id = collectionId
 
       return (await this.http.get('/api/v1/genres', {
         params: params,
@@ -47,11 +48,12 @@ export default class KomgaReferentialService {
     }
   }
 
-  async getTags (libraryId?: string, seriesId?: string): Promise<string[]> {
+  async getTags (libraryId?: string, seriesId?: string, collectionId?: string): Promise<string[]> {
     try {
       const params = {} as any
       if (libraryId) params.library_id = libraryId
       if (seriesId) params.series_id = seriesId
+      if (collectionId) params.collection_id = collectionId
 
       return (await this.http.get('/api/v1/tags', {
         params: params,
@@ -66,10 +68,11 @@ export default class KomgaReferentialService {
     }
   }
 
-  async getPublishers (libraryId?: string): Promise<string[]> {
+  async getPublishers (libraryId?: string, collectionId?: string): Promise<string[]> {
     try {
       const params = {} as any
       if (libraryId) params.library_id = libraryId
+      if (collectionId) params.collection_id = collectionId
 
       return (await this.http.get('/api/v1/publishers', {
         params: params,
@@ -84,10 +87,11 @@ export default class KomgaReferentialService {
     }
   }
 
-  async getAgeRatings (libraryId?: string): Promise<string[]> {
+  async getAgeRatings (libraryId?: string, collectionId?: string): Promise<string[]> {
     try {
       const params = {} as any
       if (libraryId) params.library_id = libraryId
+      if (collectionId) params.collection_id = collectionId
 
       return (await this.http.get('/api/v1/age-ratings', {
         params: params,
@@ -102,10 +106,11 @@ export default class KomgaReferentialService {
     }
   }
 
-  async getLanguages (libraryId?: string): Promise<NameValue[]> {
+  async getLanguages (libraryId?: string, collectionId?: string): Promise<NameValue[]> {
     try {
       const params = {} as any
       if (libraryId) params.library_id = libraryId
+      if (collectionId) params.collection_id = collectionId
 
       const data = (await this.http.get('/api/v1/languages', {
         params: params,
