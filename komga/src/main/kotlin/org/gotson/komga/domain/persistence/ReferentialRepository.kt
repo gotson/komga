@@ -15,4 +15,7 @@ interface ReferentialRepository {
 
   fun findAllPublishers(): Set<String>
   fun findAllPublishersByLibrary(libraryId: String): Set<String>
+
+  fun findAllAgeRatings(): Set<Int?>
+  fun findAllAgeRatingsByLibrary(libraryId: String): Set<Int?>
 }

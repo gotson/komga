@@ -51,4 +51,14 @@ class ReferentialController(
   ): Set<String> =
     if (libraryId != null) referentialRepository.findAllPublishersByLibrary(libraryId)
     else referentialRepository.findAllPublishers()
+
+  @GetMapping("/age-ratings")
+  fun getAgeRatings(
+    @RequestParam(name = "library_id", required = false) libraryId: String?
+  ): Set<String> =
+    if (libraryId != null) {
+      referentialRepository.findAllAgeRatingsByLibrary(libraryId)
+    } else {
+      referentialRepository.findAllAgeRatings()
+    }.map { it?.toString() ?: "None" }.toSet()
 }

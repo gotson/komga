@@ -98,4 +98,18 @@ class ReferentialDao(
       .and(s.LIBRARY_ID.eq(libraryId))
       .orderBy(sd.PUBLISHER)
       .fetchSet(sd.PUBLISHER)
+
+  override fun findAllAgeRatings(): Set<Int> =
+    dsl.selectDistinct(sd.AGE_RATING)
+      .from(sd)
+      .orderBy(sd.AGE_RATING)
+      .fetchSet(sd.AGE_RATING)
+
+  override fun findAllAgeRatingsByLibrary(libraryId: String): Set<Int> =
+    dsl.selectDistinct(sd.AGE_RATING)
+      .from(sd)
+      .leftJoin(s).on(sd.SERIES_ID.eq(s.ID))
+      .where(s.LIBRARY_ID.eq(libraryId))
+      .orderBy(sd.AGE_RATING)
+      .fetchSet(sd.AGE_RATING)
 }
