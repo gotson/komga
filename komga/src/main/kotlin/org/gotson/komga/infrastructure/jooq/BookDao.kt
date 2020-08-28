@@ -189,10 +189,10 @@ class BookDao(
   private fun BookSearch.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()
 
-    libraryIds?.let { c = c.and(b.LIBRARY_ID.`in`(it)) }
-    seriesIds?.let { c = c.and(b.SERIES_ID.`in`(it)) }
+    if (!libraryIds.isNullOrEmpty()) c = c.and(b.LIBRARY_ID.`in`(libraryIds))
+    if (!seriesIds.isNullOrEmpty()) c = c.and(b.SERIES_ID.`in`(seriesIds))
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
-    mediaStatus?.let { c = c.and(m.STATUS.`in`(it)) }
+    if (!mediaStatus.isNullOrEmpty()) c = c.and(m.STATUS.`in`(mediaStatus))
 
     return c
   }

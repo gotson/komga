@@ -127,10 +127,10 @@ class SeriesDao(
   private fun SeriesSearch.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()
 
-    libraryIds?.let { c = c.and(s.LIBRARY_ID.`in`(it)) }
-    collectionIds?.let { c = c.and(cs.COLLECTION_ID.`in`(it)) }
+    if (!libraryIds.isNullOrEmpty()) c = c.and(s.LIBRARY_ID.`in`(libraryIds))
+    if (!collectionIds.isNullOrEmpty()) c = c.and(cs.COLLECTION_ID.`in`(collectionIds))
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
-    metadataStatus?.let { c = c.and(d.STATUS.`in`(it)) }
+    if (!metadataStatus.isNullOrEmpty()) c = c.and(d.STATUS.`in`(metadataStatus))
 
     return c
   }
