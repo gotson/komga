@@ -1,3 +1,10 @@
+## [0.62.1](https://github.com/gotson/komga/compare/v0.62.0...v0.62.1) (2020-08-28)
+
+
+### Bug Fixes
+
+* series genre is not imported from metadata ([58fac36](https://github.com/gotson/komga/commit/58fac365ad046fa652ea825ba7b0c57b24b8d141))
+
 # [0.62.0](https://github.com/gotson/komga/compare/v0.61.0...v0.62.0) (2020-08-28)
 
 
