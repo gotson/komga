@@ -7,7 +7,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.ROLE_ADMIN
+import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesCollection
+import org.gotson.komga.domain.model.SeriesMetadata
+import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.service.SeriesCollectionLifecycle
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
@@ -153,6 +156,14 @@ class SeriesCollectionController(
   fun getSeriesForCollection(
     @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
+    @RequestParam(name = "status", required = false) metadataStatus: List<SeriesMetadata.Status>?,
+    @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
+    @RequestParam(name = "publisher", required = false) publishers: List<String>?,
+    @RequestParam(name = "language", required = false) languages: List<String>?,
+    @RequestParam(name = "genre", required = false) genres: List<String>?,
+    @RequestParam(name = "tag", required = false) tags: List<String>?,
+    @RequestParam(name = "age_rating", required = false) ageRatings: List<String>?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> =
@@ -169,7 +180,18 @@ class SeriesCollectionController(
           sort
         )
 
-      seriesDtoRepository.findByCollectionId(collection.id, principal.user.id, pageRequest)
+      val seriesSearch = SeriesSearchWithReadProgress(
+        libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
+        metadataStatus = metadataStatus,
+        readStatus = readStatus,
+        publishers = publishers,
+        languages = languages,
+        genres = genres,
+        tags = tags,
+        ageRatings = ageRatings?.map { it.toIntOrNull() }
+      )
+
+      seriesDtoRepository.findByCollectionId(collection.id, seriesSearch, principal.user.id, pageRequest)
         .map { it.restrictUrl(!principal.user.roleAdmin) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 }

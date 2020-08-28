@@ -72,11 +72,12 @@ class SeriesDtoDao(
     return findAll(conditions, having, userId, pageable, search.toJoinConditions())
   }
 
-  override fun findByCollectionId(collectionId: String, userId: String, pageable: Pageable): Page<SeriesDto> {
-    val conditions = cs.COLLECTION_ID.eq(collectionId)
-    val having = DSL.trueCondition()
+  override fun findByCollectionId(collectionId: String, search: SeriesSearchWithReadProgress, userId: String, pageable: Pageable): Page<SeriesDto> {
+    val conditions = search.toCondition().and(cs.COLLECTION_ID.eq(collectionId))
+    val having = search.readStatus?.toCondition() ?: DSL.trueCondition()
+    val joinConditions = search.toJoinConditions().copy(selectCollectionNumber = true, collection = true)
 
-    return findAll(conditions, having, userId, pageable, JoinConditions(selectCollectionNumber = true, collection = true))
+    return findAll(conditions, having, userId, pageable, joinConditions)
   }
 
   override fun findRecentlyUpdated(search: SeriesSearchWithReadProgress, userId: String, pageable: Pageable): Page<SeriesDto> {
