@@ -1,3 +1,11 @@
+## [0.62.2](https://github.com/gotson/komga/compare/v0.62.1...v0.62.2) (2020-08-31)
+
+
+### Bug Fixes
+
+* **opds:** latest series sort inverted ([bddc008](https://github.com/gotson/komga/commit/bddc00855202d4c3694f7069837178b029ebf026)), closes [#301](https://github.com/gotson/komga/issues/301)
+* **webui:** compute scrollability on mount, fix right chevron when using display scaling ([8928959](https://github.com/gotson/komga/commit/8928959fdb8adf9c555379c67a13a657fc291e05))
+
 ## [0.62.1](https://github.com/gotson/komga/compare/v0.62.0...v0.62.1) (2020-08-28)
 
 
