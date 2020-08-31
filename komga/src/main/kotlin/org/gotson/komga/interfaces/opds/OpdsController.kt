@@ -194,7 +194,7 @@ class OpdsController(
 
     val entries = seriesRepository.findAll(seriesSearch)
       .map { SeriesWithInfo(it, seriesMetadataRepository.findById(it.id)) }
-      .sortedBy { it.series.lastModifiedDate }
+      .sortedByDescending { it.series.lastModifiedDate }
       .map { it.toOpdsEntry() }
 
     return OpdsFeedNavigation(
