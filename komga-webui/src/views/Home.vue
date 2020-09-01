@@ -102,12 +102,12 @@
       <v-list>
         <v-list-item>
           <v-list-item-icon>
-            <v-icon v-if="activeTheme === Theme.LIGHT">mdi-brightness-7</v-icon>
-            <v-icon v-if="activeTheme === Theme.DARK">mdi-brightness-3</v-icon>
-            <v-icon v-if="activeTheme === Theme.SYSTEM">mdi-brightness-auto</v-icon>
+            <v-icon v-if="theme === Theme.LIGHT">mdi-brightness-7</v-icon>
+            <v-icon v-if="theme === Theme.DARK">mdi-brightness-3</v-icon>
+            <v-icon v-if="theme === Theme.SYSTEM">mdi-brightness-auto</v-icon>
           </v-list-item-icon>
           <v-select
-            v-model="activeTheme"
+            v-model="theme"
             :items="themes"
             label="Theme"
           ></v-select>
@@ -148,7 +148,9 @@ export default Vue.extend({
     return {
       drawerVisible: this.$vuetify.breakpoint.lgAndUp,
       info: {} as ActuatorInfo,
-      activeTheme: Theme.LIGHT,
+      settings: {
+        theme: Theme.LIGHT,
+      },
       Theme,
       themes: [
         { text: Theme.LIGHT.valueOf(), value: Theme.LIGHT },
@@ -156,11 +158,6 @@ export default Vue.extend({
         { text: Theme.SYSTEM.valueOf(), value: Theme.SYSTEM },
       ],
     }
-  },
-  watch: {
-    activeTheme (val) {
-      this.changeTheme(val)
-    },
   },
   async created () {
     if (this.isAdmin) {
@@ -170,7 +167,7 @@ export default Vue.extend({
     if (this.$cookies.isKey(cookieTheme)) {
       const theme = this.$cookies.get(cookieTheme)
       if (Object.values(Theme).includes(theme)) {
-        this.activeTheme = theme as Theme
+        this.theme = theme as Theme
       }
     }
 
@@ -186,18 +183,30 @@ export default Vue.extend({
     isAdmin (): boolean {
       return this.$store.getters.meAdmin
     },
+
+    theme: {
+      get: function (): Theme {
+        return this.settings.theme
+      },
+      set: function (theme: Theme): void {
+        if (Object.values(Theme).includes(theme)) {
+          this.settings.theme = theme
+          this.changeTheme(theme)
+          this.$cookies.set(cookieTheme, theme, Infinity)
+        }
+      },
+    },
   },
   methods: {
     toggleDrawer () {
       this.drawerVisible = !this.drawerVisible
     },
     systemThemeChange () {
-      if (this.activeTheme === Theme.SYSTEM) {
-        this.changeTheme(this.activeTheme)
+      if (this.theme === Theme.SYSTEM) {
+        this.changeTheme(this.theme)
       }
     },
     changeTheme (theme: Theme) {
-      this.$cookies.set(cookieTheme, theme.valueOf())
       switch (theme) {
         case Theme.DARK:
           this.$vuetify.theme.dark = true
