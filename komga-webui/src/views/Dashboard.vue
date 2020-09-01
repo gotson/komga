@@ -176,6 +176,8 @@ export default Vue.extend({
       }
     },
     loadAll () {
+      this.selectedSeries = []
+      this.selectedBooks = []
       this.loadNewSeries()
       this.loadUpdatedSeries()
       this.loadLatestBooks()

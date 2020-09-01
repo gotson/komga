@@ -300,7 +300,6 @@ export default Vue.extend({
     updateRouteAndReload () {
       this.unsetWatches()
 
-      this.selectedSeries = []
       this.page = 1
 
       this.updateRoute()
@@ -345,6 +344,8 @@ export default Vue.extend({
       })
     },
     async loadPage (libraryId: string, page: number, sort: SortActive) {
+      this.selectedSeries = []
+
       const pageRequest = {
         page: page - 1,
         size: this.pageSize,

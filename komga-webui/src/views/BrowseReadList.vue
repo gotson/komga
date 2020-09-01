@@ -157,6 +157,7 @@ export default Vue.extend({
       this.readList = await this.$komgaReadLists.getOneReadList(readListId)
       this.books = (await this.$komgaReadLists.getBooks(readListId, { unpaged: true } as PageRequest)).content
       this.booksCopy = [...this.books]
+      this.selectedBooks = []
     },
     editSingleBook (book: BookDto) {
       this.$store.dispatch('dialogUpdateBooks', book)

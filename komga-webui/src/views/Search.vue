@@ -257,6 +257,8 @@ export default Vue.extend({
       this.loadResults(this.$route.query.q.toString())
     },
     async loadResults (search: string) {
+      this.selectedBooks = []
+      this.selectedSeries = []
       if (search) {
         this.loading = true
 

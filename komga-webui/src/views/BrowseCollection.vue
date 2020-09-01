@@ -259,8 +259,6 @@ export default Vue.extend({
     updateRouteAndReload () {
       this.unsetWatches()
 
-      this.selectedSeries = []
-
       this.updateRoute()
       this.loadSeries(this.collectionId)
 
@@ -269,6 +267,7 @@ export default Vue.extend({
     async loadSeries (collectionId: string) {
       this.series = (await this.$komgaCollections.getSeries(collectionId, { unpaged: true } as PageRequest, this.filters.library, this.filters.status, this.filters.readStatus, this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating)).content
       this.seriesCopy = [...this.series]
+      this.selectedSeries = []
     },
     async loadCollection (collectionId: string) {
       this.collection = await this.$komgaCollections.getOneCollection(collectionId)
