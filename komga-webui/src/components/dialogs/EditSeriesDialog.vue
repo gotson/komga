@@ -112,7 +112,7 @@
                                 v-model="form.status"
                                 label="Status"
                                 filled
-                                :placeholder="mixed.status ? 'MIXED' : ''"
+                                :placeholder="!single && mixed.status ? 'MIXED' : ''"
                                 @input="$v.form.status.$touch()"
                                 @change="form.statusLock = true"
                       >
@@ -132,7 +132,7 @@
                                     label="Language"
                                     filled
                                     dense
-                                    :placeholder="mixed.language ? 'MIXED' : ''"
+                                    :placeholder="!single && mixed.language ? 'MIXED' : ''"
                                     :error-messages="languageErrors"
                                     @input="$v.form.language.$touch()"
                                     @change="form.languageLock = true"
@@ -156,7 +156,7 @@
                                 label="Reading Direction"
                                 clearable
                                 filled
-                                :placeholder="mixed.readingDirection ? 'MIXED' : ''"
+                                :placeholder="!single && mixed.readingDirection ? 'MIXED' : ''"
                                 @input="$v.form.readingDirection.$touch()"
                                 @change="form.readingDirectionLock = true"
                       >
@@ -178,7 +178,7 @@
                                     label="Publisher"
                                     filled
                                     dense
-                                    :placeholder="mixed.publisher ? 'MIXED' : ''"
+                                    :placeholder="!single && mixed.publisher ? 'MIXED' : ''"
                                     @input="$v.form.publisher.$touch()"
                                     @change="form.publisherLock = true"
                       >
@@ -200,7 +200,7 @@
                                     filled
                                     dense
                                     type="number"
-                                    :placeholder="mixed.ageRating ? 'MIXED' : ''"
+                                    :placeholder="!single && mixed.ageRating ? 'MIXED' : ''"
                                     :error-messages="ageRatingErrors"
                                     @input="$v.form.ageRating.$touch()"
                                     @blur="$v.form.ageRating.$touch()"
