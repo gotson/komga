@@ -273,15 +273,15 @@ export default Vue.extend({
       this.collection = await this.$komgaCollections.getOneCollection(collectionId)
       await this.loadSeries(collectionId)
 
-      this.filterOptionsPanel.library.values.push(...this.$store.state.komgaLibraries.libraries.map((x: LibraryDto) => ({
+      this.filterOptionsPanel.library.values = this.$store.state.komgaLibraries.libraries.map((x: LibraryDto) => ({
         name: x.name,
         value: x.id,
-      })))
-      this.filterOptionsPanel.genre.values.push(...toNameValue(await this.$komgaReferential.getGenres(undefined, collectionId)))
-      this.filterOptionsPanel.tag.values.push(...toNameValue(await this.$komgaReferential.getTags(undefined, undefined, collectionId)))
-      this.filterOptionsPanel.publisher.values.push(...toNameValue(await this.$komgaReferential.getPublishers(undefined, collectionId)))
-      this.filterOptionsPanel.language.values.push(...(await this.$komgaReferential.getLanguages(undefined, collectionId)))
-      this.filterOptionsPanel.ageRating.values.push(...toNameValue(await this.$komgaReferential.getAgeRatings(undefined, collectionId)))
+      }))
+      this.filterOptionsPanel.genre.values = toNameValue(await this.$komgaReferential.getGenres(undefined, collectionId))
+      this.filterOptionsPanel.tag.values = toNameValue(await this.$komgaReferential.getTags(undefined, undefined, collectionId))
+      this.filterOptionsPanel.publisher.values = toNameValue(await this.$komgaReferential.getPublishers(undefined, collectionId))
+      this.filterOptionsPanel.language.values = (await this.$komgaReferential.getLanguages(undefined, collectionId))
+      this.filterOptionsPanel.ageRating.values = toNameValue(await this.$komgaReferential.getAgeRatings(undefined, collectionId))
     },
     updateRoute () {
       const loc = {

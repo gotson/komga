@@ -321,11 +321,11 @@ export default Vue.extend({
       this.library = this.getLibraryLazy(libraryId)
 
       const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
-      this.filterOptionsPanel.genre.values.push(...toNameValue(await this.$komgaReferential.getGenres(requestLibraryId)))
-      this.filterOptionsPanel.tag.values.push(...toNameValue(await this.$komgaReferential.getTags(requestLibraryId)))
-      this.filterOptionsPanel.publisher.values.push(...toNameValue(await this.$komgaReferential.getPublishers(requestLibraryId)))
-      this.filterOptionsPanel.language.values.push(...(await this.$komgaReferential.getLanguages(requestLibraryId)))
-      this.filterOptionsPanel.ageRating.values.push(...toNameValue(await this.$komgaReferential.getAgeRatings(requestLibraryId)))
+      this.filterOptionsPanel.genre.values = toNameValue(await this.$komgaReferential.getGenres(requestLibraryId))
+      this.filterOptionsPanel.tag.values = toNameValue(await this.$komgaReferential.getTags(requestLibraryId))
+      this.filterOptionsPanel.publisher.values = toNameValue(await this.$komgaReferential.getPublishers(requestLibraryId))
+      this.filterOptionsPanel.language.values = (await this.$komgaReferential.getLanguages(requestLibraryId))
+      this.filterOptionsPanel.ageRating.values = toNameValue(await this.$komgaReferential.getAgeRatings(requestLibraryId))
 
       await this.loadPage(libraryId, this.page, this.sortActive)
     },

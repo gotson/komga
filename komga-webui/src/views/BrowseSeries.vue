@@ -412,7 +412,7 @@ export default Vue.extend({
       this.series = await this.$komgaSeries.getOneSeries(seriesId)
       this.collections = await this.$komgaSeries.getCollections(seriesId)
 
-      this.filterOptionsPanel.tag.values.push(...toNameValue(await this.$komgaReferential.getTags(undefined, this.seriesId)))
+      this.filterOptionsPanel.tag.values = toNameValue(await this.$komgaReferential.getTags(undefined, this.seriesId))
 
       await this.loadPage(seriesId, this.page, this.sortActive)
     },
