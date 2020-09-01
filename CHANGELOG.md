@@ -1,3 +1,13 @@
+## [0.62.3](https://github.com/gotson/komga/compare/v0.62.2...v0.62.3) (2020-09-01)
+
+
+### Bug Fixes
+
+* **webui:** clear selection after action performed ([e0cff70](https://github.com/gotson/komga/commit/e0cff70ff513a35cdeb509a168e0663219f89090)), closes [#303](https://github.com/gotson/komga/issues/303)
+* **webui:** edit series dialog could incorrectly display MIXED placeholder ([5d3f061](https://github.com/gotson/komga/commit/5d3f061a810dd9deefec710ebeec45c0ed1f5b18))
+* **webui:** filter values could be duplicated ([e91954f](https://github.com/gotson/komga/commit/e91954f6bd0072d5316e716e9ff687225684d549))
+* **webui:** theme is not restored properly ([432dc91](https://github.com/gotson/komga/commit/432dc9156293bfaabbdde01472229cf2951ff504)), closes [#304](https://github.com/gotson/komga/issues/304)
+
 ## [0.62.2](https://github.com/gotson/komga/compare/v0.62.1...v0.62.2) (2020-08-31)
 
 
