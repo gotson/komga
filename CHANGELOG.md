@@ -1,3 +1,10 @@
+## [0.62.4](https://github.com/gotson/komga/compare/v0.62.3...v0.62.4) (2020-09-05)
+
+
+### Bug Fixes
+
+* **api:** openAPI spec fields marked as required ([8f228db](https://github.com/gotson/komga/commit/8f228dbb1868c17133c61b85375d027dbce532f6)), closes [#308](https://github.com/gotson/komga/issues/308)
+
 ## [0.62.3](https://github.com/gotson/komga/compare/v0.62.2...v0.62.3) (2020-09-01)
 
 

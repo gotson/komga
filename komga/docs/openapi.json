@@ -3,6 +3,9 @@
     "schemas": {
       "DirectoryListingDto": {
         "type": "object",
+        "required": [
+          "directories"
+        ],
         "properties": {
           "parent": {
             "type": "string"
@@ -17,6 +20,10 @@
       },
       "OpenSearchUrl": {
         "type": "object",
+        "required": [
+          "template",
+          "type"
+        ],
         "properties": {
           "template": {
             "type": "string"
@@ -77,6 +84,21 @@
       },
       "BookDto": {
         "type": "object",
+        "required": [
+          "created",
+          "fileLastModified",
+          "id",
+          "lastModified",
+          "libraryId",
+          "media",
+          "metadata",
+          "name",
+          "number",
+          "seriesId",
+          "size",
+          "sizeBytes",
+          "url"
+        ],
         "properties": {
           "metadata": {
             "$ref": "#/components/schemas/BookMetadataDto"
@@ -129,6 +151,11 @@
       },
       "UserDto": {
         "type": "object",
+        "required": [
+          "email",
+          "id",
+          "roles"
+        ],
         "properties": {
           "roles": {
             "type": "array",
@@ -160,6 +187,12 @@
       },
       "OpdsEntry": {
         "type": "object",
+        "required": [
+          "content",
+          "id",
+          "title",
+          "updated"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -178,6 +211,23 @@
       },
       "BookMetadataDto": {
         "type": "object",
+        "required": [
+          "authors",
+          "authorsLock",
+          "created",
+          "lastModified",
+          "number",
+          "numberLock",
+          "numberSort",
+          "numberSortLock",
+          "releaseDateLock",
+          "summary",
+          "summaryLock",
+          "tags",
+          "tagsLock",
+          "title",
+          "titleLock"
+        ],
         "properties": {
           "summary": {
             "type": "string"
@@ -242,6 +292,13 @@
       },
       "OpenSearchDescription": {
         "type": "object",
+        "required": [
+          "description",
+          "inputEncoding",
+          "outputEncoding",
+          "shortName",
+          "url"
+        ],
         "properties": {
           "inputEncoding": {
             "type": "string"
@@ -250,10 +307,14 @@
             "type": "string"
           },
           "description": {
-            "type": "string"
+            "minLength": 1,
+            "type": "string",
+            "maxLength": 1024
           },
           "shortName": {
-            "type": "string"
+            "minLength": 1,
+            "type": "string",
+            "maxLength": 16
           },
           "url": {
             "$ref": "#/components/schemas/OpenSearchUrl"
@@ -262,6 +323,9 @@
       },
       "SharedLibraryDto": {
         "type": "object",
+        "required": [
+          "id"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -270,6 +334,10 @@
       },
       "AuthorDto": {
         "type": "object",
+        "required": [
+          "name",
+          "role"
+        ],
         "properties": {
           "role": {
             "type": "string"
@@ -281,6 +349,11 @@
       },
       "PathDto": {
         "type": "object",
+        "required": [
+          "name",
+          "path",
+          "type"
+        ],
         "properties": {
           "path": {
             "type": "string"
@@ -295,6 +368,13 @@
       },
       "UserWithSharedLibrariesDto": {
         "type": "object",
+        "required": [
+          "email",
+          "id",
+          "roles",
+          "sharedAllLibraries",
+          "sharedLibraries"
+        ],
         "properties": {
           "roles": {
             "type": "array",
@@ -321,6 +401,12 @@
       },
       "MediaDto": {
         "type": "object",
+        "required": [
+          "comment",
+          "mediaType",
+          "pagesCount",
+          "status"
+        ],
         "properties": {
           "pagesCount": {
             "format": "int32",
@@ -340,31 +426,29 @@
       "Pageable": {
         "type": "object",
         "properties": {
-          "paged": {
-            "type": "boolean"
-          },
-          "pageNumber": {
+          "size": {
             "format": "int32",
-            "type": "integer"
+            "type": "integer",
+            "minimum": 1
           },
-          "offset": {
-            "format": "int64",
-            "type": "integer"
-          },
-          "pageSize": {
+          "page": {
             "format": "int32",
-            "type": "integer"
-          },
-          "unpaged": {
-            "type": "boolean"
+            "type": "integer",
+            "minimum": 0
           },
           "sort": {
-            "$ref": "#/components/schemas/Sort"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
       "DirectoryRequestDto": {
         "type": "object",
+        "required": [
+          "path"
+        ],
         "properties": {
           "path": {
             "type": "string"
@@ -389,8 +473,17 @@
       "LibraryUpdateDto": {
         "type": "object",
         "required": [
+          "importComicInfoBook",
+          "importComicInfoCollection",
+          "importComicInfoReadList",
+          "importComicInfoSeries",
+          "importEpubBook",
+          "importEpubSeries",
+          "importLocalArtwork",
           "name",
-          "root"
+          "root",
+          "scanDeep",
+          "scanForceModifiedTime"
         ],
         "properties": {
           "importEpubSeries": {
@@ -430,6 +523,20 @@
       },
       "LibraryDto": {
         "type": "object",
+        "required": [
+          "id",
+          "importComicInfoBook",
+          "importComicInfoCollection",
+          "importComicInfoReadList",
+          "importComicInfoSeries",
+          "importEpubBook",
+          "importEpubSeries",
+          "importLocalArtwork",
+          "name",
+          "root",
+          "scanDeep",
+          "scanForceModifiedTime"
+        ],
         "properties": {
           "importEpubSeries": {
             "type": "boolean"
@@ -553,6 +660,14 @@
       },
       "OpdsFeed": {
         "type": "object",
+        "required": [
+          "author",
+          "entries",
+          "id",
+          "links",
+          "title",
+          "updated"
+        ],
         "properties": {
           "entries": {
             "type": "array",
@@ -600,6 +715,11 @@
       },
       "PageDto": {
         "type": "object",
+        "required": [
+          "fileName",
+          "mediaType",
+          "number"
+        ],
         "properties": {
           "number": {
             "format": "int32",
@@ -625,6 +745,7 @@
         "type": "object",
         "required": [
           "name",
+          "ordered",
           "seriesIds"
         ],
         "properties": {
@@ -644,6 +765,14 @@
       },
       "ReadListDto": {
         "type": "object",
+        "required": [
+          "bookIds",
+          "createdDate",
+          "filtered",
+          "id",
+          "lastModifiedDate",
+          "name"
+        ],
         "properties": {
           "createdDate": {
             "format": "date-time",
@@ -672,6 +801,15 @@
       },
       "CollectionDto": {
         "type": "object",
+        "required": [
+          "createdDate",
+          "filtered",
+          "id",
+          "lastModifiedDate",
+          "name",
+          "ordered",
+          "seriesIds"
+        ],
         "properties": {
           "ordered": {
             "type": "boolean"
@@ -763,7 +901,9 @@
       "UserCreationDto": {
         "type": "object",
         "required": [
-          "password"
+          "email",
+          "password",
+          "roles"
         ],
         "properties": {
           "password": {
@@ -782,6 +922,29 @@
       },
       "SeriesMetadataDto": {
         "type": "object",
+        "required": [
+          "ageRatingLock",
+          "created",
+          "genres",
+          "genresLock",
+          "language",
+          "languageLock",
+          "lastModified",
+          "publisher",
+          "publisherLock",
+          "readingDirection",
+          "readingDirectionLock",
+          "status",
+          "statusLock",
+          "summary",
+          "summaryLock",
+          "tags",
+          "tagsLock",
+          "title",
+          "titleLock",
+          "titleSort",
+          "titleSortLock"
+        ],
         "properties": {
           "summary": {
             "type": "string"
@@ -864,6 +1027,12 @@
       },
       "ReadProgressDto": {
         "type": "object",
+        "required": [
+          "completed",
+          "created",
+          "lastModified",
+          "page"
+        ],
         "properties": {
           "created": {
             "format": "date-time",
@@ -903,8 +1072,17 @@
       "LibraryCreationDto": {
         "type": "object",
         "required": [
+          "importComicInfoBook",
+          "importComicInfoCollection",
+          "importComicInfoReadList",
+          "importComicInfoSeries",
+          "importEpubBook",
+          "importEpubSeries",
+          "importLocalArtwork",
           "name",
-          "root"
+          "root",
+          "scanDeep",
+          "scanForceModifiedTime"
         ],
         "properties": {
           "importEpubSeries": {
@@ -944,6 +1122,9 @@
       },
       "OpdsAuthor": {
         "type": "object",
+        "required": [
+          "name"
+        ],
         "properties": {
           "name": {
             "type": "string"
@@ -956,6 +1137,20 @@
       },
       "SeriesDto": {
         "type": "object",
+        "required": [
+          "booksCount",
+          "booksInProgressCount",
+          "booksReadCount",
+          "booksUnreadCount",
+          "created",
+          "fileLastModified",
+          "id",
+          "lastModified",
+          "libraryId",
+          "metadata",
+          "name",
+          "url"
+        ],
         "properties": {
           "metadata": {
             "$ref": "#/components/schemas/SeriesMetadataDto"
@@ -1091,14 +1286,21 @@
       },
       "ClaimStatus": {
         "type": "object",
+        "required": [
+          "isClaimed"
+        ],
         "properties": {
-          "claimed": {
+          "isClaimed": {
             "type": "boolean"
           }
         }
       },
       "SharedLibrariesUpdateDto": {
         "type": "object",
+        "required": [
+          "all",
+          "libraryIds"
+        ],
         "properties": {
           "all": {
             "type": "boolean"
@@ -1206,6 +1408,9 @@
       },
       "RolesUpdateDto": {
         "type": "object",
+        "required": [
+          "roles"
+        ],
         "properties": {
           "roles": {
             "type": "array",
@@ -1217,6 +1422,11 @@
       },
       "OpdsLink": {
         "type": "object",
+        "required": [
+          "href",
+          "rel",
+          "type"
+        ],
         "properties": {
           "rel": {
             "type": "string"
