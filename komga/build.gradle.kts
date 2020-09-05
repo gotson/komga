@@ -62,6 +62,8 @@ dependencies {
     val springdocVersion = "1.4.3"
     implementation("org.springdoc:springdoc-openapi-ui:$springdocVersion")
     implementation("org.springdoc:springdoc-openapi-security:$springdocVersion")
+    implementation("org.springdoc:springdoc-openapi-kotlin:$springdocVersion")
+    implementation("org.springdoc:springdoc-openapi-data-rest:$springdocVersion")
   }
 
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
