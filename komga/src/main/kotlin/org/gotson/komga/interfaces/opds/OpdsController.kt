@@ -436,11 +436,13 @@ class OpdsController(
       links = listOf(
         OpdsLinkImageThumbnail("image/jpeg", "${routeBase}books/${book.id}/thumbnail"),
         OpdsLinkImage(media.pages[0].mediaType, "${routeBase}books/${book.id}/pages/1"),
-        OpdsLinkFileAcquisition(media.mediaType, "${routeBase}books/${book.id}/file/${book.fileName()}"),
+        OpdsLinkFileAcquisition(media.mediaType, "${routeBase}books/${book.id}/file/${sanitize(book.fileName())}"),
         opdsLinkPageStreaming
       )
     )
   }
+
+  private fun sanitize(fileName: String): String = fileName.replace(";", "")
 
   private fun Library.toOpdsEntry(): OpdsEntryNavigation =
     OpdsEntryNavigation(
