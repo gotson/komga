@@ -1,3 +1,11 @@
+## [0.62.5](https://github.com/gotson/komga/compare/v0.62.4...v0.62.5) (2020-09-06)
+
+
+### Bug Fixes
+
+* trim and lowercase tags and genres in metadata ([656f23a](https://github.com/gotson/komga/commit/656f23a64abd5cd22de6d670e64352df005a628e)), closes [#302](https://github.com/gotson/komga/issues/302)
+* **opds:** cannot download file with semicolon in filename ([e1e251e](https://github.com/gotson/komga/commit/e1e251ec2f384892d7705ab590c318cf0e3232bb)), closes [#309](https://github.com/gotson/komga/issues/309)
+
 ## [0.62.4](https://github.com/gotson/komga/compare/v0.62.3...v0.62.4) (2020-09-05)
 
 
