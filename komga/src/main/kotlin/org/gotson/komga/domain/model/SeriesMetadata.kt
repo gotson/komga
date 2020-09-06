@@ -11,8 +11,8 @@ class SeriesMetadata(
   publisher: String = "",
   val ageRating: Int? = null,
   val language: String = "",
-  val genres: Set<String> = emptySet(),
-  val tags: Set<String> = emptySet(),
+  genres: Set<String> = emptySet(),
+  tags: Set<String> = emptySet(),
 
   val statusLock: Boolean = false,
   val titleLock: Boolean = false,
@@ -34,6 +34,8 @@ class SeriesMetadata(
   val titleSort = titleSort.trim()
   val summary = summary.trim()
   val publisher = publisher.trim()
+  val tags = tags.map { it.toLowerCase().trim() }.filter { it.isNotBlank() }.toSet()
+  val genres = genres.map { it.toLowerCase().trim() }.filter { it.isNotBlank() }.toSet()
 
   fun copy(
     status: Status = this.status,

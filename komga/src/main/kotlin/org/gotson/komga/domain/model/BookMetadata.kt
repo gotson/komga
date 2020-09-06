@@ -10,7 +10,7 @@ class BookMetadata(
   val numberSort: Float,
   val releaseDate: LocalDate? = null,
   val authors: List<Author> = emptyList(),
-  val tags: Set<String> = emptySet(),
+  tags: Set<String> = emptySet(),
 
   val titleLock: Boolean = false,
   val summaryLock: Boolean = false,
@@ -29,6 +29,7 @@ class BookMetadata(
   val title = title.trim()
   val summary = summary.trim()
   val number = number.trim()
+  val tags = tags.map { it.toLowerCase().trim() }.filter { it.isNotBlank() }.toSet()
 
   fun copy(
     title: String = this.title,
