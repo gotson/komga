@@ -43,7 +43,6 @@ import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
-import java.time.LocalDate
 import kotlin.random.Random
 
 @ExtendWith(SpringExtension::class)
@@ -420,7 +419,7 @@ class SeriesControllerTest(
         assertThat(summary).isEqualTo("newSummary")
         assertThat(language).isEqualTo("ja")
         assertThat(ageRating).isEqualTo(12)
-        assertThat(genres).containsExactly("Action")
+        assertThat(genres).containsExactly("action")
         assertThat(tags).containsExactly("tag")
 
         assertThat(titleLock).isEqualTo(true)
