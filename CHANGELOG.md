@@ -1,3 +1,10 @@
+## [0.62.6](https://github.com/gotson/komga/compare/v0.62.5...v0.62.6) (2020-09-12)
+
+
+### Bug Fixes
+
+* **webreader:** images smaller than viewport would not fill width ([81d9a00](https://github.com/gotson/komga/commit/81d9a001850191b6ce2f6891caf296cc015a8dc6)), closes [#311](https://github.com/gotson/komga/issues/311)
+
 ## [0.62.5](https://github.com/gotson/komga/compare/v0.62.4...v0.62.5) (2020-09-06)
 
 
