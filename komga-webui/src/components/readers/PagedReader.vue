@@ -31,6 +31,7 @@
                  :key="`spread${i}-${j}`"
                  :src="page.url"
                  :class="imgClass(spread)"
+                 class="img-fit-all"
             />
           </div>
         </div>
@@ -241,7 +242,7 @@ export default Vue.extend({
         case ScaleType.SCREEN:
           return double ? 'img-double-fit-screen' : 'img-fit-screen'
         default:
-          return ''
+          return 'img-fit-original'
       }
     },
     eagerLoad (spreadIndex: number): boolean {
@@ -349,28 +350,40 @@ export default Vue.extend({
   position: absolute;
 }
 
+.img-fit-all {
+  object-fit: contain;
+  object-position: center;
+}
+
 .img-fit-width {
-  max-width: 100vw;
+  width: 100vw;
+  min-height: 100vh;
   align-self: flex-start;
 }
 
 .img-double-fit-width {
-  max-width: 50vw;
+  width: 50vw;
+  min-height: 100vh;
   align-self: flex-start;
 }
 
+.img-fit-original {
+  width: auto;
+  height: auto;
+}
+
 .img-fit-height {
+  min-height: 100vh;
   height: 100vh;
 }
 
 .img-fit-screen {
-  max-width: 100vw;
-  max-height: 100vh;
+  width: 100vw;
+  height: 100vh;
 }
 
 .img-double-fit-screen {
   max-width: 50vw;
-  max-height: 100vh;
-  object-fit: contain;
+  height: 100vh;
 }
 </style>
