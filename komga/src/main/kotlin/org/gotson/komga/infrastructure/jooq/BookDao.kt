@@ -8,6 +8,11 @@ import org.gotson.komga.jooq.tables.records.BookRecord
 import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
 import java.net.URL
 import java.time.LocalDateTime
@@ -21,6 +26,10 @@ class BookDao(
   private val b = Tables.BOOK
   private val m = Tables.MEDIA
   private val d = Tables.BOOK_METADATA
+
+  private val sorts = mapOf(
+    "createdDate" to b.CREATED_DATE
+  )
 
   override fun findByIdOrNull(bookId: String): Book? =
     findByIdOrNull(dsl, bookId)
@@ -51,6 +60,38 @@ class BookDao(
       .where(bookSearch.toCondition())
       .fetchInto(b)
       .map { it.toDomain() }
+
+  override fun findAll(bookSearch: BookSearch, pageable: Pageable): Page<Book> {
+    val conditions = bookSearch.toCondition()
+
+    val count = dsl.selectCount()
+      .from(b)
+      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
+      .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
+      .where(conditions)
+      .fetchOne(0, Long::class.java)
+
+    val orderBy = pageable.sort.toOrderBy(sorts)
+
+
+    val items = dsl.select(*b.fields())
+      .from(b)
+      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
+      .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
+      .where(conditions)
+      .orderBy(orderBy)
+      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+      .fetchInto(b)
+      .map { it.toDomain() }
+
+    val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
+    return PageImpl(
+      items,
+      if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
+      else PageRequest.of(0, maxOf(count.toInt(), 20), pageSort),
+      count.toLong()
+    )
+  }
 
 
   override fun getLibraryId(bookId: String): String? =

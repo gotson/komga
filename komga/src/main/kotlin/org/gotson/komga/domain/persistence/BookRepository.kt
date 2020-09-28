@@ -2,12 +2,15 @@ package org.gotson.komga.domain.persistence
 
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookSearch
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 interface BookRepository {
   fun findByIdOrNull(bookId: String): Book?
   fun findBySeriesId(seriesId: String): Collection<Book>
   fun findAll(): Collection<Book>
   fun findAll(bookSearch: BookSearch): Collection<Book>
+  fun findAll(bookSearch: BookSearch, pageable: Pageable): Page<Book>
 
   fun getLibraryId(bookId: String): String?
   fun findFirstIdInSeries(seriesId: String): String?

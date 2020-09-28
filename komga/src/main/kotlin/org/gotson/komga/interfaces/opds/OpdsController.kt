@@ -36,6 +36,7 @@ import org.gotson.komga.interfaces.opds.dto.OpdsLinkPageStreaming
 import org.gotson.komga.interfaces.opds.dto.OpdsLinkRel
 import org.gotson.komga.interfaces.opds.dto.OpdsLinkSearch
 import org.gotson.komga.interfaces.opds.dto.OpenSearchDescription
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -60,6 +61,7 @@ private const val ROUTE_BASE = "/opds/v1.2/"
 private const val ROUTE_CATALOG = "catalog"
 private const val ROUTE_SERIES_ALL = "series"
 private const val ROUTE_SERIES_LATEST = "series/latest"
+private const val ROUTE_BOOKS_LATEST = "books/latest"
 private const val ROUTE_LIBRARIES_ALL = "libraries"
 private const val ROUTE_COLLECTIONS_ALL = "collections"
 private const val ROUTE_READLISTS_ALL = "readlists"
@@ -68,6 +70,7 @@ private const val ROUTE_SEARCH = "search"
 
 private const val ID_SERIES_ALL = "allSeries"
 private const val ID_SERIES_LATEST = "latestSeries"
+private const val ID_BOOKS_LATEST = "latestBooks"
 private const val ID_LIBRARIES_ALL = "allLibraries"
 private const val ID_COLLECTIONS_ALL = "allCollections"
 private const val ID_READLISTS_ALL = "allReadLists"
@@ -122,6 +125,13 @@ class OpdsController(
         id = ID_SERIES_LATEST,
         content = "Browse latest series",
         link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "$routeBase$ROUTE_SERIES_LATEST")
+      ),
+      OpdsEntryNavigation(
+        title = "Latest books",
+        updated = ZonedDateTime.now(),
+        id = ID_BOOKS_LATEST,
+        content = "Browse latest books",
+        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "$routeBase$ROUTE_BOOKS_LATEST")
       ),
       OpdsEntryNavigation(
         title = "All libraries",
@@ -217,6 +227,35 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "$routeBase$ROUTE_SERIES_LATEST"),
+        linkStart
+      ),
+      entries = entries
+    )
+  }
+
+  @GetMapping(ROUTE_BOOKS_LATEST)
+  fun getLatestBooks(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestHeader(name = HttpHeaders.USER_AGENT, required = false, defaultValue = "") userAgent: String
+  ): OpdsFeed {
+    val bookSearch = BookSearch(
+      libraryIds = principal.user.getAuthorizedLibraryIds(null),
+      mediaStatus = setOf(Media.Status.READY)
+    )
+    val pageRequest = PageRequest.of(0, 50, Sort.by(Sort.Order.desc("createdDate")))
+
+    val entries = bookRepository.findAll(bookSearch, pageRequest)
+      .map { BookWithInfo(it, mediaRepository.findById(it.id), bookMetadataRepository.findById(it.id)) }
+      .content
+      .map { it.toOpdsEntry(shouldPrependBookNumbers(userAgent)) }
+
+    return OpdsFeedAcquisition(
+      id = ID_BOOKS_LATEST,
+      title = "Latest books",
+      updated = ZonedDateTime.now(),
+      author = komgaAuthor,
+      links = listOf(
+        OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "$routeBase$ROUTE_BOOKS_LATEST"),
         linkStart
       ),
       entries = entries
