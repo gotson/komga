@@ -40,12 +40,12 @@
             "format": "int32",
             "type": "integer"
           },
+          "last": {
+            "type": "boolean"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -859,12 +859,12 @@
             "format": "int32",
             "type": "integer"
           },
+          "last": {
+            "type": "boolean"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -1321,12 +1321,12 @@
             "format": "int32",
             "type": "integer"
           },
+          "last": {
+            "type": "boolean"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -1367,12 +1367,12 @@
             "format": "int32",
             "type": "integer"
           },
+          "last": {
+            "type": "boolean"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -1455,36 +1455,6 @@
   ],
   "openapi": "3.0.1",
   "paths": {
-    "/opds/v1.2/series/latest": {
-      "get": {
-        "operationId": "getLatestSeries_1",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/OpdsFeed"
-                }
-              },
-              "application/atom+xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/OpdsFeed"
-                }
-              },
-              "text/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/OpdsFeed"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "opds-controller"
-        ]
-      }
-    },
     "/opds/v1.2/search": {
       "get": {
         "operationId": "getSearch",
@@ -1505,6 +1475,36 @@
               "text/xml": {
                 "schema": {
                   "$ref": "#/components/schemas/OpenSearchDescription"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "opds-controller"
+        ]
+      }
+    },
+    "/opds/v1.2/series/latest": {
+      "get": {
+        "operationId": "getLatestSeries_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "application/atom+xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
                 }
               }
             }
@@ -2062,6 +2062,47 @@
         ],
         "tags": [
           "series-controller"
+        ]
+      }
+    },
+    "/opds/v1.2/books/latest": {
+      "get": {
+        "operationId": "getLatestBooks_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "application/atom+xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "default": "",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "User-Agent",
+            "required": false
+          }
+        ],
+        "tags": [
+          "opds-controller"
         ]
       }
     },
@@ -3076,6 +3117,17 @@
             "in": "query",
             "name": "search",
             "required": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "in": "query",
+            "name": "publisher",
+            "required": false
           }
         ],
         "tags": [
@@ -3103,6 +3155,36 @@
         ],
         "tags": [
           "library-controller"
+        ]
+      }
+    },
+    "/opds/v1.2/publishers": {
+      "get": {
+        "operationId": "getPublishers_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "application/atom+xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "opds-controller"
         ]
       }
     },

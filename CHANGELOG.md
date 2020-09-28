@@ -1,3 +1,12 @@
+# [0.63.0](https://github.com/gotson/komga/compare/v0.62.6...v0.63.0) (2020-09-28)
+
+
+### Features
+
+* **opds:** browse series by publishers ([f3fcab4](https://github.com/gotson/komga/commit/f3fcab41e49cd3fbe861ec8110fa9f2ee0972ec1)), closes [#332](https://github.com/gotson/komga/issues/332)
+* **opds:** recently added books ([dd7bc9c](https://github.com/gotson/komga/commit/dd7bc9cbf63c51a7b9655d26d7c69c005f13417c)), closes [#327](https://github.com/gotson/komga/issues/327)
+* order books by release date ([e3bb8bc](https://github.com/gotson/komga/commit/e3bb8bc7aee48154a4798620baa3b5f409f6d2a5)), closes [#318](https://github.com/gotson/komga/issues/318)
+
 ## [0.62.6](https://github.com/gotson/komga/compare/v0.62.5...v0.62.6) (2020-09-12)
 
 
