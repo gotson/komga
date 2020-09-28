@@ -241,10 +241,12 @@ export default Vue.extend({
       pageSize: 20,
       totalPages: 1,
       totalElements: null as number | null,
-      sortOptions: [{ name: 'Number', key: 'metadata.numberSort' }, { name: 'Date added', key: 'createdDate' }, {
-        name: 'File size',
-        key: 'fileSize',
-      }] as SortOption[],
+      sortOptions: [
+        { name: 'Number', key: 'metadata.numberSort' },
+        { name: 'Date added', key: 'createdDate' },
+        { name: 'Release date', key: 'metadata.releaseDate' },
+        { name: 'File size', key: 'fileSize' },
+      ] as SortOption[],
       sortActive: {} as SortActive,
       sortDefault: { key: 'metadata.numberSort', order: 'asc' } as SortActive,
       filterOptionsList: {

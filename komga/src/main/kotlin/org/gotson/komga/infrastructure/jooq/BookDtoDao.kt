@@ -55,6 +55,7 @@ class BookDtoDao(
     "media.comment" to DSL.lower(m.COMMENT),
     "media.mediaType" to DSL.lower(m.MEDIA_TYPE),
     "metadata.numberSort" to d.NUMBER_SORT,
+    "metadata.releaseDate" to d.RELEASE_DATE,
     "readProgress.lastModified" to r.LAST_MODIFIED_DATE,
     "readList.number" to rlb.NUMBER
   )
