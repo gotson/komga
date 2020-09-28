@@ -16,6 +16,7 @@ import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
+import org.gotson.komga.domain.persistence.ReferentialRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
@@ -62,6 +63,7 @@ private const val ROUTE_SERIES_LATEST = "series/latest"
 private const val ROUTE_LIBRARIES_ALL = "libraries"
 private const val ROUTE_COLLECTIONS_ALL = "collections"
 private const val ROUTE_READLISTS_ALL = "readlists"
+private const val ROUTE_PUBLISHERS_ALL = "publishers"
 private const val ROUTE_SEARCH = "search"
 
 private const val ID_SERIES_ALL = "allSeries"
@@ -69,6 +71,7 @@ private const val ID_SERIES_LATEST = "latestSeries"
 private const val ID_LIBRARIES_ALL = "allLibraries"
 private const val ID_COLLECTIONS_ALL = "allCollections"
 private const val ID_READLISTS_ALL = "allReadLists"
+private const val ID_PUBLISHERS_ALL = "allPublishers"
 
 @RestController
 @RequestMapping(value = [ROUTE_BASE], produces = [MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE])
@@ -81,7 +84,8 @@ class OpdsController(
   private val seriesMetadataRepository: SeriesMetadataRepository,
   private val bookRepository: BookRepository,
   private val bookMetadataRepository: BookMetadataRepository,
-  private val mediaRepository: MediaRepository
+  private val mediaRepository: MediaRepository,
+  private val referentialRepository: ReferentialRepository
 ) {
 
   private val routeBase = "${servletContext.contextPath}$ROUTE_BASE"
@@ -139,6 +143,13 @@ class OpdsController(
         id = ID_READLISTS_ALL,
         content = "Browse by read lists",
         link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "$routeBase$ROUTE_READLISTS_ALL")
+      ),
+      OpdsEntryNavigation(
+        title = "All publishers",
+        updated = ZonedDateTime.now(),
+        id = ID_PUBLISHERS_ALL,
+        content = "Browse by publishers",
+        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "$routeBase$ROUTE_PUBLISHERS_ALL")
       )
     )
   )
@@ -158,11 +169,13 @@ class OpdsController(
   @GetMapping(ROUTE_SERIES_ALL)
   fun getAllSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestParam("search") searchTerm: String?
+    @RequestParam(name = "search", required = false) searchTerm: String?,
+    @RequestParam(name = "publisher", required = false) publishers: List<String>?
   ): OpdsFeed {
     val seriesSearch = SeriesSearch(
       libraryIds = principal.user.getAuthorizedLibraryIds(null),
-      searchTerm = searchTerm
+      searchTerm = searchTerm,
+      publishers = publishers
     )
 
     val entries = seriesRepository.findAll(seriesSearch)
@@ -278,6 +291,35 @@ class OpdsController(
         linkStart
       ),
       entries = readLists.content.map { it.toOpdsEntry() }
+    )
+  }
+
+  @GetMapping(ROUTE_PUBLISHERS_ALL)
+  fun getPublishers(
+    @AuthenticationPrincipal principal: KomgaPrincipal
+  ): OpdsFeed {
+    val publishers =
+      if (principal.user.sharedAllLibraries) referentialRepository.findAllPublishers()
+      else referentialRepository.findAllPublishersByLibraries(principal.user.sharedLibrariesIds)
+
+    return OpdsFeedNavigation(
+      id = ID_PUBLISHERS_ALL,
+      title = "All publishers",
+      updated = ZonedDateTime.now(),
+      author = komgaAuthor,
+      links = listOf(
+        OpdsLinkFeedNavigation(OpdsLinkRel.SELF, "$routeBase$ROUTE_PUBLISHERS_ALL"),
+        linkStart
+      ),
+      entries = publishers.map {
+        OpdsEntryNavigation(
+          title = it,
+          updated = ZonedDateTime.now(),
+          id = "publisher:$it",
+          content = "",
+          link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "$routeBase$ROUTE_SERIES_ALL?publisher=$it")
+        )
+      }
     )
   }
 

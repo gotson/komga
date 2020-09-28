@@ -125,6 +125,15 @@ class ReferentialDao(
       .orderBy(sd.PUBLISHER)
       .fetchSet(sd.PUBLISHER)
 
+  override fun findAllPublishersByLibraries(libraryIds: Set<String>): Set<String> =
+    dsl.selectDistinct(sd.PUBLISHER)
+      .from(sd)
+      .leftJoin(s).on(sd.SERIES_ID.eq(s.ID))
+      .where(sd.PUBLISHER.ne(""))
+      .and(s.LIBRARY_ID.`in`(libraryIds))
+      .orderBy(sd.PUBLISHER)
+      .fetchSet(sd.PUBLISHER)
+
   override fun findAllPublishersByCollection(collectionId: String): Set<String> =
     dsl.selectDistinct(sd.PUBLISHER)
       .from(sd)

@@ -131,6 +131,7 @@ class SeriesDao(
     if (!collectionIds.isNullOrEmpty()) c = c.and(cs.COLLECTION_ID.`in`(collectionIds))
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
     if (!metadataStatus.isNullOrEmpty()) c = c.and(d.STATUS.`in`(metadataStatus))
+    if (!publishers.isNullOrEmpty()) c = c.and(DSL.lower(d.PUBLISHER).`in`(publishers.map { it.toLowerCase() }))
 
     return c
   }
