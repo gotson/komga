@@ -49,7 +49,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.web.util.UriUtils
 import java.net.URI
+import java.nio.charset.StandardCharsets
 import java.text.DecimalFormat
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -341,6 +343,7 @@ class OpdsController(
       if (principal.user.sharedAllLibraries) referentialRepository.findAllPublishers()
       else referentialRepository.findAllPublishersByLibraries(principal.user.sharedLibrariesIds)
 
+
     return OpdsFeedNavigation(
       id = ID_PUBLISHERS_ALL,
       title = "All publishers",
@@ -351,12 +354,13 @@ class OpdsController(
         linkStart
       ),
       entries = publishers.map {
+        val publisherEncoded = UriUtils.encodeQueryParam(it, StandardCharsets.UTF_8)
         OpdsEntryNavigation(
           title = it,
           updated = ZonedDateTime.now(),
-          id = "publisher:$it",
+          id = "publisher:$publisherEncoded",
           content = "",
-          link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "$routeBase$ROUTE_SERIES_ALL?publisher=$it")
+          link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, "$routeBase$ROUTE_SERIES_ALL?publisher=$publisherEncoded")
         )
       }
     )
