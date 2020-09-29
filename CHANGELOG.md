@@ -1,3 +1,10 @@
+## [0.63.1](https://github.com/gotson/komga/compare/v0.63.0...v0.63.1) (2020-09-29)
+
+
+### Bug Fixes
+
+* **opds:** url encode publisher query param ([8347fdc](https://github.com/gotson/komga/commit/8347fdc44d5610159599ba9946ae28d26779e65b)), closes [#335](https://github.com/gotson/komga/issues/335)
+
 # [0.63.0](https://github.com/gotson/komga/compare/v0.62.6...v0.63.0) (2020-09-28)
 
 
