@@ -1,3 +1,10 @@
+## [0.63.2](https://github.com/gotson/komga/compare/v0.63.1...v0.63.2) (2020-10-05)
+
+
+### Bug Fixes
+
+* **api:** incorrect parameter type ([342f04c](https://github.com/gotson/komga/commit/342f04c117ee0ad2d26782f7ee65ec14247f741e))
+
 ## [0.63.1](https://github.com/gotson/komga/compare/v0.63.0...v0.63.1) (2020-09-29)
 
 
