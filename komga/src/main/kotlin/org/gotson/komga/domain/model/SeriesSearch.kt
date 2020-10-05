@@ -2,7 +2,7 @@ package org.gotson.komga.domain.model
 
 open class SeriesSearch(
   val libraryIds: Collection<String>? = null,
-  val collectionIds: Collection<Long>? = null,
+  val collectionIds: Collection<String>? = null,
   val searchTerm: String? = null,
   val metadataStatus: Collection<SeriesMetadata.Status>? = null,
   val publishers: Collection<String>? = null
@@ -10,7 +10,7 @@ open class SeriesSearch(
 
 class SeriesSearchWithReadProgress(
   libraryIds: Collection<String>? = null,
-  collectionIds: Collection<Long>? = null,
+  collectionIds: Collection<String>? = null,
   searchTerm: String? = null,
   metadataStatus: Collection<SeriesMetadata.Status>? = null,
   publishers: Collection<String>? = null,
