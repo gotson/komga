@@ -189,7 +189,7 @@ class SeriesLifecycle(
         thumbnailsSeriesRepository.markSelected(selected[0])
       }
       selected.isEmpty() && all.isNotEmpty() -> {
-        logger.info { "Series has bo selected thumbnail, choosing one automatically" }
+        logger.info { "Series has no selected thumbnail, choosing one automatically" }
         thumbnailsSeriesRepository.markSelected(all.first())
       }
     }
