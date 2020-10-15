@@ -131,7 +131,7 @@ class BookLifecycle(
         thumbnailBookRepository.markSelected(selected[0])
       }
       selected.isEmpty() && all.isNotEmpty() -> {
-        logger.info { "Book has bo selected thumbnail, choosing one automatically" }
+        logger.info { "Book has no selected thumbnail, choosing one automatically" }
         thumbnailBookRepository.markSelected(all.first())
       }
     }
