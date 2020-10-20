@@ -1,3 +1,10 @@
+## [0.63.3](https://github.com/gotson/komga/compare/v0.63.2...v0.63.3) (2020-10-20)
+
+
+### Bug Fixes
+
+* scanner crashes if folders are not readable ([f43a386](https://github.com/gotson/komga/commit/f43a3864f869d254e75b18c00c4a1585ed69fd25)), closes [#342](https://github.com/gotson/komga/issues/342)
+
 ## [0.63.2](https://github.com/gotson/komga/compare/v0.63.1...v0.63.2) (2020-10-05)
 
 
