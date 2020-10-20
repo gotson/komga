@@ -6,7 +6,10 @@ import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.springframework.stereotype.Service
+import java.io.IOException
 import java.nio.file.FileVisitOption
+import java.nio.file.FileVisitResult
+import java.nio.file.FileVisitor
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.attribute.BasicFileAttributes
@@ -34,25 +37,42 @@ class FileSystemScanner(
     lateinit var scannedSeries: Map<Series, List<Book>>
 
     measureTime {
-      scannedSeries = Files.walk(root, FileVisitOption.FOLLOW_LINKS).use { dirsStream ->
-        dirsStream.asSequence()
-          .onEach { logger.trace { "GetSeries file: $it" } }
-          .filter { !Files.isHidden(it) }
-          .filter { Files.isDirectory(it) }
-          .filter { path ->
-            komgaProperties.librariesScanDirectoryExclusions.none { exclude ->
-              path.toString().contains(exclude, true)
-            }
-          }
-          .mapNotNull { dir ->
-            logger.debug { "Processing directory: $dir" }
-            val books = Files.list(dir).use { dirStream ->
-              dirStream.asSequence()
-                .onEach { logger.trace { "GetBooks file: $it" } }
-                .filter { Files.isRegularFile(it) }
-                .filter { supportedExtensions.contains(FilenameUtils.getExtension(it.fileName.toString()).toLowerCase()) }
-                .map {
-                  logger.debug { "Processing file: $it" }
+      val dirs = mutableListOf<Path>()
+
+      Files.walkFileTree(root, setOf(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE, object : FileVisitor<Path> {
+        override fun preVisitDirectory(dir: Path, attrs: BasicFileAttributes?): FileVisitResult {
+          logger.trace { "preVisit: $dir" }
+          if (!Files.isHidden(dir) && komgaProperties.librariesScanDirectoryExclusions.any { exclude ->
+              dir.toString().contains(exclude, true)
+            }) return FileVisitResult.SKIP_SUBTREE
+
+          dirs.add(dir)
+          return FileVisitResult.CONTINUE
+        }
+
+        override fun visitFile(file: Path?, attrs: BasicFileAttributes?): FileVisitResult = FileVisitResult.CONTINUE
+
+        override fun visitFileFailed(file: Path?, exc: IOException?): FileVisitResult {
+          logger.warn { "Could not access: $file" }
+          return FileVisitResult.SKIP_SUBTREE
+        }
+
+        override fun postVisitDirectory(dir: Path?, exc: IOException?): FileVisitResult = FileVisitResult.CONTINUE
+      })
+
+      logger.debug { "Found directories: $dirs" }
+
+      scannedSeries = dirs
+        .mapNotNull { dir ->
+          logger.debug { "Processing directory: $dir" }
+          val books = Files.list(dir).use { dirStream ->
+            dirStream.asSequence()
+              .onEach { logger.trace { "GetBooks file: $it" } }
+              .filter { Files.isReadable(it) }
+              .filter { Files.isRegularFile(it) }
+              .filter { supportedExtensions.contains(FilenameUtils.getExtension(it.fileName.toString()).toLowerCase()) }
+              .map {
+                logger.debug { "Processing file: $it" }
                   Book(
                     name = FilenameUtils.getBaseName(it.fileName.toString()),
                     url = it.toUri().toURL(),
@@ -74,7 +94,6 @@ class FileSystemScanner(
               else dir.getUpdatedTime()
             ) to books
           }.toMap()
-      }
     }.also {
       val countOfBooks = scannedSeries.values.sumBy { it.size }
       logger.info { "Scanned ${scannedSeries.size} series and $countOfBooks books in $it" }
