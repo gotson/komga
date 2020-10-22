@@ -1,3 +1,10 @@
+# [0.64.0](https://github.com/gotson/komga/compare/v0.63.3...v0.64.0) (2020-10-22)
+
+
+### Features
+
+* append volume to series name ([2567796](https://github.com/gotson/komga/commit/25677967db255efe39834ce31fe0f048481a3067)), closes [#343](https://github.com/gotson/komga/issues/343) [#132](https://github.com/gotson/komga/issues/132)
+
 ## [0.63.3](https://github.com/gotson/komga/compare/v0.63.2...v0.63.3) (2020-10-20)
 
 
