@@ -214,6 +214,22 @@ class ComicInfoProviderTest {
     }
 
     @Test
+    fun `given comicInfo with volume when getting series metadata then metadata patch is valid`() {
+      val comicInfo = ComicInfo().apply {
+        series = "series"
+        volume = 2020
+      }
+
+      every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
+
+      val patch = comicInfoProvider.getSeriesMetadataFromBook(book, media)!!
+
+      with(patch) {
+        assertThat(title).isEqualTo("series (2020)")
+      }
+    }
+
+    @Test
     fun `given comicInfo with incorrect values when getting series metadata then metadata patch is valid`() {
       val comicInfo = ComicInfo().apply {
         languageISO = "japanese"

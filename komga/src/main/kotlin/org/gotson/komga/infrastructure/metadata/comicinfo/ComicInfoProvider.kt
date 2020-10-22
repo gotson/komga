@@ -76,10 +76,13 @@ class ComicInfoProvider(
       }
 
       val genres = comicInfo.genre?.split(',')?.mapNotNull { it.trim().ifBlank { null } }
+      val series = comicInfo.series?.ifBlank { null }?.let { series ->
+        series + (comicInfo.volume?.let { " ($it)" } ?: "")
+      }
 
       return SeriesMetadataPatch(
-        title = comicInfo.series?.ifBlank { null },
-        titleSort = comicInfo.series?.ifBlank { null },
+        title = series,
+        titleSort = series,
         status = null,
         summary = null,
         readingDirection = readingDirection,
