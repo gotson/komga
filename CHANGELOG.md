@@ -1,3 +1,10 @@
+## [0.64.1](https://github.com/gotson/komga/compare/v0.64.0...v0.64.1) (2020-10-24)
+
+
+### Bug Fixes
+
+* use own distrib of sqlite with freebsd support ([3d2793a](https://github.com/gotson/komga/commit/3d2793a768cb220265246fabc16ec3474e0af935)), closes [#319](https://github.com/gotson/komga/issues/319)
+
 # [0.64.0](https://github.com/gotson/komga/compare/v0.63.3...v0.64.0) (2020-10-22)
 
 
