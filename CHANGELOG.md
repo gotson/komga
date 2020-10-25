@@ -1,3 +1,10 @@
+## [0.64.2](https://github.com/gotson/komga/compare/v0.64.1...v0.64.2) (2020-10-25)
+
+
+### Bug Fixes
+
+* native webp library ([15caea3](https://github.com/gotson/komga/commit/15caea3b99b76162aa636bcd691032a4510f32ff)), closes [#279](https://github.com/gotson/komga/issues/279)
+
 ## [0.64.1](https://github.com/gotson/komga/compare/v0.64.0...v0.64.1) (2020-10-24)
 
 
