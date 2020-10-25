@@ -85,6 +85,7 @@ dependencies {
   runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.6")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.6")
   runtimeOnly(files("$projectDir/libs/webp-imageio-decoder-plugin-0.2.jar"))
+  implementation("org.gotson:webp-imageio:0.2.0")
   // support for jpeg2000
   runtimeOnly("com.github.jai-imageio:jai-imageio-jpeg2000:1.3.0")
   runtimeOnly("org.apache.pdfbox:jbig2-imageio:3.0.3")

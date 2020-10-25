@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.image
 
+import com.luciad.imageio.webp.WebP
 import mu.KotlinLogging
 import net.coobird.thumbnailator.Thumbnails
 import org.springframework.stereotype.Service
@@ -7,18 +8,35 @@ import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
+import javax.imageio.spi.IIORegistry
+import javax.imageio.spi.ImageReaderSpi
+
 
 private val logger = KotlinLogging.logger {}
 
 @Service
 class ImageConverter {
 
-  val supportedReadFormats = ImageIO.getReaderFormatNames().toList()
-  val supportedReadMediaTypes = ImageIO.getReaderMIMETypes().toList()
-  val supportedWriteFormats = ImageIO.getWriterFormatNames().toList()
-  val supportedWriteMediaTypes = ImageIO.getWriterMIMETypes().toList()
+  val supportedReadFormats by lazy { ImageIO.getReaderFormatNames().toList() }
+  val supportedReadMediaTypes by lazy { ImageIO.getReaderMIMETypes().toList() }
+  val supportedWriteFormats by lazy { ImageIO.getWriterFormatNames().toList() }
+  val supportedWriteMediaTypes by lazy { ImageIO.getWriterMIMETypes().toList() }
 
   init {
+    val registry = IIORegistry.getDefaultInstance()
+    val nativeWebp = registry.getServiceProviderByClass(Class.forName("com.luciad.imageio.webp.WebPImageReaderSpi")) as ImageReaderSpi?
+    val javaWebp = registry.getServiceProviderByClass(Class.forName("net.sf.javavp8decoder.imageio.WebPImageReaderSpi")) as ImageReaderSpi?
+
+    if (nativeWebp != null) {
+      if (!WebP.loadNativeLibrary()) {
+        logger.warn { "Could not load native WebP library" }
+        registry.deregisterServiceProvider(nativeWebp)
+      } else if (javaWebp != null) {
+        logger.info { "Using native WebP library" }
+        registry.setOrdering(ImageReaderSpi::class.java, nativeWebp, javaWebp)
+      }
+    }
+
     logger.info { "Supported read formats: $supportedReadFormats" }
     logger.info { "Supported read mediaTypes: $supportedReadMediaTypes" }
     logger.info { "Supported write formats: $supportedWriteFormats" }
