@@ -1,10 +1,14 @@
 package org.gotson.komga.domain.service
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import mu.KotlinLogging
 import org.apache.commons.io.FilenameUtils
-import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.Series
+import org.gotson.komga.domain.model.*
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
+import org.gotson.komga.infrastructure.mediacontainer.MediaContainerExtractor
+import org.gotson.komga.infrastructure.metadata.comicinfo.dto.ComicInfo
+import org.gotson.komga.infrastructure.web.filePathToUrl
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.IOException
 import java.nio.file.FileVisitOption
@@ -16,17 +20,24 @@ import java.nio.file.attribute.BasicFileAttributes
 import java.nio.file.attribute.FileTime
 import java.time.LocalDateTime
 import java.time.ZoneId
-import kotlin.streams.asSequence
 import kotlin.time.measureTime
 
 private val logger = KotlinLogging.logger {}
+private const val COMIC_INFO = "ComicInfo.xml"
+
 
 @Service
 class FileSystemScanner(
-  private val komgaProperties: KomgaProperties
+  private val komgaProperties: KomgaProperties,
+  extractors: List<MediaContainerExtractor>,
+  private val bookAnalyzer: BookAnalyzer
 ) {
 
+  @Autowired(required = false) private val mapper: XmlMapper = XmlMapper()
   val supportedExtensions = listOf("cbz", "zip", "cbr", "rar", "pdf", "epub")
+  val supportedMediaTypes = extractors
+    .flatMap { e -> e.mediaTypes().map { it to e } }
+    .toMap()
 
   fun scanRootFolder(root: Path, forceDirectoryModifiedTime: Boolean = false): Map<Series, List<Book>> {
     logger.info { "Scanning folder: $root" }
@@ -34,10 +45,16 @@ class FileSystemScanner(
     logger.info { "Excluded patterns: ${komgaProperties.librariesScanDirectoryExclusions}" }
     logger.info { "Force directory modified time: $forceDirectoryModifiedTime" }
 
-    lateinit var scannedSeries: Map<Series, List<Book>>
+    var scannedSeries: MutableMap<Series, List<Book>>
 
     measureTime {
       val dirs = mutableListOf<Path>()
+      var bookfile: Book
+      var seriesfile: Series
+      var mediabook: Media
+      var seriesName: String
+
+      scannedSeries = mutableMapOf()
 
       Files.walkFileTree(root, setOf(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE, object : FileVisitor<Path> {
         override fun preVisitDirectory(dir: Path, attrs: BasicFileAttributes?): FileVisitResult {
@@ -50,7 +67,45 @@ class FileSystemScanner(
           return FileVisitResult.CONTINUE
         }
 
-        override fun visitFile(file: Path?, attrs: BasicFileAttributes?): FileVisitResult = FileVisitResult.CONTINUE
+        override fun visitFile(file: Path, attrs: BasicFileAttributes?): FileVisitResult {
+          if (Files.isReadable(file) && Files.isRegularFile(file) && supportedExtensions.contains(FilenameUtils.getExtension(file.fileName.toString()).toLowerCase())) {
+            logger.trace { "File Detected: $file" }
+            bookfile = Book(
+              FilenameUtils.getBaseName(file.fileName.toString()),
+              file.toUri().toURL(),
+              file.getUpdatedTime(),
+              Files.readAttributes(file, BasicFileAttributes::class.java).size()
+            )
+
+            mediabook = bookAnalyzer.analyze(bookfile)
+
+            if ( mediabook.files.none { it == COMIC_INFO } ) {
+              logger.debug { "Book does not contain any $COMIC_INFO file: ${bookfile.name}" }
+              seriesfile = Series (
+                name = dirs.last().fileName.toString(),
+                url = dirs.last().toUri().toURL(),
+                fileLastModified = dirs.last().getUpdatedTime()
+              )
+            } else if (mediabook.status != Media.Status.READY) {
+              logger.warn { "Book media is not ready, cannot get files" }
+              seriesfile = Series (
+                name = dirs.last().fileName.toString(),
+                url = dirs.last().toUri().toURL(),
+                fileLastModified = dirs.last().getUpdatedTime()
+              )
+            } else {
+              val fileContent = supportedMediaTypes.getValue(mediabook.mediaType!!).getEntryStream(bookfile.path(), COMIC_INFO)
+              val mtdComic = mapper.readValue(fileContent, ComicInfo::class.java)
+
+              seriesName = mtdComic.series.toString()
+              seriesfile = Series(seriesName, filePathToUrl("/$seriesName"), LocalDateTime.now())
+            }
+              scannedSeries = addBookSeriesMap(seriesfile, bookfile, scannedSeries)
+              logger.debug { "Scanned up to now: $scannedSeries" }
+
+          }
+          return FileVisitResult.CONTINUE
+        }
 
         override fun visitFileFailed(file: Path?, exc: IOException?): FileVisitResult {
           logger.warn { "Could not access: $file" }
@@ -60,54 +115,42 @@ class FileSystemScanner(
         override fun postVisitDirectory(dir: Path?, exc: IOException?): FileVisitResult = FileVisitResult.CONTINUE
       })
 
-      logger.debug { "Found directories: $dirs" }
+      return scannedSeries.toMap()
+    }
+  }
 
-      scannedSeries = dirs
-        .mapNotNull { dir ->
-          logger.debug { "Processing directory: $dir" }
-          val books = Files.list(dir).use { dirStream ->
-            dirStream.asSequence()
-              .onEach { logger.trace { "GetBooks file: $it" } }
-              .filter { Files.isReadable(it) }
-              .filter { Files.isRegularFile(it) }
-              .filter { supportedExtensions.contains(FilenameUtils.getExtension(it.fileName.toString()).toLowerCase()) }
-              .map {
-                logger.debug { "Processing file: $it" }
-                  Book(
-                    name = FilenameUtils.getBaseName(it.fileName.toString()),
-                    url = it.toUri().toURL(),
-                    fileLastModified = it.getUpdatedTime(),
-                    fileSize = Files.readAttributes(it, BasicFileAttributes::class.java).size()
-                  )
-                }.toList()
-            }
-            if (books.isNullOrEmpty()) {
-              logger.debug { "No books in directory: $dir" }
-              return@mapNotNull null
-            }
-            Series(
-              name = dir.fileName.toString(),
-              url = dir.toUri().toURL(),
-              fileLastModified =
-              if (forceDirectoryModifiedTime)
-                maxOf(dir.getUpdatedTime(), books.map { it.fileLastModified }.max()!!)
-              else dir.getUpdatedTime()
-            ) to books
-          }.toMap()
-    }.also {
-      val countOfBooks = scannedSeries.values.sumBy { it.size }
-      logger.info { "Scanned ${scannedSeries.size} series and $countOfBooks books in $it" }
+  fun addBookSeriesMap(series: Series, book: Book, scannedSeries: MutableMap<Series, List<Book>>): MutableMap<Series, List<Book>> {
+    val nameSearch = series.name
+    var found = false
+    var bookList: MutableList<Book>
+
+    scannedSeries.forEach { (t, _) ->
+      logger.debug { "Comparing: ${t.name} with $nameSearch" }
+      if (found) return@forEach
+      if ( t.name == nameSearch ){
+        logger.debug { "Comparation matched" }
+        bookList = scannedSeries[t]?.toMutableList()!!
+        bookList.add(book)
+        scannedSeries[t] = bookList.toList()
+        found = true
+      }
+    }
+
+    if (!found) {
+      logger.debug { "Adding new Serie: $nameSearch" }
+      scannedSeries[series] = listOf(book)
     }
 
     return scannedSeries
   }
+
+  fun Path.getUpdatedTime(): LocalDateTime =
+    Files.readAttributes(this, BasicFileAttributes::class.java).let { b ->
+      maxOf(b.creationTime(), b.lastModifiedTime()).toLocalDateTime()
+        .also { logger.trace { "Get updated time for file $this. Creation time: ${b.creationTime()}, Last Modified Time: ${b.lastModifiedTime()}. Choosing the max (Local Time): $it" } }
+    }
+
+  fun FileTime.toLocalDateTime(): LocalDateTime =
+    LocalDateTime.ofInstant(this.toInstant(), ZoneId.systemDefault())
+
 }
-
-fun Path.getUpdatedTime(): LocalDateTime =
-  Files.readAttributes(this, BasicFileAttributes::class.java).let { b ->
-    maxOf(b.creationTime(), b.lastModifiedTime()).toLocalDateTime()
-      .also { logger.trace { "Get updated time for file $this. Creation time: ${b.creationTime()}, Last Modified Time: ${b.lastModifiedTime()}. Choosing the max (Local Time): $it" } }
-  }
-
-fun FileTime.toLocalDateTime(): LocalDateTime =
-  LocalDateTime.ofInstant(this.toInstant(), ZoneId.systemDefault())

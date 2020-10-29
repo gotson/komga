@@ -49,6 +49,7 @@ class LocalArtworkProvider(
   fun getSeriesThumbnails(series: Series): List<ThumbnailSeries> {
     logger.info { "Looking for local thumbnails for series: $series" }
 
+    if (!Files.exists(series.path())) return emptyList()
     return Files.list(series.path()).use { dirStream ->
       dirStream.asSequence()
         .filter { Files.isRegularFile(it) }
