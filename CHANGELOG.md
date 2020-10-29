@@ -1,3 +1,10 @@
+## [0.64.3](https://github.com/gotson/komga/compare/v0.64.2...v0.64.3) (2020-10-29)
+
+
+### Bug Fixes
+
+* don't append volume to series title if equals to 1 ([1cb9ae6](https://github.com/gotson/komga/commit/1cb9ae6aad85900db1a1dc12e14a7a88d4a430a9)), closes [#347](https://github.com/gotson/komga/issues/347)
+
 ## [0.64.2](https://github.com/gotson/komga/compare/v0.64.1...v0.64.2) (2020-10-25)
 
 
