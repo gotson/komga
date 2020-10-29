@@ -77,7 +77,7 @@ class ComicInfoProvider(
 
       val genres = comicInfo.genre?.split(',')?.mapNotNull { it.trim().ifBlank { null } }
       val series = comicInfo.series?.ifBlank { null }?.let { series ->
-        series + (comicInfo.volume?.let { " ($it)" } ?: "")
+        series + (comicInfo.volume?.let { if (it != 1) " ($it)" else "" } ?: "")
       }
 
       return SeriesMetadataPatch(
