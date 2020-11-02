@@ -298,7 +298,7 @@ class BookController(
   @GetMapping(value = [
     "api/v1/books/{bookId}/pages/{pageNumber}",
     "opds/v1.2/books/{bookId}/pages/{pageNumber}"
-  ])
+  ], produces = [MediaType.ALL_VALUE])
   @PreAuthorize("hasRole('$ROLE_PAGE_STREAMING')")
   fun getBookPage(
     @AuthenticationPrincipal principal: KomgaPrincipal,
