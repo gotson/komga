@@ -1,3 +1,10 @@
+## [0.64.4](https://github.com/gotson/komga/compare/v0.64.3...v0.64.4) (2020-11-02)
+
+
+### Bug Fixes
+
+* **api:** support accept header in getBookPage ([#352](https://github.com/gotson/komga/issues/352)) ([e123d38](https://github.com/gotson/komga/commit/e123d386928c07c69915fcaa903c1a9b5373b8c6)), closes [#350](https://github.com/gotson/komga/issues/350)
+
 ## [0.64.3](https://github.com/gotson/komga/compare/v0.64.2...v0.64.3) (2020-10-29)
 
 
