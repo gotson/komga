@@ -1,3 +1,10 @@
+## [0.64.5](https://github.com/gotson/komga/compare/v0.64.4...v0.64.5) (2020-11-23)
+
+
+### Bug Fixes
+
+* enhanced logging for sqlite native lib loading ([f1a894d](https://github.com/gotson/komga/commit/f1a894db9eb9c6720353039a9dc79c021856cabd))
+
 ## [0.64.4](https://github.com/gotson/komga/compare/v0.64.3...v0.64.4) (2020-11-02)
 
 
