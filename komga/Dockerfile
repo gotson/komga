@@ -1,4 +1,4 @@
-FROM adoptopenjdk:11-jre-hotspot
+FROM adoptopenjdk:11-jre-hotspot-bionic
 VOLUME /tmp
 ARG DEPENDENCY=build/dependency
 WORKDIR app
