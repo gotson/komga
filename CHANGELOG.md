@@ -1,3 +1,10 @@
+## [0.64.6](https://github.com/gotson/komga/compare/v0.64.5...v0.64.6) (2020-12-03)
+
+
+### Bug Fixes
+
+* use bionic base image ([85fe674](https://github.com/gotson/komga/commit/85fe674e6a3f4977450f089b83c91f22e1f6f390)), closes [#349](https://github.com/gotson/komga/issues/349)
+
 ## [0.64.5](https://github.com/gotson/komga/compare/v0.64.4...v0.64.5) (2020-11-23)
 
 
