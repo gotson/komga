@@ -63,7 +63,7 @@ class SeriesDao(
   override fun findAll(search: SeriesSearch): Collection<Series> {
     val conditions = search.toCondition()
 
-    return dsl.select(*s.fields())
+    return dsl.selectDistinct(*s.fields())
       .from(s)
       .leftJoin(cs).on(s.ID.eq(cs.SERIES_ID))
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
