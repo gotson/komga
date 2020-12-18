@@ -1,3 +1,10 @@
+## [0.64.7](https://github.com/gotson/komga/compare/v0.64.6...v0.64.7) (2020-12-18)
+
+
+### Bug Fixes
+
+* **opds:** duplicate series if in multiple collections ([c7e6209](https://github.com/gotson/komga/commit/c7e62097656b435bd3e728e95038a7986f226525)), closes [#363](https://github.com/gotson/komga/issues/363)
+
 ## [0.64.6](https://github.com/gotson/komga/compare/v0.64.5...v0.64.6) (2020-12-03)
 
 
