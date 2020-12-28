@@ -17,7 +17,7 @@ plugins {
     kotlin("kapt") version kotlinVersion
   }
   id("org.springframework.boot") version "2.3.2.RELEASE"
-  id("com.github.ben-manes.versions") version "0.29.0"
+  id("com.github.ben-manes.versions") version "0.36.0"
   id("com.gorylenko.gradle-git-properties") version "2.2.3"
   id("com.rohanprabhu.kotlin-dsl-jooq") version "0.4.6"
   id("org.flywaydb.flyway") version "6.4.4"
