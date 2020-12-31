@@ -1,7 +1,7 @@
 [![Open Collective backers and sponsors](https://img.shields.io/opencollective/all/komga)](https://opencollective.com/komga)
 [![Discord](https://img.shields.io/discord/678794935368941569?label=Discord)](https://discord.gg/TdRpkDu)
 
-[![Build Status](https://travis-ci.com/gotson/komga.svg?branch=master)](https://travis-ci.com/gotson/komga)
+[![Build Status](https://github.com/gotson/komga/workflows/CI/badge.svg?branch=master)](https://github.com/gotson/komga/actions?query=workflow%3ACI+branch%3Amaster)
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/gotson/komga?color=blue&label=download&sort=semver)](https://github.com/gotson/komga/releases)
 [![Docker Pulls](https://img.shields.io/docker/pulls/gotson/komga)](https://hub.docker.com/r/gotson/komga)
 
