@@ -6,15 +6,15 @@
 source "$(dirname "$0")/docker-common.sh" $1 $2
 
 # Update Docker CE
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-sudo apt-get update
-sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+#curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+#sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+#sudo apt-get update
+#sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
 
 # Enable buildx
-docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-docker buildx create --name mybuilder --driver docker-container --use
-docker buildx inspect --bootstrap
+#docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+#docker buildx create --name mybuilder --driver docker-container --use
+#docker buildx inspect --bootstrap
 
 # Unpack fat jar
 ./gradlew unpack
