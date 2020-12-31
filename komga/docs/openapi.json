@@ -209,6 +209,37 @@
           }
         }
       },
+      "OpenSearchDescription": {
+        "type": "object",
+        "required": [
+          "description",
+          "inputEncoding",
+          "outputEncoding",
+          "shortName",
+          "url"
+        ],
+        "properties": {
+          "inputEncoding": {
+            "type": "string"
+          },
+          "outputEncoding": {
+            "type": "string"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string",
+            "maxLength": 1024
+          },
+          "shortName": {
+            "minLength": 1,
+            "type": "string",
+            "maxLength": 16
+          },
+          "url": {
+            "$ref": "#/components/schemas/OpenSearchUrl"
+          }
+        }
+      },
       "BookMetadataDto": {
         "type": "object",
         "required": [
@@ -290,37 +321,6 @@
           }
         }
       },
-      "OpenSearchDescription": {
-        "type": "object",
-        "required": [
-          "description",
-          "inputEncoding",
-          "outputEncoding",
-          "shortName",
-          "url"
-        ],
-        "properties": {
-          "inputEncoding": {
-            "type": "string"
-          },
-          "outputEncoding": {
-            "type": "string"
-          },
-          "description": {
-            "minLength": 1,
-            "type": "string",
-            "maxLength": 1024
-          },
-          "shortName": {
-            "minLength": 1,
-            "type": "string",
-            "maxLength": 16
-          },
-          "url": {
-            "$ref": "#/components/schemas/OpenSearchUrl"
-          }
-        }
-      },
       "SharedLibraryDto": {
         "type": "object",
         "required": [
@@ -328,21 +328,6 @@
         ],
         "properties": {
           "id": {
-            "type": "string"
-          }
-        }
-      },
-      "AuthorDto": {
-        "type": "object",
-        "required": [
-          "name",
-          "role"
-        ],
-        "properties": {
-          "role": {
-            "type": "string"
-          },
-          "name": {
             "type": "string"
           }
         }
@@ -399,6 +384,21 @@
           }
         }
       },
+      "AuthorDto": {
+        "type": "object",
+        "required": [
+          "name",
+          "role"
+        ],
+        "properties": {
+          "role": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
       "MediaDto": {
         "type": "object",
         "required": [
@@ -423,6 +423,17 @@
           }
         }
       },
+      "DirectoryRequestDto": {
+        "type": "object",
+        "required": [
+          "path"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          }
+        }
+      },
       "Pageable": {
         "type": "object",
         "properties": {
@@ -441,17 +452,6 @@
             "items": {
               "type": "string"
             }
-          }
-        }
-      },
-      "DirectoryRequestDto": {
-        "type": "object",
-        "required": [
-          "path"
-        ],
-        "properties": {
-          "path": {
-            "type": "string"
           }
         }
       },
@@ -741,28 +741,6 @@
           }
         }
       },
-      "CollectionCreationDto": {
-        "type": "object",
-        "required": [
-          "name",
-          "ordered",
-          "seriesIds"
-        ],
-        "properties": {
-          "ordered": {
-            "type": "boolean"
-          },
-          "name": {
-            "type": "string"
-          },
-          "seriesIds": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
       "ReadListDto": {
         "type": "object",
         "required": [
@@ -796,6 +774,28 @@
           },
           "id": {
             "type": "string"
+          }
+        }
+      },
+      "CollectionCreationDto": {
+        "type": "object",
+        "required": [
+          "name",
+          "ordered",
+          "seriesIds"
+        ],
+        "properties": {
+          "ordered": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "seriesIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -1135,68 +1135,6 @@
           }
         }
       },
-      "SeriesDto": {
-        "type": "object",
-        "required": [
-          "booksCount",
-          "booksInProgressCount",
-          "booksReadCount",
-          "booksUnreadCount",
-          "created",
-          "fileLastModified",
-          "id",
-          "lastModified",
-          "libraryId",
-          "metadata",
-          "name",
-          "url"
-        ],
-        "properties": {
-          "metadata": {
-            "$ref": "#/components/schemas/SeriesMetadataDto"
-          },
-          "fileLastModified": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "created": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "booksReadCount": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "libraryId": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "id": {
-            "type": "string"
-          },
-          "lastModified": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "booksCount": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "url": {
-            "type": "string"
-          },
-          "booksUnreadCount": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "booksInProgressCount": {
-            "format": "int32",
-            "type": "integer"
-          }
-        }
-      },
       "SeriesMetadataUpdateDto": {
         "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.",
         "type": "object",
@@ -1281,6 +1219,68 @@
               "ABANDONED",
               "HIATUS"
             ]
+          }
+        }
+      },
+      "SeriesDto": {
+        "type": "object",
+        "required": [
+          "booksCount",
+          "booksInProgressCount",
+          "booksReadCount",
+          "booksUnreadCount",
+          "created",
+          "fileLastModified",
+          "id",
+          "lastModified",
+          "libraryId",
+          "metadata",
+          "name",
+          "url"
+        ],
+        "properties": {
+          "metadata": {
+            "$ref": "#/components/schemas/SeriesMetadataDto"
+          },
+          "fileLastModified": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "created": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "booksReadCount": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "libraryId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "lastModified": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "booksCount": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "url": {
+            "type": "string"
+          },
+          "booksUnreadCount": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "booksInProgressCount": {
+            "format": "int32",
+            "type": "integer"
           }
         }
       },
@@ -1455,6 +1455,36 @@
   ],
   "openapi": "3.0.1",
   "paths": {
+    "/opds/v1.2/series/latest": {
+      "get": {
+        "operationId": "getLatestSeries",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "application/atom+xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "opds-controller"
+        ]
+      }
+    },
     "/opds/v1.2/search": {
       "get": {
         "operationId": "getSearch",
@@ -1475,36 +1505,6 @@
               "text/xml": {
                 "schema": {
                   "$ref": "#/components/schemas/OpenSearchDescription"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "opds-controller"
-        ]
-      }
-    },
-    "/opds/v1.2/series/latest": {
-      "get": {
-        "operationId": "getLatestSeries_1",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/OpdsFeed"
-                }
-              },
-              "application/atom+xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/OpdsFeed"
-                }
-              },
-              "text/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/OpdsFeed"
                 }
               }
             }
@@ -1557,7 +1557,7 @@
           },
           "required": true
         },
-        "operationId": "addOne",
+        "operationId": "addOne_2",
         "responses": {
           "200": {
             "description": "OK",
@@ -1575,7 +1575,7 @@
         ]
       },
       "get": {
-        "operationId": "getAll",
+        "operationId": "getAll_2",
         "responses": {
           "200": {
             "description": "OK",
@@ -1649,7 +1649,7 @@
     "/api/v1/books/latest": {
       "get": {
         "description": "Return newly added or updated books.",
-        "operationId": "getLatestBooks",
+        "operationId": "getLatestBooks_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -1755,6 +1755,67 @@
         ]
       }
     },
+    "/opds/v1.2/readlists": {
+      "get": {
+        "operationId": "getReadLists",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "application/atom+xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "opds-controller"
+        ]
+      }
+    },
+    "/api/v1/series/{seriesId}/thumbnail": {
+      "get": {
+        "operationId": "getSeriesThumbnail",
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "format": "binary",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "seriesId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "series-controller"
+        ]
+      }
+    },
     "/api/v1/languages": {
       "get": {
         "operationId": "getLanguages",
@@ -1797,70 +1858,9 @@
         ]
       }
     },
-    "/api/v1/series/{seriesId}/thumbnail": {
-      "get": {
-        "operationId": "getSeriesThumbnail",
-        "responses": {
-          "default": {
-            "description": "default response",
-            "content": {
-              "image/jpeg": {
-                "schema": {
-                  "format": "binary",
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "schema": {
-              "type": "string"
-            },
-            "in": "path",
-            "name": "seriesId",
-            "required": true
-          }
-        ],
-        "tags": [
-          "series-controller"
-        ]
-      }
-    },
-    "/opds/v1.2/readlists": {
-      "get": {
-        "operationId": "getReadLists",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/OpdsFeed"
-                }
-              },
-              "application/atom+xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/OpdsFeed"
-                }
-              },
-              "text/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/OpdsFeed"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "opds-controller"
-        ]
-      }
-    },
     "/api/v1/libraries/{libraryId}": {
       "get": {
-        "operationId": "getOne",
+        "operationId": "getOne_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -1888,7 +1888,7 @@
         ]
       },
       "delete": {
-        "operationId": "deleteOne",
+        "operationId": "deleteOne_1",
         "responses": {
           "204": {
             "description": "No Content"
@@ -1943,7 +1943,7 @@
     "/api/v1/series/latest": {
       "get": {
         "description": "Return recently added or updated series.",
-        "operationId": "getLatestSeries",
+        "operationId": "getLatestSeries_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -2018,6 +2018,47 @@
         ]
       }
     },
+    "/opds/v1.2/books/latest": {
+      "get": {
+        "operationId": "getLatestBooks",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "application/atom+xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "default": "",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "User-Agent",
+            "required": false
+          }
+        ],
+        "tags": [
+          "opds-controller"
+        ]
+      }
+    },
     "/api/v1/series/new": {
       "get": {
         "description": "Return newly added series.",
@@ -2065,50 +2106,9 @@
         ]
       }
     },
-    "/opds/v1.2/books/latest": {
-      "get": {
-        "operationId": "getLatestBooks_1",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/OpdsFeed"
-                }
-              },
-              "application/atom+xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/OpdsFeed"
-                }
-              },
-              "text/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/OpdsFeed"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "schema": {
-              "default": "",
-              "type": "string"
-            },
-            "in": "header",
-            "name": "User-Agent",
-            "required": false
-          }
-        ],
-        "tags": [
-          "opds-controller"
-        ]
-      }
-    },
     "/api/v1/books/{bookId}/analyze": {
       "post": {
-        "operationId": "analyze_1",
+        "operationId": "analyze_2",
         "responses": {
           "202": {
             "description": "Accepted"
@@ -2315,7 +2315,7 @@
     },
     "/api/v1/series/{seriesId}/analyze": {
       "post": {
-        "operationId": "analyze_2",
+        "operationId": "analyze",
         "responses": {
           "202": {
             "description": "Accepted"
@@ -2442,7 +2442,7 @@
           },
           "required": true
         },
-        "operationId": "addOne_3",
+        "operationId": "addOne",
         "responses": {
           "201": {
             "description": "Created",
@@ -2460,7 +2460,7 @@
         ]
       },
       "get": {
-        "operationId": "getAll_3",
+        "operationId": "getAll",
         "responses": {
           "200": {
             "description": "OK",
@@ -2569,7 +2569,7 @@
     },
     "/opds/v1.2/series/{id}": {
       "get": {
-        "operationId": "getOneSeries_1",
+        "operationId": "getOneSeries",
         "responses": {
           "200": {
             "description": "OK",
@@ -2651,7 +2651,7 @@
     },
     "/api/v1/series/{seriesId}/metadata/refresh": {
       "post": {
-        "operationId": "refreshMetadata_2",
+        "operationId": "refreshMetadata",
         "responses": {
           "202": {
             "description": "Accepted"
@@ -2766,15 +2766,19 @@
             "description": "The size of the page to be returned"
           },
           {
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
             "in": "query",
             "name": "sort",
-            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported."
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
           }
         ],
         "tags": [
@@ -2857,7 +2861,7 @@
           },
           "required": true
         },
-        "operationId": "updateOne_1",
+        "operationId": "updateOne_2",
         "responses": {
           "204": {
             "description": "No Content"
@@ -2878,7 +2882,7 @@
         ]
       },
       "get": {
-        "operationId": "getOne_1",
+        "operationId": "getOne_2",
         "responses": {
           "200": {
             "description": "OK",
@@ -2906,7 +2910,7 @@
         ]
       },
       "delete": {
-        "operationId": "deleteOne_1",
+        "operationId": "deleteOne_2",
         "responses": {
           "204": {
             "description": "No Content"
@@ -3053,40 +3057,9 @@
         ]
       }
     },
-    "/api/v1/readlists/{id}/thumbnail": {
-      "get": {
-        "operationId": "getReadListThumbnail",
-        "responses": {
-          "default": {
-            "description": "default response",
-            "content": {
-              "image/jpeg": {
-                "schema": {
-                  "format": "binary",
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "schema": {
-              "type": "string"
-            },
-            "in": "path",
-            "name": "id",
-            "required": true
-          }
-        ],
-        "tags": [
-          "read-list-controller"
-        ]
-      }
-    },
     "/opds/v1.2/series": {
       "get": {
-        "operationId": "getAllSeries_1",
+        "operationId": "getAllSeries",
         "responses": {
           "200": {
             "description": "OK",
@@ -3135,9 +3108,40 @@
         ]
       }
     },
+    "/api/v1/readlists/{id}/thumbnail": {
+      "get": {
+        "operationId": "getReadListThumbnail",
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "format": "binary",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "tags": [
+          "read-list-controller"
+        ]
+      }
+    },
     "/api/v1/libraries/{libraryId}/metadata/refresh": {
       "post": {
-        "operationId": "refreshMetadata",
+        "operationId": "refreshMetadata_1",
         "responses": {
           "202": {
             "description": "Accepted"
@@ -3160,7 +3164,7 @@
     },
     "/opds/v1.2/publishers": {
       "get": {
-        "operationId": "getPublishers_1",
+        "operationId": "getPublishers",
         "responses": {
           "200": {
             "description": "OK",
@@ -3295,7 +3299,7 @@
     },
     "/api/v1/series": {
       "get": {
-        "operationId": "getAllSeries",
+        "operationId": "getAllSeries_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -3452,15 +3456,19 @@
             "description": "The size of the page to be returned"
           },
           {
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
             "in": "query",
             "name": "sort",
-            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported."
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
           }
         ],
         "tags": [
@@ -3522,36 +3530,6 @@
         ]
       }
     },
-    "/api/v1/series/{seriesId}": {
-      "get": {
-        "operationId": "getOneSeries",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SeriesDto"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "schema": {
-              "type": "string"
-            },
-            "in": "path",
-            "name": "seriesId",
-            "required": true
-          }
-        ],
-        "tags": [
-          "series-controller"
-        ]
-      }
-    },
     "/opds/v1.2/collections/{id}": {
       "get": {
         "operationId": "getOneCollection",
@@ -3592,9 +3570,39 @@
         ]
       }
     },
+    "/api/v1/series/{seriesId}": {
+      "get": {
+        "operationId": "getOneSeries_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeriesDto"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "seriesId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "series-controller"
+        ]
+      }
+    },
     "/api/v1/books/{bookId}/metadata/refresh": {
       "post": {
-        "operationId": "refreshMetadata_1",
+        "operationId": "refreshMetadata_2",
         "responses": {
           "202": {
             "description": "Accepted"
@@ -3627,7 +3635,7 @@
           },
           "required": true
         },
-        "operationId": "addOne_2",
+        "operationId": "addOne_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -3645,7 +3653,7 @@
         ]
       },
       "get": {
-        "operationId": "getAll_2",
+        "operationId": "getAll_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -3813,15 +3821,19 @@
             "description": "The size of the page to be returned"
           },
           {
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
             "in": "query",
             "name": "sort",
-            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported."
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
           }
         ],
         "tags": [
@@ -3884,7 +3896,7 @@
     },
     "/api/v1/libraries/{libraryId}/analyze": {
       "post": {
-        "operationId": "analyze",
+        "operationId": "analyze_1",
         "responses": {
           "202": {
             "description": "Accepted"
@@ -3917,7 +3929,7 @@
           },
           "required": true
         },
-        "operationId": "updateMetadata_1",
+        "operationId": "updateMetadata",
         "responses": {
           "204": {
             "description": "No Content"
@@ -3980,7 +3992,7 @@
           },
           "required": true
         },
-        "operationId": "addOne_1",
+        "operationId": "addOne_3",
         "responses": {
           "200": {
             "description": "OK",
@@ -3998,7 +4010,7 @@
         ]
       },
       "get": {
-        "operationId": "getAll_1",
+        "operationId": "getAll_3",
         "responses": {
           "200": {
             "description": "OK",
@@ -4073,7 +4085,7 @@
           },
           "required": true
         },
-        "operationId": "updateOne_2",
+        "operationId": "updateOne_1",
         "responses": {
           "204": {
             "description": "No Content"
@@ -4094,7 +4106,7 @@
         ]
       },
       "get": {
-        "operationId": "getOne_2",
+        "operationId": "getOne",
         "responses": {
           "200": {
             "description": "OK",
@@ -4122,7 +4134,7 @@
         ]
       },
       "delete": {
-        "operationId": "deleteOne_2",
+        "operationId": "deleteOne",
         "responses": {
           "204": {
             "description": "No Content"
@@ -4438,6 +4450,48 @@
         ]
       }
     },
+    "/api/v1/publishers": {
+      "get": {
+        "operationId": "getPublishers_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "uniqueItems": true,
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "library_id",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "collection_id",
+            "required": false
+          }
+        ],
+        "tags": [
+          "referential-controller"
+        ]
+      }
+    },
     "/api/v1/books/{bookId}/pages/{pageNumber}/thumbnail": {
       "get": {
         "operationId": "getBookPageThumbnail",
@@ -4478,48 +4532,6 @@
         ]
       }
     },
-    "/api/v1/publishers": {
-      "get": {
-        "operationId": "getPublishers",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "uniqueItems": true,
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "schema": {
-              "type": "string"
-            },
-            "in": "query",
-            "name": "library_id",
-            "required": false
-          },
-          {
-            "schema": {
-              "type": "string"
-            },
-            "in": "query",
-            "name": "collection_id",
-            "required": false
-          }
-        ],
-        "tags": [
-          "referential-controller"
-        ]
-      }
-    },
     "/api/v1/books/{bookId}/metadata": {
       "patch": {
         "requestBody": {
@@ -4532,7 +4544,7 @@
           },
           "required": true
         },
-        "operationId": "updateMetadata",
+        "operationId": "updateMetadata_1",
         "responses": {
           "204": {
             "description": "No Content"

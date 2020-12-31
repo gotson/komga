@@ -1,3 +1,10 @@
+## [0.64.8](https://github.com/gotson/komga/compare/v0.64.7...v0.64.8) (2020-12-31)
+
+
+### Bug Fixes
+
+* fix sqlite library detection for aarch64 ([10df531](https://github.com/gotson/komga/commit/10df5316b3381183e32de10c0db83c72534da881))
+
 ## [0.64.7](https://github.com/gotson/komga/compare/v0.64.6...v0.64.7) (2020-12-18)
 
 
