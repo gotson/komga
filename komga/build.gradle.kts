@@ -18,7 +18,7 @@ plugins {
   }
   id("org.springframework.boot") version "2.4.1"
   id("com.github.ben-manes.versions") version "0.36.0"
-  id("com.gorylenko.gradle-git-properties") version "2.2.3"
+  id("com.gorylenko.gradle-git-properties") version "2.2.4"
   id("com.rohanprabhu.kotlin-dsl-jooq") version "0.4.6"
   id("org.flywaydb.flyway") version "7.3.2"
   id("com.github.johnrengelman.processes") version "0.5.0"
@@ -59,7 +59,7 @@ dependencies {
   implementation("io.hawt:hawtio-springboot:2.12.1")
 
   run {
-    val springdocVersion = "1.4.3"
+    val springdocVersion = "1.5.2"
     implementation("org.springdoc:springdoc-openapi-ui:$springdocVersion")
     implementation("org.springdoc:springdoc-openapi-security:$springdocVersion")
     implementation("org.springdoc:springdoc-openapi-kotlin:$springdocVersion")
@@ -72,27 +72,27 @@ dependencies {
   implementation("commons-io:commons-io:2.7")
   implementation("org.apache.commons:commons-lang3:3.11")
 
-  implementation("com.ibm.icu:icu4j:67.1")
+  implementation("com.ibm.icu:icu4j:68.2")
 
-  implementation("org.apache.tika:tika-core:1.24.1")
+  implementation("org.apache.tika:tika-core:1.25")
   implementation("org.apache.commons:commons-compress:1.20")
-  implementation("com.github.junrar:junrar:7.2.0")
+  implementation("com.github.junrar:junrar:7.4.0")
   implementation("org.apache.pdfbox:pdfbox:2.0.19")
   implementation("net.grey-panther:natural-comparator:1.1")
   implementation("org.jsoup:jsoup:1.13.1")
 
-  implementation("net.coobird:thumbnailator:0.4.11")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.6")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.6")
+  implementation("net.coobird:thumbnailator:0.4.13")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.6.1")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.6.1")
   runtimeOnly(files("$projectDir/libs/webp-imageio-decoder-plugin-0.2.jar"))
   implementation("org.gotson:webp-imageio:0.2.0")
   // support for jpeg2000
-  runtimeOnly("com.github.jai-imageio:jai-imageio-jpeg2000:1.3.0")
+  runtimeOnly("com.github.jai-imageio:jai-imageio-jpeg2000:1.4.0")
   runtimeOnly("org.apache.pdfbox:jbig2-imageio:3.0.3")
 
   implementation("com.jakewharton.byteunits:byteunits:0.9.1")
 
-  implementation("com.github.f4b6a3:tsid-creator:2.2.4")
+  implementation("com.github.f4b6a3:tsid-creator:2.4.4")
 
   runtimeOnly("com.h2database:h2:1.4.200")
 
@@ -110,7 +110,7 @@ dependencies {
   testImplementation("io.mockk:mockk:1.10.4")
   testImplementation("com.google.jimfs:jimfs:1.1")
 
-  testImplementation("com.tngtech.archunit:archunit-junit5:0.14.1")
+  testImplementation("com.tngtech.archunit:archunit-junit5:0.15.0")
 
   developmentOnly("org.springframework.boot:spring-boot-devtools:2.4.1")
 }
