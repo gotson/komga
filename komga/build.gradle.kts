@@ -11,7 +11,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
   run {
-    val kotlinVersion = "1.3.72"
+    val kotlinVersion = "1.4.20"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     kotlin("kapt") version kotlinVersion
