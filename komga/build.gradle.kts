@@ -77,7 +77,7 @@ dependencies {
   implementation("org.apache.tika:tika-core:1.25")
   implementation("org.apache.commons:commons-compress:1.20")
   implementation("com.github.junrar:junrar:7.4.0")
-  implementation("org.apache.pdfbox:pdfbox:2.0.19")
+  implementation("org.apache.pdfbox:pdfbox:2.0.22")
   implementation("net.grey-panther:natural-comparator:1.1")
   implementation("org.jsoup:jsoup:1.13.1")
 
@@ -99,8 +99,8 @@ dependencies {
 //  While waiting for https://github.com/xerial/sqlite-jdbc/pull/491 and https://github.com/xerial/sqlite-jdbc/pull/494
 //  runtimeOnly("org.xerial:sqlite-jdbc:3.32.3.2")
 //  jooqGeneratorRuntime("org.xerial:sqlite-jdbc:3.32.3.2")
-  runtimeOnly("org.gotson:sqlite-jdbc:3.32.3.5")
-  jooqGeneratorRuntime("org.gotson:sqlite-jdbc:3.32.3.5")
+  runtimeOnly("org.gotson:sqlite-jdbc:3.32.3.6")
+  jooqGeneratorRuntime("org.gotson:sqlite-jdbc:3.32.3.6")
 
   testImplementation("org.springframework.boot:spring-boot-starter-test") {
     exclude(module = "mockito-core")
