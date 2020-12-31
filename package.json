@@ -30,8 +30,8 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": ".travis/prepare-release.sh ${nextRelease.version} ${nextRelease.channel}",
-          "publishCmd": ".travis/publish-dockerhub.sh ${nextRelease.version} ${nextRelease.channel}"
+          "prepareCmd": "ci/prepare-release.sh ${nextRelease.version} ${nextRelease.channel}",
+          "publishCmd": "ci/publish-dockerhub.sh ${nextRelease.version} ${nextRelease.channel}"
         }
       ],
       [
