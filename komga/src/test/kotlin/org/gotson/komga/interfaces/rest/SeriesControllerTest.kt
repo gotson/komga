@@ -99,7 +99,7 @@ class SeriesControllerTest(
 
       mockMvc.get("/api/v1/series")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.content[0].metadata.title") { value("TheAlpha") }
           jsonPath("$.content[1].metadata.title") { value("Beta") }
         }
@@ -118,7 +118,7 @@ class SeriesControllerTest(
         param("sort", "metadata.titleSort,asc")
       }
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.content[0].metadata.title") { value("a") }
           jsonPath("$.content[1].metadata.title") { value(Matchers.equalToIgnoringCase("b")) }
           jsonPath("$.content[2].metadata.title") { value(Matchers.equalToIgnoringCase("b")) }
@@ -145,7 +145,7 @@ class SeriesControllerTest(
 
       mockMvc.get("/api/v1/series/${createdSeries.id}/books")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.content[0].name") { value("1") }
           jsonPath("$.content[1].name") { value("2") }
           jsonPath("$.content[2].name") { value("3") }
@@ -168,7 +168,7 @@ class SeriesControllerTest(
 
       mockMvc.get("/api/v1/series/${createdSeries.id}/books")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.content[0].name") { value("1") }
           jsonPath("$.content[1].name") { value("2") }
           jsonPath("$.content[2].name") { value("3") }
@@ -203,7 +203,7 @@ class SeriesControllerTest(
 
       mockMvc.get("/api/v1/series")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.content.length()") { value(1) }
           jsonPath("$.content[0].name") { value("series") }
         }
@@ -223,7 +223,7 @@ class SeriesControllerTest(
       }
 
       mockMvc.get("/api/v1/series/${createdSeries.id}")
-        .andExpect { status { isForbidden } }
+        .andExpect { status { isForbidden() } }
     }
 
     @Test
@@ -237,7 +237,7 @@ class SeriesControllerTest(
       }
 
       mockMvc.get("/api/v1/series/${createdSeries.id}/thumbnail")
-        .andExpect { status { isForbidden } }
+        .andExpect { status { isForbidden() } }
     }
 
     @Test
@@ -251,7 +251,7 @@ class SeriesControllerTest(
       }
 
       mockMvc.get("/api/v1/series/${createdSeries.id}/books")
-        .andExpect { status { isForbidden } }
+        .andExpect { status { isForbidden() } }
     }
   }
 
@@ -268,7 +268,7 @@ class SeriesControllerTest(
       }
 
       mockMvc.get("/api/v1/series/${createdSeries.id}/thumbnail")
-        .andExpect { status { isNotFound } }
+        .andExpect { status { isNotFound() } }
     }
   }
 
@@ -285,7 +285,7 @@ class SeriesControllerTest(
       }
 
       val validation: MockMvcResultMatchersDsl.() -> Unit = {
-        status { isOk }
+        status { isOk() }
         jsonPath("$.content[0].url") { value("") }
       }
 
@@ -300,7 +300,7 @@ class SeriesControllerTest(
 
       mockMvc.get("/api/v1/series/${createdSeries.id}")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.url") { value("") }
         }
     }
@@ -316,7 +316,7 @@ class SeriesControllerTest(
       }
 
       val validation: MockMvcResultMatchersDsl.() -> Unit = {
-        status { isOk }
+        status { isOk() }
         jsonPath("$.content[0].url") { value(Matchers.containsString("series")) }
       }
 
@@ -331,7 +331,7 @@ class SeriesControllerTest(
 
       mockMvc.get("/api/v1/series/${createdSeries.id}")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.url") { value(Matchers.containsString("series")) }
         }
     }
@@ -346,7 +346,7 @@ class SeriesControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = "{}"
       }.andExpect {
-        status { isForbidden }
+        status { isForbidden() }
       }
     }
 
@@ -363,7 +363,7 @@ class SeriesControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isBadRequest }
+        status { isBadRequest() }
       }
     }
 
@@ -406,7 +406,7 @@ class SeriesControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isNoContent }
+        status { isNoContent() }
       }
 
       val updatedMetadata = seriesMetadataRepository.findById(createdSeries.id)
@@ -476,7 +476,7 @@ class SeriesControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isNoContent }
+        status { isNoContent() }
       }
 
       val updatedMetadata = seriesMetadataRepository.findById(createdSeries.id)
@@ -519,7 +519,7 @@ class SeriesControllerTest(
           ifNoneMatch = listOf(response.getHeader(HttpHeaders.ETAG)!!)
         }
       }.andExpect {
-        status { isNotModified }
+        status { isNotModified() }
       }
     }
 
@@ -556,7 +556,7 @@ class SeriesControllerTest(
           ifNoneMatch = listOf(response.getHeader(HttpHeaders.ETAG)!!)
         }
       }.andExpect {
-        status { isOk }
+        status { isOk() }
       }
     }
   }
@@ -584,19 +584,19 @@ class SeriesControllerTest(
 
       mockMvc.post("/api/v1/series/${series.id}/read-progress")
         .andExpect {
-          status { isNoContent }
+          status { isNoContent() }
         }
 
       mockMvc.get("/api/v1/series/${series.id}")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.booksUnreadCount") { value(0) }
           jsonPath("$.booksReadCount") { value(2) }
         }
 
       mockMvc.get("/api/v1/series/${series.id}/books")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.content[0].readProgress.completed") { value(true) }
           jsonPath("$.content[1].readProgress.completed") { value(true) }
           jsonPath("$.numberOfElements") { value(2) }
@@ -624,24 +624,24 @@ class SeriesControllerTest(
 
       mockMvc.post("/api/v1/series/${series.id}/read-progress")
         .andExpect {
-          status { isNoContent }
+          status { isNoContent() }
         }
 
       mockMvc.delete("/api/v1/series/${series.id}/read-progress")
         .andExpect {
-          status { isNoContent }
+          status { isNoContent() }
         }
 
       mockMvc.get("/api/v1/series/${series.id}")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.booksUnreadCount") { value(2) }
           jsonPath("$.booksReadCount") { value(0) }
         }
 
       mockMvc.get("/api/v1/series/${series.id}/books")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.content[0].readProgress") { value(IsNull.nullValue()) }
           jsonPath("$.content[1].readProgress") { value(IsNull.nullValue()) }
           jsonPath("$.numberOfElements") { value(2) }
@@ -684,7 +684,7 @@ class SeriesControllerTest(
 
       mockMvc.get("/api/v1/series/${series.id}")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.booksUnreadCount") { value(1) }
           jsonPath("$.booksReadCount") { value(1) }
           jsonPath("$.booksInProgressCount") { value(1) }

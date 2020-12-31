@@ -16,11 +16,11 @@ plugins {
     kotlin("plugin.spring") version kotlinVersion
     kotlin("kapt") version kotlinVersion
   }
-  id("org.springframework.boot") version "2.3.2.RELEASE"
+  id("org.springframework.boot") version "2.4.1"
   id("com.github.ben-manes.versions") version "0.36.0"
   id("com.gorylenko.gradle-git-properties") version "2.2.3"
   id("com.rohanprabhu.kotlin-dsl-jooq") version "0.4.6"
-  id("org.flywaydb.flyway") version "6.4.4"
+  id("org.flywaydb.flyway") version "7.3.2"
   id("com.github.johnrengelman.processes") version "0.5.0"
   id("org.springdoc.openapi-gradle-plugin") version "1.3.0"
   jacoco
@@ -37,7 +37,7 @@ dependencies {
   implementation(kotlin("stdlib-jdk8"))
   implementation(kotlin("reflect"))
 
-  implementation(platform("org.springframework.boot:spring-boot-dependencies:2.3.2.RELEASE"))
+  implementation(platform("org.springframework.boot:spring-boot-dependencies:2.4.1"))
 
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -48,15 +48,15 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-artemis")
   implementation("org.springframework.boot:spring-boot-starter-jooq")
 
-  kapt("org.springframework.boot:spring-boot-configuration-processor:2.3.2.RELEASE")
+  kapt("org.springframework.boot:spring-boot-configuration-processor:2.4.1")
 
   implementation("org.apache.activemq:artemis-jms-server")
 
   implementation("org.flywaydb:flyway-core")
 
-  implementation("io.github.microutils:kotlin-logging:1.8.3")
+  implementation("io.github.microutils:kotlin-logging-jvm:2.0.4")
   implementation("io.micrometer:micrometer-registry-influx")
-  implementation("io.hawt:hawtio-springboot:2.10.1")
+  implementation("io.hawt:hawtio-springboot:2.12.1")
 
   run {
     val springdocVersion = "1.4.3"
@@ -106,13 +106,13 @@ dependencies {
     exclude(module = "mockito-core")
   }
   testImplementation("org.springframework.security:spring-security-test")
-  testImplementation("com.ninja-squad:springmockk:2.0.2")
-  testImplementation("io.mockk:mockk:1.10.0")
+  testImplementation("com.ninja-squad:springmockk:3.0.1")
+  testImplementation("io.mockk:mockk:1.10.4")
   testImplementation("com.google.jimfs:jimfs:1.1")
 
   testImplementation("com.tngtech.archunit:archunit-junit5:0.14.1")
 
-  developmentOnly("org.springframework.boot:spring-boot-devtools:2.3.2.RELEASE")
+  developmentOnly("org.springframework.boot:spring-boot-devtools:2.4.1")
 }
 
 val webui = "$rootDir/komga-webui"

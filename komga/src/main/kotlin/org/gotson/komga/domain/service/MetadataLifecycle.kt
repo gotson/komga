@@ -138,7 +138,7 @@ class MetadataLifecycle(
               language = patches.mostFrequent { it.language },
               summary = null,
               readingDirection = patches.mostFrequent { it.readingDirection },
-              ageRating = patches.mapNotNull { it.ageRating }.max(),
+              ageRating = patches.mapNotNull { it.ageRating }.maxOrNull(),
               publisher = patches.mostFrequent { it.publisher },
               collections = emptyList()
             )
@@ -192,7 +192,7 @@ class MetadataLifecycle(
       .mapNotNull(transform)
       .groupingBy { it }
       .eachCount()
-      .maxBy { it.value }?.key
+      .maxByOrNull { it.value }?.key
   }
 }
 

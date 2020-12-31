@@ -28,7 +28,7 @@ class UserControllerTest(
       contentType = MediaType.APPLICATION_JSON
       content = jsonString
     }.andExpect {
-      status { isForbidden }
+      status { isForbidden() }
     }
   }
 }

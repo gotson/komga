@@ -1,8 +1,8 @@
 application.version: ${version}
 
 logging:
+  logback.rollingpolicy.max-history: 10
   file:
-    max-history: 10
     name: \${user.home}/.komga/komga.log
   level:
     org.apache.activemq.audit.message: WARN
@@ -21,6 +21,7 @@ spring:
   datasource:
     url: jdbc:h2:~/.komga/database.h2
     username: sa
+    initialization-mode: always
   h2:
     console:
       enabled: true

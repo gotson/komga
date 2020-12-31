@@ -104,7 +104,7 @@ class ReadListControllerTest(
 
       mockMvc.get("/api/v1/readlists")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.totalElements") { value(3) }
           jsonPath("$.content[?(@.name == 'Lib1')].filtered") { value(false) }
           jsonPath("$.content[?(@.name == 'Lib2')].filtered") { value(false) }
@@ -119,7 +119,7 @@ class ReadListControllerTest(
 
       mockMvc.get("/api/v1/readlists")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.totalElements") { value(2) }
           jsonPath("$.content[?(@.name == 'Lib1')].filtered") { value(false) }
           jsonPath("$.content[?(@.name == 'Lib1+2')].filtered") { value(true) }
@@ -133,7 +133,7 @@ class ReadListControllerTest(
 
       mockMvc.get("/api/v1/readlists/${rlLibBoth.id}")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.bookIds.length()") { value(10) }
           jsonPath("$.filtered") { value(false) }
         }
@@ -146,7 +146,7 @@ class ReadListControllerTest(
 
       mockMvc.get("/api/v1/readlists/${rlLibBoth.id}")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.bookIds.length()") { value(5) }
           jsonPath("$.filtered") { value(true) }
         }
@@ -159,7 +159,7 @@ class ReadListControllerTest(
 
       mockMvc.get("/api/v1/readlists/${rlLib2.id}")
         .andExpect {
-          status { isNotFound }
+          status { isNotFound() }
         }
     }
   }
@@ -177,7 +177,7 @@ class ReadListControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isForbidden }
+        status { isForbidden() }
       }
     }
 
@@ -192,7 +192,7 @@ class ReadListControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isOk }
+        status { isOk() }
         jsonPath("$.bookIds.length()") { value(1) }
         jsonPath("$.name") { value("readlist") }
       }
@@ -211,7 +211,7 @@ class ReadListControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isBadRequest }
+        status { isBadRequest() }
       }
     }
 
@@ -226,7 +226,7 @@ class ReadListControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isBadRequest }
+        status { isBadRequest() }
       }
     }
   }
@@ -244,7 +244,7 @@ class ReadListControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isForbidden }
+        status { isForbidden() }
       }
     }
 
@@ -261,12 +261,12 @@ class ReadListControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isNoContent }
+        status { isNoContent() }
       }
 
       mockMvc.get("/api/v1/readlists/${rlLib1.id}")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.name") { value("updated") }
           jsonPath("$.bookIds.length()") { value(1) }
           jsonPath("$.filtered") { value(false) }
@@ -284,7 +284,7 @@ class ReadListControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isBadRequest }
+        status { isBadRequest() }
       }
     }
 
@@ -299,7 +299,7 @@ class ReadListControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isBadRequest }
+        status { isBadRequest() }
       }
     }
 
@@ -315,7 +315,7 @@ class ReadListControllerTest(
 
       mockMvc.get("/api/v1/readlists/${rlLib2.id}")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.name") { value("newName") }
           jsonPath("$.bookIds.length()") { value(5) }
         }
@@ -328,7 +328,7 @@ class ReadListControllerTest(
 
       mockMvc.get("/api/v1/readlists/${rlLibBoth.id}")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.name") { value("Lib1+2") }
           jsonPath("$.bookIds.length()") { value(1) }
         }
@@ -342,7 +342,7 @@ class ReadListControllerTest(
     fun `given non-admin user when deleting read list then return forbidden`() {
       mockMvc.delete("/api/v1/readlists/5")
         .andExpect {
-          status { isForbidden }
+          status { isForbidden() }
         }
     }
 
@@ -353,12 +353,12 @@ class ReadListControllerTest(
 
       mockMvc.delete("/api/v1/readlists/${rlLib1.id}")
         .andExpect {
-          status { isNoContent }
+          status { isNoContent() }
         }
 
       mockMvc.get("/api/v1/readlists/${rlLib1.id}")
         .andExpect {
-          status { isNotFound }
+          status { isNotFound() }
         }
     }
   }

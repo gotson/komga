@@ -137,19 +137,21 @@ class DatabaseMigration(
 
   private fun flywayMigrateSqlite(): Int {
     logger.info { "Initialize SQLite database with initial migration: 20200706141854" }
-    return Flyway(FluentConfiguration()
-      .dataSource(sqliteDataSource)
-      .locations("classpath:db/migration/sqlite")
-      .target("20200706141854")
-    ).migrate()
+    return Flyway(
+      FluentConfiguration()
+        .dataSource(sqliteDataSource)
+        .locations("classpath:db/migration/sqlite")
+        .target("20200706141854")
+    ).migrate().migrationsExecuted
   }
 
   private fun flywayMigrateH2(): Int {
     logger.info { "Migrating H2 database to the latest migration" }
-    return Flyway(FluentConfiguration()
-      .dataSource(h2DataSource)
-      .locations("classpath:db/migration/h2")
-    ).migrate()
+    return Flyway(
+      FluentConfiguration()
+        .dataSource(h2DataSource)
+        .locations("classpath:db/migration/h2")
+    ).migrate().migrationsExecuted
   }
 
   private fun h2Backup(h2Filename: String) {

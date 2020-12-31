@@ -49,7 +49,7 @@ class LibraryControllerTest(
     @WithAnonymousUser
     fun `given anonymous user when getAll then return unauthorized`() {
       mockMvc.get(route)
-        .andExpect { status { isUnauthorized } }
+        .andExpect { status { isUnauthorized() } }
     }
 
     @Test
@@ -60,7 +60,7 @@ class LibraryControllerTest(
       mockMvc.post(route) {
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
-      }.andExpect { status { isUnauthorized } }
+      }.andExpect { status { isUnauthorized() } }
     }
   }
 
@@ -70,7 +70,7 @@ class LibraryControllerTest(
     @WithMockCustomUser
     fun `given user with access to all libraries when getAll then return ok`() {
       mockMvc.get(route)
-        .andExpect { status { isOk } }
+        .andExpect { status { isOk() } }
     }
 
     @Test
@@ -81,7 +81,7 @@ class LibraryControllerTest(
       mockMvc.post(route) {
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
-      }.andExpect { status { isForbidden } }
+      }.andExpect { status { isForbidden() } }
     }
   }
 
@@ -92,7 +92,7 @@ class LibraryControllerTest(
     fun `given user with access to a single library when getAll then only gets this library`() {
       mockMvc.get(route)
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.length()") { value(1) }
           jsonPath("$[0].id") { value(1) }
         }
@@ -106,13 +106,13 @@ class LibraryControllerTest(
     fun `given regular user when getting libraries then root is hidden`() {
       mockMvc.get(route)
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$[0].root") { value("") }
         }
 
       mockMvc.get("${route}/${library.id}")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.root") { value("") }
         }
     }
@@ -122,13 +122,13 @@ class LibraryControllerTest(
     fun `given admin user when getting books then root is available`() {
       mockMvc.get(route)
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$[0].root") { value(Matchers.containsString("library1")) }
         }
 
       mockMvc.get("${route}/${library.id}")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.root") { value(Matchers.containsString("library1")) }
         }
     }

@@ -27,14 +27,14 @@ class FileSystemControllerTest(
   @WithAnonymousUser
   fun `given anonymous user when getDirectoryListing then return unauthorized`() {
     mockMvc.post(route)
-      .andExpect { status { isUnauthorized } }
+      .andExpect { status { isUnauthorized() } }
   }
 
   @Test
   @WithMockUser
   fun `given regular user when getDirectoryListing then return forbidden`() {
     mockMvc.post(route)
-      .andExpect { status { isForbidden } }
+      .andExpect { status { isForbidden() } }
   }
 
   @Test
@@ -43,7 +43,7 @@ class FileSystemControllerTest(
     mockMvc.post(route) {
       contentType = MediaType.APPLICATION_JSON
       content = "."
-    }.andExpect { status { isBadRequest } }
+    }.andExpect { status { isBadRequest() } }
   }
 
   @Test
@@ -55,6 +55,6 @@ class FileSystemControllerTest(
     mockMvc.post(route) {
       contentType = MediaType.APPLICATION_JSON
       content = parent.toString()
-    }.andExpect { status { isBadRequest } }
+    }.andExpect { status { isBadRequest() } }
   }
 }

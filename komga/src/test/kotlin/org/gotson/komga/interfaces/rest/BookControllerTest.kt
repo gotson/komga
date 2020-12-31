@@ -8,7 +8,6 @@ import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ROLE_ADMIN
-import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
@@ -118,7 +117,7 @@ class BookControllerTest(
 
       mockMvc.get("/api/v1/books")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.content.length()") { value(1) }
           jsonPath("$.content[0].name") { value("1") }
         }
@@ -141,7 +140,7 @@ class BookControllerTest(
       val book = bookRepository.findAll().first()
 
       mockMvc.get("/api/v1/books/${book.id}")
-        .andExpect { status { isForbidden } }
+        .andExpect { status { isForbidden() } }
     }
 
     @Test
@@ -157,7 +156,7 @@ class BookControllerTest(
       val book = bookRepository.findAll().first()
 
       mockMvc.get("/api/v1/books/${book.id}/thumbnail")
-        .andExpect { status { isForbidden } }
+        .andExpect { status { isForbidden() } }
     }
 
     @Test
@@ -173,7 +172,7 @@ class BookControllerTest(
       val book = bookRepository.findAll().first()
 
       mockMvc.get("/api/v1/books/${book.id}/file")
-        .andExpect { status { isForbidden } }
+        .andExpect { status { isForbidden() } }
     }
 
     @Test
@@ -189,7 +188,7 @@ class BookControllerTest(
       val book = bookRepository.findAll().first()
 
       mockMvc.get("/api/v1/books/${book.id}/pages")
-        .andExpect { status { isForbidden } }
+        .andExpect { status { isForbidden() } }
     }
 
     @Test
@@ -205,7 +204,7 @@ class BookControllerTest(
       val book = bookRepository.findAll().first()
 
       mockMvc.get("/api/v1/books/${book.id}/pages/1")
-        .andExpect { status { isForbidden } }
+        .andExpect { status { isForbidden() } }
     }
   }
 
@@ -224,7 +223,7 @@ class BookControllerTest(
       val book = bookRepository.findAll().first()
 
       mockMvc.get("/api/v1/books/${book.id}/pages/1")
-        .andExpect { status { isForbidden } }
+        .andExpect { status { isForbidden() } }
     }
 
     @Test
@@ -240,7 +239,7 @@ class BookControllerTest(
       val book = bookRepository.findAll().first()
 
       mockMvc.get("/api/v1/books/${book.id}/file")
-        .andExpect { status { isForbidden } }
+        .andExpect { status { isForbidden() } }
     }
   }
 
@@ -259,7 +258,7 @@ class BookControllerTest(
       val book = bookRepository.findAll().first()
 
       mockMvc.get("/api/v1/books/${book.id}/thumbnail")
-        .andExpect { status { isNotFound } }
+        .andExpect { status { isNotFound() } }
     }
 
     @Test
@@ -275,7 +274,7 @@ class BookControllerTest(
       val book = bookRepository.findAll().first()
 
       mockMvc.get("/api/v1/books/${book.id}/file")
-        .andExpect { status { isNotFound } }
+        .andExpect { status { isNotFound() } }
     }
 
     @ParameterizedTest
@@ -295,7 +294,7 @@ class BookControllerTest(
       }
 
       mockMvc.get("/api/v1/books/${book.id}/pages")
-        .andExpect { status { isNotFound } }
+        .andExpect { status { isNotFound() } }
     }
 
     @ParameterizedTest
@@ -315,7 +314,7 @@ class BookControllerTest(
       }
 
       mockMvc.get("/api/v1/books/${book.id}/pages/1")
-        .andExpect { status { isNotFound } }
+        .andExpect { status { isNotFound() } }
     }
   }
 
@@ -339,7 +338,7 @@ class BookControllerTest(
     }
 
     mockMvc.get("/api/v1/books/${book.id}/pages/$page")
-      .andExpect { status { isBadRequest } }
+      .andExpect { status { isBadRequest() } }
   }
 
   @Nested
@@ -365,31 +364,31 @@ class BookControllerTest(
       val third = bookRepository.findAll(BookSearch(searchTerm = "3")).first().id
 
       mockMvc.get("/api/v1/books/${first}/previous")
-        .andExpect { status { isNotFound } }
+        .andExpect { status { isNotFound() } }
       mockMvc.get("/api/v1/books/${first}/next")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.name") { value("2") }
         }
 
       mockMvc.get("/api/v1/books/${second}/previous")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.name") { value("1") }
         }
       mockMvc.get("/api/v1/books/${second}/next")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.name") { value("3") }
         }
 
       mockMvc.get("/api/v1/books/${third}/previous")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.name") { value("2") }
         }
       mockMvc.get("/api/v1/books/${third}/next")
-        .andExpect { status { isNotFound } }
+        .andExpect { status { isNotFound() } }
 
     }
   }
@@ -409,7 +408,7 @@ class BookControllerTest(
       val book = bookRepository.findAll().first()
 
       val validation: MockMvcResultMatchersDsl.() -> Unit = {
-        status { isOk }
+        status { isOk() }
         jsonPath("$.content[0].url") { value("1.cbr") }
       }
 
@@ -424,7 +423,7 @@ class BookControllerTest(
 
       mockMvc.get("/api/v1/books/${book.id}")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.url") { value("1.cbr") }
         }
     }
@@ -442,7 +441,7 @@ class BookControllerTest(
       val book = bookRepository.findAll().first()
 
       val validation: MockMvcResultMatchersDsl.() -> Unit = {
-        status { isOk }
+        status { isOk() }
         jsonPath("$.content[0].url") { value(Matchers.containsString("1.cbr")) }
       }
 
@@ -457,7 +456,7 @@ class BookControllerTest(
 
       mockMvc.get("/api/v1/books/${book.id}")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.url") { value(Matchers.containsString("1.cbr")) }
         }
     }
@@ -492,7 +491,7 @@ class BookControllerTest(
           ifNoneMatch = listOf(response.getHeader(HttpHeaders.ETAG)!!)
         }
       }.andExpect {
-        status { isNotModified }
+        status { isNotModified() }
       }
     }
 
@@ -518,7 +517,7 @@ class BookControllerTest(
           set(HttpHeaders.IF_MODIFIED_SINCE, lastModified!!)
         }
       }.andExpect {
-        status { isNotModified }
+        status { isNotModified() }
       }
     }
 
@@ -555,7 +554,7 @@ class BookControllerTest(
           ifNoneMatch = listOf(response.getHeader(HttpHeaders.ETAG)!!)
         }
       }.andExpect {
-        status { isOk }
+        status { isOk() }
       }
     }
   }
@@ -569,7 +568,7 @@ class BookControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = "{}"
       }.andExpect {
-        status { isForbidden }
+        status { isForbidden() }
       }
     }
 
@@ -585,7 +584,7 @@ class BookControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isBadRequest }
+        status { isBadRequest() }
       }
     }
 
@@ -633,7 +632,7 @@ class BookControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isNoContent }
+        status { isNoContent() }
       }
 
       val metadata = bookMetadataRepository.findById(bookId)
@@ -703,7 +702,7 @@ class BookControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isNoContent }
+        status { isNoContent() }
       }
 
       val updatedMetadata = bookMetadataRepository.findById(bookId)
@@ -751,7 +750,7 @@ class BookControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isNoContent }
+        status { isNoContent() }
       }
 
       val metadata = bookMetadataRepository.findById(bookId)
@@ -781,7 +780,7 @@ class BookControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isBadRequest }
+        status { isBadRequest() }
       }
     }
 
@@ -813,12 +812,12 @@ class BookControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isNoContent }
+        status { isNoContent() }
       }
 
       mockMvc.get("/api/v1/books/${book.id}")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.readProgress.page") { value(5) }
           jsonPath("$.readProgress.completed") { value(false) }
         }
@@ -852,12 +851,12 @@ class BookControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isNoContent }
+        status { isNoContent() }
       }
 
       mockMvc.get("/api/v1/books/${book.id}")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.readProgress.page") { value(10) }
           jsonPath("$.readProgress.completed") { value(true) }
         }
@@ -892,19 +891,19 @@ class BookControllerTest(
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isNoContent }
+        status { isNoContent() }
       }
 
 
       mockMvc.delete("/api/v1/books/${book.id}/read-progress") {
         contentType = MediaType.APPLICATION_JSON
       }.andExpect {
-        status { isNoContent }
+        status { isNoContent() }
       }
 
       mockMvc.get("/api/v1/books/${book.id}")
         .andExpect {
-          status { isOk }
+          status { isOk() }
           jsonPath("$.readProgress") { value(IsNull.nullValue()) }
         }
     }

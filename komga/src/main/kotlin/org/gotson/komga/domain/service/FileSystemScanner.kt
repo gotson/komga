@@ -90,7 +90,7 @@ class FileSystemScanner(
               url = dir.toUri().toURL(),
               fileLastModified =
               if (forceDirectoryModifiedTime)
-                maxOf(dir.getUpdatedTime(), books.map { it.fileLastModified }.max()!!)
+                maxOf(dir.getUpdatedTime(), books.map { it.fileLastModified }.maxOrNull()!!)
               else dir.getUpdatedTime()
             ) to books
           }.toMap()
