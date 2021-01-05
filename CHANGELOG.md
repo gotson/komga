@@ -1,3 +1,10 @@
+# [0.65.0](https://github.com/gotson/komga/compare/v0.64.8...v0.65.0) (2021-01-05)
+
+
+### Features
+
+* **api:** filter /series endpoint by library_id ([1603a96](https://github.com/gotson/komga/commit/1603a96de6a0bb4fdcadad01220498f63a8fd729)), closes [#360](https://github.com/gotson/komga/issues/360)
+
 ## [0.64.8](https://github.com/gotson/komga/compare/v0.64.7...v0.64.8) (2020-12-31)
 
 
