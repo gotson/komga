@@ -119,6 +119,7 @@ class SeriesController(
   @GetMapping("/latest")
   fun getLatestSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> {
@@ -133,7 +134,7 @@ class SeriesController(
       )
 
     return seriesDtoRepository.findAll(
-      SeriesSearchWithReadProgress(principal.user.getAuthorizedLibraryIds(null)),
+      SeriesSearchWithReadProgress(principal.user.getAuthorizedLibraryIds(libraryIds)),
       principal.user.id,
       pageRequest
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
@@ -144,6 +145,7 @@ class SeriesController(
   @GetMapping("/new")
   fun getNewSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> {
@@ -158,7 +160,7 @@ class SeriesController(
       )
 
     return seriesDtoRepository.findAll(
-      SeriesSearchWithReadProgress(principal.user.getAuthorizedLibraryIds(null)),
+      SeriesSearchWithReadProgress(principal.user.getAuthorizedLibraryIds(libraryIds)),
       principal.user.id,
       pageRequest
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
@@ -169,6 +171,7 @@ class SeriesController(
   @GetMapping("/updated")
   fun getUpdatedSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> {
@@ -183,7 +186,7 @@ class SeriesController(
       )
 
     return seriesDtoRepository.findRecentlyUpdated(
-      SeriesSearchWithReadProgress(principal.user.getAuthorizedLibraryIds(null)),
+      SeriesSearchWithReadProgress(principal.user.getAuthorizedLibraryIds(libraryIds)),
       principal.user.id,
       pageRequest
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
