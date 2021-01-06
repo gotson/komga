@@ -1,3 +1,10 @@
+# [0.67.0](https://github.com/gotson/komga/compare/v0.66.1...v0.67.0) (2021-01-06)
+
+
+### Features
+
+* **webui:** filter collections/readlists in Add To dialog ([1b422a2](https://github.com/gotson/komga/commit/1b422a2086113dce613121c46a79272d13e6b114)), closes [#378](https://github.com/gotson/komga/issues/378)
+
 ## [0.66.1](https://github.com/gotson/komga/compare/v0.66.0...v0.66.1) (2021-01-06)
 
 
