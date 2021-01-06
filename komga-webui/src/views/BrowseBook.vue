@@ -173,7 +173,7 @@
                  color="accent"
                  title="Read book"
                  class="pb-1"
-                 :to="{name: 'read-book', params: { bookId: bookId}}"
+                 :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id}}"
                  :disabled="book.media.status !== 'READY' || !canReadPages"
           >
             <v-icon>mdi-book-open-page-variant</v-icon>

@@ -289,6 +289,7 @@ import { shortcutsMenus, shortcutsSettings } from '@/functions/shortcuts/bookrea
 import { shortcutsAll } from '@/functions/shortcuts/reader'
 import { shortcutsSettingsContinuous } from '@/functions/shortcuts/continuous-reader'
 import { BookDto, PageDto, PageDtoWithUrl } from '@/types/komga-books'
+import { Context, ContextOrigin } from '@/types/context'
 
 const cookieFit = 'webreader.fit'
 const cookieContinuousReaderFit = 'webreader.continuousReaderFit'
@@ -313,6 +314,8 @@ export default Vue.extend({
     return {
       book: {} as BookDto,
       series: {} as SeriesDto,
+      context: {} as Context,
+      contextName: '',
       siblingPrevious: {} as BookDto,
       siblingNext: {} as BookDto,
       jumpToNextBook: false,
@@ -476,6 +479,9 @@ export default Vue.extend({
         'Menus': shortcutsMenus,
       }
     },
+    contextReadList (): boolean {
+      return this.context.origin === ContextOrigin.READLIST
+    },
 
     animations: {
       get: function (): boolean {
@@ -569,7 +575,25 @@ export default Vue.extend({
     async setup (bookId: string, page: number) {
       this.book = await this.$komgaBooks.getBook(bookId)
       this.series = await this.$komgaSeries.getOneSeries(this.book.seriesId)
-      document.title = `Komga - ${getBookTitleCompact(this.book.metadata.title, this.series.metadata.title)}`
+
+      // parse query params to get context and contextId
+      if (this.$route.query.contextId && this.$route.query.context
+        && Object.values(ContextOrigin).includes(this.$route.query.context as ContextOrigin)) {
+        this.context = {
+          origin: this.$route.query.context as ContextOrigin,
+          id: this.$route.query.contextId as string,
+        }
+        this.book.context = this.context
+        this.contextName = (await (this.$komgaReadLists.getOneReadList(this.context.id))).name
+        document.title = `Komga - ${this.contextName} - ${this.book.metadata.title}`
+      } else {
+        this.context = {
+          origin: ContextOrigin.SERIES,
+          id: this.book.seriesId,
+        }
+        this.contextName = this.series.metadata.title
+        document.title = `Komga - ${getBookTitleCompact(this.book.metadata.title, this.series.metadata.title)}`
+      }
 
       const pageDtos = (await this.$komgaBooks.getBookPages(bookId))
       pageDtos.forEach((p: any) => p['url'] = this.getPageUrl(p))
@@ -593,12 +617,20 @@ export default Vue.extend({
       }
 
       try {
-        this.siblingNext = await this.$komgaBooks.getBookSiblingNext(bookId)
+        if (this?.context.origin === ContextOrigin.SERIES) {
+          this.siblingNext = await this.$komgaBooks.getBookSiblingNext(bookId)
+        } else if (this.context.origin === ContextOrigin.READLIST) {
+          this.siblingNext = await this.$komgaReadLists.getBookSiblingNext(this.context.id, bookId)
+        }
       } catch (e) {
         this.siblingNext = {} as BookDto
       }
       try {
-        this.siblingPrevious = await this.$komgaBooks.getBookSiblingPrevious(bookId)
+        if (this?.context.origin === ContextOrigin.SERIES) {
+          this.siblingPrevious = await this.$komgaBooks.getBookSiblingPrevious(bookId)
+        } else if (this.context.origin === ContextOrigin.READLIST) {
+          this.siblingPrevious = await this.$komgaReadLists.getBookSiblingPrevious(this.context.id, bookId)
+        }
       } catch (e) {
         this.siblingPrevious = {} as BookDto
       }
@@ -627,7 +659,11 @@ export default Vue.extend({
     previousBook () {
       if (!this.$_.isEmpty(this.siblingPrevious)) {
         this.jumpToPreviousBook = false
-        this.$router.push({ name: 'read-book', params: { bookId: this.siblingPrevious.id.toString() } })
+        this.$router.push({
+          name: 'read-book',
+          params: { bookId: this.siblingPrevious.id.toString() },
+          query: { context: this.context.origin, contextId: this.context.id },
+        })
       }
     },
     nextBook () {
@@ -635,7 +671,11 @@ export default Vue.extend({
         this.closeBook()
       } else {
         this.jumpToNextBook = false
-        this.$router.push({ name: 'read-book', params: { bookId: this.siblingNext.id.toString() } })
+        this.$router.push({
+          name: 'read-book',
+          params: { bookId: this.siblingNext.id.toString() },
+          query: { context: this.context.origin, contextId: this.context.id },
+        })
       }
     },
     goTo (page: number) {
@@ -653,11 +693,17 @@ export default Vue.extend({
         params: { bookId: this.$route.params.bookId },
         query: {
           page: this.page.toString(),
+          context: this.context.origin,
+          contextId: this.context.id,
         },
       } as Location)
     },
     closeBook () {
-      this.$router.push({ name: 'browse-book', params: { bookId: this.bookId.toString() } })
+      this.$router.push({
+        name: 'browse-book',
+        params: { bookId: this.bookId.toString() },
+        query: { context: this.context.origin, contextId: this.context.id },
+      })
     },
     loadFromCookie (cookieKey: string, setter: (value: any) => void): void {
       if (this.$cookies.isKey(cookieKey)) {
