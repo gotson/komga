@@ -333,18 +333,13 @@ export default Vue.extend({
         }
         this.book.context = this.context
         this.contextName = (await (this.$komgaReadLists.getOneReadList(this.context.id))).name
-      } else {
-        this.context = {
-          origin: ContextOrigin.SERIES,
-          id: this.book.seriesId,
-        }
       }
 
       // Get siblings depending on origin
-      if (this?.context.origin === ContextOrigin.SERIES) {
-        this.siblings = (await this.$komgaSeries.getBooks(this.book.seriesId, { unpaged: true } as PageRequest)).content
-      } else if (this.context.origin === ContextOrigin.READLIST) {
+      if (this?.context.origin === ContextOrigin.READLIST) {
         this.siblings = (await this.$komgaReadLists.getBooks(this.context.id, { unpaged: true } as PageRequest)).content
+      } else {
+        this.siblings = (await this.$komgaSeries.getBooks(this.book.seriesId, { unpaged: true } as PageRequest)).content
       }
 
       this.readLists = await this.$komgaBooks.getReadLists(this.bookId)
@@ -354,19 +349,19 @@ export default Vue.extend({
       }
 
       try {
-        if (this?.context.origin === ContextOrigin.SERIES) {
-          this.siblingNext = await this.$komgaBooks.getBookSiblingNext(bookId)
-        } else if (this.context.origin === ContextOrigin.READLIST) {
+        if (this?.context.origin === ContextOrigin.READLIST) {
           this.siblingNext = await this.$komgaReadLists.getBookSiblingNext(this.context.id, bookId)
+        } else {
+          this.siblingNext = await this.$komgaBooks.getBookSiblingNext(bookId)
         }
       } catch (e) {
         this.siblingNext = {} as BookDto
       }
       try {
-        if (this?.context.origin === ContextOrigin.SERIES) {
-          this.siblingPrevious = await this.$komgaBooks.getBookSiblingPrevious(bookId)
-        } else if (this.context.origin === ContextOrigin.READLIST) {
+        if (this?.context.origin === ContextOrigin.READLIST) {
           this.siblingPrevious = await this.$komgaReadLists.getBookSiblingPrevious(this.context.id, bookId)
+        } else {
+          this.siblingPrevious = await this.$komgaBooks.getBookSiblingPrevious(bookId)
         }
       } catch (e) {
         this.siblingPrevious = {} as BookDto

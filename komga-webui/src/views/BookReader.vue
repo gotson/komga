@@ -587,11 +587,6 @@ export default Vue.extend({
         this.contextName = (await (this.$komgaReadLists.getOneReadList(this.context.id))).name
         document.title = `Komga - ${this.contextName} - ${this.book.metadata.title}`
       } else {
-        this.context = {
-          origin: ContextOrigin.SERIES,
-          id: this.book.seriesId,
-        }
-        this.contextName = this.series.metadata.title
         document.title = `Komga - ${getBookTitleCompact(this.book.metadata.title, this.series.metadata.title)}`
       }
 
@@ -617,19 +612,19 @@ export default Vue.extend({
       }
 
       try {
-        if (this?.context.origin === ContextOrigin.SERIES) {
-          this.siblingNext = await this.$komgaBooks.getBookSiblingNext(bookId)
-        } else if (this.context.origin === ContextOrigin.READLIST) {
+        if (this?.context.origin === ContextOrigin.READLIST) {
           this.siblingNext = await this.$komgaReadLists.getBookSiblingNext(this.context.id, bookId)
+        } else {
+          this.siblingNext = await this.$komgaBooks.getBookSiblingNext(bookId)
         }
       } catch (e) {
         this.siblingNext = {} as BookDto
       }
       try {
-        if (this?.context.origin === ContextOrigin.SERIES) {
-          this.siblingPrevious = await this.$komgaBooks.getBookSiblingPrevious(bookId)
-        } else if (this.context.origin === ContextOrigin.READLIST) {
+        if (this?.context.origin === ContextOrigin.READLIST) {
           this.siblingPrevious = await this.$komgaReadLists.getBookSiblingPrevious(this.context.id, bookId)
+        } else {
+          this.siblingPrevious = await this.$komgaBooks.getBookSiblingPrevious(bookId)
         }
       } catch (e) {
         this.siblingPrevious = {} as BookDto
