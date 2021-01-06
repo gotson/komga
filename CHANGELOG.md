@@ -1,3 +1,10 @@
+## [0.66.1](https://github.com/gotson/komga/compare/v0.66.0...v0.66.1) (2021-01-06)
+
+
+### Bug Fixes
+
+* **webui:** context navigation messed up ([ba61660](https://github.com/gotson/komga/commit/ba6166031bf02eabd246187ec5af09e28ee38362))
+
 # [0.66.0](https://github.com/gotson/komga/compare/v0.65.0...v0.66.0) (2021-01-06)
 
 
