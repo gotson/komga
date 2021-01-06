@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios'
+import { BookDto } from '@/types/komga-books'
 
 const qs = require('qs')
 
@@ -86,6 +87,30 @@ export default class KomgaReadListsService {
       })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve books'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async getBookSiblingNext (readListId: string, bookId: string): Promise<BookDto> {
+    try {
+      return (await this.http.get(`${API_READLISTS}/${readListId}/books/${bookId}/next`)).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve book'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async getBookSiblingPrevious (readListId: string, bookId: string): Promise<BookDto> {
+    try {
+      return (await this.http.get(`${API_READLISTS}/${readListId}/books/${bookId}/previous`)).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve book'
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

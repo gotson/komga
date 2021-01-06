@@ -92,6 +92,7 @@ import Vue from 'vue'
 import ReadListAddToDialog from '@/components/dialogs/ReadListAddToDialog.vue'
 import ReadListDeleteDialog from '@/components/dialogs/ReadListDeleteDialog.vue'
 import ReadListEditDialog from '@/components/dialogs/ReadListEditDialog.vue'
+import { BookDto } from '@/types/komga-books'
 
 export default Vue.extend({
   name: 'Dialogs',

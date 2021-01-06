@@ -1,5 +1,6 @@
 import { bookThumbnailUrl, collectionThumbnailUrl, readListThumbnailUrl, seriesThumbnailUrl } from '@/functions/urls'
 import { RawLocation } from 'vue-router/types/router'
+import { BookDto } from '@/types/komga-books'
 
 function plural (count: number, singular: string, plural: string) {
   return `${count} ${count === 1 ? singular : plural}`
@@ -47,6 +48,8 @@ export abstract class Item<T> {
   abstract body (): string
 
   abstract to (): RawLocation
+
+  abstract fabTo (): RawLocation
 }
 
 export class BookItem extends Item<BookDto> {
@@ -69,7 +72,19 @@ export class BookItem extends Item<BookDto> {
   }
 
   to (): RawLocation {
-    return { name: 'browse-book', params: { bookId: this.item.id.toString() } }
+    return {
+      name: 'browse-book',
+      params: { bookId: this.item.id },
+      query: { context: this.item?.context?.origin, contextId: this.item?.context?.id },
+    }
+  }
+
+  fabTo (): RawLocation {
+    return {
+      name: 'read-book',
+      params: { bookId: this.item.id },
+      query: { context: this.item?.context?.origin, contextId: this.item?.context?.id },
+    }
   }
 }
 
@@ -94,6 +109,10 @@ export class SeriesItem extends Item<SeriesDto> {
   to (): RawLocation {
     return { name: 'browse-series', params: { seriesId: this.item.id.toString() } }
   }
+
+  fabTo (): RawLocation {
+    return undefined as unknown as RawLocation
+  }
 }
 
 export class CollectionItem extends Item<CollectionDto> {
@@ -117,6 +136,10 @@ export class CollectionItem extends Item<CollectionDto> {
   to (): RawLocation {
     return { name: 'browse-collection', params: { collectionId: this.item.id.toString() } }
   }
+
+  fabTo (): RawLocation {
+    return undefined as unknown as RawLocation
+  }
 }
 
 export class ReadListItem extends Item<ReadListDto> {
@@ -139,5 +162,9 @@ export class ReadListItem extends Item<ReadListDto> {
 
   to (): RawLocation {
     return { name: 'browse-readlist', params: { readListId: this.item.id.toString() } }
+  }
+
+  fabTo (): RawLocation {
+    return undefined as unknown as RawLocation
   }
 }

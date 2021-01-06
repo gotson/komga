@@ -80,6 +80,7 @@ import Vue from 'vue'
 import { ReadingDirection } from '@/types/enum-books'
 import { PagedReaderLayout, ScaleType } from '@/types/enum-reader'
 import { shortcutsLTR, shortcutsRTL, shortcutsVertical } from '@/functions/shortcuts/paged-reader'
+import { PageDtoWithUrl } from '@/types/komga-books'
 
 export default Vue.extend({
   name: 'PagedReader',

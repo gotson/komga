@@ -279,6 +279,7 @@ import { authorRoles } from '@/types/author-roles'
 import moment from 'moment'
 import Vue from 'vue'
 import { helpers, requiredIf } from 'vuelidate/lib/validators'
+import { BookDto } from '@/types/komga-books'
 
 const validDate = (value: any) => !helpers.req(value) || moment(value, 'YYYY-MM-DD', true).isValid()
 

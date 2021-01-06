@@ -80,6 +80,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { BookDto } from '@/types/komga-books'
 
 export default Vue.extend({
   name: 'ReadListAddToDialog',

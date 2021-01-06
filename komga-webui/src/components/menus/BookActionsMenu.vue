@@ -31,6 +31,7 @@ import { getReadProgress } from '@/functions/book-progress'
 import { ReadStatus } from '@/types/enum-books'
 import { BOOK_CHANGED, bookToEventBookChanged } from '@/types/events'
 import Vue from 'vue'
+import { BookDto, ReadProgressUpdateDto } from '@/types/komga-books'
 
 export default Vue.extend({
   name: 'BookActionsMenu',

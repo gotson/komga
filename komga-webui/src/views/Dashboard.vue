@@ -111,6 +111,7 @@ import EmptyState from '@/components/EmptyState.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import { ReadStatus } from '@/types/enum-books'
+import { BookDto } from '@/types/komga-books'
 import { BOOK_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
 

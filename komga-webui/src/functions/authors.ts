@@ -1,5 +1,6 @@
 import { get, groupBy, mapKeys, mapValues } from 'lodash'
 import { authorRoles } from '@/types/author-roles'
+import { AuthorDto } from '@/types/komga-books'
 
 // return an object where keys are roles, and values are string[]
 export function groupAuthorsByRole (authors: AuthorDto[]): any {

@@ -23,6 +23,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { MediaStatus } from '@/types/enum-books'
+import { BookDto } from '@/types/komga-books'
 
 export default Vue.extend({
   name: 'SettingsMediaAnalysis',

@@ -107,6 +107,7 @@ import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
+import { BookDto } from '@/types/komga-books'
 import {
   BOOK_CHANGED,
   COLLECTION_CHANGED,

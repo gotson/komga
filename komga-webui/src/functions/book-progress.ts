@@ -1,4 +1,5 @@
 import { ReadStatus } from '@/types/enum-books'
+import { BookDto } from '@/types/komga-books'
 
 export function getReadProgress (book: BookDto): ReadStatus {
   if (book.readProgress?.completed) return ReadStatus.READ

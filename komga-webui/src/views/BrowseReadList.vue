@@ -80,6 +80,8 @@ import { BOOK_CHANGED, READLIST_CHANGED, READLIST_DELETED } from '@/types/events
 import Vue from 'vue'
 import ReadListActionsMenu from '@/components/menus/ReadListActionsMenu.vue'
 import BooksMultiSelectBar from '@/components/bars/BooksMultiSelectBar.vue'
+import { BookDto, ReadProgressUpdateDto } from '@/types/komga-books'
+import { ContextOrigin } from '@/types/context'
 
 export default Vue.extend({
   name: 'BrowseReadList',
@@ -156,6 +158,7 @@ export default Vue.extend({
     async loadReadList (readListId: string) {
       this.readList = await this.$komgaReadLists.getOneReadList(readListId)
       this.books = (await this.$komgaReadLists.getBooks(readListId, { unpaged: true } as PageRequest)).content
+      this.books.forEach((x: BookDto) => x.context = { origin: ContextOrigin.READLIST, id: readListId })
       this.booksCopy = [...this.books]
       this.selectedBooks = []
     },

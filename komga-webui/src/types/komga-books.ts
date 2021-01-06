@@ -1,4 +1,6 @@
-interface BookDto {
+import { Context } from '@/types/context'
+
+export interface BookDto {
   id: string,
   seriesId: string,
   libraryId: string,
@@ -11,16 +13,19 @@ interface BookDto {
   media: MediaDto,
   metadata: BookMetadataDto,
   readProgress?: ReadProgressDto
+
+  // custom fields
+  context: Context
 }
 
-interface MediaDto {
+export interface MediaDto {
   status: string,
   mediaType: string,
   pagesCount: number,
   comment: string
 }
 
-interface PageDto {
+export interface PageDto {
   number: number,
   fileName: string,
   mediaType: string,
@@ -28,7 +33,7 @@ interface PageDto {
   height?: number,
 }
 
-interface PageDtoWithUrl {
+export interface PageDtoWithUrl {
   number: number,
   fileName: string,
   mediaType: string,
@@ -37,7 +42,7 @@ interface PageDtoWithUrl {
   url: string,
 }
 
-interface BookMetadataDto {
+export interface BookMetadataDto {
   created: string,
   lastModified: string,
   title: string,
@@ -56,14 +61,14 @@ interface BookMetadataDto {
   tagsLock: boolean
 }
 
-interface ReadProgressDto {
+export interface ReadProgressDto {
   page: number,
   completed: boolean,
   created: string,
   lastModified: string
 }
 
-interface BookMetadataUpdateDto {
+export interface BookMetadataUpdateDto {
   title?: string,
   titleLock?: boolean,
   summary?: string,
@@ -80,17 +85,17 @@ interface BookMetadataUpdateDto {
   tagsLock?: boolean
 }
 
-interface AuthorDto {
+export interface AuthorDto {
   name: string,
   role: string
 }
 
-interface ReadProgressUpdateDto {
+export interface ReadProgressUpdateDto {
   page?: number,
   completed?: boolean
 }
 
-interface BookFormat {
+export interface BookFormat {
   type: string,
   color: string
 }

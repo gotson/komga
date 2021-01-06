@@ -30,6 +30,8 @@
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import Vue from 'vue'
+import { BookDto } from '@/types/komga-books'
+import { ContextOrigin } from '@/types/context'
 
 export default Vue.extend({
   name: 'ReadListsExpansionPanels',
@@ -62,6 +64,7 @@ export default Vue.extend({
         const rlId = this.readLists[val].id
         if (this.$_.isEmpty(this.readListsContent[val])) {
           const content = (await this.$komgaReadLists.getBooks(rlId, { unpaged: true } as PageRequest)).content
+          content.forEach((x: BookDto) => x.context = { origin: ContextOrigin.READLIST, id: rlId })
           this.readListsContent.splice(val, 1, content)
         }
       }

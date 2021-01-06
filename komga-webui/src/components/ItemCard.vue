@@ -50,7 +50,7 @@
                 x-large
                 color="accent"
                 style="position: absolute; top: 50%; left: 50%; margin-left: -36px; margin-top: -36px"
-                :to="{name: 'read-book', params: { bookId: item.id}}"
+                :to="fabTo"
               >
                 <v-icon>mdi-book-open-page-variant</v-icon>
               </v-btn>
@@ -124,6 +124,7 @@ import { createItem, Item, ItemTypes } from '@/types/items'
 import Vue from 'vue'
 import { RawLocation } from 'vue-router'
 import ReadListActionsMenu from '@/components/menus/ReadListActionsMenu.vue'
+import { BookDto } from '@/types/komga-books'
 
 export default Vue.extend({
   name: 'ItemCard',
@@ -231,6 +232,9 @@ export default Vue.extend({
     },
     to (): RawLocation {
       return this.computedItem.to()
+    },
+    fabTo (): RawLocation {
+      return this.computedItem.fabTo()
     },
   },
   methods: {

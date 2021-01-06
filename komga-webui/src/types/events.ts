@@ -1,3 +1,5 @@
+import { BookDto } from '@/types/komga-books'
+
 export const BOOK_CHANGED = 'book-changed'
 export const SERIES_CHANGED = 'series-changed'
 export const COLLECTION_DELETED = 'collection-deleted'

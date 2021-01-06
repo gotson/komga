@@ -1,3 +1,5 @@
+import { BookFormat } from '@/types/komga-books'
+
 export function getBookFormatFromMediaType (mediaType: string): BookFormat {
   switch (mediaType) {
     case 'application/x-rar-compressed':

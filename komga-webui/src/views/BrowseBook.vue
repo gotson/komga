@@ -12,14 +12,28 @@
 
       <v-spacer/>
 
+      <!--   Context notification for navigation   -->
+      <v-alert
+        v-if="contextReadList"
+        type="info"
+        text
+        dense
+        border="right"
+        class="mb-0"
+      >
+        Navigation within the readlist: {{ contextName }}
+      </v-alert>
+
+      <!--   Navigate to previous book   -->
       <v-btn
         icon
         :disabled="$_.isEmpty(siblingPrevious)"
-        :to="{ name: 'browse-book', params: { bookId: previousId } }"
+        :to="{ name: 'browse-book', params: { bookId: previousId }, query: { context: context.origin, contextId: context.id}  }"
       >
         <v-icon>mdi-chevron-left</v-icon>
       </v-btn>
 
+      <!--   List of all books in context (series/readlist) for navigation   -->
       <v-menu bottom
               offset-y
               :max-height="$vuetify.breakpoint.height * .7"
@@ -38,7 +52,7 @@
             <v-list-item
               v-for="(book, i) in siblings"
               :key="i"
-              :to="{ name: 'browse-book', params: { bookId: book.id } }"
+              :to="{ name: 'browse-book', params: { bookId: book.id }, query: { context: context.origin, contextId: context.id} }"
             >
               <v-list-item-title class="text-wrap text-body-2">{{ book.metadata.number }} - {{ book.metadata.title }}
               </v-list-item-title>
@@ -47,10 +61,11 @@
         </v-list>
       </v-menu>
 
+      <!--   Navigate to next book   -->
       <v-btn
         icon
         :disabled="$_.isEmpty(siblingNext)"
-        :to="{ name: 'browse-book', params: { bookId: nextId } }"
+        :to="{ name: 'browse-book', params: { bookId: nextId }, query: { context: context.origin, contextId: context.id}  }"
       >
         <v-icon>mdi-chevron-right</v-icon>
       </v-btn>
@@ -212,6 +227,8 @@ import { ReadStatus } from '@/types/enum-books'
 import { BOOK_CHANGED, LIBRARY_DELETED } from '@/types/events'
 import Vue from 'vue'
 import ReadListsExpansionPanels from '@/components/ReadListsExpansionPanels.vue'
+import { BookDto, BookFormat } from '@/types/komga-books'
+import { Context, ContextOrigin } from '@/types/context'
 
 export default Vue.extend({
   name: 'BrowseBook',
@@ -220,6 +237,8 @@ export default Vue.extend({
     return {
       book: {} as BookDto,
       series: {} as SeriesDto,
+      context: {} as Context,
+      contextName: '',
       siblings: [] as BookDto[],
       siblingPrevious: {} as BookDto,
       siblingNext: {} as BookDto,
@@ -288,6 +307,9 @@ export default Vue.extend({
     nextId (): string {
       return this.siblingNext?.id?.toString() || '0'
     },
+    contextReadList (): boolean {
+      return this.context.origin === ContextOrigin.READLIST
+    },
   },
   methods: {
     libraryDeleted (event: EventLibraryDeleted) {
@@ -301,7 +323,30 @@ export default Vue.extend({
     async loadBook (bookId: string) {
       this.book = await this.$komgaBooks.getBook(bookId)
       this.series = await this.$komgaSeries.getOneSeries(this.book.seriesId)
-      this.siblings = (await this.$komgaSeries.getBooks(this.book.seriesId, { unpaged: true } as PageRequest)).content
+
+      // parse query params to get context and contextId
+      if (this.$route.query.contextId && this.$route.query.context
+        && Object.values(ContextOrigin).includes(this.$route.query.context as ContextOrigin)) {
+        this.context = {
+          origin: this.$route.query.context as ContextOrigin,
+          id: this.$route.query.contextId as string,
+        }
+        this.book.context = this.context
+        this.contextName = (await (this.$komgaReadLists.getOneReadList(this.context.id))).name
+      } else {
+        this.context = {
+          origin: ContextOrigin.SERIES,
+          id: this.book.seriesId,
+        }
+      }
+
+      // Get siblings depending on origin
+      if (this?.context.origin === ContextOrigin.SERIES) {
+        this.siblings = (await this.$komgaSeries.getBooks(this.book.seriesId, { unpaged: true } as PageRequest)).content
+      } else if (this.context.origin === ContextOrigin.READLIST) {
+        this.siblings = (await this.$komgaReadLists.getBooks(this.context.id, { unpaged: true } as PageRequest)).content
+      }
+
       this.readLists = await this.$komgaBooks.getReadLists(this.bookId)
 
       if (this.$_.has(this.book, 'metadata.title')) {
@@ -309,12 +354,20 @@ export default Vue.extend({
       }
 
       try {
-        this.siblingNext = await this.$komgaBooks.getBookSiblingNext(bookId)
+        if (this?.context.origin === ContextOrigin.SERIES) {
+          this.siblingNext = await this.$komgaBooks.getBookSiblingNext(bookId)
+        } else if (this.context.origin === ContextOrigin.READLIST) {
+          this.siblingNext = await this.$komgaReadLists.getBookSiblingNext(this.context.id, bookId)
+        }
       } catch (e) {
         this.siblingNext = {} as BookDto
       }
       try {
-        this.siblingPrevious = await this.$komgaBooks.getBookSiblingPrevious(bookId)
+        if (this?.context.origin === ContextOrigin.SERIES) {
+          this.siblingPrevious = await this.$komgaBooks.getBookSiblingPrevious(bookId)
+        } else if (this.context.origin === ContextOrigin.READLIST) {
+          this.siblingPrevious = await this.$komgaReadLists.getBookSiblingPrevious(this.context.id, bookId)
+        }
       } catch (e) {
         this.siblingPrevious = {} as BookDto
       }

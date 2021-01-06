@@ -38,6 +38,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { ContinuousScaleType } from '@/types/enum-reader'
+import { PageDtoWithUrl } from '@/types/komga-books'
 
 export default Vue.extend({
   name: 'ContinuousReader',

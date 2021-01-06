@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { BookDto } from '@/types/komga-books'
 
 Vue.use(Vuex)
 

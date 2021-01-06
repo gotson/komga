@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios'
+import { BookDto } from '@/types/komga-books'
 
 const qs = require('qs')
 

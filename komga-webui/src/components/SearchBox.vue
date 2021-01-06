@@ -105,6 +105,7 @@
 import { bookThumbnailUrl, collectionThumbnailUrl, readListThumbnailUrl, seriesThumbnailUrl } from '@/functions/urls'
 import { debounce } from 'lodash'
 import Vue from 'vue'
+import { BookDto } from '@/types/komga-books'
 
 export default Vue.extend({
   name: 'SearchBox',
