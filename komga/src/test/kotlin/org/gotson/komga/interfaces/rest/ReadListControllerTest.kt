@@ -165,6 +165,44 @@ class ReadListControllerTest(
   }
 
   @Nested
+  inner class GetBooksAndFilter {
+    @Test
+    @WithMockCustomUser
+    fun `given user with access to all libraries when getting books from single read list then it is not filtered`() {
+      makeReadLists()
+
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.content.length()") { value(10) }
+        }
+    }
+
+    @Test
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = ["1"])
+    fun `given user with access to a single library when getting books from single read list with items from 2 libraries then it is filtered`() {
+      makeReadLists()
+
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.content.length()") { value(5) }
+        }
+    }
+
+    @Test
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = ["1"])
+    fun `given user with access to a single library when getting books from single read list from another library then return not found`() {
+      makeReadLists()
+
+      mockMvc.get("/api/v1/readlists/${rlLib2.id}/books")
+        .andExpect {
+          status { isNotFound() }
+        }
+    }
+  }
+
+  @Nested
   inner class Creation {
     @Test
     @WithMockCustomUser

@@ -166,7 +166,12 @@ class ReadListController(
           sort
         )
 
-      bookDtoRepository.findByReadListId(readList.id, principal.user.id, pageRequest)
+      bookDtoRepository.findByReadListId(
+        readList.id,
+        principal.user.id,
+        principal.user.getAuthorizedLibraryIds(null),
+        pageRequest
+      )
         .map { it.restrictUrl(!principal.user.roleAdmin) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 }
