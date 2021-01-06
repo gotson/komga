@@ -19,7 +19,7 @@
               <v-col>
                 <v-text-field
                   v-model="newReadList"
-                  label="Create new read list"
+                  label="Search or create read list"
                   @keydown.enter="create"
                   :error-messages="duplicate"
                 />
@@ -38,8 +38,8 @@
 
             <v-row v-if="readLists.length !== 0">
               <v-col>
-                <v-list elevation="5">
-                  <div v-for="(c, index) in readLists"
+                <v-list elevation="5" v-if="readListsFiltered.length !== 0">
+                  <div v-for="(c, index) in readListsFiltered"
                        :key="index"
                   >
                     <v-list-item @click="addTo(c)"
@@ -50,9 +50,17 @@
                         <v-list-item-subtitle>{{ c.bookIds.length }} books</v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
-                    <v-divider v-if="index !== readLists.length-1"/>
+                    <v-divider v-if="index !== readListsFiltered.length-1"/>
                   </div>
                 </v-list>
+
+                <v-alert
+                  v-else
+                  type="info"
+                  text
+                >
+                  No matching readlist
+                </v-alert>
               </v-col>
             </v-row>
 
@@ -125,6 +133,9 @@ export default Vue.extend({
       if (this.newReadList !== '' && this.readLists.some(e => e.name === this.newReadList)) {
         return 'A read list with this name already exists'
       } else return ''
+    },
+    readListsFiltered (): ReadListDto[] {
+      return this.readLists.filter((x: ReadListDto) => x.name.toLowerCase().includes(this.newReadList.toLowerCase()))
     },
   },
   methods: {

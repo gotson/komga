@@ -19,7 +19,7 @@
               <v-col>
                 <v-text-field
                   v-model="newCollection"
-                  label="Create new collection"
+                  label="Search or create collection"
                   @keydown.enter="create"
                   :error-messages="duplicate"
                 />
@@ -38,8 +38,8 @@
 
             <v-row v-if="collections.length !== 0">
               <v-col>
-                <v-list elevation="5">
-                  <div v-for="(c, index) in collections"
+                <v-list elevation="5" v-if="collectionsFiltered.length !== 0">
+                  <div v-for="(c, index) in collectionsFiltered"
                        :key="index"
                   >
                     <v-list-item @click="addTo(c)"
@@ -50,9 +50,17 @@
                         <v-list-item-subtitle>{{ c.seriesIds.length }} series</v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
-                    <v-divider v-if="index !== collections.length-1"/>
+                    <v-divider v-if="index !== collectionsFiltered.length-1"/>
                   </div>
                 </v-list>
+
+                <v-alert
+                  v-else
+                  type="info"
+                  text
+                >
+                  No matching collection
+                </v-alert>
               </v-col>
             </v-row>
 
@@ -124,6 +132,9 @@ export default Vue.extend({
       if (this.newCollection !== '' && this.collections.some(e => e.name === this.newCollection)) {
         return 'A collection with this name already exists'
       } else return ''
+    },
+    collectionsFiltered (): CollectionDto[] {
+      return this.collections.filter((x: CollectionDto) => x.name.toLowerCase().includes(this.newCollection.toLowerCase()))
     },
   },
   methods: {
