@@ -203,6 +203,94 @@ class ReadListControllerTest(
   }
 
   @Nested
+  inner class Siblings {
+    @Test
+    @WithMockCustomUser
+    fun `given user with access to all libraries when getting book siblings then it is returned or not found`() {
+      makeReadLists()
+
+      val first = booksLibrary1.first().id // Book_1
+      val second = booksLibrary1[1].id // Book_2
+      val last = booksLibrary2.last().id // Book_10
+
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${first}/previous")
+        .andExpect { status { isNotFound() } }
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${first}/next")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.name") { value("Book_2") }
+        }
+
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${second}/previous")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.name") { value("Book_1") }
+        }
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${second}/next")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.name") { value("Book_3") }
+        }
+
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${last}/previous")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.name") { value("Book_9") }
+        }
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${last}/next")
+        .andExpect { status { isNotFound() } }
+    }
+
+    @Test
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = ["1"])
+    fun `given user with access to a single library when getting book siblings then it takes into account the library filter`() {
+      makeReadLists()
+
+      val first = booksLibrary1.first().id // Book_1
+      val second = booksLibrary1[1].id // Book_2
+      val last = booksLibrary1.last().id // Book_5
+
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${first}/previous")
+        .andExpect { status { isNotFound() } }
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${first}/next")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.name") { value("Book_2") }
+        }
+
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${second}/previous")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.name") { value("Book_1") }
+        }
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${second}/next")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.name") { value("Book_3") }
+        }
+
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${last}/previous")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.name") { value("Book_4") }
+        }
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${last}/next")
+        .andExpect { status { isNotFound() } }
+    }
+
+    @Test
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = ["1"])
+    fun `given user with access to a single library when getting books from single read list from another library then return not found`() {
+      makeReadLists()
+
+      mockMvc.get("/api/v1/readlists/${rlLib2.id}/books")
+        .andExpect {
+          status { isNotFound() }
+        }
+    }
+  }
+
+  @Nested
   inner class Creation {
     @Test
     @WithMockCustomUser

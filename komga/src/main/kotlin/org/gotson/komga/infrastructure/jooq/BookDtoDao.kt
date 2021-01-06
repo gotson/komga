@@ -121,9 +121,28 @@ class BookDtoDao(
       .fetchAndMap()
       .firstOrNull()
 
-  override fun findPreviousInSeries(bookId: String, userId: String): BookDto? = findSibling(bookId, userId, next = false)
+  override fun findPreviousInSeries(bookId: String, userId: String): BookDto? =
+    findSiblingSeries(bookId, userId, next = false)
 
-  override fun findNextInSeries(bookId: String, userId: String): BookDto? = findSibling(bookId, userId, next = true)
+  override fun findNextInSeries(bookId: String, userId: String): BookDto? =
+    findSiblingSeries(bookId, userId, next = true)
+
+
+  override fun findPreviousInReadList(
+    readListId: String,
+    bookId: String,
+    userId: String,
+    filterOnLibraryIds: Collection<String>?
+  ): BookDto? =
+    findSiblingReadList(readListId, bookId, userId, filterOnLibraryIds, next = false)
+
+  override fun findNextInReadList(
+    readListId: String,
+    bookId: String,
+    userId: String,
+    filterOnLibraryIds: Collection<String>?
+  ): BookDto? =
+    findSiblingReadList(readListId, bookId, userId, filterOnLibraryIds, next = true)
 
 
   override fun findOnDeck(libraryIds: Collection<String>, userId: String, pageable: Pageable): Page<BookDto> {
@@ -163,7 +182,7 @@ class BookDtoDao(
 
   private fun readProgressCondition(userId: String): Condition = r.USER_ID.eq(userId).or(r.USER_ID.isNull)
 
-  private fun findSibling(bookId: String, userId: String, next: Boolean): BookDto? {
+  private fun findSiblingSeries(bookId: String, userId: String, next: Boolean): BookDto? {
     val record = dsl.select(b.SERIES_ID, d.NUMBER_SORT)
       .from(b)
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
@@ -175,6 +194,31 @@ class BookDtoDao(
     return selectBase(userId)
       .where(b.SERIES_ID.eq(seriesId))
       .orderBy(d.NUMBER_SORT.let { if (next) it.asc() else it.desc() })
+      .seek(numberSort)
+      .limit(1)
+      .fetchAndMap()
+      .firstOrNull()
+  }
+
+  private fun findSiblingReadList(
+    readListId: String,
+    bookId: String,
+    userId: String,
+    filterOnLibraryIds: Collection<String>?,
+    next: Boolean
+  ): BookDto? {
+    val numberSort = dsl.select(rlb.NUMBER)
+      .from(b)
+      .leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID))
+      .where(b.ID.eq(bookId))
+      .and(rlb.READLIST_ID.eq(readListId))
+      .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
+      .fetchOne(0, Int::class.java)
+
+    return selectBase(userId, JoinConditions(selectReadListNumber = true))
+      .where(rlb.READLIST_ID.eq(readListId))
+      .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
+      .orderBy(rlb.NUMBER.let { if (next) it.asc() else it.desc() })
       .seek(numberSort)
       .limit(1)
       .fetchAndMap()

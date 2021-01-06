@@ -73,10 +73,28 @@ class ReadListController(
       )
 
     return when {
-      principal.user.sharedAllLibraries && libraryIds == null -> readListRepository.findAll(searchTerm, pageable = pageRequest)
-      principal.user.sharedAllLibraries && libraryIds != null -> readListRepository.findAllByLibraries(libraryIds, null, searchTerm, pageable = pageRequest)
-      !principal.user.sharedAllLibraries && libraryIds != null -> readListRepository.findAllByLibraries(libraryIds, principal.user.sharedLibrariesIds, searchTerm, pageable = pageRequest)
-      else -> readListRepository.findAllByLibraries(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, searchTerm, pageable = pageRequest)
+      principal.user.sharedAllLibraries && libraryIds == null -> readListRepository.findAll(
+        searchTerm,
+        pageable = pageRequest
+      )
+      principal.user.sharedAllLibraries && libraryIds != null -> readListRepository.findAllByLibraries(
+        libraryIds,
+        null,
+        searchTerm,
+        pageable = pageRequest
+      )
+      !principal.user.sharedAllLibraries && libraryIds != null -> readListRepository.findAllByLibraries(
+        libraryIds,
+        principal.user.sharedLibrariesIds,
+        searchTerm,
+        pageable = pageRequest
+      )
+      else -> readListRepository.findAllByLibraries(
+        principal.user.sharedLibrariesIds,
+        principal.user.sharedLibrariesIds,
+        searchTerm,
+        pageable = pageRequest
+      )
     }.map { it.toDto() }
   }
 
@@ -108,10 +126,12 @@ class ReadListController(
     @Valid @RequestBody readList: ReadListCreationDto
   ): ReadListDto =
     try {
-      readListLifecycle.addReadList(ReadList(
-        name = readList.name,
-        bookIds = readList.bookIds.toIndexedMap()
-      )).toDto()
+      readListLifecycle.addReadList(
+        ReadList(
+          name = readList.name,
+          bookIds = readList.bookIds.toIndexedMap()
+        )
+      ).toDto()
     } catch (e: DuplicateNameException) {
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
     }
@@ -173,6 +193,38 @@ class ReadListController(
         pageRequest
       )
         .map { it.restrictUrl(!principal.user.roleAdmin) }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  @GetMapping("{id}/books/{bookId}/previous")
+  fun getBookSiblingPrevious(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable id: String,
+    @PathVariable bookId: String
+  ): BookDto =
+    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
+      bookDtoRepository.findPreviousInReadList(
+        id,
+        bookId,
+        principal.user.id,
+        principal.user.getAuthorizedLibraryIds(null)
+      )
+        ?.restrictUrl(!principal.user.roleAdmin)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  @GetMapping("{id}/books/{bookId}/next")
+  fun getBookSiblingNext(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable id: String,
+    @PathVariable bookId: String
+  ): BookDto =
+    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
+      bookDtoRepository.findNextInReadList(
+        id,
+        bookId,
+        principal.user.id,
+        principal.user.getAuthorizedLibraryIds(null)
+      )
+        ?.restrictUrl(!principal.user.roleAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 }
 
