@@ -1517,7 +1517,7 @@
     },
     "/api/v1/books/{bookId}/next": {
       "get": {
-        "operationId": "getBookSiblingNext",
+        "operationId": "getBookSiblingNext_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -2638,6 +2638,44 @@
         ]
       }
     },
+    "/api/v1/readlists/{id}/books/{bookId}/previous": {
+      "get": {
+        "operationId": "getBookSiblingPrevious",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookDto"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "bookId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "read-list-controller"
+        ]
+      }
+    },
     "/api/v1/series/{seriesId}/collections": {
       "get": {
         "operationId": "getAllCollectionsBySeries",
@@ -3018,7 +3056,7 @@
     },
     "/api/v1/books/{bookId}/previous": {
       "get": {
-        "operationId": "getBookSiblingPrevious",
+        "operationId": "getBookSiblingPrevious_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -3936,6 +3974,44 @@
         ],
         "tags": [
           "library-controller"
+        ]
+      }
+    },
+    "/api/v1/readlists/{id}/books/{bookId}/next": {
+      "get": {
+        "operationId": "getBookSiblingNext",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookDto"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "bookId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "read-list-controller"
         ]
       }
     },

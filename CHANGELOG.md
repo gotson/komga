@@ -1,3 +1,17 @@
+# [0.66.0](https://github.com/gotson/komga/compare/v0.65.0...v0.66.0) (2021-01-06)
+
+
+### Bug Fixes
+
+* **api:** endpoint for books in readlist is not filtered properly ([cdca78b](https://github.com/gotson/komga/commit/cdca78b38f1071e592d458cf9bc29c057d44197d))
+
+
+### Features
+
+* **api:** find previous/next book in readlist ([bcfb203](https://github.com/gotson/komga/commit/bcfb203f74e16fcc9df53e69720680a7cb328eb0))
+* **webreader:** navigate between books of a readlist ([3a3d85c](https://github.com/gotson/komga/commit/3a3d85c3fc83f1a0c74adc091a843870b59bcc12)), closes [#310](https://github.com/gotson/komga/issues/310)
+* **webui:** navigate between books of a readlist ([88d4342](https://github.com/gotson/komga/commit/88d4342ef5a17bb65f966b77620cd8dfbd7e42b9))
+
 # [0.65.0](https://github.com/gotson/komga/compare/v0.64.8...v0.65.0) (2021-01-05)
 
 
