@@ -8,7 +8,6 @@ import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
-
 plugins {
   run {
     val kotlinVersion = "1.4.20"
@@ -26,12 +25,9 @@ plugins {
   jacoco
 }
 
-group = "org.gotson"
+apply(plugin = "org.jlleitschuh.gradle.ktlint-idea")
 
-repositories {
-  jcenter()
-  mavenCentral()
-}
+group = "org.gotson"
 
 dependencies {
   implementation(kotlin("stdlib-jdk8"))
@@ -139,7 +135,7 @@ tasks {
     }
   }
 
-  //unpack Spring Boot's fat jar for better Docker image layering
+  // unpack Spring Boot's fat jar for better Docker image layering
   register<JavaExec>("unpack") {
     dependsOn(bootJar)
     classpath = files(jar)
@@ -182,7 +178,7 @@ tasks {
     )
   }
 
-  //copy the webui build into public
+  // copy the webui build into public
   register<Sync>("copyWebDist") {
     group = "web"
     dependsOn("npmBuild")
@@ -201,17 +197,16 @@ springBoot {
 }
 
 sourceSets {
-  //add a flyway sourceSet
+  // add a flyway sourceSet
   val flyway by creating {
     compileClasspath += sourceSets.main.get().compileClasspath
     runtimeClasspath += sourceSets.main.get().runtimeClasspath
   }
-  //main sourceSet depends on the output of flyway sourceSet
+  // main sourceSet depends on the output of flyway sourceSet
   main {
     output.dir(flyway.output)
   }
 }
-
 
 val dbSqlite = mapOf(
   "url" to "jdbc:sqlite:${project.buildDir}/generated/flyway/database.sqlite"
@@ -225,7 +220,7 @@ flyway {
   locations = arrayOf("classpath:db/migration/sqlite")
 }
 tasks.flywayMigrate {
-  //in order to include the Java migrations, flywayClasses must be run before flywayMigrate
+  // in order to include the Java migrations, flywayClasses must be run before flywayMigrate
   dependsOn("flywayClasses")
   migrationDirsSqlite.forEach { inputs.dir(it) }
   outputs.dir("${project.buildDir}/generated/flyway")
