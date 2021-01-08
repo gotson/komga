@@ -3,6 +3,7 @@ package org.gotson.komga.domain.persistence
 import org.gotson.komga.domain.model.SeriesCollection
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import java.util.*
 
 interface SeriesCollectionRepository {
   fun findByIdOrNull(collectionId: String): SeriesCollection?
@@ -27,12 +28,16 @@ interface SeriesCollectionRepository {
   fun findAllBySeries(containsSeriesId: String, filterOnLibraryIds: Collection<String>?): Collection<SeriesCollection>
 
   fun findByNameOrNull(name: String): SeriesCollection?
+  fun findDeletedSeriesByName(name: String): SortedMap<Int, String>
 
   fun insert(collection: SeriesCollection)
   fun update(collection: SeriesCollection)
 
   fun removeSeriesFromAll(seriesId: String)
   fun removeSeriesFromAll(seriesIds: Collection<String>)
+
+  fun softDeleteSeriesFromAll(seriesIds: Collection<String>)
+  fun restoreDeleteSeriesInAll(seriesId: String)
 
   fun delete(collectionId: String)
 

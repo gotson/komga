@@ -13,6 +13,7 @@ data class Series(
 
   val id: String = TsidCreator.getTsidString256(),
   val libraryId: String = "",
+  val deleted: Boolean = false,
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now()

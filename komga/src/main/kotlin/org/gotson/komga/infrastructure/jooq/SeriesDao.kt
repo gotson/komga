@@ -21,41 +21,75 @@ class SeriesDao(
   private val s = Tables.SERIES
   private val d = Tables.SERIES_METADATA
   private val cs = Tables.COLLECTION_SERIES
+  private val b = Tables.BOOK
 
   override fun findAll(): Collection<Series> =
     dsl.selectFrom(s)
+      .where(s.DELETED.eq(false))
       .fetchInto(s)
       .map { it.toDomain() }
 
   override fun findByIdOrNull(seriesId: String): Series? =
     dsl.selectFrom(s)
       .where(s.ID.eq(seriesId))
+      .and(s.DELETED.eq(false))
       .fetchOneInto(s)
       ?.toDomain()
 
   override fun findByLibraryId(libraryId: String): List<Series> =
     dsl.selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId))
+      .and(s.DELETED.eq(false))
       .fetchInto(s)
       .map { it.toDomain() }
 
   override fun findByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): List<Series> =
     dsl.selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId).and(s.URL.notIn(urls.map { it.toString() })))
+      .and(s.DELETED.eq(false))
       .fetchInto(s)
       .map { it.toDomain() }
 
-  override fun findByLibraryIdAndUrl(libraryId: String, url: URL): Series? =
+  override fun existsByLibraryIdAndUrl(libraryId: String, url: URL): Boolean =
+    dsl.fetchExists(
+      dsl.selectOne()
+        .from(s)
+        .where(s.LIBRARY_ID.eq(libraryId).and(s.URL.eq(url.toString())))
+        .and(s.DELETED.eq(false))
+    )
+
+  override fun findByLibraryIdAndUrlIncludeDeleted(libraryId: String, url: URL): Series? =
     dsl.selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId).and(s.URL.eq(url.toString())))
       .fetchOneInto(s)
       ?.toDomain()
 
-  override fun getLibraryId(seriesId: String): String? =
-    dsl.select(s.LIBRARY_ID)
+  override fun findByLibraryIdAndHashesInIncludeDeleted(libraryId: String, hashes: Collection<String>): List<Series> =
+    dsl.select(*s.fields())
       .from(s)
-      .where(s.ID.eq(seriesId))
-      .fetchOne(0, String::class.java)
+      .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
+      .where(b.FILE_HASH.`in`(hashes))
+      .and(s.LIBRARY_ID.eq(libraryId))
+      .groupBy(s.ID)
+      .having(DSL.count().eq(hashes.size))
+      .fetchInto(s)
+      .map { it.toDomain() }
+
+  override fun findByHashesInIncludeDeleted(hashes: Collection<String>): List<Series> =
+    dsl.select(*s.fields())
+      .from(s)
+      .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
+      .where(b.FILE_HASH.`in`(hashes))
+      .groupBy(s.ID)
+      .having(DSL.count().eq(hashes.size))
+      .fetchInto(s)
+      .map { it.toDomain() }
+
+  override fun findAllDeleted(): Collection<String> =
+    dsl.select(s.ID)
+      .from(s)
+      .where(s.DELETED.eq(true))
+      .fetch(0, String::class.java)
 
   override fun findAll(search: SeriesSearch): Collection<Series> {
     val conditions = search.toCondition()
@@ -65,9 +99,17 @@ class SeriesDao(
       .leftJoin(cs).on(s.ID.eq(cs.SERIES_ID))
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
       .where(conditions)
+      .and(s.DELETED.eq(false))
       .fetchInto(s)
       .map { it.toDomain() }
   }
+
+  override fun getLibraryId(seriesId: String): String? =
+    dsl.select(s.LIBRARY_ID)
+      .from(s)
+      .where(s.ID.eq(seriesId))
+      .fetchOne(0, String::class.java)
+
 
   override fun insert(series: Series) {
     dsl.insertInto(s)
@@ -86,6 +128,7 @@ class SeriesDao(
       .set(s.FILE_LAST_MODIFIED, series.fileLastModified)
       .set(s.LIBRARY_ID, series.libraryId)
       .set(s.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
+      .set(s.DELETED, series.deleted)
       .where(s.ID.eq(series.id))
       .execute()
   }
@@ -114,7 +157,19 @@ class SeriesDao(
     }
   }
 
-  override fun count(): Long = dsl.fetchCount(s).toLong()
+  override fun softDeleteAll(seriesIds: Collection<String>) {
+    dsl.transaction { config ->
+      with(config.dsl())
+      {
+        update(s).set(s.DELETED, true).where(s.ID.`in`(seriesIds)).execute()
+      }
+    }
+  }
+
+  override fun count(): Long = dsl.selectCount()
+    .from(s)
+    .where(s.DELETED.eq(false))
+    .fetchOne(0, Long::class.java)
 
   private fun SeriesSearch.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()
@@ -136,6 +191,7 @@ class SeriesDao(
       id = id,
       libraryId = libraryId,
       createdDate = createdDate.toCurrentTimeZone(),
-      lastModifiedDate = lastModifiedDate.toCurrentTimeZone()
+      lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
+      deleted = deleted
     )
 }

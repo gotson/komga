@@ -28,4 +28,8 @@ sealed class Task : Serializable {
   data class AggregateSeriesMetadata(val seriesId: String) : Task() {
     override fun uniqueId() = "AGGREGATE_SERIES_METADATA_$seriesId"
   }
+
+  object EmptyTrash : Task() {
+    override fun uniqueId() = "EMPTY_TRASH"
+  }
 }

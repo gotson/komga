@@ -119,6 +119,15 @@ class ReadListDao(
       .fetchAndMap(null)
       .firstOrNull()
 
+  override fun findDeletedBooksByName(name: String): SortedMap<Int, String> =
+    dsl.select(rlb.BOOK_ID, rlb.NUMBER)
+      .from(rlb)
+      .leftJoin(rl).on(rlb.READLIST_ID.eq(rl.ID))
+      .where(rl.NAME.equalIgnoreCase(name))
+      .and(rlb.DELETED.eq(true))
+      .fetchInto(rlb).map { it.number to it.bookId }.toMap().toSortedMap()
+
+
   private fun selectBase() =
     dsl.selectDistinct(*rl.fields())
       .from(rl)
@@ -187,6 +196,20 @@ class ReadListDao(
 
   override fun removeBookFromAll(bookIds: Collection<String>) {
     dsl.deleteFrom(rlb)
+      .where(rlb.BOOK_ID.`in`(bookIds))
+      .execute()
+  }
+
+  override fun softDeleteBookFromAll(bookIds: Collection<String>) {
+    dsl.update(rlb)
+      .set(rlb.DELETED, true)
+      .where(rlb.BOOK_ID.`in`(bookIds))
+      .execute()
+  }
+
+  override fun restoreDeletedBooksInAll(bookIds: Collection<String>) {
+    dsl.update(rlb)
+      .set(rlb.DELETED, false)
       .where(rlb.BOOK_ID.`in`(bookIds))
       .execute()
   }

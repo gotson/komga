@@ -70,6 +70,10 @@ class TaskReceiver(
     submitTask(Task.AggregateSeriesMetadata(seriesId))
   }
 
+  fun emptyTrash(){
+    submitTask(Task.EmptyTrash)
+  }
+
   private fun submitTask(task: Task) {
     logger.info { "Sending task: $task" }
     jmsTemplate.convertAndSend(QUEUE_TASKS, task) {

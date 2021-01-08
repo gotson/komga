@@ -234,10 +234,10 @@ class SeriesDaoTest(
     )
     seriesDao.insert(series)
 
-    val found = seriesDao.findByLibraryIdAndUrl(library.id, URL("file://series"))
-    val notFound1 = seriesDao.findByLibraryIdAndUrl(library.id, URL("file://series2"))
-    val notFound2 = seriesDao.findByLibraryIdAndUrl(library.id + 1, URL("file://series"))
-    val notFound3 = seriesDao.findByLibraryIdAndUrl(library.id + 1, URL("file://series2"))
+    val found = seriesDao.findByLibraryIdAndUrlIncludeDeleted(library.id, URL("file://series"))
+    val notFound1 = seriesDao.findByLibraryIdAndUrlIncludeDeleted(library.id, URL("file://series2"))
+    val notFound2 = seriesDao.findByLibraryIdAndUrlIncludeDeleted(library.id + 1, URL("file://series"))
+    val notFound3 = seriesDao.findByLibraryIdAndUrlIncludeDeleted(library.id + 1, URL("file://series2"))
 
     assertThat(found).isNotNull
     assertThat(found?.name).isEqualTo("Series")

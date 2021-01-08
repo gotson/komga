@@ -95,6 +95,7 @@ dependencies {
 //  jooqGeneratorRuntime("org.xerial:sqlite-jdbc:3.32.3.2")
   runtimeOnly("com.github.gotson:sqlite-jdbc:3.32.3.6")
   jooqGeneratorRuntime("com.github.gotson:sqlite-jdbc:3.32.3.6")
+  implementation("org.lz4:lz4-java:1.7.1")
 
   testImplementation("org.springframework.boot:spring-boot-starter-test") {
     exclude(module = "mockito-core")

@@ -13,11 +13,13 @@ data class Book(
   val url: URL,
   val fileLastModified: LocalDateTime,
   val fileSize: Long = 0,
+  val fileHash: String = "",
   val number: Int = 0,
 
   val id: String = TsidCreator.getTsidString256(),
   val seriesId: String = "",
   val libraryId: String = "",
+  val deleted: Boolean = false,
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now()

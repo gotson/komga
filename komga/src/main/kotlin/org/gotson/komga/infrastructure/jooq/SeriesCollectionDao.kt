@@ -8,14 +8,11 @@ import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.ResultQuery
 import org.jooq.impl.DSL
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Sort
+import org.springframework.data.domain.*
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.util.*
 
 @Component
 class SeriesCollectionDao(
@@ -69,7 +66,12 @@ class SeriesCollectionDao(
     )
   }
 
-  override fun findAllByLibraries(belongsToLibraryIds: Collection<String>, filterOnLibraryIds: Collection<String>?, search: String?, pageable: Pageable): Page<SeriesCollection> {
+  override fun findAllByLibraries(
+    belongsToLibraryIds: Collection<String>,
+    filterOnLibraryIds: Collection<String>?,
+    search: String?,
+    pageable: Pageable
+  ): Page<SeriesCollection> {
     val ids = dsl.selectDistinct(c.ID)
       .from(c)
       .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
@@ -99,7 +101,10 @@ class SeriesCollectionDao(
     )
   }
 
-  override fun findAllBySeries(containsSeriesId: String, filterOnLibraryIds: Collection<String>?): Collection<SeriesCollection> {
+  override fun findAllBySeries(
+    containsSeriesId: String,
+    filterOnLibraryIds: Collection<String>?
+  ): Collection<SeriesCollection> {
     val ids = dsl.select(c.ID)
       .from(c)
       .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
@@ -117,6 +122,14 @@ class SeriesCollectionDao(
       .where(c.NAME.equalIgnoreCase(name))
       .fetchAndMap(null)
       .firstOrNull()
+
+  override fun findDeletedSeriesByName(name: String): SortedMap<Int, String> =
+    dsl.select(cs.SERIES_ID, cs.NUMBER)
+      .from(cs)
+      .leftJoin(c).on(cs.COLLECTION_ID.eq(c.ID))
+      .where(c.NAME.equalIgnoreCase(name))
+      .and(cs.DELETED.eq(true))
+      .fetchInto(cs).map { it.number to it.seriesId }.toMap().toSortedMap()
 
   private fun selectBase() =
     dsl.selectDistinct(*c.fields())
@@ -188,6 +201,20 @@ class SeriesCollectionDao(
   override fun removeSeriesFromAll(seriesIds: Collection<String>) {
     dsl.deleteFrom(cs)
       .where(cs.SERIES_ID.`in`(seriesIds))
+      .execute()
+  }
+
+  override fun softDeleteSeriesFromAll(seriesIds: Collection<String>) {
+    dsl.update(cs)
+      .set(cs.DELETED, true)
+      .where(cs.SERIES_ID.`in`(seriesIds))
+      .execute()
+  }
+
+  override fun restoreDeleteSeriesInAll(seriesId: String) {
+    dsl.update(cs)
+      .set(cs.DELETED, false)
+      .where(cs.SERIES_ID.eq(seriesId))
       .execute()
   }
 

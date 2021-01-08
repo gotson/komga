@@ -78,7 +78,12 @@ class SeriesDtoDao(
     return findAll(conditions, having, userId, pageable, search.toJoinConditions())
   }
 
-  override fun findByCollectionId(collectionId: String, search: SeriesSearchWithReadProgress, userId: String, pageable: Pageable): Page<SeriesDto> {
+  override fun findByCollectionId(
+    collectionId: String,
+    search: SeriesSearchWithReadProgress,
+    userId: String,
+    pageable: Pageable
+  ): Page<SeriesDto> {
     val conditions = search.toCondition().and(cs.COLLECTION_ID.eq(collectionId))
     val having = search.readStatus?.toCondition() ?: DSL.trueCondition()
     val joinConditions = search.toJoinConditions().copy(selectCollectionNumber = true, collection = true)
@@ -86,7 +91,11 @@ class SeriesDtoDao(
     return findAll(conditions, having, userId, pageable, joinConditions)
   }
 
-  override fun findRecentlyUpdated(search: SeriesSearchWithReadProgress, userId: String, pageable: Pageable): Page<SeriesDto> {
+  override fun findRecentlyUpdated(
+    search: SeriesSearchWithReadProgress,
+    userId: String,
+    pageable: Pageable
+  ): Page<SeriesDto> {
     val conditions = search.toCondition()
       .and(s.CREATED_DATE.ne(s.LAST_MODIFIED_DATE))
 
@@ -98,6 +107,7 @@ class SeriesDtoDao(
   override fun findByIdOrNull(seriesId: String, userId: String): SeriesDto? =
     selectBase(userId)
       .where(s.ID.eq(seriesId))
+      .and(b.DELETED.eq(false))
       .groupBy(*groupFields)
       .fetchAndMap(userId)
       .firstOrNull()
@@ -135,6 +145,8 @@ class SeriesDtoDao(
       .apply { if (joinConditions.tag) leftJoin(st).on(s.ID.eq(st.SERIES_ID)) }
       .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
       .where(conditions)
+      .and(s.DELETED.eq(false))
+      .and(b.DELETED.eq(false).or(b.DELETED.isNull))
       .groupBy(s.ID)
       .having(having)
       .fetch()
@@ -144,6 +156,8 @@ class SeriesDtoDao(
 
     val dtos = selectBase(userId, joinConditions)
       .where(conditions)
+      .and(s.DELETED.eq(false))
+      .and(b.DELETED.eq(false).or(b.DELETED.isNull))
       .groupBy(*groupFields)
       .having(having)
       .orderBy(orderBy)
@@ -215,7 +229,9 @@ class SeriesDtoDao(
     if (!tags.isNullOrEmpty()) c = c.and(lower(st.TAG).`in`(tags.map { it.toLowerCase() }))
     if (!ageRatings.isNullOrEmpty()) {
       val c1 = if (ageRatings.contains(null)) d.AGE_RATING.isNull else DSL.falseCondition()
-      val c2 = if (ageRatings.filterNotNull().isNotEmpty()) d.AGE_RATING.`in`(ageRatings.filterNotNull()) else DSL.falseCondition()
+      val c2 = if (ageRatings.filterNotNull()
+          .isNotEmpty()
+      ) d.AGE_RATING.`in`(ageRatings.filterNotNull()) else DSL.falseCondition()
       c = c.and(c1.or(c2))
     }
     // cast to String is necessary for SQLite, else the years in the IN block are coerced to Int, even though YEAR for SQLite uses strftime (string)

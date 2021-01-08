@@ -7,6 +7,7 @@ import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.LibraryScanner
 import org.gotson.komga.domain.service.MetadataLifecycle
+import org.gotson.komga.domain.service.SeriesLifecycle
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS_SELECTOR
 import org.springframework.jms.annotation.JmsListener
@@ -23,7 +24,8 @@ class TaskHandler(
   private val seriesRepository: SeriesRepository,
   private val libraryScanner: LibraryScanner,
   private val bookLifecycle: BookLifecycle,
-  private val metadataLifecycle: MetadataLifecycle
+  private val metadataLifecycle: MetadataLifecycle,
+  private val seriesLifecycle: SeriesLifecycle
 ) {
 
   @JmsListener(destination = QUEUE_TASKS, selector = QUEUE_TASKS_SELECTOR)
@@ -67,6 +69,10 @@ class TaskHandler(
             seriesRepository.findByIdOrNull(task.seriesId)?.let {
               metadataLifecycle.aggregateMetadata(it)
             } ?: logger.warn { "Cannot execute task $task: Series does not exist" }
+          is Task.EmptyTrash -> {
+            seriesRepository.findAllDeleted().let { seriesLifecycle.deleteMany(it) }
+            bookRepository.findAllDeleted().let { bookLifecycle.deleteMany(it) }
+          }
         }
       }.also {
         logger.info { "Task $task executed in $it" }

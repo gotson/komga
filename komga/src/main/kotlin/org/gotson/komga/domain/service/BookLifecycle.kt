@@ -219,6 +219,20 @@ class BookLifecycle(
     bookRepository.deleteByBookIds(bookIds)
   }
 
+  fun softDeleteMany(bookIds: Collection<String>) {
+    logger.info { "Mark all books as deleted: $bookIds" }
+
+    readListRepository.softDeleteBookFromAll(bookIds)
+    bookRepository.softDeleteByBookIds(bookIds)
+  }
+
+  fun restoreMany(books: Collection<Book>) {
+    logger.info { "restoring deleted books: ${books.map { it.path() }}" }
+
+    readListRepository.restoreDeletedBooksInAll(books.map { it.id })
+    bookRepository.updateMany(books)
+  }
+
   fun markReadProgress(book: Book, user: KomgaUser, page: Int) {
     val media = mediaRepository.findById(book.id)
     require(page >= 1 && page <= media.pages.size) { "Page argument ($page) must be within 1 and book page count (${media.pages.size})" }

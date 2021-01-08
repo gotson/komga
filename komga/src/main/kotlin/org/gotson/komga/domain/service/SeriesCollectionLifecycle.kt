@@ -36,8 +36,15 @@ class SeriesCollectionLifecycle(
 
     if (existing.name != toUpdate.name && collectionRepository.existsByName(toUpdate.name))
       throw DuplicateNameException("Collection name already exists")
+    val allSeriesIds = toUpdate.seriesIds.toMutableList()
+    collectionRepository.findDeletedSeriesByName(toUpdate.name).let { deleted ->
+      deleted.forEach {
+        if (allSeriesIds.size < it.key - 1) allSeriesIds.add(it.value)
+        else allSeriesIds.add(it.key - 1, it.value)
+      }
+    }
 
-    collectionRepository.update(toUpdate)
+    collectionRepository.update(toUpdate.copy(seriesIds = allSeriesIds))
   }
 
   fun deleteCollection(collectionId: String) {
