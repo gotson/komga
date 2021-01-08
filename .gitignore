@@ -30,8 +30,8 @@ node_modules
 .springBeans
 
 ### IntelliJ IDEA
-!.idea/
 .idea/*
+!/.idea/codeStyles/
 !/.idea/runConfigurations/
 *.iws
 *.iml
