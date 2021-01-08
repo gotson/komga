@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
 
-
 @Service
 class MosaicGenerator {
 

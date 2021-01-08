@@ -7,7 +7,6 @@ import com.tngtech.archunit.lang.ArchRule
 import com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices
 import org.gotson.komga.Application
 
-
 @AnalyzeClasses(packagesOf = [Application::class], importOptions = [ImportOption.DoNotIncludeTests::class])
 class SlicesIsolationRulesTest {
   @ArchTest

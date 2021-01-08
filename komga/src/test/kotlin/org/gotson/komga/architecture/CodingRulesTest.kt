@@ -8,7 +8,6 @@ import com.tngtech.archunit.library.GeneralCodingRules.NO_CLASSES_SHOULD_USE_JAV
 import com.tngtech.archunit.library.GeneralCodingRules.NO_CLASSES_SHOULD_USE_JODATIME
 import org.gotson.komga.Application
 
-
 @AnalyzeClasses(packagesOf = [Application::class])
 class CodingRulesTest {
 

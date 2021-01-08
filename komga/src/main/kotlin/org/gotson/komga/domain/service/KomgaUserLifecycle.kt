@@ -72,6 +72,4 @@ class KomgaUserLifecycle(
         it.expireNow()
       }
   }
-
 }
-

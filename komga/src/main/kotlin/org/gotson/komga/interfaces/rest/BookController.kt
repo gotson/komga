@@ -117,7 +117,6 @@ class BookController(
       .map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
-
   @Operation(description = "Return newly added or updated books.")
   @PageableWithoutSortAsQueryParam
   @GetMapping("api/v1/books/latest")
@@ -161,7 +160,6 @@ class BookController(
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
-
   @GetMapping("api/v1/books/{bookId}")
   fun getOneBook(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -200,7 +198,6 @@ class BookController(
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
-
   @GetMapping("api/v1/books/{bookId}/readlists")
   fun getAllReadListsByBook(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -214,12 +211,14 @@ class BookController(
       .map { it.toDto() }
   }
 
-
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
-  @GetMapping(value = [
-    "api/v1/books/{bookId}/thumbnail",
-    "opds/v1.2/books/{bookId}/thumbnail"
-  ], produces = [MediaType.IMAGE_JPEG_VALUE])
+  @GetMapping(
+    value = [
+      "api/v1/books/{bookId}/thumbnail",
+      "opds/v1.2/books/{bookId}/thumbnail"
+    ],
+    produces = [MediaType.IMAGE_JPEG_VALUE]
+  )
   fun getBookThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String
@@ -232,11 +231,14 @@ class BookController(
   }
 
   @Operation(description = "Download the book file.")
-  @GetMapping(value = [
-    "api/v1/books/{bookId}/file",
-    "api/v1/books/{bookId}/file/*",
-    "opds/v1.2/books/{bookId}/file/*"
-  ], produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
+  @GetMapping(
+    value = [
+      "api/v1/books/{bookId}/file",
+      "api/v1/books/{bookId}/file/*",
+      "opds/v1.2/books/{bookId}/file/*"
+    ],
+    produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
+  )
   @PreAuthorize("hasRole('$ROLE_FILE_DOWNLOAD')")
   fun getBookFile(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -255,11 +257,13 @@ class BookController(
             }
           }
           ResponseEntity.ok()
-            .headers(HttpHeaders().apply {
-              contentDisposition = ContentDisposition.builder("attachment")
-                .filename(book.fileName())
-                .build()
-            })
+            .headers(
+              HttpHeaders().apply {
+                contentDisposition = ContentDisposition.builder("attachment")
+                  .filename(book.fileName())
+                  .build()
+              }
+            )
             .contentType(getMediaTypeOrDefault(media.mediaType))
             .contentLength(this.contentLength())
             .body(stream)
@@ -269,7 +273,6 @@ class BookController(
         throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-
 
   @GetMapping("api/v1/books/{bookId}/pages")
   fun getBookPages(
@@ -291,14 +294,21 @@ class BookController(
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  @ApiResponse(content = [Content(
-    mediaType = "image/*",
-    schema = Schema(type = "string", format = "binary")
-  )])
-  @GetMapping(value = [
-    "api/v1/books/{bookId}/pages/{pageNumber}",
-    "opds/v1.2/books/{bookId}/pages/{pageNumber}"
-  ], produces = [MediaType.ALL_VALUE])
+  @ApiResponse(
+    content = [
+      Content(
+        mediaType = "image/*",
+        schema = Schema(type = "string", format = "binary")
+      )
+    ]
+  )
+  @GetMapping(
+    value = [
+      "api/v1/books/{bookId}/pages/{pageNumber}",
+      "opds/v1.2/books/{bookId}/pages/{pageNumber}"
+    ],
+    produces = [MediaType.ALL_VALUE]
+  )
   @PreAuthorize("hasRole('$ROLE_PAGE_STREAMING')")
   fun getBookPage(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -430,8 +440,8 @@ class BookController(
             if (authors != null) authors!!.map { Author(it.name ?: "", it.role ?: "") } else emptyList()
           } else existing.authors,
           authorsLock = authorsLock ?: existing.authorsLock,
-          tags = if(isSet("tags")) {
-            if(tags != null) tags!! else emptySet()
+          tags = if (isSet("tags")) {
+            if (tags != null) tags!! else emptySet()
           } else existing.tags,
           tagsLock = tagsLock ?: existing.tagsLock
         )
@@ -480,7 +490,6 @@ class BookController(
   private fun getBookLastModified(media: Media) =
     media.lastModifiedDate.toInstant(ZoneOffset.UTC).toEpochMilli()
 
-
   private fun getMediaTypeOrDefault(mediaTypeString: String?): MediaType {
     mediaTypeString?.let {
       try {
@@ -491,4 +500,3 @@ class BookController(
     return MediaType.APPLICATION_OCTET_STREAM
   }
 }
-

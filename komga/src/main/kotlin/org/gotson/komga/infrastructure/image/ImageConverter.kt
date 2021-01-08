@@ -11,7 +11,6 @@ import javax.imageio.ImageIO
 import javax.imageio.spi.IIORegistry
 import javax.imageio.spi.ImageReaderSpi
 
-
 private val logger = KotlinLogging.logger {}
 
 @Service

@@ -109,5 +109,4 @@ class LibraryScanner(
       }
     }.also { logger.info { "Library updated in $it" } }
   }
-
 }

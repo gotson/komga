@@ -195,7 +195,6 @@ class OpdsController(
       .sortedBy { it.metadata.titleSort.toLowerCase() }
       .map { it.toOpdsEntry() }
 
-
     return OpdsFeedNavigation(
       id = ID_SERIES_ALL,
       title = "All series",
@@ -343,7 +342,6 @@ class OpdsController(
       if (principal.user.sharedAllLibraries) referentialRepository.findAllPublishers()
       else referentialRepository.findAllPublishersByLibraries(principal.user.sharedLibrariesIds)
 
-
     return OpdsFeedNavigation(
       id = ID_PUBLISHERS_ALL,
       title = "All publishers",
@@ -375,10 +373,12 @@ class OpdsController(
     seriesRepository.findByIdOrNull(id)?.let { series ->
       if (!principal.user.canAccessSeries(series)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
 
-      val books = bookRepository.findAll(BookSearch(
-        seriesIds = listOf(id),
-        mediaStatus = setOf(Media.Status.READY)
-      ))
+      val books = bookRepository.findAll(
+        BookSearch(
+          seriesIds = listOf(id),
+          mediaStatus = setOf(Media.Status.READY)
+        )
+      )
       val metadata = seriesMetadataRepository.findById(series.id)
 
       val entries = books
@@ -484,7 +484,6 @@ class OpdsController(
       )
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
-
 
   private fun SeriesWithInfo.toOpdsEntry(prepend: Int? = null): OpdsEntryNavigation {
     val pre = prepend?.let { decimalFormat.format(it) + " - " } ?: ""

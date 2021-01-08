@@ -110,7 +110,7 @@ class LibraryControllerTest(
           jsonPath("$[0].root") { value("") }
         }
 
-      mockMvc.get("${route}/${library.id}")
+      mockMvc.get("$route/${library.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.root") { value("") }
@@ -126,7 +126,7 @@ class LibraryControllerTest(
           jsonPath("$[0].root") { value(Matchers.containsString("library1")) }
         }
 
-      mockMvc.get("${route}/${library.id}")
+      mockMvc.get("$route/${library.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.root") { value(Matchers.containsString("library1")) }

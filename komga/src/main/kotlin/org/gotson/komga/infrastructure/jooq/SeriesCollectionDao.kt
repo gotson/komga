@@ -30,7 +30,6 @@ class SeriesCollectionDao(
     "name" to DSL.lower(c.NAME)
   )
 
-
   override fun findByIdOrNull(collectionId: String): SeriesCollection? =
     selectBase()
       .where(c.ID.eq(collectionId))
@@ -152,7 +151,6 @@ class SeriesCollectionDao(
     }
   }
 
-
   private fun insertSeries(dsl: DSLContext, collection: SeriesCollection) {
     collection.seriesIds.forEachIndexed { index, id ->
       dsl.insertInto(cs)
@@ -195,8 +193,7 @@ class SeriesCollectionDao(
 
   override fun delete(collectionId: String) {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         deleteFrom(cs).where(cs.COLLECTION_ID.eq(collectionId)).execute()
         deleteFrom(c).where(c.ID.eq(collectionId)).execute()
       }
@@ -205,8 +202,7 @@ class SeriesCollectionDao(
 
   override fun deleteAll() {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         deleteFrom(cs).execute()
         deleteFrom(c).execute()
       }
@@ -218,7 +214,6 @@ class SeriesCollectionDao(
       dsl.selectFrom(c)
         .where(c.NAME.equalIgnoreCase(name))
     )
-
 
   private fun CollectionRecord.toDomain(seriesIds: List<String>) =
     SeriesCollection(

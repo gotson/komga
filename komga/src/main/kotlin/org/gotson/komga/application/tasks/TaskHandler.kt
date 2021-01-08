@@ -61,7 +61,6 @@ class TaskHandler(
             seriesRepository.findByIdOrNull(task.seriesId)?.let {
               metadataLifecycle.refreshMetadata(it)
             } ?: logger.warn { "Cannot execute task $task: Series does not exist" }
-
         }
       }.also {
         logger.info { "Task $task executed in $it" }
@@ -71,5 +70,3 @@ class TaskHandler(
     }
   }
 }
-
-

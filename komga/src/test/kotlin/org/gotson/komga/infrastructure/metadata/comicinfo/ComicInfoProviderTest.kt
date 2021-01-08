@@ -284,6 +284,5 @@ class ComicInfoProviderTest {
         assertThat(collections).isEmpty()
       }
     }
-
   }
 }

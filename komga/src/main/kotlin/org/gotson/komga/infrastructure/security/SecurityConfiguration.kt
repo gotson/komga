@@ -57,7 +57,7 @@ class SecurityConfiguration(
       .and()
       .headers {
         it.frameOptions().sameOrigin()
-        it.cacheControl().disable() //headers are set in WebMvcConfiguration
+        it.cacheControl().disable() // headers are set in WebMvcConfiguration
       }
 
       .httpBasic()

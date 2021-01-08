@@ -42,5 +42,4 @@ class MetadataApplier {
         genres = getIfNotLocked(genres, patch.genres, genresLock)
       )
     }
-
 }

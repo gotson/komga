@@ -130,8 +130,7 @@ class MediaDao(
 
   override fun update(media: Media) {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         update(m)
           .set(m.STATUS, media.status.toString())
           .set(m.MEDIA_TYPE, media.mediaType)
@@ -157,8 +156,7 @@ class MediaDao(
 
   override fun delete(bookId: String) {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         deleteFrom(p).where(p.BOOK_ID.eq(bookId)).execute()
         deleteFrom(f).where(f.BOOK_ID.eq(bookId)).execute()
         deleteFrom(m).where(m.BOOK_ID.eq(bookId)).execute()
@@ -168,8 +166,7 @@ class MediaDao(
 
   override fun deleteByBookIds(bookIds: Collection<String>) {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         deleteFrom(p).where(p.BOOK_ID.`in`(bookIds)).execute()
         deleteFrom(f).where(f.BOOK_ID.`in`(bookIds)).execute()
         deleteFrom(m).where(m.BOOK_ID.`in`(bookIds)).execute()

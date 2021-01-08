@@ -351,12 +351,14 @@ class SeriesControllerTest(
     }
 
     @ParameterizedTest
-    @ValueSource(strings = [
-      """{"title":""}""",
-      """{"titleSort":""}""",
-      """{"ageRating":-1}""",
-      """{"language":"japanese"}"""
-    ])
+    @ValueSource(
+      strings = [
+        """{"title":""}""",
+        """{"titleSort":""}""",
+        """{"ageRating":-1}""",
+        """{"language":"japanese"}"""
+      ]
+    )
     @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given invalid json when updating metadata then raise validation error`(jsonString: String) {
       mockMvc.patch("/api/v1/series/1/metadata") {
@@ -502,11 +504,13 @@ class SeriesControllerTest(
       }
 
       bookRepository.findAll().first().let { book ->
-        bookLifecycle.addThumbnailForBook(ThumbnailBook(
-          thumbnail = Random.nextBytes(1),
-          bookId = book.id,
-          type = ThumbnailBook.Type.GENERATED
-        ))
+        bookLifecycle.addThumbnailForBook(
+          ThumbnailBook(
+            thumbnail = Random.nextBytes(1),
+            bookId = book.id,
+            type = ThumbnailBook.Type.GENERATED
+          )
+        )
       }
 
       val url = "/api/v1/series/${createdSeries.id}/thumbnail"
@@ -534,11 +538,13 @@ class SeriesControllerTest(
       }
 
       bookRepository.findAll().forEach { book ->
-        bookLifecycle.addThumbnailForBook(ThumbnailBook(
-          thumbnail = Random.nextBytes(1),
-          bookId = book.id,
-          type = ThumbnailBook.Type.GENERATED
-        ))
+        bookLifecycle.addThumbnailForBook(
+          ThumbnailBook(
+            thumbnail = Random.nextBytes(1),
+            bookId = book.id,
+            type = ThumbnailBook.Type.GENERATED
+          )
+        )
       }
 
       val url = "/api/v1/series/${createdSeries.id}/thumbnail"
@@ -575,10 +581,12 @@ class SeriesControllerTest(
 
       bookRepository.findAll().forEach { book ->
         mediaRepository.findById(book.id).let { media ->
-          mediaRepository.update(media.copy(
-            status = Media.Status.READY,
-            pages = (1..10).map { BookPage("$it", "image/jpeg") }
-          ))
+          mediaRepository.update(
+            media.copy(
+              status = Media.Status.READY,
+              pages = (1..10).map { BookPage("$it", "image/jpeg") }
+            )
+          )
         }
       }
 
@@ -615,10 +623,12 @@ class SeriesControllerTest(
 
       bookRepository.findAll().forEach { book ->
         mediaRepository.findById(book.id).let { media ->
-          mediaRepository.update(media.copy(
-            status = Media.Status.READY,
-            pages = (1..10).map { BookPage("$it", "image/jpeg") }
-          ))
+          mediaRepository.update(
+            media.copy(
+              status = Media.Status.READY,
+              pages = (1..10).map { BookPage("$it", "image/jpeg") }
+            )
+          )
         }
       }
 
@@ -664,10 +674,12 @@ class SeriesControllerTest(
 
       bookRepository.findAll().forEach { book ->
         mediaRepository.findById(book.id).let { media ->
-          mediaRepository.update(media.copy(
-            status = Media.Status.READY,
-            pages = (1..10).map { BookPage("$it", "image/jpeg") }
-          ))
+          mediaRepository.update(
+            media.copy(
+              status = Media.Status.READY,
+              pages = (1..10).map { BookPage("$it", "image/jpeg") }
+            )
+          )
         }
       }
 

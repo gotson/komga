@@ -72,4 +72,3 @@ data class ReadProgressDto(
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val lastModified: LocalDateTime
 )
-

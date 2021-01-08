@@ -53,7 +53,6 @@ class ComicInfoProvider(
         readLists.addAll(arcs.map { BookMetadataPatch.ReadListEntry(it) })
       }
 
-
       return BookMetadataPatch(
         title = comicInfo.title?.ifBlank { null },
         summary = comicInfo.summary?.ifBlank { null },

@@ -116,5 +116,4 @@ class ComicInfo {
 
   @JsonProperty(value = "AgeRating", defaultValue = "Unknown")
   var ageRating: AgeRating? = null
-
 }

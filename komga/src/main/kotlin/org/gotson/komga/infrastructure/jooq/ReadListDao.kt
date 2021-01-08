@@ -31,7 +31,6 @@ class ReadListDao(
     "name" to DSL.lower(rl.NAME)
   )
 
-
   override fun findByIdOrNull(readListId: String): ReadList? =
     selectBase()
       .where(rl.ID.eq(readListId))
@@ -141,7 +140,6 @@ class ReadListDao(
         rr.toDomain(bookIds)
       }
 
-
   override fun insert(readList: ReadList) {
     dsl.transaction { config ->
       config.dsl().insertInto(rl)
@@ -153,7 +151,6 @@ class ReadListDao(
       insertBooks(config.dsl(), readList)
     }
   }
-
 
   private fun insertBooks(dsl: DSLContext, readList: ReadList) {
     readList.bookIds.map { (index, id) ->
@@ -196,8 +193,7 @@ class ReadListDao(
 
   override fun delete(readListId: String) {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         deleteFrom(rlb).where(rlb.READLIST_ID.eq(readListId)).execute()
         deleteFrom(rl).where(rl.ID.eq(readListId)).execute()
       }
@@ -206,8 +202,7 @@ class ReadListDao(
 
   override fun deleteAll() {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         deleteFrom(rlb).execute()
         deleteFrom(rl).execute()
       }
@@ -219,7 +214,6 @@ class ReadListDao(
       dsl.selectFrom(rl)
         .where(rl.NAME.equalIgnoreCase(name))
     )
-
 
   private fun ReadlistRecord.toDomain(bookIds: SortedMap<Int, String>) =
     ReadList(

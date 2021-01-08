@@ -201,7 +201,7 @@ class ReadListController(
     @PathVariable id: String,
     @PathVariable bookId: String
   ): BookDto =
-    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
+    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
       bookDtoRepository.findPreviousInReadList(
         id,
         bookId,
@@ -217,7 +217,7 @@ class ReadListController(
     @PathVariable id: String,
     @PathVariable bookId: String
   ): BookDto =
-    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
+    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
       bookDtoRepository.findNextInReadList(
         id,
         bookId,
@@ -227,4 +227,3 @@ class ReadListController(
         ?.restrictUrl(!principal.user.roleAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 }
-

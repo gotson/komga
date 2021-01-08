@@ -7,7 +7,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-class AutowiringTriggerTest {
+class AutowiringTest {
 
   @Test
   fun `Application loads properly with test properties`() = Unit

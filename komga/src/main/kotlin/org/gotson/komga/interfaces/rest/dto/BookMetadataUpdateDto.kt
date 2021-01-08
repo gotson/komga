@@ -1,11 +1,9 @@
 package org.gotson.komga.interfaces.rest.dto
 
-import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.infrastructure.validation.NullOrNotBlank
 import java.time.LocalDate
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
-import javax.validation.constraints.PositiveOrZero
 import kotlin.properties.Delegates
 
 class BookMetadataUpdateDto {
@@ -32,23 +30,23 @@ class BookMetadataUpdateDto {
 
   var releaseDate: LocalDate?
     by Delegates.observable<LocalDate?>(null) { prop, _, _ ->
-      isSet[prop.name] = true
-    }
+    isSet[prop.name] = true
+  }
 
   var releaseDateLock: Boolean? = null
 
   @get:Valid
   var authors: List<AuthorUpdateDto>?
     by Delegates.observable<List<AuthorUpdateDto>?>(null) { prop, _, _ ->
-      isSet[prop.name] = true
-    }
+    isSet[prop.name] = true
+  }
 
   var authorsLock: Boolean? = null
 
   var tags: Set<String>?
     by Delegates.observable<Set<String>?>(null) { prop, _, _ ->
-      isSet[prop.name] = true
-    }
+    isSet[prop.name] = true
+  }
 
   var tagsLock: Boolean? = null
 }

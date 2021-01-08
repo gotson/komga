@@ -7,7 +7,6 @@ import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.BookMetadataAuthorRecord
 import org.gotson.komga.jooq.tables.records.BookMetadataRecord
 import org.jooq.DSLContext
-import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
 import java.time.ZoneId

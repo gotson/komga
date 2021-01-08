@@ -57,7 +57,8 @@ class MetadataLifecycle(
 
           // handle book metadata
           if ((provider is ComicInfoProvider && library.importComicInfoBook) ||
-            (provider is EpubMetadataProvider && library.importEpubBook)) {
+            (provider is EpubMetadataProvider && library.importEpubBook)
+          ) {
             patch?.let { bPatch ->
               bookMetadataRepository.findById(book.id).let {
                 logger.debug { "Original metadata: $it" }
@@ -93,15 +94,16 @@ class MetadataLifecycle(
                   }
                 } else {
                   logger.debug { "Adding book '${book.name}' to new readlist '$readList'" }
-                  readListLifecycle.addReadList(ReadList(
-                    name = readList.name,
-                    bookIds = mapOf((readList.number ?: 0) to book.id).toSortedMap()
-                  ))
+                  readListLifecycle.addReadList(
+                    ReadList(
+                      name = readList.name,
+                      bookIds = mapOf((readList.number ?: 0) to book.id).toSortedMap()
+                    )
+                  )
                 }
               }
             }
           }
-
         }
       }
     }
@@ -128,7 +130,8 @@ class MetadataLifecycle(
 
           // handle series metadata
           if ((provider is ComicInfoProvider && library.importComicInfoSeries) ||
-            (provider is EpubMetadataProvider && library.importEpubSeries)) {
+            (provider is EpubMetadataProvider && library.importEpubSeries)
+          ) {
 
             val aggregatedPatch = SeriesMetadataPatch(
               title = patches.mostFrequent { it.title },
@@ -169,10 +172,12 @@ class MetadataLifecycle(
                   }
                 } else {
                   logger.debug { "Adding series '${series.name}' to new collection '$collection'" }
-                  collectionLifecycle.addCollection(SeriesCollection(
-                    name = collection,
-                    seriesIds = listOf(series.id)
-                  ))
+                  collectionLifecycle.addCollection(
+                    SeriesCollection(
+                      name = collection,
+                      seriesIds = listOf(series.id)
+                    )
+                  )
                 }
               }
             }
@@ -195,4 +200,3 @@ class MetadataLifecycle(
       .maxByOrNull { it.value }?.key
   }
 }
-

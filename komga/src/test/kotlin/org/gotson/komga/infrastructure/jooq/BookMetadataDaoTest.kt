@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookMetadata
-import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -223,4 +222,3 @@ class BookMetadataDaoTest(
     assertThat(found).isInstanceOf(Exception::class.java)
   }
 }
-

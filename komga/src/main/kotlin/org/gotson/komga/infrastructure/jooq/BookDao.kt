@@ -73,7 +73,6 @@ class BookDao(
 
     val orderBy = pageable.sort.toOrderBy(sorts)
 
-
     val items = dsl.select(*b.fields())
       .from(b)
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
@@ -92,7 +91,6 @@ class BookDao(
       count.toLong()
     )
   }
-
 
   override fun getLibraryId(bookId: String): String? =
     dsl.select(b.LIBRARY_ID)
@@ -137,7 +135,6 @@ class BookDao(
       .where(conditions)
       .fetch(0, String::class.java)
   }
-
 
   override fun insert(book: Book) {
     insertMany(listOf(book))
@@ -225,7 +222,6 @@ class BookDao(
   }
 
   override fun count(): Long = dsl.fetchCount(b).toLong()
-
 
   private fun BookSearch.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()

@@ -45,7 +45,6 @@ class SeriesMetadataDaoTest(
     libraryRepository.deleteAll()
   }
 
-
   @Test
   fun `given a seriesMetadata when inserting then it is persisted`() {
     val series = makeSeries("Series", libraryId = library.id).also { seriesRepository.insert(it) }
@@ -60,7 +59,7 @@ class SeriesMetadataDaoTest(
       publisher = "publisher",
       ageRating = 18,
       genres = setOf("Action", "Adventure"),
-      tags = setOf("tag","another"),
+      tags = setOf("tag", "another"),
       language = "en",
       titleLock = true,
       titleSortLock = true,
@@ -196,7 +195,6 @@ class SeriesMetadataDaoTest(
     )
     seriesMetadataDao.insert(metadata)
     val created = seriesMetadataDao.findById(metadata.seriesId)
-
 
     val modificationDate = LocalDateTime.now()
 

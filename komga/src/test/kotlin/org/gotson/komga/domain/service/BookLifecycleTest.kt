@@ -76,10 +76,12 @@ class BookLifecycleTest(
 
     val book = bookRepository.findAll().first()
     mediaRepository.findById(book.id).let { media ->
-      mediaRepository.update(media.copy(
-        status = Media.Status.OUTDATED,
-        pages = (1..10).map { BookPage("$it", "image/jpeg") }
-      ))
+      mediaRepository.update(
+        media.copy(
+          status = Media.Status.OUTDATED,
+          pages = (1..10).map { BookPage("$it", "image/jpeg") }
+        )
+      )
     }
 
     bookLifecycle.markReadProgressCompleted(book.id, user1)
@@ -107,10 +109,12 @@ class BookLifecycleTest(
 
     val book = bookRepository.findAll().first()
     mediaRepository.findById(book.id).let { media ->
-      mediaRepository.update(media.copy(
-        status = Media.Status.OUTDATED,
-        pages = (1..10).map { BookPage("$it", "image/jpeg") }
-      ))
+      mediaRepository.update(
+        media.copy(
+          status = Media.Status.OUTDATED,
+          pages = (1..10).map { BookPage("$it", "image/jpeg") }
+        )
+      )
     }
 
     bookLifecycle.markReadProgressCompleted(book.id, user1)

@@ -56,8 +56,7 @@ class KomgaUserDao(
 
   override fun insert(user: KomgaUser) {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         insertInto(u)
           .set(u.ID, user.id)
           .set(u.EMAIL, user.email)
@@ -80,8 +79,7 @@ class KomgaUserDao(
 
   override fun update(user: KomgaUser) {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         update(u)
           .set(u.EMAIL, user.email)
           .set(u.PASSWORD, user.password)
@@ -109,8 +107,7 @@ class KomgaUserDao(
 
   override fun delete(userId: String) {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         deleteFrom(ul).where(ul.USER_ID.equal(userId)).execute()
         deleteFrom(u).where(u.ID.equal(userId)).execute()
       }
@@ -119,8 +116,7 @@ class KomgaUserDao(
 
   override fun deleteAll() {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         deleteFrom(ul).execute()
         deleteFrom(u).execute()
       }

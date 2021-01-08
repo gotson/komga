@@ -22,7 +22,6 @@ class SeriesDao(
   private val d = Tables.SERIES_METADATA
   private val cs = Tables.COLLECTION_SERIES
 
-
   override fun findAll(): Collection<Series> =
     dsl.selectFrom(s)
       .fetchInto(s)
@@ -52,13 +51,11 @@ class SeriesDao(
       .fetchOneInto(s)
       ?.toDomain()
 
-
   override fun getLibraryId(seriesId: String): String? =
     dsl.select(s.LIBRARY_ID)
       .from(s)
       .where(s.ID.eq(seriesId))
       .fetchOne(0, String::class.java)
-
 
   override fun findAll(search: SeriesSearch): Collection<Series> {
     val conditions = search.toCondition()
@@ -71,7 +68,6 @@ class SeriesDao(
       .fetchInto(s)
       .map { it.toDomain() }
   }
-
 
   override fun insert(series: Series) {
     dsl.insertInto(s)
@@ -96,8 +92,7 @@ class SeriesDao(
 
   override fun delete(seriesId: String) {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         deleteFrom(s).where(s.ID.eq(seriesId)).execute()
       }
     }
@@ -105,8 +100,7 @@ class SeriesDao(
 
   override fun deleteAll() {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         deleteFrom(s).execute()
       }
     }
@@ -114,15 +108,13 @@ class SeriesDao(
 
   override fun deleteAll(seriesIds: Collection<String>) {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         deleteFrom(s).where(s.ID.`in`(seriesIds)).execute()
       }
     }
   }
 
   override fun count(): Long = dsl.fetchCount(s).toLong()
-
 
   private fun SeriesSearch.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()

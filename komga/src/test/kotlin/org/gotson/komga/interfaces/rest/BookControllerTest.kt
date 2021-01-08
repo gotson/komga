@@ -121,7 +121,6 @@ class BookControllerTest(
           jsonPath("$.content.length()") { value(1) }
           jsonPath("$.content[0].name") { value("1") }
         }
-
     }
   }
 
@@ -331,10 +330,12 @@ class BookControllerTest(
 
     val book = bookRepository.findAll().first()
     mediaRepository.findById(book.id).let {
-      mediaRepository.update(it.copy(
-        status = Media.Status.READY,
-        pages = listOf(BookPage("file", "image/jpeg"))
-      ))
+      mediaRepository.update(
+        it.copy(
+          status = Media.Status.READY,
+          pages = listOf(BookPage("file", "image/jpeg"))
+        )
+      )
     }
 
     mockMvc.get("/api/v1/books/${book.id}/pages/$page")
@@ -363,33 +364,32 @@ class BookControllerTest(
       val second = bookRepository.findAll(BookSearch(searchTerm = "2")).first().id
       val third = bookRepository.findAll(BookSearch(searchTerm = "3")).first().id
 
-      mockMvc.get("/api/v1/books/${first}/previous")
+      mockMvc.get("/api/v1/books/$first/previous")
         .andExpect { status { isNotFound() } }
-      mockMvc.get("/api/v1/books/${first}/next")
+      mockMvc.get("/api/v1/books/$first/next")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("2") }
         }
 
-      mockMvc.get("/api/v1/books/${second}/previous")
+      mockMvc.get("/api/v1/books/$second/previous")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("1") }
         }
-      mockMvc.get("/api/v1/books/${second}/next")
+      mockMvc.get("/api/v1/books/$second/next")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("3") }
         }
 
-      mockMvc.get("/api/v1/books/${third}/previous")
+      mockMvc.get("/api/v1/books/$third/previous")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("2") }
         }
-      mockMvc.get("/api/v1/books/${third}/next")
+      mockMvc.get("/api/v1/books/$third/next")
         .andExpect { status { isNotFound() } }
-
     }
   }
 
@@ -475,11 +475,13 @@ class BookControllerTest(
       }
 
       val book = bookRepository.findAll().first()
-      bookLifecycle.addThumbnailForBook(ThumbnailBook(
-        thumbnail = Random.nextBytes(100),
-        bookId = book.id,
-        type = ThumbnailBook.Type.GENERATED
-      ))
+      bookLifecycle.addThumbnailForBook(
+        ThumbnailBook(
+          thumbnail = Random.nextBytes(100),
+          bookId = book.id,
+          type = ThumbnailBook.Type.GENERATED
+        )
+      )
 
       val url = "/api/v1/books/${book.id}/thumbnail"
 
@@ -532,22 +534,26 @@ class BookControllerTest(
       }
 
       val book = bookRepository.findAll().first()
-      bookLifecycle.addThumbnailForBook(ThumbnailBook(
-        thumbnail = Random.nextBytes(1),
-        bookId = book.id,
-        type = ThumbnailBook.Type.GENERATED
-      ))
+      bookLifecycle.addThumbnailForBook(
+        ThumbnailBook(
+          thumbnail = Random.nextBytes(1),
+          bookId = book.id,
+          type = ThumbnailBook.Type.GENERATED
+        )
+      )
 
       val url = "/api/v1/books/${book.id}/thumbnail"
 
       val response = mockMvc.get(url).andReturn().response
 
       Thread.sleep(100)
-      bookLifecycle.addThumbnailForBook(ThumbnailBook(
-        thumbnail = Random.nextBytes(1),
-        bookId = book.id,
-        type = ThumbnailBook.Type.GENERATED
-      ))
+      bookLifecycle.addThumbnailForBook(
+        ThumbnailBook(
+          thumbnail = Random.nextBytes(1),
+          bookId = book.id,
+          type = ThumbnailBook.Type.GENERATED
+        )
+      )
 
       mockMvc.get(url) {
         headers {
@@ -573,11 +579,13 @@ class BookControllerTest(
     }
 
     @ParameterizedTest
-    @ValueSource(strings = [
-      """{"title":""}""",
-      """{"number":""}""",
-      """{"authors":"[{"name":""}]"}"""
-    ])
+    @ValueSource(
+      strings = [
+        """{"title":""}""",
+        """{"number":""}""",
+        """{"authors":"[{"name":""}]"}"""
+      ]
+    )
     @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given invalid json when updating metadata then raise validation error`(jsonString: String) {
       mockMvc.patch("/api/v1/books/1/metadata") {
@@ -628,7 +636,7 @@ class BookControllerTest(
         }
       """.trimIndent()
 
-      mockMvc.patch("/api/v1/books/${bookId}/metadata") {
+      mockMvc.patch("/api/v1/books/$bookId/metadata") {
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
@@ -698,7 +706,7 @@ class BookControllerTest(
         }
       """.trimIndent()
 
-      mockMvc.patch("/api/v1/books/${bookId}/metadata") {
+      mockMvc.patch("/api/v1/books/$bookId/metadata") {
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
@@ -746,7 +754,7 @@ class BookControllerTest(
         }
       """.trimIndent()
 
-      mockMvc.patch("/api/v1/books/${bookId}/metadata") {
+      mockMvc.patch("/api/v1/books/$bookId/metadata") {
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
@@ -769,11 +777,13 @@ class BookControllerTest(
   inner class ReadProgress {
 
     @ParameterizedTest
-    @ValueSource(strings = [
-      """{"completed": false}""",
-      """{}""",
-      """{"page":0}"""
-    ])
+    @ValueSource(
+      strings = [
+        """{"completed": false}""",
+        """{}""",
+        """{"page":0}"""
+      ]
+    )
     @WithMockCustomUser
     fun `given invalid payload when marking book in progress then validation error is returned`(jsonString: String) {
       mockMvc.patch("/api/v1/books/1/read-progress") {
@@ -796,10 +806,12 @@ class BookControllerTest(
 
       val book = bookRepository.findAll().first()
       mediaRepository.findById(book.id).let { media ->
-        mediaRepository.update(media.copy(
-          status = Media.Status.READY,
-          pages = (1..10).map { BookPage("$it", "image/jpeg") }
-        ))
+        mediaRepository.update(
+          media.copy(
+            status = Media.Status.READY,
+            pages = (1..10).map { BookPage("$it", "image/jpeg") }
+          )
+        )
       }
 
       val jsonString = """
@@ -835,10 +847,12 @@ class BookControllerTest(
 
       val book = bookRepository.findAll().first()
       mediaRepository.findById(book.id).let { media ->
-        mediaRepository.update(media.copy(
-          status = Media.Status.READY,
-          pages = (1..10).map { BookPage("$it", "image/jpeg") }
-        ))
+        mediaRepository.update(
+          media.copy(
+            status = Media.Status.READY,
+            pages = (1..10).map { BookPage("$it", "image/jpeg") }
+          )
+        )
       }
 
       val jsonString = """
@@ -874,10 +888,12 @@ class BookControllerTest(
 
       val book = bookRepository.findAll().first()
       mediaRepository.findById(book.id).let { media ->
-        mediaRepository.update(media.copy(
-          status = Media.Status.READY,
-          pages = (1..10).map { BookPage("$it", "image/jpeg") }
-        ))
+        mediaRepository.update(
+          media.copy(
+            status = Media.Status.READY,
+            pages = (1..10).map { BookPage("$it", "image/jpeg") }
+          )
+        )
       }
 
       val jsonString = """
@@ -893,7 +909,6 @@ class BookControllerTest(
       }.andExpect {
         status { isNoContent() }
       }
-
 
       mockMvc.delete("/api/v1/books/${book.id}/read-progress") {
         contentType = MediaType.APPLICATION_JSON
@@ -920,37 +935,42 @@ class BookControllerTest(
 
     val book = bookRepository.findAll().first()
     mediaRepository.findById(book.id).let { media ->
-      mediaRepository.update(media.copy(
-        status = Media.Status.READY,
-        pages = (1..10).map { BookPage("$it", "image/jpeg") }
-      ))
+      mediaRepository.update(
+        media.copy(
+          status = Media.Status.READY,
+          pages = (1..10).map { BookPage("$it", "image/jpeg") }
+        )
+      )
     }
 
     val jsonString = """
         {
           "completed": true
         }
-      """.trimIndent()
+    """.trimIndent()
 
-    mockMvc.perform(MockMvcRequestBuilders
-      .patch("/api/v1/books/${book.id}/read-progress")
-      .with(user(KomgaPrincipal(user)))
-      .contentType(MediaType.APPLICATION_JSON)
-      .content(jsonString)
+    mockMvc.perform(
+      MockMvcRequestBuilders
+        .patch("/api/v1/books/${book.id}/read-progress")
+        .with(user(KomgaPrincipal(user)))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(jsonString)
     )
 
-    mockMvc.perform(MockMvcRequestBuilders
-      .get("/api/v1/books")
-      .with(user(KomgaPrincipal(user)))
-      .contentType(MediaType.APPLICATION_JSON)
+    mockMvc.perform(
+      MockMvcRequestBuilders
+        .get("/api/v1/books")
+        .with(user(KomgaPrincipal(user)))
+        .contentType(MediaType.APPLICATION_JSON)
     ).andExpect(
       jsonPath("$.totalElements").value(2)
     )
 
-    mockMvc.perform(MockMvcRequestBuilders
-      .get("/api/v1/books")
-      .with(user(KomgaPrincipal(user2)))
-      .contentType(MediaType.APPLICATION_JSON)
+    mockMvc.perform(
+      MockMvcRequestBuilders
+        .get("/api/v1/books")
+        .with(user(KomgaPrincipal(user2)))
+        .contentType(MediaType.APPLICATION_JSON)
     ).andExpect(
       jsonPath("$.totalElements").value(2)
     )

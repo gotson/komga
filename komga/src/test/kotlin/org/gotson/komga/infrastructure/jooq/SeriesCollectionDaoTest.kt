@@ -144,20 +144,26 @@ class SeriesCollectionDaoTest(
     val seriesLibrary1 = makeSeries("Series1", library.id).also { seriesRepository.insert(it) }
     val seriesLibrary2 = makeSeries("Series2", library2.id).also { seriesRepository.insert(it) }
 
-    collectionDao.insert(SeriesCollection(
-      name = "collectionLibrary1",
-      seriesIds = listOf(seriesLibrary1.id)
-    ))
+    collectionDao.insert(
+      SeriesCollection(
+        name = "collectionLibrary1",
+        seriesIds = listOf(seriesLibrary1.id)
+      )
+    )
 
-    collectionDao.insert(SeriesCollection(
-      name = "collectionLibrary2",
-      seriesIds = listOf(seriesLibrary2.id)
-    ))
+    collectionDao.insert(
+      SeriesCollection(
+        name = "collectionLibrary2",
+        seriesIds = listOf(seriesLibrary2.id)
+      )
+    )
 
-    collectionDao.insert(SeriesCollection(
-      name = "collectionLibraryBoth",
-      seriesIds = listOf(seriesLibrary1.id, seriesLibrary2.id)
-    ))
+    collectionDao.insert(
+      SeriesCollection(
+        name = "collectionLibraryBoth",
+        seriesIds = listOf(seriesLibrary1.id, seriesLibrary2.id)
+      )
+    )
 
     // when
     val foundLibrary1Filtered = collectionDao.findAllByLibraries(listOf(library.id), listOf(library.id), pageable = Pageable.unpaged()).content

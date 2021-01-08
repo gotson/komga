@@ -131,7 +131,6 @@ class ReadListDaoTest(
     )
     readListDao.insert(readList2)
 
-
     // when
     readListDao.removeBookFromAll(books.first().id)
 
@@ -155,20 +154,26 @@ class ReadListDaoTest(
     val seriesLibrary2 = makeSeries("Series2", library2.id).also { seriesRepository.insert(it) }
     val bookLibrary2 = makeBook("Book2", libraryId = library2.id, seriesId = seriesLibrary2.id).also { bookRepository.insert(it) }
 
-    readListDao.insert(ReadList(
-      name = "readListLibrary1",
-      bookIds = listOf(bookLibrary1.id).toIndexedMap()
-    ))
+    readListDao.insert(
+      ReadList(
+        name = "readListLibrary1",
+        bookIds = listOf(bookLibrary1.id).toIndexedMap()
+      )
+    )
 
-    readListDao.insert(ReadList(
-      name = "readListLibrary2",
-      bookIds = listOf(bookLibrary2.id).toIndexedMap()
-    ))
+    readListDao.insert(
+      ReadList(
+        name = "readListLibrary2",
+        bookIds = listOf(bookLibrary2.id).toIndexedMap()
+      )
+    )
 
-    readListDao.insert(ReadList(
-      name = "readListLibraryBoth",
-      bookIds = listOf(bookLibrary1.id, bookLibrary2.id).toIndexedMap()
-    ))
+    readListDao.insert(
+      ReadList(
+        name = "readListLibraryBoth",
+        bookIds = listOf(bookLibrary1.id, bookLibrary2.id).toIndexedMap()
+      )
+    )
 
     // when
     val foundLibrary1Filtered = readListDao.findAllByLibraries(listOf(library.id), listOf(library.id), pageable = Pageable.unpaged()).content

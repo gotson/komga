@@ -117,7 +117,6 @@ class DatabaseMigration(
       jmsListenerEndpointRegistry.start()
 
       logger.info { "Migration finished" }
-
     } catch (e: Exception) {
       logger.error(e) { "Migration failed" }
 
@@ -171,30 +170,37 @@ class DatabaseMigration(
     if (countBook > 0) {
       logger.info { "Found $countBook books with missing page numbers, marking them as to be re-analyzed" }
 
-      jdbc.update("""
+      jdbc.update(
+        """
         update media set STATUS='UNKNOWN'
         where BOOK_ID in (
             select distinct BOOK_ID from media_page where number is null
-        )""")
+        )"""
+      )
       jdbc.update("delete from media_page where number is null")
-      jdbc.update("""
+      jdbc.update(
+        """
         delete from media_page
         where BOOK_ID in (
             select distinct BOOK_ID from media_page where number is null
-        )""")
+        )"""
+      )
     }
 
-    val invalidReadProgress = jdbc.query("""
+    val invalidReadProgress = jdbc.query(
+      """
       select b.id as BOOK_ID, u.id as USER_ID, count(p.BOOK_ID)
       from read_progress p left join user u on p.user_id = u.id left join book b on p.book_id = b.id
       group by b.id, b.name, u.id, u.email
       having count(p.book_id) > 1
-    """) { rs, _ -> Triple(rs.getLong(1), rs.getLong(2), rs.getLong(3)) }
+    """
+    ) { rs, _ -> Triple(rs.getLong(1), rs.getLong(2), rs.getLong(3)) }
 
     if (invalidReadProgress.isNotEmpty()) {
       logger.info { "Found ${invalidReadProgress.size} invalid read progress, removing extra rows and keep one per (book,user)" }
       invalidReadProgress.forEach {
-        jdbc.update("delete from read_progress where book_id = ? and user_id = ? and rownum() < ?",
+        jdbc.update(
+          "delete from read_progress where book_id = ? and user_id = ? and rownum() < ?",
           it.first, it.second, it.third
         )
       }
@@ -268,7 +274,6 @@ class DatabaseMigration(
 
     return "insert into $table (${columns.joinToString()}) values (${quids.joinToString()})"
   }
-
 }
 
 val excludeH2Url = listOf(":mem:", ":ssl:", ":tcp:", ":zip:")

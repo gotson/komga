@@ -44,8 +44,7 @@ class LibraryDao(
 
   override fun delete(libraryId: String) {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         deleteFrom(ul).where(ul.LIBRARY_ID.eq(libraryId)).execute()
         deleteFrom(l).where(l.ID.eq(libraryId)).execute()
       }
@@ -54,8 +53,7 @@ class LibraryDao(
 
   override fun deleteAll() {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         deleteFrom(ul).execute()
         deleteFrom(l).execute()
       }
@@ -98,7 +96,6 @@ class LibraryDao(
   }
 
   override fun count(): Long = dsl.fetchCount(l).toLong()
-
 
   private fun LibraryRecord.toDomain() =
     Library(

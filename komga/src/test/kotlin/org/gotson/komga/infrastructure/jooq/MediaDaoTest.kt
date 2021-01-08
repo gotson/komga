@@ -61,10 +61,12 @@ class MediaDaoTest(
     val media = Media(
       status = Media.Status.READY,
       mediaType = "application/zip",
-      pages = listOf(BookPage(
-        fileName = "1.jpg",
-        mediaType = "image/jpeg"
-      )),
+      pages = listOf(
+        BookPage(
+          fileName = "1.jpg",
+          mediaType = "image/jpeg"
+        )
+      ),
       files = listOf("ComicInfo.xml"),
       comment = "comment",
       bookId = book.id
@@ -108,10 +110,12 @@ class MediaDaoTest(
     val media = Media(
       status = Media.Status.READY,
       mediaType = "application/zip",
-      pages = listOf(BookPage(
-        fileName = "1.jpg",
-        mediaType = "image/jpeg"
-      )),
+      pages = listOf(
+        BookPage(
+          fileName = "1.jpg",
+          mediaType = "image/jpeg"
+        )
+      ),
       files = listOf("ComicInfo.xml"),
       comment = "comment",
       bookId = book.id
@@ -124,10 +128,12 @@ class MediaDaoTest(
       copy(
         status = Media.Status.ERROR,
         mediaType = "application/rar",
-        pages = listOf(BookPage(
-          fileName = "2.png",
-          mediaType = "image/png"
-        )),
+        pages = listOf(
+          BookPage(
+            fileName = "2.png",
+            mediaType = "image/png"
+          )
+        ),
         files = listOf("id.txt"),
         comment = "comment2"
       )
@@ -154,10 +160,12 @@ class MediaDaoTest(
     val media = Media(
       status = Media.Status.READY,
       mediaType = "application/zip",
-      pages = listOf(BookPage(
-        fileName = "1.jpg",
-        mediaType = "image/jpeg"
-      )),
+      pages = listOf(
+        BookPage(
+          fileName = "1.jpg",
+          mediaType = "image/jpeg"
+        )
+      ),
       files = listOf("ComicInfo.xml"),
       comment = "comment",
       bookId = book.id

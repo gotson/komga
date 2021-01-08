@@ -74,20 +74,26 @@ class SeriesCollectionControllerTest(
   }
 
   private fun makeCollections() {
-    colLib1 = collectionLifecycle.addCollection(SeriesCollection(
-      name = "Lib1",
-      seriesIds = seriesLibrary1.map { it.id }
-    ))
+    colLib1 = collectionLifecycle.addCollection(
+      SeriesCollection(
+        name = "Lib1",
+        seriesIds = seriesLibrary1.map { it.id }
+      )
+    )
 
-    colLib2 = collectionLifecycle.addCollection(SeriesCollection(
-      name = "Lib2",
-      seriesIds = seriesLibrary2.map { it.id }
-    ))
+    colLib2 = collectionLifecycle.addCollection(
+      SeriesCollection(
+        name = "Lib2",
+        seriesIds = seriesLibrary2.map { it.id }
+      )
+    )
 
-    colLibBoth = collectionLifecycle.addCollection(SeriesCollection(
-      name = "Lib1+2",
-      seriesIds = (seriesLibrary1 + seriesLibrary2).map { it.id }
-    ))
+    colLibBoth = collectionLifecycle.addCollection(
+      SeriesCollection(
+        name = "Lib1+2",
+        seriesIds = (seriesLibrary1 + seriesLibrary2).map { it.id }
+      )
+    )
   }
 
   @Nested
@@ -318,7 +324,6 @@ class SeriesCollectionControllerTest(
           jsonPath("$.seriesIds.length()") { value(5) }
         }
 
-
       mockMvc.patch("/api/v1/collections/${colLib2.id}") {
         contentType = MediaType.APPLICATION_JSON
         content = """{"name":"newName"}"""
@@ -331,7 +336,6 @@ class SeriesCollectionControllerTest(
           jsonPath("$.ordered") { value(false) }
           jsonPath("$.seriesIds.length()") { value(5) }
         }
-
 
       mockMvc.patch("/api/v1/collections/${colLibBoth.id}") {
         contentType = MediaType.APPLICATION_JSON

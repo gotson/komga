@@ -7,7 +7,6 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Null
 import kotlin.reflect.KClass
 
-
 @ConstraintComposition(CompositionType.OR)
 @Constraint(validatedBy = [])
 @Null

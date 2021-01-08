@@ -5,7 +5,6 @@ import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.SeriesMetadataRecord
 import org.jooq.DSLContext
-import org.jooq.impl.DSL.lower
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -160,7 +159,6 @@ class SeriesMetadataDao(
   }
 
   override fun count(): Long = dsl.fetchCount(d).toLong()
-
 
   private fun SeriesMetadataRecord.toDomain(genres: Set<String>, tags: Set<String>) =
     SeriesMetadata(

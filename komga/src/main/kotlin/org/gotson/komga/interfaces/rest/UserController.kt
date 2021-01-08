@@ -127,4 +127,3 @@ class UserController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 }
-

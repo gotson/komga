@@ -32,10 +32,12 @@ class TaskReceiver(
   }
 
   fun analyzeUnknownAndOutdatedBooks(library: Library) {
-    bookRepository.findAllId(BookSearch(
-      libraryIds = listOf(library.id),
-      mediaStatus = listOf(Media.Status.UNKNOWN, Media.Status.OUTDATED)
-    )).forEach {
+    bookRepository.findAllId(
+      BookSearch(
+        libraryIds = listOf(library.id),
+        mediaStatus = listOf(Media.Status.UNKNOWN, Media.Status.OUTDATED)
+      )
+    ).forEach {
       submitTask(Task.AnalyzeBook(it))
     }
   }

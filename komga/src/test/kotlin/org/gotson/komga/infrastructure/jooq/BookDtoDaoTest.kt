@@ -68,10 +68,12 @@ class BookDtoDaoTest(
   }
 
   private fun setupBooks() {
-    seriesLifecycle.addBooks(series,
+    seriesLifecycle.addBooks(
+      series,
       (1..3).map {
         makeBook("$it", seriesId = series.id, libraryId = library.id)
-      })
+      }
+    )
 
     val books = bookRepository.findAll().sortedBy { it.name }
     books.elementAt(0).let { readProgressRepository.save(ReadProgress(it.id, user.id, 5, false)) }
@@ -241,10 +243,12 @@ class BookDtoDaoTest(
     @Test
     fun `given series with only unread books when searching for on deck then no books are returned`() {
       // given
-      seriesLifecycle.addBooks(series,
+      seriesLifecycle.addBooks(
+        series,
         (1..3).map {
           makeBook("$it", seriesId = series.id, libraryId = library.id)
-        })
+        }
+      )
 
       // when
       val found = bookDtoDao.findOnDeck(
@@ -260,10 +264,12 @@ class BookDtoDaoTest(
     @Test
     fun `given series with some unread books when searching for on deck then first unread book of series is returned`() {
       // given
-      seriesLifecycle.addBooks(series,
+      seriesLifecycle.addBooks(
+        series,
         (1..3).map {
           makeBook("$it", seriesId = series.id, libraryId = library.id)
-        })
+        }
+      )
 
       val books = bookRepository.findAll().sortedBy { it.name }
       books.elementAt(0).let { readProgressRepository.save(ReadProgress(it.id, user.id, 5, true)) }

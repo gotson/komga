@@ -41,7 +41,6 @@ class SeriesDaoTest(
     libraryRepository.deleteAll()
   }
 
-
   @Test
   fun `given a series when inserting then it is persisted`() {
     val now = LocalDateTime.now()

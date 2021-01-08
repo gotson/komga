@@ -96,7 +96,6 @@ class SeriesDtoDao(
       .fetchAndMap(userId)
       .firstOrNull()
 
-
   private fun selectBase(
     userId: String,
     joinConditions: JoinConditions = JoinConditions()
@@ -273,5 +272,3 @@ class SeriesDtoDao(
       tagsLock = tagsLock
     )
 }
-
-

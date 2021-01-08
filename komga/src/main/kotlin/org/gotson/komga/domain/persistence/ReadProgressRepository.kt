@@ -2,7 +2,6 @@ package org.gotson.komga.domain.persistence
 
 import org.gotson.komga.domain.model.ReadProgress
 
-
 interface ReadProgressRepository {
   fun findAll(): Collection<ReadProgress>
   fun findByBookIdAndUserId(bookId: String, userId: String): ReadProgress?

@@ -110,11 +110,13 @@ class SeriesCollectionController(
     @Valid @RequestBody collection: CollectionCreationDto
   ): CollectionDto =
     try {
-      collectionLifecycle.addCollection(SeriesCollection(
-        name = collection.name,
-        ordered = collection.ordered,
-        seriesIds = collection.seriesIds
-      )).toDto()
+      collectionLifecycle.addCollection(
+        SeriesCollection(
+          name = collection.name,
+          ordered = collection.ordered,
+          seriesIds = collection.seriesIds
+        )
+      ).toDto()
     } catch (e: DuplicateNameException) {
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
     }
@@ -195,4 +197,3 @@ class SeriesCollectionController(
         .map { it.restrictUrl(!principal.user.roleAdmin) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 }
-

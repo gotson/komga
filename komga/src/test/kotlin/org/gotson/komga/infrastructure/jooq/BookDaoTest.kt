@@ -49,7 +49,6 @@ class BookDaoTest(
     libraryRepository.deleteAll()
   }
 
-
   @Test
   fun `given a book when inserting then it is persisted`() {
     val now = LocalDateTime.now()
@@ -189,7 +188,6 @@ class BookDaoTest(
 
     assertThat(bookDao.count()).isEqualTo(0)
   }
-
 
   private val logger = KotlinLogging.logger {}
 

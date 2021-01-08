@@ -43,11 +43,13 @@ class LocalArtworkProviderTest {
 
       (thumbsFiles + thumbsDashFiles + invalidFiles).forEach { Files.createFile(root.resolve(it)) }
 
-      val book = spyk(Book(
-        name = "Book",
-        url = bookFile.toUri().toURL(),
-        fileLastModified = LocalDateTime.now()
-      ))
+      val book = spyk(
+        Book(
+          name = "Book",
+          url = bookFile.toUri().toURL(),
+          fileLastModified = LocalDateTime.now()
+        )
+      )
       every { book.path() } returns bookFile
 
       // when
@@ -75,11 +77,13 @@ class LocalArtworkProviderTest {
 
       (thumbsFiles + invalidFiles).forEach { Files.createFile(seriesPath.resolve(it)) }
 
-      val series = spyk(Series(
-        name = "Series",
-        url = seriesFile.toUri().toURL(),
-        fileLastModified = LocalDateTime.now()
-      ))
+      val series = spyk(
+        Series(
+          name = "Series",
+          url = seriesFile.toUri().toURL(),
+          fileLastModified = LocalDateTime.now()
+        )
+      )
       every { series.path() } returns seriesFile
 
       // when

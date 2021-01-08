@@ -12,7 +12,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import org.springframework.web.servlet.mvc.WebContentInterceptor
 import java.util.concurrent.TimeUnit
 
-
 @Configuration
 class WebMvcConfiguration : WebMvcConfigurer {
   override fun addResourceHandlers(registry: ResourceHandlerRegistry) {

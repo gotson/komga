@@ -219,7 +219,6 @@ class LibraryScannerTest(
         assertThat(media.pages).hasSize(2)
         assertThat(media.pages.map { it.fileName }).containsExactly("1.jpg", "2.jpg")
       }
-
     }
   }
 
@@ -256,7 +255,6 @@ class LibraryScannerTest(
         assertThat(media.pages).hasSize(2)
         assertThat(media.pages.map { it.fileName }).containsExactly("1.jpg", "2.jpg")
       }
-
     }
   }
 

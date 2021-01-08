@@ -39,26 +39,30 @@ class FileSystemScanner(
     measureTime {
       val dirs = mutableListOf<Path>()
 
-      Files.walkFileTree(root, setOf(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE, object : FileVisitor<Path> {
-        override fun preVisitDirectory(dir: Path, attrs: BasicFileAttributes?): FileVisitResult {
-          logger.trace { "preVisit: $dir" }
-          if (!Files.isHidden(dir) && komgaProperties.librariesScanDirectoryExclusions.any { exclude ->
+      Files.walkFileTree(
+        root, setOf(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE,
+        object : FileVisitor<Path> {
+          override fun preVisitDirectory(dir: Path, attrs: BasicFileAttributes?): FileVisitResult {
+            logger.trace { "preVisit: $dir" }
+            if (!Files.isHidden(dir) && komgaProperties.librariesScanDirectoryExclusions.any { exclude ->
               dir.toString().contains(exclude, true)
-            }) return FileVisitResult.SKIP_SUBTREE
+            }
+            ) return FileVisitResult.SKIP_SUBTREE
 
-          dirs.add(dir)
-          return FileVisitResult.CONTINUE
+            dirs.add(dir)
+            return FileVisitResult.CONTINUE
+          }
+
+          override fun visitFile(file: Path?, attrs: BasicFileAttributes?): FileVisitResult = FileVisitResult.CONTINUE
+
+          override fun visitFileFailed(file: Path?, exc: IOException?): FileVisitResult {
+            logger.warn { "Could not access: $file" }
+            return FileVisitResult.SKIP_SUBTREE
+          }
+
+          override fun postVisitDirectory(dir: Path?, exc: IOException?): FileVisitResult = FileVisitResult.CONTINUE
         }
-
-        override fun visitFile(file: Path?, attrs: BasicFileAttributes?): FileVisitResult = FileVisitResult.CONTINUE
-
-        override fun visitFileFailed(file: Path?, exc: IOException?): FileVisitResult {
-          logger.warn { "Could not access: $file" }
-          return FileVisitResult.SKIP_SUBTREE
-        }
-
-        override fun postVisitDirectory(dir: Path?, exc: IOException?): FileVisitResult = FileVisitResult.CONTINUE
-      })
+      )
 
       logger.debug { "Found directories: $dirs" }
 
@@ -73,27 +77,27 @@ class FileSystemScanner(
               .filter { supportedExtensions.contains(FilenameUtils.getExtension(it.fileName.toString()).toLowerCase()) }
               .map {
                 logger.debug { "Processing file: $it" }
-                  Book(
-                    name = FilenameUtils.getBaseName(it.fileName.toString()),
-                    url = it.toUri().toURL(),
-                    fileLastModified = it.getUpdatedTime(),
-                    fileSize = Files.readAttributes(it, BasicFileAttributes::class.java).size()
-                  )
-                }.toList()
-            }
-            if (books.isNullOrEmpty()) {
-              logger.debug { "No books in directory: $dir" }
-              return@mapNotNull null
-            }
-            Series(
-              name = dir.fileName.toString(),
-              url = dir.toUri().toURL(),
-              fileLastModified =
-              if (forceDirectoryModifiedTime)
-                maxOf(dir.getUpdatedTime(), books.map { it.fileLastModified }.maxOrNull()!!)
-              else dir.getUpdatedTime()
-            ) to books
-          }.toMap()
+                Book(
+                  name = FilenameUtils.getBaseName(it.fileName.toString()),
+                  url = it.toUri().toURL(),
+                  fileLastModified = it.getUpdatedTime(),
+                  fileSize = Files.readAttributes(it, BasicFileAttributes::class.java).size()
+                )
+              }.toList()
+          }
+          if (books.isNullOrEmpty()) {
+            logger.debug { "No books in directory: $dir" }
+            return@mapNotNull null
+          }
+          Series(
+            name = dir.fileName.toString(),
+            url = dir.toUri().toURL(),
+            fileLastModified =
+            if (forceDirectoryModifiedTime)
+              maxOf(dir.getUpdatedTime(), books.map { it.fileLastModified }.maxOrNull()!!)
+            else dir.getUpdatedTime()
+          ) to books
+        }.toMap()
     }.also {
       val countOfBooks = scannedSeries.values.sumBy { it.size }
       logger.info { "Scanned ${scannedSeries.size} series and $countOfBooks books in $it" }

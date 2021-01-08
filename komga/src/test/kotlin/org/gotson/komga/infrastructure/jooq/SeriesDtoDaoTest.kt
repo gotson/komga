@@ -68,10 +68,12 @@ class SeriesDtoDaoTest(
     (1..4).map { makeSeries("$it", library.id) }
       .forEach { series ->
         val created = seriesLifecycle.createSeries(series)
-        seriesLifecycle.addBooks(created,
+        seriesLifecycle.addBooks(
+          created,
           (1..3).map {
             makeBook("$it", seriesId = created.id, libraryId = library.id)
-          })
+          }
+        )
       }
 
     val series = seriesRepository.findAll().sortedBy { it.name }

@@ -33,7 +33,6 @@ class ReadProgressDao(
       .fetchInto(r)
       .map { it.toDomain() }
 
-
   override fun save(readProgress: ReadProgress) {
     dsl.insertInto(r, r.BOOK_ID, r.USER_ID, r.PAGE, r.COMPLETED)
       .values(readProgress.bookId, readProgress.userId, readProgress.page, readProgress.completed)
@@ -43,7 +42,6 @@ class ReadProgressDao(
       .set(r.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .execute()
   }
-
 
   override fun delete(bookId: String, userId: String) {
     dsl.deleteFrom(r)
@@ -72,7 +70,6 @@ class ReadProgressDao(
   override fun deleteAll() {
     dsl.deleteFrom(r).execute()
   }
-
 
   private fun ReadProgressRecord.toDomain() =
     ReadProgress(

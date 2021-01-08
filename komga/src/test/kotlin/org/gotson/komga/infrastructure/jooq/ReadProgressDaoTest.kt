@@ -65,12 +65,14 @@ class ReadProgressDaoTest(
   fun `given book without user progress when saving progress then progress is saved`() {
     val now = LocalDateTime.now()
 
-    readProgressDao.save(ReadProgress(
-      book1.id,
-      user1.id,
-      5,
-      false
-    ))
+    readProgressDao.save(
+      ReadProgress(
+        book1.id,
+        user1.id,
+        5,
+        false
+      )
+    )
 
     val readProgressList = readProgressDao.findByUserId(user1.id)
 
@@ -87,21 +89,25 @@ class ReadProgressDaoTest(
 
   @Test
   fun `given book with user progress when saving progress then progress is updated`() {
-    readProgressDao.save(ReadProgress(
-      book1.id,
-      user1.id,
-      5,
-      false
-    ))
+    readProgressDao.save(
+      ReadProgress(
+        book1.id,
+        user1.id,
+        5,
+        false
+      )
+    )
 
     val modificationDate = LocalDateTime.now()
 
-    readProgressDao.save(ReadProgress(
-      book1.id,
-      user1.id,
-      10,
-      true
-    ))
+    readProgressDao.save(
+      ReadProgress(
+        book1.id,
+        user1.id,
+        10,
+        true
+      )
+    )
 
     val readProgressList = readProgressDao.findByUserId(user1.id)
 

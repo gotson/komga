@@ -79,20 +79,26 @@ class ReadListControllerTest(
   }
 
   private fun makeReadLists() {
-    rlLib1 = readListLifecycle.addReadList(ReadList(
-      name = "Lib1",
-      bookIds = booksLibrary1.map { it.id }.toIndexedMap()
-    ))
+    rlLib1 = readListLifecycle.addReadList(
+      ReadList(
+        name = "Lib1",
+        bookIds = booksLibrary1.map { it.id }.toIndexedMap()
+      )
+    )
 
-    rlLib2 = readListLifecycle.addReadList(ReadList(
-      name = "Lib2",
-      bookIds = booksLibrary2.map { it.id }.toIndexedMap()
-    ))
+    rlLib2 = readListLifecycle.addReadList(
+      ReadList(
+        name = "Lib2",
+        bookIds = booksLibrary2.map { it.id }.toIndexedMap()
+      )
+    )
 
-    rlLibBoth = readListLifecycle.addReadList(ReadList(
-      name = "Lib1+2",
-      bookIds = (booksLibrary1 + booksLibrary2).map { it.id }.toIndexedMap()
-    ))
+    rlLibBoth = readListLifecycle.addReadList(
+      ReadList(
+        name = "Lib1+2",
+        bookIds = (booksLibrary1 + booksLibrary2).map { it.id }.toIndexedMap()
+      )
+    )
   }
 
   @Nested
@@ -213,31 +219,31 @@ class ReadListControllerTest(
       val second = booksLibrary1[1].id // Book_2
       val last = booksLibrary2.last().id // Book_10
 
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${first}/previous")
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$first/previous")
         .andExpect { status { isNotFound() } }
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${first}/next")
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$first/next")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Book_2") }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${second}/previous")
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$second/previous")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Book_1") }
         }
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${second}/next")
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$second/next")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Book_3") }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${last}/previous")
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$last/previous")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Book_9") }
         }
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${last}/next")
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$last/next")
         .andExpect { status { isNotFound() } }
     }
 
@@ -250,31 +256,31 @@ class ReadListControllerTest(
       val second = booksLibrary1[1].id // Book_2
       val last = booksLibrary1.last().id // Book_5
 
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${first}/previous")
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$first/previous")
         .andExpect { status { isNotFound() } }
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${first}/next")
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$first/next")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Book_2") }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${second}/previous")
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$second/previous")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Book_1") }
         }
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${second}/next")
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$second/next")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Book_3") }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${last}/previous")
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$last/previous")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Book_4") }
         }
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/${last}/next")
+      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$last/next")
         .andExpect { status { isNotFound() } }
     }
 
@@ -445,7 +451,6 @@ class ReadListControllerTest(
           jsonPath("$.name") { value("newName") }
           jsonPath("$.bookIds.length()") { value(5) }
         }
-
 
       mockMvc.patch("/api/v1/readlists/${rlLibBoth.id}") {
         contentType = MediaType.APPLICATION_JSON
