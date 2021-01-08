@@ -18,9 +18,10 @@ tab_width = 2
 indent_size = 2
 tab_width = 2
 
-[{*.gradle.kts, *.kts, *.kt}]
+[{*.kts, *.kt}]
 indent_size = 2
 tab_width = 2
+max_line_length = off
 
 [{*.yml, *.yaml}]
 indent_size = 2
