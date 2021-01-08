@@ -2,9 +2,11 @@ plugins {
   id("org.jlleitschuh.gradle.ktlint") version "9.4.1"
 }
 
-repositories {
-  jcenter()
-  mavenCentral()
+allprojects {
+  repositories {
+    jcenter()
+    mavenCentral()
+  }
 }
 
 tasks.wrapper {
