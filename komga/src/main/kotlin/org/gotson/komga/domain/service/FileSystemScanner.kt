@@ -45,7 +45,7 @@ class FileSystemScanner(
         object : FileVisitor<Path> {
           override fun preVisitDirectory(dir: Path, attrs: BasicFileAttributes?): FileVisitResult {
             logger.trace { "preVisit: $dir" }
-            if (!Files.isHidden(dir) && komgaProperties.librariesScanDirectoryExclusions.any { exclude ->
+            if (Files.isHidden(dir) || komgaProperties.librariesScanDirectoryExclusions.any { exclude ->
               dir.toString().contains(exclude, true)
             }
             ) return FileVisitResult.SKIP_SUBTREE

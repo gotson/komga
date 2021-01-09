@@ -130,6 +130,29 @@ class FileSystemScannerTest {
   }
 
   @Test
+  fun `given directory structure with hidden directories when scanning then hidden directories are not returned`() {
+    Jimfs.newFileSystem(Configuration.unix()).use { fs ->
+      // given
+      val root = fs.getPath("/root")
+      Files.createDirectory(root)
+
+      val dir1 = makeSubDir(root, "dir1", listOf("comic.cbz"))
+      makeSubDir(dir1, "subdir1", listOf("comic2.cbz"))
+      val hidden = makeSubDir(root, ".hidden", listOf("hidden.cbz"))
+      makeSubDir(hidden, "subhidden", listOf("hidden2.cbz"))
+
+      // when
+      val scan = scanner.scanRootFolder(root)
+
+      // then
+      assertThat(scan).hasSize(2)
+
+      assertThat(scan.keys.map { it.name }).containsExactlyInAnyOrder("dir1", "subdir1")
+      assertThat(scan.values.flatMap { list -> list.map { it.name } }).containsExactlyInAnyOrder("comic", "comic2")
+    }
+  }
+
+  @Test
   fun `given directory structure with hidden files when scanning then hidden files are not returned`() {
     Jimfs.newFileSystem(Configuration.unix()).use { fs ->
       // given
