@@ -16,6 +16,7 @@ import java.nio.file.attribute.BasicFileAttributes
 import java.nio.file.attribute.FileTime
 import java.time.LocalDateTime
 import java.time.ZoneId
+import kotlin.io.path.isHidden
 import kotlin.streams.asSequence
 import kotlin.time.measureTime
 
@@ -72,6 +73,7 @@ class FileSystemScanner(
           val books = Files.list(dir).use { dirStream ->
             dirStream.asSequence()
               .onEach { logger.trace { "GetBooks file: $it" } }
+              .filterNot { Files.isHidden(it) }
               .filter { Files.isReadable(it) }
               .filter { Files.isRegularFile(it) }
               .filter { supportedExtensions.contains(FilenameUtils.getExtension(it.fileName.toString()).toLowerCase()) }
