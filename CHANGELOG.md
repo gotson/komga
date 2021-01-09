@@ -1,3 +1,11 @@
+## [0.67.1](https://github.com/gotson/komga/compare/v0.67.0...v0.67.1) (2021-01-09)
+
+
+### Bug Fixes
+
+* scanner should ignore hidden files ([2d72b47](https://github.com/gotson/komga/commit/2d72b47cdfc03b90554e01259dadd8a5b37ab85b))
+* scanner would not ignore hidden directories properly ([1cbcdaa](https://github.com/gotson/komga/commit/1cbcdaa0a193bc3440e9b25fc9b7f1db83808885))
+
 # [0.67.0](https://github.com/gotson/komga/compare/v0.66.1...v0.67.0) (2021-01-06)
 
 
