@@ -29,6 +29,7 @@
 <script lang="ts">
 import { SERIES_CHANGED, seriesToEventSeriesChanged } from '@/types/events'
 import Vue from 'vue'
+import {SeriesDto} from "@/types/komga-series";
 
 export default Vue.extend({
   name: 'SeriesActionsMenu',

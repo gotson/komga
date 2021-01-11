@@ -319,6 +319,7 @@ import Vue from 'vue'
 import { SeriesStatus } from '@/types/enum-series'
 import { helpers, minValue, requiredIf } from 'vuelidate/lib/validators'
 import { ReadingDirection } from '@/types/enum-books'
+import {SeriesDto} from "@/types/komga-series";
 
 const tags = require('language-tags')
 

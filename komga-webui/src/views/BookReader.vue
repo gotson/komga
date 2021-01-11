@@ -290,6 +290,7 @@ import { shortcutsAll } from '@/functions/shortcuts/reader'
 import { shortcutsSettingsContinuous } from '@/functions/shortcuts/continuous-reader'
 import { BookDto, PageDto, PageDtoWithUrl } from '@/types/komga-books'
 import { Context, ContextOrigin } from '@/types/context'
+import {SeriesDto} from "@/types/komga-series";
 
 const cookieFit = 'webreader.fit'
 const cookieContinuousReaderFit = 'webreader.continuousReaderFit'

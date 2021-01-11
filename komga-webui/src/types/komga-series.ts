@@ -1,4 +1,6 @@
-interface SeriesDto {
+import {AuthorDto} from "@/types/komga-books";
+
+export interface SeriesDto {
   id: string,
   libraryId: string,
   name: string,
@@ -8,10 +10,11 @@ interface SeriesDto {
   booksReadCount: number,
   booksUnreadCount: number,
   booksInProgressCount: number,
-  metadata: SeriesMetadata
+  metadata: SeriesMetadataDto,
+  booksMetadata: SeriesBooksMetadataDto,
 }
 
-interface SeriesMetadata {
+export interface SeriesMetadataDto {
   status: string,
   statusLock: boolean,
   created: string,
@@ -36,7 +39,16 @@ interface SeriesMetadata {
   tagsLock: boolean
 }
 
-interface SeriesMetadataUpdateDto {
+export interface SeriesBooksMetadataDto {
+  created: string,
+  lastModified: string
+  authors: AuthorDto[],
+  releaseDate: string,
+  summary: string,
+  summaryNumber: string,
+}
+
+export interface SeriesMetadataUpdateDto {
   status?: string,
   statusLock?: boolean,
   title?: string,

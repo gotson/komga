@@ -1,4 +1,5 @@
 import { BookDto } from '@/types/komga-books'
+import {SeriesDto} from "@/types/komga-series";
 
 export const BOOK_CHANGED = 'book-changed'
 export const SERIES_CHANGED = 'series-changed'

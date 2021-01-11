@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios'
+import {SeriesDto} from "@/types/komga-series";
 
 const qs = require('qs')
 

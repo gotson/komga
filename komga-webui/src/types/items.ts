@@ -1,6 +1,7 @@
 import { bookThumbnailUrl, collectionThumbnailUrl, readListThumbnailUrl, seriesThumbnailUrl } from '@/functions/urls'
 import { RawLocation } from 'vue-router/types/router'
 import { BookDto } from '@/types/komga-books'
+import {SeriesDto} from "@/types/komga-series";
 
 function plural (count: number, singular: string, plural: string) {
   return `${count} ${count === 1 ? singular : plural}`

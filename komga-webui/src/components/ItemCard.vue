@@ -125,6 +125,7 @@ import Vue from 'vue'
 import { RawLocation } from 'vue-router'
 import ReadListActionsMenu from '@/components/menus/ReadListActionsMenu.vue'
 import { BookDto } from '@/types/komga-books'
+import {SeriesDto} from "@/types/komga-series";
 
 export default Vue.extend({
   name: 'ItemCard',

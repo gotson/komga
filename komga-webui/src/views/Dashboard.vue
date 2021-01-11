@@ -114,6 +114,7 @@ import { ReadStatus } from '@/types/enum-books'
 import { BookDto } from '@/types/komga-books'
 import { BOOK_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
 import Vue from 'vue'
+import {SeriesDto} from "@/types/komga-series";
 
 export default Vue.extend({
   name: 'Dashboard',

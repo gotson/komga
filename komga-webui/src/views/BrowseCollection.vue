@@ -122,6 +122,7 @@ import FilterList from '@/components/FilterList.vue'
 import { Location } from 'vue-router'
 import EmptyState from '@/components/EmptyState.vue'
 import { parseQueryFilter } from '@/functions/query-params'
+import {SeriesDto} from "@/types/komga-series";
 
 export default Vue.extend({
   name: 'BrowseCollection',

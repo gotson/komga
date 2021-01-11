@@ -111,6 +111,34 @@
             </v-col>
           </v-row>
 
+          <v-row class="mt-3" v-if="!series.metadata.summary && series.booksMetadata.summary">
+            <v-col>
+              <v-tooltip right>
+                <template v-slot:activator="{ on }">
+                  <span v-on="on" class="text-caption">Summary from book {{ series.booksMetadata.summaryNumber }}:</span>
+                </template>
+                This series has no summary, so we picked one for you!
+              </v-tooltip>
+              <div class="text-body-1"
+                   style="white-space: pre-wrap"
+              >
+                {{ series.booksMetadata.summary }}
+              </div>
+            </v-col>
+          </v-row>
+
+          <v-row v-if="series.booksMetadata.releaseDate">
+            <v-col cols="6" sm="4" md="2" class="text-body-2 py-1">YEAR</v-col>
+            <v-col class="text-body-2 text-capitalize py-1">
+              <v-tooltip right>
+                <template v-slot:activator="{ on }">
+                  <span v-on="on">{{ series.booksMetadata.releaseDate | moment('YYYY') }}</span>
+                </template>
+                This is the earliest year from the release dates from all books in the series
+              </v-tooltip>
+            </v-col>
+          </v-row>
+
           <v-row v-if="series.metadata.publisher">
             <v-col cols="6" sm="4" md="2" class="text-body-2 py-1">PUBLISHER</v-col>
             <v-col class="text-body-2 text-capitalize py-1">
@@ -143,6 +171,18 @@
                       outlined
               >{{ t }}
               </v-chip>
+            </v-col>
+          </v-row>
+
+          <v-row class="text-body-2"
+                 v-for="(names, key) in authorsByRole"
+                 :key="key"
+          >
+            <v-col cols="6" sm="4" md="2" class="py-1 text-uppercase">{{ key }}</v-col>
+            <v-col class="py-1">
+              <span v-for="(name, i) in names"
+                    :key="name"
+              >{{ i === 0 ? '' : ', ' }}{{ name }}</span>
             </v-col>
           </v-row>
 
@@ -212,6 +252,8 @@ import FilterList from '@/components/FilterList.vue'
 import SortList from '@/components/SortList.vue'
 import { mergeFilterParams, sortOrFilterActive, toNameValue } from '@/functions/filter'
 import FilterPanels from '@/components/FilterPanels.vue'
+import {SeriesDto} from "@/types/komga-series";
+import {groupAuthorsByRolePlural} from "@/functions/authors";
 
 const tags = require('language-tags')
 
@@ -304,6 +346,9 @@ export default Vue.extend({
     },
     sortOrFilterActive (): boolean {
       return sortOrFilterActive(this.sortActive, this.sortDefault, this.filters)
+    },
+    authorsByRole (): any {
+      return groupAuthorsByRolePlural(this.series.booksMetadata.authors)
     },
   },
   props: {

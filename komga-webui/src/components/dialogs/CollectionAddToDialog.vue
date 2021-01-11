@@ -88,6 +88,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import {SeriesDto} from "@/types/komga-series";
 
 export default Vue.extend({
   name: 'CollectionAddToDialog',

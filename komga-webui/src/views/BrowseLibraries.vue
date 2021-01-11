@@ -105,6 +105,7 @@ import SortList from '@/components/SortList.vue'
 import FilterPanels from '@/components/FilterPanels.vue'
 import FilterList from '@/components/FilterList.vue'
 import { mergeFilterParams, sortOrFilterActive, toNameValue } from '@/functions/filter'
+import {SeriesDto} from "@/types/komga-series";
 
 const cookiePageSize = 'pagesize'
 

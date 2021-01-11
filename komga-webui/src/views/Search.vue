@@ -118,6 +118,7 @@ import {
   SERIES_CHANGED,
 } from '@/types/events'
 import Vue from 'vue'
+import {SeriesDto} from "@/types/komga-series";
 
 export default Vue.extend({
   name: 'Search',
