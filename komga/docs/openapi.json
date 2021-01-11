@@ -1227,6 +1227,7 @@
         "required": [
           "booksCount",
           "booksInProgressCount",
+          "booksMetadata",
           "booksReadCount",
           "booksUnreadCount",
           "created",
@@ -1242,20 +1243,34 @@
           "metadata": {
             "$ref": "#/components/schemas/SeriesMetadataDto"
           },
-          "fileLastModified": {
+          "created": {
             "format": "date-time",
             "type": "string"
           },
-          "created": {
+          "libraryId": {
+            "type": "string"
+          },
+          "booksMetadata": {
+            "$ref": "#/components/schemas/BookMetadataAggregationDto"
+          },
+          "booksCount": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "url": {
+            "type": "string"
+          },
+          "booksInProgressCount": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "fileLastModified": {
             "format": "date-time",
             "type": "string"
           },
           "booksReadCount": {
             "format": "int32",
             "type": "integer"
-          },
-          "libraryId": {
-            "type": "string"
           },
           "name": {
             "type": "string"
@@ -1267,18 +1282,7 @@
             "format": "date-time",
             "type": "string"
           },
-          "booksCount": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "url": {
-            "type": "string"
-          },
           "booksUnreadCount": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "booksInProgressCount": {
             "format": "int32",
             "type": "integer"
           }
@@ -1403,6 +1407,42 @@
           },
           "empty": {
             "type": "boolean"
+          }
+        }
+      },
+      "BookMetadataAggregationDto": {
+        "type": "object",
+        "required": [
+          "authors",
+          "created",
+          "lastModified",
+          "summary",
+          "summaryNumber"
+        ],
+        "properties": {
+          "summary": {
+            "type": "string"
+          },
+          "releaseDate": {
+            "format": "date",
+            "type": "string"
+          },
+          "created": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "summaryNumber": {
+            "type": "string"
+          },
+          "lastModified": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "authors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthorDto"
+            }
           }
         }
       },

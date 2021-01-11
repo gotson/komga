@@ -1,3 +1,11 @@
+# [0.68.0](https://github.com/gotson/komga/compare/v0.67.1...v0.68.0) (2021-01-11)
+
+
+### Features
+
+* **webui:** display book aggregated data on series screen ([e642174](https://github.com/gotson/komga/commit/e642174c8450fa9e6f6707e59f1c3830e283a47f)), closes [#181](https://github.com/gotson/komga/issues/181)
+* aggregate book information at series level ([eb029d9](https://github.com/gotson/komga/commit/eb029d9bb5506775fac03a5fd2eca93d32678f57))
+
 ## [0.67.1](https://github.com/gotson/komga/compare/v0.67.0...v0.67.1) (2021-01-09)
 
 
