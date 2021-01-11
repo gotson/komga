@@ -1,6 +1,8 @@
 package org.gotson.komga.interfaces.rest.dto
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import org.gotson.komga.domain.model.Author
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class SeriesDto(
@@ -18,7 +20,8 @@ data class SeriesDto(
   val booksReadCount: Int,
   val booksUnreadCount: Int,
   val booksInProgressCount: Int,
-  val metadata: SeriesMetadataDto
+  val metadata: SeriesMetadataDto,
+  val booksMetadata: BookMetadataAggregationDto,
 )
 
 fun SeriesDto.restrictUrl(restrict: Boolean) =
@@ -45,6 +48,19 @@ data class SeriesMetadataDto(
   val genresLock: Boolean,
   val tags: Set<String>,
   val tagsLock: Boolean,
+
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  val created: LocalDateTime,
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  val lastModified: LocalDateTime
+)
+
+data class BookMetadataAggregationDto(
+  val authors: List<AuthorDto> = emptyList(),
+  @JsonFormat(pattern = "yyyy-MM-dd")
+  val releaseDate: LocalDate?,
+  val summary: String,
+  val summaryNumber: String,
 
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val created: LocalDateTime,

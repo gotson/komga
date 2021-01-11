@@ -447,6 +447,7 @@ class BookController(
         )
       }
       bookMetadataRepository.update(updated)
+      taskReceiver.aggregateSeriesMetadata(bookRepository.findByIdOrNull(bookId)!!.seriesId)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @PatchMapping("api/v1/books/{bookId}/read-progress")

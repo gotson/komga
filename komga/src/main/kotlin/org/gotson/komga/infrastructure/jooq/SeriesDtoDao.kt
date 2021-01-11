@@ -3,10 +3,13 @@ package org.gotson.komga.infrastructure.jooq
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
 import org.gotson.komga.infrastructure.web.toFilePath
+import org.gotson.komga.interfaces.rest.dto.AuthorDto
+import org.gotson.komga.interfaces.rest.dto.BookMetadataAggregationDto
 import org.gotson.komga.interfaces.rest.dto.SeriesDto
 import org.gotson.komga.interfaces.rest.dto.SeriesMetadataDto
 import org.gotson.komga.interfaces.rest.persistence.SeriesDtoRepository
 import org.gotson.komga.jooq.Tables
+import org.gotson.komga.jooq.tables.records.BookMetadataAggregationRecord
 import org.gotson.komga.jooq.tables.records.SeriesMetadataRecord
 import org.gotson.komga.jooq.tables.records.SeriesRecord
 import org.jooq.AggregateFunction
@@ -45,6 +48,8 @@ class SeriesDtoDao(
     private val cs = Tables.COLLECTION_SERIES
     private val g = Tables.SERIES_METADATA_GENRE
     private val st = Tables.SERIES_METADATA_TAG
+    private val bma = Tables.BOOK_METADATA_AGGREGATION
+    private val bmaa = Tables.BOOK_METADATA_AGGREGATION_AUTHOR
 
     val countUnread: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isNull, 1).otherwise(0))
     val countRead: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isTrue, 1).otherwise(0))
@@ -53,7 +58,8 @@ class SeriesDtoDao(
 
   private val groupFields = arrayOf(
     *s.fields(),
-    *d.fields()
+    *d.fields(),
+    *bma.fields(),
   )
 
   private val sorts = mapOf(
@@ -106,6 +112,7 @@ class SeriesDtoDao(
       .from(s)
       .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
+      .leftJoin(bma).on(s.ID.eq(bma.SERIES_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
       .apply { if (joinConditions.genre) leftJoin(g).on(s.ID.eq(g.SERIES_ID)) }
       .apply { if (joinConditions.tag) leftJoin(st).on(s.ID.eq(st.SERIES_ID)) }
@@ -122,6 +129,7 @@ class SeriesDtoDao(
       .from(s)
       .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
+      .leftJoin(bma).on(s.ID.eq(bma.SERIES_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
       .apply { if (joinConditions.genre) leftJoin(g).on(s.ID.eq(g.SERIES_ID)) }
       .apply { if (joinConditions.tag) leftJoin(st).on(s.ID.eq(st.SERIES_ID)) }
@@ -158,6 +166,7 @@ class SeriesDtoDao(
       .map { rec ->
         val sr = rec.into(s)
         val dr = rec.into(d)
+        val bmar = rec.into(bma)
         val booksCount = rec.get(BOOKS_COUNT, Int::class.java)
 
         val booksCountRecord = dsl
@@ -184,7 +193,13 @@ class SeriesDtoDao(
           .where(st.SERIES_ID.eq(sr.id))
           .fetchSet(st.TAG)
 
-        sr.toDto(booksCount, booksReadCount, booksUnreadCount, booksInProgressCount, dr.toDto(genres, tags))
+        val aggregatedAuthors = dsl.selectFrom(bmaa)
+          .where(bmaa.SERIES_ID.eq(sr.id))
+          .fetchInto(bmaa)
+          .filter {it.name != null }
+          .map { AuthorDto(it.name, it.role) }
+
+        sr.toDto(booksCount, booksReadCount, booksUnreadCount, booksInProgressCount, dr.toDto(genres, tags), bmar.toDto(aggregatedAuthors))
       }
 
   private fun SeriesSearchWithReadProgress.toCondition(): Condition {
@@ -230,7 +245,7 @@ class SeriesDtoDao(
       }
     }.reduce { acc, condition -> acc.or(condition) }
 
-  private fun SeriesRecord.toDto(booksCount: Int, booksReadCount: Int, booksUnreadCount: Int, booksInProgressCount: Int, metadata: SeriesMetadataDto) =
+  private fun SeriesRecord.toDto(booksCount: Int, booksReadCount: Int, booksUnreadCount: Int, booksInProgressCount: Int, metadata: SeriesMetadataDto, booksMetadata: BookMetadataAggregationDto) =
     SeriesDto(
       id = id,
       libraryId = libraryId,
@@ -243,7 +258,8 @@ class SeriesDtoDao(
       booksReadCount = booksReadCount,
       booksUnreadCount = booksUnreadCount,
       booksInProgressCount = booksInProgressCount,
-      metadata = metadata
+      metadata = metadata,
+      booksMetadata = booksMetadata,
     )
 
   private fun SeriesMetadataRecord.toDto(genres: Set<String>, tags: Set<String>) =
@@ -270,5 +286,16 @@ class SeriesDtoDao(
       genresLock = genresLock,
       tags = tags,
       tagsLock = tagsLock
+    )
+
+  private fun BookMetadataAggregationRecord.toDto(authors: List<AuthorDto>) =
+    BookMetadataAggregationDto(
+      authors = authors,
+      releaseDate = releaseDate,
+      summary = summary,
+      summaryNumber = summaryNumber,
+
+      created = createdDate.toCurrentTimeZone(),
+      lastModified = lastModifiedDate.toCurrentTimeZone()
     )
 }

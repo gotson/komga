@@ -6,6 +6,7 @@ import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.SeriesMetadataPatch
+import org.gotson.komga.domain.persistence.BookMetadataAggregationRepository
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
@@ -27,9 +28,11 @@ class MetadataLifecycle(
   private val bookMetadataProviders: List<BookMetadataProvider>,
   private val seriesMetadataProviders: List<SeriesMetadataProvider>,
   private val metadataApplier: MetadataApplier,
+  private val metadataAggregator: MetadataAggregator,
   private val mediaRepository: MediaRepository,
   private val bookMetadataRepository: BookMetadataRepository,
   private val seriesMetadataRepository: SeriesMetadataRepository,
+  private val bookMetadataAggregationRepository: BookMetadataAggregationRepository,
   private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
   private val bookLifecycle: BookLifecycle,
@@ -190,6 +193,15 @@ class MetadataLifecycle(
       localArtworkProvider.getSeriesThumbnails(series).forEach {
         seriesLifecycle.addThumbnailForSeries(it)
       }
+  }
+
+  fun aggregateMetadata(series: Series){
+    logger.info { "Aggregate book metadata for series: $series" }
+
+    val metadatas = bookMetadataRepository.findByIds(bookRepository.findAllIdBySeriesId(series.id))
+    val aggregation = metadataAggregator.aggregate(metadatas).copy(seriesId = series.id)
+
+    bookMetadataAggregationRepository.update(aggregation)
   }
 
   private fun <T, R : Any> Iterable<T>.mostFrequent(transform: (T) -> R?): R? {

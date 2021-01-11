@@ -6,10 +6,12 @@ import org.apache.commons.lang3.StringUtils
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadata
+import org.gotson.komga.domain.model.BookMetadataAggregation
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.ThumbnailSeries
+import org.gotson.komga.domain.persistence.BookMetadataAggregationRepository
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
@@ -35,6 +37,7 @@ class SeriesLifecycle(
   private val seriesRepository: SeriesRepository,
   private val thumbnailsSeriesRepository: ThumbnailSeriesRepository,
   private val seriesMetadataRepository: SeriesMetadataRepository,
+  private val bookMetadataAggregationRepository: BookMetadataAggregationRepository,
   private val collectionRepository: SeriesCollectionRepository,
   private val taskReceiver: TaskReceiver
 ) {
@@ -107,6 +110,10 @@ class SeriesLifecycle(
       )
     )
 
+    bookMetadataAggregationRepository.insert(
+      BookMetadataAggregation(seriesId = series.id)
+    )
+
     return seriesRepository.findByIdOrNull(series.id)!!
   }
 
@@ -119,6 +126,7 @@ class SeriesLifecycle(
     collectionRepository.removeSeriesFromAll(seriesId)
     thumbnailsSeriesRepository.deleteBySeriesId(seriesId)
     seriesMetadataRepository.delete(seriesId)
+    bookMetadataAggregationRepository.delete(seriesId)
 
     seriesRepository.delete(seriesId)
   }
@@ -132,6 +140,7 @@ class SeriesLifecycle(
     collectionRepository.removeSeriesFromAll(seriesIds)
     thumbnailsSeriesRepository.deleteBySeriesIds(seriesIds)
     seriesMetadataRepository.delete(seriesIds)
+    bookMetadataAggregationRepository.delete(seriesIds)
 
     seriesRepository.deleteAll(seriesIds)
   }

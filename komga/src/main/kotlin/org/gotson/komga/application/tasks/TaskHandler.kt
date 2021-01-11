@@ -60,6 +60,12 @@ class TaskHandler(
           is Task.RefreshSeriesMetadata ->
             seriesRepository.findByIdOrNull(task.seriesId)?.let {
               metadataLifecycle.refreshMetadata(it)
+              taskReceiver.aggregateSeriesMetadata(it.id)
+            } ?: logger.warn { "Cannot execute task $task: Series does not exist" }
+
+          is Task.AggregateSeriesMetadata ->
+            seriesRepository.findByIdOrNull(task.seriesId)?.let {
+              metadataLifecycle.aggregateMetadata(it)
             } ?: logger.warn { "Cannot execute task $task: Series does not exist" }
         }
       }.also {
