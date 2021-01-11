@@ -1,3 +1,10 @@
+## [0.68.1](https://github.com/gotson/komga/compare/v0.68.0...v0.68.1) (2021-01-11)
+
+
+### Bug Fixes
+
+* **webui:** truncate summary and authors when too long ([9071ad5](https://github.com/gotson/komga/commit/9071ad59ef9f52482c73849732ca2967617a6e68))
+
 # [0.68.0](https://github.com/gotson/komga/compare/v0.67.1...v0.68.0) (2021-01-11)
 
 
