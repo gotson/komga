@@ -20,6 +20,7 @@
     "vue-cookies": "^1.7.3",
     "vue-line-clamp": "^1.3.2",
     "vue-moment": "^4.1.0",
+    "vue-read-more-smooth": "^0.1.8",
     "vue-router": "^3.3.4",
     "vue-typed-mixins": "^0.2.0",
     "vuedraggable": "^2.24.0",

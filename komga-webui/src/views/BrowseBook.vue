@@ -109,24 +109,19 @@
 
           <v-divider/>
 
+          <v-row class="mt-3">
+            <v-col>
+              <read-more>{{ book.metadata.summary }}</read-more>
+            </v-col>
+          </v-row>
+
           <v-row class="text-body-2"
                  v-for="(names, key) in authorsByRole"
                  :key="key"
           >
             <v-col cols="6" sm="4" md="2" class="py-1 text-uppercase">{{ key }}</v-col>
-            <v-col class="py-1">
-              <span v-for="(name, i) in names"
-                    :key="name"
-              >{{ i === 0 ? '' : ', ' }}{{ name }}</span>
-            </v-col>
-          </v-row>
-
-          <v-row class="mt-3">
-            <v-col>
-              <div class="text-body-1"
-                   style="white-space: pre-wrap"
-              >{{ book.metadata.summary }}
-              </div>
+            <v-col class="py-1 text-truncate" :title="names.join(', ')">
+              {{ names.join(', ') }}
             </v-col>
           </v-row>
 
@@ -230,10 +225,11 @@ import ReadListsExpansionPanels from '@/components/ReadListsExpansionPanels.vue'
 import { BookDto, BookFormat } from '@/types/komga-books'
 import { Context, ContextOrigin } from '@/types/context'
 import {SeriesDto} from "@/types/komga-series";
+import ReadMore from "@/components/ReadMore.vue";
 
 export default Vue.extend({
   name: 'BrowseBook',
-  components: { ToolbarSticky, ItemCard, BookActionsMenu, ReadListsExpansionPanels },
+  components: {ReadMore, ToolbarSticky, ItemCard, BookActionsMenu, ReadListsExpansionPanels },
   data: () => {
     return {
       book: {} as BookDto,

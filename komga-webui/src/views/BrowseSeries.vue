@@ -104,10 +104,7 @@
 
           <v-row class="mt-3" v-if="series.metadata.summary">
             <v-col>
-              <div class="text-body-1"
-                   style="white-space: pre-wrap"
-              >{{ series.metadata.summary }}
-              </div>
+              <read-more> {{ series.metadata.summary }}</read-more>
             </v-col>
           </v-row>
 
@@ -115,15 +112,13 @@
             <v-col>
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
-                  <span v-on="on" class="text-caption">Summary from book {{ series.booksMetadata.summaryNumber }}:</span>
+                  <span v-on="on" class="text-caption">Summary from book {{
+                      series.booksMetadata.summaryNumber
+                    }}:</span>
                 </template>
                 This series has no summary, so we picked one for you!
               </v-tooltip>
-              <div class="text-body-1"
-                   style="white-space: pre-wrap"
-              >
-                {{ series.booksMetadata.summary }}
-              </div>
+              <read-more>{{ series.booksMetadata.summary }}</read-more>
             </v-col>
           </v-row>
 
@@ -174,15 +169,15 @@
             </v-col>
           </v-row>
 
+          <v-divider v-if="series.booksMetadata.authors.length > 0"/>
+
           <v-row class="text-body-2"
                  v-for="(names, key) in authorsByRole"
                  :key="key"
           >
             <v-col cols="6" sm="4" md="2" class="py-1 text-uppercase">{{ key }}</v-col>
-            <v-col class="py-1">
-              <span v-for="(name, i) in names"
-                    :key="name"
-              >{{ i === 0 ? '' : ', ' }}{{ name }}</span>
+            <v-col class="py-1 text-truncate" :title="names.join(', ')">
+              {{ names.join(', ') }}
             </v-col>
           </v-row>
 
@@ -239,21 +234,22 @@ import ItemBrowser from '@/components/ItemBrowser.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import SeriesActionsMenu from '@/components/menus/SeriesActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
-import { parseQueryFilter, parseQuerySort } from '@/functions/query-params'
-import { seriesThumbnailUrl } from '@/functions/urls'
-import { ReadStatus } from '@/types/enum-books'
-import { BOOK_CHANGED, LIBRARY_DELETED, READLIST_CHANGED, SERIES_CHANGED } from '@/types/events'
+import {parseQueryFilter, parseQuerySort} from '@/functions/query-params'
+import {seriesThumbnailUrl} from '@/functions/urls'
+import {ReadStatus} from '@/types/enum-books'
+import {BOOK_CHANGED, LIBRARY_DELETED, READLIST_CHANGED, SERIES_CHANGED} from '@/types/events'
 import Vue from 'vue'
-import { Location } from 'vue-router'
-import { BookDto } from '@/types/komga-books'
-import { SeriesStatus } from '@/types/enum-series'
+import {Location} from 'vue-router'
+import {BookDto} from '@/types/komga-books'
+import {SeriesStatus} from '@/types/enum-series'
 import FilterDrawer from '@/components/FilterDrawer.vue'
 import FilterList from '@/components/FilterList.vue'
 import SortList from '@/components/SortList.vue'
-import { mergeFilterParams, sortOrFilterActive, toNameValue } from '@/functions/filter'
+import {mergeFilterParams, sortOrFilterActive, toNameValue} from '@/functions/filter'
 import FilterPanels from '@/components/FilterPanels.vue'
 import {SeriesDto} from "@/types/komga-series";
 import {groupAuthorsByRolePlural} from "@/functions/authors";
+import ReadMore from "@/components/ReadMore.vue";
 
 const tags = require('language-tags')
 
@@ -274,6 +270,7 @@ export default Vue.extend({
     FilterList,
     FilterPanels,
     SortList,
+    ReadMore,
   },
   data: () => {
     return {
@@ -285,18 +282,18 @@ export default Vue.extend({
       totalPages: 1,
       totalElements: null as number | null,
       sortOptions: [
-        { name: 'Number', key: 'metadata.numberSort' },
-        { name: 'Date added', key: 'createdDate' },
-        { name: 'Release date', key: 'metadata.releaseDate' },
-        { name: 'File size', key: 'fileSize' },
+        {name: 'Number', key: 'metadata.numberSort'},
+        {name: 'Date added', key: 'createdDate'},
+        {name: 'Release date', key: 'metadata.releaseDate'},
+        {name: 'File size', key: 'fileSize'},
       ] as SortOption[],
       sortActive: {} as SortActive,
-      sortDefault: { key: 'metadata.numberSort', order: 'asc' } as SortActive,
+      sortDefault: {key: 'metadata.numberSort', order: 'asc'} as SortActive,
       filterOptionsList: {
-        readStatus: { values: [{ name: 'Unread', value: ReadStatus.UNREAD }] },
+        readStatus: {values: [{name: 'Unread', value: ReadStatus.UNREAD}]},
       } as FiltersOptions,
       filterOptionsPanel: {
-        tag: { name: 'TAG', values: [] },
+        tag: {name: 'TAG', values: []},
       } as FiltersOptions,
       filters: {} as FiltersActive,
       sortUnwatch: null as any,
@@ -308,13 +305,13 @@ export default Vue.extend({
     }
   },
   computed: {
-    isAdmin (): boolean {
+    isAdmin(): boolean {
       return this.$store.getters.meAdmin
     },
-    thumbnailUrl (): string {
+    thumbnailUrl(): string {
       return seriesThumbnailUrl(this.seriesId)
     },
-    paginationVisible (): number {
+    paginationVisible(): number {
       switch (this.$vuetify.breakpoint.name) {
         case 'xs':
           return 5
@@ -327,27 +324,27 @@ export default Vue.extend({
           return 15
       }
     },
-    readingDirection (): string {
+    readingDirection(): string {
       return this.$_.capitalize(this.series.metadata.readingDirection.replace(/_/g, ' '))
     },
-    languageDisplay (): string {
+    languageDisplay(): string {
       return tags(this.series.metadata.language).language().descriptions()[0]
     },
-    statusChip (): object {
+    statusChip(): object {
       switch (this.series.metadata.status) {
         case SeriesStatus.ABANDONED:
-          return { color: 'red darken-4', text: 'white' }
+          return {color: 'red darken-4', text: 'white'}
         case SeriesStatus.ENDED:
-          return { color: 'green darken-4', text: 'white' }
+          return {color: 'green darken-4', text: 'white'}
         case SeriesStatus.HIATUS:
-          return { color: 'orange darken-4', text: 'white' }
+          return {color: 'orange darken-4', text: 'white'}
       }
-      return { color: undefined, text: undefined }
+      return {color: undefined, text: undefined}
     },
-    sortOrFilterActive (): boolean {
+    sortOrFilterActive(): boolean {
       return sortOrFilterActive(this.sortActive, this.sortDefault, this.filters)
     },
-    authorsByRole (): any {
+    authorsByRole(): any {
       return groupAuthorsByRolePlural(this.series.booksMetadata.authors)
     },
   },
@@ -358,25 +355,25 @@ export default Vue.extend({
     },
   },
   watch: {
-    series (val) {
+    series(val) {
       if (this.$_.has(val, 'metadata.title')) {
         document.title = `Komga - ${val.metadata.title}`
       }
     },
   },
-  created () {
+  created() {
     this.$eventHub.$on(SERIES_CHANGED, this.reloadSeries)
     this.$eventHub.$on(READLIST_CHANGED, this.reloadSeries)
     this.$eventHub.$on(BOOK_CHANGED, this.reloadBooks)
     this.$eventHub.$on(LIBRARY_DELETED, this.libraryDeleted)
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this.$eventHub.$off(SERIES_CHANGED, this.reloadSeries)
     this.$eventHub.$off(READLIST_CHANGED, this.reloadSeries)
     this.$eventHub.$off(BOOK_CHANGED, this.reloadBooks)
     this.$eventHub.$off(LIBRARY_DELETED, this.libraryDeleted)
   },
-  async mounted () {
+  async mounted() {
     if (this.$cookies.isKey(cookiePageSize)) {
       this.pageSize = Number(this.$cookies.get(cookiePageSize))
     }
@@ -394,7 +391,7 @@ export default Vue.extend({
 
     this.setWatches()
   },
-  async beforeRouteUpdate (to, from, next) {
+  async beforeRouteUpdate(to, from, next) {
     if (to.params.seriesId !== from.params.seriesId) {
       this.unsetWatches()
 
@@ -416,7 +413,7 @@ export default Vue.extend({
     next()
   },
   methods: {
-    setWatches () {
+    setWatches() {
       this.sortUnwatch = this.$watch('sortActive', this.updateRouteAndReload)
       this.filterUnwatch = this.$watch('filters', this.updateRouteAndReload)
       this.pageSizeUnwatch = this.$watch('pageSize', (val) => {
@@ -429,13 +426,13 @@ export default Vue.extend({
         this.loadPage(this.seriesId, val, this.sortActive)
       })
     },
-    unsetWatches () {
+    unsetWatches() {
       this.sortUnwatch()
       this.filterUnwatch()
       this.pageUnwatch()
       this.pageSizeUnwatch()
     },
-    updateRouteAndReload () {
+    updateRouteAndReload() {
       this.unsetWatches()
 
       this.page = 1
@@ -445,18 +442,18 @@ export default Vue.extend({
 
       this.setWatches()
     },
-    libraryDeleted (event: EventLibraryDeleted) {
+    libraryDeleted(event: EventLibraryDeleted) {
       if (event.id === this.series.libraryId) {
-        this.$router.push({ name: 'home' })
+        this.$router.push({name: 'home'})
       }
     },
-    reloadSeries (event: EventSeriesChanged) {
+    reloadSeries(event: EventSeriesChanged) {
       if (event.id === this.seriesId) this.loadSeries(this.seriesId)
     },
-    reloadBooks (event: EventBookChanged) {
+    reloadBooks(event: EventBookChanged) {
       if (event.seriesId === this.seriesId) this.loadSeries(this.seriesId)
     },
-    async loadSeries (seriesId: string) {
+    async loadSeries(seriesId: string) {
       this.series = await this.$komgaSeries.getOneSeries(seriesId)
       this.collections = await this.$komgaSeries.getCollections(seriesId)
 
@@ -464,16 +461,16 @@ export default Vue.extend({
 
       await this.loadPage(seriesId, this.page, this.sortActive)
     },
-    parseQuerySortOrDefault (querySort: any): SortActive {
+    parseQuerySortOrDefault(querySort: any): SortActive {
       return parseQuerySort(querySort, this.sortOptions) || this.$_.clone(this.sortDefault)
     },
-    parseQueryFilterStatus (queryStatus: any): string[] {
+    parseQueryFilterStatus(queryStatus: any): string[] {
       return queryStatus ? queryStatus.toString().split(',').filter((x: string) => Object.keys(ReadStatus).includes(x)) : []
     },
-    updateRoute () {
+    updateRoute() {
       const loc = {
         name: this.$route.name,
-        params: { seriesId: this.$route.params.seriesId },
+        params: {seriesId: this.$route.params.seriesId},
         query: {
           page: `${this.page}`,
           pageSize: `${this.pageSize}`,
@@ -484,7 +481,7 @@ export default Vue.extend({
       this.$router.replace(loc).catch((_: any) => {
       })
     },
-    async loadPage (seriesId: string, page: number, sort: SortActive) {
+    async loadPage(seriesId: string, page: number, sort: SortActive) {
       this.selectedBooks = []
 
       const pageRequest = {
@@ -501,31 +498,31 @@ export default Vue.extend({
       this.totalElements = booksPage.totalElements
       this.books = booksPage.content
     },
-    analyze () {
+    analyze() {
       this.$komgaSeries.analyzeSeries(this.series)
     },
-    refreshMetadata () {
+    refreshMetadata() {
       this.$komgaSeries.refreshMetadata(this.series)
     },
-    editSeries () {
+    editSeries() {
       this.$store.dispatch('dialogUpdateSeries', this.series)
     },
-    editSingleBook (book: BookDto) {
+    editSingleBook(book: BookDto) {
       this.$store.dispatch('dialogUpdateBooks', book)
     },
-    editMultipleBooks () {
+    editMultipleBooks() {
       this.$store.dispatch('dialogUpdateBooks', this.selectedBooks)
     },
-    addToReadList () {
+    addToReadList() {
       this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks)
     },
-    async markSelectedRead () {
+    async markSelectedRead() {
       await Promise.all(this.selectedBooks.map(b =>
-        this.$komgaBooks.updateReadProgress(b.id, { completed: true }),
+        this.$komgaBooks.updateReadProgress(b.id, {completed: true}),
       ))
       await this.loadSeries(this.seriesId)
     },
-    async markSelectedUnread () {
+    async markSelectedUnread() {
       await Promise.all(this.selectedBooks.map(b =>
         this.$komgaBooks.deleteReadProgress(b.id),
       ))
