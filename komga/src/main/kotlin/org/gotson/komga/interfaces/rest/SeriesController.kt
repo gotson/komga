@@ -6,10 +6,12 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
+import org.apache.commons.io.IOUtils
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ROLE_ADMIN
+import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
@@ -31,12 +33,16 @@ import org.gotson.komga.interfaces.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.rest.dto.toDto
 import org.gotson.komga.interfaces.rest.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.rest.persistence.SeriesDtoRepository
+import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
+import org.springframework.http.ContentDisposition
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -50,6 +56,10 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
+import java.io.OutputStream
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 import javax.validation.Valid
 
 private val logger = KotlinLogging.logger {}
@@ -355,5 +365,47 @@ class SeriesController(
     bookRepository.findAllIdBySeriesId(seriesId).forEach {
       bookLifecycle.deleteReadProgress(it, principal.user)
     }
+  }
+
+  @GetMapping("{seriesId}/file", produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
+  @PreAuthorize("hasRole('$ROLE_FILE_DOWNLOAD')")
+  fun getSeriesFile(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable seriesId: String
+  ): ResponseEntity<StreamingResponseBody> {
+    seriesRepository.getLibraryId(seriesId)?.let {
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+    val books = bookRepository.findBySeriesId(seriesId)
+
+    val streamingResponse = StreamingResponseBody { responseStream: OutputStream ->
+      ZipOutputStream(responseStream).use { zipStream ->
+        zipStream.setLevel(0)
+        books.forEach { book ->
+          val file = FileSystemResource(book.path())
+          if (!file.exists()) {
+            logger.warn { "Book file not found, skipping archive entry: ${file.path}" }
+            return@forEach
+          }
+
+          logger.debug { "Adding file to zip archive: ${file.path}" }
+          file.inputStream.use {
+            zipStream.putNextEntry(ZipEntry(file.filename))
+            IOUtils.copyLarge(it, zipStream, ByteArray(8192))
+            zipStream.closeEntry()
+          }
+        }
+      }
+    }
+
+    return ResponseEntity.ok()
+      .headers(HttpHeaders().apply {
+        contentDisposition = ContentDisposition.builder("attachment")
+          .filename(seriesMetadataRepository.findById(seriesId).title + ".zip")
+          .build()
+      })
+      .contentType(MediaType.parseMediaType("application/zip"))
+      .body(streamingResponse)
   }
 }
