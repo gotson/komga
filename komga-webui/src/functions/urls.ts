@@ -32,6 +32,10 @@ export function bookPageThumbnailUrl (bookId: string, page: number): string {
   return `${urls.originNoSlash}/api/v1/books/${bookId}/pages/${page}/thumbnail`
 }
 
+export function seriesFileUrl (seriesId: string): string {
+  return `${urls.originNoSlash}/api/v1/series/${seriesId}/file`
+}
+
 export function seriesThumbnailUrl (seriesId: string): string {
   return `${urls.originNoSlash}/api/v1/series/${seriesId}/thumbnail`
 }

@@ -253,6 +253,38 @@ class SeriesControllerTest(
       mockMvc.get("/api/v1/series/${createdSeries.id}/books")
         .andExpect { status { isForbidden() } }
     }
+
+    @Test
+    @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
+    fun `given user with no access to any library when getting specific series file then returns forbidden`() {
+      val createdSeries = makeSeries(name = "series", libraryId = library.id).let { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(makeBook("1", libraryId = library.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+      }
+
+      mockMvc.get("/api/v1/series/${createdSeries.id}/file")
+        .andExpect { status { isForbidden() } }
+    }
+  }
+
+
+  @Nested
+  inner class RestrictedUserByRole {
+    @Test
+    @WithMockCustomUser(roles = [])
+    fun `given user without file download role when getting specific series file then returns forbidden`() {
+      val createdSeries = makeSeries(name = "series", libraryId = library.id).let { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(makeBook("1", libraryId = library.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+      }
+
+      mockMvc.get("/api/v1/series/${createdSeries.id}/file")
+        .andExpect { status { isForbidden() } }
+    }
   }
 
   @Nested
