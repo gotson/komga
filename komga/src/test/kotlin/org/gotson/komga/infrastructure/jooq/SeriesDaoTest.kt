@@ -1,9 +1,11 @@
 package org.gotson.komga.infrastructure.jooq
 
 import org.assertj.core.api.Assertions.assertThat
+import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.model.makeLibrary
+import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
@@ -20,7 +22,8 @@ import java.time.LocalDateTime
 @SpringBootTest
 class SeriesDaoTest(
   @Autowired private val seriesDao: SeriesDao,
-  @Autowired private val libraryRepository: LibraryRepository
+  @Autowired private val libraryRepository: LibraryRepository,
+  @Autowired private val bookRepository: BookRepository
 ) {
 
   private val library = makeLibrary()
@@ -32,6 +35,7 @@ class SeriesDaoTest(
 
   @AfterEach
   fun deleteSeries() {
+    bookRepository.deleteAll()
     seriesDao.deleteAll()
     assertThat(seriesDao.count()).isEqualTo(0)
   }
@@ -245,5 +249,259 @@ class SeriesDaoTest(
     assertThat(notFound1).isNull()
     assertThat(notFound2).isNull()
     assertThat(notFound3).isNull()
+  }
+
+  @Test
+  fun `given soft deleted series when finding all then empty list is returned`() {
+    val now = LocalDateTime.now()
+    val series = Series(
+      name = "Series",
+      url = URL("file://series"),
+      fileLastModified = now,
+      libraryId = library.id,
+      deleted = true
+    )
+
+    seriesDao.insert(series)
+
+    val found = seriesDao.findAll()
+
+    assertThat(found).isEmpty()
+  }
+
+  @Test
+  fun `given soft deleted series when finding by id or null then null is returned`() {
+    val now = LocalDateTime.now()
+    val series = Series(
+      name = "Series",
+      url = URL("file://series"),
+      fileLastModified = now,
+      libraryId = library.id,
+      deleted = true
+    )
+
+    seriesDao.insert(series)
+
+    val found = seriesDao.findByIdOrNull(series.id)
+
+    assertThat(found).isNull()
+  }
+
+  @Test
+  fun `given soft deleted series when finding by library id then empty list is returned`() {
+    val now = LocalDateTime.now()
+    val series = Series(
+      name = "Series",
+      url = URL("file://series"),
+      fileLastModified = now,
+      libraryId = library.id,
+      deleted = true
+    )
+
+    seriesDao.insert(series)
+
+    val found = seriesDao.findByLibraryId(library.id)
+
+    assertThat(found).isEmpty()
+  }
+
+  @Test
+  fun `given soft deleted series when finding by library id including deleted then book is returned`() {
+    val now = LocalDateTime.now()
+    val series = Series(
+      name = "Series",
+      url = URL("file://series"),
+      fileLastModified = now,
+      libraryId = library.id,
+      deleted = true
+    )
+
+    seriesDao.insert(series)
+
+    val found = seriesDao.findByLibraryIdIncludeDeleted(library.id)
+
+    assertThat(found).hasSize(1)
+    assertThat(found.first().id).isEqualTo(series.id)
+  }
+
+  @Test
+  fun `given soft deleted series when finding by library id and url not in some url then empty list is returned`() {
+    val now = LocalDateTime.now()
+    val series = Series(
+      name = "Series",
+      url = URL("file://series"),
+      fileLastModified = now,
+      libraryId = library.id,
+      deleted = true
+    )
+
+    seriesDao.insert(series)
+
+    val found = seriesDao.findByLibraryIdAndUrlNotIn(library.id, listOf(URL("file:/otherSeries")))
+
+    assertThat(found).isEmpty()
+  }
+
+  @Test
+  fun `given soft deleted series when checking if series exists by library id and url then false is returned`() {
+    val now = LocalDateTime.now()
+    val series = Series(
+      name = "Series",
+      url = URL("file://series"),
+      fileLastModified = now,
+      libraryId = library.id,
+      deleted = true
+    )
+
+    seriesDao.insert(series)
+
+    val found = seriesDao.existsByLibraryIdAndUrl(library.id, series.url)
+
+    assertThat(found).isFalse
+  }
+
+  @Test
+  fun `given soft deleted series when finding by library id and url including deleted then series is returned`() {
+    val now = LocalDateTime.now()
+    val series = Series(
+      name = "Series",
+      url = URL("file://series"),
+      fileLastModified = now,
+      libraryId = library.id,
+      deleted = true
+    )
+
+    seriesDao.insert(series)
+
+    val found = seriesDao.findByLibraryIdAndUrlIncludeDeleted(library.id, series.url)
+
+    assertThat(found).isNotNull
+    assertThat(found!!.id).isEqualTo(series.id)
+  }
+
+  @Test
+  fun `given soft deleted series when finding by hashes including deleted then series is returned`() {
+    val now = LocalDateTime.now()
+    val series = Series(
+      name = "Series",
+      url = URL("file://series"),
+      fileLastModified = now,
+      libraryId = library.id,
+      deleted = true
+    )
+
+    seriesDao.insert(series)
+
+    val book = Book(
+      name = "Book",
+      url = URL("file://book"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      fileHash = "1",
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true
+    )
+    bookRepository.insert(book)
+
+    val found = seriesDao.findByHashesInIncludeDeleted(listOf(book.fileHash))
+
+    assertThat(found).hasSize(1)
+    assertThat(found.first().id).isEqualTo(series.id)
+  }
+
+  @Test
+  fun `given soft deleted series when finding all deleted then series is returned`() {
+    val now = LocalDateTime.now()
+    val series = Series(
+      name = "Series",
+      url = URL("file://series"),
+      fileLastModified = now,
+      libraryId = library.id,
+      deleted = true
+    )
+
+    seriesDao.insert(series)
+
+    val found = seriesDao.findAllDeleted()
+
+    assertThat(found).hasSize(1)
+    assertThat(found.first()).isEqualTo(series.id)
+  }
+
+  @Test
+  fun `given soft deleted series when searching then empty list is returned`() {
+    val now = LocalDateTime.now()
+    val series = Series(
+      name = "Series",
+      url = URL("file://series"),
+      fileLastModified = now,
+      libraryId = library.id,
+      deleted = true
+    )
+
+    seriesDao.insert(series)
+
+    val search = SeriesSearch(
+      libraryIds = listOf(library.id)
+    )
+    val found = seriesDao.findAll(search)
+
+    assertThat(found).hasSize(0)
+  }
+
+  @Test
+  fun `given soft deleted series when getting library id by series id then null is returned`() {
+    val now = LocalDateTime.now()
+    val series = Series(
+      name = "Series",
+      url = URL("file://series"),
+      fileLastModified = now,
+      libraryId = library.id,
+      deleted = true
+    )
+
+    seriesDao.insert(series)
+
+    val found = seriesDao.getLibraryId(series.id)
+
+    assertThat(found).isNull()
+  }
+
+  @Test
+  fun `given existing series when soft deleting series then series is marked as deleted`() {
+    val now = LocalDateTime.now()
+    val series = Series(
+      name = "Series",
+      url = URL("file://series"),
+      fileLastModified = now,
+      libraryId = library.id,
+    )
+
+    seriesDao.insert(series)
+
+    seriesDao.softDeleteAll(listOf(series.id))
+
+    val found = seriesDao.findAllDeleted()
+    assertThat(found).hasSize(1)
+    assertThat(found.first()).isEqualTo(series.id)
+  }
+
+  @Test
+  fun `given soft deleted series when counting series then zero is returned`() {
+    val now = LocalDateTime.now()
+    val series = Series(
+      name = "Series",
+      url = URL("file://series"),
+      fileLastModified = now,
+      libraryId = library.id,
+      deleted = true
+    )
+
+    seriesDao.insert(series)
+
+    val count = seriesDao.count()
+
+    assertThat(count).isEqualTo(0)
   }
 }

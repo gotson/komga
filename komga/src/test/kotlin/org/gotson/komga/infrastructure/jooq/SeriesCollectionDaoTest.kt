@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.time.LocalDateTime
@@ -217,5 +218,159 @@ class SeriesCollectionDaoTest(
         .containsExactly(seriesLibrary1.id, seriesLibrary2.id)
       assertThat(filtered).isFalse()
     }
+  }
+
+  @Test
+  fun `given collections with soft deleted series when finding by id then series ids are empty`() {
+    // given
+    val series = makeSeries("Series", library.id)
+    seriesRepository.insert(series)
+
+    val collection = SeriesCollection(
+      name = "MyCollection",
+      seriesIds = listOf(series.id)
+    )
+    collectionDao.insert(collection)
+
+    seriesRepository.softDeleteAll(listOf(series.id))
+
+    // when
+    val found = collectionDao.findByIdOrNull(collection.id)
+
+    // then
+    assertThat(found).isNotNull
+    assertThat(found!!.seriesIds).isEmpty()
+  }
+
+  @Test
+  fun `given collections with soft deleted series when searching then series ids are empty`() {
+    // given
+    val series = makeSeries("Series", library.id)
+    seriesRepository.insert(series)
+
+    val collection = SeriesCollection(
+      name = "MyCollection",
+      seriesIds = listOf(series.id)
+    )
+    collectionDao.insert(collection)
+
+    seriesRepository.softDeleteAll(listOf(series.id))
+
+    // when
+    val found = collectionDao.findAll(collection.name, PageRequest.of(0, 20))
+
+    // then
+    assertThat(found.content).isNotEmpty
+    assertThat(found.content.first().seriesIds).isEmpty()
+  }
+
+  @Test
+  fun `given collections with soft deleted series when finding by id with library filter then series ids are empty`() {
+    // given
+    val series = makeSeries("Series", library.id)
+    seriesRepository.insert(series)
+
+    val collection = SeriesCollection(
+      name = "MyCollection",
+      seriesIds = listOf(series.id)
+    )
+    collectionDao.insert(collection)
+
+    seriesRepository.softDeleteAll(listOf(series.id))
+
+    // when
+    val found = collectionDao.findByIdOrNull(collection.id, listOf(library.id))
+
+    // then
+    assertThat(found).isNotNull
+    assertThat(found!!.seriesIds).isEmpty()
+  }
+
+  @Test
+  fun `given collections with soft deleted series when finding all by libraries then series ids are empty`() {
+    // given
+    val series = makeSeries("Series", library.id)
+    seriesRepository.insert(series)
+
+    val collection = SeriesCollection(
+      name = "MyCollection",
+      seriesIds = listOf(series.id)
+    )
+    collectionDao.insert(collection)
+
+    seriesRepository.softDeleteAll(listOf(series.id))
+
+    // when
+    val found = collectionDao.findAllByLibraries(listOf(library.id), null, null, PageRequest.of(0, 20))
+
+    // then
+    assertThat(found).isNotEmpty
+    assertThat(found.first().seriesIds).isEmpty()
+  }
+
+  @Test
+  fun `given collections with soft deleted series when finding all by series then series ids are empty`() {
+    // given
+    val series = makeSeries("Series", library.id)
+    seriesRepository.insert(series)
+
+    val collection = SeriesCollection(
+      name = "MyCollection",
+      seriesIds = listOf(series.id)
+    )
+    collectionDao.insert(collection)
+
+    seriesRepository.softDeleteAll(listOf(series.id))
+
+    // when
+    val found = collectionDao.findAllBySeries(series.id, null)
+
+    // then
+    assertThat(found).isNotEmpty
+    assertThat(found.first().seriesIds).isEmpty()
+  }
+
+  @Test
+  fun `given collections with soft deleted series when finding by name then series ids are empty`() {
+    // given
+    val series = makeSeries("Series", library.id)
+    seriesRepository.insert(series)
+
+    val collection = SeriesCollection(
+      name = "MyCollection",
+      seriesIds = listOf(series.id)
+    )
+    collectionDao.insert(collection)
+
+    seriesRepository.softDeleteAll(listOf(series.id))
+
+    // when
+    val found = collectionDao.findByNameOrNull(collection.name)
+
+    // then
+    assertThat(found).isNotNull
+    assertThat(found!!.seriesIds).isEmpty()
+  }
+
+  @Test
+  fun `given collections with soft deleted series when finding deleted series ids by name then deleted series is returned`() {
+    // given
+    val series = makeSeries("Series", library.id)
+    seriesRepository.insert(series)
+
+    val collection = SeriesCollection(
+      name = "MyCollection",
+      seriesIds = listOf(series.id)
+    )
+    collectionDao.insert(collection)
+
+    seriesRepository.softDeleteAll(listOf(series.id))
+
+    // when
+    val found = collectionDao.findDeletedSeriesByName(collection.name)
+
+    // then
+    assertThat(found).isNotEmpty
+    assertThat(found.values.first()).isEqualTo(series.id)
   }
 }

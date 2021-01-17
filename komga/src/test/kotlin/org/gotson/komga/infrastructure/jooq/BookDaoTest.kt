@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.domain.Pageable
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.net.URL
 import java.time.LocalDateTime
@@ -187,6 +188,336 @@ class BookDaoTest(
     bookDao.deleteAll()
 
     assertThat(bookDao.count()).isEqualTo(0)
+  }
+
+  @Test
+  fun `given soft-deleted book when finding by id then null is returned`() {
+    val book = Book(
+      name = "Book",
+      url = URL("file://book"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true
+    )
+    bookDao.insert(book)
+
+    val found = bookDao.findByIdOrNull(book.id)
+
+    assertThat(found).isNull()
+  }
+
+  @Test
+  fun `given soft-deleted book when finding by series id then empty list is returned`() {
+    val book = Book(
+      name = "Book",
+      url = URL("file://book"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true
+    )
+    bookDao.insert(book)
+
+    val found = bookDao.findBySeriesId(series.id)
+
+    assertThat(found).isEmpty()
+  }
+
+  @Test
+  fun `given soft-deleted book when finding all then empty list is returned`() {
+    val book = Book(
+      name = "Book",
+      url = URL("file://book"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true
+    )
+    bookDao.insert(book)
+
+    val found = bookDao.findAll()
+
+    assertThat(found).isEmpty()
+  }
+
+  @Test
+  fun `given soft-deleted book when searching then empty list is returned`() {
+    val book = Book(
+      name = "Book",
+      url = URL("file://book"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true
+    )
+    bookDao.insert(book)
+
+    val search = BookSearch(
+      libraryIds = listOf(library.id),
+      seriesIds = listOf(series.id)
+    )
+    val found = bookDao.findAll(search)
+
+    assertThat(found).isEmpty()
+  }
+
+  @Test
+  fun `given soft-deleted book when searching paged then empty list is returned`() {
+    val book = Book(
+      name = "Book",
+      url = URL("file://book"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true
+    )
+    bookDao.insert(book)
+
+    val search = BookSearch(
+      libraryIds = listOf(library.id),
+      seriesIds = listOf(series.id)
+    )
+    val found = bookDao.findAll(search, Pageable.unpaged())
+
+    assertThat(found.hasContent()).isFalse
+  }
+
+  @Test
+  fun `given soft-deleted book when getting library id by book id then null is returned`() {
+    val book = Book(
+      name = "Book",
+      url = URL("file://book"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true
+    )
+    bookDao.insert(book)
+
+    val found = bookDao.getLibraryId(book.id)
+
+    assertThat(found).isNull()
+  }
+
+  @Test
+  fun `given soft-deleted book when finding first id in series then null is returned`() {
+    val book = Book(
+      name = "Book",
+      url = URL("file://book"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true
+    )
+    bookDao.insert(book)
+
+    val found = bookDao.findFirstIdInSeries(book.id)
+
+    assertThat(found).isNull()
+  }
+
+  @Test
+  fun `given soft-deleted book when finding all id by series id then empty list is returned`() {
+    val book = Book(
+      name = "Book",
+      url = URL("file://book"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true
+    )
+    bookDao.insert(book)
+
+    val found = bookDao.findAllIdBySeriesId(series.id)
+
+    assertThat(found).isEmpty()
+  }
+
+  @Test
+  fun `given soft-deleted book when finding all id by series ids then empty list is returned`() {
+    val book = Book(
+      name = "Book",
+      url = URL("file://book"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true
+    )
+    bookDao.insert(book)
+
+    val found = bookDao.findAllIdBySeriesIds(listOf(series.id))
+
+    assertThat(found).isEmpty()
+  }
+
+  @Test
+  fun `given soft-deleted book when finding all by library id then empty list is returned`() {
+    val book = Book(
+      name = "Book",
+      url = URL("file://book"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true
+    )
+    bookDao.insert(book)
+
+    val found = bookDao.findAllIdByLibraryId(library.id)
+
+    assertThat(found).isEmpty()
+  }
+
+  @Test
+  fun `given soft-deleted book when searching all ids then empty list is returned`() {
+    val book = Book(
+      name = "Book",
+      url = URL("file://book"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true
+    )
+    bookDao.insert(book)
+
+    val search = BookSearch(
+      libraryIds = listOf(library.id),
+      seriesIds = listOf(series.id)
+    )
+
+    val found = bookDao.findAllId(search)
+
+    assertThat(found).isEmpty()
+  }
+
+  @Test
+  fun `given soft-deleted book when counting books then zero is returned`() {
+    val book = Book(
+      name = "Book",
+      url = URL("file://book"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true
+    )
+    bookDao.insert(book)
+
+    val found = bookDao.count()
+
+    assertThat(found).isEqualTo(0)
+  }
+
+  @Test
+  fun `given soft-deleted book when finding all deleted then book is returned`() {
+    val book = Book(
+      name = "Book",
+      url = URL("file://book"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true
+    )
+    bookDao.insert(book)
+
+    val found = bookDao.findAllDeleted()
+
+    assertThat(found).hasSize(1)
+    assertThat(found.first()).isEqualTo(book.id)
+  }
+
+  @Test
+  fun `given existing book when soft deleting it then it is marked as deleted`() {
+    val book = Book(
+      name = "Book",
+      url = URL("file://book"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id
+    )
+    bookDao.insert(book)
+
+    bookDao.softDeleteByBookIds(listOf(book.id))
+    val deleted = bookDao.findAllDeleted()
+
+    assertThat(deleted).hasSize(1)
+    assertThat(deleted.first()).isEqualTo(book.id)
+  }
+
+  @Test
+  fun `given soft-deleted book when finding by file hash and size then book is returned`() {
+    val book = Book(
+      name = "Book",
+      url = URL("file://book"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      fileHash = "1",
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true
+    )
+
+    bookDao.insert(book)
+
+    val found = bookDao.findByFileHashAndSizeIncludeDeleted(book.fileHash, book.fileSize)
+
+    assertThat(found).hasSize(1)
+    assertThat(found.first().id).isEqualTo(book.id)
+  }
+
+  @Test
+  fun `given soft-deleted book when finding by library id and url then book is returned`() {
+    val book = Book(
+      name = "Book",
+      url = URL("file://book"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      fileHash = "1",
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true
+    )
+
+    bookDao.insert(book)
+
+    val found = bookDao.findByLibraryIdAndUrlIncludeDeleted(library.id, book.url)
+
+    assertThat(found).isNotNull
+    assertThat(found!!.id).isEqualTo(book.id)
+  }
+
+  @Test
+  fun `given soft-deleted book when finding by series id including deleted then book is returned`() {
+    val book = Book(
+      name = "Book",
+      url = URL("file://book"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      fileHash = "1",
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true
+    )
+
+    bookDao.insert(book)
+
+    val found = bookDao.findBySeriesIdIncludeDeleted(series.id)
+
+    assertThat(found).isNotEmpty
+    assertThat(found.first().id).isEqualTo(book.id)
   }
 
   private val logger = KotlinLogging.logger {}

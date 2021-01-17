@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.model.ReadStatus
+import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
@@ -12,6 +13,7 @@ import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
+import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.domain.service.LibraryLifecycle
@@ -25,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import java.time.LocalDateTime
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
@@ -37,7 +40,8 @@ class SeriesDtoDaoTest(
   @Autowired private val libraryLifecycle: LibraryLifecycle,
   @Autowired private val readProgressRepository: ReadProgressRepository,
   @Autowired private val userRepository: KomgaUserRepository,
-  @Autowired private val userLifecycle: KomgaUserLifecycle
+  @Autowired private val userLifecycle: KomgaUserLifecycle,
+  @Autowired private val seriesCollectionRepository: SeriesCollectionRepository
 ) {
 
   private val library = makeLibrary()
@@ -79,11 +83,13 @@ class SeriesDtoDaoTest(
     val series = seriesRepository.findAll().sortedBy { it.name }
     // series "1": only in progress books
     series.elementAt(0).let {
-      bookRepository.findBySeriesId(it.id).forEach { readProgressRepository.save(ReadProgress(it.id, user.id, 5, false)) }
+      bookRepository.findBySeriesId(it.id)
+        .forEach { readProgressRepository.save(ReadProgress(it.id, user.id, 5, false)) }
     }
     // series "2": only read books
     series.elementAt(1).let {
-      bookRepository.findBySeriesId(it.id).forEach { readProgressRepository.save(ReadProgress(it.id, user.id, 5, true)) }
+      bookRepository.findBySeriesId(it.id)
+        .forEach { readProgressRepository.save(ReadProgress(it.id, user.id, 5, true)) }
     }
     // series "3": only unread books
     // series "4": read, unread, and in progress
@@ -243,5 +249,95 @@ class SeriesDtoDaoTest(
     // then
     assertThat(found).hasSize(4)
     assertThat(found.map { it.name }).containsExactlyInAnyOrder("1", "2", "3", "4")
+  }
+
+  @Test
+  fun `given soft deleted series when searching then empty list is returned`() {
+    // given
+    val series = makeSeries("series", library.id)
+    seriesLifecycle.createSeries(series)
+    seriesRepository.softDeleteAll(listOf(series.id))
+    // seriesLifecycle.softDeleteMany(listOf(series.id))
+
+    // when
+    val found = seriesDtoDao.findAll(
+      SeriesSearchWithReadProgress(),
+      user.id,
+      PageRequest.of(0, 20)
+    )
+
+    // then
+    assertThat(found).isEmpty()
+  }
+
+  @Test
+  fun `given soft deleted series when finding by collection id then empty list is returned`() {
+    // given
+    val series = makeSeries("series", library.id)
+    seriesLifecycle.createSeries(series)
+    // seriesLifecycle.softDeleteMany(listOf(series.id))
+    seriesRepository.softDeleteAll(listOf(series.id))
+
+    val collection = SeriesCollection(
+      name = "MyCollection",
+      seriesIds = listOf(series.id)
+    )
+    seriesCollectionRepository.insert(collection)
+
+    // when
+    val found = seriesDtoDao.findByCollectionId(
+      collection.id,
+      SeriesSearchWithReadProgress(),
+      user.id,
+      PageRequest.of(0, 20)
+    )
+
+    // then
+    assertThat(found).isEmpty()
+  }
+
+  @Test
+  fun `given soft deleted series when finding recently updated then empty page is returned`() {
+    // given
+    val series = makeSeries("series", library.id)
+    seriesLifecycle.createSeries(series)
+    val updatedSeries = series.copy(lastModifiedDate = LocalDateTime.now().plusMinutes(15))
+    seriesRepository.update(updatedSeries)
+    seriesRepository.softDeleteAll(listOf(series.id))
+    // seriesLifecycle.softDeleteMany(listOf(series.id))
+
+    val collection = SeriesCollection(
+      name = "MyCollection",
+      seriesIds = listOf(series.id)
+    )
+    seriesCollectionRepository.insert(collection)
+
+    // when
+    val found = seriesDtoDao.findRecentlyUpdated(
+      SeriesSearchWithReadProgress(),
+      user.id,
+      PageRequest.of(0, 20)
+    )
+
+    // then
+    assertThat(found.content).isEmpty()
+  }
+
+  @Test
+  fun `given soft deleted series when finding by id then null is returned`() {
+    // given
+    val series = makeSeries("series", library.id)
+    seriesLifecycle.createSeries(series)
+    // seriesLifecycle.softDeleteMany(listOf(series.id))
+    seriesRepository.softDeleteAll(listOf(series.id))
+
+    // when
+    val found = seriesDtoDao.findByIdOrNull(
+      series.id,
+      user.id,
+    )
+
+    // then
+    assertThat(found).isNull()
   }
 }
