@@ -145,22 +145,6 @@ class SeriesLifecycle(
     seriesRepository.deleteAll(seriesIds)
   }
 
-  fun softDeleteMany(seriesIds: Collection<String>) {
-    logger.info { "Soft delete series ids: $seriesIds" }
-
-    val bookIds = bookRepository.findAllIdBySeriesIds(seriesIds)
-    bookLifecycle.softDeleteMany(bookIds)
-    collectionRepository.softDeleteSeriesFromAll(seriesIds)
-    seriesRepository.softDeleteAll(seriesIds)
-  }
-
-  fun restore(series: Series) {
-    logger.info { "restoring deleted series: $series" }
-
-    collectionRepository.restoreDeleteSeriesInAll(series.id)
-    seriesRepository.update(series)
-  }
-
   fun getThumbnail(seriesId: String): ThumbnailSeries? {
     val selected = thumbnailsSeriesRepository.findSelectedBySeriesId(seriesId)
 

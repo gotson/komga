@@ -14,9 +14,8 @@ interface BookRepository {
   fun findAll(bookSearch: BookSearch, pageable: Pageable): Page<Book>
 
   fun findByFileHashAndSizeIncludeDeleted(fileHash: String, fileSize: Long): Collection<Book>
-  fun findBySeriesIdAndFileHashAndSizeIncludeDeleted(seriesId: String, fileHash: String, fileSize: Long): Collection<Book>
-  fun findByLibraryIdAndFileHashAndSizeIncludeDeleted(libraryId: String, fileHash: String, fileSize: Long): Collection<Book>
   fun findByLibraryIdAndUrlIncludeDeleted(libraryId: String, url: URL): Book?
+  fun findBySeriesIdIncludeDeleted(seriesId: String): Collection<Book>
 
   fun getLibraryId(bookId: String): String?
   fun findFirstIdInSeries(seriesId: String): String?

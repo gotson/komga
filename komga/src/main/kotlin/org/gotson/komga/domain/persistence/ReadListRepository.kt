@@ -35,8 +35,6 @@ interface ReadListRepository {
 
   fun removeBookFromAll(bookId: String)
   fun removeBookFromAll(bookIds: Collection<String>)
-  fun softDeleteBookFromAll(bookIds: Collection<String>)
-  fun restoreDeletedBooksInAll(bookIds: Collection<String>)
 
   fun delete(readListId: String)
 

@@ -8,11 +8,11 @@ interface SeriesRepository {
   fun findAll(): Collection<Series>
   fun findByIdOrNull(seriesId: String): Series?
   fun findByLibraryId(libraryId: String): Collection<Series>
+  fun findByLibraryIdIncludeDeleted(libraryId: String): Collection<Series>
   fun findByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): Collection<Series>
   fun existsByLibraryIdAndUrl(libraryId: String, url: URL): Boolean
 
   fun findByLibraryIdAndUrlIncludeDeleted(libraryId: String, url: URL): Series?
-  fun findByLibraryIdAndHashesInIncludeDeleted(libraryId: String, hashes: Collection<String>): Collection<Series>
   fun findByHashesInIncludeDeleted(hashes: Collection<String>): Collection<Series>
 
   fun findAllDeleted(): Collection<String>

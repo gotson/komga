@@ -127,8 +127,9 @@ class SeriesCollectionDao(
     dsl.select(cs.SERIES_ID, cs.NUMBER)
       .from(cs)
       .leftJoin(c).on(cs.COLLECTION_ID.eq(c.ID))
+      .leftJoin(s).on(cs.SERIES_ID.eq(s.ID))
       .where(c.NAME.equalIgnoreCase(name))
-      .and(cs.DELETED.eq(true))
+      .and(s.DELETED.eq(true))
       .fetchInto(cs).map { it.number to it.seriesId }.toMap().toSortedMap()
 
   private fun selectBase() =
@@ -144,6 +145,7 @@ class SeriesCollectionDao(
           .from(cs)
           .leftJoin(s).on(cs.SERIES_ID.eq(s.ID))
           .where(cs.COLLECTION_ID.eq(cr.id))
+          .and(s.DELETED.eq(false))
           .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
           .orderBy(cs.NUMBER.asc())
           .fetchInto(cs)
@@ -201,20 +203,6 @@ class SeriesCollectionDao(
   override fun removeSeriesFromAll(seriesIds: Collection<String>) {
     dsl.deleteFrom(cs)
       .where(cs.SERIES_ID.`in`(seriesIds))
-      .execute()
-  }
-
-  override fun softDeleteSeriesFromAll(seriesIds: Collection<String>) {
-    dsl.update(cs)
-      .set(cs.DELETED, true)
-      .where(cs.SERIES_ID.`in`(seriesIds))
-      .execute()
-  }
-
-  override fun restoreDeleteSeriesInAll(seriesId: String) {
-    dsl.update(cs)
-      .set(cs.DELETED, false)
-      .where(cs.SERIES_ID.eq(seriesId))
       .execute()
   }
 

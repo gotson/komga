@@ -104,7 +104,9 @@ class ReadListDao(
     val ids = dsl.select(rl.ID)
       .from(rl)
       .leftJoin(rlb).on(rl.ID.eq(rlb.READLIST_ID))
+      .leftJoin(b).on(rlb.BOOK_ID.eq(b.ID))
       .where(rlb.BOOK_ID.eq(containsBookId))
+      .and(b.DELETED.eq(false))
       .fetch(0, String::class.java)
 
     return selectBase()
@@ -123,10 +125,10 @@ class ReadListDao(
     dsl.select(rlb.BOOK_ID, rlb.NUMBER)
       .from(rlb)
       .leftJoin(rl).on(rlb.READLIST_ID.eq(rl.ID))
+      .leftJoin(b).on(rlb.BOOK_ID.eq(b.ID))
       .where(rl.NAME.equalIgnoreCase(name))
-      .and(rlb.DELETED.eq(true))
+      .and(b.DELETED.eq(true))
       .fetchInto(rlb).map { it.number to it.bookId }.toMap().toSortedMap()
-
 
   private fun selectBase() =
     dsl.selectDistinct(*rl.fields())
@@ -141,6 +143,7 @@ class ReadListDao(
           .from(rlb)
           .leftJoin(b).on(rlb.BOOK_ID.eq(b.ID))
           .where(rlb.READLIST_ID.eq(rr.id))
+          .and(b.DELETED.eq(false))
           .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
           .orderBy(rlb.NUMBER.asc())
           .fetchInto(rlb)
@@ -196,20 +199,6 @@ class ReadListDao(
 
   override fun removeBookFromAll(bookIds: Collection<String>) {
     dsl.deleteFrom(rlb)
-      .where(rlb.BOOK_ID.`in`(bookIds))
-      .execute()
-  }
-
-  override fun softDeleteBookFromAll(bookIds: Collection<String>) {
-    dsl.update(rlb)
-      .set(rlb.DELETED, true)
-      .where(rlb.BOOK_ID.`in`(bookIds))
-      .execute()
-  }
-
-  override fun restoreDeletedBooksInAll(bookIds: Collection<String>) {
-    dsl.update(rlb)
-      .set(rlb.DELETED, false)
       .where(rlb.BOOK_ID.`in`(bookIds))
       .execute()
   }

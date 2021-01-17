@@ -71,7 +71,7 @@ class LibraryLifecycle(
   fun deleteLibrary(library: Library) {
     logger.info { "Deleting library: $library" }
 
-    val seriesIds = seriesRepository.findByLibraryId(library.id).map { it.id }
+    val seriesIds = seriesRepository.findByLibraryIdIncludeDeleted(library.id).map { it.id }
     seriesLifecycle.deleteMany(seriesIds)
 
     libraryRepository.delete(library.id)

@@ -43,6 +43,12 @@ class SeriesDao(
       .fetchInto(s)
       .map { it.toDomain() }
 
+  override fun findByLibraryIdIncludeDeleted(libraryId: String): List<Series> =
+    dsl.selectFrom(s)
+      .where(s.LIBRARY_ID.eq(libraryId))
+      .fetchInto(s)
+      .map { it.toDomain() }
+
   override fun findByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): List<Series> =
     dsl.selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId).and(s.URL.notIn(urls.map { it.toString() })))
@@ -63,17 +69,6 @@ class SeriesDao(
       .where(s.LIBRARY_ID.eq(libraryId).and(s.URL.eq(url.toString())))
       .fetchOneInto(s)
       ?.toDomain()
-
-  override fun findByLibraryIdAndHashesInIncludeDeleted(libraryId: String, hashes: Collection<String>): List<Series> =
-    dsl.select(*s.fields())
-      .from(s)
-      .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
-      .where(b.FILE_HASH.`in`(hashes))
-      .and(s.LIBRARY_ID.eq(libraryId))
-      .groupBy(s.ID)
-      .having(DSL.count().eq(hashes.size))
-      .fetchInto(s)
-      .map { it.toDomain() }
 
   override fun findByHashesInIncludeDeleted(hashes: Collection<String>): List<Series> =
     dsl.select(*s.fields())
@@ -108,8 +103,8 @@ class SeriesDao(
     dsl.select(s.LIBRARY_ID)
       .from(s)
       .where(s.ID.eq(seriesId))
+      .and(s.DELETED.eq(false))
       .fetchOne(0, String::class.java)
-
 
   override fun insert(series: Series) {
     dsl.insertInto(s)
@@ -118,6 +113,7 @@ class SeriesDao(
       .set(s.URL, series.url.toString())
       .set(s.FILE_LAST_MODIFIED, series.fileLastModified)
       .set(s.LIBRARY_ID, series.libraryId)
+      .set(s.DELETED, series.deleted)
       .execute()
   }
 

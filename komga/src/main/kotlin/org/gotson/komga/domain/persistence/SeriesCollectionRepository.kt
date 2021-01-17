@@ -36,9 +36,6 @@ interface SeriesCollectionRepository {
   fun removeSeriesFromAll(seriesId: String)
   fun removeSeriesFromAll(seriesIds: Collection<String>)
 
-  fun softDeleteSeriesFromAll(seriesIds: Collection<String>)
-  fun restoreDeleteSeriesInAll(seriesId: String)
-
   fun delete(collectionId: String)
 
   fun deleteAll()

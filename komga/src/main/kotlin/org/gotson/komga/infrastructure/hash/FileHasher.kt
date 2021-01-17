@@ -1,4 +1,4 @@
-package org.gotson.komga.infrastructure.file
+package org.gotson.komga.infrastructure.hash
 
 import java.nio.file.Path
 

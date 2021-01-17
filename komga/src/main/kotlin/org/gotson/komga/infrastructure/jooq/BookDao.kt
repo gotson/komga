@@ -79,6 +79,7 @@ class BookDao(
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .where(conditions)
+      .and(b.DELETED.eq(false))
       .orderBy(orderBy)
       .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
       .fetchInto(b)
@@ -99,35 +100,18 @@ class BookDao(
       .and(b.FILE_SIZE.eq(fileSize))
       .map { it.toDomain() }
 
-  override fun findBySeriesIdAndFileHashAndSizeIncludeDeleted(
-    seriesId: String,
-    fileHash: String,
-    fileSize: Long
-  ): Collection<Book> =
-    dsl.selectFrom(b)
-      .where(b.SERIES_ID.eq(seriesId))
-      .and(b.FILE_HASH.eq(fileHash))
-      .and(b.FILE_SIZE.eq(fileSize))
-      .map { it.toDomain() }
-
-  override fun findByLibraryIdAndFileHashAndSizeIncludeDeleted(
-    libraryId: String,
-    fileHash: String,
-    fileSize: Long
-  ): Collection<Book> =
-    dsl.selectFrom(b)
-      .where(b.LIBRARY_ID.eq(libraryId))
-      .and(b.FILE_HASH.eq(fileHash))
-      .and(b.FILE_SIZE.eq(fileSize))
-      .map { it.toDomain() }
-
   override fun findByLibraryIdAndUrlIncludeDeleted(libraryId: String, url: URL): Book? =
     dsl.selectFrom(b)
       .where(b.LIBRARY_ID.eq(libraryId))
       .and(b.URL.eq(url.toString()))
-      .and(b.DELETED.eq(true))
       .fetchOneInto(b)
       ?.toDomain()
+
+  override fun findBySeriesIdIncludeDeleted(seriesId: String): Collection<Book> =
+    dsl.selectFrom(b)
+      .where(b.SERIES_ID.eq(seriesId))
+      .fetchInto(b)
+      .map { it.toDomain() }
 
   override fun getLibraryId(bookId: String): String? =
     dsl.select(b.LIBRARY_ID)
@@ -209,8 +193,9 @@ class BookDao(
             b.FILE_SIZE,
             b.LIBRARY_ID,
             b.SERIES_ID,
-            b.FILE_HASH
-          ).values(null as String?, null, null, null, null, null, null, null, null)
+            b.FILE_HASH,
+            b.DELETED
+          ).values(null as String?, null, null, null, null, null, null, null, null,null)
         ).also { step ->
           books.forEach {
             step.bind(
@@ -222,7 +207,8 @@ class BookDao(
               it.fileSize,
               it.libraryId,
               it.seriesId,
-              it.fileHash
+              it.fileHash,
+              it.deleted
             )
           }
         }.execute()
