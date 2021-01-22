@@ -235,7 +235,7 @@ class LibraryScanner(
   private fun updateBookMetadataTitle(books: Collection<Book>) {
     books.forEach { book ->
       val meta = bookMetadataRepository.findById(book.id)
-      if (!meta.titleLock || meta.title != book.name) {
+      if (!meta.titleLock && meta.title != book.name) {
         bookMetadataRepository.update(meta.copy(title = book.name))
         taskReceiver.refreshBookMetadata(book)
       }
@@ -244,7 +244,7 @@ class LibraryScanner(
 
   private fun updateSeriesMetadataTitle(series: Series) {
     val meta = seriesMetadataRepository.findById(series.id)
-    if (!meta.titleLock || meta.title != series.name) {
+    if (!meta.titleLock && meta.title != series.name) {
       seriesMetadataRepository.update(meta.copy(title = series.name))
       taskReceiver.refreshSeriesMetadata(series.id)
     }
