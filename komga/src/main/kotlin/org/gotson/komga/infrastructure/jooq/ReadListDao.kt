@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.persistence.ReadListRepository
+import org.gotson.komga.infrastructure.language.toIndexedMap
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.ReadlistRecord
 import org.jooq.DSLContext
@@ -147,8 +148,8 @@ class ReadListDao(
           .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
           .orderBy(rlb.NUMBER.asc())
           .fetchInto(rlb)
-          .mapNotNull { it.number to it.bookId }
-          .toMap().toSortedMap()
+          .mapNotNull { it.bookId }
+          .toList().toIndexedMap()
         rr.toDomain(bookIds)
       }
 

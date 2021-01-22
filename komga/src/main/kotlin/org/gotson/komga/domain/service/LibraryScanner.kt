@@ -37,14 +37,10 @@ class LibraryScanner(
   fun scanRootFolder(library: Library) {
     logger.info { "Updating library: $library" }
     measureTime {
-      val scannedSeries =
-        fileSystemScanner.scanRootFolder(Paths.get(library.root.toURI()), library.scanForceModifiedTime)
-          .map { (series, books) ->
-            series.copy(libraryId = library.id) to books.map { it.copy(libraryId = library.id) }
-          }.map { (series, books) ->
-            series to books.map { it.copy(fileHash = getBookHash(it)) }
-          }
-          .toMap()
+      val scannedSeries = fileSystemScanner.scanRootFolder(Paths.get(library.root.toURI()), library.scanForceModifiedTime)
+        .map { (series, books) -> series.copy(libraryId = library.id) to books.map { it.copy(libraryId = library.id) } }
+        .map { (series, books) -> series to books.map { it.copy(fileHash = getBookHash(it)) } }
+        .toMap()
 
       deleteNoLongerExistingSeries(scannedSeries, library)
       restoreDeletedSeries(scannedSeries)
@@ -145,7 +141,7 @@ class LibraryScanner(
 
         if (matchedSeries.size == 1) {
           val seriesToRestore = matchedSeries.first()
-          logger.info { "new series contains all books from previously deleted series. Restoring old series: ${seriesToRestore.path()}" }
+          logger.info { "new series contains all books from previously deleted series. Restoring old series from: ${seriesToRestore.path()}" }
 
           val deletedBooks: Collection<Book> = bookRepository.findBySeriesIdIncludeDeleted(seriesToRestore.id)
 
@@ -217,10 +213,9 @@ class LibraryScanner(
   }
 
   private fun matchExistingBooksByHash(bookToCheck: Book, existingSeries: Series): Collection<Book> {
-    var existingBooks: Collection<Book> =
-      bookRepository.findByFileHashAndSizeIncludeDeleted(bookToCheck.fileHash, bookToCheck.fileSize)
-        //check if book exists in case it was deleted but library analysis wasn't done yet
-        .filter { it.deleted || Files.notExists(it.path()) }
+    var existingBooks = bookRepository.findByFileHashAndSizeIncludeDeleted(bookToCheck.fileHash, bookToCheck.fileSize)
+      //check if book exists in case it was deleted but library analysis wasn't done yet
+      .filter { it.deleted || Files.notExists(it.path()) }
     if (existingBooks.size > 1) {
       logger.debug { "Multiple matches: ${existingBooks}, limiting matching to library of the series" }
       existingBooks = existingBooks.filter { it.libraryId == existingSeries.libraryId }
@@ -240,7 +235,7 @@ class LibraryScanner(
   private fun updateBookMetadataTitle(books: Collection<Book>) {
     books.forEach { book ->
       val meta = bookMetadataRepository.findById(book.id)
-      if (!meta.titleLock) {
+      if (!meta.titleLock || meta.title != book.name) {
         bookMetadataRepository.update(meta.copy(title = book.name))
         taskReceiver.refreshBookMetadata(book)
       }
@@ -249,7 +244,7 @@ class LibraryScanner(
 
   private fun updateSeriesMetadataTitle(series: Series) {
     val meta = seriesMetadataRepository.findById(series.id)
-    if (!meta.titleLock) {
+    if (!meta.titleLock || meta.title != series.name) {
       seriesMetadataRepository.update(meta.copy(title = series.name))
       taskReceiver.refreshSeriesMetadata(series.id)
     }

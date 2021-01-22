@@ -15,7 +15,7 @@ class XXHasher : FileHasher {
   private val readBlockSize = 4096
 
   override fun getHash(path: Path): String {
-    logger.debug { "calculating hash for the file ${path.toUri()}" }
+    logger.info { "Calculating hash for the file $path" }
     val file = path.toFile()
     val bytesToSkip = java.lang.Long.highestOneBit(file.length() / 100)
 

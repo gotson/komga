@@ -38,11 +38,9 @@ class ReadListLifecycle(
     if (existing.name != toUpdate.name && readListRepository.existsByName(toUpdate.name))
       throw DuplicateNameException("Read list name already exists")
     val allSeriesIds = toUpdate.bookIds.values.toMutableList()
-    readListRepository.findDeletedBooksByName(toUpdate.name).let { deleted ->
-      deleted.forEach { (key, value) ->
-        if (allSeriesIds.size < key - 1) allSeriesIds.add(key - 1, value)
-        else allSeriesIds.add(key - 1, value)
-      }
+    readListRepository.findDeletedBooksByName(toUpdate.name).forEach { (number, bookId) ->
+      if (allSeriesIds.size < number) allSeriesIds.add(number, bookId)
+      else allSeriesIds.add(number, bookId)
     }
 
     readListRepository.update(toUpdate.copy(bookIds = allSeriesIds.toIndexedMap()))

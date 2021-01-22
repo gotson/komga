@@ -69,6 +69,7 @@ class TaskHandler(
             seriesRepository.findByIdOrNull(task.seriesId)?.let {
               metadataLifecycle.aggregateMetadata(it)
             } ?: logger.warn { "Cannot execute task $task: Series does not exist" }
+
           is Task.EmptyTrash -> {
             seriesRepository.findAllDeleted().let { seriesLifecycle.deleteMany(it) }
             bookRepository.findAllDeleted().let { bookLifecycle.deleteMany(it) }

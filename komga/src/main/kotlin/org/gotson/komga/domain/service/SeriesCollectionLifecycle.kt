@@ -38,9 +38,9 @@ class SeriesCollectionLifecycle(
       throw DuplicateNameException("Collection name already exists")
     val allSeriesIds = toUpdate.seriesIds.toMutableList()
     collectionRepository.findDeletedSeriesByName(toUpdate.name).let { deleted ->
-      deleted.forEach {
-        if (allSeriesIds.size < it.key - 1) allSeriesIds.add(it.value)
-        else allSeriesIds.add(it.key - 1, it.value)
+      deleted.forEach {(number, seriesId)->
+        if (allSeriesIds.size < number) allSeriesIds.add(seriesId)
+        else allSeriesIds.add(number, seriesId)
       }
     }
 
