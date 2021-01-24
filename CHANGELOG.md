@@ -1,3 +1,10 @@
+## [0.68.2](https://github.com/gotson/komga/compare/v0.68.1...v0.68.2) (2021-01-24)
+
+
+### Bug Fixes
+
+* **scanner:** prevent library deletion when inaccessible ([2a262cc](https://github.com/gotson/komga/commit/2a262ccad1c276bf8bc7f489305dac9cf1c295c6)), closes [#392](https://github.com/gotson/komga/issues/392)
+
 ## [0.68.1](https://github.com/gotson/komga/compare/v0.68.0...v0.68.1) (2021-01-11)
 
 
