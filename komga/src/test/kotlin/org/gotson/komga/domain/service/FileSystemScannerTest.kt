@@ -4,8 +4,11 @@ import com.google.common.jimfs.Configuration
 import com.google.common.jimfs.Jimfs
 import org.apache.commons.io.FilenameUtils
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.catchThrowable
+import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.junit.jupiter.api.Test
+import java.lang.Exception
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -16,6 +19,20 @@ class FileSystemScannerTest {
   }
 
   private val scanner = FileSystemScanner(komgaProperties)
+
+  @Test
+  fun `given unavailable root directory when scanning then throw exception`() {
+    Jimfs.newFileSystem(Configuration.unix()).use { fs ->
+      // given
+      val root = fs.getPath("/root")
+
+      // when
+      val thrown = catchThrowable { scanner.scanRootFolder(root) }
+
+      // then
+      assertThat(thrown).isInstanceOf(DirectoryNotFoundException::class.java)
+    }
+  }
 
   @Test
   fun `given empty root directory when scanning then return empty list`() {

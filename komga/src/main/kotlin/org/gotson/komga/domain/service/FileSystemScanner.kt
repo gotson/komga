@@ -3,6 +3,7 @@ package org.gotson.komga.domain.service
 import mu.KotlinLogging
 import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.domain.model.Book
+import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.springframework.stereotype.Service
@@ -16,7 +17,6 @@ import java.nio.file.attribute.BasicFileAttributes
 import java.nio.file.attribute.FileTime
 import java.time.LocalDateTime
 import java.time.ZoneId
-import kotlin.io.path.isHidden
 import kotlin.streams.asSequence
 import kotlin.time.measureTime
 
@@ -34,6 +34,9 @@ class FileSystemScanner(
     logger.info { "Supported extensions: $supportedExtensions" }
     logger.info { "Excluded patterns: ${komgaProperties.librariesScanDirectoryExclusions}" }
     logger.info { "Force directory modified time: $forceDirectoryModifiedTime" }
+
+    if(!(Files.isDirectory(root) && Files.isReadable(root)))
+      throw DirectoryNotFoundException("Library root is not accessible: $root")
 
     lateinit var scannedSeries: Map<Series, List<Book>>
 
