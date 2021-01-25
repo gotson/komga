@@ -1,5 +1,7 @@
 package org.gotson.komga.domain.persistence
 
+import java.time.LocalDate
+
 interface ReferentialRepository {
   fun findAuthorsByName(search: String): List<String>
 
@@ -23,5 +25,9 @@ interface ReferentialRepository {
 
   fun findAllAgeRatings(): Set<Int?>
   fun findAllAgeRatingsByLibrary(libraryId: String): Set<Int?>
-  fun findAllAgeRatingsByCollection(collectionId: String): Iterable<Int?>
+  fun findAllAgeRatingsByCollection(collectionId: String): Set<Int?>
+
+  fun findAllSeriesReleaseDates(): Set<LocalDate>
+  fun findAllSeriesReleaseDatesByLibrary(libraryId: String): Set<LocalDate>
+  fun findAllSeriesReleaseDatesByCollection(collectionId: String): Set<LocalDate>
 }

@@ -75,4 +75,15 @@ class ReferentialController(
       collectionId != null -> referentialRepository.findAllAgeRatingsByCollection(collectionId)
       else -> referentialRepository.findAllAgeRatings()
     }.map { it?.toString() ?: "None" }.toSet()
+
+  @GetMapping("/series/release-dates")
+  fun getSeriesReleaseDates(
+    @RequestParam(name = "library_id", required = false) libraryId: String?,
+    @RequestParam(name = "collection_id", required = false) collectionId: String?
+  ): Set<String> =
+    when {
+      libraryId != null -> referentialRepository.findAllSeriesReleaseDatesByLibrary(libraryId)
+      collectionId != null -> referentialRepository.findAllSeriesReleaseDatesByCollection(collectionId)
+      else -> referentialRepository.findAllSeriesReleaseDates()
+    }.map { it.year.toString() }.toSet()
 }

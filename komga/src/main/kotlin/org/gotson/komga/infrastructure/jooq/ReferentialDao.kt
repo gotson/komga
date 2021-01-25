@@ -6,6 +6,7 @@ import org.jooq.DSLContext
 import org.jooq.impl.DSL.lower
 import org.jooq.impl.DSL.select
 import org.springframework.stereotype.Component
+import java.time.LocalDate
 
 @Component
 class ReferentialDao(
@@ -14,6 +15,7 @@ class ReferentialDao(
 
   private val a = Tables.BOOK_METADATA_AUTHOR
   private val sd = Tables.SERIES_METADATA
+  private val bma = Tables.BOOK_METADATA_AGGREGATION
   private val s = Tables.SERIES
   private val b = Tables.BOOK
   private val g = Tables.SERIES_METADATA_GENRE
@@ -157,11 +159,36 @@ class ReferentialDao(
       .orderBy(sd.AGE_RATING)
       .fetchSet(sd.AGE_RATING)
 
-  override fun findAllAgeRatingsByCollection(collectionId: String): Iterable<Int?> =
+  override fun findAllAgeRatingsByCollection(collectionId: String): Set<Int?> =
     dsl.selectDistinct(sd.AGE_RATING)
       .from(sd)
       .leftJoin(cs).on(sd.SERIES_ID.eq(cs.SERIES_ID))
       .where(cs.COLLECTION_ID.eq(collectionId))
       .orderBy(sd.AGE_RATING)
       .fetchSet(sd.AGE_RATING)
+
+  override fun findAllSeriesReleaseDates(): Set<LocalDate> =
+    dsl.selectDistinct(bma.RELEASE_DATE)
+    .from(bma)
+    .where(bma.RELEASE_DATE.isNotNull)
+    .orderBy(bma.RELEASE_DATE)
+    .fetchSet(bma.RELEASE_DATE)
+
+  override fun findAllSeriesReleaseDatesByLibrary(libraryId: String): Set<LocalDate> =
+    dsl.selectDistinct(bma.RELEASE_DATE)
+      .from(bma)
+      .leftJoin(s).on(bma.SERIES_ID.eq(s.ID))
+      .where(s.LIBRARY_ID.eq(libraryId))
+      .and(bma.RELEASE_DATE.isNotNull)
+      .orderBy(bma.RELEASE_DATE)
+      .fetchSet(bma.RELEASE_DATE)
+
+  override fun findAllSeriesReleaseDatesByCollection(collectionId: String): Set<LocalDate> =
+    dsl.selectDistinct(bma.RELEASE_DATE)
+      .from(bma)
+      .leftJoin(cs).on(bma.SERIES_ID.eq(cs.SERIES_ID))
+      .where(cs.COLLECTION_ID.eq(collectionId))
+      .and(bma.RELEASE_DATE.isNotNull)
+      .orderBy(bma.RELEASE_DATE)
+      .fetchSet(bma.RELEASE_DATE)
 }
