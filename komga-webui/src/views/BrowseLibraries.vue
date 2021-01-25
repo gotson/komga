@@ -93,18 +93,18 @@ import ItemBrowser from '@/components/ItemBrowser.vue'
 import LibraryNavigation from '@/components/LibraryNavigation.vue'
 import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
-import { parseQueryFilter, parseQuerySort } from '@/functions/query-params'
-import { ReadStatus } from '@/types/enum-books'
-import { SeriesStatus, SeriesStatusKeyValue } from '@/types/enum-series'
-import { LIBRARY_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
+import {parseQueryFilter, parseQuerySort} from '@/functions/query-params'
+import {ReadStatus} from '@/types/enum-books'
+import {SeriesStatus, SeriesStatusKeyValue} from '@/types/enum-series'
+import {LIBRARY_CHANGED, LIBRARY_DELETED, SERIES_CHANGED} from '@/types/events'
 import Vue from 'vue'
-import { Location } from 'vue-router'
-import { LIBRARIES_ALL } from '@/types/library'
+import {Location} from 'vue-router'
+import {LIBRARIES_ALL} from '@/types/library'
 import FilterDrawer from '@/components/FilterDrawer.vue'
 import SortList from '@/components/SortList.vue'
 import FilterPanels from '@/components/FilterPanels.vue'
 import FilterList from '@/components/FilterList.vue'
-import { mergeFilterParams, sortOrFilterActive, toNameValue } from '@/functions/filter'
+import {mergeFilterParams, sortOrFilterActive, toNameValue} from '@/functions/filter'
 import {SeriesDto} from "@/types/komga-series";
 
 const cookiePageSize = 'pagesize'
@@ -150,6 +150,7 @@ export default Vue.extend({
         publisher: { name: 'PUBLISHER', values: [] },
         language: { name: 'LANGUAGE', values: [] },
         ageRating: { name: 'AGE RATING', values: [] },
+        releaseDate: { name: 'RELEASE DATE', values: [] },
       } as FiltersOptions,
       filters: {} as FiltersActive,
       sortUnwatch: null as any,
@@ -214,6 +215,7 @@ export default Vue.extend({
       this.filterOptionsPanel.publisher.values = []
       this.filterOptionsPanel.language.values = []
       this.filterOptionsPanel.ageRating.values = []
+      this.filterOptionsPanel.releaseDate.values = []
 
       this.loadLibrary(to.params.libraryId)
 
@@ -262,6 +264,7 @@ export default Vue.extend({
         this.filters.tag = parseQueryFilter(route.query.tag, this.filterOptionsPanel.tag.values.map(x => x.value))
         this.filters.language = parseQueryFilter(route.query.language, this.filterOptionsPanel.language.values.map(x => x.value))
         this.filters.ageRating = parseQueryFilter(route.query.ageRating, this.filterOptionsPanel.ageRating.values.map(x => x.value))
+        this.filters.releaseDate = parseQueryFilter(route.query.releaseDate, this.filterOptionsPanel.releaseDate.values.map(x => x.value))
       } else {
         this.filters = this.$cookies.get(this.cookieFilter(route.params.libraryId)) || {} as FiltersActive
       }
@@ -327,6 +330,7 @@ export default Vue.extend({
       this.filterOptionsPanel.publisher.values = toNameValue(await this.$komgaReferential.getPublishers(requestLibraryId))
       this.filterOptionsPanel.language.values = (await this.$komgaReferential.getLanguages(requestLibraryId))
       this.filterOptionsPanel.ageRating.values = toNameValue(await this.$komgaReferential.getAgeRatings(requestLibraryId))
+      this.filterOptionsPanel.releaseDate.values = toNameValue(await this.$komgaReferential.getSeriesReleaseDates(requestLibraryId))
 
       await this.loadPage(libraryId, this.page, this.sortActive)
     },
@@ -357,7 +361,7 @@ export default Vue.extend({
       }
 
       const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
-      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, this.filters.readStatus, this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating)
+      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, this.filters.readStatus, this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate)
 
       this.totalPages = seriesPage.totalPages
       this.totalElements = seriesPage.totalElements

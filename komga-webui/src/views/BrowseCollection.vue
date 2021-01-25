@@ -109,19 +109,19 @@
 import CollectionActionsMenu from '@/components/menus/CollectionActionsMenu.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
-import { COLLECTION_CHANGED, COLLECTION_DELETED, SERIES_CHANGED } from '@/types/events'
+import {COLLECTION_CHANGED, COLLECTION_DELETED, SERIES_CHANGED} from '@/types/events'
 import Vue from 'vue'
 import SeriesMultiSelectBar from '@/components/bars/SeriesMultiSelectBar.vue'
-import { LIBRARIES_ALL } from '@/types/library'
-import { ReadStatus } from '@/types/enum-books'
-import { SeriesStatus, SeriesStatusKeyValue } from '@/types/enum-series'
-import { mergeFilterParams, toNameValue } from '@/functions/filter'
+import {LIBRARIES_ALL} from '@/types/library'
+import {ReadStatus} from '@/types/enum-books'
+import {SeriesStatus, SeriesStatusKeyValue} from '@/types/enum-series'
+import {mergeFilterParams, toNameValue} from '@/functions/filter'
 import FilterDrawer from '@/components/FilterDrawer.vue'
 import FilterPanels from '@/components/FilterPanels.vue'
 import FilterList from '@/components/FilterList.vue'
-import { Location } from 'vue-router'
+import {Location} from 'vue-router'
 import EmptyState from '@/components/EmptyState.vue'
-import { parseQueryFilter } from '@/functions/query-params'
+import {parseQueryFilter} from '@/functions/query-params'
 import {SeriesDto} from "@/types/komga-series";
 
 export default Vue.extend({
@@ -154,6 +154,7 @@ export default Vue.extend({
         publisher: { name: 'PUBLISHER', values: [] },
         language: { name: 'LANGUAGE', values: [] },
         ageRating: { name: 'AGE RATING', values: [] },
+        releaseDate: { name: 'RELEASE DATE', values: [] },
       } as FiltersOptions,
       filters: {} as FiltersActive,
       filterUnwatch: null as any,
@@ -211,6 +212,7 @@ export default Vue.extend({
       this.filterOptionsPanel.publisher.values = []
       this.filterOptionsPanel.language.values = []
       this.filterOptionsPanel.ageRating.values = []
+      this.filterOptionsPanel.releaseDate.values = []
 
       this.loadCollection(to.params.collectionId)
 
@@ -236,6 +238,7 @@ export default Vue.extend({
         this.filters.tag = parseQueryFilter(route.query.tag, this.filterOptionsPanel.tag.values.map(x => x.value))
         this.filters.language = parseQueryFilter(route.query.language, this.filterOptionsPanel.language.values.map(x => x.value))
         this.filters.ageRating = parseQueryFilter(route.query.ageRating, this.filterOptionsPanel.ageRating.values.map(x => x.value))
+        this.filters.releaseDate = parseQueryFilter(route.query.releaseDate, this.filterOptionsPanel.releaseDate.values.map(x => x.value))
       } else {
         this.filters = this.$cookies.get(this.cookieFilter(route.params.collectionId)) || {} as FiltersActive
       }
@@ -266,7 +269,7 @@ export default Vue.extend({
       this.setWatches()
     },
     async loadSeries (collectionId: string) {
-      this.series = (await this.$komgaCollections.getSeries(collectionId, { unpaged: true } as PageRequest, this.filters.library, this.filters.status, this.filters.readStatus, this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating)).content
+      this.series = (await this.$komgaCollections.getSeries(collectionId, { unpaged: true } as PageRequest, this.filters.library, this.filters.status, this.filters.readStatus, this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate)).content
       this.seriesCopy = [...this.series]
       this.selectedSeries = []
     },
@@ -283,6 +286,7 @@ export default Vue.extend({
       this.filterOptionsPanel.publisher.values = toNameValue(await this.$komgaReferential.getPublishers(undefined, collectionId))
       this.filterOptionsPanel.language.values = (await this.$komgaReferential.getLanguages(undefined, collectionId))
       this.filterOptionsPanel.ageRating.values = toNameValue(await this.$komgaReferential.getAgeRatings(undefined, collectionId))
+      this.filterOptionsPanel.releaseDate.values = toNameValue(await this.$komgaReferential.getSeriesReleaseDates(undefined, collectionId))
     },
     updateRoute () {
       const loc = {
