@@ -2347,6 +2347,17 @@
           },
           {
             "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "in": "query",
+            "name": "release_year",
+            "required": false
+          },
+          {
+            "schema": {
               "type": "boolean"
             },
             "in": "query",
@@ -3397,6 +3408,48 @@
         ]
       }
     },
+    "/api/v1/series/release-dates": {
+      "get": {
+        "operationId": "getSeriesReleaseDates",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "uniqueItems": true,
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "library_id",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "collection_id",
+            "required": false
+          }
+        ],
+        "tags": [
+          "referential-controller"
+        ]
+      }
+    },
     "/api/v1/series": {
       "get": {
         "operationId": "getAllSeries_1",
@@ -3529,6 +3582,17 @@
             },
             "in": "query",
             "name": "age_rating",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "in": "query",
+            "name": "release_year",
             "required": false
           },
           {

@@ -1,3 +1,12 @@
+# [0.69.0](https://github.com/gotson/komga/compare/v0.68.2...v0.69.0) (2021-01-25)
+
+
+### Features
+
+* **api:** filter series by release year ([9133f3a](https://github.com/gotson/komga/commit/9133f3a441a6a3e3dab80cbbc701049df060beda))
+* **api:** get all release years for series ([c68951b](https://github.com/gotson/komga/commit/c68951be849a85b2852afabdf49e060974be6f96))
+* **webui:** filter series by release year ([33ecb72](https://github.com/gotson/komga/commit/33ecb72f57cecdd63a7f5a2d37de95b3b965eeaf)), closes [#374](https://github.com/gotson/komga/issues/374)
+
 ## [0.68.2](https://github.com/gotson/komga/compare/v0.68.1...v0.68.2) (2021-01-24)
 
 
