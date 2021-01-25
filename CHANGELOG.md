@@ -1,3 +1,10 @@
+## [0.69.1](https://github.com/gotson/komga/compare/v0.69.0...v0.69.1) (2021-01-25)
+
+
+### Bug Fixes
+
+* **api:** sort series release years descending ([3cea176](https://github.com/gotson/komga/commit/3cea17612e82606503a5e8900cd8fc190a0eb707)), closes [#395](https://github.com/gotson/komga/issues/395)
+
 # [0.69.0](https://github.com/gotson/komga/compare/v0.68.2...v0.69.0) (2021-01-25)
 
 
