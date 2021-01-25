@@ -171,7 +171,7 @@ class ReferentialDao(
     dsl.selectDistinct(bma.RELEASE_DATE)
     .from(bma)
     .where(bma.RELEASE_DATE.isNotNull)
-    .orderBy(bma.RELEASE_DATE)
+    .orderBy(bma.RELEASE_DATE.desc())
     .fetchSet(bma.RELEASE_DATE)
 
   override fun findAllSeriesReleaseDatesByLibrary(libraryId: String): Set<LocalDate> =
@@ -180,7 +180,7 @@ class ReferentialDao(
       .leftJoin(s).on(bma.SERIES_ID.eq(s.ID))
       .where(s.LIBRARY_ID.eq(libraryId))
       .and(bma.RELEASE_DATE.isNotNull)
-      .orderBy(bma.RELEASE_DATE)
+      .orderBy(bma.RELEASE_DATE.desc())
       .fetchSet(bma.RELEASE_DATE)
 
   override fun findAllSeriesReleaseDatesByCollection(collectionId: String): Set<LocalDate> =
@@ -189,6 +189,6 @@ class ReferentialDao(
       .leftJoin(cs).on(bma.SERIES_ID.eq(cs.SERIES_ID))
       .where(cs.COLLECTION_ID.eq(collectionId))
       .and(bma.RELEASE_DATE.isNotNull)
-      .orderBy(bma.RELEASE_DATE)
+      .orderBy(bma.RELEASE_DATE.desc())
       .fetchSet(bma.RELEASE_DATE)
 }
