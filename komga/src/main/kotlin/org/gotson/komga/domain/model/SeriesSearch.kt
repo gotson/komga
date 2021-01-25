@@ -18,6 +18,7 @@ class SeriesSearchWithReadProgress(
   val genres: Collection<String>? = null,
   val tags: Collection<String>? = null,
   val ageRatings: Collection<Int?>? = null,
+  val releaseYears: Collection<String>? = null,
   val readStatus: Collection<ReadStatus>? = null
 ) : SeriesSearch(
   libraryIds = libraryIds,

@@ -218,6 +218,8 @@ class SeriesDtoDao(
       val c2 = if (ageRatings.filterNotNull().isNotEmpty()) d.AGE_RATING.`in`(ageRatings.filterNotNull()) else DSL.falseCondition()
       c = c.and(c1.or(c2))
     }
+    // cast to String is necessary for SQLite, else the years in the IN block are coerced to Int, even though YEAR for SQLite uses strftime (string)
+    if(!releaseYears.isNullOrEmpty()) c = c.and(DSL.year(bma.RELEASE_DATE).cast(String::class.java).`in`(releaseYears))
 
     return c
   }

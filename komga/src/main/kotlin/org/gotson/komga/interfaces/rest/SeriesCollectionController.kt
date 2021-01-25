@@ -166,6 +166,7 @@ class SeriesCollectionController(
     @RequestParam(name = "genre", required = false) genres: List<String>?,
     @RequestParam(name = "tag", required = false) tags: List<String>?,
     @RequestParam(name = "age_rating", required = false) ageRatings: List<String>?,
+    @RequestParam(name = "release_year", required = false) release_years: List<String>?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> =
@@ -190,7 +191,8 @@ class SeriesCollectionController(
         languages = languages,
         genres = genres,
         tags = tags,
-        ageRatings = ageRatings?.map { it.toIntOrNull() }
+        ageRatings = ageRatings?.map { it.toIntOrNull() },
+        releaseYears = release_years,
       )
 
       seriesDtoRepository.findByCollectionId(collection.id, seriesSearch, principal.user.id, pageRequest)
