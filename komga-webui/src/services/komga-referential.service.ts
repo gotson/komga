@@ -145,7 +145,7 @@ export default class KomgaReferentialService {
       }
       return ret
     } catch (e) {
-      let msg = 'An error occurred while trying to retrieve publishers'
+      let msg = 'An error occurred while trying to retrieve languages'
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }
