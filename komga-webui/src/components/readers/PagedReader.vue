@@ -6,6 +6,7 @@
                up: () => {if(swipe) {verticalNext()}},
                down: () => {if(swipe) {verticalPrev()}}
              }"
+    @wheel.passive="wheelMoved"
   >
     <v-carousel v-model="carouselPage"
                 :show-arrows="false"
@@ -88,6 +89,8 @@ export default Vue.extend({
     return {
       carouselPage: 0,
       spreads: [] as PageDtoWithUrl[][],
+      // Amount of overscroll in pixels
+      accOverscroll: 0,
     }
   },
   props: {
@@ -196,6 +199,85 @@ export default Vue.extend({
     keyPressed (e: KeyboardEvent) {
       this.shortcuts[e.key]?.execute(this)
     },
+    wheelMoved (e: WheelEvent) {
+      const PAGE_SWITCH_THRESHOLD = 60
+
+      // Only handle vertical movement for now
+      let change = e.deltaY
+      if (change == 0) {
+        return
+      }
+
+      const isAtBottomOfPage = (window.innerHeight + window.scrollY) >= document.body.offsetHeight
+      const isAtTopOfPage = window.scrollY <= 0
+      const isAtEdgeOfPage = isAtBottomOfPage || isAtTopOfPage
+
+      // Only handle overscrolling, not regular scrolling
+      if (!isAtEdgeOfPage) {
+        this.accOverscroll = 0
+        return
+      }
+
+      // If wheel mode is pixel based accumulate scroll values until it hits the threshold
+      if (e.deltaMode === window.WheelEvent.DOM_DELTA_PIXEL) {
+        // Forget accumulated overscroll on scroll direction change
+        if (Math.sign(change) != Math.sign(this.accOverscroll)) {
+            this.accOverscroll = 0
+        }
+        change = this.accOverscroll + change
+        this.accOverscroll = change
+      // Other scroll modes (e.g. line or page) instantly cause page switch
+      } else {
+          change = Math.sign(e.deltaY) * (PAGE_SWITCH_THRESHOLD + 1);
+      }
+
+      // Switch to next page if scrolling down at the bottom of the current page
+      if (change > PAGE_SWITCH_THRESHOLD && isAtBottomOfPage) {
+        this.next()
+      }
+
+      // Switch to previous page if scrolling up at the top of the current page
+      if (change < -PAGE_SWITCH_THRESHOLD && isAtTopOfPage) {
+        this.prev()
+      }
+    },
+    buildSpreads (): PageDtoWithUrl[][] {
+      if (this.pages.length === 0) return []
+      if (this.isDoublePages) {
+        const spreads = []
+        let pages: PageDtoWithUrl[]
+        if (this.pageLayout === PagedReaderLayout.DOUBLE_PAGES) {
+          spreads.push([this.pages[0]])
+          pages = this.$_.drop(this.$_.dropRight(this.pages))
+        } else {
+          pages = this.$_.cloneDeep(this.pages)
+        }
+        while (pages.length > 0) {
+          const p = pages.shift() as PageDtoWithUrl
+          if (isPageLandscape(p)) {
+            spreads.push([p])
+          } else {
+            if (pages.length > 0) {
+              const p2 = pages.shift() as PageDtoWithUrl
+              if (isPageLandscape(p2)) {
+                spreads.push([p])
+                spreads.push([p2])
+              } else {
+                spreads.push([p, p2])
+              }
+            } else {
+              spreads.push([p])
+            }
+          }
+        }
+        if (this.pageLayout === PagedReaderLayout.DOUBLE_PAGES) {
+          spreads.push([this.pages[this.pages.length - 1]])
+        }
+        return spreads
+      } else {
+        return this.pages.map(p => [p])
+      }
+    },
     imgClass (spread: PageDtoWithUrl[]): string {
       const double = spread.length > 1
       switch (this.scale) {
@@ -230,6 +312,8 @@ export default Vue.extend({
       if (this.vertical) this.next()
     },
     prev () {
+      // Reset overscroll on pageswitch
+      this.accOverscroll = 0
       if (this.canPrev) {
         this.carouselPage--
         window.scrollTo(0, 0)
@@ -238,6 +322,8 @@ export default Vue.extend({
       }
     },
     next () {
+      // Reset overscroll on pageswitch
+      this.accOverscroll = 0
       if (this.canNext) {
         this.carouselPage++
         window.scrollTo(0, 0)
