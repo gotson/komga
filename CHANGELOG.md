@@ -1,3 +1,10 @@
+## [0.69.2](https://github.com/gotson/komga/compare/v0.69.1...v0.69.2) (2021-01-29)
+
+
+### Bug Fixes
+
+* update sqlite library to handle armv6 ([33a10b3](https://github.com/gotson/komga/commit/33a10b3f7b8b2f40ecb05a905d1a6157fac2b075)), closes [#398](https://github.com/gotson/komga/issues/398)
+
 ## [0.69.1](https://github.com/gotson/komga/compare/v0.69.0...v0.69.1) (2021-01-25)
 
 
