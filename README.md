@@ -35,9 +35,9 @@ Check the [development guidelines](./DEVELOPING.md).
 
 ## Sponsors
 
-| JetBrains | Portable Guide |
-|:---:|:---:|
-| [![Jetbrains_logo](./.github/readme-images/sponsors-jetbrains.png)](https://www.jetbrains.com/?from=Komga) | [![PortableGuide_logo](./.github/readme-images/sponsors-portableguide.png)](https://portable.guide) |
+| JetBrains |
+|:---:|
+| [![Jetbrains_logo](./.github/readme-images/sponsors-jetbrains.png)](https://www.jetbrains.com/?from=Komga) |
 
 ## Credits
 
