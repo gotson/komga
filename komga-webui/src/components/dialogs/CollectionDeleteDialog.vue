@@ -4,23 +4,19 @@
               max-width="450"
     >
       <v-card>
-        <v-card-title>Delete Collection</v-card-title>
+        <v-card-title>{{ $t('dialog.delete_collection.title') }}</v-card-title>
 
         <v-card-text>
           <v-container fluid>
             <v-row>
-              <v-col>The collection <b>{{ collection.name }}</b> will be removed from this server. Your media files will
-                not
-                be
-                affected. This <b>cannot</b> be undone. Continue ?
-              </v-col>
+              <v-col v-html="$t('dialog.delete_collection.warning_html', { collection: collection.name})"></v-col>
             </v-row>
 
             <v-row>
               <v-col>
                 <v-checkbox v-model="confirmDelete" color="red">
                   <template v-slot:label>
-                    Yes, delete the collection "{{ collection.name }}"
+                    {{ $t('dialog.delete_collection.confirm_delete') }} "{{ collection.name }}"
                   </template>
                 </v-checkbox>
               </v-col>
@@ -34,7 +30,7 @@
           <v-btn text class="red--text"
                  @click="dialogConfirm"
                  :disabled="!confirmDelete"
-          >Delete
+          >{{ $t('common.delete') }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -77,27 +73,27 @@ export default Vue.extend({
     },
   },
   watch: {
-    value (val) {
+    value(val) {
       this.modal = val
     },
-    modal (val) {
+    modal(val) {
       !val && this.dialogCancel()
     },
   },
   methods: {
-    dialogCancel () {
+    dialogCancel() {
       this.$emit('input', false)
       this.confirmDelete = false
     },
-    dialogConfirm () {
+    dialogConfirm() {
       this.deleteCollection()
       this.$emit('input', false)
     },
-    showSnack (message: string) {
+    showSnack(message: string) {
       this.snackText = message
       this.snackbar = true
     },
-    async deleteCollection () {
+    async deleteCollection() {
       try {
         await this.$komgaCollections.deleteCollection(this.collection.id)
         this.$emit('deleted', true)

@@ -5,7 +5,7 @@
     :fixed="$vuetify.breakpoint.name === 'xs'"
   >
     <v-btn :to="{name: 'browse-libraries', params: {libraryId: libraryId}}">
-      <span>Browse</span>
+      <span>{{ $t('library_navigation.browse') }}</span>
       <v-icon>mdi-bookshelf</v-icon>
     </v-btn>
 
@@ -13,7 +13,7 @@
       v-if="collectionsCount > 0"
       :to="{name: 'browse-collections', params: {libraryId: libraryId}}"
     >
-      <span>Collections</span>
+      <span>{{ $t('library_navigation.collections') }}</span>
       <v-icon>mdi-layers-triple</v-icon>
     </v-btn>
 
@@ -21,7 +21,7 @@
       v-if="readListsCount > 0"
       :to="{name: 'browse-readlists', params: {libraryId: libraryId}}"
     >
-      <span>Read Lists</span>
+      <span>{{ $t('library_navigation.readlists') }}</span>
       <v-icon>mdi-book-multiple</v-icon>
     </v-btn>
 
@@ -30,8 +30,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { COLLECTION_CHANGED, READLIST_CHANGED } from '@/types/events'
-import { LIBRARIES_ALL } from '@/types/library'
+import {COLLECTION_CHANGED, READLIST_CHANGED} from '@/types/events'
+import {LIBRARIES_ALL} from '@/types/library'
 
 export default Vue.extend({
   name: 'LibraryNavigation',

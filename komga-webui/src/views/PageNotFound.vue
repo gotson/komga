@@ -1,11 +1,11 @@
 <template>
   <v-row justify="center">
-    <empty-state title="Page not found"
-                 sub-title="The page you are looking for doesn't exist."
+    <empty-state :title="$t('page_not_found.page_not_found')"
+                 :sub-title="$t('page_not_found.page_does_not_exist')"
                  icon="mdi-help-circle"
                  icon-color="secondary"
     >
-      <v-btn color="primary" :to="{name: 'home'}">Go back to home page</v-btn>
+      <v-btn color="primary" :to="{name: 'home'}">{{ $t('page_not_found.go_back_to_home_page') }}</v-btn>
     </empty-state>
   </v-row>
 </template>

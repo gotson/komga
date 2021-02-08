@@ -7,16 +7,16 @@
     </v-row>
     <v-row align="center" justify="center">
       <div class="text-center">
-        <h1 class="text-h5 mt-4">Welcome to Komga</h1>
-        <p class="text-body-1">No libraries have been added yet!</p>
-        <v-btn color="primary" @click="addLibrary" v-if="isAdmin">Add library</v-btn>
+        <h1 class="text-h5 mt-4">{{ $t('welcome.welcome_message') }}</h1>
+        <p class="text-body-1">{{ $t('welcome.no_libraries_yet') }}</p>
+        <v-btn color="primary" @click="addLibrary" v-if="isAdmin">{{ $t('welcome.add_library') }}</v-btn>
       </div>
     </v-row>
   </div>
 </template>
 
 <script lang="ts">
-import { LIBRARY_ADDED } from '@/types/events'
+import {LIBRARY_ADDED} from '@/types/events'
 import Vue from 'vue'
 
 export default Vue.extend({

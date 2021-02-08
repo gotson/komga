@@ -19,7 +19,7 @@
                       <v-icon v-else>mdi-account</v-icon>
                     </v-list-item-icon>
                   </template>
-                  <span>{{ u.roles.includes(UserRoles.ADMIN) ? 'Administrator' : 'User' }}</span>
+                  <span>{{ u.roles.includes(UserRoles.ADMIN) ? $t('settings_user.role_administrator') : $t('settings_user.role_user') }}</span>
                 </v-tooltip>
 
                 <v-list-item-content>
@@ -36,7 +36,7 @@
                         <v-icon>mdi-book-lock</v-icon>
                       </v-btn>
                     </template>
-                    <span>Edit shared libraries</span>
+                    <span>{{ $t('settings_user.edit_shared_libraries') }}</span>
                   </v-tooltip>
                 </v-list-item-action>
 
@@ -47,7 +47,7 @@
                         <v-icon>mdi-pencil</v-icon>
                       </v-btn>
                     </template>
-                    <span>Edit user</span>
+                    <span>{{ $t('settings_user.edit_user') }}</span>
                   </v-tooltip>
                 </v-list-item-action>
 
@@ -94,7 +94,7 @@
 import UserDeleteDialog from '@/components/dialogs/UserDeleteDialog.vue'
 import UserEditDialog from '@/components/dialogs/UserEditDialog.vue'
 import UserSharedLibrariesEditDialog from '@/components/dialogs/UserSharedLibrariesEditDialog.vue'
-import { UserRoles } from '@/types/enum-users'
+import {UserRoles} from '@/types/enum-users'
 import Vue from 'vue'
 
 export default Vue.extend({

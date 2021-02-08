@@ -8,26 +8,26 @@
       </template>
       <v-list dense>
         <v-list-item @click="analyze" v-if="isAdmin">
-          <v-list-item-title>Analyze</v-list-item-title>
+          <v-list-item-title>{{ $t('menu.analyze') }}</v-list-item-title>
         </v-list-item>
         <v-list-item @click="refreshMetadata" v-if="isAdmin">
-          <v-list-item-title>Refresh metadata</v-list-item-title>
+          <v-list-item-title>{{ $t('menu.refresh_metadata') }}</v-list-item-title>
         </v-list-item>
         <v-list-item @click="addToCollection" v-if="isAdmin">
-          <v-list-item-title>Add to collection</v-list-item-title>
+          <v-list-item-title>{{ $t('menu.add_to_collection') }}</v-list-item-title>
         </v-list-item>
         <v-list-item @click="markRead" v-if="!isRead">
-          <v-list-item-title>Mark as read</v-list-item-title>
+          <v-list-item-title>{{ $t('menu.mark_read') }}</v-list-item-title>
         </v-list-item>
         <v-list-item @click="markUnread" v-if="!isUnread">
-          <v-list-item-title>Mark as unread</v-list-item-title>
+          <v-list-item-title>{{ $t('menu.mark_unread') }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
   </div>
 </template>
 <script lang="ts">
-import { SERIES_CHANGED, seriesToEventSeriesChanged } from '@/types/events'
+import {SERIES_CHANGED, seriesToEventSeriesChanged} from '@/types/events'
 import Vue from 'vue'
 import {SeriesDto} from "@/types/komga-series";
 

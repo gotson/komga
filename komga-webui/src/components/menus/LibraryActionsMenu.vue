@@ -8,20 +8,20 @@
       </template>
       <v-list dense>
         <v-list-item @click="scan">
-          <v-list-item-title>Scan library files</v-list-item-title>
+          <v-list-item-title>{{ $t('menu.scan_library_files') }}</v-list-item-title>
         </v-list-item>
         <v-list-item @click="analyze">
-          <v-list-item-title>Analyze</v-list-item-title>
+          <v-list-item-title>{{ $t('menu.analyze') }}</v-list-item-title>
         </v-list-item>
         <v-list-item @click="refreshMetadata">
-          <v-list-item-title>Refresh metadata</v-list-item-title>
+          <v-list-item-title>{{ $t('menu.refresh_metadata') }}</v-list-item-title>
         </v-list-item>
         <v-list-item @click="edit">
-          <v-list-item-title>Edit</v-list-item-title>
+          <v-list-item-title>{{ $t('menu.edit') }}</v-list-item-title>
         </v-list-item>
         <v-list-item @click="promptDeleteLibrary"
                      class="list-warning">
-          <v-list-item-title>Delete</v-list-item-title>
+          <v-list-item-title>{{ $t('menu.delete') }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>

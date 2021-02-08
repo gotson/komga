@@ -3,7 +3,7 @@
     <toolbar-sticky v-if="selectedBooks.length === 0">
       <!--   Go back to parent library   -->
       <v-btn icon
-             title="Go to library"
+             :title="$t('common.go_to_library')"
              :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }}"
       >
         <v-icon>mdi-arrow-left</v-icon>
@@ -115,9 +115,7 @@
                   <span v-on="on" class="text-caption">Summary from book {{
                       series.booksMetadata.summaryNumber
                     }}:</span>
-                </template>
-                This series has no summary, so we picked one for you!
-              </v-tooltip>
+                </template>{{ $t('browse_series.series_no_summary') }}</v-tooltip>
               <read-more>{{ series.booksMetadata.summary }}</read-more>
             </v-col>
           </v-row>
@@ -128,21 +126,19 @@
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <span v-on="on">{{ series.booksMetadata.releaseDate | moment('YYYY') }}</span>
-                </template>
-                This is the earliest year from the release dates from all books in the series
-              </v-tooltip>
+                </template>{{ $t('browse_series.earliest_year_from_release_dates') }}</v-tooltip>
             </v-col>
           </v-row>
 
           <v-row v-if="series.metadata.publisher">
-            <v-col cols="6" sm="4" md="2" class="text-body-2 py-1">PUBLISHER</v-col>
+            <v-col cols="6" sm="4" md="2" class="text-body-2 py-1 text-uppercase">{{ $t('common.publisher') }}</v-col>
             <v-col class="text-body-2 text-capitalize py-1">
               {{ series.metadata.publisher }}
             </v-col>
           </v-row>
 
           <v-row v-if="series.metadata.genres.length > 0">
-            <v-col cols="6" sm="4" md="2" class="text-body-2 py-1">GENRE</v-col>
+            <v-col cols="6" sm="4" md="2" class="text-body-2 py-1 text-uppercase">{{ $t('common.genre') }}</v-col>
             <v-col class="text-body-2 text-capitalize py-1">
               <v-chip v-for="(t, i) in series.metadata.genres"
                       :key="i"
@@ -156,7 +152,7 @@
           </v-row>
 
           <v-row v-if="series.metadata.tags.length > 0">
-            <v-col cols="6" sm="4" md="2" class="text-body-2 py-1">TAGS</v-col>
+            <v-col cols="6" sm="4" md="2" class="text-body-2 py-1 text-uppercase">{{ $t('common.tags') }}</v-col>
             <v-col class="text-body-2 text-capitalize py-1">
               <v-chip v-for="(t, i) in series.metadata.tags"
                       :key="i"
@@ -199,8 +195,8 @@
 
       <empty-state
         v-if="totalPages === 0"
-        title="The active filter has no matches"
-        sub-title="Use the filter panel to change the active filter"
+        :title="$t('common.filter_no_matches')"
+        :sub-title="$t('common.use_filter_panel_to_change_filter')"
         icon="mdi-book-multiple"
         icon-color="secondary"
       >

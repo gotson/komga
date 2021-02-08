@@ -30,7 +30,7 @@
             <v-icon>mdi-home</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title>Home</v-list-item-title>
+            <v-list-item-title>{{ $t('navigation.home') }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -39,7 +39,7 @@
             <v-icon>mdi-book-multiple</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title>Libraries</v-list-item-title>
+            <v-list-item-title>{{ $t('navigation.libraries') }}</v-list-item-title>
           </v-list-item-content>
           <v-list-item-action v-if="isAdmin">
             <v-btn icon @click.stop.capture.prevent="addLibrary">
@@ -74,7 +74,7 @@
             <v-icon>mdi-cog</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Server settings</v-list-item-title>
+            <v-list-item-title>{{ $t('server_settings.server_settings') }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -83,7 +83,7 @@
             <v-icon>mdi-account</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Account settings</v-list-item-title>
+            <v-list-item-title>{{ $t('account_settings.account_settings') }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -92,7 +92,7 @@
             <v-icon>mdi-power</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title>Log out</v-list-item-title>
+            <v-list-item-title>{{ $t('navigation.logout') }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -109,7 +109,7 @@
           <v-select
             v-model="theme"
             :items="themes"
-            label="Theme"
+            :label="$t('home.theme')"
           ></v-select>
         </v-list-item>
       </v-list>
@@ -120,7 +120,8 @@
             <v-icon>mdi-translate</v-icon>
           </v-list-item-icon>
           <v-select v-model="locale"
-                    :items="$i18n.availableLocales"
+                    :items="locales"
+                    :label="$t('home.translation')"
           >
           </v-select>
         </v-list-item>
@@ -156,7 +157,7 @@ const cookieLocale = 'locale'
 
 export default Vue.extend({
   name: 'home',
-  components: { LibraryActionsMenu, SearchBox, Dialogs },
+  components: {LibraryActionsMenu, SearchBox, Dialogs},
   data: function () {
     return {
       drawerVisible: this.$vuetify.breakpoint.lgAndUp,
@@ -166,13 +167,14 @@ export default Vue.extend({
       },
       Theme,
       themes: [
-        { text: Theme.LIGHT.valueOf(), value: Theme.LIGHT },
-        { text: Theme.DARK.valueOf(), value: Theme.DARK },
-        { text: Theme.SYSTEM.valueOf(), value: Theme.SYSTEM },
+        {text: Theme.LIGHT.valueOf(), value: Theme.LIGHT},
+        {text: Theme.DARK.valueOf(), value: Theme.DARK},
+        {text: Theme.SYSTEM.valueOf(), value: Theme.SYSTEM},
       ],
+      locales: this.$i18n.availableLocales.map((x: any) => ({text: this.$i18n.t('common.locale_name', x), value: x})),
     }
   },
-  async created () {
+  async created() {
     if (this.isAdmin) {
       this.info = await this.$actuator.getInfo()
     }
@@ -193,17 +195,14 @@ export default Vue.extend({
 
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', this.systemThemeChange)
   },
-  async beforeDestroy () {
+  async beforeDestroy() {
     window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', this.systemThemeChange)
   },
   computed: {
-    locales (): string[] {
-      return this.$i18n.availableLocales
-    },
-    libraries (): LibraryDto[] {
+    libraries(): LibraryDto[] {
       return this.$store.state.komgaLibraries.libraries
     },
-    isAdmin (): boolean {
+    isAdmin(): boolean {
       return this.$store.getters.meAdmin
     },
 
@@ -232,15 +231,15 @@ export default Vue.extend({
     },
   },
   methods: {
-    toggleDrawer () {
+    toggleDrawer() {
       this.drawerVisible = !this.drawerVisible
     },
-    systemThemeChange () {
+    systemThemeChange() {
       if (this.theme === Theme.SYSTEM) {
         this.changeTheme(this.theme)
       }
     },
-    changeTheme (theme: Theme) {
+    changeTheme(theme: Theme) {
       switch (theme) {
         case Theme.DARK:
           this.$vuetify.theme.dark = true
@@ -255,11 +254,11 @@ export default Vue.extend({
           break
       }
     },
-    logout () {
+    logout() {
       this.$store.dispatch('logout')
-      this.$router.push({ name: 'login' })
+      this.$router.push({name: 'login'})
     },
-    addLibrary () {
+    addLibrary() {
       this.$store.dispatch('dialogAddLibrary')
     },
   },

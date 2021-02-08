@@ -6,7 +6,7 @@
                             :library="library"/>
 
       <v-toolbar-title>
-        <span>{{ library ? library.name : 'All libraries' }}</span>
+        <span>{{ library ? library.name : $t('common.all_libraries') }}</span>
         <v-chip label class="ml-4" v-if="totalElements">
           <span style="font-size: 1.1rem">{{ totalElements }}</span>
         </v-chip>
@@ -44,10 +44,10 @@ import ItemBrowser from '@/components/ItemBrowser.vue'
 import LibraryNavigation from '@/components/LibraryNavigation.vue'
 import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
-import { COLLECTION_CHANGED, COLLECTION_DELETED, LIBRARY_CHANGED } from '@/types/events'
+import {COLLECTION_CHANGED, COLLECTION_DELETED, LIBRARY_CHANGED} from '@/types/events'
 import Vue from 'vue'
-import { Location } from 'vue-router'
-import { LIBRARIES_ALL } from '@/types/library'
+import {Location} from 'vue-router'
+import {LIBRARIES_ALL} from '@/types/library'
 
 const cookiePageSize = 'pagesize'
 

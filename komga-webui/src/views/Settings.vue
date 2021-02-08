@@ -1,8 +1,8 @@
 <template>
   <div>
     <v-tabs>
-      <v-tab :to="{name: 'settings-analysis'}">Media analysis</v-tab>
-      <v-tab :to="{name: 'settings-users'}">Users</v-tab>
+      <v-tab :to="{name: 'settings-analysis'}">{{ $t('media_analysis.media_analysis') }}</v-tab>
+      <v-tab :to="{name: 'settings-users'}">{{ $t('users.users') }}</v-tab>
     </v-tabs>
     <router-view/>
   </div>

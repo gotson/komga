@@ -9,8 +9,7 @@
           <template v-slot:prepend>
             <router-link class="text-overline"
                          :to="{name: 'browse-collection', params: {collectionId: c.id}}"
-            >Manage collection
-            </router-link>
+            >{{ $t('collections_expansion_panel.manage_collection') }}</router-link>
           </template>
           <template v-slot:content>
             <item-browser :items="collectionsContent[index]"

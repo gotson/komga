@@ -7,7 +7,7 @@
     </div>
     <template v-slot:more="value">
       <v-btn text small color="grey darken-1">
-        {{ value.open ? 'Read less' : 'Read more' }}
+        {{ value.open ? $t('read_more.less') : $t('read_more.more') }}
         <v-icon right>mdi-chevron-{{ value.open ? 'up' : 'down' }}</v-icon>
       </v-btn>
     </template>

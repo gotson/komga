@@ -2,7 +2,7 @@
   <div>
     <toolbar-sticky v-if="showToolbar">
       <v-toolbar-title>
-        <span>Search results for "{{ $route.query.q }}"</span>
+        <span>{{ $t('search.search_results_for') }} "{{ $route.query.q }}"</span>
       </v-toolbar-title>
     </toolbar-sticky>
 
@@ -27,8 +27,8 @@
     <v-container fluid>
       <empty-state
         v-if="emptyResults"
-        title="The search returned no results"
-        sub-title="Try searching for something else"
+        :title="$t('search.no_results')"
+        :sub-title="$t('search.search_for_something_else')"
         icon="mdi-magnify"
         icon-color="secondary"
         class="my-4"
@@ -38,7 +38,7 @@
       <template v-else>
         <horizontal-scroller v-if="series.length !== 0" class="mb-4">
           <template v-slot:prepend>
-            <div class="title">Series</div>
+            <div class="title">{{ $t('common.series') }}</div>
           </template>
           <template v-slot:content>
             <item-browser :items="series"
@@ -53,7 +53,7 @@
 
         <horizontal-scroller v-if="books.length !== 0" class="mb-4">
           <template v-slot:prepend>
-            <div class="title">Books</div>
+            <div class="title">{{ $t('common.books') }}</div>
           </template>
           <template v-slot:content>
             <item-browser :items="books"
@@ -68,7 +68,7 @@
 
         <horizontal-scroller v-if="collections.length !== 0" class="mb-4">
           <template v-slot:prepend>
-            <div class="title">Collections</div>
+            <div class="title">{{ $t('common.collections') }}</div>
           </template>
           <template v-slot:content>
             <item-browser :items="collections"
@@ -82,7 +82,7 @@
 
         <horizontal-scroller v-if="readLists.length !== 0" class="mb-4">
           <template v-slot:prepend>
-            <div class="title">Read Lists</div>
+            <div class="title">{{ $t('common.readlists') }}</div>
           </template>
           <template v-slot:content>
             <item-browser :items="readLists"
@@ -107,7 +107,7 @@ import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
-import { BookDto } from '@/types/komga-books'
+import {BookDto} from '@/types/komga-books'
 import {
   BOOK_CHANGED,
   COLLECTION_CHANGED,

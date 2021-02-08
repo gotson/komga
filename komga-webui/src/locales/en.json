@@ -5,8 +5,182 @@
     "keep_reading": "Keep Reading",
     "recently_updated_series": "Recently Updated Series",
     "recently_added_books": "Recently Added Books"
-  },
+    },
   "common": {
-    "nothing_to_show": "Nothing to show"
+    "locale_name": "English",
+    "nothing_to_show": "Nothing to show",
+    "email": "Email",
+    "roles": "Roles",
+    "pages": "pages",
+    "filter_no_matches": "The active filter has no matches",
+    "use_filter_panel_to_change_filter": "Use the filter panel to change the active filter",
+    "all_libraries": "All libraries",
+    "go_to_library": "Go to library",
+    "publisher": "Publisher",
+    "genre": "Genre",
+    "tags": "Tags",
+    "password": "Password",
+    "close": "Close",
+    "series": "Series",
+    "books": "Books",
+    "collections": "Collections",
+    "readlists": "Read Lists",
+    "create": "Create",
+    "delete": "Delete",
+    "cancel": "Cancel"
+  },
+  "account_settings": {
+    "account_settings": "Account Settings",
+    "change_password": "Change password"
+  },
+  "bookreader": {
+    "reader_settings": "Reader Settings",
+    "settings": {
+      "general": "General",
+      "reading_mode": "Reading mode",
+      "animate_page_transitions": "Animate page transitions",
+      "gestures": "Gestures",
+      "display": "Display",
+      "background_color": "Background color",
+      "webtoon": "Webtoon",
+      "scale_type": "Scale type",
+      "side_padding": "Side padding",
+      "page_layout": "Page layout"
+    },
+    "beginning_of_book": "of the book.",
+    "move_previous": "to move to the previous book.",
+    "end_of_book": "of the book.",
+    "move_next": "to move to the next book.",
+    "move_next_exit": "to exit the reader.",
+    "from_series_metadata": "from series metadata",
+    "cycling_page_layout": "Cycling Page Layout",
+    "cycling_side_padding": "Cycling Side Padding",
+    "cycling_scale": "Cycling Scale",
+    "changing_reading_direction": "Changing Reading Direction to"
+  },
+  "browse_book": {
+    "navigation_within_readlist": "Navigation within the readlist",
+    "download_file": "Download file",
+    "read_book": "Read book",
+    "size": "SIZE",
+    "comment": "COMMENT",
+    "format": "FORMAT",
+    "file": "FILE"
+  },
+  "browse_collection": {
+    "manual_ordering": "manual ordering",
+    "edit_elements": "Edit elements",
+    "edit_collection": "Edit collection"
+  },
+  "browse_readlist": {
+    "edit_elements": "Edit elements",
+    "edit_readlist": "Edit read list"
+  },
+  "browse_series": {
+    "series_no_summary": "This series has no summary, so we picked one for you!",
+    "earliest_year_from_release_dates": "This is the earliest year from the release dates from all books in the series"
+  },
+  "navigation": {
+    "home": "Home",
+    "libraries": "Libraries",
+    "logout": "Log out"
+  },
+  "server_settings": {
+    "server_settings": "Server settings"
+  },
+  "home": {
+    "theme": "Theme",
+    "translation": "Translation"
+  },
+  "login": {
+    "unclaimed_html": "This Komga server is not yet active, you need to create a user account to be able to access it.<br/><br/>Choose an <strong>email</strong> and <strong>password</strong> and click on <strong>Create user account</strong>.",
+    "create_user_account": "Create user account",
+    "login": "Login"
+  },
+  "page_not_found": {
+    "page_not_found": "Page not found",
+    "page_does_not_exist": "The page you are looking for doesn't exist.",
+    "go_back_to_home_page": "Go back to home page"
+  },
+  "search": {
+    "search_results_for": "Search results for",
+    "no_results": "The search returned no results",
+    "search_for_something_else": "Try searching for something else",
+    "search": "Search"
+  },
+  "media_analysis": {
+    "media_analysis": "Media analysis",
+    "name": "Name",
+    "status": "Status",
+    "comment": "Comment",
+    "media_type": "Media Type",
+    "url": "URL",
+    "size": "Size"
+  },
+  "users": {
+    "users": "Users"
+  },
+  "settings_user": {
+    "role_administrator": "Administrator",
+    "role_user": "User",
+    "edit_shared_libraries": "Edit shared libraries",
+    "edit_user": "Edit user"
+  },
+  "welcome": {
+    "welcome_message": "Welcome to Komga",
+    "no_libraries_yet": "No libraries have been added yet!",
+    "add_library": "Add library"
+  },
+  "searchbox": {
+    "no_results": "No results"
+  },
+  "read_more": {
+    "less": "Read less",
+    "more": "Read more"
+  },
+  "readlists_expansion_panel": {
+    "manage_readlist": "Manage read list"
+  },
+  "library_navigation": {
+    "browse": "Browse",
+    "collections": "Collections",
+    "readlists": "Read Lists"
+  },
+  "filter_drawer": {
+    "filter": "FILTER",
+    "sort": "SORT"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "Manage collection"
+  },
+  "menu": {
+    "analyze": "Analyze",
+    "refresh_metadata": "Refresh metadata",
+    "add_to_readlist": "Add to read list",
+    "mark_read": "Mark as read",
+    "mark_unread": "Mark as unread",
+    "delete": "Delete",
+    "scan_library_files": "Scan library files",
+    "edit": "Edit",
+    "add_to_collection": "Add to collection",
+    "edit_metadata": "Edit metadata"
+  },
+  "dialog": {
+    "add_to_collection": {
+      "title": "Add to collection",
+      "search_or_create": "Search or create collection",
+      "no_matching_collection": "No matching collection"
+    },
+    "delete_collection": {
+      "title": "Delete Collection",
+      "confirm_delete": "Yes, delete the collection",
+      "warning_html": "The collection <b>{collection}</b> will be removed from this server. Your media files will  not be affected. This <b>cannot</b> be undone. Continue ?"
+    },
+    "edit_collection": {
+      "title": "Edit collection",
+      "ordering_notice": "By default, series in a collection will be ordered by name. You can enable manual ordering to define your own order.",
+      "manual_ordering": "Manual ordering",
+      "save": "Save changes"
+    }
   }
 }

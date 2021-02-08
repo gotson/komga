@@ -22,42 +22,44 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { MediaStatus } from '@/types/enum-books'
-import { BookDto } from '@/types/komga-books'
+import {MediaStatus} from '@/types/enum-books'
+import {BookDto} from '@/types/komga-books'
 
 export default Vue.extend({
   name: 'SettingsMediaAnalysis',
-  data: () => ({
-    books: [] as BookDto[],
-    totalBooks: 0,
-    loading: true,
-    options: {} as any,
-    headers: [
-      { text: 'Name', value: 'name' },
-      { text: 'Status', value: 'media.status' },
-      { text: 'Comment', value: 'media.comment' },
-      { text: 'Media Type', value: 'media.mediaType' },
-      { text: 'URL', value: 'url' },
-      { text: 'Size', value: 'size', sortable: false },
-    ],
-  }),
+  data: function () {
+    return {
+      books: [] as BookDto[],
+      totalBooks: 0,
+      loading: true,
+      options: {} as any,
+      headers: [
+        {text: this.$i18n.t('media_analysis.name').toString(), value: 'name'},
+        {text: this.$i18n.t('media_analysis.status').toString(), value: 'media.status'},
+        {text: this.$i18n.t('media_analysis.comment').toString(), value: 'media.comment'},
+        {text: this.$i18n.t('media_analysis.media_type').toString(), value: 'media.mediaType'},
+        {text: this.$i18n.t('media_analysis.url').toString(), value: 'url'},
+        {text: this.$i18n.t('media_analysis.size').toString(), value: 'size', sortable: false},
+      ],
+    }
+  },
   watch: {
     options: {
-      handler () {
+      handler() {
         this.loadBooks()
       },
       deep: true,
     },
   },
   computed: {},
-  async mounted () {
+  async mounted() {
     this.loadBooks()
   },
   methods: {
-    async loadBooks () {
+    async loadBooks() {
       this.loading = true
 
-      const { sortBy, sortDesc, page, itemsPerPage } = this.options
+      const {sortBy, sortDesc, page, itemsPerPage} = this.options
 
       const pageRequest = {
         page: page - 1,

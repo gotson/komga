@@ -11,13 +11,13 @@
 
     <template v-if="$slots.filter">
       <v-divider/>
-      <v-subheader>FILTER</v-subheader>
+      <v-subheader>{{ $t('filter_drawer.filter') }}</v-subheader>
     </template>
     <slot name="filter"></slot>
 
     <template v-if="$slots.sort">
       <v-divider/>
-      <v-subheader>SORT</v-subheader>
+      <v-subheader>{{ $t('filter_drawer.sort') }}</v-subheader>
     </template>
     <slot name="sort"></slot>
 

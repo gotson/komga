@@ -9,8 +9,7 @@
           <template v-slot:prepend>
             <router-link class="text-overline"
                          :to="{name: 'browse-readlist', params: {readListId: r.id}}"
-            >Manage read list
-            </router-link>
+            >{{ $t('readlists_expansion_panel.manage_readlist') }}</router-link>
           </template>
           <template v-slot:content>
             <item-browser :items="readListsContent[index]"
@@ -30,8 +29,8 @@
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import Vue from 'vue'
-import { BookDto } from '@/types/komga-books'
-import { ContextOrigin } from '@/types/context'
+import {BookDto} from '@/types/komga-books'
+import {ContextOrigin} from '@/types/context'
 
 export default Vue.extend({
   name: 'ReadListsExpansionPanels',
