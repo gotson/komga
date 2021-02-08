@@ -20,9 +20,7 @@
         dense
         border="right"
         class="mb-0"
-      >
-        Navigation within the readlist: {{ contextName }}
-      </v-alert>
+      >{{ $t('browse_book.navigation_within_readlist') }}: {{ contextName }}</v-alert>
 
       <!--   Navigate to previous book   -->
       <v-btn
@@ -156,7 +154,7 @@
       <v-row align="center">
         <v-col cols="auto">
           <v-btn icon
-                 title="Download file"
+                 :title="$t('browse_book.download_file')"
                  class="pb-1"
                  :disabled="!canDownload"
                  :href="fileUrl">
@@ -166,7 +164,7 @@
         <v-col cols="auto">
           <v-btn icon
                  color="accent"
-                 title="Read book"
+                 :title="$t('browse_book.read_book')"
                  class="pb-1"
                  :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id}}"
                  :disabled="book.media.status !== 'READY' || !canReadPages"
@@ -176,31 +174,31 @@
         </v-col>
         <v-col cols="auto">
           <v-icon class="mr-2 pb-1">mdi-book-open</v-icon>
-          <span class="text-body-2">{{ book.media.pagesCount }} pages</span>
+          <span class="text-body-2">{{ book.media.pagesCount }} {{ $t('common.pages') }}</span>
         </v-col>
       </v-row>
 
       <v-row>
-        <v-col cols="2" md="1" lg="1" xl="1" class="text-body-2">SIZE</v-col>
+        <v-col cols="2" md="1" lg="1" xl="1" class="text-body-2">{{ $t('browse_book.size') }}</v-col>
         <v-col cols="10" class="text-body-2">{{ book.size }}</v-col>
       </v-row>
 
       <v-row v-if="book.media.comment">
-        <v-col cols="2" md="1" lg="1" xl="1" class="text-body-2">COMMENT</v-col>
+        <v-col cols="2" md="1" lg="1" xl="1" class="text-body-2">{{ $t('browse_book.comment') }}</v-col>
         <v-col cols="10" class="text-body-2">
           <span class="error--text font-weight-bold">{{ book.media.comment }}</span>
         </v-col>
       </v-row>
 
       <v-row>
-        <v-col cols="2" md="1" lg="1" xl="1" class="text-body-2">FORMAT</v-col>
+        <v-col cols="2" md="1" lg="1" xl="1" class="text-body-2">{{ $t('browse_book.format') }}</v-col>
         <v-col cols="10" class="text-body-2">
           <span>{{ format.type }}</span>
         </v-col>
       </v-row>
 
       <v-row align="center">
-        <v-col cols="2" md="1" lg="1" xl="1" class="text-body-2">FILE</v-col>
+        <v-col cols="2" md="1" lg="1" xl="1" class="text-body-2">{{ $t('browse_book.file') }}</v-col>
         <v-col cols="10" class="text-body-2">{{ book.url }}</v-col>
       </v-row>
 
@@ -213,17 +211,17 @@
 import BookActionsMenu from '@/components/menus/BookActionsMenu.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
-import { groupAuthorsByRolePlural } from '@/functions/authors'
-import { getBookFormatFromMediaType } from '@/functions/book-format'
-import { getReadProgress, getReadProgressPercentage } from '@/functions/book-progress'
-import { getBookTitleCompact } from '@/functions/book-title'
-import { bookFileUrl, bookThumbnailUrl } from '@/functions/urls'
-import { ReadStatus } from '@/types/enum-books'
-import { BOOK_CHANGED, LIBRARY_DELETED } from '@/types/events'
+import {groupAuthorsByRolePlural} from '@/functions/authors'
+import {getBookFormatFromMediaType} from '@/functions/book-format'
+import {getReadProgress, getReadProgressPercentage} from '@/functions/book-progress'
+import {getBookTitleCompact} from '@/functions/book-title'
+import {bookFileUrl, bookThumbnailUrl} from '@/functions/urls'
+import {ReadStatus} from '@/types/enum-books'
+import {BOOK_CHANGED, LIBRARY_DELETED} from '@/types/events'
 import Vue from 'vue'
 import ReadListsExpansionPanels from '@/components/ReadListsExpansionPanels.vue'
-import { BookDto, BookFormat } from '@/types/komga-books'
-import { Context, ContextOrigin } from '@/types/context'
+import {BookDto, BookFormat} from '@/types/komga-books'
+import {Context, ContextOrigin} from '@/types/context'
 import {SeriesDto} from "@/types/komga-series";
 import ReadMore from "@/components/ReadMore.vue";
 

@@ -9,7 +9,7 @@
       <v-list dense>
         <v-list-item @click="promptDeleteCollection"
                      class="list-warning">
-          <v-list-item-title>Delete</v-list-item-title>
+          <v-list-item-title>{{ $t('menu.delete') }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>

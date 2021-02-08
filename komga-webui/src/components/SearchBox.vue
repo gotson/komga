@@ -5,7 +5,7 @@
                   hide-details
                   clearable
                   prepend-inner-icon="mdi-magnify"
-                  label="Search"
+                  :label="$t('search.search')"
                   :loading="loading"
                   @click:clear="clear"
                   @keydown.esc="clear"
@@ -21,11 +21,11 @@
       <v-list>
         <v-list-item
           v-if="series.length === 0 && books.length === 0 && collections.length === 0 && readLists.length === 0">
-          No results
+          {{ $t('searchbox.no_results') }}
         </v-list-item>
 
         <template v-if="series.length !== 0">
-          <v-subheader>SERIES</v-subheader>
+          <v-subheader class="text-uppercase">{{ $t('common.series') }}</v-subheader>
           <v-list-item v-for="item in series"
                        :key="item.id"
                        link
@@ -43,7 +43,7 @@
         </template>
 
         <template v-if="books.length !== 0">
-          <v-subheader>BOOKS</v-subheader>
+          <v-subheader class="text-uppercase">{{ $t('common.books') }}</v-subheader>
           <v-list-item v-for="item in books"
                        :key="item.id"
                        link
@@ -61,7 +61,7 @@
         </template>
 
         <template v-if="collections.length !== 0">
-          <v-subheader>COLLECTIONS</v-subheader>
+          <v-subheader class="text-uppercase">{{ $t('common.collections') }}</v-subheader>
           <v-list-item v-for="item in collections"
                        :key="item.id"
                        link
@@ -79,7 +79,7 @@
         </template>
 
         <template v-if="readLists.length !== 0">
-          <v-subheader>READ LISTS</v-subheader>
+          <v-subheader class="text-uppercase">{{ $t('common.readlists') }}</v-subheader>
           <v-list-item v-for="item in readLists"
                        :key="item.id"
                        link
@@ -102,10 +102,10 @@
 </template>
 
 <script lang="ts">
-import { bookThumbnailUrl, collectionThumbnailUrl, readListThumbnailUrl, seriesThumbnailUrl } from '@/functions/urls'
-import { debounce } from 'lodash'
+import {bookThumbnailUrl, collectionThumbnailUrl, readListThumbnailUrl, seriesThumbnailUrl} from '@/functions/urls'
+import {debounce} from 'lodash'
 import Vue from 'vue'
-import { BookDto } from '@/types/komga-books'
+import {BookDto} from '@/types/komga-books'
 import {SeriesDto} from "@/types/komga-series";
 
 export default Vue.extend({
@@ -123,10 +123,10 @@ export default Vue.extend({
     }
   },
   watch: {
-    search (val) {
+    search(val) {
       this.searchItems(val)
     },
-    showResults (val) {
+    showResults(val) {
       !val && this.clear()
     },
   },
@@ -134,17 +134,17 @@ export default Vue.extend({
     searchItems: debounce(async function (this: any, query: string) {
       if (query) {
         this.loading = true
-        this.series = (await this.$komgaSeries.getSeries(undefined, { size: this.pageSize }, query)).content
-        this.books = (await this.$komgaBooks.getBooks(undefined, { size: this.pageSize }, query)).content
-        this.collections = (await this.$komgaCollections.getCollections(undefined, { size: this.pageSize }, query)).content
-        this.readLists = (await this.$komgaReadLists.getReadLists(undefined, { size: this.pageSize }, query)).content
+        this.series = (await this.$komgaSeries.getSeries(undefined, {size: this.pageSize}, query)).content
+        this.books = (await this.$komgaBooks.getBooks(undefined, {size: this.pageSize}, query)).content
+        this.collections = (await this.$komgaCollections.getCollections(undefined, {size: this.pageSize}, query)).content
+        this.readLists = (await this.$komgaReadLists.getReadLists(undefined, {size: this.pageSize}, query)).content
         this.showResults = true
         this.loading = false
       } else {
         this.clear()
       }
     }, 500),
-    clear () {
+    clear() {
       this.search = null
       this.showResults = false
       this.series = []
@@ -152,22 +152,22 @@ export default Vue.extend({
       this.collections = []
       this.readLists = []
     },
-    searchDetails () {
+    searchDetails() {
       const s = this.search
       this.clear()
-      this.$router.push({ name: 'search', query: { q: s } }).catch(e => {
+      this.$router.push({name: 'search', query: {q: s}}).catch(e => {
       })
     },
-    seriesThumbnailUrl (seriesId: string): string {
+    seriesThumbnailUrl(seriesId: string): string {
       return seriesThumbnailUrl(seriesId)
     },
-    bookThumbnailUrl (bookId: string): string {
+    bookThumbnailUrl(bookId: string): string {
       return bookThumbnailUrl(bookId)
     },
-    collectionThumbnailUrl (collectionId: string): string {
+    collectionThumbnailUrl(collectionId: string): string {
       return collectionThumbnailUrl(collectionId)
     },
-    readListThumbnailUrl (readListId: string): string {
+    readListThumbnailUrl(readListId: string): string {
       return readListThumbnailUrl(readListId)
     },
   },

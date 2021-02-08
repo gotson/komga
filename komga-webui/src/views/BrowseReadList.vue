@@ -20,7 +20,7 @@
           <template v-slot:activator="{ on }">
             <v-icon v-on="on">mdi-playlist-edit</v-icon>
           </template>
-          <span>Edit elements</span>
+          <span>{{ $t('browse_readlist.edit_elements') }}</span>
         </v-tooltip>
       </v-btn>
 
@@ -29,7 +29,7 @@
           <template v-slot:activator="{ on }">
             <v-icon v-on="on">mdi-pencil</v-icon>
           </template>
-          <span>Edit read list</span>
+          <span>{{ $t('browse_readlist.edit_readlist') }}</span>
         </v-tooltip>
       </v-btn>
 
@@ -76,12 +76,12 @@
 <script lang="ts">
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
-import { BOOK_CHANGED, READLIST_CHANGED, READLIST_DELETED } from '@/types/events'
+import {BOOK_CHANGED, READLIST_CHANGED, READLIST_DELETED} from '@/types/events'
 import Vue from 'vue'
 import ReadListActionsMenu from '@/components/menus/ReadListActionsMenu.vue'
 import BooksMultiSelectBar from '@/components/bars/BooksMultiSelectBar.vue'
-import { BookDto, ReadProgressUpdateDto } from '@/types/komga-books'
-import { ContextOrigin } from '@/types/context'
+import {BookDto, ReadProgressUpdateDto} from '@/types/komga-books'
+import {ContextOrigin} from '@/types/context'
 
 export default Vue.extend({
   name: 'BrowseReadList',

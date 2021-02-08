@@ -5,7 +5,7 @@
               scrollable
     >
       <v-card>
-        <v-card-title>Add to collection</v-card-title>
+        <v-card-title>{{ $t('dialog.add_to_collection.title') }}</v-card-title>
         <v-btn icon absolute top right @click="dialogClose">
           <v-icon>mdi-close</v-icon>
         </v-btn>
@@ -19,7 +19,7 @@
               <v-col>
                 <v-text-field
                   v-model="newCollection"
-                  label="Search or create collection"
+                  :label="$t('dialog.add_to_collection.search_or_create')"
                   @keydown.enter="create"
                   :error-messages="duplicate"
                 />
@@ -29,7 +29,7 @@
                   color="primary"
                   @click="create"
                   :disabled="newCollection.length === 0 || duplicate !== ''"
-                >Create
+                >{{ $t('common.create') }}
                 </v-btn>
               </v-col>
             </v-row>
@@ -47,7 +47,7 @@
                     >
                       <v-list-item-content>
                         <v-list-item-title>{{ c.name }}</v-list-item-title>
-                        <v-list-item-subtitle>{{ c.seriesIds.length }} series</v-list-item-subtitle>
+                        <v-list-item-subtitle>{{ c.seriesIds.length }} {{ $t('common.series') }}</v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
                     <v-divider v-if="index !== collectionsFiltered.length-1"/>
@@ -58,8 +58,7 @@
                   v-else
                   type="info"
                   text
-                >
-                  No matching collection
+                >{{ $t('dialog.add_to_collection.no_matching_collection') }}
                 </v-alert>
               </v-col>
             </v-row>
@@ -80,7 +79,7 @@
         text
         @click="snackbar = false"
       >
-        Close
+        {{ $t('common.close') }}
       </v-btn>
     </v-snackbar>
   </div>
@@ -110,43 +109,43 @@ export default Vue.extend({
     },
   },
   watch: {
-    async value (val) {
+    async value(val) {
       this.modal = val
       if (val) {
         this.newCollection = ''
-        this.collections = (await this.$komgaCollections.getCollections(undefined, { unpaged: true } as PageRequest)).content
+        this.collections = (await this.$komgaCollections.getCollections(undefined, {unpaged: true} as PageRequest)).content
       }
     },
-    modal (val) {
+    modal(val) {
       !val && this.dialogClose()
     },
   },
-  async mounted () {
+  async mounted() {
 
   },
   computed: {
-    seriesIds (): string[] {
+    seriesIds(): string[] {
       if (Array.isArray(this.series)) return this.series.map(s => s.id)
       else return [this.series.id]
     },
-    duplicate (): string {
+    duplicate(): string {
       if (this.newCollection !== '' && this.collections.some(e => e.name === this.newCollection)) {
         return 'A collection with this name already exists'
       } else return ''
     },
-    collectionsFiltered (): CollectionDto[] {
+    collectionsFiltered(): CollectionDto[] {
       return this.collections.filter((x: CollectionDto) => x.name.toLowerCase().includes(this.newCollection.toLowerCase()))
     },
   },
   methods: {
-    dialogClose () {
+    dialogClose() {
       this.$emit('input', false)
     },
-    showSnack (message: string) {
+    showSnack(message: string) {
       this.snackText = message
       this.snackbar = true
     },
-    async addTo (collection: CollectionDto) {
+    async addTo(collection: CollectionDto) {
       const seriesIds = this.$_.uniq(collection.seriesIds.concat(this.seriesIds))
 
       const toUpdate = {
@@ -161,7 +160,7 @@ export default Vue.extend({
         this.showSnack(e.message)
       }
     },
-    async create () {
+    async create() {
       const toCreate = {
         name: this.newCollection,
         ordered: false,

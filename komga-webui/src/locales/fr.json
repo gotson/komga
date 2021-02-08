@@ -1,5 +1,8 @@
 {
   "dashboard": {
     "recently_added_series": "Séries ajoutées récemment"
+  },
+  "common" : {
+    "locale_name": "Français"
   }
 }

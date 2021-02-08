@@ -8,30 +8,30 @@
       </template>
       <v-list dense>
         <v-list-item @click="analyze" v-if="isAdmin">
-          <v-list-item-title>Analyze</v-list-item-title>
+          <v-list-item-title>{{ $t('menu.analyze') }}</v-list-item-title>
         </v-list-item>
         <v-list-item @click="refreshMetadata" v-if="isAdmin">
-          <v-list-item-title>Refresh metadata</v-list-item-title>
+          <v-list-item-title>{{ $t('menu.refresh_metadata') }}</v-list-item-title>
         </v-list-item>
         <v-list-item @click="addToReadList" v-if="isAdmin">
-          <v-list-item-title>Add to read list</v-list-item-title>
+          <v-list-item-title>{{ $t('menu.add_to_readlist') }}</v-list-item-title>
         </v-list-item>
         <v-list-item @click="markRead" v-if="!isRead">
-          <v-list-item-title>Mark as read</v-list-item-title>
+          <v-list-item-title>{{ $t('menu.mark_read') }}</v-list-item-title>
         </v-list-item>
         <v-list-item @click="markUnread" v-if="!isUnread">
-          <v-list-item-title>Mark as unread</v-list-item-title>
+          <v-list-item-title>{{ $t('menu.mark_unread') }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
   </div>
 </template>
 <script lang="ts">
-import { getReadProgress } from '@/functions/book-progress'
-import { ReadStatus } from '@/types/enum-books'
-import { BOOK_CHANGED, bookToEventBookChanged } from '@/types/events'
+import {getReadProgress} from '@/functions/book-progress'
+import {ReadStatus} from '@/types/enum-books'
+import {BOOK_CHANGED, bookToEventBookChanged} from '@/types/events'
 import Vue from 'vue'
-import { BookDto, ReadProgressUpdateDto } from '@/types/komga-books'
+import {BookDto, ReadProgressUpdateDto} from '@/types/komga-books'
 
 export default Vue.extend({
   name: 'BookActionsMenu',

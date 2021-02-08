@@ -15,7 +15,7 @@
           <template v-slot:activator="{ on }">
             <v-icon v-on="on">mdi-bookmark-check</v-icon>
           </template>
-          <span>Mark as Read</span>
+          <span>{{ $t('menu.mark_read') }}</span>
         </v-tooltip>
       </v-btn>
 
@@ -24,7 +24,7 @@
           <template v-slot:activator="{ on }">
             <v-icon v-on="on">mdi-bookmark-remove</v-icon>
           </template>
-          <span>Mark as Unread</span>
+          <span>{{ $t('menu.mark_unread') }}</span>
         </v-tooltip>
       </v-btn>
 
@@ -33,7 +33,7 @@
           <template v-slot:activator="{ on }">
             <v-icon v-on="on">mdi-playlist-plus</v-icon>
           </template>
-          <span>Add to collection</span>
+          <span>{{ $t('menu.add_to_collection') }}</span>
         </v-tooltip>
       </v-btn>
 

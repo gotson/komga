@@ -13,7 +13,7 @@
         </v-chip>
         <span v-if="collection.ordered"
               class="font-italic text-overline"
-        >(manual ordering)</span>
+        >({{ $t('browse_collection.manual_ordering') }})</span>
       </v-toolbar-title>
 
       <v-spacer/>
@@ -23,7 +23,7 @@
           <template v-slot:activator="{ on }">
             <v-icon v-on="on">mdi-playlist-edit</v-icon>
           </template>
-          <span>Edit elements</span>
+          <span>{{ $t('browse_collection.edit_elements') }}</span>
         </v-tooltip>
       </v-btn>
 
@@ -32,7 +32,7 @@
           <template v-slot:activator="{ on }">
             <v-icon v-on="on">mdi-pencil</v-icon>
           </template>
-          <span>Edit collection</span>
+          <span>{{ $t('browse_collection.edit_collection') }}</span>
         </v-tooltip>
       </v-btn>
 
@@ -84,8 +84,8 @@
     <v-container fluid>
       <empty-state
         v-if="series.length === 0"
-        title="The active filter has no matches"
-        sub-title="Use the filter panel to change the active filter"
+        :title="$t('common.filter_no_matches')"
+        :sub-title="$t('common.use_filter_panel_to_change_filter')"
         icon="mdi-book-multiple"
         icon-color="secondary"
       >

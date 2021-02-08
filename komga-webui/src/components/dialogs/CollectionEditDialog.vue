@@ -4,7 +4,7 @@
               max-width="450"
     >
       <v-card>
-        <v-card-title>Edit collection</v-card-title>
+        <v-card-title>{{ $t('dialog.edit_collection.title') }}</v-card-title>
 
         <v-card-text>
           <v-container fluid>
@@ -19,13 +19,10 @@
 
             <v-row>
               <v-col>
-                <div class="text-body-2">By default, series in a collection will be ordered by name. You can enable
-                  manual
-                  ordering to define your own order.
-                </div>
+                <div class="text-body-2">{{ $t('dialog.edit_collection.ordering_notice') }}</div>
                 <v-checkbox
                   v-model="form.ordered"
-                  label="Manual ordering"
+                  :label="$t('dialog.edit_collection.manual_ordering')"
                   hide-details
                 />
               </v-col>
@@ -36,11 +33,11 @@
 
         <v-card-actions>
           <v-spacer/>
-          <v-btn text @click="dialogCancel">Cancel</v-btn>
+          <v-btn text @click="dialogCancel">{{ $t('common.cancel') }}</v-btn>
           <v-btn text class="primary--text"
                  @click="dialogConfirm"
                  :disabled="getErrorsName !== ''"
-          >Save changes
+          >{{ $t('dialog.edit_collection.save') }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -55,15 +52,14 @@
       <v-btn
         text
         @click="snackbar = false"
-      >
-        Close
+      >{{ $t('common.close') }}
       </v-btn>
     </v-snackbar>
   </div>
 </template>
 
 <script lang="ts">
-import { UserRoles } from '@/types/enum-users'
+import {UserRoles} from '@/types/enum-users'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -89,28 +85,28 @@ export default Vue.extend({
     },
   },
   watch: {
-    async value (val) {
+    async value(val) {
       this.modal = val
       if (val) {
-        this.collections = (await this.$komgaCollections.getCollections(undefined, { unpaged: true } as PageRequest)).content
+        this.collections = (await this.$komgaCollections.getCollections(undefined, {unpaged: true} as PageRequest)).content
         this.dialogReset(this.collection)
       }
     },
-    modal (val) {
+    modal(val) {
       !val && this.dialogCancel()
     },
     collection: {
-      handler (val) {
+      handler(val) {
         this.dialogReset(val)
       },
       immediate: true,
     },
   },
   computed: {
-    libraries (): LibraryDto[] {
+    libraries(): LibraryDto[] {
       return this.$store.state.komgaLibraries.libraries
     },
-    getErrorsName (): string {
+    getErrorsName(): string {
       if (this.form.name === '') return 'Name is required'
       if (this.form.name !== this.collection.name && this.collections.some(e => e.name === this.form.name)) {
         return 'A collection with this name already exists'
@@ -119,22 +115,22 @@ export default Vue.extend({
     },
   },
   methods: {
-    async dialogReset (collection: CollectionDto) {
+    async dialogReset(collection: CollectionDto) {
       this.form.name = collection.name
       this.form.ordered = collection.ordered
     },
-    dialogCancel () {
+    dialogCancel() {
       this.$emit('input', false)
     },
-    dialogConfirm () {
+    dialogConfirm() {
       this.editCollection()
       this.$emit('input', false)
     },
-    showSnack (message: string) {
+    showSnack(message: string) {
       this.snackText = message
       this.snackbar = true
     },
-    async editCollection () {
+    async editCollection() {
       try {
         const update = {
           name: this.form.name,

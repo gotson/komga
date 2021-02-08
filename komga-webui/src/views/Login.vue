@@ -16,8 +16,8 @@
                    icon="mdi-account-plus"
                    prominent
                    text
-          >This Komga server is not yet active, you need to create a user account to be able to access it.<br/><br/>Choose
-            an <strong>email</strong> and <strong>password</strong> and click on <strong>Create user account</strong>.
+                   v-html="$t('login.unclaimed_html')"
+          >
           </v-alert>
         </v-col>
       </v-row>
@@ -25,7 +25,7 @@
       <v-row justify="center">
         <v-col cols="12" sm="8" md="6" lg="4" xl="2">
           <v-text-field v-model="form.login"
-                        label="Email"
+                        :label="$t('common.email')"
                         autocomplete="username"
                         autofocus
           />
@@ -35,7 +35,7 @@
       <v-row justify="center">
         <v-col cols="12" sm="8" md="6" lg="4" xl="2">
           <v-text-field v-model="form.password"
-                        label="Password"
+                        :label="$t('common.password')"
                         type="password"
                         autocomplete="current-password"
           />
@@ -47,14 +47,12 @@
           <v-btn color="primary"
                  type="submit"
                  :disabled="unclaimed"
-          >Login
-          </v-btn>
+          >{{ $t('login.login') }}</v-btn>
           <v-btn v-if="unclaimed"
                  class="ml-4"
                  color="primary"
                  @click="claim"
-          >Create user account
-          </v-btn>
+          >{{ $t('login.create_user_account') }}</v-btn>
         </v-col>
       </v-row>
     </form>
@@ -68,9 +66,7 @@
       <v-btn
         text
         @click="snackbar = false"
-      >
-        Close
-      </v-btn>
+      >{{ $t('common.close') }}</v-btn>
     </v-snackbar>
   </div>
 </template>

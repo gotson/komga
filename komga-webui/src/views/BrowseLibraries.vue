@@ -6,7 +6,7 @@
                             :library="library"/>
 
       <v-toolbar-title>
-        <span>{{ library ? library.name : 'All libraries' }}</span>
+        <span>{{ library ? library.name : $t('common.all_libraries') }}</span>
         <v-chip label class="ml-4" v-if="totalElements">
           <span style="font-size: 1.1rem">{{ totalElements }}</span>
         </v-chip>
@@ -59,8 +59,8 @@
     <v-container fluid>
       <empty-state
         v-if="totalPages === 0"
-        title="The active filter has no matches"
-        sub-title="Use the filter panel to change the active filter"
+        :title="$t('common.filter_no_matches')"
+        :sub-title="$t('common.use_filter_panel_to_change_filter')"
         icon="mdi-book-multiple"
         icon-color="secondary"
       >

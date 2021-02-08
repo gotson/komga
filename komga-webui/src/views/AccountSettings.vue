@@ -1,11 +1,11 @@
 <template>
   <v-container fluid class="pa-6">
     <v-row>
-      <span class="text-h5">Account Settings</span>
+      <span class="text-h5">{{ $t('account_settings.account_settings') }}</span>
     </v-row>
     <v-row align="center">
       <v-col cols="12" md="8" lg="6" xl="4">
-        <span>Email</span>
+        <span class="text-capitalize">{{ $t('common.email') }}</span>
         <v-text-field readonly
                       v-model="me.email"
         />
@@ -13,7 +13,7 @@
     </v-row>
     <v-row align="center">
       <v-col>
-        <span>Roles</span>
+        <span>{{ $t('common.roles') }}</span>
         <v-chip-group>
           <v-chip v-for="role in me.roles" :key="role"
           >{{ role }}
@@ -26,8 +26,7 @@
       <v-col>
         <v-btn color="primary"
                @click.prevent="modalPasswordChange = true"
-        >Change password
-        </v-btn>
+        >{{ $t('account_settings.change_password') }}</v-btn>
       </v-col>
     </v-row>
 

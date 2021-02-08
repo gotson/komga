@@ -132,52 +132,52 @@
           <v-btn icon dark @click="showSettings = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Reader Settings</v-toolbar-title>
+          <v-toolbar-title>{{ $t('bookreader.reader_settings') }}</v-toolbar-title>
         </v-toolbar>
 
         <v-card-text class="pa-0">
           <v-list class="full-height full-width">
-            <v-subheader class="font-weight-black text-h6">General</v-subheader>
+            <v-subheader class="font-weight-black text-h6">{{ $t('bookreader.settings.general') }}</v-subheader>
             <v-list-item>
               <settings-select
                 :items="readingDirs"
                 v-model="readingDirection"
-                label="Reading mode"
+                :label="$t('bookreader.settings.reading_mode')"
               />
             </v-list-item>
 
             <v-list-item>
-              <settings-switch v-model="animations" label="Animate page transitions"></settings-switch>
+              <settings-switch v-model="animations" :label="$t('bookreader.settings.animate_page_transitions')"></settings-switch>
             </v-list-item>
 
             <v-list-item>
-              <settings-switch v-model="swipe" label="Gestures"></settings-switch>
+              <settings-switch v-model="swipe" :label="$t('bookreader.settings.gestures')"></settings-switch>
             </v-list-item>
 
-            <v-subheader class="font-weight-black text-h6">Display</v-subheader>
+            <v-subheader class="font-weight-black text-h6">{{ $t('bookreader.settings.display') }}</v-subheader>
             <v-list-item>
               <settings-select
                 :items="backgroundColors"
                 v-model="backgroundColor"
-                label="Background color"
+                :label="$t('bookreader.settings.background_color')"
               >
               </settings-select>
             </v-list-item>
 
             <div v-if="continuousReader">
-              <v-subheader class="font-weight-black text-h6">Webtoon</v-subheader>
+              <v-subheader class="font-weight-black text-h6">{{ $t('bookreader.settings.webtoon') }}</v-subheader>
               <v-list-item>
                 <settings-select
                   :items="continuousScaleTypes"
                   v-model="continuousScale"
-                  label="Scale type"
+                  :label="$t('bookreader.settings.scale_type')"
                 />
               </v-list-item>
               <v-list-item>
                 <settings-select
                   :items="paddingPercentages"
                   v-model="sidePadding"
-                  label="Side padding"
+                  :label="$t('bookreader.settings.side_padding')"
                 />
               </v-list-item>
             </div>
@@ -188,7 +188,7 @@
                 <settings-select
                   :items="scaleTypes"
                   v-model="scale"
-                  label="Scale type"
+                  :label="$t('bookreader.settings.scale_type')"
                 />
               </v-list-item>
 
@@ -196,7 +196,7 @@
                 <settings-select
                   :items="pageLayouts"
                   v-model="pageLayout"
-                  label="Page layout"
+                  :label="$t('bookreader.settings.page_layout')"
                 />
               </v-list-item>
             </div>
@@ -215,8 +215,8 @@
       class="mt-12"
     >
       <div class="body-1 pa-6">
-        <p>You're at the beginning<br/>of the book.</p>
-        <p v-if="!$_.isEmpty(siblingPrevious)">Click or press previous again<br/>to move to the previous book.</p>
+        <p>You're at the beginning<br/>{{ $t('bookreader.beginning_of_book') }}</p>
+        <p v-if="!$_.isEmpty(siblingPrevious)">Click or press previous again<br/>{{ $t('bookreader.move_previous') }}</p>
       </div>
     </v-snackbar>
 
@@ -229,9 +229,9 @@
       class="mt-12"
     >
       <div class="text-body-1 pa-6">
-        <p>You've reached the end<br/>of the book.</p>
-        <p v-if="!$_.isEmpty(siblingNext)">Click or press next again<br/>to move to the next book.</p>
-        <p v-else>Click or press next again<br/>to exit the reader.</p>
+        <p>You've reached the end<br/>{{ $t('bookreader.end_of_book') }}</p>
+        <p v-if="!$_.isEmpty(siblingNext)">Click or press next again<br/>{{ $t('bookreader.move_next') }}</p>
+        <p v-else>Click or press next again<br/>{{ $t('bookreader.move_next_exit') }}</p>
       </div>
     </v-snackbar>
 
@@ -242,7 +242,7 @@
       timeout="3000"
     >
       <p class="text-body-1 text-center ma-0">
-        {{ readingDirectionText }}{{ notificationReadingDirection.fromMetadata ? ' (from series metadata)' : '' }}
+        {{ readingDirectionText }}{{ notificationReadingDirection.fromMetadata ? '(' + $t('bookreader.from_series_metadata') + ')' : '' }}
       </p>
     </v-snackbar>
 
@@ -269,27 +269,27 @@ import SettingsSelect from '@/components/SettingsSelect.vue'
 import SettingsSwitch from '@/components/SettingsSwitch.vue'
 import ThumbnailExplorerDialog from '@/components/dialogs/ThumbnailExplorerDialog.vue'
 import ShortcutHelpDialog from '@/components/dialogs/ShortcutHelpDialog.vue'
-import { getBookTitleCompact } from '@/functions/book-title'
-import { checkWebpFeature } from '@/functions/check-webp'
-import { bookPageUrl } from '@/functions/urls'
-import { ReadingDirection } from '@/types/enum-books'
+import {getBookTitleCompact} from '@/functions/book-title'
+import {checkWebpFeature} from '@/functions/check-webp'
+import {bookPageUrl} from '@/functions/urls'
+import {ReadingDirection} from '@/types/enum-books'
 import Vue from 'vue'
-import { Location } from 'vue-router'
+import {Location} from 'vue-router'
 import PagedReader from '@/components/readers/PagedReader.vue'
 import ContinuousReader from '@/components/readers/ContinuousReader.vue'
-import { ContinuousScaleType, PaddingPercentage, PagedReaderLayout, ScaleType } from '@/types/enum-reader'
-import { PagedReaderLayoutText, ReadingDirectionText, ScaleTypeText } from '@/functions/reader'
+import {ContinuousScaleType, PaddingPercentage, PagedReaderLayout, ScaleType} from '@/types/enum-reader'
+import {PagedReaderLayoutText, ReadingDirectionText, ScaleTypeText} from '@/functions/reader'
 import {
   shortcutsLTR,
   shortcutsRTL,
   shortcutsSettingsPaged,
   shortcutsVertical,
 } from '@/functions/shortcuts/paged-reader'
-import { shortcutsMenus, shortcutsSettings } from '@/functions/shortcuts/bookreader'
-import { shortcutsAll } from '@/functions/shortcuts/reader'
-import { shortcutsSettingsContinuous } from '@/functions/shortcuts/continuous-reader'
-import { BookDto, PageDto, PageDtoWithUrl } from '@/types/komga-books'
-import { Context, ContextOrigin } from '@/types/context'
+import {shortcutsMenus, shortcutsSettings} from '@/functions/shortcuts/bookreader'
+import {shortcutsAll} from '@/functions/shortcuts/reader'
+import {shortcutsSettingsContinuous} from '@/functions/shortcuts/continuous-reader'
+import {BookDto, PageDto, PageDtoWithUrl} from '@/types/komga-books'
+import {Context, ContextOrigin} from '@/types/context'
 import {SeriesDto} from "@/types/komga-series";
 
 const cookieFit = 'webreader.fit'
@@ -709,7 +709,7 @@ export default Vue.extend({
     changeReadingDir (dir: ReadingDirection) {
       this.readingDirection = dir
       const text = ReadingDirectionText[this.readingDirection]
-      this.sendNotification(`Changing Reading Direction to: ${text}`)
+      this.sendNotification(`${this.$t('bookreader.changing_reading_direction')}: ${text}`)
     },
     cycleScale () {
       if (this.continuousReader) {
@@ -717,13 +717,13 @@ export default Vue.extend({
         const i = (enumValues.indexOf(this.settings.continuousScale) + 1) % (enumValues.length)
         this.continuousScale = enumValues[i]
         const text = ScaleTypeText[this.continuousScale]
-        this.sendNotification(`Cycling Scale: ${text}`)
+        this.sendNotification(`${this.$t('bookreader.cycling_scale')}: ${text}`)
       } else {
         const enumValues = Object.values(ScaleType)
         const i = (enumValues.indexOf(this.settings.scale) + 1) % (enumValues.length)
         this.scale = enumValues[i]
         const text = ScaleTypeText[this.scale]
-        this.sendNotification(`Cycling Scale: ${text}`)
+        this.sendNotification(`${this.$t('bookreader.cycling_scale')}: ${text}`)
       }
     },
     cycleSidePadding () {
@@ -731,7 +731,7 @@ export default Vue.extend({
         const i = (PaddingPercentage.indexOf(this.settings.sidePadding) + 1) % (PaddingPercentage.length)
         this.sidePadding = PaddingPercentage[i]
         const text = this.sidePadding === 0 ? 'None' : `${this.sidePadding}%`
-        this.sendNotification(`Cycling Side Padding: ${text}`)
+        this.sendNotification(`${this.$t('bookreader.cycling_side_padding')}: ${text}`)
       }
     },
     cyclePageLayout () {
@@ -740,7 +740,7 @@ export default Vue.extend({
       const i = (enumValues.indexOf(this.settings.pageLayout) + 1) % (enumValues.length)
       this.pageLayout = enumValues[i]
       const text = PagedReaderLayoutText[this.pageLayout]
-      this.sendNotification(`Cycling Page Layout: ${text}`)
+      this.sendNotification(`${this.$t('bookreader.cycling_page_layout')}: ${text}`)
     },
     toggleToolbars () {
       this.showToolbars = !this.showToolbars
