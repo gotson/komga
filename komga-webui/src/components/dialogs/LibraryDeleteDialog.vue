@@ -4,23 +4,18 @@
               max-width="450"
     >
       <v-card>
-        <v-card-title>Delete Library</v-card-title>
+        <v-card-title>{{ $t('dialog.delete_library.title') }}</v-card-title>
 
         <v-card-text>
           <v-container fluid>
             <v-row>
-              <v-col>The library <b>{{ library.name }}</b> will be removed from this server. Your media files will not
-                be
-                affected. This <b>cannot</b> be undone. Continue ?
-              </v-col>
+              <v-col>{{ $t('dialog.delete_library.warning_html', {library: library.name}) }}</v-col>
             </v-row>
 
             <v-row>
               <v-col>
                 <v-checkbox v-model="confirmDelete" color="red">
-                  <template v-slot:label>
-                    Yes, delete the library "{{ library.name }}"
-                  </template>
+                  <template v-slot:label>{{ $t('dialog.delete_library.confirm_delete') }} "{{ library.name }}"</template>
                 </v-checkbox>
               </v-col>
             </v-row>
@@ -33,7 +28,7 @@
           <v-btn text class="red--text"
                  @click="dialogConfirm"
                  :disabled="!confirmDelete"
-          >Delete
+          >{{ $t('common.delete') }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -49,7 +44,7 @@
         text
         @click="snackbar = false"
       >
-        Close
+        {{ $t('common.close') }}
       </v-btn>
     </v-snackbar>
   </div>
@@ -76,27 +71,27 @@ export default Vue.extend({
     },
   },
   watch: {
-    value (val) {
+    value(val) {
       this.modal = val
     },
-    modal (val) {
+    modal(val) {
       !val && this.dialogCancel()
     },
   },
   methods: {
-    dialogCancel () {
+    dialogCancel() {
       this.$emit('input', false)
       this.confirmDelete = false
     },
-    dialogConfirm () {
+    dialogConfirm() {
       this.deleteLibrary()
       this.$emit('input', false)
     },
-    showSnack (message: string) {
+    showSnack(message: string) {
       this.snackText = message
       this.snackbar = true
     },
-    async deleteLibrary () {
+    async deleteLibrary() {
       try {
         await this.$store.dispatch('deleteLibrary', this.library)
         this.$emit('deleted', true)

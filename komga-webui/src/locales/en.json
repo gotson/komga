@@ -181,6 +181,11 @@
       "ordering_notice": "By default, series in a collection will be ordered by name. You can enable manual ordering to define your own order.",
       "manual_ordering": "Manual ordering",
       "save": "Save changes"
+    },
+    "delete_library": {
+      "title": "Delete Library",
+      "warning_html": "The library <b>{library}</b> will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue ?",
+      "confirm_delete": "Yes, delete the library"
     }
   }
 }
