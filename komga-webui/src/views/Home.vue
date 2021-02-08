@@ -114,6 +114,18 @@
         </v-list-item>
       </v-list>
 
+      <v-list>
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon>mdi-translate</v-icon>
+          </v-list-item-icon>
+          <v-select v-model="locale"
+                    :items="$i18n.availableLocales"
+          >
+          </v-select>
+        </v-list-item>
+      </v-list>
+
       <v-spacer/>
 
       <template v-slot:append>
@@ -136,10 +148,11 @@
 import Dialogs from '@/components/Dialogs.vue'
 import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import SearchBox from '@/components/SearchBox.vue'
-import { Theme } from '@/types/themes'
+import {Theme} from '@/types/themes'
 import Vue from 'vue'
 
 const cookieTheme = 'theme'
+const cookieLocale = 'locale'
 
 export default Vue.extend({
   name: 'home',
@@ -171,12 +184,22 @@ export default Vue.extend({
       }
     }
 
+    if (this.$cookies.isKey(cookieLocale)) {
+      const locale = this.$cookies.get(cookieLocale)
+      if (this.$i18n.availableLocales.includes(locale)) {
+        this.$i18n.locale = locale
+      }
+    }
+
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', this.systemThemeChange)
   },
   async beforeDestroy () {
     window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', this.systemThemeChange)
   },
   computed: {
+    locales (): string[] {
+      return this.$i18n.availableLocales
+    },
     libraries (): LibraryDto[] {
       return this.$store.state.komgaLibraries.libraries
     },
@@ -193,6 +216,17 @@ export default Vue.extend({
           this.settings.theme = theme
           this.changeTheme(theme)
           this.$cookies.set(cookieTheme, theme, Infinity)
+        }
+      },
+    },
+    locale: {
+      get: function (): string {
+        return this.$i18n.locale
+      },
+      set: function (locale: string): void {
+        if (this.$i18n.availableLocales.includes(locale)) {
+          this.$i18n.locale = locale
+          this.$cookies.set(cookieLocale, locale, Infinity)
         }
       },
     },
