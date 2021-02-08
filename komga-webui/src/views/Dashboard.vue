@@ -20,7 +20,7 @@
 
     <v-container fluid>
       <empty-state v-if="allEmpty"
-                   title="Nothing to show"
+                   :title="$t('common.nothing_to_show')"
                    icon="mdi-help-circle"
                    icon-color="secondary"
       >
@@ -28,7 +28,7 @@
 
       <horizontal-scroller v-if="inProgressBooks.length !== 0" class="mb-4">
         <template v-slot:prepend>
-          <div class="title">Keep Reading</div>
+          <div class="title">{{ $t('dashboard.keep_reading') }}</div>
         </template>
         <template v-slot:content>
           <item-browser :items="inProgressBooks"
@@ -43,7 +43,7 @@
 
       <horizontal-scroller v-if="onDeckBooks.length !== 0" class="mb-4">
         <template v-slot:prepend>
-          <div class="title">On Deck</div>
+          <div class="title">{{ $t('dashboard.on_deck') }}</div>
         </template>
         <template v-slot:content>
           <item-browser :items="onDeckBooks"
@@ -58,7 +58,7 @@
 
       <horizontal-scroller v-if="newSeries.length !== 0" class="mb-4">
         <template v-slot:prepend>
-          <div class="title">Recently Added Series</div>
+          <div class="title">{{ $t('dashboard.recently_added_series') }}</div>
         </template>
         <template v-slot:content>
           <item-browser :items="newSeries"
@@ -73,7 +73,7 @@
 
       <horizontal-scroller v-if="updatedSeries.length !== 0" class="mb-4">
         <template v-slot:prepend>
-          <div class="title">Recently Updated Series</div>
+          <div class="title">{{ $t('dashboard.recently_updated_series') }}</div>
         </template>
         <template v-slot:content>
           <item-browser :items="updatedSeries"
@@ -88,7 +88,7 @@
 
       <horizontal-scroller v-if="latestBooks.length !== 0" class="mb-4">
         <template v-slot:prepend>
-          <div class="title">Recently Added Books</div>
+          <div class="title">{{ $t('dashboard.recently_added_books') }}</div>
         </template>
         <template v-slot:content>
           <item-browser :items="latestBooks"
@@ -110,9 +110,9 @@ import SeriesMultiSelectBar from '@/components/bars/SeriesMultiSelectBar.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
-import { ReadStatus } from '@/types/enum-books'
-import { BookDto } from '@/types/komga-books'
-import { BOOK_CHANGED, LIBRARY_DELETED, SERIES_CHANGED } from '@/types/events'
+import {ReadStatus} from '@/types/enum-books'
+import {BookDto} from '@/types/komga-books'
+import {BOOK_CHANGED, LIBRARY_DELETED, SERIES_CHANGED} from '@/types/events'
 import Vue from 'vue'
 import {SeriesDto} from "@/types/komga-series";
 

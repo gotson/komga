@@ -1,10 +1,10 @@
-import _, { LoDashStatic } from 'lodash'
+import _, {LoDashStatic} from 'lodash'
 import Vue from 'vue'
 import VueCookies from 'vue-cookies'
 // @ts-ignore
 import * as lineClamp from 'vue-line-clamp'
 import Vuelidate from 'vuelidate'
-import { sync } from 'vuex-router-sync'
+import {sync} from 'vuex-router-sync'
 import App from './App.vue'
 import actuator from './plugins/actuator.plugin'
 import httpPlugin from './plugins/http.plugin'
@@ -21,6 +21,7 @@ import vuetify from './plugins/vuetify'
 import './public-path'
 import router from './router'
 import store from './store'
+import i18n from './i18n'
 
 Vue.use(Vuelidate)
 Vue.use(lineClamp)
@@ -50,6 +51,7 @@ new Vue({
   router,
   store,
   vuetify,
+  i18n,
   render: h => h(App),
 }).$mount('#app')
 

@@ -1,0 +1,12 @@
+{
+  "dashboard": {
+    "recently_added_series": "Recently Added Series",
+    "on_deck": "On Deck",
+    "keep_reading": "Keep Reading",
+    "recently_updated_series": "Recently Updated Series",
+    "recently_added_books": "Recently Added Books"
+  },
+  "common": {
+    "nothing_to_show": "Nothing to show"
+  }
+}

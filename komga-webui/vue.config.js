@@ -5,6 +5,7 @@ const _ = require('lodash')
 // vue.config.js
 module.exports = {
   publicPath: '/',
+
   chainWebpack: (config) => {
     config.plugins.delete('prefetch') // conflicts with htmlInject
     config.plugins.delete('preload') // conflicts with htmlInject
@@ -33,5 +34,14 @@ module.exports = {
 
     config.plugin('momentLocalesPlugin')
       .use(momentLocalesPlugin)
+  },
+
+  pluginOptions: {
+    i18n: {
+      locale: 'en',
+      fallbackLocale: 'en',
+      localeDir: 'locales',
+      enableInSFC: false,
+    },
   },
 }
