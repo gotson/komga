@@ -1,8 +1,9 @@
 {
-  "dashboard": {
-    "recently_added_series": "Séries ajoutées récemment"
-  },
-  "common" : {
-    "locale_name": "Français"
-  }
+    "dashboard": {
+        "recently_added_series": "Séries ajoutées récemment",
+        "recently_added_books": "Livres ajoutés récemment"
+    },
+    "common": {
+        "locale_name": "Français"
+    }
 }
