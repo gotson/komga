@@ -81,7 +81,7 @@ dependencies {
   runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.6.1")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.6.1")
   runtimeOnly(files("$projectDir/libs/webp-imageio-decoder-plugin-0.2.jar"))
-  implementation("org.gotson:webp-imageio:0.2.0")
+  implementation("com.github.gotson:webp-imageio:0.2.0")
   // support for jpeg2000
   runtimeOnly("com.github.jai-imageio:jai-imageio-jpeg2000:1.4.0")
   runtimeOnly("org.apache.pdfbox:jbig2-imageio:3.0.3")
@@ -95,8 +95,8 @@ dependencies {
 //  While waiting for https://github.com/xerial/sqlite-jdbc/pull/491 and https://github.com/xerial/sqlite-jdbc/pull/494
 //  runtimeOnly("org.xerial:sqlite-jdbc:3.32.3.2")
 //  jooqGeneratorRuntime("org.xerial:sqlite-jdbc:3.32.3.2")
-  runtimeOnly("org.gotson:sqlite-jdbc:3.32.3.6")
-  jooqGeneratorRuntime("org.gotson:sqlite-jdbc:3.32.3.6")
+  runtimeOnly("com.github.gotson:sqlite-jdbc:3.32.3.6")
+  jooqGeneratorRuntime("com.github.gotson:sqlite-jdbc:3.32.3.6")
 
   testImplementation("org.springframework.boot:spring-boot-starter-test") {
     exclude(module = "mockito-core")
