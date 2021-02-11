@@ -14,7 +14,7 @@
             <v-toolbar-title>{{ dialogTitle }}</v-toolbar-title>
             <v-spacer/>
             <v-toolbar-items>
-              <v-btn text color="primary" @click="dialogConfirm">Save changes</v-btn>
+              <v-btn text color="primary" @click="dialogConfirm">{{ $t('dialog.edit_books.save_changes') }}</v-btn>
             </v-toolbar-items>
           </v-toolbar>
 
@@ -26,15 +26,15 @@
           <v-tabs :vertical="$vuetify.breakpoint.smAndUp" v-model="tab">
             <v-tab class="justify-start" v-if="single">
               <v-icon left class="hidden-xs-only">mdi-format-align-center</v-icon>
-              General
+              {{ $t('dialog.edit_books.tab_general') }}
             </v-tab>
             <v-tab class="justify-start">
               <v-icon left class="hidden-xs-only">mdi-account-multiple</v-icon>
-              Authors
+              {{ $t('dialog.edit_books.tab_authors') }}
             </v-tab>
             <v-tab class="justify-start">
               <v-icon left class="hidden-xs-only">mdi-tag-multiple</v-icon>
-              Tags
+              {{ $t('dialog.edit_books.tab_tags') }}
             </v-tab>
 
             <!--  Tab: General  -->
@@ -46,7 +46,7 @@
                   <v-row v-if="single">
                     <v-col cols="12">
                       <v-text-field v-model="form.title"
-                                    label="Title"
+                                    :label="$t('dialog.edit_books.title')"
                                     filled
                                     dense
                                     :error-messages="requiredErrors('title')"
@@ -69,7 +69,7 @@
                   <v-row v-if="single">
                     <v-col cols="6">
                       <v-text-field v-model="form.number"
-                                    label="Number"
+                                    :label="$t('dialog.edit_books.number')"
                                     filled
                                     dense
                                     :error-messages="requiredErrors('number')"
@@ -92,10 +92,10 @@
                       <v-text-field v-model="form.numberSort"
                                     type="number"
                                     step="0.1"
-                                    label="Sort Number"
+                                    :label="$t('dialog.edit_books.number_sort')"
                                     filled
                                     dense
-                                    hint="You can use decimal numbers"
+                                    :hint="$t('dialog.edit_books.number_sort_hint')"
                                     persistent-hint
                                     :error-messages="requiredErrors('numberSort')"
                                     @input="$v.form.numberSort.$touch()"
@@ -117,7 +117,7 @@
                   <v-row v-if="single">
                     <v-col cols="12">
                       <v-textarea v-model="form.summary"
-                                  label="Summary"
+                                  :label="$t('dialog.edit_books.summary')"
                                   filled
                                   dense
                                   @input="$v.form.summary.$touch()"
@@ -138,7 +138,7 @@
                   <v-row v-if="single">
                     <v-col cols="12">
                       <v-text-field v-model="form.releaseDate"
-                                    label="Release Date"
+                                    :label="$t('dialog.edit_books.release_date')"
                                     filled
                                     dense
                                     placeholder="YYYY-MM-DD"
@@ -170,8 +170,7 @@
                            type="warning"
                            outlined
                            dense
-                  >
-                    You are editing authors for multiple books. This will override existing authors of each book.
+                  >{{ $t('dialog.edit_books.authors_notice_multiple_edit') }}
                   </v-alert>
                   <v-row v-for="(role, i) in authorRoles"
                          :key="i"
@@ -213,8 +212,7 @@
                            type="warning"
                            outlined
                            dense
-                  >
-                    You are editing tags for multiple books. This will override existing tags of each book.
+                  >{{ $t('dialog.edit_books.tags_notice_multiple_edit') }}
                   </v-alert>
 
                   <!-- Tags -->
@@ -251,7 +249,7 @@
           <v-card-actions class="hidden-xs-only">
             <v-spacer/>
             <v-btn text @click="dialogCancel">Cancel</v-btn>
-            <v-btn text class="primary--text" @click="dialogConfirm">Save changes</v-btn>
+            <v-btn text class="primary--text" @click="dialogConfirm">{{ $t('dialog.edit_books.save_changes') }}</v-btn>
           </v-card-actions>
         </v-card>
       </form>
@@ -266,20 +264,19 @@
       <v-btn
         text
         @click="snackbar = false"
-      >
-        Close
+      >{{ $t('common.close') }}
       </v-btn>
     </v-snackbar>
   </div>
 </template>
 
 <script lang="ts">
-import { groupAuthorsByRole } from '@/functions/authors'
-import { authorRoles } from '@/types/author-roles'
+import {groupAuthorsByRole} from '@/functions/authors'
+import {authorRoles} from '@/types/author-roles'
 import moment from 'moment'
 import Vue from 'vue'
-import { helpers, requiredIf } from 'vuelidate/lib/validators'
-import { BookDto } from '@/types/komga-books'
+import {helpers, requiredIf} from 'vuelidate/lib/validators'
+import {BookDto} from '@/types/komga-books'
 
 const validDate = (value: any) => !helpers.req(value) || moment(value, 'YYYY-MM-DD', true).isValid()
 
@@ -321,21 +318,21 @@ export default Vue.extend({
     },
   },
   watch: {
-    value (val) {
+    value(val) {
       this.modal = val
     },
-    modal (val) {
+    modal(val) {
       !val && this.dialogCancel()
     },
     books: {
       immediate: true,
-      handler (val) {
+      handler(val) {
         this.dialogReset(val)
       },
     },
     authorSearch: {
       deep: true,
-      async handler (val: []) {
+      async handler(val: []) {
         const index = val.findIndex(x => x !== null)
         this.authorSearchResults = await this.$komgaReferential.getAuthors(val[index])
       },
@@ -359,44 +356,44 @@ export default Vue.extend({
         }),
       },
       tags: {},
-      releaseDate: { validDate },
+      releaseDate: {validDate},
       summary: {},
       authors: {},
     },
   },
-  async created () {
+  async created() {
     this.tagsAvailable = await this.$komgaReferential.getTags()
   },
   computed: {
-    single (): boolean {
+    single(): boolean {
       return !Array.isArray(this.books)
     },
-    authorSearchResultsFull (): string[] {
+    authorSearchResultsFull(): string[] {
       // merge local values with server search, so that already input value is available
       const local = (this.$_.values(this.form.authors).flat()) as unknown as string[]
       return this.$_.sortBy(this.$_.union(local, this.authorSearchResults), x => x.toLowerCase())
     },
     dialogTitle (): string {
       return this.single
-        ? `Edit ${this.$_.get(this.books, 'metadata.title')}`
-        : `Edit ${(this.books as BookDto[]).length} books`
+        ? this.$t('dialog.edit_books.dialog_title_single', {book: this.$_.get(this.books, 'metadata.title')}).toString()
+        : this.$tc('dialog.edit_books.dialog_title_multiple', (this.books as BookDto[]).length)
     },
-    releaseDateErrors (): string[] {
+    releaseDateErrors(): string[] {
       const errors = [] as string[]
       if (!this.$v.form?.releaseDate?.$dirty) return errors
-      !this.$v?.form?.releaseDate?.validDate && errors.push('Must be a valid date in YYYY-MM-DD format')
+      !this.$v?.form?.releaseDate?.validDate && errors.push(this.$t('dialog.edit_books.release_date_error').toString())
       return errors
     },
   },
   methods: {
-    requiredErrors (fieldName: string): string[] {
+    requiredErrors(fieldName: string): string[] {
       const errors = [] as string[]
       const formField = this.$v.form!![fieldName] as any
       if (!formField.$dirty) return errors
-      !formField.required && errors.push('Requiredb')
+      !formField.required && errors.push(this.$t('common.required').toString())
       return errors
     },
-    dialogReset (books: BookDto | BookDto[]) {
+    dialogReset(books: BookDto | BookDto[]) {
       this.tab = 0
       this.$v.$reset()
       if (Array.isArray(books) && books.length === 0) return
@@ -418,20 +415,20 @@ export default Vue.extend({
         this.form.authors = groupAuthorsByRole(book.metadata.authors)
       }
     },
-    dialogCancel () {
+    dialogCancel() {
       this.$emit('input', false)
       this.dialogReset(this.books)
     },
-    async dialogConfirm () {
+    async dialogConfirm() {
       if (await this.editBooks()) {
         this.$emit('input', false)
       }
     },
-    showSnack (message: string) {
+    showSnack(message: string) {
       this.snackText = message
       this.snackbar = true
     },
-    validateForm (): any {
+    validateForm(): any {
       if (!this.$v.$invalid) {
         const metadata = {
           authorsLock: this.form.authorsLock,
@@ -441,13 +438,13 @@ export default Vue.extend({
         if (this.$v.form?.authors?.$dirty) {
           this.$_.merge(metadata, {
             authors: this.$_.keys(this.form.authors).flatMap((role: string) =>
-              this.$_.get(this.form.authors, role).map((name: string) => ({ name: name, role: role })),
+              this.$_.get(this.form.authors, role).map((name: string) => ({name: name, role: role})),
             ),
           })
         }
 
         if (this.$v.form?.tags?.$dirty) {
-          this.$_.merge(metadata, { tags: this.form.tags })
+          this.$_.merge(metadata, {tags: this.form.tags})
         }
 
         if (this.single) {
@@ -460,23 +457,23 @@ export default Vue.extend({
           })
 
           if (this.$v.form?.title?.$dirty) {
-            this.$_.merge(metadata, { title: this.form.title })
+            this.$_.merge(metadata, {title: this.form.title})
           }
 
           if (this.$v.form?.number?.$dirty) {
-            this.$_.merge(metadata, { number: this.form.number })
+            this.$_.merge(metadata, {number: this.form.number})
           }
 
           if (this.$v.form?.numberSort?.$dirty) {
-            this.$_.merge(metadata, { numberSort: this.form.numberSort })
+            this.$_.merge(metadata, {numberSort: this.form.numberSort})
           }
 
           if (this.$v.form?.summary?.$dirty) {
-            this.$_.merge(metadata, { summary: this.form.summary })
+            this.$_.merge(metadata, {summary: this.form.summary})
           }
 
           if (this.$v.form?.releaseDate?.$dirty) {
-            this.$_.merge(metadata, { releaseDate: this.form.releaseDate ? this.form.releaseDate : null })
+            this.$_.merge(metadata, {releaseDate: this.form.releaseDate ? this.form.releaseDate : null})
           }
         }
 
@@ -484,7 +481,7 @@ export default Vue.extend({
       }
       return null
     },
-    async editBooks (): Promise<boolean> {
+    async editBooks(): Promise<boolean> {
       const metadata = this.validateForm()
       if (metadata) {
         const updated = [] as BookDto[]
