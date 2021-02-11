@@ -28,7 +28,7 @@
 
       <horizontal-scroller v-if="inProgressBooks.length !== 0" class="mb-4">
         <template v-slot:prepend>
-          <div class="title">{{ $t('dashboard.keep_reading') }}</div>
+          <div class="title text-capitalize">{{ $t('dashboard.keep_reading') }}</div>
         </template>
         <template v-slot:content>
           <item-browser :items="inProgressBooks"
@@ -43,7 +43,7 @@
 
       <horizontal-scroller v-if="onDeckBooks.length !== 0" class="mb-4">
         <template v-slot:prepend>
-          <div class="title">{{ $t('dashboard.on_deck') }}</div>
+          <div class="title text-capitalize">{{ $t('dashboard.on_deck') }}</div>
         </template>
         <template v-slot:content>
           <item-browser :items="onDeckBooks"
@@ -58,7 +58,7 @@
 
       <horizontal-scroller v-if="newSeries.length !== 0" class="mb-4">
         <template v-slot:prepend>
-          <div class="title">{{ $t('dashboard.recently_added_series') }}</div>
+          <div class="title text-capitalize">{{ $t('dashboard.recently_added_series') }}</div>
         </template>
         <template v-slot:content>
           <item-browser :items="newSeries"
@@ -73,7 +73,7 @@
 
       <horizontal-scroller v-if="updatedSeries.length !== 0" class="mb-4">
         <template v-slot:prepend>
-          <div class="title">{{ $t('dashboard.recently_updated_series') }}</div>
+          <div class="title text-capitalize">{{ $t('dashboard.recently_updated_series') }}</div>
         </template>
         <template v-slot:content>
           <item-browser :items="updatedSeries"
@@ -88,7 +88,7 @@
 
       <horizontal-scroller v-if="latestBooks.length !== 0" class="mb-4">
         <template v-slot:prepend>
-          <div class="title">{{ $t('dashboard.recently_added_books') }}</div>
+          <div class="title text-capitalize">{{ $t('dashboard.recently_added_books') }}</div>
         </template>
         <template v-slot:content>
           <item-browser :items="latestBooks"

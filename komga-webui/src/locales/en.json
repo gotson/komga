@@ -1,10 +1,10 @@
 {
   "dashboard": {
-    "recently_added_series": "Recently Added Series",
-    "on_deck": "On Deck",
-    "keep_reading": "Keep Reading",
-    "recently_updated_series": "Recently Updated Series",
-    "recently_added_books": "Recently Added Books"
+    "recently_added_series": "recently added series",
+    "on_deck": "on deck",
+    "keep_reading": "keep reading",
+    "recently_updated_series": "recently updated series",
+    "recently_added_books": "recently added books"
     },
   "common": {
     "locale_name": "English",
@@ -27,11 +27,12 @@
     "readlists": "Read Lists",
     "create": "Create",
     "delete": "Delete",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "required": "Required"
   },
   "account_settings": {
-    "account_settings": "Account Settings",
-    "change_password": "Change password"
+    "account_settings": "account settings",
+    "change_password": "change password"
   },
   "bookreader": {
     "reader_settings": "Reader Settings",
@@ -47,11 +48,11 @@
       "side_padding": "Side padding",
       "page_layout": "Page layout"
     },
-    "beginning_of_book": "of the book.",
-    "move_previous": "to move to the previous book.",
-    "end_of_book": "of the book.",
-    "move_next": "to move to the next book.",
-    "move_next_exit": "to exit the reader.",
+    "beginning_of_book": "You're at the beginning of the book.",
+    "move_previous": "Click or press previous again to move to the previous book.",
+    "end_of_book": "You've reached the end of the book.",
+    "move_next": "Click or press next again to move to the next book.",
+    "move_next_exit": "Click or press next again to exit the reader.",
     "from_series_metadata": "from series metadata",
     "cycling_page_layout": "Cycling Page Layout",
     "cycling_side_padding": "Cycling Side Padding",
@@ -81,12 +82,12 @@
     "earliest_year_from_release_dates": "This is the earliest year from the release dates from all books in the series"
   },
   "navigation": {
-    "home": "Home",
-    "libraries": "Libraries",
-    "logout": "Log out"
+    "home": "home",
+    "libraries": "libraries",
+    "logout": "log out"
   },
   "server_settings": {
-    "server_settings": "Server settings"
+    "server_settings": "server settings"
   },
   "home": {
     "theme": "Theme",
@@ -147,8 +148,8 @@
     "readlists": "Read Lists"
   },
   "filter_drawer": {
-    "filter": "FILTER",
-    "sort": "SORT"
+    "filter": "filter",
+    "sort": "sort"
   },
   "collections_expansion_panel": {
     "manage_collection": "Manage collection"
@@ -186,6 +187,23 @@
       "title": "Delete Library",
       "warning_html": "The library <b>{library}</b> will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue ?",
       "confirm_delete": "Yes, delete the library"
+    },
+    "edit_books": {
+      "save_changes": "Save changes",
+      "tab_general": "General",
+      "tab_authors": "Authors",
+      "tab_tags": "Tags",
+      "title": "Title",
+      "number": "Number",
+      "number_sort": "Sort Number",
+      "number_sort_hint": "You can use decimal numbers",
+      "summary": "Summary",
+      "release_date": "Release Date",
+      "authors_notice_multiple_edit": "You are editing authors for multiple books. This will override existing authors of each book.",
+      "tags_notice_multiple_edit": "You are editing tags for multiple books. This will override existing tags of each book.",
+      "dialog_title_single": "Edit {book}",
+      "dialog_title_multiple": "Edit {count} book | Edit {count} books",
+      "release_date_error": "Must be a valid date in YYYY-MM-DD format"
     }
   }
 }

@@ -215,8 +215,8 @@
       class="mt-12"
     >
       <div class="body-1 pa-6">
-        <p>You're at the beginning<br/>{{ $t('bookreader.beginning_of_book') }}</p>
-        <p v-if="!$_.isEmpty(siblingPrevious)">Click or press previous again<br/>{{ $t('bookreader.move_previous') }}</p>
+        <p>{{ $t('bookreader.beginning_of_book') }}</p>
+        <p v-if="!$_.isEmpty(siblingPrevious)">{{ $t('bookreader.move_previous') }}</p>
       </div>
     </v-snackbar>
 
@@ -229,9 +229,9 @@
       class="mt-12"
     >
       <div class="text-body-1 pa-6">
-        <p>You've reached the end<br/>{{ $t('bookreader.end_of_book') }}</p>
-        <p v-if="!$_.isEmpty(siblingNext)">Click or press next again<br/>{{ $t('bookreader.move_next') }}</p>
-        <p v-else>Click or press next again<br/>{{ $t('bookreader.move_next_exit') }}</p>
+        <p>{{ $t('bookreader.end_of_book') }}</p>
+        <p v-if="!$_.isEmpty(siblingNext)">{{ $t('bookreader.move_next') }}</p>
+        <p v-else>{{ $t('bookreader.move_next_exit') }}</p>
       </div>
     </v-snackbar>
 
