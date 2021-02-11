@@ -14,7 +14,7 @@
             <v-toolbar-title>{{ dialogTitle }}</v-toolbar-title>
             <v-spacer/>
             <v-toolbar-items>
-              <v-btn text color="primary" @click="dialogConfirm">{{ $t('dialog.edit_books.save_changes') }}</v-btn>
+              <v-btn text color="primary" @click="dialogConfirm">{{ $t('dialog.edit_books.button_confirm') }}</v-btn>
             </v-toolbar-items>
           </v-toolbar>
 
@@ -69,7 +69,7 @@
                   <v-row v-if="single">
                     <v-col cols="6">
                       <v-text-field v-model="form.number"
-                                    :label="$t('dialog.edit_books.number')"
+                                    :label="$t('dialog.edit_books.field_number')"
                                     filled
                                     dense
                                     :error-messages="requiredErrors('number')"
@@ -92,10 +92,10 @@
                       <v-text-field v-model="form.numberSort"
                                     type="number"
                                     step="0.1"
-                                    :label="$t('dialog.edit_books.number_sort')"
+                                    :label="$t('dialog.edit_books.field_number_sort')"
                                     filled
                                     dense
-                                    :hint="$t('dialog.edit_books.number_sort_hint')"
+                                    :hint="$t('dialog.edit_books.field_number_sort_hint')"
                                     persistent-hint
                                     :error-messages="requiredErrors('numberSort')"
                                     @input="$v.form.numberSort.$touch()"
@@ -117,7 +117,7 @@
                   <v-row v-if="single">
                     <v-col cols="12">
                       <v-textarea v-model="form.summary"
-                                  :label="$t('dialog.edit_books.summary')"
+                                  :label="$t('dialog.edit_books.field_summary')"
                                   filled
                                   dense
                                   @input="$v.form.summary.$touch()"
@@ -138,7 +138,7 @@
                   <v-row v-if="single">
                     <v-col cols="12">
                       <v-text-field v-model="form.releaseDate"
-                                    :label="$t('dialog.edit_books.release_date')"
+                                    :label="$t('dialog.edit_books.field_release_date')"
                                     filled
                                     dense
                                     placeholder="YYYY-MM-DD"
@@ -218,7 +218,7 @@
                   <!-- Tags -->
                   <v-row>
                     <v-col cols="12">
-                      <span class="text-body-2">Tags</span>
+                      <span class="text-body-2">{{ $t('dialog.edit_books.field_tags') }}</span>
                       <v-combobox v-model="form.tags"
                                   :items="tagsAvailable"
                                   @input="$v.form.tags.$touch()"
@@ -248,8 +248,8 @@
 
           <v-card-actions class="hidden-xs-only">
             <v-spacer/>
-            <v-btn text @click="dialogCancel">Cancel</v-btn>
-            <v-btn text class="primary--text" @click="dialogConfirm">{{ $t('dialog.edit_books.save_changes') }}</v-btn>
+            <v-btn text @click="dialogCancel">{{ $t('dialog.edit_books.button_cancel') }}</v-btn>
+            <v-btn text class="primary--text" @click="dialogConfirm">{{ $t('dialog.edit_books.button_confirm') }}</v-btn>
           </v-card-actions>
         </v-card>
       </form>
@@ -381,7 +381,7 @@ export default Vue.extend({
     releaseDateErrors(): string[] {
       const errors = [] as string[]
       if (!this.$v.form?.releaseDate?.$dirty) return errors
-      !this.$v?.form?.releaseDate?.validDate && errors.push(this.$t('dialog.edit_books.release_date_error').toString())
+      !this.$v?.form?.releaseDate?.validDate && errors.push(this.$t('dialog.edit_books.field_release_date_error').toString())
       return errors
     },
   },

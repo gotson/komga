@@ -189,21 +189,44 @@
       "confirm_delete": "Yes, delete the library"
     },
     "edit_books": {
-      "save_changes": "Save changes",
+      "button_confirm": "Save changes",
       "tab_general": "General",
       "tab_authors": "Authors",
       "tab_tags": "Tags",
       "title": "Title",
-      "number": "Number",
-      "number_sort": "Sort Number",
-      "number_sort_hint": "You can use decimal numbers",
-      "summary": "Summary",
-      "release_date": "Release Date",
+      "field_number": "Number",
+      "field_number_sort": "Sort Number",
+      "field_number_sort_hint": "You can use decimal numbers",
+      "field_summary": "Summary",
+      "field_release_date": "Release Date",
       "authors_notice_multiple_edit": "You are editing authors for multiple books. This will override existing authors of each book.",
       "tags_notice_multiple_edit": "You are editing tags for multiple books. This will override existing tags of each book.",
       "dialog_title_single": "Edit {book}",
       "dialog_title_multiple": "Edit {count} book | Edit {count} books",
-      "release_date_error": "Must be a valid date in YYYY-MM-DD format"
+      "field_release_date_error": "Must be a valid date in YYYY-MM-DD format",
+      "button_cancel": "Cancel",
+      "field_tags": "Tags"
+    },
+    "edit_series": {
+      "button_confirm": "Save changes",
+      "tab_general": "General",
+      "tab_tags": "Tags",
+      "field_title": "Title",
+      "field_sort_title": "Sort Title",
+      "field_summary": "Summary",
+      "field_status": "Status",
+      "field_language": "Language",
+      "field_reading_direction": "Reading Direction",
+      "mixed": "MIXED",
+      "field_publisher": "Publisher",
+      "field_age_rating": "Age Rating",
+      "tags_notice_multiple_edit": "You are editing tags for multiple series. This will override existing tags of each series.",
+      "field_genres": "Genres",
+      "field_tags": "Tags",
+      "button_cancel": "Cancel",
+      "field_age_rating_error": "Age rating must be 0 or more",
+      "dialog_title_single": "Edit {series}",
+      "dialog_title_multiple": "Edit {count} series | Edit {count} series"
     }
   }
 }
