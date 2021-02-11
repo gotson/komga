@@ -26,7 +26,7 @@
               <v-row>
                 <v-col>
                   <v-text-field v-model="form.email"
-                                label="Email"
+                                :label="$t('dialog.add_user.field_email')"
                                 :error-messages="getErrors('email')"
                                 @blur="$v.form.email.$touch()"
                   />
@@ -36,7 +36,7 @@
               <v-row>
                 <v-col>
                   <v-text-field v-model="form.password"
-                                label="Password"
+                                :label="$t('dialog.add_user.field_password')"
                                 autocomplete="off"
                                 :type="showPassword ? 'text' : 'password'"
                                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -50,22 +50,22 @@
 
               <v-row>
                 <v-col>
-                  <span>Roles</span>
+                  <span>{{ $t('dialog.add_user.label_roles') }}</span>
                   <v-checkbox
                     v-model="form.roles"
-                    label="Administrator"
+                    :label="$t('dialog.add_user.field_role_administrator')"
                     :value="UserRoles.ADMIN"
                     hide-details
                   />
                   <v-checkbox
                     v-model="form.roles"
-                    label="Page Streaming"
+                    :label="$t('dialog.add_user.field_role_page_streaming')"
                     :value="UserRoles.PAGE_STREAMING"
                     hide-details
                   />
                   <v-checkbox
                     v-model="form.roles"
-                    label="File Download"
+                    :label="$t('dialog.add_user.field_role_file_download')"
                     :value="UserRoles.FILE_DOWNLOAD"
                     hide-details
                   />
@@ -78,7 +78,7 @@
 
         <v-card-actions class="hidden-xs-only">
           <v-spacer/>
-          <v-btn text @click="dialogCancel">Cancel</v-btn>
+          <v-btn text @click="dialogCancel">{{ $t('dialog.add_user.button_cancel') }}</v-btn>
           <v-btn text class="primary--text" @click="dialogConfirm">{{ confirmText }}</v-btn>
         </v-card-actions>
       </v-card>
@@ -93,29 +93,27 @@
       <v-btn
         text
         @click="snackbar = false"
-      >
-        Close
-      </v-btn>
+      >{{ $t('common.close') }}</v-btn>
     </v-snackbar>
   </div>
 </template>
 
 <script lang="ts">
-import { UserRoles } from '@/types/enum-users'
+import {UserRoles} from '@/types/enum-users'
 import Vue from 'vue'
-import { email, required } from 'vuelidate/lib/validators'
+import {email, required} from 'vuelidate/lib/validators'
 
 export default Vue.extend({
   name: 'UserAddDialog',
-  data: () => {
+  data: function () {
     return {
       UserRoles,
       modalAddUser: true,
       showPassword: false,
       snackbar: false,
       snackText: '',
-      dialogTitle: 'Add User',
-      confirmText: 'Add',
+      dialogTitle: this.$i18n.t('dialog.add_user.dialog_title').toString(),
+      confirmText: this.$i18n.t('dialog.add_user.button_confirm').toString(),
       form: {
         email: '',
         password: '',
@@ -143,8 +141,8 @@ export default Vue.extend({
       if (field && field.$invalid && field.$dirty) {
         const properName = this.validationFieldNames.has(fieldName)
           ? this.validationFieldNames.get(fieldName) : fieldName.charAt(0).toUpperCase() + fieldName.substring(1)
-        if (!field.required) errors.push(`${properName} is required.`)
-        if (!field.email) errors.push(`${properName} must be a valid email address.`)
+        if (!field.required) errors.push(this.$t('common.required').toString())
+        if (!field.email) errors.push(this.$t('dialog.add_user.field_email_error').toString())
       }
       return errors
     },

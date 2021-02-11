@@ -4,14 +4,14 @@
               max-width="450"
     >
       <v-card>
-        <v-card-title>Edit read list</v-card-title>
+        <v-card-title>{{ $t('dialog.edit_readlist.dialog_title') }}</v-card-title>
 
         <v-card-text>
           <v-container fluid>
             <v-row>
               <v-col>
                 <v-text-field v-model="form.name"
-                              label="Name"
+                              :label="$t('dialog.edit_readlist.field_name')"
                               :error-messages="getErrorsName"
                 />
               </v-col>
@@ -22,12 +22,11 @@
 
         <v-card-actions>
           <v-spacer/>
-          <v-btn text @click="dialogCancel">Cancel</v-btn>
+          <v-btn text @click="dialogCancel">{{ $t('dialog.edit_readlist.button_cancel') }}</v-btn>
           <v-btn text class="primary--text"
                  @click="dialogConfirm"
                  :disabled="getErrorsName !== ''"
-          >Save changes
-          </v-btn>
+          >{{ $t('dialog.edit_readlist.button_confirm') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -41,15 +40,13 @@
       <v-btn
         text
         @click="snackbar = false"
-      >
-        Close
-      </v-btn>
+      >{{ $t('common.close') }}</v-btn>
     </v-snackbar>
   </div>
 </template>
 
 <script lang="ts">
-import { UserRoles } from '@/types/enum-users'
+import {UserRoles} from '@/types/enum-users'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -96,9 +93,9 @@ export default Vue.extend({
       return this.$store.state.komgaLibraries.libraries
     },
     getErrorsName (): string {
-      if (this.form.name === '') return 'Name is required'
+      if (this.form.name === '') return this.$t('common.required').toString()
       if (this.form.name !== this.readList.name && this.readLists.some(e => e.name === this.form.name)) {
-        return 'A read list with this name already exists'
+        return this.$t('dialog.add_to_readlist.field_search_create_error').toString()
       }
       return ''
     },

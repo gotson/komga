@@ -475,9 +475,9 @@ export default Vue.extend({
         settings.push(...shortcutsSettingsPaged)
       }
       return {
-        'Reader Navigation': nav,
-        'Settings': settings,
-        'Menus': shortcutsMenus,
+        [this.$t('bookreader.shortcuts.reader_navigation').toString()]: nav,
+        [this.$t('bookreader.shortcuts.settings').toString()]: settings,
+        [this.$t('bookreader.shortcuts.menus').toString()]: shortcutsMenus,
       }
     },
     contextReadList (): boolean {

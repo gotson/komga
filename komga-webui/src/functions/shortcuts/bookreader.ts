@@ -1,38 +1,39 @@
-import { Shortcut } from '@/types/shortcuts'
-import { ReadingDirection } from '@/types/enum-books'
+import {Shortcut} from '@/types/shortcuts'
+import {ReadingDirection} from '@/types/enum-books'
+import i18n from "@/i18n";
 
 export const shortcutsSettings = [
-  new Shortcut('Left to Right',
+  new Shortcut(i18n.t('bookreader.shortcuts.left_to_right').toString(),
     (ctx: any) => ctx.changeReadingDir(ReadingDirection.LEFT_TO_RIGHT)
     , 'l'),
-  new Shortcut('Right to Left',
+  new Shortcut(i18n.t('bookreader.shortcuts.right_to_left').toString(),
     (ctx: any) => ctx.changeReadingDir(ReadingDirection.RIGHT_TO_LEFT)
     , 'r'),
-  new Shortcut('Vertical',
+  new Shortcut(i18n.t('bookreader.shortcuts.vertical').toString(),
     (ctx: any) => ctx.changeReadingDir(ReadingDirection.VERTICAL)
     , 'v'),
-  new Shortcut('Webtoon',
+  new Shortcut(i18n.t('bookreader.shortcuts.webtoon').toString(),
     (ctx: any) => ctx.changeReadingDir(ReadingDirection.WEBTOON)
     , 'w'),
-  new Shortcut('Cycle scale',
+  new Shortcut(i18n.t('bookreader.shortcuts.cycle_scale').toString(),
     (ctx: any) => ctx.cycleScale()
     , 'c'),
 ]
 
 export const shortcutsMenus = [
-  new Shortcut('Show/hide toolbars',
+  new Shortcut(i18n.t('bookreader.shortcuts.show_hide_toolbars').toString(),
     (ctx: any) => ctx.toggleToolbars()
     , 'm'),
-  new Shortcut('Show/hide settings menu',
+  new Shortcut(i18n.t('bookreader.shortcuts.show_hide_settings').toString(),
     (ctx: any) => ctx.toggleSettings()
     , 's'),
-  new Shortcut('Show/hide thumbnails explorer',
+  new Shortcut(i18n.t('bookreader.shortcuts.show_hide_thumbnails').toString(),
     (ctx: any) => ctx.toggleExplorer()
     , 't'),
-  new Shortcut('Show/hide help',
+  new Shortcut(i18n.t('bookreader.shortcuts.show_hide_help').toString(),
     (ctx: any) => ctx.toggleHelp()
     , 'h'),
-  new Shortcut('Close',
+  new Shortcut(i18n.t('bookreader.shortcuts.close').toString(),
     (ctx: any) => ctx.closeDialog()
     , 'Escape'),
 ]

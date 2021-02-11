@@ -5,7 +5,7 @@
       :key="key"
       :disabled="f.values.length === 0"
     >
-      <v-expansion-panel-header>
+      <v-expansion-panel-header class="text-uppercase">
         <v-icon
           color="secondary"
           style="max-width: 24px"

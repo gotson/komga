@@ -268,7 +268,7 @@ export default Vue.extend({
     SortList,
     ReadMore,
   },
-  data: () => {
+  data: function () {
     return {
       series: {} as SeriesDto,
       books: [] as BookDto[],
@@ -278,18 +278,18 @@ export default Vue.extend({
       totalPages: 1,
       totalElements: null as number | null,
       sortOptions: [
-        {name: 'Number', key: 'metadata.numberSort'},
-        {name: 'Date added', key: 'createdDate'},
-        {name: 'Release date', key: 'metadata.releaseDate'},
-        {name: 'File size', key: 'fileSize'},
+        {name: this.$i18n.t('sort.number').toString(), key: 'metadata.numberSort'},
+        {name: this.$i18n.t('sort.date_added').toString(), key: 'createdDate'},
+        {name: this.$i18n.t('sort.release_date').toString(), key: 'metadata.releaseDate'},
+        {name: this.$i18n.t('sort.file_size').toString(), key: 'fileSize'},
       ] as SortOption[],
       sortActive: {} as SortActive,
       sortDefault: {key: 'metadata.numberSort', order: 'asc'} as SortActive,
       filterOptionsList: {
-        readStatus: {values: [{name: 'Unread', value: ReadStatus.UNREAD}]},
+        readStatus: {values: [{name: this.$i18n.t('filter.unread').toString(), value: ReadStatus.UNREAD}]},
       } as FiltersOptions,
       filterOptionsPanel: {
-        tag: {name: 'TAG', values: []},
+        tag: {name: this.$i18n.t('filter.tag').toString(), values: []},
       } as FiltersOptions,
       filters: {} as FiltersActive,
       sortUnwatch: null as any,

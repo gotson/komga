@@ -136,7 +136,7 @@ export default Vue.extend({
     FilterList,
     EmptyState,
   },
-  data: () => {
+  data: function () {
     return {
       collection: undefined as CollectionDto | undefined,
       series: [] as SeriesDto[],
@@ -144,17 +144,17 @@ export default Vue.extend({
       selectedSeries: [] as SeriesDto[],
       editElements: false,
       filterOptionsList: {
-        readStatus: { values: [{ name: 'Unread', value: ReadStatus.UNREAD }] },
+        readStatus: {values: [{name: this.$i18n.t('filter.unread').toString(), value: ReadStatus.UNREAD}]},
       } as FiltersOptions,
       filterOptionsPanel: {
-        library: { name: 'LIBRARY', values: [] },
-        status: { name: 'STATUS', values: SeriesStatusKeyValue },
-        genre: { name: 'GENRE', values: [] },
-        tag: { name: 'TAG', values: [] },
-        publisher: { name: 'PUBLISHER', values: [] },
-        language: { name: 'LANGUAGE', values: [] },
-        ageRating: { name: 'AGE RATING', values: [] },
-        releaseDate: { name: 'RELEASE DATE', values: [] },
+        library: {name: this.$i18n.t('filter.library').toString(), values: []},
+        status: {name: this.$i18n.t('filter.status').toString(), values: SeriesStatusKeyValue},
+        genre: {name: this.$i18n.t('filter.genre').toString(), values: []},
+        tag: {name: this.$i18n.t('filter.tag').toString(), values: []},
+        publisher: {name: this.$i18n.t('filter.publisher').toString(), values: []},
+        language: {name: this.$i18n.t('filter.language').toString(), values: []},
+        ageRating: {name: this.$i18n.t('filter.age_rating').toString(), values: []},
+        releaseDate: {name: this.$i18n.t('filter.release_date').toString(), values: []},
       } as FiltersOptions,
       filters: {} as FiltersActive,
       filterUnwatch: null as any,

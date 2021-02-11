@@ -23,11 +23,11 @@
           <v-tabs :vertical="$vuetify.breakpoint.smAndUp" v-model="tab">
             <v-tab class="justify-start">
               <v-icon left class="hidden-xs-only">mdi-bookshelf</v-icon>
-              General
+              {{ $t('dialog.edit_library.tab_general') }}
             </v-tab>
             <v-tab class="justify-start">
               <v-icon left class="hidden-xs-only">mdi-tune</v-icon>
-              Options
+              {{ $t('dialog.edit_library.tab_options') }}
             </v-tab>
 
             <!--  Tab: General  -->
@@ -38,7 +38,7 @@
                   <v-row>
                     <v-col>
                       <v-text-field v-model="form.name"
-                                    label="Name"
+                                    :label="$t('dialog.edit_library.field_name')"
                                     :error-messages="getErrors('name')"
                                     @input="$v.form.name.$touch()"
                                     @blur="$v.form.name.$touch()"
@@ -51,19 +51,19 @@
                       <file-browser-dialog
                         v-model="modalFileBrowser"
                         :path.sync="form.path"
-                        confirm-text="Choose"
-                        dialog-title="Library's root folder"
+                        :confirm-text="$t('dialog.edit_library.file_browser_dialog_button_confirm')"
+                        :dialog-title="$t('dialog.edit_library.file_browser_dialog_title')"
                       />
 
                       <v-text-field v-model="form.path"
-                                    label="Root folder"
+                                    :label="$t('dialog.edit_library.field_root_folder')"
                                     :error-messages="getErrors('path')"
                                     @input="$v.form.path.$touch()"
                                     @blur="$v.form.path.$touch()"
                       />
                     </v-col>
                     <v-col cols="4">
-                      <v-btn @click="modalFileBrowser = true">Browse</v-btn>
+                      <v-btn @click="modalFileBrowser = true">{{ $t('dialog.edit_library.button_browse') }}</v-btn>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -76,65 +76,65 @@
                 <v-container fluid>
                   <v-row>
                     <v-col>
-                      <span class="text-subtitle-2">Import metadata for CBR/CBZ containing a ComicInfo.xml file</span>
+                      <span class="text-subtitle-2">{{ $t('dialog.edit_library.label_import_comicinfo') }}</span>
                       <v-checkbox
                         v-model="form.importComicInfoBook"
-                        label="Book metadata"
+                        :label="$t('dialog.edit_library.field_import_comicinfo_book')"
                         hide-details
                       />
                       <v-checkbox
                         v-model="form.importComicInfoSeries"
-                        label="Series metadata"
+                        :label="$t('dialog.edit_library.field_import_comicinfo_series')"
                         hide-details
                       />
                       <v-checkbox
                         v-model="form.importComicInfoCollection"
-                        label="Collections"
+                        :label="$t('dialog.edit_library.field_import_comicinfo_collections')"
                         hide-details
                       />
                       <v-checkbox
                         v-model="form.importComicInfoReadList"
-                        label="Read lists"
+                        :label="$t('dialog.edit_library.field_import_comicinfo_readlists')"
                         hide-details
                       />
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col>
-                      <span class="text-subtitle-2">Import metadata from EPUB files</span>
+                      <span class="text-subtitle-2">{{ $t('dialog.edit_library.label_import_epub') }}</span>
                       <v-checkbox
                         v-model="form.importEpubBook"
-                        label="Book metadata"
+                        :label="$t('dialog.edit_library.field_import_epub_book')"
                         hide-details
                       />
                       <v-checkbox
                         v-model="form.importEpubSeries"
-                        label="Series metadata"
+                        :label="$t('dialog.edit_library.field_import_epub_series')"
                         hide-details
                       />
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col>
-                      <span class="text-subtitle-2">Import local media assets</span>
+                      <span class="text-subtitle-2">{{ $t('dialog.edit_library.label_import_local') }}</span>
                       <v-checkbox
                         v-model="form.importLocalArtwork"
-                        label="Local artwork"
+                        :label="$t('dialog.edit_library.field_import_local_artwork')"
                         hide-details
                       />
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="auto">
-                      <span class="text-subtitle-2">Scanner</span>
+                      <span class="text-subtitle-2">{{ $t('dialog.edit_library.label_scanner') }}</span>
                       <v-checkbox
                         v-model="form.scanForceModifiedTime"
-                        label="Force directory modified time"
+                        :label="$t('dialog.edit_library.field_scanner_force_directory_modified_time')"
                         hide-details
                       />
                       <v-checkbox
                         v-model="form.scanDeep"
-                        label="Deep scan"
+                        :label="$t('dialog.edit_library.field_scanner_deep_scan')"
                         hide-details
                       />
                     </v-col>
@@ -146,7 +146,7 @@
 
           <v-card-actions class="hidden-xs-only">
             <v-spacer/>
-            <v-btn text @click="dialogClose">Cancel</v-btn>
+            <v-btn text @click="dialogClose">{{ $t('dialog.edit_library.button_cancel') }}</v-btn>
             <v-btn text class="primary--text" @click="dialogConfirm">{{ confirmText }}</v-btn>
           </v-card-actions>
         </v-card>
@@ -162,8 +162,7 @@
       <v-btn
         text
         @click="snackbar = false"
-      >
-        Close
+      >{{ $t('common.close') }}
       </v-btn>
     </v-snackbar>
   </div>
@@ -171,13 +170,13 @@
 
 <script lang="ts">
 import FileBrowserDialog from '@/components/dialogs/FileBrowserDialog.vue'
-import { LIBRARY_ADDED, LIBRARY_CHANGED, libraryToEventLibraryChanged } from '@/types/events'
+import {LIBRARY_ADDED, LIBRARY_CHANGED, libraryToEventLibraryChanged} from '@/types/events'
 import Vue from 'vue'
-import { required } from 'vuelidate/lib/validators'
+import {required} from 'vuelidate/lib/validators'
 
 export default Vue.extend({
   name: 'LibraryEditDialog',
-  components: { FileBrowserDialog },
+  components: {FileBrowserDialog},
   data: () => {
     return {
       modal: false,
@@ -202,11 +201,11 @@ export default Vue.extend({
     }
   },
   computed: {
-    dialogTitle (): string {
-      return this.library ? 'Edit Library' : 'Add Library'
+    dialogTitle(): string {
+      return this.library ? this.$t('dialog.edit_library.dialot_title_edit').toString() : this.$t('dialog.edit_library.dialog_title_add').toString()
     },
-    confirmText (): string {
-      return this.library ? 'Edit' : 'Add'
+    confirmText(): string {
+      return this.library ? this.$t('dialog.edit_library.button_confirm_edit').toString() : this.$t('dialog.edit_library.button_confirm_add').toString()
     },
   },
   props: {
@@ -217,44 +216,44 @@ export default Vue.extend({
     },
   },
   watch: {
-    value (val) {
+    value(val) {
       this.modal = val
     },
-    modal (val) {
+    modal(val) {
       if (val) this.dialogReset(this.library)
       else this.dialogClose()
     },
   },
   validations: {
     form: {
-      name: { required },
-      path: { required },
+      name: {required},
+      path: {required},
     },
   },
   methods: {
-    getErrors (fieldName: string) {
+    getErrors(fieldName: string) {
       const errors = []
 
       const field = this.$v.form!![fieldName] as any
       if (field && field.$invalid && field.$dirty) {
         const properName = this.validationFieldNames.has(fieldName)
           ? this.validationFieldNames.get(fieldName) : fieldName.charAt(0).toUpperCase() + fieldName.substring(1)
-        errors.push(`${properName} is required.`)
+        errors.push(this.$t('common.required').toString())
       }
       return errors
     },
-    showSnack (message: string) {
+    showSnack(message: string) {
       this.snackText = message
       this.snackbar = true
     },
-    dialogClose () {
+    dialogClose() {
       this.$emit('input', false)
       this.tab = 0
     },
-    dialogConfirm () {
+    dialogConfirm() {
       this.addLibrary()
     },
-    dialogReset (library?: LibraryDto) {
+    dialogReset(library?: LibraryDto) {
       this.form.name = library ? library.name : ''
       this.form.path = library ? library.root : ''
       this.form.importComicInfoBook = library ? library.importComicInfoBook : true
@@ -268,7 +267,7 @@ export default Vue.extend({
       this.form.scanDeep = library ? library.scanDeep : false
       this.$v.$reset()
     },
-    validateLibrary () {
+    validateLibrary() {
       this.$v.$touch()
 
       if (!this.$v.$invalid) {
@@ -288,12 +287,12 @@ export default Vue.extend({
       }
       return null
     },
-    async addLibrary () {
+    async addLibrary() {
       const library = this.validateLibrary()
       if (library) {
         try {
           if (this.library) {
-            await this.$store.dispatch('updateLibrary', { libraryId: this.library.id, library: library })
+            await this.$store.dispatch('updateLibrary', {libraryId: this.library.id, library: library})
             this.$eventHub.$emit(LIBRARY_CHANGED, libraryToEventLibraryChanged(this.library))
           } else {
             await this.$store.dispatch('postLibrary', library)

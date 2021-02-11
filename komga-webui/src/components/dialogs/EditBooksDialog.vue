@@ -46,7 +46,7 @@
                   <v-row v-if="single">
                     <v-col cols="12">
                       <v-text-field v-model="form.title"
-                                    :label="$t('dialog.edit_books.title')"
+                                    :label="$t('dialog.edit_books.field_title')"
                                     filled
                                     dense
                                     :error-messages="requiredErrors('title')"
@@ -304,7 +304,6 @@ export default Vue.extend({
         tags: [] as string[],
         tagsLock: false,
       },
-      authorRoles,
       authorSearch: [],
       authorSearchResults: [] as string[],
       tagsAvailable: [] as string[],
@@ -365,6 +364,12 @@ export default Vue.extend({
     this.tagsAvailable = await this.$komgaReferential.getTags()
   },
   computed: {
+    authorRoles(): object[] {
+      return authorRoles.map((x: any) => {
+        x.plural = this.$t(`author_roles.${x.role}`)
+        return x
+      })
+    },
     single(): boolean {
       return !Array.isArray(this.books)
     },

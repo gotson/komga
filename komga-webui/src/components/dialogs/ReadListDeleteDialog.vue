@@ -4,21 +4,19 @@
               max-width="450"
     >
       <v-card>
-        <v-card-title>Delete Read List</v-card-title>
+        <v-card-title>{{ $t('dialog.delete_readlist.dialog_title') }}</v-card-title>
 
         <v-card-text>
           <v-container fluid>
             <v-row>
-              <v-col>The read list <b>{{ readList.name }}</b> will be removed from this server. Your media files will
-                not be affected. This <b>cannot</b> be undone. Continue ?
-              </v-col>
+              <v-col v-html="$t('dialog.delete_readlist.warning_html', {name: readList.name})"></v-col>
             </v-row>
 
             <v-row>
               <v-col>
                 <v-checkbox v-model="confirmDelete" color="red">
                   <template v-slot:label>
-                    Yes, delete the read list "{{ readList.name }}"
+                    {{ $t('dialog.delete_readlist.confirm_delete', { name: readList.name}) }}
                   </template>
                 </v-checkbox>
               </v-col>
@@ -28,12 +26,11 @@
 
         <v-card-actions>
           <v-spacer/>
-          <v-btn text @click="dialogCancel">Cancel</v-btn>
+          <v-btn text @click="dialogCancel">{{ $t('dialog.delete_readlist.button_cancel') }}</v-btn>
           <v-btn text class="red--text"
                  @click="dialogConfirm"
                  :disabled="!confirmDelete"
-          >Delete
-          </v-btn>
+          >{{ $t('dialog.delete_readlist.button_confirm') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -47,9 +44,7 @@
       <v-btn
         text
         @click="snackbar = false"
-      >
-        Close
-      </v-btn>
+      >{{ $t('common.close') }}</v-btn>
     </v-snackbar>
   </div>
 </template>
@@ -75,27 +70,27 @@ export default Vue.extend({
     },
   },
   watch: {
-    value (val) {
+    value(val) {
       this.modal = val
     },
-    modal (val) {
+    modal(val) {
       !val && this.dialogCancel()
     },
   },
   methods: {
-    dialogCancel () {
+    dialogCancel() {
       this.$emit('input', false)
       this.confirmDelete = false
     },
-    dialogConfirm () {
+    dialogConfirm() {
       this.delete()
       this.$emit('input', false)
     },
-    showSnack (message: string) {
+    showSnack(message: string) {
       this.snackText = message
       this.snackbar = true
     },
-    async delete () {
+    async delete() {
       try {
         await this.$komgaReadLists.deleteReadList(this.readList.id)
         this.$emit('deleted', true)

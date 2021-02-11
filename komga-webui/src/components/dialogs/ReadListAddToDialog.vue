@@ -5,7 +5,7 @@
               scrollable
     >
       <v-card>
-        <v-card-title>Add to read list</v-card-title>
+        <v-card-title>{{ $t('dialog.add_to_readlist.dialog_title') }}</v-card-title>
         <v-btn icon absolute top right @click="dialogClose">
           <v-icon>mdi-close</v-icon>
         </v-btn>
@@ -19,7 +19,7 @@
               <v-col>
                 <v-text-field
                   v-model="newReadList"
-                  label="Search or create read list"
+                  :label="$t('dialog.add_to_readlist.field_search_create')"
                   @keydown.enter="create"
                   :error-messages="duplicate"
                 />
@@ -29,8 +29,7 @@
                   color="primary"
                   @click="create"
                   :disabled="newReadList.length === 0 || duplicate !== ''"
-                >Create
-                </v-btn>
+                >{{ $t('dialog.add_to_readlist.button_create') }}</v-btn>
               </v-col>
             </v-row>
 
@@ -47,7 +46,7 @@
                     >
                       <v-list-item-content>
                         <v-list-item-title>{{ c.name }}</v-list-item-title>
-                        <v-list-item-subtitle>{{ c.bookIds.length }} books</v-list-item-subtitle>
+                        <v-list-item-subtitle>{{ $tc('dialog.add_to_readlist.card_readlist_subtitle', c.bookIds.length) }}</v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
                     <v-divider v-if="index !== readListsFiltered.length-1"/>
@@ -58,9 +57,7 @@
                   v-else
                   type="info"
                   text
-                >
-                  No matching readlist
-                </v-alert>
+                >{{ $t('dialog.add_to_readlist.label_no_matching_readlist') }}</v-alert>
               </v-col>
             </v-row>
 
@@ -79,16 +76,14 @@
       <v-btn
         text
         @click="snackbar = false"
-      >
-        Close
-      </v-btn>
+      >{{ $t('common.close') }}</v-btn>
     </v-snackbar>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { BookDto } from '@/types/komga-books'
+import {BookDto} from '@/types/komga-books'
 
 export default Vue.extend({
   name: 'ReadListAddToDialog',
@@ -131,7 +126,7 @@ export default Vue.extend({
     },
     duplicate (): string {
       if (this.newReadList !== '' && this.readLists.some(e => e.name === this.newReadList)) {
-        return 'A read list with this name already exists'
+        return this.$t('dialog.add_to_readlist.field_search_create_error').toString()
       } else return ''
     },
     readListsFiltered (): ReadListDto[] {
