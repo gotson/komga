@@ -14,7 +14,7 @@
             <v-toolbar-title>{{ dialogTitle }}</v-toolbar-title>
             <v-spacer/>
             <v-toolbar-items>
-              <v-btn text color="primary" @click="dialogConfirm">Save changes</v-btn>
+              <v-btn text color="primary" @click="dialogConfirm">{{ $t('dialog.edit_series.button_confirm') }}</v-btn>
             </v-toolbar-items>
           </v-toolbar>
 
@@ -25,13 +25,9 @@
 
           <v-tabs :vertical="$vuetify.breakpoint.smAndUp" v-model="tab">
             <v-tab class="justify-start">
-              <v-icon left class="hidden-xs-only">mdi-format-align-center</v-icon>
-              General
-            </v-tab>
+              <v-icon left class="hidden-xs-only">mdi-format-align-center</v-icon>{{ $t('dialog.edit_series.tab_general') }}</v-tab>
             <v-tab class="justify-start">
-              <v-icon left class="hidden-xs-only">mdi-tag-multiple</v-icon>
-              Tags
-            </v-tab>
+              <v-icon left class="hidden-xs-only">mdi-tag-multiple</v-icon>{{ $t('dialog.edit_series.tab_tags') }}</v-tab>
 
             <!--  Tab: General  -->
             <v-tab-item>
@@ -42,7 +38,7 @@
                   <v-row v-if="single">
                     <v-col cols="12">
                       <v-text-field v-model="form.title"
-                                    label="Title"
+                                    :label="$t('dialog.edit_series.field_title')"
                                     filled
                                     dense
                                     :error-messages="requiredErrors('title')"
@@ -65,7 +61,7 @@
                   <v-row v-if="single">
                     <v-col cols="12">
                       <v-text-field v-model="form.titleSort"
-                                    label="Sort Title"
+                                    :label="$t('dialog.edit_series.field_sort_title')"
                                     filled
                                     dense
                                     :error-messages="requiredErrors('titleSort')"
@@ -88,7 +84,7 @@
                   <v-row v-if="single">
                     <v-col cols="12">
                       <v-textarea v-model="form.summary"
-                                  label="Summary"
+                                  :label="$t('dialog.edit_series.field_summary')"
                                   filled
                                   dense
                                   @input="$v.form.summary.$touch()"
@@ -110,9 +106,9 @@
                     <v-col cols="6">
                       <v-select :items="seriesStatus"
                                 v-model="form.status"
-                                label="Status"
+                                :label="$t('dialog.edit_series.field_status')"
                                 filled
-                                :placeholder="!single && mixed.status ? 'MIXED' : ''"
+                                :placeholder="!single && mixed.status ? $t('dialog.edit_series.mixed') : ''"
                                 @input="$v.form.status.$touch()"
                                 @change="form.statusLock = true"
                       >
@@ -129,10 +125,10 @@
                     <!--  Language  -->
                     <v-col cols="6">
                       <v-text-field v-model="form.language"
-                                    label="Language"
+                                    :label="$t('dialog.edit_series.field_language')"
                                     filled
                                     dense
-                                    :placeholder="!single && mixed.language ? 'MIXED' : ''"
+                                    :placeholder="!single && mixed.language ? $t('dialog.edit_series.mixed') : ''"
                                     :error-messages="languageErrors"
                                     @input="$v.form.language.$touch()"
                                     @change="form.languageLock = true"
@@ -153,10 +149,10 @@
                     <v-col cols="12">
                       <v-select v-model="form.readingDirection"
                                 :items="readingDirections"
-                                label="Reading Direction"
+                                :label="$t('dialog.edit_series.field_reading_direction')"
                                 clearable
                                 filled
-                                :placeholder="!single && mixed.readingDirection ? 'MIXED' : ''"
+                                :placeholder="!single && mixed.readingDirection ? $t('dialog.edit_series.mixed') : ''"
                                 @input="$v.form.readingDirection.$touch()"
                                 @change="form.readingDirectionLock = true"
                       >
@@ -175,10 +171,10 @@
                     <!--  Publisher  -->
                     <v-col cols="6">
                       <v-text-field v-model="form.publisher"
-                                    label="Publisher"
+                                    :label="$t('dialog.edit_series.field_publisher')"
                                     filled
                                     dense
-                                    :placeholder="!single && mixed.publisher ? 'MIXED' : ''"
+                                    :placeholder="!single && mixed.publisher ? $t('dialog.edit_series.mixed') : ''"
                                     @input="$v.form.publisher.$touch()"
                                     @change="form.publisherLock = true"
                       >
@@ -195,12 +191,12 @@
                     <!--  Age Rating  -->
                     <v-col cols="6">
                       <v-text-field v-model="form.ageRating"
-                                    label="Age Rating"
+                                    :label="$t('dialog.edit_series.field_age_rating')"
                                     clearable
                                     filled
                                     dense
                                     type="number"
-                                    :placeholder="!single && mixed.ageRating ? 'MIXED' : ''"
+                                    :placeholder="!single && mixed.ageRating ? $t('dialog.edit_series.mixed') : ''"
                                     :error-messages="ageRatingErrors"
                                     @input="$v.form.ageRating.$touch()"
                                     @blur="$v.form.ageRating.$touch()"
@@ -229,14 +225,12 @@
                            type="warning"
                            outlined
                            dense
-                  >
-                    You are editing tags for multiple series. This will override existing tags of each series.
-                  </v-alert>
+                  >{{ $t('dialog.edit_series.tags_notice_multiple_edit') }}</v-alert>
 
                   <!-- Genres -->
                   <v-row>
                     <v-col cols="12">
-                      <span class="text-body-2">Genres</span>
+                      <span class="text-body-2">{{ $t('dialog.edit_series.field_genres') }}</span>
                       <v-combobox v-model="form.genres"
                                   :items="genresAvailable"
                                   @input="$v.form.genres.$touch()"
@@ -262,7 +256,7 @@
                   <!-- Tags -->
                   <v-row>
                     <v-col cols="12">
-                      <span class="text-body-2">Tags</span>
+                      <span class="text-body-2">{{ $t('dialog.edit_series.field_tags') }}</span>
                       <v-combobox v-model="form.tags"
                                   :items="tagsAvailable"
                                   @input="$v.form.tags.$touch()"
@@ -291,8 +285,8 @@
 
           <v-card-actions class="hidden-xs-only">
             <v-spacer/>
-            <v-btn text @click="dialogCancel">Cancel</v-btn>
-            <v-btn text class="primary--text" @click="dialogConfirm">Save changes</v-btn>
+            <v-btn text @click="dialogCancel">{{ $t('dialog.edit_series.button_cancel') }}</v-btn>
+            <v-btn text class="primary--text" @click="dialogConfirm">{{ $t('dialog.edit_series.button_confirm') }}</v-btn>
           </v-card-actions>
         </v-card>
       </form>
@@ -307,18 +301,16 @@
       <v-btn
         text
         @click="snackbar = false"
-      >
-        Close
-      </v-btn>
+      >{{ $t('common.close') }}</v-btn>
     </v-snackbar>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { SeriesStatus } from '@/types/enum-series'
-import { helpers, minValue, requiredIf } from 'vuelidate/lib/validators'
-import { ReadingDirection } from '@/types/enum-books'
+import {SeriesStatus} from '@/types/enum-series'
+import {helpers, minValue, requiredIf} from 'vuelidate/lib/validators'
+import {ReadingDirection} from '@/types/enum-books'
 import {SeriesDto} from "@/types/komga-series";
 
 const tags = require('language-tags')
@@ -437,7 +429,7 @@ export default Vue.extend({
     ageRatingErrors (): string[] {
       const errors = [] as string[]
       if (!this.$v.form?.ageRating?.$dirty) return errors
-      !this.$v?.form?.ageRating?.minValue && errors.push('Age rating must be 0 or more')
+      !this.$v?.form?.ageRating?.minValue && errors.push(this.$t('dialog.edit_series.field_age_rating_error').toString())
       return errors
     },
     languageErrors (): string[] {
@@ -447,8 +439,8 @@ export default Vue.extend({
     },
     dialogTitle (): string {
       return this.single
-        ? `Edit ${this.$_.get(this.series, 'metadata.title')}`
-        : `Edit ${(this.series as SeriesDto[]).length} series`
+        ? this.$t('dialog.edit_series.dialog_title_single', {series: this.$_.get(this.series, 'metadata.title')}).toString()
+        : this.$tc('dialog.edit_series.dialog_title_multiple', (this.series as SeriesDto[]).length)
     },
   },
   methods: {
@@ -456,7 +448,7 @@ export default Vue.extend({
       const errors = [] as string[]
       const formField = this.$v.form!![fieldName] as any
       if (!formField.$dirty) return errors
-      !formField.required && errors.push('Required')
+      !formField.required && errors.push(this.$t('common.required').toString())
       return errors
     },
     dialogReset (series: SeriesDto | SeriesDto[]) {
