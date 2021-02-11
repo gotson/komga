@@ -4,7 +4,7 @@
               max-width="450"
     >
       <v-card>
-        <v-card-title>{{ $t('dialog.edit_collection.title') }}</v-card-title>
+        <v-card-title>{{ $t('dialog.edit_collection.dialog_title') }}</v-card-title>
 
         <v-card-text>
           <v-container fluid>
@@ -19,10 +19,10 @@
 
             <v-row>
               <v-col>
-                <div class="text-body-2">{{ $t('dialog.edit_collection.ordering_notice') }}</div>
+                <div class="text-body-2">{{ $t('dialog.edit_collection.label_ordering') }}</div>
                 <v-checkbox
                   v-model="form.ordered"
-                  :label="$t('dialog.edit_collection.manual_ordering')"
+                  :label="$t('dialog.edit_collection.field_manual_ordering')"
                   hide-details
                 />
               </v-col>
@@ -33,11 +33,11 @@
 
         <v-card-actions>
           <v-spacer/>
-          <v-btn text @click="dialogCancel">{{ $t('common.cancel') }}</v-btn>
+          <v-btn text @click="dialogCancel">{{ $t('dialog.edit_collection.button_cancel') }}</v-btn>
           <v-btn text class="primary--text"
                  @click="dialogConfirm"
                  :disabled="getErrorsName !== ''"
-          >{{ $t('dialog.edit_collection.save') }}
+          >{{ $t('dialog.edit_collection.button_confirm') }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -107,9 +107,9 @@ export default Vue.extend({
       return this.$store.state.komgaLibraries.libraries
     },
     getErrorsName(): string {
-      if (this.form.name === '') return 'Name is required'
+      if (this.form.name === '') return this.$t('common.required').toString()
       if (this.form.name !== this.collection.name && this.collections.some(e => e.name === this.form.name)) {
-        return 'A collection with this name already exists'
+        return this.$t('dialog.add_to_collection.field_search_create_error').toString()
       }
       return ''
     },

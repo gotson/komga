@@ -19,8 +19,8 @@
                 <template v-slot:default>
                   <thead>
                   <tr>
-                    <th class="text-left">Key</th>
-                    <th class="text-left">Description</th>
+                    <th class="text-left">{{ $t('dialog.shortcut_help.label_key') }}</th>
+                    <th class="text-left">{{ $t('dialog.shortcut_help.label_description') }}</th>
                   </tr>
                   </thead>
                   <tbody>

@@ -24,9 +24,7 @@
               </v-list-item-icon>
 
               <v-list-item-content>
-                <v-list-item-title>
-                  Parent
-                </v-list-item-title>
+                <v-list-item-title>{{ $t('dialog.file_browser.parent_directory') }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
             <v-divider/>
@@ -54,7 +52,7 @@
 
       <v-card-actions>
         <v-spacer/>
-        <v-btn text @click="dialogCancel">Cancel</v-btn>
+        <v-btn text @click="dialogCancel">{{ $t('dialog.file_browser.button_cancel') }}</v-btn>
         <v-btn text class="primary--text"
                @click="dialogConfirm"
                :disabled="!selectedPath"
@@ -94,11 +92,15 @@ export default Vue.extend({
     },
     dialogTitle: {
       type: String,
-      default: 'File Browser',
+      default: function(): string {
+        return this.$t('dialog.file_browser.dialog_title_default').toString()
+      },
     },
     confirmText: {
       type: String,
-      default: 'Choose',
+      default: function(): string {
+        return this.$t('dialog.file_browser.button_confirm_default').toString()
+      },
     },
   },
   methods: {

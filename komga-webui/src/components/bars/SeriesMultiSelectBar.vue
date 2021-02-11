@@ -5,7 +5,7 @@
         <v-icon>mdi-close</v-icon>
       </v-btn>
       <v-toolbar-title>
-        <span>{{ value.length }} selected</span>
+        <span>{{ $tc('common.n_selected', value.length) }}</span>
       </v-toolbar-title>
 
       <v-spacer/>

@@ -5,5 +5,14 @@
     },
     "common": {
         "locale_name": "Français"
+    },
+    "author_roles": {
+      "writer": "scénaristes",
+      "penciller": "dessinateurs",
+      "inker": "encreurs",
+      "colorist": "coloristes",
+      "letterer": "lettrage",
+      "cover": "couverture",
+      "editor": "éditeurs"
     }
 }

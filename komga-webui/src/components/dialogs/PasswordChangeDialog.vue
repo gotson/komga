@@ -4,14 +4,14 @@
               max-width="450"
     >
       <v-card>
-        <v-card-title>Change password</v-card-title>
+        <v-card-title>{{ $t('dialog.password_change.dialog_title') }}</v-card-title>
 
         <v-card-text>
           <form novalidate>
             <v-container fluid>
               <v-row>
                 <v-col>
-                  <v-text-field label="New password"
+                  <v-text-field :label="$t('dialog.password_change.field_new_password')"
                                 v-model="form.newPassword"
                                 autocomplete="off"
                                 :type="showPassword1 ? 'text' : 'password'"
@@ -26,7 +26,7 @@
 
               <v-row>
                 <v-col>
-                  <v-text-field label="Repeat new password"
+                  <v-text-field :label="$t('dialog.password_change.field_repeat_password')"
                                 v-model="form.repeatPassword"
                                 autocomplete="off"
                                 :type="showPassword2 ? 'text' : 'password'"
@@ -45,11 +45,10 @@
 
         <v-card-actions>
           <v-spacer/>
-          <v-btn text @click="dialogCancel">Cancel</v-btn>
+          <v-btn text @click="dialogCancel">{{ $t('dialog.password_change.button_cancel') }}</v-btn>
           <v-btn text class="primary--text"
                  @click="dialogConfirm"
-          >Change password
-          </v-btn>
+          >{{ $t('dialog.password_change.button_confirm') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -63,16 +62,14 @@
       <v-btn
         text
         @click="snackbar = false"
-      >
-        Close
-      </v-btn>
+      >{{ $t('common.close') }}</v-btn>
     </v-snackbar>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { required, sameAs } from 'vuelidate/lib/validators'
+import {required, sameAs} from 'vuelidate/lib/validators'
 
 export default Vue.extend({
   name: 'PasswordChangeDialog',
@@ -120,10 +117,10 @@ export default Vue.extend({
       const field = this.$v.form!![fieldName] as any
       if (field && field.$invalid && field.$dirty) {
         if (fieldName === 'newPassword') {
-          if (!field.required) errors.push(`New password is required.`)
+          if (!field.required) errors.push(this.$t('dialog.password_change.field_new_password_error').toString())
         }
         if (fieldName === 'repeatPassword') {
-          if (!field.sameAsPassword) errors.push(`Passwords must be identical.`)
+          if (!field.sameAsPassword) errors.push(this.$t('dialog.password_change.field_repeat_password_error').toString())
         }
       }
       return errors

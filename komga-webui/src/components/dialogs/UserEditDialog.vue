@@ -4,13 +4,13 @@
               max-width="450"
     >
       <v-card>
-        <v-card-title>Edit user</v-card-title>
+        <v-card-title>{{ $t('dialog.edit_user.dialog_title') }}</v-card-title>
 
         <v-card-text>
           <v-container fluid>
             <v-row>
               <v-col>
-                <span class="text-subtitle-1">Roles for {{ user.email }}</span>
+                <span class="text-subtitle-1">{{ $t('dialog.edit_user.label_roles_for', {name: user.email}) }}</span>
               </v-col>
             </v-row>
 
@@ -18,19 +18,19 @@
               <v-col>
                 <v-checkbox
                   v-model="roles"
-                  label="Administrator"
+                  :label="$t('dialog.add_user.field_role_administrator')"
                   :value="UserRoles.ADMIN"
                   hide-details
                 />
                 <v-checkbox
                   v-model="roles"
-                  label="Page Streaming"
+                  :label="$t('dialog.add_user.field_role_page_streaming')"
                   :value="UserRoles.PAGE_STREAMING"
                   hide-details
                 />
                 <v-checkbox
                   v-model="roles"
-                  label="File Download"
+                  :label="$t('dialog.add_user.field_role_file_download')"
                   :value="UserRoles.FILE_DOWNLOAD"
                   hide-details
                 />
@@ -42,11 +42,10 @@
 
         <v-card-actions>
           <v-spacer/>
-          <v-btn text @click="dialogCancel">Cancel</v-btn>
+          <v-btn text @click="dialogCancel">{{ $t('dialog.edit_user.button_cancel') }}</v-btn>
           <v-btn text class="primary--text"
                  @click="dialogConfirm"
-          >Save changes
-          </v-btn>
+          >{{ $t('dialog.edit_user.button_confirm') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -60,15 +59,13 @@
       <v-btn
         text
         @click="snackbar = false"
-      >
-        Close
-      </v-btn>
+      >{{ $t('common.close') }}</v-btn>
     </v-snackbar>
   </div>
 </template>
 
 <script lang="ts">
-import { UserRoles } from '@/types/enum-users'
+import {UserRoles} from '@/types/enum-users'
 import Vue from 'vue'
 
 export default Vue.extend({

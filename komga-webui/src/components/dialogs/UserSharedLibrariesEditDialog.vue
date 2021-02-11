@@ -4,20 +4,20 @@
               max-width="450"
     >
       <v-card>
-        <v-card-title>Edit shared libraries</v-card-title>
+        <v-card-title>{{ $t('dialog.edit_user_shared_libraries.dialog_title') }}</v-card-title>
 
         <v-card-text>
           <v-container fluid>
             <v-row>
               <v-col>
-                <span class="text-subtitle-1">Shared with {{ this.user.email }}</span>
+                <span class="text-subtitle-1">{{ $t('dialog.edit_user_shared_libraries.label_shared_with', {name: user.email}) }}</span>
               </v-col>
             </v-row>
 
             <v-row>
               <v-col>
                 <v-checkbox v-model="allLibraries"
-                            label="All libraries"
+                            :label="$t('dialog.edit_user_shared_libraries.field_all_libraries')"
                             hide-details
                             class="my-0 py-0"
                 />
@@ -42,11 +42,10 @@
 
         <v-card-actions>
           <v-spacer/>
-          <v-btn text @click="dialogCancel">Cancel</v-btn>
+          <v-btn text @click="dialogCancel">{{ $t('dialog.edit_user_shared_libraries.button_cancel') }}</v-btn>
           <v-btn text class="primary--text"
                  @click="dialogConfirm"
-          >Save changes
-          </v-btn>
+          >{{ $t('dialog.edit_user_shared_libraries.button_confirm') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -60,9 +59,7 @@
       <v-btn
         text
         @click="snackbar = false"
-      >
-        Close
-      </v-btn>
+      >{{ $t('common.close') }}</v-btn>
     </v-snackbar>
   </div>
 </template>

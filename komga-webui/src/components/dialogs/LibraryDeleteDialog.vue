@@ -9,13 +9,13 @@
         <v-card-text>
           <v-container fluid>
             <v-row>
-              <v-col>{{ $t('dialog.delete_library.warning_html', {library: library.name}) }}</v-col>
+              <v-col>{{ $t('dialog.delete_library.warning_html', {name: library.name}) }}</v-col>
             </v-row>
 
             <v-row>
               <v-col>
                 <v-checkbox v-model="confirmDelete" color="red">
-                  <template v-slot:label>{{ $t('dialog.delete_library.confirm_delete') }} "{{ library.name }}"</template>
+                  <template v-slot:label>{{ $t('dialog.delete_library.confirm_delete', { name: library.name}) }}</template>
                 </v-checkbox>
               </v-col>
             </v-row>
@@ -24,11 +24,11 @@
 
         <v-card-actions>
           <v-spacer/>
-          <v-btn text @click="dialogCancel">Cancel</v-btn>
+          <v-btn text @click="dialogCancel">{{ $t('dialog.delete_library.button_cancel') }}</v-btn>
           <v-btn text class="red--text"
                  @click="dialogConfirm"
                  :disabled="!confirmDelete"
-          >{{ $t('common.delete') }}
+          >{{ $t('dialog.delete_library.button_confirm') }}
           </v-btn>
         </v-card-actions>
       </v-card>

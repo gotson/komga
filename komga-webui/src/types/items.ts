@@ -1,11 +1,8 @@
-import { bookThumbnailUrl, collectionThumbnailUrl, readListThumbnailUrl, seriesThumbnailUrl } from '@/functions/urls'
-import { RawLocation } from 'vue-router/types/router'
-import { BookDto } from '@/types/komga-books'
+import {bookThumbnailUrl, collectionThumbnailUrl, readListThumbnailUrl, seriesThumbnailUrl} from '@/functions/urls'
+import {RawLocation} from 'vue-router/types/router'
+import {BookDto} from '@/types/komga-books'
 import {SeriesDto} from "@/types/komga-series";
-
-function plural (count: number, singular: string, plural: string) {
-  return `${count} ${count === 1 ? singular : plural}`
-}
+import i18n from "@/i18n";
 
 export enum ItemTypes {
   BOOK, SERIES, COLLECTION, READLIST
@@ -68,8 +65,7 @@ export class BookItem extends Item<BookDto> {
   }
 
   body (): string {
-    const c = this.item.media.pagesCount
-    return `<span>${plural(c, 'Page', 'Pages')}</span>`
+    return `<span>${i18n.tc('common.pages_n', this.item.media.pagesCount)}</span>`
   }
 
   to (): RawLocation {
@@ -103,8 +99,7 @@ export class SeriesItem extends Item<SeriesDto> {
   }
 
   body (): string {
-    const c = this.item.booksCount
-    return `<span>${plural(c, 'Book', 'Books')}</span>`
+    return `<span>${i18n.tc('common.books_n', this.item.booksCount)}</span>`
   }
 
   to (): RawLocation {

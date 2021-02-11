@@ -5,7 +5,7 @@
               scrollable
     >
       <v-card>
-        <v-card-title>{{ $t('dialog.add_to_collection.title') }}</v-card-title>
+        <v-card-title>{{ $t('dialog.add_to_collection.dialog_title') }}</v-card-title>
         <v-btn icon absolute top right @click="dialogClose">
           <v-icon>mdi-close</v-icon>
         </v-btn>
@@ -19,7 +19,7 @@
               <v-col>
                 <v-text-field
                   v-model="newCollection"
-                  :label="$t('dialog.add_to_collection.search_or_create')"
+                  :label="$t('dialog.add_to_collection.field_search_create')"
                   @keydown.enter="create"
                   :error-messages="duplicate"
                 />
@@ -29,7 +29,7 @@
                   color="primary"
                   @click="create"
                   :disabled="newCollection.length === 0 || duplicate !== ''"
-                >{{ $t('common.create') }}
+                >{{ $t('dialog.add_to_collection.button_create') }}
                 </v-btn>
               </v-col>
             </v-row>
@@ -47,7 +47,7 @@
                     >
                       <v-list-item-content>
                         <v-list-item-title>{{ c.name }}</v-list-item-title>
-                        <v-list-item-subtitle>{{ c.seriesIds.length }} {{ $t('common.series') }}</v-list-item-subtitle>
+                        <v-list-item-subtitle>{{ $tc('dialog.add_to_collection.card_collection_subtitle', c.seriesIds.length) }}</v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
                     <v-divider v-if="index !== collectionsFiltered.length-1"/>
@@ -58,7 +58,7 @@
                   v-else
                   type="info"
                   text
-                >{{ $t('dialog.add_to_collection.no_matching_collection') }}
+                >{{ $t('dialog.add_to_collection.label_no_matching_collection') }}
                 </v-alert>
               </v-col>
             </v-row>
@@ -130,7 +130,7 @@ export default Vue.extend({
     },
     duplicate(): string {
       if (this.newCollection !== '' && this.collections.some(e => e.name === this.newCollection)) {
-        return 'A collection with this name already exists'
+        return this.$t('dialog.add_to_collection.field_search_create_error').toString()
       } else return ''
     },
     collectionsFiltered(): CollectionDto[] {

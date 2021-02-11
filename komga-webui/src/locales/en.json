@@ -9,9 +9,12 @@
   "common": {
     "locale_name": "English",
     "nothing_to_show": "Nothing to show",
+    "n_selected": "{count} selected",
     "email": "Email",
     "roles": "Roles",
     "pages": "pages",
+    "pages_n": "No pages | 1 page | {count} pages",
+    "books_n": "No book | 1 book | {count} books",
     "filter_no_matches": "The active filter has no matches",
     "use_filter_panel_to_change_filter": "Use the filter panel to change the active filter",
     "all_libraries": "All libraries",
@@ -57,7 +60,28 @@
     "cycling_page_layout": "Cycling Page Layout",
     "cycling_side_padding": "Cycling Side Padding",
     "cycling_scale": "Cycling Scale",
-    "changing_reading_direction": "Changing Reading Direction to"
+    "changing_reading_direction": "Changing Reading Direction to",
+    "shortcuts": {
+      "reader_navigation": "Reader Navigation",
+      "settings": "Settings",
+      "menus": "Menus",
+      "previous_page": "Previous page",
+      "next_page": "Next page",
+      "cycle_page_layout": "Cycle page layout",
+      "first_page": "First page",
+      "last_page": "Last page",
+      "cycle_side_padding": "Cycle side padding",
+      "left_to_right": "Left to Right",
+      "right_to_left": "Right to Left",
+      "vertical": "Vertical",
+      "webtoon": "Webtoon",
+      "cycle_scale": "Cycle scale",
+      "show_hide_toolbars": "Show/hide toolbars",
+      "show_hide_settings": "Show/hide settings menu",
+      "show_hide_thumbnails": "Show/hide thumbnails explorer",
+      "show_hide_help": "Show/hide help",
+      "close": "Close"
+    }
   },
   "browse_book": {
     "navigation_within_readlist": "Navigation within the readlist",
@@ -168,32 +192,40 @@
   },
   "dialog": {
     "add_to_collection": {
-      "title": "Add to collection",
-      "search_or_create": "Search or create collection",
-      "no_matching_collection": "No matching collection"
+      "dialog_title": "Add to collection",
+      "button_create": "Create",
+      "field_search_create": "Search or create collection",
+      "label_no_matching_collection": "No matching collection",
+      "card_collection_subtitle": "No series | 1 series | {count} series",
+      "field_search_create_error": "A collection with this name already exists"
     },
     "delete_collection": {
-      "title": "Delete Collection",
-      "confirm_delete": "Yes, delete the collection",
-      "warning_html": "The collection <b>{collection}</b> will be removed from this server. Your media files will  not be affected. This <b>cannot</b> be undone. Continue ?"
+      "dialog_title": "Delete Collection",
+      "confirm_delete": "Yes, delete the collection \"{name}\"",
+      "warning_html": "The collection <b>{name}</b> will be removed from this server. Your media files will  not be affected. This <b>cannot</b> be undone. Continue ?",
+      "button_cancel": "Cancel",
+      "button_confirm": "Delete"
     },
     "edit_collection": {
-      "title": "Edit collection",
-      "ordering_notice": "By default, series in a collection will be ordered by name. You can enable manual ordering to define your own order.",
-      "manual_ordering": "Manual ordering",
-      "save": "Save changes"
+      "dialog_title": "Edit collection",
+      "label_ordering": "By default, series in a collection will be ordered by name. You can enable manual ordering to define your own order.",
+      "field_manual_ordering": "Manual ordering",
+      "button_cancel": "Cancel",
+      "button_confirm": "Save changes"
     },
     "delete_library": {
       "title": "Delete Library",
-      "warning_html": "The library <b>{library}</b> will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue ?",
-      "confirm_delete": "Yes, delete the library"
+      "warning_html": "The library <b>{name}</b> will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue ?",
+      "confirm_delete": "Yes, delete the library \"{name}\"",
+      "button_cancel": "Cancel",
+      "button_confirm": "Delete"
     },
     "edit_books": {
       "button_confirm": "Save changes",
       "tab_general": "General",
       "tab_authors": "Authors",
       "tab_tags": "Tags",
-      "title": "Title",
+      "field_title": "Title",
       "field_number": "Number",
       "field_number_sort": "Sort Number",
       "field_number_sort_hint": "You can use decimal numbers",
@@ -227,6 +259,133 @@
       "field_age_rating_error": "Age rating must be 0 or more",
       "dialog_title_single": "Edit {series}",
       "dialog_title_multiple": "Edit {count} series | Edit {count} series"
+    },
+    "file_browser": {
+      "parent_directory": "Parent",
+      "dialog_title_default": "File Browser",
+      "button_confirm_default": "Choose",
+      "button_cancel": "Cancel"
+    },
+    "edit_library": {
+      "tab_general": "General",
+      "tab_options": "Options",
+      "field_name": "Name",
+      "file_browser_dialog_title": "Library's root folder",
+      "file_browser_dialog_button_confirm": "Choose",
+      "field_root_folder": "Root folder",
+      "button_browse": "Browse",
+      "label_import_comicinfo": "Import metadata for CBR/CBZ containing a ComicInfo.xml file",
+      "field_import_comicinfo_book": "Book metadata",
+      "field_import_comicinfo_series": "Series metadata",
+      "field_import_comicinfo_collections": "Collections",
+      "field_import_comicinfo_readlists": "Read lists",
+      "label_import_epub": "Import metadata from EPUB files",
+      "label_import_local": "Import local media assets",
+      "label_scanner": "Scanner",
+      "field_import_epub_book": "Book metadata",
+      "field_import_epub_series": "Series metadata",
+      "field_import_local_artwork": "Local artwork",
+      "field_scanner_force_directory_modified_time": "Force directory modified time",
+      "field_scanner_deep_scan": "Deep scan",
+      "button_cancel": "Cancel",
+      "dialot_title_edit": "Edit Library",
+      "dialog_title_add": "Add Library",
+      "button_confirm_edit": "Edit",
+      "button_confirm_add": "Add"
+    },
+    "password_change": {
+      "dialog_title": "Change password",
+      "field_new_password": "New password",
+      "field_repeat_password": "Repeat new password",
+      "button_confirm": "Change password",
+      "button_cancel": "Cancel",
+      "field_new_password_error": "New password is required.",
+      "field_repeat_password_error": "Passwords must be identical."
+    },
+    "add_to_readlist": {
+      "dialog_title": "Add to read list",
+      "field_search_create": "Search or create read list",
+      "button_create": "Create",
+      "card_readlist_subtitle": "No book | 1 book | {count} books",
+      "label_no_matching_readlist": "No matching readlist",
+      "field_search_create_error": "A read list with this name already exists"
+    },
+    "delete_readlist": {
+      "dialog_title": "Delete Read List",
+      "warning_html": "The read list <b>{name}</b> will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue ?",
+      "confirm_delete": "Yes, delete the read list \"{name}\"",
+      "button_cancel": "Cancel",
+      "button_confirm": "Delete"
+    },
+    "edit_readlist": {
+      "dialog_title": "Edit read list",
+      "field_name": "Name",
+      "button_cancel": "Cancel",
+      "button_confirm": "Save changes"
+    },
+    "shortcut_help": {
+      "label_key": "Key",
+      "label_description": "Description"
+    },
+    "add_user": {
+      "field_email": "Email",
+      "field_password": "Password",
+      "label_roles": "Roles",
+      "field_role_administrator": "Administrator",
+      "field_role_page_streaming": "Page Streaming",
+      "field_role_file_download": "File Download",
+      "button_cancel": "Cancel",
+      "dialog_title": "Add User",
+      "button_confirm": "Add",
+      "field_email_error": "Must be a valid email address"
+    },
+    "edit_user": {
+      "dialog_title": "Edit user",
+      "label_roles_for": "Roles for {name}",
+      "button_cancel": "Cancel",
+      "button_confirm": "Save changes"
+    },
+    "delete_user": {
+      "dialog_title": "Delete User",
+      "warning_html": "The user <b>{name}</b> will be deleted from this server. This <b>cannot</b> be undone. Continue ?",
+      "confirm_delete": "Yes, delete the user \"{name}\"",
+      "button_cancel": "Cancel",
+      "button_confirm": "Delete"
+    },
+    "edit_user_shared_libraries": {
+      "dialog_title": "Edit shared libraries",
+      "label_shared_with": "Shared with {name}",
+      "field_all_libraries": "All libraries",
+      "button_cancel": "Cancel",
+      "button_confirm": "Save changes"
     }
+  },
+  "author_roles": {
+    "writer": "writers",
+    "penciller": "pencillers",
+    "inker": "inkers",
+    "colorist": "colorists",
+    "letterer": "letterers",
+    "cover": "cover",
+    "editor": "editors"
+  },
+  "sort": {
+    "name": "Name",
+    "date_added": "Date added",
+    "date_updated": "Date updated",
+    "number": "Number",
+    "release_date": "Release date",
+    "file_size": "File size"
+  },
+  "filter": {
+    "unread": "Unread",
+    "status": "status",
+    "genre": "genre",
+    "tag": "tag",
+    "library": "library",
+    "publisher": "publisher",
+    "language": "language",
+    "age_rating": "age rating",
+    "release_date": "release date"
   }
 }
