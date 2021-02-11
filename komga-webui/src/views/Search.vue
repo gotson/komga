@@ -2,7 +2,7 @@
   <div>
     <toolbar-sticky v-if="showToolbar">
       <v-toolbar-title>
-        <span>{{ $t('search.search_results_for') }} "{{ $route.query.q }}"</span>
+        <span>{{ $t('search.search_results_for', {name: $route.query.q}) }}</span>
       </v-toolbar-title>
     </toolbar-sticky>
 

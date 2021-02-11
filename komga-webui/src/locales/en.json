@@ -128,7 +128,7 @@
     "go_back_to_home_page": "Go back to home page"
   },
   "search": {
-    "search_results_for": "Search results for",
+    "search_results_for": "Search results for \"{name}\"",
     "no_results": "The search returned no results",
     "search_for_something_else": "Try searching for something else",
     "search": "Search"
@@ -387,5 +387,11 @@
     "language": "language",
     "age_rating": "age rating",
     "release_date": "release date"
+  },
+  "user_roles": {
+    "USER": "User",
+    "ADMIN": "Administrator",
+    "FILE_DOWNLOAD": "File download",
+    "PAGE_STREAMING": "Stream pages"
   }
 }

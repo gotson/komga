@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="pa-6">
     <v-row>
-      <span class="text-h5">{{ $t('account_settings.account_settings') }}</span>
+      <span class="text-h5 text-capitalize">{{ $t('account_settings.account_settings') }}</span>
     </v-row>
     <v-row align="center">
       <v-col cols="12" md="8" lg="6" xl="4">
@@ -16,7 +16,7 @@
         <span>{{ $t('common.roles') }}</span>
         <v-chip-group>
           <v-chip v-for="role in me.roles" :key="role"
-          >{{ role }}
+          >{{ $t(`user_roles.${role}`) }}
           </v-chip>
           <v-chip v-if="me.roles.length === 0">USER</v-chip>
         </v-chip-group>
