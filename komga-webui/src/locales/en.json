@@ -49,7 +49,8 @@
       "webtoon": "Webtoon",
       "scale_type": "Scale type",
       "side_padding": "Side padding",
-      "page_layout": "Page layout"
+      "page_layout": "Page layout",
+      "paged": "Paged"
     },
     "beginning_of_book": "You're at the beginning of the book.",
     "move_previous": "Click or press previous again to move to the previous book.",
