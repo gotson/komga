@@ -183,7 +183,7 @@
             </div>
 
             <div v-if="!continuousReader">
-              <v-subheader class="font-weight-black text-h6">Paged</v-subheader>
+              <v-subheader class="font-weight-black text-h6">{{ $t('bookreader.settings.paged') }}</v-subheader>
               <v-list-item>
                 <settings-select
                   :items="scaleTypes"
