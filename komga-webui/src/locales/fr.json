@@ -116,7 +116,8 @@
     },
     "browse_series": {
         "earliest_year_from_release_dates": "Il s'agit de l'année la plus ancienne parmi les dates de sortie de tous les livres de la série",
-        "series_no_summary": "Cette série n'a pas de résumé, nous en avons choisi un pour vous !"
+        "series_no_summary": "Cette série n'a pas de résumé, nous en avons choisi un pour vous !",
+        "summary_from_book": "Résume du livre {number} :"
     },
     "collections_expansion_panel": {
         "manage_collection": "Gérer la collection"

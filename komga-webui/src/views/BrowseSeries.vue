@@ -91,7 +91,7 @@
               <v-chip label small
                       :color="statusChip.color"
                       :text-color="statusChip.text"
-              >{{ series.metadata.status }}
+              >{{ $t(`enums.series_status.${series.metadata.status}`) }}
               </v-chip>
               <v-chip label small v-if="series.metadata.ageRating" class="ml-2">{{
                   series.metadata.ageRating
@@ -112,9 +112,9 @@
             <v-col>
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
-                  <span v-on="on" class="text-caption">Summary from book {{
-                      series.booksMetadata.summaryNumber
-                    }}:</span>
+                  <span v-on="on" class="text-caption">
+                    {{ $t('browse_series.summary_from_book',{number: series.booksMetadata.summaryNumber})}}
+                  </span>
                 </template>
                 {{ $t('browse_series.series_no_summary') }}
               </v-tooltip>

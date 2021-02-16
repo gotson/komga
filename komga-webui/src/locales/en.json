@@ -140,6 +140,7 @@
     "edit_readlist": "Edit read list"
   },
   "browse_series": {
+    "summary_from_book": "Summary from book {number}:",
     "series_no_summary": "This series has no summary, so we picked one for you!",
     "earliest_year_from_release_dates": "This is the earliest year from the release dates from all books in the series"
   },

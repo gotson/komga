@@ -422,7 +422,7 @@ export default Vue.extend({
     },
     seriesStatus (): any[] {
       return Object.keys(SeriesStatus).map(x => ({
-        text: this.$_.capitalize(x),
+        text: this.$t(`enums.series_status.${x}`),
         value: x,
       }))
     },
