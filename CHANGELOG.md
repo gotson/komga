@@ -1,3 +1,15 @@
+# [0.70.0](https://github.com/gotson/komga/compare/v0.69.2...v0.70.0) (2021-02-16)
+
+
+### Features
+
+* **webui:** support for translations ([efe6476](https://github.com/gotson/komga/commit/efe6476a9057ce610c61278a9e402c250ee61365)), closes [#187](https://github.com/gotson/komga/issues/187)
+
+
+### Reverts
+
+* update sqlite library to handle armv6 ([e39a2ac](https://github.com/gotson/komga/commit/e39a2ac6bac77f29d29828e2e58f0d97033cc15d))
+
 ## [0.69.2](https://github.com/gotson/komga/compare/v0.69.1...v0.69.2) (2021-01-29)
 
 
