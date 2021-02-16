@@ -1,0 +1,55 @@
+{
+    "account_settings": {
+        "account_settings": "Configuración de cuenta",
+        "change_password": "Cambiar contraseña"
+    },
+    "bookreader": {
+        "beginning_of_book": "Estás al inicio del libro.",
+        "changing_reading_direction": "Cambiar dirección de lectura a",
+        "end_of_book": "Had llegado al final del libro.",
+        "move_next": "Has click o presiona siguiente de nuevo para moverte al siguiente libro.",
+        "move_next_exit": "Has click o presiona siguiente de nuevo para salir del lector.",
+        "move_previous": "Has click o presiona anterior de nuevo para moverte al libro anterior.",
+        "reader_settings": "Configuraciones del lector",
+        "settings": {
+            "animate_page_transitions": "Animar transición de página",
+            "background_color": "Color de fondo",
+            "general": "General",
+            "gestures": "Gestos",
+            "reading_mode": "Modo de lectura",
+            "scale_type": "Tipo de escala"
+        }
+    },
+    "common": {
+        "all_libraries": "Todas las bibliotecas",
+        "books": "Libros",
+        "books_n": "Sin libros | 1 libro | {count} libros",
+        "cancel": "Cancelar",
+        "close": "Cerrar",
+        "collections": "Colecciones",
+        "create": "Crear",
+        "delete": "Borrar",
+        "email": "Email",
+        "filter_no_matches": "Los filtros activos no tienen ninguna coincidencia",
+        "genre": "Género",
+        "go_to_library": "Ir a la biblioteca",
+        "n_selected": "{count} seleccionado",
+        "nothing_to_show": "Nada que mostrar",
+        "pages": "páginas",
+        "pages_n": "Sin páginas | 1 página | {count} páginas",
+        "password": "Contraseña",
+        "publisher": "Editor",
+        "readlists": "Listas de lectura",
+        "required": "Requerido",
+        "roles": "Rol",
+        "series": "Series",
+        "tags": "Etiquetas",
+        "use_filter_panel_to_change_filter": "Uso el panel de filtros para cambiar los filtros activos"
+    },
+    "dashboard": {
+        "keep_reading": "Seguir leyendo",
+        "recently_added_books": "Libros recién agregados",
+        "recently_added_series": "Series agregadas recientemente",
+        "recently_updated_series": "Series recientemente actualizadas"
+    }
+}
