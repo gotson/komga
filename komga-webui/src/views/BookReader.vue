@@ -278,7 +278,6 @@ import {Location} from 'vue-router'
 import PagedReader from '@/components/readers/PagedReader.vue'
 import ContinuousReader from '@/components/readers/ContinuousReader.vue'
 import {ContinuousScaleType, PaddingPercentage, PagedReaderLayout, ScaleType} from '@/types/enum-reader'
-import {PagedReaderLayoutText, ReadingDirectionText, ScaleTypeText} from '@/functions/reader'
 import {
   shortcutsLTR,
   shortcutsRTL,
@@ -311,7 +310,7 @@ export default Vue.extend({
     ThumbnailExplorerDialog,
     ShortcutHelpDialog,
   },
-  data: () => {
+  data: function () {
     return {
       book: {} as BookDto,
       series: {} as SeriesDto,
@@ -352,28 +351,28 @@ export default Vue.extend({
         timeout: 4000,
       },
       readingDirs: Object.values(ReadingDirection).map(x => ({
-        text: ReadingDirectionText[x],
+        text: this.$i18n.t(`enums.reading_direction.${x}`),
         value: x,
       })),
       scaleTypes: Object.values(ScaleType).map(x => ({
-        text: ScaleTypeText[x],
+        text: this.$i18n.t(x),
         value: x,
       })),
       continuousScaleTypes: Object.values(ContinuousScaleType).map(x => ({
-        text: ScaleTypeText[x],
+        text: this.$i18n.t(x),
         value: x,
       })),
       pageLayouts: Object.values(PagedReaderLayout).map(x => ({
-        text: PagedReaderLayoutText[x],
+        text: this.$i18n.t(x),
         value: x,
       })),
       paddingPercentages: Object.values(PaddingPercentage).map(x => ({
-        text: x === 0 ? 'None' : `${x}%`,
+        text: x === 0 ? this.$i18n.t('bookreader.settings.side_padding_none').toString() : `${x}%`,
         value: x,
       })),
       backgroundColors: [
-        { text: 'White', value: 'white' },
-        { text: 'Black', value: 'black' },
+        {text: this.$t('bookreader.settings.background_colors.white').toString(), value: 'white'},
+        {text: this.$t('bookreader.settings.background_colors.black').toString(), value: 'black'},
       ],
     }
   },
@@ -451,7 +450,7 @@ export default Vue.extend({
       return getBookTitleCompact(this.book.metadata.title, this.series.metadata.title)
     },
     readingDirectionText (): string {
-      return ReadingDirectionText[this.readingDirection]
+      return this.$t(`enums.reading_direction.${this.readingDirection}`).toString()
     },
     shortcutsHelp (): object {
       let nav = []
@@ -708,7 +707,7 @@ export default Vue.extend({
     },
     changeReadingDir (dir: ReadingDirection) {
       this.readingDirection = dir
-      const text = ReadingDirectionText[this.readingDirection]
+      const text = this.$t(`enums.reading_direction.${this.readingDirection}`)
       this.sendNotification(`${this.$t('bookreader.changing_reading_direction')}: ${text}`)
     },
     cycleScale () {
@@ -716,13 +715,13 @@ export default Vue.extend({
         const enumValues = Object.values(ContinuousScaleType)
         const i = (enumValues.indexOf(this.settings.continuousScale) + 1) % (enumValues.length)
         this.continuousScale = enumValues[i]
-        const text = ScaleTypeText[this.continuousScale]
+        const text = this.$t(this.continuousScale)
         this.sendNotification(`${this.$t('bookreader.cycling_scale')}: ${text}`)
       } else {
         const enumValues = Object.values(ScaleType)
         const i = (enumValues.indexOf(this.settings.scale) + 1) % (enumValues.length)
         this.scale = enumValues[i]
-        const text = ScaleTypeText[this.scale]
+        const text = this.$t(this.scale)
         this.sendNotification(`${this.$t('bookreader.cycling_scale')}: ${text}`)
       }
     },
@@ -730,7 +729,7 @@ export default Vue.extend({
       if (this.continuousReader) {
         const i = (PaddingPercentage.indexOf(this.settings.sidePadding) + 1) % (PaddingPercentage.length)
         this.sidePadding = PaddingPercentage[i]
-        const text = this.sidePadding === 0 ? 'None' : `${this.sidePadding}%`
+        const text = this.sidePadding === 0 ? this.$t('bookreader.settings.side_padding_none').toString() : `${this.sidePadding}%`
         this.sendNotification(`${this.$t('bookreader.cycling_side_padding')}: ${text}`)
       }
     },
@@ -739,7 +738,7 @@ export default Vue.extend({
       const enumValues = Object.values(PagedReaderLayout)
       const i = (enumValues.indexOf(this.settings.pageLayout) + 1) % (enumValues.length)
       this.pageLayout = enumValues[i]
-      const text = PagedReaderLayoutText[this.pageLayout]
+      const text = this.$i18n.t(this.pageLayout)
       this.sendNotification(`${this.$t('bookreader.cycling_page_layout')}: ${text}`)
     },
     toggleToolbars () {

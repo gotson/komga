@@ -415,7 +415,7 @@ export default Vue.extend({
     readingDirections (): any[] {
       return Object.keys(ReadingDirection).map(x => (
         {
-          text: this.$_.capitalize(x.replace(/_/g, ' ')),
+          text: this.$t(`enums.reading_direction.${x}`),
           value: x,
         }),
       )

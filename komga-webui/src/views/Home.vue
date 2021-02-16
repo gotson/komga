@@ -166,11 +166,6 @@ export default Vue.extend({
         theme: Theme.LIGHT,
       },
       Theme,
-      themes: [
-        {text: Theme.LIGHT.valueOf(), value: Theme.LIGHT},
-        {text: Theme.DARK.valueOf(), value: Theme.DARK},
-        {text: Theme.SYSTEM.valueOf(), value: Theme.SYSTEM},
-      ],
       locales: this.$i18n.availableLocales.map((x: any) => ({text: this.$i18n.t('common.locale_name', x), value: x})),
     }
   },
@@ -186,13 +181,6 @@ export default Vue.extend({
       }
     }
 
-    if (this.$cookies.isKey(cookieLocale)) {
-      const locale = this.$cookies.get(cookieLocale)
-      if (this.$i18n.availableLocales.includes(locale)) {
-        this.$i18n.locale = locale
-      }
-    }
-
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', this.systemThemeChange)
   },
   async beforeDestroy() {
@@ -204,6 +192,13 @@ export default Vue.extend({
     },
     isAdmin(): boolean {
       return this.$store.getters.meAdmin
+    },
+    themes(): object[] {
+      return [
+        {text: this.$i18n.t(Theme.LIGHT), value: Theme.LIGHT},
+        {text: this.$i18n.t(Theme.DARK), value: Theme.DARK},
+        {text: this.$i18n.t(Theme.SYSTEM), value: Theme.SYSTEM},
+      ]
     },
 
     theme: {

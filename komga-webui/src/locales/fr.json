@@ -1,4 +1,17 @@
 {
+    "enums": {
+      "reading_direction": {
+        "LEFT_TO_RIGHT": "Gauche à droite",
+        "RIGHT_TO_LEFT": "Droite à gauche",
+        "VERTICAL": "Vertical",
+        "WEBTOON": "Webtoon"
+      }
+    },
+    "theme": {
+      "light": "Clair",
+      "dark": "Sombre",
+      "system": "Système"
+    },
     "account_settings": {
         "account_settings": "Paramètres du compte",
         "change_password": "Modifier le mot de passe"
@@ -24,9 +37,26 @@
         "move_next_exit": "Cliquez ou appuyez à nouveau sur suivant pour quitter la liseuse.",
         "move_previous": "Cliquez ou appuyez à nouveau sur précédent pour passer au livre précédent.",
         "reader_settings": "Paramètres de la liseuse",
+        "scale_type": {
+          "screen": "Écran",
+          "width": "Ajuster largeur",
+          "height": "Ajuster hauteur",
+          "original": "Original",
+          "continuous_original": "Original",
+          "continuous_width": "Ajuster largeur"
+        },
+        "paged_reader_layout":{
+          "single": "Simple page",
+          "double": "Double pages",
+          "double_no_cover": "Double pages (sans couverture)"
+        },
         "settings": {
             "animate_page_transitions": "Activer les transitions de page",
             "background_color": "Couleur d'arrière-plan",
+            "background_colors": {
+              "black": "Noir",
+              "white": "Blanc"
+            },
             "display": "Affichage",
             "general": "Général",
             "gestures": "Gestes tactiles",
@@ -35,6 +65,7 @@
             "reading_mode": "Mode de lecture",
             "scale_type": "Type de mise à l'échelle",
             "side_padding": "Bordure latérale",
+            "side_padding_none": "Aucune",
             "webtoon": "Webtoon"
         },
         "shortcuts": {

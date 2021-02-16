@@ -32,7 +32,7 @@
                         {{ s.display }}
                       </kbd>
                     </td>
-                    <td>{{ s.description }}</td>
+                    <td>{{ $t(s.description) }}</td>
                   </tr>
                   </tbody>
                 </template>

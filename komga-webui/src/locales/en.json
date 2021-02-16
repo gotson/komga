@@ -1,4 +1,17 @@
 {
+  "enums": {
+    "reading_direction": {
+      "LEFT_TO_RIGHT": "Left to right",
+      "RIGHT_TO_LEFT": "Right to left",
+      "VERTICAL": "Vertical",
+      "WEBTOON": "Webtoon"
+    }
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
   "dashboard": {
     "recently_added_series": "recently added series",
     "on_deck": "on deck",
@@ -50,7 +63,25 @@
       "scale_type": "Scale type",
       "side_padding": "Side padding",
       "page_layout": "Page layout",
-      "paged": "Paged"
+      "paged": "Paged",
+      "side_padding_none": "None",
+      "background_colors": {
+        "black": "Black",
+        "white": "White"
+      }
+    },
+    "scale_type": {
+      "screen": "Screen",
+      "width": "Fit width",
+      "height": "Fit height",
+      "original": "Original",
+      "continuous_original": "Original",
+      "continuous_width": "Fit width"
+    },
+    "paged_reader_layout":{
+      "single": "Single page",
+      "double": "Double pages",
+      "double_no_cover": "Double pages (no cover)"
     },
     "beginning_of_book": "You're at the beginning of the book.",
     "move_previous": "Click or press previous again to move to the previous book.",

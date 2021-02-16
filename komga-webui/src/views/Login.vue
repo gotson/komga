@@ -47,12 +47,25 @@
           <v-btn color="primary"
                  type="submit"
                  :disabled="unclaimed"
-          >{{ $t('login.login') }}</v-btn>
+          >{{ $t('login.login') }}
+          </v-btn>
           <v-btn v-if="unclaimed"
                  class="ml-4"
                  color="primary"
                  @click="claim"
-          >{{ $t('login.create_user_account') }}</v-btn>
+          >{{ $t('login.create_user_account') }}
+          </v-btn>
+        </v-col>
+      </v-row>
+
+      <v-row justify="center">
+        <v-col cols="12" sm="6" md="4" lg="2" xl="2">
+          <v-select v-model="locale"
+                    :items="locales"
+                    :label="$t('home.translation')"
+                    prepend-icon="mdi-translate"
+          >
+          </v-select>
         </v-col>
       </v-row>
     </form>
@@ -66,7 +79,8 @@
       <v-btn
         text
         @click="snackbar = false"
-      >{{ $t('common.close') }}</v-btn>
+      >{{ $t('common.close') }}
+      </v-btn>
     </v-snackbar>
   </div>
 </template>
@@ -74,19 +88,24 @@
 <script lang="ts">
 import Vue from 'vue'
 
+const cookieLocale = 'locale'
+
 export default Vue.extend({
   name: 'Login',
-  data: () => ({
-    form: {
-      login: '',
-      password: '',
-    },
-    snackbar: false,
-    snackText: '',
-    unclaimed: false,
-  }),
+  data: function () {
+    return {
+      form: {
+        login: '',
+        password: '',
+      },
+      snackbar: false,
+      snackText: '',
+      unclaimed: false,
+      locales: this.$i18n.availableLocales.map((x: any) => ({text: this.$i18n.t('common.locale_name', x), value: x})),
+    }
+  },
   computed: {
-    logoWidth (): number {
+    logoWidth(): number {
       let l = 100
       switch (this.$vuetify.breakpoint.name) {
         case 'xs':
@@ -101,15 +120,28 @@ export default Vue.extend({
       }
       return l / (this.unclaimed ? 2 : 1)
     },
+
+
+    locale: {
+      get: function (): string {
+        return this.$i18n.locale
+      },
+      set: function (locale: string): void {
+        if (this.$i18n.availableLocales.includes(locale)) {
+          this.$i18n.locale = locale
+          this.$cookies.set(cookieLocale, locale, Infinity)
+        }
+      },
+    },
   },
-  mounted () {
+  mounted() {
     this.getClaimStatus()
   },
   methods: {
-    async getClaimStatus () {
+    async getClaimStatus() {
       this.unclaimed = !(await this.$komgaClaim.getClaimStatus()).isClaimed
     },
-    async performLogin () {
+    async performLogin() {
       try {
         await this.$store.dispatch(
           'getMeWithAuth',
@@ -121,19 +153,19 @@ export default Vue.extend({
         await this.$store.dispatch('getLibraries')
 
         if (this.$route.query.redirect) {
-          await this.$router.push({ path: this.$route.query.redirect.toString() })
+          await this.$router.push({path: this.$route.query.redirect.toString()})
         } else {
-          await this.$router.push({ name: 'home' })
+          await this.$router.push({name: 'home'})
         }
       } catch (e) {
         this.showSnack(e?.message)
       }
     },
-    showSnack (message: string) {
+    showSnack(message: string) {
       this.snackText = message
       this.snackbar = true
     },
-    async claim () {
+    async claim() {
       try {
         await this.$komgaClaim.claimServer({
           email: this.form.login,

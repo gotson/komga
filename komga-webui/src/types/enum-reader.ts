@@ -1,20 +1,21 @@
+// those enums are client side only, we can use whatever values we want
+// here we use the translation key
 export enum ScaleType {
-  SCREEN = 'screen',
-  WIDTH = 'width',
-  HEIGHT = 'height',
-  ORIGINAL = 'original'
+  SCREEN = 'bookreader.scale_type.screen',
+  WIDTH = 'bookreader.scale_type.width',
+  HEIGHT = 'bookreader.scale_type.height',
+  ORIGINAL = 'bookreader.scale_type.original'
 }
 
 export enum ContinuousScaleType {
-  WIDTH = 'width',
-  ORIGINAL = 'original'
+  WIDTH = 'bookreader.scale_type.continuous_width',
+  ORIGINAL = 'bookreader.scale_type.continuous_original'
 }
 
 export enum PagedReaderLayout {
-  SINGLE_PAGE = 'single',
-  DOUBLE_PAGES = 'double',
-  DOUBLE_NO_COVER = 'double_no_cover'
+  SINGLE_PAGE = 'bookreader.paged_reader_layout.single',
+  DOUBLE_PAGES = 'bookreader.paged_reader_layout.double',
+  DOUBLE_NO_COVER = 'bookreader.paged_reader_layout.double_no_cover'
 }
-
 
 export const PaddingPercentage: number[] = [0, 5, 10, 15, 20, 25, 30, 35, 40]
