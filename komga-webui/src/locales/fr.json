@@ -5,6 +5,12 @@
         "RIGHT_TO_LEFT": "Droite à gauche",
         "VERTICAL": "Vertical",
         "WEBTOON": "Webtoon"
+      },
+      "series_status": {
+        "ENDED": "Finie",
+        "ONGOING": "En cours",
+        "HIATUS": "Hiatus",
+        "ABANDONED":"Abandonnée"
       }
     },
     "theme": {

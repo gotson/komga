@@ -115,7 +115,9 @@
                   <span v-on="on" class="text-caption">Summary from book {{
                       series.booksMetadata.summaryNumber
                     }}:</span>
-                </template>{{ $t('browse_series.series_no_summary') }}</v-tooltip>
+                </template>
+                {{ $t('browse_series.series_no_summary') }}
+              </v-tooltip>
               <read-more>{{ series.booksMetadata.summary }}</read-more>
             </v-col>
           </v-row>
@@ -126,7 +128,9 @@
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <span v-on="on">{{ series.booksMetadata.releaseDate | moment('YYYY') }}</span>
-                </template>{{ $t('browse_series.earliest_year_from_release_dates') }}</v-tooltip>
+                </template>
+                {{ $t('browse_series.earliest_year_from_release_dates') }}
+              </v-tooltip>
             </v-col>
           </v-row>
 
@@ -277,20 +281,8 @@ export default Vue.extend({
       pageSize: 20,
       totalPages: 1,
       totalElements: null as number | null,
-      sortOptions: [
-        {name: this.$i18n.t('sort.number').toString(), key: 'metadata.numberSort'},
-        {name: this.$i18n.t('sort.date_added').toString(), key: 'createdDate'},
-        {name: this.$i18n.t('sort.release_date').toString(), key: 'metadata.releaseDate'},
-        {name: this.$i18n.t('sort.file_size').toString(), key: 'fileSize'},
-      ] as SortOption[],
       sortActive: {} as SortActive,
       sortDefault: {key: 'metadata.numberSort', order: 'asc'} as SortActive,
-      filterOptionsList: {
-        readStatus: {values: [{name: this.$i18n.t('filter.unread').toString(), value: ReadStatus.UNREAD}]},
-      } as FiltersOptions,
-      filterOptionsPanel: {
-        tag: {name: this.$i18n.t('filter.tag').toString(), values: []},
-      } as FiltersOptions,
       filters: {} as FiltersActive,
       sortUnwatch: null as any,
       filterUnwatch: null as any,
@@ -301,6 +293,24 @@ export default Vue.extend({
     }
   },
   computed: {
+    sortOptions(): SortOption[] {
+      return [
+        {name: this.$i18n.t('sort.number').toString(), key: 'metadata.numberSort'},
+        {name: this.$i18n.t('sort.date_added').toString(), key: 'createdDate'},
+        {name: this.$i18n.t('sort.release_date').toString(), key: 'metadata.releaseDate'},
+        {name: this.$i18n.t('sort.file_size').toString(), key: 'fileSize'},
+      ] as SortOption[]
+    },
+    filterOptionsList(): FiltersOptions {
+      return {
+        readStatus: {values: [{name: this.$i18n.t('filter.unread').toString(), value: ReadStatus.UNREAD}]},
+      } as FiltersOptions
+    },
+    filterOptionsPanel(): FiltersOptions {
+      return {
+        tag: {name: this.$i18n.t('filter.tag').toString(), values: []},
+      } as FiltersOptions
+    },
     isAdmin(): boolean {
       return this.$store.getters.meAdmin
     },

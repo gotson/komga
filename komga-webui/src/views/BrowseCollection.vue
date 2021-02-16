@@ -143,19 +143,6 @@ export default Vue.extend({
       seriesCopy: [] as SeriesDto[],
       selectedSeries: [] as SeriesDto[],
       editElements: false,
-      filterOptionsList: {
-        readStatus: {values: [{name: this.$i18n.t('filter.unread').toString(), value: ReadStatus.UNREAD}]},
-      } as FiltersOptions,
-      filterOptionsPanel: {
-        library: {name: this.$i18n.t('filter.library').toString(), values: []},
-        status: {name: this.$i18n.t('filter.status').toString(), values: SeriesStatusKeyValue},
-        genre: {name: this.$i18n.t('filter.genre').toString(), values: []},
-        tag: {name: this.$i18n.t('filter.tag').toString(), values: []},
-        publisher: {name: this.$i18n.t('filter.publisher').toString(), values: []},
-        language: {name: this.$i18n.t('filter.language').toString(), values: []},
-        ageRating: {name: this.$i18n.t('filter.age_rating').toString(), values: []},
-        releaseDate: {name: this.$i18n.t('filter.release_date').toString(), values: []},
-      } as FiltersOptions,
       filters: {} as FiltersActive,
       filterUnwatch: null as any,
       drawer: false,
@@ -168,7 +155,7 @@ export default Vue.extend({
     },
   },
   watch: {
-    selectedSeries (val: SeriesDto[]) {
+    selectedSeries(val: SeriesDto[]) {
       val.forEach(s => {
         let index = this.series.findIndex(x => x.id === s.id)
         if (index !== -1) {
@@ -181,24 +168,24 @@ export default Vue.extend({
       })
     },
   },
-  created () {
+  created() {
     this.$eventHub.$on(COLLECTION_CHANGED, this.collectionChanged)
     this.$eventHub.$on(COLLECTION_DELETED, this.afterDelete)
     this.$eventHub.$on(SERIES_CHANGED, this.reloadSeries)
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this.$eventHub.$off(COLLECTION_CHANGED, this.collectionChanged)
     this.$eventHub.$off(COLLECTION_DELETED, this.afterDelete)
     this.$eventHub.$off(SERIES_CHANGED, this.reloadSeries)
   },
-  mounted () {
+  mounted() {
     this.loadCollection(this.collectionId)
 
     this.resetParams(this.$route)
 
     this.setWatches()
   },
-  beforeRouteUpdate (to, from, next) {
+  beforeRouteUpdate(to, from, next) {
     if (to.params.collectionId !== from.params.collectionId) {
       this.unsetWatches()
 
@@ -222,15 +209,32 @@ export default Vue.extend({
     next()
   },
   computed: {
-    isAdmin (): boolean {
+    filterOptionsList(): FiltersOptions {
+      return {
+        readStatus: {values: [{name: this.$i18n.t('filter.unread').toString(), value: ReadStatus.UNREAD}]},
+      } as FiltersOptions
+    },
+    filterOptionsPanel(): FiltersOptions {
+      return {
+        library: {name: this.$i18n.t('filter.library').toString(), values: []},
+        status: {name: this.$i18n.t('filter.status').toString(), values: SeriesStatusKeyValue()},
+        genre: {name: this.$i18n.t('filter.genre').toString(), values: []},
+        tag: {name: this.$i18n.t('filter.tag').toString(), values: []},
+        publisher: {name: this.$i18n.t('filter.publisher').toString(), values: []},
+        language: {name: this.$i18n.t('filter.language').toString(), values: []},
+        ageRating: {name: this.$i18n.t('filter.age_rating').toString(), values: []},
+        releaseDate: {name: this.$i18n.t('filter.release_date').toString(), values: []},
+      } as FiltersOptions
+    },
+    isAdmin(): boolean {
       return this.$store.getters.meAdmin
     },
-    filterActive (): boolean {
+    filterActive(): boolean {
       return Object.keys(this.filters).some(x => this.filters[x].length !== 0)
     },
   },
   methods: {
-    resetParams (route: any) {
+    resetParams(route: any) {
       if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating) {
         this.filters.status = parseQueryFilter(route.query.status, Object.keys(SeriesStatus))
         this.filters.readStatus = parseQueryFilter(route.query.readStatus, Object.keys(ReadStatus))
@@ -243,24 +247,24 @@ export default Vue.extend({
         this.filters = this.$cookies.get(this.cookieFilter(route.params.collectionId)) || {} as FiltersActive
       }
     },
-    cookieFilter (collectionId: string): string {
+    cookieFilter(collectionId: string): string {
       return `collection.filter.${collectionId}`
     },
-    setWatches () {
+    setWatches() {
       this.filterUnwatch = this.$watch('filters', (val) => {
         this.$cookies.set(this.cookieFilter(this.collectionId), val, Infinity)
         this.updateRouteAndReload()
       })
     },
-    unsetWatches () {
+    unsetWatches() {
       this.filterUnwatch()
     },
-    collectionChanged (event: EventCollectionChanged) {
+    collectionChanged(event: EventCollectionChanged) {
       if (event.id === this.collectionId) {
         this.loadCollection(this.collectionId)
       }
     },
-    updateRouteAndReload () {
+    updateRouteAndReload() {
       this.unsetWatches()
 
       this.updateRoute()
@@ -268,12 +272,12 @@ export default Vue.extend({
 
       this.setWatches()
     },
-    async loadSeries (collectionId: string) {
-      this.series = (await this.$komgaCollections.getSeries(collectionId, { unpaged: true } as PageRequest, this.filters.library, this.filters.status, this.filters.readStatus, this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate)).content
+    async loadSeries(collectionId: string) {
+      this.series = (await this.$komgaCollections.getSeries(collectionId, {unpaged: true} as PageRequest, this.filters.library, this.filters.status, this.filters.readStatus, this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate)).content
       this.seriesCopy = [...this.series]
       this.selectedSeries = []
     },
-    async loadCollection (collectionId: string) {
+    async loadCollection(collectionId: string) {
       this.collection = await this.$komgaCollections.getOneCollection(collectionId)
       await this.loadSeries(collectionId)
 
@@ -288,23 +292,23 @@ export default Vue.extend({
       this.filterOptionsPanel.ageRating.values = toNameValue(await this.$komgaReferential.getAgeRatings(undefined, collectionId))
       this.filterOptionsPanel.releaseDate.values = toNameValue(await this.$komgaReferential.getSeriesReleaseDates(undefined, collectionId))
     },
-    updateRoute () {
+    updateRoute() {
       const loc = {
         name: this.$route.name,
-        params: { collectionId: this.$route.params.collectionId },
+        params: {collectionId: this.$route.params.collectionId},
         query: {},
       } as Location
       mergeFilterParams(this.filters, loc.query)
       this.$router.replace(loc).catch((_: any) => {
       })
     },
-    editSingleSeries (series: SeriesDto) {
+    editSingleSeries(series: SeriesDto) {
       this.$store.dispatch('dialogUpdateSeries', series)
     },
-    editMultipleSeries () {
+    editMultipleSeries() {
       this.$store.dispatch('dialogUpdateSeries', this.selectedSeries)
     },
-    async markSelectedRead () {
+    async markSelectedRead() {
       await Promise.all(this.selectedSeries.map(s =>
         this.$komgaSeries.markAsRead(s.id),
       ))
@@ -312,7 +316,7 @@ export default Vue.extend({
         this.$komgaSeries.getOneSeries(s.id),
       ))
     },
-    async markSelectedUnread () {
+    async markSelectedUnread() {
       await Promise.all(this.selectedSeries.map(s =>
         this.$komgaSeries.markAsUnread(s.id),
       ))
@@ -320,18 +324,18 @@ export default Vue.extend({
         this.$komgaSeries.getOneSeries(s.id),
       ))
     },
-    addToCollection () {
+    addToCollection() {
       this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries)
     },
-    startEditElements () {
+    startEditElements() {
       this.filters = {}
       this.editElements = true
     },
-    cancelEditElements () {
+    cancelEditElements() {
       this.editElements = false
       this.series = [...this.seriesCopy]
     },
-    doEditElements () {
+    doEditElements() {
       this.editElements = false
       const update = {
         seriesIds: this.series.map(x => x.id),
@@ -339,13 +343,13 @@ export default Vue.extend({
       this.$komgaCollections.patchCollection(this.collectionId, update)
       this.loadCollection(this.collectionId)
     },
-    editCollection () {
+    editCollection() {
       this.$store.dispatch('dialogEditCollection', this.collection)
     },
-    afterDelete () {
-      this.$router.push({ name: 'browse-collections', params: { libraryId: LIBRARIES_ALL } })
+    afterDelete() {
+      this.$router.push({name: 'browse-collections', params: {libraryId: LIBRARIES_ALL}})
     },
-    reloadSeries (event: EventSeriesChanged) {
+    reloadSeries(event: EventSeriesChanged) {
       if (this.series.some(s => s.id === event.id)) this.loadCollection(this.collectionId)
     },
   },

@@ -133,25 +133,8 @@ export default Vue.extend({
       pageSize: 20,
       totalPages: 1,
       totalElements: null as number | null,
-      sortOptions: [
-        {name: this.$i18n.t('sort.name').toString(), key: 'metadata.titleSort'},
-        {name: this.$i18n.t('sort.date_added').toString(), key: 'createdDate'},
-        {name: this.$i18n.t('sort.date_updated').toString(), key: 'lastModifiedDate'},
-      ] as SortOption[],
       sortActive: {} as SortActive,
       sortDefault: {key: 'metadata.titleSort', order: 'asc'} as SortActive,
-      filterOptionsList: {
-        readStatus: {values: [{name: this.$i18n.t('filter.unread').toString(), value: ReadStatus.UNREAD}]},
-      } as FiltersOptions,
-      filterOptionsPanel: {
-        status: {name: this.$i18n.t('filter.status').toString(), values: SeriesStatusKeyValue},
-        genre: {name: this.$i18n.t('filter.genre').toString(), values: []},
-        tag: {name: this.$i18n.t('filter.tag').toString(), values: []},
-        publisher: {name: this.$i18n.t('filter.publisher').toString(), values: []},
-        language: {name: this.$i18n.t('filter.language').toString(), values: []},
-        ageRating: {name: this.$i18n.t('filter.age_rating').toString(), values: []},
-        releaseDate: {name: this.$i18n.t('filter.release_date').toString(), values: []},
-      } as FiltersOptions,
       filters: {} as FiltersActive,
       sortUnwatch: null as any,
       filterUnwatch: null as any,
@@ -167,7 +150,7 @@ export default Vue.extend({
     },
   },
   watch: {
-    selectedSeries (val: SeriesDto[]) {
+    selectedSeries(val: SeriesDto[]) {
       val.forEach(s => {
         const index = this.series.findIndex(x => x.id === s.id)
         if (index !== -1) {
@@ -176,17 +159,17 @@ export default Vue.extend({
       })
     },
   },
-  created () {
+  created() {
     this.$eventHub.$on(SERIES_CHANGED, this.reloadSeries)
     this.$eventHub.$on(LIBRARY_DELETED, this.libraryDeleted)
     this.$eventHub.$on(LIBRARY_CHANGED, this.reloadLibrary)
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this.$eventHub.$off(SERIES_CHANGED, this.reloadSeries)
     this.$eventHub.$off(LIBRARY_DELETED, this.libraryDeleted)
     this.$eventHub.$off(LIBRARY_CHANGED, this.reloadLibrary)
   },
-  async mounted () {
+  async mounted() {
     if (this.$cookies.isKey(cookiePageSize)) {
       this.pageSize = Number(this.$cookies.get(cookiePageSize))
     }
@@ -200,7 +183,7 @@ export default Vue.extend({
 
     this.setWatches()
   },
-  beforeRouteUpdate (to, from, next) {
+  beforeRouteUpdate(to, from, next) {
     if (to.params.libraryId !== from.params.libraryId) {
       this.unsetWatches()
 
@@ -225,10 +208,33 @@ export default Vue.extend({
     next()
   },
   computed: {
-    isAdmin (): boolean {
+    sortOptions(): SortOption[] {
+      return [
+        {name: this.$i18n.t('sort.name').toString(), key: 'metadata.titleSort'},
+        {name: this.$i18n.t('sort.date_added').toString(), key: 'createdDate'},
+        {name: this.$i18n.t('sort.date_updated').toString(), key: 'lastModifiedDate'},
+      ] as SortOption[]
+    },
+    filterOptionsList(): FiltersOptions {
+      return {
+        readStatus: {values: [{name: this.$i18n.t('filter.unread').toString(), value: ReadStatus.UNREAD}]},
+      } as FiltersOptions
+    },
+    filterOptionsPanel(): FiltersOptions {
+      return {
+        status: {name: this.$i18n.t('filter.status').toString(), values: SeriesStatusKeyValue()},
+        genre: {name: this.$i18n.t('filter.genre').toString(), values: []},
+        tag: {name: this.$i18n.t('filter.tag').toString(), values: []},
+        publisher: {name: this.$i18n.t('filter.publisher').toString(), values: []},
+        language: {name: this.$i18n.t('filter.language').toString(), values: []},
+        ageRating: {name: this.$i18n.t('filter.age_rating').toString(), values: []},
+        releaseDate: {name: this.$i18n.t('filter.release_date').toString(), values: []},
+      } as FiltersOptions
+    },
+    isAdmin(): boolean {
       return this.$store.getters.meAdmin
     },
-    paginationVisible (): number {
+    paginationVisible(): number {
       switch (this.$vuetify.breakpoint.name) {
         case 'xs':
           return 5
@@ -241,18 +247,18 @@ export default Vue.extend({
           return 15
       }
     },
-    sortOrFilterActive (): boolean {
+    sortOrFilterActive(): boolean {
       return sortOrFilterActive(this.sortActive, this.sortDefault, this.filters)
     },
   },
   methods: {
-    cookieSort (libraryId: string): string {
+    cookieSort(libraryId: string): string {
       return `library.sort.${libraryId}`
     },
-    cookieFilter (libraryId: string): string {
+    cookieFilter(libraryId: string): string {
       return `library.filter.${libraryId}`
     },
-    resetParams (route: any) {
+    resetParams(route: any) {
       this.sortActive = parseQuerySort(route.query.sort, this.sortOptions) ||
         this.$cookies.get(this.cookieSort(route.params.libraryId)) ||
         this.$_.clone(this.sortDefault)
@@ -269,14 +275,14 @@ export default Vue.extend({
         this.filters = this.$cookies.get(this.cookieFilter(route.params.libraryId)) || {} as FiltersActive
       }
     },
-    libraryDeleted (event: EventLibraryDeleted) {
+    libraryDeleted(event: EventLibraryDeleted) {
       if (event.id === this.libraryId) {
-        this.$router.push({ name: 'home' })
+        this.$router.push({name: 'home'})
       } else if (this.libraryId === LIBRARIES_ALL) {
         this.loadLibrary(this.libraryId)
       }
     },
-    setWatches () {
+    setWatches() {
       this.sortUnwatch = this.$watch('sortActive', (val) => {
         this.$cookies.set(this.cookieSort(this.libraryId), val, Infinity)
         this.updateRouteAndReload()
@@ -295,13 +301,13 @@ export default Vue.extend({
         this.loadPage(this.libraryId, val, this.sortActive)
       })
     },
-    unsetWatches () {
+    unsetWatches() {
       this.sortUnwatch()
       this.filterUnwatch()
       this.pageUnwatch()
       this.pageSizeUnwatch()
     },
-    updateRouteAndReload () {
+    updateRouteAndReload() {
       this.unsetWatches()
 
       this.page = 1
@@ -311,17 +317,17 @@ export default Vue.extend({
 
       this.setWatches()
     },
-    reloadSeries (event: EventSeriesChanged) {
+    reloadSeries(event: EventSeriesChanged) {
       if (this.libraryId === LIBRARIES_ALL || event.libraryId === this.libraryId) {
         this.loadPage(this.libraryId, this.page, this.sortActive)
       }
     },
-    reloadLibrary (event: EventLibraryChanged) {
+    reloadLibrary(event: EventLibraryChanged) {
       if (this.libraryId === LIBRARIES_ALL || event.id === this.libraryId) {
         this.loadLibrary(this.libraryId)
       }
     },
-    async loadLibrary (libraryId: string) {
+    async loadLibrary(libraryId: string) {
       this.library = this.getLibraryLazy(libraryId)
 
       const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
@@ -334,10 +340,10 @@ export default Vue.extend({
 
       await this.loadPage(libraryId, this.page, this.sortActive)
     },
-    updateRoute () {
+    updateRoute() {
       const loc = {
         name: this.$route.name,
-        params: { libraryId: this.$route.params.libraryId },
+        params: {libraryId: this.$route.params.libraryId},
         query: {
           page: `${this.page}`,
           pageSize: `${this.pageSize}`,
@@ -348,7 +354,7 @@ export default Vue.extend({
       this.$router.replace(loc).catch((_: any) => {
       })
     },
-    async loadPage (libraryId: string, page: number, sort: SortActive) {
+    async loadPage(libraryId: string, page: number, sort: SortActive) {
       this.selectedSeries = []
 
       const pageRequest = {
@@ -367,14 +373,14 @@ export default Vue.extend({
       this.totalElements = seriesPage.totalElements
       this.series = seriesPage.content
     },
-    getLibraryLazy (libraryId: any): LibraryDto | undefined {
+    getLibraryLazy(libraryId: any): LibraryDto | undefined {
       if (libraryId !== 0) {
         return this.$store.getters.getLibraryById(libraryId)
       } else {
         return undefined
       }
     },
-    async markSelectedRead () {
+    async markSelectedRead() {
       await Promise.all(this.selectedSeries.map(s =>
         this.$komgaSeries.markAsRead(s.id),
       ))
@@ -382,7 +388,7 @@ export default Vue.extend({
         this.$komgaSeries.getOneSeries(s.id),
       ))
     },
-    async markSelectedUnread () {
+    async markSelectedUnread() {
       await Promise.all(this.selectedSeries.map(s =>
         this.$komgaSeries.markAsUnread(s.id),
       ))
@@ -390,13 +396,13 @@ export default Vue.extend({
         this.$komgaSeries.getOneSeries(s.id),
       ))
     },
-    addToCollection () {
+    addToCollection() {
       this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries)
     },
-    editSingleSeries (series: SeriesDto) {
+    editSingleSeries(series: SeriesDto) {
       this.$store.dispatch('dialogUpdateSeries', series)
     },
-    editMultipleSeries () {
+    editMultipleSeries() {
       this.$store.dispatch('dialogUpdateSeries', this.selectedSeries)
     },
   },

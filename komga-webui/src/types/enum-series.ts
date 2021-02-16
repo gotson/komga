@@ -1,4 +1,4 @@
-import { capitalize } from 'lodash'
+import i18n from "@/i18n";
 
 export enum SeriesStatus {
   ENDED = 'ENDED',
@@ -7,7 +7,9 @@ export enum SeriesStatus {
   HIATUS = 'HIATUS'
 }
 
-export const SeriesStatusKeyValue = Object.values(SeriesStatus).map(x => ({
-  name: capitalize(x),
-  value: x,
-} as NameValue))
+export function SeriesStatusKeyValue(): NameValue[] {
+  return Object.values(SeriesStatus).map(x => ({
+    name: i18n.t(`enums.series_status.${x}`),
+    value: x,
+  } as NameValue))
+}
