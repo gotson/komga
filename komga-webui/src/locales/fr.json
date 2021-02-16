@@ -147,7 +147,8 @@
         "roles": "Rôles",
         "series": "Séries",
         "tags": "Étiquettes",
-        "use_filter_panel_to_change_filter": "Utilisez le panneau des filtres pour modifier les filtres actuels"
+        "use_filter_panel_to_change_filter": "Utilisez le panneau des filtres pour modifier les filtres actuels",
+        "year": "année"
     },
     "dashboard": {
         "keep_reading": "Continuer la lecture",

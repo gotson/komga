@@ -50,7 +50,8 @@
     "create": "Create",
     "delete": "Delete",
     "cancel": "Cancel",
-    "required": "Required"
+    "required": "Required",
+    "year": "year"
   },
   "account_settings": {
     "account_settings": "account settings",

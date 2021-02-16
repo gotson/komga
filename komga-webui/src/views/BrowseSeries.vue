@@ -98,7 +98,7 @@
                 }}+
               </v-chip>
               <v-chip label small v-if="series.metadata.language" class="ml-2">{{ languageDisplay }}</v-chip>
-              <v-chip label small v-if="series.metadata.readingDirection" class="ml-2">{{ readingDirection }}</v-chip>
+              <v-chip label small v-if="series.metadata.readingDirection" class="ml-2">{{ $t(`enums.reading_direction.${series.metadata.readingDirection}`) }}</v-chip>
             </v-col>
           </v-row>
 
@@ -123,7 +123,7 @@
           </v-row>
 
           <v-row v-if="series.booksMetadata.releaseDate">
-            <v-col cols="6" sm="4" md="2" class="text-body-2 py-1">YEAR</v-col>
+            <v-col cols="6" sm="4" md="2" class="text-body-2 py-1 text-uppercase">{{ $t('common.year') }}</v-col>
             <v-col class="text-body-2 text-capitalize py-1">
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
@@ -329,9 +329,6 @@ export default Vue.extend({
         default:
           return 15
       }
-    },
-    readingDirection(): string {
-      return this.$_.capitalize(this.series.metadata.readingDirection.replace(/_/g, ' '))
     },
     languageDisplay(): string {
       return tags(this.series.metadata.language).language().descriptions()[0]
