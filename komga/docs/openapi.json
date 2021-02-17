@@ -40,12 +40,12 @@
             "format": "int32",
             "type": "integer"
           },
-          "last": {
-            "type": "boolean"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
+          },
+          "last": {
+            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -859,12 +859,12 @@
             "format": "int32",
             "type": "integer"
           },
-          "last": {
-            "type": "boolean"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
+          },
+          "last": {
+            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -1325,12 +1325,12 @@
             "format": "int32",
             "type": "integer"
           },
-          "last": {
-            "type": "boolean"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
+          },
+          "last": {
+            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -1371,12 +1371,12 @@
             "format": "int32",
             "type": "integer"
           },
-          "last": {
-            "type": "boolean"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
+          },
+          "last": {
+            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -2551,6 +2551,36 @@
         },
         "tags": [
           "user-controller"
+        ]
+      }
+    },
+    "/api/v1/series/{seriesId}/file": {
+      "get": {
+        "operationId": "getSeriesFile",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "$ref": "#/components/schemas/StreamingResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "seriesId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "series-controller"
         ]
       }
     },

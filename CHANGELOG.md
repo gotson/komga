@@ -1,3 +1,10 @@
+# [0.71.0](https://github.com/gotson/komga/compare/v0.70.0...v0.71.0) (2021-02-17)
+
+
+### Features
+
+* series download ([e44bc7b](https://github.com/gotson/komga/commit/e44bc7b4915e8d8d55ad3c89c6148bdaba33278f))
+
 # [0.70.0](https://github.com/gotson/komga/compare/v0.69.2...v0.70.0) (2021-02-16)
 
 
