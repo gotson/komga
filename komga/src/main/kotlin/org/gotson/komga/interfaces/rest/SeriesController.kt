@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
 import org.apache.commons.io.IOUtils
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
@@ -58,8 +60,7 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
 import java.io.OutputStream
-import java.util.zip.ZipEntry
-import java.util.zip.ZipOutputStream
+import java.util.zip.Deflater
 import javax.validation.Valid
 
 private val logger = KotlinLogging.logger {}
@@ -380,8 +381,9 @@ class SeriesController(
     val books = bookRepository.findBySeriesId(seriesId)
 
     val streamingResponse = StreamingResponseBody { responseStream: OutputStream ->
-      ZipOutputStream(responseStream).use { zipStream ->
-        zipStream.setLevel(0)
+      ZipArchiveOutputStream(responseStream).use { zipStream ->
+        zipStream.setMethod(ZipArchiveOutputStream.DEFLATED)
+        zipStream.setLevel(Deflater.NO_COMPRESSION)
         books.forEach { book ->
           val file = FileSystemResource(book.path())
           if (!file.exists()) {
@@ -391,9 +393,9 @@ class SeriesController(
 
           logger.debug { "Adding file to zip archive: ${file.path}" }
           file.inputStream.use {
-            zipStream.putNextEntry(ZipEntry(file.filename))
+            zipStream.putArchiveEntry(ZipArchiveEntry(file.filename))
             IOUtils.copyLarge(it, zipStream, ByteArray(8192))
-            zipStream.closeEntry()
+            zipStream.closeArchiveEntry()
           }
         }
       }
