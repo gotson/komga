@@ -11,9 +11,9 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 plugins {
   run {
     val kotlinVersion = "1.4.20"
-    kotlin("jvm") version kotlinVersion
-    kotlin("plugin.spring") version kotlinVersion
-    kotlin("kapt") version kotlinVersion
+    kotlin("jvm")
+    kotlin("plugin.spring")
+    kotlin("kapt")
   }
   id("org.springframework.boot") version "2.4.1"
   id("com.github.ben-manes.versions") version "0.36.0"
@@ -24,8 +24,6 @@ plugins {
   id("org.springdoc.openapi-gradle-plugin") version "1.3.0"
   jacoco
 }
-
-apply(plugin = "org.jlleitschuh.gradle.ktlint-idea")
 
 group = "org.gotson"
 
@@ -275,4 +273,11 @@ tasks.named("dependencyUpdates", DependencyUpdatesTask::class.java).configure {
     isNonStable(candidate.version) && !isNonStable(currentVersion)
   }
   gradleReleaseChannel = "current"
+}
+
+configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+  version.set("0.40.0")
+  filter {
+    exclude("**/db/migration/**")
+  }
 }

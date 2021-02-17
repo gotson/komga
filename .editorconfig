@@ -1,30 +1,30 @@
-root = true
+root=true
 
 [*]
-charset = utf-8
-end_of_line = lf
-indent_size = 4
-indent_style = space
-insert_final_newline = true
-max_line_length = 120
-tab_width = 4
-trim_trailing_whitespace = true
+charset=utf-8
+end_of_line=lf
+indent_size=4
+indent_style=space
+insert_final_newline=true
+max_line_length=120
+tab_width=4
+trim_trailing_whitespace=true
 
-[{*.ats, *.ts}]
-indent_size = 2
-tab_width = 2
+[{*.ats,*.ts}]
+indent_size=2
+tab_width=2
 
-[{*.cjs, *.js}]
-indent_size = 2
-tab_width = 2
+[{*.cjs,*.js}]
+indent_size=2
+tab_width=2
 
-[{*.kts, *.kt}]
-indent_size = 2
-tab_width = 2
-max_line_length = off
+[{*.kts,*.kt}]
+indent_size=2
+tab_width=2
+max_line_length=off
 
-[{*.yml, *.yaml}]
-indent_size = 2
+[{*.yml,*.yaml}]
+indent_size=2
 
-[{.eslintrc, bowerrc, .prettierrc, .releaserc, jest.config, .stylelintrc, .babelrc, *.jsb3, *.jsb2, *.json}]
-indent_size = 2
+[{.eslintrc,bowerrc,.prettierrc,.releaserc,jest.config,.stylelintrc,.babelrc,*.jsb3,*.jsb2,*.json}]
+indent_size=2
