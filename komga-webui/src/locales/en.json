@@ -228,7 +228,8 @@
     "scan_library_files": "Scan library files",
     "edit": "Edit",
     "add_to_collection": "Add to collection",
-    "edit_metadata": "Edit metadata"
+    "edit_metadata": "Edit metadata",
+    "download_series": "Download series"
   },
   "dialog": {
     "add_to_collection": {

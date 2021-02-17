@@ -23,7 +23,7 @@
           <v-list-item-title>{{ $t('menu.mark_unread') }}</v-list-item-title>
         </v-list-item>
         <v-list-item v-if="canDownload" :href="fileUrl">
-          <v-list-item-title>Download series</v-list-item-title>
+          <v-list-item-title>{{ $t('menu.download_series') }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
