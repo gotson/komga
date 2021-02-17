@@ -196,7 +196,7 @@ class SeriesDtoDao(
         val aggregatedAuthors = dsl.selectFrom(bmaa)
           .where(bmaa.SERIES_ID.eq(sr.id))
           .fetchInto(bmaa)
-          .filter {it.name != null }
+          .filter { it.name != null }
           .map { AuthorDto(it.name, it.role) }
 
         sr.toDto(booksCount, booksReadCount, booksUnreadCount, booksInProgressCount, dr.toDto(genres, tags), bmar.toDto(aggregatedAuthors))
@@ -219,7 +219,7 @@ class SeriesDtoDao(
       c = c.and(c1.or(c2))
     }
     // cast to String is necessary for SQLite, else the years in the IN block are coerced to Int, even though YEAR for SQLite uses strftime (string)
-    if(!releaseYears.isNullOrEmpty()) c = c.and(DSL.year(bma.RELEASE_DATE).cast(String::class.java).`in`(releaseYears))
+    if (!releaseYears.isNullOrEmpty()) c = c.and(DSL.year(bma.RELEASE_DATE).cast(String::class.java).`in`(releaseYears))
 
     return c
   }

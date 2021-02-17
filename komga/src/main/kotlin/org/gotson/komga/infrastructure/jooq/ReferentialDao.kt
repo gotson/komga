@@ -169,10 +169,10 @@ class ReferentialDao(
 
   override fun findAllSeriesReleaseDates(): Set<LocalDate> =
     dsl.selectDistinct(bma.RELEASE_DATE)
-    .from(bma)
-    .where(bma.RELEASE_DATE.isNotNull)
-    .orderBy(bma.RELEASE_DATE.desc())
-    .fetchSet(bma.RELEASE_DATE)
+      .from(bma)
+      .where(bma.RELEASE_DATE.isNotNull)
+      .orderBy(bma.RELEASE_DATE.desc())
+      .fetchSet(bma.RELEASE_DATE)
 
   override fun findAllSeriesReleaseDatesByLibrary(libraryId: String): Set<LocalDate> =
     dsl.selectDistinct(bma.RELEASE_DATE)

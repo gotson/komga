@@ -35,7 +35,7 @@ class FileSystemScanner(
     logger.info { "Excluded patterns: ${komgaProperties.librariesScanDirectoryExclusions}" }
     logger.info { "Force directory modified time: $forceDirectoryModifiedTime" }
 
-    if(!(Files.isDirectory(root) && Files.isReadable(root)))
+    if (!(Files.isDirectory(root) && Files.isReadable(root)))
       throw DirectoryNotFoundException("Library root is not accessible: $root")
 
     lateinit var scannedSeries: Map<Series, List<Book>>

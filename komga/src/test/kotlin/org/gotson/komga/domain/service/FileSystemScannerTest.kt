@@ -8,7 +8,6 @@ import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.junit.jupiter.api.Test
-import java.lang.Exception
 import java.nio.file.Files
 import java.nio.file.Path
 

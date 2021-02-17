@@ -269,7 +269,6 @@ class SeriesControllerTest(
     }
   }
 
-
   @Nested
   inner class RestrictedUserByRole {
     @Test

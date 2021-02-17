@@ -402,11 +402,13 @@ class SeriesController(
     }
 
     return ResponseEntity.ok()
-      .headers(HttpHeaders().apply {
-        contentDisposition = ContentDisposition.builder("attachment")
-          .filename(seriesMetadataRepository.findById(seriesId).title + ".zip")
-          .build()
-      })
+      .headers(
+        HttpHeaders().apply {
+          contentDisposition = ContentDisposition.builder("attachment")
+            .filename(seriesMetadataRepository.findById(seriesId).title + ".zip")
+            .build()
+        }
+      )
       .contentType(MediaType.parseMediaType("application/zip"))
       .body(streamingResponse)
   }

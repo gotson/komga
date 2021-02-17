@@ -195,7 +195,7 @@ class MetadataLifecycle(
       }
   }
 
-  fun aggregateMetadata(series: Series){
+  fun aggregateMetadata(series: Series) {
     logger.info { "Aggregate book metadata for series: $series" }
 
     val metadatas = bookMetadataRepository.findByIds(bookRepository.findAllIdBySeriesId(series.id))

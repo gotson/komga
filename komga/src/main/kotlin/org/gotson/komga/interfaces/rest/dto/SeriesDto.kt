@@ -1,7 +1,6 @@
 package org.gotson.komga.interfaces.rest.dto
 
 import com.fasterxml.jackson.annotation.JsonFormat
-import org.gotson.komga.domain.model.Author
 import java.time.LocalDate
 import java.time.LocalDateTime
 

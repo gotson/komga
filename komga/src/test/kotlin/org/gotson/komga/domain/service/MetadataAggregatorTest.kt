@@ -10,10 +10,10 @@ class MetadataAggregatorTest {
   private val aggregator = MetadataAggregator()
 
   @Test
-  fun `given metadatas when aggregating then aggregation is relevant`(){
+  fun `given metadatas when aggregating then aggregation is relevant`() {
     val metadatas = listOf(
-      BookMetadata(title = "ignored", summary = "summary 1", number = "1", numberSort = 1F, authors = listOf(Author("author1", "role1"), Author("author2", "role2")), releaseDate = LocalDate.of(2020, 1,1)),
-      BookMetadata(title = "ignored", summary = "summary 2", number = "2", numberSort = 2F, authors = listOf(Author("author3", "role3"), Author("author2", "role3")), releaseDate = LocalDate.of(2021, 1,1)),
+      BookMetadata(title = "ignored", summary = "summary 1", number = "1", numberSort = 1F, authors = listOf(Author("author1", "role1"), Author("author2", "role2")), releaseDate = LocalDate.of(2020, 1, 1)),
+      BookMetadata(title = "ignored", summary = "summary 2", number = "2", numberSort = 2F, authors = listOf(Author("author3", "role3"), Author("author2", "role3")), releaseDate = LocalDate.of(2021, 1, 1)),
     )
 
     val aggregation = aggregator.aggregate(metadatas)
@@ -25,7 +25,7 @@ class MetadataAggregatorTest {
   }
 
   @Test
-  fun `given metadatas with summary only on second book when aggregating then aggregation has second book's summary`(){
+  fun `given metadatas with summary only on second book when aggregating then aggregation has second book's summary`() {
     val metadatas = listOf(
       BookMetadata(title = "ignored", number = "1", numberSort = 1F),
       BookMetadata(title = "ignored", summary = "summary 2", number = "2", numberSort = 2F),
@@ -38,10 +38,10 @@ class MetadataAggregatorTest {
   }
 
   @Test
-  fun `given metadatas with second book with earlier release date when aggregating then aggregation has release date from second book`(){
+  fun `given metadatas with second book with earlier release date when aggregating then aggregation has release date from second book`() {
     val metadatas = listOf(
-      BookMetadata(title = "ignored", number = "1", numberSort = 1F, releaseDate = LocalDate.of(2020, 1,1)),
-      BookMetadata(title = "ignored", number = "2", numberSort = 2F, releaseDate = LocalDate.of(2019, 1,1)),
+      BookMetadata(title = "ignored", number = "1", numberSort = 1F, releaseDate = LocalDate.of(2020, 1, 1)),
+      BookMetadata(title = "ignored", number = "2", numberSort = 2F, releaseDate = LocalDate.of(2019, 1, 1)),
     )
 
     val aggregation = aggregator.aggregate(metadatas)
@@ -50,7 +50,7 @@ class MetadataAggregatorTest {
   }
 
   @Test
-  fun `given metadatas with duplicate authors when aggregating then aggregation has no duplicate authors`(){
+  fun `given metadatas with duplicate authors when aggregating then aggregation has no duplicate authors`() {
     val metadatas = listOf(
       BookMetadata(title = "ignored", number = "1", numberSort = 1F, authors = listOf(Author("author1", "role1"), Author("author2", "role2"))),
       BookMetadata(title = "ignored", number = "2", numberSort = 2F, authors = listOf(Author("author1", "role1"), Author("author2", "role2"))),
