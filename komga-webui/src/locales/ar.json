@@ -1,0 +1,167 @@
+{
+  "account_settings": {
+    "account_settings": "إعدادات الحساب",
+    "change_password": "تغيير كلمة السر"
+  },
+  "bookreader": {
+    "beginning_of_book": "أنت في بداية الكتاب.",
+    "changing_reading_direction": "تغيير اتجاه القراءة إلى",
+    "cycling_page_layout": "تخطيط دوري للصفحة",
+    "end_of_book": "لقد وصلت إلى نهاية الكتاب.",
+    "from_series_metadata": "من البيانات الوصفية للسلسلة",
+    "move_next": "انقر أو اضغط على التالي مرة أخرى للانتقال إلى الكتاب التالي.",
+    "move_next_exit": "انقر أو اضغط التالي مرة أخرى للخروج من القارئ.",
+    "move_previous": "انقر أو اضغط على السابق مرة أخرى للانتقال إلى الكتاب السابق.",
+    "paged_reader_layout": {
+      "double": "صفحات مزدوجة",
+      "double_no_cover": "صفحات مزدوجة (بدون غلاف)",
+      "single": "صفحة منفردة"
+    },
+    "reader_settings": "إعدادات القارئ",
+    "scale_type": {
+      "continuous_original": "الأصلي",
+      "continuous_width": "ملائمة العرض",
+      "height": "ملائمة الطول",
+      "original": "الأصلي",
+      "screen": "شاشة",
+      "width": "ملائمة العرض"
+    },
+    "settings": {
+      "animate_page_transitions": "مؤثرات الانتقال بين الصفحات",
+      "background_color": "لون الخلفية",
+      "background_colors": {
+        "black": "أسود",
+        "white": "أبيض"
+      },
+      "display": "العرض",
+      "general": "إعدادات عامة",
+      "gestures": "الإيماءات",
+      "page_layout": "تخطيط الصفحة",
+      "paged": "عارض الصفحات",
+      "reading_mode": "وضع القراءة",
+      "scale_type": "نوع القياس",
+      "side_padding": "المساحة الجانبية",
+      "side_padding_none": "لا شيء",
+      "webtoon": "ويبتون"
+    },
+    "shortcuts": {
+      "close": "إغلاق",
+      "cycle_page_layout": "دورة تخطيط الصفحة",
+      "cycle_scale": "مقياس الدورة",
+      "first_page": "الصفحة الأولى",
+      "last_page": "آخر صفحة",
+      "left_to_right": "من اليسار إلى اليمين",
+      "menus": "القوائم",
+      "next_page": "الصفحة التالية",
+      "previous_page": "الصفحة السابقة",
+      "reader_navigation": "نقل القارئ",
+      "right_to_left": "من اليمين الى اليسار",
+      "settings": "إعدادات",
+      "show_hide_help": "إظهار / إخفاء المساعدة",
+      "show_hide_settings": "إظهار / إخفاء قائمة الإعدادات",
+      "show_hide_thumbnails": "إظهار / إخفاء مستكشف الصور المصغرة",
+      "show_hide_toolbars": "إظهار/إخفاء أشرطة الأدوات",
+      "vertical": "عمودي",
+      "webtoon": "ويبتون"
+    }
+  },
+  "browse_book": {
+    "comment": "تعليق",
+    "download_file": "تحميل الملف",
+    "file": "ملف",
+    "format": "صيغة",
+    "navigation_within_readlist": "التنقل ضمن قائمة القراءة",
+    "read_book": "قراءة كتاب",
+    "size": "حجم"
+  },
+  "browse_collection": {
+    "edit_collection": "تحرير المجموعة",
+    "edit_elements": "تحرير العناصر",
+    "manual_ordering": "ترتيب يدوي"
+  },
+  "browse_readlist": {
+    "edit_elements": "تحرير العناصر",
+    "edit_readlist": "تحرير قائمة القراءة"
+  },
+  "browse_series": {
+    "earliest_year_from_release_dates": "هذه هي السنة الأولى من تواريخ الإصدار لجميع الكتب في السلسلة",
+    "series_no_summary": "هذه السلسلة لا تحتوي على ملخص ، لذلك اخترنا واحدًا لك!",
+    "summary_from_book": "ملخص من الكتاب {number}:"
+  },
+  "common": {
+    "all_libraries": "كل المكتبات",
+    "books": "كتب",
+    "books_n": "لا يوجد كتاب | 1 كتاب | {count} كتب",
+    "cancel": "إلغاء",
+    "close": "إغلاق",
+    "collections": "ديوان كتب مصورة",
+    "create": "خلق",
+    "delete": "حذف",
+    "email": "البريد الإلكتروني",
+    "filter_no_matches": "الفلتر النشط ليس له تطابق",
+    "genre": "نوع",
+    "go_to_library": "اذهب إلى المكتبة",
+    "locale_name": "اللغة العربية",
+    "n_selected": "{count} مختار",
+    "nothing_to_show": "لا شيء للعرض",
+    "pages": "صفحات",
+    "pages_n": "لا توجد صفحات | 1 صفحة | {count} صفحات",
+    "password": "كلمة السر",
+    "publisher": "الناشر",
+    "readlists": "قوائم القراءة",
+    "required": "مطلوب",
+    "roles": "أدوار",
+    "series": "سلسلة",
+    "tags": "التصنيف",
+    "use_filter_panel_to_change_filter": "استخدام لوحة الفلتر لتغيير فلتر نشط",
+    "year": "سنة"
+  },
+  "dashboard": {
+    "keep_reading": "استئناف القراءة",
+    "on_deck": "على السطح",
+    "recently_added_books": "كتب مصورة مضافة مؤخرًا",
+    "recently_added_series": "كتب مصورة أضيفت مؤخرا",
+    "recently_updated_series": "كتب مصورة تم تحديثها مؤخرًا"
+  },
+  "enums": {
+    "reading_direction": {
+      "LEFT_TO_RIGHT": "من اليسار إلى اليمين",
+      "RIGHT_TO_LEFT": "من اليمين الى اليسار",
+      "VERTICAL": "عمودي",
+      "WEBTOON": "ويبتون"
+    },
+    "series_status": {
+      "ABANDONED": "مهجور",
+      "ENDED": "مكتمل",
+      "HIATUS": "متوقف",
+      "ONGOING": "مستمر"
+    }
+  },
+  "home": {
+    "theme": "السمة",
+    "translation": "ترجمة"
+  },
+  "login": {
+    "create_user_account": "إنشاء حساب مستخدم",
+    "login": "تسجيل الدخول",
+    "unclaimed_html": "خادم Komga هذا غير نشط بعد ، فأنت بحاجة إلى إنشاء حساب مستخدم لتتمكن من الوصول إليه.<br><br>اختر<strong>بريد إلكتروني<strong>و<strong>كلمة مرور<strong>وانقر على<strong>إنشاء حساب مستخدم<strong></strong></strong></strong></strong></strong></strong>"
+  },
+  "navigation": {
+    "home": "الصفحة الرئيسية",
+    "libraries": "المكتبات",
+    "logout": "تسجيل الخروج"
+  },
+  "page_not_found": {
+    "go_back_to_home_page": "العودة إلى الصفحة الرئيسية",
+    "page_does_not_exist": "الصفحة التي تبحث عنها غير موجودة.",
+    "page_not_found": "الصفحة غير موجودة"
+  },
+  "server_settings": {
+    "server_settings": "اعدادات الخادم"
+  },
+  "theme": {
+    "dark": "قاتم",
+    "light": "فاتح",
+    "system": "نظام"
+  }
+}

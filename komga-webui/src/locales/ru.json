@@ -1,0 +1,72 @@
+{
+  "account_settings": {
+    "account_settings": "настройки учётной записи",
+    "change_password": "изменить пароль"
+  },
+  "bookreader": {
+    "reader_settings": "Настройки Просмотрщика",
+    "scale_type": {
+      "height": "По высоте",
+      "original": "Исходное",
+      "screen": "По экрану",
+      "width": "По ширине"
+    },
+    "settings": {
+      "animate_page_transitions": "Анимировать переходы страниц",
+      "background_color": "Цвет фона",
+      "background_colors": {
+        "black": "Чёрный",
+        "white": "Белый"
+      },
+      "display": "Отображение",
+      "general": "Общие",
+      "gestures": "Жесты",
+      "paged": "Страницы",
+      "reading_mode": "Режим чтения",
+      "scale_type": "Масштабирование",
+      "side_padding": "Боковой отступ",
+      "side_padding_none": "Нет"
+    }
+  },
+  "common": {
+    "all_libraries": "Все библиотеки",
+    "books": "Книги",
+    "cancel": "Отмена",
+    "close": "Закрыть",
+    "collections": "Коллекции",
+    "create": "Создать",
+    "delete": "Удалить",
+    "email": "Email",
+    "filter_no_matches": "Нет совпадений по заданному фильтру",
+    "genre": "Жанр",
+    "go_to_library": "Вернуться к библиотеке",
+    "locale_name": "Русский",
+    "n_selected": "{count} выбрано",
+    "pages": "страниц",
+    "password": "Пароль",
+    "publisher": "Издатель",
+    "roles": "Роли",
+    "series": "Серии",
+    "tags": "Теги",
+    "use_filter_panel_to_change_filter": "Воспользуйтесь панелью фильтров для изменения активного фильтра",
+    "year": "год"
+  },
+  "dashboard": {
+    "keep_reading": "продолжить чтение",
+    "recently_added_books": "недавно добавленные книги",
+    "recently_added_series": "недавно добавленные серии",
+    "recently_updated_series": "недавно обновленные серии"
+  },
+  "enums": {
+    "reading_direction": {
+      "LEFT_TO_RIGHT": "Слева на право",
+      "RIGHT_TO_LEFT": "Справа на лево",
+      "VERTICAL": "Вертикальный"
+    }
+  },
+  "theme": {
+    "dark": "Тёмная",
+    "light": "Светлая",
+    "system": "Системная"
+  }
+}

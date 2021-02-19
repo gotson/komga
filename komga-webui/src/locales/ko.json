@@ -1,0 +1,318 @@
+{
+  "account_settings": {
+    "account_settings": "계정 설정",
+    "change_password": "비밀번호 변경"
+  },
+  "author_roles": {
+    "colorist": "채색",
+    "cover": "표지",
+    "editor": "편집",
+    "inker": "그림",
+    "letterer": "글자",
+    "penciller": "글",
+    "writer": "저자"
+  },
+  "bookreader": {
+    "beginning_of_book": "책에 첫 페이지입니다.",
+    "end_of_book": "책에 마지막 페이지입니다.",
+    "move_next": "다음 책으로 이동하려면 다음을 선택하거나 다시 한번 눌러주세요.",
+    "move_next_exit": "읽기를 종료하려면 다음을 선택하거나 다시 한번 눌러주세요.",
+    "move_previous": "이전 책으로 이동하려면 이전을 선택하거나 다시 한번 눌러주세요.",
+    "paged_reader_layout": {
+      "double": "두쪽 보기",
+      "double_no_cover": "두쪽 보기 (표지 포함)",
+      "single": "한쪽 보기"
+    },
+    "reader_settings": "읽기 설정",
+    "scale_type": {
+      "continuous_original": "원래 크기",
+      "continuous_width": "너비 맞춤",
+      "height": "높이 맞춤",
+      "original": "원래 크기",
+      "screen": "화면에 맞춤",
+      "width": "너비 맞춤"
+    },
+    "settings": {
+      "animate_page_transitions": "페이지 넘김 효과",
+      "background_color": "배경 색상",
+      "background_colors": {
+        "black": "검정",
+        "white": "흰색"
+      },
+      "display": "화면",
+      "general": "일반",
+      "gestures": "제스처",
+      "page_layout": "페이지 배치",
+      "paged": "페이지",
+      "reading_mode": "읽기 방식",
+      "scale_type": "비율 종류",
+      "side_padding": "여백 추가",
+      "side_padding_none": "없음",
+      "webtoon": "웹툰"
+    },
+    "shortcuts": {
+      "close": "닫기",
+      "cycle_page_layout": "페이지 배치 전환",
+      "cycle_scale": "비율 전환",
+      "cycle_side_padding": "여백 전환",
+      "first_page": "첫 페이지",
+      "last_page": "마지막 페이지",
+      "left_to_right": "왼쪽에서 오른쪽",
+      "menus": "메뉴",
+      "next_page": "다음 페이지",
+      "previous_page": "이전 페이지",
+      "right_to_left": "오른쪽에서 왼쪽",
+      "show_hide_help": "도움말 켜기/끄기",
+      "show_hide_settings": "설정 메뉴 켜기/끄기",
+      "show_hide_thumbnails": "썸네일 탐색기 켜기/끄기",
+      "show_hide_toolbars": "툴바 켜기/끄기",
+      "vertical": "세로",
+      "webtoon": "웹툰"
+    }
+  },
+  "browse_book": {
+    "download_file": "파일 다운로드",
+    "file": "파일",
+    "format": "파일 형식",
+    "navigation_within_readlist": "읽기 목록 내 탐색",
+    "read_book": "책 읽기",
+    "size": "용량"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "모음집 관리"
+  },
+  "common": {
+    "all_libraries": "모든 서재",
+    "books": "권",
+    "books_n": "없음 | 1 권 | {count} 권",
+    "cancel": "취소",
+    "close": "닫기",
+    "collections": "모음집",
+    "create": "만들기",
+    "delete": "삭제",
+    "email": "이메일",
+    "filter_no_matches": "선택된 필터에 일치하는 항목이 없습니다",
+    "genre": "장르",
+    "go_to_library": "서재로 가기",
+    "locale_name": "한국어",
+    "n_selected": "{count}선택 됨",
+    "nothing_to_show": "내용 없음",
+    "pages": "페이지",
+    "password": "비밀번호",
+    "publisher": "출판사",
+    "readlists": "리스트 보기",
+    "series": "시리즈",
+    "tags": "태그",
+    "use_filter_panel_to_change_filter": "필터패널에서 선택을 바꿔보세요",
+    "year": "년"
+  },
+  "dashboard": {
+    "keep_reading": "이어보기",
+    "recently_added_books": "최근 추가된 책",
+    "recently_added_series": "최근 추가된 시리즈",
+    "recently_updated_series": "최근 갱신된 시리즈"
+  },
+  "dialog": {
+    "add_user": {
+      "button_confirm": "추가",
+      "dialog_title": "사용자 추가",
+      "field_email_error": "올바른 이메일 주소여야 합니다"
+    },
+    "delete_library": {
+      "button_cancel": "취소",
+      "confirm_delete": "네, 서재 \"{name}\" 를 삭제합니다",
+      "warning_html": "라이브러리 <b>{name}</b> 이(가) 이 서버에서 제거됩니다. 미디어 파일은 영향을 받지 않습니다. <b>이 일은 되돌릴 수 없습니다.</b> 계속 하시겠습니까?"
+    },
+    "delete_user": {
+      "button_cancel": "취소",
+      "button_confirm": "삭제",
+      "confirm_delete": "네, 사용자 {name}를 삭제합니다",
+      "dialog_title": "사용자 삭제",
+      "warning_html": "사용자 <b>{name}</b> 가 서버에서 삭제됩니다. 삭제 시 <b>되돌릴 수 없습니다.</b> 계속하시겠습니까?"
+    },
+    "edit_books": {
+      "field_tags": "태그"
+    },
+    "edit_library": {
+      "button_browse": "찾기",
+      "button_cancel": "취소",
+      "button_confirm_add": "추가",
+      "button_confirm_edit": "수정",
+      "dialog_title_add": "서재 추가하기",
+      "field_import_comicinfo_book": "책 메타데이터",
+      "field_import_comicinfo_collections": "모음집",
+      "field_import_comicinfo_readlists": "읽기 목록",
+      "field_import_comicinfo_series": "시리즈 메타데이터",
+      "field_import_epub_book": "책 메타데이터",
+      "field_import_epub_series": "시리즈 메타데이터",
+      "field_name": "이름",
+      "field_root_folder": "루트 폴더",
+      "file_browser_dialog_button_confirm": "선택",
+      "file_browser_dialog_title": "서재의 루트 폴더",
+      "label_import_comicinfo": "ComicInfo.xml 파일이 포함된 CBR/CBZ의 메타데이터 가져오기",
+      "label_import_epub": "EPUB 파일에서 메타데이터 가져오기",
+      "label_scanner": "스캐너",
+      "tab_general": "일반",
+      "tab_options": "옵션"
+    },
+    "edit_series": {
+      "button_cancel": "취소",
+      "button_confirm": "변경 저장",
+      "field_age_rating": "연령 등급",
+      "field_age_rating_error": "연령 등급은 0 이상이어야 합니다",
+      "field_genres": "장르",
+      "field_language": "언어",
+      "field_publisher": "출판사",
+      "field_reading_direction": "읽기 방향",
+      "field_sort_title": "정렬 제목",
+      "field_status": "상태",
+      "field_summary": "개요",
+      "field_tags": "태그",
+      "field_title": "제목",
+      "tab_general": "일반",
+      "tab_tags": "태그",
+      "tags_notice_multiple_edit": "다수의 시리즈를 일괄 편집합니다. 기존 태그가 수정될 수 있습니다."
+    },
+    "edit_user": {
+      "button_cancel": "취소",
+      "button_confirm": "변경 저장",
+      "dialog_title": "사용자 수정"
+    },
+    "edit_user_shared_libraries": {
+      "button_cancel": "취소",
+      "button_confirm": "변경 저장",
+      "dialog_title": "공유된 서재 수정",
+      "field_all_libraries": "모든 서재"
+    },
+    "file_browser": {
+      "button_cancel": "취소",
+      "button_confirm_default": "선택",
+      "dialog_title_default": "파일 탐색기",
+      "parent_directory": "상위 폴더"
+    },
+    "password_change": {
+      "button_cancel": "취소",
+      "button_confirm": "비밀번호 변경",
+      "dialog_title": "비밀번호 변경",
+      "field_new_password": "새로운 비밀번호",
+      "field_new_password_error": "새로운 비밀번호가 필요합니다.",
+      "field_repeat_password": "새로운 비밀번호 반복 입력",
+      "field_repeat_password_error": "비밀번호는 동일해야 합니다."
+    }
+  },
+  "enums": {
+    "reading_direction": {
+      "LEFT_TO_RIGHT": "왼쪽에서 오른쪽",
+      "RIGHT_TO_LEFT": "오른쪽에서 왼쪽",
+      "VERTICAL": "세로",
+      "WEBTOON": "웹툰"
+    },
+    "series_status": {
+      "ABANDONED": "연재 중단",
+      "ENDED": "완결",
+      "HIATUS": "휴재",
+      "ONGOING": "연재"
+    }
+  },
+  "filter": {
+    "age_rating": "연령 등급",
+    "genre": "장르",
+    "language": "언어",
+    "library": "서재",
+    "publisher": "출판사",
+    "release_date": "발매일",
+    "status": "상태",
+    "tag": "태그",
+    "unread": "읽지 않음"
+  },
+  "filter_drawer": {
+    "filter": "필터",
+    "sort": "정렬"
+  },
+  "home": {
+    "theme": "테마",
+    "translation": "언어"
+  },
+  "library_navigation": {
+    "browse": "탐색"
+  },
+  "login": {
+    "create_user_account": "사용자 계정 만들기",
+    "login": "로그인",
+    "unclaimed_html": "Komga 서버가 아직 활성화 되지 않았습니다. 접속하려면 사용자 계정을 만들어야 합니다.<strong>이메일과 암호</strong>를 설정하고 <strong>사용자 계정 만들기</strong>를 클릭합니다."
+  },
+  "media_analysis": {
+    "media_analysis": "미디어 분석",
+    "media_type": "미디어 타입",
+    "name": "이름",
+    "size": "용량",
+    "status": "상태",
+    "url": "URL"
+  },
+  "menu": {
+    "analyze": "분석",
+    "mark_read": "읽음으로 표시",
+    "mark_unread": "읽지 않음으로 표시",
+    "refresh_metadata": "메타데이터 새로고침"
+  },
+  "navigation": {
+    "home": "홈",
+    "libraries": "서재",
+    "logout": "로그아웃"
+  },
+  "page_not_found": {
+    "page_does_not_exist": "찾는 페이지가 없습니다.",
+    "page_not_found": "페이지를 찾을 수 없습니다"
+  },
+  "read_more": {
+    "less": "읽기 없음",
+    "more": "더 보기"
+  },
+  "readlists_expansion_panel": {
+    "manage_readlist": "읽기 목록 관리"
+  },
+  "search": {
+    "no_results": "검색 결과 없음",
+    "search": "검색",
+    "search_for_something_else": "다른 항목을 검색해 보세요",
+    "search_results_for": "\"{name}\"검색 결과"
+  },
+  "searchbox": {
+    "no_results": "결과 없음"
+  },
+  "server_settings": {
+    "server_settings": "서버 설정"
+  },
+  "settings_user": {
+    "edit_user": "사용자 수정",
+    "role_administrator": "관리자",
+    "role_user": "사용자"
+  },
+  "sort": {
+    "date_added": "추가된 날짜",
+    "date_updated": "갱신된 날짜",
+    "file_size": "파일 크기",
+    "name": "제목",
+    "number": "번호",
+    "release_date": "발매일"
+  },
+  "theme": {
+    "dark": "어두운",
+    "light": "밝은",
+    "system": "시스템"
+  },
+  "user_roles": {
+    "ADMIN": "관리자",
+    "FILE_DOWNLOAD": "파일 다운로드",
+    "PAGE_STREAMING": "스트리밍",
+    "USER": "사용자"
+  },
+  "users": {
+    "users": "사용자"
+  },
+  "welcome": {
+    "add_library": "서재 추가",
+    "no_libraries_yet": "서재가 아직 추가되지 않았습니다!",
+    "welcome_message": "Komga에 오신걸 환영합니다"
+  }
+}
