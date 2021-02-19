@@ -291,6 +291,9 @@ export default Vue.extend({
       pageSizeUnwatch: null as any,
       collections: [] as CollectionDto[],
       drawer: false,
+      filterOptions: {
+        tag: [] as NameValue[],
+      },
     }
   },
   computed: {
@@ -309,7 +312,7 @@ export default Vue.extend({
     },
     filterOptionsPanel(): FiltersOptions {
       return {
-        tag: {name: this.$i18n.t('filter.tag').toString(), values: []},
+        tag: {name: this.$i18n.t('filter.tag').toString(), values: this.filterOptions.tag},
       } as FiltersOptions
     },
     isAdmin(): boolean {
@@ -386,7 +389,7 @@ export default Vue.extend({
     this.sortActive = this.parseQuerySortOrDefault(this.$route.query.sort)
 
     this.filters.readStatus = parseQueryFilter(this.$route.query.readStatus, Object.keys(ReadStatus))
-    this.filters.tag = parseQueryFilter(this.$route.query.tag, this.filterOptionsPanel.tag.values.map(x => x.value))
+    this.filters.tag = parseQueryFilter(this.$route.query.tag, this.filterOptions.tag.map(x => x.value))
 
     if (this.$route.query.page) this.page = Number(this.$route.query.page)
     if (this.$route.query.pageSize) this.pageSize = Number(this.$route.query.pageSize)
@@ -407,7 +410,7 @@ export default Vue.extend({
       this.totalElements = null
       this.books = []
       this.collections = []
-      this.filterOptionsPanel.tag.values = []
+      this.filterOptions.tag = []
 
       this.loadSeries(to.params.seriesId)
 
@@ -461,7 +464,7 @@ export default Vue.extend({
       this.series = await this.$komgaSeries.getOneSeries(seriesId)
       this.collections = await this.$komgaSeries.getCollections(seriesId)
 
-      this.filterOptionsPanel.tag.values = toNameValue(await this.$komgaReferential.getTags(undefined, this.seriesId))
+      this.filterOptions.tag = toNameValue(await this.$komgaReferential.getTags(undefined, this.seriesId))
 
       await this.loadPage(seriesId, this.page, this.sortActive)
     },

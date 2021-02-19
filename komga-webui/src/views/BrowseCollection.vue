@@ -146,6 +146,15 @@ export default Vue.extend({
       filters: {} as FiltersActive,
       filterUnwatch: null as any,
       drawer: false,
+      filterOptions: {
+        library: [] as NameValue[],
+        genre: [] as NameValue[],
+        tag: [] as NameValue[],
+        publisher: [] as NameValue[],
+        language: [] as NameValue[],
+        ageRating: [] as NameValue[],
+        releaseDate: [] as NameValue[],
+      },
     }
   },
   props: {
@@ -193,13 +202,13 @@ export default Vue.extend({
       this.resetParams(this.$route)
       this.series = []
       this.editElements = false
-      this.filterOptionsPanel.library.values = []
-      this.filterOptionsPanel.genre.values = []
-      this.filterOptionsPanel.tag.values = []
-      this.filterOptionsPanel.publisher.values = []
-      this.filterOptionsPanel.language.values = []
-      this.filterOptionsPanel.ageRating.values = []
-      this.filterOptionsPanel.releaseDate.values = []
+      this.filterOptions.library = []
+      this.filterOptions.genre = []
+      this.filterOptions.tag = []
+      this.filterOptions.publisher = []
+      this.filterOptions.language = []
+      this.filterOptions.ageRating = []
+      this.filterOptions.releaseDate = []
 
       this.loadCollection(to.params.collectionId)
 
@@ -216,14 +225,14 @@ export default Vue.extend({
     },
     filterOptionsPanel(): FiltersOptions {
       return {
-        library: {name: this.$i18n.t('filter.library').toString(), values: []},
+        library: {name: this.$i18n.t('filter.library').toString(), values: this.filterOptions.library},
         status: {name: this.$i18n.t('filter.status').toString(), values: SeriesStatusKeyValue()},
-        genre: {name: this.$i18n.t('filter.genre').toString(), values: []},
-        tag: {name: this.$i18n.t('filter.tag').toString(), values: []},
-        publisher: {name: this.$i18n.t('filter.publisher').toString(), values: []},
-        language: {name: this.$i18n.t('filter.language').toString(), values: []},
-        ageRating: {name: this.$i18n.t('filter.age_rating').toString(), values: []},
-        releaseDate: {name: this.$i18n.t('filter.release_date').toString(), values: []},
+        genre: {name: this.$i18n.t('filter.genre').toString(), values: this.filterOptions.genre},
+        tag: {name: this.$i18n.t('filter.tag').toString(), values: this.filterOptions.tag},
+        publisher: {name: this.$i18n.t('filter.publisher').toString(), values: this.filterOptions.publisher},
+        language: {name: this.$i18n.t('filter.language').toString(), values: this.filterOptions.language},
+        ageRating: {name: this.$i18n.t('filter.age_rating').toString(), values: this.filterOptions.ageRating},
+        releaseDate: {name: this.$i18n.t('filter.release_date').toString(), values: this.filterOptions.releaseDate},
       } as FiltersOptions
     },
     isAdmin(): boolean {
@@ -235,14 +244,15 @@ export default Vue.extend({
   },
   methods: {
     resetParams(route: any) {
-      if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating) {
+      if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating || route.query.library) {
         this.filters.status = parseQueryFilter(route.query.status, Object.keys(SeriesStatus))
         this.filters.readStatus = parseQueryFilter(route.query.readStatus, Object.keys(ReadStatus))
-        this.filters.genre = parseQueryFilter(route.query.genre, this.filterOptionsPanel.genre.values.map(x => x.value))
-        this.filters.tag = parseQueryFilter(route.query.tag, this.filterOptionsPanel.tag.values.map(x => x.value))
-        this.filters.language = parseQueryFilter(route.query.language, this.filterOptionsPanel.language.values.map(x => x.value))
-        this.filters.ageRating = parseQueryFilter(route.query.ageRating, this.filterOptionsPanel.ageRating.values.map(x => x.value))
-        this.filters.releaseDate = parseQueryFilter(route.query.releaseDate, this.filterOptionsPanel.releaseDate.values.map(x => x.value))
+        this.filters.library = parseQueryFilter(route.query.library, this.filterOptions.library.map(x => x.value))
+        this.filters.genre = parseQueryFilter(route.query.genre, this.filterOptions.genre.map(x => x.value))
+        this.filters.tag = parseQueryFilter(route.query.tag, this.filterOptions.tag.map(x => x.value))
+        this.filters.language = parseQueryFilter(route.query.language, this.filterOptions.language.map(x => x.value))
+        this.filters.ageRating = parseQueryFilter(route.query.ageRating, this.filterOptions.ageRating.map(x => x.value))
+        this.filters.releaseDate = parseQueryFilter(route.query.releaseDate, this.filterOptions.releaseDate.map(x => x.value))
       } else {
         this.filters = this.$cookies.get(this.cookieFilter(route.params.collectionId)) || {} as FiltersActive
       }
@@ -281,16 +291,16 @@ export default Vue.extend({
       this.collection = await this.$komgaCollections.getOneCollection(collectionId)
       await this.loadSeries(collectionId)
 
-      this.filterOptionsPanel.library.values = this.$store.state.komgaLibraries.libraries.map((x: LibraryDto) => ({
+      this.filterOptions.library = this.$store.state.komgaLibraries.libraries.map((x: LibraryDto) => ({
         name: x.name,
         value: x.id,
       }))
-      this.filterOptionsPanel.genre.values = toNameValue(await this.$komgaReferential.getGenres(undefined, collectionId))
-      this.filterOptionsPanel.tag.values = toNameValue(await this.$komgaReferential.getTags(undefined, undefined, collectionId))
-      this.filterOptionsPanel.publisher.values = toNameValue(await this.$komgaReferential.getPublishers(undefined, collectionId))
-      this.filterOptionsPanel.language.values = (await this.$komgaReferential.getLanguages(undefined, collectionId))
-      this.filterOptionsPanel.ageRating.values = toNameValue(await this.$komgaReferential.getAgeRatings(undefined, collectionId))
-      this.filterOptionsPanel.releaseDate.values = toNameValue(await this.$komgaReferential.getSeriesReleaseDates(undefined, collectionId))
+      this.filterOptions.genre = toNameValue(await this.$komgaReferential.getGenres(undefined, collectionId))
+      this.filterOptions.tag = toNameValue(await this.$komgaReferential.getTags(undefined, undefined, collectionId))
+      this.filterOptions.publisher = toNameValue(await this.$komgaReferential.getPublishers(undefined, collectionId))
+      this.filterOptions.language = (await this.$komgaReferential.getLanguages(undefined, collectionId))
+      this.filterOptions.ageRating = toNameValue(await this.$komgaReferential.getAgeRatings(undefined, collectionId))
+      this.filterOptions.releaseDate = toNameValue(await this.$komgaReferential.getSeriesReleaseDates(undefined, collectionId))
     },
     updateRoute() {
       const loc = {
