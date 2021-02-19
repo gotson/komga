@@ -325,6 +325,7 @@
   },
   "filter": {
     "age_rating": "Classification d'âge",
+    "age_rating_none": "Aucune",
     "genre": "Genre",
     "language": "Langue",
     "library": "Bibliothèque",

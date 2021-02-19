@@ -325,6 +325,7 @@
   },
   "filter": {
     "age_rating": "age rating",
+    "age_rating_none": "None",
     "genre": "genre",
     "language": "language",
     "library": "library",

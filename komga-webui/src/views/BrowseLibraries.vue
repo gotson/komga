@@ -218,25 +218,32 @@ export default Vue.extend({
   computed: {
     sortOptions(): SortOption[] {
       return [
-        {name: this.$i18n.t('sort.name').toString(), key: 'metadata.titleSort'},
-        {name: this.$i18n.t('sort.date_added').toString(), key: 'createdDate'},
-        {name: this.$i18n.t('sort.date_updated').toString(), key: 'lastModifiedDate'},
+        {name: this.$t('sort.name').toString(), key: 'metadata.titleSort'},
+        {name: this.$t('sort.date_added').toString(), key: 'createdDate'},
+        {name: this.$t('sort.date_updated').toString(), key: 'lastModifiedDate'},
       ] as SortOption[]
     },
     filterOptionsList(): FiltersOptions {
       return {
-        readStatus: {values: [{name: this.$i18n.t('filter.unread').toString(), value: ReadStatus.UNREAD}]},
+        readStatus: {values: [{name: this.$t('filter.unread').toString(), value: ReadStatus.UNREAD}]},
       } as FiltersOptions
     },
     filterOptionsPanel(): FiltersOptions {
       return {
-        status: {name: this.$i18n.t('filter.status').toString(), values: SeriesStatusKeyValue()},
-        genre: {name: this.$i18n.t('filter.genre').toString(), values: this.filterOptions.genre},
-        tag: {name: this.$i18n.t('filter.tag').toString(), values: this.filterOptions.tag},
-        publisher: {name: this.$i18n.t('filter.publisher').toString(), values: this.filterOptions.publisher},
-        language: {name: this.$i18n.t('filter.language').toString(), values: this.filterOptions.language},
-        ageRating: {name: this.$i18n.t('filter.age_rating').toString(), values: this.filterOptions.ageRating},
-        releaseDate: {name: this.$i18n.t('filter.release_date').toString(), values: this.filterOptions.releaseDate},
+        status: {name: this.$t('filter.status').toString(), values: SeriesStatusKeyValue()},
+        genre: {name: this.$t('filter.genre').toString(), values: this.filterOptions.genre},
+        tag: {name: this.$t('filter.tag').toString(), values: this.filterOptions.tag},
+        publisher: {name: this.$t('filter.publisher').toString(), values: this.filterOptions.publisher},
+        language: {name: this.$t('filter.language').toString(), values: this.filterOptions.language},
+        ageRating: {
+          name: this.$t('filter.age_rating').toString(),
+          values: this.filterOptions.ageRating.map((x: NameValue) => ({
+              name: (x.value === 'None' ? this.$t('filter.age_rating_none').toString() : x.name),
+              value: x.value,
+            } as NameValue),
+          ),
+        },
+        releaseDate: {name: this.$t('filter.release_date').toString(), values: this.filterOptions.releaseDate},
       } as FiltersOptions
     },
     isAdmin(): boolean {

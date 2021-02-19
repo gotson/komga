@@ -299,20 +299,20 @@ export default Vue.extend({
   computed: {
     sortOptions(): SortOption[] {
       return [
-        {name: this.$i18n.t('sort.number').toString(), key: 'metadata.numberSort'},
-        {name: this.$i18n.t('sort.date_added').toString(), key: 'createdDate'},
-        {name: this.$i18n.t('sort.release_date').toString(), key: 'metadata.releaseDate'},
-        {name: this.$i18n.t('sort.file_size').toString(), key: 'fileSize'},
+        {name: this.$t('sort.number').toString(), key: 'metadata.numberSort'},
+        {name: this.$t('sort.date_added').toString(), key: 'createdDate'},
+        {name: this.$t('sort.release_date').toString(), key: 'metadata.releaseDate'},
+        {name: this.$t('sort.file_size').toString(), key: 'fileSize'},
       ] as SortOption[]
     },
     filterOptionsList(): FiltersOptions {
       return {
-        readStatus: {values: [{name: this.$i18n.t('filter.unread').toString(), value: ReadStatus.UNREAD}]},
+        readStatus: {values: [{name: this.$t('filter.unread').toString(), value: ReadStatus.UNREAD}]},
       } as FiltersOptions
     },
     filterOptionsPanel(): FiltersOptions {
       return {
-        tag: {name: this.$i18n.t('filter.tag').toString(), values: this.filterOptions.tag},
+        tag: {name: this.$t('filter.tag').toString(), values: this.filterOptions.tag},
       } as FiltersOptions
     },
     isAdmin(): boolean {
