@@ -6,7 +6,8 @@
              :title="$t('common.go_to_library')"
              :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }}"
       >
-        <v-icon>mdi-arrow-left</v-icon>
+        <v-icon v-if="$vuetify.rtl">mdi-arrow-right</v-icon>
+        <v-icon v-else>mdi-arrow-left</v-icon>
       </v-btn>
 
       <series-actions-menu v-if="series"
