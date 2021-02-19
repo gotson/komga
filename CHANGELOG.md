@@ -1,3 +1,10 @@
+## [0.71.2](https://github.com/gotson/komga/compare/v0.71.1...v0.71.2) (2021-02-19)
+
+
+### Bug Fixes
+
+* **webui:** right to left compatibility ([9420010](https://github.com/gotson/komga/commit/9420010caeba3053fd22e0579c2224c42dd08326))
+
 ## [0.71.1](https://github.com/gotson/komga/compare/v0.71.0...v0.71.1) (2021-02-19)
 
 
