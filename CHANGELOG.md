@@ -1,3 +1,10 @@
+## [0.71.1](https://github.com/gotson/komga/compare/v0.71.0...v0.71.1) (2021-02-19)
+
+
+### Bug Fixes
+
+* handle query parameters with square brackets ([245dea9](https://github.com/gotson/komga/commit/245dea906c52245ada916c7282cc5e579b4b8a87))
+
 # [0.71.0](https://github.com/gotson/komga/compare/v0.70.0...v0.71.0) (2021-02-17)
 
 
