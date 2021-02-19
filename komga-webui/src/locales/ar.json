@@ -133,7 +133,7 @@
     "year": "سنة"
   },
   "dashboard": {
-    "keep_reading": "استئناف القراءة",
+    "keep_reading": "مواصلة القراءة",
     "on_deck": "على السطح",
     "recently_added_books": "كتب مصورة مضافة مؤخرًا",
     "recently_added_series": "كتب مصورة أضيفت مؤخرا",
@@ -231,7 +231,82 @@
       "dialot_title_edit": "تحرير المكتبة",
       "field_import_comicinfo_book": "البيانات الوصفية للكتاب",
       "field_import_comicinfo_collections": "المجموعات",
-      "field_import_comicinfo_readlists": "قوائم القراءة"
+      "field_import_comicinfo_readlists": "قوائم القراءة",
+      "field_import_comicinfo_series": "سلسلة البيانات الوصفية",
+      "field_import_epub_book": "البيانات الوصفية للكتاب",
+      "field_import_epub_series": "سلسلة البيانات الوصفية",
+      "field_import_local_artwork": "الأعمال الفنية المحلية",
+      "field_name": "الاسم",
+      "field_root_folder": "المجلد الرئيسي",
+      "field_scanner_deep_scan": "تفحص بعمق",
+      "field_scanner_force_directory_modified_time": "فرض وقت تعديل الدليل",
+      "file_browser_dialog_button_confirm": "إختيار",
+      "file_browser_dialog_title": "المجلد الجذر للمكتبة",
+      "label_import_comicinfo": "استيراد البيانات الوصفية لـ CBR/CBZ التي تحتوي على ملف ComicInfo.xml",
+      "label_import_epub": "استيراد البيانات الوصفية من ملفات EPUB",
+      "label_import_local": "استيراد أصول الوسائط المحلية",
+      "label_scanner": "الماسح الضوئي",
+      "tab_general": "إعدادات عامة",
+      "tab_options": "الخيارات"
+    },
+    "edit_readlist": {
+      "button_cancel": "إلغاء",
+      "button_confirm": "حفظ التغييرات",
+      "dialog_title": "تحرير قائمة القراءة",
+      "field_name": "الاسم"
+    },
+    "edit_series": {
+      "button_cancel": "إلغاء",
+      "button_confirm": "حفظ التغييرات",
+      "dialog_title_multiple": "تحرير {count} سلسلة | تحرير {count} سلسلة",
+      "dialog_title_single": "تحرير {series}",
+      "field_age_rating": "التصنيف العمري",
+      "field_age_rating_error": "يجب أن يكون التصنيف العمري 0 أو أكثر",
+      "field_genres": "الأنواع",
+      "field_language": "اللغة",
+      "field_publisher": "الناشر",
+      "field_reading_direction": "اتجاه القراءة",
+      "field_sort_title": "فرز العنوان",
+      "field_status": "حالة",
+      "field_summary": "ملخص",
+      "field_tags": "التصنيف",
+      "field_title": "العنوان",
+      "mixed": "مختلط",
+      "tab_general": "إعدادات عامة",
+      "tab_tags": "التصنيف",
+      "tags_notice_multiple_edit": "أنت تقوم بتحرير العلامات لسلسلة متعددة. سيؤدي هذا إلى تجاوز العلامات الموجودة في كل سلسلة."
+    },
+    "edit_user": {
+      "button_cancel": "إلغاء",
+      "button_confirm": "حفظ التغييرات",
+      "dialog_title": "تحرير المستخدم",
+      "label_roles_for": "أدوار ل {name}"
+    },
+    "edit_user_shared_libraries": {
+      "button_cancel": "إلغاء",
+      "button_confirm": "حفظ التغييرات",
+      "dialog_title": "تحرير المكتبات المشتركة",
+      "field_all_libraries": "كل المكتبات",
+      "label_shared_with": "مشترك مع {name}"
+    },
+    "file_browser": {
+      "button_cancel": "إلغاء",
+      "button_confirm_default": "إختيار",
+      "dialog_title_default": "متصفح الملفات",
+      "parent_directory": "مستوى أعلى"
+    },
+    "password_change": {
+      "button_cancel": "إلغاء",
+      "button_confirm": "تغيير كلمة السر",
+      "dialog_title": "تغيير كلمة السر",
+      "field_new_password": "كلمة سر جديدة",
+      "field_new_password_error": "مطلوب كلمة سر جديدة.",
+      "field_repeat_password": "كرر كلمة السر الجديدة",
+      "field_repeat_password_error": "يجب أن تكون كلمات السر متطابقة."
+    },
+    "shortcut_help": {
+      "label_description": "الوصف",
+      "label_key": "مفتاح"
     }
   },
   "enums": {
@@ -248,14 +323,57 @@
       "ONGOING": "مستمر"
     }
   },
+  "filter": {
+    "age_rating": "التصنيف العمري",
+    "age_rating_none": "لا شيء",
+    "genre": "نوع",
+    "language": "اللغة",
+    "library": "المكتبة",
+    "publisher": "الناشر",
+    "release_date": "تاريخ الاصدار",
+    "status": "حالة",
+    "tag": "التصنيف",
+    "unread": "غير مقروء"
+  },
+  "filter_drawer": {
+    "filter": "منقي",
+    "sort": "فرز"
+  },
   "home": {
     "theme": "السمة",
     "translation": "ترجمة"
   },
+  "library_navigation": {
+    "browse": "تصفّح",
+    "collections": "المجموعات",
+    "readlists": "قوائم القراءة"
+  },
   "login": {
     "create_user_account": "إنشاء حساب مستخدم",
     "login": "تسجيل الدخول",
-    "unclaimed_html": "خادم Komga هذا غير نشط بعد ، فأنت بحاجة إلى إنشاء حساب مستخدم لتتمكن من الوصول إليه.<br><br>اختر<strong>بريد إلكتروني<strong>و<strong>كلمة مرور<strong>وانقر على<strong>إنشاء حساب مستخدم<strong></strong></strong></strong></strong></strong></strong>"
+    "unclaimed_html": "خادم Komga هذا غير نشط بعد ، فأنت بحاجة إلى إنشاء حساب مستخدم لتتمكن من الوصول إليه.اختربريد إلكتروني وكلمة مرور وانقر على إنشاء حساب مستخدم."
+  },
+  "media_analysis": {
+    "comment": "تعليق",
+    "media_analysis": "تحليل الوسائط",
+    "media_type": "نوع الوسائط",
+    "name": "الاسم",
+    "size": "الحجم",
+    "status": "حالة",
+    "url": "رابط"
+  },
+  "menu": {
+    "add_to_collection": "أضف إلى المجموعة",
+    "add_to_readlist": "أضف إلى قائمة القراءة",
+    "analyze": "تحليل",
+    "delete": "حذف",
+    "download_series": "تحميل سلسلة",
+    "edit": "تعديل",
+    "edit_metadata": "تحرير البيانات الوصفية",
+    "mark_read": "تحديد كمقروء",
+    "mark_unread": "تحديد كغير مقروء",
+    "refresh_metadata": "تحديث البيانات الوصفية",
+    "scan_library_files": "فحص ملفات المكتبة"
   },
   "navigation": {
     "home": "الصفحة الرئيسية",
@@ -267,12 +385,56 @@
     "page_does_not_exist": "الصفحة التي تبحث عنها غير موجودة.",
     "page_not_found": "الصفحة غير موجودة"
   },
+  "read_more": {
+    "less": "أقرأ أقل",
+    "more": "اقرأ أكثر"
+  },
+  "readlists_expansion_panel": {
+    "manage_readlist": "إدارة قائمة القراءة"
+  },
+  "search": {
+    "no_results": "لم يعرض البحث أية نتائج",
+    "search": "بحث",
+    "search_for_something_else": "حاول البحث عن شيء آخر",
+    "search_results_for": "نتائج البحث عن \"{name}\""
+  },
+  "searchbox": {
+    "no_results": "لاتوجد نتائج"
+  },
   "server_settings": {
     "server_settings": "اعدادات الخادم"
+  },
+  "settings_user": {
+    "edit_shared_libraries": "تحرير المكتبات المشتركة",
+    "edit_user": "تحرير المستخدم",
+    "role_administrator": "مدير",
+    "role_user": "مستخدم"
+  },
+  "sort": {
+    "date_added": "تاريخ الاضافة",
+    "date_updated": "تاريخ تحديث",
+    "file_size": "حجم الملف",
+    "name": "الاسم",
+    "number": "رقم",
+    "release_date": "تاريخ الاصدار"
   },
   "theme": {
     "dark": "قاتم",
     "light": "فاتح",
     "system": "نظام"
+  },
+  "user_roles": {
+    "ADMIN": "مدير",
+    "FILE_DOWNLOAD": "تحميل الملف",
+    "PAGE_STREAMING": "صفحات البث",
+    "USER": "مستخدم"
+  },
+  "users": {
+    "users": "المستخدمين"
+  },
+  "welcome": {
+    "add_library": "إضافة مكتبة",
+    "no_libraries_yet": "لم يتم إضافة مكتبات بعد!",
+    "welcome_message": "مرحبا بكم في Komga"
   }
 }
