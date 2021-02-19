@@ -1,3 +1,11 @@
+## [0.71.3](https://github.com/gotson/komga/compare/v0.71.2...v0.71.3) (2021-02-19)
+
+
+### Bug Fixes
+
+* **webui:** filter panel would not show values properly ([a63daaf](https://github.com/gotson/komga/commit/a63daafcce8975df46b9d65be83e9d1aac4fb374))
+* **webui:** incorrect rtl icon ([98a8f61](https://github.com/gotson/komga/commit/98a8f61a488856e038451a866184b0b1e3402f12))
+
 ## [0.71.2](https://github.com/gotson/komga/compare/v0.71.1...v0.71.2) (2021-02-19)
 
 
