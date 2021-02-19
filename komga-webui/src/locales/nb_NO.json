@@ -3,8 +3,22 @@
     "account_settings": "kontoinnstillinger",
     "change_password": "endre passord"
   },
+  "author_roles": {
+    "colorist": "fargeleggere",
+    "cover": "omslag",
+    "editor": "redaktører",
+    "writer": "skribenter"
+  },
   "bookreader": {
+    "beginning_of_book": "Du er på begynnelsen av boka.",
+    "changing_reading_direction": "Endrer leseretning til",
+    "cycling_page_layout": "Endrer sideoppsett til",
+    "cycling_scale": "Endrer skalering til",
+    "end_of_book": "Du har nådd slutten på boka.",
+    "from_series_metadata": "fra serie metadata",
+    "move_next": "Klikk eller trykk «Neste» igjen for å gå til neste bok.",
     "move_next_exit": "Klikk eller trykk «Neste» igjen for å avslutte leseren.",
+    "move_previous": "Klikk eller trykk «Bakover» igjen for å gå til forrige bok.",
     "reader_settings": "Leserinnstillinger",
     "settings": {
       "animate_page_transitions": "Animer sideoverganger",
@@ -67,7 +81,7 @@
     "genre": "Sjanger",
     "go_to_library": "Gå til bibliotek",
     "locale_name": "Norsk bokmål",
-    "locale_rtl" : "false",
+    "locale_rtl": "false",
     "n_selected": "{count} valgt",
     "nothing_to_show": "Ingenting å vise",
     "pages": "sider",
