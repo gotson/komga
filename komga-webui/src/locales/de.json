@@ -20,9 +20,9 @@
     "cycling_side_padding": "Seitenrand ändern",
     "end_of_book": "Sie haben das Ende des Buches erreicht.",
     "from_series_metadata": "Metadaten von Serie",
-    "move_next": "Klicke oder presse Vorwärts erneut um zum nächsten Buch zu gelangen.",
-    "move_next_exit": "Klicke oder presse Vorwärts erneut um den Reader zu beenden.",
-    "move_previous": "Klick oder drücke nochmal Vorherige Seite erneut um zum letzten Buch zu gelangen.",
+    "move_next": "Klicken Sie oder pressen Sie nocheinmal \"Nächste Seite\" um zum nächsten Buch zu gelangen.",
+    "move_next_exit": "Klicke oder presse Vorwärts erneut um den Lesemodus zu beenden.",
+    "move_previous": "Klicken Sie oder drücken Sie nocheinmal \"Vorherige Seite\" um zum letzten Buch zu gelangen.",
     "paged_reader_layout": {
       "double": "Doppelseite",
       "double_no_cover": "Doppelseitig ohne Titelbild",
@@ -117,7 +117,7 @@
     "genre": "Genre/Gattung",
     "go_to_library": "Gehe zu Bibliothek",
     "locale_name": "Deutsch",
-    "locale_rtl" : "false",
+    "locale_rtl": "false",
     "n_selected": "{count} markiert",
     "nothing_to_show": "Keine Treffer gefunden die angezeigt werden könnten",
     "pages": "Seiten",
@@ -425,7 +425,7 @@
   "user_roles": {
     "ADMIN": "Administrator",
     "FILE_DOWNLOAD": "Datei herunterladen",
-    "PAGE_STREAMING": "Seitenfluss",
+    "PAGE_STREAMING": "Online lesen",
     "USER": "Anwender"
   },
   "users": {
