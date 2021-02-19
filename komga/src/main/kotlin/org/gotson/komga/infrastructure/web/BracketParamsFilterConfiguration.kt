@@ -27,7 +27,3 @@ class BracketParamsFilterConfiguration {
     }
   }
 }
-
-
-
-
