@@ -20,13 +20,26 @@
     "move_next_exit": "Klikk eller trykk «Neste» igjen for å avslutte leseren.",
     "move_previous": "Klikk eller trykk «Bakover» igjen for å gå til forrige bok.",
     "paged_reader_layout": {
-      "double": "",
-      "double_no_cover": "Doble sider (ingen omslag)"
+      "double": "Doble sider",
+      "double_no_cover": "Doble sider (ingen omslag)",
+      "single": "Enkel side"
     },
     "reader_settings": "Leserinnstillinger",
+    "scale_type": {
+      "continuous_original": "Original",
+      "continuous_width": "Tilpass til bredden",
+      "height": "Tilpass til høyden",
+      "original": "Original",
+      "screen": "Tilpass til skjerm",
+      "width": "Tilpass til bredden"
+    },
     "settings": {
       "animate_page_transitions": "Animer sideoverganger",
       "background_color": "Bakgrunnsfarge",
+      "background_colors": {
+        "black": "Svart",
+        "white": "Hvit"
+      },
       "display": "Skjerm",
       "general": "Sjanger",
       "gestures": "Håndvendinger",
