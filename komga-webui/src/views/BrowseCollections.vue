@@ -7,7 +7,7 @@
 
       <v-toolbar-title>
         <span>{{ library ? library.name : $t('common.all_libraries') }}</span>
-        <v-chip label class="ml-4" v-if="totalElements">
+        <v-chip label class="mx-4" v-if="totalElements">
           <span style="font-size: 1.1rem">{{ totalElements }}</span>
         </v-chip>
       </v-toolbar-title>

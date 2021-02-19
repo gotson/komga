@@ -95,6 +95,7 @@
     "genre": "장르",
     "go_to_library": "서재로 가기",
     "locale_name": "한국어",
+    "locale_rtl" : "false",
     "n_selected": "{count}선택 됨",
     "nothing_to_show": "내용 없음",
     "pages": "페이지",

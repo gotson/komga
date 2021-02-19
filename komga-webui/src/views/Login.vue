@@ -50,7 +50,7 @@
           >{{ $t('login.login') }}
           </v-btn>
           <v-btn v-if="unclaimed"
-                 class="ml-4"
+                 class="mx-4"
                  color="primary"
                  @click="claim"
           >{{ $t('login.create_user_account') }}
@@ -130,6 +130,7 @@ export default Vue.extend({
         if (this.$i18n.availableLocales.includes(locale)) {
           this.$i18n.locale = locale
           this.$cookies.set(cookieLocale, locale, Infinity)
+          this.$vuetify.rtl = (this.$t('common.locale_rtl') === 'true')
         }
       },
     },

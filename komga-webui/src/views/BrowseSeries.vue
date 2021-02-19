@@ -15,7 +15,7 @@
 
       <v-toolbar-title>
         <span v-if="$_.get(series, 'metadata.title')">{{ series.metadata.title }}</span>
-        <v-chip label class="ml-4" v-if="totalElements">
+        <v-chip label class="mx-4" v-if="totalElements">
           <span style="font-size: 1.1rem">{{ totalElements }}</span>
         </v-chip>
       </v-toolbar-title>
@@ -93,12 +93,12 @@
                       :text-color="statusChip.text"
               >{{ $t(`enums.series_status.${series.metadata.status}`) }}
               </v-chip>
-              <v-chip label small v-if="series.metadata.ageRating" class="ml-2">{{
+              <v-chip label small v-if="series.metadata.ageRating" class="mx-1">{{
                   series.metadata.ageRating
                 }}+
               </v-chip>
-              <v-chip label small v-if="series.metadata.language" class="ml-2">{{ languageDisplay }}</v-chip>
-              <v-chip label small v-if="series.metadata.readingDirection" class="ml-2">{{ $t(`enums.reading_direction.${series.metadata.readingDirection}`) }}</v-chip>
+              <v-chip label small v-if="series.metadata.language" class="mx-1">{{ languageDisplay }}</v-chip>
+              <v-chip label small v-if="series.metadata.readingDirection" class="mx-1">{{ $t(`enums.reading_direction.${series.metadata.readingDirection}`) }}</v-chip>
             </v-col>
           </v-row>
 
@@ -146,7 +146,7 @@
             <v-col class="text-body-2 text-capitalize py-1">
               <v-chip v-for="(t, i) in series.metadata.genres"
                       :key="i"
-                      class="mr-2"
+                      :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
                       label
                       small
                       outlined
@@ -160,7 +160,7 @@
             <v-col class="text-body-2 text-capitalize py-1">
               <v-chip v-for="(t, i) in series.metadata.tags"
                       :key="i"
-                      class="mr-2"
+                      :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
                       label
                       small
                       outlined

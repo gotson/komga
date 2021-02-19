@@ -117,6 +117,7 @@
     "genre": "Gênero",
     "go_to_library": "Ir para biblioteca",
     "locale_name": "Português",
+    "locale_rtl" : "false",
     "n_selected": "{count} selecionados",
     "nothing_to_show": "Nada para exibir",
     "pages": "páginas",

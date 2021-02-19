@@ -15,6 +15,7 @@ export default Vue.extend({
       const locale = this.$cookies.get(cookieLocale)
       if (this.$i18n.availableLocales.includes(locale)) {
         this.$i18n.locale = locale
+        this.$vuetify.rtl = (this.$t('common.locale_rtl') === 'true')
       }
     }
   },

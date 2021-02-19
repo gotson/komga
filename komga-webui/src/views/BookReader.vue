@@ -377,6 +377,7 @@ export default Vue.extend({
     }
   },
   created () {
+    this.$vuetify.rtl = false
     checkWebpFeature('lossy', (feature, isSupported) => {
       if (isSupported) {
         this.supportedMediaTypes.push('image/webp')
@@ -414,6 +415,7 @@ export default Vue.extend({
     this.setup(this.bookId, Number(this.$route.query.page))
   },
   destroyed () {
+    this.$vuetify.rtl = (this.$t('common.locale_rtl') === 'true')
     window.removeEventListener('keydown', this.keyPressed)
   },
   props: {

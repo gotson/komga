@@ -34,7 +34,7 @@
             <v-img :src="seriesThumbnailUrl(item.id)"
                    height="50"
                    max-width="35"
-                   class="ma-1 mr-3"
+                   class="my-1 mx-3"
             />
             <v-list-item-content>
               <v-list-item-title v-text="item.metadata.title"/>
@@ -52,7 +52,7 @@
             <v-img :src="bookThumbnailUrl(item.id)"
                    height="50"
                    max-width="35"
-                   class="ma-1 mr-3"
+                   class="my-1 mx-3"
             />
             <v-list-item-content>
               <v-list-item-title v-text="item.metadata.title"/>
@@ -70,7 +70,7 @@
             <v-img :src="collectionThumbnailUrl(item.id)"
                    height="50"
                    max-width="35"
-                   class="ma-1 mr-3"
+                   class="my-1 mx-3"
             />
             <v-list-item-content>
               <v-list-item-title v-text="item.name"/>
@@ -88,7 +88,7 @@
             <v-img :src="readListThumbnailUrl(item.id)"
                    height="50"
                    max-width="35"
-                   class="ma-1 mr-3"
+                   class="my-1 mx-3"
             />
             <v-list-item-content>
               <v-list-item-title v-text="item.name"/>

@@ -28,7 +28,8 @@
         :disabled="$_.isEmpty(siblingPrevious)"
         :to="{ name: 'browse-book', params: { bookId: previousId }, query: { context: context.origin, contextId: context.id}  }"
       >
-        <v-icon>mdi-chevron-left</v-icon>
+        <v-icon v-if="$vuetify.rtl">mdi-chevron-right</v-icon>
+        <v-icon v-else>mdi-chevron-left</v-icon>
       </v-btn>
 
       <!--   List of all books in context (series/readlist) for navigation   -->
@@ -65,7 +66,8 @@
         :disabled="$_.isEmpty(siblingNext)"
         :to="{ name: 'browse-book', params: { bookId: nextId }, query: { context: context.origin, contextId: context.id}  }"
       >
-        <v-icon>mdi-chevron-right</v-icon>
+        <v-icon v-if="$vuetify.rtl">mdi-chevron-left</v-icon>
+        <v-icon v-else>mdi-chevron-right</v-icon>
       </v-btn>
     </toolbar-sticky>
 
@@ -98,7 +100,7 @@
 
           <v-row class="text-body-2">
             <v-col>
-              <span class="mr-3">#{{ book.metadata.number }}</span>
+              <span class="mx-3">#{{ book.metadata.number }}</span>
             </v-col>
             <v-col cols="auto" v-if="book.metadata.releaseDate">
               {{ book.metadata.releaseDate | moment('MMMM DD, YYYY') }}
@@ -128,7 +130,7 @@
             <v-col class="text-body-2 text-capitalize py-1">
               <v-chip v-for="(t, i) in book.metadata.tags"
                       :key="i"
-                      class="mr-2"
+                      :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
                       label
                       small
                       outlined
@@ -173,7 +175,7 @@
           </v-btn>
         </v-col>
         <v-col cols="auto">
-          <v-icon class="mr-2 pb-1">mdi-book-open</v-icon>
+          <v-icon class="mx-2 pb-1">mdi-book-open</v-icon>
           <span class="text-body-2">{{ book.media.pagesCount }} {{ $t('common.pages') }}</span>
         </v-col>
       </v-row>

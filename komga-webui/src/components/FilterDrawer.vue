@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer
     v-model="display"
-    right
+    :right="!$vuetify.rtl"
     fixed
     temporary
     disable-route-watcher

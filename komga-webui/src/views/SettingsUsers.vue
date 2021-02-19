@@ -64,8 +64,10 @@
             </div>
           </v-list>
 
-          <v-btn fab absolute bottom right color="primary"
-                 class="mr-6"
+          <v-btn fab absolute bottom color="primary"
+                 :right="!$vuetify.rtl"
+                 :left="$vuetify.rtl"
+                 class="mx-6"
                  small
                  :to="{name: 'settings-users-add'}">
             <v-icon>mdi-plus</v-icon>

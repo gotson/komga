@@ -102,6 +102,7 @@
     "genre": "نوع",
     "go_to_library": "اذهب إلى المكتبة",
     "locale_name": "اللغة العربية",
+    "locale_rtl": "true",
     "n_selected": "{count} مختار",
     "nothing_to_show": "لا شيء للعرض",
     "pages": "صفحات",

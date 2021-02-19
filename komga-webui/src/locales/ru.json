@@ -41,6 +41,7 @@
     "genre": "Жанр",
     "go_to_library": "Вернуться к библиотеке",
     "locale_name": "Русский",
+    "locale_rtl" : "false",
     "n_selected": "{count} выбрано",
     "pages": "страниц",
     "password": "Пароль",

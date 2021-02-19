@@ -36,7 +36,7 @@
               <!-- Circle icon for selection (top left) -->
               <v-icon v-if="onSelected"
                       :color="selected ? 'secondary' : ''"
-                      style="position: absolute; top: 5px; left: 10px"
+                      :style="'position: absolute; top: 5px; ' + ($vuetify.rtl ? 'right' : 'left') + ': 10px'"
                       @click.stop="selectItem"
               >
                 {{ selected || (preselect && hover) ? 'mdi-checkbox-marked-circle' : 'mdi-checkbox-blank-circle-outline'
@@ -58,7 +58,7 @@
               <!-- Pen icon for edition (bottom left) -->
               <v-btn icon
                      v-if="!selected && !preselect && onEdit"
-                     style="position: absolute; bottom: 5px; left: 5px"
+                     :style="'position: absolute; bottom: 5px; ' + ($vuetify.rtl ? 'right' : 'left' ) +': 5px'"
                      @click.stop="editItem"
               >
                 <v-icon>mdi-pencil</v-icon>
@@ -66,7 +66,7 @@
 
               <!-- Action menu (bottom right) -->
               <div v-if="!selected && !preselect && actionMenu"
-                   style="position: absolute; bottom: 5px; right: 5px"
+                   :style="'position: absolute; bottom: 5px; ' + ($vuetify.rtl ? 'left' : 'right') +': 5px'"
               >
                 <book-actions-menu v-if="computedItem.type() === ItemTypes.BOOK"
                                    :book="item"
@@ -118,13 +118,13 @@
 import BookActionsMenu from '@/components/menus/BookActionsMenu.vue'
 import CollectionActionsMenu from '@/components/menus/CollectionActionsMenu.vue'
 import SeriesActionsMenu from '@/components/menus/SeriesActionsMenu.vue'
-import { getReadProgress, getReadProgressPercentage } from '@/functions/book-progress'
-import { ReadStatus } from '@/types/enum-books'
-import { createItem, Item, ItemTypes } from '@/types/items'
+import {getReadProgress, getReadProgressPercentage} from '@/functions/book-progress'
+import {ReadStatus} from '@/types/enum-books'
+import {createItem, Item, ItemTypes} from '@/types/items'
 import Vue from 'vue'
-import { RawLocation } from 'vue-router'
+import {RawLocation} from 'vue-router'
 import ReadListActionsMenu from '@/components/menus/ReadListActionsMenu.vue'
-import { BookDto } from '@/types/komga-books'
+import {BookDto} from '@/types/komga-books'
 import {SeriesDto} from "@/types/komga-series";
 
 export default Vue.extend({

@@ -19,7 +19,7 @@
           </v-toolbar>
 
           <v-card-title class="hidden-xs-only">
-            <v-icon class="mr-4">mdi-pencil</v-icon>
+            <v-icon class="mx-4">mdi-pencil</v-icon>
             {{ dialogTitle }}
           </v-card-title>
 

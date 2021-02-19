@@ -117,6 +117,7 @@
     "genre": "Genre/Gattung",
     "go_to_library": "Gehe zu Bibliothek",
     "locale_name": "Deutsch",
+    "locale_rtl" : "false",
     "n_selected": "{count} markiert",
     "nothing_to_show": "Keine Treffer gefunden die angezeigt werden könnten",
     "pages": "Seiten",

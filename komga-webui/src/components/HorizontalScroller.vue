@@ -3,16 +3,18 @@
     <div style="min-height: 36px">
       <slot name="prepend"/>
     </div>
-    <div style="position: absolute; top: 0; right: 0">
+    <div :style="'position: absolute; top: 0;' + ($vuetify.rtl ? 'left: 0' : 'right: 0')">
       <v-btn icon
-             :disabled="!canScrollLeft"
-             @click="doScroll('left')">
-        <v-icon>mdi-chevron-left</v-icon>
+             :disabled="!canScrollBackward"
+             @click="doScroll('backward')">
+        <v-icon v-if="$vuetify.rtl">mdi-chevron-right</v-icon>
+        <v-icon v-else>mdi-chevron-left</v-icon>
       </v-btn>
       <v-btn icon
-             :disabled="!canScrollRight"
-             @click="doScroll('right')">
-        <v-icon>mdi-chevron-right</v-icon>
+             :disabled="!canScrollForward"
+             @click="doScroll('forward')">
+        <v-icon v-if="$vuetify.rtl">mdi-chevron-left</v-icon>
+        <v-icon v-else>mdi-chevron-right</v-icon>
       </v-btn>
     </div>
 
@@ -36,30 +38,44 @@ export default Vue.extend({
     const uniqueId = this.$_.uniqueId()
     return {
       id: uniqueId,
-      canScrollLeft: false,
-      canScrollRight: true,
+      canScrollBackward: false,
+      canScrollForward: true,
       container: this.$refs[uniqueId] as HTMLElement,
       adjustment: 100,
     }
   },
-  mounted () {
+  mounted() {
     this.container = this.$refs[this.id] as HTMLElement
     this.computeScrollability()
   },
   methods: {
-    computeScrollability () {
+    computeScrollability() {
       if (this.container !== undefined) {
-        this.canScrollLeft = Math.round(this.container.scrollLeft) > 0
-        this.canScrollRight = (Math.round(this.container.scrollLeft) + this.container.clientWidth) < this.container.scrollWidth
+        if (this.$vuetify.rtl) {
+          this.canScrollBackward = Math.round(this.container.scrollLeft) < 0
+          this.canScrollForward = (Math.round(this.container.scrollLeft) - this.container.clientWidth) > -this.container.scrollWidth
+        } else {
+          this.canScrollBackward = Math.round(this.container.scrollLeft) > 0
+          this.canScrollForward = (Math.round(this.container.scrollLeft) + this.container.clientWidth) < this.container.scrollWidth
+        }
       }
     },
-    doScroll (direction: string) {
+    doScroll(direction: string) {
       if (this.container !== undefined) {
-        let target = Math.round(this.container.scrollLeft) + (this.container.clientWidth - this.adjustment)
-        if (direction === 'left') {
-          target = Math.round(this.container.scrollLeft) - (this.container.clientWidth - this.adjustment)
+        let increment = (this.container.clientWidth - this.adjustment)
+        let scrollLeft = Math.round(this.container.scrollLeft)
+        let target
+        if (this.$vuetify.rtl){
+          if (direction === 'backward')
+            target = scrollLeft + increment
+          else
+            target = scrollLeft - increment
+        } else {
+          if (direction === 'backward')
+            target = scrollLeft - increment
+          else
+            target = scrollLeft + increment
         }
-        const scrollMax = this.container.clientWidth
         this.container.scrollTo({
           top: 0,
           left: target,

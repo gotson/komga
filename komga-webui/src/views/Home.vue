@@ -9,7 +9,7 @@
 
     </v-app-bar>
 
-    <v-navigation-drawer app v-model="drawerVisible">
+    <v-navigation-drawer app v-model="drawerVisible" :right="$vuetify.rtl">
       <v-list-item @click="$router.push({name: 'home'})" inactive class="pb-2">
         <v-list-item-avatar>
           <v-img src="../assets/logo.svg"/>
@@ -221,6 +221,7 @@ export default Vue.extend({
         if (this.$i18n.availableLocales.includes(locale)) {
           this.$i18n.locale = locale
           this.$cookies.set(cookieLocale, locale, Infinity)
+          this.$vuetify.rtl = (this.$t('common.locale_rtl') === 'true')
         }
       },
     },

@@ -9,7 +9,7 @@
         <v-icon
           color="secondary"
           style="max-width: 24px"
-          class="mr-2"
+          class="mx-2"
           @click.stop="clear(key)"
         >{{ groupActive(key) ? 'mdi-checkbox-marked' : '' }}
         </v-icon>
