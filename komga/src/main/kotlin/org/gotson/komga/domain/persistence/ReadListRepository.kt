@@ -3,7 +3,7 @@ package org.gotson.komga.domain.persistence
 import org.gotson.komga.domain.model.ReadList
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import java.util.*
+import java.util.SortedMap
 
 interface ReadListRepository {
   fun findByIdOrNull(readListId: String): ReadList?

@@ -123,13 +123,13 @@ class LibraryScanner(
 
   private fun restoreDeletedSeries(scannedSeries: Map<Series, Collection<Book>>) {
     scannedSeries
-      //do checks only for new or deleted series
+      // do checks only for new or deleted series
       .filterNot { seriesRepository.existsByLibraryIdAndUrl(it.key.libraryId, it.key.url) }
       .forEach { (newSeries, newBooks) ->
         val newHashes = newBooks.map { it.fileHash }
         var matchedSeries: Collection<Series> =
           seriesRepository.findByHashesInIncludeDeleted(newHashes)
-            //check if series folder exists in case it was deleted but analysis wasn't done yet
+            // check if series folder exists in case it was deleted but analysis wasn't done yet
             .filter { it.deleted || Files.notExists(it.path()) }
         if (matchedSeries.size > 1) {
           logger.debug { "matched multiple series: ${matchedSeries.map { it.path() }}, limiting matching to the library" }
@@ -214,14 +214,14 @@ class LibraryScanner(
 
   private fun matchExistingBooksByHash(bookToCheck: Book, existingSeries: Series): Collection<Book> {
     var existingBooks = bookRepository.findByFileHashAndSizeIncludeDeleted(bookToCheck.fileHash, bookToCheck.fileSize)
-      //check if book exists in case it was deleted but library analysis wasn't done yet
+      // check if book exists in case it was deleted but library analysis wasn't done yet
       .filter { it.deleted || Files.notExists(it.path()) }
     if (existingBooks.size > 1) {
-      logger.debug { "Multiple matches: ${existingBooks}, limiting matching to library of the series" }
+      logger.debug { "Multiple matches: $existingBooks, limiting matching to library of the series" }
       existingBooks = existingBooks.filter { it.libraryId == existingSeries.libraryId }
 
       if (existingBooks.size > 1) {
-        logger.debug { "Multiple matches: ${existingBooks}, limiting matching only withing series" }
+        logger.debug { "Multiple matches: $existingBooks, limiting matching only withing series" }
         existingBooks = existingBooks.filter { it.seriesId == existingSeries.id }
       }
     }

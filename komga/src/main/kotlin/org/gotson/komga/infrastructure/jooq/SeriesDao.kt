@@ -155,8 +155,7 @@ class SeriesDao(
 
   override fun softDeleteAll(seriesIds: Collection<String>) {
     dsl.transaction { config ->
-      with(config.dsl())
-      {
+      with(config.dsl()) {
         update(s).set(s.DELETED, true).where(s.ID.`in`(seriesIds)).execute()
       }
     }

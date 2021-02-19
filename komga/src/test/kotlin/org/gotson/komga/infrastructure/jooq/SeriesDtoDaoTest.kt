@@ -304,7 +304,6 @@ class SeriesDtoDaoTest(
     val updatedSeries = series.copy(lastModifiedDate = LocalDateTime.now().plusMinutes(15))
     seriesRepository.update(updatedSeries)
     seriesRepository.softDeleteAll(listOf(series.id))
-    // seriesLifecycle.softDeleteMany(listOf(series.id))
 
     val collection = SeriesCollection(
       name = "MyCollection",
@@ -328,7 +327,6 @@ class SeriesDtoDaoTest(
     // given
     val series = makeSeries("series", library.id)
     seriesLifecycle.createSeries(series)
-    // seriesLifecycle.softDeleteMany(listOf(series.id))
     seriesRepository.softDeleteAll(listOf(series.id))
 
     // when

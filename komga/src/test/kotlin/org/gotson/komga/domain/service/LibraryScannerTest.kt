@@ -602,7 +602,6 @@ class LibraryScannerTest(
       assertThat(series1Books.map { it.id }).contains(book1.id)
       assertThat(series2Books.map { it.id }).contains(book2.id)
 
-
       assertThat(restoredBook1Metadata.bookId).isEqualTo(bookMetadata1.bookId)
       assertThat(restoredBook1Metadata.title).isEqualTo(bookMetadata1.title)
       assertThat(restoredReadProgress1).isNotNull

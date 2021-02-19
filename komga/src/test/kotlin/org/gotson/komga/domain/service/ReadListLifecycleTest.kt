@@ -64,7 +64,7 @@ class ReadListLifecycleTest(
 
   @Test
   fun `given existing read list with soft deleted book when read list updated and book is restored then that book is in read list with restored order`() {
-    //given
+    // given
     val book1 = makeBook("Book1", libraryId = library.id, seriesId = series.id)
     val book2 = makeBook("Book2", libraryId = library.id, seriesId = series.id)
     val book3 = makeBook("Book3", libraryId = library.id, seriesId = series.id)
@@ -74,11 +74,11 @@ class ReadListLifecycleTest(
     readListRepository.insert(readList)
     bookRepository.update(book2.copy(deleted = true))
 
-    //when
+    // when
     readListLifecycle.updateReadList(readList.copy(bookIds = listOf(book1, book3).map { it.id }.toIndexedMap()))
     bookRepository.update(book2.copy(deleted = false))
 
-    //then
+    // then
     val book2Restored = readListRepository.findByIdOrNull(readList.id)!!
     assertThat(book2Restored.bookIds.map { it.key to it.value }).containsExactly(0 to book1.id, 1 to book2.id, 2 to book3.id)
   }

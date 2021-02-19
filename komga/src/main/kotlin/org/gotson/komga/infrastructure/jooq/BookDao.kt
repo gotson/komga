@@ -8,7 +8,11 @@ import org.gotson.komga.jooq.tables.records.BookRecord
 import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
-import org.springframework.data.domain.*
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
 import java.net.URL
 import java.time.LocalDateTime
@@ -195,7 +199,7 @@ class BookDao(
             b.SERIES_ID,
             b.FILE_HASH,
             b.DELETED
-          ).values(null as String?, null, null, null, null, null, null, null, null,null)
+          ).values(null as String?, null, null, null, null, null, null, null, null, null)
         ).also { step ->
           books.forEach {
             step.bind(

@@ -59,7 +59,7 @@ class SeriesCollectionLifecycleTest(
 
   @Test
   fun `given existing collection with soft deleted series when collection is updated and series is restored then that series is in collection with restored order`() {
-    //given
+    // given
     val series1 = makeSeries("Series1", libraryId = library.id)
     val series2 = makeSeries("Series2", libraryId = library.id)
     val series3 = makeSeries("Series3", libraryId = library.id)
@@ -71,11 +71,11 @@ class SeriesCollectionLifecycleTest(
     collectionRepository.insert(collection)
     seriesRepository.update(series2.copy(deleted = true))
 
-    //when
+    // when
     collectionLifecycle.updateCollection(collection.copy(seriesIds = listOf(series1, series3).map { it.id }))
     seriesRepository.update(series2.copy(deleted = false))
 
-    //then
+    // then
     val series2Restored = collectionRepository.findByIdOrNull(collection.id)!!
     assertThat(series2Restored.seriesIds).containsExactly(series1.id, series2.id, series3.id)
   }

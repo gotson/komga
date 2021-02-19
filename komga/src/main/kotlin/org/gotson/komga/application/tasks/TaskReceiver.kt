@@ -70,7 +70,7 @@ class TaskReceiver(
     submitTask(Task.AggregateSeriesMetadata(seriesId))
   }
 
-  fun emptyTrash(){
+  fun emptyTrash() {
     submitTask(Task.EmptyTrash)
   }
 

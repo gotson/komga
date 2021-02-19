@@ -230,7 +230,7 @@ class SeriesDtoDao(
     if (!ageRatings.isNullOrEmpty()) {
       val c1 = if (ageRatings.contains(null)) d.AGE_RATING.isNull else DSL.falseCondition()
       val c2 = if (ageRatings.filterNotNull()
-          .isNotEmpty()
+        .isNotEmpty()
       ) d.AGE_RATING.`in`(ageRatings.filterNotNull()) else DSL.falseCondition()
       c = c.and(c1.or(c2))
     }
