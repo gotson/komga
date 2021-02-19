@@ -3,10 +3,21 @@
     "account_settings": "إعدادات الحساب",
     "change_password": "تغيير كلمة السر"
   },
+  "author_roles": {
+    "colorist": "ملونين",
+    "cover": "الغلاف",
+    "editor": "المحررين",
+    "inker": "محبرين",
+    "letterer": "كاتب الحروف",
+    "penciller": "رسامين",
+    "writer": "الكتاب"
+  },
   "bookreader": {
     "beginning_of_book": "أنت في بداية الكتاب.",
     "changing_reading_direction": "تغيير اتجاه القراءة إلى",
     "cycling_page_layout": "تخطيط دوري للصفحة",
+    "cycling_scale": "تغيير حجم التحرير",
+    "cycling_side_padding": "تغيير الحدود الجانبية",
     "end_of_book": "لقد وصلت إلى نهاية الكتاب.",
     "from_series_metadata": "من البيانات الوصفية للسلسلة",
     "move_next": "انقر أو اضغط على التالي مرة أخرى للانتقال إلى الكتاب التالي.",
@@ -48,6 +59,7 @@
       "close": "إغلاق",
       "cycle_page_layout": "دورة تخطيط الصفحة",
       "cycle_scale": "مقياس الدورة",
+      "cycle_side_padding": "تغيير الحدود الجانبية",
       "first_page": "الصفحة الأولى",
       "last_page": "آخر صفحة",
       "left_to_right": "من اليسار إلى اليمين",
@@ -88,6 +100,9 @@
     "series_no_summary": "هذه السلسلة لا تحتوي على ملخص ، لذلك اخترنا واحدًا لك!",
     "summary_from_book": "ملخص من الكتاب {number}:"
   },
+  "collections_expansion_panel": {
+    "manage_collection": "إدارة المجموعة"
+  },
   "common": {
     "all_libraries": "كل المكتبات",
     "books": "كتب",
@@ -101,7 +116,7 @@
     "filter_no_matches": "الفلتر النشط ليس له تطابق",
     "genre": "نوع",
     "go_to_library": "اذهب إلى المكتبة",
-    "locale_name": "اللغة العربية",
+    "locale_name": "الإنجليزية",
     "locale_rtl": "true",
     "n_selected": "{count} مختار",
     "nothing_to_show": "لا شيء للعرض",
@@ -123,6 +138,101 @@
     "recently_added_books": "كتب مصورة مضافة مؤخرًا",
     "recently_added_series": "كتب مصورة أضيفت مؤخرا",
     "recently_updated_series": "كتب مصورة تم تحديثها مؤخرًا"
+  },
+  "dialog": {
+    "add_to_collection": {
+      "button_create": "خلق",
+      "card_collection_subtitle": "لا توجد سلسلة | 1 سلسلة | {count} سلسلة",
+      "dialog_title": "أضف إلى المجموعة",
+      "field_search_create": "بحث أو إنشاء مجموعة",
+      "field_search_create_error": "مجموعة بهذا الاسم موجودة مسبقاً",
+      "label_no_matching_collection": "لا توجد مجموعة مطابقة"
+    },
+    "add_to_readlist": {
+      "button_create": "خلق",
+      "card_readlist_subtitle": "لا يوجد كتاب | 1 كتاب | {count} كتب",
+      "dialog_title": "أضف إلى قائمة القراءة",
+      "field_search_create": "البحث أو إنشاء قائمة القراءة",
+      "field_search_create_error": "توجد قائمة قراءة بهذا الاسم",
+      "label_no_matching_readlist": "لا توجد قائمة قراءة مطابقة"
+    },
+    "add_user": {
+      "button_cancel": "إلغاء",
+      "button_confirm": "إضافة",
+      "dialog_title": "إضافة مستخدم",
+      "field_email": "البريد الإلكتروني",
+      "field_email_error": "يجب أن يكون عنوان بريد إلكتروني صالح",
+      "field_password": "كلمة السر",
+      "field_role_administrator": "مدير",
+      "field_role_file_download": "تحميل الملف",
+      "field_role_page_streaming": "تدفق الصفحة",
+      "label_roles": "أدوار"
+    },
+    "delete_collection": {
+      "button_cancel": "إلغاء",
+      "button_confirm": "حذف",
+      "confirm_delete": "نعم ، احذف المجموعة \"{name}\"",
+      "dialog_title": "حذف المجموعة",
+      "warning_html": "ستتم إزالة المجموعة <b> {name}</b> من هذا الخادم. لن تتأثر الملفات. لا يمكن التراجع عن هذا <b></b>. مواصله؟"
+    },
+    "delete_library": {
+      "button_cancel": "إلغاء",
+      "button_confirm": "حذف",
+      "confirm_delete": "نعم ، احذف المكتبة \"{name}\"",
+      "title": "حذف المكتبة",
+      "warning_html": "ستتم إزالة المكتبة <b> {name} </b> من هذا الخادم. ملفات الوسائط الخاصة بك لن تتأثر. هذا <b> لا يمكن </b> التراجع عنه. يكمل ؟"
+    },
+    "delete_readlist": {
+      "button_cancel": "إلغاء",
+      "button_confirm": "حذف",
+      "confirm_delete": "نعم ، احذف قائمة القراءة \"{name}\"",
+      "dialog_title": "حذف قائمة القراءة",
+      "warning_html": "ستتم إزالة قائمة القراءة <b> {name} </b> من هذا الخادم. ملفات الوسائط الخاصة بك لن تتأثر. هذا <b> لا يمكن </b> التراجع عنه. يكمل ؟"
+    },
+    "delete_user": {
+      "button_cancel": "إلغاء",
+      "button_confirm": "حذف",
+      "confirm_delete": "نعم ، احذف المستخدم \"{name}\"",
+      "dialog_title": "حذف المستخدم",
+      "warning_html": "المستخدم <b> {name} </b> سيتم حذفه من هذا الخادم. هذا <b> لا يمكن </b> التراجع عنه. يكمل ؟"
+    },
+    "edit_books": {
+      "authors_notice_multiple_edit": "أنت تقوم بتحرير مؤلفين لكتب متعددة. سيؤدي هذا إلى تجاوز المؤلفين الحاليين لكل كتاب.",
+      "button_cancel": "إلغاء",
+      "button_confirm": "حفظ التغييرات",
+      "dialog_title_multiple": "تحرير {count} كتاب | تحرير {count} كتاب",
+      "dialog_title_single": "تحرير {book}",
+      "field_number": "رقم",
+      "field_number_sort": "رقم الفرز",
+      "field_number_sort_hint": "يمكنك استخدام الأرقام العشرية",
+      "field_release_date": "تاريخ الاصدار",
+      "field_release_date_error": "يجب أن يكون تاريخًا صالحًا بتنسيق YYYY-MM-DD",
+      "field_summary": "ملخص",
+      "field_tags": "التصنيف",
+      "field_title": "العنوان",
+      "tab_authors": "المؤلفون",
+      "tab_general": "إعدادات عامة",
+      "tab_tags": "التصنيف",
+      "tags_notice_multiple_edit": "أنت تقوم بتحرير العلامات لكتب متعددة. سيؤدي هذا إلى تجاوز العلامات الموجودة لكل كتاب."
+    },
+    "edit_collection": {
+      "button_cancel": "إلغاء",
+      "button_confirm": "حفظ التغييرات",
+      "dialog_title": "تحرير المجموعة",
+      "field_manual_ordering": "ترتيب يدوي",
+      "label_ordering": "بشكل افتراضي ، سيتم ترتيب السلسلة في المجموعة حسب الاسم. يمكنك تمكين الطلب اليدوي لتحديد طلبك."
+    },
+    "edit_library": {
+      "button_browse": "تصفّح",
+      "button_cancel": "إلغاء",
+      "button_confirm_add": "إضافة",
+      "button_confirm_edit": "تعديل",
+      "dialog_title_add": "إضافة مكتبة",
+      "dialot_title_edit": "تحرير المكتبة",
+      "field_import_comicinfo_book": "البيانات الوصفية للكتاب",
+      "field_import_comicinfo_collections": "المجموعات",
+      "field_import_comicinfo_readlists": "قوائم القراءة"
+    }
   },
   "enums": {
     "reading_direction": {
