@@ -19,6 +19,10 @@
     "move_next": "Klikk eller trykk «Neste» igjen for å gå til neste bok.",
     "move_next_exit": "Klikk eller trykk «Neste» igjen for å avslutte leseren.",
     "move_previous": "Klikk eller trykk «Bakover» igjen for å gå til forrige bok.",
+    "paged_reader_layout": {
+      "double": "",
+      "double_no_cover": "Doble sider (ingen omslag)"
+    },
     "reader_settings": "Leserinnstillinger",
     "settings": {
       "animate_page_transitions": "Animer sideoverganger",
