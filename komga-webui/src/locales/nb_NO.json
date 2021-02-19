@@ -1,300 +1,302 @@
 {
-    "account_settings": {
-        "account_settings": "kontoinnstillinger",
-        "change_password": "endre passord"
+  "account_settings": {
+    "account_settings": "kontoinnstillinger",
+    "change_password": "endre passord"
+  },
+  "bookreader": {
+    "move_next_exit": "Klikk eller trykk «Neste» igjen for å avslutte leseren.",
+    "reader_settings": "Leserinnstillinger",
+    "settings": {
+      "animate_page_transitions": "Animer sideoverganger",
+      "background_color": "Bakgrunnsfarge",
+      "display": "Skjerm",
+      "general": "Sjanger",
+      "gestures": "Håndvendinger",
+      "page_layout": "Sideutforming",
+      "reading_mode": "Lesemodus",
+      "scale_type": "Skalering",
+      "side_padding": "Sideutfylling"
     },
-    "bookreader": {
-        "move_next_exit": "Klikk eller trykk «Neste» igjen for å avslutte leseren.",
-        "reader_settings": "Leserinnstillinger",
-        "settings": {
-            "animate_page_transitions": "Animer sideoverganger",
-            "background_color": "Bakgrunnsfarge",
-            "display": "Skjerm",
-            "general": "Sjanger",
-            "gestures": "Håndvendinger",
-            "reading_mode": "Lesemodus",
-            "scale_type": "Skalatype"
-        },
-        "shortcuts": {
-            "close": "Lukk",
-            "first_page": "Første side",
-            "last_page": "Siste side",
-            "left_to_right": "Fra venstre til høyre",
-            "menus": "Menyer",
-            "next_page": "Neste side",
-            "previous_page": "Forrige side",
-            "right_to_left": "Fra høyre til venstre",
-            "settings": "Innstillinger",
-            "show_hide_help": "Vis/skjul hjelp",
-            "show_hide_settings": "Vis/skjul innstillingsmeny",
-            "show_hide_thumbnails": "Vis/skjul miniatyrbildeutforsker",
-            "show_hide_toolbars": "Vis/skjul verktøylinjer",
-            "vertical": "Loddrett"
-        }
-    },
-    "browse_book": {
-        "comment": "Kommentar",
-        "download_file": "Last ned fil",
-        "file": "Fil",
-        "format": "Format",
-        "navigation_within_readlist": "Navigasjon i leselisten",
-        "read_book": "Les bok",
-        "size": "Størrelse"
-    },
-    "browse_collection": {
-        "edit_collection": "Rediger samling",
-        "edit_elements": "Rediger elementer"
-    },
-    "browse_readlist": {
-        "edit_elements": "Rediger elementer",
-        "edit_readlist": "Rediger leseliste"
-    },
-    "collections_expansion_panel": {
-        "manage_collection": "Håndter samling"
-    },
-    "common": {
-        "all_libraries": "Alle bibliotek",
-        "books": "Bøker",
-        "books_n": "Ingen bøker | 1 bok | {count} bøker",
-        "cancel": "Avbryt",
-        "close": "Lukk",
-        "collections": "Samlinger",
-        "create": "Opprett",
-        "delete": "Slett",
-        "email": "E-post",
-        "genre": "Sjanger",
-        "go_to_library": "Gå til bibliotek",
-        "locale_name": "Norsk bokmål",
-        "n_selected": "{count} valgt",
-        "nothing_to_show": "Ingenting å vise",
-        "pages": "sider",
-        "pages_n": "Ingen sider | 1 side | {count} sider",
-        "password": "Passord",
-        "readlists": "Leselister",
-        "required": "Påkrevd",
-        "roles": "Roller",
-        "series": "Serier",
-        "tags": "Etiketter"
-    },
-    "dashboard": {
-        "keep_reading": "fortsett å lese",
-        "on_deck": "på nattbordet",
-        "recently_added_books": "nylig oppdaterte bøker",
-        "recently_added_series": "nylig tillagte serier",
-        "recently_updated_series": "nylig oppdaterte serier"
-    },
-    "dialog": {
-        "add_to_collection": {
-            "button_create": "Opprett",
-            "card_collection_subtitle": "Ingen serier | 1 serie | {count} serier",
-            "dialog_title": "Legg til i samling",
-            "field_search_create": "Søk etter eller lag samling"
-        },
-        "add_to_readlist": {
-            "button_create": "Opprett",
-            "dialog_title": "Legg til i leseliste"
-        },
-        "add_user": {
-            "button_cancel": "Avbryt",
-            "button_confirm": "Legg til",
-            "dialog_title": "Legg til bruker",
-            "field_email": "E-post",
-            "field_password": "Passord",
-            "field_role_administrator": "Administrator",
-            "label_roles": "Roller"
-        },
-        "delete_collection": {
-            "button_cancel": "Avbryt",
-            "button_confirm": "Slett",
-            "confirm_delete": "Ja, slett samlingen ved navn «{name}»",
-            "dialog_title": "Slett samling"
-        },
-        "delete_library": {
-            "button_cancel": "Avbryt",
-            "button_confirm": "Slett",
-            "confirm_delete": "Ja, slett biblioteket «{name}»",
-            "title": "Slett bibliotek"
-        },
-        "delete_readlist": {
-            "button_cancel": "Avbryt",
-            "button_confirm": "Slett",
-            "dialog_title": "Sl"
-        },
-        "delete_user": {
-            "button_cancel": "Avbryt",
-            "button_confirm": "Slett",
-            "confirm_delete": "Ja, slett brukeren «{name}»",
-            "dialog_title": "Slett bruker"
-        },
-        "edit_books": {
-            "button_cancel": "Avbryt",
-            "button_confirm": "Lagre endringer",
-            "dialog_title_single": "Rediger {book}",
-            "field_number": "Nummer",
-            "field_tags": "Etiketter",
-            "field_title": "Tittel",
-            "tab_general": "Generelt",
-            "tab_tags": "Etiketter"
-        },
-        "edit_collection": {
-            "button_cancel": "Avbryt",
-            "button_confirm": "Lagre endringer",
-            "dialog_title": "Rediger samling"
-        },
-        "edit_library": {
-            "button_browse": "Utforsk",
-            "button_cancel": "Avbryt",
-            "button_confirm_add": "Legg til",
-            "button_confirm_edit": "Rediger",
-            "dialog_title_add": "Legg til bibliotek",
-            "dialot_title_edit": "Rediger bibliotek",
-            "field_import_comicinfo_book": "Bok-metadata",
-            "field_name": "Navn",
-            "field_root_folder": "Rotmappe",
-            "file_browser_dialog_button_confirm": "Velg",
-            "tab_general": "Generelt"
-        },
-        "edit_readlist": {
-            "button_cancel": "Avbryt",
-            "button_confirm": "Lagre endringer",
-            "dialog_title": "Rediger leseliste",
-            "field_name": "Navn"
-        },
-        "edit_series": {
-            "button_cancel": "Avbryt",
-            "button_confirm": "Lagre endringer",
-            "dialog_title_single": "Rediger {series}",
-            "field_status": "Status",
-            "field_tags": "Etiketter",
-            "field_title": "Tittel",
-            "mixed": "Blandet",
-            "tab_general": "Generelt",
-            "tab_tags": "Etiketter"
-        },
-        "edit_user": {
-            "button_cancel": "Avbryt",
-            "button_confirm": "Lagre endringer"
-        },
-        "edit_user_shared_libraries": {
-            "button_cancel": "Avbryt",
-            "button_confirm": "Lagre endringer",
-            "dialog_title": "Rediger lagrede bibliotek",
-            "field_all_libraries": "Alle bibliotek",
-            "label_shared_with": "Delt med {name}"
-        },
-        "file_browser": {
-            "button_cancel": "Avbryt",
-            "button_confirm_default": "Velg",
-            "dialog_title_default": "Filutforsker"
-        },
-        "password_change": {
-            "button_cancel": "Avbryt",
-            "button_confirm": "Endre passord",
-            "dialog_title": "Endre passord",
-            "field_new_password": "Nytt passord",
-            "field_new_password_error": "Nytt passord påkrevd.",
-            "field_repeat_password": "Gjenta nytt passord",
-            "field_repeat_password_error": "Passordene må samsvare."
-        },
-        "shortcut_help": {
-            "label_description": "Beskrivelse"
-        }
-    },
-    "filter": {
-        "genre": "sjanger",
-        "language": "språk",
-        "library": "bibliotek",
-        "release_date": "utgivelsesdato",
-        "status": "status",
-        "tag": "etikett",
-        "unread": "Ulest"
-    },
-    "home": {
-        "theme": "Drakt",
-        "translation": "Oversettelse"
-    },
-    "library_navigation": {
-        "browse": "Utforsk",
-        "collections": "Samlinger",
-        "readlists": "Leselister"
-    },
-    "login": {
-        "create_user_account": "Opprett brukerkonto",
-        "unclaimed_html": "Denne Komga-tjeneren er ikke aktiv enda. Du må opprette en brukerkonto for å få tilgang til den.<br><br>Velg en<strong>e-post</strong> og et <strong>passord</strong> og klikk så på <strong>Opprett brukerkonto</strong>."
-    },
-    "media_analysis": {
-        "comment": "Kommentar",
-        "media_analysis": "Mediaanalyse",
-        "media_type": "Mediatype",
-        "name": "Navn",
-        "size": "Størrelse",
-        "status": "Status",
-        "url": "Nettadresse"
-    },
-    "menu": {
-        "add_to_collection": "Legg til i samling",
-        "add_to_readlist": "Legg til i leseliste",
-        "analyze": "Analyser",
-        "delete": "Slett",
-        "edit": "Rediger",
-        "edit_metadata": "Rediger metadata",
-        "mark_read": "Marker som lest",
-        "mark_unread": "Marker som ulest",
-        "refresh_metadata": "Gjenoppfrisk metadata",
-        "scan_library_files": "Skann biblioteksfiler"
-    },
-    "navigation": {
-        "home": "hjem",
-        "libraries": "bibliotek",
-        "logout": "logg ut"
-    },
-    "page_not_found": {
-        "go_back_to_home_page": "Gå tilbake til hjemmesiden",
-        "page_does_not_exist": "Siden du ser etter finnes ikke.",
-        "page_not_found": "Fant ikke siden"
-    },
-    "read_more": {
-        "less": "Les mindre",
-        "more": "Les mer"
-    },
-    "readlists_expansion_panel": {
-        "manage_readlist": "Håndter leseliste"
-    },
-    "search": {
-        "search": "Søk",
-        "search_results_for": "Søkeresultater for «{name}»"
-    },
-    "searchbox": {
-        "no_results": "Resultatløst"
-    },
-    "server_settings": {
-        "server_settings": "tjenerinnstillinger"
-    },
-    "settings_user": {
-        "edit_shared_libraries": "Rediger delte bibliotek",
-        "edit_user": "Rediger bruker",
-        "role_administrator": "Administrator",
-        "role_user": "Bruker"
-    },
-    "sort": {
-        "date_added": "Dato tillagt",
-        "date_updated": "Dato oppdatert",
-        "file_size": "Filstørrelse",
-        "name": "Navn",
-        "number": "Navn",
-        "release_date": "Utgivelsesdato"
-    },
-    "user_roles": {
-        "ADMIN": "Administrator",
-        "FILE_DOWNLOAD": "Filnedlasting",
-        "USER": "Bruker"
-    },
-    "users": {
-        "users": "Brukere"
-    },
-    "welcome": {
-        "add_library": "Legg til bibliotek",
-        "no_libraries_yet": "Ingen bibliotek lagt til enda.",
-        "welcome_message": "Velkommen til Komga"
+    "shortcuts": {
+      "close": "Lukk",
+      "first_page": "Første side",
+      "last_page": "Siste side",
+      "left_to_right": "Fra venstre til høyre",
+      "menus": "Menyer",
+      "next_page": "Neste side",
+      "previous_page": "Forrige side",
+      "right_to_left": "Fra høyre til venstre",
+      "settings": "Innstillinger",
+      "show_hide_help": "Vis/skjul hjelp",
+      "show_hide_settings": "Vis/skjul innstillingsmeny",
+      "show_hide_thumbnails": "Vis/skjul miniatyrbildeutforsker",
+      "show_hide_toolbars": "Vis/skjul verktøylinjer",
+      "vertical": "Loddrett"
     }
+  },
+  "browse_book": {
+    "comment": "Kommentar",
+    "download_file": "Last ned fil",
+    "file": "Fil",
+    "format": "Format",
+    "navigation_within_readlist": "Navigasjon i leselisten",
+    "read_book": "Les bok",
+    "size": "Størrelse"
+  },
+  "browse_collection": {
+    "edit_collection": "Rediger samling",
+    "edit_elements": "Rediger elementer"
+  },
+  "browse_readlist": {
+    "edit_elements": "Rediger elementer",
+    "edit_readlist": "Rediger leseliste"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "Håndter samling"
+  },
+  "common": {
+    "all_libraries": "Alle bibliotek",
+    "books": "Bøker",
+    "books_n": "Ingen bøker | 1 bok | {count} bøker",
+    "cancel": "Avbryt",
+    "close": "Lukk",
+    "collections": "Samlinger",
+    "create": "Opprett",
+    "delete": "Slett",
+    "email": "E-post",
+    "genre": "Sjanger",
+    "go_to_library": "Gå til bibliotek",
+    "locale_name": "Norsk bokmål",
+    "n_selected": "{count} valgt",
+    "nothing_to_show": "Ingenting å vise",
+    "pages": "sider",
+    "pages_n": "Ingen sider | 1 side | {count} sider",
+    "password": "Passord",
+    "readlists": "Leselister",
+    "required": "Påkrevd",
+    "roles": "Roller",
+    "series": "Serier",
+    "tags": "Etiketter"
+  },
+  "dashboard": {
+    "keep_reading": "fortsett å lese",
+    "on_deck": "på nattbordet",
+    "recently_added_books": "nylig oppdaterte bøker",
+    "recently_added_series": "nylig tillagte serier",
+    "recently_updated_series": "nylig oppdaterte serier"
+  },
+  "dialog": {
+    "add_to_collection": {
+      "button_create": "Opprett",
+      "card_collection_subtitle": "Ingen serier | 1 serie | {count} serier",
+      "dialog_title": "Legg til i samling",
+      "field_search_create": "Søk etter eller lag samling"
+    },
+    "add_to_readlist": {
+      "button_create": "Opprett",
+      "dialog_title": "Legg til i leseliste"
+    },
+    "add_user": {
+      "button_cancel": "Avbryt",
+      "button_confirm": "Legg til",
+      "dialog_title": "Legg til bruker",
+      "field_email": "E-post",
+      "field_password": "Passord",
+      "field_role_administrator": "Administrator",
+      "label_roles": "Roller"
+    },
+    "delete_collection": {
+      "button_cancel": "Avbryt",
+      "button_confirm": "Slett",
+      "confirm_delete": "Ja, slett samlingen ved navn «{name}»",
+      "dialog_title": "Slett samling"
+    },
+    "delete_library": {
+      "button_cancel": "Avbryt",
+      "button_confirm": "Slett",
+      "confirm_delete": "Ja, slett biblioteket «{name}»",
+      "title": "Slett bibliotek"
+    },
+    "delete_readlist": {
+      "button_cancel": "Avbryt",
+      "button_confirm": "Slett",
+      "dialog_title": "Sl"
+    },
+    "delete_user": {
+      "button_cancel": "Avbryt",
+      "button_confirm": "Slett",
+      "confirm_delete": "Ja, slett brukeren «{name}»",
+      "dialog_title": "Slett bruker"
+    },
+    "edit_books": {
+      "button_cancel": "Avbryt",
+      "button_confirm": "Lagre endringer",
+      "dialog_title_single": "Rediger {book}",
+      "field_number": "Nummer",
+      "field_tags": "Etiketter",
+      "field_title": "Tittel",
+      "tab_general": "Generelt",
+      "tab_tags": "Etiketter"
+    },
+    "edit_collection": {
+      "button_cancel": "Avbryt",
+      "button_confirm": "Lagre endringer",
+      "dialog_title": "Rediger samling"
+    },
+    "edit_library": {
+      "button_browse": "Utforsk",
+      "button_cancel": "Avbryt",
+      "button_confirm_add": "Legg til",
+      "button_confirm_edit": "Rediger",
+      "dialog_title_add": "Legg til bibliotek",
+      "dialot_title_edit": "Rediger bibliotek",
+      "field_import_comicinfo_book": "Bok-metadata",
+      "field_name": "Navn",
+      "field_root_folder": "Rotmappe",
+      "file_browser_dialog_button_confirm": "Velg",
+      "tab_general": "Generelt"
+    },
+    "edit_readlist": {
+      "button_cancel": "Avbryt",
+      "button_confirm": "Lagre endringer",
+      "dialog_title": "Rediger leseliste",
+      "field_name": "Navn"
+    },
+    "edit_series": {
+      "button_cancel": "Avbryt",
+      "button_confirm": "Lagre endringer",
+      "dialog_title_single": "Rediger {series}",
+      "field_status": "Status",
+      "field_tags": "Etiketter",
+      "field_title": "Tittel",
+      "mixed": "Blandet",
+      "tab_general": "Generelt",
+      "tab_tags": "Etiketter"
+    },
+    "edit_user": {
+      "button_cancel": "Avbryt",
+      "button_confirm": "Lagre endringer"
+    },
+    "edit_user_shared_libraries": {
+      "button_cancel": "Avbryt",
+      "button_confirm": "Lagre endringer",
+      "dialog_title": "Rediger lagrede bibliotek",
+      "field_all_libraries": "Alle bibliotek",
+      "label_shared_with": "Delt med {name}"
+    },
+    "file_browser": {
+      "button_cancel": "Avbryt",
+      "button_confirm_default": "Velg",
+      "dialog_title_default": "Filutforsker"
+    },
+    "password_change": {
+      "button_cancel": "Avbryt",
+      "button_confirm": "Endre passord",
+      "dialog_title": "Endre passord",
+      "field_new_password": "Nytt passord",
+      "field_new_password_error": "Nytt passord påkrevd.",
+      "field_repeat_password": "Gjenta nytt passord",
+      "field_repeat_password_error": "Passordene må samsvare."
+    },
+    "shortcut_help": {
+      "label_description": "Beskrivelse"
+    }
+  },
+  "filter": {
+    "genre": "sjanger",
+    "language": "språk",
+    "library": "bibliotek",
+    "release_date": "utgivelsesdato",
+    "status": "status",
+    "tag": "etikett",
+    "unread": "Ulest"
+  },
+  "home": {
+    "theme": "Drakt",
+    "translation": "Oversettelse"
+  },
+  "library_navigation": {
+    "browse": "Utforsk",
+    "collections": "Samlinger",
+    "readlists": "Leselister"
+  },
+  "login": {
+    "create_user_account": "Opprett brukerkonto",
+    "unclaimed_html": "Denne Komga-tjeneren er ikke aktiv enda. Du må opprette en brukerkonto for å få tilgang til den.<br><br>Velg en<strong>e-post</strong> og et <strong>passord</strong> og klikk så på <strong>Opprett brukerkonto</strong>."
+  },
+  "media_analysis": {
+    "comment": "Kommentar",
+    "media_analysis": "Mediaanalyse",
+    "media_type": "Mediatype",
+    "name": "Navn",
+    "size": "Størrelse",
+    "status": "Status",
+    "url": "Nettadresse"
+  },
+  "menu": {
+    "add_to_collection": "Legg til i samling",
+    "add_to_readlist": "Legg til i leseliste",
+    "analyze": "Analyser",
+    "delete": "Slett",
+    "edit": "Rediger",
+    "edit_metadata": "Rediger metadata",
+    "mark_read": "Marker som lest",
+    "mark_unread": "Marker som ulest",
+    "refresh_metadata": "Gjenoppfrisk metadata",
+    "scan_library_files": "Skann biblioteksfiler"
+  },
+  "navigation": {
+    "home": "hjem",
+    "libraries": "bibliotek",
+    "logout": "logg ut"
+  },
+  "page_not_found": {
+    "go_back_to_home_page": "Gå tilbake til hjemmesiden",
+    "page_does_not_exist": "Siden du ser etter finnes ikke.",
+    "page_not_found": "Fant ikke siden"
+  },
+  "read_more": {
+    "less": "Les mindre",
+    "more": "Les mer"
+  },
+  "readlists_expansion_panel": {
+    "manage_readlist": "Håndter leseliste"
+  },
+  "search": {
+    "search": "Søk",
+    "search_results_for": "Søkeresultater for «{name}»"
+  },
+  "searchbox": {
+    "no_results": "Resultatløst"
+  },
+  "server_settings": {
+    "server_settings": "tjenerinnstillinger"
+  },
+  "settings_user": {
+    "edit_shared_libraries": "Rediger delte bibliotek",
+    "edit_user": "Rediger bruker",
+    "role_administrator": "Administrator",
+    "role_user": "Bruker"
+  },
+  "sort": {
+    "date_added": "Dato tillagt",
+    "date_updated": "Dato oppdatert",
+    "file_size": "Filstørrelse",
+    "name": "Navn",
+    "number": "Navn",
+    "release_date": "Utgivelsesdato"
+  },
+  "user_roles": {
+    "ADMIN": "Administrator",
+    "FILE_DOWNLOAD": "Filnedlasting",
+    "USER": "Bruker"
+  },
+  "users": {
+    "users": "Brukere"
+  },
+  "welcome": {
+    "add_library": "Legg til bibliotek",
+    "no_libraries_yet": "Ingen bibliotek lagt til enda!",
+    "welcome_message": "Velkommen til Komga"
+  }
 }

@@ -1,0 +1,438 @@
+{
+  "account_settings": {
+    "account_settings": "Kontoeinstellungen",
+    "change_password": "Passwortänderung"
+  },
+  "author_roles": {
+    "colorist": "Colorist",
+    "cover": "Titelbild (Cover)",
+    "editor": "Herausgeber (Editor)",
+    "inker": "Tuscher",
+    "letterer": "Setzer",
+    "penciller": "Zeichner",
+    "writer": "Schriftsteller"
+  },
+  "bookreader": {
+    "beginning_of_book": "Sie sind am Anfang des Buches.",
+    "changing_reading_direction": "Ändere Leserichtung zu",
+    "cycling_page_layout": "Ändere Seitendarstellung",
+    "cycling_scale": "Ändere die Skalierung",
+    "cycling_side_padding": "Seitenrand ändern",
+    "end_of_book": "Sie haben das Ende des Buches erreicht.",
+    "from_series_metadata": "Metadaten von Serie",
+    "move_next": "Klicke oder presse Vorwärts erneut um zum nächsten Buch zu gelangen.",
+    "move_next_exit": "Klicke oder presse Vorwärts erneut um den Reader zu beenden.",
+    "move_previous": "Klick oder drücke nochmal Vorherige Seite erneut um zum letzten Buch zu gelangen.",
+    "paged_reader_layout": {
+      "double": "Doppelseite",
+      "double_no_cover": "Doppelseitig ohne Titelbild",
+      "single": "Einseitig"
+    },
+    "reader_settings": "Reader Einstellungen",
+    "scale_type": {
+      "continuous_original": "Original",
+      "continuous_width": "An Breite ausrichten",
+      "height": "An Höhe ausrichten",
+      "original": "Original",
+      "screen": "Vollbild",
+      "width": "An Breite ausrichten"
+    },
+    "settings": {
+      "animate_page_transitions": "Fließender Seitenübergangseffekt",
+      "background_color": "Hintergrundfarbe",
+      "background_colors": {
+        "black": "Schwarz",
+        "white": "Weiß"
+      },
+      "display": "Anzeige",
+      "general": "Allgemeines",
+      "gestures": "Gesten",
+      "page_layout": "Seiteneinstellungen",
+      "paged": "Seitenausrichtung",
+      "reading_mode": "Lesemodus",
+      "scale_type": "Maßstab",
+      "side_padding": "Seitenpolsterung",
+      "side_padding_none": "Keine",
+      "webtoon": "Webtoon"
+    },
+    "shortcuts": {
+      "close": "Verlasse den Reader",
+      "cycle_page_layout": "Wechsle Seitendarstellung",
+      "cycle_scale": "Ändern der Skalierung",
+      "cycle_side_padding": "Seitenrand ändern",
+      "first_page": "Erste Seite",
+      "last_page": "Letzte Seite",
+      "left_to_right": "von Links nach Rechts",
+      "menus": "Menü",
+      "next_page": "Nächste Seite",
+      "previous_page": "Vorherige Seite",
+      "reader_navigation": "Reader Steuerung",
+      "right_to_left": "von Rechts nach Links",
+      "settings": "Einstellungen",
+      "show_hide_help": "Zeige/Verstecke Hilfe",
+      "show_hide_settings": "Zeige/Verstecke Einstellungsmenü",
+      "show_hide_thumbnails": "Zeige/Verstecke Vorschaubilder",
+      "show_hide_toolbars": "Zeige/Verstecke Menüleiste",
+      "vertical": "Vertikal",
+      "webtoon": "Webtoon"
+    }
+  },
+  "browse_book": {
+    "comment": "Kommentar",
+    "download_file": "Datei herunterladen",
+    "file": "Datei",
+    "format": "Format",
+    "navigation_within_readlist": "Wechseln zur Leseliste",
+    "read_book": "Lese Buch",
+    "size": "Dateigröße"
+  },
+  "browse_collection": {
+    "edit_collection": "Ändere Sammlung",
+    "edit_elements": "Ändern",
+    "manual_ordering": "Manuelle Sortierung"
+  },
+  "browse_readlist": {
+    "edit_elements": "Ändere Eintrag",
+    "edit_readlist": "Ändere Leseliste"
+  },
+  "browse_series": {
+    "earliest_year_from_release_dates": "Dies ist das früheste Erscheinungsjahr von allen Büchern in der Serie",
+    "series_no_summary": "Diese Serie hat keine Kurzbeschreibung, es wurde eine aus der Serie per Zufall ausgewählt!",
+    "summary_from_book": "Inhaltsangabe des Buches {number}:"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "Sammlungverwaltung"
+  },
+  "common": {
+    "all_libraries": "Alle Bibliotheken",
+    "books": "Bücher",
+    "books_n": "Kein Buch | 1 Buch | {count} Bücher",
+    "cancel": "Abbrechen",
+    "close": "Schließen",
+    "collections": "Sammlung",
+    "create": "Erstelle",
+    "delete": "Löschen",
+    "email": "E-Mail",
+    "filter_no_matches": "Die Suchkriterien haben kein Ergebnis geliefert",
+    "genre": "Genre/Gattung",
+    "go_to_library": "Gehe zu Bibliothek",
+    "locale_name": "Deutsch",
+    "n_selected": "{count} markiert",
+    "nothing_to_show": "Keine Treffer gefunden die angezeigt werden könnten",
+    "pages": "Seiten",
+    "pages_n": "Keine Seite | 1 Seite | {count} Seiten",
+    "password": "Passwort",
+    "publisher": "Verleger/Verlag",
+    "readlists": "Leseliste",
+    "required": "Benötigt",
+    "roles": "Rollen",
+    "series": "Series/Reihe",
+    "tags": "Tags/Stichworte",
+    "use_filter_panel_to_change_filter": "Mit dem Suchfeld können die Suchkriterien eingestellt werden",
+    "year": "Jahr"
+  },
+  "dashboard": {
+    "keep_reading": "Weiter lesen",
+    "on_deck": "Oben auf dem Stapel",
+    "recently_added_books": "Kürzlich hinzugefügte Bücher",
+    "recently_added_series": "Kürzlich hinzugefügte Serien",
+    "recently_updated_series": "Kürzlich aktualisierte Serien"
+  },
+  "dialog": {
+    "add_to_collection": {
+      "button_create": "Erstelle",
+      "card_collection_subtitle": "Keine Serie | 1 Serie | {count} Serien",
+      "dialog_title": "Füge zu Sammlung hinzu",
+      "field_search_create": "Suche oder erzeuge eine Sammlung",
+      "field_search_create_error": "Eine Sammlung mit diesem Namen ist bereits vorhanden",
+      "label_no_matching_collection": "Keine Sammlung gefunden"
+    },
+    "add_to_readlist": {
+      "button_create": "Erzeuge",
+      "card_readlist_subtitle": "Kein Buch | 1 Buch| {count} Bücher",
+      "dialog_title": "Zur Leseliste hinzufügen",
+      "field_search_create": "Durchsuche oder Erzeuge eine Leseliste",
+      "field_search_create_error": "Eine Leseliste mit diesem Namen ist schon vorhanden",
+      "label_no_matching_readlist": "Keine passende Leseliste"
+    },
+    "add_user": {
+      "button_cancel": "Abbruch",
+      "button_confirm": "Hinzufügen",
+      "dialog_title": "Anwender hinzufügen",
+      "field_email": "E-Mail",
+      "field_email_error": "Die E-Mail Adresse muss eine gültige Adresse sein",
+      "field_password": "Passwort",
+      "field_role_administrator": "Administrator",
+      "field_role_file_download": "Datei herunterladen",
+      "field_role_page_streaming": "Seitenaufbau",
+      "label_roles": "Rollen"
+    },
+    "delete_collection": {
+      "button_cancel": "Abbruch",
+      "button_confirm": "Lösche",
+      "confirm_delete": "Ja, lösche die Sammlung \"{name}\"",
+      "dialog_title": "Lösche Sammmlung",
+      "warning_html": "Die Sammlung <b>{name}</b> wird vom Server entfernt. Die physikalischen Dateien bleiben unverändert. Dies kann <b>NICHT</b> rückgängig gemacht werden.  Fortfahren?"
+    },
+    "delete_library": {
+      "button_cancel": "Abbruch",
+      "button_confirm": "Lösche",
+      "confirm_delete": "Ja, lösche die Bibliothek \"{name}\"",
+      "title": "Lösche Bibliothek",
+      "warning_html": "Die Bibliothek <b>{name}</b> wird vom Server gelöscht. Die physikalischen Dateien bleiben unverändert. Dies kann <b>NICHT</b> rückgängig gemacht werden. Fortfahren?"
+    },
+    "delete_readlist": {
+      "button_cancel": "Abbruch",
+      "button_confirm": "Löschen",
+      "confirm_delete": "Ja, lösche die Leseliste \"{name}\"",
+      "dialog_title": "Lösche Leseliste",
+      "warning_html": "Die Leseliste <b>{name}</b> wird vom Server entfernt. Die physikalischen Dateien bleiben unverändert. Dies kann <b>NICHT</b> rückgängig gemacht werden. Fortfahren?"
+    },
+    "delete_user": {
+      "button_cancel": "Abbruch",
+      "button_confirm": "Lösche",
+      "confirm_delete": "Ja, lösche den Anwender \"{name}\"",
+      "dialog_title": "Anwender löschen",
+      "warning_html": "Der Anwender <b>{name}</b> wird gelöscht. Dies kann <b>NICHT</b> rückgängig gemacht werden. Fortfahren?"
+    },
+    "edit_books": {
+      "authors_notice_multiple_edit": "Sie verändern mehrere Bücher. Dies wird die existierenden Einträge der Autoren jedes einzelnen Buches durch den neuen Eintrag ersetzen.",
+      "button_cancel": "Abbruch",
+      "button_confirm": "Speichere die Änderungen",
+      "dialog_title_multiple": "Bearbeite {count} Bücher|Bearbeite {count} Bücher",
+      "dialog_title_single": "Bearbeite {book}",
+      "field_number": "Nummer",
+      "field_number_sort": "Reihenfolgennummer",
+      "field_number_sort_hint": "Sie können Dezimalzahlen verwenden",
+      "field_release_date": "Erscheinungsdatum",
+      "field_release_date_error": "Das Datum muss im Format YYYY-MM-DD sein",
+      "field_summary": "Zusammenfassung",
+      "field_tags": "Stichworte (Tags)",
+      "field_title": "Titel",
+      "tab_authors": "Authoren",
+      "tab_general": "Allgemein",
+      "tab_tags": "Stichworte (Tags)",
+      "tags_notice_multiple_edit": "Sie verändern die Stichwörter von mehreren Büchern. Dies wird die existierenden Einträge der Stichwörter jedes einzelnen Buches durch den neuen Eintrag ersetzen."
+    },
+    "edit_collection": {
+      "button_cancel": "Abbruch",
+      "button_confirm": "Speichere die Änderungen",
+      "dialog_title": "Bearbeite Sammlung",
+      "field_manual_ordering": "Manuelle Sortierung",
+      "label_ordering": "Sammlungen werden standardmäßig nach Namen sortiert. Sie können die manuelle Sortierung aktivieren und eine eigene Sortierfolge festlegen."
+    },
+    "edit_library": {
+      "button_browse": "Stöbern",
+      "button_cancel": "Abbruch",
+      "button_confirm_add": "Hinzufügen",
+      "button_confirm_edit": "Bearbeite",
+      "dialog_title_add": "Füge Bibliothek hinzu",
+      "dialot_title_edit": "Bearbeite Bibliothek",
+      "field_import_comicinfo_book": "Buch Metadaten",
+      "field_import_comicinfo_collections": "Sammlung",
+      "field_import_comicinfo_readlists": "Leseliste",
+      "field_import_comicinfo_series": "Serien Metadaten",
+      "field_import_epub_book": "Buch Metadaten",
+      "field_import_epub_series": "Serien Metadaten",
+      "field_import_local_artwork": "Lokale Artwork",
+      "field_name": "Name",
+      "field_root_folder": "Hauptverzeichnis",
+      "field_scanner_deep_scan": "Tiefensuche",
+      "field_scanner_force_directory_modified_time": "Erzwinge das Durchsuchen des Verzeichnis auf Basis des Zeitstempels",
+      "file_browser_dialog_button_confirm": "Akzeptiert",
+      "file_browser_dialog_title": "Bibliothekshauptverzeichnis",
+      "label_import_comicinfo": "Importiere aus einer vorhandenen ComicInfo.xml Datei die Metadaten für CBR/CBZ",
+      "label_import_epub": "Importiere für EPUB Dateien die Metadaten",
+      "label_import_local": "Importiere lokale Medienbestände",
+      "label_scanner": "Scanner",
+      "tab_general": "Allgemein",
+      "tab_options": "Optionen"
+    },
+    "edit_readlist": {
+      "button_cancel": "Abbruch",
+      "button_confirm": "Änderungen speichern",
+      "dialog_title": "Bearbeite die Leseliste",
+      "field_name": "Name der Leseliste"
+    },
+    "edit_series": {
+      "button_cancel": "Abbruch",
+      "button_confirm": "Speichere die Änderungen",
+      "dialog_title_multiple": "Bearbeite {count} Serien | Bearbeite {count} Serien",
+      "dialog_title_single": "Bearbeite {series}",
+      "field_age_rating": "Altersfreigabe",
+      "field_age_rating_error": "Altersfreigabe muß größer 0 sein",
+      "field_genres": "Genre/Gattung",
+      "field_language": "Sprache",
+      "field_publisher": "Verleger/Verlag",
+      "field_reading_direction": "Leserichtung",
+      "field_sort_title": "Nach Titel sortiert",
+      "field_status": "Status",
+      "field_summary": "Zusammenfassung",
+      "field_tags": "Stichworte (Tags)",
+      "field_title": "Titel",
+      "mixed": "Vermischtes",
+      "tab_general": "Allgemein",
+      "tab_tags": "Stichworte (Tags)",
+      "tags_notice_multiple_edit": "Sie verändern mehrere Stichwörter. Dies wird die existierenden Einträge der Stichwörter aller Serien durch den neuen Eintrag ersetzen."
+    },
+    "edit_user": {
+      "button_cancel": "Abbruch",
+      "button_confirm": "Änderungen speichern",
+      "dialog_title": "Bearbeite Anwender",
+      "label_roles_for": "Rollen für {name}"
+    },
+    "edit_user_shared_libraries": {
+      "button_cancel": "Abbruch",
+      "button_confirm": "Änderungen speichern",
+      "dialog_title": "Bearbeite gemeinsame Bibliotheken",
+      "field_all_libraries": "Alle Bibliotheken",
+      "label_shared_with": "Teile mit {name}"
+    },
+    "file_browser": {
+      "button_cancel": "Abbruch",
+      "button_confirm_default": "Akzeptiert",
+      "dialog_title_default": "Datei Browser",
+      "parent_directory": "Übergeordnetes Verzeichnis"
+    },
+    "password_change": {
+      "button_cancel": "Abbruch",
+      "button_confirm": "Ändere das Passwort",
+      "dialog_title": "Passwortänderung",
+      "field_new_password": "Neues Passwort",
+      "field_new_password_error": "Passworterneuerung ist notwendig.",
+      "field_repeat_password": "Geben Sie das Passwort erneut ein",
+      "field_repeat_password_error": "Das Passwort muss übereinstimmen."
+    },
+    "shortcut_help": {
+      "label_description": "Beschreibung",
+      "label_key": "Schlüssel"
+    }
+  },
+  "enums": {
+    "reading_direction": {
+      "LEFT_TO_RIGHT": "von Links nach Rechts",
+      "RIGHT_TO_LEFT": "von Rechts nach Links",
+      "VERTICAL": "Vertikal",
+      "WEBTOON": "Webtoon"
+    },
+    "series_status": {
+      "ABANDONED": "Abgebrochen",
+      "ENDED": "Abgeschlossen",
+      "HIATUS": "Spalt",
+      "ONGOING": "Fortlaufend"
+    }
+  },
+  "filter": {
+    "age_rating": "Altersfreigabe",
+    "genre": "Genre/Gattung",
+    "language": "Sprache",
+    "library": "Bibliothek",
+    "publisher": "Verleger/Verlag",
+    "release_date": "Erscheinungsdatum",
+    "status": "Status",
+    "tag": "Stichwort (Tag)",
+    "unread": "Ungelesen"
+  },
+  "filter_drawer": {
+    "filter": "Auswahlkriterium (Filter)",
+    "sort": "Sortierung"
+  },
+  "home": {
+    "theme": "Vorlage",
+    "translation": "Übersetzung"
+  },
+  "library_navigation": {
+    "browse": "Stöbern",
+    "collections": "Sammlung",
+    "readlists": "Leseliste"
+  },
+  "login": {
+    "create_user_account": "Erstelle Anwenderkonto",
+    "login": "Login",
+    "unclaimed_html": "Dieser Komga Server ist noch nicht bereit. Sie müssen zuerst einen Anwenderkonto anlegen um sich anmelden zu können.<br><br>Hinterlegen Sie eine <strong>E-Mail Adresse</strong> und vergeben Sie ein <strong>Passwort</strong>. Klicken Sie dann auf <strong>Erstelle Anwenderkonto</strong>."
+  },
+  "media_analysis": {
+    "comment": "Kommentar",
+    "media_analysis": "Medien Analyse",
+    "media_type": "Medienart",
+    "name": "Name",
+    "size": "Größe",
+    "status": "Status",
+    "url": "URL"
+  },
+  "menu": {
+    "add_to_collection": "Füge zu Sammlung hinzu",
+    "add_to_readlist": "Füge zur Leseliste hinzu",
+    "analyze": "Analysiere",
+    "delete": "Lösche",
+    "download_series": "Lade die gesamte Serie herunter",
+    "edit": "Ändere",
+    "edit_metadata": "Ändere Metadaten",
+    "mark_read": "Markiere als gelesen",
+    "mark_unread": "Markiere als ungelesen",
+    "refresh_metadata": "Erneuere Metadaten",
+    "scan_library_files": "Überprüfe (Scan) Bibliotheksdateien"
+  },
+  "navigation": {
+    "home": "Übersicht",
+    "libraries": "Bibliotheken",
+    "logout": "Abmelden"
+  },
+  "page_not_found": {
+    "go_back_to_home_page": "Zurück zur Übersicht",
+    "page_does_not_exist": "Die ausgewählte Seite existiert nicht.",
+    "page_not_found": "Seite nicht gefunden"
+  },
+  "read_more": {
+    "less": "Zeige weniger an",
+    "more": "Zeige den ganzen Text an"
+  },
+  "readlists_expansion_panel": {
+    "manage_readlist": "Leselistenverwaltung"
+  },
+  "search": {
+    "no_results": "Die Suche lieferte keine Treffer",
+    "search": "Suche",
+    "search_for_something_else": "Versuche ein anderes Suchkriterium",
+    "search_results_for": "Suchergegnis für \"{name}\""
+  },
+  "searchbox": {
+    "no_results": "Kein Ergebnis"
+  },
+  "server_settings": {
+    "server_settings": "Servereinstellungen"
+  },
+  "settings_user": {
+    "edit_shared_libraries": "Bearbeite gemeinsame Bibliotheken",
+    "edit_user": "Bearbeite den Anwender",
+    "role_administrator": "Administrator",
+    "role_user": "Anwender"
+  },
+  "sort": {
+    "date_added": "Nach Hinzufügedatum sortiert",
+    "date_updated": "Nach letzter Aktuallisierung sortiert",
+    "file_size": "Nach Dateigröße sortiert",
+    "name": "Nach Name sortiert",
+    "number": "Nach Nummer sortiert",
+    "release_date": "Nach Erscheinungsdatum sortiert"
+  },
+  "theme": {
+    "dark": "Dunkel",
+    "light": "Hell",
+    "system": "System"
+  },
+  "user_roles": {
+    "ADMIN": "Administrator",
+    "FILE_DOWNLOAD": "Datei herunterladen",
+    "PAGE_STREAMING": "Seitenfluss",
+    "USER": "Anwender"
+  },
+  "users": {
+    "users": "Anwender"
+  },
+  "welcome": {
+    "add_library": "Füge Bibliothek hinzu",
+    "no_libraries_yet": "Es wurden bisher noch keine Bibliothken hinzugefügt!",
+    "welcome_message": "Willkommen zu Komga"
+  }
+}
