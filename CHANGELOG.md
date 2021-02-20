@@ -1,3 +1,10 @@
+## [0.71.4](https://github.com/gotson/komga/compare/v0.71.3...v0.71.4) (2021-02-20)
+
+
+### Bug Fixes
+
+* **webui:** translations update from Weblate ([#415](https://github.com/gotson/komga/issues/415)) ([71a280a](https://github.com/gotson/komga/commit/71a280a1b0c6c0ee201f1b85302cac1829c69d9e))
+
 ## [0.71.3](https://github.com/gotson/komga/compare/v0.71.2...v0.71.3) (2021-02-19)
 
 
