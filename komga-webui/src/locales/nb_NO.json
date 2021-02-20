@@ -7,6 +7,9 @@
     "colorist": "fargeleggere",
     "cover": "omslag",
     "editor": "redaktører",
+    "inker": "inkers",
+    "letterer": "letterers",
+    "penciller": "pencillers",
     "writer": "skribenter"
   },
   "bookreader": {
@@ -45,6 +48,7 @@
       "general": "Generelt",
       "gestures": "Håndvendinger",
       "page_layout": "Sideutforming",
+      "paged": "Sideoppsett",
       "reading_mode": "Lesemodus",
       "scale_type": "Skalering",
       "side_padding": "Sideutfylling",
@@ -311,16 +315,29 @@
       "RIGHT_TO_LEFT": "Høyre til venstre",
       "VERTICAL": "Loddrett",
       "WEBTOON": "Webtoon"
+    },
+    "series_status": {
+      "ABANDONED": "Forlatt",
+      "ENDED": "Avsluttet",
+      "HIATUS": "Pause",
+      "ONGOING": "Pågående"
     }
   },
   "filter": {
+    "age_rating": "aldersgrense",
+    "age_rating_none": "Ingen",
     "genre": "sjanger",
     "language": "språk",
     "library": "bibliotek",
+    "publisher": "utgiver",
     "release_date": "utgivelsesdato",
     "status": "status",
     "tag": "etikett",
     "unread": "Ulest"
+  },
+  "filter_drawer": {
+    "filter": "filter",
+    "sort": "sorter"
   },
   "home": {
     "theme": "Drakt",
@@ -333,6 +350,7 @@
   },
   "login": {
     "create_user_account": "Opprett brukerkonto",
+    "login": "Logg inn",
     "unclaimed_html": "Denne Komga-tjeneren er ikke aktiv enda. Du må opprette en brukerkonto for å få tilgang til den.<br><br>Velg en<strong>e-post</strong> og et <strong>passord</strong> og klikk så på <strong>Opprett brukerkonto</strong>."
   },
   "media_analysis": {
@@ -349,6 +367,7 @@
     "add_to_readlist": "Legg til i leseliste",
     "analyze": "Analyser",
     "delete": "Slett",
+    "download_series": "Last ned serie",
     "edit": "Rediger",
     "edit_metadata": "Rediger metadata",
     "mark_read": "Marker som lest",
@@ -374,7 +393,9 @@
     "manage_readlist": "Håndter leseliste"
   },
   "search": {
+    "no_results": "Søket ga ingen treff",
     "search": "Søk",
+    "search_for_something_else": "Prøv å søk etter noe annet",
     "search_results_for": "Søkeresultater for «{name}»"
   },
   "searchbox": {
@@ -397,9 +418,15 @@
     "number": "Navn",
     "release_date": "Utgivelsesdato"
   },
+  "theme": {
+    "dark": "Mørk",
+    "light": "Lys",
+    "system": "System"
+  },
   "user_roles": {
     "ADMIN": "Administrator",
     "FILE_DOWNLOAD": "Filnedlasting",
+    "PAGE_STREAMING": "Strøm sider",
     "USER": "Bruker"
   },
   "users": {
