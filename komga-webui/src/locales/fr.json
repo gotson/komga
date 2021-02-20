@@ -117,7 +117,7 @@
     "genre": "Genre",
     "go_to_library": "Aller à la bibliothèque",
     "locale_name": "Français",
-    "locale_rtl" : "false",
+    "locale_rtl": "false",
     "n_selected": "{count} sélectionné | {count} sélectionnés",
     "nothing_to_show": "Rien à afficher",
     "pages": "pages",
@@ -134,7 +134,7 @@
   },
   "dashboard": {
     "keep_reading": "Continuer la lecture",
-    "on_deck": "Sur le pont",
+    "on_deck": "En cours",
     "recently_added_books": "Livres ajoutés récemment",
     "recently_added_series": "Séries ajoutées récemment",
     "recently_updated_series": "Séries mises à jour récemment"

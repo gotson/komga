@@ -3,53 +3,102 @@
     "account_settings": "kontoinnstillinger",
     "change_password": "endre passord"
   },
+  "author_roles": {
+    "colorist": "fargeleggere",
+    "cover": "omslag",
+    "editor": "redaktører",
+    "inker": "inkers",
+    "letterer": "letterers",
+    "penciller": "pencillers",
+    "writer": "skribenter"
+  },
   "bookreader": {
+    "beginning_of_book": "Du er på begynnelsen av boka.",
+    "changing_reading_direction": "Endrer leseretning til",
+    "cycling_page_layout": "Endrer sideutforming til",
+    "cycling_scale": "Endrer skalering til",
+    "cycling_side_padding": "Endrer side padding til",
+    "end_of_book": "Du har nådd slutten på boka.",
+    "from_series_metadata": "fra serie metadata",
+    "move_next": "Klikk eller trykk «Neste» igjen for å gå til neste bok.",
     "move_next_exit": "Klikk eller trykk «Neste» igjen for å avslutte leseren.",
+    "move_previous": "Klikk eller trykk «Bakover» igjen for å gå til forrige bok.",
+    "paged_reader_layout": {
+      "double": "Doble sider",
+      "double_no_cover": "Doble sider (ingen omslag)",
+      "single": "Enkel side"
+    },
     "reader_settings": "Leserinnstillinger",
+    "scale_type": {
+      "continuous_original": "Original",
+      "continuous_width": "Tilpass til bredden",
+      "height": "Tilpass til høyden",
+      "original": "Original",
+      "screen": "Tilpass til skjerm",
+      "width": "Tilpass til bredden"
+    },
     "settings": {
       "animate_page_transitions": "Animer sideoverganger",
       "background_color": "Bakgrunnsfarge",
-      "display": "Skjerm",
-      "general": "Sjanger",
+      "background_colors": {
+        "black": "Svart",
+        "white": "Hvit"
+      },
+      "display": "Visning",
+      "general": "Generelt",
       "gestures": "Håndvendinger",
       "page_layout": "Sideutforming",
+      "paged": "Sideoppsett",
       "reading_mode": "Lesemodus",
       "scale_type": "Skalering",
-      "side_padding": "Sideutfylling"
+      "side_padding": "Sideutfylling",
+      "side_padding_none": "Ingen",
+      "webtoon": "Webtoon"
     },
     "shortcuts": {
       "close": "Lukk",
+      "cycle_page_layout": "Endre sideutforming",
+      "cycle_scale": "Endre skalering",
+      "cycle_side_padding": "Endre side padding",
       "first_page": "Første side",
       "last_page": "Siste side",
       "left_to_right": "Fra venstre til høyre",
       "menus": "Menyer",
       "next_page": "Neste side",
       "previous_page": "Forrige side",
+      "reader_navigation": "Navigering",
       "right_to_left": "Fra høyre til venstre",
       "settings": "Innstillinger",
       "show_hide_help": "Vis/skjul hjelp",
       "show_hide_settings": "Vis/skjul innstillingsmeny",
       "show_hide_thumbnails": "Vis/skjul miniatyrbildeutforsker",
       "show_hide_toolbars": "Vis/skjul verktøylinjer",
-      "vertical": "Loddrett"
+      "vertical": "Loddrett",
+      "webtoon": "Webtoon"
     }
   },
   "browse_book": {
-    "comment": "Kommentar",
+    "comment": "KOMMENTAR",
     "download_file": "Last ned fil",
-    "file": "Fil",
-    "format": "Format",
+    "file": "FIL",
+    "format": "FORMAT",
     "navigation_within_readlist": "Navigasjon i leselisten",
     "read_book": "Les bok",
-    "size": "Størrelse"
+    "size": "STØRRELSE"
   },
   "browse_collection": {
     "edit_collection": "Rediger samling",
-    "edit_elements": "Rediger elementer"
+    "edit_elements": "Rediger elementer",
+    "manual_ordering": "egendefinert rekkefølge"
   },
   "browse_readlist": {
     "edit_elements": "Rediger elementer",
     "edit_readlist": "Rediger leseliste"
+  },
+  "browse_series": {
+    "earliest_year_from_release_dates": "Dette er det tidligste året fra utgivelsesdatoene til alle bøkene i serien",
+    "series_no_summary": "Denne serien har ingen sammendrag, så vi valgte et for deg!",
+    "summary_from_book": "Sammendrag fra bok {number}:"
   },
   "collections_expansion_panel": {
     "manage_collection": "Håndter samling"
@@ -64,20 +113,24 @@
     "create": "Opprett",
     "delete": "Slett",
     "email": "E-post",
+    "filter_no_matches": "Det aktive filteret ga ingen treff",
     "genre": "Sjanger",
     "go_to_library": "Gå til bibliotek",
     "locale_name": "Norsk bokmål",
-    "locale_rtl" : "false",
+    "locale_rtl": "false",
     "n_selected": "{count} valgt",
     "nothing_to_show": "Ingenting å vise",
     "pages": "sider",
     "pages_n": "Ingen sider | 1 side | {count} sider",
     "password": "Passord",
+    "publisher": "Utgiver",
     "readlists": "Leselister",
     "required": "Påkrevd",
     "roles": "Roller",
     "series": "Serier",
-    "tags": "Etiketter"
+    "tags": "Etiketter",
+    "use_filter_panel_to_change_filter": "Bruk filterpanelet til å endre aktivt filter",
+    "year": "år"
   },
   "dashboard": {
     "keep_reading": "fortsett å lese",
@@ -91,58 +144,83 @@
       "button_create": "Opprett",
       "card_collection_subtitle": "Ingen serier | 1 serie | {count} serier",
       "dialog_title": "Legg til i samling",
-      "field_search_create": "Søk etter eller lag samling"
+      "field_search_create": "Søk etter eller lag samling",
+      "field_search_create_error": "En samling med dette navnet finnes allerede",
+      "label_no_matching_collection": "Ingen samling funnet"
     },
     "add_to_readlist": {
       "button_create": "Opprett",
-      "dialog_title": "Legg til i leseliste"
+      "card_readlist_subtitle": "Ingen bøker | 1 bok | {count} bøker",
+      "dialog_title": "Legg til i leseliste",
+      "field_search_create": "Søk eller lag leseliste",
+      "field_search_create_error": "En leseliste med dette navnet finnes allerede",
+      "label_no_matching_readlist": "Ingen leseliste funnet"
     },
     "add_user": {
       "button_cancel": "Avbryt",
       "button_confirm": "Legg til",
       "dialog_title": "Legg til bruker",
       "field_email": "E-post",
+      "field_email_error": "Må være en gyldig e-postadresse",
       "field_password": "Passord",
       "field_role_administrator": "Administrator",
+      "field_role_file_download": "Filnedlasting",
+      "field_role_page_streaming": "Sidestrømming",
       "label_roles": "Roller"
     },
     "delete_collection": {
       "button_cancel": "Avbryt",
       "button_confirm": "Slett",
       "confirm_delete": "Ja, slett samlingen ved navn «{name}»",
-      "dialog_title": "Slett samling"
+      "dialog_title": "Slett samling",
+      "warning_html": "Samlingen <b>{name}</b> vil bli fjernet fra tjeneren. Dine mediafiler vil ikke bli affektert. Dette kan <b>ikke</b> angres. Fortsett?"
     },
     "delete_library": {
       "button_cancel": "Avbryt",
       "button_confirm": "Slett",
       "confirm_delete": "Ja, slett biblioteket «{name}»",
-      "title": "Slett bibliotek"
+      "title": "Slett bibliotek",
+      "warning_html": "Biblioteket <b>{name}</b> vil bli fjernet fra tjeneren. Dine mediafiler vil ikke bli affektert. Dette kan <b>ikke</b> angres. Fortsett?"
     },
     "delete_readlist": {
       "button_cancel": "Avbryt",
       "button_confirm": "Slett",
-      "dialog_title": "Sl"
+      "confirm_delete": "Ja, slett leselisten «{name}»",
+      "dialog_title": "Slett leseliste",
+      "warning_html": "Leselisten <b>{name}</b> vil bli fjernet fra tjeneren. Dine mediafiler vil ikke bli affektert. Dette kan <b>ikke</b> angres. Fortsett?"
     },
     "delete_user": {
       "button_cancel": "Avbryt",
       "button_confirm": "Slett",
       "confirm_delete": "Ja, slett brukeren «{name}»",
-      "dialog_title": "Slett bruker"
+      "dialog_title": "Slett bruker",
+      "warning_html": "Brukeren <b>{name}</b> vil bli slettet fra tjeneren. Dette kan <b>ikke</b> angres. Fortsett?"
     },
     "edit_books": {
+      "authors_notice_multiple_edit": "Du redigerer forfattere til flere bøker. Dette vil overskrive eksisterende forfattere til hver bok.",
       "button_cancel": "Avbryt",
       "button_confirm": "Lagre endringer",
+      "dialog_title_multiple": "Rediger {count} bok | Rediger {count} bøker",
       "dialog_title_single": "Rediger {book}",
       "field_number": "Nummer",
+      "field_number_sort": "Sorteringsnummer",
+      "field_number_sort_hint": "Du kan bruke desimaltall",
+      "field_release_date": "Utgivelsesdato",
+      "field_release_date_error": "Må være en gyldig dato i ÅÅÅÅ-MM-DD format",
+      "field_summary": "Sammendrag",
       "field_tags": "Etiketter",
       "field_title": "Tittel",
+      "tab_authors": "Forfattere",
       "tab_general": "Generelt",
-      "tab_tags": "Etiketter"
+      "tab_tags": "Etiketter",
+      "tags_notice_multiple_edit": "Du redigerer etiketter til flere bøker. Dette vil overskrive eksisterende etiketter til hver bok."
     },
     "edit_collection": {
       "button_cancel": "Avbryt",
       "button_confirm": "Lagre endringer",
-      "dialog_title": "Rediger samling"
+      "dialog_title": "Rediger samling",
+      "field_manual_ordering": "Egendefinert rekkefølge",
+      "label_ordering": "Som standard vil serier i en samling være sortert etter navn. Du kan skru på egendefinert rekkefølge for å flytte serier fritt."
     },
     "edit_library": {
       "button_browse": "Utforsk",
@@ -152,10 +230,24 @@
       "dialog_title_add": "Legg til bibliotek",
       "dialot_title_edit": "Rediger bibliotek",
       "field_import_comicinfo_book": "Bok-metadata",
+      "field_import_comicinfo_collections": "Samlinger",
+      "field_import_comicinfo_readlists": "Leselister",
+      "field_import_comicinfo_series": "Serie metadata",
+      "field_import_epub_book": "Bok metadata",
+      "field_import_epub_series": "Serie metadata",
+      "field_import_local_artwork": "Lokale bilder",
       "field_name": "Navn",
       "field_root_folder": "Rotmappe",
+      "field_scanner_deep_scan": "Dyp skann",
+      "field_scanner_force_directory_modified_time": "Tving mappe modifisert tid",
       "file_browser_dialog_button_confirm": "Velg",
-      "tab_general": "Generelt"
+      "file_browser_dialog_title": "Biblioteket's rotmappe",
+      "label_import_comicinfo": "Importer metadata for CBR/CBZ som har en ComicInfo.xml fil",
+      "label_import_epub": "Importer metadata fra EPUB filer",
+      "label_import_local": "Importer lokale media ressurser",
+      "label_scanner": "Skanner",
+      "tab_general": "Generelt",
+      "tab_options": "Alternativer"
     },
     "edit_readlist": {
       "button_cancel": "Avbryt",
@@ -166,17 +258,29 @@
     "edit_series": {
       "button_cancel": "Avbryt",
       "button_confirm": "Lagre endringer",
+      "dialog_title_multiple": "Rediger {count} serie | Rediger {count} serier",
       "dialog_title_single": "Rediger {series}",
+      "field_age_rating": "Aldersgrense",
+      "field_age_rating_error": "Aldersgrense må være 0 eller mer",
+      "field_genres": "Sjangrer",
+      "field_language": "Språk",
+      "field_publisher": "Utgiver",
+      "field_reading_direction": "Leseretning",
+      "field_sort_title": "Sorteringstittel",
       "field_status": "Status",
+      "field_summary": "Sammendrag",
       "field_tags": "Etiketter",
       "field_title": "Tittel",
-      "mixed": "Blandet",
+      "mixed": "BLANDET",
       "tab_general": "Generelt",
-      "tab_tags": "Etiketter"
+      "tab_tags": "Etiketter",
+      "tags_notice_multiple_edit": "Du redigerer etiketter til flere serier. Dette vil overskrive eksisterende etiketter til hver serie."
     },
     "edit_user": {
       "button_cancel": "Avbryt",
-      "button_confirm": "Lagre endringer"
+      "button_confirm": "Lagre endringer",
+      "dialog_title": "Rediger bruker",
+      "label_roles_for": "Roller til {name}"
     },
     "edit_user_shared_libraries": {
       "button_cancel": "Avbryt",
@@ -188,7 +292,8 @@
     "file_browser": {
       "button_cancel": "Avbryt",
       "button_confirm_default": "Velg",
-      "dialog_title_default": "Filutforsker"
+      "dialog_title_default": "Filutforsker",
+      "parent_directory": "Ovennevnt"
     },
     "password_change": {
       "button_cancel": "Avbryt",
@@ -200,17 +305,39 @@
       "field_repeat_password_error": "Passordene må samsvare."
     },
     "shortcut_help": {
-      "label_description": "Beskrivelse"
+      "label_description": "Beskrivelse",
+      "label_key": "Tast"
+    }
+  },
+  "enums": {
+    "reading_direction": {
+      "LEFT_TO_RIGHT": "Venstre til høyre",
+      "RIGHT_TO_LEFT": "Høyre til venstre",
+      "VERTICAL": "Loddrett",
+      "WEBTOON": "Webtoon"
+    },
+    "series_status": {
+      "ABANDONED": "Forlatt",
+      "ENDED": "Avsluttet",
+      "HIATUS": "Pause",
+      "ONGOING": "Pågående"
     }
   },
   "filter": {
+    "age_rating": "aldersgrense",
+    "age_rating_none": "Ingen",
     "genre": "sjanger",
     "language": "språk",
     "library": "bibliotek",
+    "publisher": "utgiver",
     "release_date": "utgivelsesdato",
     "status": "status",
     "tag": "etikett",
     "unread": "Ulest"
+  },
+  "filter_drawer": {
+    "filter": "filter",
+    "sort": "sorter"
   },
   "home": {
     "theme": "Drakt",
@@ -223,6 +350,7 @@
   },
   "login": {
     "create_user_account": "Opprett brukerkonto",
+    "login": "Logg inn",
     "unclaimed_html": "Denne Komga-tjeneren er ikke aktiv enda. Du må opprette en brukerkonto for å få tilgang til den.<br><br>Velg en<strong>e-post</strong> og et <strong>passord</strong> og klikk så på <strong>Opprett brukerkonto</strong>."
   },
   "media_analysis": {
@@ -239,6 +367,7 @@
     "add_to_readlist": "Legg til i leseliste",
     "analyze": "Analyser",
     "delete": "Slett",
+    "download_series": "Last ned serie",
     "edit": "Rediger",
     "edit_metadata": "Rediger metadata",
     "mark_read": "Marker som lest",
@@ -264,7 +393,9 @@
     "manage_readlist": "Håndter leseliste"
   },
   "search": {
+    "no_results": "Søket ga ingen treff",
     "search": "Søk",
+    "search_for_something_else": "Prøv å søk etter noe annet",
     "search_results_for": "Søkeresultater for «{name}»"
   },
   "searchbox": {
@@ -287,9 +418,15 @@
     "number": "Navn",
     "release_date": "Utgivelsesdato"
   },
+  "theme": {
+    "dark": "Mørk",
+    "light": "Lys",
+    "system": "System"
+  },
   "user_roles": {
     "ADMIN": "Administrator",
     "FILE_DOWNLOAD": "Filnedlasting",
+    "PAGE_STREAMING": "Strøm sider",
     "USER": "Bruker"
   },
   "users": {
