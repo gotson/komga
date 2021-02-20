@@ -11,7 +11,7 @@ import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
-import org.gotson.komga.infrastructure.hash.FileHasher
+import org.gotson.komga.infrastructure.hash.XXHasher
 import org.springframework.stereotype.Service
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -28,7 +28,7 @@ class LibraryScanner(
   private val bookRepository: BookRepository,
   private val mediaRepository: MediaRepository,
   private val seriesLifecycle: SeriesLifecycle,
-  private val fileHasher: FileHasher,
+  private val fileHasher: XXHasher,
   private val taskReceiver: TaskReceiver,
   private val bookMetadataRepository: BookMetadataRepository,
   private val seriesMetadataRepository: SeriesMetadataRepository
@@ -82,12 +82,19 @@ class LibraryScanner(
   private fun updateSeriesAndBooks(scannedSeries: Map<Series, Collection<Book>>, library: Library) {
     scannedSeries.forEach { (newSeries, newBooks) ->
       seriesRepository.findByLibraryIdAndUrlIncludeDeleted(library.id, newSeries.url)?.let { existingSeries ->
-        // if series already exists, update it
+        if (existingSeries.deleted) {
+          seriesLifecycle.deleteOne(existingSeries.id)
+          logger.info { "Adding new series: $newSeries" }
+          seriesLifecycle.createSeries(newSeries)
+          return@let
+        }
+
         logger.debug { "Scanned series already exists. Scanned: $newSeries, Existing: $existingSeries" }
         if (isModified(newSeries.fileLastModified, existingSeries.fileLastModified)) {
           logger.info { "Series changed on disk, updating: $existingSeries" }
           seriesRepository.update(existingSeries.copy(fileLastModified = newSeries.fileLastModified))
         }
+
         if (library.scanDeep || isModified(newSeries.fileLastModified, existingSeries.fileLastModified)) {
           val existingBooks = bookRepository.findBySeriesId(existingSeries.id)
           logger.debug { "Existing books: $existingBooks" }
@@ -95,7 +102,6 @@ class LibraryScanner(
           deleteNoLongerExistingBooks(newBooks, existingBooks)
         }
       } ?: run {
-        // if series does not exist, save it
         logger.info { "Adding new series: $newSeries" }
         seriesLifecycle.createSeries(newSeries)
       }
@@ -144,13 +150,19 @@ class LibraryScanner(
           logger.info { "new series contains all books from previously deleted series. Restoring old series from: ${seriesToRestore.path()}" }
 
           val deletedBooks: Collection<Book> = bookRepository.findBySeriesIdIncludeDeleted(seriesToRestore.id)
-
           val restoredBooks: List<Book> = newBooks.mapNotNull { newBook ->
             deletedBooks.find { Pair(it.fileHash, it.fileSize) == Pair(newBook.fileHash, newBook.fileSize) }?.let {
               newBook.copy(id = it.id, seriesId = it.seriesId)
             }
           }
+
           val restoredSeries = newSeries.copy(id = seriesToRestore.id, createdDate = seriesToRestore.createdDate)
+
+          seriesRepository.findByLibraryIdAndUrlIncludeDeleted(restoredSeries.libraryId, restoredSeries.url)?.let {
+            if (restoredSeries.id != it.id) {
+              seriesLifecycle.deleteOne(it.id)
+            }
+          }
 
           bookRepository.updateMany(restoredBooks)
           seriesRepository.update(restoredSeries)
@@ -182,7 +194,6 @@ class LibraryScanner(
 
   private fun updateExistingBook(newBooks: Collection<Book>, existingBooks: Collection<Book>) {
     newBooks.forEach { newBook ->
-      // update list of books with existing entities if they exist
       logger.debug { "Trying to match scanned book by url: $newBook" }
       existingBooks.find { it.url == newBook.url }?.let { existingBook ->
         logger.debug { "Matched existing book: $existingBook" }

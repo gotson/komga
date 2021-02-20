@@ -1,7 +1,7 @@
 package db.migration.sqlite
 
 import mu.KotlinLogging
-import net.jpountz.xxhash.XXHashFactory
+import org.apache.commons.codec.digest.XXHash32
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.springframework.jdbc.core.JdbcTemplate
@@ -36,23 +36,23 @@ class V202101091156000__trash_bin_part_2 : BaseJavaMigration() {
   }
 
   fun getHash(path: Path): String {
-    val seed = -0x68b84d74L
     val file = path.toFile()
     val bytesToSkip = java.lang.Long.highestOneBit(file.length() / 100)
 
     with(FileInputStream(file)) {
+      val hash32 = XXHash32()
       val buf = ByteArray(4096)
-      val hash64 = XXHashFactory.fastestInstance().newStreamingHash64(seed)
 
       while (true) {
         val read: Int = this.read(buf)
         if (read == -1) break
 
-        hash64.update(buf, 0, read)
+        hash32.update(buf, 0, read)
+
         this.skip(bytesToSkip)
       }
 
-      return hash64.value.toString(16)
+      return hash32.value.toString(16)
     }
   }
 

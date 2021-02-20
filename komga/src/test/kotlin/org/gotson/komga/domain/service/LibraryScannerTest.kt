@@ -22,7 +22,7 @@ import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
-import org.gotson.komga.infrastructure.hash.FileHasher
+import org.gotson.komga.infrastructure.hash.XXHasher
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -53,7 +53,7 @@ class LibraryScannerTest(
   private lateinit var mockScanner: FileSystemScanner
 
   @MockkBean
-  private lateinit var mockHasher: FileHasher
+  private lateinit var mockHasher: XXHasher
 
   @MockkBean
   private lateinit var mockAnalyzer: BookAnalyzer
@@ -846,5 +846,100 @@ class LibraryScannerTest(
     assertThat(restoredMetadata.title).isEqualTo(metadata.title)
     assertThat(restoredReadProgress).isNotNull
     assertThat(restoredReadProgress!!.page).isEqualTo(readProgress.page)
+  }
+
+  @Test
+  fun `given a soft-deleted and existing series when changing path of existing series to soft-deleted then soft-deleted is removed and existing series path is changed`() {
+    // given
+    val user = KomgaUser("user@example.org", "", false)
+    userRepository.insert(user)
+
+    val library = makeLibrary()
+    libraryRepository.insert(library)
+
+    val series1 = makeSeries(name = "series1")
+    val book1 = makeBook(name = "book1")
+
+    val series2 = makeSeries(name = "series2")
+    val book2 = makeBook(name = "book2")
+
+    val series2MovedToSeries1Path = series2.copy(name = series1.name, url = series1.url)
+    val book2MovedToBook1Path = book2.copy(url = book1.url)
+
+    every { mockScanner.scanRootFolder(any()) }
+      .returnsMany(
+        mapOf(series1 to listOf(book1)),
+        mapOf(series2 to listOf(book2)),
+        mapOf(series2MovedToSeries1Path to listOf(book2MovedToBook1Path))
+      )
+    every { mockHasher.getHash(book1.path()) }.returnsMany("1", "2")
+    every { mockHasher.getHash(book2.path()) }.returns("2")
+    libraryScanner.scanRootFolder(library)
+    libraryScanner.scanRootFolder(library)
+
+    // when
+    libraryScanner.scanRootFolder(library)
+
+    // then
+    val allSeries = seriesRepository.findAll()
+    val allSeriesDeleted = seriesRepository.findAllDeleted()
+    val allBooks = bookRepository.findAll()
+    val allBooksDeleted = bookRepository.findAllDeleted()
+
+    verify(exactly = 3) { mockScanner.scanRootFolder(any()) }
+
+    assertThat(allSeries).hasSize(1)
+    assertThat(allSeriesDeleted).isEmpty()
+    assertThat(allBooks).hasSize(1)
+    assertThat(allBooksDeleted).isEmpty()
+
+    assertThat(allSeries.first().id).isEqualTo(series2.id)
+    assertThat(allBooks.first().id).isEqualTo(book2.id)
+  }
+
+  @Test
+  fun `given soft-deleted series when adding new series with the same path but different books then soft-deleted series is removed and new series is created`() {
+    // given
+    val user = KomgaUser("user@example.org", "", false)
+    userRepository.insert(user)
+
+    val library = makeLibrary()
+    libraryRepository.insert(library)
+
+    val series1 = makeSeries(name = "series1")
+    val book1 = makeBook(name = "book1")
+
+    val series2 = makeSeries(name = "series2").copy(url = series1.url)
+    val book2 = makeBook(name = "book2").copy(url = book1.url)
+
+    every { mockScanner.scanRootFolder(any()) }
+      .returnsMany(
+        mapOf(series1 to listOf(book1)),
+        mapOf(),
+        mapOf(series2 to listOf(book2)),
+      )
+    every { mockHasher.getHash(book1.path()) }.returnsMany("1", "2")
+    libraryScanner.scanRootFolder(library)
+    // delete series
+    libraryScanner.scanRootFolder(library)
+
+    // when
+    libraryScanner.scanRootFolder(library)
+
+    // then
+    val allSeries = seriesRepository.findAll()
+    val allSeriesDeleted = seriesRepository.findAllDeleted()
+    val allBooks = bookRepository.findAll()
+    val allBooksDeleted = bookRepository.findAllDeleted()
+
+    verify(exactly = 3) { mockScanner.scanRootFolder(any()) }
+
+    assertThat(allSeries).hasSize(1)
+    assertThat(allSeriesDeleted).isEmpty()
+    assertThat(allBooks).hasSize(1)
+    assertThat(allBooksDeleted).isEmpty()
+
+    assertThat(allSeries.first().id).isEqualTo(series2.id)
+    assertThat(allBooks.first().id).isEqualTo(book2.id)
   }
 }

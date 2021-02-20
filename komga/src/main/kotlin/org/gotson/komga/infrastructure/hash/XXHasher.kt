@@ -1,7 +1,7 @@
 package org.gotson.komga.infrastructure.hash
 
 import mu.KotlinLogging
-import net.jpountz.xxhash.XXHashFactory
+import org.apache.commons.codec.digest.XXHash32
 import org.springframework.stereotype.Component
 import java.io.FileInputStream
 import java.nio.file.Path
@@ -9,18 +9,16 @@ import java.nio.file.Path
 private val logger = KotlinLogging.logger {}
 
 @Component
-class XXHasher : FileHasher {
-  private val factory: XXHashFactory = XXHashFactory.fastestInstance()
-  private val seed = -0x68b84d74L
+class XXHasher {
   private val readBlockSize = 4096
 
-  override fun getHash(path: Path): String {
+  fun getHash(path: Path): String {
     logger.info { "Calculating hash for the file $path" }
     val file = path.toFile()
     val bytesToSkip = java.lang.Long.highestOneBit(file.length() / 100)
 
     with(FileInputStream(file)) {
-      val hash64 = factory.newStreamingHash64(seed)
+      val hash32 = XXHash32()
       val buf = ByteArray(readBlockSize)
 
       while (true) {
@@ -28,12 +26,12 @@ class XXHasher : FileHasher {
         if (read == -1) {
           break
         }
-        hash64.update(buf, 0, read)
 
+        hash32.update(buf, 0, read)
         this.skip(bytesToSkip)
       }
 
-      return hash64.value.toString(16)
+      return hash32.value.toString(16)
     }
   }
 }

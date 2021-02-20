@@ -120,7 +120,7 @@ class SeriesLifecycle(
   fun deleteOne(seriesId: String) {
     logger.info { "Delete series id: $seriesId" }
 
-    val bookIds = bookRepository.findAllIdBySeriesId(seriesId)
+    val bookIds = bookRepository.findAllIdBySeriesIdsIncludeDeleted(listOf(seriesId))
     bookLifecycle.deleteMany(bookIds)
 
     collectionRepository.removeSeriesFromAll(seriesId)
