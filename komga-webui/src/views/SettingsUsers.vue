@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="pa-6">
     <v-row>
-      <span class="text-h5">Users</span>
+      <span class="text-h5">{{ $t('users.users') }}</span>
     </v-row>
     <v-row>
       <v-col cols="12" md="8" lg="6" xl="4">
