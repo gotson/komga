@@ -2,7 +2,7 @@
   <v-container fluid class="pa-6">
     <v-data-table
       :headers="headers"
-      :items="books"
+      :items="booksData"
       :options.sync="options"
       :server-items-length="totalBooks"
       :loading="loading"
@@ -33,14 +33,6 @@ export default Vue.extend({
       totalBooks: 0,
       loading: true,
       options: {} as any,
-      headers: [
-        {text: this.$i18n.t('media_analysis.name').toString(), value: 'name'},
-        {text: this.$i18n.t('media_analysis.status').toString(), value: 'media.status'},
-        {text: this.$i18n.t('media_analysis.comment').toString(), value: 'media.comment'},
-        {text: this.$i18n.t('media_analysis.media_type').toString(), value: 'media.mediaType'},
-        {text: this.$i18n.t('media_analysis.url').toString(), value: 'url'},
-        {text: this.$i18n.t('media_analysis.size').toString(), value: 'size', sortable: false},
-      ],
     }
   },
   watch: {
@@ -51,7 +43,26 @@ export default Vue.extend({
       deep: true,
     },
   },
-  computed: {},
+  computed: {
+    headers(): object[] {
+      return [
+        {text: this.$i18n.t('media_analysis.name').toString(), value: 'name'},
+        {text: this.$i18n.t('media_analysis.status').toString(), value: 'media.status'},
+        {text: this.$i18n.t('media_analysis.comment').toString(), value: 'media.comment'},
+        {text: this.$i18n.t('media_analysis.media_type').toString(), value: 'media.mediaType'},
+        {text: this.$i18n.t('media_analysis.url').toString(), value: 'url'},
+        {text: this.$i18n.t('media_analysis.size').toString(), value: 'size', sortable: false},
+      ]
+    },
+    booksData():BookDto[] {
+      return this.books.map((b:BookDto) => ({
+        ...b,
+        media: {
+          ...b.media,
+          status: this.$t(`enums.media_status.${b.media.status}`).toString()},
+      }))
+    },
+  },
   async mounted() {
     this.loadBooks()
   },

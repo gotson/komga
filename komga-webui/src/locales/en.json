@@ -318,6 +318,13 @@
     }
   },
   "enums": {
+    "media_status": {
+      "ERROR": "Error",
+      "OUTDATED": "Outdated",
+      "READY": "Ready",
+      "UNKNOWN": "Unknown",
+      "UNSUPPORTED": "Unsupported"
+    },
     "reading_direction": {
       "LEFT_TO_RIGHT": "Left to right",
       "RIGHT_TO_LEFT": "Right to left",

@@ -324,6 +324,13 @@
       "VERTICAL": "Vertical",
       "WEBTOON": "Webtoon"
     },
+    "media_status": {
+      "READY": "Prêt",
+      "UNKNOWN":"Inconnu",
+      "ERROR": "Erreur",
+      "UNSUPPORTED":"Non supporté",
+      "OUTDATED": "Dépassé"
+    },
     "series_status": {
       "ABANDONED": "Abandonnée",
       "ENDED": "Finie",
