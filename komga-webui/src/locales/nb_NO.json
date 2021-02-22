@@ -5,7 +5,8 @@
     },
     "dataTable": {
       "itemsPerPageText": "Rader per side:"
-    }
+    },
+    "noDataText": "Ingen data er tilgjengelig"
   },
   "account_settings": {
     "account_settings": "kontoinnstillinger",

@@ -5,7 +5,8 @@
     },
     "dataTable": {
       "itemsPerPageText": "Строк на странице:"
-    }
+    },
+    "noDataText": "Отсутствуют данные"
   },
   "account_settings": {
     "account_settings": "настройки учётной записи",

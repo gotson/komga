@@ -5,7 +5,8 @@
     },
     "dataTable": {
       "itemsPerPageText": "Zeilen pro Seite:"
-    }
+    },
+    "noDataText": "Keine Daten vorhanden"
   },
   "account_settings": {
     "account_settings": "Kontoeinstellungen",

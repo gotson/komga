@@ -5,7 +5,8 @@
     },
     "dataTable": {
       "itemsPerPageText": "Linhas por página:"
-    }
+    },
+    "noDataText": "Não há dados disponíveis"
   },
   "account_settings": {
     "account_settings": "configurações da conta",

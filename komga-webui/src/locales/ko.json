@@ -5,7 +5,8 @@
     },
     "dataTable": {
       "itemsPerPageText": "페이지 당 행 수:"
-    }
+    },
+    "noDataText": "데이터가 없습니다."
   },
   "account_settings": {
     "account_settings": "계정 설정",

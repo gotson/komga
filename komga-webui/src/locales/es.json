@@ -5,7 +5,8 @@
     },
     "dataTable": {
       "itemsPerPageText": "Filas por página:"
-    }
+    },
+    "noDataText": "No hay datos disponibles"
   },
   "account_settings": {
     "account_settings": "Configuración de cuenta",

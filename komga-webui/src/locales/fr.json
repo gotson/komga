@@ -5,7 +5,8 @@
     },
     "dataTable": {
       "itemsPerPageText": "Élements par page:"
-    }
+    },
+    "noDataText": "Aucune donnée disponible"
   },
   "account_settings": {
     "account_settings": "Paramètres du compte",

@@ -5,7 +5,8 @@
     },
     "dataTable": {
       "itemsPerPageText": "الصفوف لكل صفحة:"
-    }
+    },
+    "noDataText": "لا توجد بيانات متاحة"
   },
   "account_settings": {
     "account_settings": "إعدادات الحساب",
