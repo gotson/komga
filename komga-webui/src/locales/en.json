@@ -313,6 +313,12 @@
       "field_repeat_password": "Repeat new password",
       "field_repeat_password_error": "Passwords must be identical."
     },
+    "server_stop": {
+      "button_cancel": "Cancel",
+      "button_confirm": "Stop",
+      "confirmation_message": "Are you sure you want to stop Komga?",
+      "dialog_title": "Shutdown server"
+    },
     "shortcut_help": {
       "label_description": "Description",
       "label_key": "Key"
@@ -416,6 +422,13 @@
   },
   "searchbox": {
     "no_results": "No results"
+  },
+  "server": {
+    "server_management": {
+      "button_shutdown": "Shutdown",
+      "section_title": "Server Management"
+    },
+    "tab_title": "Server"
   },
   "server_settings": {
     "server_settings": "Server Settings"
