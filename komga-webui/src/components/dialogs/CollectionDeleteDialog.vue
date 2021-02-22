@@ -4,7 +4,7 @@
               max-width="450"
     >
       <v-card>
-        <v-card-title>{{ $t('dialog.delete_collection.title') }}</v-card-title>
+        <v-card-title>{{ $t('dialog.delete_collection.dialog_title') }}</v-card-title>
 
         <v-card-text>
           <v-container fluid>
