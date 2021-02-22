@@ -181,27 +181,27 @@
       </v-row>
 
       <v-row>
-        <v-col cols="2" md="2" lg="2" xl="1" class="text-body-2">{{ $t('browse_book.size') }}</v-col>
-        <v-col cols="10" class="text-body-2">{{ book.size }}</v-col>
+        <v-col cols="3" md="2" lg="2" xl="1" class="text-body-2">{{ $t('browse_book.size') }}</v-col>
+        <v-col cols="9" class="text-body-2">{{ book.size }}</v-col>
       </v-row>
 
       <v-row v-if="book.media.comment">
-        <v-col cols="2" md="2" lg="2" xl="1" class="text-body-2">{{ $t('browse_book.comment') }}</v-col>
-        <v-col cols="10" class="text-body-2">
+        <v-col cols="3" md="2" lg="2" xl="1" class="text-body-2">{{ $t('browse_book.comment') }}</v-col>
+        <v-col cols="9" class="text-body-2">
           <span class="error--text font-weight-bold">{{ book.media.comment }}</span>
         </v-col>
       </v-row>
 
       <v-row>
-        <v-col cols="2" md="2" lg="2" xl="1" class="text-body-2">{{ $t('browse_book.format') }}</v-col>
-        <v-col cols="10" class="text-body-2">
+        <v-col cols="3" md="2" lg="2" xl="1" class="text-body-2">{{ $t('browse_book.format') }}</v-col>
+        <v-col cols="9" class="text-body-2">
           <span>{{ format.type }}</span>
         </v-col>
       </v-row>
 
       <v-row align="center">
-        <v-col cols="2" md="2" lg="2" xl="1" class="text-body-2">{{ $t('browse_book.file') }}</v-col>
-        <v-col cols="10" class="text-body-2">{{ book.url }}</v-col>
+        <v-col cols="3" md="2" lg="2" xl="1" class="text-body-2">{{ $t('browse_book.file') }}</v-col>
+        <v-col cols="9" class="text-body-2">{{ book.url }}</v-col>
       </v-row>
 
     </v-container>
