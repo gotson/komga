@@ -1,4 +1,12 @@
 {
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} von {2}"
+    },
+    "dataTable": {
+      "itemsPerPageText": "Zeilen pro Seite:"
+    }
+  },
   "account_settings": {
     "account_settings": "Kontoeinstellungen",
     "change_password": "Passwortänderung"

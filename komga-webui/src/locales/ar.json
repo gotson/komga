@@ -1,4 +1,12 @@
 {
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} من {2}"
+    },
+    "dataTable": {
+      "itemsPerPageText": "الصفوف لكل صفحة:"
+    }
+  },
   "account_settings": {
     "account_settings": "إعدادات الحساب",
     "change_password": "تغيير كلمة السر"

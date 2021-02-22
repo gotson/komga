@@ -4,7 +4,8 @@ import Vue from 'vue'
 import Vuetify from 'vuetify/lib'
 import colors from 'vuetify/lib/util/colors'
 
-import { Touch } from 'vuetify/lib/directives'
+import {Touch} from 'vuetify/lib/directives'
+import i18n from "@/i18n";
 
 Vue.use(Vuetify, {
   directives: {
@@ -15,6 +16,10 @@ Vue.use(Vuetify, {
 export default new Vuetify({
   icons: {
     iconfont: 'mdi',
+  },
+
+  lang: {
+    t: (key, ...params) => i18n.t(key, params).toString(),
   },
 
   theme: {

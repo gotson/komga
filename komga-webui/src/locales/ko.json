@@ -1,4 +1,12 @@
 {
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{2} 중 {0}-{1}"
+    },
+    "dataTable": {
+      "itemsPerPageText": "페이지 당 행 수:"
+    }
+  },
   "account_settings": {
     "account_settings": "계정 설정",
     "change_password": "비밀번호 변경"

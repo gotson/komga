@@ -1,4 +1,12 @@
 {
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} из {2}"
+    },
+    "dataTable": {
+      "itemsPerPageText": "Строк на странице:"
+    }
+  },
   "account_settings": {
     "account_settings": "настройки учётной записи",
     "change_password": "изменить пароль"

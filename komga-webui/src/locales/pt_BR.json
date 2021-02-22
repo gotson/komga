@@ -1,4 +1,12 @@
 {
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} de {2}"
+    },
+    "dataTable": {
+      "itemsPerPageText": "Linhas por página:"
+    }
+  },
   "account_settings": {
     "account_settings": "configurações da conta",
     "change_password": "mudar senha"
