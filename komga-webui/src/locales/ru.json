@@ -27,7 +27,7 @@
         "white": "Белый"
       },
       "display": "Отображение",
-      "general": "Общие",
+      "general": "Общее",
       "gestures": "Жесты",
       "paged": "Страницы",
       "reading_mode": "Режим чтения",
@@ -39,6 +39,7 @@
   "common": {
     "all_libraries": "Все библиотеки",
     "books": "Книги",
+    "books_n": "Книг нет | 1 книга | {count} книг",
     "cancel": "Отмена",
     "close": "Закрыть",
     "collections": "Коллекции",
@@ -49,11 +50,15 @@
     "genre": "Жанр",
     "go_to_library": "Вернуться к библиотеке",
     "locale_name": "Русский",
-    "locale_rtl" : "false",
+    "locale_rtl": "false",
     "n_selected": "{count} выбрано",
+    "nothing_to_show": "Нет данных для отображения",
     "pages": "страниц",
+    "pages_n": "Страниц нет | 1 страница | {count} страниц",
     "password": "Пароль",
     "publisher": "Издатель",
+    "readlists": "Списки чтения",
+    "required": "Обязательно",
     "roles": "Роли",
     "series": "Серии",
     "tags": "Теги",
@@ -65,6 +70,113 @@
     "recently_added_books": "недавно добавленные книги",
     "recently_added_series": "недавно добавленные серии",
     "recently_updated_series": "недавно обновленные серии"
+  },
+  "dialog": {
+    "add_to_collection": {
+      "button_create": "Создать",
+      "card_collection_subtitle": "Серий нет | 1 серия | {count} серий",
+      "dialog_title": "Добавить в коллекцию",
+      "field_search_create": "Найти или создать коллекцию",
+      "field_search_create_error": "Коллекция с таким именем уже существует",
+      "label_no_matching_collection": "Совпадающих коллекций не найдено"
+    },
+    "add_to_readlist": {
+      "button_create": "Создать",
+      "card_readlist_subtitle": "Книг нет | 1 книга | {count} книг",
+      "dialog_title": "Добавить в список чтения",
+      "field_search_create": "Найти или создать списко чтения",
+      "field_search_create_error": "Список чтения с таким именем уже существует",
+      "label_no_matching_readlist": "Совпадающих списков чтения не найдено"
+    },
+    "add_user": {
+      "button_cancel": "Отмена",
+      "button_confirm": "Добавить",
+      "dialog_title": "Добавить Пользователя",
+      "field_email": "Email",
+      "field_email_error": "Email адрес должен быть действительным",
+      "field_password": "Пароль",
+      "field_role_administrator": "Администратор",
+      "field_role_file_download": "Скачивание файлов",
+      "field_role_page_streaming": "Потоковый просмотр страниц",
+      "label_roles": "Роли"
+    },
+    "delete_collection": {
+      "button_cancel": "Отмена",
+      "button_confirm": "Удалить",
+      "confirm_delete": "Да, удалить коллекцию \"{name}\"",
+      "dialog_title": "Удалить коллекцию",
+      "warning_html": "Коллекция <b>{name}</b> будет удалена с этого сервера. Ваши медиа файлы не будут затронуты. Это действие <b>не может</b> быть отменено. Продолжить?"
+    },
+    "delete_library": {
+      "button_cancel": "Отмена",
+      "button_confirm": "Удалить",
+      "confirm_delete": "Да, удалить библиотеку \"{name}\"",
+      "title": "Удалить Библиотеку",
+      "warning_html": "Библиотека <b>{name}</b> будет удалена с этого сервера. Ваши медиа файлы не будут затроны. Это действие <b>не может</b> быть отменено. Продолжить?"
+    },
+    "delete_readlist": {
+      "button_cancel": "Отмена",
+      "button_confirm": "Удалить",
+      "confirm_delete": "Да, удалить список чтения \"{name}\"",
+      "dialog_title": "Удалить Список Чтения",
+      "warning_html": "Список чтения <b>{name}</b> будет удален с этого сервера. Ваши медиа файлы не будут затронуты. Это действие <b>не может</b> быть отменено. Продолжить?"
+    },
+    "delete_user": {
+      "button_cancel": "Отмена",
+      "button_confirm": "Удалить",
+      "confirm_delete": "Да, удалить пользователя \"{name}\"",
+      "dialog_title": "Удалить Пользователя",
+      "warning_html": "Пользователь <b>{name}</b> буден удален с этого сервера. Это действие <b>не может</b> быть отменено. Продолжить?"
+    },
+    "edit_books": {
+      "authors_notice_multiple_edit": "Вы редактируете авторов для нескольких книг. Это действие перезапишет существующих авторов для каждой книги.",
+      "button_cancel": "Отмена",
+      "button_confirm": "Сохранить изменения",
+      "dialog_title_multiple": "Редактировать {count} книгу | Редактировать {count} книг(и)",
+      "dialog_title_single": "Редактировать {book}",
+      "field_number": "Номер",
+      "field_number_sort": "Номер сортировки",
+      "field_number_sort_hint": "Вы можете использовать десятичные числа",
+      "field_release_date": "Дата выпуска",
+      "field_release_date_error": "Дата должна быть в действительном YYYY-MM-DD формате",
+      "field_summary": "Описание",
+      "field_tags": "Теги",
+      "field_title": "Название",
+      "tab_authors": "Авторы",
+      "tab_general": "Общее",
+      "tab_tags": "Теги",
+      "tags_notice_multiple_edit": "Вы редактируете теги для нескольких книг. Это действие перзапишет существующие теги для каждой книги."
+    },
+    "edit_collection": {
+      "button_cancel": "Отмена",
+      "button_confirm": "Сохранить изменения",
+      "dialog_title": "Редактировать коллекцию",
+      "field_manual_ordering": "Ручной порядок",
+      "label_ordering": "По умолчанию серии в коллекции будут отсортированы по имени. Вы можете включить ручной порядок, чтобы указать собственный порядок."
+    },
+    "edit_library": {
+      "button_browse": "Обзор",
+      "button_cancel": "Отмена",
+      "button_confirm_add": "Добавить",
+      "button_confirm_edit": "Редактировать",
+      "dialog_title_add": "Добавить Библиотеку",
+      "dialot_title_edit": "Редактировать Библиотеку",
+      "field_import_comicinfo_book": "Метаданные книг",
+      "field_import_comicinfo_collections": "Коллекции",
+      "field_import_comicinfo_readlists": "Списки чтения",
+      "field_import_comicinfo_series": "Метаданные серий",
+      "field_import_epub_book": "Метаданные книг",
+      "field_import_epub_series": "Метаданные серий",
+      "field_import_local_artwork": "Локальные обложки",
+      "field_name": "Имя",
+      "field_root_folder": "Корневая директория",
+      "field_scanner_deep_scan": "Глубокое сканирование",
+      "file_browser_dialog_button_confirm": "Выбрать",
+      "file_browser_dialog_title": "Корневая директория библиотеки",
+      "label_import_comicinfo": "Импорт метаданных для CBR/CBZ, содержащих файл ComicInfo.xml",
+      "label_import_epub": "Импорт метаданных из EPUB файлов",
+      "label_import_local": "Импорт локальных медиа данных"
+    }
   },
   "enums": {
     "reading_direction": {

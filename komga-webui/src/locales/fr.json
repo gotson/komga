@@ -4,7 +4,7 @@
       "pageText": "{0}-{1} de {2}"
     },
     "dataTable": {
-      "itemsPerPageText": "Élements par page:"
+      "itemsPerPageText": "Élements par page :"
     }
   },
   "account_settings": {
@@ -318,18 +318,18 @@
     }
   },
   "enums": {
+    "media_status": {
+      "ERROR": "Erreur",
+      "OUTDATED": "Dépassé",
+      "READY": "Prêt",
+      "UNKNOWN": "Inconnu",
+      "UNSUPPORTED": "Non supporté"
+    },
     "reading_direction": {
       "LEFT_TO_RIGHT": "Gauche à droite",
       "RIGHT_TO_LEFT": "Droite à gauche",
       "VERTICAL": "Vertical",
       "WEBTOON": "Webtoon"
-    },
-    "media_status": {
-      "READY": "Prêt",
-      "UNKNOWN":"Inconnu",
-      "ERROR": "Erreur",
-      "UNSUPPORTED":"Non supporté",
-      "OUTDATED": "Dépassé"
     },
     "series_status": {
       "ABANDONED": "Abandonnée",
