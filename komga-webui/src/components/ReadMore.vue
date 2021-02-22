@@ -1,8 +1,6 @@
 <template>
   <vue-read-more-smooth no-shadow :lines="4">
-    <div class="text-body-1"
-         style="white-space: pre-wrap"
-    >
+    <div style="white-space: pre-wrap" class="body-2">
       <slot/>
     </div>
     <template v-slot:more="value">
