@@ -1,3 +1,11 @@
+## [0.71.7](https://github.com/gotson/komga/compare/v0.71.6...v0.71.7) (2021-02-22)
+
+
+### Bug Fixes
+
+* translated using Weblate (French) ([f5fdf5c](https://github.com/gotson/komga/commit/f5fdf5c8a925ecfc993b23d50364a88481250f4f))
+* translated using Weblate (Norwegian Bokmål) ([33fd19b](https://github.com/gotson/komga/commit/33fd19befb10464f49af28fc2d0fc94140a929ff))
+
 ## [0.71.6](https://github.com/gotson/komga/compare/v0.71.5...v0.71.6) (2021-02-22)
 
 
