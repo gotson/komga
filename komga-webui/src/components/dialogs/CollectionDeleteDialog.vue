@@ -16,7 +16,7 @@
               <v-col>
                 <v-checkbox v-model="confirmDelete" color="red">
                   <template v-slot:label>
-                    {{ $t('dialog.delete_collection.confirm_delete', { name: collection.name}) }}
+                    {{ $t('dialog.delete_collection.confirm_delete', {name: collection.name}) }}
                   </template>
                 </v-checkbox>
               </v-col>
@@ -27,7 +27,7 @@
         <v-card-actions>
           <v-spacer/>
           <v-btn text @click="dialogCancel">{{ $t('dialog.delete_collection.button_cancel') }}</v-btn>
-          <v-btn text class="red--text"
+          <v-btn text color="error"
                  @click="dialogConfirm"
                  :disabled="!confirmDelete"
           >{{ $t('dialog.delete_collection.button_confirm') }}
@@ -45,8 +45,7 @@
       <v-btn
         text
         @click="snackbar = false"
-      >
-        Close
+      >{{ $t('common.close') }}
       </v-btn>
     </v-snackbar>
   </div>
