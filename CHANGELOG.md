@@ -1,3 +1,16 @@
+## [0.71.5](https://github.com/gotson/komga/compare/v0.71.4...v0.71.5) (2021-02-22)
+
+
+### Bug Fixes
+
+* **webui:** add i18n for Vuetify datatable ([add6160](https://github.com/gotson/komga/commit/add6160eacffc0dd5f242ecca08e9fedc6e0587f))
+* **webui:** add i18n media analysis media status ([6d5b50e](https://github.com/gotson/komga/commit/6d5b50e3c5992f7814600e781bf17f28ecf31dc3))
+* **webui:** adjust summary text font size ([cd8805c](https://github.com/gotson/komga/commit/cd8805c434c2608f5ff19cde9d0c9e7f503d2b72))
+* **webui:** change grid layout for browse book ([c8543a9](https://github.com/gotson/komga/commit/c8543a95e1993bc4f3d75f419276b55652d77f13))
+* **webui:** missing i18n for Settings Users screen ([8a3b16d](https://github.com/gotson/komga/commit/8a3b16db8f6fd163949b96ea36c74d563debc2b2))
+* **webui:** missing i18n on collection delete dialog ([f57b949](https://github.com/gotson/komga/commit/f57b949de26917414f6637455671560663ce89f7))
+* **webui:** remove text capitalization for some i18n strings ([4c0b24b](https://github.com/gotson/komga/commit/4c0b24b9ac91854c31824fe0d28f7b923556c43b))
+
 ## [0.71.4](https://github.com/gotson/komga/compare/v0.71.3...v0.71.4) (2021-02-20)
 
 
