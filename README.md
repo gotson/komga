@@ -5,6 +5,8 @@
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/gotson/komga?color=blue&label=download&sort=semver)](https://github.com/gotson/komga/releases)
 [![Docker Pulls](https://img.shields.io/docker/pulls/gotson/komga)](https://hub.docker.com/r/gotson/komga)
 
+[![Translation status](https://hosted.weblate.org/widgets/komga/-/webui/svg-badge.svg)](https://hosted.weblate.org/engage/komga/)
+
 # ![app icon](./.github/readme-images/app-icon.png) Komga
 
 Komga is a free and open source comics/mangas server.
@@ -32,6 +34,10 @@ Head over to our [website](https://komga.org) for more information.
 ## Develop in Komga
 
 Check the [development guidelines](./DEVELOPING.md).
+
+## Translation
+
+[![Translation status](https://hosted.weblate.org/widgets/komga/-/webui/horizontal-auto.svg)](https://hosted.weblate.org/engage/komga/)
 
 ## Sponsors
 

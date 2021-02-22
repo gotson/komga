@@ -5,6 +5,8 @@
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/gotson/komga?color=blue&label=download&sort=semver)](https://github.com/gotson/komga/releases)
 [![Docker Pulls](https://img.shields.io/docker/pulls/gotson/komga)](https://hub.docker.com/r/gotson/komga)
 
+[![Translation status](https://hosted.weblate.org/widgets/komga/-/webui/svg-badge.svg)](https://hosted.weblate.org/engage/komga/)
+
 # ![app icon](https://github.com/gotson/komga/raw/master/.github/readme-images/app-icon.png) Komga
 
 [Komga](https://github.com/gotson/komga) is a free and open source comics/mangas/magazines server.
