@@ -53,6 +53,8 @@ management:
     health:
       roles: ADMIN
       show-details: when_authorized
+    shutdown:
+      enabled: true
   metrics:
     export:
       influx:
