@@ -1,3 +1,10 @@
+## [0.71.6](https://github.com/gotson/komga/compare/v0.71.5...v0.71.6) (2021-02-22)
+
+
+### Bug Fixes
+
+* **webui:** missing i18n for vuetify datatable ([4fc4e32](https://github.com/gotson/komga/commit/4fc4e32d00d390f438d2564a518433d635c5e440))
+
 ## [0.71.5](https://github.com/gotson/komga/compare/v0.71.4...v0.71.5) (2021-02-22)
 
 
