@@ -1,6 +1,6 @@
 {
   "account_settings": {
-    "account_settings": "account settings",
+    "account_settings": "Account Settings",
     "change_password": "change password"
   },
   "author_roles": {
@@ -104,7 +104,7 @@
     "manage_collection": "Manage collection"
   },
   "common": {
-    "all_libraries": "All libraries",
+    "all_libraries": "All Libraries",
     "books": "Books",
     "books_n": "No book | 1 book | {count} books",
     "cancel": "Cancel",
@@ -117,7 +117,7 @@
     "genre": "Genre",
     "go_to_library": "Go to library",
     "locale_name": "English",
-    "locale_rtl" : "false",
+    "locale_rtl": "false",
     "n_selected": "{count} selected",
     "nothing_to_show": "Nothing to show",
     "pages": "pages",
@@ -133,11 +133,11 @@
     "year": "year"
   },
   "dashboard": {
-    "keep_reading": "keep reading",
-    "on_deck": "on deck",
-    "recently_added_books": "recently added books",
-    "recently_added_series": "recently added series",
-    "recently_updated_series": "recently updated series"
+    "keep_reading": "Keep Reading",
+    "on_deck": "On Deck",
+    "recently_added_books": "Recently Added Books",
+    "recently_added_series": "Recently Added Series",
+    "recently_updated_series": "Recently Updated Series"
   },
   "dialog": {
     "add_to_collection": {
@@ -376,9 +376,9 @@
     "scan_library_files": "Scan library files"
   },
   "navigation": {
-    "home": "home",
-    "libraries": "libraries",
-    "logout": "log out"
+    "home": "Home",
+    "libraries": "Libraries",
+    "logout": "Log Out"
   },
   "page_not_found": {
     "go_back_to_home_page": "Go back to home page",
@@ -402,7 +402,7 @@
     "no_results": "No results"
   },
   "server_settings": {
-    "server_settings": "server settings"
+    "server_settings": "Server Settings"
   },
   "settings_user": {
     "edit_shared_libraries": "Edit shared libraries",

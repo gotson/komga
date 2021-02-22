@@ -30,7 +30,7 @@
             <v-icon>mdi-home</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title class="text-capitalize">{{ $t('navigation.home') }}</v-list-item-title>
+            <v-list-item-title>{{ $t('navigation.home') }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -39,7 +39,7 @@
             <v-icon>mdi-book-multiple</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title class="text-capitalize">{{ $t('navigation.libraries') }}</v-list-item-title>
+            <v-list-item-title>{{ $t('navigation.libraries') }}</v-list-item-title>
           </v-list-item-content>
           <v-list-item-action v-if="isAdmin">
             <v-btn icon @click.stop.capture.prevent="addLibrary">
@@ -74,7 +74,7 @@
             <v-icon>mdi-cog</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title class="text-capitalize">{{ $t('server_settings.server_settings') }}</v-list-item-title>
+            <v-list-item-title>{{ $t('server_settings.server_settings') }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -83,7 +83,7 @@
             <v-icon>mdi-account</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title class="text-capitalize">{{ $t('account_settings.account_settings') }}</v-list-item-title>
+            <v-list-item-title>{{ $t('account_settings.account_settings') }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -92,7 +92,7 @@
             <v-icon>mdi-power</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title class="text-capitalize">{{ $t('navigation.logout') }}</v-list-item-title>
+            <v-list-item-title>{{ $t('navigation.logout') }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
