@@ -1,3 +1,11 @@
+# [0.72.0](https://github.com/gotson/komga/compare/v0.71.7...v0.72.0) (2021-02-22)
+
+
+### Features
+
+* **api:** enable actuator shutdown endpoint ([8f5ba00](https://github.com/gotson/komga/commit/8f5ba00f1ab64a406bf8aefb752f5b5678f44b4c))
+* **webui:** new server management screen with shutdown button ([fd81e17](https://github.com/gotson/komga/commit/fd81e17dedada691d92871be2d77794f29a3c250)), closes [#416](https://github.com/gotson/komga/issues/416)
+
 ## [0.71.7](https://github.com/gotson/komga/compare/v0.71.6...v0.71.7) (2021-02-22)
 
 
