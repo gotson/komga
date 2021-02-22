@@ -9,7 +9,7 @@
     "noDataText": "Ingen data er tilgjengelig"
   },
   "account_settings": {
-    "account_settings": "kontoinnstillinger",
+    "account_settings": "Kontoinnstillinger",
     "change_password": "endre passord"
   },
   "author_roles": {
@@ -142,11 +142,11 @@
     "year": "år"
   },
   "dashboard": {
-    "keep_reading": "fortsett å lese",
-    "on_deck": "på nattbordet",
-    "recently_added_books": "nylig oppdaterte bøker",
-    "recently_added_series": "nylig tillagte serier",
-    "recently_updated_series": "nylig oppdaterte serier"
+    "keep_reading": "Fortsett å lese",
+    "on_deck": "På nattbordet",
+    "recently_added_books": "Nylig oppdaterte bøker",
+    "recently_added_series": "Nylig tillagte serier",
+    "recently_updated_series": "Nylig oppdaterte serier"
   },
   "dialog": {
     "add_to_collection": {
@@ -319,6 +319,13 @@
     }
   },
   "enums": {
+    "media_status": {
+      "ERROR": "Feil",
+      "OUTDATED": "Utdatert",
+      "READY": "Klar",
+      "UNKNOWN": "Ukjent",
+      "UNSUPPORTED": "Ustøttet"
+    },
     "reading_direction": {
       "LEFT_TO_RIGHT": "Venstre til høyre",
       "RIGHT_TO_LEFT": "Høyre til venstre",
@@ -385,9 +392,9 @@
     "scan_library_files": "Skann biblioteksfiler"
   },
   "navigation": {
-    "home": "hjem",
-    "libraries": "bibliotek",
-    "logout": "logg ut"
+    "home": "Hjem",
+    "libraries": "Bibliotek",
+    "logout": "Logg ut"
   },
   "page_not_found": {
     "go_back_to_home_page": "Gå tilbake til hjemmesiden",
@@ -411,7 +418,7 @@
     "no_results": "Resultatløst"
   },
   "server_settings": {
-    "server_settings": "tjenerinnstillinger"
+    "server_settings": "Tjenerinnstillinger"
   },
   "settings_user": {
     "edit_shared_libraries": "Rediger delte bibliotek",
