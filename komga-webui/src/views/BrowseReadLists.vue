@@ -33,6 +33,12 @@
         :edit-function="editSingle"
       />
 
+      <v-pagination
+        v-if="totalPages > 1"
+        v-model="page"
+        :total-visible="paginationVisible"
+        :length="totalPages"
+      />
     </v-container>
 
   </div>
