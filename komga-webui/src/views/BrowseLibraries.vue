@@ -281,16 +281,10 @@ export default Vue.extend({
     cookieFilter(libraryId: string): string {
       return `library.filter.${libraryId}`
     },
-    async resetParams(route: any) {
+    resetParams(route: any) {
       this.sortActive = parseQuerySort(route.query.sort, this.sortOptions) ||
         this.$cookies.get(this.cookieSort(route.params.libraryId)) ||
         this.$_.clone(this.sortDefault)
-
-      // This is a bit of a hack as filterOptions wouldn't otherwise be populated at this stage which
-      // causes the parseQueryFilter calls in the below if statement to always return false for anything referencing filterOptions
-      const requestLibraryId = this.$route.params.libraryId !== LIBRARIES_ALL ? this.$route.params.libraryId : undefined
-      this.filterOptions.genre = toNameValue(await this.$komgaReferential.getGenres(requestLibraryId))
-      this.filterOptions.tag = toNameValue(await this.$komgaReferential.getTags(requestLibraryId))
 
       if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating) {
         this.filters.status = parseQueryFilter(route.query.status, Object.keys(SeriesStatus))
