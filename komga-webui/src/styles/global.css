@@ -1,3 +1,7 @@
+html {
+    overflow-y: auto !important;
+}
+
 .link-underline {
     text-decoration: none;
 }
