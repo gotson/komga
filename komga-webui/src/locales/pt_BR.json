@@ -126,7 +126,7 @@
     "genre": "Gênero",
     "go_to_library": "Ir para biblioteca",
     "locale_name": "Português",
-    "locale_rtl" : "false",
+    "locale_rtl": "false",
     "n_selected": "{count} selecionados",
     "nothing_to_show": "Nada para exibir",
     "pages": "páginas",
@@ -135,16 +135,16 @@
     "publisher": "Editora",
     "readlists": "Listas de Leitura",
     "required": "Obrigatório",
-    "roles": "Cargos",
+    "roles": "Funções",
     "series": "Séries",
     "tags": "Tags",
     "use_filter_panel_to_change_filter": "Utilize o painel de filtros para mudar o filtro ativo",
     "year": "ano"
   },
   "dashboard": {
-    "keep_reading": "continuar lendo",
+    "keep_reading": "Continuar Lendo",
     "on_deck": "na sequência",
-    "recently_added_books": "livros adicionados recentemente",
+    "recently_added_books": "Livros Adicionados Recentemente",
     "recently_added_series": "séries adicionadas recentemente",
     "recently_updated_series": "séries atualizadas recentemente"
   },
