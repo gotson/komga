@@ -100,7 +100,7 @@
 
           <v-row class="text-body-2">
             <v-col>
-              <span class="mx-3">#{{ book.metadata.number }}</span>
+              <span class="mx-3">{{ book.metadata.number }}</span>
             </v-col>
             <v-col cols="auto" v-if="book.metadata.releaseDate">
               {{ book.metadata.releaseDate | moment('MMMM DD, YYYY') }}

@@ -61,7 +61,7 @@ export class BookItem extends Item<BookDto> {
 
   title (): string {
     const m = this.item.metadata
-    return `#${m.number} - ${m.title}`
+    return `${m.number} - ${m.title}`
   }
 
   body (): string {
