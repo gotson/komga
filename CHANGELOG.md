@@ -1,3 +1,10 @@
+## [0.73.2](https://github.com/gotson/komga/compare/v0.73.1...v0.73.2) (2021-02-24)
+
+
+### Bug Fixes
+
+* translated using Weblate (Chinese (Simplified)) ([#425](https://github.com/gotson/komga/issues/425)) ([e270034](https://github.com/gotson/komga/commit/e270034c8023b46b89d4dd830ef7781ed4a736e0))
+
 ## [0.73.1](https://github.com/gotson/komga/compare/v0.73.0...v0.73.1) (2021-02-24)
 
 
