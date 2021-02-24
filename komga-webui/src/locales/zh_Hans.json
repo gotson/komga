@@ -1,0 +1,469 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} 或 {2}"
+    },
+    "dataTable": {
+      "itemsPerPageText": "每页行数:"
+    },
+    "noDataText": "没有数据可用"
+  },
+  "account_settings": {
+    "account_settings": "账户设置",
+    "change_password": "修改密码"
+  },
+  "author_roles": {
+    "colorist": "上色者",
+    "cover": "封面",
+    "editor": "主编",
+    "inker": "画图者",
+    "letterer": "嵌字者",
+    "penciller": "译者",
+    "writer": "作者"
+  },
+  "bookreader": {
+    "beginning_of_book": "你可以开始阅读这本书.",
+    "changing_reading_direction": "将阅读方向更改为",
+    "cycling_page_layout": "切换页模式",
+    "cycling_scale": "切换缩放",
+    "cycling_side_padding": "切换边距",
+    "end_of_book": "你已经阅读完这本书了.",
+    "from_series_metadata": "来自系列元数据",
+    "move_next": "再次单击或按“下一步”移动到下一本书。",
+    "move_next_exit": "再次单击或按“下一步”退出阅读。",
+    "move_previous": "再次单击或按“上一页”可移动到上一本书。",
+    "paged_reader_layout": {
+      "double": "双页",
+      "double_no_cover": "双页 (无封面)",
+      "single": "单页"
+    },
+    "reader_settings": "阅读设置",
+    "scale_type": {
+      "continuous_original": "原始大小",
+      "continuous_width": "适应宽度",
+      "height": "适应高度",
+      "original": "原始大小",
+      "screen": "适应屏幕",
+      "width": "适应宽度"
+    },
+    "settings": {
+      "animate_page_transitions": "页面过渡动画",
+      "background_color": "背景颜色",
+      "background_colors": {
+        "black": "黑色",
+        "white": "白色"
+      },
+      "display": "显示",
+      "general": "常规",
+      "gestures": "手势",
+      "page_layout": "页面布局",
+      "paged": "页面",
+      "reading_mode": "阅读模式",
+      "scale_type": "缩放模式",
+      "side_padding": "切换边距",
+      "side_padding_none": "无",
+      "webtoon": "Webtoon模式"
+    },
+    "shortcuts": {
+      "close": "关闭",
+      "cycle_page_layout": "切换页模式",
+      "cycle_scale": "切换缩放",
+      "cycle_side_padding": "切换边距",
+      "first_page": "第一页",
+      "last_page": "最后一页",
+      "left_to_right": "从左到右",
+      "menus": "菜单",
+      "next_page": "下一页",
+      "previous_page": "上一页",
+      "reader_navigation": "阅读导航",
+      "right_to_left": "从右到左",
+      "settings": "设定",
+      "show_hide_help": "显示/隐藏帮助",
+      "show_hide_settings": "显示/隐藏设置菜单",
+      "show_hide_thumbnails": "显示/隐藏缩略图资源管理器",
+      "show_hide_toolbars": "显示/隐藏工具栏",
+      "vertical": "垂直模式",
+      "webtoon": "Webtoon模式"
+    }
+  },
+  "browse_book": {
+    "comment": "备注",
+    "download_file": "下载文件",
+    "file": "文件",
+    "format": "格式",
+    "navigation_within_readlist": "阅读列表中的导航",
+    "read_book": "阅读书籍",
+    "size": "文件大小"
+  },
+  "browse_collection": {
+    "edit_collection": "编辑集合",
+    "edit_elements": "编辑元素",
+    "manual_ordering": "手动订阅"
+  },
+  "browse_readlist": {
+    "edit_elements": "编辑元素",
+    "edit_readlist": "编辑阅读列表"
+  },
+  "browse_series": {
+    "earliest_year_from_release_dates": "这是该系列所有书籍发行日期最早的一年",
+    "series_no_summary": "这个系列没有摘要，所以我们为您挑选了一个！",
+    "summary_from_book": "书中的摘要 {number}:"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "集合管理"
+  },
+  "common": {
+    "all_libraries": "所有库",
+    "books": "书",
+    "books_n": "无书 | 1本 | {count} 书籍",
+    "cancel": "取消",
+    "close": "关闭",
+    "collections": "集合",
+    "create": "创建",
+    "delete": "删除",
+    "email": "邮箱",
+    "filter_no_matches": "过滤器没有匹配的",
+    "genre": "流派",
+    "go_to_library": "前往库",
+    "locale_name": "中文简体",
+    "locale_rtl": "false",
+    "n_selected": "{count} 选择",
+    "nothing_to_show": "没有东西可显示",
+    "pages": "页数",
+    "pages_n": "无页 | 1 页 | {count} 页面",
+    "password": "密码",
+    "publisher": "发布者",
+    "readlists": "阅读列表",
+    "required": "要求",
+    "roles": "角色",
+    "series": "系列",
+    "tags": "标签",
+    "use_filter_panel_to_change_filter": "使用过滤器修改过滤项",
+    "year": "年"
+  },
+  "dashboard": {
+    "keep_reading": "继续阅读",
+    "on_deck": "导航",
+    "recently_added_books": "最近添加的书籍",
+    "recently_added_series": "最近添加的系列",
+    "recently_updated_series": "最近更新的系列"
+  },
+  "dialog": {
+    "add_to_collection": {
+      "button_create": "创建收藏",
+      "card_collection_subtitle": "无系列 | 1 系列 | {count} 系列",
+      "dialog_title": "加入到集合",
+      "field_search_create": "搜索或创建收藏",
+      "field_search_create_error": "该收藏已存在",
+      "label_no_matching_collection": "没有匹配的收藏"
+    },
+    "add_to_readlist": {
+      "button_create": "创建",
+      "card_readlist_subtitle": "无书 | 1 本 | {count} 书籍",
+      "dialog_title": "添加到阅读列表",
+      "field_search_create": "搜索或创建阅读列表",
+      "field_search_create_error": "该阅读列表已存在",
+      "label_no_matching_readlist": "没有匹配阅读列表"
+    },
+    "add_user": {
+      "button_cancel": "取消",
+      "button_confirm": "添加",
+      "dialog_title": "添加用户",
+      "field_email": "邮箱",
+      "field_email_error": "必须是有效的电子邮件地址",
+      "field_password": "密码",
+      "field_role_administrator": "管理员",
+      "field_role_file_download": "文件下载",
+      "field_role_page_streaming": "支持浏览",
+      "label_roles": "角色"
+    },
+    "delete_collection": {
+      "button_cancel": "取消",
+      "button_confirm": "删除",
+      "confirm_delete": "是否确定删除 \"{name}\"集合",
+      "dialog_title": "删除集合",
+      "warning_html": "<b>{name}</b>收藏将从此服务器中删除.您的媒体文件不会受到影响.此操作<b>不能撤消</b>.继续吗？"
+    },
+    "delete_library": {
+      "button_cancel": "取消",
+      "button_confirm": "删除",
+      "confirm_delete": "确定, 删除 \"{name}\"的图书馆",
+      "title": "删除图书馆",
+      "warning_html": "库<b>{name}</b>将从此服务器中删除.您的媒体文件不会受到影响.此操作<b>不能撤消</b>.继续吗？"
+    },
+    "delete_readlist": {
+      "button_cancel": "取消",
+      "button_confirm": "删除",
+      "confirm_delete": "确定, 删除阅读列表 \"{name}\"",
+      "dialog_title": "删除阅读列表",
+      "warning_html": "<b>{name}</b>列表将从此服务器中删除. 您的媒体文件不会受到影响. 此操作<b>不能撤消</b>. 继续吗？"
+    },
+    "delete_user": {
+      "button_cancel": "取消",
+      "button_confirm": "删除",
+      "confirm_delete": "是，删除用户“{name}”",
+      "dialog_title": "删除用户",
+      "warning_html": "<b>{name}</b>用户将从此服务器中删除. 您的媒体文件不会受到影响. 此操作<b>不能撤消</b>. 继续吗？"
+    },
+    "edit_books": {
+      "authors_notice_multiple_edit": "您正在编辑多本书的作者。这将覆盖每本书的现有的作者。",
+      "button_cancel": "取消",
+      "button_confirm": "保存更改",
+      "dialog_title_multiple": "编辑 {count} 书 | 编辑 {count} 书籍",
+      "dialog_title_single": "编辑 {book}",
+      "field_number": "序号",
+      "field_number_sort": "短编号",
+      "field_number_sort_hint": "你可以用十进制数",
+      "field_release_date": "发布日期",
+      "field_release_date_error": "必须是YYYY-MM-DD格式的有效日期",
+      "field_summary": "概要",
+      "field_tags": "标签",
+      "field_title": "标题",
+      "tab_authors": "作者",
+      "tab_general": "常规",
+      "tab_tags": "标签",
+      "tags_notice_multiple_edit": "您正在编辑多本书的标签。这将覆盖每本书的现有标签。"
+    },
+    "edit_collection": {
+      "button_cancel": "取消",
+      "button_confirm": "保存更改",
+      "dialog_title": "编辑集合",
+      "field_manual_ordering": "手动订阅",
+      "label_ordering": "默认情况下，收藏中的系列将按名称排序。您可以启用手动排序来定义自己的顺序。"
+    },
+    "edit_library": {
+      "button_browse": "浏览",
+      "button_cancel": "取消",
+      "button_confirm_add": "添加",
+      "button_confirm_edit": "编辑",
+      "dialog_title_add": "添加库",
+      "dialot_title_edit": "编辑库",
+      "field_import_comicinfo_book": "书籍元数据",
+      "field_import_comicinfo_collections": "集合",
+      "field_import_comicinfo_readlists": "阅读列表",
+      "field_import_comicinfo_series": "系列元数据",
+      "field_import_epub_book": "书籍元数据",
+      "field_import_epub_series": "系列元数据",
+      "field_import_local_artwork": "本地艺术品",
+      "field_name": "名称",
+      "field_root_folder": "根文件夹",
+      "field_scanner_deep_scan": "深度扫描",
+      "field_scanner_force_directory_modified_time": "强制目录修改时间",
+      "file_browser_dialog_button_confirm": "选择",
+      "file_browser_dialog_title": "库的根文件夹",
+      "label_import_comicinfo": "引入含有ComicInfo.xml的CBR/CBZ压缩包",
+      "label_import_epub": "EPUB文件导入元数据",
+      "label_import_local": "导入本地媒体",
+      "label_scanner": "扫描器",
+      "tab_general": "常规",
+      "tab_options": "选项"
+    },
+    "edit_readlist": {
+      "button_cancel": "取消",
+      "button_confirm": "保存更改",
+      "dialog_title": "编辑阅读列表",
+      "field_name": "名称"
+    },
+    "edit_series": {
+      "button_cancel": "取消",
+      "button_confirm": "保存更改",
+      "dialog_title_multiple": "编辑 {count} 系列 | 编辑 {count} 系列",
+      "dialog_title_single": "编辑 {series}",
+      "field_age_rating": "年龄限制",
+      "field_age_rating_error": "年龄限制必须为0或更高",
+      "field_genres": "风格",
+      "field_language": "语言",
+      "field_publisher": "发布者",
+      "field_reading_direction": "阅读指导",
+      "field_sort_title": "排序标题",
+      "field_status": "状态",
+      "field_summary": "概要",
+      "field_tags": "标签",
+      "field_title": "标题",
+      "mixed": "混合",
+      "tab_general": "常规",
+      "tab_tags": "标签",
+      "tags_notice_multiple_edit": "您正在编辑多个系列的标签。这将覆盖每个系列的现有标签。"
+    },
+    "edit_user": {
+      "button_cancel": "取消",
+      "button_confirm": "保存更改",
+      "dialog_title": "编辑用户",
+      "label_roles_for": "{name}的权限"
+    },
+    "edit_user_shared_libraries": {
+      "button_cancel": "取消",
+      "button_confirm": "保存更改",
+      "dialog_title": "编辑共享库",
+      "field_all_libraries": "所有库",
+      "label_shared_with": "{name}共享"
+    },
+    "file_browser": {
+      "button_cancel": "取消",
+      "button_confirm_default": "选择",
+      "dialog_title_default": "文件浏览器",
+      "parent_directory": "父"
+    },
+    "password_change": {
+      "button_cancel": "取消",
+      "button_confirm": "修改密码",
+      "dialog_title": "取消密码",
+      "field_new_password": "新密码",
+      "field_new_password_error": "需要新密码.",
+      "field_repeat_password": "确认新密码",
+      "field_repeat_password_error": "密码必须相同."
+    },
+    "server_stop": {
+      "button_cancel": "取消",
+      "button_confirm": "停止",
+      "confirmation_message": "你确定想要关闭Komga服务器吗？",
+      "dialog_title": "关闭服务器"
+    },
+    "shortcut_help": {
+      "label_description": "说明",
+      "label_key": "键值"
+    }
+  },
+  "enums": {
+    "media_status": {
+      "ERROR": "错误",
+      "OUTDATED": "过期",
+      "READY": "就绪",
+      "UNKNOWN": "未知",
+      "UNSUPPORTED": "不支持"
+    },
+    "reading_direction": {
+      "LEFT_TO_RIGHT": "从左到右",
+      "RIGHT_TO_LEFT": "从右到左",
+      "VERTICAL": "垂直模式",
+      "WEBTOON": "Webtoon模式"
+    },
+    "series_status": {
+      "ABANDONED": "已放弃",
+      "ENDED": "已完结",
+      "HIATUS": "有生之年",
+      "ONGOING": "连载中"
+    }
+  },
+  "filter": {
+    "age_rating": "年龄限制",
+    "age_rating_none": "无",
+    "genre": "流派",
+    "language": "语言",
+    "library": "库",
+    "publisher": "发布者",
+    "release_date": "发行日期",
+    "status": "状态",
+    "tag": "标签",
+    "unread": "未读"
+  },
+  "filter_drawer": {
+    "filter": "过滤",
+    "sort": "排序"
+  },
+  "home": {
+    "theme": "主题",
+    "translation": "翻译"
+  },
+  "library_navigation": {
+    "browse": "浏览",
+    "collections": "集合",
+    "readlists": "阅读列表"
+  },
+  "login": {
+    "create_user_account": "创建用户帐户",
+    "login": "登录名",
+    "unclaimed_html": "该Komga服务器尚未激活, 您需要创建一个用户帐户才能访问它.<br><br>选择一个 <strong>邮箱</strong> 和 <strong>密码</strong> 然后点击<strong>创建账户</strong>."
+  },
+  "media_analysis": {
+    "comment": "注释",
+    "media_analysis": "媒体分析",
+    "media_type": "媒体类型",
+    "name": "名称",
+    "size": "大小",
+    "status": "状态",
+    "url": "地址"
+  },
+  "menu": {
+    "add_to_collection": "添加到集合",
+    "add_to_readlist": "添加到阅读列表",
+    "analyze": "分析",
+    "delete": "删除",
+    "download_series": "下载系列",
+    "edit": "编辑",
+    "edit_metadata": "编辑元数据",
+    "mark_read": "标记为已读",
+    "mark_unread": "标记为未读",
+    "refresh_metadata": "刷新元数据",
+    "scan_library_files": "扫描库文件"
+  },
+  "navigation": {
+    "home": "主页",
+    "libraries": "库",
+    "logout": "注销"
+  },
+  "page_not_found": {
+    "go_back_to_home_page": "返回主页",
+    "page_does_not_exist": "您要查找的页面不存在.",
+    "page_not_found": "找不到页面"
+  },
+  "read_more": {
+    "less": "阅读更少",
+    "more": "阅读更多"
+  },
+  "readlists_expansion_panel": {
+    "manage_readlist": "管理阅读列表"
+  },
+  "search": {
+    "no_results": "搜索没有任何结果",
+    "search": "查找",
+    "search_for_something_else": "尝试寻找其他的东西",
+    "search_results_for": "\"{name}\"搜索结果"
+  },
+  "searchbox": {
+    "no_results": "无结果"
+  },
+  "server": {
+    "server_management": {
+      "button_shutdown": "关机",
+      "section_title": "服务器管理"
+    },
+    "tab_title": "服务器"
+  },
+  "server_settings": {
+    "server_settings": "服务器设置"
+  },
+  "settings_user": {
+    "edit_shared_libraries": "编辑共享库",
+    "edit_user": "编辑用户",
+    "role_administrator": "管理员",
+    "role_user": "用户"
+  },
+  "sort": {
+    "date_added": "添加日期",
+    "date_updated": "更新时间",
+    "file_size": "文件大小",
+    "name": "名称",
+    "number": "序号",
+    "release_date": "发布日期"
+  },
+  "theme": {
+    "dark": "暗",
+    "light": "亮",
+    "system": "系统"
+  },
+  "user_roles": {
+    "ADMIN": "管理员",
+    "FILE_DOWNLOAD": "文件下载",
+    "PAGE_STREAMING": "页面浏览",
+    "USER": "普通用户"
+  },
+  "users": {
+    "users": "用户"
+  },
+  "welcome": {
+    "add_library": "添加库",
+    "no_libraries_yet": "还没有添加任何库！",
+    "welcome_message": "欢迎使用Komga"
+  }
+}
