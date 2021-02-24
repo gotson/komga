@@ -124,7 +124,7 @@
           </v-row>
 
           <v-row v-if="series.booksMetadata.releaseDate">
-            <v-col cols="6" sm="4" md="2" class="text-body-2 py-1 text-uppercase">{{ $t('common.year') }}</v-col>
+            <v-col cols="6" sm="4" md="3" class="text-body-2 py-1 text-uppercase">{{ $t('common.year') }}</v-col>
             <v-col class="text-body-2 text-capitalize py-1">
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
@@ -136,14 +136,14 @@
           </v-row>
 
           <v-row v-if="series.metadata.publisher">
-            <v-col cols="6" sm="4" md="2" class="text-body-2 py-1 text-uppercase">{{ $t('common.publisher') }}</v-col>
+            <v-col cols="6" sm="4" md="3" class="text-body-2 py-1 text-uppercase">{{ $t('common.publisher') }}</v-col>
             <v-col class="text-body-2 text-capitalize py-1">
               {{ series.metadata.publisher }}
             </v-col>
           </v-row>
 
           <v-row v-if="series.metadata.genres.length > 0">
-            <v-col cols="6" sm="4" md="2" class="text-body-2 py-1 text-uppercase">{{ $t('common.genre') }}</v-col>
+            <v-col cols="6" sm="4" md="3" class="text-body-2 py-1 text-uppercase">{{ $t('common.genre') }}</v-col>
             <v-col class="text-body-2 text-capitalize py-1">
               <v-chip v-for="(t, i) in series.metadata.genres"
                       :key="i"
@@ -157,7 +157,7 @@
           </v-row>
 
           <v-row v-if="series.metadata.tags.length > 0">
-            <v-col cols="6" sm="4" md="2" class="text-body-2 py-1 text-uppercase">{{ $t('common.tags') }}</v-col>
+            <v-col cols="6" sm="4" md="3" class="text-body-2 py-1 text-uppercase">{{ $t('common.tags') }}</v-col>
             <v-col class="text-body-2 text-capitalize py-1">
               <v-chip v-for="(t, i) in series.metadata.tags"
                       :key="i"
@@ -176,7 +176,7 @@
                  v-for="(names, key) in authorsByRole"
                  :key="key"
           >
-            <v-col cols="6" sm="4" md="2" class="py-1 text-uppercase">{{ key }}</v-col>
+            <v-col cols="6" sm="4" md="3" class="py-1 text-uppercase">{{ key }}</v-col>
             <v-col class="py-1 text-truncate" :title="names.join(', ')">
               {{ names.join(', ') }}
             </v-col>
