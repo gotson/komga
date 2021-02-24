@@ -317,7 +317,7 @@
       "button_cancel": "Cancel",
       "button_confirm": "Stop",
       "confirmation_message": "Are you sure you want to stop Komga?",
-      "dialog_title": "Shutdown server"
+      "dialog_title": "Shut down server"
     },
     "shortcut_help": {
       "label_description": "Description",
@@ -425,7 +425,7 @@
   },
   "server": {
     "server_management": {
-      "button_shutdown": "Shutdown",
+      "button_shutdown": "Shut down",
       "section_title": "Server Management"
     },
     "tab_title": "Server"
