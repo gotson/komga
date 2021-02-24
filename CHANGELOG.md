@@ -1,3 +1,20 @@
+# [0.73.0](https://github.com/gotson/komga/compare/v0.72.0...v0.73.0) (2021-02-24)
+
+
+### Bug Fixes
+
+* **webui:** incorrect display of html in library delete dialog ([fd6fee1](https://github.com/gotson/komga/commit/fd6fee19d886c397d6c79d0a6013a4bdae2ed097))
+* **webui:** remove hash prefix for book numbers ([114f55f](https://github.com/gotson/komga/commit/114f55fe864d70a6fae40a5a0406f9d9111b504a))
+* **webui:** text overlapping in some locales ([0ac9f24](https://github.com/gotson/komga/commit/0ac9f24245133214fba6f2e64616eaf81de6344e))
+
+
+### Features
+
+* **webui:** sort books by file name ([55f0647](https://github.com/gotson/komga/commit/55f06476f205f3c5ce60bba18cb5ce68db4251e4)), closes [#420](https://github.com/gotson/komga/issues/420)
+* sort series by folder name ([6ba5cd4](https://github.com/gotson/komga/commit/6ba5cd483218644bdc09e9cdfe573f22c1389963))
+* **webui:** Duplicate pagination links at bottom of content lists ([22cdd28](https://github.com/gotson/komga/commit/22cdd28f93bffe814877f68487ebd6eceb8b3fa8))
+* add simplified chinese translation ([b76907f](https://github.com/gotson/komga/commit/b76907fe4be29dcb1fa20903ef9ea380df3cd284))
+
 # [0.72.0](https://github.com/gotson/komga/compare/v0.71.7...v0.72.0) (2021-02-22)
 
 
