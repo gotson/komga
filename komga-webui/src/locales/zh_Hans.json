@@ -75,7 +75,7 @@
       "menus": "菜单",
       "next_page": "下一页",
       "previous_page": "上一页",
-      "reader_navigation": "阅读导航",
+      "reader_navigation": "阅读方向",
       "right_to_left": "从右到左",
       "settings": "设定",
       "show_hide_help": "显示/隐藏帮助",
@@ -87,38 +87,38 @@
     }
   },
   "browse_book": {
-    "comment": "备注",
+    "comment": "注释",
     "download_file": "下载文件",
-    "file": "文件",
+    "file": "文件来源",
     "format": "格式",
     "navigation_within_readlist": "阅读列表中的导航",
     "read_book": "阅读书籍",
     "size": "文件大小"
   },
   "browse_collection": {
-    "edit_collection": "编辑集合",
+    "edit_collection": "编辑收藏",
     "edit_elements": "编辑元素",
-    "manual_ordering": "手动订阅"
+    "manual_ordering": "手动排序"
   },
   "browse_readlist": {
     "edit_elements": "编辑元素",
     "edit_readlist": "编辑阅读列表"
   },
   "browse_series": {
-    "earliest_year_from_release_dates": "这是该系列所有书籍发行日期最早的一年",
-    "series_no_summary": "这个系列没有摘要，所以我们为您挑选了一个！",
-    "summary_from_book": "书中的摘要 {number}:"
+    "earliest_year_from_release_dates": "这是该系列所有书发行日期最早的一年",
+    "series_no_summary": "这个系列没有概要，所以我们为您挑选了一个！",
+    "summary_from_book": "书中的概要 {number}:"
   },
   "collections_expansion_panel": {
-    "manage_collection": "集合管理"
+    "manage_collection": "管理收藏"
   },
   "common": {
     "all_libraries": "所有库",
     "books": "书",
-    "books_n": "无书 | 1本 | {count} 书籍",
+    "books_n": "无 | 1本书 | {count} 本书",
     "cancel": "取消",
     "close": "关闭",
-    "collections": "集合",
+    "collections": "收藏",
     "create": "创建",
     "delete": "删除",
     "email": "邮箱",
@@ -128,9 +128,9 @@
     "locale_name": "中文简体",
     "locale_rtl": "false",
     "n_selected": "{count} 选择",
-    "nothing_to_show": "没有东西可显示",
-    "pages": "页数",
-    "pages_n": "无页 | 1 页 | {count} 页面",
+    "nothing_to_show": "没有什么可显示",
+    "pages": "页",
+    "pages_n": "无 | 1 页 | {count} 页",
     "password": "密码",
     "publisher": "发布者",
     "readlists": "阅读列表",
@@ -144,22 +144,22 @@
   "dashboard": {
     "keep_reading": "继续阅读",
     "on_deck": "导航",
-    "recently_added_books": "最近添加的书籍",
+    "recently_added_books": "最近添加的书",
     "recently_added_series": "最近添加的系列",
     "recently_updated_series": "最近更新的系列"
   },
   "dialog": {
     "add_to_collection": {
       "button_create": "创建收藏",
-      "card_collection_subtitle": "无系列 | 1 系列 | {count} 系列",
-      "dialog_title": "加入到集合",
+      "card_collection_subtitle": "无 | 1 系列 | {count} 系列",
+      "dialog_title": "添加到收藏",
       "field_search_create": "搜索或创建收藏",
       "field_search_create_error": "该收藏已存在",
       "label_no_matching_collection": "没有匹配的收藏"
     },
     "add_to_readlist": {
       "button_create": "创建",
-      "card_readlist_subtitle": "无书 | 1 本 | {count} 书籍",
+      "card_readlist_subtitle": "无 | 1 本书 | {count} 本书",
       "dialog_title": "添加到阅读列表",
       "field_search_create": "搜索或创建阅读列表",
       "field_search_create_error": "该阅读列表已存在",
@@ -173,46 +173,46 @@
       "field_email_error": "必须是有效的电子邮件地址",
       "field_password": "密码",
       "field_role_administrator": "管理员",
-      "field_role_file_download": "文件下载",
+      "field_role_file_download": "支持下载",
       "field_role_page_streaming": "支持浏览",
       "label_roles": "角色"
     },
     "delete_collection": {
       "button_cancel": "取消",
       "button_confirm": "删除",
-      "confirm_delete": "是否确定删除 \"{name}\"集合",
-      "dialog_title": "删除集合",
+      "confirm_delete": "是否确定删除 \"{name}\"收藏",
+      "dialog_title": "删除收藏",
       "warning_html": "<b>{name}</b>收藏将从此服务器中删除.您的媒体文件不会受到影响.此操作<b>不能撤消</b>.继续吗？"
     },
     "delete_library": {
       "button_cancel": "取消",
       "button_confirm": "删除",
-      "confirm_delete": "确定, 删除 \"{name}\"的图书馆",
-      "title": "删除图书馆",
-      "warning_html": "库<b>{name}</b>将从此服务器中删除.您的媒体文件不会受到影响.此操作<b>不能撤消</b>.继续吗？"
+      "confirm_delete": "是的, 删除 \"{name}\"的库",
+      "title": "删除库",
+      "warning_html": "<b>{name}</b>库将从此服务器中删除.您的媒体文件不会受到影响.此操作<b>不能撤消</b>.继续吗？"
     },
     "delete_readlist": {
       "button_cancel": "取消",
       "button_confirm": "删除",
-      "confirm_delete": "确定, 删除阅读列表 \"{name}\"",
+      "confirm_delete": "是的, 删除阅读列表 \"{name}\"",
       "dialog_title": "删除阅读列表",
       "warning_html": "<b>{name}</b>列表将从此服务器中删除. 您的媒体文件不会受到影响. 此操作<b>不能撤消</b>. 继续吗？"
     },
     "delete_user": {
       "button_cancel": "取消",
       "button_confirm": "删除",
-      "confirm_delete": "是，删除用户“{name}”",
+      "confirm_delete": "是的,删除用户“{name}”",
       "dialog_title": "删除用户",
       "warning_html": "<b>{name}</b>用户将从此服务器中删除. 您的媒体文件不会受到影响. 此操作<b>不能撤消</b>. 继续吗？"
     },
     "edit_books": {
       "authors_notice_multiple_edit": "您正在编辑多本书的作者。这将覆盖每本书的现有的作者。",
       "button_cancel": "取消",
-      "button_confirm": "保存更改",
-      "dialog_title_multiple": "编辑 {count} 书 | 编辑 {count} 书籍",
+      "button_confirm": "保存修改",
+      "dialog_title_multiple": "编辑 {count} 书 | 编辑 {count} 书",
       "dialog_title_single": "编辑 {book}",
       "field_number": "序号",
-      "field_number_sort": "短编号",
+      "field_number_sort": "短序号",
       "field_number_sort_hint": "你可以用十进制数",
       "field_release_date": "发布日期",
       "field_release_date_error": "必须是YYYY-MM-DD格式的有效日期",
@@ -226,10 +226,10 @@
     },
     "edit_collection": {
       "button_cancel": "取消",
-      "button_confirm": "保存更改",
-      "dialog_title": "编辑集合",
-      "field_manual_ordering": "手动订阅",
-      "label_ordering": "默认情况下，收藏中的系列将按名称排序。您可以启用手动排序来定义自己的顺序。"
+      "button_confirm": "保存修改",
+      "dialog_title": "编辑收藏",
+      "field_manual_ordering": "手动排序",
+      "label_ordering": "默认情况下，收藏中的系列将按名称排序,您可以启用手动排序来整理想要的顺序."
     },
     "edit_library": {
       "button_browse": "浏览",
@@ -239,20 +239,20 @@
       "dialog_title_add": "添加库",
       "dialot_title_edit": "编辑库",
       "field_import_comicinfo_book": "书籍元数据",
-      "field_import_comicinfo_collections": "集合",
+      "field_import_comicinfo_collections": "收藏",
       "field_import_comicinfo_readlists": "阅读列表",
       "field_import_comicinfo_series": "系列元数据",
       "field_import_epub_book": "书籍元数据",
       "field_import_epub_series": "系列元数据",
-      "field_import_local_artwork": "本地艺术品",
+      "field_import_local_artwork": "本地图片(插图)",
       "field_name": "名称",
       "field_root_folder": "根文件夹",
       "field_scanner_deep_scan": "深度扫描",
       "field_scanner_force_directory_modified_time": "强制目录修改时间",
       "file_browser_dialog_button_confirm": "选择",
       "file_browser_dialog_title": "库的根文件夹",
-      "label_import_comicinfo": "引入含有ComicInfo.xml的CBR/CBZ压缩包",
-      "label_import_epub": "EPUB文件导入元数据",
+      "label_import_comicinfo": "导入含有ComicInfo.xml的CBR/CBZ压缩包",
+      "label_import_epub": "导入EPUB文件的元数据",
       "label_import_local": "导入本地媒体",
       "label_scanner": "扫描器",
       "tab_general": "常规",
@@ -260,13 +260,13 @@
     },
     "edit_readlist": {
       "button_cancel": "取消",
-      "button_confirm": "保存更改",
+      "button_confirm": "保存修改",
       "dialog_title": "编辑阅读列表",
       "field_name": "名称"
     },
     "edit_series": {
       "button_cancel": "取消",
-      "button_confirm": "保存更改",
+      "button_confirm": "保存修改",
       "dialog_title_multiple": "编辑 {count} 系列 | 编辑 {count} 系列",
       "dialog_title_single": "编辑 {series}",
       "field_age_rating": "年龄限制",
@@ -274,7 +274,7 @@
       "field_genres": "风格",
       "field_language": "语言",
       "field_publisher": "发布者",
-      "field_reading_direction": "阅读指导",
+      "field_reading_direction": "阅读方向",
       "field_sort_title": "排序标题",
       "field_status": "状态",
       "field_summary": "概要",
@@ -287,13 +287,13 @@
     },
     "edit_user": {
       "button_cancel": "取消",
-      "button_confirm": "保存更改",
+      "button_confirm": "保存修改",
       "dialog_title": "编辑用户",
       "label_roles_for": "{name}的权限"
     },
     "edit_user_shared_libraries": {
       "button_cancel": "取消",
-      "button_confirm": "保存更改",
+      "button_confirm": "保存修改",
       "dialog_title": "编辑共享库",
       "field_all_libraries": "所有库",
       "label_shared_with": "{name}共享"
@@ -302,7 +302,7 @@
       "button_cancel": "取消",
       "button_confirm_default": "选择",
       "dialog_title_default": "文件浏览器",
-      "parent_directory": "父"
+      "parent_directory": "父目录"
     },
     "password_change": {
       "button_cancel": "取消",
@@ -321,7 +321,7 @@
     },
     "shortcut_help": {
       "label_description": "说明",
-      "label_key": "键值"
+      "label_key": "按键"
     }
   },
   "enums": {
@@ -367,12 +367,12 @@
   },
   "library_navigation": {
     "browse": "浏览",
-    "collections": "集合",
+    "collections": "收藏",
     "readlists": "阅读列表"
   },
   "login": {
     "create_user_account": "创建用户帐户",
-    "login": "登录名",
+    "login": "登录",
     "unclaimed_html": "该Komga服务器尚未激活, 您需要创建一个用户帐户才能访问它.<br><br>选择一个 <strong>邮箱</strong> 和 <strong>密码</strong> 然后点击<strong>创建账户</strong>."
   },
   "media_analysis": {
@@ -385,7 +385,7 @@
     "url": "地址"
   },
   "menu": {
-    "add_to_collection": "添加到集合",
+    "add_to_collection": "添加到收藏",
     "add_to_readlist": "添加到阅读列表",
     "analyze": "分析",
     "delete": "删除",
@@ -416,7 +416,7 @@
   },
   "search": {
     "no_results": "搜索没有任何结果",
-    "search": "查找",
+    "search": "搜索",
     "search_for_something_else": "尝试寻找其他的东西",
     "search_results_for": "\"{name}\"搜索结果"
   },
@@ -440,9 +440,11 @@
     "role_user": "用户"
   },
   "sort": {
-    "date_added": "添加日期",
+    "date_added": "添加时间",
     "date_updated": "更新时间",
+    "file_name": "文件名",
     "file_size": "文件大小",
+    "folder_name": "文件夹名",
     "name": "名称",
     "number": "序号",
     "release_date": "发布日期"
@@ -454,9 +456,9 @@
   },
   "user_roles": {
     "ADMIN": "管理员",
-    "FILE_DOWNLOAD": "文件下载",
-    "PAGE_STREAMING": "页面浏览",
-    "USER": "普通用户"
+    "FILE_DOWNLOAD": "支持下载",
+    "PAGE_STREAMING": "支持浏览",
+    "USER": "用户"
   },
   "users": {
     "users": "用户"
