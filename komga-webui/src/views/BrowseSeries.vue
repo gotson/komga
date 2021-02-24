@@ -310,6 +310,7 @@ export default Vue.extend({
         {name: this.$t('sort.date_added').toString(), key: 'createdDate'},
         {name: this.$t('sort.release_date').toString(), key: 'metadata.releaseDate'},
         {name: this.$t('sort.file_size').toString(), key: 'fileSize'},
+        {name: this.$t('sort.file_name').toString(), key: 'name'},
       ] as SortOption[]
     },
     filterOptionsList(): FiltersOptions {

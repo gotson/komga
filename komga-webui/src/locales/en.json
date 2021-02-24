@@ -442,6 +442,7 @@
   "sort": {
     "date_added": "Date added",
     "date_updated": "Date updated",
+    "file_name": "File name",
     "file_size": "File size",
     "folder_name": "Folder name",
     "name": "Name",
