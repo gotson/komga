@@ -9,7 +9,7 @@
         <v-card-text>
           <v-container fluid>
             <v-row>
-              <v-col>{{ $t('dialog.delete_library.warning_html', {name: library.name}) }}</v-col>
+              <v-col v-html="$t('dialog.delete_library.warning_html', {name: library.name})"></v-col>
             </v-row>
 
             <v-row>
