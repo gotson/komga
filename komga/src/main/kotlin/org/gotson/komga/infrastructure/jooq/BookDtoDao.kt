@@ -44,16 +44,16 @@ class BookDtoDao(
   private val bt = Tables.BOOK_METADATA_TAG
 
   private val sorts = mapOf(
-    "name" to DSL.lower(b.NAME),
+    "name" to lower(b.NAME),
     "created" to b.CREATED_DATE,
     "createdDate" to b.CREATED_DATE,
     "lastModified" to b.LAST_MODIFIED_DATE,
     "lastModifiedDate" to b.LAST_MODIFIED_DATE,
     "fileSize" to b.FILE_SIZE,
-    "url" to DSL.lower(b.URL),
-    "media.status" to DSL.lower(m.STATUS),
-    "media.comment" to DSL.lower(m.COMMENT),
-    "media.mediaType" to DSL.lower(m.MEDIA_TYPE),
+    "url" to lower(b.URL),
+    "media.status" to lower(m.STATUS),
+    "media.comment" to lower(m.COMMENT),
+    "media.mediaType" to lower(m.MEDIA_TYPE),
     "metadata.numberSort" to d.NUMBER_SORT,
     "metadata.releaseDate" to d.RELEASE_DATE,
     "readProgress.lastModified" to r.LAST_MODIFIED_DATE,
