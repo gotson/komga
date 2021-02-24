@@ -143,7 +143,17 @@ export default Vue.extend({
       seriesCopy: [] as SeriesDto[],
       selectedSeries: [] as SeriesDto[],
       editElements: false,
-      filters: {} as FiltersActive,
+      // we need to define all the possible values, else the properties are not reactive when changed
+      filters: {
+        status: [],
+        readStatus: [],
+        library: [],
+        genre: [],
+        tag: [],
+        language: [],
+        ageRating: [],
+        releaseDate: [],
+      } as FiltersActive,
       filterUnwatch: null as any,
       drawer: false,
       filterOptions: {
@@ -187,19 +197,19 @@ export default Vue.extend({
     this.$eventHub.$off(COLLECTION_DELETED, this.afterDelete)
     this.$eventHub.$off(SERIES_CHANGED, this.reloadSeries)
   },
-  mounted() {
-    this.loadCollection(this.collectionId)
+  async mounted() {
+    await this.resetParams(this.$route, this.collectionId)
 
-    this.resetParams(this.$route)
+    this.loadCollection(this.collectionId)
 
     this.setWatches()
   },
-  beforeRouteUpdate(to, from, next) {
+  async beforeRouteUpdate(to, from, next) {
     if (to.params.collectionId !== from.params.collectionId) {
       this.unsetWatches()
 
       // reset
-      this.resetParams(this.$route)
+      await this.resetParams(this.$route, to.params.collectionId)
       this.series = []
       this.editElements = false
       this.filterOptions.library = []
@@ -250,7 +260,20 @@ export default Vue.extend({
     },
   },
   methods: {
-    resetParams(route: any) {
+    async resetParams(route: any, collectionId: string) {
+      // load dynamic filters
+      this.filterOptions.library = this.$store.state.komgaLibraries.libraries.map((x: LibraryDto) => ({
+        name: x.name,
+        value: x.id,
+      }))
+      this.filterOptions.genre = toNameValue(await this.$komgaReferential.getGenres(undefined, collectionId))
+      this.filterOptions.tag = toNameValue(await this.$komgaReferential.getTags(undefined, undefined, collectionId))
+      this.filterOptions.publisher = toNameValue(await this.$komgaReferential.getPublishers(undefined, collectionId))
+      this.filterOptions.language = (await this.$komgaReferential.getLanguages(undefined, collectionId))
+      this.filterOptions.ageRating = toNameValue(await this.$komgaReferential.getAgeRatings(undefined, collectionId))
+      this.filterOptions.releaseDate = toNameValue(await this.$komgaReferential.getSeriesReleaseDates(undefined, collectionId))
+
+      // filter query params with available filter values
       if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating || route.query.library) {
         this.filters.status = parseQueryFilter(route.query.status, Object.keys(SeriesStatus))
         this.filters.readStatus = parseQueryFilter(route.query.readStatus, Object.keys(ReadStatus))
@@ -296,18 +319,8 @@ export default Vue.extend({
     },
     async loadCollection(collectionId: string) {
       this.collection = await this.$komgaCollections.getOneCollection(collectionId)
-      await this.loadSeries(collectionId)
 
-      this.filterOptions.library = this.$store.state.komgaLibraries.libraries.map((x: LibraryDto) => ({
-        name: x.name,
-        value: x.id,
-      }))
-      this.filterOptions.genre = toNameValue(await this.$komgaReferential.getGenres(undefined, collectionId))
-      this.filterOptions.tag = toNameValue(await this.$komgaReferential.getTags(undefined, undefined, collectionId))
-      this.filterOptions.publisher = toNameValue(await this.$komgaReferential.getPublishers(undefined, collectionId))
-      this.filterOptions.language = (await this.$komgaReferential.getLanguages(undefined, collectionId))
-      this.filterOptions.ageRating = toNameValue(await this.$komgaReferential.getAgeRatings(undefined, collectionId))
-      this.filterOptions.releaseDate = toNameValue(await this.$komgaReferential.getSeriesReleaseDates(undefined, collectionId))
+      await this.loadSeries(collectionId)
     },
     updateRoute() {
       const loc = {
