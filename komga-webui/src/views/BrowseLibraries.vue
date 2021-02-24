@@ -142,7 +142,16 @@ export default Vue.extend({
       totalElements: null as number | null,
       sortActive: {} as SortActive,
       sortDefault: {key: 'metadata.titleSort', order: 'asc'} as SortActive,
-      filters: {} as FiltersActive,
+      // we need to define all the possible values, else the properties are not reactive when changed
+      filters: {
+        status: [],
+        readStatus: [],
+        genre: [],
+        tag: [],
+        language: [],
+        ageRating: [],
+        releaseDate: [],
+      } as FiltersActive,
       sortUnwatch: null as any,
       filterUnwatch: null as any,
       pageUnwatch: null as any,
@@ -190,7 +199,7 @@ export default Vue.extend({
     }
 
     // restore from query param
-    this.resetParams(this.$route)
+    await this.resetParams(this.$route, this.libraryId)
     if (this.$route.query.page) this.page = Number(this.$route.query.page)
     if (this.$route.query.pageSize) this.pageSize = Number(this.$route.query.pageSize)
 
@@ -198,12 +207,12 @@ export default Vue.extend({
 
     this.setWatches()
   },
-  beforeRouteUpdate(to, from, next) {
+  async beforeRouteUpdate(to, from, next) {
     if (to.params.libraryId !== from.params.libraryId) {
       this.unsetWatches()
 
       // reset
-      this.resetParams(to)
+      await this.resetParams(to, to.params.libraryId)
       this.page = 1
       this.totalPages = 1
       this.totalElements = null
@@ -281,11 +290,22 @@ export default Vue.extend({
     cookieFilter(libraryId: string): string {
       return `library.filter.${libraryId}`
     },
-    resetParams(route: any) {
+    async resetParams(route: any, libraryId: string) {
       this.sortActive = parseQuerySort(route.query.sort, this.sortOptions) ||
         this.$cookies.get(this.cookieSort(route.params.libraryId)) ||
         this.$_.clone(this.sortDefault)
 
+      const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
+
+      // load dynamic filters
+      this.filterOptions.genre = toNameValue(await this.$komgaReferential.getGenres(requestLibraryId))
+      this.filterOptions.tag = toNameValue(await this.$komgaReferential.getTags(requestLibraryId))
+      this.filterOptions.publisher = toNameValue(await this.$komgaReferential.getPublishers(requestLibraryId))
+      this.filterOptions.language = (await this.$komgaReferential.getLanguages(requestLibraryId))
+      this.filterOptions.ageRating = toNameValue(await this.$komgaReferential.getAgeRatings(requestLibraryId))
+      this.filterOptions.releaseDate = toNameValue(await this.$komgaReferential.getSeriesReleaseDates(requestLibraryId))
+
+      // filter query params with available filter values
       if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating) {
         this.filters.status = parseQueryFilter(route.query.status, Object.keys(SeriesStatus))
         this.filters.readStatus = parseQueryFilter(route.query.readStatus, Object.keys(ReadStatus))
@@ -352,14 +372,6 @@ export default Vue.extend({
     },
     async loadLibrary(libraryId: string) {
       this.library = this.getLibraryLazy(libraryId)
-
-      const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
-      this.filterOptions.genre = toNameValue(await this.$komgaReferential.getGenres(requestLibraryId))
-      this.filterOptions.tag = toNameValue(await this.$komgaReferential.getTags(requestLibraryId))
-      this.filterOptions.publisher = toNameValue(await this.$komgaReferential.getPublishers(requestLibraryId))
-      this.filterOptions.language = (await this.$komgaReferential.getLanguages(requestLibraryId))
-      this.filterOptions.ageRating = toNameValue(await this.$komgaReferential.getAgeRatings(requestLibraryId))
-      this.filterOptions.releaseDate = toNameValue(await this.$komgaReferential.getSeriesReleaseDates(requestLibraryId))
 
       await this.loadPage(libraryId, this.page, this.sortActive)
     },

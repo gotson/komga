@@ -297,7 +297,10 @@ export default Vue.extend({
       totalElements: null as number | null,
       sortActive: {} as SortActive,
       sortDefault: {key: 'metadata.numberSort', order: 'asc'} as SortActive,
-      filters: {} as FiltersActive,
+      filters: {
+        readStatus: [],
+        tag: [],
+      } as FiltersActive,
       sortUnwatch: null as any,
       filterUnwatch: null as any,
       pageUnwatch: null as any,
@@ -400,11 +403,7 @@ export default Vue.extend({
     }
 
     // restore from query param
-    this.sortActive = this.parseQuerySortOrDefault(this.$route.query.sort)
-
-    this.filters.readStatus = parseQueryFilter(this.$route.query.readStatus, Object.keys(ReadStatus))
-    this.filters.tag = parseQueryFilter(this.$route.query.tag, this.filterOptions.tag.map(x => x.value))
-
+    await this.resetParams(this.$route, this.seriesId)
     if (this.$route.query.page) this.page = Number(this.$route.query.page)
     if (this.$route.query.pageSize) this.pageSize = Number(this.$route.query.pageSize)
 
@@ -417,8 +416,7 @@ export default Vue.extend({
       this.unsetWatches()
 
       // reset
-      this.sortActive = this.parseQuerySortOrDefault(to.query.sort)
-      this.filters.readStatus = parseQueryFilter(to.query.readStatus, Object.keys(ReadStatus))
+      await this.resetParams(to, to.params.seriesId)
       this.page = 1
       this.totalPages = 1
       this.totalElements = null
@@ -434,6 +432,16 @@ export default Vue.extend({
     next()
   },
   methods: {
+    async resetParams(route: any, seriesId: string) {
+      this.sortActive = this.parseQuerySortOrDefault(route.query.sort)
+
+      // load dynamic filters
+      this.filterOptions.tag = toNameValue(await this.$komgaReferential.getTags(undefined, this.seriesId))
+
+      // filter query params with available filter values
+      this.filters.readStatus = parseQueryFilter(this.$route.query.readStatus, Object.keys(ReadStatus))
+      this.filters.tag = parseQueryFilter(this.$route.query.tag, this.filterOptions.tag.map(x => x.value))
+    },
     setWatches() {
       this.sortUnwatch = this.$watch('sortActive', this.updateRouteAndReload)
       this.filterUnwatch = this.$watch('filters', this.updateRouteAndReload)
@@ -477,8 +485,6 @@ export default Vue.extend({
     async loadSeries(seriesId: string) {
       this.series = await this.$komgaSeries.getOneSeries(seriesId)
       this.collections = await this.$komgaSeries.getCollections(seriesId)
-
-      this.filterOptions.tag = toNameValue(await this.$komgaReferential.getTags(undefined, this.seriesId))
 
       await this.loadPage(seriesId, this.page, this.sortActive)
     },

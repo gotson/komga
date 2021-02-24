@@ -1,3 +1,10 @@
+## [0.73.1](https://github.com/gotson/komga/compare/v0.73.0...v0.73.1) (2021-02-24)
+
+
+### Bug Fixes
+
+* **webui:** properly restore query params on page reload ([01f9317](https://github.com/gotson/komga/commit/01f9317b89e211bbc69512d4965a1fee09fcc9e6))
+
 # [0.73.0](https://github.com/gotson/komga/compare/v0.72.0...v0.73.0) (2021-02-24)
 
 
