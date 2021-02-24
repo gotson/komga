@@ -228,6 +228,7 @@ export default Vue.extend({
         {name: this.$t('sort.name').toString(), key: 'metadata.titleSort'},
         {name: this.$t('sort.date_added').toString(), key: 'createdDate'},
         {name: this.$t('sort.date_updated').toString(), key: 'lastModifiedDate'},
+        {name: this.$t('sort.folder_name').toString(), key: 'name'},
       ] as SortOption[]
     },
     filterOptionsList(): FiltersOptions {

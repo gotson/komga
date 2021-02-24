@@ -68,7 +68,8 @@ class SeriesDtoDao(
     "created" to s.CREATED_DATE,
     "lastModifiedDate" to s.LAST_MODIFIED_DATE,
     "lastModified" to s.LAST_MODIFIED_DATE,
-    "collection.number" to cs.NUMBER
+    "collection.number" to cs.NUMBER,
+    "name" to s.NAME
   )
 
   override fun findAll(search: SeriesSearchWithReadProgress, userId: String, pageable: Pageable): Page<SeriesDto> {
