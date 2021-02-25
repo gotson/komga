@@ -100,22 +100,22 @@
                 {{ $t(`enums.series_status.${series.metadata.status}`) }}
               </v-chip>
               <v-chip
-                label
-                small
-                link
-                v-if="series.metadata.ageRating"
-                :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }, query: {ageRating: series.metadata.ageRating}}"
-                class="mx-1"
+                  label
+                  small
+                  link
+                  v-if="series.metadata.ageRating"
+                  :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }, query: {ageRating: series.metadata.ageRating}}"
+                  class="mx-1"
               >
                 {{series.metadata.ageRating}}+
               </v-chip>
               <v-chip
-                label
-                small
-                link
-                :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }, query: {language: series.metadata.language}}"
-                v-if="series.metadata.language"
-                class="mx-1"
+                  label
+                  small
+                  link
+                  :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }, query: {language: series.metadata.language}}"
+                  v-if="series.metadata.language"
+                  class="mx-1"
               >
                 {{ languageDisplay }}
               </v-chip>
