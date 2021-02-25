@@ -1,3 +1,10 @@
+# [0.74.0](https://github.com/gotson/komga/compare/v0.73.2...v0.74.0) (2021-02-25)
+
+
+### Features
+
+* **webui:** make publisher, status, language, ageRating chips clickable ([8bf805e](https://github.com/gotson/komga/commit/8bf805e1e414a0f9464d121b0de53515f11697f1))
+
 ## [0.73.2](https://github.com/gotson/komga/compare/v0.73.1...v0.73.2) (2021-02-24)
 
 
