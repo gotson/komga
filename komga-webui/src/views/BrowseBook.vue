@@ -131,9 +131,12 @@
               <v-chip v-for="(t, i) in book.metadata.tags"
                       :key="i"
                       :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+                      :title="t"
+                      :to="{name:'browse-series', params: {seriesId: book.seriesId}, query: {tag: t}}"
                       label
                       small
                       outlined
+                      link
               >{{ t }}
               </v-chip>
             </v-col>

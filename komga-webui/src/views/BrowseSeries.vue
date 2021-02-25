@@ -148,9 +148,12 @@
               <v-chip v-for="(t, i) in series.metadata.genres"
                       :key="i"
                       :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+                      :title="t"
+                      :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }, query: {genre: t}}"
                       label
                       small
                       outlined
+                      link
               >{{ t }}
               </v-chip>
             </v-col>
@@ -162,9 +165,12 @@
               <v-chip v-for="(t, i) in series.metadata.tags"
                       :key="i"
                       :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+                      :title="t"
+                      :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }, query: {tag: t}}"
                       label
                       small
                       outlined
+                      link
               >{{ t }}
               </v-chip>
             </v-col>
