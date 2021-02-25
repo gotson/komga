@@ -89,16 +89,36 @@
 
           <v-row class="text-body-2">
             <v-col>
-              <v-chip label small
-                      :color="statusChip.color"
-                      :text-color="statusChip.text"
-              >{{ $t(`enums.series_status.${series.metadata.status}`) }}
+              <v-chip
+                  label
+                  small
+                  link
+                  :color="statusChip.color"
+                  :text-color="statusChip.text"
+                  :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }, query: {status: series.metadata.status}}"
+              >
+                {{ $t(`enums.series_status.${series.metadata.status}`) }}
               </v-chip>
-              <v-chip label small v-if="series.metadata.ageRating" class="mx-1">{{
-                  series.metadata.ageRating
-                }}+
+              <v-chip
+                  label
+                  small
+                  link
+                  v-if="series.metadata.ageRating"
+                  :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }, query: {ageRating: series.metadata.ageRating}}"
+                  class="mx-1"
+              >
+                {{series.metadata.ageRating}}+
               </v-chip>
-              <v-chip label small v-if="series.metadata.language" class="mx-1">{{ languageDisplay }}</v-chip>
+              <v-chip
+                  label
+                  small
+                  link
+                  :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }, query: {language: series.metadata.language}}"
+                  v-if="series.metadata.language"
+                  class="mx-1"
+              >
+                {{ languageDisplay }}
+              </v-chip>
               <v-chip label small v-if="series.metadata.readingDirection" class="mx-1">{{ $t(`enums.reading_direction.${series.metadata.readingDirection}`) }}</v-chip>
             </v-col>
           </v-row>
@@ -138,7 +158,16 @@
           <v-row v-if="series.metadata.publisher">
             <v-col cols="6" sm="4" md="3" class="text-body-2 py-1 text-uppercase">{{ $t('common.publisher') }}</v-col>
             <v-col class="text-body-2 text-capitalize py-1">
-              {{ series.metadata.publisher }}
+              <v-chip
+                      :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+                      :title="series.metadata.publisher"
+                      :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }, query: {publisher: series.metadata.publisher}}"
+                      label
+                      small
+                      outlined
+                      link
+              >{{ series.metadata.publisher }}
+              </v-chip>
             </v-col>
           </v-row>
 
