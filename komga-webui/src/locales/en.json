@@ -196,14 +196,14 @@
       "button_confirm": "Delete",
       "confirm_delete": "Yes, delete the read list \"{name}\"",
       "dialog_title": "Delete Read List",
-      "warning_html": "The read list <b>{name}</b> will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue ?"
+      "warning_html": "The read list <b>{name}</b> will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue?"
     },
     "delete_user": {
       "button_cancel": "Cancel",
       "button_confirm": "Delete",
       "confirm_delete": "Yes, delete the user \"{name}\"",
       "dialog_title": "Delete User",
-      "warning_html": "The user <b>{name}</b> will be deleted from this server. This <b>cannot</b> be undone. Continue ?"
+      "warning_html": "The user <b>{name}</b> will be deleted from this server. This <b>cannot</b> be undone. Continue?"
     },
     "edit_books": {
       "authors_notice_multiple_edit": "You are editing authors for multiple books. This will override existing authors of each book.",
