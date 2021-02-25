@@ -13,12 +13,12 @@
     "change_password": "修改密码"
   },
   "author_roles": {
-    "colorist": "上色者",
+    "colorist": "上色",
     "cover": "封面",
     "editor": "主编",
-    "inker": "画图者",
-    "letterer": "嵌字者",
-    "penciller": "译者",
+    "inker": "墨稿",
+    "letterer": "嵌字",
+    "penciller": "铅稿",
     "writer": "作者"
   },
   "bookreader": {
