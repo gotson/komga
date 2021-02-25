@@ -306,11 +306,12 @@ export default Vue.extend({
       this.filterOptions.releaseDate = toNameValue(await this.$komgaReferential.getSeriesReleaseDates(requestLibraryId))
 
       // filter query params with available filter values
-      if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating) {
+      if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating || route.query.publisher) {
         this.filters.status = parseQueryFilter(route.query.status, Object.keys(SeriesStatus))
         this.filters.readStatus = parseQueryFilter(route.query.readStatus, Object.keys(ReadStatus))
         this.filters.genre = parseQueryFilter(route.query.genre, this.filterOptions.genre.map(x => x.value))
         this.filters.tag = parseQueryFilter(route.query.tag, this.filterOptions.tag.map(x => x.value))
+        this.filters.publisher = parseQueryFilter(route.query.publisher, this.filterOptions.publisher.map(x => x.value))
         this.filters.language = parseQueryFilter(route.query.language, this.filterOptions.language.map(x => x.value))
         this.filters.ageRating = parseQueryFilter(route.query.ageRating, this.filterOptions.ageRating.map(x => x.value))
         this.filters.releaseDate = parseQueryFilter(route.query.releaseDate, this.filterOptions.releaseDate.map(x => x.value))
