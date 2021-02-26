@@ -79,7 +79,12 @@ class SeriesDtoDao(
     return findAll(conditions, having, userId, pageable, search.toJoinConditions())
   }
 
-  override fun findByCollectionId(collectionId: String, search: SeriesSearchWithReadProgress, userId: String, pageable: Pageable): Page<SeriesDto> {
+  override fun findByCollectionId(
+    collectionId: String,
+    search: SeriesSearchWithReadProgress,
+    userId: String,
+    pageable: Pageable
+  ): Page<SeriesDto> {
     val conditions = search.toCondition().and(cs.COLLECTION_ID.eq(collectionId))
     val having = search.readStatus?.toCondition() ?: DSL.trueCondition()
     val joinConditions = search.toJoinConditions().copy(selectCollectionNumber = true, collection = true)
@@ -87,7 +92,11 @@ class SeriesDtoDao(
     return findAll(conditions, having, userId, pageable, joinConditions)
   }
 
-  override fun findRecentlyUpdated(search: SeriesSearchWithReadProgress, userId: String, pageable: Pageable): Page<SeriesDto> {
+  override fun findRecentlyUpdated(
+    search: SeriesSearchWithReadProgress,
+    userId: String,
+    pageable: Pageable
+  ): Page<SeriesDto> {
     val conditions = search.toCondition()
       .and(s.CREATED_DATE.ne(s.LAST_MODIFIED_DATE))
 
@@ -118,6 +127,7 @@ class SeriesDtoDao(
       .apply { if (joinConditions.genre) leftJoin(g).on(s.ID.eq(g.SERIES_ID)) }
       .apply { if (joinConditions.tag) leftJoin(st).on(s.ID.eq(st.SERIES_ID)) }
       .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
+      .apply { if (joinConditions.aggregationAuthor) leftJoin(bmaa).on(s.ID.eq(bmaa.SERIES_ID)) }
 
   private fun findAll(
     conditions: Condition,
@@ -135,6 +145,7 @@ class SeriesDtoDao(
       .apply { if (joinConditions.genre) leftJoin(g).on(s.ID.eq(g.SERIES_ID)) }
       .apply { if (joinConditions.tag) leftJoin(st).on(s.ID.eq(st.SERIES_ID)) }
       .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
+      .apply { if (joinConditions.aggregationAuthor) leftJoin(bmaa).on(s.ID.eq(bmaa.SERIES_ID)) }
       .where(conditions)
       .groupBy(s.ID)
       .having(having)
@@ -200,7 +211,14 @@ class SeriesDtoDao(
           .filter { it.name != null }
           .map { AuthorDto(it.name, it.role) }
 
-        sr.toDto(booksCount, booksReadCount, booksUnreadCount, booksInProgressCount, dr.toDto(genres, tags), bmar.toDto(aggregatedAuthors))
+        sr.toDto(
+          booksCount,
+          booksReadCount,
+          booksUnreadCount,
+          booksInProgressCount,
+          dr.toDto(genres, tags),
+          bmar.toDto(aggregatedAuthors)
+        )
       }
 
   private fun SeriesSearchWithReadProgress.toCondition(): Condition {
@@ -216,11 +234,20 @@ class SeriesDtoDao(
     if (!tags.isNullOrEmpty()) c = c.and(lower(st.TAG).`in`(tags.map { it.toLowerCase() }))
     if (!ageRatings.isNullOrEmpty()) {
       val c1 = if (ageRatings.contains(null)) d.AGE_RATING.isNull else DSL.falseCondition()
-      val c2 = if (ageRatings.filterNotNull().isNotEmpty()) d.AGE_RATING.`in`(ageRatings.filterNotNull()) else DSL.falseCondition()
+      val c2 = if (ageRatings.filterNotNull()
+        .isNotEmpty()
+      ) d.AGE_RATING.`in`(ageRatings.filterNotNull()) else DSL.falseCondition()
       c = c.and(c1.or(c2))
     }
     // cast to String is necessary for SQLite, else the years in the IN block are coerced to Int, even though YEAR for SQLite uses strftime (string)
     if (!releaseYears.isNullOrEmpty()) c = c.and(DSL.year(bma.RELEASE_DATE).cast(String::class.java).`in`(releaseYears))
+    if (!authors.isNullOrEmpty()) {
+      var ca: Condition = DSL.falseCondition()
+      authors.forEach {
+        ca = ca.or(bmaa.NAME.equalIgnoreCase(it.name).and(bmaa.ROLE.equalIgnoreCase(it.role)))
+      }
+      c = c.and(ca)
+    }
 
     return c
   }
@@ -229,14 +256,16 @@ class SeriesDtoDao(
     JoinConditions(
       genre = !genres.isNullOrEmpty(),
       tag = !tags.isNullOrEmpty(),
-      collection = !collectionIds.isNullOrEmpty()
+      collection = !collectionIds.isNullOrEmpty(),
+      aggregationAuthor = !authors.isNullOrEmpty(),
     )
 
   private data class JoinConditions(
     val selectCollectionNumber: Boolean = false,
     val genre: Boolean = false,
     val tag: Boolean = false,
-    val collection: Boolean = false
+    val collection: Boolean = false,
+    val aggregationAuthor: Boolean = false,
   )
 
   private fun Collection<ReadStatus>.toCondition(): Condition =
@@ -248,7 +277,14 @@ class SeriesDtoDao(
       }
     }.reduce { acc, condition -> acc.or(condition) }
 
-  private fun SeriesRecord.toDto(booksCount: Int, booksReadCount: Int, booksUnreadCount: Int, booksInProgressCount: Int, metadata: SeriesMetadataDto, booksMetadata: BookMetadataAggregationDto) =
+  private fun SeriesRecord.toDto(
+    booksCount: Int,
+    booksReadCount: Int,
+    booksUnreadCount: Int,
+    booksInProgressCount: Int,
+    metadata: SeriesMetadataDto,
+    booksMetadata: BookMetadataAggregationDto
+  ) =
     SeriesDto(
       id = id,
       libraryId = libraryId,

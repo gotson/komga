@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
+import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ReadStatus
@@ -15,7 +16,9 @@ import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.service.SeriesCollectionLifecycle
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
+import org.gotson.komga.infrastructure.swagger.AuthorsAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
+import org.gotson.komga.infrastructure.web.Authors
 import org.gotson.komga.interfaces.rest.dto.CollectionCreationDto
 import org.gotson.komga.interfaces.rest.dto.CollectionDto
 import org.gotson.komga.interfaces.rest.dto.CollectionUpdateDto
@@ -154,6 +157,7 @@ class SeriesCollectionController(
   }
 
   @PageableWithoutSortAsQueryParam
+  @AuthorsAsQueryParam
   @GetMapping("{id}/series")
   fun getSeriesForCollection(
     @PathVariable id: String,
@@ -168,6 +172,7 @@ class SeriesCollectionController(
     @RequestParam(name = "age_rating", required = false) ageRatings: List<String>?,
     @RequestParam(name = "release_year", required = false) release_years: List<String>?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
+    @Parameter(hidden = true) @Authors authors: List<Author>?,
     @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> =
     collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { collection ->
@@ -193,6 +198,7 @@ class SeriesCollectionController(
         tags = tags,
         ageRatings = ageRatings?.map { it.toIntOrNull() },
         releaseYears = release_years,
+        authors = authors
       )
 
       seriesDtoRepository.findByCollectionId(collection.id, seriesSearch, principal.user.id, pageRequest)

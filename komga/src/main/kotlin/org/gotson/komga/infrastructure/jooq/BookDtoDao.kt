@@ -92,6 +92,7 @@ class BookDtoDao(
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
       .apply { if (joinConditions.tag) leftJoin(bt).on(b.ID.eq(bt.BOOK_ID)) }
       .apply { if (joinConditions.selectReadListNumber) leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID)) }
+      .apply { if(joinConditions.author) leftJoin(a).on(b.ID.eq(a.BOOK_ID)) }
       .where(conditions)
       .groupBy(b.ID)
       .fetch()
@@ -236,6 +237,7 @@ class BookDtoDao(
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
       .apply { if (joinConditions.tag) leftJoin(bt).on(b.ID.eq(bt.BOOK_ID)) }
       .apply { if (joinConditions.selectReadListNumber) leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID)) }
+      .apply { if(joinConditions.author) leftJoin(a).on(b.ID.eq(a.BOOK_ID)) }
 
   private fun ResultQuery<Record>.fetchAndMap() =
     fetch()
@@ -280,17 +282,27 @@ class BookDtoDao(
       c = c.and(cr)
     }
 
+    if (!authors.isNullOrEmpty()) {
+      var ca: Condition = DSL.falseCondition()
+      authors.forEach {
+        ca = ca.or(a.NAME.equalIgnoreCase(it.name).and(a.ROLE.equalIgnoreCase(it.role)))
+      }
+      c = c.and(ca)
+    }
+
     return c
   }
 
   private fun BookSearchWithReadProgress.toJoinConditions() =
     JoinConditions(
-      tag = !tags.isNullOrEmpty()
+      tag = !tags.isNullOrEmpty(),
+      author = !authors.isNullOrEmpty(),
     )
 
   private data class JoinConditions(
     val selectReadListNumber: Boolean = false,
-    val tag: Boolean = false
+    val tag: Boolean = false,
+    val author: Boolean = false,
   )
 
   private fun BookRecord.toDto(media: MediaDto, metadata: BookMetadataDto, readProgress: ReadProgressDto?) =

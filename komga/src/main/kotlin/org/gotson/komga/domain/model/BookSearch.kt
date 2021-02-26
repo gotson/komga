@@ -13,5 +13,6 @@ class BookSearchWithReadProgress(
   searchTerm: String? = null,
   mediaStatus: Collection<Media.Status>? = null,
   val tags: Collection<String>? = null,
-  val readStatus: Collection<ReadStatus>? = null
+  val readStatus: Collection<ReadStatus>? = null,
+  val authors: Collection<Author>? = null,
 ) : BookSearch(libraryIds, seriesIds, searchTerm, mediaStatus)

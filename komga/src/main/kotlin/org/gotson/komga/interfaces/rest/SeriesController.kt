@@ -10,6 +10,7 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
 import org.apache.commons.io.IOUtils
 import org.gotson.komga.application.tasks.TaskReceiver
+import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ROLE_ADMIN
@@ -25,8 +26,10 @@ import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
+import org.gotson.komga.infrastructure.swagger.AuthorsAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
+import org.gotson.komga.infrastructure.web.Authors
 import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.CollectionDto
 import org.gotson.komga.interfaces.rest.dto.SeriesDto
@@ -80,6 +83,7 @@ class SeriesController(
 ) {
 
   @PageableAsQueryParam
+  @AuthorsAsQueryParam
   @GetMapping
   fun getAllSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -95,6 +99,7 @@ class SeriesController(
     @RequestParam(name = "age_rating", required = false) ageRatings: List<String>?,
     @RequestParam(name = "release_year", required = false) release_years: List<String>?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
+    @Parameter(hidden = true) @Authors authors: List<Author>?,
     @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> {
     val sort =
@@ -121,6 +126,7 @@ class SeriesController(
       tags = tags,
       ageRatings = ageRatings?.map { it.toIntOrNull() },
       releaseYears = release_years,
+      authors = authors
     )
 
     return seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageRequest)
@@ -229,6 +235,7 @@ class SeriesController(
   }
 
   @PageableAsQueryParam
+  @AuthorsAsQueryParam
   @GetMapping("{seriesId}/books")
   fun getAllBooksBySeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -237,6 +244,7 @@ class SeriesController(
     @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
     @RequestParam(name = "tag", required = false) tags: List<String>?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
+    @Parameter(hidden = true) @Authors authors: List<Author>?,
     @Parameter(hidden = true) page: Pageable
   ): Page<BookDto> {
     seriesRepository.getLibraryId(seriesId)?.let {
@@ -259,7 +267,8 @@ class SeriesController(
         seriesIds = listOf(seriesId),
         mediaStatus = mediaStatus,
         readStatus = readStatus,
-        tags = tags
+        tags = tags,
+        authors = authors,
       ),
       principal.user.id,
       pageRequest
