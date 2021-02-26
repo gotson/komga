@@ -67,10 +67,10 @@
     "year": "год"
   },
   "dashboard": {
-    "keep_reading": "продолжить чтение",
-    "recently_added_books": "недавно добавленные книги",
-    "recently_added_series": "недавно добавленные серии",
-    "recently_updated_series": "недавно обновленные серии"
+    "keep_reading": "Продолжить Чтение",
+    "recently_added_books": "Недавно Добавленные Книги",
+    "recently_added_series": "Недавно Добавленные Серии",
+    "recently_updated_series": "Недавно Обновленные Серии"
   },
   "dialog": {
     "add_to_collection": {
@@ -85,7 +85,7 @@
       "button_create": "Создать",
       "card_readlist_subtitle": "Книг нет | 1 книга | {count} книг",
       "dialog_title": "Добавить в список чтения",
-      "field_search_create": "Найти или создать списко чтения",
+      "field_search_create": "Найти или создать список чтения",
       "field_search_create_error": "Список чтения с таким именем уже существует",
       "label_no_matching_readlist": "Совпадающих списков чтения не найдено"
     },
@@ -142,7 +142,7 @@
       "field_release_date_error": "Дата должна быть в действительном YYYY-MM-DD формате",
       "field_summary": "Описание",
       "field_tags": "Теги",
-      "field_title": "Название",
+      "field_title": "Заголовок",
       "tab_authors": "Авторы",
       "tab_general": "Общее",
       "tab_tags": "Теги",
@@ -170,13 +170,53 @@
       "field_import_epub_series": "Метаданные серий",
       "field_import_local_artwork": "Локальные обложки",
       "field_name": "Имя",
-      "field_root_folder": "Корневая директория",
+      "field_root_folder": "Корневой каталог",
       "field_scanner_deep_scan": "Глубокое сканирование",
       "file_browser_dialog_button_confirm": "Выбрать",
-      "file_browser_dialog_title": "Корневая директория библиотеки",
+      "file_browser_dialog_title": "Корневой каталог библиотеки",
       "label_import_comicinfo": "Импорт метаданных для CBR/CBZ, содержащих файл ComicInfo.xml",
       "label_import_epub": "Импорт метаданных из EPUB файлов",
-      "label_import_local": "Импорт локальных медиа данных"
+      "label_import_local": "Импорт локальных медиа данных",
+      "label_scanner": "Сканер",
+      "tab_general": "Общее",
+      "tab_options": "Опции"
+    },
+    "edit_readlist": {
+      "button_cancel": "Отмена",
+      "button_confirm": "Сохранить изменения",
+      "dialog_title": "Редактировать список чтения",
+      "field_name": "Имя"
+    },
+    "edit_series": {
+      "button_cancel": "Отмена",
+      "button_confirm": "Сохранить изменения",
+      "dialog_title_multiple": "Редактировать {count} серию | Редактировать {count} серий",
+      "dialog_title_single": "Редактировать {series}",
+      "field_age_rating": "Возрастной Рейтинг",
+      "field_age_rating_error": "Возрастной рейтинг должен быть 0 или больше",
+      "field_genres": "Жанры",
+      "field_language": "Язык",
+      "field_publisher": "Издатель",
+      "field_reading_direction": "Направление Чтения",
+      "field_sort_title": "Заголовок для сортировки",
+      "field_status": "Статус",
+      "field_summary": "Описание",
+      "field_tags": "Теги",
+      "field_title": "Заголовок",
+      "mixed": "СМЕШАННЫЙ",
+      "tab_general": "Общее",
+      "tab_tags": "Теги",
+      "tags_notice_multiple_edit": "Вы редактируете теги для нескольких серий. Это действие перезапишет существующие теги для каждой серии."
+    },
+    "edit_user": {
+      "button_cancel": "Отмена",
+      "button_confirm": "Сохранить изменения",
+      "dialog_title": "Редактировать пользователя",
+      "label_roles_for": "Роли для {name}"
+    },
+    "edit_user_shared_libraries": {
+      "button_cancel": "Отмена",
+      "button_confirm": "Сохранить изменения"
     }
   },
   "enums": {

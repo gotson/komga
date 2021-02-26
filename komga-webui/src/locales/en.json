@@ -182,14 +182,14 @@
       "button_confirm": "Delete",
       "confirm_delete": "Yes, delete the collection \"{name}\"",
       "dialog_title": "Delete Collection",
-      "warning_html": "The collection <b>{name}</b> will be removed from this server. Your media files will  not be affected. This <b>cannot</b> be undone. Continue ?"
+      "warning_html": "The collection <b>{name}</b> will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue?"
     },
     "delete_library": {
       "button_cancel": "Cancel",
       "button_confirm": "Delete",
       "confirm_delete": "Yes, delete the library \"{name}\"",
       "title": "Delete Library",
-      "warning_html": "The library <b>{name}</b> will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue ?"
+      "warning_html": "The library <b>{name}</b> will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue?"
     },
     "delete_readlist": {
       "button_cancel": "Cancel",
@@ -442,7 +442,7 @@
   "sort": {
     "date_added": "Date added",
     "date_updated": "Date updated",
-    "file_name": "File name",
+    "file_name": "Filename",
     "file_size": "File size",
     "folder_name": "Folder name",
     "name": "Name",

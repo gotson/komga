@@ -442,7 +442,9 @@
   "sort": {
     "date_added": "Dato tillagt",
     "date_updated": "Dato oppdatert",
+    "file_name": "Filnavn",
     "file_size": "Filstørrelse",
+    "folder_name": "Mappenavn",
     "name": "Navn",
     "number": "Navn",
     "release_date": "Utgivelsesdato"
