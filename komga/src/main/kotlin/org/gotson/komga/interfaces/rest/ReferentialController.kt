@@ -1,6 +1,8 @@
 package org.gotson.komga.interfaces.rest
 
 import org.gotson.komga.domain.persistence.ReferentialRepository
+import org.gotson.komga.interfaces.rest.dto.AuthorDto
+import org.gotson.komga.interfaces.rest.dto.toDto
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -15,9 +17,28 @@ class ReferentialController(
 
   @GetMapping("/authors")
   fun getAuthors(
+    @RequestParam(name = "search", defaultValue = "") search: String,
+    @RequestParam(name = "library_id", required = false) libraryId: String?,
+    @RequestParam(name = "collection_id", required = false) collectionId: String?,
+    @RequestParam(name = "series_id", required = false) seriesId: String?,
+  ): List<AuthorDto> =
+
+    when {
+      libraryId != null -> referentialRepository.findAuthorsByNameAndLibrary(search, libraryId)
+      collectionId != null -> referentialRepository.findAuthorsByNameAndCollection(search, collectionId)
+      seriesId != null -> referentialRepository.findAuthorsByNameAndSeries(search, seriesId)
+      else -> referentialRepository.findAuthorsByName(search)
+    }.map { it.toDto() }
+
+  @GetMapping("/authors/names")
+  fun getAuthorsNames(
     @RequestParam(name = "search", defaultValue = "") search: String
   ): List<String> =
-    referentialRepository.findAuthorsByName(search)
+    referentialRepository.findAuthorsNamesByName(search)
+
+  @GetMapping("/authors/roles")
+  fun getAuthorsRoles(): List<String> =
+    referentialRepository.findAuthorsRoles()
 
   @GetMapping("/genres")
   fun getGenres(

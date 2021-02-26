@@ -1,7 +1,10 @@
 package org.gotson.komga.infrastructure.jooq
 
+import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.persistence.ReferentialRepository
 import org.gotson.komga.jooq.Tables
+import org.gotson.komga.jooq.tables.records.BookMetadataAggregationAuthorRecord
+import org.gotson.komga.jooq.tables.records.BookMetadataAuthorRecord
 import org.jooq.DSLContext
 import org.jooq.impl.DSL.lower
 import org.jooq.impl.DSL.select
@@ -16,6 +19,7 @@ class ReferentialDao(
   private val a = Tables.BOOK_METADATA_AUTHOR
   private val sd = Tables.SERIES_METADATA
   private val bma = Tables.BOOK_METADATA_AGGREGATION
+  private val bmaa = Tables.BOOK_METADATA_AGGREGATION_AUTHOR
   private val s = Tables.SERIES
   private val b = Tables.BOOK
   private val g = Tables.SERIES_METADATA_GENRE
@@ -23,12 +27,55 @@ class ReferentialDao(
   private val st = Tables.SERIES_METADATA_TAG
   private val cs = Tables.COLLECTION_SERIES
 
-  override fun findAuthorsByName(search: String): List<String> =
+  override fun findAuthorsByName(search: String): List<Author> =
+    dsl.selectDistinct(a.NAME, a.ROLE)
+      .from(a)
+      .where(a.NAME.containsIgnoreCase(search))
+      .orderBy(a.NAME, a.ROLE)
+      .fetchInto(a)
+      .map { it.toDomain() }
+
+  override fun findAuthorsByNameAndLibrary(search: String, libraryId: String): List<Author> =
+    dsl.selectDistinct(bmaa.NAME, bmaa.ROLE)
+      .from(bmaa)
+      .leftJoin(s).on(bmaa.SERIES_ID.eq(s.ID))
+      .where(bmaa.NAME.containsIgnoreCase(search))
+      .and(s.LIBRARY_ID.eq(libraryId))
+      .orderBy(bmaa.NAME, bmaa.ROLE)
+      .fetchInto(bmaa)
+      .map { it.toDomain() }
+
+  override fun findAuthorsByNameAndCollection(search: String, collectionId: String): List<Author> =
+    dsl.selectDistinct(bmaa.NAME, bmaa.ROLE)
+      .from(bmaa)
+      .leftJoin(cs).on(bmaa.SERIES_ID.eq(cs.SERIES_ID))
+      .where(bmaa.NAME.containsIgnoreCase(search))
+      .and(cs.COLLECTION_ID.eq(collectionId))
+      .orderBy(bmaa.NAME, bmaa.ROLE)
+      .fetchInto(bmaa)
+      .map { it.toDomain() }
+
+  override fun findAuthorsByNameAndSeries(search: String, seriesId: String): List<Author> =
+    dsl.selectDistinct(bmaa.NAME, bmaa.ROLE)
+      .from(bmaa)
+      .where(bmaa.NAME.containsIgnoreCase(search))
+      .and(bmaa.SERIES_ID.eq(seriesId))
+      .orderBy(bmaa.NAME, bmaa.ROLE)
+      .fetchInto(bmaa)
+      .map { it.toDomain() }
+
+  override fun findAuthorsNamesByName(search: String): List<String> =
     dsl.selectDistinct(a.NAME)
       .from(a)
       .where(a.NAME.containsIgnoreCase(search))
       .orderBy(a.NAME)
       .fetch(a.NAME)
+
+  override fun findAuthorsRoles(): List<String> =
+    dsl.selectDistinct(a.ROLE)
+      .from(a)
+      .orderBy(a.ROLE)
+      .fetch(a.ROLE)
 
   override fun findAllGenres(): Set<String> =
     dsl.selectDistinct(g.GENRE)
@@ -191,4 +238,16 @@ class ReferentialDao(
       .and(bma.RELEASE_DATE.isNotNull)
       .orderBy(bma.RELEASE_DATE.desc())
       .fetchSet(bma.RELEASE_DATE)
+
+  private fun BookMetadataAuthorRecord.toDomain(): Author =
+    Author(
+      name = name,
+      role = role
+    )
+
+  private fun BookMetadataAggregationAuthorRecord.toDomain(): Author =
+    Author(
+      name = name,
+      role = role
+    )
 }

@@ -59,11 +59,6 @@ data class BookMetadataDto(
   val lastModified: LocalDateTime
 )
 
-data class AuthorDto(
-  val name: String,
-  val role: String
-)
-
 data class ReadProgressDto(
   val page: Int,
   val completed: Boolean,

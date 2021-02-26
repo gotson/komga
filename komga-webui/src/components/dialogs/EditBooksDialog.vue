@@ -333,7 +333,7 @@ export default Vue.extend({
       deep: true,
       async handler(val: []) {
         const index = val.findIndex(x => x !== null)
-        this.authorSearchResults = await this.$komgaReferential.getAuthors(val[index])
+        this.authorSearchResults = await this.$komgaReferential.getAuthorsNames(val[index])
       },
     },
   },
