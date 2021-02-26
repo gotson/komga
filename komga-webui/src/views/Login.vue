@@ -26,8 +26,10 @@
         <v-col cols="12" sm="8" md="6" lg="4" xl="2">
           <v-text-field v-model="form.login"
                         :label="$t('common.email')"
+                        :error-messages="getErrors('login')"
                         autocomplete="username"
                         autofocus
+                        @blur="$v.form.login.$touch()"
           />
         </v-col>
       </v-row>
@@ -36,8 +38,11 @@
         <v-col cols="12" sm="8" md="6" lg="4" xl="2">
           <v-text-field v-model="form.password"
                         :label="$t('common.password')"
+                        :error-messages="getErrors('password')"
                         type="password"
                         autocomplete="current-password"
+                        @input="$v.form.password.$touch()"
+                        @blur="$v.form.password.$touch()"
           />
         </v-col>
       </v-row>
@@ -87,6 +92,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import {email, required} from "vuelidate/lib/validators";
 
 const cookieLocale = 'locale'
 
@@ -103,6 +109,12 @@ export default Vue.extend({
       unclaimed: false,
       locales: this.$i18n.availableLocales.map((x: any) => ({text: this.$i18n.t('common.locale_name', x), value: x})),
     }
+  },
+  validations: {
+    form: {
+      login: {required, email},
+      password: {required},
+    },
   },
   computed: {
     logoWidth(): number {
@@ -121,7 +133,6 @@ export default Vue.extend({
       return l / (this.unclaimed ? 2 : 1)
     },
 
-
     locale: {
       get: function (): string {
         return this.$i18n.locale
@@ -139,43 +150,61 @@ export default Vue.extend({
     this.getClaimStatus()
   },
   methods: {
+    getErrors(fieldName: string): string[] {
+      const errors = [] as string[]
+
+      const field = this.$v.form!![fieldName] as any
+      if (field && field.$invalid && field.$dirty) {
+        if (!field.required) errors.push(this.$t('common.required').toString())
+        if (!field.email) errors.push(this.$t('dialog.add_user.field_email_error').toString())
+      }
+      return errors
+    },
     async getClaimStatus() {
       this.unclaimed = !(await this.$komgaClaim.getClaimStatus()).isClaimed
     },
     async performLogin() {
-      try {
-        await this.$store.dispatch(
-          'getMeWithAuth',
-          {
-            login: this.form.login,
-            password: this.form.password,
-          })
+      if (this.isUserValid()) {
+        try {
+          await this.$store.dispatch(
+            'getMeWithAuth',
+            {
+              login: this.form.login,
+              password: this.form.password,
+            })
 
-        await this.$store.dispatch('getLibraries')
+          await this.$store.dispatch('getLibraries')
 
-        if (this.$route.query.redirect) {
-          await this.$router.push({path: this.$route.query.redirect.toString()})
-        } else {
-          await this.$router.push({name: 'home'})
+          if (this.$route.query.redirect) {
+            await this.$router.push({path: this.$route.query.redirect.toString()})
+          } else {
+            await this.$router.push({name: 'home'})
+          }
+        } catch (e) {
+          this.showSnack(e?.message)
         }
-      } catch (e) {
-        this.showSnack(e?.message)
       }
     },
     showSnack(message: string) {
       this.snackText = message
       this.snackbar = true
     },
+    isUserValid(): boolean {
+      this.$v.$touch()
+      return !this.$v.$invalid;
+    },
     async claim() {
-      try {
-        await this.$komgaClaim.claimServer({
-          email: this.form.login,
-          password: this.form.password,
-        } as ClaimAdmin)
+      if (this.isUserValid()) {
+        try {
+          await this.$komgaClaim.claimServer({
+            email: this.form.login,
+            password: this.form.password,
+          } as ClaimAdmin)
 
-        await this.performLogin()
-      } catch (e) {
-        this.showSnack(e.message)
+          await this.performLogin()
+        } catch (e) {
+          this.showSnack(e.message)
+        }
       }
     },
   },
