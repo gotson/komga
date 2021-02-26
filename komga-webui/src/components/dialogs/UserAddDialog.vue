@@ -119,7 +119,6 @@ export default Vue.extend({
         password: '',
         roles: [UserRoles.PAGE_STREAMING, UserRoles.FILE_DOWNLOAD],
       },
-      validationFieldNames: new Map([]),
     }
   },
   watch: {
@@ -139,8 +138,6 @@ export default Vue.extend({
 
       const field = this.$v.form!![fieldName] as any
       if (field && field.$invalid && field.$dirty) {
-        const properName = this.validationFieldNames.has(fieldName)
-          ? this.validationFieldNames.get(fieldName) : fieldName.charAt(0).toUpperCase() + fieldName.substring(1)
         if (!field.required) errors.push(this.$t('common.required').toString())
         if (!field.email) errors.push(this.$t('dialog.add_user.field_email_error').toString())
       }
