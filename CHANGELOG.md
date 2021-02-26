@@ -1,3 +1,18 @@
+# [0.75.0](https://github.com/gotson/komga/compare/v0.74.0...v0.75.0) (2021-02-26)
+
+
+### Bug Fixes
+
+* **webui:** filter panel would not display values properly ([0c5a744](https://github.com/gotson/komga/commit/0c5a7447f8b7d76e5ad5af3a482dae7e64289261))
+* translated using Weblate (Chinese (Simplified)) ([#430](https://github.com/gotson/komga/issues/430)) ([b68e3e5](https://github.com/gotson/komga/commit/b68e3e54b86ee258f2b4cae7ab0d6a9641f041d1))
+
+
+### Features
+
+* **api:** filter series and books by authors ([bd64381](https://github.com/gotson/komga/commit/bd64381a8e869b26c84168722a100b1e9572c505)), closes [#339](https://github.com/gotson/komga/issues/339)
+* **api:** revamp search authors ([f549067](https://github.com/gotson/komga/commit/f549067a8ae3e0e5a44eac97aa8002712b0d20b1))
+* **webui:** filter series and books by authors ([c2c2f58](https://github.com/gotson/komga/commit/c2c2f58f1a4fc24a46bc9377768d75fa5f73c6ac)), closes [#339](https://github.com/gotson/komga/issues/339)
+
 # [0.74.0](https://github.com/gotson/komga/compare/v0.73.2...v0.74.0) (2021-02-25)
 
 

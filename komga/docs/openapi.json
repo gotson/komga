@@ -40,12 +40,12 @@
             "format": "int32",
             "type": "integer"
           },
+          "last": {
+            "type": "boolean"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -859,12 +859,12 @@
             "format": "int32",
             "type": "integer"
           },
+          "last": {
+            "type": "boolean"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -1325,12 +1325,12 @@
             "format": "int32",
             "type": "integer"
           },
+          "last": {
+            "type": "boolean"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -1371,12 +1371,12 @@
             "format": "int32",
             "type": "integer"
           },
+          "last": {
+            "type": "boolean"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -2379,6 +2379,21 @@
             "in": "query",
             "name": "size",
             "description": "The size of the page to be returned"
+          },
+          {
+            "in": "query",
+            "name": "author",
+            "description": "Author criteria in the format: name,role. Multiple author criteria are supported.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
           }
         ],
         "tags": [
@@ -2790,6 +2805,40 @@
         ]
       }
     },
+    "/api/v1/authors/names": {
+      "get": {
+        "operationId": "getAuthorsNames",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "default": "",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          }
+        ],
+        "tags": [
+          "referential-controller"
+        ]
+      }
+    },
     "/api/v1/series/{seriesId}/metadata/refresh": {
       "post": {
         "operationId": "refreshMetadata",
@@ -2910,6 +2959,21 @@
             "in": "query",
             "name": "sort",
             "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "author",
+            "description": "Author criteria in the format: name,role. Multiple author criteria are supported.",
             "content": {
               "*/*": {
                 "schema": {
@@ -3663,6 +3727,21 @@
                 }
               }
             }
+          },
+          {
+            "in": "query",
+            "name": "author",
+            "description": "Author criteria in the format: name,role. Multiple author criteria are supported.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
           }
         ],
         "tags": [
@@ -4062,6 +4141,29 @@
         },
         "tags": [
           "opds-controller"
+        ]
+      }
+    },
+    "/api/v1/authors/roles": {
+      "get": {
+        "operationId": "getAuthorsRoles",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "referential-controller"
         ]
       }
     },
@@ -4659,7 +4761,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/AuthorDto"
                   }
                 }
               }
@@ -4674,6 +4776,30 @@
             },
             "in": "query",
             "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "library_id",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "collection_id",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "series_id",
             "required": false
           }
         ],
