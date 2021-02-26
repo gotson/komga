@@ -182,7 +182,7 @@
       "button_confirm": "Lösche",
       "confirm_delete": "Ja, lösche die Sammlung \"{name}\"",
       "dialog_title": "Lösche Sammmlung",
-      "warning_html": "Die Sammlung <b>{name}</b> wird vom Server entfernt. Die physikalischen Dateien bleiben unverändert. Dies kann <b>NICHT</b> rückgängig gemacht werden.  Fortfahren?"
+      "warning_html": "Die Sammlung <b>{name}</b> wird vom Server entfernt. Die physikalischen Dateien bleiben unverändert. Dies kann <b>NICHT</b> rückgängig gemacht werden. Fortfahren?"
     },
     "delete_library": {
       "button_cancel": "Abbruch",

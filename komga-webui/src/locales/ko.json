@@ -23,6 +23,8 @@
   },
   "bookreader": {
     "beginning_of_book": "책에 첫 페이지입니다.",
+    "changing_reading_direction": "읽는 방향 변경",
+    "cycling_page_layout": "페이지 보기 전환",
     "end_of_book": "책에 마지막 페이지입니다.",
     "move_next": "다음 책으로 이동하려면 다음을 선택하거나 다시 한번 눌러주세요.",
     "move_next_exit": "읽기를 종료하려면 다음을 선택하거나 다시 한번 눌러주세요.",
@@ -104,7 +106,7 @@
     "genre": "장르",
     "go_to_library": "서재로 가기",
     "locale_name": "한국어",
-    "locale_rtl" : "false",
+    "locale_rtl": "false",
     "n_selected": "{count}선택 됨",
     "nothing_to_show": "내용 없음",
     "pages": "페이지",

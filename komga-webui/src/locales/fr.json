@@ -442,7 +442,9 @@
   "sort": {
     "date_added": "Date d'ajout",
     "date_updated": "Date de mise à jour",
+    "file_name": "Nom du ficher",
     "file_size": "Taille du fichier",
+    "folder_name": "Nom du répertoire",
     "name": "Nom",
     "number": "Numéro",
     "release_date": "Date de publication"
