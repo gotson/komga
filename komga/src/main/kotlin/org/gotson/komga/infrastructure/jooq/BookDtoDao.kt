@@ -92,7 +92,7 @@ class BookDtoDao(
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
       .apply { if (joinConditions.tag) leftJoin(bt).on(b.ID.eq(bt.BOOK_ID)) }
       .apply { if (joinConditions.selectReadListNumber) leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID)) }
-      .apply { if(joinConditions.author) leftJoin(a).on(b.ID.eq(a.BOOK_ID)) }
+      .apply { if (joinConditions.author) leftJoin(a).on(b.ID.eq(a.BOOK_ID)) }
       .where(conditions)
       .groupBy(b.ID)
       .fetch()
@@ -237,7 +237,7 @@ class BookDtoDao(
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
       .apply { if (joinConditions.tag) leftJoin(bt).on(b.ID.eq(bt.BOOK_ID)) }
       .apply { if (joinConditions.selectReadListNumber) leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID)) }
-      .apply { if(joinConditions.author) leftJoin(a).on(b.ID.eq(a.BOOK_ID)) }
+      .apply { if (joinConditions.author) leftJoin(a).on(b.ID.eq(a.BOOK_ID)) }
 
   private fun ResultQuery<Record>.fetchAndMap() =
     fetch()
