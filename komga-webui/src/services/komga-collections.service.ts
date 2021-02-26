@@ -1,5 +1,6 @@
 import {AxiosInstance} from 'axios'
 import {SeriesDto} from "@/types/komga-series";
+import {AuthorDto} from "@/types/komga-books";
 
 const qs = require('qs')
 
@@ -82,7 +83,7 @@ export default class KomgaCollectionsService {
   async getSeries (collectionId: string, pageRequest?: PageRequest,
                    libraryId?: string[], status?: string[],
                    readStatus?: string[], genre?: string[], tag?: string[], language?: string[],
-                   publisher?: string[], ageRating?: string[], releaseDate?: string[]): Promise<Page<SeriesDto>> {
+                   publisher?: string[], ageRating?: string[], releaseDate?: string[], authors?: AuthorDto[]): Promise<Page<SeriesDto>> {
     try {
       const params = { ...pageRequest } as any
       if (libraryId) params.library_id = libraryId
@@ -94,6 +95,7 @@ export default class KomgaCollectionsService {
       if (publisher) params.publisher = publisher
       if (ageRating) params.age_rating = ageRating
       if (releaseDate) params.release_year = releaseDate
+      if (authors) params.author = authors.map(a => `${a.name},${a.role}`)
 
       return (await this.http.get(`${API_COLLECTIONS}/${collectionId}/series`, {
         params: params,

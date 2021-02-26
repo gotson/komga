@@ -283,7 +283,7 @@ import {ReadStatus} from '@/types/enum-books'
 import {BOOK_CHANGED, LIBRARY_DELETED, READLIST_CHANGED, SERIES_CHANGED} from '@/types/events'
 import Vue from 'vue'
 import {Location} from 'vue-router'
-import {BookDto} from '@/types/komga-books'
+import {AuthorDto, BookDto} from '@/types/komga-books'
 import {SeriesStatus} from '@/types/enum-series'
 import FilterDrawer from '@/components/FilterDrawer.vue'
 import FilterList from '@/components/FilterList.vue'
@@ -291,8 +291,9 @@ import SortList from '@/components/SortList.vue'
 import {mergeFilterParams, sortOrFilterActive, toNameValue} from '@/functions/filter'
 import FilterPanels from '@/components/FilterPanels.vue'
 import {SeriesDto} from "@/types/komga-series";
-import {groupAuthorsByRoleI18n} from "@/functions/authors";
+import {groupAuthorsByRole, groupAuthorsByRoleI18n} from "@/functions/authors";
 import ReadMore from "@/components/ReadMore.vue";
+import {authorRoles} from "@/types/author-roles";
 
 const tags = require('language-tags')
 
@@ -354,9 +355,14 @@ export default Vue.extend({
       } as FiltersOptions
     },
     filterOptionsPanel(): FiltersOptions {
-      return {
+      const r = {
         tag: {name: this.$t('filter.tag').toString(), values: this.filterOptions.tag},
       } as FiltersOptions
+      authorRoles.forEach((role: string) => {
+        //@ts-ignore
+        r[role] = {name: this.$t(`author_roles.${role}`).toString(), values: this.$_.get(this.filterOptions, role, [])}
+      })
+      return r
     },
     isAdmin(): boolean {
       return this.$store.getters.meAdmin
@@ -462,10 +468,18 @@ export default Vue.extend({
 
       // load dynamic filters
       this.$set(this.filterOptions, 'tag', toNameValue(await this.$komgaReferential.getTags(undefined, seriesId)))
+      const grouped = groupAuthorsByRole(await this.$komgaReferential.getAuthors(undefined, undefined, undefined, seriesId))
+      authorRoles.forEach((role: string) => {
+        this.$set(this.filterOptions, role, role in grouped ? toNameValue(grouped[role]) : [])
+      })
 
       // filter query params with available filter values
       this.$set(this.filters, 'readStatus', parseQueryFilter(this.$route.query.readStatus, Object.keys(ReadStatus)))
       this.$set(this.filters, 'tag', parseQueryFilter(this.$route.query.tag, this.filterOptions.tag.map(x => x.value)))
+      authorRoles.forEach((role: string) => {
+        //@ts-ignore
+        this.$set(this.filters, role, parseQueryFilter(route.query[role], this.filterOptions[role].map((x: NameValue) => x.value)))
+      })
     },
     setWatches() {
       this.sortUnwatch = this.$watch('sortActive', this.updateRouteAndReload)
@@ -544,7 +558,16 @@ export default Vue.extend({
       if (sort) {
         pageRequest.sort = [`${sort.key},${sort.order}`]
       }
-      const booksPage = await this.$komgaSeries.getBooks(seriesId, pageRequest, this.filters.readStatus, this.filters.tag)
+
+      let authorsFilter = [] as AuthorDto[]
+      authorRoles.forEach((role: string) => {
+        if (role in this.filters) this.filters[role].forEach((name: string) => authorsFilter.push({
+          name: name,
+          role: role,
+        }))
+      })
+
+      const booksPage = await this.$komgaSeries.getBooks(seriesId, pageRequest, this.filters.readStatus, this.filters.tag, authorsFilter)
 
       this.totalPages = booksPage.totalPages
       this.totalElements = booksPage.totalElements

@@ -113,6 +113,9 @@ import FilterPanels from '@/components/FilterPanels.vue'
 import FilterList from '@/components/FilterList.vue'
 import {mergeFilterParams, sortOrFilterActive, toNameValue} from '@/functions/filter'
 import {SeriesDto} from "@/types/komga-series";
+import {groupAuthorsByRole} from "@/functions/authors";
+import {AuthorDto} from "@/types/komga-books";
+import {authorRoles} from "@/types/author-roles";
 
 const cookiePageSize = 'pagesize'
 
@@ -142,16 +145,7 @@ export default Vue.extend({
       totalElements: null as number | null,
       sortActive: {} as SortActive,
       sortDefault: {key: 'metadata.titleSort', order: 'asc'} as SortActive,
-      // we need to define all the possible values, else the properties are not reactive when changed
-      filters: {
-        status: [],
-        readStatus: [],
-        genre: [],
-        tag: [],
-        language: [],
-        ageRating: [],
-        releaseDate: [],
-      } as FiltersActive,
+      filters: {} as FiltersActive,
       sortUnwatch: null as any,
       filterUnwatch: null as any,
       pageUnwatch: null as any,
@@ -217,12 +211,6 @@ export default Vue.extend({
       this.totalPages = 1
       this.totalElements = null
       this.series = []
-      this.filterOptions.genre = []
-      this.filterOptions.tag = []
-      this.filterOptions.publisher = []
-      this.filterOptions.language = []
-      this.filterOptions.ageRating = []
-      this.filterOptions.releaseDate = []
 
       this.loadLibrary(to.params.libraryId)
 
@@ -246,7 +234,7 @@ export default Vue.extend({
       } as FiltersOptions
     },
     filterOptionsPanel(): FiltersOptions {
-      return {
+      const r = {
         status: {name: this.$t('filter.status').toString(), values: SeriesStatusKeyValue()},
         genre: {name: this.$t('filter.genre').toString(), values: this.filterOptions.genre},
         tag: {name: this.$t('filter.tag').toString(), values: this.filterOptions.tag},
@@ -262,6 +250,11 @@ export default Vue.extend({
         },
         releaseDate: {name: this.$t('filter.release_date').toString(), values: this.filterOptions.releaseDate},
       } as FiltersOptions
+      authorRoles.forEach((role: string) => {
+        //@ts-ignore
+        r[role] = {name: this.$t(`author_roles.${role}`).toString(), values: this.$_.get(this.filterOptions, role, [])}
+      })
+      return r
     },
     isAdmin(): boolean {
       return this.$store.getters.meAdmin
@@ -298,23 +291,31 @@ export default Vue.extend({
       const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
 
       // load dynamic filters
-      this.filterOptions.genre = toNameValue(await this.$komgaReferential.getGenres(requestLibraryId))
-      this.filterOptions.tag = toNameValue(await this.$komgaReferential.getTags(requestLibraryId))
-      this.filterOptions.publisher = toNameValue(await this.$komgaReferential.getPublishers(requestLibraryId))
-      this.filterOptions.language = (await this.$komgaReferential.getLanguages(requestLibraryId))
-      this.filterOptions.ageRating = toNameValue(await this.$komgaReferential.getAgeRatings(requestLibraryId))
-      this.filterOptions.releaseDate = toNameValue(await this.$komgaReferential.getSeriesReleaseDates(requestLibraryId))
+      this.$set(this.filterOptions, 'genre', toNameValue(await this.$komgaReferential.getGenres(requestLibraryId)))
+      this.$set(this.filterOptions, 'tag', toNameValue(await this.$komgaReferential.getTags(requestLibraryId)))
+      this.$set(this.filterOptions, 'publisher', toNameValue(await this.$komgaReferential.getPublishers(requestLibraryId)))
+      this.$set(this.filterOptions, 'language', (await this.$komgaReferential.getLanguages(requestLibraryId)))
+      this.$set(this.filterOptions, 'ageRating', toNameValue(await this.$komgaReferential.getAgeRatings(requestLibraryId)))
+      this.$set(this.filterOptions, 'releaseDate', toNameValue(await this.$komgaReferential.getSeriesReleaseDates(requestLibraryId)))
+      const grouped = groupAuthorsByRole(await this.$komgaReferential.getAuthors(undefined, requestLibraryId))
+      authorRoles.forEach((role: string) => {
+        this.$set(this.filterOptions, role, role in grouped ? toNameValue(grouped[role]) : [])
+      })
 
       // filter query params with available filter values
-      if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating || route.query.publisher) {
-        this.filters.status = parseQueryFilter(route.query.status, Object.keys(SeriesStatus))
-        this.filters.readStatus = parseQueryFilter(route.query.readStatus, Object.keys(ReadStatus))
-        this.filters.genre = parseQueryFilter(route.query.genre, this.filterOptions.genre.map(x => x.value))
-        this.filters.tag = parseQueryFilter(route.query.tag, this.filterOptions.tag.map(x => x.value))
-        this.filters.publisher = parseQueryFilter(route.query.publisher, this.filterOptions.publisher.map(x => x.value))
-        this.filters.language = parseQueryFilter(route.query.language, this.filterOptions.language.map(x => x.value))
-        this.filters.ageRating = parseQueryFilter(route.query.ageRating, this.filterOptions.ageRating.map(x => x.value))
-        this.filters.releaseDate = parseQueryFilter(route.query.releaseDate, this.filterOptions.releaseDate.map(x => x.value))
+      if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating || route.query.publisher || authorRoles.some(role => role in route.query)) {
+        this.$set(this.filters, 'status', parseQueryFilter(route.query.status, Object.keys(SeriesStatus)))
+        this.$set(this.filters, 'readStatus', parseQueryFilter(route.query.readStatus, Object.keys(ReadStatus)))
+        this.$set(this.filters, 'genre', parseQueryFilter(route.query.genre, this.filterOptions.genre.map(x => x.value)))
+        this.$set(this.filters, 'tag', parseQueryFilter(route.query.tag, this.filterOptions.tag.map(x => x.value)))
+        this.$set(this.filters, 'publisher', parseQueryFilter(route.query.publisher, this.filterOptions.publisher.map(x => x.value)))
+        this.$set(this.filters, 'language', parseQueryFilter(route.query.language, this.filterOptions.language.map(x => x.value)))
+        this.$set(this.filters, 'ageRating', parseQueryFilter(route.query.ageRating, this.filterOptions.ageRating.map(x => x.value)))
+        this.$set(this.filters, 'releaseDate', parseQueryFilter(route.query.releaseDate, this.filterOptions.releaseDate.map(x => x.value)))
+        authorRoles.forEach((role: string) => {
+          //@ts-ignore
+          this.$set(this.filters, role, parseQueryFilter(route.query[role], this.filterOptions[role].map((x: NameValue) => x.value)))
+        })
       } else {
         this.filters = this.$cookies.get(this.cookieFilter(route.params.libraryId)) || {} as FiltersActive
       }
@@ -402,8 +403,16 @@ export default Vue.extend({
         pageRequest.sort = [`${sort.key},${sort.order}`]
       }
 
+      let authorsFilter = [] as AuthorDto[]
+      authorRoles.forEach((role: string) => {
+        if (role in this.filters) this.filters[role].forEach((name: string) => authorsFilter.push({
+          name: name,
+          role: role,
+        }))
+      })
+
       const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
-      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, this.filters.readStatus, this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate)
+      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, this.filters.readStatus, this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter)
 
       this.totalPages = seriesPage.totalPages
       this.totalElements = seriesPage.totalElements
