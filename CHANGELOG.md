@@ -1,3 +1,10 @@
+## [0.75.1](https://github.com/gotson/komga/compare/v0.75.0...v0.75.1) (2021-02-26)
+
+
+### Bug Fixes
+
+* **webui:** validation on user login screen ([392b3b8](https://github.com/gotson/komga/commit/392b3b87fe9ff4778086a8f6b34e144e0582c772)), closes [#429](https://github.com/gotson/komga/issues/429)
+
 # [0.75.0](https://github.com/gotson/komga/compare/v0.74.0...v0.75.0) (2021-02-26)
 
 
