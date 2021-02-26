@@ -216,7 +216,7 @@
 import BookActionsMenu from '@/components/menus/BookActionsMenu.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
-import {groupAuthorsByRolePlural} from '@/functions/authors'
+import {groupAuthorsByRoleI18n} from '@/functions/authors'
 import {getBookFormatFromMediaType} from '@/functions/book-format'
 import {getReadProgress, getReadProgressPercentage} from '@/functions/book-progress'
 import {getBookTitleCompact} from '@/functions/book-title'
@@ -287,7 +287,7 @@ export default Vue.extend({
       return getBookFormatFromMediaType(this.book.media.mediaType)
     },
     authorsByRole (): any {
-      return groupAuthorsByRolePlural(this.book.metadata.authors)
+      return groupAuthorsByRoleI18n(this.book.metadata.authors)
     },
     isRead (): boolean {
       return getReadProgress(this.book) === ReadStatus.READ

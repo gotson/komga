@@ -9,15 +9,15 @@ export function groupAuthorsByRole (authors: AuthorDto[]): any {
     authors => authors.map((author: AuthorDto) => author.name))
 }
 
-// return an object where keys are roles (plural form), and values are string[]
-export function groupAuthorsByRolePlural (authors: AuthorDto[]): any {
+// return an object where keys are roles (i18n translated), and values are string[]
+export function groupAuthorsByRoleI18n (authors: AuthorDto[]): any {
   const r = mapKeys(groupAuthorsByRole(authors),
     (v, k) => i18n.t(`author_roles.${k}`),
   )
 
   // sort object keys according to the order of keys in authorRoles
   // push unknown keys to the end of the array
-  const roles = authorRoles.map(x => i18n.t(`author_roles.${x.role}`))
+  const roles = authorRoles.map(x => i18n.t(`author_roles.${x}`))
   const o = {} as any
   Object.keys(r)
     .sort((a, b) => {

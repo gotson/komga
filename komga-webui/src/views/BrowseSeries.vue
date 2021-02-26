@@ -291,7 +291,7 @@ import SortList from '@/components/SortList.vue'
 import {mergeFilterParams, sortOrFilterActive, toNameValue} from '@/functions/filter'
 import FilterPanels from '@/components/FilterPanels.vue'
 import {SeriesDto} from "@/types/komga-series";
-import {groupAuthorsByRolePlural} from "@/functions/authors";
+import {groupAuthorsByRoleI18n} from "@/functions/authors";
 import ReadMore from "@/components/ReadMore.vue";
 
 const tags = require('language-tags')
@@ -398,7 +398,7 @@ export default Vue.extend({
       return sortOrFilterActive(this.sortActive, this.sortDefault, this.filters)
     },
     authorsByRole(): any {
-      return groupAuthorsByRolePlural(this.series.booksMetadata.authors)
+      return groupAuthorsByRoleI18n(this.series.booksMetadata.authors)
     },
   },
   props: {

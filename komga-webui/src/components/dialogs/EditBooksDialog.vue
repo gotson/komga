@@ -176,8 +176,8 @@
                          :key="i"
                   >
                     <v-col cols="12">
-                      <span class="text-body-2">{{ $_.capitalize(role.plural) }}</span>
-                      <v-combobox v-model="form.authors[role.role]"
+                      <span class="text-body-2">{{ $_.capitalize(role.name) }}</span>
+                      <v-combobox v-model="form.authors[role.value]"
                                   :items="authorSearchResultsFull"
                                   :search-input.sync="authorSearch[i]"
                                   @keydown.esc="authorSearch[i] = null"
@@ -364,11 +364,11 @@ export default Vue.extend({
     this.tagsAvailable = await this.$komgaReferential.getTags()
   },
   computed: {
-    authorRoles(): object[] {
-      return authorRoles.map((x: any) => {
-        x.plural = this.$t(`author_roles.${x.role}`)
-        return x
-      })
+    authorRoles(): NameValue[] {
+      return authorRoles.map((x: string) => ({
+        name: this.$t(`author_roles.${x}`).toString(),
+        value: x,
+      }))
     },
     single(): boolean {
       return !Array.isArray(this.books)
