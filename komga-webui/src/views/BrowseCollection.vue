@@ -143,17 +143,7 @@ export default Vue.extend({
       seriesCopy: [] as SeriesDto[],
       selectedSeries: [] as SeriesDto[],
       editElements: false,
-      // we need to define all the possible values, else the properties are not reactive when changed
-      filters: {
-        status: [],
-        readStatus: [],
-        library: [],
-        genre: [],
-        tag: [],
-        language: [],
-        ageRating: [],
-        releaseDate: [],
-      } as FiltersActive,
+      filters: {} as FiltersActive,
       filterUnwatch: null as any,
       drawer: false,
       filterOptions: {
@@ -212,13 +202,6 @@ export default Vue.extend({
       await this.resetParams(this.$route, to.params.collectionId)
       this.series = []
       this.editElements = false
-      this.filterOptions.library = []
-      this.filterOptions.genre = []
-      this.filterOptions.tag = []
-      this.filterOptions.publisher = []
-      this.filterOptions.language = []
-      this.filterOptions.ageRating = []
-      this.filterOptions.releaseDate = []
 
       this.loadCollection(to.params.collectionId)
 
@@ -262,27 +245,27 @@ export default Vue.extend({
   methods: {
     async resetParams(route: any, collectionId: string) {
       // load dynamic filters
-      this.filterOptions.library = this.$store.state.komgaLibraries.libraries.map((x: LibraryDto) => ({
+      this.$set(this.filterOptions, 'library', this.$store.state.komgaLibraries.libraries.map((x: LibraryDto) => ({
         name: x.name,
         value: x.id,
-      }))
-      this.filterOptions.genre = toNameValue(await this.$komgaReferential.getGenres(undefined, collectionId))
-      this.filterOptions.tag = toNameValue(await this.$komgaReferential.getTags(undefined, undefined, collectionId))
-      this.filterOptions.publisher = toNameValue(await this.$komgaReferential.getPublishers(undefined, collectionId))
-      this.filterOptions.language = (await this.$komgaReferential.getLanguages(undefined, collectionId))
-      this.filterOptions.ageRating = toNameValue(await this.$komgaReferential.getAgeRatings(undefined, collectionId))
-      this.filterOptions.releaseDate = toNameValue(await this.$komgaReferential.getSeriesReleaseDates(undefined, collectionId))
+      })))
+      this.$set(this.filterOptions, 'genre', toNameValue(await this.$komgaReferential.getGenres(undefined, collectionId)))
+      this.$set(this.filterOptions, 'tag', toNameValue(await this.$komgaReferential.getTags(undefined, undefined, collectionId)))
+      this.$set(this.filterOptions, 'publisher', toNameValue(await this.$komgaReferential.getPublishers(undefined, collectionId)))
+      this.$set(this.filterOptions, 'language', (await this.$komgaReferential.getLanguages(undefined, collectionId)))
+      this.$set(this.filterOptions, 'ageRating', toNameValue(await this.$komgaReferential.getAgeRatings(undefined, collectionId)))
+      this.$set(this.filterOptions, 'releaseDate', toNameValue(await this.$komgaReferential.getSeriesReleaseDates(undefined, collectionId)))
 
       // filter query params with available filter values
       if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating || route.query.library) {
-        this.filters.status = parseQueryFilter(route.query.status, Object.keys(SeriesStatus))
-        this.filters.readStatus = parseQueryFilter(route.query.readStatus, Object.keys(ReadStatus))
-        this.filters.library = parseQueryFilter(route.query.library, this.filterOptions.library.map(x => x.value))
-        this.filters.genre = parseQueryFilter(route.query.genre, this.filterOptions.genre.map(x => x.value))
-        this.filters.tag = parseQueryFilter(route.query.tag, this.filterOptions.tag.map(x => x.value))
-        this.filters.language = parseQueryFilter(route.query.language, this.filterOptions.language.map(x => x.value))
-        this.filters.ageRating = parseQueryFilter(route.query.ageRating, this.filterOptions.ageRating.map(x => x.value))
-        this.filters.releaseDate = parseQueryFilter(route.query.releaseDate, this.filterOptions.releaseDate.map(x => x.value))
+        this.$set(this.filters, 'status', parseQueryFilter(route.query.status, Object.keys(SeriesStatus)))
+        this.$set(this.filters, 'readStatus', parseQueryFilter(route.query.readStatus, Object.keys(ReadStatus)))
+        this.$set(this.filters, 'library', parseQueryFilter(route.query.library, this.filterOptions.library.map(x => x.value)))
+        this.$set(this.filters, 'genre', parseQueryFilter(route.query.genre, this.filterOptions.genre.map(x => x.value)))
+        this.$set(this.filters, 'tag', parseQueryFilter(route.query.tag, this.filterOptions.tag.map(x => x.value)))
+        this.$set(this.filters, 'language', parseQueryFilter(route.query.language, this.filterOptions.language.map(x => x.value)))
+        this.$set(this.filters, 'ageRating', parseQueryFilter(route.query.ageRating, this.filterOptions.ageRating.map(x => x.value)))
+        this.$set(this.filters, 'releaseDate', parseQueryFilter(route.query.releaseDate, this.filterOptions.releaseDate.map(x => x.value)))
       } else {
         this.filters = this.$cookies.get(this.cookieFilter(route.params.collectionId)) || {} as FiltersActive
       }

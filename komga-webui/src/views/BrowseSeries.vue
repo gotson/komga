@@ -326,10 +326,7 @@ export default Vue.extend({
       totalElements: null as number | null,
       sortActive: {} as SortActive,
       sortDefault: {key: 'metadata.numberSort', order: 'asc'} as SortActive,
-      filters: {
-        readStatus: [],
-        tag: [],
-      } as FiltersActive,
+      filters: {} as FiltersActive,
       sortUnwatch: null as any,
       filterUnwatch: null as any,
       pageUnwatch: null as any,
@@ -451,7 +448,6 @@ export default Vue.extend({
       this.totalElements = null
       this.books = []
       this.collections = []
-      this.filterOptions.tag = []
 
       this.loadSeries(to.params.seriesId)
 
@@ -465,11 +461,11 @@ export default Vue.extend({
       this.sortActive = this.parseQuerySortOrDefault(route.query.sort)
 
       // load dynamic filters
-      this.filterOptions.tag = toNameValue(await this.$komgaReferential.getTags(undefined, this.seriesId))
+      this.$set(this.filterOptions, 'tag', toNameValue(await this.$komgaReferential.getTags(undefined, seriesId)))
 
       // filter query params with available filter values
-      this.filters.readStatus = parseQueryFilter(this.$route.query.readStatus, Object.keys(ReadStatus))
-      this.filters.tag = parseQueryFilter(this.$route.query.tag, this.filterOptions.tag.map(x => x.value))
+      this.$set(this.filters, 'readStatus', parseQueryFilter(this.$route.query.readStatus, Object.keys(ReadStatus)))
+      this.$set(this.filters, 'tag', parseQueryFilter(this.$route.query.tag, this.filterOptions.tag.map(x => x.value)))
     },
     setWatches() {
       this.sortUnwatch = this.$watch('sortActive', this.updateRouteAndReload)
