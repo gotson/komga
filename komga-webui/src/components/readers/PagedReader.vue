@@ -86,10 +86,14 @@ import {buildSpreads} from "@/functions/book-spreads";
 const INITIAL_SCROLL_DATA = {
     // Amount of overscroll in pixels
     accOverscroll: 0,
-    // Since when the view has been at the edge of a page since the last wheel event was triggered
-    atEdgeSince: 0,
-    wasAtTop: true,
-    wasAtBot: true,
+    // When the last inhibited edge page switch event was triggered
+    lastEdgeEvent: 0,
+    // ... and when the first inhibited edge page switch event was triggered
+    firstEdgeEvent: 0,
+    // Scroll value of last scroll event
+    lastChange: 0,
+    // last scroll position
+    lastPos: 0,
 }
 
 export default Vue.extend({
@@ -212,7 +216,7 @@ export default Vue.extend({
 
       // Only handle vertical movement for now
       let change = e.deltaY
-      if (change == 0) {
+      if (change === 0) {
         return
       }
 
@@ -220,49 +224,71 @@ export default Vue.extend({
       const isAtTopOfPage = window.scrollY <= 0
       const isOverscrolling = isAtBottomOfPage && change > 0 || isAtTopOfPage && change < 0
 
+      const newScroll = {
+        ...this.scroll,
+        lastPos: window.scrollY,
+        lastChange: change,
+      }
+
       // Return early if not overscrolling
-      if (!isOverscrolling) {
+      if (!isAtTopOfPage && !isAtBottomOfPage) {
         this.scroll = {
-          ...this.scroll,
-          wasAtTop: false,
-          wasAtBot: false,
-          atEdgeSince: Infinity,
+          ...newScroll,
+          lastEdgeEvent: Infinity,
+          firstEdgeEvent: Infinity,
         }
         return
       }
 
       const currentDate = Date.now()
 
-      // Initialise atEdgeSince if newly arrived at this edge
-      if (!this.scroll.wasAtBot && isAtBottomOfPage || !this.scroll.wasAtTop && isAtTopOfPage) {
+      // Initialise lastEdgeEvent and firstEdgeEvent when arriving at this edge
+      if (this.scroll.lastPos !== window.scrollY && isOverscrolling) {
         this.scroll = {
-          ...this.scroll,
-          wasAtBot: isAtBottomOfPage,
-          wasAtTop: isAtTopOfPage,
-          atEdgeSince: currentDate,
+          ...newScroll,
+          lastEdgeEvent: currentDate,
+          firstEdgeEvent: currentDate,
         }
         return
       }
 
-      // Wait for 100ms of rest before allowing events to go through
-      if (currentDate - this.scroll.atEdgeSince < 100) {
-        this.scroll.atEdgeSince = Date.now()
+      // If direction changes stop scroll inertia handling and reset overscroll value
+      if (this.scroll.lastChange !== 0 && Math.sign(change) !== Math.sign(this.scroll.lastChange)) {
+       this.scroll = {
+         ...this.scroll,
+          accOverscroll: 0,
+          lastEdgeEvent: 0,
+          firstEdgeEvent: 0,
+        }
+
+        newScroll.lastEdgeEvent = newScroll.firstEdgeEvent = 0
+      }
+
+      // Wait for 100ms of rest (up to 1000ms total) before allowing events to go through
+      // to prevent scroll inertia from inadvertly flipping the page
+      if (currentDate - this.scroll.lastEdgeEvent < 100 && currentDate - this.scroll.firstEdgeEvent < 1000) {
+        newScroll.lastEdgeEvent = Date.now()
+
+        // ensure firstEdgeEvent is initialiased properly
+        if (this.scroll.firstEdgeEvent > this.scroll.lastEdgeEvent) {
+          newScroll.firstEdgeEvent = this.scroll.lastEdgeEvent
+        }
+
+        this.scroll = newScroll
         return
       }
 
       // Threshold page switch to prevent minimal pixel wheel movement from causing a page switch
       if (e.deltaMode === window.WheelEvent.DOM_DELTA_PIXEL) {
-        // Forget accumulated overscroll on scroll direction change
-        if (Math.sign(change) != Math.sign(this.scroll.accOverscroll)) {
-          this.scroll.accOverscroll = 0
-        }
         change += this.scroll.accOverscroll
-        this.scroll.accOverscroll = change
-
+        newScroll.accOverscroll = change
       // Other scroll modes (line or page) instantly cause page switch at the edge
       } else {
         change = Math.sign(change) * PAGE_SWITCH_THRESHOLD
       }
+
+      // Save new scroll data
+      this.scroll = newScroll
 
       // Switch to next page if scrolling down at the bottom of the current page
       if (change >= PAGE_SWITCH_THRESHOLD && isAtBottomOfPage) {
@@ -349,7 +375,8 @@ export default Vue.extend({
       // Reset scroll state on pageswitch
       this.scroll = {
         ...INITIAL_SCROLL_DATA,
-        atEdgeSince: Date.now(),
+        lastEdgeEvent: Date.now(),
+        firstEdgeEvent: Date.now(),
       }
       if (this.canPrev) {
         this.carouselPage--
@@ -362,7 +389,8 @@ export default Vue.extend({
       // Reset scroll state on pageswitch
       this.scroll = {
         ...INITIAL_SCROLL_DATA,
-        atEdgeSince: Date.now(),
+        lastEdgeEvent: Date.now(),
+        firstEdgeEvent: Date.now(),
       }
       if (this.canNext) {
         this.carouselPage++
