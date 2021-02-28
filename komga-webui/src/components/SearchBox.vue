@@ -32,10 +32,17 @@
                        :to="{name: 'browse-series', params: {seriesId: item.id}}"
           >
             <v-img :src="seriesThumbnailUrl(item.id)"
-                   height="50"
-                   max-width="35"
-                   class="my-1 mx-3"
-            />
+                   height="75"
+                   max-width="60"
+                   class="my-1 mx-3">
+
+                <span v-if="unreadCount(item)"
+                      class="white--text pa-1 px-2 text-subtitle-2"
+                      :style="{background: 'orange', position: 'absolute', right: 0}"
+                >
+                  {{ unreadCount(item) }}
+                </span>
+            </v-img>
             <v-list-item-content>
               <v-list-item-title v-text="item.metadata.title"/>
             </v-list-item-content>
@@ -50,10 +57,13 @@
                        :to="{name: 'browse-book', params: {bookId: item.id}}"
           >
             <v-img :src="bookThumbnailUrl(item.id)"
-                   height="50"
-                   max-width="35"
+                   height="75"
+                   max-width="60"
                    class="my-1 mx-3"
-            />
+            >
+              <div class="unread" v-if="isUnread(item)"/>
+            </v-img>
+
             <v-list-item-content>
               <v-list-item-title v-text="item.metadata.title"/>
             </v-list-item-content>
@@ -68,8 +78,8 @@
                        :to="{name: 'browse-collection', params: {collectionId: item.id}}"
           >
             <v-img :src="collectionThumbnailUrl(item.id)"
-                   height="50"
-                   max-width="35"
+                   height="75"
+                   max-width="60"
                    class="my-1 mx-3"
             />
             <v-list-item-content>
@@ -86,8 +96,8 @@
                        :to="{name: 'browse-readlist', params: {readListId: item.id}}"
           >
             <v-img :src="readListThumbnailUrl(item.id)"
-                   height="50"
-                   max-width="35"
+                   height="75"
+                   max-width="60"
                    class="my-1 mx-3"
             />
             <v-list-item-content>
@@ -107,6 +117,8 @@ import {debounce} from 'lodash'
 import Vue from 'vue'
 import {BookDto} from '@/types/komga-books'
 import {SeriesDto} from "@/types/komga-series";
+import {getReadProgress} from "@/functions/book-progress";
+import {ReadStatus} from "@/types/enum-books";
 
 export default Vue.extend({
   name: 'SearchBox',
@@ -157,6 +169,12 @@ export default Vue.extend({
       this.clear()
       this.$router.push({name: 'search', query: {q: s}}).catch(e => {
       })
+    },
+    isUnread (item: BookDto): boolean {
+      return getReadProgress(item as BookDto) === ReadStatus.UNREAD
+    },
+    unreadCount (item: SeriesDto): number | undefined {
+      return (item as SeriesDto).booksUnreadCount
     },
     seriesThumbnailUrl(seriesId: string): string {
       return seriesThumbnailUrl(seriesId)
