@@ -115,19 +115,31 @@
             </v-col>
           </v-row>
 
+          <v-divider v-if="book.metadata.authors.length > 0"/>
+
           <v-row class="text-body-2"
                  v-for="(names, key) in authorsByRole"
                  :key="key"
           >
-            <v-col cols="6" sm="4" md="3" class="py-1 text-uppercase">{{ key }}</v-col>
-            <v-col class="py-1 text-truncate" :title="names.join(', ')">
-              {{ names.join(', ') }}
+            <v-col cols="6" sm="4" md="3" class="py-1 text-uppercase">{{ $t(`author_roles.${key}`) }}</v-col>
+            <v-col class="text-body-2 text-capitalize py-1 chip-spacing">
+              <v-chip v-for="(name, i) in names"
+                      :key="i"
+                      :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+                      :title="name"
+                      :to="{name:'browse-series', params: {seriesId: book.seriesId }, query: {[key]: name}}"
+                      label
+                      small
+                      outlined
+                      link
+              >{{ name }}
+              </v-chip>
             </v-col>
           </v-row>
 
           <v-row v-if="book.metadata.tags.length > 0">
             <v-col cols="6" sm="4" md="3" class="text-body-2 py-1">TAGS</v-col>
-            <v-col class="text-body-2 text-capitalize py-1">
+            <v-col class="text-body-2 text-capitalize py-1 chip-spacing">
               <v-chip v-for="(t, i) in book.metadata.tags"
                       :key="i"
                       :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
@@ -216,7 +228,7 @@
 import BookActionsMenu from '@/components/menus/BookActionsMenu.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
-import {groupAuthorsByRoleI18n} from '@/functions/authors'
+import {groupAuthorsByRole} from '@/functions/authors'
 import {getBookFormatFromMediaType} from '@/functions/book-format'
 import {getReadProgress, getReadProgressPercentage} from '@/functions/book-progress'
 import {getBookTitleCompact} from '@/functions/book-title'
@@ -287,7 +299,7 @@ export default Vue.extend({
       return getBookFormatFromMediaType(this.book.media.mediaType)
     },
     authorsByRole (): any {
-      return groupAuthorsByRoleI18n(this.book.metadata.authors)
+      return groupAuthorsByRole(this.book.metadata.authors)
     },
     isRead (): boolean {
       return getReadProgress(this.book) === ReadStatus.READ

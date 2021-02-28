@@ -173,7 +173,7 @@
 
           <v-row v-if="series.metadata.genres.length > 0">
             <v-col cols="6" sm="4" md="3" class="text-body-2 py-1 text-uppercase">{{ $t('common.genre') }}</v-col>
-            <v-col class="text-body-2 text-capitalize py-1">
+            <v-col class="text-body-2 text-capitalize py-1 chip-spacing">
               <v-chip v-for="(t, i) in series.metadata.genres"
                       :key="i"
                       :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
@@ -190,7 +190,7 @@
 
           <v-row v-if="series.metadata.tags.length > 0">
             <v-col cols="6" sm="4" md="3" class="text-body-2 py-1 text-uppercase">{{ $t('common.tags') }}</v-col>
-            <v-col class="text-body-2 text-capitalize py-1">
+            <v-col class="text-body-2 text-capitalize py-1 chip-spacing">
               <v-chip v-for="(t, i) in series.metadata.tags"
                       :key="i"
                       :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
@@ -211,9 +211,19 @@
                  v-for="(names, key) in authorsByRole"
                  :key="key"
           >
-            <v-col cols="6" sm="4" md="3" class="py-1 text-uppercase">{{ key }}</v-col>
-            <v-col class="py-1 text-truncate" :title="names.join(', ')">
-              {{ names.join(', ') }}
+            <v-col cols="6" sm="4" md="3" class="py-1 text-uppercase">{{ $t(`author_roles.${key}`) }}</v-col>
+            <v-col class="text-body-2 text-capitalize py-1 chip-spacing">
+              <v-chip v-for="(name, i) in names"
+                      :key="i"
+                      :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+                      :title="name"
+                      :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }, query: {[key]: name}}"
+                      label
+                      small
+                      outlined
+                      link
+              >{{ name }}
+              </v-chip>
             </v-col>
           </v-row>
 
@@ -401,7 +411,7 @@ export default Vue.extend({
       return sortOrFilterActive(this.sortActive, this.sortDefault, this.filters)
     },
     authorsByRole(): any {
-      return groupAuthorsByRoleI18n(this.series.booksMetadata.authors)
+      return groupAuthorsByRole(this.series.booksMetadata.authors)
     },
   },
   props: {

@@ -10,3 +10,7 @@ html {
     text-decoration: underline;
     text-decoration-color: black;
 }
+
+.chip-spacing {
+    line-height: 2rem !important;
+}
