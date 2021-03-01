@@ -29,7 +29,7 @@ export default Vue.extend({
       type: String,
     },
     value: {
-      type: String,
+      type: [String, Number],
     },
     display: {
       type: String,
