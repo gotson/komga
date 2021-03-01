@@ -4,7 +4,7 @@
       <!--   Go back to parent library   -->
       <v-btn icon
              :title="$t('common.go_to_library')"
-             :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }}"
+             :to="{name:'browse-libraries', params: {libraryId: series.libraryId }}"
       >
         <v-icon v-if="$vuetify.rtl">mdi-arrow-right</v-icon>
         <v-icon v-else>mdi-arrow-left</v-icon>
@@ -90,36 +90,38 @@
           <v-row class="text-body-2">
             <v-col>
               <v-chip
-                  label
-                  small
-                  link
-                  :color="statusChip.color"
-                  :text-color="statusChip.text"
-                  :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }, query: {status: series.metadata.status}}"
+                label
+                small
+                link
+                :color="statusChip.color"
+                :text-color="statusChip.text"
+                :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {status: series.metadata.status}}"
               >
                 {{ $t(`enums.series_status.${series.metadata.status}`) }}
               </v-chip>
               <v-chip
-                  label
-                  small
-                  link
-                  v-if="series.metadata.ageRating"
-                  :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }, query: {ageRating: series.metadata.ageRating}}"
-                  class="mx-1"
+                label
+                small
+                link
+                v-if="series.metadata.ageRating"
+                :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {ageRating: series.metadata.ageRating}}"
+                class="mx-1"
               >
-                {{series.metadata.ageRating}}+
+                {{ series.metadata.ageRating }}+
               </v-chip>
               <v-chip
-                  label
-                  small
-                  link
-                  :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }, query: {language: series.metadata.language}}"
-                  v-if="series.metadata.language"
-                  class="mx-1"
+                label
+                small
+                link
+                :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {language: series.metadata.language}}"
+                v-if="series.metadata.language"
+                class="mx-1"
               >
                 {{ languageDisplay }}
               </v-chip>
-              <v-chip label small v-if="series.metadata.readingDirection" class="mx-1">{{ $t(`enums.reading_direction.${series.metadata.readingDirection}`) }}</v-chip>
+              <v-chip label small v-if="series.metadata.readingDirection" class="mx-1">
+                {{ $t(`enums.reading_direction.${series.metadata.readingDirection}`) }}
+              </v-chip>
             </v-col>
           </v-row>
 
@@ -134,7 +136,7 @@
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <span v-on="on" class="text-caption">
-                    {{ $t('browse_series.summary_from_book',{number: series.booksMetadata.summaryNumber})}}
+                    {{ $t('browse_series.summary_from_book', {number: series.booksMetadata.summaryNumber}) }}
                   </span>
                 </template>
                 {{ $t('browse_series.series_no_summary') }}
@@ -155,75 +157,115 @@
             </v-col>
           </v-row>
 
-          <v-row v-if="series.metadata.publisher">
-            <v-col cols="6" sm="4" md="3" class="text-body-2 py-1 text-uppercase">{{ $t('common.publisher') }}</v-col>
-            <v-col class="text-body-2 text-capitalize py-1">
+          <v-row v-if="series.metadata.publisher" class="align-center text-body-2">
+            <v-col cols="6" sm="4" md="3" class="py-1 text-uppercase">{{ $t('common.publisher') }}</v-col>
+            <v-col class="py-1">
               <v-chip
-                      :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
-                      :title="series.metadata.publisher"
-                      :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }, query: {publisher: series.metadata.publisher}}"
-                      label
-                      small
-                      outlined
-                      link
+                :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+                :title="series.metadata.publisher"
+                :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {publisher: series.metadata.publisher}}"
+                label
+                small
+                outlined
+                link
               >{{ series.metadata.publisher }}
               </v-chip>
             </v-col>
           </v-row>
 
-          <v-row v-if="series.metadata.genres.length > 0">
-            <v-col cols="6" sm="4" md="3" class="text-body-2 py-1 text-uppercase">{{ $t('common.genre') }}</v-col>
-            <v-col class="text-body-2 text-capitalize py-1 chip-spacing">
-              <v-chip v-for="(t, i) in series.metadata.genres"
-                      :key="i"
-                      :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
-                      :title="t"
-                      :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }, query: {genre: t}}"
-                      label
-                      small
-                      outlined
-                      link
-              >{{ t }}
-              </v-chip>
+          <v-row v-if="series.metadata.genres.length > 0" class="align-center text-body-2">
+            <v-col cols="6" sm="4" md="3" class="py-1 text-uppercase">{{ $t('common.genre') }}</v-col>
+            <v-col cols="6" sm="8" md="9" class="py-1 text-capitalize">
+              <vue-horizontal>
+                <template v-slot:btn-prev>
+                  <v-btn icon small>
+                    <v-icon>mdi-chevron-left</v-icon>
+                  </v-btn>
+                </template>
+
+                <template v-slot:btn-next>
+                  <v-btn icon small>
+                    <v-icon>mdi-chevron-right</v-icon>
+                  </v-btn>
+                </template>
+                <v-chip v-for="(t, i) in series.metadata.genres"
+                        :key="i"
+                        :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+                        :title="t"
+                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {genre: t}}"
+                        label
+                        small
+                        outlined
+                        link
+                >{{ t }}
+                </v-chip>
+              </vue-horizontal>
             </v-col>
           </v-row>
 
-          <v-row v-if="series.metadata.tags.length > 0">
-            <v-col cols="6" sm="4" md="3" class="text-body-2 py-1 text-uppercase">{{ $t('common.tags') }}</v-col>
-            <v-col class="text-body-2 text-capitalize py-1 chip-spacing">
-              <v-chip v-for="(t, i) in series.metadata.tags"
-                      :key="i"
-                      :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
-                      :title="t"
-                      :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }, query: {tag: t}}"
-                      label
-                      small
-                      outlined
-                      link
-              >{{ t }}
-              </v-chip>
+          <v-row v-if="series.metadata.tags.length > 0" class="align-center text-body-2">
+            <v-col cols="6" sm="4" md="3" class="py-1 text-uppercase">{{ $t('common.tags') }}</v-col>
+            <v-col cols="6" sm="8" md="9" class="py-1 text-capitalize">
+              <vue-horizontal>
+                <template v-slot:btn-prev>
+                  <v-btn icon small>
+                    <v-icon>mdi-chevron-left</v-icon>
+                  </v-btn>
+                </template>
+
+                <template v-slot:btn-next>
+                  <v-btn icon small>
+                    <v-icon>mdi-chevron-right</v-icon>
+                  </v-btn>
+                </template>
+                <v-chip v-for="(t, i) in series.metadata.tags"
+                        :key="i"
+                        :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+                        :title="t"
+                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {tag: t}}"
+                        label
+                        small
+                        outlined
+                        link
+                >{{ t }}
+                </v-chip>
+              </vue-horizontal>
             </v-col>
           </v-row>
 
           <v-divider v-if="series.booksMetadata.authors.length > 0"/>
 
-          <v-row class="text-body-2"
-                 v-for="(names, key) in authorsByRole"
-                 :key="key"
+          <v-row class="align-center text-body-2"
+                 v-for="role in authorRoles"
+                 :key="role"
           >
-            <v-col cols="6" sm="4" md="3" class="py-1 text-uppercase">{{ $t(`author_roles.${key}`) }}</v-col>
-            <v-col class="text-body-2 text-capitalize py-1 chip-spacing">
-              <v-chip v-for="(name, i) in names"
-                      :key="i"
-                      :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
-                      :title="name"
-                      :to="{name:'browse-libraries', params: {libraryId: series.libraryId ? series.libraryId : 0 }, query: {[key]: name}}"
-                      label
-                      small
-                      outlined
-                      link
-              >{{ name }}
-              </v-chip>
+            <v-col cols="6" sm="4" md="3" class="py-1 text-uppercase">{{ $t(`author_roles.${role}`) }}</v-col>
+            <v-col cols="6" sm="8" md="9" class="py-1">
+              <vue-horizontal>
+                <template v-slot:btn-prev>
+                  <v-btn icon small>
+                    <v-icon>mdi-chevron-left</v-icon>
+                  </v-btn>
+                </template>
+
+                <template v-slot:btn-next>
+                  <v-btn icon small>
+                    <v-icon>mdi-chevron-right</v-icon>
+                  </v-btn>
+                </template>
+
+                <v-chip v-for="(name, i) in authorsByRole[role]"
+                        :key="i"
+                        :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+                        :title="name"
+                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {[role]: name}}"
+                        label
+                        small
+                        outlined
+                        link
+                >{{ name }}
+                </v-chip>
+              </vue-horizontal>
             </v-col>
           </v-row>
 
@@ -301,9 +343,10 @@ import SortList from '@/components/SortList.vue'
 import {mergeFilterParams, sortOrFilterActive, toNameValue} from '@/functions/filter'
 import FilterPanels from '@/components/FilterPanels.vue'
 import {SeriesDto} from "@/types/komga-series";
-import {groupAuthorsByRole, groupAuthorsByRoleI18n} from "@/functions/authors";
+import {groupAuthorsByRole} from "@/functions/authors";
 import ReadMore from "@/components/ReadMore.vue";
 import {authorRoles} from "@/types/author-roles";
+import VueHorizontal from "vue-horizontal";
 
 const tags = require('language-tags')
 
@@ -325,9 +368,11 @@ export default Vue.extend({
     FilterPanels,
     SortList,
     ReadMore,
+    VueHorizontal,
   },
   data: function () {
     return {
+      authorRoles,
       series: {} as SeriesDto,
       books: [] as BookDto[],
       selectedBooks: [] as BookDto[],
