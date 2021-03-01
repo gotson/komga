@@ -9,13 +9,8 @@
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
     "commitlint": "^11.0.0",
-    "husky": "^4.3.6"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run --prefix komga-webui lint",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
+    "husky": "^5.1.2",
+    "pinst": "^2.1.6"
   },
   "commitlint": {
     "extends": [
@@ -55,5 +50,11 @@
         }
       ]
     ]
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "postinstall": "husky install",
+    "prepublishOnly": "pinst --disable",
+    "postpublish": "pinst --enable"
   }
 }
