@@ -57,12 +57,12 @@
       "general": "General",
       "gestures": "Gestures",
       "page_layout": "Page layout",
-      "paged": "Paged",
+      "paged": "Paginated Reader Options",
       "reading_mode": "Reading mode",
       "scale_type": "Scale type",
       "side_padding": "Side padding",
       "side_padding_none": "None",
-      "webtoon": "Webtoon"
+      "webtoon": "Webtoon Reader Options"
     },
     "shortcuts": {
       "close": "Close",
