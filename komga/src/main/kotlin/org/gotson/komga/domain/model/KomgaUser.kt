@@ -11,7 +11,7 @@ const val ROLE_FILE_DOWNLOAD = "FILE_DOWNLOAD"
 const val ROLE_PAGE_STREAMING = "PAGE_STREAMING"
 
 data class KomgaUser(
-  @Email
+  @Email(regexp = ".+@.+\\..+")
   @NotBlank
   val email: String,
   @NotBlank

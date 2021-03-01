@@ -45,7 +45,7 @@ fun KomgaUser.toWithSharedLibrariesDto() =
   )
 
 data class UserCreationDto(
-  @get:Email val email: String,
+  @get:Email(regexp = ".+@.+\\..+") val email: String,
   @get:NotBlank val password: String,
   val roles: List<String> = emptyList()
 ) {

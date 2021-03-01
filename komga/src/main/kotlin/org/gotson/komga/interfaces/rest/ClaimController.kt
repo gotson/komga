@@ -28,7 +28,7 @@ class ClaimController(
 
   @PostMapping
   fun claimAdmin(
-    @Email @RequestHeader("X-Komga-Email") email: String,
+    @Email(regexp = ".+@.+\\..+") @RequestHeader("X-Komga-Email") email: String,
     @NotBlank @RequestHeader("X-Komga-Password") password: String
   ): UserDto {
     if (userDetailsLifecycle.countUsers() > 0)
