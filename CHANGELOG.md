@@ -1,3 +1,10 @@
+## [0.75.2](https://github.com/gotson/komga/compare/v0.75.1...v0.75.2) (2021-03-01)
+
+
+### Bug Fixes
+
+* better email validation ([97871f7](https://github.com/gotson/komga/commit/97871f7fbc3b615b02ffbaf1f81359cce03a57c1)), closes [#434](https://github.com/gotson/komga/issues/434)
+
 ## [0.75.1](https://github.com/gotson/komga/compare/v0.75.0...v0.75.1) (2021-02-26)
 
 
