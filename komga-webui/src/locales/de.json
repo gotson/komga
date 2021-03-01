@@ -442,7 +442,9 @@
   "sort": {
     "date_added": "Nach Hinzufügedatum sortiert",
     "date_updated": "Nach letzter Aktuallisierung sortiert",
+    "file_name": "Dateiname",
     "file_size": "Nach Dateigröße sortiert",
+    "folder_name": "Name des Ordners",
     "name": "Nach Name sortiert",
     "number": "Nach Nummer sortiert",
     "release_date": "Nach Erscheinungsdatum sortiert"
