@@ -16,9 +16,9 @@
     "colorist": "fargeleggere",
     "cover": "omslag",
     "editor": "redaktører",
-    "inker": "inkers",
-    "letterer": "letterers",
-    "penciller": "pencillers",
+    "inker": "tusjere",
+    "letterer": "settere",
+    "penciller": "tegnere",
     "writer": "skribenter"
   },
   "bookreader": {
@@ -26,7 +26,7 @@
     "changing_reading_direction": "Endrer leseretning til",
     "cycling_page_layout": "Endrer sideutforming til",
     "cycling_scale": "Endrer skalering til",
-    "cycling_side_padding": "Endrer side padding til",
+    "cycling_side_padding": "Endrer sidefyll til",
     "end_of_book": "Du har nådd slutten på boka.",
     "from_series_metadata": "fra serie metadata",
     "move_next": "Klikk eller trykk «Neste» igjen for å gå til neste bok.",
@@ -62,13 +62,13 @@
       "scale_type": "Skalering",
       "side_padding": "Sideutfylling",
       "side_padding_none": "Ingen",
-      "webtoon": "Webtoon"
+      "webtoon": "Nettserie"
     },
     "shortcuts": {
       "close": "Lukk",
       "cycle_page_layout": "Endre sideutforming",
       "cycle_scale": "Endre skalering",
-      "cycle_side_padding": "Endre side padding",
+      "cycle_side_padding": "Endre sidefyll",
       "first_page": "Første side",
       "last_page": "Siste side",
       "left_to_right": "Fra venstre til høyre",
@@ -87,13 +87,13 @@
     }
   },
   "browse_book": {
-    "comment": "KOMMENTAR",
+    "comment": "Kommentar",
     "download_file": "Last ned fil",
-    "file": "FIL",
-    "format": "FORMAT",
+    "file": "Fil",
+    "format": "Format",
     "navigation_within_readlist": "Navigasjon i leselisten",
     "read_book": "Les bok",
-    "size": "STØRRELSE"
+    "size": "Størrelse"
   },
   "browse_collection": {
     "edit_collection": "Rediger samling",
@@ -182,31 +182,31 @@
       "button_confirm": "Slett",
       "confirm_delete": "Ja, slett samlingen ved navn «{name}»",
       "dialog_title": "Slett samling",
-      "warning_html": "Samlingen <b>{name}</b> vil bli fjernet fra tjeneren. Dine mediafiler vil ikke bli affektert. Dette kan <b>ikke</b> angres. Fortsett?"
+      "warning_html": "Samlingen <b>{name}</b> vil bli fjernet fra tjeneren. Dette har ingen innvirkning på dine mediafiler. Dette kan <b>ikke</b> angres. Fortsett?"
     },
     "delete_library": {
       "button_cancel": "Avbryt",
       "button_confirm": "Slett",
       "confirm_delete": "Ja, slett biblioteket «{name}»",
       "title": "Slett bibliotek",
-      "warning_html": "Biblioteket <b>{name}</b> vil bli fjernet fra tjeneren. Dine mediafiler vil ikke bli affektert. Dette kan <b>ikke</b> angres. Fortsett?"
+      "warning_html": "Biblioteket <b>{name}</b> vil bli fjernet fra tjeneren. Dette har ingen innvirkning på dine mediefiler. Dette kan <b>ikke</b> angres. Fortsett?"
     },
     "delete_readlist": {
       "button_cancel": "Avbryt",
       "button_confirm": "Slett",
       "confirm_delete": "Ja, slett leselisten «{name}»",
       "dialog_title": "Slett leseliste",
-      "warning_html": "Leselisten <b>{name}</b> vil bli fjernet fra tjeneren. Dine mediafiler vil ikke bli affektert. Dette kan <b>ikke</b> angres. Fortsett?"
+      "warning_html": "Leselisten <b>{name}</b> vil bli fjernet fra tjeneren. Dette har ingen innvirkning på dine mediefiler. Dette kan <b>ikke</b> angres. Fortsett?"
     },
     "delete_user": {
       "button_cancel": "Avbryt",
       "button_confirm": "Slett",
       "confirm_delete": "Ja, slett brukeren «{name}»",
       "dialog_title": "Slett bruker",
-      "warning_html": "Brukeren <b>{name}</b> vil bli slettet fra tjeneren. Dette kan <b>ikke</b> angres. Fortsett?"
+      "warning_html": "Brukeren <b>{name}</b> vil bli fjernet fra tjeneren. Dette kan <b>ikke</b> angres. Fortsett?"
     },
     "edit_books": {
-      "authors_notice_multiple_edit": "Du redigerer forfattere til flere bøker. Dette vil overskrive eksisterende forfattere til hver bok.",
+      "authors_notice_multiple_edit": "Du redigerer forfattere for flere bøker. Dette vil overskrive eksisterende forfattere for hver bok.",
       "button_cancel": "Avbryt",
       "button_confirm": "Lagre endringer",
       "dialog_title_multiple": "Rediger {count} bok | Rediger {count} bøker",
@@ -241,19 +241,19 @@
       "field_import_comicinfo_book": "Bok-metadata",
       "field_import_comicinfo_collections": "Samlinger",
       "field_import_comicinfo_readlists": "Leselister",
-      "field_import_comicinfo_series": "Serie metadata",
-      "field_import_epub_book": "Bok metadata",
-      "field_import_epub_series": "Serie metadata",
+      "field_import_comicinfo_series": "Serie-metadata",
+      "field_import_epub_book": "Bok-metadata",
+      "field_import_epub_series": "Serie-metadata",
       "field_import_local_artwork": "Lokale bilder",
       "field_name": "Navn",
       "field_root_folder": "Rotmappe",
-      "field_scanner_deep_scan": "Dyp skann",
-      "field_scanner_force_directory_modified_time": "Tving mappe modifisert tid",
+      "field_scanner_deep_scan": "Dypskanning",
+      "field_scanner_force_directory_modified_time": "Påtving mappe-modifisert tid",
       "file_browser_dialog_button_confirm": "Velg",
-      "file_browser_dialog_title": "Biblioteket's rotmappe",
+      "file_browser_dialog_title": "Bibliotekets rotmappe",
       "label_import_comicinfo": "Importer metadata for CBR/CBZ som har en ComicInfo.xml fil",
-      "label_import_epub": "Importer metadata fra EPUB filer",
-      "label_import_local": "Importer lokale media ressurser",
+      "label_import_epub": "Importer metadata fra EPUB-filer",
+      "label_import_local": "Importer lokale medieressurser",
       "label_scanner": "Skanner",
       "tab_general": "Generelt",
       "tab_options": "Alternativer"
@@ -280,7 +280,7 @@
       "field_summary": "Sammendrag",
       "field_tags": "Etiketter",
       "field_title": "Tittel",
-      "mixed": "BLANDET",
+      "mixed": "Blandet",
       "tab_general": "Generelt",
       "tab_tags": "Etiketter",
       "tags_notice_multiple_edit": "Du redigerer etiketter til flere serier. Dette vil overskrive eksisterende etiketter til hver serie."
@@ -336,7 +336,7 @@
       "LEFT_TO_RIGHT": "Venstre til høyre",
       "RIGHT_TO_LEFT": "Høyre til venstre",
       "VERTICAL": "Loddrett",
-      "WEBTOON": "Webtoon"
+      "WEBTOON": "Nettserie"
     },
     "series_status": {
       "ABANDONED": "Forlatt",

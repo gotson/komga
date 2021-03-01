@@ -57,12 +57,12 @@
       "general": "Général",
       "gestures": "Gestes tactiles",
       "page_layout": "Disposition des pages",
-      "paged": "Pagination",
+      "paged": "Options de la liseuse paginée",
       "reading_mode": "Mode de lecture",
       "scale_type": "Type de mise à l'échelle",
       "side_padding": "Bordure latérale",
       "side_padding_none": "Aucune",
-      "webtoon": "Webtoon"
+      "webtoon": "Options de la liseuse Webtoon"
     },
     "shortcuts": {
       "close": "Fermer",
