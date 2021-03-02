@@ -35,7 +35,14 @@
                    height="50"
                    max-width="35"
                    class="my-1 mx-3"
-            />
+            >
+                <span v-if="item.booksUnreadCount !== 0"
+                      class="white--text pa-0 px-1 text-caption"
+                      :style="{background: 'orange', position: 'absolute', right: 0}"
+                >
+                  {{ item.booksUnreadCount }}
+                </span>
+            </v-img>
             <v-list-item-content>
               <v-list-item-title v-text="item.metadata.title"/>
             </v-list-item-content>
@@ -53,7 +60,10 @@
                    height="50"
                    max-width="35"
                    class="my-1 mx-3"
-            />
+            >
+              <div class="unread" v-if="isUnread(item)"/>
+            </v-img>
+
             <v-list-item-content>
               <v-list-item-title v-text="item.metadata.title"/>
             </v-list-item-content>
@@ -107,6 +117,8 @@ import {debounce} from 'lodash'
 import Vue from 'vue'
 import {BookDto} from '@/types/komga-books'
 import {SeriesDto} from "@/types/komga-series";
+import {getReadProgress} from "@/functions/book-progress";
+import {ReadStatus} from "@/types/enum-books";
 
 export default Vue.extend({
   name: 'SearchBox',
@@ -158,6 +170,9 @@ export default Vue.extend({
       this.$router.push({name: 'search', query: {q: s}}).catch(e => {
       })
     },
+    isUnread(book: BookDto): boolean {
+      return getReadProgress(book) === ReadStatus.UNREAD
+    },
     seriesThumbnailUrl(seriesId: string): string {
       return seriesThumbnailUrl(seriesId)
     },
@@ -175,5 +190,14 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-
+.unread {
+  border-left: 15px solid transparent;
+  border-right: 15px solid orange;
+  border-bottom: 15px solid transparent;
+  height: 0;
+  width: 0;
+  position: absolute;
+  right: 0;
+  z-index: 2;
+}
 </style>
