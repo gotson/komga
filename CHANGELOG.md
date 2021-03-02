@@ -1,3 +1,10 @@
+# [0.77.0](https://github.com/gotson/komga/compare/v0.76.0...v0.77.0) (2021-03-02)
+
+
+### Features
+
+* **webui:** show read status on Books and Series when searching  ([234997c](https://github.com/gotson/komga/commit/234997c27d86d93c23bc26e989954e6da384865d)), closes [#433](https://github.com/gotson/komga/issues/433)
+
 # [0.76.0](https://github.com/gotson/komga/compare/v0.75.2...v0.76.0) (2021-03-02)
 
 

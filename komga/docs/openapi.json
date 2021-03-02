@@ -51,12 +51,12 @@
             "format": "int32",
             "type": "integer"
           },
+          "last": {
+            "type": "boolean"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -884,12 +884,12 @@
             "format": "int32",
             "type": "integer"
           },
+          "last": {
+            "type": "boolean"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -1350,12 +1350,12 @@
             "format": "int32",
             "type": "integer"
           },
+          "last": {
+            "type": "boolean"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -1396,12 +1396,12 @@
             "format": "int32",
             "type": "integer"
           },
+          "last": {
+            "type": "boolean"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
           },
           "size": {
             "format": "int32",
