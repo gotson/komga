@@ -1,3 +1,10 @@
+# [0.76.0](https://github.com/gotson/komga/compare/v0.75.2...v0.76.0) (2021-03-02)
+
+
+### Features
+
+* **webui:** make authors chips clickable ([9fed50e](https://github.com/gotson/komga/commit/9fed50e4056a13570f90a1bc289117b27b253eda)), closes [#431](https://github.com/gotson/komga/issues/431)
+
 ## [0.75.2](https://github.com/gotson/komga/compare/v0.75.1...v0.75.2) (2021-03-01)
 
 
