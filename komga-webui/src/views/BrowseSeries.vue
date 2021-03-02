@@ -235,39 +235,41 @@
 
           <v-divider v-if="series.booksMetadata.authors.length > 0"/>
 
-          <v-row class="align-center text-body-2"
-                 v-for="role in authorRoles"
-                 :key="role"
-          >
-            <v-col cols="6" sm="4" md="3" class="py-1 text-uppercase">{{ $t(`author_roles.${role}`) }}</v-col>
-            <v-col cols="6" sm="8" md="9" class="py-1">
-              <vue-horizontal>
-                <template v-slot:btn-prev>
-                  <v-btn icon small>
-                    <v-icon>mdi-chevron-left</v-icon>
-                  </v-btn>
-                </template>
+          <div v-for="role in authorRoles"
+               :key="role">
+            <v-row class="align-center text-body-2"
+                   v-if="authorsByRole[role]"
+            >
+              <v-col cols="6" sm="4" md="3" class="py-1 text-uppercase">{{ $t(`author_roles.${role}`) }}</v-col>
+              <v-col cols="6" sm="8" md="9" class="py-1">
+                <vue-horizontal>
+                  <template v-slot:btn-prev>
+                    <v-btn icon small>
+                      <v-icon>mdi-chevron-left</v-icon>
+                    </v-btn>
+                  </template>
 
-                <template v-slot:btn-next>
-                  <v-btn icon small>
-                    <v-icon>mdi-chevron-right</v-icon>
-                  </v-btn>
-                </template>
+                  <template v-slot:btn-next>
+                    <v-btn icon small>
+                      <v-icon>mdi-chevron-right</v-icon>
+                    </v-btn>
+                  </template>
 
-                <v-chip v-for="(name, i) in authorsByRole[role]"
-                        :key="i"
-                        :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
-                        :title="name"
-                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {[role]: name}}"
-                        label
-                        small
-                        outlined
-                        link
-                >{{ name }}
-                </v-chip>
-              </vue-horizontal>
-            </v-col>
-          </v-row>
+                  <v-chip v-for="(name, i) in authorsByRole[role]"
+                          :key="i"
+                          :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+                          :title="name"
+                          :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {[role]: name}}"
+                          label
+                          small
+                          outlined
+                          link
+                  >{{ name }}
+                  </v-chip>
+                </vue-horizontal>
+              </v-col>
+            </v-row>
+          </div>
 
           <v-row v-if="$vuetify.breakpoint.name !== 'xs'">
             <v-col>

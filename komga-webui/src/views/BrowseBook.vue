@@ -108,9 +108,9 @@
             </v-col>
           </v-row>
 
-          <v-divider/>
+          <v-divider v-if="book.metadata.summary"/>
 
-          <v-row class="mt-3">
+          <v-row class="mt-3" v-if="book.metadata.summary">
             <v-col>
               <read-more>{{ book.metadata.summary }}</read-more>
             </v-col>
@@ -118,38 +118,42 @@
 
           <v-divider v-if="book.metadata.authors.length > 0"/>
 
-          <v-row class="align-center text-body-2"
-                 v-for="role in authorRoles"
-                 :key="role"
-          >
-            <v-col cols="6" sm="4" md="3" class="py-1 text-uppercase">{{ $t(`author_roles.${role}`) }}</v-col>
-            <v-col cols="6" sm="8" md="9" class="py-1">
-              <vue-horizontal>
-                <template v-slot:btn-prev>
-                  <v-btn icon small>
-                    <v-icon>mdi-chevron-left</v-icon>
-                  </v-btn>
-                </template>
 
-                <template v-slot:btn-next>
-                  <v-btn icon small>
-                    <v-icon>mdi-chevron-right</v-icon>
-                  </v-btn>
-                </template>
-                <v-chip v-for="(name, i) in authorsByRole[role]"
-                        :key="i"
-                        :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
-                        :title="name"
-                        :to="{name:'browse-series', params: {seriesId: book.seriesId }, query: {[role]: name}}"
-                        label
-                        small
-                        outlined
-                        link
-                >{{ name }}
-                </v-chip>
-              </vue-horizontal>
-            </v-col>
-          </v-row>
+          <div v-for="role in authorRoles"
+               :key="role"
+          >
+            <v-row class="align-center text-body-2"
+                   v-if="authorsByRole[role]"
+            >
+              <v-col cols="6" sm="4" md="3" class="py-1 text-uppercase">{{ $t(`author_roles.${role}`) }}</v-col>
+              <v-col cols="6" sm="8" md="9" class="py-1">
+                <vue-horizontal>
+                  <template v-slot:btn-prev>
+                    <v-btn icon small>
+                      <v-icon>mdi-chevron-left</v-icon>
+                    </v-btn>
+                  </template>
+
+                  <template v-slot:btn-next>
+                    <v-btn icon small>
+                      <v-icon>mdi-chevron-right</v-icon>
+                    </v-btn>
+                  </template>
+                  <v-chip v-for="(name, i) in authorsByRole[role]"
+                          :key="i"
+                          :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+                          :title="name"
+                          :to="{name:'browse-series', params: {seriesId: book.seriesId }, query: {[role]: name}}"
+                          label
+                          small
+                          outlined
+                          link
+                  >{{ name }}
+                  </v-chip>
+                </vue-horizontal>
+              </v-col>
+            </v-row>
+          </div>
 
           <v-row v-if="book.metadata.tags.length > 0" class="align-center text-body-2">
             <v-col cols="6" sm="4" md="3" class="py-1">TAGS</v-col>
