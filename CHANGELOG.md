@@ -1,3 +1,10 @@
+## [0.77.1](https://github.com/gotson/komga/compare/v0.77.0...v0.77.1) (2021-03-02)
+
+
+### Bug Fixes
+
+* **webui:** show only author roles present ([847b704](https://github.com/gotson/komga/commit/847b7044a0730683bf57b5907799fa7dffed0f13))
+
 # [0.77.0](https://github.com/gotson/komga/compare/v0.76.0...v0.77.0) (2021-03-02)
 
 
