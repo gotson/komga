@@ -121,6 +121,7 @@
     "collections": "Collections",
     "create": "Create",
     "delete": "Delete",
+    "download": "Download",
     "email": "Email",
     "filter_no_matches": "The active filter has no matches",
     "genre": "Genre",
@@ -133,15 +134,14 @@
     "pages_n": "No pages | 1 page | {count} pages",
     "password": "Password",
     "publisher": "Publisher",
+    "read": "Read",
     "readlists": "Read Lists",
     "required": "Required",
     "roles": "Roles",
     "series": "Series",
     "tags": "Tags",
     "use_filter_panel_to_change_filter": "Use the filter panel to change the active filter",
-    "year": "year",
-    "download": "Download",
-    "read": "Read"
+    "year": "year"
   },
   "dashboard": {
     "keep_reading": "Keep Reading",
@@ -423,7 +423,8 @@
     "search_results_for": "Search results for \"{name}\""
   },
   "searchbox": {
-    "no_results": "No results"
+    "no_results": "No results",
+    "search_all": "Search all…"
   },
   "server": {
     "server_management": {
