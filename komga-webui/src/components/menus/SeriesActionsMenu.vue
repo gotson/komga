@@ -22,9 +22,6 @@
         <v-list-item @click="markUnread" v-if="!isUnread">
           <v-list-item-title>{{ $t('menu.mark_unread') }}</v-list-item-title>
         </v-list-item>
-        <v-list-item v-if="canDownload" :href="fileUrl">
-          <v-list-item-title>{{ $t('menu.download_series') }}</v-list-item-title>
-        </v-list-item>
       </v-list>
     </v-menu>
   </div>
@@ -33,7 +30,6 @@
 import {SERIES_CHANGED, seriesToEventSeriesChanged} from '@/types/events'
 import Vue from 'vue'
 import {SeriesDto} from "@/types/komga-series";
-import {seriesFileUrl} from "@/functions/urls";
 
 export default Vue.extend({
   name: 'SeriesActionsMenu',
@@ -60,12 +56,6 @@ export default Vue.extend({
   computed: {
     isAdmin (): boolean {
       return this.$store.getters.meAdmin
-    },
-    canDownload (): boolean {
-      return this.$store.getters.meFileDownload
-    },
-    fileUrl (): string {
-      return seriesFileUrl(this.series.id)
     },
     isRead (): boolean {
       return this.series.booksReadCount === this.series.booksCount
