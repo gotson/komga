@@ -1,3 +1,11 @@
+## [0.77.2](https://github.com/gotson/komga/compare/v0.77.1...v0.77.2) (2021-03-03)
+
+
+### Bug Fixes
+
+* **webui:** keyboard navigation in searchbox results ([604ccf1](https://github.com/gotson/komga/commit/604ccf11928e8f80b4a9470e92272770bb08ed96)), closes [#250](https://github.com/gotson/komga/issues/250)
+* **webui:** rearrange browse series and books views ([a5c7b17](https://github.com/gotson/komga/commit/a5c7b17829b73cb11e6e365c0949ccb624e6e0c3))
+
 ## [0.77.1](https://github.com/gotson/komga/compare/v0.77.0...v0.77.1) (2021-03-02)
 
 
