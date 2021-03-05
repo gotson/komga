@@ -1,3 +1,10 @@
+## [0.77.3](https://github.com/gotson/komga/compare/v0.77.2...v0.77.3) (2021-03-05)
+
+
+### Bug Fixes
+
+* translated using Weblate (Swedish) ([04c1dde](https://github.com/gotson/komga/commit/04c1dde4eefcc4abaccce1eefb7d6129954d8433))
+
 ## [0.77.2](https://github.com/gotson/komga/compare/v0.77.1...v0.77.2) (2021-03-03)
 
 
