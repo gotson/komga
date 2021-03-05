@@ -134,7 +134,7 @@
                        small
                        :disabled="!canDownload"
                        :href="fileUrl">
-                  <v-icon left>mdi-file-download</v-icon>
+                  <v-icon left small>mdi-file-download</v-icon>
                   {{ $t('common.download') }}
                 </v-btn>
               </v-col>
@@ -172,7 +172,7 @@
                    small
                    :disabled="!canDownload"
                    :href="fileUrl">
-              <v-icon left>mdi-file-download</v-icon>
+              <v-icon left small>mdi-file-download</v-icon>
               {{ $t('common.download') }}
             </v-btn>
           </v-col>

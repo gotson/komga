@@ -118,7 +118,7 @@
                        :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id}}"
                        :disabled="book.media.status !== 'READY' || !canReadPages"
                 >
-                  <v-icon left>mdi-book-open-page-variant</v-icon>
+                  <v-icon left small>mdi-book-open-page-variant</v-icon>
                   {{ $t('common.read') }}
                 </v-btn>
               </v-col>
@@ -127,7 +127,7 @@
                        small
                        :disabled="!canDownload"
                        :href="fileUrl">
-                  <v-icon left>mdi-file-download</v-icon>
+                  <v-icon left small>mdi-file-download</v-icon>
                   {{ $t('common.download') }}
                 </v-btn>
               </v-col>
@@ -151,7 +151,7 @@
                    :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id}}"
                    :disabled="book.media.status !== 'READY' || !canReadPages"
             >
-              <v-icon left>mdi-book-open-page-variant</v-icon>
+              <v-icon left small>mdi-book-open-page-variant</v-icon>
               {{ $t('common.read') }}
             </v-btn>
           </v-col>
@@ -160,7 +160,7 @@
                    small
                    :disabled="!canDownload"
                    :href="fileUrl">
-              <v-icon left>mdi-file-download</v-icon>
+              <v-icon left small>mdi-file-download</v-icon>
               {{ $t('common.download') }}
             </v-btn>
           </v-col>
