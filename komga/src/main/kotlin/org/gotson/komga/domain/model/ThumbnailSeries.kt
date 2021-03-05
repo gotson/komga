@@ -8,7 +8,7 @@ data class ThumbnailSeries(
   val url: URL,
   val selected: Boolean = false,
 
-  val id: String = TsidCreator.getTsidString256(),
+  val id: String = TsidCreator.getTsid256().toString(),
   val seriesId: String = "",
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),

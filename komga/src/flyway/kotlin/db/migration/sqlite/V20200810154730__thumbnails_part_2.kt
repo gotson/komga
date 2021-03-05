@@ -16,7 +16,7 @@ class V20200810154730__thumbnails_part_2 : BaseJavaMigration() {
 
     if (thumbnails.isNotEmpty()) {
       val parameters = thumbnails.map {
-        arrayOf(TsidCreator.getTsidString256(), it["THUMBNAIL"], it["BOOK_ID"])
+        arrayOf(TsidCreator.getTsid256().toString(), it["THUMBNAIL"], it["BOOK_ID"])
       }
 
       jdbcTemplate.batchUpdate(

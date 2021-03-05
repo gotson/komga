@@ -19,7 +19,7 @@ data class Library(
   val scanForceModifiedTime: Boolean = false,
   val scanDeep: Boolean = false,
 
-  val id: String = TsidCreator.getTsidString256(),
+  val id: String = TsidCreator.getTsid256().toString(),
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now()

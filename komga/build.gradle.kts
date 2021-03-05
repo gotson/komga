@@ -10,18 +10,16 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
   run {
-    val kotlinVersion = "1.4.20"
     kotlin("jvm")
     kotlin("plugin.spring")
     kotlin("kapt")
   }
   id("org.springframework.boot") version "2.4.3"
-  id("com.github.ben-manes.versions") version "0.36.0"
   id("com.gorylenko.gradle-git-properties") version "2.2.4"
   id("com.rohanprabhu.kotlin-dsl-jooq") version "0.4.6"
-  id("org.flywaydb.flyway") version "7.3.2"
+  id("org.flywaydb.flyway") version "7.5.4"
   id("com.github.johnrengelman.processes") version "0.5.0"
-  id("org.springdoc.openapi-gradle-plugin") version "1.3.0"
+  id("org.springdoc.openapi-gradle-plugin") version "1.3.1"
   jacoco
 }
 
@@ -48,12 +46,12 @@ dependencies {
 
   implementation("org.flywaydb:flyway-core")
 
-  implementation("io.github.microutils:kotlin-logging-jvm:2.0.4")
+  implementation("io.github.microutils:kotlin-logging-jvm:2.0.5")
   implementation("io.micrometer:micrometer-registry-influx")
-  implementation("io.hawt:hawtio-springboot:2.12.1")
+  implementation("io.hawt:hawtio-springboot:2.13.0")
 
   run {
-    val springdocVersion = "1.5.2"
+    val springdocVersion = "1.5.5"
     implementation("org.springdoc:springdoc-openapi-ui:$springdocVersion")
     implementation("org.springdoc:springdoc-openapi-security:$springdocVersion")
     implementation("org.springdoc:springdoc-openapi-kotlin:$springdocVersion")
@@ -63,8 +61,8 @@ dependencies {
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
 
-  implementation("commons-io:commons-io:2.7")
-  implementation("org.apache.commons:commons-lang3:3.11")
+  implementation("commons-io:commons-io:2.8.0")
+  implementation("org.apache.commons:commons-lang3:3.12.0")
 
   implementation("com.ibm.icu:icu4j:68.2")
 
@@ -76,8 +74,8 @@ dependencies {
   implementation("org.jsoup:jsoup:1.13.1")
 
   implementation("net.coobird:thumbnailator:0.4.13")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.6.1")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.6.1")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.6.3")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.6.3")
   runtimeOnly(files("$projectDir/libs/webp-imageio-decoder-plugin-0.2.jar"))
   implementation("com.github.gotson:webp-imageio:0.2.0")
   // support for jpeg2000
@@ -86,7 +84,7 @@ dependencies {
 
   implementation("com.jakewharton.byteunits:byteunits:0.9.1")
 
-  implementation("com.github.f4b6a3:tsid-creator:2.4.4")
+  implementation("com.github.f4b6a3:tsid-creator:3.0.1")
 
   runtimeOnly("com.h2database:h2:1.4.200")
 
@@ -101,10 +99,10 @@ dependencies {
   }
   testImplementation("org.springframework.security:spring-security-test")
   testImplementation("com.ninja-squad:springmockk:3.0.1")
-  testImplementation("io.mockk:mockk:1.10.4")
-  testImplementation("com.google.jimfs:jimfs:1.1")
+  testImplementation("io.mockk:mockk:1.10.6")
+  testImplementation("com.google.jimfs:jimfs:1.2")
 
-  testImplementation("com.tngtech.archunit:archunit-junit5:0.15.0")
+  testImplementation("com.tngtech.archunit:archunit-junit5:0.17.0")
 
   developmentOnly("org.springframework.boot:spring-boot-devtools:2.4.3")
 }

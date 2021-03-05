@@ -25,7 +25,7 @@ fun makeSeries(name: String, libraryId: String = ""): Series {
   )
 }
 
-fun makeLibrary(name: String = "default", url: String = "file:/$name", id: String = TsidCreator.getTsidString256()): Library {
+fun makeLibrary(name: String = "default", url: String = "file:/$name", id: String = TsidCreator.getTsid256().toString()): Library {
   return Library(name, URL(url), id = id)
 }
 

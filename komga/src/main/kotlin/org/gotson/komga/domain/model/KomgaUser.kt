@@ -21,7 +21,7 @@ data class KomgaUser(
   val rolePageStreaming: Boolean = true,
   val sharedLibrariesIds: Set<String> = emptySet(),
   val sharedAllLibraries: Boolean = true,
-  val id: String = TsidCreator.getTsidString256(),
+  val id: String = TsidCreator.getTsid256().toString(),
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
 ) : Auditable() {

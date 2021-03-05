@@ -11,7 +11,7 @@ data class Series(
   val url: URL,
   val fileLastModified: LocalDateTime,
 
-  val id: String = TsidCreator.getTsidString256(),
+  val id: String = TsidCreator.getTsid256().toString(),
   val libraryId: String = "",
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),

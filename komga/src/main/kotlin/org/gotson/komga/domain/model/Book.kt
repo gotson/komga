@@ -15,7 +15,7 @@ data class Book(
   val fileSize: Long = 0,
   val number: Int = 0,
 
-  val id: String = TsidCreator.getTsidString256(),
+  val id: String = TsidCreator.getTsid256().toString(),
   val seriesId: String = "",
   val libraryId: String = "",
 

@@ -19,22 +19,22 @@ left join BOOK B on B.ID = m.BOOK_ID"""
       val parameters = bookMetadata
         .groupBy { it["SERIES_ID"] }
         .map { (seriesId, v) ->
-          val ageRating = v.mapNotNull { it["AGE_RATING"] as Int? }.max()
-          val ageRatingLock = v.mapNotNull { it["AGE_RATING_LOCK"] as Int? }.max()
+          val ageRating = v.mapNotNull { it["AGE_RATING"] as Int? }.maxOrNull()
+          val ageRatingLock = v.mapNotNull { it["AGE_RATING_LOCK"] as Int? }.maxOrNull()
 
           val publisher =
             v.filter { (it["PUBLISHER"] as String).isNotEmpty() }
               .sortedByDescending { it["NUMBER_SORT"] as Double? }
               .map { it["PUBLISHER"] as String }
               .firstOrNull() ?: ""
-          val publisherLock = v.mapNotNull { it["PUBLISHER_LOCK"] as Int? }.max()
+          val publisherLock = v.mapNotNull { it["PUBLISHER_LOCK"] as Int? }.maxOrNull()
 
           val readingDir =
             v.mapNotNull { it["READING_DIRECTION"] as String? }
               .groupingBy { it }
               .eachCount()
-              .maxBy { it.value }?.key
-          val readingDirLock = v.mapNotNull { it["READING_DIRECTION_LOCK"] as Int? }.max()
+              .maxByOrNull { it.value }?.key
+          val readingDirLock = v.mapNotNull { it["READING_DIRECTION_LOCK"] as Int? }.maxOrNull()
 
           arrayOf(ageRating, ageRatingLock, publisher, publisherLock, readingDir, readingDirLock, seriesId)
         }

@@ -10,7 +10,7 @@ data class ThumbnailBook(
   val selected: Boolean = false,
   val type: Type,
 
-  val id: String = TsidCreator.getTsidString256(),
+  val id: String = TsidCreator.getTsid256().toString(),
   val bookId: String = "",
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),

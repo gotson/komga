@@ -1,11 +1,12 @@
 plugins {
   run {
-    val kotlinVersion = "1.4.20"
+    val kotlinVersion = "1.4.31"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     kotlin("kapt") version kotlinVersion
   }
-  id("org.jlleitschuh.gradle.ktlint") version "9.4.1"
+  id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
+  id("com.github.ben-manes.versions") version "0.38.0"
 }
 
 allprojects {
@@ -13,6 +14,7 @@ allprojects {
     mavenCentral()
   }
   apply(plugin = "org.jlleitschuh.gradle.ktlint")
+  apply(plugin = "com.github.ben-manes.versions")
 }
 
 tasks.wrapper {
