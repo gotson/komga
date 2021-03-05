@@ -18,14 +18,29 @@
     "editor": "редакторы",
     "inker": "контуровщики",
     "letterer": "шрифтовики",
-    "penciller": "графики",
+    "penciller": "Художник",
     "writer": "писатели"
   },
   "bookreader": {
     "beginning_of_book": "Вы находитесь в начале книги.",
     "changing_reading_direction": "Изменение Направления Чтения на",
-    "reader_settings": "Настройки Просмотрщика",
+    "cycling_page_layout": "Переключить Формат Страниц",
+    "cycling_scale": "Переключить Масштабирование",
+    "cycling_side_padding": "Переключить Боковой Отступ",
+    "end_of_book": "Вы достигли конца книги.",
+    "from_series_metadata": "из метаданных серии",
+    "move_next": "Для перехода к следующей книге щелкните или нажмите кнопку далее еще раз.",
+    "move_next_exit": "Для выхода из ридера щелкните или нажмите кнопку далее еще раз.",
+    "move_previous": "Для перехода к предыдущей книге щелкните или нажмите кнопку назад еще раз.",
+    "paged_reader_layout": {
+      "double": "Двойные страницы",
+      "double_no_cover": "Двойные страницы (без обложки)",
+      "single": "Одна страница"
+    },
+    "reader_settings": "Настройки Ридера",
     "scale_type": {
+      "continuous_original": "Исходное",
+      "continuous_width": "По ширине",
       "height": "По высоте",
       "original": "Исходное",
       "screen": "По экрану",
@@ -41,15 +56,64 @@
       "display": "Отображение",
       "general": "Общее",
       "gestures": "Жесты",
-      "paged": "Страницы",
+      "page_layout": "Формат страницы",
+      "paged": "Настройки Отображения Страниц",
       "reading_mode": "Режим чтения",
       "scale_type": "Масштабирование",
       "side_padding": "Боковой отступ",
-      "side_padding_none": "Нет"
+      "side_padding_none": "Нет",
+      "webtoon": "Настройки Webtoon Ридера"
+    },
+    "shortcuts": {
+      "close": "Закрыть",
+      "cycle_page_layout": "Переключить формат страниц",
+      "cycle_scale": "Переключить масштаб",
+      "cycle_side_padding": "Переключить боковой отступ",
+      "first_page": "Первая страница",
+      "last_page": "Последняя страница",
+      "left_to_right": "Слева Направо",
+      "menus": "Меню",
+      "next_page": "Следующая страница",
+      "previous_page": "Предыдущая страница",
+      "reader_navigation": "Навигация",
+      "right_to_left": "Справа Налево",
+      "settings": "Настройки",
+      "show_hide_help": "Показать/скрыть помощь",
+      "show_hide_settings": "Показать/скрыть меню настроек",
+      "show_hide_thumbnails": "Показать/скрыть просмотр эскизов",
+      "show_hide_toolbars": "Показать/скрыть панели инструментов",
+      "vertical": "Вертикально",
+      "webtoon": "Webtoon"
     }
   },
+  "browse_book": {
+    "comment": "КОММЕНТАРИЙ",
+    "download_file": "Скачать файл",
+    "file": "ФАЙЛ",
+    "format": "ФОРМАТ",
+    "navigation_within_readlist": "Навигация в пределах списка чтения",
+    "read_book": "Читать книгу",
+    "size": "РАЗМЕР"
+  },
+  "browse_collection": {
+    "edit_collection": "Редактировать коллекцию",
+    "edit_elements": "Редактировать элементы",
+    "manual_ordering": "ручной порядок"
+  },
+  "browse_readlist": {
+    "edit_elements": "Редактировать элементы",
+    "edit_readlist": "Редактировать список чтения"
+  },
+  "browse_series": {
+    "earliest_year_from_release_dates": "Это самая ранняя дата выпуска из всех книг в этой серии",
+    "series_no_summary": "У серии нет описания, поэтому мы подобрали его для вас!",
+    "summary_from_book": "Краткое описание из книги {number}:"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "Управлять коллекцией"
+  },
   "common": {
-    "all_libraries": "Все библиотеки",
+    "all_libraries": "Все Библиотеки",
     "books": "Книги",
     "books_n": "Книг нет | 1 книга | {count} книг",
     "cancel": "Отмена",
@@ -79,6 +143,7 @@
   },
   "dashboard": {
     "keep_reading": "Продолжить Чтение",
+    "on_deck": "Текущее",
     "recently_added_books": "Недавно Добавленные Книги",
     "recently_added_series": "Недавно Добавленные Серии",
     "recently_updated_series": "Недавно Обновленные Серии"
@@ -151,7 +216,7 @@
       "field_number_sort_hint": "Вы можете использовать десятичные числа",
       "field_release_date": "Дата выхода",
       "field_release_date_error": "Дата должна быть в действительном YYYY-MM-DD формате",
-      "field_summary": "Описание",
+      "field_summary": "Краткое Описание",
       "field_tags": "Теги",
       "field_title": "Заголовок",
       "tab_authors": "Авторы",
@@ -183,6 +248,7 @@
       "field_name": "Имя",
       "field_root_folder": "Корневой каталог",
       "field_scanner_deep_scan": "Глубокое сканирование",
+      "field_scanner_force_directory_modified_time": "Выполнять поиск даты модификации каталога",
       "file_browser_dialog_button_confirm": "Выбрать",
       "file_browser_dialog_title": "Корневой каталог библиотеки",
       "label_import_comicinfo": "Импорт метаданных для CBR/CBZ, содержащих файл ComicInfo.xml",
@@ -209,11 +275,11 @@
       "field_language": "Язык",
       "field_publisher": "Издатель",
       "field_reading_direction": "Направление Чтения",
-      "field_sort_title": "Заголовок для сортировки",
+      "field_sort_title": "Сортировать по Названию",
       "field_status": "Статус",
-      "field_summary": "Описание",
+      "field_summary": "Краткое Описание",
       "field_tags": "Теги",
-      "field_title": "Заголовок",
+      "field_title": "Название",
       "mixed": "СМЕШАННЫЙ",
       "tab_general": "Общее",
       "tab_tags": "Теги",
@@ -267,8 +333,8 @@
       "UNSUPPORTED": "Неподдреживаемый"
     },
     "reading_direction": {
-      "LEFT_TO_RIGHT": "Слева на право",
-      "RIGHT_TO_LEFT": "Справа на лево",
+      "LEFT_TO_RIGHT": "Слева направо",
+      "RIGHT_TO_LEFT": "Справа налево",
       "VERTICAL": "Вертикально",
       "WEBTOON": "Webtoon"
     },

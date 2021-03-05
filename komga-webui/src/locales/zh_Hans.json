@@ -121,6 +121,7 @@
     "collections": "收藏",
     "create": "创建",
     "delete": "删除",
+    "download": "下载",
     "email": "邮箱",
     "filter_no_matches": "过滤器没有匹配的",
     "genre": "流派",
@@ -133,6 +134,7 @@
     "pages_n": "无 | 1 页 | {count} 页",
     "password": "密码",
     "publisher": "发布者",
+    "read": "阅读",
     "readlists": "阅读列表",
     "required": "要求",
     "roles": "角色",
@@ -421,7 +423,8 @@
     "search_results_for": "\"{name}\"搜索结果"
   },
   "searchbox": {
-    "no_results": "无结果"
+    "no_results": "无结果",
+    "search_all": "搜索全部…"
   },
   "server": {
     "server_management": {

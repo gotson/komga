@@ -17,7 +17,7 @@
     "cover": "couverture",
     "editor": "éditeurs",
     "inker": "encreurs",
-    "letterer": "lettrage",
+    "letterer": "lettreurs",
     "penciller": "dessinateurs",
     "writer": "scénaristes"
   },
@@ -121,6 +121,7 @@
     "collections": "Collections",
     "create": "Créer",
     "delete": "Supprimer",
+    "download": "Télécharger",
     "email": "E-mail",
     "filter_no_matches": "Aucun résultats avec les filtres actuels",
     "genre": "Genre",
@@ -133,6 +134,7 @@
     "pages_n": "Aucune page | 1 page | {count} pages",
     "password": "Mot de passe",
     "publisher": "Éditeur",
+    "read": "Lire",
     "readlists": "Listes de lecture",
     "required": "Requis",
     "roles": "Rôles",
@@ -269,8 +271,8 @@
       "button_confirm": "Enregistrer les modifications",
       "dialog_title_multiple": "Modifier {count} série | Modifier {count} séries",
       "dialog_title_single": "Modifier {series}",
-      "field_age_rating": "Classification d'âge",
-      "field_age_rating_error": "La classification d'âge doit être supérieure ou égale à 0",
+      "field_age_rating": "Âge mininal",
+      "field_age_rating_error": "L'âge minimal doit être supérieur ou égal à 0",
       "field_genres": "Genres",
       "field_language": "Langue",
       "field_publisher": "Éditeur",
@@ -346,8 +348,8 @@
     }
   },
   "filter": {
-    "age_rating": "Classification d'âge",
-    "age_rating_none": "Aucune",
+    "age_rating": "Âge minimal",
+    "age_rating_none": "Aucun",
     "genre": "Genre",
     "language": "Langue",
     "library": "Bibliothèque",
@@ -421,7 +423,8 @@
     "search_results_for": "Résultats de la recherche pour « {name} »"
   },
   "searchbox": {
-    "no_results": "Aucun résultat"
+    "no_results": "Aucun résultat",
+    "search_all": "Rechercher…"
   },
   "server": {
     "server_management": {
