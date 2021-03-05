@@ -121,6 +121,7 @@
     "collections": "Sammlung",
     "create": "Erstelle",
     "delete": "Löschen",
+    "download": "Download",
     "email": "E-Mail",
     "filter_no_matches": "Die Suchkriterien haben kein Ergebnis geliefert",
     "genre": "Genre/Gattung",
@@ -133,6 +134,7 @@
     "pages_n": "Keine Seite | 1 Seite | {count} Seiten",
     "password": "Passwort",
     "publisher": "Verlag",
+    "read": "Lese",
     "readlists": "Leseliste",
     "required": "Benötigt",
     "roles": "Rollen",
@@ -421,7 +423,8 @@
     "search_results_for": "Suchergegnis für \"{name}\""
   },
   "searchbox": {
-    "no_results": "Kein Ergebnis"
+    "no_results": "Kein Ergebnis",
+    "search_all": "Durchsuche alles nach …"
   },
   "server": {
     "server_management": {

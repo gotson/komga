@@ -121,6 +121,7 @@
     "collections": "ديوان كتب مصورة",
     "create": "خلق",
     "delete": "حذف",
+    "download": "تحميل",
     "email": "البريد الإلكتروني",
     "filter_no_matches": "الفلتر النشط ليس له تطابق",
     "genre": "نوع",
@@ -133,6 +134,7 @@
     "pages_n": "لا توجد صفحات | 1 صفحة | {count} صفحات",
     "password": "كلمة السر",
     "publisher": "الناشر",
+    "read": "اقرأ",
     "readlists": "قوائم القراءة",
     "required": "مطلوب",
     "roles": "أدوار",
@@ -313,12 +315,25 @@
       "field_repeat_password": "كرر كلمة السر الجديدة",
       "field_repeat_password_error": "يجب أن تكون كلمات السر متطابقة."
     },
+    "server_stop": {
+      "button_cancel": "إلغاء",
+      "button_confirm": "إيقاف",
+      "confirmation_message": "هل أنت متأكد أنك تريد إيقاف Komga؟",
+      "dialog_title": "إيقاف الخادم"
+    },
     "shortcut_help": {
       "label_description": "الوصف",
       "label_key": "مفتاح"
     }
   },
   "enums": {
+    "media_status": {
+      "ERROR": "خطأ",
+      "OUTDATED": "قديمه",
+      "READY": "مستعد",
+      "UNKNOWN": "غير معروف",
+      "UNSUPPORTED": "غير مدعوم"
+    },
     "reading_direction": {
       "LEFT_TO_RIGHT": "من اليسار إلى اليمين",
       "RIGHT_TO_LEFT": "من اليمين الى اليسار",
@@ -408,7 +423,15 @@
     "search_results_for": "نتائج البحث عن \"{name}\""
   },
   "searchbox": {
-    "no_results": "لاتوجد نتائج"
+    "no_results": "لاتوجد نتائج",
+    "search_all": "بحث كل…"
+  },
+  "server": {
+    "server_management": {
+      "button_shutdown": "إيقاف التشغيل",
+      "section_title": "إدارة الخادم"
+    },
+    "tab_title": "خادم"
   },
   "server_settings": {
     "server_settings": "اعدادات الخادم"
@@ -422,7 +445,9 @@
   "sort": {
     "date_added": "تاريخ الاضافة",
     "date_updated": "تاريخ تحديث",
+    "file_name": "اسم الملف",
     "file_size": "حجم الملف",
+    "folder_name": "اسم المجلد",
     "name": "الاسم",
     "number": "رقم",
     "release_date": "تاريخ الاصدار"
