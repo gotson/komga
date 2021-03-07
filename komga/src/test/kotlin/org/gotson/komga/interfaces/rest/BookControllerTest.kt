@@ -583,7 +583,9 @@ class BookControllerTest(
       strings = [
         """{"title":""}""",
         """{"number":""}""",
-        """{"authors":"[{"name":""}]"}"""
+        """{"authors":"[{"name":""}]"}""",
+        """{"isbn":"1617290459"}""", // isbn 10
+        """{"isbn":"978-123-456-789-6"}""", // invalid check digit
       ]
     )
     @WithMockCustomUser(roles = [ROLE_ADMIN])
@@ -632,7 +634,9 @@ class BookControllerTest(
           ],
           "authorsLock":true,
           "tags":["tag"],
-          "tagsLock":true
+          "tagsLock":true,
+          "isbn":"978-161-729-045-9abc xxxoefj",
+          "isbnLock":true
         }
       """.trimIndent()
 
@@ -658,6 +662,7 @@ class BookControllerTest(
             tuple("newAuthor2", "newauthorrole2")
           )
         assertThat(tags).containsExactly("tag")
+        assertThat(isbn).isEqualTo("9781617290459")
 
         assertThat(titleLock).isEqualTo(true)
         assertThat(summaryLock).isEqualTo(true)
@@ -666,6 +671,7 @@ class BookControllerTest(
         assertThat(releaseDateLock).isEqualTo(true)
         assertThat(authorsLock).isEqualTo(true)
         assertThat(tagsLock).isEqualTo(true)
+        assertThat(isbnLock).isEqualTo(true)
       }
     }
 

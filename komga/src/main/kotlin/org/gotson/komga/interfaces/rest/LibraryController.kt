@@ -80,6 +80,7 @@ class LibraryController(
           importEpubBook = library.importEpubBook,
           importEpubSeries = library.importEpubSeries,
           importLocalArtwork = library.importLocalArtwork,
+          importBarcodeIsbn = library.importBarcodeIsbn,
           scanForceModifiedTime = library.scanForceModifiedTime,
           scanDeep = library.scanDeep
         )
@@ -114,6 +115,7 @@ class LibraryController(
         importEpubBook = library.importEpubBook,
         importEpubSeries = library.importEpubSeries,
         importLocalArtwork = library.importLocalArtwork,
+        importBarcodeIsbn = library.importBarcodeIsbn,
         scanForceModifiedTime = library.scanForceModifiedTime,
         scanDeep = library.scanDeep
       )
@@ -168,6 +170,7 @@ data class LibraryCreationDto(
   val importEpubBook: Boolean = true,
   val importEpubSeries: Boolean = true,
   val importLocalArtwork: Boolean = true,
+  val importBarcodeIsbn: Boolean = true,
   val scanForceModifiedTime: Boolean = false,
   val scanDeep: Boolean = false
 )
@@ -183,6 +186,7 @@ data class LibraryDto(
   val importEpubBook: Boolean,
   val importEpubSeries: Boolean,
   val importLocalArtwork: Boolean,
+  val importBarcodeIsbn: Boolean,
   val scanForceModifiedTime: Boolean,
   val scanDeep: Boolean
 )
@@ -197,6 +201,7 @@ data class LibraryUpdateDto(
   val importEpubBook: Boolean,
   val importEpubSeries: Boolean,
   val importLocalArtwork: Boolean,
+  val importBarcodeIsbn: Boolean,
   val scanForceModifiedTime: Boolean,
   val scanDeep: Boolean
 )
@@ -212,6 +217,7 @@ fun Library.toDto(includeRoot: Boolean) = LibraryDto(
   importEpubBook = importEpubBook,
   importEpubSeries = importEpubSeries,
   importLocalArtwork = importLocalArtwork,
+  importBarcodeIsbn = importBarcodeIsbn,
   scanForceModifiedTime = scanForceModifiedTime,
   scanDeep = scanDeep
 )

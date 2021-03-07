@@ -56,8 +56,6 @@ class EpubMetadataProvider(
       return BookMetadataPatch(
         title = title,
         summary = description,
-        number = null,
-        numberSort = null,
         releaseDate = date,
         authors = authors
       )

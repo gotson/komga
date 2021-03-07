@@ -346,6 +346,8 @@ class BookDtoDao(
       authorsLock = authorsLock,
       tags = tags,
       tagsLock = tagsLock,
+      isbn = isbn,
+      isbnLock = isbnLock,
       created = createdDate,
       lastModified = lastModifiedDate
     )

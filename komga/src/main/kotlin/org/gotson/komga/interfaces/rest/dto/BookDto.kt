@@ -52,6 +52,8 @@ data class BookMetadataDto(
   val authorsLock: Boolean,
   val tags: Set<String>,
   val tagsLock: Boolean,
+  val isbn: String,
+  val isbnLock: Boolean,
 
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val created: LocalDateTime,

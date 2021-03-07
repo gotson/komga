@@ -1,6 +1,7 @@
 package org.gotson.komga.interfaces.rest.dto
 
 import org.gotson.komga.infrastructure.validation.NullOrNotBlank
+import org.hibernate.validator.constraints.ISBN
 import java.time.LocalDate
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
@@ -49,6 +50,11 @@ class BookMetadataUpdateDto {
   }
 
   var tagsLock: Boolean? = null
+
+  @get:ISBN
+  var isbn: String? = null
+
+  var isbnLock: Boolean? = null
 }
 
 class AuthorUpdateDto {

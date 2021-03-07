@@ -443,7 +443,9 @@ class BookController(
           tags = if (isSet("tags")) {
             if (tags != null) tags!! else emptySet()
           } else existing.tags,
-          tagsLock = tagsLock ?: existing.tagsLock
+          tagsLock = tagsLock ?: existing.tagsLock,
+          isbn = isbn?.filter { it.isDigit() } ?: existing.isbn,
+          isbnLock = isbnLock ?: existing.isbnLock
         )
       }
       bookMetadataRepository.update(updated)

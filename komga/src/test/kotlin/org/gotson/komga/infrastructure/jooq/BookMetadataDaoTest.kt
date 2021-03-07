@@ -67,6 +67,7 @@ class BookMetadataDaoTest(
       releaseDate = LocalDate.now(),
       authors = listOf(Author("author", "role")),
       tags = setOf("tag", "another"),
+      isbn = "987654321",
       bookId = book.id,
       titleLock = true,
       summaryLock = true,
@@ -74,7 +75,8 @@ class BookMetadataDaoTest(
       numberSortLock = true,
       releaseDateLock = true,
       authorsLock = true,
-      tagsLock = true
+      tagsLock = true,
+      isbnLock = true,
     )
 
     bookMetadataDao.insert(metadata)
@@ -95,6 +97,7 @@ class BookMetadataDaoTest(
       assertThat(role).isEqualTo(metadata.authors.first().role)
     }
     assertThat(created.tags).containsAll(metadata.tags)
+    assertThat(created.isbn).isEqualTo(metadata.isbn)
 
     assertThat(created.titleLock).isEqualTo(metadata.titleLock)
     assertThat(created.summaryLock).isEqualTo(metadata.summaryLock)
@@ -103,6 +106,7 @@ class BookMetadataDaoTest(
     assertThat(created.releaseDateLock).isEqualTo(metadata.releaseDateLock)
     assertThat(created.authorsLock).isEqualTo(metadata.authorsLock)
     assertThat(created.tagsLock).isEqualTo(metadata.tagsLock)
+    assertThat(created.isbnLock).isEqualTo(metadata.isbnLock)
   }
 
   @Test
@@ -120,20 +124,22 @@ class BookMetadataDaoTest(
     assertThat(created.bookId).isEqualTo(book.id)
 
     assertThat(created.title).isEqualTo(metadata.title)
-    assertThat(created.summary).isBlank()
+    assertThat(created.summary).isBlank
     assertThat(created.number).isEqualTo(metadata.number)
     assertThat(created.numberSort).isEqualTo(metadata.numberSort)
     assertThat(created.releaseDate).isNull()
     assertThat(created.authors).isEmpty()
     assertThat(created.tags).isEmpty()
+    assertThat(created.isbn).isBlank
 
-    assertThat(created.titleLock).isFalse()
-    assertThat(created.summaryLock).isFalse()
-    assertThat(created.numberLock).isFalse()
-    assertThat(created.numberSortLock).isFalse()
-    assertThat(created.releaseDateLock).isFalse()
-    assertThat(created.authorsLock).isFalse()
-    assertThat(created.tagsLock).isFalse()
+    assertThat(created.titleLock).isFalse
+    assertThat(created.summaryLock).isFalse
+    assertThat(created.numberLock).isFalse
+    assertThat(created.numberSortLock).isFalse
+    assertThat(created.releaseDateLock).isFalse
+    assertThat(created.authorsLock).isFalse
+    assertThat(created.tagsLock).isFalse
+    assertThat(created.isbnLock).isFalse
   }
 
   @Test
@@ -160,13 +166,15 @@ class BookMetadataDaoTest(
         releaseDate = LocalDate.now(),
         authors = listOf(Author("author2", "role2")),
         tags = setOf("another"),
+        isbn = "987654321",
         titleLock = true,
         summaryLock = true,
         numberLock = true,
         numberSortLock = true,
         releaseDateLock = true,
         authorsLock = true,
-        tagsLock = true
+        tagsLock = true,
+        isbnLock = true,
       )
     }
 
@@ -183,6 +191,7 @@ class BookMetadataDaoTest(
     assertThat(modified.summary).isEqualTo(updated.summary)
     assertThat(modified.number).isEqualTo(updated.number)
     assertThat(modified.numberSort).isEqualTo(updated.numberSort)
+    assertThat(modified.isbn).isEqualTo(updated.isbn)
 
     assertThat(modified.titleLock).isEqualTo(updated.titleLock)
     assertThat(modified.summaryLock).isEqualTo(updated.summaryLock)
@@ -191,6 +200,7 @@ class BookMetadataDaoTest(
     assertThat(modified.releaseDateLock).isEqualTo(updated.releaseDateLock)
     assertThat(modified.authorsLock).isEqualTo(updated.authorsLock)
     assertThat(modified.tagsLock).isEqualTo(updated.tagsLock)
+    assertThat(modified.isbnLock).isEqualTo(updated.isbnLock)
 
     assertThat(modified.tags).containsAll(updated.tags)
     assertThat(modified.authors.first().name).isEqualTo(updated.authors.first().name)

@@ -63,6 +63,7 @@ dependencies {
 
   implementation("commons-io:commons-io:2.8.0")
   implementation("org.apache.commons:commons-lang3:3.12.0")
+  implementation("commons-validator:commons-validator:1.7")
 
   implementation("com.ibm.icu:icu4j:68.2")
 
@@ -81,6 +82,9 @@ dependencies {
   // support for jpeg2000
   runtimeOnly("com.github.jai-imageio:jai-imageio-jpeg2000:1.4.0")
   runtimeOnly("org.apache.pdfbox:jbig2-imageio:3.0.3")
+
+  // barcode scanning
+  implementation("com.google.zxing:core:3.4.1")
 
   implementation("com.jakewharton.byteunits:byteunits:0.9.1")
 

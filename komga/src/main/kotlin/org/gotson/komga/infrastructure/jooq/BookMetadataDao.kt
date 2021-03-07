@@ -73,8 +73,10 @@ class BookMetadataDao(
             d.RELEASE_DATE,
             d.RELEASE_DATE_LOCK,
             d.AUTHORS_LOCK,
-            d.TAGS_LOCK
-          ).values(null as String?, null, null, null, null, null, null, null, null, null, null, null, null)
+            d.TAGS_LOCK,
+            d.ISBN,
+            d.ISBN_LOCK
+          ).values(null as String?, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
         ).also { step ->
           metadatas.forEach {
             step.bind(
@@ -90,7 +92,9 @@ class BookMetadataDao(
               it.releaseDate,
               it.releaseDateLock,
               it.authorsLock,
-              it.tagsLock
+              it.tagsLock,
+              it.isbn,
+              it.isbnLock
             )
           }
         }.execute()
@@ -129,6 +133,8 @@ class BookMetadataDao(
           .set(d.RELEASE_DATE_LOCK, metadata.releaseDateLock)
           .set(d.AUTHORS_LOCK, metadata.authorsLock)
           .set(d.TAGS_LOCK, metadata.tagsLock)
+          .set(d.ISBN, metadata.isbn)
+          .set(d.ISBN_LOCK, metadata.isbnLock)
           .set(d.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
           .where(d.BOOK_ID.eq(metadata.bookId))
           .execute()
@@ -205,6 +211,7 @@ class BookMetadataDao(
       releaseDate = releaseDate,
       authors = authors,
       tags = tags,
+      isbn = isbn,
 
       bookId = bookId,
 
@@ -217,7 +224,8 @@ class BookMetadataDao(
       numberSortLock = numberSortLock,
       releaseDateLock = releaseDateLock,
       authorsLock = authorsLock,
-      tagsLock = tagsLock
+      tagsLock = tagsLock,
+      isbnLock = isbnLock,
     )
 
   private fun BookMetadataAuthorRecord.toDomain() =
