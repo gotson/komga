@@ -117,7 +117,95 @@ class FileSystemScannerTest {
 
       assertThat(series.map { it.name }).containsExactlyInAnyOrderElementsOf(subDirs.keys)
       series.forEach { s ->
-        assertThat(scan.getValue(s).map { it.name }).containsExactlyInAnyOrderElementsOf(subDirs[s.name]?.map { FilenameUtils.removeExtension(it) })
+        assertThat(
+          scan.getValue(s).map { it.name }
+        ).containsExactlyInAnyOrderElementsOf(
+          subDirs[s.name]?.map {
+            FilenameUtils.removeExtension(
+              it
+            )
+          }
+        )
+      }
+    }
+  }
+
+  @Test
+  fun `given symlink root directory when scanning then return series and books`() {
+    Jimfs.newFileSystem(Configuration.unix()).use { fs ->
+      // given
+      val root = fs.getPath("/root")
+      Files.createDirectory(root)
+
+      val link = fs.getPath("/link")
+      Files.createSymbolicLink(link, root)
+
+      val subDirs = listOf(
+        "series1" to listOf("volume1.cbz", "volume2.cbz"),
+        "series2" to listOf("book1.cbz", "book2.cbz")
+      ).toMap()
+
+      subDirs.forEach { (dir, files) ->
+        makeSubDir(root, dir, files)
+      }
+
+      // when
+      val scan = scanner.scanRootFolder(link)
+      val series = scan.keys
+
+      // then
+      assertThat(scan).hasSize(2)
+
+      assertThat(series.map { it.name }).containsExactlyInAnyOrderElementsOf(subDirs.keys)
+      series.forEach { s ->
+        assertThat(
+          scan.getValue(s).map { it.name }
+        ).containsExactlyInAnyOrderElementsOf(
+          subDirs[s.name]?.map {
+            FilenameUtils.removeExtension(
+              it
+            )
+          }
+        )
+      }
+    }
+  }
+
+  @Test
+  fun `given root directory with symlinks when scanning then return series and books`() {
+    Jimfs.newFileSystem(Configuration.unix()).use { fs ->
+      // given
+      val root = fs.getPath("/root")
+      Files.createDirectory(root)
+
+      val subDirs = listOf(
+        "series1" to listOf("volume1.cbz", "volume2.cbz"),
+        "series2" to listOf("book1.cbz", "book2.cbz")
+      ).toMap()
+
+      subDirs.forEach { (dir, files) ->
+        makeSubDir(root, dir, files)
+        Files.createSymbolicLink(root.resolve("${dir}_link"), root.resolve(dir))
+      }
+
+      // when
+      val scan = scanner.scanRootFolder(root)
+      val series = scan.keys
+
+      // then
+      assertThat(scan).hasSize(4)
+
+      assertThat(series.map { it.name }).containsExactlyInAnyOrderElementsOf(subDirs.keys + subDirs.keys.map { "${it}_link" })
+      series.forEach { s ->
+        assertThat(
+          scan.getValue(s).map { it.name }
+        ).containsExactlyInAnyOrderElementsOf(
+          subDirs[s.name.removeSuffix("_link")]?.map {
+            FilenameUtils.removeExtension(
+              it
+            )
+          }
+        )
       }
     }
   }
