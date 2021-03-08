@@ -174,7 +174,7 @@
       "field_email": "E-post",
       "field_email_error": "Måste vara en giltig e-postadress",
       "field_password": "Lösenord",
-      "field_role_administrator": "Administrator",
+      "field_role_administrator": "Administratör",
       "field_role_file_download": "Filnerladdning",
       "field_role_page_streaming": "Sidströmmning",
       "label_roles": "Roller"
@@ -439,7 +439,7 @@
   "settings_user": {
     "edit_shared_libraries": "Redigera delade bibliotek",
     "edit_user": "Redigera användare",
-    "role_administrator": "Administrator",
+    "role_administrator": "Administratör",
     "role_user": "Användare"
   },
   "sort": {
