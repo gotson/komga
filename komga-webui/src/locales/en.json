@@ -29,9 +29,9 @@
     "cycling_side_padding": "Cycling Side Padding",
     "end_of_book": "You've reached the end of the book.",
     "from_series_metadata": "from series metadata",
-    "move_next": "Click or press next again to move to the next book.",
-    "move_next_exit": "Click or press next again to exit the reader.",
-    "move_previous": "Click or press previous again to move to the previous book.",
+    "move_next": "Click or press \"Next\" again to move to the next book.",
+    "move_next_exit": "Click or press \"Next\" again to exit the reader.",
+    "move_previous": "Click or press \"Previous\" again to move to the previous book.",
     "paged_reader_layout": {
       "double": "Double pages",
       "double_no_cover": "Double pages (no cover)",
