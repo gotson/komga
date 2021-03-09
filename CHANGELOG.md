@@ -1,3 +1,15 @@
+# [0.78.0](https://github.com/gotson/komga/compare/v0.77.3...v0.78.0) (2021-03-09)
+
+
+### Bug Fixes
+
+* **webui:** adjust read and download button icon size ([6cdc777](https://github.com/gotson/komga/commit/6cdc777be9d62116859e956057c8a3396f2d0277))
+
+
+### Features
+
+* add Japanese translation ([8e5748d](https://github.com/gotson/komga/commit/8e5748d97309b5821d38d04c0285f3240a087e7b))
+
 ## [0.77.3](https://github.com/gotson/komga/compare/v0.77.2...v0.77.3) (2021-03-05)
 
 
