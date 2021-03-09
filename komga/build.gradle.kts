@@ -74,8 +74,8 @@ dependencies {
   implementation("org.jsoup:jsoup:1.13.1")
 
   implementation("net.coobird:thumbnailator:0.4.13")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.6.3")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.6.3")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.6.4")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.6.4")
   runtimeOnly(files("$projectDir/libs/webp-imageio-decoder-plugin-0.2.jar"))
   implementation("com.github.gotson:webp-imageio:0.2.0")
   // support for jpeg2000
