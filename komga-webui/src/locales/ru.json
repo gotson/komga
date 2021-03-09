@@ -18,7 +18,7 @@
     "editor": "редакторы",
     "inker": "контуровщики",
     "letterer": "шрифтовики",
-    "penciller": "Художник",
+    "penciller": "художники",
     "writer": "писатели"
   },
   "bookreader": {
@@ -121,6 +121,7 @@
     "collections": "Коллекции",
     "create": "Создать",
     "delete": "Удалить",
+    "download": "Скачать",
     "email": "Эл.почта",
     "filter_no_matches": "Нет совпадений по заданному фильтру",
     "genre": "Жанр",
@@ -133,6 +134,7 @@
     "pages_n": "Страниц нет | 1 страница | {count} страниц",
     "password": "Пароль",
     "publisher": "Издатель",
+    "read": "Читать",
     "readlists": "Списки чтения",
     "required": "Обязательно",
     "roles": "Роли",
@@ -421,7 +423,8 @@
     "search_results_for": "Результаты поиска по запросу \"{name}\""
   },
   "searchbox": {
-    "no_results": "Результатов не найдено"
+    "no_results": "Результатов не найдено",
+    "search_all": "Найти все…"
   },
   "server": {
     "server_management": {

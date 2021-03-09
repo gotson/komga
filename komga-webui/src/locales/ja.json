@@ -1,0 +1,474 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{2} 件中の {0}〜{1}"
+    },
+    "dataTable": {
+      "itemsPerPageText": "ページ毎の行数:"
+    },
+    "noDataText": "データがありません"
+  },
+  "account_settings": {
+    "account_settings": "アカウント設定",
+    "change_password": "パスワード変更"
+  },
+  "author_roles": {
+    "colorist": "カラリスト",
+    "cover": "カバー",
+    "editor": "エディター",
+    "inker": "インカー",
+    "letterer": "レタラー",
+    "penciller": "ペンシラー",
+    "writer": "ライター"
+  },
+  "bookreader": {
+    "beginning_of_book": "ここが本の先頭です。",
+    "changing_reading_direction": "読み方向を変更する",
+    "cycling_page_layout": "ページレイアウトを切り替える",
+    "cycling_scale": "表示サイズを切り替える",
+    "cycling_side_padding": "左右の余白を切り替える",
+    "end_of_book": "ここが本の末尾です。",
+    "from_series_metadata": "シリーズ情報から",
+    "move_next": "もう一度押すと次の本へ移動します。",
+    "move_next_exit": "もう一度押すと本を閉じます。",
+    "move_previous": "もう一度押すと前の本へ移動します。",
+    "paged_reader_layout": {
+      "double": "見開き",
+      "double_no_cover": "見開き (カバーなし)",
+      "single": "単ページ"
+    },
+    "reader_settings": "リーダー設定",
+    "scale_type": {
+      "continuous_original": "オリジナル",
+      "continuous_width": "幅にあわせる",
+      "height": "高さにあわせる",
+      "original": "オリジナル",
+      "screen": "画面にあわせる",
+      "width": "幅にあわせる"
+    },
+    "settings": {
+      "animate_page_transitions": "ページめくりのアニメーション",
+      "background_color": "背景色",
+      "background_colors": {
+        "black": "黒",
+        "white": "白"
+      },
+      "display": "表示",
+      "general": "全般",
+      "gestures": "ジェスチャー",
+      "page_layout": "ページレイアウト",
+      "paged": "リーダーのページ設定",
+      "reading_mode": "読書モード",
+      "scale_type": "大きさ",
+      "side_padding": "左右の余白",
+      "side_padding_none": "なし",
+      "webtoon": "Webtoon リーダー設定"
+    },
+    "shortcuts": {
+      "close": "閉じる",
+      "cycle_page_layout": "ページレイアウトを切り替える",
+      "cycle_scale": "大きさを切り替える",
+      "cycle_side_padding": "左右の余白を切り替える",
+      "first_page": "最初のページ",
+      "last_page": "最後のページ",
+      "left_to_right": "左から右に",
+      "menus": "メニュー",
+      "next_page": "次のページ",
+      "previous_page": "前のページ",
+      "reader_navigation": "リーダーのページ移動",
+      "right_to_left": "右から左に",
+      "settings": "設定",
+      "show_hide_help": "ヘルプを表示/隠す",
+      "show_hide_settings": "設定メニューを表示/隠す",
+      "show_hide_thumbnails": "サムネイルビューを表示/隠す",
+      "show_hide_toolbars": "ツールバーを表示/隠す",
+      "vertical": "縦",
+      "webtoon": "Webtoon"
+    }
+  },
+  "browse_book": {
+    "comment": "コメント",
+    "download_file": "ファイルをダウンロード",
+    "file": "ファイル名",
+    "format": "フォーマット",
+    "navigation_within_readlist": "この読書リスト内の一覧",
+    "read_book": "本を読む",
+    "size": "サイズ"
+  },
+  "browse_collection": {
+    "edit_collection": "コレクションの編集",
+    "edit_elements": "内容を編集",
+    "manual_ordering": "手動で並べる"
+  },
+  "browse_readlist": {
+    "edit_elements": "内容を編集",
+    "edit_readlist": "読書リストの編集"
+  },
+  "browse_series": {
+    "earliest_year_from_release_dates": "シリーズ内の本の発行日のうち、これが最初の年です",
+    "series_no_summary": "このシリーズはサマリがないので、ピックアップしました！",
+    "summary_from_book": "{number} 巻のサマリ:"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "コレクションの管理"
+  },
+  "common": {
+    "all_libraries": "全ライブラリ",
+    "books": "本",
+    "books_n": "0 冊 | 1 冊 | {count} 冊",
+    "cancel": "キャンセル",
+    "close": "閉じる",
+    "collections": "コレクション",
+    "create": "作成",
+    "delete": "削除",
+    "download": "ダウンロード",
+    "email": "メールアドレス",
+    "filter_no_matches": "フィルタに一致するものはありません",
+    "genre": "ジャンル",
+    "go_to_library": "ライブラリへ移動",
+    "locale_name": "日本語",
+    "locale_rtl": "false",
+    "n_selected": "{count} 冊を選択中",
+    "nothing_to_show": "表示するものはありません",
+    "pages": "ページ",
+    "pages_n": "0 ページ | 1 ページ | {count} ページ",
+    "password": "パスワード",
+    "publisher": "出版社",
+    "read": "読む",
+    "readlists": "読書リスト",
+    "required": "必須",
+    "roles": "役割",
+    "series": "シリーズ",
+    "tags": "タグ",
+    "use_filter_panel_to_change_filter": "フィルターパネルを使って有効なフィルタを変更する",
+    "year": "年"
+  },
+  "dashboard": {
+    "keep_reading": "読書を続ける",
+    "on_deck": "次に読む",
+    "recently_added_books": "最近追加された本",
+    "recently_added_series": "最近追加されたシリーズ",
+    "recently_updated_series": "最近更新されたシリーズ"
+  },
+  "dialog": {
+    "add_to_collection": {
+      "button_create": "作成",
+      "card_collection_subtitle": "0 シリーズ | 1 シリーズ | {count} シリーズ",
+      "dialog_title": "コレクションに追加",
+      "field_search_create": "コレクションを検索もしくは作成",
+      "field_search_create_error": "すでに同じコレクション名があります",
+      "label_no_matching_collection": "一致するコレクションはありません"
+    },
+    "add_to_readlist": {
+      "button_create": "作成",
+      "card_readlist_subtitle": "0 冊 | 1 冊 | {count} 冊",
+      "dialog_title": "読書リストに追加",
+      "field_search_create": "読書リストを検索もしくは作成",
+      "field_search_create_error": "すでに同じ名前の読書リストがあります",
+      "label_no_matching_readlist": "一致する読書リストはありません"
+    },
+    "add_user": {
+      "button_cancel": "キャンセル",
+      "button_confirm": "追加",
+      "dialog_title": "ユーザを追加",
+      "field_email": "メールアドレス",
+      "field_email_error": "有効なメールアドレスにしてください",
+      "field_password": "パスワード",
+      "field_role_administrator": "管理者",
+      "field_role_file_download": "ファイルのダウンロード",
+      "field_role_page_streaming": "ストリーム配信",
+      "label_roles": "役割"
+    },
+    "delete_collection": {
+      "button_cancel": "キャンセル",
+      "button_confirm": "削除",
+      "confirm_delete": "はい、コレクション「{name}」を削除します",
+      "dialog_title": "コレクションを削除",
+      "warning_html": "コレクション <b>{name}</b> はこのサーバから削除されます。メディアファイルには影響しません。削除はなかったことに<b>できません</b>。続けますか？"
+    },
+    "delete_library": {
+      "button_cancel": "キャンセル",
+      "button_confirm": "削除",
+      "confirm_delete": "はい、ライブラリ「{name}」を削除します",
+      "title": "ライブラリを削除",
+      "warning_html": "ライブラリ <b>{name}</b> はこのサーバから削除されます。メディアファイルには影響しません。削除はなかったことに<b>できません</b>。続けますか？"
+    },
+    "delete_readlist": {
+      "button_cancel": "キャンセル",
+      "button_confirm": "削除",
+      "confirm_delete": "はい、読書リスト「{name}」を削除します",
+      "dialog_title": "読書リストを削除",
+      "warning_html": "読書リスト<b>{name}</b>はこのサーバから削除されます。メディアファイルには影響しません。削除はなかったことに<b>できません</b>。続けますか？"
+    },
+    "delete_user": {
+      "button_cancel": "キャンセル",
+      "button_confirm": "削除",
+      "confirm_delete": "はい、ユーザ「{name}」を削除します",
+      "dialog_title": "ユーザを削除",
+      "warning_html": "ユーザ<b>{name}</b>はこのサーバから削除されます。削除はなかったことに<b>できません</b>。続けますか？"
+    },
+    "edit_books": {
+      "authors_notice_multiple_edit": "複数冊まとめて著者情報を編集しています。それぞれの本の著者情報より優先されるようになります。",
+      "button_cancel": "キャンセル",
+      "button_confirm": "変更を保存",
+      "dialog_title_multiple": "{count} 冊を編集",
+      "dialog_title_single": "{book} を編集",
+      "field_number": "ナンバー",
+      "field_number_sort": "ソートナンバー",
+      "field_number_sort_hint": "十進数が使えます",
+      "field_release_date": "発行日",
+      "field_release_date_error": "日付は YYYY-MM-DD 形式にしてください",
+      "field_summary": "サマリ",
+      "field_tags": "タグ",
+      "field_title": "タイトル",
+      "tab_authors": "著作者",
+      "tab_general": "一般",
+      "tab_tags": "タグ",
+      "tags_notice_multiple_edit": "複数冊まとめてタグを編集しています。それぞれの本のタグより優先されるようになります。"
+    },
+    "edit_collection": {
+      "button_cancel": "キャンセル",
+      "button_confirm": "変更を保存",
+      "dialog_title": "コレクションを編集",
+      "field_manual_ordering": "手動で並べる",
+      "label_ordering": "コレクション中のシリーズは、デフォルトでは名前順に並びます。並び順を自分で決めるために、手動で並べることができます。"
+    },
+    "edit_library": {
+      "button_browse": "ブラウズ",
+      "button_cancel": "キャンセル",
+      "button_confirm_add": "追加",
+      "button_confirm_edit": "編集",
+      "dialog_title_add": "ライブラリを追加",
+      "dialot_title_edit": "ライブラリを編集",
+      "field_import_comicinfo_book": "書誌情報",
+      "field_import_comicinfo_collections": "コレクション",
+      "field_import_comicinfo_readlists": "読書リスト",
+      "field_import_comicinfo_series": "シリーズ情報",
+      "field_import_epub_book": "書誌情報",
+      "field_import_epub_series": "シリーズ情報",
+      "field_import_local_artwork": "ローカルのアートワーク",
+      "field_name": "ライブラリ名",
+      "field_root_folder": "ルートフォルダ",
+      "field_scanner_deep_scan": "ディープスキャン",
+      "field_scanner_force_directory_modified_time": "ディレクトリの変更時刻が更新されているものと見なす",
+      "file_browser_dialog_button_confirm": "選択",
+      "file_browser_dialog_title": "ライブラリのルートフォルダ",
+      "label_import_comicinfo": "ComicInfo.xml ファイルを含んだ CBR/CBZ から情報をインポート",
+      "label_import_epub": "EPUB ファイルから書誌情報をインポート",
+      "label_import_local": "ローカルのメディアをインポート",
+      "label_scanner": "スキャナ",
+      "tab_general": "一般",
+      "tab_options": "オプション"
+    },
+    "edit_readlist": {
+      "button_cancel": "キャンセル",
+      "button_confirm": "変更を保存",
+      "dialog_title": "読書リストを編集",
+      "field_name": "リスト名"
+    },
+    "edit_series": {
+      "button_cancel": "キャンセル",
+      "button_confirm": "変更を保存",
+      "dialog_title_multiple": "シリーズ {count} 件を編集 | シリーズ {count} 件を編集",
+      "dialog_title_single": "{series} を編集",
+      "field_age_rating": "年齢レーティング",
+      "field_age_rating_error": "年齢レーティングは 0 以上にしてください",
+      "field_genres": "ジャンル",
+      "field_language": "言語",
+      "field_publisher": "出版社",
+      "field_reading_direction": "読み方向",
+      "field_sort_title": "ソート用タイトル",
+      "field_status": "執筆状況",
+      "field_summary": "サマリ",
+      "field_tags": "タグ",
+      "field_title": "タイトル",
+      "mixed": "MIXED",
+      "tab_general": "全般",
+      "tab_tags": "タグ",
+      "tags_notice_multiple_edit": "複数シリーズまとめてタグを編集しています。それぞれのシリーズのタグより優先されるようになります。"
+    },
+    "edit_user": {
+      "button_cancel": "キャンセル",
+      "button_confirm": "変更を保存",
+      "dialog_title": "ユーザを編集",
+      "label_roles_for": "{name} がもつ役割"
+    },
+    "edit_user_shared_libraries": {
+      "button_cancel": "キャンセル",
+      "button_confirm": "変更を保存",
+      "dialog_title": "共有ライブラリを編集",
+      "field_all_libraries": "全ライブラリ",
+      "label_shared_with": "{name} と共有"
+    },
+    "file_browser": {
+      "button_cancel": "キャンセル",
+      "button_confirm_default": "選択",
+      "dialog_title_default": "ファイルブラウザ",
+      "parent_directory": "親フォルダ"
+    },
+    "password_change": {
+      "button_cancel": "キャンセル",
+      "button_confirm": "パスワード変更",
+      "dialog_title": "パスワード変更",
+      "field_new_password": "新しいパスワード",
+      "field_new_password_error": "新しいパスワードは必須です。",
+      "field_repeat_password": "新しいパスワードを再入力",
+      "field_repeat_password_error": "パスワードを一致させてください。"
+    },
+    "server_stop": {
+      "button_cancel": "キャンセル",
+      "button_confirm": "停止",
+      "confirmation_message": "本当に komga を停止しますか？",
+      "dialog_title": "サーバをシャットダウン"
+    },
+    "shortcut_help": {
+      "label_description": "説明",
+      "label_key": "キー"
+    }
+  },
+  "enums": {
+    "media_status": {
+      "ERROR": "エラー",
+      "OUTDATED": "Outdated",
+      "READY": "Ready",
+      "UNKNOWN": "Unknown",
+      "UNSUPPORTED": "Unsupported"
+    },
+    "reading_direction": {
+      "LEFT_TO_RIGHT": "左から右",
+      "RIGHT_TO_LEFT": "右から左",
+      "VERTICAL": "縦",
+      "WEBTOON": "Webtoon"
+    },
+    "series_status": {
+      "ABANDONED": "打ち切り",
+      "ENDED": "完結",
+      "HIATUS": "休載",
+      "ONGOING": "連載中"
+    }
+  },
+  "filter": {
+    "age_rating": "年齢レーティング",
+    "age_rating_none": "なし",
+    "genre": "ジャンル",
+    "language": "言語",
+    "library": "ライブラリ",
+    "publisher": "出版社",
+    "release_date": "発売日",
+    "status": "執筆状況",
+    "tag": "タグ",
+    "unread": "未読"
+  },
+  "filter_drawer": {
+    "filter": "フィルタ",
+    "sort": "並び替え"
+  },
+  "home": {
+    "theme": "テーマ",
+    "translation": "翻訳"
+  },
+  "library_navigation": {
+    "browse": "ブラウズ",
+    "collections": "コレクション",
+    "readlists": "読書リスト"
+  },
+  "login": {
+    "create_user_account": "ユーザアカウントを作成",
+    "login": "ログイン",
+    "unclaimed_html": "この Komga サーバはまだ有効になっておらず、アクセスするためのユーザアカウントを作成する必要があります。<br><br><strong>メールアドレス</strong>と<strong>パスワード</strong>を選んで<strong>ユーザアカウントの作成</strong>を押してください。"
+  },
+  "media_analysis": {
+    "comment": "コメント",
+    "media_analysis": "メディア分析",
+    "media_type": "メディアタイプ",
+    "name": "ファイル名",
+    "size": "サイズ",
+    "status": "状態",
+    "url": "URL"
+  },
+  "menu": {
+    "add_to_collection": "コレクションに追加",
+    "add_to_readlist": "読書リストに追加",
+    "analyze": "分析",
+    "delete": "削除",
+    "download_series": "シリーズをダウンロード",
+    "edit": "編集",
+    "edit_metadata": "情報を編集",
+    "mark_read": "既読にする",
+    "mark_unread": "未読にする",
+    "refresh_metadata": "情報を更新",
+    "scan_library_files": "ライブラリ内のファイルをスキャン"
+  },
+  "navigation": {
+    "home": "ホーム",
+    "libraries": "ライブラリ",
+    "logout": "ログアウト"
+  },
+  "page_not_found": {
+    "go_back_to_home_page": "ホームページに戻る",
+    "page_does_not_exist": "お探しのページはありません。",
+    "page_not_found": "ページが見つかりません"
+  },
+  "read_more": {
+    "less": "省略する",
+    "more": "続きを読む"
+  },
+  "readlists_expansion_panel": {
+    "manage_readlist": "読書リストを管理"
+  },
+  "search": {
+    "no_results": "検索結果はありませんでした",
+    "search": "検索",
+    "search_for_something_else": "別の検索を試してください",
+    "search_results_for": "\"{name}\" の検索結果"
+  },
+  "searchbox": {
+    "no_results": "何も見つかりませんでした",
+    "search_all": "全て検索する…"
+  },
+  "server": {
+    "server_management": {
+      "button_shutdown": "シャットダウン",
+      "section_title": "サーバ管理"
+    },
+    "tab_title": "サーバ"
+  },
+  "server_settings": {
+    "server_settings": "サーバ設定"
+  },
+  "settings_user": {
+    "edit_shared_libraries": "共有ライブラリの編集",
+    "edit_user": "ユーザの編集",
+    "role_administrator": "管理者",
+    "role_user": "ユーザ"
+  },
+  "sort": {
+    "date_added": "追加した日",
+    "date_updated": "更新した日",
+    "file_name": "ファイル名",
+    "file_size": "ファイルサイズ",
+    "folder_name": "フォルダ名",
+    "name": "書名",
+    "number": "巻数",
+    "release_date": "発行日"
+  },
+  "theme": {
+    "dark": "ダーク",
+    "light": "ライト",
+    "system": "システムに任せる"
+  },
+  "user_roles": {
+    "ADMIN": "管理者",
+    "FILE_DOWNLOAD": "ファイルのダウンロード",
+    "PAGE_STREAMING": "ストリーム配信",
+    "USER": "ユーザ"
+  },
+  "users": {
+    "users": "ユーザ"
+  },
+  "welcome": {
+    "add_library": "ライブラリを追加",
+    "no_libraries_yet": "まだライブラリが追加されていません！",
+    "welcome_message": "Komga へようこそ"
+  }
+}
