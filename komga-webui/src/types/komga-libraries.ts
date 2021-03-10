@@ -8,6 +8,7 @@ interface LibraryCreationDto {
   importEpubBook: boolean,
   importEpubSeries: boolean,
   importLocalArtwork: boolean,
+  importBarcodeIsbn: boolean,
   scanForceModifiedTime: boolean,
   scanDeep: boolean
 }
@@ -22,6 +23,7 @@ interface LibraryUpdateDto {
   importEpubBook: boolean,
   importEpubSeries: boolean,
   importLocalArtwork: boolean,
+  importBarcodeIsbn: boolean,
   scanForceModifiedTime: boolean,
   scanDeep: boolean
 }
@@ -37,6 +39,7 @@ interface LibraryDto {
   importEpubBook: boolean,
   importEpubSeries: boolean,
   importLocalArtwork: boolean,
+  importBarcodeIsbn: boolean,
   scanForceModifiedTime: boolean,
   scanDeep: boolean
 }

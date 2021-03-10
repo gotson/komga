@@ -258,7 +258,9 @@
       "label_import_local": "Import local media assets",
       "label_scanner": "Scanner",
       "tab_general": "General",
-      "tab_options": "Options"
+      "tab_options": "Options",
+      "field_import_barcode_isbn": "ISBN barcode",
+      "label_import_barcode_isbn": "Import ISBN within barcode"
     },
     "edit_readlist": {
       "button_cancel": "Cancel",

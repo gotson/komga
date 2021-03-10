@@ -125,6 +125,17 @@
                     </v-col>
                   </v-row>
                   <v-row>
+                    <v-col>
+                      <span class="text-subtitle-2">{{ $t('dialog.edit_library.label_import_barcode_isbn') }}</span>
+                      <v-checkbox
+                        v-model="form.importBarcodeIsbn"
+                        :label="$t('dialog.edit_library.field_import_barcode_isbn')"
+                        hide-details
+                        class="mx-4"
+                      />
+                    </v-col>
+                  </v-row>
+                  <v-row>
                     <v-col cols="auto">
                       <span class="text-subtitle-2">{{ $t('dialog.edit_library.label_scanner') }}</span>
                       <v-checkbox
@@ -194,6 +205,7 @@ export default Vue.extend({
         importEpubBook: true,
         importEpubSeries: true,
         importLocalArtwork: true,
+        importBarcodeIsbn: true,
         scanForceModifiedTime: false,
         scanDeep: false,
       },
@@ -263,6 +275,7 @@ export default Vue.extend({
       this.form.importEpubBook = library ? library.importEpubBook : true
       this.form.importEpubSeries = library ? library.importEpubSeries : true
       this.form.importLocalArtwork = library ? library.importLocalArtwork : true
+      this.form.importBarcodeIsbn = library ? library.importBarcodeIsbn : true
       this.form.scanForceModifiedTime = library ? library.scanForceModifiedTime : false
       this.form.scanDeep = library ? library.scanDeep : false
       this.$v.$reset()
@@ -281,6 +294,7 @@ export default Vue.extend({
           importEpubBook: this.form.importEpubBook,
           importEpubSeries: this.form.importEpubSeries,
           importLocalArtwork: this.form.importLocalArtwork,
+          importBarcodeIsbn: this.form.importBarcodeIsbn,
           scanForceModifiedTime: this.form.scanForceModifiedTime,
           scanDeep: this.form.scanDeep,
         }
