@@ -1,7 +1,7 @@
 package org.gotson.komga.interfaces.rest.dto
 
+import org.gotson.komga.infrastructure.validation.NullOrBlankOrISBN
 import org.gotson.komga.infrastructure.validation.NullOrNotBlank
-import org.hibernate.validator.constraints.ISBN
 import java.time.LocalDate
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
@@ -16,7 +16,10 @@ class BookMetadataUpdateDto {
 
   var titleLock: Boolean? = null
 
-  var summary: String? = null
+  var summary: String?
+    by Delegates.observable(null) { prop, _, _ ->
+    isSet[prop.name] = true
+  }
 
   var summaryLock: Boolean? = null
 
@@ -30,7 +33,7 @@ class BookMetadataUpdateDto {
   var numberSortLock: Boolean? = null
 
   var releaseDate: LocalDate?
-    by Delegates.observable<LocalDate?>(null) { prop, _, _ ->
+    by Delegates.observable(null) { prop, _, _ ->
     isSet[prop.name] = true
   }
 
@@ -38,21 +41,24 @@ class BookMetadataUpdateDto {
 
   @get:Valid
   var authors: List<AuthorUpdateDto>?
-    by Delegates.observable<List<AuthorUpdateDto>?>(null) { prop, _, _ ->
+    by Delegates.observable(null) { prop, _, _ ->
     isSet[prop.name] = true
   }
 
   var authorsLock: Boolean? = null
 
   var tags: Set<String>?
-    by Delegates.observable<Set<String>?>(null) { prop, _, _ ->
+    by Delegates.observable(null) { prop, _, _ ->
     isSet[prop.name] = true
   }
 
   var tagsLock: Boolean? = null
 
-  @get:ISBN
-  var isbn: String? = null
+  @get:NullOrBlankOrISBN
+  var isbn: String?
+    by Delegates.observable(null) { prop, _, _ ->
+    isSet[prop.name] = true
+  }
 
   var isbnLock: Boolean? = null
 }

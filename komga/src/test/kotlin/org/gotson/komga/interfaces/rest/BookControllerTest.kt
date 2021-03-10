@@ -677,6 +677,47 @@ class BookControllerTest(
 
     @Test
     @WithMockCustomUser(roles = [ROLE_ADMIN])
+    fun `given json with blank fields when updating metadata then fields with blanks are unset`() {
+      makeSeries(name = "series", libraryId = library.id).let { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(makeBook("1.cbr", libraryId = library.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+      }
+
+      val bookId = bookRepository.findAll().first().id
+      bookMetadataRepository.findById(bookId).let { metadata ->
+        val updated = metadata.copy(
+          summary = "summary",
+          isbn = "9781617290459",
+        )
+
+        bookMetadataRepository.update(updated)
+      }
+
+      val jsonString = """
+        {
+          "summary":"",
+          "isbn":""
+        }
+      """.trimIndent()
+
+      mockMvc.patch("/api/v1/books/$bookId/metadata") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
+        status { isNoContent() }
+      }
+
+      val updatedMetadata = bookMetadataRepository.findById(bookId)
+      with(updatedMetadata) {
+        assertThat(summary).isBlank
+        assertThat(isbn).isBlank
+      }
+    }
+
+    @Test
+    @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given json with null fields when updating metadata then fields with null are unset`() {
       val testDate = LocalDate.of(2020, 1, 1)
 
@@ -692,7 +733,9 @@ class BookControllerTest(
         val updated = metadata.copy(
           authors = metadata.authors.toMutableList().also { it.add(Author("Author", "role")) },
           releaseDate = testDate,
-          tags = setOf("tag")
+          tags = setOf("tag"),
+          summary = "summary",
+          isbn = "9781617290459",
         )
 
         bookMetadataRepository.update(updated)
@@ -708,7 +751,9 @@ class BookControllerTest(
         {
           "authors":null,
           "releaseDate":null,
-          "tags":null
+          "tags":null,
+          "summary":null,
+          "isbn":null
         }
       """.trimIndent()
 
@@ -724,6 +769,8 @@ class BookControllerTest(
         assertThat(authors).isEmpty()
         assertThat(releaseDate).isNull()
         assertThat(tags).isEmpty()
+        assertThat(summary).isBlank
+        assertThat(isbn).isBlank
       }
     }
 
@@ -749,7 +796,8 @@ class BookControllerTest(
           numberLock = true,
           numberSort = 2F,
           numberSortLock = true,
-          title = "title"
+          title = "title",
+          isbn = "9781617290459",
         )
 
         bookMetadataRepository.update(updated)
@@ -775,6 +823,7 @@ class BookControllerTest(
         assertThat(number).isEqualTo("number")
         assertThat(numberSort).isEqualTo(2F)
         assertThat(title).isEqualTo("title")
+        assertThat(isbn).isEqualTo("9781617290459")
       }
     }
   }

@@ -428,7 +428,7 @@ class BookController(
         existing.copy(
           title = title ?: existing.title,
           titleLock = titleLock ?: existing.titleLock,
-          summary = summary ?: existing.summary,
+          summary = if (isSet("summary")) summary ?: "" else existing.summary,
           summaryLock = summaryLock ?: existing.summaryLock,
           number = number ?: existing.number,
           numberLock = numberLock ?: existing.numberLock,
@@ -444,7 +444,7 @@ class BookController(
             if (tags != null) tags!! else emptySet()
           } else existing.tags,
           tagsLock = tagsLock ?: existing.tagsLock,
-          isbn = isbn?.filter { it.isDigit() } ?: existing.isbn,
+          isbn = if (isSet("isbn")) isbn?.filter { it.isDigit() } ?: "" else existing.isbn,
           isbnLock = isbnLock ?: existing.isbnLock
         )
       }
