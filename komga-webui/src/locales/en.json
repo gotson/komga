@@ -91,6 +91,7 @@
     "download_file": "Download file",
     "file": "FILE",
     "format": "FORMAT",
+    "isbn": "ISBN",
     "navigation_within_readlist": "Navigation within the readlist",
     "read_book": "Read book",
     "size": "SIZE"
@@ -213,6 +214,8 @@
       "button_confirm": "Save changes",
       "dialog_title_multiple": "Edit {count} book | Edit {count} books",
       "dialog_title_single": "Edit {book}",
+      "field_isbn": "ISBN",
+      "field_isbn_error": "Must be a valid ISBN 13",
       "field_number": "Number",
       "field_number_sort": "Sort Number",
       "field_number_sort_hint": "You can use decimal numbers",

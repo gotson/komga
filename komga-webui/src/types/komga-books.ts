@@ -1,4 +1,4 @@
-import { Context } from '@/types/context'
+import {Context} from '@/types/context'
 
 export interface BookDto {
   id: string,
@@ -57,8 +57,10 @@ export interface BookMetadataDto {
   releaseDateLock: boolean,
   authors: AuthorDto[],
   authorsLock: boolean,
-  tags: String[],
-  tagsLock: boolean
+  tags: string[],
+  tagsLock: boolean,
+  isbn: string,
+  isbnLock: boolean
 }
 
 export interface ReadProgressDto {
@@ -81,8 +83,10 @@ export interface BookMetadataUpdateDto {
   releaseDateLock?: boolean,
   authors?: AuthorDto[],
   authorsLock?: boolean,
-  tags?: String[],
+  tags?: string[],
   tagsLock?: boolean
+  isbn?: string,
+  isbnLock?: boolean
 }
 
 export interface AuthorDto {

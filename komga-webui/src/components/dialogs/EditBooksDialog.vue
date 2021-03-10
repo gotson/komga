@@ -134,9 +134,9 @@
                     </v-col>
                   </v-row>
 
-                  <!--  Release Date  -->
                   <v-row v-if="single">
-                    <v-col cols="12">
+                    <!--  Release Date  -->
+                    <v-col cols="6">
                       <v-text-field v-model="form.releaseDate"
                                     :label="$t('dialog.edit_books.field_release_date')"
                                     filled
@@ -152,6 +152,28 @@
                                   @click="form.releaseDateLock = !form.releaseDateLock"
                           >
                             {{ form.releaseDateLock ? 'mdi-lock' : 'mdi-lock-open' }}
+                          </v-icon>
+                        </template>
+                      </v-text-field>
+                    </v-col>
+
+                    <!--  ISBN  -->
+                    <v-col cols="6">
+                      <v-text-field v-model="form.isbn"
+                                    :label="$t('dialog.edit_books.field_isbn')"
+                                    filled
+                                    dense
+                                    placeholder="978-2-20-504375-4"
+                                    clearable
+                                    :error-messages="isbnErrors"
+                                    @blur="$v.form.isbn.$touch()"
+                                    @change="form.isbnLock = true"
+                      >
+                        <template v-slot:prepend>
+                          <v-icon :color="form.isbnLock ? 'secondary' : ''"
+                                  @click="form.isbnLock = !form.isbnLock"
+                          >
+                            {{ form.isbnLock ? 'mdi-lock' : 'mdi-lock-open' }}
                           </v-icon>
                         </template>
                       </v-text-field>
@@ -277,8 +299,13 @@ import moment from 'moment'
 import Vue from 'vue'
 import {helpers, requiredIf} from 'vuelidate/lib/validators'
 import {BookDto} from '@/types/komga-books'
+import ISBN from '@saekitominaga/isbn-verify'
 
-const validDate = (value: any) => !helpers.req(value) || moment(value, 'YYYY-MM-DD', true).isValid()
+const validDate = (value: string) => !helpers.req(value) || moment(value, 'YYYY-MM-DD', true).isValid()
+const validIsbn = (value: string) => {
+  const isbn = new ISBN(value.replaceAll('-', ''))
+  return (!helpers.req(value) || (isbn.isIsbn13() && isbn.isValid()))
+}
 
 export default Vue.extend({
   name: 'EditBooksDialog',
@@ -303,6 +330,8 @@ export default Vue.extend({
         authorsLock: false,
         tags: [] as string[],
         tagsLock: false,
+        isbn: '',
+        isbnLock: false,
       },
       authorSearch: [],
       authorSearchResults: [] as string[],
@@ -358,6 +387,7 @@ export default Vue.extend({
       releaseDate: {validDate},
       summary: {},
       authors: {},
+      isbn: {validIsbn},
     },
   },
   async created() {
@@ -387,6 +417,12 @@ export default Vue.extend({
       const errors = [] as string[]
       if (!this.$v.form?.releaseDate?.$dirty) return errors
       !this.$v?.form?.releaseDate?.validDate && errors.push(this.$t('dialog.edit_books.field_release_date_error').toString())
+      return errors
+    },
+    isbnErrors(): string[] {
+      const errors = [] as string[]
+      if (!this.$v.form?.isbn?.$dirty) return errors
+      !this.$v?.form?.isbn?.validIsbn && errors.push(this.$t('dialog.edit_books.field_isbn_error').toString())
       return errors
     },
   },
@@ -459,6 +495,7 @@ export default Vue.extend({
             numberSortLock: this.form.numberSortLock,
             summaryLock: this.form.summaryLock,
             releaseDateLock: this.form.releaseDateLock,
+            isbnLock: this.form.isbnLock,
           })
 
           if (this.$v.form?.title?.$dirty) {
@@ -479,6 +516,10 @@ export default Vue.extend({
 
           if (this.$v.form?.releaseDate?.$dirty) {
             this.$_.merge(metadata, {releaseDate: this.form.releaseDate ? this.form.releaseDate : null})
+          }
+
+          if (this.$v.form?.isbn?.$dirty) {
+            this.$_.merge(metadata, {isbn: this.form.isbn})
           }
         }
 
