@@ -76,41 +76,63 @@
                 <v-container fluid>
                   <v-row>
                     <v-col>
-                      <span class="text-subtitle-2">{{ $t('dialog.edit_library.label_import_comicinfo') }}</span>
+                      <v-checkbox
+                        v-model="importComicInfo"
+                        :indeterminate="importComicInfo === 1"
+                        hide-details
+                      >
+                        <template v-slot:label>
+                          <span class="text-subtitle-2 text--primary">{{ $t('dialog.edit_library.label_import_comicinfo') }}</span>
+                        </template>
+                      </v-checkbox>
                       <v-checkbox
                         v-model="form.importComicInfoBook"
                         :label="$t('dialog.edit_library.field_import_comicinfo_book')"
                         hide-details
+                        class="mx-4"
                       />
                       <v-checkbox
                         v-model="form.importComicInfoSeries"
                         :label="$t('dialog.edit_library.field_import_comicinfo_series')"
                         hide-details
+                        class="mx-4"
                       />
                       <v-checkbox
                         v-model="form.importComicInfoCollection"
                         :label="$t('dialog.edit_library.field_import_comicinfo_collections')"
                         hide-details
+                        class="mx-4"
                       />
                       <v-checkbox
                         v-model="form.importComicInfoReadList"
                         :label="$t('dialog.edit_library.field_import_comicinfo_readlists')"
                         hide-details
+                        class="mx-4"
                       />
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col>
-                      <span class="text-subtitle-2">{{ $t('dialog.edit_library.label_import_epub') }}</span>
+                      <v-checkbox
+                        v-model="importEpub"
+                        :indeterminate="importEpub === 1"
+                        hide-details
+                      >
+                        <template v-slot:label>
+                          <span class="text-subtitle-2 text--primary">{{ $t('dialog.edit_library.label_import_epub') }}</span>
+                        </template>
+                      </v-checkbox>
                       <v-checkbox
                         v-model="form.importEpubBook"
                         :label="$t('dialog.edit_library.field_import_epub_book')"
                         hide-details
+                        class="mx-4"
                       />
                       <v-checkbox
                         v-model="form.importEpubSeries"
                         :label="$t('dialog.edit_library.field_import_epub_series')"
                         hide-details
+                        class="mx-4"
                       />
                     </v-col>
                   </v-row>
@@ -121,6 +143,7 @@
                         v-model="form.importLocalArtwork"
                         :label="$t('dialog.edit_library.field_import_local_artwork')"
                         hide-details
+                        class="mx-4"
                       />
                     </v-col>
                   </v-row>
@@ -137,16 +160,26 @@
                   </v-row>
                   <v-row>
                     <v-col cols="auto">
-                      <span class="text-subtitle-2">{{ $t('dialog.edit_library.label_scanner') }}</span>
+                      <v-checkbox
+                        v-model="scanner"
+                        :indeterminate="scanner === 1"
+                        hide-details
+                      >
+                        <template v-slot:label>
+                          <span class="text-subtitle-2 text--primary">{{ $t('dialog.edit_library.label_scanner') }}</span>
+                        </template>
+                      </v-checkbox>
                       <v-checkbox
                         v-model="form.scanForceModifiedTime"
                         :label="$t('dialog.edit_library.field_scanner_force_directory_modified_time')"
                         hide-details
+                        class="mx-4"
                       />
                       <v-checkbox
                         v-model="form.scanDeep"
                         :label="$t('dialog.edit_library.field_scanner_deep_scan')"
                         hide-details
+                        class="mx-4"
                       />
                     </v-col>
                   </v-row>
@@ -218,6 +251,50 @@ export default Vue.extend({
     },
     confirmText(): string {
       return this.library ? this.$t('dialog.edit_library.button_confirm_edit').toString() : this.$t('dialog.edit_library.button_confirm_add').toString()
+    },
+
+    importComicInfo: {
+      get: function (): number {
+        const val = [this.form.importComicInfoBook, this.form.importComicInfoCollection, this.form.importComicInfoReadList, this.form.importComicInfoSeries]
+        const count = val.filter(Boolean).length
+        if (count === val.length) return 2
+        if (count === 0) return 0
+        return 1
+      },
+      set: function (value: boolean): void {
+        this.form.importComicInfoBook = value
+        this.form.importComicInfoCollection = value
+        this.form.importComicInfoReadList = value
+        this.form.importComicInfoSeries = value
+      },
+    },
+
+    importEpub: {
+      get: function (): number {
+        const val = [this.form.importEpubBook, this.form.importEpubSeries]
+        const count = val.filter(Boolean).length
+        if (count === val.length) return 2
+        if (count === 0) return 0
+        return 1
+      },
+      set: function (value: boolean): void {
+        this.form.importEpubBook = value
+        this.form.importEpubSeries = value
+      },
+    },
+
+    scanner: {
+      get: function (): number {
+        const val = [this.form.scanDeep, this.form.scanForceModifiedTime]
+        const count = val.filter(Boolean).length
+        if (count === val.length) return 2
+        if (count === 0) return 0
+        return 1
+      },
+      set: function (value: boolean): void {
+        this.form.scanDeep = value
+        this.form.scanForceModifiedTime = value
+      },
     },
   },
   props: {
