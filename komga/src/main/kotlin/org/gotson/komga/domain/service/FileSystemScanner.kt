@@ -17,7 +17,6 @@ import java.nio.file.attribute.BasicFileAttributes
 import java.nio.file.attribute.FileTime
 import java.time.LocalDateTime
 import java.time.ZoneId
-import kotlin.streams.asSequence
 import kotlin.time.measureTime
 
 private val logger = KotlinLogging.logger {}
@@ -38,71 +37,80 @@ class FileSystemScanner(
     if (!(Files.isDirectory(root) && Files.isReadable(root)))
       throw DirectoryNotFoundException("Library root is not accessible: $root")
 
-    lateinit var scannedSeries: Map<Series, List<Book>>
+    val scannedSeries = mutableMapOf<Series, List<Book>>()
 
     measureTime {
-      val dirs = mutableListOf<Path>()
+      val pathToSeries = mutableMapOf<Path, Series>()
+      val pathToBooks = mutableMapOf<Path, MutableList<Book>>()
 
       Files.walkFileTree(
         root, setOf(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE,
         object : FileVisitor<Path> {
-          override fun preVisitDirectory(dir: Path, attrs: BasicFileAttributes?): FileVisitResult {
+          override fun preVisitDirectory(dir: Path, attrs: BasicFileAttributes): FileVisitResult {
             logger.trace { "preVisit: $dir" }
-            if (Files.isHidden(dir) || komgaProperties.librariesScanDirectoryExclusions.any { exclude ->
-              dir.toString().contains(exclude, true)
-            }
+            if (dir.fileName.toString().startsWith(".") ||
+              komgaProperties.librariesScanDirectoryExclusions.any { exclude ->
+                dir.toString().contains(exclude, true)
+              }
             ) return FileVisitResult.SKIP_SUBTREE
 
-            dirs.add(dir)
+            pathToSeries[dir] = Series(
+              name = dir.fileName.toString(),
+              url = dir.toUri().toURL(),
+              fileLastModified = attrs.getUpdatedTime()
+            )
+
             return FileVisitResult.CONTINUE
           }
 
-          override fun visitFile(file: Path?, attrs: BasicFileAttributes?): FileVisitResult = FileVisitResult.CONTINUE
+          override fun visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult {
+            logger.trace { "visitFile: $file" }
+            if (attrs.isRegularFile &&
+              supportedExtensions.contains(FilenameUtils.getExtension(file.fileName.toString()).toLowerCase()) &&
+              !file.fileName.toString().startsWith(".")
+            ) {
+              val book = Book(
+                name = FilenameUtils.getBaseName(file.fileName.toString()),
+                url = file.toUri().toURL(),
+                fileLastModified = attrs.getUpdatedTime(),
+                fileSize = attrs.size()
+              )
+              file.parent.let { key ->
+                if (pathToBooks.containsKey(key)) pathToBooks[key]!!.add(book)
+                else pathToBooks[key] = mutableListOf(book)
+              }
+            }
+
+            return FileVisitResult.CONTINUE
+          }
 
           override fun visitFileFailed(file: Path?, exc: IOException?): FileVisitResult {
             logger.warn { "Could not access: $file" }
             return FileVisitResult.SKIP_SUBTREE
           }
 
-          override fun postVisitDirectory(dir: Path?, exc: IOException?): FileVisitResult = FileVisitResult.CONTINUE
+          override fun postVisitDirectory(dir: Path, exc: IOException?): FileVisitResult {
+            logger.trace { "postVisit: $dir" }
+            val books = pathToBooks[dir]
+            val series = pathToSeries[dir]
+            if (!books.isNullOrEmpty() && series !== null) {
+              if (forceDirectoryModifiedTime)
+                scannedSeries[
+                  series.copy(
+                    fileLastModified = maxOf(
+                      series.fileLastModified,
+                      books.maxOf { it.fileLastModified }
+                    )
+                  )
+                ] = books
+              else
+                scannedSeries[series] = books
+            }
+
+            return FileVisitResult.CONTINUE
+          }
         }
       )
-
-      logger.debug { "Found directories: $dirs" }
-
-      scannedSeries = dirs
-        .mapNotNull { dir ->
-          logger.debug { "Processing directory: $dir" }
-          val books = Files.list(dir).use { dirStream ->
-            dirStream.asSequence()
-              .onEach { logger.trace { "GetBooks file: $it" } }
-              .filterNot { Files.isHidden(it) }
-              .filter { Files.isReadable(it) }
-              .filter { Files.isRegularFile(it) }
-              .filter { supportedExtensions.contains(FilenameUtils.getExtension(it.fileName.toString()).toLowerCase()) }
-              .map {
-                logger.debug { "Processing file: $it" }
-                Book(
-                  name = FilenameUtils.getBaseName(it.fileName.toString()),
-                  url = it.toUri().toURL(),
-                  fileLastModified = it.getUpdatedTime(),
-                  fileSize = Files.readAttributes(it, BasicFileAttributes::class.java).size()
-                )
-              }.toList()
-          }
-          if (books.isNullOrEmpty()) {
-            logger.debug { "No books in directory: $dir" }
-            return@mapNotNull null
-          }
-          Series(
-            name = dir.fileName.toString(),
-            url = dir.toUri().toURL(),
-            fileLastModified =
-            if (forceDirectoryModifiedTime)
-              maxOf(dir.getUpdatedTime(), books.map { it.fileLastModified }.maxOrNull()!!)
-            else dir.getUpdatedTime()
-          ) to books
-        }.toMap()
     }.also {
       val countOfBooks = scannedSeries.values.sumBy { it.size }
       logger.info { "Scanned ${scannedSeries.size} series and $countOfBooks books in $it" }
@@ -112,11 +120,8 @@ class FileSystemScanner(
   }
 }
 
-fun Path.getUpdatedTime(): LocalDateTime =
-  Files.readAttributes(this, BasicFileAttributes::class.java).let { b ->
-    maxOf(b.creationTime(), b.lastModifiedTime()).toLocalDateTime()
-      .also { logger.trace { "Get updated time for file $this. Creation time: ${b.creationTime()}, Last Modified Time: ${b.lastModifiedTime()}. Choosing the max (Local Time): $it" } }
-  }
+fun BasicFileAttributes.getUpdatedTime(): LocalDateTime =
+  maxOf(creationTime(), lastModifiedTime()).toLocalDateTime()
 
 fun FileTime.toLocalDateTime(): LocalDateTime =
   LocalDateTime.ofInstant(this.toInstant(), ZoneId.systemDefault())
