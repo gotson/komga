@@ -281,7 +281,7 @@
       </v-row>
 
       <v-divider v-if="series.booksMetadata.authors.length > 0"/>
-      <div v-for="role in authorRoles"
+      <div v-for="role in authorRolesSeries"
            :key="role">
         <v-row class="align-center text-caption"
                v-if="authorsByRole[role]"
@@ -301,7 +301,7 @@
                 </v-btn>
               </template>
 
-              <v-chip v-for="(name, i) in authorsByRole[role]"
+              <v-chip v-for="(name, i) in authorsByRole[role].sort()"
                       :key="i"
                       :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
                       :title="name"
@@ -385,7 +385,7 @@ import FilterPanels from '@/components/FilterPanels.vue'
 import {SeriesDto} from "@/types/komga-series";
 import {groupAuthorsByRole} from "@/functions/authors";
 import ReadMore from "@/components/ReadMore.vue";
-import {authorRoles} from "@/types/author-roles";
+import {authorRoles, authorRolesSeries} from "@/types/author-roles";
 import VueHorizontal from "vue-horizontal";
 
 const tags = require('language-tags')
@@ -412,7 +412,7 @@ export default Vue.extend({
   },
   data: function () {
     return {
-      authorRoles,
+      authorRolesSeries,
       series: {} as SeriesDto,
       books: [] as BookDto[],
       selectedBooks: [] as BookDto[],

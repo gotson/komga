@@ -7,3 +7,8 @@ export const authorRoles = [
   'cover',
   'editor',
 ]
+
+export const authorRolesSeries = [
+  'writer',
+  'penciller',
+]
