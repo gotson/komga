@@ -25,8 +25,6 @@ spring:
   h2:
     console:
       enabled: true
-  resources:
-    add-mappings: false
   flyway:
     enabled: true
     locations: classpath:db/migration/{vendor}
@@ -41,6 +39,9 @@ spring:
     embedded:
       persistent: true
       data-directory: \${user.home}/.komga/artemis
+  web:
+    resources:
+      add-mappings: false
 
 server:
   servlet.session.timeout: 7d
