@@ -1,3 +1,19 @@
+# [0.79.0](https://github.com/gotson/komga/compare/v0.78.0...v0.79.0) (2021-03-10)
+
+
+### Bug Fixes
+
+* **api:** some metadata fields would not unset if set to null ([1996071](https://github.com/gotson/komga/commit/1996071794dddc87c67d99a676f901c725870043))
+* **webui:** only show writers and pencillers on series screen ([6101e83](https://github.com/gotson/komga/commit/6101e83292b2e238508559db28fe249bf9fb0fff))
+
+
+### Features
+
+* **webui:** group checkbox for advanced library options ([6fa0324](https://github.com/gotson/komga/commit/6fa0324666050c80f5247a3313d20ea349a08754))
+* **webui:** manage isbn barcode import for libraries ([ee1a0a2](https://github.com/gotson/komga/commit/ee1a0a2aa0909f79dfe99da484ba519e6daaac7d))
+* **webui:** show and edit ISBN for book ([65c16f1](https://github.com/gotson/komga/commit/65c16f109f2a1172128b91e0d7f015206a523c48))
+* read ISBN from barcode ([6431b1f](https://github.com/gotson/komga/commit/6431b1f0008fc43c1997dec966d93c5b9e1531d0)), closes [#380](https://github.com/gotson/komga/issues/380) [#381](https://github.com/gotson/komga/issues/381)
+
 # [0.78.0](https://github.com/gotson/komga/compare/v0.77.3...v0.78.0) (2021-03-09)
 
 

@@ -51,12 +51,12 @@
             "format": "int32",
             "type": "integer"
           },
+          "last": {
+            "type": "boolean"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -257,6 +257,8 @@
           "authors",
           "authorsLock",
           "created",
+          "isbn",
+          "isbnLock",
           "lastModified",
           "number",
           "numberLock",
@@ -288,6 +290,9 @@
             "format": "date-time",
             "type": "string"
           },
+          "isbn": {
+            "type": "string"
+          },
           "numberLock": {
             "type": "boolean"
           },
@@ -311,6 +316,9 @@
             "type": "string"
           },
           "summaryLock": {
+            "type": "boolean"
+          },
+          "isbnLock": {
             "type": "boolean"
           },
           "numberSort": {
@@ -484,6 +492,7 @@
       "LibraryUpdateDto": {
         "type": "object",
         "required": [
+          "importBarcodeIsbn",
           "importComicInfoBook",
           "importComicInfoCollection",
           "importComicInfoReadList",
@@ -521,6 +530,9 @@
           "importComicInfoCollection": {
             "type": "boolean"
           },
+          "importBarcodeIsbn": {
+            "type": "boolean"
+          },
           "importLocalArtwork": {
             "type": "boolean"
           },
@@ -536,6 +548,7 @@
         "type": "object",
         "required": [
           "id",
+          "importBarcodeIsbn",
           "importComicInfoBook",
           "importComicInfoCollection",
           "importComicInfoReadList",
@@ -549,10 +562,16 @@
           "scanForceModifiedTime"
         ],
         "properties": {
-          "importEpubSeries": {
+          "importComicInfoReadList": {
             "type": "boolean"
           },
-          "importComicInfoReadList": {
+          "scanDeep": {
+            "type": "boolean"
+          },
+          "scanForceModifiedTime": {
+            "type": "boolean"
+          },
+          "importEpubSeries": {
             "type": "boolean"
           },
           "importComicInfoSeries": {
@@ -576,13 +595,10 @@
           "importComicInfoCollection": {
             "type": "boolean"
           },
+          "importBarcodeIsbn": {
+            "type": "boolean"
+          },
           "importLocalArtwork": {
-            "type": "boolean"
-          },
-          "scanDeep": {
-            "type": "boolean"
-          },
-          "scanForceModifiedTime": {
             "type": "boolean"
           }
         }
@@ -618,6 +634,9 @@
             "format": "date",
             "type": "string"
           },
+          "isbn": {
+            "type": "string"
+          },
           "numberLock": {
             "type": "boolean"
           },
@@ -641,6 +660,9 @@
             "type": "string"
           },
           "summaryLock": {
+            "type": "boolean"
+          },
+          "isbnLock": {
             "type": "boolean"
           },
           "numberSort": {
@@ -884,12 +906,12 @@
             "format": "int32",
             "type": "integer"
           },
+          "last": {
+            "type": "boolean"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -1097,6 +1119,7 @@
       "LibraryCreationDto": {
         "type": "object",
         "required": [
+          "importBarcodeIsbn",
           "importComicInfoBook",
           "importComicInfoCollection",
           "importComicInfoReadList",
@@ -1132,6 +1155,9 @@
             "type": "string"
           },
           "importComicInfoCollection": {
+            "type": "boolean"
+          },
+          "importBarcodeIsbn": {
             "type": "boolean"
           },
           "importLocalArtwork": {
@@ -1350,12 +1376,12 @@
             "format": "int32",
             "type": "integer"
           },
+          "last": {
+            "type": "boolean"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
           },
           "size": {
             "format": "int32",
@@ -1396,12 +1422,12 @@
             "format": "int32",
             "type": "integer"
           },
+          "last": {
+            "type": "boolean"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
           },
           "size": {
             "format": "int32",
