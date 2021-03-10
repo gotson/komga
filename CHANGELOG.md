@@ -1,3 +1,10 @@
+## [0.79.1](https://github.com/gotson/komga/compare/v0.79.0...v0.79.1) (2021-03-10)
+
+
+### Performance Improvements
+
+* reduce disk usage during filesystem scan ([e154583](https://github.com/gotson/komga/commit/e154583d30c49f6e88473b7a6594e39365498d34))
+
 # [0.79.0](https://github.com/gotson/komga/compare/v0.78.0...v0.79.0) (2021-03-10)
 
 
