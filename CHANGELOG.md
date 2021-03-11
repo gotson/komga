@@ -1,3 +1,15 @@
+# [0.80.0](https://github.com/gotson/komga/compare/v0.79.1...v0.80.0) (2021-03-11)
+
+
+### Features
+
+* localize server side errors ([cbe47ea](https://github.com/gotson/komga/commit/cbe47ea5931427193bc853e80b8faae40135ec1a))
+
+
+### Performance Improvements
+
+* prevent failing tasks ([07cec50](https://github.com/gotson/komga/commit/07cec50417da93d299f59734d6e6139e8e037589))
+
 ## [0.79.1](https://github.com/gotson/komga/compare/v0.79.0...v0.79.1) (2021-03-10)
 
 
