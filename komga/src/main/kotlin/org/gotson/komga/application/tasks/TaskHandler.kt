@@ -41,9 +41,10 @@ class TaskHandler(
 
           is Task.AnalyzeBook ->
             bookRepository.findByIdOrNull(task.bookId)?.let {
-              bookLifecycle.analyzeAndPersist(it)
-              taskReceiver.generateBookThumbnail(it.id)
-              taskReceiver.refreshBookMetadata(it)
+              if (bookLifecycle.analyzeAndPersist(it)) {
+                taskReceiver.generateBookThumbnail(it.id)
+                taskReceiver.refreshBookMetadata(it)
+              }
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
           is Task.GenerateBookThumbnail ->
