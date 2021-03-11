@@ -56,14 +56,10 @@ class BookLifecycle(
 
   fun generateThumbnailAndPersist(book: Book) {
     logger.info { "Generate thumbnail and persist for book: $book" }
-    val thumbnailBook = try {
-      bookAnalyzer.generateThumbnail(book)
+    try {
+      addThumbnailForBook(bookAnalyzer.generateThumbnail(book))
     } catch (ex: Exception) {
       logger.error(ex) { "Error while creating thumbnail" }
-      null
-    }
-    thumbnailBook?.let {
-      addThumbnailForBook(it)
     }
   }
 
