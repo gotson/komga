@@ -36,15 +36,15 @@ class BookAnalyzer(
     val mediaType = contentDetector.detectMediaType(book.path())
     logger.info { "Detected media type: $mediaType" }
     if (!supportedMediaTypes.containsKey(mediaType))
-      return Media(mediaType = mediaType, status = Media.Status.UNSUPPORTED, comment = "Media type $mediaType is not supported")
+      return Media(mediaType = mediaType, status = Media.Status.UNSUPPORTED, comment = "ERR_1001")
 
     val entries = try {
       supportedMediaTypes.getValue(mediaType).getEntries(book.path())
     } catch (ex: MediaUnsupportedException) {
-      return Media(mediaType = mediaType, status = Media.Status.UNSUPPORTED, comment = ex.message)
+      return Media(mediaType = mediaType, status = Media.Status.UNSUPPORTED, comment = ex.code)
     } catch (ex: Exception) {
       logger.error(ex) { "Error while analyzing book: $book" }
-      return Media(mediaType = mediaType, status = Media.Status.ERROR, comment = ex.message)
+      return Media(mediaType = mediaType, status = Media.Status.ERROR, comment = "ERR_1008")
     }
 
     val (pages, others) = entries
@@ -61,11 +61,11 @@ class BookAnalyzer(
       .filter { it.mediaType.isNullOrBlank() }
       .map { it.name }
       .ifEmpty { null }
-      ?.joinToString(prefix = "Some entries could not be analyzed: [", postfix = "]") { it }
+      ?.joinToString(prefix = "ERR_1007 [", postfix = "]") { it }
 
     if (pages.isEmpty()) {
       logger.warn { "Book $book does not contain any pages" }
-      return Media(mediaType = mediaType, status = Media.Status.ERROR, comment = "Book does not contain any pages")
+      return Media(mediaType = mediaType, status = Media.Status.ERROR, comment = "ERR_1006")
     }
     logger.info { "Book has ${pages.size} pages" }
 

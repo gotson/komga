@@ -27,9 +27,9 @@ class RarExtractor(
 
   override fun getEntries(path: Path): List<MediaContainerEntry> =
     Archive(path.toFile()).use { rar ->
-      if (rar.isPasswordProtected) throw MediaUnsupportedException("Encrypted RAR archives are not supported")
-      if (rar.mainHeader.isSolid) throw MediaUnsupportedException("Solid RAR archives are not supported")
-      if (rar.mainHeader.isMultiVolume) throw MediaUnsupportedException("Multi-Volume RAR archives are not supported")
+      if (rar.isPasswordProtected) throw MediaUnsupportedException("Encrypted RAR archives are not supported", "ERR_1002")
+      if (rar.mainHeader.isSolid) throw MediaUnsupportedException("Solid RAR archives are not supported", "ERR_1003")
+      if (rar.mainHeader.isMultiVolume) throw MediaUnsupportedException("Multi-Volume RAR archives are not supported", "ERR_1004")
       rar.fileHeaders
         .filter { !it.isDirectory }
         .map { hd ->

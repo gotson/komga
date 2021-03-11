@@ -1,4 +1,4 @@
-import { BookFormat } from '@/types/komga-books'
+import {BookFormat} from '@/types/komga-books'
 
 export function getBookFormatFromMediaType (mediaType: string): BookFormat {
   switch (mediaType) {
@@ -11,7 +11,9 @@ export function getBookFormatFromMediaType (mediaType: string): BookFormat {
       return { type: 'PDF', color: '#FF5722' }
     case 'application/epub+zip':
       return { type: 'EPUB', color: '#ff5ab1' }
+    case 'application/x-rar-compressed; version=5':
+      return { type: 'RAR5', color: '#000000' }
     default:
-      return { type: '?', color: '#000000' }
+      return { type: mediaType, color: '#000000' }
   }
 }

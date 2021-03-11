@@ -252,7 +252,7 @@
 
       <v-row v-if="book.media.comment" class="align-center text-caption">
         <v-col class="py-1" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.comment') }}</v-col>
-        <v-col class="py-1 error--text font-weight-bold" cols="8" sm="9" md="10" xl="11">{{ book.media.comment }}</v-col>
+        <v-col class="py-1 error--text font-weight-bold" cols="8" sm="9" md="10" xl="11">{{ mediaComment }}</v-col>
       </v-row>
 
       <v-row class="align-center text-caption">
@@ -294,6 +294,7 @@ import {SeriesDto} from "@/types/komga-series";
 import ReadMore from "@/components/ReadMore.vue";
 import VueHorizontal from "vue-horizontal";
 import {authorRoles} from "@/types/author-roles";
+import {convertErrorCodes} from "@/functions/error-codes";
 
 export default Vue.extend({
   name: 'BrowseBook',
@@ -375,6 +376,9 @@ export default Vue.extend({
     },
     contextReadList(): boolean {
       return this.context.origin === ContextOrigin.READLIST
+    },
+    mediaComment(): string {
+      return convertErrorCodes(this.book.media.comment)
     },
   },
   methods: {

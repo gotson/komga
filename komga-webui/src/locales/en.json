@@ -243,6 +243,7 @@
       "button_confirm_edit": "Edit",
       "dialog_title_add": "Add Library",
       "dialot_title_edit": "Edit Library",
+      "field_import_barcode_isbn": "ISBN barcode",
       "field_import_comicinfo_book": "Book metadata",
       "field_import_comicinfo_collections": "Collections",
       "field_import_comicinfo_readlists": "Read lists",
@@ -256,14 +257,13 @@
       "field_scanner_force_directory_modified_time": "Force directory modified time",
       "file_browser_dialog_button_confirm": "Choose",
       "file_browser_dialog_title": "Library's root folder",
+      "label_import_barcode_isbn": "Import ISBN within barcode",
       "label_import_comicinfo": "Import metadata for CBR/CBZ containing a ComicInfo.xml file",
       "label_import_epub": "Import metadata from EPUB files",
       "label_import_local": "Import local media assets",
       "label_scanner": "Scanner",
       "tab_general": "General",
-      "tab_options": "Options",
-      "field_import_barcode_isbn": "ISBN barcode",
-      "label_import_barcode_isbn": "Import ISBN within barcode"
+      "tab_options": "Options"
     },
     "edit_readlist": {
       "button_cancel": "Cancel",
@@ -351,6 +351,17 @@
       "HIATUS": "Hiatus",
       "ONGOING": "Ongoing"
     }
+  },
+  "error_codes": {
+    "ERR_1000": "File could not be accessed during analysis",
+    "ERR_1001": "Media type is not supported",
+    "ERR_1002": "Encrypted RAR archives are not supported",
+    "ERR_1003": "Solid RAR archives are not supported",
+    "ERR_1004": "Multi-Volume RAR archives are not supported",
+    "ERR_1005": "Unknown error while analyzing book",
+    "ERR_1006": "Book does not contain any page",
+    "ERR_1007": "Some entries could not be analyzed",
+    "ERR_1008": "Unknown error while getting book's entries"
   },
   "filter": {
     "age_rating": "age rating",

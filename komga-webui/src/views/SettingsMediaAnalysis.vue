@@ -24,6 +24,7 @@
 import Vue from 'vue'
 import {MediaStatus} from '@/types/enum-books'
 import {BookDto} from '@/types/komga-books'
+import {convertErrorCodes} from "@/functions/error-codes";
 
 export default Vue.extend({
   name: 'SettingsMediaAnalysis',
@@ -59,6 +60,7 @@ export default Vue.extend({
         ...b,
         media: {
           ...b.media,
+          comment: convertErrorCodes(b.media.comment),
           status: this.$t(`enums.media_status.${b.media.status}`).toString()},
       }))
     },

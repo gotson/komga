@@ -347,6 +347,17 @@
       "ONGOING": "En cours"
     }
   },
+  "error_codes": {
+    "ERR_1000": "Le fichier n'etait pas accessible pendant l'analyse",
+    "ERR_1001": "Le type de média n'est pas supporté",
+    "ERR_1002": "Les archives RAR encryptées ne sont pas supportées",
+    "ERR_1003": "Les archives RAR solides ne sont pas supportées",
+    "ERR_1004": "Les archives RAR multi-volumes ne sont pas supportées",
+    "ERR_1005": "Erreur inconnue pendant l'analyse",
+    "ERR_1006": "Le livre ne contient aucune page",
+    "ERR_1007": "Certaines entrées n'ont pas pu être analysées",
+    "ERR_1008": "Erreur inconnue pendant la recuperation des entrées"
+  },
   "filter": {
     "age_rating": "Âge minimal",
     "age_rating_none": "Aucun",
