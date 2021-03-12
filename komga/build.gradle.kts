@@ -6,7 +6,6 @@ import com.rohanprabhu.gradle.plugins.kdjooq.jooqCodegenConfiguration
 import com.rohanprabhu.gradle.plugins.kdjooq.target
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
   run {
@@ -120,13 +119,10 @@ tasks {
     }
   }
 
-  withType<BootJar> {
-    layered()
-  }
-
   withType<Test> {
     useJUnitPlatform()
     systemProperty("spring.profiles.active", "test")
+    maxHeapSize = "1G"
   }
 
   withType<ProcessResources> {
