@@ -159,7 +159,7 @@
 
                     <!--  ISBN  -->
                     <v-col cols="6">
-                      <v-text-field v-model="form.isbn"
+                      <v-text-field v-model.trim="form.isbn"
                                     :label="$t('dialog.edit_books.field_isbn')"
                                     filled
                                     dense
@@ -303,7 +303,7 @@ import ISBN from '@saekitominaga/isbn-verify'
 
 const validDate = (value: string) => !helpers.req(value) || moment(value, 'YYYY-MM-DD', true).isValid()
 const validIsbn = (value: string) => {
-  const isbn = new ISBN(value.replaceAll('-', ''))
+  const isbn = new ISBN(value)
   return (!helpers.req(value) || (isbn.isIsbn13() && isbn.isValid()))
 }
 
