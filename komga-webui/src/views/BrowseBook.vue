@@ -104,7 +104,7 @@
               {{ book.metadata.number }} · {{ book.media.pagesCount }} {{ $t('common.pages') }}
             </v-col>
             <v-col cols="auto" v-if="book.metadata.releaseDate">
-              {{ book.metadata.releaseDate | moment('MMMM DD, YYYY') }}
+              {{ new Intl.DateTimeFormat($i18n.locale, { dateStyle: 'long' }).format(new Date(book.metadata.releaseDate)) }}
             </v-col>
           </v-row>
 

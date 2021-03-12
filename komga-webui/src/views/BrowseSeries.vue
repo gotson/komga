@@ -91,7 +91,7 @@
             <v-col class="py-1">
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
-                  <span v-on="on">{{ series.booksMetadata.releaseDate | moment('YYYY') }}</span>
+                  <span v-on="on">{{ new Intl.DateTimeFormat($i18n.locale, { dateStyle: 'long' }).format(new Date(series.booksMetadata.releaseDate)) }}</span>
                 </template>
                 {{ $t('browse_series.earliest_year_from_release_dates') }}
               </v-tooltip>

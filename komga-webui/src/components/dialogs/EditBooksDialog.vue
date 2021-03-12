@@ -295,13 +295,13 @@
 <script lang="ts">
 import {groupAuthorsByRole} from '@/functions/authors'
 import {authorRoles} from '@/types/author-roles'
-import moment from 'moment'
 import Vue from 'vue'
 import {helpers, requiredIf} from 'vuelidate/lib/validators'
 import {BookDto} from '@/types/komga-books'
 import ISBN from '@saekitominaga/isbn-verify'
+import {isMatch} from 'date-fns'
 
-const validDate = (value: string) => !helpers.req(value) || moment(value, 'YYYY-MM-DD', true).isValid()
+const validDate = (value: string) => !helpers.req(value) || isMatch(value, 'yyyy-MM-dd')
 const validIsbn = (value: string) => {
   const isbn = new ISBN(value)
   return (!helpers.req(value) || (isbn.isIsbn13() && isbn.isValid()))
