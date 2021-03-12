@@ -4,7 +4,8 @@
       "pageText": "{0}-{1} de {2}"
     },
     "dataTable": {
-      "itemsPerPageText": "Filas por página:"
+      "itemsPerPageText": "Filas por página:",
+      "sortBy": "Ordenado por"
     },
     "noDataText": "No hay datos disponibles"
   },

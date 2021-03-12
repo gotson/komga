@@ -4,7 +4,8 @@
       "pageText": "{0}-{1} из {2}"
     },
     "dataTable": {
-      "itemsPerPageText": "Строк на странице:"
+      "itemsPerPageText": "Строк на странице:",
+      "sortBy": "Сортировать по"
     },
     "noDataText": "Отсутствуют данные"
   },

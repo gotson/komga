@@ -4,7 +4,8 @@
       "pageText": "{0}-{1} 或 {2}"
     },
     "dataTable": {
-      "itemsPerPageText": "每页行数:"
+      "itemsPerPageText": "每页行数:",
+      "sortBy": "排序方式"
     },
     "noDataText": "没有数据可用"
   },

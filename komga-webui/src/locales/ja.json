@@ -4,7 +4,8 @@
       "pageText": "{2} 件中の {0}〜{1}"
     },
     "dataTable": {
-      "itemsPerPageText": "ページ毎の行数:"
+      "itemsPerPageText": "ページ毎の行数:",
+      "sortBy": "ソート方式"
     },
     "noDataText": "データがありません"
   },
