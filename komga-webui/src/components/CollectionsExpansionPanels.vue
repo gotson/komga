@@ -3,7 +3,7 @@
     <v-expansion-panel v-for="(c, index) in collections"
                        :key="index"
     >
-      <v-expansion-panel-header>{{ c.name }} collection</v-expansion-panel-header>
+      <v-expansion-panel-header>{{ $t('collections_expansion_panel.title', {name: c.name}) }}</v-expansion-panel-header>
       <v-expansion-panel-content>
         <horizontal-scroller>
           <template v-slot:prepend>

@@ -111,7 +111,8 @@
     "summary_from_book": "Summary from book {number}:"
   },
   "collections_expansion_panel": {
-    "manage_collection": "Manage collection"
+    "manage_collection": "Manage collection",
+    "title": "{name} collection"
   },
   "common": {
     "all_libraries": "All Libraries",
@@ -430,7 +431,8 @@
     "more": "Read more"
   },
   "readlists_expansion_panel": {
-    "manage_readlist": "Manage read list"
+    "manage_readlist": "Manage read list",
+    "title": "{name} read list"
   },
   "search": {
     "no_results": "The search returned no results",

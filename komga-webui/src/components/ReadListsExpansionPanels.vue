@@ -3,7 +3,7 @@
     <v-expansion-panel v-for="(r, index) in readLists"
                        :key="index"
     >
-      <v-expansion-panel-header>{{ r.name }} read list</v-expansion-panel-header>
+      <v-expansion-panel-header>{{ $t('readlists_expansion_panel.title', {name: r.name}) }}</v-expansion-panel-header>
       <v-expansion-panel-content>
         <horizontal-scroller>
           <template v-slot:prepend>
