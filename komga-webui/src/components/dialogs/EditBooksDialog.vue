@@ -298,14 +298,11 @@ import {authorRoles} from '@/types/author-roles'
 import Vue from 'vue'
 import {helpers, requiredIf} from 'vuelidate/lib/validators'
 import {BookDto} from '@/types/komga-books'
-import ISBN from '@saekitominaga/isbn-verify'
+import IsbnVerify from '@saekitominaga/isbn-verify'
 import {isMatch} from 'date-fns'
 
 const validDate = (value: string) => !helpers.req(value) || isMatch(value, 'yyyy-MM-dd')
-const validIsbn = (value: string) => {
-  const isbn = new ISBN(value)
-  return (!helpers.req(value) || (isbn.isIsbn13() && isbn.isValid()))
-}
+const validIsbn = (value: string) => !helpers.req(value) || new IsbnVerify(value).isIsbn13({ check_digit: true })
 
 export default Vue.extend({
   name: 'EditBooksDialog',

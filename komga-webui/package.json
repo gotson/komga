@@ -10,7 +10,7 @@
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'"
   },
   "dependencies": {
-    "@saekitominaga/isbn-verify": "^1.3.0",
+    "@saekitominaga/isbn-verify": "^1.4.0",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "date-fns": "^2.19.0",
