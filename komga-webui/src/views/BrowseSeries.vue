@@ -142,7 +142,7 @@
 
             <v-row v-if="series.metadata.summary">
               <v-col>
-                <read-more>{{ series.metadata.summary }}</read-more>
+                <read-more>{{ summaryText }}</read-more>
               </v-col>
             </v-row>
 
@@ -156,7 +156,7 @@
                   </template>
                   {{ $t('browse_series.series_no_summary') }}
                 </v-tooltip>
-                <read-more>{{ series.booksMetadata.summary }}</read-more>
+                <read-more>{{ summaryText }}</read-more>
               </v-col>
             </v-row>
           </div>
@@ -181,7 +181,7 @@
         <!--   Series summary     -->
         <v-row v-if="series.metadata.summary">
           <v-col>
-            <read-more>{{ series.metadata.summary }}</read-more>
+            <read-more>{{ summaryText }}</read-more>
           </v-col>
         </v-row>
 
@@ -196,7 +196,7 @@
               </template>
               {{ $t('browse_series.series_no_summary') }}
             </v-tooltip>
-            <read-more>{{ series.booksMetadata.summary }}</read-more>
+            <read-more>{{ summaryText }}</read-more>
           </v-col>
         </v-row>
       </div>
@@ -387,6 +387,7 @@ import {groupAuthorsByRole} from "@/functions/authors";
 import ReadMore from "@/components/ReadMore.vue";
 import {authorRoles, authorRolesSeries} from "@/types/author-roles";
 import VueHorizontal from "vue-horizontal";
+import {parseSummary} from "@/functions/parse-summary";
 
 const tags = require('language-tags')
 
@@ -435,6 +436,12 @@ export default Vue.extend({
     }
   },
   computed: {
+    summaryText(): string {
+      if (!series.metadata.summary && series.booksMetadata.summary) {
+        return parseSummary(series.booksMetadata.summary);
+      }
+      return parseSummary(series.metadata.summary);
+    },
     sortOptions(): SortOption[] {
       return [
         {name: this.$t('sort.number').toString(), key: 'metadata.numberSort'},

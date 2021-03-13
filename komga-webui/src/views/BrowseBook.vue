@@ -135,7 +135,7 @@
 
             <v-row v-if="book.metadata.summary">
               <v-col>
-                <read-more>{{ book.metadata.summary }}</read-more>
+                <read-more>{{ summaryText }}</read-more>
               </v-col>
             </v-row>
           </div>
@@ -168,7 +168,7 @@
 
         <v-row v-if="book.metadata.summary">
           <v-col>
-            <read-more>{{ book.metadata.summary }}</read-more>
+            <read-more>{{ summaryText }}</read-more>
           </v-col>
         </v-row>
       </div>
@@ -295,6 +295,7 @@ import ReadMore from "@/components/ReadMore.vue";
 import VueHorizontal from "vue-horizontal";
 import {authorRoles} from "@/types/author-roles";
 import {convertErrorCodes} from "@/functions/error-codes";
+import {parseSummary} from "@/functions/parse-summary";
 
 export default Vue.extend({
   name: 'BrowseBook',
@@ -335,6 +336,9 @@ export default Vue.extend({
     next()
   },
   computed: {
+    summaryText(): string {
+      return parseSummary(series.metadata.summary);
+    },
     isAdmin(): boolean {
       return this.$store.getters.meAdmin
     },
