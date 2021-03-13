@@ -30,15 +30,15 @@
     "cycling_side_padding": "Växla Spaltfyllnad",
     "end_of_book": "Du har kommit till slutet av boken.",
     "from_series_metadata": "från seriens metadata",
-    "move_next": "Klicka eller tryck \"nästa\" igen för att gå till nästa bok.",
-    "move_next_exit": "Klicka eller tryck \"nästa\" igen för att stänga läsaren.",
-    "move_previous": "Klicka eller tryck \"bakåt\" igen för att gå till föregående bok.",
+    "move_next": "Tryck \"Nästa\" igen för att gå till nästa bok.",
+    "move_next_exit": "Tryck \"Nästa\" igen för att stänga läsaren.",
+    "move_previous": "Tryck \"Föregående\" igen för att gå till föregående bok.",
     "paged_reader_layout": {
       "double": "Dubbla sidor",
       "double_no_cover": "Dubbla sidor (inget omslag)",
       "single": "En sida"
     },
-    "reader_settings": "Läsarinställningar",
+    "reader_settings": "Läsinställningar",
     "scale_type": {
       "continuous_original": "Original",
       "continuous_width": "Passa bredd",
@@ -92,6 +92,7 @@
     "download_file": "Ladda ner fil",
     "file": "FIL",
     "format": "FORMAT",
+    "isbn": "ISBN",
     "navigation_within_readlist": "Navigering inom läslistan",
     "read_book": "Läs bok",
     "size": "STORLEK"
@@ -111,7 +112,8 @@
     "summary_from_book": "Sammanfattning från bok {number}:"
   },
   "collections_expansion_panel": {
-    "manage_collection": "Hantera samling"
+    "manage_collection": "Hantera samling",
+    "title": "{name} samling"
   },
   "common": {
     "all_libraries": "Alla bibliotek",
@@ -214,6 +216,8 @@
       "button_confirm": "Spara ändringar",
       "dialog_title_multiple": "Redigera {count} bok | Redigera {count} böcker",
       "dialog_title_single": "Redigera {book}",
+      "field_isbn": "ISBN",
+      "field_isbn_error": "Måste vara ett giltigt ISBN 13",
       "field_number": "Nummer",
       "field_number_sort": "Sorteringsnummer",
       "field_number_sort_hint": "Du kan använda decimaltal",
@@ -241,6 +245,7 @@
       "button_confirm_edit": "Redigera",
       "dialog_title_add": "Lägg till bibliotek",
       "dialot_title_edit": "Lägg till bibliotek",
+      "field_import_barcode_isbn": "ISBN streckkod",
       "field_import_comicinfo_book": "Bok metadata",
       "field_import_comicinfo_collections": "Samlingar",
       "field_import_comicinfo_readlists": "Läslistor",
@@ -254,6 +259,7 @@
       "field_scanner_force_directory_modified_time": "Tvinga katalogen att söka baserat på tidsstämpeln",
       "file_browser_dialog_button_confirm": "Välj",
       "file_browser_dialog_title": "Bibliotekets rotkatalog",
+      "label_import_barcode_isbn": "Importera ISBN streckkod",
       "label_import_comicinfo": "Importera metadata för CBR/CBZ som innehåller en ComicInfo.xml-fil",
       "label_import_epub": "Importera metadata från EPUB-filer",
       "label_import_local": "Importera lokala mediatillgångar",
@@ -348,6 +354,17 @@
       "ONGOING": "Pågående"
     }
   },
+  "error_codes": {
+    "ERR_1000": "Filen kunde inte nås under analysen",
+    "ERR_1001": "Mediatyp är inte supporterad",
+    "ERR_1002": "Enkrypterade RAR-arkiv är inte supporterade",
+    "ERR_1003": "Solid RAR-arkiv är inte supporterade",
+    "ERR_1004": "Multivolym RAR-arkiv är inte supporterade",
+    "ERR_1005": "Okänt fel vid analys av bok",
+    "ERR_1006": "Boken innehåller inte några sidor",
+    "ERR_1007": "Vissa poster kunde inte analyseras",
+    "ERR_1008": "Okänt fel vid inhämtning av poster"
+  },
   "filter": {
     "age_rating": "åldersgräns",
     "age_rating_none": "Ingen",
@@ -358,7 +375,7 @@
     "release_date": "utgivningsdatum",
     "status": "status",
     "tag": "tag",
-    "unread": "Oläst"
+    "unread": "Olästa"
   },
   "filter_drawer": {
     "filter": "filter",
@@ -415,7 +432,8 @@
     "more": "Se mer"
   },
   "readlists_expansion_panel": {
-    "manage_readlist": "Hantera läslistan"
+    "manage_readlist": "Hantera läslistan",
+    "title": "{name} läslista"
   },
   "search": {
     "no_results": "Sökningen gav inga resultat",
@@ -446,7 +464,7 @@
   "sort": {
     "date_added": "Datum tillagd",
     "date_updated": "Datum uppdaterat",
-    "file_name": "FIlnamn",
+    "file_name": "Filnamn",
     "file_size": "Filstorlek",
     "folder_name": "Mapp namn",
     "name": "Namn",

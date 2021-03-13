@@ -7,7 +7,7 @@
       "itemsPerPageText": "每页行数:",
       "sortBy": "排序方式"
     },
-    "noDataText": "没有数据可用"
+    "noDataText": "无数据可用"
   },
   "account_settings": {
     "account_settings": "账户设置",
@@ -92,6 +92,7 @@
     "download_file": "下载文件",
     "file": "文件来源",
     "format": "格式",
+    "isbn": "ISBN",
     "navigation_within_readlist": "阅读列表中的导航",
     "read_book": "阅读书籍",
     "size": "文件大小"
@@ -111,7 +112,8 @@
     "summary_from_book": "书中的概要 {number}:"
   },
   "collections_expansion_panel": {
-    "manage_collection": "管理收藏"
+    "manage_collection": "管理收藏",
+    "title": "{name} 的收藏"
   },
   "common": {
     "all_libraries": "所有库",
@@ -214,6 +216,8 @@
       "button_confirm": "保存修改",
       "dialog_title_multiple": "编辑 {count} 书 | 编辑 {count} 书",
       "dialog_title_single": "编辑 {book}",
+      "field_isbn": "ISBN",
+      "field_isbn_error": "ISBN必须是13位数",
       "field_number": "序号",
       "field_number_sort": "短序号",
       "field_number_sort_hint": "你可以用十进制数",
@@ -241,6 +245,7 @@
       "button_confirm_edit": "编辑",
       "dialog_title_add": "添加库",
       "dialot_title_edit": "编辑库",
+      "field_import_barcode_isbn": "ISBN条行码",
       "field_import_comicinfo_book": "书籍元数据",
       "field_import_comicinfo_collections": "收藏",
       "field_import_comicinfo_readlists": "阅读列表",
@@ -254,6 +259,7 @@
       "field_scanner_force_directory_modified_time": "强制目录修改时间",
       "file_browser_dialog_button_confirm": "选择",
       "file_browser_dialog_title": "库的根文件夹",
+      "label_import_barcode_isbn": "从条形码中导入ISBN",
       "label_import_comicinfo": "导入含有ComicInfo.xml的CBR/CBZ压缩包",
       "label_import_epub": "导入EPUB文件的元数据",
       "label_import_local": "导入本地媒体",
@@ -348,6 +354,17 @@
       "ONGOING": "连载中"
     }
   },
+  "error_codes": {
+    "ERR_1000": "分析期间无法访问文件",
+    "ERR_1001": "不支持的媒体类型",
+    "ERR_1002": "不支持加密的RAR",
+    "ERR_1003": "不支持固实压缩的RAR",
+    "ERR_1004": "不支持多卷(分卷)的RAR",
+    "ERR_1005": "分析书本时出现未知错误",
+    "ERR_1006": "这本书不包含任何页面",
+    "ERR_1007": "无法分析某些条目",
+    "ERR_1008": "获取书本条目时出现未知错误"
+  },
   "filter": {
     "age_rating": "年龄限制",
     "age_rating_none": "无",
@@ -415,7 +432,8 @@
     "more": "阅读更多"
   },
   "readlists_expansion_panel": {
-    "manage_readlist": "管理阅读列表"
+    "manage_readlist": "管理阅读列表",
+    "title": "{name} 的阅读列表"
   },
   "search": {
     "no_results": "搜索没有任何结果",

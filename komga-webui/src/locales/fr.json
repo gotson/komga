@@ -5,7 +5,7 @@
     },
     "dataTable": {
       "itemsPerPageText": "Élements par page :",
-      "sortBy": "Sort by"
+      "sortBy": "Trier par"
     },
     "noDataText": "Aucune donnée disponible"
   },
@@ -30,9 +30,9 @@
     "cycling_side_padding": "Changer la bordure latérale",
     "end_of_book": "Vous avez atteint la fin du livre.",
     "from_series_metadata": "à partir des métadonnées de la série",
-    "move_next": "Cliquez ou appuyez à nouveau sur suivant pour passer au livre suivant.",
-    "move_next_exit": "Cliquez ou appuyez à nouveau sur suivant pour quitter la liseuse.",
-    "move_previous": "Cliquez ou appuyez à nouveau sur précédent pour passer au livre précédent.",
+    "move_next": "Cliquez ou appuyez à nouveau sur \"Suivant\" pour passer au livre suivant.",
+    "move_next_exit": "Cliquez ou appuyez à nouveau sur \"Suivant\" pour quitter la liseuse.",
+    "move_previous": "Cliquez ou appuyez à nouveau sur \"Précédent\" pour passer au livre précédent.",
     "paged_reader_layout": {
       "double": "Double pages",
       "double_no_cover": "Double pages (sans couverture)",
@@ -92,6 +92,7 @@
     "download_file": "Télécharger le fichier",
     "file": "FICHIER",
     "format": "FORMAT",
+    "isbn": "ISBN",
     "navigation_within_readlist": "Navigation dans la liste de lecture",
     "read_book": "Lire le livre",
     "size": "TAILLE"
@@ -111,7 +112,8 @@
     "summary_from_book": "Résume du livre {number} :"
   },
   "collections_expansion_panel": {
-    "manage_collection": "Gérer la collection"
+    "manage_collection": "Gérer la collection",
+    "title": "Collection {name}"
   },
   "common": {
     "all_libraries": "Toutes les bibliothèques",
@@ -214,6 +216,8 @@
       "button_confirm": "Enregistrer les modifications",
       "dialog_title_multiple": "Modifier {count} livre | Modifier {count} livres",
       "dialog_title_single": "Modifier {book}",
+      "field_isbn": "ISBN",
+      "field_isbn_error": "Doit être un code ISBN 13 valide",
       "field_number": "Numéro",
       "field_number_sort": "Numéro pour le tri",
       "field_number_sort_hint": "Vous pouvez utiliser des nombres décimaux",
@@ -241,6 +245,7 @@
       "button_confirm_edit": "Modifier",
       "dialog_title_add": "Ajouter une bibliothèque",
       "dialot_title_edit": "Modifier la bibliothèque",
+      "field_import_barcode_isbn": "Code-barres ISBN",
       "field_import_comicinfo_book": "Métadonnées du livre",
       "field_import_comicinfo_collections": "Collections",
       "field_import_comicinfo_readlists": "Listes de lecture",
@@ -254,6 +259,7 @@
       "field_scanner_force_directory_modified_time": "Forcer l'heure de modification des dossiers",
       "file_browser_dialog_button_confirm": "Sélectionner",
       "file_browser_dialog_title": "Dossier racine de la bibliothèque",
+      "label_import_barcode_isbn": "Importer l'ISBN des code-barres",
       "label_import_comicinfo": "Importer les métadonnées pour les fichiers CBR/CBZ contenant un fichier ComicInfo.xml",
       "label_import_epub": "Importer les métadonnées des fichiers EPUB",
       "label_import_local": "Importer les médias locaux",
@@ -426,7 +432,8 @@
     "more": "En savoir +"
   },
   "readlists_expansion_panel": {
-    "manage_readlist": "Gérer la liste de lecture"
+    "manage_readlist": "Gérer la liste de lecture",
+    "title": "Liste de lecture {name}"
   },
   "search": {
     "no_results": "La recherche n'a retourné aucun résultat",

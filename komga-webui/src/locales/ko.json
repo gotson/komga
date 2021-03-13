@@ -105,7 +105,7 @@
     "edit_readlist": "읽기 목록 수정"
   },
   "browse_series": {
-    "earliest_year_from_release_dates": "올해는 시리즈의 모든 책들의 발매일로부터 가장 이른 해이다.",
+    "earliest_year_from_release_dates": "올해는 시리즈의 모든 책들의 발매일로부터 가장 이른 해이다",
     "series_no_summary": "이 시리즈는 요약이 없어서 저희가 골라드렸습니다!",
     "summary_from_book": "요약본 {number}:"
   },

@@ -92,6 +92,7 @@
     "download_file": "Last ned fil",
     "file": "Fil",
     "format": "Format",
+    "isbn": "ISBN",
     "navigation_within_readlist": "Navigasjon i leselisten",
     "read_book": "Les bok",
     "size": "Størrelse"
@@ -122,6 +123,7 @@
     "collections": "Samlinger",
     "create": "Opprett",
     "delete": "Slett",
+    "download": "Last ned",
     "email": "E-post",
     "filter_no_matches": "Det aktive filteret ga ingen treff",
     "genre": "Sjanger",
@@ -134,6 +136,7 @@
     "pages_n": "Ingen sider | 1 side | {count} sider",
     "password": "Passord",
     "publisher": "Utgiver",
+    "read": "Les",
     "readlists": "Leselister",
     "required": "Påkrevd",
     "roles": "Roller",
@@ -212,6 +215,8 @@
       "button_confirm": "Lagre endringer",
       "dialog_title_multiple": "Rediger {count} bok | Rediger {count} bøker",
       "dialog_title_single": "Rediger {book}",
+      "field_isbn": "ISBN",
+      "field_isbn_error": "Må være en gyldig trettensifret ISBN",
       "field_number": "Nummer",
       "field_number_sort": "Sorteringsnummer",
       "field_number_sort_hint": "Du kan bruke desimaltall",
@@ -239,6 +244,7 @@
       "button_confirm_edit": "Rediger",
       "dialog_title_add": "Legg til bibliotek",
       "dialot_title_edit": "Rediger bibliotek",
+      "field_import_barcode_isbn": "ISBN-strekkode",
       "field_import_comicinfo_book": "Bok-metadata",
       "field_import_comicinfo_collections": "Samlinger",
       "field_import_comicinfo_readlists": "Leselister",
@@ -252,6 +258,7 @@
       "field_scanner_force_directory_modified_time": "Påtving mappe-modifisert tid",
       "file_browser_dialog_button_confirm": "Velg",
       "file_browser_dialog_title": "Bibliotekets rotmappe",
+      "label_import_barcode_isbn": "Importer ISBN med strekkode",
       "label_import_comicinfo": "Importer metadata for CBR/CBZ som har en ComicInfo.xml fil",
       "label_import_epub": "Importer metadata fra EPUB-filer",
       "label_import_local": "Importer lokale medieressurser",
@@ -422,7 +429,8 @@
     "search_results_for": "Søkeresultater for «{name}»"
   },
   "searchbox": {
-    "no_results": "Resultatløst"
+    "no_results": "Resultatløst",
+    "search_all": "Søk i alle …"
   },
   "server": {
     "server_management": {
