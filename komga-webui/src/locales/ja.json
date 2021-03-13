@@ -112,7 +112,8 @@
     "summary_from_book": "{number} 巻のサマリ:"
   },
   "collections_expansion_panel": {
-    "manage_collection": "コレクションの管理"
+    "manage_collection": "コレクションの管理",
+    "title": "{name} コレクション"
   },
   "common": {
     "all_libraries": "全ライブラリ",
