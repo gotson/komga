@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.util.SortedMap
 
 @Component
 class SeriesCollectionDao(
@@ -69,7 +70,12 @@ class SeriesCollectionDao(
     )
   }
 
-  override fun findAllByLibraries(belongsToLibraryIds: Collection<String>, filterOnLibraryIds: Collection<String>?, search: String?, pageable: Pageable): Page<SeriesCollection> {
+  override fun findAllByLibraries(
+    belongsToLibraryIds: Collection<String>,
+    filterOnLibraryIds: Collection<String>?,
+    search: String?,
+    pageable: Pageable
+  ): Page<SeriesCollection> {
     val ids = dsl.selectDistinct(c.ID)
       .from(c)
       .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
@@ -99,7 +105,10 @@ class SeriesCollectionDao(
     )
   }
 
-  override fun findAllBySeries(containsSeriesId: String, filterOnLibraryIds: Collection<String>?): Collection<SeriesCollection> {
+  override fun findAllBySeries(
+    containsSeriesId: String,
+    filterOnLibraryIds: Collection<String>?
+  ): Collection<SeriesCollection> {
     val ids = dsl.select(c.ID)
       .from(c)
       .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
@@ -118,6 +127,15 @@ class SeriesCollectionDao(
       .fetchAndMap(null)
       .firstOrNull()
 
+  override fun findDeletedSeriesByName(name: String): SortedMap<Int, String> =
+    dsl.select(cs.SERIES_ID, cs.NUMBER)
+      .from(cs)
+      .leftJoin(c).on(cs.COLLECTION_ID.eq(c.ID))
+      .leftJoin(s).on(cs.SERIES_ID.eq(s.ID))
+      .where(c.NAME.equalIgnoreCase(name))
+      .and(s.DELETED.eq(true))
+      .fetchInto(cs).map { it.number to it.seriesId }.toMap().toSortedMap()
+
   private fun selectBase() =
     dsl.selectDistinct(*c.fields())
       .from(c)
@@ -131,6 +149,7 @@ class SeriesCollectionDao(
           .from(cs)
           .leftJoin(s).on(cs.SERIES_ID.eq(s.ID))
           .where(cs.COLLECTION_ID.eq(cr.id))
+          .and(s.DELETED.eq(false))
           .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
           .orderBy(cs.NUMBER.asc())
           .fetchInto(cs)

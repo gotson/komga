@@ -3,6 +3,7 @@ package org.gotson.komga.domain.persistence
 import org.gotson.komga.domain.model.ReadList
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import java.util.SortedMap
 
 interface ReadListRepository {
   fun findByIdOrNull(readListId: String): ReadList?
@@ -27,6 +28,7 @@ interface ReadListRepository {
   fun findAllByBook(containsBookId: String, filterOnLibraryIds: Collection<String>?): Collection<ReadList>
 
   fun findByNameOrNull(name: String): ReadList?
+  fun findDeletedBooksByName(name: String): SortedMap<Int, String>
 
   fun insert(readList: ReadList)
   fun update(readList: ReadList)

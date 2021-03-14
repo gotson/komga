@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.persistence.ReadListRepository
+import org.gotson.komga.infrastructure.language.toIndexedMap
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.ReadlistRecord
 import org.jooq.DSLContext
@@ -104,7 +105,9 @@ class ReadListDao(
     val ids = dsl.select(rl.ID)
       .from(rl)
       .leftJoin(rlb).on(rl.ID.eq(rlb.READLIST_ID))
+      .leftJoin(b).on(rlb.BOOK_ID.eq(b.ID))
       .where(rlb.BOOK_ID.eq(containsBookId))
+      .and(b.DELETED.eq(false))
       .fetch(0, String::class.java)
 
     return selectBase()
@@ -119,6 +122,15 @@ class ReadListDao(
       .fetchAndMap(null)
       .firstOrNull()
 
+  override fun findDeletedBooksByName(name: String): SortedMap<Int, String> =
+    dsl.select(rlb.BOOK_ID, rlb.NUMBER)
+      .from(rlb)
+      .leftJoin(rl).on(rlb.READLIST_ID.eq(rl.ID))
+      .leftJoin(b).on(rlb.BOOK_ID.eq(b.ID))
+      .where(rl.NAME.equalIgnoreCase(name))
+      .and(b.DELETED.eq(true))
+      .fetchInto(rlb).map { it.number to it.bookId }.toMap().toSortedMap()
+
   private fun selectBase() =
     dsl.selectDistinct(*rl.fields())
       .from(rl)
@@ -132,11 +144,12 @@ class ReadListDao(
           .from(rlb)
           .leftJoin(b).on(rlb.BOOK_ID.eq(b.ID))
           .where(rlb.READLIST_ID.eq(rr.id))
+          .and(b.DELETED.eq(false))
           .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
           .orderBy(rlb.NUMBER.asc())
           .fetchInto(rlb)
-          .mapNotNull { it.number to it.bookId }
-          .toMap().toSortedMap()
+          .mapNotNull { it.bookId }
+          .toList().toIndexedMap()
         rr.toDomain(bookIds)
       }
 

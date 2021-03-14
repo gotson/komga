@@ -11,7 +11,8 @@ fun makeBook(name: String, fileLastModified: LocalDateTime = LocalDateTime.now()
     url = URL("file:/$name"),
     fileLastModified = fileLastModified,
     libraryId = libraryId,
-    seriesId = seriesId
+    seriesId = seriesId,
+    fileHash = ""
   )
 }
 

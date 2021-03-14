@@ -37,18 +37,21 @@ class BookDao(
   private fun findByIdOrNull(dsl: DSLContext, bookId: String): Book? =
     dsl.selectFrom(b)
       .where(b.ID.eq(bookId))
+      .and(b.DELETED.eq(false))
       .fetchOneInto(b)
       ?.toDomain()
 
   override fun findBySeriesId(seriesId: String): Collection<Book> =
     dsl.selectFrom(b)
       .where(b.SERIES_ID.eq(seriesId))
+      .and(b.DELETED.eq(false))
       .fetchInto(b)
       .map { it.toDomain() }
 
   override fun findAll(): Collection<Book> =
     dsl.select(*b.fields())
       .from(b)
+      .where(b.DELETED.eq(false))
       .fetchInto(b)
       .map { it.toDomain() }
 
@@ -58,6 +61,7 @@ class BookDao(
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .where(bookSearch.toCondition())
+      .and(b.DELETED.eq(false))
       .fetchInto(b)
       .map { it.toDomain() }
 
@@ -69,6 +73,7 @@ class BookDao(
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .where(conditions)
+      .and(b.DELETED.eq(false))
       .fetchOne(0, Long::class.java)
 
     val orderBy = pageable.sort.toOrderBy(sorts)
@@ -78,6 +83,7 @@ class BookDao(
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .where(conditions)
+      .and(b.DELETED.eq(false))
       .orderBy(orderBy)
       .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
       .fetchInto(b)
@@ -92,10 +98,30 @@ class BookDao(
     )
   }
 
+  override fun findByFileHashAndSizeIncludeDeleted(fileHash: String, fileSize: Long): Collection<Book> =
+    dsl.selectFrom(b)
+      .where(b.FILE_HASH.eq(fileHash))
+      .and(b.FILE_SIZE.eq(fileSize))
+      .map { it.toDomain() }
+
+  override fun findByLibraryIdAndUrlIncludeDeleted(libraryId: String, url: URL): Book? =
+    dsl.selectFrom(b)
+      .where(b.LIBRARY_ID.eq(libraryId))
+      .and(b.URL.eq(url.toString()))
+      .fetchOneInto(b)
+      ?.toDomain()
+
+  override fun findBySeriesIdIncludeDeleted(seriesId: String): Collection<Book> =
+    dsl.selectFrom(b)
+      .where(b.SERIES_ID.eq(seriesId))
+      .fetchInto(b)
+      .map { it.toDomain() }
+
   override fun getLibraryId(bookId: String): String? =
     dsl.select(b.LIBRARY_ID)
       .from(b)
       .where(b.ID.eq(bookId))
+      .and(b.DELETED.eq(false))
       .fetchOne(0, String::class.java)
 
   override fun findFirstIdInSeries(seriesId: String): String? =
@@ -103,6 +129,7 @@ class BookDao(
       .from(b)
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .where(b.SERIES_ID.eq(seriesId))
+      .and(b.DELETED.eq(false))
       .orderBy(d.NUMBER_SORT)
       .limit(1)
       .fetchOne(0, String::class.java)
@@ -111,9 +138,17 @@ class BookDao(
     dsl.select(b.ID)
       .from(b)
       .where(b.SERIES_ID.eq(seriesId))
+      .and(b.DELETED.eq(false))
       .fetch(0, String::class.java)
 
   override fun findAllIdBySeriesIds(seriesIds: Collection<String>): Collection<String> =
+    dsl.select(b.ID)
+      .from(b)
+      .where(b.SERIES_ID.`in`(seriesIds))
+      .and(b.DELETED.eq(false))
+      .fetch(0, String::class.java)
+
+  override fun findAllIdBySeriesIdsIncludeDeleted(seriesIds: Collection<String>): Collection<String> =
     dsl.select(b.ID)
       .from(b)
       .where(b.SERIES_ID.`in`(seriesIds))
@@ -123,6 +158,7 @@ class BookDao(
     dsl.select(b.ID)
       .from(b)
       .where(b.LIBRARY_ID.eq(libraryId))
+      .and(b.DELETED.eq(false))
       .fetch(0, String::class.java)
 
   override fun findAllId(bookSearch: BookSearch): Collection<String> {
@@ -133,8 +169,15 @@ class BookDao(
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .where(conditions)
+      .and(b.DELETED.eq(false))
       .fetch(0, String::class.java)
   }
+
+  override fun findAllDeleted(): Collection<String> =
+    dsl.select(b.ID)
+      .from(b)
+      .where(b.DELETED.eq(true))
+      .fetch(0, String::class.java)
 
   override fun insert(book: Book) {
     insertMany(listOf(book))
@@ -153,8 +196,10 @@ class BookDao(
             b.FILE_LAST_MODIFIED,
             b.FILE_SIZE,
             b.LIBRARY_ID,
-            b.SERIES_ID
-          ).values(null as String?, null, null, null, null, null, null, null)
+            b.SERIES_ID,
+            b.FILE_HASH,
+            b.DELETED
+          ).values(null as String?, null, null, null, null, null, null, null, null, null)
         ).also { step ->
           books.forEach {
             step.bind(
@@ -165,7 +210,9 @@ class BookDao(
               it.fileLastModified,
               it.fileSize,
               it.libraryId,
-              it.seriesId
+              it.seriesId,
+              it.fileHash,
+              it.deleted
             )
           }
         }.execute()
@@ -193,6 +240,7 @@ class BookDao(
       .set(b.LIBRARY_ID, book.libraryId)
       .set(b.SERIES_ID, book.seriesId)
       .set(b.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
+      .set(b.DELETED, book.deleted)
       .where(b.ID.eq(book.id))
       .execute()
   }
@@ -213,6 +261,14 @@ class BookDao(
     }
   }
 
+  override fun softDeleteByBookIds(bookIds: Collection<String>) {
+    dsl.transaction { config ->
+      with(config.dsl()) {
+        update(b).set(b.DELETED, true).where(b.ID.`in`(bookIds)).execute()
+      }
+    }
+  }
+
   override fun deleteAll() {
     dsl.transaction { config ->
       with(config.dsl()) {
@@ -221,7 +277,10 @@ class BookDao(
     }
   }
 
-  override fun count(): Long = dsl.fetchCount(b).toLong()
+  override fun count(): Long = dsl.selectCount()
+    .from(b)
+    .where(b.DELETED.eq(false))
+    .fetchOne(0, Long::class.java)
 
   private fun BookSearch.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()
@@ -245,6 +304,8 @@ class BookDao(
       seriesId = seriesId,
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
-      number = number
+      number = number,
+      fileHash = fileHash,
+      deleted = deleted
     )
 }

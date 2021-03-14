@@ -5,6 +5,7 @@ import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.infrastructure.image.MosaicGenerator
+import org.gotson.komga.infrastructure.language.toIndexedMap
 import org.springframework.stereotype.Service
 
 private val logger = KotlinLogging.logger {}
@@ -36,8 +37,13 @@ class ReadListLifecycle(
 
     if (existing.name != toUpdate.name && readListRepository.existsByName(toUpdate.name))
       throw DuplicateNameException("Read list name already exists")
+    val allSeriesIds = toUpdate.bookIds.values.toMutableList()
+    readListRepository.findDeletedBooksByName(toUpdate.name).forEach { (number, bookId) ->
+      if (allSeriesIds.size < number) allSeriesIds.add(number, bookId)
+      else allSeriesIds.add(number, bookId)
+    }
 
-    readListRepository.update(toUpdate)
+    readListRepository.update(toUpdate.copy(bookIds = allSeriesIds.toIndexedMap()))
   }
 
   fun deleteReadList(readListId: String) {

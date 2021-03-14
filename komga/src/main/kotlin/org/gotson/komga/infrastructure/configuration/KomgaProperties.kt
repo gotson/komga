@@ -11,6 +11,7 @@ import javax.validation.constraints.Positive
 @Validated
 class KomgaProperties {
   var librariesScanCron: String = ""
+  var trashEmptyingCron: String = ""
 
   var librariesScanStartup: Boolean = false
 

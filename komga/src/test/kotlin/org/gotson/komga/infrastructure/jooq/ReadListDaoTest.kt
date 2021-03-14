@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.time.LocalDateTime
@@ -227,5 +228,167 @@ class ReadListDaoTest(
         .containsExactly(bookLibrary1.id, bookLibrary2.id)
       assertThat(filtered).isFalse()
     }
+  }
+
+  @Test
+  fun `given read list with soft deleted book when finding deleted book by read list name then book is returned`() {
+    // given
+    val series = makeSeries("Series", library.id)
+    seriesRepository.insert(series)
+    val book1 = makeBook("Book", libraryId = library.id, seriesId = series.id)
+    val book2 = makeBook("Book", libraryId = library.id, seriesId = series.id)
+    bookRepository.insert(book1)
+    bookRepository.insert(book2)
+    bookRepository.softDeleteByBookIds(listOf(book1.id))
+
+    val readList = ReadList(
+      name = "MyReadList",
+      bookIds = listOf(book1.id).toIndexedMap()
+    )
+    readListDao.insert(readList)
+
+    // when
+    val deletedBooks = readListDao.findDeletedBooksByName(readList.name)
+
+    // then
+    assertThat(deletedBooks).hasSize(1)
+    assertThat(deletedBooks.values.first()).isEqualTo(book1.id)
+  }
+
+  @Test
+  fun `given read list with soft deleted book when finding by id then book ids are empty`() {
+    // given
+    val series = makeSeries("Series", library.id)
+    seriesRepository.insert(series)
+    val book = makeBook("Book", libraryId = library.id, seriesId = series.id)
+    bookRepository.insert(book)
+    bookRepository.softDeleteByBookIds(listOf(book.id))
+
+    val readList = ReadList(
+      name = "MyReadList",
+      bookIds = listOf(book.id).toIndexedMap()
+    )
+    readListDao.insert(readList)
+
+    // when
+    val deletedBooks = readListDao.findByIdOrNull(readList.id)
+
+    // then
+    assertThat(deletedBooks).isNotNull
+    assertThat(deletedBooks!!.bookIds).isEmpty()
+  }
+
+  @Test
+  fun `given read list with soft deleted book when searching then book ids are empty`() {
+    // given
+    val series = makeSeries("Series", library.id)
+    seriesRepository.insert(series)
+    val book = makeBook("Book", libraryId = library.id, seriesId = series.id)
+    bookRepository.insert(book)
+    bookRepository.softDeleteByBookIds(listOf(book.id))
+
+    val readList = ReadList(
+      name = "MyReadList",
+      bookIds = listOf(book.id).toIndexedMap()
+    )
+    readListDao.insert(readList)
+
+    // when
+    val found = readListDao.findAll(readList.name, PageRequest.of(0, 20))
+
+    // then
+    assertThat(found).hasSize(1)
+    assertThat(found.first().bookIds).isEmpty()
+  }
+
+  @Test
+  fun `given read list with soft deleted book when searching with library id filter then book ids are empty`() {
+    // given
+    val series = makeSeries("Series", library.id)
+    seriesRepository.insert(series)
+    val book = makeBook("Book", libraryId = library.id, seriesId = series.id)
+    bookRepository.insert(book)
+    bookRepository.softDeleteByBookIds(listOf(book.id))
+
+    val readList = ReadList(
+      name = "MyReadList",
+      bookIds = listOf(book.id).toIndexedMap()
+    )
+    readListDao.insert(readList)
+
+    // when
+    val found = readListDao.findByIdOrNull(readList.id, listOf(library.id))
+
+    // then
+    assertThat(found).isNotNull
+    assertThat(found!!.bookIds).isEmpty()
+  }
+
+  @Test
+  fun `given read list with soft deleted book when finding all by libraries then book ids are empty`() {
+    // given
+    val series = makeSeries("Series", library.id)
+    seriesRepository.insert(series)
+    val book = makeBook("Book", libraryId = library.id, seriesId = series.id)
+    bookRepository.insert(book)
+    bookRepository.softDeleteByBookIds(listOf(book.id))
+
+    val readList = ReadList(
+      name = "MyReadList",
+      bookIds = listOf(book.id).toIndexedMap()
+    )
+    readListDao.insert(readList)
+
+    // when
+    val found = readListDao.findAllByLibraries(listOf(library.id), null, null, PageRequest.of(0, 20))
+
+    // then
+    assertThat(found).isNotNull
+    assertThat(found.first().bookIds).isEmpty()
+  }
+
+  @Test
+  fun `given read list with soft deleted book when finding all by book then empty list is returned`() {
+    // given
+    val series = makeSeries("Series", library.id)
+    seriesRepository.insert(series)
+    val book = makeBook("Book", libraryId = library.id, seriesId = series.id)
+    bookRepository.insert(book)
+    bookRepository.softDeleteByBookIds(listOf(book.id))
+
+    val readList = ReadList(
+      name = "MyReadList",
+      bookIds = listOf(book.id).toIndexedMap()
+    )
+    readListDao.insert(readList)
+
+    // when
+    val found = readListDao.findAllByBook(book.id, null)
+
+    // then
+    assertThat(found).isEmpty()
+  }
+
+  @Test
+  fun `given read list with soft deleted book when finding by name then then book ids are empty`() {
+    // given
+    val series = makeSeries("Series", library.id)
+    seriesRepository.insert(series)
+    val book = makeBook("Book", libraryId = library.id, seriesId = series.id)
+    bookRepository.insert(book)
+    bookRepository.softDeleteByBookIds(listOf(book.id))
+
+    val readList = ReadList(
+      name = "MyReadList",
+      bookIds = listOf(book.id).toIndexedMap()
+    )
+    readListDao.insert(readList)
+
+    // when
+    val found = readListDao.findByNameOrNull(readList.name)
+
+    // then
+    assertThat(found).isNotNull
+    assertThat(found!!.bookIds).isEmpty()
   }
 }

@@ -1,8 +1,10 @@
 package org.gotson.komga.infrastructure.jooq
 
 import org.assertj.core.api.Assertions.assertThat
+import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.makeBook
@@ -11,11 +13,13 @@ import org.gotson.komga.domain.model.makeSeries
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
+import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
+import org.gotson.komga.infrastructure.language.toIndexedMap
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
@@ -26,6 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import java.net.URL
+import java.time.LocalDateTime
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
@@ -38,7 +44,8 @@ class BookDtoDaoTest(
   @Autowired private val libraryLifecycle: LibraryLifecycle,
   @Autowired private val readProgressRepository: ReadProgressRepository,
   @Autowired private val userRepository: KomgaUserRepository,
-  @Autowired private val userLifecycle: KomgaUserLifecycle
+  @Autowired private val userLifecycle: KomgaUserLifecycle,
+  @Autowired private val readListRepository: ReadListRepository
 ) {
 
   private val library = makeLibrary()
@@ -285,5 +292,220 @@ class BookDtoDaoTest(
       assertThat(found).hasSize(1)
       assertThat(found.first().name).isEqualTo("2")
     }
+  }
+
+  @Test
+  fun `given soft deleted book when searching for books then empty list is returned`() {
+    // given
+    val book = Book(
+      name = "Book",
+      url = URL("file://book"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true
+    )
+    bookRepository.insert(book)
+
+    // when
+    val found = bookDtoDao.findAll(
+      BookSearchWithReadProgress(),
+      user.id,
+      PageRequest.of(0, 20)
+    )
+
+    // then
+    assertThat(found).hasSize(0)
+  }
+
+  @Test
+  fun `given soft deleted book in a read list when searching by read list id then empty list is returned`() {
+    // given
+    val book = Book(
+      name = "Book",
+      url = URL("file://book"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true
+    )
+    bookRepository.insert(book)
+
+    val readList = ReadList(
+      name = "MyReadList",
+      bookIds = listOf(book.id).toIndexedMap()
+    )
+    readListRepository.insert(readList)
+
+    // when
+    val found = bookDtoDao.findByReadListId(
+      readList.id,
+      user.id,
+      null,
+      PageRequest.of(0, 20)
+    )
+
+    // then
+    assertThat(found).hasSize(0)
+  }
+
+  @Test
+  fun `given book and soft deleted book when finding next in series then null is returned`() {
+    // given
+    val book1 = Book(
+      name = "Book2",
+      url = URL("file:/book2"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = false,
+      number = 1
+
+    )
+
+    val book2 = Book(
+      name = "Book2",
+      url = URL("file:/book2"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true,
+      number = 2
+    )
+    seriesLifecycle.addBooks(series, listOf(book1, book2))
+
+    // when
+    val found = bookDtoDao.findNextInSeries(book1.id, user.id)
+
+    // then
+    assertThat(found).isNull()
+  }
+
+  @Test
+  fun `given book and soft deleted book when finding previous in series then null is returned`() {
+    // given
+    val book1 = Book(
+      name = "Book2",
+      url = URL("file:/book2"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true,
+      number = 1
+
+    )
+
+    val book2 = Book(
+      name = "Book2",
+      url = URL("file:/book2"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = false,
+      number = 2
+    )
+    seriesLifecycle.addBooks(series, listOf(book1, book2))
+
+    // when
+    val found = bookDtoDao.findPreviousInSeries(book2.id, user.id)
+
+    // then
+    assertThat(found).isNull()
+  }
+
+  @Test
+  fun `given book and soft deleted book in a read list when finding next in read list then null is returned`() {
+    // given
+    val book1 = Book(
+      name = "Book2",
+      url = URL("file:/book2"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = false,
+      number = 1
+
+    )
+
+    val book2 = Book(
+      name = "Book2",
+      url = URL("file:/book2"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true,
+      number = 2
+    )
+    seriesLifecycle.addBooks(series, listOf(book1, book2))
+
+    val readList = ReadList(
+      name = "MyReadList",
+      bookIds = listOf(book1.id, book2.id).toIndexedMap()
+    )
+    readListRepository.insert(readList)
+
+    // when
+    val found = bookDtoDao.findNextInReadList(
+      readList.id,
+      book1.id,
+      user.id,
+      null,
+    )
+
+    // then
+    assertThat(found).isNull()
+  }
+
+  @Test
+  fun `given book and soft deleted book in a read list when finding previous in read list then null is returned`() {
+    // given
+    val book1 = Book(
+      name = "Book2",
+      url = URL("file:/book2"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = true,
+      number = 1
+
+    )
+
+    val book2 = Book(
+      name = "Book2",
+      url = URL("file:/book2"),
+      fileLastModified = LocalDateTime.now(),
+      fileSize = 3,
+      seriesId = series.id,
+      libraryId = library.id,
+      deleted = false,
+      number = 2
+    )
+    seriesLifecycle.addBooks(series, listOf(book1, book2))
+
+    val readList = ReadList(
+      name = "MyReadList",
+      bookIds = listOf(book1.id, book2.id).toIndexedMap()
+    )
+    readListRepository.insert(readList)
+
+    // when
+    val found = bookDtoDao.findPreviousInReadList(
+      readList.id,
+      book2.id,
+      user.id,
+      null,
+    )
+
+    // then
+    assertThat(found).isNull()
   }
 }

@@ -108,6 +108,7 @@ class SeriesDtoDao(
   override fun findByIdOrNull(seriesId: String, userId: String): SeriesDto? =
     selectBase(userId)
       .where(s.ID.eq(seriesId))
+      .and(b.DELETED.eq(false))
       .groupBy(*groupFields)
       .fetchAndMap(userId)
       .firstOrNull()
@@ -147,6 +148,8 @@ class SeriesDtoDao(
       .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
       .apply { if (joinConditions.aggregationAuthor) leftJoin(bmaa).on(s.ID.eq(bmaa.SERIES_ID)) }
       .where(conditions)
+      .and(s.DELETED.eq(false))
+      .and(b.DELETED.eq(false).or(b.DELETED.isNull))
       .groupBy(s.ID)
       .having(having)
       .fetch()
@@ -156,6 +159,8 @@ class SeriesDtoDao(
 
     val dtos = selectBase(userId, joinConditions)
       .where(conditions)
+      .and(s.DELETED.eq(false))
+      .and(b.DELETED.eq(false).or(b.DELETED.isNull))
       .groupBy(*groupFields)
       .having(having)
       .orderBy(orderBy)

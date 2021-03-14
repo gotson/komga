@@ -94,6 +94,7 @@ class BookDtoDao(
       .apply { if (joinConditions.selectReadListNumber) leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID)) }
       .apply { if (joinConditions.author) leftJoin(a).on(b.ID.eq(a.BOOK_ID)) }
       .where(conditions)
+      .and(b.DELETED.eq(false))
       .groupBy(b.ID)
       .fetch()
       .size
@@ -102,6 +103,7 @@ class BookDtoDao(
 
     val dtos = selectBase(userId, joinConditions)
       .where(conditions)
+      .and(b.DELETED.eq(false))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
       .orderBy(orderBy)
       .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
@@ -119,6 +121,7 @@ class BookDtoDao(
   override fun findByIdOrNull(bookId: String, userId: String): BookDto? =
     selectBase(userId)
       .where(b.ID.eq(bookId))
+      .and(b.DELETED.eq(false))
       .fetchAndMap()
       .firstOrNull()
 
@@ -152,6 +155,7 @@ class BookDtoDao(
       .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
       .where(conditions)
+      .and(b.DELETED.eq(false))
       .groupBy(s.ID)
       .having(SeriesDtoDao.countUnread.ge(inline(1.toBigDecimal())))
       .and(SeriesDtoDao.countRead.ge(inline(1.toBigDecimal())))
@@ -165,6 +169,7 @@ class BookDtoDao(
       .mapNotNull { seriesId ->
         selectBase(userId)
           .where(b.SERIES_ID.eq(seriesId))
+          .and(b.DELETED.eq(false))
           .and(r.COMPLETED.isNull)
           .orderBy(d.NUMBER_SORT.asc())
           .limit(1)
@@ -186,12 +191,14 @@ class BookDtoDao(
       .from(b)
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .where(b.ID.eq(bookId))
+      .and(b.DELETED.eq(false))
       .fetchOne()
     val seriesId = record.get(0, String::class.java)
     val numberSort = record.get(1, Float::class.java)
 
     return selectBase(userId)
       .where(b.SERIES_ID.eq(seriesId))
+      .and(b.DELETED.eq(false))
       .orderBy(d.NUMBER_SORT.let { if (next) it.asc() else it.desc() })
       .seek(numberSort)
       .limit(1)
@@ -210,12 +217,14 @@ class BookDtoDao(
       .from(b)
       .leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID))
       .where(b.ID.eq(bookId))
+      .and(b.DELETED.eq(false))
       .and(rlb.READLIST_ID.eq(readListId))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
       .fetchOne(0, Int::class.java)
 
     return selectBase(userId, JoinConditions(selectReadListNumber = true))
       .where(rlb.READLIST_ID.eq(readListId))
+      .and(b.DELETED.eq(false))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
       .orderBy(rlb.NUMBER.let { if (next) it.asc() else it.desc() })
       .seek(numberSort)

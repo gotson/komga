@@ -8,8 +8,14 @@ interface SeriesRepository {
   fun findAll(): Collection<Series>
   fun findByIdOrNull(seriesId: String): Series?
   fun findByLibraryId(libraryId: String): Collection<Series>
+  fun findByLibraryIdIncludeDeleted(libraryId: String): Collection<Series>
   fun findByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): Collection<Series>
-  fun findByLibraryIdAndUrl(libraryId: String, url: URL): Series?
+  fun existsByLibraryIdAndUrl(libraryId: String, url: URL): Boolean
+
+  fun findByLibraryIdAndUrlIncludeDeleted(libraryId: String, url: URL): Series?
+  fun findByHashesInIncludeDeleted(hashes: Collection<String>): Collection<Series>
+
+  fun findAllDeleted(): Collection<String>
   fun findAll(search: SeriesSearch): Collection<Series>
 
   fun getLibraryId(seriesId: String): String?
@@ -20,6 +26,7 @@ interface SeriesRepository {
   fun delete(seriesId: String)
   fun deleteAll()
   fun deleteAll(seriesIds: Collection<String>)
+  fun softDeleteAll(seriesIds: Collection<String>)
 
   fun count(): Long
 }

@@ -9,6 +9,7 @@ logging:
 
 komga:
   libraries-scan-cron: "0 */15 * * * ?"
+  trash-emptying-cron: "0 0 0 ? * * "
   libraries-scan-directory-exclusions:
     - "#recycle"
     - "@eaDir"
