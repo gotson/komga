@@ -342,14 +342,14 @@
       "UNSUPPORTED": "Non supporté"
     },
     "reading_direction": {
-      "LEFT_TO_RIGHT": "Gauche à droite",
-      "RIGHT_TO_LEFT": "Droite à gauche",
+      "LEFT_TO_RIGHT": "De gauche à droite",
+      "RIGHT_TO_LEFT": "De droite à gauche",
       "VERTICAL": "Vertical",
       "WEBTOON": "Webtoon"
     },
     "series_status": {
       "ABANDONED": "Abandonnée",
-      "ENDED": "Finie",
+      "ENDED": "Terminée",
       "HIATUS": "Hiatus",
       "ONGOING": "En cours"
     }
