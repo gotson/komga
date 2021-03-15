@@ -92,7 +92,7 @@
     "download_file": "Ladda ner fil",
     "file": "FIL",
     "format": "FORMAT",
-    "navigation_within_readlist": "Navigering inom läslistan",
+    "navigation_within_readlist": "Navigering inom läslistan: {name}",
     "read_book": "Läs bok",
     "size": "STORLEK"
   },

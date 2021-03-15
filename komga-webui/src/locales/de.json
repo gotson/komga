@@ -92,7 +92,7 @@
     "download_file": "Datei herunterladen",
     "file": "Datei",
     "format": "Format",
-    "navigation_within_readlist": "Wechseln zur Leseliste",
+    "navigation_within_readlist": "Wechseln zur Leseliste: {name}",
     "read_book": "Lese Buch",
     "size": "Dateigröße"
   },

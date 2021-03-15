@@ -91,7 +91,7 @@
     "download_file": "파일 다운로드",
     "file": "파일",
     "format": "파일 형식",
-    "navigation_within_readlist": "읽기 목록 내 탐색",
+    "navigation_within_readlist": "읽기 목록 내 탐색: {name}",
     "read_book": "책 읽기",
     "size": "용량"
   },

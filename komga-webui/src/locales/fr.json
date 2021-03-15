@@ -92,7 +92,7 @@
     "download_file": "Télécharger le fichier",
     "file": "FICHIER",
     "format": "FORMAT",
-    "navigation_within_readlist": "Navigation dans la liste de lecture",
+    "navigation_within_readlist": "Navigation dans la liste de lecture : {name}",
     "read_book": "Lire le livre",
     "size": "TAILLE"
   },

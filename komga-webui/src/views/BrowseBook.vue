@@ -20,7 +20,7 @@
         dense
         border="right"
         class="mb-0"
-      >{{ $t('browse_book.navigation_within_readlist') }}: {{ contextName }}
+      >{{ $t('browse_book.navigation_within_readlist', {name: contextName}) }}
       </v-alert>
 
       <!--   Navigate to previous book   -->

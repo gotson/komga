@@ -92,7 +92,7 @@
     "download_file": "Скачать файл",
     "file": "ФАЙЛ",
     "format": "ФОРМАТ",
-    "navigation_within_readlist": "Навигация в пределах списка чтения",
+    "navigation_within_readlist": "Навигация в пределах списка чтения: {name}",
     "read_book": "Читать книгу",
     "size": "РАЗМЕР"
   },

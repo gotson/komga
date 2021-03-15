@@ -92,7 +92,7 @@
     "download_file": "下载文件",
     "file": "文件来源",
     "format": "格式",
-    "navigation_within_readlist": "阅读列表中的导航",
+    "navigation_within_readlist": "阅读列表中的导航: {name}",
     "read_book": "阅读书籍",
     "size": "文件大小"
   },

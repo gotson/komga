@@ -93,7 +93,7 @@
     "file": "FILE",
     "format": "FORMAT",
     "isbn": "ISBN",
-    "navigation_within_readlist": "Navigation within the readlist",
+    "navigation_within_readlist": "Navigation within the readlist: {name}",
     "read_book": "Read book",
     "size": "SIZE"
   },

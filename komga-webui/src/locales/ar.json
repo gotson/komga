@@ -92,7 +92,7 @@
     "download_file": "تحميل الملف",
     "file": "ملف",
     "format": "صيغة",
-    "navigation_within_readlist": "التنقل ضمن قائمة القراءة",
+    "navigation_within_readlist": "التنقل ضمن قائمة القراءة: {name}",
     "read_book": "قراءة كتاب",
     "size": "حجم"
   },

@@ -92,7 +92,7 @@
     "download_file": "ファイルをダウンロード",
     "file": "ファイル名",
     "format": "フォーマット",
-    "navigation_within_readlist": "この読書リスト内の一覧",
+    "navigation_within_readlist": "この読書リスト内の一覧: {name}",
     "read_book": "本を読む",
     "size": "サイズ"
   },
