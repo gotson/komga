@@ -16,15 +16,6 @@ komga:
     file: \${user.home}/.komga/database.sqlite
 
 spring:
-  #  cache:
-  #    caffeine-spec: maximumSize=500,expireAfterWrite=300s
-  datasource:
-    url: jdbc:h2:~/.komga/database.h2
-    username: sa
-    initialization-mode: always
-  h2:
-    console:
-      enabled: true
   flyway:
     enabled: true
     locations: classpath:db/migration/{vendor}

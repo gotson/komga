@@ -27,7 +27,6 @@ dependencies {
 
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-validation")
-  implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
   implementation("org.springframework.boot:spring-boot-starter-actuator")
   implementation("org.springframework.boot:spring-boot-starter-security")
   implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
@@ -83,8 +82,6 @@ dependencies {
   implementation("com.jakewharton.byteunits:byteunits:0.9.1")
 
   implementation("com.github.f4b6a3:tsid-creator:3.0.1")
-
-  runtimeOnly("com.h2database:h2:1.4.200")
 
 //  While waiting for https://github.com/xerial/sqlite-jdbc/pull/491 and https://github.com/xerial/sqlite-jdbc/pull/494
 //  runtimeOnly("org.xerial:sqlite-jdbc:3.32.3.2")

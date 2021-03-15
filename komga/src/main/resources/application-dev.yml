@@ -9,8 +9,6 @@ komga:
     file: ":memory:"
 
 spring:
-  datasource:
-    url: jdbc:h2:mem:testdb
   artemis:
     embedded:
       data-directory: ./artemis

@@ -1,8 +1,3 @@
 komga:
   database:
     file: ./localdb.sqlite
-
-spring:
-  datasource:
-    url: jdbc:h2:./testdb
-

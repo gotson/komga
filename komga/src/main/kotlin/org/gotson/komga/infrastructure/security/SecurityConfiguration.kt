@@ -5,7 +5,6 @@ import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_USER
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Profile
 import org.springframework.http.HttpMethod
@@ -41,9 +40,6 @@ class SecurityConfiguration(
       // restrict all actuator endpoints to ADMIN only
       .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole(ROLE_ADMIN)
 
-      // restrict H2 console to ADMIN only
-      .requestMatchers(PathRequest.toH2Console()).hasRole(ROLE_ADMIN)
-
       // claim is unprotected
       .antMatchers("/api/v1/claim").permitAll()
 
@@ -53,10 +49,8 @@ class SecurityConfiguration(
         "/opds/**"
       ).hasRole(ROLE_USER)
 
-      // authorize frames for H2 console
       .and()
       .headers {
-        it.frameOptions().sameOrigin()
         it.cacheControl().disable() // headers are set in WebMvcConfiguration
       }
 
