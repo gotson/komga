@@ -186,7 +186,7 @@ class BookDtoDao(
       .from(b)
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .where(b.ID.eq(bookId))
-      .fetchOne()
+      .fetchOne()!!
     val seriesId = record.get(0, String::class.java)
     val numberSort = record.get(1, Float::class.java)
 

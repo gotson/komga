@@ -223,7 +223,7 @@ tasks.flywayMigrate {
 }
 
 jooq {
-  version.set("3.13.1")
+  version.set("3.14.8")
   configurations {
     create("main") {
       jooqConfiguration.apply {

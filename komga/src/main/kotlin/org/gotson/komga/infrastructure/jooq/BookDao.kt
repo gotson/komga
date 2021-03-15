@@ -69,7 +69,7 @@ class BookDao(
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .where(conditions)
-      .fetchOne(0, Long::class.java)
+      .fetchOne(0, Long::class.java) ?: 0
 
     val orderBy = pageable.sort.toOrderBy(sorts)
 
@@ -88,7 +88,7 @@ class BookDao(
       items,
       if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
       else PageRequest.of(0, maxOf(count.toInt(), 20), pageSort),
-      count.toLong()
+      count
     )
   }
 

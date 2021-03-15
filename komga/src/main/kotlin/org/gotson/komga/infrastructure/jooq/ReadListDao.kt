@@ -51,7 +51,7 @@ class ReadListDao(
     val count = dsl.selectCount()
       .from(rl)
       .where(conditions)
-      .fetchOne(0, Long::class.java)
+      .fetchOne(0, Long::class.java) ?: 0
 
     val orderBy = pageable.sort.toOrderBy(sorts)
 
@@ -66,7 +66,7 @@ class ReadListDao(
       items,
       if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
       else PageRequest.of(0, maxOf(count.toInt(), 20), pageSort),
-      count.toLong()
+      count
     )
   }
 

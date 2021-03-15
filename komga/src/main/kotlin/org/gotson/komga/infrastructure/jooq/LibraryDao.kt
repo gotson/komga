@@ -23,7 +23,7 @@ class LibraryDao(
       ?.toDomain()
 
   override fun findById(libraryId: String): Library =
-    findOne(libraryId)
+    findOne(libraryId)!!
       .toDomain()
 
   private fun findOne(libraryId: String) =

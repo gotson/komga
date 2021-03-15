@@ -19,7 +19,7 @@ class SeriesMetadataDao(
   private val st = Tables.SERIES_METADATA_TAG
 
   override fun findById(seriesId: String): SeriesMetadata =
-    findOne(seriesId).toDomain(findGenres(seriesId), findTags(seriesId))
+    findOne(seriesId)!!.toDomain(findGenres(seriesId), findTags(seriesId))
 
   override fun findByIdOrNull(seriesId: String): SeriesMetadata? =
     findOne(seriesId)?.toDomain(findGenres(seriesId), findTags(seriesId))
