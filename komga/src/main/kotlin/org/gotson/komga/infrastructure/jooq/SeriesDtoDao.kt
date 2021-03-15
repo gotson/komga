@@ -19,6 +19,7 @@ import org.jooq.Record
 import org.jooq.ResultQuery
 import org.jooq.SelectOnConditionStep
 import org.jooq.impl.DSL
+import org.jooq.impl.DSL.field
 import org.jooq.impl.DSL.inline
 import org.jooq.impl.DSL.lower
 import org.springframework.data.domain.Page
@@ -69,7 +70,8 @@ class SeriesDtoDao(
     "lastModifiedDate" to s.LAST_MODIFIED_DATE,
     "lastModified" to s.LAST_MODIFIED_DATE,
     "collection.number" to cs.NUMBER,
-    "name" to s.NAME
+    "name" to s.NAME,
+    "booksCount" to field(BOOKS_COUNT)
   )
 
   override fun findAll(search: SeriesSearchWithReadProgress, userId: String, pageable: Pageable): Page<SeriesDto> {

@@ -462,6 +462,7 @@
     "role_user": "User"
   },
   "sort": {
+    "books_count": "Books count",
     "date_added": "Date added",
     "date_updated": "Date updated",
     "file_name": "Filename",
