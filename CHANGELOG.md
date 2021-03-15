@@ -1,3 +1,11 @@
+# [0.81.0](https://github.com/gotson/komga/compare/v0.80.0...v0.81.0) (2021-03-15)
+
+
+### Features
+
+* remove H2 dependencies ([50248e7](https://github.com/gotson/komga/commit/50248e72332c493b070d1a200eec994661fd6b7d)), closes [#455](https://github.com/gotson/komga/issues/455)
+* sort series by books count ([b51e491](https://github.com/gotson/komga/commit/b51e4917e1636c83a121952b1b69bd3ab881a279)), closes [#459](https://github.com/gotson/komga/issues/459)
+
 # [0.80.0](https://github.com/gotson/komga/compare/v0.79.1...v0.80.0) (2021-03-11)
 
 
