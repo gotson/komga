@@ -1,6 +1,14 @@
 <template>
   <div v-if="!$_.isEmpty(book)">
     <toolbar-sticky>
+      <v-btn icon
+             :title="$t('common.go_to_library')"
+             :to="{name:'browse-series', params: {seriesId: book.libraryId }}"
+      >
+        <v-icon v-if="$vuetify.rtl">mdi-arrow-right</v-icon>
+        <v-icon v-else>mdi-arrow-left</v-icon>
+      </v-btn>
+
       <!--   Action menu   -->
       <book-actions-menu v-if="book"
                          :book="book"
