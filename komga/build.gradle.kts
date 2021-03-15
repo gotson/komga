@@ -1,9 +1,4 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import com.rohanprabhu.gradle.plugins.kdjooq.database
-import com.rohanprabhu.gradle.plugins.kdjooq.generator
-import com.rohanprabhu.gradle.plugins.kdjooq.jdbc
-import com.rohanprabhu.gradle.plugins.kdjooq.jooqCodegenConfiguration
-import com.rohanprabhu.gradle.plugins.kdjooq.target
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -15,7 +10,7 @@ plugins {
   }
   id("org.springframework.boot") version "2.4.3"
   id("com.gorylenko.gradle-git-properties") version "2.2.4"
-  id("com.rohanprabhu.kotlin-dsl-jooq") version "0.4.6"
+  id("nu.studer.jooq") version "5.2.1"
   id("org.flywaydb.flyway") version "7.5.4"
   id("com.github.johnrengelman.processes") version "0.5.0"
   id("org.springdoc.openapi-gradle-plugin") version "1.3.1"
@@ -93,9 +88,9 @@ dependencies {
 
 //  While waiting for https://github.com/xerial/sqlite-jdbc/pull/491 and https://github.com/xerial/sqlite-jdbc/pull/494
 //  runtimeOnly("org.xerial:sqlite-jdbc:3.32.3.2")
-//  jooqGeneratorRuntime("org.xerial:sqlite-jdbc:3.32.3.2")
+//  jooqGenerator("org.xerial:sqlite-jdbc:3.32.3.2")
   runtimeOnly("com.github.gotson:sqlite-jdbc:3.32.3.6")
-  jooqGeneratorRuntime("com.github.gotson:sqlite-jdbc:3.32.3.6")
+  jooqGenerator("com.github.gotson:sqlite-jdbc:3.32.3.6")
 
   testImplementation("org.springframework.boot:spring-boot-starter-test") {
     exclude(module = "mockito-core")
@@ -227,32 +222,32 @@ tasks.flywayMigrate {
   mixed = true
 }
 
-jooqGenerator {
-  jooqVersion = "3.13.1"
-  configuration("primary", project.sourceSets.getByName("main")) {
-    databaseSources = migrationDirsSqlite
-
-    configuration = jooqCodegenConfiguration {
-      jdbc {
-        driver = "org.sqlite.JDBC"
-        url = dbSqlite["url"]
-      }
-
-      generator {
-        target {
-          packageName = "org.gotson.komga.jooq"
-          directory = "${project.buildDir}/generated/jooq/primary"
+jooq {
+  version.set("3.13.1")
+  configurations {
+    create("main") {
+      jooqConfiguration.apply {
+        logging = org.jooq.meta.jaxb.Logging.WARN
+        jdbc.apply {
+          driver = "org.sqlite.JDBC"
+          url = dbSqlite["url"]
         }
-
-        database {
-          name = "org.jooq.meta.sqlite.SQLiteDatabase"
+        generator.apply {
+          database.apply {
+            name = "org.jooq.meta.sqlite.SQLiteDatabase"
+          }
+          target.apply {
+            packageName = "org.gotson.komga.jooq"
+          }
         }
       }
     }
   }
 }
-val `jooq-codegen-primary` by project.tasks
-`jooq-codegen-primary`.dependsOn("flywayMigrate")
+tasks.named<nu.studer.gradle.jooq.JooqGenerate>("generateJooq") {
+  allInputsDeclared.set(true)
+  dependsOn("flywayMigrate")
+}
 
 openApi {
   outputDir.set(file("$projectDir/docs"))
