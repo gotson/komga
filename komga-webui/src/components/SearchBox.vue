@@ -48,6 +48,7 @@
           </v-img>
           <v-list-item-content>
             <v-list-item-title v-text="data.item.metadata.title"/>
+            <v-list-item-subtitle v-text="getLibraryName(data.item)"></v-list-item-subtitle>
           </v-list-item-content>
         </template>
 
@@ -62,6 +63,7 @@
 
           <v-list-item-content>
             <v-list-item-title v-text="data.item.metadata.title"/>
+            <v-list-item-subtitle v-text="getLibraryName(data.item)"></v-list-item-subtitle>
           </v-list-item-content>
         </template>
 
@@ -169,6 +171,9 @@ export default Vue.extend({
     },
   },
   methods: {
+    getLibraryName(item: BookDto | SeriesDto): string {
+      return this.$store.getters.getLibraryById(item.libraryId).name;
+    },
     searchItems: debounce(async function (this: any, query: string) {
       if (query) {
         this.loading = true
