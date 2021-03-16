@@ -22,14 +22,18 @@ class DatabaseMigration(
   @ExperimentalPathApi
   @PostConstruct
   fun init() {
-    convertHomeDir(komgaProperties.database.file).parent.listDirectoryEntries("*.mv.db*").let { h2Files ->
-      if (h2Files.isNotEmpty()) {
-        logger.info { "Deleting old H2 database files" }
-        h2Files.forEach {
-          logger.info { "Delete: $it" }
-          it.deleteIfExists()
+    try {
+      convertHomeDir(komgaProperties.database.file).parent?.listDirectoryEntries("*.mv.db*")?.let { h2Files ->
+        if (h2Files.isNotEmpty()) {
+          logger.info { "Deleting old H2 database files" }
+          h2Files.forEach {
+            logger.info { "Delete: $it" }
+            it.deleteIfExists()
+          }
         }
       }
+    } catch (e: Exception) {
+      logger.warn(e) { "Could not delete old H2 database files" }
     }
   }
 }
