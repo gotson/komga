@@ -1,4 +1,4 @@
-package org.gotson.komga.infrastructure.metadata.comicinfo.dto
+package org.gotson.komga.infrastructure.metadata.comicrack.dto
 
 import com.fasterxml.jackson.annotation.JsonCreator
 

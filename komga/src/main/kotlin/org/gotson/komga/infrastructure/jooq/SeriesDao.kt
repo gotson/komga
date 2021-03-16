@@ -51,6 +51,14 @@ class SeriesDao(
       .fetchOneInto(s)
       ?.toDomain()
 
+  override fun findByTitle(title: String): Collection<Series> =
+    dsl.selectDistinct(*s.fields())
+      .from(s)
+      .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
+      .where(d.TITLE.equalIgnoreCase(title))
+      .fetchInto(s)
+      .map { it.toDomain() }
+
   override fun getLibraryId(seriesId: String): String? =
     dsl.select(s.LIBRARY_ID)
       .from(s)

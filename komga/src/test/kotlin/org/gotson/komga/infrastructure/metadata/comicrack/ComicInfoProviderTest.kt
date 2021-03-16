@@ -1,4 +1,4 @@
-package org.gotson.komga.infrastructure.metadata.comicinfo
+package org.gotson.komga.infrastructure.metadata.comicrack
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import io.mockk.every
@@ -8,12 +8,16 @@ import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.service.BookAnalyzer
-import org.gotson.komga.infrastructure.metadata.comicinfo.dto.AgeRating
-import org.gotson.komga.infrastructure.metadata.comicinfo.dto.ComicInfo
-import org.gotson.komga.infrastructure.metadata.comicinfo.dto.Manga
+import org.gotson.komga.infrastructure.metadata.comicrack.dto.AgeRating
+import org.gotson.komga.infrastructure.metadata.comicrack.dto.ComicInfo
+import org.gotson.komga.infrastructure.metadata.comicrack.dto.Manga
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 import java.time.LocalDate
+import java.util.stream.Stream
 
 class ComicInfoProviderTest {
 
@@ -284,5 +288,19 @@ class ComicInfoProviderTest {
         assertThat(collections).isEmpty()
       }
     }
+  }
+
+  fun computeSeriesFromSeriesAndVolumeArguments() = Stream.of(
+    Arguments.of("", null, null),
+    Arguments.of(null, null, null),
+    Arguments.of("Series", null, "Series"),
+    Arguments.of("Series", 1, "Series"),
+    Arguments.of("Series", 10, "Series (10)"),
+  )
+
+  @ParameterizedTest
+  @MethodSource("computeSeriesFromSeriesAndVolumeArguments")
+  fun `given series and volume when computing series name then it is correct`(series: String?, volume: Int?, expected: String?) {
+    assertThat(computeSeriesFromSeriesAndVolume(series, volume)).isEqualTo(expected)
   }
 }

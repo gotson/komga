@@ -3,8 +3,10 @@ package org.gotson.komga.domain.service
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.ReadList
+import org.gotson.komga.domain.model.ReadListRequestResult
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.infrastructure.image.MosaicGenerator
+import org.gotson.komga.infrastructure.metadata.comicrack.ReadListProvider
 import org.springframework.stereotype.Service
 
 private val logger = KotlinLogging.logger {}
@@ -13,7 +15,9 @@ private val logger = KotlinLogging.logger {}
 class ReadListLifecycle(
   private val readListRepository: ReadListRepository,
   private val bookLifecycle: BookLifecycle,
-  private val mosaicGenerator: MosaicGenerator
+  private val mosaicGenerator: MosaicGenerator,
+  private val readListMatcher: ReadListMatcher,
+  private val readListProvider: ReadListProvider,
 ) {
 
   @Throws(
@@ -54,5 +58,22 @@ class ReadListLifecycle(
 
     val images = ids.mapNotNull { bookLifecycle.getThumbnailBytes(it) }
     return mosaicGenerator.createMosaic(images)
+  }
+
+  fun importReadList(fileContent: ByteArray): ReadListRequestResult {
+    val request = try {
+      readListProvider.importFromCbl(fileContent) ?: return ReadListRequestResult(null, emptyList(), "ERR_1015")
+    } catch (e: Exception) {
+      return ReadListRequestResult(null, emptyList(), "ERR_1015")
+    }
+
+    val result = readListMatcher.matchReadListRequest(request)
+    return when {
+      result.readList != null -> {
+        readListRepository.insert(result.readList)
+        result.copy(readList = readListRepository.findByIdOrNull(result.readList.id)!!)
+      }
+      else -> result
+    }
   }
 }

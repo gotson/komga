@@ -11,3 +11,10 @@ ERR_1005 | Unknown error while analyzing book
 ERR_1006 | Book does not contain any page
 ERR_1007 | Some entries could not be analyzed
 ERR_1008 | Unknown error while getting book's entries
+ERR_1009 | A read list with that name already exists
+ERR_1010 | No books were matched within the read list request
+ERR_1011 | No unique match for series
+ERR_1012 | No match for series
+ERR_1013 | No unique match for book number within series
+ERR_1014 | No match for book number within series
+ERR_1015 | Error while deserializing ComicRack ReadingList

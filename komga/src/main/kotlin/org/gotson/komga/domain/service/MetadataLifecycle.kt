@@ -18,7 +18,7 @@ import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
 import org.gotson.komga.infrastructure.metadata.barcode.IsbnBarcodeProvider
-import org.gotson.komga.infrastructure.metadata.comicinfo.ComicInfoProvider
+import org.gotson.komga.infrastructure.metadata.comicrack.ComicInfoProvider
 import org.gotson.komga.infrastructure.metadata.epub.EpubMetadataProvider
 import org.gotson.komga.infrastructure.metadata.localartwork.LocalArtworkProvider
 import org.springframework.stereotype.Service

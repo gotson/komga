@@ -1,6 +1,7 @@
-package org.gotson.komga.infrastructure.metadata.comicinfo.dto
+package org.gotson.komga.infrastructure.metadata.comicrack.dto
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.core.io.ClassPathResource
@@ -9,9 +10,9 @@ class ComicInfoTest {
 
   @Test
   fun `given valid xml file when deserializing then properties are available`() {
-    val file = ClassPathResource("comicinfo/ComicInfo.xml")
+    val file = ClassPathResource("comicrack/ComicInfo.xml")
     val mapper = XmlMapper()
-    val comicInfo = mapper.readValue(file.url, ComicInfo::class.java)
+    val comicInfo = mapper.readValue<ComicInfo>(file.url)
 
     with(comicInfo) {
       assertThat(title).isEqualTo("v01 - Preludes & Nocturnes - 30th Anniversary Edition")
@@ -34,9 +35,9 @@ class ComicInfoTest {
 
   @Test
   fun `given another valid xml file when deserializing then properties are available`() {
-    val file = ClassPathResource("comicinfo/ComicInfo2.xml")
+    val file = ClassPathResource("comicrack/ComicInfo2.xml")
     val mapper = XmlMapper()
-    val comicInfo = mapper.readValue(file.url, ComicInfo::class.java)
+    val comicInfo = mapper.readValue<ComicInfo>(file.url)
 
     with(comicInfo) {
       assertThat(title).isEqualTo("v01 - Preludes & Nocturnes - 30th Anniversary Edition")
@@ -62,9 +63,9 @@ class ComicInfoTest {
 
   @Test
   fun `given incorrect enum values when deserializing then it is ignored`() {
-    val file = ClassPathResource("comicinfo/InvalidEnumValues.xml")
+    val file = ClassPathResource("comicrack/InvalidEnumValues.xml")
     val mapper = XmlMapper()
-    val comicInfo = mapper.readValue(file.url, ComicInfo::class.java)
+    val comicInfo = mapper.readValue<ComicInfo>(file.url)
 
     with(comicInfo) {
       assertThat(ageRating).isNull()

@@ -17,6 +17,7 @@ import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.ReadListCreationDto
 import org.gotson.komga.interfaces.rest.dto.ReadListDto
+import org.gotson.komga.interfaces.rest.dto.ReadListRequestResultDto
 import org.gotson.komga.interfaces.rest.dto.ReadListUpdateDto
 import org.gotson.komga.interfaces.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.rest.dto.toDto
@@ -41,6 +42,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
 import java.util.concurrent.TimeUnit
 import javax.validation.Valid
@@ -135,6 +137,13 @@ class ReadListController(
     } catch (e: DuplicateNameException) {
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
     }
+
+  @PostMapping("/import")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  fun importFromComicRackList(
+    @RequestParam("files") files: List<MultipartFile>,
+  ): List<ReadListRequestResultDto> =
+    files.map { readListLifecycle.importReadList(it.bytes).toDto(it.originalFilename) }
 
   @PatchMapping("{id}")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")

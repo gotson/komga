@@ -11,6 +11,7 @@ interface SeriesRepository {
   fun findByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): Collection<Series>
   fun findByLibraryIdAndUrl(libraryId: String, url: URL): Series?
   fun findAll(search: SeriesSearch): Collection<Series>
+  fun findByTitle(title: String): Collection<Series>
 
   fun getLibraryId(seriesId: String): String?
 

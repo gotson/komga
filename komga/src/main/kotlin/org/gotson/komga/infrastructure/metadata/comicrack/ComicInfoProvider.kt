@@ -1,4 +1,4 @@
-package org.gotson.komga.infrastructure.metadata.comicinfo
+package org.gotson.komga.infrastructure.metadata.comicrack
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import mu.KotlinLogging
@@ -11,8 +11,8 @@ import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
-import org.gotson.komga.infrastructure.metadata.comicinfo.dto.ComicInfo
-import org.gotson.komga.infrastructure.metadata.comicinfo.dto.Manga
+import org.gotson.komga.infrastructure.metadata.comicrack.dto.ComicInfo
+import org.gotson.komga.infrastructure.metadata.comicrack.dto.Manga
 import org.gotson.komga.infrastructure.validation.BCP47TagValidator
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -45,7 +45,12 @@ class ComicInfoProvider(
 
       val readLists = mutableListOf<BookMetadataPatch.ReadListEntry>()
       if (!comicInfo.alternateSeries.isNullOrBlank()) {
-        readLists.add(BookMetadataPatch.ReadListEntry(comicInfo.alternateSeries!!, comicInfo.alternateNumber?.toIntOrNull()))
+        readLists.add(
+          BookMetadataPatch.ReadListEntry(
+            comicInfo.alternateSeries!!,
+            comicInfo.alternateNumber?.toIntOrNull()
+          )
+        )
       }
 
       comicInfo.storyArc?.let { value ->
@@ -75,9 +80,7 @@ class ComicInfoProvider(
       }
 
       val genres = comicInfo.genre?.split(',')?.mapNotNull { it.trim().ifBlank { null } }
-      val series = comicInfo.series?.ifBlank { null }?.let { series ->
-        series + (comicInfo.volume?.let { if (it != 1) " ($it)" else "" } ?: "")
-      }
+      val series = computeSeriesFromSeriesAndVolume(comicInfo.series, comicInfo.volume)
 
       return SeriesMetadataPatch(
         title = series,
@@ -115,3 +118,8 @@ class ComicInfoProvider(
       if (list.isNotEmpty()) list.map { Author(it, role) } else null
     }
 }
+
+fun computeSeriesFromSeriesAndVolume(series: String?, volume: Int?): String? =
+  series?.ifBlank { null }?.let { s ->
+    s + (volume?.let { if (it != 1) " ($it)" else "" } ?: "")
+  }
