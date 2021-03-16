@@ -30,9 +30,9 @@
     "cycling_side_padding": "左右の余白を切り替える",
     "end_of_book": "ここが本の末尾です。",
     "from_series_metadata": "シリーズ情報から",
-    "move_next": "もう一度押すと次の本へ移動します。",
-    "move_next_exit": "もう一度押すと本を閉じます。",
-    "move_previous": "もう一度押すと前の本へ移動します。",
+    "move_next": "もう一度「次」を押すと次の本へ移動します。",
+    "move_next_exit": "もう一度「次」を押すと本を閉じます。",
+    "move_previous": "もう一度「前」を押すと前の本へ移動します。",
     "paged_reader_layout": {
       "double": "見開き",
       "double_no_cover": "見開き (カバーなし)",
@@ -92,6 +92,7 @@
     "download_file": "ファイルをダウンロード",
     "file": "ファイル名",
     "format": "フォーマット",
+    "isbn": "ISBN",
     "navigation_within_readlist": "この読書リスト内の一覧: {name}",
     "read_book": "本を読む",
     "size": "サイズ"
@@ -111,7 +112,8 @@
     "summary_from_book": "{number} 巻のサマリ:"
   },
   "collections_expansion_panel": {
-    "manage_collection": "コレクションの管理"
+    "manage_collection": "コレクションの管理",
+    "title": "{name} コレクション"
   },
   "common": {
     "all_libraries": "全ライブラリ",
@@ -214,6 +216,8 @@
       "button_confirm": "変更を保存",
       "dialog_title_multiple": "{count} 冊を編集",
       "dialog_title_single": "{book} を編集",
+      "field_isbn": "ISBN",
+      "field_isbn_error": "ISBN は正しく 13 桁にしてください",
       "field_number": "ナンバー",
       "field_number_sort": "ソートナンバー",
       "field_number_sort_hint": "十進数が使えます",
@@ -241,6 +245,7 @@
       "button_confirm_edit": "編集",
       "dialog_title_add": "ライブラリを追加",
       "dialot_title_edit": "ライブラリを編集",
+      "field_import_barcode_isbn": "ISBN バーコード",
       "field_import_comicinfo_book": "書誌情報",
       "field_import_comicinfo_collections": "コレクション",
       "field_import_comicinfo_readlists": "読書リスト",
@@ -254,6 +259,7 @@
       "field_scanner_force_directory_modified_time": "ディレクトリの変更時刻が更新されているものと見なす",
       "file_browser_dialog_button_confirm": "選択",
       "file_browser_dialog_title": "ライブラリのルートフォルダ",
+      "label_import_barcode_isbn": "バーコードから ISBN をインポート",
       "label_import_comicinfo": "ComicInfo.xml ファイルを含んだ CBR/CBZ から情報をインポート",
       "label_import_epub": "EPUB ファイルから書誌情報をインポート",
       "label_import_local": "ローカルのメディアをインポート",
@@ -347,6 +353,17 @@
       "HIATUS": "休載",
       "ONGOING": "連載中"
     }
+  },
+  "error_codes": {
+    "ERR_1000": "分析中にファイルへのアクセスができませんでした",
+    "ERR_1001": "サポートしていないメディアタイプです",
+    "ERR_1002": "暗号化 RAR 書庫はサポートしていません",
+    "ERR_1003": "ソリッドモードの RAR 書庫はサポートしていません",
+    "ERR_1004": "マルチボリュームの RAR 書庫はサポートしていません",
+    "ERR_1005": "分析中に想定外のエラーがありました",
+    "ERR_1006": "本にページが含まれていません",
+    "ERR_1007": "分析できない項目がありました",
+    "ERR_1008": "想定外のエラーで本の項目が取得できません"
   },
   "filter": {
     "age_rating": "年齢レーティング",

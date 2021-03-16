@@ -30,9 +30,9 @@
     "cycling_side_padding": "تغيير الحدود الجانبية",
     "end_of_book": "لقد وصلت إلى نهاية الكتاب.",
     "from_series_metadata": "من البيانات الوصفية للسلسلة",
-    "move_next": "انقر أو اضغط على التالي مرة أخرى للانتقال إلى الكتاب التالي.",
-    "move_next_exit": "انقر أو اضغط التالي مرة أخرى للخروج من القارئ.",
-    "move_previous": "انقر أو اضغط على السابق مرة أخرى للانتقال إلى الكتاب السابق.",
+    "move_next": "انقر أو اضغط على \"التالي\" مرة أخرى للانتقال إلى الكتاب التالي.",
+    "move_next_exit": "انقر أو اضغط \"التالي\" مرة أخرى للخروج من القارئ.",
+    "move_previous": "انقر أو اضغط على \"السابق\" مرة أخرى للانتقال إلى الكتاب السابق.",
     "paged_reader_layout": {
       "double": "صفحات مزدوجة",
       "double_no_cover": "صفحات مزدوجة (بدون غلاف)",
@@ -58,12 +58,12 @@
       "general": "إعدادات عامة",
       "gestures": "الإيماءات",
       "page_layout": "تخطيط الصفحة",
-      "paged": "عارض الصفحات",
+      "paged": "خيارات القارئ المرقم",
       "reading_mode": "وضع القراءة",
       "scale_type": "نوع القياس",
       "side_padding": "المساحة الجانبية",
       "side_padding_none": "لا شيء",
-      "webtoon": "ويبتون"
+      "webtoon": "خيارات قارئ الويبتون"
     },
     "shortcuts": {
       "close": "إغلاق",
@@ -92,6 +92,7 @@
     "download_file": "تحميل الملف",
     "file": "ملف",
     "format": "صيغة",
+    "isbn": "ردمك",
     "navigation_within_readlist": "التنقل ضمن قائمة القراءة: {name}",
     "read_book": "قراءة كتاب",
     "size": "حجم"
@@ -111,7 +112,8 @@
     "summary_from_book": "ملخص من الكتاب {number}:"
   },
   "collections_expansion_panel": {
-    "manage_collection": "إدارة المجموعة"
+    "manage_collection": "إدارة المجموعة",
+    "title": "{name} مجموعة"
   },
   "common": {
     "all_libraries": "كل المكتبات",
@@ -132,7 +134,7 @@
     "n_selected": "{count} مختار",
     "nothing_to_show": "لا شيء للعرض",
     "pages": "صفحة",
-    "pages_n": "لا توجد صفحات | 1 صفحة | {count} صفحات",
+    "pages_n": "لا توجد صفحات | 1 صفحة | {count} صفحة",
     "password": "كلمة السر",
     "publisher": "الناشر",
     "read": "اقرأ",
@@ -148,8 +150,8 @@
     "keep_reading": "مواصلة القراءة",
     "on_deck": "على السطح",
     "recently_added_books": "كتب مصورة مضافة مؤخرًا",
-    "recently_added_series": "كتب مصورة أضيفت مؤخرا",
-    "recently_updated_series": "كتب مصورة تم تحديثها مؤخرًا"
+    "recently_added_series": "سلاسل أضيفت مؤخرا",
+    "recently_updated_series": "سلاسل تم تحديثها مؤخرًا"
   },
   "dialog": {
     "add_to_collection": {
@@ -185,28 +187,28 @@
       "button_confirm": "حذف",
       "confirm_delete": "نعم ، احذف المجموعة \"{name}\"",
       "dialog_title": "حذف المجموعة",
-      "warning_html": "ستتم إزالة المجموعة <b> {name}</b> من هذا الخادم. لن تتأثر الملفات. لا يمكن التراجع عن هذا <b></b>. مواصله؟"
+      "warning_html": "ستتم إزالة المجموعة <b>{name}</b>; من هذا الخادم. لن تتأثر الملفات. لا يمكن التراجع عن هذا . مواصله؟"
     },
     "delete_library": {
       "button_cancel": "إلغاء",
       "button_confirm": "حذف",
       "confirm_delete": "نعم ، احذف المكتبة \"{name}\"",
       "title": "حذف المكتبة",
-      "warning_html": "ستتم إزالة المكتبة <b> {name} </b> من هذا الخادم. ملفات الوسائط الخاصة بك لن تتأثر. هذا <b> لا يمكن </b> التراجع عنه. يكمل ؟"
+      "warning_html": "ستتم إزالة المكتبة <b>{name}</b> من هذا الخادم. ملفات الوسائط الخاصة بك لن تتأثر. هذا لا يمكن التراجع عنه. مواصله؟"
     },
     "delete_readlist": {
       "button_cancel": "إلغاء",
       "button_confirm": "حذف",
       "confirm_delete": "نعم ، احذف قائمة القراءة \"{name}\"",
       "dialog_title": "حذف قائمة القراءة",
-      "warning_html": "ستتم إزالة قائمة القراءة <b> {name} </b> من هذا الخادم. ملفات الوسائط الخاصة بك لن تتأثر. هذا <b> لا يمكن </b> التراجع عنه. يكمل ؟"
+      "warning_html": "ستتم إزالة قائمة القراءة <b>{name}</b> من هذا الخادم. ملفات الوسائط الخاصة بك لن تتأثر. هذا لا يمكن التراجع عنه. مواصله؟"
     },
     "delete_user": {
       "button_cancel": "إلغاء",
       "button_confirm": "حذف",
       "confirm_delete": "نعم ، احذف المستخدم \"{name}\"",
       "dialog_title": "حذف المستخدم",
-      "warning_html": "المستخدم <b> {name} </b> سيتم حذفه من هذا الخادم. هذا <b> لا يمكن </b> التراجع عنه. يكمل ؟"
+      "warning_html": "المستخدم <b>{name}</b> سيتم حذفه من هذا الخادم. هذا لا يمكن التراجع عنه. مواصله؟"
     },
     "edit_books": {
       "authors_notice_multiple_edit": "أنت تقوم بتحرير مؤلفين لكتب متعددة. سيؤدي هذا إلى تجاوز المؤلفين الحاليين لكل كتاب.",
@@ -214,6 +216,8 @@
       "button_confirm": "حفظ التغييرات",
       "dialog_title_multiple": "تحرير {count} كتاب | تحرير {count} كتاب",
       "dialog_title_single": "تحرير {book}",
+      "field_isbn": "ردمك",
+      "field_isbn_error": "يجب أن يكون رقم ردمك 13 صالحًا",
       "field_number": "رقم",
       "field_number_sort": "رقم الفرز",
       "field_number_sort_hint": "يمكنك استخدام الأرقام العشرية",
@@ -241,6 +245,7 @@
       "button_confirm_edit": "تعديل",
       "dialog_title_add": "إضافة مكتبة",
       "dialot_title_edit": "تحرير المكتبة",
+      "field_import_barcode_isbn": "الباركود ردمك",
       "field_import_comicinfo_book": "البيانات الوصفية للكتاب",
       "field_import_comicinfo_collections": "المجموعات",
       "field_import_comicinfo_readlists": "قوائم القراءة",
@@ -254,6 +259,7 @@
       "field_scanner_force_directory_modified_time": "فرض وقت تعديل الدليل",
       "file_browser_dialog_button_confirm": "إختيار",
       "file_browser_dialog_title": "المجلد الجذر للمكتبة",
+      "label_import_barcode_isbn": "استيراد رقم ردمك داخل الباركود",
       "label_import_comicinfo": "استيراد البيانات الوصفية لـ CBR/CBZ التي تحتوي على ملف ComicInfo.xml",
       "label_import_epub": "استيراد البيانات الوصفية من ملفات EPUB",
       "label_import_local": "استيراد أصول الوسائط المحلية",
@@ -348,6 +354,17 @@
       "ONGOING": "مستمر"
     }
   },
+  "error_codes": {
+    "ERR_1000": "تعذر الوصول إلى الملف أثناء التحليل",
+    "ERR_1001": "نوع الوسائط غير مدعوم",
+    "ERR_1002": "لا يتم دعم أرشيفات RAR المشفرة",
+    "ERR_1003": "أرشيفات RAR الصلبة غير مدعومة",
+    "ERR_1004": "أرشيفات RAR متعددة المجلدات غير مدعومة",
+    "ERR_1005": "خطأ غير معروف أثناء تحليل الكتاب",
+    "ERR_1006": "لا يحتوي الكتاب على أي صفحة",
+    "ERR_1007": "تعذر تحليل بعض الإدخالات",
+    "ERR_1008": "خطأ غير معروف أثناء الحصول على إدخالات الكتاب"
+  },
   "filter": {
     "age_rating": "التصنيف العمري",
     "age_rating_none": "لا شيء",
@@ -415,7 +432,8 @@
     "more": "اقرأ أكثر"
   },
   "readlists_expansion_panel": {
-    "manage_readlist": "إدارة قائمة القراءة"
+    "manage_readlist": "إدارة قائمة القراءة",
+    "title": "{name} قائمة القراءة"
   },
   "search": {
     "no_results": "لم يعرض البحث أية نتائج",
