@@ -1,3 +1,13 @@
+## [0.81.1](https://github.com/gotson/komga/compare/v0.81.0...v0.81.1) (2021-03-16)
+
+
+### Bug Fixes
+
+* prevent crash during h2 cleanup if parent folder is null ([bd20ff6](https://github.com/gotson/komga/commit/bd20ff67cc9b1973323d603b384783ae533eaed7))
+* translated using Weblate (French) ([a5f7dc5](https://github.com/gotson/komga/commit/a5f7dc5dafe59ba43a1fc5442a58a0adaee98f18))
+* translated using Weblate (Japanese) ([7c95fff](https://github.com/gotson/komga/commit/7c95fffccf6d2e1dc161121aa9e1880e699534e2))
+* translated using Weblate (Swedish) ([1b72135](https://github.com/gotson/komga/commit/1b72135beff2e82c1df885d9d1e5580444056397))
+
 # [0.81.0](https://github.com/gotson/komga/compare/v0.80.0...v0.81.0) (2021-03-15)
 
 
