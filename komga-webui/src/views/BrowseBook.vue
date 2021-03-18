@@ -3,7 +3,7 @@
     <toolbar-sticky>
       <v-btn icon
              :title="$t('common.go_to_library')"
-             :to="{name:'browse-series', params: {seriesId: book.libraryId }}"
+             :to="{name:'browse-series', params: {seriesId: book.seriesId }}"
       >
         <v-icon v-if="$vuetify.rtl">mdi-arrow-right</v-icon>
         <v-icon v-else>mdi-arrow-left</v-icon>
