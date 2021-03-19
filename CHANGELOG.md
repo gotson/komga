@@ -1,3 +1,12 @@
+# [0.82.0](https://github.com/gotson/komga/compare/v0.81.1...v0.82.0) (2021-03-19)
+
+
+### Features
+
+* **webui:** import ComicRack lists as read lists ([8b0dac3](https://github.com/gotson/komga/commit/8b0dac312589dbd5fd9a6c972d61802147022b2f))
+* added translation using Weblate (Italian)  ([e5343d7](https://github.com/gotson/komga/commit/e5343d7ab40b95eaed861a0cb65282911093a0aa))
+* import ComicRack lists as read lists ([c1e4357](https://github.com/gotson/komga/commit/c1e435762c732d38a4e074f4927fa17445d89709)), closes [#464](https://github.com/gotson/komga/issues/464)
+
 ## [0.81.1](https://github.com/gotson/komga/compare/v0.81.0...v0.81.1) (2021-03-16)
 
 

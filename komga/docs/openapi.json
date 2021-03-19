@@ -44,52 +44,6 @@
           }
         }
       },
-      "PageSeriesDto": {
-        "type": "object",
-        "properties": {
-          "number": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "numberOfElements": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "totalPages": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/Pageable"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/Sort"
-          },
-          "first": {
-            "type": "boolean"
-          },
-          "content": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SeriesDto"
-            }
-          },
-          "totalElements": {
-            "format": "int64",
-            "type": "integer"
-          },
-          "empty": {
-            "type": "boolean"
-          }
-        }
-      },
       "StreamingResponseBody": {
         "type": "object"
       },
@@ -192,30 +146,6 @@
             }
           },
           "name": {
-            "type": "string"
-          }
-        }
-      },
-      "OpdsEntry": {
-        "type": "object",
-        "required": [
-          "content",
-          "id",
-          "title",
-          "updated"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "updated": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "content": {
             "type": "string"
           }
         }
@@ -340,36 +270,6 @@
           }
         }
       },
-      "SharedLibraryDto": {
-        "type": "object",
-        "required": [
-          "id"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          }
-        }
-      },
-      "PathDto": {
-        "type": "object",
-        "required": [
-          "name",
-          "path",
-          "type"
-        ],
-        "properties": {
-          "path": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
-          }
-        }
-      },
       "UserWithSharedLibrariesDto": {
         "type": "object",
         "required": [
@@ -403,6 +303,554 @@
           }
         }
       },
+      "Pageable": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "format": "int32",
+            "type": "integer",
+            "minimum": 1
+          },
+          "page": {
+            "format": "int32",
+            "type": "integer",
+            "minimum": 0
+          },
+          "sort": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Sort": {
+        "type": "object",
+        "properties": {
+          "unsorted": {
+            "type": "boolean"
+          },
+          "sorted": {
+            "type": "boolean"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "BookMetadataUpdateDto": {
+        "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.",
+        "type": "object",
+        "properties": {
+          "summary": {
+            "type": "string"
+          },
+          "numberSortLock": {
+            "type": "boolean"
+          },
+          "tagsLock": {
+            "type": "boolean"
+          },
+          "releaseDate": {
+            "format": "date",
+            "type": "string"
+          },
+          "isbn": {
+            "type": "string"
+          },
+          "numberLock": {
+            "type": "boolean"
+          },
+          "releaseDateLock": {
+            "type": "boolean"
+          },
+          "title": {
+            "type": "string"
+          },
+          "titleLock": {
+            "type": "boolean"
+          },
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "number": {
+            "type": "string"
+          },
+          "summaryLock": {
+            "type": "boolean"
+          },
+          "isbnLock": {
+            "type": "boolean"
+          },
+          "numberSort": {
+            "format": "float",
+            "type": "number"
+          },
+          "authorsLock": {
+            "type": "boolean"
+          },
+          "authors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthorUpdateDto"
+            }
+          }
+        }
+      },
+      "PasswordUpdateDto": {
+        "type": "object",
+        "required": [
+          "password"
+        ],
+        "properties": {
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "CollectionUpdateDto": {
+        "type": "object",
+        "properties": {
+          "ordered": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "seriesIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CollectionCreationDto": {
+        "type": "object",
+        "required": [
+          "name",
+          "ordered",
+          "seriesIds"
+        ],
+        "properties": {
+          "ordered": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "seriesIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ValidationErrorResponse": {
+        "type": "object",
+        "required": [
+          "violations"
+        ],
+        "properties": {
+          "violations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Violation"
+            }
+          }
+        }
+      },
+      "ReadProgressUpdateDto": {
+        "description": "page can be omitted if completed is set to true. completed can be omitted, and will be set accordingly depending on the page passed and the total number of pages in the book.",
+        "type": "object",
+        "properties": {
+          "page": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "completed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageReadListDto": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "numberOfElements": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "totalPages": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/Pageable"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReadListDto"
+            }
+          },
+          "totalElements": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SeriesDto": {
+        "type": "object",
+        "required": [
+          "booksCount",
+          "booksInProgressCount",
+          "booksMetadata",
+          "booksReadCount",
+          "booksUnreadCount",
+          "created",
+          "fileLastModified",
+          "id",
+          "lastModified",
+          "libraryId",
+          "metadata",
+          "name",
+          "url"
+        ],
+        "properties": {
+          "metadata": {
+            "$ref": "#/components/schemas/SeriesMetadataDto"
+          },
+          "created": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "libraryId": {
+            "type": "string"
+          },
+          "booksMetadata": {
+            "$ref": "#/components/schemas/BookMetadataAggregationDto"
+          },
+          "booksCount": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "url": {
+            "type": "string"
+          },
+          "booksInProgressCount": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "fileLastModified": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "booksReadCount": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "lastModified": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "booksUnreadCount": {
+            "format": "int32",
+            "type": "integer"
+          }
+        }
+      },
+      "SharedLibrariesUpdateDto": {
+        "type": "object",
+        "required": [
+          "all",
+          "libraryIds"
+        ],
+        "properties": {
+          "all": {
+            "type": "boolean"
+          },
+          "libraryIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PageBookDto": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "numberOfElements": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "totalPages": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/Pageable"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BookDto"
+            }
+          },
+          "totalElements": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageCollectionDto": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "numberOfElements": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "totalPages": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/Pageable"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CollectionDto"
+            }
+          },
+          "totalElements": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "OpdsLink": {
+        "type": "object",
+        "required": [
+          "href",
+          "rel",
+          "type"
+        ],
+        "properties": {
+          "rel": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "ReadListRequestBookDto": {
+        "type": "object",
+        "required": [
+          "number",
+          "series"
+        ],
+        "properties": {
+          "number": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "series": {
+            "type": "string"
+          }
+        }
+      },
+      "ReadListRequestResultBookDto": {
+        "type": "object",
+        "required": [
+          "book",
+          "errorCode"
+        ],
+        "properties": {
+          "book": {
+            "$ref": "#/components/schemas/ReadListRequestBookDto"
+          },
+          "errorCode": {
+            "type": "string"
+          }
+        }
+      },
+      "PageSeriesDto": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "numberOfElements": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "totalPages": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/Pageable"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SeriesDto"
+            }
+          },
+          "totalElements": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "OpdsEntry": {
+        "type": "object",
+        "required": [
+          "content",
+          "id",
+          "title",
+          "updated"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "updated": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      },
+      "SharedLibraryDto": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        }
+      },
+      "PathDto": {
+        "type": "object",
+        "required": [
+          "name",
+          "path",
+          "type"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
       "AuthorDto": {
         "type": "object",
         "required": [
@@ -414,6 +862,31 @@
             "type": "string"
           },
           "name": {
+            "type": "string"
+          }
+        }
+      },
+      "ReadListRequestResultDto": {
+        "type": "object",
+        "required": [
+          "errorCode",
+          "requestName",
+          "unmatchedBooks"
+        ],
+        "properties": {
+          "requestName": {
+            "type": "string"
+          },
+          "readList": {
+            "$ref": "#/components/schemas/ReadListDto"
+          },
+          "unmatchedBooks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReadListRequestResultBookDto"
+            }
+          },
+          "errorCode": {
             "type": "string"
           }
         }
@@ -450,27 +923,6 @@
         "properties": {
           "path": {
             "type": "string"
-          }
-        }
-      },
-      "Pageable": {
-        "type": "object",
-        "properties": {
-          "size": {
-            "format": "int32",
-            "type": "integer",
-            "minimum": 1
-          },
-          "page": {
-            "format": "int32",
-            "type": "integer",
-            "minimum": 0
-          },
-          "sort": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           }
         }
       },
@@ -603,94 +1055,6 @@
           }
         }
       },
-      "Sort": {
-        "type": "object",
-        "properties": {
-          "unsorted": {
-            "type": "boolean"
-          },
-          "sorted": {
-            "type": "boolean"
-          },
-          "empty": {
-            "type": "boolean"
-          }
-        }
-      },
-      "BookMetadataUpdateDto": {
-        "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.",
-        "type": "object",
-        "properties": {
-          "summary": {
-            "type": "string"
-          },
-          "numberSortLock": {
-            "type": "boolean"
-          },
-          "tagsLock": {
-            "type": "boolean"
-          },
-          "releaseDate": {
-            "format": "date",
-            "type": "string"
-          },
-          "isbn": {
-            "type": "string"
-          },
-          "numberLock": {
-            "type": "boolean"
-          },
-          "releaseDateLock": {
-            "type": "boolean"
-          },
-          "title": {
-            "type": "string"
-          },
-          "titleLock": {
-            "type": "boolean"
-          },
-          "tags": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "number": {
-            "type": "string"
-          },
-          "summaryLock": {
-            "type": "boolean"
-          },
-          "isbnLock": {
-            "type": "boolean"
-          },
-          "numberSort": {
-            "format": "float",
-            "type": "number"
-          },
-          "authorsLock": {
-            "type": "boolean"
-          },
-          "authors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AuthorUpdateDto"
-            }
-          }
-        }
-      },
-      "PasswordUpdateDto": {
-        "type": "object",
-        "required": [
-          "password"
-        ],
-        "properties": {
-          "password": {
-            "type": "string"
-          }
-        }
-      },
       "OpdsFeed": {
         "type": "object",
         "required": [
@@ -726,23 +1090,6 @@
           "updated": {
             "format": "date-time",
             "type": "string"
-          }
-        }
-      },
-      "CollectionUpdateDto": {
-        "type": "object",
-        "properties": {
-          "ordered": {
-            "type": "boolean"
-          },
-          "name": {
-            "type": "string"
-          },
-          "seriesIds": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           }
         }
       },
@@ -810,42 +1157,6 @@
           }
         }
       },
-      "CollectionCreationDto": {
-        "type": "object",
-        "required": [
-          "name",
-          "ordered",
-          "seriesIds"
-        ],
-        "properties": {
-          "ordered": {
-            "type": "boolean"
-          },
-          "name": {
-            "type": "string"
-          },
-          "seriesIds": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "ValidationErrorResponse": {
-        "type": "object",
-        "required": [
-          "violations"
-        ],
-        "properties": {
-          "violations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Violation"
-            }
-          }
-        }
-      },
       "CollectionDto": {
         "type": "object",
         "required": [
@@ -883,65 +1194,6 @@
             "items": {
               "type": "string"
             }
-          }
-        }
-      },
-      "ReadProgressUpdateDto": {
-        "description": "page can be omitted if completed is set to true. completed can be omitted, and will be set accordingly depending on the page passed and the total number of pages in the book.",
-        "type": "object",
-        "properties": {
-          "page": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "completed": {
-            "type": "boolean"
-          }
-        }
-      },
-      "PageReadListDto": {
-        "type": "object",
-        "properties": {
-          "number": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "numberOfElements": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "totalPages": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/Pageable"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/Sort"
-          },
-          "first": {
-            "type": "boolean"
-          },
-          "content": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ReadListDto"
-            }
-          },
-          "totalElements": {
-            "format": "int64",
-            "type": "integer"
-          },
-          "empty": {
-            "type": "boolean"
           }
         }
       },
@@ -1273,72 +1525,6 @@
           }
         }
       },
-      "SeriesDto": {
-        "type": "object",
-        "required": [
-          "booksCount",
-          "booksInProgressCount",
-          "booksMetadata",
-          "booksReadCount",
-          "booksUnreadCount",
-          "created",
-          "fileLastModified",
-          "id",
-          "lastModified",
-          "libraryId",
-          "metadata",
-          "name",
-          "url"
-        ],
-        "properties": {
-          "metadata": {
-            "$ref": "#/components/schemas/SeriesMetadataDto"
-          },
-          "created": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "libraryId": {
-            "type": "string"
-          },
-          "booksMetadata": {
-            "$ref": "#/components/schemas/BookMetadataAggregationDto"
-          },
-          "booksCount": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "url": {
-            "type": "string"
-          },
-          "booksInProgressCount": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "fileLastModified": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "booksReadCount": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "name": {
-            "type": "string"
-          },
-          "id": {
-            "type": "string"
-          },
-          "lastModified": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "booksUnreadCount": {
-            "format": "int32",
-            "type": "integer"
-          }
-        }
-      },
       "ClaimStatus": {
         "type": "object",
         "required": [
@@ -1346,117 +1532,6 @@
         ],
         "properties": {
           "isClaimed": {
-            "type": "boolean"
-          }
-        }
-      },
-      "SharedLibrariesUpdateDto": {
-        "type": "object",
-        "required": [
-          "all",
-          "libraryIds"
-        ],
-        "properties": {
-          "all": {
-            "type": "boolean"
-          },
-          "libraryIds": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "PageBookDto": {
-        "type": "object",
-        "properties": {
-          "number": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "numberOfElements": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "totalPages": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/Pageable"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/Sort"
-          },
-          "first": {
-            "type": "boolean"
-          },
-          "content": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/BookDto"
-            }
-          },
-          "totalElements": {
-            "format": "int64",
-            "type": "integer"
-          },
-          "empty": {
-            "type": "boolean"
-          }
-        }
-      },
-      "PageCollectionDto": {
-        "type": "object",
-        "properties": {
-          "number": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "numberOfElements": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "last": {
-            "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "totalPages": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/Pageable"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/Sort"
-          },
-          "first": {
-            "type": "boolean"
-          },
-          "content": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CollectionDto"
-            }
-          },
-          "totalElements": {
-            "format": "int64",
-            "type": "integer"
-          },
-          "empty": {
             "type": "boolean"
           }
         }
@@ -1508,25 +1583,6 @@
             "items": {
               "type": "string"
             }
-          }
-        }
-      },
-      "OpdsLink": {
-        "type": "object",
-        "required": [
-          "href",
-          "rel",
-          "type"
-        ],
-        "properties": {
-          "rel": {
-            "type": "string"
-          },
-          "href": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
           }
         }
       }
@@ -5920,6 +5976,57 @@
         ],
         "tags": [
           "book-controller"
+        ]
+      }
+    },
+    "/api/v1/readlists/import": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "format": "binary",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "importFromComicRackList",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReadListRequestResultDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "read-list-controller"
         ]
       }
     },
