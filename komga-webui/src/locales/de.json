@@ -11,12 +11,12 @@
   },
   "account_settings": {
     "account_settings": "Kontoeinstellungen",
-    "change_password": "Passwortänderung"
+    "change_password": "Passwort ändern"
   },
   "author_roles": {
-    "colorist": "Colorist",
+    "colorist": "Kolorist",
     "cover": "Titelbild (Cover)",
-    "editor": "Herausgeber (Editor)",
+    "editor": "Editoren",
     "inker": "Tuscher",
     "letterer": "Setzer",
     "penciller": "Zeichner",
@@ -30,9 +30,9 @@
     "cycling_side_padding": "Seitenrand ändern",
     "end_of_book": "Sie haben das Ende des Buches erreicht.",
     "from_series_metadata": "Metadaten von Serie",
-    "move_next": "Klicken Sie oder pressen Sie nocheinmal \"Nächste Seite\" um zum nächsten Buch zu gelangen.",
-    "move_next_exit": "Klicke oder presse Vorwärts erneut um den Lesemodus zu beenden.",
-    "move_previous": "Klicken Sie oder drücken Sie nocheinmal \"Vorherige Seite\" um zum letzten Buch zu gelangen.",
+    "move_next": "Klicken oder drücken Sie \"Weiter\" um zum nächsten Buch zu gelangen.",
+    "move_next_exit": "Klicken oder drücken Sie \"Weiter\" erneut um den Lesemodus zu beenden.",
+    "move_previous": "Klicken oder drücken Sie erneut auf \"Vorherige Seite\", um zum letzten Buch zu wechseln.",
     "paged_reader_layout": {
       "double": "Doppelseite",
       "double_no_cover": "Doppelseitig ohne Titelbild",
@@ -58,12 +58,12 @@
       "general": "Allgemeines",
       "gestures": "Gesten",
       "page_layout": "Seiteneinstellungen",
-      "paged": "Seitenausrichtung",
+      "paged": "Einstellungen zur Seitenausrichtung",
       "reading_mode": "Lesemodus",
       "scale_type": "Maßstab",
       "side_padding": "Seitenränder",
       "side_padding_none": "Keine",
-      "webtoon": "Webtoon"
+      "webtoon": "Webtoon Lese-Einstellungen"
     },
     "shortcuts": {
       "close": "Verlasse den Reader",
@@ -92,6 +92,7 @@
     "download_file": "Datei herunterladen",
     "file": "Datei",
     "format": "Format",
+    "isbn": "ISBN",
     "navigation_within_readlist": "Wechseln zur Leseliste: {name}",
     "read_book": "Lese Buch",
     "size": "Dateigröße"
@@ -111,7 +112,8 @@
     "summary_from_book": "Inhaltsangabe des Buches {number}:"
   },
   "collections_expansion_panel": {
-    "manage_collection": "Sammlungverwaltung"
+    "manage_collection": "Sammlungverwaltung",
+    "title": "{name} Kollektion"
   },
   "common": {
     "all_libraries": "Alle Bibliotheken",
@@ -214,6 +216,8 @@
       "button_confirm": "Speichere die Änderungen",
       "dialog_title_multiple": "Bearbeite {count} Bücher|Bearbeite {count} Bücher",
       "dialog_title_single": "Bearbeite {book}",
+      "field_isbn": "ISBN",
+      "field_isbn_error": "Muss eine gültige ISBN 13 Nummer sein",
       "field_number": "Nummer",
       "field_number_sort": "Reihenfolgennummer",
       "field_number_sort_hint": "Sie können Dezimalzahlen verwenden",
@@ -241,6 +245,7 @@
       "button_confirm_edit": "Bearbeite",
       "dialog_title_add": "Füge Bibliothek hinzu",
       "dialot_title_edit": "Bearbeite Bibliothek",
+      "field_import_barcode_isbn": "ISBN Strichcode",
       "field_import_comicinfo_book": "Buch Metadaten",
       "field_import_comicinfo_collections": "Sammlung",
       "field_import_comicinfo_readlists": "Leseliste",
@@ -254,6 +259,7 @@
       "field_scanner_force_directory_modified_time": "Erzwinge das Durchsuchen des Verzeichnis auf Basis des Zeitstempels",
       "file_browser_dialog_button_confirm": "Akzeptiert",
       "file_browser_dialog_title": "Bibliothekshauptverzeichnis",
+      "label_import_barcode_isbn": "Importieren Sie die ISBN aus einem Barcode",
       "label_import_comicinfo": "Importiere aus einer vorhandenen ComicInfo.xml Datei die Metadaten für CBR/CBZ",
       "label_import_epub": "Importiere für EPUB Dateien die Metadaten",
       "label_import_local": "Importiere lokale Medienbestände",
@@ -348,6 +354,17 @@
       "ONGOING": "Fortlaufend"
     }
   },
+  "error_codes": {
+    "ERR_1000": "Während der Untersuchung konnte auf die Datei nicht zugegriffen werden",
+    "ERR_1001": "Dieser Medientyp ist nicht unterstützt",
+    "ERR_1002": "Verschlüsselte RAR Archive werden nicht unterstützt",
+    "ERR_1003": "Solide RAR Archive werden nicht unterstützt",
+    "ERR_1004": "Mehrbändige RAR Archive werden nicht unterstützt",
+    "ERR_1005": "Unbekannter Fehler beim Analysieren des Buchs",
+    "ERR_1006": "Das Buch enthält keine Seiten",
+    "ERR_1007": "Einige Einträge konnten nicht ausgewertet werden",
+    "ERR_1008": "Unbekannter Fehler beim Abrufen der Bucheinträge"
+  },
   "filter": {
     "age_rating": "Altersfreigabe",
     "age_rating_none": "Bei Serien ohne Altersbeschränkungen soll dieser Wert im Filter angezeigt werden",
@@ -415,7 +432,8 @@
     "more": "Zeige den ganzen Text an"
   },
   "readlists_expansion_panel": {
-    "manage_readlist": "Leselistenverwaltung"
+    "manage_readlist": "Leselistenverwaltung",
+    "title": "{name} Leseliste"
   },
   "search": {
     "no_results": "Die Suche lieferte keine Treffer",
@@ -444,6 +462,7 @@
     "role_user": "Anwender"
   },
   "sort": {
+    "books_count": "Anzahl der Bücher",
     "date_added": "Nach Hinzufügedatum sortiert",
     "date_updated": "Nach letzter Aktuallisierung sortiert",
     "file_name": "Dateiname",
