@@ -1,0 +1,37 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} di {2}"
+    },
+    "dataTable": {
+      "itemsPerPageText": "Righe per pagina:",
+      "sortBy": "Ordina per"
+    }
+  },
+  "account_settings": {
+    "account_settings": "Impostazioni Account",
+    "change_password": "cambia password"
+  },
+  "author_roles": {
+    "cover": "copertina",
+    "editor": "editori",
+    "writer": "scrittori"
+  },
+  "bookreader": {
+    "beginning_of_book": "Sei all'inizio del libro.",
+    "end_of_book": "Hai raggiunto la fine del libro.",
+    "from_series_metadata": "dai metadati della serie",
+    "paged_reader_layout": {
+      "double_no_cover": "Pagine doppie (senza copertina)",
+      "single": "Pagina singola"
+    },
+    "reader_settings": "Impostazioni Lettore",
+    "scale_type": {
+      "continuous_original": "Originale",
+      "continuous_width": "Adatta a larghezza"
+    }
+  },
+  "common": {
+    "locale_name": "Inglese"
+  }
+}

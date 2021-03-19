@@ -462,6 +462,7 @@
     "role_user": "用户"
   },
   "sort": {
+    "books_count": "书本数量",
     "date_added": "添加时间",
     "date_updated": "更新时间",
     "file_name": "文件名",

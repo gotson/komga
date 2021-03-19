@@ -462,6 +462,7 @@
     "role_user": "Utilisateur"
   },
   "sort": {
+    "books_count": "Nombre de livres",
     "date_added": "Date d'ajout",
     "date_updated": "Date de mise à jour",
     "file_name": "Nom du ficher",

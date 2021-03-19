@@ -357,9 +357,9 @@
   "error_codes": {
     "ERR_1000": "Filen kunde inte nås under analysen",
     "ERR_1001": "Mediatyp är inte supporterad",
-    "ERR_1002": "Enkrypterade RAR-arkiv är inte supporterade",
-    "ERR_1003": "Solid RAR-arkiv är inte supporterade",
-    "ERR_1004": "Multivolym RAR-arkiv är inte supporterade",
+    "ERR_1002": "Krypterade RAR-arkiv är inte supporterade",
+    "ERR_1003": "\"Solid RAR\"-arkiv är inte supporterade",
+    "ERR_1004": "\"Multi Volume RAR\"-arkiv är inte supporterade",
     "ERR_1005": "Okänt fel vid analys av bok",
     "ERR_1006": "Boken innehåller inte några sidor",
     "ERR_1007": "Vissa poster kunde inte analyseras",
@@ -462,6 +462,7 @@
     "role_user": "Användare"
   },
   "sort": {
+    "books_count": "Antal böcker",
     "date_added": "Datum tillagd",
     "date_updated": "Datum uppdaterat",
     "file_name": "Filnamn",
