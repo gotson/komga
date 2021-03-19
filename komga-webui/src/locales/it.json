@@ -6,7 +6,12 @@
     "dataTable": {
       "itemsPerPageText": "Righe per pagina:",
       "sortBy": "Ordina per"
-    }
+    },
+    "fileInput": {
+      "counter": "{0} files",
+      "counterSize": "{0} files ({1} in totale)"
+    },
+    "noDataText": "Nessun elemento disponibile"
   },
   "account_settings": {
     "account_settings": "Impostazioni Account",

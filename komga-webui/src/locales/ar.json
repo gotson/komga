@@ -7,6 +7,10 @@
       "itemsPerPageText": "الصفوف لكل صفحة:",
       "sortBy": "مفروزة حسب"
     },
+    "fileInput": {
+      "counter": "{0} ملفات",
+      "counterSize": "{0} ملفات ({1} في المجموع)"
+    },
     "noDataText": "لا توجد بيانات متاحة"
   },
   "account_settings": {

@@ -70,6 +70,12 @@ const router = new Router({
               beforeEnter: adminGuard,
               component: () => import(/* webpackChunkName: "settings-server" */ './views/SettingsServer.vue'),
             },
+            {
+              path: '/settings/data-import',
+              name: 'settings-data-import',
+              beforeEnter: adminGuard,
+              component: () => import(/* webpackChunkName: "settings-data-import" */ './views/SettingsDataImport.vue'),
+            },
           ],
         },
         {

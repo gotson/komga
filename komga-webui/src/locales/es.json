@@ -7,6 +7,10 @@
       "itemsPerPageText": "Filas por página:",
       "sortBy": "Ordenado por"
     },
+    "fileInput": {
+      "counter": "{0} archivos",
+      "counterSize": "{0} archivos ({1} en total)"
+    },
     "noDataText": "No hay datos disponibles"
   },
   "account_settings": {

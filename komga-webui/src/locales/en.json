@@ -7,6 +7,10 @@
       "itemsPerPageText": "Rows per page:",
       "sortBy": "Sort by"
     },
+    "fileInput": {
+      "counter": "{0} files",
+      "counterSize": "{0} files ({1} in total)"
+    },
     "noDataText": "No data available"
   },
   "account_settings": {
@@ -152,6 +156,18 @@
     "recently_added_books": "Recently Added Books",
     "recently_added_series": "Recently Added Series",
     "recently_updated_series": "Recently Updated Series"
+  },
+  "data_import": {
+    "book_number": "Book number: {name}",
+    "book_series": "Series: {name}",
+    "button_import": "Import",
+    "comicrack_preambule_html": "You can import existing ComicRack Reading Lists in <code>.cbl</code> format.<br/>Komga will try to match the provided series and book number with series and books in your libraries.",
+    "field_files_label": "ComicRack Reading Lists (.cbl)",
+    "import_read_lists": "Import Read Lists",
+    "imported_as": "Imported as {name}",
+    "results_preambule": "Result of the import is shown below. You can also check the unmatched books for each provided file.",
+    "size_limit": "Size should be less than {size} MB",
+    "tab_title": "Data Import"
   },
   "dialog": {
     "add_to_collection": {
@@ -363,7 +379,14 @@
     "ERR_1005": "Unknown error while analyzing book",
     "ERR_1006": "Book does not contain any page",
     "ERR_1007": "Some entries could not be analyzed",
-    "ERR_1008": "Unknown error while getting book's entries"
+    "ERR_1008": "Unknown error while getting book's entries",
+    "ERR_1009": "A read list with that name already exists",
+    "ERR_1010": "No books were matched within the read list request",
+    "ERR_1011": "No unique match for series",
+    "ERR_1012": "No match for series",
+    "ERR_1013": "No unique match for book number within series",
+    "ERR_1014": "No match for book number within series",
+    "ERR_1015": "Error while deserializing ComicRack ReadingList"
   },
   "filter": {
     "age_rating": "age rating",

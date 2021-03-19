@@ -7,6 +7,10 @@
       "itemsPerPageText": "每页行数:",
       "sortBy": "排序方式"
     },
+    "fileInput": {
+      "counter": "{0} 个文件",
+      "counterSize": "{0} 个文件（共 {1}）"
+    },
     "noDataText": "无数据可用"
   },
   "account_settings": {

@@ -7,6 +7,10 @@
       "itemsPerPageText": "Rader per sida:",
       "sortBy": "Sortera efter"
     },
+    "fileInput": {
+      "counter": "{0} filer",
+      "counterSize": "{0} filer (av {1} totalt)"
+    },
     "noDataText": "Ingen data tillgänglig"
   },
   "account_settings": {

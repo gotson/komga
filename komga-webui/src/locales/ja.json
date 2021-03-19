@@ -7,6 +7,10 @@
       "itemsPerPageText": "ページ毎の行数:",
       "sortBy": "ソート方式"
     },
+    "fileInput": {
+      "counter": "{0} ファイル",
+      "counterSize": "{0} ファイル (合計 {1})"
+    },
     "noDataText": "データがありません"
   },
   "account_settings": {
