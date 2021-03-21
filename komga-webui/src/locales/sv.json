@@ -157,6 +157,18 @@
     "recently_added_series": "Nyligen tillagda serier",
     "recently_updated_series": "Nyligen uppdaterad serier"
   },
+  "data_import": {
+    "book_number": "Boknummer: {name}",
+    "book_series": "Serie: {name}",
+    "button_import": "Importera",
+    "comicrack_preambule_html": "Du kan importera existerande ComicRack Läslistor i <code>.cbl</code>-format.<br/>Komga kommer att försöka matcha innehållet med serier och böker i dina bibliotek.",
+    "field_files_label": "ComicRack Läslistor (.cbl)",
+    "import_read_lists": "Importera Läslistor",
+    "imported_as": "Importerad som {name}",
+    "results_preambule": "Resultatet av importen visas nedan. Du kan också kontrollera omatchade böcker för varje fil.",
+    "size_limit": "Filstorlek ska vara mindre än {size} MB",
+    "tab_title": "Data import"
+  },
   "dialog": {
     "add_to_collection": {
       "button_create": "Skapa",
@@ -367,7 +379,14 @@
     "ERR_1005": "Okänt fel vid analys av bok",
     "ERR_1006": "Boken innehåller inte några sidor",
     "ERR_1007": "Vissa poster kunde inte analyseras",
-    "ERR_1008": "Okänt fel vid inhämtning av poster"
+    "ERR_1008": "Okänt fel vid inhämtning av poster",
+    "ERR_1009": "Det finns redan en läslista med det namnet",
+    "ERR_1010": "Inga böcker matchades i begärd läslista",
+    "ERR_1011": "Ingen unik matchning för serier",
+    "ERR_1012": "Ingen match för serier",
+    "ERR_1013": "Ingen unik matchning för boknummer inom serien",
+    "ERR_1014": "Ingen matchning för boknummer inom serien",
+    "ERR_1015": "Fel vid avinstallation av ComicRack Läslista"
   },
   "filter": {
     "age_rating": "åldersgräns",
