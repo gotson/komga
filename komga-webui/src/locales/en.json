@@ -26,6 +26,11 @@
     "penciller": "pencillers",
     "writer": "writers"
   },
+  "book_card": {
+    "error": "Error",
+    "unknown": "To be analyzed",
+    "unsupported": "Unsupported"
+  },
   "bookreader": {
     "beginning_of_book": "You're at the beginning of the book.",
     "changing_reading_direction": "Changing Reading Direction to",

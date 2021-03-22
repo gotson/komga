@@ -3,6 +3,7 @@ import {RawLocation} from 'vue-router/types/router'
 import {BookDto} from '@/types/komga-books'
 import {SeriesDto} from "@/types/komga-series";
 import i18n from "@/i18n";
+import {MediaStatus} from "@/types/enum-books";
 
 export enum ItemTypes {
   BOOK, SERIES, COLLECTION, READLIST
@@ -65,7 +66,13 @@ export class BookItem extends Item<BookDto> {
   }
 
   body (): string {
-    return `<span>${i18n.tc('common.pages_n', this.item.media.pagesCount)}</span>`
+    switch (this.item.media.status) {
+      case MediaStatus.ERROR: return `<div class="text-truncate error--text">${i18n.t('book_card.error')}</div>`
+      case MediaStatus.UNSUPPORTED: return `<div class="text-truncate warning--text">${i18n.t('book_card.unsupported')}</div>`
+      case MediaStatus.UNKNOWN: return `<div class="text-truncate">${i18n.t('book_card.unknown')}</div>`
+      default: return `<div class="text-truncate">${i18n.tc('common.pages_n', this.item.media.pagesCount)}</div>`
+    }
+
   }
 
   to (): RawLocation {
