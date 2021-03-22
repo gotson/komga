@@ -61,6 +61,8 @@ class MetadataLifecycle(
           logger.info { "Library is not set to import book and read lists metadata from ComicInfo, skipping" }
         provider is EpubMetadataProvider && !library.importEpubBook ->
           logger.info { "Library is not set to import book metadata from Epub, skipping" }
+        provider is IsbnBarcodeProvider && !library.importBarcodeIsbn ->
+          logger.info { "Library is not set to import book metadata from Barcode ISBN, skipping" }
         else -> {
           logger.debug { "Provider: $provider" }
           val patch = provider.getBookMetadataFromBook(book, media)
