@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.metadata.epub
 
+import org.apache.commons.validator.routines.ISBNValidator
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatch
@@ -18,7 +19,8 @@ import java.time.format.DateTimeFormatter
 
 @Service
 class EpubMetadataProvider(
-  private val epubExtractor: EpubExtractor
+  private val epubExtractor: EpubExtractor,
+  private val isbnValidator: ISBNValidator
 ) : BookMetadataProvider, SeriesMetadataProvider {
 
   private val relators = mapOf(
@@ -36,6 +38,7 @@ class EpubMetadataProvider(
       BookMetadataPatchCapability.SUMMARY,
       BookMetadataPatchCapability.RELEASE_DATE,
       BookMetadataPatchCapability.AUTHORS,
+      BookMetadataPatchCapability.ISBN,
     )
 
   override fun getBookMetadataFromBook(book: Book, media: Media): BookMetadataPatch? {
@@ -50,23 +53,28 @@ class EpubMetadataProvider(
       val creatorRefines = opf.select("metadata > meta[property=role][scheme=marc:relators]")
         .associate { it.attr("refines").removePrefix("#") to it.text() }
       val authors = opf.select("metadata > dc|creator")
-        .mapNotNull {
-          val name = it.text()?.ifBlank { null }
-          if (name == null) null
+        .flatMap { el ->
+          val names = el.text()?.split(",")?.mapNotNull { it.trim().ifBlank { null } } ?: emptyList()
+          if (names.isEmpty()) emptyList()
           else {
-            val opfRole = it.attr("opf|role").ifBlank { null }
-            val id = it.attr("id").ifBlank { null }
+            val opfRole = el.attr("opf|role").ifBlank { null }
+            val id = el.attr("id").ifBlank { null }
             val refineRole = creatorRefines[id]?.ifBlank { null }
             val role = opfRole ?: refineRole
-            Author(name, relators[role] ?: "writer")
+            names.map { Author(it, relators[role] ?: "writer") }
           }
         }
+
+      val isbn = opf.select("metadata > dc|identifier")
+        ?.mapNotNull { isbnValidator.validate(it.text()) }
+        ?.firstOrNull()
 
       return BookMetadataPatch(
         title = title,
         summary = description,
         releaseDate = date,
-        authors = authors
+        authors = authors.ifEmpty { null },
+        isbn = isbn,
       )
     }
     return null
