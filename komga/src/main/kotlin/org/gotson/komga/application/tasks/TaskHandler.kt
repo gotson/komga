@@ -5,7 +5,7 @@ import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.BookLifecycle
-import org.gotson.komga.domain.service.LibraryScanner
+import org.gotson.komga.domain.service.LibraryContentLifecycle
 import org.gotson.komga.domain.service.MetadataLifecycle
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS_SELECTOR
@@ -21,7 +21,7 @@ class TaskHandler(
   private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
   private val seriesRepository: SeriesRepository,
-  private val libraryScanner: LibraryScanner,
+  private val libraryContentLifecycle: LibraryContentLifecycle,
   private val bookLifecycle: BookLifecycle,
   private val metadataLifecycle: MetadataLifecycle
 ) {
@@ -35,7 +35,7 @@ class TaskHandler(
 
           is Task.ScanLibrary ->
             libraryRepository.findByIdOrNull(task.libraryId)?.let {
-              libraryScanner.scanRootFolder(it)
+              libraryContentLifecycle.scanRootFolder(it)
               taskReceiver.analyzeUnknownAndOutdatedBooks(it)
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 

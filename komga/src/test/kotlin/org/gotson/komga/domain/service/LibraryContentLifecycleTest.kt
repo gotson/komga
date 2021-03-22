@@ -23,11 +23,11 @@ import java.nio.file.Paths
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-class LibraryScannerTest(
+class LibraryContentLifecycleTest(
   @Autowired private val seriesRepository: SeriesRepository,
   @Autowired private val libraryRepository: LibraryRepository,
   @Autowired private val bookRepository: BookRepository,
-  @Autowired private val libraryScanner: LibraryScanner,
+  @Autowired private val libraryContentLifecycle: LibraryContentLifecycle,
   @Autowired private val bookLifecycle: BookLifecycle,
   @Autowired private val mediaRepository: MediaRepository,
   @Autowired private val libraryLifecycle: LibraryLifecycle
@@ -59,10 +59,10 @@ class LibraryScannerTest(
       mapOf(makeSeries(name = "series") to books),
       mapOf(makeSeries(name = "series") to moreBooks)
     )
-    libraryScanner.scanRootFolder(library)
+    libraryContentLifecycle.scanRootFolder(library)
 
     // when
-    libraryScanner.scanRootFolder(library)
+    libraryContentLifecycle.scanRootFolder(library)
 
     // then
     val allSeries = seriesRepository.findAll()
@@ -89,10 +89,10 @@ class LibraryScannerTest(
         mapOf(makeSeries(name = "series") to books),
         mapOf(makeSeries(name = "series") to lessBooks)
       )
-    libraryScanner.scanRootFolder(library)
+    libraryContentLifecycle.scanRootFolder(library)
 
     // when
-    libraryScanner.scanRootFolder(library)
+    libraryContentLifecycle.scanRootFolder(library)
 
     // then
     val allSeries = seriesRepository.findAll()
@@ -120,10 +120,10 @@ class LibraryScannerTest(
         mapOf(makeSeries(name = "series") to books),
         mapOf(makeSeries(name = "series") to updatedBooks)
       )
-    libraryScanner.scanRootFolder(library)
+    libraryContentLifecycle.scanRootFolder(library)
 
     // when
-    libraryScanner.scanRootFolder(library)
+    libraryContentLifecycle.scanRootFolder(library)
 
     // then
     val allSeries = seriesRepository.findAll()
@@ -148,10 +148,10 @@ class LibraryScannerTest(
         mapOf(makeSeries(name = "series") to listOf(makeBook("book1"))),
         emptyMap()
       )
-    libraryScanner.scanRootFolder(library)
+    libraryContentLifecycle.scanRootFolder(library)
 
     // when
-    libraryScanner.scanRootFolder(library)
+    libraryContentLifecycle.scanRootFolder(library)
 
     // then
     verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
@@ -174,10 +174,10 @@ class LibraryScannerTest(
         ),
         mapOf(makeSeries(name = "series") to listOf(makeBook("book1")))
       )
-    libraryScanner.scanRootFolder(library)
+    libraryContentLifecycle.scanRootFolder(library)
 
     // when
-    libraryScanner.scanRootFolder(library)
+    libraryContentLifecycle.scanRootFolder(library)
 
     // then
     verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
@@ -198,13 +198,13 @@ class LibraryScannerTest(
         mapOf(makeSeries(name = "series") to listOf(book1)),
         mapOf(makeSeries(name = "series") to listOf(makeBook(name = "book1", fileLastModified = book1.fileLastModified)))
       )
-    libraryScanner.scanRootFolder(library)
+    libraryContentLifecycle.scanRootFolder(library)
 
     every { mockAnalyzer.analyze(any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")))
     bookRepository.findAll().map { bookLifecycle.analyzeAndPersist(it) }
 
     // when
-    libraryScanner.scanRootFolder(library)
+    libraryContentLifecycle.scanRootFolder(library)
 
     // then
     verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
@@ -234,13 +234,13 @@ class LibraryScannerTest(
         mapOf(makeSeries(name = "series") to listOf(book1)),
         mapOf(makeSeries(name = "series") to listOf(makeBook(name = "book1")))
       )
-    libraryScanner.scanRootFolder(library)
+    libraryContentLifecycle.scanRootFolder(library)
 
     every { mockAnalyzer.analyze(any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")))
     bookRepository.findAll().map { bookLifecycle.analyzeAndPersist(it) }
 
     // when
-    libraryScanner.scanRootFolder(library)
+    libraryContentLifecycle.scanRootFolder(library)
 
     // then
     verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
@@ -274,14 +274,14 @@ class LibraryScannerTest(
       emptyMap()
     )
 
-    libraryScanner.scanRootFolder(library1)
-    libraryScanner.scanRootFolder(library2)
+    libraryContentLifecycle.scanRootFolder(library1)
+    libraryContentLifecycle.scanRootFolder(library2)
 
     assertThat(seriesRepository.count()).describedAs("Series repository should be empty").isEqualTo(2)
     assertThat(bookRepository.count()).describedAs("Book repository should be empty").isEqualTo(2)
 
     // when
-    libraryScanner.scanRootFolder(library2)
+    libraryContentLifecycle.scanRootFolder(library2)
 
     // then
     verify(exactly = 1) { mockScanner.scanRootFolder(Paths.get(library1.root.toURI())) }

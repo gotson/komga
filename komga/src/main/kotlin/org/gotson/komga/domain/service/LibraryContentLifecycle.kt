@@ -1,6 +1,7 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
+import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.persistence.BookRepository
@@ -14,7 +15,7 @@ import kotlin.time.measureTime
 private val logger = KotlinLogging.logger {}
 
 @Service
-class LibraryScanner(
+class LibraryContentLifecycle(
   private val fileSystemScanner: FileSystemScanner,
   private val seriesRepository: SeriesRepository,
   private val bookRepository: BookRepository,
@@ -59,7 +60,10 @@ class LibraryScanner(
         } else {
           // if series already exists, update it
           logger.debug { "Scanned series already exists. Scanned: $newSeries, Existing: $existingSeries" }
-          val seriesChanged = newSeries.fileLastModified.truncatedTo(ChronoUnit.MILLIS) != existingSeries.fileLastModified.truncatedTo(ChronoUnit.MILLIS)
+          val seriesChanged =
+            newSeries.fileLastModified.truncatedTo(ChronoUnit.MILLIS) != existingSeries.fileLastModified.truncatedTo(
+              ChronoUnit.MILLIS
+            )
           if (seriesChanged) {
             logger.info { "Series changed on disk, updating: $existingSeries" }
             seriesRepository.update(existingSeries.copy(fileLastModified = newSeries.fileLastModified))
@@ -73,7 +77,10 @@ class LibraryScanner(
               logger.debug { "Trying to match scanned book by url: $newBook" }
               existingBooks.find { it.url == newBook.url }?.let { existingBook ->
                 logger.debug { "Matched existing book: $existingBook" }
-                if (newBook.fileLastModified.truncatedTo(ChronoUnit.MILLIS) != existingBook.fileLastModified.truncatedTo(ChronoUnit.MILLIS)) {
+                if (newBook.fileLastModified.truncatedTo(ChronoUnit.MILLIS) != existingBook.fileLastModified.truncatedTo(
+                    ChronoUnit.MILLIS
+                  )
+                ) {
                   logger.info { "Book changed on disk, update and reset media status: $existingBook" }
                   val updatedBook = existingBook.copy(
                     fileLastModified = newBook.fileLastModified,
