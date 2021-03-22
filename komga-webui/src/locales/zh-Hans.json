@@ -157,6 +157,18 @@
     "recently_added_series": "最近添加的系列",
     "recently_updated_series": "最近更新的系列"
   },
+  "data_import": {
+    "book_number": "书号: {name}",
+    "book_series": "系列: {name}",
+    "button_import": "导入",
+    "comicrack_preambule_html": "您可以导入<code>.cbl</code>格式的阅读列表。<br/>Komga将尝试将你提供的系列和书号与你的库中的系列和书号相匹配。",
+    "field_files_label": "阅读列表（.cbl）",
+    "import_read_lists": "导入阅读列表",
+    "imported_as": "导入为 {name}",
+    "results_preambule": "导入结果如下所示。你还可以为每个提供的文件检查不匹配的书籍。",
+    "size_limit": "大小应小于 {size} MB",
+    "tab_title": "数据导入"
+  },
   "dialog": {
     "add_to_collection": {
       "button_create": "创建收藏",
@@ -367,7 +379,14 @@
     "ERR_1005": "分析书本时出现未知错误",
     "ERR_1006": "这本书不包含任何页面",
     "ERR_1007": "无法分析某些条目",
-    "ERR_1008": "获取书本条目时出现未知错误"
+    "ERR_1008": "获取书本条目时出现未知错误",
+    "ERR_1009": "已存在该名称的阅读列表",
+    "ERR_1010": "阅读列表请求中没有匹配的书籍",
+    "ERR_1011": "系列没有唯一匹配项",
+    "ERR_1012": "系列不匹配",
+    "ERR_1013": "系列中的书号没有唯一匹配",
+    "ERR_1014": "系列中的书号不匹配",
+    "ERR_1015": "反序列化阅读列表时出错"
   },
   "filter": {
     "age_rating": "年龄限制",

@@ -157,6 +157,18 @@
     "recently_added_series": "Séries ajoutées récemment",
     "recently_updated_series": "Séries mises à jour récemment"
   },
+  "data_import": {
+    "book_number": "Nombre de livres : {name}",
+    "book_series": "Série : {name}",
+    "button_import": "Importer",
+    "comicrack_preambule_html": "Vous pouvez importer des listes de lecture ComicRack au format <code>.cbl</code>.<br/>Komga tentera de faire correspondre les séries fournies et le numéro des livres avec les séries et livres de votre bibliothèque.",
+    "field_files_label": "Listes de lecture ComicRack (.cbl)",
+    "import_read_lists": "Importer des listes de lecture",
+    "imported_as": "Importé comme {name}",
+    "results_preambule": "Le résultat de l'import est affiché ci-dessous. Vous pouvez également vérifier les livres pour lesquels aucune correspondance n'a été trouvée pour chaque fichier fourni.",
+    "size_limit": "La taille du fichier doit être inférieure à {size} Mo",
+    "tab_title": "Import de données"
+  },
   "dialog": {
     "add_to_collection": {
       "button_create": "Créer",
@@ -367,7 +379,14 @@
     "ERR_1005": "Erreur inconnue pendant l'analyse",
     "ERR_1006": "Le livre ne contient aucune page",
     "ERR_1007": "Certaines entrées n'ont pas pu être analysées",
-    "ERR_1008": "Erreur inconnue pendant la recuperation des entrées"
+    "ERR_1008": "Erreur inconnue pendant la recuperation des entrées",
+    "ERR_1009": "Il existe déjà une liste de lecture avec ce nom",
+    "ERR_1010": "Aucune correspondance n'a été trouvée pour les livres de la liste de lecture",
+    "ERR_1011": "Aucune correspondance unique pour la série",
+    "ERR_1012": "Aucune correspondance pour la série",
+    "ERR_1013": "Aucune correspondance unique pour le numéro de livre dans la série",
+    "ERR_1014": "Aucune correspondance pour le numéro de livre dans la série",
+    "ERR_1015": "Erreur lors de l'analyse de la liste de lecture ComicRack"
   },
   "filter": {
     "age_rating": "Âge minimal",
