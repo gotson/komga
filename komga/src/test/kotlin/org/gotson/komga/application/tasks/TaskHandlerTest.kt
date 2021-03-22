@@ -6,8 +6,6 @@ import io.mockk.just
 import io.mockk.runs
 import io.mockk.verify
 import mu.KotlinLogging
-import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -80,8 +78,8 @@ class TaskHandlerTest(
       seriesLifecycle.addBooks(it, listOf(book))
     }
 
-    every { mockMetadataLifecycle.refreshMetadata(any<Book>()) } answers { Thread.sleep(1_000) }
-    every { mockMetadataLifecycle.refreshMetadata(any<Series>()) } just runs
+    every { mockMetadataLifecycle.refreshMetadata(any(), any()) } answers { Thread.sleep(1_000) }
+    every { mockMetadataLifecycle.refreshMetadata(any()) } just runs
 
     val createdBook = bookRepository.findAll().first()
 
@@ -91,6 +89,6 @@ class TaskHandlerTest(
 
     Thread.sleep(5_000)
 
-    verify(atLeast = 1, atMost = 3) { mockMetadataLifecycle.refreshMetadata(any<Book>()) }
+    verify(atLeast = 1, atMost = 3) { mockMetadataLifecycle.refreshMetadata(any(), any()) }
   }
 }
