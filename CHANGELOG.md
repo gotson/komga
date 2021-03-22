@@ -1,3 +1,21 @@
+# [0.83.0](https://github.com/gotson/komga/compare/v0.82.1...v0.83.0) (2021-03-22)
+
+
+### Bug Fixes
+
+* refresh series metadata and aggregation after book deletion ([9e44437](https://github.com/gotson/komga/commit/9e4443765b77f503177871cfc68d3252dd0e4206))
+* skip ISBN barcode provider if not enabled in library ([9cb63b5](https://github.com/gotson/komga/commit/9cb63b57985afb192555ab89feb1aa8163207000))
+
+
+### Features
+
+* import ISBN from epub metadata, split authors on comma ([52fceec](https://github.com/gotson/komga/commit/52fceecaa9c15fb9d75844b6f56ed948f0e4b947))
+
+
+### Performance Improvements
+
+* only refresh relevant metadata providers on series sort ([3dccb9a](https://github.com/gotson/komga/commit/3dccb9a6a7e6b51cbdbd85fc12fc4b001998864a))
+
 ## [0.82.1](https://github.com/gotson/komga/compare/v0.82.0...v0.82.1) (2021-03-22)
 
 
