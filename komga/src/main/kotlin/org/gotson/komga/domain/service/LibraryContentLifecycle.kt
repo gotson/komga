@@ -21,7 +21,8 @@ class LibraryContentLifecycle(
   private val bookRepository: BookRepository,
   private val bookLifecycle: BookLifecycle,
   private val mediaRepository: MediaRepository,
-  private val seriesLifecycle: SeriesLifecycle
+  private val seriesLifecycle: SeriesLifecycle,
+  private val taskReceiver: TaskReceiver,
 ) {
 
   fun scanRootFolder(library: Library) {
@@ -101,6 +102,7 @@ class LibraryContentLifecycle(
               .let { books ->
                 logger.info { "Deleting books not on disk anymore: $books" }
                 bookLifecycle.deleteMany(books.map { it.id })
+                books.map { it.seriesId }.distinct().forEach { taskReceiver.refreshSeriesMetadata(it) }
               }
 
             // add new books
