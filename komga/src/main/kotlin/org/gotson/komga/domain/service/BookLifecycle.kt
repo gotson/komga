@@ -39,24 +39,25 @@ class BookLifecycle(
 
   fun analyzeAndPersist(book: Book): Boolean {
     logger.info { "Analyze and persist book: $book" }
-    val (media, error) = try {
-      bookAnalyzer.analyze(book) to false
+    val media = try {
+      bookAnalyzer.analyze(book)
     } catch (ade: AccessDeniedException) {
       logger.error(ade) { "Error while analyzing book: $book" }
-      Media(status = Media.Status.ERROR, comment = "ERR_1000") to true
+      Media(status = Media.Status.ERROR, comment = "ERR_1000")
     } catch (ex: Exception) {
       logger.error(ex) { "Error while analyzing book: $book" }
-      Media(status = Media.Status.ERROR, comment = "ERR_1005") to true
-    }.let { it.first.copy(bookId = book.id) to it.second }
+      Media(status = Media.Status.ERROR, comment = "ERR_1005")
+    }.copy(bookId = book.id)
 
     // if the number of pages has changed, delete all read progress for that book
-    val previous = mediaRepository.findById(book.id)
-    if (previous.status == Media.Status.OUTDATED && previous.pages.size != media.pages.size) {
-      readProgressRepository.deleteByBookId(book.id)
+    mediaRepository.findById(book.id).let { previous ->
+      if (previous.status == Media.Status.OUTDATED && previous.pages.size != media.pages.size) {
+        readProgressRepository.deleteByBookId(book.id)
+      }
     }
 
     mediaRepository.update(media)
-    return !error
+    return media.status == Media.Status.READY
   }
 
   fun generateThumbnailAndPersist(book: Book) {
