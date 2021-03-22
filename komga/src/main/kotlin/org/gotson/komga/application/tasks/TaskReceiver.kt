@@ -2,6 +2,7 @@ package org.gotson.komga.application.tasks
 
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
+import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
@@ -54,12 +55,18 @@ class TaskReceiver(
     submitTask(Task.GenerateBookThumbnail(bookId))
   }
 
-  fun refreshBookMetadata(bookId: String) {
-    submitTask(Task.RefreshBookMetadata(bookId))
+  fun refreshBookMetadata(
+    bookId: String,
+    capabilities: List<BookMetadataPatchCapability> = BookMetadataPatchCapability.values().toList()
+  ) {
+    submitTask(Task.RefreshBookMetadata(bookId, capabilities))
   }
 
-  fun refreshBookMetadata(book: Book) {
-    submitTask(Task.RefreshBookMetadata(book.id))
+  fun refreshBookMetadata(
+    book: Book,
+    capabilities: List<BookMetadataPatchCapability> = BookMetadataPatchCapability.values().toList()
+  ) {
+    submitTask(Task.RefreshBookMetadata(book.id, capabilities))
   }
 
   fun refreshSeriesMetadata(seriesId: String) {

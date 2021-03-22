@@ -3,6 +3,7 @@ package org.gotson.komga.domain.service
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatch
+import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesCollection
@@ -46,16 +47,20 @@ class MetadataLifecycle(
   private val localArtworkProvider: LocalArtworkProvider
 ) {
 
-  fun refreshMetadata(book: Book) {
-    logger.info { "Refresh metadata for book: $book" }
+  fun refreshMetadata(book: Book, capabilities: List<BookMetadataPatchCapability>) {
+    logger.info { "Refresh metadata for book: $book with capabilities: $capabilities" }
     val media = mediaRepository.findById(book.id)
 
     val library = libraryRepository.findById(book.libraryId)
 
     bookMetadataProviders.forEach { provider ->
       when {
-        provider is ComicInfoProvider && !library.importComicInfoBook && !library.importComicInfoReadList -> logger.info { "Library is not set to import book and read lists metadata from ComicInfo, skipping" }
-        provider is EpubMetadataProvider && !library.importEpubBook -> logger.info { "Library is not set to import book metadata from Epub, skipping" }
+        capabilities.intersect(provider.getCapabilities()).isEmpty() ->
+          logger.info { "Provider does not support requested capabilities, skipping: $provider" }
+        provider is ComicInfoProvider && !library.importComicInfoBook && !library.importComicInfoReadList ->
+          logger.info { "Library is not set to import book and read lists metadata from ComicInfo, skipping" }
+        provider is EpubMetadataProvider && !library.importEpubBook ->
+          logger.info { "Library is not set to import book metadata from Epub, skipping" }
         else -> {
           logger.debug { "Provider: $provider" }
           val patch = provider.getBookMetadataFromBook(book, media)
@@ -75,7 +80,8 @@ class MetadataLifecycle(
       }
     }
 
-    if (library.importLocalArtwork) refreshMetadataLocalArtwork(book)
+    if (library.importLocalArtwork && capabilities.contains(BookMetadataPatchCapability.THUMBNAILS))
+      refreshMetadataLocalArtwork(book)
   }
 
   private fun handlePatchForReadLists(

@@ -7,6 +7,7 @@ import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.BookMetadataAggregation
+import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesMetadata
@@ -68,10 +69,11 @@ class SeriesLifecycle(
     }
     bookMetadataRepository.updateMany(oldToNew.map { it.second })
 
+    // refresh metadata to reimport book number, else the series resorting would overwritei t
     oldToNew.forEach { (old, new) ->
       if (old.number != new.number || old.numberSort != new.numberSort) {
         logger.debug { "Metadata numbering has changed, refreshing metadata for book ${new.bookId} " }
-        taskReceiver.refreshBookMetadata(new.bookId)
+        taskReceiver.refreshBookMetadata(new.bookId, listOf(BookMetadataPatchCapability.NUMBER, BookMetadataPatchCapability.NUMBER_SORT))
       }
     }
   }

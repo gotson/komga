@@ -5,6 +5,7 @@ import mu.KotlinLogging
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatch
+import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesMetadataPatch
@@ -27,6 +28,17 @@ class ComicInfoProvider(
   @Autowired(required = false) private val mapper: XmlMapper = XmlMapper(),
   private val bookAnalyzer: BookAnalyzer
 ) : BookMetadataProvider, SeriesMetadataProvider {
+
+  override fun getCapabilities(): List<BookMetadataPatchCapability> =
+    listOf(
+      BookMetadataPatchCapability.TITLE,
+      BookMetadataPatchCapability.SUMMARY,
+      BookMetadataPatchCapability.NUMBER,
+      BookMetadataPatchCapability.NUMBER_SORT,
+      BookMetadataPatchCapability.RELEASE_DATE,
+      BookMetadataPatchCapability.AUTHORS,
+      BookMetadataPatchCapability.READ_LISTS,
+    )
 
   override fun getBookMetadataFromBook(book: Book, media: Media): BookMetadataPatch? {
     getComicInfo(book, media)?.let { comicInfo ->

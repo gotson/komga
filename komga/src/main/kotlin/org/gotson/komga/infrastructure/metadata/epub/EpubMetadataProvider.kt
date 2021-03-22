@@ -3,6 +3,7 @@ package org.gotson.komga.infrastructure.metadata.epub
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatch
+import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesMetadataPatch
@@ -28,6 +29,14 @@ class EpubMetadataProvider(
     "art" to "penciller",
     "ill" to "penciller"
   )
+
+  override fun getCapabilities(): List<BookMetadataPatchCapability> =
+    listOf(
+      BookMetadataPatchCapability.TITLE,
+      BookMetadataPatchCapability.SUMMARY,
+      BookMetadataPatchCapability.RELEASE_DATE,
+      BookMetadataPatchCapability.AUTHORS,
+    )
 
   override fun getBookMetadataFromBook(book: Book, media: Media): BookMetadataPatch? {
     if (media.mediaType != "application/epub+zip") return null

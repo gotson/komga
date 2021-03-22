@@ -10,6 +10,7 @@ import mu.KotlinLogging
 import org.apache.commons.validator.routines.ISBNValidator
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatch
+import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
@@ -32,6 +33,9 @@ class IsbnBarcodeProvider(
     DecodeHintType.POSSIBLE_FORMATS to EnumSet.of(BarcodeFormat.EAN_13),
     DecodeHintType.TRY_HARDER to true
   )
+
+  override fun getCapabilities(): List<BookMetadataPatchCapability> =
+    listOf(BookMetadataPatchCapability.ISBN)
 
   override fun getBookMetadataFromBook(book: Book, media: Media): BookMetadataPatch? {
     val pagesToTry = (1..media.pages.size).toList().let {

@@ -1,5 +1,6 @@
 package org.gotson.komga.application.tasks
 
+import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import java.io.Serializable
 
 sealed class Task : Serializable {
@@ -17,7 +18,7 @@ sealed class Task : Serializable {
     override fun uniqueId() = "GENERATE_BOOK_THUMBNAIL_$bookId"
   }
 
-  data class RefreshBookMetadata(val bookId: String) : Task() {
+  data class RefreshBookMetadata(val bookId: String, val capabilities: List<BookMetadataPatchCapability>) : Task() {
     override fun uniqueId() = "REFRESH_BOOK_METADATA_$bookId"
   }
 

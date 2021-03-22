@@ -54,7 +54,7 @@ class TaskHandler(
 
           is Task.RefreshBookMetadata ->
             bookRepository.findByIdOrNull(task.bookId)?.let {
-              metadataLifecycle.refreshMetadata(it)
+              metadataLifecycle.refreshMetadata(it, task.capabilities)
               taskReceiver.refreshSeriesMetadata(it.seriesId)
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
