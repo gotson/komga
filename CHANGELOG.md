@@ -1,3 +1,11 @@
+## [0.82.1](https://github.com/gotson/komga/compare/v0.82.0...v0.82.1) (2021-03-22)
+
+
+### Bug Fixes
+
+* **webui:** display status instead of pages on cards for books not ready ([dcf065f](https://github.com/gotson/komga/commit/dcf065f0054088063d0c2e2773043e9df063a9c8))
+* translated using Weblate ([a01b764](https://github.com/gotson/komga/commit/a01b764b07f49022e74ccc65b4ab9cfe92d1b46d))
+
 # [0.82.0](https://github.com/gotson/komga/compare/v0.81.1...v0.82.0) (2021-03-19)
 
 
