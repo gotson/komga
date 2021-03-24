@@ -7,6 +7,7 @@ import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Profile
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -102,6 +103,7 @@ class SecurityConfiguration(
           allowedOrigins = listOf("http://localhost:8081")
           allowedMethods = HttpMethod.values().map { it.name }
           allowCredentials = true
+          addExposedHeader(HttpHeaders.CONTENT_DISPOSITION)
         }
       )
     }

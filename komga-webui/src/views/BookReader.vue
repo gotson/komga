@@ -803,6 +803,7 @@ export default Vue.extend({
       new jsFileDownloader({
         url: this.currentPage.url,
         withCredentials: true,
+        forceDesktopMode: true,
       })
     },
   },
