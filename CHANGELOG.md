@@ -1,3 +1,10 @@
+# [0.84.0](https://github.com/gotson/komga/compare/v0.83.0...v0.84.0) (2021-03-24)
+
+
+### Features
+
+* download current page from webreader ([93cec4e](https://github.com/gotson/komga/commit/93cec4e4e593a0bdbe3b3c324dda28d843dbdf49)), closes [#469](https://github.com/gotson/komga/issues/469)
+
 # [0.83.0](https://github.com/gotson/komga/compare/v0.82.1...v0.83.0) (2021-03-22)
 
 
