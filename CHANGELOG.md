@@ -1,3 +1,10 @@
+## [0.84.1](https://github.com/gotson/komga/compare/v0.84.0...v0.84.1) (2021-03-24)
+
+
+### Bug Fixes
+
+* download current page not working on mobile ([f98d791](https://github.com/gotson/komga/commit/f98d7915c599580a39c4aa77e9b491a16af79e3c))
+
 # [0.84.0](https://github.com/gotson/komga/compare/v0.83.0...v0.84.0) (2021-03-24)
 
 
