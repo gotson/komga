@@ -24,6 +24,7 @@ import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
+import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
@@ -78,7 +79,8 @@ class BookController(
   private val bookMetadataRepository: BookMetadataRepository,
   private val mediaRepository: MediaRepository,
   private val bookDtoRepository: BookDtoRepository,
-  private val readListRepository: ReadListRepository
+  private val readListRepository: ReadListRepository,
+  private val contentDetector: ContentDetector,
 ) {
 
   @PageableAsQueryParam
@@ -342,6 +344,15 @@ class BookController(
         val pageContent = bookLifecycle.getBookPage(book, pageNum, convertFormat)
 
         ResponseEntity.ok()
+          .headers(
+            HttpHeaders().apply {
+              val extension = contentDetector.mediaTypeToExtension(pageContent.mediaType) ?: "jpeg"
+              val imageFileName = "${book.name}-$pageNum$extension"
+              contentDisposition = ContentDisposition.builder("inline")
+                .filename(imageFileName)
+                .build()
+            }
+          )
           .contentType(getMediaTypeOrDefault(pageContent.mediaType))
           .setNotModified(media)
           .body(pageContent.content)

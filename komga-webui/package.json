@@ -15,6 +15,7 @@
     "core-js": "^3.6.5",
     "date-fns": "^2.19.0",
     "jquery": "^3.5.1",
+    "js-file-downloader": "^1.1.16",
     "language-tags": "^1.0.5",
     "lodash": "^4.17.19",
     "qs": "^6.9.4",

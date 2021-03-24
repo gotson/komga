@@ -36,4 +36,11 @@ class ContentDetector(
 
   fun isImage(mediaType: String): Boolean =
     mediaType.startsWith("image/")
+
+  fun mediaTypeToExtension(mediaType: String): String? =
+    try {
+      tika.mimeRepository.forName(mediaType).extension
+    } catch (e: Exception) {
+      null
+    }
 }

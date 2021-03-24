@@ -38,6 +38,19 @@
           >
             <v-icon>mdi-cog</v-icon>
           </v-btn>
+
+          <v-menu offset-y>
+            <template v-slot:activator="{ on }">
+              <v-btn icon v-on="on" @click.prevent="">
+                <v-icon>mdi-dots-vertical</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item @click="downloadCurrentPage">
+                <v-list-item-title>{{ $t('bookreader.download_current_page') }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
         </v-toolbar>
       </v-slide-y-transition>
 
@@ -290,6 +303,7 @@ import {shortcutsSettingsContinuous} from '@/functions/shortcuts/continuous-read
 import {BookDto, PageDto, PageDtoWithUrl} from '@/types/komga-books'
 import {Context, ContextOrigin} from '@/types/context'
 import {SeriesDto} from "@/types/komga-series";
+import jsFileDownloader from "js-file-downloader"
 
 const cookieFit = 'webreader.fit'
 const cookieContinuousReaderFit = 'webreader.continuousReaderFit'
@@ -483,6 +497,9 @@ export default Vue.extend({
     },
     contextReadList (): boolean {
       return this.context.origin === ContextOrigin.READLIST
+    },
+    currentPage(): PageDtoWithUrl {
+      return this.pages[this.page - 1]
     },
 
     animations: {
@@ -781,6 +798,12 @@ export default Vue.extend({
     },
     async markProgress (page: number) {
       await this.$komgaBooks.updateReadProgress(this.bookId, { page: page })
+    },
+    downloadCurrentPage() {
+      new jsFileDownloader({
+        url: this.currentPage.url,
+        withCredentials: true,
+      })
     },
   },
 })
