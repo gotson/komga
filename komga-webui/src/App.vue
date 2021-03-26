@@ -9,6 +9,14 @@ import {Theme} from "@/types/themes";
 
 const cookieLocale = 'locale'
 const cookieTheme = 'theme'
+const cookieFit = 'webreader.fit'
+const cookieContinuousReaderFit = 'webreader.continuousReaderFit'
+const cookieContinuousReaderPadding = 'webreader.continuousReaderPadding'
+const cookieReadingDirection = 'webreader.readingDirection'
+const cookiePageLayout = 'webreader.pageLayout'
+const cookieSwipe = 'webreader.swipe'
+const cookieAnimations = 'webreader.animations'
+const cookieBackground = 'webreader.background'
 
 export default Vue.extend({
   name: 'App',
@@ -23,6 +31,38 @@ export default Vue.extend({
     if (this.$cookies.isKey(cookieTheme)) {
       this.$store.commit('setTheme', this.$cookies.get(cookieTheme))
       this.$cookies.remove(cookieTheme)
+    }
+    if (this.$cookies.isKey(cookieFit)) {
+      this.$store.commit('setWebreaderFit', this.$cookies.get(cookieFit))
+      this.$cookies.remove(cookieFit)
+    }
+    if (this.$cookies.isKey(cookieContinuousReaderFit)) {
+      this.$store.commit('setWebreaderContinuousReaderFit', this.$cookies.get(cookieContinuousReaderFit))
+      this.$cookies.remove(cookieContinuousReaderFit)
+    }
+    if (this.$cookies.isKey(cookieContinuousReaderPadding)) {
+      this.$store.commit('setWebreaderContinuousReaderPadding', this.$cookies.get(cookieContinuousReaderPadding))
+      this.$cookies.remove(cookieContinuousReaderPadding)
+    }
+    if (this.$cookies.isKey(cookieReadingDirection)) {
+      this.$store.commit('setWebreaderReadingDirection', this.$cookies.get(cookieReadingDirection))
+      this.$cookies.remove(cookieReadingDirection)
+    }
+    if (this.$cookies.isKey(cookiePageLayout)) {
+      this.$store.commit('setWebreaderPageLayout', this.$cookies.get(cookiePageLayout))
+      this.$cookies.remove(cookiePageLayout)
+    }
+    if (this.$cookies.isKey(cookieSwipe)) {
+      this.$store.commit('setWebreaderSwipe', this.$cookies.get(cookieSwipe))
+      this.$cookies.remove(cookieSwipe)
+    }
+    if (this.$cookies.isKey(cookieAnimations)) {
+      this.$store.commit('setWebreaderAnimations', this.$cookies.get(cookieAnimations))
+      this.$cookies.remove(cookieAnimations)
+    }
+    if (this.$cookies.isKey(cookieBackground)) {
+      this.$store.commit('setWebreaderBackground', this.$cookies.get(cookieBackground))
+      this.$cookies.remove(cookieBackground)
     }
   },
   beforeDestroy() {

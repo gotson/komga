@@ -160,7 +160,8 @@
             </v-list-item>
 
             <v-list-item>
-              <settings-switch v-model="animations" :label="$t('bookreader.settings.animate_page_transitions')"></settings-switch>
+              <settings-switch v-model="animations"
+                               :label="$t('bookreader.settings.animate_page_transitions')"></settings-switch>
             </v-list-item>
 
             <v-list-item>
@@ -255,7 +256,9 @@
       timeout="3000"
     >
       <p class="text-body-1 text-center ma-0">
-        {{ readingDirectionText }}{{ notificationReadingDirection.fromMetadata ? '(' + $t('bookreader.from_series_metadata') + ')' : '' }}
+        {{
+          readingDirectionText
+        }}{{ notificationReadingDirection.fromMetadata ? '(' + $t('bookreader.from_series_metadata') + ')' : '' }}
       </p>
     </v-snackbar>
 
@@ -304,15 +307,6 @@ import {BookDto, PageDto, PageDtoWithUrl} from '@/types/komga-books'
 import {Context, ContextOrigin} from '@/types/context'
 import {SeriesDto} from "@/types/komga-series";
 import jsFileDownloader from "js-file-downloader"
-
-const cookieFit = 'webreader.fit'
-const cookieContinuousReaderFit = 'webreader.continuousReaderFit'
-const cookieContinuousReaderPadding = 'webreader.continuousReaderPadding'
-const cookieReadingDirection = 'webreader.readingDirection'
-const cookiePageLayout = 'webreader.pageLayout'
-const cookieSwipe = 'webreader.swipe'
-const cookieAnimations = 'webreader.animations'
-const cookieBackground = 'webreader.background'
 
 export default Vue.extend({
   name: 'BookReader',
@@ -390,7 +384,7 @@ export default Vue.extend({
       ],
     }
   },
-  created () {
+  created() {
     this.$vuetify.rtl = false
     checkWebpFeature('lossy', (feature, isSupported) => {
       if (isSupported) {
@@ -400,35 +394,19 @@ export default Vue.extend({
     this.shortcuts = this.$_.keyBy([...shortcutsSettings, ...shortcutsSettingsPaged, ...shortcutsSettingsContinuous, ...shortcutsMenus, ...shortcutsAll], x => x.key)
     window.addEventListener('keydown', this.keyPressed)
   },
-  async mounted () {
-    this.loadFromCookie(cookieReadingDirection, (v) => {
-      this.readingDirection = v
-    })
-    this.loadFromCookie(cookieAnimations, (v) => {
-      this.animations = (v === 'true')
-    })
-    this.loadFromCookie(cookiePageLayout, (v) => {
-      this.pageLayout = v
-    })
-    this.loadFromCookie(cookieSwipe, (v) => {
-      this.swipe = (v === 'true')
-    })
-    this.loadFromCookie(cookieFit, (v) => {
-      this.scale = v
-    })
-    this.loadFromCookie(cookieContinuousReaderFit, (v) => {
-      this.continuousScale = v
-    })
-    this.loadFromCookie(cookieContinuousReaderPadding, (v) => {
-      this.sidePadding = parseInt(v)
-    })
-    this.loadFromCookie(cookieBackground, (v) => {
-      this.backgroundColor = v
-    })
+  async mounted() {
+    this.readingDirection = this.$store.state.persistedState.webreader.readingDirection
+    this.animations = this.$store.state.persistedState.webreader.animations
+    this.pageLayout = this.$store.state.persistedState.webreader.pageLayout
+    this.swipe = this.$store.state.persistedState.webreader.swipe
+    this.scale = this.$store.state.persistedState.webreader.fit
+    this.continuousScale = this.$store.state.persistedState.webreader.continuousReaderFit
+    this.sidePadding = parseInt(this.$store.state.persistedState.webreader.continuousReaderPadding)
+    this.backgroundColor = this.$store.state.persistedState.webreader.background
 
     this.setup(this.bookId, Number(this.$route.query.page))
   },
-  destroyed () {
+  destroyed() {
     this.$vuetify.rtl = (this.$t('common.locale_rtl') === 'true')
     window.removeEventListener('keydown', this.keyPressed)
   },
@@ -438,7 +416,7 @@ export default Vue.extend({
       required: true,
     },
   },
-  async beforeRouteUpdate (to, from, next) {
+  async beforeRouteUpdate(to, from, next) {
     if (to.params.bookId !== from.params.bookId) {
       // route update means going to previous/next book, in this case we start from first page
       this.setup(to.params.bookId, 1)
@@ -446,29 +424,29 @@ export default Vue.extend({
     next()
   },
   watch: {
-    page (val) {
+    page(val) {
       this.updateRoute()
       this.goToPage = val
       this.markProgress(val)
     },
   },
   computed: {
-    continuousReader (): boolean {
+    continuousReader(): boolean {
       return this.readingDirection === ReadingDirection.WEBTOON
     },
-    progress (): number {
+    progress(): number {
       return this.page / this.pagesCount * 100
     },
-    pagesCount (): number {
+    pagesCount(): number {
       return this.pages.length
     },
-    bookTitle (): string {
+    bookTitle(): string {
       return getBookTitleCompact(this.book.metadata.title, this.series.metadata.title)
     },
-    readingDirectionText (): string {
+    readingDirectionText(): string {
       return this.$t(`enums.reading_direction.${this.readingDirection}`).toString()
     },
-    shortcutsHelp (): object {
+    shortcutsHelp(): object {
       let nav = []
       switch (this.readingDirection) {
         case ReadingDirection.LEFT_TO_RIGHT:
@@ -495,7 +473,7 @@ export default Vue.extend({
         [this.$t('bookreader.shortcuts.menus').toString()]: shortcutsMenus,
       }
     },
-    contextReadList (): boolean {
+    contextReadList(): boolean {
       return this.context.origin === ContextOrigin.READLIST
     },
     currentPage(): PageDtoWithUrl {
@@ -508,7 +486,7 @@ export default Vue.extend({
       },
       set: function (animations: boolean): void {
         this.settings.animations = animations
-        this.$cookies.set(cookieAnimations, animations, Infinity)
+        this.$store.commit('setWebreaderAnimations', animations)
       },
     },
     scale: {
@@ -518,7 +496,7 @@ export default Vue.extend({
       set: function (scale: ScaleType): void {
         if (Object.values(ScaleType).includes(scale)) {
           this.settings.scale = scale
-          this.$cookies.set(cookieFit, scale, Infinity)
+          this.$store.commit('setWebreaderFit', scale)
         }
       },
     },
@@ -529,7 +507,7 @@ export default Vue.extend({
       set: function (scale: ContinuousScaleType): void {
         if (Object.values(ContinuousScaleType).includes(scale)) {
           this.settings.continuousScale = scale
-          this.$cookies.set(cookieContinuousReaderFit, scale, Infinity)
+          this.$store.commit('setWebreaderContinuousReaderFit', scale)
         }
       },
     },
@@ -540,7 +518,7 @@ export default Vue.extend({
       set: function (padding: number): void {
         if (PaddingPercentage.includes(padding)) {
           this.settings.sidePadding = padding
-          this.$cookies.set(cookieContinuousReaderPadding, padding, Infinity)
+          this.$store.commit('setWebreaderContinuousReaderPadding', padding)
         }
       },
     },
@@ -551,7 +529,7 @@ export default Vue.extend({
       set: function (color: string): void {
         if (this.backgroundColors.map(x => x.value).includes(color)) {
           this.settings.backgroundColor = color
-          this.$cookies.set(cookieBackground, color, Infinity)
+          this.$store.commit('setWebreaderBackground', color)
         }
       },
     },
@@ -562,7 +540,7 @@ export default Vue.extend({
       set: function (readingDirection: ReadingDirection): void {
         if (Object.values(ReadingDirection).includes(readingDirection)) {
           this.settings.readingDirection = readingDirection
-          this.$cookies.set(cookieReadingDirection, readingDirection, Infinity)
+          this.$store.commit('setWebreaderReadingDirection', readingDirection)
         }
       },
     },
@@ -573,7 +551,7 @@ export default Vue.extend({
       set: function (pageLayout: PagedReaderLayout): void {
         if (Object.values(PagedReaderLayout).includes(pageLayout)) {
           this.settings.pageLayout = pageLayout
-          this.$cookies.set(cookiePageLayout, pageLayout, Infinity)
+          this.$store.commit('setWebreaderPageLayout', pageLayout)
         }
       },
     },
@@ -583,15 +561,15 @@ export default Vue.extend({
       },
       set: function (swipe: boolean): void {
         this.settings.swipe = swipe
-        this.$cookies.set(cookieSwipe, swipe, Infinity)
+        this.$store.commit('setWebreaderSwipe', swipe)
       },
     },
   },
   methods: {
-    keyPressed (e: KeyboardEvent) {
+    keyPressed(e: KeyboardEvent) {
       this.shortcuts[e.key]?.execute(this)
     },
-    async setup (bookId: string, page: number) {
+    async setup(bookId: string, page: number) {
       this.book = await this.$komgaBooks.getBook(bookId)
       this.series = await this.$komgaSeries.getOneSeries(this.book.seriesId)
 
@@ -623,7 +601,7 @@ export default Vue.extend({
 
       // set non-persistent reading direction if exists in metadata
       if (this.series.metadata.readingDirection in ReadingDirection && this.readingDirection !== this.series.metadata.readingDirection) {
-        // bypass setter so cookies aren't set
+        // bypass setter so setting is not persisted
         this.settings.readingDirection = this.series.metadata.readingDirection as ReadingDirection
         this.sendNotificationReadingDirection(true)
       } else {
@@ -649,62 +627,62 @@ export default Vue.extend({
         this.siblingPrevious = {} as BookDto
       }
     },
-    getPageUrl (page: PageDto): string {
+    getPageUrl(page: PageDto): string {
       if (!this.supportedMediaTypes.includes(page.mediaType)) {
         return bookPageUrl(this.bookId, page.number, this.convertTo)
       } else {
         return bookPageUrl(this.bookId, page.number)
       }
     },
-    jumpToPrevious () {
+    jumpToPrevious() {
       if (this.jumpToPreviousBook) {
         this.previousBook()
       } else {
         this.jumpToPreviousBook = true
       }
     },
-    jumpToNext () {
+    jumpToNext() {
       if (this.jumpToNextBook) {
         this.nextBook()
       } else {
         this.jumpToNextBook = true
       }
     },
-    previousBook () {
+    previousBook() {
       if (!this.$_.isEmpty(this.siblingPrevious)) {
         this.jumpToPreviousBook = false
         this.$router.push({
           name: 'read-book',
-          params: { bookId: this.siblingPrevious.id.toString() },
-          query: { context: this.context.origin, contextId: this.context.id },
+          params: {bookId: this.siblingPrevious.id.toString()},
+          query: {context: this.context.origin, contextId: this.context.id},
         })
       }
     },
-    nextBook () {
+    nextBook() {
       if (this.$_.isEmpty(this.siblingNext)) {
         this.closeBook()
       } else {
         this.jumpToNextBook = false
         this.$router.push({
           name: 'read-book',
-          params: { bookId: this.siblingNext.id.toString() },
-          query: { context: this.context.origin, contextId: this.context.id },
+          params: {bookId: this.siblingNext.id.toString()},
+          query: {context: this.context.origin, contextId: this.context.id},
         })
       }
     },
-    goTo (page: number) {
+    goTo(page: number) {
       this.page = page
     },
-    goToFirst () {
+    goToFirst() {
       this.goTo(1)
     },
-    goToLast () {
+    goToLast() {
       this.goTo(this.pagesCount)
     },
-    updateRoute () {
+    updateRoute() {
       this.$router.replace({
         name: this.$route.name,
-        params: { bookId: this.$route.params.bookId },
+        params: {bookId: this.$route.params.bookId},
         query: {
           page: this.page.toString(),
           context: this.context.origin,
@@ -712,24 +690,19 @@ export default Vue.extend({
         },
       } as Location)
     },
-    closeBook () {
+    closeBook() {
       this.$router.push({
         name: 'browse-book',
-        params: { bookId: this.bookId.toString() },
-        query: { context: this.context.origin, contextId: this.context.id },
+        params: {bookId: this.bookId.toString()},
+        query: {context: this.context.origin, contextId: this.context.id},
       })
     },
-    loadFromCookie (cookieKey: string, setter: (value: any) => void): void {
-      if (this.$cookies.isKey(cookieKey)) {
-        setter(this.$cookies.get(cookieKey))
-      }
-    },
-    changeReadingDir (dir: ReadingDirection) {
+    changeReadingDir(dir: ReadingDirection) {
       this.readingDirection = dir
       const text = this.$t(`enums.reading_direction.${this.readingDirection}`)
       this.sendNotification(`${this.$t('bookreader.changing_reading_direction')}: ${text}`)
     },
-    cycleScale () {
+    cycleScale() {
       if (this.continuousReader) {
         const enumValues = Object.values(ContinuousScaleType)
         const i = (enumValues.indexOf(this.settings.continuousScale) + 1) % (enumValues.length)
@@ -744,7 +717,7 @@ export default Vue.extend({
         this.sendNotification(`${this.$t('bookreader.cycling_scale')}: ${text}`)
       }
     },
-    cycleSidePadding () {
+    cycleSidePadding() {
       if (this.continuousReader) {
         const i = (PaddingPercentage.indexOf(this.settings.sidePadding) + 1) % (PaddingPercentage.length)
         this.sidePadding = PaddingPercentage[i]
@@ -752,7 +725,7 @@ export default Vue.extend({
         this.sendNotification(`${this.$t('bookreader.cycling_side_padding')}: ${text}`)
       }
     },
-    cyclePageLayout () {
+    cyclePageLayout() {
       if (this.continuousReader) return
       const enumValues = Object.values(PagedReaderLayout)
       const i = (enumValues.indexOf(this.settings.pageLayout) + 1) % (enumValues.length)
@@ -760,19 +733,19 @@ export default Vue.extend({
       const text = this.$i18n.t(this.pageLayout)
       this.sendNotification(`${this.$t('bookreader.cycling_page_layout')}: ${text}`)
     },
-    toggleToolbars () {
+    toggleToolbars() {
       this.showToolbars = !this.showToolbars
     },
-    toggleExplorer () {
+    toggleExplorer() {
       this.showExplorer = !this.showExplorer
     },
-    toggleSettings () {
+    toggleSettings() {
       this.showSettings = !this.showSettings
     },
-    toggleHelp () {
+    toggleHelp() {
       this.showHelp = !this.showHelp
     },
-    closeDialog () {
+    closeDialog() {
       if (this.showExplorer) {
         this.showExplorer = false
         return
@@ -787,17 +760,17 @@ export default Vue.extend({
       }
       this.closeBook()
     },
-    sendNotificationReadingDirection (fromMetadata: boolean) {
+    sendNotificationReadingDirection(fromMetadata: boolean) {
       this.notificationReadingDirection.fromMetadata = fromMetadata
       this.notificationReadingDirection.enabled = true
     },
-    sendNotification (message: string, timeout: number = 4000) {
+    sendNotification(message: string, timeout: number = 4000) {
       this.notification.timeout = timeout
       this.notification.message = message
       this.notification.enabled = true
     },
-    async markProgress (page: number) {
-      await this.$komgaBooks.updateReadProgress(this.bookId, { page: page })
+    async markProgress(page: number) {
+      await this.$komgaBooks.updateReadProgress(this.bookId, {page: page})
     },
     downloadCurrentPage() {
       new jsFileDownloader({
