@@ -55,8 +55,6 @@ import Vue from 'vue'
 import {Location} from 'vue-router'
 import {LIBRARIES_ALL} from '@/types/library'
 
-const cookiePageSize = 'pagesize'
-
 export default Vue.extend({
   name: 'BrowseCollections',
   components: {
@@ -95,9 +93,7 @@ export default Vue.extend({
     this.$eventHub.$off(LIBRARY_CHANGED, this.reloadLibrary)
   },
   mounted () {
-    if (this.$cookies.isKey(cookiePageSize)) {
-      this.pageSize = Number(this.$cookies.get(cookiePageSize))
-    }
+    this.pageSize = this.$store.state.persistedState.browsingPageSize
 
     // restore from query param
     if (this.$route.query.page) this.page = Number(this.$route.query.page)
@@ -141,7 +137,7 @@ export default Vue.extend({
   methods: {
     setWatches () {
       this.pageSizeUnwatch = this.$watch('pageSize', (val) => {
-        this.$cookies.set(cookiePageSize, val, Infinity)
+        this.$store.commit('setBrowsingPageSize', val)
         this.updateRouteAndReload()
       })
 

@@ -91,7 +91,9 @@
             <v-col class="py-1">
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
-                  <span v-on="on">{{ new Intl.DateTimeFormat($i18n.locale, { dateStyle: 'long' }).format(new Date(series.booksMetadata.releaseDate)) }}</span>
+                  <span v-on="on">{{
+                      new Intl.DateTimeFormat($i18n.locale, {dateStyle: 'long'}).format(new Date(series.booksMetadata.releaseDate))
+                    }}</span>
                 </template>
                 {{ $t('browse_series.earliest_year_from_release_dates') }}
               </v-tooltip>
@@ -390,8 +392,6 @@ import VueHorizontal from "vue-horizontal";
 
 const tags = require('language-tags')
 
-const cookiePageSize = 'pagesize'
-
 export default Vue.extend({
   name: 'BrowseSeries',
   components: {
@@ -531,9 +531,7 @@ export default Vue.extend({
     this.$eventHub.$off(LIBRARY_DELETED, this.libraryDeleted)
   },
   async mounted() {
-    if (this.$cookies.isKey(cookiePageSize)) {
-      this.pageSize = Number(this.$cookies.get(cookiePageSize))
-    }
+    this.pageSize = this.$store.state.persistedState.browsingPageSize
 
     // restore from query param
     await this.resetParams(this.$route, this.seriesId)
@@ -586,7 +584,7 @@ export default Vue.extend({
       this.sortUnwatch = this.$watch('sortActive', this.updateRouteAndReload)
       this.filterUnwatch = this.$watch('filters', this.updateRouteAndReload)
       this.pageSizeUnwatch = this.$watch('pageSize', (val) => {
-        this.$cookies.set(cookiePageSize, val, Infinity)
+        this.$store.commit('setBrowsingPageSize', val)
         this.updateRouteAndReload()
       })
 

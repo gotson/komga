@@ -117,8 +117,6 @@ import {groupAuthorsByRole} from "@/functions/authors";
 import {AuthorDto} from "@/types/komga-books";
 import {authorRoles} from "@/types/author-roles";
 
-const cookiePageSize = 'pagesize'
-
 export default Vue.extend({
   name: 'BrowseLibraries',
   components: {
@@ -188,9 +186,7 @@ export default Vue.extend({
     this.$eventHub.$off(LIBRARY_CHANGED, this.reloadLibrary)
   },
   async mounted() {
-    if (this.$cookies.isKey(cookiePageSize)) {
-      this.pageSize = Number(this.$cookies.get(cookiePageSize))
-    }
+    this.pageSize = this.$store.state.persistedState.browsingPageSize
 
     // restore from query param
     await this.resetParams(this.$route, this.libraryId)
@@ -338,7 +334,7 @@ export default Vue.extend({
         this.updateRouteAndReload()
       })
       this.pageSizeUnwatch = this.$watch('pageSize', (val) => {
-        this.$cookies.set(cookiePageSize, val, Infinity)
+        this.$store.commit('setBrowsingPageSize', val)
         this.updateRouteAndReload()
       })
 

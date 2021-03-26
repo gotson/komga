@@ -401,7 +401,7 @@ export default Vue.extend({
     this.swipe = this.$store.state.persistedState.webreader.swipe
     this.scale = this.$store.state.persistedState.webreader.fit
     this.continuousScale = this.$store.state.persistedState.webreader.continuousReaderFit
-    this.sidePadding = parseInt(this.$store.state.persistedState.webreader.continuousReaderPadding)
+    this.sidePadding = this.$store.state.persistedState.webreader.continuousReaderPadding
     this.backgroundColor = this.$store.state.persistedState.webreader.background
 
     this.setup(this.bookId, Number(this.$route.query.page))

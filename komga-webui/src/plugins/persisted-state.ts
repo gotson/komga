@@ -15,6 +15,7 @@ export const persistedModule: Module<any, any> = {
       animations: true,
       background: '',
     },
+    browsingPageSize: undefined as unknown as number,
   },
   mutations: {
     setLocale (state, val) {
@@ -46,6 +47,9 @@ export const persistedModule: Module<any, any> = {
     },
     setWebreaderBackground (state, val) {
       state.webreader.background = val
+    },
+    setBrowsingPageSize(state, val) {
+      state.browsingPageSize = val
     },
   },
 }

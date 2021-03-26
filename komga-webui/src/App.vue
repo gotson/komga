@@ -17,6 +17,7 @@ const cookiePageLayout = 'webreader.pageLayout'
 const cookieSwipe = 'webreader.swipe'
 const cookieAnimations = 'webreader.animations'
 const cookieBackground = 'webreader.background'
+const cookiePageSize = 'pagesize'
 
 export default Vue.extend({
   name: 'App',
@@ -41,7 +42,7 @@ export default Vue.extend({
       this.$cookies.remove(cookieContinuousReaderFit)
     }
     if (this.$cookies.isKey(cookieContinuousReaderPadding)) {
-      this.$store.commit('setWebreaderContinuousReaderPadding', this.$cookies.get(cookieContinuousReaderPadding))
+      this.$store.commit('setWebreaderContinuousReaderPadding', parseInt(this.$cookies.get(cookieContinuousReaderPadding)))
       this.$cookies.remove(cookieContinuousReaderPadding)
     }
     if (this.$cookies.isKey(cookieReadingDirection)) {
@@ -63,6 +64,10 @@ export default Vue.extend({
     if (this.$cookies.isKey(cookieBackground)) {
       this.$store.commit('setWebreaderBackground', this.$cookies.get(cookieBackground))
       this.$cookies.remove(cookieBackground)
+    }
+    if (this.$cookies.isKey(cookiePageSize)) {
+      this.$store.commit('setBrowsingPageSize', parseInt(this.$cookies.get(cookiePageSize)))
+      this.$cookies.remove(cookiePageSize)
     }
   },
   beforeDestroy() {
