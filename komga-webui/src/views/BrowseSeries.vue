@@ -531,7 +531,7 @@ export default Vue.extend({
     this.$eventHub.$off(LIBRARY_DELETED, this.libraryDeleted)
   },
   async mounted() {
-    this.pageSize = this.$store.state.persistedState.browsingPageSize
+    this.pageSize = this.$store.state.persistedState.browsingPageSize || this.pageSize
 
     // restore from query param
     await this.resetParams(this.$route, this.seriesId)

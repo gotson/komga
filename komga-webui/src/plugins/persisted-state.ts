@@ -16,6 +16,24 @@ export const persistedModule: Module<any, any> = {
       background: '',
     },
     browsingPageSize: undefined as unknown as number,
+    collection: {
+      filter: {},
+    },
+    library: {
+      filter: {},
+      sort: {},
+    },
+  },
+  getters: {
+    getCollectionFilter: (state) => (id: string) => {
+      return state.collection.filter[id]
+    },
+    getLibraryFilter: (state) => (id: string) => {
+      return state.library.filter[id]
+    },
+    getLibrarySort: (state) => (id: string) => {
+      return state.library.sort[id]
+    },
   },
   mutations: {
     setLocale (state, val) {
@@ -50,6 +68,15 @@ export const persistedModule: Module<any, any> = {
     },
     setBrowsingPageSize(state, val) {
       state.browsingPageSize = val
+    },
+    setCollectionFilter(state, {id, filter}) {
+      state.collection.filter[id] = filter
+    },
+    setLibraryFilter(state, {id, filter}) {
+      state.library.filter[id] = filter
+    },
+    setLibrarySort(state, {id, sort}) {
+      state.library.sort[id] = sort
     },
   },
 }

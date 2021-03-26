@@ -93,7 +93,7 @@ export default Vue.extend({
     this.$eventHub.$off(LIBRARY_CHANGED, this.reloadLibrary)
   },
   mounted () {
-    this.pageSize = this.$store.state.persistedState.browsingPageSize
+    this.pageSize = this.$store.state.persistedState.browsingPageSize || this.pageSize
 
     // restore from query param
     if (this.$route.query.page) this.page = Number(this.$route.query.page)

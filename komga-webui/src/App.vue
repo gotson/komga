@@ -69,6 +69,9 @@ export default Vue.extend({
       this.$store.commit('setBrowsingPageSize', parseInt(this.$cookies.get(cookiePageSize)))
       this.$cookies.remove(cookiePageSize)
     }
+    this.$cookies.keys()
+      .filter(x => x.startsWith('collection.filter') || x.startsWith('library.filter') || x.startsWith('library.sort'))
+      .forEach(x => this.$cookies.remove(x))
   },
   beforeDestroy() {
     window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', this.systemThemeChange)

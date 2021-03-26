@@ -186,7 +186,7 @@ export default Vue.extend({
     this.$eventHub.$off(LIBRARY_CHANGED, this.reloadLibrary)
   },
   async mounted() {
-    this.pageSize = this.$store.state.persistedState.browsingPageSize
+    this.pageSize = this.$store.state.persistedState.browsingPageSize || this.pageSize
 
     // restore from query param
     await this.resetParams(this.$route, this.libraryId)
@@ -274,15 +274,9 @@ export default Vue.extend({
     },
   },
   methods: {
-    cookieSort(libraryId: string): string {
-      return `library.sort.${libraryId}`
-    },
-    cookieFilter(libraryId: string): string {
-      return `library.filter.${libraryId}`
-    },
     async resetParams(route: any, libraryId: string) {
       this.sortActive = parseQuerySort(route.query.sort, this.sortOptions) ||
-        this.$cookies.get(this.cookieSort(route.params.libraryId)) ||
+        this.$store.getters.getLibrarySort(route.params.libraryId) ||
         this.$_.clone(this.sortDefault)
 
       const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
@@ -314,7 +308,7 @@ export default Vue.extend({
           this.$set(this.filters, role, parseQueryFilter(route.query[role], this.filterOptions[role].map((x: NameValue) => x.value)))
         })
       } else {
-        this.filters = this.$cookies.get(this.cookieFilter(route.params.libraryId)) || {} as FiltersActive
+        this.filters = this.$store.getters.getLibraryFilter(route.params.libraryId) || {} as FiltersActive
       }
     },
     libraryDeleted(event: EventLibraryDeleted) {
@@ -326,11 +320,11 @@ export default Vue.extend({
     },
     setWatches() {
       this.sortUnwatch = this.$watch('sortActive', (val) => {
-        this.$cookies.set(this.cookieSort(this.libraryId), val, Infinity)
+        this.$store.commit('setLibrarySort', {id: this.libraryId, sort: val})
         this.updateRouteAndReload()
       })
       this.filterUnwatch = this.$watch('filters', (val) => {
-        this.$cookies.set(this.cookieFilter(this.libraryId), val, Infinity)
+        this.$store.commit('setLibraryFilter', {id: this.libraryId, filter: val})
         this.updateRouteAndReload()
       })
       this.pageSizeUnwatch = this.$watch('pageSize', (val) => {

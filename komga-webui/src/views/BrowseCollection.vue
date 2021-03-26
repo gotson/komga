@@ -284,15 +284,12 @@ export default Vue.extend({
           this.$set(this.filters, role, parseQueryFilter(route.query[role], this.filterOptions[role].map((x: NameValue) => x.value)))
         })
       } else {
-        this.filters = this.$cookies.get(this.cookieFilter(route.params.collectionId)) || {} as FiltersActive
+        this.filters = this.$store.getters.getCollectionFilter(route.params.collectionId) || {} as FiltersActive
       }
-    },
-    cookieFilter(collectionId: string): string {
-      return `collection.filter.${collectionId}`
     },
     setWatches() {
       this.filterUnwatch = this.$watch('filters', (val) => {
-        this.$cookies.set(this.cookieFilter(this.collectionId), val, Infinity)
+        this.$store.commit('setCollectionFilter', {id: this.collectionId, filter: val})
         this.updateRouteAndReload()
       })
     },
