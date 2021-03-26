@@ -1,9 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { BookDto } from '@/types/komga-books'
-import {SeriesDto} from "@/types/komga-series";
+import {BookDto} from '@/types/komga-books'
+import {SeriesDto} from "@/types/komga-series"
+import createPersistedState from "vuex-persistedstate"
+import {persistedModule} from './plugins/persisted-state'
 
 Vue.use(Vuex)
+
+const persistedState = createPersistedState({
+  paths: ['persistedState'],
+})
 
 export default new Vuex.Store({
   state: {
@@ -181,4 +187,8 @@ export default new Vuex.Store({
       commit('setUpdateSeriesDialog', value)
     },
   },
+  modules: {
+    persistedState: persistedModule,
+  },
+  plugins: [persistedState],
 })

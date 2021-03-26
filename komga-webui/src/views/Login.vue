@@ -64,11 +64,20 @@
       </v-row>
 
       <v-row justify="center">
-        <v-col cols="12" sm="6" md="4" lg="2" xl="2">
+        <v-col cols="6" sm="4" md="3" lg="2" xl="1">
           <v-select v-model="locale"
                     :items="locales"
                     :label="$t('home.translation')"
                     prepend-icon="mdi-translate"
+          >
+          </v-select>
+        </v-col>
+
+        <v-col cols="6" sm="4" md="3" lg="2" xl="1">
+          <v-select v-model="theme"
+                    :items="themes"
+                    :label="$t('home.theme')"
+                    :prepend-icon="themeIcon"
           >
           </v-select>
         </v-col>
@@ -93,8 +102,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import {email, required} from "vuelidate/lib/validators";
-
-const cookieLocale = 'locale'
+import {Theme} from "@/types/themes";
 
 export default Vue.extend({
   name: 'Login',
@@ -139,9 +147,37 @@ export default Vue.extend({
       },
       set: function (locale: string): void {
         if (this.$i18n.availableLocales.includes(locale)) {
-          this.$i18n.locale = locale
-          this.$cookies.set(cookieLocale, locale, Infinity)
-          this.$vuetify.rtl = (this.$t('common.locale_rtl') === 'true')
+          this.$store.commit('setLocale', locale)
+        }
+      },
+    },
+
+    themes(): object[] {
+      return [
+        {text: this.$i18n.t(Theme.LIGHT), value: Theme.LIGHT},
+        {text: this.$i18n.t(Theme.DARK), value: Theme.DARK},
+        {text: this.$i18n.t(Theme.SYSTEM), value: Theme.SYSTEM},
+      ]
+    },
+    themeIcon(): string {
+      switch (this.theme) {
+        case Theme.LIGHT:
+          return 'mdi-brightness-7'
+        case Theme.DARK:
+          return 'mdi-brightness-3'
+        case Theme.SYSTEM:
+          return 'mdi-brightness-auto'
+      }
+      return ''
+    },
+
+    theme: {
+      get: function (): Theme {
+        return this.$store.state.persistedState.theme
+      },
+      set: function (theme: Theme): void {
+        if (Object.values(Theme).includes(theme)) {
+          this.$store.commit('setTheme', theme)
         }
       },
     },

@@ -102,9 +102,7 @@
       <v-list>
         <v-list-item>
           <v-list-item-icon>
-            <v-icon v-if="theme === Theme.LIGHT">mdi-brightness-7</v-icon>
-            <v-icon v-if="theme === Theme.DARK">mdi-brightness-3</v-icon>
-            <v-icon v-if="theme === Theme.SYSTEM">mdi-brightness-auto</v-icon>
+            <v-icon>{{ themeIcon }}</v-icon>
           </v-list-item-icon>
           <v-select
             v-model="theme"
@@ -152,9 +150,6 @@ import SearchBox from '@/components/SearchBox.vue'
 import {Theme} from '@/types/themes'
 import Vue from 'vue'
 
-const cookieTheme = 'theme'
-const cookieLocale = 'locale'
-
 export default Vue.extend({
   name: 'home',
   components: {LibraryActionsMenu, SearchBox, Dialogs},
@@ -162,10 +157,6 @@ export default Vue.extend({
     return {
       drawerVisible: this.$vuetify.breakpoint.lgAndUp,
       info: {} as ActuatorInfo,
-      settings: {
-        theme: Theme.LIGHT,
-      },
-      Theme,
       locales: this.$i18n.availableLocales.map((x: any) => ({text: this.$i18n.t('common.locale_name', x), value: x})),
     }
   },
@@ -173,18 +164,6 @@ export default Vue.extend({
     if (this.isAdmin) {
       this.info = await this.$actuator.getInfo()
     }
-
-    if (this.$cookies.isKey(cookieTheme)) {
-      const theme = this.$cookies.get(cookieTheme)
-      if (Object.values(Theme).includes(theme)) {
-        this.theme = theme as Theme
-      }
-    }
-
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', this.systemThemeChange)
-  },
-  async beforeDestroy() {
-    window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', this.systemThemeChange)
   },
   computed: {
     libraries(): LibraryDto[] {
@@ -200,16 +179,25 @@ export default Vue.extend({
         {text: this.$i18n.t(Theme.SYSTEM), value: Theme.SYSTEM},
       ]
     },
+    themeIcon(): string {
+      switch (this.theme) {
+        case Theme.LIGHT:
+          return 'mdi-brightness-7'
+        case Theme.DARK:
+          return 'mdi-brightness-3'
+        case Theme.SYSTEM:
+          return 'mdi-brightness-auto'
+      }
+      return ''
+    },
 
     theme: {
       get: function (): Theme {
-        return this.settings.theme
+        return this.$store.state.persistedState.theme
       },
       set: function (theme: Theme): void {
         if (Object.values(Theme).includes(theme)) {
-          this.settings.theme = theme
-          this.changeTheme(theme)
-          this.$cookies.set(cookieTheme, theme, Infinity)
+          this.$store.commit('setTheme', theme)
         }
       },
     },
@@ -219,9 +207,7 @@ export default Vue.extend({
       },
       set: function (locale: string): void {
         if (this.$i18n.availableLocales.includes(locale)) {
-          this.$i18n.locale = locale
-          this.$cookies.set(cookieLocale, locale, Infinity)
-          this.$vuetify.rtl = (this.$t('common.locale_rtl') === 'true')
+          this.$store.commit('setLocale', locale)
         }
       },
     },
@@ -229,26 +215,6 @@ export default Vue.extend({
   methods: {
     toggleDrawer() {
       this.drawerVisible = !this.drawerVisible
-    },
-    systemThemeChange() {
-      if (this.theme === Theme.SYSTEM) {
-        this.changeTheme(this.theme)
-      }
-    },
-    changeTheme(theme: Theme) {
-      switch (theme) {
-        case Theme.DARK:
-          this.$vuetify.theme.dark = true
-          break
-
-        case Theme.SYSTEM:
-          this.$vuetify.theme.dark = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
-          break
-
-        default:
-          this.$vuetify.theme.dark = false
-          break
-      }
     },
     logout() {
       this.$store.dispatch('logout')
