@@ -40,8 +40,11 @@ export default Vue.extend({
     },
   },
   watch: {
-    value (val) {
-      this.selection = this.items.findIndex(x => x === val)
+    value: {
+      handler(val) {
+        this.selection = this.items.findIndex(x => x === val)
+      },
+      immediate: true,
     },
   },
   methods: {
