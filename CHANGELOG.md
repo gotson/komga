@@ -1,3 +1,15 @@
+# [0.85.0](https://github.com/gotson/komga/compare/v0.84.1...v0.85.0) (2021-03-29)
+
+
+### Bug Fixes
+
+* **webui:** page size chooser would not always reflect the actual value ([5ee4230](https://github.com/gotson/komga/commit/5ee423030f2775754a9e556fcef776b9517eb902))
+
+
+### Features
+
+* **webui:** change/restore theme even on login page ([7f7c6c3](https://github.com/gotson/komga/commit/7f7c6c3e6f7c75b90aa15666f3af5b657e5764bd))
+
 ## [0.84.1](https://github.com/gotson/komga/compare/v0.84.0...v0.84.1) (2021-03-24)
 
 
