@@ -496,7 +496,7 @@ export default Vue.extend({
       set: function (scale: ScaleType): void {
         if (Object.values(ScaleType).includes(scale)) {
           this.settings.scale = scale
-          this.$store.commit('setWebreaderFit', scale)
+          this.$store.commit('setWebreaderPagedScale', scale)
         }
       },
     },
@@ -507,7 +507,7 @@ export default Vue.extend({
       set: function (scale: ContinuousScaleType): void {
         if (Object.values(ContinuousScaleType).includes(scale)) {
           this.settings.continuousScale = scale
-          this.$store.commit('setWebreaderContinuousReaderFit', scale)
+          this.$store.commit('setWebreaderContinuousScale', scale)
         }
       },
     },
@@ -518,7 +518,7 @@ export default Vue.extend({
       set: function (padding: number): void {
         if (PaddingPercentage.includes(padding)) {
           this.settings.sidePadding = padding
-          this.$store.commit('setWebreaderContinuousReaderPadding', padding)
+          this.$store.commit('setWebreaderContinuousPadding', padding)
         }
       },
     },
@@ -551,7 +551,7 @@ export default Vue.extend({
       set: function (pageLayout: PagedReaderLayout): void {
         if (Object.values(PagedReaderLayout).includes(pageLayout)) {
           this.settings.pageLayout = pageLayout
-          this.$store.commit('setWebreaderPageLayout', pageLayout)
+          this.$store.commit('setWebreaderPagedPageLayout', pageLayout)
         }
       },
     },

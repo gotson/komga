@@ -34,15 +34,15 @@ export default Vue.extend({
       this.$cookies.remove(cookieTheme)
     }
     if (this.$cookies.isKey(cookieFit)) {
-      this.$store.commit('setWebreaderFit', this.$cookies.get(cookieFit))
+      this.$store.commit('setWebreaderPagedScale', this.$cookies.get(cookieFit))
       this.$cookies.remove(cookieFit)
     }
     if (this.$cookies.isKey(cookieContinuousReaderFit)) {
-      this.$store.commit('setWebreaderContinuousReaderFit', this.$cookies.get(cookieContinuousReaderFit))
+      this.$store.commit('setWebreaderContinuousScale', this.$cookies.get(cookieContinuousReaderFit))
       this.$cookies.remove(cookieContinuousReaderFit)
     }
     if (this.$cookies.isKey(cookieContinuousReaderPadding)) {
-      this.$store.commit('setWebreaderContinuousReaderPadding', parseInt(this.$cookies.get(cookieContinuousReaderPadding)))
+      this.$store.commit('setWebreaderContinuousPadding', parseInt(this.$cookies.get(cookieContinuousReaderPadding)))
       this.$cookies.remove(cookieContinuousReaderPadding)
     }
     if (this.$cookies.isKey(cookieReadingDirection)) {
@@ -50,7 +50,7 @@ export default Vue.extend({
       this.$cookies.remove(cookieReadingDirection)
     }
     if (this.$cookies.isKey(cookiePageLayout)) {
-      this.$store.commit('setWebreaderPageLayout', this.$cookies.get(cookiePageLayout))
+      this.$store.commit('setWebreaderPagedPageLayout', this.$cookies.get(cookiePageLayout))
       this.$cookies.remove(cookiePageLayout)
     }
     if (this.$cookies.isKey(cookieSwipe)) {

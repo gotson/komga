@@ -6,11 +6,15 @@ export const persistedModule: Module<any, any> = {
     locale: '',
     theme: Theme.LIGHT,
     webreader: {
-      fit: '',
-      continuousReaderFit: '',
-      continuousReaderPadding: '',
+      paged: {
+        scale: '',
+        pageLayout: '',
+      },
+      continuous: {
+        scale: '',
+        padding: '',
+      },
       readingDirection: '',
-      pageLayout: '',
       swipe: false,
       animations: true,
       background: '',
@@ -36,34 +40,34 @@ export const persistedModule: Module<any, any> = {
     },
   },
   mutations: {
-    setLocale (state, val) {
+    setLocale(state, val) {
       state.locale = val
     },
-    setTheme (state, val) {
+    setTheme(state, val) {
       state.theme = val
     },
-    setWebreaderFit (state, val) {
-      state.webreader.fit = val
+    setWebreaderPagedScale(state, val) {
+      state.webreader.paged.scale = val
     },
-    setWebreaderContinuousReaderFit (state, val) {
-      state.webreader.continuousReaderFit = val
+    setWebreaderPagedPageLayout(state, val) {
+      state.webreader.paged.pageLayout = val
     },
-    setWebreaderContinuousReaderPadding (state, val) {
-      state.webreader.continuousReaderPadding = val
+    setWebreaderContinuousScale(state, val) {
+      state.webreader.continuous.scale = val
     },
-    setWebreaderReadingDirection (state, val) {
+    setWebreaderContinuousPadding(state, val) {
+      state.webreader.continuous.padding = val
+    },
+    setWebreaderReadingDirection(state, val) {
       state.webreader.readingDirection = val
     },
-    setWebreaderPageLayout (state, val) {
-      state.webreader.pageLayout = val
-    },
-    setWebreaderSwipe (state, val) {
+    setWebreaderSwipe(state, val) {
       state.webreader.swipe = val
     },
-    setWebreaderAnimations (state, val) {
+    setWebreaderAnimations(state, val) {
       state.webreader.animations = val
     },
-    setWebreaderBackground (state, val) {
+    setWebreaderBackground(state, val) {
       state.webreader.background = val
     },
     setBrowsingPageSize(state, val) {
