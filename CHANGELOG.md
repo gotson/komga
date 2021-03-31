@@ -1,3 +1,10 @@
+## [0.85.1](https://github.com/gotson/komga/compare/v0.85.0...v0.85.1) (2021-03-31)
+
+
+### Bug Fixes
+
+* **webreader:** settings are not persisted ([d202dc2](https://github.com/gotson/komga/commit/d202dc239a1d7f8b440ec09fa509ebe0686bc695)), closes [#489](https://github.com/gotson/komga/issues/489)
+
 # [0.85.0](https://github.com/gotson/komga/compare/v0.84.1...v0.85.0) (2021-03-29)
 
 
