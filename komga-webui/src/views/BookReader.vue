@@ -397,11 +397,11 @@ export default Vue.extend({
   async mounted() {
     this.readingDirection = this.$store.state.persistedState.webreader.readingDirection
     this.animations = this.$store.state.persistedState.webreader.animations
-    this.pageLayout = this.$store.state.persistedState.webreader.pageLayout
+    this.pageLayout = this.$store.state.persistedState.webreader.paged.pageLayout
     this.swipe = this.$store.state.persistedState.webreader.swipe
-    this.scale = this.$store.state.persistedState.webreader.fit
-    this.continuousScale = this.$store.state.persistedState.webreader.continuousReaderFit
-    this.sidePadding = this.$store.state.persistedState.webreader.continuousReaderPadding
+    this.scale = this.$store.state.persistedState.webreader.paged.scale
+    this.continuousScale = this.$store.state.persistedState.webreader.continuous.scale
+    this.sidePadding = this.$store.state.persistedState.webreader.continuous.padding
     this.backgroundColor = this.$store.state.persistedState.webreader.background
 
     this.setup(this.bookId, Number(this.$route.query.page))
