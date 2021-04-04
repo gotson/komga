@@ -417,7 +417,8 @@
   "library_navigation": {
     "browse": "Browse",
     "collections": "Collections",
-    "readlists": "Read Lists"
+    "readlists": "Read Lists",
+    "recommended": "Recommended"
   },
   "login": {
     "create_user_account": "Create user account",

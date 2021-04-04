@@ -147,13 +147,18 @@ class BookController(
   }
 
   @Operation(description = "Return first unread book of series with at least one book read and no books in progress.")
-  @PageableWithoutSortAsQueryParam
+  @PageableAsQueryParam
   @GetMapping("api/v1/books/ondeck")
   fun getBooksOnDeck(
     @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestParam(name = "library_id", required = false) libraryId: List<String>?,
     @Parameter(hidden = true) page: Pageable
   ): Page<BookDto> {
-    val libraryIds = if (principal.user.sharedAllLibraries) emptySet() else principal.user.sharedLibrariesIds
+    val libraryIds = when {
+      !libraryId.isNullOrEmpty() -> libraryId
+      principal.user.sharedAllLibraries -> emptySet()
+      else -> principal.user.sharedLibrariesIds
+    }
 
     return bookDtoRepository.findOnDeck(
       libraryIds,

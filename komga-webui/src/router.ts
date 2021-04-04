@@ -91,6 +91,13 @@ const router = new Router({
           props: (route) => ({ libraryId: route.params.libraryId }),
         },
         {
+          path: '/libraries/:libraryId/dashboard',
+          name: 'recommended-libraries',
+          beforeEnter: noLibraryGuard,
+          component: () => import(/* webpackChunkName: "dashboard" */ './views/Dashboard.vue'),
+          props: (route) => ({ libraryId: route.params.libraryId }),
+        },
+        {
           path: '/libraries/:libraryId/collections',
           name: 'browse-collections',
           beforeEnter: noLibraryGuard,

@@ -1,12 +1,16 @@
 <template>
   <v-bottom-navigation
-    v-if="collectionsCount > 0 || readListsCount > 0"
     grow color="primary"
     :fixed="$vuetify.breakpoint.name === 'xs'"
   >
     <v-btn :to="{name: 'browse-libraries', params: {libraryId: libraryId}}">
       <span>{{ $t('library_navigation.browse') }}</span>
       <v-icon>mdi-bookshelf</v-icon>
+    </v-btn>
+
+    <v-btn :to="{name: 'recommended-libraries', params: {libraryId: libraryId}}">
+      <span>{{ $t('library_navigation.recommended') }}</span>
+      <v-icon>mdi-view-dashboard</v-icon>
     </v-btn>
 
     <v-btn

@@ -1,5 +1,25 @@
 <template>
-  <div>
+  <div :style="libraryId && $vuetify.breakpoint.name === 'xs' ? 'margin-bottom: 56px' : undefined">
+    <div v-if="libraryId">
+        <toolbar-sticky v-if="selectedSeries.length === 0">
+
+        <library-actions-menu
+          v-if="library"
+          :library="library"
+        />
+
+        <v-toolbar-title>
+            <span>{{ library ? library.name : $t('common.all_libraries') }}</span>
+            <v-chip label class="mx-4" v-if="totalElements">
+            <span style="font-size: 1.1rem">{{ totalElements }}</span>
+            </v-chip>
+        </v-toolbar-title>
+
+        </toolbar-sticky>
+
+      <library-navigation :libraryId="libraryId"/>
+    </div>
+
     <series-multi-select-bar
       v-model="selectedSeries"
       @unselect-all="selectedSeries = []"
@@ -110,6 +130,9 @@ import SeriesMultiSelectBar from '@/components/bars/SeriesMultiSelectBar.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
+import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
+import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
+import LibraryNavigation from '@/components/LibraryNavigation.vue'
 import {ReadStatus} from '@/types/enum-books'
 import {BookDto} from '@/types/komga-books'
 import {BOOK_CHANGED, LIBRARY_DELETED, SERIES_CHANGED} from '@/types/events'
@@ -121,12 +144,16 @@ export default Vue.extend({
   components: {
     HorizontalScroller,
     EmptyState,
+    ToolbarSticky,
+    LibraryNavigation,
     ItemBrowser,
     BooksMultiSelectBar,
     SeriesMultiSelectBar,
+    LibraryActionsMenu,
   },
   data: () => {
     return {
+      library: undefined as LibraryDto | undefined,
       newSeries: [] as SeriesDto[],
       updatedSeries: [] as SeriesDto[],
       latestBooks: [] as BookDto[],
@@ -149,12 +176,20 @@ export default Vue.extend({
   mounted () {
     this.loadAll()
   },
+  props: {
+    libraryId: {
+      type: String,
+    },
+  },
   watch: {
     selectedSeries (val: SeriesDto[]) {
       val.forEach(i => this.replaceSeries(i))
     },
     selectedBooks (val: BookDto[]) {
       val.forEach(i => this.replaceBook(i))
+    },
+    '$route.path': function(val, oldVal){
+        this.loadAll()
     },
   },
   computed: {
@@ -178,6 +213,9 @@ export default Vue.extend({
       }
     },
     loadAll () {
+      if(this.libraryId){
+        this.loadLibrary(this.libraryId)
+      }
       this.selectedSeries = []
       this.selectedBooks = []
       this.loadNewSeries()
@@ -211,14 +249,21 @@ export default Vue.extend({
       }
     },
     async loadNewSeries () {
-      this.newSeries = (await this.$komgaSeries.getNewSeries()).content
+      const pageRequest = {
+        library_id: this.libraryId,
+      } as PageRequest
+      this.newSeries = (await this.$komgaSeries.getNewSeries(pageRequest)).content
     },
     async loadUpdatedSeries () {
-      this.updatedSeries = (await this.$komgaSeries.getUpdatedSeries()).content
+      const pageRequest = {
+        library_id: this.libraryId,
+      } as PageRequest
+      this.updatedSeries = (await this.$komgaSeries.getUpdatedSeries(pageRequest)).content
     },
     async loadLatestBooks () {
       const pageRequest = {
         sort: ['createdDate,desc'],
+        library_id: this.libraryId,
       } as PageRequest
 
       this.latestBooks = (await this.$komgaBooks.getBooks(undefined, pageRequest)).content
@@ -226,12 +271,17 @@ export default Vue.extend({
     async loadInProgressBooks () {
       const pageRequest = {
         sort: ['readProgress.lastModified,desc'],
+        library_id: this.libraryId,
       } as PageRequest
 
       this.inProgressBooks = (await this.$komgaBooks.getBooks(undefined, pageRequest, undefined, undefined, [ReadStatus.IN_PROGRESS])).content
     },
     async loadOnDeckBooks () {
-      this.onDeckBooks = (await this.$komgaBooks.getBooksOnDeck()).content
+      const pageRequest = {
+          library_id: this.libraryId,
+      } as PageRequest
+
+      this.onDeckBooks = (await this.$komgaBooks.getBooksOnDeck(pageRequest)).content
     },
     singleEditSeries (series: SeriesDto) {
       this.$store.dispatch('dialogUpdateSeries', series)
@@ -282,6 +332,11 @@ export default Vue.extend({
       this.selectedBooks = await Promise.all(this.selectedBooks.map(b =>
         this.$komgaBooks.getBook(b.id),
       ))
+    },
+    loadLibrary(libraryId: string) {
+      if (libraryId) {
+       this.library = this.$store.getters.getLibraryById(libraryId)
+      }
     },
   },
 })
