@@ -92,7 +92,7 @@
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <span v-on="on">{{
-                      new Intl.DateTimeFormat($i18n.locale, {dateStyle: 'long'}).format(new Date(series.booksMetadata.releaseDate))
+                      new Intl.DateTimeFormat($i18n.locale, {year: 'numeric'}).format(new Date(series.booksMetadata.releaseDate))
                     }}</span>
                 </template>
                 {{ $t('browse_series.earliest_year_from_release_dates') }}
