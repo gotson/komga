@@ -1,3 +1,15 @@
+# [0.86.0](https://github.com/gotson/komga/compare/v0.85.1...v0.86.0) (2021-04-07)
+
+
+### Bug Fixes
+
+* **webui:** series year incorrectly formatted ([d166207](https://github.com/gotson/komga/commit/d16620791243201f2e2eb0910201f73e2c2975f7))
+
+
+### Features
+
+* added translation using Weblate (Finnish) ([81142ab](https://github.com/gotson/komga/commit/81142ab570ea9ce1cfd964e7c3205d0c1a9ead7a))
+
 ## [0.85.1](https://github.com/gotson/komga/compare/v0.85.0...v0.85.1) (2021-03-31)
 
 
