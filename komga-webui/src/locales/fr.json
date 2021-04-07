@@ -26,12 +26,18 @@
     "penciller": "dessinateurs",
     "writer": "scénaristes"
   },
+  "book_card": {
+    "error": "Erreur",
+    "unknown": "À analyser",
+    "unsupported": "Non pris en charge"
+  },
   "bookreader": {
     "beginning_of_book": "Vous êtes au début du livre.",
     "changing_reading_direction": "Modifier le sens de lecture vers",
     "cycling_page_layout": "Changer la disposition des pages",
     "cycling_scale": "Changer la mise à l'échelle",
     "cycling_side_padding": "Changer la bordure latérale",
+    "download_current_page": "Télécharger la page courante",
     "end_of_book": "Vous avez atteint la fin du livre.",
     "from_series_metadata": "à partir des métadonnées de la série",
     "move_next": "Cliquez ou appuyez à nouveau sur \"Suivant\" pour passer au livre suivant.",
@@ -161,7 +167,7 @@
     "book_number": "Nombre de livres : {name}",
     "book_series": "Série : {name}",
     "button_import": "Importer",
-    "comicrack_preambule_html": "Vous pouvez importer des listes de lecture ComicRack au format <code>.cbl</code>.<br/>Komga tentera de faire correspondre les séries fournies et le numéro des livres avec les séries et livres de votre bibliothèque.",
+    "comicrack_preambule_html": "Vous pouvez importer des listes de lecture ComicRack au format <code>.cbl</code>.<br>Komga tentera de faire correspondre les séries fournies et le numéro des livres avec les séries et livres de votre bibliothèque.",
     "field_files_label": "Listes de lecture ComicRack (.cbl)",
     "import_read_lists": "Importer des listes de lecture",
     "imported_as": "Importé comme {name}",

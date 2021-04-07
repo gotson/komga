@@ -26,12 +26,18 @@
     "penciller": "formgivare",
     "writer": "författare"
   },
+  "book_card": {
+    "error": "Fel",
+    "unknown": "Ska analyserad",
+    "unsupported": "Stödjs inte"
+  },
   "bookreader": {
     "beginning_of_book": "Du är i början av boken.",
     "changing_reading_direction": "Byt läsriktning till",
     "cycling_page_layout": "Växla Sidlayout",
     "cycling_scale": "Växla Skala",
     "cycling_side_padding": "Växla Spaltfyllnad",
+    "download_current_page": "Ladda ner aktuell sida",
     "end_of_book": "Du har kommit till slutet av boken.",
     "from_series_metadata": "från seriens metadata",
     "move_next": "Tryck \"Nästa\" igen för att gå till nästa bok.",
@@ -161,7 +167,7 @@
     "book_number": "Boknummer: {name}",
     "book_series": "Serie: {name}",
     "button_import": "Importera",
-    "comicrack_preambule_html": "Du kan importera existerande ComicRack Läslistor i <code>.cbl</code>-format.<br/>Komga kommer att försöka matcha innehållet med serier och böker i dina bibliotek.",
+    "comicrack_preambule_html": "Du kan importera existerande ComicRack Läslistor i <code>.cbl</code>-format.<br>Komga kommer att försöka matcha innehållet med serier och böker i dina bibliotek.",
     "field_files_label": "ComicRack Läslistor (.cbl)",
     "import_read_lists": "Importera Läslistor",
     "imported_as": "Importerad som {name}",

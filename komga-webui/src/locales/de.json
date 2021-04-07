@@ -26,12 +26,18 @@
     "penciller": "Zeichner",
     "writer": "Schriftsteller"
   },
+  "book_card": {
+    "error": "Störung",
+    "unknown": "Noch nicht analisiert",
+    "unsupported": "Unbekanntes Format"
+  },
   "bookreader": {
     "beginning_of_book": "Sie sind am Anfang des Buches.",
     "changing_reading_direction": "Ändere Leserichtung zu",
     "cycling_page_layout": "Ändere Seitendarstellung",
     "cycling_scale": "Ändere die Skalierung",
     "cycling_side_padding": "Seitenrand ändern",
+    "download_current_page": "Lade die aktuelle Seite herunter",
     "end_of_book": "Sie haben das Ende des Buches erreicht.",
     "from_series_metadata": "Metadaten von Serie",
     "move_next": "Klicken oder drücken Sie \"Weiter\" um zum nächsten Buch zu gelangen.",
@@ -156,6 +162,18 @@
     "recently_added_books": "Kürzlich hinzugefügte Bücher",
     "recently_added_series": "Kürzlich hinzugefügte Serien",
     "recently_updated_series": "Kürzlich aktualisierte Serien"
+  },
+  "data_import": {
+    "book_number": "Buch Nummer: {name}",
+    "book_series": "Serie: {name}",
+    "button_import": "Übernehme",
+    "comicrack_preambule_html": "Es ist möglich ComicRack Leselisten im Format <code>.cbl</code> zu übernehmen.<br>Komga versucht die übernommenen Serien und Buchnummern mit den Serien und Büchern in der Bibliothek abzugleichen.",
+    "field_files_label": "ComicRack Leseliste (.cbl)",
+    "import_read_lists": "Übernehme Leseliste",
+    "imported_as": "Übernehme als {name}",
+    "results_preambule": "Das Ergebnis der Übernahme wird unten angezeigt. Es ist möglich für jedes Buch, das nicht gefunden wurde, eine Einzelauswahl durchzuführen.",
+    "size_limit": "Die Größe darf {size} MB nicht überschreiten",
+    "tab_title": "Datenübernahme"
   },
   "dialog": {
     "add_to_collection": {
@@ -367,7 +385,14 @@
     "ERR_1005": "Unbekannter Fehler beim Analysieren des Buchs",
     "ERR_1006": "Das Buch enthält keine Seiten",
     "ERR_1007": "Einige Einträge konnten nicht ausgewertet werden",
-    "ERR_1008": "Unbekannter Fehler beim Abrufen der Bucheinträge"
+    "ERR_1008": "Unbekannter Fehler beim Abrufen der Bucheinträge",
+    "ERR_1009": "Eine Leseliste mit diesem Namen existiert bereits",
+    "ERR_1010": "Für dies Bücher in der Leseliste gab es keine Übereinstimmung in der Bibliothek",
+    "ERR_1011": "Kein eindeutige Übereinstimmung für diese Serie",
+    "ERR_1012": "Keine Übereinstimmung für die Serie",
+    "ERR_1013": "Kein eindeutige Übereinstimmung für die Bücher der Serie",
+    "ERR_1014": "Keine Übereinstimmung für die Bücher für die Serie",
+    "ERR_1015": "Fehler bei der Abarbeitung der ComicRack Leseliste"
   },
   "filter": {
     "age_rating": "Altersfreigabe",

@@ -26,12 +26,17 @@
     "penciller": "tegnere",
     "writer": "skribenter"
   },
+  "book_card": {
+    "error": "Feil",
+    "unsupported": "Ustøttet"
+  },
   "bookreader": {
     "beginning_of_book": "Du er på begynnelsen av boka.",
     "changing_reading_direction": "Endrer leseretning til",
     "cycling_page_layout": "Endrer sideutforming til",
     "cycling_scale": "Endrer skalering til",
     "cycling_side_padding": "Endrer sidefyll til",
+    "download_current_page": "Last ned nåværende side",
     "end_of_book": "Du har nådd slutten på boka.",
     "from_series_metadata": "fra serie metadata",
     "move_next": "Klikk eller trykk «Neste» igjen for å gå til neste bok.",

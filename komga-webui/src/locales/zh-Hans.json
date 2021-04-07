@@ -26,12 +26,18 @@
     "penciller": "铅稿",
     "writer": "作者"
   },
+  "book_card": {
+    "error": "错误",
+    "unknown": "待分析",
+    "unsupported": "不支持"
+  },
   "bookreader": {
     "beginning_of_book": "你可以开始阅读这本书.",
     "changing_reading_direction": "将阅读方向更改为",
     "cycling_page_layout": "切换页模式",
     "cycling_scale": "切换缩放",
     "cycling_side_padding": "切换边距",
+    "download_current_page": "下载当前页面",
     "end_of_book": "你已经阅读完这本书了.",
     "from_series_metadata": "来自系列元数据",
     "move_next": "再次单击或按“下一步”移动到下一本书。",
@@ -161,7 +167,7 @@
     "book_number": "书号: {name}",
     "book_series": "系列: {name}",
     "button_import": "导入",
-    "comicrack_preambule_html": "您可以导入<code>.cbl</code>格式的阅读列表。<br/>Komga将尝试将你提供的系列和书号与你的库中的系列和书号相匹配。",
+    "comicrack_preambule_html": "您可以导入<code>.cbl</code>格式的阅读列表。<br>Komga将尝试将你提供的系列和书号与你的库中的系列和书号相匹配。",
     "field_files_label": "阅读列表（.cbl）",
     "import_read_lists": "导入阅读列表",
     "imported_as": "导入为 {name}",
