@@ -212,7 +212,7 @@ export default Vue.extend({
       this.shortcuts[e.key]?.execute(this)
     },
     wheelMoved (e: WheelEvent) {
-      const PAGE_SWITCH_THRESHOLD = 40
+      const PAGE_SWITCH_THRESHOLD = 13
 
       // Only handle vertical movement for now
       let change = e.deltaY
