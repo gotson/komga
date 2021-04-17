@@ -28,7 +28,7 @@
   },
   "book_card": {
     "error": "Fel",
-    "unknown": "Ska analyserad",
+    "unknown": "Ska analyseras",
     "unsupported": "Stödjs inte"
   },
   "bookreader": {
@@ -37,16 +37,16 @@
     "cycling_page_layout": "Växla Sidlayout",
     "cycling_scale": "Växla Skala",
     "cycling_side_padding": "Växla Spaltfyllnad",
-    "download_current_page": "Ladda ner aktuell sida",
+    "download_current_page": "Ladda ner nuvarande sida",
     "end_of_book": "Du har kommit till slutet av boken.",
     "from_series_metadata": "från seriens metadata",
-    "move_next": "Tryck \"Nästa\" igen för att gå till nästa bok.",
-    "move_next_exit": "Tryck \"Nästa\" igen för att stänga läsaren.",
-    "move_previous": "Tryck \"Föregående\" igen för att gå till föregående bok.",
+    "move_next": "Tryck ”Nästa” igen för att gå till nästa bok.",
+    "move_next_exit": "Tryck ”Nästa” igen för att stänga läsaren.",
+    "move_previous": "Tryck ”Föregående” igen för att gå till föregående bok.",
     "paged_reader_layout": {
       "double": "Dubbla sidor",
       "double_no_cover": "Dubbla sidor (inget omslag)",
-      "single": "En sida"
+      "single": "Enkelsidig"
     },
     "reader_settings": "Läsinställningar",
     "scale_type": {
@@ -207,28 +207,28 @@
     "delete_collection": {
       "button_cancel": "Avbryt",
       "button_confirm": "Radera",
-      "confirm_delete": "Ja, radera samlingen \"{name}\"",
+      "confirm_delete": "Ja, radera samlingen ”{name}”",
       "dialog_title": "Radera samling",
       "warning_html": "Samlingen <b>{name}</b> tas bort från den här servern. Dina mediefiler påverkas inte. Detta <b>kan inte</b> ångras. Fortsätta?"
     },
     "delete_library": {
       "button_cancel": "Avbryt",
       "button_confirm": "Radera",
-      "confirm_delete": "Ja, redera biblioteket \"{name}\"",
+      "confirm_delete": "Ja, redera biblioteket ”{name}”",
       "title": "Redera bibliotek",
       "warning_html": "Biblioteket <b>{name}</b> kommer att tas bort från den här servern. Dina mediefiler påverkas inte. Detta <b>kan inte</b> ångras. Fortsätta?"
     },
     "delete_readlist": {
       "button_cancel": "Avbryt",
       "button_confirm": "Radera",
-      "confirm_delete": "Ja, radera läslistan \"{name}\"",
+      "confirm_delete": "Ja, radera läslistan ”{name}”",
       "dialog_title": "Radera läslista",
       "warning_html": "Läslistan <b>{name}</b> tas bort från den här servern. Dina mediefiler påverkas inte. Detta <b>kan inte</b> ångras. Fortsätta?"
     },
     "delete_user": {
       "button_cancel": "Avbryt",
       "button_confirm": "Radera",
-      "confirm_delete": "Ja, radera användare \"{name}\"",
+      "confirm_delete": "Ja, radera användare ”{name}”",
       "dialog_title": "Radera användare",
       "warning_html": "Användaren <b>{name}</b> kommer att tas bort från den här servern. Detta <b>kan inte</b> ångras. Fortsätta?"
     },
@@ -380,8 +380,8 @@
     "ERR_1000": "Filen kunde inte nås under analysen",
     "ERR_1001": "Mediatyp är inte supporterad",
     "ERR_1002": "Krypterade RAR-arkiv är inte supporterade",
-    "ERR_1003": "\"Solid RAR\"-arkiv är inte supporterade",
-    "ERR_1004": "\"Multi Volume RAR\"-arkiv är inte supporterade",
+    "ERR_1003": "Solid RAR-arkiv är inte supporterade",
+    "ERR_1004": "Multi Volume RAR-arkiv är inte supporterade",
     "ERR_1005": "Okänt fel vid analys av bok",
     "ERR_1006": "Boken innehåller inte några sidor",
     "ERR_1007": "Vissa poster kunde inte analyseras",
@@ -468,7 +468,7 @@
     "no_results": "Sökningen gav inga resultat",
     "search": "Sök",
     "search_for_something_else": "Försök söka efter något annat",
-    "search_results_for": "Sökresultat för \"{name}\""
+    "search_results_for": "Sökresultat för ”{name}”"
   },
   "searchbox": {
     "no_results": "Inga resultat",

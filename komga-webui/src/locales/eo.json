@@ -1,0 +1,415 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} el {2}"
+    },
+    "dataTable": {
+      "itemsPerPageText": "Rikordoj en paĝo:",
+      "sortBy": "Ordigi laŭ"
+    },
+    "fileInput": {
+      "counter": "{0} dosieroj",
+      "counterSize": "{0} dosieroj ({1} entute)"
+    },
+    "noDataText": "Neniuj datenoj disponeblas"
+  },
+  "account_settings": {
+    "account_settings": "Agordoj pri Konto",
+    "change_password": "ŝanĝi pasvorton"
+  },
+  "author_roles": {
+    "colorist": "kolorigistoj",
+    "cover": "kovrilartistoj",
+    "editor": "redaktoroj",
+    "inker": "inkistoj",
+    "letterer": "skribistoj",
+    "penciller": "desegnistoj",
+    "writer": "verkistoj"
+  },
+  "book_card": {
+    "error": "Eraro",
+    "unknown": "Analizota",
+    "unsupported": "Ne subtenata"
+  },
+  "bookreader": {
+    "beginning_of_book": "Vi estas ĉe la komenco de la libro.",
+    "download_current_page": "Elŝuti aktualan paĝon",
+    "end_of_book": "Vi atingis la finon de la libro.",
+    "from_series_metadata": "el metadatenoj de la serio",
+    "paged_reader_layout": {
+      "double": "Duope",
+      "double_no_cover": "Duope (sen kovrilo)",
+      "single": "Unuope"
+    },
+    "reader_settings": "Agordoj pri Legilo",
+    "scale_type": {
+      "continuous_original": "Originalo",
+      "continuous_width": "Adapti al larĝo",
+      "height": "Adapti al alto",
+      "original": "Originalo",
+      "screen": "Ekrano",
+      "width": "Adapti al larĝo"
+    },
+    "settings": {
+      "background_color": "Fona koloro",
+      "background_colors": {
+        "black": "Nigro",
+        "white": "Blanko"
+      },
+      "general": "Ĝenerala",
+      "gestures": "Gestoj",
+      "reading_mode": "Reĝimo de legado",
+      "side_padding_none": "Nenio",
+      "webtoon": "Opcioj pri Legilo de Retkomiksoj"
+    },
+    "shortcuts": {
+      "close": "Fermi",
+      "first_page": "Unua paĝo",
+      "last_page": "Lasta paĝo",
+      "left_to_right": "Demaldekstre Dekstren",
+      "menus": "Menuoj",
+      "next_page": "Sekva paĝo",
+      "previous_page": "Antaŭa paĝo",
+      "reader_navigation": "Navigado de Legilo",
+      "right_to_left": "Dedekstre Maldekstren",
+      "settings": "Agordoj",
+      "show_hide_help": "Montri/kaŝi helpon",
+      "show_hide_toolbars": "Montri/kaŝi ilobretojn",
+      "vertical": "Vertikala",
+      "webtoon": "Retkomikso"
+    }
+  },
+  "browse_book": {
+    "comment": "KOMENTO",
+    "download_file": "Elŝuti dosieron",
+    "file": "DOSIERO",
+    "format": "FORMO",
+    "isbn": "ISBN",
+    "read_book": "Legi libron",
+    "size": "GRANDO"
+  },
+  "browse_collection": {
+    "edit_collection": "Redakti kolekton",
+    "edit_elements": "Redakti elementojn"
+  },
+  "browse_readlist": {
+    "edit_elements": "Redakti elementojn",
+    "edit_readlist": "Redakti legoliston"
+  },
+  "browse_series": {
+    "summary_from_book": "Resumo el libro {number}:"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "Mastrumi kolekton",
+    "title": "Kolekto {name}"
+  },
+  "common": {
+    "all_libraries": "Ĉiuj Bibliotekoj",
+    "books": "Libroj",
+    "books_n": "Neniuj libroj | 1 libro | {count} libroj",
+    "cancel": "Nuligi",
+    "close": "Fermi",
+    "collections": "Kolektoj",
+    "create": "Krei",
+    "delete": "Forigi",
+    "download": "Elŝuti",
+    "email": "Retpoŝta adreso",
+    "genre": "Ĝenro",
+    "go_to_library": "Iri al biblioteko",
+    "locale_name": "Esperanto",
+    "locale_rtl": "false",
+    "n_selected": "{count} elektiĝis",
+    "pages": "paĝoj",
+    "pages_n": "Neniuj paĝoj | 1 paĝo | {count} paĝoj",
+    "password": "Pasvorto",
+    "publisher": "Eldonejo",
+    "read": "Legi",
+    "readlists": "Legolistoj",
+    "required": "Deviga",
+    "roles": "Roloj",
+    "series": "Serio",
+    "tags": "Etikedoj",
+    "year": "jaro"
+  },
+  "data_import": {
+    "book_number": "Numero de libro: {name}",
+    "book_series": "Serio: {name}",
+    "button_import": "Enporti",
+    "field_files_label": "Legolistoj ComicRack (.cbl)",
+    "import_read_lists": "Enporti Legolistojn",
+    "imported_as": "Enportita kiel {name}",
+    "tab_title": "Enportado de Datenoj"
+  },
+  "dialog": {
+    "add_to_collection": {
+      "button_create": "Krei",
+      "card_collection_subtitle": "Neniuj serioj | 1 serio | {count} serioj",
+      "dialog_title": "Aldoni en kolekton",
+      "field_search_create": "Serĉi aŭ krei kolekton"
+    },
+    "add_to_readlist": {
+      "button_create": "Krei",
+      "card_readlist_subtitle": "Neniuj libroj | 1 libro | {count} libroj",
+      "dialog_title": "Aldoni en legoliston",
+      "field_search_create": "Serĉi aŭ krei legoliston"
+    },
+    "add_user": {
+      "button_cancel": "Nuligi",
+      "button_confirm": "Aldoni",
+      "dialog_title": "Aldoni Uzanton",
+      "field_email": "Retpoŝta adreso",
+      "field_email_error": "Devas esti valida retpoŝta adreso",
+      "field_password": "Pasvorto",
+      "field_role_administrator": "Administranto",
+      "label_roles": "Roloj"
+    },
+    "delete_collection": {
+      "button_cancel": "Nuligi",
+      "button_confirm": "Forigi",
+      "confirm_delete": "Jes, forigu la kolekton \"{name}\"",
+      "dialog_title": "Forigi Kolekton"
+    },
+    "delete_library": {
+      "button_cancel": "Nuligi",
+      "button_confirm": "Forigi",
+      "confirm_delete": "Jes, forigu la bibliotekon \"{name}\"",
+      "title": "Forigi Bibliotekon"
+    },
+    "delete_readlist": {
+      "button_cancel": "Nuligi",
+      "button_confirm": "Forigi",
+      "confirm_delete": "Jes, forigu la legoliston \"{name}\"",
+      "dialog_title": "Forigi Legoliston"
+    },
+    "delete_user": {
+      "button_cancel": "Nuligi",
+      "button_confirm": "Forigi",
+      "confirm_delete": "Jes, forigu la uzanton \"{name}\"",
+      "dialog_title": "Forigi Uzanton"
+    },
+    "edit_books": {
+      "button_cancel": "Nuligi",
+      "button_confirm": "Konservi ŝanĝojn",
+      "dialog_title_multiple": "Redakti {count} libron | Redakti {count} librojn",
+      "dialog_title_single": "Redakti libron {book}",
+      "field_isbn": "ISBN",
+      "field_isbn_error": "Devas esti valida ISBN-13",
+      "field_number": "Numero",
+      "field_number_sort": "Ordiga Numero",
+      "field_release_date": "Dato de Eldono",
+      "field_release_date_error": "Devas esti valida dato de la aranĝo JJJJ-MM-TT",
+      "field_summary": "Resumo",
+      "field_tags": "Etikedoj",
+      "field_title": "Titolo",
+      "tab_authors": "Aŭtoroj",
+      "tab_general": "Ĝenerala",
+      "tab_tags": "Etikedoj"
+    },
+    "edit_collection": {
+      "button_cancel": "Nuligi",
+      "button_confirm": "Konservi ŝanĝojn",
+      "dialog_title": "Redakti kolekton",
+      "field_manual_ordering": "Mana ordigo"
+    },
+    "edit_library": {
+      "button_browse": "Foliumi",
+      "button_cancel": "Nuligi",
+      "button_confirm_add": "Aldoni",
+      "button_confirm_edit": "Redakti",
+      "dialog_title_add": "Aldoni Bibliotekon",
+      "dialot_title_edit": "Redakti Bibliotekon",
+      "field_import_barcode_isbn": "Strikodo de ISBN",
+      "field_import_comicinfo_book": "Metadatenoj pri libro",
+      "field_import_comicinfo_collections": "Kolektoj",
+      "field_import_comicinfo_readlists": "Legolistoj",
+      "field_import_comicinfo_series": "Metadatenoj pri serio",
+      "field_import_epub_book": "Metadatenoj pri libro",
+      "field_import_epub_series": "Metadatenoj pri serio",
+      "field_import_local_artwork": "Lokaj bildoj",
+      "field_name": "Nomo",
+      "field_root_folder": "Radika dosierujo",
+      "field_scanner_deep_scan": "Profunde skani",
+      "file_browser_dialog_button_confirm": "Elekti",
+      "label_import_barcode_isbn": "Enporti ISBN el strikodo",
+      "label_scanner": "Skanilo",
+      "tab_general": "Ĝenerala",
+      "tab_options": "Opcioj"
+    },
+    "edit_readlist": {
+      "button_cancel": "Nuligi",
+      "button_confirm": "Konservi ŝanĝojn",
+      "dialog_title": "Redakti legoliston",
+      "field_name": "Nomo"
+    },
+    "edit_series": {
+      "button_cancel": "Nuligi",
+      "button_confirm": "Konservi ŝanĝojn",
+      "dialog_title_multiple": "Redakti {count} serion | Redakti {count} seriojn",
+      "dialog_title_single": "Redakti serion {series}",
+      "field_genres": "Ĝenroj",
+      "field_language": "Lingvo",
+      "field_publisher": "Eldonejo",
+      "field_sort_title": "Titolo por Ordigo",
+      "field_status": "Stato",
+      "field_summary": "Resumo",
+      "field_tags": "Etikedoj",
+      "field_title": "Titolo",
+      "mixed": "MIKSITA",
+      "tab_general": "Ĝenerala",
+      "tab_tags": "Etikedoj"
+    },
+    "edit_user": {
+      "button_cancel": "Nuligi",
+      "button_confirm": "Konservi ŝanĝojn",
+      "dialog_title": "Redakti uzanton",
+      "label_roles_for": "Roloj de {name}"
+    },
+    "edit_user_shared_libraries": {
+      "button_cancel": "Nuligi",
+      "button_confirm": "Konservi ŝanĝojn",
+      "dialog_title": "Redakti komunajn bibliotekojn",
+      "field_all_libraries": "Ĉiuj bibliotekoj",
+      "label_shared_with": "Komuna kun {name}"
+    },
+    "file_browser": {
+      "button_cancel": "Nuligi",
+      "button_confirm_default": "Elekti",
+      "dialog_title_default": "Dosieradministrilo",
+      "parent_directory": "Patro"
+    },
+    "password_change": {
+      "button_cancel": "Nuligi",
+      "button_confirm": "Ŝanĝi pasvorton",
+      "dialog_title": "Ŝanĝi pasvorton",
+      "field_new_password": "Nova pasvorto",
+      "field_repeat_password": "Ripetu novan pasvorton"
+    },
+    "server_stop": {
+      "button_cancel": "Nuligi"
+    },
+    "shortcut_help": {
+      "label_description": "Priskribo",
+      "label_key": "Ŝlosilo"
+    }
+  },
+  "enums": {
+    "media_status": {
+      "ERROR": "Eraro"
+    },
+    "reading_direction": {
+      "VERTICAL": "Vertikala",
+      "WEBTOON": "Retkomikso"
+    }
+  },
+  "filter": {
+    "age_rating_none": "Nenio",
+    "genre": "ĝenro",
+    "language": "lingvo",
+    "library": "biblioteko",
+    "publisher": "eldonejo",
+    "release_date": "dato de eldono",
+    "status": "stato",
+    "tag": "etikedo"
+  },
+  "filter_drawer": {
+    "filter": "filtri",
+    "sort": "ordigi"
+  },
+  "home": {
+    "theme": "Etoso",
+    "translation": "Traduko"
+  },
+  "library_navigation": {
+    "browse": "Foliumi",
+    "collections": "Kolektoj",
+    "readlists": "Legolistoj"
+  },
+  "login": {
+    "create_user_account": "Krei konton de uzanto",
+    "login": "Saluti"
+  },
+  "media_analysis": {
+    "comment": "Komento",
+    "name": "Nomo",
+    "size": "Grando",
+    "status": "Stato",
+    "url": "Reta adreso"
+  },
+  "menu": {
+    "add_to_collection": "Aldoni en kolekton",
+    "add_to_readlist": "Aldoni en legoliston",
+    "analyze": "Analizi",
+    "delete": "Forigi",
+    "download_series": "Elŝuti serion",
+    "edit": "Redakti",
+    "edit_metadata": "Redakti metadatenojn",
+    "mark_read": "Marki kiel legitan",
+    "mark_unread": "Marki kiel ne legitan",
+    "refresh_metadata": "Reŝargi metadatenojn",
+    "scan_library_files": "Skani bibliotekajn dosierojn"
+  },
+  "navigation": {
+    "home": "Hejmo",
+    "libraries": "Bibliotekoj",
+    "logout": "Adiaŭi"
+  },
+  "page_not_found": {
+    "go_back_to_home_page": "Hejmen",
+    "page_does_not_exist": "La serĉata paĝo ne ekzistas.",
+    "page_not_found": "La paĝo ne troviĝis"
+  },
+  "readlists_expansion_panel": {
+    "manage_readlist": "Mastrumi legoliston",
+    "title": "Legolisto {name}"
+  },
+  "search": {
+    "search": "Serĉi",
+    "search_results_for": "Serĉi \"{name}\" en rezultoj"
+  },
+  "searchbox": {
+    "no_results": "Neniuj rezultoj",
+    "search_all": "Serĉi ĉion…"
+  },
+  "server": {
+    "server_management": {
+      "section_title": "Administrado de Servilo"
+    },
+    "tab_title": "Servilo"
+  },
+  "server_settings": {
+    "server_settings": "Agordoj pri Servilo"
+  },
+  "settings_user": {
+    "edit_shared_libraries": "Redakti komunajn bibliotekojn",
+    "edit_user": "Redakti uzanton",
+    "role_administrator": "Administranto",
+    "role_user": "Uzanto"
+  },
+  "sort": {
+    "books_count": "Nombro de libroj",
+    "date_added": "Dato de aldono",
+    "date_updated": "Dato de ĝisdatigo",
+    "file_name": "Nomo de dosiero",
+    "file_size": "Grando de dosiero",
+    "folder_name": "Nomo de dosierujo",
+    "name": "Nomo",
+    "number": "Numero",
+    "release_date": "Dato de eldono"
+  },
+  "theme": {
+    "dark": "Malhela",
+    "light": "Hela",
+    "system": "Sistema"
+  },
+  "user_roles": {
+    "ADMIN": "Administranto",
+    "USER": "Uzanto"
+  },
+  "users": {
+    "users": "Uzantoj"
+  },
+  "welcome": {
+    "add_library": "Aldoni bibliotekon",
+    "welcome_message": "Bonvenon al Komga"
+  }
+}
