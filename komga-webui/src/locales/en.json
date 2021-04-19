@@ -353,6 +353,44 @@
     "shortcut_help": {
       "label_description": "Description",
       "label_key": "Key"
+    },
+    "series_picker": {
+      "title": "Select Series",
+      "label_search_series": "Search Series"
+    },
+    "filename_chooser": {
+      "title": "Destination File Name",
+      "label_source_filename": "Source File Name",
+      "field_destination_filename": "Destination file name",
+      "button_choose": "Choose",
+      "table": {
+        "order": "Order",
+        "existing_file": "Existing File"
+      }
+    },
+    "transient_book_details": {
+      "title": "Book Details",
+      "title_comparison": "Book Comparison",
+      "label_candidate": "Candidate",
+      "label_existing": "Existing",
+      "label_name": "Name",
+      "label_size": "Size",
+      "label_format": "Format",
+      "label_pages": "Pages",
+      "pages_table": {
+        "index": "Index",
+        "filename": "File name",
+        "media_type": "Media type",
+        "width": "Width",
+        "height": "Height"
+      }
+    },
+    "transient_book_viewer": {
+      "title": "Inspect Book",
+      "title_comparison": "Book Comparison",
+      "label_candidate": "Candidate",
+      "label_existing": "Existing",
+      "page_of_pages": "{page} / {pages}"
     }
   },
   "enums": {
@@ -374,6 +412,10 @@
       "ENDED": "Ended",
       "HIATUS": "Hiatus",
       "ONGOING": "Ongoing"
+    },
+    "copy_mode": {
+      "HARDLINK": "Hardlink/Copy Files",
+      "MOVE": "Move Files"
     }
   },
   "error_codes": {
@@ -519,5 +561,25 @@
     "add_library": "Add library",
     "no_libraries_yet": "No libraries have been added yet!",
     "welcome_message": "Welcome to Komga"
+  },
+  "book_import": {
+    "title": "Import",
+    "field_import_path": "Import from folder",
+    "button_browse": "Browse",
+    "button_scan": "Scan",
+    "table": {
+      "file_name": "File name",
+      "series": "Series",
+      "number": "Number",
+      "destination_name": "Destination name"
+    },
+    "button_select_series": "Select Series",
+    "button_import": "Import",
+    "row": {
+      "warning_upgrade": "Existing book will be upgraded",
+      "error_analyze_first": "Book needs to be analyzed first",
+      "error_only_import_no_errors": "Can only import books without errors",
+      "error_choose_series": "Choose a series"
+    }
   }
 }

@@ -1,4 +1,5 @@
 import {Context} from '@/types/context'
+import {CopyMode} from "@/types/enum-books";
 
 export interface BookDto {
   id: string,
@@ -102,4 +103,16 @@ export interface ReadProgressUpdateDto {
 export interface BookFormat {
   type: string,
   color: string
+}
+
+export interface BookImportBatchDto{
+  books: BookImportDto[],
+  copyMode: CopyMode,
+}
+
+export interface BookImportDto {
+  sourceFile: string,
+  seriesId: string,
+  upgradeBookId?: string,
+  destinationName?: string,
 }
