@@ -8,10 +8,9 @@ import com.google.zxing.RGBLuminanceSource
 import com.google.zxing.common.HybridBinarizer
 import mu.KotlinLogging
 import org.apache.commons.validator.routines.ISBNValidator
-import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatch
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
-import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
 import org.springframework.stereotype.Service
@@ -37,8 +36,8 @@ class IsbnBarcodeProvider(
   override fun getCapabilities(): List<BookMetadataPatchCapability> =
     listOf(BookMetadataPatchCapability.ISBN)
 
-  override fun getBookMetadataFromBook(book: Book, media: Media): BookMetadataPatch? {
-    val pagesToTry = (1..media.pages.size).toList().let {
+  override fun getBookMetadataFromBook(book: BookWithMedia): BookMetadataPatch? {
+    val pagesToTry = (1..book.media.pages.size).toList().let {
       (it.takeLast(PAGES_LAST).reversed() + it.take(PAGES_FIRST)).distinct()
     }
 

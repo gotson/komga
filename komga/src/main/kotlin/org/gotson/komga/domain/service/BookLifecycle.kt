@@ -3,6 +3,7 @@ package org.gotson.komga.domain.service
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookPageContent
+import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.ImageConversionException
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Media
@@ -63,7 +64,7 @@ class BookLifecycle(
   fun generateThumbnailAndPersist(book: Book) {
     logger.info { "Generate thumbnail and persist for book: $book" }
     try {
-      addThumbnailForBook(bookAnalyzer.generateThumbnail(book))
+      addThumbnailForBook(bookAnalyzer.generateThumbnail(BookWithMedia(book, mediaRepository.findById(book.id))))
     } catch (ex: Exception) {
       logger.error(ex) { "Error while creating thumbnail" }
     }
@@ -155,7 +156,7 @@ class BookLifecycle(
   )
   fun getBookPage(book: Book, number: Int, convertTo: ImageType? = null, resizeTo: Int? = null): BookPageContent {
     val media = mediaRepository.findById(book.id)
-    val pageContent = bookAnalyzer.getPageContent(book, number)
+    val pageContent = bookAnalyzer.getPageContent(BookWithMedia(book, mediaRepository.findById(book.id)), number)
     val pageMediaType = media.pages[number - 1].mediaType
 
     if (resizeTo != null) {
