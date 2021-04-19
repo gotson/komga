@@ -1,3 +1,18 @@
+# [0.87.0](https://github.com/gotson/komga/compare/v0.86.0...v0.87.0) (2021-04-19)
+
+
+### Bug Fixes
+
+* translated using Weblate (Esperanto) ([#506](https://github.com/gotson/komga/issues/506)) ([248f474](https://github.com/gotson/komga/commit/248f47458cb82d777e0f5823ddbe044ca76092c7))
+
+
+### Features
+
+* **api:** import books ([d41dcef](https://github.com/gotson/komga/commit/d41dcefd3efd4f9844d5b3b1d336a246c320a1ec))
+* **api:** support for transient books ([02b0893](https://github.com/gotson/komga/commit/02b08932babd27b5b309b3038279885ac65d0821))
+* **webui:** import books ([13b304d](https://github.com/gotson/komga/commit/13b304dd147f3102345c2edb85d41f87ccae1871))
+* added translation using Weblate (Esperanto, Polish) ([f3cc6f6](https://github.com/gotson/komga/commit/f3cc6f6e916862741cd7ff3aafa98a4c587653c6))
+
 # [0.86.0](https://github.com/gotson/komga/compare/v0.85.1...v0.86.0) (2021-04-07)
 
 
