@@ -1,6 +1,7 @@
 package org.gotson.komga.application.tasks
 
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
+import org.gotson.komga.domain.model.CopyMode
 import java.io.Serializable
 
 sealed class Task : Serializable {
@@ -28,5 +29,9 @@ sealed class Task : Serializable {
 
   data class AggregateSeriesMetadata(val seriesId: String) : Task() {
     override fun uniqueId() = "AGGREGATE_SERIES_METADATA_$seriesId"
+  }
+
+  data class ImportBook(val sourceFile: String, val seriesId: String, val copyMode: CopyMode, val destinationName: String?, val upgradeBookId: String?) : Task() {
+    override fun uniqueId(): String = "IMPORT_BOOK_${seriesId}_$sourceFile"
   }
 }

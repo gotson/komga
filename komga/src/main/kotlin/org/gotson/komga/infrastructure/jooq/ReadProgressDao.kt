@@ -33,6 +33,12 @@ class ReadProgressDao(
       .fetchInto(r)
       .map { it.toDomain() }
 
+  override fun findByBookId(bookId: String): Collection<ReadProgress> =
+    dsl.selectFrom(r)
+      .where(r.BOOK_ID.eq(bookId))
+      .fetchInto(r)
+      .map { it.toDomain() }
+
   override fun save(readProgress: ReadProgress) {
     dsl.insertInto(r, r.BOOK_ID, r.USER_ID, r.PAGE, r.COMPLETED)
       .values(readProgress.bookId, readProgress.userId, readProgress.page, readProgress.completed)

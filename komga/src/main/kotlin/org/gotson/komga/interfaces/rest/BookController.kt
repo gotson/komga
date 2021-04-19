@@ -31,6 +31,7 @@ import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.infrastructure.web.getMediaTypeOrDefault
 import org.gotson.komga.infrastructure.web.setCachePrivate
 import org.gotson.komga.interfaces.rest.dto.BookDto
+import org.gotson.komga.interfaces.rest.dto.BookImportBatchDto
 import org.gotson.komga.interfaces.rest.dto.BookMetadataUpdateDto
 import org.gotson.komga.interfaces.rest.dto.PageDto
 import org.gotson.komga.interfaces.rest.dto.ReadListDto
@@ -497,6 +498,27 @@ class BookController(
 
       bookLifecycle.deleteReadProgress(book.id, principal.user)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @PostMapping("api/v1/books/import")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun importBooks(
+    @RequestBody bookImportBatch: BookImportBatchDto,
+  ) {
+    bookImportBatch.books.forEach {
+      try {
+        taskReceiver.importBook(
+          sourceFile = it.sourceFile,
+          seriesId = it.seriesId,
+          copyMode = bookImportBatch.copyMode,
+          destinationName = it.destinationName,
+          upgradeBookId = it.upgradeBookId,
+        )
+      } catch (e: Exception) {
+        logger.error(e) { "Error while creating import task for: $it" }
+      }
+    }
   }
 
   private fun ResponseEntity.BodyBuilder.setNotModified(media: Media) =

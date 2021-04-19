@@ -6,6 +6,7 @@ interface ReadProgressRepository {
   fun findAll(): Collection<ReadProgress>
   fun findByBookIdAndUserId(bookId: String, userId: String): ReadProgress?
   fun findByUserId(userId: String): Collection<ReadProgress>
+  fun findByBookId(bookId: String): Collection<ReadProgress>
 
   fun save(readProgress: ReadProgress)
 
