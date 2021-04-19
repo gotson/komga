@@ -35,7 +35,7 @@ class BookLifecycleTest(
   @Autowired private val seriesLifecycle: SeriesLifecycle,
   @Autowired private val readProgressRepository: ReadProgressRepository,
   @Autowired private val mediaRepository: MediaRepository,
-  @Autowired private val userRepository: KomgaUserRepository
+  @Autowired private val userRepository: KomgaUserRepository,
 ) {
 
   @MockkBean
@@ -90,7 +90,7 @@ class BookLifecycleTest(
     assertThat(readProgressRepository.findAll()).hasSize(2)
 
     // when
-    every { mockAnalyzer.analyze(any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")))
+    every { mockAnalyzer.analyze(any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")), bookId = book.id)
     bookLifecycle.analyzeAndPersist(book)
 
     // then
@@ -123,7 +123,7 @@ class BookLifecycleTest(
     assertThat(readProgressRepository.findAll()).hasSize(2)
 
     // when
-    every { mockAnalyzer.analyze(any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = (1..10).map { BookPage("$it", "image/jpeg") })
+    every { mockAnalyzer.analyze(any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = (1..10).map { BookPage("$it", "image/jpeg") }, bookId = book.id)
     bookLifecycle.analyzeAndPersist(book)
 
     // then

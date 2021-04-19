@@ -12,6 +12,7 @@ import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.mediacontainer.MediaContainerExtractor
 import org.springframework.stereotype.Service
+import java.nio.file.AccessDeniedException
 
 private val logger = KotlinLogging.logger {}
 
@@ -31,20 +32,20 @@ class BookAnalyzer(
 
   fun analyze(book: Book): Media {
     logger.info { "Trying to analyze book: $book" }
+    try {
+      val mediaType = contentDetector.detectMediaType(book.path())
+      logger.info { "Detected media type: $mediaType" }
+      if (!supportedMediaTypes.containsKey(mediaType))
+        return Media(mediaType = mediaType, status = Media.Status.UNSUPPORTED, comment = "ERR_1001", bookId = book.id)
 
-    val mediaType = contentDetector.detectMediaType(book.path())
-    logger.info { "Detected media type: $mediaType" }
-    if (!supportedMediaTypes.containsKey(mediaType))
-      return Media(mediaType = mediaType, status = Media.Status.UNSUPPORTED, comment = "ERR_1001")
-
-    val entries = try {
-      supportedMediaTypes.getValue(mediaType).getEntries(book.path())
-    } catch (ex: MediaUnsupportedException) {
-      return Media(mediaType = mediaType, status = Media.Status.UNSUPPORTED, comment = ex.code)
-    } catch (ex: Exception) {
-      logger.error(ex) { "Error while analyzing book: $book" }
-      return Media(mediaType = mediaType, status = Media.Status.ERROR, comment = "ERR_1008")
-    }
+      val entries = try {
+        supportedMediaTypes.getValue(mediaType).getEntries(book.path())
+      } catch (ex: MediaUnsupportedException) {
+        return Media(mediaType = mediaType, status = Media.Status.UNSUPPORTED, comment = ex.code, bookId = book.id)
+      } catch (ex: Exception) {
+        logger.error(ex) { "Error while analyzing book: $book" }
+        return Media(mediaType = mediaType, status = Media.Status.ERROR, comment = "ERR_1008", bookId = book.id)
+      }
 
       val (pages, others) = entries
         .partition { entry ->
@@ -62,15 +63,22 @@ class BookAnalyzer(
         .ifEmpty { null }
         ?.joinToString(prefix = "ERR_1007 [", postfix = "]") { it }
 
-    if (pages.isEmpty()) {
-      logger.warn { "Book $book does not contain any pages" }
-      return Media(mediaType = mediaType, status = Media.Status.ERROR, comment = "ERR_1006")
-    }
-    logger.info { "Book has ${pages.size} pages" }
+      if (pages.isEmpty()) {
+        logger.warn { "Book $book does not contain any pages" }
+        return Media(mediaType = mediaType, status = Media.Status.ERROR, comment = "ERR_1006", bookId = book.id)
+      }
+      logger.info { "Book has ${pages.size} pages" }
 
       val files = others.map { it.name }
 
-    return Media(mediaType = mediaType, status = Media.Status.READY, pages = pages, files = files, comment = entriesErrorSummary)
+      return Media(mediaType = mediaType, status = Media.Status.READY, pages = pages, files = files, comment = entriesErrorSummary, bookId = book.id)
+    } catch (ade: AccessDeniedException) {
+      logger.error(ade) { "Error while analyzing book: $book" }
+      return Media(status = Media.Status.ERROR, comment = "ERR_1000", bookId = book.id)
+    } catch (ex: Exception) {
+      logger.error(ex) { "Error while analyzing book: $book" }
+      return Media(status = Media.Status.ERROR, comment = "ERR_1005", bookId = book.id)
+    }
   }
 
   @Throws(MediaNotReadyException::class)

@@ -200,7 +200,7 @@ class LibraryContentLifecycleTest(
       )
     libraryContentLifecycle.scanRootFolder(library)
 
-    every { mockAnalyzer.analyze(any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")))
+    every { mockAnalyzer.analyze(any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")), bookId = book1.id)
     bookRepository.findAll().map { bookLifecycle.analyzeAndPersist(it) }
 
     // when
@@ -236,7 +236,7 @@ class LibraryContentLifecycleTest(
       )
     libraryContentLifecycle.scanRootFolder(library)
 
-    every { mockAnalyzer.analyze(any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")))
+    every { mockAnalyzer.analyze(any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")), bookId = book1.id)
     bookRepository.findAll().map { bookLifecycle.analyzeAndPersist(it) }
 
     // when

@@ -20,7 +20,6 @@ import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
 import org.springframework.stereotype.Service
 import java.io.File
-import java.nio.file.AccessDeniedException
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -40,15 +39,7 @@ class BookLifecycle(
 
   fun analyzeAndPersist(book: Book): Boolean {
     logger.info { "Analyze and persist book: $book" }
-    val media = try {
-      bookAnalyzer.analyze(book)
-    } catch (ade: AccessDeniedException) {
-      logger.error(ade) { "Error while analyzing book: $book" }
-      Media(status = Media.Status.ERROR, comment = "ERR_1000")
-    } catch (ex: Exception) {
-      logger.error(ex) { "Error while analyzing book: $book" }
-      Media(status = Media.Status.ERROR, comment = "ERR_1005")
-    }.copy(bookId = book.id)
+    val media = bookAnalyzer.analyze(book)
 
     // if the number of pages has changed, delete all read progress for that book
     mediaRepository.findById(book.id).let { previous ->
