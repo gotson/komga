@@ -40,9 +40,9 @@
     "download_current_page": "Lataa tämänhetkinen sivu",
     "end_of_book": "Olet saavuttanut kirjan lopun.",
     "from_series_metadata": "sarjan metatiedoista",
-    "move_next": "Siirry seuraavaan kirjaan napsauttamalla tai painamalla \"Seuraava\" uudelleen.",
-    "move_next_exit": "Poistu lukijasta napsauttamalla tai painamalla \"Seuraava\" uudelleen.",
-    "move_previous": "Siirry edelliseen kirjaan napsauttamalla tai painamalla \"Edellinen\" uudelleen.",
+    "move_next": "Siirry seuraavaan kirjaan napsauttamalla tai painamalla ”Seuraava” uudelleen.",
+    "move_next_exit": "Poistu lukijasta napsauttamalla tai painamalla ”Seuraava” uudelleen.",
+    "move_previous": "Siirry edelliseen kirjaan napsauttamalla tai painamalla ”Edellinen” uudelleen.",
     "paged_reader_layout": {
       "double": "Kaksoissivut",
       "double_no_cover": "Kaksoissivut (ei kantta)",
@@ -207,28 +207,28 @@
     "delete_collection": {
       "button_cancel": "Peruuta",
       "button_confirm": "Poista",
-      "confirm_delete": "Kyllä, poista kokoelma \"{name}\"",
+      "confirm_delete": "Kyllä, poista kokoelma ”{name}”",
       "dialog_title": "Poista kokoelma",
       "warning_html": "Kokoelma <b>{name}</b> poistetaan. Tämä ei vaikuta mediatiedostoihisi. Tätä <b>ei voi</b> kumota. Jatka?"
     },
     "delete_library": {
       "button_cancel": "Peruuta",
       "button_confirm": "Poista",
-      "confirm_delete": "Kyllä, poista kirjasto \"{name}\"",
+      "confirm_delete": "Kyllä, poista kirjasto ”{name}”",
       "title": "Poista kirjasto",
       "warning_html": "Kirjasto <b>{name}</b> poistetaan palvelimelta. Tämä ei vaikuta mediatiedostoihisi. Tätä <b>ei voi</b> kumota. Jatka?"
     },
     "delete_readlist": {
       "button_cancel": "Peruuta",
       "button_confirm": "Poista",
-      "confirm_delete": "Kyllä, poista lukulista \"{name}\"",
+      "confirm_delete": "Kyllä, poista lukulista ”{name}”",
       "dialog_title": "Poista lukulista",
       "warning_html": "Lukulista <b>{name}</b> poistetaan palvelimelta. Tämä ei vaikuta mediatiedostoihisi. Tätä <b>ei voi</b> kumota. Jatka?"
     },
     "delete_user": {
       "button_cancel": "Peruuta",
       "button_confirm": "Poista",
-      "confirm_delete": "Kyllä, poista käyttäjä \"{name}\"",
+      "confirm_delete": "Kyllä, poista käyttäjä ”{name}”",
       "dialog_title": "Poista käyttäjä",
       "warning_html": "Käyttäjä <b>{name}</b> poistetaan palvelimelta. Tätä <b>ei voi</b> kumota. Jatka?"
     },
@@ -468,7 +468,7 @@
     "no_results": "Haku ei tuottanut yhtään tulosta",
     "search": "Etsi",
     "search_for_something_else": "Yritä etsiä jotain muuta",
-    "search_results_for": "Tulokset haulle \"{name}\""
+    "search_results_for": "Tulokset haulle ”{name}”"
   },
   "searchbox": {
     "no_results": "Ei tuloksia",

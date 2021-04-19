@@ -14,12 +14,12 @@
     "noDataText": "No hay datos disponibles"
   },
   "account_settings": {
-    "account_settings": "Configuración de Cuenta",
+    "account_settings": "Configuración de cuenta",
     "change_password": "cambiar contraseña"
   },
   "author_roles": {
     "colorist": "coloristas",
-    "cover": "portada",
+    "cover": "cubierta",
     "editor": "editores",
     "inker": "entintadores",
     "letterer": "letristas",
@@ -40,9 +40,9 @@
     "download_current_page": "Descargar página actual",
     "end_of_book": "Has llegado al final del libro.",
     "from_series_metadata": "desde metadatos de serie",
-    "move_next": "Haz click o presiona \"Siguiente\" de nuevo para moverte al siguiente libro.",
-    "move_next_exit": "Haz click o presiona \"Siguiente\" de nuevo para salir del lector.",
-    "move_previous": "Haz click o presiona \"Anterior\" de nuevo para moverte al libro anterior.",
+    "move_next": "Haz clic o presiona «Siguiente» de nuevo para moverte al siguiente libro.",
+    "move_next_exit": "Haz clic o presiona «Siguiente» de nuevo para salir del lector.",
+    "move_previous": "Haz clic o presiona «Anterior» de nuevo para moverte al libro anterior.",
     "paged_reader_layout": {
       "double": "Doble página",
       "double_no_cover": "Doble página (sin portada)",
@@ -58,7 +58,7 @@
       "width": "Ajustar a ancho"
     },
     "settings": {
-      "animate_page_transitions": "Animar transiciones de página",
+      "animate_page_transitions": "Animar las transiciones de página",
       "background_color": "Color de fondo",
       "background_colors": {
         "black": "Negro",
@@ -70,7 +70,7 @@
       "page_layout": "Disposición de página",
       "paged": "Opciones de Paginado",
       "reading_mode": "Modo de lectura",
-      "scale_type": "Escalado",
+      "scale_type": "Tipo de escalado",
       "side_padding": "Borde lateral",
       "side_padding_none": "Ninguno",
       "webtoon": "Opciones del Lector de Webtoon"
@@ -88,7 +88,7 @@
       "previous_page": "Página anterior",
       "reader_navigation": "Navegación en Lector",
       "right_to_left": "Derecha a Izquierda",
-      "settings": "Configuración",
+      "settings": "Ajustes",
       "show_hide_help": "Mostrar/ocultar ayuda",
       "show_hide_settings": "Mostrar/ocultar menú de configuración",
       "show_hide_thumbnails": "Mostrar/ocultar miniaturas",
@@ -135,7 +135,7 @@
     "create": "Crear",
     "delete": "Eliminar",
     "download": "Descargar",
-    "email": "Email",
+    "email": "Correo electrónico",
     "filter_no_matches": "El filtro activo no tiene coincidencias",
     "genre": "Género",
     "go_to_library": "Ir a la biblioteca",
@@ -195,9 +195,9 @@
     "add_user": {
       "button_cancel": "Cancelar",
       "button_confirm": "Agregar",
-      "dialog_title": "Agregar Usuario",
-      "field_email": "Email",
-      "field_email_error": "Debe ser una dirección de email válida",
+      "dialog_title": "Añadir usuario",
+      "field_email": "Correo electrónico",
+      "field_email_error": "Debe ser una dirección de correo electrónico válida",
       "field_password": "Contraseña",
       "field_role_administrator": "Administrador",
       "field_role_file_download": "Descarga de archivos",
@@ -207,29 +207,29 @@
     "delete_collection": {
       "button_cancel": "Cancelar",
       "button_confirm": "Eliminar",
-      "confirm_delete": "Sí, eliminar la colección \"{name}\"",
+      "confirm_delete": "Sí, eliminar la colección «{name}»",
       "dialog_title": "Eliminar Colección",
       "warning_html": "La colección <b>{name}</b> será removida de este servidor. Los archivos no serán eliminados. Esta acción <b>es irreversible</b> ¿Desea continuar?"
     },
     "delete_library": {
       "button_cancel": "Cancelar",
       "button_confirm": "Eliminar",
-      "confirm_delete": "Sí, eliminar la biblioteca \"{name}\"",
+      "confirm_delete": "Sí, eliminar la biblioteca «{name}»",
       "title": "Eliminar Biblioteca",
       "warning_html": "La biblioteca <b>{name}</b> será removida de este servidor. Los archivos no serán eliminados. Esta acción <b>es irreversible</b> ¿Desea continuar?"
     },
     "delete_readlist": {
       "button_cancel": "Cancelar",
       "button_confirm": "Eliminar",
-      "confirm_delete": "Sí, eliminar la lista de lectura \"{name}\"",
-      "dialog_title": "Eliminar Lista de Lectura",
+      "confirm_delete": "Sí, eliminar la lista de lectura «{name}»",
+      "dialog_title": "Eliminar Lista de lectura",
       "warning_html": "La lista de lectura <b>{name}</b> será removida de este servidor. Los archivos no serán eliminados. Esta acción <b>es irreversible</b> ¿Desea continuar?"
     },
     "delete_user": {
       "button_cancel": "Cancelar",
       "button_confirm": "Eliminar",
-      "confirm_delete": "Sí, eliminar el usuario \"{name}\"",
-      "dialog_title": "Eliminar Usuario",
+      "confirm_delete": "Sí, eliminar el usuario «{name}»",
+      "dialog_title": "Eliminar usuario",
       "warning_html": "El usuario <b>{name}</b> será removido de este servidor. Esta acción <b>es irreversible</b> ¿Desea continuar?"
     },
     "edit_books": {
@@ -276,7 +276,7 @@
       "field_import_epub_series": "Metadatos de serie",
       "field_import_local_artwork": "Portada local",
       "field_name": "Nombre",
-      "field_root_folder": "Directorio raíz",
+      "field_root_folder": "Carpeta raíz",
       "field_scanner_deep_scan": "Análisis en profundidad",
       "field_scanner_force_directory_modified_time": "Forzar hora de edición del directorio",
       "file_browser_dialog_button_confirm": "Elegir",
@@ -370,7 +370,7 @@
       "WEBTOON": "Webtoon"
     },
     "series_status": {
-      "ABANDONED": "Abandonada",
+      "ABANDONED": "Abandonado",
       "ENDED": "Finalizada",
       "HIATUS": "En hiato",
       "ONGOING": "En curso"
@@ -392,7 +392,7 @@
     "ERR_1012": "No existe coincidencia para la serie",
     "ERR_1013": "No existe una única coincidencia para el número de libro dentro de la serie",
     "ERR_1014": "No existe coincidencia para el número de libro dentro de la serie",
-    "ERR_1015": "Error al deserializar la Lista de Lectura ComicRack"
+    "ERR_1015": "Error al deserializar la Lista de lectura ComicRack"
   },
   "filter": {
     "age_rating": "edad mínima",
@@ -422,7 +422,7 @@
   "login": {
     "create_user_account": "Crear cuenta de usuario",
     "login": "Iniciar sesión",
-    "unclaimed_html": "Este servidor Komga no está activo aún, debes crear una cuenta de usuario para poder acceder a él.<br><br>Escoge un <strong>email</strong> y <strong>contraseña</strong>, y haz clic en <strong>Crear cuenta de usuario</strong>."
+    "unclaimed_html": "Este servidor Komga no está activo aún, debes crear una cuenta de usuario para poder acceder a él.<br><br>Escoge un <strong>correo eleactrónico</strong> y <strong>contraseña</strong>, y haz clic en <strong>Crear cuenta de usuario</strong>."
   },
   "media_analysis": {
     "comment": "Comentario",
@@ -468,7 +468,7 @@
     "no_results": "La búsqueda no arrojó resultados",
     "search": "Buscar",
     "search_for_something_else": "Intenta buscar otra cosa",
-    "search_results_for": "Resultados de búsqueda para \"{name}\""
+    "search_results_for": "Resultados de búsqueda para «{name}»"
   },
   "searchbox": {
     "no_results": "No hay resultados",
