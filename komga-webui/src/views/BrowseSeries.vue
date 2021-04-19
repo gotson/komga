@@ -6,8 +6,7 @@
              :title="$t('common.go_to_library')"
              :to="{name:'browse-libraries', params: {libraryId: series.libraryId }}"
       >
-        <v-icon v-if="$vuetify.rtl">mdi-arrow-right</v-icon>
-        <v-icon v-else>mdi-arrow-left</v-icon>
+        <rtl-icon icon="mdi-arrow-left" rtl="mdi-arrow-right"/>
       </v-btn>
 
       <series-actions-menu v-if="series"
@@ -389,6 +388,7 @@ import {groupAuthorsByRole} from "@/functions/authors";
 import ReadMore from "@/components/ReadMore.vue";
 import {authorRoles, authorRolesSeries} from "@/types/author-roles";
 import VueHorizontal from "vue-horizontal";
+import RtlIcon from "@/components/RtlIcon.vue";
 
 const tags = require('language-tags')
 
@@ -409,6 +409,7 @@ export default Vue.extend({
     SortList,
     ReadMore,
     VueHorizontal,
+    RtlIcon,
   },
   data: function () {
     return {

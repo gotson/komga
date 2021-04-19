@@ -7,14 +7,12 @@
       <v-btn icon
              :disabled="!canScrollBackward"
              @click="doScroll('backward')">
-        <v-icon v-if="$vuetify.rtl">mdi-chevron-right</v-icon>
-        <v-icon v-else>mdi-chevron-left</v-icon>
+        <rtl-icon icon="mdi-chevron-left" rtl="mdi-chevron-right"/>
       </v-btn>
       <v-btn icon
              :disabled="!canScrollForward"
              @click="doScroll('forward')">
-        <v-icon v-if="$vuetify.rtl">mdi-chevron-left</v-icon>
-        <v-icon v-else>mdi-chevron-right</v-icon>
+        <rtl-icon icon="mdi-chevron-right" rtl="mdi-chevron-left"/>
       </v-btn>
     </div>
 
@@ -31,9 +29,11 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import RtlIcon from "@/components/RtlIcon.vue";
 
 export default Vue.extend({
   name: 'HorizontalScroller',
+  components: {RtlIcon},
   data: function () {
     const uniqueId = this.$_.uniqueId()
     return {
@@ -65,7 +65,7 @@ export default Vue.extend({
         let increment = (this.container.clientWidth - this.adjustment)
         let scrollLeft = Math.round(this.container.scrollLeft)
         let target
-        if (this.$vuetify.rtl){
+        if (this.$vuetify.rtl) {
           if (direction === 'backward')
             target = scrollLeft + increment
           else

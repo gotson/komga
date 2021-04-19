@@ -29,8 +29,7 @@
         :disabled="$_.isEmpty(siblingPrevious)"
         :to="{ name: 'browse-book', params: { bookId: previousId }, query: { context: context.origin, contextId: context.id}  }"
       >
-        <v-icon v-if="$vuetify.rtl">mdi-chevron-right</v-icon>
-        <v-icon v-else>mdi-chevron-left</v-icon>
+        <rtl-icon icon="mdi-chevron-left" rtl="mdi-chevron-right"/>
       </v-btn>
 
       <!--   List of all books in context (series/readlist) for navigation   -->
@@ -67,8 +66,7 @@
         :disabled="$_.isEmpty(siblingNext)"
         :to="{ name: 'browse-book', params: { bookId: nextId }, query: { context: context.origin, contextId: context.id}  }"
       >
-        <v-icon v-if="$vuetify.rtl">mdi-chevron-left</v-icon>
-        <v-icon v-else>mdi-chevron-right</v-icon>
+        <rtl-icon icon="mdi-chevron-right" rtl="mdi-chevron-left"/>
       </v-btn>
     </toolbar-sticky>
 
@@ -104,7 +102,9 @@
               {{ book.metadata.number }} · {{ book.media.pagesCount }} {{ $t('common.pages') }}
             </v-col>
             <v-col cols="auto" v-if="book.metadata.releaseDate">
-              {{ new Intl.DateTimeFormat($i18n.locale, { dateStyle: 'long' }).format(new Date(book.metadata.releaseDate)) }}
+              {{
+                new Intl.DateTimeFormat($i18n.locale, {dateStyle: 'long'}).format(new Date(book.metadata.releaseDate))
+              }}
             </v-col>
           </v-row>
 
@@ -295,10 +295,11 @@ import ReadMore from "@/components/ReadMore.vue";
 import VueHorizontal from "vue-horizontal";
 import {authorRoles} from "@/types/author-roles";
 import {convertErrorCodes} from "@/functions/error-codes";
+import RtlIcon from "@/components/RtlIcon.vue";
 
 export default Vue.extend({
   name: 'BrowseBook',
-  components: {ReadMore, ToolbarSticky, ItemCard, BookActionsMenu, ReadListsExpansionPanels, VueHorizontal},
+  components: {ReadMore, ToolbarSticky, ItemCard, BookActionsMenu, ReadListsExpansionPanels, VueHorizontal, RtlIcon},
   data: () => {
     return {
       authorRoles,
