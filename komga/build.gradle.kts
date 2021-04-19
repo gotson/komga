@@ -83,6 +83,8 @@ dependencies {
 
   implementation("com.github.f4b6a3:tsid-creator:3.0.1")
 
+  implementation("com.github.ben-manes.caffeine:caffeine:2.9.0")
+
 //  While waiting for https://github.com/xerial/sqlite-jdbc/pull/491 and https://github.com/xerial/sqlite-jdbc/pull/494
 //  runtimeOnly("org.xerial:sqlite-jdbc:3.32.3.2")
 //  jooqGenerator("org.xerial:sqlite-jdbc:3.32.3.2")
@@ -107,7 +109,11 @@ tasks {
   withType<KotlinCompile> {
     kotlinOptions {
       jvmTarget = "1.8"
-      freeCompilerArgs = listOf("-Xjsr305=strict", "-Xopt-in=kotlin.time.ExperimentalTime")
+      freeCompilerArgs = listOf(
+        "-Xjsr305=strict",
+        "-Xopt-in=kotlin.time.ExperimentalTime",
+        "-Xopt-in=kotlin.io.path.ExperimentalPathApi"
+      )
     }
   }
 

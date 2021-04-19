@@ -28,6 +28,7 @@ import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
+import org.gotson.komga.infrastructure.web.getMediaTypeOrDefault
 import org.gotson.komga.infrastructure.web.setCachePrivate
 import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.BookMetadataUpdateDto
@@ -503,14 +504,4 @@ class BookController(
 
   private fun getBookLastModified(media: Media) =
     media.lastModifiedDate.toInstant(ZoneOffset.UTC).toEpochMilli()
-
-  private fun getMediaTypeOrDefault(mediaTypeString: String?): MediaType {
-    mediaTypeString?.let {
-      try {
-        return MediaType.parseMediaType(mediaTypeString)
-      } catch (ex: Exception) {
-      }
-    }
-    return MediaType.APPLICATION_OCTET_STREAM
-  }
 }
