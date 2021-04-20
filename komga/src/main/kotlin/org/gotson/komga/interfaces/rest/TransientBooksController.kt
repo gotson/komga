@@ -3,7 +3,7 @@ package org.gotson.komga.interfaces.rest
 import com.jakewharton.byteunits.BinaryByteUnit
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.BookWithMedia
-import org.gotson.komga.domain.model.DirectoryNotFoundException
+import org.gotson.komga.domain.model.CodedException
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.persistence.TransientBookRepository
@@ -43,7 +43,7 @@ class TransientBooksController(
       transientBookLifecycle.scanAndPersist(request.path)
         .sortedBy { it.book.path() }
         .map { it.toDto() }
-    } catch (e: DirectoryNotFoundException) {
+    } catch (e: CodedException) {
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.code)
     }
 

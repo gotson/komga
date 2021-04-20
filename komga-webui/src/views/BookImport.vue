@@ -84,6 +84,19 @@
       </v-row>
     </template>
 
+    <v-snackbar
+      v-model="snackbar"
+      bottom
+      color="error"
+    >
+      {{ snackText }}
+      <v-btn
+        text
+        @click="snackbar = false"
+      >{{ $t('common.close') }}
+      </v-btn>
+    </v-snackbar>
+
   </v-container>
 </template>
 
@@ -96,6 +109,7 @@ import SeriesPickerDialog from "@/components/dialogs/SeriesPickerDialog.vue";
 import {SeriesDto} from "@/types/komga-series";
 import {BookImportBatchDto, BookImportDto} from "@/types/komga-books";
 import {CopyMode} from "@/types/enum-books";
+import {convertErrorCodes} from "@/functions/error-codes";
 
 export default Vue.extend({
   name: 'BookImport',
@@ -110,6 +124,8 @@ export default Vue.extend({
     transientBooks: [] as TransientBookDto[],
     copyMode: CopyMode.HARDLINK,
     importFinished: false,
+    snackbar: false,
+    snackText: '',
   }),
   computed: {
     globalSelect: {
@@ -146,7 +162,11 @@ export default Vue.extend({
   methods: {
     async scanBooks() {
       this.transientBooks = []
-      this.transientBooks = await this.$komgaTransientBooks.scanForTransientBooks(this.importPath)
+      try {
+        this.transientBooks = await this.$komgaTransientBooks.scanForTransientBooks(this.importPath)
+      } catch (e) {
+        this.showSnack(convertErrorCodes(e.message))
+      }
       this.selected = this.$_.range(this.transientBooks.length)
       this.payloads = this.payloads.splice(this.transientBooks.length, this.payloads.length)
       this.importFinished = false
@@ -156,6 +176,10 @@ export default Vue.extend({
         this.$komgaBooks.importBooks(this.payloadBatch)
         this.importFinished = true
       }
+    },
+    showSnack(message: string) {
+      this.snackText = message
+      this.snackbar = true
     },
   },
 })
