@@ -31,6 +31,26 @@
     "unknown": "Analizota",
     "unsupported": "Ne subtenata"
   },
+  "book_import": {
+    "button_browse": "Foliumi",
+    "button_import": "Enporti",
+    "button_scan": "Skani",
+    "button_select_series": "Elekti Serion",
+    "field_import_path": "Enporti el dosierujo",
+    "row": {
+      "error_analyze_first": "Libro devas esti analizita antaŭe",
+      "error_choose_series": "Elekti serion",
+      "error_only_import_no_errors": "Nur libroj sen eraro estas enporteblaj",
+      "warning_upgrade": "Ekzistanta libro estas ĝisdatigota"
+    },
+    "table": {
+      "destination_name": "Nomo de celo",
+      "file_name": "Nomo de dosiero",
+      "number": "Numero",
+      "series": "Serio"
+    },
+    "title": "Enporti"
+  },
   "bookreader": {
     "beginning_of_book": "Vi estas ĉe la komenco de la libro.",
     "changing_reading_direction": "Ŝanĝante Direkton de Legado al",
@@ -335,6 +355,16 @@
       "dialog_title_default": "Dosieradministrilo",
       "parent_directory": "Patro"
     },
+    "filename_chooser": {
+      "button_choose": "Elekti",
+      "field_destination_filename": "Cela dosiernomo",
+      "label_source_filename": "Fonta Dosiernomo",
+      "table": {
+        "existing_file": "Ekzistanta Dosiero",
+        "order": "Ordo"
+      },
+      "title": "Cela Dosiernomo"
+    },
     "password_change": {
       "button_cancel": "Nuligi",
       "button_confirm": "Ŝanĝi pasvorton",
@@ -343,6 +373,10 @@
       "field_new_password_error": "Nova pasvorto estas deviga.",
       "field_repeat_password": "Ripetu novan pasvorton",
       "field_repeat_password_error": "Pasvortoj devas esti identaj."
+    },
+    "series_picker": {
+      "label_search_series": "Serĉi Serion",
+      "title": "Elekti Serion"
     },
     "server_stop": {
       "button_cancel": "Nuligi",
@@ -353,9 +387,37 @@
     "shortcut_help": {
       "label_description": "Priskribo",
       "label_key": "Ŝlosilo"
+    },
+    "transient_book_details": {
+      "label_candidate": "Kandidato",
+      "label_existing": "Ekzistanta",
+      "label_format": "Formo",
+      "label_name": "Nomo",
+      "label_pages": "Paĝoj",
+      "label_size": "Grando",
+      "pages_table": {
+        "filename": "Nomo de dosiero",
+        "height": "Alto",
+        "index": "Indekso",
+        "media_type": "Tipo",
+        "width": "Larĝo"
+      },
+      "title": "Detaloj pri Libro",
+      "title_comparison": "Komparo inter Libroj"
+    },
+    "transient_book_viewer": {
+      "label_candidate": "Kandidato",
+      "label_existing": "Ekzistanta",
+      "page_of_pages": "{page} el {pages}",
+      "title": "Inspekti Libron",
+      "title_comparison": "Komparo inter Libroj"
     }
   },
   "enums": {
+    "copy_mode": {
+      "HARDLINK": "Rekte Ligi/Kopii Dosierojn",
+      "MOVE": "Movi Dosierojn"
+    },
     "media_status": {
       "ERROR": "Eraro",
       "OUTDATED": "Ne ĝisdata",

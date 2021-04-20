@@ -31,6 +31,26 @@
     "unknown": "Ska analyseras",
     "unsupported": "Stödjs inte"
   },
+  "book_import": {
+    "button_browse": "Bläddra",
+    "button_import": "Importera",
+    "button_scan": "Skanna",
+    "button_select_series": "Välj serie",
+    "field_import_path": "Importera från mapp",
+    "row": {
+      "error_analyze_first": "Boken måste analyseras först",
+      "error_choose_series": "Välj en serie",
+      "error_only_import_no_errors": "Kan bara importera böcker utan fel",
+      "warning_upgrade": "Befintlig bok kommer att uppgraderas"
+    },
+    "table": {
+      "destination_name": "Målnamn",
+      "file_name": "Filnamn",
+      "number": "Nummer",
+      "series": "Serie"
+    },
+    "title": "Importera"
+  },
   "bookreader": {
     "beginning_of_book": "Du är i början av boken.",
     "changing_reading_direction": "Byt läsriktning till",
@@ -335,6 +355,16 @@
       "dialog_title_default": "Filhanterare",
       "parent_directory": "Ovanstående"
     },
+    "filename_chooser": {
+      "button_choose": "Välj",
+      "field_destination_filename": "Namn på målfil",
+      "label_source_filename": "Källfilens namn",
+      "table": {
+        "existing_file": "Befintlig fil",
+        "order": "Ordning"
+      },
+      "title": "Namn på målfil"
+    },
     "password_change": {
       "button_cancel": "Avbryt",
       "button_confirm": "Ändra lösenord",
@@ -343,6 +373,10 @@
       "field_new_password_error": "Nytt lösenord krävs.",
       "field_repeat_password": "Upprepa nytt lösenord",
       "field_repeat_password_error": "Lösenorden måste vara identiska."
+    },
+    "series_picker": {
+      "label_search_series": "Sök serie",
+      "title": "Välj serie"
     },
     "server_stop": {
       "button_cancel": "Avbryt",
@@ -353,9 +387,37 @@
     "shortcut_help": {
       "label_description": "Beskrivning",
       "label_key": "Nyckel"
+    },
+    "transient_book_details": {
+      "label_candidate": "Kandidat",
+      "label_existing": "Befintlig",
+      "label_format": "Format",
+      "label_name": "Namn",
+      "label_pages": "Sidor",
+      "label_size": "Storlek",
+      "pages_table": {
+        "filename": "Filnamn",
+        "height": "Höjd",
+        "index": "Index",
+        "media_type": "Mediatyp",
+        "width": "Bredd"
+      },
+      "title": "Bokinformation",
+      "title_comparison": "Bokjämförelse"
+    },
+    "transient_book_viewer": {
+      "label_candidate": "Kandidat",
+      "label_existing": "Befintlig",
+      "page_of_pages": "{page} / {pages}",
+      "title": "Inspektera boken",
+      "title_comparison": "Bokjämförelse"
     }
   },
   "enums": {
+    "copy_mode": {
+      "HARDLINK": "Hårdlänk/kopiera filer",
+      "MOVE": "Flytta filer"
+    },
     "media_status": {
       "ERROR": "Fel",
       "OUTDATED": "Föråldrad",
