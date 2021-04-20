@@ -20,6 +20,7 @@ import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
+import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
@@ -56,6 +57,7 @@ class BookImporterTest(
   @Autowired private val seriesRepository: SeriesRepository,
   @Autowired private val seriesLifecycle: SeriesLifecycle,
   @Autowired private val mediaRepository: MediaRepository,
+  @Autowired private val metadataRepository: BookMetadataRepository,
   @Autowired private val userRepository: KomgaUserRepository,
   @Autowired private val readListRepository: ReadListRepository,
   @Autowired private val readListLifecycle: ReadListLifecycle,
@@ -252,6 +254,66 @@ class BookImporterTest(
 
       val upgradedMedia = mediaRepository.findById(books[2].id)
       assertThat(upgradedMedia.status).isEqualTo(Media.Status.OUTDATED)
+
+      assertThat(Files.notExists(sourceFile)).isTrue
+
+      verify(exactly = 1) { mockTaskReceiver.analyzeBook(any<Book>()) }
+    }
+  }
+
+  @Test
+  fun `given existing book with metadata when importing with upgrade then metadata is kept`() {
+    Jimfs.newFileSystem(Configuration.unix()).use { fs ->
+      // given
+      val sourceDir = fs.getPath("/source").createDirectory()
+      val sourceFile = sourceDir.resolve("source.cbz").createFile()
+      val destDir = fs.getPath("/library/series").createDirectories()
+      val existingFile = destDir.resolve("4.cbz").createFile()
+
+      val bookToUpgrade = makeBook("2", libraryId = library.id, url = existingFile.toUri().toURL())
+      val otherBooks = listOf(
+        makeBook("1", libraryId = library.id),
+        makeBook("3", libraryId = library.id),
+      )
+      val series = makeSeries("series", url = destDir.toUri().toURL(), libraryId = library.id)
+        .also { series ->
+          seriesLifecycle.createSeries(series)
+          seriesLifecycle.addBooks(series, listOf(bookToUpgrade) + otherBooks)
+          seriesLifecycle.sortBooks(series)
+        }
+
+      metadataRepository.findById(bookToUpgrade.id).let {
+        metadataRepository.update(it.copy(
+          summary = "a summary",
+          number = "HS",
+          numberLock = true,
+          numberSort = 100F,
+          numberSortLock = true,
+        ))
+      }
+
+      // when
+      bookImporter.importBook(sourceFile, series, CopyMode.MOVE, upgradeBookId = bookToUpgrade.id)
+
+      // then
+      val books = bookRepository.findBySeriesId(series.id).sortedBy { it.number }
+      assertThat(books).hasSize(3)
+      assertThat(books[0].id).isEqualTo(otherBooks[0].id)
+      assertThat(books[1].id).isEqualTo(otherBooks[1].id)
+      assertThat(books[2].id).isNotEqualTo(bookToUpgrade.id)
+
+      assertThat(bookRepository.findByIdOrNull(bookToUpgrade.id)).isNull()
+
+      val upgradedMedia = mediaRepository.findById(books[2].id)
+      assertThat(upgradedMedia.status).isEqualTo(Media.Status.OUTDATED)
+
+      with(metadataRepository.findById(books[2].id)) {
+        assertThat(summary).isEqualTo("a summary")
+        assertThat(number).isEqualTo("HS")
+        assertThat(numberLock).isTrue
+        assertThat(numberSort).isEqualTo(100F)
+        assertThat(numberSortLock).isTrue
+      }
 
       assertThat(Files.notExists(sourceFile)).isTrue
 
