@@ -6,6 +6,7 @@ import org.gotson.komga.domain.model.CopyMode
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.PathContainedInPath
 import org.gotson.komga.domain.model.Series
+import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
@@ -36,6 +37,7 @@ class BookImporter(
   private val seriesLifecycle: SeriesLifecycle,
   private val bookRepository: BookRepository,
   private val mediaRepository: MediaRepository,
+  private val metadataRepository: BookMetadataRepository,
   private val readProgressRepository: ReadProgressRepository,
   private val readListRepository: ReadListRepository,
   private val taskReceiver: TaskReceiver,
@@ -113,6 +115,11 @@ class BookImporter(
             status = Media.Status.OUTDATED,
           )
         )
+      }
+
+      // copy metadata
+      metadataRepository.findById(upgradedBookId).let {
+        metadataRepository.update(it.copy(bookId = importedBook.id))
       }
 
       // copy read progress
