@@ -31,6 +31,20 @@
     "unknown": "Da analizzare",
     "unsupported": "Non supportato"
   },
+  "book_import": {
+    "button_browse": "Sfoglia",
+    "button_import": "Importa",
+    "button_scan": "Scansiona",
+    "button_select_series": "Seleziona Serie",
+    "field_import_path": "Importa da cartella",
+    "table": {
+      "destination_name": "Nome destinazione",
+      "file_name": "Nome File",
+      "number": "Numero",
+      "series": "Serie"
+    },
+    "title": "Importa"
+  },
   "bookreader": {
     "beginning_of_book": "Sei all'inizio del libro.",
     "changing_reading_direction": "Cambia la direzione di lettura in",
@@ -335,6 +349,16 @@
       "dialog_title_default": "Browser di file",
       "parent_directory": "Genitore"
     },
+    "filename_chooser": {
+      "button_choose": "Scegli",
+      "field_destination_filename": "Nome del file di destinazione",
+      "label_source_filename": "Nome del file di origine",
+      "table": {
+        "existing_file": "File Esistente",
+        "order": "Ordine"
+      },
+      "title": "Nome del file di destinazione"
+    },
     "password_change": {
       "button_cancel": "Annulla",
       "button_confirm": "Cambia password",
@@ -343,6 +367,10 @@
       "field_new_password_error": "È richiesta una nuova password.",
       "field_repeat_password": "Ripeti la nuova password",
       "field_repeat_password_error": "Le password devono essere identiche."
+    },
+    "series_picker": {
+      "label_search_series": "Cerca Serie",
+      "title": "Seleziona Serie"
     },
     "server_stop": {
       "button_cancel": "Annulla",
@@ -353,9 +381,37 @@
     "shortcut_help": {
       "label_description": "Descrizione",
       "label_key": "Chiave"
+    },
+    "transient_book_details": {
+      "label_candidate": "Candidato",
+      "label_existing": "Esistente",
+      "label_format": "Formato",
+      "label_name": "Nome",
+      "label_pages": "Pagine",
+      "label_size": "Dimensione",
+      "pages_table": {
+        "filename": "Nome File",
+        "height": "Altezza",
+        "index": "Indice",
+        "media_type": "Tipo media",
+        "width": "Larghezza"
+      },
+      "title": "Dettagli Fumetto",
+      "title_comparison": "Confronto Fumetto"
+    },
+    "transient_book_viewer": {
+      "label_candidate": "Candidato",
+      "label_existing": "Esistente",
+      "page_of_pages": "{page} / {pages}",
+      "title": "Ispeziona Fumetto",
+      "title_comparison": "Confronto Fumetto"
     }
   },
   "enums": {
+    "copy_mode": {
+      "HARDLINK": "Hardlink / Copia File",
+      "MOVE": "Sposta File"
+    },
     "media_status": {
       "ERROR": "Errore",
       "OUTDATED": "Scaduto",
