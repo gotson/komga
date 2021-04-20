@@ -85,8 +85,8 @@ class BookImporter(
       CopyMode.HARDLINK -> try {
         logger.info { "Hardlink file $sourceFile to $destFile" }
         Files.createLink(destFile, sourceFile)
-      } catch (e: UnsupportedOperationException) {
-        logger.warn { "Filesystem does not support hardlinks, copying instead" }
+      } catch (e: Exception) {
+        logger.warn(e) { "Filesystem does not support hardlinks, copying instead" }
         sourceFile.copyTo(destFile)
       }
     }
