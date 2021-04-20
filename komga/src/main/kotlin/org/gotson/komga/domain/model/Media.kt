@@ -16,4 +16,8 @@ data class Media(
   enum class Status {
     UNKNOWN, ERROR, READY, UNSUPPORTED, OUTDATED
   }
+
+  override fun toString(): String {
+    return "Media(status=$status, mediaType=$mediaType, comment=$comment, bookId='$bookId', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate)"
+  }
 }
