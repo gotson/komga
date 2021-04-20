@@ -1,3 +1,10 @@
+## [0.87.1](https://github.com/gotson/komga/compare/v0.87.0...v0.87.1) (2021-04-20)
+
+
+### Bug Fixes
+
+* **importer:** hardlink fails inside docker ([24cf181](https://github.com/gotson/komga/commit/24cf1819b02dd2625d7a6327a17ef2081cf52e64))
+
 # [0.87.0](https://github.com/gotson/komga/compare/v0.86.0...v0.87.0) (2021-04-19)
 
 
