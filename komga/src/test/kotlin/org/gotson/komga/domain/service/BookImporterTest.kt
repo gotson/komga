@@ -15,6 +15,7 @@ import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.CopyMode
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.PathContainedInPath
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
@@ -145,6 +146,31 @@ class BookImporterTest(
 
       // then
       assertThat(thrown).isInstanceOf(FileAlreadyExistsException::class.java)
+    }
+  }
+
+  @Test
+  fun `given source file parf of a Komga library when importing then exception is thrown`() {
+    Jimfs.newFileSystem(Configuration.unix()).use { fs ->
+      // given
+      val sourceDir = fs.getPath("/source").createDirectory()
+      val sourceFile = sourceDir.resolve("source.cbz").createFile()
+      val destDir = fs.getPath("/dest").createDirectory()
+
+      val series = makeSeries("dest").copy(url = destDir.toUri().toURL())
+
+      val libraryJimfs = makeLibrary("jimfs", url = sourceDir.toUri().toURL())
+      libraryRepository.insert(libraryJimfs)
+
+      // when
+      val thrown = Assertions.catchThrowable {
+        bookImporter.importBook(sourceFile, series, CopyMode.COPY)
+      }
+
+      // then
+      assertThat(thrown).isInstanceOf(PathContainedInPath::class.java)
+
+      libraryRepository.delete(libraryJimfs.id)
     }
   }
 

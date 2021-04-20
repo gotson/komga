@@ -25,8 +25,12 @@ fun makeSeries(name: String, libraryId: String = "", url: URL? = null): Series {
   )
 }
 
-fun makeLibrary(name: String = "default", url: String = "file:/$name", id: String = TsidCreator.getTsid256().toString()): Library {
-  return Library(name, URL(url), id = id)
+fun makeLibrary(name: String = "default", path: String = "file:/$name", id: String = TsidCreator.getTsid256().toString(), url: URL? = null): Library {
+  return Library(
+    name = name,
+    root = url ?: URL(path),
+    id = id
+  )
 }
 
 fun makeBookPage(name: String) =

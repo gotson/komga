@@ -4,8 +4,10 @@ import mu.KotlinLogging
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.CopyMode
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.PathContainedInPath
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.persistence.BookRepository
+import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
@@ -37,10 +39,15 @@ class BookImporter(
   private val readProgressRepository: ReadProgressRepository,
   private val readListRepository: ReadListRepository,
   private val taskReceiver: TaskReceiver,
+  private val libraryRepository: LibraryRepository,
 ) {
 
   fun importBook(sourceFile: Path, series: Series, copyMode: CopyMode, destinationName: String? = null, upgradeBookId: String? = null) {
     if (sourceFile.notExists()) throw FileNotFoundException("File not found: $sourceFile")
+
+    libraryRepository.findAll().forEach { library ->
+      if (sourceFile.startsWith(library.path())) throw PathContainedInPath("Cannot import file that is part of an existing library")
+    }
 
     val destFile = series.path().resolve(
       if (destinationName != null) Paths.get("$destinationName.${sourceFile.extension}").fileName.toString()
