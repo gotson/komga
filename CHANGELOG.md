@@ -1,3 +1,13 @@
+## [0.87.2](https://github.com/gotson/komga/compare/v0.87.1...v0.87.2) (2021-04-20)
+
+
+### Bug Fixes
+
+* translated using Weblate (Esperanto) ([19ff72f](https://github.com/gotson/komga/commit/19ff72f9e34fce599b3f9691dcaa78b8a21909ef))
+* **importer:** keep metadata when upgrading book ([a3b8866](https://github.com/gotson/komga/commit/a3b88667d0364edf68f5a906053af0977c176135))
+* prevent transient scanning of directories that are part of existing libraries ([8a92b84](https://github.com/gotson/komga/commit/8a92b84fd06c7b6b8ae3ab6975f7802708598de3))
+* **importer:** prevent import of files that are in an existing library ([b0170c7](https://github.com/gotson/komga/commit/b0170c7c8840089811108e275e76cf4bb0350d8b))
+
 ## [0.87.1](https://github.com/gotson/komga/compare/v0.87.0...v0.87.1) (2021-04-20)
 
 
