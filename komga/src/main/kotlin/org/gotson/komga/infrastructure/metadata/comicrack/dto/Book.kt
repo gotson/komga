@@ -9,7 +9,7 @@ class Book {
   var series: String? = null
 
   @JsonProperty(value = "Number")
-  var number: Int? = null
+  var number: String? = null
 
   @JsonProperty(value = "Volume")
   var volume: Int? = null

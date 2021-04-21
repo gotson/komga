@@ -78,17 +78,17 @@ class ReadListMatcherTest(
       seriesLifecycle.sortBooks(s)
 
       bookMetadataRepository.findById(booksSeries2[0].id).let {
-        bookMetadataRepository.update(it.copy(number = "025"))
+        bookMetadataRepository.update(it.copy(number = "0025"))
       }
     }
 
     val request = ReadListRequest(
       name = "readlist",
       books = listOf(
-        ReadListRequestBook(series = "Batman: White Knight", number = 1),
-        ReadListRequestBook(series = "joker", number = 2),
-        ReadListRequestBook(series = "Batman: White Knight", number = 2),
-        ReadListRequestBook(series = "joker", number = 25),
+        ReadListRequestBook(series = "Batman: White Knight", number = "1"),
+        ReadListRequestBook(series = "joker", number = "02"),
+        ReadListRequestBook(series = "Batman: White Knight", number = "2"),
+        ReadListRequestBook(series = "joker", number = "25"),
       )
     )
 
@@ -99,7 +99,7 @@ class ReadListMatcherTest(
     with(result) {
       assertThat(readList).isNotNull
       assertThat(unmatchedBooks).isEmpty()
-      assertThat(errorCode).isBlank()
+      assertThat(errorCode).isBlank
       with(readList!!) {
         assertThat(name).isEqualTo(request.name)
         assertThat(bookIds).hasSize(4)
@@ -125,10 +125,10 @@ class ReadListMatcherTest(
     val request = ReadListRequest(
       name = "my readlist",
       books = listOf(
-        ReadListRequestBook(series = "batman: white knight", number = 1),
-        ReadListRequestBook(series = "joker", number = 2),
-        ReadListRequestBook(series = "BATMAN: WHITE KNIGHT", number = 2),
-        ReadListRequestBook(series = "joker", number = 25),
+        ReadListRequestBook(series = "batman: white knight", number = "1"),
+        ReadListRequestBook(series = "joker", number = "2"),
+        ReadListRequestBook(series = "BATMAN: WHITE KNIGHT", number = "2"),
+        ReadListRequestBook(series = "joker", number = "25"),
       )
     )
 
@@ -176,10 +176,10 @@ class ReadListMatcherTest(
     val request = ReadListRequest(
       name = "readlist",
       books = listOf(
-        ReadListRequestBook(series = "tokyo ghost", number = 1),
-        ReadListRequestBook(series = "batman", number = 3),
-        ReadListRequestBook(series = "joker", number = 3),
-        ReadListRequestBook(series = "batman", number = 2),
+        ReadListRequestBook(series = "tokyo ghost", number = "1"),
+        ReadListRequestBook(series = "batman", number = "3"),
+        ReadListRequestBook(series = "joker", number = "3"),
+        ReadListRequestBook(series = "batman", number = "2"),
       )
     )
 

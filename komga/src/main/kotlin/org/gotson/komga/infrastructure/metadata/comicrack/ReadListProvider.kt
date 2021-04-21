@@ -28,7 +28,7 @@ class ReadListProvider(
         val books = readingList.books.mapNotNull {
           val series = computeSeriesFromSeriesAndVolume(it.series, it.volume)
           if (!series.isNullOrBlank() && it.number != null)
-            ReadListRequestBook(series, it.number!!)
+            ReadListRequestBook(series, it.number!!.trim())
           else {
             logger.warn { "Book is missing series or number, skipping: $it" }
             null

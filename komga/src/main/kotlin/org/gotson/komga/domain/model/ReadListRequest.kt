@@ -10,7 +10,7 @@ data class ReadListRequest(
 
 data class ReadListRequestBook(
   val series: String,
-  val number: Int,
+  val number: String,
 )
 
 data class ReadListRequestResult(

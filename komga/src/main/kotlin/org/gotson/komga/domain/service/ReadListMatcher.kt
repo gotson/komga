@@ -40,7 +40,7 @@ class ReadListMatcher(
           val seriesId = seriesMatches.first().id
           val seriesBooks = bookRepository.findBySeriesId(seriesId)
           val bookMatches = bookMetadataRepository.findByIds(seriesBooks.map { it.id })
-            .filter { it.number.toIntOrNull()?.equals(book.number) ?: false }
+            .filter { (it.number.trimStart('0') == book.number.trimStart('0')) }
             .map { it.bookId }
           when {
             bookMatches.size > 1 -> unmatchedBooks += ReadListRequestResultBook(book, "ERR_1013")

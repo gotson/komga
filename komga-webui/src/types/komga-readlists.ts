@@ -31,5 +31,5 @@ interface ReadListRequestResultBookDto {
 
 interface ReadListRequestBookDto {
   series: string,
-  number: number,
+  number: string,
 }
