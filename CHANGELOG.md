@@ -1,3 +1,11 @@
+## [0.87.3](https://github.com/gotson/komga/compare/v0.87.2...v0.87.3) (2021-04-21)
+
+
+### Bug Fixes
+
+* error importing reading list with non-numerical number ([3ef0240](https://github.com/gotson/komga/commit/3ef02409bac07ee64c0136e34aac6afcf7c1aba4)), closes [#499](https://github.com/gotson/komga/issues/499)
+* **webui:** stored filters are not validated ([fbb4171](https://github.com/gotson/komga/commit/fbb4171d9bd3727d3826e650fe97822ec146bd4d)), closes [#504](https://github.com/gotson/komga/issues/504)
+
 ## [0.87.2](https://github.com/gotson/komga/compare/v0.87.1...v0.87.2) (2021-04-20)
 
 

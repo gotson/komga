@@ -787,8 +787,7 @@
         ],
         "properties": {
           "number": {
-            "format": "int32",
-            "type": "integer"
+            "type": "string"
           },
           "series": {
             "type": "string"
