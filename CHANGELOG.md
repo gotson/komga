@@ -1,3 +1,10 @@
+## [0.87.4](https://github.com/gotson/komga/compare/v0.87.3...v0.87.4) (2021-04-21)
+
+
+### Bug Fixes
+
+* **api:** filter referential data by access rights ([09fa5e9](https://github.com/gotson/komga/commit/09fa5e95a5a59f2136a7992468ca77a257a267a5)), closes [#492](https://github.com/gotson/komga/issues/492)
+
 ## [0.87.3](https://github.com/gotson/komga/compare/v0.87.2...v0.87.3) (2021-04-21)
 
 
