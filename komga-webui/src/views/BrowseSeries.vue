@@ -567,7 +567,7 @@ export default Vue.extend({
       this.sortActive = this.parseQuerySortOrDefault(route.query.sort)
 
       // load dynamic filters
-      this.$set(this.filterOptions, 'tag', toNameValue(await this.$komgaReferential.getTags(undefined, seriesId)))
+      this.$set(this.filterOptions, 'tag', toNameValue(await this.$komgaReferential.getBookTags(seriesId)))
       const grouped = groupAuthorsByRole(await this.$komgaReferential.getAuthors(undefined, undefined, undefined, seriesId))
       authorRoles.forEach((role: string) => {
         this.$set(this.filterOptions, role, role in grouped ? toNameValue(grouped[role]) : [])

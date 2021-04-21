@@ -283,7 +283,7 @@ export default Vue.extend({
 
       // load dynamic filters
       this.$set(this.filterOptions, 'genre', toNameValue(await this.$komgaReferential.getGenres(requestLibraryId)))
-      this.$set(this.filterOptions, 'tag', toNameValue(await this.$komgaReferential.getTags(requestLibraryId)))
+      this.$set(this.filterOptions, 'tag', toNameValue(await this.$komgaReferential.getSeriesTags(requestLibraryId)))
       this.$set(this.filterOptions, 'publisher', toNameValue(await this.$komgaReferential.getPublishers(requestLibraryId)))
       this.$set(this.filterOptions, 'language', (await this.$komgaReferential.getLanguages(requestLibraryId)))
       this.$set(this.filterOptions, 'ageRating', toNameValue(await this.$komgaReferential.getAgeRatings(requestLibraryId)))

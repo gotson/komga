@@ -258,7 +258,7 @@ export default Vue.extend({
         value: x.id,
       })))
       this.$set(this.filterOptions, 'genre', toNameValue(await this.$komgaReferential.getGenres(undefined, collectionId)))
-      this.$set(this.filterOptions, 'tag', toNameValue(await this.$komgaReferential.getTags(undefined, undefined, collectionId)))
+      this.$set(this.filterOptions, 'tag', toNameValue(await this.$komgaReferential.getSeriesTags(undefined, collectionId)))
       this.$set(this.filterOptions, 'publisher', toNameValue(await this.$komgaReferential.getPublishers(undefined, collectionId)))
       this.$set(this.filterOptions, 'language', (await this.$komgaReferential.getLanguages(undefined, collectionId)))
       this.$set(this.filterOptions, 'ageRating', toNameValue(await this.$komgaReferential.getAgeRatings(undefined, collectionId)))

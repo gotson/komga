@@ -338,9 +338,7 @@ class OpdsController(
   fun getPublishers(
     @AuthenticationPrincipal principal: KomgaPrincipal
   ): OpdsFeed {
-    val publishers =
-      if (principal.user.sharedAllLibraries) referentialRepository.findAllPublishers()
-      else referentialRepository.findAllPublishersByLibraries(principal.user.sharedLibrariesIds)
+    val publishers = referentialRepository.findAllPublishers(principal.user.getAuthorizedLibraryIds(null))
 
     return OpdsFeedNavigation(
       id = ID_PUBLISHERS_ALL,
