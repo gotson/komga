@@ -370,7 +370,7 @@ import ItemBrowser from '@/components/ItemBrowser.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import SeriesActionsMenu from '@/components/menus/SeriesActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
-import {parseQueryFilter, parseQuerySort} from '@/functions/query-params'
+import {parseQueryParamAndFilter, parseQuerySort} from '@/functions/query-params'
 import {seriesFileUrl, seriesThumbnailUrl} from '@/functions/urls'
 import {ReadStatus} from '@/types/enum-books'
 import {BOOK_CHANGED, LIBRARY_DELETED, READLIST_CHANGED, SERIES_CHANGED} from '@/types/events'
@@ -574,11 +574,11 @@ export default Vue.extend({
       })
 
       // filter query params with available filter values
-      this.$set(this.filters, 'readStatus', parseQueryFilter(this.$route.query.readStatus, Object.keys(ReadStatus)))
-      this.$set(this.filters, 'tag', parseQueryFilter(this.$route.query.tag, this.filterOptions.tag.map(x => x.value)))
+      this.$set(this.filters, 'readStatus', parseQueryParamAndFilter(this.$route.query.readStatus, Object.keys(ReadStatus)))
+      this.$set(this.filters, 'tag', parseQueryParamAndFilter(this.$route.query.tag, this.filterOptions.tag.map(x => x.value)))
       authorRoles.forEach((role: string) => {
         //@ts-ignore
-        this.$set(this.filters, role, parseQueryFilter(route.query[role], this.filterOptions[role].map((x: NameValue) => x.value)))
+        this.$set(this.filters, role, parseQueryParamAndFilter(route.query[role], this.filterOptions[role].map((x: NameValue) => x.value)))
       })
     },
     setWatches() {
