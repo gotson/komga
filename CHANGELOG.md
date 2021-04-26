@@ -1,3 +1,10 @@
+## [0.88.1](https://github.com/gotson/komga/compare/v0.88.0...v0.88.1) (2021-04-26)
+
+
+### Bug Fixes
+
+* replace java webp library ([f658f9a](https://github.com/gotson/komga/commit/f658f9abe04896cbce6590bae0783836f4e59f74))
+
 # [0.88.0](https://github.com/gotson/komga/compare/v0.87.5...v0.88.0) (2021-04-26)
 
 
