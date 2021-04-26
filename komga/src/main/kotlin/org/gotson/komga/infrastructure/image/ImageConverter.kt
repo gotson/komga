@@ -23,8 +23,16 @@ class ImageConverter {
 
   init {
     val registry = IIORegistry.getDefaultInstance()
-    val nativeWebp = registry.getServiceProviderByClass(Class.forName("com.luciad.imageio.webp.WebPImageReaderSpi")) as ImageReaderSpi?
-    val javaWebp = registry.getServiceProviderByClass(Class.forName("net.sf.javavp8decoder.imageio.WebPImageReaderSpi")) as ImageReaderSpi?
+    val nativeWebp = try {
+        registry.getServiceProviderByClass(Class.forName("com.luciad.imageio.webp.WebPImageReaderSpi"))
+    } catch (e: Exception) {
+      null
+    } as ImageReaderSpi?
+    val javaWebp = try {
+        registry.getServiceProviderByClass(Class.forName("com.twelvemonkeys.imageio.plugins.webp.WebPImageReaderSpi"))
+    } catch (e: Exception) {
+      null
+    } as ImageReaderSpi?
 
     if (nativeWebp != null) {
       if (!WebP.loadNativeLibrary()) {
