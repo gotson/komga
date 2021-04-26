@@ -95,7 +95,8 @@
       "show_hide_toolbars": "Show/hide toolbars",
       "vertical": "Vertical",
       "webtoon": "Webtoon"
-    }
+    },
+    "tooltip_incognito": "Read progress will not be saved"
   },
   "browse_book": {
     "comment": "COMMENT",
