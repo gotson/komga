@@ -1,3 +1,12 @@
+## [0.87.5](https://github.com/gotson/komga/compare/v0.87.4...v0.87.5) (2021-04-26)
+
+
+### Bug Fixes
+
+* **webui:** double pages could show duplicate pages ([76ba55a](https://github.com/gotson/komga/commit/76ba55a1242cfc90bceaddef8520719ac1165854))
+* **webui:** mark read progress instantly ([97cc3e0](https://github.com/gotson/komga/commit/97cc3e043d15255bc53641bdf0b5cd53cb5c14c4)), closes [#475](https://github.com/gotson/komga/issues/475)
+* **webui:** scroll continuous reader to top on book change ([d27828d](https://github.com/gotson/komga/commit/d27828de13fdbe348055fe4c23d129a29ad974e8)), closes [#475](https://github.com/gotson/komga/issues/475)
+
 ## [0.87.4](https://github.com/gotson/komga/compare/v0.87.3...v0.87.4) (2021-04-21)
 
 
