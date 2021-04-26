@@ -1,3 +1,10 @@
+# [0.88.0](https://github.com/gotson/komga/compare/v0.87.5...v0.88.0) (2021-04-26)
+
+
+### Features
+
+* **webui:** ability to read incognito ([dc0cc13](https://github.com/gotson/komga/commit/dc0cc1380793bf870e11444debf1872a6cefc95c))
+
 ## [0.87.5](https://github.com/gotson/komga/compare/v0.87.4...v0.87.5) (2021-04-26)
 
 
