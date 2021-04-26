@@ -427,7 +427,7 @@ export default Vue.extend({
     page(val) {
       this.updateRoute()
       this.goToPage = val
-      this.markProgress(val)
+      // this.markProgress(val)
     },
   },
   computed: {
@@ -672,6 +672,7 @@ export default Vue.extend({
     },
     goTo(page: number) {
       this.page = page
+      this.markProgress(page)
     },
     goToFirst() {
       this.goTo(1)
