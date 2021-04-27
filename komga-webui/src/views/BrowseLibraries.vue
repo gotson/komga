@@ -14,6 +14,10 @@
 
       <v-spacer/>
 
+      <library-navigation v-if="$vuetify.breakpoint.name !== 'xs'" :libraryId="libraryId"/>
+
+      <v-spacer/>
+
       <page-size-select v-model="pageSize"/>
 
       <v-btn icon @click="drawer = !drawer">
@@ -30,7 +34,7 @@
       @edit="editMultipleSeries"
     />
 
-    <library-navigation :libraryId="libraryId"/>
+    <library-navigation v-if="$vuetify.breakpoint.name === 'xs'" :libraryId="libraryId" bottom-navigation/>
 
     <filter-drawer v-model="drawer">
       <template v-slot:default>

@@ -1,35 +1,78 @@
 <template>
-  <v-bottom-navigation
-    grow color="primary"
-    :fixed="$vuetify.breakpoint.name === 'xs'"
-  >
-    <v-btn :to="{name: 'browse-libraries', params: {libraryId: libraryId}}">
-      <span>{{ $t('library_navigation.browse') }}</span>
-      <v-icon>mdi-bookshelf</v-icon>
-    </v-btn>
-
-    <v-btn :to="{name: 'recommended-libraries', params: {libraryId: libraryId}}">
-      <span>{{ $t('library_navigation.recommended') }}</span>
-      <v-icon>mdi-view-dashboard</v-icon>
-    </v-btn>
-
-    <v-btn
-      v-if="collectionsCount > 0"
-      :to="{name: 'browse-collections', params: {libraryId: libraryId}}"
+  <div>
+    <v-bottom-navigation
+      v-if="show && bottomNavigation"
+      grow color="primary"
+      :fixed="$vuetify.breakpoint.name === 'xs'"
     >
-      <span>{{ $t('library_navigation.collections') }}</span>
-      <v-icon>mdi-layers-triple</v-icon>
-    </v-btn>
+      <v-btn v-if="showRecommended"
+             :to="{name: 'recommended-libraries', params: {libraryId: libraryId}}"
+      >
+        <span>{{ $t('library_navigation.recommended') }}</span>
+        <v-icon>mdi-star</v-icon>
+      </v-btn>
 
-    <v-btn
-      v-if="readListsCount > 0"
-      :to="{name: 'browse-readlists', params: {libraryId: libraryId}}"
+      <v-btn :to="{name: 'browse-libraries', params: {libraryId: libraryId}}">
+        <span>{{ $t('library_navigation.browse') }}</span>
+        <v-icon>mdi-bookshelf</v-icon>
+      </v-btn>
+
+      <v-btn
+        v-if="collectionsCount > 0"
+        :to="{name: 'browse-collections', params: {libraryId: libraryId}}"
+      >
+        <span>{{ $t('library_navigation.collections') }}</span>
+        <v-icon>mdi-layers-triple</v-icon>
+      </v-btn>
+
+      <v-btn
+        v-if="readListsCount > 0"
+        :to="{name: 'browse-readlists', params: {libraryId: libraryId}}"
+      >
+        <span>{{ $t('library_navigation.readlists') }}</span>
+        <v-icon>mdi-book-multiple</v-icon>
+      </v-btn>
+
+    </v-bottom-navigation>
+
+    <template
+      v-if="show && !bottomNavigation"
     >
-      <span>{{ $t('library_navigation.readlists') }}</span>
-      <v-icon>mdi-book-multiple</v-icon>
-    </v-btn>
+      <v-btn v-if="showRecommended"
+             :to="{name: 'recommended-libraries', params: {libraryId: libraryId}}"
+             text
+             class="mx-1"
+      >
+        {{ $t('library_navigation.recommended') }}
+      </v-btn>
 
-  </v-bottom-navigation>
+      <v-btn :to="{name: 'browse-libraries', params: {libraryId: libraryId}}"
+             text
+             class="mx-1"
+      >
+        {{ $t('library_navigation.browse') }}
+      </v-btn>
+
+      <v-btn
+        v-if="collectionsCount > 0"
+        :to="{name: 'browse-collections', params: {libraryId: libraryId}}"
+        text
+        class="mx-1"
+      >
+        {{ $t('library_navigation.collections') }}
+      </v-btn>
+
+      <v-btn
+        v-if="readListsCount > 0"
+        :to="{name: 'browse-readlists', params: {libraryId: libraryId}}"
+        text
+        class="mx-1"
+      >
+        {{ $t('library_navigation.readlists') }}
+      </v-btn>
+
+    </template>
+  </div>
 </template>
 
 <script lang="ts">
@@ -50,31 +93,43 @@ export default Vue.extend({
       type: String,
       required: true,
     },
+    bottomNavigation: {
+      type: Boolean,
+      default: false,
+    },
   },
   watch: {
     libraryId: {
-      handler (val) {
+      handler(val) {
         this.loadCounts(val)
       },
       immediate: true,
     },
   },
-  created () {
+  created() {
     this.$eventHub.$on(COLLECTION_CHANGED, this.reloadCounts)
     this.$eventHub.$on(READLIST_CHANGED, this.reloadCounts)
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this.$eventHub.$off(COLLECTION_CHANGED, this.reloadCounts)
     this.$eventHub.$off(READLIST_CHANGED, this.reloadCounts)
   },
+  computed: {
+    showRecommended(): boolean {
+      return this.libraryId !== LIBRARIES_ALL
+    },
+    show(): boolean {
+      return this.collectionsCount > 0 || this.readListsCount > 0 || this.showRecommended
+    },
+  },
   methods: {
-    reloadCounts () {
+    reloadCounts() {
       this.loadCounts(this.libraryId)
     },
-    async loadCounts (libraryId: string) {
+    async loadCounts(libraryId: string) {
       const lib = libraryId !== LIBRARIES_ALL ? [libraryId] : undefined
-      this.collectionsCount = (await this.$komgaCollections.getCollections(lib, { size: 1 })).totalElements
-      this.readListsCount = (await this.$komgaReadLists.getReadLists(lib, { size: 1 })).totalElements
+      this.collectionsCount = (await this.$komgaCollections.getCollections(lib, {size: 1})).totalElements
+      this.readListsCount = (await this.$komgaReadLists.getReadLists(lib, {size: 1})).totalElements
     },
   },
 })

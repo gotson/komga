@@ -14,10 +14,14 @@
 
       <v-spacer/>
 
+      <library-navigation v-if="$vuetify.breakpoint.name !== 'xs'" :libraryId="libraryId"/>
+
+      <v-spacer/>
+
       <page-size-select v-model="pageSize"/>
     </toolbar-sticky>
 
-    <library-navigation :libraryId="libraryId"/>
+    <library-navigation v-if="$vuetify.breakpoint.name === 'xs'" :libraryId="libraryId" bottom-navigation/>
 
     <v-container fluid>
       <v-pagination

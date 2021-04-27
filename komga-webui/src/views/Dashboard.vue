@@ -9,10 +9,15 @@
         <span>{{ library ? library.name : $t('common.all_libraries') }}</span>
       </v-toolbar-title>
 
-        </toolbar-sticky>
+      <v-spacer/>
 
-      <library-navigation :libraryId="libraryId"/>
-    </div>
+      <library-navigation v-if="showLibraryBar && $vuetify.breakpoint.name !== 'xs'" :libraryId="libraryId"/>
+
+      <v-spacer/>
+
+    </toolbar-sticky>
+
+    <library-navigation v-if="showLibraryBar && $vuetify.breakpoint.name === 'xs'" :libraryId="libraryId" bottom-navigation/>
 
     <series-multi-select-bar
       v-model="selectedSeries"
