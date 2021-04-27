@@ -1,3 +1,18 @@
+# [0.89.0](https://github.com/gotson/komga/compare/v0.88.1...v0.89.0) (2021-04-27)
+
+
+### Bug Fixes
+
+* **webui:** home link would not show as active ([4c6b3f5](https://github.com/gotson/komga/commit/4c6b3f5e5e4cc99bb952263d9a6b155063da5704))
+* **webui:** wrong comparison could show error in javascript console ([b345c30](https://github.com/gotson/komga/commit/b345c30d1232fb8529c6e822b5a2e99565d12b4e))
+
+
+### Features
+
+* **webui:** display library navigation within toolbar ([a6252ff](https://github.com/gotson/komga/commit/a6252ff2e8e1664bab2492216667fc46546d7f64)), closes [#234](https://github.com/gotson/komga/issues/234)
+* **webui:** remember view within library ([b1931aa](https://github.com/gotson/komga/commit/b1931aa892a71d6718c12ae00a917ef1e7d8fcb4)), closes [#367](https://github.com/gotson/komga/issues/367)
+* Added a 'Recommended' tab in the library views for a library specific dashboard like the home page ([b26559d](https://github.com/gotson/komga/commit/b26559dc47a76220e20599caa807fe9a6b008d44))
+
 ## [0.88.1](https://github.com/gotson/komga/compare/v0.88.0...v0.88.1) (2021-04-26)
 
 
