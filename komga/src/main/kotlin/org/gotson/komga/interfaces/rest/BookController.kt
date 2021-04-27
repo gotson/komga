@@ -147,7 +147,7 @@ class BookController(
   }
 
   @Operation(description = "Return first unread book of series with at least one book read and no books in progress.")
-  @PageableAsQueryParam
+  @PageableWithoutSortAsQueryParam
   @GetMapping("api/v1/books/ondeck")
   fun getBooksOnDeck(
     @AuthenticationPrincipal principal: KomgaPrincipal,
