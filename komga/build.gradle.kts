@@ -1,4 +1,3 @@
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -255,20 +254,6 @@ tasks.named<nu.studer.gradle.jooq.JooqGenerate>("generateJooq") {
 openApi {
   outputDir.set(file("$projectDir/docs"))
   forkProperties.set("-Dspring.profiles.active=claim")
-}
-
-fun isNonStable(version: String): Boolean {
-  val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
-  val regex = "^[0-9,.v-]+(-r)?$".toRegex()
-  val isStable = stableKeyword || regex.matches(version)
-  return isStable.not()
-}
-tasks.named("dependencyUpdates", DependencyUpdatesTask::class.java).configure {
-  // disallow release candidates as upgradable versions from stable versions
-  rejectVersionIf {
-    isNonStable(candidate.version) && !isNonStable(currentVersion)
-  }
-  gradleReleaseChannel = "current"
 }
 
 configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
