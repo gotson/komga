@@ -231,8 +231,8 @@ class BookDtoDaoTest(
 
       // when
       val found = bookDtoDao.findOnDeck(
-        emptyList(),
         user.id,
+        null,
         PageRequest.of(0, 20)
       )
 
@@ -252,8 +252,8 @@ class BookDtoDaoTest(
 
       // when
       val found = bookDtoDao.findOnDeck(
-        emptyList(),
         user.id,
+        null,
         PageRequest.of(0, 20)
       )
 
@@ -276,8 +276,8 @@ class BookDtoDaoTest(
 
       // when
       val found = bookDtoDao.findOnDeck(
-        emptyList(),
         user.id,
+        null,
         PageRequest.of(0, 20)
       )
 
