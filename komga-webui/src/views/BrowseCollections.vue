@@ -14,10 +14,14 @@
 
       <v-spacer/>
 
+      <library-navigation v-if="$vuetify.breakpoint.name !== 'xs'" :libraryId="libraryId"/>
+
+      <v-spacer/>
+
       <page-size-select v-model="pageSize"/>
     </toolbar-sticky>
 
-    <library-navigation :libraryId="libraryId"/>
+    <library-navigation v-if="$vuetify.breakpoint.name === 'xs'" :libraryId="libraryId" bottom-navigation/>
 
     <v-container fluid>
       <v-pagination
@@ -53,7 +57,7 @@ import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import {COLLECTION_CHANGED, COLLECTION_DELETED, LIBRARY_CHANGED} from '@/types/events'
 import Vue from 'vue'
 import {Location} from 'vue-router'
-import {LIBRARIES_ALL} from '@/types/library'
+import {LIBRARIES_ALL, LIBRARY_ROUTE} from '@/types/library'
 
 export default Vue.extend({
   name: 'BrowseCollections',
@@ -82,17 +86,18 @@ export default Vue.extend({
       default: LIBRARIES_ALL,
     },
   },
-  created () {
+  created() {
     this.$eventHub.$on(COLLECTION_CHANGED, this.reloadCollections)
     this.$eventHub.$on(COLLECTION_DELETED, this.reloadCollections)
     this.$eventHub.$on(LIBRARY_CHANGED, this.reloadLibrary)
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this.$eventHub.$off(COLLECTION_CHANGED, this.reloadCollections)
     this.$eventHub.$off(COLLECTION_DELETED, this.reloadCollections)
     this.$eventHub.$off(LIBRARY_CHANGED, this.reloadLibrary)
   },
-  mounted () {
+  mounted() {
+    this.$store.commit('setLibraryRoute', {id: this.libraryId, route: LIBRARY_ROUTE.COLLECTIONS})
     this.pageSize = this.$store.state.persistedState.browsingPageSize || this.pageSize
 
     // restore from query param
@@ -103,7 +108,7 @@ export default Vue.extend({
 
     this.setWatches()
   },
-  beforeRouteUpdate (to, from, next) {
+  beforeRouteUpdate(to, from, next) {
     if (to.params.libraryId !== from.params.libraryId) {
       // reset
       this.page = 1
@@ -117,10 +122,10 @@ export default Vue.extend({
     next()
   },
   computed: {
-    isAdmin (): boolean {
+    isAdmin(): boolean {
       return this.$store.getters.meAdmin
     },
-    paginationVisible (): number {
+    paginationVisible(): number {
       switch (this.$vuetify.breakpoint.name) {
         case 'xs':
           return 5
@@ -135,7 +140,7 @@ export default Vue.extend({
     },
   },
   methods: {
-    setWatches () {
+    setWatches() {
       this.pageSizeUnwatch = this.$watch('pageSize', (val) => {
         this.$store.commit('setBrowsingPageSize', val)
         this.updateRouteAndReload()
@@ -146,11 +151,11 @@ export default Vue.extend({
         this.loadPage(this.libraryId, val)
       })
     },
-    unsetWatches () {
+    unsetWatches() {
       this.pageUnwatch()
       this.pageSizeUnwatch()
     },
-    updateRouteAndReload () {
+    updateRouteAndReload() {
       this.unsetWatches()
 
       this.page = 1
@@ -160,10 +165,10 @@ export default Vue.extend({
 
       this.setWatches()
     },
-    updateRoute () {
+    updateRoute() {
       this.$router.replace({
         name: this.$route.name,
-        params: { libraryId: this.$route.params.libraryId },
+        params: {libraryId: this.$route.params.libraryId},
         query: {
           page: `${this.page}`,
           pageSize: `${this.pageSize}`,
@@ -171,23 +176,23 @@ export default Vue.extend({
       } as Location).catch((_: any) => {
       })
     },
-    reloadCollections () {
+    reloadCollections() {
       this.loadLibrary(this.libraryId)
     },
-    reloadLibrary (event: EventLibraryChanged) {
+    reloadLibrary(event: EventLibraryChanged) {
       if (event.id === this.libraryId) {
         this.loadLibrary(this.libraryId)
       }
     },
-    async loadLibrary (libraryId: string) {
+    async loadLibrary(libraryId: string) {
       this.library = this.getLibraryLazy(libraryId)
       await this.loadPage(libraryId, this.page)
 
       if (this.totalElements === 0) {
-        await this.$router.push({ name: 'browse-libraries', params: { libraryId: libraryId.toString() } })
+        await this.$router.push({name: 'browse-libraries', params: {libraryId: libraryId.toString()}})
       }
     },
-    async loadPage (libraryId: string, page: number) {
+    async loadPage(libraryId: string, page: number) {
       const pageRequest = {
         page: page - 1,
         size: this.pageSize,
@@ -200,14 +205,14 @@ export default Vue.extend({
       this.totalElements = collectionsPage.totalElements
       this.collections = collectionsPage.content
     },
-    getLibraryLazy (libraryId: string): LibraryDto | undefined {
+    getLibraryLazy(libraryId: string): LibraryDto | undefined {
       if (libraryId !== LIBRARIES_ALL) {
         return this.$store.getters.getLibraryById(libraryId)
       } else {
         return undefined
       }
     },
-    editSingleCollection (collection: CollectionDto) {
+    editSingleCollection(collection: CollectionDto) {
       this.$store.dispatch('dialogEditCollection', collection)
     },
   },

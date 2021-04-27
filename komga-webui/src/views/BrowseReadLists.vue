@@ -14,10 +14,14 @@
 
       <v-spacer/>
 
+      <library-navigation v-if="$vuetify.breakpoint.name !== 'xs'" :libraryId="libraryId"/>
+
+      <v-spacer/>
+
       <page-size-select v-model="pageSize"/>
     </toolbar-sticky>
 
-    <library-navigation :libraryId="libraryId"/>
+    <library-navigation v-if="$vuetify.breakpoint.name === 'xs'" :libraryId="libraryId" bottom-navigation/>
 
     <v-container fluid>
       <v-pagination
@@ -53,7 +57,7 @@ import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import {LIBRARY_CHANGED, READLIST_CHANGED, READLIST_DELETED} from '@/types/events'
 import Vue from 'vue'
 import {Location} from 'vue-router'
-import {LIBRARIES_ALL} from '@/types/library'
+import {LIBRARIES_ALL, LIBRARY_ROUTE} from '@/types/library'
 
 export default Vue.extend({
   name: 'BrowseReadLists',
@@ -93,6 +97,7 @@ export default Vue.extend({
     this.$eventHub.$off(LIBRARY_CHANGED, this.reloadLibrary)
   },
   mounted () {
+    this.$store.commit('setLibraryRoute', {id: this.libraryId, route: LIBRARY_ROUTE.READLISTS})
     this.pageSize = this.$store.state.persistedState.browsingPageSize || this.pageSize
 
     // restore from query param

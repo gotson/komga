@@ -144,14 +144,12 @@ class BookDtoDao(
   ): BookDto? =
     findSiblingReadList(readListId, bookId, userId, filterOnLibraryIds, next = true)
 
-  override fun findOnDeck(libraryIds: Collection<String>, userId: String, pageable: Pageable): Page<BookDto> {
-    val conditions = if (libraryIds.isEmpty()) DSL.trueCondition() else s.LIBRARY_ID.`in`(libraryIds)
-
+  override fun findOnDeck(userId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<BookDto> {
     val seriesIds = dsl.select(s.ID)
       .from(s)
       .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
-      .where(conditions)
+      .apply { filterOnLibraryIds?.let { where(s.LIBRARY_ID.`in`(it)) } }
       .groupBy(s.ID)
       .having(SeriesDtoDao.countUnread.ge(inline(1.toBigDecimal())))
       .and(SeriesDtoDao.countRead.ge(inline(1.toBigDecimal())))

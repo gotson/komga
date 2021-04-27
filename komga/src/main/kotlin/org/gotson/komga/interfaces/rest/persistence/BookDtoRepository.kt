@@ -37,5 +37,5 @@ interface BookDtoRepository {
     filterOnLibraryIds: Collection<String>?
   ): BookDto?
 
-  fun findOnDeck(libraryIds: Collection<String>, userId: String, pageable: Pageable): Page<BookDto>
+  fun findOnDeck(userId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<BookDto>
 }

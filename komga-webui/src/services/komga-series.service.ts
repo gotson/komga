@@ -43,9 +43,12 @@ export default class KomgaSeriesService {
     }
   }
 
-  async getNewSeries (pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
+  async getNewSeries (libraryId?: string, pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
     try {
       const params = { ...pageRequest } as any
+      if (libraryId) {
+        params.library_id = libraryId
+      }
       return (await this.http.get(`${API_SERIES}/new`, {
         params: params,
       })).data
@@ -58,9 +61,12 @@ export default class KomgaSeriesService {
     }
   }
 
-  async getUpdatedSeries (pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
+  async getUpdatedSeries (libraryId?: string, pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
     try {
       const params = { ...pageRequest } as any
+      if (libraryId) {
+        params.library_id = libraryId
+      }
       return (await this.http.get(`${API_SERIES}/updated`, {
         params: params,
       })).data

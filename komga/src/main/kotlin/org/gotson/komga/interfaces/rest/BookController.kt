@@ -153,16 +153,14 @@ class BookController(
   @GetMapping("api/v1/books/ondeck")
   fun getBooksOnDeck(
     @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
     @Parameter(hidden = true) page: Pageable
-  ): Page<BookDto> {
-    val libraryIds = if (principal.user.sharedAllLibraries) emptySet() else principal.user.sharedLibrariesIds
-
-    return bookDtoRepository.findOnDeck(
-      libraryIds,
+  ): Page<BookDto> =
+    bookDtoRepository.findOnDeck(
       principal.user.id,
+      principal.user.getAuthorizedLibraryIds(libraryIds),
       page
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
-  }
 
   @GetMapping("api/v1/books/{bookId}")
   fun getOneBook(
@@ -289,7 +287,10 @@ class BookController(
       val media = mediaRepository.findById(book.id)
       when (media.status) {
         Media.Status.UNKNOWN -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book has not been analyzed yet")
-        Media.Status.OUTDATED -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book is outdated and must be re-analyzed")
+        Media.Status.OUTDATED -> throw ResponseStatusException(
+          HttpStatus.NOT_FOUND,
+          "Book is outdated and must be re-analyzed"
+        )
         Media.Status.ERROR -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
         Media.Status.UNSUPPORTED -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book format is not supported")
         Media.Status.READY -> media.pages.mapIndexed { index, s ->
@@ -319,7 +320,10 @@ class BookController(
     request: WebRequest,
     @PathVariable bookId: String,
     @PathVariable pageNumber: Int,
-    @Parameter(description = "Convert the image to the provided format.", schema = Schema(allowableValues = ["jpeg", "png"]))
+    @Parameter(
+      description = "Convert the image to the provided format.",
+      schema = Schema(allowableValues = ["jpeg", "png"])
+    )
     @RequestParam(value = "convert", required = false) convertTo: String?,
     @Parameter(description = "If set to true, pages will start at index 0. If set to false, pages will start at index 1.")
     @RequestParam(value = "zero_based", defaultValue = "false") zeroBasedIndex: Boolean

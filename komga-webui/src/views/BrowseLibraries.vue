@@ -14,6 +14,10 @@
 
       <v-spacer/>
 
+      <library-navigation v-if="$vuetify.breakpoint.name !== 'xs'" :libraryId="libraryId"/>
+
+      <v-spacer/>
+
       <page-size-select v-model="pageSize"/>
 
       <v-btn icon @click="drawer = !drawer">
@@ -30,7 +34,7 @@
       @edit="editMultipleSeries"
     />
 
-    <library-navigation :libraryId="libraryId"/>
+    <library-navigation v-if="$vuetify.breakpoint.name === 'xs'" :libraryId="libraryId" bottom-navigation/>
 
     <filter-drawer v-model="drawer">
       <template v-slot:default>
@@ -106,7 +110,7 @@ import {SeriesStatus, SeriesStatusKeyValue} from '@/types/enum-series'
 import {LIBRARY_CHANGED, LIBRARY_DELETED, SERIES_CHANGED} from '@/types/events'
 import Vue from 'vue'
 import {Location} from 'vue-router'
-import {LIBRARIES_ALL} from '@/types/library'
+import {LIBRARIES_ALL, LIBRARY_ROUTE} from '@/types/library'
 import FilterDrawer from '@/components/FilterDrawer.vue'
 import SortList from '@/components/SortList.vue'
 import FilterPanels from '@/components/FilterPanels.vue'
@@ -186,6 +190,7 @@ export default Vue.extend({
     this.$eventHub.$off(LIBRARY_CHANGED, this.reloadLibrary)
   },
   async mounted() {
+    this.$store.commit('setLibraryRoute', {id: this.libraryId, route: LIBRARY_ROUTE.BROWSE})
     this.pageSize = this.$store.state.persistedState.browsingPageSize || this.pageSize
 
     // restore from query param
@@ -428,8 +433,8 @@ export default Vue.extend({
       this.totalElements = seriesPage.totalElements
       this.series = seriesPage.content
     },
-    getLibraryLazy(libraryId: any): LibraryDto | undefined {
-      if (libraryId !== 0) {
+    getLibraryLazy (libraryId: string): LibraryDto | undefined {
+      if (libraryId !== LIBRARIES_ALL) {
         return this.$store.getters.getLibraryById(libraryId)
       } else {
         return undefined

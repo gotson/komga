@@ -26,6 +26,7 @@ export const persistedModule: Module<any, any> = {
     library: {
       filter: {},
       sort: {},
+      route: {},
     },
   },
   getters: {
@@ -37,6 +38,9 @@ export const persistedModule: Module<any, any> = {
     },
     getLibrarySort: (state) => (id: string) => {
       return state.library.sort[id]
+    },
+    getLibraryRoute: (state) => (id: string) => {
+      return state.library.route[id]
     },
   },
   mutations: {
@@ -81,6 +85,9 @@ export const persistedModule: Module<any, any> = {
     },
     setLibrarySort(state, {id, sort}) {
       state.library.sort[id] = sort
+    },
+    setLibraryRoute(state, {id, route}) {
+      state.library.route[id] = route
     },
   },
 }
