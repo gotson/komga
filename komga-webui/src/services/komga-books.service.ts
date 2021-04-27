@@ -1,5 +1,5 @@
-import { AxiosInstance } from 'axios'
-import { BookDto, BookMetadataUpdateDto, PageDto, ReadProgressUpdateDto } from '@/types/komga-books'
+import {AxiosInstance} from 'axios'
+import {BookDto, BookMetadataUpdateDto, PageDto, ReadProgressUpdateDto} from '@/types/komga-books'
 
 const qs = require('qs')
 
@@ -40,10 +40,14 @@ export default class KomgaBooksService {
     }
   }
 
-  async getBooksOnDeck (pageRequest?: PageRequest): Promise<Page<BookDto>> {
+  async getBooksOnDeck (libraryId?: string, pageRequest?: PageRequest): Promise<Page<BookDto>> {
     try {
+      const params = { ...pageRequest } as any
+      if (libraryId) {
+        params.library_id = libraryId
+      }
       return (await this.http.get(`${API_BOOKS}/ondeck`, {
-        params: { ...pageRequest },
+        params: params,
       })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve books on deck'
