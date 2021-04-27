@@ -34,7 +34,6 @@ allprojects {
     gradleReleaseChannel = "current"
     checkConstraints = true
   }
-
 }
 
 tasks.wrapper {
