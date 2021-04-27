@@ -1,4 +1,3 @@
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -68,9 +67,9 @@ dependencies {
   implementation("org.jsoup:jsoup:1.13.1")
 
   implementation("net.coobird:thumbnailator:0.4.13")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.6.4")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.6.4")
-  runtimeOnly(files("$projectDir/libs/webp-imageio-decoder-plugin-0.2.jar"))
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.7.0")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.7.0")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-webp:3.7.0")
   implementation("com.github.gotson:webp-imageio:0.2.0")
   // support for jpeg2000
   runtimeOnly("com.github.jai-imageio:jai-imageio-jpeg2000:1.4.0")
@@ -82,6 +81,8 @@ dependencies {
   implementation("com.jakewharton.byteunits:byteunits:0.9.1")
 
   implementation("com.github.f4b6a3:tsid-creator:3.0.1")
+
+  implementation("com.github.ben-manes.caffeine:caffeine:2.9.0")
 
 //  While waiting for https://github.com/xerial/sqlite-jdbc/pull/491 and https://github.com/xerial/sqlite-jdbc/pull/494
 //  runtimeOnly("org.xerial:sqlite-jdbc:3.32.3.2")
@@ -107,7 +108,11 @@ tasks {
   withType<KotlinCompile> {
     kotlinOptions {
       jvmTarget = "1.8"
-      freeCompilerArgs = listOf("-Xjsr305=strict", "-Xopt-in=kotlin.time.ExperimentalTime")
+      freeCompilerArgs = listOf(
+        "-Xjsr305=strict",
+        "-Xopt-in=kotlin.time.ExperimentalTime",
+        "-Xopt-in=kotlin.io.path.ExperimentalPathApi"
+      )
     }
   }
 
@@ -249,20 +254,6 @@ tasks.named<nu.studer.gradle.jooq.JooqGenerate>("generateJooq") {
 openApi {
   outputDir.set(file("$projectDir/docs"))
   forkProperties.set("-Dspring.profiles.active=claim")
-}
-
-fun isNonStable(version: String): Boolean {
-  val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
-  val regex = "^[0-9,.v-]+(-r)?$".toRegex()
-  val isStable = stableKeyword || regex.matches(version)
-  return isStable.not()
-}
-tasks.named("dependencyUpdates", DependencyUpdatesTask::class.java).configure {
-  // disallow release candidates as upgradable versions from stable versions
-  rejectVersionIf {
-    isNonStable(candidate.version) && !isNonStable(currentVersion)
-  }
-  gradleReleaseChannel = "current"
 }
 
 configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {

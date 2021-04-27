@@ -17,6 +17,7 @@ import komgaLibraries from './plugins/komga-libraries.plugin'
 import komgaReferential from './plugins/komga-referential.plugin'
 import komgaSeries from './plugins/komga-series.plugin'
 import komgaUsers from './plugins/komga-users.plugin'
+import komgaTransientBooks from './plugins/komga-transientbooks.plugin'
 import vuetify from './plugins/vuetify'
 import './public-path'
 import router from './router'
@@ -35,6 +36,7 @@ Vue.use(komgaReadLists, {http: Vue.prototype.$http})
 Vue.use(komgaBooks, {http: Vue.prototype.$http})
 Vue.use(komgaReferential, {http: Vue.prototype.$http})
 Vue.use(komgaClaim, {http: Vue.prototype.$http})
+Vue.use(komgaTransientBooks, {http: Vue.prototype.$http})
 Vue.use(komgaUsers, {store: store, http: Vue.prototype.$http})
 Vue.use(komgaLibraries, {store: store, http: Vue.prototype.$http})
 Vue.use(actuator, {http: Vue.prototype.$http})

@@ -104,7 +104,7 @@ import ItemBrowser from '@/components/ItemBrowser.vue'
 import LibraryNavigation from '@/components/LibraryNavigation.vue'
 import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
-import {parseQueryFilter, parseQuerySort} from '@/functions/query-params'
+import {parseQueryParam, parseQuerySort} from '@/functions/query-params'
 import {ReadStatus} from '@/types/enum-books'
 import {SeriesStatus, SeriesStatusKeyValue} from '@/types/enum-series'
 import {LIBRARY_CHANGED, LIBRARY_DELETED, SERIES_CHANGED} from '@/types/events'
@@ -288,7 +288,7 @@ export default Vue.extend({
 
       // load dynamic filters
       this.$set(this.filterOptions, 'genre', toNameValue(await this.$komgaReferential.getGenres(requestLibraryId)))
-      this.$set(this.filterOptions, 'tag', toNameValue(await this.$komgaReferential.getTags(requestLibraryId)))
+      this.$set(this.filterOptions, 'tag', toNameValue(await this.$komgaReferential.getSeriesTags(requestLibraryId)))
       this.$set(this.filterOptions, 'publisher', toNameValue(await this.$komgaReferential.getPublishers(requestLibraryId)))
       this.$set(this.filterOptions, 'language', (await this.$komgaReferential.getLanguages(requestLibraryId)))
       this.$set(this.filterOptions, 'ageRating', toNameValue(await this.$komgaReferential.getAgeRatings(requestLibraryId)))
@@ -298,23 +298,42 @@ export default Vue.extend({
         this.$set(this.filterOptions, role, role in grouped ? toNameValue(grouped[role]) : [])
       })
 
-      // filter query params with available filter values
+      // get filter from query params or local storage and validate with available filter values
+      let activeFilters: any
       if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating || route.query.publisher || authorRoles.some(role => role in route.query)) {
-        this.$set(this.filters, 'status', parseQueryFilter(route.query.status, Object.keys(SeriesStatus)))
-        this.$set(this.filters, 'readStatus', parseQueryFilter(route.query.readStatus, Object.keys(ReadStatus)))
-        this.$set(this.filters, 'genre', parseQueryFilter(route.query.genre, this.filterOptions.genre.map(x => x.value)))
-        this.$set(this.filters, 'tag', parseQueryFilter(route.query.tag, this.filterOptions.tag.map(x => x.value)))
-        this.$set(this.filters, 'publisher', parseQueryFilter(route.query.publisher, this.filterOptions.publisher.map(x => x.value)))
-        this.$set(this.filters, 'language', parseQueryFilter(route.query.language, this.filterOptions.language.map(x => x.value)))
-        this.$set(this.filters, 'ageRating', parseQueryFilter(route.query.ageRating, this.filterOptions.ageRating.map(x => x.value)))
-        this.$set(this.filters, 'releaseDate', parseQueryFilter(route.query.releaseDate, this.filterOptions.releaseDate.map(x => x.value)))
+        activeFilters = {
+          status: parseQueryParam(route.query.status),
+          readStatus: parseQueryParam(route.query.readStatus),
+          genre: parseQueryParam(route.query.genre),
+          tag: parseQueryParam(route.query.tag),
+          publisher: parseQueryParam(route.query.publisher),
+          language: parseQueryParam(route.query.language),
+          ageRating: parseQueryParam(route.query.ageRating),
+          releaseDate: parseQueryParam(route.query.releaseDate),
+        }
         authorRoles.forEach((role: string) => {
-          //@ts-ignore
-          this.$set(this.filters, role, parseQueryFilter(route.query[role], this.filterOptions[role].map((x: NameValue) => x.value)))
+          activeFilters[role] = parseQueryParam(route.query[role])
         })
       } else {
-        this.filters = this.$store.getters.getLibraryFilter(route.params.libraryId) || {} as FiltersActive
+        activeFilters = this.$store.getters.getLibraryFilter(route.params.libraryId) || {} as FiltersActive
       }
+      this.filters = this.validateFilters(activeFilters)
+    },
+    validateFilters(filters: FiltersActive): FiltersActive {
+      const validFilter = {
+        status: filters.status?.filter(x => Object.keys(SeriesStatus).includes(x)) || [],
+        readStatus: filters.readStatus?.filter(x => Object.keys(ReadStatus).includes(x)) || [],
+        genre: filters.genre?.filter(x => this.filterOptions.genre.map(n => n.value).includes(x)) || [],
+        tag: filters.tag?.filter(x => this.filterOptions.tag.map(n => n.value).includes(x)) || [],
+        publisher: filters.publisher?.filter(x => this.filterOptions.publisher.map(n => n.value).includes(x)) || [],
+        language: filters.language?.filter(x => this.filterOptions.language.map(n => n.value).includes(x)) || [],
+        ageRating: filters.ageRating?.filter(x => this.filterOptions.ageRating.map(n => n.value).includes(x)) || [],
+        releaseDate: filters.releaseDate?.filter(x => this.filterOptions.releaseDate.map(n => n.value).includes(x)) || [],
+      } as any
+      authorRoles.forEach((role: string) => {
+        validFilter[role] = filters[role]?.filter(x => ((this.filterOptions as any)[role] as NameValue[]).map(n => n.value).includes(x)) || []
+      })
+      return validFilter
     },
     libraryDeleted(event: EventLibraryDeleted) {
       if (event.id === this.libraryId) {

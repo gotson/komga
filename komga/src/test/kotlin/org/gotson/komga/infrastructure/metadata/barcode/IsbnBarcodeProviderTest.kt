@@ -5,6 +5,7 @@ import io.mockk.mockk
 import org.apache.commons.validator.routines.ISBNValidator
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.BookPage
+import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.service.BookAnalyzer
@@ -25,7 +26,7 @@ class IsbnBarcodeProviderTest {
     val media = Media(pages = listOf(BookPage("page", "image/jpeg")))
 
     // when
-    val patch = isbnBarcodeProvider.getBookMetadataFromBook(book, media)
+    val patch = isbnBarcodeProvider.getBookMetadataFromBook(BookWithMedia(book, media))
 
     // then
     assertThat(patch?.isbn).isEqualTo("9782811632397")
@@ -40,7 +41,7 @@ class IsbnBarcodeProviderTest {
     val media = Media(pages = listOf(BookPage("page", "image/jpeg")))
 
     // when
-    val patch = isbnBarcodeProvider.getBookMetadataFromBook(book, media)
+    val patch = isbnBarcodeProvider.getBookMetadataFromBook(BookWithMedia(book, media))
 
     // then
     assertThat(patch).isNull()
@@ -56,7 +57,7 @@ class IsbnBarcodeProviderTest {
     val media = Media(pages = listOf(BookPage("page", "image/jpeg")))
 
     // when
-    val patch = isbnBarcodeProvider.getBookMetadataFromBook(book, media)
+    val patch = isbnBarcodeProvider.getBookMetadataFromBook(BookWithMedia(book, media))
 
     // then
     assertThat(patch).isNull()

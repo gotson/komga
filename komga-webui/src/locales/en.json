@@ -95,7 +95,8 @@
       "show_hide_toolbars": "Show/hide toolbars",
       "vertical": "Vertical",
       "webtoon": "Webtoon"
-    }
+    },
+    "tooltip_incognito": "Read progress will not be saved"
   },
   "browse_book": {
     "comment": "COMMENT",
@@ -353,6 +354,44 @@
     "shortcut_help": {
       "label_description": "Description",
       "label_key": "Key"
+    },
+    "series_picker": {
+      "title": "Select Series",
+      "label_search_series": "Search Series"
+    },
+    "filename_chooser": {
+      "title": "Destination File Name",
+      "label_source_filename": "Source File Name",
+      "field_destination_filename": "Destination file name",
+      "button_choose": "Choose",
+      "table": {
+        "order": "Order",
+        "existing_file": "Existing File"
+      }
+    },
+    "transient_book_details": {
+      "title": "Book Details",
+      "title_comparison": "Book Comparison",
+      "label_candidate": "Candidate",
+      "label_existing": "Existing",
+      "label_name": "Name",
+      "label_size": "Size",
+      "label_format": "Format",
+      "label_pages": "Pages",
+      "pages_table": {
+        "index": "Index",
+        "filename": "File name",
+        "media_type": "Media type",
+        "width": "Width",
+        "height": "Height"
+      }
+    },
+    "transient_book_viewer": {
+      "title": "Inspect Book",
+      "title_comparison": "Book Comparison",
+      "label_candidate": "Candidate",
+      "label_existing": "Existing",
+      "page_of_pages": "{page} / {pages}"
     }
   },
   "enums": {
@@ -374,6 +413,10 @@
       "ENDED": "Ended",
       "HIATUS": "Hiatus",
       "ONGOING": "Ongoing"
+    },
+    "copy_mode": {
+      "HARDLINK": "Hardlink/Copy Files",
+      "MOVE": "Move Files"
     }
   },
   "error_codes": {
@@ -392,7 +435,9 @@
     "ERR_1012": "No match for series",
     "ERR_1013": "No unique match for book number within series",
     "ERR_1014": "No match for book number within series",
-    "ERR_1015": "Error while deserializing ComicRack ReadingList"
+    "ERR_1015": "Error while deserializing ComicRack ReadingList",
+    "ERR_1016": "Directory not accessible or not a directory",
+    "ERR_1017": "Cannot scan folder that is part of an existing library"
   },
   "filter": {
     "age_rating": "age rating",
@@ -520,5 +565,28 @@
     "add_library": "Add library",
     "no_libraries_yet": "No libraries have been added yet!",
     "welcome_message": "Welcome to Komga"
+  },
+  "book_import": {
+    "title": "Import",
+    "field_import_path": "Import from folder",
+    "button_browse": "Browse",
+    "button_scan": "Scan",
+    "table": {
+      "file_name": "File name",
+      "series": "Series",
+      "number": "Number",
+      "destination_name": "Destination name"
+    },
+    "button_select_series": "Select Series",
+    "button_import": "Import",
+    "row": {
+      "warning_upgrade": "Existing book will be upgraded",
+      "error_analyze_first": "Book needs to be analyzed first",
+      "error_only_import_no_errors": "Can only import books without errors",
+      "error_choose_series": "Choose a series"
+    },
+    "warning_early_feature": "Book Import is still an early feature, and must be used with caution. Make sure your source\n      and destination files\n      are backed up before using the Import feature.",
+    "info_part1": "This screen lets you import files that are outside your existing libraries. You can only import files into\n        existing Series, in which case Komga will move or copy the files into the directory of the chosen Series.",
+    "info_part2": "If you choose a number for a book, and a book already exists with that number, then\n        you will be able to compare the 2 books. If you decide to import the book, Komga will upgrade the existing book\n        with the new one, effectively replacing the old file with the new."
   }
 }

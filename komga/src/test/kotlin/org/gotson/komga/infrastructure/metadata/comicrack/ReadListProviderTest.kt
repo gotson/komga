@@ -21,12 +21,12 @@ class ReadListProviderTest {
       books = listOf(
         Book().apply {
           series = "series 1"
-          number = 4
+          number = " 4 "
           volume = 2005
         },
         Book().apply {
           series = "series 2"
-          number = 1
+          number = "1"
         },
       )
     }
@@ -44,12 +44,12 @@ class ReadListProviderTest {
 
       with(books[0]) {
         assertThat(series).isEqualTo("series 1 (2005)")
-        assertThat(number).isEqualTo(4)
+        assertThat(number).isEqualTo("4")
       }
 
       with(books[1]) {
         assertThat(series).isEqualTo("series 2")
-        assertThat(number).isEqualTo(1)
+        assertThat(number).isEqualTo("1")
       }
     }
   }
@@ -62,12 +62,12 @@ class ReadListProviderTest {
       books = listOf(
         Book().apply {
           series = " "
-          number = 4
+          number = "4"
           volume = 2005
         },
         Book().apply {
           series = null
-          number = 1
+          number = "1"
         },
         Book().apply {
           series = "Series"
@@ -110,12 +110,12 @@ class ReadListProviderTest {
       books = listOf(
         Book().apply {
           series = "series 1"
-          number = 4
+          number = "4"
           volume = 2005
         },
         Book().apply {
           series = "series 2"
-          number = 1
+          number = "1"
         },
       )
     }
@@ -137,12 +137,12 @@ class ReadListProviderTest {
       books = listOf(
         Book().apply {
           series = "series 1"
-          number = 4
+          number = "4"
           volume = 2005
         },
         Book().apply {
           series = "series 2"
-          number = 1
+          number = "1"
         },
       )
     }

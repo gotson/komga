@@ -17,6 +17,8 @@ import java.nio.file.attribute.BasicFileAttributes
 import java.nio.file.attribute.FileTime
 import java.time.LocalDateTime
 import java.time.ZoneId
+import kotlin.io.path.exists
+import kotlin.io.path.readAttributes
 import kotlin.time.measureTime
 
 private val logger = KotlinLogging.logger {}
@@ -35,7 +37,7 @@ class FileSystemScanner(
     logger.info { "Force directory modified time: $forceDirectoryModifiedTime" }
 
     if (!(Files.isDirectory(root) && Files.isReadable(root)))
-      throw DirectoryNotFoundException("Library root is not accessible: $root")
+      throw DirectoryNotFoundException("Folder is not accessible: $root", "ERR_1016")
 
     val scannedSeries = mutableMapOf<Series, List<Book>>()
 
@@ -69,12 +71,7 @@ class FileSystemScanner(
               supportedExtensions.contains(FilenameUtils.getExtension(file.fileName.toString()).toLowerCase()) &&
               !file.fileName.toString().startsWith(".")
             ) {
-              val book = Book(
-                name = FilenameUtils.getBaseName(file.fileName.toString()),
-                url = file.toUri().toURL(),
-                fileLastModified = attrs.getUpdatedTime(),
-                fileSize = attrs.size()
-              )
+              val book = pathToBook(file, attrs)
               file.parent.let { key ->
                 if (pathToBooks.containsKey(key)) pathToBooks[key]!!.add(book)
                 else pathToBooks[key] = mutableListOf(book)
@@ -118,6 +115,20 @@ class FileSystemScanner(
 
     return scannedSeries
   }
+
+  fun scanFile(path: Path): Book? {
+    if (!path.exists()) return null
+
+    return pathToBook(path, path.readAttributes())
+  }
+
+  private fun pathToBook(path: Path, attrs: BasicFileAttributes): Book =
+    Book(
+      name = FilenameUtils.getBaseName(path.fileName.toString()),
+      url = path.toUri().toURL(),
+      fileLastModified = attrs.getUpdatedTime(),
+      fileSize = attrs.size()
+    )
 }
 
 fun BasicFileAttributes.getUpdatedTime(): LocalDateTime =

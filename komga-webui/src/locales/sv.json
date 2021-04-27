@@ -26,21 +26,47 @@
     "penciller": "formgivare",
     "writer": "författare"
   },
+  "book_card": {
+    "error": "Fel",
+    "unknown": "Ska analyseras",
+    "unsupported": "Stödjs inte"
+  },
+  "book_import": {
+    "button_browse": "Bläddra",
+    "button_import": "Importera",
+    "button_scan": "Skanna",
+    "button_select_series": "Välj serie",
+    "field_import_path": "Importera från mapp",
+    "row": {
+      "error_analyze_first": "Boken måste analyseras först",
+      "error_choose_series": "Välj en serie",
+      "error_only_import_no_errors": "Kan bara importera böcker utan fel",
+      "warning_upgrade": "Befintlig bok kommer att uppgraderas"
+    },
+    "table": {
+      "destination_name": "Målnamn",
+      "file_name": "Filnamn",
+      "number": "Nummer",
+      "series": "Serie"
+    },
+    "title": "Importera"
+  },
   "bookreader": {
     "beginning_of_book": "Du är i början av boken.",
     "changing_reading_direction": "Byt läsriktning till",
     "cycling_page_layout": "Växla Sidlayout",
     "cycling_scale": "Växla Skala",
     "cycling_side_padding": "Växla Spaltfyllnad",
+    "download_current_page": "Ladda ner nuvarande sida",
     "end_of_book": "Du har kommit till slutet av boken.",
     "from_series_metadata": "från seriens metadata",
-    "move_next": "Tryck \"Nästa\" igen för att gå till nästa bok.",
-    "move_next_exit": "Tryck \"Nästa\" igen för att stänga läsaren.",
-    "move_previous": "Tryck \"Föregående\" igen för att gå till föregående bok.",
+    "move_next": "Tryck ”Nästa” igen för att gå till nästa bok.",
+    "move_next_exit": "Tryck ”Nästa” igen för att stänga läsaren.",
+    "move_previous": "Tryck ”Föregående” igen för att gå till föregående bok.",
     "paged_reader_layout": {
       "double": "Dubbla sidor",
       "double_no_cover": "Dubbla sidor (inget omslag)",
-      "single": "En sida"
+      "single": "Enkelsidig"
     },
     "reader_settings": "Läsinställningar",
     "scale_type": {
@@ -161,7 +187,7 @@
     "book_number": "Boknummer: {name}",
     "book_series": "Serie: {name}",
     "button_import": "Importera",
-    "comicrack_preambule_html": "Du kan importera existerande ComicRack Läslistor i <code>.cbl</code>-format.<br/>Komga kommer att försöka matcha innehållet med serier och böker i dina bibliotek.",
+    "comicrack_preambule_html": "Du kan importera existerande ComicRack Läslistor i <code>.cbl</code>-format.<br>Komga kommer att försöka matcha innehållet med serier och böker i dina bibliotek.",
     "field_files_label": "ComicRack Läslistor (.cbl)",
     "import_read_lists": "Importera Läslistor",
     "imported_as": "Importerad som {name}",
@@ -201,28 +227,28 @@
     "delete_collection": {
       "button_cancel": "Avbryt",
       "button_confirm": "Radera",
-      "confirm_delete": "Ja, radera samlingen \"{name}\"",
+      "confirm_delete": "Ja, radera samlingen ”{name}”",
       "dialog_title": "Radera samling",
       "warning_html": "Samlingen <b>{name}</b> tas bort från den här servern. Dina mediefiler påverkas inte. Detta <b>kan inte</b> ångras. Fortsätta?"
     },
     "delete_library": {
       "button_cancel": "Avbryt",
       "button_confirm": "Radera",
-      "confirm_delete": "Ja, redera biblioteket \"{name}\"",
+      "confirm_delete": "Ja, redera biblioteket ”{name}”",
       "title": "Redera bibliotek",
       "warning_html": "Biblioteket <b>{name}</b> kommer att tas bort från den här servern. Dina mediefiler påverkas inte. Detta <b>kan inte</b> ångras. Fortsätta?"
     },
     "delete_readlist": {
       "button_cancel": "Avbryt",
       "button_confirm": "Radera",
-      "confirm_delete": "Ja, radera läslistan \"{name}\"",
+      "confirm_delete": "Ja, radera läslistan ”{name}”",
       "dialog_title": "Radera läslista",
       "warning_html": "Läslistan <b>{name}</b> tas bort från den här servern. Dina mediefiler påverkas inte. Detta <b>kan inte</b> ångras. Fortsätta?"
     },
     "delete_user": {
       "button_cancel": "Avbryt",
       "button_confirm": "Radera",
-      "confirm_delete": "Ja, radera användare \"{name}\"",
+      "confirm_delete": "Ja, radera användare ”{name}”",
       "dialog_title": "Radera användare",
       "warning_html": "Användaren <b>{name}</b> kommer att tas bort från den här servern. Detta <b>kan inte</b> ångras. Fortsätta?"
     },
@@ -329,6 +355,16 @@
       "dialog_title_default": "Filhanterare",
       "parent_directory": "Ovanstående"
     },
+    "filename_chooser": {
+      "button_choose": "Välj",
+      "field_destination_filename": "Namn på målfil",
+      "label_source_filename": "Källfilens namn",
+      "table": {
+        "existing_file": "Befintlig fil",
+        "order": "Ordning"
+      },
+      "title": "Namn på målfil"
+    },
     "password_change": {
       "button_cancel": "Avbryt",
       "button_confirm": "Ändra lösenord",
@@ -337,6 +373,10 @@
       "field_new_password_error": "Nytt lösenord krävs.",
       "field_repeat_password": "Upprepa nytt lösenord",
       "field_repeat_password_error": "Lösenorden måste vara identiska."
+    },
+    "series_picker": {
+      "label_search_series": "Sök serie",
+      "title": "Välj serie"
     },
     "server_stop": {
       "button_cancel": "Avbryt",
@@ -347,9 +387,37 @@
     "shortcut_help": {
       "label_description": "Beskrivning",
       "label_key": "Nyckel"
+    },
+    "transient_book_details": {
+      "label_candidate": "Kandidat",
+      "label_existing": "Befintlig",
+      "label_format": "Format",
+      "label_name": "Namn",
+      "label_pages": "Sidor",
+      "label_size": "Storlek",
+      "pages_table": {
+        "filename": "Filnamn",
+        "height": "Höjd",
+        "index": "Index",
+        "media_type": "Mediatyp",
+        "width": "Bredd"
+      },
+      "title": "Bokinformation",
+      "title_comparison": "Bokjämförelse"
+    },
+    "transient_book_viewer": {
+      "label_candidate": "Kandidat",
+      "label_existing": "Befintlig",
+      "page_of_pages": "{page} / {pages}",
+      "title": "Inspektera boken",
+      "title_comparison": "Bokjämförelse"
     }
   },
   "enums": {
+    "copy_mode": {
+      "HARDLINK": "Hårdlänk/kopiera filer",
+      "MOVE": "Flytta filer"
+    },
     "media_status": {
       "ERROR": "Fel",
       "OUTDATED": "Föråldrad",
@@ -374,8 +442,8 @@
     "ERR_1000": "Filen kunde inte nås under analysen",
     "ERR_1001": "Mediatyp är inte supporterad",
     "ERR_1002": "Krypterade RAR-arkiv är inte supporterade",
-    "ERR_1003": "\"Solid RAR\"-arkiv är inte supporterade",
-    "ERR_1004": "\"Multi Volume RAR\"-arkiv är inte supporterade",
+    "ERR_1003": "Solid RAR-arkiv är inte supporterade",
+    "ERR_1004": "Multi Volume RAR-arkiv är inte supporterade",
     "ERR_1005": "Okänt fel vid analys av bok",
     "ERR_1006": "Boken innehåller inte några sidor",
     "ERR_1007": "Vissa poster kunde inte analyseras",
@@ -462,7 +530,7 @@
     "no_results": "Sökningen gav inga resultat",
     "search": "Sök",
     "search_for_something_else": "Försök söka efter något annat",
-    "search_results_for": "Sökresultat för \"{name}\""
+    "search_results_for": "Sökresultat för ”{name}”"
   },
   "searchbox": {
     "no_results": "Inga resultat",

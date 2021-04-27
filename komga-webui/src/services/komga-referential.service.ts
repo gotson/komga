@@ -70,19 +70,48 @@ export default class KomgaReferentialService {
     }
   }
 
-  async getTags(libraryId?: string, seriesId?: string, collectionId?: string): Promise<string[]> {
+  async getTags(): Promise<string[]> {
+    try {
+      return (await this.http.get('/api/v1/tags')).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve tags'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async getSeriesTags(libraryId?: string, collectionId?: string): Promise<string[]> {
     try {
       const params = {} as any
       if (libraryId) params.library_id = libraryId
-      if (seriesId) params.series_id = seriesId
       if (collectionId) params.collection_id = collectionId
 
-      return (await this.http.get('/api/v1/tags', {
+      return (await this.http.get('/api/v1/tags/series', {
         params: params,
         paramsSerializer: params => qs.stringify(params, {indices: false}),
       })).data
     } catch (e) {
-      let msg = 'An error occurred while trying to retrieve tags'
+      let msg = 'An error occurred while trying to retrieve series tags'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async getBookTags(seriesId?: string): Promise<string[]> {
+    try {
+      const params = {} as any
+      if (seriesId) params.series_id = seriesId
+
+      return (await this.http.get('/api/v1/tags/book', {
+        params: params,
+        paramsSerializer: params => qs.stringify(params, {indices: false}),
+      })).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve book tags'
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

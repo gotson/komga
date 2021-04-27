@@ -121,7 +121,7 @@ import FilterPanels from '@/components/FilterPanels.vue'
 import FilterList from '@/components/FilterList.vue'
 import {Location} from 'vue-router'
 import EmptyState from '@/components/EmptyState.vue'
-import {parseQueryFilter} from '@/functions/query-params'
+import {parseQueryParam} from '@/functions/query-params'
 import {SeriesDto} from "@/types/komga-series";
 import {authorRoles} from "@/types/author-roles";
 import {groupAuthorsByRole} from "@/functions/authors";
@@ -258,7 +258,7 @@ export default Vue.extend({
         value: x.id,
       })))
       this.$set(this.filterOptions, 'genre', toNameValue(await this.$komgaReferential.getGenres(undefined, collectionId)))
-      this.$set(this.filterOptions, 'tag', toNameValue(await this.$komgaReferential.getTags(undefined, undefined, collectionId)))
+      this.$set(this.filterOptions, 'tag', toNameValue(await this.$komgaReferential.getSeriesTags(undefined, collectionId)))
       this.$set(this.filterOptions, 'publisher', toNameValue(await this.$komgaReferential.getPublishers(undefined, collectionId)))
       this.$set(this.filterOptions, 'language', (await this.$komgaReferential.getLanguages(undefined, collectionId)))
       this.$set(this.filterOptions, 'ageRating', toNameValue(await this.$komgaReferential.getAgeRatings(undefined, collectionId)))
@@ -268,24 +268,44 @@ export default Vue.extend({
         this.$set(this.filterOptions, role, role in grouped ? toNameValue(grouped[role]) : [])
       })
 
-      // filter query params with available filter values
+      // get filter from query params or local storage and validate with available filter values
+      let activeFilters: any
       if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating || route.query.library || route.query.publisher || authorRoles.some(role => role in route.query)) {
-        this.$set(this.filters, 'status', parseQueryFilter(route.query.status, Object.keys(SeriesStatus)))
-        this.$set(this.filters, 'readStatus', parseQueryFilter(route.query.readStatus, Object.keys(ReadStatus)))
-        this.$set(this.filters, 'library', parseQueryFilter(route.query.library, this.filterOptions.library.map(x => x.value)))
-        this.$set(this.filters, 'genre', parseQueryFilter(route.query.genre, this.filterOptions.genre.map(x => x.value)))
-        this.$set(this.filters, 'tag', parseQueryFilter(route.query.tag, this.filterOptions.tag.map(x => x.value)))
-        this.$set(this.filters, 'publisher', parseQueryFilter(route.query.publisher, this.filterOptions.publisher.map(x => x.value)))
-        this.$set(this.filters, 'language', parseQueryFilter(route.query.language, this.filterOptions.language.map(x => x.value)))
-        this.$set(this.filters, 'ageRating', parseQueryFilter(route.query.ageRating, this.filterOptions.ageRating.map(x => x.value)))
-        this.$set(this.filters, 'releaseDate', parseQueryFilter(route.query.releaseDate, this.filterOptions.releaseDate.map(x => x.value)))
+        activeFilters = {
+          status: parseQueryParam(route.query.status),
+          readStatus: parseQueryParam(route.query.readStatus),
+          library: parseQueryParam(route.query.library),
+          genre: parseQueryParam(route.query.genre),
+          tag: parseQueryParam(route.query.tag),
+          publisher: parseQueryParam(route.query.publisher),
+          language: parseQueryParam(route.query.language),
+          ageRating: parseQueryParam(route.query.ageRating),
+          releaseDate: parseQueryParam(route.query.releaseDate),
+        }
         authorRoles.forEach((role: string) => {
-          //@ts-ignore
-          this.$set(this.filters, role, parseQueryFilter(route.query[role], this.filterOptions[role].map((x: NameValue) => x.value)))
+          activeFilters[role] = parseQueryParam(route.query[role])
         })
       } else {
-        this.filters = this.$store.getters.getCollectionFilter(route.params.collectionId) || {} as FiltersActive
+        activeFilters = this.$store.getters.getCollectionFilter(route.params.collectionId) || {} as FiltersActive
       }
+      this.filters = this.validateFilters(activeFilters)
+    },
+    validateFilters(filters: FiltersActive): FiltersActive {
+      const validFilter = {
+        status: filters.status?.filter(x => Object.keys(SeriesStatus).includes(x)) || [],
+        readStatus: filters.readStatus?.filter(x => Object.keys(ReadStatus).includes(x)) || [],
+        library: filters.library?.filter(x => this.filterOptions.library.map(n => n.value).includes(x)) || [],
+        genre: filters.genre?.filter(x => this.filterOptions.genre.map(n => n.value).includes(x)) || [],
+        tag: filters.tag?.filter(x => this.filterOptions.tag.map(n => n.value).includes(x)) || [],
+        publisher: filters.publisher?.filter(x => this.filterOptions.publisher.map(n => n.value).includes(x)) || [],
+        language: filters.language?.filter(x => this.filterOptions.language.map(n => n.value).includes(x)) || [],
+        ageRating: filters.ageRating?.filter(x => this.filterOptions.ageRating.map(n => n.value).includes(x)) || [],
+        releaseDate: filters.releaseDate?.filter(x => this.filterOptions.releaseDate.map(n => n.value).includes(x)) || [],
+      } as any
+      authorRoles.forEach((role: string) => {
+        validFilter[role] = filters[role]?.filter(x => ((this.filterOptions as any)[role] as NameValue[]).map(n => n.value).includes(x)) || []
+      })
+      return validFilter
     },
     setWatches() {
       this.filterUnwatch = this.$watch('filters', (val) => {

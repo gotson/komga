@@ -3,10 +3,9 @@ package org.gotson.komga.infrastructure.metadata.comicrack
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Author
-import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatch
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
-import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.gotson.komga.domain.service.BookAnalyzer
@@ -40,8 +39,8 @@ class ComicInfoProvider(
       BookMetadataPatchCapability.READ_LISTS,
     )
 
-  override fun getBookMetadataFromBook(book: Book, media: Media): BookMetadataPatch? {
-    getComicInfo(book, media)?.let { comicInfo ->
+  override fun getBookMetadataFromBook(book: BookWithMedia): BookMetadataPatch? {
+    getComicInfo(book)?.let { comicInfo ->
       val releaseDate = comicInfo.year?.let {
         LocalDate.of(comicInfo.year!!, comicInfo.month ?: 1, comicInfo.day ?: 1)
       }
@@ -83,8 +82,8 @@ class ComicInfoProvider(
     return null
   }
 
-  override fun getSeriesMetadataFromBook(book: Book, media: Media): SeriesMetadataPatch? {
-    getComicInfo(book, media)?.let { comicInfo ->
+  override fun getSeriesMetadataFromBook(book: BookWithMedia): SeriesMetadataPatch? {
+    getComicInfo(book)?.let { comicInfo ->
       val readingDirection = when (comicInfo.manga) {
         Manga.NO -> SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT
         Manga.YES_AND_RIGHT_TO_LEFT -> SeriesMetadata.ReadingDirection.RIGHT_TO_LEFT
@@ -110,9 +109,9 @@ class ComicInfoProvider(
     return null
   }
 
-  private fun getComicInfo(book: Book, media: Media): ComicInfo? {
+  private fun getComicInfo(book: BookWithMedia): ComicInfo? {
     try {
-      if (media.files.none { it == COMIC_INFO }) {
+      if (book.media.files.none { it == COMIC_INFO }) {
         logger.debug { "Book does not contain any $COMIC_INFO file: $book" }
         return null
       }

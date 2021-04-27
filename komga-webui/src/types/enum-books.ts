@@ -18,3 +18,9 @@ export enum ReadStatus {
   IN_PROGRESS = 'IN_PROGRESS',
   READ = 'READ'
 }
+
+export enum CopyMode {
+  MOVE = 'MOVE',
+  COPY = 'COPY',
+  HARDLINK = 'HARDLINK',
+}

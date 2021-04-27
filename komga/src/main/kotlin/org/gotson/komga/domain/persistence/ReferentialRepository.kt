@@ -4,36 +4,37 @@ import org.gotson.komga.domain.model.Author
 import java.time.LocalDate
 
 interface ReferentialRepository {
-  fun findAuthorsByName(search: String): List<Author>
-  fun findAuthorsByNameAndLibrary(search: String, libraryId: String): List<Author>
-  fun findAuthorsByNameAndCollection(search: String, collectionId: String): List<Author>
-  fun findAuthorsByNameAndSeries(search: String, seriesId: String): List<Author>
-  fun findAuthorsNamesByName(search: String): List<String>
-  fun findAuthorsRoles(): List<String>
+  fun findAuthorsByName(search: String, filterOnLibraryIds: Collection<String>?): List<Author>
+  fun findAuthorsByNameAndLibrary(search: String, libraryId: String, filterOnLibraryIds: Collection<String>?): List<Author>
+  fun findAuthorsByNameAndCollection(search: String, collectionId: String, filterOnLibraryIds: Collection<String>?): List<Author>
+  fun findAuthorsByNameAndSeries(search: String, seriesId: String, filterOnLibraryIds: Collection<String>?): List<Author>
+  fun findAuthorsNamesByName(search: String, filterOnLibraryIds: Collection<String>?): List<String>
+  fun findAuthorsRoles(filterOnLibraryIds: Collection<String>?): List<String>
 
-  fun findAllGenres(): Set<String>
-  fun findAllGenresByLibrary(libraryId: String): Set<String>
-  fun findAllGenresByCollection(collectionId: String): Set<String>
+  fun findAllGenres(filterOnLibraryIds: Collection<String>?): Set<String>
+  fun findAllGenresByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<String>
+  fun findAllGenresByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<String>
 
-  fun findAllTags(): Set<String>
-  fun findAllTagsByLibrary(libraryId: String): Set<String>
-  fun findAllTagsBySeries(seriesId: String): Set<String>
-  fun findAllTagsByCollection(collectionId: String): Set<String>
+  fun findAllSeriesAndBookTags(filterOnLibraryIds: Collection<String>?): Set<String>
+  fun findAllSeriesTags(filterOnLibraryIds: Collection<String>?): Set<String>
+  fun findAllSeriesTagsByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<String>
+  fun findAllSeriesTagsByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<String>
+  fun findAllBookTags(filterOnLibraryIds: Collection<String>?): Set<String>
+  fun findAllBookTagsBySeries(seriesId: String, filterOnLibraryIds: Collection<String>?): Set<String>
 
-  fun findAllLanguages(): Set<String>
-  fun findAllLanguagesByLibrary(libraryId: String): Set<String>
-  fun findAllLanguagesByCollection(collectionId: String): Set<String>
+  fun findAllLanguages(filterOnLibraryIds: Collection<String>?): Set<String>
+  fun findAllLanguagesByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<String>
+  fun findAllLanguagesByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<String>
 
-  fun findAllPublishers(): Set<String>
-  fun findAllPublishersByLibrary(libraryId: String): Set<String>
-  fun findAllPublishersByLibraries(libraryIds: Set<String>): Set<String>
-  fun findAllPublishersByCollection(collectionId: String): Set<String>
+  fun findAllPublishers(filterOnLibraryIds: Collection<String>?): Set<String>
+  fun findAllPublishersByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<String>
+  fun findAllPublishersByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<String>
 
-  fun findAllAgeRatings(): Set<Int?>
-  fun findAllAgeRatingsByLibrary(libraryId: String): Set<Int?>
-  fun findAllAgeRatingsByCollection(collectionId: String): Set<Int?>
+  fun findAllAgeRatings(filterOnLibraryIds: Collection<String>?): Set<Int?>
+  fun findAllAgeRatingsByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<Int?>
+  fun findAllAgeRatingsByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<Int?>
 
-  fun findAllSeriesReleaseDates(): Set<LocalDate>
-  fun findAllSeriesReleaseDatesByLibrary(libraryId: String): Set<LocalDate>
-  fun findAllSeriesReleaseDatesByCollection(collectionId: String): Set<LocalDate>
+  fun findAllSeriesReleaseDates(filterOnLibraryIds: Collection<String>?): Set<LocalDate>
+  fun findAllSeriesReleaseDatesByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<LocalDate>
+  fun findAllSeriesReleaseDatesByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<LocalDate>
 }

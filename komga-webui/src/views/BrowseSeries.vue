@@ -6,8 +6,7 @@
              :title="$t('common.go_to_library')"
              :to="{name:'browse-libraries', params: {libraryId: series.libraryId }}"
       >
-        <v-icon v-if="$vuetify.rtl">mdi-arrow-right</v-icon>
-        <v-icon v-else>mdi-arrow-left</v-icon>
+        <rtl-icon icon="mdi-arrow-left" rtl="mdi-arrow-right"/>
       </v-btn>
 
       <series-actions-menu v-if="series"
@@ -92,7 +91,7 @@
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <span v-on="on">{{
-                      new Intl.DateTimeFormat($i18n.locale, {dateStyle: 'long'}).format(new Date(series.booksMetadata.releaseDate))
+                      new Intl.DateTimeFormat($i18n.locale, {year: 'numeric'}).format(new Date(series.booksMetadata.releaseDate))
                     }}</span>
                 </template>
                 {{ $t('browse_series.earliest_year_from_release_dates') }}
@@ -371,7 +370,7 @@ import ItemBrowser from '@/components/ItemBrowser.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import SeriesActionsMenu from '@/components/menus/SeriesActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
-import {parseQueryFilter, parseQuerySort} from '@/functions/query-params'
+import {parseQueryParamAndFilter, parseQuerySort} from '@/functions/query-params'
 import {seriesFileUrl, seriesThumbnailUrl} from '@/functions/urls'
 import {ReadStatus} from '@/types/enum-books'
 import {BOOK_CHANGED, LIBRARY_DELETED, READLIST_CHANGED, SERIES_CHANGED} from '@/types/events'
@@ -389,6 +388,7 @@ import {groupAuthorsByRole} from "@/functions/authors";
 import ReadMore from "@/components/ReadMore.vue";
 import {authorRoles, authorRolesSeries} from "@/types/author-roles";
 import VueHorizontal from "vue-horizontal";
+import RtlIcon from "@/components/RtlIcon.vue";
 
 const tags = require('language-tags')
 
@@ -409,6 +409,7 @@ export default Vue.extend({
     SortList,
     ReadMore,
     VueHorizontal,
+    RtlIcon,
   },
   data: function () {
     return {
@@ -566,18 +567,18 @@ export default Vue.extend({
       this.sortActive = this.parseQuerySortOrDefault(route.query.sort)
 
       // load dynamic filters
-      this.$set(this.filterOptions, 'tag', toNameValue(await this.$komgaReferential.getTags(undefined, seriesId)))
+      this.$set(this.filterOptions, 'tag', toNameValue(await this.$komgaReferential.getBookTags(seriesId)))
       const grouped = groupAuthorsByRole(await this.$komgaReferential.getAuthors(undefined, undefined, undefined, seriesId))
       authorRoles.forEach((role: string) => {
         this.$set(this.filterOptions, role, role in grouped ? toNameValue(grouped[role]) : [])
       })
 
       // filter query params with available filter values
-      this.$set(this.filters, 'readStatus', parseQueryFilter(this.$route.query.readStatus, Object.keys(ReadStatus)))
-      this.$set(this.filters, 'tag', parseQueryFilter(this.$route.query.tag, this.filterOptions.tag.map(x => x.value)))
+      this.$set(this.filters, 'readStatus', parseQueryParamAndFilter(this.$route.query.readStatus, Object.keys(ReadStatus)))
+      this.$set(this.filters, 'tag', parseQueryParamAndFilter(this.$route.query.tag, this.filterOptions.tag.map(x => x.value)))
       authorRoles.forEach((role: string) => {
         //@ts-ignore
-        this.$set(this.filters, role, parseQueryFilter(route.query[role], this.filterOptions[role].map((x: NameValue) => x.value)))
+        this.$set(this.filters, role, parseQueryParamAndFilter(route.query[role], this.filterOptions[role].map((x: NameValue) => x.value)))
       })
     },
     setWatches() {

@@ -4,6 +4,7 @@ import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.BookSearch
+import org.gotson.komga.domain.model.CopyMode
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.persistence.BookRepository
@@ -75,6 +76,10 @@ class TaskReceiver(
 
   fun aggregateSeriesMetadata(seriesId: String) {
     submitTask(Task.AggregateSeriesMetadata(seriesId))
+  }
+
+  fun importBook(sourceFile: String, seriesId: String, copyMode: CopyMode, destinationName: String?, upgradeBookId: String?) {
+    submitTask(Task.ImportBook(sourceFile, seriesId, copyMode, destinationName, upgradeBookId))
   }
 
   private fun submitTask(task: Task) {

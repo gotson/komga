@@ -163,6 +163,12 @@ const router = new Router({
           name: 'search',
           component: () => import(/* webpackChunkName: "search" */ './views/Search.vue'),
         },
+        {
+          path: '/import',
+          name: 'import',
+          beforeEnter: adminGuard,
+          component: () => import(/* webpackChunkName: "book-import" */ './views/BookImport.vue'),
+        },
       ],
     },
     {

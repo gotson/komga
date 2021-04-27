@@ -1,3 +1,85 @@
+## [0.88.1](https://github.com/gotson/komga/compare/v0.88.0...v0.88.1) (2021-04-26)
+
+
+### Bug Fixes
+
+* replace java webp library ([f658f9a](https://github.com/gotson/komga/commit/f658f9abe04896cbce6590bae0783836f4e59f74))
+
+# [0.88.0](https://github.com/gotson/komga/compare/v0.87.5...v0.88.0) (2021-04-26)
+
+
+### Features
+
+* **webui:** ability to read incognito ([dc0cc13](https://github.com/gotson/komga/commit/dc0cc1380793bf870e11444debf1872a6cefc95c))
+
+## [0.87.5](https://github.com/gotson/komga/compare/v0.87.4...v0.87.5) (2021-04-26)
+
+
+### Bug Fixes
+
+* **webui:** double pages could show duplicate pages ([76ba55a](https://github.com/gotson/komga/commit/76ba55a1242cfc90bceaddef8520719ac1165854))
+* **webui:** mark read progress instantly ([97cc3e0](https://github.com/gotson/komga/commit/97cc3e043d15255bc53641bdf0b5cd53cb5c14c4)), closes [#475](https://github.com/gotson/komga/issues/475)
+* **webui:** scroll continuous reader to top on book change ([d27828d](https://github.com/gotson/komga/commit/d27828de13fdbe348055fe4c23d129a29ad974e8)), closes [#475](https://github.com/gotson/komga/issues/475)
+
+## [0.87.4](https://github.com/gotson/komga/compare/v0.87.3...v0.87.4) (2021-04-21)
+
+
+### Bug Fixes
+
+* **api:** filter referential data by access rights ([09fa5e9](https://github.com/gotson/komga/commit/09fa5e95a5a59f2136a7992468ca77a257a267a5)), closes [#492](https://github.com/gotson/komga/issues/492)
+
+## [0.87.3](https://github.com/gotson/komga/compare/v0.87.2...v0.87.3) (2021-04-21)
+
+
+### Bug Fixes
+
+* error importing reading list with non-numerical number ([3ef0240](https://github.com/gotson/komga/commit/3ef02409bac07ee64c0136e34aac6afcf7c1aba4)), closes [#499](https://github.com/gotson/komga/issues/499)
+* **webui:** stored filters are not validated ([fbb4171](https://github.com/gotson/komga/commit/fbb4171d9bd3727d3826e650fe97822ec146bd4d)), closes [#504](https://github.com/gotson/komga/issues/504)
+
+## [0.87.2](https://github.com/gotson/komga/compare/v0.87.1...v0.87.2) (2021-04-20)
+
+
+### Bug Fixes
+
+* translated using Weblate (Esperanto) ([19ff72f](https://github.com/gotson/komga/commit/19ff72f9e34fce599b3f9691dcaa78b8a21909ef))
+* **importer:** keep metadata when upgrading book ([a3b8866](https://github.com/gotson/komga/commit/a3b88667d0364edf68f5a906053af0977c176135))
+* prevent transient scanning of directories that are part of existing libraries ([8a92b84](https://github.com/gotson/komga/commit/8a92b84fd06c7b6b8ae3ab6975f7802708598de3))
+* **importer:** prevent import of files that are in an existing library ([b0170c7](https://github.com/gotson/komga/commit/b0170c7c8840089811108e275e76cf4bb0350d8b))
+
+## [0.87.1](https://github.com/gotson/komga/compare/v0.87.0...v0.87.1) (2021-04-20)
+
+
+### Bug Fixes
+
+* **importer:** hardlink fails inside docker ([24cf181](https://github.com/gotson/komga/commit/24cf1819b02dd2625d7a6327a17ef2081cf52e64))
+
+# [0.87.0](https://github.com/gotson/komga/compare/v0.86.0...v0.87.0) (2021-04-19)
+
+
+### Bug Fixes
+
+* translated using Weblate (Esperanto) ([#506](https://github.com/gotson/komga/issues/506)) ([248f474](https://github.com/gotson/komga/commit/248f47458cb82d777e0f5823ddbe044ca76092c7))
+
+
+### Features
+
+* **api:** import books ([d41dcef](https://github.com/gotson/komga/commit/d41dcefd3efd4f9844d5b3b1d336a246c320a1ec))
+* **api:** support for transient books ([02b0893](https://github.com/gotson/komga/commit/02b08932babd27b5b309b3038279885ac65d0821))
+* **webui:** import books ([13b304d](https://github.com/gotson/komga/commit/13b304dd147f3102345c2edb85d41f87ccae1871))
+* added translation using Weblate (Esperanto, Polish) ([f3cc6f6](https://github.com/gotson/komga/commit/f3cc6f6e916862741cd7ff3aafa98a4c587653c6))
+
+# [0.86.0](https://github.com/gotson/komga/compare/v0.85.1...v0.86.0) (2021-04-07)
+
+
+### Bug Fixes
+
+* **webui:** series year incorrectly formatted ([d166207](https://github.com/gotson/komga/commit/d16620791243201f2e2eb0910201f73e2c2975f7))
+
+
+### Features
+
+* added translation using Weblate (Finnish) ([81142ab](https://github.com/gotson/komga/commit/81142ab570ea9ce1cfd964e7c3205d0c1a9ead7a))
+
 ## [0.85.1](https://github.com/gotson/komga/compare/v0.85.0...v0.85.1) (2021-03-31)
 
 

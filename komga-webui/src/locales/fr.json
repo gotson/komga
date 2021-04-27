@@ -26,17 +26,23 @@
     "penciller": "dessinateurs",
     "writer": "scénaristes"
   },
+  "book_card": {
+    "error": "Erreur",
+    "unknown": "À analyser",
+    "unsupported": "Non pris en charge"
+  },
   "bookreader": {
     "beginning_of_book": "Vous êtes au début du livre.",
     "changing_reading_direction": "Modifier le sens de lecture vers",
     "cycling_page_layout": "Changer la disposition des pages",
     "cycling_scale": "Changer la mise à l'échelle",
     "cycling_side_padding": "Changer la bordure latérale",
+    "download_current_page": "Télécharger la page courante",
     "end_of_book": "Vous avez atteint la fin du livre.",
     "from_series_metadata": "à partir des métadonnées de la série",
-    "move_next": "Cliquez ou appuyez à nouveau sur \"Suivant\" pour passer au livre suivant.",
-    "move_next_exit": "Cliquez ou appuyez à nouveau sur \"Suivant\" pour quitter la liseuse.",
-    "move_previous": "Cliquez ou appuyez à nouveau sur \"Précédent\" pour passer au livre précédent.",
+    "move_next": "Cliquez ou appuyez à nouveau sur « Suivant » pour passer au livre suivant.",
+    "move_next_exit": "Cliquez ou appuyez à nouveau sur « Suivant » pour quitter la liseuse.",
+    "move_previous": "Cliquez ou appuyez à nouveau sur « Précédent » pour passer au livre précédent.",
     "paged_reader_layout": {
       "double": "Double pages",
       "double_no_cover": "Double pages (sans couverture)",
@@ -161,7 +167,7 @@
     "book_number": "Nombre de livres : {name}",
     "book_series": "Série : {name}",
     "button_import": "Importer",
-    "comicrack_preambule_html": "Vous pouvez importer des listes de lecture ComicRack au format <code>.cbl</code>.<br/>Komga tentera de faire correspondre les séries fournies et le numéro des livres avec les séries et livres de votre bibliothèque.",
+    "comicrack_preambule_html": "Vous pouvez importer des listes de lecture ComicRack au format <code>.cbl</code>.<br>Komga tentera de faire correspondre les séries fournies et le numéro des livres avec les séries et livres de votre bibliothèque.",
     "field_files_label": "Listes de lecture ComicRack (.cbl)",
     "import_read_lists": "Importer des listes de lecture",
     "imported_as": "Importé comme {name}",
@@ -191,7 +197,7 @@
       "button_confirm": "Ajouter",
       "dialog_title": "Ajouter un utilisateur",
       "field_email": "E-mail",
-      "field_email_error": "Doit être une adresse e-mail valide",
+      "field_email_error": "Doit être une adresse électronique valide",
       "field_password": "Mot de passe",
       "field_role_administrator": "Administrateur",
       "field_role_file_download": "Téléchargement de fichier",
@@ -238,7 +244,7 @@
       "field_number_sort": "Numéro pour le tri",
       "field_number_sort_hint": "Vous pouvez utiliser des nombres décimaux",
       "field_release_date": "Date de publication",
-      "field_release_date_error": "Doit être une date au format YYYY-MM-DD",
+      "field_release_date_error": "Doit être une date au format AAAA-MM-JJ",
       "field_summary": "Résumé",
       "field_tags": "Étiquettes",
       "field_title": "Titre",
@@ -341,7 +347,7 @@
     "server_stop": {
       "button_cancel": "Annuler",
       "button_confirm": "Arrêter",
-      "confirmation_message": "Êtes-vous sûr de vouloir arrêter Komga ?",
+      "confirmation_message": "Êtes-vous sûr de vouloir arrêter Komga ?",
       "dialog_title": "Arrêter le serveur"
     },
     "shortcut_help": {

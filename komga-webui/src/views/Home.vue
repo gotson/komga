@@ -69,6 +69,15 @@
           </v-list-item-action>
         </v-list-item>
 
+        <v-list-item :to="{name: 'import'}" v-if="isAdmin">
+          <v-list-item-icon>
+            <v-icon>mdi-import</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>{{ $t('book_import.title') }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
         <v-list-item :to="{name: 'settings'}" v-if="isAdmin">
           <v-list-item-action>
             <v-icon>mdi-cog</v-icon>

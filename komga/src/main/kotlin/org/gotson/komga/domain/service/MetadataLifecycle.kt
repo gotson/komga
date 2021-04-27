@@ -4,6 +4,7 @@ import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatch
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
+import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesCollection
@@ -65,7 +66,7 @@ class MetadataLifecycle(
           logger.info { "Library is not set to import book metadata from Barcode ISBN, skipping" }
         else -> {
           logger.debug { "Provider: $provider" }
-          val patch = provider.getBookMetadataFromBook(book, media)
+          val patch = provider.getBookMetadataFromBook(BookWithMedia(book, media))
 
           if (
             (provider is ComicInfoProvider && library.importComicInfoBook) ||
@@ -156,7 +157,7 @@ class MetadataLifecycle(
         else -> {
           logger.debug { "Provider: $provider" }
           val patches = bookRepository.findBySeriesId(series.id)
-            .mapNotNull { provider.getSeriesMetadataFromBook(it, mediaRepository.findById(it.id)) }
+            .mapNotNull { provider.getSeriesMetadataFromBook(BookWithMedia(it, mediaRepository.findById(it.id))) }
 
           if (
             (provider is ComicInfoProvider && library.importComicInfoSeries) ||

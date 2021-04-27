@@ -37,8 +37,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { ContinuousScaleType } from '@/types/enum-reader'
-import { PageDtoWithUrl } from '@/types/komga-books'
+import {ContinuousScaleType} from '@/types/enum-reader'
+import {PageDtoWithUrl} from '@/types/komga-books'
 
 export default Vue.extend({
   name: 'ContinuousReader',
@@ -74,8 +74,9 @@ export default Vue.extend({
   },
   watch: {
     pages: {
-      handler (val) {
+      handler(val) {
         this.seen = new Array(val.length).fill(false)
+        if (this.page === 1) window.scrollTo(0, 0)
       },
       immediate: true,
     },
@@ -90,7 +91,7 @@ export default Vue.extend({
       immediate: false,
     },
   },
-  mounted () {
+  mounted() {
     if (this.page != this.currentPage) {
       this.$vuetify.goTo(`#page${this.page}`, {
         duration: 0,
@@ -98,26 +99,26 @@ export default Vue.extend({
     }
   },
   computed: {
-    canPrev (): boolean {
+    canPrev(): boolean {
       return this.offsetTop > 0
     },
-    canNext (): boolean {
+    canNext(): boolean {
       return this.offsetTop + this.$vuetify.breakpoint.height < this.totalHeight
     },
-    goToOptions (): object | undefined {
+    goToOptions(): object | undefined {
       if (this.animations) return undefined
-      return { duration: 0 }
+      return {duration: 0}
     },
-    totalSidePadding (): number {
+    totalSidePadding(): number {
       return this.sidePadding * 2
     },
   },
   methods: {
-    onScroll (e: any) {
+    onScroll(e: any) {
       this.offsetTop = e.target.scrollingElement.scrollTop
       this.totalHeight = e.target.scrollingElement.scrollHeight
     },
-    onIntersect (entries: any) {
+    onIntersect(entries: any) {
       if (entries[0].isIntersecting) {
         const page = parseInt(entries[0].target.id.replace('page', ''))
         this.seen.splice(page - 1, 1, true)
@@ -125,10 +126,10 @@ export default Vue.extend({
         this.$emit('update:page', page)
       }
     },
-    shouldLoad (page: number): boolean {
+    shouldLoad(page: number): boolean {
       return page == 0 || this.seen[page] || Math.abs((this.currentPage - 1) - page) <= 2
     },
-    calcHeight (page: PageDtoWithUrl): number | undefined {
+    calcHeight(page: PageDtoWithUrl): number | undefined {
       switch (this.scale) {
         case ContinuousScaleType.WIDTH:
           if (page.height && page.width)
@@ -140,7 +141,7 @@ export default Vue.extend({
           return undefined
       }
     },
-    calcWidth (page: PageDtoWithUrl): number | undefined {
+    calcWidth(page: PageDtoWithUrl): number | undefined {
       switch (this.scale) {
         case ContinuousScaleType.WIDTH:
           return this.$vuetify.breakpoint.width - (this.$vuetify.breakpoint.width * this.totalSidePadding) / 100
@@ -150,10 +151,10 @@ export default Vue.extend({
           return undefined
       }
     },
-    centerClick () {
+    centerClick() {
       this.$emit('menu')
     },
-    prev () {
+    prev() {
       if (this.canPrev) {
         const step = this.$vuetify.breakpoint.height * 0.95
         this.$vuetify.goTo(this.offsetTop - step, this.goToOptions)
@@ -161,7 +162,7 @@ export default Vue.extend({
         this.$emit('jump-previous')
       }
     },
-    next () {
+    next() {
       if (this.canNext) {
         const step = this.$vuetify.breakpoint.height * 0.95
         this.$vuetify.goTo(this.offsetTop + step, this.goToOptions)

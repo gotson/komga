@@ -31,7 +31,7 @@ class LibraryControllerTest(
 
   private val route = "/api/v1/libraries"
 
-  private val library = makeLibrary(url = "file:/library1", id = "1")
+  private val library = makeLibrary(path = "file:/library1", id = "1")
 
   @BeforeAll
   fun `setup library`() {

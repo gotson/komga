@@ -1,6 +1,7 @@
 package org.gotson.komga.infrastructure.web
 
 import org.springframework.http.CacheControl
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import java.net.URL
 import java.nio.file.Paths
@@ -20,3 +21,13 @@ val cachePrivate = CacheControl
   .noTransform()
   .cachePrivate()
   .mustRevalidate()
+
+fun getMediaTypeOrDefault(mediaTypeString: String?): MediaType {
+  mediaTypeString?.let {
+    try {
+      return MediaType.parseMediaType(mediaTypeString)
+    } catch (ex: Exception) {
+    }
+  }
+  return MediaType.APPLICATION_OCTET_STREAM
+}

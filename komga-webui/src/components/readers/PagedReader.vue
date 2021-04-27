@@ -75,12 +75,12 @@
 </template>
 
 <script lang="ts">
-import { isPageLandscape } from '@/functions/page'
 import Vue from 'vue'
-import { ReadingDirection } from '@/types/enum-books'
-import { PagedReaderLayout, ScaleType } from '@/types/enum-reader'
-import { shortcutsLTR, shortcutsRTL, shortcutsVertical } from '@/functions/shortcuts/paged-reader'
-import { PageDtoWithUrl } from '@/types/komga-books'
+import {ReadingDirection} from '@/types/enum-books'
+import {PagedReaderLayout, ScaleType} from '@/types/enum-reader'
+import {shortcutsLTR, shortcutsRTL, shortcutsVertical} from '@/functions/shortcuts/paged-reader'
+import {PageDtoWithUrl} from '@/types/komga-books'
+import {buildSpreads} from "@/functions/book-spreads";
 
 export default Vue.extend({
   name: 'PagedReader',
@@ -122,8 +122,8 @@ export default Vue.extend({
   },
   watch: {
     pages: {
-      handler () {
-        this.spreads = this.buildSpreads()
+      handler (val) {
+        this.spreads = buildSpreads(val, this.pageLayout)
       },
       immediate: true,
     },
@@ -134,9 +134,9 @@ export default Vue.extend({
       this.carouselPage = this.toSpreadIndex(val)
     },
     pageLayout: {
-      handler () {
+      handler (val) {
         const current = this.page
-        this.spreads = this.buildSpreads()
+        this.spreads = buildSpreads(this.pages, val)
         this.carouselPage = this.toSpreadIndex(current)
       },
       immediate: true,
@@ -195,43 +195,6 @@ export default Vue.extend({
   methods: {
     keyPressed (e: KeyboardEvent) {
       this.shortcuts[e.key]?.execute(this)
-    },
-    buildSpreads (): PageDtoWithUrl[][] {
-      if (this.pages.length === 0) return []
-      if (this.isDoublePages) {
-        const spreads = []
-        let pages: PageDtoWithUrl[]
-        if (this.pageLayout === PagedReaderLayout.DOUBLE_PAGES) {
-          spreads.push([this.pages[0]])
-          pages = this.$_.drop(this.$_.dropRight(this.pages))
-        } else {
-          pages = this.$_.cloneDeep(this.pages)
-        }
-        while (pages.length > 0) {
-          const p = pages.shift() as PageDtoWithUrl
-          if (isPageLandscape(p)) {
-            spreads.push([p])
-          } else {
-            if (pages.length > 0) {
-              const p2 = pages.shift() as PageDtoWithUrl
-              if (isPageLandscape(p2)) {
-                spreads.push([p])
-                spreads.push([p2])
-              } else {
-                spreads.push([p, p2])
-              }
-            } else {
-              spreads.push([p])
-            }
-          }
-        }
-        if (this.pageLayout === PagedReaderLayout.DOUBLE_PAGES) {
-          spreads.push([this.pages[this.pages.length - 1]])
-        }
-        return spreads
-      } else {
-        return this.pages.map(p => [p])
-      }
     },
     imgClass (spread: PageDtoWithUrl[]): string {
       const double = spread.length > 1

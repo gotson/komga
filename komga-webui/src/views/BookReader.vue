@@ -20,6 +20,13 @@
           <v-toolbar-title> {{ bookTitle }}</v-toolbar-title>
           <v-spacer></v-spacer>
 
+          <v-tooltip bottom v-if="incognito">
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on">mdi-incognito</v-icon>
+            </template>
+            <span>{{ $t('bookreader.tooltip_incognito') }}</span>
+          </v-tooltip>
+
           <v-btn
             icon
             @click="showHelp = !showHelp">
@@ -324,6 +331,7 @@ export default Vue.extend({
       series: {} as SeriesDto,
       context: {} as Context,
       contextName: '',
+      incognito: false,
       siblingPrevious: {} as BookDto,
       siblingNext: {} as BookDto,
       jumpToNextBook: false,
@@ -427,7 +435,7 @@ export default Vue.extend({
     page(val) {
       this.updateRoute()
       this.goToPage = val
-      this.markProgress(val)
+      // this.markProgress(val)
     },
   },
   computed: {
@@ -587,6 +595,9 @@ export default Vue.extend({
         document.title = `Komga - ${getBookTitleCompact(this.book.metadata.title, this.series.metadata.title)}`
       }
 
+      // parse query params to get incognito mode
+      this.incognito = !!(this.$route.query.incognito && this.$route.query.incognito.toString().toLowerCase() === 'true');
+
       const pageDtos = (await this.$komgaBooks.getBookPages(bookId))
       pageDtos.forEach((p: any) => p['url'] = this.getPageUrl(p))
       this.pages = pageDtos as PageDtoWithUrl[]
@@ -654,7 +665,7 @@ export default Vue.extend({
         this.$router.push({
           name: 'read-book',
           params: {bookId: this.siblingPrevious.id.toString()},
-          query: {context: this.context.origin, contextId: this.context.id},
+          query: {context: this.context.origin, contextId: this.context.id, incognito: this.incognito.toString()},
         })
       }
     },
@@ -666,12 +677,13 @@ export default Vue.extend({
         this.$router.push({
           name: 'read-book',
           params: {bookId: this.siblingNext.id.toString()},
-          query: {context: this.context.origin, contextId: this.context.id},
+          query: {context: this.context.origin, contextId: this.context.id, incognito: this.incognito.toString()},
         })
       }
     },
     goTo(page: number) {
       this.page = page
+      this.markProgress(page)
     },
     goToFirst() {
       this.goTo(1)
@@ -687,6 +699,7 @@ export default Vue.extend({
           page: this.page.toString(),
           context: this.context.origin,
           contextId: this.context.id,
+          incognito: this.incognito.toString(),
         },
       } as Location)
     },
@@ -770,7 +783,8 @@ export default Vue.extend({
       this.notification.enabled = true
     },
     async markProgress(page: number) {
-      await this.$komgaBooks.updateReadProgress(this.bookId, {page: page})
+      if (!this.incognito)
+        await this.$komgaBooks.updateReadProgress(this.bookId, {page: page})
     },
     downloadCurrentPage() {
       new jsFileDownloader({

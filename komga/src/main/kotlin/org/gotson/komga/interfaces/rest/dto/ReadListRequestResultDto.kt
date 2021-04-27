@@ -6,7 +6,7 @@ import org.gotson.komga.domain.model.ReadListRequestResultBook
 
 data class ReadListRequestBookDto(
   val series: String,
-  val number: Int,
+  val number: String,
 )
 
 data class ReadListRequestResultDto(

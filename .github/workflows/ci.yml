@@ -67,6 +67,9 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle
       - name: npmBuild
         run: ./gradlew npmBuild
+      - name: npmTest
+        run: npm run test:unit
+        working-directory: komga-webui
 
   release:
     name: Semantic Release

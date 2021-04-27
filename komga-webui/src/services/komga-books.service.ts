@@ -1,5 +1,5 @@
 import {AxiosInstance} from 'axios'
-import {BookDto, BookMetadataUpdateDto, PageDto, ReadProgressUpdateDto} from '@/types/komga-books'
+import {BookDto, BookImportBatchDto, BookMetadataUpdateDto, PageDto, ReadProgressUpdateDto} from '@/types/komga-books'
 
 const qs = require('qs')
 
@@ -171,6 +171,18 @@ export default class KomgaBooksService {
       await this.http.delete(`${API_BOOKS}/${bookId}/read-progress`)
     } catch (e) {
       let msg = `An error occurred while trying to delete read progress`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async importBooks(batch: BookImportBatchDto) {
+    try {
+      await this.http.post(`${API_BOOKS}/import`, batch)
+    } catch (e) {
+      let msg = `An error occurred while trying to submit book import batch`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }
