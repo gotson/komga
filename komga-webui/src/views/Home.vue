@@ -25,7 +25,7 @@
       <v-divider/>
 
       <v-list>
-        <v-list-item :to="{name: 'home'}" exact>
+        <v-list-item :to="{name: 'dashboard'}">
           <v-list-item-icon>
             <v-icon>mdi-home</v-icon>
           </v-list-item-icon>
