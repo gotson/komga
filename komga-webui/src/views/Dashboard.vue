@@ -137,7 +137,7 @@ import {BookDto} from '@/types/komga-books'
 import {BOOK_CHANGED, LIBRARY_DELETED, SERIES_CHANGED} from '@/types/events'
 import Vue from 'vue'
 import {SeriesDto} from "@/types/komga-series";
-import {LIBRARIES_ALL} from "@/types/library";
+import {LIBRARIES_ALL, LIBRARY_ROUTE} from "@/types/library";
 
 export default Vue.extend({
   name: 'Dashboard',
@@ -174,6 +174,7 @@ export default Vue.extend({
     this.$eventHub.$off(BOOK_CHANGED, this.reload)
   },
   mounted() {
+    if(this.showLibraryBar) this.$store.commit('setLibraryRoute', {id: this.libraryId, route: LIBRARY_ROUTE.RECOMMENDED})
     this.reload()
   },
   props: {

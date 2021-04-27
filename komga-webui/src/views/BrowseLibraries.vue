@@ -110,7 +110,7 @@ import {SeriesStatus, SeriesStatusKeyValue} from '@/types/enum-series'
 import {LIBRARY_CHANGED, LIBRARY_DELETED, SERIES_CHANGED} from '@/types/events'
 import Vue from 'vue'
 import {Location} from 'vue-router'
-import {LIBRARIES_ALL} from '@/types/library'
+import {LIBRARIES_ALL, LIBRARY_ROUTE} from '@/types/library'
 import FilterDrawer from '@/components/FilterDrawer.vue'
 import SortList from '@/components/SortList.vue'
 import FilterPanels from '@/components/FilterPanels.vue'
@@ -190,6 +190,7 @@ export default Vue.extend({
     this.$eventHub.$off(LIBRARY_CHANGED, this.reloadLibrary)
   },
   async mounted() {
+    this.$store.commit('setLibraryRoute', {id: this.libraryId, route: LIBRARY_ROUTE.BROWSE})
     this.pageSize = this.$store.state.persistedState.browsingPageSize || this.pageSize
 
     // restore from query param

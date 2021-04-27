@@ -57,7 +57,7 @@ import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import {COLLECTION_CHANGED, COLLECTION_DELETED, LIBRARY_CHANGED} from '@/types/events'
 import Vue from 'vue'
 import {Location} from 'vue-router'
-import {LIBRARIES_ALL} from '@/types/library'
+import {LIBRARIES_ALL, LIBRARY_ROUTE} from '@/types/library'
 
 export default Vue.extend({
   name: 'BrowseCollections',
@@ -96,7 +96,8 @@ export default Vue.extend({
     this.$eventHub.$off(COLLECTION_DELETED, this.reloadCollections)
     this.$eventHub.$off(LIBRARY_CHANGED, this.reloadLibrary)
   },
-  mounted () {
+  mounted() {
+    this.$store.commit('setLibraryRoute', {id: this.libraryId, route: LIBRARY_ROUTE.COLLECTIONS})
     this.pageSize = this.$store.state.persistedState.browsingPageSize || this.pageSize
 
     // restore from query param

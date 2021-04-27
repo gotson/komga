@@ -2,20 +2,35 @@ import urls from '@/functions/urls'
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from './store'
+import {LIBRARIES_ALL, LIBRARY_ROUTE} from "@/types/library";
 
 Vue.use(Router)
 
 const lStore = store as any
 
 const adminGuard = (to: any, from: any, next: any) => {
-  if (!lStore.getters.meAdmin) next({ name: 'home' })
+  if (!lStore.getters.meAdmin) next({name: 'home'})
   else next()
 }
 
 const noLibraryGuard = (to: any, from: any, next: any) => {
   if (lStore.state.komgaLibraries.libraries.length === 0) {
-    next({ name: 'welcome' })
+    next({name: 'welcome'})
   } else next()
+}
+
+const getLibraryRoute = (libraryId: string) => {
+  switch ((lStore.getters.getLibraryRoute(libraryId) as LIBRARY_ROUTE)) {
+    case LIBRARY_ROUTE.COLLECTIONS:
+      return 'browse-collections'
+    case LIBRARY_ROUTE.READLISTS:
+      return 'browse-readlists'
+    case LIBRARY_ROUTE.BROWSE:
+      return 'browse-libraries'
+    case LIBRARY_ROUTE.RECOMMENDED:
+    default:
+      return 'recommended-libraries'
+  }
 }
 
 const router = new Router({
@@ -25,7 +40,7 @@ const router = new Router({
     {
       path: '/',
       name: 'home',
-      redirect: { name: 'dashboard' },
+      redirect: {name: 'dashboard'},
       component: () => import(/* webpackChunkName: "home" */ './views/Home.vue'),
       children: [
         {
@@ -42,7 +57,7 @@ const router = new Router({
         {
           path: '/settings',
           name: 'settings',
-          redirect: { name: 'settings-analysis' },
+          redirect: {name: 'settings-analysis'},
           component: () => import(/* webpackChunkName: "settings" */ './views/Settings.vue'),
           children: [
             {
@@ -84,56 +99,64 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "account" */ './views/AccountSettings.vue'),
         },
         {
+          path: '/libraries/:libraryId?',
+          name: 'libraries',
+          redirect: (route) => ({
+            name: getLibraryRoute(route.params.libraryId || LIBRARIES_ALL),
+            params: {libraryId: route.params.libraryId || LIBRARIES_ALL},
+          }),
+        },
+        {
+          path: '/libraries/:libraryId/recommended',
+          name: 'recommended-libraries',
+          beforeEnter: noLibraryGuard,
+          component: () => import(/* webpackChunkName: "dashboard" */ './views/Dashboard.vue'),
+          props: (route) => ({libraryId: route.params.libraryId}),
+        },
+        {
           path: '/libraries/:libraryId/series',
           name: 'browse-libraries',
           beforeEnter: noLibraryGuard,
           component: () => import(/* webpackChunkName: "browse-libraries" */ './views/BrowseLibraries.vue'),
-          props: (route) => ({ libraryId: route.params.libraryId }),
-        },
-        {
-          path: '/libraries/:libraryId/dashboard',
-          name: 'recommended-libraries',
-          beforeEnter: noLibraryGuard,
-          component: () => import(/* webpackChunkName: "dashboard" */ './views/Dashboard.vue'),
-          props: (route) => ({ libraryId: route.params.libraryId }),
+          props: (route) => ({libraryId: route.params.libraryId}),
         },
         {
           path: '/libraries/:libraryId/collections',
           name: 'browse-collections',
           beforeEnter: noLibraryGuard,
           component: () => import(/* webpackChunkName: "browse-collections" */ './views/BrowseCollections.vue'),
-          props: (route) => ({ libraryId: route.params.libraryId }),
+          props: (route) => ({libraryId: route.params.libraryId}),
         },
         {
           path: '/libraries/:libraryId/readlists',
           name: 'browse-readlists',
           beforeEnter: noLibraryGuard,
           component: () => import(/* webpackChunkName: "browse-readlists" */ './views/BrowseReadLists.vue'),
-          props: (route) => ({ libraryId: route.params.libraryId }),
+          props: (route) => ({libraryId: route.params.libraryId}),
         },
         {
           path: '/collections/:collectionId',
           name: 'browse-collection',
           component: () => import(/* webpackChunkName: "browse-collection" */ './views/BrowseCollection.vue'),
-          props: (route) => ({ collectionId: route.params.collectionId }),
+          props: (route) => ({collectionId: route.params.collectionId}),
         },
         {
           path: '/readlists/:readListId',
           name: 'browse-readlist',
           component: () => import(/* webpackChunkName: "browse-readlist" */ './views/BrowseReadList.vue'),
-          props: (route) => ({ readListId: route.params.readListId }),
+          props: (route) => ({readListId: route.params.readListId}),
         },
         {
           path: '/series/:seriesId',
           name: 'browse-series',
           component: () => import(/* webpackChunkName: "browse-series" */ './views/BrowseSeries.vue'),
-          props: (route) => ({ seriesId: route.params.seriesId }),
+          props: (route) => ({seriesId: route.params.seriesId}),
         },
         {
           path: '/book/:bookId',
           name: 'browse-book',
           component: () => import(/* webpackChunkName: "browse-book" */ './views/BrowseBook.vue'),
-          props: (route) => ({ bookId: route.params.bookId }),
+          props: (route) => ({bookId: route.params.bookId}),
         },
         {
           path: '/search',
@@ -156,7 +179,7 @@ const router = new Router({
       path: '/book/:bookId/read',
       name: 'read-book',
       component: () => import(/* webpackChunkName: "read-book" */ './views/BookReader.vue'),
-      props: (route) => ({ bookId: route.params.bookId }),
+      props: (route) => ({bookId: route.params.bookId}),
     },
     {
       path: '*',
@@ -164,12 +187,12 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "notfound" */ './views/PageNotFound.vue'),
     },
   ],
-  scrollBehavior (to, from, savedPosition) {
+  scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
     } else {
       if (to.name !== from.name) {
-        return { x: 0, y: 0 }
+        return {x: 0, y: 0}
       }
     }
   },
@@ -180,7 +203,7 @@ router.beforeEach((to, from, next) => {
     document.title = 'Komga'
   }
   if (to.name !== 'startup' && to.name !== 'login' && !lStore.getters.authenticated) {
-    next({ name: 'startup', query: { redirect: to.fullPath } })
+    next({name: 'startup', query: {redirect: to.fullPath}})
   } else next()
 })
 

@@ -34,7 +34,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="{name:'browse-libraries', params: {libraryId: 'all'}}">
+        <v-list-item :to="{name:'libraries', params: {libraryId: LIBRARIES_ALL}}">
           <v-list-item-icon>
             <v-icon>mdi-book-multiple</v-icon>
           </v-list-item-icon>
@@ -51,7 +51,7 @@
         <v-list-item v-for="(l, index) in libraries"
                      :key="index"
                      dense
-                     :to="{name:'browse-libraries', params: {libraryId: l.id}}"
+                     :to="{name:'libraries', params: {libraryId: l.id}}"
         >
           <v-list-item-icon>
           </v-list-item-icon>
@@ -149,12 +149,14 @@ import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import SearchBox from '@/components/SearchBox.vue'
 import {Theme} from '@/types/themes'
 import Vue from 'vue'
+import {LIBRARIES_ALL} from "@/types/library";
 
 export default Vue.extend({
   name: 'home',
   components: {LibraryActionsMenu, SearchBox, Dialogs},
   data: function () {
     return {
+      LIBRARIES_ALL,
       drawerVisible: this.$vuetify.breakpoint.lgAndUp,
       info: {} as ActuatorInfo,
       locales: this.$i18n.availableLocales.map((x: any) => ({text: this.$i18n.t('common.locale_name', x), value: x})),
