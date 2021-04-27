@@ -5972,14 +5972,6 @@
             "in": "query",
             "name": "size",
             "description": "The size of the page to be returned"
-          },
-          {
-            "schema": {
-              "type": "string"
-            },
-            "in": "query",
-            "name": "library_id",
-            "required": false
           }
         ],
         "tags": [
