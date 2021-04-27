@@ -413,8 +413,8 @@ export default Vue.extend({
       this.totalElements = seriesPage.totalElements
       this.series = seriesPage.content
     },
-    getLibraryLazy(libraryId: any): LibraryDto | undefined {
-      if (libraryId !== 0) {
+    getLibraryLazy (libraryId: string): LibraryDto | undefined {
+      if (libraryId !== LIBRARIES_ALL) {
         return this.$store.getters.getLibraryById(libraryId)
       } else {
         return undefined
