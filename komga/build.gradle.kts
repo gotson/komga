@@ -185,6 +185,8 @@ springBoot {
     properties {
       // prevent task bootBuildInfo to rerun every time
       time = null
+      // but rerun if the gradle.properties file changed
+      inputs.file("$rootDir/gradle.properties")
     }
   }
 }
