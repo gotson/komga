@@ -52,6 +52,62 @@ describe("Double Pages", () => {
     expect(spreads[0].length).toEqual(1)
     expect(spreads[0][0].number).toEqual(1)
   })
+
+  test("given even pages then it should return correct spreads", () => {
+    const pages = [
+      {number: 1} as PageDtoWithUrl,
+      {number: 2} as PageDtoWithUrl,
+      {number: 3} as PageDtoWithUrl,
+      {number: 4} as PageDtoWithUrl,
+      {number: 5} as PageDtoWithUrl,
+      {number: 6} as PageDtoWithUrl,
+    ] as PageDtoWithUrl[]
+
+    const spreads = buildSpreads(pages, pageLayout)
+
+    expect(spreads.length).toEqual(4)
+
+    expect(spreads[0].length).toEqual(1)
+    expect(spreads[0][0].number).toEqual(1)
+
+    expect(spreads[1].length).toEqual(2)
+    expect(spreads[1][0].number).toEqual(2)
+    expect(spreads[1][1].number).toEqual(3)
+
+    expect(spreads[2].length).toEqual(2)
+    expect(spreads[2][0].number).toEqual(4)
+    expect(spreads[2][1].number).toEqual(5)
+
+    expect(spreads[3].length).toEqual(1)
+    expect(spreads[3][0].number).toEqual(6)
+  })
+
+  test("given odd pages then it should return correct spreads", () => {
+    const pages = [
+      {number: 1} as PageDtoWithUrl,
+      {number: 2} as PageDtoWithUrl,
+      {number: 3} as PageDtoWithUrl,
+      {number: 4} as PageDtoWithUrl,
+      {number: 5} as PageDtoWithUrl,
+    ] as PageDtoWithUrl[]
+
+    const spreads = buildSpreads(pages, pageLayout)
+
+    expect(spreads.length).toEqual(4)
+
+    expect(spreads[0].length).toEqual(1)
+    expect(spreads[0][0].number).toEqual(1)
+
+    expect(spreads[1].length).toEqual(2)
+    expect(spreads[1][0].number).toEqual(2)
+    expect(spreads[1][1].number).toEqual(3)
+
+    expect(spreads[2].length).toEqual(1)
+    expect(spreads[2][0].number).toEqual(4)
+
+    expect(spreads[3].length).toEqual(1)
+    expect(spreads[3][0].number).toEqual(5)
+  })
 })
 
 describe("Double Pages No Cover", () => {
