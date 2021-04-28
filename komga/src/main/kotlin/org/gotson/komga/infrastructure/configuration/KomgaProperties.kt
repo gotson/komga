@@ -32,6 +32,7 @@ class KomgaProperties {
     @get:NotBlank
     var file: String = ""
 
+    @Deprecated("Unused since 0.81.0")
     var batchSize: Int = 500
   }
 }
