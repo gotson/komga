@@ -29,7 +29,7 @@ const getLibraryRoute = (libraryId: string) => {
       return 'browse-libraries'
     case LIBRARY_ROUTE.RECOMMENDED:
     default:
-      return 'recommended-libraries'
+      return libraryId === LIBRARIES_ALL ? 'browse-libraries' : 'recommended-libraries'
   }
 }
 
