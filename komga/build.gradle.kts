@@ -70,7 +70,7 @@ dependencies {
   runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.7.0")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.7.0")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-webp:3.7.0")
-  implementation("com.github.gotson:webp-imageio:0.2.0")
+  implementation("com.github.gotson:webp-imageio:0.2.1")
   // support for jpeg2000
   runtimeOnly("com.github.jai-imageio:jai-imageio-jpeg2000:1.4.0")
   runtimeOnly("org.apache.pdfbox:jbig2-imageio:3.0.3")
