@@ -61,7 +61,7 @@ class ReferentialController(
   @GetMapping("/tags")
   fun getTags(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    // TODO: remove those parameters once Tachiyomi Extension is using the new /tags/series endpoint
+    // TODO: remove those parameters once Tachiyomi Extension is using the new /tags/series endpoint (changed in 0.87.4 - 21 Apr 2021)
     @RequestParam(name = "library_id", required = false) libraryId: String?,
     @RequestParam(name = "series_id", required = false) seriesId: String?,
     @RequestParam(name = "collection_id", required = false) collectionId: String?

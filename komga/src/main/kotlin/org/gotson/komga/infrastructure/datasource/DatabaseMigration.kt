@@ -7,19 +7,18 @@ import org.springframework.stereotype.Component
 import java.nio.file.Path
 import java.nio.file.Paths
 import javax.annotation.PostConstruct
-import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.deleteIfExists
 import kotlin.io.path.listDirectoryEntries
 
 private val logger = KotlinLogging.logger {}
 
+// TODO: remove this completely at some point (removed migration in 0.81.0 - 15 Mar 2021)
 @Component
 @Profile("!test")
 class DatabaseMigration(
   private val komgaProperties: KomgaProperties
 ) {
 
-  @ExperimentalPathApi
   @PostConstruct
   fun init() {
     try {

@@ -24,7 +24,8 @@ export default Vue.extend({
   created() {
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', this.systemThemeChange)
 
-    // TODO: remove this after a few months
+    // TODO: remove this after a few months (moved to local storage in 0.85.0 - 29 Mar 2021)
+    // remove also vue-cookie npm package
     if (this.$cookies.isKey(cookieLocale)) {
       this.$store.commit('setLocale', this.$cookies.get(cookieLocale))
       this.$cookies.remove(cookieLocale)
