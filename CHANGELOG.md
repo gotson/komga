@@ -1,3 +1,11 @@
+## [0.89.2](https://github.com/gotson/komga/compare/v0.89.1...v0.89.2) (2021-04-28)
+
+
+### Bug Fixes
+
+* add configuration to unload native webp library ([64a805e](https://github.com/gotson/komga/commit/64a805e0194357622ef7e18efc74d97a301ccdb3))
+* native webp library excludes support for armv7l ([731e07a](https://github.com/gotson/komga/commit/731e07a070a6c2046e0db30bbc90bef0270d4687)), closes [#488](https://github.com/gotson/komga/issues/488)
+
 ## [0.89.1](https://github.com/gotson/komga/compare/v0.89.0...v0.89.1) (2021-04-28)
 
 
