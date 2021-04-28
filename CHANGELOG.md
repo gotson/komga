@@ -1,3 +1,12 @@
+## [0.89.1](https://github.com/gotson/komga/compare/v0.89.0...v0.89.1) (2021-04-28)
+
+
+### Bug Fixes
+
+* **webreader:** incorrect double pages display ([ece9813](https://github.com/gotson/komga/commit/ece981345fe78afe4e1ef82103aa2e9fbfc54244))
+* **webui:** all libraries should show browse view by default ([3e1bf89](https://github.com/gotson/komga/commit/3e1bf89bdba60e60188960e462de4d335e23b946))
+* **webui:** dashboard would not reload properly ([18e3e21](https://github.com/gotson/komga/commit/18e3e21f06d9e1a810eae98aaf2f03a97d2b91a4))
+
 # [0.89.0](https://github.com/gotson/komga/compare/v0.88.1...v0.89.0) (2021-04-27)
 
 
