@@ -3,6 +3,7 @@ package org.gotson.komga.infrastructure.image
 import com.luciad.imageio.webp.WebP
 import mu.KotlinLogging
 import net.coobird.thumbnailator.Thumbnails
+import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.springframework.stereotype.Service
 import java.awt.Color
 import java.awt.image.BufferedImage
@@ -14,7 +15,9 @@ import javax.imageio.spi.ImageReaderSpi
 private val logger = KotlinLogging.logger {}
 
 @Service
-class ImageConverter {
+class ImageConverter(
+  private val komgaProperties: KomgaProperties,
+) {
 
   val supportedReadFormats by lazy { ImageIO.getReaderFormatNames().toList() }
   val supportedReadMediaTypes by lazy { ImageIO.getReaderMIMETypes().toList() }
@@ -35,12 +38,19 @@ class ImageConverter {
     } as ImageReaderSpi?
 
     if (nativeWebp != null) {
-      if (!WebP.loadNativeLibrary()) {
-        logger.warn { "Could not load native WebP library" }
-        registry.deregisterServiceProvider(nativeWebp)
-      } else if (javaWebp != null) {
-        logger.info { "Using native WebP library" }
-        registry.setOrdering(ImageReaderSpi::class.java, nativeWebp, javaWebp)
+      when {
+        !komgaProperties.nativeWebp -> {
+          logger.warn { "Unloading native WebP library" }
+          registry.deregisterServiceProvider(nativeWebp)
+        }
+        !WebP.loadNativeLibrary() -> {
+          logger.warn { "Could not load native WebP library" }
+          registry.deregisterServiceProvider(nativeWebp)
+        }
+        javaWebp != null -> {
+          logger.info { "Using native WebP library" }
+          registry.setOrdering(ImageReaderSpi::class.java, nativeWebp, javaWebp)
+        }
       }
     }
 

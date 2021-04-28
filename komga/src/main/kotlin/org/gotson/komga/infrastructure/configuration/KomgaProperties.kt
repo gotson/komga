@@ -18,6 +18,8 @@ class KomgaProperties {
 
   var rememberMe = RememberMe()
 
+  var nativeWebp: Boolean = true
+
   var database = Database()
 
   class RememberMe {
