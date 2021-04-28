@@ -190,13 +190,9 @@ export default Vue.extend({
     selectedBooks(val: BookDto[]) {
       val.forEach(i => this.replaceBook(i))
     },
-  },
-  beforeRouteUpdate(to, from, next) {
-    if (to.params.libraryId !== from.params.libraryId) {
-      this.loadAll(to.params.libraryId)
-    }
-
-    next()
+    '$route' (to, from) {
+      this.loadAll(this.libraryId)
+    },
   },
   computed: {
     fixedCardWidth(): number {
