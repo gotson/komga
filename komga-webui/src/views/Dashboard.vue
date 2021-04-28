@@ -1,6 +1,6 @@
 <template>
   <div :style="$vuetify.breakpoint.name === 'xs' ? 'margin-bottom: 56px' : undefined">
-    <toolbar-sticky v-if="showLibraryBar && selectedSeries.length === 0">
+    <toolbar-sticky v-if="individualLibrary && selectedSeries.length === 0">
       <!--   Action menu   -->
       <library-actions-menu v-if="library"
                             :library="library"/>
@@ -11,13 +11,13 @@
 
       <v-spacer/>
 
-      <library-navigation v-if="showLibraryBar && $vuetify.breakpoint.name !== 'xs'" :libraryId="libraryId"/>
+      <library-navigation v-if="individualLibrary && $vuetify.breakpoint.name !== 'xs'" :libraryId="libraryId"/>
 
       <v-spacer/>
 
     </toolbar-sticky>
 
-    <library-navigation v-if="showLibraryBar && $vuetify.breakpoint.name === 'xs'" :libraryId="libraryId" bottom-navigation/>
+    <library-navigation v-if="individualLibrary && $vuetify.breakpoint.name === 'xs'" :libraryId="libraryId" bottom-navigation/>
 
     <series-multi-select-bar
       v-model="selectedSeries"
@@ -174,7 +174,7 @@ export default Vue.extend({
     this.$eventHub.$off(BOOK_CHANGED, this.reload)
   },
   mounted() {
-    if(this.showLibraryBar) this.$store.commit('setLibraryRoute', {id: this.libraryId, route: LIBRARY_ROUTE.RECOMMENDED})
+    if(this.individualLibrary) this.$store.commit('setLibraryRoute', {id: this.libraryId, route: LIBRARY_ROUTE.RECOMMENDED})
     this.reload()
   },
   props: {
@@ -190,8 +190,8 @@ export default Vue.extend({
     selectedBooks(val: BookDto[]) {
       val.forEach(i => this.replaceBook(i))
     },
-    '$route' (to, from) {
-      this.loadAll(this.libraryId)
+    libraryId(val) {
+      this.loadAll(val)
     },
   },
   computed: {
@@ -205,7 +205,7 @@ export default Vue.extend({
         this.inProgressBooks.length === 0 &&
         this.onDeckBooks.length === 0
     },
-    showLibraryBar(): boolean {
+    individualLibrary(): boolean {
       return this.libraryId !== LIBRARIES_ALL
     },
   },
