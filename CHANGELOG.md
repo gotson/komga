@@ -1,3 +1,10 @@
+## [0.89.3](https://github.com/gotson/komga/compare/v0.89.2...v0.89.3) (2021-04-29)
+
+
+### Bug Fixes
+
+* **webreader:** progress not marked correctly ([f3c541c](https://github.com/gotson/komga/commit/f3c541cd1452496469431439f85ec160564224d6)), closes [#518](https://github.com/gotson/komga/issues/518)
+
 ## [0.89.2](https://github.com/gotson/komga/compare/v0.89.1...v0.89.2) (2021-04-28)
 
 
