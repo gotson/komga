@@ -288,6 +288,7 @@
 </template>
 
 <script lang="ts">
+import {debounce} from 'lodash'
 import SettingsSelect from '@/components/SettingsSelect.vue'
 import SettingsSwitch from '@/components/SettingsSwitch.vue'
 import ThumbnailExplorerDialog from '@/components/dialogs/ThumbnailExplorerDialog.vue'
@@ -342,7 +343,7 @@ export default Vue.extend({
         fromMetadata: false,
       },
       pages: [] as PageDtoWithUrl[],
-      page: 1,
+      page: undefined as unknown as number,
       supportedMediaTypes: ['image/jpeg', 'image/png', 'image/gif'],
       convertTo: 'jpeg',
       showExplorer: false,
@@ -427,15 +428,20 @@ export default Vue.extend({
   async beforeRouteUpdate(to, from, next) {
     if (to.params.bookId !== from.params.bookId) {
       // route update means going to previous/next book, in this case we start from first page
-      this.setup(to.params.bookId, 1)
+      this.setup(to.params.bookId)
     }
     next()
   },
   watch: {
-    page(val) {
-      this.updateRoute()
-      this.goToPage = val
-      // this.markProgress(val)
+    page: {
+      handler(val, old) {
+        if (val) {
+          this.markProgress(val)
+          this.goToPage = val
+          this.updateRoute()
+        }
+      },
+      immediate: true,
     },
   },
   computed: {
@@ -577,7 +583,7 @@ export default Vue.extend({
     keyPressed(e: KeyboardEvent) {
       this.shortcuts[e.key]?.execute(this)
     },
-    async setup(bookId: string, page: number) {
+    async setup(bookId: string, page?: number) {
       this.book = await this.$komgaBooks.getBook(bookId)
       this.series = await this.$komgaSeries.getOneSeries(this.book.seriesId)
 
@@ -602,7 +608,7 @@ export default Vue.extend({
       pageDtos.forEach((p: any) => p['url'] = this.getPageUrl(p))
       this.pages = pageDtos as PageDtoWithUrl[]
 
-      if (page >= 1 && page <= this.pagesCount) {
+      if (page && page >= 1 && page <= this.pagesCount) {
         this.goTo(page)
       } else if (this.book.readProgress?.completed === false) {
         this.goTo(this.book.readProgress?.page!!)
@@ -782,10 +788,11 @@ export default Vue.extend({
       this.notification.message = message
       this.notification.enabled = true
     },
-    async markProgress(page: number) {
-      if (!this.incognito)
-        await this.$komgaBooks.updateReadProgress(this.bookId, {page: page})
-    },
+    markProgress: debounce(function (this: any, page: number) {
+      if (!this.incognito) {
+        this.$komgaBooks.updateReadProgress(this.bookId, {page: page})
+      }
+    }, 50),
     downloadCurrentPage() {
       new jsFileDownloader({
         url: this.currentPage.url,
