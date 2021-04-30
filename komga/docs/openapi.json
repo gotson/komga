@@ -544,14 +544,14 @@
             "format": "int32",
             "type": "integer"
           },
-          "numberOfElements": {
+          "size": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
           },
-          "size": {
+          "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
@@ -675,14 +675,14 @@
             "format": "int32",
             "type": "integer"
           },
-          "numberOfElements": {
+          "size": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
           },
-          "size": {
+          "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
@@ -721,14 +721,14 @@
             "format": "int32",
             "type": "integer"
           },
-          "numberOfElements": {
+          "size": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
           },
-          "size": {
+          "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
@@ -816,14 +816,14 @@
             "format": "int32",
             "type": "integer"
           },
-          "numberOfElements": {
+          "size": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
           },
-          "size": {
+          "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },

@@ -1,3 +1,10 @@
+# [0.90.0](https://github.com/gotson/komga/compare/v0.89.3...v0.90.0) (2021-04-30)
+
+
+### Features
+
+* added translation using Weblate (Dutch) ([e15f174](https://github.com/gotson/komga/commit/e15f174ff124c14d753779d6f53e7a92e64b3b94))
+
 ## [0.89.3](https://github.com/gotson/komga/compare/v0.89.2...v0.89.3) (2021-04-29)
 
 
