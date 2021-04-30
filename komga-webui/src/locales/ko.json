@@ -4,7 +4,12 @@
       "pageText": "{2} 중 {0}-{1}"
     },
     "dataTable": {
-      "itemsPerPageText": "페이지 당 행 수:"
+      "itemsPerPageText": "페이지 당 행 수:",
+      "sortBy": "정렬 기준"
+    },
+    "fileInput": {
+      "counter": "{0} 파일",
+      "counterSize": "{0} 파일 (전체 {1}개)"
     },
     "noDataText": "데이터가 없습니다"
   },
@@ -21,12 +26,18 @@
     "penciller": "글",
     "writer": "저자"
   },
+  "book_card": {
+    "error": "오류",
+    "unknown": "분석 예정",
+    "unsupported": "미지원"
+  },
   "bookreader": {
     "beginning_of_book": "책에 첫 페이지입니다.",
     "changing_reading_direction": "읽는 방향 변경",
     "cycling_page_layout": "페이지 보기 전환",
     "cycling_scale": "비율 전환",
     "cycling_side_padding": "여백 전환",
+    "download_current_page": "현재 페이지 다운로드",
     "end_of_book": "책에 마지막 페이지입니다.",
     "from_series_metadata": "시리즈 메타 데이터에서",
     "move_next": "다음 책으로 이동하려면 다음을 선택하거나 다시 한번 눌러주세요.",
@@ -110,7 +121,8 @@
     "summary_from_book": "요약본 {number}:"
   },
   "collections_expansion_panel": {
-    "manage_collection": "모음집 관리"
+    "manage_collection": "모음집 관리",
+    "title": "{name} 모음집"
   },
   "common": {
     "all_libraries": "모든 서재",
@@ -121,6 +133,7 @@
     "collections": "모음집",
     "create": "만들기",
     "delete": "삭제",
+    "download": "다운로드",
     "email": "이메일",
     "filter_no_matches": "선택된 필터에 일치하는 항목이 없습니다",
     "genre": "장르",
@@ -133,6 +146,7 @@
     "pages_n": "페이지 없음 | 1 페이지 | {count} 페이지",
     "password": "비밀번호",
     "publisher": "출판사",
+    "read": "읽음",
     "readlists": "읽기 목록",
     "required": "요청",
     "roles": "역할",
@@ -147,6 +161,12 @@
     "recently_added_books": "최근 추가된 책",
     "recently_added_series": "최근 추가된 시리즈",
     "recently_updated_series": "최근 갱신된 시리즈"
+  },
+  "data_import": {
+    "book_number": "책 번호: {name}",
+    "book_series": "시리즈: {name}",
+    "button_import": "가져오기",
+    "imported_as": "{name} 으로 가져왔음"
   },
   "dialog": {
     "add_to_collection": {

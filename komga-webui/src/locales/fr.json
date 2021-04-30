@@ -31,6 +31,29 @@
     "unknown": "À analyser",
     "unsupported": "Non pris en charge"
   },
+  "book_import": {
+    "button_browse": "Parcourir",
+    "button_import": "Importer",
+    "button_scan": "Scanner",
+    "button_select_series": "Sélectionner une série",
+    "field_import_path": "Importer à partir du dossier",
+    "info_part1": "Cet écran vous permet d'importer des fichiers qui se trouvent en dehors de vos bibliothèques existantes. Vous pouvez uniquement importer des fichiers dans une Série existante, auquel cas Komga déplacera ou copiera les fichiers dans le répertoire de la Série choisie.",
+    "info_part2": "Si vous choisissez un numéro pour un livre, et qu'un livre existe déjà avec ce numéro, alors vous pourrez comparer les deux livres. Si vous décidez d'importer le livre, Komga mettra à jour le livre existant avec le nouveau, remplaçant effectivement l'ancien fichier par le nouveau.",
+    "row": {
+      "error_analyze_first": "Le livre doit d'abord être analysé",
+      "error_choose_series": "Choisissez une série",
+      "error_only_import_no_errors": "Impossible d'importer des livres sans erreur",
+      "warning_upgrade": "Le livre existant sera mis à niveau"
+    },
+    "table": {
+      "destination_name": "Nom de destination",
+      "file_name": "Nom du fichier",
+      "number": "Numéro",
+      "series": "Série"
+    },
+    "title": "Importer",
+    "warning_early_feature": "L'importation de livres est encore une fonctionnalité précoce, et doit être utilisée avec précaution. Assurez-vous que vos fichiers source et de destination sont sauvegardés avant d'utiliser la fonction d'importation."
+  },
   "bookreader": {
     "beginning_of_book": "Vous êtes au début du livre.",
     "changing_reading_direction": "Modifier le sens de lecture vers",
@@ -95,7 +118,8 @@
       "show_hide_toolbars": "Afficher/Masquer les barres d'outil",
       "vertical": "Vertical",
       "webtoon": "Webtoon"
-    }
+    },
+    "tooltip_incognito": "La progression de la lecture ne sera pas sauvegardée"
   },
   "browse_book": {
     "comment": "COMMENTAIRE",
@@ -335,6 +359,16 @@
       "dialog_title_default": "Explorateur de fichiers",
       "parent_directory": "Parent"
     },
+    "filename_chooser": {
+      "button_choose": "Choisir",
+      "field_destination_filename": "Nom du fichier de destination",
+      "label_source_filename": "Nom de fichier d'origine",
+      "table": {
+        "existing_file": "Fichier existant",
+        "order": "Ordre"
+      },
+      "title": "Nom du fichier de destination"
+    },
     "password_change": {
       "button_cancel": "Annuler",
       "button_confirm": "Modifier le mot de passe",
@@ -343,6 +377,10 @@
       "field_new_password_error": "Le nouveau mot de passe est requis.",
       "field_repeat_password": "Répéter le nouveau mot de passe",
       "field_repeat_password_error": "Les mots de passe doivent être identiques."
+    },
+    "series_picker": {
+      "label_search_series": "Chercher une série",
+      "title": "Sélectionner une série"
     },
     "server_stop": {
       "button_cancel": "Annuler",
@@ -353,9 +391,37 @@
     "shortcut_help": {
       "label_description": "Description",
       "label_key": "Touche"
+    },
+    "transient_book_details": {
+      "label_candidate": "Candidat(e)",
+      "label_existing": "Existant",
+      "label_format": "Format",
+      "label_name": "Nom",
+      "label_pages": "Pages",
+      "label_size": "Taille",
+      "pages_table": {
+        "filename": "Nom du fichier",
+        "height": "Hauteur",
+        "index": "Index",
+        "media_type": "Type de média",
+        "width": "Largeur"
+      },
+      "title": "Détails du livre",
+      "title_comparison": "Comparaison du livre"
+    },
+    "transient_book_viewer": {
+      "label_candidate": "Candidat(e)",
+      "label_existing": "Existant",
+      "page_of_pages": "{page} / {pages}",
+      "title": "Inspecter le livre",
+      "title_comparison": "Comparaison du livre"
     }
   },
   "enums": {
+    "copy_mode": {
+      "HARDLINK": "Fichiers Hardlink/Copier",
+      "MOVE": "Déplacer les fichiers"
+    },
     "media_status": {
       "ERROR": "Erreur",
       "OUTDATED": "Dépassé",
@@ -377,11 +443,11 @@
     }
   },
   "error_codes": {
-    "ERR_1000": "Le fichier n'etait pas accessible pendant l'analyse",
-    "ERR_1001": "Le type de média n'est pas supporté",
-    "ERR_1002": "Les archives RAR encryptées ne sont pas supportées",
-    "ERR_1003": "Les archives RAR solides ne sont pas supportées",
-    "ERR_1004": "Les archives RAR multi-volumes ne sont pas supportées",
+    "ERR_1000": "Le fichier n'était pas accessible pendant l'analyse",
+    "ERR_1001": "Le type de média n'est pas pris en charge",
+    "ERR_1002": "Les archives RAR chiffrées ne sont pas prises en charge",
+    "ERR_1003": "Les archives RAR solides ne sont pas prises en charge",
+    "ERR_1004": "Les archives RAR multi-volumes ne sont pas prises en charge",
     "ERR_1005": "Erreur inconnue pendant l'analyse",
     "ERR_1006": "Le livre ne contient aucune page",
     "ERR_1007": "Certaines entrées n'ont pas pu être analysées",
@@ -392,7 +458,9 @@
     "ERR_1012": "Aucune correspondance pour la série",
     "ERR_1013": "Aucune correspondance unique pour le numéro de livre dans la série",
     "ERR_1014": "Aucune correspondance pour le numéro de livre dans la série",
-    "ERR_1015": "Erreur lors de l'analyse de la liste de lecture ComicRack"
+    "ERR_1015": "Erreur lors de l'analyse de la liste de lecture ComicRack",
+    "ERR_1016": "Répertoire non accessible ou pas un répertoire",
+    "ERR_1017": "Impossible de numériser un dossier qui fait partie d'une bibliothèque existante"
   },
   "filter": {
     "age_rating": "Âge minimal",
@@ -417,7 +485,8 @@
   "library_navigation": {
     "browse": "Parcourir",
     "collections": "Collections",
-    "readlists": "Listes de lecture"
+    "readlists": "Listes de lecture",
+    "recommended": "Recommandé"
   },
   "login": {
     "create_user_account": "Créer un compte utilisateur",

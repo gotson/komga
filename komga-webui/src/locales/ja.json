@@ -26,12 +26,18 @@
     "penciller": "ペンシラー",
     "writer": "ライター"
   },
+  "book_card": {
+    "error": "エラー",
+    "unknown": "分析待ち",
+    "unsupported": "非対応"
+  },
   "bookreader": {
     "beginning_of_book": "ここが本の先頭です。",
     "changing_reading_direction": "読み方向を変更する",
     "cycling_page_layout": "ページレイアウトを切り替える",
     "cycling_scale": "表示サイズを切り替える",
     "cycling_side_padding": "左右の余白を切り替える",
+    "download_current_page": "このページをダウンロードする",
     "end_of_book": "ここが本の末尾です。",
     "from_series_metadata": "シリーズ情報から",
     "move_next": "もう一度「次」を押すと次の本へ移動します。",
@@ -156,6 +162,11 @@
     "recently_added_books": "最近追加された本",
     "recently_added_series": "最近追加されたシリーズ",
     "recently_updated_series": "最近更新されたシリーズ"
+  },
+  "data_import": {
+    "book_number": "巻数: {name}",
+    "book_series": "シリーズ: {name}",
+    "button_import": "インポート"
   },
   "dialog": {
     "add_to_collection": {

@@ -37,6 +37,8 @@
     "button_scan": "Skanna",
     "button_select_series": "Välj serie",
     "field_import_path": "Importera från mapp",
+    "info_part1": "Den här skärmen låter dig importera filer som ligger utanför dina befintliga bibliotek. Du kan bara importera filer till befintlig serie, i vilket fall Komga flyttar eller kopierar filerna till katalogen för den valda serien.",
+    "info_part2": "Om du väljer ett nummer för en bok och det redan finns en bok med det numret du kommer att kunna jämföra de två böckerna. Om du väljer att importera boken kommer Komga att uppgradera den befintliga boken med den nya, ersätter effektivt den gamla filen med den nya.",
     "row": {
       "error_analyze_first": "Boken måste analyseras först",
       "error_choose_series": "Välj en serie",
@@ -49,7 +51,8 @@
       "number": "Nummer",
       "series": "Serie"
     },
-    "title": "Importera"
+    "title": "Importera",
+    "warning_early_feature": "Bokimport är fortfarande en funktion som är i ett tidigt skede och måste användas med försiktighet. Se till att din källa och destinationsfiler är säkerhetskopierade innan du använder funktionen Import."
   },
   "bookreader": {
     "beginning_of_book": "Du är i början av boken.",
@@ -115,7 +118,8 @@
       "show_hide_toolbars": "Visa/dölj verktygsfält",
       "vertical": "Lodrät",
       "webtoon": "Webtoon"
-    }
+    },
+    "tooltip_incognito": "Läsförlopp sparas inte"
   },
   "browse_book": {
     "comment": "KOMMENTAR",
@@ -454,7 +458,9 @@
     "ERR_1012": "Ingen match för serier",
     "ERR_1013": "Ingen unik matchning för boknummer inom serien",
     "ERR_1014": "Ingen matchning för boknummer inom serien",
-    "ERR_1015": "Fel vid avinstallation av ComicRack Läslista"
+    "ERR_1015": "Fel vid avinstallation av ComicRack Läslista",
+    "ERR_1016": "Katalog inte tillgänglig eller är inte en katalog",
+    "ERR_1017": "Kan inte skanna en mapp som är en del av ett befintligt bibliotek"
   },
   "filter": {
     "age_rating": "åldersgräns",
@@ -479,7 +485,8 @@
   "library_navigation": {
     "browse": "Bläddra",
     "collections": "Samlingar",
-    "readlists": "Läslistor"
+    "readlists": "Läslistor",
+    "recommended": "Rekommenderad"
   },
   "login": {
     "create_user_account": "Skapa användarkonto",
