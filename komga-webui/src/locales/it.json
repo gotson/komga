@@ -14,7 +14,7 @@
     "noDataText": "Nessun dato disponibile"
   },
   "account_settings": {
-    "account_settings": "Impostazioni profilo",
+    "account_settings": "Impostazioni Profilo",
     "change_password": "cambia password"
   },
   "author_roles": {
@@ -35,28 +35,37 @@
     "button_browse": "Sfoglia",
     "button_import": "Importa",
     "button_scan": "Scansiona",
-    "button_select_series": "Seleziona Serie",
+    "button_select_series": "Seleziona la serie",
     "field_import_path": "Importa da cartella",
+    "info_part1": "Questa schermata ti permette di importare file che sono al di fuori delle tue librerie esistenti. Puoi solo importare file in serie esistenti, nel qual caso Komga sposterà o copierà i file nella cartella della serie scelta.",
+    "info_part2": "Se scegli un numero per un fumetto e un fumetto esiste già con quel numero, allora potrai confrontare i due fumetti. Se decidi di importare il fumetto, Komga aggiornerà il fumetto esistente con quello nuovo, sostituendo effettivamente il vecchio file con il nuovo.",
+    "row": {
+      "error_analyze_first": "Il fumetto deve essere analizzato prima",
+      "error_choose_series": "Scegli una serie",
+      "error_only_import_no_errors": "Posso importare solo fumetti senza errori",
+      "warning_upgrade": "Il fumetto esistente verrà aggiornato"
+    },
     "table": {
       "destination_name": "Nome destinazione",
-      "file_name": "Nome File",
+      "file_name": "Nome del file",
       "number": "Numero",
       "series": "Serie"
     },
-    "title": "Importa"
+    "title": "Importa",
+    "warning_early_feature": "Importa Fumetti è ancora in beta e deve essere usata con cautela. Assicurati che i file di origine e di destinazione abbiano un backup prima di usare questa funzione."
   },
   "bookreader": {
-    "beginning_of_book": "Sei all'inizio del libro.",
+    "beginning_of_book": "Sei all'inizio del fumetto.",
     "changing_reading_direction": "Cambia la direzione di lettura in",
     "cycling_page_layout": "Cambia Layout Pagina",
     "cycling_scale": "Cambia scala",
     "cycling_side_padding": "Cambia Distanziamento Laterale",
     "download_current_page": "Scarica pagina corrente",
-    "end_of_book": "Hai raggiunto la fine del libro.",
+    "end_of_book": "Hai raggiunto la fine del fumetto.",
     "from_series_metadata": "dai metadati della serie",
-    "move_next": "Clicca o premi nuovamente «Avanti» per passare al libro successivo.",
+    "move_next": "Clicca o premi nuovamente «Avanti» per passare al fumetto successivo.",
     "move_next_exit": "Clicca o premi nuovamente «Avanti» per uscire dal lettore.",
-    "move_previous": "Clicca o premi nuovamente «Indietro» per passare al libro precedente.",
+    "move_previous": "Clicca o premi nuovamente «Indietro» per passare al fumetto precedente.",
     "paged_reader_layout": {
       "double": "Pagine doppie",
       "double_no_cover": "Pagine doppie (senza copertina)",
@@ -109,7 +118,8 @@
       "show_hide_toolbars": "Mostra/nascondi barre strumenti",
       "vertical": "Verticale",
       "webtoon": "Webtoon"
-    }
+    },
+    "tooltip_incognito": "Il progresso della lettura non sarà salvato"
   },
   "browse_book": {
     "comment": "COMMENTO",
@@ -118,7 +128,7 @@
     "format": "FORMATO",
     "isbn": "ISBN",
     "navigation_within_readlist": "Navigazione all'interno della lista di lettura: {name}",
-    "read_book": "Leggi libro",
+    "read_book": "Leggi fumetto",
     "size": "DIMENSIONE"
   },
   "browse_collection": {
@@ -133,7 +143,7 @@
   "browse_series": {
     "earliest_year_from_release_dates": "Questo è la data di uscita del primo fumetto della serie",
     "series_no_summary": "Questa serie non ha riassunto, quindi ne ho scelto uno per te!",
-    "summary_from_book": "Riassunto dal libro {number}:"
+    "summary_from_book": "Riassunto dal fumetto {number}:"
   },
   "collections_expansion_panel": {
     "manage_collection": "Gestisci raccolta",
@@ -178,7 +188,7 @@
     "recently_updated_series": "Serie aggiornate di recente"
   },
   "data_import": {
-    "book_number": "Libro numero: {name}",
+    "book_number": "Fumetto numero: {name}",
     "book_series": "Serie: {name}",
     "button_import": "Importa",
     "comicrack_preambule_html": "Puoi importare liste di lettura ComicRack esistenti in formato <code>.cbl</code>.<br>Komga cercherà di far corrispondere la serie e il numero di fumetti forniti con le serie e i fumetti nelle tue librerie.",
@@ -282,11 +292,11 @@
       "dialog_title_add": "Aggiungi Libreria",
       "dialot_title_edit": "Modifica Libreria",
       "field_import_barcode_isbn": "Codice a barre ISBN",
-      "field_import_comicinfo_book": "Metadati del libro",
+      "field_import_comicinfo_book": "Metadati del fumetto",
       "field_import_comicinfo_collections": "Raccolte",
       "field_import_comicinfo_readlists": "Liste di lettura",
       "field_import_comicinfo_series": "Metadati della serie",
-      "field_import_epub_book": "Metadati del libro",
+      "field_import_epub_book": "Metadati del fumetto",
       "field_import_epub_series": "Metadati della serie",
       "field_import_local_artwork": "Copertine locali",
       "field_name": "Nome",
@@ -354,7 +364,7 @@
       "field_destination_filename": "Nome del file di destinazione",
       "label_source_filename": "Nome del file di origine",
       "table": {
-        "existing_file": "File Esistente",
+        "existing_file": "File esistente",
         "order": "Ordine"
       },
       "title": "Nome del file di destinazione"
@@ -369,8 +379,8 @@
       "field_repeat_password_error": "Le password devono essere identiche."
     },
     "series_picker": {
-      "label_search_series": "Cerca Serie",
-      "title": "Seleziona Serie"
+      "label_search_series": "Cerca una serie",
+      "title": "Seleziona una serie"
     },
     "server_stop": {
       "button_cancel": "Annulla",
@@ -390,27 +400,27 @@
       "label_pages": "Pagine",
       "label_size": "Dimensione",
       "pages_table": {
-        "filename": "Nome File",
+        "filename": "Nome del file",
         "height": "Altezza",
         "index": "Indice",
         "media_type": "Tipo media",
         "width": "Larghezza"
       },
-      "title": "Dettagli Fumetto",
-      "title_comparison": "Confronto Fumetto"
+      "title": "Dettagli fumetto",
+      "title_comparison": "Confronto fumetto"
     },
     "transient_book_viewer": {
       "label_candidate": "Candidato",
       "label_existing": "Esistente",
       "page_of_pages": "{page} / {pages}",
-      "title": "Ispeziona Fumetto",
-      "title_comparison": "Confronto Fumetto"
+      "title": "Ispeziona fumetto",
+      "title_comparison": "Confronto fumetto"
     }
   },
   "enums": {
     "copy_mode": {
       "HARDLINK": "Hardlink / Copia File",
-      "MOVE": "Sposta File"
+      "MOVE": "Sposta i file"
     },
     "media_status": {
       "ERROR": "Errore",
@@ -438,17 +448,19 @@
     "ERR_1002": "Gli archivi RAR crittografati non sono supportati",
     "ERR_1003": "Gli archivi RAR solidi non sono supportati",
     "ERR_1004": "Gli archivi RAR multivolume non sono supportati",
-    "ERR_1005": "Errore sconosciuto durante l'analisi del libro",
-    "ERR_1006": "Il libro non contiene alcuna pagina",
+    "ERR_1005": "Errore sconosciuto durante l'analisi del fumetto",
+    "ERR_1006": "Il fumetto non contiene alcuna pagina",
     "ERR_1007": "Non è stato possibile analizzare alcune voci",
-    "ERR_1008": "Errore sconosciuto durante il recupero delle voci del libro",
+    "ERR_1008": "Errore sconosciuto durante il recupero delle voci del fumetto",
     "ERR_1009": "Esiste già una lista di lettura con quel nome",
-    "ERR_1010": "Nessun libro è stato abbinato all'interno della lista di lettura richiesta",
+    "ERR_1010": "Nessun fumetto è stato abbinato all'interno della lista di lettura richiesta",
     "ERR_1011": "Nessuna corrispondenza unica per la serie",
     "ERR_1012": "Nessuna corrispondenza per la serie",
     "ERR_1013": "Nessuna corrispondenza per il numero del fumetto nella serie",
     "ERR_1014": "Nessuna corrispondenza per il numero del fumetto nella serie",
-    "ERR_1015": "Errore durante la deserializzazione della lista di lettura di ComicRack"
+    "ERR_1015": "Errore durante la deserializzazione della lista di lettura di ComicRack",
+    "ERR_1016": "Cartella non accessibile o non è una cartella",
+    "ERR_1017": "Impossibile eseguire la scansione di una cartella che fa parte di una libreria esistente"
   },
   "filter": {
     "age_rating": "Fascia d'età",
@@ -473,7 +485,8 @@
   "library_navigation": {
     "browse": "Esplora",
     "collections": "Raccolte",
-    "readlists": "Liste Lettura"
+    "readlists": "Liste Lettura",
+    "recommended": "Raccomandati"
   },
   "login": {
     "create_user_account": "Crea account utente",

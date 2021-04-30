@@ -37,6 +37,8 @@
     "button_scan": "Skani",
     "button_select_series": "Elekti Serion",
     "field_import_path": "Enporti el dosierujo",
+    "info_part1": "Ĉi tiu ekrano permesas enporti dosierojn ekster viaj ekzistantaj bibliotekoj. Vi povas nur enporti dosierojn en ekzistantan serion; tiaokaze Komga movos aŭ kopios la dosierojn en la dosierujon de la elektita serio.",
+    "info_part2": "Se vi elektos tiun numeron, kiunumera libro jam ekzistas, do vi povos kompari la du librojn. Se vi decidas enporti la libron malgraŭ tio, Komga anstataŭigos la ekzistantan libron per la nova.",
     "row": {
       "error_analyze_first": "Libro devas esti analizita antaŭe",
       "error_choose_series": "Elekti serion",
@@ -49,7 +51,8 @@
       "number": "Numero",
       "series": "Serio"
     },
-    "title": "Enporti"
+    "title": "Enporti",
+    "warning_early_feature": "Enportado de libroj ankoraŭ estas elprovata, kaj devas esti uzata singarde. Faru savkopiojn de viaj fontaj kaj celaj dosieroj antaŭ ol enporti."
   },
   "bookreader": {
     "beginning_of_book": "Vi estas ĉe la komenco de la libro.",
@@ -115,7 +118,8 @@
       "show_hide_toolbars": "Montri/kaŝi ilobretojn",
       "vertical": "Vertikala",
       "webtoon": "Retkomikso"
-    }
+    },
+    "tooltip_incognito": "Legprogreso ne konserviĝos"
   },
   "browse_book": {
     "comment": "KOMENTO",
@@ -454,7 +458,9 @@
     "ERR_1012": "Neniu kongrua serio",
     "ERR_1013": "Kongrua numero de libro ne estas unika en serio",
     "ERR_1014": "Neniu kongrua numero de libro en serio",
-    "ERR_1015": "Eraro pri enportado de legolisto ComicsRack"
+    "ERR_1015": "Eraro pri enportado de legolisto ComicsRack",
+    "ERR_1016": "Dosierujo aŭ ne estas atingebla aŭ fakte ne estas dosierujo",
+    "ERR_1017": "Ne eblas skani dosierujon, kiu estas jam parto de ekzistanta biblioteko"
   },
   "filter": {
     "age_rating": "aĝolimo",
@@ -479,7 +485,8 @@
   "library_navigation": {
     "browse": "Foliumi",
     "collections": "Kolektoj",
-    "readlists": "Legolistoj"
+    "readlists": "Legolistoj",
+    "recommended": "Rekomendata"
   },
   "login": {
     "create_user_account": "Krei konton de uzanto",

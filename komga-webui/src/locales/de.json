@@ -31,6 +31,29 @@
     "unknown": "Noch nicht analisiert",
     "unsupported": "Nicht unterstützt"
   },
+  "book_import": {
+    "button_browse": "Durchblättern",
+    "button_import": "Importieren",
+    "button_scan": "Scannen",
+    "button_select_series": "Serie auswählen",
+    "field_import_path": "Aus Ordner importieren",
+    "info_part1": "Diese Option ermöglicht das Importieren von Dateien welche ausserhalb der bestehende Bibliothek existieren.Es können nur Dateien in eine vorhandene Serie importiert werden. Beim Einlesen wird die Datei entweder in das bestehende Verzeichnis kopiert oder verschoben.",
+    "info_part2": "Sollte ein Buch mit einer Nummer versehen werden, die in Komga schon existiert, dann bekommen Sie die Möglichkeit die Bücher zu vergleichen. Sollten Sie sich entscheiden das Buch dennoch zu importieren, wird Komga das bestehende Buch durch das neue ersetzen.",
+    "row": {
+      "error_analyze_first": "Das Buch muss zuerst analysiert werden",
+      "error_choose_series": "Wählen Sie eine Serie",
+      "error_only_import_no_errors": "Kann nur Bücher ohne Fehler importieren",
+      "warning_upgrade": "Vorhandenes Buch wird aktualisiert sein"
+    },
+    "table": {
+      "destination_name": "Zielname",
+      "file_name": "Dateiname",
+      "number": "Nummer",
+      "series": "Serie"
+    },
+    "title": "Importieren",
+    "warning_early_feature": "Die Funktion Buchimport ist noch unstabil. Es muss mit bedacht genutzt werden. Stellen Sie vor dem Benutzen der Funktion eine Datensicherung deines Orignals sicher."
+  },
   "bookreader": {
     "beginning_of_book": "Sie sind am Anfang des Buches.",
     "changing_reading_direction": "Leserichtung ändern zu",
@@ -95,7 +118,8 @@
       "show_hide_toolbars": "Zeige/Verstecke Menüleiste",
       "vertical": "Vertikal",
       "webtoon": "Webtoon"
-    }
+    },
+    "tooltip_incognito": "Lesefortschritt wird nicht gespeichert"
   },
   "browse_book": {
     "comment": "Kommentar",
@@ -261,7 +285,7 @@
       "label_ordering": "Sammlungen werden standardmäßig nach Namen sortiert. Sie können die manuelle Sortierung aktivieren und eine eigene Sortierfolge festlegen."
     },
     "edit_library": {
-      "button_browse": "Durchsuchen",
+      "button_browse": "Stöbern",
       "button_cancel": "Abbrechen",
       "button_confirm_add": "Hinzufügen",
       "button_confirm_edit": "Bearbeiten",
@@ -335,6 +359,16 @@
       "dialog_title_default": "Dateibrowser",
       "parent_directory": "Übergeordnet"
     },
+    "filename_chooser": {
+      "button_choose": "Auswählen",
+      "field_destination_filename": "Zieldateiname",
+      "label_source_filename": "Quelldateiname",
+      "table": {
+        "existing_file": "Vorhandene Datei",
+        "order": "Reihenfolge"
+      },
+      "title": "Zieldateiname"
+    },
     "password_change": {
       "button_cancel": "Abbrechen",
       "button_confirm": "Passwort ändern",
@@ -343,6 +377,10 @@
       "field_new_password_error": "Passworterneuerung ist notwendig.",
       "field_repeat_password": "Neues Passwort wiederholen",
       "field_repeat_password_error": "Das Passwort muss übereinstimmen."
+    },
+    "series_picker": {
+      "label_search_series": "Serie suchen",
+      "title": "Serie auswählen"
     },
     "server_stop": {
       "button_cancel": "Abbrechen",
@@ -353,9 +391,37 @@
     "shortcut_help": {
       "label_description": "Beschreibung",
       "label_key": "Schlüssel"
+    },
+    "transient_book_details": {
+      "label_candidate": "Kandidat",
+      "label_existing": "Existierend",
+      "label_format": "Format",
+      "label_name": "Name",
+      "label_pages": "Seiten",
+      "label_size": "Größe",
+      "pages_table": {
+        "filename": "Dateiname",
+        "height": "Höhe",
+        "index": "Index",
+        "media_type": "Medientyp",
+        "width": "Breite"
+      },
+      "title": "Buchdetail",
+      "title_comparison": "Buchvergleich"
+    },
+    "transient_book_viewer": {
+      "label_candidate": "Kandidat",
+      "label_existing": "Existierend",
+      "page_of_pages": "{page} / {pages}",
+      "title": "Buch inspizieren",
+      "title_comparison": "Buchvergleich"
     }
   },
   "enums": {
+    "copy_mode": {
+      "HARDLINK": "Hardlink/Dateien kopieren",
+      "MOVE": "Dateien übertragen"
+    },
     "media_status": {
       "ERROR": "Fehler",
       "OUTDATED": "Veraltet",
@@ -392,7 +458,9 @@
     "ERR_1012": "Keine Übereinstimmung für die Serie",
     "ERR_1013": "Kein eindeutige Übereinstimmung für die Bücher der Serie",
     "ERR_1014": "Keine Übereinstimmung für die Bücher für die Serie",
-    "ERR_1015": "Fehler bei der Abarbeitung der ComicRack Leseliste"
+    "ERR_1015": "Fehler bei der Abarbeitung der ComicRack Leseliste",
+    "ERR_1016": "Verzeichnis nicht erreichbar oder kein Verzeichnis",
+    "ERR_1017": "Ordner, der Teil einer vorhandenen Bibliothek ist, kann nicht scannen"
   },
   "filter": {
     "age_rating": "Altersfreigabe",
@@ -417,7 +485,8 @@
   "library_navigation": {
     "browse": "Durchsuchen",
     "collections": "Sammlungen",
-    "readlists": "Leseliste"
+    "readlists": "Leseliste",
+    "recommended": "Empfohlen"
   },
   "login": {
     "create_user_account": "Benutzerkonto erstellen",

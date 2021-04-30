@@ -37,6 +37,8 @@
     "button_scan": "扫描",
     "button_select_series": "选择系列",
     "field_import_path": "从文件夹导入",
+    "info_part1": "此屏幕允许您导入现有库之外的文件. 只能将文件导入到现有序列, 在这种情况下Komga会将文件移动或复制到所选序列的目录中.",
+    "info_part2": "如果您为一本书选择了一个编号, 并且已经存在一本带有该编号的书,你可以比较这两本书.如果您决定导入该书. Komga将升级现有的书使用新文件, 有效地用新文件替换旧文件.",
     "row": {
       "error_analyze_first": "书籍需要先分析",
       "error_choose_series": "选择一个系列",
@@ -49,7 +51,8 @@
       "number": "编号",
       "series": "系列"
     },
-    "title": "导入"
+    "title": "导入",
+    "warning_early_feature": "书籍导入仍然是早期的功能, 须谨慎使用. 确定你的消息来源和目标文件在使用导入功能之前备份."
   },
   "bookreader": {
     "beginning_of_book": "你可以开始阅读这本书.",
@@ -115,7 +118,8 @@
       "show_hide_toolbars": "显示/隐藏工具栏",
       "vertical": "垂直模式",
       "webtoon": "Webtoon模式"
-    }
+    },
+    "tooltip_incognito": "将不保存阅读进度"
   },
   "browse_book": {
     "comment": "注释",
@@ -352,7 +356,7 @@
     "file_browser": {
       "button_cancel": "取消",
       "button_confirm_default": "选择",
-      "dialog_title_default": "文件浏览器",
+      "dialog_title_default": "文件浏览",
       "parent_directory": "父目录"
     },
     "filename_chooser": {
@@ -454,7 +458,9 @@
     "ERR_1012": "系列不匹配",
     "ERR_1013": "系列中的书号没有唯一匹配",
     "ERR_1014": "系列中的书号不匹配",
-    "ERR_1015": "反序列化阅读列表时出错"
+    "ERR_1015": "反序列化阅读列表时出错",
+    "ERR_1016": "目录不可访问",
+    "ERR_1017": "无法扫描作为现有库一部分的文件夹"
   },
   "filter": {
     "age_rating": "年龄限制",
@@ -479,7 +485,8 @@
   "library_navigation": {
     "browse": "浏览",
     "collections": "收藏",
-    "readlists": "阅读列表"
+    "readlists": "阅读列表",
+    "recommended": "推荐"
   },
   "login": {
     "create_user_account": "创建用户帐户",
