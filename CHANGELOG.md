@@ -1,3 +1,10 @@
+## [0.90.1](https://github.com/gotson/komga/compare/v0.90.0...v0.90.1) (2021-05-03)
+
+
+### Bug Fixes
+
+* better stream handling for rar and zip files ([ebc8df2](https://github.com/gotson/komga/commit/ebc8df2053e270f420c6752619854d125041ef4e))
+
 # [0.90.0](https://github.com/gotson/komga/compare/v0.89.3...v0.90.0) (2021-04-30)
 
 
