@@ -80,8 +80,8 @@ class BookImporterTest(
 
   @BeforeEach
   fun beforeEach() {
-    every { mockTaskReceiver.analyzeBook(any<Book>()) } just Runs
-    every { mockTaskReceiver.refreshBookMetadata(any<String>(), any()) } just Runs
+    every { mockTaskReceiver.analyzeBook(any<Book>(), any()) } just Runs
+    every { mockTaskReceiver.refreshBookMetadata(any<String>(), any(), any()) } just Runs
   }
 
   @AfterAll
@@ -215,7 +215,7 @@ class BookImporterTest(
         assertThat(newMedia.status).isEqualTo(Media.Status.UNKNOWN)
       }
 
-      verify(exactly = 1) { mockTaskReceiver.analyzeBook(any<Book>()) }
+      verify(exactly = 1) { mockTaskReceiver.analyzeBook(any<Book>(), any()) }
     }
   }
 
@@ -257,7 +257,7 @@ class BookImporterTest(
 
       assertThat(Files.notExists(sourceFile)).isTrue
 
-      verify(exactly = 1) { mockTaskReceiver.analyzeBook(any<Book>()) }
+      verify(exactly = 1) { mockTaskReceiver.analyzeBook(any<Book>(), any()) }
     }
   }
 
@@ -319,7 +319,7 @@ class BookImporterTest(
 
       assertThat(Files.notExists(sourceFile)).isTrue
 
-      verify(exactly = 1) { mockTaskReceiver.analyzeBook(any<Book>()) }
+      verify(exactly = 1) { mockTaskReceiver.analyzeBook(any<Book>(), any()) }
     }
   }
 
@@ -361,7 +361,7 @@ class BookImporterTest(
 
       assertThat(Files.exists(sourceFile)).isTrue
 
-      verify(exactly = 1) { mockTaskReceiver.analyzeBook(any<Book>()) }
+      verify(exactly = 1) { mockTaskReceiver.analyzeBook(any<Book>(), any()) }
     }
   }
 
@@ -411,7 +411,7 @@ class BookImporterTest(
         assertThat(page).isEqualTo(4)
       }
 
-      verify(exactly = 1) { mockTaskReceiver.analyzeBook(any<Book>()) }
+      verify(exactly = 1) { mockTaskReceiver.analyzeBook(any<Book>(), any()) }
     }
   }
 
@@ -450,7 +450,7 @@ class BookImporterTest(
         assertThat(bookIds[0]).isEqualTo(books[0].id)
       }
 
-      verify(exactly = 1) { mockTaskReceiver.analyzeBook(any<Book>()) }
+      verify(exactly = 1) { mockTaskReceiver.analyzeBook(any<Book>(), any()) }
     }
   }
 }
