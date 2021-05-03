@@ -1,6 +1,7 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
+import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.CopyMode
 import org.gotson.komga.domain.model.Media
@@ -147,6 +148,6 @@ class BookImporter(
 
     seriesLifecycle.sortBooks(series)
 
-    taskReceiver.analyzeBook(importedBook)
+    taskReceiver.analyzeBook(importedBook, HIGHEST_PRIORITY)
   }
 }

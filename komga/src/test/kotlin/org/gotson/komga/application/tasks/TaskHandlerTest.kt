@@ -2,26 +2,21 @@ package org.gotson.komga.application.tasks
 
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
-import io.mockk.just
-import io.mockk.runs
+import io.mockk.slot
 import io.mockk.verify
 import mu.KotlinLogging
+import org.assertj.core.api.Assertions.assertThat
+import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.makeBook
-import org.gotson.komga.domain.model.makeLibrary
-import org.gotson.komga.domain.model.makeSeries
 import org.gotson.komga.domain.persistence.BookRepository
-import org.gotson.komga.domain.persistence.LibraryRepository
-import org.gotson.komga.domain.service.LibraryLifecycle
-import org.gotson.komga.domain.service.MetadataLifecycle
-import org.gotson.komga.domain.service.SeriesLifecycle
+import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
-import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.jms.config.JmsListenerEndpointRegistry
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.jms.support.destination.JmsDestinationAccessor
 import org.springframework.test.context.junit.jupiter.SpringExtension
@@ -33,34 +28,17 @@ private val logger = KotlinLogging.logger {}
 class TaskHandlerTest(
   @Autowired private val taskReceiver: TaskReceiver,
   @Autowired private val jmsTemplate: JmsTemplate,
-  @Autowired private val libraryRepository: LibraryRepository,
-  @Autowired private val bookRepository: BookRepository,
-  @Autowired private val seriesLifecycle: SeriesLifecycle,
-  @Autowired private val libraryLifecycle: LibraryLifecycle
+  @Autowired private val jmsListenerEndpointRegistry: JmsListenerEndpointRegistry,
 ) {
 
   @MockkBean
-  private lateinit var mockMetadataLifecycle: MetadataLifecycle
+  private lateinit var mockBookLifecycle: BookLifecycle
 
-  private val library = makeLibrary()
+  @MockkBean
+  private lateinit var mockBookRepository: BookRepository
 
   init {
     jmsTemplate.receiveTimeout = JmsDestinationAccessor.RECEIVE_TIMEOUT_NO_WAIT
-  }
-
-  @BeforeAll
-  fun `setup library`() {
-    libraryRepository.insert(library)
-  }
-
-  @AfterAll
-  fun `teardown library`() {
-    libraryRepository.deleteAll()
-  }
-
-  @AfterEach
-  fun `clear repository`() {
-    libraryLifecycle.deleteLibrary(library)
   }
 
   @AfterEach
@@ -72,23 +50,39 @@ class TaskHandlerTest(
 
   @Test
   fun `when similar tasks are submitted then only a few are executed`() {
-    val book = makeBook("book", libraryId = library.id)
-    val series = makeSeries("series", libraryId = library.id)
-    seriesLifecycle.createSeries(series).let {
-      seriesLifecycle.addBooks(it, listOf(book))
-    }
+    every { mockBookRepository.findByIdOrNull(any()) } returns makeBook("id")
+    every { mockBookLifecycle.analyzeAndPersist(any()) } returns false
 
-    every { mockMetadataLifecycle.refreshMetadata(any(), any()) } answers { Thread.sleep(1_000) }
-    every { mockMetadataLifecycle.refreshMetadata(any()) } just runs
-
-    val createdBook = bookRepository.findAll().first()
+    jmsListenerEndpointRegistry.stop()
 
     repeat(100) {
-      taskReceiver.refreshBookMetadata(createdBook)
+      taskReceiver.analyzeBook("id")
     }
 
-    Thread.sleep(5_000)
+    jmsListenerEndpointRegistry.start()
 
-    verify(atLeast = 1, atMost = 3) { mockMetadataLifecycle.refreshMetadata(any(), any()) }
+    Thread.sleep(1_00)
+
+    verify(exactly = 1) { mockBookLifecycle.analyzeAndPersist(any()) }
+  }
+
+  @Test
+  fun `when high priority tasks are submitted then they are executed first`() {
+    val slot = slot<String>()
+    val calls = mutableListOf<Book>()
+    every { mockBookRepository.findByIdOrNull(capture(slot)) } answers { makeBook(slot.captured) }
+    every { mockBookLifecycle.analyzeAndPersist(capture(calls)) } returns false
+
+    jmsListenerEndpointRegistry.stop()
+
+    taskReceiver.analyzeBook("1")
+    taskReceiver.analyzeBook("2", HIGHEST_PRIORITY)
+
+    jmsListenerEndpointRegistry.start()
+
+    Thread.sleep(1_00)
+
+    verify(exactly = 2) { mockBookLifecycle.analyzeAndPersist(any()) }
+    assertThat(calls.map { it.name }).containsExactly("2", "1")
   }
 }

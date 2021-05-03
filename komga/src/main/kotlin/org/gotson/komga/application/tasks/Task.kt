@@ -4,23 +4,30 @@ import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.CopyMode
 import java.io.Serializable
 
-sealed class Task : Serializable {
+const val HIGHEST_PRIORITY = 9
+const val DEFAULT_PRIORITY = 4
+
+sealed class Task(priority: Int = DEFAULT_PRIORITY) : Serializable {
   abstract fun uniqueId(): String
+  val priority = priority.coerceIn(0, 9)
 
   data class ScanLibrary(val libraryId: String) : Task() {
     override fun uniqueId() = "SCAN_LIBRARY_$libraryId"
   }
 
-  data class AnalyzeBook(val bookId: String) : Task() {
+  class AnalyzeBook(val bookId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
     override fun uniqueId() = "ANALYZE_BOOK_$bookId"
+    override fun toString(): String = "AnalyzeBook(bookId='$bookId', priority='$priority')"
   }
 
-  data class GenerateBookThumbnail(val bookId: String) : Task() {
+  class GenerateBookThumbnail(val bookId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
     override fun uniqueId() = "GENERATE_BOOK_THUMBNAIL_$bookId"
+    override fun toString(): String = "GenerateBookThumbnail(bookId='$bookId', priority='$priority')"
   }
 
-  data class RefreshBookMetadata(val bookId: String, val capabilities: List<BookMetadataPatchCapability>) : Task() {
+  class RefreshBookMetadata(val bookId: String, val capabilities: List<BookMetadataPatchCapability>, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
     override fun uniqueId() = "REFRESH_BOOK_METADATA_$bookId"
+    override fun toString(): String = "RefreshBookMetadata(bookId='$bookId', capabilities=$capabilities, priority='$priority')"
   }
 
   data class RefreshSeriesMetadata(val seriesId: String) : Task() {

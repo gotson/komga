@@ -92,4 +92,35 @@ class ArtemisConfigTest(
     assertThat(msg).isEqualTo("message 1")
     assertThat(size).isEqualTo(5)
   }
+
+  @Test
+  fun `when sending messages with different priority then high priority messages are received first`() {
+    for (i in 0..9) {
+      jmsTemplate.priority = i
+      jmsTemplate.convertAndSend(
+        QUEUE_TASKS,
+        "message A $i"
+      )
+    }
+
+    for (i in 9 downTo 0) {
+      jmsTemplate.priority = i
+      jmsTemplate.convertAndSend(
+        QUEUE_TASKS,
+        "message B $i"
+      )
+    }
+
+    val size = jmsTemplate.browse(QUEUE_TASKS) { _: Session, browser: QueueBrowser ->
+      browser.enumeration.toList().size
+    }
+    assertThat(size).isEqualTo(20)
+
+    for (i in 9 downTo 0) {
+      val msgA = jmsTemplate.receiveAndConvert(QUEUE_TASKS) as String
+      assertThat(msgA).isEqualTo("message A $i")
+      val msgB = jmsTemplate.receiveAndConvert(QUEUE_TASKS) as String
+      assertThat(msgB).isEqualTo("message B $i")
+    }
+  }
 }

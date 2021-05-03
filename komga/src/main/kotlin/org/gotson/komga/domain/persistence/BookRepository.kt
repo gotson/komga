@@ -4,6 +4,7 @@ import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookSearch
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 
 interface BookRepository {
   fun findByIdOrNull(bookId: String): Book?
@@ -17,7 +18,7 @@ interface BookRepository {
   fun findAllIdBySeriesId(seriesId: String): Collection<String>
   fun findAllIdBySeriesIds(seriesIds: Collection<String>): Collection<String>
   fun findAllIdByLibraryId(libraryId: String): Collection<String>
-  fun findAllId(bookSearch: BookSearch): Collection<String>
+  fun findAllId(bookSearch: BookSearch, sort: Sort): Collection<String>
 
   fun insert(book: Book)
   fun insertMany(books: Collection<Book>)

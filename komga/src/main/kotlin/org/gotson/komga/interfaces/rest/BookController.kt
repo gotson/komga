@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
 import org.apache.commons.io.IOUtils
+import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
@@ -418,7 +419,7 @@ class BookController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable bookId: String) {
     bookRepository.findByIdOrNull(bookId)?.let { book ->
-      taskReceiver.analyzeBook(book)
+      taskReceiver.analyzeBook(book, HIGHEST_PRIORITY)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -427,7 +428,7 @@ class BookController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun refreshMetadata(@PathVariable bookId: String) {
     bookRepository.findByIdOrNull(bookId)?.let { book ->
-      taskReceiver.refreshBookMetadata(book)
+      taskReceiver.refreshBookMetadata(book, priority = HIGHEST_PRIORITY)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 

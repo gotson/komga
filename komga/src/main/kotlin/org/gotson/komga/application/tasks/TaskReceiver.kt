@@ -13,6 +13,7 @@ import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS_TYPE
 import org.gotson.komga.infrastructure.jms.QUEUE_TYPE
 import org.gotson.komga.infrastructure.jms.QUEUE_UNIQUE_ID
+import org.springframework.data.domain.Sort
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.stereotype.Service
 
@@ -38,36 +39,39 @@ class TaskReceiver(
       BookSearch(
         libraryIds = listOf(library.id),
         mediaStatus = listOf(Media.Status.UNKNOWN, Media.Status.OUTDATED)
-      )
+      ),
+      Sort.by(Sort.Order.asc("seriesId"), Sort.Order.asc("number"))
     ).forEach {
       submitTask(Task.AnalyzeBook(it))
     }
   }
 
-  fun analyzeBook(bookId: String) {
-    submitTask(Task.AnalyzeBook(bookId))
+  fun analyzeBook(bookId: String, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.AnalyzeBook(bookId, priority))
   }
 
-  fun analyzeBook(book: Book) {
-    submitTask(Task.AnalyzeBook(book.id))
+  fun analyzeBook(book: Book, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.AnalyzeBook(book.id, priority))
   }
 
-  fun generateBookThumbnail(bookId: String) {
-    submitTask(Task.GenerateBookThumbnail(bookId))
+  fun generateBookThumbnail(bookId: String, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.GenerateBookThumbnail(bookId, priority))
   }
 
   fun refreshBookMetadata(
     bookId: String,
-    capabilities: List<BookMetadataPatchCapability> = BookMetadataPatchCapability.values().toList()
+    capabilities: List<BookMetadataPatchCapability> = BookMetadataPatchCapability.values().toList(),
+    priority: Int = DEFAULT_PRIORITY,
   ) {
-    submitTask(Task.RefreshBookMetadata(bookId, capabilities))
+    submitTask(Task.RefreshBookMetadata(bookId, capabilities, priority))
   }
 
   fun refreshBookMetadata(
     book: Book,
-    capabilities: List<BookMetadataPatchCapability> = BookMetadataPatchCapability.values().toList()
+    capabilities: List<BookMetadataPatchCapability> = BookMetadataPatchCapability.values().toList(),
+    priority: Int = DEFAULT_PRIORITY,
   ) {
-    submitTask(Task.RefreshBookMetadata(book.id, capabilities))
+    submitTask(Task.RefreshBookMetadata(book.id, capabilities, priority))
   }
 
   fun refreshSeriesMetadata(seriesId: String) {
@@ -84,6 +88,7 @@ class TaskReceiver(
 
   private fun submitTask(task: Task) {
     logger.info { "Sending task: $task" }
+    jmsTemplate.priority = task.priority
     jmsTemplate.convertAndSend(QUEUE_TASKS, task) {
       it.apply {
         setStringProperty(QUEUE_TYPE, QUEUE_TASKS_TYPE)

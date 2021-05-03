@@ -28,7 +28,9 @@ class BookDao(
   private val d = Tables.BOOK_METADATA
 
   private val sorts = mapOf(
-    "createdDate" to b.CREATED_DATE
+    "createdDate" to b.CREATED_DATE,
+    "seriesId" to b.SERIES_ID,
+    "number" to b.NUMBER,
   )
 
   override fun findByIdOrNull(bookId: String): Book? =
@@ -125,14 +127,17 @@ class BookDao(
       .where(b.LIBRARY_ID.eq(libraryId))
       .fetch(0, String::class.java)
 
-  override fun findAllId(bookSearch: BookSearch): Collection<String> {
+  override fun findAllId(bookSearch: BookSearch, sort: Sort): Collection<String> {
     val conditions = bookSearch.toCondition()
+
+    val orderBy = sort.toOrderBy(sorts)
 
     return dsl.select(b.ID)
       .from(b)
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .where(conditions)
+      .orderBy(orderBy)
       .fetch(0, String::class.java)
   }
 
