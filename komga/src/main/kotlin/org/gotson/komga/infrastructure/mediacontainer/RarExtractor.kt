@@ -3,15 +3,11 @@ package org.gotson.komga.infrastructure.mediacontainer
 import com.github.junrar.Archive
 import mu.KotlinLogging
 import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
-import org.apache.commons.io.input.TeeInputStream
 import org.gotson.komga.domain.model.MediaContainerEntry
 import org.gotson.komga.domain.model.MediaUnsupportedException
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.springframework.stereotype.Service
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 import java.nio.file.Path
-import java.util.Comparator
 
 private val logger = KotlinLogging.logger {}
 
@@ -32,20 +28,19 @@ class RarExtractor(
       if (rar.mainHeader.isMultiVolume) throw MediaUnsupportedException("Multi-Volume RAR archives are not supported", "ERR_1004")
       rar.fileHeaders
         .filter { !it.isDirectory }
-        .map { hd ->
+        .map { entry ->
           try {
-            val buffer = ByteArrayOutputStream()
-            TeeInputStream(rar.getInputStream(hd), buffer).use { tee ->
-              val mediaType = contentDetector.detectMediaType(tee)
+            rar.getInputStream(entry).buffered().use { stream ->
+              val mediaType = contentDetector.detectMediaType(stream)
               val dimension = if (contentDetector.isImage(mediaType))
-                imageAnalyzer.getDimension(ByteArrayInputStream(buffer.toByteArray()))
+                imageAnalyzer.getDimension(stream)
               else
                 null
-              MediaContainerEntry(name = hd.fileName, mediaType = mediaType, dimension = dimension)
+              MediaContainerEntry(name = entry.fileName, mediaType = mediaType, dimension = dimension)
             }
           } catch (e: Exception) {
-            logger.warn(e) { "Could not analyze entry: ${hd.fileName}" }
-            MediaContainerEntry(name = hd.fileName, comment = e.message)
+            logger.warn(e) { "Could not analyze entry: ${entry.fileName}" }
+            MediaContainerEntry(name = entry.fileName, comment = e.message)
           }
         }
         .sortedWith(compareBy(natSortComparator) { it.name })
@@ -54,6 +49,6 @@ class RarExtractor(
   override fun getEntryStream(path: Path, entryName: String): ByteArray =
     Archive(path.toFile()).use { rar ->
       val header = rar.fileHeaders.find { it.fileName == entryName }
-      rar.getInputStream(header).readBytes()
+      rar.getInputStream(header).use { it.readBytes() }
     }
 }

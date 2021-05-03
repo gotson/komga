@@ -11,8 +11,12 @@ private val logger = KotlinLogging.logger {}
 @Service
 class ImageAnalyzer {
 
+  /**
+   * Returns the Dimension of the image contained in the stream.
+   * The stream will not be closed, nor marked or reset.
+   */
   fun getDimension(stream: InputStream): Dimension? =
-    stream.use {
+    try {
       ImageIO.createImageInputStream(stream).use { fis ->
         val readers = ImageIO.getImageReaders(fis)
         if (readers.hasNext()) {
@@ -24,5 +28,8 @@ class ImageAnalyzer {
           null
         }
       }
+    } catch (e: Exception) {
+      logger.warn(e) { "Could not get image dimensions" }
+      null
     }
 }

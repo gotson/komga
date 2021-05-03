@@ -51,7 +51,7 @@ class EpubExtractor(
             it.href == (opfDir?.relativize(image) ?: image).separatorsToUnix()
           }.mediaType
           val dimension = if (contentDetector.isImage(mediaType))
-            imageAnalyzer.getDimension(zip.getInputStream(zip.getEntry(name)))
+            zip.getInputStream(zip.getEntry(name)).use { imageAnalyzer.getDimension(it) }
           else
             null
           MediaContainerEntry(name = name, mediaType = mediaType, dimension = dimension)

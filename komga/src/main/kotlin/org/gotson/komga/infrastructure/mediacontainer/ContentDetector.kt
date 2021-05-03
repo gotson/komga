@@ -26,13 +26,12 @@ class ContentDetector(
     }
   }
 
+  /**
+   * Detects the media type of the content of the stream.
+   * The stream will not be closed.
+   */
   fun detectMediaType(stream: InputStream): String =
-    stream.use {
-      TikaInputStream.get(it).use { tikaStream ->
-        val mediaType = tika.detector.detect(tikaStream, Metadata())
-        mediaType.toString()
-      }
-    }
+    tika.detector.detect(stream, Metadata()).toString()
 
   fun isImage(mediaType: String): Boolean =
     mediaType.startsWith("image/")

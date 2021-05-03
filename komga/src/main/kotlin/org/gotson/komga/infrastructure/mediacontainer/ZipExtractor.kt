@@ -7,7 +7,6 @@ import org.gotson.komga.domain.model.MediaContainerEntry
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.springframework.stereotype.Service
 import java.nio.file.Path
-import java.util.Comparator
 
 private val logger = KotlinLogging.logger {}
 
@@ -25,24 +24,26 @@ class ZipExtractor(
     ZipFile(path.toFile()).use { zip ->
       zip.entries.toList()
         .filter { !it.isDirectory }
-        .map {
+        .map { entry ->
           try {
-            val mediaType = contentDetector.detectMediaType(zip.getInputStream(it))
-            val dimension = if (contentDetector.isImage(mediaType))
-              imageAnalyzer.getDimension(zip.getInputStream(it))
-            else
-              null
-            MediaContainerEntry(name = it.name, mediaType = mediaType, dimension = dimension)
+            zip.getInputStream(entry).buffered().use { stream ->
+              val mediaType = contentDetector.detectMediaType(stream)
+              val dimension = if (contentDetector.isImage(mediaType))
+                imageAnalyzer.getDimension(stream)
+              else
+                null
+              MediaContainerEntry(name = entry.name, mediaType = mediaType, dimension = dimension)
+            }
           } catch (e: Exception) {
-            logger.warn(e) { "Could not analyze entry: ${it.name}" }
-            MediaContainerEntry(name = it.name, comment = e.message)
+            logger.warn(e) { "Could not analyze entry: ${entry.name}" }
+            MediaContainerEntry(name = entry.name, comment = e.message)
           }
         }
         .sortedWith(compareBy(natSortComparator) { it.name })
     }
 
   override fun getEntryStream(path: Path, entryName: String): ByteArray =
-    ZipFile(path.toFile()).use {
-      it.getInputStream(it.getEntry(entryName)).readBytes()
+    ZipFile(path.toFile()).use { zip ->
+      zip.getInputStream(zip.getEntry(entryName)).use { it.readBytes() }
     }
 }
