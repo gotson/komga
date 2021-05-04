@@ -4,7 +4,8 @@ import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.CopyMode
 import java.io.Serializable
 
-const val HIGHEST_PRIORITY = 9
+const val HIGHEST_PRIORITY = 8
+const val HIGH_PRIORITY = 6
 const val DEFAULT_PRIORITY = 4
 
 sealed class Task(priority: Int = DEFAULT_PRIORITY) : Serializable {
@@ -38,7 +39,9 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY) : Serializable {
     override fun uniqueId() = "AGGREGATE_SERIES_METADATA_$seriesId"
   }
 
-  data class ImportBook(val sourceFile: String, val seriesId: String, val copyMode: CopyMode, val destinationName: String?, val upgradeBookId: String?) : Task() {
+  class ImportBook(val sourceFile: String, val seriesId: String, val copyMode: CopyMode, val destinationName: String?, val upgradeBookId: String?, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
     override fun uniqueId(): String = "IMPORT_BOOK_${seriesId}_$sourceFile"
+    override fun toString(): String =
+      "ImportBook(sourceFile='$sourceFile', seriesId='$seriesId', copyMode=$copyMode, destinationName=$destinationName, upgradeBookId=$upgradeBookId, priority='$priority')"
   }
 }

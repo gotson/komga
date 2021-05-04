@@ -74,7 +74,8 @@ class TaskHandler(
 
           is Task.ImportBook ->
             seriesRepository.findByIdOrNull(task.seriesId)?.let { series ->
-              bookImporter.importBook(Paths.get(task.sourceFile), series, task.copyMode, task.destinationName, task.upgradeBookId)
+              val importedBook = bookImporter.importBook(Paths.get(task.sourceFile), series, task.copyMode, task.destinationName, task.upgradeBookId)
+              taskReceiver.analyzeBook(importedBook, priority = task.priority + 1)
             } ?: logger.warn { "Cannot execute task $task: Series does not exist" }
         }
       }.also {

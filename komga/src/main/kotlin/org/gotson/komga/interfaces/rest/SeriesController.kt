@@ -9,7 +9,7 @@ import mu.KotlinLogging
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
 import org.apache.commons.io.IOUtils
-import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
+import org.gotson.komga.application.tasks.HIGH_PRIORITY
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
@@ -294,7 +294,7 @@ class SeriesController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable seriesId: String) {
     bookRepository.findAllIdBySeriesId(seriesId).forEach {
-      taskReceiver.analyzeBook(it, HIGHEST_PRIORITY)
+      taskReceiver.analyzeBook(it, HIGH_PRIORITY)
     }
   }
 
@@ -303,7 +303,7 @@ class SeriesController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun refreshMetadata(@PathVariable seriesId: String) {
     bookRepository.findAllIdBySeriesId(seriesId).forEach {
-      taskReceiver.refreshBookMetadata(it, priority = HIGHEST_PRIORITY)
+      taskReceiver.refreshBookMetadata(it, priority = HIGH_PRIORITY)
     }
   }
 

@@ -82,8 +82,8 @@ class TaskReceiver(
     submitTask(Task.AggregateSeriesMetadata(seriesId))
   }
 
-  fun importBook(sourceFile: String, seriesId: String, copyMode: CopyMode, destinationName: String?, upgradeBookId: String?) {
-    submitTask(Task.ImportBook(sourceFile, seriesId, copyMode, destinationName, upgradeBookId))
+  fun importBook(sourceFile: String, seriesId: String, copyMode: CopyMode, destinationName: String?, upgradeBookId: String?, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.ImportBook(sourceFile, seriesId, copyMode, destinationName, upgradeBookId, priority))
   }
 
   private fun submitTask(task: Task) {

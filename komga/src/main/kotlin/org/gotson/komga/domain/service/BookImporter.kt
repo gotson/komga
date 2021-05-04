@@ -1,8 +1,7 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
-import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
-import org.gotson.komga.application.tasks.TaskReceiver
+import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.CopyMode
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.PathContainedInPath
@@ -41,11 +40,10 @@ class BookImporter(
   private val metadataRepository: BookMetadataRepository,
   private val readProgressRepository: ReadProgressRepository,
   private val readListRepository: ReadListRepository,
-  private val taskReceiver: TaskReceiver,
   private val libraryRepository: LibraryRepository,
 ) {
 
-  fun importBook(sourceFile: Path, series: Series, copyMode: CopyMode, destinationName: String? = null, upgradeBookId: String? = null) {
+  fun importBook(sourceFile: Path, series: Series, copyMode: CopyMode, destinationName: String? = null, upgradeBookId: String? = null): Book {
     if (sourceFile.notExists()) throw FileNotFoundException("File not found: $sourceFile")
 
     libraryRepository.findAll().forEach { library ->
@@ -148,6 +146,6 @@ class BookImporter(
 
     seriesLifecycle.sortBooks(series)
 
-    taskReceiver.analyzeBook(importedBook, HIGHEST_PRIORITY)
+    return importedBook
   }
 }

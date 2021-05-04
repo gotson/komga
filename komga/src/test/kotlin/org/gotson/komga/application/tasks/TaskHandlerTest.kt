@@ -76,7 +76,7 @@ class TaskHandlerTest(
     jmsListenerEndpointRegistry.stop()
 
     taskReceiver.analyzeBook("1")
-    taskReceiver.analyzeBook("2", HIGHEST_PRIORITY)
+    taskReceiver.analyzeBook("2", HIGH_PRIORITY)
 
     jmsListenerEndpointRegistry.start()
 

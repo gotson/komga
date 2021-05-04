@@ -2,15 +2,8 @@ package org.gotson.komga.domain.service
 
 import com.google.common.jimfs.Configuration
 import com.google.common.jimfs.Jimfs
-import com.ninjasquad.springmockk.MockkBean
-import io.mockk.Runs
-import io.mockk.every
-import io.mockk.just
-import io.mockk.verify
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
-import org.gotson.komga.application.tasks.TaskReceiver
-import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.CopyMode
 import org.gotson.komga.domain.model.KomgaUser
@@ -32,7 +25,6 @@ import org.gotson.komga.infrastructure.language.toIndexedMap
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -63,9 +55,6 @@ class BookImporterTest(
   @Autowired private val readListLifecycle: ReadListLifecycle,
 ) {
 
-  @MockkBean
-  private lateinit var mockTaskReceiver: TaskReceiver
-
   private val library = makeLibrary("lib", "file:/library")
   private val user1 = KomgaUser("user1@example.org", "", false)
   private val user2 = KomgaUser("user2@example.org", "", false)
@@ -76,12 +65,6 @@ class BookImporterTest(
 
     userRepository.insert(user1)
     userRepository.insert(user2)
-  }
-
-  @BeforeEach
-  fun beforeEach() {
-    every { mockTaskReceiver.analyzeBook(any<Book>(), any()) } just Runs
-    every { mockTaskReceiver.refreshBookMetadata(any<String>(), any(), any()) } just Runs
   }
 
   @AfterAll
@@ -214,8 +197,6 @@ class BookImporterTest(
         val newMedia = mediaRepository.findById(id)
         assertThat(newMedia.status).isEqualTo(Media.Status.UNKNOWN)
       }
-
-      verify(exactly = 1) { mockTaskReceiver.analyzeBook(any<Book>(), any()) }
     }
   }
 
@@ -256,8 +237,6 @@ class BookImporterTest(
       assertThat(upgradedMedia.status).isEqualTo(Media.Status.OUTDATED)
 
       assertThat(Files.notExists(sourceFile)).isTrue
-
-      verify(exactly = 1) { mockTaskReceiver.analyzeBook(any<Book>(), any()) }
     }
   }
 
@@ -318,8 +297,6 @@ class BookImporterTest(
       }
 
       assertThat(Files.notExists(sourceFile)).isTrue
-
-      verify(exactly = 1) { mockTaskReceiver.analyzeBook(any<Book>(), any()) }
     }
   }
 
@@ -360,8 +337,6 @@ class BookImporterTest(
       assertThat(upgradedMedia.status).isEqualTo(Media.Status.OUTDATED)
 
       assertThat(Files.exists(sourceFile)).isTrue
-
-      verify(exactly = 1) { mockTaskReceiver.analyzeBook(any<Book>(), any()) }
     }
   }
 
@@ -410,8 +385,6 @@ class BookImporterTest(
         assertThat(completed).isFalse
         assertThat(page).isEqualTo(4)
       }
-
-      verify(exactly = 1) { mockTaskReceiver.analyzeBook(any<Book>(), any()) }
     }
   }
 
@@ -449,8 +422,6 @@ class BookImporterTest(
         assertThat(bookIds).hasSize(1)
         assertThat(bookIds[0]).isEqualTo(books[0].id)
       }
-
-      verify(exactly = 1) { mockTaskReceiver.analyzeBook(any<Book>(), any()) }
     }
   }
 }

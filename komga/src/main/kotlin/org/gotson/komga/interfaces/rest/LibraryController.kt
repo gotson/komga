@@ -1,7 +1,7 @@
 package org.gotson.komga.interfaces.rest
 
 import mu.KotlinLogging
-import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
+import org.gotson.komga.application.tasks.HIGH_PRIORITY
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.domain.model.DuplicateNameException
@@ -147,7 +147,7 @@ class LibraryController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable libraryId: String) {
     bookRepository.findAllIdByLibraryId(libraryId).forEach {
-      taskReceiver.analyzeBook(it, HIGHEST_PRIORITY)
+      taskReceiver.analyzeBook(it, HIGH_PRIORITY)
     }
   }
 
@@ -156,7 +156,7 @@ class LibraryController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun refreshMetadata(@PathVariable libraryId: String) {
     bookRepository.findAllIdByLibraryId(libraryId).forEach {
-      taskReceiver.refreshBookMetadata(it, priority = HIGHEST_PRIORITY)
+      taskReceiver.refreshBookMetadata(it, priority = HIGH_PRIORITY)
     }
   }
 }
