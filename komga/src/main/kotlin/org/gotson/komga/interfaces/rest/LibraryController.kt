@@ -83,7 +83,8 @@ class LibraryController(
           importLocalArtwork = library.importLocalArtwork,
           importBarcodeIsbn = library.importBarcodeIsbn,
           scanForceModifiedTime = library.scanForceModifiedTime,
-          scanDeep = library.scanDeep
+          scanDeep = library.scanDeep,
+          convertToCbz = library.convertToCbz,
         )
       ).toDto(includeRoot = principal.user.roleAdmin)
     } catch (e: Exception) {
@@ -118,7 +119,8 @@ class LibraryController(
         importLocalArtwork = library.importLocalArtwork,
         importBarcodeIsbn = library.importBarcodeIsbn,
         scanForceModifiedTime = library.scanForceModifiedTime,
-        scanDeep = library.scanDeep
+        scanDeep = library.scanDeep,
+        convertToCbz = library.convertToCbz,
       )
       libraryLifecycle.updateLibrary(toUpdate)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -173,7 +175,8 @@ data class LibraryCreationDto(
   val importLocalArtwork: Boolean = true,
   val importBarcodeIsbn: Boolean = true,
   val scanForceModifiedTime: Boolean = false,
-  val scanDeep: Boolean = false
+  val scanDeep: Boolean = false,
+  val convertToCbz: Boolean = false,
 )
 
 data class LibraryDto(
@@ -189,7 +192,8 @@ data class LibraryDto(
   val importLocalArtwork: Boolean,
   val importBarcodeIsbn: Boolean,
   val scanForceModifiedTime: Boolean,
-  val scanDeep: Boolean
+  val scanDeep: Boolean,
+  val convertToCbz: Boolean,
 )
 
 data class LibraryUpdateDto(
@@ -204,7 +208,8 @@ data class LibraryUpdateDto(
   val importLocalArtwork: Boolean,
   val importBarcodeIsbn: Boolean,
   val scanForceModifiedTime: Boolean,
-  val scanDeep: Boolean
+  val scanDeep: Boolean,
+  val convertToCbz: Boolean,
 )
 
 fun Library.toDto(includeRoot: Boolean) = LibraryDto(
@@ -220,5 +225,6 @@ fun Library.toDto(includeRoot: Boolean) = LibraryDto(
   importLocalArtwork = importLocalArtwork,
   importBarcodeIsbn = importBarcodeIsbn,
   scanForceModifiedTime = scanForceModifiedTime,
-  scanDeep = scanDeep
+  scanDeep = scanDeep,
+  convertToCbz = convertToCbz,
 )

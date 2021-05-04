@@ -4,6 +4,7 @@ import org.gotson.komga.domain.model.Media
 
 interface MediaRepository {
   fun findById(bookId: String): Media
+  fun findBookIdsByMediaType(mediaTypes: Collection<String>): Collection<String>
 
   fun insert(media: Media)
   fun insertMany(medias: Collection<Media>)

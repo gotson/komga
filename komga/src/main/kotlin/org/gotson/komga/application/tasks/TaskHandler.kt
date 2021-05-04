@@ -4,6 +4,7 @@ import mu.KotlinLogging
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
+import org.gotson.komga.domain.service.BookConverter
 import org.gotson.komga.domain.service.BookImporter
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.LibraryContentLifecycle
@@ -27,6 +28,7 @@ class TaskHandler(
   private val bookLifecycle: BookLifecycle,
   private val metadataLifecycle: MetadataLifecycle,
   private val bookImporter: BookImporter,
+  private val bookConverter: BookConverter,
 ) {
 
   @JmsListener(destination = QUEUE_TASKS, selector = QUEUE_TASKS_SELECTOR)
@@ -37,9 +39,10 @@ class TaskHandler(
         when (task) {
 
           is Task.ScanLibrary ->
-            libraryRepository.findByIdOrNull(task.libraryId)?.let {
-              libraryContentLifecycle.scanRootFolder(it)
-              taskReceiver.analyzeUnknownAndOutdatedBooks(it)
+            libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
+              libraryContentLifecycle.scanRootFolder(library)
+              taskReceiver.analyzeUnknownAndOutdatedBooks(library)
+              if (library.convertToCbz) taskReceiver.convertBooksToCbz(library, LOWEST_PRIORITY)
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 
           is Task.AnalyzeBook ->
@@ -77,6 +80,11 @@ class TaskHandler(
               val importedBook = bookImporter.importBook(Paths.get(task.sourceFile), series, task.copyMode, task.destinationName, task.upgradeBookId)
               taskReceiver.analyzeBook(importedBook, priority = task.priority + 1)
             } ?: logger.warn { "Cannot execute task $task: Series does not exist" }
+
+          is Task.ConvertBook ->
+            bookRepository.findByIdOrNull(task.bookId)?.let { book ->
+              bookConverter.convertToCbz(book)
+            }
         }
       }.also {
         logger.info { "Task $task executed in $it" }

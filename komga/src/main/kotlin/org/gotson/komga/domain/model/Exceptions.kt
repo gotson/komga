@@ -8,3 +8,4 @@ class DirectoryNotFoundException(message: String, code: String = "") : CodedExce
 class DuplicateNameException(message: String, code: String = "") : CodedException(message, code)
 class PathContainedInPath(message: String, code: String = "") : CodedException(message, code)
 class UserEmailAlreadyExistsException(message: String, code: String = "") : CodedException(message, code)
+class BookConversionException(message: String) : Exception(message)

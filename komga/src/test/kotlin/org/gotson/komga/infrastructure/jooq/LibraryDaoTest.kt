@@ -63,6 +63,7 @@ class LibraryDaoTest(
         importComicInfoReadList = false,
         importBarcodeIsbn = false,
         importLocalArtwork = false,
+        convertToCbz = true,
       )
     }
 
@@ -85,6 +86,7 @@ class LibraryDaoTest(
     assertThat(modified.importComicInfoReadList).isEqualTo(updated.importComicInfoReadList)
     assertThat(modified.importBarcodeIsbn).isEqualTo(updated.importBarcodeIsbn)
     assertThat(modified.importLocalArtwork).isEqualTo(updated.importLocalArtwork)
+    assertThat(modified.convertToCbz).isEqualTo(updated.convertToCbz)
   }
 
   @Test

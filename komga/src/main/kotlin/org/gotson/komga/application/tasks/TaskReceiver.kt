@@ -9,6 +9,8 @@ import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
+import org.gotson.komga.domain.persistence.MediaRepository
+import org.gotson.komga.domain.service.BookConverter
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS_TYPE
 import org.gotson.komga.infrastructure.jms.QUEUE_TYPE
@@ -23,7 +25,9 @@ private val logger = KotlinLogging.logger {}
 class TaskReceiver(
   private val jmsTemplate: JmsTemplate,
   private val libraryRepository: LibraryRepository,
-  private val bookRepository: BookRepository
+  private val bookRepository: BookRepository,
+  private val mediaRepository: MediaRepository,
+  private val bookConverter: BookConverter,
 ) {
 
   fun scanLibraries() {
@@ -43,6 +47,12 @@ class TaskReceiver(
       Sort.by(Sort.Order.asc("seriesId"), Sort.Order.asc("number"))
     ).forEach {
       submitTask(Task.AnalyzeBook(it))
+    }
+  }
+
+  fun convertBooksToCbz(library: Library, priority: Int = DEFAULT_PRIORITY) {
+    mediaRepository.findBookIdsByMediaType(bookConverter.convertibleTypes).forEach {
+      submitTask(Task.ConvertBook(it, priority))
     }
   }
 
@@ -84,6 +94,10 @@ class TaskReceiver(
 
   fun importBook(sourceFile: String, seriesId: String, copyMode: CopyMode, destinationName: String?, upgradeBookId: String?, priority: Int = DEFAULT_PRIORITY) {
     submitTask(Task.ImportBook(sourceFile, seriesId, copyMode, destinationName, upgradeBookId, priority))
+  }
+
+  fun convertBook(bookId: String, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.ConvertBook(bookId, priority))
   }
 
   private fun submitTask(task: Task) {

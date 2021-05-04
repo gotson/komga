@@ -7,6 +7,7 @@ import java.io.Serializable
 const val HIGHEST_PRIORITY = 8
 const val HIGH_PRIORITY = 6
 const val DEFAULT_PRIORITY = 4
+const val LOWEST_PRIORITY = 0
 
 sealed class Task(priority: Int = DEFAULT_PRIORITY) : Serializable {
   abstract fun uniqueId(): String
@@ -43,5 +44,10 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY) : Serializable {
     override fun uniqueId(): String = "IMPORT_BOOK_${seriesId}_$sourceFile"
     override fun toString(): String =
       "ImportBook(sourceFile='$sourceFile', seriesId='$seriesId', copyMode=$copyMode, destinationName=$destinationName, upgradeBookId=$upgradeBookId, priority='$priority')"
+  }
+
+  class ConvertBook(val bookId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
+    override fun uniqueId(): String = "CONVERT_BOOK_$bookId"
+    override fun toString(): String = "ConvertBook(bookId='$bookId', priority='$priority')"
   }
 }

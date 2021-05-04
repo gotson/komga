@@ -26,6 +26,12 @@ class MediaDao(
   override fun findById(bookId: String): Media =
     find(dsl, bookId)
 
+  override fun findBookIdsByMediaType(mediaTypes: Collection<String>): Collection<String> =
+    dsl.select(m.BOOK_ID)
+      .from(m)
+      .where(m.MEDIA_TYPE.`in`(mediaTypes))
+      .fetch(m.BOOK_ID)
+
   private fun find(dsl: DSLContext, bookId: String): Media =
     dsl.select(*groupFields)
       .from(m)
