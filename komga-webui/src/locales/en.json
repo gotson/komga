@@ -31,6 +31,29 @@
     "unknown": "To be analyzed",
     "unsupported": "Unsupported"
   },
+  "book_import": {
+    "button_browse": "Browse",
+    "button_import": "Import",
+    "button_scan": "Scan",
+    "button_select_series": "Select Series",
+    "field_import_path": "Import from folder",
+    "info_part1": "This screen lets you import files that are outside your existing libraries. You can only import files into existing Series, in which case Komga will move or copy the files into the directory of the chosen Series.",
+    "info_part2": "If you choose a number for a book, and a book already exists with that number, then you will be able to compare the 2 books. If you decide to import the book, Komga will upgrade the existing book with the new one, effectively replacing the old file with the new.",
+    "row": {
+      "error_analyze_first": "Book needs to be analyzed first",
+      "error_choose_series": "Choose a series",
+      "error_only_import_no_errors": "Can only import books without errors",
+      "warning_upgrade": "Existing book will be upgraded"
+    },
+    "table": {
+      "destination_name": "Destination name",
+      "file_name": "File name",
+      "number": "Number",
+      "series": "Series"
+    },
+    "title": "Import",
+    "warning_early_feature": "Book Import is still an early feature, and must be used with caution. Make sure your source and destination files are backed up before using the Import feature."
+  },
   "bookreader": {
     "beginning_of_book": "You're at the beginning of the book.",
     "changing_reading_direction": "Changing Reading Direction to",
@@ -268,6 +291,7 @@
       "button_confirm_edit": "Edit",
       "dialog_title_add": "Add Library",
       "dialot_title_edit": "Edit Library",
+      "field_convert_to_cbz": "Convert to CBZ",
       "field_import_barcode_isbn": "ISBN barcode",
       "field_import_comicinfo_book": "Book metadata",
       "field_import_comicinfo_collections": "Collections",
@@ -282,13 +306,15 @@
       "field_scanner_force_directory_modified_time": "Force directory modified time",
       "file_browser_dialog_button_confirm": "Choose",
       "file_browser_dialog_title": "Library's root folder",
+      "label_convert_to_cbz": "Automatically convert to CBZ",
       "label_import_barcode_isbn": "Import ISBN within barcode",
       "label_import_comicinfo": "Import metadata for CBR/CBZ containing a ComicInfo.xml file",
       "label_import_epub": "Import metadata from EPUB files",
       "label_import_local": "Import local media assets",
       "label_scanner": "Scanner",
       "tab_general": "General",
-      "tab_options": "Options"
+      "tab_options": "Options",
+      "warning_early_feature_convert_to_cbz": "Book conversion is still an early feature, and must be used with caution. Make sure your files are backed up before using it."
     },
     "edit_readlist": {
       "button_cancel": "Cancel",
@@ -336,6 +362,16 @@
       "dialog_title_default": "File Browser",
       "parent_directory": "Parent"
     },
+    "filename_chooser": {
+      "button_choose": "Choose",
+      "field_destination_filename": "Destination file name",
+      "label_source_filename": "Source File Name",
+      "table": {
+        "existing_file": "Existing File",
+        "order": "Order"
+      },
+      "title": "Destination File Name"
+    },
     "password_change": {
       "button_cancel": "Cancel",
       "button_confirm": "Change password",
@@ -344,6 +380,10 @@
       "field_new_password_error": "New password is required.",
       "field_repeat_password": "Repeat new password",
       "field_repeat_password_error": "Passwords must be identical."
+    },
+    "series_picker": {
+      "label_search_series": "Search Series",
+      "title": "Select Series"
     },
     "server_stop": {
       "button_cancel": "Cancel",
@@ -355,46 +395,36 @@
       "label_description": "Description",
       "label_key": "Key"
     },
-    "series_picker": {
-      "title": "Select Series",
-      "label_search_series": "Search Series"
-    },
-    "filename_chooser": {
-      "title": "Destination File Name",
-      "label_source_filename": "Source File Name",
-      "field_destination_filename": "Destination file name",
-      "button_choose": "Choose",
-      "table": {
-        "order": "Order",
-        "existing_file": "Existing File"
-      }
-    },
     "transient_book_details": {
-      "title": "Book Details",
-      "title_comparison": "Book Comparison",
       "label_candidate": "Candidate",
       "label_existing": "Existing",
-      "label_name": "Name",
-      "label_size": "Size",
       "label_format": "Format",
+      "label_name": "Name",
       "label_pages": "Pages",
+      "label_size": "Size",
       "pages_table": {
-        "index": "Index",
         "filename": "File name",
+        "height": "Height",
+        "index": "Index",
         "media_type": "Media type",
-        "width": "Width",
-        "height": "Height"
-      }
+        "width": "Width"
+      },
+      "title": "Book Details",
+      "title_comparison": "Book Comparison"
     },
     "transient_book_viewer": {
-      "title": "Inspect Book",
-      "title_comparison": "Book Comparison",
       "label_candidate": "Candidate",
       "label_existing": "Existing",
-      "page_of_pages": "{page} / {pages}"
+      "page_of_pages": "{page} / {pages}",
+      "title": "Inspect Book",
+      "title_comparison": "Book Comparison"
     }
   },
   "enums": {
+    "copy_mode": {
+      "HARDLINK": "Hardlink/Copy Files",
+      "MOVE": "Move Files"
+    },
     "media_status": {
       "ERROR": "Error",
       "OUTDATED": "Outdated",
@@ -413,10 +443,6 @@
       "ENDED": "Ended",
       "HIATUS": "Hiatus",
       "ONGOING": "Ongoing"
-    },
-    "copy_mode": {
-      "HARDLINK": "Hardlink/Copy Files",
-      "MOVE": "Move Files"
     }
   },
   "error_codes": {
@@ -565,28 +591,5 @@
     "add_library": "Add library",
     "no_libraries_yet": "No libraries have been added yet!",
     "welcome_message": "Welcome to Komga"
-  },
-  "book_import": {
-    "title": "Import",
-    "field_import_path": "Import from folder",
-    "button_browse": "Browse",
-    "button_scan": "Scan",
-    "table": {
-      "file_name": "File name",
-      "series": "Series",
-      "number": "Number",
-      "destination_name": "Destination name"
-    },
-    "button_select_series": "Select Series",
-    "button_import": "Import",
-    "row": {
-      "warning_upgrade": "Existing book will be upgraded",
-      "error_analyze_first": "Book needs to be analyzed first",
-      "error_only_import_no_errors": "Can only import books without errors",
-      "error_choose_series": "Choose a series"
-    },
-    "warning_early_feature": "Book Import is still an early feature, and must be used with caution. Make sure your source and destination files are backed up before using the Import feature.",
-    "info_part1": "This screen lets you import files that are outside your existing libraries. You can only import files into existing Series, in which case Komga will move or copy the files into the directory of the chosen Series.",
-    "info_part2": "If you choose a number for a book, and a book already exists with that number, then you will be able to compare the 2 books. If you decide to import the book, Komga will upgrade the existing book with the new one, effectively replacing the old file with the new."
   }
 }

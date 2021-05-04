@@ -10,7 +10,8 @@ interface LibraryCreationDto {
   importLocalArtwork: boolean,
   importBarcodeIsbn: boolean,
   scanForceModifiedTime: boolean,
-  scanDeep: boolean
+  scanDeep: boolean,
+  convertToCbz: boolean
 }
 
 interface LibraryUpdateDto {
@@ -25,7 +26,8 @@ interface LibraryUpdateDto {
   importLocalArtwork: boolean,
   importBarcodeIsbn: boolean,
   scanForceModifiedTime: boolean,
-  scanDeep: boolean
+  scanDeep: boolean,
+  convertToCbz: boolean
 }
 
 interface LibraryDto {
@@ -41,5 +43,6 @@ interface LibraryDto {
   importLocalArtwork: boolean,
   importBarcodeIsbn: boolean,
   scanForceModifiedTime: boolean,
-  scanDeep: boolean
+  scanDeep: boolean,
+  convertToCbz: boolean
 }
