@@ -43,33 +43,33 @@ class TaskHandler(
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 
           is Task.AnalyzeBook ->
-            bookRepository.findByIdOrNull(task.bookId)?.let {
-              if (bookLifecycle.analyzeAndPersist(it)) {
-                taskReceiver.generateBookThumbnail(it.id, priority = task.priority + 1)
-                taskReceiver.refreshBookMetadata(it, priority = task.priority + 1)
+            bookRepository.findByIdOrNull(task.bookId)?.let { book ->
+              if (bookLifecycle.analyzeAndPersist(book)) {
+                taskReceiver.generateBookThumbnail(book.id, priority = task.priority + 1)
+                taskReceiver.refreshBookMetadata(book, priority = task.priority + 1)
               }
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
           is Task.GenerateBookThumbnail ->
-            bookRepository.findByIdOrNull(task.bookId)?.let {
-              bookLifecycle.generateThumbnailAndPersist(it)
+            bookRepository.findByIdOrNull(task.bookId)?.let { book ->
+              bookLifecycle.generateThumbnailAndPersist(book)
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
           is Task.RefreshBookMetadata ->
-            bookRepository.findByIdOrNull(task.bookId)?.let {
-              metadataLifecycle.refreshMetadata(it, task.capabilities)
-              taskReceiver.refreshSeriesMetadata(it.seriesId)
+            bookRepository.findByIdOrNull(task.bookId)?.let { book ->
+              metadataLifecycle.refreshMetadata(book, task.capabilities)
+              taskReceiver.refreshSeriesMetadata(book.seriesId)
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
           is Task.RefreshSeriesMetadata ->
-            seriesRepository.findByIdOrNull(task.seriesId)?.let {
-              metadataLifecycle.refreshMetadata(it)
-              taskReceiver.aggregateSeriesMetadata(it.id)
+            seriesRepository.findByIdOrNull(task.seriesId)?.let { series ->
+              metadataLifecycle.refreshMetadata(series)
+              taskReceiver.aggregateSeriesMetadata(series.id)
             } ?: logger.warn { "Cannot execute task $task: Series does not exist" }
 
           is Task.AggregateSeriesMetadata ->
-            seriesRepository.findByIdOrNull(task.seriesId)?.let {
-              metadataLifecycle.aggregateMetadata(it)
+            seriesRepository.findByIdOrNull(task.seriesId)?.let { series ->
+              metadataLifecycle.aggregateMetadata(series)
             } ?: logger.warn { "Cannot execute task $task: Series does not exist" }
 
           is Task.ImportBook ->
