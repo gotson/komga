@@ -1,10 +1,11 @@
 {
   "dependencies": {
+    "@google/semantic-release-replace-plugin": "^1.0.2",
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/exec": "^5.0.0",
     "@semantic-release/git": "^9.0.0",
-    "semantic-release": "^17.4.1",
-    "is-ci": "^3.0.0"
+    "is-ci": "^3.0.0",
+    "semantic-release": "^17.4.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.0.1",
@@ -23,6 +24,27 @@
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
       "@semantic-release/changelog",
+      [
+        "@google/semantic-release-replace-plugin",
+        {
+          "replacements": [
+            {
+              "files": ["gradle.properties"],
+              "from": "version=.*",
+              "to": "version=${nextRelease.version}",
+              "results": [
+                {
+                  "file": "gradle.properties",
+                  "hasChanged": true,
+                  "numMatches": 1,
+                  "numReplacements": 1
+                }
+              ],
+              "countMatches": true
+            }
+          ]
+        }
+      ],
       [
         "@semantic-release/exec",
         {

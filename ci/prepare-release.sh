@@ -3,9 +3,6 @@
 # 1: next version
 # 2: channel
 
-# Update version for Gradle
-echo version=$1 >gradle.properties
-
 # Build jar
 ./gradlew copyWebDist
 ./gradlew assemble
