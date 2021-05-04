@@ -427,8 +427,10 @@ export default Vue.extend({
   },
   async beforeRouteUpdate(to, from, next) {
     if (to.params.bookId !== from.params.bookId) {
-      // route update means going to previous/next book, in this case we start from first page
-      this.setup(to.params.bookId)
+      // route update means either:
+      // - going to previous/next book, in this case the query.page is not set, so it will default to first page
+      // - pressing the back button of the browser and navigating to the previous book, in this case the query.page is set, so we honor it
+      this.setup(to.params.bookId, Number(to.query.page))
     }
     next()
   },
