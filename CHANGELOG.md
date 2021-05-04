@@ -1,3 +1,10 @@
+## [0.91.1](https://github.com/gotson/komga/compare/v0.91.0...v0.91.1) (2021-05-04)
+
+
+### Bug Fixes
+
+* **opds:** acquisition link is not a valid url ([00ade7f](https://github.com/gotson/komga/commit/00ade7fb362bc8ba30364d5353c857290838ccf3)), closes [#525](https://github.com/gotson/komga/issues/525)
+
 # [0.91.0](https://github.com/gotson/komga/compare/v0.90.3...v0.91.0) (2021-05-04)
 
 
