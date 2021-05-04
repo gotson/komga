@@ -1,3 +1,10 @@
+## [0.90.3](https://github.com/gotson/komga/compare/v0.90.2...v0.90.3) (2021-05-04)
+
+
+### Bug Fixes
+
+* **webreader:** browser back button would not honor page in query param ([dc4bd44](https://github.com/gotson/komga/commit/dc4bd440d9be77385815f98c4824384c152f2088))
+
 ## [0.90.2](https://github.com/gotson/komga/compare/v0.90.1...v0.90.2) (2021-05-04)
 
 
