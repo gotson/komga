@@ -71,6 +71,7 @@ import java.io.OutputStream
 import java.nio.file.NoSuchFileException
 import java.time.ZoneOffset
 import javax.validation.Valid
+import kotlin.io.path.name
 
 private val logger = KotlinLogging.logger {}
 
@@ -252,7 +253,7 @@ class BookController(
       if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
       try {
         val media = mediaRepository.findById(book.id)
-        with(FileSystemResource(book.path())) {
+        with(FileSystemResource(book.path)) {
           if (!exists()) throw FileNotFoundException(path)
           val stream = StreamingResponseBody { os: OutputStream ->
             this.inputStream.use {
@@ -264,7 +265,7 @@ class BookController(
             .headers(
               HttpHeaders().apply {
                 contentDisposition = ContentDisposition.builder("attachment")
-                  .filename(book.fileName())
+                  .filename(book.path.name)
                   .build()
               }
             )

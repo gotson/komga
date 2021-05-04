@@ -22,7 +22,7 @@ class TransientBookLifecycle(
     val folderToScan = Paths.get(filePath)
 
     libraryRepository.findAll().forEach { library ->
-      if (folderToScan.startsWith(library.path())) throw PathContainedInPath("Cannot scan folder that is part of an existing library", "ERR_1017")
+      if (folderToScan.startsWith(library.path)) throw PathContainedInPath("Cannot scan folder that is part of an existing library", "ERR_1017")
     }
 
     val books = fileSystemScanner.scanRootFolder(folderToScan).values.flatten().map { BookWithMedia(it, Media()) }

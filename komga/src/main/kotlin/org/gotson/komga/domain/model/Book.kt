@@ -2,7 +2,6 @@ package org.gotson.komga.domain.model
 
 import com.github.f4b6a3.tsid.TsidCreator
 import com.jakewharton.byteunits.BinaryByteUnit
-import org.apache.commons.io.FilenameUtils
 import java.net.URL
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -23,11 +22,6 @@ data class Book(
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
 ) : Auditable() {
 
-  fun fileName(): String = FilenameUtils.getName(url.toString())
-
-  fun fileExtension(): String = FilenameUtils.getExtension(url.toString())
-
-  fun path(): Path = Paths.get(this.url.toURI())
-
-  fun fileSizeHumanReadable(): String = BinaryByteUnit.format(fileSize)
+  val path: Path by lazy { Paths.get(this.url.toURI()) }
+  val fileSizeHumanReadable: String by lazy { BinaryByteUnit.format(fileSize) }
 }

@@ -26,5 +26,5 @@ data class Library(
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
 ) : Auditable() {
 
-  fun path(): Path = Paths.get(this.root.toURI())
+  val path: Path by lazy { Paths.get(this.root.toURI()) }
 }

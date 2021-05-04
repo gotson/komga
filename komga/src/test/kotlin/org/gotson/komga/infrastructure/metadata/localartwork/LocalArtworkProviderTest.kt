@@ -50,7 +50,7 @@ class LocalArtworkProviderTest {
           fileLastModified = LocalDateTime.now()
         )
       )
-      every { book.path() } returns bookFile
+      every { book.path } returns bookFile
 
       // when
       val thumbnails = localMediaAssetsProvider.getBookThumbnails(book)
@@ -84,7 +84,7 @@ class LocalArtworkProviderTest {
           fileLastModified = LocalDateTime.now()
         )
       )
-      every { series.path() } returns seriesFile
+      every { series.path } returns seriesFile
 
       // when
       val thumbnails = localMediaAssetsProvider.getSeriesThumbnails(series)

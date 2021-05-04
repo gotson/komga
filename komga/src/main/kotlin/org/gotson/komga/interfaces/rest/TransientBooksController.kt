@@ -41,7 +41,7 @@ class TransientBooksController(
   ): List<TransientBookDto> =
     try {
       transientBookLifecycle.scanAndPersist(request.path)
-        .sortedBy { it.book.path() }
+        .sortedBy { it.book.path }
         .map { it.toDto() }
     } catch (e: CodedException) {
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.code)

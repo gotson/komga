@@ -18,5 +18,5 @@ data class Series(
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
 ) : Auditable() {
 
-  fun path(): Path = Paths.get(this.url.toURI())
+  val path: Path by lazy { Paths.get(this.url.toURI()) }
 }

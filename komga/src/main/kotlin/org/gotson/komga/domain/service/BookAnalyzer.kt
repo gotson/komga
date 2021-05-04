@@ -33,13 +33,13 @@ class BookAnalyzer(
   fun analyze(book: Book): Media {
     logger.info { "Trying to analyze book: $book" }
     try {
-      val mediaType = contentDetector.detectMediaType(book.path())
+      val mediaType = contentDetector.detectMediaType(book.path)
       logger.info { "Detected media type: $mediaType" }
       if (!supportedMediaTypes.containsKey(mediaType))
         return Media(mediaType = mediaType, status = Media.Status.UNSUPPORTED, comment = "ERR_1001", bookId = book.id)
 
       val entries = try {
-        supportedMediaTypes.getValue(mediaType).getEntries(book.path())
+        supportedMediaTypes.getValue(mediaType).getEntries(book.path)
       } catch (ex: MediaUnsupportedException) {
         return Media(mediaType = mediaType, status = Media.Status.UNSUPPORTED, comment = ex.code, bookId = book.id)
       } catch (ex: Exception) {
@@ -91,7 +91,7 @@ class BookAnalyzer(
     }
 
     val thumbnail = try {
-      supportedMediaTypes.getValue(book.media.mediaType!!).getEntryStream(book.book.path(), book.media.pages.first().fileName).let { cover ->
+      supportedMediaTypes.getValue(book.media.mediaType!!).getEntryStream(book.book.path, book.media.pages.first().fileName).let { cover ->
         imageConverter.resizeImage(cover, thumbnailFormat, thumbnailSize)
       }
     } catch (ex: Exception) {
@@ -123,7 +123,7 @@ class BookAnalyzer(
       throw IndexOutOfBoundsException("Page $number does not exist")
     }
 
-    return supportedMediaTypes.getValue(book.media.mediaType!!).getEntryStream(book.book.path(), book.media.pages[number - 1].fileName)
+    return supportedMediaTypes.getValue(book.media.mediaType!!).getEntryStream(book.book.path, book.media.pages[number - 1].fileName)
   }
 
   @Throws(
@@ -137,6 +137,6 @@ class BookAnalyzer(
       throw MediaNotReadyException()
     }
 
-    return supportedMediaTypes.getValue(book.media.mediaType!!).getEntryStream(book.book.path(), fileName)
+    return supportedMediaTypes.getValue(book.media.mediaType!!).getEntryStream(book.book.path, fileName)
   }
 }

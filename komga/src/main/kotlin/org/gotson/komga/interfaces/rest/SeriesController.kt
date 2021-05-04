@@ -395,7 +395,7 @@ class SeriesController(
         zipStream.setMethod(ZipArchiveOutputStream.DEFLATED)
         zipStream.setLevel(Deflater.NO_COMPRESSION)
         books.forEach { book ->
-          val file = FileSystemResource(book.path())
+          val file = FileSystemResource(book.path)
           if (!file.exists()) {
             logger.warn { "Book file not found, skipping archive entry: ${file.path}" }
             return@forEach

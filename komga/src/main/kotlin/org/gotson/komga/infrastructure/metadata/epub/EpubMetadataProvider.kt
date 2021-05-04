@@ -42,7 +42,7 @@ class EpubMetadataProvider(
 
   override fun getBookMetadataFromBook(book: BookWithMedia): BookMetadataPatch? {
     if (book.media.mediaType != "application/epub+zip") return null
-    epubExtractor.getPackageFile(book.book.path())?.let { packageFile ->
+    epubExtractor.getPackageFile(book.book.path)?.let { packageFile ->
       val opf = Jsoup.parse(packageFile)
 
       val title = opf.selectFirst("metadata > dc|title")?.text()?.ifBlank { null }
@@ -81,7 +81,7 @@ class EpubMetadataProvider(
 
   override fun getSeriesMetadataFromBook(book: BookWithMedia): SeriesMetadataPatch? {
     if (book.media.mediaType != "application/epub+zip") return null
-    epubExtractor.getPackageFile(book.book.path())?.let { packageFile ->
+    epubExtractor.getPackageFile(book.book.path)?.let { packageFile ->
       val opf = Jsoup.parse(packageFile)
 
       val series = opf.selectFirst("metadata > meta[property=belongs-to-collection]")?.text()?.ifBlank { null }

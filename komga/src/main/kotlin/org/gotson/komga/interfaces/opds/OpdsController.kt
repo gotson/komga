@@ -56,6 +56,8 @@ import java.text.DecimalFormat
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import javax.servlet.ServletContext
+import kotlin.io.path.extension
+import kotlin.io.path.name
 
 private val logger = KotlinLogging.logger {}
 
@@ -509,7 +511,7 @@ class OpdsController(
       updated = book.lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
       id = book.id,
       content = run {
-        var content = "${book.fileExtension().toUpperCase()} - ${book.fileSizeHumanReadable()}"
+        var content = "${book.path.extension.toUpperCase()} - ${book.fileSizeHumanReadable}"
         if (metadata.summary.isNotBlank())
           content += "\n\n${metadata.summary}"
         content
@@ -518,7 +520,7 @@ class OpdsController(
       links = listOf(
         OpdsLinkImageThumbnail("image/jpeg", "${routeBase}books/${book.id}/thumbnail"),
         OpdsLinkImage(media.pages[0].mediaType, "${routeBase}books/${book.id}/pages/1"),
-        OpdsLinkFileAcquisition(media.mediaType, "${routeBase}books/${book.id}/file/${sanitize(book.fileName())}"),
+        OpdsLinkFileAcquisition(media.mediaType, "${routeBase}books/${book.id}/file/${sanitize(book.path.name)}"),
         opdsLinkPageStreaming
       )
     )

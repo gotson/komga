@@ -51,20 +51,20 @@ class LibraryLifecycle(
   }
 
   private fun checkLibraryValidity(library: Library, existing: Collection<Library>) {
-    if (!Files.exists(library.path()))
+    if (!Files.exists(library.path))
       throw FileNotFoundException("Library root folder does not exist: ${library.root}")
 
-    if (!Files.isDirectory(library.path()))
+    if (!Files.isDirectory(library.path))
       throw DirectoryNotFoundException("Library root folder is not a folder: ${library.root}")
 
     if (existing.map { it.name }.contains(library.name))
       throw DuplicateNameException("Library name already exists")
 
     existing.forEach {
-      if (library.path().startsWith(it.path()))
-        throw PathContainedInPath("Library path ${library.path()} is a child of existing library ${it.name}: ${it.path()}")
-      if (it.path().startsWith(library.path()))
-        throw PathContainedInPath("Library path ${library.path()} is a parent of existing library ${it.name}: ${it.path()}")
+      if (library.path.startsWith(it.path))
+        throw PathContainedInPath("Library path ${library.path} is a child of existing library ${it.name}: ${it.path}")
+      if (it.path.startsWith(library.path))
+        throw PathContainedInPath("Library path ${library.path} is a parent of existing library ${it.name}: ${it.path}")
     }
   }
 

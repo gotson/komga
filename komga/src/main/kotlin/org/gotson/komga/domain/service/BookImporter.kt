@@ -47,10 +47,10 @@ class BookImporter(
     if (sourceFile.notExists()) throw FileNotFoundException("File not found: $sourceFile")
 
     libraryRepository.findAll().forEach { library ->
-      if (sourceFile.startsWith(library.path())) throw PathContainedInPath("Cannot import file that is part of an existing library")
+      if (sourceFile.startsWith(library.path)) throw PathContainedInPath("Cannot import file that is part of an existing library")
     }
 
-    val destFile = series.path().resolve(
+    val destFile = series.path.resolve(
       if (destinationName != null) Paths.get("$destinationName.${sourceFile.extension}").fileName.toString()
       else sourceFile.fileName.toString()
     )
@@ -64,7 +64,7 @@ class BookImporter(
       } else null
     val upgradedBookPath =
       if (upgradedBookId != null)
-        bookRepository.findByIdOrNull(upgradedBookId)?.path()
+        bookRepository.findByIdOrNull(upgradedBookId)?.path
       else null
 
     var deletedUpgradedFile = false

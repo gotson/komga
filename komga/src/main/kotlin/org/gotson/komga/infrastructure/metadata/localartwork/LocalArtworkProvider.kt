@@ -23,7 +23,7 @@ class LocalArtworkProvider(
 
   fun getBookThumbnails(book: Book): List<ThumbnailBook> {
     logger.info { "Looking for local thumbnails for book: $book" }
-    val bookPath = book.path()
+    val bookPath = book.path
     val baseName = FilenameUtils.getBaseName(bookPath.toString())
 
     val regex = "${Regex.escape(baseName)}(-\\d+)?".toRegex(RegexOption.IGNORE_CASE)
@@ -49,7 +49,7 @@ class LocalArtworkProvider(
   fun getSeriesThumbnails(series: Series): List<ThumbnailSeries> {
     logger.info { "Looking for local thumbnails for series: $series" }
 
-    return Files.list(series.path()).use { dirStream ->
+    return Files.list(series.path).use { dirStream ->
       dirStream.asSequence()
         .filter { Files.isRegularFile(it) }
         .filter { supportedSeriesFiles.contains(FilenameUtils.getBaseName(it.toString().toLowerCase())) }
