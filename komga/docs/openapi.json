@@ -544,16 +544,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -675,16 +675,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -721,16 +721,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -816,16 +816,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -1025,6 +1025,7 @@
       "LibraryUpdateDto": {
         "type": "object",
         "required": [
+          "convertToCbz",
           "importBarcodeIsbn",
           "importComicInfoBook",
           "importComicInfoCollection",
@@ -1039,16 +1040,25 @@
           "scanForceModifiedTime"
         ],
         "properties": {
-          "importEpubSeries": {
+          "importComicInfoReadList": {
             "type": "boolean"
           },
-          "importComicInfoReadList": {
+          "scanDeep": {
+            "type": "boolean"
+          },
+          "scanForceModifiedTime": {
+            "type": "boolean"
+          },
+          "importEpubSeries": {
             "type": "boolean"
           },
           "importComicInfoSeries": {
             "type": "boolean"
           },
           "importComicInfoBook": {
+            "type": "boolean"
+          },
+          "convertToCbz": {
             "type": "boolean"
           },
           "importEpubBook": {
@@ -1068,18 +1078,13 @@
           },
           "importLocalArtwork": {
             "type": "boolean"
-          },
-          "scanDeep": {
-            "type": "boolean"
-          },
-          "scanForceModifiedTime": {
-            "type": "boolean"
           }
         }
       },
       "LibraryDto": {
         "type": "object",
         "required": [
+          "convertToCbz",
           "id",
           "importBarcodeIsbn",
           "importComicInfoBook",
@@ -1111,6 +1116,9 @@
             "type": "boolean"
           },
           "importComicInfoBook": {
+            "type": "boolean"
+          },
+          "convertToCbz": {
             "type": "boolean"
           },
           "importEpubBook": {
@@ -1473,6 +1481,7 @@
       "LibraryCreationDto": {
         "type": "object",
         "required": [
+          "convertToCbz",
           "importBarcodeIsbn",
           "importComicInfoBook",
           "importComicInfoCollection",
@@ -1487,16 +1496,25 @@
           "scanForceModifiedTime"
         ],
         "properties": {
-          "importEpubSeries": {
+          "importComicInfoReadList": {
             "type": "boolean"
           },
-          "importComicInfoReadList": {
+          "scanDeep": {
+            "type": "boolean"
+          },
+          "scanForceModifiedTime": {
+            "type": "boolean"
+          },
+          "importEpubSeries": {
             "type": "boolean"
           },
           "importComicInfoSeries": {
             "type": "boolean"
           },
           "importComicInfoBook": {
+            "type": "boolean"
+          },
+          "convertToCbz": {
             "type": "boolean"
           },
           "importEpubBook": {
@@ -1515,12 +1533,6 @@
             "type": "boolean"
           },
           "importLocalArtwork": {
-            "type": "boolean"
-          },
-          "scanDeep": {
-            "type": "boolean"
-          },
-          "scanForceModifiedTime": {
             "type": "boolean"
           }
         }

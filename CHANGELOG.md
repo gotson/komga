@@ -1,3 +1,11 @@
+# [0.91.0](https://github.com/gotson/komga/compare/v0.90.3...v0.91.0) (2021-05-04)
+
+
+### Features
+
+* **webui:** automatic book conversion in library settings ([1c3e853](https://github.com/gotson/komga/commit/1c3e853202b9fd5a4d3d7e7686304b20aa8abe8b))
+* automatic book conversion to cbz ([dc2663e](https://github.com/gotson/komga/commit/dc2663ecb78b70c06a8ba1e364986191b802e638))
+
 ## [0.90.3](https://github.com/gotson/komga/compare/v0.90.2...v0.90.3) (2021-05-04)
 
 
