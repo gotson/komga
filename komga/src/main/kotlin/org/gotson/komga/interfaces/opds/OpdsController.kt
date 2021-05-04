@@ -1,6 +1,7 @@
 package org.gotson.komga.interfaces.opds
 
 import mu.KotlinLogging
+import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.BookSearch
@@ -57,7 +58,6 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import javax.servlet.ServletContext
 import kotlin.io.path.extension
-import kotlin.io.path.name
 
 private val logger = KotlinLogging.logger {}
 
@@ -520,7 +520,7 @@ class OpdsController(
       links = listOf(
         OpdsLinkImageThumbnail("image/jpeg", "${routeBase}books/${book.id}/thumbnail"),
         OpdsLinkImage(media.pages[0].mediaType, "${routeBase}books/${book.id}/pages/1"),
-        OpdsLinkFileAcquisition(media.mediaType, "${routeBase}books/${book.id}/file/${sanitize(book.path.name)}"),
+        OpdsLinkFileAcquisition(media.mediaType, "${routeBase}books/${book.id}/file/${sanitize(FilenameUtils.getName(book.url.toString()))}"),
         opdsLinkPageStreaming
       )
     )
