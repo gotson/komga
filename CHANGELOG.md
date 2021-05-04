@@ -1,3 +1,10 @@
+## [0.90.2](https://github.com/gotson/komga/compare/v0.90.1...v0.90.2) (2021-05-04)
+
+
+### Bug Fixes
+
+* priority tasks ([6ee968b](https://github.com/gotson/komga/commit/6ee968be924b497bda482a13e876407a84d789b8))
+
 ## [0.90.1](https://github.com/gotson/komga/compare/v0.90.0...v0.90.1) (2021-05-03)
 
 
