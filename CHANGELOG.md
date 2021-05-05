@@ -1,3 +1,10 @@
+## [0.91.3](https://github.com/gotson/komga/compare/v0.91.2...v0.91.3) (2021-05-05)
+
+
+### Bug Fixes
+
+* rar extractor could mis-analyze some images ([bd15aec](https://github.com/gotson/komga/commit/bd15aecccc507675aa16c5943fb91009bddf56dc))
+
 ## [0.91.2](https://github.com/gotson/komga/compare/v0.91.1...v0.91.2) (2021-05-05)
 
 
