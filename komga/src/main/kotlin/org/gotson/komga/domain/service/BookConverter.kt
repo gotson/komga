@@ -3,6 +3,7 @@ package org.gotson.komga.domain.service
 import mu.KotlinLogging
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
+import org.apache.commons.io.FilenameUtils
 import org.apache.tika.mime.MediaType
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookConversionException
@@ -86,14 +87,26 @@ class BookConverter(
 
     val convertedMedia = bookAnalyzer.analyze(convertedBook)
 
-    if (convertedMedia.status != Media.Status.READY ||
-      convertedMedia.mediaType != MediaType.APPLICATION_ZIP.toString() ||
-      !convertedMedia.pages.containsAll(media.pages) ||
-      !convertedMedia.files.containsAll(media.files)
-    ) {
+    try {
+      when {
+        convertedMedia.status != Media.Status.READY
+        -> throw BookConversionException("Converted file could not be analyzed, aborting conversion")
+
+        convertedMedia.mediaType != MediaType.APPLICATION_ZIP.toString()
+        -> throw BookConversionException("Converted file is not a zip file, aborting conversion")
+
+        !convertedMedia.pages.map { it.copy(fileName = FilenameUtils.getName(it.fileName)) }
+          .containsAll(media.pages.map { it.copy(fileName = FilenameUtils.getName(it.fileName)) })
+        -> throw BookConversionException("Converted file does not contain all pages from existing file, aborting conversion")
+
+        !convertedMedia.files.map { FilenameUtils.getName(it) }
+          .containsAll(media.files.map { FilenameUtils.getName(it) })
+        -> throw BookConversionException("Converted file does not contain all files from existing file, aborting conversion")
+      }
+    } catch (e: BookConversionException) {
       destinationPath.deleteIfExists()
       exclude += book.id
-      throw BookConversionException("Converted file does not match existing file, aborting conversion")
+      throw e
     }
 
     if (book.path.deleteIfExists())
