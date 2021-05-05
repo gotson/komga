@@ -19,6 +19,7 @@ data class Library(
   val importBarcodeIsbn: Boolean = true,
   val scanForceModifiedTime: Boolean = false,
   val scanDeep: Boolean = false,
+  val repairExtensions: Boolean = false,
   val convertToCbz: Boolean = false,
 
   val id: String = TsidCreator.getTsid256().toString(),

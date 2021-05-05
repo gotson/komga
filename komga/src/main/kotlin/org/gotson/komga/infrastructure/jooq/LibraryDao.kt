@@ -75,6 +75,7 @@ class LibraryDao(
       .set(l.IMPORT_BARCODE_ISBN, library.importBarcodeIsbn)
       .set(l.SCAN_FORCE_MODIFIED_TIME, library.scanForceModifiedTime)
       .set(l.SCAN_DEEP, library.scanDeep)
+      .set(l.REPAIR_EXTENSIONS, library.repairExtensions)
       .set(l.CONVERT_TO_CBZ, library.convertToCbz)
       .execute()
   }
@@ -93,6 +94,7 @@ class LibraryDao(
       .set(l.IMPORT_BARCODE_ISBN, library.importBarcodeIsbn)
       .set(l.SCAN_FORCE_MODIFIED_TIME, library.scanForceModifiedTime)
       .set(l.SCAN_DEEP, library.scanDeep)
+      .set(l.REPAIR_EXTENSIONS, library.repairExtensions)
       .set(l.CONVERT_TO_CBZ, library.convertToCbz)
       .set(l.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(l.ID.eq(library.id))
@@ -115,6 +117,7 @@ class LibraryDao(
       importBarcodeIsbn = importBarcodeIsbn,
       scanForceModifiedTime = scanForceModifiedTime,
       scanDeep = scanDeep,
+      repairExtensions = repairExtensions,
       convertToCbz = convertToCbz,
       id = id,
       createdDate = createdDate.toCurrentTimeZone(),

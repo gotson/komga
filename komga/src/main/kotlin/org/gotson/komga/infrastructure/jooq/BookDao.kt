@@ -141,6 +141,23 @@ class BookDao(
       .fetch(b.ID)
   }
 
+  override fun findAllIdByLibraryIdAndMediaTypes(libraryId: String, mediaTypes: Collection<String>): Collection<String> =
+    dsl.select(b.ID)
+      .from(b)
+      .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
+      .where(b.LIBRARY_ID.eq(libraryId))
+      .and(m.MEDIA_TYPE.`in`(mediaTypes))
+      .fetch(b.ID)
+
+  override fun findAllIdByLibraryIdAndMismatchedExtension(libraryId: String, mediaType: String, extension: String): Collection<String> =
+    dsl.select(b.ID)
+      .from(b)
+      .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
+      .where(b.LIBRARY_ID.eq(libraryId))
+      .and(m.MEDIA_TYPE.eq(mediaType))
+      .and(b.URL.notLike("%.$extension"))
+      .fetch(b.ID)
+
   override fun insert(book: Book) {
     insertMany(listOf(book))
   }

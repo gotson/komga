@@ -19,6 +19,8 @@ interface BookRepository {
   fun findAllIdBySeriesIds(seriesIds: Collection<String>): Collection<String>
   fun findAllIdByLibraryId(libraryId: String): Collection<String>
   fun findAllId(bookSearch: BookSearch, sort: Sort): Collection<String>
+  fun findAllIdByLibraryIdAndMediaTypes(libraryId: String, mediaTypes: Collection<String>): Collection<String>
+  fun findAllIdByLibraryIdAndMismatchedExtension(libraryId: String, mediaType: String, extension: String): Collection<String>
 
   fun insert(book: Book)
   fun insertMany(books: Collection<Book>)

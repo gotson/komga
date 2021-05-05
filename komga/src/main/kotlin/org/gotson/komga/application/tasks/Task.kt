@@ -50,4 +50,9 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY) : Serializable {
     override fun uniqueId(): String = "CONVERT_BOOK_$bookId"
     override fun toString(): String = "ConvertBook(bookId='$bookId', priority='$priority')"
   }
+
+  class RepairExtension(val bookId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
+    override fun uniqueId(): String = "REPAIR_EXTENSION_$bookId"
+    override fun toString(): String = "RepairExtension(bookId='$bookId', priority='$priority')"
+  }
 }

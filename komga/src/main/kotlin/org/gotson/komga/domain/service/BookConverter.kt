@@ -4,10 +4,10 @@ import mu.KotlinLogging
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
 import org.apache.commons.io.FilenameUtils
-import org.apache.tika.mime.MediaType
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookConversionException
 import org.gotson.komga.domain.model.BookWithMedia
+import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaUnsupportedException
@@ -20,6 +20,8 @@ import java.nio.file.FileAlreadyExistsException
 import java.util.zip.Deflater
 import kotlin.io.path.deleteIfExists
 import kotlin.io.path.exists
+import kotlin.io.path.extension
+import kotlin.io.path.moveTo
 import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.notExists
 import kotlin.io.path.outputStream
@@ -37,15 +39,26 @@ class BookConverter(
   private val libraryRepository: LibraryRepository,
 ) {
 
-  val convertibleTypes = listOf("application/x-rar-compressed; version=4")
+  private val convertibleTypes = listOf("application/x-rar-compressed; version=4")
 
-  private val exclude = mutableListOf<String>()
+  private val mediaTypeToExtension = mapOf(
+    "application/x-rar-compressed; version=4" to "cbr",
+    "application/zip" to "cbz",
+    "application/epub+zip" to "epub",
+    "application/pdf" to "pdf",
+  )
+
+  private val failedConversions = mutableListOf<String>()
+  private val skippedRepairs = mutableListOf<String>()
+
+  fun getConvertibleBookIds(library: Library): Collection<String> =
+    bookRepository.findAllIdByLibraryIdAndMediaTypes(library.id, convertibleTypes)
 
   fun convertToCbz(book: Book) {
     if (!libraryRepository.findById(book.libraryId).convertToCbz)
       return logger.info { "Book conversion is disabled for the library, it may have changed since the task was submitted, skipping" }
 
-    if (exclude.contains(book.id))
+    if (failedConversions.contains(book.id))
       return logger.info { "Book conversion already failed before, skipping" }
 
     if (book.path.notExists()) throw FileNotFoundException("File not found: ${book.path}")
@@ -92,7 +105,7 @@ class BookConverter(
         convertedMedia.status != Media.Status.READY
         -> throw BookConversionException("Converted file could not be analyzed, aborting conversion")
 
-        convertedMedia.mediaType != MediaType.APPLICATION_ZIP.toString()
+        convertedMedia.mediaType != "application/zip"
         -> throw BookConversionException("Converted file is not a zip file, aborting conversion")
 
         !convertedMedia.pages.map { it.copy(fileName = FilenameUtils.getName(it.fileName)) }
@@ -105,7 +118,7 @@ class BookConverter(
       }
     } catch (e: BookConversionException) {
       destinationPath.deleteIfExists()
-      exclude += book.id
+      failedConversions += book.id
       throw e
     }
 
@@ -114,5 +127,51 @@ class BookConverter(
 
     bookRepository.update(convertedBook)
     mediaRepository.update(convertedMedia)
+  }
+
+  fun getMismatchedExtensionBookIds(library: Library): Collection<String> =
+    mediaTypeToExtension.flatMap { (mediaType, extension) ->
+      bookRepository.findAllIdByLibraryIdAndMismatchedExtension(library.id, mediaType, extension)
+    }
+
+  fun repairExtension(book: Book) {
+    if (!libraryRepository.findById(book.libraryId).repairExtensions)
+      return logger.info { "Repair extensions is disabled for the library, it may have changed since the task was submitted, skipping" }
+
+    if (skippedRepairs.contains(book.id))
+      return logger.info { "Extension repair has already been skipped before, skipping" }
+
+    if (book.path.notExists()) throw FileNotFoundException("File not found: ${book.path}")
+
+    val media = mediaRepository.findById(book.id)
+
+    if (!mediaTypeToExtension.keys.contains(media.mediaType))
+      throw MediaUnsupportedException("${media.mediaType} cannot be repaired. Must be one of ${mediaTypeToExtension.keys}")
+
+    val actualExtension = book.path.extension
+    val correctExtension = mediaTypeToExtension[media.mediaType]
+
+    if (correctExtension == actualExtension) {
+      logger.info { "MediaType (${media.mediaType}) and extension ($actualExtension) already match, skipping" }
+      skippedRepairs += book.id
+    }
+
+    val destinationFilename = "${book.path.nameWithoutExtension}.$correctExtension"
+    val destinationPath = book.path.parent.resolve(destinationFilename)
+    if (destinationPath.exists())
+      throw FileAlreadyExistsException("Destination file already exists: $destinationPath")
+
+    logger.info { "Renaming ${book.path} to $destinationPath" }
+    book.path.moveTo(destinationPath)
+
+    val repairedBook = fileSystemScanner.scanFile(destinationPath)
+      ?.copy(
+        id = book.id,
+        seriesId = book.seriesId,
+        libraryId = book.libraryId
+      )
+      ?: throw IllegalStateException("Repaired book could not be scanned: $destinationFilename")
+
+    bookRepository.update(repairedBook)
   }
 }

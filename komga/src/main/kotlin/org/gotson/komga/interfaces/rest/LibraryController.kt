@@ -84,6 +84,7 @@ class LibraryController(
           importBarcodeIsbn = library.importBarcodeIsbn,
           scanForceModifiedTime = library.scanForceModifiedTime,
           scanDeep = library.scanDeep,
+          repairExtensions = library.repairExtensions,
           convertToCbz = library.convertToCbz,
         )
       ).toDto(includeRoot = principal.user.roleAdmin)
@@ -120,6 +121,7 @@ class LibraryController(
         importBarcodeIsbn = library.importBarcodeIsbn,
         scanForceModifiedTime = library.scanForceModifiedTime,
         scanDeep = library.scanDeep,
+        repairExtensions = library.repairExtensions,
         convertToCbz = library.convertToCbz,
       )
       libraryLifecycle.updateLibrary(toUpdate)
@@ -176,6 +178,7 @@ data class LibraryCreationDto(
   val importBarcodeIsbn: Boolean = true,
   val scanForceModifiedTime: Boolean = false,
   val scanDeep: Boolean = false,
+  val repairExtensions: Boolean = false,
   val convertToCbz: Boolean = false,
 )
 
@@ -193,6 +196,7 @@ data class LibraryDto(
   val importBarcodeIsbn: Boolean,
   val scanForceModifiedTime: Boolean,
   val scanDeep: Boolean,
+  val repairExtensions: Boolean,
   val convertToCbz: Boolean,
 )
 
@@ -209,6 +213,7 @@ data class LibraryUpdateDto(
   val importBarcodeIsbn: Boolean,
   val scanForceModifiedTime: Boolean,
   val scanDeep: Boolean,
+  val repairExtensions: Boolean,
   val convertToCbz: Boolean,
 )
 
@@ -226,5 +231,6 @@ fun Library.toDto(includeRoot: Boolean) = LibraryDto(
   importBarcodeIsbn = importBarcodeIsbn,
   scanForceModifiedTime = scanForceModifiedTime,
   scanDeep = scanDeep,
+  repairExtensions = repairExtensions,
   convertToCbz = convertToCbz,
 )
