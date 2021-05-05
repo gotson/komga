@@ -372,7 +372,7 @@ import SeriesActionsMenu from '@/components/menus/SeriesActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import {parseQueryParamAndFilter, parseQuerySort} from '@/functions/query-params'
 import {seriesFileUrl, seriesThumbnailUrl} from '@/functions/urls'
-import {ReadStatus} from '@/types/enum-books'
+import {ReadStatus, replaceCompositeReadStatus} from '@/types/enum-books'
 import {BOOK_CHANGED, LIBRARY_DELETED, READLIST_CHANGED, SERIES_CHANGED} from '@/types/events'
 import Vue from 'vue'
 import {Location} from 'vue-router'
@@ -447,7 +447,7 @@ export default Vue.extend({
     },
     filterOptionsList(): FiltersOptions {
       return {
-        readStatus: {values: [{name: this.$t('filter.unread').toString(), value: ReadStatus.UNREAD}]},
+        readStatus: {values: [{name: this.$t('filter.unread').toString(), value: ReadStatus.UNREAD_AND_IN_PROGRESS}]},
       } as FiltersOptions
     },
     filterOptionsPanel(): FiltersOptions {
@@ -667,7 +667,7 @@ export default Vue.extend({
         }))
       })
 
-      const booksPage = await this.$komgaSeries.getBooks(seriesId, pageRequest, this.filters.readStatus, this.filters.tag, authorsFilter)
+      const booksPage = await this.$komgaSeries.getBooks(seriesId, pageRequest, replaceCompositeReadStatus(this.filters.readStatus), this.filters.tag, authorsFilter)
 
       this.totalPages = booksPage.totalPages
       this.totalElements = booksPage.totalElements
