@@ -249,6 +249,7 @@ jooq {
   }
 }
 tasks.named<nu.studer.gradle.jooq.JooqGenerate>("generateJooq") {
+  migrationDirsSqlite.forEach { inputs.dir(it) }
   allInputsDeclared.set(true)
   dependsOn("flywayMigrate")
 }
