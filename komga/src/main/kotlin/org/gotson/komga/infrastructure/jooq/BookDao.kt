@@ -98,7 +98,7 @@ class BookDao(
     dsl.select(b.LIBRARY_ID)
       .from(b)
       .where(b.ID.eq(bookId))
-      .fetchOne(0, String::class.java)
+      .fetchOne(b.LIBRARY_ID)
 
   override fun findFirstIdInSeries(seriesId: String): String? =
     dsl.select(b.ID)
@@ -107,13 +107,13 @@ class BookDao(
       .where(b.SERIES_ID.eq(seriesId))
       .orderBy(d.NUMBER_SORT)
       .limit(1)
-      .fetchOne(0, String::class.java)
+      .fetchOne(b.ID)
 
   override fun findAllIdBySeriesId(seriesId: String): Collection<String> =
     dsl.select(b.ID)
       .from(b)
       .where(b.SERIES_ID.eq(seriesId))
-      .fetch(0, String::class.java)
+      .fetch(b.ID)
 
   override fun findAllIdBySeriesIds(seriesIds: Collection<String>): Collection<String> =
     dsl.select(b.ID)
@@ -125,7 +125,7 @@ class BookDao(
     dsl.select(b.ID)
       .from(b)
       .where(b.LIBRARY_ID.eq(libraryId))
-      .fetch(0, String::class.java)
+      .fetch(b.ID)
 
   override fun findAllId(bookSearch: BookSearch, sort: Sort): Collection<String> {
     val conditions = bookSearch.toCondition()
@@ -138,7 +138,7 @@ class BookDao(
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .where(conditions)
       .orderBy(orderBy)
-      .fetch(0, String::class.java)
+      .fetch(b.ID)
   }
 
   override fun insert(book: Book) {
