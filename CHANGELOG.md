@@ -1,3 +1,10 @@
+## [0.91.2](https://github.com/gotson/komga/compare/v0.91.1...v0.91.2) (2021-05-05)
+
+
+### Bug Fixes
+
+* book conversion could fail because of different path separators ([e577e4a](https://github.com/gotson/komga/commit/e577e4a78f0586262fecfcb673af3201422435eb))
+
 ## [0.91.1](https://github.com/gotson/komga/compare/v0.91.0...v0.91.1) (2021-05-04)
 
 
