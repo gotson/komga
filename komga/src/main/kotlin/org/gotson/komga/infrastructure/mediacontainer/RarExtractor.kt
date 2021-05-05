@@ -30,14 +30,13 @@ class RarExtractor(
         .filter { !it.isDirectory }
         .map { entry ->
           try {
-            rar.getInputStream(entry).buffered().use { stream ->
-              val mediaType = contentDetector.detectMediaType(stream)
-              val dimension = if (contentDetector.isImage(mediaType))
-                imageAnalyzer.getDimension(stream)
-              else
-                null
-              MediaContainerEntry(name = entry.fileName, mediaType = mediaType, dimension = dimension)
-            }
+            val buffer = rar.getInputStream(entry).use { it.readBytes() }
+            val mediaType = buffer.inputStream().use { contentDetector.detectMediaType(it) }
+            val dimension = if (contentDetector.isImage(mediaType))
+              buffer.inputStream().use { imageAnalyzer.getDimension(it) }
+            else
+              null
+            MediaContainerEntry(name = entry.fileName, mediaType = mediaType, dimension = dimension)
           } catch (e: Exception) {
             logger.warn(e) { "Could not analyze entry: ${entry.fileName}" }
             MediaContainerEntry(name = entry.fileName, comment = e.message)
