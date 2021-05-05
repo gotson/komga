@@ -185,8 +185,25 @@
                   </v-row>
                   <v-row>
                     <v-col>
-                      <span class="text-subtitle-2">{{ $t('dialog.edit_library.label_convert_to_cbz') }}</span>
-                      <v-alert type="warning" text class="text-subtitle-2">{{ $t('dialog.edit_library.warning_early_feature_convert_to_cbz') }}</v-alert>
+                      <v-checkbox
+                        v-model="fileManagement"
+                        :indeterminate="fileManagement === 1"
+                        hide-details
+                      >
+                        <template v-slot:label>
+                          <span class="text-subtitle-2">{{ $t('dialog.edit_library.label_file_management') }}</span>
+                        </template>
+                      </v-checkbox>
+
+                      <v-alert type="warning" text class="text-subtitle-2 mt-4">{{ $t('dialog.edit_library.warning_early_feature_repair_extensions') }}</v-alert>
+                      <v-checkbox
+                        v-model="form.repairExtensions"
+                        :label="$t('dialog.edit_library.field_repair_extensions')"
+                        hide-details
+                        class="mx-4"
+                      />
+
+                      <v-alert type="warning" text class="text-subtitle-2 mt-4">{{ $t('dialog.edit_library.warning_early_feature_convert_to_cbz') }}</v-alert>
                       <v-checkbox
                         v-model="form.convertToCbz"
                         :label="$t('dialog.edit_library.field_convert_to_cbz')"
@@ -254,6 +271,7 @@ export default Vue.extend({
         importBarcodeIsbn: true,
         scanForceModifiedTime: false,
         scanDeep: false,
+        repairExtensions: false,
         convertToCbz: false,
       },
       validationFieldNames: new Map([]),
@@ -308,6 +326,20 @@ export default Vue.extend({
       set: function (value: boolean): void {
         this.form.scanDeep = value
         this.form.scanForceModifiedTime = value
+      },
+    },
+
+    fileManagement: {
+      get: function (): number {
+        const val = [this.form.repairExtensions, this.form.convertToCbz]
+        const count = val.filter(Boolean).length
+        if (count === val.length) return 2
+        if (count === 0) return 0
+        return 1
+      },
+      set: function (value: boolean): void {
+        this.form.repairExtensions = value
+        this.form.convertToCbz = value
       },
     },
   },
@@ -369,6 +401,7 @@ export default Vue.extend({
       this.form.importBarcodeIsbn = library ? library.importBarcodeIsbn : true
       this.form.scanForceModifiedTime = library ? library.scanForceModifiedTime : false
       this.form.scanDeep = library ? library.scanDeep : false
+      this.form.repairExtensions = library ? library.repairExtensions : false
       this.form.convertToCbz = library ? library.convertToCbz : false
       this.$v.$reset()
     },
@@ -389,6 +422,7 @@ export default Vue.extend({
           importBarcodeIsbn: this.form.importBarcodeIsbn,
           scanForceModifiedTime: this.form.scanForceModifiedTime,
           scanDeep: this.form.scanDeep,
+          repairExtensions: this.form.repairExtensions,
           convertToCbz: this.form.convertToCbz,
         }
       }

@@ -11,6 +11,7 @@ interface LibraryCreationDto {
   importBarcodeIsbn: boolean,
   scanForceModifiedTime: boolean,
   scanDeep: boolean,
+  repairExtensions: boolean,
   convertToCbz: boolean
 }
 
@@ -27,6 +28,7 @@ interface LibraryUpdateDto {
   importBarcodeIsbn: boolean,
   scanForceModifiedTime: boolean,
   scanDeep: boolean,
+  repairExtensions: boolean,
   convertToCbz: boolean
 }
 
@@ -44,5 +46,6 @@ interface LibraryDto {
   importBarcodeIsbn: boolean,
   scanForceModifiedTime: boolean,
   scanDeep: boolean,
+  repairExtensions: boolean,
   convertToCbz: boolean
 }

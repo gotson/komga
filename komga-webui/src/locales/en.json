@@ -291,7 +291,7 @@
       "button_confirm_edit": "Edit",
       "dialog_title_add": "Add Library",
       "dialot_title_edit": "Edit Library",
-      "field_convert_to_cbz": "Convert to CBZ",
+      "field_convert_to_cbz": "Automatically convert to CBZ",
       "field_import_barcode_isbn": "ISBN barcode",
       "field_import_comicinfo_book": "Book metadata",
       "field_import_comicinfo_collections": "Collections",
@@ -301,12 +301,13 @@
       "field_import_epub_series": "Series metadata",
       "field_import_local_artwork": "Local artwork",
       "field_name": "Name",
+      "field_repair_extensions": "Automatically repair incorrect file extensions",
       "field_root_folder": "Root folder",
       "field_scanner_deep_scan": "Deep scan",
       "field_scanner_force_directory_modified_time": "Force directory modified time",
       "file_browser_dialog_button_confirm": "Choose",
       "file_browser_dialog_title": "Library's root folder",
-      "label_convert_to_cbz": "Automatically convert to CBZ",
+      "label_file_management": "File management",
       "label_import_barcode_isbn": "Import ISBN within barcode",
       "label_import_comicinfo": "Import metadata for CBR/CBZ containing a ComicInfo.xml file",
       "label_import_epub": "Import metadata from EPUB files",
@@ -314,7 +315,8 @@
       "label_scanner": "Scanner",
       "tab_general": "General",
       "tab_options": "Options",
-      "warning_early_feature_convert_to_cbz": "Book conversion is still an early feature, and must be used with caution. Make sure your files are backed up before using it."
+      "warning_early_feature_convert_to_cbz": "Book conversion is still an early feature, and must be used with caution. Make sure your files are backed up before using it.",
+      "warning_early_feature_repair_extensions": "Repair file extension is still an early feature, and must be used with caution. Make sure your files are backed up before using it."
     },
     "edit_readlist": {
       "button_cancel": "Cancel",
