@@ -1,3 +1,12 @@
+# [0.92.0](https://github.com/gotson/komga/compare/v0.91.3...v0.92.0) (2021-05-05)
+
+
+### Features
+
+* **webui:** library dialog options for extension repair ([f6ad0f0](https://github.com/gotson/komga/commit/f6ad0f0012b7d67a4cdbb95bad11cc5dcc8e2e9f))
+* repair file extensions ([39cd31c](https://github.com/gotson/komga/commit/39cd31cbb6f8b50e36620c36f394d6d06822a3a2))
+* **webui:** show in progress books as unread ([db95544](https://github.com/gotson/komga/commit/db955447f95e5946062a5aa91c5dbd356d8e0f82)), closes [#526](https://github.com/gotson/komga/issues/526)
+
 ## [0.91.3](https://github.com/gotson/komga/compare/v0.91.2...v0.91.3) (2021-05-05)
 
 

@@ -1035,11 +1035,15 @@
           "importEpubSeries",
           "importLocalArtwork",
           "name",
+          "repairExtensions",
           "root",
           "scanDeep",
           "scanForceModifiedTime"
         ],
         "properties": {
+          "repairExtensions": {
+            "type": "boolean"
+          },
           "importComicInfoReadList": {
             "type": "boolean"
           },
@@ -1095,11 +1099,15 @@
           "importEpubSeries",
           "importLocalArtwork",
           "name",
+          "repairExtensions",
           "root",
           "scanDeep",
           "scanForceModifiedTime"
         ],
         "properties": {
+          "repairExtensions": {
+            "type": "boolean"
+          },
           "importComicInfoReadList": {
             "type": "boolean"
           },
@@ -1491,11 +1499,15 @@
           "importEpubSeries",
           "importLocalArtwork",
           "name",
+          "repairExtensions",
           "root",
           "scanDeep",
           "scanForceModifiedTime"
         ],
         "properties": {
+          "repairExtensions": {
+            "type": "boolean"
+          },
           "importComicInfoReadList": {
             "type": "boolean"
           },
