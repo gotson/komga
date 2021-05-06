@@ -52,7 +52,7 @@
       "series": "系列"
     },
     "title": "导入",
-    "warning_early_feature": "书籍导入仍然是早期的功能, 须谨慎使用. 确定你的消息来源和目标文件在使用导入功能之前备份."
+    "warning_early_feature": "图书导入仍然是早期的功能，必须谨慎使用。在使用导入功能之前，请确保已备份源文件和目标文件。"
   },
   "bookreader": {
     "beginning_of_book": "你可以开始阅读这本书.",
@@ -291,6 +291,7 @@
       "button_confirm_edit": "编辑",
       "dialog_title_add": "添加库",
       "dialot_title_edit": "编辑库",
+      "field_convert_to_cbz": "自动转换为CBZ格式",
       "field_import_barcode_isbn": "ISBN条行码",
       "field_import_comicinfo_book": "书籍元数据",
       "field_import_comicinfo_collections": "收藏",
@@ -300,18 +301,22 @@
       "field_import_epub_series": "系列元数据",
       "field_import_local_artwork": "本地图片(插图)",
       "field_name": "名称",
+      "field_repair_extensions": "自动修复不正确的文件扩展名",
       "field_root_folder": "根文件夹",
       "field_scanner_deep_scan": "深度扫描",
       "field_scanner_force_directory_modified_time": "强制目录修改时间",
       "file_browser_dialog_button_confirm": "选择",
       "file_browser_dialog_title": "库的根文件夹",
+      "label_file_management": "文件管理",
       "label_import_barcode_isbn": "从条形码中导入ISBN",
       "label_import_comicinfo": "导入含有ComicInfo.xml的CBR/CBZ压缩包",
       "label_import_epub": "导入EPUB文件的元数据",
       "label_import_local": "导入本地媒体",
       "label_scanner": "扫描器",
       "tab_general": "常规",
-      "tab_options": "选项"
+      "tab_options": "选项",
+      "warning_early_feature_convert_to_cbz": "书籍转换仍然是早期的功能，必须谨慎使用。请确保在使用之前备份了您的文件。",
+      "warning_early_feature_repair_extensions": "修复文件扩展名仍然是早期的功能，必须谨慎使用。请确保在使用之前备份了您的文件。"
     },
     "edit_readlist": {
       "button_cancel": "取消",

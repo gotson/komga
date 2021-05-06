@@ -291,6 +291,7 @@
       "button_confirm_edit": "Modifier",
       "dialog_title_add": "Ajouter une bibliothèque",
       "dialot_title_edit": "Modifier la bibliothèque",
+      "field_convert_to_cbz": "Convertir en CBZ",
       "field_import_barcode_isbn": "Code-barres ISBN",
       "field_import_comicinfo_book": "Métadonnées du livre",
       "field_import_comicinfo_collections": "Collections",
@@ -311,7 +312,8 @@
       "label_import_local": "Importer les médias locaux",
       "label_scanner": "Scanneur",
       "tab_general": "Général",
-      "tab_options": "Options"
+      "tab_options": "Options",
+      "warning_early_feature_convert_to_cbz": "La conversion de livres est une fonctionnalité encore récente, qui doit être utilisée avec prudence. Assurez-vous que vos fichiers sont sauvegardés avant de l'utiliser."
     },
     "edit_readlist": {
       "button_cancel": "Annuler",

@@ -141,7 +141,7 @@
     "edit_readlist": "Modifica elenco lettura"
   },
   "browse_series": {
-    "earliest_year_from_release_dates": "Questo è la data di uscita del primo fumetto della serie",
+    "earliest_year_from_release_dates": "Questo è l'anno di uscita del primo fumetto della serie",
     "series_no_summary": "Questa serie non ha riassunto, quindi ne ho scelto uno per te!",
     "summary_from_book": "Riassunto dal fumetto {number}:"
   },
@@ -291,6 +291,7 @@
       "button_confirm_edit": "Modifica",
       "dialog_title_add": "Aggiungi Libreria",
       "dialot_title_edit": "Modifica Libreria",
+      "field_convert_to_cbz": "Converti automaticamente in CBZ",
       "field_import_barcode_isbn": "Codice a barre ISBN",
       "field_import_comicinfo_book": "Metadati del fumetto",
       "field_import_comicinfo_collections": "Raccolte",
@@ -300,18 +301,21 @@
       "field_import_epub_series": "Metadati della serie",
       "field_import_local_artwork": "Copertine locali",
       "field_name": "Nome",
+      "field_repair_extensions": "Ripara automaticamente le estensioni errate dei file",
       "field_root_folder": "Cartella principale",
       "field_scanner_deep_scan": "Scansione profonda",
       "field_scanner_force_directory_modified_time": "Usa data di modifica delle cartelle",
       "file_browser_dialog_button_confirm": "Scegli",
       "file_browser_dialog_title": "Cartella principale della libreria",
+      "label_file_management": "Gestione File",
       "label_import_barcode_isbn": "Importa ISBN all'interno del codice a barre",
       "label_import_comicinfo": "Importa metadati per CBR/CBZ contenenti un file ComicInfo.xml",
       "label_import_epub": "Importa metadati dai file EPUB",
       "label_import_local": "Importa risorse multimediali locali",
       "label_scanner": "Scanner",
       "tab_general": "Generale",
-      "tab_options": "Opzioni"
+      "tab_options": "Opzioni",
+      "warning_early_feature_convert_to_cbz": "La conversione dei libri è ancora una funzionalità nuova e deve essere usata con cautela. Assicurati che i tuoi file abbiano un backup prima di usarla."
     },
     "edit_readlist": {
       "button_cancel": "Annulla",
