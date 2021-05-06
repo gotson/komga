@@ -1,3 +1,10 @@
+# [0.93.0](https://github.com/gotson/komga/compare/v0.92.1...v0.93.0) (2021-05-06)
+
+
+### Features
+
+* added translation using Weblate (Hungarian) ([3abc8bd](https://github.com/gotson/komga/commit/3abc8bde92db420128fe509680a73707f59d3dd7))
+
 ## [0.92.1](https://github.com/gotson/komga/compare/v0.92.0...v0.92.1) (2021-05-06)
 
 
