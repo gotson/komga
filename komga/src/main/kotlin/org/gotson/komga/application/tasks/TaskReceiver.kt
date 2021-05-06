@@ -17,16 +17,24 @@ import org.gotson.komga.infrastructure.jms.QUEUE_UNIQUE_ID
 import org.springframework.data.domain.Sort
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.stereotype.Service
+import javax.jms.ConnectionFactory
 
 private val logger = KotlinLogging.logger {}
 
 @Service
 class TaskReceiver(
-  private val jmsTemplate: JmsTemplate,
+  private val connectionFactory: ConnectionFactory,
   private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
   private val bookConverter: BookConverter,
 ) {
+
+  private val jmsTemplates = (0..9).associateWith {
+    JmsTemplate(connectionFactory).apply {
+      priority = it
+      isExplicitQosEnabled = true
+    }
+  }
 
   fun scanLibraries() {
     libraryRepository.findAll().forEach { scanLibrary(it.id) }
@@ -102,8 +110,7 @@ class TaskReceiver(
 
   private fun submitTask(task: Task) {
     logger.info { "Sending task: $task" }
-    jmsTemplate.priority = task.priority
-    jmsTemplate.convertAndSend(QUEUE_TASKS, task) {
+    jmsTemplates[task.priority]!!.convertAndSend(QUEUE_TASKS, task) {
       it.apply {
         setStringProperty(QUEUE_TYPE, QUEUE_TASKS_TYPE)
         setStringProperty(QUEUE_UNIQUE_ID, task.uniqueId())

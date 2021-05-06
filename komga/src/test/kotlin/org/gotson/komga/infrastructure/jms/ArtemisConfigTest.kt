@@ -97,6 +97,7 @@ class ArtemisConfigTest(
   fun `when sending messages with different priority then high priority messages are received first`() {
     for (i in 0..9) {
       jmsTemplate.priority = i
+      jmsTemplate.isExplicitQosEnabled = true
       jmsTemplate.convertAndSend(
         QUEUE_TASKS,
         "message A $i"
@@ -105,6 +106,7 @@ class ArtemisConfigTest(
 
     for (i in 9 downTo 0) {
       jmsTemplate.priority = i
+      jmsTemplate.isExplicitQosEnabled = true
       jmsTemplate.convertAndSend(
         QUEUE_TASKS,
         "message B $i"

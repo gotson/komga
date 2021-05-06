@@ -33,7 +33,6 @@ spring:
   web:
     resources:
       add-mappings: false
-  jms.template.qos-enabled: true
 
 server:
   servlet.session.timeout: 7d

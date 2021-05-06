@@ -70,19 +70,21 @@ class TaskHandlerTest(
   fun `when high priority tasks are submitted then they are executed first`() {
     val slot = slot<String>()
     val calls = mutableListOf<Book>()
-    every { mockBookRepository.findByIdOrNull(capture(slot)) } answers { makeBook(slot.captured) }
+    every { mockBookRepository.findByIdOrNull(capture(slot)) } answers {
+      Thread.sleep(1_00)
+      makeBook(slot.captured)
+    }
     every { mockBookLifecycle.analyzeAndPersist(capture(calls)) } returns false
 
-    jmsListenerEndpointRegistry.stop()
+    taskReceiver.analyzeBook("1", HIGHEST_PRIORITY)
+    taskReceiver.analyzeBook("2", LOWEST_PRIORITY)
+    taskReceiver.analyzeBook("3", HIGH_PRIORITY)
+    taskReceiver.analyzeBook("4", HIGHEST_PRIORITY)
+    taskReceiver.analyzeBook("5", DEFAULT_PRIORITY)
 
-    taskReceiver.analyzeBook("1")
-    taskReceiver.analyzeBook("2", HIGH_PRIORITY)
+    Thread.sleep(1_000)
 
-    jmsListenerEndpointRegistry.start()
-
-    Thread.sleep(1_00)
-
-    verify(exactly = 2) { mockBookLifecycle.analyzeAndPersist(any()) }
-    assertThat(calls.map { it.name }).containsExactly("2", "1")
+    verify(exactly = 5) { mockBookLifecycle.analyzeAndPersist(any()) }
+    assertThat(calls.map { it.name }).containsExactly("1", "4", "3", "5", "2")
   }
 }
