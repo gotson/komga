@@ -14,17 +14,45 @@
     "noDataText": "Não há dados disponíveis"
   },
   "account_settings": {
-    "account_settings": "configurações da conta",
-    "change_password": "mudar senha"
+    "account_settings": "Configurações de conta",
+    "change_password": "Alterar senha"
   },
   "author_roles": {
     "colorist": "coloristas",
-    "cover": "capa",
+    "cover": "Capa",
     "editor": "editores",
     "inker": "arte-finalistas",
     "letterer": "letristas",
     "penciller": "desenhistas",
-    "writer": "escritores"
+    "writer": "Escritores"
+  },
+  "book_card": {
+    "error": "Erro",
+    "unknown": "Em análise",
+    "unsupported": "Não suportado"
+  },
+  "book_import": {
+    "button_browse": "Navegar",
+    "button_import": "Importar",
+    "button_scan": "Examinar",
+    "button_select_series": "Selecione uma série",
+    "field_import_path": "Importar a partir de uma pasta",
+    "info_part1": "Esta tela permite importar arquivos que estão fora de suas bibliotecas existentes. Você só pode importar arquivos para as séries existentes; nesse caso, Komga moverá ou copiará os arquivos para o diretório da série escolhida.",
+    "info_part2": "Se escolher um número para um livro, e já havendo um livro com este número, então poderá comparar os dois livros. Se decidir importar o livro, Komga vai atualizar o livro, substituindo o arquivo antigo pelo novo.",
+    "row": {
+      "error_analyze_first": "O livro deve ser analisado primeiro",
+      "error_choose_series": "Escolha uma série",
+      "error_only_import_no_errors": "Só se pode importar livros sem erros",
+      "warning_upgrade": "O livro existente será atualizado"
+    },
+    "table": {
+      "destination_name": "Nome de destino",
+      "file_name": "Nome do arquivo",
+      "number": "Número",
+      "series": "Série"
+    },
+    "title": "Importar",
+    "warning_early_feature": "A importação de livros ainda é uma funcionalidade recente e deve ser usada com precaução. Tenha certeza de que seus arquivos estão devidamente salvos e com cópias de segurança antes de usar a funcionalidade de importação."
   },
   "bookreader": {
     "beginning_of_book": "Você está no inicio do livro.",
@@ -32,27 +60,28 @@
     "cycling_page_layout": "Alterando Layout de Página",
     "cycling_scale": "Alterando Escala",
     "cycling_side_padding": "Alterando Preenchimento Lateral",
+    "download_current_page": "Baixar a pagina atual",
     "end_of_book": "Você chegou ao final do livro.",
     "from_series_metadata": "dos metadados da série",
-    "move_next": "Clique ou pressione próximo novamente para mover ao próximo livro.",
-    "move_next_exit": "Clique ou pressione próximo novamente para sair do leitor.",
-    "move_previous": "Clique ou pressione anterior novamente para mover ao livro anterior.",
+    "move_next": "Clique ou pressione em \"Próximo\" novamente para mover ao próximo livro.",
+    "move_next_exit": "Clique ou pressione em \"Próximo\" novamente para sair do leitor.",
+    "move_previous": "Clique ou pressione em \"Anterior\" novamente para mover ao livro anterior.",
     "paged_reader_layout": {
       "double": "Páginas duplas",
       "double_no_cover": "Páginas duplas (sem capa)",
-      "single": "Página única"
+      "single": "Página simples"
     },
     "reader_settings": "Configurações de Leitura",
     "scale_type": {
       "continuous_original": "Original",
-      "continuous_width": "Ajustar largura",
-      "height": "Ajustar altura",
+      "continuous_width": "Ajustar à largura",
+      "height": "Ajustar à altura",
       "original": "Original",
       "screen": "Tela",
-      "width": "Ajustar largura"
+      "width": "Ajustar à largura"
     },
     "settings": {
-      "animate_page_transitions": "Animar transições de página",
+      "animate_page_transitions": "Animar as transições de página",
       "background_color": "Cor de fundo",
       "background_colors": {
         "black": "Preto",
@@ -62,12 +91,12 @@
       "general": "Geral",
       "gestures": "Gestos",
       "page_layout": "Layout de página",
-      "paged": "Página",
+      "paged": "Opções do Reader paginado",
       "reading_mode": "Modo de leitura",
       "scale_type": "Tipo de escala",
-      "side_padding": "Preenchimento lateral",
-      "side_padding_none": "Nenhum",
-      "webtoon": "Webtoon"
+      "side_padding": "Margem lateral",
+      "side_padding_none": "Sem categoria",
+      "webtoon": "Opções do Webtoon Reader"
     },
     "shortcuts": {
       "close": "Fechar",
@@ -96,6 +125,7 @@
     "download_file": "Baixar arquivo",
     "file": "ARQUIVO",
     "format": "FORMATO",
+    "isbn": "ISBN",
     "navigation_within_readlist": "Navegação dentro da lista de leitura: {name}",
     "read_book": "Ler livro",
     "size": "TAMANHO"
@@ -115,10 +145,11 @@
     "summary_from_book": "Resumo do livro {number}:"
   },
   "collections_expansion_panel": {
-    "manage_collection": "Gerenciar coleção"
+    "manage_collection": "Gerenciar coleção",
+    "title": "Coleção {name}"
   },
   "common": {
-    "all_libraries": "Todas as Bibliotecas",
+    "all_libraries": "Todas as bibliotecas",
     "books": "Livros",
     "books_n": "Nenhum livro | 1 livro | {count} livros",
     "cancel": "Cancelar",
@@ -126,6 +157,7 @@
     "collections": "Coleções",
     "create": "Criar",
     "delete": "Excluir",
+    "download": "Baixar",
     "email": "Email",
     "filter_no_matches": "O filtro ativo não contém correspondências",
     "genre": "Gênero",
@@ -138,6 +170,7 @@
     "pages_n": "Nenhuma página | 1 página | {count} páginas",
     "password": "Senha",
     "publisher": "Editora",
+    "read": "Ler",
     "readlists": "Listas de Leitura",
     "required": "Obrigatório",
     "roles": "Funções",
@@ -152,6 +185,11 @@
     "recently_added_books": "Livros Adicionados Recentemente",
     "recently_added_series": "séries adicionadas recentemente",
     "recently_updated_series": "séries atualizadas recentemente"
+  },
+  "data_import": {
+    "book_number": "Número de livro: {name}",
+    "book_series": "Série: {name}",
+    "button_import": "Importar"
   },
   "dialog": {
     "add_to_collection": {
@@ -259,7 +297,7 @@
       "label_import_comicinfo": "Importar metadados para CBR/CBZ que contenham um arquivo ComicInfo.xml",
       "label_import_epub": "Importar metadados de arquivos EPUB",
       "label_import_local": "Importar recursos de mídia locais",
-      "label_scanner": "Scanner",
+      "label_scanner": "Fazer varredura",
       "tab_general": "Geral",
       "tab_options": "Opções"
     },

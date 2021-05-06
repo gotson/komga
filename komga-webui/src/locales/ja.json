@@ -31,18 +31,41 @@
     "unknown": "分析待ち",
     "unsupported": "非対応"
   },
+  "book_import": {
+    "button_browse": "参照",
+    "button_import": "インポート",
+    "button_scan": "スキャン",
+    "button_select_series": "シリーズを選択",
+    "field_import_path": "フォルダからインポート",
+    "info_part1": "この画面では、既存のライブラリ以外のファイルをインポートすることができます。既存のシリーズにしかファイルをインポートできませんが、その場合、Komgaはファイルを選択したシリーズのディレクトリに移動またはコピーします。",
+    "info_part2": "書籍番号を選択すると、その番号の書籍がすでに存在している場合、2つの書籍を比較することができます。また、書籍をインポートする場合、Komgaは既存の書籍を新しい書籍にアップグレードし、古いファイルを新しいファイルに置き換えます。",
+    "row": {
+      "error_analyze_first": "本は事前に分析する必要があります",
+      "error_choose_series": "シリーズを選択",
+      "error_only_import_no_errors": "エラーのない本だけをインポートできます",
+      "warning_upgrade": "既存の書籍がアップグレードされます"
+    },
+    "table": {
+      "destination_name": "出力先の名前",
+      "file_name": "ファイル名",
+      "number": "番号",
+      "series": "シリーズ"
+    },
+    "title": "インポート",
+    "warning_early_feature": "書籍のインポート機能はまだ初期の機能であり、慎重に使用する必要があります。インポート機能を使用する前に、インポート元のファイルとインポート先のファイルがバックアップされていることを確認してください。"
+  },
   "bookreader": {
-    "beginning_of_book": "ここが本の先頭です。",
+    "beginning_of_book": "ここが書籍の先頭です。",
     "changing_reading_direction": "読み方向を変更する",
     "cycling_page_layout": "ページレイアウトを切り替える",
     "cycling_scale": "表示サイズを切り替える",
     "cycling_side_padding": "左右の余白を切り替える",
     "download_current_page": "このページをダウンロードする",
-    "end_of_book": "ここが本の末尾です。",
+    "end_of_book": "ここが書籍の末尾です。",
     "from_series_metadata": "シリーズ情報から",
-    "move_next": "もう一度「次」を押すと次の本へ移動します。",
-    "move_next_exit": "もう一度「次」を押すと本を閉じます。",
-    "move_previous": "もう一度「前」を押すと前の本へ移動します。",
+    "move_next": "もう一度「次」を押すと次の書籍へ移動します。",
+    "move_next_exit": "もう一度「次」を押すと書籍を閉じます。",
+    "move_previous": "もう一度「前」を押すと前の書籍へ移動します。",
     "paged_reader_layout": {
       "double": "見開き",
       "double_no_cover": "見開き (カバーなし)",
@@ -95,7 +118,8 @@
       "show_hide_toolbars": "ツールバーを表示/隠す",
       "vertical": "縦",
       "webtoon": "Webtoon"
-    }
+    },
+    "tooltip_incognito": "読み上げの進捗状況は保存されません"
   },
   "browse_book": {
     "comment": "コメント",
@@ -104,7 +128,7 @@
     "format": "フォーマット",
     "isbn": "ISBN",
     "navigation_within_readlist": "この読書リスト内の一覧: {name}",
-    "read_book": "本を読む",
+    "read_book": "書籍を読む",
     "size": "サイズ"
   },
   "browse_collection": {
@@ -117,7 +141,7 @@
     "edit_readlist": "読書リストの編集"
   },
   "browse_series": {
-    "earliest_year_from_release_dates": "シリーズ内の本の発行日のうち、これが最初の年です",
+    "earliest_year_from_release_dates": "シリーズ内の書籍の発行日のうち、これが最初の年です",
     "series_no_summary": "このシリーズはサマリがないので、ピックアップしました！",
     "summary_from_book": "{number} 巻のサマリ:"
   },
@@ -127,7 +151,7 @@
   },
   "common": {
     "all_libraries": "全ライブラリ",
-    "books": "本",
+    "books": "書籍",
     "books_n": "0 冊 | 1 冊 | {count} 冊",
     "cancel": "キャンセル",
     "close": "閉じる",
@@ -159,14 +183,21 @@
   "dashboard": {
     "keep_reading": "読書を続ける",
     "on_deck": "次に読む",
-    "recently_added_books": "最近追加された本",
+    "recently_added_books": "最近追加された書籍",
     "recently_added_series": "最近追加されたシリーズ",
     "recently_updated_series": "最近更新されたシリーズ"
   },
   "data_import": {
     "book_number": "巻数: {name}",
     "book_series": "シリーズ: {name}",
-    "button_import": "インポート"
+    "button_import": "インポート",
+    "comicrack_preambule_html": "既存のComicRackの読書リストを<code>.cbl</code>形式でインポートすることができます。<br>Komgaは指定されたシリーズと書籍番号を、あなたのライブラリにあるシリーズと本に一致させようとします。",
+    "field_files_label": "ComicRack 読書リスト (.cbl)",
+    "import_read_lists": "Read Listsのインポート",
+    "imported_as": "{name}をインポートしました",
+    "results_preambule": "インポートの結果は以下の通りです。また、指定されたファイルごとにマッチしていない本を確認することができます。",
+    "size_limit": "サイズは{size}MB以下にしてください",
+    "tab_title": "データインポート"
   },
   "dialog": {
     "add_to_collection": {
@@ -226,7 +257,7 @@
       "warning_html": "ユーザ<b>{name}</b>はこのサーバから削除されます。削除はなかったことに<b>できません</b>。続けますか？"
     },
     "edit_books": {
-      "authors_notice_multiple_edit": "複数冊まとめて著者情報を編集しています。それぞれの本の著者情報より優先されるようになります。",
+      "authors_notice_multiple_edit": "複数冊まとめて著者情報を編集しています。それぞれの書籍の著者情報より優先されるようになります。",
       "button_cancel": "キャンセル",
       "button_confirm": "変更を保存",
       "dialog_title_multiple": "{count} 冊を編集",
@@ -244,7 +275,7 @@
       "tab_authors": "著作者",
       "tab_general": "一般",
       "tab_tags": "タグ",
-      "tags_notice_multiple_edit": "複数冊まとめてタグを編集しています。それぞれの本のタグより優先されるようになります。"
+      "tags_notice_multiple_edit": "複数冊まとめてタグを編集しています。それぞれの書籍のタグより優先されるようになります。"
     },
     "edit_collection": {
       "button_cancel": "キャンセル",
@@ -260,6 +291,7 @@
       "button_confirm_edit": "編集",
       "dialog_title_add": "ライブラリを追加",
       "dialot_title_edit": "ライブラリを編集",
+      "field_convert_to_cbz": "自動的にCBZに変換",
       "field_import_barcode_isbn": "ISBN バーコード",
       "field_import_comicinfo_book": "書誌情報",
       "field_import_comicinfo_collections": "コレクション",
@@ -269,18 +301,22 @@
       "field_import_epub_series": "シリーズ情報",
       "field_import_local_artwork": "ローカルのアートワーク",
       "field_name": "ライブラリ名",
+      "field_repair_extensions": "不正なファイル拡張子を自動的に修復",
       "field_root_folder": "ルートフォルダ",
       "field_scanner_deep_scan": "ディープスキャン",
       "field_scanner_force_directory_modified_time": "ディレクトリの変更時刻が更新されているものと見なす",
       "file_browser_dialog_button_confirm": "選択",
       "file_browser_dialog_title": "ライブラリのルートフォルダ",
+      "label_file_management": "ファイル管理",
       "label_import_barcode_isbn": "バーコードから ISBN をインポート",
       "label_import_comicinfo": "ComicInfo.xml ファイルを含んだ CBR/CBZ から情報をインポート",
       "label_import_epub": "EPUB ファイルから書誌情報をインポート",
       "label_import_local": "ローカルのメディアをインポート",
       "label_scanner": "スキャナ",
       "tab_general": "一般",
-      "tab_options": "オプション"
+      "tab_options": "オプション",
+      "warning_early_feature_convert_to_cbz": "書籍の変換機能はまだ初期の機能であり、使用には注意が必要です。使用する前に、ファイルがバックアップされていることを確認してください。",
+      "warning_early_feature_repair_extensions": "ファイル拡張子の修復機能は、まだ初期の機能であり、注意して使用する必要があります。使用する前に、ファイルがバックアップされていることを確認してください。"
     },
     "edit_readlist": {
       "button_cancel": "キャンセル",
@@ -328,6 +364,16 @@
       "dialog_title_default": "ファイルブラウザ",
       "parent_directory": "親フォルダ"
     },
+    "filename_chooser": {
+      "button_choose": "選択してください",
+      "field_destination_filename": "出力先のファイル名",
+      "label_source_filename": "入力元のファイル名",
+      "table": {
+        "existing_file": "既存のファイル",
+        "order": "オーダー"
+      },
+      "title": "出力先のファイル名"
+    },
     "password_change": {
       "button_cancel": "キャンセル",
       "button_confirm": "パスワード変更",
@@ -337,18 +383,50 @@
       "field_repeat_password": "新しいパスワードを再入力",
       "field_repeat_password_error": "パスワードを一致させてください。"
     },
+    "series_picker": {
+      "label_search_series": "シリーズを検索",
+      "title": "シリーズの選択"
+    },
     "server_stop": {
       "button_cancel": "キャンセル",
       "button_confirm": "停止",
-      "confirmation_message": "本当に komga を停止しますか？",
+      "confirmation_message": "本当に Komga を停止しますか？",
       "dialog_title": "サーバをシャットダウン"
     },
     "shortcut_help": {
       "label_description": "説明",
       "label_key": "キー"
+    },
+    "transient_book_details": {
+      "label_candidate": "候補",
+      "label_existing": "既存",
+      "label_format": "フォーマット",
+      "label_name": "名前",
+      "label_pages": "ページ",
+      "label_size": "サイズ",
+      "pages_table": {
+        "filename": "ファイル名",
+        "height": "高さ",
+        "index": "目次",
+        "media_type": "メディアの種類",
+        "width": "幅"
+      },
+      "title": "書籍の詳細",
+      "title_comparison": "書籍の比較"
+    },
+    "transient_book_viewer": {
+      "label_candidate": "候補",
+      "label_existing": "既存",
+      "page_of_pages": "{page} / {pages}",
+      "title": "書籍の検査",
+      "title_comparison": "書籍の比較"
     }
   },
   "enums": {
+    "copy_mode": {
+      "HARDLINK": "ハードリンク/コピーファイル",
+      "MOVE": "ファイルを移動します"
+    },
     "media_status": {
       "ERROR": "エラー",
       "OUTDATED": "Outdated",
@@ -376,9 +454,18 @@
     "ERR_1003": "ソリッドモードの RAR 書庫はサポートしていません",
     "ERR_1004": "マルチボリュームの RAR 書庫はサポートしていません",
     "ERR_1005": "分析中に想定外のエラーがありました",
-    "ERR_1006": "本にページが含まれていません",
+    "ERR_1006": "書籍にページが含まれていません",
     "ERR_1007": "分析できない項目がありました",
-    "ERR_1008": "想定外のエラーで本の項目が取得できません"
+    "ERR_1008": "想定外のエラーで書籍の項目が取得できません",
+    "ERR_1009": "すでに同じ名前の読書リストがあります",
+    "ERR_1010": "指定された読書リストの内に一致する本がありませんでした",
+    "ERR_1011": "シリーズに一致するものがありません",
+    "ERR_1012": "シリーズに一致しません",
+    "ERR_1013": "シリーズ内の書籍番号が一意に一致しません",
+    "ERR_1014": "シリーズ内の書籍番号が一致しない",
+    "ERR_1015": "ComicRack読書リストのデシリアライズ時のエラー",
+    "ERR_1016": "ディレクトリにアクセスできない、またはディレクトリではありません",
+    "ERR_1017": "既存のライブラリの一部であるフォルダをスキャンできない"
   },
   "filter": {
     "age_rating": "年齢レーティング",
@@ -403,7 +490,8 @@
   "library_navigation": {
     "browse": "ブラウズ",
     "collections": "コレクション",
-    "readlists": "読書リスト"
+    "readlists": "読書リスト",
+    "recommended": "推奨"
   },
   "login": {
     "create_user_account": "ユーザアカウントを作成",
@@ -447,7 +535,8 @@
     "more": "続きを読む"
   },
   "readlists_expansion_panel": {
-    "manage_readlist": "読書リストを管理"
+    "manage_readlist": "読書リストを管理",
+    "title": "{name} 読書リスト"
   },
   "search": {
     "no_results": "検索結果はありませんでした",
@@ -476,6 +565,7 @@
     "role_user": "ユーザ"
   },
   "sort": {
+    "books_count": "書籍の数",
     "date_added": "追加した日",
     "date_updated": "更新した日",
     "file_name": "ファイル名",

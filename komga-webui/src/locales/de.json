@@ -291,6 +291,7 @@
       "button_confirm_edit": "Bearbeiten",
       "dialog_title_add": "Bibliothek hinzufügen",
       "dialot_title_edit": "Bibliothek bearbeiten",
+      "field_convert_to_cbz": "In CBZ konvertieren",
       "field_import_barcode_isbn": "ISBN Strichcode",
       "field_import_comicinfo_book": "Buch Metadaten",
       "field_import_comicinfo_collections": "Sammlungen",
@@ -483,7 +484,7 @@
     "translation": "Übersetzung"
   },
   "library_navigation": {
-    "browse": "Durchsuchen",
+    "browse": "Stöbern",
     "collections": "Sammlungen",
     "readlists": "Leseliste",
     "recommended": "Empfohlen"
