@@ -52,7 +52,7 @@
       "series": "Könyvsorozat"
     },
     "title": "Importálás",
-    "warning_early_feature": "A könyvimportálás még egy korai funkció, ezért óvatosan kell használni. Használata előtt bizonyosodj meg arról, hogy való biztonsági mentésed a forrás- és célfájlról."
+    "warning_early_feature": "A könyvimportálás még egy korai funkció, ezért óvatosan kell használni. Használata előtt bizonyosodj meg arról, hogy van biztonsági mentésed a forrás- és célfájlról."
   },
   "bookreader": {
     "beginning_of_book": "A könyv elején jársz.",
@@ -291,6 +291,7 @@
       "button_confirm_edit": "Szerkesztés",
       "dialog_title_add": "Könyvtár hozzáadása",
       "dialot_title_edit": "Könyvtár szerkesztése",
+      "field_convert_to_cbz": "Automatikus konvertálás CBZ-re",
       "field_import_barcode_isbn": "ISBN vonalkód",
       "field_import_comicinfo_book": "Könyv metaadat",
       "field_import_comicinfo_collections": "Gyűjtemények",
@@ -300,18 +301,22 @@
       "field_import_epub_series": "Sorozat metaadat",
       "field_import_local_artwork": "Helyi műalkotás",
       "field_name": "Név",
+      "field_repair_extensions": "Automatikus helytelen fájlkiterjesztés javítás",
       "field_root_folder": "Gyökérkönyvtár",
       "field_scanner_deep_scan": "Mély beolvasás",
       "field_scanner_force_directory_modified_time": "Kényszerített könyvtár-módosítási idő",
       "file_browser_dialog_button_confirm": "Kiválaszt",
       "file_browser_dialog_title": "A könyvtár gyökérkönyvtára",
+      "label_file_management": "Fájlkezelés",
       "label_import_barcode_isbn": "ISBN importálása vonalkódon belül",
       "label_import_comicinfo": "ComicInfo.xml fájlt tartalmazó CBR/CBZ metaadatok importálása",
       "label_import_epub": "Metaadatok importálása EPUB fájlokból",
       "label_import_local": "Helyi médiafájlok importálása",
       "label_scanner": "Beolvasó",
       "tab_general": "Általános",
-      "tab_options": "Opciók"
+      "tab_options": "Opciók",
+      "warning_early_feature_convert_to_cbz": "Könyvkonvertálás egy korai funkció, ezért óvatosan kell használni. Használata előtt bizonyosodj meg arról, hogy van biztonsági mentésed a fájljaidról.",
+      "warning_early_feature_repair_extensions": "Fájkiterjesztés javítás egy korai funkció, ezért óvatosan kell használni. Használata előtt bizonyosodj meg arról, hogy van biztonsági mentésed a fájljaidról."
     },
     "edit_readlist": {
       "button_cancel": "Mégse",
