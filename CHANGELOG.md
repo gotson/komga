@@ -1,3 +1,10 @@
+# [0.94.0](https://github.com/gotson/komga/compare/v0.93.0...v0.94.0) (2021-05-09)
+
+
+### Features
+
+* added translation using Weblate (Vietnamese) ([648f0d4](https://github.com/gotson/komga/commit/648f0d40ff7d0ee6af26d294513914af2edb8915))
+
 # [0.93.0](https://github.com/gotson/komga/compare/v0.92.1...v0.93.0) (2021-05-06)
 
 
