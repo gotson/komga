@@ -1,0 +1,597 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} của {2}"
+    },
+    "dataTable": {
+      "itemsPerPageText": "Hàng trên mỗi trang:",
+      "sortBy": "Sắp xếp theo"
+    },
+    "fileInput": {
+      "counter": "{0} tệp",
+      "counterSize": "{0} tệp (tổng cộng {1})"
+    },
+    "noDataText": "Không có dữ liệu"
+  },
+  "account_settings": {
+    "account_settings": "Cài đặt tài khoản",
+    "change_password": "đổi mật khẩu"
+  },
+  "author_roles": {
+    "colorist": "người tô màu",
+    "cover": "bìa sách",
+    "editor": "biên tập",
+    "inker": "người tô đậm",
+    "letterer": "người viết hội thoại",
+    "penciller": "người vẽ nháp",
+    "writer": "tác giả"
+  },
+  "book_card": {
+    "error": "Lỗi",
+    "unknown": "Cần phân tích",
+    "unsupported": "Không được hỗ trợ"
+  },
+  "book_import": {
+    "button_browse": "Duyệt",
+    "button_import": "Nhập",
+    "button_scan": "Quét",
+    "button_select_series": "Chọn sê-ri",
+    "field_import_path": "Nhập từ thư mục",
+    "info_part1": "Màn hình này cho phép bạn nhập các tệp nằm ngoài các thư viện hiện có của bạn. Bạn chỉ có thể nhập tệp vào Sê-ri hiện có, trong trường hợp đó, Komga sẽ di chuyển hoặc sao chép tệp vào thư mục của Sê-ri đã chọn.",
+    "info_part2": "Nếu bạn chọn một số cho một cuốn sách và một cuốn sách đã tồn tại với con số đó, thì bạn sẽ có thể so sánh 2 cuốn sách. Nếu bạn quyết định nhập cuốn sách, Komga sẽ nâng cấp cuốn sách hiện có với cuốn sách mới, thay thế hiệu quả tệp cũ bằng tệp mới.",
+    "row": {
+      "error_analyze_first": "Sách cần được phân tích trước",
+      "error_choose_series": "Chọn một sê-ri",
+      "error_only_import_no_errors": "Chỉ có thể nhập sách mà không có lỗi",
+      "warning_upgrade": "Sách hiện có sẽ được nâng cấp"
+    },
+    "table": {
+      "destination_name": "Tên điểm đến",
+      "file_name": "Tên tệp",
+      "number": "Số",
+      "series": "Sê-ri"
+    },
+    "title": "Nhập",
+    "warning_early_feature": "Nhập sách vẫn là một tính năng thử nghiệm và phải được sử dụng một cách thận trọng. Đảm bảo tệp nguồn và tệp đích của bạn được sao lưu trước khi sử dụng tính năng Nhập."
+  },
+  "bookreader": {
+    "beginning_of_book": "Bạn đang ở phần đầu của cuốn sách.",
+    "changing_reading_direction": "Thay đổi hướng đọc thành",
+    "cycling_page_layout": "Thay đổi bố cục trang theo chu kỳ",
+    "cycling_scale": "Thay đổi tỷ lệ theo chu kỳ",
+    "cycling_side_padding": "Thay đổi lề trái và lề phải theo chu kỳ",
+    "download_current_page": "Tải xuống trang hiện tại",
+    "end_of_book": "Bạn đã đọc đến cuối cuốn sách.",
+    "from_series_metadata": "từ sê-ri dữ liệu",
+    "move_next": "Nhấp hoặc nhấn \"Tiếp theo\" một lần nữa để chuyển sang cuốn sách tiếp theo.",
+    "move_next_exit": "Nhấp hoặc nhấn lại \"Tiếp theo\" để thoát khỏi trình đọc.",
+    "move_previous": "Nhấp hoặc nhấn lại \"Trước\" để chuyển sang sách trước đó.",
+    "paged_reader_layout": {
+      "double": "Trang đôi",
+      "double_no_cover": "Trang đôi (không có bìa)",
+      "single": "Một trang"
+    },
+    "reader_settings": "Cài đặt trình đọc",
+    "scale_type": {
+      "continuous_original": "Nguyên gốc",
+      "continuous_width": "Vừa chiều ngang",
+      "height": "Vừa chiều dọc",
+      "original": "Nguyên gốc",
+      "screen": "Màn hình",
+      "width": "Vừa chiều ngang"
+    },
+    "settings": {
+      "animate_page_transitions": "Hoạt ảnh chuyển trang",
+      "background_color": "Màu nền",
+      "background_colors": {
+        "black": "Đen",
+        "white": "Trắng"
+      },
+      "display": "Hiển thị",
+      "general": "Chung",
+      "gestures": "Cử chỉ",
+      "page_layout": "Bố trí trang",
+      "paged": "Tùy chọn Trình đọc có phân trang",
+      "reading_mode": "Kiểu đọc",
+      "scale_type": "Kiểu tỉ lệ",
+      "side_padding": "Lề trái và phải",
+      "side_padding_none": "Không",
+      "webtoon": "Tùy chọn Trình đọc Webtoon"
+    },
+    "shortcuts": {
+      "close": "Đóng",
+      "cycle_page_layout": "Bố cục trang theo chu kỳ",
+      "cycle_scale": "Tỷ lệ theo chu kỳ",
+      "cycle_side_padding": "Lề trái và phải theo chu kỳ",
+      "first_page": "Trang đầu tiên",
+      "last_page": "Trang cuối cùng",
+      "left_to_right": "Trái sang phải",
+      "menus": "Menu",
+      "next_page": "Trang tiếp theo",
+      "previous_page": "Trang trước",
+      "reader_navigation": "Điều hướng Trình đọc",
+      "right_to_left": "Phải sang trái",
+      "settings": "Cài đặt",
+      "show_hide_help": "Hiện/ẩn trợ giúp",
+      "show_hide_settings": "Hiển thị / ẩn menu cài đặt",
+      "show_hide_thumbnails": "Hiện/ẩn trình khám phá hình thu nhỏ",
+      "show_hide_toolbars": "Hiện/ẩn thanh công cụ",
+      "vertical": "Theo chiều dọc",
+      "webtoon": "Webtoon"
+    },
+    "tooltip_incognito": "Tiến trình đọc sẽ không được lưu"
+  },
+  "browse_book": {
+    "comment": "BÌNH LUẬN",
+    "download_file": "Tải tập tin",
+    "file": "TỆP",
+    "format": "ĐỊNH DẠNG",
+    "isbn": "ISBN",
+    "navigation_within_readlist": "Điều hướng trong danh sách đọc: {name}",
+    "read_book": "Đọc sách",
+    "size": "KÍCH THƯỚC"
+  },
+  "browse_collection": {
+    "edit_collection": "Chỉnh sửa bộ sưu tập",
+    "edit_elements": "Chỉnh sửa thành phần",
+    "manual_ordering": "sắp xếp thủ công"
+  },
+  "browse_readlist": {
+    "edit_elements": "Chỉnh sửa thành phần",
+    "edit_readlist": "Sửa danh sách đọc"
+  },
+  "browse_series": {
+    "earliest_year_from_release_dates": "Đây là năm sớm nhất kể từ ngày phát hành từ tất cả các cuốn sách trong sê-ri",
+    "series_no_summary": "Sê-ri này không có tóm tắt, vì vậy chúng tôi đã chọn một cho bạn!",
+    "summary_from_book": "Tóm tắt từ sách {number}:"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "Quản lý bộ sưu tập",
+    "title": "{name} bộ sưu tập"
+  },
+  "common": {
+    "all_libraries": "Tất cả thư viện",
+    "books": "Sách",
+    "books_n": "Không có sách | 1 cuốn sách | {count} sách",
+    "cancel": "Hủy",
+    "close": "Đóng",
+    "collections": "Bộ sưu tập",
+    "create": "Tạo",
+    "delete": "Xóa",
+    "download": "Tải xuống",
+    "email": "Email",
+    "filter_no_matches": "Bộ lọc đang hoạt động không có kết quả phù hợp nào",
+    "genre": "Thể loại",
+    "go_to_library": "Đi tới thư viện",
+    "locale_name": "Tiếng Việt",
+    "locale_rtl": "false",
+    "n_selected": "{count} đã chọn",
+    "nothing_to_show": "Không có gì để hiển thị",
+    "pages": "trang",
+    "pages_n": "Không có trang | 1 trang | {count} trang",
+    "password": "Mật khẩu",
+    "publisher": "Nhà xuất bản",
+    "read": "Đọc",
+    "readlists": "Đọc Danh sách",
+    "required": "Cần thiết",
+    "roles": "Vai trò",
+    "series": "Sê-ri",
+    "tags": "Thẻ",
+    "use_filter_panel_to_change_filter": "Sử dụng bảng điều khiển bộ lọc để thay đổi bộ lọc đang hoạt động",
+    "year": "năm"
+  },
+  "dashboard": {
+    "keep_reading": "Tiếp tục đọc",
+    "on_deck": "Trong tiến trình",
+    "recently_added_books": "Sách đã thêm gần đây",
+    "recently_added_series": "Sê-ri đã thêm gần đây",
+    "recently_updated_series": "Sê-ri cập nhật gần đây"
+  },
+  "data_import": {
+    "book_number": "Số sách: {name}",
+    "book_series": "Sê-ri: {name}",
+    "button_import": "Nhập",
+    "comicrack_preambule_html": "Bạn có thể nhập Danh sách Đọc ComicRack hiện có ở định dạng <code>.cbl</code>. <br> Komga sẽ cố gắng kết hợp sê-ri và số sách được cung cấp với sê-ri và sách trong thư viện của bạn.",
+    "field_files_label": "Danh sách đọc ComicRack (.cbl)",
+    "import_read_lists": "Nhập danh sách đọc",
+    "imported_as": "Đã nhập là {name}",
+    "results_preambule": "Kết quả nhập được hiển thị bên dưới. Bạn cũng có thể kiểm tra các sách chưa khớp cho từng tệp được cung cấp.",
+    "size_limit": "Kích thước phải nhỏ hơn {size} MB",
+    "tab_title": "Nhập Dữ liệu"
+  },
+  "dialog": {
+    "add_to_collection": {
+      "button_create": "Tạo",
+      "card_collection_subtitle": "Không có sê-ri nào | 1 sê-ri | {count} sê-ri",
+      "dialog_title": "Thêm vào bộ sưu tập",
+      "field_search_create": "Tìm kiếm hoặc tạo bộ sưu tập",
+      "field_search_create_error": "Một bộ sưu tập với tên này đã tồn tại",
+      "label_no_matching_collection": "Không có bộ sưu tập phù hợp"
+    },
+    "add_to_readlist": {
+      "button_create": "Tạo",
+      "card_readlist_subtitle": "Không có sách | 1 cuốn sách | {count} sách",
+      "dialog_title": "Thêm vào danh sách đọc",
+      "field_search_create": "Tìm kiếm hoặc tạo danh sách đọc",
+      "field_search_create_error": "Danh sách đọc với tên này đã tồn tại",
+      "label_no_matching_readlist": "Không có danh sách đọc phù hợp"
+    },
+    "add_user": {
+      "button_cancel": "Hủy",
+      "button_confirm": "Thêm",
+      "dialog_title": "Thêm Người Sử Dụng",
+      "field_email": "Email",
+      "field_email_error": "Phải là địa chỉ email hợp lệ",
+      "field_password": "Mật khẩu",
+      "field_role_administrator": "Người quản lý",
+      "field_role_file_download": "Tập tin tải về",
+      "field_role_page_streaming": "Truyền phát Trang",
+      "label_roles": "Vai trò"
+    },
+    "delete_collection": {
+      "button_cancel": "Hủy",
+      "button_confirm": "Xóa",
+      "confirm_delete": "Có, xóa bộ sưu tập \"{name}\"",
+      "dialog_title": "Xoá bộ sưu tập",
+      "warning_html": "Bộ sưu tập <b>{name}</b> sẽ bị xóa khỏi máy chủ này. Các tệp phương tiện của bạn sẽ không bị ảnh hưởng. Điều này <b> không thể hoàn tác</b>. Tiếp tục?"
+    },
+    "delete_library": {
+      "button_cancel": "Hủy",
+      "button_confirm": "Xóa",
+      "confirm_delete": "Có, xóa thư viện \"{name}\"",
+      "title": "Xóa Thư viện",
+      "warning_html": "Thư viện <b>{name}</b> sẽ bị xóa khỏi máy chủ này. Các tệp phương tiện của bạn sẽ không bị ảnh hưởng. Điều này <b> không thể hoàn tác</b>. Tiếp tục?"
+    },
+    "delete_readlist": {
+      "button_cancel": "Hủy",
+      "button_confirm": "Xóa",
+      "confirm_delete": "Có, xóa danh sách đọc \"{name}\"",
+      "dialog_title": "Xóa Bỏ Danh sách Đọc",
+      "warning_html": "Danh sách đọc <b>{name}</b> sẽ bị xóa khỏi máy chủ này. Các tệp phương tiện của bạn sẽ không bị ảnh hưởng. Điều này <b>không thể hoàn tác</b>. tiếp tục?"
+    },
+    "delete_user": {
+      "button_cancel": "Hủy",
+      "button_confirm": "Xóa",
+      "confirm_delete": "Có, xóa người dùng \"{name}\"",
+      "dialog_title": "Xóa Người dùng",
+      "warning_html": "Người dùng <b>{name}</b> sẽ bị xóa khỏi máy chủ này. Điều này <b> không thể hoàn tác</b> được hoàn tác. tiếp tục?"
+    },
+    "edit_books": {
+      "authors_notice_multiple_edit": "Bạn đang chỉnh sửa tác giả cho nhiều cuốn sách. Điều này sẽ ghi đè lên các tác giả hiện có của mỗi cuốn sách.",
+      "button_cancel": "Hủy",
+      "button_confirm": "Lưu thay đổi",
+      "dialog_title_multiple": "Chỉnh sửa {count} sách | Chỉnh sửa {count} sách",
+      "dialog_title_single": "Chỉnh sửa {book}",
+      "field_isbn": "ISBN",
+      "field_isbn_error": "Phải là ISBN 13 hợp lệ",
+      "field_number": "Số",
+      "field_number_sort": "Sắp xếp số",
+      "field_number_sort_hint": "Bạn có thể sử dụng số thập phân",
+      "field_release_date": "Ngày phát hành",
+      "field_release_date_error": "Phải là ngày hợp lệ ở định dạng YYYY-MM-DD",
+      "field_summary": "Tóm tắt",
+      "field_tags": "Thẻ",
+      "field_title": "Tiêu đề",
+      "tab_authors": "Tác giả",
+      "tab_general": "Chung",
+      "tab_tags": "Thẻ",
+      "tags_notice_multiple_edit": "Bạn đang chỉnh sửa thẻ cho nhiều cuốn sách. Điều này sẽ ghi đè lên các thẻ hiện có của mỗi cuốn sách."
+    },
+    "edit_collection": {
+      "button_cancel": "Hủy",
+      "button_confirm": "Lưu thay đổi",
+      "dialog_title": "Chỉnh sửa bộ sưu tập",
+      "field_manual_ordering": "Sắp xếp thủ công",
+      "label_ordering": "Theo mặc định, sê-ri trong bộ sưu tập sẽ được sắp xếp theo tên. Bạn có thể tự sắp xếp thủ công để xác định sự sắp xếp của riêng bạn."
+    },
+    "edit_library": {
+      "button_browse": "Duyệt",
+      "button_cancel": "Hủy",
+      "button_confirm_add": "Thêm",
+      "button_confirm_edit": "Sửa",
+      "dialog_title_add": "Thêm Thư viện",
+      "dialot_title_edit": "Sửa Thư viện",
+      "field_convert_to_cbz": "Tự động chuyển đổi sang CBZ",
+      "field_import_barcode_isbn": "Mã vạch ISBN",
+      "field_import_comicinfo_book": "Siêu dữ liệu sách",
+      "field_import_comicinfo_collections": "Bộ sưu tập",
+      "field_import_comicinfo_readlists": "Danh sách đọc",
+      "field_import_comicinfo_series": "Siêu dữ liệu sê-ri",
+      "field_import_epub_book": "Siêu dữ liệu sách",
+      "field_import_epub_series": "Siêu dữ liệu sê-ri",
+      "field_import_local_artwork": "Tác phẩm nghệ thuật địa phương",
+      "field_name": "Tên",
+      "field_repair_extensions": "Tự động sửa chữa phần mở rộng tệp không chính xác",
+      "field_root_folder": "Thư mục gốc",
+      "field_scanner_deep_scan": "Quét sâu",
+      "field_scanner_force_directory_modified_time": "Buộc thời gian sửa đổi thư mục",
+      "file_browser_dialog_button_confirm": "Chọn",
+      "file_browser_dialog_title": "Thư mục gốc của thư viện",
+      "label_file_management": "Quản lý tệp",
+      "label_import_barcode_isbn": "Nhập ISBN trong mã vạch",
+      "label_import_comicinfo": "Nhập siêu dữ liệu cho CBR / CBZ chứa tệp ComicInfo.xml",
+      "label_import_epub": "Nhập siêu dữ liệu từ tệp EPUB",
+      "label_import_local": "Nhập nội dung phương tiện cục bộ",
+      "label_scanner": "Máy quét",
+      "tab_general": "Chung",
+      "tab_options": "Tùy chọn",
+      "warning_early_feature_convert_to_cbz": "Chuyển đổi sách vẫn là một tính năng thử nghiệm và phải được sử dụng một cách thận trọng. Đảm bảo các tệp của bạn được sao lưu trước khi sử dụng.",
+      "warning_early_feature_repair_extensions": "Phần mở rộng tệp sửa chữa vẫn là một tính năng thử nghiệm và phải được sử dụng một cách thận trọng. Đảm bảo các tệp của bạn được sao lưu trước khi sử dụng."
+    },
+    "edit_readlist": {
+      "button_cancel": "Hủy",
+      "button_confirm": "Lưu thay đổi",
+      "dialog_title": "Sửa danh sách đọc",
+      "field_name": "Tên"
+    },
+    "edit_series": {
+      "button_cancel": "Hủy",
+      "button_confirm": "Lưu thay đổi",
+      "dialog_title_multiple": "Chỉnh sửa {count} sê-ri | Chỉnh sửa {count} sê-ri",
+      "dialog_title_single": "Chỉnh sửa {series}",
+      "field_age_rating": "Xếp hạng độ tuổi",
+      "field_age_rating_error": "Xếp hạng độ tuổi phải từ 0 trở lên",
+      "field_genres": "Thể loại",
+      "field_language": "Ngôn ngữ",
+      "field_publisher": "Nhà xuất bản",
+      "field_reading_direction": "Hướng đọc",
+      "field_sort_title": "Sắp xếp tiêu đề",
+      "field_status": "Trạng thái",
+      "field_summary": "Tóm tắt",
+      "field_tags": "Thẻ",
+      "field_title": "Tiêu đề",
+      "mixed": "HỖN HỢP",
+      "tab_general": "Chung",
+      "tab_tags": "Thẻ",
+      "tags_notice_multiple_edit": "Bạn đang chỉnh sửa thẻ cho nhiều sê-ri. Điều này sẽ ghi đè lên các thẻ hiện có của mỗi sê-ri."
+    },
+    "edit_user": {
+      "button_cancel": "Hủy",
+      "button_confirm": "Lưu thay đổi",
+      "dialog_title": "Chỉnh sửa người dùng",
+      "label_roles_for": "Vai trò cho {name}"
+    },
+    "edit_user_shared_libraries": {
+      "button_cancel": "Hủy",
+      "button_confirm": "Lưu thay đổi",
+      "dialog_title": "Chỉnh sửa thư viện được chia sẻ",
+      "field_all_libraries": "Tất cả các thư viện",
+      "label_shared_with": "Chia sẻ với {name}"
+    },
+    "file_browser": {
+      "button_cancel": "Hủy",
+      "button_confirm_default": "Chọn",
+      "dialog_title_default": "Trình duyệt Tệp",
+      "parent_directory": "Cha mẹ"
+    },
+    "filename_chooser": {
+      "button_choose": "Chọn",
+      "field_destination_filename": "Tên tệp đích",
+      "label_source_filename": "Tên Tệp Nguồn",
+      "table": {
+        "existing_file": "Tệp Hiện có",
+        "order": "Thứ tự"
+      },
+      "title": "Tên Tệp Đích"
+    },
+    "password_change": {
+      "button_cancel": "Hủy",
+      "button_confirm": "Đổi mật khẩu",
+      "dialog_title": "Đổi mật khẩu",
+      "field_new_password": "Mật khẩu mới",
+      "field_new_password_error": "Mật khẩu mới là bắt buộc.",
+      "field_repeat_password": "Lặp lại mật khẩu mới",
+      "field_repeat_password_error": "Mật khẩu phải giống hệt nhau."
+    },
+    "series_picker": {
+      "label_search_series": "Tìm kiếm Sê-ri",
+      "title": "Chọn sê-ri"
+    },
+    "server_stop": {
+      "button_cancel": "Hủy",
+      "button_confirm": "Dừng",
+      "confirmation_message": "Bạn có chắc chắn muốn dừng Komga không?",
+      "dialog_title": "Tắt máy chủ"
+    },
+    "shortcut_help": {
+      "label_description": "Sự miêu tả",
+      "label_key": "Chìa khóa"
+    },
+    "transient_book_details": {
+      "label_candidate": "Ứng cử viên",
+      "label_existing": "Hiện có",
+      "label_format": "Định dạng",
+      "label_name": "Tên",
+      "label_pages": "Trang",
+      "label_size": "Kích thước",
+      "pages_table": {
+        "filename": "Tên tệp",
+        "height": "Chiều cao",
+        "index": "Mục lục",
+        "media_type": "Loại phương tiện",
+        "width": "Chiều rộng"
+      },
+      "title": "Chi tiết sách",
+      "title_comparison": "So sánh sách"
+    },
+    "transient_book_viewer": {
+      "label_candidate": "Ứng cử viên",
+      "label_existing": "Hiện có",
+      "page_of_pages": "{page} / {pages}",
+      "title": "Kiểm tra sách",
+      "title_comparison": "So sánh sách"
+    }
+  },
+  "enums": {
+    "copy_mode": {
+      "HARDLINK": "Hardlink / Sao chép tệp",
+      "MOVE": "Di chuyển Tệp"
+    },
+    "media_status": {
+      "ERROR": "Lỗi",
+      "OUTDATED": "Lỗi thời",
+      "READY": "Sẵn sàng",
+      "UNKNOWN": "Không rõ",
+      "UNSUPPORTED": "Không được hỗ trợ"
+    },
+    "reading_direction": {
+      "LEFT_TO_RIGHT": "Trái sang phải",
+      "RIGHT_TO_LEFT": "Phải sang trái",
+      "VERTICAL": "Theo chiều dọc",
+      "WEBTOON": "Webtoon"
+    },
+    "series_status": {
+      "ABANDONED": "Bị bỏ rơi",
+      "ENDED": "Kết thúc",
+      "HIATUS": "Gián đoạn",
+      "ONGOING": "Đang tiến hành"
+    }
+  },
+  "error_codes": {
+    "ERR_1000": "Không thể truy nhập tệp trong khi phân tích",
+    "ERR_1001": "Loại phương tiện không được hỗ trợ",
+    "ERR_1002": "Lưu trữ RAR được mã hóa không được hỗ trợ",
+    "ERR_1003": "Lưu trữ RAR rắn không được hỗ trợ",
+    "ERR_1004": "Lưu trữ RAR nhiều ổ đĩa không được hỗ trợ",
+    "ERR_1005": "Lỗi không xác định trong khi phân tích sách",
+    "ERR_1006": "Sách không chứa bất kỳ trang nào",
+    "ERR_1007": "Một số mục không thể phân tích được",
+    "ERR_1008": "Lỗi không xác định khi nhận mục nhập sách",
+    "ERR_1009": "Danh sách đọc với tên này đã tồn tại",
+    "ERR_1010": "Không có sách nào phù hợp trong yêu cầu danh sách đã đọc",
+    "ERR_1011": "Không có kết quả phù hợp duy nhất cho sê-ri",
+    "ERR_1012": "Không có kết quả phù hợp với sê-ri",
+    "ERR_1013": "Không có kết quả phù hợp duy nhất cho số sách trong sê-ri",
+    "ERR_1014": "Không có kết quả phù hợp cho số sách trong sê-ri",
+    "ERR_1015": "Lỗi khi xử lý danh sách đọc ComicRack",
+    "ERR_1016": "Thư mục không thể truy cập hoặc không phải là một thư mục",
+    "ERR_1017": "Không thể quét thư mục là một phần của thư viện hiện có"
+  },
+  "filter": {
+    "age_rating": "xếp hạng độ tuổi",
+    "age_rating_none": "Không",
+    "genre": "thể loại",
+    "language": "ngôn ngữ",
+    "library": "thư viện",
+    "publisher": "nhà xuất bản",
+    "release_date": "ngày phát hành",
+    "status": "trạng thái",
+    "tag": "thẻ",
+    "unread": "Chưa đọc"
+  },
+  "filter_drawer": {
+    "filter": "bộ lọc",
+    "sort": "sắp xếp"
+  },
+  "home": {
+    "theme": "Chủ đề",
+    "translation": "Dịch"
+  },
+  "library_navigation": {
+    "browse": "Duyệt",
+    "collections": "Bộ sưu tập",
+    "readlists": "Đọc Danh sách",
+    "recommended": "Được đề xuất"
+  },
+  "login": {
+    "create_user_account": "Tạo tài khoản người dùng",
+    "login": "Đăng nhập",
+    "unclaimed_html": "Máy chủ Komga này chưa hoạt động, bạn cần tạo tài khoản người dùng để có thể truy cập. <br><br> Chọn <strong> email </strong> và <strong> mật khẩu </strong> và nhấp vào <strong> Tạo tài khoản người dùng </strong>."
+  },
+  "media_analysis": {
+    "comment": "Ghi chú",
+    "media_analysis": "Phân tích phương tiện",
+    "media_type": "Loại Phương tiện",
+    "name": "Tên",
+    "size": "Kích thước",
+    "status": "Trạng thái",
+    "url": "URL"
+  },
+  "menu": {
+    "add_to_collection": "Thêm vào bộ sưu tập",
+    "add_to_readlist": "Thêm vào danh sách đọc",
+    "analyze": "Phân tích",
+    "delete": "Xóa",
+    "download_series": "Tải xuống sê-ri",
+    "edit": "Sửa",
+    "edit_metadata": "Sửa siêu dữ liệu",
+    "mark_read": "Đánh dấu là đã đọc",
+    "mark_unread": "Đánh dấu là chưa đọc",
+    "refresh_metadata": "Làm mới siêu dữ liệu",
+    "scan_library_files": "Quét tệp thư viện"
+  },
+  "navigation": {
+    "home": "Trang Chủ",
+    "libraries": "Thư viện",
+    "logout": "Đăng xuất"
+  },
+  "page_not_found": {
+    "go_back_to_home_page": "Quay lại trang chủ",
+    "page_does_not_exist": "Trang bạn đang tìm kiếm không tồn tại.",
+    "page_not_found": "Không tìm thấy trang"
+  },
+  "read_more": {
+    "less": "Đọc ít hơn",
+    "more": "Đọc thêm"
+  },
+  "readlists_expansion_panel": {
+    "manage_readlist": "Quản lý danh sách đọc",
+    "title": "{name} danh sách đọc"
+  },
+  "search": {
+    "no_results": "Tìm kiếm không trả về kết quả",
+    "search": "Tìm kiếm",
+    "search_for_something_else": "Thử tìm kiếm thứ khác",
+    "search_results_for": "Kết quả tìm kiếm cho \"{name}\""
+  },
+  "searchbox": {
+    "no_results": "Không có kết quả",
+    "search_all": "Tìm kiếm tất cả…"
+  },
+  "server": {
+    "server_management": {
+      "button_shutdown": "Tắt",
+      "section_title": "Quản lý máy chủ"
+    },
+    "tab_title": "Máy chủ"
+  },
+  "server_settings": {
+    "server_settings": "Cài đặt máy chủ"
+  },
+  "settings_user": {
+    "edit_shared_libraries": "Chỉnh sửa thư viện được chia sẻ",
+    "edit_user": "Chỉnh sửa người dùng",
+    "role_administrator": "Người quản lý",
+    "role_user": "Người dùng"
+  },
+  "sort": {
+    "books_count": "Số lượng sách",
+    "date_added": "Ngày thêm",
+    "date_updated": "Ngày cập nhật",
+    "file_name": "Tên tệp",
+    "file_size": "Kích thước tệp",
+    "folder_name": "Tên thư mục",
+    "name": "Tên",
+    "number": "Số",
+    "release_date": "Ngày phát hành"
+  },
+  "theme": {
+    "dark": "Tối",
+    "light": "Sáng",
+    "system": "Hệ thống"
+  },
+  "user_roles": {
+    "ADMIN": "Người quản lý",
+    "FILE_DOWNLOAD": "Tải tệp xuống",
+    "PAGE_STREAMING": "Phát trực tuyến trang",
+    "USER": "Người dùng"
+  },
+  "users": {
+    "users": "Người dùng"
+  },
+  "welcome": {
+    "add_library": "Thêm thư viện",
+    "no_libraries_yet": "Chưa có thư viện nào được thêm vào!",
+    "welcome_message": "Chào mừng đến với Komga"
+  }
+}

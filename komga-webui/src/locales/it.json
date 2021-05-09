@@ -307,7 +307,7 @@
       "field_scanner_force_directory_modified_time": "Usa data di modifica delle cartelle",
       "file_browser_dialog_button_confirm": "Scegli",
       "file_browser_dialog_title": "Cartella principale della libreria",
-      "label_file_management": "Gestione File",
+      "label_file_management": "Gestione dei file",
       "label_import_barcode_isbn": "Importa ISBN all'interno del codice a barre",
       "label_import_comicinfo": "Importa metadati per CBR/CBZ contenenti un file ComicInfo.xml",
       "label_import_epub": "Importa metadati dai file EPUB",
@@ -315,7 +315,8 @@
       "label_scanner": "Scanner",
       "tab_general": "Generale",
       "tab_options": "Opzioni",
-      "warning_early_feature_convert_to_cbz": "La conversione dei libri è ancora una funzionalità nuova e deve essere usata con cautela. Assicurati che i tuoi file abbiano un backup prima di usarla."
+      "warning_early_feature_convert_to_cbz": "La conversione dei libri è ancora una funzionalità nuova e deve essere usata con cautela. Assicurati che i tuoi file abbiano un backup prima di usarla.",
+      "warning_early_feature_repair_extensions": "La riparazione delle estensioni di file è ancora una funzionalità nuova e deve essere usata con cautela. Assicurati che i tuoi file abbiano un backup prima di usarla."
     },
     "edit_readlist": {
       "button_cancel": "Annulla",
