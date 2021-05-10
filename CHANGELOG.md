@@ -1,3 +1,11 @@
+# [0.95.0](https://github.com/gotson/komga/compare/v0.94.0...v0.95.0) (2021-05-10)
+
+
+### Features
+
+* **api:** mark read progress for read lists with Tachiyomi format ([0177ee3](https://github.com/gotson/komga/commit/0177ee3e08ad08eb061bed668cb312e70c0b0858))
+* **api:** mark read progress for series with Tachiyomi format ([82af4b3](https://github.com/gotson/komga/commit/82af4b3bbfb2a7dcb91b46032dc7a8e22e5d2e90))
+
 # [0.94.0](https://github.com/gotson/komga/compare/v0.93.0...v0.94.0) (2021-05-09)
 
 
