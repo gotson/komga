@@ -35,6 +35,7 @@ import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.CollectionDto
 import org.gotson.komga.interfaces.rest.dto.SeriesDto
 import org.gotson.komga.interfaces.rest.dto.SeriesMetadataUpdateDto
+import org.gotson.komga.interfaces.rest.dto.TachiyomiReadProgressUpdateDto
 import org.gotson.komga.interfaces.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.rest.dto.toDto
 import org.gotson.komga.interfaces.rest.persistence.BookDtoRepository
@@ -360,6 +361,29 @@ class SeriesController(
 
     bookRepository.findAllIdBySeriesId(seriesId).forEach {
       bookLifecycle.markReadProgressCompleted(it, principal.user)
+    }
+  }
+
+  @PatchMapping("{seriesId}/read-progress/tachiyomi")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  fun markReadProgress(
+    @PathVariable seriesId: String,
+    @Valid @RequestBody readProgress: TachiyomiReadProgressUpdateDto,
+    @AuthenticationPrincipal principal: KomgaPrincipal
+  ) {
+    seriesRepository.getLibraryId(seriesId)?.let {
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+    bookDtoRepository.findAll(
+      BookSearchWithReadProgress(seriesIds = listOf(seriesId)),
+      principal.user.id,
+      UnpagedSorted(Sort.by(Sort.Order.asc("metadata.numberSort"))),
+    ).forEachIndexed { index, book ->
+      if (index < readProgress.lastBookRead)
+        bookLifecycle.markReadProgressCompleted(book.id, principal.user)
+      else
+        bookLifecycle.deleteReadProgress(book.id, principal.user)
     }
   }
 
