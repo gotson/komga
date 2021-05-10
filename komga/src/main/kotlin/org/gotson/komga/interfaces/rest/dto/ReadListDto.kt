@@ -18,6 +18,13 @@ data class ReadListDto(
   val filtered: Boolean
 )
 
+data class ReadListProgressDto(
+  val booksCount: Int,
+  val booksReadCount: Int,
+  val booksUnreadCount: Int,
+  val booksInProgressCount: Int,
+)
+
 fun ReadList.toDto() =
   ReadListDto(
     id = id,

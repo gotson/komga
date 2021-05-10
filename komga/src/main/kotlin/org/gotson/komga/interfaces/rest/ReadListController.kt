@@ -9,6 +9,7 @@ import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.persistence.ReadListRepository
+import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.ReadListLifecycle
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.language.toIndexedMap
@@ -17,11 +18,14 @@ import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.ReadListCreationDto
 import org.gotson.komga.interfaces.rest.dto.ReadListDto
+import org.gotson.komga.interfaces.rest.dto.ReadListProgressDto
 import org.gotson.komga.interfaces.rest.dto.ReadListRequestResultDto
 import org.gotson.komga.interfaces.rest.dto.ReadListUpdateDto
+import org.gotson.komga.interfaces.rest.dto.TachiyomiReadProgressUpdateDto
 import org.gotson.komga.interfaces.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.rest.dto.toDto
 import org.gotson.komga.interfaces.rest.persistence.BookDtoRepository
+import org.gotson.komga.interfaces.rest.persistence.ReadListDtoRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -54,7 +58,9 @@ private val logger = KotlinLogging.logger {}
 class ReadListController(
   private val readListRepository: ReadListRepository,
   private val readListLifecycle: ReadListLifecycle,
-  private val bookDtoRepository: BookDtoRepository
+  private val bookDtoRepository: BookDtoRepository,
+  private val readListDtoRepository: ReadListDtoRepository,
+  private val bookLifecycle: BookLifecycle,
 ) {
 
   @PageableWithoutSortAsQueryParam
@@ -235,4 +241,35 @@ class ReadListController(
       )
         ?.restrictUrl(!principal.user.roleAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  @GetMapping("{id}/read-progress")
+  fun getReadProgress(
+    @PathVariable id: String,
+    @AuthenticationPrincipal principal: KomgaPrincipal
+  ): ReadListProgressDto =
+    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
+      readListDtoRepository.getProgress(readList.id, principal.user.id)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  @PatchMapping("{id}/read-progress/tachiyomi")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  fun markReadProgress(
+    @PathVariable id: String,
+    @Valid @RequestBody readProgress: TachiyomiReadProgressUpdateDto,
+    @AuthenticationPrincipal principal: KomgaPrincipal
+  ) {
+    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
+      bookDtoRepository.findByReadListId(
+        readList.id,
+        principal.user.id,
+        principal.user.getAuthorizedLibraryIds(null),
+        UnpagedSorted(Sort.by(Sort.Order.asc("readList.number")))
+      ).forEachIndexed { index, book ->
+        if (index < readProgress.lastBookRead)
+          bookLifecycle.markReadProgressCompleted(book.id, principal.user)
+        else
+          bookLifecycle.deleteReadProgress(book.id, principal.user)
+      }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
 }
