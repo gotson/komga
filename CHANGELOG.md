@@ -1,3 +1,10 @@
+## [0.95.1](https://github.com/gotson/komga/compare/v0.95.0...v0.95.1) (2021-05-11)
+
+
+### Bug Fixes
+
+* **webui:** import details dialog not updated correctly ([33cb083](https://github.com/gotson/komga/commit/33cb0836ba5b7c9dec53a6941b9dc6d4a25bd34b))
+
 # [0.95.0](https://github.com/gotson/komga/compare/v0.94.0...v0.95.0) (2021-05-10)
 
 
