@@ -250,6 +250,7 @@ export default Vue.extend({
     async checkForUpgrade(number: number | undefined) {
       this.bookToUpgrade = this.seriesBooks.find(b => b.metadata.numberSort === number)
       if (this.bookToUpgrade) this.bookToUpgradePages = await this.$komgaBooks.getBookPages(this.bookToUpgrade.id)
+      else this.bookToUpgradePages = []
     },
   },
 })
