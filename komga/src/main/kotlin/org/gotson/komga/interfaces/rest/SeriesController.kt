@@ -35,10 +35,12 @@ import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.CollectionDto
 import org.gotson.komga.interfaces.rest.dto.SeriesDto
 import org.gotson.komga.interfaces.rest.dto.SeriesMetadataUpdateDto
+import org.gotson.komga.interfaces.rest.dto.TachiyomiReadProgressDto
 import org.gotson.komga.interfaces.rest.dto.TachiyomiReadProgressUpdateDto
 import org.gotson.komga.interfaces.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.rest.dto.toDto
 import org.gotson.komga.interfaces.rest.persistence.BookDtoRepository
+import org.gotson.komga.interfaces.rest.persistence.ReadProgressDtoRepository
 import org.gotson.komga.interfaces.rest.persistence.SeriesDtoRepository
 import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Page
@@ -57,6 +59,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -81,7 +84,8 @@ class SeriesController(
   private val bookLifecycle: BookLifecycle,
   private val bookRepository: BookRepository,
   private val bookDtoRepository: BookDtoRepository,
-  private val collectionRepository: SeriesCollectionRepository
+  private val collectionRepository: SeriesCollectionRepository,
+  private val readProgressDtoRepository: ReadProgressDtoRepository,
 ) {
 
   @PageableAsQueryParam
@@ -364,29 +368,6 @@ class SeriesController(
     }
   }
 
-  @PatchMapping("{seriesId}/read-progress/tachiyomi")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  fun markReadProgress(
-    @PathVariable seriesId: String,
-    @Valid @RequestBody readProgress: TachiyomiReadProgressUpdateDto,
-    @AuthenticationPrincipal principal: KomgaPrincipal
-  ) {
-    seriesRepository.getLibraryId(seriesId)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-
-    bookDtoRepository.findAll(
-      BookSearchWithReadProgress(seriesIds = listOf(seriesId)),
-      principal.user.id,
-      UnpagedSorted(Sort.by(Sort.Order.asc("metadata.numberSort"))),
-    ).forEachIndexed { index, book ->
-      if (index < readProgress.lastBookRead)
-        bookLifecycle.markReadProgressCompleted(book.id, principal.user)
-      else
-        bookLifecycle.deleteReadProgress(book.id, principal.user)
-    }
-  }
-
   @DeleteMapping("{seriesId}/read-progress")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun markAsUnread(
@@ -400,6 +381,35 @@ class SeriesController(
     bookRepository.findAllIdBySeriesId(seriesId).forEach {
       bookLifecycle.deleteReadProgress(it, principal.user)
     }
+  }
+
+  @GetMapping("{seriesId}/read-progress/tachiyomi")
+  fun getReadProgressTachiyomi(
+    @PathVariable seriesId: String,
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+  ): TachiyomiReadProgressDto =
+    seriesRepository.getLibraryId(seriesId)?.let {
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+      return readProgressDtoRepository.getProgressBySeries(seriesId, principal.user.id)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  @PutMapping("{seriesId}/read-progress/tachiyomi")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  fun markReadProgressTachiyomi(
+    @PathVariable seriesId: String,
+    @Valid @RequestBody readProgress: TachiyomiReadProgressUpdateDto,
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+  ) {
+    seriesRepository.getLibraryId(seriesId)?.let {
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+    bookDtoRepository.findAll(
+      BookSearchWithReadProgress(seriesIds = listOf(seriesId)),
+      principal.user.id,
+      UnpagedSorted(Sort.by(Sort.Order.asc("metadata.numberSort"))),
+    ).filterIndexed { index, _ -> index < readProgress.lastBookRead }
+      .forEach { book -> bookLifecycle.markReadProgressCompleted(book.id, principal.user) }
   }
 
   @GetMapping("{seriesId}/file", produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])

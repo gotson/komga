@@ -18,14 +18,14 @@ import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.ReadListCreationDto
 import org.gotson.komga.interfaces.rest.dto.ReadListDto
-import org.gotson.komga.interfaces.rest.dto.ReadListProgressDto
 import org.gotson.komga.interfaces.rest.dto.ReadListRequestResultDto
 import org.gotson.komga.interfaces.rest.dto.ReadListUpdateDto
+import org.gotson.komga.interfaces.rest.dto.TachiyomiReadProgressDto
 import org.gotson.komga.interfaces.rest.dto.TachiyomiReadProgressUpdateDto
 import org.gotson.komga.interfaces.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.rest.dto.toDto
 import org.gotson.komga.interfaces.rest.persistence.BookDtoRepository
-import org.gotson.komga.interfaces.rest.persistence.ReadListDtoRepository
+import org.gotson.komga.interfaces.rest.persistence.ReadProgressDtoRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -41,6 +41,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -59,7 +60,7 @@ class ReadListController(
   private val readListRepository: ReadListRepository,
   private val readListLifecycle: ReadListLifecycle,
   private val bookDtoRepository: BookDtoRepository,
-  private val readListDtoRepository: ReadListDtoRepository,
+  private val readProgressDtoRepository: ReadProgressDtoRepository,
   private val bookLifecycle: BookLifecycle,
 ) {
 
@@ -242,18 +243,18 @@ class ReadListController(
         ?.restrictUrl(!principal.user.roleAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  @GetMapping("{id}/read-progress")
+  @GetMapping("{id}/read-progress/tachiyomi")
   fun getReadProgress(
     @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal
-  ): ReadListProgressDto =
+  ): TachiyomiReadProgressDto =
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
-      readListDtoRepository.getProgress(readList.id, principal.user.id)
+      readProgressDtoRepository.getProgressByReadList(readList.id, principal.user.id)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  @PatchMapping("{id}/read-progress/tachiyomi")
+  @PutMapping("{id}/read-progress/tachiyomi")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  fun markReadProgress(
+  fun markReadProgressTachiyomi(
     @PathVariable id: String,
     @Valid @RequestBody readProgress: TachiyomiReadProgressUpdateDto,
     @AuthenticationPrincipal principal: KomgaPrincipal
@@ -264,12 +265,8 @@ class ReadListController(
         principal.user.id,
         principal.user.getAuthorizedLibraryIds(null),
         UnpagedSorted(Sort.by(Sort.Order.asc("readList.number")))
-      ).forEachIndexed { index, book ->
-        if (index < readProgress.lastBookRead)
-          bookLifecycle.markReadProgressCompleted(book.id, principal.user)
-        else
-          bookLifecycle.deleteReadProgress(book.id, principal.user)
-      }
+      ).filterIndexed { index, _ -> index < readProgress.lastBookRead }
+        .forEach { book -> bookLifecycle.markReadProgressCompleted(book.id, principal.user) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 }
