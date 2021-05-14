@@ -1,3 +1,10 @@
+## [0.95.2](https://github.com/gotson/komga/compare/v0.95.1...v0.95.2) (2021-05-14)
+
+
+### Bug Fixes
+
+* **api:** better handling of tachiyomi tracking ([a7ab0da](https://github.com/gotson/komga/commit/a7ab0da0253bb42b23db2d5b711dbe58eadca437))
+
 ## [0.95.1](https://github.com/gotson/komga/compare/v0.95.0...v0.95.1) (2021-05-11)
 
 

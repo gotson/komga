@@ -12,6 +12,18 @@
           }
         }
       },
+      "TachiyomiReadProgressUpdateDto": {
+        "type": "object",
+        "required": [
+          "lastBookRead"
+        ],
+        "properties": {
+          "lastBookRead": {
+            "format": "int32",
+            "type": "integer"
+          }
+        }
+      },
       "DirectoryListingDto": {
         "type": "object",
         "required": [
@@ -26,18 +38,6 @@
             "items": {
               "$ref": "#/components/schemas/PathDto"
             }
-          }
-        }
-      },
-      "TachiyomiReadProgressUpdateDto": {
-        "type": "object",
-        "required": [
-          "lastBookRead"
-        ],
-        "properties": {
-          "lastBookRead": {
-            "format": "int32",
-            "type": "integer"
           }
         }
       },
@@ -395,33 +395,6 @@
           }
         }
       },
-      "ReadListProgressDto": {
-        "type": "object",
-        "required": [
-          "booksCount",
-          "booksInProgressCount",
-          "booksReadCount",
-          "booksUnreadCount"
-        ],
-        "properties": {
-          "booksReadCount": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "booksCount": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "booksUnreadCount": {
-            "format": "int32",
-            "type": "integer"
-          },
-          "booksInProgressCount": {
-            "format": "int32",
-            "type": "integer"
-          }
-        }
-      },
       "Sort": {
         "type": "object",
         "properties": {
@@ -750,6 +723,38 @@
           },
           "empty": {
             "type": "boolean"
+          }
+        }
+      },
+      "TachiyomiReadProgressDto": {
+        "type": "object",
+        "required": [
+          "booksCount",
+          "booksInProgressCount",
+          "booksReadCount",
+          "booksUnreadCount",
+          "lastReadContinuousIndex"
+        ],
+        "properties": {
+          "lastReadContinuousIndex": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "booksReadCount": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "booksCount": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "booksUnreadCount": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "booksInProgressCount": {
+            "format": "int32",
+            "type": "integer"
           }
         }
       },
@@ -3128,7 +3133,45 @@
       }
     },
     "/api/v1/readlists/{id}/read-progress/tachiyomi": {
-      "patch": {
+      "get": {
+        "operationId": "getReadProgress",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TachiyomiReadProgressDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "tags": [
+          "read-list-controller"
+        ]
+      },
+      "put": {
         "requestBody": {
           "content": {
             "application/json": {
@@ -3139,7 +3182,7 @@
           },
           "required": true
         },
-        "operationId": "markReadProgress_1",
+        "operationId": "markReadProgressTachiyomi_1",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -3182,7 +3225,7 @@
           },
           "required": true
         },
-        "operationId": "markReadProgress_2",
+        "operationId": "markReadProgress",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -5292,46 +5335,6 @@
         ]
       }
     },
-    "/api/v1/readlists/{id}/read-progress": {
-      "get": {
-        "operationId": "getReadProgress",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReadListProgressDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "schema": {
-              "type": "string"
-            },
-            "in": "path",
-            "name": "id",
-            "required": true
-          }
-        ],
-        "tags": [
-          "read-list-controller"
-        ]
-      }
-    },
     "/api/v1/authors/roles": {
       "get": {
         "operationId": "getAuthorsRoles",
@@ -6372,7 +6375,45 @@
       }
     },
     "/api/v1/series/{seriesId}/read-progress/tachiyomi": {
-      "patch": {
+      "get": {
+        "operationId": "getReadProgressTachiyomi",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TachiyomiReadProgressDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "seriesId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "series-controller"
+        ]
+      },
+      "put": {
         "requestBody": {
           "content": {
             "application/json": {
@@ -6383,7 +6424,7 @@
           },
           "required": true
         },
-        "operationId": "markReadProgress",
+        "operationId": "markReadProgressTachiyomi",
         "responses": {
           "400": {
             "description": "Bad Request",
