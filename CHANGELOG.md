@@ -1,3 +1,10 @@
+## [0.95.3](https://github.com/gotson/komga/compare/v0.95.2...v0.95.3) (2021-05-17)
+
+
+### Bug Fixes
+
+* fix rar books with potential issues ([8befde0](https://github.com/gotson/komga/commit/8befde0ea8e8aba007fd9c0374a133e0f3a753ef))
+
 ## [0.95.2](https://github.com/gotson/komga/compare/v0.95.1...v0.95.2) (2021-05-14)
 
 
