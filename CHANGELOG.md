@@ -1,3 +1,10 @@
+## [0.95.4](https://github.com/gotson/komga/compare/v0.95.3...v0.95.4) (2021-05-17)
+
+
+### Bug Fixes
+
+* book conversion would fail if page dimensions were missing ([e8e46a0](https://github.com/gotson/komga/commit/e8e46a0834f1ace429183973266fb25d573d0694))
+
 ## [0.95.3](https://github.com/gotson/komga/compare/v0.95.2...v0.95.3) (2021-05-17)
 
 
