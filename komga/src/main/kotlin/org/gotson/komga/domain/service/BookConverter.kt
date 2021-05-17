@@ -108,8 +108,8 @@ class BookConverter(
         convertedMedia.mediaType != "application/zip"
         -> throw BookConversionException("Converted file is not a zip file, aborting conversion")
 
-        !convertedMedia.pages.map { it.copy(fileName = FilenameUtils.getName(it.fileName)) }
-          .containsAll(media.pages.map { it.copy(fileName = FilenameUtils.getName(it.fileName)) })
+        !convertedMedia.pages.map { FilenameUtils.getName(it.fileName) to it.mediaType }
+          .containsAll(media.pages.map { FilenameUtils.getName(it.fileName) to it.mediaType })
         -> throw BookConversionException("Converted file does not contain all pages from existing file, aborting conversion")
 
         !convertedMedia.files.map { FilenameUtils.getName(it) }
