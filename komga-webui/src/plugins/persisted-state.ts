@@ -28,6 +28,7 @@ export const persistedModule: Module<any, any> = {
       sort: {},
       route: {},
     },
+    importPath: '',
   },
   getters: {
     getCollectionFilter: (state) => (id: string) => {
@@ -88,6 +89,9 @@ export const persistedModule: Module<any, any> = {
     },
     setLibraryRoute(state, {id, route}) {
       state.library.route[id] = route
+    },
+    setImportPath(state, val) {
+      state.importPath = val ?? ''
     },
   },
 }

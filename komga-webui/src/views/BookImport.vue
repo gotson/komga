@@ -11,6 +11,7 @@
       <v-col>
         <v-text-field
           v-model="importPath"
+          clearable
           :label="$t('book_import.field_import_path')"
         />
       </v-col>
@@ -127,7 +128,6 @@ export default Vue.extend({
     selected: [] as number[],
     selectedSeries: undefined as SeriesDto | undefined,
     payloads: [] as BookImportDto[],
-    importPath: '',
     transientBooks: [] as TransientBookDto[],
     copyMode: CopyMode.HARDLINK,
     importFinished: false,
@@ -144,6 +144,14 @@ export default Vue.extend({
       set: function (val: boolean): void {
         if (val) this.selected = this.$_.range(this.transientBooks.length)
         else this.selected = []
+      },
+    },
+    importPath: {
+      get: function (): string {
+        return this.$store.state.persistedState.importPath
+      },
+      set: function (val: string): void {
+        this.$store.commit('setImportPath', val)
       },
     },
     copyModes(): object[] {
