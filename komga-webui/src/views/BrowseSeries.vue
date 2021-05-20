@@ -2,12 +2,17 @@
   <div v-if="!$_.isEmpty(series)">
     <toolbar-sticky v-if="selectedBooks.length === 0">
       <!--   Go back to parent library   -->
-      <v-btn icon
-             :title="$t('common.go_to_library')"
-             :to="{name:'browse-libraries', params: {libraryId: series.libraryId }}"
-      >
-        <rtl-icon icon="mdi-arrow-left" rtl="mdi-arrow-right"/>
-      </v-btn>
+      <v-tooltip bottom :disabled="!isAdmin">
+        <template v-slot:activator="{ on }">
+          <v-btn icon
+                 v-on="on"
+                 :to="{name:'browse-libraries', params: {libraryId: series.libraryId }}"
+          >
+            <rtl-icon icon="mdi-arrow-left" rtl="mdi-arrow-right"/>
+          </v-btn>
+        </template>
+        <span>{{ $t('common.go_to_library') }}</span>
+      </v-tooltip>
 
       <series-actions-menu v-if="series"
                            :series="series"
