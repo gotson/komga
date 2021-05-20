@@ -26,7 +26,7 @@
 
       <template v-slot:item="data">
         <template v-if="typeof data.item !== 'object'">
-          <v-list-item-content v-text="data.item"></v-list-item-content>
+          <v-list-item-content>{{ data.item }}</v-list-item-content>
         </template>
 
         <template v-if="data.item.type === 'search'">
@@ -47,7 +47,8 @@
                 </span>
           </v-img>
           <v-list-item-content>
-            <v-list-item-title v-text="data.item.metadata.title"/>
+            <v-list-item-title>{{ data.item.metadata.title }}</v-list-item-title>
+            <v-list-item-subtitle>{{ $t('searchbox.in_library', {library: getLibraryName(data.item)}) }}</v-list-item-subtitle>
           </v-list-item-content>
         </template>
 
@@ -61,7 +62,8 @@
           </v-img>
 
           <v-list-item-content>
-            <v-list-item-title v-text="data.item.metadata.title"/>
+            <v-list-item-title>{{ data.item.metadata.title }}</v-list-item-title>
+            <v-list-item-subtitle>{{ $t('searchbox.in_library', {library: getLibraryName(data.item)}) }}</v-list-item-subtitle>
           </v-list-item-content>
         </template>
 
@@ -72,7 +74,7 @@
                  class="my-1 mx-3"
           />
           <v-list-item-content>
-            <v-list-item-title v-text="data.item.name"/>
+            <v-list-item-title>{{ data.item.name }}</v-list-item-title>
           </v-list-item-content>
         </template>
 
@@ -83,7 +85,7 @@
                  class="my-1 mx-3"
           />
           <v-list-item-content>
-            <v-list-item-title v-text="data.item.name"/>
+            <v-list-item-title>{{ data.item.name }}</v-list-item-title>
           </v-list-item-content>
         </template>
 
@@ -169,6 +171,9 @@ export default Vue.extend({
     },
   },
   methods: {
+    getLibraryName(item: BookDto | SeriesDto): string {
+      return this.$store.getters.getLibraryById(item.libraryId).name;
+    },
     searchItems: debounce(async function (this: any, query: string) {
       if (query) {
         this.loading = true
