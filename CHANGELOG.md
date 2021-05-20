@@ -1,3 +1,10 @@
+## [0.95.5](https://github.com/gotson/komga/compare/v0.95.4...v0.95.5) (2021-05-20)
+
+
+### Bug Fixes
+
+* allow cors configuration ([f435b9d](https://github.com/gotson/komga/commit/f435b9dc784b91077e632b68b1f3124373f1ea1f)), closes [#540](https://github.com/gotson/komga/issues/540)
+
 ## [0.95.4](https://github.com/gotson/komga/compare/v0.95.3...v0.95.4) (2021-05-17)
 
 
