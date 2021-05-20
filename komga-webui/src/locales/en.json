@@ -163,6 +163,8 @@
     "filter_no_matches": "The active filter has no matches",
     "genre": "Genre",
     "go_to_library": "Go to library",
+    "go_to_series": "Go to series",
+    "go_to_readlist": "Go to read list",
     "locale_name": "English",
     "locale_rtl": "false",
     "n_selected": "{count} selected",

@@ -1,6 +1,20 @@
 <template>
   <div v-if="!$_.isEmpty(book)">
     <toolbar-sticky>
+      <v-tooltip bottom :disabled="!isAdmin">
+        <template v-slot:activator="{ on }">
+          <v-btn icon
+                 v-on="on"
+                 :to="parent.route"
+          >
+            <v-icon v-if="$vuetify.rtl">mdi-arrow-right</v-icon>
+            <v-icon v-else>mdi-arrow-left</v-icon>
+          </v-btn>
+        </template>
+        <span v-if="contextReadList">{{ $t('common.go_to_readlist') }}</span>
+        <span v-else>{{ $t('common.go_to_series') }}</span>
+      </v-tooltip>
+
       <!--   Action menu   -->
       <book-actions-menu v-if="book"
                          :book="book"
@@ -404,6 +418,18 @@ export default Vue.extend({
     },
     mediaComment(): string {
       return convertErrorCodes(this.book.media.comment)
+    },
+    parent(): object {
+      if (this.contextReadList)
+        return {
+          name: this.contextName,
+          route: {name: 'browse-readlist', params: {readListId: this.context.id}},
+        }
+      else
+        return {
+          name: this.series.name,
+          route: {name: 'browse-series', params: {seriesId: this.book.seriesId}},
+        }
     },
   },
   methods: {
