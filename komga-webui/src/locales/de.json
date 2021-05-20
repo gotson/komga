@@ -285,10 +285,10 @@
       "label_ordering": "Sammlungen werden standardmäßig nach Namen sortiert. Sie können die manuelle Sortierung aktivieren und eine eigene Sortierfolge festlegen."
     },
     "edit_library": {
-      "button_browse": "Stöbern",
+      "button_browse": "Durchsuchen",
       "button_cancel": "Abbrechen",
       "button_confirm_add": "Hinzufügen",
-      "button_confirm_edit": "Bearbeiten",
+      "button_confirm_edit": "Übernehmen",
       "dialog_title_add": "Bibliothek hinzufügen",
       "dialot_title_edit": "Bibliothek bearbeiten",
       "field_convert_to_cbz": "Automatisch in CBZ konvertieren",
@@ -551,7 +551,7 @@
   "server": {
     "server_management": {
       "button_shutdown": "Herunterfahren",
-      "section_title": "Server Verwaltung"
+      "section_title": "Serververwaltung"
     },
     "tab_title": "Server"
   },
