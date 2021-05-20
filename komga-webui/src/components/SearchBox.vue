@@ -61,7 +61,7 @@
           </v-img>
 
           <v-list-item-content>
-            <v-list-item-title v-text="data.item.metadata.title"/>
+            <v-list-item-title v-text="bookTitle(data.item)"/>
           </v-list-item-content>
         </template>
 
@@ -196,6 +196,10 @@ export default Vue.extend({
       this.clear()
       this.$router.push({name: 'search', query: {q: s}}).catch(e => {
       })
+    },
+    bookTitle(book: BookDto): string {
+      const m = book.metadata
+      return `${m.number} - ${m.title}`
     },
     isUnread(book: BookDto): boolean {
       return getReadProgress(book) === ReadStatus.UNREAD
