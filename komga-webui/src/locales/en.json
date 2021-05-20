@@ -545,6 +545,7 @@
     "search_results_for": "Search results for \"{name}\""
   },
   "searchbox": {
+    "in_library": "in {library}",
     "no_results": "No results",
     "search_all": "Search all…"
   },
