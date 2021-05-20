@@ -1,3 +1,21 @@
+# [0.96.0](https://github.com/gotson/komga/compare/v0.95.5...v0.96.0) (2021-05-20)
+
+
+### Bug Fixes
+
+* **webui:** add autofocus on some dialogs ([339570e](https://github.com/gotson/komga/commit/339570e17c76355eff1c13c9084958d41ce512a2))
+* **webui:** display file browser errors in snackbar ([80a520c](https://github.com/gotson/komga/commit/80a520cfe5ac73792b3815080b267d67399d71c8))
+* remove the library path tooltip ([1285ae4](https://github.com/gotson/komga/commit/1285ae4a7e5ad5635cc22d409c71df55b13ec66f))
+* translated using Weblate (Italian) ([#539](https://github.com/gotson/komga/issues/539)) ([7200046](https://github.com/gotson/komga/commit/7200046ea5603e6d14fa76eaf0540f4194cf6fc8))
+
+
+### Features
+
+* **webui:** add back button on book view ([d03acea](https://github.com/gotson/komga/commit/d03aceae1a9195885a7890a121dbfad24f4ff3d6))
+* **webui:** book import path is saved to local storage ([2473090](https://github.com/gotson/komga/commit/2473090c36bf12cc04b5c457020f54ae046e58e5))
+* **webui:** change default theme to system ([b7a371b](https://github.com/gotson/komga/commit/b7a371b7eacae68f850a5862db3c6ecfab7edee6))
+* **webui:** show the library name on the search drop down ([f85c60b](https://github.com/gotson/komga/commit/f85c60bd1ab56a4f2dd2a3e7994aa44700774454))
+
 ## [0.95.5](https://github.com/gotson/komga/compare/v0.95.4...v0.95.5) (2021-05-20)
 
 
