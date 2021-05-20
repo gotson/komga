@@ -4,7 +4,7 @@ import {Theme} from "@/types/themes";
 export const persistedModule: Module<any, any> = {
   state: {
     locale: '',
-    theme: Theme.LIGHT,
+    theme: Theme.SYSTEM,
     webreader: {
       paged: {
         scale: '',
