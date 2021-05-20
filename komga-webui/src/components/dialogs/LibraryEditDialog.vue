@@ -38,6 +38,7 @@
                   <v-row>
                     <v-col>
                       <v-text-field v-model="form.name"
+                                    autofocus
                                     :label="$t('dialog.edit_library.field_name')"
                                     :error-messages="getErrors('name')"
                                     @input="$v.form.name.$touch()"

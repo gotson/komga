@@ -12,6 +12,7 @@
               <v-row>
                 <v-col>
                   <v-text-field :label="$t('dialog.password_change.field_new_password')"
+                                autofocus
                                 v-model="form.newPassword"
                                 autocomplete="off"
                                 :type="showPassword1 ? 'text' : 'password'"

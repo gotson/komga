@@ -19,6 +19,7 @@
               <v-col>
                 <v-text-field
                   v-model="newCollection"
+                  autofocus
                   :label="$t('dialog.add_to_collection.field_search_create')"
                   @keydown.enter="create"
                   :error-messages="duplicate"

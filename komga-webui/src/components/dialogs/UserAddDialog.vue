@@ -26,6 +26,7 @@
               <v-row>
                 <v-col>
                   <v-text-field v-model="form.email"
+                                autofocus
                                 :label="$t('dialog.add_user.field_email')"
                                 :error-messages="getErrors('email')"
                                 @blur="$v.form.email.$touch()"
