@@ -22,12 +22,18 @@ class KomgaProperties {
 
   var database = Database()
 
+  var cors = Cors()
+
   class RememberMe {
     @get:NotBlank
     var key: String? = null
 
     @get:Positive
     var validity: Int = 1209600 // 2 weeks
+  }
+
+  class Cors {
+    var allowedOrigins: List<String> = emptyList()
   }
 
   class Database {

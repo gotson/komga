@@ -7,6 +7,8 @@ komga:
   libraries-scan-startup: true
   database:
     file: ":memory:"
+  cors.allowed-origins:
+    - http://localhost:8081
 
 spring:
   artemis:
