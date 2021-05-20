@@ -56,13 +56,7 @@
           <v-list-item-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-tooltip bottom :disabled="!isAdmin">
-              <template v-slot:activator="{ on }">
-                <v-list-item-title v-on="on">{{ l.name }}
-                </v-list-item-title>
-              </template>
-              <span>{{ l.root }}</span>
-            </v-tooltip>
+            <v-list-item-title>{{ l.name }}</v-list-item-title>
           </v-list-item-content>
           <v-list-item-action v-if="isAdmin">
             <library-actions-menu :library="l"/>
