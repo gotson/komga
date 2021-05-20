@@ -545,13 +545,14 @@
     "search_results_for": "Risultati della ricerca per «{name}»"
   },
   "searchbox": {
+    "in_library": "in {library}",
     "no_results": "Nessun risultato",
     "search_all": "Cerca tutto…"
   },
   "server": {
     "server_management": {
       "button_shutdown": "Spegni",
-      "section_title": "Gestione Server"
+      "section_title": "Gestione server"
     },
     "tab_title": "Server"
   },
