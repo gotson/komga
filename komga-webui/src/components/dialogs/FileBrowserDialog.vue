@@ -1,66 +1,81 @@
 <template>
-  <v-dialog v-model="modalFileBrowser"
-            max-width="450"
-            scrollable
-  >
-    <v-card>
+  <div>
+    <v-dialog v-model="modalFileBrowser"
+              max-width="450"
+              scrollable
+    >
+      <v-card>
 
-      <v-card-title>{{ dialogTitle }}</v-card-title>
+        <v-card-title>{{ dialogTitle }}</v-card-title>
 
-      <v-card-text style="height: 450px">
-        <v-text-field
-          v-model="selectedPath"
-          readonly
-        />
+        <v-card-text style="height: 450px">
+          <v-text-field
+            v-model="selectedPath"
+            readonly
+          />
 
-        <v-list elevation="3" dense>
+          <v-list elevation="3" dense>
 
-          <template v-if="directoryListing.hasOwnProperty('parent')">
-            <v-list-item
-              @click.prevent="select(directoryListing.parent)"
-            >
-              <v-list-item-icon>
-                <v-icon>mdi-arrow-left</v-icon>
-              </v-list-item-icon>
+            <template v-if="directoryListing.hasOwnProperty('parent')">
+              <v-list-item
+                @click.prevent="select(directoryListing.parent)"
+              >
+                <v-list-item-icon>
+                  <v-icon>mdi-arrow-left</v-icon>
+                </v-list-item-icon>
 
-              <v-list-item-content>
-                <v-list-item-title>{{ $t('dialog.file_browser.parent_directory') }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-divider/>
-          </template>
+                <v-list-item-content>
+                  <v-list-item-title>{{ $t('dialog.file_browser.parent_directory') }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider/>
+            </template>
 
-          <div v-for="(d, index) in directoryListing.directories" :key="index">
-            <v-list-item
-              @click.prevent="select(d.path)"
-            >
-              <v-list-item-icon>
-                <v-icon>{{ d.type === 'directory' ? 'mdi-folder' : 'mdi-file' }}</v-icon>
-              </v-list-item-icon>
+            <div v-for="(d, index) in directoryListing.directories" :key="index">
+              <v-list-item
+                @click.prevent="select(d.path)"
+              >
+                <v-list-item-icon>
+                  <v-icon>{{ d.type === 'directory' ? 'mdi-folder' : 'mdi-file' }}</v-icon>
+                </v-list-item-icon>
 
-              <v-list-item-content>
-                <v-list-item-title>
-                  {{ d.name }}
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    {{ d.name }}
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
 
-            <v-divider v-if="index !== directoryListing.directories.length-1"/>
-          </div>
-        </v-list>
-      </v-card-text>
+              <v-divider v-if="index !== directoryListing.directories.length-1"/>
+            </div>
+          </v-list>
+        </v-card-text>
 
-      <v-card-actions>
-        <v-spacer/>
-        <v-btn text @click="dialogCancel">{{ $t('dialog.file_browser.button_cancel') }}</v-btn>
-        <v-btn text class="primary--text"
-               @click="dialogConfirm"
-               :disabled="!selectedPath"
-        >{{ confirmText }}
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+        <v-card-actions>
+          <v-spacer/>
+          <v-btn text @click="dialogCancel">{{ $t('dialog.file_browser.button_cancel') }}</v-btn>
+          <v-btn text class="primary--text"
+                 @click="dialogConfirm"
+                 :disabled="!selectedPath"
+          >{{ confirmText }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-snackbar
+      v-model="snackbar"
+      bottom
+      color="error"
+    >
+      {{ snackText }}
+      <v-btn
+        text
+        @click="snackbar = false"
+      >{{ $t('common.close') }}
+      </v-btn>
+    </v-snackbar>
+  </div>
 </template>
 
 <script lang="ts">
@@ -73,14 +88,16 @@ export default Vue.extend({
       directoryListing: {} as DirectoryListingDto,
       selectedPath: '',
       modalFileBrowser: false,
+      snackbar: false,
+      snackText: '',
     }
   },
   watch: {
-    value (val) {
+    value(val) {
       if (val) this.dialogInit()
       this.modalFileBrowser = val
     },
-    modalFileBrowser (val) {
+    modalFileBrowser(val) {
       !val && this.dialogCancel()
     },
   },
@@ -92,19 +109,23 @@ export default Vue.extend({
     },
     dialogTitle: {
       type: String,
-      default: function(): string {
+      default: function (): string {
         return this.$t('dialog.file_browser.dialog_title_default').toString()
       },
     },
     confirmText: {
       type: String,
-      default: function(): string {
+      default: function (): string {
         return this.$t('dialog.file_browser.button_confirm_default').toString()
       },
     },
   },
   methods: {
-    dialogInit () {
+    showSnack (message: string) {
+      this.snackText = message
+      this.snackbar = true
+    },
+    dialogInit() {
       try {
         this.getDirs(this.path)
         this.selectedPath = this.path
@@ -112,17 +133,21 @@ export default Vue.extend({
         this.getDirs()
       }
     },
-    dialogCancel () {
+    dialogCancel() {
       this.$emit('input', false)
     },
-    dialogConfirm () {
+    dialogConfirm() {
       this.$emit('input', false)
       this.$emit('update:path', this.selectedPath)
     },
-    async getDirs (path?: string) {
-      this.directoryListing = await this.$komgaFileSystem.getDirectoryListing(path)
+    async getDirs(path?: string) {
+      try {
+        this.directoryListing = await this.$komgaFileSystem.getDirectoryListing(path)
+      } catch (e) {
+        this.showSnack(e.message)
+      }
     },
-    select (path: string) {
+    select(path: string) {
       this.selectedPath = path
       this.getDirs(path)
     },
