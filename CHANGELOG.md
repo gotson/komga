@@ -1,3 +1,11 @@
+## [0.96.1](https://github.com/gotson/komga/compare/v0.96.0...v0.96.1) (2021-05-21)
+
+
+### Bug Fixes
+
+* **webreader:** incorrect tooltip for read incognito button ([d1616a9](https://github.com/gotson/komga/commit/d1616a98cd96a81e996752c7127720f162404e54))
+* **webui:** count in progress books as unread in series filter and card ([fa9d40f](https://github.com/gotson/komga/commit/fa9d40f84c7d02fa164472c86ac549ae3999c418))
+
 # [0.96.0](https://github.com/gotson/komga/compare/v0.95.5...v0.96.0) (2021-05-20)
 
 
