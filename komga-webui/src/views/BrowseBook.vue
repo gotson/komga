@@ -139,7 +139,7 @@
 
               <v-col cols="auto">
                 <v-btn small
-                       :title="$t('browse_book.read_book')"
+                       :title="$t('browse_book.read_incognito')"
                        :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id, incognito: true}}"
                        :disabled="book.media.status !== 'READY' || !canReadPages"
                 >
@@ -184,7 +184,7 @@
 
           <v-col cols="auto">
             <v-btn small
-                   :title="$t('browse_book.read_book')"
+                   :title="$t('browse_book.read_incognito')"
                    :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id, incognito: true}}"
                    :disabled="book.media.status !== 'READY' || !canReadPages"
             >

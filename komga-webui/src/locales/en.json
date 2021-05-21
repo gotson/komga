@@ -129,6 +129,7 @@
     "isbn": "ISBN",
     "navigation_within_readlist": "Navigation within the readlist: {name}",
     "read_book": "Read book",
+    "read_incognito": "Read incognito",
     "size": "SIZE"
   },
   "browse_collection": {
