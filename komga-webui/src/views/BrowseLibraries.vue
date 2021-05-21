@@ -105,7 +105,7 @@ import LibraryNavigation from '@/components/LibraryNavigation.vue'
 import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import {parseQueryParam, parseQuerySort} from '@/functions/query-params'
-import {ReadStatus} from '@/types/enum-books'
+import {ReadStatus, replaceCompositeReadStatus} from '@/types/enum-books'
 import {SeriesStatus, SeriesStatusKeyValue} from '@/types/enum-series'
 import {LIBRARY_CHANGED, LIBRARY_DELETED, SERIES_CHANGED} from '@/types/events'
 import Vue from 'vue'
@@ -232,7 +232,7 @@ export default Vue.extend({
     },
     filterOptionsList(): FiltersOptions {
       return {
-        readStatus: {values: [{name: this.$t('filter.unread').toString(), value: ReadStatus.UNREAD}]},
+        readStatus: {values: [{name: this.$t('filter.unread').toString(), value: ReadStatus.UNREAD_AND_IN_PROGRESS}]},
       } as FiltersOptions
     },
     filterOptionsPanel(): FiltersOptions {
@@ -427,7 +427,7 @@ export default Vue.extend({
       })
 
       const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
-      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, this.filters.readStatus, this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter)
+      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter)
 
       this.totalPages = seriesPage.totalPages
       this.totalElements = seriesPage.totalElements

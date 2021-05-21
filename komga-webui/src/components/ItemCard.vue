@@ -218,7 +218,7 @@ export default Vue.extend({
       return false
     },
     unreadCount (): number | undefined {
-      if (this.computedItem.type() === ItemTypes.SERIES) return (this.item as SeriesDto).booksUnreadCount
+      if (this.computedItem.type() === ItemTypes.SERIES) return (this.item as SeriesDto).booksUnreadCount + (this.item as SeriesDto).booksInProgressCount
       return undefined
     },
     readProgressPercentage (): number {
