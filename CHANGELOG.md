@@ -1,3 +1,10 @@
+## [0.96.2](https://github.com/gotson/komga/compare/v0.96.1...v0.96.2) (2021-05-22)
+
+
+### Bug Fixes
+
+* cors filter causing issues ([0708ce7](https://github.com/gotson/komga/commit/0708ce750c9d003fbd3430e864b1571cebbabb5c)), closes [#543](https://github.com/gotson/komga/issues/543)
+
 ## [0.96.1](https://github.com/gotson/komga/compare/v0.96.0...v0.96.1) (2021-05-21)
 
 
