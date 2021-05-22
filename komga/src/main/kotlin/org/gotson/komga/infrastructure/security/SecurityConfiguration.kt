@@ -5,9 +5,6 @@ import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_USER
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
-import org.springframework.context.annotation.Bean
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
@@ -15,8 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 private val logger = KotlinLogging.logger {}
 
@@ -91,18 +86,4 @@ class SecurityConfiguration(
         "/index.html"
       )
   }
-
-  @Bean
-  fun corsConfigurationSource(): UrlBasedCorsConfigurationSource =
-    UrlBasedCorsConfigurationSource().apply {
-      registerCorsConfiguration(
-        "/**",
-        CorsConfiguration().applyPermitDefaultValues().apply {
-          allowedOrigins = komgaProperties.cors.allowedOrigins
-          allowedMethods = HttpMethod.values().map { it.name }
-          allowCredentials = true
-          addExposedHeader(HttpHeaders.CONTENT_DISPOSITION)
-        }
-      )
-    }
 }
