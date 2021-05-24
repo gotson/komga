@@ -300,44 +300,6 @@ export default Vue.extend({
         this.prev()
       }
     },
-
-    buildSpreads (): PageDtoWithUrl[][] {
-      if (this.pages.length === 0) return []
-      if (this.isDoublePages) {
-        const spreads = []
-        let pages: PageDtoWithUrl[]
-        if (this.pageLayout === PagedReaderLayout.DOUBLE_PAGES) {
-          spreads.push([this.pages[0]])
-          pages = this.$_.drop(this.$_.dropRight(this.pages))
-        } else {
-          pages = this.$_.cloneDeep(this.pages)
-        }
-        while (pages.length > 0) {
-          const p = pages.shift() as PageDtoWithUrl
-          if (isPageLandscape(p)) {
-            spreads.push([p])
-          } else {
-            if (pages.length > 0) {
-              const p2 = pages.shift() as PageDtoWithUrl
-              if (isPageLandscape(p2)) {
-                spreads.push([p])
-                spreads.push([p2])
-              } else {
-                spreads.push([p, p2])
-              }
-            } else {
-              spreads.push([p])
-            }
-          }
-        }
-        if (this.pageLayout === PagedReaderLayout.DOUBLE_PAGES) {
-          spreads.push([this.pages[this.pages.length - 1]])
-        }
-        return spreads
-      } else {
-        return this.pages.map(p => [p])
-      }
-    },
     imgClass (spread: PageDtoWithUrl[]): string {
       const double = spread.length > 1
       switch (this.scale) {
