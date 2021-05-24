@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.mediacontainer
 
+import com.github.benmanes.caffeine.cache.Caffeine
 import mu.KotlinLogging
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
@@ -11,6 +12,7 @@ import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.springframework.stereotype.Service
 import java.io.ByteArrayOutputStream
 import java.nio.file.Path
+import java.util.concurrent.TimeUnit
 import javax.imageio.ImageIO
 import kotlin.math.roundToInt
 
@@ -25,6 +27,12 @@ class PdfExtractor(
   private val imageIOFormat = "jpeg"
   private val resolution = 1536F
 
+  private val cache = Caffeine.newBuilder()
+    .maximumSize(20)
+    .expireAfterAccess(1, TimeUnit.MINUTES)
+    .removalListener { _: Path?, pdf: PDDocument?, _ -> pdf?.close() }
+    .build<Path, PDDocument>()
+
   override fun mediaTypes(): List<String> = listOf("application/pdf")
 
   override fun getEntries(path: Path): List<MediaContainerEntry> =
@@ -37,16 +45,16 @@ class PdfExtractor(
       }
     }
 
-  override fun getEntryStream(path: Path, entryName: String): ByteArray =
-    PDDocument.load(path.toFile()).use { pdf ->
-      val pageNumber = entryName.toInt()
-      val page = pdf.getPage(pageNumber)
-      val image = PDFRenderer(pdf).renderImage(pageNumber, page.getScale(), ImageType.RGB)
-      ByteArrayOutputStream().use { out ->
-        ImageIO.write(image, imageIOFormat, out)
-        out.toByteArray()
-      }
+  override fun getEntryStream(path: Path, entryName: String): ByteArray {
+    val pdf = cache.get(path) { PDDocument.load(path.toFile()) }!!
+    val pageNumber = entryName.toInt()
+    val page = pdf.getPage(pageNumber)
+    val image = PDFRenderer(pdf).renderImage(pageNumber, page.getScale(), ImageType.RGB)
+    return ByteArrayOutputStream().use { out ->
+      ImageIO.write(image, imageIOFormat, out)
+      out.toByteArray()
     }
+  }
 
   private fun PDPage.getScale() = resolution / minOf(cropBox.width, cropBox.height)
 }
