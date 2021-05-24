@@ -1,3 +1,10 @@
+## [0.96.3](https://github.com/gotson/komga/compare/v0.96.2...v0.96.3) (2021-05-24)
+
+
+### Performance Improvements
+
+* page streaming performance ([8de01a6](https://github.com/gotson/komga/commit/8de01a6fd760a8bd80aa75ff2055a3138f3476bf))
+
 ## [0.96.2](https://github.com/gotson/komga/compare/v0.96.1...v0.96.2) (2021-05-22)
 
 
