@@ -111,7 +111,7 @@ class SeriesDtoDao(
     selectBase(userId)
       .where(s.ID.eq(seriesId))
       .groupBy(*groupFields)
-      .fetchAndMap(userId)
+      .fetchAndMap()
       .firstOrNull()
 
   private fun selectBase(
@@ -120,6 +120,9 @@ class SeriesDtoDao(
   ): SelectOnConditionStep<Record> =
     dsl.selectDistinct(*groupFields)
       .select(DSL.countDistinct(b.ID).`as`(BOOKS_COUNT))
+      .select(countUnread.`as`(BOOKS_UNREAD_COUNT))
+      .select(countRead.`as`(BOOKS_READ_COUNT))
+      .select(countInProgress.`as`(BOOKS_IN_PROGRESS_COUNT))
       .apply { if (joinConditions.selectCollectionNumber) select(cs.NUMBER) }
       .from(s)
       .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
@@ -162,7 +165,7 @@ class SeriesDtoDao(
       .having(having)
       .orderBy(orderBy)
       .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-      .fetchAndMap(userId)
+      .fetchAndMap()
 
     val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
     return PageImpl(
@@ -175,27 +178,16 @@ class SeriesDtoDao(
 
   private fun readProgressCondition(userId: String): Condition = r.USER_ID.eq(userId).or(r.USER_ID.isNull)
 
-  private fun ResultQuery<Record>.fetchAndMap(userId: String) =
+  private fun ResultQuery<Record>.fetchAndMap() =
     fetch()
       .map { rec ->
         val sr = rec.into(s)
         val dr = rec.into(d)
         val bmar = rec.into(bma)
         val booksCount = rec.get(BOOKS_COUNT, Int::class.java)
-
-        val booksCountRecord = dsl
-          .select(countUnread.`as`(BOOKS_UNREAD_COUNT))
-          .select(countRead.`as`(BOOKS_READ_COUNT))
-          .select(countInProgress.`as`(BOOKS_IN_PROGRESS_COUNT))
-          .from(b)
-          .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
-          .where(b.SERIES_ID.eq(sr.id))
-          .fetch()
-          .first()
-
-        val booksUnreadCount = booksCountRecord.get(BOOKS_UNREAD_COUNT, Int::class.java)
-        val booksReadCount = booksCountRecord.get(BOOKS_READ_COUNT, Int::class.java)
-        val booksInProgressCount = booksCountRecord.get(BOOKS_IN_PROGRESS_COUNT, Int::class.java)
+        val booksUnreadCount = rec.get(BOOKS_UNREAD_COUNT, Int::class.java)
+        val booksReadCount = rec.get(BOOKS_READ_COUNT, Int::class.java)
+        val booksInProgressCount = rec.get(BOOKS_IN_PROGRESS_COUNT, Int::class.java)
 
         val genres = dsl.select(g.GENRE)
           .from(g)
