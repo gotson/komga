@@ -1,3 +1,11 @@
+## [0.96.4](https://github.com/gotson/komga/compare/v0.96.3...v0.96.4) (2021-05-25)
+
+
+### Performance Improvements
+
+* missing database index ([8b5ae64](https://github.com/gotson/komga/commit/8b5ae64dd5ae62c3562405f1b280e9eb91e4a6e8))
+* remove subquery ([b162cde](https://github.com/gotson/komga/commit/b162cdeba39b1a28af0188de24b429a1a15cbab0))
+
 ## [0.96.3](https://github.com/gotson/komga/compare/v0.96.2...v0.96.3) (2021-05-24)
 
 
