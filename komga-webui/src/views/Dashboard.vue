@@ -75,6 +75,21 @@
         </template>
       </horizontal-scroller>
 
+      <horizontal-scroller v-if="latestBooks.length !== 0" class="mb-4">
+        <template v-slot:prepend>
+          <div class="title">{{ $t('dashboard.recently_added_books') }}</div>
+        </template>
+        <template v-slot:content>
+          <item-browser :items="latestBooks"
+                        nowrap
+                        :edit-function="singleEditBook"
+                        :selected.sync="selectedBooks"
+                        :selectable="selectedSeries.length === 0"
+                        :fixed-item-width="fixedCardWidth"
+          />
+        </template>
+      </horizontal-scroller>
+
       <horizontal-scroller v-if="newSeries.length !== 0" class="mb-4">
         <template v-slot:prepend>
           <div class="title">{{ $t('dashboard.recently_added_series') }}</div>
@@ -100,21 +115,6 @@
                         :edit-function="singleEditSeries"
                         :selected.sync="selectedSeries"
                         :selectable="selectedBooks.length === 0"
-                        :fixed-item-width="fixedCardWidth"
-          />
-        </template>
-      </horizontal-scroller>
-
-      <horizontal-scroller v-if="latestBooks.length !== 0" class="mb-4">
-        <template v-slot:prepend>
-          <div class="title">{{ $t('dashboard.recently_added_books') }}</div>
-        </template>
-        <template v-slot:content>
-          <item-browser :items="latestBooks"
-                        nowrap
-                        :edit-function="singleEditBook"
-                        :selected.sync="selectedBooks"
-                        :selectable="selectedSeries.length === 0"
                         :fixed-item-width="fixedCardWidth"
           />
         </template>
@@ -227,11 +227,11 @@ export default Vue.extend({
       this.library = this.getLibraryLazy(libraryId)
       this.selectedSeries = []
       this.selectedBooks = []
-      this.loadNewSeries(libraryId)
-      this.loadUpdatedSeries(libraryId)
-      this.loadLatestBooks(libraryId)
       this.loadInProgressBooks(libraryId)
       this.loadOnDeckBooks(libraryId)
+      this.loadLatestBooks(libraryId)
+      this.loadNewSeries(libraryId)
+      this.loadUpdatedSeries(libraryId)
     },
     replaceSeries(series: SeriesDto) {
       let index = this.newSeries.findIndex(x => x.id === series.id)
