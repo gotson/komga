@@ -1,3 +1,16 @@
+## [0.96.5](https://github.com/gotson/komga/compare/v0.96.4...v0.96.5) (2021-05-27)
+
+
+### Bug Fixes
+
+* **webui:** show recent books before series ([7f49bfa](https://github.com/gotson/komga/commit/7f49bfa05e20ae4adb5ab40244ae9b770c1c2348))
+
+
+### Performance Improvements
+
+* add db index to speed up webui dashboard ([ecc1dd4](https://github.com/gotson/komga/commit/ecc1dd412dcae1409bba8e5d4cf42471f7f303a5))
+* precompute series book counts ([c3b352a](https://github.com/gotson/komga/commit/c3b352aca03a7a859ffdb8f4a95c504b91981348))
+
 ## [0.96.4](https://github.com/gotson/komga/compare/v0.96.3...v0.96.4) (2021-05-25)
 
 
