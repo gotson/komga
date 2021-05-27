@@ -1,0 +1,29 @@
+alter table SERIES
+    add column BOOK_COUNT int NOT NULL DEFAULT 0;
+
+update SERIES
+set BOOK_COUNT = (
+    SELECT COUNT(b.ID)
+    FROM BOOK b
+    WHERE b.SERIES_ID = SERIES.ID
+    );
+
+CREATE TABLE READ_PROGRESS_SERIES
+(
+    SERIES_ID         varchar NOT NULL,
+    USER_ID           varchar NOT NULL,
+    READ_COUNT        int     NOT NULL,
+    IN_PROGRESS_COUNT int     NOT NULL,
+    PRIMARY KEY (SERIES_ID, USER_ID),
+    FOREIGN KEY (SERIES_ID) REFERENCES SERIES (ID),
+    FOREIGN KEY (USER_ID) REFERENCES USER (ID)
+);
+
+insert into READ_PROGRESS_SERIES
+select BOOK.SERIES_ID,
+       READ_PROGRESS.USER_ID,
+       sum(case when READ_PROGRESS.COMPLETED = 1 then 1 else 0 end) as READ_COUNT,
+       sum(case when READ_PROGRESS.COMPLETED = 0 then 1 else 0 end) as IN_PROGRESS_COUNT
+from BOOK
+         inner join READ_PROGRESS on (BOOK.ID = READ_PROGRESS.BOOK_ID)
+group by BOOK.SERIES_ID, READ_PROGRESS.USER_ID;

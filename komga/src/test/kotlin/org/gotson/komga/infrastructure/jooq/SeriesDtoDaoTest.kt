@@ -74,6 +74,7 @@ class SeriesDtoDaoTest(
             makeBook("$it", seriesId = created.id, libraryId = library.id)
           }
         )
+        seriesLifecycle.sortBooks(created)
       }
 
     val series = seriesRepository.findAll().sortedBy { it.name }
@@ -107,13 +108,10 @@ class SeriesDtoDaoTest(
     ).sortedBy { it.name }
 
     // then
-    assertThat(found).hasSize(2)
+    assertThat(found).hasSize(1)
 
     assertThat(found.first().booksReadCount).isEqualTo(3)
     assertThat(found.first().name).isEqualTo("2")
-
-    assertThat(found.last().booksReadCount).isEqualTo(1)
-    assertThat(found.last().name).isEqualTo("4")
   }
 
   @Test
@@ -129,13 +127,10 @@ class SeriesDtoDaoTest(
     ).sortedBy { it.name }
 
     // then
-    assertThat(found).hasSize(2)
+    assertThat(found).hasSize(1)
 
     assertThat(found.first().booksUnreadCount).isEqualTo(3)
     assertThat(found.first().name).isEqualTo("3")
-
-    assertThat(found.last().booksUnreadCount).isEqualTo(1)
-    assertThat(found.last().name).isEqualTo("4")
   }
 
   @Test
@@ -173,8 +168,8 @@ class SeriesDtoDaoTest(
     ).sortedBy { it.name }
 
     // then
-    assertThat(found).hasSize(3)
-    assertThat(found.map { it.name }).containsExactlyInAnyOrder("2", "3", "4")
+    assertThat(found).hasSize(2)
+    assertThat(found.map { it.name }).containsExactlyInAnyOrder("2", "3")
   }
 
   @Test

@@ -9,10 +9,12 @@ interface ReadProgressRepository {
   fun findByBookId(bookId: String): Collection<ReadProgress>
 
   fun save(readProgress: ReadProgress)
+  fun saveAll(readProgresses: Collection<ReadProgress>)
 
   fun delete(bookId: String, userId: String)
   fun deleteByUserId(userId: String)
   fun deleteByBookId(bookId: String)
   fun deleteByBookIds(bookIds: Collection<String>)
+  fun deleteByBookIdsAndUserId(bookIds: Collection<String>, userId: String)
   fun deleteAll()
 }

@@ -8,7 +8,9 @@ import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.BookMetadataAggregation
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
+import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.ThumbnailSeries
@@ -16,6 +18,7 @@ import org.gotson.komga.domain.persistence.BookMetadataAggregationRepository
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
+import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
@@ -24,7 +27,6 @@ import org.springframework.stereotype.Service
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.Comparator
 
 private val logger = KotlinLogging.logger {}
 private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
@@ -40,6 +42,7 @@ class SeriesLifecycle(
   private val seriesMetadataRepository: SeriesMetadataRepository,
   private val bookMetadataAggregationRepository: BookMetadataAggregationRepository,
   private val collectionRepository: SeriesCollectionRepository,
+  private val readProgressRepository: ReadProgressRepository,
   private val taskReceiver: TaskReceiver
 ) {
 
@@ -69,13 +72,16 @@ class SeriesLifecycle(
     }
     bookMetadataRepository.updateMany(oldToNew.map { it.second })
 
-    // refresh metadata to reimport book number, else the series resorting would overwritei t
+    // refresh metadata to reimport book number, else the series resorting would overwrite it
     oldToNew.forEach { (old, new) ->
       if (old.number != new.number || old.numberSort != new.numberSort) {
         logger.debug { "Metadata numbering has changed, refreshing metadata for book ${new.bookId} " }
         taskReceiver.refreshBookMetadata(new.bookId, listOf(BookMetadataPatchCapability.NUMBER, BookMetadataPatchCapability.NUMBER_SORT))
       }
     }
+
+    // update book count for series
+    seriesRepository.update(series.copy(bookCount = books.size))
   }
 
   fun addBooks(series: Series, booksToAdd: Collection<Book>) {
@@ -147,6 +153,17 @@ class SeriesLifecycle(
     seriesRepository.deleteAll(seriesIds)
   }
 
+  fun markReadProgressCompleted(seriesId: String, user: KomgaUser) {
+    val progresses = mediaRepository.getPagesSizes(bookRepository.findAllIdBySeriesId(seriesId))
+      .map { (bookId, pageSize) -> ReadProgress(bookId, user.id, pageSize, true) }
+
+    readProgressRepository.saveAll(progresses)
+  }
+
+  fun deleteReadProgress(seriesId: String, user: KomgaUser) {
+    readProgressRepository.deleteByBookIdsAndUserId(bookRepository.findAllIdBySeriesId(seriesId), user.id)
+  }
+
   fun getThumbnail(seriesId: String): ThumbnailSeries? {
     val selected = thumbnailsSeriesRepository.findSelectedBySeriesId(seriesId)
 
@@ -205,6 +222,5 @@ class SeriesLifecycle(
       }
     }
   }
-
   private fun ThumbnailSeries.exists(): Boolean = Files.exists(Paths.get(url.toURI()))
 }

@@ -214,10 +214,10 @@ class BookLifecycle(
   }
 
   fun markReadProgress(book: Book, user: KomgaUser, page: Int) {
-    val media = mediaRepository.findById(book.id)
-    require(page >= 1 && page <= media.pages.size) { "Page argument ($page) must be within 1 and book page count (${media.pages.size})" }
+    val pages = mediaRepository.getPagesSize(book.id)
+    require(page in 1..pages) { "Page argument ($page) must be within 1 and book page count ($pages)" }
 
-    readProgressRepository.save(ReadProgress(book.id, user.id, page, page == media.pages.size))
+    readProgressRepository.save(ReadProgress(book.id, user.id, page, page == pages))
   }
 
   fun markReadProgressCompleted(bookId: String, user: KomgaUser) {

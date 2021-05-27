@@ -607,6 +607,7 @@ class SeriesControllerTest(
         seriesLifecycle.createSeries(series).also { created ->
           val books = listOf(makeBook("1.cbr", libraryId = library.id), makeBook("2.cbr", libraryId = library.id))
           seriesLifecycle.addBooks(created, books)
+          seriesLifecycle.sortBooks(created)
         }
       }
 
@@ -649,6 +650,7 @@ class SeriesControllerTest(
         seriesLifecycle.createSeries(series).also { created ->
           val books = listOf(makeBook("1.cbr", libraryId = library.id), makeBook("2.cbr", libraryId = library.id))
           seriesLifecycle.addBooks(created, books)
+          seriesLifecycle.sortBooks(created)
         }
       }
 
@@ -700,6 +702,7 @@ class SeriesControllerTest(
             makeBook("3.cbr", libraryId = library.id)
           )
           seriesLifecycle.addBooks(created, books)
+          seriesLifecycle.sortBooks(created)
         }
       }
 

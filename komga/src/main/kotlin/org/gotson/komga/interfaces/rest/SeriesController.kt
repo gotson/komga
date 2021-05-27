@@ -363,9 +363,7 @@ class SeriesController(
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    bookRepository.findAllIdBySeriesId(seriesId).forEach {
-      bookLifecycle.markReadProgressCompleted(it, principal.user)
-    }
+    seriesLifecycle.markReadProgressCompleted(seriesId, principal.user)
   }
 
   @DeleteMapping("{seriesId}/read-progress")
@@ -378,9 +376,7 @@ class SeriesController(
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    bookRepository.findAllIdBySeriesId(seriesId).forEach {
-      bookLifecycle.deleteReadProgress(it, principal.user)
-    }
+    seriesLifecycle.deleteReadProgress(seriesId, principal.user)
   }
 
   @GetMapping("{seriesId}/read-progress/tachiyomi")
