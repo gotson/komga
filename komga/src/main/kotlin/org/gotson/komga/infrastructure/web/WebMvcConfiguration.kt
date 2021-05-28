@@ -44,7 +44,7 @@ class WebMvcConfiguration : WebMvcConfigurer {
         "classpath:public/favicon-32x32.png",
         "classpath:public/mstile-144x144.png",
         "classpath:public/apple-touch-icon.png",
-        "classpath:public/apple-touch-icon-180x180.png",
+        "classpath:public/apple-touch-icon-180x180.png"
       )
       .setCacheControl(CacheControl.noStore())
 
