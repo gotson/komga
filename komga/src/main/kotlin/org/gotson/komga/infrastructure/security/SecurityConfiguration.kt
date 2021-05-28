@@ -82,6 +82,11 @@ class SecurityConfiguration(
         "/img/**",
         "/js/**",
         "/favicon.ico",
+        "/favicon-16x16.png",
+        "/favicon-32x32.png",
+        "/mstile-144x144.png",
+        "/apple-touch-icon.png",
+        "/apple-touch-icon-180x180.png",
         "/",
         "/index.html"
       )
