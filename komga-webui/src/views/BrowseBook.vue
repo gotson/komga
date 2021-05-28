@@ -84,7 +84,7 @@
       </v-btn>
     </toolbar-sticky>
 
-    <v-container fluid class="px-6">
+    <v-container fluid class="pa-6">
       <v-row>
         <v-col cols="4" sm="4" md="auto" lg="auto" xl="auto">
           <item-card
@@ -98,77 +98,79 @@
         </v-col>
 
         <v-col cols="8">
-          <v-row>
-            <v-col class="py-1">
-              <router-link :to="{name:'browse-series', params: {seriesId: book.seriesId}}" class="link-underline">
-                <span class="text-h5" v-if="!$_.isEmpty(series)">{{ series.metadata.title }}</span>
-              </router-link>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col class="py-1">
-              <div class="text-h6">{{ book.metadata.title }}</div>
-            </v-col>
-          </v-row>
-
-          <v-row class="text-caption">
-            <v-col cols="auto">
-              {{ book.metadata.number }} · {{ book.media.pagesCount }} {{ $t('common.pages') }}
-            </v-col>
-            <v-col cols="auto" v-if="book.metadata.releaseDate">
-              {{
-                new Intl.DateTimeFormat($i18n.locale, {dateStyle: 'long'}).format(new Date(book.metadata.releaseDate))
-              }}
-            </v-col>
-          </v-row>
-
-
-          <div class="hidden-xs-only">
-            <v-row class="align-center">
-              <v-col cols="auto">
-                <v-btn color="accent"
-                       small
-                       :title="$t('browse_book.read_book')"
-                       :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id}}"
-                       :disabled="book.media.status !== 'READY' || !canReadPages"
-                >
-                  <v-icon left small>mdi-book-open-page-variant</v-icon>
-                  {{ $t('common.read') }}
-                </v-btn>
+          <v-container>
+            <v-row>
+              <v-col class="py-1">
+                <router-link :to="{name:'browse-series', params: {seriesId: book.seriesId}}" class="link-underline">
+                  <span class="text-h5" v-if="!$_.isEmpty(series)">{{ series.metadata.title }}</span>
+                </router-link>
               </v-col>
-
-              <v-col cols="auto">
-                <v-btn small
-                       :title="$t('browse_book.read_incognito')"
-                       :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id, incognito: true}}"
-                       :disabled="book.media.status !== 'READY' || !canReadPages"
-                >
-                  <v-icon left small>mdi-incognito</v-icon>
-                  {{ $t('common.read') }}
-                </v-btn>
-              </v-col>
-
-              <v-col cols="auto">
-                <v-btn :title="$t('browse_book.download_file')"
-                       small
-                       :disabled="!canDownload"
-                       :href="fileUrl">
-                  <v-icon left small>mdi-file-download</v-icon>
-                  {{ $t('common.download') }}
-                </v-btn>
+            </v-row>
+            <v-row>
+              <v-col class="py-1">
+                <div class="text-h6">{{ book.metadata.title }}</div>
               </v-col>
             </v-row>
 
-            <v-row v-if="book.metadata.summary">
-              <v-col>
-                <read-more>{{ book.metadata.summary }}</read-more>
+            <v-row class="text-caption">
+              <v-col cols="auto">
+                {{ book.metadata.number }} · {{ book.media.pagesCount }} {{ $t('common.pages') }}
+              </v-col>
+              <v-col cols="auto" v-if="book.metadata.releaseDate">
+                {{
+                  new Intl.DateTimeFormat($i18n.locale, {dateStyle: 'long'}).format(new Date(book.metadata.releaseDate))
+                }}
               </v-col>
             </v-row>
-          </div>
+
+
+            <template v-if="$vuetify.breakpoint.smAndUp">
+              <v-row class="align-center">
+                <v-col cols="auto">
+                  <v-btn color="accent"
+                         small
+                         :title="$t('browse_book.read_book')"
+                         :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id}}"
+                         :disabled="book.media.status !== 'READY' || !canReadPages"
+                  >
+                    <v-icon left small>mdi-book-open-page-variant</v-icon>
+                    {{ $t('common.read') }}
+                  </v-btn>
+                </v-col>
+
+                <v-col cols="auto">
+                  <v-btn small
+                         :title="$t('browse_book.read_incognito')"
+                         :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id, incognito: true}}"
+                         :disabled="book.media.status !== 'READY' || !canReadPages"
+                  >
+                    <v-icon left small>mdi-incognito</v-icon>
+                    {{ $t('common.read') }}
+                  </v-btn>
+                </v-col>
+
+                <v-col cols="auto">
+                  <v-btn :title="$t('browse_book.download_file')"
+                         small
+                         :disabled="!canDownload"
+                         :href="fileUrl">
+                    <v-icon left small>mdi-file-download</v-icon>
+                    {{ $t('common.download') }}
+                  </v-btn>
+                </v-col>
+              </v-row>
+
+              <v-row v-if="book.metadata.summary">
+                <v-col>
+                  <read-more>{{ book.metadata.summary }}</read-more>
+                </v-col>
+              </v-row>
+            </template>
+          </v-container>
         </v-col>
       </v-row>
 
-      <div class="hidden-sm-and-up">
+      <template v-if="$vuetify.breakpoint.xsOnly">
         <v-row class="align-center">
           <v-col cols="auto">
             <v-btn color="accent"
@@ -209,43 +211,40 @@
             <read-more>{{ book.metadata.summary }}</read-more>
           </v-col>
         </v-row>
-      </div>
+      </template>
 
-      <div v-for="role in authorRoles"
-           :key="role"
+      <v-row v-for="role in displayedRoles"
+             :key="role"
+             class="align-center text-caption"
       >
-        <v-row class="align-center text-caption"
-               v-if="authorsByRole[role]"
-        >
-          <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $t(`author_roles.${role}`) }}</v-col>
-          <v-col cols="8" sm="9" md="10" xl="11" class="py-1">
-            <vue-horizontal>
-              <template v-slot:btn-prev>
-                <v-btn icon small>
-                  <v-icon>mdi-chevron-left</v-icon>
-                </v-btn>
-              </template>
+        <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $t(`author_roles.${role}`) }}</v-col>
+        <v-col cols="8" sm="9" md="10" xl="11" class="py-1">
+          <vue-horizontal>
+            <template v-slot:btn-prev>
+              <v-btn icon small>
+                <v-icon>mdi-chevron-left</v-icon>
+              </v-btn>
+            </template>
 
-              <template v-slot:btn-next>
-                <v-btn icon small>
-                  <v-icon>mdi-chevron-right</v-icon>
-                </v-btn>
-              </template>
-              <v-chip v-for="(name, i) in authorsByRole[role]"
-                      :key="i"
-                      :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
-                      :title="name"
-                      :to="{name:'browse-series', params: {seriesId: book.seriesId }, query: {[role]: name}}"
-                      label
-                      small
-                      outlined
-                      link
-              >{{ name }}
-              </v-chip>
-            </vue-horizontal>
-          </v-col>
-        </v-row>
-      </div>
+            <template v-slot:btn-next>
+              <v-btn icon small>
+                <v-icon>mdi-chevron-right</v-icon>
+              </v-btn>
+            </template>
+            <v-chip v-for="(name, i) in authorsByRole[role]"
+                    :key="i"
+                    :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+                    :title="name"
+                    :to="{name:'browse-series', params: {seriesId: book.seriesId }, query: {[role]: name}}"
+                    label
+                    small
+                    outlined
+                    link
+            >{{ name }}
+            </v-chip>
+          </vue-horizontal>
+        </v-col>
+      </v-row>
 
       <v-row v-if="book.metadata.tags.length > 0" class="align-center text-caption">
         <v-col cols="4" sm="3" md="2" xl="1" class="py-1">TAGS</v-col>
@@ -340,7 +339,6 @@ export default Vue.extend({
   components: {ReadMore, ToolbarSticky, ItemCard, BookActionsMenu, ReadListsExpansionPanels, VueHorizontal, RtlIcon},
   data: () => {
     return {
-      authorRoles,
       book: {} as BookDto,
       series: {} as SeriesDto,
       context: {} as Context,
@@ -430,6 +428,9 @@ export default Vue.extend({
           name: this.series.name,
           route: {name: 'browse-series', params: {seriesId: this.book.seriesId}},
         }
+    },
+    displayedRoles(): string[] {
+      return authorRoles.filter(x => this.authorsByRole[x])
     },
   },
   methods: {

@@ -185,7 +185,7 @@
               </settings-select>
             </v-list-item>
 
-            <div v-if="continuousReader">
+            <template v-if="continuousReader">
               <v-subheader class="font-weight-black text-h6">{{ $t('bookreader.settings.webtoon') }}</v-subheader>
               <v-list-item>
                 <settings-select
@@ -201,9 +201,9 @@
                   :label="$t('bookreader.settings.side_padding')"
                 />
               </v-list-item>
-            </div>
+            </template>
 
-            <div v-if="!continuousReader">
+            <template v-if="!continuousReader">
               <v-subheader class="font-weight-black text-h6">{{ $t('bookreader.settings.paged') }}</v-subheader>
               <v-list-item>
                 <settings-select
@@ -220,7 +220,7 @@
                   :label="$t('bookreader.settings.page_layout')"
                 />
               </v-list-item>
-            </div>
+            </template>
 
 
           </v-list>

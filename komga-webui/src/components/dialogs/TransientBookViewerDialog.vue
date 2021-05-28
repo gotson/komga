@@ -14,7 +14,7 @@
         <v-divider/>
 
         <v-card-text style="height: 50%">
-          <v-container fluid class="pa-0">
+          <v-container fluid class="">
 
             <v-row justify="space-around" v-if="!single">
               <v-col cols="auto" class="pa-1">{{ $t('dialog.transient_book_viewer.label_candidate') }}</v-col>

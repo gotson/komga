@@ -71,7 +71,7 @@
       </template>
     </filter-drawer>
 
-    <v-container fluid class="px-6">
+    <v-container fluid class="pa-6">
       <v-row>
         <v-col cols="4" sm="4" md="auto" lg="auto" xl="auto">
           <item-card
@@ -85,6 +85,7 @@
         </v-col>
 
         <v-col cols="8">
+          <v-container>
           <v-row>
             <v-col class="py-1">
               <div class="text-h5" v-if="$_.get(series, 'metadata.title')">{{ series.metadata.title }}</div>
@@ -133,7 +134,7 @@
             </v-col>
           </v-row>
 
-          <div class="hidden-xs-only">
+          <template v-if="$vuetify.breakpoint.smAndUp">
             <v-row class="align-center">
               <v-col cols="auto">
                 <v-btn :title="$t('menu.download_series')"
@@ -165,12 +166,12 @@
                 <read-more>{{ series.booksMetadata.summary }}</read-more>
               </v-col>
             </v-row>
-          </div>
-
+          </template>
+          </v-container>
         </v-col>
       </v-row>
 
-      <div class="hidden-sm-and-up">
+      <template v-if="$vuetify.breakpoint.xsOnly">
         <!--   Download button     -->
         <v-row class="align-center">
           <v-col cols="auto">
@@ -205,9 +206,9 @@
             <read-more>{{ series.booksMetadata.summary }}</read-more>
           </v-col>
         </v-row>
-      </div>
+      </template>
 
-      <!--  Pubisher    -->
+      <!--  Publisher    -->
       <v-row v-if="series.metadata.publisher" class="align-center text-caption">
         <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $t('common.publisher') }}</v-col>
         <v-col cols="8" sm="9" md="10" xl="11" class="py-1">
@@ -286,11 +287,10 @@
         </v-col>
       </v-row>
 
-      <v-divider v-if="series.booksMetadata.authors.length > 0"/>
-      <div v-for="role in authorRolesSeries"
-           :key="role">
+      <v-divider v-if="series.booksMetadata.authors.length > 0" class="my-3"/>
         <v-row class="align-center text-caption"
-               v-if="authorsByRole[role]"
+               v-for="role in displayedRoles"
+               :key="role"
         >
           <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $t(`author_roles.${role}`) }}</v-col>
           <v-col cols="8" sm="9" md="10" xl="11" class="py-1">
@@ -321,7 +321,6 @@
             </vue-horizontal>
           </v-col>
         </v-row>
-      </div>
 
       <v-row>
         <v-col>
@@ -329,7 +328,7 @@
         </v-col>
       </v-row>
 
-      <v-divider class="my-1"/>
+      <v-divider class="mt-4 mb-1"/>
 
       <empty-state
         v-if="totalPages === 0"
@@ -418,7 +417,6 @@ export default Vue.extend({
   },
   data: function () {
     return {
-      authorRolesSeries,
       series: {} as SeriesDto,
       books: [] as BookDto[],
       selectedBooks: [] as BookDto[],
@@ -509,6 +507,9 @@ export default Vue.extend({
     },
     authorsByRole(): any {
       return groupAuthorsByRole(this.series.booksMetadata.authors)
+    },
+    displayedRoles(): string[] {
+      return authorRolesSeries.filter(x => this.authorsByRole[x])
     },
   },
   props: {
