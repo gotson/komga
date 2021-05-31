@@ -8,6 +8,11 @@ import org.gotson.komga.jooq.tables.records.BookMetadataAuthorRecord
 import org.jooq.DSLContext
 import org.jooq.impl.DSL.lower
 import org.jooq.impl.DSL.select
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 
@@ -70,6 +75,68 @@ class ReferentialDao(
       .orderBy(bmaa.NAME, bmaa.ROLE)
       .fetchInto(bmaa)
       .map { it.toDomain() }
+
+  override fun findAuthorsByName(search: String, role: String?, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author> {
+    return findAuthorsByName(search, role, filterOnLibraryIds, pageable, null)
+  }
+
+  override fun findAuthorsByNameAndLibrary(search: String, role: String?, libraryId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author> {
+    return findAuthorsByName(search, role, filterOnLibraryIds, pageable, FilterBy(FilterByType.LIBRARY, libraryId))
+  }
+
+  override fun findAuthorsByNameAndCollection(search: String, role: String?, collectionId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author> {
+    return findAuthorsByName(search, role, filterOnLibraryIds, pageable, FilterBy(FilterByType.COLLECTION, collectionId))
+  }
+
+  override fun findAuthorsByNameAndSeries(search: String, role: String?, seriesId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author> {
+    return findAuthorsByName(search, role, filterOnLibraryIds, pageable, FilterBy(FilterByType.SERIES, seriesId))
+  }
+
+  private enum class FilterByType {
+    LIBRARY,
+    COLLECTION,
+    SERIES,
+  }
+
+  private data class FilterBy(
+    val type: FilterByType,
+    val id: String,
+  )
+
+  private fun findAuthorsByName(search: String, role: String?, filterOnLibraryIds: Collection<String>?, pageable: Pageable, filterBy: FilterBy?): Page<Author> {
+    val query = dsl.selectDistinct(bmaa.NAME, bmaa.ROLE)
+      .from(bmaa)
+      .apply { if (filterOnLibraryIds != null || filterBy?.type == FilterByType.LIBRARY) leftJoin(s).on(bmaa.SERIES_ID.eq(s.ID)) }
+      .apply { if (filterBy?.type == FilterByType.COLLECTION) leftJoin(cs).on(bmaa.SERIES_ID.eq(cs.SERIES_ID)) }
+      .where(bmaa.NAME.containsIgnoreCase(search))
+      .apply { role?.let { and(bmaa.ROLE.eq(role)) } }
+      .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
+      .apply {
+        filterBy?.let {
+          when (it.type) {
+            FilterByType.LIBRARY -> and(s.LIBRARY_ID.eq(it.id))
+            FilterByType.COLLECTION -> and(cs.COLLECTION_ID.eq(it.id))
+            FilterByType.SERIES -> and(bmaa.SERIES_ID.eq(it.id))
+          }
+        }
+      }
+
+    val count = dsl.fetchCount(query)
+
+    val items = query
+      .orderBy(bmaa.NAME, bmaa.ROLE)
+      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+      .fetchInto(a)
+      .map { it.toDomain() }
+
+    val pageSort = Sort.by("name")
+    return PageImpl(
+      items,
+      if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
+      else PageRequest.of(0, maxOf(count, 20), pageSort),
+      count.toLong()
+    )
+  }
 
   override fun findAuthorsNamesByName(search: String, filterOnLibraryIds: Collection<String>?): List<String> =
     dsl.selectDistinct(a.NAME)

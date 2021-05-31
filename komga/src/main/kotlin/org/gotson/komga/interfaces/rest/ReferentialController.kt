@@ -1,9 +1,14 @@
 package org.gotson.komga.interfaces.rest
 
+import io.swagger.v3.oas.annotations.Parameter
 import org.gotson.komga.domain.persistence.ReferentialRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
+import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.interfaces.rest.dto.AuthorDto
 import org.gotson.komga.interfaces.rest.dto.toDto
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.http.MediaType
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
@@ -12,13 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("api/v1", produces = [MediaType.APPLICATION_JSON_VALUE])
+@RequestMapping("api", produces = [MediaType.APPLICATION_JSON_VALUE])
 class ReferentialController(
   private val referentialRepository: ReferentialRepository
 ) {
 
-  @GetMapping("/authors")
-  fun getAuthors(
+  @GetMapping("v1/authors")
+  fun getAuthorsV1(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", defaultValue = "") search: String,
     @RequestParam(name = "library_id", required = false) libraryId: String?,
@@ -33,20 +38,47 @@ class ReferentialController(
       else -> referentialRepository.findAuthorsByName(search, principal.user.getAuthorizedLibraryIds(null))
     }.map { it.toDto() }
 
-  @GetMapping("/authors/names")
+  @PageableWithoutSortAsQueryParam
+  @GetMapping("v2/authors")
+  fun getAuthors(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestParam(name = "search", defaultValue = "") search: String,
+    @RequestParam(name = "role") role: String?,
+    @RequestParam(name = "library_id", required = false) libraryId: String?,
+    @RequestParam(name = "collection_id", required = false) collectionId: String?,
+    @RequestParam(name = "series_id", required = false) seriesId: String?,
+    @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
+    @Parameter(hidden = true) page: Pageable,
+  ): Page<AuthorDto> {
+    val pageRequest =
+      if (unpaged) Pageable.unpaged()
+      else PageRequest.of(
+        page.pageNumber,
+        page.pageSize,
+      )
+
+    return when {
+      libraryId != null -> referentialRepository.findAuthorsByNameAndLibrary(search, role, libraryId, principal.user.getAuthorizedLibraryIds(null), pageRequest)
+      collectionId != null -> referentialRepository.findAuthorsByNameAndCollection(search, role, collectionId, principal.user.getAuthorizedLibraryIds(null), pageRequest)
+      seriesId != null -> referentialRepository.findAuthorsByNameAndSeries(search, role, seriesId, principal.user.getAuthorizedLibraryIds(null), pageRequest)
+      else -> referentialRepository.findAuthorsByName(search, role, principal.user.getAuthorizedLibraryIds(null), pageRequest)
+    }.map { it.toDto() }
+  }
+
+  @GetMapping("v1/authors/names")
   fun getAuthorsNames(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", defaultValue = "") search: String
   ): List<String> =
     referentialRepository.findAuthorsNamesByName(search, principal.user.getAuthorizedLibraryIds(null))
 
-  @GetMapping("/authors/roles")
+  @GetMapping("v1/authors/roles")
   fun getAuthorsRoles(
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ): List<String> =
     referentialRepository.findAuthorsRoles(principal.user.getAuthorizedLibraryIds(null))
 
-  @GetMapping("/genres")
+  @GetMapping("v1/genres")
   fun getGenres(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryId: String?,
@@ -58,7 +90,7 @@ class ReferentialController(
       else -> referentialRepository.findAllGenres(principal.user.getAuthorizedLibraryIds(null))
     }
 
-  @GetMapping("/tags")
+  @GetMapping("v1/tags")
   fun getTags(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     // TODO: remove those parameters once Tachiyomi Extension is using the new /tags/series endpoint (changed in 0.87.4 - 21 Apr 2021)
@@ -73,7 +105,7 @@ class ReferentialController(
       else -> referentialRepository.findAllSeriesAndBookTags(principal.user.getAuthorizedLibraryIds(null))
     }
 
-  @GetMapping("/tags/book")
+  @GetMapping("v1/tags/book")
   fun getBookTags(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "series_id", required = false) seriesId: String?,
@@ -83,7 +115,7 @@ class ReferentialController(
       else -> referentialRepository.findAllBookTags(principal.user.getAuthorizedLibraryIds(null))
     }
 
-  @GetMapping("/tags/series")
+  @GetMapping("v1/tags/series")
   fun getSeriesTags(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryId: String?,
@@ -95,7 +127,7 @@ class ReferentialController(
       else -> referentialRepository.findAllSeriesTags(principal.user.getAuthorizedLibraryIds(null))
     }
 
-  @GetMapping("/languages")
+  @GetMapping("v1/languages")
   fun getLanguages(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryId: String?,
@@ -107,7 +139,7 @@ class ReferentialController(
       else -> referentialRepository.findAllLanguages(principal.user.getAuthorizedLibraryIds(null))
     }
 
-  @GetMapping("/publishers")
+  @GetMapping("v1/publishers")
   fun getPublishers(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryId: String?,
@@ -119,7 +151,7 @@ class ReferentialController(
       else -> referentialRepository.findAllPublishers(principal.user.getAuthorizedLibraryIds(null))
     }
 
-  @GetMapping("/age-ratings")
+  @GetMapping("v1/age-ratings")
   fun getAgeRatings(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryId: String?,
@@ -131,7 +163,7 @@ class ReferentialController(
       else -> referentialRepository.findAllAgeRatings(principal.user.getAuthorizedLibraryIds(null))
     }.map { it?.toString() ?: "None" }.toSet()
 
-  @GetMapping("/series/release-dates")
+  @GetMapping("v1/series/release-dates")
   fun getSeriesReleaseDates(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryId: String?,
