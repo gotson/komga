@@ -232,7 +232,11 @@ export default Vue.extend({
     },
     filterOptionsList(): FiltersOptions {
       return {
-        readStatus: {values: [{name: this.$t('filter.unread').toString(), value: ReadStatus.UNREAD_AND_IN_PROGRESS}]},
+        readStatus: {values: [
+          {name: this.$t('filter.unread').toString(), value: ReadStatus.UNREAD_AND_IN_PROGRESS},
+          {name: this.$t('filter.in_progress').toString(), value: ReadStatus.IN_PROGRESS},
+          {name: this.$t('filter.read').toString(), value: ReadStatus.READ},
+          ]},
       } as FiltersOptions
     },
     filterOptionsPanel(): FiltersOptions {
