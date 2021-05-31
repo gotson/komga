@@ -118,7 +118,7 @@ import {COLLECTION_CHANGED, COLLECTION_DELETED, SERIES_CHANGED} from '@/types/ev
 import Vue from 'vue'
 import SeriesMultiSelectBar from '@/components/bars/SeriesMultiSelectBar.vue'
 import {LIBRARIES_ALL} from '@/types/library'
-import {ReadStatus} from '@/types/enum-books'
+import {ReadStatus, replaceCompositeReadStatus} from '@/types/enum-books'
 import {SeriesStatus, SeriesStatusKeyValue} from '@/types/enum-series'
 import {mergeFilterParams, toNameValue} from '@/functions/filter'
 import FilterDrawer from '@/components/FilterDrawer.vue'
@@ -221,7 +221,13 @@ export default Vue.extend({
   computed: {
     filterOptionsList(): FiltersOptions {
       return {
-        readStatus: {values: [{name: this.$i18n.t('filter.unread').toString(), value: ReadStatus.UNREAD}]},
+        readStatus: {
+          values: [
+            {name: this.$i18n.t('filter.unread').toString(), value: ReadStatus.UNREAD_AND_IN_PROGRESS},
+            {name: this.$t('filter.in_progress').toString(), value: ReadStatus.IN_PROGRESS},
+            {name: this.$t('filter.read').toString(), value: ReadStatus.READ},
+          ],
+        },
       } as FiltersOptions
     },
     filterOptionsPanel(): FiltersOptions {
@@ -351,7 +357,7 @@ export default Vue.extend({
         }))
       })
 
-      this.series = (await this.$komgaCollections.getSeries(collectionId, {unpaged: true} as PageRequest, this.filters.library, this.filters.status, this.filters.readStatus, this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter)).content
+      this.series = (await this.$komgaCollections.getSeries(collectionId, {unpaged: true} as PageRequest, this.filters.library, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter)).content
       this.seriesCopy = [...this.series]
       this.selectedSeries = []
     },
