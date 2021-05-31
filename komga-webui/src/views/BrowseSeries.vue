@@ -378,7 +378,7 @@ import ItemBrowser from '@/components/ItemBrowser.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import SeriesActionsMenu from '@/components/menus/SeriesActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
-import {parseQueryParamAndFilter, parseQuerySort} from '@/functions/query-params'
+import {parseQueryParam, parseQueryParamAndFilter, parseQuerySort} from '@/functions/query-params'
 import {seriesFileUrl, seriesThumbnailUrl} from '@/functions/urls'
 import {ReadStatus, replaceCompositeReadStatus} from '@/types/enum-books'
 import {BOOK_CHANGED, LIBRARY_DELETED, READLIST_CHANGED, SERIES_CHANGED} from '@/types/events'
@@ -468,8 +468,14 @@ export default Vue.extend({
         tag: {name: this.$t('filter.tag').toString(), values: this.filterOptions.tag},
       } as FiltersOptions
       authorRoles.forEach((role: string) => {
-        //@ts-ignore
-        r[role] = {name: this.$t(`author_roles.${role}`).toString(), values: this.$_.get(this.filterOptions, role, [])}
+        r[role] = {
+          name: this.$t(`author_roles.${role}`).toString(),
+          search: async search => {
+            return (await this.$komgaReferential.getAuthors(search, role, undefined, undefined, this.seriesId))
+              .content
+              .map(x => x.name)
+          },
+        }
       })
       return r
     },
@@ -592,17 +598,13 @@ export default Vue.extend({
 
       // load dynamic filters
       this.$set(this.filterOptions, 'tag', toNameValue(await this.$komgaReferential.getBookTags(seriesId)))
-      const grouped = groupAuthorsByRole(await this.$komgaReferential.getAuthors(undefined, undefined, undefined, seriesId))
-      authorRoles.forEach((role: string) => {
-        this.$set(this.filterOptions, role, role in grouped ? toNameValue(grouped[role]) : [])
-      })
 
       // filter query params with available filter values
       this.$set(this.filters, 'readStatus', parseQueryParamAndFilter(this.$route.query.readStatus, Object.keys(ReadStatus)))
       this.$set(this.filters, 'tag', parseQueryParamAndFilter(this.$route.query.tag, this.filterOptions.tag.map(x => x.value)))
       authorRoles.forEach((role: string) => {
         //@ts-ignore
-        this.$set(this.filters, role, parseQueryParamAndFilter(route.query[role], this.filterOptions[role].map((x: NameValue) => x.value)))
+        this.$set(this.filters, role, parseQueryParam(route.query[role]))
       })
     },
     setWatches() {

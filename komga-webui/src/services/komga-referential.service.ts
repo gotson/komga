@@ -11,15 +11,16 @@ export default class KomgaReferentialService {
     this.http = http
   }
 
-  async getAuthors(search?: string, libraryId?: string, collectionId?: string, seriesId?: string): Promise<AuthorDto[]> {
+  async getAuthors(search?: string, role?: string, libraryId?: string, collectionId?: string, seriesId?: string): Promise<Page<AuthorDto>> {
     try {
       const params = {} as any
       if (search) params.search = search
+      if (role) params.role = role
       if (libraryId) params.library_id = libraryId
       if (collectionId) params.collection_id = collectionId
       if (seriesId) params.series_id = seriesId
 
-      return (await this.http.get('/api/v1/authors', {
+      return (await this.http.get('/api/v2/authors', {
         params: params,
         paramsSerializer: params => qs.stringify(params, {indices: false}),
       })).data

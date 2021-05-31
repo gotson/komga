@@ -122,7 +122,6 @@ import FilterPanels from '@/components/FilterPanels.vue'
 import FilterList from '@/components/FilterList.vue'
 import {mergeFilterParams, sortOrFilterActive, toNameValue} from '@/functions/filter'
 import {SeriesDto} from "@/types/komga-series";
-import {groupAuthorsByRole} from "@/functions/authors";
 import {AuthorDto} from "@/types/komga-books";
 import {authorRoles} from "@/types/author-roles";
 
@@ -237,11 +236,13 @@ export default Vue.extend({
     },
     filterOptionsList(): FiltersOptions {
       return {
-        readStatus: {values: [
-          {name: this.$t('filter.unread').toString(), value: ReadStatus.UNREAD_AND_IN_PROGRESS},
-          {name: this.$t('filter.in_progress').toString(), value: ReadStatus.IN_PROGRESS},
-          {name: this.$t('filter.read').toString(), value: ReadStatus.READ},
-          ]},
+        readStatus: {
+          values: [
+            {name: this.$t('filter.unread').toString(), value: ReadStatus.UNREAD_AND_IN_PROGRESS},
+            {name: this.$t('filter.in_progress').toString(), value: ReadStatus.IN_PROGRESS},
+            {name: this.$t('filter.read').toString(), value: ReadStatus.READ},
+          ],
+        },
       } as FiltersOptions
     },
     filterOptionsPanel(): FiltersOptions {
@@ -262,8 +263,14 @@ export default Vue.extend({
         releaseDate: {name: this.$t('filter.release_date').toString(), values: this.filterOptions.releaseDate},
       } as FiltersOptions
       authorRoles.forEach((role: string) => {
-        //@ts-ignore
-        r[role] = {name: this.$t(`author_roles.${role}`).toString(), values: this.$_.get(this.filterOptions, role, [])}
+        r[role] = {
+          name: this.$t(`author_roles.${role}`).toString(),
+          search: async search => {
+            return (await this.$komgaReferential.getAuthors(search, role, this.libraryId !== LIBRARIES_ALL ? this.libraryId : undefined))
+              .content
+              .map(x => x.name)
+          },
+        }
       })
       return r
     },
@@ -306,16 +313,20 @@ export default Vue.extend({
       const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
 
       // load dynamic filters
-      this.$set(this.filterOptions, 'genre', toNameValue(await this.$komgaReferential.getGenres(requestLibraryId)))
-      this.$set(this.filterOptions, 'tag', toNameValue(await this.$komgaReferential.getSeriesTags(requestLibraryId)))
-      this.$set(this.filterOptions, 'publisher', toNameValue(await this.$komgaReferential.getPublishers(requestLibraryId)))
-      this.$set(this.filterOptions, 'language', (await this.$komgaReferential.getLanguages(requestLibraryId)))
-      this.$set(this.filterOptions, 'ageRating', toNameValue(await this.$komgaReferential.getAgeRatings(requestLibraryId)))
-      this.$set(this.filterOptions, 'releaseDate', toNameValue(await this.$komgaReferential.getSeriesReleaseDates(requestLibraryId)))
-      const grouped = groupAuthorsByRole(await this.$komgaReferential.getAuthors(undefined, requestLibraryId))
-      authorRoles.forEach((role: string) => {
-        this.$set(this.filterOptions, role, role in grouped ? toNameValue(grouped[role]) : [])
-      })
+      const [genres, tags, publishers, languages, ageRatings, releaseDates] = await Promise.all([
+        this.$komgaReferential.getGenres(requestLibraryId),
+        this.$komgaReferential.getSeriesTags(requestLibraryId),
+        this.$komgaReferential.getPublishers(requestLibraryId),
+        this.$komgaReferential.getLanguages(requestLibraryId),
+        this.$komgaReferential.getAgeRatings(requestLibraryId),
+        this.$komgaReferential.getSeriesReleaseDates(requestLibraryId),
+      ])
+      this.$set(this.filterOptions, 'genre', toNameValue(genres))
+      this.$set(this.filterOptions, 'tag', toNameValue(tags))
+      this.$set(this.filterOptions, 'publisher', toNameValue(publishers ))
+      this.$set(this.filterOptions, 'language', (languages))
+      this.$set(this.filterOptions, 'ageRating', toNameValue(ageRatings))
+      this.$set(this.filterOptions, 'releaseDate', toNameValue(releaseDates))
 
       // get filter from query params or local storage and validate with available filter values
       let activeFilters: any
@@ -350,7 +361,7 @@ export default Vue.extend({
         releaseDate: filters.releaseDate?.filter(x => this.filterOptions.releaseDate.map(n => n.value).includes(x)) || [],
       } as any
       authorRoles.forEach((role: string) => {
-        validFilter[role] = filters[role]?.filter(x => ((this.filterOptions as any)[role] as NameValue[]).map(n => n.value).includes(x)) || []
+        validFilter[role] = filters[role] || []
       })
       return validFilter
     },
@@ -452,7 +463,7 @@ export default Vue.extend({
       this.totalElements = seriesPage.totalElements
       this.series = seriesPage.content
     },
-    getLibraryLazy (libraryId: string): LibraryDto | undefined {
+    getLibraryLazy(libraryId: string): LibraryDto | undefined {
       if (libraryId !== LIBRARIES_ALL) {
         return this.$store.getters.getLibraryById(libraryId)
       } else {

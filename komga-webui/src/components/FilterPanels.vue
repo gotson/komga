@@ -3,7 +3,7 @@
     <v-expansion-panel
       v-for="(f, key) in filtersOptions"
       :key="key"
-      :disabled="f.values.length === 0"
+      :disabled="(f.values && f.values.length === 0) && !f.search"
     >
       <v-expansion-panel-header class="text-uppercase">
         <v-icon
@@ -16,7 +16,25 @@
         {{ f.name }}
       </v-expansion-panel-header>
       <v-expansion-panel-content class="no-padding">
-        <v-list dense>
+        <v-autocomplete
+          v-if="f.search"
+          v-model="model[key]"
+          :items="items[key]"
+          :search-input.sync="search[key]"
+          :loading="loading[key]"
+          :hide-no-data="!search[key] || loading[key]"
+          @keydown.esc="search[key] = null"
+          multiple
+          deletable-chips
+          small-chips
+          dense
+          solo
+        />
+
+        <v-list
+          v-if="f.values"
+          dense
+        >
           <v-list-item v-for="v in f.values"
                        :key="v.value"
                        @click.stop="click(key, v.value)"
@@ -38,37 +56,80 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue, {PropType} from 'vue'
 
 export default Vue.extend({
   name: 'FilterPanels',
+  data: () => {
+    return {
+      search: {} as any,
+      model: {} as any,
+      items: {} as any,
+      loading: {} as any,
+    }
+  },
   props: {
     filtersOptions: {
-      type: Object as () => FiltersOptions,
+      type: Object as PropType<FiltersOptions>,
       required: true,
     },
     filtersActive: {
-      type: Object as () => FiltersActive,
+      type: Object as PropType<FiltersActive>,
       required: true,
     },
   },
+  watch: {
+    search: {
+      deep: true,
+      async handler(val: any) {
+        for (const prop in val) {
+          if (val[prop] !== null) {
+            this.loading[prop] = true
+            this.$set(this.items, prop, await (this.filtersOptions[prop] as any).search(val[prop]))
+            this.loading[prop] = false
+          }
+        }
+      },
+    },
+    model: {
+      deep: true,
+      async handler(val: any) {
+        for (const prop in val) {
+          if (val[prop] !== null && val[prop] !== this.filtersActive[prop]) {
+            let r = this.$_.cloneDeep(this.filtersActive)
+            r[prop] = this.$_.clone(val[prop])
+
+            this.$emit('update:filtersActive', r)
+          }
+        }
+      },
+    },
+    filtersActive: {
+      deep: true,
+      immediate: true,
+      handler(val: any) {
+        for (const prop in val) {
+          if (val[prop].length > 0) {
+            // we need to add existing values to items also, else v-autocomplete won't show it
+            this.$set(this.items, prop, this.$_.union(this.items[prop], val[prop]))
+            this.$set(this.model, prop, val[prop])
+          }
+        }
+      },
+    },
+  },
   methods: {
-    clear (key: string) {
+    clear(key: string) {
       let r = this.$_.cloneDeep(this.filtersActive)
       r[key] = []
 
       this.$emit('update:filtersActive', r)
     },
-    groupActive (key: string): boolean {
+    groupActive(key: string): boolean {
       if (!(key in this.filtersActive)) return false
-      for (let v of this.filtersOptions[key].values) {
-        if (this.filtersActive[key].includes(v.value)) {
-          return true
-        }
-      }
-      return false
+      return this.filtersActive[key].length > 0;
     },
-    click (key: string, value: string) {
+    click(key: string, value: string) {
       let r = this.$_.cloneDeep(this.filtersActive)
       if (!(key in r)) r[key] = []
       if (r[key].includes(value)) this.$_.pull(r[key], (value))

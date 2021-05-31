@@ -1,7 +1,8 @@
 interface FiltersOptions {
   [key: string]: {
     name?: string,
-    values: NameValue[],
+    values?: NameValue[],
+    search?: (search: string) => Promise<string[]>,
   },
 }
 

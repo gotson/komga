@@ -129,7 +129,6 @@ import EmptyState from '@/components/EmptyState.vue'
 import {parseQueryParam} from '@/functions/query-params'
 import {SeriesDto} from "@/types/komga-series";
 import {authorRoles} from "@/types/author-roles";
-import {groupAuthorsByRole} from "@/functions/authors";
 import {AuthorDto} from "@/types/komga-books";
 
 export default Vue.extend({
@@ -249,8 +248,14 @@ export default Vue.extend({
         releaseDate: {name: this.$t('filter.release_date').toString(), values: this.filterOptions.releaseDate},
       } as FiltersOptions
       authorRoles.forEach((role: string) => {
-        //@ts-ignore
-        r[role] = {name: this.$t(`author_roles.${role}`).toString(), values: this.$_.get(this.filterOptions, role, [])}
+        r[role] = {
+          name: this.$t(`author_roles.${role}`).toString(),
+          search: async search => {
+            return (await this.$komgaReferential.getAuthors(search, role, undefined, this.collectionId))
+              .content
+              .map(x => x.name)
+          },
+        }
       })
       return r
     },
@@ -276,16 +281,21 @@ export default Vue.extend({
         name: x.name,
         value: x.id,
       })))
-      this.$set(this.filterOptions, 'genre', toNameValue(await this.$komgaReferential.getGenres(undefined, collectionId)))
-      this.$set(this.filterOptions, 'tag', toNameValue(await this.$komgaReferential.getSeriesTags(undefined, collectionId)))
-      this.$set(this.filterOptions, 'publisher', toNameValue(await this.$komgaReferential.getPublishers(undefined, collectionId)))
-      this.$set(this.filterOptions, 'language', (await this.$komgaReferential.getLanguages(undefined, collectionId)))
-      this.$set(this.filterOptions, 'ageRating', toNameValue(await this.$komgaReferential.getAgeRatings(undefined, collectionId)))
-      this.$set(this.filterOptions, 'releaseDate', toNameValue(await this.$komgaReferential.getSeriesReleaseDates(undefined, collectionId)))
-      const grouped = groupAuthorsByRole(await this.$komgaReferential.getAuthors(undefined, undefined, collectionId))
-      authorRoles.forEach((role: string) => {
-        this.$set(this.filterOptions, role, role in grouped ? toNameValue(grouped[role]) : [])
-      })
+
+      const [genres, tags, publishers, languages, ageRatings, releaseDates] = await Promise.all([
+        this.$komgaReferential.getGenres(undefined, collectionId),
+        this.$komgaReferential.getSeriesTags(undefined, collectionId),
+        this.$komgaReferential.getPublishers(undefined, collectionId),
+        this.$komgaReferential.getLanguages(undefined, collectionId),
+        this.$komgaReferential.getAgeRatings(undefined, collectionId),
+        this.$komgaReferential.getSeriesReleaseDates(undefined, collectionId),
+      ])
+      this.$set(this.filterOptions, 'genre', toNameValue(genres))
+      this.$set(this.filterOptions, 'tag', toNameValue(tags))
+      this.$set(this.filterOptions, 'publisher', toNameValue(publishers))
+      this.$set(this.filterOptions, 'language', (languages))
+      this.$set(this.filterOptions, 'ageRating', toNameValue(ageRatings))
+      this.$set(this.filterOptions, 'releaseDate', toNameValue(releaseDates))
 
       // get filter from query params or local storage and validate with available filter values
       let activeFilters: any
@@ -322,7 +332,7 @@ export default Vue.extend({
         releaseDate: filters.releaseDate?.filter(x => this.filterOptions.releaseDate.map(n => n.value).includes(x)) || [],
       } as any
       authorRoles.forEach((role: string) => {
-        validFilter[role] = filters[role]?.filter(x => ((this.filterOptions as any)[role] as NameValue[]).map(n => n.value).includes(x)) || []
+        validFilter[role] = filters[role] || []
       })
       return validFilter
     },
