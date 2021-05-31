@@ -1,3 +1,25 @@
+# [0.97.0](https://github.com/gotson/komga/compare/v0.96.5...v0.97.0) (2021-05-31)
+
+
+### Bug Fixes
+
+* series would be updated at each scan even if not modified ([d05237f](https://github.com/gotson/komga/commit/d05237f5ed6b845f0ff05527a505ed7bea7a2698))
+* **webui:** fix combobox search value remaining after list selection ([d114b0e](https://github.com/gotson/komga/commit/d114b0efb277f98b0361acc413f94d384654f6f2))
+
+
+### Features
+
+* **api:** search authors by name and role ([a45a73c](https://github.com/gotson/komga/commit/a45a73c8bd33667a8f7f254b43c8c69f5a76b19f))
+* **webui:** filter series by read and in progress status ([4195ecb](https://github.com/gotson/komga/commit/4195ecbb9a4d53d8ef37ec5820b77fd0ae568ffe))
+* **webui:** in progress and read filter for series and collection ([b41499d](https://github.com/gotson/komga/commit/b41499d77593aa3b32154959658669edb76c592e))
+* **webui:** reset filter button ([3219dc4](https://github.com/gotson/komga/commit/3219dc4bb2c721b92d25861edb281c5501ceba83))
+* **webui:** search authors in filters ([b908ac1](https://github.com/gotson/komga/commit/b908ac140b1d942b3e45c76b2094ab0d7f598f0d))
+
+
+### Performance Improvements
+
+* **webui:** load background data in parallel when possible ([c0d7be9](https://github.com/gotson/komga/commit/c0d7be9627923c52516054ffd00b9d3f339b0beb))
+
 ## [0.96.5](https://github.com/gotson/komga/compare/v0.96.4...v0.96.5) (2021-05-27)
 
 
