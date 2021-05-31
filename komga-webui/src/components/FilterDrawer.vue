@@ -7,6 +7,22 @@
     disable-route-watcher
     class="fill-height"
   >
+    <v-fab-transition>
+      <v-btn
+        v-if="clearButton"
+        absolute
+        top
+        right
+        icon
+        :style="'z-index: 10; background: ' + $vuetify.theme.currentTheme.base"
+        elevation="2"
+        @click="clear"
+        color="primary"
+      >
+        <v-icon>mdi-filter-variant-remove</v-icon>
+      </v-btn>
+    </v-fab-transition>
+
     <slot></slot>
 
     <template v-if="$slots.filter">
@@ -36,13 +52,22 @@ export default Vue.extend({
   },
   props: {
     value: Boolean,
+    clearButton: {
+      type: Boolean,
+      default: false,
+    },
   },
   watch: {
-    value (val) {
+    value(val) {
       this.display = val
     },
-    display (val) {
+    display(val) {
       !val && this.$emit('input', false)
+    },
+  },
+  methods: {
+    clear() {
+      this.$emit('clear')
     },
   },
 })

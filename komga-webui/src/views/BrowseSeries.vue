@@ -47,7 +47,11 @@
       @edit="editMultipleBooks"
     />
 
-    <filter-drawer v-model="drawer">
+    <filter-drawer
+      v-model="drawer"
+      :clear-button="sortOrFilterActive"
+      @clear="resetSortAndFilters"
+    >
       <template v-slot:default>
         <filter-list
           :filters-options="filterOptionsList"
@@ -569,6 +573,14 @@ export default Vue.extend({
     next()
   },
   methods: {
+    resetSortAndFilters() {
+      this.drawer = false
+      for (const prop in this.filters) {
+        this.$set(this.filters, prop, [])
+      }
+      this.sortActive = this.sortDefault
+      this.updateRouteAndReload()
+    },
     async resetParams(route: any, seriesId: string) {
       this.sortActive = this.parseQuerySortOrDefault(route.query.sort)
 

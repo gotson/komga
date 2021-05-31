@@ -36,7 +36,11 @@
 
     <library-navigation v-if="$vuetify.breakpoint.name === 'xs'" :libraryId="libraryId" bottom-navigation/>
 
-    <filter-drawer v-model="drawer">
+    <filter-drawer
+      v-model="drawer"
+      :clear-button="sortOrFilterActive"
+      @clear="resetSortAndFilters"
+    >
       <template v-slot:default>
         <filter-list
           :filters-options="filterOptionsList"
@@ -68,6 +72,7 @@
         icon="mdi-book-multiple"
         icon-color="secondary"
       >
+        <v-btn @click="resetSortAndFilters">{{ $t('common.reset_filters') }}</v-btn>
       </empty-state>
 
       <template v-else>
@@ -283,6 +288,16 @@ export default Vue.extend({
     },
   },
   methods: {
+    resetSortAndFilters() {
+      this.drawer = false
+      for (const prop in this.filters) {
+        this.$set(this.filters, prop, [])
+      }
+      this.sortActive = this.sortDefault
+      this.$store.commit('setLibraryFilter', {id: this.libraryId, filter: this.filters})
+      this.$store.commit('setLibrarySort', {id: this.libraryId, sort: this.sortActive})
+      this.updateRouteAndReload()
+    },
     async resetParams(route: any, libraryId: string) {
       this.sortActive = parseQuerySort(route.query.sort, this.sortOptions) ||
         this.$store.getters.getLibrarySort(route.params.libraryId) ||

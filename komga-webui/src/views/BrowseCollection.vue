@@ -65,7 +65,11 @@
       </toolbar-sticky>
     </v-scroll-y-transition>
 
-    <filter-drawer v-model="drawer">
+    <filter-drawer
+      v-model="drawer"
+      :clear-button="filterActive"
+      @clear="resetFilters"
+    >
       <template v-slot:default>
         <filter-list
           :filters-options="filterOptionsList"
@@ -89,6 +93,7 @@
         icon="mdi-book-multiple"
         icon-color="secondary"
       >
+        <v-btn @click="resetFilters">{{ $t('common.reset_filters') }}</v-btn>
       </empty-state>
 
       <item-browser
@@ -251,6 +256,14 @@ export default Vue.extend({
     },
   },
   methods: {
+    resetFilters() {
+      this.drawer = false
+      for (const prop in this.filters) {
+        this.$set(this.filters, prop, [])
+      }
+      this.$store.commit('setCollectionFilter', {id: this.collectionId, filter: this.filters})
+      this.updateRouteAndReload()
+    },
     async resetParams(route: any, collectionId: string) {
       // load dynamic filters
       this.$set(this.filterOptions, 'library', this.$store.state.komgaLibraries.libraries.map((x: LibraryDto) => ({
