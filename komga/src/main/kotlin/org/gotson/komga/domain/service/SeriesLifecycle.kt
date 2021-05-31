@@ -81,7 +81,9 @@ class SeriesLifecycle(
     }
 
     // update book count for series
-    seriesRepository.update(series.copy(bookCount = books.size))
+    seriesRepository.findByIdOrNull(series.id)?.let {
+      seriesRepository.update(it.copy(bookCount = books.size))
+    }
   }
 
   fun addBooks(series: Series, booksToAdd: Collection<Book>) {
