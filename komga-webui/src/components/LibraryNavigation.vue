@@ -128,8 +128,10 @@ export default Vue.extend({
     },
     async loadCounts(libraryId: string) {
       const lib = libraryId !== LIBRARIES_ALL ? [libraryId] : undefined
-      this.collectionsCount = (await this.$komgaCollections.getCollections(lib, {size: 1})).totalElements
-      this.readListsCount = (await this.$komgaReadLists.getReadLists(lib, {size: 1})).totalElements
+      this.$komgaCollections.getCollections(lib, {size: 0})
+      .then(v => this.collectionsCount = v.totalElements)
+      await this.$komgaReadLists.getReadLists(lib, {size: 0})
+      .then(v => this.readListsCount = v.totalElements)
     },
   },
 })

@@ -646,8 +646,10 @@ export default Vue.extend({
       if (event.seriesId === this.seriesId) this.loadSeries(this.seriesId)
     },
     async loadSeries(seriesId: string) {
-      this.series = await this.$komgaSeries.getOneSeries(seriesId)
-      this.collections = await this.$komgaSeries.getCollections(seriesId)
+      this.$komgaSeries.getOneSeries(seriesId)
+      .then(v => this.series = v)
+      this.$komgaSeries.getCollections(seriesId)
+      .then(v => this.collections = v)
 
       await this.loadPage(seriesId, this.page, this.sortActive)
     },

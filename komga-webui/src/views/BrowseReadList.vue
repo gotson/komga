@@ -156,7 +156,8 @@ export default Vue.extend({
       }
     },
     async loadReadList (readListId: string) {
-      this.readList = await this.$komgaReadLists.getOneReadList(readListId)
+      this.$komgaReadLists.getOneReadList(readListId)
+      .then(v => this.readList = v)
       this.books = (await this.$komgaReadLists.getBooks(readListId, { unpaged: true } as PageRequest)).content
       this.books.forEach((x: BookDto) => x.context = { origin: ContextOrigin.READLIST, id: readListId })
       this.booksCopy = [...this.books]

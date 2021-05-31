@@ -362,7 +362,8 @@ export default Vue.extend({
       this.selectedSeries = []
     },
     async loadCollection(collectionId: string) {
-      this.collection = await this.$komgaCollections.getOneCollection(collectionId)
+      this.$komgaCollections.getOneCollection(collectionId)
+        .then(v => this.collection = v)
 
       await this.loadSeries(collectionId)
     },
