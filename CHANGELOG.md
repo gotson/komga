@@ -1,3 +1,10 @@
+## [0.97.1](https://github.com/gotson/komga/compare/v0.97.0...v0.97.1) (2021-06-01)
+
+
+### Bug Fixes
+
+* **webui:** favicon for iOS, Android and Windows 10 ([#547](https://github.com/gotson/komga/issues/547)) ([da99052](https://github.com/gotson/komga/commit/da990529548a596f90b91fc3806946270c06c3b6))
+
 # [0.97.0](https://github.com/gotson/komga/compare/v0.96.5...v0.97.0) (2021-05-31)
 
 
