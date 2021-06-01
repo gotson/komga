@@ -1,3 +1,10 @@
+## [0.97.2](https://github.com/gotson/komga/compare/v0.97.1...v0.97.2) (2021-06-01)
+
+
+### Bug Fixes
+
+* **webui:** replace searchbox for authors in filter panel ([14e6718](https://github.com/gotson/komga/commit/14e6718252be074deae4e32dfd17d47e7b498cdf))
+
 ## [0.97.1](https://github.com/gotson/komga/compare/v0.97.0...v0.97.1) (2021-06-01)
 
 
