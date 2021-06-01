@@ -30,11 +30,25 @@ class WebMvcConfiguration : WebMvcConfigurer {
     registry
       .addResourceHandler(
         "/index.html",
-        "/favicon.ico"
+        "/favicon.ico",
+        "/favicon-16x16.png",
+        "/favicon-32x32.png",
+        "/mstile-144x144.png",
+        "/apple-touch-icon.png",
+        "/apple-touch-icon-180x180.png",
+        "/android-chrome-192x192.png",
+        "/android-chrome-512x512.png"
       )
       .addResourceLocations(
         "classpath:public/index.html",
-        "classpath:public/favicon.ico"
+        "classpath:public/favicon.ico",
+        "classpath:public/favicon-16x16.png",
+        "classpath:public/favicon-32x32.png",
+        "classpath:public/mstile-144x144.png",
+        "classpath:public/apple-touch-icon.png",
+        "classpath:public/apple-touch-icon-180x180.png",
+        "classpath:public/android-chrome-192x192.png",
+        "classpath:public/android-chrome-512x512.png"
       )
       .setCacheControl(CacheControl.noStore())
 

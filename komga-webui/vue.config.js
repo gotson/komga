@@ -17,6 +17,12 @@ module.exports = {
             }
             return false
           },
+          'th:content': function (tag) {
+            if (_.has(tag, 'attributes.content')) {
+              return `@{${tag.attributes.content}}`
+            }
+            return false
+          },
           'th:src': function (tag) {
             if (_.has(tag, 'attributes.src')) {
               return `@{${tag.attributes.src}}`
