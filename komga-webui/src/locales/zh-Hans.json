@@ -129,6 +129,7 @@
     "isbn": "ISBN",
     "navigation_within_readlist": "阅读列表中的导航: {name}",
     "read_book": "阅读书籍",
+    "read_incognito": "隐私(无痕)阅读",
     "size": "文件大小"
   },
   "browse_collection": {
@@ -163,6 +164,8 @@
     "filter_no_matches": "过滤器没有匹配的",
     "genre": "流派",
     "go_to_library": "前往库",
+    "go_to_readlist": "转到阅读列表",
+    "go_to_series": "转到系列",
     "locale_name": "中文简体",
     "locale_rtl": "false",
     "n_selected": "{count} 选择",
@@ -174,6 +177,7 @@
     "read": "阅读",
     "readlists": "阅读列表",
     "required": "要求",
+    "reset_filters": "重置过滤器",
     "roles": "角色",
     "series": "系列",
     "tags": "标签",
@@ -471,9 +475,11 @@
     "age_rating": "年龄限制",
     "age_rating_none": "无",
     "genre": "流派",
+    "in_progress": "正在进行",
     "language": "语言",
     "library": "库",
     "publisher": "发布者",
+    "read": "已读",
     "release_date": "发行日期",
     "status": "状态",
     "tag": "标签",
@@ -545,6 +551,7 @@
     "search_results_for": "\"{name}\"搜索结果"
   },
   "searchbox": {
+    "in_library": "在 {library}",
     "no_results": "无结果",
     "search_all": "搜索全部…"
   },

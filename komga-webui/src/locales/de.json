@@ -129,6 +129,7 @@
     "isbn": "ISBN",
     "navigation_within_readlist": "Wechseln zur Leseliste: {name}",
     "read_book": "Lese Buch",
+    "read_incognito": "Inkognito lesen",
     "size": "GRÖẞE"
   },
   "browse_collection": {
@@ -163,6 +164,8 @@
     "filter_no_matches": "Die Suchkriterien haben kein Ergebnis geliefert",
     "genre": "Genre",
     "go_to_library": "Gehe zu Bibliothek",
+    "go_to_readlist": "Zur Leseliste gehen",
+    "go_to_series": "Zu Serien gehen",
     "locale_name": "Deutsch",
     "locale_rtl": "false",
     "n_selected": "{count} markiert",
@@ -545,6 +548,7 @@
     "search_results_for": "Suchergegnis für „{name}“"
   },
   "searchbox": {
+    "in_library": "in {library}",
     "no_results": "Keine Ergebnisse",
     "search_all": "Durchsuche alles nach …"
   },

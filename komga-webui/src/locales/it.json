@@ -129,6 +129,7 @@
     "isbn": "ISBN",
     "navigation_within_readlist": "Navigazione all'interno della lista di lettura: {name}",
     "read_book": "Leggi fumetto",
+    "read_incognito": "Leggi in incognito",
     "size": "DIMENSIONE"
   },
   "browse_collection": {
@@ -163,6 +164,8 @@
     "filter_no_matches": "Il filtro attivo non ha corrispondenze",
     "genre": "Genere",
     "go_to_library": "Vai alla libreria",
+    "go_to_readlist": "Vai all'elenco di lettura",
+    "go_to_series": "Vai alle serie",
     "locale_name": "Italiano",
     "locale_rtl": "false",
     "n_selected": "{count} selezionati",
@@ -174,7 +177,8 @@
     "read": "Leggi",
     "readlists": "Liste di lettura",
     "required": "Richiesto",
-    "roles": "Ruoli",
+    "reset_filters": "Reimposta filtri",
+    "roles": "Permessi",
     "series": "Serie",
     "tags": "Etichette",
     "use_filter_panel_to_change_filter": "Usa il pannello dei filtri per cambiare il filtro attivo",
@@ -226,7 +230,7 @@
       "field_role_administrator": "Amministratore",
       "field_role_file_download": "Scaricamento file",
       "field_role_page_streaming": "Lettura online",
-      "label_roles": "Ruoli"
+      "label_roles": "Permessi"
     },
     "delete_collection": {
       "button_cancel": "Annulla",
@@ -349,7 +353,7 @@
       "button_cancel": "Annulla",
       "button_confirm": "Salva modifiche",
       "dialog_title": "Modifica utente",
-      "label_roles_for": "Ruoli per {name}"
+      "label_roles_for": "Permessi per {name}"
     },
     "edit_user_shared_libraries": {
       "button_cancel": "Annulla",
@@ -471,9 +475,11 @@
     "age_rating": "Fascia d'età",
     "age_rating_none": "Nessuna",
     "genre": "genere",
+    "in_progress": "In corso",
     "language": "lingua",
     "library": "libreria",
     "publisher": "editore",
+    "read": "Letti",
     "release_date": "data di pubblicazione",
     "status": "stato",
     "tag": "etichetta",
@@ -584,7 +590,7 @@
   "user_roles": {
     "ADMIN": "Amministratore",
     "FILE_DOWNLOAD": "Scaricamento file",
-    "PAGE_STREAMING": "Leggi online",
+    "PAGE_STREAMING": "Lettura online",
     "USER": "Utente"
   },
   "users": {
