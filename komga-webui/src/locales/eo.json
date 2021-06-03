@@ -129,6 +129,7 @@
     "isbn": "ISBN",
     "navigation_within_readlist": "Navigado en la legolisto {name}",
     "read_book": "Legi libron",
+    "read_incognito": "Legi private",
     "size": "GRANDO"
   },
   "browse_collection": {
@@ -163,6 +164,8 @@
     "filter_no_matches": "La aktiva filtrilo ne lasas ion ajn",
     "genre": "Ĝenro",
     "go_to_library": "Iri al biblioteko",
+    "go_to_readlist": "Iri al legolisto",
+    "go_to_series": "Iri al serio",
     "locale_name": "Esperanto",
     "locale_rtl": "false",
     "n_selected": "{count} elektiĝis",
@@ -174,6 +177,7 @@
     "read": "Legi",
     "readlists": "Legolistoj",
     "required": "Deviga",
+    "reset_filters": "Forigi filtrilojn",
     "roles": "Roloj",
     "series": "Serio",
     "tags": "Etikedoj",
@@ -471,9 +475,11 @@
     "age_rating": "aĝolimo",
     "age_rating_none": "Nenio",
     "genre": "ĝenro",
+    "in_progress": "En progreso",
     "language": "lingvo",
     "library": "biblioteko",
     "publisher": "eldonejo",
+    "read": "Legita",
     "release_date": "dato de eldono",
     "status": "stato",
     "tag": "etikedo",
@@ -545,6 +551,7 @@
     "search_results_for": "Serĉi \"{name}\" en rezultoj"
   },
   "searchbox": {
+    "in_library": "en {library}",
     "no_results": "Neniuj rezultoj",
     "search_all": "Serĉi ĉion…"
   },

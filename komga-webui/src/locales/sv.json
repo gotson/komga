@@ -129,6 +129,7 @@
     "isbn": "ISBN",
     "navigation_within_readlist": "Navigering inom läslistan: {name}",
     "read_book": "Läs bok",
+    "read_incognito": "Läs incognito",
     "size": "STORLEK"
   },
   "browse_collection": {
@@ -163,6 +164,8 @@
     "filter_no_matches": "Det aktiva filtret ger ingen träff",
     "genre": "Genre",
     "go_to_library": "Gå till bibliotek",
+    "go_to_readlist": "Gå till läslistan",
+    "go_to_series": "Gå till serien",
     "locale_name": "Svenska",
     "locale_rtl": "false",
     "n_selected": "{count} valda",
@@ -174,6 +177,7 @@
     "read": "Läs",
     "readlists": "Läslistor",
     "required": "Krävs",
+    "reset_filters": "Återställ filter",
     "roles": "Roller",
     "series": "Serier",
     "tags": "Taggar",
@@ -471,9 +475,11 @@
     "age_rating": "åldersgräns",
     "age_rating_none": "Ingen",
     "genre": "genre",
+    "in_progress": "Pågående",
     "language": "språk",
     "library": "bibliotek",
     "publisher": "utgivare",
+    "read": "Läsa",
     "release_date": "utgivningsdatum",
     "status": "status",
     "tag": "tag",
@@ -545,6 +551,7 @@
     "search_results_for": "Sökresultat för ”{name}”"
   },
   "searchbox": {
+    "in_library": "i {library}",
     "no_results": "Inga resultat",
     "search_all": "Sök i alla…"
   },

@@ -129,6 +129,7 @@
     "isbn": "ISBN",
     "navigation_within_readlist": "Navigáció az olvasólistán belül: {name}",
     "read_book": "Könyv olvasása",
+    "read_incognito": "Olvasás inkognitóban",
     "size": "MÉRET"
   },
   "browse_collection": {
@@ -163,6 +164,8 @@
     "filter_no_matches": "A jelenleg aktív szűrő szerint üres",
     "genre": "Műfaj",
     "go_to_library": "Menj a könyvtárba",
+    "go_to_readlist": "Olvasólistához lépés",
+    "go_to_series": "Könyvsorozathoz lépés",
     "locale_name": "Magyar",
     "locale_rtl": "false",
     "n_selected": "{count} kiválasztva",
@@ -174,6 +177,7 @@
     "read": "Olvasás",
     "readlists": "Olvasólisták",
     "required": "Kötelező",
+    "reset_filters": "Szűrő visszaállítása",
     "roles": "Szerepek",
     "series": "Könyvsorozatok",
     "tags": "Címkék",
@@ -471,9 +475,11 @@
     "age_rating": "korhatár-besorolás",
     "age_rating_none": "Nincs",
     "genre": "műfaj",
+    "in_progress": "Folyamatban",
     "language": "nyelv",
     "library": "könyvtár",
     "publisher": "kiadó",
+    "read": "Olvasott",
     "release_date": "megjelenési dátum",
     "status": "státusz",
     "tag": "címke",
@@ -545,6 +551,7 @@
     "search_results_for": "\"{name}\" keresés eredményei"
   },
   "searchbox": {
+    "in_library": "itt: {library}",
     "no_results": "Nincs találat",
     "search_all": "Keresés az összesben…"
   },
