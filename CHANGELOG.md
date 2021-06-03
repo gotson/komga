@@ -1,3 +1,11 @@
+## [0.97.3](https://github.com/gotson/komga/compare/v0.97.2...v0.97.3) (2021-06-03)
+
+
+### Bug Fixes
+
+* translated using Weblate ([45f2bb4](https://github.com/gotson/komga/commit/45f2bb47f902ad579b85799927033261daf2f56d))
+* **api:** updating read progress from tachiyomi would mess up On Deck ([480871c](https://github.com/gotson/komga/commit/480871c966eba64ad74356254765cbd09c8682b8))
+
 ## [0.97.2](https://github.com/gotson/komga/compare/v0.97.1...v0.97.2) (2021-06-01)
 
 
