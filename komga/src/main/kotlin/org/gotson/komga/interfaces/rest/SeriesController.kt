@@ -405,7 +405,10 @@ class SeriesController(
       principal.user.id,
       UnpagedSorted(Sort.by(Sort.Order.asc("metadata.numberSort"))),
     ).filterIndexed { index, _ -> index < readProgress.lastBookRead }
-      .forEach { book -> bookLifecycle.markReadProgressCompleted(book.id, principal.user) }
+      .forEach { book ->
+        if (book.readProgress?.completed != true)
+          bookLifecycle.markReadProgressCompleted(book.id, principal.user)
+      }
   }
 
   @GetMapping("{seriesId}/file", produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
