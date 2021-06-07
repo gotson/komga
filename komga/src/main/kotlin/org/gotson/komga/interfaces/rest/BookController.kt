@@ -421,7 +421,7 @@ class BookController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable bookId: String) {
     bookRepository.findByIdOrNull(bookId)?.let { book ->
-      taskReceiver.analyzeBook(book, HIGH_PRIORITY)
+      taskReceiver.analyzeBook(book.id, HIGH_PRIORITY)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -430,7 +430,7 @@ class BookController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun refreshMetadata(@PathVariable bookId: String) {
     bookRepository.findByIdOrNull(bookId)?.let { book ->
-      taskReceiver.refreshBookMetadata(book, priority = HIGH_PRIORITY)
+      taskReceiver.refreshBookMetadata(book.id, priority = HIGH_PRIORITY)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 

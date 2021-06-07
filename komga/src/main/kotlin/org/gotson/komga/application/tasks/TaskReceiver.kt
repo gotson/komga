@@ -1,7 +1,6 @@
 package org.gotson.komga.application.tasks
 
 import mu.KotlinLogging
-import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.CopyMode
@@ -72,10 +71,6 @@ class TaskReceiver(
     submitTask(Task.AnalyzeBook(bookId, priority))
   }
 
-  fun analyzeBook(book: Book, priority: Int = DEFAULT_PRIORITY) {
-    submitTask(Task.AnalyzeBook(book.id, priority))
-  }
-
   fun generateBookThumbnail(bookId: String, priority: Int = DEFAULT_PRIORITY) {
     submitTask(Task.GenerateBookThumbnail(bookId, priority))
   }
@@ -86,14 +81,6 @@ class TaskReceiver(
     priority: Int = DEFAULT_PRIORITY,
   ) {
     submitTask(Task.RefreshBookMetadata(bookId, capabilities, priority))
-  }
-
-  fun refreshBookMetadata(
-    book: Book,
-    capabilities: List<BookMetadataPatchCapability> = BookMetadataPatchCapability.values().toList(),
-    priority: Int = DEFAULT_PRIORITY,
-  ) {
-    submitTask(Task.RefreshBookMetadata(book.id, capabilities, priority))
   }
 
   fun refreshSeriesMetadata(seriesId: String) {
