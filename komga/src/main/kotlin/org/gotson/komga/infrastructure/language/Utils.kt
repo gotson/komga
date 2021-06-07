@@ -26,5 +26,13 @@ fun <T> List<T>.toEnumeration(): Enumeration<T> {
   }
 }
 
+fun <T, R : Any> Iterable<T>.mostFrequent(transform: (T) -> R?): R? {
+  return this
+    .mapNotNull(transform)
+    .groupingBy { it }
+    .eachCount()
+    .maxByOrNull { it.value }?.key
+}
+
 fun LocalDateTime.notEquals(other: LocalDateTime, precision: TemporalUnit = ChronoUnit.MILLIS) =
   this.truncatedTo(precision) != other.truncatedTo(precision)
