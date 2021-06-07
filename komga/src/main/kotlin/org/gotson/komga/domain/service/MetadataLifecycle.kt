@@ -20,10 +20,12 @@ import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
+import org.gotson.komga.infrastructure.metadata.SeriesMetadataFromBookProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
 import org.gotson.komga.infrastructure.metadata.barcode.IsbnBarcodeProvider
 import org.gotson.komga.infrastructure.metadata.comicrack.ComicInfoProvider
 import org.gotson.komga.infrastructure.metadata.epub.EpubMetadataProvider
+import org.gotson.komga.infrastructure.metadata.mylar.MylarSeriesProvider
 import org.springframework.stereotype.Service
 
 private val logger = KotlinLogging.logger {}
@@ -31,6 +33,7 @@ private val logger = KotlinLogging.logger {}
 @Service
 class MetadataLifecycle(
   private val bookMetadataProviders: List<BookMetadataProvider>,
+  private val seriesMetadataFromBookProviders: List<SeriesMetadataFromBookProvider>,
   private val seriesMetadataProviders: List<SeriesMetadataProvider>,
   private val metadataApplier: MetadataApplier,
   private val metadataAggregator: MetadataAggregator,
@@ -147,7 +150,7 @@ class MetadataLifecycle(
     val library = libraryRepository.findById(series.libraryId)
     var changed = false
 
-    seriesMetadataProviders.forEach { provider ->
+    seriesMetadataFromBookProviders.forEach { provider ->
       when {
         provider is ComicInfoProvider && !library.importComicInfoSeries && !library.importComicInfoCollection -> logger.info { "Library is not set to import series and collection metadata from ComicInfo, skipping" }
         provider is EpubMetadataProvider && !library.importEpubSeries -> logger.info { "Library is not set to import series metadata from Epub, skipping" }
@@ -166,6 +169,20 @@ class MetadataLifecycle(
 
           if (provider is ComicInfoProvider && library.importComicInfoCollection) {
             handlePatchForCollections(patches, series)
+          }
+        }
+      }
+    }
+
+    seriesMetadataProviders.forEach { provider ->
+      when {
+        provider is MylarSeriesProvider && !library.importMylarSeries -> logger.info { "Library is not set to import series metadata from Mylar, skipping" }
+        else -> {
+          logger.debug { "Provider: $provider" }
+          val patch = provider.getSeriesMetadata(series)
+
+          if (provider is MylarSeriesProvider && library.importMylarSeries && patch != null) {
+            handlePatchForSeriesMetadata(patch, series)
           }
         }
       }
@@ -219,11 +236,18 @@ class MetadataLifecycle(
       collections = emptyList()
     )
 
+    handlePatchForSeriesMetadata(aggregatedPatch, series)
+  }
+
+  private fun handlePatchForSeriesMetadata(
+    patch: SeriesMetadataPatch,
+    series: Series
+  ) {
     seriesMetadataRepository.findById(series.id).let {
       logger.debug { "Apply metadata for series: $series" }
 
       logger.debug { "Original metadata: $it" }
-      val patched = metadataApplier.apply(aggregatedPatch, it)
+      val patched = metadataApplier.apply(patch, it)
       logger.debug { "Patched metadata: $patched" }
 
       seriesMetadataRepository.update(patched)

@@ -9,7 +9,7 @@ import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.gotson.komga.infrastructure.mediacontainer.EpubExtractor
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
-import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
+import org.gotson.komga.infrastructure.metadata.SeriesMetadataFromBookProvider
 import org.gotson.komga.infrastructure.validation.BCP47TagValidator
 import org.jsoup.Jsoup
 import org.jsoup.parser.Parser
@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter
 class EpubMetadataProvider(
   private val epubExtractor: EpubExtractor,
   private val isbnValidator: ISBNValidator
-) : BookMetadataProvider, SeriesMetadataProvider {
+) : BookMetadataProvider, SeriesMetadataFromBookProvider {
 
   private val relators = mapOf(
     "aut" to "writer",

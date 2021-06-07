@@ -10,7 +10,7 @@ import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
-import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
+import org.gotson.komga.infrastructure.metadata.SeriesMetadataFromBookProvider
 import org.gotson.komga.infrastructure.metadata.comicrack.dto.ComicInfo
 import org.gotson.komga.infrastructure.metadata.comicrack.dto.Manga
 import org.gotson.komga.infrastructure.validation.BCP47TagValidator
@@ -26,7 +26,7 @@ private const val COMIC_INFO = "ComicInfo.xml"
 class ComicInfoProvider(
   @Autowired(required = false) private val mapper: XmlMapper = XmlMapper(),
   private val bookAnalyzer: BookAnalyzer
-) : BookMetadataProvider, SeriesMetadataProvider {
+) : BookMetadataProvider, SeriesMetadataFromBookProvider {
 
   override fun getCapabilities(): List<BookMetadataPatchCapability> =
     listOf(
@@ -119,7 +119,7 @@ class ComicInfoProvider(
       val fileContent = bookAnalyzer.getFileContent(book, COMIC_INFO)
       return mapper.readValue(fileContent, ComicInfo::class.java)
     } catch (e: Exception) {
-      logger.error(e) { "Error while retrieving metadata from ComicInfo.xml" }
+      logger.error(e) { "Error while retrieving metadata from $COMIC_INFO" }
       return null
     }
   }
