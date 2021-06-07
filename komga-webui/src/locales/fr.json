@@ -177,6 +177,7 @@
     "read": "Lire",
     "readlists": "Listes de lecture",
     "required": "Requis",
+    "reset_filters": "Réinitialiser les filtres",
     "roles": "Rôles",
     "series": "Séries",
     "tags": "Étiquettes",
@@ -474,9 +475,11 @@
     "age_rating": "Âge minimal",
     "age_rating_none": "Aucun",
     "genre": "Genre",
+    "in_progress": "En cours",
     "language": "Langue",
     "library": "Bibliothèque",
     "publisher": "Éditeur",
+    "read": "Lu",
     "release_date": "Date de publication",
     "status": "Statut",
     "tag": "Étiquette",
@@ -521,7 +524,7 @@
     "mark_read": "Marquer comme lu",
     "mark_unread": "Marquer comme non lu",
     "refresh_metadata": "Actualiser les métadonnées",
-    "scan_library_files": "Analyser les fichiers de la bibliothèque"
+    "scan_library_files": "Scanner les fichiers de la bibliothèque"
   },
   "navigation": {
     "home": "Accueil",
