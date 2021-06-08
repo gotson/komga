@@ -1,3 +1,10 @@
+# [0.98.0](https://github.com/gotson/komga/compare/v0.97.3...v0.98.0) (2021-06-08)
+
+
+### Features
+
+* delete empty read lists and collections ([159c767](https://github.com/gotson/komga/commit/159c767929be90ea326086a2354008ab7b52d290)), closes [#551](https://github.com/gotson/komga/issues/551)
+
 ## [0.97.3](https://github.com/gotson/komga/compare/v0.97.2...v0.97.3) (2021-06-03)
 
 
