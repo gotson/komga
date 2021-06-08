@@ -6,7 +6,10 @@ import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
+import org.gotson.komga.domain.persistence.ReadListRepository
+import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
+import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.springframework.stereotype.Service
 import java.nio.file.Paths
 import java.time.temporal.ChronoUnit
@@ -22,6 +25,9 @@ class LibraryContentLifecycle(
   private val bookLifecycle: BookLifecycle,
   private val mediaRepository: MediaRepository,
   private val seriesLifecycle: SeriesLifecycle,
+  private val collectionRepository: SeriesCollectionRepository,
+  private val readListRepository: ReadListRepository,
+  private val komgaProperties: KomgaProperties,
   private val taskReceiver: TaskReceiver,
 ) {
 
@@ -115,6 +121,16 @@ class LibraryContentLifecycle(
             seriesLifecycle.sortBooks(existingSeries)
           }
         }
+      }
+
+      if (komgaProperties.deleteEmptyCollections) {
+        logger.info { "Deleting empty collections" }
+        collectionRepository.deleteEmpty()
+      }
+
+      if (komgaProperties.deleteEmptyReadLists) {
+        logger.info { "Deleting empty read lists" }
+        readListRepository.deleteEmpty()
       }
     }.also { logger.info { "Library updated in $it" } }
   }

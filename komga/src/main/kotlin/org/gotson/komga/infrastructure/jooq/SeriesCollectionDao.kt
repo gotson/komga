@@ -209,6 +209,18 @@ class SeriesCollectionDao(
     }
   }
 
+  override fun deleteEmpty() {
+    dsl.deleteFrom(c)
+      .where(
+        c.ID.`in`(
+          dsl.select(c.ID)
+            .from(c)
+            .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
+            .where(cs.COLLECTION_ID.isNull)
+        )
+      ).execute()
+  }
+
   override fun existsByName(name: String): Boolean =
     dsl.fetchExists(
       dsl.selectFrom(c)

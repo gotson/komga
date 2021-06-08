@@ -37,5 +37,6 @@ interface SeriesCollectionRepository {
   fun delete(collectionId: String)
 
   fun deleteAll()
+  fun deleteEmpty()
   fun existsByName(name: String): Boolean
 }

@@ -209,6 +209,18 @@ class ReadListDao(
     }
   }
 
+  override fun deleteEmpty() {
+    dsl.deleteFrom(rl)
+      .where(
+        rl.ID.`in`(
+          dsl.select(rl.ID)
+            .from(rl)
+            .leftJoin(rlb).on(rl.ID.eq(rlb.READLIST_ID))
+            .where(rlb.READLIST_ID.isNull)
+        )
+      ).execute()
+  }
+
   override fun existsByName(name: String): Boolean =
     dsl.fetchExists(
       dsl.selectFrom(rl)

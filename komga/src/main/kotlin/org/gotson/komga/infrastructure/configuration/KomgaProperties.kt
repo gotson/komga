@@ -16,6 +16,10 @@ class KomgaProperties {
 
   var librariesScanDirectoryExclusions: List<String> = emptyList()
 
+  var deleteEmptyReadLists: Boolean = true
+
+  var deleteEmptyCollections: Boolean = true
+
   var rememberMe = RememberMe()
 
   var nativeWebp: Boolean = true

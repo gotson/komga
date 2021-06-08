@@ -37,5 +37,6 @@ interface ReadListRepository {
   fun delete(readListId: String)
 
   fun deleteAll()
+  fun deleteEmpty()
   fun existsByName(name: String): Boolean
 }
