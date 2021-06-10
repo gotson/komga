@@ -24,7 +24,7 @@
               </v-col>
             </v-row>
 
-            <v-divider/>
+            <v-divider class="my-2"/>
 
             <v-row v-for="(l, index) in libraries" :key="index">
               <v-col>
