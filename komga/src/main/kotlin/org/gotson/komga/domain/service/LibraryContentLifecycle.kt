@@ -136,6 +136,7 @@ class LibraryContentLifecycle(
                 logger.info { "Sidecar changed on disk (${newSidecar.url}, refresh Series for ${newSidecar.type}: $series" }
                 when (newSidecar.type) {
                   Sidecar.Type.ARTWORK -> taskReceiver.refreshSeriesLocalArtwork(series.id)
+                  Sidecar.Type.METADATA -> taskReceiver.refreshSeriesMetadata(series.id)
                 }
               }
             Sidecar.Source.BOOK ->
@@ -143,6 +144,7 @@ class LibraryContentLifecycle(
                 logger.info { "Sidecar changed on disk (${newSidecar.url}, refresh Book for ${newSidecar.type}: $book" }
                 when (newSidecar.type) {
                   Sidecar.Type.ARTWORK -> taskReceiver.refreshBookLocalArtwork(book.id)
+                  Sidecar.Type.METADATA -> taskReceiver.refreshBookMetadata(book.id)
                 }
               }
           }

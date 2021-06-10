@@ -12,7 +12,7 @@ data class Sidecar(
 ) {
 
   enum class Type {
-    ARTWORK
+    ARTWORK, METADATA
   }
 
   enum class Source {

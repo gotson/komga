@@ -5,8 +5,10 @@ import mu.KotlinLogging
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesMetadataPatch
+import org.gotson.komga.domain.model.Sidecar
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
 import org.gotson.komga.infrastructure.metadata.mylar.dto.Status
+import org.gotson.komga.infrastructure.sidecar.SidecarSeriesConsumer
 import org.springframework.stereotype.Service
 import kotlin.io.path.notExists
 import org.gotson.komga.infrastructure.metadata.mylar.dto.Series as MylarSeries
@@ -18,7 +20,7 @@ private const val SERIES_JSON = "series.json"
 @Service
 class MylarSeriesProvider(
   private val mapper: ObjectMapper,
-) : SeriesMetadataProvider {
+) : SeriesMetadataProvider, SidecarSeriesConsumer {
 
   override fun getSeriesMetadata(series: Series): SeriesMetadataPatch? {
     try {
@@ -49,4 +51,8 @@ class MylarSeriesProvider(
       return null
     }
   }
+
+  override fun getSidecarSeriesType(): Sidecar.Type = Sidecar.Type.METADATA
+
+  override fun getSidecarSeriesFilenames(): List<String> = listOf(SERIES_JSON)
 }
