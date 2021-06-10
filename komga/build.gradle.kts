@@ -59,10 +59,10 @@ dependencies {
 
   implementation("com.ibm.icu:icu4j:69.1")
 
-  implementation("org.apache.tika:tika-core:1.25")
+  implementation("org.apache.tika:tika-core:1.26")
   implementation("org.apache.commons:commons-compress:1.20")
   implementation("com.github.junrar:junrar:7.4.0")
-  implementation("org.apache.pdfbox:pdfbox:2.0.22")
+  implementation("org.apache.pdfbox:pdfbox:2.0.23")
   implementation("net.grey-panther:natural-comparator:1.1")
   implementation("org.jsoup:jsoup:1.13.1")
 
