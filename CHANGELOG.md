@@ -1,3 +1,15 @@
+# [0.99.0](https://github.com/gotson/komga/compare/v0.98.0...v0.99.0) (2021-06-10)
+
+
+### Bug Fixes
+
+* **api:** publisher and authors were not sorted lowercase ([78c6d23](https://github.com/gotson/komga/commit/78c6d23295b8e81425c321186f2cda71eb02eb6e))
+
+
+### Features
+
+* detect change in sidecar files during scan ([4244bcd](https://github.com/gotson/komga/commit/4244bcd9ae58b696f6d004025285fddf329c4c93))
+
 # [0.98.0](https://github.com/gotson/komga/compare/v0.97.3...v0.98.0) (2021-06-08)
 
 
