@@ -7,8 +7,8 @@ plugins {
     kotlin("plugin.spring") version kotlinVersion
     kotlin("kapt") version kotlinVersion
   }
-  id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
-  id("com.github.ben-manes.versions") version "0.38.0"
+  id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
+  id("com.github.ben-manes.versions") version "0.39.0"
 }
 
 fun isNonStable(version: String): Boolean {
@@ -33,6 +33,13 @@ allprojects {
     }
     gradleReleaseChannel = "current"
     checkConstraints = true
+  }
+
+  configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+    version.set("0.41.0")
+    filter {
+      exclude("**/db/migration/**")
+    }
   }
 }
 

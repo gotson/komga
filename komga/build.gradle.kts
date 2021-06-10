@@ -8,11 +8,11 @@ plugins {
     kotlin("kapt")
   }
   id("org.springframework.boot") version "2.4.6"
-  id("com.gorylenko.gradle-git-properties") version "2.2.4"
+  id("com.gorylenko.gradle-git-properties") version "2.3.1"
   id("nu.studer.jooq") version "5.2.1"
   id("org.flywaydb.flyway") version "7.5.4"
   id("com.github.johnrengelman.processes") version "0.5.0"
-  id("org.springdoc.openapi-gradle-plugin") version "1.3.1"
+  id("org.springdoc.openapi-gradle-plugin") version "1.3.2"
   jacoco
 }
 
@@ -38,12 +38,12 @@ dependencies {
 
   implementation("org.flywaydb:flyway-core")
 
-  implementation("io.github.microutils:kotlin-logging-jvm:2.0.5")
+  implementation("io.github.microutils:kotlin-logging-jvm:2.0.8")
   implementation("io.micrometer:micrometer-registry-influx")
-  implementation("io.hawt:hawtio-springboot:2.13.0")
+  implementation("io.hawt:hawtio-springboot:2.13.4")
 
   run {
-    val springdocVersion = "1.5.5"
+    val springdocVersion = "1.5.9"
     implementation("org.springdoc:springdoc-openapi-ui:$springdocVersion")
     implementation("org.springdoc:springdoc-openapi-security:$springdocVersion")
     implementation("org.springdoc:springdoc-openapi-kotlin:$springdocVersion")
@@ -53,11 +53,11 @@ dependencies {
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
 
-  implementation("commons-io:commons-io:2.8.0")
+  implementation("commons-io:commons-io:2.9.0")
   implementation("org.apache.commons:commons-lang3:3.12.0")
   implementation("commons-validator:commons-validator:1.7")
 
-  implementation("com.ibm.icu:icu4j:68.2")
+  implementation("com.ibm.icu:icu4j:69.1")
 
   implementation("org.apache.tika:tika-core:1.25")
   implementation("org.apache.commons:commons-compress:1.20")
@@ -66,7 +66,7 @@ dependencies {
   implementation("net.grey-panther:natural-comparator:1.1")
   implementation("org.jsoup:jsoup:1.13.1")
 
-  implementation("net.coobird:thumbnailator:0.4.13")
+  implementation("net.coobird:thumbnailator:0.4.14")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.7.0")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.7.0")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-webp:3.7.0")
@@ -95,10 +95,10 @@ dependencies {
   }
   testImplementation("org.springframework.security:spring-security-test")
   testImplementation("com.ninja-squad:springmockk:3.0.1")
-  testImplementation("io.mockk:mockk:1.10.6")
+  testImplementation("io.mockk:mockk:1.11.0")
   testImplementation("com.google.jimfs:jimfs:1.2")
 
-  testImplementation("com.tngtech.archunit:archunit-junit5:0.17.0")
+  testImplementation("com.tngtech.archunit:archunit-junit5:0.19.0")
 
   developmentOnly("org.springframework.boot:spring-boot-devtools:2.4.6")
 }
@@ -257,11 +257,4 @@ tasks.named<nu.studer.gradle.jooq.JooqGenerate>("generateJooq") {
 openApi {
   outputDir.set(file("$projectDir/docs"))
   forkProperties.set("-Dspring.profiles.active=claim")
-}
-
-configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-  version.set("0.40.0")
-  filter {
-    exclude("**/db/migration/**")
-  }
 }
