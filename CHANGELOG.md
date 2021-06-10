@@ -1,3 +1,11 @@
+## [0.99.1](https://github.com/gotson/komga/compare/v0.99.0...v0.99.1) (2021-06-10)
+
+
+### Bug Fixes
+
+* translated using Weblate (French) ([#549](https://github.com/gotson/komga/issues/549)) ([37a66fe](https://github.com/gotson/komga/commit/37a66feb27a48befb2a4297eb300306c807e3d37))
+* **webui:** incorrect spacing in dialog ([8e1ef16](https://github.com/gotson/komga/commit/8e1ef165a810145d5f4a7b2d231e51e24fc5a016))
+
 # [0.99.0](https://github.com/gotson/komga/compare/v0.98.0...v0.99.0) (2021-06-10)
 
 

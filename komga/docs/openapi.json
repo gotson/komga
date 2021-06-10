@@ -6748,6 +6748,9 @@
             "application/json": {
               "schema": {
                 "type": "object",
+                "required": [
+                  "files"
+                ],
                 "properties": {
                   "files": {
                     "type": "array",
