@@ -38,7 +38,7 @@ class ReferentialDao(
       .apply { filterOnLibraryIds?.let { leftJoin(b).on(a.BOOK_ID.eq(b.ID)) } }
       .where(a.NAME.containsIgnoreCase(search))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-      .orderBy(a.NAME, a.ROLE)
+      .orderBy(lower(a.NAME), a.ROLE)
       .fetchInto(a)
       .map { it.toDomain() }
 
@@ -49,7 +49,7 @@ class ReferentialDao(
       .where(bmaa.NAME.containsIgnoreCase(search))
       .and(s.LIBRARY_ID.eq(libraryId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(bmaa.NAME, bmaa.ROLE)
+      .orderBy(lower(bmaa.NAME), bmaa.ROLE)
       .fetchInto(bmaa)
       .map { it.toDomain() }
 
@@ -61,7 +61,7 @@ class ReferentialDao(
       .where(bmaa.NAME.containsIgnoreCase(search))
       .and(cs.COLLECTION_ID.eq(collectionId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(bmaa.NAME, bmaa.ROLE)
+      .orderBy(lower(bmaa.NAME), bmaa.ROLE)
       .fetchInto(bmaa)
       .map { it.toDomain() }
 
@@ -72,7 +72,7 @@ class ReferentialDao(
       .where(bmaa.NAME.containsIgnoreCase(search))
       .and(bmaa.SERIES_ID.eq(seriesId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(bmaa.NAME, bmaa.ROLE)
+      .orderBy(lower(bmaa.NAME), bmaa.ROLE)
       .fetchInto(bmaa)
       .map { it.toDomain() }
 
@@ -124,7 +124,7 @@ class ReferentialDao(
     val count = dsl.fetchCount(query)
 
     val items = query
-      .orderBy(bmaa.NAME, bmaa.ROLE)
+      .orderBy(lower(bmaa.NAME), bmaa.ROLE)
       .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
       .fetchInto(a)
       .map { it.toDomain() }
@@ -301,7 +301,7 @@ class ReferentialDao(
       .apply { filterOnLibraryIds?.let { leftJoin(s).on(sd.SERIES_ID.eq(s.ID)) } }
       .where(sd.PUBLISHER.ne(""))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(sd.PUBLISHER)
+      .orderBy(lower(sd.PUBLISHER))
       .fetchSet(sd.PUBLISHER)
 
   override fun findAllPublishersByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -311,7 +311,7 @@ class ReferentialDao(
       .where(sd.PUBLISHER.ne(""))
       .and(s.LIBRARY_ID.eq(libraryId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(sd.PUBLISHER)
+      .orderBy(lower(sd.PUBLISHER))
       .fetchSet(sd.PUBLISHER)
 
   override fun findAllPublishersByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -322,7 +322,7 @@ class ReferentialDao(
       .where(sd.PUBLISHER.ne(""))
       .and(cs.COLLECTION_ID.eq(collectionId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(sd.PUBLISHER)
+      .orderBy(lower(sd.PUBLISHER))
       .fetchSet(sd.PUBLISHER)
 
   override fun findAllAgeRatings(filterOnLibraryIds: Collection<String>?): Set<Int> =
