@@ -5,15 +5,18 @@ import org.gotson.komga.domain.model.SeriesSearch
 import java.net.URL
 
 interface SeriesRepository {
-  fun findAll(): Collection<Series>
   fun findByIdOrNull(seriesId: String): Series?
+  fun findByLibraryIdAndUrl(libraryId: String, url: URL): Series?
+
+  fun findAll(): Collection<Series>
   fun findByLibraryId(libraryId: String): Collection<Series>
   fun findByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): Collection<Series>
-  fun findByLibraryIdAndUrl(libraryId: String, url: URL): Series?
   fun findAll(search: SeriesSearch): Collection<Series>
   fun findByTitle(title: String): Collection<Series>
 
   fun getLibraryId(seriesId: String): String?
+
+  fun findAllIdByLibraryId(libraryId: String): Collection<String>
 
   fun insert(series: Series)
   fun update(series: Series)

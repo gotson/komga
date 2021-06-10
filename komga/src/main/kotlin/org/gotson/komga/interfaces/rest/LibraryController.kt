@@ -10,6 +10,7 @@ import org.gotson.komga.domain.model.PathContainedInPath
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
+import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.web.filePathToUrl
@@ -40,7 +41,8 @@ class LibraryController(
   private val taskReceiver: TaskReceiver,
   private val libraryLifecycle: LibraryLifecycle,
   private val libraryRepository: LibraryRepository,
-  private val bookRepository: BookRepository
+  private val bookRepository: BookRepository,
+  private val seriesRepository: SeriesRepository,
 ) {
 
   @GetMapping
@@ -161,6 +163,10 @@ class LibraryController(
   fun refreshMetadata(@PathVariable libraryId: String) {
     bookRepository.findAllIdByLibraryId(libraryId).forEach {
       taskReceiver.refreshBookMetadata(it, priority = HIGH_PRIORITY)
+      taskReceiver.refreshBookLocalArtwork(it, priority = HIGH_PRIORITY)
+    }
+    seriesRepository.findAllIdByLibraryId(libraryId).forEach {
+      taskReceiver.refreshSeriesLocalArtwork(it, priority = HIGH_PRIORITY)
     }
   }
 }

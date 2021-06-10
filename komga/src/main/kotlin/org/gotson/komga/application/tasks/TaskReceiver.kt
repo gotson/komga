@@ -91,6 +91,14 @@ class TaskReceiver(
     submitTask(Task.AggregateSeriesMetadata(seriesId))
   }
 
+  fun refreshBookLocalArtwork(bookId: String, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.RefreshBookLocalArtwork(bookId, priority))
+  }
+
+  fun refreshSeriesLocalArtwork(seriesId: String, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.RefreshSeriesLocalArtwork(seriesId, priority))
+  }
+
   fun importBook(sourceFile: String, seriesId: String, copyMode: CopyMode, destinationName: String?, upgradeBookId: String?, priority: Int = DEFAULT_PRIORITY) {
     submitTask(Task.ImportBook(sourceFile, seriesId, copyMode, destinationName, upgradeBookId, priority))
   }

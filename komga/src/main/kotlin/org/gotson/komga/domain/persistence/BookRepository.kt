@@ -5,9 +5,12 @@ import org.gotson.komga.domain.model.BookSearch
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
+import java.net.URL
 
 interface BookRepository {
   fun findByIdOrNull(bookId: String): Book?
+  fun findByLibraryIdAndUrlOrNull(libraryId: String, url: URL): Book?
+
   fun findBySeriesId(seriesId: String): Collection<Book>
   fun findAll(): Collection<Book>
   fun findAll(bookSearch: BookSearch): Collection<Book>
@@ -15,6 +18,7 @@ interface BookRepository {
 
   fun getLibraryId(bookId: String): String?
   fun findFirstIdInSeries(seriesId: String): String?
+
   fun findAllIdBySeriesId(seriesId: String): Collection<String>
   fun findAllIdBySeriesIds(seriesIds: Collection<String>): Collection<String>
   fun findAllIdByLibraryId(libraryId: String): Collection<String>

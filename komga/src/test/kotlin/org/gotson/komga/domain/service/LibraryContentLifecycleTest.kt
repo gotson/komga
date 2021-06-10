@@ -4,7 +4,10 @@ import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
+import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.ScanResult
+import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeBookPage
 import org.gotson.komga.domain.model.makeLibrary
@@ -46,6 +49,9 @@ class LibraryContentLifecycleTest(
     }
   }
 
+  private fun Map<Series, List<Book>>.toScanResult() =
+    ScanResult(this, emptyList())
+
   @Test
   fun `given existing series when adding files and scanning then only updated Books are persisted`() {
     // given
@@ -56,8 +62,8 @@ class LibraryContentLifecycleTest(
     val moreBooks = listOf(makeBook("book1"), makeBook("book2"))
 
     every { mockScanner.scanRootFolder(any()) }.returnsMany(
-      mapOf(makeSeries(name = "series") to books),
-      mapOf(makeSeries(name = "series") to moreBooks)
+      mapOf(makeSeries(name = "series") to books).toScanResult(),
+      mapOf(makeSeries(name = "series") to moreBooks).toScanResult(),
     )
     libraryContentLifecycle.scanRootFolder(library)
 
@@ -86,8 +92,8 @@ class LibraryContentLifecycleTest(
 
     every { mockScanner.scanRootFolder(any()) }
       .returnsMany(
-        mapOf(makeSeries(name = "series") to books),
-        mapOf(makeSeries(name = "series") to lessBooks)
+        mapOf(makeSeries(name = "series") to books).toScanResult(),
+        mapOf(makeSeries(name = "series") to lessBooks).toScanResult(),
       )
     libraryContentLifecycle.scanRootFolder(library)
 
@@ -117,8 +123,8 @@ class LibraryContentLifecycleTest(
 
     every { mockScanner.scanRootFolder(any()) }
       .returnsMany(
-        mapOf(makeSeries(name = "series") to books),
-        mapOf(makeSeries(name = "series") to updatedBooks)
+        mapOf(makeSeries(name = "series") to books).toScanResult(),
+        mapOf(makeSeries(name = "series") to updatedBooks).toScanResult(),
       )
     libraryContentLifecycle.scanRootFolder(library)
 
@@ -145,8 +151,8 @@ class LibraryContentLifecycleTest(
 
     every { mockScanner.scanRootFolder(any()) }
       .returnsMany(
-        mapOf(makeSeries(name = "series") to listOf(makeBook("book1"))),
-        emptyMap()
+        mapOf(makeSeries(name = "series") to listOf(makeBook("book1"))).toScanResult(),
+        emptyMap<Series, List<Book>>().toScanResult(),
       )
     libraryContentLifecycle.scanRootFolder(library)
 
@@ -170,9 +176,9 @@ class LibraryContentLifecycleTest(
       .returnsMany(
         mapOf(
           makeSeries(name = "series") to listOf(makeBook("book1")),
-          makeSeries(name = "series2") to listOf(makeBook("book2"))
-        ),
-        mapOf(makeSeries(name = "series") to listOf(makeBook("book1")))
+          makeSeries(name = "series2") to listOf(makeBook("book2")),
+        ).toScanResult(),
+        mapOf(makeSeries(name = "series") to listOf(makeBook("book1"))).toScanResult(),
       )
     libraryContentLifecycle.scanRootFolder(library)
 
@@ -195,8 +201,8 @@ class LibraryContentLifecycleTest(
     val book1 = makeBook("book1")
     every { mockScanner.scanRootFolder(any()) }
       .returnsMany(
-        mapOf(makeSeries(name = "series") to listOf(book1)),
-        mapOf(makeSeries(name = "series") to listOf(makeBook(name = "book1", fileLastModified = book1.fileLastModified)))
+        mapOf(makeSeries(name = "series") to listOf(book1)).toScanResult(),
+        mapOf(makeSeries(name = "series") to listOf(makeBook(name = "book1", fileLastModified = book1.fileLastModified))).toScanResult(),
       )
     libraryContentLifecycle.scanRootFolder(library)
 
@@ -231,8 +237,8 @@ class LibraryContentLifecycleTest(
     val book1 = makeBook("book1")
     every { mockScanner.scanRootFolder(any()) }
       .returnsMany(
-        mapOf(makeSeries(name = "series") to listOf(book1)),
-        mapOf(makeSeries(name = "series") to listOf(makeBook(name = "book1")))
+        mapOf(makeSeries(name = "series") to listOf(book1)).toScanResult(),
+        mapOf(makeSeries(name = "series") to listOf(makeBook(name = "book1"))).toScanResult(),
       )
     libraryContentLifecycle.scanRootFolder(library)
 
@@ -267,11 +273,11 @@ class LibraryContentLifecycleTest(
     libraryRepository.insert(library2)
 
     every { mockScanner.scanRootFolder(Paths.get(library1.root.toURI())) } returns
-      mapOf(makeSeries(name = "series1") to listOf(makeBook("book1")))
+      mapOf(makeSeries(name = "series1") to listOf(makeBook("book1"))).toScanResult()
 
     every { mockScanner.scanRootFolder(Paths.get(library2.root.toURI())) }.returnsMany(
-      mapOf(makeSeries(name = "series2") to listOf(makeBook("book2"))),
-      emptyMap()
+      mapOf(makeSeries(name = "series2") to listOf(makeBook("book2"))).toScanResult(),
+      emptyMap<Series, List<Book>>().toScanResult(),
     )
 
     libraryContentLifecycle.scanRootFolder(library1)

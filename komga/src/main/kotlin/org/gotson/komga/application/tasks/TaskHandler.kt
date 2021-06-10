@@ -8,6 +8,7 @@ import org.gotson.komga.domain.service.BookConverter
 import org.gotson.komga.domain.service.BookImporter
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.LibraryContentLifecycle
+import org.gotson.komga.domain.service.LocalArtworkLifecycle
 import org.gotson.komga.domain.service.MetadataLifecycle
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS_SELECTOR
@@ -27,6 +28,7 @@ class TaskHandler(
   private val libraryContentLifecycle: LibraryContentLifecycle,
   private val bookLifecycle: BookLifecycle,
   private val metadataLifecycle: MetadataLifecycle,
+  private val localArtworkLifecycle: LocalArtworkLifecycle,
   private val bookImporter: BookImporter,
   private val bookConverter: BookConverter,
 ) {
@@ -74,6 +76,16 @@ class TaskHandler(
           is Task.AggregateSeriesMetadata ->
             seriesRepository.findByIdOrNull(task.seriesId)?.let { series ->
               metadataLifecycle.aggregateMetadata(series)
+            } ?: logger.warn { "Cannot execute task $task: Series does not exist" }
+
+          is Task.RefreshBookLocalArtwork ->
+            bookRepository.findByIdOrNull(task.bookId)?.let { book ->
+              localArtworkLifecycle.refreshLocalArtwork(book)
+            } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
+
+          is Task.RefreshSeriesLocalArtwork ->
+            seriesRepository.findByIdOrNull(task.seriesId)?.let { series ->
+              localArtworkLifecycle.refreshLocalArtwork(series)
             } ?: logger.warn { "Cannot execute task $task: Series does not exist" }
 
           is Task.ImportBook ->

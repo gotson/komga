@@ -431,6 +431,7 @@ class BookController(
   fun refreshMetadata(@PathVariable bookId: String) {
     bookRepository.findByIdOrNull(bookId)?.let { book ->
       taskReceiver.refreshBookMetadata(book.id, priority = HIGH_PRIORITY)
+      taskReceiver.refreshBookLocalArtwork(book.id, priority = HIGH_PRIORITY)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 

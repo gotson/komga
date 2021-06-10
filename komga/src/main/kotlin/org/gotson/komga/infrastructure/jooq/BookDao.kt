@@ -36,6 +36,12 @@ class BookDao(
   override fun findByIdOrNull(bookId: String): Book? =
     findByIdOrNull(dsl, bookId)
 
+  override fun findByLibraryIdAndUrlOrNull(libraryId: String, url: URL): Book? =
+    dsl.selectFrom(b)
+      .where(b.LIBRARY_ID.eq(libraryId).and(b.URL.eq(url.toString())))
+      .fetchOneInto(b)
+      ?.toDomain()
+
   private fun findByIdOrNull(dsl: DSLContext, bookId: String): Book? =
     dsl.selectFrom(b)
       .where(b.ID.eq(bookId))

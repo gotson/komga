@@ -22,7 +22,6 @@ import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
 import org.gotson.komga.infrastructure.metadata.barcode.IsbnBarcodeProvider
 import org.gotson.komga.infrastructure.metadata.comicrack.ComicInfoProvider
 import org.gotson.komga.infrastructure.metadata.epub.EpubMetadataProvider
-import org.gotson.komga.infrastructure.metadata.localartwork.LocalArtworkProvider
 import org.springframework.stereotype.Service
 
 private val logger = KotlinLogging.logger {}
@@ -39,13 +38,10 @@ class MetadataLifecycle(
   private val bookMetadataAggregationRepository: BookMetadataAggregationRepository,
   private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
-  private val bookLifecycle: BookLifecycle,
-  private val seriesLifecycle: SeriesLifecycle,
   private val collectionRepository: SeriesCollectionRepository,
   private val collectionLifecycle: SeriesCollectionLifecycle,
   private val readListRepository: ReadListRepository,
   private val readListLifecycle: ReadListLifecycle,
-  private val localArtworkProvider: LocalArtworkProvider
 ) {
 
   fun refreshMetadata(book: Book, capabilities: List<BookMetadataPatchCapability>) {
@@ -82,9 +78,6 @@ class MetadataLifecycle(
         }
       }
     }
-
-    if (library.importLocalArtwork && capabilities.contains(BookMetadataPatchCapability.THUMBNAILS))
-      refreshMetadataLocalArtwork(book)
   }
 
   private fun handlePatchForReadLists(
@@ -139,12 +132,6 @@ class MetadataLifecycle(
     }
   }
 
-  private fun refreshMetadataLocalArtwork(book: Book) {
-    localArtworkProvider.getBookThumbnails(book).forEach {
-      bookLifecycle.addThumbnailForBook(it)
-    }
-  }
-
   fun refreshMetadata(series: Series) {
     logger.info { "Refresh metadata for series: $series" }
 
@@ -171,14 +158,6 @@ class MetadataLifecycle(
           }
         }
       }
-    }
-
-    if (library.importLocalArtwork) refreshMetadataLocalArtwork(series)
-  }
-
-  private fun refreshMetadataLocalArtwork(series: Series) {
-    localArtworkProvider.getSeriesThumbnails(series).forEach {
-      seriesLifecycle.addThumbnailForSeries(it)
     }
   }
 

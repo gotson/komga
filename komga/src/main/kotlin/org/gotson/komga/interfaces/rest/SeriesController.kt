@@ -309,7 +309,9 @@ class SeriesController(
   fun refreshMetadata(@PathVariable seriesId: String) {
     bookRepository.findAllIdBySeriesId(seriesId).forEach {
       taskReceiver.refreshBookMetadata(it, priority = HIGH_PRIORITY)
+      taskReceiver.refreshBookLocalArtwork(it, priority = HIGH_PRIORITY)
     }
+    taskReceiver.refreshSeriesLocalArtwork(seriesId, priority = HIGH_PRIORITY)
   }
 
   @PatchMapping("{seriesId}/metadata")

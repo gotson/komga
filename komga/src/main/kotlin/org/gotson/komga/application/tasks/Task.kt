@@ -40,6 +40,16 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY) : Serializable {
     override fun uniqueId() = "AGGREGATE_SERIES_METADATA_$seriesId"
   }
 
+  class RefreshBookLocalArtwork(val bookId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
+    override fun uniqueId(): String = "REFRESH_BOOK_LOCAL_ARTWORK_$bookId"
+    override fun toString(): String = "RefreshBookLocalArtwork(bookId='$bookId', priority='$priority')"
+  }
+
+  class RefreshSeriesLocalArtwork(val seriesId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
+    override fun uniqueId(): String = "REFRESH_SERIES_LOCAL_ARTWORK_$seriesId"
+    override fun toString(): String = "RefreshSeriesLocalArtwork(seriesId=$seriesId, priority='$priority')"
+  }
+
   class ImportBook(val sourceFile: String, val seriesId: String, val copyMode: CopyMode, val destinationName: String?, val upgradeBookId: String?, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
     override fun uniqueId(): String = "IMPORT_BOOK_${seriesId}_$sourceFile"
     override fun toString(): String =

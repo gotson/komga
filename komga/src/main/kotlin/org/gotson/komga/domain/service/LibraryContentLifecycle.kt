@@ -4,11 +4,13 @@ import mu.KotlinLogging
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.Sidecar
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
+import org.gotson.komga.domain.persistence.SidecarRepository
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.springframework.stereotype.Service
 import java.nio.file.Paths
@@ -27,6 +29,7 @@ class LibraryContentLifecycle(
   private val seriesLifecycle: SeriesLifecycle,
   private val collectionRepository: SeriesCollectionRepository,
   private val readListRepository: ReadListRepository,
+  private val sidecarRepository: SidecarRepository,
   private val komgaProperties: KomgaProperties,
   private val taskReceiver: TaskReceiver,
 ) {
@@ -34,8 +37,10 @@ class LibraryContentLifecycle(
   fun scanRootFolder(library: Library) {
     logger.info { "Updating library: $library" }
     measureTime {
+      val scanResult = fileSystemScanner.scanRootFolder(Paths.get(library.root.toURI()), library.scanForceModifiedTime)
       val scannedSeries =
-        fileSystemScanner.scanRootFolder(Paths.get(library.root.toURI()), library.scanForceModifiedTime)
+        scanResult
+          .series
           .map { (series, books) ->
             series.copy(libraryId = library.id) to books.map { it.copy(libraryId = library.id) }
           }.toMap()
@@ -121,6 +126,37 @@ class LibraryContentLifecycle(
             seriesLifecycle.sortBooks(existingSeries)
           }
         }
+      }
+
+      val existingSidecars = sidecarRepository.findAll()
+      scanResult.sidecars.forEach { newSidecar ->
+        val existingSidecar = existingSidecars.firstOrNull { it.url == newSidecar.url }
+        if (existingSidecar == null || existingSidecar.lastModifiedTime.isBefore(newSidecar.lastModifiedTime)) {
+          when (newSidecar.source) {
+            Sidecar.Source.SERIES ->
+              seriesRepository.findByLibraryIdAndUrl(library.id, newSidecar.parentUrl)?.let { series ->
+                when (newSidecar.type) {
+                  Sidecar.Type.ARTWORK -> taskReceiver.refreshSeriesLocalArtwork(series.id)
+                }
+              }
+            Sidecar.Source.BOOK ->
+              bookRepository.findByLibraryIdAndUrlOrNull(library.id, newSidecar.parentUrl)?.let { book ->
+                when (newSidecar.type) {
+                  Sidecar.Type.ARTWORK -> taskReceiver.refreshBookLocalArtwork(book.id)
+                }
+              }
+          }
+          sidecarRepository.save(library.id, newSidecar)
+        }
+      }
+
+      // cleanup sidecars that don't exist anymore
+      scanResult.sidecars.map { it.url }.let { newSidecarsUrls ->
+        existingSidecars
+          .filterNot { existing -> newSidecarsUrls.contains(existing.url) }
+          .let { sidecars ->
+            sidecarRepository.deleteByLibraryIdAndUrls(library.id, sidecars.map { it.url })
+          }
       }
 
       if (komgaProperties.deleteEmptyCollections) {

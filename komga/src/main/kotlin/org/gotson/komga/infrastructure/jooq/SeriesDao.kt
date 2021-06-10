@@ -65,6 +65,12 @@ class SeriesDao(
       .where(s.ID.eq(seriesId))
       .fetchOne(0, String::class.java)
 
+  override fun findAllIdByLibraryId(libraryId: String): Collection<String> =
+    dsl.select(s.ID)
+      .from(s)
+      .where(s.LIBRARY_ID.eq(libraryId))
+      .fetch(s.ID)
+
   override fun findAll(search: SeriesSearch): Collection<Series> {
     val conditions = search.toCondition()
 

@@ -17,7 +17,7 @@ class FileSystemScannerTest {
     librariesScanDirectoryExclusions = listOf("#recycle")
   }
 
-  private val scanner = FileSystemScanner(komgaProperties)
+  private val scanner = FileSystemScanner(komgaProperties, emptyList(), emptyList())
 
   @Test
   fun `given unavailable root directory when scanning then throw exception`() {
@@ -41,7 +41,7 @@ class FileSystemScannerTest {
       Files.createDirectory(root)
 
       // when
-      val scan = scanner.scanRootFolder(root)
+      val scan = scanner.scanRootFolder(root).series
 
       // then
       assertThat(scan).isEmpty()
@@ -59,7 +59,7 @@ class FileSystemScannerTest {
       files.forEach { Files.createFile(root.resolve(it)) }
 
       // when
-      val scan = scanner.scanRootFolder(root)
+      val scan = scanner.scanRootFolder(root).series
       val series = scan.keys.first()
       val books = scan.getValue(series)
 
@@ -81,7 +81,7 @@ class FileSystemScannerTest {
       files.forEach { Files.createFile(root.resolve(it)) }
 
       // when
-      val scan = scanner.scanRootFolder(root)
+      val scan = scanner.scanRootFolder(root).series
       val series = scan.keys.first()
       val books = scan.getValue(series)
 
@@ -109,7 +109,7 @@ class FileSystemScannerTest {
       }
 
       // when
-      val scan = scanner.scanRootFolder(root)
+      val scan = scanner.scanRootFolder(root).series
       val series = scan.keys
 
       // then
@@ -150,7 +150,7 @@ class FileSystemScannerTest {
       }
 
       // when
-      val scan = scanner.scanRootFolder(link)
+      val scan = scanner.scanRootFolder(link).series
       val series = scan.keys
 
       // then
@@ -189,7 +189,7 @@ class FileSystemScannerTest {
       }
 
       // when
-      val scan = scanner.scanRootFolder(root)
+      val scan = scanner.scanRootFolder(root).series
       val series = scan.keys
 
       // then
@@ -223,7 +223,7 @@ class FileSystemScannerTest {
       makeSubDir(recycle, "subtrash", listOf("trash2.cbz"))
 
       // when
-      val scan = scanner.scanRootFolder(root)
+      val scan = scanner.scanRootFolder(root).series
 
       // then
       assertThat(scan).hasSize(2)
@@ -246,7 +246,7 @@ class FileSystemScannerTest {
       makeSubDir(hidden, "subhidden", listOf("hidden2.cbz"))
 
       // when
-      val scan = scanner.scanRootFolder(root)
+      val scan = scanner.scanRootFolder(root).series
 
       // then
       assertThat(scan).hasSize(2)
@@ -267,7 +267,7 @@ class FileSystemScannerTest {
       makeSubDir(dir1, "subdir1", listOf("comic2.cbz", ".comic2.cbz"))
 
       // when
-      val scan = scanner.scanRootFolder(root)
+      val scan = scanner.scanRootFolder(root).series
 
       // then
       assertThat(scan).hasSize(2)
@@ -287,7 +287,7 @@ class FileSystemScannerTest {
       makeSubDir(root, "dir1", listOf("comic.Cbz", "comic2.CBR"))
 
       // when
-      val scan = scanner.scanRootFolder(root)
+      val scan = scanner.scanRootFolder(root).series
 
       // then
       assertThat(scan).hasSize(1)
