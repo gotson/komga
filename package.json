@@ -5,13 +5,13 @@
     "@semantic-release/exec": "^5.0.0",
     "@semantic-release/git": "^9.0.0",
     "is-ci": "^3.0.0",
-    "semantic-release": "^17.4.1"
+    "semantic-release": "^17.4.3"
   },
   "devDependencies": {
-    "@commitlint/cli": "^12.0.1",
-    "@commitlint/config-conventional": "^12.0.1",
-    "commitlint": "^12.0.1",
-    "husky": "^5.1.3",
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
+    "commitlint": "^12.1.4",
+    "husky": "^6.0.0",
     "pinst": "^2.1.6"
   },
   "commitlint": {
@@ -29,7 +29,9 @@
         {
           "replacements": [
             {
-              "files": ["gradle.properties"],
+              "files": [
+                "gradle.properties"
+              ],
               "from": "version=.*",
               "to": "version=${nextRelease.version}",
               "results": [
