@@ -29,5 +29,7 @@ class UnpagedSorted(
 
   override fun first(): Pageable = this
 
+  override fun withPage(pageNumber: Int): Pageable = this
+
   override fun previousOrFirst(): Pageable = this
 }
