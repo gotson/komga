@@ -59,10 +59,10 @@ class MediaDao(
       }.first()
 
   override fun insert(media: Media) {
-    insertMany(listOf(media))
+    insert(listOf(media))
   }
 
-  override fun insertMany(medias: Collection<Media>) {
+  override fun insert(medias: Collection<Media>) {
     if (medias.isNotEmpty()) {
       dsl.transaction { config ->
         config.dsl().batch(

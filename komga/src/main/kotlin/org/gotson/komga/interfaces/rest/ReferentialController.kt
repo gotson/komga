@@ -32,10 +32,10 @@ class ReferentialController(
   ): List<AuthorDto> =
 
     when {
-      libraryId != null -> referentialRepository.findAuthorsByNameAndLibrary(search, libraryId, principal.user.getAuthorizedLibraryIds(null))
-      collectionId != null -> referentialRepository.findAuthorsByNameAndCollection(search, collectionId, principal.user.getAuthorizedLibraryIds(null))
-      seriesId != null -> referentialRepository.findAuthorsByNameAndSeries(search, seriesId, principal.user.getAuthorizedLibraryIds(null))
-      else -> referentialRepository.findAuthorsByName(search, principal.user.getAuthorizedLibraryIds(null))
+      libraryId != null -> referentialRepository.findAllAuthorsByNameAndLibrary(search, libraryId, principal.user.getAuthorizedLibraryIds(null))
+      collectionId != null -> referentialRepository.findAllAuthorsByNameAndCollection(search, collectionId, principal.user.getAuthorizedLibraryIds(null))
+      seriesId != null -> referentialRepository.findAllAuthorsByNameAndSeries(search, seriesId, principal.user.getAuthorizedLibraryIds(null))
+      else -> referentialRepository.findAllAuthorsByName(search, principal.user.getAuthorizedLibraryIds(null))
     }.map { it.toDto() }
 
   @PageableWithoutSortAsQueryParam
@@ -58,10 +58,10 @@ class ReferentialController(
       )
 
     return when {
-      libraryId != null -> referentialRepository.findAuthorsByNameAndLibrary(search, role, libraryId, principal.user.getAuthorizedLibraryIds(null), pageRequest)
-      collectionId != null -> referentialRepository.findAuthorsByNameAndCollection(search, role, collectionId, principal.user.getAuthorizedLibraryIds(null), pageRequest)
-      seriesId != null -> referentialRepository.findAuthorsByNameAndSeries(search, role, seriesId, principal.user.getAuthorizedLibraryIds(null), pageRequest)
-      else -> referentialRepository.findAuthorsByName(search, role, principal.user.getAuthorizedLibraryIds(null), pageRequest)
+      libraryId != null -> referentialRepository.findAllAuthorsByNameAndLibrary(search, role, libraryId, principal.user.getAuthorizedLibraryIds(null), pageRequest)
+      collectionId != null -> referentialRepository.findAllAuthorsByNameAndCollection(search, role, collectionId, principal.user.getAuthorizedLibraryIds(null), pageRequest)
+      seriesId != null -> referentialRepository.findAllAuthorsByNameAndSeries(search, role, seriesId, principal.user.getAuthorizedLibraryIds(null), pageRequest)
+      else -> referentialRepository.findAllAuthorsByName(search, role, principal.user.getAuthorizedLibraryIds(null), pageRequest)
     }.map { it.toDto() }
   }
 
@@ -70,13 +70,13 @@ class ReferentialController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", defaultValue = "") search: String
   ): List<String> =
-    referentialRepository.findAuthorsNamesByName(search, principal.user.getAuthorizedLibraryIds(null))
+    referentialRepository.findAllAuthorsNamesByName(search, principal.user.getAuthorizedLibraryIds(null))
 
   @GetMapping("v1/authors/roles")
   fun getAuthorsRoles(
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ): List<String> =
-    referentialRepository.findAuthorsRoles(principal.user.getAuthorizedLibraryIds(null))
+    referentialRepository.findAllAuthorsRoles(principal.user.getAuthorizedLibraryIds(null))
 
   @GetMapping("v1/genres")
   fun getGenres(

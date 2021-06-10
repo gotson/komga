@@ -184,7 +184,7 @@ class SeriesDaoTest(
     )
     seriesDao.insert(series)
 
-    val found = seriesDao.findByLibraryId(library.id)
+    val found = seriesDao.findAllByLibraryId(library.id)
 
     assertThat(found).hasSize(1)
     assertThat(found.first().name).isEqualTo("Series")
@@ -200,7 +200,7 @@ class SeriesDaoTest(
     )
     seriesDao.insert(series)
 
-    val found = seriesDao.findByLibraryId(library.id + 1)
+    val found = seriesDao.findAllByLibraryId(library.id + 1)
 
     assertThat(found).hasSize(0)
   }
@@ -215,8 +215,8 @@ class SeriesDaoTest(
     )
     seriesDao.insert(series)
 
-    val found = seriesDao.findByLibraryIdAndUrlNotIn(library.id, listOf(URL("file://series2")))
-    val notFound = seriesDao.findByLibraryIdAndUrlNotIn(library.id, listOf(URL("file://series")))
+    val found = seriesDao.findAllByLibraryIdAndUrlNotIn(library.id, listOf(URL("file://series2")))
+    val notFound = seriesDao.findAllByLibraryIdAndUrlNotIn(library.id, listOf(URL("file://series")))
 
     assertThat(found).hasSize(1)
     assertThat(found.first().name).isEqualTo("Series")
@@ -234,10 +234,10 @@ class SeriesDaoTest(
     )
     seriesDao.insert(series)
 
-    val found = seriesDao.findByLibraryIdAndUrl(library.id, URL("file://series"))
-    val notFound1 = seriesDao.findByLibraryIdAndUrl(library.id, URL("file://series2"))
-    val notFound2 = seriesDao.findByLibraryIdAndUrl(library.id + 1, URL("file://series"))
-    val notFound3 = seriesDao.findByLibraryIdAndUrl(library.id + 1, URL("file://series2"))
+    val found = seriesDao.findByLibraryIdAndUrlOrNull(library.id, URL("file://series"))
+    val notFound1 = seriesDao.findByLibraryIdAndUrlOrNull(library.id, URL("file://series2"))
+    val notFound2 = seriesDao.findByLibraryIdAndUrlOrNull(library.id + 1, URL("file://series"))
+    val notFound3 = seriesDao.findByLibraryIdAndUrlOrNull(library.id + 1, URL("file://series2"))
 
     assertThat(found).isNotNull
     assertThat(found?.name).isEqualTo("Series")

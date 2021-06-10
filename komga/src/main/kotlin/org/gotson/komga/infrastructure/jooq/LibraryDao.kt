@@ -36,7 +36,7 @@ class LibraryDao(
       .fetchInto(l)
       .map { it.toDomain() }
 
-  override fun findAllById(libraryIds: Collection<String>): Collection<Library> =
+  override fun findAllByIds(libraryIds: Collection<String>): Collection<Library> =
     dsl.selectFrom(l)
       .where(l.ID.`in`(libraryIds))
       .fetchInto(l)

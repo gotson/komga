@@ -182,7 +182,7 @@ class BookImporterTest(
       bookImporter.importBook(sourceFile, series, CopyMode.COPY)
 
       // then
-      val books = bookRepository.findBySeriesId(series.id).sortedBy { it.number }
+      val books = bookRepository.findAllBySeriesId(series.id).sortedBy { it.number }
       assertThat(books).hasSize(3)
       assertThat(books[0].id).isEqualTo(existingBooks[0].id)
       assertThat(books[2].id).isEqualTo(existingBooks[1].id)
@@ -225,7 +225,7 @@ class BookImporterTest(
       bookImporter.importBook(sourceFile, series, CopyMode.MOVE, upgradeBookId = bookToUpgrade.id)
 
       // then
-      val books = bookRepository.findBySeriesId(series.id).sortedBy { it.number }
+      val books = bookRepository.findAllBySeriesId(series.id).sortedBy { it.number }
       assertThat(books).hasSize(3)
       assertThat(books[0].id).isEqualTo(otherBooks[0].id)
       assertThat(books[1].id).isEqualTo(otherBooks[1].id)
@@ -277,7 +277,7 @@ class BookImporterTest(
       bookImporter.importBook(sourceFile, series, CopyMode.MOVE, upgradeBookId = bookToUpgrade.id)
 
       // then
-      val books = bookRepository.findBySeriesId(series.id).sortedBy { it.number }
+      val books = bookRepository.findAllBySeriesId(series.id).sortedBy { it.number }
       assertThat(books).hasSize(3)
       assertThat(books[0].id).isEqualTo(otherBooks[0].id)
       assertThat(books[1].id).isEqualTo(otherBooks[1].id)
@@ -325,7 +325,7 @@ class BookImporterTest(
       bookImporter.importBook(sourceFile, series, CopyMode.COPY, destinationName = "2", upgradeBookId = bookToUpgrade.id)
 
       // then
-      val books = bookRepository.findBySeriesId(series.id).sortedBy { it.number }
+      val books = bookRepository.findAllBySeriesId(series.id).sortedBy { it.number }
       assertThat(books).hasSize(3)
       assertThat(books[0].id).isEqualTo(otherBooks[0].id)
       assertThat(books[1].id).isNotEqualTo(bookToUpgrade.id)
@@ -373,10 +373,10 @@ class BookImporterTest(
       bookImporter.importBook(sourceFile, series, CopyMode.MOVE, upgradeBookId = bookToUpgrade.id)
 
       // then
-      val books = bookRepository.findBySeriesId(series.id).sortedBy { it.number }
+      val books = bookRepository.findAllBySeriesId(series.id).sortedBy { it.number }
       assertThat(books).hasSize(1)
 
-      val progress = readProgressRepository.findByBookId(books[0].id)
+      val progress = readProgressRepository.findAllByBookId(books[0].id)
       assertThat(progress).hasSize(2)
       with(progress.find { it.userId == user1.id }!!) {
         assertThat(completed).isTrue
@@ -415,7 +415,7 @@ class BookImporterTest(
       bookImporter.importBook(sourceFile, series, CopyMode.MOVE, upgradeBookId = bookToUpgrade.id)
 
       // then
-      val books = bookRepository.findBySeriesId(series.id).sortedBy { it.number }
+      val books = bookRepository.findAllBySeriesId(series.id).sortedBy { it.number }
       assertThat(books).hasSize(1)
 
       with(readListRepository.findByIdOrNull(readList.id)!!) {

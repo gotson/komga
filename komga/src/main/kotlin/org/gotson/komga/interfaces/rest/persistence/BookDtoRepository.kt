@@ -11,7 +11,7 @@ interface BookDtoRepository {
   /**
    * Find books that are part of a readlist, optionally filtered by library
    */
-  fun findByReadListId(
+  fun findAllByReadListId(
     readListId: String,
     userId: String,
     filterOnLibraryIds: Collection<String>?,
@@ -20,22 +20,22 @@ interface BookDtoRepository {
 
   fun findByIdOrNull(bookId: String, userId: String): BookDto?
 
-  fun findPreviousInSeries(bookId: String, userId: String): BookDto?
-  fun findNextInSeries(bookId: String, userId: String): BookDto?
+  fun findPreviousInSeriesOrNull(bookId: String, userId: String): BookDto?
+  fun findNextInSeriesOrNull(bookId: String, userId: String): BookDto?
 
-  fun findPreviousInReadList(
+  fun findPreviousInReadListOrNull(
     readListId: String,
     bookId: String,
     userId: String,
     filterOnLibraryIds: Collection<String>?
   ): BookDto?
 
-  fun findNextInReadList(
+  fun findNextInReadListOrNull(
     readListId: String,
     bookId: String,
     userId: String,
     filterOnLibraryIds: Collection<String>?
   ): BookDto?
 
-  fun findOnDeck(userId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<BookDto>
+  fun findAllOnDeck(userId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<BookDto>
 }

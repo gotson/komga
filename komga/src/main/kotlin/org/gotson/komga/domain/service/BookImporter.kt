@@ -122,12 +122,12 @@ class BookImporter(
       }
 
       // copy read progress
-      readProgressRepository.findByBookId(upgradedBookId)
+      readProgressRepository.findAllByBookId(upgradedBookId)
         .map { it.copy(bookId = importedBook.id) }
         .forEach { readProgressRepository.save(it) }
 
       // replace upgraded book by imported book in read lists
-      readListRepository.findAllByBook(upgradedBookId, filterOnLibraryIds = null)
+      readListRepository.findAllContainingBookId(upgradedBookId, filterOnLibraryIds = null)
         .forEach { rl ->
           readListRepository.update(
             rl.copy(

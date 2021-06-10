@@ -49,8 +49,8 @@ class SeriesLifecycle(
   fun sortBooks(series: Series) {
     logger.debug { "Sorting books for $series" }
 
-    val books = bookRepository.findBySeriesId(series.id)
-    val metadatas = bookMetadataRepository.findByIds(books.map { it.id })
+    val books = bookRepository.findAllBySeriesId(series.id)
+    val metadatas = bookMetadataRepository.findAllByIds(books.map { it.id })
     logger.debug { "Existing books: $books" }
     logger.debug { "Existing metadata: $metadatas" }
 
@@ -59,7 +59,7 @@ class SeriesLifecycle(
       .map { book -> book to metadatas.first { it.bookId == book.id } }
     logger.debug { "Sorted books: $sorted" }
 
-    bookRepository.updateMany(
+    bookRepository.update(
       sorted.mapIndexed { index, (book, _) -> book.copy(number = index + 1) }
     )
 
@@ -70,7 +70,7 @@ class SeriesLifecycle(
         numberSort = if (!metadata.numberSortLock) (index + 1).toFloat() else metadata.numberSort
       )
     }
-    bookMetadataRepository.updateMany(oldToNew.map { it.second })
+    bookMetadataRepository.update(oldToNew.map { it.second })
 
     // refresh metadata to reimport book number, else the series resorting would overwrite it
     oldToNew.forEach { (old, new) ->
@@ -91,12 +91,12 @@ class SeriesLifecycle(
       check(it.libraryId == series.libraryId) { "Cannot add book to series if they don't share the same libraryId" }
     }
 
-    bookRepository.insertMany(
+    bookRepository.insert(
       booksToAdd.map { it.copy(seriesId = series.id) }
     )
 
     // create associated media
-    mediaRepository.insertMany(booksToAdd.map { Media(bookId = it.id) })
+    mediaRepository.insert(booksToAdd.map { Media(bookId = it.id) })
 
     // create associated metadata
     booksToAdd.map {
@@ -106,7 +106,7 @@ class SeriesLifecycle(
         numberSort = it.number.toFloat(),
         bookId = it.id
       )
-    }.let { bookMetadataRepository.insertMany(it) }
+    }.let { bookMetadataRepository.insert(it) }
   }
 
   fun createSeries(series: Series): Series {
@@ -130,7 +130,7 @@ class SeriesLifecycle(
   fun deleteOne(seriesId: String) {
     logger.info { "Delete series id: $seriesId" }
 
-    val bookIds = bookRepository.findAllIdBySeriesId(seriesId)
+    val bookIds = bookRepository.findAllIdsBySeriesId(seriesId)
     bookLifecycle.deleteMany(bookIds)
 
     collectionRepository.removeSeriesFromAll(seriesId)
@@ -144,7 +144,7 @@ class SeriesLifecycle(
   fun deleteMany(seriesIds: Collection<String>) {
     logger.info { "Delete series ids: $seriesIds" }
 
-    val bookIds = bookRepository.findAllIdBySeriesIds(seriesIds)
+    val bookIds = bookRepository.findAllIdsBySeriesIds(seriesIds)
     bookLifecycle.deleteMany(bookIds)
 
     collectionRepository.removeSeriesFromAll(seriesIds)
@@ -152,26 +152,26 @@ class SeriesLifecycle(
     seriesMetadataRepository.delete(seriesIds)
     bookMetadataAggregationRepository.delete(seriesIds)
 
-    seriesRepository.deleteAll(seriesIds)
+    seriesRepository.delete(seriesIds)
   }
 
   fun markReadProgressCompleted(seriesId: String, user: KomgaUser) {
-    val progresses = mediaRepository.getPagesSizes(bookRepository.findAllIdBySeriesId(seriesId))
+    val progresses = mediaRepository.getPagesSizes(bookRepository.findAllIdsBySeriesId(seriesId))
       .map { (bookId, pageSize) -> ReadProgress(bookId, user.id, pageSize, true) }
 
-    readProgressRepository.saveAll(progresses)
+    readProgressRepository.save(progresses)
   }
 
   fun deleteReadProgress(seriesId: String, user: KomgaUser) {
-    readProgressRepository.deleteByBookIdsAndUserId(bookRepository.findAllIdBySeriesId(seriesId), user.id)
+    readProgressRepository.deleteByBookIdsAndUserId(bookRepository.findAllIdsBySeriesId(seriesId), user.id)
   }
 
   fun getThumbnail(seriesId: String): ThumbnailSeries? {
-    val selected = thumbnailsSeriesRepository.findSelectedBySeriesId(seriesId)
+    val selected = thumbnailsSeriesRepository.findSelectedBySeriesIdOrNull(seriesId)
 
     if (selected == null || !selected.exists()) {
       thumbnailsHouseKeeping(seriesId)
-      return thumbnailsSeriesRepository.findSelectedBySeriesId(seriesId)
+      return thumbnailsSeriesRepository.findSelectedBySeriesIdOrNull(seriesId)
     }
 
     return selected
@@ -182,7 +182,7 @@ class SeriesLifecycle(
       return File(it.url.toURI()).readBytes()
     }
 
-    bookRepository.findFirstIdInSeries(seriesId)?.let { bookId ->
+    bookRepository.findFirstIdInSeriesOrNull(seriesId)?.let { bookId ->
       return bookLifecycle.getThumbnailBytes(bookId)
     }
     return null
@@ -190,7 +190,7 @@ class SeriesLifecycle(
 
   fun addThumbnailForSeries(thumbnail: ThumbnailSeries) {
     // delete existing thumbnail with the same url
-    thumbnailsSeriesRepository.findBySeriesId(thumbnail.seriesId)
+    thumbnailsSeriesRepository.findAllBySeriesId(thumbnail.seriesId)
       .filter { it.url == thumbnail.url }
       .forEach {
         thumbnailsSeriesRepository.delete(it.id)
@@ -203,7 +203,7 @@ class SeriesLifecycle(
 
   private fun thumbnailsHouseKeeping(seriesId: String) {
     logger.info { "House keeping thumbnails for series: $seriesId" }
-    val all = thumbnailsSeriesRepository.findBySeriesId(seriesId)
+    val all = thumbnailsSeriesRepository.findAllBySeriesId(seriesId)
       .mapNotNull {
         if (!it.exists()) {
           logger.warn { "Thumbnail doesn't exist, removing entry" }

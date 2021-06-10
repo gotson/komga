@@ -33,25 +33,25 @@ class SeriesDao(
       .fetchOneInto(s)
       ?.toDomain()
 
-  override fun findByLibraryId(libraryId: String): List<Series> =
+  override fun findAllByLibraryId(libraryId: String): List<Series> =
     dsl.selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId))
       .fetchInto(s)
       .map { it.toDomain() }
 
-  override fun findByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): List<Series> =
+  override fun findAllByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): List<Series> =
     dsl.selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId).and(s.URL.notIn(urls.map { it.toString() })))
       .fetchInto(s)
       .map { it.toDomain() }
 
-  override fun findByLibraryIdAndUrl(libraryId: String, url: URL): Series? =
+  override fun findByLibraryIdAndUrlOrNull(libraryId: String, url: URL): Series? =
     dsl.selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId).and(s.URL.eq(url.toString())))
       .fetchOneInto(s)
       ?.toDomain()
 
-  override fun findByTitle(title: String): Collection<Series> =
+  override fun findAllByTitle(title: String): Collection<Series> =
     dsl.selectDistinct(*s.fields())
       .from(s)
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
@@ -65,7 +65,7 @@ class SeriesDao(
       .where(s.ID.eq(seriesId))
       .fetchOne(0, String::class.java)
 
-  override fun findAllIdByLibraryId(libraryId: String): Collection<String> =
+  override fun findAllIdsByLibraryId(libraryId: String): Collection<String> =
     dsl.select(s.ID)
       .from(s)
       .where(s.LIBRARY_ID.eq(libraryId))
@@ -121,7 +121,7 @@ class SeriesDao(
     }
   }
 
-  override fun deleteAll(seriesIds: Collection<String>) {
+  override fun delete(seriesIds: Collection<String>) {
     dsl.transaction { config ->
       with(config.dsl()) {
         deleteFrom(s).where(s.ID.`in`(seriesIds)).execute()

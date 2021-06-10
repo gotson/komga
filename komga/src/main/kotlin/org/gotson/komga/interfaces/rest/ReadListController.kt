@@ -82,23 +82,23 @@ class ReadListController(
       )
 
     return when {
-      principal.user.sharedAllLibraries && libraryIds == null -> readListRepository.findAll(
+      principal.user.sharedAllLibraries && libraryIds == null -> readListRepository.searchAll(
         searchTerm,
         pageable = pageRequest
       )
-      principal.user.sharedAllLibraries && libraryIds != null -> readListRepository.findAllByLibraries(
+      principal.user.sharedAllLibraries && libraryIds != null -> readListRepository.findAllByLibraryIds(
         libraryIds,
         null,
         searchTerm,
         pageable = pageRequest
       )
-      !principal.user.sharedAllLibraries && libraryIds != null -> readListRepository.findAllByLibraries(
+      !principal.user.sharedAllLibraries && libraryIds != null -> readListRepository.findAllByLibraryIds(
         libraryIds,
         principal.user.sharedLibrariesIds,
         searchTerm,
         pageable = pageRequest
       )
-      else -> readListRepository.findAllByLibraries(
+      else -> readListRepository.findAllByLibraryIds(
         principal.user.sharedLibrariesIds,
         principal.user.sharedLibrariesIds,
         searchTerm,
@@ -202,7 +202,7 @@ class ReadListController(
           sort
         )
 
-      bookDtoRepository.findByReadListId(
+      bookDtoRepository.findAllByReadListId(
         readList.id,
         principal.user.id,
         principal.user.getAuthorizedLibraryIds(null),
@@ -218,7 +218,7 @@ class ReadListController(
     @PathVariable bookId: String
   ): BookDto =
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
-      bookDtoRepository.findPreviousInReadList(
+      bookDtoRepository.findPreviousInReadListOrNull(
         id,
         bookId,
         principal.user.id,
@@ -234,7 +234,7 @@ class ReadListController(
     @PathVariable bookId: String
   ): BookDto =
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
-      bookDtoRepository.findNextInReadList(
+      bookDtoRepository.findNextInReadListOrNull(
         id,
         bookId,
         principal.user.id,
@@ -249,7 +249,7 @@ class ReadListController(
     @AuthenticationPrincipal principal: KomgaPrincipal
   ): TachiyomiReadProgressDto =
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
-      readProgressDtoRepository.getProgressByReadList(readList.id, principal.user.id)
+      readProgressDtoRepository.findProgressByReadList(readList.id, principal.user.id)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @PutMapping("{id}/read-progress/tachiyomi")
@@ -260,7 +260,7 @@ class ReadListController(
     @AuthenticationPrincipal principal: KomgaPrincipal
   ) {
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
-      bookDtoRepository.findByReadListId(
+      bookDtoRepository.findAllByReadListId(
         readList.id,
         principal.user.id,
         principal.user.getAuthorizedLibraryIds(null),

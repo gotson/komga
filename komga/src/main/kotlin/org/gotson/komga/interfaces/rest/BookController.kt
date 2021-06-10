@@ -159,7 +159,7 @@ class BookController(
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
     @Parameter(hidden = true) page: Pageable
   ): Page<BookDto> =
-    bookDtoRepository.findOnDeck(
+    bookDtoRepository.findAllOnDeck(
       principal.user.id,
       principal.user.getAuthorizedLibraryIds(libraryIds),
       page
@@ -180,11 +180,11 @@ class BookController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String
   ): BookDto {
-    bookRepository.getLibraryId(bookId)?.let {
+    bookRepository.getLibraryIdOrNull(bookId)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    return bookDtoRepository.findPreviousInSeries(bookId, principal.user.id)
+    return bookDtoRepository.findPreviousInSeriesOrNull(bookId, principal.user.id)
       ?.restrictUrl(!principal.user.roleAdmin)
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
@@ -194,11 +194,11 @@ class BookController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String
   ): BookDto {
-    bookRepository.getLibraryId(bookId)?.let {
+    bookRepository.getLibraryIdOrNull(bookId)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    return bookDtoRepository.findNextInSeries(bookId, principal.user.id)
+    return bookDtoRepository.findNextInSeriesOrNull(bookId, principal.user.id)
       ?.restrictUrl(!principal.user.roleAdmin)
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
@@ -208,11 +208,11 @@ class BookController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "bookId") bookId: String
   ): List<ReadListDto> {
-    bookRepository.getLibraryId(bookId)?.let {
+    bookRepository.getLibraryIdOrNull(bookId)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    return readListRepository.findAllByBook(bookId, principal.user.getAuthorizedLibraryIds(null))
+    return readListRepository.findAllContainingBookId(bookId, principal.user.getAuthorizedLibraryIds(null))
       .map { it.toDto() }
   }
 
@@ -228,7 +228,7 @@ class BookController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String
   ): ByteArray {
-    bookRepository.getLibraryId(bookId)?.let {
+    bookRepository.getLibraryIdOrNull(bookId)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 

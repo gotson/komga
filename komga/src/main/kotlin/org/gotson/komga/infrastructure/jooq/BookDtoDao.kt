@@ -66,7 +66,7 @@ class BookDtoDao(
     return findAll(conditions, userId, pageable, search.toJoinConditions(), null)
   }
 
-  override fun findByReadListId(
+  override fun findAllByReadListId(
     readListId: String,
     userId: String,
     filterOnLibraryIds: Collection<String>?,
@@ -122,13 +122,13 @@ class BookDtoDao(
       .fetchAndMap()
       .firstOrNull()
 
-  override fun findPreviousInSeries(bookId: String, userId: String): BookDto? =
+  override fun findPreviousInSeriesOrNull(bookId: String, userId: String): BookDto? =
     findSiblingSeries(bookId, userId, next = false)
 
-  override fun findNextInSeries(bookId: String, userId: String): BookDto? =
+  override fun findNextInSeriesOrNull(bookId: String, userId: String): BookDto? =
     findSiblingSeries(bookId, userId, next = true)
 
-  override fun findPreviousInReadList(
+  override fun findPreviousInReadListOrNull(
     readListId: String,
     bookId: String,
     userId: String,
@@ -136,7 +136,7 @@ class BookDtoDao(
   ): BookDto? =
     findSiblingReadList(readListId, bookId, userId, filterOnLibraryIds, next = false)
 
-  override fun findNextInReadList(
+  override fun findNextInReadListOrNull(
     readListId: String,
     bookId: String,
     userId: String,
@@ -144,7 +144,7 @@ class BookDtoDao(
   ): BookDto? =
     findSiblingReadList(readListId, bookId, userId, filterOnLibraryIds, next = true)
 
-  override fun findOnDeck(userId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<BookDto> {
+  override fun findAllOnDeck(userId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<BookDto> {
     val seriesIds = dsl.select(s.ID)
       .from(s)
       .leftJoin(b).on(s.ID.eq(b.SERIES_ID))

@@ -80,16 +80,16 @@ class SeriesDtoDaoTest(
     val series = seriesRepository.findAll().sortedBy { it.name }
     // series "1": only in progress books
     series.elementAt(0).let {
-      bookRepository.findBySeriesId(it.id).forEach { readProgressRepository.save(ReadProgress(it.id, user.id, 5, false)) }
+      bookRepository.findAllBySeriesId(it.id).forEach { readProgressRepository.save(ReadProgress(it.id, user.id, 5, false)) }
     }
     // series "2": only read books
     series.elementAt(1).let {
-      bookRepository.findBySeriesId(it.id).forEach { readProgressRepository.save(ReadProgress(it.id, user.id, 5, true)) }
+      bookRepository.findAllBySeriesId(it.id).forEach { readProgressRepository.save(ReadProgress(it.id, user.id, 5, true)) }
     }
     // series "3": only unread books
     // series "4": read, unread, and in progress
     series.elementAt(3).let {
-      val books = bookRepository.findBySeriesId(it.id).sortedBy { it.name }
+      val books = bookRepository.findAllBySeriesId(it.id).sortedBy { it.name }
       books.elementAt(0).let { readProgressRepository.save(ReadProgress(it.id, user.id, 5, false)) }
       books.elementAt(1).let { readProgressRepository.save(ReadProgress(it.id, user.id, 5, true)) }
     }

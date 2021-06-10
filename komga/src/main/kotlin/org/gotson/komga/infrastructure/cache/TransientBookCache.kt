@@ -15,13 +15,13 @@ class TransientBookCache : TransientBookRepository {
     .expireAfterAccess(1, TimeUnit.HOURS)
     .build<String, BookWithMedia>()
 
-  override fun findById(transientBookId: String): BookWithMedia? = cache.getIfPresent(transientBookId)
+  override fun findByIdOrNull(transientBookId: String): BookWithMedia? = cache.getIfPresent(transientBookId)
 
   override fun save(transientBook: BookWithMedia) {
     cache.put(transientBook.book.id, transientBook)
   }
 
-  override fun saveAll(transientBooks: Collection<BookWithMedia>) {
+  override fun save(transientBooks: Collection<BookWithMedia>) {
     cache.putAll(transientBooks.associateBy { it.book.id })
   }
 }

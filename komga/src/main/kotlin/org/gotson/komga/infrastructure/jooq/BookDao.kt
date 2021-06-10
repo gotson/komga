@@ -48,7 +48,7 @@ class BookDao(
       .fetchOneInto(b)
       ?.toDomain()
 
-  override fun findBySeriesId(seriesId: String): Collection<Book> =
+  override fun findAllBySeriesId(seriesId: String): Collection<Book> =
     dsl.selectFrom(b)
       .where(b.SERIES_ID.eq(seriesId))
       .fetchInto(b)
@@ -100,13 +100,13 @@ class BookDao(
     )
   }
 
-  override fun getLibraryId(bookId: String): String? =
+  override fun getLibraryIdOrNull(bookId: String): String? =
     dsl.select(b.LIBRARY_ID)
       .from(b)
       .where(b.ID.eq(bookId))
       .fetchOne(b.LIBRARY_ID)
 
-  override fun findFirstIdInSeries(seriesId: String): String? =
+  override fun findFirstIdInSeriesOrNull(seriesId: String): String? =
     dsl.select(b.ID)
       .from(b)
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
@@ -115,25 +115,25 @@ class BookDao(
       .limit(1)
       .fetchOne(b.ID)
 
-  override fun findAllIdBySeriesId(seriesId: String): Collection<String> =
+  override fun findAllIdsBySeriesId(seriesId: String): Collection<String> =
     dsl.select(b.ID)
       .from(b)
       .where(b.SERIES_ID.eq(seriesId))
       .fetch(b.ID)
 
-  override fun findAllIdBySeriesIds(seriesIds: Collection<String>): Collection<String> =
+  override fun findAllIdsBySeriesIds(seriesIds: Collection<String>): Collection<String> =
     dsl.select(b.ID)
       .from(b)
       .where(b.SERIES_ID.`in`(seriesIds))
       .fetch(0, String::class.java)
 
-  override fun findAllIdByLibraryId(libraryId: String): Collection<String> =
+  override fun findAllIdsByLibraryId(libraryId: String): Collection<String> =
     dsl.select(b.ID)
       .from(b)
       .where(b.LIBRARY_ID.eq(libraryId))
       .fetch(b.ID)
 
-  override fun findAllId(bookSearch: BookSearch, sort: Sort): Collection<String> {
+  override fun findAllIds(bookSearch: BookSearch, sort: Sort): Collection<String> {
     val conditions = bookSearch.toCondition()
 
     val orderBy = sort.toOrderBy(sorts)
@@ -147,7 +147,7 @@ class BookDao(
       .fetch(b.ID)
   }
 
-  override fun findAllIdByLibraryIdAndMediaTypes(libraryId: String, mediaTypes: Collection<String>): Collection<String> =
+  override fun findAllIdsByLibraryIdAndMediaTypes(libraryId: String, mediaTypes: Collection<String>): Collection<String> =
     dsl.select(b.ID)
       .from(b)
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
@@ -155,7 +155,7 @@ class BookDao(
       .and(m.MEDIA_TYPE.`in`(mediaTypes))
       .fetch(b.ID)
 
-  override fun findAllIdByLibraryIdAndMismatchedExtension(libraryId: String, mediaType: String, extension: String): Collection<String> =
+  override fun findAllIdsByLibraryIdAndMismatchedExtension(libraryId: String, mediaType: String, extension: String): Collection<String> =
     dsl.select(b.ID)
       .from(b)
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
@@ -165,10 +165,10 @@ class BookDao(
       .fetch(b.ID)
 
   override fun insert(book: Book) {
-    insertMany(listOf(book))
+    insert(listOf(book))
   }
 
-  override fun insertMany(books: Collection<Book>) {
+  override fun insert(books: Collection<Book>) {
     if (books.isNotEmpty()) {
       dsl.transaction { config ->
         config.dsl().batch(
@@ -205,7 +205,7 @@ class BookDao(
     update(dsl, book)
   }
 
-  override fun updateMany(books: Collection<Book>) {
+  override fun update(books: Collection<Book>) {
     dsl.transaction { config ->
       books.map { update(config.dsl(), it) }
     }
@@ -233,7 +233,7 @@ class BookDao(
     }
   }
 
-  override fun deleteByBookIds(bookIds: Collection<String>) {
+  override fun delete(bookIds: Collection<String>) {
     dsl.transaction { config ->
       with(config.dsl()) {
         deleteFrom(b).where(b.ID.`in`(bookIds)).execute()

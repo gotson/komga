@@ -70,7 +70,7 @@ class BookLifecycle(
       }
       ThumbnailBook.Type.SIDECAR -> {
         // delete existing thumbnail with the same url
-        thumbnailBookRepository.findByBookIdAndType(thumbnail.bookId, ThumbnailBook.Type.SIDECAR)
+        thumbnailBookRepository.findAllByBookIdAndType(thumbnail.bookId, ThumbnailBook.Type.SIDECAR)
           .filter { it.url == thumbnail.url }
           .forEach {
             thumbnailBookRepository.delete(it.id)
@@ -86,11 +86,11 @@ class BookLifecycle(
   }
 
   fun getThumbnail(bookId: String): ThumbnailBook? {
-    val selected = thumbnailBookRepository.findSelectedByBookId(bookId)
+    val selected = thumbnailBookRepository.findSelectedByBookIdOrNull(bookId)
 
     if (selected == null || !selected.exists()) {
       thumbnailsHouseKeeping(bookId)
-      return thumbnailBookRepository.findSelectedByBookId(bookId)
+      return thumbnailBookRepository.findSelectedByBookIdOrNull(bookId)
     }
 
     return selected
@@ -109,7 +109,7 @@ class BookLifecycle(
 
   private fun thumbnailsHouseKeeping(bookId: String) {
     logger.info { "House keeping thumbnails for book: $bookId" }
-    val all = thumbnailBookRepository.findByBookId(bookId)
+    val all = thumbnailBookRepository.findAllByBookId(bookId)
       .mapNotNull {
         if (!it.exists()) {
           logger.warn { "Thumbnail doesn't exist, removing entry" }
@@ -204,13 +204,13 @@ class BookLifecycle(
     logger.info { "Delete all books: $bookIds" }
 
     readProgressRepository.deleteByBookIds(bookIds)
-    readListRepository.removeBookFromAll(bookIds)
+    readListRepository.removeBooksFromAll(bookIds)
 
     mediaRepository.deleteByBookIds(bookIds)
     thumbnailBookRepository.deleteByBookIds(bookIds)
-    bookMetadataRepository.deleteByBookIds(bookIds)
+    bookMetadataRepository.delete(bookIds)
 
-    bookRepository.deleteByBookIds(bookIds)
+    bookRepository.delete(bookIds)
   }
 
   fun markReadProgress(book: Book, user: KomgaUser, page: Int) {

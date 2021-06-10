@@ -143,7 +143,7 @@ class MetadataLifecycle(
         provider is EpubMetadataProvider && !library.importEpubSeries -> logger.info { "Library is not set to import series metadata from Epub, skipping" }
         else -> {
           logger.debug { "Provider: $provider" }
-          val patches = bookRepository.findBySeriesId(series.id)
+          val patches = bookRepository.findAllBySeriesId(series.id)
             .mapNotNull { provider.getSeriesMetadataFromBook(BookWithMedia(it, mediaRepository.findById(it.id))) }
 
           if (
@@ -220,7 +220,7 @@ class MetadataLifecycle(
   fun aggregateMetadata(series: Series) {
     logger.info { "Aggregate book metadata for series: $series" }
 
-    val metadatas = bookMetadataRepository.findByIds(bookRepository.findAllIdBySeriesId(series.id))
+    val metadatas = bookMetadataRepository.findAllByIds(bookRepository.findAllIdsBySeriesId(series.id))
     val aggregation = metadataAggregator.aggregate(metadatas).copy(seriesId = series.id)
 
     bookMetadataAggregationRepository.update(aggregation)

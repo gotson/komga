@@ -79,7 +79,7 @@ class SeriesDtoDao(
     return findAll(conditions, userId, pageable, search.toJoinConditions())
   }
 
-  override fun findByCollectionId(
+  override fun findAllByCollectionId(
     collectionId: String,
     search: SeriesSearchWithReadProgress,
     userId: String,
@@ -91,7 +91,7 @@ class SeriesDtoDao(
     return findAll(conditions, userId, pageable, joinConditions)
   }
 
-  override fun findRecentlyUpdated(
+  override fun findAllRecentlyUpdated(
     search: SeriesSearchWithReadProgress,
     userId: String,
     pageable: Pageable

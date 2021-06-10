@@ -360,7 +360,7 @@ class BookControllerTest(
         }
       }
 
-      val first = bookRepository.findFirstIdInSeries(series.id)
+      val first = bookRepository.findFirstIdInSeriesOrNull(series.id)
       val second = bookRepository.findAll(BookSearch(searchTerm = "2")).first().id
       val third = bookRepository.findAll(BookSearch(searchTerm = "3")).first().id
 

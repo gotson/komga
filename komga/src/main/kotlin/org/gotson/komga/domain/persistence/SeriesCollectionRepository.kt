@@ -6,7 +6,8 @@ import org.springframework.data.domain.Pageable
 
 interface SeriesCollectionRepository {
   fun findByIdOrNull(collectionId: String): SeriesCollection?
-  fun findAll(search: String? = null, pageable: Pageable): Page<SeriesCollection>
+
+  fun searchAll(search: String? = null, pageable: Pageable): Page<SeriesCollection>
 
   /**
    * Find one SeriesCollection by collectionId,
@@ -18,13 +19,13 @@ interface SeriesCollectionRepository {
    * Find all SeriesCollection with at least one Series belonging to the provided belongsToLibraryIds,
    * optionally with only seriesId filtered by the provided filterOnLibraryIds.
    */
-  fun findAllByLibraries(belongsToLibraryIds: Collection<String>, filterOnLibraryIds: Collection<String>?, search: String? = null, pageable: Pageable): Page<SeriesCollection>
+  fun findAllByLibraryIds(belongsToLibraryIds: Collection<String>, filterOnLibraryIds: Collection<String>?, search: String? = null, pageable: Pageable): Page<SeriesCollection>
 
   /**
    * Find all SeriesCollection that contains the provided containsSeriesId,
    * optionally with only seriesId filtered by the provided filterOnLibraryIds.
    */
-  fun findAllBySeries(containsSeriesId: String, filterOnLibraryIds: Collection<String>?): Collection<SeriesCollection>
+  fun findAllContainingSeriesId(containsSeriesId: String, filterOnLibraryIds: Collection<String>?): Collection<SeriesCollection>
 
   fun findByNameOrNull(name: String): SeriesCollection?
 
@@ -35,8 +36,8 @@ interface SeriesCollectionRepository {
   fun removeSeriesFromAll(seriesIds: Collection<String>)
 
   fun delete(collectionId: String)
-
   fun deleteAll()
   fun deleteEmpty()
+
   fun existsByName(name: String): Boolean
 }

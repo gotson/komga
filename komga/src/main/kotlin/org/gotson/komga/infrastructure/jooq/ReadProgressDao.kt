@@ -25,19 +25,19 @@ class ReadProgressDao(
       .fetchInto(r)
       .map { it.toDomain() }
 
-  override fun findByBookIdAndUserId(bookId: String, userId: String): ReadProgress? =
+  override fun findByBookIdAndUserIdOrNull(bookId: String, userId: String): ReadProgress? =
     dsl.selectFrom(r)
       .where(r.BOOK_ID.eq(bookId).and(r.USER_ID.eq(userId)))
       .fetchOneInto(r)
       ?.toDomain()
 
-  override fun findByUserId(userId: String): Collection<ReadProgress> =
+  override fun findAllByUserId(userId: String): Collection<ReadProgress> =
     dsl.selectFrom(r)
       .where(r.USER_ID.eq(userId))
       .fetchInto(r)
       .map { it.toDomain() }
 
-  override fun findByBookId(bookId: String): Collection<ReadProgress> =
+  override fun findAllByBookId(bookId: String): Collection<ReadProgress> =
     dsl.selectFrom(r)
       .where(r.BOOK_ID.eq(bookId))
       .fetchInto(r)
@@ -50,7 +50,7 @@ class ReadProgressDao(
     }
   }
 
-  override fun saveAll(readProgresses: Collection<ReadProgress>) {
+  override fun save(readProgresses: Collection<ReadProgress>) {
     dsl.transaction { config ->
       val queries = readProgresses.map { config.dsl().saveQuery(it) }
       config.dsl().batch(queries).execute()

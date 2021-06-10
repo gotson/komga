@@ -48,11 +48,11 @@ class LibraryContentLifecycle(
       // delete series that don't exist anymore
       if (scannedSeries.isEmpty()) {
         logger.info { "Scan returned no series, deleting all existing series" }
-        val seriesIds = seriesRepository.findByLibraryId(library.id).map { it.id }
+        val seriesIds = seriesRepository.findAllByLibraryId(library.id).map { it.id }
         seriesLifecycle.deleteMany(seriesIds)
       } else {
         scannedSeries.keys.map { it.url }.let { urls ->
-          val series = seriesRepository.findByLibraryIdAndUrlNotIn(library.id, urls)
+          val series = seriesRepository.findAllByLibraryIdAndUrlNotIn(library.id, urls)
           if (series.isNotEmpty()) {
             logger.info { "Deleting series not on disk anymore: $series" }
             seriesLifecycle.deleteMany(series.map { it.id })
@@ -61,7 +61,7 @@ class LibraryContentLifecycle(
       }
 
       scannedSeries.forEach { (newSeries, newBooks) ->
-        val existingSeries = seriesRepository.findByLibraryIdAndUrl(library.id, newSeries.url)
+        val existingSeries = seriesRepository.findByLibraryIdAndUrlOrNull(library.id, newSeries.url)
 
         // if series does not exist, save it
         if (existingSeries == null) {
@@ -82,7 +82,7 @@ class LibraryContentLifecycle(
           }
           if (library.scanDeep || seriesChanged) {
             // update list of books with existing entities if they exist
-            val existingBooks = bookRepository.findBySeriesId(existingSeries.id)
+            val existingBooks = bookRepository.findAllBySeriesId(existingSeries.id)
             logger.debug { "Existing books: $existingBooks" }
             // update existing books
             newBooks.forEach { newBook ->
@@ -134,7 +134,7 @@ class LibraryContentLifecycle(
         if (existingSidecar == null || existingSidecar.lastModifiedTime.isBefore(newSidecar.lastModifiedTime)) {
           when (newSidecar.source) {
             Sidecar.Source.SERIES ->
-              seriesRepository.findByLibraryIdAndUrl(library.id, newSidecar.parentUrl)?.let { series ->
+              seriesRepository.findByLibraryIdAndUrlOrNull(library.id, newSidecar.parentUrl)?.let { series ->
                 when (newSidecar.type) {
                   Sidecar.Type.ARTWORK -> taskReceiver.refreshSeriesLocalArtwork(series.id)
                 }

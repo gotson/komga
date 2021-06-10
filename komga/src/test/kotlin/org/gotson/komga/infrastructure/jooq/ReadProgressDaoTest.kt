@@ -74,7 +74,7 @@ class ReadProgressDaoTest(
       )
     )
 
-    val readProgressList = readProgressDao.findByUserId(user1.id)
+    val readProgressList = readProgressDao.findAllByUserId(user1.id)
 
     assertThat(readProgressList).hasSize(1)
     with(readProgressList.first()) {
@@ -109,7 +109,7 @@ class ReadProgressDaoTest(
       )
     )
 
-    val readProgressList = readProgressDao.findByUserId(user1.id)
+    val readProgressList = readProgressDao.findAllByUserId(user1.id)
 
     assertThat(readProgressList).hasSize(1)
     with(readProgressList.first()) {

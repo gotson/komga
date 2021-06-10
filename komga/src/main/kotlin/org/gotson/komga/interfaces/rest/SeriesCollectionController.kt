@@ -78,10 +78,10 @@ class SeriesCollectionController(
       )
 
     return when {
-      principal.user.sharedAllLibraries && libraryIds == null -> collectionRepository.findAll(searchTerm, pageable = pageRequest)
-      principal.user.sharedAllLibraries && libraryIds != null -> collectionRepository.findAllByLibraries(libraryIds, null, searchTerm, pageable = pageRequest)
-      !principal.user.sharedAllLibraries && libraryIds != null -> collectionRepository.findAllByLibraries(libraryIds, principal.user.sharedLibrariesIds, searchTerm, pageable = pageRequest)
-      else -> collectionRepository.findAllByLibraries(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, searchTerm, pageable = pageRequest)
+      principal.user.sharedAllLibraries && libraryIds == null -> collectionRepository.searchAll(searchTerm, pageable = pageRequest)
+      principal.user.sharedAllLibraries && libraryIds != null -> collectionRepository.findAllByLibraryIds(libraryIds, null, searchTerm, pageable = pageRequest)
+      !principal.user.sharedAllLibraries && libraryIds != null -> collectionRepository.findAllByLibraryIds(libraryIds, principal.user.sharedLibrariesIds, searchTerm, pageable = pageRequest)
+      else -> collectionRepository.findAllByLibraryIds(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, searchTerm, pageable = pageRequest)
     }.map { it.toDto() }
   }
 
@@ -201,7 +201,7 @@ class SeriesCollectionController(
         authors = authors
       )
 
-      seriesDtoRepository.findByCollectionId(collection.id, seriesSearch, principal.user.id, pageRequest)
+      seriesDtoRepository.findAllByCollectionId(collection.id, seriesSearch, principal.user.id, pageRequest)
         .map { it.restrictUrl(!principal.user.roleAdmin) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 }

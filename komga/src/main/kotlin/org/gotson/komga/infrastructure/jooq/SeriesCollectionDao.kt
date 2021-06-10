@@ -43,7 +43,7 @@ class SeriesCollectionDao(
       .fetchAndMap(filterOnLibraryIds)
       .firstOrNull()
 
-  override fun findAll(search: String?, pageable: Pageable): Page<SeriesCollection> {
+  override fun searchAll(search: String?, pageable: Pageable): Page<SeriesCollection> {
     val conditions = search?.let { c.NAME.containsIgnoreCase(it) }
       ?: DSL.trueCondition()
 
@@ -69,7 +69,7 @@ class SeriesCollectionDao(
     )
   }
 
-  override fun findAllByLibraries(belongsToLibraryIds: Collection<String>, filterOnLibraryIds: Collection<String>?, search: String?, pageable: Pageable): Page<SeriesCollection> {
+  override fun findAllByLibraryIds(belongsToLibraryIds: Collection<String>, filterOnLibraryIds: Collection<String>?, search: String?, pageable: Pageable): Page<SeriesCollection> {
     val ids = dsl.selectDistinct(c.ID)
       .from(c)
       .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
@@ -99,7 +99,7 @@ class SeriesCollectionDao(
     )
   }
 
-  override fun findAllBySeries(containsSeriesId: String, filterOnLibraryIds: Collection<String>?): Collection<SeriesCollection> {
+  override fun findAllContainingSeriesId(containsSeriesId: String, filterOnLibraryIds: Collection<String>?): Collection<SeriesCollection> {
     val ids = dsl.select(c.ID)
       .from(c)
       .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))

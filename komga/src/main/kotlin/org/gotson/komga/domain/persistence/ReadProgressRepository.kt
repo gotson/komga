@@ -3,13 +3,14 @@ package org.gotson.komga.domain.persistence
 import org.gotson.komga.domain.model.ReadProgress
 
 interface ReadProgressRepository {
+  fun findByBookIdAndUserIdOrNull(bookId: String, userId: String): ReadProgress?
+
   fun findAll(): Collection<ReadProgress>
-  fun findByBookIdAndUserId(bookId: String, userId: String): ReadProgress?
-  fun findByUserId(userId: String): Collection<ReadProgress>
-  fun findByBookId(bookId: String): Collection<ReadProgress>
+  fun findAllByUserId(userId: String): Collection<ReadProgress>
+  fun findAllByBookId(bookId: String): Collection<ReadProgress>
 
   fun save(readProgress: ReadProgress)
-  fun saveAll(readProgresses: Collection<ReadProgress>)
+  fun save(readProgresses: Collection<ReadProgress>)
 
   fun delete(bookId: String, userId: String)
   fun deleteByUserId(userId: String)

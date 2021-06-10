@@ -273,7 +273,7 @@ class OpdsController(
       if (principal.user.sharedAllLibraries) {
         libraryRepository.findAll()
       } else {
-        libraryRepository.findAllById(principal.user.sharedLibrariesIds)
+        libraryRepository.findAllByIds(principal.user.sharedLibrariesIds)
       }
     return OpdsFeedNavigation(
       id = ID_LIBRARIES_ALL,
@@ -295,9 +295,9 @@ class OpdsController(
     val pageRequest = UnpagedSorted(Sort.by(Sort.Order.asc("name")))
     val collections =
       if (principal.user.sharedAllLibraries) {
-        collectionRepository.findAll(pageable = pageRequest)
+        collectionRepository.searchAll(pageable = pageRequest)
       } else {
-        collectionRepository.findAllByLibraries(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, pageable = pageRequest)
+        collectionRepository.findAllByLibraryIds(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, pageable = pageRequest)
       }
     return OpdsFeedNavigation(
       id = ID_COLLECTIONS_ALL,
@@ -319,9 +319,9 @@ class OpdsController(
     val pageRequest = UnpagedSorted(Sort.by(Sort.Order.asc("name")))
     val readLists =
       if (principal.user.sharedAllLibraries) {
-        readListRepository.findAll(pageable = pageRequest)
+        readListRepository.searchAll(pageable = pageRequest)
       } else {
-        readListRepository.findAllByLibraries(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, pageable = pageRequest)
+        readListRepository.findAllByLibraryIds(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, pageable = pageRequest)
       }
     return OpdsFeedNavigation(
       id = ID_READLISTS_ALL,

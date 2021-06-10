@@ -44,7 +44,7 @@ class ReadListDao(
       .fetchAndMap(filterOnLibraryIds)
       .firstOrNull()
 
-  override fun findAll(search: String?, pageable: Pageable): Page<ReadList> {
+  override fun searchAll(search: String?, pageable: Pageable): Page<ReadList> {
     val conditions = search?.let { rl.NAME.containsIgnoreCase(it) }
       ?: DSL.trueCondition()
 
@@ -70,7 +70,7 @@ class ReadListDao(
     )
   }
 
-  override fun findAllByLibraries(belongsToLibraryIds: Collection<String>, filterOnLibraryIds: Collection<String>?, search: String?, pageable: Pageable): Page<ReadList> {
+  override fun findAllByLibraryIds(belongsToLibraryIds: Collection<String>, filterOnLibraryIds: Collection<String>?, search: String?, pageable: Pageable): Page<ReadList> {
     val ids = dsl.selectDistinct(rl.ID)
       .from(rl)
       .leftJoin(rlb).on(rl.ID.eq(rlb.READLIST_ID))
@@ -100,7 +100,7 @@ class ReadListDao(
     )
   }
 
-  override fun findAllByBook(containsBookId: String, filterOnLibraryIds: Collection<String>?): Collection<ReadList> {
+  override fun findAllContainingBookId(containsBookId: String, filterOnLibraryIds: Collection<String>?): Collection<ReadList> {
     val ids = dsl.select(rl.ID)
       .from(rl)
       .leftJoin(rlb).on(rl.ID.eq(rlb.READLIST_ID))
@@ -185,7 +185,7 @@ class ReadListDao(
       .execute()
   }
 
-  override fun removeBookFromAll(bookIds: Collection<String>) {
+  override fun removeBooksFromAll(bookIds: Collection<String>) {
     dsl.deleteFrom(rlb)
       .where(rlb.BOOK_ID.`in`(bookIds))
       .execute()

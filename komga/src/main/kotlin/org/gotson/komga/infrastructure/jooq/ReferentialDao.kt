@@ -32,7 +32,7 @@ class ReferentialDao(
   private val st = Tables.SERIES_METADATA_TAG
   private val cs = Tables.COLLECTION_SERIES
 
-  override fun findAuthorsByName(search: String, filterOnLibraryIds: Collection<String>?): List<Author> =
+  override fun findAllAuthorsByName(search: String, filterOnLibraryIds: Collection<String>?): List<Author> =
     dsl.selectDistinct(a.NAME, a.ROLE)
       .from(a)
       .apply { filterOnLibraryIds?.let { leftJoin(b).on(a.BOOK_ID.eq(b.ID)) } }
@@ -42,7 +42,7 @@ class ReferentialDao(
       .fetchInto(a)
       .map { it.toDomain() }
 
-  override fun findAuthorsByNameAndLibrary(search: String, libraryId: String, filterOnLibraryIds: Collection<String>?): List<Author> =
+  override fun findAllAuthorsByNameAndLibrary(search: String, libraryId: String, filterOnLibraryIds: Collection<String>?): List<Author> =
     dsl.selectDistinct(bmaa.NAME, bmaa.ROLE)
       .from(bmaa)
       .leftJoin(s).on(bmaa.SERIES_ID.eq(s.ID))
@@ -53,7 +53,7 @@ class ReferentialDao(
       .fetchInto(bmaa)
       .map { it.toDomain() }
 
-  override fun findAuthorsByNameAndCollection(search: String, collectionId: String, filterOnLibraryIds: Collection<String>?): List<Author> =
+  override fun findAllAuthorsByNameAndCollection(search: String, collectionId: String, filterOnLibraryIds: Collection<String>?): List<Author> =
     dsl.selectDistinct(bmaa.NAME, bmaa.ROLE)
       .from(bmaa)
       .leftJoin(cs).on(bmaa.SERIES_ID.eq(cs.SERIES_ID))
@@ -65,7 +65,7 @@ class ReferentialDao(
       .fetchInto(bmaa)
       .map { it.toDomain() }
 
-  override fun findAuthorsByNameAndSeries(search: String, seriesId: String, filterOnLibraryIds: Collection<String>?): List<Author> =
+  override fun findAllAuthorsByNameAndSeries(search: String, seriesId: String, filterOnLibraryIds: Collection<String>?): List<Author> =
     dsl.selectDistinct(bmaa.NAME, bmaa.ROLE)
       .from(bmaa)
       .apply { filterOnLibraryIds?.let { leftJoin(s).on(bmaa.SERIES_ID.eq(s.ID)) } }
@@ -76,19 +76,19 @@ class ReferentialDao(
       .fetchInto(bmaa)
       .map { it.toDomain() }
 
-  override fun findAuthorsByName(search: String, role: String?, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author> {
+  override fun findAllAuthorsByName(search: String, role: String?, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author> {
     return findAuthorsByName(search, role, filterOnLibraryIds, pageable, null)
   }
 
-  override fun findAuthorsByNameAndLibrary(search: String, role: String?, libraryId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author> {
+  override fun findAllAuthorsByNameAndLibrary(search: String, role: String?, libraryId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author> {
     return findAuthorsByName(search, role, filterOnLibraryIds, pageable, FilterBy(FilterByType.LIBRARY, libraryId))
   }
 
-  override fun findAuthorsByNameAndCollection(search: String, role: String?, collectionId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author> {
+  override fun findAllAuthorsByNameAndCollection(search: String, role: String?, collectionId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author> {
     return findAuthorsByName(search, role, filterOnLibraryIds, pageable, FilterBy(FilterByType.COLLECTION, collectionId))
   }
 
-  override fun findAuthorsByNameAndSeries(search: String, role: String?, seriesId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author> {
+  override fun findAllAuthorsByNameAndSeries(search: String, role: String?, seriesId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author> {
     return findAuthorsByName(search, role, filterOnLibraryIds, pageable, FilterBy(FilterByType.SERIES, seriesId))
   }
 
@@ -138,7 +138,7 @@ class ReferentialDao(
     )
   }
 
-  override fun findAuthorsNamesByName(search: String, filterOnLibraryIds: Collection<String>?): List<String> =
+  override fun findAllAuthorsNamesByName(search: String, filterOnLibraryIds: Collection<String>?): List<String> =
     dsl.selectDistinct(a.NAME)
       .from(a)
       .apply { filterOnLibraryIds?.let { leftJoin(b).on(a.BOOK_ID.eq(b.ID)) } }
@@ -147,7 +147,7 @@ class ReferentialDao(
       .orderBy(a.NAME)
       .fetch(a.NAME)
 
-  override fun findAuthorsRoles(filterOnLibraryIds: Collection<String>?): List<String> =
+  override fun findAllAuthorsRoles(filterOnLibraryIds: Collection<String>?): List<String> =
     dsl.selectDistinct(a.ROLE)
       .from(a)
       .apply {

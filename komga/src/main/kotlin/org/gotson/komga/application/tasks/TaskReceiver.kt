@@ -44,7 +44,7 @@ class TaskReceiver(
   }
 
   fun analyzeUnknownAndOutdatedBooks(library: Library) {
-    bookRepository.findAllId(
+    bookRepository.findAllIds(
       BookSearch(
         libraryIds = listOf(library.id),
         mediaStatus = listOf(Media.Status.UNKNOWN, Media.Status.OUTDATED)

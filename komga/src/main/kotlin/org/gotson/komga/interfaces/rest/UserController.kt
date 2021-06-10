@@ -118,7 +118,7 @@ class UserController(
       val updatedUser = user.copy(
         sharedAllLibraries = sharedLibrariesUpdateDto.all,
         sharedLibrariesIds = if (sharedLibrariesUpdateDto.all) emptySet()
-        else libraryRepository.findAllById(sharedLibrariesUpdateDto.libraryIds)
+        else libraryRepository.findAllByIds(sharedLibrariesUpdateDto.libraryIds)
           .map { it.id }
           .toSet()
       )

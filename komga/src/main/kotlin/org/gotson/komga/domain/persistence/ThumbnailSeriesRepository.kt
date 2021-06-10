@@ -3,8 +3,9 @@ package org.gotson.komga.domain.persistence
 import org.gotson.komga.domain.model.ThumbnailSeries
 
 interface ThumbnailSeriesRepository {
-  fun findBySeriesId(seriesId: String): Collection<ThumbnailSeries>
-  fun findSelectedBySeriesId(seriesId: String): ThumbnailSeries?
+  fun findSelectedBySeriesIdOrNull(seriesId: String): ThumbnailSeries?
+
+  fun findAllBySeriesId(seriesId: String): Collection<ThumbnailSeries>
 
   fun insert(thumbnail: ThumbnailSeries)
   fun markSelected(thumbnail: ThumbnailSeries)

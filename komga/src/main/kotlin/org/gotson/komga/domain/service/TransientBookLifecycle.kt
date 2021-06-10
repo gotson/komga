@@ -27,7 +27,7 @@ class TransientBookLifecycle(
 
     val books = fileSystemScanner.scanRootFolder(folderToScan).series.values.flatten().map { BookWithMedia(it, Media()) }
 
-    transientBookRepository.saveAll(books)
+    transientBookRepository.save(books)
 
     return books
   }

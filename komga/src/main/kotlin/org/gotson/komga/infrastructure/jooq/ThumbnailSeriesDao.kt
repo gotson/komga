@@ -14,13 +14,13 @@ class ThumbnailSeriesDao(
 ) : ThumbnailSeriesRepository {
   private val ts = Tables.THUMBNAIL_SERIES
 
-  override fun findBySeriesId(seriesId: String): Collection<ThumbnailSeries> =
+  override fun findAllBySeriesId(seriesId: String): Collection<ThumbnailSeries> =
     dsl.selectFrom(ts)
       .where(ts.SERIES_ID.eq(seriesId))
       .fetchInto(ts)
       .map { it.toDomain() }
 
-  override fun findSelectedBySeriesId(seriesId: String): ThumbnailSeries? =
+  override fun findSelectedBySeriesIdOrNull(seriesId: String): ThumbnailSeries? =
     dsl.selectFrom(ts)
       .where(ts.SERIES_ID.eq(seriesId))
       .and(ts.SELECTED.isTrue)

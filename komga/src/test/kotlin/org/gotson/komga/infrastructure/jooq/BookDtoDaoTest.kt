@@ -230,7 +230,7 @@ class BookDtoDaoTest(
       setupBooks()
 
       // when
-      val found = bookDtoDao.findOnDeck(
+      val found = bookDtoDao.findAllOnDeck(
         user.id,
         null,
         PageRequest.of(0, 20)
@@ -251,7 +251,7 @@ class BookDtoDaoTest(
       )
 
       // when
-      val found = bookDtoDao.findOnDeck(
+      val found = bookDtoDao.findAllOnDeck(
         user.id,
         null,
         PageRequest.of(0, 20)
@@ -275,7 +275,7 @@ class BookDtoDaoTest(
       books.elementAt(0).let { readProgressRepository.save(ReadProgress(it.id, user.id, 5, true)) }
 
       // when
-      val found = bookDtoDao.findOnDeck(
+      val found = bookDtoDao.findAllOnDeck(
         user.id,
         null,
         PageRequest.of(0, 20)

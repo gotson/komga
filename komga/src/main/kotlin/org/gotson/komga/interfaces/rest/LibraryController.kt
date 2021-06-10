@@ -52,7 +52,7 @@ class LibraryController(
     if (principal.user.sharedAllLibraries) {
       libraryRepository.findAll()
     } else {
-      libraryRepository.findAllById(principal.user.sharedLibrariesIds)
+      libraryRepository.findAllByIds(principal.user.sharedLibrariesIds)
     }.sortedBy { it.name.toLowerCase() }.map { it.toDto(includeRoot = principal.user.roleAdmin) }
 
   @GetMapping("{libraryId}")
@@ -152,7 +152,7 @@ class LibraryController(
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable libraryId: String) {
-    bookRepository.findAllIdByLibraryId(libraryId).forEach {
+    bookRepository.findAllIdsByLibraryId(libraryId).forEach {
       taskReceiver.analyzeBook(it, HIGH_PRIORITY)
     }
   }
@@ -161,11 +161,11 @@ class LibraryController(
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun refreshMetadata(@PathVariable libraryId: String) {
-    bookRepository.findAllIdByLibraryId(libraryId).forEach {
+    bookRepository.findAllIdsByLibraryId(libraryId).forEach {
       taskReceiver.refreshBookMetadata(it, priority = HIGH_PRIORITY)
       taskReceiver.refreshBookLocalArtwork(it, priority = HIGH_PRIORITY)
     }
-    seriesRepository.findAllIdByLibraryId(libraryId).forEach {
+    seriesRepository.findAllIdsByLibraryId(libraryId).forEach {
       taskReceiver.refreshSeriesLocalArtwork(it, priority = HIGH_PRIORITY)
     }
   }

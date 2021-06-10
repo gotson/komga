@@ -160,7 +160,7 @@ class LibraryDaoTest(
     libraryDao.insert(library)
     libraryDao.insert(library2)
 
-    val all = libraryDao.findAllById(listOf(library.id, library2.id))
+    val all = libraryDao.findAllByIds(listOf(library.id, library2.id))
 
     assertThat(all).hasSize(2)
     assertThat(all.map { it.name }).containsExactlyInAnyOrder("Library", "Library2")

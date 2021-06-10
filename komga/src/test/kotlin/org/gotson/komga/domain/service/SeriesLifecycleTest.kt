@@ -66,7 +66,7 @@ class SeriesLifecycleTest(
     assertThat(seriesRepository.count()).isEqualTo(1)
     assertThat(bookRepository.count()).isEqualTo(4)
 
-    val savedBooks = bookRepository.findBySeriesId(createdSeries.id).sortedBy { it.number }
+    val savedBooks = bookRepository.findAllBySeriesId(createdSeries.id).sortedBy { it.number }
     assertThat(savedBooks.map { it.name }).containsExactly("book 1", "book 002", "book 05", "book 6")
     assertThat(savedBooks.map { it.number }).containsExactly(1, 2, 3, 4)
   }
@@ -87,7 +87,7 @@ class SeriesLifecycleTest(
     seriesLifecycle.sortBooks(createdSeries)
 
     // when
-    val book = bookRepository.findBySeriesId(createdSeries.id).first { it.name == "book 2" }
+    val book = bookRepository.findAllBySeriesId(createdSeries.id).first { it.name == "book 2" }
     bookLifecycle.deleteOne(book.id)
     seriesLifecycle.sortBooks(createdSeries)
 
@@ -95,7 +95,7 @@ class SeriesLifecycleTest(
     assertThat(seriesRepository.count()).isEqualTo(1)
     assertThat(bookRepository.count()).isEqualTo(3)
 
-    val savedBooks = bookRepository.findBySeriesId(createdSeries.id).sortedBy { it.number }
+    val savedBooks = bookRepository.findAllBySeriesId(createdSeries.id).sortedBy { it.number }
     assertThat(savedBooks.map { it.name }).containsExactly("book 1", "book 3", "book 4")
     assertThat(savedBooks.map { it.number }).containsExactly(1, 2, 3)
   }
@@ -124,7 +124,7 @@ class SeriesLifecycleTest(
     assertThat(seriesRepository.count()).isEqualTo(1)
     assertThat(bookRepository.count()).isEqualTo(5)
 
-    val savedBooks = bookRepository.findBySeriesId(createdSeries.id).sortedBy { it.number }
+    val savedBooks = bookRepository.findAllBySeriesId(createdSeries.id).sortedBy { it.number }
     assertThat(savedBooks.map { it.name }).containsExactly("book 1", "book 2", "book 3", "book 4", "book 5")
     assertThat(savedBooks.map { it.number }).containsExactly(1, 2, 3, 4, 5)
   }

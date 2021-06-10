@@ -164,7 +164,7 @@ class BookDaoTest(
     bookDao.insert(makeBook("1", libraryId = library.id, seriesId = series.id))
     bookDao.insert(makeBook("2", libraryId = library.id, seriesId = series.id))
 
-    val found = bookDao.findAllIdByLibraryId(library.id)
+    val found = bookDao.findAllIdsByLibraryId(library.id)
 
     assertThat(found).hasSize(2)
   }
@@ -174,7 +174,7 @@ class BookDaoTest(
     bookDao.insert(makeBook("1", libraryId = library.id, seriesId = series.id))
     bookDao.insert(makeBook("2", libraryId = library.id, seriesId = series.id))
 
-    val found = bookDao.findAllIdBySeriesId(series.id)
+    val found = bookDao.findAllIdsBySeriesId(series.id)
 
     assertThat(found).hasSize(2)
   }

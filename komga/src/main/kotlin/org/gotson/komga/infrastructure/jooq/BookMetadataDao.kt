@@ -28,7 +28,7 @@ class BookMetadataDao(
   override fun findByIdOrNull(bookId: String): BookMetadata? =
     find(dsl, listOf(bookId)).firstOrNull()
 
-  override fun findByIds(bookIds: Collection<String>): Collection<BookMetadata> =
+  override fun findAllByIds(bookIds: Collection<String>): Collection<BookMetadata> =
     find(dsl, bookIds)
 
   private fun find(dsl: DSLContext, bookIds: Collection<String>) =
@@ -52,10 +52,10 @@ class BookMetadataDao(
       .toSet()
 
   override fun insert(metadata: BookMetadata) {
-    insertMany(listOf(metadata))
+    insert(listOf(metadata))
   }
 
-  override fun insertMany(metadatas: Collection<BookMetadata>) {
+  override fun insert(metadatas: Collection<BookMetadata>) {
     if (metadatas.isNotEmpty()) {
       dsl.transaction { config ->
         config.dsl().batch(
@@ -111,7 +111,7 @@ class BookMetadataDao(
     }
   }
 
-  override fun updateMany(metadatas: Collection<BookMetadata>) {
+  override fun update(metadatas: Collection<BookMetadata>) {
     dsl.transaction { config ->
       metadatas.forEach { updateMetadata(config.dsl(), it) }
     }
@@ -192,7 +192,7 @@ class BookMetadataDao(
     }
   }
 
-  override fun deleteByBookIds(bookIds: Collection<String>) {
+  override fun delete(bookIds: Collection<String>) {
     dsl.transaction { config ->
       with(config.dsl()) {
         deleteFrom(a).where(a.BOOK_ID.`in`(bookIds)).execute()

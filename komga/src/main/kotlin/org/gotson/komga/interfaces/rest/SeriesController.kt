@@ -210,7 +210,7 @@ class SeriesController(
         sort
       )
 
-    return seriesDtoRepository.findRecentlyUpdated(
+    return seriesDtoRepository.findAllRecentlyUpdated(
       SeriesSearchWithReadProgress(principal.user.getAuthorizedLibraryIds(libraryIds)),
       principal.user.id,
       pageRequest
@@ -290,7 +290,7 @@ class SeriesController(
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    return collectionRepository.findAllBySeries(seriesId, principal.user.getAuthorizedLibraryIds(null))
+    return collectionRepository.findAllContainingSeriesId(seriesId, principal.user.getAuthorizedLibraryIds(null))
       .map { it.toDto() }
   }
 
@@ -298,7 +298,7 @@ class SeriesController(
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable seriesId: String) {
-    bookRepository.findAllIdBySeriesId(seriesId).forEach {
+    bookRepository.findAllIdsBySeriesId(seriesId).forEach {
       taskReceiver.analyzeBook(it, HIGH_PRIORITY)
     }
   }
@@ -307,7 +307,7 @@ class SeriesController(
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun refreshMetadata(@PathVariable seriesId: String) {
-    bookRepository.findAllIdBySeriesId(seriesId).forEach {
+    bookRepository.findAllIdsBySeriesId(seriesId).forEach {
       taskReceiver.refreshBookMetadata(it, priority = HIGH_PRIORITY)
       taskReceiver.refreshBookLocalArtwork(it, priority = HIGH_PRIORITY)
     }
@@ -388,7 +388,7 @@ class SeriesController(
   ): TachiyomiReadProgressDto =
     seriesRepository.getLibraryId(seriesId)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-      return readProgressDtoRepository.getProgressBySeries(seriesId, principal.user.id)
+      return readProgressDtoRepository.findProgressBySeries(seriesId, principal.user.id)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @PutMapping("{seriesId}/read-progress/tachiyomi")
@@ -423,7 +423,7 @@ class SeriesController(
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    val books = bookRepository.findBySeriesId(seriesId)
+    val books = bookRepository.findAllBySeriesId(seriesId)
 
     val streamingResponse = StreamingResponseBody { responseStream: OutputStream ->
       ZipArchiveOutputStream(responseStream).use { zipStream ->

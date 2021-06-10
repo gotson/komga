@@ -50,7 +50,7 @@ class TransientBooksController(
   @PostMapping("{id}/analyze")
   fun analyze(
     @PathVariable id: String,
-  ): TransientBookDto = transientBookRepository.findById(id)?.let {
+  ): TransientBookDto = transientBookRepository.findByIdOrNull(id)?.let {
     transientBookLifecycle.analyzeAndPersist(it).toDto()
   } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
@@ -62,7 +62,7 @@ class TransientBooksController(
     @PathVariable id: String,
     @PathVariable pageNumber: Int,
   ): ResponseEntity<ByteArray> =
-    transientBookRepository.findById(id)?.let {
+    transientBookRepository.findByIdOrNull(id)?.let {
       try {
         val pageContent = transientBookLifecycle.getBookPage(it, pageNumber)
 

@@ -14,20 +14,20 @@ class ThumbnailBookDao(
 ) : ThumbnailBookRepository {
   private val tb = Tables.THUMBNAIL_BOOK
 
-  override fun findByBookId(bookId: String): Collection<ThumbnailBook> =
+  override fun findAllByBookId(bookId: String): Collection<ThumbnailBook> =
     dsl.selectFrom(tb)
       .where(tb.BOOK_ID.eq(bookId))
       .fetchInto(tb)
       .map { it.toDomain() }
 
-  override fun findByBookIdAndType(bookId: String, type: ThumbnailBook.Type): Collection<ThumbnailBook> =
+  override fun findAllByBookIdAndType(bookId: String, type: ThumbnailBook.Type): Collection<ThumbnailBook> =
     dsl.selectFrom(tb)
       .where(tb.BOOK_ID.eq(bookId))
       .and(tb.TYPE.eq(type.toString()))
       .fetchInto(tb)
       .map { it.toDomain() }
 
-  override fun findSelectedByBookId(bookId: String): ThumbnailBook? =
+  override fun findSelectedByBookIdOrNull(bookId: String): ThumbnailBook? =
     dsl.selectFrom(tb)
       .where(tb.BOOK_ID.eq(bookId))
       .and(tb.SELECTED.isTrue)

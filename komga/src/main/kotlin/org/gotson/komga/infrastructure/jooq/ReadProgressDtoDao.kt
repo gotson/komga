@@ -20,7 +20,7 @@ class ReadProgressDtoDao(
   private val d = Tables.BOOK_METADATA
   private val r = Tables.READ_PROGRESS
 
-  override fun getProgressBySeries(seriesId: String, userId: String): TachiyomiReadProgressDto {
+  override fun findProgressBySeries(seriesId: String, userId: String): TachiyomiReadProgressDto {
     val indexedReadProgress = dsl.select(
       rowNumber().over().orderBy(d.NUMBER_SORT),
       r.COMPLETED,
@@ -46,7 +46,7 @@ class ReadProgressDtoDao(
     return booksCountToDto(booksCountRecord, indexedReadProgress)
   }
 
-  override fun getProgressByReadList(readListId: String, userId: String): TachiyomiReadProgressDto {
+  override fun findProgressByReadList(readListId: String, userId: String): TachiyomiReadProgressDto {
     val indexedReadProgress = dsl.select(
       rowNumber().over().orderBy(rlb.NUMBER),
       r.COMPLETED,

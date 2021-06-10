@@ -6,24 +6,24 @@ import java.net.URL
 
 interface SeriesRepository {
   fun findByIdOrNull(seriesId: String): Series?
-  fun findByLibraryIdAndUrl(libraryId: String, url: URL): Series?
+  fun findByLibraryIdAndUrlOrNull(libraryId: String, url: URL): Series?
 
   fun findAll(): Collection<Series>
-  fun findByLibraryId(libraryId: String): Collection<Series>
-  fun findByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): Collection<Series>
+  fun findAllByLibraryId(libraryId: String): Collection<Series>
+  fun findAllByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): Collection<Series>
+  fun findAllByTitle(title: String): Collection<Series>
   fun findAll(search: SeriesSearch): Collection<Series>
-  fun findByTitle(title: String): Collection<Series>
 
   fun getLibraryId(seriesId: String): String?
 
-  fun findAllIdByLibraryId(libraryId: String): Collection<String>
+  fun findAllIdsByLibraryId(libraryId: String): Collection<String>
 
   fun insert(series: Series)
   fun update(series: Series)
 
   fun delete(seriesId: String)
+  fun delete(seriesIds: Collection<String>)
   fun deleteAll()
-  fun deleteAll(seriesIds: Collection<String>)
 
   fun count(): Long
 }
