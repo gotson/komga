@@ -31,6 +31,8 @@ class SeriesCollectionLifecycle(
   }
 
   fun updateCollection(toUpdate: SeriesCollection) {
+    logger.info { "Update collection: $toUpdate" }
+
     val existing = collectionRepository.findByIdOrNull(toUpdate.id)
       ?: throw IllegalArgumentException("Cannot update collection that does not exist")
 

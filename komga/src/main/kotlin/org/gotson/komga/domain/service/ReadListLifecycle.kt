@@ -35,6 +35,7 @@ class ReadListLifecycle(
   }
 
   fun updateReadList(toUpdate: ReadList) {
+    logger.info { "Update read list: $toUpdate" }
     val existing = readListRepository.findByIdOrNull(toUpdate.id)
       ?: throw IllegalArgumentException("Cannot update read list that does not exist")
 

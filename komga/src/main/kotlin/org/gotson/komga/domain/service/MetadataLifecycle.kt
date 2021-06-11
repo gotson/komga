@@ -61,7 +61,7 @@ class MetadataLifecycle(
         provider is IsbnBarcodeProvider && !library.importBarcodeIsbn ->
           logger.info { "Library is not set to import book metadata from Barcode ISBN, skipping" }
         else -> {
-          logger.debug { "Provider: $provider" }
+          logger.debug { "Provider: ${provider::class.simpleName}" }
           val patch = provider.getBookMetadataFromBook(BookWithMedia(book, media))
 
           if (
@@ -89,14 +89,14 @@ class MetadataLifecycle(
       readListRepository.findByNameOrNull(readList.name).let { existing ->
         if (existing != null) {
           if (existing.bookIds.containsValue(book.id))
-            logger.debug { "Book is already in existing readlist '${existing.name}'" }
+            logger.debug { "Book is already in existing read list '${existing.name}'" }
           else {
             val map = existing.bookIds.toSortedMap()
             val key = if (readList.number != null && existing.bookIds.containsKey(readList.number)) {
-              logger.debug { "Existing readlist '${existing.name}' already contains a book at position ${readList.number}, adding book '${book.name}' at the end" }
+              logger.debug { "Existing read list '${existing.name}' already contains a book at position ${readList.number}, adding book '${book.name}' at the end" }
               existing.bookIds.lastKey() + 1
             } else {
-              logger.debug { "Adding book '${book.name}' to existing readlist '${existing.name}'" }
+              logger.debug { "Adding book '${book.name}' to existing read list '${existing.name}'" }
               readList.number ?: existing.bookIds.lastKey() + 1
             }
             map[key] = book.id
@@ -105,7 +105,7 @@ class MetadataLifecycle(
             )
           }
         } else {
-          logger.debug { "Adding book '${book.name}' to new readlist '$readList'" }
+          logger.debug { "Adding book '${book.name}' to new read list '$readList'" }
           readListLifecycle.addReadList(
             ReadList(
               name = readList.name,
@@ -123,6 +123,8 @@ class MetadataLifecycle(
   ) {
     patch?.let { bPatch ->
       bookMetadataRepository.findById(book.id).let {
+        logger.debug { "Apply metadata for book: $book" }
+
         logger.debug { "Original metadata: $it" }
         val patched = metadataApplier.apply(bPatch, it)
         logger.debug { "Patched metadata: $patched" }
@@ -142,7 +144,7 @@ class MetadataLifecycle(
         provider is ComicInfoProvider && !library.importComicInfoSeries && !library.importComicInfoCollection -> logger.info { "Library is not set to import series and collection metadata from ComicInfo, skipping" }
         provider is EpubMetadataProvider && !library.importEpubSeries -> logger.info { "Library is not set to import series metadata from Epub, skipping" }
         else -> {
-          logger.debug { "Provider: $provider" }
+          logger.debug { "Provider: ${provider::class.simpleName}" }
           val patches = bookRepository.findAllBySeriesId(series.id)
             .mapNotNull { provider.getSeriesMetadataFromBook(BookWithMedia(it, mediaRepository.findById(it.id))) }
 

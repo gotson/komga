@@ -1,13 +1,10 @@
 package org.gotson.komga.domain.service
 
-import mu.KotlinLogging
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.BookMetadataPatch
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.springframework.stereotype.Service
-
-private val logger = KotlinLogging.logger {}
 
 @Service
 class MetadataApplier {

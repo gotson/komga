@@ -160,7 +160,7 @@ class FileSystemScanner(
       )
     }.also {
       val countOfBooks = scannedSeries.values.sumBy { it.size }
-      logger.info { "Scanned ${scannedSeries.size} series and $countOfBooks books in $it" }
+      logger.info { "Scanned ${scannedSeries.size} series, $countOfBooks books, and ${scannedSidecars.size} sidecars in $it" }
     }
 
     return ScanResult(scannedSeries, scannedSidecars)
