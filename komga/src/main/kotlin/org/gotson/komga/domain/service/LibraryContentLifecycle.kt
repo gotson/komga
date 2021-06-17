@@ -12,9 +12,9 @@ import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.SidecarRepository
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
+import org.gotson.komga.infrastructure.language.notEquals
 import org.springframework.stereotype.Service
 import java.nio.file.Paths
-import java.time.temporal.ChronoUnit
 import kotlin.time.measureTime
 
 private val logger = KotlinLogging.logger {}
@@ -72,10 +72,7 @@ class LibraryContentLifecycle(
         } else {
           // if series already exists, update it
           logger.debug { "Scanned series already exists. Scanned: $newSeries, Existing: $existingSeries" }
-          val seriesChanged =
-            newSeries.fileLastModified.truncatedTo(ChronoUnit.MILLIS) != existingSeries.fileLastModified.truncatedTo(
-              ChronoUnit.MILLIS
-            )
+          val seriesChanged = newSeries.fileLastModified.notEquals(existingSeries.fileLastModified)
           if (seriesChanged) {
             logger.info { "Series changed on disk, updating: $existingSeries" }
             seriesRepository.update(existingSeries.copy(fileLastModified = newSeries.fileLastModified))
@@ -89,10 +86,7 @@ class LibraryContentLifecycle(
               logger.debug { "Trying to match scanned book by url: $newBook" }
               existingBooks.find { it.url == newBook.url }?.let { existingBook ->
                 logger.debug { "Matched existing book: $existingBook" }
-                if (newBook.fileLastModified.truncatedTo(ChronoUnit.MILLIS) != existingBook.fileLastModified.truncatedTo(
-                    ChronoUnit.MILLIS
-                  )
-                ) {
+                if (newBook.fileLastModified.notEquals(existingBook.fileLastModified)) {
                   logger.info { "Book changed on disk, update and reset media status: $existingBook" }
                   val updatedBook = existingBook.copy(
                     fileLastModified = newBook.fileLastModified,
@@ -131,7 +125,7 @@ class LibraryContentLifecycle(
       val existingSidecars = sidecarRepository.findAll()
       scanResult.sidecars.forEach { newSidecar ->
         val existingSidecar = existingSidecars.firstOrNull { it.url == newSidecar.url }
-        if (existingSidecar == null || existingSidecar.lastModifiedTime.isBefore(newSidecar.lastModifiedTime)) {
+        if (existingSidecar == null || existingSidecar.lastModifiedTime.notEquals(newSidecar.lastModifiedTime)) {
           when (newSidecar.source) {
             Sidecar.Source.SERIES ->
               seriesRepository.findByLibraryIdAndUrlOrNull(library.id, newSidecar.parentUrl)?.let { series ->

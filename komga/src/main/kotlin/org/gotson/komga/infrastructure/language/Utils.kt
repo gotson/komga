@@ -1,5 +1,8 @@
 package org.gotson.komga.infrastructure.language
 
+import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
+import java.time.temporal.TemporalUnit
 import java.util.Enumeration
 import java.util.SortedMap
 
@@ -22,3 +25,6 @@ fun <T> List<T>.toEnumeration(): Enumeration<T> {
     }
   }
 }
+
+fun LocalDateTime.notEquals(other: LocalDateTime, precision: TemporalUnit = ChronoUnit.MILLIS) =
+  this.truncatedTo(precision) != other.truncatedTo(precision)
