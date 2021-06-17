@@ -1,3 +1,10 @@
+## [0.99.2](https://github.com/gotson/komga/compare/v0.99.1...v0.99.2) (2021-06-17)
+
+
+### Bug Fixes
+
+* local artwork could be refreshed at every scan ([4ac9fe9](https://github.com/gotson/komga/commit/4ac9fe96bed2c55ba3584853cc47f75de6601bee))
+
 ## [0.99.1](https://github.com/gotson/komga/compare/v0.99.0...v0.99.1) (2021-06-10)
 
 
