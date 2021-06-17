@@ -10,4 +10,5 @@ interface SidecarRepository {
   fun save(libraryId: String, sidecar: Sidecar)
 
   fun deleteByLibraryIdAndUrls(libraryId: String, urls: Collection<URL>)
+  fun deleteByLibraryId(libraryId: String)
 }

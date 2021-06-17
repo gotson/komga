@@ -41,6 +41,12 @@ class SidecarDao(
       .execute()
   }
 
+  override fun deleteByLibraryId(libraryId: String) {
+    dsl.deleteFrom(sc)
+      .where(sc.LIBRARY_ID.eq(libraryId))
+      .execute()
+  }
+
   private fun SidecarRecord.toDomain() =
     SidecarStored(
       url = URL(url),

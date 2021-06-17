@@ -8,6 +8,7 @@ import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.PathContainedInPath
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
+import org.gotson.komga.domain.persistence.SidecarRepository
 import org.springframework.stereotype.Service
 import java.io.FileNotFoundException
 import java.nio.file.Files
@@ -19,6 +20,7 @@ class LibraryLifecycle(
   private val libraryRepository: LibraryRepository,
   private val seriesLifecycle: SeriesLifecycle,
   private val seriesRepository: SeriesRepository,
+  private val sidecarRepository: SidecarRepository,
   private val taskReceiver: TaskReceiver
 ) {
 
@@ -73,6 +75,7 @@ class LibraryLifecycle(
 
     val seriesIds = seriesRepository.findAllByLibraryId(library.id).map { it.id }
     seriesLifecycle.deleteMany(seriesIds)
+    sidecarRepository.deleteByLibraryId(library.id)
 
     libraryRepository.delete(library.id)
   }
