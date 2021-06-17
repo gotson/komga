@@ -1,3 +1,10 @@
+## [0.99.3](https://github.com/gotson/komga/compare/v0.99.2...v0.99.3) (2021-06-17)
+
+
+### Bug Fixes
+
+* sidecars would not be deleted with library ([49f83b7](https://github.com/gotson/komga/commit/49f83b78ace92aeb6a42e1a66f2042655a3b41cd))
+
 ## [0.99.2](https://github.com/gotson/komga/compare/v0.99.1...v0.99.2) (2021-06-17)
 
 
