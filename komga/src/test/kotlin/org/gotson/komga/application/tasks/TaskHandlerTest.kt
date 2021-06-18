@@ -2,14 +2,20 @@ package org.gotson.komga.application.tasks
 
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
+import io.mockk.just
+import io.mockk.runs
 import io.mockk.slot
 import io.mockk.verify
 import mu.KotlinLogging
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.Book
+import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.makeBook
+import org.gotson.komga.domain.model.makeSeries
 import org.gotson.komga.domain.persistence.BookRepository
+import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.BookLifecycle
+import org.gotson.komga.domain.service.MetadataLifecycle
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -35,6 +41,12 @@ class TaskHandlerTest(
   private lateinit var mockBookLifecycle: BookLifecycle
 
   @MockkBean
+  private lateinit var mockMetadataLifecycle: MetadataLifecycle
+
+  @MockkBean
+  private lateinit var mockSeriesRepository: SeriesRepository
+
+  @MockkBean
   private lateinit var mockBookRepository: BookRepository
 
   init {
@@ -49,16 +61,14 @@ class TaskHandlerTest(
   }
 
   @Test
-  fun `when similar tasks are submitted then only a few are executed`() {
+  fun `when similar tasks are submitted then only one is executed`() {
     every { mockBookRepository.findByIdOrNull(any()) } returns makeBook("id")
     every { mockBookLifecycle.analyzeAndPersist(any()) } returns false
 
     jmsListenerEndpointRegistry.stop()
-
     repeat(100) {
       taskReceiver.analyzeBook("id")
     }
-
     jmsListenerEndpointRegistry.start()
 
     Thread.sleep(1_00)
@@ -76,15 +86,38 @@ class TaskHandlerTest(
     }
     every { mockBookLifecycle.analyzeAndPersist(capture(calls)) } returns false
 
-    taskReceiver.analyzeBook("1", HIGHEST_PRIORITY)
-    taskReceiver.analyzeBook("2", LOWEST_PRIORITY)
-    taskReceiver.analyzeBook("3", HIGH_PRIORITY)
-    taskReceiver.analyzeBook("4", HIGHEST_PRIORITY)
-    taskReceiver.analyzeBook("5", DEFAULT_PRIORITY)
+    jmsListenerEndpointRegistry.stop()
+    (0..9).forEach {
+      taskReceiver.analyzeBook("$it", it)
+    }
+    jmsListenerEndpointRegistry.start()
 
-    Thread.sleep(1_000)
+    Thread.sleep(3_000)
 
-    verify(exactly = 5) { mockBookLifecycle.analyzeAndPersist(any()) }
-    assertThat(calls.map { it.name }).containsExactly("1", "4", "3", "5", "2")
+    verify(exactly = 10) { mockBookLifecycle.analyzeAndPersist(any()) }
+    assertThat(calls.map { it.name }).containsExactlyElementsOf((9 downTo 0).map { "$it" })
+  }
+
+  @Test
+  fun `when high priority tasks triggering tasks are submitted then they are executed first`() {
+    val slot = slot<String>()
+    val calls = mutableListOf<Series>()
+    every { mockSeriesRepository.findByIdOrNull(capture(slot)) } answers {
+      Thread.sleep(1_00)
+      makeSeries(slot.captured)
+    }
+    every { mockMetadataLifecycle.refreshMetadata(capture(calls)) } just runs
+    every { mockMetadataLifecycle.aggregateMetadata(any()) } just runs
+
+    jmsListenerEndpointRegistry.stop()
+    (0..9).forEach {
+      taskReceiver.refreshSeriesMetadata("$it", it)
+    }
+    jmsListenerEndpointRegistry.start()
+
+    Thread.sleep(5_000)
+
+    verify(exactly = 10) { mockMetadataLifecycle.refreshMetadata(any()) }
+    assertThat(calls.map { it.name }).containsExactlyElementsOf((9 downTo 0).map { "$it" })
   }
 }

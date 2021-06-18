@@ -64,13 +64,13 @@ class TaskHandler(
           is Task.RefreshBookMetadata ->
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
               metadataLifecycle.refreshMetadata(book, task.capabilities)
-              taskReceiver.refreshSeriesMetadata(book.seriesId)
+              taskReceiver.refreshSeriesMetadata(book.seriesId, priority = task.priority - 1)
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
           is Task.RefreshSeriesMetadata ->
             seriesRepository.findByIdOrNull(task.seriesId)?.let { series ->
               metadataLifecycle.refreshMetadata(series)
-              taskReceiver.aggregateSeriesMetadata(series.id)
+              taskReceiver.aggregateSeriesMetadata(series.id, priority = task.priority)
             } ?: logger.warn { "Cannot execute task $task: Series does not exist" }
 
           is Task.AggregateSeriesMetadata ->

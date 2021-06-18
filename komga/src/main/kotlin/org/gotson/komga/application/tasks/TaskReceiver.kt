@@ -83,12 +83,12 @@ class TaskReceiver(
     submitTask(Task.RefreshBookMetadata(bookId, capabilities, priority))
   }
 
-  fun refreshSeriesMetadata(seriesId: String) {
-    submitTask(Task.RefreshSeriesMetadata(seriesId))
+  fun refreshSeriesMetadata(seriesId: String, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.RefreshSeriesMetadata(seriesId, priority))
   }
 
-  fun aggregateSeriesMetadata(seriesId: String) {
-    submitTask(Task.AggregateSeriesMetadata(seriesId))
+  fun aggregateSeriesMetadata(seriesId: String, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.AggregateSeriesMetadata(seriesId, priority))
   }
 
   fun refreshBookLocalArtwork(bookId: String, priority: Int = DEFAULT_PRIORITY) {

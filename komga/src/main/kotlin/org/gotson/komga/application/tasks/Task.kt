@@ -32,12 +32,14 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY) : Serializable {
     override fun toString(): String = "RefreshBookMetadata(bookId='$bookId', capabilities=$capabilities, priority='$priority')"
   }
 
-  data class RefreshSeriesMetadata(val seriesId: String) : Task() {
+  class RefreshSeriesMetadata(val seriesId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
     override fun uniqueId() = "REFRESH_SERIES_METADATA_$seriesId"
+    override fun toString(): String = "RefreshSeriesMetadata(seriesId='$seriesId', priority='$priority')"
   }
 
-  data class AggregateSeriesMetadata(val seriesId: String) : Task() {
+  class AggregateSeriesMetadata(val seriesId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
     override fun uniqueId() = "AGGREGATE_SERIES_METADATA_$seriesId"
+    override fun toString(): String = "AggregateSeriesMetadata(seriesId='$seriesId', priority='$priority')"
   }
 
   class RefreshBookLocalArtwork(val bookId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
