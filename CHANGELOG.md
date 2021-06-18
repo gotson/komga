@@ -1,3 +1,10 @@
+## [0.99.4](https://github.com/gotson/komga/compare/v0.99.3...v0.99.4) (2021-06-18)
+
+
+### Bug Fixes
+
+* some tasks could be executed with the wrong priority ([2b6f534](https://github.com/gotson/komga/commit/2b6f534f848f5b8fc926558d03edc3a594a9f2e2))
+
 ## [0.99.3](https://github.com/gotson/komga/compare/v0.99.2...v0.99.3) (2021-06-17)
 
 
