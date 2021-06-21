@@ -1,3 +1,10 @@
+## [0.100.1](https://github.com/gotson/komga/compare/v0.100.0...v0.100.1) (2021-06-21)
+
+
+### Bug Fixes
+
+* **webui:** query param doesn't work with values containing comma ([b447101](https://github.com/gotson/komga/commit/b447101bccda6b4b31a80c048288346026e8292c)), closes [#557](https://github.com/gotson/komga/issues/557)
+
 # [0.100.0](https://github.com/gotson/komga/compare/v0.99.4...v0.100.0) (2021-06-21)
 
 
