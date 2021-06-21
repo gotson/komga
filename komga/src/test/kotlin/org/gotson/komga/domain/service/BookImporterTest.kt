@@ -89,7 +89,7 @@ class BookImporterTest(
     }
 
     // then
-    assertThat(thrown).isInstanceOf(FileNotFoundException::class.java)
+    assertThat(thrown).hasCauseInstanceOf(FileNotFoundException::class.java)
   }
 
   @Test
@@ -109,7 +109,7 @@ class BookImporterTest(
       }
 
       // then
-      assertThat(thrown).isInstanceOf(FileAlreadyExistsException::class.java)
+      assertThat(thrown).hasCauseInstanceOf(FileAlreadyExistsException::class.java)
     }
   }
 
@@ -130,7 +130,7 @@ class BookImporterTest(
       }
 
       // then
-      assertThat(thrown).isInstanceOf(FileAlreadyExistsException::class.java)
+      assertThat(thrown).hasCauseInstanceOf(FileAlreadyExistsException::class.java)
     }
   }
 
