@@ -48,14 +48,14 @@ class LibraryContentLifecycle(
       // delete series that don't exist anymore
       if (scannedSeries.isEmpty()) {
         logger.info { "Scan returned no series, deleting all existing series" }
-        val seriesIds = seriesRepository.findAllByLibraryId(library.id).map { it.id }
-        seriesLifecycle.deleteMany(seriesIds)
+        val series = seriesRepository.findAllByLibraryId(library.id)
+        seriesLifecycle.deleteMany(series)
       } else {
         scannedSeries.keys.map { it.url }.let { urls ->
           val series = seriesRepository.findAllByLibraryIdAndUrlNotIn(library.id, urls)
           if (series.isNotEmpty()) {
             logger.info { "Deleting series not on disk anymore: $series" }
-            seriesLifecycle.deleteMany(series.map { it.id })
+            seriesLifecycle.deleteMany(series)
           }
         }
       }
@@ -106,7 +106,7 @@ class LibraryContentLifecycle(
               .filterNot { existingBook -> newBooksUrls.contains(existingBook.url) }
               .let { books ->
                 logger.info { "Deleting books not on disk anymore: $books" }
-                bookLifecycle.deleteMany(books.map { it.id })
+                bookLifecycle.deleteMany(books)
                 books.map { it.seriesId }.distinct().forEach { taskReceiver.refreshSeriesMetadata(it) }
               }
 

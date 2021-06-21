@@ -75,7 +75,7 @@ class BookImporterTest(
 
   @AfterEach
   fun `clear repository`() {
-    seriesLifecycle.deleteMany(seriesRepository.findAll().map { it.id })
+    seriesLifecycle.deleteMany(seriesRepository.findAll())
   }
 
   @Test

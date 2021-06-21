@@ -1,6 +1,7 @@
 package org.gotson.komga.domain.model
 
 import com.github.f4b6a3.tsid.TsidCreator
+import java.io.Serializable
 import java.time.LocalDateTime
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
@@ -24,7 +25,7 @@ data class KomgaUser(
   val id: String = TsidCreator.getTsid256().toString(),
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
-) : Auditable() {
+) : Auditable(), Serializable {
 
   fun roles(): Set<String> {
     val roles = mutableSetOf(ROLE_USER)

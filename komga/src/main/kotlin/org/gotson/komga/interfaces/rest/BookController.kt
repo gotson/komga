@@ -7,11 +7,13 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
 import org.apache.commons.io.IOUtils
+import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
+import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.ImageConversionException
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
@@ -86,6 +88,7 @@ class BookController(
   private val bookDtoRepository: BookDtoRepository,
   private val readListRepository: ReadListRepository,
   private val contentDetector: ContentDetector,
+  private val eventPublisher: EventPublisher,
 ) {
 
   @PageableAsQueryParam
@@ -471,6 +474,8 @@ class BookController(
       }
       bookMetadataRepository.update(updated)
       taskReceiver.aggregateSeriesMetadata(bookRepository.findByIdOrNull(bookId)!!.seriesId)
+
+      bookRepository.findByIdOrNull(bookId)?.let { eventPublisher.publishEvent(DomainEvent.BookUpdated(it)) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @PatchMapping("api/v1/books/{bookId}/read-progress")
@@ -504,7 +509,7 @@ class BookController(
     bookRepository.findByIdOrNull(bookId)?.let { book ->
       if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
 
-      bookLifecycle.deleteReadProgress(book.id, principal.user)
+      bookLifecycle.deleteReadProgress(book, principal.user)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 

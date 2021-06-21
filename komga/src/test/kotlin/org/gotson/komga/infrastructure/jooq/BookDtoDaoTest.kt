@@ -54,7 +54,7 @@ class BookDtoDaoTest(
 
   @AfterEach
   fun deleteBooks() {
-    bookLifecycle.deleteMany(bookRepository.findAll().map { it.id })
+    bookLifecycle.deleteMany(bookRepository.findAll())
   }
 
   @AfterAll

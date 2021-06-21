@@ -1,5 +1,6 @@
 package org.gotson.komga.domain.model
 
+import java.io.Serializable
 import java.time.LocalDateTime
 
 data class ReadProgress(
@@ -10,4 +11,4 @@ data class ReadProgress(
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
-) : Auditable()
+) : Auditable(), Serializable

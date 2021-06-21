@@ -1,10 +1,12 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
+import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatch
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.BookWithMedia
+import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesCollection
@@ -42,6 +44,7 @@ class MetadataLifecycle(
   private val collectionLifecycle: SeriesCollectionLifecycle,
   private val readListRepository: ReadListRepository,
   private val readListLifecycle: ReadListLifecycle,
+  private val eventPublisher: EventPublisher,
 ) {
 
   fun refreshMetadata(book: Book, capabilities: List<BookMetadataPatchCapability>) {
@@ -49,6 +52,7 @@ class MetadataLifecycle(
     val media = mediaRepository.findById(book.id)
 
     val library = libraryRepository.findById(book.libraryId)
+    var changed = false
 
     bookMetadataProviders.forEach { provider ->
       when {
@@ -70,6 +74,7 @@ class MetadataLifecycle(
             (provider is IsbnBarcodeProvider && library.importBarcodeIsbn)
           ) {
             handlePatchForBookMetadata(patch, book)
+            changed = true
           }
 
           if (provider is ComicInfoProvider && library.importComicInfoReadList) {
@@ -78,6 +83,8 @@ class MetadataLifecycle(
         }
       }
     }
+
+    if (changed) eventPublisher.publishEvent(DomainEvent.BookUpdated(book))
   }
 
   private fun handlePatchForReadLists(
@@ -138,6 +145,7 @@ class MetadataLifecycle(
     logger.info { "Refresh metadata for series: $series" }
 
     val library = libraryRepository.findById(series.libraryId)
+    var changed = false
 
     seriesMetadataProviders.forEach { provider ->
       when {
@@ -153,6 +161,7 @@ class MetadataLifecycle(
             (provider is EpubMetadataProvider && library.importEpubSeries)
           ) {
             handlePatchForSeriesMetadata(patches, series)
+            changed = true
           }
 
           if (provider is ComicInfoProvider && library.importComicInfoCollection) {
@@ -161,6 +170,8 @@ class MetadataLifecycle(
         }
       }
     }
+
+    if (changed) eventPublisher.publishEvent(DomainEvent.SeriesUpdated(series))
   }
 
   private fun handlePatchForCollections(
@@ -226,6 +237,8 @@ class MetadataLifecycle(
     val aggregation = metadataAggregator.aggregate(metadatas).copy(seriesId = series.id)
 
     bookMetadataAggregationRepository.update(aggregation)
+
+    eventPublisher.publishEvent(DomainEvent.SeriesUpdated(series))
   }
 
   private fun <T, R : Any> Iterable<T>.mostFrequent(transform: (T) -> R?): R? {

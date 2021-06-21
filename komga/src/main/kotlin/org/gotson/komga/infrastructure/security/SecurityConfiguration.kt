@@ -41,7 +41,8 @@ class SecurityConfiguration(
       // all other endpoints are restricted to authenticated users
       .antMatchers(
         "/api/**",
-        "/opds/**"
+        "/opds/**",
+        "/sse/**"
       ).hasRole(ROLE_USER)
 
       .and()

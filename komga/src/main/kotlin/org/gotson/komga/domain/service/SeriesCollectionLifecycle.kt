@@ -1,6 +1,8 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
+import org.gotson.komga.application.events.EventPublisher
+import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
@@ -13,7 +15,8 @@ private val logger = KotlinLogging.logger {}
 class SeriesCollectionLifecycle(
   private val collectionRepository: SeriesCollectionRepository,
   private val seriesLifecycle: SeriesLifecycle,
-  private val mosaicGenerator: MosaicGenerator
+  private val mosaicGenerator: MosaicGenerator,
+  private val eventPublisher: EventPublisher,
 ) {
 
   @Throws(
@@ -26,6 +29,8 @@ class SeriesCollectionLifecycle(
       throw DuplicateNameException("Collection name already exists")
 
     collectionRepository.insert(collection)
+
+    eventPublisher.publishEvent(DomainEvent.CollectionAdded(collection))
 
     return collectionRepository.findByIdOrNull(collection.id)!!
   }
@@ -40,10 +45,13 @@ class SeriesCollectionLifecycle(
       throw DuplicateNameException("Collection name already exists")
 
     collectionRepository.update(toUpdate)
+
+    eventPublisher.publishEvent(DomainEvent.CollectionUpdated(toUpdate))
   }
 
-  fun deleteCollection(collectionId: String) {
-    collectionRepository.delete(collectionId)
+  fun deleteCollection(collection: SeriesCollection) {
+    collectionRepository.delete(collection.id)
+    eventPublisher.publishEvent(DomainEvent.CollectionDeleted(collection))
   }
 
   fun getThumbnailBytes(collection: SeriesCollection): ByteArray {

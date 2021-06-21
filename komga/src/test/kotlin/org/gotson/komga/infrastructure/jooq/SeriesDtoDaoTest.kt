@@ -51,7 +51,7 @@ class SeriesDtoDaoTest(
 
   @AfterEach
   fun deleteSeries() {
-    seriesLifecycle.deleteMany(seriesRepository.findAll().map { it.id })
+    seriesLifecycle.deleteMany(seriesRepository.findAll())
   }
 
   @AfterAll

@@ -13,10 +13,12 @@ interface BookRepository {
 
   fun findAll(): Collection<Book>
   fun findAllBySeriesId(seriesId: String): Collection<Book>
+  fun findAllBySeriesIds(seriesIds: Collection<String>): Collection<Book>
   fun findAll(bookSearch: BookSearch): Collection<Book>
   fun findAll(bookSearch: BookSearch, pageable: Pageable): Page<Book>
 
   fun getLibraryIdOrNull(bookId: String): String?
+  fun getSeriesIdOrNull(bookId: String): String?
   fun findFirstIdInSeriesOrNull(seriesId: String): String?
 
   fun findAllIdsBySeriesId(seriesId: String): Collection<String>

@@ -49,7 +49,7 @@ class ReadListMatcherTest(
   @AfterEach
   fun `clear repository`() {
     readListRepository.deleteAll()
-    seriesLifecycle.deleteMany(seriesRepository.findAll().map { it.id })
+    seriesLifecycle.deleteMany(seriesRepository.findAll())
   }
 
   @Test

@@ -5,7 +5,7 @@ logging:
   file:
     name: \${user.home}/.komga/komga.log
   level:
-    org.apache.activemq.audit.message: WARN
+    org.apache.activemq.audit: WARN
 
 komga:
   libraries-scan-cron: "0 */15 * * * ?"

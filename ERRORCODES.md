@@ -21,3 +21,8 @@ ERR_1014 | No match for book number within series
 ERR_1015 | Error while deserializing ComicRack ReadingList
 ERR_1016 | Directory not accessible or not a directory
 ERR_1017 | Cannot scan folder that is part of an existing library
+ERR_1018 | File not found
+ERR_1019 | Cannot import file that is part of an existing library
+ERR_1020 | Book to upgrade does not belong to provided series
+ERR_1021 | Destination file already exists
+ERR_1022 | Newly imported book could not be scanned

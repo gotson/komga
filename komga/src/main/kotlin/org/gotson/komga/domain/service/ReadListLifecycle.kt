@@ -1,6 +1,8 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
+import org.gotson.komga.application.events.EventPublisher
+import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadListRequestResult
@@ -18,6 +20,7 @@ class ReadListLifecycle(
   private val mosaicGenerator: MosaicGenerator,
   private val readListMatcher: ReadListMatcher,
   private val readListProvider: ReadListProvider,
+  private val eventPublisher: EventPublisher,
 ) {
 
   @Throws(
@@ -31,6 +34,8 @@ class ReadListLifecycle(
 
     readListRepository.insert(readList)
 
+    eventPublisher.publishEvent(DomainEvent.ReadListAdded(readList))
+
     return readListRepository.findByIdOrNull(readList.id)!!
   }
 
@@ -43,10 +48,14 @@ class ReadListLifecycle(
       throw DuplicateNameException("Read list name already exists")
 
     readListRepository.update(toUpdate)
+
+    eventPublisher.publishEvent(DomainEvent.ReadListUpdated(toUpdate))
   }
 
-  fun deleteReadList(readListId: String) {
-    readListRepository.delete(readListId)
+  fun deleteReadList(readList: ReadList) {
+    readListRepository.delete(readList.id)
+
+    eventPublisher.publishEvent(DomainEvent.ReadListDeleted(readList))
   }
 
   fun getThumbnailBytes(readList: ReadList): ByteArray {

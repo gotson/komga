@@ -1,6 +1,18 @@
 package org.gotson.komga.domain.model
 
-open class CodedException(message: String, val code: String) : Exception(message)
+open class CodedException : Exception {
+  val code: String
+
+  constructor(cause: Throwable, code: String) : super(cause) {
+    this.code = code
+  }
+
+  constructor(message: String, code: String) : super(message) {
+    this.code = code
+  }
+}
+fun Exception.withCode(code: String) = CodedException(this, code)
+
 class MediaNotReadyException : Exception()
 class MediaUnsupportedException(message: String, code: String = "") : CodedException(message, code)
 class ImageConversionException(message: String, code: String = "") : CodedException(message, code)

@@ -9,10 +9,12 @@ import mu.KotlinLogging
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
 import org.apache.commons.io.IOUtils
+import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
+import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
@@ -86,6 +88,7 @@ class SeriesController(
   private val bookDtoRepository: BookDtoRepository,
   private val collectionRepository: SeriesCollectionRepository,
   private val readProgressDtoRepository: ReadProgressDtoRepository,
+  private val eventPublisher: EventPublisher,
 ) {
 
   @PageableAsQueryParam
@@ -353,6 +356,8 @@ class SeriesController(
         )
       }
       seriesMetadataRepository.update(updated)
+
+      seriesRepository.findByIdOrNull(seriesId)?.let { eventPublisher.publishEvent(DomainEvent.SeriesUpdated(it)) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @PostMapping("{seriesId}/read-progress")

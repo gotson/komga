@@ -179,7 +179,7 @@ class ReadListController(
     @PathVariable id: String
   ) {
     readListRepository.findByIdOrNull(id)?.let {
-      readListLifecycle.deleteReadList(it.id)
+      readListLifecycle.deleteReadList(it)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 

@@ -43,6 +43,12 @@ class ReadProgressDao(
       .fetchInto(r)
       .map { it.toDomain() }
 
+  override fun findAllByBookIdsAndUserId(bookIds: Collection<String>, userId: String): Collection<ReadProgress> =
+    dsl.selectFrom(r)
+      .where(r.BOOK_ID.`in`(bookIds).and(r.USER_ID.eq(userId)))
+      .fetchInto(r)
+      .map { it.toDomain() }
+
   override fun save(readProgress: ReadProgress) {
     dsl.transaction { config ->
       config.dsl().saveQuery(readProgress).execute()

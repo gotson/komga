@@ -152,7 +152,7 @@ class SeriesCollectionController(
     @PathVariable id: String
   ) {
     collectionRepository.findByIdOrNull(id)?.let {
-      collectionLifecycle.deleteCollection(it.id)
+      collectionLifecycle.deleteCollection(it)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
