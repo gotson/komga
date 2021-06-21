@@ -110,15 +110,20 @@ import ItemBrowser from '@/components/ItemBrowser.vue'
 import {BookDto} from '@/types/komga-books'
 import {
   BOOK_CHANGED,
+  BOOK_DELETED,
   COLLECTION_CHANGED,
   COLLECTION_DELETED,
   LIBRARY_DELETED,
   READLIST_CHANGED,
   READLIST_DELETED,
+  READPROGRESS_CHANGED,
+  READPROGRESS_DELETED,
   SERIES_CHANGED,
+  SERIES_DELETED,
 } from '@/types/events'
 import Vue from 'vue'
 import {SeriesDto} from "@/types/komga-series";
+import {BookSseDto, CollectionSseDto, ReadListSseDto, ReadProgressSseDto, SeriesSseDto} from "@/types/komga-sse";
 
 export default Vue.extend({
   name: 'Search',
@@ -144,21 +149,29 @@ export default Vue.extend({
   },
   created () {
     this.$eventHub.$on(LIBRARY_DELETED, this.reloadResults)
-    this.$eventHub.$on(SERIES_CHANGED, this.reloadResults)
-    this.$eventHub.$on(BOOK_CHANGED, this.reloadResults)
-    this.$eventHub.$on(COLLECTION_CHANGED, this.reloadResults)
-    this.$eventHub.$on(COLLECTION_DELETED, this.reloadResults)
-    this.$eventHub.$on(READLIST_CHANGED, this.reloadResults)
-    this.$eventHub.$on(READLIST_DELETED, this.reloadResults)
+    this.$eventHub.$on(SERIES_CHANGED, this.seriesChanged)
+    this.$eventHub.$on(SERIES_DELETED, this.seriesChanged)
+    this.$eventHub.$on(BOOK_CHANGED, this.bookChanged)
+    this.$eventHub.$on(BOOK_DELETED, this.bookChanged)
+    this.$eventHub.$on(COLLECTION_CHANGED, this.collectionChanged)
+    this.$eventHub.$on(COLLECTION_DELETED, this.collectionChanged)
+    this.$eventHub.$on(READLIST_CHANGED, this.readListChanged)
+    this.$eventHub.$on(READLIST_DELETED, this.readListChanged)
+    this.$eventHub.$on(READPROGRESS_CHANGED, this.readProgressChanged)
+    this.$eventHub.$on(READPROGRESS_DELETED, this.readProgressChanged)
   },
   beforeDestroy () {
     this.$eventHub.$off(LIBRARY_DELETED, this.reloadResults)
-    this.$eventHub.$off(SERIES_CHANGED, this.reloadResults)
-    this.$eventHub.$off(BOOK_CHANGED, this.reloadResults)
-    this.$eventHub.$off(COLLECTION_CHANGED, this.reloadResults)
-    this.$eventHub.$off(COLLECTION_DELETED, this.reloadResults)
-    this.$eventHub.$off(READLIST_CHANGED, this.reloadResults)
-    this.$eventHub.$off(READLIST_DELETED, this.reloadResults)
+    this.$eventHub.$off(SERIES_CHANGED, this.seriesChanged)
+    this.$eventHub.$off(SERIES_DELETED, this.seriesChanged)
+    this.$eventHub.$off(BOOK_CHANGED, this.bookChanged)
+    this.$eventHub.$off(BOOK_DELETED, this.bookChanged)
+    this.$eventHub.$off(COLLECTION_CHANGED, this.collectionChanged)
+    this.$eventHub.$off(COLLECTION_DELETED, this.collectionChanged)
+    this.$eventHub.$off(READLIST_CHANGED, this.readListChanged)
+    this.$eventHub.$off(READLIST_DELETED, this.readListChanged)
+    this.$eventHub.$off(READPROGRESS_CHANGED, this.readProgressChanged)
+    this.$eventHub.$off(READPROGRESS_DELETED, this.readProgressChanged)
   },
   watch: {
     '$route.query.q': {
@@ -199,6 +212,31 @@ export default Vue.extend({
     },
   },
   methods: {
+    seriesChanged(event: SeriesSseDto){
+      if(this.series.map(x => x.id).includes(event.seriesId)){
+        this.reloadResults()
+      }
+    },
+    bookChanged(event: BookSseDto){
+      if(this.books.map(x => x.id).includes(event.bookId)){
+        this.reloadResults()
+      }
+    },
+    readProgressChanged(event: ReadProgressSseDto){
+      if(this.books.map(x => x.id).includes(event.bookId)){
+        this.reloadResults()
+      }
+    },
+    collectionChanged (event: CollectionSseDto) {
+      if (this.collections.map(x => x.id).includes(event.collectionId)) {
+        this.reloadResults()
+      }
+    },
+    readListChanged (event: ReadListSseDto) {
+      if (this.readLists.map(x => x.id).includes(event.readListId)) {
+        this.reloadResults()
+      }
+    },
     singleEditSeries (series: SeriesDto) {
       this.$store.dispatch('dialogUpdateSeries', series)
     },

@@ -122,7 +122,6 @@ export default Vue.extend({
         } as ReadListUpdateDto
 
         await this.$komgaReadLists.patchReadList(this.readList.id, update)
-        this.$emit('updated', true)
       } catch (e) {
         this.showSnack(e.message)
       }

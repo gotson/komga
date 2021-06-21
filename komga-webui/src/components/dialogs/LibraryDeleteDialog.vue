@@ -94,7 +94,6 @@ export default Vue.extend({
     async deleteLibrary() {
       try {
         await this.$store.dispatch('deleteLibrary', this.library)
-        this.$emit('deleted', true)
       } catch (e) {
         this.showSnack(e.message)
       }

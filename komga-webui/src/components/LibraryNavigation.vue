@@ -77,7 +77,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {COLLECTION_CHANGED, READLIST_CHANGED} from '@/types/events'
+import {COLLECTION_ADDED, COLLECTION_DELETED, READLIST_ADDED, READLIST_DELETED} from '@/types/events'
 import {LIBRARIES_ALL} from '@/types/library'
 
 export default Vue.extend({
@@ -101,18 +101,23 @@ export default Vue.extend({
   watch: {
     libraryId: {
       handler(val) {
-        this.loadCounts(val)
+        this.loadReadListCounts(val)
+        this.loadCollectionCounts(val)
       },
       immediate: true,
     },
   },
   created() {
-    this.$eventHub.$on(COLLECTION_CHANGED, this.reloadCounts)
-    this.$eventHub.$on(READLIST_CHANGED, this.reloadCounts)
+    this.$eventHub.$on(COLLECTION_ADDED, this.collectionAdded)
+    this.$eventHub.$on(COLLECTION_DELETED, this.collectionDeleted)
+    this.$eventHub.$on(READLIST_ADDED, this.readListAdded)
+    this.$eventHub.$on(READLIST_DELETED, this.readListDeleted)
   },
   beforeDestroy() {
-    this.$eventHub.$off(COLLECTION_CHANGED, this.reloadCounts)
-    this.$eventHub.$off(READLIST_CHANGED, this.reloadCounts)
+    this.$eventHub.$off(COLLECTION_ADDED, this.collectionAdded)
+    this.$eventHub.$off(COLLECTION_DELETED, this.collectionDeleted)
+    this.$eventHub.$off(READLIST_ADDED, this.readListAdded)
+    this.$eventHub.$off(READLIST_DELETED, this.readListDeleted)
   },
   computed: {
     showRecommended(): boolean {
@@ -123,15 +128,27 @@ export default Vue.extend({
     },
   },
   methods: {
-    reloadCounts() {
-      this.loadCounts(this.libraryId)
+    readListAdded() {
+      if(this.readListsCount === 0) this.loadReadListCounts(this.libraryId)
     },
-    async loadCounts(libraryId: string) {
+    readListDeleted() {
+      if(this.readListsCount === 1) this.loadReadListCounts(this.libraryId)
+    },
+    collectionAdded() {
+      if(this.collectionsCount === 0) this.loadCollectionCounts(this.libraryId)
+    },
+    collectionDeleted() {
+      if(this.collectionsCount === 1) this.loadCollectionCounts(this.libraryId)
+    },
+    async loadCollectionCounts(libraryId: string) {
       const lib = libraryId !== LIBRARIES_ALL ? [libraryId] : undefined
       this.$komgaCollections.getCollections(lib, {size: 0})
       .then(v => this.collectionsCount = v.totalElements)
+    },
+    async loadReadListCounts(libraryId: string) {
+      const lib = libraryId !== LIBRARIES_ALL ? [libraryId] : undefined
       await this.$komgaReadLists.getReadLists(lib, {size: 0})
-      .then(v => this.readListsCount = v.totalElements)
+        .then(v => this.readListsCount = v.totalElements)
     },
   },
 })

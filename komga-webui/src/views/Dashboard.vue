@@ -17,7 +17,8 @@
 
     </toolbar-sticky>
 
-    <library-navigation v-if="individualLibrary && $vuetify.breakpoint.name === 'xs'" :libraryId="libraryId" bottom-navigation/>
+    <library-navigation v-if="individualLibrary && $vuetify.breakpoint.name === 'xs'" :libraryId="libraryId"
+                        bottom-navigation/>
 
     <series-multi-select-bar
       v-model="selectedSeries"
@@ -134,10 +135,21 @@ import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import LibraryNavigation from '@/components/LibraryNavigation.vue'
 import {ReadStatus} from '@/types/enum-books'
 import {BookDto} from '@/types/komga-books'
-import {BOOK_CHANGED, LIBRARY_DELETED, SERIES_CHANGED} from '@/types/events'
+import {
+  BOOK_ADDED,
+  BOOK_CHANGED,
+  BOOK_DELETED,
+  READPROGRESS_CHANGED,
+  READPROGRESS_DELETED,
+  SERIES_ADDED,
+  SERIES_CHANGED,
+  SERIES_DELETED,
+} from '@/types/events'
 import Vue from 'vue'
 import {SeriesDto} from "@/types/komga-series";
 import {LIBRARIES_ALL, LIBRARY_ROUTE} from "@/types/library";
+import {throttle} from 'lodash'
+import {BookSseDto, ReadProgressSseDto, SeriesSseDto} from "@/types/komga-sse";
 
 export default Vue.extend({
   name: 'Dashboard',
@@ -164,17 +176,30 @@ export default Vue.extend({
     }
   },
   created() {
-    this.$eventHub.$on(LIBRARY_DELETED, this.libraryDeleted)
-    this.$eventHub.$on(SERIES_CHANGED, this.reload)
-    this.$eventHub.$on(BOOK_CHANGED, this.reload)
+    this.$eventHub.$on(SERIES_ADDED, this.seriesChanged)
+    this.$eventHub.$on(SERIES_CHANGED, this.seriesChanged)
+    this.$eventHub.$on(SERIES_DELETED, this.seriesChanged)
+    this.$eventHub.$on(BOOK_ADDED, this.bookChanged)
+    this.$eventHub.$on(BOOK_CHANGED, this.bookChanged)
+    this.$eventHub.$on(BOOK_DELETED, this.bookChanged)
+    this.$eventHub.$on(READPROGRESS_CHANGED, this.readProgressChanged)
+    this.$eventHub.$on(READPROGRESS_DELETED, this.readProgressChanged)
   },
   beforeDestroy() {
-    this.$eventHub.$off(LIBRARY_DELETED, this.libraryDeleted)
-    this.$eventHub.$off(SERIES_CHANGED, this.reload)
-    this.$eventHub.$off(BOOK_CHANGED, this.reload)
+    this.$eventHub.$off(SERIES_ADDED, this.seriesChanged)
+    this.$eventHub.$off(SERIES_CHANGED, this.seriesChanged)
+    this.$eventHub.$off(SERIES_DELETED, this.seriesChanged)
+    this.$eventHub.$off(BOOK_ADDED, this.bookChanged)
+    this.$eventHub.$off(BOOK_CHANGED, this.bookChanged)
+    this.$eventHub.$off(BOOK_DELETED, this.bookChanged)
+    this.$eventHub.$off(READPROGRESS_CHANGED, this.readProgressChanged)
+    this.$eventHub.$off(READPROGRESS_DELETED, this.readProgressChanged)
   },
   mounted() {
-    if(this.individualLibrary) this.$store.commit('setLibraryRoute', {id: this.libraryId, route: LIBRARY_ROUTE.RECOMMENDED})
+    if (this.individualLibrary) this.$store.commit('setLibraryRoute', {
+      id: this.libraryId,
+      route: LIBRARY_ROUTE.RECOMMENDED,
+    })
     this.reload()
   },
   props: {
@@ -192,6 +217,12 @@ export default Vue.extend({
     },
     libraryId(val) {
       this.loadAll(val)
+    },
+    '$store.state.komgaLibraries.libraries': {
+      handler(val){
+        if(val.length === 0) this.$router.push({name: 'welcome'})
+        else this.reload()
+      },
     },
   },
   computed: {
@@ -213,16 +244,24 @@ export default Vue.extend({
     getRequestLibraryId(libraryId: string): string | undefined {
       return libraryId !== LIBRARIES_ALL ? libraryId : undefined
     },
-    libraryDeleted() {
-      if (this.$store.state.komgaLibraries.libraries.length === 0) {
-        this.$router.push({name: 'welcome'})
-      } else {
+    seriesChanged(event: SeriesSseDto) {
+      if (this.libraryId === LIBRARIES_ALL || event.libraryId === this.libraryId) {
         this.reload()
       }
     },
-    reload() {
-      this.loadAll(this.libraryId)
+    bookChanged(event: BookSseDto){
+      if (this.libraryId === LIBRARIES_ALL || event.libraryId === this.libraryId) {
+        this.reload()
+      }
     },
+    readProgressChanged(event: ReadProgressSseDto){
+      if (this.inProgressBooks.some(b => b.id === event.bookId)) this.reload()
+      else if (this.latestBooks.some(b => b.id === event.bookId)) this.reload()
+      else if (this.onDeckBooks.some(b => b.id === event.bookId)) this.reload()
+    },
+    reload: throttle(function(this: any) {
+      this.loadAll(this.libraryId)
+    }, 5000),
     loadAll(libraryId: string) {
       this.library = this.getLibraryLazy(libraryId)
       this.selectedSeries = []

@@ -155,7 +155,6 @@ export default Vue.extend({
 
       try {
         await this.$komgaCollections.patchCollection(collection.id, toUpdate)
-        this.$emit('added', collection)
         this.dialogClose()
       } catch (e) {
         this.showSnack(e.message)
@@ -170,7 +169,6 @@ export default Vue.extend({
 
       try {
         const created = await this.$komgaCollections.postCollection(toCreate)
-        this.$emit('created', created)
         this.dialogClose()
       } catch (e) {
         this.showSnack(e.message)

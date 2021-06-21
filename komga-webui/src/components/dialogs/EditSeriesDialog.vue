@@ -591,7 +591,6 @@ export default Vue.extend({
         for (const s of toUpdate) {
           try {
             await this.$komgaSeries.updateMetadata(s.id, metadata)
-            this.$emit('updated', s)
           } catch (e) {
             this.showSnack(e.message)
           }

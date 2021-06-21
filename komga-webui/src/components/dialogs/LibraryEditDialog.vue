@@ -245,7 +245,6 @@
 
 <script lang="ts">
 import FileBrowserDialog from '@/components/dialogs/FileBrowserDialog.vue'
-import {LIBRARY_ADDED, LIBRARY_CHANGED, libraryToEventLibraryChanged} from '@/types/events'
 import Vue from 'vue'
 import {required} from 'vuelidate/lib/validators'
 
@@ -435,10 +434,8 @@ export default Vue.extend({
         try {
           if (this.library) {
             await this.$store.dispatch('updateLibrary', {libraryId: this.library.id, library: library})
-            this.$eventHub.$emit(LIBRARY_CHANGED, libraryToEventLibraryChanged(this.library))
           } else {
             await this.$store.dispatch('postLibrary', library)
-            this.$eventHub.$emit(LIBRARY_ADDED)
           }
           this.dialogClose()
         } catch (e) {

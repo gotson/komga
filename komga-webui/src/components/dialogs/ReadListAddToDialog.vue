@@ -151,7 +151,6 @@ export default Vue.extend({
 
       try {
         await this.$komgaReadLists.patchReadList(readList.id, toUpdate)
-        this.$emit('added', readList)
         this.dialogClose()
       } catch (e) {
         this.showSnack(e.message)
@@ -165,7 +164,6 @@ export default Vue.extend({
 
       try {
         const created = await this.$komgaReadLists.postReadList(toCreate)
-        this.$emit('created', created)
         this.dialogClose()
       } catch (e) {
         this.showSnack(e.message)

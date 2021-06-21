@@ -93,7 +93,6 @@ export default Vue.extend({
     async delete() {
       try {
         await this.$komgaReadLists.deleteReadList(this.readList.id)
-        this.$emit('deleted', true)
       } catch (e) {
         this.showSnack(e.message)
       }

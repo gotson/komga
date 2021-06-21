@@ -95,7 +95,6 @@ export default Vue.extend({
     async deleteCollection() {
       try {
         await this.$komgaCollections.deleteCollection(this.collection.id)
-        this.$emit('deleted', true)
       } catch (e) {
         this.showSnack(e.message)
       }

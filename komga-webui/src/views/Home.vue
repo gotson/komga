@@ -20,6 +20,21 @@
             Komga
           </v-list-item-title>
         </v-list-item-content>
+
+        <v-tooltip left>
+          <template v-slot:activator="{ on }">
+            <v-progress-linear
+              :active="taskCount > 0"
+              indeterminate
+              absolute
+              bottom
+              height="2"
+              color="secondary"
+              v-on="on"
+            />
+          </template>
+          <span>{{ $tc('common.pending_tasks', taskCount) }}</span>
+        </v-tooltip>
       </v-list-item>
 
       <v-divider/>
@@ -141,6 +156,7 @@
 
     <v-main class="fill-height">
       <dialogs/>
+      <toaster/>
       <router-view/>
     </v-main>
   </div>
@@ -152,11 +168,12 @@ import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import SearchBox from '@/components/SearchBox.vue'
 import {Theme} from '@/types/themes'
 import Vue from 'vue'
-import {LIBRARIES_ALL} from "@/types/library";
+import {LIBRARIES_ALL} from "@/types/library"
+import Toaster from "@/components/Toaster.vue"
 
 export default Vue.extend({
   name: 'home',
-  components: {LibraryActionsMenu, SearchBox, Dialogs},
+  components: {Toaster, LibraryActionsMenu, SearchBox, Dialogs},
   data: function () {
     return {
       LIBRARIES_ALL,
@@ -171,6 +188,9 @@ export default Vue.extend({
     }
   },
   computed: {
+    taskCount(): number {
+      return this.$store.state.komgaSse.taskCount
+    },
     libraries(): LibraryDto[] {
       return this.$store.state.komgaLibraries.libraries
     },

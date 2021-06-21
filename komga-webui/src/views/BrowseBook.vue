@@ -322,7 +322,16 @@ import {getReadProgress, getReadProgressPercentage} from '@/functions/book-progr
 import {getBookTitleCompact} from '@/functions/book-title'
 import {bookFileUrl, bookThumbnailUrl} from '@/functions/urls'
 import {ReadStatus} from '@/types/enum-books'
-import {BOOK_CHANGED, LIBRARY_DELETED} from '@/types/events'
+import {
+  BOOK_CHANGED,
+  BOOK_DELETED,
+  LIBRARY_DELETED,
+  READLIST_ADDED,
+  READLIST_CHANGED,
+  READLIST_DELETED,
+  READPROGRESS_CHANGED,
+  READPROGRESS_DELETED,
+} from '@/types/events'
 import Vue from 'vue'
 import ReadListsExpansionPanels from '@/components/ReadListsExpansionPanels.vue'
 import {BookDto, BookFormat} from '@/types/komga-books'
@@ -333,6 +342,7 @@ import VueHorizontal from "vue-horizontal";
 import {authorRoles} from "@/types/author-roles";
 import {convertErrorCodes} from "@/functions/error-codes";
 import RtlIcon from "@/components/RtlIcon.vue";
+import {BookSseDto, LibrarySseDto, ReadListSseDto, ReadProgressSseDto} from "@/types/komga-sse";
 
 export default Vue.extend({
   name: 'BrowseBook',
@@ -351,12 +361,24 @@ export default Vue.extend({
   },
   async created() {
     this.loadBook(this.bookId)
-    this.$eventHub.$on(BOOK_CHANGED, this.reloadBook)
+    this.$eventHub.$on(BOOK_CHANGED, this.bookChanged)
+    this.$eventHub.$on(BOOK_DELETED, this.bookDeleted)
+    this.$eventHub.$on(READPROGRESS_CHANGED, this.readProgressChanged)
+    this.$eventHub.$on(READPROGRESS_DELETED, this.readProgressChanged)
     this.$eventHub.$on(LIBRARY_DELETED, this.libraryDeleted)
+    this.$eventHub.$on(READLIST_ADDED, this.readListChanged)
+    this.$eventHub.$on(READLIST_CHANGED, this.readListChanged)
+    this.$eventHub.$on(READLIST_DELETED, this.readListChanged)
   },
   beforeDestroy() {
-    this.$eventHub.$off(BOOK_CHANGED, this.reloadBook)
+    this.$eventHub.$off(BOOK_CHANGED, this.bookChanged)
+    this.$eventHub.$off(BOOK_DELETED, this.bookDeleted)
+    this.$eventHub.$off(READPROGRESS_CHANGED, this.readProgressChanged)
+    this.$eventHub.$off(READPROGRESS_DELETED, this.readProgressChanged)
     this.$eventHub.$off(LIBRARY_DELETED, this.libraryDeleted)
+    this.$eventHub.$off(READLIST_ADDED, this.readListChanged)
+    this.$eventHub.$off(READLIST_CHANGED, this.readListChanged)
+    this.$eventHub.$off(READLIST_DELETED, this.readListChanged)
   },
   props: {
     bookId: {
@@ -434,13 +456,27 @@ export default Vue.extend({
     },
   },
   methods: {
-    libraryDeleted(event: EventLibraryDeleted) {
-      if (event.id === this.book.libraryId) {
+    libraryDeleted(event: LibrarySseDto) {
+      if (event.libraryId === this.book.libraryId) {
         this.$router.push({name: 'home'})
       }
     },
-    reloadBook(event: EventBookChanged) {
-      if (event.id === this.bookId) this.loadBook(this.bookId)
+    readListChanged(event: ReadListSseDto) {
+      if(event.bookIds.includes(this.bookId) || this.readLists.map(x => x.id).includes(event.readListId)){
+        this.$komgaBooks.getReadLists(this.bookId)
+          .then(v => this.readLists = v)
+      }
+    },
+    bookChanged(event: BookSseDto) {
+      if (event.bookId === this.bookId) this.loadBook(this.bookId)
+    },
+    bookDeleted(event: BookSseDto) {
+      if (event.bookId === this.bookId){
+        this.$router.push({name:'browse-series', params: {seriesId: this.series.id }})
+      }
+    },
+    readProgressChanged(event: ReadProgressSseDto){
+      if (event.bookId === this.bookId) this.loadBook(this.bookId)
     },
     async loadBook(bookId: string) {
       this.book = await this.$komgaBooks.getBook(bookId)

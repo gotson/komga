@@ -39,6 +39,12 @@
     "field_import_path": "Import from folder",
     "info_part1": "This screen lets you import files that are outside your existing libraries. You can only import files into existing Series, in which case Komga will move or copy the files into the directory of the chosen Series.",
     "info_part2": "If you choose a number for a book, and a book already exists with that number, then you will be able to compare the 2 books. If you decide to import the book, Komga will upgrade the existing book with the new one, effectively replacing the old file with the new.",
+    "notification": {
+      "go_to_book": "Go to book",
+      "import_failure": "Failed to import book: {file}",
+      "import_successful": "Book imported successfully: {book}",
+      "source_file": "Source file: {file}"
+    },
     "row": {
       "error_analyze_first": "Book needs to be analyzed first",
       "error_choose_series": "Choose a series",
@@ -159,6 +165,7 @@
     "collections": "Collections",
     "create": "Create",
     "delete": "Delete",
+    "dismiss": "Dismiss",
     "download": "Download",
     "email": "Email",
     "filter_no_matches": "The active filter has no matches",
@@ -177,12 +184,13 @@
     "read": "Read",
     "readlists": "Read Lists",
     "required": "Required",
+    "reset_filters": "Reset filters",
     "roles": "Roles",
     "series": "Series",
     "tags": "Tags",
     "use_filter_panel_to_change_filter": "Use the filter panel to change the active filter",
     "year": "year",
-    "reset_filters": "Reset filters"
+    "pending_tasks": "No pending tasks | 1 pending task | {count} pending tasks"
   },
   "dashboard": {
     "keep_reading": "Keep Reading",
@@ -469,7 +477,12 @@
     "ERR_1014": "No match for book number within series",
     "ERR_1015": "Error while deserializing ComicRack ReadingList",
     "ERR_1016": "Directory not accessible or not a directory",
-    "ERR_1017": "Cannot scan folder that is part of an existing library"
+    "ERR_1017": "Cannot scan folder that is part of an existing library",
+    "ERR_1018": "File not found",
+    "ERR_1019": "Cannot import file that is part of an existing library",
+    "ERR_1020": "Book to upgrade does not belong to provided series",
+    "ERR_1021": "Destination file already exists",
+    "ERR_1022": "Newly imported book could not be scanned"
   },
   "filter": {
     "age_rating": "age rating",

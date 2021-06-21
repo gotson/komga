@@ -114,7 +114,7 @@
 import CollectionActionsMenu from '@/components/menus/CollectionActionsMenu.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
-import {COLLECTION_CHANGED, COLLECTION_DELETED, SERIES_CHANGED} from '@/types/events'
+import {COLLECTION_CHANGED, COLLECTION_DELETED, SERIES_CHANGED, SERIES_DELETED} from '@/types/events'
 import Vue from 'vue'
 import SeriesMultiSelectBar from '@/components/bars/SeriesMultiSelectBar.vue'
 import {LIBRARIES_ALL} from '@/types/library'
@@ -130,6 +130,7 @@ import {parseQueryParam} from '@/functions/query-params'
 import {SeriesDto} from "@/types/komga-series";
 import {authorRoles} from "@/types/author-roles";
 import {AuthorDto} from "@/types/komga-books";
+import {CollectionSseDto, SeriesSseDto} from "@/types/komga-sse";
 
 export default Vue.extend({
   name: 'BrowseCollection',
@@ -186,13 +187,15 @@ export default Vue.extend({
   },
   created() {
     this.$eventHub.$on(COLLECTION_CHANGED, this.collectionChanged)
-    this.$eventHub.$on(COLLECTION_DELETED, this.afterDelete)
-    this.$eventHub.$on(SERIES_CHANGED, this.reloadSeries)
+    this.$eventHub.$on(COLLECTION_DELETED, this.collectionDeleted)
+    this.$eventHub.$on(SERIES_CHANGED, this.seriesChanged)
+    this.$eventHub.$on(SERIES_DELETED, this.seriesChanged)
   },
   beforeDestroy() {
     this.$eventHub.$off(COLLECTION_CHANGED, this.collectionChanged)
-    this.$eventHub.$off(COLLECTION_DELETED, this.afterDelete)
-    this.$eventHub.$off(SERIES_CHANGED, this.reloadSeries)
+    this.$eventHub.$off(COLLECTION_DELETED, this.collectionDeleted)
+    this.$eventHub.$off(SERIES_CHANGED, this.seriesChanged)
+    this.$eventHub.$off(SERIES_DELETED, this.seriesChanged)
   },
   async mounted() {
     await this.resetParams(this.$route, this.collectionId)
@@ -345,9 +348,14 @@ export default Vue.extend({
     unsetWatches() {
       this.filterUnwatch()
     },
-    collectionChanged(event: EventCollectionChanged) {
-      if (event.id === this.collectionId) {
+    collectionChanged(event: CollectionSseDto) {
+      if (event.collectionId === this.collectionId) {
         this.loadCollection(this.collectionId)
+      }
+    },
+    collectionDeleted(event: CollectionSseDto) {
+      if(event.collectionId === this.collectionId) {
+        this.$router.push({name: 'browse-collections', params: {libraryId: LIBRARIES_ALL}})
       }
     },
     updateRouteAndReload() {
@@ -431,11 +439,8 @@ export default Vue.extend({
     editCollection() {
       this.$store.dispatch('dialogEditCollection', this.collection)
     },
-    afterDelete() {
-      this.$router.push({name: 'browse-collections', params: {libraryId: LIBRARIES_ALL}})
-    },
-    reloadSeries(event: EventSeriesChanged) {
-      if (this.series.some(s => s.id === event.id)) this.loadCollection(this.collectionId)
+    seriesChanged(event: SeriesSseDto) {
+      if (this.series.some(s => s.id === event.seriesId)) this.loadCollection(this.collectionId)
     },
   },
 })

@@ -76,12 +76,20 @@
 <script lang="ts">
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
-import {BOOK_CHANGED, READLIST_CHANGED, READLIST_DELETED} from '@/types/events'
+import {
+  BOOK_CHANGED,
+  BOOK_DELETED,
+  READLIST_CHANGED,
+  READLIST_DELETED,
+  READPROGRESS_CHANGED,
+  READPROGRESS_DELETED,
+} from '@/types/events'
 import Vue from 'vue'
 import ReadListActionsMenu from '@/components/menus/ReadListActionsMenu.vue'
 import BooksMultiSelectBar from '@/components/bars/BooksMultiSelectBar.vue'
 import {BookDto, ReadProgressUpdateDto} from '@/types/komga-books'
 import {ContextOrigin} from '@/types/context'
+import {BookSseDto, ReadListSseDto, ReadProgressSseDto} from "@/types/komga-sse";
 
 export default Vue.extend({
   name: 'BrowseReadList',
@@ -122,13 +130,19 @@ export default Vue.extend({
   },
   created () {
     this.$eventHub.$on(READLIST_CHANGED, this.readListChanged)
-    this.$eventHub.$on(READLIST_DELETED, this.afterDelete)
-    this.$eventHub.$on(BOOK_CHANGED, this.reloadBook)
+    this.$eventHub.$on(READLIST_DELETED, this.readListDeleted)
+    this.$eventHub.$on(BOOK_CHANGED, this.bookChanged)
+    this.$eventHub.$on(BOOK_DELETED, this.bookChanged)
+    this.$eventHub.$on(READPROGRESS_CHANGED, this.readProgressChanged)
+    this.$eventHub.$on(READPROGRESS_DELETED, this.readProgressChanged)
   },
   beforeDestroy () {
     this.$eventHub.$off(READLIST_CHANGED, this.readListChanged)
-    this.$eventHub.$off(READLIST_DELETED, this.afterDelete)
-    this.$eventHub.$off(BOOK_CHANGED, this.reloadBook)
+    this.$eventHub.$off(READLIST_DELETED, this.readListDeleted)
+    this.$eventHub.$off(BOOK_CHANGED, this.bookChanged)
+    this.$eventHub.$off(BOOK_DELETED, this.bookChanged)
+    this.$eventHub.$off(READPROGRESS_CHANGED, this.readProgressChanged)
+    this.$eventHub.$off(READPROGRESS_DELETED, this.readProgressChanged)
   },
   mounted () {
     this.loadReadList(this.readListId)
@@ -150,9 +164,14 @@ export default Vue.extend({
     },
   },
   methods: {
-    readListChanged (event: EventReadListChanged) {
-      if (event.id === this.readListId) {
+    readListChanged (event: ReadListSseDto) {
+      if (event.readListId === this.readListId) {
         this.loadReadList(this.readListId)
+      }
+    },
+    readListDeleted (event: ReadListSseDto) {
+      if (event.readListId === this.readListId) {
+        this.$router.push({name: 'browse-readlists', params: {libraryId: 'all'}})
       }
     },
     async loadReadList (readListId: string) {
@@ -206,11 +225,11 @@ export default Vue.extend({
     editReadList () {
       this.$store.dispatch('dialogEditReadList', this.readList)
     },
-    afterDelete () {
-      this.$router.push({ name: 'browse-readlists', params: { libraryId: 'all' } })
+    bookChanged (event: BookSseDto) {
+      if (this.books.some(b => b.id === event.bookId)) this.loadReadList(this.readListId)
     },
-    reloadBook (event: EventBookChanged) {
-      if (this.books.some(b => b.id === event.id)) this.loadReadList(this.readListId)
+    readProgressChanged(event: ReadProgressSseDto){
+      if (this.books.some(b => b.id === event.bookId)) this.loadReadList(this.readListId)
     },
   },
 })

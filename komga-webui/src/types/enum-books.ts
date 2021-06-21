@@ -23,7 +23,7 @@ export enum ReadStatus {
 }
 
 export function replaceCompositeReadStatus(list: string[]): string[] {
-  if(list.includes(ReadStatus.UNREAD_AND_IN_PROGRESS)){
+  if(list?.includes(ReadStatus.UNREAD_AND_IN_PROGRESS)){
     return [...without(list, ReadStatus.UNREAD_AND_IN_PROGRESS), ReadStatus.UNREAD, ReadStatus.IN_PROGRESS]
   }
   else return list

@@ -138,7 +138,6 @@ export default Vue.extend({
         } as CollectionUpdateDto
 
         await this.$komgaCollections.patchCollection(this.collection.id, update)
-        this.$emit('updated', true)
       } catch (e) {
         this.showSnack(e.message)
       }

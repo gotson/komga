@@ -381,7 +381,19 @@ import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import {parseQueryParam, parseQueryParamAndFilter, parseQuerySort} from '@/functions/query-params'
 import {seriesFileUrl, seriesThumbnailUrl} from '@/functions/urls'
 import {ReadStatus, replaceCompositeReadStatus} from '@/types/enum-books'
-import {BOOK_CHANGED, LIBRARY_DELETED, READLIST_CHANGED, SERIES_CHANGED} from '@/types/events'
+import {
+  BOOK_ADDED,
+  BOOK_CHANGED,
+  BOOK_DELETED,
+  COLLECTION_ADDED,
+  COLLECTION_CHANGED,
+  COLLECTION_DELETED,
+  LIBRARY_DELETED,
+  READPROGRESS_CHANGED,
+  READPROGRESS_DELETED,
+  SERIES_CHANGED,
+  SERIES_DELETED,
+} from '@/types/events'
 import Vue from 'vue'
 import {Location} from 'vue-router'
 import {AuthorDto, BookDto} from '@/types/komga-books'
@@ -397,6 +409,8 @@ import ReadMore from "@/components/ReadMore.vue";
 import {authorRoles, authorRolesSeries} from "@/types/author-roles";
 import VueHorizontal from "vue-horizontal";
 import RtlIcon from "@/components/RtlIcon.vue";
+import {throttle} from "lodash";
+import {BookSseDto, CollectionSseDto, LibrarySseDto, ReadProgressSseDto, SeriesSseDto} from "@/types/komga-sse";
 
 const tags = require('language-tags')
 
@@ -542,16 +556,30 @@ export default Vue.extend({
     },
   },
   created() {
-    this.$eventHub.$on(SERIES_CHANGED, this.reloadSeries)
-    this.$eventHub.$on(READLIST_CHANGED, this.reloadSeries)
-    this.$eventHub.$on(BOOK_CHANGED, this.reloadBooks)
+    this.$eventHub.$on(SERIES_CHANGED, this.seriesChanged)
+    this.$eventHub.$on(SERIES_DELETED, this.seriesDeleted)
+    this.$eventHub.$on(BOOK_ADDED, this.bookChanged)
+    this.$eventHub.$on(BOOK_CHANGED, this.bookChanged)
+    this.$eventHub.$on(BOOK_DELETED, this.bookChanged)
+    this.$eventHub.$on(READPROGRESS_CHANGED, this.readProgressChanged)
+    this.$eventHub.$on(READPROGRESS_DELETED, this.readProgressChanged)
     this.$eventHub.$on(LIBRARY_DELETED, this.libraryDeleted)
+    this.$eventHub.$on(COLLECTION_ADDED, this.collectionChanged)
+    this.$eventHub.$on(COLLECTION_CHANGED, this.collectionChanged)
+    this.$eventHub.$on(COLLECTION_DELETED, this.collectionChanged)
   },
   beforeDestroy() {
-    this.$eventHub.$off(SERIES_CHANGED, this.reloadSeries)
-    this.$eventHub.$off(READLIST_CHANGED, this.reloadSeries)
-    this.$eventHub.$off(BOOK_CHANGED, this.reloadBooks)
+    this.$eventHub.$off(SERIES_CHANGED, this.seriesChanged)
+    this.$eventHub.$off(SERIES_DELETED, this.seriesDeleted)
+    this.$eventHub.$off(BOOK_ADDED, this.bookChanged)
+    this.$eventHub.$off(BOOK_CHANGED, this.bookChanged)
+    this.$eventHub.$off(BOOK_DELETED, this.bookChanged)
+    this.$eventHub.$off(READPROGRESS_CHANGED, this.readProgressChanged)
+    this.$eventHub.$off(READPROGRESS_DELETED, this.readProgressChanged)
     this.$eventHub.$off(LIBRARY_DELETED, this.libraryDeleted)
+    this.$eventHub.$off(COLLECTION_ADDED, this.collectionChanged)
+    this.$eventHub.$off(COLLECTION_CHANGED, this.collectionChanged)
+    this.$eventHub.$off(COLLECTION_DELETED, this.collectionChanged)
   },
   async mounted() {
     this.pageSize = this.$store.state.persistedState.browsingPageSize || this.pageSize
@@ -636,22 +664,41 @@ export default Vue.extend({
 
       this.setWatches()
     },
-    libraryDeleted(event: EventLibraryDeleted) {
-      if (event.id === this.series.libraryId) {
+    libraryDeleted(event: LibrarySseDto) {
+      if (event.libraryId === this.series.libraryId) {
         this.$router.push({name: 'home'})
       }
     },
-    reloadSeries(event: EventSeriesChanged) {
-      if (event.id === this.seriesId) this.loadSeries(this.seriesId)
+    seriesChanged(event: SeriesSseDto) {
+      if (event.seriesId === this.seriesId)
+        this.$komgaSeries.getOneSeries(this.seriesId)
+          .then(v => this.series = v)
     },
-    reloadBooks(event: EventBookChanged) {
-      if (event.seriesId === this.seriesId) this.loadSeries(this.seriesId)
+    seriesDeleted(event: SeriesSseDto) {
+      if (event.seriesId === this.seriesId) {
+        this.$router.push({name: 'browse-libraries', params: {libraryId: this.series.libraryId}})
+      }
     },
+    bookChanged(event: BookSseDto) {
+      if (event.seriesId === this.seriesId) this.reloadPage()
+    },
+    readProgressChanged(event: ReadProgressSseDto) {
+      if (this.books.some(b => b.id === event.bookId)) this.reloadPage()
+    },
+    collectionChanged(event: CollectionSseDto) {
+      if (event.seriesIds.includes(this.seriesId) || this.collections.map(x => x.id).includes(event.collectionId)) {
+        this.$komgaSeries.getCollections(this.seriesId)
+          .then(v => this.collections = v)
+      }
+    },
+    reloadPage: throttle(function (this: any) {
+      this.loadPage(this.seriesId, this.page, this.sortActive)
+    }, 5000),
     async loadSeries(seriesId: string) {
       this.$komgaSeries.getOneSeries(seriesId)
-      .then(v => this.series = v)
+        .then(v => this.series = v)
       this.$komgaSeries.getCollections(seriesId)
-      .then(v => this.collections = v)
+        .then(v => this.collections = v)
 
       await this.loadPage(seriesId, this.page, this.sortActive)
     },

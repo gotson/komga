@@ -13,6 +13,7 @@
           lazy-src="../assets/cover.svg"
           aspect-ratio="0.7071"
           contain
+          @error="thumbnailError = true"
         >
           <!-- unread tick for book -->
           <div class="unread" v-if="isUnread"/>
@@ -39,7 +40,8 @@
                       :style="'position: absolute; top: 5px; ' + ($vuetify.rtl ? 'right' : 'left') + ': 10px'"
                       @click.stop="selectItem"
               >
-                {{ selected || (preselect && hover) ? 'mdi-checkbox-marked-circle' : 'mdi-checkbox-blank-circle-outline'
+                {{
+                  selected || (preselect && hover) ? 'mdi-checkbox-marked-circle' : 'mdi-checkbox-blank-circle-outline'
                 }}
               </v-icon>
 
@@ -126,10 +128,12 @@ import {RawLocation} from 'vue-router'
 import ReadListActionsMenu from '@/components/menus/ReadListActionsMenu.vue'
 import {BookDto} from '@/types/komga-books'
 import {SeriesDto} from "@/types/komga-series";
+import {THUMBNAILBOOK_ADDED, THUMBNAILSERIES_ADDED} from "@/types/events";
+import {ThumbnailBookSseDto, ThumbnailSeriesSseDto} from "@/types/komga-sse";
 
 export default Vue.extend({
   name: 'ItemCard',
-  components: { BookActionsMenu, SeriesActionsMenu, CollectionActionsMenu, ReadListActionsMenu },
+  components: {BookActionsMenu, SeriesActionsMenu, CollectionActionsMenu, ReadListActionsMenu},
   props: {
     item: {
       type: Object as () => BookDto | SeriesDto | CollectionDto | ReadListDto,
@@ -182,79 +186,101 @@ export default Vue.extend({
     return {
       ItemTypes,
       actionMenuState: false,
+      thumbnailError: false,
+      thumbnailCacheBust: '',
     }
   },
+  created() {
+    this.$eventHub.$on(THUMBNAILBOOK_ADDED, this.thumbnailBookAdded)
+    this.$eventHub.$on(THUMBNAILSERIES_ADDED, this.thumbnailSeriesAdded)
+  },
+  beforeDestroy() {
+    this.$eventHub.$off(THUMBNAILBOOK_ADDED, this.thumbnailBookAdded)
+    this.$eventHub.$off(THUMBNAILSERIES_ADDED, this.thumbnailSeriesAdded)
+  },
   computed: {
-    canReadPages (): boolean {
+    canReadPages(): boolean {
       return this.$store.getters.mePageStreaming && this.computedItem.type() === ItemTypes.BOOK
     },
-    overlay (): boolean {
+    overlay(): boolean {
       return this.onEdit !== undefined || this.onSelected !== undefined || this.bookReady || this.canReadPages || this.actionMenu
     },
-    computedItem (): Item<BookDto | SeriesDto | CollectionDto | ReadListDto> {
+    computedItem(): Item<BookDto | SeriesDto | CollectionDto | ReadListDto> {
       return createItem(this.item)
     },
-    disableHover (): boolean {
+    disableHover(): boolean {
       return !this.overlay
     },
-    thumbnailUrl (): string {
-      return this.computedItem.thumbnailUrl()
+    thumbnailUrl(): string {
+      return this.computedItem.thumbnailUrl() + this.thumbnailCacheBust
     },
-    title (): string {
+    title(): string {
       return this.computedItem.title()
     },
-    subtitleProps (): Object {
+    subtitleProps(): Object {
       return this.computedItem.subtitleProps()
     },
-    body (): string {
+    body(): string {
       return this.computedItem.body()
     },
-    isInProgress (): boolean {
+    isInProgress(): boolean {
       if (this.computedItem.type() === ItemTypes.BOOK) return getReadProgress(this.item as BookDto) === ReadStatus.IN_PROGRESS
       return false
     },
-    isUnread (): boolean {
+    isUnread(): boolean {
       if (this.computedItem.type() === ItemTypes.BOOK) return getReadProgress(this.item as BookDto) === ReadStatus.UNREAD
       return false
     },
-    unreadCount (): number | undefined {
+    unreadCount(): number | undefined {
       if (this.computedItem.type() === ItemTypes.SERIES) return (this.item as SeriesDto).booksUnreadCount + (this.item as SeriesDto).booksInProgressCount
       return undefined
     },
-    readProgressPercentage (): number {
+    readProgressPercentage(): number {
       if (this.computedItem.type() === ItemTypes.BOOK) return getReadProgressPercentage(this.item as BookDto)
       return 0
     },
-    bookReady (): boolean {
+    bookReady(): boolean {
       if (this.computedItem.type() === ItemTypes.BOOK) {
         return (this.item as BookDto).media.status === 'READY'
       }
       return false
     },
-    to (): RawLocation {
+    to(): RawLocation {
       return this.computedItem.to()
     },
-    fabTo (): RawLocation {
+    fabTo(): RawLocation {
       return this.computedItem.fabTo()
     },
   },
   methods: {
-    onClick () {
+    thumbnailBookAdded(event: ThumbnailBookSseDto) {
+      if (this.thumbnailError &&
+        ((this.computedItem.type() === ItemTypes.BOOK && event.bookId === this.item.id) || (this.computedItem.type() === ItemTypes.SERIES && event.seriesId === this.item.id))
+      ) {
+        this.thumbnailCacheBust = '?' + this.$_.random(1000)
+      }
+    },
+    thumbnailSeriesAdded(event: ThumbnailSeriesSseDto) {
+      if (this.thumbnailError && (this.computedItem.type() === ItemTypes.SERIES && event.seriesId === this.item.id)) {
+        this.thumbnailCacheBust = '?' + this.$_.random(1000)
+      }
+    },
+    onClick() {
       if (this.preselect && this.onSelected !== undefined) {
         this.selectItem()
       } else if (!this.noLink) {
         this.goto()
       }
     },
-    goto () {
+    goto() {
       this.$router.push(this.computedItem.to())
     },
-    selectItem () {
+    selectItem() {
       if (this.onSelected !== undefined) {
         this.onSelected()
       }
     },
-    editItem () {
+    editItem() {
       if (this.onEdit !== undefined) {
         this.onEdit(this.item)
       }

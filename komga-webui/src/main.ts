@@ -18,11 +18,15 @@ import komgaReferential from './plugins/komga-referential.plugin'
 import komgaSeries from './plugins/komga-series.plugin'
 import komgaUsers from './plugins/komga-users.plugin'
 import komgaTransientBooks from './plugins/komga-transientbooks.plugin'
+import komgaSse from './plugins/komga-sse.plugin'
 import vuetify from './plugins/vuetify'
 import './public-path'
 import router from './router'
 import store from './store'
 import i18n from './i18n'
+
+Vue.prototype.$_ = _
+Vue.prototype.$eventHub = new Vue()
 
 Vue.use(Vuelidate)
 Vue.use(lineClamp)
@@ -39,10 +43,9 @@ Vue.use(komgaClaim, {http: Vue.prototype.$http})
 Vue.use(komgaTransientBooks, {http: Vue.prototype.$http})
 Vue.use(komgaUsers, {store: store, http: Vue.prototype.$http})
 Vue.use(komgaLibraries, {store: store, http: Vue.prototype.$http})
+Vue.use(komgaSse, {eventHub: Vue.prototype.$eventHub, store: store})
 Vue.use(actuator, {http: Vue.prototype.$http})
 
-Vue.prototype.$_ = _
-Vue.prototype.$eventHub = new Vue()
 
 Vue.config.productionTip = false
 

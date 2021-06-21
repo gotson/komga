@@ -27,7 +27,6 @@
   </div>
 </template>
 <script lang="ts">
-import {SERIES_CHANGED, seriesToEventSeriesChanged} from '@/types/events'
 import Vue from 'vue'
 import {SeriesDto} from "@/types/komga-series";
 
@@ -76,11 +75,11 @@ export default Vue.extend({
     },
     async markRead () {
       await this.$komgaSeries.markAsRead(this.series.id)
-      this.$eventHub.$emit(SERIES_CHANGED, seriesToEventSeriesChanged(this.series))
+      // this.$eventHub.$emit(SERIES_CHANGED, seriesToEventSeriesChanged(this.series))
     },
     async markUnread () {
       await this.$komgaSeries.markAsUnread(this.series.id)
-      this.$eventHub.$emit(SERIES_CHANGED, seriesToEventSeriesChanged(this.series))
+      // this.$eventHub.$emit(SERIES_CHANGED, seriesToEventSeriesChanged(this.series))
     },
   },
 })
