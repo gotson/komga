@@ -1,3 +1,11 @@
+# [0.100.0](https://github.com/gotson/komga/compare/v0.99.4...v0.100.0) (2021-06-21)
+
+
+### Features
+
+* **sse:** publish server-sent events ([691c7f0](https://github.com/gotson/komga/commit/691c7f0071009d26dd6ec2073d4922aa9a7e60d0))
+* **webui:** the UI is now dynamic to events from the server ([a707fd3](https://github.com/gotson/komga/commit/a707fd359490d032bc65782cc1009d1e40e4b51a)), closes [#124](https://github.com/gotson/komga/issues/124)
+
 ## [0.99.4](https://github.com/gotson/komga/compare/v0.99.3...v0.99.4) (2021-06-18)
 
 
