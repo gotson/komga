@@ -235,7 +235,7 @@
                     :key="i"
                     :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
                     :title="name"
-                    :to="{name:'browse-series', params: {seriesId: book.seriesId }, query: {[role]: name}}"
+                    :to="{name:'browse-series', params: {seriesId: book.seriesId }, query: {[role]: [name]}}"
                     label
                     small
                     outlined
@@ -265,7 +265,7 @@
                     :key="i"
                     :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
                     :title="t"
-                    :to="{name:'browse-series', params: {seriesId: book.seriesId}, query: {tag: t}}"
+                    :to="{name:'browse-series', params: {seriesId: book.seriesId}, query: {tag: [t]}}"
                     label
                     small
                     outlined

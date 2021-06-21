@@ -126,11 +126,10 @@ import FilterPanels from '@/components/FilterPanels.vue'
 import FilterList from '@/components/FilterList.vue'
 import {Location} from 'vue-router'
 import EmptyState from '@/components/EmptyState.vue'
-import {parseQueryParam} from '@/functions/query-params'
-import {SeriesDto} from "@/types/komga-series";
-import {authorRoles} from "@/types/author-roles";
-import {AuthorDto} from "@/types/komga-books";
-import {CollectionSseDto, SeriesSseDto} from "@/types/komga-sse";
+import {SeriesDto} from "@/types/komga-series"
+import {authorRoles} from "@/types/author-roles"
+import {AuthorDto} from "@/types/komga-books"
+import {CollectionSseDto, SeriesSseDto} from "@/types/komga-sse"
 
 export default Vue.extend({
   name: 'BrowseCollection',
@@ -304,18 +303,18 @@ export default Vue.extend({
       let activeFilters: any
       if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating || route.query.library || route.query.publisher || authorRoles.some(role => role in route.query)) {
         activeFilters = {
-          status: parseQueryParam(route.query.status),
-          readStatus: parseQueryParam(route.query.readStatus),
-          library: parseQueryParam(route.query.library),
-          genre: parseQueryParam(route.query.genre),
-          tag: parseQueryParam(route.query.tag),
-          publisher: parseQueryParam(route.query.publisher),
-          language: parseQueryParam(route.query.language),
-          ageRating: parseQueryParam(route.query.ageRating),
-          releaseDate: parseQueryParam(route.query.releaseDate),
+          status: route.query.status || [],
+          readStatus: route.query.readStatus || [],
+          library: route.query.library || [],
+          genre: route.query.genre || [],
+          tag: route.query.tag || [],
+          publisher: route.query.publisher || [],
+          language: route.query.language || [],
+          ageRating: route.query.ageRating || [],
+          releaseDate: route.query.releaseDate || [],
         }
         authorRoles.forEach((role: string) => {
-          activeFilters[role] = parseQueryParam(route.query[role])
+          activeFilters[role] = route.query[role] || []
         })
       } else {
         activeFilters = this.$store.getters.getCollectionFilter(route.params.collectionId) || {} as FiltersActive

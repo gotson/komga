@@ -112,20 +112,20 @@
             <v-row class="text-body-2">
               <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto">
                 <v-chip label small link :color="statusChip.color" :text-color="statusChip.text"
-                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {status: series.metadata.status}}">
+                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {status: [series.metadata.status]}}">
                   {{ $t(`enums.series_status.${series.metadata.status}`) }}
                 </v-chip>
               </v-col>
               <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto">
                 <v-chip label small link v-if="series.metadata.ageRating"
-                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {ageRating: series.metadata.ageRating}}"
+                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {ageRating: [series.metadata.ageRating]}}"
                 >
                   {{ series.metadata.ageRating }}+
                 </v-chip>
               </v-col>
               <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto">
                 <v-chip label small link
-                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {language: series.metadata.language}}"
+                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {language: [series.metadata.language]}}"
                         v-if="series.metadata.language"
                 >
                   {{ languageDisplay }}
@@ -219,7 +219,7 @@
           <v-chip
             :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
             :title="series.metadata.publisher"
-            :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {publisher: series.metadata.publisher}}"
+            :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {publisher: [series.metadata.publisher]}}"
             label
             small
             outlined
@@ -249,7 +249,7 @@
                     :key="i"
                     :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
                     :title="t"
-                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {genre: t}}"
+                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {genre: [t]}}"
                     label
                     small
                     outlined
@@ -280,7 +280,7 @@
                     :key="i"
                     :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
                     :title="t"
-                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {tag: t}}"
+                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {tag: [t]}}"
                     label
                     small
                     outlined
@@ -315,7 +315,7 @@
                     :key="i"
                     :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
                     :title="name"
-                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {[role]: name}}"
+                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {[role]: [name]}}"
                     label
                     small
                     outlined
@@ -378,7 +378,7 @@ import ItemBrowser from '@/components/ItemBrowser.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import SeriesActionsMenu from '@/components/menus/SeriesActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
-import {parseQueryParam, parseQueryParamAndFilter, parseQuerySort} from '@/functions/query-params'
+import {parseQuerySort} from '@/functions/query-params'
 import {seriesFileUrl, seriesThumbnailUrl} from '@/functions/urls'
 import {ReadStatus, replaceCompositeReadStatus} from '@/types/enum-books'
 import {
@@ -628,11 +628,11 @@ export default Vue.extend({
       this.$set(this.filterOptions, 'tag', toNameValue(await this.$komgaReferential.getBookTags(seriesId)))
 
       // filter query params with available filter values
-      this.$set(this.filters, 'readStatus', parseQueryParamAndFilter(this.$route.query.readStatus, Object.keys(ReadStatus)))
-      this.$set(this.filters, 'tag', parseQueryParamAndFilter(this.$route.query.tag, this.filterOptions.tag.map(x => x.value)))
+      this.$set(this.filters, 'readStatus', (route.query.readStatus || []).filter((x: string) => Object.keys(ReadStatus).includes(x)))
+      this.$set(this.filters, 'tag', (route.query.tag || []).filter((x: string) => this.filterOptions.tag.map(x => x.value).includes(x)))
       authorRoles.forEach((role: string) => {
         //@ts-ignore
-        this.$set(this.filters, role, parseQueryParam(route.query[role]))
+        this.$set(this.filters, role, route.query[role] || [])
       })
     },
     setWatches() {

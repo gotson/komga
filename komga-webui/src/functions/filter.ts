@@ -6,7 +6,7 @@ export function sortOrFilterActive (sortActive: SortActive, sortDefault: SortAct
 
 export function mergeFilterParams (filter: FiltersActive, query: any) {
   for (const f of Object.keys(filter)) {
-    if (filter[f].length !== 0) query[f] = `${filter[f]}`
+    if (filter[f].length !== 0) query[f] = filter[f]
   }
 }
 

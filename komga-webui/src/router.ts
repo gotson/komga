@@ -2,7 +2,9 @@ import urls from '@/functions/urls'
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from './store'
-import {LIBRARIES_ALL, LIBRARY_ROUTE} from "@/types/library";
+import {LIBRARIES_ALL, LIBRARY_ROUTE} from "@/types/library"
+
+const qs = require('qs')
 
 Vue.use(Router)
 
@@ -36,6 +38,13 @@ const getLibraryRoute = (libraryId: string) => {
 const router = new Router({
   mode: 'history',
   base: urls.base,
+  parseQuery(query: string) {
+    return qs.parse(query)
+  },
+  stringifyQuery(query: Object) {
+    const res = qs.stringify(query)
+    return res ? `?${res}` : ''
+  },
   routes: [
     {
       path: '/',

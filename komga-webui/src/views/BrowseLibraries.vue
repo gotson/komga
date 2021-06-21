@@ -109,7 +109,7 @@ import ItemBrowser from '@/components/ItemBrowser.vue'
 import LibraryNavigation from '@/components/LibraryNavigation.vue'
 import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
-import {parseQueryParam, parseQuerySort} from '@/functions/query-params'
+import {parseQuerySort} from '@/functions/query-params'
 import {ReadStatus, replaceCompositeReadStatus} from '@/types/enum-books'
 import {SeriesStatus, SeriesStatusKeyValue} from '@/types/enum-series'
 import {LIBRARY_CHANGED, LIBRARY_DELETED, SERIES_ADDED, SERIES_CHANGED, SERIES_DELETED} from '@/types/events'
@@ -337,17 +337,17 @@ export default Vue.extend({
       let activeFilters: any
       if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating || route.query.publisher || authorRoles.some(role => role in route.query)) {
         activeFilters = {
-          status: parseQueryParam(route.query.status),
-          readStatus: parseQueryParam(route.query.readStatus),
-          genre: parseQueryParam(route.query.genre),
-          tag: parseQueryParam(route.query.tag),
-          publisher: parseQueryParam(route.query.publisher),
-          language: parseQueryParam(route.query.language),
-          ageRating: parseQueryParam(route.query.ageRating),
-          releaseDate: parseQueryParam(route.query.releaseDate),
+          status: route.query.status || [],
+          readStatus: route.query.readStatus || [],
+          genre: route.query.genre || [],
+          tag: route.query.tag || [],
+          publisher: route.query.publisher || [],
+          language: route.query.language || [],
+          ageRating: route.query.ageRating || [],
+          releaseDate: route.query.releaseDate || [],
         }
         authorRoles.forEach((role: string) => {
-          activeFilters[role] = parseQueryParam(route.query[role])
+          activeFilters[role] = route.query[role] || []
         })
       } else {
         activeFilters = this.$store.getters.getLibraryFilter(route.params.libraryId) || {} as FiltersActive
