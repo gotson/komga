@@ -12,6 +12,7 @@ import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
 import org.gotson.komga.infrastructure.validation.BCP47TagValidator
 import org.jsoup.Jsoup
+import org.jsoup.safety.Whitelist
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -46,7 +47,7 @@ class EpubMetadataProvider(
       val opf = Jsoup.parse(packageFile)
 
       val title = opf.selectFirst("metadata > dc|title")?.text()?.ifBlank { null }
-      val description = opf.selectFirst("metadata > dc|description")?.text()?.ifBlank { null }
+      val description = opf.selectFirst("metadata > dc|description")?.text()?.let { Jsoup.clean(it, Whitelist.none()) }?.ifBlank { null }
       val date = opf.selectFirst("metadata > dc|date")?.text()?.let { parseDate(it) }
 
       val creatorRefines = opf.select("metadata > meta[property=role][scheme=marc:relators]")
