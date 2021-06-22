@@ -121,7 +121,11 @@ class EpubMetadataProvider(
       try {
         LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE)
       } catch (e: Exception) {
-        null
+        try {
+          LocalDate.parse(date, DateTimeFormatter.ISO_DATE_TIME)
+        } catch (e: Exception) {
+          null
+        }
       }
     }
 }
