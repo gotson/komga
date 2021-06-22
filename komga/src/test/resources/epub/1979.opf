@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="uuid_id" version="2.0">
+    <metadata xmlns:calibre="http://calibre.kovidgoyal.net/2009/metadata" xmlns:opf="http://www.idpf.org/2007/opf"
+              xmlns:dc="http://purl.org/dc/elements/1.1/"
+    >
+    <dc:language>de</dc:language>
+    <meta name="cover" content="cover"/>
+    <meta name="calibre:timestamp" content="2014-12-05T19:43:29.849000+00:00"/>
+    <dc:contributor opf:role="bkp">calibre (2.10.0) [http://calibre-ebook.com]</dc:contributor>
+    <dc:description>&lt;div&gt;&lt;div&gt;&lt;font face="MS Shell Dlg 2, sans-serif"&gt;&lt;span style="font-size: 14px;"&gt;Auf dem Weg nach Teheran sah ich aus dem Autofenster, mir wurde etwas übel und ich hielt mich an Christophers Knie fest. Sein Hosenbein war von den aufgeplatzten Blasen ganz naß. Wir fuhren an endlosen Reihen von Birken vorbei. Ich schlief.&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face="MS Shell Dlg 2, sans-serif"&gt;&lt;span style="font-size: 14px;"&gt;&lt;br&gt;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face="MS Shell Dlg 2, sans-serif"&gt;&lt;span style="font-size: 14px;"&gt;Später hielten wir an, um uns zu erfrischen. Ich trank ein Glas Tee, Christopher eine Limonade. Es wurde sehr rasch Nacht.&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face="MS Shell Dlg 2, sans-serif"&gt;&lt;span style="font-size: 14px;"&gt;&lt;br&gt;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face="MS Shell Dlg 2, sans-serif"&gt;&lt;span style="font-size: 14px;"&gt;Es gab einige Militärkontrollen, denn seit September herrschte Kriegsrecht, was ja eigentlich nichts zu bedeuten hatte in diesen Ländern, sagte Christopher. Wir wurden weitergewunken, einmal sah ich einen Arm, eine weiße Bandage darum und eine Taschenlampe, die uns ins Gesicht schien, dann ging es weiter.&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face="MS Shell Dlg 2, sans-serif"&gt;&lt;span style="font-size: 14px;"&gt;&lt;br&gt;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face="MS Shell Dlg 2, sans-serif"&gt;&lt;span style="font-size: 14px;"&gt;Die Luft war staubig, ab und zu roch es im Wagen nach Mais. Wir hatten nur zwei Kassetten dabei; wir hörten erst Blondie, dann Devo, dann wieder Blondie. Es waren Christophers Kassetten.&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face="MS Shell Dlg 2, sans-serif"&gt;&lt;span style="font-size: 14px;"&gt;&lt;br&gt;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face="MS Shell Dlg 2, sans-serif"&gt;&lt;span style="font-size: 14px;"&gt;&lt;br&gt;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face="MS Shell Dlg 2, sans-serif"&gt;&lt;span style="font-size: 14px;"&gt;CHRISTIAN KRACHT, 1966 geboren, ist Schweizer. Das Foto zeigt den Autor auf der Landstraße nach Tashigang, Tibet, Volksrepublik China.&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face="MS Shell Dlg 2, sans-serif"&gt;&lt;span style="font-size: 14px;"&gt;&lt;br&gt;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face="MS Shell Dlg 2, sans-serif"&gt;&lt;span style="font-size: 14px;"&gt;GESTALTUNG: PAUL BARNES UND PETER SAVILLE&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face="MS Shell Dlg 2, sans-serif"&gt;&lt;span style="font-size: 14px;"&gt;FOTO: ECKHART NICKEL&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div style="font-family: 'MS Shell Dlg 2', sans-serif; font-size: 14px;"&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;</dc:description>
+    <dc:creator opf:file-as="Kracht, Christian" opf:role="aut">Kracht, Christian</dc:creator>
+    <dc:creator opf:file-as="Editor, The" opf:role="edt">The Editor</dc:creator>
+    <meta name="calibre:title_sort" content="1979"/>
+    <dc:identifier id="uuid_id" opf:scheme="uuid">84b3a7d8-eb3f-4fd8-ad65-4e3f75d019f9</dc:identifier>
+    <dc:identifier opf:scheme="calibre">84b3a7d8-eb3f-4fd8-ad65-4e3f75d019f9</dc:identifier>
+    <dc:date>0101-01-01T00:00:00+00:00</dc:date>
+    <dc:title>1979</dc:title>
+  </metadata>
+  <manifest>
+    <item href="cover.jpeg" id="cover" media-type="image/jpeg"/>
+    <item href="1979_split_000.htm" id="html22" media-type="application/xhtml+xml"/>
+    <item href="1979_split_001.htm" id="html21" media-type="application/xhtml+xml"/>
+    <item href="1979_split_002.htm" id="html20" media-type="application/xhtml+xml"/>
+    <item href="1979_split_003.htm" id="html19" media-type="application/xhtml+xml"/>
+    <item href="1979_split_004.htm" id="html18" media-type="application/xhtml+xml"/>
+    <item href="1979_split_005.htm" id="html17" media-type="application/xhtml+xml"/>
+    <item href="1979_split_006.htm" id="html16" media-type="application/xhtml+xml"/>
+    <item href="1979_split_007.htm" id="html15" media-type="application/xhtml+xml"/>
+    <item href="1979_split_008.htm" id="html14" media-type="application/xhtml+xml"/>
+    <item href="1979_split_009.htm" id="html13" media-type="application/xhtml+xml"/>
+    <item href="1979_split_010.htm" id="html12" media-type="application/xhtml+xml"/>
+    <item href="1979_split_011.htm" id="html11" media-type="application/xhtml+xml"/>
+    <item href="1979_split_012.htm" id="html10" media-type="application/xhtml+xml"/>
+    <item href="1979_split_013.htm" id="html9" media-type="application/xhtml+xml"/>
+    <item href="1979_split_014.htm" id="html8" media-type="application/xhtml+xml"/>
+    <item href="1979_split_015.htm" id="html7" media-type="application/xhtml+xml"/>
+    <item href="1979_split_016.htm" id="html6" media-type="application/xhtml+xml"/>
+    <item href="1979_split_017.htm" id="html5" media-type="application/xhtml+xml"/>
+    <item href="1979_split_018.htm" id="html4" media-type="application/xhtml+xml"/>
+    <item href="1979_split_019.htm" id="html3" media-type="application/xhtml+xml"/>
+    <item href="1979_split_020.htm" id="html2" media-type="application/xhtml+xml"/>
+    <item href="1979_split_021.htm" id="html1" media-type="application/xhtml+xml"/>
+    <item href="aa026-145.png" id="added" media-type="image/png"/>
+    <item href="aa026-146.png" id="added1" media-type="image/png"/>
+    <item href="page_styles.css" id="page_css" media-type="text/css"/>
+    <item href="stylesheet.css" id="css" media-type="text/css"/>
+    <item href="titlepage.xhtml" id="titlepage" media-type="application/xhtml+xml"/>
+    <item href="toc.ncx" id="ncx" media-type="application/x-dtbncx+xml"/>
+  </manifest>
+  <spine toc="ncx">
+    <itemref idref="titlepage"/>
+    <itemref idref="html22"/>
+    <itemref idref="html21"/>
+    <itemref idref="html20"/>
+    <itemref idref="html19"/>
+    <itemref idref="html18"/>
+    <itemref idref="html17"/>
+    <itemref idref="html16"/>
+    <itemref idref="html15"/>
+    <itemref idref="html14"/>
+    <itemref idref="html13"/>
+    <itemref idref="html12"/>
+    <itemref idref="html11"/>
+    <itemref idref="html10"/>
+    <itemref idref="html9"/>
+    <itemref idref="html8"/>
+    <itemref idref="html7"/>
+    <itemref idref="html6"/>
+    <itemref idref="html5"/>
+    <itemref idref="html4"/>
+    <itemref idref="html3"/>
+    <itemref idref="html2"/>
+    <itemref idref="html1"/>
+  </spine>
+  <guide>
+    <reference href="titlepage.xhtml" title="Cover" type="cover"/>
+  </guide>
+</package>

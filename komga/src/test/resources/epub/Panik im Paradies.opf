@@ -1,0 +1,128 @@
+<package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifier="uuid_id" prefix="calibre: https://calibre-ebook.com">
+    <metadata xmlns:opf="http://www.idpf.org/2007/opf" xmlns:dc="http://purl.org/dc/elements/1.1/"
+              xmlns:dcterms="http://purl.org/dc/terms/"
+              xmlns:calibre="http://calibre.kovidgoyal.net/2009/metadata">
+        <dc:title id="id">Panik im Paradies</dc:title>
+        <dc:creator id="id-1">Ulf Blanck</dc:creator>
+        <dc:creator id="id-3">The Editor</dc:creator>
+        <dc:identifier>goodreads:222735</dc:identifier>
+        <dc:identifier>isbn:9783440077894</dc:identifier>
+        <dc:identifier>calibre:255</dc:identifier>
+        <dc:identifier>uuid:499def46-39dc-4e79-b474-d0ec12ea5dc5</dc:identifier>
+        <dc:identifier id="uuid_id">uuid:499def46-39dc-4e79-b474-d0ec12ea5dc5</dc:identifier>
+        <dc:language>de</dc:language>
+        <dc:date>1999-07-31T16:00:00+00:00</dc:date>
+        <dc:description>&lt;div&gt;
+            &lt;p&gt;Bereits im ersten Band "Panik im Paradies" machen die drei berühmten Detektive ihrem Namen alle Ehre. Eigentlich haben sie ja gerade Ferien. Doch dann treffen sie auf diesen schrulligen Kapitän Larsson, der sich einen kleinen Privatzoo mit exotischen Tieren hält. Als plötzlich alle Tiere an rätselhaften Infektionen erkranken und die Besucher ausbleiben, werden Justus, Peter und Bob neugierig. Schon bald merken sie, daß da jemand ein düsteres Geheimnis hütet...&lt;/p&gt;&lt;/div&gt;</dc:description>
+        <dc:publisher>Kosmos</dc:publisher>
+        <dc:subject>Kinder- und Jugendbücher</dc:subject>
+        <opf:meta refines="#id" property="title-type">main</opf:meta>
+        <opf:meta refines="#id" property="file-as">Panik im Paradies</opf:meta>
+        <meta name="cover" content="cover"/>
+        <meta property="calibre:timestamp" scheme="dcterms:W3CDTF">2020-08-09T08:40:58Z</meta>
+        <meta property="dcterms:modified" scheme="dcterms:W3CDTF">2021-06-19T08:20:33Z</meta>
+        <opf:meta refines="#id-1" property="role" scheme="marc:relators">aut</opf:meta>
+        <opf:meta refines="#id-1" property="file-as">Blanck, Ulf</opf:meta>
+        <opf:meta refines="#id-3" property="role" scheme="marc:relators">edt</opf:meta>
+        <opf:meta refines="#id-3" property="file-as">Editor, The</opf:meta>
+        <opf:meta property="calibre:rating">6</opf:meta>
+        <opf:meta property="belongs-to-collection" id="id-2">Die drei ??? Kids</opf:meta>
+        <opf:meta refines="#id-2" property="collection-type">series</opf:meta>
+        <opf:meta refines="#id-2" property="group-position">1</opf:meta>
+        <opf:meta property="calibre:author_link_map">{"Ulf Blanck": ""}</opf:meta>
+    </metadata>
+    <manifest>
+        <item id="titlepage" href="titlepage.xhtml" media-type="application/xhtml+xml" properties="svg calibre:title-page"/>
+        <item id="TableOfContents_html" href="OPS/TableOfContents.html" media-type="application/xhtml+xml"/>
+        <item id="section-0001_html" href="OPS/section-0001.html" media-type="application/xhtml+xml"/>
+        <item id="section-0002_html" href="OPS/section-0002.html" media-type="application/xhtml+xml"/>
+        <item id="section-0003_html" href="OPS/section-0003.html" media-type="application/xhtml+xml"/>
+        <item id="section-0004_html" href="OPS/section-0004.html" media-type="application/xhtml+xml"/>
+        <item id="section-0005_html" href="OPS/section-0005.html" media-type="application/xhtml+xml"/>
+        <item id="section-0006_html" href="OPS/section-0006.html" media-type="application/xhtml+xml"/>
+        <item id="section-0007_html" href="OPS/section-0007.html" media-type="application/xhtml+xml"/>
+        <item id="section-0008_html" href="OPS/section-0008.html" media-type="application/xhtml+xml"/>
+        <item id="section-0009_html" href="OPS/section-0009.html" media-type="application/xhtml+xml"/>
+        <item id="section-0010_html" href="OPS/section-0010.html" media-type="application/xhtml+xml"/>
+        <item id="section-0011_html" href="OPS/section-0011.html" media-type="application/xhtml+xml"/>
+        <item id="section-0012_html" href="OPS/section-0012.html" media-type="application/xhtml+xml"/>
+        <item id="section-0013_html" href="OPS/section-0013.html" media-type="application/xhtml+xml"/>
+        <item id="section-0014_html" href="OPS/section-0014.html" media-type="application/xhtml+xml"/>
+        <item id="section-0015_html" href="OPS/section-0015.html" media-type="application/xhtml+xml"/>
+        <item id="section-0016_html" href="OPS/section-0016.html" media-type="application/xhtml+xml"/>
+        <item id="section-0017_html" href="OPS/section-0017.html" media-type="application/xhtml+xml"/>
+        <item id="section-0018_html" href="OPS/section-0018.html" media-type="application/xhtml+xml"/>
+        <item id="section-0019_html" href="OPS/section-0019.html" media-type="application/xhtml+xml"/>
+        <item id="section-0020_html" href="OPS/section-0020.html" media-type="application/xhtml+xml"/>
+        <item id="section-0021_html" href="OPS/section-0021.html" media-type="application/xhtml+xml"/>
+        <item id="section-0022_html" href="OPS/section-0022.html" media-type="application/xhtml+xml"/>
+        <item id="section-0023_html" href="OPS/section-0023.html" media-type="application/xhtml+xml"/>
+        <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>
+        <item id="page_css" href="page_styles.css" media-type="text/css"/>
+        <item id="css" href="stylesheet.css" media-type="text/css"/>
+        <item id="cover" href="cover.jpeg" media-type="image/jpeg" properties="cover-image"/>
+        <item id="image0_jpg" href="OPS/image0.jpg" media-type="image/jpeg"/>
+        <item id="image1_jpg" href="OPS/image1.jpg" media-type="image/jpeg"/>
+        <item id="image10_jpg" href="OPS/image10.jpg" media-type="image/jpeg"/>
+        <item id="image11_jpg" href="OPS/image11.jpg" media-type="image/jpeg"/>
+        <item id="image12_jpg" href="OPS/image12.jpg" media-type="image/jpeg"/>
+        <item id="image13_jpg" href="OPS/image13.jpg" media-type="image/jpeg"/>
+        <item id="image14_jpg" href="OPS/image14.jpg" media-type="image/jpeg"/>
+        <item id="image15_jpg" href="OPS/image15.jpg" media-type="image/jpeg"/>
+        <item id="image16_jpg" href="OPS/image16.jpg" media-type="image/jpeg"/>
+        <item id="image17_jpg" href="OPS/image17.jpg" media-type="image/jpeg"/>
+        <item id="image18_jpg" href="OPS/image18.jpg" media-type="image/jpeg"/>
+        <item id="image19_jpg" href="OPS/image19.jpg" media-type="image/jpeg"/>
+        <item id="image2_jpg" href="OPS/image2.jpg" media-type="image/jpeg"/>
+        <item id="image20_jpg" href="OPS/image20.jpg" media-type="image/jpeg"/>
+        <item id="image21_jpg" href="OPS/image21.jpg" media-type="image/jpeg"/>
+        <item id="image22_jpg" href="OPS/image22.jpg" media-type="image/jpeg"/>
+        <item id="image23_jpg" href="OPS/image23.jpg" media-type="image/jpeg"/>
+        <item id="image24_jpg" href="OPS/image24.jpg" media-type="image/jpeg"/>
+        <item id="image25_jpg" href="OPS/image25.jpg" media-type="image/jpeg"/>
+        <item id="image26_jpg" href="OPS/image26.jpg" media-type="image/jpeg"/>
+        <item id="image27_jpg" href="OPS/image27.jpg" media-type="image/jpeg"/>
+        <item id="image28_jpg" href="OPS/image28.jpg" media-type="image/jpeg"/>
+        <item id="image29_jpg" href="OPS/image29.jpg" media-type="image/jpeg"/>
+        <item id="image3_jpg" href="OPS/image3.jpg" media-type="image/jpeg"/>
+        <item id="image30_jpg" href="OPS/image30.jpg" media-type="image/jpeg"/>
+        <item id="image31_jpg" href="OPS/image31.jpg" media-type="image/jpeg"/>
+        <item id="image32_jpg" href="OPS/image32.jpg" media-type="image/jpeg"/>
+        <item id="image33_jpg" href="OPS/image33.jpg" media-type="image/jpeg"/>
+        <item id="image34_jpg" href="OPS/image34.jpg" media-type="image/jpeg"/>
+        <item id="image35_jpg" href="OPS/image35.jpg" media-type="image/jpeg"/>
+        <item id="image4_jpg" href="OPS/image4.jpg" media-type="image/jpeg"/>
+        <item id="image5_jpg" href="OPS/image5.jpg" media-type="image/jpeg"/>
+        <item id="image6_jpg" href="OPS/image6.jpg" media-type="image/jpeg"/>
+        <item id="image7_jpg" href="OPS/image7.jpg" media-type="image/jpeg"/>
+        <item id="image8_jpg" href="OPS/image8.jpg" media-type="image/jpeg"/>
+        <item id="image9_jpg" href="OPS/image9.jpg" media-type="image/jpeg"/>
+    </manifest>
+    <spine page-progression-direction="rtl">
+        <itemref idref="titlepage"/>
+        <itemref idref="TableOfContents_html"/>
+        <itemref idref="section-0001_html"/>
+        <itemref idref="section-0002_html"/>
+        <itemref idref="section-0003_html"/>
+        <itemref idref="section-0004_html"/>
+        <itemref idref="section-0005_html"/>
+        <itemref idref="section-0006_html"/>
+        <itemref idref="section-0007_html"/>
+        <itemref idref="section-0008_html"/>
+        <itemref idref="section-0009_html"/>
+        <itemref idref="section-0010_html"/>
+        <itemref idref="section-0011_html"/>
+        <itemref idref="section-0012_html"/>
+        <itemref idref="section-0013_html"/>
+        <itemref idref="section-0014_html"/>
+        <itemref idref="section-0015_html"/>
+        <itemref idref="section-0016_html"/>
+        <itemref idref="section-0017_html"/>
+        <itemref idref="section-0018_html"/>
+        <itemref idref="section-0019_html"/>
+        <itemref idref="section-0020_html"/>
+        <itemref idref="section-0021_html"/>
+        <itemref idref="section-0022_html"/>
+        <itemref idref="section-0023_html"/>
+    </spine>
+</package>
