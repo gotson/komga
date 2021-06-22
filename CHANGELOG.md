@@ -1,3 +1,16 @@
+## [0.100.2](https://github.com/gotson/komga/compare/v0.100.1...v0.100.2) (2021-06-22)
+
+
+### Bug Fixes
+
+* better date parsing for epub metadata ([ed7fa1f](https://github.com/gotson/komga/commit/ed7fa1fcb8c077f14b42df86ecf7c4674114a73b))
+* better isbn parsing for epub metadata ([b3bcd23](https://github.com/gotson/komga/commit/b3bcd233fda5e209377c8452917655d83906e6f7))
+* do not split authors by comma in epub metadata ([13b18c0](https://github.com/gotson/komga/commit/13b18c0b457dfee81a824328093b52a8e7a0b777)), closes [#556](https://github.com/gotson/komga/issues/556)
+* epub parsing namespace issue ([7a56632](https://github.com/gotson/komga/commit/7a566326b089e6ce91fc5c660b2c03a374306616))
+* ignore html tags in epub description ([52d81ef](https://github.com/gotson/komga/commit/52d81ef1d7ab5d9ae813b5693e6861321a7f96ff)), closes [#556](https://github.com/gotson/komga/issues/556)
+* retrieve series from epub correctly ([fbd8655](https://github.com/gotson/komga/commit/fbd8655c51b752eeba939a13fca3d7dc96dfb40e)), closes [#556](https://github.com/gotson/komga/issues/556)
+* some images could be missing from epub files ([6c34794](https://github.com/gotson/komga/commit/6c34794a505ca1fbfdc25593caced45037b85cb9)), closes [#556](https://github.com/gotson/komga/issues/556)
+
 ## [0.100.1](https://github.com/gotson/komga/compare/v0.100.0...v0.100.1) (2021-06-21)
 
 
