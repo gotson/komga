@@ -12,6 +12,7 @@ import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
 import org.gotson.komga.infrastructure.validation.BCP47TagValidator
 import org.jsoup.Jsoup
+import org.jsoup.parser.Parser
 import org.jsoup.safety.Whitelist
 import org.springframework.stereotype.Service
 import java.time.LocalDate
@@ -44,7 +45,7 @@ class EpubMetadataProvider(
   override fun getBookMetadataFromBook(book: BookWithMedia): BookMetadataPatch? {
     if (book.media.mediaType != "application/epub+zip") return null
     epubExtractor.getPackageFile(book.book.path)?.let { packageFile ->
-      val opf = Jsoup.parse(packageFile)
+      val opf = Jsoup.parse(packageFile, "", Parser.xmlParser())
 
       val title = opf.selectFirst("metadata > dc|title")?.text()?.ifBlank { null }
       val description = opf.selectFirst("metadata > dc|description")?.text()?.let { Jsoup.clean(it, Whitelist.none()) }?.ifBlank { null }
