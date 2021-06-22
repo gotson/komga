@@ -3,13 +3,17 @@ package org.gotson.komga.infrastructure.metadata.epub
 import io.mockk.every
 import io.mockk.mockk
 import org.apache.commons.validator.routines.ISBNValidator
+import org.apache.tika.config.TikaConfig
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.makeBook
+import org.gotson.komga.infrastructure.image.ImageAnalyzer
+import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.mediacontainer.EpubExtractor
+import org.gotson.komga.infrastructure.mediacontainer.ZipExtractor
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.core.io.ClassPathResource
@@ -20,6 +24,10 @@ class EpubMetadataProviderTest {
   private val mockExtractor = mockk<EpubExtractor>()
   private val isbnValidator = ISBNValidator(true)
   private val epubMetadataProvider = EpubMetadataProvider(mockExtractor, isbnValidator)
+
+  private val contentDetector = ContentDetector(TikaConfig())
+  private val imageAnalyzer = ImageAnalyzer()
+  private val epubMetadataProviderProper = EpubMetadataProvider(EpubExtractor(ZipExtractor(contentDetector, imageAnalyzer), contentDetector, imageAnalyzer), ISBNValidator(true))
 
   private val book = makeBook("book")
   private val media = Media(
@@ -42,10 +50,29 @@ class EpubMetadataProviderTest {
         assertThat(summary).isEqualTo("Bereits im ersten Band \"Panik im Paradies\" machen die drei berühmten Detektive ihrem Namen alle Ehre. Eigentlich haben sie ja gerade Ferien. Doch dann treffen sie auf diesen schrulligen Kapitän Larsson, der sich einen kleinen Privatzoo mit exotischen Tieren hält. Als plötzlich alle Tiere an rätselhaften Infektionen erkranken und die Besucher ausbleiben, werden Justus, Peter und Bob neugierig. Schon bald merken sie, daß da jemand ein düsteres Geheimnis hütet...")
         assertThat(releaseDate).isEqualTo(LocalDate.of(1999, 7, 31))
         assertThat(authors).containsExactlyInAnyOrder(
-          Author("Blanck, Ulf", "writer"),
-          Author("Editor, The", "editor"),
+          Author("Ulf Blanck", "writer"),
+          Author("The Editor", "editor"),
         )
         assertThat(isbn).isEqualTo("9783440077894")
+      }
+    }
+
+    @Test
+    fun `given real epub 3 when getting book metadata then metadata patch is valid`() {
+      val epubResource = ClassPathResource("epub/The Incomplete Theft - Ralph Burke.epub")
+      val epubBook = BookWithMedia(
+        makeBook("Epub", url = epubResource.url),
+        media,
+      )
+
+      val patch = epubMetadataProviderProper.getBookMetadataFromBook(epubBook)
+
+      with(patch!!) {
+        assertThat(title).isEqualTo("The Incomplete Theft")
+        assertThat(summary).isNull()
+        assertThat(releaseDate).isEqualTo(LocalDate.of(2021, 6, 20))
+        assertThat(authors).containsExactlyInAnyOrder(Author("Ralph Burke", "writer"))
+        assertThat(isbn).isNull()
       }
     }
 
@@ -62,7 +89,7 @@ class EpubMetadataProviderTest {
         assertThat(releaseDate).isEqualTo(LocalDate.of(101, 1, 1))
         assertThat(authors).containsExactlyInAnyOrder(
           Author("Kracht, Christian", "writer"),
-          Author("Editor, The", "editor"),
+          Author("The Editor", "editor"),
         )
         assertThat(isbn).isNull()
       }
