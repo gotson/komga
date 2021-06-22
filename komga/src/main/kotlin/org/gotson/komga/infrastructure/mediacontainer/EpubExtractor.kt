@@ -40,9 +40,14 @@ class EpubExtractor(
           .map { opfDir?.resolve(it)?.normalize() ?: Paths.get(it) }
           .flatMap { pagePath ->
             val doc = zip.getInputStream(zip.getEntry(pagePath.separatorsToUnix())).use { Jsoup.parse(it, null, "") }
-            doc.getElementsByTag("img")
+
+            val img = doc.getElementsByTag("img")
               .map { it.attr("src") } // get the src, which can be a relative path
-              .map { pagePath.parentOrEmpty().resolve(it).normalize() } // resolve it against the page folder
+
+            val svg = doc.select("svg > image[xlink:href]")
+              .map { it.attr("xlink:href") } // get the source, which can be a relative path
+
+            (img + svg).map { pagePath.parentOrEmpty().resolve(it).normalize() } // resolve it against the page folder
           }
 
         return images.map { image ->
