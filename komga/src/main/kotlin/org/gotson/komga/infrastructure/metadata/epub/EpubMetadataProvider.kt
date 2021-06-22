@@ -53,15 +53,14 @@ class EpubMetadataProvider(
       val creatorRefines = opf.select("metadata > meta[property=role][scheme=marc:relators]")
         .associate { it.attr("refines").removePrefix("#") to it.text() }
       val authors = opf.select("metadata > dc|creator")
-        .flatMap { el ->
-          val names = el.text()?.split(",")?.mapNotNull { it.trim().ifBlank { null } } ?: emptyList()
-          if (names.isEmpty()) emptyList()
+        .mapNotNull { el ->
+          val name = el.text()?.trim()
+          if (name.isNullOrBlank()) null
           else {
             val opfRole = el.attr("opf|role").ifBlank { null }
             val id = el.attr("id").ifBlank { null }
             val refineRole = creatorRefines[id]?.ifBlank { null }
-            val role = opfRole ?: refineRole
-            names.map { Author(it, relators[role] ?: "writer") }
+            Author(name, relators[opfRole ?: refineRole] ?: "writer")
           }
         }
 
