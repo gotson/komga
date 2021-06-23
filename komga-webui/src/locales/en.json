@@ -57,8 +57,7 @@
       "number": "Number",
       "series": "Series"
     },
-    "title": "Import",
-    "warning_early_feature": "Book Import is still an early feature, and must be used with caution. Make sure your source and destination files are backed up before using the Import feature."
+    "title": "Import"
   },
   "bookreader": {
     "beginning_of_book": "You're at the beginning of the book.",

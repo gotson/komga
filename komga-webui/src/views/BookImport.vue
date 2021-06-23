@@ -1,7 +1,5 @@
 <template>
   <v-container fluid class="pa-6">
-    <v-alert type="warning" text>{{ $t('book_import.warning_early_feature') }}</v-alert>
-
     <v-alert type="info" text class="body-2">
       <div>{{ $t('book_import.info_part1') }}</div>
       <div class="mt-2">{{ $t('book_import.info_part2') }}</div>
