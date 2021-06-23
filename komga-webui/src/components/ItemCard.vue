@@ -14,6 +14,7 @@
           aspect-ratio="0.7071"
           contain
           @error="thumbnailError = true"
+          @load="thumbnailError = false"
         >
           <!-- unread tick for book -->
           <div class="unread" v-if="isUnread"/>
