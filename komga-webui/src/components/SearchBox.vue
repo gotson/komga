@@ -38,6 +38,7 @@
                  height="50"
                  max-width="35"
                  class="my-1 mx-3"
+                 contain
           >
                 <span v-if="data.item.booksUnreadCount !== 0"
                       class="white--text pa-0 px-1 text-caption"
@@ -57,6 +58,7 @@
                  height="50"
                  max-width="35"
                  class="my-1 mx-3"
+                 contain
           >
             <div class="unread" v-if="isUnread(data.item)"/>
           </v-img>
