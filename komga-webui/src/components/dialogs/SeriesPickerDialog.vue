@@ -29,13 +29,14 @@
 
             <v-row v-if="results">
               <v-col>
-                <v-list elevation="5" v-if="results.length > 0">
+                <v-list elevation="5" v-if="results.length > 0" two-line>
                   <div v-for="(s, index) in results"
                        :key="index"
                   >
                     <v-list-item @click="select(s)">
                       <v-list-item-content>
                         <v-list-item-title>{{ s.metadata.title }}</v-list-item-title>
+                        <v-list-item-subtitle>{{ $t('searchbox.in_library', {library: getLibraryName(s)}) }}</v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
                     <v-divider v-if="index !== results.length-1"/>
@@ -117,6 +118,9 @@ export default Vue.extend({
     },
     dialogClose() {
       this.$emit('input', false)
+    },
+    getLibraryName(item: SeriesDto): string {
+      return this.$store.getters.getLibraryById(item.libraryId).name;
     },
   },
 })
