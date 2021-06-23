@@ -31,8 +31,6 @@
 <script lang="ts">
 import {debounce} from 'lodash'
 import Vue, {PropType} from 'vue'
-import {BookDto} from '@/types/komga-books'
-import {SeriesDto} from "@/types/komga-series";
 
 export default Vue.extend({
   name: 'SearchBoxBase',
@@ -73,9 +71,6 @@ export default Vue.extend({
     },
   },
   methods: {
-    getLibraryName(item: BookDto | SeriesDto): string {
-      return this.$store.getters.getLibraryById(item.libraryId).name;
-    },
     searchItems: debounce(async function (this: any, query: string) {
       if (query) {
         this.loading = true
