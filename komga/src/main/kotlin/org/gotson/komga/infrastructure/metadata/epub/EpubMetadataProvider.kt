@@ -87,7 +87,7 @@ class EpubMetadataProvider(
   override fun getSeriesMetadataFromBook(book: BookWithMedia): SeriesMetadataPatch? {
     if (book.media.mediaType != "application/epub+zip") return null
     epubExtractor.getPackageFile(book.book.path)?.let { packageFile ->
-      val opf = Jsoup.parse(packageFile)
+      val opf = Jsoup.parse(packageFile, "", Parser.xmlParser())
 
       val series = (
         opf.selectFirst("metadata > meta[property=belongs-to-collection]")
