@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifier="uuid_id" prefix="calibre: https://calibre-ebook.com">
+    <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/"
+              xmlns:calibre="http://calibre.kovidgoyal.net/2009/metadata">
+    <dc:title id="id">Die Drei Fragezeichen-Kids, Bd.3, Invasion Der Fliegen</dc:title>
+    <dc:creator id="id-1">Ulf Blanck</dc:creator>
+    <dc:creator id="id-2">Stefanie Wegner</dc:creator>
+    <dc:language>de</dc:language>
+    <dc:contributor id="id-3">calibre (5.21.0) [https://calibre-ebook.com]</dc:contributor>
+    <dc:publisher>Franckh-Kosmos Verlag</dc:publisher>
+    <dc:identifier>AMAZON:3440077934</dc:identifier>
+    <dc:identifier>GOOGLE:pPamZwEACAAJ</dc:identifier>
+    <dc:identifier>ISBN:9783440077931</dc:identifier>
+    <dc:identifier>GOODREADS:71348</dc:identifier>
+    <dc:identifier id="uuid_id">uuid:38969b48-0187-4654-9e62-f2b21d4c5e40</dc:identifier>
+    <dc:identifier>calibre:38969b48-0187-4654-9e62-f2b21d4c5e40</dc:identifier>
+    <dc:subject>Juvenile Fiction</dc:subject>
+    <dc:subject>Mysteries &amp; Detective Stories</dc:subject>
+    <dc:subject>Kinder- und Jugendbücher</dc:subject>
+    <dc:date>1999-07-31T16:00:00+00:00</dc:date>
+    <dc:description>&lt;div&gt;
+&lt;p&gt;Hunderte von Fliegen tummeln sich auf dem Schrottplatz vor Tante Mathildas Haus. Das ist ein Alptraum! Findet diese "Invasion der Fliegen" tatsächlich statt oder leidet Tante Mathilda etwa an Halluzinationen? Justus, Peter und Bob nehmen sich der Sache an und kommen schnell dahinter, daß es sich hier nicht um eine Einbildung von Tante Mathilda handelt. Sie verfolgen die Spur der Fliegen bis in einen düsteren Kanalschacht...&lt;/p&gt;&lt;/div&gt;</dc:description>
+    <meta refines="#id" property="title-type">main</meta>
+    <meta refines="#id" property="file-as">Drei Fragezeichen-Kids, Bd.3, Invasion Der Fliegen, Die</meta>
+    <meta name="cover" content="cover"/>
+    <meta refines="#id-1" property="role" scheme="marc:relators">aut</meta>
+    <meta refines="#id-1" property="file-as">Blanck, Ulf &amp; Wegner, Stefanie</meta>
+    <meta refines="#id-2" property="role" scheme="marc:relators">aut</meta>
+    <meta refines="#id-2" property="file-as">Blanck, Ulf &amp; Wegner, Stefanie</meta>
+    <meta refines="#id-3" property="role" scheme="marc:relators">bkp</meta>
+    <meta property="calibre:timestamp" scheme="dcterms:W3CDTF">2020-08-09T08:40:50Z</meta>
+    <meta property="calibre:rating">8.00</meta>
+    <meta property="belongs-to-collection" id="id-4">Die drei ??? Kids</meta>
+    <meta refines="#id-4" property="collection-type">series</meta>
+    <meta refines="#id-4" property="group-position">3</meta>
+    <meta property="dcterms:modified" scheme="dcterms:W3CDTF">2021-06-22T13:37:39Z</meta>
+  </metadata>
+  <manifest>
+    <item id="titlepage" href="titlepage.xhtml" media-type="application/xhtml+xml" properties="svg calibre:title-page"/>
+    <item id="id13" href="index_split_000.html" media-type="application/xhtml+xml"/>
+    <item id="id12" href="index_split_001.html" media-type="application/xhtml+xml"/>
+    <item id="page_css" href="page_styles.css" media-type="text/css"/>
+    <item id="css" href="stylesheet.css" media-type="text/css"/>
+    <item id="cover" href="cover1.jpeg" media-type="image/jpeg" properties="cover-image"/>
+    <item id="id9" href="index-1_1.jpg" media-type="image/jpeg"/>
+    <item id="id2" href="index-124_1.png" media-type="image/png"/>
+    <item id="id3" href="index-124_2.png" media-type="image/png"/>
+    <item id="id4" href="index-124_3.png" media-type="image/png"/>
+    <item id="id5" href="index-124_4.png" media-type="image/png"/>
+    <item id="id6" href="index-126_1.jpg" media-type="image/jpeg"/>
+    <item id="id7" href="index-127_1.jpg" media-type="image/jpeg"/>
+    <item id="id8" href="index-128_1.jpg" media-type="image/jpeg"/>
+    <item id="id10" href="index-2_1.jpg" media-type="image/jpeg"/>
+    <item id="id11" href="index-3_1.jpg" media-type="image/jpeg"/>
+    <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>
+  </manifest>
+  <spine>
+    <itemref idref="titlepage"/>
+    <itemref idref="id13"/>
+    <itemref idref="id12"/>
+  </spine>
+  </package>

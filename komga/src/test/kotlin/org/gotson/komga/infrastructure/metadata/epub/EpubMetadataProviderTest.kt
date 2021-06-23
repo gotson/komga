@@ -58,6 +58,25 @@ class EpubMetadataProviderTest {
     }
 
     @Test
+    fun `given another epub 3 opf when getting book metadata then metadata patch is valid`() {
+      val opf = ClassPathResource("epub/Die Drei 3.opf")
+      every { mockExtractor.getPackageFile(any()) } returns opf.file.readText()
+
+      val patch = epubMetadataProvider.getBookMetadataFromBook(BookWithMedia(book, media))
+
+      with(patch!!) {
+        assertThat(title).isEqualTo("Die Drei Fragezeichen-Kids, Bd.3, Invasion Der Fliegen")
+        assertThat(summary).isEqualTo("Hunderte von Fliegen tummeln sich auf dem Schrottplatz vor Tante Mathildas Haus. Das ist ein Alptraum! Findet diese \"Invasion der Fliegen\" tatsächlich statt oder leidet Tante Mathilda etwa an Halluzinationen? Justus, Peter und Bob nehmen sich der Sache an und kommen schnell dahinter, daß es sich hier nicht um eine Einbildung von Tante Mathilda handelt. Sie verfolgen die Spur der Fliegen bis in einen düsteren Kanalschacht...")
+        assertThat(releaseDate).isEqualTo(LocalDate.of(1999, 7, 31))
+        assertThat(authors).containsExactlyInAnyOrder(
+          Author("Ulf Blanck", "writer"),
+          Author("Stefanie Wegner", "writer"),
+        )
+        assertThat(isbn).isEqualTo("9783440077931")
+      }
+    }
+
+    @Test
     fun `given real epub 3 when getting book metadata then metadata patch is valid`() {
       val epubResource = ClassPathResource("epub/The Incomplete Theft - Ralph Burke.epub")
       val epubBook = BookWithMedia(
@@ -113,6 +132,23 @@ class EpubMetadataProviderTest {
         assertThat(publisher).isEqualTo("Kosmos")
         assertThat(language).isEqualTo("de")
         assertThat(genres).containsExactlyInAnyOrder("Kinder- und Jugendbücher")
+      }
+    }
+
+    @Test
+    fun `given another epub 3 opf when getting series metadata then metadata patch is valid`() {
+      val opf = ClassPathResource("epub/Die Drei 3.opf")
+      every { mockExtractor.getPackageFile(any()) } returns opf.file.readText()
+
+      val patch = epubMetadataProvider.getSeriesMetadataFromBook(BookWithMedia(book, media))
+
+      with(patch!!) {
+        assertThat(title).isEqualTo("Die drei ??? Kids")
+        assertThat(titleSort).isEqualTo("Die drei ??? Kids")
+        assertThat(readingDirection).isNull()
+        assertThat(publisher).isEqualTo("Franckh-Kosmos Verlag")
+        assertThat(language).isEqualTo("de")
+        assertThat(genres).containsExactlyInAnyOrder("Kinder- und Jugendbücher", "Juvenile Fiction", "Mysteries & Detective Stories")
       }
     }
 
