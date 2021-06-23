@@ -1,3 +1,13 @@
+## [0.100.3](https://github.com/gotson/komga/compare/v0.100.2...v0.100.3) (2021-06-23)
+
+
+### Bug Fixes
+
+* **epub:** better isbn parsing ([e1741c3](https://github.com/gotson/komga/commit/e1741c34fa88d188f703fa2d85f005b50d0c475e))
+* **epub:** incorrect genres parsing when empty ([8a5abf2](https://github.com/gotson/komga/commit/8a5abf24fb9d6679507f8ce6599450e6997c6ead))
+* **epub:** parse multiple dc:subjects for series genre ([c25b9cf](https://github.com/gotson/komga/commit/c25b9cf5f91e8cca404c53fbc2f481264b60dcaa))
+* **epub:** series title not always parsed properly ([a6c19f6](https://github.com/gotson/komga/commit/a6c19f6eee9a965ad470d7426a07f3a32b3c3890)), closes [#556](https://github.com/gotson/komga/issues/556)
+
 ## [0.100.2](https://github.com/gotson/komga/compare/v0.100.1...v0.100.2) (2021-06-22)
 
 
