@@ -1,3 +1,12 @@
+# [0.101.0](https://github.com/gotson/komga/compare/v0.100.3...v0.101.0) (2021-06-23)
+
+
+### Features
+
+* **webui:** remove early feature warning (extension repair, convert to cbz) ([6af6f5b](https://github.com/gotson/komga/commit/6af6f5be405ace295d704deab3a12b769397ece5))
+* **webui:** remove early feature warning in book import screen ([3d159d1](https://github.com/gotson/komga/commit/3d159d16b27e41dbc53d4267ba0527ae90e11dc8))
+* **webui:** show library name on series picker dialog (import) ([626ef3e](https://github.com/gotson/komga/commit/626ef3eb40c82f8107f465d90fa9854504547a94)), closes [#559](https://github.com/gotson/komga/issues/559)
+
 ## [0.100.3](https://github.com/gotson/komga/compare/v0.100.2...v0.100.3) (2021-06-23)
 
 
