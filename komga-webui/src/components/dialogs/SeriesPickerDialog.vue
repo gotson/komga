@@ -34,6 +34,12 @@
                        :key="index"
                   >
                     <v-list-item @click="select(s)">
+                      <v-img :src="seriesThumbnailUrl(s.id)"
+                             height="50"
+                             max-width="35"
+                             class="my-1 mx-3"
+                             contain
+                      />
                       <v-list-item-content>
                         <v-list-item-title>{{ s.metadata.title }}</v-list-item-title>
                         <v-list-item-subtitle>{{ $t('searchbox.in_library', {library: getLibraryName(s)}) }}</v-list-item-subtitle>
@@ -65,6 +71,7 @@
 import Vue, {PropType} from 'vue'
 import {SeriesDto} from "@/types/komga-series"
 import {debounce} from 'lodash'
+import {seriesThumbnailUrl} from "@/functions/urls";
 
 export default Vue.extend({
   name: 'SeriesPickerDialog',
@@ -121,6 +128,9 @@ export default Vue.extend({
     },
     getLibraryName(item: SeriesDto): string {
       return this.$store.getters.getLibraryById(item.libraryId).name;
+    },
+    seriesThumbnailUrl(seriesId: string): string {
+      return seriesThumbnailUrl(seriesId)
     },
   },
 })
