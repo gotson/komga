@@ -196,7 +196,6 @@
                         </template>
                       </v-checkbox>
 
-                      <v-alert type="warning" text class="text-subtitle-2 mt-4">{{ $t('dialog.edit_library.warning_early_feature_repair_extensions') }}</v-alert>
                       <v-checkbox
                         v-model="form.repairExtensions"
                         :label="$t('dialog.edit_library.field_repair_extensions')"
@@ -204,7 +203,6 @@
                         class="mx-4"
                       />
 
-                      <v-alert type="warning" text class="text-subtitle-2 mt-4">{{ $t('dialog.edit_library.warning_early_feature_convert_to_cbz') }}</v-alert>
                       <v-checkbox
                         v-model="form.convertToCbz"
                         :label="$t('dialog.edit_library.field_convert_to_cbz')"

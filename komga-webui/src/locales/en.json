@@ -325,9 +325,7 @@
       "label_import_local": "Import local media assets",
       "label_scanner": "Scanner",
       "tab_general": "General",
-      "tab_options": "Options",
-      "warning_early_feature_convert_to_cbz": "Book conversion is still an early feature, and must be used with caution. Make sure your files are backed up before using it.",
-      "warning_early_feature_repair_extensions": "Repair file extension is still an early feature, and must be used with caution. Make sure your files are backed up before using it."
+      "tab_options": "Options"
     },
     "edit_readlist": {
       "button_cancel": "Cancel",
