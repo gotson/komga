@@ -66,7 +66,7 @@ class EpubMetadataProvider(
             val refineRole = authorRoles[id]?.ifBlank { null }
             Author(name, relators[opfRole ?: refineRole] ?: "writer")
           }
-        }
+        }.ifEmpty { null }
 
       val isbn = opf.select("metadata > dc|identifier")
         ?.map { it.text().toLowerCase().removePrefix("isbn:") }
@@ -77,7 +77,7 @@ class EpubMetadataProvider(
         title = title,
         summary = description,
         releaseDate = date,
-        authors = authors.ifEmpty { null },
+        authors = authors,
         isbn = isbn,
       )
     }
@@ -96,8 +96,9 @@ class EpubMetadataProvider(
       val publisher = opf.selectFirst("metadata > dc|publisher")?.text()?.ifBlank { null }
       val language = opf.selectFirst("metadata > dc|language")?.text()?.ifBlank { null }
       val genres = opf.select("metadata > dc|subject")
-        ?.mapNotNull { it.text() }
-        ?.toSet()
+        .mapNotNull { it?.text()?.trim()?.ifBlank { null } }
+        .toSet()
+        .ifEmpty { null }
 
       val direction = opf.getElementsByTag("spine").first().attr("page-progression-direction")?.let {
         when (it) {
