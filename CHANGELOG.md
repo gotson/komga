@@ -1,3 +1,12 @@
+## [0.101.1](https://github.com/gotson/komga/compare/v0.101.0...v0.101.1) (2021-06-23)
+
+
+### Bug Fixes
+
+* **webui:** add contain property to thumbnail in searchbox ([15bad4b](https://github.com/gotson/komga/commit/15bad4b20a8213dc489ba83affc57a00763e468c))
+* **webui:** add thumbnail to series picker dialog ([cb096e2](https://github.com/gotson/komga/commit/cb096e21175f83ea73ca0bbc5a4391a5b684355d))
+* **webui:** don't reload card thumbnail if one was successfully loaded ([10cdedc](https://github.com/gotson/komga/commit/10cdedcf5d6e35c0a5928d0e92761832f699b099))
+
 # [0.101.0](https://github.com/gotson/komga/compare/v0.100.3...v0.101.0) (2021-06-23)
 
 
