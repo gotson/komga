@@ -95,7 +95,9 @@ class EpubMetadataProvider(
         )?.text()?.ifBlank { null }
       val publisher = opf.selectFirst("metadata > dc|publisher")?.text()?.ifBlank { null }
       val language = opf.selectFirst("metadata > dc|language")?.text()?.ifBlank { null }
-      val genre = opf.selectFirst("metadata > dc|subject")?.text()?.ifBlank { null }
+      val genres = opf.select("metadata > dc|subject")
+        ?.mapNotNull { it.text() }
+        ?.toSet()
 
       val direction = opf.getElementsByTag("spine").first().attr("page-progression-direction")?.let {
         when (it) {
@@ -114,7 +116,7 @@ class EpubMetadataProvider(
         ageRating = null,
         summary = null,
         language = if (language != null && BCP47TagValidator.isValid(language)) language else null,
-        genres = genre?.let { setOf(genre) },
+        genres = genres,
         collections = emptyList()
       )
     }
