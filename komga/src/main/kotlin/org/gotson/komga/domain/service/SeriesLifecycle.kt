@@ -140,6 +140,7 @@ class SeriesLifecycle(
     val books = bookRepository.findAllBySeriesIds(seriesIds)
     bookLifecycle.deleteMany(books)
 
+    readProgressRepository.deleteBySeriesIds(seriesIds)
     collectionRepository.removeSeriesFromAll(seriesIds)
     thumbnailsSeriesRepository.deleteBySeriesIds(seriesIds)
     seriesMetadataRepository.delete(seriesIds)

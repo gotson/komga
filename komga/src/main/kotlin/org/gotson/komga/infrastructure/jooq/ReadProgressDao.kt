@@ -104,6 +104,10 @@ class ReadProgressDao(
     }
   }
 
+  override fun deleteBySeriesIds(seriesIds: Collection<String>) {
+    dsl.deleteFrom(rs).where(rs.SERIES_ID.`in`(seriesIds)).execute()
+  }
+
   override fun deleteByBookIdsAndUserId(bookIds: Collection<String>, userId: String) {
     dsl.transaction { config ->
       config.dsl().deleteFrom(r).where(r.BOOK_ID.`in`(bookIds)).and(r.USER_ID.eq(userId)).execute()
