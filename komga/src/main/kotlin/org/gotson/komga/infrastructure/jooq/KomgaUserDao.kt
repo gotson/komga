@@ -7,6 +7,7 @@ import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.ResultQuery
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.time.ZoneId
 
@@ -54,73 +55,61 @@ class KomgaUserDao(
         )
       }
 
+  @Transactional
   override fun insert(user: KomgaUser) {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        insertInto(u)
-          .set(u.ID, user.id)
-          .set(u.EMAIL, user.email)
-          .set(u.PASSWORD, user.password)
-          .set(u.ROLE_ADMIN, user.roleAdmin)
-          .set(u.ROLE_FILE_DOWNLOAD, user.roleFileDownload)
-          .set(u.ROLE_PAGE_STREAMING, user.rolePageStreaming)
-          .set(u.SHARED_ALL_LIBRARIES, user.sharedAllLibraries)
-          .execute()
+    dsl.insertInto(u)
+      .set(u.ID, user.id)
+      .set(u.EMAIL, user.email)
+      .set(u.PASSWORD, user.password)
+      .set(u.ROLE_ADMIN, user.roleAdmin)
+      .set(u.ROLE_FILE_DOWNLOAD, user.roleFileDownload)
+      .set(u.ROLE_PAGE_STREAMING, user.rolePageStreaming)
+      .set(u.SHARED_ALL_LIBRARIES, user.sharedAllLibraries)
+      .execute()
 
-        user.sharedLibrariesIds.forEach {
-          insertInto(ul)
-            .columns(ul.USER_ID, ul.LIBRARY_ID)
-            .values(user.id, it)
-            .execute()
-        }
-      }
+    user.sharedLibrariesIds.forEach {
+      dsl.insertInto(ul)
+        .columns(ul.USER_ID, ul.LIBRARY_ID)
+        .values(user.id, it)
+        .execute()
     }
   }
 
+  @Transactional
   override fun update(user: KomgaUser) {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        update(u)
-          .set(u.EMAIL, user.email)
-          .set(u.PASSWORD, user.password)
-          .set(u.ROLE_ADMIN, user.roleAdmin)
-          .set(u.ROLE_FILE_DOWNLOAD, user.roleFileDownload)
-          .set(u.ROLE_PAGE_STREAMING, user.rolePageStreaming)
-          .set(u.SHARED_ALL_LIBRARIES, user.sharedAllLibraries)
-          .set(u.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
-          .where(u.ID.eq(user.id))
-          .execute()
+    dsl.update(u)
+      .set(u.EMAIL, user.email)
+      .set(u.PASSWORD, user.password)
+      .set(u.ROLE_ADMIN, user.roleAdmin)
+      .set(u.ROLE_FILE_DOWNLOAD, user.roleFileDownload)
+      .set(u.ROLE_PAGE_STREAMING, user.rolePageStreaming)
+      .set(u.SHARED_ALL_LIBRARIES, user.sharedAllLibraries)
+      .set(u.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
+      .where(u.ID.eq(user.id))
+      .execute()
 
-        deleteFrom(ul)
-          .where(ul.USER_ID.eq(user.id))
-          .execute()
+    dsl.deleteFrom(ul)
+      .where(ul.USER_ID.eq(user.id))
+      .execute()
 
-        user.sharedLibrariesIds.forEach {
-          insertInto(ul)
-            .columns(ul.USER_ID, ul.LIBRARY_ID)
-            .values(user.id, it)
-            .execute()
-        }
-      }
+    user.sharedLibrariesIds.forEach {
+      dsl.insertInto(ul)
+        .columns(ul.USER_ID, ul.LIBRARY_ID)
+        .values(user.id, it)
+        .execute()
     }
   }
 
+  @Transactional
   override fun delete(userId: String) {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        deleteFrom(ul).where(ul.USER_ID.equal(userId)).execute()
-        deleteFrom(u).where(u.ID.equal(userId)).execute()
-      }
-    }
+    dsl.deleteFrom(ul).where(ul.USER_ID.equal(userId)).execute()
+    dsl.deleteFrom(u).where(u.ID.equal(userId)).execute()
   }
 
+  @Transactional
   override fun deleteAll() {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        deleteFrom(ul).execute()
-        deleteFrom(u).execute()
-      }
-    }
+    dsl.deleteFrom(ul).execute()
+    dsl.deleteFrom(u).execute()
   }
 
   override fun existsByEmailIgnoreCase(email: String): Boolean =

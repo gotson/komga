@@ -26,6 +26,7 @@ import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.ThumbnailSeriesRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -89,6 +90,7 @@ class SeriesLifecycle(
     }
   }
 
+  @Transactional
   fun addBooks(series: Series, booksToAdd: Collection<Book>) {
     booksToAdd.forEach {
       check(it.libraryId == series.libraryId) { "Cannot add book to series if they don't share the same libraryId" }
@@ -113,6 +115,7 @@ class SeriesLifecycle(
     toAdd.forEach { eventPublisher.publishEvent(DomainEvent.BookAdded(it)) }
   }
 
+  @Transactional
   fun createSeries(series: Series): Series {
     seriesRepository.insert(series)
 
@@ -133,6 +136,7 @@ class SeriesLifecycle(
     return seriesRepository.findByIdOrNull(series.id)!!
   }
 
+  @Transactional
   fun deleteMany(series: Collection<Series>) {
     val seriesIds = series.map { it.id }
     logger.info { "Delete series ids: $seriesIds" }
@@ -167,6 +171,7 @@ class SeriesLifecycle(
     progresses.forEach { eventPublisher.publishEvent(DomainEvent.ReadProgressDeleted(it)) }
   }
 
+  @Transactional
   fun getThumbnail(seriesId: String): ThumbnailSeries? {
     val selected = thumbnailsSeriesRepository.findSelectedBySeriesIdOrNull(seriesId)
 
@@ -189,6 +194,7 @@ class SeriesLifecycle(
     return null
   }
 
+  @Transactional
   fun addThumbnailForSeries(thumbnail: ThumbnailSeries) {
     // delete existing thumbnail with the same url
     thumbnailsSeriesRepository.findAllBySeriesId(thumbnail.seriesId)

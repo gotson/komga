@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.net.URL
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -176,54 +177,54 @@ class BookDao(
       .and(b.URL.notLike("%.$extension"))
       .fetch(b.ID)
 
+  @Transactional
   override fun insert(book: Book) {
     insert(listOf(book))
   }
 
+  @Transactional
   override fun insert(books: Collection<Book>) {
     if (books.isNotEmpty()) {
-      dsl.transaction { config ->
-        config.dsl().batch(
-          config.dsl().insertInto(
-            b,
-            b.ID,
-            b.NAME,
-            b.URL,
-            b.NUMBER,
-            b.FILE_LAST_MODIFIED,
-            b.FILE_SIZE,
-            b.LIBRARY_ID,
-            b.SERIES_ID
-          ).values(null as String?, null, null, null, null, null, null, null)
-        ).also { step ->
-          books.forEach {
-            step.bind(
-              it.id,
-              it.name,
-              it.url,
-              it.number,
-              it.fileLastModified,
-              it.fileSize,
-              it.libraryId,
-              it.seriesId
-            )
-          }
-        }.execute()
-      }
+      dsl.batch(
+        dsl.insertInto(
+          b,
+          b.ID,
+          b.NAME,
+          b.URL,
+          b.NUMBER,
+          b.FILE_LAST_MODIFIED,
+          b.FILE_SIZE,
+          b.LIBRARY_ID,
+          b.SERIES_ID
+        ).values(null as String?, null, null, null, null, null, null, null)
+      ).also { step ->
+        books.forEach {
+          step.bind(
+            it.id,
+            it.name,
+            it.url,
+            it.number,
+            it.fileLastModified,
+            it.fileSize,
+            it.libraryId,
+            it.seriesId
+          )
+        }
+      }.execute()
     }
   }
 
+  @Transactional
   override fun update(book: Book) {
-    update(dsl, book)
+    updateBook(book)
   }
 
+  @Transactional
   override fun update(books: Collection<Book>) {
-    dsl.transaction { config ->
-      books.map { update(config.dsl(), it) }
-    }
+    books.map { updateBook(it) }
   }
 
-  private fun update(dsl: DSLContext, book: Book) {
+  private fun updateBook(book: Book) {
     dsl.update(b)
       .set(b.NAME, book.name)
       .set(b.URL, book.url.toString())
@@ -237,28 +238,19 @@ class BookDao(
       .execute()
   }
 
+  @Transactional
   override fun delete(bookId: String) {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        deleteFrom(b).where(b.ID.eq(bookId)).execute()
-      }
-    }
+    dsl.deleteFrom(b).where(b.ID.eq(bookId)).execute()
   }
 
+  @Transactional
   override fun delete(bookIds: Collection<String>) {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        deleteFrom(b).where(b.ID.`in`(bookIds)).execute()
-      }
-    }
+    dsl.deleteFrom(b).where(b.ID.`in`(bookIds)).execute()
   }
 
+  @Transactional
   override fun deleteAll() {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        deleteFrom(b).execute()
-      }
-    }
+    dsl.deleteFrom(b).execute()
   }
 
   override fun count(): Long = dsl.fetchCount(b).toLong()

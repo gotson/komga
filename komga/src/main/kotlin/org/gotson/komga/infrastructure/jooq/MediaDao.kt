@@ -9,6 +9,7 @@ import org.gotson.komga.jooq.tables.records.MediaPageRecord
 import org.gotson.komga.jooq.tables.records.MediaRecord
 import org.jooq.DSLContext
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.time.ZoneId
 
@@ -58,41 +59,41 @@ class MediaDao(
         mr.toDomain(pr.filterNot { it.bookId == null }.map { it.toDomain() }, files)
       }.first()
 
+  @Transactional
   override fun insert(media: Media) {
     insert(listOf(media))
   }
 
+  @Transactional
   override fun insert(medias: Collection<Media>) {
     if (medias.isNotEmpty()) {
-      dsl.transaction { config ->
-        config.dsl().batch(
-          config.dsl().insertInto(
-            m,
-            m.BOOK_ID,
-            m.STATUS,
-            m.MEDIA_TYPE,
-            m.COMMENT,
-            m.PAGE_COUNT
-          ).values(null as String?, null, null, null, null)
-        ).also { step ->
-          medias.forEach {
-            step.bind(
-              it.bookId,
-              it.status,
-              it.mediaType,
-              it.comment,
-              it.pages.size
-            )
-          }
-        }.execute()
+      dsl.batch(
+        dsl.insertInto(
+          m,
+          m.BOOK_ID,
+          m.STATUS,
+          m.MEDIA_TYPE,
+          m.COMMENT,
+          m.PAGE_COUNT
+        ).values(null as String?, null, null, null, null)
+      ).also { step ->
+        medias.forEach {
+          step.bind(
+            it.bookId,
+            it.status,
+            it.mediaType,
+            it.comment,
+            it.pages.size
+          )
+        }
+      }.execute()
 
-        insertPages(config.dsl(), medias)
-        insertFiles(config.dsl(), medias)
-      }
+      insertPages(medias)
+      insertFiles(medias)
     }
   }
 
-  private fun insertPages(dsl: DSLContext, medias: Collection<Media>) {
+  private fun insertPages(medias: Collection<Media>) {
     if (medias.any { it.pages.isNotEmpty() }) {
       dsl.batch(
         dsl.insertInto(
@@ -121,7 +122,7 @@ class MediaDao(
     }
   }
 
-  private fun insertFiles(dsl: DSLContext, medias: Collection<Media>) {
+  private fun insertFiles(medias: Collection<Media>) {
     if (medias.any { it.files.isNotEmpty() }) {
       dsl.batch(
         dsl.insertInto(
@@ -142,51 +143,44 @@ class MediaDao(
     }
   }
 
+  @Transactional
   override fun update(media: Media) {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        update(m)
-          .set(m.STATUS, media.status.toString())
-          .set(m.MEDIA_TYPE, media.mediaType)
-          .set(m.COMMENT, media.comment)
-          .set(m.PAGE_COUNT, media.pages.size)
-          .set(m.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
-          .where(m.BOOK_ID.eq(media.bookId))
-          .execute()
+    dsl.update(m)
+      .set(m.STATUS, media.status.toString())
+      .set(m.MEDIA_TYPE, media.mediaType)
+      .set(m.COMMENT, media.comment)
+      .set(m.PAGE_COUNT, media.pages.size)
+      .set(m.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
+      .where(m.BOOK_ID.eq(media.bookId))
+      .execute()
 
-        deleteFrom(p)
-          .where(p.BOOK_ID.eq(media.bookId))
-          .execute()
+    dsl.deleteFrom(p)
+      .where(p.BOOK_ID.eq(media.bookId))
+      .execute()
 
-        deleteFrom(f)
-          .where(f.BOOK_ID.eq(media.bookId))
-          .execute()
+    dsl.deleteFrom(f)
+      .where(f.BOOK_ID.eq(media.bookId))
+      .execute()
 
-        insertPages(this, listOf(media))
-        insertFiles(this, listOf(media))
-      }
-    }
+    insertPages(listOf(media))
+    insertFiles(listOf(media))
   }
 
+  @Transactional
   override fun delete(bookId: String) {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        deleteFrom(p).where(p.BOOK_ID.eq(bookId)).execute()
-        deleteFrom(f).where(f.BOOK_ID.eq(bookId)).execute()
-        deleteFrom(m).where(m.BOOK_ID.eq(bookId)).execute()
-      }
-    }
+    dsl.deleteFrom(p).where(p.BOOK_ID.eq(bookId)).execute()
+    dsl.deleteFrom(f).where(f.BOOK_ID.eq(bookId)).execute()
+    dsl.deleteFrom(m).where(m.BOOK_ID.eq(bookId)).execute()
   }
 
+  @Transactional
   override fun deleteByBookIds(bookIds: Collection<String>) {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        deleteFrom(p).where(p.BOOK_ID.`in`(bookIds)).execute()
-        deleteFrom(f).where(f.BOOK_ID.`in`(bookIds)).execute()
-        deleteFrom(m).where(m.BOOK_ID.`in`(bookIds)).execute()
-      }
-    }
+    dsl.deleteFrom(p).where(p.BOOK_ID.`in`(bookIds)).execute()
+    dsl.deleteFrom(f).where(f.BOOK_ID.`in`(bookIds)).execute()
+    dsl.deleteFrom(m).where(m.BOOK_ID.`in`(bookIds)).execute()
   }
+
+  override fun count(): Long = dsl.fetchCount(m).toLong()
 
   private fun MediaRecord.toDomain(pages: List<BookPage>, files: List<String>) =
     Media(

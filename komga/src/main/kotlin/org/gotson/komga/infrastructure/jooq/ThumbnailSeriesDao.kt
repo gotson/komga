@@ -6,6 +6,7 @@ import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.ThumbnailSeriesRecord
 import org.jooq.DSLContext
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.net.URL
 
 @Component
@@ -29,6 +30,7 @@ class ThumbnailSeriesDao(
       .map { it.toDomain() }
       .firstOrNull()
 
+  @Transactional
   override fun insert(thumbnail: ThumbnailSeries) {
     dsl.insertInto(ts)
       .set(ts.ID, thumbnail.id)
@@ -38,30 +40,32 @@ class ThumbnailSeriesDao(
       .execute()
   }
 
+  @Transactional
   override fun markSelected(thumbnail: ThumbnailSeries) {
-    dsl.transaction { config ->
-      config.dsl().update(ts)
-        .set(ts.SELECTED, false)
-        .where(ts.SERIES_ID.eq(thumbnail.seriesId))
-        .and(ts.ID.ne(thumbnail.id))
-        .execute()
+    dsl.update(ts)
+      .set(ts.SELECTED, false)
+      .where(ts.SERIES_ID.eq(thumbnail.seriesId))
+      .and(ts.ID.ne(thumbnail.id))
+      .execute()
 
-      config.dsl().update(ts)
-        .set(ts.SELECTED, true)
-        .where(ts.SERIES_ID.eq(thumbnail.seriesId))
-        .and(ts.ID.eq(thumbnail.id))
-        .execute()
-    }
+    dsl.update(ts)
+      .set(ts.SELECTED, true)
+      .where(ts.SERIES_ID.eq(thumbnail.seriesId))
+      .and(ts.ID.eq(thumbnail.id))
+      .execute()
   }
 
+  @Transactional
   override fun delete(thumbnailSeriesId: String) {
     dsl.deleteFrom(ts).where(ts.ID.eq(thumbnailSeriesId)).execute()
   }
 
+  @Transactional
   override fun deleteBySeriesId(seriesId: String) {
     dsl.deleteFrom(ts).where(ts.SERIES_ID.eq(seriesId)).execute()
   }
 
+  @Transactional
   override fun deleteBySeriesIds(seriesIds: Collection<String>) {
     dsl.deleteFrom(ts).where(ts.SERIES_ID.`in`(seriesIds)).execute()
   }

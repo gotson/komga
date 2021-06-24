@@ -6,6 +6,7 @@ import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.SeriesMetadataRecord
 import org.jooq.DSLContext
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.time.ZoneId
 
@@ -45,74 +46,72 @@ class SeriesMetadataDao(
       .mapNotNull { it.tag }
       .toSet()
 
+  @Transactional
   override fun insert(metadata: SeriesMetadata) {
-    dsl.transaction { config ->
-      config.dsl().insertInto(d)
-        .set(d.SERIES_ID, metadata.seriesId)
-        .set(d.STATUS, metadata.status.toString())
-        .set(d.TITLE, metadata.title)
-        .set(d.TITLE_SORT, metadata.titleSort)
-        .set(d.SUMMARY, metadata.summary)
-        .set(d.READING_DIRECTION, metadata.readingDirection?.toString())
-        .set(d.PUBLISHER, metadata.publisher)
-        .set(d.AGE_RATING, metadata.ageRating)
-        .set(d.LANGUAGE, metadata.language)
-        .set(d.STATUS_LOCK, metadata.statusLock)
-        .set(d.TITLE_LOCK, metadata.titleLock)
-        .set(d.TITLE_SORT_LOCK, metadata.titleSortLock)
-        .set(d.SUMMARY_LOCK, metadata.summaryLock)
-        .set(d.READING_DIRECTION_LOCK, metadata.readingDirectionLock)
-        .set(d.PUBLISHER_LOCK, metadata.publisherLock)
-        .set(d.AGE_RATING_LOCK, metadata.ageRatingLock)
-        .set(d.LANGUAGE_LOCK, metadata.languageLock)
-        .set(d.GENRES_LOCK, metadata.genresLock)
-        .set(d.TAGS_LOCK, metadata.tagsLock)
-        .execute()
+    dsl.insertInto(d)
+      .set(d.SERIES_ID, metadata.seriesId)
+      .set(d.STATUS, metadata.status.toString())
+      .set(d.TITLE, metadata.title)
+      .set(d.TITLE_SORT, metadata.titleSort)
+      .set(d.SUMMARY, metadata.summary)
+      .set(d.READING_DIRECTION, metadata.readingDirection?.toString())
+      .set(d.PUBLISHER, metadata.publisher)
+      .set(d.AGE_RATING, metadata.ageRating)
+      .set(d.LANGUAGE, metadata.language)
+      .set(d.STATUS_LOCK, metadata.statusLock)
+      .set(d.TITLE_LOCK, metadata.titleLock)
+      .set(d.TITLE_SORT_LOCK, metadata.titleSortLock)
+      .set(d.SUMMARY_LOCK, metadata.summaryLock)
+      .set(d.READING_DIRECTION_LOCK, metadata.readingDirectionLock)
+      .set(d.PUBLISHER_LOCK, metadata.publisherLock)
+      .set(d.AGE_RATING_LOCK, metadata.ageRatingLock)
+      .set(d.LANGUAGE_LOCK, metadata.languageLock)
+      .set(d.GENRES_LOCK, metadata.genresLock)
+      .set(d.TAGS_LOCK, metadata.tagsLock)
+      .execute()
 
-      insertGenres(config.dsl(), metadata)
-      insertTags(config.dsl(), metadata)
-    }
+    insertGenres(metadata)
+    insertTags(metadata)
   }
 
+  @Transactional
   override fun update(metadata: SeriesMetadata) {
-    dsl.transaction { config ->
-      config.dsl().update(d)
-        .set(d.STATUS, metadata.status.toString())
-        .set(d.TITLE, metadata.title)
-        .set(d.TITLE_SORT, metadata.titleSort)
-        .set(d.SUMMARY, metadata.summary)
-        .set(d.READING_DIRECTION, metadata.readingDirection?.toString())
-        .set(d.PUBLISHER, metadata.publisher)
-        .set(d.AGE_RATING, metadata.ageRating)
-        .set(d.LANGUAGE, metadata.language)
-        .set(d.STATUS_LOCK, metadata.statusLock)
-        .set(d.TITLE_LOCK, metadata.titleLock)
-        .set(d.TITLE_SORT_LOCK, metadata.titleSortLock)
-        .set(d.SUMMARY_LOCK, metadata.summaryLock)
-        .set(d.READING_DIRECTION_LOCK, metadata.readingDirectionLock)
-        .set(d.PUBLISHER_LOCK, metadata.publisherLock)
-        .set(d.AGE_RATING_LOCK, metadata.ageRatingLock)
-        .set(d.LANGUAGE_LOCK, metadata.languageLock)
-        .set(d.GENRES_LOCK, metadata.genresLock)
-        .set(d.TAGS_LOCK, metadata.tagsLock)
-        .set(d.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
-        .where(d.SERIES_ID.eq(metadata.seriesId))
-        .execute()
+    dsl.update(d)
+      .set(d.STATUS, metadata.status.toString())
+      .set(d.TITLE, metadata.title)
+      .set(d.TITLE_SORT, metadata.titleSort)
+      .set(d.SUMMARY, metadata.summary)
+      .set(d.READING_DIRECTION, metadata.readingDirection?.toString())
+      .set(d.PUBLISHER, metadata.publisher)
+      .set(d.AGE_RATING, metadata.ageRating)
+      .set(d.LANGUAGE, metadata.language)
+      .set(d.STATUS_LOCK, metadata.statusLock)
+      .set(d.TITLE_LOCK, metadata.titleLock)
+      .set(d.TITLE_SORT_LOCK, metadata.titleSortLock)
+      .set(d.SUMMARY_LOCK, metadata.summaryLock)
+      .set(d.READING_DIRECTION_LOCK, metadata.readingDirectionLock)
+      .set(d.PUBLISHER_LOCK, metadata.publisherLock)
+      .set(d.AGE_RATING_LOCK, metadata.ageRatingLock)
+      .set(d.LANGUAGE_LOCK, metadata.languageLock)
+      .set(d.GENRES_LOCK, metadata.genresLock)
+      .set(d.TAGS_LOCK, metadata.tagsLock)
+      .set(d.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
+      .where(d.SERIES_ID.eq(metadata.seriesId))
+      .execute()
 
-      config.dsl().deleteFrom(g)
-        .where(g.SERIES_ID.eq(metadata.seriesId))
-        .execute()
+    dsl.deleteFrom(g)
+      .where(g.SERIES_ID.eq(metadata.seriesId))
+      .execute()
 
-      config.dsl().deleteFrom(st)
-        .where(st.SERIES_ID.eq(metadata.seriesId))
-        .execute()
+    dsl.deleteFrom(st)
+      .where(st.SERIES_ID.eq(metadata.seriesId))
+      .execute()
 
-      insertGenres(config.dsl(), metadata)
-      insertTags(config.dsl(), metadata)
-    }
+    insertGenres(metadata)
+    insertTags(metadata)
   }
 
-  private fun insertGenres(dsl: DSLContext, metadata: SeriesMetadata) {
+  private fun insertGenres(metadata: SeriesMetadata) {
     if (metadata.genres.isNotEmpty()) {
       dsl.batch(
         dsl.insertInto(g, g.SERIES_ID, g.GENRE)
@@ -125,7 +124,7 @@ class SeriesMetadataDao(
     }
   }
 
-  private fun insertTags(dsl: DSLContext, metadata: SeriesMetadata) {
+  private fun insertTags(metadata: SeriesMetadata) {
     if (metadata.tags.isNotEmpty()) {
       dsl.batch(
         dsl.insertInto(st, st.SERIES_ID, st.TAG)
@@ -138,24 +137,18 @@ class SeriesMetadataDao(
     }
   }
 
+  @Transactional
   override fun delete(seriesId: String) {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        deleteFrom(g).where(g.SERIES_ID.eq(seriesId)).execute()
-        deleteFrom(st).where(st.SERIES_ID.eq(seriesId)).execute()
-        deleteFrom(d).where(d.SERIES_ID.eq(seriesId)).execute()
-      }
-    }
+    dsl.deleteFrom(g).where(g.SERIES_ID.eq(seriesId)).execute()
+    dsl.deleteFrom(st).where(st.SERIES_ID.eq(seriesId)).execute()
+    dsl.deleteFrom(d).where(d.SERIES_ID.eq(seriesId)).execute()
   }
 
+  @Transactional
   override fun delete(seriesIds: Collection<String>) {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        deleteFrom(g).where(g.SERIES_ID.`in`(seriesIds)).execute()
-        deleteFrom(st).where(st.SERIES_ID.`in`(seriesIds)).execute()
-        deleteFrom(d).where(d.SERIES_ID.`in`(seriesIds)).execute()
-      }
-    }
+    dsl.deleteFrom(g).where(g.SERIES_ID.`in`(seriesIds)).execute()
+    dsl.deleteFrom(st).where(st.SERIES_ID.`in`(seriesIds)).execute()
+    dsl.deleteFrom(d).where(d.SERIES_ID.`in`(seriesIds)).execute()
   }
 
   override fun count(): Long = dsl.fetchCount(d).toLong()

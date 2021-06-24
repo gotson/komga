@@ -6,6 +6,7 @@ import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.ThumbnailBookRecord
 import org.jooq.DSLContext
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.net.URL
 
 @Component
@@ -36,6 +37,7 @@ class ThumbnailBookDao(
       .map { it.toDomain() }
       .firstOrNull()
 
+  @Transactional
   override fun insert(thumbnail: ThumbnailBook) {
     dsl.insertInto(tb)
       .set(tb.ID, thumbnail.id)
@@ -47,6 +49,7 @@ class ThumbnailBookDao(
       .execute()
   }
 
+  @Transactional
   override fun update(thumbnail: ThumbnailBook) {
     dsl.update(tb)
       .set(tb.BOOK_ID, thumbnail.bookId)
@@ -58,34 +61,37 @@ class ThumbnailBookDao(
       .execute()
   }
 
+  @Transactional
   override fun markSelected(thumbnail: ThumbnailBook) {
-    dsl.transaction { config ->
-      config.dsl().update(tb)
-        .set(tb.SELECTED, false)
-        .where(tb.BOOK_ID.eq(thumbnail.bookId))
-        .and(tb.ID.ne(thumbnail.id))
-        .execute()
+    dsl.update(tb)
+      .set(tb.SELECTED, false)
+      .where(tb.BOOK_ID.eq(thumbnail.bookId))
+      .and(tb.ID.ne(thumbnail.id))
+      .execute()
 
-      config.dsl().update(tb)
-        .set(tb.SELECTED, true)
-        .where(tb.BOOK_ID.eq(thumbnail.bookId))
-        .and(tb.ID.eq(thumbnail.id))
-        .execute()
-    }
+    dsl.update(tb)
+      .set(tb.SELECTED, true)
+      .where(tb.BOOK_ID.eq(thumbnail.bookId))
+      .and(tb.ID.eq(thumbnail.id))
+      .execute()
   }
 
+  @Transactional
   override fun delete(thumbnailBookId: String) {
     dsl.deleteFrom(tb).where(tb.ID.eq(thumbnailBookId)).execute()
   }
 
+  @Transactional
   override fun deleteByBookId(bookId: String) {
     dsl.deleteFrom(tb).where(tb.BOOK_ID.eq(bookId)).execute()
   }
 
+  @Transactional
   override fun deleteByBookIds(bookIds: Collection<String>) {
     dsl.deleteFrom(tb).where(tb.BOOK_ID.`in`(bookIds)).execute()
   }
 
+  @Transactional
   override fun deleteByBookIdAndType(bookId: String, type: ThumbnailBook.Type) {
     dsl.deleteFrom(tb)
       .where(tb.BOOK_ID.eq(bookId))

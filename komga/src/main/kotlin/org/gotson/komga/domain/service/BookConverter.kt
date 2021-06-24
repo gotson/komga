@@ -15,6 +15,7 @@ import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.io.FileNotFoundException
 import java.nio.file.FileAlreadyExistsException
 import java.util.zip.Deflater
@@ -54,6 +55,7 @@ class BookConverter(
   fun getConvertibleBookIds(library: Library): Collection<String> =
     bookRepository.findAllIdsByLibraryIdAndMediaTypes(library.id, convertibleTypes)
 
+  @Transactional
   fun convertToCbz(book: Book) {
     if (!libraryRepository.findById(book.libraryId).convertToCbz)
       return logger.info { "Book conversion is disabled for the library, it may have changed since the task was submitted, skipping" }
@@ -134,6 +136,7 @@ class BookConverter(
       bookRepository.findAllIdsByLibraryIdAndMismatchedExtension(library.id, mediaType, extension)
     }
 
+  @Transactional
   fun repairExtension(book: Book) {
     if (!libraryRepository.findById(book.libraryId).repairExtensions)
       return logger.info { "Repair extensions is disabled for the library, it may have changed since the task was submitted, skipping" }

@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.SortedMap
@@ -140,19 +141,18 @@ class ReadListDao(
         rr.toDomain(bookIds)
       }
 
+  @Transactional
   override fun insert(readList: ReadList) {
-    dsl.transaction { config ->
-      config.dsl().insertInto(rl)
-        .set(rl.ID, readList.id)
-        .set(rl.NAME, readList.name)
-        .set(rl.BOOK_COUNT, readList.bookIds.size)
-        .execute()
+    dsl.insertInto(rl)
+      .set(rl.ID, readList.id)
+      .set(rl.NAME, readList.name)
+      .set(rl.BOOK_COUNT, readList.bookIds.size)
+      .execute()
 
-      insertBooks(config.dsl(), readList)
-    }
+    insertBooks(readList)
   }
 
-  private fun insertBooks(dsl: DSLContext, readList: ReadList) {
+  private fun insertBooks(readList: ReadList) {
     readList.bookIds.map { (index, id) ->
       dsl.insertInto(rlb)
         .set(rlb.READLIST_ID, readList.id)
@@ -162,53 +162,47 @@ class ReadListDao(
     }
   }
 
+  @Transactional
   override fun update(readList: ReadList) {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        update(rl)
-          .set(rl.NAME, readList.name)
-          .set(rl.BOOK_COUNT, readList.bookIds.size)
-          .set(rl.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
-          .where(rl.ID.eq(readList.id))
-          .execute()
+    dsl.update(rl)
+      .set(rl.NAME, readList.name)
+      .set(rl.BOOK_COUNT, readList.bookIds.size)
+      .set(rl.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
+      .where(rl.ID.eq(readList.id))
+      .execute()
 
-        deleteFrom(rlb).where(rlb.READLIST_ID.eq(readList.id)).execute()
+    dsl.deleteFrom(rlb).where(rlb.READLIST_ID.eq(readList.id)).execute()
 
-        insertBooks(config.dsl(), readList)
-      }
-    }
+    insertBooks(readList)
   }
 
+  @Transactional
   override fun removeBookFromAll(bookId: String) {
     dsl.deleteFrom(rlb)
       .where(rlb.BOOK_ID.eq(bookId))
       .execute()
   }
 
+  @Transactional
   override fun removeBooksFromAll(bookIds: Collection<String>) {
     dsl.deleteFrom(rlb)
       .where(rlb.BOOK_ID.`in`(bookIds))
       .execute()
   }
 
+  @Transactional
   override fun delete(readListId: String) {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        deleteFrom(rlb).where(rlb.READLIST_ID.eq(readListId)).execute()
-        deleteFrom(rl).where(rl.ID.eq(readListId)).execute()
-      }
-    }
+    dsl.deleteFrom(rlb).where(rlb.READLIST_ID.eq(readListId)).execute()
+    dsl.deleteFrom(rl).where(rl.ID.eq(readListId)).execute()
   }
 
+  @Transactional
   override fun deleteAll() {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        deleteFrom(rlb).execute()
-        deleteFrom(rl).execute()
-      }
-    }
+    dsl.deleteFrom(rlb).execute()
+    dsl.deleteFrom(rl).execute()
   }
 
+  @Transactional
   override fun deleteEmpty() {
     dsl.deleteFrom(rl)
       .where(

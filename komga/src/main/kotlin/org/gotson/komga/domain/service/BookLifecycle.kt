@@ -21,6 +21,7 @@ import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -40,6 +41,7 @@ class BookLifecycle(
   private val eventPublisher: EventPublisher,
 ) {
 
+  @Transactional
   fun analyzeAndPersist(book: Book): Boolean {
     logger.info { "Analyze and persist book: $book" }
     val media = bookAnalyzer.analyze(book)
@@ -58,6 +60,7 @@ class BookLifecycle(
     return media.status == Media.Status.READY
   }
 
+  @Transactional
   fun generateThumbnailAndPersist(book: Book) {
     logger.info { "Generate thumbnail and persist for book: $book" }
     try {
@@ -67,6 +70,7 @@ class BookLifecycle(
     }
   }
 
+  @Transactional
   fun addThumbnailForBook(thumbnail: ThumbnailBook) {
     when (thumbnail.type) {
       ThumbnailBook.Type.GENERATED -> {
@@ -93,6 +97,7 @@ class BookLifecycle(
       thumbnailsHouseKeeping(thumbnail.bookId)
   }
 
+  @Transactional
   fun getThumbnail(bookId: String): ThumbnailBook? {
     val selected = thumbnailBookRepository.findSelectedByBookIdOrNull(bookId)
 

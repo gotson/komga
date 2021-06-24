@@ -12,6 +12,7 @@ import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.SidecarRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.io.FileNotFoundException
 import java.nio.file.Files
 
@@ -77,6 +78,7 @@ class LibraryLifecycle(
     }
   }
 
+  @Transactional
   fun deleteLibrary(library: Library) {
     logger.info { "Deleting library: $library" }
 

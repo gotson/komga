@@ -16,4 +16,6 @@ interface BookMetadataRepository {
 
   fun delete(bookId: String)
   fun delete(bookIds: Collection<String>)
+
+  fun count(): Long
 }

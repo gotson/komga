@@ -7,6 +7,7 @@ import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.SidecarRecord
 import org.jooq.DSLContext
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.net.URL
 
 @Component
@@ -19,6 +20,7 @@ class SidecarDao(
   override fun findAll(): Collection<SidecarStored> =
     dsl.selectFrom(sc).fetch().map { it.toDomain() }
 
+  @Transactional
   override fun save(libraryId: String, sidecar: Sidecar) {
     dsl.insertInto(sc)
       .values(
@@ -34,6 +36,7 @@ class SidecarDao(
       .execute()
   }
 
+  @Transactional
   override fun deleteByLibraryIdAndUrls(libraryId: String, urls: Collection<URL>) {
     dsl.deleteFrom(sc)
       .where(sc.LIBRARY_ID.eq(libraryId))
@@ -41,6 +44,7 @@ class SidecarDao(
       .execute()
   }
 
+  @Transactional
   override fun deleteByLibraryId(libraryId: String) {
     dsl.deleteFrom(sc)
       .where(sc.LIBRARY_ID.eq(libraryId))

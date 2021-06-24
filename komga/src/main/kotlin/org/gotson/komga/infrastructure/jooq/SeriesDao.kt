@@ -9,6 +9,7 @@ import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.net.URL
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -83,6 +84,7 @@ class SeriesDao(
       .map { it.toDomain() }
   }
 
+  @Transactional
   override fun insert(series: Series) {
     dsl.insertInto(s)
       .set(s.ID, series.id)
@@ -93,6 +95,7 @@ class SeriesDao(
       .execute()
   }
 
+  @Transactional
   override fun update(series: Series) {
     dsl.update(s)
       .set(s.NAME, series.name)
@@ -105,28 +108,19 @@ class SeriesDao(
       .execute()
   }
 
+  @Transactional
   override fun delete(seriesId: String) {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        deleteFrom(s).where(s.ID.eq(seriesId)).execute()
-      }
-    }
+    dsl.deleteFrom(s).where(s.ID.eq(seriesId)).execute()
   }
 
+  @Transactional
   override fun deleteAll() {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        deleteFrom(s).execute()
-      }
-    }
+    dsl.deleteFrom(s).execute()
   }
 
+  @Transactional
   override fun delete(seriesIds: Collection<String>) {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        deleteFrom(s).where(s.ID.`in`(seriesIds)).execute()
-      }
-    }
+    dsl.deleteFrom(s).where(s.ID.`in`(seriesIds)).execute()
   }
 
   override fun count(): Long = dsl.fetchCount(s).toLong()

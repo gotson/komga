@@ -6,6 +6,7 @@ import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.LibraryRecord
 import org.jooq.DSLContext
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.net.URL
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -42,24 +43,19 @@ class LibraryDao(
       .fetchInto(l)
       .map { it.toDomain() }
 
+  @Transactional
   override fun delete(libraryId: String) {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        deleteFrom(ul).where(ul.LIBRARY_ID.eq(libraryId)).execute()
-        deleteFrom(l).where(l.ID.eq(libraryId)).execute()
-      }
-    }
+    dsl.deleteFrom(ul).where(ul.LIBRARY_ID.eq(libraryId)).execute()
+    dsl.deleteFrom(l).where(l.ID.eq(libraryId)).execute()
   }
 
+  @Transactional
   override fun deleteAll() {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        deleteFrom(ul).execute()
-        deleteFrom(l).execute()
-      }
-    }
+    dsl.deleteFrom(ul).execute()
+    dsl.deleteFrom(l).execute()
   }
 
+  @Transactional
   override fun insert(library: Library) {
     dsl.insertInto(l)
       .set(l.ID, library.id)
@@ -80,6 +76,7 @@ class LibraryDao(
       .execute()
   }
 
+  @Transactional
   override fun update(library: Library) {
     dsl.update(l)
       .set(l.NAME, library.name)

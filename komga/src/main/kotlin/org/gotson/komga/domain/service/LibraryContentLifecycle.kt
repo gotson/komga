@@ -14,6 +14,7 @@ import org.gotson.komga.domain.persistence.SidecarRepository
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.gotson.komga.infrastructure.language.notEquals
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.nio.file.Paths
 import kotlin.time.measureTime
 
@@ -34,6 +35,7 @@ class LibraryContentLifecycle(
   private val taskReceiver: TaskReceiver,
 ) {
 
+  @Transactional
   fun scanRootFolder(library: Library) {
     logger.info { "Updating library: $library" }
     measureTime {

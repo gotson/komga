@@ -8,6 +8,7 @@ import org.jooq.DSLContext
 import org.jooq.Query
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.time.ZoneId
 
@@ -49,93 +50,85 @@ class ReadProgressDao(
       .fetchInto(r)
       .map { it.toDomain() }
 
+  @Transactional
   override fun save(readProgress: ReadProgress) {
-    dsl.transaction { config ->
-      config.dsl().saveQuery(readProgress).execute()
-      config.dsl().aggregateSeriesProgress(listOf(readProgress.bookId), readProgress.userId)
-    }
+    saveQuery(readProgress).execute()
+    aggregateSeriesProgress(listOf(readProgress.bookId), readProgress.userId)
   }
 
+  @Transactional
   override fun save(readProgresses: Collection<ReadProgress>) {
-    dsl.transaction { config ->
-      val queries = readProgresses.map { config.dsl().saveQuery(it) }
-      config.dsl().batch(queries).execute()
+    val queries = readProgresses.map { saveQuery(it) }
+    dsl.batch(queries).execute()
 
-      readProgresses.groupBy { it.userId }
-        .forEach { (userId, readProgresses) ->
-          config.dsl().aggregateSeriesProgress(readProgresses.map { it.bookId }, userId)
-        }
-    }
+    readProgresses.groupBy { it.userId }
+      .forEach { (userId, readProgresses) ->
+        aggregateSeriesProgress(readProgresses.map { it.bookId }, userId)
+      }
   }
 
-  private fun DSLContext.saveQuery(readProgress: ReadProgress): Query =
-    this.insertInto(r, r.BOOK_ID, r.USER_ID, r.PAGE, r.COMPLETED)
+  private fun saveQuery(readProgress: ReadProgress): Query =
+    dsl.insertInto(r, r.BOOK_ID, r.USER_ID, r.PAGE, r.COMPLETED)
       .values(readProgress.bookId, readProgress.userId, readProgress.page, readProgress.completed)
       .onDuplicateKeyUpdate()
       .set(r.PAGE, readProgress.page)
       .set(r.COMPLETED, readProgress.completed)
       .set(r.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
 
+  @Transactional
   override fun delete(bookId: String, userId: String) {
-    dsl.transaction { config ->
-      config.dsl().deleteFrom(r).where(r.BOOK_ID.eq(bookId).and(r.USER_ID.eq(userId))).execute()
-      config.dsl().aggregateSeriesProgress(listOf(bookId), userId)
-    }
+    dsl.deleteFrom(r).where(r.BOOK_ID.eq(bookId).and(r.USER_ID.eq(userId))).execute()
+    aggregateSeriesProgress(listOf(bookId), userId)
   }
 
+  @Transactional
   override fun deleteByUserId(userId: String) {
-    dsl.transaction { config ->
-      config.dsl().deleteFrom(r).where(r.USER_ID.eq(userId)).execute()
-      config.dsl().deleteFrom(rs).where(rs.USER_ID.eq(userId)).execute()
-    }
+    dsl.deleteFrom(r).where(r.USER_ID.eq(userId)).execute()
+    dsl.deleteFrom(rs).where(rs.USER_ID.eq(userId)).execute()
   }
 
+  @Transactional
   override fun deleteByBookId(bookId: String) {
-    dsl.transaction { config ->
-      config.dsl().deleteFrom(r).where(r.BOOK_ID.eq(bookId)).execute()
-      config.dsl().aggregateSeriesProgress(listOf(bookId))
-    }
+    dsl.deleteFrom(r).where(r.BOOK_ID.eq(bookId)).execute()
+    aggregateSeriesProgress(listOf(bookId))
   }
 
+  @Transactional
   override fun deleteByBookIds(bookIds: Collection<String>) {
-    dsl.transaction { config ->
-      config.dsl().deleteFrom(r).where(r.BOOK_ID.`in`(bookIds)).execute()
-      config.dsl().aggregateSeriesProgress(bookIds)
-    }
+    dsl.deleteFrom(r).where(r.BOOK_ID.`in`(bookIds)).execute()
+    aggregateSeriesProgress(bookIds)
   }
 
   override fun deleteBySeriesIds(seriesIds: Collection<String>) {
     dsl.deleteFrom(rs).where(rs.SERIES_ID.`in`(seriesIds)).execute()
   }
 
+  @Transactional
   override fun deleteByBookIdsAndUserId(bookIds: Collection<String>, userId: String) {
-    dsl.transaction { config ->
-      config.dsl().deleteFrom(r).where(r.BOOK_ID.`in`(bookIds)).and(r.USER_ID.eq(userId)).execute()
-      config.dsl().aggregateSeriesProgress(bookIds, userId)
-    }
+    dsl.deleteFrom(r).where(r.BOOK_ID.`in`(bookIds)).and(r.USER_ID.eq(userId)).execute()
+    aggregateSeriesProgress(bookIds, userId)
   }
 
+  @Transactional
   override fun deleteAll() {
-    dsl.transaction { config ->
-      config.dsl().deleteFrom(r).execute()
-      config.dsl().deleteFrom(rs).execute()
-    }
+    dsl.deleteFrom(r).execute()
+    dsl.deleteFrom(rs).execute()
   }
 
-  private fun DSLContext.aggregateSeriesProgress(bookIds: Collection<String>, userId: String? = null) {
-    val seriesIds = this.select(b.SERIES_ID)
+  private fun aggregateSeriesProgress(bookIds: Collection<String>, userId: String? = null) {
+    val seriesIds = dsl.select(b.SERIES_ID)
       .from(b)
       .where(b.ID.`in`(bookIds))
       .fetch(b.SERIES_ID)
 
-    this.deleteFrom(rs)
+    dsl.deleteFrom(rs)
       .where(rs.SERIES_ID.`in`(seriesIds))
       .apply { userId?.let { and(rs.USER_ID.eq(it)) } }
       .execute()
 
-    this.insertInto(rs)
+    dsl.insertInto(rs)
       .select(
-        this.select(b.SERIES_ID, r.USER_ID)
+        dsl.select(b.SERIES_ID, r.USER_ID)
           .select(DSL.sum(DSL.`when`(r.COMPLETED.isTrue, 1).otherwise(0)))
           .select(DSL.sum(DSL.`when`(r.COMPLETED.isFalse, 1).otherwise(0)))
           .from(b)

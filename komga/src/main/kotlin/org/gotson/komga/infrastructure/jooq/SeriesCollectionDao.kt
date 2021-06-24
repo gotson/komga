@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.time.ZoneId
 
@@ -138,20 +139,19 @@ class SeriesCollectionDao(
         cr.toDomain(seriesIds)
       }
 
+  @Transactional
   override fun insert(collection: SeriesCollection) {
-    dsl.transaction { config ->
-      config.dsl().insertInto(c)
-        .set(c.ID, collection.id)
-        .set(c.NAME, collection.name)
-        .set(c.ORDERED, collection.ordered)
-        .set(c.SERIES_COUNT, collection.seriesIds.size)
-        .execute()
+    dsl.insertInto(c)
+      .set(c.ID, collection.id)
+      .set(c.NAME, collection.name)
+      .set(c.ORDERED, collection.ordered)
+      .set(c.SERIES_COUNT, collection.seriesIds.size)
+      .execute()
 
-      insertSeries(config.dsl(), collection)
-    }
+    insertSeries(collection)
   }
 
-  private fun insertSeries(dsl: DSLContext, collection: SeriesCollection) {
+  private fun insertSeries(collection: SeriesCollection) {
     collection.seriesIds.forEachIndexed { index, id ->
       dsl.insertInto(cs)
         .set(cs.COLLECTION_ID, collection.id)
@@ -161,54 +161,48 @@ class SeriesCollectionDao(
     }
   }
 
+  @Transactional
   override fun update(collection: SeriesCollection) {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        update(c)
-          .set(c.NAME, collection.name)
-          .set(c.ORDERED, collection.ordered)
-          .set(c.SERIES_COUNT, collection.seriesIds.size)
-          .set(c.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
-          .where(c.ID.eq(collection.id))
-          .execute()
+    dsl.update(c)
+      .set(c.NAME, collection.name)
+      .set(c.ORDERED, collection.ordered)
+      .set(c.SERIES_COUNT, collection.seriesIds.size)
+      .set(c.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
+      .where(c.ID.eq(collection.id))
+      .execute()
 
-        deleteFrom(cs).where(cs.COLLECTION_ID.eq(collection.id)).execute()
+    dsl.deleteFrom(cs).where(cs.COLLECTION_ID.eq(collection.id)).execute()
 
-        insertSeries(config.dsl(), collection)
-      }
-    }
+    insertSeries(collection)
   }
 
+  @Transactional
   override fun removeSeriesFromAll(seriesId: String) {
     dsl.deleteFrom(cs)
       .where(cs.SERIES_ID.eq(seriesId))
       .execute()
   }
 
+  @Transactional
   override fun removeSeriesFromAll(seriesIds: Collection<String>) {
     dsl.deleteFrom(cs)
       .where(cs.SERIES_ID.`in`(seriesIds))
       .execute()
   }
 
+  @Transactional
   override fun delete(collectionId: String) {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        deleteFrom(cs).where(cs.COLLECTION_ID.eq(collectionId)).execute()
-        deleteFrom(c).where(c.ID.eq(collectionId)).execute()
-      }
-    }
+    dsl.deleteFrom(cs).where(cs.COLLECTION_ID.eq(collectionId)).execute()
+    dsl.deleteFrom(c).where(c.ID.eq(collectionId)).execute()
   }
 
+  @Transactional
   override fun deleteAll() {
-    dsl.transaction { config ->
-      with(config.dsl()) {
-        deleteFrom(cs).execute()
-        deleteFrom(c).execute()
-      }
-    }
+    dsl.deleteFrom(cs).execute()
+    dsl.deleteFrom(c).execute()
   }
 
+  @Transactional
   override fun deleteEmpty() {
     dsl.deleteFrom(c)
       .where(
