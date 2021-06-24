@@ -1,3 +1,13 @@
+## [0.101.2](https://github.com/gotson/komga/compare/v0.101.1...v0.101.2) (2021-06-24)
+
+
+### Bug Fixes
+
+* deleting series could fail with foreign key error ([97b53e5](https://github.com/gotson/komga/commit/97b53e5c962cf848cf7d62fb4fe0ede94479a554))
+* fix potential database inconsistencies ([75ecbe1](https://github.com/gotson/komga/commit/75ecbe15baee9c91d209675cd20f488fff907fce))
+* use spring transactions instead of jooq transactions ([73931f0](https://github.com/gotson/komga/commit/73931f0bf80e39e1806e877c3f97d40e583735a7))
+* **webui:** sort by size in media analysis table ([4d2393f](https://github.com/gotson/komga/commit/4d2393f500fafc9dd7cfdd08b7830089936bc30c))
+
 ## [0.101.1](https://github.com/gotson/komga/compare/v0.101.0...v0.101.1) (2021-06-23)
 
 
