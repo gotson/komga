@@ -50,6 +50,7 @@ class BookDtoDao(
     "lastModified" to b.LAST_MODIFIED_DATE,
     "lastModifiedDate" to b.LAST_MODIFIED_DATE,
     "fileSize" to b.FILE_SIZE,
+    "size" to b.FILE_SIZE,
     "url" to lower(b.URL),
     "media.status" to lower(m.STATUS),
     "media.comment" to lower(m.COMMENT),

@@ -52,7 +52,7 @@ export default Vue.extend({
         {text: this.$i18n.t('media_analysis.comment').toString(), value: 'media.comment'},
         {text: this.$i18n.t('media_analysis.media_type').toString(), value: 'media.mediaType'},
         {text: this.$i18n.t('media_analysis.url').toString(), value: 'url'},
-        {text: this.$i18n.t('media_analysis.size').toString(), value: 'size', sortable: false},
+        {text: this.$i18n.t('media_analysis.size').toString(), value: 'size'},
       ]
     },
     booksData():BookDto[] {
