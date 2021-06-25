@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices
 
 private val logger = KotlinLogging.logger {}
 
@@ -25,6 +26,7 @@ class SecurityConfiguration(
 
   override fun configure(http: HttpSecurity) {
     // @formatter:off
+    val userAgentWebAuthenticationDetailsSource = UserAgentWebAuthenticationDetailsSource()
 
     http
       .cors()
@@ -51,11 +53,13 @@ class SecurityConfiguration(
       }
 
       .httpBasic()
+      .authenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
 
       .and()
       .logout()
       .logoutUrl("/api/v1/users/logout")
       .deleteCookies("JSESSIONID")
+      .invalidateHttpSession(true)
 
       .and()
       .sessionManagement()
@@ -67,10 +71,13 @@ class SecurityConfiguration(
 
       http
         .rememberMe()
-        .key(komgaProperties.rememberMe.key)
-        .tokenValiditySeconds(komgaProperties.rememberMe.validity)
-        .alwaysRemember(true)
-        .userDetailsService(komgaUserDetailsLifecycle)
+        .rememberMeServices(
+          TokenBasedRememberMeServices(komgaProperties.rememberMe.key, komgaUserDetailsLifecycle).apply {
+            setTokenValiditySeconds(komgaProperties.rememberMe.validity)
+            setAlwaysRemember(true)
+            setAuthenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
+          }
+        )
     }
     // @formatter:on
   }

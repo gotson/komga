@@ -118,7 +118,7 @@ class KomgaUserDao(
         .where(u.EMAIL.equalIgnoreCase(email))
     )
 
-  override fun findByEmailIgnoreCase(email: String): KomgaUser? =
+  override fun findByEmailIgnoreCaseOrNull(email: String): KomgaUser? =
     selectBase()
       .where(u.EMAIL.equalIgnoreCase(email))
       .fetchAndMap()

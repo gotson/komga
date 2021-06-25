@@ -6,7 +6,7 @@ interface KomgaUserRepository {
   fun count(): Long
 
   fun findByIdOrNull(id: String): KomgaUser?
-  fun findByEmailIgnoreCase(email: String): KomgaUser?
+  fun findByEmailIgnoreCaseOrNull(email: String): KomgaUser?
 
   fun findAll(): Collection<KomgaUser>
 

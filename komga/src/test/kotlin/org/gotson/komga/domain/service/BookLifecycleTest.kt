@@ -56,6 +56,7 @@ class BookLifecycleTest(
   @AfterAll
   fun teardown() {
     libraryRepository.deleteAll()
+    readProgressRepository.deleteAll()
     userRepository.deleteAll()
   }
 

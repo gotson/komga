@@ -173,8 +173,8 @@ class KomgaUserDaoTest(
       KomgaUser("user1@example.org", "p", false)
     )
 
-    val found = komgaUserDao.findByEmailIgnoreCase("USER1@EXAMPLE.ORG")
-    val notFound = komgaUserDao.findByEmailIgnoreCase("USER2@EXAMPLE.ORG")
+    val found = komgaUserDao.findByEmailIgnoreCaseOrNull("USER1@EXAMPLE.ORG")
+    val notFound = komgaUserDao.findByEmailIgnoreCaseOrNull("USER2@EXAMPLE.ORG")
 
     assertThat(found).isNotNull
     assertThat(found?.email).isEqualTo("user1@example.org")

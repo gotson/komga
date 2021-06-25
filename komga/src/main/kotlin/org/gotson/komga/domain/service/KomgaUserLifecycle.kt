@@ -3,6 +3,7 @@ package org.gotson.komga.domain.service
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.UserEmailAlreadyExistsException
+import org.gotson.komga.domain.persistence.AuthenticationActivityRepository
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
@@ -20,18 +21,19 @@ private val logger = KotlinLogging.logger {}
 class KomgaUserLifecycle(
   private val userRepository: KomgaUserRepository,
   private val readProgressRepository: ReadProgressRepository,
+  private val authenticationActivityRepository: AuthenticationActivityRepository,
   private val passwordEncoder: PasswordEncoder,
-  private val sessionRegistry: SessionRegistry
+  private val sessionRegistry: SessionRegistry,
 
 ) : UserDetailsService {
 
   override fun loadUserByUsername(username: String): UserDetails =
-    userRepository.findByEmailIgnoreCase(username)?.let {
+    userRepository.findByEmailIgnoreCaseOrNull(username)?.let {
       KomgaPrincipal(it)
     } ?: throw UsernameNotFoundException(username)
 
   fun updatePassword(user: UserDetails, newPassword: String, expireSessions: Boolean): UserDetails {
-    userRepository.findByEmailIgnoreCase(user.username)?.let { komgaUser ->
+    userRepository.findByEmailIgnoreCaseOrNull(user.username)?.let { komgaUser ->
       logger.info { "Changing password for user ${user.username}" }
       val updatedUser = komgaUser.copy(password = passwordEncoder.encode(newPassword))
       userRepository.update(updatedUser)
@@ -58,8 +60,11 @@ class KomgaUserLifecycle(
   @Transactional
   fun deleteUser(user: KomgaUser) {
     logger.info { "Deleting user: $user" }
+
     readProgressRepository.deleteByUserId(user.id)
+    authenticationActivityRepository.deleteByUser(user)
     userRepository.delete(user.id)
+
     expireSessions(user)
   }
 

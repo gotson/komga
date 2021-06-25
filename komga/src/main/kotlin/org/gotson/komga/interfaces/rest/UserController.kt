@@ -1,14 +1,18 @@
 package org.gotson.komga.interfaces.rest
 
+import io.swagger.v3.oas.annotations.Parameter
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
 import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
 import org.gotson.komga.domain.model.UserEmailAlreadyExistsException
+import org.gotson.komga.domain.persistence.AuthenticationActivityRepository
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.service.KomgaUserLifecycle
+import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
+import org.gotson.komga.interfaces.rest.dto.AuthenticationActivityDto
 import org.gotson.komga.interfaces.rest.dto.PasswordUpdateDto
 import org.gotson.komga.interfaces.rest.dto.RolesUpdateDto
 import org.gotson.komga.interfaces.rest.dto.SharedLibrariesUpdateDto
@@ -17,7 +21,12 @@ import org.gotson.komga.interfaces.rest.dto.UserDto
 import org.gotson.komga.interfaces.rest.dto.UserWithSharedLibrariesDto
 import org.gotson.komga.interfaces.rest.dto.toDto
 import org.gotson.komga.interfaces.rest.dto.toWithSharedLibrariesDto
+import org.springdoc.core.converters.models.PageableAsQueryParam
 import org.springframework.core.env.Environment
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -29,6 +38,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
@@ -42,6 +52,7 @@ class UserController(
   private val userLifecycle: KomgaUserLifecycle,
   private val userRepository: KomgaUserRepository,
   private val libraryRepository: LibraryRepository,
+  private val authenticationActivityRepository: AuthenticationActivityRepository,
   env: Environment
 ) {
 
@@ -125,5 +136,49 @@ class UserController(
       userRepository.update(updatedUser)
       logger.info { "Updated user shared libraries: $updatedUser" }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @GetMapping("me/authentication-activity")
+  @PageableAsQueryParam
+  fun getMyAuthenticationActivity(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
+    @Parameter(hidden = true) page: Pageable,
+  ): Page<AuthenticationActivityDto> {
+    val sort =
+      if (page.sort.isSorted) page.sort
+      else Sort.by(Sort.Order.desc("dateTime"))
+
+    val pageRequest =
+      if (unpaged) UnpagedSorted(sort)
+      else PageRequest.of(
+        page.pageNumber,
+        page.pageSize,
+        sort
+      )
+
+    return authenticationActivityRepository.findAllByUser(principal.user, pageRequest).map { it.toDto() }
+  }
+
+  @GetMapping("authentication-activity")
+  @PageableAsQueryParam
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  fun getAuthenticationActivity(
+    @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
+    @Parameter(hidden = true) page: Pageable,
+  ): Page<AuthenticationActivityDto> {
+    val sort =
+      if (page.sort.isSorted) page.sort
+      else Sort.by(Sort.Order.desc("dateTime"))
+
+    val pageRequest =
+      if (unpaged) UnpagedSorted(sort)
+      else PageRequest.of(
+        page.pageNumber,
+        page.pageSize,
+        sort
+      )
+
+    return authenticationActivityRepository.findAll(pageRequest).map { it.toDto() }
   }
 }
