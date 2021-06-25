@@ -1,3 +1,11 @@
+# [0.102.0](https://github.com/gotson/komga/compare/v0.101.2...v0.102.0) (2021-06-25)
+
+
+### Features
+
+* **api:** store authentication activity ([de96e0d](https://github.com/gotson/komga/commit/de96e0dcef1312aaed0d253574734a9e027722ca)), closes [#160](https://github.com/gotson/komga/issues/160)
+* **webui:** display authentication activity ([9d33602](https://github.com/gotson/komga/commit/9d33602873b15668fe978dd66148287d4f9744dd)), closes [#160](https://github.com/gotson/komga/issues/160)
+
 ## [0.101.2](https://github.com/gotson/komga/compare/v0.101.1...v0.101.2) (2021-06-24)
 
 
