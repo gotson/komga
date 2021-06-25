@@ -1,4 +1,6 @@
-import { AxiosInstance } from 'axios'
+import {AxiosInstance} from 'axios'
+
+const qs = require('qs')
 
 const API_USERS = '/api/v1/users'
 
@@ -123,6 +125,36 @@ export default class KomgaUsersService {
       await this.http.post(`${API_USERS}/logout`)
     } catch (e) {
       let msg = `An error occurred while trying to logout`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async getMyAuthenticationActivity (pageRequest?: PageRequest): Promise<Page<AuthenticationActivityDto>> {
+    try {
+      return (await this.http.get(`${API_USERS}/me/authentication-activity`, {
+        params: pageRequest,
+        paramsSerializer: params => qs.stringify(params, { indices: false }),
+      })).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve authentication activity'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async getAuthenticationActivity (pageRequest?: PageRequest): Promise<Page<AuthenticationActivityDto>> {
+    try {
+      return (await this.http.get(`${API_USERS}/authentication-activity`, {
+        params: pageRequest,
+        paramsSerializer: params => qs.stringify(params, { indices: false }),
+      })).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve authentication activity'
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

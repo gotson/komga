@@ -3,6 +3,10 @@
     "dataFooter": {
       "pageText": "{0}-{1} of {2}"
     },
+    "dataIterator": {
+      "noResultsText": "No matching records found",
+      "loadingText": "Loading items..."
+    },
     "dataTable": {
       "itemsPerPageText": "Rows per page:",
       "sortBy": "Sort by"
@@ -604,11 +608,20 @@
     "USER": "User"
   },
   "users": {
-    "users": "Users"
+    "users": "Users",
+    "authentication_activity": "Authentication Activity"
   },
   "welcome": {
     "add_library": "Add library",
     "no_libraries_yet": "No libraries have been added yet!",
     "welcome_message": "Welcome to Komga"
+  },
+  "authentication_activity": {
+    "ip": "Ip",
+    "user_agent": "User Agent",
+    "email": "Email",
+    "success": "Success",
+    "error": "Error",
+    "datetime": "Date Time"
   }
 }

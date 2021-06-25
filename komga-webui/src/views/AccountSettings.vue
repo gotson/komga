@@ -1,8 +1,9 @@
 <template>
   <v-container fluid class="pa-6">
     <v-row>
-      <span class="text-h5">{{ $t('account_settings.account_settings') }}</span>
+      <v-col class="text-h5">{{ $t('account_settings.account_settings') }}</v-col>
     </v-row>
+
     <v-row align="center">
       <v-col cols="12" md="8" lg="6" xl="4">
         <span class="text-capitalize">{{ $t('common.email') }}</span>
@@ -11,6 +12,7 @@
         />
       </v-col>
     </v-row>
+
     <v-row align="center">
       <v-col>
         <span>{{ $t('common.roles') }}</span>
@@ -22,11 +24,22 @@
         </v-chip-group>
       </v-col>
     </v-row>
+
     <v-row>
       <v-col>
         <v-btn color="primary"
                @click.prevent="modalPasswordChange = true"
         >{{ $t('account_settings.change_password') }}</v-btn>
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col class="text-h5">{{ $t('users.authentication_activity') }}</v-col>
+    </v-row>
+
+    <v-row>
+      <v-col>
+        <authentication-activity-table for-me/>
       </v-col>
     </v-row>
 
@@ -40,10 +53,11 @@
 <script lang="ts">
 import PasswordChangeDialog from '@/components/dialogs/PasswordChangeDialog.vue'
 import Vue from 'vue'
+import AuthenticationActivityTable from "@/components/AuthenticationActivityTable.vue";
 
 export default Vue.extend({
   name: 'AccountSettings',
-  components: { PasswordChangeDialog },
+  components: {AuthenticationActivityTable, PasswordChangeDialog },
   data: () => {
     return {
       modalPasswordChange: false,
