@@ -44,7 +44,7 @@ class AuthenticationActivityDao(
   }
 
   private fun findAll(conditions: Condition, pageable: Pageable): PageImpl<AuthenticationActivity> {
-    val count = dsl.fetchCount(aa)
+    val count = dsl.fetchCount(aa, conditions)
 
     val orderBy = pageable.sort.toOrderBy(sorts)
 
