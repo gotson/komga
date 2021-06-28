@@ -31,6 +31,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -64,12 +65,14 @@ class UserController(
 
   @PatchMapping("me/password")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  fun updatePassword(
+  fun updateMyPassword(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @Valid @RequestBody newPasswordDto: PasswordUpdateDto
   ) {
     if (demo) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-    userLifecycle.updatePassword(principal, newPasswordDto.password, false)
+    userRepository.findByEmailIgnoreCaseOrNull(principal.username)?.let { user ->
+      userLifecycle.updatePassword(user, newPasswordDto.password, false)
+    } ?: throw UsernameNotFoundException(principal.username)
   }
 
   @GetMapping
@@ -116,6 +119,20 @@ class UserController(
       userRepository.update(updatedUser)
       logger.info { "Updated user roles: $updatedUser" }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @PatchMapping("{id}/password")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @PreAuthorize("hasRole('$ROLE_ADMIN') or #principal.user.id == #id")
+  fun updatePassword(
+    @PathVariable id: String,
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @Valid @RequestBody newPasswordDto: PasswordUpdateDto
+  ) {
+    if (demo) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    userRepository.findByIdOrNull(id)?.let { user ->
+      userLifecycle.updatePassword(user, newPasswordDto.password, user.id != principal.user.id)
+    } ?: throw UsernameNotFoundException(principal.username)
   }
 
   @PatchMapping("{id}/shared-libraries")

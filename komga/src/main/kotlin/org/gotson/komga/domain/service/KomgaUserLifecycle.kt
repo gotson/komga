@@ -32,16 +32,12 @@ class KomgaUserLifecycle(
       KomgaPrincipal(it)
     } ?: throw UsernameNotFoundException(username)
 
-  fun updatePassword(user: UserDetails, newPassword: String, expireSessions: Boolean): UserDetails {
-    userRepository.findByEmailIgnoreCaseOrNull(user.username)?.let { komgaUser ->
-      logger.info { "Changing password for user ${user.username}" }
-      val updatedUser = komgaUser.copy(password = passwordEncoder.encode(newPassword))
-      userRepository.update(updatedUser)
+  fun updatePassword(user: KomgaUser, newPassword: String, expireSessions: Boolean) {
+    logger.info { "Changing password for user ${user.email}" }
+    val updatedUser = user.copy(password = passwordEncoder.encode(newPassword))
+    userRepository.update(updatedUser)
 
-      if (expireSessions) expireSessions(updatedUser)
-
-      return KomgaPrincipal(updatedUser)
-    } ?: throw UsernameNotFoundException(user.username)
+    if (expireSessions) expireSessions(updatedUser)
   }
 
   fun countUsers() = userRepository.count()
