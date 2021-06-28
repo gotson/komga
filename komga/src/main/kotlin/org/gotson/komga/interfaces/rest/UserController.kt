@@ -72,7 +72,7 @@ class UserController(
     if (demo) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     userRepository.findByEmailIgnoreCaseOrNull(principal.username)?.let { user ->
       userLifecycle.updatePassword(user, newPasswordDto.password, false)
-    } ?: throw UsernameNotFoundException(principal.username)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
   @GetMapping
@@ -132,7 +132,7 @@ class UserController(
     if (demo) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     userRepository.findByIdOrNull(id)?.let { user ->
       userLifecycle.updatePassword(user, newPasswordDto.password, user.id != principal.user.id)
-    } ?: throw UsernameNotFoundException(principal.username)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
   @PatchMapping("{id}/shared-libraries")
