@@ -43,6 +43,15 @@ class AuthenticationActivityDao(
     return findAll(conditions, pageable)
   }
 
+  override fun findMostRecentByUser(user: KomgaUser): AuthenticationActivity? =
+    dsl.selectFrom(aa)
+      .where(aa.USER_ID.eq(user.id))
+      .or(aa.EMAIL.eq(user.email))
+      .orderBy(aa.DATE_TIME.desc())
+      .limit(1)
+      .fetchOne()
+      ?.toDomain()
+
   private fun findAll(conditions: Condition, pageable: Pageable): PageImpl<AuthenticationActivity> {
     val count = dsl.fetchCount(aa, conditions)
 

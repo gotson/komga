@@ -31,7 +31,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -198,4 +197,15 @@ class UserController(
 
     return authenticationActivityRepository.findAll(pageRequest).map { it.toDto() }
   }
+
+  @GetMapping("{id}/authentication-activity/latest")
+  @PreAuthorize("hasRole('$ROLE_ADMIN') or #principal.user.id == #id")
+  fun getLatestAuthenticationActivityForUser(
+    @PathVariable id: String,
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+  ): AuthenticationActivityDto =
+    userRepository.findByIdOrNull(id)?.let { user ->
+      authenticationActivityRepository.findMostRecentByUser(user)?.toDto()
+        ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 }
