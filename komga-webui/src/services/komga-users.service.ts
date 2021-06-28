@@ -161,4 +161,16 @@ export default class KomgaUsersService {
       throw new Error(msg)
     }
   }
+
+  async getLatestAuthenticationActivityForUser(user: UserDto): Promise<AuthenticationActivityDto> {
+    try {
+      return (await this.http.get(`${API_USERS}/${user.id}/authentication-activity/latest`)).data
+    } catch (e) {
+      let msg = `An error occurred while trying to retrieve latest authentication activity for user ${user.email}`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
 }

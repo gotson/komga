@@ -4,8 +4,8 @@
       "pageText": "{0}-{1} of {2}"
     },
     "dataIterator": {
-      "noResultsText": "No matching records found",
-      "loadingText": "Loading items..."
+      "loadingText": "Loading items...",
+      "noResultsText": "No matching records found"
     },
     "dataTable": {
       "itemsPerPageText": "Rows per page:",
@@ -20,6 +20,14 @@
   "account_settings": {
     "account_settings": "Account Settings",
     "change_password": "change password"
+  },
+  "authentication_activity": {
+    "datetime": "Date Time",
+    "email": "Email",
+    "error": "Error",
+    "ip": "Ip",
+    "success": "Success",
+    "user_agent": "User Agent"
   },
   "author_roles": {
     "colorist": "colorists",
@@ -183,6 +191,7 @@
     "pages": "pages",
     "pages_n": "No pages | 1 page | {count} pages",
     "password": "Password",
+    "pending_tasks": "No pending tasks | 1 pending task | {count} pending tasks",
     "publisher": "Publisher",
     "read": "Read",
     "readlists": "Read Lists",
@@ -192,8 +201,7 @@
     "series": "Series",
     "tags": "Tags",
     "use_filter_panel_to_change_filter": "Use the filter panel to change the active filter",
-    "year": "year",
-    "pending_tasks": "No pending tasks | 1 pending task | {count} pending tasks"
+    "year": "year"
   },
   "dashboard": {
     "keep_reading": "Keep Reading",
@@ -583,6 +591,8 @@
     "change_password": "Change password",
     "edit_shared_libraries": "Edit shared libraries",
     "edit_user": "Edit user",
+    "latest_activity": "Latest activity: {date}",
+    "no_recent_activity": "No recent activity",
     "role_administrator": "Administrator",
     "role_user": "User"
   },
@@ -609,20 +619,12 @@
     "USER": "User"
   },
   "users": {
-    "users": "Users",
-    "authentication_activity": "Authentication Activity"
+    "authentication_activity": "Authentication Activity",
+    "users": "Users"
   },
   "welcome": {
     "add_library": "Add library",
     "no_libraries_yet": "No libraries have been added yet!",
     "welcome_message": "Welcome to Komga"
-  },
-  "authentication_activity": {
-    "ip": "Ip",
-    "user_agent": "User Agent",
-    "email": "Email",
-    "success": "Success",
-    "error": "Error",
-    "datetime": "Date Time"
   }
 }

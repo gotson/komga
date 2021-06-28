@@ -2,6 +2,7 @@
   <div style="position: relative">
     <v-list
       elevation="3"
+      two-line
     >
       <div v-for="(u, index) in users" :key="index">
         <v-list-item
@@ -22,6 +23,18 @@
             <v-list-item-title>
               {{ u.email }}
             </v-list-item-title>
+            <v-list-item-subtitle v-if="usersLastActivity[u.id] !== undefined">
+              {{
+                $t('settings_user.latest_activity', {
+                  date:
+                    new Intl.DateTimeFormat($i18n.locale, {
+                      dateStyle: 'medium',
+                      timeStyle: 'short'
+                    }).format(new Date(usersLastActivity[u.id]))
+                })
+              }}
+            </v-list-item-subtitle>
+            <v-list-item-subtitle v-else>{{ $t('settings_user.no_recent_activity') }}</v-list-item-subtitle>
           </v-list-item-content>
 
           <v-list-item-action>
@@ -122,6 +135,7 @@ export default Vue.extend({
     userToEdit: {} as UserDto,
     modalChangePassword: false,
     userToChangePassword: {} as UserDto,
+    usersLastActivity: {} as any,
   }),
   computed: {
     users(): UserWithSharedLibrariesDto[] {
@@ -129,6 +143,16 @@ export default Vue.extend({
     },
     me(): UserDto {
       return this.$store.state.komgaUsers.me
+    },
+  },
+  watch: {
+    users(val) {
+      val.forEach((u: UserDto) => {
+        this.$komgaUsers.getLatestAuthenticationActivityForUser(u)
+          .then(value => this.$set(this.usersLastActivity, `${u.id}`, value.dateTime))
+          .catch(e => {
+          })
+      })
     },
   },
   async mounted() {
