@@ -194,7 +194,7 @@ class OpdsController(
 
     val entries = seriesRepository.findAll(seriesSearch)
       .map { SeriesWithInfo(it, seriesMetadataRepository.findById(it.id)) }
-      .sortedBy { it.metadata.titleSort.toLowerCase() }
+      .sortedBy { it.metadata.titleSort.lowercase() }
       .map { it.toOpdsEntry() }
 
     return OpdsFeedNavigation(
@@ -411,7 +411,7 @@ class OpdsController(
 
       val entries = seriesRepository.findAll(seriesSearch)
         .map { SeriesWithInfo(it, seriesMetadataRepository.findById(it.id)) }
-        .sortedBy { it.metadata.titleSort.toLowerCase() }
+        .sortedBy { it.metadata.titleSort.lowercase() }
         .map { it.toOpdsEntry() }
 
       OpdsFeedNavigation(
@@ -511,7 +511,7 @@ class OpdsController(
       updated = book.lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
       id = book.id,
       content = run {
-        var content = "${book.path.extension.toUpperCase()} - ${book.fileSizeHumanReadable}"
+        var content = "${book.path.extension.lowercase()} - ${book.fileSizeHumanReadable}"
         if (metadata.summary.isNotBlank())
           content += "\n\n${metadata.summary}"
         content

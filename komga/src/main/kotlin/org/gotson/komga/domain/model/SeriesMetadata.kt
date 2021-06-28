@@ -34,8 +34,8 @@ class SeriesMetadata(
   val titleSort = titleSort.trim()
   val summary = summary.trim()
   val publisher = publisher.trim()
-  val tags = tags.map { it.toLowerCase().trim() }.filter { it.isNotBlank() }.toSet()
-  val genres = genres.map { it.toLowerCase().trim() }.filter { it.isNotBlank() }.toSet()
+  val tags = tags.map { it.lowercase().trim() }.filter { it.isNotBlank() }.toSet()
+  val genres = genres.map { it.lowercase().trim() }.filter { it.isNotBlank() }.toSet()
 
   fun copy(
     status: Status = this.status,

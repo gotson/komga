@@ -7,10 +7,10 @@ plugins {
     kotlin("plugin.spring")
     kotlin("kapt")
   }
-  id("org.springframework.boot") version "2.4.6"
+  id("org.springframework.boot") version "2.5.2"
   id("com.gorylenko.gradle-git-properties") version "2.3.1"
-  id("nu.studer.jooq") version "5.2.1"
-  id("org.flywaydb.flyway") version "7.5.4"
+  id("nu.studer.jooq") version "5.2.2"
+  id("org.flywaydb.flyway") version "7.10.0"
   id("com.github.johnrengelman.processes") version "0.5.0"
   id("org.springdoc.openapi-gradle-plugin") version "1.3.2"
   jacoco
@@ -22,7 +22,7 @@ dependencies {
   implementation(kotlin("stdlib-jdk8"))
   implementation(kotlin("reflect"))
 
-  implementation(platform("org.springframework.boot:spring-boot-dependencies:2.4.6"))
+  implementation(platform("org.springframework.boot:spring-boot-dependencies:2.5.2"))
 
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -32,7 +32,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-artemis")
   implementation("org.springframework.boot:spring-boot-starter-jooq")
 
-  kapt("org.springframework.boot:spring-boot-configuration-processor:2.4.6")
+  kapt("org.springframework.boot:spring-boot-configuration-processor:2.5.2")
 
   implementation("org.apache.activemq:artemis-jms-server")
 
@@ -40,7 +40,7 @@ dependencies {
 
   implementation("io.github.microutils:kotlin-logging-jvm:2.0.8")
   implementation("io.micrometer:micrometer-registry-influx")
-  implementation("io.hawt:hawtio-springboot:2.13.4")
+  implementation("io.hawt:hawtio-springboot:2.13.5")
 
   run {
     val springdocVersion = "1.5.9"
@@ -53,7 +53,7 @@ dependencies {
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
 
-  implementation("commons-io:commons-io:2.9.0")
+  implementation("commons-io:commons-io:2.10.0")
   implementation("org.apache.commons:commons-lang3:3.12.0")
   implementation("commons-validator:commons-validator:1.7")
 
@@ -100,7 +100,7 @@ dependencies {
 
   testImplementation("com.tngtech.archunit:archunit-junit5:0.19.0")
 
-  developmentOnly("org.springframework.boot:spring-boot-devtools:2.4.6")
+  developmentOnly("org.springframework.boot:spring-boot-devtools:2.5.2")
 }
 
 val webui = "$rootDir/komga-webui"
@@ -111,7 +111,6 @@ tasks {
       freeCompilerArgs = listOf(
         "-Xjsr305=strict",
         "-Xopt-in=kotlin.time.ExperimentalTime",
-        "-Xopt-in=kotlin.io.path.ExperimentalPathApi"
       )
     }
   }

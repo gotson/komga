@@ -5,7 +5,7 @@ class Author(
   role: String
 ) {
   val name = name.trim()
-  val role = role.trim().toLowerCase()
+  val role = role.trim().lowercase()
 
   override fun toString(): String = "Author($name, $role)"
 

@@ -206,10 +206,10 @@ class SeriesDtoDao(
     if (!collectionIds.isNullOrEmpty()) c = c.and(cs.COLLECTION_ID.`in`(collectionIds))
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
     if (!metadataStatus.isNullOrEmpty()) c = c.and(d.STATUS.`in`(metadataStatus))
-    if (!publishers.isNullOrEmpty()) c = c.and(lower(d.PUBLISHER).`in`(publishers.map { it.toLowerCase() }))
-    if (!languages.isNullOrEmpty()) c = c.and(lower(d.LANGUAGE).`in`(languages.map { it.toLowerCase() }))
-    if (!genres.isNullOrEmpty()) c = c.and(lower(g.GENRE).`in`(genres.map { it.toLowerCase() }))
-    if (!tags.isNullOrEmpty()) c = c.and(lower(st.TAG).`in`(tags.map { it.toLowerCase() }))
+    if (!publishers.isNullOrEmpty()) c = c.and(lower(d.PUBLISHER).`in`(publishers.map { it.lowercase() }))
+    if (!languages.isNullOrEmpty()) c = c.and(lower(d.LANGUAGE).`in`(languages.map { it.lowercase() }))
+    if (!genres.isNullOrEmpty()) c = c.and(lower(g.GENRE).`in`(genres.map { it.lowercase() }))
+    if (!tags.isNullOrEmpty()) c = c.and(lower(st.TAG).`in`(tags.map { it.lowercase() }))
     if (!ageRatings.isNullOrEmpty()) {
       val c1 = if (ageRatings.contains(null)) d.AGE_RATING.isNull else DSL.falseCondition()
       val c2 = if (ageRatings.filterNotNull()

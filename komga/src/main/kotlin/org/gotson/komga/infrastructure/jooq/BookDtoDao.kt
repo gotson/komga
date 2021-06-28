@@ -267,7 +267,7 @@ class BookDtoDao(
     if (!seriesIds.isNullOrEmpty()) c = c.and(b.SERIES_ID.`in`(seriesIds))
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
     if (!mediaStatus.isNullOrEmpty()) c = c.and(m.STATUS.`in`(mediaStatus))
-    if (!tags.isNullOrEmpty()) c = c.and(lower(bt.TAG).`in`(tags.map { it.toLowerCase() }))
+    if (!tags.isNullOrEmpty()) c = c.and(lower(bt.TAG).`in`(tags.map { it.lowercase() }))
 
     if (readStatus != null) {
       val cr = readStatus.map {

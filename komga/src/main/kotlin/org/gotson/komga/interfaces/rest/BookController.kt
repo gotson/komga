@@ -344,7 +344,7 @@ class BookController(
       }
       if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
       try {
-        val convertFormat = when (convertTo?.toLowerCase()) {
+        val convertFormat = when (convertTo?.lowercase()) {
           "jpeg" -> ImageType.JPEG
           "png" -> ImageType.PNG
           "", null -> null

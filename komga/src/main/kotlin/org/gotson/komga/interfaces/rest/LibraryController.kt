@@ -53,7 +53,7 @@ class LibraryController(
       libraryRepository.findAll()
     } else {
       libraryRepository.findAllByIds(principal.user.sharedLibrariesIds)
-    }.sortedBy { it.name.toLowerCase() }.map { it.toDto(includeRoot = principal.user.roleAdmin) }
+    }.sortedBy { it.name.lowercase() }.map { it.toDto(includeRoot = principal.user.roleAdmin) }
 
   @GetMapping("{libraryId}")
   fun getOne(

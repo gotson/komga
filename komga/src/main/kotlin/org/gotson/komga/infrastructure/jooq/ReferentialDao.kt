@@ -210,7 +210,7 @@ class ReferentialDao(
           }
       )
       .fetchSet(0, String::class.java)
-      .sortedBy { it.toLowerCase() }
+      .sortedBy { it.lowercase() }
       .toSet()
 
   override fun findAllSeriesTags(filterOnLibraryIds: Collection<String>?): Set<String> =

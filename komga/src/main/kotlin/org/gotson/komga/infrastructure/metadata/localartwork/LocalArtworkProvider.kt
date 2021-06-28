@@ -35,7 +35,7 @@ class LocalArtworkProvider(
       dirStream.asSequence()
         .filter { Files.isRegularFile(it) }
         .filter { regex.matches(FilenameUtils.getBaseName(it.toString())) }
-        .filter { supportedExtensions.contains(FilenameUtils.getExtension(it.fileName.toString()).toLowerCase()) }
+        .filter { supportedExtensions.contains(FilenameUtils.getExtension(it.fileName.toString()).lowercase()) }
         .filter { contentDetector.isImage(contentDetector.detectMediaType(it)) }
         .mapIndexed { index, path ->
           logger.info { "Found file: $path" }
@@ -55,8 +55,8 @@ class LocalArtworkProvider(
     return Files.list(series.path).use { dirStream ->
       dirStream.asSequence()
         .filter { Files.isRegularFile(it) }
-        .filter { supportedSeriesFiles.contains(FilenameUtils.getBaseName(it.toString().toLowerCase())) }
-        .filter { supportedExtensions.contains(FilenameUtils.getExtension(it.fileName.toString()).toLowerCase()) }
+        .filter { supportedSeriesFiles.contains(FilenameUtils.getBaseName(it.toString().lowercase())) }
+        .filter { supportedExtensions.contains(FilenameUtils.getExtension(it.fileName.toString()).lowercase()) }
         .filter { contentDetector.isImage(contentDetector.detectMediaType(it)) }
         .mapIndexed { index, path ->
           logger.info { "Found file: $path" }

@@ -26,6 +26,6 @@ enum class AgeRating(val value: String, val ageRating: Int? = null) {
     @JsonCreator
     fun fromValue(value: String) = map[value.toLowerNoSpace()]
 
-    private fun String.toLowerNoSpace() = toLowerCase().replace(" ", "")
+    private fun String.toLowerNoSpace() = lowercase().replace(" ", "")
   }
 }

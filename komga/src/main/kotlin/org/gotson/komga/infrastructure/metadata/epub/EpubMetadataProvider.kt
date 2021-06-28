@@ -69,7 +69,7 @@ class EpubMetadataProvider(
         }.ifEmpty { null }
 
       val isbn = opf.select("metadata > dc|identifier")
-        ?.map { it.text().toLowerCase().removePrefix("isbn:") }
+        ?.map { it.text().lowercase().removePrefix("isbn:") }
         ?.mapNotNull { isbnValidator.validate(it) }
         ?.firstOrNull()
 

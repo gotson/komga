@@ -90,7 +90,7 @@ class FileSystemScanner(
           override fun visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult {
             logger.trace { "visitFile: $file" }
             if (attrs.isRegularFile) {
-              if (supportedExtensions.contains(FilenameUtils.getExtension(file.fileName.toString()).toLowerCase()) &&
+              if (supportedExtensions.contains(FilenameUtils.getExtension(file.fileName.toString()).lowercase()) &&
                 !file.fileName.toString().startsWith(".")
               ) {
                 val book = pathToBook(file, attrs)
@@ -159,7 +159,7 @@ class FileSystemScanner(
         }
       )
     }.also {
-      val countOfBooks = scannedSeries.values.sumBy { it.size }
+      val countOfBooks = scannedSeries.values.sumOf { it.size }
       logger.info { "Scanned ${scannedSeries.size} series, $countOfBooks books, and ${scannedSidecars.size} sidecars in $it" }
     }
 
