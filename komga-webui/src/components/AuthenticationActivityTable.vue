@@ -8,6 +8,7 @@
     sort-by="dateTime"
     :sort-desc="true"
     multi-sort
+    show-group-by
     class="elevation-1"
     :footer-props="{
         itemsPerPageOptions: [20, 50, 100]
@@ -65,7 +66,7 @@ export default Vue.extend({
         {text: this.$t('authentication_activity.user_agent').toString(), value: 'userAgent'},
         {text: this.$t('authentication_activity.success').toString(), value: 'success'},
         {text: this.$t('authentication_activity.error').toString(), value: 'error'},
-        {text: this.$t('authentication_activity.datetime').toString(), value: 'dateTime'},
+        {text: this.$t('authentication_activity.datetime').toString(), value: 'dateTime', groupable: false},
       )
       return headers
     },
