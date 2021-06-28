@@ -152,7 +152,7 @@ export default Vue.extend({
     },
     async updatePassword () {
       try {
-        await this.$store.dispatch('updateMyPassword', { password: this.form.newPassword })
+        await this.$komgaUsers.patchUserPassword(this.user, { password: this.form.newPassword } as PasswordUpdateDto)
       } catch (e) {
         this.showSnack(e.message)
       }

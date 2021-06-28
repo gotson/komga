@@ -580,6 +580,7 @@
     "server_settings": "Server Settings"
   },
   "settings_user": {
+    "change_password": "Change password",
     "edit_shared_libraries": "Edit shared libraries",
     "edit_user": "Edit user",
     "role_administrator": "Administrator",

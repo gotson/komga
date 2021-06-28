@@ -1,8 +1,8 @@
 import KomgaUsersService from '@/services/komga-users.service'
-import { UserRoles } from '@/types/enum-users'
-import { AxiosInstance } from 'axios'
+import {UserRoles} from '@/types/enum-users'
+import {AxiosInstance} from 'axios'
 import _Vue from 'vue'
-import { Module } from 'vuex/types'
+import {Module} from 'vuex/types'
 
 let service: KomgaUsersService
 
@@ -38,9 +38,6 @@ const vuexModule: Module<any, any> = {
     },
     async getMe ({ commit }) {
       commit('setMe', await service.getMe())
-    },
-    async updateMyPassword (_, newPassword: PasswordUpdateDto) {
-      await service.patchMePassword(newPassword)
     },
     async getAllUsers ({ commit }) {
       commit('setAllUsers', await service.getAll())

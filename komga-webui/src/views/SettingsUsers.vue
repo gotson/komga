@@ -4,7 +4,7 @@
       <v-col class="text-h5">{{ $t('users.users') }}</v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" md="8" lg="6" xl="4">
+      <v-col cols="12" md="10" lg="8" xl="4">
         <users-list/>
       </v-col>
     </v-row>

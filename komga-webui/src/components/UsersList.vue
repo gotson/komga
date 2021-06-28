@@ -39,6 +39,17 @@
           <v-list-item-action>
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
+                <v-btn icon @click="changeUserPassword(u)" v-on="on">
+                  <v-icon>mdi-lock-reset</v-icon>
+                </v-btn>
+              </template>
+              <span>{{ $t('settings_user.change_password') }}</span>
+            </v-tooltip>
+          </v-list-item-action>
+
+          <v-list-item-action>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
                 <v-btn icon @click="editUser(u)" :disabled="u.id === me.id" v-on="on">
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
@@ -73,6 +84,10 @@
                                        :user="userToEditSharedLibraries"
     />
 
+    <password-change-dialog v-model="modalChangePassword"
+                            :user="userToChangePassword"
+    />
+
     <user-edit-dialog v-model="modalEditUser"
                       :user="userToEdit"
     />
@@ -91,10 +106,11 @@ import UserEditDialog from '@/components/dialogs/UserEditDialog.vue'
 import UserSharedLibrariesEditDialog from '@/components/dialogs/UserSharedLibrariesEditDialog.vue'
 import {UserRoles} from '@/types/enum-users'
 import Vue from 'vue'
+import PasswordChangeDialog from "@/components/dialogs/PasswordChangeDialog.vue"
 
 export default Vue.extend({
   name: 'UsersList',
-  components: {UserSharedLibrariesEditDialog, UserDeleteDialog, UserEditDialog},
+  components: {UserSharedLibrariesEditDialog, UserDeleteDialog, UserEditDialog, PasswordChangeDialog},
   data: () => ({
     UserRoles,
     modalAddUser: false,
@@ -104,6 +120,8 @@ export default Vue.extend({
     userToEditSharedLibraries: {} as UserWithSharedLibrariesDto,
     modalEditUser: false,
     userToEdit: {} as UserDto,
+    modalChangePassword: false,
+    userToChangePassword: {} as UserDto,
   }),
   computed: {
     users(): UserWithSharedLibrariesDto[] {
@@ -128,6 +146,10 @@ export default Vue.extend({
     editUser(user: UserDto) {
       this.userToEdit = user
       this.modalEditUser = true
+    },
+    changeUserPassword(user: UserDto) {
+      this.userToChangePassword = user
+      this.modalChangePassword = true
     },
   },
 })

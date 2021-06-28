@@ -7,11 +7,11 @@ const API_USERS = '/api/v1/users'
 export default class KomgaUsersService {
   private http: AxiosInstance
 
-  constructor (http: AxiosInstance) {
+  constructor(http: AxiosInstance) {
     this.http = http
   }
 
-  async getMeWithAuth (login: string, password: string): Promise<UserDto> {
+  async getMeWithAuth(login: string, password: string): Promise<UserDto> {
     try {
       return (await this.http.get(
         `${API_USERS}/me`,
@@ -36,7 +36,7 @@ export default class KomgaUsersService {
     }
   }
 
-  async getMe (): Promise<UserDto> {
+  async getMe(): Promise<UserDto> {
     try {
       return (await this.http.get(`${API_USERS}/me`)).data
     } catch (e) {
@@ -48,7 +48,7 @@ export default class KomgaUsersService {
     }
   }
 
-  async getAll (): Promise<UserWithSharedLibrariesDto[]> {
+  async getAll(): Promise<UserWithSharedLibrariesDto[]> {
     try {
       return (await this.http.get(`${API_USERS}`)).data
     } catch (e) {
@@ -60,7 +60,7 @@ export default class KomgaUsersService {
     }
   }
 
-  async postUser (user: UserCreationDto): Promise<UserDto> {
+  async postUser(user: UserCreationDto): Promise<UserDto> {
     try {
       return (await this.http.post(API_USERS, user)).data
     } catch (e) {
@@ -72,7 +72,7 @@ export default class KomgaUsersService {
     }
   }
 
-  async patchUserRoles (userId: string, roles: RolesUpdateDto): Promise<UserDto> {
+  async patchUserRoles(userId: string, roles: RolesUpdateDto): Promise<UserDto> {
     try {
       return (await this.http.patch(`${API_USERS}/${userId}`, roles)).data
     } catch (e) {
@@ -84,7 +84,7 @@ export default class KomgaUsersService {
     }
   }
 
-  async deleteUser (user: UserDto) {
+  async deleteUser(user: UserDto) {
     try {
       await this.http.delete(`${API_USERS}/${user.id}`)
     } catch (e) {
@@ -96,11 +96,11 @@ export default class KomgaUsersService {
     }
   }
 
-  async patchMePassword (newPassword: PasswordUpdateDto) {
+  async patchUserPassword(user: UserDto, newPassword: PasswordUpdateDto) {
     try {
-      return (await this.http.patch(`${API_USERS}/me/password`, newPassword)).data
+      return (await this.http.patch(`${API_USERS}/${user.id}/password`, newPassword)).data
     } catch (e) {
-      let msg = `An error occurred while trying to update password for current user`
+      let msg = `An error occurred while trying to update password for user ${user.email}`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }
@@ -108,7 +108,7 @@ export default class KomgaUsersService {
     }
   }
 
-  async patchUserSharedLibraries (user: UserDto, sharedLibrariesUpdateDto: SharedLibrariesUpdateDto) {
+  async patchUserSharedLibraries(user: UserDto, sharedLibrariesUpdateDto: SharedLibrariesUpdateDto) {
     try {
       return (await this.http.patch(`${API_USERS}/${user.id}/shared-libraries`, sharedLibrariesUpdateDto)).data
     } catch (e) {
@@ -120,7 +120,7 @@ export default class KomgaUsersService {
     }
   }
 
-  async logout () {
+  async logout() {
     try {
       await this.http.post(`${API_USERS}/logout`)
     } catch (e) {
@@ -132,11 +132,11 @@ export default class KomgaUsersService {
     }
   }
 
-  async getMyAuthenticationActivity (pageRequest?: PageRequest): Promise<Page<AuthenticationActivityDto>> {
+  async getMyAuthenticationActivity(pageRequest?: PageRequest): Promise<Page<AuthenticationActivityDto>> {
     try {
       return (await this.http.get(`${API_USERS}/me/authentication-activity`, {
         params: pageRequest,
-        paramsSerializer: params => qs.stringify(params, { indices: false }),
+        paramsSerializer: params => qs.stringify(params, {indices: false}),
       })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve authentication activity'
@@ -147,11 +147,11 @@ export default class KomgaUsersService {
     }
   }
 
-  async getAuthenticationActivity (pageRequest?: PageRequest): Promise<Page<AuthenticationActivityDto>> {
+  async getAuthenticationActivity(pageRequest?: PageRequest): Promise<Page<AuthenticationActivityDto>> {
     try {
       return (await this.http.get(`${API_USERS}/authentication-activity`, {
         params: pageRequest,
-        paramsSerializer: params => qs.stringify(params, { indices: false }),
+        paramsSerializer: params => qs.stringify(params, {indices: false}),
       })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve authentication activity'
