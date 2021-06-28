@@ -1,3 +1,17 @@
+# [0.103.0](https://github.com/gotson/komga/compare/v0.102.0...v0.103.0) (2021-06-28)
+
+
+### Bug Fixes
+
+* **api:** total item count incorrect for /me/authentication-activity ([a56c2f1](https://github.com/gotson/komga/commit/a56c2f1d2d2daa17bbd7080afda4ab30194ba86b))
+
+
+### Features
+
+* **api:** admin can change password for any user ([30303a6](https://github.com/gotson/komga/commit/30303a6df3f1d37db0cbf38de734542a1eaa2876)), closes [#503](https://github.com/gotson/komga/issues/503)
+* **webui:** enable grouping for authentication activity table ([2a19399](https://github.com/gotson/komga/commit/2a1939934776ec9d3cc2d98c8d4b5446454bcde3))
+* **webui:** password change from user settings screen ([668331e](https://github.com/gotson/komga/commit/668331eb00f64f430b0bdf627184b05bcff8ad78)), closes [#503](https://github.com/gotson/komga/issues/503)
+
 # [0.102.0](https://github.com/gotson/komga/compare/v0.101.2...v0.102.0) (2021-06-25)
 
 

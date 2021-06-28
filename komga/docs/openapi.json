@@ -5738,7 +5738,7 @@
           },
           "required": true
         },
-        "operationId": "updatePassword",
+        "operationId": "updateMyPassword",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -6224,6 +6224,49 @@
         },
         "tags": [
           "file-system-controller"
+        ]
+      }
+    },
+    "/api/v1/users/{id}/password": {
+      "patch": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordUpdateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "operationId": "updatePassword",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "tags": [
+          "user-controller"
         ]
       }
     },
