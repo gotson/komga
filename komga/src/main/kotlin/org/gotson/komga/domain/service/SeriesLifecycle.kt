@@ -161,6 +161,7 @@ class SeriesLifecycle(
 
     readProgressRepository.save(progresses)
     progresses.forEach { eventPublisher.publishEvent(DomainEvent.ReadProgressChanged(it)) }
+    eventPublisher.publishEvent(DomainEvent.ReadProgressSeriesChanged(seriesId, user.id))
   }
 
   fun deleteReadProgress(seriesId: String, user: KomgaUser) {
@@ -169,6 +170,7 @@ class SeriesLifecycle(
     readProgressRepository.deleteByBookIdsAndUserId(bookIds, user.id)
 
     progresses.forEach { eventPublisher.publishEvent(DomainEvent.ReadProgressDeleted(it)) }
+    eventPublisher.publishEvent(DomainEvent.ReadProgressSeriesDeleted(seriesId, user.id))
   }
 
   @Transactional

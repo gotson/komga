@@ -15,6 +15,7 @@ import org.gotson.komga.interfaces.sse.dto.BookSseDto
 import org.gotson.komga.interfaces.sse.dto.CollectionSseDto
 import org.gotson.komga.interfaces.sse.dto.LibrarySseDto
 import org.gotson.komga.interfaces.sse.dto.ReadListSseDto
+import org.gotson.komga.interfaces.sse.dto.ReadProgressSeriesSseDto
 import org.gotson.komga.interfaces.sse.dto.ReadProgressSseDto
 import org.gotson.komga.interfaces.sse.dto.SeriesSseDto
 import org.gotson.komga.interfaces.sse.dto.TaskQueueSseDto
@@ -89,6 +90,8 @@ class SseController(
 
       is DomainEvent.ReadProgressChanged -> emitSse("ReadProgressChanged", ReadProgressSseDto(event.progress.bookId, event.progress.userId), userIdOnly = event.progress.userId)
       is DomainEvent.ReadProgressDeleted -> emitSse("ReadProgressDeleted", ReadProgressSseDto(event.progress.bookId, event.progress.userId), userIdOnly = event.progress.userId)
+      is DomainEvent.ReadProgressSeriesChanged -> emitSse("ReadProgressSeriesChanged", ReadProgressSeriesSseDto(event.seriesId, event.userId), userIdOnly = event.userId)
+      is DomainEvent.ReadProgressSeriesDeleted -> emitSse("ReadProgressSeriesDeleted", ReadProgressSeriesSseDto(event.seriesId, event.userId), userIdOnly = event.userId)
 
       is DomainEvent.ThumbnailBookAdded -> emitSse("ThumbnailBookAdded", ThumbnailBookSseDto(event.thumbnail.bookId, bookRepository.getSeriesIdOrNull(event.thumbnail.bookId).orEmpty()))
       is DomainEvent.ThumbnailSeriesAdded -> emitSse("ThumbnailSeriesAdded", ThumbnailSeriesSseDto(event.thumbnail.seriesId))
