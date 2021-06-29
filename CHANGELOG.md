@@ -1,3 +1,21 @@
+# [0.104.0](https://github.com/gotson/komga/compare/v0.103.0...v0.104.0) (2021-06-29)
+
+
+### Features
+
+* **api:** get latest activity by user ([b118959](https://github.com/gotson/komga/commit/b11895977544c94aa89c74b6a6a94d6c556c344e))
+* **sse:** publish event when series is completely marked as read or unread ([11c5802](https://github.com/gotson/komga/commit/11c5802255b2fbf7f4f03db2393bd4db1b4c834c))
+* **webui:** display badge if some books are in error or unsupported ([101c6fd](https://github.com/gotson/komga/commit/101c6fd92d4cf707f023ea6c8a6af1255534da02))
+* **webui:** display latest user connection in settings ([58478c2](https://github.com/gotson/komga/commit/58478c21ff59a4239dfcd24ced427be911c3e25d))
+* **webui:** multi-select collections and read lists ([19e3f18](https://github.com/gotson/komga/commit/19e3f18cad28de14a23eba81745d73d069059f29))
+* **webui:** select all option in the selection bar ([8545574](https://github.com/gotson/komga/commit/8545574d387e7242291f2a5eb8f9ce81bbda3d73))
+* **webui:** select multiple items using shift+click ([f69a31e](https://github.com/gotson/komga/commit/f69a31eaf1ed62ba2a173ee78116008a4cef0ec1))
+
+
+### Performance Improvements
+
+* **webui:** throttle reloads, remove legacy reload logic ([e8a7eaf](https://github.com/gotson/komga/commit/e8a7eaf999b7cd4d239fec665c90eece29546f53))
+
 # [0.103.0](https://github.com/gotson/komga/compare/v0.102.0...v0.103.0) (2021-06-28)
 
 
