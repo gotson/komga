@@ -130,7 +130,7 @@ tasks {
   // unpack Spring Boot's fat jar for better Docker image layering
   register<JavaExec>("unpack") {
     dependsOn(bootJar)
-    classpath = files(jar)
+    classpath = files(bootJar)
     jvmArgs = listOf("-Djarmode=layertools")
     args = "extract --destination $buildDir/dependency".split(" ")
     doFirst {
