@@ -26,6 +26,20 @@
       @edit="editMultipleBooks"
     />
 
+    <multi-select-bar
+      v-model="selectedCollections"
+      kind="collections"
+      @unselect-all="selectedCollections = []"
+      @delete="deleteCollections"
+    />
+
+    <multi-select-bar
+      v-model="selectedReadLists"
+      kind="readlists"
+      @unselect-all="selectedReadLists = []"
+      @delete="deleteReadLists"
+    />
+
     <v-container fluid>
       <empty-state
         v-if="emptyResults"
@@ -47,7 +61,7 @@
                           nowrap
                           :edit-function="singleEditSeries"
                           :selected.sync="selectedSeries"
-                          :selectable="selectedBooks.length === 0"
+                          :selectable="selectedBooks.length === 0 && selectedCollections.length === 0 && selectedReadLists.length === 0"
                           :fixed-item-width="fixedCardWidth"
             />
           </template>
@@ -62,7 +76,7 @@
                           nowrap
                           :edit-function="singleEditBook"
                           :selected.sync="selectedBooks"
-                          :selectable="selectedSeries.length === 0"
+                          :selectable="selectedSeries.length === 0 && selectedCollections.length === 0 && selectedReadLists.length === 0"
                           :fixed-item-width="fixedCardWidth"
             />
           </template>
@@ -76,7 +90,8 @@
             <item-browser :items="collections"
                           nowrap
                           :edit-function="singleEditCollection"
-                          :selectable="false"
+                          :selected.sync="selectedCollections"
+                          :selectable="selectedSeries.length === 0 && selectedBooks.length === 0 && selectedReadLists.length === 0"
                           :fixed-item-width="fixedCardWidth"
             />
           </template>
@@ -90,7 +105,8 @@
             <item-browser :items="readLists"
                           nowrap
                           :edit-function="singleEditReadList"
-                          :selectable="false"
+                          :selected.sync="selectedReadLists"
+                          :selectable="selectedSeries.length === 0 && selectedBooks.length === 0 && selectedCollections.length === 0"
                           :fixed-item-width="fixedCardWidth"
             />
           </template>
@@ -145,6 +161,8 @@ export default Vue.extend({
       loading: false,
       selectedSeries: [] as SeriesDto[],
       selectedBooks: [] as BookDto[],
+      selectedCollections: [] as CollectionDto[],
+      selectedReadLists: [] as ReadListDto[],
     }
   },
   created () {
@@ -179,6 +197,8 @@ export default Vue.extend({
         this.loadResults(val)
         this.selectedBooks = []
         this.selectedSeries = []
+        this.selectedCollections = []
+        this.selectedReadLists = []
       },
       deep: true,
       immediate: true,
@@ -189,7 +209,7 @@ export default Vue.extend({
       return this.$vuetify.breakpoint.name === 'xs' ? 120 : 150
     },
     showToolbar (): boolean {
-      return this.selectedSeries.length === 0 && this.selectedBooks.length === 0
+      return this.selectedSeries.length === 0 && this.selectedBooks.length === 0 && this.selectedCollections.length === 0 && this.selectedReadLists.length === 0
     },
     emptyResults (): boolean {
       return !this.loading && this.series.length === 0 && this.books.length === 0 && this.collections.length === 0 && this.readLists.length === 0
@@ -261,6 +281,12 @@ export default Vue.extend({
     editMultipleBooks () {
       this.$store.dispatch('dialogUpdateBooks', this.selectedBooks)
     },
+    deleteCollections () {
+      this.$store.dispatch('dialogDeleteCollection', this.selectedCollections)
+    },
+    deleteReadLists () {
+      this.$store.dispatch('dialogDeleteReadList', this.selectedReadLists)
+    },
     async markSelectedBooksRead () {
       await Promise.all(this.selectedBooks.map(b =>
         this.$komgaBooks.updateReadProgress(b.id, { completed: true }),
@@ -277,6 +303,8 @@ export default Vue.extend({
     async loadResults (search: string) {
       this.selectedBooks = []
       this.selectedSeries = []
+      this.selectedCollections = []
+      this.selectedReadLists = []
       if (search) {
         this.loading = true
 

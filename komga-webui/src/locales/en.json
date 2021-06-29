@@ -255,8 +255,11 @@
       "button_cancel": "Cancel",
       "button_confirm": "Delete",
       "confirm_delete": "Yes, delete the collection \"{name}\"",
+      "confirm_delete_multiple": "Yes, delete {count} collections",
       "dialog_title": "Delete Collection",
-      "warning_html": "The collection <b>{name}</b> will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue?"
+      "dialog_title_multiple": "Delete Collections",
+      "warning_html": "The collection <b>{name}</b> will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue?",
+      "warning_multiple_html": "{count} collections will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue?"
     },
     "delete_library": {
       "button_cancel": "Cancel",
@@ -269,8 +272,11 @@
       "button_cancel": "Cancel",
       "button_confirm": "Delete",
       "confirm_delete": "Yes, delete the read list \"{name}\"",
+      "confirm_delete_multiple": "Yes, delete {count} read lists",
       "dialog_title": "Delete Read List",
-      "warning_html": "The read list <b>{name}</b> will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue?"
+      "dialog_title_multiple": "Delete Read Lists",
+      "warning_html": "The read list <b>{name}</b> will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue?",
+      "warning_multiple_html": "{count} read lists will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue?"
     },
     "delete_user": {
       "button_cancel": "Cancel",
@@ -540,6 +546,7 @@
     "add_to_readlist": "Add to read list",
     "analyze": "Analyze",
     "delete": "Delete",
+    "deselect_all": "Deselect all",
     "download_series": "Download series",
     "edit": "Edit",
     "edit_metadata": "Edit metadata",
@@ -547,7 +554,6 @@
     "mark_unread": "Mark as unread",
     "refresh_metadata": "Refresh metadata",
     "scan_library_files": "Scan library files",
-    "deselect_all": "Deselect all",
     "select_all": "Select all"
   },
   "navigation": {

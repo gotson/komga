@@ -4,19 +4,30 @@
               max-width="450"
     >
       <v-card>
-        <v-card-title>{{ $t('dialog.delete_readlist.dialog_title') }}</v-card-title>
+        <v-card-title v-if="single">{{ $t('dialog.delete_readlist.dialog_title') }}</v-card-title>
+        <v-card-title v-else>{{ $t('dialog.delete_readlist.dialog_title_multiple') }}</v-card-title>
 
         <v-card-text>
           <v-container fluid>
             <v-row>
-              <v-col v-html="$t('dialog.delete_readlist.warning_html', {name: readList.name})"></v-col>
+              <v-col
+                v-if="single"
+                v-html="$t('dialog.delete_readlist.warning_html', {name: readLists.name})"
+              />
+              <v-col
+                v-else
+                v-html="$t('dialog.delete_readlist.warning_multiple_html', {count: readLists.length})"
+              />
             </v-row>
 
             <v-row>
               <v-col>
                 <v-checkbox v-model="confirmDelete" color="red">
-                  <template v-slot:label>
-                    {{ $t('dialog.delete_readlist.confirm_delete', { name: readList.name}) }}
+                  <template v-slot:label v-if="single">
+                    {{ $t('dialog.delete_readlist.confirm_delete', { name: readLists.name}) }}
+                  </template>
+                  <template v-slot:label v-else>
+                    {{ $t('dialog.delete_readlist.confirm_delete_multiple', { count: readLists.length}) }}
                   </template>
                 </v-checkbox>
               </v-col>
@@ -64,8 +75,8 @@ export default Vue.extend({
   },
   props: {
     value: Boolean,
-    readList: {
-      type: Object as () => ReadListDto,
+    readLists: {
+      type: [Object as () => ReadListDto, Array as () => ReadListDto[]],
       required: true,
     },
   },
@@ -75,6 +86,11 @@ export default Vue.extend({
     },
     modal(val) {
       !val && this.dialogCancel()
+    },
+  },
+  computed: {
+    single(): boolean {
+      return !Array.isArray(this.readLists)
     },
   },
   methods: {
@@ -91,10 +107,13 @@ export default Vue.extend({
       this.snackbar = true
     },
     async delete() {
-      try {
-        await this.$komgaReadLists.deleteReadList(this.readList.id)
-      } catch (e) {
-        this.showSnack(e.message)
+      const toUpdate = (this.single ? [this.readLists] : this.readLists) as ReadListDto[]
+      for (const b of toUpdate) {
+        try {
+          await this.$komgaReadLists.deleteReadList(b.id)
+        } catch (e) {
+          this.showSnack(e.message)
+        }
       }
     },
   },

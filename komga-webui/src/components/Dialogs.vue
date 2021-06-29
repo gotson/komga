@@ -12,7 +12,7 @@
 
     <collection-delete-dialog
       v-model="deleteCollectionDialog"
-      :collection="deleteCollection"
+      :collections="deleteCollections"
     />
 
     <read-list-add-to-dialog
@@ -27,7 +27,7 @@
 
     <read-list-delete-dialog
       v-model="deleteReadListDialog"
-      :read-list="deleteReadList"
+      :read-lists="deleteReadLists"
     />
 
     <library-edit-dialog
@@ -114,8 +114,8 @@ export default Vue.extend({
         this.$store.dispatch('dialogDeleteCollectionDisplay', val)
       },
     },
-    deleteCollection (): CollectionDto {
-      return this.$store.state.deleteCollection
+    deleteCollections (): CollectionDto | CollectionDto[] {
+      return this.$store.state.deleteCollections
     },
     // read lists
     addToReadListDialog: {
@@ -148,8 +148,8 @@ export default Vue.extend({
         this.$store.dispatch('dialogDeleteReadListDisplay', val)
       },
     },
-    deleteReadList (): ReadListDto {
-      return this.$store.state.deleteReadList
+    deleteReadLists (): ReadListDto | ReadListDto[] {
+      return this.$store.state.deleteReadLists
     },
     // libraries
     editLibraryDialog: {

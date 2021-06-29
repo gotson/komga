@@ -1,6 +1,6 @@
 <template>
   <div :style="$vuetify.breakpoint.name === 'xs' ? 'margin-bottom: 56px' : undefined">
-    <toolbar-sticky>
+    <toolbar-sticky v-if="selectedCollections.length === 0">
       <!--   Action menu   -->
       <library-actions-menu v-if="library"
                             :library="library"/>
@@ -21,6 +21,15 @@
       <page-size-select v-model="pageSize"/>
     </toolbar-sticky>
 
+    <multi-select-bar
+      v-model="selectedCollections"
+      kind="collections"
+      show-select-all
+      @unselect-all="selectedCollections = []"
+      @select-all="selectedCollections = collections"
+      @delete="deleteCollections"
+    />
+
     <library-navigation v-if="$vuetify.breakpoint.name === 'xs'" :libraryId="libraryId" bottom-navigation/>
 
     <v-container fluid>
@@ -33,7 +42,8 @@
 
       <item-browser
         :items="collections"
-        :selectable="false"
+        selectable
+        :selected.sync="selectedCollections"
         :edit-function="editSingleCollection"
       />
 
@@ -59,6 +69,7 @@ import Vue from 'vue'
 import {Location} from 'vue-router'
 import {LIBRARIES_ALL, LIBRARY_ROUTE} from '@/types/library'
 import {LibrarySseDto} from "@/types/komga-sse";
+import MultiSelectBar from "@/components/bars/MultiSelectBar.vue";
 
 export default Vue.extend({
   name: 'BrowseCollections',
@@ -68,11 +79,13 @@ export default Vue.extend({
     LibraryNavigation,
     ItemBrowser,
     PageSizeSelect,
+    MultiSelectBar,
   },
   data: () => {
     return {
       library: undefined as LibraryDto | undefined,
       collections: [] as CollectionDto[],
+      selectedCollections: [] as CollectionDto[],
       page: 1,
       pageSize: 20,
       totalPages: 1,
@@ -196,6 +209,8 @@ export default Vue.extend({
       }
     },
     async loadPage(libraryId: string, page: number) {
+      this.selectedCollections = []
+
       const pageRequest = {
         page: page - 1,
         size: this.pageSize,
@@ -217,6 +232,9 @@ export default Vue.extend({
     },
     editSingleCollection(collection: CollectionDto) {
       this.$store.dispatch('dialogEditCollection', collection)
+    },
+    deleteCollections() {
+      this.$store.dispatch('dialogDeleteCollection', this.selectedCollections)
     },
   },
 })

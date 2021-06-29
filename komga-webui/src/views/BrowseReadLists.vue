@@ -1,6 +1,6 @@
 <template>
   <div :style="$vuetify.breakpoint.name === 'xs' ? 'margin-bottom: 56px' : undefined">
-    <toolbar-sticky>
+    <toolbar-sticky v-if="selectedReadLists.length === 0">
       <!--   Action menu   -->
       <library-actions-menu v-if="library"
                             :library="library"/>
@@ -21,6 +21,15 @@
       <page-size-select v-model="pageSize"/>
     </toolbar-sticky>
 
+    <multi-select-bar
+      v-model="selectedReadLists"
+      kind="readlists"
+      show-select-all
+      @unselect-all="selectedReadLists = []"
+      @select-all="selectedReadLists = readLists"
+      @delete="deleteReadLists"
+    />
+
     <library-navigation v-if="$vuetify.breakpoint.name === 'xs'" :libraryId="libraryId" bottom-navigation/>
 
     <v-container fluid>
@@ -33,7 +42,8 @@
 
       <item-browser
         :items="readLists"
-        :selectable="false"
+        selectable
+        :selected.sync="selectedReadLists"
         :edit-function="editSingle"
       />
 
@@ -59,6 +69,7 @@ import Vue from 'vue'
 import {Location} from 'vue-router'
 import {LIBRARIES_ALL, LIBRARY_ROUTE} from '@/types/library'
 import {LibrarySseDto} from "@/types/komga-sse";
+import MultiSelectBar from "@/components/bars/MultiSelectBar.vue";
 
 export default Vue.extend({
   name: 'BrowseReadLists',
@@ -68,11 +79,13 @@ export default Vue.extend({
     LibraryNavigation,
     ItemBrowser,
     PageSizeSelect,
+    MultiSelectBar,
   },
   data: () => {
     return {
       library: undefined as LibraryDto | undefined,
       readLists: [] as ReadListDto[],
+      selectedReadLists: [] as ReadListDto[],
       page: 1,
       pageSize: 20,
       totalPages: 1,
@@ -87,19 +100,19 @@ export default Vue.extend({
       default: LIBRARIES_ALL,
     },
   },
-  created () {
+  created() {
     this.$eventHub.$on(READLIST_ADDED, this.reloadElements)
     this.$eventHub.$on(READLIST_CHANGED, this.reloadElements)
     this.$eventHub.$on(READLIST_DELETED, this.reloadElements)
     this.$eventHub.$on(LIBRARY_CHANGED, this.reloadLibrary)
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this.$eventHub.$off(READLIST_ADDED, this.reloadElements)
     this.$eventHub.$off(READLIST_CHANGED, this.reloadElements)
     this.$eventHub.$off(READLIST_DELETED, this.reloadElements)
     this.$eventHub.$off(LIBRARY_CHANGED, this.reloadLibrary)
   },
-  mounted () {
+  mounted() {
     this.$store.commit('setLibraryRoute', {id: this.libraryId, route: LIBRARY_ROUTE.READLISTS})
     this.pageSize = this.$store.state.persistedState.browsingPageSize || this.pageSize
 
@@ -111,7 +124,7 @@ export default Vue.extend({
 
     this.setWatches()
   },
-  beforeRouteUpdate (to, from, next) {
+  beforeRouteUpdate(to, from, next) {
     if (to.params.libraryId !== from.params.libraryId) {
       // reset
       this.page = 1
@@ -125,10 +138,10 @@ export default Vue.extend({
     next()
   },
   computed: {
-    isAdmin (): boolean {
+    isAdmin(): boolean {
       return this.$store.getters.meAdmin
     },
-    paginationVisible (): number {
+    paginationVisible(): number {
       switch (this.$vuetify.breakpoint.name) {
         case 'xs':
           return 5
@@ -143,7 +156,7 @@ export default Vue.extend({
     },
   },
   methods: {
-    setWatches () {
+    setWatches() {
       this.pageSizeUnwatch = this.$watch('pageSize', (val) => {
         this.$store.commit('setBrowsingPageSize', val)
         this.updateRouteAndReload()
@@ -154,11 +167,11 @@ export default Vue.extend({
         this.loadPage(this.libraryId, val)
       })
     },
-    unsetWatches () {
+    unsetWatches() {
       this.pageUnwatch()
       this.pageSizeUnwatch()
     },
-    updateRouteAndReload () {
+    updateRouteAndReload() {
       this.unsetWatches()
 
       this.page = 1
@@ -168,10 +181,10 @@ export default Vue.extend({
 
       this.setWatches()
     },
-    updateRoute () {
+    updateRoute() {
       this.$router.replace({
         name: this.$route.name,
-        params: { libraryId: this.$route.params.libraryId },
+        params: {libraryId: this.$route.params.libraryId},
         query: {
           page: `${this.page}`,
           pageSize: `${this.pageSize}`,
@@ -179,23 +192,25 @@ export default Vue.extend({
       } as Location).catch((_: any) => {
       })
     },
-    reloadElements () {
+    reloadElements() {
       this.loadLibrary(this.libraryId)
     },
-    reloadLibrary (event: LibrarySseDto) {
+    reloadLibrary(event: LibrarySseDto) {
       if (event.libraryId === this.libraryId) {
         this.loadLibrary(this.libraryId)
       }
     },
-    async loadLibrary (libraryId: string) {
+    async loadLibrary(libraryId: string) {
       this.library = this.getLibraryLazy(libraryId)
       await this.loadPage(libraryId, this.page)
 
       if (this.totalElements === 0) {
-        await this.$router.push({ name: 'browse-libraries', params: { libraryId: libraryId.toString() } })
+        await this.$router.push({name: 'browse-libraries', params: {libraryId: libraryId.toString()}})
       }
     },
-    async loadPage (libraryId: string, page: number) {
+    async loadPage(libraryId: string, page: number) {
+      this.selectedReadLists = []
+
       const pageRequest = {
         page: page - 1,
         size: this.pageSize,
@@ -208,15 +223,18 @@ export default Vue.extend({
       this.totalElements = elementsPage.totalElements
       this.readLists = elementsPage.content
     },
-    getLibraryLazy (libraryId: string): LibraryDto | undefined {
+    getLibraryLazy(libraryId: string): LibraryDto | undefined {
       if (libraryId !== LIBRARIES_ALL) {
         return this.$store.getters.getLibraryById(libraryId)
       } else {
         return undefined
       }
     },
-    editSingle (element: ReadListDto) {
+    editSingle(element: ReadListDto) {
       this.$store.dispatch('dialogEditReadList', element)
+    },
+    deleteReadLists () {
+      this.$store.dispatch('dialogDeleteReadList', this.selectedReadLists)
     },
   },
 })

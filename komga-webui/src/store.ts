@@ -18,14 +18,14 @@ export default new Vuex.Store({
     addToCollectionDialog: false,
     editCollection: {} as CollectionDto,
     editCollectionDialog: false,
-    deleteCollection: {} as CollectionDto,
+    deleteCollections: {} as CollectionDto | CollectionDto[],
     deleteCollectionDialog: false,
     // read lists
     addToReadListBooks: {} as BookDto | BookDto[],
     addToReadListDialog: false,
     editReadList: {} as ReadListDto,
     editReadListDialog: false,
-    deleteReadList: {} as ReadListDto,
+    deleteReadLists: {} as ReadListDto | ReadListDto[],
     deleteReadListDialog: false,
     // libraries
     editLibrary: {} as LibraryDto | undefined,
@@ -53,27 +53,27 @@ export default new Vuex.Store({
     setEditCollectionDialog (state, dialog) {
       state.editCollectionDialog = dialog
     },
-    setDeleteCollection (state, collection) {
-      state.deleteCollection = collection
+    setDeleteCollections (state, collections) {
+      state.deleteCollections = collections
     },
     setDeleteCollectionDialog (state, dialog) {
       state.deleteCollectionDialog = dialog
     },
     // Read Lists
-    setAddToReadListBooks (state, Book) {
-      state.addToReadListBooks = Book
+    setAddToReadListBooks (state, book) {
+      state.addToReadListBooks = book
     },
     setAddToReadListDialog (state, dialog) {
       state.addToReadListDialog = dialog
     },
-    setEditReadList (state, ReadList) {
-      state.editReadList = ReadList
+    setEditReadList (state, readList) {
+      state.editReadList = readList
     },
     setEditReadListDialog (state, dialog) {
       state.editReadListDialog = dialog
     },
-    setDeleteReadList (state, ReadList) {
-      state.deleteReadList = ReadList
+    setDeleteReadLists (state, readLists) {
+      state.deleteReadLists = readLists
     },
     setDeleteReadListDialog (state, dialog) {
       state.deleteReadListDialog = dialog
@@ -122,8 +122,8 @@ export default new Vuex.Store({
     dialogEditCollectionDisplay ({ commit }, value) {
       commit('setEditCollectionDialog', value)
     },
-    dialogDeleteCollection ({ commit }, collection) {
-      commit('setDeleteCollection', collection)
+    dialogDeleteCollection ({ commit }, collections) {
+      commit('setDeleteCollections', collections)
       commit('setDeleteCollectionDialog', true)
     },
     dialogDeleteCollectionDisplay ({ commit }, value) {
@@ -144,8 +144,8 @@ export default new Vuex.Store({
     dialogEditReadListDisplay ({ commit }, value) {
       commit('setEditReadListDialog', value)
     },
-    dialogDeleteReadList ({ commit }, readList) {
-      commit('setDeleteReadList', readList)
+    dialogDeleteReadList ({ commit }, readLists) {
+      commit('setDeleteReadLists', readLists)
       commit('setDeleteReadListDialog', true)
     },
     dialogDeleteReadListDisplay ({ commit }, value) {

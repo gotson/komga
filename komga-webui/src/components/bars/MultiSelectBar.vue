@@ -25,7 +25,7 @@
 
       <v-spacer/>
 
-      <v-btn icon @click="markRead">
+      <v-btn icon @click="markRead" v-if="kind === 'books' || kind === 'series'">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-icon v-on="on">mdi-bookmark-check</v-icon>
@@ -34,7 +34,7 @@
         </v-tooltip>
       </v-btn>
 
-      <v-btn icon @click="markUnread">
+      <v-btn icon @click="markUnread" v-if="kind === 'books' || kind === 'series'">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-icon v-on="on">mdi-bookmark-remove</v-icon>
@@ -61,12 +61,21 @@
         </v-tooltip>
       </v-btn>
 
-      <v-btn icon @click="edit" v-if="isAdmin">
+      <v-btn icon @click="edit" v-if="isAdmin && (kind === 'books' || kind === 'series')">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-icon v-on="on">mdi-pencil</v-icon>
           </template>
           <span>{{ $t('menu.edit_metadata') }}</span>
+        </v-tooltip>
+      </v-btn>
+
+      <v-btn icon @click="doDelete" v-if="isAdmin && (kind === 'collections' || kind === 'readlists')">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on">mdi-delete</v-icon>
+          </template>
+          <span>{{ $t('menu.delete') }}</span>
         </v-tooltip>
       </v-btn>
     </toolbar-sticky>
@@ -88,7 +97,10 @@ export default Vue.extend({
       type: Array,
       required: true,
     },
-    // books or series
+    /**
+     * The kind of items this toolbar acts on.
+     * @values books, series, collections, readlists
+     */
     kind: {
       type: String,
       required: true,
@@ -124,6 +136,9 @@ export default Vue.extend({
     },
     edit () {
       this.$emit('edit')
+    },
+    doDelete () {
+      this.$emit('delete')
     },
   },
 })
