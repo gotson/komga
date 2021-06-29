@@ -586,7 +586,6 @@ export default Vue.extend({
     async editSeries (): Promise<boolean> {
       const metadata = this.validateForm()
       if (metadata) {
-        const updated = [] as SeriesDto[]
         const toUpdate = (this.single ? [this.series] : this.series) as SeriesDto[]
         for (const s of toUpdate) {
           try {

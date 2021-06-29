@@ -527,7 +527,6 @@ export default Vue.extend({
     async editBooks(): Promise<boolean> {
       const metadata = this.validateForm()
       if (metadata) {
-        const updated = [] as BookDto[]
         const toUpdate = (this.single ? [this.books] : this.books) as BookDto[]
         for (const b of toUpdate) {
           try {

@@ -183,22 +183,6 @@ export default Vue.extend({
       deep: true,
       immediate: true,
     },
-    selectedSeries (val: SeriesDto[]) {
-      val.forEach(s => {
-        const index = this.series.findIndex(x => x.id === s.id)
-        if (index !== -1) {
-          this.series.splice(index, 1, s)
-        }
-      })
-    },
-    selectedBooks (val: BookDto[]) {
-      val.forEach(b => {
-        const index = this.books.findIndex(x => x.id === b.id)
-        if (index !== -1) {
-          this.books.splice(index, 1, b)
-        }
-      })
-    },
   },
   computed: {
     fixedCardWidth (): number {
@@ -281,16 +265,10 @@ export default Vue.extend({
       await Promise.all(this.selectedBooks.map(b =>
         this.$komgaBooks.updateReadProgress(b.id, { completed: true }),
       ))
-      this.selectedBooks = await Promise.all(this.selectedBooks.map(b =>
-        this.$komgaBooks.getBook(b.id),
-      ))
     },
     async markSelectedBooksUnread () {
       await Promise.all(this.selectedBooks.map(b =>
         this.$komgaBooks.deleteReadProgress(b.id),
-      ))
-      this.selectedBooks = await Promise.all(this.selectedBooks.map(b =>
-        this.$komgaBooks.getBook(b.id),
       ))
     },
     reloadResults () {
