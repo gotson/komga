@@ -86,6 +86,7 @@ export default Vue.extend({
 
       const booksPage = await this.$komgaBooks.getBooks(undefined, pageRequest, undefined, [MediaStatus.ERROR, MediaStatus.UNSUPPORTED])
       this.totalBooks = booksPage.totalElements
+      this.$store.commit('setBooksToCheck', booksPage.totalElements)
       this.books = booksPage.content
 
       this.loading = false

@@ -3,7 +3,16 @@
     <v-app-bar
       app
     >
-      <v-app-bar-nav-icon @click.stop="toggleDrawer"/>
+      <v-badge
+        dot
+        offset-x="15"
+        offset-y="20"
+        :value="drawerVisible ? 0 : booksToCheck"
+        color="accent"
+        :style="`margin-${$vuetify.rtl ? 'right' : 'left' }: -12px`"
+      >
+        <v-app-bar-nav-icon @click.stop="toggleDrawer"/>
+      </v-badge>
 
       <search-box class="flex-fill"/>
 
@@ -92,7 +101,14 @@
             <v-icon>mdi-cog</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>{{ $t('server_settings.server_settings') }}</v-list-item-title>
+            <v-badge
+              dot
+              inline
+              v-model="booksToCheck"
+              color="accent"
+            >
+              <v-list-item-title>{{ $t('server_settings.server_settings') }}</v-list-item-title>
+            </v-badge>
           </v-list-item-content>
         </v-list-item>
 
@@ -170,6 +186,7 @@ import {Theme} from '@/types/themes'
 import Vue from 'vue'
 import {LIBRARIES_ALL} from "@/types/library"
 import Toaster from "@/components/Toaster.vue"
+import {MediaStatus} from "@/types/enum-books";
 
 export default Vue.extend({
   name: 'home',
@@ -185,9 +202,14 @@ export default Vue.extend({
   async created() {
     if (this.isAdmin) {
       this.info = await this.$actuator.getInfo()
+      this.$komgaBooks.getBooks(undefined, {size: 0} as PageRequest, undefined, [MediaStatus.ERROR, MediaStatus.UNSUPPORTED])
+        .then(x => this.$store.commit('setBooksToCheck', x.totalElements))
     }
   },
   computed: {
+    booksToCheck(): number {
+      return this.$store.state.booksToCheck
+    },
     taskCount(): number {
       return this.$store.state.komgaSse.taskCount
     },
