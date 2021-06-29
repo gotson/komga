@@ -15,6 +15,8 @@ import {
   READLIST_DELETED,
   READPROGRESS_CHANGED,
   READPROGRESS_DELETED,
+  READPROGRESS_SERIES_CHANGED,
+  READPROGRESS_SERIES_DELETED,
   SERIES_ADDED,
   SERIES_CHANGED,
   SERIES_DELETED,
@@ -76,6 +78,8 @@ export default class KomgaSseService {
     // Read Progress
     this.eventSource.addEventListener('ReadProgressChanged', (event: any) => this.emit(READPROGRESS_CHANGED, event))
     this.eventSource.addEventListener('ReadProgressDeleted', (event: any) => this.emit(READPROGRESS_DELETED, event))
+    this.eventSource.addEventListener('ReadProgressSeriesChanged', (event: any) => this.emit(READPROGRESS_SERIES_CHANGED, event))
+    this.eventSource.addEventListener('ReadProgressSeriesDeleted', (event: any) => this.emit(READPROGRESS_SERIES_DELETED, event))
 
     // Thumbnails
     this.eventSource.addEventListener('ThumbnailBookAdded', (event: any) => this.emit(THUMBNAILBOOK_ADDED, event))

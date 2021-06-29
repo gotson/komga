@@ -40,7 +40,7 @@
       kind="books"
       show-select-all
       @unselect-all="selectedBooks = []"
-      @select-all="selectedBooks = $_.cloneDeep(books)"
+      @select-all="selectedBooks = books"
       @mark-read="markSelectedRead"
       @mark-unread="markSelectedUnread"
       @add-to-readlist="addToReadList"
@@ -93,6 +93,7 @@ import MultiSelectBar from '@/components/bars/MultiSelectBar.vue'
 import {BookDto, ReadProgressUpdateDto} from '@/types/komga-books'
 import {ContextOrigin} from '@/types/context'
 import {BookSseDto, ReadListSseDto, ReadProgressSseDto} from "@/types/komga-sse";
+import {throttle} from "lodash";
 
 export default Vue.extend({
   name: 'BrowseReadList',
@@ -115,20 +116,6 @@ export default Vue.extend({
     readListId: {
       type: String,
       required: true,
-    },
-  },
-  watch: {
-    selectedBooks (val: BookDto[]) {
-      val.forEach(s => {
-        let index = this.books.findIndex(x => x.id === s.id)
-        if (index !== -1) {
-          this.books.splice(index, 1, s)
-        }
-        index = this.booksCopy.findIndex(x => x.id === s.id)
-        if (index !== -1) {
-          this.booksCopy.splice(index, 1, s)
-        }
-      })
     },
   },
   created () {
@@ -180,11 +167,17 @@ export default Vue.extend({
     async loadReadList (readListId: string) {
       this.$komgaReadLists.getOneReadList(readListId)
       .then(v => this.readList = v)
+      await this.loadBooks(readListId)
+    },
+    async loadBooks (readListId: string) {
       this.books = (await this.$komgaReadLists.getBooks(readListId, { unpaged: true } as PageRequest)).content
       this.books.forEach((x: BookDto) => x.context = { origin: ContextOrigin.READLIST, id: readListId })
       this.booksCopy = [...this.books]
       this.selectedBooks = []
     },
+    reloadBooks: throttle(function (this: any) {
+      this.loadBooks(this.readListId)
+    }, 5000),
     editSingleBook (book: BookDto) {
       this.$store.dispatch('dialogUpdateBooks', book)
     },
@@ -195,16 +188,10 @@ export default Vue.extend({
       await Promise.all(this.selectedBooks.map(b =>
         this.$komgaBooks.updateReadProgress(b.id, { completed: true } as ReadProgressUpdateDto),
       ))
-      this.selectedBooks = await Promise.all(this.selectedBooks.map(b =>
-        this.$komgaBooks.getBook(b.id),
-      ))
     },
     async markSelectedUnread () {
       await Promise.all(this.selectedBooks.map(b =>
         this.$komgaBooks.deleteReadProgress(b.id),
-      ))
-      this.selectedBooks = await Promise.all(this.selectedBooks.map(b =>
-        this.$komgaBooks.getBook(b.id),
       ))
     },
     addToReadList () {
@@ -223,16 +210,15 @@ export default Vue.extend({
         bookIds: this.books.map(x => x.id),
       } as ReadListUpdateDto
       this.$komgaReadLists.patchReadList(this.readListId, update)
-      this.loadReadList(this.readListId)
     },
     editReadList () {
       this.$store.dispatch('dialogEditReadList', this.readList)
     },
     bookChanged (event: BookSseDto) {
-      if (this.books.some(b => b.id === event.bookId)) this.loadReadList(this.readListId)
+      if (this.books.some(b => b.id === event.bookId)) this.reloadBooks()
     },
     readProgressChanged(event: ReadProgressSseDto){
-      if (this.books.some(b => b.id === event.bookId)) this.loadReadList(this.readListId)
+      if (this.books.some(b => b.id === event.bookId)) this.reloadBooks()
     },
   },
 })

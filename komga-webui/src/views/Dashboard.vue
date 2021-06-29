@@ -343,6 +343,7 @@ export default Vue.extend({
     },
     addToCollection() {
       this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries)
+      this.selectedSeries = []
     },
     editMultipleSeries() {
       this.$store.dispatch('dialogUpdateSeries', this.selectedSeries)
@@ -352,6 +353,7 @@ export default Vue.extend({
     },
     addToReadList() {
       this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks)
+      this.selectedBooks = []
     },
     async markSelectedBooksRead() {
       await Promise.all(this.selectedBooks.map(b =>

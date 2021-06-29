@@ -47,7 +47,7 @@
       kind="series"
       show-select-all
       @unselect-all="selectedSeries = []"
-      @select-all="selectedSeries = $_.cloneDeep(series)"
+      @select-all="selectedSeries = series"
       @mark-read="markSelectedRead"
       @mark-unread="markSelectedUnread"
       @add-to-collection="addToCollection"
@@ -117,7 +117,14 @@
 import CollectionActionsMenu from '@/components/menus/CollectionActionsMenu.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
-import {COLLECTION_CHANGED, COLLECTION_DELETED, SERIES_CHANGED, SERIES_DELETED} from '@/types/events'
+import {
+  COLLECTION_CHANGED,
+  COLLECTION_DELETED,
+  READPROGRESS_SERIES_CHANGED,
+  READPROGRESS_SERIES_DELETED,
+  SERIES_CHANGED,
+  SERIES_DELETED,
+} from '@/types/events'
 import Vue from 'vue'
 import MultiSelectBar from '@/components/bars/MultiSelectBar.vue'
 import {LIBRARIES_ALL} from '@/types/library'
@@ -132,7 +139,8 @@ import EmptyState from '@/components/EmptyState.vue'
 import {SeriesDto} from "@/types/komga-series"
 import {authorRoles} from "@/types/author-roles"
 import {AuthorDto} from "@/types/komga-books"
-import {CollectionSseDto, SeriesSseDto} from "@/types/komga-sse"
+import {CollectionSseDto, ReadProgressSeriesSseDto, SeriesSseDto} from "@/types/komga-sse"
+import {throttle} from 'lodash'
 
 export default Vue.extend({
   name: 'BrowseCollection',
@@ -173,31 +181,21 @@ export default Vue.extend({
       required: true,
     },
   },
-  watch: {
-    selectedSeries(val: SeriesDto[]) {
-      val.forEach(s => {
-        let index = this.series.findIndex(x => x.id === s.id)
-        if (index !== -1) {
-          this.series.splice(index, 1, s)
-        }
-        index = this.seriesCopy.findIndex(x => x.id === s.id)
-        if (index !== -1) {
-          this.seriesCopy.splice(index, 1, s)
-        }
-      })
-    },
-  },
   created() {
     this.$eventHub.$on(COLLECTION_CHANGED, this.collectionChanged)
     this.$eventHub.$on(COLLECTION_DELETED, this.collectionDeleted)
     this.$eventHub.$on(SERIES_CHANGED, this.seriesChanged)
     this.$eventHub.$on(SERIES_DELETED, this.seriesChanged)
+    this.$eventHub.$on(READPROGRESS_SERIES_CHANGED, this.readProgressChanged)
+    this.$eventHub.$on(READPROGRESS_SERIES_DELETED, this.readProgressChanged)
   },
   beforeDestroy() {
     this.$eventHub.$off(COLLECTION_CHANGED, this.collectionChanged)
     this.$eventHub.$off(COLLECTION_DELETED, this.collectionDeleted)
     this.$eventHub.$off(SERIES_CHANGED, this.seriesChanged)
     this.$eventHub.$off(SERIES_DELETED, this.seriesChanged)
+    this.$eventHub.$off(READPROGRESS_SERIES_CHANGED, this.readProgressChanged)
+    this.$eventHub.$off(READPROGRESS_SERIES_DELETED, this.readProgressChanged)
   },
   async mounted() {
     await this.resetParams(this.$route, this.collectionId)
@@ -368,6 +366,9 @@ export default Vue.extend({
 
       this.setWatches()
     },
+    reloadSeries: throttle(function (this: any) {
+      this.loadSeries(this.collectionId)
+    }, 5000),
     async loadSeries(collectionId: string) {
       let authorsFilter = [] as AuthorDto[]
       authorRoles.forEach((role: string) => {
@@ -407,17 +408,13 @@ export default Vue.extend({
       await Promise.all(this.selectedSeries.map(s =>
         this.$komgaSeries.markAsRead(s.id),
       ))
-      this.selectedSeries = await Promise.all(this.selectedSeries.map(s =>
-        this.$komgaSeries.getOneSeries(s.id),
-      ))
+      this.selectedSeries = []
     },
     async markSelectedUnread() {
       await Promise.all(this.selectedSeries.map(s =>
         this.$komgaSeries.markAsUnread(s.id),
       ))
-      this.selectedSeries = await Promise.all(this.selectedSeries.map(s =>
-        this.$komgaSeries.getOneSeries(s.id),
-      ))
+      this.selectedSeries = []
     },
     addToCollection() {
       this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries)
@@ -436,13 +433,15 @@ export default Vue.extend({
         seriesIds: this.series.map(x => x.id),
       } as CollectionUpdateDto
       this.$komgaCollections.patchCollection(this.collectionId, update)
-      this.loadCollection(this.collectionId)
     },
     editCollection() {
       this.$store.dispatch('dialogEditCollection', this.collection)
     },
     seriesChanged(event: SeriesSseDto) {
-      if (this.series.some(s => s.id === event.seriesId)) this.loadCollection(this.collectionId)
+      if (this.series.some(s => s.id === event.seriesId)) this.reloadSeries()
+    },
+    readProgressChanged(event: ReadProgressSeriesSseDto) {
+      if (this.series.some(b => b.id === event.seriesId)) this.reloadSeries()
     },
   },
 })

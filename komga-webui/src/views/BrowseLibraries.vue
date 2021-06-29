@@ -30,7 +30,7 @@
       kind="series"
       show-select-all
       @unselect-all="selectedSeries = []"
-      @select-all="selectedSeries = $_.cloneDeep(series)"
+      @select-all="selectedSeries = series"
       @mark-read="markSelectedRead"
       @mark-unread="markSelectedUnread"
       @add-to-collection="addToCollection"
@@ -115,7 +115,15 @@ import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import {parseQuerySort} from '@/functions/query-params'
 import {ReadStatus, replaceCompositeReadStatus} from '@/types/enum-books'
 import {SeriesStatus, SeriesStatusKeyValue} from '@/types/enum-series'
-import {LIBRARY_CHANGED, LIBRARY_DELETED, SERIES_ADDED, SERIES_CHANGED, SERIES_DELETED} from '@/types/events'
+import {
+  LIBRARY_CHANGED,
+  LIBRARY_DELETED,
+  READPROGRESS_SERIES_CHANGED,
+  READPROGRESS_SERIES_DELETED,
+  SERIES_ADDED,
+  SERIES_CHANGED,
+  SERIES_DELETED,
+} from '@/types/events'
 import Vue from 'vue'
 import {Location} from 'vue-router'
 import {LIBRARIES_ALL, LIBRARY_ROUTE} from '@/types/library'
@@ -127,7 +135,8 @@ import {mergeFilterParams, sortOrFilterActive, toNameValue} from '@/functions/fi
 import {SeriesDto} from "@/types/komga-series";
 import {AuthorDto} from "@/types/komga-books";
 import {authorRoles} from "@/types/author-roles";
-import {LibrarySseDto, SeriesSseDto} from "@/types/komga-sse";
+import {LibrarySseDto, ReadProgressSeriesSseDto, SeriesSseDto} from "@/types/komga-sse";
+import {throttle} from "lodash";
 
 export default Vue.extend({
   name: 'BrowseLibraries',
@@ -177,22 +186,14 @@ export default Vue.extend({
       default: LIBRARIES_ALL,
     },
   },
-  watch: {
-    selectedSeries(val: SeriesDto[]) {
-      val.forEach(s => {
-        const index = this.series.findIndex(x => x.id === s.id)
-        if (index !== -1) {
-          this.series.splice(index, 1, s)
-        }
-      })
-    },
-  },
   created() {
     this.$eventHub.$on(SERIES_ADDED, this.seriesChanged)
     this.$eventHub.$on(SERIES_CHANGED, this.seriesChanged)
     this.$eventHub.$on(SERIES_DELETED, this.seriesChanged)
     this.$eventHub.$on(LIBRARY_DELETED, this.libraryDeleted)
     this.$eventHub.$on(LIBRARY_CHANGED, this.libraryChanged)
+    this.$eventHub.$on(READPROGRESS_SERIES_CHANGED, this.readProgressChanged)
+    this.$eventHub.$on(READPROGRESS_SERIES_DELETED, this.readProgressChanged)
   },
   beforeDestroy() {
     this.$eventHub.$off(SERIES_ADDED, this.seriesChanged)
@@ -200,6 +201,8 @@ export default Vue.extend({
     this.$eventHub.$off(SERIES_DELETED, this.seriesChanged)
     this.$eventHub.$off(LIBRARY_DELETED, this.libraryDeleted)
     this.$eventHub.$off(LIBRARY_CHANGED, this.libraryChanged)
+    this.$eventHub.$off(READPROGRESS_SERIES_CHANGED, this.readProgressChanged)
+    this.$eventHub.$off(READPROGRESS_SERIES_DELETED, this.readProgressChanged)
   },
   async mounted() {
     this.$store.commit('setLibraryRoute', {id: this.libraryId, route: LIBRARY_ROUTE.BROWSE})
@@ -417,13 +420,16 @@ export default Vue.extend({
     },
     seriesChanged(event: SeriesSseDto) {
       if (this.libraryId === LIBRARIES_ALL || event.libraryId === this.libraryId) {
-        this.loadPage(this.libraryId, this.page, this.sortActive)
+        this.reloadPage()
       }
     },
     libraryChanged(event: LibrarySseDto) {
       if (this.libraryId === LIBRARIES_ALL || event.libraryId === this.libraryId) {
         this.loadLibrary(this.libraryId)
       }
+    },
+    readProgressChanged(event: ReadProgressSeriesSseDto) {
+      if (this.series.some(b => b.id === event.seriesId)) this.reloadPage()
     },
     async loadLibrary(libraryId: string) {
       this.library = this.getLibraryLazy(libraryId)
@@ -444,6 +450,9 @@ export default Vue.extend({
       this.$router.replace(loc).catch((_: any) => {
       })
     },
+    reloadPage: throttle(function (this: any) {
+      this.loadPage(this.libraryId, this.page, this.sortActive)
+    }, 5000),
     async loadPage(libraryId: string, page: number, sort: SortActive) {
       this.selectedSeries = []
 
@@ -482,17 +491,13 @@ export default Vue.extend({
       await Promise.all(this.selectedSeries.map(s =>
         this.$komgaSeries.markAsRead(s.id),
       ))
-      this.selectedSeries = await Promise.all(this.selectedSeries.map(s =>
-        this.$komgaSeries.getOneSeries(s.id),
-      ))
+      this.selectedSeries = []
     },
     async markSelectedUnread() {
       await Promise.all(this.selectedSeries.map(s =>
         this.$komgaSeries.markAsUnread(s.id),
       ))
-      this.selectedSeries = await Promise.all(this.selectedSeries.map(s =>
-        this.$komgaSeries.getOneSeries(s.id),
-      ))
+      this.selectedSeries = []
     },
     addToCollection() {
       this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries)

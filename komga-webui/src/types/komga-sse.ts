@@ -28,6 +28,11 @@ export interface ReadProgressSseDto {
   userId: string,
 }
 
+export interface ReadProgressSeriesSseDto {
+  seriesId: string,
+  userId: string,
+}
+
 export interface ThumbnailBookSseDto {
   bookId: string,
   seriesId: string,

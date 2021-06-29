@@ -135,12 +135,22 @@ import {
   READLIST_DELETED,
   READPROGRESS_CHANGED,
   READPROGRESS_DELETED,
+  READPROGRESS_SERIES_CHANGED,
+  READPROGRESS_SERIES_DELETED,
   SERIES_CHANGED,
   SERIES_DELETED,
 } from '@/types/events'
 import Vue from 'vue'
 import {SeriesDto} from "@/types/komga-series";
-import {BookSseDto, CollectionSseDto, ReadListSseDto, ReadProgressSseDto, SeriesSseDto} from "@/types/komga-sse";
+import {
+  BookSseDto,
+  CollectionSseDto,
+  ReadListSseDto,
+  ReadProgressSeriesSseDto,
+  ReadProgressSseDto,
+  SeriesSseDto,
+} from "@/types/komga-sse";
+import {throttle} from "lodash";
 
 export default Vue.extend({
   name: 'Search',
@@ -177,6 +187,8 @@ export default Vue.extend({
     this.$eventHub.$on(READLIST_DELETED, this.readListChanged)
     this.$eventHub.$on(READPROGRESS_CHANGED, this.readProgressChanged)
     this.$eventHub.$on(READPROGRESS_DELETED, this.readProgressChanged)
+    this.$eventHub.$on(READPROGRESS_SERIES_CHANGED, this.readProgressSeriesChanged)
+    this.$eventHub.$on(READPROGRESS_SERIES_DELETED, this.readProgressSeriesChanged)
   },
   beforeDestroy () {
     this.$eventHub.$off(LIBRARY_DELETED, this.reloadResults)
@@ -190,6 +202,8 @@ export default Vue.extend({
     this.$eventHub.$off(READLIST_DELETED, this.readListChanged)
     this.$eventHub.$off(READPROGRESS_CHANGED, this.readProgressChanged)
     this.$eventHub.$off(READPROGRESS_DELETED, this.readProgressChanged)
+    this.$eventHub.$off(READPROGRESS_SERIES_CHANGED, this.readProgressSeriesChanged)
+    this.$eventHub.$off(READPROGRESS_SERIES_DELETED, this.readProgressSeriesChanged)
   },
   watch: {
     '$route.query.q': {
@@ -228,6 +242,11 @@ export default Vue.extend({
     },
     readProgressChanged(event: ReadProgressSseDto){
       if(this.books.map(x => x.id).includes(event.bookId)){
+        this.reloadResults()
+      }
+    },
+    readProgressSeriesChanged(event: ReadProgressSeriesSseDto){
+      if(this.series.map(x => x.id).includes(event.seriesId)){
         this.reloadResults()
       }
     },
@@ -297,9 +316,9 @@ export default Vue.extend({
         this.$komgaBooks.deleteReadProgress(b.id),
       ))
     },
-    reloadResults () {
+    reloadResults: throttle(function (this: any) {
       this.loadResults(this.$route.query.q.toString())
-    },
+    }, 500),
     async loadResults (search: string) {
       this.selectedBooks = []
       this.selectedSeries = []
