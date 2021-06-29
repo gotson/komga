@@ -266,9 +266,9 @@ export default Vue.extend({
         this.thumbnailCacheBust = '?' + this.$_.random(1000)
       }
     },
-    onClick() {
+    onClick(e: MouseEvent) {
       if (this.preselect && this.onSelected !== undefined) {
-        this.selectItem()
+        this.selectItem(e)
       } else if (!this.noLink) {
         this.goto()
       }
@@ -276,9 +276,9 @@ export default Vue.extend({
     goto() {
       this.$router.push(this.computedItem.to())
     },
-    selectItem() {
+    selectItem(e: MouseEvent) {
       if (this.onSelected !== undefined) {
-        this.onSelected()
+        this.onSelected(this.item, e)
       }
     },
     editItem() {

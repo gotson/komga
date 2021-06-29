@@ -14,25 +14,25 @@
                           :class="flexClass"
         >
           <v-item
-                  v-for="item in localItems"
-                  :key="item.id"
-                  class="my-2 mx-2"
-                  v-slot:default="{ toggle, active }" :value="item"
+            v-for="item in localItems"
+            :key="item.id"
+            class="my-2 mx-2"
+            v-slot:default="{ toggle, active }" :value="item"
           >
             <slot name="item">
               <div style="position: relative"
                    :class="draggable ? 'draggable-item' : undefined"
               >
                 <item-card
-                        class="item-card"
-                        :item="item"
-                        :width="itemWidth"
-                        :selected="active"
-                        :no-link="draggable || deletable"
-                        :preselect="shouldPreselect"
-                        :onEdit="(draggable || deletable) ? undefined : editFunction"
-                        :onSelected="(draggable || deletable) ? undefined : selectable ? toggle: undefined"
-                        :action-menu="actionMenu"
+                  class="item-card"
+                  :item="item"
+                  :width="itemWidth"
+                  :selected="active"
+                  :no-link="draggable || deletable"
+                  :preselect="shouldPreselect"
+                  :onEdit="(draggable || deletable) ? undefined : editFunction"
+                  :onSelected="(draggable || deletable) ? undefined : selectable ? (item, event) => handleSelectClick(toggle, item, event): undefined"
+                  :action-menu="actionMenu"
                 ></item-card>
 
                 <v-slide-y-reverse-transition>
@@ -73,13 +73,13 @@
 
 <script lang="ts">
 import ItemCard from '@/components/ItemCard.vue'
-import { computeCardWidth } from '@/functions/grid-utilities'
+import {computeCardWidth} from '@/functions/grid-utilities'
 import Vue from 'vue'
 import draggable from 'vuedraggable'
 
 export default Vue.extend({
   name: 'ItemBrowser',
-  components: { ItemCard, draggable },
+  components: {ItemCard, draggable},
   props: {
     items: {
       type: Array,
@@ -122,51 +122,53 @@ export default Vue.extend({
   },
   data: () => {
     return {
-      selectedItems: [],
+      selectedItems: [] as any[],
       localItems: [],
+      lastClickedNoShift: undefined as any,
+      lastClickedShift: undefined as any,
       width: 150,
     }
   },
   watch: {
     selectedItems: {
-      handler () {
+      handler() {
         this.$emit('update:selected', this.selectedItems)
       },
       immediate: true,
     },
     selected: {
-      handler () {
+      handler() {
         this.selectedItems = this.selected as []
       },
       immediate: true,
     },
     items: {
-      handler () {
+      handler() {
         this.localItems = this.items as []
       },
       immediate: true,
     },
     localItems: {
-      handler () {
+      handler() {
         this.$emit('update:items', this.localItems)
       },
       immediate: true,
     },
   },
   computed: {
-    flexClass (): string {
+    flexClass(): string {
       return this.nowrap ? 'd-flex flex-nowrap' : 'd-flex flex-wrap'
     },
-    hasItems (): boolean {
+    hasItems(): boolean {
       return this.items.length > 0
     },
-    itemWidth (): number {
+    itemWidth(): number {
       return this.fixedItemWidth ? this.fixedItemWidth : this.width
     },
-    shouldPreselect (): boolean {
+    shouldPreselect(): boolean {
       return this.selectedItems.length > 0
     },
-    dragOptions (): any {
+    dragOptions(): any {
       return {
         animation: 200,
         group: 'item-cards',
@@ -176,11 +178,43 @@ export default Vue.extend({
     },
   },
   methods: {
-    onResize () {
+    // handle normal click and shift click
+    handleSelectClick(toggle: () => void, item: any, e: MouseEvent) {
+      if (!e.shiftKey) {
+        this.lastClickedShift = undefined
+        this.lastClickedNoShift = item
+      } else {
+        // if it's a shift click and we haven't clicked anywhere before, consider the first item as the beginning of the selection
+        if (!this.lastClickedNoShift) this.lastClickedNoShift = this.$_.head(this.localItems)
+      }
+
+      if (e.shiftKey && this.lastClickedNoShift) {
+        // recompute last shift selection so we can unselect it
+        if (this.lastClickedShift) {
+          const pf = (i: any) => i !== this.lastClickedShift && i !== this.lastClickedNoShift
+          let previousShiftSelection = this.$_.dropRightWhile(this.$_.dropWhile(this.localItems, pf), pf)
+          this.$_.pullAll(this.selectedItems, previousShiftSelection)
+        }
+
+        // compute shift selection and select it
+        const f = (i: any) => i !== item && i !== this.lastClickedNoShift
+        let shiftSelection = this.$_.dropRightWhile(this.$_.dropWhile(this.localItems, f), f)
+        shiftSelection.forEach(i => {
+          if (!this.selectedItems.includes(i)) this.selectedItems.push(i)
+        })
+
+        this.lastClickedShift = item
+        return
+      }
+
+      // perform a normal toggle
+      toggle()
+    },
+    onResize() {
       const content = this.$refs.content as HTMLElement
       this.width = computeCardWidth(content.clientWidth, this.$vuetify.breakpoint.name.toString())
     },
-    deleteItem (item: any) {
+    deleteItem(item: any) {
       const index = this.localItems.findIndex((e: any) => e.id === item.id)
       this.localItems.splice(index, 1)
     },
