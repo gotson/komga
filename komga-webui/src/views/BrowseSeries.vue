@@ -38,9 +38,12 @@
       </v-btn>
     </toolbar-sticky>
 
-    <books-multi-select-bar
+    <multi-select-bar
       v-model="selectedBooks"
+      kind="books"
+      show-select-all
       @unselect-all="selectedBooks = []"
+      @select-all="selectedBooks = books"
       @mark-read="markSelectedRead"
       @mark-unread="markSelectedUnread"
       @add-to-readlist="addToReadList"
@@ -370,7 +373,7 @@
 </template>
 
 <script lang="ts">
-import BooksMultiSelectBar from '@/components/bars/BooksMultiSelectBar.vue'
+import MultiSelectBar from '@/components/bars/MultiSelectBar.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import CollectionsExpansionPanels from '@/components/CollectionsExpansionPanels.vue'
 import EmptyState from '@/components/EmptyState.vue'
@@ -423,7 +426,7 @@ export default Vue.extend({
     SeriesActionsMenu,
     ItemCard,
     EmptyState,
-    BooksMultiSelectBar,
+    MultiSelectBar,
     CollectionsExpansionPanels,
     FilterDrawer,
     FilterList,

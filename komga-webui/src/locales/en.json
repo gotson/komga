@@ -546,7 +546,9 @@
     "mark_read": "Mark as read",
     "mark_unread": "Mark as unread",
     "refresh_metadata": "Refresh metadata",
-    "scan_library_files": "Scan library files"
+    "scan_library_files": "Scan library files",
+    "deselect_all": "Deselect all",
+    "select_all": "Select all"
   },
   "navigation": {
     "home": "Home",

@@ -25,9 +25,12 @@
       </v-btn>
     </toolbar-sticky>
 
-    <series-multi-select-bar
+    <multi-select-bar
       v-model="selectedSeries"
+      kind="series"
+      show-select-all
       @unselect-all="selectedSeries = []"
+      @select-all="selectedSeries = $_.cloneDeep(series)"
       @mark-read="markSelectedRead"
       @mark-unread="markSelectedUnread"
       @add-to-collection="addToCollection"
@@ -102,7 +105,7 @@
 </template>
 
 <script lang="ts">
-import SeriesMultiSelectBar from '@/components/bars/SeriesMultiSelectBar.vue'
+import MultiSelectBar from '@/components/bars/MultiSelectBar.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
@@ -135,7 +138,7 @@ export default Vue.extend({
     ItemBrowser,
     PageSizeSelect,
     LibraryNavigation,
-    SeriesMultiSelectBar,
+    MultiSelectBar,
     FilterDrawer,
     FilterPanels,
     FilterList,

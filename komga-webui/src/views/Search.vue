@@ -6,8 +6,9 @@
       </v-toolbar-title>
     </toolbar-sticky>
 
-    <series-multi-select-bar
+    <multi-select-bar
       v-model="selectedSeries"
+      kind="series"
       @unselect-all="selectedSeries = []"
       @mark-read="markSelectedSeriesRead"
       @mark-unread="markSelectedSeriesUnread"
@@ -15,8 +16,9 @@
       @edit="editMultipleSeries"
     />
 
-    <books-multi-select-bar
+    <multi-select-bar
       v-model="selectedBooks"
+      kind="books"
       @unselect-all="selectedBooks = []"
       @mark-read="markSelectedBooksRead"
       @mark-unread="markSelectedBooksUnread"
@@ -101,8 +103,7 @@
 </template>
 
 <script lang="ts">
-import BooksMultiSelectBar from '@/components/bars/BooksMultiSelectBar.vue'
-import SeriesMultiSelectBar from '@/components/bars/SeriesMultiSelectBar.vue'
+import MultiSelectBar from '@/components/bars/MultiSelectBar.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
@@ -132,8 +133,7 @@ export default Vue.extend({
     ToolbarSticky,
     HorizontalScroller,
     ItemBrowser,
-    BooksMultiSelectBar,
-    SeriesMultiSelectBar,
+    MultiSelectBar,
   },
   data: () => {
     return {

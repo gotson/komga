@@ -2,9 +2,24 @@
   <v-scroll-y-transition hide-on-leave>
     <toolbar-sticky v-if="value.length > 0" :elevation="5" color="base">
       <v-btn icon @click="unselectAll">
-        <v-icon>mdi-close</v-icon>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on">mdi-close</v-icon>
+          </template>
+          <span>{{ $t('menu.deselect_all') }}</span>
+        </v-tooltip>
       </v-btn>
-      <v-toolbar-title>
+
+      <v-btn icon @click="selectAll" v-if="showSelectAll">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on">mdi-select-all</v-icon>
+          </template>
+          <span>{{ $t('menu.select_all') }}</span>
+        </v-tooltip>
+      </v-btn>
+
+      <v-toolbar-title class="mx-2">
         <span>{{ $tc('common.n_selected', value.length) }}</span>
       </v-toolbar-title>
 
@@ -28,7 +43,16 @@
         </v-tooltip>
       </v-btn>
 
-      <v-btn icon @click="addToReadList" v-if="isAdmin">
+      <v-btn icon @click="addToCollection" v-if="isAdmin && kind === 'series'">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on">mdi-playlist-plus</v-icon>
+          </template>
+          <span>{{ $t('menu.add_to_collection') }}</span>
+        </v-tooltip>
+      </v-btn>
+
+      <v-btn icon @click="addToReadList" v-if="isAdmin && kind === 'books'">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-icon v-on="on">mdi-book-plus-multiple</v-icon>
@@ -54,7 +78,7 @@ import Vue from 'vue'
 import ToolbarSticky from './ToolbarSticky.vue'
 
 export default Vue.extend({
-  name: 'BooksMultiSelectBar',
+  name: 'MultiSelectBar',
   components: { ToolbarSticky },
   data: () => {
     return {}
@@ -63,6 +87,15 @@ export default Vue.extend({
     value: {
       type: Array,
       required: true,
+    },
+    // books or series
+    kind: {
+      type: String,
+      required: true,
+    },
+    showSelectAll: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
@@ -74,11 +107,17 @@ export default Vue.extend({
     unselectAll () {
       this.$emit('unselect-all')
     },
+    selectAll () {
+      this.$emit('select-all')
+    },
     markRead () {
       this.$emit('mark-read')
     },
     markUnread () {
       this.$emit('mark-unread')
+    },
+    addToCollection () {
+      this.$emit('add-to-collection')
     },
     addToReadList () {
       this.$emit('add-to-readlist')

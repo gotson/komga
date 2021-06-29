@@ -42,9 +42,12 @@
 
     </toolbar-sticky>
 
-    <series-multi-select-bar
+    <multi-select-bar
       v-model="selectedSeries"
+      kind="series"
+      show-select-all
       @unselect-all="selectedSeries = []"
+      @select-all="selectedSeries = $_.cloneDeep(series)"
       @mark-read="markSelectedRead"
       @mark-unread="markSelectedUnread"
       @add-to-collection="addToCollection"
@@ -116,7 +119,7 @@ import ItemBrowser from '@/components/ItemBrowser.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import {COLLECTION_CHANGED, COLLECTION_DELETED, SERIES_CHANGED, SERIES_DELETED} from '@/types/events'
 import Vue from 'vue'
-import SeriesMultiSelectBar from '@/components/bars/SeriesMultiSelectBar.vue'
+import MultiSelectBar from '@/components/bars/MultiSelectBar.vue'
 import {LIBRARIES_ALL} from '@/types/library'
 import {ReadStatus, replaceCompositeReadStatus} from '@/types/enum-books'
 import {SeriesStatus, SeriesStatusKeyValue} from '@/types/enum-series'
@@ -137,7 +140,7 @@ export default Vue.extend({
     ToolbarSticky,
     ItemBrowser,
     CollectionActionsMenu,
-    SeriesMultiSelectBar,
+    MultiSelectBar,
     FilterDrawer,
     FilterPanels,
     FilterList,

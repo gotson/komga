@@ -35,9 +35,12 @@
 
     </toolbar-sticky>
 
-    <books-multi-select-bar
+    <multi-select-bar
       v-model="selectedBooks"
+      kind="books"
+      show-select-all
       @unselect-all="selectedBooks = []"
+      @select-all="selectedBooks = $_.cloneDeep(books)"
       @mark-read="markSelectedRead"
       @mark-unread="markSelectedUnread"
       @add-to-readlist="addToReadList"
@@ -86,7 +89,7 @@ import {
 } from '@/types/events'
 import Vue from 'vue'
 import ReadListActionsMenu from '@/components/menus/ReadListActionsMenu.vue'
-import BooksMultiSelectBar from '@/components/bars/BooksMultiSelectBar.vue'
+import MultiSelectBar from '@/components/bars/MultiSelectBar.vue'
 import {BookDto, ReadProgressUpdateDto} from '@/types/komga-books'
 import {ContextOrigin} from '@/types/context'
 import {BookSseDto, ReadListSseDto, ReadProgressSseDto} from "@/types/komga-sse";
@@ -97,7 +100,7 @@ export default Vue.extend({
     ToolbarSticky,
     ItemBrowser,
     ReadListActionsMenu,
-    BooksMultiSelectBar,
+    MultiSelectBar,
   },
   data: () => {
     return {
