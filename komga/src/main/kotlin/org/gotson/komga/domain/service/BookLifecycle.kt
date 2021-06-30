@@ -22,6 +22,7 @@ import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.support.TransactionTemplate
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -39,28 +40,29 @@ class BookLifecycle(
   private val bookAnalyzer: BookAnalyzer,
   private val imageConverter: ImageConverter,
   private val eventPublisher: EventPublisher,
+  private val transactionTemplate: TransactionTemplate,
 ) {
 
-  @Transactional
   fun analyzeAndPersist(book: Book): Boolean {
     logger.info { "Analyze and persist book: $book" }
     val media = bookAnalyzer.analyze(book)
 
-    // if the number of pages has changed, delete all read progress for that book
-    mediaRepository.findById(book.id).let { previous ->
-      if (previous.status == Media.Status.OUTDATED && previous.pages.size != media.pages.size) {
-        readProgressRepository.deleteByBookId(book.id)
+    transactionTemplate.executeWithoutResult {
+      // if the number of pages has changed, delete all read progress for that book
+      mediaRepository.findById(book.id).let { previous ->
+        if (previous.status == Media.Status.OUTDATED && previous.pages.size != media.pages.size) {
+          readProgressRepository.deleteByBookId(book.id)
+        }
       }
-    }
 
-    mediaRepository.update(media)
+      mediaRepository.update(media)
+    }
 
     eventPublisher.publishEvent(DomainEvent.BookUpdated(book))
 
     return media.status == Media.Status.READY
   }
 
-  @Transactional
   fun generateThumbnailAndPersist(book: Book) {
     logger.info { "Generate thumbnail and persist for book: $book" }
     try {
@@ -70,7 +72,6 @@ class BookLifecycle(
     }
   }
 
-  @Transactional
   fun addThumbnailForBook(thumbnail: ThumbnailBook) {
     when (thumbnail.type) {
       ThumbnailBook.Type.GENERATED -> {
@@ -97,7 +98,6 @@ class BookLifecycle(
       thumbnailsHouseKeeping(thumbnail.bookId)
   }
 
-  @Transactional
   fun getThumbnail(bookId: String): ThumbnailBook? {
     val selected = thumbnailBookRepository.findSelectedByBookIdOrNull(bookId)
 
@@ -200,6 +200,7 @@ class BookLifecycle(
     }
   }
 
+  @Transactional
   fun deleteOne(book: Book) {
     logger.info { "Delete book id: ${book.id}" }
 
@@ -215,6 +216,7 @@ class BookLifecycle(
     eventPublisher.publishEvent(DomainEvent.BookDeleted(book))
   }
 
+  @Transactional
   fun deleteMany(books: Collection<Book>) {
     val bookIds = books.map { it.id }
     logger.info { "Delete book ids: $bookIds" }

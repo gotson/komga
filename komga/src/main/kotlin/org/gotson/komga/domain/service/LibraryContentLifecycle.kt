@@ -14,7 +14,7 @@ import org.gotson.komga.domain.persistence.SidecarRepository
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.gotson.komga.infrastructure.language.notEquals
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.support.TransactionTemplate
 import java.nio.file.Paths
 import kotlin.time.measureTime
 
@@ -33,9 +33,9 @@ class LibraryContentLifecycle(
   private val sidecarRepository: SidecarRepository,
   private val komgaProperties: KomgaProperties,
   private val taskReceiver: TaskReceiver,
+  private val transactionTemplate: TransactionTemplate,
 ) {
 
-  @Transactional
   fun scanRootFolder(library: Library) {
     logger.info { "Updating library: $library" }
     measureTime {
@@ -94,10 +94,12 @@ class LibraryContentLifecycle(
                     fileLastModified = newBook.fileLastModified,
                     fileSize = newBook.fileSize
                   )
-                  mediaRepository.findById(existingBook.id).let {
-                    mediaRepository.update(it.copy(status = Media.Status.OUTDATED))
+                  transactionTemplate.executeWithoutResult {
+                    mediaRepository.findById(existingBook.id).let {
+                      mediaRepository.update(it.copy(status = Media.Status.OUTDATED))
+                    }
+                    bookRepository.update(updatedBook)
                   }
-                  bookRepository.update(updatedBook)
                 }
               }
             }

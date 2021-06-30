@@ -25,7 +25,6 @@ import org.gotson.komga.infrastructure.metadata.barcode.IsbnBarcodeProvider
 import org.gotson.komga.infrastructure.metadata.comicrack.ComicInfoProvider
 import org.gotson.komga.infrastructure.metadata.epub.EpubMetadataProvider
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 private val logger = KotlinLogging.logger {}
 
@@ -48,7 +47,6 @@ class MetadataLifecycle(
   private val eventPublisher: EventPublisher,
 ) {
 
-  @Transactional
   fun refreshMetadata(book: Book, capabilities: List<BookMetadataPatchCapability>) {
     logger.info { "Refresh metadata for book: $book with capabilities: $capabilities" }
     val media = mediaRepository.findById(book.id)
@@ -143,7 +141,6 @@ class MetadataLifecycle(
     }
   }
 
-  @Transactional
   fun refreshMetadata(series: Series) {
     logger.info { "Refresh metadata for series: $series" }
 
@@ -233,7 +230,6 @@ class MetadataLifecycle(
     }
   }
 
-  @Transactional
   fun aggregateMetadata(series: Series) {
     logger.info { "Aggregate book metadata for series: $series" }
 

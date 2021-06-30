@@ -15,7 +15,7 @@ import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.support.TransactionTemplate
 import java.io.FileNotFoundException
 import java.nio.file.FileAlreadyExistsException
 import java.util.zip.Deflater
@@ -38,6 +38,7 @@ class BookConverter(
   private val bookRepository: BookRepository,
   private val mediaRepository: MediaRepository,
   private val libraryRepository: LibraryRepository,
+  private val transactionTemplate: TransactionTemplate,
 ) {
 
   private val convertibleTypes = listOf("application/x-rar-compressed; version=4")
@@ -55,7 +56,6 @@ class BookConverter(
   fun getConvertibleBookIds(library: Library): Collection<String> =
     bookRepository.findAllIdsByLibraryIdAndMediaTypes(library.id, convertibleTypes)
 
-  @Transactional
   fun convertToCbz(book: Book) {
     if (!libraryRepository.findById(book.libraryId).convertToCbz)
       return logger.info { "Book conversion is disabled for the library, it may have changed since the task was submitted, skipping" }
@@ -127,8 +127,10 @@ class BookConverter(
     if (book.path.deleteIfExists())
       logger.info { "Deleted converted file: ${book.path}" }
 
-    bookRepository.update(convertedBook)
-    mediaRepository.update(convertedMedia)
+    transactionTemplate.executeWithoutResult {
+      bookRepository.update(convertedBook)
+      mediaRepository.update(convertedMedia)
+    }
   }
 
   fun getMismatchedExtensionBookIds(library: Library): Collection<String> =
@@ -136,7 +138,6 @@ class BookConverter(
       bookRepository.findAllIdsByLibraryIdAndMismatchedExtension(library.id, mediaType, extension)
     }
 
-  @Transactional
   fun repairExtension(book: Book) {
     if (!libraryRepository.findById(book.libraryId).repairExtensions)
       return logger.info { "Repair extensions is disabled for the library, it may have changed since the task was submitted, skipping" }

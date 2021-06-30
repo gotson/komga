@@ -238,17 +238,14 @@ class BookDao(
       .execute()
   }
 
-  @Transactional
   override fun delete(bookId: String) {
     dsl.deleteFrom(b).where(b.ID.eq(bookId)).execute()
   }
 
-  @Transactional
   override fun delete(bookIds: Collection<String>) {
     dsl.deleteFrom(b).where(b.ID.`in`(bookIds)).execute()
   }
 
-  @Transactional
   override fun deleteAll() {
     dsl.deleteFrom(b).execute()
   }

@@ -176,14 +176,12 @@ class ReadListDao(
     insertBooks(readList)
   }
 
-  @Transactional
   override fun removeBookFromAll(bookId: String) {
     dsl.deleteFrom(rlb)
       .where(rlb.BOOK_ID.eq(bookId))
       .execute()
   }
 
-  @Transactional
   override fun removeBooksFromAll(bookIds: Collection<String>) {
     dsl.deleteFrom(rlb)
       .where(rlb.BOOK_ID.`in`(bookIds))

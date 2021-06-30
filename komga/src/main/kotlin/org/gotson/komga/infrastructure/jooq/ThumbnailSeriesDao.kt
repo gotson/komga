@@ -30,7 +30,6 @@ class ThumbnailSeriesDao(
       .map { it.toDomain() }
       .firstOrNull()
 
-  @Transactional
   override fun insert(thumbnail: ThumbnailSeries) {
     dsl.insertInto(ts)
       .set(ts.ID, thumbnail.id)
@@ -55,17 +54,14 @@ class ThumbnailSeriesDao(
       .execute()
   }
 
-  @Transactional
   override fun delete(thumbnailSeriesId: String) {
     dsl.deleteFrom(ts).where(ts.ID.eq(thumbnailSeriesId)).execute()
   }
 
-  @Transactional
   override fun deleteBySeriesId(seriesId: String) {
     dsl.deleteFrom(ts).where(ts.SERIES_ID.eq(seriesId)).execute()
   }
 
-  @Transactional
   override fun deleteBySeriesIds(seriesIds: Collection<String>) {
     dsl.deleteFrom(ts).where(ts.SERIES_ID.`in`(seriesIds)).execute()
   }

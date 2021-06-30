@@ -173,7 +173,6 @@ class SeriesLifecycle(
     eventPublisher.publishEvent(DomainEvent.ReadProgressSeriesDeleted(seriesId, user.id))
   }
 
-  @Transactional
   fun getThumbnail(seriesId: String): ThumbnailSeries? {
     val selected = thumbnailsSeriesRepository.findSelectedBySeriesIdOrNull(seriesId)
 
@@ -196,7 +195,6 @@ class SeriesLifecycle(
     return null
   }
 
-  @Transactional
   fun addThumbnailForSeries(thumbnail: ThumbnailSeries) {
     // delete existing thumbnail with the same url
     thumbnailsSeriesRepository.findAllBySeriesId(thumbnail.seriesId)

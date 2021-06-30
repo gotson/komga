@@ -37,7 +37,6 @@ class ThumbnailBookDao(
       .map { it.toDomain() }
       .firstOrNull()
 
-  @Transactional
   override fun insert(thumbnail: ThumbnailBook) {
     dsl.insertInto(tb)
       .set(tb.ID, thumbnail.id)
@@ -49,7 +48,6 @@ class ThumbnailBookDao(
       .execute()
   }
 
-  @Transactional
   override fun update(thumbnail: ThumbnailBook) {
     dsl.update(tb)
       .set(tb.BOOK_ID, thumbnail.bookId)
@@ -76,22 +74,18 @@ class ThumbnailBookDao(
       .execute()
   }
 
-  @Transactional
   override fun delete(thumbnailBookId: String) {
     dsl.deleteFrom(tb).where(tb.ID.eq(thumbnailBookId)).execute()
   }
 
-  @Transactional
   override fun deleteByBookId(bookId: String) {
     dsl.deleteFrom(tb).where(tb.BOOK_ID.eq(bookId)).execute()
   }
 
-  @Transactional
   override fun deleteByBookIds(bookIds: Collection<String>) {
     dsl.deleteFrom(tb).where(tb.BOOK_ID.`in`(bookIds)).execute()
   }
 
-  @Transactional
   override fun deleteByBookIdAndType(bookId: String, type: ThumbnailBook.Type) {
     dsl.deleteFrom(tb)
       .where(tb.BOOK_ID.eq(bookId))
