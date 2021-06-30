@@ -127,6 +127,10 @@ tasks {
     }
   }
 
+  getByName<Jar>("jar") {
+    enabled = false
+  }
+
   // unpack Spring Boot's fat jar for better Docker image layering
   register<JavaExec>("unpack") {
     dependsOn(bootJar)
