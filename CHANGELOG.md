@@ -1,3 +1,10 @@
+## [0.104.1](https://github.com/gotson/komga/compare/v0.104.0...v0.104.1) (2021-06-30)
+
+
+### Performance Improvements
+
+* optimize database transactions to avoid locking ([39dcf59](https://github.com/gotson/komga/commit/39dcf5969ed435fd68ed9d439b6538a2bf832315))
+
 # [0.104.0](https://github.com/gotson/komga/compare/v0.103.0...v0.104.0) (2021-06-29)
 
 
