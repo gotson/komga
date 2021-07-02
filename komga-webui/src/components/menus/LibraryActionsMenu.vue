@@ -10,10 +10,10 @@
         <v-list-item @click="scan">
           <v-list-item-title>{{ $t('menu.scan_library_files') }}</v-list-item-title>
         </v-list-item>
-        <v-list-item @click="analyze">
+        <v-list-item @click="confirmAnalyzeModal = true">
           <v-list-item-title>{{ $t('menu.analyze') }}</v-list-item-title>
         </v-list-item>
-        <v-list-item @click="refreshMetadata">
+        <v-list-item @click="confirmRefreshMetadataModal = true">
           <v-list-item-title>{{ $t('menu.refresh_metadata') }}</v-list-item-title>
         </v-list-item>
         <v-list-item @click="edit">
@@ -25,38 +25,62 @@
         </v-list-item>
       </v-list>
     </v-menu>
+
+    <confirmation-dialog
+      v-model="confirmAnalyzeModal"
+      title="Analyze library"
+      body="Analyzes all the media files in the library. The analysis captures information about the media. Depending on your library size, this may take a long time."
+      button-confirm="Analyze"
+      @confirm="analyze"
+    />
+
+    <confirmation-dialog
+      v-model="confirmRefreshMetadataModal"
+      title="Refresh metadata for library"
+      body="Refreshes metadata for all the media files in the library. Depending on your library size, this may take a long time."
+      button-confirm="Refresh"
+      @confirm="refreshMetadata"
+    />
   </div>
 </template>
 <script lang="ts">
 import Vue from 'vue'
+import ConfirmationDialog from "@/components/dialogs/ConfirmationDialog.vue";
 
 export default Vue.extend({
   name: 'LibraryActionsMenu',
+  components: {ConfirmationDialog},
   props: {
     library: {
       type: Object as () => LibraryDto,
       required: true,
     },
   },
+  data: () => {
+    return {
+      confirmAnalyzeModal: false,
+      confirmRefreshMetadataModal: false,
+    }
+  },
   computed: {
-    isAdmin (): boolean {
+    isAdmin(): boolean {
       return this.$store.getters.meAdmin
     },
   },
   methods: {
-    scan () {
+    scan() {
       this.$komgaLibraries.scanLibrary(this.library)
     },
-    analyze () {
+    analyze() {
       this.$komgaLibraries.analyzeLibrary(this.library)
     },
-    refreshMetadata () {
+    refreshMetadata() {
       this.$komgaLibraries.refreshMetadata(this.library)
     },
-    edit () {
+    edit() {
       this.$store.dispatch('dialogEditLibrary', this.library)
     },
-    promptDeleteLibrary () {
+    promptDeleteLibrary() {
       this.$store.dispatch('dialogDeleteLibrary', this.library)
     },
   },
