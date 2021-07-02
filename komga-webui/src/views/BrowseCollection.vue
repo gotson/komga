@@ -103,7 +103,7 @@
         v-else
         :items.sync="series"
         :selected.sync="selectedSeries"
-        :edit-function="editSingleSeries"
+        :edit-function="isAdmin ? editSingleSeries : undefined"
         :draggable="editElements && collection.ordered"
         :deletable="editElements"
       />

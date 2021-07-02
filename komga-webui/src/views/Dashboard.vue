@@ -55,7 +55,7 @@
         <template v-slot:content>
           <item-browser :items="inProgressBooks"
                         nowrap
-                        :edit-function="singleEditBook"
+                        :edit-function="isAdmin ? singleEditBook : undefined"
                         :selected.sync="selectedBooks"
                         :selectable="selectedSeries.length === 0"
                         :fixed-item-width="fixedCardWidth"
@@ -70,7 +70,7 @@
         <template v-slot:content>
           <item-browser :items="onDeckBooks"
                         nowrap
-                        :edit-function="singleEditBook"
+                        :edit-function="isAdmin ? singleEditBook : undefined"
                         :selected.sync="selectedBooks"
                         :selectable="selectedSeries.length === 0"
                         :fixed-item-width="fixedCardWidth"
@@ -85,7 +85,7 @@
         <template v-slot:content>
           <item-browser :items="latestBooks"
                         nowrap
-                        :edit-function="singleEditBook"
+                        :edit-function="isAdmin ? singleEditBook : undefined"
                         :selected.sync="selectedBooks"
                         :selectable="selectedSeries.length === 0"
                         :fixed-item-width="fixedCardWidth"
@@ -100,7 +100,7 @@
         <template v-slot:content>
           <item-browser :items="newSeries"
                         nowrap
-                        :edit-function="singleEditSeries"
+                        :edit-function="isAdmin ? singleEditSeries : undefined"
                         :selected.sync="selectedSeries"
                         :selectable="selectedBooks.length === 0"
                         :fixed-item-width="fixedCardWidth"
@@ -115,7 +115,7 @@
         <template v-slot:content>
           <item-browser :items="updatedSeries"
                         nowrap
-                        :edit-function="singleEditSeries"
+                        :edit-function="isAdmin ? singleEditSeries : undefined"
                         :selected.sync="selectedSeries"
                         :selectable="selectedBooks.length === 0"
                         :fixed-item-width="fixedCardWidth"
@@ -226,6 +226,9 @@ export default Vue.extend({
     },
   },
   computed: {
+    isAdmin(): boolean {
+      return this.$store.getters.meAdmin
+    },
     fixedCardWidth(): number {
       return this.$vuetify.breakpoint.name === 'xs' ? 120 : 150
     },

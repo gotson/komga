@@ -42,9 +42,9 @@
 
       <item-browser
         :items="collections"
-        selectable
+        :selectable="isAdmin"
         :selected.sync="selectedCollections"
-        :edit-function="editSingleCollection"
+        :edit-function="isAdmin ? editSingleCollection : undefined"
       />
 
       <v-pagination

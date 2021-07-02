@@ -42,9 +42,9 @@
 
       <item-browser
         :items="readLists"
-        selectable
+        :selectable="isAdmin"
         :selected.sync="selectedReadLists"
-        :edit-function="editSingle"
+        :edit-function="isAdmin ? editSingle : undefined"
       />
 
       <v-pagination

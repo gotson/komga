@@ -356,7 +356,7 @@
 
         <item-browser :items="books"
                       :selected.sync="selectedBooks"
-                      :edit-function="editSingleBook"
+                      :edit-function="isAdmin ? editSingleBook : undefined"
         />
 
         <v-pagination

@@ -89,7 +89,7 @@
         <item-browser
           :items="series"
           :selected.sync="selectedSeries"
-          :edit-function="editSingleSeries"
+          :edit-function="isAdmin ? editSingleSeries : undefined"
         />
 
         <v-pagination

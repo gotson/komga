@@ -59,7 +59,7 @@
           <template v-slot:content>
             <item-browser :items="series"
                           nowrap
-                          :edit-function="singleEditSeries"
+                          :edit-function="isAdmin ? singleEditSeries : undefined"
                           :selected.sync="selectedSeries"
                           :selectable="selectedBooks.length === 0 && selectedCollections.length === 0 && selectedReadLists.length === 0"
                           :fixed-item-width="fixedCardWidth"
@@ -74,7 +74,7 @@
           <template v-slot:content>
             <item-browser :items="books"
                           nowrap
-                          :edit-function="singleEditBook"
+                          :edit-function="isAdmin ? singleEditBook : undefined"
                           :selected.sync="selectedBooks"
                           :selectable="selectedSeries.length === 0 && selectedCollections.length === 0 && selectedReadLists.length === 0"
                           :fixed-item-width="fixedCardWidth"
@@ -89,9 +89,9 @@
           <template v-slot:content>
             <item-browser :items="collections"
                           nowrap
-                          :edit-function="singleEditCollection"
+                          :edit-function="isAdmin ? singleEditCollection : undefined"
                           :selected.sync="selectedCollections"
-                          :selectable="selectedSeries.length === 0 && selectedBooks.length === 0 && selectedReadLists.length === 0"
+                          :selectable="isAdmin && selectedSeries.length === 0 && selectedBooks.length === 0 && selectedReadLists.length === 0"
                           :fixed-item-width="fixedCardWidth"
             />
           </template>
@@ -104,9 +104,9 @@
           <template v-slot:content>
             <item-browser :items="readLists"
                           nowrap
-                          :edit-function="singleEditReadList"
+                          :edit-function="isAdmin ? singleEditReadList : undefined"
                           :selected.sync="selectedReadLists"
-                          :selectable="selectedSeries.length === 0 && selectedBooks.length === 0 && selectedCollections.length === 0"
+                          :selectable="isAdmin && selectedSeries.length === 0 && selectedBooks.length === 0 && selectedCollections.length === 0"
                           :fixed-item-width="fixedCardWidth"
             />
           </template>
@@ -219,6 +219,9 @@ export default Vue.extend({
     },
   },
   computed: {
+    isAdmin(): boolean {
+      return this.$store.getters.meAdmin
+    },
     fixedCardWidth (): number {
       return this.$vuetify.breakpoint.name === 'xs' ? 120 : 150
     },
