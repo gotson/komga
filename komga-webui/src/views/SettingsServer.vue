@@ -10,20 +10,55 @@
         >{{ $t('server.server_management.button_shutdown') }}</v-btn>
       </v-col>
     </v-row>
-    <server-stop-dialog v-model="modalStopServer"></server-stop-dialog>
+
+    <confirmation-dialog
+      v-model="modalStopServer"
+      :title="$t('dialog.server_stop.dialog_title')"
+      :body="$t('dialog.server_stop.confirmation_message')"
+      :button-confirm="$t('dialog.server_stop.button_confirm')"
+      button-confirm-color="error"
+    />
+
+    <v-snackbar
+      v-model="snackbar"
+      bottom
+      color="error"
+    >
+      {{ snackText }}
+      <v-btn
+        text
+        @click="snackbar = false"
+      >{{ $t('common.close') }}
+      </v-btn>
+    </v-snackbar>
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import ServerStopDialog from "@/components/dialogs/ServerStopDialog.vue";
+import ConfirmationDialog from "@/components/dialogs/ConfirmationDialog.vue";
 
 export default Vue.extend({
   name: 'SettingsServer',
-  components: {ServerStopDialog},
+  components: {ConfirmationDialog},
   data: () => ({
     modalStopServer: false,
+    snackbar: false,
+    snackText: '',
   }),
+  methods: {
+    showSnack(message: string) {
+      this.snackText = message
+      this.snackbar = true
+    },
+    async stopServer() {
+      try {
+        await this.$actuator.shutdown()
+      } catch (e) {
+        this.showSnack(e.message)
+      }
+    },
+  },
 })
 </script>
 
