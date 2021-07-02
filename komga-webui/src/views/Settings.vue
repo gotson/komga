@@ -4,7 +4,7 @@
       <v-tab :to="{name: 'settings-analysis'}">
         <v-badge
           dot
-          v-model="booksToCheck"
+          :value="booksToCheck"
           color="accent"
         >
           {{ $t('media_analysis.media_analysis') }}

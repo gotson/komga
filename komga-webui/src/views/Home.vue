@@ -104,7 +104,7 @@
             <v-badge
               dot
               inline
-              v-model="booksToCheck"
+              :value="booksToCheck"
               color="accent"
             >
               <v-list-item-title>{{ $t('server_settings.server_settings') }}</v-list-item-title>
