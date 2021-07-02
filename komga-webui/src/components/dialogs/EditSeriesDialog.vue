@@ -286,7 +286,7 @@
           <v-card-actions class="hidden-xs-only">
             <v-spacer/>
             <v-btn text @click="dialogCancel">{{ $t('dialog.edit_series.button_cancel') }}</v-btn>
-            <v-btn text class="primary--text" @click="dialogConfirm">{{ $t('dialog.edit_series.button_confirm') }}</v-btn>
+            <v-btn color="primary" @click="dialogConfirm">{{ $t('dialog.edit_series.button_confirm') }}</v-btn>
           </v-card-actions>
         </v-card>
       </form>

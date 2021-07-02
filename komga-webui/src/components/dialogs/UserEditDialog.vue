@@ -43,7 +43,7 @@
         <v-card-actions>
           <v-spacer/>
           <v-btn text @click="dialogCancel">{{ $t('dialog.edit_user.button_cancel') }}</v-btn>
-          <v-btn text class="primary--text"
+          <v-btn color="primary"
                  @click="dialogConfirm"
           >{{ $t('dialog.edit_user.button_confirm') }}</v-btn>
         </v-card-actions>

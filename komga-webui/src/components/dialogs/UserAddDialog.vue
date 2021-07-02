@@ -80,7 +80,7 @@
         <v-card-actions class="hidden-xs-only">
           <v-spacer/>
           <v-btn text @click="dialogCancel">{{ $t('dialog.add_user.button_cancel') }}</v-btn>
-          <v-btn text class="primary--text" @click="dialogConfirm">{{ confirmText }}</v-btn>
+          <v-btn color="primary" @click="dialogConfirm">{{ confirmText }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

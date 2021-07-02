@@ -23,7 +23,7 @@
         <v-card-actions>
           <v-spacer/>
           <v-btn text @click="dialogCancel">{{ $t('dialog.edit_readlist.button_cancel') }}</v-btn>
-          <v-btn text class="primary--text"
+          <v-btn color="primary"
                  @click="dialogConfirm"
                  :disabled="getErrorsName !== ''"
           >{{ $t('dialog.edit_readlist.button_confirm') }}</v-btn>

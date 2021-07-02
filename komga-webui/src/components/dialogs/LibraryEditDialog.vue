@@ -47,8 +47,8 @@
                     </v-col>
                   </v-row>
 
-                  <v-row>
-                    <v-col cols="8">
+                  <v-row justify="center">
+                    <v-col cols="8" align-self="center">
                       <file-browser-dialog
                         v-model="modalFileBrowser"
                         :path.sync="form.path"
@@ -63,7 +63,7 @@
                                     @blur="$v.form.path.$touch()"
                       />
                     </v-col>
-                    <v-col cols="4">
+                    <v-col cols="4" align-self="center">
                       <v-btn @click="modalFileBrowser = true">{{ $t('dialog.edit_library.button_browse') }}</v-btn>
                     </v-col>
                   </v-row>
@@ -220,7 +220,7 @@
           <v-card-actions class="hidden-xs-only">
             <v-spacer/>
             <v-btn text @click="dialogClose">{{ $t('dialog.edit_library.button_cancel') }}</v-btn>
-            <v-btn text class="primary--text" @click="dialogConfirm">{{ confirmText }}</v-btn>
+            <v-btn color="primary" @click="dialogConfirm">{{ confirmText }}</v-btn>
           </v-card-actions>
         </v-card>
       </form>
