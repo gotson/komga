@@ -71,6 +71,28 @@ class FileSystemScannerTest {
   }
 
   @Test
+  fun `given root directory as filesystem root when scanning then return 1 series containing those files as books`() {
+    Jimfs.newFileSystem(Configuration.unix()).use { fs ->
+      // given
+      val root = fs.getPath("/")
+
+      val files = listOf("file1.cbz", "file2.cbz")
+      files.forEach { Files.createFile(root.resolve(it)) }
+
+      // when
+      val scan = scanner.scanRootFolder(root).series
+      val series = scan.keys.first()
+      val books = scan.getValue(series)
+
+      // then
+      assertThat(scan).hasSize(1)
+      assertThat(series.name).isEqualTo("/")
+      assertThat(books).hasSize(2)
+      assertThat(books.map { it.name }).containsExactlyInAnyOrderElementsOf(files.map { FilenameUtils.removeExtension(it) })
+    }
+  }
+
+  @Test
   fun `given directory with unsupported files when scanning then return a series excluding those files as books`() {
     Jimfs.newFileSystem(Configuration.unix()).use { fs ->
       // given

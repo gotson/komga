@@ -72,14 +72,14 @@ class FileSystemScanner(
         object : FileVisitor<Path> {
           override fun preVisitDirectory(dir: Path, attrs: BasicFileAttributes): FileVisitResult {
             logger.trace { "preVisit: $dir" }
-            if (dir.fileName.toString().startsWith(".") ||
+            if (dir.fileName?.toString()?.startsWith(".") == true ||
               komgaProperties.librariesScanDirectoryExclusions.any { exclude ->
                 dir.toString().contains(exclude, true)
               }
             ) return FileVisitResult.SKIP_SUBTREE
 
             pathToSeries[dir] = Series(
-              name = dir.fileName.toString(),
+              name = dir.fileName?.toString() ?: dir.toString(),
               url = dir.toUri().toURL(),
               fileLastModified = attrs.getUpdatedTime()
             )
