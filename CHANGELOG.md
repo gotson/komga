@@ -1,3 +1,15 @@
+# [0.105.0](https://github.com/gotson/komga/compare/v0.104.2...v0.105.0) (2021-07-02)
+
+
+### Bug Fixes
+
+* **webui:** more emphasis on main button in dialogs ([f0d32d9](https://github.com/gotson/komga/commit/f0d32d98a582c6dfa8178ee5ed81b3f97d3000e5))
+
+
+### Features
+
+* **webui:** confirmation dialog for library analysis and refresh ([9923cea](https://github.com/gotson/komga/commit/9923cea244476ce5743beb1ce3872a76575d4436))
+
 ## [0.104.2](https://github.com/gotson/komga/compare/v0.104.1...v0.104.2) (2021-07-02)
 
 
