@@ -4,7 +4,7 @@
     :color="snackbar.color"
     bottom
     multi-line
-    vertical
+    :vertical="snackbar.vertical"
     :timeout="snackbar.timeout"
   >
     <p>{{ snackbar.text }}</p>
@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {BOOK_IMPORTED} from "@/types/events";
+import {BOOK_IMPORTED, ERROR} from "@/types/events";
 import {convertErrorCodes} from "@/functions/error-codes";
 import {BookImportSseDto} from "@/types/komga-sse";
 
@@ -42,6 +42,7 @@ export default Vue.extend({
       queue: [] as any[],
       snackbar: {
         show: false,
+        vertical: false,
         text: '',
         text2: '',
         color: undefined,
@@ -55,10 +56,12 @@ export default Vue.extend({
     }
   },
   created() {
-    this.$eventHub.$on(BOOK_IMPORTED, this.bookImported)
+    this.$eventHub.$on(BOOK_IMPORTED, this.onBookImported)
+    this.$eventHub.$on(ERROR, this.onError)
   },
   beforeDestroy() {
-    this.$eventHub.$off(BOOK_IMPORTED, this.bookImported)
+    this.$eventHub.$off(BOOK_IMPORTED, this.onBookImported)
+    this.$eventHub.$off(ERROR, this.onError)
   },
   watch: {
     'snackbar.show'(val) {
@@ -86,10 +89,17 @@ export default Vue.extend({
         this.snackbar.text2 = snack.text2
         this.snackbar.goTo = snack.goTo
         this.snackbar.color = snack.color
+        this.snackbar.vertical = snack.text2 !== undefined
         this.snackbar.show = true
       }
     },
-    async bookImported(event: BookImportSseDto) {
+    onError(event: ErrorEvent) {
+      this.queue.push({
+        text: event.message,
+        color: 'error',
+      })
+    },
+    async onBookImported(event: BookImportSseDto) {
       if (event.success && event.bookId) {
         const book = await this.$komgaBooks.getBook(event.bookId)
         this.queue.push({

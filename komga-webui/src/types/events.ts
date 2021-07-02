@@ -26,3 +26,9 @@ export const READPROGRESS_SERIES_DELETED = 'readprogress-series-deleted'
 
 export const THUMBNAILBOOK_ADDED = 'thumbnailbook-added'
 export const THUMBNAILSERIES_ADDED = 'thumbnailbook-added'
+
+export const ERROR = 'error'
+
+export interface ErrorEvent{
+  message: string,
+}

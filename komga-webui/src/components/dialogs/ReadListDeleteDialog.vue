@@ -1,75 +1,61 @@
 <template>
-  <div>
-    <v-dialog v-model="modal"
-              max-width="450"
-    >
-      <v-card>
-        <v-card-title v-if="single">{{ $t('dialog.delete_readlist.dialog_title') }}</v-card-title>
-        <v-card-title v-else>{{ $t('dialog.delete_readlist.dialog_title_multiple') }}</v-card-title>
+  <v-dialog v-model="modal"
+            max-width="450"
+  >
+    <v-card>
+      <v-card-title v-if="single">{{ $t('dialog.delete_readlist.dialog_title') }}</v-card-title>
+      <v-card-title v-else>{{ $t('dialog.delete_readlist.dialog_title_multiple') }}</v-card-title>
 
-        <v-card-text>
-          <v-container fluid>
-            <v-row>
-              <v-col
-                v-if="single"
-                v-html="$t('dialog.delete_readlist.warning_html', {name: readLists.name})"
-              />
-              <v-col
-                v-else
-                v-html="$t('dialog.delete_readlist.warning_multiple_html', {count: readLists.length})"
-              />
-            </v-row>
+      <v-card-text>
+        <v-container fluid>
+          <v-row>
+            <v-col
+              v-if="single"
+              v-html="$t('dialog.delete_readlist.warning_html', {name: readLists.name})"
+            />
+            <v-col
+              v-else
+              v-html="$t('dialog.delete_readlist.warning_multiple_html', {count: readLists.length})"
+            />
+          </v-row>
 
-            <v-row>
-              <v-col>
-                <v-checkbox v-model="confirmDelete" color="red">
-                  <template v-slot:label v-if="single">
-                    {{ $t('dialog.delete_readlist.confirm_delete', { name: readLists.name}) }}
-                  </template>
-                  <template v-slot:label v-else>
-                    {{ $t('dialog.delete_readlist.confirm_delete_multiple', { count: readLists.length}) }}
-                  </template>
-                </v-checkbox>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
+          <v-row>
+            <v-col>
+              <v-checkbox v-model="confirmDelete" color="red">
+                <template v-slot:label v-if="single">
+                  {{ $t('dialog.delete_readlist.confirm_delete', {name: readLists.name}) }}
+                </template>
+                <template v-slot:label v-else>
+                  {{ $t('dialog.delete_readlist.confirm_delete_multiple', {count: readLists.length}) }}
+                </template>
+              </v-checkbox>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card-text>
 
-        <v-card-actions>
-          <v-spacer/>
-          <v-btn text @click="dialogCancel">{{ $t('dialog.delete_readlist.button_cancel') }}</v-btn>
-          <v-btn color="error"
-                 @click="dialogConfirm"
-                 :disabled="!confirmDelete"
-          >{{ $t('dialog.delete_readlist.button_confirm') }}</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <v-snackbar
-      v-model="snackbar"
-      bottom
-      color="error"
-    >
-      {{ snackText }}
-      <v-btn
-        text
-        @click="snackbar = false"
-      >{{ $t('common.close') }}</v-btn>
-    </v-snackbar>
-  </div>
+      <v-card-actions>
+        <v-spacer/>
+        <v-btn text @click="dialogCancel">{{ $t('dialog.delete_readlist.button_cancel') }}</v-btn>
+        <v-btn color="error"
+               @click="dialogConfirm"
+               :disabled="!confirmDelete"
+        >{{ $t('dialog.delete_readlist.button_confirm') }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import {ERROR} from "@/types/events";
 
 export default Vue.extend({
   name: 'ReadListDeleteDialog',
   data: () => {
     return {
       confirmDelete: false,
-      snackbar: false,
-      snackText: '',
       modal: false,
     }
   },
@@ -102,17 +88,13 @@ export default Vue.extend({
       this.delete()
       this.$emit('input', false)
     },
-    showSnack(message: string) {
-      this.snackText = message
-      this.snackbar = true
-    },
     async delete() {
       const toUpdate = (this.single ? [this.readLists] : this.readLists) as ReadListDto[]
       for (const b of toUpdate) {
         try {
           await this.$komgaReadLists.deleteReadList(b.id)
         } catch (e) {
-          this.showSnack(e.message)
+          this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
         }
       }
     },

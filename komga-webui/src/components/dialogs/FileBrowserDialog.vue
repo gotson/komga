@@ -1,85 +1,71 @@
 <template>
-  <div>
-    <v-dialog v-model="modalFileBrowser"
-              max-width="450"
-              scrollable
-    >
-      <v-card>
+  <v-dialog v-model="modalFileBrowser"
+            max-width="450"
+            scrollable
+  >
+    <v-card>
 
-        <v-card-title>{{ dialogTitle }}</v-card-title>
+      <v-card-title>{{ dialogTitle }}</v-card-title>
 
-        <v-card-text style="height: 450px">
-          <v-text-field
-            v-model="selectedPath"
-            readonly
-          />
+      <v-card-text style="height: 450px">
+        <v-text-field
+          v-model="selectedPath"
+          readonly
+        />
 
-          <v-list elevation="3" dense>
+        <v-list elevation="3" dense>
 
-            <template v-if="directoryListing.hasOwnProperty('parent')">
-              <v-list-item
-                @click.prevent="select(directoryListing.parent)"
-              >
-                <v-list-item-icon>
-                  <v-icon>mdi-arrow-left</v-icon>
-                </v-list-item-icon>
+          <template v-if="directoryListing.hasOwnProperty('parent')">
+            <v-list-item
+              @click.prevent="select(directoryListing.parent)"
+            >
+              <v-list-item-icon>
+                <v-icon>mdi-arrow-left</v-icon>
+              </v-list-item-icon>
 
-                <v-list-item-content>
-                  <v-list-item-title>{{ $t('dialog.file_browser.parent_directory') }}</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-divider/>
-            </template>
+              <v-list-item-content>
+                <v-list-item-title>{{ $t('dialog.file_browser.parent_directory') }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider/>
+          </template>
 
-            <div v-for="(d, index) in directoryListing.directories" :key="index">
-              <v-list-item
-                @click.prevent="select(d.path)"
-              >
-                <v-list-item-icon>
-                  <v-icon>{{ d.type === 'directory' ? 'mdi-folder' : 'mdi-file' }}</v-icon>
-                </v-list-item-icon>
+          <div v-for="(d, index) in directoryListing.directories" :key="index">
+            <v-list-item
+              @click.prevent="select(d.path)"
+            >
+              <v-list-item-icon>
+                <v-icon>{{ d.type === 'directory' ? 'mdi-folder' : 'mdi-file' }}</v-icon>
+              </v-list-item-icon>
 
-                <v-list-item-content>
-                  <v-list-item-title>
-                    {{ d.name }}
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ d.name }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
 
-              <v-divider v-if="index !== directoryListing.directories.length-1"/>
-            </div>
-          </v-list>
-        </v-card-text>
+            <v-divider v-if="index !== directoryListing.directories.length-1"/>
+          </div>
+        </v-list>
+      </v-card-text>
 
-        <v-card-actions>
-          <v-spacer/>
-          <v-btn text @click="dialogCancel">{{ $t('dialog.file_browser.button_cancel') }}</v-btn>
-          <v-btn color="primary"
-                 @click="dialogConfirm"
-                 :disabled="!selectedPath"
-          >{{ confirmText }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <v-snackbar
-      v-model="snackbar"
-      bottom
-      color="error"
-    >
-      {{ snackText }}
-      <v-btn
-        text
-        @click="snackbar = false"
-      >{{ $t('common.close') }}
-      </v-btn>
-    </v-snackbar>
-  </div>
+      <v-card-actions>
+        <v-spacer/>
+        <v-btn text @click="dialogCancel">{{ $t('dialog.file_browser.button_cancel') }}</v-btn>
+        <v-btn color="primary"
+               @click="dialogConfirm"
+               :disabled="!selectedPath"
+        >{{ confirmText }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import {ERROR} from "@/types/events";
 
 export default Vue.extend({
   name: 'FileBrowserDialog',
@@ -88,8 +74,6 @@ export default Vue.extend({
       directoryListing: {} as DirectoryListingDto,
       selectedPath: '',
       modalFileBrowser: false,
-      snackbar: false,
-      snackText: '',
     }
   },
   watch: {
@@ -121,10 +105,6 @@ export default Vue.extend({
     },
   },
   methods: {
-    showSnack (message: string) {
-      this.snackText = message
-      this.snackbar = true
-    },
     dialogInit() {
       try {
         this.getDirs(this.path)
@@ -144,7 +124,7 @@ export default Vue.extend({
       try {
         this.directoryListing = await this.$komgaFileSystem.getDirectoryListing(path)
       } catch (e) {
-        this.showSnack(e.message)
+        this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
       }
     },
     select(path: string) {

@@ -47,31 +47,18 @@
       </v-card>
     </v-dialog>
 
-    <v-snackbar
-      v-model="snackbar"
-      bottom
-      color="error"
-    >
-      {{ snackText }}
-      <v-btn
-        text
-        @click="snackbar = false"
-      >{{ $t('common.close') }}
-      </v-btn>
-    </v-snackbar>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import {ERROR} from "@/types/events";
 
 export default Vue.extend({
   name: 'CollectionDeleteDialog',
   data: () => {
     return {
       confirmDelete: false,
-      snackbar: false,
-      snackText: '',
       modal: false,
     }
   },
@@ -104,17 +91,13 @@ export default Vue.extend({
       this.deleteCollections()
       this.$emit('input', false)
     },
-    showSnack(message: string) {
-      this.snackText = message
-      this.snackbar = true
-    },
     async deleteCollections() {
       const toUpdate = (this.single ? [this.collections] : this.collections) as CollectionDto[]
       for (const b of toUpdate) {
         try {
           await this.$komgaCollections.deleteCollection(b.id)
         } catch (e) {
-          this.showSnack(e.message)
+          this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
         }
       }
     },

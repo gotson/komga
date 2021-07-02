@@ -17,45 +17,29 @@
       :body="$t('dialog.server_stop.confirmation_message')"
       :button-confirm="$t('dialog.server_stop.button_confirm')"
       button-confirm-color="error"
+      @confirm="stopServer"
     />
 
-    <v-snackbar
-      v-model="snackbar"
-      bottom
-      color="error"
-    >
-      {{ snackText }}
-      <v-btn
-        text
-        @click="snackbar = false"
-      >{{ $t('common.close') }}
-      </v-btn>
-    </v-snackbar>
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import ConfirmationDialog from "@/components/dialogs/ConfirmationDialog.vue";
+import {ERROR} from "@/types/events";
 
 export default Vue.extend({
   name: 'SettingsServer',
   components: {ConfirmationDialog},
   data: () => ({
     modalStopServer: false,
-    snackbar: false,
-    snackText: '',
   }),
   methods: {
-    showSnack(message: string) {
-      this.snackText = message
-      this.snackbar = true
-    },
     async stopServer() {
       try {
         await this.$actuator.shutdown()
       } catch (e) {
-        this.showSnack(e.message)
+        this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
       }
     },
   },

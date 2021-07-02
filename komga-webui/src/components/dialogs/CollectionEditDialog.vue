@@ -1,74 +1,58 @@
 <template>
-  <div>
-    <v-dialog v-model="modal"
-              max-width="450"
-    >
-      <v-card>
-        <v-card-title>{{ $t('dialog.edit_collection.dialog_title') }}</v-card-title>
+  <v-dialog v-model="modal"
+            max-width="450"
+  >
+    <v-card>
+      <v-card-title>{{ $t('dialog.edit_collection.dialog_title') }}</v-card-title>
 
-        <v-card-text>
-          <v-container fluid>
-            <v-row>
-              <v-col>
-                <v-text-field v-model="form.name"
-                              label="Name"
-                              :error-messages="getErrorsName"
-                />
-              </v-col>
-            </v-row>
+      <v-card-text>
+        <v-container fluid>
+          <v-row>
+            <v-col>
+              <v-text-field v-model="form.name"
+                            label="Name"
+                            :error-messages="getErrorsName"
+              />
+            </v-col>
+          </v-row>
 
-            <v-row>
-              <v-col>
-                <div class="text-body-2">{{ $t('dialog.edit_collection.label_ordering') }}</div>
-                <v-checkbox
-                  v-model="form.ordered"
-                  :label="$t('dialog.edit_collection.field_manual_ordering')"
-                  hide-details
-                />
-              </v-col>
-            </v-row>
+          <v-row>
+            <v-col>
+              <div class="text-body-2">{{ $t('dialog.edit_collection.label_ordering') }}</div>
+              <v-checkbox
+                v-model="form.ordered"
+                :label="$t('dialog.edit_collection.field_manual_ordering')"
+                hide-details
+              />
+            </v-col>
+          </v-row>
 
-          </v-container>
-        </v-card-text>
+        </v-container>
+      </v-card-text>
 
-        <v-card-actions>
-          <v-spacer/>
-          <v-btn text @click="dialogCancel">{{ $t('dialog.edit_collection.button_cancel') }}</v-btn>
-          <v-btn color="primary"
-                 @click="dialogConfirm"
-                 :disabled="getErrorsName !== ''"
-          >{{ $t('dialog.edit_collection.button_confirm') }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <v-snackbar
-      v-model="snackbar"
-      bottom
-      color="error"
-    >
-      {{ snackText }}
-      <v-btn
-        text
-        @click="snackbar = false"
-      >{{ $t('common.close') }}
-      </v-btn>
-    </v-snackbar>
-  </div>
+      <v-card-actions>
+        <v-spacer/>
+        <v-btn text @click="dialogCancel">{{ $t('dialog.edit_collection.button_cancel') }}</v-btn>
+        <v-btn color="primary"
+               @click="dialogConfirm"
+               :disabled="getErrorsName !== ''"
+        >{{ $t('dialog.edit_collection.button_confirm') }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script lang="ts">
 import {UserRoles} from '@/types/enum-users'
 import Vue from 'vue'
+import {ERROR} from "@/types/events";
 
 export default Vue.extend({
   name: 'CollectionEditDialog',
   data: () => {
     return {
       UserRoles,
-      snackbar: false,
-      snackText: '',
       modal: false,
       collections: [] as CollectionDto[],
       form: {
@@ -126,10 +110,6 @@ export default Vue.extend({
       this.editCollection()
       this.$emit('input', false)
     },
-    showSnack(message: string) {
-      this.snackText = message
-      this.snackbar = true
-    },
     async editCollection() {
       try {
         const update = {
@@ -139,7 +119,7 @@ export default Vue.extend({
 
         await this.$komgaCollections.patchCollection(this.collection.id, update)
       } catch (e) {
-        this.showSnack(e.message)
+        this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
       }
     },
   },

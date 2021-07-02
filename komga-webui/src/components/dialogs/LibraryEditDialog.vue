@@ -1,250 +1,240 @@
 <template>
-  <div>
-    <v-dialog v-model="modal"
-              :fullscreen="this.$vuetify.breakpoint.xsOnly"
-              :hide-overlay="this.$vuetify.breakpoint.xsOnly"
-              max-width="600"
-    >
-      <form novalidate>
-        <v-card>
-          <v-toolbar class="hidden-sm-and-up">
-            <v-btn icon @click="dialogClose">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-            <v-toolbar-title>{{ dialogTitle }}</v-toolbar-title>
-            <v-spacer/>
-            <v-toolbar-items>
-              <v-btn text color="primary" @click="dialogConfirm">{{ confirmText }}</v-btn>
-            </v-toolbar-items>
-          </v-toolbar>
+  <v-dialog v-model="modal"
+            :fullscreen="this.$vuetify.breakpoint.xsOnly"
+            :hide-overlay="this.$vuetify.breakpoint.xsOnly"
+            max-width="600"
+  >
+    <form novalidate>
+      <v-card>
+        <v-toolbar class="hidden-sm-and-up">
+          <v-btn icon @click="dialogClose">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>{{ dialogTitle }}</v-toolbar-title>
+          <v-spacer/>
+          <v-toolbar-items>
+            <v-btn text color="primary" @click="dialogConfirm">{{ confirmText }}</v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
 
-          <v-card-title class="hidden-xs-only">{{ dialogTitle }}</v-card-title>
+        <v-card-title class="hidden-xs-only">{{ dialogTitle }}</v-card-title>
 
-          <v-tabs :vertical="$vuetify.breakpoint.smAndUp" v-model="tab">
-            <v-tab class="justify-start">
-              <v-icon left class="hidden-xs-only">mdi-bookshelf</v-icon>
-              {{ $t('dialog.edit_library.tab_general') }}
-            </v-tab>
-            <v-tab class="justify-start">
-              <v-icon left class="hidden-xs-only">mdi-tune</v-icon>
-              {{ $t('dialog.edit_library.tab_options') }}
-            </v-tab>
+        <v-tabs :vertical="$vuetify.breakpoint.smAndUp" v-model="tab">
+          <v-tab class="justify-start">
+            <v-icon left class="hidden-xs-only">mdi-bookshelf</v-icon>
+            {{ $t('dialog.edit_library.tab_general') }}
+          </v-tab>
+          <v-tab class="justify-start">
+            <v-icon left class="hidden-xs-only">mdi-tune</v-icon>
+            {{ $t('dialog.edit_library.tab_options') }}
+          </v-tab>
 
-            <!--  Tab: General  -->
-            <v-tab-item>
-              <v-card flat>
-                <v-container fluid>
+          <!--  Tab: General  -->
+          <v-tab-item>
+            <v-card flat>
+              <v-container fluid>
 
-                  <v-row>
-                    <v-col>
-                      <v-text-field v-model="form.name"
-                                    autofocus
-                                    :label="$t('dialog.edit_library.field_name')"
-                                    :error-messages="getErrors('name')"
-                                    @input="$v.form.name.$touch()"
-                                    @blur="$v.form.name.$touch()"
-                      />
-                    </v-col>
-                  </v-row>
+                <v-row>
+                  <v-col>
+                    <v-text-field v-model="form.name"
+                                  autofocus
+                                  :label="$t('dialog.edit_library.field_name')"
+                                  :error-messages="getErrors('name')"
+                                  @input="$v.form.name.$touch()"
+                                  @blur="$v.form.name.$touch()"
+                    />
+                  </v-col>
+                </v-row>
 
-                  <v-row justify="center">
-                    <v-col cols="8" align-self="center">
-                      <file-browser-dialog
-                        v-model="modalFileBrowser"
-                        :path.sync="form.path"
-                        :confirm-text="$t('dialog.edit_library.file_browser_dialog_button_confirm')"
-                        :dialog-title="$t('dialog.edit_library.file_browser_dialog_title')"
-                      />
+                <v-row justify="center">
+                  <v-col cols="8" align-self="center">
+                    <file-browser-dialog
+                      v-model="modalFileBrowser"
+                      :path.sync="form.path"
+                      :confirm-text="$t('dialog.edit_library.file_browser_dialog_button_confirm')"
+                      :dialog-title="$t('dialog.edit_library.file_browser_dialog_title')"
+                    />
 
-                      <v-text-field v-model="form.path"
-                                    :label="$t('dialog.edit_library.field_root_folder')"
-                                    :error-messages="getErrors('path')"
-                                    @input="$v.form.path.$touch()"
-                                    @blur="$v.form.path.$touch()"
-                      />
-                    </v-col>
-                    <v-col cols="4" align-self="center">
-                      <v-btn @click="modalFileBrowser = true">{{ $t('dialog.edit_library.button_browse') }}</v-btn>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card>
-            </v-tab-item>
+                    <v-text-field v-model="form.path"
+                                  :label="$t('dialog.edit_library.field_root_folder')"
+                                  :error-messages="getErrors('path')"
+                                  @input="$v.form.path.$touch()"
+                                  @blur="$v.form.path.$touch()"
+                    />
+                  </v-col>
+                  <v-col cols="4" align-self="center">
+                    <v-btn @click="modalFileBrowser = true">{{ $t('dialog.edit_library.button_browse') }}</v-btn>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card>
+          </v-tab-item>
 
-            <!--  Tab: Options  -->
-            <v-tab-item>
-              <v-card flat>
-                <v-container fluid>
-                  <v-row>
-                    <v-col>
-                      <v-checkbox
-                        v-model="importComicInfo"
-                        :indeterminate="importComicInfo === 1"
-                        hide-details
-                      >
-                        <template v-slot:label>
-                          <span class="text-subtitle-2 text--primary">{{ $t('dialog.edit_library.label_import_comicinfo') }}</span>
-                        </template>
-                      </v-checkbox>
-                      <v-checkbox
-                        v-model="form.importComicInfoBook"
-                        :label="$t('dialog.edit_library.field_import_comicinfo_book')"
-                        hide-details
-                        class="mx-4"
-                      />
-                      <v-checkbox
-                        v-model="form.importComicInfoSeries"
-                        :label="$t('dialog.edit_library.field_import_comicinfo_series')"
-                        hide-details
-                        class="mx-4"
-                      />
-                      <v-checkbox
-                        v-model="form.importComicInfoCollection"
-                        :label="$t('dialog.edit_library.field_import_comicinfo_collections')"
-                        hide-details
-                        class="mx-4"
-                      />
-                      <v-checkbox
-                        v-model="form.importComicInfoReadList"
-                        :label="$t('dialog.edit_library.field_import_comicinfo_readlists')"
-                        hide-details
-                        class="mx-4"
-                      />
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col>
-                      <v-checkbox
-                        v-model="importEpub"
-                        :indeterminate="importEpub === 1"
-                        hide-details
-                      >
-                        <template v-slot:label>
-                          <span class="text-subtitle-2 text--primary">{{ $t('dialog.edit_library.label_import_epub') }}</span>
-                        </template>
-                      </v-checkbox>
-                      <v-checkbox
-                        v-model="form.importEpubBook"
-                        :label="$t('dialog.edit_library.field_import_epub_book')"
-                        hide-details
-                        class="mx-4"
-                      />
-                      <v-checkbox
-                        v-model="form.importEpubSeries"
-                        :label="$t('dialog.edit_library.field_import_epub_series')"
-                        hide-details
-                        class="mx-4"
-                      />
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col>
-                      <span class="text-subtitle-2">{{ $t('dialog.edit_library.label_import_local') }}</span>
-                      <v-checkbox
-                        v-model="form.importLocalArtwork"
-                        :label="$t('dialog.edit_library.field_import_local_artwork')"
-                        hide-details
-                        class="mx-4"
-                      />
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col>
-                      <span class="text-subtitle-2">{{ $t('dialog.edit_library.label_import_barcode_isbn') }}</span>
-                      <v-checkbox
-                        v-model="form.importBarcodeIsbn"
-                        :label="$t('dialog.edit_library.field_import_barcode_isbn')"
-                        hide-details
-                        class="mx-4"
-                      />
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="auto">
-                      <v-checkbox
-                        v-model="scanner"
-                        :indeterminate="scanner === 1"
-                        hide-details
-                      >
-                        <template v-slot:label>
-                          <span class="text-subtitle-2 text--primary">{{ $t('dialog.edit_library.label_scanner') }}</span>
-                        </template>
-                      </v-checkbox>
-                      <v-checkbox
-                        v-model="form.scanForceModifiedTime"
-                        :label="$t('dialog.edit_library.field_scanner_force_directory_modified_time')"
-                        hide-details
-                        class="mx-4"
-                      />
-                      <v-checkbox
-                        v-model="form.scanDeep"
-                        :label="$t('dialog.edit_library.field_scanner_deep_scan')"
-                        hide-details
-                        class="mx-4"
-                      />
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col>
-                      <v-checkbox
-                        v-model="fileManagement"
-                        :indeterminate="fileManagement === 1"
-                        hide-details
-                      >
-                        <template v-slot:label>
-                          <span class="text-subtitle-2">{{ $t('dialog.edit_library.label_file_management') }}</span>
-                        </template>
-                      </v-checkbox>
+          <!--  Tab: Options  -->
+          <v-tab-item>
+            <v-card flat>
+              <v-container fluid>
+                <v-row>
+                  <v-col>
+                    <v-checkbox
+                      v-model="importComicInfo"
+                      :indeterminate="importComicInfo === 1"
+                      hide-details
+                    >
+                      <template v-slot:label>
+                        <span class="text-subtitle-2 text--primary">{{
+                            $t('dialog.edit_library.label_import_comicinfo')
+                          }}</span>
+                      </template>
+                    </v-checkbox>
+                    <v-checkbox
+                      v-model="form.importComicInfoBook"
+                      :label="$t('dialog.edit_library.field_import_comicinfo_book')"
+                      hide-details
+                      class="mx-4"
+                    />
+                    <v-checkbox
+                      v-model="form.importComicInfoSeries"
+                      :label="$t('dialog.edit_library.field_import_comicinfo_series')"
+                      hide-details
+                      class="mx-4"
+                    />
+                    <v-checkbox
+                      v-model="form.importComicInfoCollection"
+                      :label="$t('dialog.edit_library.field_import_comicinfo_collections')"
+                      hide-details
+                      class="mx-4"
+                    />
+                    <v-checkbox
+                      v-model="form.importComicInfoReadList"
+                      :label="$t('dialog.edit_library.field_import_comicinfo_readlists')"
+                      hide-details
+                      class="mx-4"
+                    />
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <v-checkbox
+                      v-model="importEpub"
+                      :indeterminate="importEpub === 1"
+                      hide-details
+                    >
+                      <template v-slot:label>
+                        <span class="text-subtitle-2 text--primary">{{
+                            $t('dialog.edit_library.label_import_epub')
+                          }}</span>
+                      </template>
+                    </v-checkbox>
+                    <v-checkbox
+                      v-model="form.importEpubBook"
+                      :label="$t('dialog.edit_library.field_import_epub_book')"
+                      hide-details
+                      class="mx-4"
+                    />
+                    <v-checkbox
+                      v-model="form.importEpubSeries"
+                      :label="$t('dialog.edit_library.field_import_epub_series')"
+                      hide-details
+                      class="mx-4"
+                    />
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <span class="text-subtitle-2">{{ $t('dialog.edit_library.label_import_local') }}</span>
+                    <v-checkbox
+                      v-model="form.importLocalArtwork"
+                      :label="$t('dialog.edit_library.field_import_local_artwork')"
+                      hide-details
+                      class="mx-4"
+                    />
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <span class="text-subtitle-2">{{ $t('dialog.edit_library.label_import_barcode_isbn') }}</span>
+                    <v-checkbox
+                      v-model="form.importBarcodeIsbn"
+                      :label="$t('dialog.edit_library.field_import_barcode_isbn')"
+                      hide-details
+                      class="mx-4"
+                    />
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="auto">
+                    <v-checkbox
+                      v-model="scanner"
+                      :indeterminate="scanner === 1"
+                      hide-details
+                    >
+                      <template v-slot:label>
+                        <span class="text-subtitle-2 text--primary">{{ $t('dialog.edit_library.label_scanner') }}</span>
+                      </template>
+                    </v-checkbox>
+                    <v-checkbox
+                      v-model="form.scanForceModifiedTime"
+                      :label="$t('dialog.edit_library.field_scanner_force_directory_modified_time')"
+                      hide-details
+                      class="mx-4"
+                    />
+                    <v-checkbox
+                      v-model="form.scanDeep"
+                      :label="$t('dialog.edit_library.field_scanner_deep_scan')"
+                      hide-details
+                      class="mx-4"
+                    />
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <v-checkbox
+                      v-model="fileManagement"
+                      :indeterminate="fileManagement === 1"
+                      hide-details
+                    >
+                      <template v-slot:label>
+                        <span class="text-subtitle-2">{{ $t('dialog.edit_library.label_file_management') }}</span>
+                      </template>
+                    </v-checkbox>
 
-                      <v-checkbox
-                        v-model="form.repairExtensions"
-                        :label="$t('dialog.edit_library.field_repair_extensions')"
-                        hide-details
-                        class="mx-4"
-                      />
+                    <v-checkbox
+                      v-model="form.repairExtensions"
+                      :label="$t('dialog.edit_library.field_repair_extensions')"
+                      hide-details
+                      class="mx-4"
+                    />
 
-                      <v-checkbox
-                        v-model="form.convertToCbz"
-                        :label="$t('dialog.edit_library.field_convert_to_cbz')"
-                        hide-details
-                        class="mx-4"
-                      />
-                    </v-col>
-                  </v-row>
+                    <v-checkbox
+                      v-model="form.convertToCbz"
+                      :label="$t('dialog.edit_library.field_convert_to_cbz')"
+                      hide-details
+                      class="mx-4"
+                    />
+                  </v-col>
+                </v-row>
 
-                </v-container>
-              </v-card>
-            </v-tab-item>
-          </v-tabs>
+              </v-container>
+            </v-card>
+          </v-tab-item>
+        </v-tabs>
 
-          <v-card-actions class="hidden-xs-only">
-            <v-spacer/>
-            <v-btn text @click="dialogClose">{{ $t('dialog.edit_library.button_cancel') }}</v-btn>
-            <v-btn color="primary" @click="dialogConfirm">{{ confirmText }}</v-btn>
-          </v-card-actions>
-        </v-card>
-      </form>
-    </v-dialog>
-
-    <v-snackbar
-      v-model="snackbar"
-      bottom
-      color="error"
-    >
-      {{ snackText }}
-      <v-btn
-        text
-        @click="snackbar = false"
-      >{{ $t('common.close') }}
-      </v-btn>
-    </v-snackbar>
-  </div>
+        <v-card-actions class="hidden-xs-only">
+          <v-spacer/>
+          <v-btn text @click="dialogClose">{{ $t('dialog.edit_library.button_cancel') }}</v-btn>
+          <v-btn color="primary" @click="dialogConfirm">{{ confirmText }}</v-btn>
+        </v-card-actions>
+      </v-card>
+    </form>
+  </v-dialog>
 </template>
 
 <script lang="ts">
 import FileBrowserDialog from '@/components/dialogs/FileBrowserDialog.vue'
 import Vue from 'vue'
 import {required} from 'vuelidate/lib/validators'
+import {ERROR} from "@/types/events";
 
 export default Vue.extend({
   name: 'LibraryEditDialog',
@@ -253,8 +243,6 @@ export default Vue.extend({
     return {
       modal: false,
       modalFileBrowser: false,
-      snackbar: false,
-      snackText: '',
       tab: 0,
       form: {
         name: '',
@@ -375,10 +363,6 @@ export default Vue.extend({
       }
       return errors
     },
-    showSnack(message: string) {
-      this.snackText = message
-      this.snackbar = true
-    },
     dialogClose() {
       this.$emit('input', false)
       this.tab = 0
@@ -437,7 +421,7 @@ export default Vue.extend({
           }
           this.dialogClose()
         } catch (e) {
-          this.showSnack(e.message)
+          this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
         }
       } else {
         this.tab = 0
