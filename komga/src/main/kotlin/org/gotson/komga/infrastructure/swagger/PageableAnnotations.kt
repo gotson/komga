@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.Parameters
 import io.swagger.v3.oas.annotations.enums.ParameterIn
 import io.swagger.v3.oas.annotations.media.ArraySchema
-import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Target(AnnotationTarget.ANNOTATION_CLASS, AnnotationTarget.FUNCTION)
@@ -40,7 +39,7 @@ annotation class PageableWithoutSortAsQueryParam
   ),
   Parameter(
     description = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
-    `in` = ParameterIn.QUERY, name = "sort", content = [Content(array = ArraySchema(schema = Schema(type = "string")))]
+    `in` = ParameterIn.QUERY, name = "sort", array = ArraySchema(schema = Schema(type = "string"))
   )
 )
 annotation class PageableAsQueryParam
