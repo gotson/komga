@@ -1,3 +1,11 @@
+## [0.104.2](https://github.com/gotson/komga/compare/v0.104.1...v0.104.2) (2021-07-02)
+
+
+### Bug Fixes
+
+* **scanner:** crash if library root is filesystem root ([d739166](https://github.com/gotson/komga/commit/d7391669f696e7de61b2a52cef3bf12c36072227)), closes [#564](https://github.com/gotson/komga/issues/564)
+* **swagger:** swagger-ui hangs on some calls ([76caa4d](https://github.com/gotson/komga/commit/76caa4de39e1c7c2c3a8e3440a4c4eeec2d0bd7f)), closes [#566](https://github.com/gotson/komga/issues/566)
+
 ## [0.104.1](https://github.com/gotson/komga/compare/v0.104.0...v0.104.1) (2021-06-30)
 
 

@@ -556,16 +556,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -687,16 +687,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -765,16 +765,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -830,16 +830,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -906,16 +906,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -952,16 +952,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -3330,19 +3330,15 @@
             "description": "The size of the page to be returned"
           },
           {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
             "in": "query",
             "name": "author",
-            "description": "Author criteria in the format: name,role. Multiple author criteria are supported.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
+            "description": "Author criteria in the format: name,role. Multiple author criteria are supported."
           }
         ],
         "tags": [
@@ -4146,34 +4142,26 @@
             "description": "The size of the page to be returned"
           },
           {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
             "in": "query",
             "name": "sort",
-            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported."
           },
           {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
             "in": "query",
             "name": "author",
-            "description": "Author criteria in the format: name,role. Multiple author criteria are supported.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
+            "description": "Author criteria in the format: name,role. Multiple author criteria are supported."
           }
         ],
         "tags": [
@@ -5213,34 +5201,26 @@
             "description": "The size of the page to be returned"
           },
           {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
             "in": "query",
             "name": "sort",
-            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported."
           },
           {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
             "in": "query",
             "name": "author",
-            "description": "Author criteria in the format: name,role. Multiple author criteria are supported.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
+            "description": "Author criteria in the format: name,role. Multiple author criteria are supported."
           }
         ],
         "tags": [
@@ -5673,19 +5653,15 @@
             "description": "The size of the page to be returned"
           },
           {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
             "in": "query",
             "name": "sort",
-            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported."
           }
         ],
         "tags": [
