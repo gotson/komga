@@ -1,3 +1,11 @@
+## [0.105.1](https://github.com/gotson/komga/compare/v0.105.0...v0.105.1) (2021-07-02)
+
+
+### Bug Fixes
+
+* **webui:** disable some UI elements for non-admins ([ada1438](https://github.com/gotson/komga/commit/ada1438921446d81c56a403c0f2083b5781a0f02))
+* **webui:** properly reload series when book read progress is updated ([92954e0](https://github.com/gotson/komga/commit/92954e091675b121fb53a1846a559fa5fed92a3b))
+
 # [0.105.0](https://github.com/gotson/komga/compare/v0.104.2...v0.105.0) (2021-07-02)
 
 
