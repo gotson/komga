@@ -105,25 +105,37 @@
                       :user="userToEdit"
     />
 
-    <user-delete-dialog v-model="modalDeleteUser"
-                        :user="userToDelete">
-    </user-delete-dialog>
+    <confirmation-dialog
+      v-model="modalDeleteUser"
+      :title="$t('dialog.delete_user.dialog_title')"
+      :body-html="$t('dialog.delete_user.warning_html', {name: userToDelete.email})"
+      :confirm-text=" $t('dialog.delete_user.confirm_delete', {name: userToDelete.email})"
+      :button-confirm="$t('dialog.delete_user.button_confirm')"
+      button-confirm-color="error"
+      @confirm="deleteUser"
+    />
 
     <router-view/>
   </div>
 </template>
 
 <script lang="ts">
-import UserDeleteDialog from '@/components/dialogs/UserDeleteDialog.vue'
 import UserEditDialog from '@/components/dialogs/UserEditDialog.vue'
 import UserSharedLibrariesEditDialog from '@/components/dialogs/UserSharedLibrariesEditDialog.vue'
 import {UserRoles} from '@/types/enum-users'
 import Vue from 'vue'
 import PasswordChangeDialog from "@/components/dialogs/PasswordChangeDialog.vue"
+import {ERROR} from "@/types/events";
+import ConfirmationDialog from "@/components/dialogs/ConfirmationDialog.vue";
 
 export default Vue.extend({
   name: 'UsersList',
-  components: {UserSharedLibrariesEditDialog, UserDeleteDialog, UserEditDialog, PasswordChangeDialog},
+  components: {
+    ConfirmationDialog,
+    UserSharedLibrariesEditDialog,
+    UserEditDialog,
+    PasswordChangeDialog,
+  },
   data: () => ({
     UserRoles,
     modalAddUser: false,
@@ -174,6 +186,13 @@ export default Vue.extend({
     changeUserPassword(user: UserDto) {
       this.userToChangePassword = user
       this.modalChangePassword = true
+    },
+    async deleteUser() {
+      try {
+        await this.$store.dispatch('deleteUser', this.userToDelete)
+      } catch (e) {
+        this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
+      }
     },
   },
 })

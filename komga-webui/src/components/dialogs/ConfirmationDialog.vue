@@ -8,7 +8,18 @@
       <v-card-text>
         <v-container fluid>
           <v-row>
-            <v-col>{{ body }}</v-col>
+            <v-col v-if="body && !bodyHtml">{{ body }}</v-col>
+            <v-col v-if="bodyHtml" v-html="bodyHtml"/>
+          </v-row>
+
+          <v-row v-if="confirmText">
+            <v-col>
+              <v-checkbox v-model="confirmation" :color="buttonConfirmColor">
+                <template v-slot:label>
+                  {{ confirmText }}
+                </template>
+              </v-checkbox>
+            </v-col>
           </v-row>
         </v-container>
       </v-card-text>
@@ -18,6 +29,7 @@
         <v-btn text @click="dialogCancel">{{ buttonCancel || $t('common.cancel') }}</v-btn>
         <v-btn :color="buttonConfirmColor"
                @click="dialogConfirm"
+               :disabled="confirmText && !confirmation"
         >{{ buttonConfirm }}
         </v-btn>
       </v-card-actions>
@@ -33,6 +45,7 @@ export default Vue.extend({
   data: () => {
     return {
       modal: false,
+      confirmation: false,
     }
   },
   props: {
@@ -43,7 +56,15 @@ export default Vue.extend({
     },
     body: {
       type: String,
-      required: true,
+      required: false,
+    },
+    bodyHtml: {
+      type: String,
+      required: false,
+    },
+    confirmText: {
+      type: String,
+      required: false,
     },
     buttonCancel: {
       type: String,
@@ -68,6 +89,7 @@ export default Vue.extend({
   },
   methods: {
     dialogCancel() {
+      this.confirmation = false
       this.$emit('input', false)
     },
     dialogConfirm() {
