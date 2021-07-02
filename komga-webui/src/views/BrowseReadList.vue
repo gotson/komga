@@ -177,7 +177,7 @@ export default Vue.extend({
     },
     reloadBooks: throttle(function (this: any) {
       this.loadBooks(this.readListId)
-    }, 5000),
+    }, 1000),
     editSingleBook (book: BookDto) {
       this.$store.dispatch('dialogUpdateBooks', book)
     },

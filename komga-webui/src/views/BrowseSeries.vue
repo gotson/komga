@@ -686,7 +686,10 @@ export default Vue.extend({
       if (event.seriesId === this.seriesId) this.reloadPage()
     },
     readProgressChanged(event: ReadProgressSseDto) {
-      if (this.books.some(b => b.id === event.bookId)) this.reloadPage()
+      if (this.books.some(b => b.id === event.bookId)) {
+        this.reloadPage()
+        this.reloadSeries()
+      }
     },
     collectionChanged(event: CollectionSseDto) {
       if (event.seriesIds.includes(this.seriesId) || this.collections.map(x => x.id).includes(event.collectionId)) {
@@ -696,7 +699,11 @@ export default Vue.extend({
     },
     reloadPage: throttle(function (this: any) {
       this.loadPage(this.seriesId, this.page, this.sortActive)
-    }, 5000),
+    }, 1000),
+    reloadSeries: throttle(function (this: any) {
+      this.$komgaSeries.getOneSeries(this.seriesId)
+        .then((v: SeriesDto) => this.series = v)
+    }, 1000),
     async loadSeries(seriesId: string) {
       this.$komgaSeries.getOneSeries(seriesId)
         .then(v => this.series = v)

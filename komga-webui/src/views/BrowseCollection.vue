@@ -368,7 +368,7 @@ export default Vue.extend({
     },
     reloadSeries: throttle(function (this: any) {
       this.loadSeries(this.collectionId)
-    }, 5000),
+    }, 1000),
     async loadSeries(collectionId: string) {
       let authorsFilter = [] as AuthorDto[]
       authorRoles.forEach((role: string) => {

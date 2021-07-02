@@ -452,7 +452,7 @@ export default Vue.extend({
     },
     reloadPage: throttle(function (this: any) {
       this.loadPage(this.libraryId, this.page, this.sortActive)
-    }, 5000),
+    }, 1000),
     async loadPage(libraryId: string, page: number, sort: SortActive) {
       this.selectedSeries = []
 
