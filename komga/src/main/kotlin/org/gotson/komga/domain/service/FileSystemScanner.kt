@@ -1,7 +1,6 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
-import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.domain.model.ScanResult
@@ -23,7 +22,10 @@ import java.nio.file.attribute.FileTime
 import java.time.LocalDateTime
 import java.time.ZoneId
 import kotlin.io.path.exists
+import kotlin.io.path.extension
 import kotlin.io.path.name
+import kotlin.io.path.nameWithoutExtension
+import kotlin.io.path.pathString
 import kotlin.io.path.readAttributes
 import kotlin.time.measureTime
 
@@ -72,14 +74,14 @@ class FileSystemScanner(
         object : FileVisitor<Path> {
           override fun preVisitDirectory(dir: Path, attrs: BasicFileAttributes): FileVisitResult {
             logger.trace { "preVisit: $dir" }
-            if (dir.fileName?.toString()?.startsWith(".") == true ||
+            if (dir.name.startsWith(".") ||
               komgaProperties.librariesScanDirectoryExclusions.any { exclude ->
-                dir.toString().contains(exclude, true)
+                dir.pathString.contains(exclude, true)
               }
             ) return FileVisitResult.SKIP_SUBTREE
 
             pathToSeries[dir] = Series(
-              name = dir.fileName?.toString() ?: dir.toString(),
+              name = dir.name.ifBlank { dir.pathString },
               url = dir.toUri().toURL(),
               fileLastModified = attrs.getUpdatedTime()
             )
@@ -90,8 +92,8 @@ class FileSystemScanner(
           override fun visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult {
             logger.trace { "visitFile: $file" }
             if (attrs.isRegularFile) {
-              if (supportedExtensions.contains(FilenameUtils.getExtension(file.fileName.toString()).lowercase()) &&
-                !file.fileName.toString().startsWith(".")
+              if (supportedExtensions.contains(file.extension.lowercase()) &&
+                !file.name.startsWith(".")
               ) {
                 val book = pathToBook(file, attrs)
                 file.parent.let { key ->
@@ -174,7 +176,7 @@ class FileSystemScanner(
 
   private fun pathToBook(path: Path, attrs: BasicFileAttributes): Book =
     Book(
-      name = FilenameUtils.getBaseName(path.name),
+      name = path.nameWithoutExtension,
       url = path.toUri().toURL(),
       fileLastModified = attrs.getUpdatedTime(),
       fileSize = attrs.size()

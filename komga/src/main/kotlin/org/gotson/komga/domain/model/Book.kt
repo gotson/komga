@@ -5,8 +5,8 @@ import com.jakewharton.byteunits.BinaryByteUnit
 import java.io.Serializable
 import java.net.URL
 import java.nio.file.Path
-import java.nio.file.Paths
 import java.time.LocalDateTime
+import kotlin.io.path.toPath
 
 data class Book(
   val name: String,
@@ -24,7 +24,7 @@ data class Book(
 ) : Auditable(), Serializable {
 
   @delegate:Transient
-  val path: Path by lazy { Paths.get(this.url.toURI()) }
+  val path: Path by lazy { this.url.toURI().toPath() }
 
   @delegate:Transient
   val fileSizeHumanReadable: String by lazy { BinaryByteUnit.format(fileSize) }

@@ -30,6 +30,7 @@ import kotlin.io.path.deleteIfExists
 import kotlin.io.path.exists
 import kotlin.io.path.extension
 import kotlin.io.path.moveTo
+import kotlin.io.path.name
 import kotlin.io.path.notExists
 
 private val logger = KotlinLogging.logger {}
@@ -57,8 +58,8 @@ class BookImporter(
       }
 
       val destFile = series.path.resolve(
-        if (destinationName != null) Paths.get("$destinationName.${sourceFile.extension}").fileName.toString()
-        else sourceFile.fileName.toString()
+        if (destinationName != null) Paths.get("$destinationName.${sourceFile.extension}").name
+        else sourceFile.name
       )
 
       val upgradedBook =

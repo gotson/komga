@@ -7,6 +7,7 @@ import org.apache.tika.metadata.Metadata
 import org.springframework.stereotype.Service
 import java.io.InputStream
 import java.nio.file.Path
+import kotlin.io.path.name
 
 private val logger = KotlinLogging.logger {}
 
@@ -17,7 +18,7 @@ class ContentDetector(
 
   fun detectMediaType(path: Path): String {
     val metadata = Metadata().also {
-      it[Metadata.RESOURCE_NAME_KEY] = path.fileName.toString()
+      it[Metadata.RESOURCE_NAME_KEY] = path.name
     }
 
     return TikaInputStream.get(path).use {

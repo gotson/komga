@@ -12,6 +12,8 @@ import org.gotson.komga.infrastructure.sidecar.SidecarBookConsumer
 import org.gotson.komga.infrastructure.sidecar.SidecarSeriesConsumer
 import org.springframework.stereotype.Service
 import java.nio.file.Files
+import kotlin.io.path.extension
+import kotlin.io.path.nameWithoutExtension
 import kotlin.streams.asSequence
 
 private val logger = KotlinLogging.logger {}
@@ -27,15 +29,15 @@ class LocalArtworkProvider(
   fun getBookThumbnails(book: Book): List<ThumbnailBook> {
     logger.info { "Looking for local thumbnails for book: $book" }
     val bookPath = book.path
-    val baseName = FilenameUtils.getBaseName(bookPath.toString())
+    val baseName = bookPath.nameWithoutExtension
 
     val regex = "${Regex.escape(baseName)}(-\\d+)?".toRegex(RegexOption.IGNORE_CASE)
 
     return Files.list(bookPath.parent).use { dirStream ->
       dirStream.asSequence()
         .filter { Files.isRegularFile(it) }
-        .filter { regex.matches(FilenameUtils.getBaseName(it.toString())) }
-        .filter { supportedExtensions.contains(FilenameUtils.getExtension(it.fileName.toString()).lowercase()) }
+        .filter { regex.matches(it.nameWithoutExtension) }
+        .filter { supportedExtensions.contains(it.extension.lowercase()) }
         .filter { contentDetector.isImage(contentDetector.detectMediaType(it)) }
         .mapIndexed { index, path ->
           logger.info { "Found file: $path" }
@@ -55,8 +57,8 @@ class LocalArtworkProvider(
     return Files.list(series.path).use { dirStream ->
       dirStream.asSequence()
         .filter { Files.isRegularFile(it) }
-        .filter { supportedSeriesFiles.contains(FilenameUtils.getBaseName(it.toString().lowercase())) }
-        .filter { supportedExtensions.contains(FilenameUtils.getExtension(it.fileName.toString()).lowercase()) }
+        .filter { supportedSeriesFiles.contains(it.nameWithoutExtension.lowercase()) }
+        .filter { supportedExtensions.contains(it.extension.lowercase()) }
         .filter { contentDetector.isImage(contentDetector.detectMediaType(it)) }
         .mapIndexed { index, path ->
           logger.info { "Found file: $path" }

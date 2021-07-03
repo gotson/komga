@@ -4,8 +4,8 @@ import com.github.f4b6a3.tsid.TsidCreator
 import java.io.Serializable
 import java.net.URL
 import java.nio.file.Path
-import java.nio.file.Paths
 import java.time.LocalDateTime
+import kotlin.io.path.toPath
 
 data class Series(
   val name: String,
@@ -21,5 +21,5 @@ data class Series(
 ) : Auditable(), Serializable {
 
   @delegate:Transient
-  val path: Path by lazy { Paths.get(this.url.toURI()) }
+  val path: Path by lazy { this.url.toURI().toPath() }
 }

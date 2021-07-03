@@ -2,13 +2,13 @@ package org.gotson.komga.infrastructure.mediacontainer
 
 import mu.KotlinLogging
 import org.apache.commons.compress.archivers.zip.ZipFile
-import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.domain.model.MediaContainerEntry
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.jsoup.Jsoup
 import org.springframework.stereotype.Service
 import java.nio.file.Path
 import java.nio.file.Paths
+import kotlin.io.path.invariantSeparatorsPathString
 
 private val logger = KotlinLogging.logger {}
 
@@ -39,7 +39,7 @@ class EpubExtractor(
         val images = pages
           .map { opfDir?.resolve(it)?.normalize() ?: Paths.get(it) }
           .flatMap { pagePath ->
-            val doc = zip.getInputStream(zip.getEntry(pagePath.separatorsToUnix())).use { Jsoup.parse(it, null, "") }
+            val doc = zip.getInputStream(zip.getEntry(pagePath.invariantSeparatorsPathString)).use { Jsoup.parse(it, null, "") }
 
             val img = doc.getElementsByTag("img")
               .map { it.attr("src") } // get the src, which can be a relative path
@@ -51,9 +51,9 @@ class EpubExtractor(
           }
 
         return images.map { image ->
-          val name = image.separatorsToUnix()
+          val name = image.invariantSeparatorsPathString
           val mediaType = manifest.values.first {
-            it.href == (opfDir?.relativize(image) ?: image).separatorsToUnix()
+            it.href == (opfDir?.relativize(image) ?: image).invariantSeparatorsPathString
           }.mediaType
           val dimension = if (contentDetector.isImage(mediaType))
             zip.getInputStream(zip.getEntry(name)).use { imageAnalyzer.getDimension(it) }
@@ -88,8 +88,6 @@ class EpubExtractor(
     }
 
   fun Path.parentOrEmpty(): Path = parent ?: Paths.get("")
-
-  fun Path.separatorsToUnix(): String = FilenameUtils.separatorsToUnix(this.toString())
 
   private data class ManifestItem(
     val id: String,
