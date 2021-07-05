@@ -15,7 +15,7 @@
         color="secondary"
         text
         v-bind="attrs"
-        @click="snackbar.goTo.click"
+        @click="snackbar.goTo.click(); close()"
       >
         {{ snackbar.goTo.text }}
       </v-btn>
@@ -24,7 +24,8 @@
         text
         v-bind="attrs"
         @click="close"
-      >{{ $t('common.dismiss') }}</v-btn>
+      >{{ $t('common.dismiss') }}
+      </v-btn>
     </template>
   </v-snackbar>
 </template>
