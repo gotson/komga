@@ -205,28 +205,24 @@
       "label_roles": "Roolit"
     },
     "delete_collection": {
-      "button_cancel": "Peruuta",
       "button_confirm": "Poista",
       "confirm_delete": "Kyllä, poista kokoelma ”{name}”",
       "dialog_title": "Poista kokoelma",
       "warning_html": "Kokoelma <b>{name}</b> poistetaan. Tämä ei vaikuta mediatiedostoihisi. Tätä <b>ei voi</b> kumota. Jatka?"
     },
     "delete_library": {
-      "button_cancel": "Peruuta",
       "button_confirm": "Poista",
       "confirm_delete": "Kyllä, poista kirjasto ”{name}”",
       "title": "Poista kirjasto",
       "warning_html": "Kirjasto <b>{name}</b> poistetaan palvelimelta. Tämä ei vaikuta mediatiedostoihisi. Tätä <b>ei voi</b> kumota. Jatka?"
     },
     "delete_readlist": {
-      "button_cancel": "Peruuta",
       "button_confirm": "Poista",
       "confirm_delete": "Kyllä, poista lukulista ”{name}”",
       "dialog_title": "Poista lukulista",
       "warning_html": "Lukulista <b>{name}</b> poistetaan palvelimelta. Tämä ei vaikuta mediatiedostoihisi. Tätä <b>ei voi</b> kumota. Jatka?"
     },
     "delete_user": {
-      "button_cancel": "Peruuta",
       "button_confirm": "Poista",
       "confirm_delete": "Kyllä, poista käyttäjä ”{name}”",
       "dialog_title": "Poista käyttäjä",
@@ -345,7 +341,6 @@
       "field_repeat_password_error": "Salasanojen on oltava identtisiä."
     },
     "server_stop": {
-      "button_cancel": "Peruuta",
       "button_confirm": "Pysäytä",
       "confirmation_message": "Oletko varma, että haluat lopettaa Komgan?",
       "dialog_title": "Sammuta palvelin"

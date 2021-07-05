@@ -51,8 +51,7 @@
       "number": "Número",
       "series": "Série"
     },
-    "title": "Importar",
-    "warning_early_feature": "A importação de livros ainda é uma funcionalidade recente e deve ser usada com precaução. Tenha certeza de que seus arquivos estão devidamente salvos e com cópias de segurança antes de usar a funcionalidade de importação."
+    "title": "Importar"
   },
   "bookreader": {
     "beginning_of_book": "Você está no inicio do livro.",
@@ -221,28 +220,24 @@
       "label_roles": "Cargos"
     },
     "delete_collection": {
-      "button_cancel": "Cancelar",
       "button_confirm": "Excluir",
       "confirm_delete": "Sim, excluir a coleção \"{name}\"",
       "dialog_title": "Excluir Coleção",
       "warning_html": "A coleção <b>{name}</b> será removida deste servidor. Seus arquivos originais não serão afetados. Isso <b>não poderá</b> ser desfeito. Prosseguir?"
     },
     "delete_library": {
-      "button_cancel": "Cancelar",
       "button_confirm": "Excluir",
       "confirm_delete": "Sim, excluir a biblioteca \"{name}\"",
       "title": "Excluir Biblioteca",
       "warning_html": "A biblioteca <b>{name}</b> será removida deste servidor. Seus arquivos originais não serão afetados. Isso <b>não poderá</b> ser desfeito. Prosseguir?"
     },
     "delete_readlist": {
-      "button_cancel": "Cancelar",
       "button_confirm": "Excluir",
       "confirm_delete": "Sim, excluir a lista de leitura \"{name}\"",
       "dialog_title": "Excluir Lista de Leitura",
       "warning_html": "A lista de leitura <b>{name}</b> será removida deste servidor. Seus arquivos originais não serão afetados. Isso <b>não poderá</b> ser desfeito. Prosseguir?"
     },
     "delete_user": {
-      "button_cancel": "Cancelar",
       "button_confirm": "Excluir",
       "confirm_delete": "Sim, excluir o usuário \"{name}\"",
       "dialog_title": "Excluir Usuário",

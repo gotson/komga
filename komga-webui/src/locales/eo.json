@@ -3,6 +3,10 @@
     "dataFooter": {
       "pageText": "{0}-{1} el {2}"
     },
+    "dataIterator": {
+      "loadingText": "Ŝargante…",
+      "noResultsText": "Neniu kongrua rikordo troviĝis"
+    },
     "dataTable": {
       "itemsPerPageText": "Rikordoj en paĝo:",
       "sortBy": "Ordigi laŭ"
@@ -16,6 +20,14 @@
   "account_settings": {
     "account_settings": "Agordoj pri Konto",
     "change_password": "ŝanĝi pasvorton"
+  },
+  "authentication_activity": {
+    "datetime": "Dato kaj tempo",
+    "email": "Retpoŝta adreso",
+    "error": "Eraro",
+    "ip": "IP-adreso",
+    "success": "Sukceso",
+    "user_agent": "Klienta Aplikaĵo"
   },
   "author_roles": {
     "colorist": "kolorigistoj",
@@ -39,11 +51,17 @@
     "field_import_path": "Enporti el dosierujo",
     "info_part1": "Ĉi tiu ekrano permesas enporti dosierojn ekster viaj ekzistantaj bibliotekoj. Vi povas nur enporti dosierojn en ekzistantan serion; tiaokaze Komga movos aŭ kopios la dosierojn en la dosierujon de la elektita serio.",
     "info_part2": "Se vi elektos tiun numeron, kiunumera libro jam ekzistas, do vi povos kompari la du librojn. Se vi decidas enporti la libron malgraŭ tio, Komga anstataŭigos la ekzistantan libron per la nova.",
+    "notification": {
+      "go_to_book": "Iri al libro",
+      "import_failure": "Malsukcesis enporti libron: {file}",
+      "import_successful": "Libro enportiĝis sukcese: {book}",
+      "source_file": "Fontodosiero: {file}"
+    },
     "row": {
       "error_analyze_first": "Libro devas esti analizita antaŭe",
       "error_choose_series": "Elekti serion",
       "error_only_import_no_errors": "Nur libroj sen eraro estas enporteblaj",
-      "warning_upgrade": "Ekzistanta libro estas ĝisdatigota"
+      "warning_upgrade": "Ekzistanta libro estas anstataŭigota"
     },
     "table": {
       "destination_name": "Nomo de celo",
@@ -51,8 +69,7 @@
       "number": "Numero",
       "series": "Serio"
     },
-    "title": "Enporti",
-    "warning_early_feature": "Enportado de libroj ankoraŭ estas elprovata, kaj devas esti uzata singarde. Faru savkopiojn de viaj fontaj kaj celaj dosieroj antaŭ ol enporti."
+    "title": "Enporti"
   },
   "bookreader": {
     "beginning_of_book": "Vi estas ĉe la komenco de la libro.",
@@ -63,9 +80,9 @@
     "download_current_page": "Elŝuti aktualan paĝon",
     "end_of_book": "Vi atingis la finon de la libro.",
     "from_series_metadata": "el metadatenoj de la serio",
-    "move_next": "Alklaku aŭ premu \"Sekva\" denove por iri al la sekva libro.",
-    "move_next_exit": "Alklaku aŭ premu \"Sekva\" denove por eliri el la legilo.",
-    "move_previous": "Alklaku aŭ premu \"Antaŭa\" denove por iri al la antaŭa libro.",
+    "move_next": "Alklaku aŭ premu «Sekva» denove por iri al la sekva libro.",
+    "move_next_exit": "Alklaku aŭ premu «Sekva» denove por eliri el la legilo.",
+    "move_previous": "Alklaku aŭ premu «Antaŭa» denove por iri al la antaŭa libro.",
     "paged_reader_layout": {
       "double": "Duope",
       "double_no_cover": "Duope (sen kovrilo)",
@@ -159,6 +176,7 @@
     "collections": "Kolektoj",
     "create": "Krei",
     "delete": "Forigi",
+    "dismiss": "Fermi",
     "download": "Elŝuti",
     "email": "Retpoŝta adreso",
     "filter_no_matches": "La aktiva filtrilo ne lasas ion ajn",
@@ -173,6 +191,7 @@
     "pages": "paĝoj",
     "pages_n": "Neniuj paĝoj | 1 paĝo | {count} paĝoj",
     "password": "Pasvorto",
+    "pending_tasks": "Neniu farotaĵo | 1 farotaĵo | {count} farotaĵoj",
     "publisher": "Eldonejo",
     "read": "Legi",
     "readlists": "Legolistoj",
@@ -233,30 +252,32 @@
       "label_roles": "Roloj"
     },
     "delete_collection": {
-      "button_cancel": "Nuligi",
       "button_confirm": "Forigi",
-      "confirm_delete": "Jes, forigu la kolekton \"{name}\"",
+      "confirm_delete": "Jes, forigu la kolekton «{name}»",
+      "confirm_delete_multiple": "Jes, forigu {count} kolektojn",
       "dialog_title": "Forigi Kolekton",
-      "warning_html": "La kolekto <b>{name}</b> estas forigota de ĉi tiu servilo. Viaj dosieroj ne ŝanĝiĝos. Tio <b>ne</b> esteas malfarebla. Ĉu daŭrigi?"
+      "dialog_title_multiple": "Forigi kolektojn",
+      "warning_html": "La kolekto <b>{name}</b> estas forigota de ĉi tiu servilo. Viaj dosieroj ne ŝanĝiĝos. Tio <b>ne</b> esteas malfarebla. Ĉu daŭrigi?",
+      "warning_multiple_html": "{count} kolektoj estas forigotaj de ĉi tiu servilo. Viaj dosieroj ne ŝanĝiĝos. Tio <b>ne</b> esteas malfarebla. Ĉu daŭrigi?"
     },
     "delete_library": {
-      "button_cancel": "Nuligi",
       "button_confirm": "Forigi",
-      "confirm_delete": "Jes, forigu la bibliotekon \"{name}\"",
+      "confirm_delete": "Jes, forigu la bibliotekon «{name}»",
       "title": "Forigi Bibliotekon",
       "warning_html": "La biblioteko <b>{name}</b> estas forigota de ĉi tiu servilo. Viaj dosieroj ne ŝanĝiĝos. Tio <b>ne</b> esteas malfarebla. Ĉu daŭrigi?"
     },
     "delete_readlist": {
-      "button_cancel": "Nuligi",
       "button_confirm": "Forigi",
-      "confirm_delete": "Jes, forigu la legoliston \"{name}\"",
+      "confirm_delete": "Jes, forigu la legoliston «{name}»",
+      "confirm_delete_multiple": "Jes, forigu {count} legolistojn",
       "dialog_title": "Forigi Legoliston",
-      "warning_html": "La legolisto <b>{name}</b> estas forigota de ĉi tiu servilo. Viaj dosieroj ne ŝanĝiĝos. Tio <b>ne</b> esteas malfarebla. Ĉu daŭrigi?"
+      "dialog_title_multiple": "Forigi legolistojn",
+      "warning_html": "La legolisto <b>{name}</b> estas forigota de ĉi tiu servilo. Viaj dosieroj ne ŝanĝiĝos. Tio <b>ne</b> esteas malfarebla. Ĉu daŭrigi?",
+      "warning_multiple_html": "{count} legolistoj estas forigotaj de ĉi tiu servilo. Viaj dosieroj ne ŝanĝiĝos. Tio <b>ne</b> esteas malfarebla. Ĉu daŭrigi?"
     },
     "delete_user": {
-      "button_cancel": "Nuligi",
       "button_confirm": "Forigi",
-      "confirm_delete": "Jes, forigu la uzanton \"{name}\"",
+      "confirm_delete": "Jes, forigu la uzanton «{name}»",
       "dialog_title": "Forigi Uzanton",
       "warning_html": "La uzanto <b>{name}</b> estas forigota de ĉi tiu servilo. Tio <b>ne</b> esteas malfarebla. Ĉu daŭrigi?"
     },
@@ -318,9 +339,7 @@
       "label_import_local": "Enporti lokajn bildojn",
       "label_scanner": "Skanilo",
       "tab_general": "Ĝenerala",
-      "tab_options": "Opcioj",
-      "warning_early_feature_convert_to_cbz": "Konvertado de libroj ankoraŭ estas provata funkcio kaj devas esti uzata singarde. Certigu, ke vi havas savkopiojn de viaj dosieroj antaŭ ol uzi ĉi tiun funkcion.",
-      "warning_early_feature_repair_extensions": "Korektado de dosiersufiksoj ankoraŭ estas provata funkcio kaj devas esti uzata singarde. Certigu, ke vi havas savkopiojn de viaj dosieroj antaŭ ol uzi ĉi tiun funkcion."
+      "tab_options": "Opcioj"
     },
     "edit_readlist": {
       "button_cancel": "Nuligi",
@@ -392,7 +411,6 @@
       "title": "Elekti Serion"
     },
     "server_stop": {
-      "button_cancel": "Nuligi",
       "button_confirm": "Ĉesigi",
       "confirmation_message": "Ĉu vi certe volas ĉesigi Komga?",
       "dialog_title": "Haltigi servilon"
@@ -469,7 +487,12 @@
     "ERR_1014": "Neniu kongrua numero de libro en serio",
     "ERR_1015": "Eraro pri enportado de legolisto ComicsRack",
     "ERR_1016": "Dosierujo aŭ ne estas atingebla aŭ fakte ne estas dosierujo",
-    "ERR_1017": "Ne eblas skani dosierujon, kiu estas jam parto de ekzistanta biblioteko"
+    "ERR_1017": "Ne eblas skani dosierujon, kiu estas jam parto de ekzistanta biblioteko",
+    "ERR_1018": "Dosiero ne troviĝis",
+    "ERR_1019": "Ne eblas skani dosierujon, kiu estas jam parto de ekzistanta biblioteko",
+    "ERR_1020": "Anstataŭigota libro ne apartenas al la specifita serio",
+    "ERR_1021": "Cela dosiero jam ekzistas",
+    "ERR_1022": "Nova enportita libro ne estas skanebla"
   },
   "filter": {
     "age_rating": "aĝolimo",
@@ -518,13 +541,15 @@
     "add_to_readlist": "Aldoni en legoliston",
     "analyze": "Analizi",
     "delete": "Forigi",
+    "deselect_all": "Malelekti ĉion",
     "download_series": "Elŝuti serion",
     "edit": "Redakti",
     "edit_metadata": "Redakti metadatenojn",
     "mark_read": "Marki kiel legitan",
     "mark_unread": "Marki kiel ne legitan",
     "refresh_metadata": "Reŝargi metadatenojn",
-    "scan_library_files": "Skani bibliotekajn dosierojn"
+    "scan_library_files": "Skani bibliotekajn dosierojn",
+    "select_all": "Elekti ĉion"
   },
   "navigation": {
     "home": "Hejmo",
@@ -548,7 +573,7 @@
     "no_results": "La serĉo ne donis rezultojn",
     "search": "Serĉi",
     "search_for_something_else": "Provu serĉi ion alian",
-    "search_results_for": "Serĉi \"{name}\" en rezultoj"
+    "search_results_for": "Serĉi «{name}» en rezultoj"
   },
   "searchbox": {
     "in_library": "en {library}",
@@ -566,8 +591,11 @@
     "server_settings": "Agordoj pri Servilo"
   },
   "settings_user": {
+    "change_password": "Ŝanĝi pasvorton",
     "edit_shared_libraries": "Redakti komunajn bibliotekojn",
     "edit_user": "Redakti uzanton",
+    "latest_activity": "Lasta interago: {date}",
+    "no_recent_activity": "Neniu ĵusa interago",
     "role_administrator": "Administranto",
     "role_user": "Uzanto"
   },
@@ -594,6 +622,7 @@
     "USER": "Uzanto"
   },
   "users": {
+    "authentication_activity": "Aŭtentikigado",
     "users": "Uzantoj"
   },
   "welcome": {

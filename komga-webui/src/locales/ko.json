@@ -198,28 +198,24 @@
       "label_roles": "역할"
     },
     "delete_collection": {
-      "button_cancel": "취소",
       "button_confirm": "삭제",
       "confirm_delete": "예, 모음집 \"{name}\"을 삭제합니다",
       "dialog_title": "모음집 삭제",
       "warning_html": "모음집 <b>{name}</b> 이(가) 이 서버에서 제거됩니다. 미디어 파일은 영향을 받지 않습니다. <b>이 일은 되돌릴 수 없습니다.</b> 계속 하시겠습니까?"
     },
     "delete_library": {
-      "button_cancel": "취소",
       "button_confirm": "삭제",
       "confirm_delete": "네, 서재 \"{name}\" 를 삭제합니다",
       "title": "서재 삭제",
       "warning_html": "서재 <b>{name}</b> 이(가) 이 서버에서 제거됩니다. 미디어 파일은 영향을 받지 않습니다. <b>이 일은 되돌릴 수 없습니다.</b> 계속 하시겠습니까?"
     },
     "delete_readlist": {
-      "button_cancel": "취소",
       "button_confirm": "삭제",
       "confirm_delete": "예, 읽기 목록 \"{name}\"을 삭제합니다",
       "dialog_title": "읽기 목록 삭제",
       "warning_html": "읽기 목록 <b>{name}</b> 이(가) 이 서버에서 제거됩니다. 미디어 파일은 영향을 받지 않습니다. <b>이 일은 되돌릴 수 없습니다.</b> 계속 하시겠습니까?"
     },
     "delete_user": {
-      "button_cancel": "취소",
       "button_confirm": "삭제",
       "confirm_delete": "네, 사용자 {name}를 삭제합니다",
       "dialog_title": "사용자 삭제",

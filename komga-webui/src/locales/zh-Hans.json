@@ -3,6 +3,10 @@
     "dataFooter": {
       "pageText": "{0}-{1} 或 {2}"
     },
+    "dataIterator": {
+      "loadingText": "正在载入项目…",
+      "noResultsText": "未能找到匹配的记录"
+    },
     "dataTable": {
       "itemsPerPageText": "每页行数:",
       "sortBy": "排序方式"
@@ -16,6 +20,14 @@
   "account_settings": {
     "account_settings": "账户设置",
     "change_password": "修改密码"
+  },
+  "authentication_activity": {
+    "datetime": "日期/时间",
+    "email": "邮箱",
+    "error": "错误",
+    "ip": "IP地址",
+    "success": "成功",
+    "user_agent": "用户代理"
   },
   "author_roles": {
     "colorist": "上色者",
@@ -39,6 +51,12 @@
     "field_import_path": "从文件夹导入",
     "info_part1": "此屏幕允许您导入现有库之外的文件. 只能将文件导入到现有序列, 在这种情况下Komga会将文件移动或复制到所选序列的目录中.",
     "info_part2": "如果您为一本书选择了一个编号, 并且已经存在一本带有该编号的书,你可以比较这两本书.如果您决定导入该书. Komga将升级现有的书使用新文件, 有效地用新文件替换旧文件.",
+    "notification": {
+      "go_to_book": "转到书籍",
+      "import_failure": "无法导入书籍:{file}",
+      "import_successful": "书籍导入成功: {book}",
+      "source_file": "源文件: {file}"
+    },
     "row": {
       "error_analyze_first": "书籍需要先分析",
       "error_choose_series": "选择一个系列",
@@ -51,8 +69,7 @@
       "number": "编号",
       "series": "系列"
     },
-    "title": "导入",
-    "warning_early_feature": "图书导入仍然是早期的功能，必须谨慎使用。在使用导入功能之前，请确保已备份源文件和目标文件。"
+    "title": "导入"
   },
   "bookreader": {
     "beginning_of_book": "你可以开始阅读这本书.",
@@ -159,6 +176,7 @@
     "collections": "收藏",
     "create": "创建",
     "delete": "删除",
+    "dismiss": "解除",
     "download": "下载",
     "email": "邮箱",
     "filter_no_matches": "过滤器没有匹配的",
@@ -173,6 +191,7 @@
     "pages": "页",
     "pages_n": "无 | 1 页 | {count} 页",
     "password": "密码",
+    "pending_tasks": "无挂起任务| 1个挂起任务|{count}个挂起任务",
     "publisher": "发布者",
     "read": "阅读",
     "readlists": "阅读列表",
@@ -233,28 +252,30 @@
       "label_roles": "角色"
     },
     "delete_collection": {
-      "button_cancel": "取消",
       "button_confirm": "删除",
       "confirm_delete": "是否确定删除 \"{name}\"收藏",
+      "confirm_delete_multiple": "是，删除 {count} 个合集",
       "dialog_title": "删除收藏",
-      "warning_html": "<b>{name}</b>收藏将从此服务器中删除.您的媒体文件不会受到影响.此操作<b>不能撤消</b>.继续吗？"
+      "dialog_title_multiple": "删除合集",
+      "warning_html": "<b>{name}</b>收藏将从此服务器中删除.您的媒体文件不会受到影响.此操作<b>不能撤消</b>.继续吗？",
+      "warning_multiple_html": "将从此服务器删除 {count} 个合集。你的媒体文件不会受到影响。此操作<b>无法</b>撤销。继续吗？"
     },
     "delete_library": {
-      "button_cancel": "取消",
       "button_confirm": "删除",
       "confirm_delete": "是的, 删除 \"{name}\"的库",
       "title": "删除库",
       "warning_html": "<b>{name}</b>库将从此服务器中删除.您的媒体文件不会受到影响.此操作<b>不能撤消</b>.继续吗？"
     },
     "delete_readlist": {
-      "button_cancel": "取消",
       "button_confirm": "删除",
       "confirm_delete": "是的, 删除阅读列表 \"{name}\"",
+      "confirm_delete_multiple": "是，删除 {count} 个阅读列表",
       "dialog_title": "删除阅读列表",
-      "warning_html": "<b>{name}</b>列表将从此服务器中删除. 您的媒体文件不会受到影响. 此操作<b>不能撤消</b>. 继续吗？"
+      "dialog_title_multiple": "删除阅读列表",
+      "warning_html": "<b>{name}</b>列表将从此服务器中删除. 您的媒体文件不会受到影响. 此操作<b>不能撤消</b>. 继续吗？",
+      "warning_multiple_html": "将从此服务器中删除 {count} 个阅读列表。你的媒体文件不会受影响。此操作 <b>无法</b>撤销。继续吗？"
     },
     "delete_user": {
-      "button_cancel": "取消",
       "button_confirm": "删除",
       "confirm_delete": "是的,删除用户“{name}”",
       "dialog_title": "删除用户",
@@ -318,9 +339,7 @@
       "label_import_local": "导入本地媒体",
       "label_scanner": "扫描器",
       "tab_general": "常规",
-      "tab_options": "选项",
-      "warning_early_feature_convert_to_cbz": "书籍转换仍然是早期的功能，必须谨慎使用。请确保在使用之前备份了您的文件。",
-      "warning_early_feature_repair_extensions": "修复文件扩展名仍然是早期的功能，必须谨慎使用。请确保在使用之前备份了您的文件。"
+      "tab_options": "选项"
     },
     "edit_readlist": {
       "button_cancel": "取消",
@@ -392,7 +411,6 @@
       "title": "选择系列"
     },
     "server_stop": {
-      "button_cancel": "取消",
       "button_confirm": "停止",
       "confirmation_message": "你确定想要关闭Komga服务器吗？",
       "dialog_title": "关闭服务器"
@@ -469,7 +487,12 @@
     "ERR_1014": "系列中的书号不匹配",
     "ERR_1015": "反序列化阅读列表时出错",
     "ERR_1016": "目录不可访问",
-    "ERR_1017": "无法扫描作为现有库一部分的文件夹"
+    "ERR_1017": "无法扫描作为现有库一部分的文件夹",
+    "ERR_1018": "文件未找到",
+    "ERR_1019": "无法导入属于现有库的文件",
+    "ERR_1020": "要升级的书籍不属于提供的系列",
+    "ERR_1021": "目标文件已存在",
+    "ERR_1022": "无法扫描新导入的书籍"
   },
   "filter": {
     "age_rating": "年龄限制",
@@ -518,13 +541,15 @@
     "add_to_readlist": "添加到阅读列表",
     "analyze": "分析",
     "delete": "删除",
+    "deselect_all": "取消选中所有",
     "download_series": "下载系列",
     "edit": "编辑",
     "edit_metadata": "编辑元数据",
     "mark_read": "标记为已读",
     "mark_unread": "标记为未读",
     "refresh_metadata": "刷新元数据",
-    "scan_library_files": "扫描库文件"
+    "scan_library_files": "扫描库文件",
+    "select_all": "选择所有"
   },
   "navigation": {
     "home": "主页",
@@ -566,8 +591,11 @@
     "server_settings": "服务器设置"
   },
   "settings_user": {
+    "change_password": "更改密码",
     "edit_shared_libraries": "编辑共享库",
     "edit_user": "编辑用户",
+    "latest_activity": "最新活动：{date}",
+    "no_recent_activity": "近期无活动",
     "role_administrator": "管理员",
     "role_user": "用户"
   },
@@ -594,6 +622,7 @@
     "USER": "用户"
   },
   "users": {
+    "authentication_activity": "身份验证活动",
     "users": "用户"
   },
   "welcome": {

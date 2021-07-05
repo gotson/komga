@@ -51,8 +51,7 @@
       "number": "Số",
       "series": "Sê-ri"
     },
-    "title": "Nhập",
-    "warning_early_feature": "Nhập sách vẫn là một tính năng thử nghiệm và phải được sử dụng một cách thận trọng. Đảm bảo tệp nguồn và tệp đích của bạn được sao lưu trước khi sử dụng tính năng Nhập."
+    "title": "Nhập"
   },
   "bookreader": {
     "beginning_of_book": "Bạn đang ở phần đầu của cuốn sách.",
@@ -229,28 +228,24 @@
       "label_roles": "Vai trò"
     },
     "delete_collection": {
-      "button_cancel": "Hủy",
       "button_confirm": "Xóa",
       "confirm_delete": "Có, xóa bộ sưu tập \"{name}\"",
       "dialog_title": "Xoá bộ sưu tập",
       "warning_html": "Bộ sưu tập <b>{name}</b> sẽ bị xóa khỏi máy chủ này. Các tệp phương tiện của bạn sẽ không bị ảnh hưởng. Điều này <b> không thể hoàn tác</b>. Tiếp tục?"
     },
     "delete_library": {
-      "button_cancel": "Hủy",
       "button_confirm": "Xóa",
       "confirm_delete": "Có, xóa thư viện \"{name}\"",
       "title": "Xóa Thư viện",
       "warning_html": "Thư viện <b>{name}</b> sẽ bị xóa khỏi máy chủ này. Các tệp phương tiện của bạn sẽ không bị ảnh hưởng. Điều này <b> không thể hoàn tác</b>. Tiếp tục?"
     },
     "delete_readlist": {
-      "button_cancel": "Hủy",
       "button_confirm": "Xóa",
       "confirm_delete": "Có, xóa danh sách đọc \"{name}\"",
       "dialog_title": "Xóa Bỏ Danh sách Đọc",
       "warning_html": "Danh sách đọc <b>{name}</b> sẽ bị xóa khỏi máy chủ này. Các tệp phương tiện của bạn sẽ không bị ảnh hưởng. Điều này <b>không thể hoàn tác</b>. tiếp tục?"
     },
     "delete_user": {
-      "button_cancel": "Hủy",
       "button_confirm": "Xóa",
       "confirm_delete": "Có, xóa người dùng \"{name}\"",
       "dialog_title": "Xóa Người dùng",
@@ -314,9 +309,7 @@
       "label_import_local": "Nhập nội dung phương tiện cục bộ",
       "label_scanner": "Máy quét",
       "tab_general": "Chung",
-      "tab_options": "Tùy chọn",
-      "warning_early_feature_convert_to_cbz": "Chuyển đổi sách vẫn là một tính năng thử nghiệm và phải được sử dụng một cách thận trọng. Đảm bảo các tệp của bạn được sao lưu trước khi sử dụng.",
-      "warning_early_feature_repair_extensions": "Phần mở rộng tệp sửa chữa vẫn là một tính năng thử nghiệm và phải được sử dụng một cách thận trọng. Đảm bảo các tệp của bạn được sao lưu trước khi sử dụng."
+      "tab_options": "Tùy chọn"
     },
     "edit_readlist": {
       "button_cancel": "Hủy",
@@ -388,7 +381,6 @@
       "title": "Chọn sê-ri"
     },
     "server_stop": {
-      "button_cancel": "Hủy",
       "button_confirm": "Dừng",
       "confirmation_message": "Bạn có chắc chắn muốn dừng Komga không?",
       "dialog_title": "Tắt máy chủ"

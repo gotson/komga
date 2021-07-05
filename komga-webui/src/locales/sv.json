@@ -3,6 +3,10 @@
     "dataFooter": {
       "pageText": "{0}-{1} av {2}"
     },
+    "dataIterator": {
+      "loadingText": "Laddar objekt…",
+      "noResultsText": "Inga matchande uppgifter hittades"
+    },
     "dataTable": {
       "itemsPerPageText": "Rader per sida:",
       "sortBy": "Sortera efter"
@@ -16,6 +20,14 @@
   "account_settings": {
     "account_settings": "Kontoinställningar",
     "change_password": "ändra lösenord"
+  },
+  "authentication_activity": {
+    "datetime": "Datum & Tid",
+    "email": "E-post",
+    "error": "Fel",
+    "ip": "IP",
+    "success": "Lyckades",
+    "user_agent": "Användaragent"
   },
   "author_roles": {
     "colorist": "färgläggare",
@@ -39,6 +51,12 @@
     "field_import_path": "Importera från mapp",
     "info_part1": "Den här skärmen låter dig importera filer som ligger utanför dina befintliga bibliotek. Du kan bara importera filer till befintlig serie, i vilket fall Komga flyttar eller kopierar filerna till katalogen för den valda serien.",
     "info_part2": "Om du väljer ett nummer för en bok och det redan finns en bok med det numret du kommer att kunna jämföra de två böckerna. Om du väljer att importera boken kommer Komga att uppgradera den befintliga boken med den nya, ersätter effektivt den gamla filen med den nya.",
+    "notification": {
+      "go_to_book": "Gå till boken",
+      "import_failure": "Det gick inte att importera boken: {file}",
+      "import_successful": "Boken importerades framgångsrikt: {book}",
+      "source_file": "Källfil: {file}"
+    },
     "row": {
       "error_analyze_first": "Boken måste analyseras först",
       "error_choose_series": "Välj en serie",
@@ -51,8 +69,7 @@
       "number": "Nummer",
       "series": "Serie"
     },
-    "title": "Importera",
-    "warning_early_feature": "Bokimport är fortfarande en funktion som är i ett tidigt skede och måste användas med försiktighet. Se till att din källa och destinationsfiler är säkerhetskopierade innan du använder funktionen Import."
+    "title": "Importera"
   },
   "bookreader": {
     "beginning_of_book": "Du är i början av boken.",
@@ -159,6 +176,7 @@
     "collections": "Samlingar",
     "create": "Skapa",
     "delete": "Redera",
+    "dismiss": "Avfärda",
     "download": "Ladda ner",
     "email": "E-post",
     "filter_no_matches": "Det aktiva filtret ger ingen träff",
@@ -173,6 +191,7 @@
     "pages": "sidor",
     "pages_n": "Inga sidor | 1 sida | {count} sidor",
     "password": "Lösenord",
+    "pending_tasks": "Inga väntande uppgifter | 1 väntande uppgift | {count} väntande uppgifter",
     "publisher": "Utgivare",
     "read": "Läs",
     "readlists": "Läslistor",
@@ -233,28 +252,30 @@
       "label_roles": "Roller"
     },
     "delete_collection": {
-      "button_cancel": "Avbryt",
       "button_confirm": "Radera",
       "confirm_delete": "Ja, radera samlingen ”{name}”",
+      "confirm_delete_multiple": "Ja, ta bort {count} samlingar",
       "dialog_title": "Radera samling",
-      "warning_html": "Samlingen <b>{name}</b> tas bort från den här servern. Dina mediefiler påverkas inte. Detta <b>kan inte</b> ångras. Fortsätta?"
+      "dialog_title_multiple": "Ta bort samlingar",
+      "warning_html": "Samlingen <b>{name}</b> tas bort från den här servern. Dina mediefiler påverkas inte. Detta <b>kan inte</b> ångras. Fortsätta?",
+      "warning_multiple_html": "{count} samlingar tas bort från den här servern. Dina mediefiler påverkas inte. Denna <b> kan inte </b> ångras. Fortsätta?"
     },
     "delete_library": {
-      "button_cancel": "Avbryt",
       "button_confirm": "Radera",
       "confirm_delete": "Ja, redera biblioteket ”{name}”",
       "title": "Redera bibliotek",
       "warning_html": "Biblioteket <b>{name}</b> kommer att tas bort från den här servern. Dina mediefiler påverkas inte. Detta <b>kan inte</b> ångras. Fortsätta?"
     },
     "delete_readlist": {
-      "button_cancel": "Avbryt",
       "button_confirm": "Radera",
       "confirm_delete": "Ja, radera läslistan ”{name}”",
+      "confirm_delete_multiple": "Ja, ta bort {count} läslistor",
       "dialog_title": "Radera läslista",
-      "warning_html": "Läslistan <b>{name}</b> tas bort från den här servern. Dina mediefiler påverkas inte. Detta <b>kan inte</b> ångras. Fortsätta?"
+      "dialog_title_multiple": "Ta bort läslistor",
+      "warning_html": "Läslistan <b>{name}</b> tas bort från den här servern. Dina mediefiler påverkas inte. Detta <b>kan inte</b> ångras. Fortsätta?",
+      "warning_multiple_html": "{count} läslistor kommer att tas bort från denna server. Dina mediefiler påverkas inte. Denna <b> kan inte </b> ångras. Fortsätta?"
     },
     "delete_user": {
-      "button_cancel": "Avbryt",
       "button_confirm": "Radera",
       "confirm_delete": "Ja, radera användare ”{name}”",
       "dialog_title": "Radera användare",
@@ -318,9 +339,7 @@
       "label_import_local": "Importera lokala mediatillgångar",
       "label_scanner": "Skanning",
       "tab_general": "Allmänt",
-      "tab_options": "Alternativ",
-      "warning_early_feature_convert_to_cbz": "Bokkonvertering är fortfarande en tidig funktion och måste användas med försiktighet. Se till att dina filer är säkerhetskopierade innan du använder den.",
-      "warning_early_feature_repair_extensions": "Reparation av filtillägg är fortfarande en tidig funktion och måste användas med försiktighet. Se till att dina filer är säkerhetskopierade innan du använder dem."
+      "tab_options": "Alternativ"
     },
     "edit_readlist": {
       "button_cancel": "Avbryt",
@@ -392,7 +411,6 @@
       "title": "Välj serie"
     },
     "server_stop": {
-      "button_cancel": "Avbryt",
       "button_confirm": "Stopp",
       "confirmation_message": "Är du säker på att du vill stoppa Komga?",
       "dialog_title": "Stäng av servern"
@@ -421,7 +439,7 @@
     "transient_book_viewer": {
       "label_candidate": "Kandidat",
       "label_existing": "Befintlig",
-      "page_of_pages": "{page} / {pages}",
+      "page_of_pages": "{page}/{pages}",
       "title": "Inspektera boken",
       "title_comparison": "Bokjämförelse"
     }
@@ -469,7 +487,12 @@
     "ERR_1014": "Ingen matchning för boknummer inom serien",
     "ERR_1015": "Fel vid avinstallation av ComicRack Läslista",
     "ERR_1016": "Katalog inte tillgänglig eller är inte en katalog",
-    "ERR_1017": "Kan inte skanna en mapp som är en del av ett befintligt bibliotek"
+    "ERR_1017": "Kan inte skanna en mapp som är en del av ett befintligt bibliotek",
+    "ERR_1018": "Filen hittades inte",
+    "ERR_1019": "Det går inte att importera filer som ingår i ett befintligt bibliotek",
+    "ERR_1020": "Boken att uppgradera tillhör inte den medföljande serien",
+    "ERR_1021": "Destinationsfilen finns redan",
+    "ERR_1022": "Nyimporterad boken kunde inte skannas"
   },
   "filter": {
     "age_rating": "åldersgräns",
@@ -518,13 +541,15 @@
     "add_to_readlist": "Lägg till i läslista",
     "analyze": "Analysera",
     "delete": "Radera",
+    "deselect_all": "Avmarkera alla",
     "download_series": "Ladda ner serie",
     "edit": "Redigera",
     "edit_metadata": "Redigera metadata",
     "mark_read": "Markera som läst",
     "mark_unread": "Markera som oläst",
     "refresh_metadata": "Uppdatera metadata",
-    "scan_library_files": "Skanna biblioteksfiler"
+    "scan_library_files": "Skanna biblioteksfiler",
+    "select_all": "Välj alla"
   },
   "navigation": {
     "home": "Hem",
@@ -566,8 +591,11 @@
     "server_settings": "Serverinställningar"
   },
   "settings_user": {
+    "change_password": "Byt lösenord",
     "edit_shared_libraries": "Redigera delade bibliotek",
     "edit_user": "Redigera användare",
+    "latest_activity": "Senaste aktivitet: {date}",
+    "no_recent_activity": "Ingen aktivitet nyligen",
     "role_administrator": "Administratör",
     "role_user": "Användare"
   },
@@ -594,6 +622,7 @@
     "USER": "Användare"
   },
   "users": {
+    "authentication_activity": "Autentiseringsaktivitet",
     "users": "Användare"
   },
   "welcome": {

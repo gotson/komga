@@ -185,28 +185,24 @@
       "label_roles": "Роли"
     },
     "delete_collection": {
-      "button_cancel": "Отмена",
       "button_confirm": "Удалить",
       "confirm_delete": "Да, удалить коллекцию \"{name}\"",
       "dialog_title": "Удалить коллекцию",
       "warning_html": "Коллекция <b>{name}</b> будет удалена с этого сервера. Ваши медиа файлы не будут затронуты. Это действие <b>не может</b> быть отменено. Продолжить?"
     },
     "delete_library": {
-      "button_cancel": "Отмена",
       "button_confirm": "Удалить",
       "confirm_delete": "Да, удалить библиотеку \"{name}\"",
       "title": "Удалить Библиотеку",
       "warning_html": "Библиотека <b>{name}</b> будет удалена с этого сервера. Ваши медиа файлы не будут затроны. Это действие <b>не может</b> быть отменено. Продолжить?"
     },
     "delete_readlist": {
-      "button_cancel": "Отмена",
       "button_confirm": "Удалить",
       "confirm_delete": "Да, удалить список чтения \"{name}\"",
       "dialog_title": "Удалить Список Чтения",
       "warning_html": "Список чтения <b>{name}</b> будет удален с этого сервера. Ваши медиа файлы не будут затронуты. Это действие <b>не может</b> быть отменено. Продолжить?"
     },
     "delete_user": {
-      "button_cancel": "Отмена",
       "button_confirm": "Удалить",
       "confirm_delete": "Да, удалить пользователя \"{name}\"",
       "dialog_title": "Удалить Пользователя",
@@ -321,7 +317,6 @@
       "field_repeat_password_error": "Пароли должны совпадать."
     },
     "server_stop": {
-      "button_cancel": "Отмена",
       "button_confirm": "Остановить",
       "confirmation_message": "Вы уверены что хотите остановить Komga?",
       "dialog_title": "Выключить сервер"
