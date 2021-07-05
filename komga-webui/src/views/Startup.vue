@@ -1,5 +1,5 @@
 <template>
-  <div class="ma-3">
+  <div class="pa-6">
     <v-row align="center" justify="center">
       <v-img src="../assets/logo.svg"
              max-width="400"
