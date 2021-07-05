@@ -1,3 +1,14 @@
+## [0.105.2](https://github.com/gotson/komga/compare/v0.105.1...v0.105.2) (2021-07-05)
+
+
+### Bug Fixes
+
+* translated using Weblate (Danish) ([9f2e2dc](https://github.com/gotson/komga/commit/9f2e2dca14ace0b65a5a570cef763e2dc5d57a9a))
+* **webui:** clear searchbox results on blur ([e1a2cec](https://github.com/gotson/komga/commit/e1a2cecce409cb236d5aa4bf375bfe2bea49b7c9))
+* **webui:** close notification when clicking on primary action ([403ab0a](https://github.com/gotson/komga/commit/403ab0a04f7a6e619fe3f94fd3ecea865c4b24c5))
+* **webui:** logo alignment on startup page ([1de8a94](https://github.com/gotson/komga/commit/1de8a944bdc2db99dc644866aea1793857e09c45))
+* **webui:** show empty state if there's not books to import ([7ddbac9](https://github.com/gotson/komga/commit/7ddbac95be63a3867d0d544e3d722b257cf1d19e))
+
 ## [0.105.1](https://github.com/gotson/komga/compare/v0.105.0...v0.105.1) (2021-07-02)
 
 
