@@ -32,6 +32,14 @@
       </v-col>
     </v-row>
 
+    <empty-state
+      v-if="scanned && transientBooks.length === 0"
+      :title="$t('book_import.no_files_found')"
+      :sub-title="$t('book_import.try_another_directory')"
+      icon-color="secondary"
+      icon="mdi-book-search"
+      />
+
     <template v-if="transientBooks.length > 0">
       <v-divider/>
 
@@ -104,10 +112,11 @@ import {BookImportBatchDto, BookImportDto} from "@/types/komga-books";
 import {CopyMode} from "@/types/enum-books";
 import {convertErrorCodes} from "@/functions/error-codes";
 import {ERROR} from "@/types/events";
+import EmptyState from "@/components/EmptyState.vue";
 
 export default Vue.extend({
   name: 'BookImport',
-  components: {FileBrowserDialog, FileImportRow, SeriesPickerDialog},
+  components: {EmptyState, FileBrowserDialog, FileImportRow, SeriesPickerDialog},
   data: () => ({
     modalFileBrowser: false,
     modalSeriesPicker: false,
@@ -115,6 +124,7 @@ export default Vue.extend({
     selectedSeries: undefined as SeriesDto | undefined,
     payloads: [] as BookImportDto[],
     transientBooks: [] as TransientBookDto[],
+    scanned: false,
     copyMode: CopyMode.HARDLINK,
     importFinished: false,
   }),
@@ -161,8 +171,10 @@ export default Vue.extend({
   methods: {
     async scanBooks() {
       this.transientBooks = []
+      this.scanned = false
       try {
         this.transientBooks = await this.$komgaTransientBooks.scanForTransientBooks(this.importPath)
+        this.scanned = true
       } catch (e) {
         this.$eventHub.$emit(ERROR, {message: convertErrorCodes(e.message)} as ErrorEvent)
       }

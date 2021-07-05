@@ -51,6 +51,7 @@
     "field_import_path": "Import from folder",
     "info_part1": "This screen lets you import files that are outside your existing libraries. You can only import files into existing Series, in which case Komga will move or copy the files into the directory of the chosen Series.",
     "info_part2": "If you choose a number for a book, and a book already exists with that number, then you will be able to compare the 2 books. If you decide to import the book, Komga will upgrade the existing book with the new one, effectively replacing the old file with the new.",
+    "no_files_found": "No files found",
     "notification": {
       "go_to_book": "Go to book",
       "import_failure": "Failed to import book: {file}",
@@ -69,7 +70,8 @@
       "number": "Number",
       "series": "Series"
     },
-    "title": "Import"
+    "title": "Import",
+    "try_another_directory": "Try searching another directory"
   },
   "bookreader": {
     "beginning_of_book": "You're at the beginning of the book.",
