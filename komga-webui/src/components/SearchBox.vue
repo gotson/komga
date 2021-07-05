@@ -19,6 +19,7 @@
       :search-input.sync="search"
       :menu-props="{maxHeight: $vuetify.breakpoint.height * .9, minWidth: $vuetify.breakpoint.mdAndUp ? $vuetify.breakpoint.width * .4 : $vuetify.breakpoint.width * .8}"
       @keydown.esc="clear"
+      @blur="clear"
       ref="searchbox"
     >
       <template v-slot:selection>
@@ -191,7 +192,6 @@ export default Vue.extend({
     }, 500),
     clear() {
       this.search = null
-      // this.selectedItem = null
       this.showResults = false
       this.series = []
       this.books = []
