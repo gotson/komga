@@ -3,6 +3,10 @@
     "dataFooter": {
       "pageText": "{0}-{1} di {2}"
     },
+    "dataIterator": {
+      "loadingText": "Caricamento elementi...",
+      "noResultsText": "Nessuna corrispondenza trovata"
+    },
     "dataTable": {
       "itemsPerPageText": "Righe per pagina:",
       "sortBy": "Ordina per"
@@ -16,6 +20,14 @@
   "account_settings": {
     "account_settings": "Impostazioni Profilo",
     "change_password": "cambia password"
+  },
+  "authentication_activity": {
+    "datetime": "Data Ora",
+    "email": "Email",
+    "error": "Errore",
+    "ip": "IP",
+    "success": "Successo",
+    "user_agent": "User agent"
   },
   "author_roles": {
     "colorist": "coloristi",
@@ -39,6 +51,12 @@
     "field_import_path": "Importa da cartella",
     "info_part1": "Questa schermata ti permette di importare file che sono al di fuori delle tue librerie esistenti. Puoi solo importare file in serie esistenti, nel qual caso Komga sposterà o copierà i file nella cartella della serie scelta.",
     "info_part2": "Se scegli un numero per un fumetto e un fumetto esiste già con quel numero, allora potrai confrontare i due fumetti. Se decidi di importare il fumetto, Komga aggiornerà il fumetto esistente con quello nuovo, sostituendo effettivamente il vecchio file con il nuovo.",
+    "notification": {
+      "go_to_book": "Vai al fumetto",
+      "import_failure": "Impossibile importare il file: {file}",
+      "import_successful": "File importato con successo: {book}",
+      "source_file": "File di origine: {file}"
+    },
     "row": {
       "error_analyze_first": "Il fumetto deve essere analizzato prima",
       "error_choose_series": "Scegli una serie",
@@ -51,8 +69,7 @@
       "number": "Numero",
       "series": "Serie"
     },
-    "title": "Importa",
-    "warning_early_feature": "Importa Fumetti è ancora in beta e deve essere usata con cautela. Assicurati che i file di origine e di destinazione abbiano un backup prima di usare questa funzione."
+    "title": "Importa"
   },
   "bookreader": {
     "beginning_of_book": "Sei all'inizio del fumetto.",
@@ -159,6 +176,7 @@
     "collections": "Raccolte",
     "create": "Crea",
     "delete": "Elimina",
+    "dismiss": "Chiudi",
     "download": "Scarica",
     "email": "E-mail",
     "filter_no_matches": "Il filtro attivo non ha corrispondenze",
@@ -173,6 +191,7 @@
     "pages": "pagine",
     "pages_n": "Nessuna pagina | 1 pagina | {count} pagine",
     "password": "Password",
+    "pending_tasks": "Nessuna attività in sospeso | 1 attività in sospeso | {count} attività in sospeso",
     "publisher": "Editore",
     "read": "Leggi",
     "readlists": "Liste di lettura",
@@ -233,28 +252,30 @@
       "label_roles": "Permessi"
     },
     "delete_collection": {
-      "button_cancel": "Annulla",
       "button_confirm": "Elimina",
       "confirm_delete": "Sì, elimina la raccolta «{name}»",
+      "confirm_delete_multiple": "Sì, elimina {count} raccolte",
       "dialog_title": "Elimina Raccolta",
-      "warning_html": "La raccolta <b>{name}</b> sarà rimossa da questo server. I tuoi file non saranno interessati. Questo <b>non</b> può essere annullato. Continuare?"
+      "dialog_title_multiple": "Elimina Raccolte",
+      "warning_html": "La raccolta <b>{name}</b> sarà rimossa da questo server. I tuoi file non saranno interessati. Questo <b>non</b> può essere annullato. Continuare?",
+      "warning_multiple_html": "{count} raccolte verranno rimosse da questo server. I file non saranno interessati. Questo <b>non</b> può essere annullato. Continue?"
     },
     "delete_library": {
-      "button_cancel": "Annulla",
       "button_confirm": "Elimina",
       "confirm_delete": "Sì, elimina la libreria «{name}»",
       "title": "Elimina Libreria",
       "warning_html": "La libreria <b>{name}</b> sarà rimossa da questo server. I tuoi file multimediali non saranno interessati. Questo <b> non può</b> essere annullato. Continuare?"
     },
     "delete_readlist": {
-      "button_cancel": "Annulla",
       "button_confirm": "Elimina",
       "confirm_delete": "Sì, cancella la lista di lettura «{name}»",
+      "confirm_delete_multiple": "Sì, elimina {count} elenchi di lettura",
       "dialog_title": "Elimina Elenco Lettura",
-      "warning_html": "La lista di lettura <b>{name}</b> sarà rimossa da questo server. I tuoi file multimediali non saranno interessati. Questo <b>non può</b> essere annullato. Continuare?"
+      "dialog_title_multiple": "Elimina elenchi di lettura",
+      "warning_html": "La lista di lettura <b>{name}</b> sarà rimossa da questo server. I tuoi file multimediali non saranno interessati. Questo <b>non può</b> essere annullato. Continuare?",
+      "warning_multiple_html": "{count} raccolte verranno rimosse da questo server. I file non saranno interessati. Questo <b>non</b> può essere annullato. Continuare?"
     },
     "delete_user": {
-      "button_cancel": "Annulla",
       "button_confirm": "Elimina",
       "confirm_delete": "Sì, elimina l'utente «{name}»",
       "dialog_title": "Elimina Utente",
@@ -318,9 +339,7 @@
       "label_import_local": "Importa risorse multimediali locali",
       "label_scanner": "Scanner",
       "tab_general": "Generale",
-      "tab_options": "Opzioni",
-      "warning_early_feature_convert_to_cbz": "La conversione dei libri è ancora una funzionalità nuova e deve essere usata con cautela. Assicurati che i tuoi file abbiano un backup prima di usarla.",
-      "warning_early_feature_repair_extensions": "La riparazione delle estensioni di file è ancora una funzionalità nuova e deve essere usata con cautela. Assicurati che i tuoi file abbiano un backup prima di usarla."
+      "tab_options": "Opzioni"
     },
     "edit_readlist": {
       "button_cancel": "Annulla",
@@ -392,7 +411,6 @@
       "title": "Seleziona una serie"
     },
     "server_stop": {
-      "button_cancel": "Annulla",
       "button_confirm": "Spegni",
       "confirmation_message": "Sei sicuro/a di voler spegnere Komga?",
       "dialog_title": "Spegni il server"
@@ -469,7 +487,12 @@
     "ERR_1014": "Nessuna corrispondenza per il numero del fumetto nella serie",
     "ERR_1015": "Errore durante la deserializzazione della lista di lettura di ComicRack",
     "ERR_1016": "Cartella non accessibile o non è una cartella",
-    "ERR_1017": "Impossibile eseguire la scansione di una cartella che fa parte di una libreria esistente"
+    "ERR_1017": "Impossibile eseguire la scansione di una cartella che fa parte di una libreria esistente",
+    "ERR_1018": "File non trovato",
+    "ERR_1019": "Impossibile eseguire la scansione di una cartella che fa parte di una libreria esistente",
+    "ERR_1020": "Il fumetto da aggiornare non appartiene alla serie fornita",
+    "ERR_1021": "Il file di destinazione esiste già",
+    "ERR_1022": "Impossibile scansionare il fumetto appena importato"
   },
   "filter": {
     "age_rating": "Fascia d'età",
@@ -518,13 +541,15 @@
     "add_to_readlist": "Aggiungi all'elenco di lettura",
     "analyze": "Analizza",
     "delete": "Elimina",
+    "deselect_all": "Deseleziona tutti",
     "download_series": "Scarica serie",
     "edit": "Modifica",
     "edit_metadata": "Modifica metadati",
     "mark_read": "Segna come letto",
     "mark_unread": "Segna come non letto",
     "refresh_metadata": "Aggiorna metadati",
-    "scan_library_files": "Scansiona i file della libreria"
+    "scan_library_files": "Scansiona i file della libreria",
+    "select_all": "Seleziona Tutto"
   },
   "navigation": {
     "home": "Home",
@@ -566,8 +591,11 @@
     "server_settings": "Impostazioni Server"
   },
   "settings_user": {
+    "change_password": "Cambia password",
     "edit_shared_libraries": "Modifica librerie condivise",
     "edit_user": "Modifica utente",
+    "latest_activity": "Ultima attività: {date}",
+    "no_recent_activity": "Nessuna attività recente",
     "role_administrator": "Amministratore",
     "role_user": "Utente"
   },
@@ -594,6 +622,7 @@
     "USER": "Utente"
   },
   "users": {
+    "authentication_activity": "Attività di autenticazione",
     "users": "Utenti"
   },
   "welcome": {

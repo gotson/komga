@@ -26,12 +26,40 @@
     "penciller": "رسامين",
     "writer": "الكتاب"
   },
+  "book_card": {
+    "error": "خطأ",
+    "unknown": "ليتم تحليلها",
+    "unsupported": "غير مدعوم"
+  },
+  "book_import": {
+    "button_browse": "تصفّح",
+    "button_import": "إستيراد",
+    "button_scan": "فحص",
+    "button_select_series": "اختيار سلسلة",
+    "field_import_path": "استيراد من مجلد",
+    "info_part1": "تتيح لك هذه الشاشة استيراد الملفات الموجودة خارج المكتبات الموجودة لديك. يمكنك استيراد الملفات فقط إلى السلسلة الموجودة، وفي هذه الحالة ستقوم Komga بنقل الملفات أو نسخها إلى دليل السلسلة المختارة.",
+    "info_part2": "إذا اخترت رقمًا لكتاب ، وكان الكتاب موجودًا بالفعل بهذا الرقم ، فستتمكن من مقارنة الكتابين. إذا قررت استيراد الكتاب ، فسيقوم Komga بترقية الكتاب الحالي بالكتاب الجديد ، واستبدال الملف القديم بالجديد بشكل فعال.",
+    "row": {
+      "error_analyze_first": "يحتاج الكتاب للتحليل أولا",
+      "error_choose_series": "اختر سلسلة",
+      "error_only_import_no_errors": "يمكن فقط استيراد الكتب بدون أخطاء",
+      "warning_upgrade": "ستتم ترقية الكتاب الحالي"
+    },
+    "table": {
+      "destination_name": "اسم الوجهة",
+      "file_name": "اسم الملف",
+      "number": "رقم",
+      "series": "سلسلة"
+    },
+    "title": "إستيراد"
+  },
   "bookreader": {
     "beginning_of_book": "أنت في بداية الكتاب.",
     "changing_reading_direction": "تغيير اتجاه القراءة إلى",
     "cycling_page_layout": "تخطيط دوري للصفحة",
     "cycling_scale": "تغيير حجم التحرير",
     "cycling_side_padding": "تغيير الحدود الجانبية",
+    "download_current_page": "تنزيل الصفحة الحالية",
     "end_of_book": "لقد وصلت إلى نهاية الكتاب.",
     "from_series_metadata": "من البيانات الوصفية للسلسلة",
     "move_next": "انقر أو اضغط على \"التالي\" مرة أخرى للانتقال إلى الكتاب التالي.",
@@ -89,7 +117,8 @@
       "show_hide_toolbars": "إظهار/إخفاء أشرطة الأدوات",
       "vertical": "عمودي",
       "webtoon": "ويبتون"
-    }
+    },
+    "tooltip_incognito": "لن يتم حفظ تقدم القراءة"
   },
   "browse_book": {
     "comment": "تعليق",
@@ -99,6 +128,7 @@
     "isbn": "ردمك",
     "navigation_within_readlist": "التنقل ضمن قائمة القراءة: {name}",
     "read_book": "قراءة كتاب",
+    "read_incognito": "قراءة التصفح المتخفي",
     "size": "حجم"
   },
   "browse_collection": {
@@ -133,6 +163,8 @@
     "filter_no_matches": "الفلتر النشط ليس له تطابق",
     "genre": "نوع",
     "go_to_library": "اذهب إلى المكتبة",
+    "go_to_readlist": "انتقل إلى قائمة القراءة",
+    "go_to_series": "الانتقال إلى السلسلة",
     "locale_name": "العربية",
     "locale_rtl": "true",
     "n_selected": "{count} مختار",
@@ -144,6 +176,7 @@
     "read": "اقرأ",
     "readlists": "قوائم القراءة",
     "required": "مطلوب",
+    "reset_filters": "إعادة تعيين فلتر",
     "roles": "أدوار",
     "series": "سلسلة",
     "tags": "التصنيف",
@@ -156,6 +189,18 @@
     "recently_added_books": "كتب مصورة مضافة مؤخرًا",
     "recently_added_series": "سلاسل أضيفت مؤخرا",
     "recently_updated_series": "سلاسل تم تحديثها مؤخرًا"
+  },
+  "data_import": {
+    "book_number": "رقم الكتاب: {name}",
+    "book_series": "سلسلة: {name}",
+    "button_import": "إستيراد",
+    "comicrack_preambule_html": "يمكنك استيراد قوائم قراءة ComicRack الحالية بتنسيق <code>.cbl</code>\n<br> سيحاول Komga مطابقة السلسلة ورقم الكتاب المقدمين مع السلسلة والكتب في مكتباتك.",
+    "field_files_label": "قوائم القراءة ComicRack (.cbl)",
+    "import_read_lists": "استيراد قوائم القراءة",
+    "imported_as": "مستورد كـ {name}",
+    "results_preambule": "تظهر نتيجة الاستيراد أدناه. يمكنك أيضًا التحقق من الكتب غير المتطابقة لكل ملف مقدم.",
+    "size_limit": "يجب أن يكون الحجم أقل من {size} ميغابايت",
+    "tab_title": "استيراد البيانات"
   },
   "dialog": {
     "add_to_collection": {
@@ -187,28 +232,24 @@
       "label_roles": "أدوار"
     },
     "delete_collection": {
-      "button_cancel": "إلغاء",
       "button_confirm": "حذف",
       "confirm_delete": "نعم ، احذف المجموعة \"{name}\"",
       "dialog_title": "حذف المجموعة",
       "warning_html": "ستتم إزالة المجموعة <b>{name}</b>; من هذا الخادم. لن تتأثر الملفات. لا يمكن التراجع عن هذا . مواصله؟"
     },
     "delete_library": {
-      "button_cancel": "إلغاء",
       "button_confirm": "حذف",
       "confirm_delete": "نعم ، احذف المكتبة \"{name}\"",
       "title": "حذف المكتبة",
       "warning_html": "ستتم إزالة المكتبة <b>{name}</b> من هذا الخادم. ملفات الوسائط الخاصة بك لن تتأثر. هذا لا يمكن التراجع عنه. مواصله؟"
     },
     "delete_readlist": {
-      "button_cancel": "إلغاء",
       "button_confirm": "حذف",
       "confirm_delete": "نعم ، احذف قائمة القراءة \"{name}\"",
       "dialog_title": "حذف قائمة القراءة",
       "warning_html": "ستتم إزالة قائمة القراءة <b>{name}</b> من هذا الخادم. ملفات الوسائط الخاصة بك لن تتأثر. هذا لا يمكن التراجع عنه. مواصله؟"
     },
     "delete_user": {
-      "button_cancel": "إلغاء",
       "button_confirm": "حذف",
       "confirm_delete": "نعم ، احذف المستخدم \"{name}\"",
       "dialog_title": "حذف المستخدم",
@@ -249,6 +290,7 @@
       "button_confirm_edit": "تعديل",
       "dialog_title_add": "إضافة مكتبة",
       "dialot_title_edit": "تحرير المكتبة",
+      "field_convert_to_cbz": "تحويل تلقائيا إلى CBZ",
       "field_import_barcode_isbn": "الباركود ردمك",
       "field_import_comicinfo_book": "البيانات الوصفية للكتاب",
       "field_import_comicinfo_collections": "المجموعات",
@@ -258,11 +300,13 @@
       "field_import_epub_series": "سلسلة البيانات الوصفية",
       "field_import_local_artwork": "الأعمال الفنية المحلية",
       "field_name": "الاسم",
+      "field_repair_extensions": "إصلاح ملحقات الملفات غير الصحيحة تلقائيًا",
       "field_root_folder": "المجلد الرئيسي",
       "field_scanner_deep_scan": "تفحص بعمق",
       "field_scanner_force_directory_modified_time": "فرض وقت تعديل الدليل",
       "file_browser_dialog_button_confirm": "إختيار",
       "file_browser_dialog_title": "المجلد الجذر للمكتبة",
+      "label_file_management": "إدارة الملفات",
       "label_import_barcode_isbn": "استيراد رقم ردمك داخل الباركود",
       "label_import_comicinfo": "استيراد البيانات الوصفية لـ CBR/CBZ التي تحتوي على ملف ComicInfo.xml",
       "label_import_epub": "استيراد البيانات الوصفية من ملفات EPUB",
@@ -317,6 +361,16 @@
       "dialog_title_default": "متصفح الملفات",
       "parent_directory": "مستوى أعلى"
     },
+    "filename_chooser": {
+      "button_choose": "إختيار",
+      "field_destination_filename": "اسم الوجهة",
+      "label_source_filename": "اسم الملف المصدر",
+      "table": {
+        "existing_file": "ملف موجود",
+        "order": "ترتيب"
+      },
+      "title": "اسم الوجهة"
+    },
     "password_change": {
       "button_cancel": "إلغاء",
       "button_confirm": "تغيير كلمة السر",
@@ -326,8 +380,11 @@
       "field_repeat_password": "كرر كلمة السر الجديدة",
       "field_repeat_password_error": "يجب أن تكون كلمات السر متطابقة."
     },
+    "series_picker": {
+      "label_search_series": "سلسلة البحث",
+      "title": "اختيار سلسلة"
+    },
     "server_stop": {
-      "button_cancel": "إلغاء",
       "button_confirm": "إيقاف",
       "confirmation_message": "هل أنت متأكد أنك تريد إيقاف Komga؟",
       "dialog_title": "إيقاف الخادم"
@@ -335,9 +392,37 @@
     "shortcut_help": {
       "label_description": "الوصف",
       "label_key": "مفتاح"
+    },
+    "transient_book_details": {
+      "label_candidate": "مرشح",
+      "label_existing": "موجود",
+      "label_format": "صيغة",
+      "label_name": "الاسم",
+      "label_pages": "صفحة",
+      "label_size": "الحجم",
+      "pages_table": {
+        "filename": "اسم الملف",
+        "height": "طول",
+        "index": "فهرس‎",
+        "media_type": "نوع الوسائط",
+        "width": "العرض"
+      },
+      "title": "تفاصيل الكتاب",
+      "title_comparison": "مقارنة الكتاب"
+    },
+    "transient_book_viewer": {
+      "label_candidate": "مرشح",
+      "label_existing": "موجود",
+      "page_of_pages": "{page} / {pages}",
+      "title": "فحص الكتاب",
+      "title_comparison": "مقارنة الكتاب"
     }
   },
   "enums": {
+    "copy_mode": {
+      "HARDLINK": "ملفات الروابط الثابتة/النسخ",
+      "MOVE": "نقل الملفات"
+    },
     "media_status": {
       "ERROR": "خطأ",
       "OUTDATED": "قديمه",
@@ -367,15 +452,26 @@
     "ERR_1005": "خطأ غير معروف أثناء تحليل الكتاب",
     "ERR_1006": "لا يحتوي الكتاب على أي صفحة",
     "ERR_1007": "تعذر تحليل بعض الإدخالات",
-    "ERR_1008": "خطأ غير معروف أثناء الحصول على إدخالات الكتاب"
+    "ERR_1008": "خطأ غير معروف أثناء الحصول على إدخالات الكتاب",
+    "ERR_1009": "توجد قائمة قراءة بهذا الاسم",
+    "ERR_1010": "لم تتم مطابقة أي كتب ضمن طلب قائمة القراءة",
+    "ERR_1011": "لا توجد مطابقة فريدة للسلسلة",
+    "ERR_1012": "لا يوجد تطابق للمسلسل",
+    "ERR_1013": "لا توجد مطابقة فريدة لرقم الكتاب ضمن السلسلة",
+    "ERR_1014": "لا توجد مطابقة فريدة لرقم الكتاب ضمن السلسلة",
+    "ERR_1015": "خطأ أثناء إلغاء تسلسل قائمة القراءة ComicRack",
+    "ERR_1016": "الدليل لا يمكن الوصول إليه أو أنه ليس دليلاً",
+    "ERR_1017": "لا يمكن مسح المجلد الذي هو جزء من مكتبة موجودة"
   },
   "filter": {
     "age_rating": "التصنيف العمري",
     "age_rating_none": "لا شيء",
     "genre": "نوع",
+    "in_progress": "قيد التقدم",
     "language": "اللغة",
     "library": "المكتبة",
     "publisher": "الناشر",
+    "read": "اقرأ",
     "release_date": "تاريخ الاصدار",
     "status": "حالة",
     "tag": "التصنيف",
@@ -392,7 +488,8 @@
   "library_navigation": {
     "browse": "تصفّح",
     "collections": "المجموعات",
-    "readlists": "قوائم القراءة"
+    "readlists": "قوائم القراءة",
+    "recommended": "موصى به"
   },
   "login": {
     "create_user_account": "إنشاء حساب مستخدم",
@@ -446,6 +543,7 @@
     "search_results_for": "نتائج البحث عن \"{name}\""
   },
   "searchbox": {
+    "in_library": "في {library}",
     "no_results": "لاتوجد نتائج",
     "search_all": "بحث كل…"
   },
@@ -466,6 +564,7 @@
     "role_user": "مستخدم"
   },
   "sort": {
+    "books_count": "عدد الكتب",
     "date_added": "تاريخ الاضافة",
     "date_updated": "تاريخ تحديث",
     "file_name": "اسم الملف",

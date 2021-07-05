@@ -3,6 +3,10 @@
     "dataFooter": {
       "pageText": "{0}-{1} von {2}"
     },
+    "dataIterator": {
+      "loadingText": "Lade Elemente...",
+      "noResultsText": "Keine passenden Datensätze gefunden"
+    },
     "dataTable": {
       "itemsPerPageText": "Zeilen pro Seite:",
       "sortBy": "Sortiere nach"
@@ -16,6 +20,14 @@
   "account_settings": {
     "account_settings": "Kontoeinstellungen",
     "change_password": "Passwort ändern"
+  },
+  "authentication_activity": {
+    "datetime": "Datum/Uhrzeit",
+    "email": "E-Mail",
+    "error": "Fehler",
+    "ip": "IP-Adresse",
+    "success": "Erfolgreich",
+    "user_agent": "User Agent"
   },
   "author_roles": {
     "colorist": "Kolorist",
@@ -39,6 +51,12 @@
     "field_import_path": "Aus Ordner importieren",
     "info_part1": "Diese Option ermöglicht das Importieren von Dateien welche ausserhalb der bestehende Bibliothek existieren.Es können nur Dateien in eine vorhandene Serie importiert werden. Beim Einlesen wird die Datei entweder in das bestehende Verzeichnis kopiert oder verschoben.",
     "info_part2": "Sollte ein Buch mit einer Nummer versehen werden, die in Komga schon existiert, dann bekommen Sie die Möglichkeit die Bücher zu vergleichen. Sollten Sie sich entscheiden das Buch dennoch zu importieren, wird Komga das bestehende Buch durch das neue ersetzen.",
+    "notification": {
+      "go_to_book": "Zum Buch",
+      "import_failure": "Buch kann nicht importiert werden: {file}",
+      "import_successful": "Buch erfolgreich importiert: {book}",
+      "source_file": "Quelldatei: {file}"
+    },
     "row": {
       "error_analyze_first": "Das Buch muss zuerst analysiert werden",
       "error_choose_series": "Wählen Sie eine Serie",
@@ -51,8 +69,7 @@
       "number": "Nummer",
       "series": "Serie"
     },
-    "title": "Importieren",
-    "warning_early_feature": "Die Funktion Buchimport ist noch unstabil. Es muss mit bedacht genutzt werden. Stellen Sie vor dem Benutzen der Funktion eine Datensicherung deines Orignals sicher."
+    "title": "Importieren"
   },
   "bookreader": {
     "beginning_of_book": "Sie sind am Anfang des Buches.",
@@ -159,6 +176,7 @@
     "collections": "Sammlungen",
     "create": "Erstellen",
     "delete": "Löschen",
+    "dismiss": "Verwerfen",
     "download": "Herunterladen",
     "email": "E-Mail",
     "filter_no_matches": "Die Suchkriterien haben kein Ergebnis geliefert",
@@ -173,10 +191,12 @@
     "pages": "Seiten",
     "pages_n": "Keine Seite | 1 Seite | {count} Seiten",
     "password": "Passwort",
+    "pending_tasks": "Keine ausstehenden Aufgaben | 1 ausstehende Aufgabe | {count} ausstehende Aufgaben",
     "publisher": "Verlag",
     "read": "Lesen",
     "readlists": "Leseliste",
     "required": "Notwendig",
+    "reset_filters": "Filter Zurücksetzen",
     "roles": "Rollen",
     "series": "Serie",
     "tags": "Stichwörter",
@@ -232,28 +252,30 @@
       "label_roles": "Rollen"
     },
     "delete_collection": {
-      "button_cancel": "Abbrechen",
       "button_confirm": "Löschen",
       "confirm_delete": "Ja, die Sammlung „{name}“ löschen",
+      "confirm_delete_multiple": "Ja, {count} Sammlung(en) löschen",
       "dialog_title": "Sammlung löschen",
-      "warning_html": "Die Sammlung <b>{name}</b> wird vom Server entfernt. Die physikalischen Dateien bleiben unverändert. Dies kann <b>NICHT</b> rückgängig gemacht werden. Fortfahren?"
+      "dialog_title_multiple": "Sammlungen löschen",
+      "warning_html": "Die Sammlung <b>{name}</b> wird vom Server entfernt. Die physikalischen Dateien bleiben unverändert. Dies kann <b>NICHT</b> rückgängig gemacht werden. Fortfahren?",
+      "warning_multiple_html": "{count} Sammlungen werden von diesem Server entfernt. Ihre Mediendateien sind davon nicht betroffen. Dies kann <b>nicht</b> rückgängig gemacht werden. Fortsetzen?"
     },
     "delete_library": {
-      "button_cancel": "Abbrechen",
       "button_confirm": "Löschen",
       "confirm_delete": "Ja, die Bibliothek „{name}“ löschen",
       "title": "Bibliothek löschen",
       "warning_html": "Die Bibliothek <b>{name}</b> wird vom Server gelöscht. Die physikalischen Dateien bleiben unverändert. Dies kann <b>NICHT</b> rückgängig gemacht werden. Fortfahren?"
     },
     "delete_readlist": {
-      "button_cancel": "Abbrechen",
       "button_confirm": "Löschen",
       "confirm_delete": "Ja, die Leseliste „{name}“ löschen",
+      "confirm_delete_multiple": "Ja, {count} Leselisten löschen",
       "dialog_title": "Leseliste löschen",
-      "warning_html": "Die Leseliste <b>{name}</b> wird vom Server entfernt. Die physikalischen Dateien bleiben unverändert. Dies kann <b>NICHT</b> rückgängig gemacht werden. Fortfahren?"
+      "dialog_title_multiple": "Leselisten löschen",
+      "warning_html": "Die Leseliste <b>{name}</b> wird vom Server entfernt. Die physikalischen Dateien bleiben unverändert. Dies kann <b>NICHT</b> rückgängig gemacht werden. Fortfahren?",
+      "warning_multiple_html": "{count} Leselisten werden von diesem Server entfernt. Ihre Mediendateien sind davon nicht betroffen. Dies <b>kann nicht</b> rückgängig gemacht werden. Fortsetzen?"
     },
     "delete_user": {
-      "button_cancel": "Abbrechen",
       "button_confirm": "Löschen",
       "confirm_delete": "Ja, den Benutzer „{name}“ löschen",
       "dialog_title": "Benutzer löschen",
@@ -317,9 +339,7 @@
       "label_import_local": "Importiere lokale Medienbestände",
       "label_scanner": "Scanner",
       "tab_general": "Allgemein",
-      "tab_options": "Optionen",
-      "warning_early_feature_convert_to_cbz": "Die Buchkonvertierung ist noch eine frühe Funktion und muss mit Vorsicht verwendet werden. Stellen Sie sicher, dass Ihre Dateien gesichert sind, bevor Sie sie verwenden.",
-      "warning_early_feature_repair_extensions": "Die Funktion „Dateierweiterung reparieren“ befindet sich noch in einem frühen Stadium und muss mit Vorsicht verwendet werden. Stellen Sie sicher, dass Ihre Dateien gesichert sind, bevor Sie sie verwenden."
+      "tab_options": "Optionen"
     },
     "edit_readlist": {
       "button_cancel": "Abbrechen",
@@ -391,7 +411,6 @@
       "title": "Serie auswählen"
     },
     "server_stop": {
-      "button_cancel": "Abbrechen",
       "button_confirm": "Herunterfahren",
       "confirmation_message": "Sind Sie sicher das Sie Komga beenden wollen?",
       "dialog_title": "Server herunterfahren"
@@ -468,15 +487,22 @@
     "ERR_1014": "Keine Übereinstimmung für die Bücher für die Serie",
     "ERR_1015": "Fehler bei der Abarbeitung der ComicRack Leseliste",
     "ERR_1016": "Verzeichnis nicht erreichbar oder kein Verzeichnis",
-    "ERR_1017": "Ordner, der Teil einer vorhandenen Bibliothek ist, kann nicht scannen"
+    "ERR_1017": "Ordner, der Teil einer vorhandenen Bibliothek ist, kann nicht scannen",
+    "ERR_1018": "Datei nicht gefunden",
+    "ERR_1019": "Eine Datei, die Teil einer vorhandenen Bibliothek ist, kann nicht importiert werden",
+    "ERR_1020": "Das zu aktualisierende Buch gehört nicht zu den angebotenen Serien",
+    "ERR_1021": "Zieldatei ist bereits vorhanden",
+    "ERR_1022": "Ein neu importiertes Buch konnte nicht gescannt werden"
   },
   "filter": {
     "age_rating": "Altersfreigabe",
     "age_rating_none": "Keine",
     "genre": "Genre",
+    "in_progress": "In Bearbeitung",
     "language": "Sprache",
     "library": "Bibliothek",
     "publisher": "Verlag",
+    "read": "Gelesen",
     "release_date": "Veröffentlichungsdatum",
     "status": "Status",
     "tag": "Srichwort",
@@ -515,13 +541,15 @@
     "add_to_readlist": "Füge zur Leseliste hinzu",
     "analyze": "Analysieren",
     "delete": "Löschen",
+    "deselect_all": "Auswahl für alle aufheben",
     "download_series": "Lade die gesamte Serie herunter",
     "edit": "Bearbeiten",
     "edit_metadata": "Metadaten bearbeiten",
     "mark_read": "Als gelesen markieren",
     "mark_unread": "Als ungelesen markieren",
     "refresh_metadata": "Erneuere Metadaten",
-    "scan_library_files": "Überprüfe (Scan) Bibliotheksdateien"
+    "scan_library_files": "Überprüfe (Scan) Bibliotheksdateien",
+    "select_all": "Alle auswählen"
   },
   "navigation": {
     "home": "Übersicht",
@@ -563,8 +591,11 @@
     "server_settings": "Servereinstellungen"
   },
   "settings_user": {
+    "change_password": "Passwort ändern",
     "edit_shared_libraries": "Bearbeite gemeinsame Bibliotheken",
     "edit_user": "Benutzerdaten bearbeiten",
+    "latest_activity": "Letzte Aktivität: {date}",
+    "no_recent_activity": "Keine letzten Aktivitäten",
     "role_administrator": "Systemverwalter",
     "role_user": "Benutzer"
   },
@@ -591,6 +622,7 @@
     "USER": "Benutzer"
   },
   "users": {
+    "authentication_activity": "Authentifizierungsaktivität",
     "users": "Benutzer"
   },
   "welcome": {

@@ -30,6 +30,27 @@
     "error": "Feil",
     "unsupported": "Ustøttet"
   },
+  "book_import": {
+    "button_browse": "Utforsk",
+    "button_import": "Importer",
+    "button_scan": "Skann",
+    "button_select_series": "Velg serie",
+    "field_import_path": "Importer fra mappe",
+    "notification": {
+      "source_file": "Kildefil: {file}"
+    },
+    "row": {
+      "error_choose_series": "Velg en serie",
+      "warning_upgrade": "Eksisterende bok vil bli oppgradert"
+    },
+    "table": {
+      "destination_name": "Målnavn",
+      "file_name": "Filnavn",
+      "number": "Nummer",
+      "series": "Serie"
+    },
+    "title": "Importer"
+  },
   "bookreader": {
     "beginning_of_book": "Du er på begynnelsen av boka.",
     "changing_reading_direction": "Endrer leseretning til",
@@ -191,28 +212,24 @@
       "label_roles": "Roller"
     },
     "delete_collection": {
-      "button_cancel": "Avbryt",
       "button_confirm": "Slett",
       "confirm_delete": "Ja, slett samlingen ved navn «{name}»",
       "dialog_title": "Slett samling",
       "warning_html": "Samlingen <b>{name}</b> vil bli fjernet fra tjeneren. Dette har ingen innvirkning på dine mediafiler. Dette kan <b>ikke</b> angres. Fortsett?"
     },
     "delete_library": {
-      "button_cancel": "Avbryt",
       "button_confirm": "Slett",
       "confirm_delete": "Ja, slett biblioteket «{name}»",
       "title": "Slett bibliotek",
       "warning_html": "Biblioteket <b>{name}</b> vil bli fjernet fra tjeneren. Dette har ingen innvirkning på dine mediefiler. Dette kan <b>ikke</b> angres. Fortsett?"
     },
     "delete_readlist": {
-      "button_cancel": "Avbryt",
       "button_confirm": "Slett",
       "confirm_delete": "Ja, slett leselisten «{name}»",
       "dialog_title": "Slett leseliste",
       "warning_html": "Leselisten <b>{name}</b> vil bli fjernet fra tjeneren. Dette har ingen innvirkning på dine mediefiler. Dette kan <b>ikke</b> angres. Fortsett?"
     },
     "delete_user": {
-      "button_cancel": "Avbryt",
       "button_confirm": "Slett",
       "confirm_delete": "Ja, slett brukeren «{name}»",
       "dialog_title": "Slett bruker",
@@ -331,7 +348,6 @@
       "field_repeat_password_error": "Passordene må samsvare."
     },
     "server_stop": {
-      "button_cancel": "Avbryt",
       "button_confirm": "Stopp",
       "confirmation_message": "Er du sikker på at du vil stoppe Komga?",
       "dialog_title": "Slå av tjener"
@@ -339,6 +355,19 @@
     "shortcut_help": {
       "label_description": "Beskrivelse",
       "label_key": "Tast"
+    },
+    "transient_book_details": {
+      "pages_table": {
+        "media_type": "Mediatype",
+        "width": "Bredde"
+      },
+      "title": "Bokinfo",
+      "title_comparison": "Boksammenligning"
+    },
+    "transient_book_viewer": {
+      "label_candidate": "Kandidat",
+      "label_existing": "Eksisterende",
+      "page_of_pages": "{page}/{pages}"
     }
   },
   "enums": {
@@ -438,6 +467,7 @@
     "search_results_for": "Søkeresultater for «{name}»"
   },
   "searchbox": {
+    "in_library": "i {library}",
     "no_results": "Resultatløst",
     "search_all": "Søk i alle …"
   },

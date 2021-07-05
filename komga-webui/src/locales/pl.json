@@ -205,28 +205,24 @@
       "label_roles": "Role"
     },
     "delete_collection": {
-      "button_cancel": "Anuluj",
       "button_confirm": "Usuń",
       "confirm_delete": "Tak, usuń kolekcję „{name}”",
       "dialog_title": "Usuń kolekcję",
       "warning_html": "Kolekcja <b>{name}</b> zostanie usunięta z tego serwera. Nie będzie to miało wpływu na Twoje pliki. Ta czynność <b>nie może</b> być cofnięta. Kontynuować?"
     },
     "delete_library": {
-      "button_cancel": "Anuluj",
       "button_confirm": "Usuń",
       "confirm_delete": "Tak, usuń bibliotekę \"{name}\"",
       "title": "Usuń bibliotekę",
       "warning_html": "Biblioteka <b>{name}</b> zostanie usunięta z tego serwera. Nie będzie to miało wpływu na Twoje pliki. Ta czynność <b>nie może</b> być cofnięta. Kontynuować?"
     },
     "delete_readlist": {
-      "button_cancel": "Anuluj",
       "button_confirm": "Usuń",
       "confirm_delete": "Tak, usuń listę \"{name}\"",
       "dialog_title": "Usuwanie listy",
       "warning_html": "Lista <b>{name}</b> zostanie usunięta z tego serwera. Nie będzie to miało wpływu na Twoje pliki. Ta czynność <b>nie może</b> być cofnięta. Kontynuować?"
     },
     "delete_user": {
-      "button_cancel": "Anuluj",
       "button_confirm": "Usuń",
       "confirm_delete": "Tak, usuń użytkownika \"{name}\"",
       "dialog_title": "Usuń użytkownika",
@@ -345,7 +341,6 @@
       "field_repeat_password_error": "Hasła muszą być identyczne."
     },
     "server_stop": {
-      "button_cancel": "Anuluj",
       "button_confirm": "Wyłącz",
       "confirmation_message": "Jesteś pewien, że chcesz wyłączyć Komgę?",
       "dialog_title": "Wyłączenie serwera"

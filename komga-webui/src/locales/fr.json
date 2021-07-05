@@ -3,6 +3,10 @@
     "dataFooter": {
       "pageText": "{0}-{1} de {2}"
     },
+    "dataIterator": {
+      "loadingText": "Chargement des articles...",
+      "noResultsText": "Aucun résultat ne correspond à votre recherche"
+    },
     "dataTable": {
       "itemsPerPageText": "Élements par page :",
       "sortBy": "Trier par"
@@ -16,6 +20,14 @@
   "account_settings": {
     "account_settings": "Paramètres du compte",
     "change_password": "Modifier le mot de passe"
+  },
+  "authentication_activity": {
+    "datetime": "Date et heure",
+    "email": "Adresse e-mail",
+    "error": "Erreur",
+    "ip": "Adresse IP",
+    "success": "Succès",
+    "user_agent": "User Agent"
   },
   "author_roles": {
     "colorist": "coloristes",
@@ -39,6 +51,12 @@
     "field_import_path": "Importer à partir du dossier",
     "info_part1": "Cet écran vous permet d'importer des fichiers qui se trouvent en dehors de vos bibliothèques existantes. Vous pouvez uniquement importer des fichiers dans une Série existante, auquel cas Komga déplacera ou copiera les fichiers dans le répertoire de la Série choisie.",
     "info_part2": "Si vous choisissez un numéro pour un livre, et qu'un livre existe déjà avec ce numéro, alors vous pourrez comparer les deux livres. Si vous décidez d'importer le livre, Komga mettra à jour le livre existant avec le nouveau, remplaçant effectivement l'ancien fichier par le nouveau.",
+    "notification": {
+      "go_to_book": "Voir le livre",
+      "import_failure": "Échec de l'import du livre : {file}",
+      "import_successful": "Livre importé avec succès : {book}",
+      "source_file": "Fichier source : {file}"
+    },
     "row": {
       "error_analyze_first": "Le livre doit d'abord être analysé",
       "error_choose_series": "Choisissez une série",
@@ -51,8 +69,7 @@
       "number": "Numéro",
       "series": "Série"
     },
-    "title": "Importer",
-    "warning_early_feature": "L'importation de livres est encore une fonctionnalité précoce, et doit être utilisée avec précaution. Assurez-vous que vos fichiers source et de destination sont sauvegardés avant d'utiliser la fonction d'importation."
+    "title": "Importer"
   },
   "bookreader": {
     "beginning_of_book": "Vous êtes au début du livre.",
@@ -159,6 +176,7 @@
     "collections": "Collections",
     "create": "Créer",
     "delete": "Supprimer",
+    "dismiss": "Masquer",
     "download": "Télécharger",
     "email": "E-mail",
     "filter_no_matches": "Aucun résultats avec les filtres actuels",
@@ -173,6 +191,7 @@
     "pages": "pages",
     "pages_n": "Aucune page | 1 page | {count} pages",
     "password": "Mot de passe",
+    "pending_tasks": "Aucune tâche en cours | 1 tâche en cours | {count} tâches en cours",
     "publisher": "Éditeur",
     "read": "Lire",
     "readlists": "Listes de lecture",
@@ -233,28 +252,30 @@
       "label_roles": "Rôles"
     },
     "delete_collection": {
-      "button_cancel": "Annuler",
       "button_confirm": "Supprimer",
       "confirm_delete": "Oui, supprimer la collection « {name} »",
+      "confirm_delete_multiple": "Oui, supprimer {count} collections",
       "dialog_title": "Supprimer la collection",
-      "warning_html": "La collection <b>{name}</b> sera supprimée de ce serveur. Vos fichiers ne seront pas affectés. Cette action <b>est irréversible</b>. Voulez-vous continuer ?"
+      "dialog_title_multiple": "Supprimer les collections",
+      "warning_html": "La collection <b>{name}</b> sera supprimée de ce serveur. Vos fichiers ne seront pas affectés. Cette action <b>est irréversible</b>. Voulez-vous continuer ?",
+      "warning_multiple_html": "{count} collections seront supprimées de ce serveur. Vos fichiers ne seront pas affectés. Cette action est <b>irréversible</b>. Voulez-vous continuer ?"
     },
     "delete_library": {
-      "button_cancel": "Annuler",
       "button_confirm": "Supprimer",
       "confirm_delete": "Oui, supprimer la bibliothèque « {name} »",
       "title": "Supprimer la bibliothèque",
       "warning_html": "La bibliothèque <b>{name}</b> sera supprimée de ce serveur. Vos fichiers ne seront pas affectés. Cette action <b>est irréversible</b>. Voulez-vous continuer ?"
     },
     "delete_readlist": {
-      "button_cancel": "Annuler",
       "button_confirm": "Supprimer",
       "confirm_delete": "Oui, supprimer la liste de lecture « {name} »",
+      "confirm_delete_multiple": "Oui, supprimer {count} listes de lecture",
       "dialog_title": "Supprimer la liste de lecture",
-      "warning_html": "La liste de lecture <b>{name}</b> sera supprimée de ce serveur. Vos fichiers médias ne seront pas affectés. Cette action <b>est irréversible</b>. Voulez-vous continuer ?"
+      "dialog_title_multiple": "Supprimer les listes de lecture",
+      "warning_html": "La liste de lecture <b>{name}</b> sera supprimée de ce serveur. Vos fichiers médias ne seront pas affectés. Cette action <b>est irréversible</b>. Voulez-vous continuer ?",
+      "warning_multiple_html": "{count} listes de lecture seront supprimées de ce serveur. Vos fichiers médias ne seront pas affectés. Cette action est <b>irréversible</b>. Voulez-vous continuer ?"
     },
     "delete_user": {
-      "button_cancel": "Annuler",
       "button_confirm": "Supprimer",
       "confirm_delete": "Oui, supprimer l'utilisateur « {name} »",
       "dialog_title": "Supprimer l'utilisateur",
@@ -318,9 +339,7 @@
       "label_import_local": "Importer les médias locaux",
       "label_scanner": "Scanneur",
       "tab_general": "Général",
-      "tab_options": "Options",
-      "warning_early_feature_convert_to_cbz": "La conversion de livres est une fonctionnalité encore récente, qui doit être utilisée avec prudence. Assurez-vous que vos fichiers sont sauvegardés avant de l'utiliser.",
-      "warning_early_feature_repair_extensions": "La réparation des extensions est une fonctionnalité encore récente, qui doit être utilisée avec prudence. Assurez-vous que vos fichiers sont sauvegardés avant de l'utiliser."
+      "tab_options": "Options"
     },
     "edit_readlist": {
       "button_cancel": "Annuler",
@@ -392,7 +411,6 @@
       "title": "Sélectionner une série"
     },
     "server_stop": {
-      "button_cancel": "Annuler",
       "button_confirm": "Arrêter",
       "confirmation_message": "Êtes-vous sûr de vouloir arrêter Komga ?",
       "dialog_title": "Arrêter le serveur"
@@ -469,7 +487,12 @@
     "ERR_1014": "Aucune correspondance pour le numéro de livre dans la série",
     "ERR_1015": "Erreur lors de l'analyse de la liste de lecture ComicRack",
     "ERR_1016": "Répertoire non accessible ou pas un répertoire",
-    "ERR_1017": "Impossible de numériser un dossier qui fait partie d'une bibliothèque existante"
+    "ERR_1017": "Impossible de numériser un dossier qui fait partie d'une bibliothèque existante",
+    "ERR_1018": "Fichier introuvable",
+    "ERR_1019": "Impossible d'importer un fichier faisant partie d'une bibliothèque existante",
+    "ERR_1020": "Le livre à mettre à jour n'appartient pas à la série indiquée",
+    "ERR_1021": "Le fichier de destination existe déjà",
+    "ERR_1022": "Le livre nouvellement importé n'a pas pu être numérisé"
   },
   "filter": {
     "age_rating": "Âge minimal",
@@ -518,13 +541,15 @@
     "add_to_readlist": "Ajouter à la liste de lecture",
     "analyze": "Analyser",
     "delete": "Supprimer",
+    "deselect_all": "Tout désélectionner",
     "download_series": "Télécharger la série",
     "edit": "Modifier",
     "edit_metadata": "Modifier les métadonnées",
     "mark_read": "Marquer comme lu",
     "mark_unread": "Marquer comme non lu",
     "refresh_metadata": "Actualiser les métadonnées",
-    "scan_library_files": "Scanner les fichiers de la bibliothèque"
+    "scan_library_files": "Scanner les fichiers de la bibliothèque",
+    "select_all": "Tout sélectionner"
   },
   "navigation": {
     "home": "Accueil",
@@ -566,8 +591,11 @@
     "server_settings": "Paramètres du serveur"
   },
   "settings_user": {
+    "change_password": "Modifier le mot de passe",
     "edit_shared_libraries": "Modifier les bibliothèques partagées",
     "edit_user": "Modifier l'utilisateur",
+    "latest_activity": "Dernière activité : {date}",
+    "no_recent_activity": "Aucune activité récente",
     "role_administrator": "Administrateur",
     "role_user": "Utilisateur"
   },
@@ -594,6 +622,7 @@
     "USER": "Utilisateur"
   },
   "users": {
+    "authentication_activity": "Activité d'authentification",
     "users": "Utilisateurs"
   },
   "welcome": {

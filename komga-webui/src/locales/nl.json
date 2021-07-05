@@ -51,8 +51,7 @@
       "number": "Nummer",
       "series": "Serie"
     },
-    "title": "Importeer",
-    "warning_early_feature": "Boekimport is nog steeds een functie in ontwikkeling en moet met voorzichtigheid worden gebruikt. Zorg ervoor dat er een back-up van uw bron- en doelbestanden wordt gemaakt voordat u de functie Importeren gebruikt."
+    "title": "Importeer"
   },
   "bookreader": {
     "beginning_of_book": "Je bent bij het begin van het boek.",
@@ -129,6 +128,7 @@
     "isbn": "ISBN",
     "navigation_within_readlist": "Navigatie in de leeslijst: {name}",
     "read_book": "Lees boek",
+    "read_incognito": "Incognito lezen",
     "size": "GROOTTE"
   },
   "browse_collection": {
@@ -163,6 +163,8 @@
     "filter_no_matches": "Het actieve filter vindt geen overeenkomsten",
     "genre": "Genre",
     "go_to_library": "Ga naar bibliotheek",
+    "go_to_readlist": "Ga naar leeslijst",
+    "go_to_series": "Ga naar series",
     "locale_name": "Nederlands",
     "locale_rtl": "false",
     "n_selected": "{count} geselecteerd",
@@ -174,6 +176,7 @@
     "read": "Lezen",
     "readlists": "Leeslijsten",
     "required": "Vereist",
+    "reset_filters": "Filters resetten",
     "roles": "Rollen",
     "series": "Serie",
     "tags": "Labels",
@@ -229,28 +232,24 @@
       "label_roles": "Rollen"
     },
     "delete_collection": {
-      "button_cancel": "Annuleren",
       "button_confirm": "Verwijderen",
       "confirm_delete": "Ja, verwijder de verzameling \"{name}\"",
       "dialog_title": "Verwijder verzameling",
       "warning_html": "De verzameling <b>{name}</b> wordt van deze server verwijderd. Uw mediabestanden worden niet beïnvloed. Dit kan <b>niet</b> ongedaan worden gemaakt. Doorgaan?"
     },
     "delete_library": {
-      "button_cancel": "Annuleren",
       "button_confirm": "Verwijderen",
       "confirm_delete": "Ja, verwijder de bibliotheek \"{name}\"",
       "title": "Verwijder Bibliotheek",
       "warning_html": "De bibliotheek <b>{name}</b> zal van deze server worden verwijderd. Uw mediabestanden zullen niet worden beïnvloed. Dit kan <b>niet</b> ongedaan worden gemaakt. Doorgaan?"
     },
     "delete_readlist": {
-      "button_cancel": "Annuleren",
       "button_confirm": "Verwijderen",
       "confirm_delete": "Ja, verwijder de leeslijst \"{name}\"",
       "dialog_title": "Verwijder Leeslijst",
       "warning_html": "De leeslijst <b>{name}</b> zal van deze server worden verwijderd. Uw mediabestanden zullen niet worden beïnvloed. Dit kan <b>niet</b> ongedaan worden gemaakt. Doorgaan?"
     },
     "delete_user": {
-      "button_cancel": "Annuleren",
       "button_confirm": "Verwijderen",
       "confirm_delete": "Ja, verwijder de gebruiker \"{name}\"",
       "dialog_title": "Verwijder gebruiker",
@@ -291,6 +290,7 @@
       "button_confirm_edit": "Bewerken",
       "dialog_title_add": "Bibliotheek toevoegen",
       "dialot_title_edit": "Bibliotheek bewerken",
+      "field_convert_to_cbz": "Automatisch converteren naar CBZ",
       "field_import_barcode_isbn": "ISBN streepjescode",
       "field_import_comicinfo_book": "Boek metadata",
       "field_import_comicinfo_collections": "Verzamelingen",
@@ -300,11 +300,13 @@
       "field_import_epub_series": "Serie metadata",
       "field_import_local_artwork": "Lokale afbeeldingen",
       "field_name": "Naam",
+      "field_repair_extensions": "Herstel automatisch onjuiste bestandsextensies",
       "field_root_folder": "Hoofdmap",
       "field_scanner_deep_scan": "Diepe scan",
       "field_scanner_force_directory_modified_time": "Gewijzigde tijd van map forceren",
       "file_browser_dialog_button_confirm": "Kies",
       "file_browser_dialog_title": "Hoofdmap van de bibliotheek",
+      "label_file_management": "Bestandsbeheer",
       "label_import_barcode_isbn": "Importeer ISBN uit streepjescode",
       "label_import_comicinfo": "Importeer metadata voor CBR / CBZ met een ComicInfo.xml-bestand",
       "label_import_epub": "Importeer metadata uit EPUB-bestanden",
@@ -383,7 +385,6 @@
       "title": "Selecteer serie"
     },
     "server_stop": {
-      "button_cancel": "Annuleren",
       "button_confirm": "Stop",
       "confirmation_message": "Weet u zeker dat u Komga wilt stoppen?",
       "dialog_title": "Server afsluiten"
@@ -466,9 +467,11 @@
     "age_rating": "leeftijdsclassificatie",
     "age_rating_none": "Geen",
     "genre": "genre",
+    "in_progress": "Wordt uitgevoerd",
     "language": "taal",
     "library": "Bibliotheek",
     "publisher": "uitgever",
+    "read": "Lezen",
     "release_date": "Verschijningsdatum",
     "status": "status",
     "tag": "label",
@@ -540,6 +543,7 @@
     "search_results_for": "Zoekresultaten voor \"{name}\""
   },
   "searchbox": {
+    "in_library": "in {library}",
     "no_results": "Geen resultaten",
     "search_all": "Zoek alle…"
   },

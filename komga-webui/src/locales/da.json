@@ -1,0 +1,134 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} af {2}"
+    },
+    "dataIterator": {
+      "loadingText": "Indlæser...",
+      "noResultsText": "Ingen passende resultater fundet"
+    },
+    "dataTable": {
+      "itemsPerPageText": "Rækker per side:",
+      "sortBy": "Sortér efter"
+    },
+    "fileInput": {
+      "counter": "{0} filer",
+      "counterSize": "{0} filer ({1} i alt)"
+    },
+    "noDataText": "Ingen data tilgængelig"
+  },
+  "account_settings": {
+    "account_settings": "Konto Indstillinger",
+    "change_password": "skift adgangskode"
+  },
+  "authentication_activity": {
+    "datetime": "Dato",
+    "email": "Email",
+    "error": "Fejl",
+    "ip": "IP",
+    "success": "Succes",
+    "user_agent": "Bruger Agent"
+  },
+  "author_roles": {
+    "colorist": "farvelæggere",
+    "cover": "forside",
+    "editor": "redaktører",
+    "inker": "formvalser",
+    "writer": "forfattere"
+  },
+  "book_card": {
+    "error": "Fejl",
+    "unknown": "Skal analyseres",
+    "unsupported": "Ikke understøttet"
+  },
+  "book_import": {
+    "button_browse": "Gennemse",
+    "button_import": "Importér",
+    "button_scan": "Skan",
+    "button_select_series": "Vælg Serier",
+    "field_import_path": "Importér fra mappe",
+    "info_part1": "Denne side lader dig importére filer, der er uden for dine eksisterende biblioteker. Du kan kun importére filer ind i eksisterende Serier, i hvilket tilfælde Komga vil flytte eller kopiere filerne ind i mappen af den valgte Serie.",
+    "info_part2": "Hvis du vælger et tal for en bog, og en bog allerede eksistere med det nummer, så får du mulighed for at sammenligne de 2 bøger. Hvis du vælger at importére bogen, Komga vil opgradere den eksisterende bog med den nye, hvor den udskifter den gamle fil med den nye.",
+    "notification": {
+      "go_to_book": "Gå til bog",
+      "import_failure": "Kunne ikke importére bog: {file}",
+      "import_successful": "Bog importéret succesfuldt: {book}",
+      "source_file": "Kilde fil: {file}"
+    },
+    "row": {
+      "error_analyze_first": "Bog skal blive analyseret først",
+      "error_choose_series": "Vælg en serie",
+      "error_only_import_no_errors": "Kan kun importére bøger uden fejl",
+      "warning_upgrade": "Eksisterende bog bliver opgraderet"
+    },
+    "table": {
+      "destination_name": "Destination navn",
+      "file_name": "Fil navn",
+      "number": "Nummer",
+      "series": "Serie"
+    },
+    "title": "Importér"
+  },
+  "bookreader": {
+    "beginning_of_book": "Du er i begyndelsen af bogen.",
+    "changing_reading_direction": "Skifter læse retning til",
+    "download_current_page": "Gem nuværende side",
+    "end_of_book": "Du har nået enden af bogen.",
+    "from_series_metadata": "fra serie metadata",
+    "move_next": "Klik \"Næste\" igen for at gå til den næste bog.",
+    "move_next_exit": "Klik \"Næste\" igen for at gå ud af læseren.",
+    "move_previous": "Klik \"Forrige\" igen for at gå til den forrige bog.",
+    "paged_reader_layout": {
+      "double": "Dobblet sider",
+      "double_no_cover": "Dobbelt sider (ingen forside)",
+      "single": "Enkelt side"
+    },
+    "reader_settings": "Læser Indstillinger",
+    "scale_type": {
+      "continuous_original": "Original",
+      "continuous_width": "Pas bredde",
+      "height": "Pas højde",
+      "original": "Original",
+      "screen": "Skærm",
+      "width": "Pas bredde"
+    },
+    "settings": {
+      "animate_page_transitions": "Animér side skift",
+      "background_color": "Baggrundsfarve",
+      "background_colors": {
+        "black": "Sort",
+        "white": "Hvid"
+      },
+      "display": "Skærm",
+      "general": "Generalt",
+      "gestures": "Håndbevægelser",
+      "page_layout": "Side layout",
+      "reading_mode": "Læse metode",
+      "scale_type": "Skalér type",
+      "side_padding": "Side margen",
+      "side_padding_none": "Ingen",
+      "webtoon": "Webtoon Læser Indstillinger"
+    },
+    "shortcuts": {
+      "close": "Luk",
+      "first_page": "Første side",
+      "last_page": "Sidste side",
+      "left_to_right": "Venstre til Højre",
+      "menus": "Menuer",
+      "next_page": "Næste side",
+      "previous_page": "Forrige side",
+      "reader_navigation": "Læser Navigation",
+      "right_to_left": "Højre til Venstre",
+      "settings": "Indstillinger",
+      "show_hide_help": "Vis/gem hjælp",
+      "show_hide_settings": "Vis/gem indstillinger",
+      "show_hide_thumbnails": "Vis/gem forvisninger",
+      "show_hide_toolbars": "Vis/gem værktøjslinje",
+      "vertical": "Lodret",
+      "webtoon": "Webtoon"
+    }
+  },
+  "common": {
+    "locale_name": "Dansk"
+  }
+}

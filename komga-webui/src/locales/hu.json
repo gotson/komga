@@ -51,8 +51,7 @@
       "number": "Szám",
       "series": "Könyvsorozat"
     },
-    "title": "Importálás",
-    "warning_early_feature": "A könyvimportálás még egy korai funkció, ezért óvatosan kell használni. Használata előtt bizonyosodj meg arról, hogy van biztonsági mentésed a forrás- és célfájlról."
+    "title": "Importálás"
   },
   "bookreader": {
     "beginning_of_book": "A könyv elején jársz.",
@@ -233,28 +232,24 @@
       "label_roles": "Szerepek"
     },
     "delete_collection": {
-      "button_cancel": "Mégse",
       "button_confirm": "Törlés",
       "confirm_delete": "Igen, törölje a(z) \"{name}\" gyűjteményt",
       "dialog_title": "Gyűjtemény törlése",
       "warning_html": "A gyűjtemény <b>{name}</b> törölve lesz erről a szerverről. A médiafájljaid nem lesznek befolyásolva. Ez <b>nem</b> fordítható vissza. Folytatod?"
     },
     "delete_library": {
-      "button_cancel": "Mégse",
       "button_confirm": "Törlés",
       "confirm_delete": "Igen, törölje a(z) \"{name}\" könyvtárat",
       "title": "Könyvtár törlése",
       "warning_html": "A könyvtár <b>{name}</b> törölve lesz erről a szerverről. A médiafájljaid nem lesznek befolyásolva. Ez <b>nem</b> fordítható vissza. Folytatod?"
     },
     "delete_readlist": {
-      "button_cancel": "Mégse",
       "button_confirm": "Törlés",
       "confirm_delete": "Igen, törölje a(z) \"{name}\" olvasólistát",
       "dialog_title": "Olvasólista törlése",
       "warning_html": "Az olvasólista <b>{name}</b> törölve lesz erről a szerverről. A médiafájljaid nem lesznek befolyásolva. Ez <b>nem</b> fordítható vissza. Folytatod?"
     },
     "delete_user": {
-      "button_cancel": "Mégse",
       "button_confirm": "Törlés",
       "confirm_delete": "Igen, törölje a(z) \"{name}\" felhasználót",
       "dialog_title": "Felhasználó törlése",
@@ -318,9 +313,7 @@
       "label_import_local": "Helyi médiafájlok importálása",
       "label_scanner": "Beolvasó",
       "tab_general": "Általános",
-      "tab_options": "Opciók",
-      "warning_early_feature_convert_to_cbz": "Könyvkonvertálás egy korai funkció, ezért óvatosan kell használni. Használata előtt bizonyosodj meg arról, hogy van biztonsági mentésed a fájljaidról.",
-      "warning_early_feature_repair_extensions": "Fájkiterjesztés javítás egy korai funkció, ezért óvatosan kell használni. Használata előtt bizonyosodj meg arról, hogy van biztonsági mentésed a fájljaidról."
+      "tab_options": "Opciók"
     },
     "edit_readlist": {
       "button_cancel": "Mégse",
@@ -392,7 +385,6 @@
       "title": "Könyvsorozat kiválasztása"
     },
     "server_stop": {
-      "button_cancel": "Mégse",
       "button_confirm": "Megállít",
       "confirmation_message": "Biztosan le akarod állítani Komgát?",
       "dialog_title": "Szerver leállítása"

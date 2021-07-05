@@ -51,8 +51,7 @@
       "number": "番号",
       "series": "シリーズ"
     },
-    "title": "インポート",
-    "warning_early_feature": "書籍のインポート機能はまだ初期の機能であり、慎重に使用する必要があります。インポート機能を使用する前に、インポート元のファイルとインポート先のファイルがバックアップされていることを確認してください。"
+    "title": "インポート"
   },
   "bookreader": {
     "beginning_of_book": "ここが書籍の先頭です。",
@@ -229,28 +228,24 @@
       "label_roles": "役割"
     },
     "delete_collection": {
-      "button_cancel": "キャンセル",
       "button_confirm": "削除",
       "confirm_delete": "はい、コレクション「{name}」を削除します",
       "dialog_title": "コレクションを削除",
       "warning_html": "コレクション <b>{name}</b> はこのサーバから削除されます。メディアファイルには影響しません。削除はなかったことに<b>できません</b>。続けますか？"
     },
     "delete_library": {
-      "button_cancel": "キャンセル",
       "button_confirm": "削除",
       "confirm_delete": "はい、ライブラリ「{name}」を削除します",
       "title": "ライブラリを削除",
       "warning_html": "ライブラリ <b>{name}</b> はこのサーバから削除されます。メディアファイルには影響しません。削除はなかったことに<b>できません</b>。続けますか？"
     },
     "delete_readlist": {
-      "button_cancel": "キャンセル",
       "button_confirm": "削除",
       "confirm_delete": "はい、読書リスト「{name}」を削除します",
       "dialog_title": "読書リストを削除",
       "warning_html": "読書リスト<b>{name}</b>はこのサーバから削除されます。メディアファイルには影響しません。削除はなかったことに<b>できません</b>。続けますか？"
     },
     "delete_user": {
-      "button_cancel": "キャンセル",
       "button_confirm": "削除",
       "confirm_delete": "はい、ユーザ「{name}」を削除します",
       "dialog_title": "ユーザを削除",
@@ -314,9 +309,7 @@
       "label_import_local": "ローカルのメディアをインポート",
       "label_scanner": "スキャナ",
       "tab_general": "一般",
-      "tab_options": "オプション",
-      "warning_early_feature_convert_to_cbz": "書籍の変換機能はまだ初期の機能であり、使用には注意が必要です。使用する前に、ファイルがバックアップされていることを確認してください。",
-      "warning_early_feature_repair_extensions": "ファイル拡張子の修復機能は、まだ初期の機能であり、注意して使用する必要があります。使用する前に、ファイルがバックアップされていることを確認してください。"
+      "tab_options": "オプション"
     },
     "edit_readlist": {
       "button_cancel": "キャンセル",
@@ -388,7 +381,6 @@
       "title": "シリーズの選択"
     },
     "server_stop": {
-      "button_cancel": "キャンセル",
       "button_confirm": "停止",
       "confirmation_message": "本当に Komga を停止しますか？",
       "dialog_title": "サーバをシャットダウン"
