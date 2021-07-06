@@ -13,6 +13,7 @@ data class Book(
   val url: URL,
   val fileLastModified: LocalDateTime,
   val fileSize: Long = 0,
+  val fileHash: String = "",
   val number: Int = 0,
 
   val id: String = TsidCreator.getTsid256().toString(),

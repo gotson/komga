@@ -1,6 +1,5 @@
 package org.gotson.komga.infrastructure.jooq
 
-import mu.KotlinLogging
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookSearch
@@ -57,6 +56,7 @@ class BookDaoTest(
       url = URL("file://book"),
       fileLastModified = now,
       fileSize = 3,
+      fileHash = "abc",
       seriesId = series.id,
       libraryId = library.id
     )
@@ -71,6 +71,7 @@ class BookDaoTest(
     assertThat(created.url).isEqualTo(book.url)
     assertThat(created.fileLastModified).isEqualToIgnoringNanos(book.fileLastModified)
     assertThat(created.fileSize).isEqualTo(book.fileSize)
+    assertThat(created.fileHash).isEqualTo(book.fileHash)
   }
 
   @Test
@@ -92,7 +93,8 @@ class BookDaoTest(
         name = "Updated",
         url = URL("file://updated"),
         fileLastModified = modificationDate,
-        fileSize = 5
+        fileSize = 5,
+        fileHash = "def",
       )
     }
 
@@ -108,6 +110,7 @@ class BookDaoTest(
     assertThat(modified.url).isEqualTo(URL("file://updated"))
     assertThat(modified.fileLastModified).isEqualToIgnoringNanos(modificationDate)
     assertThat(modified.fileSize).isEqualTo(5)
+    assertThat(modified.fileHash).isEqualTo("def")
   }
 
   @Test
@@ -188,34 +191,4 @@ class BookDaoTest(
 
     assertThat(bookDao.count()).isEqualTo(0)
   }
-
-  private val logger = KotlinLogging.logger {}
-
-//  @Test
-//  fun benchmark() {
-//    val books = (1..10000).map {
-//      makeBook(it.toString(), libraryId = library.id, seriesId = series.id)
-//    }
-//
-//    val single = measureTime {
-//      books.map { bookDao.insert(it) }
-//    }
-//    bookDao.deleteAll()
-//
-//    val singleBatch = measureTime {
-//      books.map { bookDao.insertBatch(it) }
-//    }
-//    bookDao.deleteAll()
-//
-//    val transaction = measureTime {
-//      bookDao.insertMany(books)
-//    }
-//    bookDao.deleteAll()
-//
-//    logger.info { "Single: $single" }
-//    logger.info { "SingleBatch: $singleBatch" }
-//    logger.info { "Transaction: $transaction" }
-//
-//    assertThat(single).isEqualTo(transaction)
-//  }
 }

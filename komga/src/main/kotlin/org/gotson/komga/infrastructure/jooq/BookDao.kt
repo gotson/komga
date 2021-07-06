@@ -62,8 +62,7 @@ class BookDao(
       .map { it.toDomain() }
 
   override fun findAll(): Collection<Book> =
-    dsl.select(*b.fields())
-      .from(b)
+    dsl.selectFrom(b)
       .fetchInto(b)
       .map { it.toDomain() }
 
@@ -177,6 +176,13 @@ class BookDao(
       .and(b.URL.notLike("%.$extension"))
       .fetch(b.ID)
 
+  override fun findAllIdsByLibraryIdAndWithEmptyHash(libraryId: String): Collection<String> =
+    dsl.select(b.ID)
+      .from(b)
+      .where(b.LIBRARY_ID.eq(libraryId))
+      .and(b.FILE_HASH.eq(""))
+      .fetch(b.ID)
+
   @Transactional
   override fun insert(book: Book) {
     insert(listOf(book))
@@ -194,9 +200,10 @@ class BookDao(
           b.NUMBER,
           b.FILE_LAST_MODIFIED,
           b.FILE_SIZE,
+          b.FILE_HASH,
           b.LIBRARY_ID,
           b.SERIES_ID
-        ).values(null as String?, null, null, null, null, null, null, null)
+        ).values(null as String?, null, null, null, null, null, null, null, null)
       ).also { step ->
         books.forEach {
           step.bind(
@@ -206,6 +213,7 @@ class BookDao(
             it.number,
             it.fileLastModified,
             it.fileSize,
+            it.fileHash,
             it.libraryId,
             it.seriesId
           )
@@ -231,6 +239,7 @@ class BookDao(
       .set(b.NUMBER, book.number)
       .set(b.FILE_LAST_MODIFIED, book.fileLastModified)
       .set(b.FILE_SIZE, book.fileSize)
+      .set(b.FILE_HASH, book.fileHash)
       .set(b.LIBRARY_ID, book.libraryId)
       .set(b.SERIES_ID, book.seriesId)
       .set(b.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
@@ -269,6 +278,7 @@ class BookDao(
       url = URL(url),
       fileLastModified = fileLastModified,
       fileSize = fileSize,
+      fileHash = fileHash,
       id = id,
       libraryId = libraryId,
       seriesId = seriesId,

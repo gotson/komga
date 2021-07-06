@@ -56,6 +56,12 @@ class TaskReceiver(
     }
   }
 
+  fun hashBooksWithoutHash(library: Library) {
+    bookRepository.findAllIdsByLibraryIdAndWithEmptyHash(library.id).forEach {
+      submitTask(Task.HashBook(it, LOWEST_PRIORITY))
+    }
+  }
+
   fun convertBooksToCbz(library: Library, priority: Int = DEFAULT_PRIORITY) {
     bookConverter.getConvertibleBookIds(library).forEach {
       submitTask(Task.ConvertBook(it, priority))
