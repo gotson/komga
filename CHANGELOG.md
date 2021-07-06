@@ -1,3 +1,11 @@
+# [0.106.0](https://github.com/gotson/komga/compare/v0.105.2...v0.106.0) (2021-07-06)
+
+
+### Features
+
+* **sse:** publish breakdown of task count by task type ([eda767a](https://github.com/gotson/komga/commit/eda767aeb5c9291bab69bebb9cb14591247344ed))
+* **webui:** display task count by type in activity bar tooltip ([6b690bc](https://github.com/gotson/komga/commit/6b690bcdfb25080f2a6c6df37b03d53d2c868b94))
+
 ## [0.105.2](https://github.com/gotson/komga/compare/v0.105.1...v0.105.2) (2021-07-05)
 
 
