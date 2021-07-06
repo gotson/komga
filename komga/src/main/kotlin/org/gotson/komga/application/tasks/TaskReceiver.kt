@@ -9,6 +9,7 @@ import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.service.BookConverter
+import org.gotson.komga.infrastructure.jms.QUEUE_SUB_TYPE
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS_TYPE
 import org.gotson.komga.infrastructure.jms.QUEUE_TYPE
@@ -109,6 +110,7 @@ class TaskReceiver(
       it.apply {
         setStringProperty(QUEUE_TYPE, QUEUE_TASKS_TYPE)
         setStringProperty(QUEUE_UNIQUE_ID, task.uniqueId())
+        setStringProperty(QUEUE_SUB_TYPE, task::class.simpleName)
       }
     }
   }

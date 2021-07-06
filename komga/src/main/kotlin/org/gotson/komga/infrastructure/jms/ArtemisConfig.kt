@@ -13,6 +13,7 @@ import org.apache.activemq.artemis.core.config.Configuration as ArtemisConfigura
 
 const val QUEUE_UNIQUE_ID = "unique_id"
 const val QUEUE_TYPE = "type"
+const val QUEUE_SUB_TYPE = "subtype"
 
 const val QUEUE_TASKS = "tasks.background"
 const val QUEUE_TASKS_TYPE = "task"
