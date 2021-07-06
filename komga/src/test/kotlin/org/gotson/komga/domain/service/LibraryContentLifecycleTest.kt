@@ -16,6 +16,7 @@ import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
+import org.gotson.komga.infrastructure.hash.Hasher
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -41,6 +42,9 @@ class LibraryContentLifecycleTest(
 
   @MockkBean
   private lateinit var mockAnalyzer: BookAnalyzer
+
+  @MockkBean
+  private lateinit var mockHasher: Hasher
 
   @AfterEach
   fun `clear repositories`() {
@@ -229,7 +233,7 @@ class LibraryContentLifecycleTest(
   }
 
   @Test
-  fun `given existing Book with different last modified date when rescanning then media is marked as outdated`() {
+  fun `given existing Book with different last modified date when rescanning then media is marked as outdated and hash is reset`() {
     // given
     val library = makeLibrary()
     libraryRepository.insert(library)
@@ -243,7 +247,12 @@ class LibraryContentLifecycleTest(
     libraryContentLifecycle.scanRootFolder(library)
 
     every { mockAnalyzer.analyze(any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")), bookId = book1.id)
-    bookRepository.findAll().map { bookLifecycle.analyzeAndPersist(it) }
+    every { mockHasher.computeHash(any()) }.returnsMany("abc", "def")
+
+    bookRepository.findAll().map {
+      bookLifecycle.analyzeAndPersist(it)
+      bookLifecycle.hashAndPersist(it)
+    }
 
     // when
     libraryContentLifecycle.scanRootFolder(library)
@@ -251,9 +260,11 @@ class LibraryContentLifecycleTest(
     // then
     verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
     verify(exactly = 1) { mockAnalyzer.analyze(any()) }
+    verify(exactly = 1) { mockHasher.computeHash(any()) }
 
     bookRepository.findAll().first().let { book ->
       assertThat(book.lastModifiedDate).isNotEqualTo(book.createdDate)
+      assertThat(book.fileHash).isEmpty()
 
       mediaRepository.findById(book.id).let { media ->
         assertThat(media.status).isEqualTo(Media.Status.OUTDATED)

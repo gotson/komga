@@ -44,6 +44,7 @@ class TaskHandler(
             libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
               libraryContentLifecycle.scanRootFolder(library)
               taskReceiver.analyzeUnknownAndOutdatedBooks(library)
+              taskReceiver.hashBooksWithoutHash(library)
               if (library.repairExtensions) taskReceiver.repairExtensions(library, LOWEST_PRIORITY)
               if (library.convertToCbz) taskReceiver.convertBooksToCbz(library, LOWEST_PRIORITY)
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
@@ -102,6 +103,11 @@ class TaskHandler(
           is Task.RepairExtension ->
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
               bookConverter.repairExtension(book)
+            } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
+
+          is Task.HashBook ->
+            bookRepository.findByIdOrNull(task.bookId)?.let { book ->
+              bookLifecycle.hashAndPersist(book)
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
         }
       }.also {

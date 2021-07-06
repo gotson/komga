@@ -18,6 +18,7 @@ import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
+import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
 import org.springframework.stereotype.Service
@@ -41,6 +42,7 @@ class BookLifecycle(
   private val imageConverter: ImageConverter,
   private val eventPublisher: EventPublisher,
   private val transactionTemplate: TransactionTemplate,
+  private val hasher: Hasher,
 ) {
 
   fun analyzeAndPersist(book: Book): Boolean {
@@ -61,6 +63,16 @@ class BookLifecycle(
     eventPublisher.publishEvent(DomainEvent.BookUpdated(book))
 
     return media.status == Media.Status.READY
+  }
+
+  fun hashAndPersist(book: Book) {
+    logger.info { "Hash and persist book: $book" }
+    if (book.fileHash.isBlank()) {
+      val hash = hasher.computeHash(book.path)
+      bookRepository.update(book.copy(fileHash = hash))
+    } else {
+      logger.info { "Book already has a hash, skipping" }
+    }
   }
 
   fun generateThumbnailAndPersist(book: Book) {

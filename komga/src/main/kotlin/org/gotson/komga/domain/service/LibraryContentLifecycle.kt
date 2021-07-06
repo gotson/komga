@@ -92,7 +92,8 @@ class LibraryContentLifecycle(
                   logger.info { "Book changed on disk, update and reset media status: $existingBook" }
                   val updatedBook = existingBook.copy(
                     fileLastModified = newBook.fileLastModified,
-                    fileSize = newBook.fileSize
+                    fileSize = newBook.fileSize,
+                    fileHash = "",
                   )
                   transactionTemplate.executeWithoutResult {
                     mediaRepository.findById(existingBook.id).let {
