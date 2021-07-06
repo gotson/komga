@@ -14,12 +14,13 @@ import org.junit.jupiter.api.Test
 import java.nio.file.Files
 import java.nio.file.Path
 import java.time.LocalDateTime
+import kotlin.io.path.extension
 
 class LocalArtworkProviderTest {
 
   private val contentDetector = spyk(ContentDetector(TikaConfiguration().tika())).also {
     every { it.detectMediaType(any<Path>()) } answers {
-      when (FilenameUtils.getExtension(firstArg<Path>().toString().toLowerCase())) {
+      when (firstArg<Path>().extension.lowercase()) {
         "jpg", "jpeg", "tbn" -> "image/jpeg"
         "png" -> "image/png"
         else -> "application/octet-stream"
