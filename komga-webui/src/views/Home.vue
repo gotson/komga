@@ -42,7 +42,11 @@
               v-on="on"
             />
           </template>
-          <span>{{ $tc('common.pending_tasks', taskCount) }}</span>
+          <div class="mb-2">{{ $tc('common.pending_tasks', taskCount) }}</div>
+          <div v-for="taskType in Object.keys(taskCountByType)"
+               :key="taskType"
+          >{{ taskType }}: {{ taskCountByType[taskType] }}
+          </div>
         </v-tooltip>
       </v-list-item>
 
@@ -212,6 +216,9 @@ export default Vue.extend({
     },
     taskCount(): number {
       return this.$store.state.komgaSse.taskCount
+    },
+    taskCountByType(): { [key: string]: number } {
+      return this.$store.state.komgaSse.taskCountByType
     },
     libraries(): LibraryDto[] {
       return this.$store.state.komgaLibraries.libraries

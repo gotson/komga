@@ -98,6 +98,6 @@ export default class KomgaSseService {
 
   private updateTaskCount(event: any) {
     const data = JSON.parse(event.data) as TaskQueueSseDto
-    this.store.commit('setTaskCount', data.count)
+    this.store.commit('setTaskCount', data)
   }
 }
