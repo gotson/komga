@@ -92,6 +92,9 @@ class ReadListMatcherTest(
       )
     )
 
+    // try to fix flaky test on Github Actions
+    Thread.sleep(200)
+
     // when
     val result = readListMatcher.matchReadListRequest(request)
 
