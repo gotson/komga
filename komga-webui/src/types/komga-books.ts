@@ -13,7 +13,8 @@ export interface BookDto {
   size: string,
   media: MediaDto,
   metadata: BookMetadataDto,
-  readProgress?: ReadProgressDto
+  readProgress?: ReadProgressDto,
+  deleted: boolean,
 
   // custom fields
   context: Context

@@ -202,6 +202,7 @@
     "roles": "Roles",
     "series": "Series",
     "tags": "Tags",
+    "unavailable": "Unavailable",
     "use_filter_panel_to_change_filter": "Use the filter panel to change the active filter",
     "year": "year"
   },

@@ -112,7 +112,7 @@
               </v-col>
             </v-row>
 
-            <v-row class="text-caption">
+            <v-row class="text-caption" align="center">
               <v-col cols="auto">
                 {{ book.metadata.number }} · {{ $tc('common.pages_n', book.media.pagesCount) }}
               </v-col>
@@ -120,6 +120,11 @@
                 {{
                   new Intl.DateTimeFormat($i18n.locale, {dateStyle: 'long'}).format(new Date(book.metadata.releaseDate))
                 }}
+              </v-col>
+              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="book.deleted">
+                <v-chip label small color="error">
+                  {{ $t('common.unavailable') }}
+                </v-chip>
               </v-col>
             </v-row>
 
@@ -131,7 +136,7 @@
                          small
                          :title="$t('browse_book.read_book')"
                          :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id}}"
-                         :disabled="book.media.status !== 'READY' || !canReadPages"
+                         :disabled="!canRead"
                   >
                     <v-icon left small>mdi-book-open-page-variant</v-icon>
                     {{ $t('common.read') }}
@@ -142,7 +147,7 @@
                   <v-btn small
                          :title="$t('browse_book.read_incognito')"
                          :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id, incognito: true}}"
-                         :disabled="book.media.status !== 'READY' || !canReadPages"
+                         :disabled="!canRead"
                   >
                     <v-icon left small>mdi-incognito</v-icon>
                     {{ $t('common.read') }}
@@ -177,7 +182,7 @@
                    small
                    :title="$t('browse_book.read_book')"
                    :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id}}"
-                   :disabled="book.media.status !== 'READY' || !canReadPages"
+                   :disabled="!canRead"
             >
               <v-icon left small>mdi-book-open-page-variant</v-icon>
               {{ $t('common.read') }}
@@ -188,7 +193,7 @@
             <v-btn small
                    :title="$t('browse_book.read_incognito')"
                    :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id, incognito: true}}"
-                   :disabled="book.media.status !== 'READY' || !canReadPages"
+                   :disabled="!canRead"
             >
               <v-icon left small>mdi-incognito</v-icon>
               {{ $t('common.read') }}
@@ -397,11 +402,11 @@ export default Vue.extend({
     isAdmin(): boolean {
       return this.$store.getters.meAdmin
     },
-    canReadPages(): boolean {
-      return this.$store.getters.mePageStreaming
+    canRead(): boolean {
+      return this.book.media.status === 'READY' && this.$store.getters.mePageStreaming && !this.book.deleted
     },
     canDownload(): boolean {
-      return this.$store.getters.meFileDownload
+      return this.$store.getters.meFileDownload && !this.book.deleted
     },
     thumbnailUrl(): string {
       return bookThumbnailUrl(this.bookId)

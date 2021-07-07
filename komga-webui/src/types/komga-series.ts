@@ -12,6 +12,7 @@ export interface SeriesDto {
   booksInProgressCount: number,
   metadata: SeriesMetadataDto,
   booksMetadata: SeriesBooksMetadataDto,
+  deleted: boolean,
 }
 
 export interface SeriesMetadataDto {
