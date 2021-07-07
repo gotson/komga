@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.time.LocalDateTime
 
 private val logger = KotlinLogging.logger {}
 private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
@@ -137,12 +138,24 @@ class SeriesLifecycle(
   }
 
   @Transactional
+  fun softDeleteMany(series: Collection<Series>) {
+    logger.info { "Soft delete series: $series" }
+    val deletedDate = LocalDateTime.now()
+
+    bookLifecycle.softDeleteMany(bookRepository.findAllBySeriesIds(series.map { it.id }))
+    series.forEach {
+      seriesRepository.update(it.copy(deletedDate = deletedDate))
+    }
+
+    series.forEach { eventPublisher.publishEvent(DomainEvent.SeriesUpdated(it)) }
+  }
+
+  @Transactional
   fun deleteMany(series: Collection<Series>) {
     val seriesIds = series.map { it.id }
     logger.info { "Delete series ids: $seriesIds" }
 
-    val books = bookRepository.findAllBySeriesIds(seriesIds)
-    bookLifecycle.deleteMany(books)
+    bookLifecycle.deleteMany(bookRepository.findAllBySeriesIds(seriesIds))
 
     readProgressRepository.deleteBySeriesIds(seriesIds)
     collectionRepository.removeSeriesFromAll(seriesIds)

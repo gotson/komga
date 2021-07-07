@@ -27,6 +27,7 @@ import org.springframework.transaction.support.TransactionTemplate
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.time.LocalDateTime
 
 private val logger = KotlinLogging.logger {}
 
@@ -226,6 +227,14 @@ class BookLifecycle(
     bookRepository.delete(book.id)
 
     eventPublisher.publishEvent(DomainEvent.BookDeleted(book))
+  }
+
+  fun softDeleteMany(books: Collection<Book>) {
+    logger.info { "Soft delete books: $books" }
+    val deletedDate = LocalDateTime.now()
+    bookRepository.update(books.map { it.copy(deletedDate = deletedDate) })
+
+    books.forEach { eventPublisher.publishEvent(DomainEvent.BookUpdated(it)) }
   }
 
   @Transactional

@@ -202,8 +202,9 @@ class BookDao(
           b.FILE_SIZE,
           b.FILE_HASH,
           b.LIBRARY_ID,
-          b.SERIES_ID
-        ).values(null as String?, null, null, null, null, null, null, null, null)
+          b.SERIES_ID,
+          b.DELETED_DATE,
+        ).values(null as String?, null, null, null, null, null, null, null, null, null)
       ).also { step ->
         books.forEach {
           step.bind(
@@ -215,7 +216,8 @@ class BookDao(
             it.fileSize,
             it.fileHash,
             it.libraryId,
-            it.seriesId
+            it.seriesId,
+            it.deletedDate,
           )
         }
       }.execute()
@@ -242,6 +244,7 @@ class BookDao(
       .set(b.FILE_HASH, book.fileHash)
       .set(b.LIBRARY_ID, book.libraryId)
       .set(b.SERIES_ID, book.seriesId)
+      .set(b.DELETED_DATE, book.deletedDate)
       .set(b.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(b.ID.eq(book.id))
       .execute()
@@ -282,6 +285,7 @@ class BookDao(
       id = id,
       libraryId = libraryId,
       seriesId = seriesId,
+      deletedDate = deletedDate,
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
       number = number

@@ -20,6 +20,8 @@ data class Book(
   val seriesId: String = "",
   val libraryId: String = "",
 
+  val deletedDate: LocalDateTime? = null,
+
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
 ) : Auditable(), Serializable {

@@ -58,7 +58,8 @@ class BookDaoTest(
       fileSize = 3,
       fileHash = "abc",
       seriesId = series.id,
-      libraryId = library.id
+      libraryId = library.id,
+      deletedDate = LocalDateTime.now(),
     )
 
     bookDao.insert(book)
@@ -72,6 +73,7 @@ class BookDaoTest(
     assertThat(created.fileLastModified).isEqualToIgnoringNanos(book.fileLastModified)
     assertThat(created.fileSize).isEqualTo(book.fileSize)
     assertThat(created.fileHash).isEqualTo(book.fileHash)
+    assertThat(created.deletedDate).isEqualTo(book.deletedDate)
   }
 
   @Test
@@ -82,7 +84,7 @@ class BookDaoTest(
       fileLastModified = LocalDateTime.now(),
       fileSize = 3,
       seriesId = series.id,
-      libraryId = library.id
+      libraryId = library.id,
     )
     bookDao.insert(book)
 
@@ -95,6 +97,7 @@ class BookDaoTest(
         fileLastModified = modificationDate,
         fileSize = 5,
         fileHash = "def",
+        deletedDate = LocalDateTime.now(),
       )
     }
 
@@ -111,6 +114,7 @@ class BookDaoTest(
     assertThat(modified.fileLastModified).isEqualToIgnoringNanos(modificationDate)
     assertThat(modified.fileSize).isEqualTo(5)
     assertThat(modified.fileHash).isEqualTo("def")
+    assertThat(modified.deletedDate).isEqualToIgnoringNanos(updated.deletedDate)
   }
 
   @Test

@@ -23,7 +23,8 @@ data class BookDto(
   val size: String = BinaryByteUnit.format(sizeBytes),
   val media: MediaDto,
   val metadata: BookMetadataDto,
-  val readProgress: ReadProgressDto? = null
+  val readProgress: ReadProgressDto? = null,
+  val deleted: Boolean,
 )
 
 fun BookDto.restrictUrl(restrict: Boolean) =

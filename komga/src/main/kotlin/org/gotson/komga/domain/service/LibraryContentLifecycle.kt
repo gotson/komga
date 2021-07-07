@@ -49,15 +49,15 @@ class LibraryContentLifecycle(
 
       // delete series that don't exist anymore
       if (scannedSeries.isEmpty()) {
-        logger.info { "Scan returned no series, deleting all existing series" }
+        logger.info { "Scan returned no series, soft deleting all existing series" }
         val series = seriesRepository.findAllByLibraryId(library.id)
-        seriesLifecycle.deleteMany(series)
+        seriesLifecycle.softDeleteMany(series)
       } else {
         scannedSeries.keys.map { it.url }.let { urls ->
           val series = seriesRepository.findAllByLibraryIdAndUrlNotIn(library.id, urls)
           if (series.isNotEmpty()) {
-            logger.info { "Deleting series not on disk anymore: $series" }
-            seriesLifecycle.deleteMany(series)
+            logger.info { "Soft deleting series not on disk anymore: $series" }
+            seriesLifecycle.softDeleteMany(series)
           }
         }
       }
@@ -74,10 +74,10 @@ class LibraryContentLifecycle(
         } else {
           // if series already exists, update it
           logger.debug { "Scanned series already exists. Scanned: $newSeries, Existing: $existingSeries" }
-          val seriesChanged = newSeries.fileLastModified.notEquals(existingSeries.fileLastModified)
+          val seriesChanged = newSeries.fileLastModified.notEquals(existingSeries.fileLastModified) || existingSeries.deletedDate != null
           if (seriesChanged) {
             logger.info { "Series changed on disk, updating: $existingSeries" }
-            seriesRepository.update(existingSeries.copy(fileLastModified = newSeries.fileLastModified))
+            seriesRepository.update(existingSeries.copy(fileLastModified = newSeries.fileLastModified, deletedDate = null))
           }
           if (library.scanDeep || seriesChanged) {
             // update list of books with existing entities if they exist
@@ -88,12 +88,13 @@ class LibraryContentLifecycle(
               logger.debug { "Trying to match scanned book by url: $newBook" }
               existingBooks.find { it.url == newBook.url }?.let { existingBook ->
                 logger.debug { "Matched existing book: $existingBook" }
-                if (newBook.fileLastModified.notEquals(existingBook.fileLastModified)) {
+                if (newBook.fileLastModified.notEquals(existingBook.fileLastModified) || existingBook.deletedDate != null) {
                   logger.info { "Book changed on disk, update and reset media status: $existingBook" }
                   val updatedBook = existingBook.copy(
                     fileLastModified = newBook.fileLastModified,
                     fileSize = newBook.fileSize,
                     fileHash = "",
+                    deletedDate = null,
                   )
                   transactionTemplate.executeWithoutResult {
                     mediaRepository.findById(existingBook.id).let {
@@ -111,7 +112,7 @@ class LibraryContentLifecycle(
               .filterNot { existingBook -> newBooksUrls.contains(existingBook.url) }
               .let { books ->
                 logger.info { "Deleting books not on disk anymore: $books" }
-                bookLifecycle.deleteMany(books)
+                bookLifecycle.softDeleteMany(books)
                 books.map { it.seriesId }.distinct().forEach { taskReceiver.refreshSeriesMetadata(it) }
               }
 

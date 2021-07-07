@@ -86,7 +86,7 @@ class LibraryContentLifecycleTest(
   }
 
   @Test
-  fun `given existing series when removing files and scanning then only updated Books are persisted`() {
+  fun `given existing series when removing files and scanning then updated Books are persisted and removed books are marked as such`() {
     // given
     val library = makeLibrary()
     libraryRepository.insert(library)
@@ -111,9 +111,41 @@ class LibraryContentLifecycleTest(
     verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
 
     assertThat(allSeries).hasSize(1)
-    assertThat(allBooks).hasSize(1)
-    assertThat(allBooks.map { it.name }).containsExactly("book1")
-    assertThat(bookRepository.count()).describedAs("Orphan book has been removed").isEqualTo(1)
+    assertThat(allBooks).hasSize(2)
+    assertThat(allBooks.filter { it.deletedDate == null }.map { it.name }).containsExactly("book1")
+    assertThat(allBooks.filter { it.deletedDate != null }.map { it.name }).containsExactly("book2")
+  }
+
+  @Test
+  fun `given existing series when removing files and scanning, restoring files and scanning then restored books are available`() {
+    // given
+    val library = makeLibrary()
+    libraryRepository.insert(library)
+
+    val books = listOf(makeBook("book1"), makeBook("book2"))
+    val lessBooks = listOf(makeBook("book1"))
+
+    every { mockScanner.scanRootFolder(any()) }
+      .returnsMany(
+        mapOf(makeSeries(name = "series") to books).toScanResult(),
+        mapOf(makeSeries(name = "series") to lessBooks).toScanResult(),
+        mapOf(makeSeries(name = "series") to books).toScanResult(),
+      )
+    libraryContentLifecycle.scanRootFolder(library) // creation
+    libraryContentLifecycle.scanRootFolder(library) // deletion
+
+    // when
+    libraryContentLifecycle.scanRootFolder(library) // restore
+
+    // then
+    val allSeries = seriesRepository.findAll()
+    val allBooks = bookRepository.findAll().sortedBy { it.number }
+
+    verify(exactly = 3) { mockScanner.scanRootFolder(any()) }
+
+    assertThat(allSeries).hasSize(1)
+    assertThat(allBooks).hasSize(2)
+    assertThat(allBooks.map { it.deletedDate }).containsOnlyNulls()
   }
 
   @Test
@@ -148,7 +180,7 @@ class LibraryContentLifecycleTest(
   }
 
   @Test
-  fun `given existing series when deleting all books and scanning then Series and Books are removed`() {
+  fun `given existing series when deleting all books and scanning then Series and Books are marked as deleted`() {
     // given
     val library = makeLibrary()
     libraryRepository.insert(library)
@@ -166,12 +198,49 @@ class LibraryContentLifecycleTest(
     // then
     verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
 
-    assertThat(seriesRepository.count()).describedAs("Series repository should be empty").isEqualTo(0)
-    assertThat(bookRepository.count()).describedAs("Book repository should be empty").isEqualTo(0)
+    val allSeries = seriesRepository.findAll()
+    val allBooks = bookRepository.findAll()
+
+    assertThat(allSeries.map { it.deletedDate }).doesNotContainNull()
+    assertThat(allSeries).hasSize(1)
+    assertThat(allBooks.map { it.deletedDate }).doesNotContainNull()
+    assertThat(allBooks).hasSize(1)
   }
 
   @Test
-  fun `given existing Series when deleting all books of one series and scanning then series and its Books are removed`() {
+  fun `given existing series when deleting all books and scanning then restoring and scanning then Series and Books are available`() {
+    // given
+    val library = makeLibrary()
+    libraryRepository.insert(library)
+
+    val series = makeSeries(name = "series")
+    val book = makeBook("book1")
+    every { mockScanner.scanRootFolder(any()) }
+      .returnsMany(
+        mapOf(series to listOf(book)).toScanResult(),
+        emptyMap<Series, List<Book>>().toScanResult(),
+        mapOf(series to listOf(book)).toScanResult(),
+      )
+    libraryContentLifecycle.scanRootFolder(library) // creation
+    libraryContentLifecycle.scanRootFolder(library) // deletion
+
+    // when
+    libraryContentLifecycle.scanRootFolder(library) // restore
+
+    // then
+    verify(exactly = 3) { mockScanner.scanRootFolder(any()) }
+
+    val allSeries = seriesRepository.findAll()
+    val allBooks = bookRepository.findAll()
+
+    assertThat(allSeries.map { it.deletedDate }).containsOnlyNulls()
+    assertThat(allSeries).hasSize(1)
+    assertThat(allBooks.map { it.deletedDate }).containsOnlyNulls()
+    assertThat(allBooks).hasSize(1)
+  }
+
+  @Test
+  fun `given existing Series when deleting all books of one series and scanning then series and its Books are marked as deleted`() {
     // given
     val library = makeLibrary()
     libraryRepository.insert(library)
@@ -192,8 +261,20 @@ class LibraryContentLifecycleTest(
     // then
     verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
 
-    assertThat(seriesRepository.count()).describedAs("Series repository should not be empty").isEqualTo(1)
-    assertThat(bookRepository.count()).describedAs("Book repository should not be empty").isEqualTo(1)
+    val (series, deletedSeries) = seriesRepository.findAll().partition { it.deletedDate == null }
+    val (books, deletedBooks) = bookRepository.findAll().partition { it.deletedDate == null }
+
+    assertThat(series).hasSize(1)
+    assertThat(series.map { it.name }).containsExactlyInAnyOrder("series")
+
+    assertThat(deletedSeries).hasSize(1)
+    assertThat(deletedSeries.map { it.name }).containsExactlyInAnyOrder("series2")
+
+    assertThat(books).hasSize(1)
+    assertThat(books.map { it.name }).containsExactlyInAnyOrder("book1")
+
+    assertThat(deletedBooks).hasSize(1)
+    assertThat(deletedBooks.map { it.name }).containsExactlyInAnyOrder("book2")
   }
 
   @Test
@@ -294,8 +375,8 @@ class LibraryContentLifecycleTest(
     libraryContentLifecycle.scanRootFolder(library1)
     libraryContentLifecycle.scanRootFolder(library2)
 
-    assertThat(seriesRepository.count()).describedAs("Series repository should be empty").isEqualTo(2)
-    assertThat(bookRepository.count()).describedAs("Book repository should be empty").isEqualTo(2)
+    assertThat(seriesRepository.count()).describedAs("Series repository should not be empty").isEqualTo(2)
+    assertThat(bookRepository.count()).describedAs("Book repository should not be empty").isEqualTo(2)
 
     // when
     libraryContentLifecycle.scanRootFolder(library2)
@@ -304,7 +385,19 @@ class LibraryContentLifecycleTest(
     verify(exactly = 1) { mockScanner.scanRootFolder(Paths.get(library1.root.toURI())) }
     verify(exactly = 2) { mockScanner.scanRootFolder(Paths.get(library2.root.toURI())) }
 
-    assertThat(seriesRepository.count()).describedAs("Series repository should be empty").isEqualTo(1)
-    assertThat(bookRepository.count()).describedAs("Book repository should be empty").isEqualTo(1)
+    val (seriesLib1, seriesLib2) = seriesRepository.findAll().partition { it.libraryId == library1.id }
+    val (booksLib1, booksLib2) = bookRepository.findAll().partition { it.libraryId == library1.id }
+
+    assertThat(seriesLib1.map { it.deletedDate }).containsOnlyNulls()
+    assertThat(seriesLib1.map { it.name }).containsExactlyInAnyOrder("series1")
+
+    assertThat(seriesLib2.map { it.deletedDate }).doesNotContainNull()
+    assertThat(seriesLib2.map { it.name }).containsExactlyInAnyOrder("series2")
+
+    assertThat(booksLib1.map { it.deletedDate }).containsOnlyNulls()
+    assertThat(booksLib1.map { it.name }).containsExactlyInAnyOrder("book1")
+
+    assertThat(booksLib2.map { it.deletedDate }).doesNotContainNull()
+    assertThat(booksLib2.map { it.name }).containsExactlyInAnyOrder("book2")
   }
 }
