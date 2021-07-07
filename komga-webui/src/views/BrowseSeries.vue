@@ -119,24 +119,28 @@
                   {{ $t(`enums.series_status.${series.metadata.status}`) }}
                 </v-chip>
               </v-col>
-              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto">
-                <v-chip label small link v-if="series.metadata.ageRating"
+              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="series.metadata.ageRating">
+                <v-chip label small link
                         :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {ageRating: [series.metadata.ageRating]}}"
                 >
                   {{ series.metadata.ageRating }}+
                 </v-chip>
               </v-col>
-              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto">
+              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="series.metadata.language">
                 <v-chip label small link
                         :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {language: [series.metadata.language]}}"
-                        v-if="series.metadata.language"
                 >
                   {{ languageDisplay }}
                 </v-chip>
               </v-col>
-              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto">
-                <v-chip label small v-if="series.metadata.readingDirection">
+              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="series.metadata.readingDirection">
+                <v-chip label small>
                   {{ $t(`enums.reading_direction.${series.metadata.readingDirection}`) }}
+                </v-chip>
+              </v-col>
+              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="series.deleted">
+                <v-chip label small color="error">
+                  {{ $t('common.unavailable') }}
                 </v-chip>
               </v-col>
             </v-row>
@@ -500,7 +504,7 @@ export default Vue.extend({
       return this.$store.getters.meAdmin
     },
     canDownload(): boolean {
-      return this.$store.getters.meFileDownload
+      return this.$store.getters.meFileDownload && !this.series.deleted
     },
     fileUrl(): string {
       return seriesFileUrl(this.series.id)
