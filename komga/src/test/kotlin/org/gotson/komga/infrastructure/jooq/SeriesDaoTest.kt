@@ -48,7 +48,8 @@ class SeriesDaoTest(
       name = "Series",
       url = URL("file://series"),
       fileLastModified = now,
-      libraryId = library.id
+      libraryId = library.id,
+      deletedDate = now,
     )
 
     seriesDao.insert(series)
@@ -60,6 +61,44 @@ class SeriesDaoTest(
     assertThat(created.name).isEqualTo(series.name)
     assertThat(created.url).isEqualTo(series.url)
     assertThat(created.fileLastModified).isEqualToIgnoringNanos(series.fileLastModified)
+    assertThat(created.deletedDate).isEqualToIgnoringNanos(series.deletedDate)
+  }
+
+  @Test
+  fun `given a series when updating then it is persisted`() {
+    val now = LocalDateTime.now()
+    val series = Series(
+      name = "Series",
+      url = URL("file://series"),
+      fileLastModified = now,
+      libraryId = library.id,
+    )
+
+    seriesDao.insert(series)
+
+    val modificationDate = LocalDateTime.now()
+
+    val updated = seriesDao.findByIdOrNull(series.id)!!.copy(
+      name = "Updated",
+      url = URL("file://updated"),
+      fileLastModified = modificationDate,
+      bookCount = 5,
+      deletedDate = LocalDateTime.now(),
+    )
+
+    seriesDao.update(updated)
+    val modified = seriesDao.findByIdOrNull(updated.id)!!
+
+    assertThat(modified.id).isEqualTo(updated.id)
+    assertThat(modified.createdDate).isEqualTo(updated.createdDate)
+    assertThat(modified.lastModifiedDate)
+      .isCloseTo(modificationDate, offset)
+      .isNotEqualTo(updated.lastModifiedDate)
+    assertThat(modified.name).isEqualTo("Updated")
+    assertThat(modified.url).isEqualTo(URL("file://updated"))
+    assertThat(modified.fileLastModified).isEqualToIgnoringNanos(modificationDate)
+    assertThat(modified.bookCount).isEqualTo(5)
+    assertThat(modified.deletedDate).isEqualToIgnoringNanos(updated.deletedDate)
   }
 
   @Test

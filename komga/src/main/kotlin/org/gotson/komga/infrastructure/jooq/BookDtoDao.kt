@@ -318,7 +318,8 @@ class BookDtoDao(
       sizeBytes = fileSize,
       media = media,
       metadata = metadata,
-      readProgress = readProgress
+      readProgress = readProgress,
+      deleted = deletedDate != null,
     )
 
   private fun MediaRecord.toDto() =

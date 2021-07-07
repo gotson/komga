@@ -90,6 +90,7 @@ class SeriesDao(
       .set(s.URL, series.url.toString())
       .set(s.FILE_LAST_MODIFIED, series.fileLastModified)
       .set(s.LIBRARY_ID, series.libraryId)
+      .set(s.DELETED_DATE, series.deletedDate)
       .execute()
   }
 
@@ -100,6 +101,7 @@ class SeriesDao(
       .set(s.FILE_LAST_MODIFIED, series.fileLastModified)
       .set(s.LIBRARY_ID, series.libraryId)
       .set(s.BOOK_COUNT, series.bookCount)
+      .set(s.DELETED_DATE, series.deletedDate)
       .set(s.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(s.ID.eq(series.id))
       .execute()
@@ -139,6 +141,7 @@ class SeriesDao(
       id = id,
       libraryId = libraryId,
       bookCount = bookCount,
+      deletedDate = deletedDate,
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone()
     )

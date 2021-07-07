@@ -278,6 +278,7 @@ class SeriesDtoDao(
       booksInProgressCount = booksInProgressCount,
       metadata = metadata,
       booksMetadata = booksMetadata,
+      deleted = deletedDate != null,
     )
 
   private fun SeriesMetadataRecord.toDto(genres: Set<String>, tags: Set<String>) =
