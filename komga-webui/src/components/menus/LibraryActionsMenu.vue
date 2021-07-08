@@ -28,17 +28,17 @@
 
     <confirmation-dialog
       v-model="confirmAnalyzeModal"
-      title="Analyze library"
-      body="Analyzes all the media files in the library. The analysis captures information about the media. Depending on your library size, this may take a long time."
-      button-confirm="Analyze"
+      :title="$t('dialog.analyze_library.title')"
+      :body="$t('dialog.analyze_library.body')"
+      :button-confirm="$t('dialog.analyze_library.button_confirm')"
       @confirm="analyze"
     />
 
     <confirmation-dialog
       v-model="confirmRefreshMetadataModal"
-      title="Refresh metadata for library"
-      body="Refreshes metadata for all the media files in the library. Depending on your library size, this may take a long time."
-      button-confirm="Refresh"
+      :title="$t('dialog.refresh_library_metadata.title')"
+      :body="$t('dialog.refresh_library_metadata.body')"
+      :button-confirm="$t('dialog.refresh_library_metadata.button_confirm')"
       @confirm="refreshMetadata"
     />
   </div>

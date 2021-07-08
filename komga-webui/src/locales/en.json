@@ -253,6 +253,11 @@
       "field_role_page_streaming": "Page Streaming",
       "label_roles": "Roles"
     },
+    "analyze_library": {
+      "body": "Analyzes all the media files in the library. The analysis captures information about the media. Depending on your library size, this may take a long time.",
+      "button_confirm": "Analyze",
+      "title": "Analyze library"
+    },
     "delete_collection": {
       "button_confirm": "Delete",
       "confirm_delete": "Yes, delete the collection \"{name}\"",
@@ -407,6 +412,11 @@
       "field_new_password_error": "New password is required.",
       "field_repeat_password": "Repeat new password",
       "field_repeat_password_error": "Passwords must be identical."
+    },
+    "refresh_library_metadata": {
+      "body": "Refreshes metadata for all the media files in the library. Depending on your library size, this may take a long time.",
+      "button_confirm": "Refresh",
+      "title": "Refresh metadata for library"
     },
     "series_picker": {
       "label_search_series": "Search Series",
