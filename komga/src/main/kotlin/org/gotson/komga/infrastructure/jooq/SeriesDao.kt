@@ -129,6 +129,8 @@ class SeriesDao(
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
     if (!metadataStatus.isNullOrEmpty()) c = c.and(d.STATUS.`in`(metadataStatus))
     if (!publishers.isNullOrEmpty()) c = c.and(DSL.lower(d.PUBLISHER).`in`(publishers.map { it.lowercase() }))
+    if (deleted == true) c = c.and(s.DELETED_DATE.isNotNull)
+    if (deleted == false) c = c.and(s.DELETED_DATE.isNull)
 
     return c
   }

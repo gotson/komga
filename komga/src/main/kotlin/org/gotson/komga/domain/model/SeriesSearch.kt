@@ -5,7 +5,8 @@ open class SeriesSearch(
   val collectionIds: Collection<String>? = null,
   val searchTerm: String? = null,
   val metadataStatus: Collection<SeriesMetadata.Status>? = null,
-  val publishers: Collection<String>? = null
+  val publishers: Collection<String>? = null,
+  val deleted: Boolean? = null,
 )
 
 class SeriesSearchWithReadProgress(
