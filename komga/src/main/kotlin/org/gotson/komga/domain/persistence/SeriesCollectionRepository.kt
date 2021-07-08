@@ -27,6 +27,8 @@ interface SeriesCollectionRepository {
    */
   fun findAllContainingSeriesId(containsSeriesId: String, filterOnLibraryIds: Collection<String>?): Collection<SeriesCollection>
 
+  fun findAllEmpty(): Collection<SeriesCollection>
+
   fun findByNameOrNull(name: String): SeriesCollection?
 
   fun insert(collection: SeriesCollection)

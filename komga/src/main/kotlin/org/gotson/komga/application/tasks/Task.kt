@@ -17,6 +17,11 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY) : Serializable {
     override fun uniqueId() = "SCAN_LIBRARY_$libraryId"
   }
 
+  class EmptyTrash(val libraryId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
+    override fun uniqueId() = "EMPTY_TRASH_$libraryId"
+    override fun toString(): String = "EmptyTrash(libraryId='$libraryId', priority='$priority')"
+  }
+
   class AnalyzeBook(val bookId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
     override fun uniqueId() = "ANALYZE_BOOK_$bookId"
     override fun toString(): String = "AnalyzeBook(bookId='$bookId', priority='$priority')"

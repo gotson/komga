@@ -58,6 +58,13 @@ class ReadListLifecycle(
     eventPublisher.publishEvent(DomainEvent.ReadListDeleted(readList))
   }
 
+  fun deleteEmptyReadLists() {
+    logger.info { "Deleting empty read lists" }
+    val toDelete = readListRepository.findAllEmpty()
+    readListRepository.deleteEmpty()
+    toDelete.forEach { eventPublisher.publishEvent(DomainEvent.ReadListDeleted(it)) }
+  }
+
   fun getThumbnailBytes(readList: ReadList): ByteArray {
     val ids = with(mutableListOf<String>()) {
       while (size < 4) {

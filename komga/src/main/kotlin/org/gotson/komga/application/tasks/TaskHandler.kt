@@ -49,6 +49,11 @@ class TaskHandler(
               if (library.convertToCbz) taskReceiver.convertBooksToCbz(library, LOWEST_PRIORITY)
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 
+          is Task.EmptyTrash ->
+            libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
+              libraryContentLifecycle.emptyTrash(library)
+            } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
+
           is Task.AnalyzeBook ->
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
               if (bookLifecycle.analyzeAndPersist(book)) {

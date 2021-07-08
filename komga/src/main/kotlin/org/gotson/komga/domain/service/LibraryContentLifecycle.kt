@@ -2,13 +2,13 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import org.gotson.komga.application.tasks.TaskReceiver
+import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.model.Sidecar
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
-import org.gotson.komga.domain.persistence.ReadListRepository
-import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.SidecarRepository
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
@@ -28,8 +28,8 @@ class LibraryContentLifecycle(
   private val bookLifecycle: BookLifecycle,
   private val mediaRepository: MediaRepository,
   private val seriesLifecycle: SeriesLifecycle,
-  private val collectionRepository: SeriesCollectionRepository,
-  private val readListRepository: ReadListRepository,
+  private val collectionLifecycle: SeriesCollectionLifecycle,
+  private val readListLifecycle: ReadListLifecycle,
   private val sidecarRepository: SidecarRepository,
   private val komgaProperties: KomgaProperties,
   private val taskReceiver: TaskReceiver,
@@ -161,15 +161,32 @@ class LibraryContentLifecycle(
           }
       }
 
-      if (komgaProperties.deleteEmptyCollections) {
-        logger.info { "Deleting empty collections" }
-        collectionRepository.deleteEmpty()
-      }
-
-      if (komgaProperties.deleteEmptyReadLists) {
-        logger.info { "Deleting empty read lists" }
-        readListRepository.deleteEmpty()
-      }
+      cleanupEmptySets()
     }.also { logger.info { "Library updated in $it" } }
+  }
+
+  fun emptyTrash(library: Library) {
+    logger.info { "Empty trash for library: $library" }
+
+    val seriesToDelete = seriesRepository.findAll(SeriesSearch(deleted = true))
+    seriesLifecycle.deleteMany(seriesToDelete)
+
+    val booksToDelete = bookRepository.findAll(BookSearch(deleted = true))
+    bookLifecycle.deleteMany(booksToDelete)
+    booksToDelete.map { it.seriesId }.distinct().forEach { seriesId ->
+      seriesRepository.findByIdOrNull(seriesId)?.let { seriesLifecycle.sortBooks(it) }
+    }
+
+    cleanupEmptySets()
+  }
+
+  private fun cleanupEmptySets() {
+    if (komgaProperties.deleteEmptyCollections) {
+      collectionLifecycle.deleteEmptyCollections()
+    }
+
+    if (komgaProperties.deleteEmptyReadLists) {
+      readListLifecycle.deleteEmptyReadLists()
+    }
   }
 }

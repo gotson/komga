@@ -113,6 +113,18 @@ class SeriesCollectionDao(
       .fetchAndMap(filterOnLibraryIds)
   }
 
+  override fun findAllEmpty(): Collection<SeriesCollection> =
+    dsl.selectFrom(c)
+      .where(
+        c.ID.`in`(
+          dsl.select(c.ID)
+            .from(c)
+            .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
+            .where(cs.COLLECTION_ID.isNull)
+        )
+      ).fetchInto(c)
+      .map { it.toDomain(emptyList()) }
+
   override fun findByNameOrNull(name: String): SeriesCollection? =
     selectBase()
       .where(c.NAME.equalIgnoreCase(name))

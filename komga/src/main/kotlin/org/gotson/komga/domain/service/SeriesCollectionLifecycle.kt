@@ -54,6 +54,13 @@ class SeriesCollectionLifecycle(
     eventPublisher.publishEvent(DomainEvent.CollectionDeleted(collection))
   }
 
+  fun deleteEmptyCollections() {
+    logger.info { "Deleting empty collections" }
+    val toDelete = collectionRepository.findAllEmpty()
+    collectionRepository.deleteEmpty()
+    toDelete.forEach { eventPublisher.publishEvent(DomainEvent.CollectionDeleted(it)) }
+  }
+
   fun getThumbnailBytes(collection: SeriesCollection): ByteArray {
     val ids = with(mutableListOf<String>()) {
       while (size < 4) {
