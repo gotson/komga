@@ -27,6 +27,8 @@ interface ReadListRepository {
    */
   fun findAllContainingBookId(containsBookId: String, filterOnLibraryIds: Collection<String>?): Collection<ReadList>
 
+  fun findAllEmpty(): Collection<ReadList>
+
   fun findByNameOrNull(name: String): ReadList?
 
   fun insert(readList: ReadList)

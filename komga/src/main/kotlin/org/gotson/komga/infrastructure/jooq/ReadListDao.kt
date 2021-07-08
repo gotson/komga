@@ -114,6 +114,18 @@ class ReadListDao(
       .fetchAndMap(filterOnLibraryIds)
   }
 
+  override fun findAllEmpty(): Collection<ReadList> =
+    dsl.selectFrom(rl)
+      .where(
+        rl.ID.`in`(
+          dsl.select(rl.ID)
+            .from(rl)
+            .leftJoin(rlb).on(rl.ID.eq(rlb.READLIST_ID))
+            .where(rlb.READLIST_ID.isNull)
+        )
+      ).fetchInto(rl)
+      .map { it.toDomain(sortedMapOf()) }
+
   override fun findByNameOrNull(name: String): ReadList? =
     selectBase()
       .where(rl.NAME.equalIgnoreCase(name))

@@ -44,6 +44,10 @@ class TaskReceiver(
     submitTask(Task.ScanLibrary(libraryId))
   }
 
+  fun emptyTrash(libraryId: String, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.EmptyTrash(libraryId, priority))
+  }
+
   fun analyzeUnknownAndOutdatedBooks(library: Library) {
     bookRepository.findAllIds(
       BookSearch(

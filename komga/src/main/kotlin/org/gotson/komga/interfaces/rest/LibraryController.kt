@@ -169,6 +169,15 @@ class LibraryController(
       taskReceiver.refreshSeriesLocalArtwork(it, priority = HIGH_PRIORITY)
     }
   }
+
+  @PostMapping("{libraryId}/empty-trash")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun emptyTrash(@PathVariable libraryId: String) {
+    libraryRepository.findByIdOrNull(libraryId)?.let { library ->
+      taskReceiver.emptyTrash(library.id, HIGH_PRIORITY)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
 }
 
 data class LibraryCreationDto(
