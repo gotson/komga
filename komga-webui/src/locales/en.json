@@ -455,6 +455,11 @@
       "page_of_pages": "{page} / {pages}",
       "title": "Inspect Book",
       "title_comparison": "Book Comparison"
+    },
+    "empty_trash": {
+      "title": "Empty trash for library",
+      "body": "By default the media server doesn't remove information for media right away. This helps if a drive is temporarily disconnected. When you empty the trash for a library, all information about missing media is deleted.",
+      "button_confirm": "Empty"
     }
   },
   "enums": {
@@ -558,6 +563,7 @@
     "download_series": "Download series",
     "edit": "Edit",
     "edit_metadata": "Edit metadata",
+    "empty_trash": "Empty trash",
     "mark_read": "Mark as read",
     "mark_unread": "Mark as unread",
     "refresh_metadata": "Refresh metadata",

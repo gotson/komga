@@ -16,6 +16,9 @@
         <v-list-item @click="confirmRefreshMetadataModal = true">
           <v-list-item-title>{{ $t('menu.refresh_metadata') }}</v-list-item-title>
         </v-list-item>
+        <v-list-item @click="confirmEmptyTrash = true">
+          <v-list-item-title>{{ $t('menu.empty_trash') }}</v-list-item-title>
+        </v-list-item>
         <v-list-item @click="edit">
           <v-list-item-title>{{ $t('menu.edit') }}</v-list-item-title>
         </v-list-item>
@@ -41,6 +44,14 @@
       :button-confirm="$t('dialog.refresh_library_metadata.button_confirm')"
       @confirm="refreshMetadata"
     />
+
+    <confirmation-dialog
+      v-model="confirmEmptyTrash"
+      :title="$t('dialog.empty_trash.title')"
+      :body="$t('dialog.empty_trash.body')"
+      :button-confirm="$t('dialog.empty_trash.button_confirm')"
+      @confirm="emptyTrash"
+    />
   </div>
 </template>
 <script lang="ts">
@@ -60,6 +71,7 @@ export default Vue.extend({
     return {
       confirmAnalyzeModal: false,
       confirmRefreshMetadataModal: false,
+      confirmEmptyTrash: false,
     }
   },
   computed: {
@@ -76,6 +88,9 @@ export default Vue.extend({
     },
     refreshMetadata() {
       this.$komgaLibraries.refreshMetadata(this.library)
+    },
+    emptyTrash() {
+      this.$komgaLibraries.emptyTrash(this.library)
     },
     edit() {
       this.$store.dispatch('dialogEditLibrary', this.library)
