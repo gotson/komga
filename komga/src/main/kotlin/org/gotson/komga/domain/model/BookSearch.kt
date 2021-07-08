@@ -4,7 +4,8 @@ open class BookSearch(
   val libraryIds: Collection<String>? = null,
   val seriesIds: Collection<String>? = null,
   val searchTerm: String? = null,
-  val mediaStatus: Collection<Media.Status>? = null
+  val mediaStatus: Collection<Media.Status>? = null,
+  val deleted: Boolean? = null,
 )
 
 class BookSearchWithReadProgress(

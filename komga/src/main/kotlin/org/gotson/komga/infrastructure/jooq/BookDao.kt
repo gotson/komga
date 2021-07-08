@@ -271,6 +271,8 @@ class BookDao(
     if (!seriesIds.isNullOrEmpty()) c = c.and(b.SERIES_ID.`in`(seriesIds))
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
     if (!mediaStatus.isNullOrEmpty()) c = c.and(m.STATUS.`in`(mediaStatus))
+    if (deleted == true) c = c.and(b.DELETED_DATE.isNotNull)
+    if (deleted == false) c = c.and(b.DELETED_DATE.isNull)
 
     return c
   }
