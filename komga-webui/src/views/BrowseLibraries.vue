@@ -69,7 +69,7 @@
 
     <v-container fluid>
       <empty-state
-        v-if="totalPages === 0"
+        v-if="totalPages === 0 && sortOrFilterActive"
         :title="$t('common.filter_no_matches')"
         :sub-title="$t('common.use_filter_panel_to_change_filter')"
         icon="mdi-book-multiple"
@@ -78,7 +78,14 @@
         <v-btn @click="resetSortAndFilters">{{ $t('common.reset_filters') }}</v-btn>
       </empty-state>
 
-      <template v-else>
+      <empty-state
+        v-if="totalPages === 0 && !sortOrFilterActive"
+        :title="$t('common.nothing_to_show')"
+        icon="mdi-help-circle"
+        icon-color="secondary"
+      />
+
+      <template v-if="totalPages > 0">
         <v-pagination
           v-if="totalPages > 1"
           v-model="page"
