@@ -5,7 +5,9 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
+import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.DuplicateNameException
+import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.persistence.ReadListRepository
@@ -188,6 +190,8 @@ class ReadListController(
   fun getBooksForReadList(
     @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
+    @RequestParam(name = "deleted", required = false) deleted: Boolean?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<BookDto> =
@@ -206,6 +210,10 @@ class ReadListController(
         readList.id,
         principal.user.id,
         principal.user.getAuthorizedLibraryIds(null),
+        BookSearchWithReadProgress(
+          mediaStatus = mediaStatus,
+          deleted = deleted,
+        ),
         pageRequest
       )
         .map { it.restrictUrl(!principal.user.roleAdmin) }
@@ -264,6 +272,7 @@ class ReadListController(
         readList.id,
         principal.user.id,
         principal.user.getAuthorizedLibraryIds(null),
+        BookSearchWithReadProgress(),
         UnpagedSorted(Sort.by(Sort.Order.asc("readList.number")))
       ).filterIndexed { index, _ -> index < readProgress.lastBookRead }
         .forEach { book -> bookLifecycle.markReadProgressCompleted(book.id, principal.user) }

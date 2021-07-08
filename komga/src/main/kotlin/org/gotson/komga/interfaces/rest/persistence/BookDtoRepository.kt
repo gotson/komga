@@ -15,7 +15,8 @@ interface BookDtoRepository {
     readListId: String,
     userId: String,
     filterOnLibraryIds: Collection<String>?,
-    pageable: Pageable
+    search: BookSearchWithReadProgress,
+    pageable: Pageable,
   ): Page<BookDto>
 
   fun findByIdOrNull(bookId: String, userId: String): BookDto?

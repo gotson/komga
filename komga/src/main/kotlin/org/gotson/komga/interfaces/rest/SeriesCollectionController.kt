@@ -171,6 +171,7 @@ class SeriesCollectionController(
     @RequestParam(name = "tag", required = false) tags: List<String>?,
     @RequestParam(name = "age_rating", required = false) ageRatings: List<String>?,
     @RequestParam(name = "release_year", required = false) release_years: List<String>?,
+    @RequestParam(name = "deleted", required = false) deleted: Boolean?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) @Authors authors: List<Author>?,
     @Parameter(hidden = true) page: Pageable
@@ -193,6 +194,7 @@ class SeriesCollectionController(
         metadataStatus = metadataStatus,
         readStatus = readStatus,
         publishers = publishers,
+        deleted = deleted,
         languages = languages,
         genres = genres,
         tags = tags,
