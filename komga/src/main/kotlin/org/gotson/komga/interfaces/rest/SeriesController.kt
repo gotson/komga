@@ -107,6 +107,7 @@ class SeriesController(
     @RequestParam(name = "tag", required = false) tags: List<String>?,
     @RequestParam(name = "age_rating", required = false) ageRatings: List<String>?,
     @RequestParam(name = "release_year", required = false) release_years: List<String>?,
+    @RequestParam(name = "deleted", required = false) deleted: Boolean?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) @Authors authors: List<Author>?,
     @Parameter(hidden = true) page: Pageable
@@ -130,6 +131,7 @@ class SeriesController(
       metadataStatus = metadataStatus,
       readStatus = readStatus,
       publishers = publishers,
+      deleted = deleted,
       languages = languages,
       genres = genres,
       tags = tags,
@@ -148,6 +150,7 @@ class SeriesController(
   fun getLatestSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
+    @RequestParam(name = "deleted", required = false) deleted: Boolean?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> {
@@ -162,7 +165,10 @@ class SeriesController(
       )
 
     return seriesDtoRepository.findAll(
-      SeriesSearchWithReadProgress(principal.user.getAuthorizedLibraryIds(libraryIds)),
+      SeriesSearchWithReadProgress(
+        libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
+        deleted = deleted,
+      ),
       principal.user.id,
       pageRequest
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
@@ -174,6 +180,7 @@ class SeriesController(
   fun getNewSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
+    @RequestParam(name = "deleted", required = false) deleted: Boolean?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> {
@@ -188,7 +195,10 @@ class SeriesController(
       )
 
     return seriesDtoRepository.findAll(
-      SeriesSearchWithReadProgress(principal.user.getAuthorizedLibraryIds(libraryIds)),
+      SeriesSearchWithReadProgress(
+        libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
+        deleted = deleted,
+      ),
       principal.user.id,
       pageRequest
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
@@ -200,6 +210,7 @@ class SeriesController(
   fun getUpdatedSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
+    @RequestParam(name = "deleted", required = false) deleted: Boolean?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> {
@@ -214,7 +225,10 @@ class SeriesController(
       )
 
     return seriesDtoRepository.findAllRecentlyUpdated(
-      SeriesSearchWithReadProgress(principal.user.getAuthorizedLibraryIds(libraryIds)),
+      SeriesSearchWithReadProgress(
+        libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
+        deleted = deleted,
+      ),
       principal.user.id,
       pageRequest
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
@@ -252,6 +266,7 @@ class SeriesController(
     @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
     @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
     @RequestParam(name = "tag", required = false) tags: List<String>?,
+    @RequestParam(name = "deleted", required = false) deleted: Boolean?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) @Authors authors: List<Author>?,
     @Parameter(hidden = true) page: Pageable
@@ -275,6 +290,7 @@ class SeriesController(
       BookSearchWithReadProgress(
         seriesIds = listOf(seriesId),
         mediaStatus = mediaStatus,
+        deleted = deleted,
         readStatus = readStatus,
         tags = tags,
         authors = authors,

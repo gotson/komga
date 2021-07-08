@@ -15,6 +15,7 @@ class SeriesSearchWithReadProgress(
   searchTerm: String? = null,
   metadataStatus: Collection<SeriesMetadata.Status>? = null,
   publishers: Collection<String>? = null,
+  deleted: Boolean? = null,
   val languages: Collection<String>? = null,
   val genres: Collection<String>? = null,
   val tags: Collection<String>? = null,
@@ -27,5 +28,6 @@ class SeriesSearchWithReadProgress(
   collectionIds = collectionIds,
   searchTerm = searchTerm,
   metadataStatus = metadataStatus,
-  publishers = publishers
+  publishers = publishers,
+  deleted = deleted,
 )

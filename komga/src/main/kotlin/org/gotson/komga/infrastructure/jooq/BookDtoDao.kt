@@ -71,9 +71,10 @@ class BookDtoDao(
     readListId: String,
     userId: String,
     filterOnLibraryIds: Collection<String>?,
+    search: BookSearchWithReadProgress,
     pageable: Pageable
   ): Page<BookDto> {
-    val conditions = rlb.READLIST_ID.eq(readListId)
+    val conditions = rlb.READLIST_ID.eq(readListId).and(search.toCondition())
 
     return findAll(conditions, userId, pageable, JoinConditions(selectReadListNumber = true), filterOnLibraryIds)
   }
@@ -267,6 +268,8 @@ class BookDtoDao(
     if (!seriesIds.isNullOrEmpty()) c = c.and(b.SERIES_ID.`in`(seriesIds))
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
     if (!mediaStatus.isNullOrEmpty()) c = c.and(m.STATUS.`in`(mediaStatus))
+    if (deleted == true) c = c.and(b.DELETED_DATE.isNotNull)
+    if (deleted == false) c = c.and(b.DELETED_DATE.isNull)
     if (!tags.isNullOrEmpty()) c = c.and(lower(bt.TAG).`in`(tags.map { it.lowercase() }))
 
     if (readStatus != null) {
