@@ -1,3 +1,10 @@
+## [0.106.1](https://github.com/gotson/komga/compare/v0.106.0...v0.106.1) (2021-07-08)
+
+
+### Bug Fixes
+
+* **webui:** show different empty state if library is empty ([68a9f7a](https://github.com/gotson/komga/commit/68a9f7a79c8d45e0ed47b44dd3561de7aa44e2ba))
+
 # [0.106.0](https://github.com/gotson/komga/compare/v0.105.2...v0.106.0) (2021-07-06)
 
 
