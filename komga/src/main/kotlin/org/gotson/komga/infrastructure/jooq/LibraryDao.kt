@@ -73,6 +73,7 @@ class LibraryDao(
       .set(l.SCAN_DEEP, library.scanDeep)
       .set(l.REPAIR_EXTENSIONS, library.repairExtensions)
       .set(l.CONVERT_TO_CBZ, library.convertToCbz)
+      .set(l.EMPTY_TRASH_AFTER_SCAN, library.emptyTrashAfterScan)
       .execute()
   }
 
@@ -93,6 +94,7 @@ class LibraryDao(
       .set(l.SCAN_DEEP, library.scanDeep)
       .set(l.REPAIR_EXTENSIONS, library.repairExtensions)
       .set(l.CONVERT_TO_CBZ, library.convertToCbz)
+      .set(l.EMPTY_TRASH_AFTER_SCAN, library.emptyTrashAfterScan)
       .set(l.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(l.ID.eq(library.id))
       .execute()
@@ -116,6 +118,7 @@ class LibraryDao(
       scanDeep = scanDeep,
       repairExtensions = repairExtensions,
       convertToCbz = convertToCbz,
+      emptyTrashAfterScan = emptyTrashAfterScan,
       id = id,
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone()

@@ -65,6 +65,7 @@ class LibraryDaoTest(
         importLocalArtwork = false,
         repairExtensions = true,
         convertToCbz = true,
+        emptyTrashAfterScan = true,
       )
     }
 
@@ -89,6 +90,7 @@ class LibraryDaoTest(
     assertThat(modified.importLocalArtwork).isEqualTo(updated.importLocalArtwork)
     assertThat(modified.repairExtensions).isEqualTo(updated.repairExtensions)
     assertThat(modified.convertToCbz).isEqualTo(updated.convertToCbz)
+    assertThat(modified.emptyTrashAfterScan).isEqualTo(updated.emptyTrashAfterScan)
   }
 
   @Test

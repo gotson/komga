@@ -88,6 +88,7 @@ class LibraryController(
           scanDeep = library.scanDeep,
           repairExtensions = library.repairExtensions,
           convertToCbz = library.convertToCbz,
+          emptyTrashAfterScan = library.emptyTrashAfterScan,
         )
       ).toDto(includeRoot = principal.user.roleAdmin)
     } catch (e: Exception) {
@@ -125,6 +126,7 @@ class LibraryController(
         scanDeep = library.scanDeep,
         repairExtensions = library.repairExtensions,
         convertToCbz = library.convertToCbz,
+        emptyTrashAfterScan = library.emptyTrashAfterScan,
       )
       libraryLifecycle.updateLibrary(toUpdate)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -195,6 +197,7 @@ data class LibraryCreationDto(
   val scanDeep: Boolean = false,
   val repairExtensions: Boolean = false,
   val convertToCbz: Boolean = false,
+  val emptyTrashAfterScan: Boolean = false,
 )
 
 data class LibraryDto(
@@ -213,6 +216,7 @@ data class LibraryDto(
   val scanDeep: Boolean,
   val repairExtensions: Boolean,
   val convertToCbz: Boolean,
+  val emptyTrashAfterScan: Boolean,
 )
 
 data class LibraryUpdateDto(
@@ -230,6 +234,7 @@ data class LibraryUpdateDto(
   val scanDeep: Boolean,
   val repairExtensions: Boolean,
   val convertToCbz: Boolean,
+  val emptyTrashAfterScan: Boolean,
 )
 
 fun Library.toDto(includeRoot: Boolean) = LibraryDto(
@@ -248,4 +253,5 @@ fun Library.toDto(includeRoot: Boolean) = LibraryDto(
   scanDeep = scanDeep,
   repairExtensions = repairExtensions,
   convertToCbz = convertToCbz,
+  emptyTrashAfterScan = emptyTrashAfterScan,
 )
