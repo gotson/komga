@@ -22,6 +22,7 @@ data class Library(
   val scanDeep: Boolean = false,
   val repairExtensions: Boolean = false,
   val convertToCbz: Boolean = false,
+  val emptyTrashAfterScan: Boolean = false,
 
   val id: String = TsidCreator.getTsid256().toString(),
 

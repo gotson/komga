@@ -5,6 +5,7 @@ import io.mockk.every
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.Book
+import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ScanResult
@@ -97,7 +98,7 @@ class LibraryContentLifecycleTest(
     }
 
     @Test
-    fun `given existing series when removing files and scanning then updated Books are persisted and removed books are marked as such`() {
+    fun `given existing series when removing files and scanning then updated books are persisted and removed books are marked as such`() {
       // given
       val library = makeLibrary()
       libraryRepository.insert(library)
@@ -251,7 +252,7 @@ class LibraryContentLifecycleTest(
     }
 
     @Test
-    fun `given existing Series when deleting all books of one series and scanning then series and its Books are marked as deleted`() {
+    fun `given existing Series when deleting all books of one series and scanning then series and its books are marked as deleted`() {
       // given
       val library = makeLibrary()
       libraryRepository.insert(library)
@@ -289,7 +290,7 @@ class LibraryContentLifecycleTest(
     }
 
     @Test
-    fun `given existing Book with media when rescanning then media is kept intact`() {
+    fun `given existing book with media when rescanning then media is kept intact`() {
       // given
       val library = makeLibrary()
       libraryRepository.insert(library)
@@ -325,7 +326,7 @@ class LibraryContentLifecycleTest(
     }
 
     @Test
-    fun `given existing Book with different last modified date when rescanning then media is marked as outdated and hash is reset`() {
+    fun `given existing book with different last modified date when rescanning then media is marked as outdated and hash is reset`() {
       // given
       val library = makeLibrary()
       libraryRepository.insert(library)
@@ -410,6 +411,75 @@ class LibraryContentLifecycleTest(
 
       assertThat(booksLib2.map { it.deletedDate }).doesNotContainNull()
       assertThat(booksLib2.map { it.name }).containsExactlyInAnyOrder("book2")
+    }
+
+    @Test
+    fun `given library with auto empty trash when scanning then removed series and books are deleted permanently`() {
+      // given
+      val library = makeLibrary().copy(emptyTrashAfterScan = true)
+      libraryRepository.insert(library)
+
+      every { mockScanner.scanRootFolder(any()) }
+        .returnsMany(
+          mapOf(
+            makeSeries(name = "series") to listOf(makeBook("book1"), makeBook("book3")),
+            makeSeries(name = "series2") to listOf(makeBook("book2")),
+          ).toScanResult(),
+          mapOf(makeSeries(name = "series") to listOf(makeBook("book1"))).toScanResult(),
+        )
+      libraryContentLifecycle.scanRootFolder(library)
+
+      // when
+      libraryContentLifecycle.scanRootFolder(library)
+
+      // then
+      verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
+
+      val (series, deletedSeries) = seriesRepository.findAll().partition { it.deletedDate == null }
+      val (books, deletedBooks) = bookRepository.findAll().partition { it.deletedDate == null }
+
+      assertThat(series).hasSize(1)
+      assertThat(series.map { it.name }).containsExactlyInAnyOrder("series")
+
+      assertThat(deletedSeries).isEmpty()
+
+      assertThat(books).hasSize(1)
+      assertThat(books.map { it.name }).containsExactlyInAnyOrder("book1")
+
+      assertThat(deletedBooks).isEmpty()
+    }
+
+    @Test
+    fun `given library with auto empty trash when scanning and the root folder is not accessible then trash is not emptied automatically`() {
+      // given
+      val library = makeLibrary().copy(emptyTrashAfterScan = true)
+      libraryRepository.insert(library)
+
+      every { mockScanner.scanRootFolder(any()) } returns mapOf(
+        makeSeries(name = "series") to listOf(makeBook("book1"), makeBook("book3")),
+        makeSeries(name = "series2") to listOf(makeBook("book2")),
+      ).toScanResult() andThenThrows DirectoryNotFoundException("")
+
+      libraryContentLifecycle.scanRootFolder(library)
+
+      // when
+      libraryContentLifecycle.scanRootFolder(library)
+
+      // then
+      verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
+
+      val (series, deletedSeries) = seriesRepository.findAll().partition { it.deletedDate == null }
+      val (books, deletedBooks) = bookRepository.findAll().partition { it.deletedDate == null }
+
+      assertThat(series).isEmpty()
+
+      assertThat(deletedSeries).hasSize(2)
+      assertThat(deletedSeries.map { it.name }).containsExactlyInAnyOrder("series", "series2")
+
+      assertThat(books).isEmpty()
+
+      assertThat(deletedBooks).hasSize(3)
+      assertThat(deletedBooks.map { it.name }).containsExactlyInAnyOrder("book1", "book2", "book3")
     }
   }
 
