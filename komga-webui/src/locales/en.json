@@ -322,6 +322,7 @@
       "button_cancel": "Cancel",
       "button_confirm_add": "Add",
       "button_confirm_edit": "Edit",
+      "button_next": "Next",
       "dialog_title_add": "Add Library",
       "dialot_title_edit": "Edit Library",
       "field_convert_to_cbz": "Automatically convert to CBZ",
@@ -337,6 +338,7 @@
       "field_repair_extensions": "Automatically repair incorrect file extensions",
       "field_root_folder": "Root folder",
       "field_scanner_deep_scan": "Deep scan",
+      "field_scanner_empty_trash_after_scan": "Empty trash automatically after every scan",
       "field_scanner_force_directory_modified_time": "Force directory modified time",
       "file_browser_dialog_button_confirm": "Choose",
       "file_browser_dialog_title": "Library's root folder",
@@ -347,6 +349,7 @@
       "label_import_local": "Import local media assets",
       "label_scanner": "Scanner",
       "tab_general": "General",
+      "tab_metadata": "Metadata",
       "tab_options": "Options"
     },
     "edit_readlist": {
@@ -388,6 +391,11 @@
       "dialog_title": "Edit shared libraries",
       "field_all_libraries": "All libraries",
       "label_shared_with": "Shared with {name}"
+    },
+    "empty_trash": {
+      "body": "By default the media server doesn't remove information for media right away. This helps if a drive is temporarily disconnected. When you empty the trash for a library, all information about missing media is deleted.",
+      "button_confirm": "Empty",
+      "title": "Empty trash for library"
     },
     "file_browser": {
       "button_cancel": "Cancel",
@@ -455,11 +463,6 @@
       "page_of_pages": "{page} / {pages}",
       "title": "Inspect Book",
       "title_comparison": "Book Comparison"
-    },
-    "empty_trash": {
-      "title": "Empty trash for library",
-      "body": "By default the media server doesn't remove information for media right away. This helps if a drive is temporarily disconnected. When you empty the trash for a library, all information about missing media is deleted.",
-      "button_confirm": "Empty"
     }
   },
   "enums": {

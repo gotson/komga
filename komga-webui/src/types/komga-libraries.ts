@@ -12,7 +12,8 @@ interface LibraryCreationDto {
   scanForceModifiedTime: boolean,
   scanDeep: boolean,
   repairExtensions: boolean,
-  convertToCbz: boolean
+  convertToCbz: boolean,
+  emptyTrashAfterScan: boolean,
 }
 
 interface LibraryUpdateDto {
@@ -29,7 +30,8 @@ interface LibraryUpdateDto {
   scanForceModifiedTime: boolean,
   scanDeep: boolean,
   repairExtensions: boolean,
-  convertToCbz: boolean
+  convertToCbz: boolean,
+  emptyTrashAfterScan: boolean,
 }
 
 interface LibraryDto {
@@ -47,5 +49,6 @@ interface LibraryDto {
   scanForceModifiedTime: boolean,
   scanDeep: boolean,
   repairExtensions: boolean,
-  convertToCbz: boolean
+  convertToCbz: boolean,
+  emptyTrashAfterScan: boolean,
 }
