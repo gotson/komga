@@ -6,6 +6,7 @@
                up: () => {if(swipe) {verticalNext()}},
                down: () => {if(swipe) {verticalPrev()}}
              }"
+    @wheel.passive="wheelMoved"
   >
     <v-carousel v-model="carouselPage"
                 :show-arrows="false"
@@ -82,12 +83,26 @@ import {shortcutsLTR, shortcutsRTL, shortcutsVertical} from '@/functions/shortcu
 import {PageDtoWithUrl} from '@/types/komga-books'
 import {buildSpreads} from "@/functions/book-spreads";
 
+const INITIAL_SCROLL_DATA = {
+    // Amount of overscroll in pixels
+    accOverscroll: 0,
+    // When the last inhibited edge page switch event was triggered
+    lastEdgeEvent: 0,
+    // ... and when the first inhibited edge page switch event was triggered
+    firstEdgeEvent: 0,
+    // Scroll value of last scroll event
+    lastChange: 0,
+    // last scroll position
+    lastPos: 0,
+}
+
 export default Vue.extend({
   name: 'PagedReader',
   data: () => {
     return {
       carouselPage: 0,
       spreads: [] as PageDtoWithUrl[][],
+      scroll: { ...INITIAL_SCROLL_DATA },
     }
   },
   props: {
@@ -196,6 +211,95 @@ export default Vue.extend({
     keyPressed (e: KeyboardEvent) {
       this.shortcuts[e.key]?.execute(this)
     },
+    wheelMoved (e: WheelEvent) {
+      const PAGE_SWITCH_THRESHOLD = 13
+
+      // Only handle vertical movement for now
+      let change = e.deltaY
+      if (change === 0) {
+        return
+      }
+
+      const isAtBottomOfPage = (window.innerHeight + window.scrollY) >= document.body.offsetHeight
+      const isAtTopOfPage = window.scrollY <= 0
+      const isOverscrolling = isAtBottomOfPage && change > 0 || isAtTopOfPage && change < 0
+
+      const newScroll = {
+        ...this.scroll,
+        lastPos: window.scrollY,
+        lastChange: change,
+      }
+
+      // Return early if not overscrolling
+      if (!isAtTopOfPage && !isAtBottomOfPage) {
+        this.scroll = {
+          ...newScroll,
+          lastEdgeEvent: Infinity,
+          firstEdgeEvent: Infinity,
+        }
+        return
+      }
+
+      const currentDate = Date.now()
+
+      // Initialise lastEdgeEvent and firstEdgeEvent when arriving at this edge
+      if (this.scroll.lastPos !== window.scrollY && isOverscrolling) {
+        this.scroll = {
+          ...newScroll,
+          lastEdgeEvent: currentDate,
+          firstEdgeEvent: currentDate,
+        }
+        return
+      }
+
+      // If direction changes stop scroll inertia handling and reset overscroll value
+      if (this.scroll.lastChange !== 0 && Math.sign(change) !== Math.sign(this.scroll.lastChange)) {
+       this.scroll = {
+         ...this.scroll,
+          accOverscroll: 0,
+          lastEdgeEvent: 0,
+          firstEdgeEvent: 0,
+        }
+
+        newScroll.lastEdgeEvent = newScroll.firstEdgeEvent = 0
+      }
+
+      // Wait for 100ms of rest (up to 1000ms total) before allowing events to go through
+      // to prevent scroll inertia from inadvertly flipping the page
+      if (currentDate - this.scroll.lastEdgeEvent < 100 && currentDate - this.scroll.firstEdgeEvent < 1000) {
+        newScroll.lastEdgeEvent = Date.now()
+
+        // ensure firstEdgeEvent is initialiased properly
+        if (this.scroll.firstEdgeEvent > this.scroll.lastEdgeEvent) {
+          newScroll.firstEdgeEvent = this.scroll.lastEdgeEvent
+        }
+
+        this.scroll = newScroll
+        return
+      }
+
+      // Threshold page switch to prevent minimal pixel wheel movement from causing a page switch
+      if (e.deltaMode === window.WheelEvent.DOM_DELTA_PIXEL) {
+        change += this.scroll.accOverscroll
+        newScroll.accOverscroll = change
+      // Other scroll modes (line or page) instantly cause page switch at the edge
+      } else {
+        change = Math.sign(change) * PAGE_SWITCH_THRESHOLD
+      }
+
+      // Save new scroll data
+      this.scroll = newScroll
+
+      // Switch to next page if scrolling down at the bottom of the current page
+      if (change >= PAGE_SWITCH_THRESHOLD && isAtBottomOfPage) {
+        this.next()
+      }
+
+      // Switch to previous page if scrolling up at the top of the current page
+      if (change <= -PAGE_SWITCH_THRESHOLD && isAtTopOfPage) {
+        this.prev()
+      }
+    },
     imgClass (spread: PageDtoWithUrl[]): string {
       const double = spread.length > 1
       switch (this.scale) {
@@ -230,6 +334,12 @@ export default Vue.extend({
       if (this.vertical) this.next()
     },
     prev () {
+      // Reset scroll state on pageswitch
+      this.scroll = {
+        ...INITIAL_SCROLL_DATA,
+        lastEdgeEvent: Date.now(),
+        firstEdgeEvent: Date.now(),
+      }
       if (this.canPrev) {
         this.carouselPage--
         window.scrollTo(0, 0)
@@ -238,6 +348,12 @@ export default Vue.extend({
       }
     },
     next () {
+      // Reset scroll state on pageswitch
+      this.scroll = {
+        ...INITIAL_SCROLL_DATA,
+        lastEdgeEvent: Date.now(),
+        firstEdgeEvent: Date.now(),
+      }
       if (this.canNext) {
         this.carouselPage++
         window.scrollTo(0, 0)
