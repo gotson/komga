@@ -114,7 +114,7 @@
 
             <v-row class="text-caption">
               <v-col cols="auto">
-                {{ book.metadata.number }} · {{ book.media.pagesCount }} {{ $t('common.pages') }}
+                {{ book.metadata.number }} · {{ $tc('common.pages_n', book.media.pagesCount) }}
               </v-col>
               <v-col cols="auto" v-if="book.metadata.releaseDate">
                 {{
