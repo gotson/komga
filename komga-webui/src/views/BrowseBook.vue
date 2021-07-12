@@ -113,14 +113,29 @@
             </v-row>
 
             <v-row class="text-caption" align="center">
-              <v-col cols="auto">
+              <v-col cols="auto" v-if="book.media.status === MediaStatus.UNKNOWN">
+                {{ book.metadata.number }} · {{ $t('book_card.unknown') }}
+              </v-col>
+
+              <v-col cols="auto" v-else>
                 {{ book.metadata.number }} · {{ $tc('common.pages_n', book.media.pagesCount) }}
               </v-col>
+
               <v-col cols="auto" v-if="book.metadata.releaseDate">
                 {{
                   new Intl.DateTimeFormat($i18n.locale, {dateStyle: 'long'}).format(new Date(book.metadata.releaseDate))
                 }}
               </v-col>
+
+              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="book.media.status === MediaStatus.OUTDATED">
+                <v-tooltip bottom :disabled="!isAdmin">
+                  <template v-slot:activator="{ on }">
+                    <v-chip label small color="warning" v-on="on">
+                      {{ $t('common.outdated') }}
+                    </v-chip>
+                  </template>{{ $t('browse_book.outdated_tooltip') }}</v-tooltip>
+              </v-col>
+
               <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="book.deleted">
                 <v-chip label small color="error">
                   {{ $t('common.unavailable') }}
@@ -326,7 +341,7 @@ import {getBookFormatFromMediaType} from '@/functions/book-format'
 import {getReadProgress, getReadProgressPercentage} from '@/functions/book-progress'
 import {getBookTitleCompact} from '@/functions/book-title'
 import {bookFileUrl, bookThumbnailUrl} from '@/functions/urls'
-import {ReadStatus} from '@/types/enum-books'
+import {MediaStatus, ReadStatus} from '@/types/enum-books'
 import {
   BOOK_CHANGED,
   BOOK_DELETED,
@@ -354,6 +369,7 @@ export default Vue.extend({
   components: {ReadMore, ToolbarSticky, ItemCard, BookActionsMenu, ReadListsExpansionPanels, VueHorizontal, RtlIcon},
   data: () => {
     return {
+      MediaStatus,
       book: {} as BookDto,
       series: {} as SeriesDto,
       context: {} as Context,
