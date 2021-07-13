@@ -51,6 +51,7 @@ class EpubMetadataProvider(
       val description = opf.selectFirst("metadata > dc|description")?.text()?.let { Jsoup.clean(it, Whitelist.none()) }?.ifBlank { null }
       val date = opf.selectFirst("metadata > dc|date")?.text()?.let { parseDate(it) }
 
+      // TODO: widcard matching for no namespace will be available in Jsoup 1.14.2
       val authorRoles = (
         opf.select("metadata > *|meta[property=role][scheme=marc:relators]") +
           opf.select("metadata > meta[property=role][scheme=marc:relators]")
@@ -89,6 +90,7 @@ class EpubMetadataProvider(
     epubExtractor.getPackageFile(book.book.path)?.let { packageFile ->
       val opf = Jsoup.parse(packageFile, "", Parser.xmlParser())
 
+      // TODO: widcard matching for no namespace will be available in Jsoup 1.14.2
       val series = (
         opf.selectFirst("metadata > meta[property=belongs-to-collection]")
           ?: opf.selectFirst("metadata > *|meta[property=belongs-to-collection]")

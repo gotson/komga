@@ -64,7 +64,7 @@ dependencies {
   implementation("com.github.junrar:junrar:7.4.0")
   implementation("org.apache.pdfbox:pdfbox:2.0.23")
   implementation("net.grey-panther:natural-comparator:1.1")
-  implementation("org.jsoup:jsoup:1.13.1")
+  implementation("org.jsoup:jsoup:1.13.1") // TODO: once updated to 1.14.2, address changes in EpubMetadataProvider.kt
 
   implementation("net.coobird:thumbnailator:0.4.14")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.7.0")
