@@ -73,7 +73,7 @@ class BookDaoTest(
     assertThat(created.fileLastModified).isEqualToIgnoringNanos(book.fileLastModified)
     assertThat(created.fileSize).isEqualTo(book.fileSize)
     assertThat(created.fileHash).isEqualTo(book.fileHash)
-    assertThat(created.deletedDate).isEqualTo(book.deletedDate)
+    assertThat(created.deletedDate).isEqualToIgnoringNanos(book.deletedDate)
   }
 
   @Test
