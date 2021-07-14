@@ -61,6 +61,18 @@ class BookDao(
       .fetchInto(b)
       .map { it.toDomain() }
 
+  override fun findAllByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): Collection<Book> =
+    dsl.selectFrom(b)
+      .where(b.LIBRARY_ID.eq(libraryId).and(b.URL.notIn(urls.map { it.toString() })))
+      .fetchInto(b)
+      .map { it.toDomain() }
+
+  override fun findAllDeletedByFileSize(fileSize: Long): Collection<Book> =
+    dsl.selectFrom(b)
+      .where(b.DELETED_DATE.isNotNull.and(b.FILE_SIZE.eq(fileSize)))
+      .fetchInto(b)
+      .map { it.toDomain() }
+
   override fun findAll(): Collection<Book> =
     dsl.selectFrom(b)
       .fetchInto(b)

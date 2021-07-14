@@ -13,4 +13,5 @@ spring:
 
 logging:
   level:
-    org.jooq: DEBUG
+    org.gotson.komga: DEBUG
+#    org.jooq: DEBUG
