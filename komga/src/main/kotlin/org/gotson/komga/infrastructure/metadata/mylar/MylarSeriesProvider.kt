@@ -29,11 +29,14 @@ class MylarSeriesProvider(
         logger.debug { "Series folder does not contain any $SERIES_JSON file: $series" }
         return null
       }
-      val metadata = mapper.readValue(seriesJsonPath.toFile(), MylarSeries::class.java).metadata.first()
+      val metadata = mapper.readValue(seriesJsonPath.toFile(), MylarSeries::class.java).metadata
+
+      val title = if (metadata.volume == null || metadata.volume == 1) metadata.name
+      else "${metadata.name} (${metadata.year})"
 
       return SeriesMetadataPatch(
-        title = metadata.name,
-        titleSort = metadata.name,
+        title = title,
+        titleSort = title,
         status = when (metadata.status) {
           Status.Ended -> SeriesMetadata.Status.ENDED
           Status.Continuing -> SeriesMetadata.Status.ONGOING
@@ -41,7 +44,7 @@ class MylarSeriesProvider(
         summary = metadata.descriptionFormatted ?: metadata.descriptionText,
         readingDirection = null,
         publisher = metadata.publisher,
-        ageRating = null,
+        ageRating = metadata.ageRating?.ageRating,
         language = null,
         genres = null,
         collections = emptyList(),

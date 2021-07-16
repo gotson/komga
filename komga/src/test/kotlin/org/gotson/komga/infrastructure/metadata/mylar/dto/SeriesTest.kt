@@ -16,8 +16,8 @@ class SeriesTest {
     val file = ClassPathResource("mylar/series.json")
     val seriesJson = mapper.readValue<Series>(file.url)
 
-    assertThat(seriesJson.metadata).hasSize(1)
-    with(seriesJson.metadata.first()) {
+    assertThat(seriesJson.metadata).isNotNull
+    with(seriesJson.metadata) {
       assertThat(type).isEqualTo("comicSeries")
       assertThat(publisher).isEqualTo("DC Comics")
       assertThat(imprint).isNull()
@@ -28,8 +28,9 @@ class SeriesTest {
       assertThat(descriptionFormatted).isEqualTo("Nine issue mini-series, the closing chapter of American Vampire")
       assertThat(volume).isNull()
       assertThat(bookType).isEqualTo("Print")
+      assertThat(ageRating).isEqualTo(AgeRating.ADULT)
       assertThat(comicImage).isEqualTo("https://comicvine.gamespot.com/a/uploads/scale_large/6/67663/7603293-01.jpg")
-      assertThat(totalIssues).isEqualTo(8)
+      assertThat(totalIssues).isEqualTo(9)
       assertThat(publicationRun).isEqualTo("December 2020 - Present")
       assertThat(status).isEqualTo(Status.Continuing)
     }
@@ -40,8 +41,8 @@ class SeriesTest {
     val file = ClassPathResource("mylar/series1.json")
     val seriesJson = mapper.readValue<Series>(file.url)
 
-    assertThat(seriesJson.metadata).hasSize(1)
-    with(seriesJson.metadata.first()) {
+    assertThat(seriesJson.metadata).isNotNull
+    with(seriesJson.metadata) {
       assertThat(type).isEqualTo("comicSeries")
       assertThat(publisher).isEqualTo("IDW Publishing")
       assertThat(imprint).isNull()
@@ -50,10 +51,11 @@ class SeriesTest {
       assertThat(year).isEqualTo(2019)
       assertThat(descriptionText).isNull()
       assertThat(descriptionFormatted).isNull()
-      assertThat(volume).isEqualTo("v4")
+      assertThat(volume).isEqualTo(4)
       assertThat(bookType).isEqualTo("Print")
+      assertThat(ageRating).isNull()
       assertThat(comicImage).isEqualTo("https://comicvine1.cbsistatic.com/uploads/scale_large/6/67663/6974029-01a.jpg")
-      assertThat(totalIssues).isEqualTo(19)
+      assertThat(totalIssues).isEqualTo(20)
       assertThat(publicationRun).isEqualTo("June 2019 - Present")
       assertThat(status).isEqualTo(Status.Ended)
     }
