@@ -15,7 +15,7 @@ import org.gotson.komga.domain.model.makeSeries
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.BookLifecycle
-import org.gotson.komga.domain.service.MetadataLifecycle
+import org.gotson.komga.domain.service.SeriesMetadataLifecycle
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -41,7 +41,7 @@ class TaskHandlerTest(
   private lateinit var mockBookLifecycle: BookLifecycle
 
   @MockkBean
-  private lateinit var mockMetadataLifecycle: MetadataLifecycle
+  private lateinit var mockMetadataLifecycle: SeriesMetadataLifecycle
 
   @MockkBean
   private lateinit var mockSeriesRepository: SeriesRepository
