@@ -2,12 +2,8 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import org.gotson.komga.application.events.EventPublisher
-import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.BookMetadataPatch
-import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.DomainEvent
-import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.SeriesMetadataPatch
@@ -42,8 +38,6 @@ class SeriesMetadataLifecycle(
   private val bookRepository: BookRepository,
   private val collectionRepository: SeriesCollectionRepository,
   private val collectionLifecycle: SeriesCollectionLifecycle,
-  private val readListRepository: ReadListRepository,
-  private val readListLifecycle: ReadListLifecycle,
   private val eventPublisher: EventPublisher,
 ) {
 
@@ -86,6 +80,7 @@ class SeriesMetadataLifecycle(
 
           if (provider is MylarSeriesProvider && library.importMylarSeries && patch != null) {
             handlePatchForSeriesMetadata(patch, series)
+            changed = true
           }
         }
       }
