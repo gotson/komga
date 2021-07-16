@@ -601,6 +601,52 @@ class LibraryContentLifecycleTest(
     }
 
     @Test
+    fun `given existing series when renaming 1 file and scanning but series modified time did not change then renamed book media and generated thumbnails are kept`() {
+      // given
+      val library = makeLibrary()
+      libraryRepository.insert(library)
+
+      val book = makeBook("book").copy(fileSize = 324)
+      val bookRenamed = makeBook("book3").copy(fileSize = 324)
+      val series = makeSeries(name = "series")
+
+      every { mockScanner.scanRootFolder(any()) }
+        .returnsMany(
+          mapOf(series to listOf(book, makeBook("book2"))).toScanResult(),
+          mapOf(makeSeries(name = "series").copy(fileLastModified = series.fileLastModified) to listOf(bookRenamed, makeBook("book2"))).toScanResult(),
+        )
+      libraryContentLifecycle.scanRootFolder(library) // creation
+
+      bookRepository.findByIdOrNull(book.id)?.let {
+        bookRepository.update(it.copy(fileHash = "sameHash"))
+        mediaRepository.update(mediaRepository.findById(it.id).copy(status = Media.Status.READY))
+        bookLifecycle.addThumbnailForBook(ThumbnailBook(thumbnail = ByteArray(0), type = ThumbnailBook.Type.GENERATED, bookId = book.id))
+        bookLifecycle.addThumbnailForBook(ThumbnailBook(url = URL("file:/sidecar"), type = ThumbnailBook.Type.SIDECAR, bookId = book.id))
+      }
+
+      every { mockHasher.computeHash(any()) } returns "sameHash"
+
+      // when
+      libraryContentLifecycle.scanRootFolder(library) // rename
+
+      // then
+      verify(exactly = 1) { mockHasher.computeHash(any()) }
+
+      val allSeries = seriesRepository.findAll()
+      val allBooks = bookRepository.findAll().sortedBy { it.number }
+
+      assertThat(allSeries).hasSize(1)
+      assertThat(allBooks).hasSize(2)
+      assertThat(allBooks.map { it.deletedDate }).containsOnlyNulls()
+      with(allBooks.last()) {
+        assertThat(name).`as` { "Book name should have changed to match the filename" }.isEqualTo("book3")
+        assertThat(mediaRepository.findById(id).status).`as` { "Book media should be kept intact" }.isEqualTo(Media.Status.READY)
+        assertThat(thumbnailBookRepository.findAllByBookIdAndType(id, ThumbnailBook.Type.SIDECAR)).hasSize(0)
+        assertThat(thumbnailBookRepository.findAllByBookIdAndType(id, ThumbnailBook.Type.GENERATED)).hasSize(1)
+      }
+    }
+
+    @Test
     fun `given existing series when renaming 1 file and scanning then renamed book read progress is kept`() {
       // given
       val library = makeLibrary()
@@ -777,6 +823,109 @@ class LibraryContentLifecycleTest(
         assertThat(name).isEqualTo("book3")
         assertThat(bookMetadataRepository.findById(id).title).`as` { "Book metadata title should have changed to match the filename" }.isEqualTo("book3")
       }
+    }
+
+    @Test
+    fun `given series when renaming all files in its folder and scanning then series books media is kept`() {
+      // given
+      val library = makeLibrary()
+      libraryRepository.insert(library)
+
+      every { mockScanner.scanRootFolder(any()) }
+        .returnsMany(
+          mapOf(makeSeries(name = "series1") to listOf(makeBook("book1").copy(fileSize = 1))).toScanResult(),
+          mapOf(makeSeries(name = "series1") to listOf(makeBook("book2").copy(fileSize = 1))).toScanResult(),
+        )
+      libraryContentLifecycle.scanRootFolder(library) // creation
+
+      seriesRepository.findAll().first().let {
+        seriesMetadataRepository.update(seriesMetadataRepository.findById(it.id).copy(summary = "Summary"))
+      }
+
+      bookRepository.findAll().forEach { book ->
+        bookRepository.update(book.copy(fileHash = "sameHash"))
+        mediaRepository.findById(book.id).let { mediaRepository.update(it.copy(status = Media.Status.READY)) }
+      }
+
+      every { mockHasher.computeHash(any()) } returns "sameHash"
+
+      // when
+      libraryContentLifecycle.scanRootFolder(library) // rename
+
+      // then
+      verify(exactly = 1) { mockHasher.computeHash(any()) }
+
+      val allSeries = seriesRepository.findAll()
+      val allBooks = bookRepository.findAll().sortedBy { it.number }
+
+      assertThat(allSeries).hasSize(1)
+      allSeries.first().let { series1 ->
+        assertThat(series1.name).isEqualTo("series1")
+        assertThat(seriesMetadataRepository.findById(series1.id).summary).isEqualTo("Summary")
+
+        val books = bookRepository.findAllBySeriesId(series1.id)
+        assertThat(books).hasSize(1)
+        books.first().let { book ->
+          assertThat(book.name).isEqualTo("book2")
+          assertThat(bookMetadataRepository.findById(book.id).title).isEqualTo("book2")
+          assertThat(mediaRepository.findById(book.id).status).isEqualTo(Media.Status.READY)
+        }
+      }
+
+      assertThat(allBooks).hasSize(1)
+      assertThat(allBooks.map { it.deletedDate }).containsOnlyNulls()
+    }
+
+    @Test
+    fun `given series when renaming all files in its folder but folder modified time is not changed and scanning then series books media is kept`() {
+      // given
+      val library = makeLibrary()
+      libraryRepository.insert(library)
+
+      val series = makeSeries(name = "series1")
+      every { mockScanner.scanRootFolder(any()) }
+        .returnsMany(
+          mapOf(series to listOf(makeBook("book1").copy(fileSize = 1))).toScanResult(),
+          mapOf(makeSeries(name = "series1").copy(fileLastModified = series.fileLastModified) to listOf(makeBook("book2").copy(fileSize = 1))).toScanResult(),
+        )
+      libraryContentLifecycle.scanRootFolder(library) // creation
+
+      seriesRepository.findAll().first().let {
+        seriesMetadataRepository.update(seriesMetadataRepository.findById(it.id).copy(summary = "Summary"))
+      }
+
+      bookRepository.findAll().forEach { book ->
+        bookRepository.update(book.copy(fileHash = "sameHash"))
+        mediaRepository.findById(book.id).let { mediaRepository.update(it.copy(status = Media.Status.READY)) }
+      }
+
+      every { mockHasher.computeHash(any()) } returns "sameHash"
+
+      // when
+      libraryContentLifecycle.scanRootFolder(library) // rename
+
+      // then
+      verify(exactly = 1) { mockHasher.computeHash(any()) }
+
+      val allSeries = seriesRepository.findAll()
+      val allBooks = bookRepository.findAll().sortedBy { it.number }
+
+      assertThat(allSeries).hasSize(1)
+      allSeries.first().let { series1 ->
+        assertThat(series1.name).isEqualTo("series1")
+        assertThat(seriesMetadataRepository.findById(series1.id).summary).isEqualTo("Summary")
+
+        val books = bookRepository.findAllBySeriesId(series1.id)
+        assertThat(books).hasSize(1)
+        books.first().let { book ->
+          assertThat(book.name).isEqualTo("book2")
+          assertThat(bookMetadataRepository.findById(book.id).title).isEqualTo("book2")
+          assertThat(mediaRepository.findById(book.id).status).isEqualTo(Media.Status.READY)
+        }
+      }
+
+      assertThat(allBooks).hasSize(1)
+      assertThat(allBooks.map { it.deletedDate }).containsOnlyNulls()
     }
   }
 
