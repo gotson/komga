@@ -9,6 +9,7 @@ komga:
     file: ":memory:"
   cors.allowed-origins:
     - http://localhost:8081
+#  file-hashing: false
 #  delete-empty-collections: true
 #  delete-empty-read-lists: true
 spring:

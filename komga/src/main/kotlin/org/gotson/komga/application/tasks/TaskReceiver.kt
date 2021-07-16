@@ -9,6 +9,7 @@ import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.service.BookConverter
+import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.gotson.komga.infrastructure.jms.QUEUE_SUB_TYPE
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS_TYPE
@@ -27,6 +28,7 @@ class TaskReceiver(
   private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
   private val bookConverter: BookConverter,
+  private val komgaProperties: KomgaProperties,
 ) {
 
   private val jmsTemplates = (0..9).associateWith {
@@ -61,9 +63,10 @@ class TaskReceiver(
   }
 
   fun hashBooksWithoutHash(library: Library) {
-    bookRepository.findAllIdsByLibraryIdAndWithEmptyHash(library.id).forEach {
-      submitTask(Task.HashBook(it, LOWEST_PRIORITY))
-    }
+    if (komgaProperties.fileHashing)
+      bookRepository.findAllIdsByLibraryIdAndWithEmptyHash(library.id).forEach {
+        submitTask(Task.HashBook(it, LOWEST_PRIORITY))
+      }
   }
 
   fun convertBooksToCbz(library: Library, priority: Int = DEFAULT_PRIORITY) {

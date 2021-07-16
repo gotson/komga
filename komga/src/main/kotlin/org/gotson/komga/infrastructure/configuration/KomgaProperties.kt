@@ -20,6 +20,8 @@ class KomgaProperties {
 
   var deleteEmptyCollections: Boolean = true
 
+  var fileHashing: Boolean = true
+
   var rememberMe = RememberMe()
 
   var nativeWebp: Boolean = true
