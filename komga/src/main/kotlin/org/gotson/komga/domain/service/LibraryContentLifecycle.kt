@@ -97,6 +97,9 @@ class LibraryContentLifecycle(
           books.map { it.seriesId }.distinct().mapNotNull { seriesRepository.findByIdOrNull(it) }.toMutableList()
         } else mutableListOf()
       }
+      // we store the url of all the series that had deleted books
+      // this can be used to detect changed series even if their file modified date did not change, for example because of NFS/SMB cache
+      val seriesUrlWithDeletedBooks = seriesToSortAndRefresh.map { it.url }
 
       scannedSeries.forEach { (newSeries, newBooks) ->
         val existingSeries = seriesRepository.findByLibraryIdAndUrlOrNull(library.id, newSeries.url)
@@ -112,7 +115,7 @@ class LibraryContentLifecycle(
         } else {
           // if series already exists, update it
           logger.debug { "Scanned series already exists. Scanned: $newSeries, Existing: $existingSeries" }
-          val seriesChanged = newSeries.fileLastModified.notEquals(existingSeries.fileLastModified) || existingSeries.deletedDate != null
+          val seriesChanged = newSeries.fileLastModified.notEquals(existingSeries.fileLastModified) || existingSeries.deletedDate != null || seriesUrlWithDeletedBooks.contains(newSeries.url)
           if (seriesChanged) {
             logger.info { "Series changed on disk, updating: $existingSeries" }
             seriesRepository.update(existingSeries.copy(fileLastModified = newSeries.fileLastModified, deletedDate = null))
