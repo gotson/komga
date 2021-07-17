@@ -3,6 +3,9 @@
     "dataFooter": {
       "pageText": "{0}-{1} av {2}"
     },
+    "dataIterator": {
+      "loadingText": "Laster inn elementer …"
+    },
     "dataTable": {
       "itemsPerPageText": "Rader per side:",
       "sortBy": "Sorter etter"
@@ -16,6 +19,11 @@
   "account_settings": {
     "account_settings": "Kontoinnstillinger",
     "change_password": "endre passord"
+  },
+  "authentication_activity": {
+    "email": "E-post",
+    "error": "Feil",
+    "ip": "IP"
   },
   "author_roles": {
     "colorist": "fargeleggere",

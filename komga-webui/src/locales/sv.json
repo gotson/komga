@@ -51,6 +51,7 @@
     "field_import_path": "Importera från mapp",
     "info_part1": "Den här skärmen låter dig importera filer som ligger utanför dina befintliga bibliotek. Du kan bara importera filer till befintlig serie, i vilket fall Komga flyttar eller kopierar filerna till katalogen för den valda serien.",
     "info_part2": "Om du väljer ett nummer för en bok och det redan finns en bok med det numret du kommer att kunna jämföra de två böckerna. Om du väljer att importera boken kommer Komga att uppgradera den befintliga boken med den nya, ersätter effektivt den gamla filen med den nya.",
+    "no_files_found": "Inga filer funna",
     "notification": {
       "go_to_book": "Gå till boken",
       "import_failure": "Det gick inte att importera boken: {file}",
@@ -69,7 +70,8 @@
       "number": "Nummer",
       "series": "Serie"
     },
-    "title": "Importera"
+    "title": "Importera",
+    "try_another_directory": "Försök att söka i en annan katalog"
   },
   "bookreader": {
     "beginning_of_book": "Du är i början av boken.",
@@ -251,6 +253,11 @@
       "field_role_page_streaming": "Sidströmmning",
       "label_roles": "Roller"
     },
+    "analyze_library": {
+      "body": "Analyserar alla mediefiler i biblioteket. Analysen samlar in information om medierna. Beroende på bibliotekets storlek kan detta ta lång tid.",
+      "button_confirm": "Analysera",
+      "title": "Analysera biblioteket"
+    },
     "delete_collection": {
       "button_confirm": "Radera",
       "confirm_delete": "Ja, radera samlingen ”{name}”",
@@ -405,6 +412,11 @@
       "field_new_password_error": "Nytt lösenord krävs.",
       "field_repeat_password": "Upprepa nytt lösenord",
       "field_repeat_password_error": "Lösenorden måste vara identiska."
+    },
+    "refresh_library_metadata": {
+      "body": "Uppdaterar metadata för alla mediefiler i biblioteket. Beroende på biblioteksstorlek kan det ta lång tid.",
+      "button_confirm": "Uppdatera",
+      "title": "Uppdatera metadata för biblioteket"
     },
     "series_picker": {
       "label_search_series": "Sök serie",
