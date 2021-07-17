@@ -51,6 +51,7 @@
     "field_import_path": "Importa da cartella",
     "info_part1": "Questa schermata ti permette di importare file che sono al di fuori delle tue librerie esistenti. Puoi solo importare file in serie esistenti, nel qual caso Komga sposterà o copierà i file nella cartella della serie scelta.",
     "info_part2": "Se scegli un numero per un fumetto e un fumetto esiste già con quel numero, allora potrai confrontare i due fumetti. Se decidi di importare il fumetto, Komga aggiornerà il fumetto esistente con quello nuovo, sostituendo effettivamente il vecchio file con il nuovo.",
+    "no_files_found": "Nessun file trovato",
     "notification": {
       "go_to_book": "Vai al fumetto",
       "import_failure": "Impossibile importare il file: {file}",
@@ -69,7 +70,8 @@
       "number": "Numero",
       "series": "Serie"
     },
-    "title": "Importa"
+    "title": "Importa",
+    "try_another_directory": "Prova a cercare in un'altra cartella"
   },
   "bookreader": {
     "beginning_of_book": "Sei all'inizio del fumetto.",
@@ -251,6 +253,11 @@
       "field_role_page_streaming": "Lettura online",
       "label_roles": "Permessi"
     },
+    "analyze_library": {
+      "body": "Analizza tutti i file nella libreria. L'analisi cattura le informazioni sui media. A seconda delle dimensioni della tua libreria, questo potrebbe richiedere molto tempo.",
+      "button_confirm": "Analizza",
+      "title": "Analizza libreria"
+    },
     "delete_collection": {
       "button_confirm": "Elimina",
       "confirm_delete": "Sì, elimina la raccolta «{name}»",
@@ -405,6 +412,11 @@
       "field_new_password_error": "È richiesta una nuova password.",
       "field_repeat_password": "Ripeti la nuova password",
       "field_repeat_password_error": "Le password devono essere identiche."
+    },
+    "refresh_library_metadata": {
+      "body": "Aggiorna i metadati per tutti i file nella libreria. A seconda della dimensione della tua libreria, questo potrebbe richiedere molto tempo.",
+      "button_confirm": "Aggiorna",
+      "title": "Aggiorna i metadati per la libreria"
     },
     "series_picker": {
       "label_search_series": "Cerca una serie",

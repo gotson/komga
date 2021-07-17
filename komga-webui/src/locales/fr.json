@@ -51,6 +51,7 @@
     "field_import_path": "Importer à partir du dossier",
     "info_part1": "Cet écran vous permet d'importer des fichiers qui se trouvent en dehors de vos bibliothèques existantes. Vous pouvez uniquement importer des fichiers dans une Série existante, auquel cas Komga déplacera ou copiera les fichiers dans le répertoire de la Série choisie.",
     "info_part2": "Si vous choisissez un numéro pour un livre, et qu'un livre existe déjà avec ce numéro, alors vous pourrez comparer les deux livres. Si vous décidez d'importer le livre, Komga mettra à jour le livre existant avec le nouveau, remplaçant effectivement l'ancien fichier par le nouveau.",
+    "no_files_found": "Aucun fichier trouvé",
     "notification": {
       "go_to_book": "Voir le livre",
       "import_failure": "Échec de l'import du livre : {file}",
@@ -69,7 +70,8 @@
       "number": "Numéro",
       "series": "Série"
     },
-    "title": "Importer"
+    "title": "Importer",
+    "try_another_directory": "Essayez de rechercher dans un autre dossier"
   },
   "bookreader": {
     "beginning_of_book": "Vous êtes au début du livre.",

@@ -51,6 +51,7 @@
     "field_import_path": "从文件夹导入",
     "info_part1": "此屏幕允许您导入现有库之外的文件. 只能将文件导入到现有序列, 在这种情况下Komga会将文件移动或复制到所选序列的目录中.",
     "info_part2": "如果您为一本书选择了一个编号, 并且已经存在一本带有该编号的书,你可以比较这两本书.如果您决定导入该书. Komga将升级现有的书使用新文件, 有效地用新文件替换旧文件.",
+    "no_files_found": "未找到文件",
     "notification": {
       "go_to_book": "转到书籍",
       "import_failure": "无法导入书籍:{file}",
@@ -69,7 +70,8 @@
       "number": "编号",
       "series": "系列"
     },
-    "title": "导入"
+    "title": "导入",
+    "try_another_directory": "尝试搜索另一个目录"
   },
   "bookreader": {
     "beginning_of_book": "你可以开始阅读这本书.",
@@ -251,6 +253,11 @@
       "field_role_page_streaming": "支持浏览",
       "label_roles": "角色"
     },
+    "analyze_library": {
+      "body": "分析库中的所有媒体文件。该分析获取有关媒体的信息。根据库的大小，这可能需要很长时间。",
+      "button_confirm": "分析",
+      "title": "分析库"
+    },
     "delete_collection": {
       "button_confirm": "删除",
       "confirm_delete": "是否确定删除 \"{name}\"收藏",
@@ -405,6 +412,11 @@
       "field_new_password_error": "需要新密码.",
       "field_repeat_password": "确认新密码",
       "field_repeat_password_error": "密码必须相同."
+    },
+    "refresh_library_metadata": {
+      "body": "刷新库中所有媒体文件的元数据。根据库的大小，这可能需要很长时间。",
+      "button_confirm": "刷新",
+      "title": "刷新库元数据"
     },
     "series_picker": {
       "label_search_series": "搜索系列",

@@ -51,6 +51,7 @@
     "field_import_path": "Enporti el dosierujo",
     "info_part1": "Ĉi tiu ekrano permesas enporti dosierojn ekster viaj ekzistantaj bibliotekoj. Vi povas nur enporti dosierojn en ekzistantan serion; tiaokaze Komga movos aŭ kopios la dosierojn en la dosierujon de la elektita serio.",
     "info_part2": "Se vi elektos tiun numeron, kiunumera libro jam ekzistas, do vi povos kompari la du librojn. Se vi decidas enporti la libron malgraŭ tio, Komga anstataŭigos la ekzistantan libron per la nova.",
+    "no_files_found": "Neniu dosiero troviĝis",
     "notification": {
       "go_to_book": "Iri al libro",
       "import_failure": "Malsukcesis enporti libron: {file}",
@@ -69,7 +70,8 @@
       "number": "Numero",
       "series": "Serio"
     },
-    "title": "Enporti"
+    "title": "Enporti",
+    "try_another_directory": "Provu serĉi alian dosierujon"
   },
   "bookreader": {
     "beginning_of_book": "Vi estas ĉe la komenco de la libro.",
@@ -251,6 +253,11 @@
       "field_role_page_streaming": "Popaĝa Leganto",
       "label_roles": "Roloj"
     },
+    "analyze_library": {
+      "body": "Analizi ĉiujn dosierojn en la biblioteko. La analizo eltiras informojn pri la dosieroj. Depende de la grando de via biblioteko, tio eble daŭros longe.",
+      "button_confirm": "Analizi",
+      "title": "Analizi bibliotekon"
+    },
     "delete_collection": {
       "button_confirm": "Forigi",
       "confirm_delete": "Jes, forigu la kolekton «{name}»",
@@ -405,6 +412,11 @@
       "field_new_password_error": "Nova pasvorto estas deviga.",
       "field_repeat_password": "Ripetu novan pasvorton",
       "field_repeat_password_error": "Pasvortoj devas esti identaj."
+    },
+    "refresh_library_metadata": {
+      "body": "Reŝargi metadatenojn pri ĉiuj dosieroj en la biblioteko. Depende de la grando de via biblioteko, tio eble daŭros longe.",
+      "button_confirm": "Reŝargi",
+      "title": "Reŝargi metadatenojn pri la biblioteko"
     },
     "series_picker": {
       "label_search_series": "Serĉi Serion",

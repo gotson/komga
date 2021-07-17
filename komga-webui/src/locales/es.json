@@ -51,6 +51,7 @@
     "field_import_path": "Importar desde carpeta",
     "info_part1": "Esta pantalla le permitirá importar arcivos que están fuera de las librerías existentes. Solo se puede importar archivos a las Series existentes, en ese caso Komga moverá o copiará los archivos hacia un directorio de la Serie seleccionada.",
     "info_part2": "Si elige un número para un libro y ya existe un libro con ese número, podrá comparar los 2 libros. Si decide importar el libro, Komga actualizará el libro existente con el nuevo, reemplazando efectivamente el archivo antiguo por el nuevo.",
+    "no_files_found": "No se han encontrado archivos",
     "notification": {
       "go_to_book": "Ir a libro",
       "import_failure": "Fallo al importar libro: {file}",
@@ -69,7 +70,8 @@
       "number": "Número",
       "series": "Serie"
     },
-    "title": "Importar"
+    "title": "Importar",
+    "try_another_directory": "Intenta buscar en otra ubicación"
   },
   "bookreader": {
     "beginning_of_book": "Estás al inicio del libro.",
@@ -251,6 +253,11 @@
       "field_role_page_streaming": "Lectura en línea",
       "label_roles": "Funciones"
     },
+    "analyze_library": {
+      "body": "Analiza todos los archivos multimedia en la librería. El análisis obtiene información sobre los medios. Dependiendo del tamaño de tu librería, esto podría tomar más tiempo.",
+      "button_confirm": "Analizar",
+      "title": "Analizar librería"
+    },
     "delete_collection": {
       "button_confirm": "Eliminar",
       "confirm_delete": "Sí, eliminar la colección «{name}»",
@@ -405,6 +412,11 @@
       "field_new_password_error": "Se requiere una contraseña nueva.",
       "field_repeat_password": "Confirmar nueva contraseña",
       "field_repeat_password_error": "Las contraseñas deben ser idénticas."
+    },
+    "refresh_library_metadata": {
+      "body": "Actualiza los metadatos de todos los archivos multimedia en la biblioteca. Dependiendo del tamaño de tu librería, esto podría tomar más tiempo.",
+      "button_confirm": "Actualizar",
+      "title": "Actualiza metadatos de la librería"
     },
     "series_picker": {
       "label_search_series": "Buscar Serie",
