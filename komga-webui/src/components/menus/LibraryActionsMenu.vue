@@ -56,7 +56,7 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import ConfirmationDialog from "@/components/dialogs/ConfirmationDialog.vue"
+import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 
 export default Vue.extend({
   name: 'LibraryActionsMenu',

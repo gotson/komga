@@ -92,8 +92,8 @@ import ReadListActionsMenu from '@/components/menus/ReadListActionsMenu.vue'
 import MultiSelectBar from '@/components/bars/MultiSelectBar.vue'
 import {BookDto, ReadProgressUpdateDto} from '@/types/komga-books'
 import {ContextOrigin} from '@/types/context'
-import {BookSseDto, ReadListSseDto, ReadProgressSseDto} from "@/types/komga-sse"
-import {throttle} from "lodash"
+import {BookSseDto, ReadListSseDto, ReadProgressSseDto} from '@/types/komga-sse'
+import {throttle} from 'lodash'
 
 export default Vue.extend({
   name: 'BrowseReadList',

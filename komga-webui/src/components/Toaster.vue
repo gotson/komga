@@ -32,9 +32,9 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {BOOK_IMPORTED, ERROR} from "@/types/events"
-import {convertErrorCodes} from "@/functions/error-codes"
-import {BookImportSseDto} from "@/types/komga-sse"
+import {BOOK_IMPORTED, ERROR} from '@/types/events'
+import {convertErrorCodes} from '@/functions/error-codes'
+import {BookImportSseDto} from '@/types/komga-sse'
 
 export default Vue.extend({
   name: 'Toaster',

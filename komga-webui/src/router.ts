@@ -2,7 +2,7 @@ import urls from '@/functions/urls'
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from './store'
-import {LIBRARIES_ALL, LIBRARY_ROUTE} from "@/types/library"
+import {LIBRARIES_ALL, LIBRARY_ROUTE} from '@/types/library'
 
 const qs = require('qs')
 

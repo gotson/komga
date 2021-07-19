@@ -5,9 +5,9 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import {Theme} from "@/types/themes"
-import {LIBRARY_ADDED, LIBRARY_CHANGED, LIBRARY_DELETED} from "@/types/events"
-import {LibrarySseDto} from "@/types/komga-sse"
+import {Theme} from '@/types/themes'
+import {LIBRARY_ADDED, LIBRARY_CHANGED, LIBRARY_DELETED} from '@/types/events'
+import {LibrarySseDto} from '@/types/komga-sse'
 
 const cookieLocale = 'locale'
 const cookieTheme = 'theme'
@@ -89,7 +89,7 @@ export default Vue.extend({
     this.$eventHub.$off(LIBRARY_CHANGED, this.reloadLibraries)
   },
   watch: {
-    "$store.state.persistedState.locale": {
+    '$store.state.persistedState.locale': {
       handler(val) {
         if (this.$i18n.availableLocales.includes(val)) {
           this.$i18n.locale = val
@@ -98,7 +98,7 @@ export default Vue.extend({
       },
       immediate: true,
     },
-    "$store.state.persistedState.theme": {
+    '$store.state.persistedState.theme': {
       handler(val) {
         if (Object.values(Theme).includes(val)) {
           this.changeTheme(val)

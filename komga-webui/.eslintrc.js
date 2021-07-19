@@ -14,6 +14,7 @@ module.exports = {
     'no-fallthrough': 'off',
     'comma-dangle': ['error', 'always-multiline'],
     'semi': ['error', 'never'],
+    'quotes': ['error', 'single'],
   },
   parserOptions: {
     parser: '@typescript-eslint/parser',

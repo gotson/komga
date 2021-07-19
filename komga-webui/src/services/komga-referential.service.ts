@@ -1,5 +1,5 @@
 import {AxiosInstance} from 'axios'
-import {AuthorDto} from "@/types/komga-books"
+import {AuthorDto} from '@/types/komga-books'
 
 const qs = require('qs')
 const tags = require('language-tags')

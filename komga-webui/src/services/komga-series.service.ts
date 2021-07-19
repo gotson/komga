@@ -1,6 +1,6 @@
 import {AxiosInstance} from 'axios'
 import {AuthorDto, BookDto} from '@/types/komga-books'
-import {SeriesDto, SeriesMetadataUpdateDto} from "@/types/komga-series"
+import {SeriesDto, SeriesMetadataUpdateDto} from '@/types/komga-series'
 
 const qs = require('qs')
 
@@ -151,7 +151,7 @@ export default class KomgaSeriesService {
     try {
       await this.http.patch(`${API_SERIES}/${seriesId}/metadata`, metadata)
     } catch (e) {
-      let msg = `An error occurred while trying to update series metadata`
+      let msg = 'An error occurred while trying to update series metadata'
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

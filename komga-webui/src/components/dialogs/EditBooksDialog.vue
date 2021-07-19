@@ -285,7 +285,7 @@ import {helpers, requiredIf} from 'vuelidate/lib/validators'
 import {BookDto} from '@/types/komga-books'
 import IsbnVerify from '@saekitominaga/isbn-verify'
 import {isMatch} from 'date-fns'
-import {ERROR} from "@/types/events"
+import {ERROR} from '@/types/events'
 
 const validDate = (value: string) => !helpers.req(value) || isMatch(value, 'yyyy-MM-dd')
 const validIsbn = (value: string) => !helpers.req(value) || new IsbnVerify(value).isIsbn13({check_digit: true})

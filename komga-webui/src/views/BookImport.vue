@@ -103,16 +103,16 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import FileBrowserDialog from "@/components/dialogs/FileBrowserDialog.vue"
-import FileImportRow from "@/components/FileImportRow.vue"
-import {TransientBookDto} from "@/types/komga-transientbooks"
-import SeriesPickerDialog from "@/components/dialogs/SeriesPickerDialog.vue"
-import {SeriesDto} from "@/types/komga-series"
-import {BookImportBatchDto, BookImportDto} from "@/types/komga-books"
-import {CopyMode} from "@/types/enum-books"
-import {convertErrorCodes} from "@/functions/error-codes"
-import {ERROR} from "@/types/events"
-import EmptyState from "@/components/EmptyState.vue"
+import FileBrowserDialog from '@/components/dialogs/FileBrowserDialog.vue'
+import FileImportRow from '@/components/FileImportRow.vue'
+import {TransientBookDto} from '@/types/komga-transientbooks'
+import SeriesPickerDialog from '@/components/dialogs/SeriesPickerDialog.vue'
+import {SeriesDto} from '@/types/komga-series'
+import {BookImportBatchDto, BookImportDto} from '@/types/komga-books'
+import {CopyMode} from '@/types/enum-books'
+import {convertErrorCodes} from '@/functions/error-codes'
+import {ERROR} from '@/types/events'
+import EmptyState from '@/components/EmptyState.vue'
 
 export default Vue.extend({
   name: 'BookImport',

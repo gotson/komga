@@ -313,8 +313,8 @@ import {shortcutsAll} from '@/functions/shortcuts/reader'
 import {shortcutsSettingsContinuous} from '@/functions/shortcuts/continuous-reader'
 import {BookDto, PageDto, PageDtoWithUrl} from '@/types/komga-books'
 import {Context, ContextOrigin} from '@/types/context'
-import {SeriesDto} from "@/types/komga-series"
-import jsFileDownloader from "js-file-downloader"
+import {SeriesDto} from '@/types/komga-series'
+import jsFileDownloader from 'js-file-downloader'
 
 export default Vue.extend({
   name: 'BookReader',

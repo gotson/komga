@@ -141,7 +141,7 @@ import {
   SERIES_DELETED,
 } from '@/types/events'
 import Vue from 'vue'
-import {SeriesDto} from "@/types/komga-series"
+import {SeriesDto} from '@/types/komga-series'
 import {
   BookSseDto,
   CollectionSseDto,
@@ -149,8 +149,8 @@ import {
   ReadProgressSeriesSseDto,
   ReadProgressSseDto,
   SeriesSseDto,
-} from "@/types/komga-sse"
-import {throttle} from "lodash"
+} from '@/types/komga-sse'
+import {throttle} from 'lodash'
 
 export default Vue.extend({
   name: 'Search',

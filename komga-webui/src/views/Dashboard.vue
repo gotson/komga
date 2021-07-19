@@ -162,11 +162,11 @@ import {
   SERIES_DELETED,
 } from '@/types/events'
 import Vue from 'vue'
-import {SeriesDto} from "@/types/komga-series"
-import {LIBRARIES_ALL, LIBRARY_ROUTE} from "@/types/library"
+import {SeriesDto} from '@/types/komga-series'
+import {LIBRARIES_ALL, LIBRARY_ROUTE} from '@/types/library'
 import {throttle} from 'lodash'
 import {subMonths} from 'date-fns'
-import {BookSseDto, ReadProgressSseDto, SeriesSseDto} from "@/types/komga-sse"
+import {BookSseDto, ReadProgressSseDto, SeriesSseDto} from '@/types/komga-sse'
 
 export default Vue.extend({
   name: 'Dashboard',

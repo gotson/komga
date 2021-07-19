@@ -356,13 +356,13 @@ import Vue from 'vue'
 import ReadListsExpansionPanels from '@/components/ReadListsExpansionPanels.vue'
 import {BookDto, BookFormat} from '@/types/komga-books'
 import {Context, ContextOrigin} from '@/types/context'
-import {SeriesDto} from "@/types/komga-series"
-import ReadMore from "@/components/ReadMore.vue"
-import VueHorizontal from "vue-horizontal"
-import {authorRoles} from "@/types/author-roles"
-import {convertErrorCodes} from "@/functions/error-codes"
-import RtlIcon from "@/components/RtlIcon.vue"
-import {BookSseDto, LibrarySseDto, ReadListSseDto, ReadProgressSseDto} from "@/types/komga-sse"
+import {SeriesDto} from '@/types/komga-series'
+import ReadMore from '@/components/ReadMore.vue'
+import VueHorizontal from 'vue-horizontal'
+import {authorRoles} from '@/types/author-roles'
+import {convertErrorCodes} from '@/functions/error-codes'
+import RtlIcon from '@/components/RtlIcon.vue'
+import {BookSseDto, LibrarySseDto, ReadListSseDto, ReadProgressSseDto} from '@/types/komga-sse'
 
 export default Vue.extend({
   name: 'BrowseBook',

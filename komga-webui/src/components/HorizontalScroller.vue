@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import RtlIcon from "@/components/RtlIcon.vue"
+import RtlIcon from '@/components/RtlIcon.vue'
 
 export default Vue.extend({
   name: 'HorizontalScroller',

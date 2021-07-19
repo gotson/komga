@@ -102,9 +102,9 @@ import {bookThumbnailUrl, collectionThumbnailUrl, readListThumbnailUrl, seriesTh
 import {debounce} from 'lodash'
 import Vue from 'vue'
 import {BookDto} from '@/types/komga-books'
-import {SeriesDto} from "@/types/komga-series"
-import {getReadProgress} from "@/functions/book-progress"
-import {ReadStatus} from "@/types/enum-books"
+import {SeriesDto} from '@/types/komga-series'
+import {getReadProgress} from '@/functions/book-progress'
+import {ReadStatus} from '@/types/enum-books'
 
 export default Vue.extend({
   name: 'SearchBox',

@@ -24,7 +24,7 @@
 import Vue from 'vue'
 import {MediaStatus} from '@/types/enum-books'
 import {BookDto} from '@/types/komga-books'
-import {convertErrorCodes} from "@/functions/error-codes"
+import {convertErrorCodes} from '@/functions/error-codes'
 
 export default Vue.extend({
   name: 'SettingsMediaAnalysis',

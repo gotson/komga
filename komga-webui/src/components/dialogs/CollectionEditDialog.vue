@@ -46,7 +46,7 @@
 <script lang="ts">
 import {UserRoles} from '@/types/enum-users'
 import Vue from 'vue'
-import {ERROR} from "@/types/events"
+import {ERROR} from '@/types/events'
 
 export default Vue.extend({
   name: 'CollectionEditDialog',

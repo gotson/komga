@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import Vue, {PropType} from 'vue'
-import {PageDto} from "@/types/komga-books"
+import {PageDto} from '@/types/komga-books'
 
 export default Vue.extend({
   name: 'PagesTable',

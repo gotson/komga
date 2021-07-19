@@ -112,8 +112,8 @@
 
 <script lang="ts">
 import Vue, {PropType} from 'vue'
-import {PageDtoWithUrl} from "@/types/komga-books"
-import RtlIcon from "@/components/RtlIcon.vue"
+import {PageDtoWithUrl} from '@/types/komga-books'
+import RtlIcon from '@/components/RtlIcon.vue'
 
 
 export default Vue.extend({

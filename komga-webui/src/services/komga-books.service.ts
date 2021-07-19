@@ -1,6 +1,6 @@
 import {AxiosInstance} from 'axios'
 import {BookDto, BookImportBatchDto, BookMetadataUpdateDto, PageDto, ReadProgressUpdateDto} from '@/types/komga-books'
-import {formatISO} from "date-fns"
+import {formatISO} from 'date-fns'
 
 const qs = require('qs')
 
@@ -150,7 +150,7 @@ export default class KomgaBooksService {
     try {
       await this.http.patch(`${API_BOOKS}/${bookId}/metadata`, metadata)
     } catch (e) {
-      let msg = `An error occurred while trying to update book metadata`
+      let msg = 'An error occurred while trying to update book metadata'
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }
@@ -162,7 +162,7 @@ export default class KomgaBooksService {
     try {
       await this.http.patch(`${API_BOOKS}/${bookId}/read-progress`, readProgress)
     } catch (e) {
-      let msg = `An error occurred while trying to update read progress`
+      let msg = 'An error occurred while trying to update read progress'
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }
@@ -174,7 +174,7 @@ export default class KomgaBooksService {
     try {
       await this.http.delete(`${API_BOOKS}/${bookId}/read-progress`)
     } catch (e) {
-      let msg = `An error occurred while trying to delete read progress`
+      let msg = 'An error occurred while trying to delete read progress'
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }
@@ -186,7 +186,7 @@ export default class KomgaBooksService {
     try {
       await this.http.post(`${API_BOOKS}/import`, batch)
     } catch (e) {
-      let msg = `An error occurred while trying to submit book import batch`
+      let msg = 'An error occurred while trying to submit book import batch'
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

@@ -67,7 +67,7 @@
 
 <script lang="ts">
 import Vue, {PropType} from 'vue'
-import SearchBoxBase from "@/components/SearchBoxBase.vue"
+import SearchBoxBase from '@/components/SearchBoxBase.vue'
 
 export default Vue.extend({
   name: 'FilterPanels',

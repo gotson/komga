@@ -136,10 +136,10 @@ import FilterPanels from '@/components/FilterPanels.vue'
 import FilterList from '@/components/FilterList.vue'
 import {Location} from 'vue-router'
 import EmptyState from '@/components/EmptyState.vue'
-import {SeriesDto} from "@/types/komga-series"
-import {authorRoles} from "@/types/author-roles"
-import {AuthorDto} from "@/types/komga-books"
-import {CollectionSseDto, ReadProgressSeriesSseDto, SeriesSseDto} from "@/types/komga-sse"
+import {SeriesDto} from '@/types/komga-series'
+import {authorRoles} from '@/types/author-roles'
+import {AuthorDto} from '@/types/komga-books'
+import {CollectionSseDto, ReadProgressSeriesSseDto, SeriesSseDto} from '@/types/komga-sse'
 import {throttle} from 'lodash'
 
 export default Vue.extend({

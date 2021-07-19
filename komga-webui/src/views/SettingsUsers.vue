@@ -22,8 +22,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import AuthenticationActivityTable from "@/components/AuthenticationActivityTable.vue"
-import UsersList from "@/components/UsersList.vue"
+import AuthenticationActivityTable from '@/components/AuthenticationActivityTable.vue'
+import UsersList from '@/components/UsersList.vue'
 
 export default Vue.extend({
   name: 'SettingsUsers',

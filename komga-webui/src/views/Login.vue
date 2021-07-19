@@ -101,8 +101,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {email, required} from "vuelidate/lib/validators"
-import {Theme} from "@/types/themes"
+import {email, required} from 'vuelidate/lib/validators'
+import {Theme} from '@/types/themes'
 
 export default Vue.extend({
   name: 'Login',

@@ -14,7 +14,7 @@
 
 <script lang="ts">
 // @ts-ignore
-import VueReadMoreSmooth from "vue-read-more-smooth"
+import VueReadMoreSmooth from 'vue-read-more-smooth'
 import Vue from 'vue'
 
 export default Vue.extend({
