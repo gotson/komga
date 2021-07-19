@@ -65,8 +65,19 @@ class ComicInfoProvider(
       }
 
       comicInfo.storyArc?.let { value ->
-        val arcs = value.split(",").mapNotNull { it.trim().ifBlank { null } }
-        readLists.addAll(arcs.map { BookMetadataPatch.ReadListEntry(it) })
+        // get list of arcs and corresponding number, split by `,`
+        val arcs = value.split(",").map { it.trim().ifBlank { null } }
+        val numbers = comicInfo.storyArcNumber?.split(",")?.map { it.trim().toIntOrNull() }
+
+        if (!numbers.isNullOrEmpty()) {
+          // if there is associated numbers, add each valid association as a read list entry
+          (arcs zip numbers).forEach { (arc, number) ->
+            if (arc != null && number != null) readLists.add(BookMetadataPatch.ReadListEntry(arc, number))
+          }
+        } else {
+          // if there is no numbers, only use the arcs name
+          readLists.addAll(arcs.filterNotNull().map { BookMetadataPatch.ReadListEntry(it) })
+        }
       }
 
       return BookMetadataPatch(

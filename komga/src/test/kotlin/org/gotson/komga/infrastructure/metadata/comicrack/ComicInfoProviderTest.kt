@@ -4,6 +4,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
+import org.gotson.komga.domain.model.BookMetadataPatch
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.SeriesMetadata
@@ -62,14 +63,137 @@ class ComicInfoProviderTest {
         assertThat(number).isEqualTo("010")
         assertThat(numberSort).isEqualTo(10F)
         assertThat(releaseDate).isEqualTo(LocalDate.of(2020, 2, 1))
-        with(readLists) {
-          assertThat(this).hasSize(4)
-          assertThat(this.map { it.name }).containsExactly("story arc", "one", "two", "three")
-          this.first { it.number != null }.let {
-            assertThat(it.name).isEqualTo("story arc")
-            assertThat(it.number).isEqualTo(5)
-          }
-        }
+
+        assertThat(readLists).hasSize(4)
+        assertThat(readLists).containsExactlyInAnyOrder(
+          BookMetadataPatch.ReadListEntry("story arc", 5),
+          BookMetadataPatch.ReadListEntry("one"),
+          BookMetadataPatch.ReadListEntry("two"),
+          BookMetadataPatch.ReadListEntry("three"),
+        )
+      }
+    }
+
+    @Test
+    fun `given comicInfo with StoryArcNumber when getting book metadata then metadata patch is valid`() {
+      val comicInfo = ComicInfo().apply {
+        storyArc = "one"
+        storyArcNumber = "6"
+      }
+
+      every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
+
+      val patch = comicInfoProvider.getBookMetadataFromBook(BookWithMedia(book, media))
+
+      with(patch!!) {
+        assertThat(readLists).hasSize(1)
+        assertThat(readLists).containsExactlyInAnyOrder(
+          BookMetadataPatch.ReadListEntry("one", 6)
+        )
+      }
+    }
+
+    @Test
+    fun `given comicInfo with multiple StoryArcNumber when getting book metadata then metadata patch is valid`() {
+      val comicInfo = ComicInfo().apply {
+        alternateSeries = "story arc"
+        alternateNumber = "5"
+        storyArc = "one, two, three"
+        storyArcNumber = "6, 7, 8"
+      }
+
+      every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
+
+      val patch = comicInfoProvider.getBookMetadataFromBook(BookWithMedia(book, media))
+
+      with(patch!!) {
+        assertThat(readLists).hasSize(4)
+        assertThat(readLists).containsExactlyInAnyOrder(
+          BookMetadataPatch.ReadListEntry("story arc", 5),
+          BookMetadataPatch.ReadListEntry("one", 6),
+          BookMetadataPatch.ReadListEntry("two", 7),
+          BookMetadataPatch.ReadListEntry("three", 8),
+        )
+      }
+    }
+
+    @Test
+    fun `given comicInfo with uneven StoryArcNumber when getting book metadata then metadata patch is valid`() {
+      val comicInfo = ComicInfo().apply {
+        storyArc = "one, two"
+        storyArcNumber = "6, 7, 8"
+      }
+
+      every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
+
+      val patch = comicInfoProvider.getBookMetadataFromBook(BookWithMedia(book, media))
+
+      with(patch!!) {
+        assertThat(readLists).hasSize(2)
+        assertThat(readLists).containsExactlyInAnyOrder(
+          BookMetadataPatch.ReadListEntry("one", 6),
+          BookMetadataPatch.ReadListEntry("two", 7),
+        )
+      }
+    }
+
+    @Test
+    fun `given another comicInfo with uneven StoryArcNumber when getting book metadata then metadata patch is valid`() {
+      val comicInfo = ComicInfo().apply {
+        storyArc = "one, two, three"
+        storyArcNumber = "6, 7"
+      }
+
+      every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
+
+      val patch = comicInfoProvider.getBookMetadataFromBook(BookWithMedia(book, media))
+
+      with(patch!!) {
+        assertThat(readLists).hasSize(2)
+        assertThat(readLists).containsExactlyInAnyOrder(
+          BookMetadataPatch.ReadListEntry("one", 6),
+          BookMetadataPatch.ReadListEntry("two", 7),
+        )
+      }
+    }
+
+    @Test
+    fun `given comicInfo with invalid StoryArcNumber when getting book metadata then invalid pairs are omitted`() {
+      val comicInfo = ComicInfo().apply {
+        storyArc = "one, two, three"
+        storyArcNumber = "6, x, 8"
+      }
+
+      every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
+
+      val patch = comicInfoProvider.getBookMetadataFromBook(BookWithMedia(book, media))
+
+      with(patch!!) {
+        assertThat(readLists).hasSize(2)
+        assertThat(readLists).containsExactlyInAnyOrder(
+          BookMetadataPatch.ReadListEntry("one", 6),
+          BookMetadataPatch.ReadListEntry("three", 8),
+        )
+      }
+    }
+
+    @Test
+    fun `given comicInfo with invalid StoryArc when getting book metadata then invalid pairs are omitted`() {
+      val comicInfo = ComicInfo().apply {
+        storyArc = "one, , three"
+        storyArcNumber = "6, 7, 8"
+      }
+
+      every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
+
+      val patch = comicInfoProvider.getBookMetadataFromBook(BookWithMedia(book, media))
+
+      with(patch!!) {
+        assertThat(readLists).hasSize(2)
+        assertThat(readLists).containsExactlyInAnyOrder(
+          BookMetadataPatch.ReadListEntry("one", 6),
+          BookMetadataPatch.ReadListEntry("three", 8),
+        )
       }
     }
 

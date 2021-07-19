@@ -72,4 +72,15 @@ class ComicInfoTest {
       assertThat(manga).isNull()
     }
   }
+
+  @Test
+  fun `given valid xml file with StoryArc fields when deserializing then properties are available`() {
+    val file = ClassPathResource("comicrack/ComicInfo_StoryArc.xml")
+    val comicInfo = mapper.readValue<ComicInfo>(file.url)
+
+    with(comicInfo) {
+      assertThat(storyArc).isEqualTo("Arc")
+      assertThat(storyArcNumber).isEqualTo("2")
+    }
+  }
 }
