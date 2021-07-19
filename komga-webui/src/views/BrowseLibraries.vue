@@ -139,11 +139,11 @@ import SortList from '@/components/SortList.vue'
 import FilterPanels from '@/components/FilterPanels.vue'
 import FilterList from '@/components/FilterList.vue'
 import {mergeFilterParams, sortOrFilterActive, toNameValue} from '@/functions/filter'
-import {SeriesDto} from "@/types/komga-series";
-import {AuthorDto} from "@/types/komga-books";
-import {authorRoles} from "@/types/author-roles";
-import {LibrarySseDto, ReadProgressSeriesSseDto, SeriesSseDto} from "@/types/komga-sse";
-import {throttle} from "lodash";
+import {SeriesDto} from "@/types/komga-series"
+import {AuthorDto} from "@/types/komga-books"
+import {authorRoles} from "@/types/author-roles"
+import {LibrarySseDto, ReadProgressSeriesSseDto, SeriesSseDto} from "@/types/komga-sse"
+import {throttle} from "lodash"
 
 export default Vue.extend({
   name: 'BrowseLibraries',

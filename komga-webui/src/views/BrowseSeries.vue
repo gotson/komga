@@ -410,14 +410,14 @@ import FilterList from '@/components/FilterList.vue'
 import SortList from '@/components/SortList.vue'
 import {mergeFilterParams, sortOrFilterActive, toNameValue} from '@/functions/filter'
 import FilterPanels from '@/components/FilterPanels.vue'
-import {SeriesDto} from "@/types/komga-series";
-import {groupAuthorsByRole} from "@/functions/authors";
-import ReadMore from "@/components/ReadMore.vue";
-import {authorRoles, authorRolesSeries} from "@/types/author-roles";
-import VueHorizontal from "vue-horizontal";
-import RtlIcon from "@/components/RtlIcon.vue";
-import {throttle} from "lodash";
-import {BookSseDto, CollectionSseDto, LibrarySseDto, ReadProgressSseDto, SeriesSseDto} from "@/types/komga-sse";
+import {SeriesDto} from "@/types/komga-series"
+import {groupAuthorsByRole} from "@/functions/authors"
+import ReadMore from "@/components/ReadMore.vue"
+import {authorRoles, authorRolesSeries} from "@/types/author-roles"
+import VueHorizontal from "vue-horizontal"
+import RtlIcon from "@/components/RtlIcon.vue"
+import {throttle} from "lodash"
+import {BookSseDto, CollectionSseDto, LibrarySseDto, ReadProgressSseDto, SeriesSseDto} from "@/types/komga-sse"
 
 const tags = require('language-tags')
 

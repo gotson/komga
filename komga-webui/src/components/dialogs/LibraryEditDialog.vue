@@ -273,7 +273,7 @@
 import FileBrowserDialog from '@/components/dialogs/FileBrowserDialog.vue'
 import Vue from 'vue'
 import {required} from 'vuelidate/lib/validators'
-import {ERROR} from "@/types/events";
+import {ERROR} from "@/types/events"
 
 export default Vue.extend({
   name: 'LibraryEditDialog',

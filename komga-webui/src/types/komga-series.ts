@@ -1,4 +1,4 @@
-import {AuthorDto} from "@/types/komga-books";
+import {AuthorDto} from "@/types/komga-books"
 
 export interface SeriesDto {
   id: string,

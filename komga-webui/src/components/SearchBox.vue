@@ -102,9 +102,9 @@ import {bookThumbnailUrl, collectionThumbnailUrl, readListThumbnailUrl, seriesTh
 import {debounce} from 'lodash'
 import Vue from 'vue'
 import {BookDto} from '@/types/komga-books'
-import {SeriesDto} from "@/types/komga-series";
-import {getReadProgress} from "@/functions/book-progress";
-import {ReadStatus} from "@/types/enum-books";
+import {SeriesDto} from "@/types/komga-series"
+import {getReadProgress} from "@/functions/book-progress"
+import {ReadStatus} from "@/types/enum-books"
 
 export default Vue.extend({
   name: 'SearchBox',
@@ -175,7 +175,7 @@ export default Vue.extend({
   },
   methods: {
     getLibraryName(item: BookDto | SeriesDto): string {
-      return this.$store.getters.getLibraryById(item.libraryId).name;
+      return this.$store.getters.getLibraryById(item.libraryId).name
     },
     searchItems: debounce(async function (this: any, query: string) {
       if (query) {

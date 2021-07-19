@@ -125,8 +125,8 @@ import UserSharedLibrariesEditDialog from '@/components/dialogs/UserSharedLibrar
 import {UserRoles} from '@/types/enum-users'
 import Vue from 'vue'
 import PasswordChangeDialog from "@/components/dialogs/PasswordChangeDialog.vue"
-import {ERROR} from "@/types/events";
-import ConfirmationDialog from "@/components/dialogs/ConfirmationDialog.vue";
+import {ERROR} from "@/types/events"
+import ConfirmationDialog from "@/components/dialogs/ConfirmationDialog.vue"
 
 export default Vue.extend({
   name: 'UsersList',

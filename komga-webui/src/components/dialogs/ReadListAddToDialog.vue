@@ -76,7 +76,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import {BookDto} from '@/types/komga-books'
-import {ERROR} from "@/types/events";
+import {ERROR} from "@/types/events"
 
 export default Vue.extend({
   name: 'ReadListAddToDialog',

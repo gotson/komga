@@ -22,9 +22,9 @@ import {
   SERIES_DELETED,
   THUMBNAILBOOK_ADDED,
   THUMBNAILSERIES_ADDED,
-} from "@/types/events";
-import Vue from "vue";
-import {TaskQueueSseDto} from "@/types/komga-sse";
+} from "@/types/events"
+import Vue from "vue"
+import {TaskQueueSseDto} from "@/types/komga-sse"
 
 const API_SSE = '/sse/v1/events'
 

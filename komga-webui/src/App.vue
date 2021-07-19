@@ -5,9 +5,9 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import {Theme} from "@/types/themes";
-import {LIBRARY_ADDED, LIBRARY_CHANGED, LIBRARY_DELETED} from "@/types/events";
-import {LibrarySseDto} from "@/types/komga-sse";
+import {Theme} from "@/types/themes"
+import {LIBRARY_ADDED, LIBRARY_CHANGED, LIBRARY_DELETED} from "@/types/events"
+import {LibrarySseDto} from "@/types/komga-sse"
 
 const cookieLocale = 'locale'
 const cookieTheme = 'theme'

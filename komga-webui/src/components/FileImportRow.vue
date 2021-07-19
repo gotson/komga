@@ -119,16 +119,16 @@
 
 <script lang="ts">
 import Vue, {PropType} from 'vue'
-import {MediaStatus} from "@/types/enum-books";
-import {SeriesDto} from "@/types/komga-series";
-import {TransientBookDto} from "@/types/komga-transientbooks";
-import {BookDto, BookImportDto, PageDto, PageDtoWithUrl} from "@/types/komga-books";
-import SeriesPickerDialog from "@/components/dialogs/SeriesPickerDialog.vue";
-import TransientBookDetailsDialog from "@/components/dialogs/TransientBookDetailsDialog.vue";
-import TransientBookViewerDialog from "@/components/dialogs/TransientBookViewerDialog.vue";
-import {bookPageUrl, transientBookPageUrl} from "@/functions/urls";
-import {convertErrorCodes} from "@/functions/error-codes";
-import FileNameChooserDialog from "@/components/dialogs/FileNameChooserDialog.vue";
+import {MediaStatus} from "@/types/enum-books"
+import {SeriesDto} from "@/types/komga-series"
+import {TransientBookDto} from "@/types/komga-transientbooks"
+import {BookDto, BookImportDto, PageDto, PageDtoWithUrl} from "@/types/komga-books"
+import SeriesPickerDialog from "@/components/dialogs/SeriesPickerDialog.vue"
+import TransientBookDetailsDialog from "@/components/dialogs/TransientBookDetailsDialog.vue"
+import TransientBookViewerDialog from "@/components/dialogs/TransientBookViewerDialog.vue"
+import {bookPageUrl, transientBookPageUrl} from "@/functions/urls"
+import {convertErrorCodes} from "@/functions/error-codes"
+import FileNameChooserDialog from "@/components/dialogs/FileNameChooserDialog.vue"
 
 export default Vue.extend({
   name: 'FileImportRow',

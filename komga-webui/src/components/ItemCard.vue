@@ -128,9 +128,9 @@ import Vue from 'vue'
 import {RawLocation} from 'vue-router'
 import ReadListActionsMenu from '@/components/menus/ReadListActionsMenu.vue'
 import {BookDto} from '@/types/komga-books'
-import {SeriesDto} from "@/types/komga-series";
-import {THUMBNAILBOOK_ADDED, THUMBNAILSERIES_ADDED} from "@/types/events";
-import {ThumbnailBookSseDto, ThumbnailSeriesSseDto} from "@/types/komga-sse";
+import {SeriesDto} from "@/types/komga-series"
+import {THUMBNAILBOOK_ADDED, THUMBNAILSERIES_ADDED} from "@/types/events"
+import {ThumbnailBookSseDto, ThumbnailSeriesSseDto} from "@/types/komga-sse"
 
 export default Vue.extend({
   name: 'ItemCard',

@@ -1,4 +1,4 @@
-import i18n from "@/i18n";
+import i18n from "@/i18n"
 
 export function convertErrorCodes(message: string): string {
   const match = message.match(/ERR_\d{4}/g)

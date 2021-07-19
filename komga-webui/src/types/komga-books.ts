@@ -1,5 +1,5 @@
 import {Context} from '@/types/context'
-import {CopyMode} from "@/types/enum-books";
+import {CopyMode} from "@/types/enum-books"
 
 export interface BookDto {
   id: string,

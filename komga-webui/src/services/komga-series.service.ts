@@ -1,6 +1,6 @@
 import {AxiosInstance} from 'axios'
 import {AuthorDto, BookDto} from '@/types/komga-books'
-import {SeriesDto, SeriesMetadataUpdateDto} from "@/types/komga-series";
+import {SeriesDto, SeriesMetadataUpdateDto} from "@/types/komga-series"
 
 const qs = require('qs')
 

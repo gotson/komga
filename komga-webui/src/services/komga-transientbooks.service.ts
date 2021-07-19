@@ -1,5 +1,5 @@
 import {AxiosInstance} from 'axios'
-import {TransientBookDto} from "@/types/komga-transientbooks";
+import {TransientBookDto} from "@/types/komga-transientbooks"
 
 const API_TRANSIENT_BOOKS = '/api/v1/transient-books'
 

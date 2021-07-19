@@ -101,8 +101,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {email, required} from "vuelidate/lib/validators";
-import {Theme} from "@/types/themes";
+import {email, required} from "vuelidate/lib/validators"
+import {Theme} from "@/types/themes"
 
 export default Vue.extend({
   name: 'Login',
@@ -227,7 +227,7 @@ export default Vue.extend({
     },
     isUserValid(): boolean {
       this.$v.$touch()
-      return !this.$v.$invalid;
+      return !this.$v.$invalid
     },
     async claim() {
       if (this.isUserValid()) {

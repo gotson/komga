@@ -1,6 +1,6 @@
 import {AxiosInstance} from 'axios'
 import {BookDto, BookImportBatchDto, BookMetadataUpdateDto, PageDto, ReadProgressUpdateDto} from '@/types/komga-books'
-import {formatISO} from "date-fns";
+import {formatISO} from "date-fns"
 
 const qs = require('qs')
 

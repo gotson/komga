@@ -78,9 +78,9 @@ import Vue from 'vue'
 import ReadListAddToDialog from '@/components/dialogs/ReadListAddToDialog.vue'
 import ReadListEditDialog from '@/components/dialogs/ReadListEditDialog.vue'
 import {BookDto} from '@/types/komga-books'
-import {SeriesDto} from "@/types/komga-series";
-import {ERROR} from "@/types/events";
-import ConfirmationDialog from "@/components/dialogs/ConfirmationDialog.vue";
+import {SeriesDto} from "@/types/komga-series"
+import {ERROR} from "@/types/events"
+import ConfirmationDialog from "@/components/dialogs/ConfirmationDialog.vue"
 
 export default Vue.extend({
   name: 'Dialogs',

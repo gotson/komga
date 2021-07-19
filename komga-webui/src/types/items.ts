@@ -1,9 +1,9 @@
 import {bookThumbnailUrl, collectionThumbnailUrl, readListThumbnailUrl, seriesThumbnailUrl} from '@/functions/urls'
 import {RawLocation} from 'vue-router/types/router'
 import {BookDto} from '@/types/komga-books'
-import {SeriesDto} from "@/types/komga-series";
-import i18n from "@/i18n";
-import {MediaStatus} from "@/types/enum-books";
+import {SeriesDto} from "@/types/komga-series"
+import i18n from "@/i18n"
+import {MediaStatus} from "@/types/enum-books"
 
 export enum ItemTypes {
   BOOK, SERIES, COLLECTION, READLIST

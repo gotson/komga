@@ -1,6 +1,6 @@
 import _Vue from 'vue'
 import KomgaSseService from "@/services/komga-sse.service"
-import {Module} from "vuex";
+import {Module} from "vuex"
 
 const vuexModule: Module<any, any> = {
   state: {

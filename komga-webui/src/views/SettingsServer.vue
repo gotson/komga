@@ -25,8 +25,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import ConfirmationDialog from "@/components/dialogs/ConfirmationDialog.vue";
-import {ERROR} from "@/types/events";
+import ConfirmationDialog from "@/components/dialogs/ConfirmationDialog.vue"
+import {ERROR} from "@/types/events"
 
 export default Vue.extend({
   name: 'SettingsServer',

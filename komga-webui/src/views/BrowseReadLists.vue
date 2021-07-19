@@ -68,8 +68,8 @@ import {LIBRARY_CHANGED, READLIST_ADDED, READLIST_CHANGED, READLIST_DELETED} fro
 import Vue from 'vue'
 import {Location} from 'vue-router'
 import {LIBRARIES_ALL, LIBRARY_ROUTE} from '@/types/library'
-import {LibrarySseDto} from "@/types/komga-sse";
-import MultiSelectBar from "@/components/bars/MultiSelectBar.vue";
+import {LibrarySseDto} from "@/types/komga-sse"
+import MultiSelectBar from "@/components/bars/MultiSelectBar.vue"
 
 export default Vue.extend({
   name: 'BrowseReadLists',

@@ -1,5 +1,5 @@
 import {Module} from "vuex"
-import {Theme} from "@/types/themes";
+import {Theme} from "@/types/themes"
 
 export const persistedModule: Module<any, any> = {
   state: {

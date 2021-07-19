@@ -57,7 +57,7 @@ export default class KomgaReadListsService {
 
   async postReadListImport(files: any): Promise<ReadListRequestResultDto[]> {
     try {
-      const formData = new FormData();
+      const formData = new FormData()
       files.forEach((f: any) => formData.append("files", f))
       return (await this.http.post(`${API_READLISTS}/import`, formData, {
         headers: {

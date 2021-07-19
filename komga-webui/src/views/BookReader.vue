@@ -313,7 +313,7 @@ import {shortcutsAll} from '@/functions/shortcuts/reader'
 import {shortcutsSettingsContinuous} from '@/functions/shortcuts/continuous-reader'
 import {BookDto, PageDto, PageDtoWithUrl} from '@/types/komga-books'
 import {Context, ContextOrigin} from '@/types/context'
-import {SeriesDto} from "@/types/komga-series";
+import {SeriesDto} from "@/types/komga-series"
 import jsFileDownloader from "js-file-downloader"
 
 export default Vue.extend({
@@ -604,7 +604,7 @@ export default Vue.extend({
       }
 
       // parse query params to get incognito mode
-      this.incognito = !!(this.$route.query.incognito && this.$route.query.incognito.toString().toLowerCase() === 'true');
+      this.incognito = !!(this.$route.query.incognito && this.$route.query.incognito.toString().toLowerCase() === 'true')
 
       const pageDtos = (await this.$komgaBooks.getBookPages(bookId))
       pageDtos.forEach((p: any) => p['url'] = this.getPageUrl(p))
