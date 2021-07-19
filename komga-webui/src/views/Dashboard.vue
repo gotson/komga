@@ -209,12 +209,6 @@ export default Vue.extend({
     },
   },
   watch: {
-    selectedSeries(val: SeriesDto[]) {
-      val.forEach(i => this.replaceSeries(i))
-    },
-    selectedBooks(val: BookDto[]) {
-      val.forEach(i => this.replaceBook(i))
-    },
     libraryId(val) {
       this.loadAll(val)
     },
@@ -275,30 +269,6 @@ export default Vue.extend({
       this.loadNewSeries(libraryId)
       this.loadUpdatedSeries(libraryId)
     },
-    replaceSeries(series: SeriesDto) {
-      let index = this.newSeries.findIndex(x => x.id === series.id)
-      if (index !== -1) {
-        this.newSeries.splice(index, 1, series)
-      }
-      index = this.updatedSeries.findIndex(x => x.id === series.id)
-      if (index !== -1) {
-        this.updatedSeries.splice(index, 1, series)
-      }
-    },
-    replaceBook(book: BookDto) {
-      let index = this.latestBooks.findIndex(x => x.id === book.id)
-      if (index !== -1) {
-        this.latestBooks.splice(index, 1, book)
-      }
-      index = this.inProgressBooks.findIndex(x => x.id === book.id)
-      if (index !== -1) {
-        this.inProgressBooks.splice(index, 1, book)
-      }
-      index = this.onDeckBooks.findIndex(x => x.id === book.id)
-      if (index !== -1) {
-        this.onDeckBooks.splice(index, 1, book)
-      }
-    },
     async loadNewSeries(libraryId: string) {
       this.newSeries = (await this.$komgaSeries.getNewSeries(this.getRequestLibraryId(libraryId))).content
     },
@@ -332,17 +302,13 @@ export default Vue.extend({
       await Promise.all(this.selectedSeries.map(s =>
         this.$komgaSeries.markAsRead(s.id),
       ))
-      this.selectedSeries = await Promise.all(this.selectedSeries.map(s =>
-        this.$komgaSeries.getOneSeries(s.id),
-      ))
+      this.selectedSeries = []
     },
     async markSelectedSeriesUnread() {
       await Promise.all(this.selectedSeries.map(s =>
         this.$komgaSeries.markAsUnread(s.id),
       ))
-      this.selectedSeries = await Promise.all(this.selectedSeries.map(s =>
-        this.$komgaSeries.getOneSeries(s.id),
-      ))
+      this.selectedSeries = []
     },
     addToCollection() {
       this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries)
@@ -362,17 +328,13 @@ export default Vue.extend({
       await Promise.all(this.selectedBooks.map(b =>
         this.$komgaBooks.updateReadProgress(b.id, {completed: true}),
       ))
-      this.selectedBooks = await Promise.all(this.selectedBooks.map(b =>
-        this.$komgaBooks.getBook(b.id),
-      ))
+      this.selectedBooks = []
     },
     async markSelectedBooksUnread() {
       await Promise.all(this.selectedBooks.map(b =>
         this.$komgaBooks.deleteReadProgress(b.id),
       ))
-      this.selectedBooks = await Promise.all(this.selectedBooks.map(b =>
-        this.$komgaBooks.getBook(b.id),
-      ))
+      this.selectedBooks = []
     },
     getLibraryLazy(libraryId: string): LibraryDto | undefined {
       if (libraryId !== LIBRARIES_ALL) {

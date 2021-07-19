@@ -784,13 +784,13 @@ export default Vue.extend({
       await Promise.all(this.selectedBooks.map(b =>
         this.$komgaBooks.updateReadProgress(b.id, {completed: true}),
       ))
-      await this.loadSeries(this.seriesId)
+      this.selectedBooks = []
     },
     async markSelectedUnread() {
       await Promise.all(this.selectedBooks.map(b =>
         this.$komgaBooks.deleteReadProgress(b.id),
       ))
-      await this.loadSeries(this.seriesId)
+      this.selectedBooks = []
     },
   },
 })

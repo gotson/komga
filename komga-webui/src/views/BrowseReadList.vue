@@ -188,11 +188,13 @@ export default Vue.extend({
       await Promise.all(this.selectedBooks.map(b =>
         this.$komgaBooks.updateReadProgress(b.id, { completed: true } as ReadProgressUpdateDto),
       ))
+      this.selectedBooks = []
     },
     async markSelectedUnread () {
       await Promise.all(this.selectedBooks.map(b =>
         this.$komgaBooks.deleteReadProgress(b.id),
       ))
+      this.selectedBooks = []
     },
     addToReadList () {
       this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks)
