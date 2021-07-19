@@ -560,16 +560,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -695,16 +695,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -773,16 +773,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -838,16 +838,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -914,16 +914,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -960,16 +960,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -1179,6 +1179,7 @@
           "importEpubBook",
           "importEpubSeries",
           "importLocalArtwork",
+          "importMylarSeries",
           "name",
           "repairExtensions",
           "root",
@@ -1190,6 +1191,9 @@
             "type": "boolean"
           },
           "importComicInfoReadList": {
+            "type": "boolean"
+          },
+          "importMylarSeries": {
             "type": "boolean"
           },
           "emptyTrashAfterScan": {
@@ -1247,6 +1251,7 @@
           "importEpubBook",
           "importEpubSeries",
           "importLocalArtwork",
+          "importMylarSeries",
           "name",
           "repairExtensions",
           "root",
@@ -1258,6 +1263,9 @@
             "type": "boolean"
           },
           "importComicInfoReadList": {
+            "type": "boolean"
+          },
+          "importMylarSeries": {
             "type": "boolean"
           },
           "emptyTrashAfterScan": {
@@ -1651,6 +1659,7 @@
           "importEpubBook",
           "importEpubSeries",
           "importLocalArtwork",
+          "importMylarSeries",
           "name",
           "repairExtensions",
           "root",
@@ -1662,6 +1671,9 @@
             "type": "boolean"
           },
           "importComicInfoReadList": {
+            "type": "boolean"
+          },
+          "importMylarSeries": {
             "type": "boolean"
           },
           "emptyTrashAfterScan": {
@@ -5675,6 +5687,15 @@
             },
             "in": "query",
             "name": "read_status",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "date",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "released_after",
             "required": false
           },
           {

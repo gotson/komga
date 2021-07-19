@@ -1,3 +1,20 @@
+# [0.108.0](https://github.com/gotson/komga/compare/v0.107.0...v0.108.0) (2021-07-19)
+
+
+### Bug Fixes
+
+* **webui:** add hint to language field in EditSeriesDialog.vue ([fa8b4c3](https://github.com/gotson/komga/commit/fa8b4c34770769cb2c8a3891a165d02934228964))
+
+
+### Features
+
+* **api:** add released_after query parameter for /books endpoint ([f6dc546](https://github.com/gotson/komga/commit/f6dc546fd99b5e68fd560616b1ddca530dbbaab1))
+* **webui:** show recently released books in the dashboard ([320450a](https://github.com/gotson/komga/commit/320450a7507e901246072be091152ebfd14aee5d)), closes [#569](https://github.com/gotson/komga/issues/569)
+* import mylar metadata ([528f676](https://github.com/gotson/komga/commit/528f676ce0fca3a4a1162aebf35076e247154741)), closes [#550](https://github.com/gotson/komga/issues/550)
+* import StoryArcNumber from ComicInfo.xml ([2012f8b](https://github.com/gotson/komga/commit/2012f8be98561d834009a4d73a0245c7b2da753c)), closes [#573](https://github.com/gotson/komga/issues/573)
+* refresh series metadata if series.json file changed ([5cc14b5](https://github.com/gotson/komga/commit/5cc14b57f84e1f817388b788b687e0bf1117da48))
+* **webui:** library options to import mylar metadata ([e6602c6](https://github.com/gotson/komga/commit/e6602c60be9fc04c0faeea6d732028deb66bd985))
+
 # [0.107.0](https://github.com/gotson/komga/compare/v0.106.1...v0.107.0) (2021-07-19)
 
 
