@@ -285,6 +285,7 @@ class BookDao(
     if (!mediaStatus.isNullOrEmpty()) c = c.and(m.STATUS.`in`(mediaStatus))
     if (deleted == true) c = c.and(b.DELETED_DATE.isNotNull)
     if (deleted == false) c = c.and(b.DELETED_DATE.isNull)
+    if (releasedAfter != null) c = c.and(d.RELEASE_DATE.gt(releasedAfter))
 
     return c
   }

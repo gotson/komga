@@ -48,6 +48,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
+import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.ContentDisposition
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -71,6 +72,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 import java.io.FileNotFoundException
 import java.io.OutputStream
 import java.nio.file.NoSuchFileException
+import java.time.LocalDate
 import java.time.ZoneOffset
 import javax.validation.Valid
 import kotlin.io.path.name
@@ -99,6 +101,7 @@ class BookController(
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
     @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
     @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
+    @RequestParam(name = "released_after", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) releasedAfter: LocalDate?,
     @RequestParam(name = "tag", required = false) tags: List<String>?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
@@ -120,6 +123,7 @@ class BookController(
       searchTerm = searchTerm,
       mediaStatus = mediaStatus,
       readStatus = readStatus,
+      releasedAfter = releasedAfter,
       tags = tags
     )
 
