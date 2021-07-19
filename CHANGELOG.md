@@ -1,3 +1,26 @@
+# [0.107.0](https://github.com/gotson/komga/compare/v0.106.1...v0.107.0) (2021-07-19)
+
+
+### Bug Fixes
+
+* **scanner:** better detect changes even if file last modified have not change after a rename ([7b8cf7a](https://github.com/gotson/komga/commit/7b8cf7ae25e51d8f0871fefbd2fc586618233538))
+
+
+### Features
+
+* configuration property to disable file hashing ([52db0a1](https://github.com/gotson/komga/commit/52db0a168628a38a0d3f1e4a5c26adabd260e57a))
+* restore books and series from trash bin ([bc25c11](https://github.com/gotson/komga/commit/bc25c119900f15293253c95021d230ea41a42159)), closes [#217](https://github.com/gotson/komga/issues/217) [#383](https://github.com/gotson/komga/issues/383)
+* **api:** add endpoint to empty trash per library ([4dac73e](https://github.com/gotson/komga/commit/4dac73ea9f154e9f3644d3c042ec7f1e63939416))
+* **api:** add query parameter to filter on deleted series or books ([c1d34e4](https://github.com/gotson/komga/commit/c1d34e430cb0b7138742928cbfd5da05d22a0c59))
+* **opds:** do not show soft deleted books/series ([5b6b817](https://github.com/gotson/komga/commit/5b6b8170856ea85f487041ad003eb80b9b36996d))
+* **scanner:** soft delete series and books ([f0664e9](https://github.com/gotson/komga/commit/f0664e97918752d2d6f795017a5e0379d305b8c2))
+* **webui:** display an outdated badge on book details view ([c955bed](https://github.com/gotson/komga/commit/c955bed79d1a309ada585972008b5ce68e0708d1))
+* **webui:** library option to automatically empty trash after scan ([fc06b4a](https://github.com/gotson/komga/commit/fc06b4a987ed43c4754b2e3691493ed2093ac64a))
+* generate file hash for books ([7ad738a](https://github.com/gotson/komga/commit/7ad738a64551b69b1a657119456f69feb9e99f30))
+* library option to automatically empty trash after scan ([21781a3](https://github.com/gotson/komga/commit/21781a3a23074a942e571e745ff5e614a7291799))
+* **webui:** add library action menu item to empty trash ([31fbf2a](https://github.com/gotson/komga/commit/31fbf2a829b4fc0f6a246178935ffc2598df10b0))
+* **webui:** show soft deleted books/series as unavailable ([d946600](https://github.com/gotson/komga/commit/d946600a646b67638226905a2359502165892ed1))
+
 ## [0.106.1](https://github.com/gotson/komga/compare/v0.106.0...v0.106.1) (2021-07-08)
 
 

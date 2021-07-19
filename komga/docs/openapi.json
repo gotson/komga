@@ -63,6 +63,7 @@
         "type": "object",
         "required": [
           "created",
+          "deleted",
           "fileLastModified",
           "id",
           "lastModified",
@@ -103,6 +104,9 @@
           "number": {
             "format": "int32",
             "type": "integer"
+          },
+          "deleted": {
+            "type": "boolean"
           },
           "size": {
             "type": "string"
@@ -556,16 +560,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -604,6 +608,7 @@
           "booksReadCount",
           "booksUnreadCount",
           "created",
+          "deleted",
           "fileLastModified",
           "id",
           "lastModified",
@@ -636,6 +641,9 @@
           "booksInProgressCount": {
             "format": "int32",
             "type": "integer"
+          },
+          "deleted": {
+            "type": "boolean"
           },
           "fileLastModified": {
             "format": "date-time",
@@ -687,16 +695,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -765,16 +773,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -830,16 +838,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -906,16 +914,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -952,16 +960,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -1162,6 +1170,7 @@
         "type": "object",
         "required": [
           "convertToCbz",
+          "emptyTrashAfterScan",
           "importBarcodeIsbn",
           "importComicInfoBook",
           "importComicInfoCollection",
@@ -1181,6 +1190,9 @@
             "type": "boolean"
           },
           "importComicInfoReadList": {
+            "type": "boolean"
+          },
+          "emptyTrashAfterScan": {
             "type": "boolean"
           },
           "scanDeep": {
@@ -1225,6 +1237,7 @@
         "type": "object",
         "required": [
           "convertToCbz",
+          "emptyTrashAfterScan",
           "id",
           "importBarcodeIsbn",
           "importComicInfoBook",
@@ -1245,6 +1258,9 @@
             "type": "boolean"
           },
           "importComicInfoReadList": {
+            "type": "boolean"
+          },
+          "emptyTrashAfterScan": {
             "type": "boolean"
           },
           "scanDeep": {
@@ -1626,6 +1642,7 @@
         "type": "object",
         "required": [
           "convertToCbz",
+          "emptyTrashAfterScan",
           "importBarcodeIsbn",
           "importComicInfoBook",
           "importComicInfoCollection",
@@ -1645,6 +1662,9 @@
             "type": "boolean"
           },
           "importComicInfoReadList": {
+            "type": "boolean"
+          },
+          "emptyTrashAfterScan": {
             "type": "boolean"
           },
           "scanDeep": {
@@ -2756,6 +2776,14 @@
               "type": "boolean"
             },
             "in": "query",
+            "name": "deleted",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
             "name": "unpaged",
             "required": false
           },
@@ -3022,6 +3050,14 @@
             },
             "in": "query",
             "name": "library_id",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "deleted",
             "required": false
           },
           {
@@ -3303,6 +3339,14 @@
             },
             "in": "query",
             "name": "release_year",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "deleted",
             "required": false
           },
           {
@@ -4115,6 +4159,14 @@
             },
             "in": "query",
             "name": "tag",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "deleted",
             "required": false
           },
           {
@@ -5174,6 +5226,14 @@
             },
             "in": "query",
             "name": "release_year",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "deleted",
             "required": false
           },
           {
@@ -6593,6 +6653,32 @@
           },
           {
             "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "UNKNOWN",
+                  "ERROR",
+                  "READY",
+                  "UNSUPPORTED",
+                  "OUTDATED"
+                ]
+              }
+            },
+            "in": "query",
+            "name": "media_status",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "deleted",
+            "required": false
+          },
+          {
+            "schema": {
               "type": "boolean"
             },
             "in": "query",
@@ -6686,6 +6772,39 @@
         ],
         "tags": [
           "referential-controller"
+        ]
+      }
+    },
+    "/api/v1/libraries/{libraryId}/empty-trash": {
+      "post": {
+        "operationId": "emptyTrash",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "libraryId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "library-controller"
         ]
       }
     },
@@ -7181,6 +7300,14 @@
             },
             "in": "query",
             "name": "library_id",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "deleted",
             "required": false
           },
           {
