@@ -78,6 +78,21 @@
         </template>
       </horizontal-scroller>
 
+      <horizontal-scroller v-if="recentlyReleasedBooks.length !== 0" class="mb-4">
+        <template v-slot:prepend>
+          <div class="title">{{ $t('dashboard.recently_released_books') }}</div>
+        </template>
+        <template v-slot:content>
+          <item-browser :items="recentlyReleasedBooks"
+                        nowrap
+                        :edit-function="isAdmin ? singleEditBook : undefined"
+                        :selected.sync="selectedBooks"
+                        :selectable="selectedSeries.length === 0"
+                        :fixed-item-width="fixedCardWidth"
+          />
+        </template>
+      </horizontal-scroller>
+
       <horizontal-scroller v-if="latestBooks.length !== 0" class="mb-4">
         <template v-slot:prepend>
           <div class="title">{{ $t('dashboard.recently_added_books') }}</div>
@@ -147,10 +162,11 @@ import {
   SERIES_DELETED,
 } from '@/types/events'
 import Vue from 'vue'
-import {SeriesDto} from "@/types/komga-series";
-import {LIBRARIES_ALL, LIBRARY_ROUTE} from "@/types/library";
+import {SeriesDto} from "@/types/komga-series"
+import {LIBRARIES_ALL, LIBRARY_ROUTE} from "@/types/library"
 import {throttle} from 'lodash'
-import {BookSseDto, ReadProgressSseDto, SeriesSseDto} from "@/types/komga-sse";
+import {subMonths} from 'date-fns'
+import {BookSseDto, ReadProgressSseDto, SeriesSseDto} from "@/types/komga-sse"
 
 export default Vue.extend({
   name: 'Dashboard',
@@ -171,6 +187,7 @@ export default Vue.extend({
       latestBooks: [] as BookDto[],
       inProgressBooks: [] as BookDto[],
       onDeckBooks: [] as BookDto[],
+      recentlyReleasedBooks: [] as BookDto[],
       selectedSeries: [] as SeriesDto[],
       selectedBooks: [] as BookDto[],
     }
@@ -231,7 +248,8 @@ export default Vue.extend({
         this.updatedSeries.length === 0 &&
         this.latestBooks.length === 0 &&
         this.inProgressBooks.length === 0 &&
-        this.onDeckBooks.length === 0
+        this.onDeckBooks.length === 0 &&
+        this.recentlyReleasedBooks.length === 0
     },
     individualLibrary(): boolean {
       return this.libraryId !== LIBRARIES_ALL
@@ -255,6 +273,7 @@ export default Vue.extend({
       if (this.inProgressBooks.some(b => b.id === event.bookId)) this.reload()
       else if (this.latestBooks.some(b => b.id === event.bookId)) this.reload()
       else if (this.onDeckBooks.some(b => b.id === event.bookId)) this.reload()
+      else if (this.recentlyReleasedBooks.some(b => b.id === event.bookId)) this.reload()
     },
     reload: throttle(function(this: any) {
       this.loadAll(this.libraryId)
@@ -265,6 +284,7 @@ export default Vue.extend({
       this.selectedBooks = []
       this.loadInProgressBooks(libraryId)
       this.loadOnDeckBooks(libraryId)
+      this.loadRecentlyReleasedBooks(libraryId)
       this.loadLatestBooks(libraryId)
       this.loadNewSeries(libraryId)
       this.loadUpdatedSeries(libraryId)
@@ -281,6 +301,14 @@ export default Vue.extend({
       } as PageRequest
 
       this.latestBooks = (await this.$komgaBooks.getBooks(this.getRequestLibraryId(libraryId), pageRequest)).content
+    },
+    async loadRecentlyReleasedBooks(libraryId: string) {
+      const pageRequest = {
+        sort: ['metadata.releaseDate,desc'],
+      } as PageRequest
+
+      const releasedAfter = subMonths(new Date(), 1)
+      this.recentlyReleasedBooks = (await this.$komgaBooks.getBooks(this.getRequestLibraryId(libraryId), pageRequest, undefined, undefined, undefined, releasedAfter)).content
     },
     async loadInProgressBooks(libraryId: string) {
       const pageRequest = {
