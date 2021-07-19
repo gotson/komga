@@ -1,6 +1,11 @@
 package org.gotson.komga.domain.service
 
+import com.ninjasquad.springmockk.MockkBean
+import io.mockk.Runs
+import io.mockk.every
+import io.mockk.just
 import org.assertj.core.api.Assertions.assertThat
+import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadListRequest
 import org.gotson.komga.domain.model.ReadListRequestBook
@@ -15,6 +20,7 @@ import org.gotson.komga.domain.persistence.SeriesRepository
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -36,9 +42,17 @@ class ReadListMatcherTest(
 
   private val library = makeLibrary()
 
+  @MockkBean
+  private lateinit var mockTaskReceiver: TaskReceiver
+
   @BeforeAll
   fun `setup library`() {
     libraryRepository.insert(library)
+  }
+
+  @BeforeEach
+  fun beforeEach() {
+    every { mockTaskReceiver.refreshBookMetadata(any(), any()) } just Runs
   }
 
   @AfterAll
@@ -91,9 +105,6 @@ class ReadListMatcherTest(
         ReadListRequestBook(series = "joker", number = "25"),
       )
     )
-
-    // try to fix flaky test on Github Actions
-    Thread.sleep(200)
 
     // when
     val result = readListMatcher.matchReadListRequest(request)
