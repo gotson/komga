@@ -133,6 +133,7 @@
                                   dense
                                   :placeholder="!single && mixed.language ? $t('dialog.edit_series.mixed') : ''"
                                   :error-messages="languageErrors"
+                                  :hint="$t('dialog.edit_series.field_language_hint')"
                                   @input="$v.form.language.$touch()"
                                   @change="form.languageLock = true"
                     >
