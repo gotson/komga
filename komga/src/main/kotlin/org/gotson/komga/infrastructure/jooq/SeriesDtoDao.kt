@@ -1,6 +1,7 @@
 package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.ReadStatus
+import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
 import org.gotson.komga.infrastructure.web.toFilePath
 import org.gotson.komga.interfaces.rest.dto.AuthorDto
@@ -205,6 +206,7 @@ class SeriesDtoDao(
     if (!libraryIds.isNullOrEmpty()) c = c.and(s.LIBRARY_ID.`in`(libraryIds))
     if (!collectionIds.isNullOrEmpty()) c = c.and(cs.COLLECTION_ID.`in`(collectionIds))
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
+    searchRegex?.let { c = c.and((it.second.toColumn()).likeRegex(it.first)) }
     if (!metadataStatus.isNullOrEmpty()) c = c.and(d.STATUS.`in`(metadataStatus))
     if (!publishers.isNullOrEmpty()) c = c.and(lower(d.PUBLISHER).`in`(publishers.map { it.lowercase() }))
     if (deleted == true) c = c.and(s.DELETED_DATE.isNotNull)
@@ -241,6 +243,13 @@ class SeriesDtoDao(
 
     return c
   }
+
+  private fun SeriesSearch.SearchField.toColumn() =
+    when (this) {
+      SeriesSearch.SearchField.NAME -> s.NAME
+      SeriesSearch.SearchField.TITLE -> d.TITLE
+      SeriesSearch.SearchField.TITLE_SORT -> d.TITLE_SORT
+    }
 
   private fun SeriesSearchWithReadProgress.toJoinConditions() =
     JoinConditions(

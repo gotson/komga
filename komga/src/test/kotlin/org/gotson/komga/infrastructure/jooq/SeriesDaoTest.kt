@@ -195,7 +195,7 @@ class SeriesDaoTest(
   }
 
   @Test
-  fun `given existing series when searching then results is returned`() {
+  fun `given existing series when searching then result is returned`() {
     val series = Series(
       name = "Series",
       url = URL("file://series"),
@@ -211,6 +211,21 @@ class SeriesDaoTest(
     val found = seriesDao.findAll(search)
 
     assertThat(found).hasSize(1)
+  }
+
+  @Test
+  fun `given existing series when searching by regex then result is returned`() {
+    val series = Series(
+      name = "my Series",
+      url = URL("file://series"),
+      fileLastModified = LocalDateTime.now(),
+      libraryId = library.id
+    )
+    seriesDao.insert(series)
+
+    assertThat(seriesDao.findAll(SeriesSearch(searchRegex = Pair("^my", SeriesSearch.SearchField.NAME)))).hasSize(1)
+    assertThat(seriesDao.findAll(SeriesSearch(searchRegex = Pair("ries$", SeriesSearch.SearchField.NAME)))).hasSize(1)
+    assertThat(seriesDao.findAll(SeriesSearch(searchRegex = Pair("series", SeriesSearch.SearchField.NAME)))).hasSize(1)
   }
 
   @Test

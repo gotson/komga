@@ -87,6 +87,38 @@ class SeriesControllerTest(
   }
 
   @Nested
+  inner class Search {
+    @Test
+    @WithMockCustomUser
+    fun `given series when searching by regex then series are found`() {
+      val alphaC = seriesLifecycle.createSeries(makeSeries("TheAlpha", libraryId = library.id))
+      seriesMetadataRepository.findById(alphaC.id).let {
+        seriesMetadataRepository.update(it.copy(titleSort = "Alpha, The"))
+      }
+      seriesLifecycle.createSeries(makeSeries("TheBeta", libraryId = library.id))
+
+      mockMvc.get("/api/v1/series") {
+        param("search_regex", "a$,title_sort")
+      }
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.content.length()") { value(1) }
+          jsonPath("$.content[0].metadata.title") { value("TheBeta") }
+        }
+
+      mockMvc.get("/api/v1/series") {
+        param("search_regex", "^the,title")
+      }
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.content.length()") { value(2) }
+          jsonPath("$.content[0].metadata.title") { value("TheAlpha") }
+          jsonPath("$.content[1].metadata.title") { value("TheBeta") }
+        }
+    }
+  }
+
+  @Nested
   inner class SeriesSort {
     @Test
     @WithMockCustomUser

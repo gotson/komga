@@ -127,6 +127,7 @@ class SeriesDao(
     if (!libraryIds.isNullOrEmpty()) c = c.and(s.LIBRARY_ID.`in`(libraryIds))
     if (!collectionIds.isNullOrEmpty()) c = c.and(cs.COLLECTION_ID.`in`(collectionIds))
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
+    searchRegex?.let { c = c.and((it.second.toColumn()).likeRegex(it.first)) }
     if (!metadataStatus.isNullOrEmpty()) c = c.and(d.STATUS.`in`(metadataStatus))
     if (!publishers.isNullOrEmpty()) c = c.and(DSL.lower(d.PUBLISHER).`in`(publishers.map { it.lowercase() }))
     if (deleted == true) c = c.and(s.DELETED_DATE.isNotNull)
@@ -134,6 +135,13 @@ class SeriesDao(
 
     return c
   }
+
+  private fun SeriesSearch.SearchField.toColumn() =
+    when (this) {
+      SeriesSearch.SearchField.NAME -> s.NAME
+      SeriesSearch.SearchField.TITLE -> d.TITLE
+      SeriesSearch.SearchField.TITLE_SORT -> d.TITLE_SORT
+    }
 
   private fun SeriesRecord.toDomain() =
     Series(

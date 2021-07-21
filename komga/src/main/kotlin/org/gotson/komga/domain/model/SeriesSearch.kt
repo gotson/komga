@@ -4,15 +4,21 @@ open class SeriesSearch(
   val libraryIds: Collection<String>? = null,
   val collectionIds: Collection<String>? = null,
   val searchTerm: String? = null,
+  val searchRegex: Pair<String, SearchField>? = null,
   val metadataStatus: Collection<SeriesMetadata.Status>? = null,
   val publishers: Collection<String>? = null,
   val deleted: Boolean? = null,
-)
+) {
+  enum class SearchField {
+    NAME, TITLE, TITLE_SORT
+  }
+}
 
 class SeriesSearchWithReadProgress(
   libraryIds: Collection<String>? = null,
   collectionIds: Collection<String>? = null,
   searchTerm: String? = null,
+  searchRegex: Pair<String, SearchField>? = null,
   metadataStatus: Collection<SeriesMetadata.Status>? = null,
   publishers: Collection<String>? = null,
   deleted: Boolean? = null,
@@ -27,6 +33,7 @@ class SeriesSearchWithReadProgress(
   libraryIds = libraryIds,
   collectionIds = collectionIds,
   searchTerm = searchTerm,
+  searchRegex = searchRegex,
   metadataStatus = metadataStatus,
   publishers = publishers,
   deleted = deleted,

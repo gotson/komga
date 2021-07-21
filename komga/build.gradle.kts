@@ -87,7 +87,7 @@ dependencies {
 //  While waiting for https://github.com/xerial/sqlite-jdbc/pull/491 and https://github.com/xerial/sqlite-jdbc/pull/494
 //  runtimeOnly("org.xerial:sqlite-jdbc:3.32.3.2")
 //  jooqGenerator("org.xerial:sqlite-jdbc:3.32.3.2")
-  runtimeOnly("com.github.gotson:sqlite-jdbc:3.32.3.6")
+  implementation("com.github.gotson:sqlite-jdbc:3.32.3.6")
   jooqGenerator("com.github.gotson:sqlite-jdbc:3.32.3.6")
 
   testImplementation("org.springframework.boot:spring-boot-starter-test") {

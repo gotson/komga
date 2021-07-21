@@ -21,14 +21,15 @@ logging:
     name: komga-dev.log
   level:
     org.apache.activemq.audit.message: WARN
+    org.gotson.komga: DEBUG
 #    org.jooq: DEBUG
 #    web: DEBUG
-    org.gotson.komga: DEBUG
+#    com.zaxxer.hikari: DEBUG
+#    org.springframework.jms: DEBUG
+#    org.springframework.security.web.FilterChainProxy: DEBUG
   logback:
     rollingpolicy:
       max-history: 1
-#    org.springframework.jms: DEBUG
-#    org.springframework.security.web.FilterChainProxy: DEBUG
 
 management.metrics.export.influx:
   #  enabled: true

@@ -81,6 +81,7 @@ class WebMvcConfiguration : WebMvcConfigurer {
 
   override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
     resolvers.add(AuthorsHandlerMethodArgumentResolver())
+    resolvers.add(DelimitedPairHandlerMethodArgumentResolver())
   }
 }
 

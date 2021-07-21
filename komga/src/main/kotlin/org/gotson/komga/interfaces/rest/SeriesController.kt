@@ -2,6 +2,8 @@ package org.gotson.komga.interfaces.rest
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.Parameters
+import io.swagger.v3.oas.annotations.enums.ParameterIn
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -20,6 +22,7 @@ import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesMetadata
+import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
@@ -33,6 +36,7 @@ import org.gotson.komga.infrastructure.swagger.AuthorsAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.infrastructure.web.Authors
+import org.gotson.komga.infrastructure.web.DelimitedPair
 import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.CollectionDto
 import org.gotson.komga.interfaces.rest.dto.SeriesDto
@@ -93,10 +97,17 @@ class SeriesController(
 
   @PageableAsQueryParam
   @AuthorsAsQueryParam
+  @Parameters(
+    Parameter(
+      description = "Search by regex criteria, in the form: regex,field. Supported fields are TITLE and TITLE_SORT.",
+      `in` = ParameterIn.QUERY, name = "search_regex", schema = Schema(type = "string")
+    )
+  )
   @GetMapping
   fun getAllSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) searchTerm: String?,
+    @Parameter(hidden = true) @DelimitedPair("search_regex") searchRegex: Pair<String, String>?,
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
     @RequestParam(name = "collection_id", required = false) collectionIds: List<String>?,
     @RequestParam(name = "status", required = false) metadataStatus: List<SeriesMetadata.Status>?,
@@ -128,6 +139,13 @@ class SeriesController(
       libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
       collectionIds = collectionIds,
       searchTerm = searchTerm,
+      searchRegex = searchRegex?.let {
+        when (it.second.lowercase()) {
+          "title" -> Pair(it.first, SeriesSearch.SearchField.TITLE)
+          "title_sort" -> Pair(it.first, SeriesSearch.SearchField.TITLE_SORT)
+          else -> null
+        }
+      },
       metadataStatus = metadataStatus,
       readStatus = readStatus,
       publishers = publishers,
