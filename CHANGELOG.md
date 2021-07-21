@@ -1,3 +1,12 @@
+# [0.109.0](https://github.com/gotson/komga/compare/v0.108.0...v0.109.0) (2021-07-21)
+
+
+### Features
+
+* **api:** count series by first letter ([199c619](https://github.com/gotson/komga/commit/199c6190a3c7fa8d0aa91935333aa23fa20ff42e))
+* **api:** search series by regex ([1fe5580](https://github.com/gotson/komga/commit/1fe55809a1e58c299151433c17889b9d4eb81a81))
+* **webui:** alphabetical navigation for libraries ([5d747d2](https://github.com/gotson/komga/commit/5d747d2cd3431410eb84554a8afd55086662eb51)), closes [#186](https://github.com/gotson/komga/issues/186)
+
 # [0.108.0](https://github.com/gotson/komga/compare/v0.107.0...v0.108.0) (2021-07-19)
 
 
