@@ -39,6 +39,7 @@ import org.gotson.komga.infrastructure.web.Authors
 import org.gotson.komga.infrastructure.web.DelimitedPair
 import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.CollectionDto
+import org.gotson.komga.interfaces.rest.dto.GroupCountDto
 import org.gotson.komga.interfaces.rest.dto.SeriesDto
 import org.gotson.komga.interfaces.rest.dto.SeriesMetadataUpdateDto
 import org.gotson.komga.interfaces.rest.dto.TachiyomiReadProgressDto
@@ -160,6 +161,58 @@ class SeriesController(
 
     return seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageRequest)
       .map { it.restrictUrl(!principal.user.roleAdmin) }
+  }
+
+  @AuthorsAsQueryParam
+  @Parameters(
+    Parameter(
+      description = "Search by regex criteria, in the form: regex,field. Supported fields are TITLE and TITLE_SORT.",
+      `in` = ParameterIn.QUERY, name = "search_regex", schema = Schema(type = "string")
+    )
+  )
+  @GetMapping("alphabetical-groups")
+  fun getAlphabeticalGroups(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestParam(name = "search", required = false) searchTerm: String?,
+    @Parameter(hidden = true) @DelimitedPair("search_regex") searchRegex: Pair<String, String>?,
+    @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
+    @RequestParam(name = "collection_id", required = false) collectionIds: List<String>?,
+    @RequestParam(name = "status", required = false) metadataStatus: List<SeriesMetadata.Status>?,
+    @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
+    @RequestParam(name = "publisher", required = false) publishers: List<String>?,
+    @RequestParam(name = "language", required = false) languages: List<String>?,
+    @RequestParam(name = "genre", required = false) genres: List<String>?,
+    @RequestParam(name = "tag", required = false) tags: List<String>?,
+    @RequestParam(name = "age_rating", required = false) ageRatings: List<String>?,
+    @RequestParam(name = "release_year", required = false) release_years: List<String>?,
+    @RequestParam(name = "deleted", required = false) deleted: Boolean?,
+    @Parameter(hidden = true) @Authors authors: List<Author>?,
+    @Parameter(hidden = true) page: Pageable
+  ): List<GroupCountDto> {
+    val seriesSearch = SeriesSearchWithReadProgress(
+      libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
+      collectionIds = collectionIds,
+      searchTerm = searchTerm,
+      searchRegex = searchRegex?.let {
+        when (it.second.lowercase()) {
+          "title" -> Pair(it.first, SeriesSearch.SearchField.TITLE)
+          "title_sort" -> Pair(it.first, SeriesSearch.SearchField.TITLE_SORT)
+          else -> null
+        }
+      },
+      metadataStatus = metadataStatus,
+      readStatus = readStatus,
+      publishers = publishers,
+      deleted = deleted,
+      languages = languages,
+      genres = genres,
+      tags = tags,
+      ageRatings = ageRatings?.map { it.toIntOrNull() },
+      releaseYears = release_years,
+      authors = authors
+    )
+
+    return seriesDtoRepository.countByFirstCharacter(seriesSearch, principal.user.id)
   }
 
   @Operation(description = "Return recently added or updated series.")

@@ -6,6 +6,7 @@ import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
 import org.gotson.komga.infrastructure.web.toFilePath
 import org.gotson.komga.interfaces.rest.dto.AuthorDto
 import org.gotson.komga.interfaces.rest.dto.BookMetadataAggregationDto
+import org.gotson.komga.interfaces.rest.dto.GroupCountDto
 import org.gotson.komga.interfaces.rest.dto.SeriesDto
 import org.gotson.komga.interfaces.rest.dto.SeriesMetadataDto
 import org.gotson.komga.interfaces.rest.persistence.SeriesDtoRepository
@@ -20,7 +21,9 @@ import org.jooq.Record
 import org.jooq.ResultQuery
 import org.jooq.SelectOnConditionStep
 import org.jooq.impl.DSL
+import org.jooq.impl.DSL.count
 import org.jooq.impl.DSL.lower
+import org.jooq.impl.DSL.substring
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -101,6 +104,27 @@ class SeriesDtoDao(
       .and(s.CREATED_DATE.ne(s.LAST_MODIFIED_DATE))
 
     return findAll(conditions, userId, pageable, search.toJoinConditions())
+  }
+
+  override fun countByFirstCharacter(search: SeriesSearchWithReadProgress, userId: String): List<GroupCountDto> {
+    val conditions = search.toCondition()
+    val joinConditions = search.toJoinConditions()
+
+    val firstChar = lower(substring(d.TITLE_SORT, 1, 1))
+    return dsl.select(firstChar, count())
+      .from(s)
+      .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
+      .leftJoin(bma).on(s.ID.eq(bma.SERIES_ID))
+      .leftJoin(rs).on(s.ID.eq(rs.SERIES_ID)).and(readProgressConditionSeries(userId))
+      .apply { if (joinConditions.genre) leftJoin(g).on(s.ID.eq(g.SERIES_ID)) }
+      .apply { if (joinConditions.tag) leftJoin(st).on(s.ID.eq(st.SERIES_ID)) }
+      .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
+      .apply { if (joinConditions.aggregationAuthor) leftJoin(bmaa).on(s.ID.eq(bmaa.SERIES_ID)) }
+      .where(conditions)
+      .groupBy(firstChar)
+      .map {
+        GroupCountDto(it.value1(), it.value2())
+      }
   }
 
   override fun findByIdOrNull(seriesId: String, userId: String): SeriesDto? =
