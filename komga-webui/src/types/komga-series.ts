@@ -71,3 +71,8 @@ export interface SeriesMetadataUpdateDto {
   tags?: String[],
   tagsLock?: boolean
 }
+
+export interface GroupCountDto {
+  group: string,
+  count: number,
+}

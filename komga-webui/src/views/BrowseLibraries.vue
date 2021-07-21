@@ -86,6 +86,14 @@
       />
 
       <template v-if="totalPages > 0">
+        <alphabetical-navigation
+          class="text-center"
+          :symbols="alphabeticalNavigation"
+          :selected="selectedSymbol"
+          :group-count="seriesGroups"
+          @clicked="filterByStarting"
+        />
+
         <v-pagination
           v-if="totalPages > 1"
           v-model="page"
@@ -139,15 +147,17 @@ import SortList from '@/components/SortList.vue'
 import FilterPanels from '@/components/FilterPanels.vue'
 import FilterList from '@/components/FilterList.vue'
 import {mergeFilterParams, sortOrFilterActive, toNameValue} from '@/functions/filter'
-import {SeriesDto} from '@/types/komga-series'
+import {GroupCountDto, SeriesDto} from '@/types/komga-series'
 import {AuthorDto} from '@/types/komga-books'
 import {authorRoles} from '@/types/author-roles'
 import {LibrarySseDto, ReadProgressSeriesSseDto, SeriesSseDto} from '@/types/komga-sse'
 import {throttle} from 'lodash'
+import AlphabeticalNavigation from '@/components/AlphabeticalNavigation.vue'
 
 export default Vue.extend({
   name: 'BrowseLibraries',
   components: {
+    AlphabeticalNavigation,
     LibraryActionsMenu,
     EmptyState,
     ToolbarSticky,
@@ -164,6 +174,10 @@ export default Vue.extend({
     return {
       library: undefined as LibraryDto | undefined,
       series: [] as SeriesDto[],
+      seriesGroups: [] as GroupCountDto[],
+      alphabeticalNavigation: ['ALL', '#', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+      searchRegex: undefined as any,
+      selectedSymbol: 'ALL',
       selectedSeries: [] as SeriesDto[],
       page: 1,
       pageSize: 20,
@@ -234,6 +248,9 @@ export default Vue.extend({
       this.totalPages = 1
       this.totalElements = null
       this.series = []
+      this.seriesGroups = []
+      this.selectedSymbol = 'ALL'
+      this.searchRegex = undefined
 
       this.loadLibrary(to.params.libraryId)
 
@@ -313,6 +330,15 @@ export default Vue.extend({
     },
   },
   methods: {
+    filterByStarting(symbol: string) {
+      if (symbol === 'ALL') this.searchRegex = undefined
+      else if (symbol === '#') this.searchRegex = '^[^a-z],title_sort'
+      else this.searchRegex = `^${symbol},title_sort`
+
+      this.selectedSymbol = symbol
+      this.page = 1
+      this.loadPage(this.libraryId, 1, this.sortActive, this.searchRegex)
+    },
     resetSortAndFilters() {
       this.drawer = false
       for (const prop in this.filters) {
@@ -341,7 +367,7 @@ export default Vue.extend({
       ])
       this.$set(this.filterOptions, 'genre', toNameValue(genres))
       this.$set(this.filterOptions, 'tag', toNameValue(tags))
-      this.$set(this.filterOptions, 'publisher', toNameValue(publishers ))
+      this.$set(this.filterOptions, 'publisher', toNameValue(publishers))
       this.$set(this.filterOptions, 'language', (languages))
       this.$set(this.filterOptions, 'ageRating', toNameValue(ageRatings))
       this.$set(this.filterOptions, 'releaseDate', toNameValue(releaseDates))
@@ -406,7 +432,7 @@ export default Vue.extend({
 
       this.pageUnwatch = this.$watch('page', (val) => {
         this.updateRoute()
-        this.loadPage(this.libraryId, val, this.sortActive)
+        this.loadPage(this.libraryId, val, this.sortActive, this.searchRegex)
       })
     },
     unsetWatches() {
@@ -421,7 +447,7 @@ export default Vue.extend({
       this.page = 1
 
       this.updateRoute()
-      this.loadPage(this.libraryId, this.page, this.sortActive)
+      this.loadPage(this.libraryId, this.page, this.sortActive, this.searchRegex)
 
       this.setWatches()
     },
@@ -441,7 +467,7 @@ export default Vue.extend({
     async loadLibrary(libraryId: string) {
       this.library = this.getLibraryLazy(libraryId)
 
-      await this.loadPage(libraryId, this.page, this.sortActive)
+      await this.loadPage(libraryId, this.page, this.sortActive, this.searchRegex)
     },
     updateRoute() {
       const loc = {
@@ -460,7 +486,7 @@ export default Vue.extend({
     reloadPage: throttle(function (this: any) {
       this.loadPage(this.libraryId, this.page, this.sortActive)
     }, 1000),
-    async loadPage(libraryId: string, page: number, sort: SortActive) {
+    async loadPage(libraryId: string, page: number, sort: SortActive, searchRegex?: string) {
       this.selectedSeries = []
 
       const pageRequest = {
@@ -481,11 +507,22 @@ export default Vue.extend({
       })
 
       const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
-      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter)
+      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, searchRegex)
 
       this.totalPages = seriesPage.totalPages
       this.totalElements = seriesPage.totalElements
       this.series = seriesPage.content
+
+      const seriesGroups = await this.$komgaSeries.getAlphabeticalGroups(requestLibraryId, undefined, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter)
+      const nonAlpha = seriesGroups
+        .filter((g) => !(/[a-zA-Z]/).test(g.group))
+        .reduce((a, b) => a + b.count, 0)
+      const all = seriesGroups.reduce((a, b) => a + b.count, 0)
+      this.seriesGroups = [
+        ...seriesGroups.filter((g) => (/[a-zA-Z]/).test(g.group)),
+        {group: '#', count: nonAlpha} as GroupCountDto,
+        {group: 'ALL', count: all} as GroupCountDto,
+      ]
     },
     getLibraryLazy(libraryId: string): LibraryDto | undefined {
       if (libraryId !== LIBRARIES_ALL) {

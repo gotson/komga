@@ -1,6 +1,6 @@
 import {AxiosInstance} from 'axios'
 import {AuthorDto, BookDto} from '@/types/komga-books'
-import {SeriesDto, SeriesMetadataUpdateDto} from '@/types/komga-series'
+import {GroupCountDto, SeriesDto, SeriesMetadataUpdateDto} from '@/types/komga-series'
 
 const qs = require('qs')
 
@@ -9,17 +9,19 @@ const API_SERIES = '/api/v1/series'
 export default class KomgaSeriesService {
   private http: AxiosInstance
 
-  constructor (http: AxiosInstance) {
+  constructor(http: AxiosInstance) {
     this.http = http
   }
 
-  async getSeries (libraryId?: string, pageRequest?: PageRequest, search?: string, status?: string[],
-                   readStatus?: string[], genre?: string[], tag?: string[], language?: string[],
-                   publisher?: string[], ageRating?: string[], releaseDate?: string[], authors?: AuthorDto[]): Promise<Page<SeriesDto>> {
+  async getSeries(libraryId?: string, pageRequest?: PageRequest, search?: string, status?: string[],
+                  readStatus?: string[], genre?: string[], tag?: string[], language?: string[],
+                  publisher?: string[], ageRating?: string[], releaseDate?: string[], authors?: AuthorDto[],
+                  searchRegex?: string): Promise<Page<SeriesDto>> {
     try {
-      const params = { ...pageRequest } as any
+      const params = {...pageRequest} as any
       if (libraryId) params.library_id = libraryId
       if (search) params.search = search
+      if (searchRegex) params.search_regex = searchRegex
       if (status) params.status = status
       if (readStatus) params.read_status = readStatus
       if (genre) params.genre = genre
@@ -32,7 +34,7 @@ export default class KomgaSeriesService {
 
       return (await this.http.get(API_SERIES, {
         params: params,
-        paramsSerializer: params => qs.stringify(params, { indices: false }),
+        paramsSerializer: params => qs.stringify(params, {indices: false}),
       })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve series'
@@ -43,9 +45,39 @@ export default class KomgaSeriesService {
     }
   }
 
-  async getNewSeries (libraryId?: string, pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
+  async getAlphabeticalGroups(libraryId?: string, search?: string, status?: string[],
+                              readStatus?: string[], genre?: string[], tag?: string[], language?: string[],
+                              publisher?: string[], ageRating?: string[], releaseDate?: string[], authors?: AuthorDto[]): Promise<GroupCountDto[]> {
     try {
-      const params = { ...pageRequest } as any
+      const params = {} as any
+      if (libraryId) params.library_id = libraryId
+      if (search) params.search = search
+      if (status) params.status = status
+      if (readStatus) params.read_status = readStatus
+      if (genre) params.genre = genre
+      if (tag) params.tag = tag
+      if (language) params.language = language
+      if (publisher) params.publisher = publisher
+      if (ageRating) params.age_rating = ageRating
+      if (releaseDate) params.release_year = releaseDate
+      if (authors) params.author = authors.map(a => `${a.name},${a.role}`)
+
+      return (await this.http.get(`${API_SERIES}/alphabetical-groups`, {
+        params: params,
+        paramsSerializer: params => qs.stringify(params, {indices: false}),
+      })).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve series alphabetical groups'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async getNewSeries(libraryId?: string, pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
+    try {
+      const params = {...pageRequest} as any
       if (libraryId) {
         params.library_id = libraryId
       }
@@ -61,9 +93,9 @@ export default class KomgaSeriesService {
     }
   }
 
-  async getUpdatedSeries (libraryId?: string, pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
+  async getUpdatedSeries(libraryId?: string, pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
     try {
-      const params = { ...pageRequest } as any
+      const params = {...pageRequest} as any
       if (libraryId) {
         params.library_id = libraryId
       }
@@ -79,7 +111,7 @@ export default class KomgaSeriesService {
     }
   }
 
-  async getOneSeries (seriesId: string): Promise<SeriesDto> {
+  async getOneSeries(seriesId: string): Promise<SeriesDto> {
     try {
       return (await this.http.get(`${API_SERIES}/${seriesId}`)).data
     } catch (e) {
@@ -91,16 +123,16 @@ export default class KomgaSeriesService {
     }
   }
 
-  async getBooks (seriesId: string, pageRequest?: PageRequest, readStatus?: string[], tag?: string[], authors?: AuthorDto[]): Promise<Page<BookDto>> {
+  async getBooks(seriesId: string, pageRequest?: PageRequest, readStatus?: string[], tag?: string[], authors?: AuthorDto[]): Promise<Page<BookDto>> {
     try {
-      const params = { ...pageRequest } as any
+      const params = {...pageRequest} as any
       if (readStatus) params.read_status = readStatus
       if (tag) params.tag = tag
       if (authors) params.author = authors.map(a => `${a.name},${a.role}`)
 
       return (await this.http.get(`${API_SERIES}/${seriesId}/books`, {
         params: params,
-        paramsSerializer: params => qs.stringify(params, { indices: false }),
+        paramsSerializer: params => qs.stringify(params, {indices: false}),
       })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve books'
@@ -111,7 +143,7 @@ export default class KomgaSeriesService {
     }
   }
 
-  async getCollections (seriesId: string): Promise<CollectionDto[]> {
+  async getCollections(seriesId: string): Promise<CollectionDto[]> {
     try {
       return (await this.http.get(`${API_SERIES}/${seriesId}/collections`)).data
     } catch (e) {
@@ -123,7 +155,7 @@ export default class KomgaSeriesService {
     }
   }
 
-  async analyzeSeries (series: SeriesDto) {
+  async analyzeSeries(series: SeriesDto) {
     try {
       await this.http.post(`${API_SERIES}/${series.id}/analyze`)
     } catch (e) {
@@ -135,7 +167,7 @@ export default class KomgaSeriesService {
     }
   }
 
-  async refreshMetadata (series: SeriesDto) {
+  async refreshMetadata(series: SeriesDto) {
     try {
       await this.http.post(`${API_SERIES}/${series.id}/metadata/refresh`)
     } catch (e) {
@@ -147,7 +179,7 @@ export default class KomgaSeriesService {
     }
   }
 
-  async updateMetadata (seriesId: string, metadata: SeriesMetadataUpdateDto) {
+  async updateMetadata(seriesId: string, metadata: SeriesMetadataUpdateDto) {
     try {
       await this.http.patch(`${API_SERIES}/${seriesId}/metadata`, metadata)
     } catch (e) {
@@ -159,7 +191,7 @@ export default class KomgaSeriesService {
     }
   }
 
-  async markAsRead (seriesId: string) {
+  async markAsRead(seriesId: string) {
     try {
       await this.http.post(`${API_SERIES}/${seriesId}/read-progress`)
     } catch (e) {
@@ -171,7 +203,7 @@ export default class KomgaSeriesService {
     }
   }
 
-  async markAsUnread (seriesId: string) {
+  async markAsUnread(seriesId: string) {
     try {
       await this.http.delete(`${API_SERIES}/${seriesId}/read-progress`)
     } catch (e) {
