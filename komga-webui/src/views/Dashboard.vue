@@ -137,6 +137,21 @@
           />
         </template>
       </horizontal-scroller>
+
+      <horizontal-scroller v-if="recentlyReadBooks.length !== 0" class="mb-4">
+        <template v-slot:prepend>
+          <div class="title">{{ $t('dashboard.recently_read_books') }}</div>
+        </template>
+        <template v-slot:content>
+          <item-browser :items="recentlyReadBooks"
+                        nowrap
+                        :edit-function="isAdmin ? singleEditBook : undefined"
+                        :selected.sync="selectedBooks"
+                        :selectable="selectedSeries.length === 0"
+                        :fixed-item-width="fixedCardWidth"
+          />
+        </template>
+      </horizontal-scroller>
     </v-container>
   </div>
 </template>
@@ -189,6 +204,7 @@ export default Vue.extend({
       inProgressBooks: [] as BookDto[],
       onDeckBooks: [] as BookDto[],
       recentlyReleasedBooks: [] as BookDto[],
+      recentlyReadBooks: [] as BookDto[],
       selectedSeries: [] as SeriesDto[],
       selectedBooks: [] as BookDto[],
     }
@@ -250,7 +266,8 @@ export default Vue.extend({
         this.latestBooks.length === 0 &&
         this.inProgressBooks.length === 0 &&
         this.onDeckBooks.length === 0 &&
-        this.recentlyReleasedBooks.length === 0
+        this.recentlyReleasedBooks.length === 0 &&
+        this.recentlyReadBooks.length === 0
     },
     individualLibrary(): boolean {
       return this.libraryId !== LIBRARIES_ALL
@@ -275,6 +292,7 @@ export default Vue.extend({
       else if (this.latestBooks.some(b => b.id === event.bookId)) this.reload()
       else if (this.onDeckBooks.some(b => b.id === event.bookId)) this.reload()
       else if (this.recentlyReleasedBooks.some(b => b.id === event.bookId)) this.reload()
+      else if (this.recentlyReadBooks.some(b => b.id === event.bookId)) this.reload()
     },
     reload: throttle(function(this: any) {
       this.loadAll(this.libraryId)
@@ -289,6 +307,7 @@ export default Vue.extend({
       this.loadLatestBooks(libraryId)
       this.loadNewSeries(libraryId)
       this.loadUpdatedSeries(libraryId)
+      this.loadRecentlyReadBooks(libraryId)
     },
     async loadNewSeries(libraryId: string) {
       this.newSeries = (await this.$komgaSeries.getNewSeries(this.getRequestLibraryId(libraryId))).content
@@ -310,6 +329,13 @@ export default Vue.extend({
 
       const releasedAfter = subMonths(new Date(), 1)
       this.recentlyReleasedBooks = (await this.$komgaBooks.getBooks(this.getRequestLibraryId(libraryId), pageRequest, undefined, undefined, undefined, releasedAfter)).content
+    },
+    async loadRecentlyReadBooks(libraryId: string) {
+      const pageRequest = {
+        sort: ['readProgress.lastModified,desc'],
+      } as PageRequest
+
+      this.recentlyReadBooks = (await this.$komgaBooks.getBooks(this.getRequestLibraryId(libraryId), pageRequest, undefined, undefined, [ReadStatus.READ])).content
     },
     async loadInProgressBooks(libraryId: string) {
       const pageRequest = {
