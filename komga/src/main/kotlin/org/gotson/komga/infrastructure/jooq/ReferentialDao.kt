@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.persistence.ReferentialRepository
+import org.gotson.komga.infrastructure.language.stripAccents
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.BookMetadataAggregationAuthorRecord
 import org.gotson.komga.jooq.tables.records.BookMetadataAuthorRecord
@@ -36,7 +37,7 @@ class ReferentialDao(
     dsl.selectDistinct(a.NAME, a.ROLE)
       .from(a)
       .apply { filterOnLibraryIds?.let { leftJoin(b).on(a.BOOK_ID.eq(b.ID)) } }
-      .where(a.NAME.containsIgnoreCase(search))
+      .where(a.NAME.udfStripAccents().containsIgnoreCase(search.stripAccents()))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
       .orderBy(lower(a.NAME), a.ROLE)
       .fetchInto(a)
@@ -46,7 +47,7 @@ class ReferentialDao(
     dsl.selectDistinct(bmaa.NAME, bmaa.ROLE)
       .from(bmaa)
       .leftJoin(s).on(bmaa.SERIES_ID.eq(s.ID))
-      .where(bmaa.NAME.containsIgnoreCase(search))
+      .where(bmaa.NAME.udfStripAccents().containsIgnoreCase(search.stripAccents()))
       .and(s.LIBRARY_ID.eq(libraryId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
       .orderBy(lower(bmaa.NAME), bmaa.ROLE)
@@ -58,7 +59,7 @@ class ReferentialDao(
       .from(bmaa)
       .leftJoin(cs).on(bmaa.SERIES_ID.eq(cs.SERIES_ID))
       .apply { filterOnLibraryIds?.let { leftJoin(s).on(bmaa.SERIES_ID.eq(s.ID)) } }
-      .where(bmaa.NAME.containsIgnoreCase(search))
+      .where(bmaa.NAME.udfStripAccents().containsIgnoreCase(search.stripAccents()))
       .and(cs.COLLECTION_ID.eq(collectionId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
       .orderBy(lower(bmaa.NAME), bmaa.ROLE)
@@ -69,7 +70,7 @@ class ReferentialDao(
     dsl.selectDistinct(bmaa.NAME, bmaa.ROLE)
       .from(bmaa)
       .apply { filterOnLibraryIds?.let { leftJoin(s).on(bmaa.SERIES_ID.eq(s.ID)) } }
-      .where(bmaa.NAME.containsIgnoreCase(search))
+      .where(bmaa.NAME.udfStripAccents().containsIgnoreCase(search.stripAccents()))
       .and(bmaa.SERIES_ID.eq(seriesId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
       .orderBy(lower(bmaa.NAME), bmaa.ROLE)
@@ -108,7 +109,7 @@ class ReferentialDao(
       .from(bmaa)
       .apply { if (filterOnLibraryIds != null || filterBy?.type == FilterByType.LIBRARY) leftJoin(s).on(bmaa.SERIES_ID.eq(s.ID)) }
       .apply { if (filterBy?.type == FilterByType.COLLECTION) leftJoin(cs).on(bmaa.SERIES_ID.eq(cs.SERIES_ID)) }
-      .where(bmaa.NAME.containsIgnoreCase(search))
+      .where(bmaa.NAME.udfStripAccents().containsIgnoreCase(search.stripAccents()))
       .apply { role?.let { and(bmaa.ROLE.eq(role)) } }
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
       .apply {
@@ -142,7 +143,7 @@ class ReferentialDao(
     dsl.selectDistinct(a.NAME)
       .from(a)
       .apply { filterOnLibraryIds?.let { leftJoin(b).on(a.BOOK_ID.eq(b.ID)) } }
-      .where(a.NAME.containsIgnoreCase(search))
+      .where(a.NAME.udfStripAccents().containsIgnoreCase(search.stripAccents()))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
       .orderBy(a.NAME)
       .fetch(a.NAME)

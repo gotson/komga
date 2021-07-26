@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.language
 
+import org.apache.commons.lang3.StringUtils
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalUnit
@@ -36,3 +37,5 @@ fun <T, R : Any> Iterable<T>.mostFrequent(transform: (T) -> R?): R? {
 
 fun LocalDateTime.notEquals(other: LocalDateTime, precision: TemporalUnit = ChronoUnit.MILLIS) =
   this.truncatedTo(precision) != other.truncatedTo(precision)
+
+fun String.stripAccents(): String = StringUtils.stripAccents(this)

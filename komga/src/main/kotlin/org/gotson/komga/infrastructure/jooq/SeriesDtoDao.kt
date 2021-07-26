@@ -3,6 +3,7 @@ package org.gotson.komga.infrastructure.jooq
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
+import org.gotson.komga.infrastructure.language.stripAccents
 import org.gotson.komga.infrastructure.web.toFilePath
 import org.gotson.komga.interfaces.rest.dto.AuthorDto
 import org.gotson.komga.interfaces.rest.dto.BookMetadataAggregationDto
@@ -229,7 +230,7 @@ class SeriesDtoDao(
 
     if (!libraryIds.isNullOrEmpty()) c = c.and(s.LIBRARY_ID.`in`(libraryIds))
     if (!collectionIds.isNullOrEmpty()) c = c.and(cs.COLLECTION_ID.`in`(collectionIds))
-    searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
+    searchTerm?.let { c = c.and(d.TITLE.udfStripAccents().containsIgnoreCase(it.stripAccents())) }
     searchRegex?.let { c = c.and((it.second.toColumn()).likeRegex(it.first)) }
     if (!metadataStatus.isNullOrEmpty()) c = c.and(d.STATUS.`in`(metadataStatus))
     if (!publishers.isNullOrEmpty()) c = c.and(lower(d.PUBLISHER).`in`(publishers.map { it.lowercase() }))

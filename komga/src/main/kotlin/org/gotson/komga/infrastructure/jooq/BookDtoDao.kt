@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.ReadStatus
+import org.gotson.komga.infrastructure.language.stripAccents
 import org.gotson.komga.infrastructure.web.toFilePath
 import org.gotson.komga.interfaces.rest.dto.AuthorDto
 import org.gotson.komga.interfaces.rest.dto.BookDto
@@ -56,6 +57,7 @@ class BookDtoDao(
     "media.comment" to lower(m.COMMENT),
     "media.mediaType" to lower(m.MEDIA_TYPE),
     "metadata.numberSort" to d.NUMBER_SORT,
+    "metadata.title" to lower(d.TITLE),
     "metadata.releaseDate" to d.RELEASE_DATE,
     "readProgress.lastModified" to r.LAST_MODIFIED_DATE,
     "readList.number" to rlb.NUMBER
@@ -266,7 +268,7 @@ class BookDtoDao(
 
     if (!libraryIds.isNullOrEmpty()) c = c.and(b.LIBRARY_ID.`in`(libraryIds))
     if (!seriesIds.isNullOrEmpty()) c = c.and(b.SERIES_ID.`in`(seriesIds))
-    searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
+    searchTerm?.let { c = c.and(d.TITLE.udfStripAccents().containsIgnoreCase(it.stripAccents())) }
     if (!mediaStatus.isNullOrEmpty()) c = c.and(m.STATUS.`in`(mediaStatus))
     if (deleted == true) c = c.and(b.DELETED_DATE.isNotNull)
     if (deleted == false) c = c.and(b.DELETED_DATE.isNull)

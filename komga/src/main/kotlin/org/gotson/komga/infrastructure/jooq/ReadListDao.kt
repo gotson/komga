@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.persistence.ReadListRepository
+import org.gotson.komga.infrastructure.language.stripAccents
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.ReadlistRecord
 import org.jooq.DSLContext
@@ -46,7 +47,7 @@ class ReadListDao(
       .firstOrNull()
 
   override fun searchAll(search: String?, pageable: Pageable): Page<ReadList> {
-    val conditions = search?.let { rl.NAME.containsIgnoreCase(it) }
+    val conditions = search?.let { rl.NAME.udfStripAccents().containsIgnoreCase(it.stripAccents()) }
       ?: DSL.trueCondition()
 
     val count = dsl.selectCount()
@@ -77,7 +78,7 @@ class ReadListDao(
       .leftJoin(rlb).on(rl.ID.eq(rlb.READLIST_ID))
       .leftJoin(b).on(rlb.BOOK_ID.eq(b.ID))
       .where(b.LIBRARY_ID.`in`(belongsToLibraryIds))
-      .apply { search?.let { and(rl.NAME.containsIgnoreCase(it)) } }
+      .apply { search?.let { and(rl.NAME.udfStripAccents().containsIgnoreCase(it.stripAccents())) } }
       .fetch(0, String::class.java)
 
     val count = ids.size
@@ -87,7 +88,7 @@ class ReadListDao(
     val items = selectBase()
       .where(rl.ID.`in`(ids))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-      .apply { search?.let { and(rl.NAME.containsIgnoreCase(it)) } }
+      .apply { search?.let { and(rl.NAME.udfStripAccents().containsIgnoreCase(it.stripAccents())) } }
       .orderBy(orderBy)
       .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
       .fetchAndMap(filterOnLibraryIds)
