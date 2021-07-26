@@ -484,7 +484,7 @@ export default Vue.extend({
       })
     },
     reloadPage: throttle(function (this: any) {
-      this.loadPage(this.libraryId, this.page, this.sortActive)
+      this.loadPage(this.libraryId, this.page, this.sortActive, this.searchRegex)
     }, 1000),
     async loadPage(libraryId: string, page: number, sort: SortActive, searchRegex?: string) {
       this.selectedSeries = []
