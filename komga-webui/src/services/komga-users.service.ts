@@ -29,8 +29,10 @@ export default class KomgaUsersService {
           msg = 'Invalid authentication'
         }
       }
-      if (e.response.data.message) {
+      if (e.response?.data?.message) {
         msg += `: ${e.response.data.message}`
+      } else {
+        msg += `: ${e.message}`
       }
       throw new Error(msg)
     }
