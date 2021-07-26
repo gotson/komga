@@ -22,6 +22,8 @@ interface BookRepository {
   fun getLibraryIdOrNull(bookId: String): String?
   fun getSeriesIdOrNull(bookId: String): String?
   fun findFirstIdInSeriesOrNull(seriesId: String): String?
+  fun findLastIdInSeriesOrNull(seriesId: String): String?
+  fun findFirstUnreadIdInSeriesOrNull(seriesId: String, userId: String): String?
 
   fun findAllIdsBySeriesId(seriesId: String): Collection<String>
   fun findAllIdsBySeriesIds(seriesIds: Collection<String>): Collection<String>

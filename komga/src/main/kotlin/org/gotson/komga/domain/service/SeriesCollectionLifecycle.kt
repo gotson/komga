@@ -61,7 +61,7 @@ class SeriesCollectionLifecycle(
     toDelete.forEach { eventPublisher.publishEvent(DomainEvent.CollectionDeleted(it)) }
   }
 
-  fun getThumbnailBytes(collection: SeriesCollection): ByteArray {
+  fun getThumbnailBytes(collection: SeriesCollection, userId: String): ByteArray {
     val ids = with(mutableListOf<String>()) {
       while (size < 4) {
         this += collection.seriesIds.take(4)
@@ -69,7 +69,7 @@ class SeriesCollectionLifecycle(
       this.take(4)
     }
 
-    val images = ids.mapNotNull { seriesLifecycle.getThumbnailBytes(it) }
+    val images = ids.mapNotNull { seriesLifecycle.getThumbnailBytes(it, userId) }
     return mosaicGenerator.createMosaic(images)
   }
 }

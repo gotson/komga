@@ -24,12 +24,20 @@ data class Library(
   val repairExtensions: Boolean = false,
   val convertToCbz: Boolean = false,
   val emptyTrashAfterScan: Boolean = false,
+  val seriesCover: SeriesCover = SeriesCover.FIRST,
 
   val id: String = TsidCreator.getTsid256().toString(),
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
 ) : Auditable(), Serializable {
+
+  enum class SeriesCover {
+    FIRST,
+    FIRST_UNREAD_OR_FIRST,
+    FIRST_UNREAD_OR_LAST,
+    LAST,
+  }
 
   @delegate:Transient
   val path: Path by lazy { this.root.toURI().toPath() }

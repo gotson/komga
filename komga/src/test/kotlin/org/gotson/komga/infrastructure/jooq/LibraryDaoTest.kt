@@ -67,6 +67,7 @@ class LibraryDaoTest(
         repairExtensions = true,
         convertToCbz = true,
         emptyTrashAfterScan = true,
+        seriesCover = Library.SeriesCover.LAST,
       )
     }
 
@@ -93,6 +94,7 @@ class LibraryDaoTest(
     assertThat(modified.repairExtensions).isEqualTo(updated.repairExtensions)
     assertThat(modified.convertToCbz).isEqualTo(updated.convertToCbz)
     assertThat(modified.emptyTrashAfterScan).isEqualTo(updated.emptyTrashAfterScan)
+    assertThat(modified.seriesCover).isEqualTo(updated.seriesCover)
   }
 
   @Test

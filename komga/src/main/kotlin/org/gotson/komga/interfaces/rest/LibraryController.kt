@@ -1,6 +1,5 @@
 package org.gotson.komga.interfaces.rest
 
-import mu.KotlinLogging
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.DirectoryNotFoundException
@@ -14,7 +13,11 @@ import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.web.filePathToUrl
-import org.gotson.komga.infrastructure.web.toFilePath
+import org.gotson.komga.interfaces.rest.dto.LibraryCreationDto
+import org.gotson.komga.interfaces.rest.dto.LibraryDto
+import org.gotson.komga.interfaces.rest.dto.LibraryUpdateDto
+import org.gotson.komga.interfaces.rest.dto.toDomain
+import org.gotson.komga.interfaces.rest.dto.toDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -31,9 +34,6 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import java.io.FileNotFoundException
 import javax.validation.Valid
-import javax.validation.constraints.NotBlank
-
-private val logger = KotlinLogging.logger {}
 
 @RestController
 @RequestMapping("api/v1/libraries", produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -90,6 +90,7 @@ class LibraryController(
           repairExtensions = library.repairExtensions,
           convertToCbz = library.convertToCbz,
           emptyTrashAfterScan = library.emptyTrashAfterScan,
+          seriesCover = library.seriesCover.toDomain(),
         )
       ).toDto(includeRoot = principal.user.roleAdmin)
     } catch (e: Exception) {
@@ -129,6 +130,7 @@ class LibraryController(
         repairExtensions = library.repairExtensions,
         convertToCbz = library.convertToCbz,
         emptyTrashAfterScan = library.emptyTrashAfterScan,
+        seriesCover = library.seriesCover.toDomain(),
       )
       libraryLifecycle.updateLibrary(toUpdate)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -183,81 +185,3 @@ class LibraryController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 }
-
-data class LibraryCreationDto(
-  @get:NotBlank val name: String,
-  @get:NotBlank val root: String,
-  val importComicInfoBook: Boolean = true,
-  val importComicInfoSeries: Boolean = true,
-  val importComicInfoCollection: Boolean = true,
-  val importComicInfoReadList: Boolean = true,
-  val importEpubBook: Boolean = true,
-  val importEpubSeries: Boolean = true,
-  val importMylarSeries: Boolean = true,
-  val importLocalArtwork: Boolean = true,
-  val importBarcodeIsbn: Boolean = true,
-  val scanForceModifiedTime: Boolean = false,
-  val scanDeep: Boolean = false,
-  val repairExtensions: Boolean = false,
-  val convertToCbz: Boolean = false,
-  val emptyTrashAfterScan: Boolean = false,
-)
-
-data class LibraryDto(
-  val id: String,
-  val name: String,
-  val root: String,
-  val importComicInfoBook: Boolean,
-  val importComicInfoSeries: Boolean,
-  val importComicInfoCollection: Boolean,
-  val importComicInfoReadList: Boolean,
-  val importEpubBook: Boolean,
-  val importEpubSeries: Boolean,
-  val importMylarSeries: Boolean,
-  val importLocalArtwork: Boolean,
-  val importBarcodeIsbn: Boolean,
-  val scanForceModifiedTime: Boolean,
-  val scanDeep: Boolean,
-  val repairExtensions: Boolean,
-  val convertToCbz: Boolean,
-  val emptyTrashAfterScan: Boolean,
-)
-
-data class LibraryUpdateDto(
-  @get:NotBlank val name: String,
-  @get:NotBlank val root: String,
-  val importComicInfoBook: Boolean,
-  val importComicInfoSeries: Boolean,
-  val importComicInfoCollection: Boolean,
-  val importComicInfoReadList: Boolean,
-  val importEpubBook: Boolean,
-  val importEpubSeries: Boolean,
-  val importMylarSeries: Boolean,
-  val importLocalArtwork: Boolean,
-  val importBarcodeIsbn: Boolean,
-  val scanForceModifiedTime: Boolean,
-  val scanDeep: Boolean,
-  val repairExtensions: Boolean,
-  val convertToCbz: Boolean,
-  val emptyTrashAfterScan: Boolean,
-)
-
-fun Library.toDto(includeRoot: Boolean) = LibraryDto(
-  id = id,
-  name = name,
-  root = if (includeRoot) this.root.toFilePath() else "",
-  importComicInfoBook = importComicInfoBook,
-  importComicInfoSeries = importComicInfoSeries,
-  importComicInfoCollection = importComicInfoCollection,
-  importComicInfoReadList = importComicInfoReadList,
-  importEpubBook = importEpubBook,
-  importEpubSeries = importEpubSeries,
-  importMylarSeries = importMylarSeries,
-  importLocalArtwork = importLocalArtwork,
-  importBarcodeIsbn = importBarcodeIsbn,
-  scanForceModifiedTime = scanForceModifiedTime,
-  scanDeep = scanDeep,
-  repairExtensions = repairExtensions,
-  convertToCbz = convertToCbz,
-  emptyTrashAfterScan = emptyTrashAfterScan,
-)

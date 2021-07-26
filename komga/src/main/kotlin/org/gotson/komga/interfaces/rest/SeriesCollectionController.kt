@@ -103,7 +103,7 @@ class SeriesCollectionController(
     collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
       return ResponseEntity.ok()
         .cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS).cachePrivate())
-        .body(collectionLifecycle.getThumbnailBytes(it))
+        .body(collectionLifecycle.getThumbnailBytes(it, principal.user.id))
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 

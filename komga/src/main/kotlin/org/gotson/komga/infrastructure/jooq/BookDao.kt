@@ -27,6 +27,7 @@ class BookDao(
   private val b = Tables.BOOK
   private val m = Tables.MEDIA
   private val d = Tables.BOOK_METADATA
+  private val r = Tables.READ_PROGRESS
 
   private val sorts = mapOf(
     "createdDate" to b.CREATED_DATE,
@@ -135,6 +136,26 @@ class BookDao(
       .from(b)
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .where(b.SERIES_ID.eq(seriesId))
+      .orderBy(d.NUMBER_SORT)
+      .limit(1)
+      .fetchOne(b.ID)
+
+  override fun findLastIdInSeriesOrNull(seriesId: String): String? =
+    dsl.select(b.ID)
+      .from(b)
+      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
+      .where(b.SERIES_ID.eq(seriesId))
+      .orderBy(d.NUMBER_SORT.desc())
+      .limit(1)
+      .fetchOne(b.ID)
+
+  override fun findFirstUnreadIdInSeriesOrNull(seriesId: String, userId: String): String? ? =
+    dsl.select(b.ID)
+      .from(b)
+      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
+      .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(r.USER_ID.eq(userId).or(r.USER_ID.isNull))
+      .where(b.SERIES_ID.eq(seriesId))
+      .and(r.COMPLETED.isNull)
       .orderBy(d.NUMBER_SORT)
       .limit(1)
       .fetchOne(b.ID)

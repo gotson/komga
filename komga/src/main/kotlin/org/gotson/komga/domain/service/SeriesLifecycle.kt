@@ -11,6 +11,7 @@ import org.gotson.komga.domain.model.BookMetadataAggregation
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.model.Series
@@ -19,6 +20,7 @@ import org.gotson.komga.domain.model.ThumbnailSeries
 import org.gotson.komga.domain.persistence.BookMetadataAggregationRepository
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
+import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
@@ -37,6 +39,7 @@ private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNatural
 
 @Service
 class SeriesLifecycle(
+  private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
   private val bookLifecycle: BookLifecycle,
   private val mediaRepository: MediaRepository,
@@ -197,14 +200,23 @@ class SeriesLifecycle(
     return selected
   }
 
-  fun getThumbnailBytes(seriesId: String): ByteArray? {
+  fun getThumbnailBytes(seriesId: String, userId: String): ByteArray? {
     getThumbnail(seriesId)?.let {
       return File(it.url.toURI()).readBytes()
     }
 
-    bookRepository.findFirstIdInSeriesOrNull(seriesId)?.let { bookId ->
-      return bookLifecycle.getThumbnailBytes(bookId)
+    seriesRepository.findByIdOrNull(seriesId)?.let { series ->
+      val bookId = when (libraryRepository.findById(series.libraryId).seriesCover) {
+        Library.SeriesCover.FIRST -> bookRepository.findFirstIdInSeriesOrNull(seriesId)
+        Library.SeriesCover.FIRST_UNREAD_OR_FIRST -> bookRepository.findFirstUnreadIdInSeriesOrNull(seriesId, userId)
+          ?: bookRepository.findFirstIdInSeriesOrNull(seriesId)
+        Library.SeriesCover.FIRST_UNREAD_OR_LAST -> bookRepository.findFirstUnreadIdInSeriesOrNull(seriesId, userId)
+          ?: bookRepository.findLastIdInSeriesOrNull(seriesId)
+        Library.SeriesCover.LAST -> bookRepository.findLastIdInSeriesOrNull(seriesId)
+      }
+      if (bookId != null) return bookLifecycle.getThumbnailBytes(bookId)
     }
+
     return null
   }
 

@@ -325,7 +325,7 @@ class SeriesController(
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    return seriesLifecycle.getThumbnailBytes(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    return seriesLifecycle.getThumbnailBytes(seriesId, principal.user.id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
   @PageableAsQueryParam
