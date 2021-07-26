@@ -45,7 +45,7 @@ class BookDtoDao(
   private val bt = Tables.BOOK_METADATA_TAG
 
   private val sorts = mapOf(
-    "name" to lower(b.NAME),
+    "name" to lower(b.NAME.udfStripAccents()),
     "created" to b.CREATED_DATE,
     "createdDate" to b.CREATED_DATE,
     "lastModified" to b.LAST_MODIFIED_DATE,
@@ -57,7 +57,7 @@ class BookDtoDao(
     "media.comment" to lower(m.COMMENT),
     "media.mediaType" to lower(m.MEDIA_TYPE),
     "metadata.numberSort" to d.NUMBER_SORT,
-    "metadata.title" to lower(d.TITLE),
+    "metadata.title" to lower(d.TITLE.udfStripAccents()),
     "metadata.releaseDate" to d.RELEASE_DATE,
     "readProgress.lastModified" to r.LAST_MODIFIED_DATE,
     "readList.number" to rlb.NUMBER

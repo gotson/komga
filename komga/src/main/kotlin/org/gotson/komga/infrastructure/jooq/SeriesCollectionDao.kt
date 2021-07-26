@@ -29,7 +29,7 @@ class SeriesCollectionDao(
   private val s = Tables.SERIES
 
   private val sorts = mapOf(
-    "name" to DSL.lower(c.NAME)
+    "name" to DSL.lower(c.NAME.udfStripAccents())
   )
 
   override fun findByIdOrNull(collectionId: String): SeriesCollection? =

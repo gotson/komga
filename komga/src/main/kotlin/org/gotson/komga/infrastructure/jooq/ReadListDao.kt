@@ -30,7 +30,7 @@ class ReadListDao(
   private val b = Tables.BOOK
 
   private val sorts = mapOf(
-    "name" to DSL.lower(rl.NAME)
+    "name" to DSL.lower(rl.NAME.udfStripAccents())
   )
 
   override fun findByIdOrNull(readListId: String): ReadList? =

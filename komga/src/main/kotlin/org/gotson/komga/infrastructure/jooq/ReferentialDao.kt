@@ -39,7 +39,7 @@ class ReferentialDao(
       .apply { filterOnLibraryIds?.let { leftJoin(b).on(a.BOOK_ID.eq(b.ID)) } }
       .where(a.NAME.udfStripAccents().containsIgnoreCase(search.stripAccents()))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(a.NAME), a.ROLE)
+      .orderBy(lower(a.NAME.udfStripAccents()), a.ROLE)
       .fetchInto(a)
       .map { it.toDomain() }
 
@@ -50,7 +50,7 @@ class ReferentialDao(
       .where(bmaa.NAME.udfStripAccents().containsIgnoreCase(search.stripAccents()))
       .and(s.LIBRARY_ID.eq(libraryId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(bmaa.NAME), bmaa.ROLE)
+      .orderBy(lower(bmaa.NAME.udfStripAccents()), bmaa.ROLE)
       .fetchInto(bmaa)
       .map { it.toDomain() }
 
@@ -62,7 +62,7 @@ class ReferentialDao(
       .where(bmaa.NAME.udfStripAccents().containsIgnoreCase(search.stripAccents()))
       .and(cs.COLLECTION_ID.eq(collectionId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(bmaa.NAME), bmaa.ROLE)
+      .orderBy(lower(bmaa.NAME.udfStripAccents()), bmaa.ROLE)
       .fetchInto(bmaa)
       .map { it.toDomain() }
 
@@ -73,7 +73,7 @@ class ReferentialDao(
       .where(bmaa.NAME.udfStripAccents().containsIgnoreCase(search.stripAccents()))
       .and(bmaa.SERIES_ID.eq(seriesId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(bmaa.NAME), bmaa.ROLE)
+      .orderBy(lower(bmaa.NAME.udfStripAccents()), bmaa.ROLE)
       .fetchInto(bmaa)
       .map { it.toDomain() }
 
@@ -125,7 +125,7 @@ class ReferentialDao(
     val count = dsl.fetchCount(query)
 
     val items = query
-      .orderBy(lower(bmaa.NAME), bmaa.ROLE)
+      .orderBy(lower(bmaa.NAME.udfStripAccents()), bmaa.ROLE)
       .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
       .fetchInto(a)
       .map { it.toDomain() }
@@ -145,7 +145,7 @@ class ReferentialDao(
       .apply { filterOnLibraryIds?.let { leftJoin(b).on(a.BOOK_ID.eq(b.ID)) } }
       .where(a.NAME.udfStripAccents().containsIgnoreCase(search.stripAccents()))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-      .orderBy(a.NAME)
+      .orderBy(a.NAME.udfStripAccents())
       .fetch(a.NAME)
 
   override fun findAllAuthorsRoles(filterOnLibraryIds: Collection<String>?): List<String> =
@@ -169,7 +169,7 @@ class ReferentialDao(
             .where(s.LIBRARY_ID.`in`(it))
         }
       }
-      .orderBy(lower(g.GENRE))
+      .orderBy(lower(g.GENRE.udfStripAccents()))
       .fetchSet(g.GENRE)
 
   override fun findAllGenresByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -178,7 +178,7 @@ class ReferentialDao(
       .leftJoin(s).on(g.SERIES_ID.eq(s.ID))
       .where(s.LIBRARY_ID.eq(libraryId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(g.GENRE))
+      .orderBy(lower(g.GENRE.udfStripAccents()))
       .fetchSet(g.GENRE)
 
   override fun findAllGenresByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -188,7 +188,7 @@ class ReferentialDao(
       .apply { filterOnLibraryIds?.let { leftJoin(s).on(g.SERIES_ID.eq(s.ID)) } }
       .where(cs.COLLECTION_ID.eq(collectionId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(g.GENRE))
+      .orderBy(lower(g.GENRE.udfStripAccents()))
       .fetchSet(g.GENRE)
 
   override fun findAllSeriesAndBookTags(filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -211,7 +211,7 @@ class ReferentialDao(
           }
       )
       .fetchSet(0, String::class.java)
-      .sortedBy { it.lowercase() }
+      .sortedBy { it.stripAccents().lowercase() }
       .toSet()
 
   override fun findAllSeriesTags(filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -223,7 +223,7 @@ class ReferentialDao(
             .where(s.LIBRARY_ID.`in`(it))
         }
       }
-      .orderBy(lower(st.TAG))
+      .orderBy(lower(st.TAG.udfStripAccents()))
       .fetchSet(st.TAG)
 
   override fun findAllSeriesTagsByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -232,7 +232,7 @@ class ReferentialDao(
       .leftJoin(s).on(st.SERIES_ID.eq(s.ID))
       .where(s.LIBRARY_ID.eq(libraryId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(st.TAG))
+      .orderBy(lower(st.TAG.udfStripAccents()))
       .fetchSet(st.TAG)
 
   override fun findAllBookTagsBySeries(seriesId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -241,7 +241,7 @@ class ReferentialDao(
       .leftJoin(b).on(bt.BOOK_ID.eq(b.ID))
       .where(b.SERIES_ID.eq(seriesId))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(bt.TAG))
+      .orderBy(lower(bt.TAG.udfStripAccents()))
       .fetchSet(bt.TAG)
 
   override fun findAllSeriesTagsByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -251,7 +251,7 @@ class ReferentialDao(
       .apply { filterOnLibraryIds?.let { leftJoin(s).on(st.SERIES_ID.eq(s.ID)) } }
       .where(cs.COLLECTION_ID.eq(collectionId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(st.TAG))
+      .orderBy(lower(st.TAG.udfStripAccents()))
       .fetchSet(st.TAG)
 
   override fun findAllBookTags(filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -263,7 +263,7 @@ class ReferentialDao(
             .where(b.LIBRARY_ID.`in`(it))
         }
       }
-      .orderBy(lower(st.TAG))
+      .orderBy(lower(st.TAG.udfStripAccents()))
       .fetchSet(st.TAG)
 
   override fun findAllLanguages(filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -302,7 +302,7 @@ class ReferentialDao(
       .apply { filterOnLibraryIds?.let { leftJoin(s).on(sd.SERIES_ID.eq(s.ID)) } }
       .where(sd.PUBLISHER.ne(""))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(sd.PUBLISHER))
+      .orderBy(lower(sd.PUBLISHER.udfStripAccents()))
       .fetchSet(sd.PUBLISHER)
 
   override fun findAllPublishersByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -312,7 +312,7 @@ class ReferentialDao(
       .where(sd.PUBLISHER.ne(""))
       .and(s.LIBRARY_ID.eq(libraryId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(sd.PUBLISHER))
+      .orderBy(lower(sd.PUBLISHER.udfStripAccents()))
       .fetchSet(sd.PUBLISHER)
 
   override fun findAllPublishersByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -323,7 +323,7 @@ class ReferentialDao(
       .where(sd.PUBLISHER.ne(""))
       .and(cs.COLLECTION_ID.eq(collectionId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(sd.PUBLISHER))
+      .orderBy(lower(sd.PUBLISHER.udfStripAccents()))
       .fetchSet(sd.PUBLISHER)
 
   override fun findAllAgeRatings(filterOnLibraryIds: Collection<String>?): Set<Int> =
