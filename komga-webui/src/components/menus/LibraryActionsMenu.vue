@@ -57,6 +57,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
+import {LibraryDto} from '@/types/komga-libraries'
 
 export default Vue.extend({
   name: 'LibraryActionsMenu',

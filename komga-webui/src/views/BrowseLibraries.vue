@@ -153,6 +153,7 @@ import {authorRoles} from '@/types/author-roles'
 import {LibrarySseDto, ReadProgressSeriesSseDto, SeriesSseDto} from '@/types/komga-sse'
 import {throttle} from 'lodash'
 import AlphabeticalNavigation from '@/components/AlphabeticalNavigation.vue'
+import {LibraryDto} from '@/types/komga-libraries'
 
 export default Vue.extend({
   name: 'BrowseLibraries',

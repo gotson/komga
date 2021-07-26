@@ -167,6 +167,7 @@ import {LIBRARIES_ALL, LIBRARY_ROUTE} from '@/types/library'
 import {throttle} from 'lodash'
 import {subMonths} from 'date-fns'
 import {BookSseDto, ReadProgressSseDto, SeriesSseDto} from '@/types/komga-sse'
+import {LibraryDto} from '@/types/komga-libraries'
 
 export default Vue.extend({
   name: 'Dashboard',

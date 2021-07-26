@@ -141,6 +141,7 @@ import {authorRoles} from '@/types/author-roles'
 import {AuthorDto} from '@/types/komga-books'
 import {CollectionSseDto, ReadProgressSeriesSseDto, SeriesSseDto} from '@/types/komga-sse'
 import {throttle} from 'lodash'
+import {LibraryDto} from '@/types/komga-libraries'
 
 export default Vue.extend({
   name: 'BrowseCollection',

@@ -191,6 +191,7 @@ import Vue from 'vue'
 import {LIBRARIES_ALL} from '@/types/library'
 import Toaster from '@/components/Toaster.vue'
 import {MediaStatus} from '@/types/enum-books'
+import {LibraryDto} from '@/types/komga-libraries'
 
 export default Vue.extend({
   name: 'home',

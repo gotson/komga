@@ -1,4 +1,5 @@
 import {AxiosInstance} from 'axios'
+import {LibraryCreationDto, LibraryDto, LibraryUpdateDto} from '@/types/komga-libraries'
 
 const API_LIBRARIES = '/api/v1/libraries'
 

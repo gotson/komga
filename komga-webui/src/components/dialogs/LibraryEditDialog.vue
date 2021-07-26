@@ -136,6 +136,17 @@
                       />
                     </v-col>
                   </v-row>
+                  <v-row>
+                    <v-col>
+                      <span class="text-subtitle-1 text--primary">{{ $t('dialog.edit_library.label_series_cover') }}</span>
+                      <v-select :items="seriesCover"
+                                v-model="form.seriesCover"
+                                :label="$t('dialog.edit_library.field_series_cover')"
+                                solo
+                                flat
+                      />
+                    </v-col>
+                  </v-row>
 
                 </v-container>
               </v-card>
@@ -274,6 +285,8 @@ import FileBrowserDialog from '@/components/dialogs/FileBrowserDialog.vue'
 import Vue from 'vue'
 import {required} from 'vuelidate/lib/validators'
 import {ERROR} from '@/types/events'
+import {SeriesCoverDto} from '@/types/enum-libraries'
+import {LibraryDto} from '@/types/komga-libraries'
 
 export default Vue.extend({
   name: 'LibraryEditDialog',
@@ -300,6 +313,7 @@ export default Vue.extend({
         repairExtensions: false,
         convertToCbz: false,
         emptyTrashAfterScan: false,
+        seriesCover: SeriesCoverDto.FIRST as SeriesCoverDto,
       },
       validationFieldNames: new Map([]),
     }
@@ -313,6 +327,12 @@ export default Vue.extend({
     },
     showNext(): boolean {
       return !this.library && this.tab !== 2
+    },
+    seriesCover(): any[] {
+      return Object.keys(SeriesCoverDto).map(x => ({
+        text: this.$t(`enums.series_cover.${x}`),
+        value: x,
+      }))
     },
 
     importComicInfo: {
@@ -421,6 +441,7 @@ export default Vue.extend({
       this.form.repairExtensions = library ? library.repairExtensions : false
       this.form.convertToCbz = library ? library.convertToCbz : false
       this.form.emptyTrashAfterScan = library ? library.emptyTrashAfterScan : false
+      this.form.seriesCover = library ? library.seriesCover : SeriesCoverDto.FIRST
       this.$v.$reset()
     },
     validateLibrary() {
@@ -444,6 +465,7 @@ export default Vue.extend({
           repairExtensions: this.form.repairExtensions,
           convertToCbz: this.form.convertToCbz,
           emptyTrashAfterScan: this.form.emptyTrashAfterScan,
+          seriesCover: this.form.seriesCover,
         }
       }
       return null

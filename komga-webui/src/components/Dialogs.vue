@@ -81,6 +81,7 @@ import {BookDto} from '@/types/komga-books'
 import {SeriesDto} from '@/types/komga-series'
 import {ERROR} from '@/types/events'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
+import {LibraryDto} from '@/types/komga-libraries'
 
 export default Vue.extend({
   name: 'Dialogs',

@@ -1,4 +1,6 @@
-interface LibraryCreationDto {
+import {SeriesCoverDto} from '@/types/enum-libraries'
+
+export interface LibraryCreationDto {
   name: string,
   root: string,
   importComicInfoBook: boolean,
@@ -15,9 +17,10 @@ interface LibraryCreationDto {
   repairExtensions: boolean,
   convertToCbz: boolean,
   emptyTrashAfterScan: boolean,
+  seriesCover: SeriesCoverDto,
 }
 
-interface LibraryUpdateDto {
+export interface LibraryUpdateDto {
   name: string,
   root: string,
   importComicInfoBook: boolean,
@@ -34,9 +37,10 @@ interface LibraryUpdateDto {
   repairExtensions: boolean,
   convertToCbz: boolean,
   emptyTrashAfterScan: boolean,
+  seriesCover: SeriesCoverDto,
 }
 
-interface LibraryDto {
+export interface LibraryDto {
   id: string,
   name: string,
   root: string,
@@ -54,4 +58,5 @@ interface LibraryDto {
   repairExtensions: boolean,
   convertToCbz: boolean,
   emptyTrashAfterScan: boolean,
+  seriesCover: SeriesCoverDto,
 }

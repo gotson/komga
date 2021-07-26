@@ -4,6 +4,7 @@ import {BookDto} from '@/types/komga-books'
 import {SeriesDto} from '@/types/komga-series'
 import createPersistedState from 'vuex-persistedstate'
 import {persistedModule} from './plugins/persisted-state'
+import {LibraryDto} from '@/types/komga-libraries'
 
 Vue.use(Vuex)
 

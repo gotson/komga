@@ -70,6 +70,7 @@ import {Location} from 'vue-router'
 import {LIBRARIES_ALL, LIBRARY_ROUTE} from '@/types/library'
 import {LibrarySseDto} from '@/types/komga-sse'
 import MultiSelectBar from '@/components/bars/MultiSelectBar.vue'
+import {LibraryDto} from '@/types/komga-libraries'
 
 export default Vue.extend({
   name: 'BrowseReadLists',
