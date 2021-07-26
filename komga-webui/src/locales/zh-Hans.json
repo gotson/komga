@@ -51,6 +51,7 @@
     "field_import_path": "从文件夹导入",
     "info_part1": "此屏幕允许您导入现有库之外的文件. 只能将文件导入到现有序列, 在这种情况下Komga会将文件移动或复制到所选序列的目录中.",
     "info_part2": "如果您为一本书选择了一个编号, 并且已经存在一本带有该编号的书,你可以比较这两本书.如果您决定导入该书. Komga将升级现有的书使用新文件, 有效地用新文件替换旧文件.",
+    "no_files_found": "未找到文件",
     "notification": {
       "go_to_book": "转到书籍",
       "import_failure": "无法导入书籍:{file}",
@@ -69,7 +70,8 @@
       "number": "编号",
       "series": "系列"
     },
-    "title": "导入"
+    "title": "导入",
+    "try_another_directory": "尝试搜索另一个目录"
   },
   "bookreader": {
     "beginning_of_book": "你可以开始阅读这本书.",
@@ -145,6 +147,7 @@
     "format": "格式",
     "isbn": "ISBN",
     "navigation_within_readlist": "阅读列表中的导航: {name}",
+    "outdated_tooltip": "此书的文件已更改，必须重新分析这本书",
     "read_book": "阅读书籍",
     "read_incognito": "隐私(无痕)阅读",
     "size": "文件大小"
@@ -188,6 +191,7 @@
     "locale_rtl": "false",
     "n_selected": "{count} 选择",
     "nothing_to_show": "没有什么可显示",
+    "outdated": "过时的",
     "pages": "页",
     "pages_n": "无 | 1 页 | {count} 页",
     "password": "密码",
@@ -200,6 +204,7 @@
     "roles": "角色",
     "series": "系列",
     "tags": "标签",
+    "unavailable": "不可用",
     "use_filter_panel_to_change_filter": "使用过滤器修改过滤项",
     "year": "年"
   },
@@ -208,13 +213,14 @@
     "on_deck": "导航",
     "recently_added_books": "最近添加的书",
     "recently_added_series": "最近添加的系列",
+    "recently_released_books": "近期发布的书籍",
     "recently_updated_series": "最近更新的系列"
   },
   "data_import": {
     "book_number": "书号: {name}",
     "book_series": "系列: {name}",
     "button_import": "导入",
-    "comicrack_preambule_html": "您可以导入<code>.cbl</code>格式的阅读列表.<br>Komga将尝试将你提供的系列和书号与你的库中的系列和书号相匹配.",
+    "comicrack_preambule_html": "您可以导入现有的 ComicRack 阅读列表，其为 <code>.cbl</code>格式。<br>Komga 会试着将你提供的系列和书籍与你库中的相匹配。",
     "field_files_label": "阅读列表（.cbl）",
     "import_read_lists": "导入阅读列表",
     "imported_as": "导入为 {name}",
@@ -250,6 +256,11 @@
       "field_role_file_download": "支持下载",
       "field_role_page_streaming": "支持浏览",
       "label_roles": "角色"
+    },
+    "analyze_library": {
+      "body": "分析库中的所有媒体文件。该分析获取有关媒体的信息。根据库的大小，这可能需要很长时间。",
+      "button_confirm": "分析",
+      "title": "分析库"
     },
     "delete_collection": {
       "button_confirm": "删除",
@@ -314,6 +325,7 @@
       "button_cancel": "取消",
       "button_confirm_add": "添加",
       "button_confirm_edit": "编辑",
+      "button_next": "下一本",
       "dialog_title_add": "添加库",
       "dialot_title_edit": "编辑库",
       "field_convert_to_cbz": "自动转换为CBZ格式",
@@ -325,10 +337,12 @@
       "field_import_epub_book": "书籍元数据",
       "field_import_epub_series": "系列元数据",
       "field_import_local_artwork": "本地图片(插图)",
+      "field_import_mylar_series": "系列元数据",
       "field_name": "名称",
       "field_repair_extensions": "自动修复不正确的文件扩展名",
       "field_root_folder": "根文件夹",
       "field_scanner_deep_scan": "深度扫描",
+      "field_scanner_empty_trash_after_scan": "每次扫描后自动清空垃圾箱",
       "field_scanner_force_directory_modified_time": "强制目录修改时间",
       "file_browser_dialog_button_confirm": "选择",
       "file_browser_dialog_title": "库的根文件夹",
@@ -337,8 +351,10 @@
       "label_import_comicinfo": "导入含有ComicInfo.xml的CBR/CBZ压缩包",
       "label_import_epub": "导入EPUB文件的元数据",
       "label_import_local": "导入本地媒体",
+      "label_import_mylar": "导入 Mylar 生成的元数据",
       "label_scanner": "扫描器",
       "tab_general": "常规",
+      "tab_metadata": "元数据",
       "tab_options": "选项"
     },
     "edit_readlist": {
@@ -356,6 +372,7 @@
       "field_age_rating_error": "年龄限制必须为0或更高",
       "field_genres": "风格",
       "field_language": "语言",
+      "field_language_hint": "IETF BCP 47 语言标签",
       "field_publisher": "发布者",
       "field_reading_direction": "阅读方向",
       "field_sort_title": "排序标题",
@@ -381,6 +398,11 @@
       "field_all_libraries": "所有库",
       "label_shared_with": "{name}共享"
     },
+    "empty_trash": {
+      "body": "默认情况下，媒体服务器不会立即删除媒体的信息。这对驱动器暂时断开连接的情况有所帮助。清空库的回收站时，所有丢失媒体的信息都会被删除。",
+      "button_confirm": "清空",
+      "title": "清空媒体库垃圾箱"
+    },
     "file_browser": {
       "button_cancel": "取消",
       "button_confirm_default": "选择",
@@ -405,6 +427,11 @@
       "field_new_password_error": "需要新密码.",
       "field_repeat_password": "确认新密码",
       "field_repeat_password_error": "密码必须相同."
+    },
+    "refresh_library_metadata": {
+      "body": "刷新库中所有媒体文件的元数据。根据库的大小，这可能需要很长时间。",
+      "button_confirm": "刷新",
+      "title": "刷新库元数据"
     },
     "series_picker": {
       "label_search_series": "搜索系列",
@@ -545,6 +572,7 @@
     "download_series": "下载系列",
     "edit": "编辑",
     "edit_metadata": "编辑元数据",
+    "empty_trash": "清空垃圾箱",
     "mark_read": "标记为已读",
     "mark_unread": "标记为未读",
     "refresh_metadata": "刷新元数据",

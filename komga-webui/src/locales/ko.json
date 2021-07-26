@@ -3,6 +3,10 @@
     "dataFooter": {
       "pageText": "{2} 중 {0}-{1}"
     },
+    "dataIterator": {
+      "loadingText": "아이템 로딩 중...",
+      "noResultsText": "일치하는 기록을 차지 못함"
+    },
     "dataTable": {
       "itemsPerPageText": "페이지 당 행 수:",
       "sortBy": "정렬 기준"
@@ -17,6 +21,14 @@
     "account_settings": "계정 설정",
     "change_password": "비밀번호 변경"
   },
+  "authentication_activity": {
+    "datetime": "날짜 시간",
+    "email": "이메일",
+    "error": "오류",
+    "ip": "Ip",
+    "success": "성공",
+    "user_agent": "사용자 에이전트"
+  },
   "author_roles": {
     "colorist": "채색",
     "cover": "표지",
@@ -30,6 +42,36 @@
     "error": "오류",
     "unknown": "분석 예정",
     "unsupported": "미지원"
+  },
+  "book_import": {
+    "button_browse": "찾아보기",
+    "button_import": "가져오기",
+    "button_scan": "스캔",
+    "button_select_series": "시리즈 선택",
+    "field_import_path": "폴더에서 가져오기",
+    "info_part1": "이 화면에서 기존 라이브러리 외부에 있는 파일을 가져올 수 있습니다. 기존 시리즈로만 파일을 가져올 수 있으며, 이 경우 Komga는 선택한 시리즈의 디렉토리로 파일을 이동하거나 복사합니다.",
+    "info_part2": "책의 번호를 선택하고 해당 번호를 가진 책이 이미 있는 경우 두 책을 비교할 수 있습니다. 책을 가져오기로 결정하면 Komga는 기존 책을 새 책으로 업그레이드하여 이전 파일을 새 파일로 효과적으로 교체합니다.",
+    "no_files_found": "파일을 찾을 수 없습니다",
+    "notification": {
+      "go_to_book": "책으로 이동",
+      "import_failure": "책 가져오기 실패: {file}",
+      "import_successful": "책 가져오기 성공: {book}",
+      "source_file": "원본 파일: {file}"
+    },
+    "row": {
+      "error_analyze_first": "책을 먼저 분석해야 합니다",
+      "error_choose_series": "시리즈를 선택하세요",
+      "error_only_import_no_errors": "오류가 없는 책만 가져올 수 있습니다",
+      "warning_upgrade": "기존 책이 업그레이드됩니다"
+    },
+    "table": {
+      "destination_name": "대상 이름",
+      "file_name": "파일 이름",
+      "number": "번호",
+      "series": "시리즈"
+    },
+    "title": "가져오기",
+    "try_another_directory": "다른 디렉토리를 검색해 보세요"
   },
   "bookreader": {
     "beginning_of_book": "책에 첫 페이지입니다.",
@@ -95,15 +137,19 @@
       "show_hide_toolbars": "툴바 켜기/끄기",
       "vertical": "세로",
       "webtoon": "웹툰"
-    }
+    },
+    "tooltip_incognito": "읽기 진행률은 저장되지 않습니다"
   },
   "browse_book": {
     "comment": "논평",
     "download_file": "파일 다운로드",
     "file": "파일",
     "format": "파일 형식",
+    "isbn": "ISBN",
     "navigation_within_readlist": "읽기 목록 내 탐색: {name}",
+    "outdated_tooltip": "이 책의 파일이 변경되었으므로 이 책을 다시 분석해야 합니다",
     "read_book": "책 읽기",
+    "read_incognito": "시크릿 모드에서 읽기",
     "size": "용량"
   },
   "browse_collection": {
@@ -133,25 +179,32 @@
     "collections": "모음집",
     "create": "만들기",
     "delete": "삭제",
+    "dismiss": "닫기",
     "download": "다운로드",
     "email": "이메일",
     "filter_no_matches": "선택된 필터에 일치하는 항목이 없습니다",
     "genre": "장르",
     "go_to_library": "서재로 가기",
+    "go_to_readlist": "읽기 목록으로 이동",
+    "go_to_series": "시리즈로 이동",
     "locale_name": "한국어",
     "locale_rtl": "false",
     "n_selected": "{count}선택 됨",
     "nothing_to_show": "내용 없음",
+    "outdated": "구식의",
     "pages": "페이지",
     "pages_n": "페이지 없음 | 1 페이지 | {count} 페이지",
     "password": "비밀번호",
+    "pending_tasks": "보류 중인 작업 없음 | 1개의 보류중인 작업 | {count}개의 보류중인 작업",
     "publisher": "출판사",
     "read": "읽음",
     "readlists": "읽기 목록",
     "required": "요청",
+    "reset_filters": "필터 재설정",
     "roles": "역할",
     "series": "시리즈",
     "tags": "태그",
+    "unavailable": "이용할 수 없는",
     "use_filter_panel_to_change_filter": "필터패널에서 선택을 바꿔보세요",
     "year": "년"
   },
@@ -160,6 +213,7 @@
     "on_deck": "올려 두기",
     "recently_added_books": "최근 추가된 책",
     "recently_added_series": "최근 추가된 시리즈",
+    "recently_released_books": "최근 출시된 책",
     "recently_updated_series": "최근 갱신된 시리즈"
   },
   "data_import": {

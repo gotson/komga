@@ -17,6 +17,9 @@
     "account_settings": "アカウント設定",
     "change_password": "パスワード変更"
   },
+  "authentication_activity": {
+    "email": "メールアドレス"
+  },
   "author_roles": {
     "colorist": "カラリスト",
     "cover": "カバー",
@@ -51,7 +54,8 @@
       "number": "番号",
       "series": "シリーズ"
     },
-    "title": "インポート"
+    "title": "インポート",
+    "try_another_directory": "他のディレクトリを検索してください"
   },
   "bookreader": {
     "beginning_of_book": "ここが書籍の先頭です。",
