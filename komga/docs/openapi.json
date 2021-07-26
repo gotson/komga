@@ -1200,11 +1200,21 @@
           "repairExtensions",
           "root",
           "scanDeep",
-          "scanForceModifiedTime"
+          "scanForceModifiedTime",
+          "seriesCover"
         ],
         "properties": {
           "repairExtensions": {
             "type": "boolean"
+          },
+          "seriesCover": {
+            "type": "string",
+            "enum": [
+              "FIRST",
+              "FIRST_UNREAD_OR_FIRST",
+              "FIRST_UNREAD_OR_LAST",
+              "LAST"
+            ]
           },
           "importComicInfoReadList": {
             "type": "boolean"
@@ -1272,11 +1282,21 @@
           "repairExtensions",
           "root",
           "scanDeep",
-          "scanForceModifiedTime"
+          "scanForceModifiedTime",
+          "seriesCover"
         ],
         "properties": {
           "repairExtensions": {
             "type": "boolean"
+          },
+          "seriesCover": {
+            "type": "string",
+            "enum": [
+              "FIRST",
+              "FIRST_UNREAD_OR_FIRST",
+              "FIRST_UNREAD_OR_LAST",
+              "LAST"
+            ]
           },
           "importComicInfoReadList": {
             "type": "boolean"
@@ -1680,11 +1700,21 @@
           "repairExtensions",
           "root",
           "scanDeep",
-          "scanForceModifiedTime"
+          "scanForceModifiedTime",
+          "seriesCover"
         ],
         "properties": {
           "repairExtensions": {
             "type": "boolean"
+          },
+          "seriesCover": {
+            "type": "string",
+            "enum": [
+              "FIRST",
+              "FIRST_UNREAD_OR_FIRST",
+              "FIRST_UNREAD_OR_LAST",
+              "LAST"
+            ]
           },
           "importComicInfoReadList": {
             "type": "boolean"

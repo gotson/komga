@@ -1,3 +1,17 @@
+# [0.110.0](https://github.com/gotson/komga/compare/v0.109.1...v0.110.0) (2021-07-26)
+
+
+### Bug Fixes
+
+* translated using Weblate ([770f2fa](https://github.com/gotson/komga/commit/770f2fa2162599669f455766f788dd4775cd9396))
+
+
+### Features
+
+* **webui:** add library option to choose series cover ([afe2b64](https://github.com/gotson/komga/commit/afe2b64a15ab68f8db10f13827c5c41ed6ca902a)), closes [#312](https://github.com/gotson/komga/issues/312)
+* **webui:** add recently read books section on dashboard ([f4527ec](https://github.com/gotson/komga/commit/f4527ec1fa9c4436d19178245b6f7566f19308be))
+* add library option to choose series cover ([8e94b8e](https://github.com/gotson/komga/commit/8e94b8e4448b7600433ceb6850b02d97afb4414a)), closes [#312](https://github.com/gotson/komga/issues/312)
+
 ## [0.109.1](https://github.com/gotson/komga/compare/v0.109.0...v0.109.1) (2021-07-26)
 
 
