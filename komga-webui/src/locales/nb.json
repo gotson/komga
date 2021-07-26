@@ -3,6 +3,9 @@
     "dataFooter": {
       "pageText": "{0}-{1} av {2}"
     },
+    "dataIterator": {
+      "loadingText": "Laster inn elementer …"
+    },
     "dataTable": {
       "itemsPerPageText": "Rader per side:",
       "sortBy": "Sorter etter"
@@ -16,6 +19,12 @@
   "account_settings": {
     "account_settings": "Kontoinnstillinger",
     "change_password": "endre passord"
+  },
+  "authentication_activity": {
+    "email": "E-post",
+    "error": "Feil",
+    "ip": "IP",
+    "success": "Vellykket"
   },
   "author_roles": {
     "colorist": "fargeleggere",
@@ -211,10 +220,14 @@
       "field_role_page_streaming": "Sidestrømming",
       "label_roles": "Roller"
     },
+    "analyze_library": {
+      "title": "Analyser bibliotek"
+    },
     "delete_collection": {
       "button_confirm": "Slett",
       "confirm_delete": "Ja, slett samlingen ved navn «{name}»",
       "dialog_title": "Slett samling",
+      "dialog_title_multiple": "Slett samlinger",
       "warning_html": "Samlingen <b>{name}</b> vil bli fjernet fra tjeneren. Dette har ingen innvirkning på dine mediafiler. Dette kan <b>ikke</b> angres. Fortsett?"
     },
     "delete_library": {
@@ -226,7 +239,9 @@
     "delete_readlist": {
       "button_confirm": "Slett",
       "confirm_delete": "Ja, slett leselisten «{name}»",
+      "confirm_delete_multiple": "Ja, slett {count} leselister",
       "dialog_title": "Slett leseliste",
+      "dialog_title_multiple": "Slett leselister",
       "warning_html": "Leselisten <b>{name}</b> vil bli fjernet fra tjeneren. Dette har ingen innvirkning på dine mediefiler. Dette kan <b>ikke</b> angres. Fortsett?"
     },
     "delete_user": {
@@ -332,11 +347,25 @@
       "field_all_libraries": "Alle bibliotek",
       "label_shared_with": "Delt med {name}"
     },
+    "empty_trash": {
+      "button_confirm": "Tøm",
+      "title": "Tøm bibliotekspapirkurv"
+    },
     "file_browser": {
       "button_cancel": "Avbryt",
       "button_confirm_default": "Velg",
       "dialog_title_default": "Filutforsker",
       "parent_directory": "Ovennevnt"
+    },
+    "filename_chooser": {
+      "button_choose": "Velg",
+      "field_destination_filename": "Mål-filnavn",
+      "label_source_filename": "Kilde-filnavn",
+      "table": {
+        "existing_file": "Eksisterende fil",
+        "order": "Rekkefølge"
+      },
+      "title": "Mål-filnavn"
     },
     "password_change": {
       "button_cancel": "Avbryt",
@@ -357,7 +386,13 @@
       "label_key": "Tast"
     },
     "transient_book_details": {
+      "label_existing": "Eksisterende",
+      "label_format": "Format",
+      "label_name": "Navn",
+      "label_pages": "Sider",
+      "label_size": "Størrelse",
       "pages_table": {
+        "filename": "Filnavn",
         "media_type": "Mediatype",
         "width": "Bredde"
       },
@@ -371,6 +406,9 @@
     }
   },
   "enums": {
+    "copy_mode": {
+      "MOVE": "Flytt filer"
+    },
     "media_status": {
       "ERROR": "Feil",
       "OUTDATED": "Utdatert",
@@ -390,6 +428,9 @@
       "HIATUS": "Pause",
       "ONGOING": "Pågående"
     }
+  },
+  "error_codes": {
+    "ERR_1021": "Målfil finnes allerede"
   },
   "filter": {
     "age_rating": "aldersgrense",
@@ -438,10 +479,12 @@
     "download_series": "Last ned serie",
     "edit": "Rediger",
     "edit_metadata": "Rediger metadata",
+    "empty_trash": "Tøm papirkurv",
     "mark_read": "Marker som lest",
     "mark_unread": "Marker som ulest",
     "refresh_metadata": "Gjenoppfrisk metadata",
-    "scan_library_files": "Skann biblioteksfiler"
+    "scan_library_files": "Skann biblioteksfiler",
+    "select_all": "Velg alle"
   },
   "navigation": {
     "home": "Hjem",
@@ -458,7 +501,8 @@
     "more": "Les mer"
   },
   "readlists_expansion_panel": {
-    "manage_readlist": "Håndter leseliste"
+    "manage_readlist": "Håndter leseliste",
+    "title": ""
   },
   "search": {
     "no_results": "Søket ga ingen treff",
@@ -482,12 +526,14 @@
     "server_settings": "Tjenerinnstillinger"
   },
   "settings_user": {
+    "change_password": "Endre passord",
     "edit_shared_libraries": "Rediger delte bibliotek",
     "edit_user": "Rediger bruker",
     "role_administrator": "Administrator",
     "role_user": "Bruker"
   },
   "sort": {
+    "books_count": "Antall bøker",
     "date_added": "Dato tillagt",
     "date_updated": "Dato oppdatert",
     "file_name": "Filnavn",
