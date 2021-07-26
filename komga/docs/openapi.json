@@ -576,16 +576,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -711,16 +711,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -789,16 +789,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -854,16 +854,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -930,16 +930,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -976,16 +976,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",

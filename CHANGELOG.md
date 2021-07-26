@@ -1,3 +1,13 @@
+## [0.109.1](https://github.com/gotson/komga/compare/v0.109.0...v0.109.1) (2021-07-26)
+
+
+### Bug Fixes
+
+* **api:** accent insensitive search ([30c349a](https://github.com/gotson/komga/commit/30c349afaffdcd307a422653895e4fe91dc47f29))
+* **api:** accent insensitive sort ([af837c6](https://github.com/gotson/komga/commit/af837c68130b40872b04b75f7ed7c74729369706)), closes [#500](https://github.com/gotson/komga/issues/500)
+* **webui:** clearer error message on login error ([ca054f6](https://github.com/gotson/komga/commit/ca054f642f6119552234656aaf3a7ede7bd8d655))
+* **webui:** incorrect data reload on received events ([44bd09a](https://github.com/gotson/komga/commit/44bd09ac0b2d8420b25d84f355860046cc978188))
+
 # [0.109.0](https://github.com/gotson/komga/compare/v0.108.0...v0.109.0) (2021-07-21)
 
 
