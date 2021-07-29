@@ -1,3 +1,10 @@
+# [0.111.0](https://github.com/gotson/komga/compare/v0.110.0...v0.111.0) (2021-07-29)
+
+
+### Features
+
+* **api:** full text search ([8f27faf](https://github.com/gotson/komga/commit/8f27faf4172bcdd733709241be6a67028d0ae737)), closes [#24](https://github.com/gotson/komga/issues/24) [#496](https://github.com/gotson/komga/issues/496)
+
 # [0.110.0](https://github.com/gotson/komga/compare/v0.109.1...v0.110.0) (2021-07-26)
 
 
