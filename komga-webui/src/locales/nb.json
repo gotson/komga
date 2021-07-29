@@ -24,7 +24,8 @@
     "email": "E-post",
     "error": "Feil",
     "ip": "IP",
-    "success": "Vellykket"
+    "success": "Vellykket",
+    "user_agent": "Brukeragent"
   },
   "author_roles": {
     "colorist": "fargeleggere",
@@ -46,6 +47,9 @@
     "button_select_series": "Velg serie",
     "field_import_path": "Importer fra mappe",
     "notification": {
+      "go_to_book": "Gå til boken",
+      "import_failure": "Kunne ikke importere bok: {file}",
+      "import_successful": "Bok importert: {book}",
       "source_file": "Kildefil: {file}"
     },
     "row": {
@@ -167,10 +171,12 @@
     "filter_no_matches": "Det aktive filteret ga ingen treff",
     "genre": "Sjanger",
     "go_to_library": "Gå til bibliotek",
+    "go_to_readlist": "Gå til leseliste",
     "locale_name": "Norsk bokmål",
     "locale_rtl": "false",
     "n_selected": "{count} valgt",
     "nothing_to_show": "Ingenting å vise",
+    "outdated": "Utdatert",
     "pages": "sider",
     "pages_n": "Ingen sider | 1 side | {count} sider",
     "password": "Passord",
@@ -190,6 +196,9 @@
     "recently_added_books": "Nylig oppdaterte bøker",
     "recently_added_series": "Nylig tillagte serier",
     "recently_updated_series": "Nylig oppdaterte serier"
+  },
+  "data_import": {
+    "tab_title": "Dataimport"
   },
   "dialog": {
     "add_to_collection": {
@@ -221,11 +230,13 @@
       "label_roles": "Roller"
     },
     "analyze_library": {
+      "button_confirm": "Analyser",
       "title": "Analyser bibliotek"
     },
     "delete_collection": {
       "button_confirm": "Slett",
       "confirm_delete": "Ja, slett samlingen ved navn «{name}»",
+      "confirm_delete_multiple": "Ja, slett {count} samlinger",
       "dialog_title": "Slett samling",
       "dialog_title_multiple": "Slett samlinger",
       "warning_html": "Samlingen <b>{name}</b> vil bli fjernet fra tjeneren. Dette har ingen innvirkning på dine mediafiler. Dette kan <b>ikke</b> angres. Fortsett?"
@@ -283,6 +294,7 @@
       "button_cancel": "Avbryt",
       "button_confirm_add": "Legg til",
       "button_confirm_edit": "Rediger",
+      "button_next": "Neste",
       "dialog_title_add": "Legg til bibliotek",
       "dialot_title_edit": "Rediger bibliotek",
       "field_import_barcode_isbn": "ISBN-strekkode",
@@ -386,6 +398,7 @@
       "label_key": "Tast"
     },
     "transient_book_details": {
+      "label_candidate": "Kandidat",
       "label_existing": "Eksisterende",
       "label_format": "Format",
       "label_name": "Navn",
@@ -393,6 +406,8 @@
       "label_size": "Størrelse",
       "pages_table": {
         "filename": "Filnavn",
+        "height": "Høyde",
+        "index": "Indeks",
         "media_type": "Mediatype",
         "width": "Bredde"
       },
@@ -402,7 +417,8 @@
     "transient_book_viewer": {
       "label_candidate": "Kandidat",
       "label_existing": "Eksisterende",
-      "page_of_pages": "{page}/{pages}"
+      "page_of_pages": "{page}/{pages}",
+      "title_comparison": "Boksammenligning"
     }
   },
   "enums": {
@@ -421,6 +437,12 @@
       "RIGHT_TO_LEFT": "Høyre til venstre",
       "VERTICAL": "Loddrett",
       "WEBTOON": "Nettserie"
+    },
+    "series_cover": {
+      "FIRST": "Første",
+      "FIRST_UNREAD_OR_FIRST": "Første uleste, ellers første",
+      "FIRST_UNREAD_OR_LAST": "Første uleste, ellers siste",
+      "LAST": "Siste"
     },
     "series_status": {
       "ABANDONED": "Forlatt",

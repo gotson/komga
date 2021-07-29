@@ -26,7 +26,7 @@
     "email": "Эл. почта",
     "error": "Ошибка",
     "ip": "IP-адрес",
-    "success": "Успех",
+    "success": "Статус",
     "user_agent": "User Agent"
   },
   "author_roles": {
@@ -622,7 +622,7 @@
     "change_password": "Изменить пароль",
     "edit_shared_libraries": "Редактировать общий доступ библиотек",
     "edit_user": "Редактировать пользователя",
-    "latest_activity": "Последняя активность: {date}",
+    "latest_activity": "Активность: {date}",
     "no_recent_activity": "Не обнаружено недавней активности",
     "role_administrator": "Администратор",
     "role_user": "Пользователь"
