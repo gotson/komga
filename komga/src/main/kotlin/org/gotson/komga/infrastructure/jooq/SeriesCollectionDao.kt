@@ -1,8 +1,8 @@
 package org.gotson.komga.infrastructure.jooq
 
+import mu.KotlinLogging
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
-import org.gotson.komga.infrastructure.language.stripAccents
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.CollectionRecord
 import org.jooq.DSLContext
@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.time.ZoneId
 
+private val logger = KotlinLogging.logger {}
+
 @Component
 class SeriesCollectionDao(
   private val dsl: DSLContext
@@ -27,9 +29,11 @@ class SeriesCollectionDao(
   private val c = Tables.COLLECTION
   private val cs = Tables.COLLECTION_SERIES
   private val s = Tables.SERIES
+  private val fts = Tables.FTS_COLLECTION
 
   private val sorts = mapOf(
-    "name" to DSL.lower(c.NAME.udfStripAccents())
+    "name" to DSL.lower(c.NAME.udfStripAccents()),
+    "relevance" to DSL.field("rank"),
   )
 
   override fun findByIdOrNull(collectionId: String): SeriesCollection? =
@@ -45,60 +49,79 @@ class SeriesCollectionDao(
       .fetchAndMap(filterOnLibraryIds)
       .firstOrNull()
 
-  override fun searchAll(search: String?, pageable: Pageable): Page<SeriesCollection> {
-    val conditions = search?.let { c.NAME.udfStripAccents().containsIgnoreCase(it.stripAccents()) }
+  override fun findAll(search: String?, pageable: Pageable): Page<SeriesCollection> {
+    val conditions = search?.let { searchCondition(search) }
       ?: DSL.trueCondition()
 
-    val count = dsl.selectCount()
-      .from(c)
-      .where(conditions)
-      .fetchOne(0, Long::class.java) ?: 0
+    return try {
+      val count = dsl.selectCount()
+        .from(c)
+        .apply { if (!search.isNullOrBlank()) join(fts).on(c.ID.eq(fts.ID)) }
+        .where(conditions)
+        .fetchOne(0, Long::class.java) ?: 0
 
-    val orderBy = pageable.sort.toOrderBy(sorts)
+      val orderBy = pageable.sort.toOrderBy(sorts)
 
-    val items = selectBase()
-      .where(conditions)
-      .orderBy(orderBy)
-      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-      .fetchAndMap(null)
+      val items = selectBase(!search.isNullOrBlank())
+        .where(conditions)
+        .orderBy(orderBy)
+        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+        .fetchAndMap(null)
 
-    val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
-    return PageImpl(
-      items,
-      if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
-      else PageRequest.of(0, maxOf(count.toInt(), 20), pageSort),
-      count
-    )
+      val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
+      PageImpl(
+        items,
+        if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
+        else PageRequest.of(0, maxOf(count.toInt(), 20), pageSort),
+        count
+      )
+    } catch (e: Exception) {
+      if (e.isFtsError()) PageImpl(emptyList())
+      else {
+        logger.error(e) { "Error while fetching data" }
+        throw e
+      }
+    }
   }
 
   override fun findAllByLibraryIds(belongsToLibraryIds: Collection<String>, filterOnLibraryIds: Collection<String>?, search: String?, pageable: Pageable): Page<SeriesCollection> {
-    val ids = dsl.selectDistinct(c.ID)
-      .from(c)
-      .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
-      .leftJoin(s).on(cs.SERIES_ID.eq(s.ID))
-      .where(s.LIBRARY_ID.`in`(belongsToLibraryIds))
-      .apply { search?.let { and(c.NAME.udfStripAccents().containsIgnoreCase(it.stripAccents())) } }
-      .fetch(0, String::class.java)
-
-    val count = ids.size
-
-    val orderBy = pageable.sort.toOrderBy(sorts)
-
-    val items = selectBase()
-      .where(c.ID.`in`(ids))
+    val conditions = s.LIBRARY_ID.`in`(belongsToLibraryIds)
+      .apply { search?.let { and(searchCondition(it)) } }
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .apply { search?.let { and(c.NAME.udfStripAccents().containsIgnoreCase(it.stripAccents())) } }
-      .orderBy(orderBy)
-      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-      .fetchAndMap(filterOnLibraryIds)
 
-    val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
-    return PageImpl(
-      items,
-      if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
-      else PageRequest.of(0, maxOf(count, 20), pageSort),
-      count.toLong()
-    )
+    return try {
+      val ids = dsl.selectDistinct(c.ID)
+        .from(c)
+        .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
+        .leftJoin(s).on(cs.SERIES_ID.eq(s.ID))
+        .where(conditions)
+        .fetch(0, String::class.java)
+
+      val count = ids.size
+
+      val orderBy = pageable.sort.toOrderBy(sorts)
+
+      val items = selectBase(!search.isNullOrBlank())
+        .where(c.ID.`in`(ids))
+        .and(conditions)
+        .orderBy(orderBy)
+        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+        .fetchAndMap(filterOnLibraryIds)
+
+      val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
+      PageImpl(
+        items,
+        if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
+        else PageRequest.of(0, maxOf(count, 20), pageSort),
+        count.toLong()
+      )
+    } catch (e: Exception) {
+      if (e.isFtsError()) PageImpl(emptyList())
+      else {
+        logger.error(e) { "Error while fetching data" }
+        throw e
+      }
+    }
   }
 
   override fun findAllContainingSeriesId(containsSeriesId: String, filterOnLibraryIds: Collection<String>?): Collection<SeriesCollection> {
@@ -132,9 +155,13 @@ class SeriesCollectionDao(
       .fetchAndMap(null)
       .firstOrNull()
 
-  private fun selectBase() =
+  private fun searchCondition(search: String) =
+    fts.match(search)
+
+  private fun selectBase(joinFts: Boolean = false) =
     dsl.selectDistinct(*c.fields())
       .from(c)
+      .apply { if (joinFts) join(fts).on(c.ID.eq(fts.ID)) }
       .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
       .leftJoin(s).on(cs.SERIES_ID.eq(s.ID))
 

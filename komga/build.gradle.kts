@@ -1,5 +1,6 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jooq.meta.jaxb.ForcedType
 
 plugins {
   run {
@@ -242,6 +243,13 @@ jooq {
         generator.apply {
           database.apply {
             name = "org.jooq.meta.sqlite.SQLiteDatabase"
+            forcedTypes.addAll(
+              listOf(
+                ForcedType()
+                  .withName("varchar")
+                  .withIncludeExpression("fts_.*.(title|.*id|isbn|publisher|name)")
+              )
+            )
           }
           target.apply {
             packageName = "org.gotson.komga.jooq"

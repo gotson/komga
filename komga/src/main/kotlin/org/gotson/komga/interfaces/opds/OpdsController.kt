@@ -298,7 +298,7 @@ class OpdsController(
     val pageRequest = UnpagedSorted(Sort.by(Sort.Order.asc("name")))
     val collections =
       if (principal.user.sharedAllLibraries) {
-        collectionRepository.searchAll(pageable = pageRequest)
+        collectionRepository.findAll(pageable = pageRequest)
       } else {
         collectionRepository.findAllByLibraryIds(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, pageable = pageRequest)
       }
@@ -322,7 +322,7 @@ class OpdsController(
     val pageRequest = UnpagedSorted(Sort.by(Sort.Order.asc("name")))
     val readLists =
       if (principal.user.sharedAllLibraries) {
-        readListRepository.searchAll(pageable = pageRequest)
+        readListRepository.findAll(pageable = pageRequest)
       } else {
         readListRepository.findAllByLibraryIds(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, pageable = pageRequest)
       }

@@ -69,16 +69,21 @@ class SeriesCollectionController(
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<CollectionDto> {
+    val sort = when {
+      !searchTerm.isNullOrBlank() -> Sort.by("relevance")
+      else -> Sort.by(Sort.Order.asc("name"))
+    }
+
     val pageRequest =
-      if (unpaged) UnpagedSorted(Sort.by(Sort.Order.asc("name")))
+      if (unpaged) UnpagedSorted(sort)
       else PageRequest.of(
         page.pageNumber,
         page.pageSize,
-        Sort.by(Sort.Order.asc("name"))
+        sort
       )
 
     return when {
-      principal.user.sharedAllLibraries && libraryIds == null -> collectionRepository.searchAll(searchTerm, pageable = pageRequest)
+      principal.user.sharedAllLibraries && libraryIds == null -> collectionRepository.findAll(searchTerm, pageable = pageRequest)
       principal.user.sharedAllLibraries && libraryIds != null -> collectionRepository.findAllByLibraryIds(libraryIds, null, searchTerm, pageable = pageRequest)
       !principal.user.sharedAllLibraries && libraryIds != null -> collectionRepository.findAllByLibraryIds(libraryIds, principal.user.sharedLibrariesIds, searchTerm, pageable = pageRequest)
       else -> collectionRepository.findAllByLibraryIds(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, searchTerm, pageable = pageRequest)

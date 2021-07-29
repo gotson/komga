@@ -1,6 +1,7 @@
 package org.gotson.komga.infrastructure.jooq
 
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatCode
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.ReadProgress
@@ -8,6 +9,7 @@ import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
+import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
@@ -25,6 +27,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
@@ -32,6 +35,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 class BookDtoDaoTest(
   @Autowired private val bookDtoDao: BookDtoDao,
   @Autowired private val bookRepository: BookRepository,
+  @Autowired private val bookMetadataRepository: BookMetadataRepository,
   @Autowired private val bookLifecycle: BookLifecycle,
   @Autowired private val seriesLifecycle: SeriesLifecycle,
   @Autowired private val libraryRepository: LibraryRepository,
@@ -285,5 +289,132 @@ class BookDtoDaoTest(
       assertThat(found).hasSize(1)
       assertThat(found.first().name).isEqualTo("2")
     }
+  }
+
+  @Nested
+  inner class FullTextSearch {
+    @Test
+    fun `given books when searching by term then results are ordered by rank`() {
+      // given
+      seriesLifecycle.addBooks(
+        series,
+        listOf(
+          makeBook("The incredible adventures of Batman, the man who is also a bat!", seriesId = series.id, libraryId = library.id),
+          makeBook("Robin", seriesId = series.id, libraryId = library.id),
+          makeBook("Batman and Robin", seriesId = series.id, libraryId = library.id),
+          makeBook("Batman", seriesId = series.id, libraryId = library.id),
+        )
+      )
+
+      // when
+      val found = bookDtoDao.findAll(
+        BookSearchWithReadProgress(searchTerm = "batman"),
+        user.id,
+        UnpagedSorted(Sort.by("relevance")),
+      ).content
+
+      // then
+      assertThat(found).hasSize(3)
+      assertThat(found.map { it.name }).containsExactly("Batman", "Batman and Robin", "The incredible adventures of Batman, the man who is also a bat!")
+    }
+
+    @Test
+    fun `given books when searching by term with accent then results are matched accent insensitive`() {
+      // given
+      val book1 = makeBook("Éric le rouge", seriesId = series.id, libraryId = library.id)
+      seriesLifecycle.addBooks(
+        series,
+        listOf(
+          book1,
+          makeBook("Robin", seriesId = series.id, libraryId = library.id),
+          makeBook("Batman and Robin", seriesId = series.id, libraryId = library.id),
+          makeBook("Batman", seriesId = series.id, libraryId = library.id),
+        )
+      )
+
+      bookMetadataRepository.findById(book1.id).let {
+        bookMetadataRepository.update(it.copy(title = "Éric le bleu"))
+      }
+
+      // when
+      val found = bookDtoDao.findAll(
+        BookSearchWithReadProgress(searchTerm = "eric"),
+        user.id,
+        UnpagedSorted(Sort.by("relevance")),
+      ).content
+
+      // then
+      assertThat(found).hasSize(1)
+      assertThat(found.map { it.metadata.title }).containsExactly("Éric le bleu")
+    }
+  }
+
+  @Test
+  fun `given books when searching by ISBN then results are matched`() {
+    // given
+    val book1 = makeBook("Éric le rouge", seriesId = series.id, libraryId = library.id)
+    seriesLifecycle.addBooks(
+      series,
+      listOf(
+        book1,
+        makeBook("Robin", seriesId = series.id, libraryId = library.id),
+        makeBook("Batman and Robin", seriesId = series.id, libraryId = library.id),
+        makeBook("Batman", seriesId = series.id, libraryId = library.id),
+      )
+    )
+
+    bookMetadataRepository.findById(book1.id).let {
+      bookMetadataRepository.update(it.copy(isbn = "9782413016878"))
+    }
+
+    // when
+    val found = bookDtoDao.findAll(
+      BookSearchWithReadProgress(searchTerm = "9782413016878"),
+      user.id,
+      UnpagedSorted(Sort.by("relevance")),
+    ).content
+
+    // then
+    assertThat(found).hasSize(1)
+    assertThat(found.map { it.name }).containsExactly("Éric le rouge")
+  }
+
+  @Test
+  fun `given books when searching by term containing hyphens then results are ordered by rank`() {
+    // given
+    seriesLifecycle.addBooks(
+      series,
+      listOf(
+        makeBook("Batman", seriesId = series.id, libraryId = library.id),
+        makeBook("Another X-Men adventure", seriesId = series.id, libraryId = library.id),
+        makeBook("X-Men", seriesId = series.id, libraryId = library.id),
+      )
+    )
+
+    // when
+    val found = bookDtoDao.findAll(
+      BookSearchWithReadProgress(searchTerm = "x-men"),
+      user.id,
+      UnpagedSorted(Sort.by("relevance")),
+    ).content
+
+    // then
+    assertThat(found).hasSize(2)
+    assertThat(found.map { it.name }).containsExactly("X-Men", "Another X-Men adventure")
+  }
+
+  @Test
+  fun `when searching by unknown field then empty result are returned and no exception is thrown`() {
+    assertThatCode {
+      // when
+      val found = bookDtoDao.findAll(
+        BookSearchWithReadProgress(searchTerm = "publisher:batman"),
+        user.id,
+        UnpagedSorted(Sort.by("relevance")),
+      ).content
+
+      // then
+      assertThat(found).hasSize(0)
+    }.doesNotThrowAnyException()
   }
 }

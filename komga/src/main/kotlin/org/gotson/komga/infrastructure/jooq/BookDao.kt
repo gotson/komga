@@ -149,7 +149,7 @@ class BookDao(
       .limit(1)
       .fetchOne(b.ID)
 
-  override fun findFirstUnreadIdInSeriesOrNull(seriesId: String, userId: String): String? ? =
+  override fun findFirstUnreadIdInSeriesOrNull(seriesId: String, userId: String): String? =
     dsl.select(b.ID)
       .from(b)
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))

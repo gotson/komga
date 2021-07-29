@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable
 interface ReadListRepository {
   fun findByIdOrNull(readListId: String): ReadList?
 
-  fun searchAll(search: String? = null, pageable: Pageable): Page<ReadList>
+  fun findAll(search: String? = null, pageable: Pageable): Page<ReadList>
 
   /**
    * Find one ReadList by readListId,

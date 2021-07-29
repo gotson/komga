@@ -12,7 +12,7 @@ private val log = KotlinLogging.logger {}
 class SqliteUdfDataSource : SimpleDriverDataSource() {
 
   companion object {
-    const val udfStripAccents = "UDF_UNIDECODE"
+    const val udfStripAccents = "UDF_STRIP_ACCENTS"
   }
 
   override fun getConnection(): Connection =

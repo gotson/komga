@@ -125,8 +125,11 @@ class SeriesController(
     @Parameter(hidden = true) page: Pageable
   ): Page<SeriesDto> {
     val sort =
-      if (page.sort.isSorted) page.sort
-      else Sort.by(Sort.Order.asc("metadata.titleSort"))
+      when {
+        page.sort.isSorted -> page.sort
+        !searchTerm.isNullOrBlank() -> Sort.by("relevance")
+        else -> Sort.by(Sort.Order.asc("metadata.titleSort"))
+      }
 
     val pageRequest =
       if (unpaged) UnpagedSorted(sort)
@@ -325,7 +328,8 @@ class SeriesController(
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    return seriesLifecycle.getThumbnailBytes(seriesId, principal.user.id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    return seriesLifecycle.getThumbnailBytes(seriesId, principal.user.id)
+      ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
   @PageableAsQueryParam

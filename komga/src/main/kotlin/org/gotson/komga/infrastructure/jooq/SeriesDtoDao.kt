@@ -1,9 +1,9 @@
 package org.gotson.komga.infrastructure.jooq
 
+import mu.KotlinLogging
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
-import org.gotson.komga.infrastructure.language.stripAccents
 import org.gotson.komga.infrastructure.web.toFilePath
 import org.gotson.komga.interfaces.rest.dto.AuthorDto
 import org.gotson.komga.interfaces.rest.dto.BookMetadataAggregationDto
@@ -34,6 +34,8 @@ import org.springframework.stereotype.Component
 import java.math.BigDecimal
 import java.net.URL
 
+private val logger = KotlinLogging.logger {}
+
 const val BOOKS_COUNT = "booksCount"
 const val BOOKS_UNREAD_COUNT = "booksUnreadCount"
 const val BOOKS_IN_PROGRESS_COUNT = "booksInProgressCount"
@@ -54,6 +56,7 @@ class SeriesDtoDao(
     private val st = Tables.SERIES_METADATA_TAG
     private val bma = Tables.BOOK_METADATA_AGGREGATION
     private val bmaa = Tables.BOOK_METADATA_AGGREGATION_AUTHOR
+    private val fts = Tables.FTS_SERIES_METADATA
 
     val countUnread: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isNull, 1).otherwise(0))
     val countRead: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isTrue, 1).otherwise(0))
@@ -76,6 +79,7 @@ class SeriesDtoDao(
     "collection.number" to cs.NUMBER,
     "name" to lower(s.NAME.udfStripAccents()),
     "booksCount" to s.BOOK_COUNT,
+    "relevance" to DSL.field("rank"),
   )
 
   override fun findAll(search: SeriesSearchWithReadProgress, userId: String, pageable: Pageable): Page<SeriesDto> {
@@ -112,20 +116,29 @@ class SeriesDtoDao(
     val joinConditions = search.toJoinConditions()
 
     val firstChar = lower(substring(d.TITLE_SORT, 1, 1))
-    return dsl.select(firstChar, count())
-      .from(s)
-      .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
-      .leftJoin(bma).on(s.ID.eq(bma.SERIES_ID))
-      .leftJoin(rs).on(s.ID.eq(rs.SERIES_ID)).and(readProgressConditionSeries(userId))
-      .apply { if (joinConditions.genre) leftJoin(g).on(s.ID.eq(g.SERIES_ID)) }
-      .apply { if (joinConditions.tag) leftJoin(st).on(s.ID.eq(st.SERIES_ID)) }
-      .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
-      .apply { if (joinConditions.aggregationAuthor) leftJoin(bmaa).on(s.ID.eq(bmaa.SERIES_ID)) }
-      .where(conditions)
-      .groupBy(firstChar)
-      .map {
-        GroupCountDto(it.value1(), it.value2())
+    return try {
+      dsl.select(firstChar, count())
+        .from(s)
+        .apply { if (joinConditions.fullTextSearch) join(fts).on(s.ID.eq(fts.SERIES_ID)) }
+        .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
+        .leftJoin(bma).on(s.ID.eq(bma.SERIES_ID))
+        .leftJoin(rs).on(s.ID.eq(rs.SERIES_ID)).and(readProgressConditionSeries(userId))
+        .apply { if (joinConditions.genre) leftJoin(g).on(s.ID.eq(g.SERIES_ID)) }
+        .apply { if (joinConditions.tag) leftJoin(st).on(s.ID.eq(st.SERIES_ID)) }
+        .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
+        .apply { if (joinConditions.aggregationAuthor) leftJoin(bmaa).on(s.ID.eq(bmaa.SERIES_ID)) }
+        .where(conditions)
+        .groupBy(firstChar)
+        .map {
+          GroupCountDto(it.value1(), it.value2())
+        }
+    } catch (e: Exception) {
+      if (e.isFtsError()) emptyList()
+      else {
+        logger.error(e) { "Error while fetching data" }
+        throw e
       }
+    }
   }
 
   override fun findByIdOrNull(seriesId: String, userId: String): SeriesDto? =
@@ -142,6 +155,7 @@ class SeriesDtoDao(
     dsl.selectDistinct(*groupFields)
       .apply { if (joinConditions.selectCollectionNumber) select(cs.NUMBER) }
       .from(s)
+      .apply { if (joinConditions.fullTextSearch) join(fts).on(s.ID.eq(fts.SERIES_ID)) }
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
       .leftJoin(bma).on(s.ID.eq(bma.SERIES_ID))
       .leftJoin(rs).on(s.ID.eq(rs.SERIES_ID)).and(readProgressConditionSeries(userId))
@@ -156,34 +170,42 @@ class SeriesDtoDao(
     pageable: Pageable,
     joinConditions: JoinConditions = JoinConditions()
   ): Page<SeriesDto> {
-    val count = dsl.select(s.ID)
-      .from(s)
-      .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
-      .leftJoin(bma).on(s.ID.eq(bma.SERIES_ID))
-      .leftJoin(rs).on(s.ID.eq(rs.SERIES_ID)).and(readProgressConditionSeries(userId))
-      .apply { if (joinConditions.genre) leftJoin(g).on(s.ID.eq(g.SERIES_ID)) }
-      .apply { if (joinConditions.tag) leftJoin(st).on(s.ID.eq(st.SERIES_ID)) }
-      .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
-      .apply { if (joinConditions.aggregationAuthor) leftJoin(bmaa).on(s.ID.eq(bmaa.SERIES_ID)) }
-      .where(conditions)
-      .fetch()
-      .size
+    return try {
+      val count = dsl.select(count(s.ID))
+        .from(s)
+        .apply { if (joinConditions.fullTextSearch) join(fts).on(s.ID.eq(fts.SERIES_ID)) }
+        .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
+        .leftJoin(bma).on(s.ID.eq(bma.SERIES_ID))
+        .leftJoin(rs).on(s.ID.eq(rs.SERIES_ID)).and(readProgressConditionSeries(userId))
+        .apply { if (joinConditions.genre) leftJoin(g).on(s.ID.eq(g.SERIES_ID)) }
+        .apply { if (joinConditions.tag) leftJoin(st).on(s.ID.eq(st.SERIES_ID)) }
+        .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
+        .apply { if (joinConditions.aggregationAuthor) leftJoin(bmaa).on(s.ID.eq(bmaa.SERIES_ID)) }
+        .where(conditions)
+        .fetchOne(count(s.ID)) ?: 0
 
-    val orderBy = pageable.sort.toOrderBy(sorts)
+      val orderBy = pageable.sort.toOrderBy(sorts)
 
-    val dtos = selectBase(userId, joinConditions)
-      .where(conditions)
-      .orderBy(orderBy)
-      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-      .fetchAndMap()
+      val dtos = selectBase(userId, joinConditions)
+        .where(conditions)
+        .orderBy(orderBy)
+        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+        .fetchAndMap()
 
-    val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
-    return PageImpl(
-      dtos,
-      if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
-      else PageRequest.of(0, maxOf(count, 20), pageSort),
-      count.toLong()
-    )
+      val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
+      PageImpl(
+        dtos,
+        if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
+        else PageRequest.of(0, maxOf(count, 20), pageSort),
+        count.toLong()
+      )
+    } catch (e: Exception) {
+      if (e.isFtsError()) PageImpl(emptyList())
+      else {
+        logger.error(e) { "Error while fetching data" }
+        throw e
+      }
+    }
   }
 
   private fun readProgressConditionSeries(userId: String): Condition = rs.USER_ID.eq(userId).or(rs.USER_ID.isNull)
@@ -228,9 +250,9 @@ class SeriesDtoDao(
   private fun SeriesSearchWithReadProgress.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()
 
+    searchTerm?.let { c = c.and(fts.match(it)) }
     if (!libraryIds.isNullOrEmpty()) c = c.and(s.LIBRARY_ID.`in`(libraryIds))
     if (!collectionIds.isNullOrEmpty()) c = c.and(cs.COLLECTION_ID.`in`(collectionIds))
-    searchTerm?.let { c = c.and(d.TITLE.udfStripAccents().containsIgnoreCase(it.stripAccents())) }
     searchRegex?.let { c = c.and((it.second.toColumn()).likeRegex(it.first)) }
     if (!metadataStatus.isNullOrEmpty()) c = c.and(d.STATUS.`in`(metadataStatus))
     if (!publishers.isNullOrEmpty()) c = c.and(lower(d.PUBLISHER).`in`(publishers.map { it.lowercase() }))
@@ -282,6 +304,7 @@ class SeriesDtoDao(
       tag = !tags.isNullOrEmpty(),
       collection = !collectionIds.isNullOrEmpty(),
       aggregationAuthor = !authors.isNullOrEmpty(),
+      fullTextSearch = !searchTerm.isNullOrBlank(),
     )
 
   private data class JoinConditions(
@@ -290,6 +313,7 @@ class SeriesDtoDao(
     val tag: Boolean = false,
     val collection: Boolean = false,
     val aggregationAuthor: Boolean = false,
+    val fullTextSearch: Boolean = false,
   )
 
   private fun SeriesRecord.toDto(

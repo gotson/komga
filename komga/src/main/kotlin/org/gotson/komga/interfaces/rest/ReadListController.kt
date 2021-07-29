@@ -75,16 +75,21 @@ class ReadListController(
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<ReadListDto> {
+    val sort = when {
+      !searchTerm.isNullOrBlank() -> Sort.by("relevance")
+      else -> Sort.by(Sort.Order.asc("name"))
+    }
+
     val pageRequest =
-      if (unpaged) UnpagedSorted(Sort.by(Sort.Order.asc("name")))
+      if (unpaged) UnpagedSorted(sort)
       else PageRequest.of(
         page.pageNumber,
         page.pageSize,
-        Sort.by(Sort.Order.asc("name"))
+        sort
       )
 
     return when {
-      principal.user.sharedAllLibraries && libraryIds == null -> readListRepository.searchAll(
+      principal.user.sharedAllLibraries && libraryIds == null -> readListRepository.findAll(
         searchTerm,
         pageable = pageRequest
       )

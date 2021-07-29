@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable
 interface SeriesCollectionRepository {
   fun findByIdOrNull(collectionId: String): SeriesCollection?
 
-  fun searchAll(search: String? = null, pageable: Pageable): Page<SeriesCollection>
+  fun findAll(search: String? = null, pageable: Pageable): Page<SeriesCollection>
 
   /**
    * Find one SeriesCollection by collectionId,

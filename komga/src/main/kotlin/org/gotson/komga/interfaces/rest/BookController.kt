@@ -107,8 +107,11 @@ class BookController(
     @Parameter(hidden = true) page: Pageable
   ): Page<BookDto> {
     val sort =
-      if (page.sort.isSorted) page.sort
-      else Sort.by(Sort.Order.asc("metadata.title"))
+      when {
+        page.sort.isSorted -> page.sort
+        !searchTerm.isNullOrBlank() -> Sort.by("relevance")
+        else -> Sort.by(Sort.Order.asc("metadata.title"))
+      }
 
     val pageRequest =
       if (unpaged) UnpagedSorted(sort)
