@@ -213,6 +213,7 @@
     "on_deck": "导航",
     "recently_added_books": "最近添加的书",
     "recently_added_series": "最近添加的系列",
+    "recently_read_books": "最近阅读的书籍",
     "recently_released_books": "近期发布的书籍",
     "recently_updated_series": "最近更新的系列"
   },
@@ -344,6 +345,7 @@
       "field_scanner_deep_scan": "深度扫描",
       "field_scanner_empty_trash_after_scan": "每次扫描后自动清空垃圾箱",
       "field_scanner_force_directory_modified_time": "强制目录修改时间",
+      "field_series_cover": "系列封面",
       "file_browser_dialog_button_confirm": "选择",
       "file_browser_dialog_title": "库的根文件夹",
       "label_file_management": "文件管理",
@@ -353,6 +355,7 @@
       "label_import_local": "导入本地媒体",
       "label_import_mylar": "导入 Mylar 生成的元数据",
       "label_scanner": "扫描器",
+      "label_series_cover": "系列封面",
       "tab_general": "常规",
       "tab_metadata": "元数据",
       "tab_options": "选项"
@@ -488,6 +491,12 @@
       "RIGHT_TO_LEFT": "从右到左",
       "VERTICAL": "垂直模式",
       "WEBTOON": "Webtoon模式"
+    },
+    "series_cover": {
+      "FIRST": "第一张",
+      "FIRST_UNREAD_OR_FIRST": "第一张未读封面或第一张封面",
+      "FIRST_UNREAD_OR_LAST": "第一张未读封面或最后一张",
+      "LAST": "最后一张"
     },
     "series_status": {
       "ABANDONED": "已放弃",

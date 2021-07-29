@@ -213,6 +213,7 @@
     "on_deck": "Oben auf dem Stapel",
     "recently_added_books": "Kürzlich hinzugefügte Bücher",
     "recently_added_series": "Kürzlich hinzugefügte Serien",
+    "recently_read_books": "Kürzlich gelesene Bücher",
     "recently_released_books": "Neuerscheinungen",
     "recently_updated_series": "Kürzlich aktualisierte Serien"
   },
@@ -344,6 +345,7 @@
       "field_scanner_deep_scan": "Tiefensuche",
       "field_scanner_empty_trash_after_scan": "Automatische Bereinigung nach jedem Scan",
       "field_scanner_force_directory_modified_time": "Erzwinge das Durchsuchen des Verzeichnis auf Basis des Zeitstempels",
+      "field_series_cover": "Serien Titelbild",
       "file_browser_dialog_button_confirm": "Auswählen",
       "file_browser_dialog_title": "Bibliothekshauptverzeichnis",
       "label_file_management": "Dateiverwaltung",
@@ -353,6 +355,7 @@
       "label_import_local": "Importiere lokale Medienbestände",
       "label_import_mylar": "Importiere Mylar generierte Metadaten",
       "label_scanner": "Scanner",
+      "label_series_cover": "Serien Titelbild",
       "tab_general": "Allgemein",
       "tab_metadata": "Metadaten",
       "tab_options": "Optionen"
@@ -488,6 +491,12 @@
       "RIGHT_TO_LEFT": "Von rechts nach links",
       "VERTICAL": "Vertikal",
       "WEBTOON": "Webtoon"
+    },
+    "series_cover": {
+      "FIRST": "Erstes",
+      "FIRST_UNREAD_OR_FIRST": "Erstes ungelesene oder Erstes",
+      "FIRST_UNREAD_OR_LAST": "Erstes ungelesene oder letztes",
+      "LAST": "Letztes"
     },
     "series_status": {
       "ABANDONED": "Abgebrochen",
