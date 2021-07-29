@@ -1,3 +1,10 @@
+## [0.112.1](https://github.com/gotson/komga/compare/v0.112.0...v0.112.1) (2021-07-29)
+
+
+### Bug Fixes
+
+* skip old file hashing tasks if feature is disabled ([01a16b7](https://github.com/gotson/komga/commit/01a16b718ae732509ac58135e323cee941b9435e)), closes [#585](https://github.com/gotson/komga/issues/585)
+
 # [0.112.0](https://github.com/gotson/komga/compare/v0.111.0...v0.112.0) (2021-07-29)
 
 
