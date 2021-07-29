@@ -76,6 +76,7 @@ class SeriesDtoDao(
     "created" to s.CREATED_DATE,
     "lastModifiedDate" to s.LAST_MODIFIED_DATE,
     "lastModified" to s.LAST_MODIFIED_DATE,
+    "booksMetadata.releaseDate" to bma.RELEASE_DATE,
     "collection.number" to cs.NUMBER,
     "name" to lower(s.NAME.udfStripAccents()),
     "booksCount" to s.BOOK_COUNT,

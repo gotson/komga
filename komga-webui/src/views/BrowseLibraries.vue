@@ -266,6 +266,7 @@ export default Vue.extend({
         {name: this.$t('sort.name').toString(), key: 'metadata.titleSort'},
         {name: this.$t('sort.date_added').toString(), key: 'createdDate'},
         {name: this.$t('sort.date_updated').toString(), key: 'lastModifiedDate'},
+        {name: this.$t('sort.release_date').toString(), key: 'booksMetadata.releaseDate'},
         {name: this.$t('sort.folder_name').toString(), key: 'name'},
         {name: this.$t('sort.books_count').toString(), key: 'booksCount'},
       ] as SortOption[]
