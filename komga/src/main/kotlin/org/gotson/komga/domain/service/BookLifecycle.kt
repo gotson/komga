@@ -18,6 +18,7 @@ import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
+import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
@@ -44,6 +45,7 @@ class BookLifecycle(
   private val eventPublisher: EventPublisher,
   private val transactionTemplate: TransactionTemplate,
   private val hasher: Hasher,
+  private val komgaProperties: KomgaProperties,
 ) {
 
   fun analyzeAndPersist(book: Book): Boolean {
@@ -67,6 +69,9 @@ class BookLifecycle(
   }
 
   fun hashAndPersist(book: Book) {
+    if (!komgaProperties.fileHashing)
+      return logger.info { "File hashing is disabled, it may have changed since the task was submitted, skipping" }
+
     logger.info { "Hash and persist book: $book" }
     if (book.fileHash.isBlank()) {
       val hash = hasher.computeHash(book.path)
