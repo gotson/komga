@@ -1,3 +1,15 @@
+# [0.112.0](https://github.com/gotson/komga/compare/v0.111.0...v0.112.0) (2021-07-29)
+
+
+### Bug Fixes
+
+* translated using Weblate (German) ([#579](https://github.com/gotson/komga/issues/579)) ([dd63a0f](https://github.com/gotson/komga/commit/dd63a0f1bbb64e7b5df65f7582d295e318b0436b))
+
+
+### Features
+
+* sort series by release date ([d15c130](https://github.com/gotson/komga/commit/d15c130530890398d39fd03c282cf005caefad96)), closes [#582](https://github.com/gotson/komga/issues/582)
+
 # [0.111.0](https://github.com/gotson/komga/compare/v0.110.0...v0.111.0) (2021-07-29)
 
 
