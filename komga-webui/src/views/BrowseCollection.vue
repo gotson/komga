@@ -288,7 +288,7 @@ export default Vue.extend({
 
       const [genres, tags, publishers, languages, ageRatings, releaseDates] = await Promise.all([
         this.$komgaReferential.getGenres(undefined, collectionId),
-        this.$komgaReferential.getSeriesTags(undefined, collectionId),
+        this.$komgaReferential.getSeriesAndBookTags(undefined, collectionId),
         this.$komgaReferential.getPublishers(undefined, collectionId),
         this.$komgaReferential.getLanguages(undefined, collectionId),
         this.$komgaReferential.getAgeRatings(undefined, collectionId),

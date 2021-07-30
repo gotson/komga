@@ -279,7 +279,8 @@
       </v-row>
 
       <!--  Tags    -->
-      <v-row v-if="series.metadata.tags.length > 0" class="align-center text-caption">
+      <v-row v-if="series.metadata.tags.length > 0 || series.booksMetadata.tags.length > 0"
+             class="align-center text-caption">
         <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $t('common.tags') }}</v-col>
         <v-col cols="8" sm="9" md="10" xl="11" class="py-1 text-capitalize">
           <vue-horizontal>
@@ -294,8 +295,8 @@
                 <v-icon>mdi-chevron-right</v-icon>
               </v-btn>
             </template>
-            <v-chip v-for="(t, i) in series.metadata.tags"
-                    :key="i"
+            <v-chip v-for="(t, i) in $_.sortBy(series.metadata.tags)"
+                    :key="`series_${i}`"
                     :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
                     :title="t"
                     :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {tag: [t]}}"
@@ -303,6 +304,18 @@
                     small
                     outlined
                     link
+            >{{ t }}
+            </v-chip>
+            <v-chip v-for="(t, i) in $_(series.booksMetadata.tags).difference(series.metadata.tags).sortBy()"
+                    :key="`book_${i}`"
+                    :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+                    :title="t"
+                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {tag: [t]}}"
+                    label
+                    small
+                    outlined
+                    link
+                    color="contrast-light-2"
             >{{ t }}
             </v-chip>
           </vue-horizontal>

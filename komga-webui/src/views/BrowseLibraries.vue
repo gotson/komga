@@ -361,7 +361,7 @@ export default Vue.extend({
       // load dynamic filters
       const [genres, tags, publishers, languages, ageRatings, releaseDates] = await Promise.all([
         this.$komgaReferential.getGenres(requestLibraryId),
-        this.$komgaReferential.getSeriesTags(requestLibraryId),
+        this.$komgaReferential.getSeriesAndBookTags(requestLibraryId),
         this.$komgaReferential.getPublishers(requestLibraryId),
         this.$komgaReferential.getLanguages(requestLibraryId),
         this.$komgaReferential.getAgeRatings(requestLibraryId),

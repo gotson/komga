@@ -46,6 +46,7 @@ export interface SeriesBooksMetadataDto {
   created: string,
   lastModified: string
   authors: AuthorDto[],
+  tags: string[],
   releaseDate: string,
   summary: string,
   summaryNumber: string,
