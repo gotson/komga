@@ -131,6 +131,7 @@ class SeriesMetadataLifecycle(
       readingDirection = patches.mostFrequent { it.readingDirection },
       ageRating = patches.mapNotNull { it.ageRating }.maxOrNull(),
       publisher = patches.mostFrequent { it.publisher },
+      totalBookCount = patches.mapNotNull { it.totalBookCount }.maxOrNull(),
       collections = emptyList()
     )
 
@@ -145,6 +146,7 @@ class SeriesMetadataLifecycle(
       logger.debug { "Apply metadata for series: $series" }
 
       logger.debug { "Original metadata: $it" }
+      logger.debug { "Patch: $patch" }
       val patched = metadataApplier.apply(patch, it)
       logger.debug { "Patched metadata: $patched" }
 

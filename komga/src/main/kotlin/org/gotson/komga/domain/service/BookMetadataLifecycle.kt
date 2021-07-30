@@ -118,6 +118,7 @@ class BookMetadataLifecycle(
         logger.debug { "Apply metadata for book: $book" }
 
         logger.debug { "Original metadata: $it" }
+        logger.debug { "Patch: $patch" }
         val patched = metadataApplier.apply(bPatch, it)
         logger.debug { "Patched metadata: $patched" }
 

@@ -321,6 +321,7 @@ class ComicInfoProviderTest {
         ageRating = AgeRating.MA_15
         manga = Manga.YES_AND_RIGHT_TO_LEFT
         languageISO = "en"
+        count = 10
         genre = "Action, Adventure"
       }
 
@@ -337,7 +338,8 @@ class ComicInfoProviderTest {
         assertThat(ageRating).isEqualTo(15)
         assertThat(readingDirection).isEqualTo(SeriesMetadata.ReadingDirection.RIGHT_TO_LEFT)
         assertThat(language).isEqualTo("en")
-        assertThat(summary).isBlank()
+        assertThat(summary).isBlank
+        assertThat(totalBookCount).isEqualTo(10)
         assertThat(genres).containsExactlyInAnyOrder("Action", "Adventure")
       }
     }

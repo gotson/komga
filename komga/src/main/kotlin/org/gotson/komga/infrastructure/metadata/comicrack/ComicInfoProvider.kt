@@ -114,6 +114,7 @@ class ComicInfoProvider(
         ageRating = comicInfo.ageRating?.ageRating,
         language = if (comicInfo.languageISO != null && BCP47TagValidator.isValid(comicInfo.languageISO!!)) comicInfo.languageISO else null,
         genres = if (!genres.isNullOrEmpty()) genres.toSet() else null,
+        totalBookCount = comicInfo.count,
         collections = listOfNotNull(comicInfo.seriesGroup?.ifBlank { null })
       )
     }

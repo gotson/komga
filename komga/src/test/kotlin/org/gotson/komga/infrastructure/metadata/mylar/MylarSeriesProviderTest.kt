@@ -57,6 +57,7 @@ class MylarSeriesProviderTest {
       assertThat(ageRating).isEqualTo(18)
       assertThat(language).isNull()
       assertThat(genres).isNull()
+      assertThat(totalBookCount).isEqualTo(2)
       assertThat(collections).isEmpty()
     }
   }
@@ -96,6 +97,7 @@ class MylarSeriesProviderTest {
       assertThat(ageRating).isNull()
       assertThat(language).isNull()
       assertThat(genres).isNull()
+      assertThat(totalBookCount).isEqualTo(2)
       assertThat(collections).isEmpty()
     }
   }

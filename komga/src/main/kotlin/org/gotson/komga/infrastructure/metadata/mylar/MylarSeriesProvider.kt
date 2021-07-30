@@ -47,6 +47,7 @@ class MylarSeriesProvider(
         ageRating = metadata.ageRating?.ageRating,
         language = null,
         genres = null,
+        totalBookCount = metadata.totalIssues,
         collections = emptyList(),
       )
     } catch (e: Exception) {
