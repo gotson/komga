@@ -217,6 +217,31 @@
                   </v-col>
                 </v-row>
 
+                <v-row v-if="single">
+                  <!--  Total book count  -->
+                  <v-col cols="6">
+                    <v-text-field v-model="form.totalBookCount"
+                                  :label="$t('dialog.edit_series.field_total_book_count')"
+                                  clearable
+                                  filled
+                                  dense
+                                  type="number"
+                                  :error-messages="totalBookCountErrors"
+                                  @input="$v.form.totalBookCount.$touch()"
+                                  @blur="$v.form.totalBookCount.$touch()"
+                                  @change="form.totalBookCountLock = true"
+                    >
+                      <template v-slot:prepend>
+                        <v-icon :color="form.totalBookCountLock ? 'secondary' : ''"
+                                @click="form.totalBookCountLock = !form.totalBookCountLock"
+                        >
+                          {{ form.totalBookCountLock ? 'mdi-lock' : 'mdi-lock-open' }}
+                        </v-icon>
+                      </template>
+                    </v-text-field>
+                  </v-col>
+                </v-row>
+
               </v-container>
             </v-card>
           </v-tab-item>
@@ -329,7 +354,7 @@ export default Vue.extend({
         readingDirectionLock: false,
         publisher: '',
         publisherLock: false,
-        ageRating: undefined as unknown as number,
+        ageRating: undefined as number | undefined,
         ageRatingLock: false,
         language: '',
         languageLock: false,
@@ -337,6 +362,8 @@ export default Vue.extend({
         genresLock: false,
         tags: [],
         tagsLock: false,
+        totalBookCount: undefined as number | undefined,
+        totalBookCountLock: false,
       },
       mixed: {
         status: false,
@@ -393,6 +420,7 @@ export default Vue.extend({
       ageRating: {minValue: minValue(0)},
       readingDirection: {},
       publisher: {},
+      totalBookCount: {minValue: minValue(1)},
     },
   },
   async created() {
@@ -421,6 +449,12 @@ export default Vue.extend({
       const errors = [] as string[]
       if (!this.$v.form?.ageRating?.$dirty) return errors
       !this.$v?.form?.ageRating?.minValue && errors.push(this.$t('dialog.edit_series.field_age_rating_error').toString())
+      return errors
+    },
+    totalBookCountErrors(): string[] {
+      const errors = [] as string[]
+      if (!this.$v.form?.totalBookCount?.$dirty) return errors
+      !this.$v?.form?.totalBookCount?.minValue && errors.push(this.$t('dialog.edit_series.field_total_book_count_error').toString())
       return errors
     },
     languageErrors(): string[] {
@@ -462,7 +496,7 @@ export default Vue.extend({
         this.form.readingDirectionLock = readingDirectionLock.length > 1 ? false : readingDirectionLock[0]
 
         const ageRating = this.$_.uniq(series.map(x => x.metadata.ageRating))
-        this.form.ageRating = ageRating.length > 1 ? undefined as unknown as number : ageRating[0]
+        this.form.ageRating = ageRating.length > 1 ? undefined : ageRating[0]
         this.mixed.ageRating = ageRating.length > 1
 
         const ageRatingLock = this.$_.uniq(series.map(x => x.metadata.ageRatingLock))
@@ -516,6 +550,7 @@ export default Vue.extend({
           languageLock: this.form.languageLock,
           genresLock: this.form.genresLock,
           tagsLock: this.form.tagsLock,
+          totalBookCountLock: this.form.totalBookCountLock,
         }
 
         if (this.$v.form?.status?.$dirty) {
@@ -551,6 +586,7 @@ export default Vue.extend({
             titleLock: this.form.titleLock,
             titleSortLock: this.form.titleSortLock,
             summaryLock: this.form.summaryLock,
+            totalBookCountLock: this.form.totalBookCountLock,
           })
 
           if (this.$v.form?.title?.$dirty) {
@@ -563,6 +599,10 @@ export default Vue.extend({
 
           if (this.$v.form?.summary?.$dirty) {
             this.$_.merge(metadata, {summary: this.form.summary})
+          }
+
+          if (this.$v.form?.totalBookCount?.$dirty) {
+            this.$_.merge(metadata, {totalBookCount: this.form.totalBookCount})
           }
         }
 

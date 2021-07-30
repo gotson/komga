@@ -133,7 +133,8 @@
                   {{ languageDisplay }}
                 </v-chip>
               </v-col>
-              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="series.metadata.readingDirection">
+              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto"
+                     v-if="series.metadata.readingDirection">
                 <v-chip label small>
                   {{ $t(`enums.reading_direction.${series.metadata.readingDirection}`) }}
                 </v-chip>
@@ -142,6 +143,16 @@
                 <v-chip label small color="error">
                   {{ $t('common.unavailable') }}
                 </v-chip>
+              </v-col>
+            </v-row>
+
+            <v-row class="text-caption" align="center">
+              <v-col cols="auto" v-if="series.metadata.totalBookCount">
+                {{ $t('common.books_total', {count: series.booksCount, total: series.metadata.totalBookCount}) }}
+              </v-col>
+
+              <v-col cols="auto" v-else>
+                {{ $tc('common.books_n', series.booksCount) }}
               </v-col>
             </v-row>
 
