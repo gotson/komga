@@ -419,6 +419,7 @@ class SeriesControllerTest(
         """{"title":""}""",
         """{"titleSort":""}""",
         """{"ageRating":-1}""",
+        """{"totalBookCount":0}""",
         """{"language":"japanese"}"""
       ]
     )
@@ -463,7 +464,9 @@ class SeriesControllerTest(
           "genres":["Action"],
           "genresLock":true,
           "tags":["tag"],
-          "tagsLock":true
+          "tagsLock":true,
+          "totalBookCount":5,
+          "totalBookCountLock":true
         }
       """.trimIndent()
 
@@ -486,6 +489,7 @@ class SeriesControllerTest(
         assertThat(ageRating).isEqualTo(12)
         assertThat(genres).containsExactly("action")
         assertThat(tags).containsExactly("tag")
+        assertThat(totalBookCount).isEqualTo(5)
 
         assertThat(titleLock).isEqualTo(true)
         assertThat(titleSortLock).isEqualTo(true)
@@ -497,6 +501,7 @@ class SeriesControllerTest(
         assertThat(summaryLock).isEqualTo(true)
         assertThat(genresLock).isEqualTo(true)
         assertThat(tagsLock).isEqualTo(true)
+        assertThat(totalBookCountLock).isEqualTo(true)
       }
     }
 
@@ -515,7 +520,8 @@ class SeriesControllerTest(
           ageRating = 12,
           readingDirection = SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT,
           genres = setOf("Action"),
-          tags = setOf("tag")
+          tags = setOf("tag"),
+          totalBookCount = 5,
         )
 
         seriesMetadataRepository.update(updated)
@@ -533,7 +539,8 @@ class SeriesControllerTest(
           "readingDirection":null,
           "ageRating":null,
           "genres":null,
-          "tags":null
+          "tags":null,
+          "totalBookCount":null
         }
       """.trimIndent()
 
@@ -550,6 +557,7 @@ class SeriesControllerTest(
         assertThat(ageRating).isNull()
         assertThat(genres).isEmpty()
         assertThat(tags).isEmpty()
+        assertThat(totalBookCount).isNull()
       }
     }
   }

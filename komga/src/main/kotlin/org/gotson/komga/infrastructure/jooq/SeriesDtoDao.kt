@@ -365,7 +365,9 @@ class SeriesDtoDao(
       genres = genres,
       genresLock = genresLock,
       tags = tags,
-      tagsLock = tagsLock
+      tagsLock = tagsLock,
+      totalBookCount = totalBookCount,
+      totalBookCountLock = totalBookCountLock,
     )
 
   private fun BookMetadataAggregationRecord.toDto(authors: List<AuthorDto>) =

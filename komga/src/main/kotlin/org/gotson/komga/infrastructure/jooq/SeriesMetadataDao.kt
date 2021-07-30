@@ -68,6 +68,8 @@ class SeriesMetadataDao(
       .set(d.LANGUAGE_LOCK, metadata.languageLock)
       .set(d.GENRES_LOCK, metadata.genresLock)
       .set(d.TAGS_LOCK, metadata.tagsLock)
+      .set(d.TOTAL_BOOK_COUNT, metadata.totalBookCount)
+      .set(d.TOTAL_BOOK_COUNT_LOCK, metadata.totalBookCountLock)
       .execute()
 
     insertGenres(metadata)
@@ -95,6 +97,8 @@ class SeriesMetadataDao(
       .set(d.LANGUAGE_LOCK, metadata.languageLock)
       .set(d.GENRES_LOCK, metadata.genresLock)
       .set(d.TAGS_LOCK, metadata.tagsLock)
+      .set(d.TOTAL_BOOK_COUNT, metadata.totalBookCount)
+      .set(d.TOTAL_BOOK_COUNT_LOCK, metadata.totalBookCountLock)
       .set(d.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(d.SERIES_ID.eq(metadata.seriesId))
       .execute()
@@ -167,6 +171,7 @@ class SeriesMetadataDao(
       language = language,
       genres = genres,
       tags = tags,
+      totalBookCount = totalBookCount,
 
       statusLock = statusLock,
       titleLock = titleLock,
@@ -178,6 +183,7 @@ class SeriesMetadataDao(
       languageLock = languageLock,
       genresLock = genresLock,
       tagsLock = tagsLock,
+      totalBookCountLock = totalBookCountLock,
 
       seriesId = seriesId,
 

@@ -3,6 +3,7 @@ package org.gotson.komga.interfaces.rest.dto
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.infrastructure.validation.NullOrBlankOrBCP47
 import org.gotson.komga.infrastructure.validation.NullOrNotBlank
+import javax.validation.constraints.Positive
 import javax.validation.constraints.PositiveOrZero
 import kotlin.properties.Delegates
 
@@ -33,7 +34,7 @@ class SeriesMetadataUpdateDto {
   var publisherLock: Boolean? = null
 
   var readingDirection: SeriesMetadata.ReadingDirection?
-    by Delegates.observable<SeriesMetadata.ReadingDirection?>(null) { prop, _, _ ->
+    by Delegates.observable(null) { prop, _, _ ->
     isSet[prop.name] = true
   }
 
@@ -41,7 +42,7 @@ class SeriesMetadataUpdateDto {
 
   @get:PositiveOrZero
   var ageRating: Int?
-    by Delegates.observable<Int?>(null) { prop, _, _ ->
+    by Delegates.observable(null) { prop, _, _ ->
     isSet[prop.name] = true
   }
 
@@ -53,16 +54,24 @@ class SeriesMetadataUpdateDto {
   var languageLock: Boolean? = null
 
   var genres: Set<String>?
-    by Delegates.observable<Set<String>?>(null) { prop, _, _ ->
+    by Delegates.observable(null) { prop, _, _ ->
     isSet[prop.name] = true
   }
 
   var genresLock: Boolean? = null
 
   var tags: Set<String>?
-    by Delegates.observable<Set<String>?>(null) { prop, _, _ ->
+    by Delegates.observable(null) { prop, _, _ ->
     isSet[prop.name] = true
   }
 
   var tagsLock: Boolean? = null
+
+  @get:Positive
+  var totalBookCount: Int?
+    by Delegates.observable(null) { prop, _, _ ->
+    isSet[prop.name] = true
+  }
+
+  var totalBookCountLock: Boolean? = null
 }

@@ -443,7 +443,9 @@ class SeriesController(
           tags = if (isSet("tags")) {
             if (tags != null) tags!! else emptySet()
           } else existing.tags,
-          tagsLock = tagsLock ?: existing.tagsLock
+          tagsLock = tagsLock ?: existing.tagsLock,
+          totalBookCount = if (isSet("totalBookCount")) totalBookCount else existing.totalBookCount,
+          totalBookCountLock = totalBookCountLock ?: existing.totalBookCountLock,
         )
       }
       seriesMetadataRepository.update(updated)
