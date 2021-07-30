@@ -7,11 +7,23 @@
 
       <v-card-text>
         <v-container fluid>
+          <!--  Name  -->
           <v-row>
             <v-col>
               <v-text-field v-model="form.name"
                             :label="$t('dialog.edit_readlist.field_name')"
                             :error-messages="getErrorsName"
+                            filled
+              />
+            </v-col>
+          </v-row>
+
+          <!--  Summary  -->
+          <v-row>
+            <v-col>
+              <v-textarea v-model="form.summary"
+                          :label="$t('dialog.edit_readlist.field_summary')"
+                          filled
               />
             </v-col>
           </v-row>
@@ -47,6 +59,7 @@ export default Vue.extend({
       readLists: [] as ReadListDto[],
       form: {
         name: '',
+        summary: '',
       },
     }
   },
@@ -90,6 +103,7 @@ export default Vue.extend({
   methods: {
     async dialogReset(readList: ReadListDto) {
       this.form.name = readList.name
+      this.form.summary = readList.summary
     },
     dialogCancel() {
       this.$emit('input', false)
@@ -102,6 +116,7 @@ export default Vue.extend({
       try {
         const update = {
           name: this.form.name,
+          summary: this.form.summary,
         } as ReadListUpdateDto
 
         await this.$komgaReadLists.patchReadList(this.readList.id, update)

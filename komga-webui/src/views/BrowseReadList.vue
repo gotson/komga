@@ -63,6 +63,14 @@
 
     <v-container fluid>
 
+      <v-row v-if="readList.summary" class="px-2">
+        <v-col>
+          <read-more>{{ readList.summary }}</read-more>
+        </v-col>
+      </v-row>
+
+      <v-divider v-if="readList.summary" class="my-3"/>
+
       <item-browser
         :items.sync="books"
         :selected.sync="selectedBooks"
@@ -94,6 +102,7 @@ import {BookDto, ReadProgressUpdateDto} from '@/types/komga-books'
 import {ContextOrigin} from '@/types/context'
 import {BookSseDto, ReadListSseDto, ReadProgressSseDto} from '@/types/komga-sse'
 import {throttle} from 'lodash'
+import ReadMore from '@/components/ReadMore.vue'
 
 export default Vue.extend({
   name: 'BrowseReadList',
@@ -102,6 +111,7 @@ export default Vue.extend({
     ItemBrowser,
     ReadListActionsMenu,
     MultiSelectBar,
+    ReadMore,
   },
   data: () => {
     return {

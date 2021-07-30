@@ -365,7 +365,8 @@
       "button_cancel": "Cancel",
       "button_confirm": "Save changes",
       "dialog_title": "Edit read list",
-      "field_name": "Name"
+      "field_name": "Name",
+      "field_summary": "Summary"
     },
     "edit_series": {
       "button_cancel": "Cancel",
