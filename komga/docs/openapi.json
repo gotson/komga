@@ -171,6 +171,9 @@
       "ReadListUpdateDto": {
         "type": "object",
         "properties": {
+          "summary": {
+            "type": "string"
+          },
           "bookIds": {
             "type": "array",
             "items": {
@@ -1443,9 +1446,13 @@
           "filtered",
           "id",
           "lastModifiedDate",
-          "name"
+          "name",
+          "summary"
         ],
         "properties": {
+          "summary": {
+            "type": "string"
+          },
           "createdDate": {
             "format": "date-time",
             "type": "string"
@@ -1556,7 +1563,8 @@
           "title",
           "titleLock",
           "titleSort",
-          "titleSortLock"
+          "titleSortLock",
+          "totalBookCountLock"
         ],
         "properties": {
           "summary": {
@@ -1567,6 +1575,10 @@
           },
           "tagsLock": {
             "type": "boolean"
+          },
+          "totalBookCount": {
+            "format": "int32",
+            "type": "integer"
           },
           "created": {
             "format": "date-time",
@@ -1602,6 +1614,9 @@
             }
           },
           "summaryLock": {
+            "type": "boolean"
+          },
+          "totalBookCountLock": {
             "type": "boolean"
           },
           "readingDirectionLock": {
@@ -1668,9 +1683,13 @@
         "type": "object",
         "required": [
           "bookIds",
-          "name"
+          "name",
+          "summary"
         ],
         "properties": {
+          "summary": {
+            "type": "string"
+          },
           "bookIds": {
             "type": "array",
             "items": {
@@ -1791,6 +1810,10 @@
           "tagsLock": {
             "type": "boolean"
           },
+          "totalBookCount": {
+            "format": "int32",
+            "type": "integer"
+          },
           "language": {
             "type": "string"
           },
@@ -1827,6 +1850,9 @@
             }
           },
           "summaryLock": {
+            "type": "boolean"
+          },
+          "totalBookCountLock": {
             "type": "boolean"
           },
           "readingDirectionLock": {
@@ -1925,7 +1951,8 @@
           "created",
           "lastModified",
           "summary",
-          "summaryNumber"
+          "summaryNumber",
+          "tags"
         ],
         "properties": {
           "summary": {
@@ -1950,6 +1977,13 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/AuthorDto"
+            }
+          },
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           }
         }
@@ -3013,6 +3047,14 @@
             },
             "in": "query",
             "name": "series_id",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "readlist_id",
             "required": false
           }
         ],
@@ -4343,6 +4385,14 @@
             },
             "in": "query",
             "name": "series_id",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "readlist_id",
             "required": false
           },
           {
@@ -6697,14 +6747,6 @@
               "type": "string"
             },
             "in": "query",
-            "name": "series_id",
-            "required": false
-          },
-          {
-            "schema": {
-              "type": "string"
-            },
-            "in": "query",
             "name": "collection_id",
             "required": false
           }
@@ -6920,6 +6962,44 @@
             "schema": {
               "type": "array",
               "items": {
+                "type": "string"
+              }
+            },
+            "in": "query",
+            "name": "library_id",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "UNREAD",
+                  "READ",
+                  "IN_PROGRESS"
+                ]
+              }
+            },
+            "in": "query",
+            "name": "read_status",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "in": "query",
+            "name": "tag",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
                 "type": "string",
                 "enum": [
                   "UNKNOWN",
@@ -6965,6 +7045,17 @@
             "in": "query",
             "name": "size",
             "description": "The size of the page to be returned"
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "in": "query",
+            "name": "author",
+            "description": "Author criteria in the format: name,role. Multiple author criteria are supported."
           }
         ],
         "tags": [

@@ -1,3 +1,19 @@
+# [0.113.0](https://github.com/gotson/komga/compare/v0.112.2...v0.113.0) (2021-07-30)
+
+
+### Features
+
+* **api:** add total book count field for series metadata ([87c1432](https://github.com/gotson/komga/commit/87c14329848667ff3d223e15e29070eb5f15d2c8)), closes [#298](https://github.com/gotson/komga/issues/298)
+* **api:** filter read lists books by library, read status, tags, or authors ([c06f89f](https://github.com/gotson/komga/commit/c06f89ffc2c876b1ef3bffd3ed20697c5f822f5a))
+* **api:** search authors and tags by read list ([422876a](https://github.com/gotson/komga/commit/422876ae2fd676459ae84f54d9bd6878828d714d))
+* **api:** summary field for read lists ([1148e46](https://github.com/gotson/komga/commit/1148e46d9043df134549bc6f3911674f1898b3e0)), closes [#558](https://github.com/gotson/komga/issues/558)
+* **webui:** add filter panel in BrowseReadList view ([b8effd4](https://github.com/gotson/komga/commit/b8effd44531de86b6392b24bf7ed0ea2eb25756f)), closes [#580](https://github.com/gotson/komga/issues/580)
+* **webui:** add summary for read list browsing and edit dialog ([883fed3](https://github.com/gotson/komga/commit/883fed39408b8f55920937075a05d1939e5c008f)), closes [#558](https://github.com/gotson/komga/issues/558)
+* **webui:** display and filter series aggregated book tags ([bb1eb36](https://github.com/gotson/komga/commit/bb1eb36daec6d983300702487163d49211b94543)), closes [#513](https://github.com/gotson/komga/issues/513)
+* aggregate book tags at series level ([0c9a063](https://github.com/gotson/komga/commit/0c9a063cc3d28a6ada2eedec0ffd6e72eee378ba)), closes [#513](https://github.com/gotson/komga/issues/513)
+* import total book count from ComicInfo.xml and Mylar series.json ([64acfef](https://github.com/gotson/komga/commit/64acfeff99a732d3819bb9b012f020369cece325)), closes [#450](https://github.com/gotson/komga/issues/450)
+* **webui:** show and edit total book count for series ([6090e3f](https://github.com/gotson/komga/commit/6090e3f0c5ac9dffa7768fd5f3948c23c6a5f8a9)), closes [#298](https://github.com/gotson/komga/issues/298)
+
 ## [0.112.2](https://github.com/gotson/komga/compare/v0.112.1...v0.112.2) (2021-07-30)
 
 
