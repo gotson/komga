@@ -7,6 +7,7 @@ import java.util.SortedMap
 
 data class ReadList(
   val name: String,
+  val summary: String = "",
 
   val bookIds: SortedMap<Int, String> = sortedMapOf(),
 

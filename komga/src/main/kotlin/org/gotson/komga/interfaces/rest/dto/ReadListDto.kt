@@ -7,6 +7,7 @@ import java.time.LocalDateTime
 data class ReadListDto(
   val id: String,
   val name: String,
+  val summary: String,
 
   val bookIds: List<String>,
 
@@ -22,6 +23,7 @@ fun ReadList.toDto() =
   ReadListDto(
     id = id,
     name = name,
+    summary = summary,
     bookIds = bookIds.values.toList(),
     createdDate = createdDate.toUTC(),
     lastModifiedDate = lastModifiedDate.toUTC(),

@@ -60,6 +60,7 @@ class ReadListDaoTest(
 
     val readList = ReadList(
       name = "MyReadList",
+      summary = "summary",
       bookIds = books.map { it.id }.toIndexedMap()
     )
 
@@ -71,6 +72,7 @@ class ReadListDaoTest(
 
     // then
     assertThat(created.name).isEqualTo(readList.name)
+    assertThat(created.summary).isEqualTo(readList.summary)
     assertThat(created.createdDate)
       .isEqualTo(created.lastModifiedDate)
       .isCloseTo(now, offset)
@@ -95,6 +97,7 @@ class ReadListDaoTest(
     // when
     val updatedReadList = readList.copy(
       name = "UpdatedReadList",
+      summary = "summary",
       bookIds = readList.bookIds.values.take(5).toIndexedMap()
     )
 
@@ -104,6 +107,7 @@ class ReadListDaoTest(
 
     // then
     assertThat(updated.name).isEqualTo(updatedReadList.name)
+    assertThat(updated.summary).isEqualTo(updatedReadList.summary)
     assertThat(updated.createdDate).isNotEqualTo(updated.lastModifiedDate)
     assertThat(updated.lastModifiedDate).isCloseTo(now, offset)
     assertThat(updated.bookIds.values)

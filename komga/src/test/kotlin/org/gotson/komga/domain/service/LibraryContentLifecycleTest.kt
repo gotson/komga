@@ -707,7 +707,7 @@ class LibraryContentLifecycleTest(
 
       bookRepository.findByIdOrNull(book.id)?.let {
         bookRepository.update(it.copy(fileHash = "sameHash"))
-        readListLifecycle.addReadList(ReadList("read list", listOf(it.id).toIndexedMap()))
+        readListLifecycle.addReadList(ReadList("read list", bookIds = listOf(it.id).toIndexedMap()))
       }
 
       every { mockHasher.computeHash(any()) } returns "sameHash"
@@ -1065,7 +1065,7 @@ class LibraryContentLifecycleTest(
 
       bookRepository.findByIdOrNull(book2.id)?.let {
         bookRepository.update(it.copy(fileHash = "sameHash"))
-        readListLifecycle.addReadList(ReadList("read list", listOf(it.id).toIndexedMap()))
+        readListLifecycle.addReadList(ReadList("read list", bookIds = listOf(it.id).toIndexedMap()))
       }
 
       every { mockHasher.computeHash(any()) } returns "sameHash"

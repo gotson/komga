@@ -187,6 +187,7 @@ class ReadListDao(
     dsl.insertInto(rl)
       .set(rl.ID, readList.id)
       .set(rl.NAME, readList.name)
+      .set(rl.SUMMARY, readList.summary)
       .set(rl.BOOK_COUNT, readList.bookIds.size)
       .execute()
 
@@ -207,6 +208,7 @@ class ReadListDao(
   override fun update(readList: ReadList) {
     dsl.update(rl)
       .set(rl.NAME, readList.name)
+      .set(rl.SUMMARY, readList.summary)
       .set(rl.BOOK_COUNT, readList.bookIds.size)
       .set(rl.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(rl.ID.eq(readList.id))
@@ -263,6 +265,7 @@ class ReadListDao(
   private fun ReadlistRecord.toDomain(bookIds: SortedMap<Int, String>) =
     ReadList(
       name = name,
+      summary = summary,
       bookIds = bookIds,
       id = id,
       createdDate = createdDate.toCurrentTimeZone(),

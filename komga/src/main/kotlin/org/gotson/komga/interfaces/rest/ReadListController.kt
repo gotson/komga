@@ -145,6 +145,7 @@ class ReadListController(
       readListLifecycle.addReadList(
         ReadList(
           name = readList.name,
+          summary = readList.summary,
           bookIds = readList.bookIds.toIndexedMap()
         )
       ).toDto()
@@ -169,6 +170,7 @@ class ReadListController(
     readListRepository.findByIdOrNull(id)?.let { existing ->
       val updated = existing.copy(
         name = readList.name ?: existing.name,
+        summary = readList.summary ?: existing.summary,
         bookIds = readList.bookIds?.toIndexedMap() ?: existing.bookIds
       )
       try {
