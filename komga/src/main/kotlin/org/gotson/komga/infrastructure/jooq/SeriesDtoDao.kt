@@ -56,6 +56,7 @@ class SeriesDtoDao(
     private val st = Tables.SERIES_METADATA_TAG
     private val bma = Tables.BOOK_METADATA_AGGREGATION
     private val bmaa = Tables.BOOK_METADATA_AGGREGATION_AUTHOR
+    private val bmat = Tables.BOOK_METADATA_AGGREGATION_TAG
     private val fts = Tables.FTS_SERIES_METADATA
 
     val countUnread: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isNull, 1).otherwise(0))
@@ -125,7 +126,11 @@ class SeriesDtoDao(
         .leftJoin(bma).on(s.ID.eq(bma.SERIES_ID))
         .leftJoin(rs).on(s.ID.eq(rs.SERIES_ID)).and(readProgressConditionSeries(userId))
         .apply { if (joinConditions.genre) leftJoin(g).on(s.ID.eq(g.SERIES_ID)) }
-        .apply { if (joinConditions.tag) leftJoin(st).on(s.ID.eq(st.SERIES_ID)) }
+        .apply {
+          if (joinConditions.tag)
+            leftJoin(st).on(s.ID.eq(st.SERIES_ID))
+              .leftJoin(bmat).on(s.ID.eq(bmat.SERIES_ID))
+        }
         .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
         .apply { if (joinConditions.aggregationAuthor) leftJoin(bmaa).on(s.ID.eq(bmaa.SERIES_ID)) }
         .where(conditions)
@@ -161,7 +166,11 @@ class SeriesDtoDao(
       .leftJoin(bma).on(s.ID.eq(bma.SERIES_ID))
       .leftJoin(rs).on(s.ID.eq(rs.SERIES_ID)).and(readProgressConditionSeries(userId))
       .apply { if (joinConditions.genre) leftJoin(g).on(s.ID.eq(g.SERIES_ID)) }
-      .apply { if (joinConditions.tag) leftJoin(st).on(s.ID.eq(st.SERIES_ID)) }
+      .apply {
+        if (joinConditions.tag)
+          leftJoin(st).on(s.ID.eq(st.SERIES_ID))
+            .leftJoin(bmat).on(s.ID.eq(bmat.SERIES_ID))
+      }
       .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
       .apply { if (joinConditions.aggregationAuthor) leftJoin(bmaa).on(s.ID.eq(bmaa.SERIES_ID)) }
 
@@ -179,7 +188,11 @@ class SeriesDtoDao(
         .leftJoin(bma).on(s.ID.eq(bma.SERIES_ID))
         .leftJoin(rs).on(s.ID.eq(rs.SERIES_ID)).and(readProgressConditionSeries(userId))
         .apply { if (joinConditions.genre) leftJoin(g).on(s.ID.eq(g.SERIES_ID)) }
-        .apply { if (joinConditions.tag) leftJoin(st).on(s.ID.eq(st.SERIES_ID)) }
+        .apply {
+          if (joinConditions.tag)
+            leftJoin(st).on(s.ID.eq(st.SERIES_ID))
+              .leftJoin(bmat).on(s.ID.eq(bmat.SERIES_ID))
+        }
         .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
         .apply { if (joinConditions.aggregationAuthor) leftJoin(bmaa).on(s.ID.eq(bmaa.SERIES_ID)) }
         .where(conditions)
@@ -238,13 +251,17 @@ class SeriesDtoDao(
           .filter { it.name != null }
           .map { AuthorDto(it.name, it.role) }
 
+        val aggregatedTags = dsl.selectFrom(bmat)
+          .where(bmat.SERIES_ID.eq(sr.id))
+          .fetchSet(bmat.TAG)
+
         sr.toDto(
           sr.bookCount,
           booksReadCount,
           booksUnreadCount,
           booksInProgressCount,
           dr.toDto(genres, tags),
-          bmar.toDto(aggregatedAuthors)
+          bmar.toDto(aggregatedAuthors, aggregatedTags)
         )
       }
 
@@ -261,12 +278,10 @@ class SeriesDtoDao(
     if (deleted == false) c = c.and(s.DELETED_DATE.isNull)
     if (!languages.isNullOrEmpty()) c = c.and(lower(d.LANGUAGE).`in`(languages.map { it.lowercase() }))
     if (!genres.isNullOrEmpty()) c = c.and(lower(g.GENRE).`in`(genres.map { it.lowercase() }))
-    if (!tags.isNullOrEmpty()) c = c.and(lower(st.TAG).`in`(tags.map { it.lowercase() }))
+    if (!tags.isNullOrEmpty()) c = c.and(lower(st.TAG).`in`(tags.map { it.lowercase() }).or(lower(bmat.TAG).`in`(tags.map { it.lowercase() })))
     if (!ageRatings.isNullOrEmpty()) {
       val c1 = if (ageRatings.contains(null)) d.AGE_RATING.isNull else DSL.falseCondition()
-      val c2 = if (ageRatings.filterNotNull()
-        .isNotEmpty()
-      ) d.AGE_RATING.`in`(ageRatings.filterNotNull()) else DSL.falseCondition()
+      val c2 = if (ageRatings.filterNotNull().isNotEmpty()) d.AGE_RATING.`in`(ageRatings.filterNotNull()) else DSL.falseCondition()
       c = c.and(c1.or(c2))
     }
     // cast to String is necessary for SQLite, else the years in the IN block are coerced to Int, even though YEAR for SQLite uses strftime (string)
@@ -370,9 +385,10 @@ class SeriesDtoDao(
       totalBookCountLock = totalBookCountLock,
     )
 
-  private fun BookMetadataAggregationRecord.toDto(authors: List<AuthorDto>) =
+  private fun BookMetadataAggregationRecord.toDto(authors: List<AuthorDto>, tags: Set<String>) =
     BookMetadataAggregationDto(
       authors = authors,
+      tags = tags,
       releaseDate = releaseDate,
       summary = summary,
       summaryNumber = summaryNumber,

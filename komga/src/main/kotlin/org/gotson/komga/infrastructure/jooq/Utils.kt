@@ -5,7 +5,6 @@ import org.jooq.Condition
 import org.jooq.Field
 import org.jooq.SortField
 import org.jooq.Table
-import org.jooq.TableField
 import org.jooq.impl.DSL
 import org.springframework.data.domain.Sort
 import org.sqlite.SQLiteException
@@ -25,7 +24,7 @@ fun Sort.toOrderBy(sorts: Map<String, Field<out Any>>): List<SortField<out Any>>
 fun LocalDateTime.toCurrentTimeZone(): LocalDateTime =
   this.atZone(ZoneId.of("Z")).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
 
-fun TableField<*, String>.udfStripAccents() =
+fun Field<String>.udfStripAccents() =
   DSL.function(SqliteUdfDataSource.udfStripAccents, String::class.java, this)
 
 fun Table<*>.match(term: String): Condition =

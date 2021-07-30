@@ -12,13 +12,14 @@ class MetadataAggregatorTest {
   @Test
   fun `given metadatas when aggregating then aggregation is relevant`() {
     val metadatas = listOf(
-      BookMetadata(title = "ignored", summary = "summary 1", number = "1", numberSort = 1F, authors = listOf(Author("author1", "role1"), Author("author2", "role2")), releaseDate = LocalDate.of(2020, 1, 1)),
-      BookMetadata(title = "ignored", summary = "summary 2", number = "2", numberSort = 2F, authors = listOf(Author("author3", "role3"), Author("author2", "role3")), releaseDate = LocalDate.of(2021, 1, 1)),
+      BookMetadata(title = "ignored", summary = "summary 1", number = "1", numberSort = 1F, authors = listOf(Author("author1", "role1"), Author("author2", "role2")), releaseDate = LocalDate.of(2020, 1, 1), tags = setOf("tag1")),
+      BookMetadata(title = "ignored", summary = "summary 2", number = "2", numberSort = 2F, authors = listOf(Author("author3", "role3"), Author("author2", "role3")), releaseDate = LocalDate.of(2021, 1, 1), tags = setOf("tag2")),
     )
 
     val aggregation = aggregator.aggregate(metadatas)
 
     assertThat(aggregation.authors).hasSize(4)
+    assertThat(aggregation.tags).hasSize(2)
     assertThat(aggregation.releaseDate?.year).isEqualTo(2020)
     assertThat(aggregation.summary).isEqualTo("summary 1")
     assertThat(aggregation.summaryNumber).isEqualTo("1")
@@ -50,14 +51,15 @@ class MetadataAggregatorTest {
   }
 
   @Test
-  fun `given metadatas with duplicate authors when aggregating then aggregation has no duplicate authors`() {
+  fun `given metadatas with duplicate authors or tags when aggregating then aggregation has no duplicates`() {
     val metadatas = listOf(
-      BookMetadata(title = "ignored", number = "1", numberSort = 1F, authors = listOf(Author("author1", "role1"), Author("author2", "role2"))),
-      BookMetadata(title = "ignored", number = "2", numberSort = 2F, authors = listOf(Author("author1", "role1"), Author("author2", "role2"))),
+      BookMetadata(title = "ignored", number = "1", numberSort = 1F, authors = listOf(Author("author1", "role1"), Author("author2", "role2")), tags = setOf("tag1", "tag2")),
+      BookMetadata(title = "ignored", number = "2", numberSort = 2F, authors = listOf(Author("author1", "role1"), Author("author2", "role2")), tags = setOf("tag1")),
     )
 
     val aggregation = aggregator.aggregate(metadatas)
 
     assertThat(aggregation.authors).hasSize(2)
+    assertThat(aggregation.tags).hasSize(2)
   }
 }

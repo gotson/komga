@@ -23,6 +23,8 @@ interface ReferentialRepository {
   fun findAllGenresByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<String>
 
   fun findAllSeriesAndBookTags(filterOnLibraryIds: Collection<String>?): Set<String>
+  fun findAllSeriesAndBookTagsByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<String>
+  fun findAllSeriesAndBookTagsByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<String>
   fun findAllSeriesTags(filterOnLibraryIds: Collection<String>?): Set<String>
   fun findAllSeriesTagsByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<String>
   fun findAllSeriesTagsByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<String>

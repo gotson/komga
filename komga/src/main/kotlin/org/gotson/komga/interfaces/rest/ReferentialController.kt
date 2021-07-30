@@ -93,15 +93,12 @@ class ReferentialController(
   @GetMapping("v1/tags")
   fun getTags(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    // TODO: remove those parameters once Tachiyomi Extension is using the new /tags/series endpoint (changed in 0.87.4 - 21 Apr 2021)
     @RequestParam(name = "library_id", required = false) libraryId: String?,
-    @RequestParam(name = "series_id", required = false) seriesId: String?,
     @RequestParam(name = "collection_id", required = false) collectionId: String?
   ): Set<String> =
     when {
-      libraryId != null -> referentialRepository.findAllSeriesTagsByLibrary(libraryId, principal.user.getAuthorizedLibraryIds(null))
-      seriesId != null -> referentialRepository.findAllBookTagsBySeries(seriesId, principal.user.getAuthorizedLibraryIds(null))
-      collectionId != null -> referentialRepository.findAllSeriesTagsByCollection(collectionId, principal.user.getAuthorizedLibraryIds(null))
+      libraryId != null -> referentialRepository.findAllSeriesAndBookTagsByLibrary(libraryId, principal.user.getAuthorizedLibraryIds(null))
+      collectionId != null -> referentialRepository.findAllSeriesAndBookTagsByCollection(collectionId, principal.user.getAuthorizedLibraryIds(null))
       else -> referentialRepository.findAllSeriesAndBookTags(principal.user.getAuthorizedLibraryIds(null))
     }
 

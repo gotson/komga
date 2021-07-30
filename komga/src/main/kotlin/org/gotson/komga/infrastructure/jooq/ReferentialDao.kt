@@ -31,6 +31,7 @@ class ReferentialDao(
   private val sd = Tables.SERIES_METADATA
   private val bma = Tables.BOOK_METADATA_AGGREGATION
   private val bmaa = Tables.BOOK_METADATA_AGGREGATION_AUTHOR
+  private val bmat = Tables.BOOK_METADATA_AGGREGATION_TAG
   private val s = Tables.SERIES
   private val b = Tables.BOOK
   private val g = Tables.SERIES_METADATA_GENRE
@@ -212,21 +213,47 @@ class ReferentialDao(
   override fun findAllSeriesAndBookTags(filterOnLibraryIds: Collection<String>?): Set<String> =
     dsl.select(bt.TAG.`as`("tag"))
       .from(bt)
-      .apply {
-        filterOnLibraryIds?.let {
-          leftJoin(b).on(bt.BOOK_ID.eq(b.ID))
-            .where(b.LIBRARY_ID.`in`(it))
-        }
-      }
+      .apply { filterOnLibraryIds?.let { leftJoin(b).on(bt.BOOK_ID.eq(b.ID)).where(b.LIBRARY_ID.`in`(it)) } }
       .union(
         select(st.TAG.`as`("tag"))
           .from(st)
-          .apply {
-            filterOnLibraryIds?.let {
-              leftJoin(s).on(st.SERIES_ID.eq(s.ID))
-                .where(s.LIBRARY_ID.`in`(it))
-            }
-          }
+          .apply { filterOnLibraryIds?.let { leftJoin(s).on(st.SERIES_ID.eq(s.ID)).where(s.LIBRARY_ID.`in`(it)) } }
+      )
+      .fetchSet(0, String::class.java)
+      .sortedBy { it.stripAccents().lowercase() }
+      .toSet()
+
+  override fun findAllSeriesAndBookTagsByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
+    dsl.select(bt.TAG.`as`("tag"))
+      .from(bt)
+      .leftJoin(b).on(bt.BOOK_ID.eq(b.ID))
+      .where(b.LIBRARY_ID.eq(libraryId))
+      .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
+      .union(
+        select(st.TAG.`as`("tag"))
+          .from(st)
+          .leftJoin(s).on(st.SERIES_ID.eq(s.ID))
+          .where(s.LIBRARY_ID.eq(libraryId))
+          .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
+      )
+      .fetchSet(0, String::class.java)
+      .sortedBy { it.stripAccents().lowercase() }
+      .toSet()
+
+  override fun findAllSeriesAndBookTagsByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
+    dsl.select(bmat.TAG.`as`("tag"))
+      .from(bmat)
+      .leftJoin(s).on(bmat.SERIES_ID.eq(s.ID))
+      .leftJoin(cs).on(bmat.SERIES_ID.eq(cs.SERIES_ID))
+      .where(cs.COLLECTION_ID.eq(collectionId))
+      .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
+      .union(
+        select(st.TAG.`as`("tag"))
+          .from(st)
+          .leftJoin(cs).on(st.SERIES_ID.eq(cs.SERIES_ID))
+          .leftJoin(s).on(st.SERIES_ID.eq(s.ID))
+          .where(cs.COLLECTION_ID.eq(collectionId))
+          .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
       )
       .fetchSet(0, String::class.java)
       .sortedBy { it.stripAccents().lowercase() }

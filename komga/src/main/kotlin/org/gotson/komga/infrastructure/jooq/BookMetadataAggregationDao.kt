@@ -19,6 +19,7 @@ class BookMetadataAggregationDao(
 
   private val d = Tables.BOOK_METADATA_AGGREGATION
   private val a = Tables.BOOK_METADATA_AGGREGATION_AUTHOR
+  private val t = Tables.BOOK_METADATA_AGGREGATION_TAG
 
   private val groupFields = arrayOf(*d.fields(), *a.fields())
 
@@ -32,13 +33,22 @@ class BookMetadataAggregationDao(
     dsl.select(*groupFields)
       .from(d)
       .leftJoin(a).on(d.SERIES_ID.eq(a.SERIES_ID))
+      .leftJoin(t).on(d.SERIES_ID.eq(t.SERIES_ID))
       .where(d.SERIES_ID.`in`(seriesIds))
       .groupBy(*groupFields)
       .fetchGroups(
         { it.into(d) }, { it.into(a) }
       ).map { (dr, ar) ->
-        dr.toDomain(ar.filterNot { it.name == null }.map { it.toDomain() })
+        dr.toDomain(ar.filterNot { it.name == null }.map { it.toDomain() }, findTags(dr.seriesId))
       }
+
+  private fun findTags(seriesId: String) =
+    dsl.select(t.TAG)
+      .from(t)
+      .where(t.SERIES_ID.eq(seriesId))
+      .fetchInto(t)
+      .mapNotNull { it.tag }
+      .toSet()
 
   @Transactional
   override fun insert(metadata: BookMetadataAggregation) {
@@ -50,6 +60,7 @@ class BookMetadataAggregationDao(
       .execute()
 
     insertAuthors(metadata)
+    insertTags(metadata)
   }
 
   @Transactional
@@ -66,7 +77,12 @@ class BookMetadataAggregationDao(
       .where(a.SERIES_ID.eq(metadata.seriesId))
       .execute()
 
+    dsl.deleteFrom(t)
+      .where(t.SERIES_ID.eq(metadata.seriesId))
+      .execute()
+
     insertAuthors(metadata)
+    insertTags(metadata)
   }
 
   private fun insertAuthors(metadata: BookMetadataAggregation) {
@@ -82,23 +98,39 @@ class BookMetadataAggregationDao(
     }
   }
 
+  private fun insertTags(metadata: BookMetadataAggregation) {
+    if (metadata.tags.isNotEmpty()) {
+      dsl.batch(
+        dsl.insertInto(t, t.SERIES_ID, t.TAG)
+          .values(null as String?, null)
+      ).also { step ->
+        metadata.tags.forEach {
+          step.bind(metadata.seriesId, it)
+        }
+      }.execute()
+    }
+  }
+
   @Transactional
   override fun delete(seriesId: String) {
     dsl.deleteFrom(a).where(a.SERIES_ID.eq(seriesId)).execute()
+    dsl.deleteFrom(t).where(t.SERIES_ID.eq(seriesId)).execute()
     dsl.deleteFrom(d).where(d.SERIES_ID.eq(seriesId)).execute()
   }
 
   @Transactional
   override fun delete(seriesIds: Collection<String>) {
     dsl.deleteFrom(a).where(a.SERIES_ID.`in`(seriesIds)).execute()
+    dsl.deleteFrom(t).where(t.SERIES_ID.`in`(seriesIds)).execute()
     dsl.deleteFrom(d).where(d.SERIES_ID.`in`(seriesIds)).execute()
   }
 
   override fun count(): Long = dsl.fetchCount(d).toLong()
 
-  private fun BookMetadataAggregationRecord.toDomain(authors: List<Author>) =
+  private fun BookMetadataAggregationRecord.toDomain(authors: List<Author>, tags: Set<String>) =
     BookMetadataAggregation(
       authors = authors,
+      tags = tags,
       releaseDate = releaseDate,
       summary = summary,
       summaryNumber = summaryNumber,
