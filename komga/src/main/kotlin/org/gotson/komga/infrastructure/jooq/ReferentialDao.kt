@@ -38,6 +38,7 @@ class ReferentialDao(
   private val bt = Tables.BOOK_METADATA_TAG
   private val st = Tables.SERIES_METADATA_TAG
   private val cs = Tables.COLLECTION_SERIES
+  private val rb = Tables.READLIST_BOOK
   private val ftsAuthors = Tables.FTS_BOOK_METADATA_AGGREGATION_AUTHOR
 
   override fun findAllAuthorsByName(search: String, filterOnLibraryIds: Collection<String>?): List<Author> =
@@ -100,10 +101,15 @@ class ReferentialDao(
     return findAuthorsByName(search, role, filterOnLibraryIds, pageable, FilterBy(FilterByType.SERIES, seriesId))
   }
 
+  override fun findAllAuthorsByNameAndReadList(search: String?, role: String?, readListId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author> {
+    return findAuthorsByName(search, role, filterOnLibraryIds, pageable, FilterBy(FilterByType.READLIST, readListId))
+  }
+
   private enum class FilterByType {
     LIBRARY,
     COLLECTION,
     SERIES,
+    READLIST,
   }
 
   private data class FilterBy(
@@ -118,6 +124,11 @@ class ReferentialDao(
         .apply { if (!search.isNullOrBlank()) join(ftsAuthors).on(ftsAuthors.rowid().eq(bmaa.rowid())) }
         .apply { if (filterOnLibraryIds != null || filterBy?.type == FilterByType.LIBRARY) leftJoin(s).on(bmaa.SERIES_ID.eq(s.ID)) }
         .apply { if (filterBy?.type == FilterByType.COLLECTION) leftJoin(cs).on(bmaa.SERIES_ID.eq(cs.SERIES_ID)) }
+        .apply {
+          if (filterBy?.type == FilterByType.READLIST)
+            leftJoin(b).on(bmaa.SERIES_ID.eq(b.SERIES_ID))
+              .leftJoin(rb).on(b.ID.eq(rb.BOOK_ID))
+        }
         .where(trueCondition())
         .apply { if (!search.isNullOrBlank()) and(ftsAuthors.match(search)) }
         .apply { role?.let { and(bmaa.ROLE.eq(role)) } }
@@ -128,6 +139,7 @@ class ReferentialDao(
               FilterByType.LIBRARY -> and(s.LIBRARY_ID.eq(it.id))
               FilterByType.COLLECTION -> and(cs.COLLECTION_ID.eq(it.id))
               FilterByType.SERIES -> and(bmaa.SERIES_ID.eq(it.id))
+              FilterByType.READLIST -> and(rb.READLIST_ID.eq(it.id))
             }
           }
         }
@@ -285,6 +297,16 @@ class ReferentialDao(
       .from(bt)
       .leftJoin(b).on(bt.BOOK_ID.eq(b.ID))
       .where(b.SERIES_ID.eq(seriesId))
+      .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
+      .orderBy(lower(bt.TAG.udfStripAccents()))
+      .fetchSet(bt.TAG)
+
+  override fun findAllBookTagsByReadList(readListId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
+    dsl.select(bt.TAG)
+      .from(bt)
+      .leftJoin(b).on(bt.BOOK_ID.eq(b.ID))
+      .leftJoin(rb).on(bt.BOOK_ID.eq(rb.BOOK_ID))
+      .where(rb.READLIST_ID.eq(readListId))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
       .orderBy(lower(bt.TAG.udfStripAccents()))
       .fetchSet(bt.TAG)

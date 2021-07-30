@@ -17,6 +17,7 @@ interface ReferentialRepository {
   fun findAllAuthorsByNameAndLibrary(search: String?, role: String?, libraryId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author>
   fun findAllAuthorsByNameAndCollection(search: String?, role: String?, collectionId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author>
   fun findAllAuthorsByNameAndSeries(search: String?, role: String?, seriesId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author>
+  fun findAllAuthorsByNameAndReadList(search: String?, role: String?, readListId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author>
 
   fun findAllGenres(filterOnLibraryIds: Collection<String>?): Set<String>
   fun findAllGenresByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<String>
@@ -30,6 +31,7 @@ interface ReferentialRepository {
   fun findAllSeriesTagsByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<String>
   fun findAllBookTags(filterOnLibraryIds: Collection<String>?): Set<String>
   fun findAllBookTagsBySeries(seriesId: String, filterOnLibraryIds: Collection<String>?): Set<String>
+  fun findAllBookTagsByReadList(readListId: String, filterOnLibraryIds: Collection<String>?): Set<String>
 
   fun findAllLanguages(filterOnLibraryIds: Collection<String>?): Set<String>
   fun findAllLanguagesByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<String>
