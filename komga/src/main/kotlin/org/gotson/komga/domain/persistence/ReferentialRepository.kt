@@ -13,10 +13,10 @@ interface ReferentialRepository {
   fun findAllAuthorsNamesByName(search: String, filterOnLibraryIds: Collection<String>?): List<String>
   fun findAllAuthorsRoles(filterOnLibraryIds: Collection<String>?): List<String>
 
-  fun findAllAuthorsByName(search: String, role: String?, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author>
-  fun findAllAuthorsByNameAndLibrary(search: String, role: String?, libraryId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author>
-  fun findAllAuthorsByNameAndCollection(search: String, role: String?, collectionId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author>
-  fun findAllAuthorsByNameAndSeries(search: String, role: String?, seriesId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author>
+  fun findAllAuthorsByName(search: String?, role: String?, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author>
+  fun findAllAuthorsByNameAndLibrary(search: String?, role: String?, libraryId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author>
+  fun findAllAuthorsByNameAndCollection(search: String?, role: String?, collectionId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author>
+  fun findAllAuthorsByNameAndSeries(search: String?, role: String?, seriesId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<Author>
 
   fun findAllGenres(filterOnLibraryIds: Collection<String>?): Set<String>
   fun findAllGenresByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<String>

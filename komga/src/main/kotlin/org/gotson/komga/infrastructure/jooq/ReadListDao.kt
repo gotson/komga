@@ -51,8 +51,8 @@ class ReadListDao(
       .firstOrNull()
 
   override fun findAll(search: String?, pageable: Pageable): Page<ReadList> {
-    val conditions = search?.let { searchCondition(it) }
-      ?: DSL.trueCondition()
+    val conditions = if (!search.isNullOrBlank()) searchCondition(search)
+    else DSL.trueCondition()
 
     return try {
       val count = dsl.selectCount()
@@ -87,7 +87,7 @@ class ReadListDao(
 
   override fun findAllByLibraryIds(belongsToLibraryIds: Collection<String>, filterOnLibraryIds: Collection<String>?, search: String?, pageable: Pageable): Page<ReadList> {
     val conditions = b.LIBRARY_ID.`in`(belongsToLibraryIds)
-      .apply { search?.let { and(searchCondition(it)) } }
+      .apply { if (!search.isNullOrBlank()) and(searchCondition(search)) }
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
 
     return try {

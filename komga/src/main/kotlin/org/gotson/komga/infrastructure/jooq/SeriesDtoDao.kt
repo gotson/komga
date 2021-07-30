@@ -251,7 +251,7 @@ class SeriesDtoDao(
   private fun SeriesSearchWithReadProgress.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()
 
-    searchTerm?.let { c = c.and(fts.match(it)) }
+    if (!searchTerm.isNullOrBlank()) c = c.and(fts.match(searchTerm))
     if (!libraryIds.isNullOrEmpty()) c = c.and(s.LIBRARY_ID.`in`(libraryIds))
     if (!collectionIds.isNullOrEmpty()) c = c.and(cs.COLLECTION_ID.`in`(collectionIds))
     searchRegex?.let { c = c.and((it.second.toColumn()).likeRegex(it.first)) }

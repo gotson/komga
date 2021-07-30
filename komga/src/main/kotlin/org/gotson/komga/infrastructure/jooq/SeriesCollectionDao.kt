@@ -50,8 +50,8 @@ class SeriesCollectionDao(
       .firstOrNull()
 
   override fun findAll(search: String?, pageable: Pageable): Page<SeriesCollection> {
-    val conditions = search?.let { searchCondition(search) }
-      ?: DSL.trueCondition()
+    val conditions = if (!search.isNullOrBlank()) searchCondition(search)
+    else DSL.trueCondition()
 
     return try {
       val count = dsl.selectCount()
@@ -86,7 +86,7 @@ class SeriesCollectionDao(
 
   override fun findAllByLibraryIds(belongsToLibraryIds: Collection<String>, filterOnLibraryIds: Collection<String>?, search: String?, pageable: Pageable): Page<SeriesCollection> {
     val conditions = s.LIBRARY_ID.`in`(belongsToLibraryIds)
-      .apply { search?.let { and(searchCondition(it)) } }
+      .apply { if (!search.isNullOrBlank()) and(searchCondition(search)) }
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
 
     return try {

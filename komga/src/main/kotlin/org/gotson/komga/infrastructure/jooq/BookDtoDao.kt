@@ -281,7 +281,7 @@ class BookDtoDao(
   private fun BookSearchWithReadProgress.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()
 
-    searchTerm?.let { c = c.and(fts.match(it)) }
+    if (!searchTerm.isNullOrBlank()) c = c.and(fts.match(searchTerm))
     if (!libraryIds.isNullOrEmpty()) c = c.and(b.LIBRARY_ID.`in`(libraryIds))
     if (!seriesIds.isNullOrEmpty()) c = c.and(b.SERIES_ID.`in`(seriesIds))
     if (!mediaStatus.isNullOrEmpty()) c = c.and(m.STATUS.`in`(mediaStatus))

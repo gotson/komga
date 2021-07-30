@@ -42,8 +42,8 @@ class ReferentialController(
   @GetMapping("v2/authors")
   fun getAuthors(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestParam(name = "search", defaultValue = "") search: String,
-    @RequestParam(name = "role") role: String?,
+    @RequestParam(name = "search", required = false) search: String?,
+    @RequestParam(name = "role", required = false) role: String?,
     @RequestParam(name = "library_id", required = false) libraryId: String?,
     @RequestParam(name = "collection_id", required = false) collectionId: String?,
     @RequestParam(name = "series_id", required = false) seriesId: String?,
