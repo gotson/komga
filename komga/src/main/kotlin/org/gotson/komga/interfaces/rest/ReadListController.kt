@@ -5,18 +5,22 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
+import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ReadList
+import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.ReadListLifecycle
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.language.toIndexedMap
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
+import org.gotson.komga.infrastructure.swagger.AuthorsAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
+import org.gotson.komga.infrastructure.web.Authors
 import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.ReadListCreationDto
 import org.gotson.komga.interfaces.rest.dto.ReadListDto
@@ -193,13 +197,18 @@ class ReadListController(
   }
 
   @PageableWithoutSortAsQueryParam
+  @AuthorsAsQueryParam
   @GetMapping("{id}/books")
   fun getBooksForReadList(
     @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
+    @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
+    @RequestParam(name = "tag", required = false) tags: List<String>?,
     @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
     @RequestParam(name = "deleted", required = false) deleted: Boolean?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
+    @Parameter(hidden = true) @Authors authors: List<Author>?,
     @Parameter(hidden = true) page: Pageable
   ): Page<BookDto> =
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
@@ -213,14 +222,20 @@ class ReadListController(
           sort
         )
 
+      val bookSearch = BookSearchWithReadProgress(
+        libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
+        readStatus = readStatus,
+        mediaStatus = mediaStatus,
+        deleted = deleted,
+        tags = tags,
+        authors = authors,
+      )
+
       bookDtoRepository.findAllByReadListId(
         readList.id,
         principal.user.id,
         principal.user.getAuthorizedLibraryIds(null),
-        BookSearchWithReadProgress(
-          mediaStatus = mediaStatus,
-          deleted = deleted,
-        ),
+        bookSearch,
         pageRequest
       )
         .map { it.restrictUrl(!principal.user.roleAdmin) }

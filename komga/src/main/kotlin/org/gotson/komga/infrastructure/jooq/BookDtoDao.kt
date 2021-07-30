@@ -83,7 +83,7 @@ class BookDtoDao(
   ): Page<BookDto> {
     val conditions = rlb.READLIST_ID.eq(readListId).and(search.toCondition())
 
-    return findAll(conditions, userId, pageable, JoinConditions(selectReadListNumber = true), filterOnLibraryIds)
+    return findAll(conditions, userId, pageable, search.toJoinConditions().copy(selectReadListNumber = true), filterOnLibraryIds)
   }
 
   private fun findAll(
