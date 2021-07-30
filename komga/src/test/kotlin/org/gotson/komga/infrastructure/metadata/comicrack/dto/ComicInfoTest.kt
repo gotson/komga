@@ -48,7 +48,7 @@ class ComicInfoTest {
       assertThat(notes).isEqualTo("Scraped metadata from Comixology [CMXDB727888], [RELDATE:2018-10-30]")
       assertThat(publisher).isEqualTo("DC")
       assertThat(imprint).isEqualTo("Vertigo")
-      assertThat(pageCount).isNull()
+      assertThat(count).isNull()
       assertThat(genre).isEqualTo("Fantasy, Supernatural/Occult, Horror, Mature, Superhero, Mythology, Drama")
       assertThat(pageCount).isEqualTo(237)
       assertThat(languageISO).isEqualTo("en")
