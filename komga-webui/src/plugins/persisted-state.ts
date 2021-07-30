@@ -23,6 +23,9 @@ export const persistedModule: Module<any, any> = {
     collection: {
       filter: {},
     },
+    readList: {
+      filter: {},
+    },
     library: {
       filter: {},
       sort: {},
@@ -33,6 +36,9 @@ export const persistedModule: Module<any, any> = {
   getters: {
     getCollectionFilter: (state) => (id: string) => {
       return state.collection.filter[id]
+    },
+    getReadListFilter: (state) => (id: string) => {
+      return state.readList.filter[id]
     },
     getLibraryFilter: (state) => (id: string) => {
       return state.library.filter[id]
@@ -80,6 +86,9 @@ export const persistedModule: Module<any, any> = {
     },
     setCollectionFilter(state, {id, filter}) {
       state.collection.filter[id] = filter
+    },
+    setReadListFilter(state, {id, filter}) {
+      state.readList.filter[id] = filter
     },
     setLibraryFilter(state, {id, filter}) {
       state.library.filter[id] = filter

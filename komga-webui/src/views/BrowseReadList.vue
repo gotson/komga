@@ -33,6 +33,10 @@
         </v-tooltip>
       </v-btn>
 
+      <v-btn icon @click="drawer = !drawer">
+        <v-icon :color="filterActive ? 'secondary' : ''">mdi-filter-variant</v-icon>
+      </v-btn>
+
     </toolbar-sticky>
 
     <multi-select-bar
@@ -60,6 +64,26 @@
 
       </toolbar-sticky>
     </v-scroll-y-transition>
+
+    <filter-drawer
+      v-model="drawer"
+      :clear-button="filterActive"
+      @clear="resetFilters"
+    >
+      <template v-slot:default>
+        <filter-list
+          :filters-options="filterOptionsList"
+          :filters-active.sync="filters"
+        />
+      </template>
+
+      <template v-slot:filter>
+        <filter-panels
+          :filters-options="filterOptionsPanel"
+          :filters-active.sync="filters"
+        />
+      </template>
+    </filter-drawer>
 
     <v-container fluid>
 
@@ -98,11 +122,19 @@ import {
 import Vue from 'vue'
 import ReadListActionsMenu from '@/components/menus/ReadListActionsMenu.vue'
 import MultiSelectBar from '@/components/bars/MultiSelectBar.vue'
-import {BookDto, ReadProgressUpdateDto} from '@/types/komga-books'
+import {AuthorDto, BookDto, ReadProgressUpdateDto} from '@/types/komga-books'
 import {ContextOrigin} from '@/types/context'
 import {BookSseDto, ReadListSseDto, ReadProgressSseDto} from '@/types/komga-sse'
 import {throttle} from 'lodash'
 import ReadMore from '@/components/ReadMore.vue'
+import FilterDrawer from '@/components/FilterDrawer.vue'
+import FilterPanels from '@/components/FilterPanels.vue'
+import FilterList from '@/components/FilterList.vue'
+import {ReadStatus, replaceCompositeReadStatus} from '@/types/enum-books'
+import {authorRoles} from '@/types/author-roles'
+import {LibraryDto} from '@/types/komga-libraries'
+import {mergeFilterParams, toNameValue} from '@/functions/filter'
+import {Location} from 'vue-router'
 
 export default Vue.extend({
   name: 'BrowseReadList',
@@ -111,6 +143,9 @@ export default Vue.extend({
     ItemBrowser,
     ReadListActionsMenu,
     MultiSelectBar,
+    FilterDrawer,
+    FilterPanels,
+    FilterList,
     ReadMore,
   },
   data: () => {
@@ -120,6 +155,13 @@ export default Vue.extend({
       booksCopy: [] as BookDto[],
       selectedBooks: [] as BookDto[],
       editElements: false,
+      filters: {} as FiltersActive,
+      filterUnwatch: null as any,
+      drawer: false,
+      filterOptions: {
+        library: [] as NameValue[],
+        tag: [] as NameValue[],
+      },
     }
   },
   props: {
@@ -128,7 +170,7 @@ export default Vue.extend({
       required: true,
     },
   },
-  created () {
+  created() {
     this.$eventHub.$on(READLIST_CHANGED, this.readListChanged)
     this.$eventHub.$on(READLIST_DELETED, this.readListDeleted)
     this.$eventHub.$on(BOOK_CHANGED, this.bookChanged)
@@ -136,7 +178,7 @@ export default Vue.extend({
     this.$eventHub.$on(READPROGRESS_CHANGED, this.readProgressChanged)
     this.$eventHub.$on(READPROGRESS_DELETED, this.readProgressChanged)
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this.$eventHub.$off(READLIST_CHANGED, this.readListChanged)
     this.$eventHub.$off(READLIST_DELETED, this.readListDeleted)
     this.$eventHub.$off(BOOK_CHANGED, this.bookChanged)
@@ -144,92 +186,213 @@ export default Vue.extend({
     this.$eventHub.$off(READPROGRESS_CHANGED, this.readProgressChanged)
     this.$eventHub.$off(READPROGRESS_DELETED, this.readProgressChanged)
   },
-  mounted () {
+  async mounted() {
+    await this.resetParams(this.$route, this.readListId)
+
     this.loadReadList(this.readListId)
+
+    this.setWatches()
   },
-  beforeRouteUpdate (to, from, next) {
+  async beforeRouteUpdate(to, from, next) {
     if (to.params.readListId !== from.params.readListId) {
+      this.unsetWatches()
+
       // reset
+      await this.resetParams(this.$route, this.readListId)
       this.books = []
       this.editElements = false
 
       this.loadReadList(to.params.readListId)
+
+      this.setWatches()
     }
 
     next()
   },
   computed: {
-    isAdmin (): boolean {
+    filterOptionsList(): FiltersOptions {
+      return {
+        readStatus: {
+          values: [
+            {name: this.$i18n.t('filter.unread').toString(), value: ReadStatus.UNREAD_AND_IN_PROGRESS},
+            {name: this.$t('filter.in_progress').toString(), value: ReadStatus.IN_PROGRESS},
+            {name: this.$t('filter.read').toString(), value: ReadStatus.READ},
+          ],
+        },
+      } as FiltersOptions
+    },
+    filterOptionsPanel(): FiltersOptions {
+      const r = {
+        library: {name: this.$t('filter.library').toString(), values: this.filterOptions.library},
+        tag: {name: this.$t('filter.tag').toString(), values: this.filterOptions.tag},
+      } as FiltersOptions
+      authorRoles.forEach((role: string) => {
+        r[role] = {
+          name: this.$t(`author_roles.${role}`).toString(),
+          search: async search => {
+            return (await this.$komgaReferential.getAuthors(search, role, undefined, undefined, undefined, this.readListId))
+              .content
+              .map(x => x.name)
+          },
+        }
+      })
+      return r
+    },
+    isAdmin(): boolean {
       return this.$store.getters.meAdmin
+    },
+    filterActive(): boolean {
+      return Object.keys(this.filters).some(x => this.filters[x].length !== 0)
     },
   },
   methods: {
-    readListChanged (event: ReadListSseDto) {
+    resetFilters() {
+      this.drawer = false
+      for (const prop in this.filters) {
+        this.$set(this.filters, prop, [])
+      }
+      this.$store.commit('setReadListFilter', {id: this.readListId, filter: this.filters})
+      this.updateRouteAndReload()
+    },
+    async resetParams(route: any, readListId: string) {
+      // load dynamic filters
+      this.$set(this.filterOptions, 'library', this.$store.state.komgaLibraries.libraries.map((x: LibraryDto) => ({
+        name: x.name,
+        value: x.id,
+      })))
+
+      const tags = await this.$komgaReferential.getBookTags(undefined, readListId)
+      this.$set(this.filterOptions, 'tag', toNameValue(tags))
+
+      // get filter from query params or local storage and validate with available filter values
+      let activeFilters: any
+      if (route.query.readStatus || route.query.tag || route.query.library || authorRoles.some(role => role in route.query)) {
+        activeFilters = {
+          readStatus: route.query.readStatus || [],
+          library: route.query.library || [],
+          tag: route.query.tag || [],
+        }
+        authorRoles.forEach((role: string) => {
+          activeFilters[role] = route.query[role] || []
+        })
+      } else {
+        activeFilters = this.$store.getters.getReadListFilter(route.params.readListId) || {} as FiltersActive
+      }
+      this.filters = this.validateFilters(activeFilters)
+    },
+    validateFilters(filters: FiltersActive): FiltersActive {
+      const validFilter = {
+        readStatus: filters.readStatus?.filter(x => Object.keys(ReadStatus).includes(x)) || [],
+        library: filters.library?.filter(x => this.filterOptions.library.map(n => n.value).includes(x)) || [],
+        tag: filters.tag?.filter(x => this.filterOptions.tag.map(n => n.value).includes(x)) || [],
+      } as any
+      authorRoles.forEach((role: string) => {
+        validFilter[role] = filters[role] || []
+      })
+      return validFilter
+    },
+    setWatches() {
+      this.filterUnwatch = this.$watch('filters', (val) => {
+        this.$store.commit('setReadListFilter', {id: this.readListId, filter: val})
+        this.updateRouteAndReload()
+      })
+    },
+    unsetWatches() {
+      this.filterUnwatch()
+    },
+    updateRouteAndReload() {
+      this.unsetWatches()
+
+      this.updateRoute()
+      this.loadBooks(this.readListId)
+
+      this.setWatches()
+    },
+    updateRoute() {
+      const loc = {
+        name: this.$route.name,
+        params: {readListId: this.$route.params.readListId},
+        query: {},
+      } as Location
+      mergeFilterParams(this.filters, loc.query)
+      this.$router.replace(loc).catch((_: any) => {
+      })
+    },
+    readListChanged(event: ReadListSseDto) {
       if (event.readListId === this.readListId) {
         this.loadReadList(this.readListId)
       }
     },
-    readListDeleted (event: ReadListSseDto) {
+    readListDeleted(event: ReadListSseDto) {
       if (event.readListId === this.readListId) {
         this.$router.push({name: 'browse-readlists', params: {libraryId: 'all'}})
       }
     },
-    async loadReadList (readListId: string) {
+    async loadReadList(readListId: string) {
       this.$komgaReadLists.getOneReadList(readListId)
-      .then(v => this.readList = v)
+        .then(v => this.readList = v)
       await this.loadBooks(readListId)
     },
-    async loadBooks (readListId: string) {
-      this.books = (await this.$komgaReadLists.getBooks(readListId, { unpaged: true } as PageRequest)).content
-      this.books.forEach((x: BookDto) => x.context = { origin: ContextOrigin.READLIST, id: readListId })
+    async loadBooks(readListId: string) {
+      let authorsFilter = [] as AuthorDto[]
+      authorRoles.forEach((role: string) => {
+        if (role in this.filters) this.filters[role].forEach((name: string) => authorsFilter.push({
+          name: name,
+          role: role,
+        }))
+      })
+
+      this.books = (await this.$komgaReadLists.getBooks(readListId, {unpaged: true} as PageRequest, this.filters.library, replaceCompositeReadStatus(this.filters.readStatus), this.filters.tag, authorsFilter)).content
+      this.books.forEach((x: BookDto) => x.context = {origin: ContextOrigin.READLIST, id: readListId})
       this.booksCopy = [...this.books]
       this.selectedBooks = []
     },
     reloadBooks: throttle(function (this: any) {
       this.loadBooks(this.readListId)
     }, 1000),
-    editSingleBook (book: BookDto) {
+    editSingleBook(book: BookDto) {
       this.$store.dispatch('dialogUpdateBooks', book)
     },
-    editMultipleBooks () {
+    editMultipleBooks() {
       this.$store.dispatch('dialogUpdateBooks', this.selectedBooks)
     },
-    async markSelectedRead () {
+    async markSelectedRead() {
       await Promise.all(this.selectedBooks.map(b =>
-        this.$komgaBooks.updateReadProgress(b.id, { completed: true } as ReadProgressUpdateDto),
+        this.$komgaBooks.updateReadProgress(b.id, {completed: true} as ReadProgressUpdateDto),
       ))
       this.selectedBooks = []
     },
-    async markSelectedUnread () {
+    async markSelectedUnread() {
       await Promise.all(this.selectedBooks.map(b =>
         this.$komgaBooks.deleteReadProgress(b.id),
       ))
       this.selectedBooks = []
     },
-    addToReadList () {
+    addToReadList() {
       this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks)
     },
-    startEditElements () {
+    startEditElements() {
+      this.filters = {}
       this.editElements = true
     },
-    cancelEditElements () {
+    cancelEditElements() {
       this.editElements = false
       this.books = [...this.booksCopy]
     },
-    doEditElements () {
+    doEditElements() {
       this.editElements = false
       const update = {
         bookIds: this.books.map(x => x.id),
       } as ReadListUpdateDto
       this.$komgaReadLists.patchReadList(this.readListId, update)
     },
-    editReadList () {
+    editReadList() {
       this.$store.dispatch('dialogEditReadList', this.readList)
     },
-    bookChanged (event: BookSseDto) {
+    bookChanged(event: BookSseDto) {
       if (this.books.some(b => b.id === event.bookId)) this.reloadBooks()
     },
-    readProgressChanged(event: ReadProgressSseDto){
+    readProgressChanged(event: ReadProgressSseDto) {
       if (this.books.some(b => b.id === event.bookId)) this.reloadBooks()
     },
   },

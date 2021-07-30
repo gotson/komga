@@ -1,5 +1,5 @@
 import {AxiosInstance} from 'axios'
-import {BookDto} from '@/types/komga-books'
+import {AuthorDto, BookDto} from '@/types/komga-books'
 
 const qs = require('qs')
 
@@ -97,11 +97,19 @@ export default class KomgaReadListsService {
     }
   }
 
-  async getBooks(readListId: string, pageRequest?: PageRequest): Promise<Page<BookDto>> {
+  async getBooks(readListId: string, pageRequest?: PageRequest,
+                 libraryId?: string[], readStatus?: string[],
+                 tag?: string[], authors?: AuthorDto[]): Promise<Page<BookDto>> {
     try {
-      const params = {...pageRequest}
+      const params = {...pageRequest} as any
+      if (libraryId) params.library_id = libraryId
+      if (readStatus) params.read_status = readStatus
+      if (tag) params.tag = tag
+      if (authors) params.author = authors.map(a => `${a.name},${a.role}`)
+
       return (await this.http.get(`${API_READLISTS}/${readListId}/books`, {
         params: params,
+        paramsSerializer: params => qs.stringify(params, { indices: false }),
       })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve books'
