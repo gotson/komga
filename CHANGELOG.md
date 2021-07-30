@@ -1,3 +1,10 @@
+## [0.112.2](https://github.com/gotson/komga/compare/v0.112.1...v0.112.2) (2021-07-30)
+
+
+### Bug Fixes
+
+* **api:** ignore search parameter when blank ([48637e2](https://github.com/gotson/komga/commit/48637e26e4f8a17a3501a15bcc6f96ac4473243b))
+
 ## [0.112.1](https://github.com/gotson/komga/compare/v0.112.0...v0.112.1) (2021-07-29)
 
 

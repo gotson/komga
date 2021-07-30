@@ -4307,7 +4307,6 @@
         "parameters": [
           {
             "schema": {
-              "default": "",
               "type": "string"
             },
             "in": "query",
