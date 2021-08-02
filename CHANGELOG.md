@@ -1,3 +1,10 @@
+# [0.114.0](https://github.com/gotson/komga/compare/v0.113.0...v0.114.0) (2021-08-02)
+
+
+### Features
+
+* **webui:** full screen support when adding to home on mobile ([20bccb5](https://github.com/gotson/komga/commit/20bccb57ec5c65e53425c46afec174ebacc8d9a2)), closes [#565](https://github.com/gotson/komga/issues/565)
+
 # [0.113.0](https://github.com/gotson/komga/compare/v0.112.2...v0.113.0) (2021-07-30)
 
 
