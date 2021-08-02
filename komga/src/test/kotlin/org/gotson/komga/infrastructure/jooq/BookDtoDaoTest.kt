@@ -29,6 +29,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import java.net.URL
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
@@ -404,6 +405,30 @@ class BookDtoDaoTest(
   }
 
   @Test
+  fun `given books when searching by single letter then results are ordered by rank`() {
+    // given
+    seriesLifecycle.addBooks(
+      series,
+      listOf(
+        makeBook("J", seriesId = series.id, libraryId = library.id),
+        makeBook("Adventures of J. J.", seriesId = series.id, libraryId = library.id),
+        makeBook("Jackal", seriesId = series.id, libraryId = library.id),
+      )
+    )
+
+    // when
+    val found = bookDtoDao.findAll(
+      BookSearchWithReadProgress(searchTerm = "j"),
+      user.id,
+      UnpagedSorted(Sort.by("relevance")),
+    ).content
+
+    // then
+    assertThat(found).hasSize(2)
+    assertThat(found.map { it.name }).containsExactly("J", "Adventures of J. J.")
+  }
+
+  @Test
   fun `when searching by unknown field then empty result are returned and no exception is thrown`() {
     assertThatCode {
       // when
@@ -416,5 +441,26 @@ class BookDtoDaoTest(
       // then
       assertThat(found).hasSize(0)
     }.doesNotThrowAnyException()
+  }
+
+  @Test
+  fun `given books in CJK when searching by CJK term then results are ordered by rank`() {
+    // given
+    seriesLifecycle.addBooks(
+      series,
+      listOf(
+        makeBook("[不道德公會][河添太一 ][東立]Vol.04-搬运", seriesId = series.id, libraryId = library.id, url = URL("file:/file.cbz")),
+      )
+    )
+
+    // when
+    val found = bookDtoDao.findAll(
+      BookSearchWithReadProgress(searchTerm = "不道德"),
+      user.id,
+      UnpagedSorted(Sort.by("relevance")),
+    ).content
+
+    // then
+    assertThat(found).hasSize(1)
   }
 }
