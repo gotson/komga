@@ -37,7 +37,8 @@ class WebMvcConfiguration : WebMvcConfigurer {
         "/apple-touch-icon.png",
         "/apple-touch-icon-180x180.png",
         "/android-chrome-192x192.png",
-        "/android-chrome-512x512.png"
+        "/android-chrome-512x512.png",
+        "/manifest.json"
       )
       .addResourceLocations(
         "classpath:public/index.html",
@@ -48,7 +49,8 @@ class WebMvcConfiguration : WebMvcConfigurer {
         "classpath:public/apple-touch-icon.png",
         "classpath:public/apple-touch-icon-180x180.png",
         "classpath:public/android-chrome-192x192.png",
-        "classpath:public/android-chrome-512x512.png"
+        "classpath:public/android-chrome-512x512.png",
+        "classpath:public/manifest.json"
       )
       .setCacheControl(CacheControl.noStore())
 
