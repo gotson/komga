@@ -100,7 +100,6 @@ class SecurityConfiguration(
         "/manifest.json",
         "/",
         "/index.html"
-
       )
   }
 }
