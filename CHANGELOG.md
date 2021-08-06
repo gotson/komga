@@ -1,3 +1,15 @@
+# [0.115.0](https://github.com/gotson/komga/compare/v0.114.0...v0.115.0) (2021-08-06)
+
+
+### Bug Fixes
+
+* **webui:** better add to home screen support ([43733fb](https://github.com/gotson/komga/commit/43733fbec3a01bd25295d806e0a38af0db858bd3))
+
+
+### Features
+
+* **webreader:** fullscreen support ([0a1761d](https://github.com/gotson/komga/commit/0a1761d37e0cbf14bc84f048ca9e8f8517ac93c0))
+
 # [0.114.0](https://github.com/gotson/komga/compare/v0.113.0...v0.114.0) (2021-08-02)
 
 
