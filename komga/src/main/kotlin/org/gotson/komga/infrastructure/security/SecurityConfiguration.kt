@@ -97,6 +97,7 @@ class SecurityConfiguration(
         "/apple-touch-icon-180x180.png",
         "/android-chrome-192x192.png",
         "/android-chrome-512x512.png",
+        "/manifest.json",
         "/",
         "/index.html"
       )
