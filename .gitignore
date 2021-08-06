@@ -48,7 +48,3 @@ nbdist/
 ### Komga
 /komga/src/main/resources/public/
 /komga/artemis/
-
-### Environment
-komga-webui/.env
-komga-webui/.env.development
