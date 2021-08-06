@@ -16,6 +16,7 @@ export const persistedModule: Module<any, any> = {
       },
       readingDirection: '',
       swipe: false,
+      alwaysFullscreen: false,
       animations: true,
       background: '',
     },
@@ -74,6 +75,9 @@ export const persistedModule: Module<any, any> = {
     },
     setWebreaderSwipe(state, val) {
       state.webreader.swipe = val
+    },
+    setWebreaderAlwaysFullscreen(state, val) {
+      state.webreader.alwaysFullscreen = val
     },
     setWebreaderAnimations(state, val) {
       state.webreader.animations = val

@@ -100,6 +100,7 @@
       "width": "Fit width"
     },
     "settings": {
+      "always_fullscreen": "Always Full Screen",
       "animate_page_transitions": "Animate page transitions",
       "background_color": "Background color",
       "background_colors": {
@@ -375,8 +376,6 @@
       "dialog_title_single": "Edit {series}",
       "field_age_rating": "Age Rating",
       "field_age_rating_error": "Age rating must be 0 or more",
-      "field_total_book_count": "Total Book Count",
-      "field_total_book_count_error": "Total book count must be 1 or more",
       "field_genres": "Genres",
       "field_language": "Language",
       "field_language_hint": "IETF BCP 47 language tag",
@@ -387,6 +386,8 @@
       "field_summary": "Summary",
       "field_tags": "Tags",
       "field_title": "Title",
+      "field_total_book_count": "Total Book Count",
+      "field_total_book_count_error": "Total book count must be 1 or more",
       "mixed": "MIXED",
       "tab_general": "General",
       "tab_tags": "Tags",

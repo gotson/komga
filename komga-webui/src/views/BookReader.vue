@@ -29,6 +29,13 @@
 
           <v-btn
             icon
+            :disabled="!screenfull.isEnabled"
+            @click="screenfull.isFullscreen ? screenfull.exit() : enterFullscreen()">
+            <v-icon>{{ fullscreenIcon }}</v-icon>
+          </v-btn>
+
+          <v-btn
+            icon
             @click="showHelp = !showHelp">
             <v-icon>mdi-help-circle</v-icon>
           </v-btn>
@@ -168,11 +175,15 @@
 
             <v-list-item>
               <settings-switch v-model="animations"
-                               :label="$t('bookreader.settings.animate_page_transitions')"></settings-switch>
+                               :label="$t('bookreader.settings.animate_page_transitions')"/>
             </v-list-item>
 
             <v-list-item>
-              <settings-switch v-model="swipe" :label="$t('bookreader.settings.gestures')"></settings-switch>
+              <settings-switch v-model="swipe" :label="$t('bookreader.settings.gestures')"/>
+            </v-list-item>
+
+            <v-list-item>
+              <settings-switch v-model="alwaysFullscreen" :label="$t('bookreader.settings.always_fullscreen')" :disabled="!screenfull.isEnabled"/>
             </v-list-item>
 
             <v-subheader class="font-weight-black text-h6">{{ $t('bookreader.settings.display') }}</v-subheader>
@@ -181,8 +192,7 @@
                 :items="backgroundColors"
                 v-model="backgroundColor"
                 :label="$t('bookreader.settings.background_color')"
-              >
-              </settings-select>
+              />
             </v-list-item>
 
             <template v-if="continuousReader">
@@ -315,6 +325,7 @@ import {BookDto, PageDto, PageDtoWithUrl} from '@/types/komga-books'
 import {Context, ContextOrigin} from '@/types/context'
 import {SeriesDto} from '@/types/komga-series'
 import jsFileDownloader from 'js-file-downloader'
+import screenfull from 'screenfull'
 
 export default Vue.extend({
   name: 'BookReader',
@@ -328,6 +339,8 @@ export default Vue.extend({
   },
   data: function () {
     return {
+      screenfull,
+      fullscreenIcon: 'mdi-fullscreen',
       book: {} as BookDto,
       series: {} as SeriesDto,
       context: {} as Context,
@@ -353,7 +366,8 @@ export default Vue.extend({
       goToPage: 1,
       settings: {
         pageLayout: PagedReaderLayout.SINGLE_PAGE,
-        swipe: true,
+        swipe: false,
+        alwaysFullscreen: false,
         animations: true,
         scale: ScaleType.SCREEN,
         continuousScale: ContinuousScaleType.WIDTH,
@@ -402,12 +416,14 @@ export default Vue.extend({
     })
     this.shortcuts = this.$_.keyBy([...shortcutsSettings, ...shortcutsSettingsPaged, ...shortcutsSettingsContinuous, ...shortcutsMenus, ...shortcutsAll], x => x.key)
     window.addEventListener('keydown', this.keyPressed)
+    if (screenfull.isEnabled) screenfull.on('change', this.fullscreenChanged)
   },
   async mounted() {
     this.readingDirection = this.$store.state.persistedState.webreader.readingDirection
     this.animations = this.$store.state.persistedState.webreader.animations
     this.pageLayout = this.$store.state.persistedState.webreader.paged.pageLayout
     this.swipe = this.$store.state.persistedState.webreader.swipe
+    this.alwaysFullscreen = this.$store.state.persistedState.webreader.alwaysFullscreen
     this.scale = this.$store.state.persistedState.webreader.paged.scale
     this.continuousScale = this.$store.state.persistedState.webreader.continuous.scale
     this.sidePadding = this.$store.state.persistedState.webreader.continuous.padding
@@ -418,6 +434,10 @@ export default Vue.extend({
   destroyed() {
     this.$vuetify.rtl = (this.$t('common.locale_rtl') === 'true')
     window.removeEventListener('keydown', this.keyPressed)
+    if (screenfull.isEnabled) {
+      screenfull.off('change', this.fullscreenChanged)
+      screenfull.exit()
+    }
   },
   props: {
     bookId: {
@@ -580,8 +600,26 @@ export default Vue.extend({
         this.$store.commit('setWebreaderSwipe', swipe)
       },
     },
+    alwaysFullscreen: {
+      get: function (): boolean {
+        return this.settings.alwaysFullscreen
+      },
+      set: function (alwaysFullscreen: boolean): void {
+        this.settings.alwaysFullscreen = alwaysFullscreen
+        this.$store.commit('setWebreaderAlwaysFullscreen', alwaysFullscreen)
+        if(alwaysFullscreen) this.enterFullscreen()
+        else screenfull.isEnabled && screenfull.exit()
+      },
+    },
   },
   methods: {
+    enterFullscreen() {
+      if (screenfull.isEnabled) screenfull.request(document.documentElement, {navigationUI: 'hide'})
+    },
+    fullscreenChanged() {
+      if (screenfull.isEnabled && screenfull.isFullscreen) this.fullscreenIcon = 'mdi-fullscreen-exit'
+      else this.fullscreenIcon = 'mdi-fullscreen'
+    },
     keyPressed(e: KeyboardEvent) {
       this.shortcuts[e.key]?.execute(this)
     },
