@@ -1,3 +1,10 @@
+## [0.115.1](https://github.com/gotson/komga/compare/v0.115.0...v0.115.1) (2021-08-08)
+
+
+### Bug Fixes
+
+* support for armv6 ([eb1fc4a](https://github.com/gotson/komga/commit/eb1fc4a49f17a225b7f5b6095cc8e8dfecf98f00)), closes [#398](https://github.com/gotson/komga/issues/398)
+
 # [0.115.0](https://github.com/gotson/komga/compare/v0.114.0...v0.115.0) (2021-08-06)
 
 
