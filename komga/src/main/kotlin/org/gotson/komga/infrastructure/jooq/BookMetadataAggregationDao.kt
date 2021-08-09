@@ -21,8 +21,6 @@ class BookMetadataAggregationDao(
   private val a = Tables.BOOK_METADATA_AGGREGATION_AUTHOR
   private val t = Tables.BOOK_METADATA_AGGREGATION_TAG
 
-  private val groupFields = arrayOf(*d.fields(), *a.fields())
-
   override fun findById(seriesId: String): BookMetadataAggregation =
     findOne(listOf(seriesId)).first()
 
@@ -30,12 +28,10 @@ class BookMetadataAggregationDao(
     findOne(listOf(seriesId)).firstOrNull()
 
   private fun findOne(seriesIds: Collection<String>) =
-    dsl.select(*groupFields)
+    dsl.select(*d.fields(), *a.fields())
       .from(d)
       .leftJoin(a).on(d.SERIES_ID.eq(a.SERIES_ID))
-      .leftJoin(t).on(d.SERIES_ID.eq(t.SERIES_ID))
       .where(d.SERIES_ID.`in`(seriesIds))
-      .groupBy(*groupFields)
       .fetchGroups(
         { it.into(d) }, { it.into(a) }
       ).map { (dr, ar) ->
