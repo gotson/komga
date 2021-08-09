@@ -38,8 +38,8 @@ interface ReadListRepository {
   fun removeBooksFromAll(bookIds: Collection<String>)
 
   fun delete(readListId: String)
+  fun delete(readListIds: Collection<String>)
   fun deleteAll()
-  fun deleteEmpty()
 
   fun existsByName(name: String): Boolean
 }

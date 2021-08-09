@@ -61,7 +61,7 @@ class ReadListLifecycle(
   fun deleteEmptyReadLists() {
     logger.info { "Deleting empty read lists" }
     val toDelete = readListRepository.findAllEmpty()
-    readListRepository.deleteEmpty()
+    readListRepository.delete(toDelete.map { it.id })
     toDelete.forEach { eventPublisher.publishEvent(DomainEvent.ReadListDeleted(it)) }
   }
 

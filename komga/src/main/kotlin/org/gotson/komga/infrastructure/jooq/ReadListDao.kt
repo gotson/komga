@@ -238,22 +238,15 @@ class ReadListDao(
   }
 
   @Transactional
-  override fun deleteAll() {
-    dsl.deleteFrom(rlb).execute()
-    dsl.deleteFrom(rl).execute()
+  override fun delete(readListIds: Collection<String>) {
+    dsl.deleteFrom(rlb).where(rlb.READLIST_ID.`in`(readListIds)).execute()
+    dsl.deleteFrom(rl).where(rl.ID.`in`(readListIds)).execute()
   }
 
   @Transactional
-  override fun deleteEmpty() {
-    dsl.deleteFrom(rl)
-      .where(
-        rl.ID.`in`(
-          dsl.select(rl.ID)
-            .from(rl)
-            .leftJoin(rlb).on(rl.ID.eq(rlb.READLIST_ID))
-            .where(rlb.READLIST_ID.isNull)
-        )
-      ).execute()
+  override fun deleteAll() {
+    dsl.deleteFrom(rlb).execute()
+    dsl.deleteFrom(rl).execute()
   }
 
   override fun existsByName(name: String): Boolean =

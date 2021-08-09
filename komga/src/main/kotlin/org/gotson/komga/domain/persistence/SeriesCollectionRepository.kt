@@ -38,8 +38,8 @@ interface SeriesCollectionRepository {
   fun removeSeriesFromAll(seriesIds: Collection<String>)
 
   fun delete(collectionId: String)
+  fun delete(collectionIds: Collection<String>)
   fun deleteAll()
-  fun deleteEmpty()
 
   fun existsByName(name: String): Boolean
 }

@@ -57,7 +57,7 @@ class SeriesCollectionLifecycle(
   fun deleteEmptyCollections() {
     logger.info { "Deleting empty collections" }
     val toDelete = collectionRepository.findAllEmpty()
-    collectionRepository.deleteEmpty()
+    collectionRepository.delete(toDelete.map { it.id })
     toDelete.forEach { eventPublisher.publishEvent(DomainEvent.CollectionDeleted(it)) }
   }
 

@@ -237,22 +237,15 @@ class SeriesCollectionDao(
   }
 
   @Transactional
-  override fun deleteAll() {
-    dsl.deleteFrom(cs).execute()
-    dsl.deleteFrom(c).execute()
+  override fun delete(collectionIds: Collection<String>) {
+    dsl.deleteFrom(cs).where(cs.COLLECTION_ID.`in`(collectionIds)).execute()
+    dsl.deleteFrom(c).where(c.ID.`in`(collectionIds)).execute()
   }
 
   @Transactional
-  override fun deleteEmpty() {
-    dsl.deleteFrom(c)
-      .where(
-        c.ID.`in`(
-          dsl.select(c.ID)
-            .from(c)
-            .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
-            .where(cs.COLLECTION_ID.isNull)
-        )
-      ).execute()
+  override fun deleteAll() {
+    dsl.deleteFrom(cs).execute()
+    dsl.deleteFrom(c).execute()
   }
 
   override fun existsByName(name: String): Boolean =
