@@ -1,8 +1,9 @@
 package org.gotson.komga.infrastructure.jooq
 
-import mu.KotlinLogging
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.ReadStatus
+import org.gotson.komga.infrastructure.search.LuceneEntity
+import org.gotson.komga.infrastructure.search.LuceneHelper
 import org.gotson.komga.infrastructure.web.toFilePath
 import org.gotson.komga.interfaces.rest.dto.AuthorDto
 import org.gotson.komga.interfaces.rest.dto.BookDto
@@ -20,9 +21,9 @@ import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.ResultQuery
 import org.jooq.impl.DSL
-import org.jooq.impl.DSL.field
 import org.jooq.impl.DSL.inline
 import org.jooq.impl.DSL.lower
+import org.jooq.impl.DSL.noCondition
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -31,11 +32,10 @@ import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
 import java.net.URL
 
-private val logger = KotlinLogging.logger {}
-
 @Component
 class BookDtoDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
+  private val luceneHelper: LuceneHelper,
 ) : BookDtoRepository {
 
   private val b = Tables.BOOK
@@ -46,7 +46,6 @@ class BookDtoDao(
   private val s = Tables.SERIES
   private val rlb = Tables.READLIST_BOOK
   private val bt = Tables.BOOK_METADATA_TAG
-  private val fts = Tables.FTS_BOOK_METADATA
 
   private val sorts = mapOf(
     "name" to lower(b.NAME.udfStripAccents()),
@@ -65,13 +64,12 @@ class BookDtoDao(
     "metadata.releaseDate" to d.RELEASE_DATE,
     "readProgress.lastModified" to r.LAST_MODIFIED_DATE,
     "readList.number" to rlb.NUMBER,
-    "relevance" to field("rank"),
   )
 
   override fun findAll(search: BookSearchWithReadProgress, userId: String, pageable: Pageable): Page<BookDto> {
     val conditions = search.toCondition()
 
-    return findAll(conditions, userId, pageable, search.toJoinConditions(), null)
+    return findAll(conditions, userId, pageable, search.toJoinConditions(), null, search.searchTerm)
   }
 
   override fun findAllByReadListId(
@@ -83,7 +81,7 @@ class BookDtoDao(
   ): Page<BookDto> {
     val conditions = rlb.READLIST_ID.eq(readListId).and(search.toCondition())
 
-    return findAll(conditions, userId, pageable, search.toJoinConditions().copy(selectReadListNumber = true), filterOnLibraryIds)
+    return findAll(conditions, userId, pageable, search.toJoinConditions().copy(selectReadListNumber = true), filterOnLibraryIds, search.searchTerm)
   }
 
   private fun findAll(
@@ -92,46 +90,47 @@ class BookDtoDao(
     pageable: Pageable,
     joinConditions: JoinConditions = JoinConditions(),
     filterOnLibraryIds: Collection<String>?,
+    searchTerm: String?,
   ): Page<BookDto> {
-    return try {
-      val count = dsl.selectDistinct(b.ID)
-        .from(b)
-        .apply { if (joinConditions.fullTextSearch) join(fts).on(b.ID.eq(fts.BOOK_ID)) }
-        .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
-        .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
-        .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
-        .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-        .apply { if (joinConditions.tag) leftJoin(bt).on(b.ID.eq(bt.BOOK_ID)) }
-        .apply { if (joinConditions.selectReadListNumber) leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID)) }
-        .apply { if (joinConditions.author) leftJoin(a).on(b.ID.eq(a.BOOK_ID)) }
-        .where(conditions)
-        .groupBy(b.ID)
-        .fetch()
-        .size
+    val bookIds = luceneHelper.searchEntitiesIds(searchTerm, LuceneEntity.Book, if (pageable.isPaged) pageable.pageSize else 20)
+    val searchCondition = b.ID.inOrNoCondition(bookIds)
 
-      val orderBy = pageable.sort.toOrderBy(sorts)
+    val count = dsl.selectDistinct(b.ID)
+      .from(b)
+      .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
+      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
+      .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
+      .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
+      .apply { if (joinConditions.tag) leftJoin(bt).on(b.ID.eq(bt.BOOK_ID)) }
+      .apply { if (joinConditions.selectReadListNumber) leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID)) }
+      .apply { if (joinConditions.author) leftJoin(a).on(b.ID.eq(a.BOOK_ID)) }
+      .where(conditions)
+      .and(searchCondition)
+      .groupBy(b.ID)
+      .fetch()
+      .size
 
-      val dtos = selectBase(userId, joinConditions)
-        .where(conditions)
-        .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-        .orderBy(orderBy)
-        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-        .fetchAndMap()
-
-      val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
-      PageImpl(
-        dtos,
-        if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
-        else PageRequest.of(0, maxOf(count, 20), pageSort),
-        count.toLong()
-      )
-    } catch (e: Exception) {
-      if (e.isFtsError()) PageImpl(emptyList())
-      else {
-        logger.error(e) { "Error while fetching data" }
-        throw e
+    val orderBy =
+      pageable.sort.mapNotNull {
+        if (it.property == "relevance" && !bookIds.isNullOrEmpty()) b.ID.sortByValues(bookIds, it.isAscending)
+        else it.toSortField(sorts)
       }
-    }
+
+    val dtos = selectBase(userId, joinConditions)
+      .where(conditions)
+      .and(searchCondition)
+      .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
+      .orderBy(orderBy)
+      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+      .fetchAndMap()
+
+    val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
+    return PageImpl(
+      dtos,
+      if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
+      else PageRequest.of(0, maxOf(count, 20), pageSort),
+      count.toLong()
+    )
   }
 
   override fun findByIdOrNull(bookId: String, userId: String): BookDto? =
@@ -248,7 +247,6 @@ class BookDtoDao(
       *r.fields()
     ).apply { if (joinConditions.selectReadListNumber) select(rlb.NUMBER) }
       .from(b)
-      .apply { if (joinConditions.fullTextSearch) join(fts).on(b.ID.eq(fts.BOOK_ID)) }
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
@@ -279,9 +277,8 @@ class BookDtoDao(
       }
 
   private fun BookSearchWithReadProgress.toCondition(): Condition {
-    var c: Condition = DSL.trueCondition()
+    var c: Condition = noCondition()
 
-    if (!searchTerm.isNullOrBlank()) c = c.and(fts.match(searchTerm))
     if (!libraryIds.isNullOrEmpty()) c = c.and(b.LIBRARY_ID.`in`(libraryIds))
     if (!seriesIds.isNullOrEmpty()) c = c.and(b.SERIES_ID.`in`(seriesIds))
     if (!mediaStatus.isNullOrEmpty()) c = c.and(m.STATUS.`in`(mediaStatus))
@@ -303,7 +300,7 @@ class BookDtoDao(
     }
 
     if (!authors.isNullOrEmpty()) {
-      var ca: Condition = DSL.falseCondition()
+      var ca = noCondition()
       authors.forEach {
         ca = ca.or(a.NAME.equalIgnoreCase(it.name).and(a.ROLE.equalIgnoreCase(it.role)))
       }
@@ -317,14 +314,12 @@ class BookDtoDao(
     JoinConditions(
       tag = !tags.isNullOrEmpty(),
       author = !authors.isNullOrEmpty(),
-      fullTextSearch = !searchTerm.isNullOrBlank(),
     )
 
   private data class JoinConditions(
     val selectReadListNumber: Boolean = false,
     val tag: Boolean = false,
     val author: Boolean = false,
-    val fullTextSearch: Boolean = false,
   )
 
   private fun BookRecord.toDto(media: MediaDto, metadata: BookMetadataDto, readProgress: ReadProgressDto?) =

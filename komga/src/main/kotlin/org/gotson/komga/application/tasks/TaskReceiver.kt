@@ -117,6 +117,10 @@ class TaskReceiver(
     submitTask(Task.ImportBook(sourceFile, seriesId, copyMode, destinationName, upgradeBookId, priority))
   }
 
+  fun rebuildIndex(priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.RebuildIndex(priority))
+  }
+
   private fun submitTask(task: Task) {
     logger.info { "Sending task: $task" }
     jmsTemplates[task.priority]!!.convertAndSend(QUEUE_TASKS, task) {

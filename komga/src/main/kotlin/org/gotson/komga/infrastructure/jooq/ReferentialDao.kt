@@ -1,6 +1,5 @@
 package org.gotson.komga.infrastructure.jooq
 
-import mu.KotlinLogging
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.persistence.ReferentialRepository
 import org.gotson.komga.infrastructure.language.stripAccents
@@ -8,10 +7,9 @@ import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.BookMetadataAggregationAuthorRecord
 import org.gotson.komga.jooq.tables.records.BookMetadataAuthorRecord
 import org.jooq.DSLContext
-import org.jooq.impl.DSL.field
 import org.jooq.impl.DSL.lower
+import org.jooq.impl.DSL.noCondition
 import org.jooq.impl.DSL.select
-import org.jooq.impl.DSL.trueCondition
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -19,8 +17,6 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
 import java.time.LocalDate
-
-private val logger = KotlinLogging.logger {}
 
 @Component
 class ReferentialDao(
@@ -39,7 +35,6 @@ class ReferentialDao(
   private val st = Tables.SERIES_METADATA_TAG
   private val cs = Tables.COLLECTION_SERIES
   private val rb = Tables.READLIST_BOOK
-  private val ftsAuthors = Tables.FTS_BOOK_METADATA_AGGREGATION_AUTHOR
 
   override fun findAllAuthorsByName(search: String, filterOnLibraryIds: Collection<String>?): List<Author> =
     dsl.selectDistinct(a.NAME, a.ROLE)
@@ -118,56 +113,46 @@ class ReferentialDao(
   )
 
   private fun findAuthorsByName(search: String?, role: String?, filterOnLibraryIds: Collection<String>?, pageable: Pageable, filterBy: FilterBy?): Page<Author> {
-    return try {
-      val query = dsl.selectDistinct(bmaa.NAME, bmaa.ROLE)
-        .from(bmaa)
-        .apply { if (!search.isNullOrBlank()) join(ftsAuthors).on(ftsAuthors.rowid().eq(bmaa.rowid())) }
-        .apply { if (filterOnLibraryIds != null || filterBy?.type == FilterByType.LIBRARY) leftJoin(s).on(bmaa.SERIES_ID.eq(s.ID)) }
-        .apply { if (filterBy?.type == FilterByType.COLLECTION) leftJoin(cs).on(bmaa.SERIES_ID.eq(cs.SERIES_ID)) }
-        .apply {
-          if (filterBy?.type == FilterByType.READLIST)
-            leftJoin(b).on(bmaa.SERIES_ID.eq(b.SERIES_ID))
-              .leftJoin(rb).on(b.ID.eq(rb.BOOK_ID))
-        }
-        .where(trueCondition())
-        .apply { if (!search.isNullOrBlank()) and(ftsAuthors.match(search)) }
-        .apply { role?.let { and(bmaa.ROLE.eq(role)) } }
-        .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-        .apply {
-          filterBy?.let {
-            when (it.type) {
-              FilterByType.LIBRARY -> and(s.LIBRARY_ID.eq(it.id))
-              FilterByType.COLLECTION -> and(cs.COLLECTION_ID.eq(it.id))
-              FilterByType.SERIES -> and(bmaa.SERIES_ID.eq(it.id))
-              FilterByType.READLIST -> and(rb.READLIST_ID.eq(it.id))
-            }
+    val query = dsl.selectDistinct(bmaa.NAME, bmaa.ROLE)
+      .from(bmaa)
+      .apply { if (filterOnLibraryIds != null || filterBy?.type == FilterByType.LIBRARY) leftJoin(s).on(bmaa.SERIES_ID.eq(s.ID)) }
+      .apply { if (filterBy?.type == FilterByType.COLLECTION) leftJoin(cs).on(bmaa.SERIES_ID.eq(cs.SERIES_ID)) }
+      .apply {
+        if (filterBy?.type == FilterByType.READLIST)
+          leftJoin(b).on(bmaa.SERIES_ID.eq(b.SERIES_ID))
+            .leftJoin(rb).on(b.ID.eq(rb.BOOK_ID))
+      }
+      .where(noCondition())
+      .apply { search?.let { and(bmaa.NAME.udfStripAccents().containsIgnoreCase(search.stripAccents())) } }
+      .apply { role?.let { and(bmaa.ROLE.eq(role)) } }
+      .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
+      .apply {
+        filterBy?.let {
+          when (it.type) {
+            FilterByType.LIBRARY -> and(s.LIBRARY_ID.eq(it.id))
+            FilterByType.COLLECTION -> and(cs.COLLECTION_ID.eq(it.id))
+            FilterByType.SERIES -> and(bmaa.SERIES_ID.eq(it.id))
+            FilterByType.READLIST -> and(rb.READLIST_ID.eq(it.id))
           }
         }
-
-      val count = dsl.fetchCount(query)
-      val sort = if (!search.isNullOrBlank()) field("rank")
-      else lower(bmaa.NAME.udfStripAccents())
-
-      val items = query
-        .orderBy(sort)
-        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-        .fetchInto(a)
-        .map { it.toDomain() }
-
-      val pageSort = Sort.by("relevance")
-      PageImpl(
-        items,
-        if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
-        else PageRequest.of(0, maxOf(count, 20), pageSort),
-        count.toLong()
-      )
-    } catch (e: Exception) {
-      if (e.isFtsError()) PageImpl(emptyList())
-      else {
-        logger.error(e) { "Error while fetching data" }
-        throw e
       }
-    }
+
+    val count = dsl.fetchCount(query)
+    val sort = lower(bmaa.NAME.udfStripAccents())
+
+    val items = query
+      .orderBy(sort)
+      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+      .fetchInto(a)
+      .map { it.toDomain() }
+
+    val pageSort = Sort.by("relevance")
+    return PageImpl(
+      items,
+      if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
+      else PageRequest.of(0, maxOf(count, 20), pageSort),
+      count.toLong()
+    )
   }
 
   override fun findAllAuthorsNamesByName(search: String, filterOnLibraryIds: Collection<String>?): List<String> =

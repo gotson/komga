@@ -1,8 +1,9 @@
 package org.gotson.komga.infrastructure.jooq
 
-import mu.KotlinLogging
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.persistence.ReadListRepository
+import org.gotson.komga.infrastructure.search.LuceneEntity
+import org.gotson.komga.infrastructure.search.LuceneHelper
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.ReadlistRecord
 import org.jooq.DSLContext
@@ -20,21 +21,18 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.SortedMap
 
-private val logger = KotlinLogging.logger {}
-
 @Component
 class ReadListDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
+  private val luceneHelper: LuceneHelper,
 ) : ReadListRepository {
 
   private val rl = Tables.READLIST
   private val rlb = Tables.READLIST_BOOK
   private val b = Tables.BOOK
-  private val fts = Tables.FTS_READLIST
 
   private val sorts = mapOf(
     "name" to DSL.lower(rl.NAME.udfStripAccents()),
-    "relevance" to DSL.field("rank"),
   )
 
   override fun findByIdOrNull(readListId: String): ReadList? =
@@ -51,79 +49,72 @@ class ReadListDao(
       .firstOrNull()
 
   override fun findAll(search: String?, pageable: Pageable): Page<ReadList> {
-    val conditions = if (!search.isNullOrBlank()) searchCondition(search)
-    else DSL.trueCondition()
+    val readListIds = luceneHelper.searchEntitiesIds(search, LuceneEntity.ReadList, if (pageable.isPaged) pageable.pageSize else 20)
+    val searchCondition = rl.ID.inOrNoCondition(readListIds)
 
-    return try {
-      val count = dsl.selectCount()
-        .from(rl)
-        .apply { if (!search.isNullOrBlank()) join(fts).on(rl.ID.eq(fts.ID)) }
-        .where(conditions)
-        .fetchOne(0, Long::class.java) ?: 0
+    val count = dsl.selectCount()
+      .from(rl)
+      .where(searchCondition)
+      .fetchOne(0, Long::class.java) ?: 0
 
-      val orderBy = pageable.sort.toOrderBy(sorts)
-
-      val items = selectBase(!search.isNullOrBlank())
-        .where(conditions)
-        .orderBy(orderBy)
-        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-        .fetchAndMap(null)
-
-      val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
-      PageImpl(
-        items,
-        if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
-        else PageRequest.of(0, maxOf(count.toInt(), 20), pageSort),
-        count
-      )
-    } catch (e: Exception) {
-      if (e.isFtsError()) PageImpl(emptyList())
-      else {
-        logger.error(e) { "Error while fetching data" }
-        throw e
+    val orderBy =
+      pageable.sort.mapNotNull {
+        if (it.property == "relevance" && !readListIds.isNullOrEmpty()) rl.ID.sortByValues(readListIds, it.isAscending)
+        else it.toSortField(sorts)
       }
-    }
+
+    val items = selectBase()
+      .where(searchCondition)
+      .orderBy(orderBy)
+      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+      .fetchAndMap(null)
+
+    val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
+    return PageImpl(
+      items,
+      if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
+      else PageRequest.of(0, maxOf(count.toInt(), 20), pageSort),
+      count
+    )
   }
 
   override fun findAllByLibraryIds(belongsToLibraryIds: Collection<String>, filterOnLibraryIds: Collection<String>?, search: String?, pageable: Pageable): Page<ReadList> {
+    val readListIds = luceneHelper.searchEntitiesIds(search, LuceneEntity.ReadList, if (pageable.isPaged) pageable.pageSize else 20)
+    val searchCondition = rl.ID.inOrNoCondition(readListIds)
+
     val conditions = b.LIBRARY_ID.`in`(belongsToLibraryIds)
-      .apply { if (!search.isNullOrBlank()) and(searchCondition(search)) }
+      .and(searchCondition)
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
 
-    return try {
-      val ids = dsl.selectDistinct(rl.ID)
-        .from(rl)
-        .apply { if (!search.isNullOrBlank()) join(fts).on(rl.ID.eq(fts.ID)) }
-        .leftJoin(rlb).on(rl.ID.eq(rlb.READLIST_ID))
-        .leftJoin(b).on(rlb.BOOK_ID.eq(b.ID))
-        .where(conditions)
-        .fetch(0, String::class.java)
+    val ids = dsl.selectDistinct(rl.ID)
+      .from(rl)
+      .leftJoin(rlb).on(rl.ID.eq(rlb.READLIST_ID))
+      .leftJoin(b).on(rlb.BOOK_ID.eq(b.ID))
+      .where(conditions)
+      .fetch(0, String::class.java)
 
-      val count = ids.size
+    val count = ids.size
 
-      val orderBy = pageable.sort.toOrderBy(sorts)
-
-      val items = selectBase(!search.isNullOrBlank())
-        .where(rl.ID.`in`(ids))
-        .and(conditions)
-        .orderBy(orderBy)
-        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-        .fetchAndMap(filterOnLibraryIds)
-
-      val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
-      PageImpl(
-        items,
-        if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
-        else PageRequest.of(0, maxOf(count, 20), pageSort),
-        count.toLong()
-      )
-    } catch (e: Exception) {
-      if (e.isFtsError()) PageImpl(emptyList())
-      else {
-        logger.error(e) { "Error while fetching data" }
-        throw e
+    val orderBy =
+      pageable.sort.mapNotNull {
+        if (it.property == "relevance" && !readListIds.isNullOrEmpty()) rl.ID.sortByValues(readListIds, it.isAscending)
+        else it.toSortField(sorts)
       }
-    }
+
+    val items = selectBase()
+      .where(rl.ID.`in`(ids))
+      .and(conditions)
+      .orderBy(orderBy)
+      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+      .fetchAndMap(filterOnLibraryIds)
+
+    val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
+    return PageImpl(
+      items,
+      if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
+      else PageRequest.of(0, maxOf(count, 20), pageSort),
+      count.toLong()
+    )
   }
 
   override fun findAllContainingBookId(containsBookId: String, filterOnLibraryIds: Collection<String>?): Collection<ReadList> {
@@ -157,13 +148,9 @@ class ReadListDao(
       .fetchAndMap(null)
       .firstOrNull()
 
-  private fun searchCondition(search: String) =
-    fts.match(search)
-
-  private fun selectBase(joinFts: Boolean = false) =
+  private fun selectBase() =
     dsl.selectDistinct(*rl.fields())
       .from(rl)
-      .apply { if (joinFts) join(fts).on(rl.ID.eq(fts.ID)) }
       .leftJoin(rlb).on(rl.ID.eq(rlb.READLIST_ID))
       .leftJoin(b).on(rlb.BOOK_ID.eq(b.ID))
 

@@ -13,6 +13,7 @@ import org.gotson.komga.domain.service.LocalArtworkLifecycle
 import org.gotson.komga.domain.service.SeriesMetadataLifecycle
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS_SELECTOR
+import org.gotson.komga.infrastructure.search.SearchIndexLifecycle
 import org.springframework.jms.annotation.JmsListener
 import org.springframework.stereotype.Service
 import java.nio.file.Paths
@@ -33,6 +34,7 @@ class TaskHandler(
   private val localArtworkLifecycle: LocalArtworkLifecycle,
   private val bookImporter: BookImporter,
   private val bookConverter: BookConverter,
+  private val searchIndexLifecycle: SearchIndexLifecycle,
 ) {
 
   @JmsListener(destination = QUEUE_TASKS, selector = QUEUE_TASKS_SELECTOR)
@@ -116,6 +118,8 @@ class TaskHandler(
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
               bookLifecycle.hashAndPersist(book)
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
+
+          is Task.RebuildIndex -> searchIndexLifecycle.rebuildIndex()
         }
       }.also {
         logger.info { "Task $task executed in $it" }

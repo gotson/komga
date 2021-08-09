@@ -77,4 +77,9 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY) : Serializable {
     override fun uniqueId(): String = "REPAIR_EXTENSION_$bookId"
     override fun toString(): String = "RepairExtension(bookId='$bookId', priority='$priority')"
   }
+
+  class RebuildIndex(priority: Int = DEFAULT_PRIORITY) : Task(priority) {
+    override fun uniqueId() = "REBUILD_INDEX"
+    override fun toString(): String = "RebuildIndex(priority='$priority')"
+  }
 }

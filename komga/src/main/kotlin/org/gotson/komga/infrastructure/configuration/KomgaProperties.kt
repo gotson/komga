@@ -30,6 +30,8 @@ class KomgaProperties {
 
   var cors = Cors()
 
+  var lucene = Lucene()
+
   class RememberMe {
     @get:NotBlank
     var key: String? = null
@@ -48,5 +50,10 @@ class KomgaProperties {
 
     @Deprecated("Unused since 0.81.0")
     var batchSize: Int = 500
+  }
+
+  class Lucene {
+    @get:NotBlank
+    var dataDirectory: String = ""
   }
 }

@@ -1,6 +1,5 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jooq.meta.jaxb.ForcedType
 
 plugins {
   run {
@@ -57,6 +56,13 @@ dependencies {
   implementation("commons-io:commons-io:2.10.0")
   implementation("org.apache.commons:commons-lang3:3.12.0")
   implementation("commons-validator:commons-validator:1.7")
+
+  run {
+    val luceneVersion = "8.9.0"
+    implementation("org.apache.lucene:lucene-core:$luceneVersion")
+    implementation("org.apache.lucene:lucene-analyzers-common:$luceneVersion")
+    implementation("org.apache.lucene:lucene-queryparser:$luceneVersion")
+  }
 
   implementation("com.ibm.icu:icu4j:69.1")
 
@@ -243,13 +249,6 @@ jooq {
         generator.apply {
           database.apply {
             name = "org.jooq.meta.sqlite.SQLiteDatabase"
-            forcedTypes.addAll(
-              listOf(
-                ForcedType()
-                  .withName("varchar")
-                  .withIncludeExpression("fts_.*.(title|.*id|isbn|publisher|name)")
-              )
-            )
           }
           target.apply {
             packageName = "org.gotson.komga.jooq"
