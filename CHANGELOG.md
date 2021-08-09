@@ -1,3 +1,10 @@
+# [0.116.0](https://github.com/gotson/komga/compare/v0.115.1...v0.116.0) (2021-08-09)
+
+
+### Features
+
+* better full text search ([5aa9a95](https://github.com/gotson/komga/commit/5aa9a95ca5a88739705e879349787fb8622b275d)), closes [#592](https://github.com/gotson/komga/issues/592) [#597](https://github.com/gotson/komga/issues/597)
+
 ## [0.115.1](https://github.com/gotson/komga/compare/v0.115.0...v0.115.1) (2021-08-08)
 
 
