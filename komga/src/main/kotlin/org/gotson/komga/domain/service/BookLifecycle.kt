@@ -23,7 +23,6 @@ import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.support.TransactionTemplate
 import java.io.File
 import java.nio.file.Files
@@ -218,18 +217,19 @@ class BookLifecycle(
     }
   }
 
-  @Transactional
   fun deleteOne(book: Book) {
     logger.info { "Delete book id: ${book.id}" }
 
-    readProgressRepository.deleteByBookId(book.id)
-    readListRepository.removeBookFromAll(book.id)
+    transactionTemplate.executeWithoutResult {
+      readProgressRepository.deleteByBookId(book.id)
+      readListRepository.removeBookFromAll(book.id)
 
-    mediaRepository.delete(book.id)
-    thumbnailBookRepository.deleteByBookId(book.id)
-    bookMetadataRepository.delete(book.id)
+      mediaRepository.delete(book.id)
+      thumbnailBookRepository.deleteByBookId(book.id)
+      bookMetadataRepository.delete(book.id)
 
-    bookRepository.delete(book.id)
+      bookRepository.delete(book.id)
+    }
 
     eventPublisher.publishEvent(DomainEvent.BookDeleted(book))
   }
@@ -242,19 +242,20 @@ class BookLifecycle(
     books.forEach { eventPublisher.publishEvent(DomainEvent.BookUpdated(it)) }
   }
 
-  @Transactional
   fun deleteMany(books: Collection<Book>) {
     val bookIds = books.map { it.id }
     logger.info { "Delete book ids: $bookIds" }
 
-    readProgressRepository.deleteByBookIds(bookIds)
-    readListRepository.removeBooksFromAll(bookIds)
+    transactionTemplate.executeWithoutResult {
+      readProgressRepository.deleteByBookIds(bookIds)
+      readListRepository.removeBooksFromAll(bookIds)
 
-    mediaRepository.deleteByBookIds(bookIds)
-    thumbnailBookRepository.deleteByBookIds(bookIds)
-    bookMetadataRepository.delete(bookIds)
+      mediaRepository.deleteByBookIds(bookIds)
+      thumbnailBookRepository.deleteByBookIds(bookIds)
+      bookMetadataRepository.delete(bookIds)
 
-    bookRepository.delete(bookIds)
+      bookRepository.delete(bookIds)
+    }
 
     books.forEach { eventPublisher.publishEvent(DomainEvent.BookDeleted(it)) }
   }

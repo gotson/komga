@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.support.TransactionTemplate
 
 private val logger = KotlinLogging.logger {}
 
@@ -24,6 +24,7 @@ class KomgaUserLifecycle(
   private val authenticationActivityRepository: AuthenticationActivityRepository,
   private val passwordEncoder: PasswordEncoder,
   private val sessionRegistry: SessionRegistry,
+  private val transactionTemplate: TransactionTemplate,
 
 ) : UserDetailsService {
 
@@ -53,13 +54,14 @@ class KomgaUserLifecycle(
     return createdUser
   }
 
-  @Transactional
   fun deleteUser(user: KomgaUser) {
     logger.info { "Deleting user: $user" }
 
-    readProgressRepository.deleteByUserId(user.id)
-    authenticationActivityRepository.deleteByUser(user)
-    userRepository.delete(user.id)
+    transactionTemplate.executeWithoutResult {
+      readProgressRepository.deleteByUserId(user.id)
+      authenticationActivityRepository.deleteByUser(user)
+      userRepository.delete(user.id)
+    }
 
     expireSessions(user)
   }

@@ -28,7 +28,7 @@ import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.ThumbnailSeriesRepository
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.support.TransactionTemplate
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -52,6 +52,7 @@ class SeriesLifecycle(
   private val readProgressRepository: ReadProgressRepository,
   private val taskReceiver: TaskReceiver,
   private val eventPublisher: EventPublisher,
+  private val transactionTemplate: TransactionTemplate,
 ) {
 
   fun sortBooks(series: Series) {
@@ -94,79 +95,83 @@ class SeriesLifecycle(
     }
   }
 
-  @Transactional
   fun addBooks(series: Series, booksToAdd: Collection<Book>) {
     booksToAdd.forEach {
       check(it.libraryId == series.libraryId) { "Cannot add book to series if they don't share the same libraryId" }
     }
     val toAdd = booksToAdd.map { it.copy(seriesId = series.id) }
 
-    bookRepository.insert(toAdd)
+    transactionTemplate.executeWithoutResult {
+      bookRepository.insert(toAdd)
 
-    // create associated media
-    mediaRepository.insert(toAdd.map { Media(bookId = it.id) })
+      // create associated media
+      mediaRepository.insert(toAdd.map { Media(bookId = it.id) })
 
-    // create associated metadata
-    toAdd.map {
-      BookMetadata(
-        title = it.name,
-        number = it.number.toString(),
-        numberSort = it.number.toFloat(),
-        bookId = it.id
-      )
-    }.let { bookMetadataRepository.insert(it) }
+      // create associated metadata
+      toAdd.map {
+        BookMetadata(
+          title = it.name,
+          number = it.number.toString(),
+          numberSort = it.number.toFloat(),
+          bookId = it.id
+        )
+      }.let { bookMetadataRepository.insert(it) }
+    }
 
     toAdd.forEach { eventPublisher.publishEvent(DomainEvent.BookAdded(it)) }
   }
 
-  @Transactional
   fun createSeries(series: Series): Series {
-    seriesRepository.insert(series)
+    transactionTemplate.executeWithoutResult {
+      seriesRepository.insert(series)
 
-    seriesMetadataRepository.insert(
-      SeriesMetadata(
-        title = series.name,
-        titleSort = StringUtils.stripAccents(series.name),
-        seriesId = series.id
+      seriesMetadataRepository.insert(
+        SeriesMetadata(
+          title = series.name,
+          titleSort = StringUtils.stripAccents(series.name),
+          seriesId = series.id
+        )
       )
-    )
 
-    bookMetadataAggregationRepository.insert(
-      BookMetadataAggregation(seriesId = series.id)
-    )
+      bookMetadataAggregationRepository.insert(
+        BookMetadataAggregation(seriesId = series.id)
+      )
+    }
 
     eventPublisher.publishEvent(DomainEvent.SeriesAdded(series))
 
     return seriesRepository.findByIdOrNull(series.id)!!
   }
 
-  @Transactional
   fun softDeleteMany(series: Collection<Series>) {
     logger.info { "Soft delete series: $series" }
     val deletedDate = LocalDateTime.now()
 
-    bookLifecycle.softDeleteMany(bookRepository.findAllBySeriesIds(series.map { it.id }))
-    series.forEach {
-      seriesRepository.update(it.copy(deletedDate = deletedDate))
+    transactionTemplate.executeWithoutResult {
+      bookLifecycle.softDeleteMany(bookRepository.findAllBySeriesIds(series.map { it.id }))
+      series.forEach {
+        seriesRepository.update(it.copy(deletedDate = deletedDate))
+      }
     }
 
     series.forEach { eventPublisher.publishEvent(DomainEvent.SeriesUpdated(it)) }
   }
 
-  @Transactional
   fun deleteMany(series: Collection<Series>) {
     val seriesIds = series.map { it.id }
     logger.info { "Delete series ids: $seriesIds" }
 
-    bookLifecycle.deleteMany(bookRepository.findAllBySeriesIds(seriesIds))
+    transactionTemplate.executeWithoutResult {
+      bookLifecycle.deleteMany(bookRepository.findAllBySeriesIds(seriesIds))
 
-    readProgressRepository.deleteBySeriesIds(seriesIds)
-    collectionRepository.removeSeriesFromAll(seriesIds)
-    thumbnailsSeriesRepository.deleteBySeriesIds(seriesIds)
-    seriesMetadataRepository.delete(seriesIds)
-    bookMetadataAggregationRepository.delete(seriesIds)
+      readProgressRepository.deleteBySeriesIds(seriesIds)
+      collectionRepository.removeSeriesFromAll(seriesIds)
+      thumbnailsSeriesRepository.deleteBySeriesIds(seriesIds)
+      seriesMetadataRepository.delete(seriesIds)
+      bookMetadataAggregationRepository.delete(seriesIds)
 
-    seriesRepository.delete(seriesIds)
+      seriesRepository.delete(seriesIds)
+    }
 
     series.forEach { eventPublisher.publishEvent(DomainEvent.SeriesDeleted(it)) }
   }
