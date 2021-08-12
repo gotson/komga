@@ -350,10 +350,10 @@ class LibraryContentLifecycle(
   fun emptyTrash(library: Library) {
     logger.info { "Empty trash for library: $library" }
 
-    val seriesToDelete = seriesRepository.findAll(SeriesSearch(deleted = true))
+    val seriesToDelete = seriesRepository.findAll(SeriesSearch(libraryIds = listOf(library.id), deleted = true))
     seriesLifecycle.deleteMany(seriesToDelete)
 
-    val booksToDelete = bookRepository.findAll(BookSearch(deleted = true))
+    val booksToDelete = bookRepository.findAll(BookSearch(libraryIds = listOf(library.id), deleted = true))
     bookLifecycle.deleteMany(booksToDelete)
     booksToDelete.map { it.seriesId }.distinct().forEach { seriesId ->
       seriesRepository.findByIdOrNull(seriesId)?.let { seriesLifecycle.sortBooks(it) }
