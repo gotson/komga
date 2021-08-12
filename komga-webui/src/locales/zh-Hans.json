@@ -100,6 +100,7 @@
       "width": "适应宽度"
     },
     "settings": {
+      "always_fullscreen": "始终全屏",
       "animate_page_transitions": "页面过渡动画",
       "background_color": "背景颜色",
       "background_colors": {
@@ -174,6 +175,7 @@
     "all_libraries": "所有库",
     "books": "书",
     "books_n": "无 | 1本书 | {count} 本书",
+    "books_total": "{count} / 共 {total} 本书",
     "cancel": "取消",
     "close": "关闭",
     "collections": "收藏",
@@ -364,7 +366,8 @@
       "button_cancel": "取消",
       "button_confirm": "保存修改",
       "dialog_title": "编辑阅读列表",
-      "field_name": "名称"
+      "field_name": "名称",
+      "field_summary": "概要"
     },
     "edit_series": {
       "button_cancel": "取消",
@@ -383,6 +386,8 @@
       "field_summary": "概要",
       "field_tags": "标签",
       "field_title": "标题",
+      "field_total_book_count": "书籍总数",
+      "field_total_book_count_error": "书籍总数必须为 1 或更多",
       "mixed": "混合",
       "tab_general": "常规",
       "tab_tags": "标签",

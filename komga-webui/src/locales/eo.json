@@ -100,6 +100,7 @@
       "width": "Adapti al larĝo"
     },
     "settings": {
+      "always_fullscreen": "Ĉiam plenekranreĝime",
       "animate_page_transitions": "Montri turnadon de paĝoj",
       "background_color": "Fona koloro",
       "background_colors": {
@@ -147,6 +148,7 @@
     "format": "FORMO",
     "isbn": "ISBN",
     "navigation_within_readlist": "Navigado en la legolisto {name}",
+    "outdated_tooltip": "Ĉi tiu libro estas reanalizenda, ĉar ĝia dosiero ŝanĝiĝis",
     "read_book": "Legi libron",
     "read_incognito": "Legi private",
     "size": "GRANDO"
@@ -173,6 +175,7 @@
     "all_libraries": "Ĉiuj Bibliotekoj",
     "books": "Libroj",
     "books_n": "Neniuj libroj | 1 libro | {count} libroj",
+    "books_total": "{count} el {total} libroj",
     "cancel": "Nuligi",
     "close": "Fermi",
     "collections": "Kolektoj",
@@ -190,6 +193,7 @@
     "locale_rtl": "false",
     "n_selected": "{count} elektiĝis",
     "nothing_to_show": "Nenio por montri",
+    "outdated": "Ne ĝisdata",
     "pages": "paĝoj",
     "pages_n": "Neniuj paĝoj | 1 paĝo | {count} paĝoj",
     "password": "Pasvorto",
@@ -202,6 +206,7 @@
     "roles": "Roloj",
     "series": "Serio",
     "tags": "Etikedoj",
+    "unavailable": "Nedisponebla",
     "use_filter_panel_to_change_filter": "Uzu la filtrilan panelon por ŝanĝi la aktivan filtrilon",
     "year": "jaro"
   },
@@ -210,6 +215,8 @@
     "on_deck": "Unua Nelegita Libro",
     "recently_added_books": "Ĵus Aldonitaj Libroj",
     "recently_added_series": "Ĵus Aldonitaj Serioj",
+    "recently_read_books": "Ĵus legitaj libroj",
+    "recently_released_books": "Ĵus eldonitaj libroj",
     "recently_updated_series": "Ĵus Ĝisdatigitaj Libroj"
   },
   "data_import": {
@@ -321,6 +328,7 @@
       "button_cancel": "Nuligi",
       "button_confirm_add": "Aldoni",
       "button_confirm_edit": "Redakti",
+      "button_next": "Sekva",
       "dialog_title_add": "Aldoni Bibliotekon",
       "dialot_title_edit": "Redakti Bibliotekon",
       "field_convert_to_cbz": "Aŭtomate konverti al CBZ",
@@ -332,11 +340,14 @@
       "field_import_epub_book": "Metadatenoj pri libro",
       "field_import_epub_series": "Metadatenoj pri serio",
       "field_import_local_artwork": "Lokaj bildoj",
+      "field_import_mylar_series": "Metadatenoj pri serio",
       "field_name": "Nomo",
       "field_repair_extensions": "Aŭtomate korekti malĝustajn dosiersufiksojn",
       "field_root_folder": "Radika dosierujo",
       "field_scanner_deep_scan": "Profunde skani",
+      "field_scanner_empty_trash_after_scan": "Aŭtomate malplenigi rubujon post skano",
       "field_scanner_force_directory_modified_time": "Devigi modifotempon de dosierujo",
+      "field_series_cover": "Kovrilo de serio",
       "file_browser_dialog_button_confirm": "Elekti",
       "file_browser_dialog_title": "La radika dosierujo de biblioteko",
       "label_file_management": "Dosieradministrado",
@@ -344,15 +355,19 @@
       "label_import_comicinfo": "Enporti metadatenojn el CBR/CBZ-dosiero enhavanta dosieron ComicsInfo.xml",
       "label_import_epub": "Enporti metadatenojn el EPUB-dosieroj",
       "label_import_local": "Enporti lokajn bildojn",
+      "label_import_mylar": "Enporti metadatenojn faritajn de Mylar",
       "label_scanner": "Skanilo",
+      "label_series_cover": "Kovrilo de serio",
       "tab_general": "Ĝenerala",
+      "tab_metadata": "Metadatenoj",
       "tab_options": "Opcioj"
     },
     "edit_readlist": {
       "button_cancel": "Nuligi",
       "button_confirm": "Konservi ŝanĝojn",
       "dialog_title": "Redakti legoliston",
-      "field_name": "Nomo"
+      "field_name": "Nomo",
+      "field_summary": "Resumo"
     },
     "edit_series": {
       "button_cancel": "Nuligi",
@@ -363,6 +378,7 @@
       "field_age_rating_error": "Aĝolimo devas esti ne negativa",
       "field_genres": "Ĝenroj",
       "field_language": "Lingvo",
+      "field_language_hint": "Lingva etikedo laŭ IETF BCP 47",
       "field_publisher": "Eldonejo",
       "field_reading_direction": "Direkto de Legado",
       "field_sort_title": "Titolo por Ordigo",
@@ -370,6 +386,8 @@
       "field_summary": "Resumo",
       "field_tags": "Etikedoj",
       "field_title": "Titolo",
+      "field_total_book_count": "Totala nombro de libroj",
+      "field_total_book_count_error": "Totala nombro de libroj devas esti almenaŭ 1",
       "mixed": "MIKSITA",
       "tab_general": "Ĝenerala",
       "tab_tags": "Etikedoj",
@@ -387,6 +405,11 @@
       "dialog_title": "Redakti komunajn bibliotekojn",
       "field_all_libraries": "Ĉiuj bibliotekoj",
       "label_shared_with": "Komuna kun {name}"
+    },
+    "empty_trash": {
+      "body": "Implicite, la servilo ne tuje forviŝas informojn pri dosieroj. Tio helpus, se disko provizore malkonektiĝus. Se vi malplenigus la rubujon de biblioteko, ĉiuj informoj pri mankantaj dosieroj forviŝiĝus.",
+      "button_confirm": "Malplenigi",
+      "title": "Malplenigi rubujon de biblioteko"
     },
     "file_browser": {
       "button_cancel": "Nuligi",
@@ -474,6 +497,12 @@
       "VERTICAL": "Vertikala",
       "WEBTOON": "Retkomikso"
     },
+    "series_cover": {
+      "FIRST": "Unua",
+      "FIRST_UNREAD_OR_FIRST": "La unua nelegitaĵo, aŭ se ĉio legiĝis, la unua ajnaĵo",
+      "FIRST_UNREAD_OR_LAST": "La unua nelegitaĵo, aŭ se ĉio legiĝis, la lasta ajnaĵo",
+      "LAST": "Lasta"
+    },
     "series_status": {
       "ABANDONED": "Forlasita",
       "ENDED": "Finita",
@@ -557,6 +586,7 @@
     "download_series": "Elŝuti serion",
     "edit": "Redakti",
     "edit_metadata": "Redakti metadatenojn",
+    "empty_trash": "Malplenigi rubujon",
     "mark_read": "Marki kiel legitan",
     "mark_unread": "Marki kiel ne legitan",
     "refresh_metadata": "Reŝargi metadatenojn",
