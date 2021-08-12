@@ -100,6 +100,7 @@
       "width": "An Breite ausrichten"
     },
     "settings": {
+      "always_fullscreen": "Dauerhaftes Vollbild",
       "animate_page_transitions": "Fließender Seitenübergangseffekt",
       "background_color": "Hintergrundfarbe",
       "background_colors": {
@@ -174,6 +175,7 @@
     "all_libraries": "Alle Bibliotheken",
     "books": "Bücher",
     "books_n": "Kein Buch | 1 Buch | {count} Bücher",
+    "books_total": "{count} / {total} Bücher",
     "cancel": "Abbrechen",
     "close": "Schließen",
     "collections": "Sammlungen",
@@ -364,7 +366,8 @@
       "button_cancel": "Abbrechen",
       "button_confirm": "Änderungen speichern",
       "dialog_title": "Bearbeite die Leseliste",
-      "field_name": "Name"
+      "field_name": "Name",
+      "field_summary": "Zusammenfassung"
     },
     "edit_series": {
       "button_cancel": "Abbrechen",
@@ -383,6 +386,8 @@
       "field_summary": "Zusammenfassung",
       "field_tags": "Stichwörter",
       "field_title": "Titel",
+      "field_total_book_count": "Anzahl aller Bücher der Serie",
+      "field_total_book_count_error": "Anzahl der Bücher einer Serie muß größer eins sein",
       "mixed": "Vermischtes",
       "tab_general": "Allgemein",
       "tab_tags": "Stichwörter",
@@ -402,8 +407,8 @@
       "label_shared_with": "Teile mit {name}"
     },
     "empty_trash": {
-      "body": "Standardmäßig entfernt der Medienserver nicht sofort alle Informationen von bei nicht vorhanden sein von Medien. Dies ist zum Schutz der Metadaten gedacht, sollte ein Datenträger temporär nicht verfügbar sein. Wenn Sie eine Bibliothek bereinigen, werden alle Informationen über fehlende Medien gelöscht.",
-      "button_confirm": "Leer",
+      "body": "Standardmäßig entfernt der Medienserver nicht sofort alle Informationen bei mehr vorhandenen Medien. Dies ist zum Schutz der Metadaten gedacht, sollte ein Datenträger temporär nicht verfügbar sein. Wenn Sie eine Bibliothek bereinigen, werden alle Informationen über fehlende Medien gelöscht.",
+      "button_confirm": "Bereinigen",
       "title": "Bereinigen der Bibliothek"
     },
     "file_browser": {

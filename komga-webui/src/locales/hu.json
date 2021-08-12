@@ -99,6 +99,7 @@
       "width": "Szélességhez igazítás"
     },
     "settings": {
+      "always_fullscreen": "Mindig teljes képernyős",
       "animate_page_transitions": "Oldal váltás animálása",
       "background_color": "Háttérszín",
       "background_colors": {
@@ -146,6 +147,7 @@
     "format": "FORMÁTUM",
     "isbn": "ISBN",
     "navigation_within_readlist": "Navigáció az olvasólistán belül: {name}",
+    "outdated_tooltip": "A fájlja ennek a könyvnek megváltozott, ezt a könyvet újra kell elemezni",
     "read_book": "Könyv olvasása",
     "read_incognito": "Olvasás inkognitóban",
     "size": "MÉRET"
@@ -172,6 +174,7 @@
     "all_libraries": "Minden könyvtár",
     "books": "Könyvek",
     "books_n": "Nincs könyv | 1 könyv | {count} könyv",
+    "books_total": "{count} / {total} könyv",
     "cancel": "Mégse",
     "close": "Bezárás",
     "collections": "Gyűjtemények",
@@ -189,6 +192,7 @@
     "locale_rtl": "false",
     "n_selected": "{count} kiválasztva",
     "nothing_to_show": "Nincs mit mutatni",
+    "outdated": "Elavult",
     "pages": "oldalak",
     "pages_n": "Nincs oldal | 1 oldal | {count} oldal",
     "password": "Jelszó",
@@ -201,6 +205,7 @@
     "roles": "Szerepek",
     "series": "Könyvsorozatok",
     "tags": "Címkék",
+    "unavailable": "Nem elérhető",
     "use_filter_panel_to_change_filter": "A szűrőpanelen változtasd meg az aktív szűrőt",
     "year": "év"
   },
@@ -209,6 +214,8 @@
     "on_deck": "Folyamatban",
     "recently_added_books": "Nemrég hozzáadott könyvek",
     "recently_added_series": "Nemrég hozzáadott könyvsorozatok",
+    "recently_read_books": "Nemrég olvasott könyvek",
+    "recently_released_books": "Nemrég megjelent könyvek",
     "recently_updated_series": "Nemrég frissített könyvsorozatok"
   },
   "data_import": {
@@ -319,6 +326,7 @@
       "button_cancel": "Mégse",
       "button_confirm_add": "Hozzáad",
       "button_confirm_edit": "Szerkesztés",
+      "button_next": "Következő",
       "dialog_title_add": "Könyvtár hozzáadása",
       "dialot_title_edit": "Könyvtár szerkesztése",
       "field_convert_to_cbz": "Automatikus konvertálás CBZ-re",
@@ -330,11 +338,14 @@
       "field_import_epub_book": "Könyv metaadat",
       "field_import_epub_series": "Sorozat metaadat",
       "field_import_local_artwork": "Helyi műalkotás",
+      "field_import_mylar_series": "Sorozat metaadat",
       "field_name": "Név",
       "field_repair_extensions": "Automatikus helytelen fájlkiterjesztés javítás",
       "field_root_folder": "Gyökérkönyvtár",
       "field_scanner_deep_scan": "Mély beolvasás",
+      "field_scanner_empty_trash_after_scan": "Minden vizsgálat után automatikusan űrítse a szemetest",
       "field_scanner_force_directory_modified_time": "Kényszerített könyvtár-módosítási idő",
+      "field_series_cover": "Sorozat borító",
       "file_browser_dialog_button_confirm": "Kiválaszt",
       "file_browser_dialog_title": "A könyvtár gyökérkönyvtára",
       "label_file_management": "Fájlkezelés",
@@ -342,15 +353,19 @@
       "label_import_comicinfo": "ComicInfo.xml fájlt tartalmazó CBR/CBZ metaadatok importálása",
       "label_import_epub": "Metaadatok importálása EPUB fájlokból",
       "label_import_local": "Helyi médiafájlok importálása",
+      "label_import_mylar": "Mylar által generált metaadatok importálása",
       "label_scanner": "Beolvasó",
+      "label_series_cover": "Sorozat borító",
       "tab_general": "Általános",
+      "tab_metadata": "Metaadat",
       "tab_options": "Opciók"
     },
     "edit_readlist": {
       "button_cancel": "Mégse",
       "button_confirm": "Módosítások mentése",
       "dialog_title": "Olvasólista szerkesztése",
-      "field_name": "Név"
+      "field_name": "Név",
+      "field_summary": "Összefoglaló"
     },
     "edit_series": {
       "button_cancel": "Mégse",
@@ -361,6 +376,7 @@
       "field_age_rating_error": "Korhatár-besorolásnak 0-nak vagy nagyobbnak kell lennie",
       "field_genres": "Műfajok",
       "field_language": "Nyelv",
+      "field_language_hint": "IETF BCP 47 nyelv címke",
       "field_publisher": "Kiadó",
       "field_reading_direction": "Olvasási irány",
       "field_sort_title": "Cím rendezése",
@@ -368,6 +384,8 @@
       "field_summary": "Összefoglaló",
       "field_tags": "Címkék",
       "field_title": "Cím",
+      "field_total_book_count": "Összes könyvszám",
+      "field_total_book_count_error": "Összes könyvszámnak legalább 1-nek kell lennie",
       "mixed": "VEGYES",
       "tab_general": "Általános",
       "tab_tags": "Címkék",
@@ -385,6 +403,10 @@
       "dialog_title": "Megosztott könyvtárak szerkesztése",
       "field_all_libraries": "Minden könyvtár",
       "label_shared_with": "Megosztva a következővel: {name}"
+    },
+    "empty_trash": {
+      "button_confirm": "Üres",
+      "title": "Könyvtár szemetesének kiűrítése"
     },
     "file_browser": {
       "button_cancel": "Mégse",
@@ -412,7 +434,8 @@
       "field_repeat_password_error": "A jelszavaknak meg kell egyeznie."
     },
     "refresh_library_metadata": {
-      "button_confirm": "Frissítés"
+      "button_confirm": "Frissítés",
+      "title": "Könyvtár metaadatok frissítése"
     },
     "series_picker": {
       "label_search_series": "Könyvsorozat keresése",
@@ -470,6 +493,12 @@
       "VERTICAL": "Függőleges",
       "WEBTOON": "Webtoon"
     },
+    "series_cover": {
+      "FIRST": "Első",
+      "FIRST_UNREAD_OR_FIRST": "Első olvasatlan különben első",
+      "FIRST_UNREAD_OR_LAST": "Első olvasatlan különben utolsó",
+      "LAST": "Utolsó"
+    },
     "series_status": {
       "ABANDONED": "Elhagyott",
       "ENDED": "Véget ért",
@@ -497,6 +526,7 @@
     "ERR_1016": "Könyvtár nem érhető el, vagy nem könyvtár",
     "ERR_1017": "Nem lehet beolvasni egy meglévő könyvtár részét képező mappát",
     "ERR_1018": "Fájl nem található",
+    "ERR_1019": "Nem lehet importálni egy létező könyvtárban található fájlt",
     "ERR_1020": "A frissítendő könyv nem tartozik a megadott sorozathoz",
     "ERR_1021": "A célfájl már létezik",
     "ERR_1022": "Az újonnan importált könyvet nem lehetett beolvasni"
@@ -552,6 +582,7 @@
     "download_series": "Könyvsorozat letöltése",
     "edit": "Szerkesztés",
     "edit_metadata": "Metaadatok szerkesztése",
+    "empty_trash": "Szemetes űrítése",
     "mark_read": "Olvasottként jelölés",
     "mark_unread": "Olvasatlanként jelölés",
     "refresh_metadata": "Metaadatok frissítése",

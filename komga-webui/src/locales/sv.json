@@ -100,6 +100,7 @@
       "width": "Passa bredd"
     },
     "settings": {
+      "always_fullscreen": "Alltid helskärm",
       "animate_page_transitions": "Animera sidbyten",
       "background_color": "Bakgrundsfärg",
       "background_colors": {
@@ -174,6 +175,7 @@
     "all_libraries": "Alla bibliotek",
     "books": "Böcker",
     "books_n": "Ingen bok | 1 bok | {count} böcker",
+    "books_total": "{count} / {total} böcker",
     "cancel": "Avbryt",
     "close": "Stäng",
     "collections": "Samlingar",
@@ -213,6 +215,7 @@
     "on_deck": "Pågående",
     "recently_added_books": "Nyligen tillagda böcker",
     "recently_added_series": "Nyligen tillagda serier",
+    "recently_read_books": "Nyligen lästa böcker",
     "recently_released_books": "Nyligen släppta böcker",
     "recently_updated_series": "Nyligen uppdaterad serier"
   },
@@ -344,6 +347,7 @@
       "field_scanner_deep_scan": "Djup skanning",
       "field_scanner_empty_trash_after_scan": "Töm papperskorgen automatiskt efter varje skanning",
       "field_scanner_force_directory_modified_time": "Tvinga katalogen att söka baserat på tidsstämpeln",
+      "field_series_cover": "Serieomslag",
       "file_browser_dialog_button_confirm": "Välj",
       "file_browser_dialog_title": "Bibliotekets rotkatalog",
       "label_file_management": "Filhantering",
@@ -353,6 +357,7 @@
       "label_import_local": "Importera lokala mediatillgångar",
       "label_import_mylar": "Importera metadata genererade av Mylar",
       "label_scanner": "Skanning",
+      "label_series_cover": "Serieomslag",
       "tab_general": "Allmänt",
       "tab_metadata": "Metadata",
       "tab_options": "Alternativ"
@@ -361,7 +366,8 @@
       "button_cancel": "Avbryt",
       "button_confirm": "Spara ändringar",
       "dialog_title": "Redigera läslistan",
-      "field_name": "Namn"
+      "field_name": "Namn",
+      "field_summary": "Sammanfattning"
     },
     "edit_series": {
       "button_cancel": "Avbryt",
@@ -380,6 +386,8 @@
       "field_summary": "Sammanfatting",
       "field_tags": "Taggar",
       "field_title": "Titel",
+      "field_total_book_count": "Totalt antal böcker",
+      "field_total_book_count_error": "Totalt antal böcker måste vara minst 1",
       "mixed": "BLANDAD",
       "tab_general": "Allämnt",
       "tab_tags": "Taggar",
@@ -488,6 +496,12 @@
       "RIGHT_TO_LEFT": "Höger till vänster",
       "VERTICAL": "Lodrät",
       "WEBTOON": "Webtoon"
+    },
+    "series_cover": {
+      "FIRST": "Första",
+      "FIRST_UNREAD_OR_FIRST": "Första olästa annars första",
+      "FIRST_UNREAD_OR_LAST": "Första olästa annars sista",
+      "LAST": "Sista"
     },
     "series_status": {
       "ABANDONED": "Övergiven",
