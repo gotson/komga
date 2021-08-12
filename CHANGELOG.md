@@ -1,3 +1,11 @@
+## [0.116.1](https://github.com/gotson/komga/compare/v0.116.0...v0.116.1) (2021-08-12)
+
+
+### Bug Fixes
+
+* empty trash is not library specific ([d68f70a](https://github.com/gotson/komga/commit/d68f70acb3dfff94756e6d92a5363b79dac66a68)), closes [#612](https://github.com/gotson/komga/issues/612)
+* translated using Weblate ([c86a99e](https://github.com/gotson/komga/commit/c86a99e315fd4f45078aace78e7ce221b8d7f883))
+
 # [0.116.0](https://github.com/gotson/komga/compare/v0.115.1...v0.116.0) (2021-08-09)
 
 
