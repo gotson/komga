@@ -73,7 +73,7 @@ class FileSystemScanner(
         root, setOf(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE,
         object : FileVisitor<Path> {
           override fun preVisitDirectory(dir: Path, attrs: BasicFileAttributes): FileVisitResult {
-            logger.trace { "preVisit: $dir" }
+            logger.trace { "preVisit: $dir (regularFile:${attrs.isRegularFile}, directory:${attrs.isDirectory}, symbolicLink:${attrs.isSymbolicLink}, other:${attrs.isOther})" }
             if (dir.name.startsWith(".") ||
               komgaProperties.librariesScanDirectoryExclusions.any { exclude ->
                 dir.pathString.contains(exclude, true)
@@ -90,8 +90,8 @@ class FileSystemScanner(
           }
 
           override fun visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult {
-            logger.trace { "visitFile: $file" }
-            if (attrs.isRegularFile) {
+            logger.trace { "visitFile: $file (regularFile:${attrs.isRegularFile}, directory:${attrs.isDirectory}, symbolicLink:${attrs.isSymbolicLink}, other:${attrs.isOther})" }
+            if (!attrs.isSymbolicLink && !attrs.isDirectory) {
               if (supportedExtensions.contains(file.extension.lowercase()) &&
                 !file.name.startsWith(".")
               ) {
