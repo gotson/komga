@@ -1,3 +1,10 @@
+## [0.116.2](https://github.com/gotson/komga/compare/v0.116.1...v0.116.2) (2021-08-16)
+
+
+### Bug Fixes
+
+* **scanner:** don't ignore files with reparse point ([d4b9f5d](https://github.com/gotson/komga/commit/d4b9f5d7c453f677e76092b569be16ae76e20e5b)), closes [#616](https://github.com/gotson/komga/issues/616)
+
 ## [0.116.1](https://github.com/gotson/komga/compare/v0.116.0...v0.116.1) (2021-08-12)
 
 
