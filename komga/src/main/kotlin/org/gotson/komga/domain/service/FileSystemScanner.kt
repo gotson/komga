@@ -23,6 +23,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import kotlin.io.path.exists
 import kotlin.io.path.extension
+import kotlin.io.path.listDirectoryEntries
 import kotlin.io.path.name
 import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.pathString
@@ -172,6 +173,18 @@ class FileSystemScanner(
     if (!path.exists()) return null
 
     return pathToBook(path, path.readAttributes())
+  }
+
+  fun scanBookSidecars(path: Path): List<Sidecar> {
+    val bookBaseName = path.nameWithoutExtension
+    val parent = path.parent
+    return parent.listDirectoryEntries()
+      .filter { candidate -> sidecarBookPrefilter.any { it.matches(candidate.name) } }
+      .mapNotNull { candidate ->
+        sidecarBookConsumers.firstOrNull { it.isSidecarBookMatch(bookBaseName, candidate.name) }?.let {
+          Sidecar(candidate.toUri().toURL(), parent.toUri().toURL(), candidate.readAttributes<BasicFileAttributes>().getUpdatedTime(), it.getSidecarBookType(), Sidecar.Source.BOOK)
+        }
+      }
   }
 
   private fun pathToBook(path: Path, attrs: BasicFileAttributes): Book =

@@ -2,6 +2,7 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import org.gotson.komga.application.events.EventPublisher
+import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.CodedException
 import org.gotson.komga.domain.model.CopyMode
@@ -9,6 +10,7 @@ import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.PathContainedInPath
 import org.gotson.komga.domain.model.Series
+import org.gotson.komga.domain.model.Sidecar
 import org.gotson.komga.domain.model.withCode
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
@@ -16,6 +18,7 @@ import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
+import org.gotson.komga.domain.persistence.SidecarRepository
 import org.gotson.komga.infrastructure.language.toIndexedMap
 import org.springframework.stereotype.Service
 import java.io.FileNotFoundException
@@ -24,6 +27,7 @@ import java.nio.file.Files
 import java.nio.file.NoSuchFileException
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.nio.file.attribute.BasicFileAttributes
 import kotlin.io.path.copyTo
 import kotlin.io.path.deleteExisting
 import kotlin.io.path.deleteIfExists
@@ -31,7 +35,10 @@ import kotlin.io.path.exists
 import kotlin.io.path.extension
 import kotlin.io.path.moveTo
 import kotlin.io.path.name
+import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.notExists
+import kotlin.io.path.readAttributes
+import kotlin.io.path.toPath
 
 private val logger = KotlinLogging.logger {}
 
@@ -46,7 +53,9 @@ class BookImporter(
   private val readProgressRepository: ReadProgressRepository,
   private val readListRepository: ReadListRepository,
   private val libraryRepository: LibraryRepository,
+  private val sidecarRepository: SidecarRepository,
   private val eventPublisher: EventPublisher,
+  private val taskReceiver: TaskReceiver,
 ) {
 
   fun importBook(sourceFile: Path, series: Series, copyMode: CopyMode, destinationName: String? = null, upgradeBookId: String? = null): Book {
@@ -61,6 +70,12 @@ class BookImporter(
         if (destinationName != null) Paths.get("$destinationName.${sourceFile.extension}").name
         else sourceFile.name
       )
+      val sidecars = fileSystemScanner.scanBookSidecars(sourceFile).associateWith {
+        series.path.resolve(
+          if (destinationName != null) it.url.toURI().toPath().name.replace(sourceFile.nameWithoutExtension, destinationName, true)
+          else it.url.toURI().toPath().name
+        )
+      }
 
       val upgradedBook =
         if (upgradeBookId != null) {
@@ -92,17 +107,39 @@ class BookImporter(
         CopyMode.MOVE -> {
           logger.info { "Moving file $sourceFile to $destFile" }
           sourceFile.moveTo(destFile)
+          sidecars.forEach {
+            it.key.url.toURI().toPath().let { sourcePath ->
+              logger.info { "Moving file $sourcePath to ${it.value}" }
+              sourcePath.moveTo(it.value, true)
+            }
+          }
         }
         CopyMode.COPY -> {
           logger.info { "Copying file $sourceFile to $destFile" }
           sourceFile.copyTo(destFile)
+          sidecars.forEach {
+            it.key.url.toURI().toPath().let { sourcePath ->
+              logger.info { "Copying file $sourcePath to ${it.value}" }
+              sourcePath.copyTo(it.value, true)
+            }
+          }
         }
         CopyMode.HARDLINK -> try {
           logger.info { "Hardlink file $sourceFile to $destFile" }
           Files.createLink(destFile, sourceFile)
+          sidecars.forEach {
+            it.key.url.toURI().toPath().let { sourcePath ->
+              logger.info { "Hardlink file $sourcePath to ${it.value}" }
+              it.value.deleteIfExists()
+              Files.createLink(it.value, sourcePath)
+            }
+          }
         } catch (e: Exception) {
           logger.warn(e) { "Filesystem does not support hardlinks, copying instead" }
           sourceFile.copyTo(destFile)
+          sidecars.forEach {
+            it.key.url.toURI().toPath().copyTo(it.value, true)
+          }
         }
       }
 
@@ -152,6 +189,19 @@ class BookImporter(
       }
 
       seriesLifecycle.sortBooks(series)
+
+      sidecars.forEach { (sourceSidecar, destPath) ->
+        when (sourceSidecar.type) {
+          Sidecar.Type.ARTWORK -> taskReceiver.refreshBookLocalArtwork(importedBook.id)
+          Sidecar.Type.METADATA -> taskReceiver.refreshBookMetadata(importedBook.id)
+        }
+        val destSidecar = sourceSidecar.copy(
+          url = destPath.toUri().toURL(),
+          parentUrl = destPath.parent.toUri().toURL(),
+          lastModifiedTime = destPath.readAttributes<BasicFileAttributes>().getUpdatedTime()
+        )
+        sidecarRepository.save(importedBook.libraryId, destSidecar)
+      }
 
       eventPublisher.publishEvent(DomainEvent.BookImported(importedBook, sourceFile.toUri().toURL(), success = true))
 

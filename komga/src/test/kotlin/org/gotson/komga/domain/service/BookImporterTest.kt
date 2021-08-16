@@ -2,8 +2,14 @@ package org.gotson.komga.domain.service
 
 import com.google.common.jimfs.Configuration
 import com.google.common.jimfs.Jimfs
+import com.ninjasquad.springmockk.MockkBean
+import io.mockk.Runs
+import io.mockk.every
+import io.mockk.just
+import io.mockk.verify
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
+import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.CopyMode
 import org.gotson.komga.domain.model.KomgaUser
@@ -25,6 +31,7 @@ import org.gotson.komga.infrastructure.language.toIndexedMap
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -59,6 +66,9 @@ class BookImporterTest(
   private val user1 = KomgaUser("user1@example.org", "", false)
   private val user2 = KomgaUser("user2@example.org", "", false)
 
+  @MockkBean
+  private lateinit var mockTackReceiver: TaskReceiver
+
   @BeforeAll
   fun init() {
     libraryRepository.insert(library)
@@ -72,6 +82,12 @@ class BookImporterTest(
     libraryRepository.deleteAll()
     readProgressRepository.deleteAll()
     userRepository.deleteAll()
+  }
+
+  @BeforeEach
+  fun initMocks() {
+    every { mockTackReceiver.refreshBookMetadata(any(), any(), any()) } just Runs
+    every { mockTackReceiver.refreshBookLocalArtwork(any(), any()) } just Runs
   }
 
   @AfterEach
@@ -136,7 +152,7 @@ class BookImporterTest(
   }
 
   @Test
-  fun `given source file parf of a Komga library when importing then exception is thrown`() {
+  fun `given source file part of a Komga library when importing then exception is thrown`() {
     Jimfs.newFileSystem(Configuration.unix()).use { fs ->
       // given
       val sourceDir = fs.getPath("/source").createDirectory()
@@ -198,6 +214,72 @@ class BookImporterTest(
         val newMedia = mediaRepository.findById(id)
         assertThat(newMedia.status).isEqualTo(Media.Status.UNKNOWN)
       }
+    }
+  }
+
+  @Test
+  fun `given book with sidecars when importing then book and sidecars are imported`() {
+    Jimfs.newFileSystem(Configuration.unix()).use { fs ->
+      // given
+      val sourceDir = fs.getPath("/source").createDirectory()
+      val sourceFile = sourceDir.resolve("book 2.cbz").createFile()
+      sourceDir.resolve("book 2.jpg").createFile()
+      sourceDir.resolve("BOOK 2-1.jpg").createFile()
+      val destDir = fs.getPath("/library/series").createDirectories()
+
+      val existingBooks = listOf(
+        makeBook("1", libraryId = library.id),
+        makeBook("3", libraryId = library.id),
+      )
+      val series = makeSeries("series", url = destDir.toUri().toURL(), libraryId = library.id)
+        .also { series ->
+          seriesLifecycle.createSeries(series)
+          seriesLifecycle.addBooks(series, existingBooks)
+          seriesLifecycle.sortBooks(series)
+        }
+
+      // when
+      bookImporter.importBook(sourceFile, series, CopyMode.COPY)
+
+      // then
+      verify(exactly = 2) { mockTackReceiver.refreshBookLocalArtwork(any()) }
+
+      assertThat(destDir.resolve("book 2.cbz")).exists()
+      assertThat(destDir.resolve("book 2.jpg")).exists()
+      assertThat(destDir.resolve("BOOK 2-1.jpg")).exists()
+    }
+  }
+
+  @Test
+  fun `given book with sidecars when importing with destination name then book and sidecars are imported`() {
+    Jimfs.newFileSystem(Configuration.unix()).use { fs ->
+      // given
+      val sourceDir = fs.getPath("/source").createDirectory()
+      val sourceFile = sourceDir.resolve("book 2.cbz").createFile()
+      sourceDir.resolve("book 2.jpg").createFile()
+      sourceDir.resolve("BOOK 2-1.jpg").createFile()
+      val destDir = fs.getPath("/library/series").createDirectories()
+
+      val existingBooks = listOf(
+        makeBook("1", libraryId = library.id),
+        makeBook("3", libraryId = library.id),
+      )
+      val series = makeSeries("series", url = destDir.toUri().toURL(), libraryId = library.id)
+        .also { series ->
+          seriesLifecycle.createSeries(series)
+          seriesLifecycle.addBooks(series, existingBooks)
+          seriesLifecycle.sortBooks(series)
+        }
+
+      // when
+      bookImporter.importBook(sourceFile, series, CopyMode.COPY, destinationName = "book 5")
+
+      // then
+      verify(exactly = 2) { mockTackReceiver.refreshBookLocalArtwork(any()) }
+
+      assertThat(destDir.resolve("book 5.cbz")).exists()
+      assertThat(destDir.resolve("book 5.jpg")).exists()
+      assertThat(destDir.resolve("book 5-1.jpg")).exists()
     }
   }
 
