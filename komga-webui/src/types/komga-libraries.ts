@@ -59,4 +59,5 @@ export interface LibraryDto {
   convertToCbz: boolean,
   emptyTrashAfterScan: boolean,
   seriesCover: SeriesCoverDto,
+  unavailable: boolean,
 }

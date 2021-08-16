@@ -139,7 +139,7 @@
                   {{ $t(`enums.reading_direction.${series.metadata.readingDirection}`) }}
                 </v-chip>
               </v-col>
-              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="series.deleted">
+              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="unavailable">
                 <v-chip label small color="error">
                   {{ $t('common.unavailable') }}
                 </v-chip>
@@ -527,8 +527,11 @@ export default Vue.extend({
     isAdmin(): boolean {
       return this.$store.getters.meAdmin
     },
+    unavailable(): boolean {
+      return this.series.deleted || this.$store.getters.getLibraryById(this.series.libraryId).unavailable
+    },
     canDownload(): boolean {
-      return this.$store.getters.meFileDownload && !this.series.deleted
+      return this.$store.getters.meFileDownload && !this.unavailable
     },
     fileUrl(): string {
       return seriesFileUrl(this.series.id)

@@ -85,6 +85,10 @@
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>{{ l.name }}</v-list-item-title>
+            <v-list-item-subtitle
+              v-if="l.unavailable"
+              class="error--text caption"
+            >{{ $t('common.unavailable') }}</v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action v-if="isAdmin">
             <library-actions-menu :library="l"/>

@@ -136,7 +136,7 @@
                   </template>{{ $t('browse_book.outdated_tooltip') }}</v-tooltip>
               </v-col>
 
-              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="book.deleted">
+              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="unavailable">
                 <v-chip label small color="error">
                   {{ $t('common.unavailable') }}
                 </v-chip>
@@ -418,11 +418,14 @@ export default Vue.extend({
     isAdmin(): boolean {
       return this.$store.getters.meAdmin
     },
+    unavailable(): boolean {
+      return this.book.deleted || this.$store.getters.getLibraryById(this.book.libraryId).unavailable
+    },
     canRead(): boolean {
-      return this.book.media.status === 'READY' && this.$store.getters.mePageStreaming && !this.book.deleted
+      return this.book.media.status === 'READY' && this.$store.getters.mePageStreaming && !this.unavailable
     },
     canDownload(): boolean {
-      return this.$store.getters.meFileDownload && !this.book.deleted
+      return this.$store.getters.meFileDownload && !this.unavailable
     },
     thumbnailUrl(): string {
       return bookThumbnailUrl(this.bookId)

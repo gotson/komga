@@ -207,7 +207,10 @@ export default Vue.extend({
       return this.onEdit !== undefined || this.onSelected !== undefined || this.bookReady || this.canReadPages || this.actionMenu
     },
     computedItem(): Item<BookDto | SeriesDto | CollectionDto | ReadListDto> {
-      return createItem(this.item)
+      let item = this.item
+      if ('libraryId' in this.item && this.$store.getters.getLibraryById((this.item as any).libraryId).unavailable)
+        item = {...item, deleted: true}
+      return createItem(item)
     },
     disableHover(): boolean {
       return !this.overlay
