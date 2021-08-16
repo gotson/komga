@@ -1286,7 +1286,8 @@
           "root",
           "scanDeep",
           "scanForceModifiedTime",
-          "seriesCover"
+          "seriesCover",
+          "unavailable"
         ],
         "properties": {
           "repairExtensions": {
@@ -1305,6 +1306,9 @@
             "type": "boolean"
           },
           "importMylarSeries": {
+            "type": "boolean"
+          },
+          "unavailable": {
             "type": "boolean"
           },
           "emptyTrashAfterScan": {

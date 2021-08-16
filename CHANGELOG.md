@@ -1,3 +1,11 @@
+## [0.116.3](https://github.com/gotson/komga/compare/v0.116.2...v0.116.3) (2021-08-16)
+
+
+### Bug Fixes
+
+* **scanner:** fail scan if root folder is unavailable ([871ec60](https://github.com/gotson/komga/commit/871ec60869fe57d2c823b79006a6f5d38c5b9372)), closes [#617](https://github.com/gotson/komga/issues/617)
+* **webui:** display series/books as unavailable if library is unavailable ([82cf82d](https://github.com/gotson/komga/commit/82cf82df384b82479837fabf917ee840a84d4dba)), closes [#617](https://github.com/gotson/komga/issues/617)
+
 ## [0.116.2](https://github.com/gotson/komga/compare/v0.116.1...v0.116.2) (2021-08-16)
 
 
