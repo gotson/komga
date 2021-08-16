@@ -1,3 +1,10 @@
+# [0.117.0](https://github.com/gotson/komga/compare/v0.116.3...v0.117.0) (2021-08-16)
+
+
+### Features
+
+* **importer:** import sidecars alongside books ([a3c3a48](https://github.com/gotson/komga/commit/a3c3a48038ecde6a1be5c4795047f8a37fbb6e11)), closes [#611](https://github.com/gotson/komga/issues/611)
+
 ## [0.116.3](https://github.com/gotson/komga/compare/v0.116.2...v0.116.3) (2021-08-16)
 
 
