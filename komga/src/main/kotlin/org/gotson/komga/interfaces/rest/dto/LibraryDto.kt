@@ -22,6 +22,7 @@ data class LibraryDto(
   val convertToCbz: Boolean,
   val emptyTrashAfterScan: Boolean,
   val seriesCover: SeriesCoverDto,
+  val unavailable: Boolean,
 )
 
 fun Library.toDto(includeRoot: Boolean) = LibraryDto(
@@ -43,4 +44,5 @@ fun Library.toDto(includeRoot: Boolean) = LibraryDto(
   convertToCbz = convertToCbz,
   emptyTrashAfterScan = emptyTrashAfterScan,
   seriesCover = seriesCover.toDto(),
+  unavailable = unavailableDate != null,
 )

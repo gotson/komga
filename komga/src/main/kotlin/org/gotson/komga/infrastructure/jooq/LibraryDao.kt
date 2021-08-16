@@ -75,6 +75,7 @@ class LibraryDao(
       .set(l.REPAIR_EXTENSIONS, library.repairExtensions)
       .set(l.CONVERT_TO_CBZ, library.convertToCbz)
       .set(l.EMPTY_TRASH_AFTER_SCAN, library.emptyTrashAfterScan)
+      .set(l.UNAVAILABLE_DATE, library.unavailableDate)
       .set(l.SERIES_COVER, library.seriesCover.toString())
       .execute()
   }
@@ -99,6 +100,7 @@ class LibraryDao(
       .set(l.CONVERT_TO_CBZ, library.convertToCbz)
       .set(l.EMPTY_TRASH_AFTER_SCAN, library.emptyTrashAfterScan)
       .set(l.SERIES_COVER, library.seriesCover.toString())
+      .set(l.UNAVAILABLE_DATE, library.unavailableDate)
       .set(l.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(l.ID.eq(library.id))
       .execute()
@@ -125,6 +127,7 @@ class LibraryDao(
       convertToCbz = convertToCbz,
       emptyTrashAfterScan = emptyTrashAfterScan,
       seriesCover = Library.SeriesCover.valueOf(seriesCover),
+      unavailableDate = unavailableDate,
       id = id,
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone()

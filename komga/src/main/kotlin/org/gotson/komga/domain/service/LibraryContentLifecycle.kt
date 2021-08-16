@@ -1,20 +1,22 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
+import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.DirectoryNotFoundException
+import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
-import org.gotson.komga.domain.model.ScanResult
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.model.Sidecar
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
+import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
@@ -30,6 +32,7 @@ import org.gotson.komga.infrastructure.language.toIndexedMap
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 import java.nio.file.Paths
+import java.time.LocalDateTime
 import kotlin.time.measureTime
 
 private val logger = KotlinLogging.logger {}
@@ -39,6 +42,7 @@ class LibraryContentLifecycle(
   private val fileSystemScanner: FileSystemScanner,
   private val seriesRepository: SeriesRepository,
   private val bookRepository: BookRepository,
+  private val libraryRepository: LibraryRepository,
   private val bookLifecycle: BookLifecycle,
   private val mediaRepository: MediaRepository,
   private val seriesLifecycle: SeriesLifecycle,
@@ -55,15 +59,27 @@ class LibraryContentLifecycle(
   private val readProgressRepository: ReadProgressRepository,
   private val collectionRepository: SeriesCollectionRepository,
   private val thumbnailBookRepository: ThumbnailBookRepository,
+  private val eventPublisher: EventPublisher,
 ) {
 
   fun scanRootFolder(library: Library) {
     logger.info { "Updating library: $library" }
     measureTime {
-      val (scanResult, rootFolderInaccessible) = try {
-        fileSystemScanner.scanRootFolder(Paths.get(library.root.toURI()), library.scanForceModifiedTime) to false
+      val scanResult = try {
+        fileSystemScanner.scanRootFolder(Paths.get(library.root.toURI()), library.scanForceModifiedTime)
       } catch (e: DirectoryNotFoundException) {
-        ScanResult(emptyMap(), emptyList()) to true
+        library.copy(unavailableDate = LocalDateTime.now()).let {
+          libraryRepository.update(it)
+          eventPublisher.publishEvent(DomainEvent.LibraryUpdated(it))
+        }
+        throw e
+      }
+
+      if (library.unavailableDate != null) {
+        library.copy(unavailableDate = null).let {
+          libraryRepository.update(it)
+          eventPublisher.publishEvent(DomainEvent.LibraryUpdated(it))
+        }
       }
 
       val scannedSeries =
@@ -164,45 +180,43 @@ class LibraryContentLifecycle(
         taskReceiver.refreshSeriesMetadata(it.id)
       }
 
-      if (!rootFolderInaccessible) {
-        val existingSidecars = sidecarRepository.findAll()
-        scanResult.sidecars.forEach { newSidecar ->
-          val existingSidecar = existingSidecars.firstOrNull { it.url == newSidecar.url }
-          if (existingSidecar == null || existingSidecar.lastModifiedTime.notEquals(newSidecar.lastModifiedTime)) {
-            when (newSidecar.source) {
-              Sidecar.Source.SERIES ->
-                seriesRepository.findByLibraryIdAndUrlOrNull(library.id, newSidecar.parentUrl)?.let { series ->
-                  logger.info { "Sidecar changed on disk (${newSidecar.url}, refresh Series for ${newSidecar.type}: $series" }
-                  when (newSidecar.type) {
-                    Sidecar.Type.ARTWORK -> taskReceiver.refreshSeriesLocalArtwork(series.id)
-                    Sidecar.Type.METADATA -> taskReceiver.refreshSeriesMetadata(series.id)
-                  }
+      val existingSidecars = sidecarRepository.findAll()
+      scanResult.sidecars.forEach { newSidecar ->
+        val existingSidecar = existingSidecars.firstOrNull { it.url == newSidecar.url }
+        if (existingSidecar == null || existingSidecar.lastModifiedTime.notEquals(newSidecar.lastModifiedTime)) {
+          when (newSidecar.source) {
+            Sidecar.Source.SERIES ->
+              seriesRepository.findByLibraryIdAndUrlOrNull(library.id, newSidecar.parentUrl)?.let { series ->
+                logger.info { "Sidecar changed on disk (${newSidecar.url}, refresh Series for ${newSidecar.type}: $series" }
+                when (newSidecar.type) {
+                  Sidecar.Type.ARTWORK -> taskReceiver.refreshSeriesLocalArtwork(series.id)
+                  Sidecar.Type.METADATA -> taskReceiver.refreshSeriesMetadata(series.id)
                 }
-              Sidecar.Source.BOOK ->
-                bookRepository.findByLibraryIdAndUrlOrNull(library.id, newSidecar.parentUrl)?.let { book ->
-                  logger.info { "Sidecar changed on disk (${newSidecar.url}, refresh Book for ${newSidecar.type}: $book" }
-                  when (newSidecar.type) {
-                    Sidecar.Type.ARTWORK -> taskReceiver.refreshBookLocalArtwork(book.id)
-                    Sidecar.Type.METADATA -> taskReceiver.refreshBookMetadata(book.id)
-                  }
+              }
+            Sidecar.Source.BOOK ->
+              bookRepository.findByLibraryIdAndUrlOrNull(library.id, newSidecar.parentUrl)?.let { book ->
+                logger.info { "Sidecar changed on disk (${newSidecar.url}, refresh Book for ${newSidecar.type}: $book" }
+                when (newSidecar.type) {
+                  Sidecar.Type.ARTWORK -> taskReceiver.refreshBookLocalArtwork(book.id)
+                  Sidecar.Type.METADATA -> taskReceiver.refreshBookMetadata(book.id)
                 }
-            }
-            sidecarRepository.save(library.id, newSidecar)
+              }
           }
+          sidecarRepository.save(library.id, newSidecar)
         }
-
-        // cleanup sidecars that don't exist anymore
-        scanResult.sidecars.map { it.url }.let { newSidecarsUrls ->
-          existingSidecars
-            .filterNot { existing -> newSidecarsUrls.contains(existing.url) }
-            .let { sidecars ->
-              sidecarRepository.deleteByLibraryIdAndUrls(library.id, sidecars.map { it.url })
-            }
-        }
-
-        if (library.emptyTrashAfterScan) emptyTrash(library)
-        else cleanupEmptySets()
       }
+
+      // cleanup sidecars that don't exist anymore
+      scanResult.sidecars.map { it.url }.let { newSidecarsUrls ->
+        existingSidecars
+          .filterNot { existing -> newSidecarsUrls.contains(existing.url) }
+          .let { sidecars ->
+            sidecarRepository.deleteByLibraryIdAndUrls(library.id, sidecars.map { it.url })
+          }
+      }
+
+      if (library.emptyTrashAfterScan) emptyTrash(library)
+      else cleanupEmptySets()
     }.also { logger.info { "Library updated in $it" } }
   }
 

@@ -26,6 +26,8 @@ data class Library(
   val emptyTrashAfterScan: Boolean = false,
   val seriesCover: SeriesCover = SeriesCover.FIRST,
 
+  val unavailableDate: LocalDateTime? = null,
+
   val id: String = TsidCreator.getTsid256().toString(),
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),

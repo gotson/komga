@@ -7,6 +7,7 @@ import io.mockk.just
 import io.mockk.slot
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
@@ -429,7 +430,7 @@ class LibraryContentLifecycleTest(
     }
 
     @Test
-    fun `given library with auto empty trash when scanning and the root folder is not accessible then trash is not emptied automatically`() {
+    fun `given library when scanning and the root folder is not accessible then exception is thrown`() {
       // given
       val library = makeLibrary().copy(emptyTrashAfterScan = true)
       libraryRepository.insert(library)
@@ -442,7 +443,7 @@ class LibraryContentLifecycleTest(
       libraryContentLifecycle.scanRootFolder(library)
 
       // when
-      libraryContentLifecycle.scanRootFolder(library)
+      val thrown = catchThrowable { libraryContentLifecycle.scanRootFolder(library) }
 
       // then
       verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
@@ -450,15 +451,17 @@ class LibraryContentLifecycleTest(
       val (series, deletedSeries) = seriesRepository.findAll().partition { it.deletedDate == null }
       val (books, deletedBooks) = bookRepository.findAll().partition { it.deletedDate == null }
 
-      assertThat(series).isEmpty()
+      assertThat(series).hasSize(2)
+      assertThat(series.map { it.name }).containsExactlyInAnyOrder("series", "series2")
 
-      assertThat(deletedSeries).hasSize(2)
-      assertThat(deletedSeries.map { it.name }).containsExactlyInAnyOrder("series", "series2")
+      assertThat(deletedSeries).isEmpty()
 
-      assertThat(books).isEmpty()
+      assertThat(books).hasSize(3)
+      assertThat(books.map { it.name }).containsExactlyInAnyOrder("book1", "book2", "book3")
 
-      assertThat(deletedBooks).hasSize(3)
-      assertThat(deletedBooks.map { it.name }).containsExactlyInAnyOrder("book1", "book2", "book3")
+      assertThat(deletedBooks).isEmpty()
+
+      assertThat(thrown).isExactlyInstanceOf(DirectoryNotFoundException::class.java)
     }
   }
 
