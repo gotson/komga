@@ -191,6 +191,7 @@
     "go_to_series": "Go to series",
     "locale_name": "English",
     "locale_rtl": "false",
+    "lock_all": "Lock all",
     "n_selected": "{count} selected",
     "nothing_to_show": "Nothing to show",
     "outdated": "Outdated",
@@ -207,6 +208,7 @@
     "series": "Series",
     "tags": "Tags",
     "unavailable": "Unavailable",
+    "unlock_all": "Unlock all",
     "use_filter_panel_to_change_filter": "Use the filter panel to change the active filter",
     "year": "year"
   },
@@ -581,6 +583,7 @@
     "add_to_collection": "Add to collection",
     "add_to_readlist": "Add to read list",
     "analyze": "Analyze",
+    "bulk_edit_metadata": "Bulk edit metadata",
     "delete": "Delete",
     "deselect_all": "Deselect all",
     "download_series": "Download series",

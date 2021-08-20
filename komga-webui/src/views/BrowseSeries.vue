@@ -47,6 +47,7 @@
       @mark-read="markSelectedRead"
       @mark-unread="markSelectedUnread"
       @add-to-readlist="addToReadList"
+      @bulk-edit="bulkEditMultipleBooks"
       @edit="editMultipleBooks"
     />
 
@@ -803,6 +804,9 @@ export default Vue.extend({
     },
     editMultipleBooks() {
       this.$store.dispatch('dialogUpdateBooks', this.selectedBooks)
+    },
+    bulkEditMultipleBooks() {
+      this.$store.dispatch('dialogUpdateBulkBooks', this.$_.sortBy(this.selectedBooks, ['metadata.numberSort']))
     },
     addToReadList() {
       this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks)

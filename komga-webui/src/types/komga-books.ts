@@ -91,6 +91,10 @@ export interface BookMetadataUpdateDto {
   isbnLock?: boolean
 }
 
+export interface BookMetadataUpdateBatchDto {
+  [bookId: string]: BookMetadataUpdateBatchDto
+}
+
 export interface AuthorDto {
   name: string,
   role: string

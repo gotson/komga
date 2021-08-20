@@ -60,6 +60,11 @@
       :books="updateBooks"
     />
 
+    <bulk-edit-books-dialog
+      v-model="updateBulkBooksDialog"
+      :books="updateBulkBooks"
+    />
+
     <edit-series-dialog
       v-model="updateSeriesDialog"
       :series="updateSeries"
@@ -82,10 +87,12 @@ import {SeriesDto} from '@/types/komga-series'
 import {ERROR} from '@/types/events'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import {LibraryDto} from '@/types/komga-libraries'
+import BulkEditBooksDialog from '@/components/dialogs/BulkEditBooksDialog.vue'
 
 export default Vue.extend({
   name: 'Dialogs',
   components: {
+    BulkEditBooksDialog,
     ConfirmationDialog,
     CollectionAddToDialog,
     CollectionEditDialog,
@@ -204,6 +211,18 @@ export default Vue.extend({
     },
     updateBooks(): BookDto | BookDto[] {
       return this.$store.state.updateBooks
+    },
+    // books bulk
+    updateBulkBooksDialog: {
+      get(): boolean {
+        return this.$store.state.updateBulkBooksDialog
+      },
+      set(val) {
+        this.$store.dispatch('dialogUpdateBulkBooksDisplay', val)
+      },
+    },
+    updateBulkBooks(): BookDto[] {
+      return this.$store.state.updateBulkBooks
     },
     // series
     updateSeriesDialog: {

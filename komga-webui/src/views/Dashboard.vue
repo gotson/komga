@@ -38,6 +38,7 @@
       @mark-unread="markSelectedBooksUnread"
       @add-to-readlist="addToReadList"
       @edit="editMultipleBooks"
+      @bulk-edit="bulkEditMultipleBooks"
     />
 
     <v-container fluid>
@@ -374,6 +375,9 @@ export default Vue.extend({
     },
     editMultipleBooks() {
       this.$store.dispatch('dialogUpdateBooks', this.selectedBooks)
+    },
+    bulkEditMultipleBooks() {
+      this.$store.dispatch('dialogUpdateBulkBooks', this.selectedBooks)
     },
     addToReadList() {
       this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks)

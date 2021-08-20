@@ -36,6 +36,10 @@ export default new Vuex.Store({
     // books
     updateBooks: {} as BookDto | BookDto[],
     updateBooksDialog: false,
+    // books bulk
+    updateBulkBooks: [] as BookDto[],
+    updateBulkBooksDialog: false,
+
     // series
     updateSeries: {} as SeriesDto | SeriesDto[],
     updateSeriesDialog: false,
@@ -100,6 +104,13 @@ export default new Vuex.Store({
     },
     setUpdateBooksDialog(state, dialog) {
       state.updateBooksDialog = dialog
+    },
+    // Books bulk
+    setUpdateBulkBooks(state, books) {
+      state.updateBulkBooks = books
+    },
+    setUpdateBulkBooksDialog(state, dialog) {
+      state.updateBulkBooksDialog = dialog
     },
     // Series
     setUpdateSeries(state, series) {
@@ -183,6 +194,14 @@ export default new Vuex.Store({
     },
     dialogUpdateBooksDisplay({commit}, value) {
       commit('setUpdateBooksDialog', value)
+    },
+    // books bulk
+    dialogUpdateBulkBooks({commit}, books) {
+      commit('setUpdateBulkBooks', books)
+      commit('setUpdateBulkBooksDialog', true)
+    },
+    dialogUpdateBulkBooksDisplay({commit}, value) {
+      commit('setUpdateBulkBooksDialog', value)
     },
     // series
     dialogUpdateSeries({commit}, series) {

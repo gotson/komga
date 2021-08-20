@@ -61,6 +61,15 @@
         </v-tooltip>
       </v-btn>
 
+      <v-btn icon @click="bulkEdit" v-if="isAdmin && kind === 'books'">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on">mdi-table-edit</v-icon>
+          </template>
+          <span>{{ $t('menu.bulk_edit_metadata') }}</span>
+        </v-tooltip>
+      </v-btn>
+
       <v-btn icon @click="edit" v-if="isAdmin && (kind === 'books' || kind === 'series')">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
@@ -136,6 +145,9 @@ export default Vue.extend({
     },
     edit () {
       this.$emit('edit')
+    },
+    bulkEdit () {
+      this.$emit('bulk-edit')
     },
     doDelete () {
       this.$emit('delete')

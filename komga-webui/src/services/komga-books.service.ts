@@ -1,5 +1,12 @@
 import {AxiosInstance} from 'axios'
-import {BookDto, BookImportBatchDto, BookMetadataUpdateDto, PageDto, ReadProgressUpdateDto} from '@/types/komga-books'
+import {
+  BookDto,
+  BookImportBatchDto,
+  BookMetadataUpdateBatchDto,
+  BookMetadataUpdateDto,
+  PageDto,
+  ReadProgressUpdateDto,
+} from '@/types/komga-books'
 import {formatISO} from 'date-fns'
 
 const qs = require('qs')
@@ -151,6 +158,18 @@ export default class KomgaBooksService {
       await this.http.patch(`${API_BOOKS}/${bookId}/metadata`, metadata)
     } catch (e) {
       let msg = 'An error occurred while trying to update book metadata'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async updateMetadataBatch(batch: BookMetadataUpdateBatchDto) {
+    try {
+      await this.http.patch(`${API_BOOKS}/metadata`, batch)
+    } catch (e) {
+      let msg = 'An error occurred while trying to update book metadata in batch'
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }
