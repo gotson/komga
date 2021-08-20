@@ -77,30 +77,33 @@ class BookImporter(
         )
       }
 
-      val upgradedBook =
+      val bookToUpgrade =
         if (upgradeBookId != null) {
-          bookRepository.findByIdOrNull(upgradeBookId)?.let {
+          bookRepository.findByIdOrNull(upgradeBookId)?.also {
             if (it.seriesId != series.id) throw IllegalArgumentException("Book to upgrade ($upgradeBookId) does not belong to series: $series").withCode("ERR_1020")
-            it
           }
         } else null
-      val upgradedBookPath =
-        if (upgradedBook != null)
-          bookRepository.findByIdOrNull(upgradedBook.id)?.path
-        else null
 
       var deletedUpgradedFile = false
       when {
-        upgradedBookPath != null && destFile == upgradedBookPath -> {
-          logger.info { "Deleting existing file: $upgradedBookPath" }
+        bookToUpgrade?.path != null && destFile == bookToUpgrade.path -> {
+          logger.info { "Deleting existing file: ${bookToUpgrade.path}" }
           try {
-            upgradedBookPath.deleteExisting()
+            bookToUpgrade.path.deleteExisting()
             deletedUpgradedFile = true
           } catch (e: NoSuchFileException) {
-            logger.warn { "Could not delete upgraded book: $upgradedBookPath" }
+            logger.warn { "Could not delete upgraded book: ${bookToUpgrade.path}" }
           }
         }
         destFile.exists() -> throw FileAlreadyExistsException("Destination file already exists: $destFile").withCode("ERR_1021")
+      }
+      // delete existing sidecars
+      if (bookToUpgrade?.path != null) {
+        fileSystemScanner.scanBookSidecars(bookToUpgrade.path).forEach { sidecar ->
+          val sidecarPath = sidecar.url.toURI().toPath()
+          logger.info { "Deleting existing file: $sidecarPath" }
+          sidecarPath.deleteIfExists()
+        }
       }
 
       when (copyMode) {
@@ -149,9 +152,9 @@ class BookImporter(
 
       seriesLifecycle.addBooks(series, listOf(importedBook))
 
-      if (upgradedBook != null) {
+      if (bookToUpgrade != null) {
         // copy media and mark it as outdated
-        mediaRepository.findById(upgradedBook.id).let {
+        mediaRepository.findById(bookToUpgrade.id).let {
           mediaRepository.update(
             it.copy(
               bookId = importedBook.id,
@@ -161,31 +164,31 @@ class BookImporter(
         }
 
         // copy metadata
-        metadataRepository.findById(upgradedBook.id).let {
+        metadataRepository.findById(bookToUpgrade.id).let {
           metadataRepository.update(it.copy(bookId = importedBook.id))
         }
 
         // copy read progress
-        readProgressRepository.findAllByBookId(upgradedBook.id)
+        readProgressRepository.findAllByBookId(bookToUpgrade.id)
           .map { it.copy(bookId = importedBook.id) }
           .forEach { readProgressRepository.save(it) }
 
         // replace upgraded book by imported book in read lists
-        readListRepository.findAllContainingBookId(upgradedBook.id, filterOnLibraryIds = null)
+        readListRepository.findAllContainingBookId(bookToUpgrade.id, filterOnLibraryIds = null)
           .forEach { rl ->
             readListRepository.update(
               rl.copy(
-                bookIds = rl.bookIds.values.map { if (it == upgradedBook.id) importedBook.id else it }.toIndexedMap()
+                bookIds = rl.bookIds.values.map { if (it == bookToUpgrade.id) importedBook.id else it }.toIndexedMap()
               )
             )
           }
 
         // delete upgraded book file on disk if it has not been replaced earlier
-        if (upgradedBookPath != null && !deletedUpgradedFile && upgradedBookPath.deleteIfExists())
-          logger.info { "Deleted existing file: $upgradedBookPath" }
+        if (!deletedUpgradedFile && bookToUpgrade.path.deleteIfExists())
+          logger.info { "Deleted existing file: ${bookToUpgrade.path}" }
 
         // delete upgraded book
-        bookLifecycle.deleteOne(upgradedBook)
+        bookLifecycle.deleteOne(bookToUpgrade)
       }
 
       seriesLifecycle.sortBooks(series)

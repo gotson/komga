@@ -39,7 +39,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.io.FileNotFoundException
 import java.nio.file.FileAlreadyExistsException
-import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.io.path.createDirectories
 import kotlin.io.path.createDirectory
@@ -284,13 +283,15 @@ class BookImporterTest(
   }
 
   @Test
-  fun `given existing book when importing with upgrade then existing book is deleted`() {
+  fun `given existing book when importing with upgrade then existing book and sidecars are deleted`() {
     Jimfs.newFileSystem(Configuration.unix()).use { fs ->
       // given
       val sourceDir = fs.getPath("/source").createDirectory()
       val sourceFile = sourceDir.resolve("source.cbz").createFile()
       val destDir = fs.getPath("/library/series").createDirectories()
       val existingFile = destDir.resolve("4.cbz").createFile()
+      val existingSidecar = destDir.resolve("4.jpg").createFile()
+      val existingSidecar2 = destDir.resolve("4-1.jpg").createFile()
 
       val bookToUpgrade = makeBook("2", libraryId = library.id, url = existingFile.toUri().toURL())
       val otherBooks = listOf(
@@ -319,7 +320,11 @@ class BookImporterTest(
       val upgradedMedia = mediaRepository.findById(books[2].id)
       assertThat(upgradedMedia.status).isEqualTo(Media.Status.OUTDATED)
 
-      assertThat(Files.notExists(sourceFile)).isTrue
+      assertThat(sourceFile).doesNotExist()
+
+      assertThat(existingFile).doesNotExist()
+      assertThat(existingSidecar).doesNotExist()
+      assertThat(existingSidecar2).doesNotExist()
     }
   }
 
@@ -379,7 +384,7 @@ class BookImporterTest(
         assertThat(numberSortLock).isTrue
       }
 
-      assertThat(Files.notExists(sourceFile)).isTrue
+      assertThat(sourceFile).doesNotExist()
     }
   }
 
@@ -419,7 +424,7 @@ class BookImporterTest(
       val upgradedMedia = mediaRepository.findById(books[1].id)
       assertThat(upgradedMedia.status).isEqualTo(Media.Status.OUTDATED)
 
-      assertThat(Files.exists(sourceFile)).isTrue
+      assertThat(sourceFile).exists()
     }
   }
 
