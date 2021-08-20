@@ -11,7 +11,6 @@ import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
 import org.gotson.komga.application.tasks.TaskReceiver
-import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.ImageConversionException
@@ -40,6 +39,7 @@ import org.gotson.komga.interfaces.rest.dto.BookMetadataUpdateDto
 import org.gotson.komga.interfaces.rest.dto.PageDto
 import org.gotson.komga.interfaces.rest.dto.ReadListDto
 import org.gotson.komga.interfaces.rest.dto.ReadProgressUpdateDto
+import org.gotson.komga.interfaces.rest.dto.patch
 import org.gotson.komga.interfaces.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.rest.dto.toDto
 import org.gotson.komga.interfaces.rest.persistence.BookDtoRepository
@@ -452,38 +452,36 @@ class BookController(
     @PathVariable bookId: String,
     @Parameter(description = "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don't want to update.")
     @Valid @RequestBody newMetadata: BookMetadataUpdateDto,
-    @AuthenticationPrincipal principal: KomgaPrincipal
   ) =
     bookMetadataRepository.findByIdOrNull(bookId)?.let { existing ->
-      val updated = with(newMetadata) {
-        existing.copy(
-          title = title ?: existing.title,
-          titleLock = titleLock ?: existing.titleLock,
-          summary = if (isSet("summary")) summary ?: "" else existing.summary,
-          summaryLock = summaryLock ?: existing.summaryLock,
-          number = number ?: existing.number,
-          numberLock = numberLock ?: existing.numberLock,
-          numberSort = numberSort ?: existing.numberSort,
-          numberSortLock = numberSortLock ?: existing.numberSortLock,
-          releaseDate = if (isSet("releaseDate")) releaseDate else existing.releaseDate,
-          releaseDateLock = releaseDateLock ?: existing.releaseDateLock,
-          authors = if (isSet("authors")) {
-            if (authors != null) authors!!.map { Author(it.name ?: "", it.role ?: "") } else emptyList()
-          } else existing.authors,
-          authorsLock = authorsLock ?: existing.authorsLock,
-          tags = if (isSet("tags")) {
-            if (tags != null) tags!! else emptySet()
-          } else existing.tags,
-          tagsLock = tagsLock ?: existing.tagsLock,
-          isbn = if (isSet("isbn")) isbn?.filter { it.isDigit() } ?: "" else existing.isbn,
-          isbnLock = isbnLock ?: existing.isbnLock
-        )
-      }
+      val updated = existing.patch(newMetadata)
       bookMetadataRepository.update(updated)
-      taskReceiver.aggregateSeriesMetadata(bookRepository.findByIdOrNull(bookId)!!.seriesId)
 
-      bookRepository.findByIdOrNull(bookId)?.let { eventPublisher.publishEvent(DomainEvent.BookUpdated(it)) }
+      bookRepository.findByIdOrNull(bookId)?.let { updatedBook ->
+        taskReceiver.aggregateSeriesMetadata(updatedBook.seriesId)
+        updatedBook.let { eventPublisher.publishEvent(DomainEvent.BookUpdated(it)) }
+      }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  @PatchMapping("api/v1/books/metadata")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  fun updateBatchMetadata(
+    @Parameter(description = "A map of book IDs which values are the metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don't want to update.")
+    @Valid @RequestBody newMetadatas: Map<String, BookMetadataUpdateDto>,
+  ) {
+    val updatedBooks = newMetadatas.mapNotNull { (bookId, newMetadata) ->
+      bookMetadataRepository.findByIdOrNull(bookId)?.let { existing ->
+        val updated = existing.patch(newMetadata)
+        bookMetadataRepository.update(updated)
+
+        bookRepository.findByIdOrNull(bookId)
+      }
+    }
+
+    updatedBooks.forEach { eventPublisher.publishEvent(DomainEvent.BookUpdated(it)) }
+    updatedBooks.map { it.seriesId }.distinct().forEach { taskReceiver.aggregateSeriesMetadata(it) }
+  }
 
   @PatchMapping("api/v1/books/{bookId}/read-progress")
   @ResponseStatus(HttpStatus.NO_CONTENT)
