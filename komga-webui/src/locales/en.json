@@ -535,7 +535,8 @@
     "ERR_1019": "Cannot import file that is part of an existing library",
     "ERR_1020": "Book to upgrade does not belong to provided series",
     "ERR_1021": "Destination file already exists",
-    "ERR_1022": "Newly imported book could not be scanned"
+    "ERR_1022": "Newly imported book could not be scanned",
+    "ERR_1023": "Book already present in ReadingList"
   },
   "filter": {
     "age_rating": "age rating",

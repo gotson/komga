@@ -220,4 +220,52 @@ class ReadListMatcherTest(
       assertThat(unmatchedBooks[3].errorCode).isEqualTo("ERR_1013")
     }
   }
+
+  @Test
+  fun `given request with duplicate books when matching then returns result with appropriate error codes`() {
+    // given
+    val booksSeries1 = listOf(
+      makeBook("book1", libraryId = library.id),
+      makeBook("book2", libraryId = library.id),
+    )
+    makeSeries(name = "batman", libraryId = library.id).let { s ->
+      seriesLifecycle.createSeries(s)
+      seriesLifecycle.addBooks(s, booksSeries1)
+      seriesLifecycle.sortBooks(s)
+    }
+
+    val request = ReadListRequest(
+      name = "readlist",
+      books = listOf(
+        ReadListRequestBook(series = "batman", number = "1"),
+        ReadListRequestBook(series = "batman", number = "2"),
+        ReadListRequestBook(series = "batman", number = "2"),
+      )
+    )
+
+    // when
+    val result = readListMatcher.matchReadListRequest(request)
+
+    // then
+    with(result) {
+      assertThat(readList).isNotNull
+      with(readList!!) {
+        assertThat(name).isEqualTo(request.name)
+        assertThat(bookIds).hasSize(2)
+        assertThat(bookIds).containsExactlyEntriesOf(
+          mapOf(
+            0 to booksSeries1[0].id,
+            1 to booksSeries1[1].id,
+          )
+        )
+      }
+
+      assertThat(errorCode).isBlank
+
+      assertThat(unmatchedBooks).hasSize(1)
+
+      assertThat(unmatchedBooks[0].book).isEqualTo(request.books[2])
+      assertThat(unmatchedBooks[0].errorCode).isEqualTo("ERR_1023")
+    }
+  }
 }
