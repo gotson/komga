@@ -579,16 +579,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -714,16 +714,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -792,16 +792,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -857,16 +857,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -933,16 +933,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -979,16 +979,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -2428,6 +2428,43 @@
             "description": "The size of the page to be returned"
           }
         ],
+        "tags": [
+          "book-controller"
+        ]
+      }
+    },
+    "/api/v1/books/metadata": {
+      "patch": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "A map of book IDs which values are the metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.",
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/BookMetadataUpdateDto"
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "operationId": "updateBatchMetadata",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        },
         "tags": [
           "book-controller"
         ]

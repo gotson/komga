@@ -1,3 +1,17 @@
+# [0.118.0](https://github.com/gotson/komga/compare/v0.117.0...v0.118.0) (2021-08-20)
+
+
+### Bug Fixes
+
+* skip duplicate books during reading list import ([b528b3d](https://github.com/gotson/komga/commit/b528b3d56d02eb837adbe8bd19b21128f0eaf884)), closes [#622](https://github.com/gotson/komga/issues/622)
+
+
+### Features
+
+* **api:** batch update book metadata ([ae9a19a](https://github.com/gotson/komga/commit/ae9a19af62d35309854b69de6e6e2b4cafcedae4))
+* **importer:** delete sidecars when upgrading book ([9443f7e](https://github.com/gotson/komga/commit/9443f7e3c715b3da0ea801ea67ff4cf700958469)), closes [#624](https://github.com/gotson/komga/issues/624)
+* **webui:** bulk edit book metadata ([4bab0c6](https://github.com/gotson/komga/commit/4bab0c61c7ce7b353d9e06da3d92c3f68cf9b361)), closes [#476](https://github.com/gotson/komga/issues/476)
+
 # [0.117.0](https://github.com/gotson/komga/compare/v0.116.3...v0.117.0) (2021-08-16)
 
 
