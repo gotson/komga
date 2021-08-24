@@ -239,13 +239,13 @@
         <v-col cols="8" sm="9" md="10" xl="11" class="py-1">
           <v-chip
             :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
-            :title="getLibraryName(series)"
+            :title="getLibraryName(book)"
             :to="{name:'browse-libraries', params: {libraryId: series.libraryId }}"
             label
             small
             outlined
             link
-          >{{ getLibraryName(series) }}
+          >{{ getLibraryName(book) }}
           </v-chip>
         </v-col>
       </v-row>
