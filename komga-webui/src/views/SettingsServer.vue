@@ -8,10 +8,12 @@
         <v-btn @click="confirmEmptyTrash = true"
                style="margin-right: 15px"
                color="error"
-        >{{ $t('server.server_management.button_empty_trash') }}</v-btn>
+        >{{ $t('server.server_management.button_empty_trash') }}
+        </v-btn>
         <v-btn @click="modalStopServer = true"
                color="error"
-        >{{ $t('server.server_management.button_shutdown') }}</v-btn>
+        >{{ $t('server.server_management.button_shutdown') }}
+        </v-btn>
       </v-col>
     </v-row>
 
@@ -55,9 +57,9 @@ export default Vue.extend({
   },
   methods: {
     emptyTrash() {
-        this.libraries.forEach( (library: LibraryDto) => {
-            this.$komgaLibraries.emptyTrash(library)
-        })
+      this.libraries.forEach(library => {
+        this.$komgaLibraries.emptyTrash(library)
+      })
     },
     async stopServer() {
       try {
