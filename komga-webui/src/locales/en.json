@@ -629,7 +629,7 @@
   },
   "server": {
     "server_management": {
-      "button_empty_trash": "Empty All Trash",
+      "button_empty_trash": "Empty trash for all libraries",
       "button_shutdown": "Shut down",
       "section_title": "Server Management"
     },
