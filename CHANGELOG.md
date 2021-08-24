@@ -1,3 +1,10 @@
+## [0.119.1](https://github.com/gotson/komga/compare/v0.119.0...v0.119.1) (2021-08-24)
+
+
+### Bug Fixes
+
+* **webui:** better image loading for cards ([f0476ab](https://github.com/gotson/komga/commit/f0476ab890825ed730cf50a488f45d33822f9030))
+
 # [0.119.0](https://github.com/gotson/komga/compare/v0.118.0...v0.119.0) (2021-08-24)
 
 
