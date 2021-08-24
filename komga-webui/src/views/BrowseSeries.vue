@@ -95,7 +95,14 @@
           <v-container>
             <v-row>
               <v-col class="py-1">
-                <div class="text-h5" v-if="$_.get(series, 'metadata.title')">{{ series.metadata.title }}</div>
+                <span class="text-h5" v-if="$_.get(series, 'metadata.title')">{{ series.metadata.title }}</span>
+                <router-link
+                  class="caption link-underline"
+                  :class="$vuetify.breakpoint.smAndUp ? 'mx-2' : ''"
+                  :style="$vuetify.breakpoint.xsOnly ? 'display: block' : ''"
+                  :to="{name:'browse-libraries', params: {libraryId: series.libraryId }}"
+                >{{ $t('searchbox.in_library', {library: getLibraryName(series)}) }}
+                </router-link>
               </v-col>
             </v-row>
 
@@ -229,23 +236,6 @@
           </v-col>
         </v-row>
       </template>
-
-      <!--  Library    -->
-      <v-row class="align-center text-caption">
-        <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $t('common.library') }}</v-col>
-        <v-col cols="8" sm="9" md="10" xl="11" class="py-1">
-          <v-chip
-            :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
-            :title="getLibraryName(series)"
-            :to="{name:'browse-libraries', params: {libraryId: series.libraryId }}"
-            label
-            small
-            outlined
-            link
-          >{{ getLibraryName(series) }}
-          </v-chip>
-        </v-col>
-      </v-row>
 
       <!--  Publisher    -->
       <v-row v-if="series.metadata.publisher" class="align-center text-caption">
