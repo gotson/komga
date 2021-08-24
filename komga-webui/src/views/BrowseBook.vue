@@ -233,6 +233,23 @@
         </v-row>
       </template>
 
+      <!--  Library    -->
+      <v-row class="align-center text-caption">
+        <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $t('common.library') }}</v-col>
+        <v-col cols="8" sm="9" md="10" xl="11" class="py-1">
+          <v-chip
+            :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+            :title="getLibraryName(series)"
+            :to="{name:'browse-libraries', params: {libraryId: series.libraryId }}"
+            label
+            small
+            outlined
+            link
+          >{{ getLibraryName(series) }}
+          </v-chip>
+        </v-col>
+      </v-row>
+
       <v-row v-for="role in displayedRoles"
              :key="role"
              class="align-center text-caption"
@@ -299,22 +316,6 @@
       <v-row>
         <v-col>
           <read-lists-expansion-panels :read-lists="readLists"/>
-        </v-col>
-      </v-row>
-
-      <v-row class="align-center text-caption">
-        <v-col class="py-1" cols="4" sm="3" md="2" xl="1">{{ $t('common.library') }}</v-col>
-        <v-col class="py-1" cols="8" sm="9" md="10" xl="11">
-            <v-chip
-            :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
-            :title="getLibraryName(book)"
-            :to="{name:'browse-libraries', params: {libraryId: book.libraryId }}"
-            label
-            small
-            outlined
-            link
-          >{{ getLibraryName(book) }}
-          </v-chip>
         </v-col>
       </v-row>
 
