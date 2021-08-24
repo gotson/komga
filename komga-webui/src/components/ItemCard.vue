@@ -10,7 +10,7 @@
         <!--      Thumbnail-->
         <v-img
           :src="thumbnailUrl"
-          lazy-src="../assets/cover.svg"
+          :lazy-src="thumbnailError ? coverBase64 : undefined"
           aspect-ratio="0.7071"
           contain
           @error="thumbnailError = true"
@@ -131,6 +131,7 @@ import {BookDto} from '@/types/komga-books'
 import {SeriesDto} from '@/types/komga-series'
 import {THUMBNAILBOOK_ADDED, THUMBNAILSERIES_ADDED} from '@/types/events'
 import {ThumbnailBookSseDto, ThumbnailSeriesSseDto} from '@/types/komga-sse'
+import {coverBase64} from '@/types/image'
 
 export default Vue.extend({
   name: 'ItemCard',
@@ -189,6 +190,7 @@ export default Vue.extend({
       actionMenuState: false,
       thumbnailError: false,
       thumbnailCacheBust: '',
+      coverBase64,
     }
   },
   created() {
