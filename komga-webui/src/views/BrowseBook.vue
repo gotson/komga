@@ -303,6 +303,22 @@
       </v-row>
 
       <v-row class="align-center text-caption">
+        <v-col class="py-1" cols="4" sm="3" md="2" xl="1">{{ $t('common.library') }}</v-col>
+        <v-col class="py-1" cols="8" sm="9" md="10" xl="11">
+            <v-chip
+            :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+            :title="getLibraryName(book)"
+            :to="{name:'browse-libraries', params: {libraryId: book.libraryId }}"
+            label
+            small
+            outlined
+            link
+          >{{ getLibraryName(book) }}
+          </v-chip>
+        </v-col>
+      </v-row>
+
+      <v-row class="align-center text-caption">
         <v-col class="py-1" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.size') }}</v-col>
         <v-col class="py-1" cols="8" sm="9" md="10" xl="11">{{ book.size }}</v-col>
       </v-row>
@@ -480,6 +496,9 @@ export default Vue.extend({
     },
   },
   methods: {
+    getLibraryName(item: BookDto): string {
+      return this.$store.getters.getLibraryById(item.libraryId).name
+    },
     libraryDeleted(event: LibrarySseDto) {
       if (event.libraryId === this.book.libraryId) {
         this.$router.push({name: 'home'})

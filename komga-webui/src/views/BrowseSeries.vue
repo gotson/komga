@@ -17,7 +17,6 @@
       <series-actions-menu v-if="series"
                            :series="series"
       />
-
       <v-toolbar-title>
         <span v-if="$_.get(series, 'metadata.title')">{{ series.metadata.title }}</span>
         <v-chip label class="mx-4" v-if="totalElements">
@@ -230,6 +229,23 @@
           </v-col>
         </v-row>
       </template>
+
+      <!--  Library    -->
+      <v-row class="align-center text-caption">
+        <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $t('common.library') }}</v-col>
+        <v-col cols="8" sm="9" md="10" xl="11" class="py-1">
+          <v-chip
+            :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+            :title="getLibraryName(series)"
+            :to="{name:'browse-libraries', params: {libraryId: series.libraryId }}"
+            label
+            small
+            outlined
+            link
+          >{{ getLibraryName(series) }}
+          </v-chip>
+        </v-col>
+      </v-row>
 
       <!--  Publisher    -->
       <v-row v-if="series.metadata.publisher" class="align-center text-caption">
@@ -648,6 +664,9 @@ export default Vue.extend({
     next()
   },
   methods: {
+    getLibraryName(item: SeriesDto): string {
+      return this.$store.getters.getLibraryById(item.libraryId).name
+    },
     resetSortAndFilters() {
       this.drawer = false
       for (const prop in this.filters) {
