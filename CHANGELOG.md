@@ -1,3 +1,10 @@
+# [0.119.0](https://github.com/gotson/komga/compare/v0.118.0...v0.119.0) (2021-08-24)
+
+
+### Features
+
+* **webui:** display library name in book/series screen, empty all trash ([1d3f4e4](https://github.com/gotson/komga/commit/1d3f4e42472cae446e53ceacbbe181f48e88a54b))
+
 # [0.118.0](https://github.com/gotson/komga/compare/v0.117.0...v0.118.0) (2021-08-20)
 
 
