@@ -172,6 +172,7 @@
     "title": "{name} collection"
   },
   "common": {
+    "library": "Library",
     "all_libraries": "All Libraries",
     "books": "Books",
     "books_n": "No book | 1 book | {count} books",
@@ -628,6 +629,7 @@
   },
   "server": {
     "server_management": {
+      "button_empty_trash": "Empty trash for all libraries",
       "button_shutdown": "Shut down",
       "section_title": "Server Management"
     },

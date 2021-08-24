@@ -17,7 +17,6 @@
       <series-actions-menu v-if="series"
                            :series="series"
       />
-
       <v-toolbar-title>
         <span v-if="$_.get(series, 'metadata.title')">{{ series.metadata.title }}</span>
         <v-chip label class="mx-4" v-if="totalElements">
@@ -96,7 +95,14 @@
           <v-container>
             <v-row>
               <v-col class="py-1">
-                <div class="text-h5" v-if="$_.get(series, 'metadata.title')">{{ series.metadata.title }}</div>
+                <span class="text-h5" v-if="$_.get(series, 'metadata.title')">{{ series.metadata.title }}</span>
+                <router-link
+                  class="caption link-underline"
+                  :class="$vuetify.breakpoint.smAndUp ? 'mx-2' : ''"
+                  :style="$vuetify.breakpoint.xsOnly ? 'display: block' : ''"
+                  :to="{name:'browse-libraries', params: {libraryId: series.libraryId }}"
+                >{{ $t('searchbox.in_library', {library: getLibraryName(series)}) }}
+                </router-link>
               </v-col>
             </v-row>
 
@@ -648,6 +654,9 @@ export default Vue.extend({
     next()
   },
   methods: {
+    getLibraryName(item: SeriesDto): string {
+      return this.$store.getters.getLibraryById(item.libraryId).name
+    },
     resetSortAndFilters() {
       this.drawer = false
       for (const prop in this.filters) {

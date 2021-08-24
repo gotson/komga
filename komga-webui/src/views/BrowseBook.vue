@@ -101,8 +101,18 @@
           <v-container>
             <v-row>
               <v-col class="py-1">
-                <router-link :to="{name:'browse-series', params: {seriesId: book.seriesId}}" class="link-underline">
-                  <span class="text-h5" v-if="!$_.isEmpty(series)">{{ series.metadata.title }}</span>
+                <router-link
+                  v-if="!$_.isEmpty(series)"
+                  :to="{name:'browse-series', params: {seriesId: book.seriesId}}"
+                  class="link-underline text-h5"
+                >{{ series.metadata.title }}
+                </router-link>
+                <router-link
+                  class="caption link-underline"
+                  :class="$vuetify.breakpoint.smAndUp ? 'mx-1' : ''"
+                  :style="$vuetify.breakpoint.xsOnly ? 'display: block' : ''"
+                  :to="{name:'browse-libraries', params: {libraryId: book.libraryId }}"
+                >{{ $t('searchbox.in_library', {library: getLibraryName(book)}) }}
                 </router-link>
               </v-col>
             </v-row>
@@ -127,13 +137,17 @@
                 }}
               </v-col>
 
-              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="book.media.status === MediaStatus.OUTDATED">
+              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')"
+                     cols="auto"
+                     v-if="book.media.status === MediaStatus.OUTDATED">
                 <v-tooltip bottom :disabled="!isAdmin">
                   <template v-slot:activator="{ on }">
                     <v-chip label small color="warning" v-on="on">
                       {{ $t('common.outdated') }}
                     </v-chip>
-                  </template>{{ $t('browse_book.outdated_tooltip') }}</v-tooltip>
+                  </template>
+                  {{ $t('browse_book.outdated_tooltip') }}
+                </v-tooltip>
               </v-col>
 
               <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="unavailable">
@@ -480,13 +494,16 @@ export default Vue.extend({
     },
   },
   methods: {
+    getLibraryName(item: BookDto): string {
+      return this.$store.getters.getLibraryById(item.libraryId).name
+    },
     libraryDeleted(event: LibrarySseDto) {
       if (event.libraryId === this.book.libraryId) {
         this.$router.push({name: 'home'})
       }
     },
     readListChanged(event: ReadListSseDto) {
-      if(event.bookIds.includes(this.bookId) || this.readLists.map(x => x.id).includes(event.readListId)){
+      if (event.bookIds.includes(this.bookId) || this.readLists.map(x => x.id).includes(event.readListId)) {
         this.$komgaBooks.getReadLists(this.bookId)
           .then(v => this.readLists = v)
       }
@@ -495,11 +512,11 @@ export default Vue.extend({
       if (event.bookId === this.bookId) this.loadBook(this.bookId)
     },
     bookDeleted(event: BookSseDto) {
-      if (event.bookId === this.bookId){
-        this.$router.push({name:'browse-series', params: {seriesId: this.series.id }})
+      if (event.bookId === this.bookId) {
+        this.$router.push({name: 'browse-series', params: {seriesId: this.series.id}})
       }
     },
-    readProgressChanged(event: ReadProgressSseDto){
+    readProgressChanged(event: ReadProgressSseDto) {
       if (event.bookId === this.bookId) this.loadBook(this.bookId)
     },
     async loadBook(bookId: string) {
