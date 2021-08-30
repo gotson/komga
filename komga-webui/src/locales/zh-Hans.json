@@ -189,8 +189,10 @@
     "go_to_library": "前往库",
     "go_to_readlist": "转到阅读列表",
     "go_to_series": "转到系列",
+    "library": "书库",
     "locale_name": "中文简体",
     "locale_rtl": "false",
+    "lock_all": "锁定全部",
     "n_selected": "{count} 选择",
     "nothing_to_show": "没有什么可显示",
     "outdated": "过时的",
@@ -207,6 +209,7 @@
     "series": "系列",
     "tags": "标签",
     "unavailable": "不可用",
+    "unlock_all": "解锁全部",
     "use_filter_panel_to_change_filter": "使用过滤器修改过滤项",
     "year": "年"
   },
@@ -533,7 +536,8 @@
     "ERR_1019": "无法导入属于现有库的文件",
     "ERR_1020": "要升级的书籍不属于提供的系列",
     "ERR_1021": "目标文件已存在",
-    "ERR_1022": "无法扫描新导入的书籍"
+    "ERR_1022": "无法扫描新导入的书籍",
+    "ERR_1023": "书籍已经在阅读列表中"
   },
   "filter": {
     "age_rating": "年龄限制",
@@ -581,6 +585,7 @@
     "add_to_collection": "添加到收藏",
     "add_to_readlist": "添加到阅读列表",
     "analyze": "分析",
+    "bulk_edit_metadata": "批量编辑元数据",
     "delete": "删除",
     "deselect_all": "取消选中所有",
     "download_series": "下载系列",
@@ -624,6 +629,7 @@
   },
   "server": {
     "server_management": {
+      "button_empty_trash": "清空所有书库的垃圾箱",
       "button_shutdown": "关机",
       "section_title": "服务器管理"
     },

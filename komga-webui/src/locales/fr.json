@@ -189,8 +189,10 @@
     "go_to_library": "Aller à la bibliothèque",
     "go_to_readlist": "Aller à la liste de lecture",
     "go_to_series": "Aller à la série",
+    "library": "Bibliothèque",
     "locale_name": "Français",
     "locale_rtl": "false",
+    "lock_all": "Tout verrouiller",
     "n_selected": "{count} sélectionné | {count} sélectionnés",
     "nothing_to_show": "Rien à afficher",
     "outdated": "Obsolète",
@@ -207,6 +209,7 @@
     "series": "Séries",
     "tags": "Étiquettes",
     "unavailable": "Indisponible",
+    "unlock_all": "Tout déverrouiller",
     "use_filter_panel_to_change_filter": "Utilisez le panneau des filtres pour modifier les filtres actuels",
     "year": "année"
   },
@@ -533,7 +536,8 @@
     "ERR_1019": "Impossible d'importer un fichier faisant partie d'une bibliothèque existante",
     "ERR_1020": "Le livre à mettre à jour n'appartient pas à la série indiquée",
     "ERR_1021": "Le fichier de destination existe déjà",
-    "ERR_1022": "Le livre nouvellement importé n'a pas pu être numérisé"
+    "ERR_1022": "Le livre nouvellement importé n'a pas pu être numérisé",
+    "ERR_1023": "Le livre est déjà présent dans la liste de lecture"
   },
   "filter": {
     "age_rating": "Âge minimal",
@@ -581,6 +585,7 @@
     "add_to_collection": "Ajouter à la collection",
     "add_to_readlist": "Ajouter à la liste de lecture",
     "analyze": "Analyser",
+    "bulk_edit_metadata": "Modifier les métadonnées brutes",
     "delete": "Supprimer",
     "deselect_all": "Tout désélectionner",
     "download_series": "Télécharger la série",
@@ -624,6 +629,7 @@
   },
   "server": {
     "server_management": {
+      "button_empty_trash": "Vider la corbeille pour toutes les bibliothèques",
       "button_shutdown": "Éteindre",
       "section_title": "Gestion du serveur"
     },

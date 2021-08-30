@@ -148,7 +148,7 @@
     "format": "FORMAT",
     "isbn": "ISBN",
     "navigation_within_readlist": "Wechseln zur Leseliste: {name}",
-    "outdated_tooltip": "Die Buchdatei hat sich geändert, das Buch muss analysiert werden.",
+    "outdated_tooltip": "Die Buchdatei hat sich geändert, das Buch muss analysiert werden",
     "read_book": "Lese Buch",
     "read_incognito": "Inkognito lesen",
     "size": "GRÖẞE"
@@ -191,6 +191,7 @@
     "go_to_series": "Zu Serien gehen",
     "locale_name": "Deutsch",
     "locale_rtl": "false",
+    "lock_all": "Alles verschliessen",
     "n_selected": "{count} markiert",
     "nothing_to_show": "Nichts anzuzeigen",
     "outdated": "Nicht mehr aktuell",
@@ -207,6 +208,7 @@
     "series": "Serie",
     "tags": "Stichwörter",
     "unavailable": "Nicht verfügbar",
+    "unlock_all": "Alles öffnen",
     "use_filter_panel_to_change_filter": "Mit dem Suchfeld können die Suchkriterien eingestellt werden",
     "year": "Jahr"
   },
@@ -533,7 +535,8 @@
     "ERR_1019": "Eine Datei, die Teil einer vorhandenen Bibliothek ist, kann nicht importiert werden",
     "ERR_1020": "Das zu aktualisierende Buch gehört nicht zu den angebotenen Serien",
     "ERR_1021": "Zieldatei ist bereits vorhanden",
-    "ERR_1022": "Ein neu importiertes Buch konnte nicht gescannt werden"
+    "ERR_1022": "Ein neu importiertes Buch konnte nicht gescannt werden",
+    "ERR_1023": "Buch ist in der Leseliste schon vorhanden"
   },
   "filter": {
     "age_rating": "Altersfreigabe",
@@ -581,6 +584,7 @@
     "add_to_collection": "Zu Sammlung hinzufügen",
     "add_to_readlist": "Füge zur Leseliste hinzu",
     "analyze": "Analysieren",
+    "bulk_edit_metadata": "Massenverarbeitung Metadaten",
     "delete": "Löschen",
     "deselect_all": "Auswahl für alle aufheben",
     "download_series": "Lade die gesamte Serie herunter",
