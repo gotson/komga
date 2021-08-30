@@ -4,6 +4,7 @@ import mu.KotlinLogging
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
+import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.infrastructure.search.LuceneEntity
 import org.gotson.komga.infrastructure.search.LuceneHelper
 import org.gotson.komga.infrastructure.web.toFilePath
@@ -74,14 +75,14 @@ class SeriesDtoDao(
   )
 
   private val sorts = mapOf(
-    "metadata.titleSort" to lower(d.TITLE_SORT),
+    "metadata.titleSort" to d.TITLE_SORT.noCase(),
     "createdDate" to s.CREATED_DATE,
     "created" to s.CREATED_DATE,
     "lastModifiedDate" to s.LAST_MODIFIED_DATE,
     "lastModified" to s.LAST_MODIFIED_DATE,
     "booksMetadata.releaseDate" to bma.RELEASE_DATE,
     "collection.number" to cs.NUMBER,
-    "name" to lower(s.NAME.udfStripAccents()),
+    "name" to s.NAME.collate(SqliteUdfDataSource.collationUnicode3),
     "booksCount" to s.BOOK_COUNT,
   )
 

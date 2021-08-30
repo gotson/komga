@@ -2,12 +2,12 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.persistence.ReferentialRepository
+import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.infrastructure.language.stripAccents
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.BookMetadataAggregationAuthorRecord
 import org.gotson.komga.jooq.tables.records.BookMetadataAuthorRecord
 import org.jooq.DSLContext
-import org.jooq.impl.DSL.lower
 import org.jooq.impl.DSL.noCondition
 import org.jooq.impl.DSL.select
 import org.springframework.data.domain.Page
@@ -42,7 +42,7 @@ class ReferentialDao(
       .apply { filterOnLibraryIds?.let { leftJoin(b).on(a.BOOK_ID.eq(b.ID)) } }
       .where(a.NAME.udfStripAccents().containsIgnoreCase(search.stripAccents()))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(a.NAME.udfStripAccents()), a.ROLE)
+      .orderBy(a.NAME.collate(SqliteUdfDataSource.collationUnicode3))
       .fetchInto(a)
       .map { it.toDomain() }
 
@@ -53,7 +53,7 @@ class ReferentialDao(
       .where(bmaa.NAME.udfStripAccents().containsIgnoreCase(search.stripAccents()))
       .and(s.LIBRARY_ID.eq(libraryId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(bmaa.NAME.udfStripAccents()), bmaa.ROLE)
+      .orderBy(bmaa.NAME.collate(SqliteUdfDataSource.collationUnicode3))
       .fetchInto(bmaa)
       .map { it.toDomain() }
 
@@ -65,7 +65,7 @@ class ReferentialDao(
       .where(bmaa.NAME.udfStripAccents().containsIgnoreCase(search.stripAccents()))
       .and(cs.COLLECTION_ID.eq(collectionId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(bmaa.NAME.udfStripAccents()), bmaa.ROLE)
+      .orderBy(bmaa.NAME.collate(SqliteUdfDataSource.collationUnicode3))
       .fetchInto(bmaa)
       .map { it.toDomain() }
 
@@ -76,7 +76,7 @@ class ReferentialDao(
       .where(bmaa.NAME.udfStripAccents().containsIgnoreCase(search.stripAccents()))
       .and(bmaa.SERIES_ID.eq(seriesId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(bmaa.NAME.udfStripAccents()), bmaa.ROLE)
+      .orderBy(bmaa.NAME.collate(SqliteUdfDataSource.collationUnicode3))
       .fetchInto(bmaa)
       .map { it.toDomain() }
 
@@ -138,7 +138,7 @@ class ReferentialDao(
       }
 
     val count = dsl.fetchCount(query)
-    val sort = lower(bmaa.NAME.udfStripAccents())
+    val sort = bmaa.NAME.collate(SqliteUdfDataSource.collationUnicode3)
 
     val items = query
       .orderBy(sort)
@@ -161,7 +161,7 @@ class ReferentialDao(
       .apply { filterOnLibraryIds?.let { leftJoin(b).on(a.BOOK_ID.eq(b.ID)) } }
       .where(a.NAME.udfStripAccents().containsIgnoreCase(search.stripAccents()))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-      .orderBy(a.NAME.udfStripAccents())
+      .orderBy(a.NAME.collate(SqliteUdfDataSource.collationUnicode3))
       .fetch(a.NAME)
 
   override fun findAllAuthorsRoles(filterOnLibraryIds: Collection<String>?): List<String> =
@@ -185,7 +185,7 @@ class ReferentialDao(
             .where(s.LIBRARY_ID.`in`(it))
         }
       }
-      .orderBy(lower(g.GENRE.udfStripAccents()))
+      .orderBy(g.GENRE.collate(SqliteUdfDataSource.collationUnicode3))
       .fetchSet(g.GENRE)
 
   override fun findAllGenresByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -194,7 +194,7 @@ class ReferentialDao(
       .leftJoin(s).on(g.SERIES_ID.eq(s.ID))
       .where(s.LIBRARY_ID.eq(libraryId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(g.GENRE.udfStripAccents()))
+      .orderBy(g.GENRE.collate(SqliteUdfDataSource.collationUnicode3))
       .fetchSet(g.GENRE)
 
   override fun findAllGenresByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -204,7 +204,7 @@ class ReferentialDao(
       .apply { filterOnLibraryIds?.let { leftJoin(s).on(g.SERIES_ID.eq(s.ID)) } }
       .where(cs.COLLECTION_ID.eq(collectionId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(g.GENRE.udfStripAccents()))
+      .orderBy(g.GENRE.collate(SqliteUdfDataSource.collationUnicode3))
       .fetchSet(g.GENRE)
 
   override fun findAllSeriesAndBookTags(filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -265,7 +265,7 @@ class ReferentialDao(
             .where(s.LIBRARY_ID.`in`(it))
         }
       }
-      .orderBy(lower(st.TAG.udfStripAccents()))
+      .orderBy(st.TAG.collate(SqliteUdfDataSource.collationUnicode3))
       .fetchSet(st.TAG)
 
   override fun findAllSeriesTagsByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -274,7 +274,7 @@ class ReferentialDao(
       .leftJoin(s).on(st.SERIES_ID.eq(s.ID))
       .where(s.LIBRARY_ID.eq(libraryId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(st.TAG.udfStripAccents()))
+      .orderBy(st.TAG.collate(SqliteUdfDataSource.collationUnicode3))
       .fetchSet(st.TAG)
 
   override fun findAllBookTagsBySeries(seriesId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -283,7 +283,7 @@ class ReferentialDao(
       .leftJoin(b).on(bt.BOOK_ID.eq(b.ID))
       .where(b.SERIES_ID.eq(seriesId))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(bt.TAG.udfStripAccents()))
+      .orderBy(bt.TAG.collate(SqliteUdfDataSource.collationUnicode3))
       .fetchSet(bt.TAG)
 
   override fun findAllBookTagsByReadList(readListId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -293,7 +293,7 @@ class ReferentialDao(
       .leftJoin(rb).on(bt.BOOK_ID.eq(rb.BOOK_ID))
       .where(rb.READLIST_ID.eq(readListId))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(bt.TAG.udfStripAccents()))
+      .orderBy(bt.TAG.collate(SqliteUdfDataSource.collationUnicode3))
       .fetchSet(bt.TAG)
 
   override fun findAllSeriesTagsByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -303,7 +303,7 @@ class ReferentialDao(
       .apply { filterOnLibraryIds?.let { leftJoin(s).on(st.SERIES_ID.eq(s.ID)) } }
       .where(cs.COLLECTION_ID.eq(collectionId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(st.TAG.udfStripAccents()))
+      .orderBy(st.TAG.collate(SqliteUdfDataSource.collationUnicode3))
       .fetchSet(st.TAG)
 
   override fun findAllBookTags(filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -315,7 +315,7 @@ class ReferentialDao(
             .where(b.LIBRARY_ID.`in`(it))
         }
       }
-      .orderBy(lower(st.TAG.udfStripAccents()))
+      .orderBy(st.TAG.collate(SqliteUdfDataSource.collationUnicode3))
       .fetchSet(st.TAG)
 
   override fun findAllLanguages(filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -354,7 +354,7 @@ class ReferentialDao(
       .apply { filterOnLibraryIds?.let { leftJoin(s).on(sd.SERIES_ID.eq(s.ID)) } }
       .where(sd.PUBLISHER.ne(""))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(sd.PUBLISHER.udfStripAccents()))
+      .orderBy(sd.PUBLISHER.collate(SqliteUdfDataSource.collationUnicode3))
       .fetchSet(sd.PUBLISHER)
 
   override fun findAllPublishersByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -364,7 +364,7 @@ class ReferentialDao(
       .where(sd.PUBLISHER.ne(""))
       .and(s.LIBRARY_ID.eq(libraryId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(sd.PUBLISHER.udfStripAccents()))
+      .orderBy(sd.PUBLISHER.collate(SqliteUdfDataSource.collationUnicode3))
       .fetchSet(sd.PUBLISHER)
 
   override fun findAllPublishersByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
@@ -375,7 +375,7 @@ class ReferentialDao(
       .where(sd.PUBLISHER.ne(""))
       .and(cs.COLLECTION_ID.eq(collectionId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .orderBy(lower(sd.PUBLISHER.udfStripAccents()))
+      .orderBy(sd.PUBLISHER.collate(SqliteUdfDataSource.collationUnicode3))
       .fetchSet(sd.PUBLISHER)
 
   override fun findAllAgeRatings(filterOnLibraryIds: Collection<String>?): Set<Int> =

@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
+import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.infrastructure.search.LuceneEntity
 import org.gotson.komga.infrastructure.search.LuceneHelper
 import org.gotson.komga.jooq.Tables
@@ -9,7 +10,6 @@ import org.gotson.komga.jooq.tables.records.CollectionRecord
 import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.ResultQuery
-import org.jooq.impl.DSL
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -31,7 +31,7 @@ class SeriesCollectionDao(
   private val s = Tables.SERIES
 
   private val sorts = mapOf(
-    "name" to DSL.lower(c.NAME.udfStripAccents()),
+    "name" to c.NAME.collate(SqliteUdfDataSource.collationUnicode3),
   )
 
   override fun findByIdOrNull(collectionId: String): SeriesCollection? =

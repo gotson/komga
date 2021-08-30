@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.persistence.ReadListRepository
+import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.infrastructure.search.LuceneEntity
 import org.gotson.komga.infrastructure.search.LuceneHelper
 import org.gotson.komga.jooq.Tables
@@ -9,7 +10,6 @@ import org.gotson.komga.jooq.tables.records.ReadlistRecord
 import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.ResultQuery
-import org.jooq.impl.DSL
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -32,7 +32,7 @@ class ReadListDao(
   private val b = Tables.BOOK
 
   private val sorts = mapOf(
-    "name" to DSL.lower(rl.NAME.udfStripAccents()),
+    "name" to rl.NAME.collate(SqliteUdfDataSource.collationUnicode3),
   )
 
   override fun findByIdOrNull(readListId: String): ReadList? =

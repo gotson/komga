@@ -91,11 +91,8 @@ dependencies {
 
   implementation("com.github.ben-manes.caffeine:caffeine:2.9.0")
 
-//  While waiting for https://github.com/xerial/sqlite-jdbc/pull/491 and https://github.com/xerial/sqlite-jdbc/pull/494
-//  runtimeOnly("org.xerial:sqlite-jdbc:3.32.3.2")
-//  jooqGenerator("org.xerial:sqlite-jdbc:3.32.3.2")
-  implementation("com.github.gotson:sqlite-jdbc:3.32.3.8")
-  jooqGenerator("com.github.gotson:sqlite-jdbc:3.32.3.8")
+  implementation("org.xerial:sqlite-jdbc:3.36.0.3")
+  jooqGenerator("org.xerial:sqlite-jdbc:3.36.0.3")
 
   testImplementation("org.springframework.boot:spring-boot-starter-test") {
     exclude(module = "mockito-core")

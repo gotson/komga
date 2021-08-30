@@ -1,8 +1,10 @@
 package org.gotson.komga.infrastructure.datasource
 
+import com.ibm.icu.text.Collator
 import mu.KotlinLogging
 import org.gotson.komga.infrastructure.language.stripAccents
 import org.springframework.jdbc.datasource.SimpleDriverDataSource
+import org.sqlite.Collation
 import org.sqlite.Function
 import org.sqlite.SQLiteConnection
 import java.sql.Connection
@@ -13,6 +15,7 @@ class SqliteUdfDataSource : SimpleDriverDataSource() {
 
   companion object {
     const val udfStripAccents = "UDF_STRIP_ACCENTS"
+    const val collationUnicode3 = "COLLATION_UNICODE_3"
   }
 
   override fun getConnection(): Connection =
@@ -24,6 +27,7 @@ class SqliteUdfDataSource : SimpleDriverDataSource() {
   private fun addAllUdf(connection: SQLiteConnection) {
     createUdfRegexp(connection)
     createUdfStripAccents(connection)
+    createUnicode3Collation(connection)
   }
 
   private fun createUdfRegexp(connection: SQLiteConnection) {
@@ -51,6 +55,21 @@ class SqliteUdfDataSource : SimpleDriverDataSource() {
             null -> error("Argument must not be null")
             else -> result(text.stripAccents())
           }
+      }
+    )
+  }
+
+  private fun createUnicode3Collation(connection: SQLiteConnection) {
+    log.debug { "Adding custom $collationUnicode3 collation" }
+    Collation.create(
+      connection, collationUnicode3,
+      object : Collation() {
+        val collator = Collator.getInstance().apply {
+          strength = Collator.TERTIARY
+          decomposition = Collator.CANONICAL_DECOMPOSITION
+        }
+
+        override fun xCompare(str1: String, str2: String): Int = collator.compare(str1, str2)
       }
     )
   }

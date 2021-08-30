@@ -10,6 +10,8 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 
+fun Field<String>.noCase() = this.collate("NOCASE")
+
 fun LocalDateTime.toUTC(): LocalDateTime =
   atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime()
 
