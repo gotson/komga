@@ -1,3 +1,10 @@
+## [0.119.2](https://github.com/gotson/komga/compare/v0.119.1...v0.119.2) (2021-08-30)
+
+
+### Bug Fixes
+
+* better unicode sorting ([773858e](https://github.com/gotson/komga/commit/773858eddd67dd242774c88d3387e1493e730173))
+
 ## [0.119.1](https://github.com/gotson/komga/compare/v0.119.0...v0.119.1) (2021-08-24)
 
 
