@@ -28,6 +28,7 @@ class BookDao(
   private val m = Tables.MEDIA
   private val d = Tables.BOOK_METADATA
   private val r = Tables.READ_PROGRESS
+  private val u = Tables.TEMP_URL_LIST
 
   private val sorts = mapOf(
     "createdDate" to b.CREATED_DATE,
@@ -62,11 +63,26 @@ class BookDao(
       .fetchInto(b)
       .map { it.toDomain() }
 
-  override fun findAllByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): Collection<Book> =
-    dsl.selectFrom(b)
-      .where(b.LIBRARY_ID.eq(libraryId).and(b.URL.notIn(urls.map { it.toString() })))
+  @Transactional
+  override fun findAllNotDeletedByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): Collection<Book> {
+    // insert urls in a temporary table, else the select size can exceed the statement limit
+    dsl.deleteFrom(u).execute()
+
+    dsl.batch(
+      dsl.insertInto(u, u.URL).values(null as String?)
+    ).also { step ->
+      urls.forEach {
+        step.bind(it.toString())
+      }
+    }.execute()
+
+    return dsl.selectFrom(b)
+      .where(b.LIBRARY_ID.eq(libraryId))
+      .and(b.DELETED_DATE.isNull)
+      .and(b.URL.notIn(dsl.selectFrom(u)))
       .fetchInto(b)
       .map { it.toDomain() }
+  }
 
   override fun findAllDeletedByFileSize(fileSize: Long): Collection<Book> =
     dsl.selectFrom(b)

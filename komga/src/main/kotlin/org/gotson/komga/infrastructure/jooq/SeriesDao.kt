@@ -9,6 +9,7 @@ import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.net.URL
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -21,6 +22,7 @@ class SeriesDao(
   private val s = Tables.SERIES
   private val d = Tables.SERIES_METADATA
   private val cs = Tables.COLLECTION_SERIES
+  private val u = Tables.TEMP_URL_LIST
 
   override fun findAll(): Collection<Series> =
     dsl.selectFrom(s)
@@ -39,11 +41,26 @@ class SeriesDao(
       .fetchInto(s)
       .map { it.toDomain() }
 
-  override fun findAllByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): List<Series> =
-    dsl.selectFrom(s)
-      .where(s.LIBRARY_ID.eq(libraryId).and(s.URL.notIn(urls.map { it.toString() })))
+  @Transactional
+  override fun findAllNotDeletedByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): List<Series> {
+    // insert urls in a temporary table, else the select size can exceed the statement limit
+    dsl.deleteFrom(u).execute()
+
+    dsl.batch(
+      dsl.insertInto(u, u.URL).values(null as String?)
+    ).also { step ->
+      urls.forEach {
+        step.bind(it.toString())
+      }
+    }.execute()
+
+    return dsl.selectFrom(s)
+      .where(s.LIBRARY_ID.eq(libraryId))
+      .and(s.DELETED_DATE.isNull)
+      .and(s.URL.notIn(dsl.selectFrom(u)))
       .fetchInto(s)
       .map { it.toDomain() }
+  }
 
   override fun findByLibraryIdAndUrlOrNull(libraryId: String, url: URL): Series? =
     dsl.selectFrom(s)

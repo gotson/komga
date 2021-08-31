@@ -96,7 +96,7 @@ class LibraryContentLifecycle(
         seriesLifecycle.softDeleteMany(series)
       } else {
         scannedSeries.keys.map { it.url }.let { urls ->
-          val series = seriesRepository.findAllByLibraryIdAndUrlNotIn(library.id, urls).filterNot { it.deletedDate != null }
+          val series = seriesRepository.findAllNotDeletedByLibraryIdAndUrlNotIn(library.id, urls)
           if (series.isNotEmpty()) {
             logger.info { "Soft deleting series not on disk anymore: $series" }
             seriesLifecycle.softDeleteMany(series)
@@ -106,7 +106,7 @@ class LibraryContentLifecycle(
 
       // delete books that don't exist anymore. We need to do this now, so trash bin can work
       val seriesToSortAndRefresh = scannedSeries.values.flatten().map { it.url }.let { urls ->
-        val books = bookRepository.findAllByLibraryIdAndUrlNotIn(library.id, urls).filterNot { it.deletedDate != null }
+        val books = bookRepository.findAllNotDeletedByLibraryIdAndUrlNotIn(library.id, urls)
         if (books.isNotEmpty()) {
           logger.info { "Soft deleting books not on disk anymore: $books" }
           bookLifecycle.softDeleteMany(books)

@@ -10,7 +10,7 @@ interface SeriesRepository {
 
   fun findAll(): Collection<Series>
   fun findAllByLibraryId(libraryId: String): Collection<Series>
-  fun findAllByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): Collection<Series>
+  fun findAllNotDeletedByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): Collection<Series>
   fun findAllByTitle(title: String): Collection<Series>
   fun findAll(search: SeriesSearch): Collection<Series>
 

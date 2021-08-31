@@ -269,8 +269,8 @@ class SeriesDaoTest(
     )
     seriesDao.insert(series)
 
-    val found = seriesDao.findAllByLibraryIdAndUrlNotIn(library.id, listOf(URL("file://series2")))
-    val notFound = seriesDao.findAllByLibraryIdAndUrlNotIn(library.id, listOf(URL("file://series")))
+    val found = seriesDao.findAllNotDeletedByLibraryIdAndUrlNotIn(library.id, listOf(URL("file://series2")))
+    val notFound = seriesDao.findAllNotDeletedByLibraryIdAndUrlNotIn(library.id, listOf(URL("file://series")))
 
     assertThat(found).hasSize(1)
     assertThat(found.first().name).isEqualTo("Series")
