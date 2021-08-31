@@ -46,13 +46,15 @@ class SeriesDao(
     // insert urls in a temporary table, else the select size can exceed the statement limit
     dsl.deleteFrom(u).execute()
 
-    dsl.batch(
-      dsl.insertInto(u, u.URL).values(null as String?)
-    ).also { step ->
-      urls.forEach {
-        step.bind(it.toString())
-      }
-    }.execute()
+    if (urls.isNotEmpty()) {
+      dsl.batch(
+        dsl.insertInto(u, u.URL).values(null as String?)
+      ).also { step ->
+        urls.forEach {
+          step.bind(it.toString())
+        }
+      }.execute()
+    }
 
     return dsl.selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId))
