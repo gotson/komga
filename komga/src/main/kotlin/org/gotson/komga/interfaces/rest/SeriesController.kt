@@ -453,6 +453,7 @@ class SeriesController(
       seriesRepository.findByIdOrNull(seriesId)?.let { eventPublisher.publishEvent(DomainEvent.SeriesUpdated(it)) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @Operation(description = "Mark all book for series as read")
   @PostMapping("{seriesId}/read-progress")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun markAsRead(
@@ -466,6 +467,7 @@ class SeriesController(
     seriesLifecycle.markReadProgressCompleted(seriesId, principal.user)
   }
 
+  @Operation(description = "Mark all book for series as unread")
   @DeleteMapping("{seriesId}/read-progress")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun markAsUnread(
