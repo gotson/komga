@@ -100,6 +100,7 @@
       "width": "Ajustar a ancho"
     },
     "settings": {
+      "always_fullscreen": "Siempre Pantalla Completa",
       "animate_page_transitions": "Animar las transiciones de página",
       "background_color": "Color de fondo",
       "background_colors": {
@@ -174,6 +175,7 @@
     "all_libraries": "Todas las Bibliotecas",
     "books": "Libros",
     "books_n": "Sin libros | 1 libro | {count} libros",
+    "books_total": "{count} / {total} libros",
     "cancel": "Cancelar",
     "close": "Cerrar",
     "collections": "Colecciones",
@@ -364,7 +366,8 @@
       "button_cancel": "Cancelar",
       "button_confirm": "Guardar cambios",
       "dialog_title": "Modificar lista de lectura",
-      "field_name": "Nombre"
+      "field_name": "Nombre",
+      "field_summary": "Resumen"
     },
     "edit_series": {
       "button_cancel": "Cancelar",
@@ -383,6 +386,8 @@
       "field_summary": "Resumen",
       "field_tags": "Etiquetas",
       "field_title": "Título",
+      "field_total_book_count": "Recuento Total de Libros",
+      "field_total_book_count_error": "El recuento total de libros debe ser 1 o más",
       "mixed": "MIXTO",
       "tab_general": "General",
       "tab_tags": "Etiquetas",

@@ -189,8 +189,10 @@
     "go_to_library": "Iri al biblioteko",
     "go_to_readlist": "Iri al legolisto",
     "go_to_series": "Iri al serio",
+    "library": "Biblioteko",
     "locale_name": "Esperanto",
     "locale_rtl": "false",
+    "lock_all": "Ŝlosi ĉion",
     "n_selected": "{count} elektiĝis",
     "nothing_to_show": "Nenio por montri",
     "outdated": "Ne ĝisdata",
@@ -207,6 +209,7 @@
     "series": "Serio",
     "tags": "Etikedoj",
     "unavailable": "Nedisponebla",
+    "unlock_all": "Malŝlosi ĉion",
     "use_filter_panel_to_change_filter": "Uzu la filtrilan panelon por ŝanĝi la aktivan filtrilon",
     "year": "jaro"
   },
@@ -533,7 +536,8 @@
     "ERR_1019": "Ne eblas skani dosierujon, kiu estas jam parto de ekzistanta biblioteko",
     "ERR_1020": "Anstataŭigota libro ne apartenas al la specifita serio",
     "ERR_1021": "Cela dosiero jam ekzistas",
-    "ERR_1022": "Nova enportita libro ne estas skanebla"
+    "ERR_1022": "Nova enportita libro ne estas skanebla",
+    "ERR_1023": "Libro jam en legolisto"
   },
   "filter": {
     "age_rating": "aĝolimo",
@@ -581,6 +585,7 @@
     "add_to_collection": "Aldoni en kolekton",
     "add_to_readlist": "Aldoni en legoliston",
     "analyze": "Analizi",
+    "bulk_edit_metadata": "Amase redakti metadatenojn",
     "delete": "Forigi",
     "deselect_all": "Malelekti ĉion",
     "download_series": "Elŝuti serion",
@@ -624,6 +629,7 @@
   },
   "server": {
     "server_management": {
+      "button_empty_trash": "Malplenigi rubujon por ĉiuj bibliotekoj",
       "button_shutdown": "Haltigi",
       "section_title": "Administrado de Servilo"
     },

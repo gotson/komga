@@ -1,0 +1,681 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} dari {2}"
+    },
+    "dataIterator": {
+      "loadingText": "Memuat item...",
+      "noResultsText": "Tidak ada catatan yang cocok ditemukan"
+    },
+    "dataTable": {
+      "itemsPerPageText": "Baris per halaman:",
+      "sortBy": "Urutkan menurut"
+    },
+    "fileInput": {
+      "counter": "{0} file",
+      "counterSize": "{0} file ({1} total)"
+    },
+    "noDataText": "Tidak ada data yang tersedia"
+  },
+  "account_settings": {
+    "account_settings": "Pengaturan Akun",
+    "change_password": "ubah kata sandi"
+  },
+  "authentication_activity": {
+    "datetime": "Tanggal & Waktu",
+    "email": "Email",
+    "error": "Eror",
+    "ip": "IP",
+    "success": "Sukses",
+    "user_agent": "Agen Pengguna"
+  },
+  "author_roles": {
+    "colorist": "pemberi warna",
+    "cover": "desain sampul",
+    "editor": "penyunting",
+    "inker": "pemberi tinta",
+    "letterer": "desain huruf",
+    "penciller": "pencillers",
+    "writer": "penulis"
+  },
+  "book_card": {
+    "error": "Error",
+    "unknown": "Untuk dianalisis",
+    "unsupported": "Tidak didukung"
+  },
+  "book_import": {
+    "button_browse": "Jelajahi",
+    "button_import": "Impor",
+    "button_scan": "Pindai",
+    "button_select_series": "Pilih Seri",
+    "field_import_path": "Impor dari folder",
+    "info_part1": "Layar ini memungkinkan Anda untuk mengimpor file yang berada di luar pustaka yang ada. Anda hanya dapat mengimpor file tersebut pada Seri yang telah ada, dalam hal ini Komga akan memindahkan atau menyalin file ini pada direktori Seri yang dipilih.",
+    "info_part2": "Jika Anda memilih nomor untuk sebuah buku, dan sebuah buku sudah ada dengan nomor tersebut, maka Anda akan dapat membandingkan 2 buku tersebut. Jika Anda memutuskan untuk mengimpor buku, Komga akan memperbarui buku yang ada dengan yang baru, secara efektif menggantikan file lama dengan yang baru.",
+    "no_files_found": "Tidak ada file yang ditemukan",
+    "notification": {
+      "go_to_book": "Menuju buku",
+      "import_failure": "Gagal mengimpor buku: {file}",
+      "import_successful": "Buku berhasil diimpor: {book}",
+      "source_file": "File sumber: {file}"
+    },
+    "row": {
+      "error_analyze_first": "Buku perlu dianalisis terlebih dahulu",
+      "error_choose_series": "Pilih seri",
+      "error_only_import_no_errors": "Hanya dapat mengimpor buku tanpa kesalahan",
+      "warning_upgrade": "Buku yang telah ada akan ditingkatkan"
+    },
+    "table": {
+      "destination_name": "Nama tujuan",
+      "file_name": "Nama file",
+      "number": "Nomor",
+      "series": "Seri"
+    },
+    "title": "Impor",
+    "try_another_directory": "Coba cari direktori lain"
+  },
+  "bookreader": {
+    "beginning_of_book": "Anda berada di awal buku.",
+    "changing_reading_direction": "Mengubah Arah Bacaan ke",
+    "cycling_page_layout": "Tata Letak Halaman Memutar",
+    "cycling_scale": "Skala Perputaran",
+    "cycling_side_padding": "Padding Sisi Perputaran",
+    "download_current_page": "Unduh halaman saat ini",
+    "end_of_book": "Anda telah mencapai akhir dari buku.",
+    "from_series_metadata": "dari metadata seri",
+    "move_next": "Klik atau tekan \"Selanjutnya\" lagi untuk berpindah ke buku berikutnya.",
+    "move_next_exit": "Klik atau tekan \"Selanjutnya\" lagi untuk keluar dari pembaca.",
+    "move_previous": "Klik atau tekan \"Sebelumnya\" lagi untuk berpindah ke buku sebelumnya.",
+    "paged_reader_layout": {
+      "double": "Halaman ganda",
+      "double_no_cover": "Halaman ganda (tanpa sampul)",
+      "single": "Halaman tunggal"
+    },
+    "reader_settings": "Pengaturan Pembaca",
+    "scale_type": {
+      "continuous_original": "Bawaan",
+      "continuous_width": "Pas lebar",
+      "height": "Pas tinggi",
+      "original": "Bawaan",
+      "screen": "Layar",
+      "width": "Pas lebar"
+    },
+    "settings": {
+      "always_fullscreen": "Selalu Layar Penuh",
+      "animate_page_transitions": "Animasikan transisi halaman",
+      "background_color": "Warna latar belakang",
+      "background_colors": {
+        "black": "Hitam",
+        "white": "Putih"
+      },
+      "display": "Tampilan",
+      "general": "Umum",
+      "gestures": "Gestur",
+      "page_layout": "Tata letak halaman",
+      "paged": "Opsi Pembaca yang diberi halaman",
+      "reading_mode": "Mode membaca",
+      "scale_type": "Tipe skala",
+      "side_padding": "Padding sisi",
+      "side_padding_none": "Tidak ada",
+      "webtoon": "Opsi Pembaca Webtoon"
+    },
+    "shortcuts": {
+      "close": "Tutup",
+      "cycle_page_layout": "Tata Letak Halaman Memutar",
+      "cycle_scale": "Skala perputaran",
+      "cycle_side_padding": "Padding sisi perputaran",
+      "first_page": "Halaman pertama",
+      "last_page": "Halaman terakhir",
+      "left_to_right": "Kiri ke Kanan",
+      "menus": "Menu",
+      "next_page": "Halaman berikutnya",
+      "previous_page": "Halaman sebelumnya",
+      "reader_navigation": "Navigasi Pembaca",
+      "right_to_left": "Kanan ke Kiri",
+      "settings": "Pengaturan",
+      "show_hide_help": "Tampilkan/sembunyikan bantuan",
+      "show_hide_settings": "Tampilkan/sembunyikan menu pengaturan",
+      "show_hide_thumbnails": "Tampilkan/sembunyikan penjelajah thumbnail",
+      "show_hide_toolbars": "Tampilkan/sembunyikan bilah alat",
+      "vertical": "Vertikal",
+      "webtoon": "Webtoon"
+    },
+    "tooltip_incognito": "Kemajuan membaca tidak akan disimpan"
+  },
+  "browse_book": {
+    "comment": "KOMENTAR",
+    "download_file": "Unduh file",
+    "file": "FILE",
+    "format": "FORMAT",
+    "isbn": "ISBN",
+    "navigation_within_readlist": "Navigasi dalam daftar bacaan: {name}",
+    "outdated_tooltip": "File untuk buku ini telah diubah, buku ini perlu dianalisis ulang",
+    "read_book": "Baca buku",
+    "read_incognito": "Baca penyamaran",
+    "size": "UKURAN"
+  },
+  "browse_collection": {
+    "edit_collection": "Edit koleksi",
+    "edit_elements": "Edit elemen",
+    "manual_ordering": "pengurutan manual"
+  },
+  "browse_readlist": {
+    "edit_elements": "Edit elemen",
+    "edit_readlist": "Edit daftar bacaan"
+  },
+  "browse_series": {
+    "earliest_year_from_release_dates": "Ini adalah tahun paling awal dari tanggal rilis dari semua buku dalam seri",
+    "series_no_summary": "Seri ini tidak memiliki rangkuman, jadi kami memilih satu untuk Anda!",
+    "summary_from_book": "Ringkasan dari buku {number}:"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "Atur koleksi",
+    "title": "{name} koleksi"
+  },
+  "common": {
+    "all_libraries": "Semua Pustaka",
+    "books": "Buku",
+    "books_n": "Tidak ada buku | 1 buku | {count} buku",
+    "books_total": "{count} / {total} buku",
+    "cancel": "Batalkan",
+    "close": "Tutup",
+    "collections": "Koleksi",
+    "create": "Buat",
+    "delete": "Hapus",
+    "dismiss": "Berhentikan",
+    "download": "Unduh",
+    "email": "Email",
+    "filter_no_matches": "Filter aktif tidak memiliki kecocokan",
+    "genre": "Genre",
+    "go_to_library": "Menuju pustaka",
+    "go_to_readlist": "Menuju daftar bacaan",
+    "go_to_series": "Menuju ke seri",
+    "library": "Pustaka",
+    "locale_name": "Bahasa Indonesia",
+    "locale_rtl": "false",
+    "lock_all": "Kunci seluruhnya",
+    "n_selected": "{count} terpilih",
+    "nothing_to_show": "Tidak ada yang dapat ditampilkan",
+    "outdated": "Kedaluwarsa",
+    "pages": "halaman",
+    "pages_n": "Tidak ada halaman | 1 halaman | {count} halaman",
+    "password": "Kata sandi",
+    "pending_tasks": "Tidak ada tugas tertunda | 1 tugas tertunda | {count} tugas tertunda",
+    "publisher": "Penerbit",
+    "read": "Baca",
+    "readlists": "Daftar Bacaan",
+    "required": "Diperlukan",
+    "reset_filters": "Setel ulang filter",
+    "roles": "Peran",
+    "series": "Seri",
+    "tags": "Tag",
+    "unavailable": "Tidak tersedia",
+    "unlock_all": "Buka seluruhnya",
+    "use_filter_panel_to_change_filter": "Gunakan panel filter untuk mengubah filter aktif",
+    "year": "tahun"
+  },
+  "dashboard": {
+    "keep_reading": "Lanjutkan Membaca",
+    "on_deck": "Dalam Dek",
+    "recently_added_books": "Buku Yang Baru Ditambahkan",
+    "recently_added_series": "Seri Yang Baru Ditambahkan",
+    "recently_read_books": "Buku Yang Baru Dibaca",
+    "recently_released_books": "Buku Yang Baru Dirilis",
+    "recently_updated_series": "Seri Yang Baru Diperbarui"
+  },
+  "data_import": {
+    "book_number": "Nomor buku: {name}",
+    "book_series": "Seri: {name}",
+    "button_import": "Impor",
+    "comicrack_preambule_html": "Anda dapat mengimpor Daftar Bacaan ComicRack yang ada dalam format <code>.cbl</code>.<br>Komga akan mencoba mencocokkan seri dan nomor buku yang disediakan dengan seri dan buku di perpustakaan Anda.",
+    "field_files_label": "Daftar Bacaan ComicRack (.cbl)",
+    "import_read_lists": "Impor Daftar Bacaan",
+    "imported_as": "Diimpor sebagai {name}",
+    "results_preambule": "Hasil impor ditunjukkan di bawah ini. Anda juga dapat memeriksa buku yang tidak cocok untuk setiap file yang disediakan.",
+    "size_limit": "Ukuran file harus kurang dari {size} MB",
+    "tab_title": "Impor Data"
+  },
+  "dialog": {
+    "add_to_collection": {
+      "button_create": "Buat",
+      "card_collection_subtitle": "Tidak ada seri | 1 Seri | {count} seri",
+      "dialog_title": "Tambahkan ke koleksi",
+      "field_search_create": "Cari atau buat koleksi baru",
+      "field_search_create_error": "Koleksi dengan nama ini sudah ada",
+      "label_no_matching_collection": "Tidak ada koleksi yang cocok"
+    },
+    "add_to_readlist": {
+      "button_create": "Buat",
+      "card_readlist_subtitle": "Tidak ada buku | 1 buku | {count} buku",
+      "dialog_title": "Tambah ke daftar bacaan",
+      "field_search_create": "Cari atau buat daftar bacaan baru",
+      "field_search_create_error": "Daftar bacaan dengan nama ini sudah ada",
+      "label_no_matching_readlist": "Tidak ada daftar bacaan yang cocok"
+    },
+    "add_user": {
+      "button_cancel": "Batal",
+      "button_confirm": "Tambahkan",
+      "dialog_title": "Tambahkan Pengguna",
+      "field_email": "Email",
+      "field_email_error": "Harus alamat email yang valid",
+      "field_password": "Kata sandi",
+      "field_role_administrator": "Administrator",
+      "field_role_file_download": "Unduh File",
+      "field_role_page_streaming": "Streaming Halaman",
+      "label_roles": "Peran"
+    },
+    "analyze_library": {
+      "body": "Menganalisis semua file media di perpustakaan. Analisis menangkap informasi tentang media. Tergantung pada ukuran perpustakaan Anda, ini mungkin memakan waktu lama.",
+      "button_confirm": "Analisa",
+      "title": "Analisa pustaka"
+    },
+    "delete_collection": {
+      "button_confirm": "Hapus",
+      "confirm_delete": "Ya, hapus koleksi \"{name}\"",
+      "confirm_delete_multiple": "Ya, hapus {count} koleksi",
+      "dialog_title": "Hapus Koleksi",
+      "dialog_title_multiple": "Hapus Koleksi",
+      "warning_html": "Koleksi <b>{name}</b> akan dihapus dari server ini. File media Anda tidak akan terpengaruh. Ini <b>tidak dapat</b> diurungkan. Lanjutkan?",
+      "warning_multiple_html": "{count} koleksi akan dihapus dari server ini. File media Anda tidak akan terpengaruh. Ini <b>tidak dapat</b> diurungkan. Lanjutkan?"
+    },
+    "delete_library": {
+      "button_confirm": "Hapus",
+      "confirm_delete": "Ya, hapus pustaka \"{name}\"",
+      "title": "Hapus Pustaka",
+      "warning_html": "Pustaka <b>{name}</b> akan dihapus dari server ini. File media Anda tidak akan terpengaruh. Ini <b>tidak dapat</b> diurungkan. Lanjutkan?"
+    },
+    "delete_readlist": {
+      "button_confirm": "Hapus",
+      "confirm_delete": "Ya, hapus daftar bacaan \"{name}\"",
+      "confirm_delete_multiple": "Ya, hapus {count} daftar bacaan",
+      "dialog_title": "Hapus Daftar Bacaan",
+      "dialog_title_multiple": "Hapus Daftar Bacaan",
+      "warning_html": "Daftar baca <b>{name}</b> akan dihapus dari server ini. File media Anda tidak akan terpengaruh. Ini <b>tidak dapat</b> diurungkan. Lanjutkan?",
+      "warning_multiple_html": "{count} daftar baca akan dihapus dari server ini. File media Anda tidak akan terpengaruh. Ini <b>tidak dapat</b> diurungkan. Lanjutkan?"
+    },
+    "delete_user": {
+      "button_confirm": "Hapus",
+      "confirm_delete": "Ya, hapus pengguna \"{name}\"",
+      "dialog_title": "Hapus Pengguna",
+      "warning_html": "Pengguna <b>{name}</b> akan dihapus dari server ini. Ini <b>tidak dapat</b> diurungkan. Lanjutkan?"
+    },
+    "edit_books": {
+      "authors_notice_multiple_edit": "Anda sedang mengedit penulis untuk beberapa buku. Ini akan menimpa penulis yang ada dari setiap buku.",
+      "button_cancel": "Batal",
+      "button_confirm": "Simpan perubahan",
+      "dialog_title_multiple": "Edit {count} buku | Edit {count} buku",
+      "dialog_title_single": "Ubah {book}",
+      "field_isbn": "ISBN",
+      "field_isbn_error": "Harus memiliki ISBN 13 yang valid",
+      "field_number": "Nomor",
+      "field_number_sort": "Nomor Urut",
+      "field_number_sort_hint": "Anda dapat menggunakan angka desimal",
+      "field_release_date": "Tanggal Rilis",
+      "field_release_date_error": "Harus tanggal yang valid dalam format YYYY-MM-DD",
+      "field_summary": "Ringkasan",
+      "field_tags": "Tag",
+      "field_title": "Judul",
+      "tab_authors": "Pengarang",
+      "tab_general": "Umum",
+      "tab_tags": "Tag",
+      "tags_notice_multiple_edit": "Anda sedang mengedit tag untuk beberapa buku. Ini akan menggantikan tag yang ada dari setiap buku."
+    },
+    "edit_collection": {
+      "button_cancel": "Batal",
+      "button_confirm": "Simpan perubahan",
+      "dialog_title": "Edit koleksi",
+      "field_manual_ordering": "Urutkan manual",
+      "label_ordering": "Secara default, seri dalam koleksi akan diurutkan berdasarkan nama. Anda dapat mengaktifkan pemesanan manual untuk menentukan pesanan Anda sendiri."
+    },
+    "edit_library": {
+      "button_browse": "Jelajahi",
+      "button_cancel": "Batal",
+      "button_confirm_add": "Tambahkan",
+      "button_confirm_edit": "Ubah",
+      "button_next": "Selanjutnya",
+      "dialog_title_add": "Tambah Pustaka",
+      "dialot_title_edit": "Edit Pustaka",
+      "field_convert_to_cbz": "Secara otomatis dikonversi ke CBZ",
+      "field_import_barcode_isbn": "Barkode ISBN",
+      "field_import_comicinfo_book": "Metadata buku",
+      "field_import_comicinfo_collections": "Koleksi",
+      "field_import_comicinfo_readlists": "Daftar bacaan",
+      "field_import_comicinfo_series": "Metadata seri",
+      "field_import_epub_book": "Metadata buku",
+      "field_import_epub_series": "Metadata seri",
+      "field_import_local_artwork": "Artwork lokal",
+      "field_import_mylar_series": "Metadata seri",
+      "field_name": "Nama",
+      "field_repair_extensions": "Memperbaiki ekstensi file yang salah secara otomatis",
+      "field_root_folder": "Folder root",
+      "field_scanner_deep_scan": "Pindai mendalam",
+      "field_scanner_empty_trash_after_scan": "Kosongkan tempat sampah setiap kali pemindaian",
+      "field_scanner_force_directory_modified_time": "Paksa waktu modifikasi direktori",
+      "field_series_cover": "Sampul seri",
+      "file_browser_dialog_button_confirm": "Pilih",
+      "file_browser_dialog_title": "Folder akar Pustaka",
+      "label_file_management": "Manajemen file",
+      "label_import_barcode_isbn": "Impor ISBN dalam barcode",
+      "label_import_comicinfo": "Impor metadata untuk CBR/CBZ yang berisi file ComicInfo.xml",
+      "label_import_epub": "Impor metadata dari file EPUB",
+      "label_import_local": "Impor aset media lokal",
+      "label_import_mylar": "Impor metadata yang dihasilkan oleh Mylar",
+      "label_scanner": "Pemindai",
+      "label_series_cover": "Sampul seri",
+      "tab_general": "Umum",
+      "tab_metadata": "Metadata",
+      "tab_options": "Pilihan"
+    },
+    "edit_readlist": {
+      "button_cancel": "Batal",
+      "button_confirm": "Simpan perubahan",
+      "dialog_title": "Edit daftar bacaan",
+      "field_name": "Nama",
+      "field_summary": "Ringkasan"
+    },
+    "edit_series": {
+      "button_cancel": "Batal",
+      "button_confirm": "Simpan perubahan",
+      "dialog_title_multiple": "Edit {count} seri | Edit {count} seri",
+      "dialog_title_single": "Ubah {series}",
+      "field_age_rating": "Peringkat Usia",
+      "field_age_rating_error": "Peringkat usia harus 0 atau lebih",
+      "field_genres": "Genre",
+      "field_language": "Bahasa",
+      "field_language_hint": "Tag bahasa IETF BCP 47",
+      "field_publisher": "Penerbit",
+      "field_reading_direction": "Arah Baca",
+      "field_sort_title": "Urutkan Judul",
+      "field_status": "Status",
+      "field_summary": "Ringkasan",
+      "field_tags": "Tag",
+      "field_title": "Judul",
+      "field_total_book_count": "Jumlah Buku Total",
+      "field_total_book_count_error": "Jumlah buku total harus 1 atau lebih",
+      "mixed": "CAMPURAN",
+      "tab_general": "Umum",
+      "tab_tags": "Tag",
+      "tags_notice_multiple_edit": "Anda sedang mengedit tag untuk beberapa seri. Ini akan menimpa tag yang ada dari setiap seri."
+    },
+    "edit_user": {
+      "button_cancel": "Batal",
+      "button_confirm": "Simpan perubahan",
+      "dialog_title": "Edit pengguna",
+      "label_roles_for": "Peran untuk {name}"
+    },
+    "edit_user_shared_libraries": {
+      "button_cancel": "Batal",
+      "button_confirm": "Simpan perubahan",
+      "dialog_title": "Edit pustaka bersama",
+      "field_all_libraries": "Semua Pustaka",
+      "label_shared_with": "Dibagikan dengan {name}"
+    },
+    "empty_trash": {
+      "body": "Secara default, server media tidak langsung menghapus informasi untuk media. Ini membantu jika drive terputus sementara. Saat Anda mengosongkan sampah untuk perpustakaan, semua informasi tentang media yang hilang akan dihapus.",
+      "button_confirm": "Kosong",
+      "title": "Kosongkan sampah untuk pustaka"
+    },
+    "file_browser": {
+      "button_cancel": "Batal",
+      "button_confirm_default": "Pilih",
+      "dialog_title_default": "Penjelajah File",
+      "parent_directory": "Induk"
+    },
+    "filename_chooser": {
+      "button_choose": "Pilih",
+      "field_destination_filename": "Nama file tujuan",
+      "label_source_filename": "Nama File Sumber",
+      "table": {
+        "existing_file": "File yang ada",
+        "order": "Urutan"
+      },
+      "title": "Nama File Tujuan"
+    },
+    "password_change": {
+      "button_cancel": "Batal",
+      "button_confirm": "Ganti Kata Sandi",
+      "dialog_title": "Ganti kata sandi",
+      "field_new_password": "Kata sandi baru",
+      "field_new_password_error": "Kata sandi dibutuhkan.",
+      "field_repeat_password": "Ulangi kata sandi baru",
+      "field_repeat_password_error": "Kata sandi harus identik."
+    },
+    "refresh_library_metadata": {
+      "body": "Refresh metadata untuk semua file media di pustaka. Tergantung pada ukuran pustaka Anda, ini mungkin memakan waktu lama.",
+      "button_confirm": "Segarkan",
+      "title": "Segarkan metadata untuk pustaka"
+    },
+    "series_picker": {
+      "label_search_series": "Cari Seri",
+      "title": "Pilih Seri"
+    },
+    "server_stop": {
+      "button_confirm": "Berhenti",
+      "confirmation_message": "Apakah Anda yakin ingin menghentikan Komga?",
+      "dialog_title": "Matikan server"
+    },
+    "shortcut_help": {
+      "label_description": "Deskripsi",
+      "label_key": "Kunci"
+    },
+    "transient_book_details": {
+      "label_candidate": "Kandidat",
+      "label_existing": "Yang sudah ada",
+      "label_format": "Format",
+      "label_name": "Nama",
+      "label_pages": "Halaman",
+      "label_size": "Ukuran",
+      "pages_table": {
+        "filename": "Nama file",
+        "height": "Tinggi",
+        "index": "Indeks",
+        "media_type": "Tipe media",
+        "width": "Lebar"
+      },
+      "title": "Detail Buku",
+      "title_comparison": "Perbandingan Buku"
+    },
+    "transient_book_viewer": {
+      "label_candidate": "Kandidat",
+      "label_existing": "Yang sudah ada",
+      "page_of_pages": "{page} / {pages}",
+      "title": "Periksa Buku",
+      "title_comparison": "Perbandingan Buku"
+    }
+  },
+  "enums": {
+    "copy_mode": {
+      "HARDLINK": "Hardlink/Salin File",
+      "MOVE": "Pindahkan File"
+    },
+    "media_status": {
+      "ERROR": "Kesalahan",
+      "OUTDATED": "Kedaluwarsa",
+      "READY": "Siap",
+      "UNKNOWN": "Tidak dikenal",
+      "UNSUPPORTED": "Tidak didukung"
+    },
+    "reading_direction": {
+      "LEFT_TO_RIGHT": "Kiri ke Kanan",
+      "RIGHT_TO_LEFT": "Kanan ke Kiri",
+      "VERTICAL": "Vertikal",
+      "WEBTOON": "Webtoon"
+    },
+    "series_cover": {
+      "FIRST": "Pertama",
+      "FIRST_UNREAD_OR_FIRST": "Pertama belum dibaca yang lain terlebih dahulu",
+      "FIRST_UNREAD_OR_LAST": "Pertama belum dibaca yang lain terakhir",
+      "LAST": "Terakhir"
+    },
+    "series_status": {
+      "ABANDONED": "Ditinggalkan",
+      "ENDED": "Berakhir",
+      "HIATUS": "Hiatus",
+      "ONGOING": "Sedang berlangsung"
+    }
+  },
+  "error_codes": {
+    "ERR_1000": "File tidak dapat diakses selama analisis",
+    "ERR_1001": "Jenis media tidak didukung",
+    "ERR_1002": "Arsip RAR terenkripsi tidak didukung",
+    "ERR_1003": "Arsip RAR padat tidak didukung",
+    "ERR_1004": "Arsip RAR Multi-Volume tidak didukung",
+    "ERR_1005": "Kesalahan yang tidak diketahui saat menganalisis buku",
+    "ERR_1006": "Buku tidak berisi halaman apa pun",
+    "ERR_1007": "Beberapa entri tidak dapat dianalisis",
+    "ERR_1008": "Kesalahan tidak diketahui saat mendapatkan entri buku",
+    "ERR_1009": "Daftar baca dengan nama tersebut sudah ada",
+    "ERR_1010": "Tidak ada buku yang cocok dalam permintaan daftar baca",
+    "ERR_1011": "Tidak ada kecocokan unik untuk seri",
+    "ERR_1012": "Tidak ada kecocokan untuk seri",
+    "ERR_1013": "Tidak ada kecocokan unik untuk nomor buku dalam seri",
+    "ERR_1014": "Tidak ada kecocokan untuk nomor buku dalam seri",
+    "ERR_1015": "Kesalahan saat menghapus serialisasi ComicRack ReadingList",
+    "ERR_1016": "Direktori tidak dapat diakses atau bukan direktori",
+    "ERR_1017": "Tidak dapat memindai folder yang merupakan bagian dari perpustakaan yang ada",
+    "ERR_1018": "File tidak ditemukan",
+    "ERR_1019": "Tidak dapat mengimpor file yang merupakan bagian dari perpustakaan yang ada",
+    "ERR_1020": "Buku untuk ditingkatkan bukan milik seri yang disediakan",
+    "ERR_1021": "File tujuan sudah ada",
+    "ERR_1022": "Buku yang baru diimpor tidak dapat dipindai",
+    "ERR_1023": "Buku sudah ada di ReadingList"
+  },
+  "filter": {
+    "age_rating": "peringkat usia",
+    "age_rating_none": "Tidak ada",
+    "genre": "Genre",
+    "in_progress": "Sedang Berlangsung",
+    "language": "Bahasa",
+    "library": "Pustaka",
+    "publisher": "Penerbit",
+    "read": "Baca",
+    "release_date": "tanggal rilis",
+    "status": "status",
+    "tag": "tag",
+    "unread": "Belum dibaca"
+  },
+  "filter_drawer": {
+    "filter": "Saring",
+    "sort": "sortir"
+  },
+  "home": {
+    "theme": "Tema",
+    "translation": "Terjemahan"
+  },
+  "library_navigation": {
+    "browse": "Jelajahi",
+    "collections": "Koleksi",
+    "readlists": "Daftar Bacaan",
+    "recommended": "Direkomendasikan"
+  },
+  "login": {
+    "create_user_account": "Buat akun pengguna",
+    "login": "Login",
+    "unclaimed_html": "Server Komga ini belum aktif, Anda perlu membuat akun pengguna untuk dapat mengaksesnya.<br><br>Pilih <strong>email</strong> dan <strong>sandi</strong> lalu klik <strong> Buat akun pengguna</strong>."
+  },
+  "media_analysis": {
+    "comment": "Komentar",
+    "media_analysis": "Analisis media",
+    "media_type": "Tipe Media",
+    "name": "Nama",
+    "size": "Ukuran",
+    "status": "Status",
+    "url": "URL"
+  },
+  "menu": {
+    "add_to_collection": "Tambah ke koleksi",
+    "add_to_readlist": "Tambah ke daftar bacaan",
+    "analyze": "Analisa",
+    "bulk_edit_metadata": "Edit metadata secara massal",
+    "delete": "Hapus",
+    "deselect_all": "Batal pilih semua",
+    "download_series": "Unduh seri",
+    "edit": "Ubah",
+    "edit_metadata": "Ubah metadata",
+    "empty_trash": "Kosongkan sampah",
+    "mark_read": "Tandai sebagai dibaca",
+    "mark_unread": "Tandai sebagai belum dibaca",
+    "refresh_metadata": "Segarkan metadata",
+    "scan_library_files": "Pindai file pustaka",
+    "select_all": "Pilih semua"
+  },
+  "navigation": {
+    "home": "Beranda",
+    "libraries": "Pustaka",
+    "logout": "Keluar"
+  },
+  "page_not_found": {
+    "go_back_to_home_page": "Kembali ke beranda",
+    "page_does_not_exist": "Halaman yang Anda cari tidak ada.",
+    "page_not_found": "Halaman tidak ditemukan"
+  },
+  "read_more": {
+    "less": "Baca lebih sedikit",
+    "more": "Baca selengkapnya"
+  },
+  "readlists_expansion_panel": {
+    "manage_readlist": "Kelola daftar baca",
+    "title": "{name} daftar baca"
+  },
+  "search": {
+    "no_results": "Pencarian tidak memberikan hasil",
+    "search": "Cari",
+    "search_for_something_else": "Coba cari yang lain",
+    "search_results_for": "Hasil pencarian untuk \"{name}\""
+  },
+  "searchbox": {
+    "in_library": "di {library}",
+    "no_results": "Tidak ada hasil",
+    "search_all": "Cari semua…"
+  },
+  "server": {
+    "server_management": {
+      "button_empty_trash": "Kosongkan sampah untuk seluruh pustaka",
+      "button_shutdown": "Matikan",
+      "section_title": "Manajemen Server"
+    },
+    "tab_title": "Server"
+  },
+  "server_settings": {
+    "server_settings": "Pengaturan Server"
+  },
+  "settings_user": {
+    "change_password": "Ganti kata sandi",
+    "edit_shared_libraries": "Edit pustaka bersama",
+    "edit_user": "Edit pengguna",
+    "latest_activity": "Aktivitas terbaru: {date}",
+    "no_recent_activity": "Tidak ada aktivitas terbaru",
+    "role_administrator": "Administrator",
+    "role_user": "Pengguna"
+  },
+  "sort": {
+    "books_count": "Jumlah buku",
+    "date_added": "Tanggal Ditambahkan",
+    "date_updated": "Tanggal diperbarui",
+    "file_name": "Nama file",
+    "file_size": "Ukuran file",
+    "folder_name": "Nama folder",
+    "name": "Nama",
+    "number": "Nomor",
+    "release_date": "Tanggal rilis"
+  },
+  "theme": {
+    "dark": "Gelap",
+    "light": "Terang",
+    "system": "Sistem"
+  },
+  "user_roles": {
+    "ADMIN": "Administrator",
+    "FILE_DOWNLOAD": "Pengunduhan file",
+    "PAGE_STREAMING": "Streaming halaman",
+    "USER": "Pengguna"
+  },
+  "users": {
+    "authentication_activity": "Otentikasi Aktifitas",
+    "users": "Pengguna"
+  },
+  "welcome": {
+    "add_library": "Tambah Pustaka",
+    "no_libraries_yet": "Belum ada pustaka yang ditambahkan!",
+    "welcome_message": "Selamat datang di Komga"
+  }
+}

@@ -189,8 +189,10 @@
     "go_to_library": "Gå till bibliotek",
     "go_to_readlist": "Gå till läslistan",
     "go_to_series": "Gå till serien",
+    "library": "Bibliotek",
     "locale_name": "Svenska",
     "locale_rtl": "false",
+    "lock_all": "Lås alla",
     "n_selected": "{count} valda",
     "nothing_to_show": "Inget att visa",
     "outdated": "Föråldrad",
@@ -207,6 +209,7 @@
     "series": "Serier",
     "tags": "Taggar",
     "unavailable": "Otillgänglig",
+    "unlock_all": "Lås upp alla",
     "use_filter_panel_to_change_filter": "Använd filterpanelen för att ändra det aktiva filtret",
     "year": "år"
   },
@@ -533,7 +536,8 @@
     "ERR_1019": "Det går inte att importera filer som ingår i ett befintligt bibliotek",
     "ERR_1020": "Boken att uppgradera tillhör inte den medföljande serien",
     "ERR_1021": "Destinationsfilen finns redan",
-    "ERR_1022": "Nyimporterad boken kunde inte skannas"
+    "ERR_1022": "Nyimporterad boken kunde inte skannas",
+    "ERR_1023": "Boken finns redan i Läslistan"
   },
   "filter": {
     "age_rating": "åldersgräns",
@@ -581,6 +585,7 @@
     "add_to_collection": "Lägg till i samling",
     "add_to_readlist": "Lägg till i läslista",
     "analyze": "Analysera",
+    "bulk_edit_metadata": "Massredigering av metadata",
     "delete": "Radera",
     "deselect_all": "Avmarkera alla",
     "download_series": "Ladda ner serie",
@@ -624,6 +629,7 @@
   },
   "server": {
     "server_management": {
+      "button_empty_trash": "Töm papperskorgen för alla bibliotek",
       "button_shutdown": "Stäng av",
       "section_title": "Serverhantering"
     },
