@@ -1,3 +1,10 @@
+## [0.120.1](https://github.com/gotson/komga/compare/v0.120.0...v0.120.1) (2021-08-31)
+
+
+### Bug Fixes
+
+* **webui:** support pl pluralization ([20afd83](https://github.com/gotson/komga/commit/20afd83356d1a153290b73cc7750e4140d27a34f))
+
 # [0.120.0](https://github.com/gotson/komga/compare/v0.119.2...v0.120.0) (2021-08-31)
 
 
