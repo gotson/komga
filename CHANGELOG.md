@@ -1,3 +1,15 @@
+# [0.120.0](https://github.com/gotson/komga/compare/v0.119.2...v0.120.0) (2021-08-31)
+
+
+### Bug Fixes
+
+* scan could fail with latest sqlite library ([f8cd7df](https://github.com/gotson/komga/commit/f8cd7dfcf7bafe80a196fa8054575562d2cca1ad)), closes [#644](https://github.com/gotson/komga/issues/644)
+
+
+### Features
+
+* translated using Weblate (Indonesian) ([#619](https://github.com/gotson/komga/issues/619)) ([bde858f](https://github.com/gotson/komga/commit/bde858f58e17e6f1151469127b7b8767951b43d9))
+
 ## [0.119.2](https://github.com/gotson/komga/compare/v0.119.1...v0.119.2) (2021-08-30)
 
 
