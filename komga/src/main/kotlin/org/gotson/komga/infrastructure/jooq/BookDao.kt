@@ -81,7 +81,7 @@ class BookDao(
     return dsl.selectFrom(b)
       .where(b.LIBRARY_ID.eq(libraryId))
       .and(b.DELETED_DATE.isNull)
-      .and(b.URL.notIn(dsl.selectFrom(u)))
+      .and(b.URL.notIn(dsl.select(u.URL).from(u)))
       .fetchInto(b)
       .map { it.toDomain() }
   }

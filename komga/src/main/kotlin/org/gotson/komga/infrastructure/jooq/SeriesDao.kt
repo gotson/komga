@@ -59,7 +59,7 @@ class SeriesDao(
     return dsl.selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId))
       .and(s.DELETED_DATE.isNull)
-      .and(s.URL.notIn(dsl.selectFrom(u)))
+      .and(s.URL.notIn(dsl.select(u.URL).from(u)))
       .fetchInto(s)
       .map { it.toDomain() }
   }
