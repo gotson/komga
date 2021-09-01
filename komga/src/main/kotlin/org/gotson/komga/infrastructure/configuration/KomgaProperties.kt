@@ -32,6 +32,8 @@ class KomgaProperties {
 
   var lucene = Lucene()
 
+  var customCovers = CustomCovers()
+
   class RememberMe {
     @get:NotBlank
     var key: String? = null
@@ -53,6 +55,11 @@ class KomgaProperties {
   }
 
   class Lucene {
+    @get:NotBlank
+    var dataDirectory: String = ""
+  }
+
+  class CustomCovers {
     @get:NotBlank
     var dataDirectory: String = ""
   }

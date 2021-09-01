@@ -72,6 +72,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
 import java.io.OutputStream
@@ -330,6 +331,35 @@ class SeriesController(
 
     return seriesLifecycle.getThumbnailBytes(seriesId, principal.user.id)
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @PatchMapping(value = ["{seriesId}/thumbnail"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE], produces = [MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE])
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun patchCustomSeriesThumbnail(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable(name = "seriesId") seriesId: String,
+    @RequestParam("image") image: MultipartFile
+  ) {
+    val series = seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    try {
+      seriesLifecycle.addCustomThumbnailForSeries(series, image)
+    } catch (e: Exception) {
+      throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  @DeleteMapping("{seriesId}/thumbnail")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun deleteCustomSeriesThumbnail(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable(name = "seriesId") seriesId: String,
+  ) {
+    val series = seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    try {
+      seriesLifecycle.deleteCustomThumbnailForSeries(series)
+    } catch (e: Exception) {
+      throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
+    }
   }
 
   @PageableAsQueryParam
