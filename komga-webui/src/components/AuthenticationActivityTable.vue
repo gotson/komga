@@ -32,6 +32,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import {ERROR} from '@/types/events'
 
 export default Vue.extend({
   name: 'AuthenticationActivityTable',
@@ -91,11 +92,14 @@ export default Vue.extend({
       }
 
       let itemsPage
-      if (!this.forMe) itemsPage = await this.$komgaUsers.getAuthenticationActivity(pageRequest)
-      else itemsPage = await this.$komgaUsers.getMyAuthenticationActivity(pageRequest)
-
-      this.totalItems = itemsPage.totalElements
-      this.items = itemsPage.content
+      try {
+        if (!this.forMe) itemsPage = await this.$komgaUsers.getAuthenticationActivity(pageRequest)
+        else itemsPage = await this.$komgaUsers.getMyAuthenticationActivity(pageRequest)
+        this.totalItems = itemsPage.totalElements
+        this.items = itemsPage.content
+      } catch (e) {
+        this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
+      }
 
       this.loading = false
     },
