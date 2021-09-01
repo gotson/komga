@@ -483,6 +483,7 @@ class BookController(
     updatedBooks.map { it.seriesId }.distinct().forEach { taskReceiver.aggregateSeriesMetadata(it) }
   }
 
+  @Operation(description = "Mark book as read and/or change page progress")
   @PatchMapping("api/v1/books/{bookId}/read-progress")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun markReadProgress(
@@ -505,6 +506,7 @@ class BookController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @Operation(description = "Mark book as unread")
   @DeleteMapping("api/v1/books/{bookId}/read-progress")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun deleteReadProgress(
