@@ -42,7 +42,7 @@
     />
 
     <v-container fluid>
-      <empty-state v-if="allEmpty"
+      <empty-state v-if="allEmpty && !loading"
                    :title="$t('common.nothing_to_show')"
                    icon="mdi-help-circle"
                    icon-color="secondary"
@@ -198,6 +198,7 @@ export default Vue.extend({
   },
   data: () => {
     return {
+      loading: false,
       library: undefined as LibraryDto | undefined,
       newSeries: [] as SeriesDto[],
       updatedSeries: [] as SeriesDto[],
@@ -248,8 +249,8 @@ export default Vue.extend({
       this.loadAll(val)
     },
     '$store.state.komgaLibraries.libraries': {
-      handler(val){
-        if(val.length === 0) this.$router.push({name: 'welcome'})
+      handler(val) {
+        if (val.length === 0) this.$router.push({name: 'welcome'})
         else this.reload()
       },
     },
@@ -283,32 +284,36 @@ export default Vue.extend({
         this.reload()
       }
     },
-    bookChanged(event: BookSseDto){
+    bookChanged(event: BookSseDto) {
       if (this.libraryId === LIBRARIES_ALL || event.libraryId === this.libraryId) {
         this.reload()
       }
     },
-    readProgressChanged(event: ReadProgressSseDto){
+    readProgressChanged(event: ReadProgressSseDto) {
       if (this.inProgressBooks.some(b => b.id === event.bookId)) this.reload()
       else if (this.latestBooks.some(b => b.id === event.bookId)) this.reload()
       else if (this.onDeckBooks.some(b => b.id === event.bookId)) this.reload()
       else if (this.recentlyReleasedBooks.some(b => b.id === event.bookId)) this.reload()
       else if (this.recentlyReadBooks.some(b => b.id === event.bookId)) this.reload()
     },
-    reload: throttle(function(this: any) {
+    reload: throttle(function (this: any) {
       this.loadAll(this.libraryId)
     }, 5000),
     loadAll(libraryId: string) {
+      this.loading = true
       this.library = this.getLibraryLazy(libraryId)
       this.selectedSeries = []
       this.selectedBooks = []
-      this.loadInProgressBooks(libraryId)
-      this.loadOnDeckBooks(libraryId)
-      this.loadRecentlyReleasedBooks(libraryId)
-      this.loadLatestBooks(libraryId)
-      this.loadNewSeries(libraryId)
-      this.loadUpdatedSeries(libraryId)
-      this.loadRecentlyReadBooks(libraryId)
+      Promise.all([this.loadInProgressBooks(libraryId),
+        this.loadOnDeckBooks(libraryId),
+        this.loadRecentlyReleasedBooks(libraryId),
+        this.loadLatestBooks(libraryId),
+        this.loadNewSeries(libraryId),
+        this.loadUpdatedSeries(libraryId),
+        this.loadRecentlyReadBooks(libraryId),
+      ]).then(x => {
+        this.loading = false
+      })
     },
     async loadNewSeries(libraryId: string) {
       this.newSeries = (await this.$komgaSeries.getNewSeries(this.getRequestLibraryId(libraryId))).content
