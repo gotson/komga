@@ -3707,6 +3707,7 @@
           },
           "required": true
         },
+        "description": "Mark book as read and/or change page progress",
         "operationId": "markReadProgress",
         "responses": {
           "400": {
@@ -3738,6 +3739,7 @@
         ]
       },
       "delete": {
+        "description": "Mark book as unread",
         "operationId": "deleteReadProgress",
         "responses": {
           "400": {
@@ -3934,6 +3936,7 @@
     },
     "/api/v1/series/{seriesId}/read-progress": {
       "post": {
+        "description": "Mark all book for series as read",
         "operationId": "markAsRead",
         "responses": {
           "400": {
@@ -3965,6 +3968,7 @@
         ]
       },
       "delete": {
+        "description": "Mark all book for series as unread",
         "operationId": "markAsUnread",
         "responses": {
           "400": {

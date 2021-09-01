@@ -1,3 +1,12 @@
+## [0.120.2](https://github.com/gotson/komga/compare/v0.120.1...v0.120.2) (2021-09-01)
+
+
+### Bug Fixes
+
+* **api:** prevent retrieving own user activity in demo profile ([59c187f](https://github.com/gotson/komga/commit/59c187f3b769550e788a5fbf8031fc59fa33b41b)), closes [#643](https://github.com/gotson/komga/issues/643)
+* **webui:** catch exception during authentication activity retrieval ([e4b136b](https://github.com/gotson/komga/commit/e4b136b28d794136b60d513e166ff8014cd9cf82))
+* **webui:** don't display nothing to show while still loading ([dce4dde](https://github.com/gotson/komga/commit/dce4dde6b8a87a5b5a910181dcf23cf8fa3ba3a1)), closes [#648](https://github.com/gotson/komga/issues/648)
+
 ## [0.120.1](https://github.com/gotson/komga/compare/v0.120.0...v0.120.1) (2021-08-31)
 
 
