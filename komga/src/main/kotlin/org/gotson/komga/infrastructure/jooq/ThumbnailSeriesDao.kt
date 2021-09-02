@@ -68,8 +68,8 @@ class ThumbnailSeriesDao(
     dsl.deleteFrom(ts).where(ts.SERIES_ID.`in`(seriesIds)).execute()
   }
 
-  private fun ThumbnailSeriesRecord.toDomain(): ThumbnailSeries {
-    return ThumbnailSeries(
+  private fun ThumbnailSeriesRecord.toDomain(): ThumbnailSeries =
+    ThumbnailSeries(
       thumbnail = thumbnail,
       url = url?.let { URL(it) },
       selected = selected,
@@ -79,5 +79,4 @@ class ThumbnailSeriesDao(
       createdDate = createdDate,
       lastModifiedDate = lastModifiedDate
     )
-  }
 }
