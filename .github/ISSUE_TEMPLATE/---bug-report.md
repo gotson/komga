@@ -8,19 +8,19 @@ assignees: ''
 ---
 
 ### Komga environment
-- **OS**: 
-- **Komga version**: 
+- **OS**:
+- **Komga version**:
 - [ ] **I am running Komga with Docker**
-  - Docker image tag [e.g. latest, beta]: 
+  - Docker image tag [e.g. latest, beta]:
 - [ ] **I am running Komga from the `jar`**
-  - Java version: 
+  - Java version:
 - [ ] **I have a problem in the web interface**
-  - Browser (with version): 
+  - Browser (with version):
 - [ ] **I have a problem with an OPDS client application**
-  - OPDS Application (with version): 
+  - OPDS Application (with version):
 - [ ] **I have a problem with the Tachiyomi extension**
-  - Tachiyomi version: 
-  - Tachiyomi extension version: 
+  - Tachiyomi version:
+  - Tachiyomi extension version:
 
 ### Describe the bug
 A clear and concise description of what the bug is.
@@ -42,4 +42,4 @@ Add any other context about the problem here.
 If applicable, add screenshots to help explain your problem.
 
 ### Log file
-If applicable, add an excerpt of the log file (max 20 lines), or a link to a gist containing the log file.
+If applicable, add an excerpt of the log file (max 20 lines) _AND_ attach the complete log file or a link to a gist/pastebin containing the log file.
