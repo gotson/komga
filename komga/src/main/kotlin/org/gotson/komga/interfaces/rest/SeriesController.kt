@@ -49,6 +49,7 @@ import org.gotson.komga.interfaces.rest.dto.toDto
 import org.gotson.komga.interfaces.rest.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.rest.persistence.ReadProgressDtoRepository
 import org.gotson.komga.interfaces.rest.persistence.SeriesDtoRepository
+import org.jooq.exception.DataAccessException
 import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -75,8 +76,10 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
+import java.io.IOException
 import java.io.OutputStream
 import java.util.zip.Deflater
+import javax.imageio.ImageIO
 import javax.validation.Valid
 
 private val logger = KotlinLogging.logger {}
@@ -325,15 +328,15 @@ class SeriesController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") seriesId: String
   ): ByteArray {
-    seriesRepository.getLibraryId(seriesId)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    val series = seriesRepository.getLibraryId(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    if (!principal.user.canAccessLibrary(series)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
 
-    return seriesLifecycle.getThumbnailBytes(seriesId, principal.user.id)
-      ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    val thumbnail = seriesLifecycle.getThumbnailBytes(seriesId, principal.user.id)
+    return thumbnail ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
-  @PatchMapping(value = ["{seriesId}/thumbnail"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE], produces = [MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE])
+  @PatchMapping(value = ["{seriesId}/thumbnail"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun patchCustomSeriesThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -342,13 +345,21 @@ class SeriesController(
   ) {
     val series = seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     try {
-      seriesLifecycle.addCustomThumbnailForSeries(series, image)
+      ImageIO.read(image.inputStream).toString()
+      seriesLifecycle.addCustomThumbnailForSeries(series, image.bytes)
     } catch (e: Exception) {
-      throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
+      when (e) {
+        is IOException,
+        is IllegalArgumentException,
+        is NullPointerException -> throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+        is DataAccessException -> throw ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE)
+        else -> throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
+      }
     }
   }
 
   @DeleteMapping("{seriesId}/thumbnail")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun deleteCustomSeriesThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -358,7 +369,10 @@ class SeriesController(
     try {
       seriesLifecycle.deleteCustomThumbnailForSeries(series)
     } catch (e: Exception) {
-      throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
+      when (e) {
+        is DataAccessException -> throw ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE)
+        else -> throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
+      }
     }
   }
 

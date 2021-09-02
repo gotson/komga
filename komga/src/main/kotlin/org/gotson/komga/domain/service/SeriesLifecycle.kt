@@ -27,23 +27,18 @@ import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.ThumbnailSeriesRepository
-import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
-import org.springframework.web.multipart.MultipartFile
 import java.io.File
-import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.time.LocalDateTime
-import kotlin.io.path.Path
 
 private val logger = KotlinLogging.logger {}
 private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
 
 @Service
 class SeriesLifecycle(
-  private val komgaProperties: KomgaProperties,
   private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
   private val bookLifecycle: BookLifecycle,
@@ -166,10 +161,6 @@ class SeriesLifecycle(
     val seriesIds = series.map { it.id }
     logger.info { "Delete series ids: $seriesIds" }
 
-    val directoryPath = Path(komgaProperties.customCovers.dataDirectory)
-    val customCovers = File(directoryPath.toUri())
-    customCovers.mkdirs()
-
     transactionTemplate.executeWithoutResult {
       bookLifecycle.deleteMany(bookRepository.findAllBySeriesIds(seriesIds))
 
@@ -180,14 +171,6 @@ class SeriesLifecycle(
       bookMetadataAggregationRepository.delete(seriesIds)
 
       seriesRepository.delete(seriesIds)
-
-      seriesIds.forEach { seriesId ->
-        val targetPath = Path("${customCovers.absolutePath}/$SERIES_PREFIX$seriesId")
-        val target = targetPath.toFile()
-        if (target.exists()) {
-          target.delete()
-        }
-      }
     }
 
     series.forEach { eventPublisher.publishEvent(DomainEvent.SeriesDeleted(it)) }
@@ -214,6 +197,10 @@ class SeriesLifecycle(
   fun getThumbnail(seriesId: String): ThumbnailSeries? {
     val selected = thumbnailsSeriesRepository.findSelectedBySeriesIdOrNull(seriesId)
 
+    if (selected != null && selected.isCustomCover) {
+      return selected
+    }
+
     if (selected == null || !selected.exists()) {
       thumbnailsHouseKeeping(seriesId)
       return thumbnailsSeriesRepository.findSelectedBySeriesIdOrNull(seriesId)
@@ -224,7 +211,10 @@ class SeriesLifecycle(
 
   fun getThumbnailBytes(seriesId: String, userId: String): ByteArray? {
     getThumbnail(seriesId)?.let {
-      return File(it.url.toURI()).readBytes()
+      if (it.isCustomCover) {
+        return it.thumbnail
+      }
+      return it.url?.toURI()?.let { uri -> File(uri).readBytes() }
     }
 
     seriesRepository.findByIdOrNull(seriesId)?.let { series ->
@@ -257,39 +247,25 @@ class SeriesLifecycle(
       thumbnailsSeriesRepository.markSelected(thumbnail)
   }
 
-  fun addCustomThumbnailForSeries(series: Series, image: MultipartFile) {
+  fun addCustomThumbnailForSeries(series: Series, imageBytes: ByteArray) {
     logger.info { "Trying to add custom cover for series: ${series.id}" }
     thumbnailsSeriesRepository.findAllBySeriesId(series.id)
       .forEach {
-        thumbnailsSeriesRepository.delete(it.id)
+        if (it.isCustomCover) {
+          logger.info { "Deleting old custom cover for series: ${series.id}" }
+          thumbnailsSeriesRepository.delete(it.id)
+        }
       }
 
-    val directoryPath = Path(komgaProperties.customCovers.dataDirectory)
-    val customCovers = File(directoryPath.toUri())
-    customCovers.mkdirs()
-
-    if (customCovers.isDirectory.not()) {
-      throw IOException("Error could not open path as directory")
-    }
-
-    logger.info { "Opened custom cover folder at ${customCovers.absolutePath}" }
-
-    val targetPath = Path("${customCovers.absolutePath}/$SERIES_PREFIX${series.id}")
-    val target = targetPath.toFile()
-    if (target.exists()) {
-      target.delete()
-    }
-    image.transferTo(targetPath)
-
-    logger.info { "Image was saved to ${target.absolutePath}" }
-
-    thumbnailsSeriesRepository.insert(
-      ThumbnailSeries(
-        url = target.toURI().toURL(),
-        seriesId = series.id,
-        selected = true
-      )
+    logger.info { "Inserting new custom cover for series: ${series.id}" }
+    val thumbnail = ThumbnailSeries(
+      url = null,
+      seriesId = series.id,
+      selected = true,
+      thumbnail = imageBytes
     )
+    thumbnailsSeriesRepository.insert(thumbnail)
+    thumbnailsSeriesRepository.markSelected(thumbnail)
 
     logger.info { "Custom cover has been set for series: ${series.id}" }
   }
@@ -298,34 +274,20 @@ class SeriesLifecycle(
     logger.info { "Trying to remove custom cover for series: ${series.id}" }
     thumbnailsSeriesRepository.findAllBySeriesId(series.id)
       .forEach {
-        thumbnailsSeriesRepository.delete(it.id)
-      }
-
-    val directoryPath = Path(komgaProperties.customCovers.dataDirectory)
-    val customCovers = File(directoryPath.toUri())
-    customCovers.mkdirs()
-
-    if (customCovers.isDirectory.not()) {
-      throw IOException("Error could not open path as directory")
-    }
-
-    customCovers.listFiles()
-      ?.forEach { file ->
-        if (file.name.equals("$SERIES_PREFIX${series.id}")) {
-          file.delete()
+        if (it.isCustomCover && it.selected) {
+          logger.info { "Custom cover has been removed for series: ${series.id}" }
+          thumbnailsSeriesRepository.delete(it.id)
         }
       }
-
-    taskReceiver.refreshSeriesLocalArtwork(series.id)
-
-    logger.info { "Custom cover has been removed for series: ${series.id}" }
   }
 
   private fun thumbnailsHouseKeeping(seriesId: String) {
     logger.info { "House keeping thumbnails for series: $seriesId" }
     val all = thumbnailsSeriesRepository.findAllBySeriesId(seriesId)
       .mapNotNull {
-        if (!it.exists()) {
+        if (!it.isCustomCover)
+          it
+        else if (!it.exists()) {
           logger.warn { "Thumbnail doesn't exist, removing entry" }
           thumbnailsSeriesRepository.delete(it.id)
           null
@@ -345,9 +307,5 @@ class SeriesLifecycle(
     }
   }
 
-  private fun ThumbnailSeries.exists(): Boolean = Files.exists(Paths.get(url.toURI()))
-
-  companion object {
-    const val SERIES_PREFIX: String = "series_"
-  }
+  private fun ThumbnailSeries.exists(): Boolean = url?.toURI()?.let { Files.exists(Paths.get(it)) } ?: false
 }

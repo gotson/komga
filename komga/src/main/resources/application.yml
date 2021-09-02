@@ -16,8 +16,6 @@ komga:
     file: \${user.home}/.komga/database.sqlite
   lucene:
     data-directory: \${user.home}/.komga/lucene
-  custom-covers:
-    data-directory: \${user.home}/.komga/custom-covers
 
 spring:
   flyway:

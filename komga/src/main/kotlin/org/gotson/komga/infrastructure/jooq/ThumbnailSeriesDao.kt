@@ -35,6 +35,7 @@ class ThumbnailSeriesDao(
       .set(ts.ID, thumbnail.id)
       .set(ts.SERIES_ID, thumbnail.seriesId)
       .set(ts.URL, thumbnail.url.toString())
+      .set(ts.THUMBNAIL, thumbnail.thumbnail)
       .set(ts.SELECTED, thumbnail.selected)
       .execute()
   }
@@ -66,13 +67,15 @@ class ThumbnailSeriesDao(
     dsl.deleteFrom(ts).where(ts.SERIES_ID.`in`(seriesIds)).execute()
   }
 
-  private fun ThumbnailSeriesRecord.toDomain() =
-    ThumbnailSeries(
-      url = URL(url),
+  private fun ThumbnailSeriesRecord.toDomain(): ThumbnailSeries {
+    return ThumbnailSeries(
+      url = if (!url.isNullOrBlank() && url != "null") URL(url) else null,
       selected = selected,
+      thumbnail = thumbnail,
       id = id,
       seriesId = seriesId,
       createdDate = createdDate,
       lastModifiedDate = lastModifiedDate
     )
+  }
 }
