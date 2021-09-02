@@ -209,6 +209,12 @@ class SeriesLifecycle(
     return selected
   }
 
+  fun getThumbnailBytesById(seriesId: String, thumbnailId: String): ByteArray? {
+    return thumbnailsSeriesRepository.findAllBySeriesId(seriesId)
+      .firstOrNull { it.id == thumbnailId }
+      ?.thumbnail
+  }
+
   fun getThumbnailBytes(seriesId: String, userId: String): ByteArray? {
     getThumbnail(seriesId)?.let {
       return when (it.type) {
