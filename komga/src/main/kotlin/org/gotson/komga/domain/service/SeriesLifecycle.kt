@@ -197,7 +197,7 @@ class SeriesLifecycle(
   fun getThumbnail(seriesId: String): ThumbnailSeries? {
     val selected = thumbnailsSeriesRepository.findSelectedBySeriesIdOrNull(seriesId)
 
-    if (selected != null && selected.isCustomCover) {
+    if (selected != null && selected.type == ThumbnailSeries.Type.USER_UPLOADED) {
       return selected
     }
 
@@ -211,10 +211,10 @@ class SeriesLifecycle(
 
   fun getThumbnailBytes(seriesId: String, userId: String): ByteArray? {
     getThumbnail(seriesId)?.let {
-      if (it.isCustomCover) {
-        return it.thumbnail
+      return when (it.type) {
+        ThumbnailSeries.Type.USER_UPLOADED -> it.thumbnail
+        ThumbnailSeries.Type.SIDECAR -> it.url?.toURI()?.let { uri -> File(uri).readBytes() }
       }
-      return it.url?.toURI()?.let { uri -> File(uri).readBytes() }
     }
 
     seriesRepository.findByIdOrNull(seriesId)?.let { series ->
@@ -247,22 +247,29 @@ class SeriesLifecycle(
       thumbnailsSeriesRepository.markSelected(thumbnail)
   }
 
-  fun addCustomThumbnailForSeries(series: Series, imageBytes: ByteArray) {
-    logger.info { "Trying to add custom cover for series: ${series.id}" }
+  fun getAllThumbnailsForSeries(seriesId: String): Collection<ThumbnailSeries> {
+    return thumbnailsSeriesRepository.findAllBySeriesId(seriesId)
+  }
+
+  fun markThumbnailAsSelected(series: Series, thumbnailId: String) {
     thumbnailsSeriesRepository.findAllBySeriesId(series.id)
       .forEach {
-        if (it.isCustomCover) {
-          logger.info { "Deleting old custom cover for series: ${series.id}" }
-          thumbnailsSeriesRepository.delete(it.id)
+        if (it.id == thumbnailId) {
+          thumbnailsSeriesRepository.markSelected(it)
+          return
         }
       }
+  }
 
-    logger.info { "Inserting new custom cover for series: ${series.id}" }
+  fun addUserUploadedThumbnailForSeries(series: Series, imageBytes: ByteArray) {
+    logger.info { "Trying to add custom cover for series: ${series.id}" }
+
     val thumbnail = ThumbnailSeries(
       url = null,
       seriesId = series.id,
       selected = true,
-      thumbnail = imageBytes
+      thumbnail = imageBytes,
+      type = ThumbnailSeries.Type.USER_UPLOADED
     )
     thumbnailsSeriesRepository.insert(thumbnail)
     thumbnailsSeriesRepository.markSelected(thumbnail)
@@ -270,13 +277,14 @@ class SeriesLifecycle(
     logger.info { "Custom cover has been set for series: ${series.id}" }
   }
 
-  fun deleteCustomThumbnailForSeries(series: Series) {
-    logger.info { "Trying to remove custom cover for series: ${series.id}" }
+  fun deleteUserUploadedCustomThumbnailForSeries(series: Series, thumbnailId: String) {
+    logger.info { "Trying to remove custom cover for series: ${series.id} ($thumbnailId)" }
     thumbnailsSeriesRepository.findAllBySeriesId(series.id)
       .forEach {
-        if (it.isCustomCover && it.selected) {
+        if (it.id == thumbnailId && it.type == ThumbnailSeries.Type.USER_UPLOADED) {
           logger.info { "Custom cover has been removed for series: ${series.id}" }
           thumbnailsSeriesRepository.delete(it.id)
+          return
         }
       }
   }
@@ -284,14 +292,16 @@ class SeriesLifecycle(
   private fun thumbnailsHouseKeeping(seriesId: String) {
     logger.info { "House keeping thumbnails for series: $seriesId" }
     val all = thumbnailsSeriesRepository.findAllBySeriesId(seriesId)
-      .mapNotNull {
-        if (!it.isCustomCover)
-          it
-        else if (!it.exists()) {
-          logger.warn { "Thumbnail doesn't exist, removing entry" }
-          thumbnailsSeriesRepository.delete(it.id)
-          null
-        } else it
+      .mapNotNull { thumbnail ->
+        when (thumbnail.type) {
+          ThumbnailSeries.Type.SIDECAR -> {
+            if (thumbnail.exists()) return@mapNotNull thumbnail
+            logger.warn { "Thumbnail doesn't exist, removing entry" }
+            thumbnailsSeriesRepository.delete(thumbnail.id)
+            null
+          }
+          ThumbnailSeries.Type.USER_UPLOADED -> thumbnail
+        }
       }
 
     val selected = all.filter { it.selected }

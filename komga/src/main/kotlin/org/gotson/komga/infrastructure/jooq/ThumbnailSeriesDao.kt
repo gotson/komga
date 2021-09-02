@@ -34,8 +34,9 @@ class ThumbnailSeriesDao(
     dsl.insertInto(ts)
       .set(ts.ID, thumbnail.id)
       .set(ts.SERIES_ID, thumbnail.seriesId)
-      .set(ts.URL, thumbnail.url.toString())
+      .set(ts.URL, thumbnail.url?.toString())
       .set(ts.THUMBNAIL, thumbnail.thumbnail)
+      .set(ts.TYPE, thumbnail.type.toString())
       .set(ts.SELECTED, thumbnail.selected)
       .execute()
   }
@@ -69,9 +70,10 @@ class ThumbnailSeriesDao(
 
   private fun ThumbnailSeriesRecord.toDomain(): ThumbnailSeries {
     return ThumbnailSeries(
-      url = if (!url.isNullOrBlank() && url != "null") URL(url) else null,
-      selected = selected,
       thumbnail = thumbnail,
+      url = url?.let { URL(it) },
+      selected = selected,
+      type = ThumbnailSeries.Type.valueOf(type),
       id = id,
       seriesId = seriesId,
       createdDate = createdDate,
