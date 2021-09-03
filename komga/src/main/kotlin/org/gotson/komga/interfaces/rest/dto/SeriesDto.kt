@@ -3,7 +3,6 @@ package org.gotson.komga.interfaces.rest.dto
 import com.fasterxml.jackson.annotation.JsonFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
-import javax.validation.constraints.PositiveOrZero
 
 data class SeriesDto(
   val id: String,
@@ -70,8 +69,4 @@ data class BookMetadataAggregationDto(
   val created: LocalDateTime,
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val lastModified: LocalDateTime
-)
-
-data class TachiyomiReadProgressUpdateDto(
-  @get:PositiveOrZero val lastBookRead: Int,
 )

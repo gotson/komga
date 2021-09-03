@@ -17,6 +17,7 @@ import org.gotson.komga.jooq.tables.records.BookMetadataRecord
 import org.gotson.komga.jooq.tables.records.BookRecord
 import org.gotson.komga.jooq.tables.records.MediaRecord
 import org.gotson.komga.jooq.tables.records.ReadProgressRecord
+import org.jooq.AggregateFunction
 import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.Record
@@ -31,6 +32,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
+import java.math.BigDecimal
 import java.net.URL
 
 @Component
@@ -47,6 +49,10 @@ class BookDtoDao(
   private val s = Tables.SERIES
   private val rlb = Tables.READLIST_BOOK
   private val bt = Tables.BOOK_METADATA_TAG
+
+  private val countUnread: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isNull, 1).otherwise(0))
+  private val countRead: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isTrue, 1).otherwise(0))
+  private val countInProgress: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isFalse, 1).otherwise(0))
 
   private val sorts = mapOf(
     "name" to b.NAME.collate(SqliteUdfDataSource.collationUnicode3),
@@ -169,9 +175,9 @@ class BookDtoDao(
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
       .apply { filterOnLibraryIds?.let { where(s.LIBRARY_ID.`in`(it)) } }
       .groupBy(s.ID)
-      .having(SeriesDtoDao.countUnread.ge(inline(1.toBigDecimal())))
-      .and(SeriesDtoDao.countRead.ge(inline(1.toBigDecimal())))
-      .and(SeriesDtoDao.countInProgress.eq(inline(0.toBigDecimal())))
+      .having(countUnread.ge(inline(1.toBigDecimal())))
+      .and(countRead.ge(inline(1.toBigDecimal())))
+      .and(countInProgress.eq(inline(0.toBigDecimal())))
       .orderBy(DSL.max(r.LAST_MODIFIED_DATE).desc())
       .fetchInto(String::class.java)
 
