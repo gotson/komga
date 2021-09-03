@@ -205,14 +205,15 @@ class SeriesLifecycle(
     return selected
   }
 
-  fun getThumbnailBytesById(seriesId: String, thumbnailId: String): ByteArray? =
-    thumbnailsSeriesRepository.findOneOrNull(seriesId, thumbnailId)?.thumbnail
+  fun getThumbnailBytesById(thumbnailId: String): ByteArray? =
+    thumbnailsSeriesRepository.findOneOrNull(thumbnailId)?.thumbnail
 
   fun getThumbnailBytes(seriesId: String, userId: String): ByteArray? {
     getThumbnail(seriesId)?.let {
-      return when (it.type) {
-        ThumbnailSeries.Type.USER_UPLOADED -> it.thumbnail
-        ThumbnailSeries.Type.SIDECAR -> it.url?.toURI()?.let { uri -> File(uri).readBytes() }
+      return when {
+        it.thumbnail != null -> it.thumbnail
+        it.url != null -> File(it.url.toURI()).readBytes()
+        else -> null
       }
     }
 
@@ -244,10 +245,6 @@ class SeriesLifecycle(
 
     if (thumbnail.selected)
       thumbnailsSeriesRepository.markSelected(thumbnail)
-  }
-
-  fun getAllThumbnailsForSeries(seriesId: String): Collection<ThumbnailSeries> {
-    return thumbnailsSeriesRepository.findAllBySeriesId(seriesId)
   }
 
   fun markThumbnailAsSelected(series: Series, thumbnailId: String) {

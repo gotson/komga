@@ -15,10 +15,9 @@ class ThumbnailSeriesDao(
 ) : ThumbnailSeriesRepository {
   private val ts = Tables.THUMBNAIL_SERIES
 
-  override fun findOneOrNull(seriesId: String, thumbnailId: String): ThumbnailSeries? =
+  override fun findOneOrNull(thumbnailId: String): ThumbnailSeries? =
     dsl.selectFrom(ts)
-      .where(ts.SERIES_ID.eq(seriesId))
-      .and(ts.ID.eq(thumbnailId))
+      .where(ts.ID.eq(thumbnailId))
       .fetchOneInto(ts)
       ?.toDomain()
 

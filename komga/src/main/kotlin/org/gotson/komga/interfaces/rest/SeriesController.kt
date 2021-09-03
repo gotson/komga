@@ -24,11 +24,11 @@ import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
-import org.gotson.komga.domain.model.ThumbnailSeries
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
+import org.gotson.komga.domain.persistence.ThumbnailSeriesRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
@@ -78,7 +78,6 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
-import java.io.BufferedInputStream
 import java.io.OutputStream
 import java.util.zip.Deflater
 import javax.validation.Valid
@@ -100,6 +99,7 @@ class SeriesController(
   private val readProgressDtoRepository: ReadProgressDtoRepository,
   private val eventPublisher: EventPublisher,
   private val contentDetector: ContentDetector,
+  private val thumbnailSeriesRepository: ThumbnailSeriesRepository
 ) {
 
   @PageableAsQueryParam
@@ -335,7 +335,7 @@ class SeriesController(
     if (!principal.user.canAccessLibrary(series)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
 
     val thumbnail = if (thumbnailId != null) {
-      seriesLifecycle.getThumbnailBytesById(seriesId, thumbnailId)
+      seriesLifecycle.getThumbnailBytesById(thumbnailId)
     } else {
       seriesLifecycle.getThumbnailBytes(seriesId, principal.user.id)
     }
@@ -350,29 +350,36 @@ class SeriesController(
     seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     if (!principal.user.canAccessLibrary(seriesId)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
 
-    return seriesLifecycle.getAllThumbnailsForSeries(seriesId)
-      .map(ThumbnailSeries::toDto)
+    return thumbnailSeriesRepository.findAllBySeriesId(seriesId)
+      .map { it.toDto() }
   }
 
-  @PatchMapping(value = ["{seriesId}/thumbnail"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+  @PostMapping(value = ["{seriesId}/thumbnail"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun patchUserUploadedSeriesThumbnail(
+  fun postUserUploadedSeriesThumbnail(
     @PathVariable(name = "seriesId") seriesId: String,
     @RequestParam("image") image: MultipartFile
   ) {
     val series = seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    val type = contentDetector.detectMediaType(BufferedInputStream(image.inputStream))
+
+    val inputStream = image.inputStream
+    val bufferedInputStream = inputStream.buffered()
+
+    val type = contentDetector.detectMediaType(bufferedInputStream)
     if (!contentDetector.isImage(type)) {
       throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
     }
     seriesLifecycle.addUserUploadedThumbnailForSeries(series, image.bytes)
+
+    inputStream.close()
+    bufferedInputStream.close()
   }
 
-  @PatchMapping("{seriesId}/thumbnails/{thumbnailId}")
+  @PostMapping("{seriesId}/thumbnails/{thumbnailId}")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun patchMarkSelectedSeriesThumbnail(
+  fun postMarkSelectedSeriesThumbnail(
     @PathVariable(name = "seriesId") seriesId: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ) {

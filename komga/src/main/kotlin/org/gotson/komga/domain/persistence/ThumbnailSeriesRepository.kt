@@ -3,7 +3,7 @@ package org.gotson.komga.domain.persistence
 import org.gotson.komga.domain.model.ThumbnailSeries
 
 interface ThumbnailSeriesRepository {
-  fun findOneOrNull(seriesId: String, thumbnailId: String): ThumbnailSeries?
+  fun findOneOrNull(thumbnailId: String): ThumbnailSeries?
 
   fun findSelectedBySeriesIdOrNull(seriesId: String): ThumbnailSeries?
 
