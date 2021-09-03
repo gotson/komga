@@ -42,4 +42,4 @@ Add any other context about the problem here.
 If applicable, add screenshots to help explain your problem.
 
 ### Log file
-If applicable, add an excerpt of the log file (max 20 lines) _AND_ attach the complete log file or a link to a gist/pastebin containing the log file.
+If applicable, add an excerpt of the log file (max 20 lines) _AND_ attach the complete log file or a link to a gist/pastebin containing the log file ([where to find the logs](https://komga.org/faq/#where-can-i-find-the-log-files)).
