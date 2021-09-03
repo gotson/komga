@@ -8,3 +8,11 @@ data class SeriesThumbnailDto(
   val type: ThumbnailSeries.Type,
   val selected: Boolean
 )
+
+fun ThumbnailSeries.toDto() =
+  SeriesThumbnailDto(
+    id = id,
+    seriesId = seriesId,
+    type = type,
+    selected = selected
+  )

@@ -197,11 +197,7 @@ class SeriesLifecycle(
   fun getThumbnail(seriesId: String): ThumbnailSeries? {
     val selected = thumbnailsSeriesRepository.findSelectedBySeriesIdOrNull(seriesId)
 
-    if (selected != null && selected.type == ThumbnailSeries.Type.USER_UPLOADED) {
-      return selected
-    }
-
-    if (selected == null || !selected.exists()) {
+    if (selected == null || (selected.type == ThumbnailSeries.Type.SIDECAR && !selected.exists())) {
       thumbnailsHouseKeeping(seriesId)
       return thumbnailsSeriesRepository.findSelectedBySeriesIdOrNull(seriesId)
     }
@@ -209,11 +205,8 @@ class SeriesLifecycle(
     return selected
   }
 
-  fun getThumbnailBytesById(seriesId: String, thumbnailId: String): ByteArray? {
-    return thumbnailsSeriesRepository.findAllBySeriesId(seriesId)
-      .firstOrNull { it.id == thumbnailId }
-      ?.thumbnail
-  }
+  fun getThumbnailBytesById(seriesId: String, thumbnailId: String): ByteArray? =
+    thumbnailsSeriesRepository.findOneOrNull(seriesId, thumbnailId)?.thumbnail
 
   fun getThumbnailBytes(seriesId: String, userId: String): ByteArray? {
     getThumbnail(seriesId)?.let {

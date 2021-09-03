@@ -24,6 +24,7 @@ import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
+import org.gotson.komga.domain.model.ThumbnailSeries
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
@@ -350,14 +351,7 @@ class SeriesController(
     if (!principal.user.canAccessLibrary(seriesId)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
 
     return seriesLifecycle.getAllThumbnailsForSeries(seriesId)
-      .map {
-        SeriesThumbnailDto(
-          id = it.id,
-          seriesId = it.seriesId,
-          type = it.type,
-          selected = it.selected
-        )
-      }
+      .map(ThumbnailSeries::toDto)
   }
 
   @PatchMapping(value = ["{seriesId}/thumbnail"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
@@ -378,7 +372,7 @@ class SeriesController(
   @PatchMapping("{seriesId}/thumbnails/{thumbnailId}")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun patchMarkSelectedUserUploadedSeriesThumbnail(
+  fun patchMarkSelectedSeriesThumbnail(
     @PathVariable(name = "seriesId") seriesId: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ) {
