@@ -368,9 +368,9 @@ class SeriesController(
         if (!contentDetector.isImage(type)) {
           throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
         }
-        seriesLifecycle.addUserUploadedThumbnailForSeries(series, image.bytes)
       }
     }
+    seriesLifecycle.addUserUploadedThumbnailForSeries(series, image.bytes)
   }
 
   @PutMapping("{seriesId}/thumbnails/{thumbnailId}/selected")
