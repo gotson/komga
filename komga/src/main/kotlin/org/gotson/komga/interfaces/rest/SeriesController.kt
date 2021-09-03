@@ -324,7 +324,7 @@ class SeriesController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
-  @GetMapping(value = ["{seriesId}/thumbnail", "{seriesId}/thumbnail/{thumbnailId}"], produces = [MediaType.IMAGE_JPEG_VALUE])
+  @GetMapping(value = ["{seriesId}/thumbnail", "{seriesId}/thumbnails/{thumbnailId}"], produces = [MediaType.IMAGE_JPEG_VALUE])
   fun getSeriesThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") seriesId: String,
@@ -375,7 +375,7 @@ class SeriesController(
     seriesLifecycle.addUserUploadedThumbnailForSeries(series, image.bytes)
   }
 
-  @PatchMapping("{seriesId}/thumbnail/{thumbnailId}")
+  @PatchMapping("{seriesId}/thumbnails/{thumbnailId}")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun patchMarkSelectedUserUploadedSeriesThumbnail(
@@ -386,7 +386,7 @@ class SeriesController(
     seriesLifecycle.markThumbnailAsSelected(series, thumbnailId)
   }
 
-  @DeleteMapping("{seriesId}/thumbnail/{thumbnailId}")
+  @DeleteMapping("{seriesId}/thumbnails/{thumbnailId}")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun deleteUserUploadedSeriesThumbnail(
