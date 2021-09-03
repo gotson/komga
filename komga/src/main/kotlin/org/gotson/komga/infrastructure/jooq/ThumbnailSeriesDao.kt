@@ -15,7 +15,7 @@ class ThumbnailSeriesDao(
 ) : ThumbnailSeriesRepository {
   private val ts = Tables.THUMBNAIL_SERIES
 
-  override fun findOneOrNull(thumbnailId: String): ThumbnailSeries? =
+  override fun findByIdOrNull(thumbnailId: String): ThumbnailSeries? =
     dsl.selectFrom(ts)
       .where(ts.ID.eq(thumbnailId))
       .fetchOneInto(ts)
@@ -74,7 +74,7 @@ class ThumbnailSeriesDao(
     dsl.deleteFrom(ts).where(ts.SERIES_ID.`in`(seriesIds)).execute()
   }
 
-  private fun ThumbnailSeriesRecord.toDomain(): ThumbnailSeries =
+  private fun ThumbnailSeriesRecord.toDomain() =
     ThumbnailSeries(
       thumbnail = thumbnail,
       url = url?.let { URL(it) },

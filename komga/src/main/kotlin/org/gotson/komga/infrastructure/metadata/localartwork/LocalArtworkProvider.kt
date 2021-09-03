@@ -66,7 +66,6 @@ class LocalArtworkProvider(
             url = path.toUri().toURL(),
             seriesId = series.id,
             selected = index == 0,
-            thumbnail = null,
             type = ThumbnailSeries.Type.SIDECAR
           )
         }.toList()

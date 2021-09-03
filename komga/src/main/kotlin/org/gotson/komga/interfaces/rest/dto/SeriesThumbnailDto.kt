@@ -5,7 +5,7 @@ import org.gotson.komga.domain.model.ThumbnailSeries
 data class SeriesThumbnailDto(
   val id: String,
   val seriesId: String,
-  val type: ThumbnailSeries.Type,
+  val type: String,
   val selected: Boolean
 )
 
@@ -13,6 +13,6 @@ fun ThumbnailSeries.toDto() =
   SeriesThumbnailDto(
     id = id,
     seriesId = seriesId,
-    type = type,
+    type = type.toString(),
     selected = selected
   )

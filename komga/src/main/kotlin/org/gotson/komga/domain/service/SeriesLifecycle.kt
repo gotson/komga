@@ -205,16 +205,23 @@ class SeriesLifecycle(
     return selected
   }
 
-  fun getThumbnailBytesById(thumbnailId: String): ByteArray? =
-    thumbnailsSeriesRepository.findOneOrNull(thumbnailId)?.thumbnail
+  private fun getBytesFromThumbnailSeries(thumbnail: ThumbnailSeries): ByteArray? {
+    return when {
+      thumbnail.thumbnail != null -> thumbnail.thumbnail
+      thumbnail.url != null -> File(thumbnail.url.toURI()).readBytes()
+      else -> null
+    }
+  }
+
+  fun getThumbnailBytesById(thumbnailId: String): ByteArray? {
+    return thumbnailsSeriesRepository.findByIdOrNull(thumbnailId)?.let {
+      getBytesFromThumbnailSeries(it)
+    }
+  }
 
   fun getThumbnailBytes(seriesId: String, userId: String): ByteArray? {
     getThumbnail(seriesId)?.let {
-      return when {
-        it.thumbnail != null -> it.thumbnail
-        it.url != null -> File(it.url.toURI()).readBytes()
-        else -> null
-      }
+      return getBytesFromThumbnailSeries(it)
     }
 
     seriesRepository.findByIdOrNull(seriesId)?.let { series ->
@@ -247,16 +254,6 @@ class SeriesLifecycle(
       thumbnailsSeriesRepository.markSelected(thumbnail)
   }
 
-  fun markThumbnailAsSelected(series: Series, thumbnailId: String) {
-    thumbnailsSeriesRepository.findAllBySeriesId(series.id)
-      .forEach {
-        if (it.id == thumbnailId) {
-          thumbnailsSeriesRepository.markSelected(it)
-          return
-        }
-      }
-  }
-
   fun addUserUploadedThumbnailForSeries(series: Series, imageBytes: ByteArray) {
     logger.info { "Trying to add custom cover for series: ${series.id}" }
 
@@ -273,16 +270,12 @@ class SeriesLifecycle(
     logger.info { "Custom cover has been set for series: ${series.id}" }
   }
 
-  fun deleteUserUploadedCustomThumbnailForSeries(series: Series, thumbnailId: String) {
-    logger.info { "Trying to remove custom cover for series: ${series.id} ($thumbnailId)" }
-    thumbnailsSeriesRepository.findAllBySeriesId(series.id)
-      .forEach {
-        if (it.id == thumbnailId && it.type == ThumbnailSeries.Type.USER_UPLOADED) {
-          logger.info { "Custom cover has been removed for series: ${series.id}" }
-          thumbnailsSeriesRepository.delete(it.id)
-          return
-        }
-      }
+  fun deleteUserUploadedCustomThumbnailForSeries(thumbnail: ThumbnailSeries) {
+    logger.info { "Trying to remove thumbnail: ${thumbnail.id}" }
+
+    if (thumbnail.type == ThumbnailSeries.Type.USER_UPLOADED) {
+      thumbnailsSeriesRepository.delete(thumbnail.id)
+    }
   }
 
   private fun thumbnailsHouseKeeping(seriesId: String) {

@@ -99,7 +99,7 @@ class SeriesController(
   private val readProgressDtoRepository: ReadProgressDtoRepository,
   private val eventPublisher: EventPublisher,
   private val contentDetector: ContentDetector,
-  private val thumbnailSeriesRepository: ThumbnailSeriesRepository
+  private val thumbnailsSeriesRepository: ThumbnailSeriesRepository,
 ) {
 
   @PageableAsQueryParam
@@ -350,7 +350,7 @@ class SeriesController(
     seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     if (!principal.user.canAccessLibrary(seriesId)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
 
-    return thumbnailSeriesRepository.findAllBySeriesId(seriesId)
+    return thumbnailsSeriesRepository.findAllBySeriesId(seriesId)
       .map { it.toDto() }
   }
 
@@ -362,29 +362,27 @@ class SeriesController(
     @RequestParam("image") image: MultipartFile
   ) {
     val series = seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-
-    val inputStream = image.inputStream
-    val bufferedInputStream = inputStream.buffered()
-
-    val type = contentDetector.detectMediaType(bufferedInputStream)
-    if (!contentDetector.isImage(type)) {
-      throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+    image.inputStream.use { inputStream ->
+      inputStream.buffered().use { bufferedInputStream ->
+        val type = contentDetector.detectMediaType(bufferedInputStream)
+        if (!contentDetector.isImage(type)) {
+          throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+        }
+        seriesLifecycle.addUserUploadedThumbnailForSeries(series, image.bytes)
+      }
     }
-    seriesLifecycle.addUserUploadedThumbnailForSeries(series, image.bytes)
-
-    inputStream.close()
-    bufferedInputStream.close()
   }
 
-  @PostMapping("{seriesId}/thumbnails/{thumbnailId}")
+  @PutMapping("{seriesId}/thumbnails/{thumbnailId}/selected")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun postMarkSelectedSeriesThumbnail(
     @PathVariable(name = "seriesId") seriesId: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ) {
-    val series = seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    seriesLifecycle.markThumbnailAsSelected(series, thumbnailId)
+    seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    val thumbnail = thumbnailsSeriesRepository.findByIdOrNull(thumbnailId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    thumbnailsSeriesRepository.markSelected(thumbnail)
   }
 
   @DeleteMapping("{seriesId}/thumbnails/{thumbnailId}")
@@ -394,8 +392,9 @@ class SeriesController(
     @PathVariable(name = "seriesId") seriesId: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ) {
-    val series = seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    seriesLifecycle.deleteUserUploadedCustomThumbnailForSeries(series, thumbnailId)
+    seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    val thumbnail = thumbnailsSeriesRepository.findByIdOrNull(thumbnailId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    seriesLifecycle.deleteUserUploadedCustomThumbnailForSeries(thumbnail)
   }
 
   @PageableAsQueryParam
