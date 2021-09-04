@@ -282,15 +282,10 @@ class SeriesLifecycle(
     logger.info { "House keeping thumbnails for series: $seriesId" }
     val all = thumbnailsSeriesRepository.findAllBySeriesId(seriesId)
       .mapNotNull { thumbnail ->
-        when (thumbnail.type) {
-          ThumbnailSeries.Type.SIDECAR -> {
-            if (thumbnail.exists()) return@mapNotNull thumbnail
-            logger.warn { "Thumbnail doesn't exist, removing entry" }
-            thumbnailsSeriesRepository.delete(thumbnail.id)
-            null
-          }
-          ThumbnailSeries.Type.USER_UPLOADED -> thumbnail
-        }
+        if (thumbnail.exists()) return@mapNotNull thumbnail
+        logger.warn { "Thumbnail doesn't exist, removing entry" }
+        thumbnailsSeriesRepository.delete(thumbnail.id)
+        null
       }
 
     val selected = all.filter { it.selected }
@@ -306,5 +301,10 @@ class SeriesLifecycle(
     }
   }
 
-  private fun ThumbnailSeries.exists(): Boolean = url?.toURI()?.let { Files.exists(Paths.get(it)) } ?: false
+  private fun ThumbnailSeries.exists(): Boolean {
+    if (url != null) {
+      return Files.exists(Paths.get(url.toURI()))
+    }
+    return thumbnail != null
+  }
 }
