@@ -47,6 +47,8 @@ import org.gotson.komga.interfaces.rest.dto.SeriesMetadataUpdateDto
 import org.gotson.komga.interfaces.rest.dto.SeriesThumbnailDto
 import org.gotson.komga.interfaces.rest.dto.TachiyomiReadProgressDto
 import org.gotson.komga.interfaces.rest.dto.TachiyomiReadProgressUpdateDto
+import org.gotson.komga.interfaces.rest.dto.TachiyomiReadProgressUpdateV2Dto
+import org.gotson.komga.interfaces.rest.dto.TachiyomiReadProgressV2Dto
 import org.gotson.komga.interfaces.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.rest.dto.toDto
 import org.gotson.komga.interfaces.rest.persistence.BookDtoRepository
@@ -85,7 +87,7 @@ import javax.validation.Valid
 private val logger = KotlinLogging.logger {}
 
 @RestController
-@RequestMapping("api/v1/series", produces = [MediaType.APPLICATION_JSON_VALUE])
+@RequestMapping("api", produces = [MediaType.APPLICATION_JSON_VALUE])
 class SeriesController(
   private val taskReceiver: TaskReceiver,
   private val seriesRepository: SeriesRepository,
@@ -110,7 +112,7 @@ class SeriesController(
       `in` = ParameterIn.QUERY, name = "search_regex", schema = Schema(type = "string")
     )
   )
-  @GetMapping
+  @GetMapping("v1/series")
   fun getAllSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) searchTerm: String?,
@@ -179,7 +181,7 @@ class SeriesController(
       `in` = ParameterIn.QUERY, name = "search_regex", schema = Schema(type = "string")
     )
   )
-  @GetMapping("alphabetical-groups")
+  @GetMapping("v1/series/alphabetical-groups")
   fun getAlphabeticalGroups(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) searchTerm: String?,
@@ -226,7 +228,7 @@ class SeriesController(
 
   @Operation(description = "Return recently added or updated series.")
   @PageableWithoutSortAsQueryParam
-  @GetMapping("/latest")
+  @GetMapping("v1/series//latest")
   fun getLatestSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
@@ -256,7 +258,7 @@ class SeriesController(
 
   @Operation(description = "Return newly added series.")
   @PageableWithoutSortAsQueryParam
-  @GetMapping("/new")
+  @GetMapping("v1/series/new")
   fun getNewSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
@@ -286,7 +288,7 @@ class SeriesController(
 
   @Operation(description = "Return recently updated series, but not newly added ones.")
   @PageableWithoutSortAsQueryParam
-  @GetMapping("/updated")
+  @GetMapping("v1/series/updated")
   fun getUpdatedSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
@@ -314,7 +316,7 @@ class SeriesController(
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
-  @GetMapping("{seriesId}")
+  @GetMapping("v1/series/{seriesId}")
   fun getOneSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") id: String
@@ -325,7 +327,7 @@ class SeriesController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
-  @GetMapping(value = ["{seriesId}/thumbnail", "{seriesId}/thumbnails/{thumbnailId}"], produces = [MediaType.IMAGE_JPEG_VALUE])
+  @GetMapping(value = ["v1/series/{seriesId}/thumbnail", "v1/series/{seriesId}/thumbnails/{thumbnailId}"], produces = [MediaType.IMAGE_JPEG_VALUE])
   fun getSeriesThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") seriesId: String,
@@ -342,7 +344,7 @@ class SeriesController(
     return thumbnail ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
-  @GetMapping(value = ["{seriesId}/thumbnails"], produces = [MediaType.APPLICATION_JSON_VALUE])
+  @GetMapping(value = ["v1/series/{seriesId}/thumbnails"], produces = [MediaType.APPLICATION_JSON_VALUE])
   fun getSeriesThumbnails(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") seriesId: String
@@ -354,7 +356,7 @@ class SeriesController(
       .map { it.toDto() }
   }
 
-  @PostMapping(value = ["{seriesId}/thumbnail"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+  @PostMapping(value = ["v1/series/{seriesId}/thumbnail"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun postUserUploadedSeriesThumbnail(
@@ -373,7 +375,7 @@ class SeriesController(
     seriesLifecycle.addUserUploadedThumbnailForSeries(series, image.bytes)
   }
 
-  @PutMapping("{seriesId}/thumbnails/{thumbnailId}/selected")
+  @PutMapping("v1/series/{seriesId}/thumbnails/{thumbnailId}/selected")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun postMarkSelectedSeriesThumbnail(
@@ -385,7 +387,7 @@ class SeriesController(
     thumbnailsSeriesRepository.markSelected(thumbnail)
   }
 
-  @DeleteMapping("{seriesId}/thumbnails/{thumbnailId}")
+  @DeleteMapping("v1/series/{seriesId}/thumbnails/{thumbnailId}")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun deleteUserUploadedSeriesThumbnail(
@@ -399,7 +401,7 @@ class SeriesController(
 
   @PageableAsQueryParam
   @AuthorsAsQueryParam
-  @GetMapping("{seriesId}/books")
+  @GetMapping("v1/series/{seriesId}/books")
   fun getAllBooksBySeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") seriesId: String,
@@ -440,7 +442,7 @@ class SeriesController(
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
-  @GetMapping("{seriesId}/collections")
+  @GetMapping("v1/series/{seriesId}/collections")
   fun getAllCollectionsBySeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") seriesId: String
@@ -453,7 +455,7 @@ class SeriesController(
       .map { it.toDto() }
   }
 
-  @PostMapping("{seriesId}/analyze")
+  @PostMapping("v1/series/{seriesId}/analyze")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable seriesId: String) {
@@ -462,7 +464,7 @@ class SeriesController(
     }
   }
 
-  @PostMapping("{seriesId}/metadata/refresh")
+  @PostMapping("v1/series/{seriesId}/metadata/refresh")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun refreshMetadata(@PathVariable seriesId: String) {
@@ -473,7 +475,7 @@ class SeriesController(
     taskReceiver.refreshSeriesLocalArtwork(seriesId, priority = HIGH_PRIORITY)
   }
 
-  @PatchMapping("{seriesId}/metadata")
+  @PatchMapping("v1/series/{seriesId}/metadata")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateMetadata(
@@ -519,7 +521,7 @@ class SeriesController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @Operation(description = "Mark all book for series as read")
-  @PostMapping("{seriesId}/read-progress")
+  @PostMapping("v1/series/{seriesId}/read-progress")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun markAsRead(
     @PathVariable seriesId: String,
@@ -533,7 +535,7 @@ class SeriesController(
   }
 
   @Operation(description = "Mark all book for series as unread")
-  @DeleteMapping("{seriesId}/read-progress")
+  @DeleteMapping("v1/series/{seriesId}/read-progress")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun markAsUnread(
     @PathVariable seriesId: String,
@@ -546,7 +548,8 @@ class SeriesController(
     seriesLifecycle.deleteReadProgress(seriesId, principal.user)
   }
 
-  @GetMapping("{seriesId}/read-progress/tachiyomi")
+  @Deprecated("Use v2 for proper handling of chapter number with numberSort")
+  @GetMapping("v1/series/{seriesId}/read-progress/tachiyomi")
   fun getReadProgressTachiyomi(
     @PathVariable seriesId: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -556,7 +559,18 @@ class SeriesController(
       return readProgressDtoRepository.findProgressBySeries(seriesId, principal.user.id)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  @PutMapping("{seriesId}/read-progress/tachiyomi")
+  @GetMapping("v2/series/{seriesId}/read-progress/tachiyomi")
+  fun getReadProgressTachiyomiV2(
+    @PathVariable seriesId: String,
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+  ): TachiyomiReadProgressV2Dto =
+    seriesRepository.getLibraryId(seriesId)?.let {
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+      return readProgressDtoRepository.findProgressV2BySeries(seriesId, principal.user.id)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  @Deprecated("Use v2 for proper handling of chapter number with numberSort")
+  @PutMapping("v1/series/{seriesId}/read-progress/tachiyomi")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun markReadProgressTachiyomi(
     @PathVariable seriesId: String,
@@ -578,7 +592,29 @@ class SeriesController(
       }
   }
 
-  @GetMapping("{seriesId}/file", produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
+  @PutMapping("v2/series/{seriesId}/read-progress/tachiyomi")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  fun markReadProgressTachiyomiV2(
+    @PathVariable seriesId: String,
+    @RequestBody readProgress: TachiyomiReadProgressUpdateV2Dto,
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+  ) {
+    seriesRepository.getLibraryId(seriesId)?.let {
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+    bookDtoRepository.findAll(
+      BookSearchWithReadProgress(seriesIds = listOf(seriesId)),
+      principal.user.id,
+      UnpagedSorted(Sort.by(Sort.Order.asc("metadata.numberSort"))),
+    ).toList().filter { book -> book.metadata.numberSort <= readProgress.lastBookNumberSortRead }
+      .forEach { book ->
+        if (book.readProgress?.completed != true)
+          bookLifecycle.markReadProgressCompleted(book.id, principal.user)
+      }
+  }
+
+  @GetMapping("v1/series/{seriesId}/file", produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
   @PreAuthorize("hasRole('$ROLE_FILE_DOWNLOAD')")
   fun getSeriesFile(
     @AuthenticationPrincipal principal: KomgaPrincipal,

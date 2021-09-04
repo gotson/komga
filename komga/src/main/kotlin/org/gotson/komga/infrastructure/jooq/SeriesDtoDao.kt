@@ -18,7 +18,6 @@ import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.BookMetadataAggregationRecord
 import org.gotson.komga.jooq.tables.records.SeriesMetadataRecord
 import org.gotson.komga.jooq.tables.records.SeriesRecord
-import org.jooq.AggregateFunction
 import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.Record
@@ -34,7 +33,6 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
-import java.math.BigDecimal
 import java.net.URL
 
 private val logger = KotlinLogging.logger {}
@@ -50,22 +48,15 @@ class SeriesDtoDao(
   private val luceneHelper: LuceneHelper,
 ) : SeriesDtoRepository {
 
-  companion object {
-    private val s = Tables.SERIES
-    private val d = Tables.SERIES_METADATA
-    private val r = Tables.READ_PROGRESS
-    private val rs = Tables.READ_PROGRESS_SERIES
-    private val cs = Tables.COLLECTION_SERIES
-    private val g = Tables.SERIES_METADATA_GENRE
-    private val st = Tables.SERIES_METADATA_TAG
-    private val bma = Tables.BOOK_METADATA_AGGREGATION
-    private val bmaa = Tables.BOOK_METADATA_AGGREGATION_AUTHOR
-    private val bmat = Tables.BOOK_METADATA_AGGREGATION_TAG
-
-    val countUnread: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isNull, 1).otherwise(0))
-    val countRead: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isTrue, 1).otherwise(0))
-    val countInProgress: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isFalse, 1).otherwise(0))
-  }
+  private val s = Tables.SERIES
+  private val d = Tables.SERIES_METADATA
+  private val rs = Tables.READ_PROGRESS_SERIES
+  private val cs = Tables.COLLECTION_SERIES
+  private val g = Tables.SERIES_METADATA_GENRE
+  private val st = Tables.SERIES_METADATA_TAG
+  private val bma = Tables.BOOK_METADATA_AGGREGATION
+  private val bmaa = Tables.BOOK_METADATA_AGGREGATION_AUTHOR
+  private val bmat = Tables.BOOK_METADATA_AGGREGATION_TAG
 
   private val groupFields = arrayOf(
     *s.fields(),

@@ -1,3 +1,17 @@
+# [0.121.0](https://github.com/gotson/komga/compare/v0.120.3...v0.121.0) (2021-09-04)
+
+
+### Features
+
+* **api:** read progress v2 for Tachiyomi ([9d92b25](https://github.com/gotson/komga/commit/9d92b2594d5b32df1963671871185fb76b4e7d30))
+
+## [0.120.3](https://github.com/gotson/komga/compare/v0.120.2...v0.120.3) (2021-09-02)
+
+
+### Bug Fixes
+
+* scan could fail because of sql statement too long ([19204df](https://github.com/gotson/komga/commit/19204df1c71b185c01195462caf4bd0a147b5c2e)), closes [#650](https://github.com/gotson/komga/issues/650)
+
 ## [0.120.2](https://github.com/gotson/komga/compare/v0.120.1...v0.120.2) (2021-09-01)
 
 
