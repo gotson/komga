@@ -1,3 +1,10 @@
+# [0.121.0](https://github.com/gotson/komga/compare/v0.120.3...v0.121.0) (2021-09-04)
+
+
+### Features
+
+* **api:** read progress v2 for Tachiyomi ([9d92b25](https://github.com/gotson/komga/commit/9d92b2594d5b32df1963671871185fb76b4e7d30))
+
 ## [0.120.3](https://github.com/gotson/komga/compare/v0.120.2...v0.120.3) (2021-09-02)
 
 

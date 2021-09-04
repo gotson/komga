@@ -572,6 +572,38 @@
           }
         }
       },
+      "TachiyomiReadProgressV2Dto": {
+        "type": "object",
+        "required": [
+          "booksCount",
+          "booksInProgressCount",
+          "booksReadCount",
+          "booksUnreadCount",
+          "lastReadContinuousNumberSort"
+        ],
+        "properties": {
+          "lastReadContinuousNumberSort": {
+            "format": "float",
+            "type": "number"
+          },
+          "booksReadCount": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "booksCount": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "booksUnreadCount": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "booksInProgressCount": {
+            "format": "int32",
+            "type": "integer"
+          }
+        }
+      },
       "PageReadListDto": {
         "type": "object",
         "properties": {
@@ -615,6 +647,18 @@
           },
           "empty": {
             "type": "boolean"
+          }
+        }
+      },
+      "TachiyomiReadProgressUpdateV2Dto": {
+        "type": "object",
+        "required": [
+          "lastBookNumberSortRead"
+        ],
+        "properties": {
+          "lastBookNumberSortRead": {
+            "format": "float",
+            "type": "number"
           }
         }
       },
@@ -6883,6 +6927,87 @@
         ]
       }
     },
+    "/api/v2/series/{seriesId}/read-progress/tachiyomi": {
+      "get": {
+        "operationId": "getReadProgressTachiyomiV2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TachiyomiReadProgressV2Dto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "seriesId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "series-controller"
+        ]
+      },
+      "put": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TachiyomiReadProgressUpdateV2Dto"
+              }
+            }
+          },
+          "required": true
+        },
+        "operationId": "markReadProgressTachiyomiV2",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "seriesId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "series-controller"
+        ]
+      }
+    },
     "/api/v1/transient-books": {
       "post": {
         "requestBody": {
@@ -7313,6 +7438,7 @@
     },
     "/api/v1/series/{seriesId}/read-progress/tachiyomi": {
       "get": {
+        "deprecated": true,
         "operationId": "getReadProgressTachiyomi",
         "responses": {
           "200": {
@@ -7361,6 +7487,7 @@
           },
           "required": true
         },
+        "deprecated": true,
         "operationId": "markReadProgressTachiyomi",
         "responses": {
           "400": {
