@@ -360,8 +360,9 @@ class SeriesController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") seriesId: String
   ): Collection<SeriesThumbnailDto> {
-    seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    if (!principal.user.canAccessLibrary(seriesId)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    seriesRepository.getLibraryId(seriesId)?.let {
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return thumbnailsSeriesRepository.findAllBySeriesId(seriesId)
       .map { it.toDto() }

@@ -276,11 +276,12 @@ class SeriesLifecycle(
   private fun thumbnailsHouseKeeping(seriesId: String) {
     logger.info { "House keeping thumbnails for series: $seriesId" }
     val all = thumbnailsSeriesRepository.findAllBySeriesId(seriesId)
-      .mapNotNull { thumbnail ->
-        if (thumbnail.exists()) return@mapNotNull thumbnail
-        logger.warn { "Thumbnail doesn't exist, removing entry" }
-        thumbnailsSeriesRepository.delete(thumbnail.id)
-        null
+      .mapNotNull {
+        if (!it.exists()) {
+          logger.warn { "Thumbnail doesn't exist, removing entry" }
+          thumbnailsSeriesRepository.delete(it.id)
+          null
+        } else it
       }
 
     val selected = all.filter { it.selected }
