@@ -237,12 +237,14 @@ class SeriesLifecycle(
 
   fun addThumbnailForSeries(thumbnail: ThumbnailSeries) {
     // delete existing thumbnail with the same url
-    thumbnailsSeriesRepository.findAllBySeriesId(thumbnail.seriesId)
-      .filter { it.url == thumbnail.url }
-      .forEach {
-        thumbnailsSeriesRepository.delete(it.id)
-      }
-    thumbnailsSeriesRepository.insert(thumbnail)
+    if (thumbnail.url != null) {
+      thumbnailsSeriesRepository.findAllBySeriesId(thumbnail.seriesId)
+        .filter { it.url == thumbnail.url }
+        .forEach {
+          thumbnailsSeriesRepository.delete(it.id)
+        }
+    }
+    thumbnailsSeriesRepository.insert(thumbnail.copy(selected = false))
 
     eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesAdded(thumbnail))
 
