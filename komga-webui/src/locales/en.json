@@ -105,7 +105,8 @@
       "background_color": "Background color",
       "background_colors": {
         "black": "Black",
-        "white": "White"
+        "white": "White",
+        "gray": "Gray"
       },
       "display": "Display",
       "general": "General",
