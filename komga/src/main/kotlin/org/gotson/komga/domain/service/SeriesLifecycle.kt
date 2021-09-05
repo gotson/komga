@@ -30,8 +30,6 @@ import org.gotson.komga.domain.persistence.ThumbnailSeriesRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 import java.io.File
-import java.nio.file.Files
-import java.nio.file.Paths
 import java.time.LocalDateTime
 
 private val logger = KotlinLogging.logger {}
@@ -299,12 +297,5 @@ class SeriesLifecycle(
         thumbnailsSeriesRepository.markSelected(all.first())
       }
     }
-  }
-
-  private fun ThumbnailSeries.exists(): Boolean {
-    if (url != null) {
-      return Files.exists(Paths.get(url.toURI()))
-    }
-    return thumbnail != null
   }
 }

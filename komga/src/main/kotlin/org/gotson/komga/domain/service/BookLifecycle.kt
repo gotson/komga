@@ -25,8 +25,6 @@ import org.gotson.komga.infrastructure.image.ImageType
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 import java.io.File
-import java.nio.file.Files
-import java.nio.file.Paths
 import java.time.LocalDateTime
 
 private val logger = KotlinLogging.logger {}
@@ -159,15 +157,6 @@ class BookLifecycle(
         thumbnailBookRepository.markSelected(all.first())
       }
     }
-  }
-
-  private fun ThumbnailBook.exists(): Boolean {
-    if (type == ThumbnailBook.Type.SIDECAR) {
-      if (url != null)
-        return Files.exists(Paths.get(url.toURI()))
-      return false
-    }
-    return true
   }
 
   @Throws(

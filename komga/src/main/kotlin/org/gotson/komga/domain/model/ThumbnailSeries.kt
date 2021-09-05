@@ -3,6 +3,8 @@ package org.gotson.komga.domain.model
 import com.github.f4b6a3.tsid.TsidCreator
 import java.io.Serializable
 import java.net.URL
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.time.LocalDateTime
 
 data class ThumbnailSeries(
@@ -50,5 +52,10 @@ data class ThumbnailSeries(
     result = 31 * result + createdDate.hashCode()
     result = 31 * result + lastModifiedDate.hashCode()
     return result
+  }
+
+  fun exists(): Boolean {
+    if (url != null) return Files.exists(Paths.get(url.toURI()))
+    return thumbnail != null
   }
 }
