@@ -192,7 +192,7 @@ class SeriesLifecycle(
     eventPublisher.publishEvent(DomainEvent.ReadProgressSeriesDeleted(seriesId, user.id))
   }
 
-  fun getThumbnail(seriesId: String): ThumbnailSeries? {
+  fun getSelectedThumbnail(seriesId: String): ThumbnailSeries? {
     val selected = thumbnailsSeriesRepository.findSelectedBySeriesIdOrNull(seriesId)
 
     if (selected == null || (selected.type == ThumbnailSeries.Type.SIDECAR && !selected.exists())) {
@@ -216,7 +216,7 @@ class SeriesLifecycle(
     }
 
   fun getThumbnailBytes(seriesId: String, userId: String): ByteArray? {
-    getThumbnail(seriesId)?.let {
+    getSelectedThumbnail(seriesId)?.let {
       return getBytesFromThumbnailSeries(it)
     }
 
