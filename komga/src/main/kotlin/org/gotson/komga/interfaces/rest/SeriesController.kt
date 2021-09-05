@@ -406,8 +406,13 @@ class SeriesController(
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ) {
     seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    val thumbnail = thumbnailsSeriesRepository.findByIdOrNull(thumbnailId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    seriesLifecycle.deleteUserUploadedCustomThumbnailForSeries(thumbnail)
+    thumbnailsSeriesRepository.findByIdOrNull(thumbnailId)?.let {
+      try {
+        seriesLifecycle.deleteThumbnailForSeries(it)
+      } catch (e: IllegalArgumentException) {
+        throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
+      }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
   @PageableAsQueryParam

@@ -268,12 +268,9 @@ class SeriesLifecycle(
     logger.info { "Custom cover has been set for series: ${series.id}" }
   }
 
-  fun deleteUserUploadedCustomThumbnailForSeries(thumbnail: ThumbnailSeries) {
-    logger.info { "Trying to remove thumbnail: ${thumbnail.id}" }
-
-    if (thumbnail.type == ThumbnailSeries.Type.USER_UPLOADED) {
-      thumbnailsSeriesRepository.delete(thumbnail.id)
-    }
+  fun deleteThumbnailForSeries(thumbnail: ThumbnailSeries) {
+    require(thumbnail.type == ThumbnailSeries.Type.USER_UPLOADED) { "Only uploaded thumbnails can be deleted" }
+    thumbnailsSeriesRepository.delete(thumbnail.id)
   }
 
   private fun thumbnailsHouseKeeping(seriesId: String) {
