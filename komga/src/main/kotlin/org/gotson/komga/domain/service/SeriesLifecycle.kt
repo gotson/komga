@@ -203,19 +203,17 @@ class SeriesLifecycle(
     return selected
   }
 
-  private fun getBytesFromThumbnailSeries(thumbnail: ThumbnailSeries): ByteArray? {
-    return when {
+  private fun getBytesFromThumbnailSeries(thumbnail: ThumbnailSeries): ByteArray? =
+    when {
       thumbnail.thumbnail != null -> thumbnail.thumbnail
       thumbnail.url != null -> File(thumbnail.url.toURI()).readBytes()
       else -> null
     }
-  }
 
-  fun getThumbnailBytesById(thumbnailId: String): ByteArray? {
-    return thumbnailsSeriesRepository.findByIdOrNull(thumbnailId)?.let {
+  fun getThumbnailBytesByThumbnailId(thumbnailId: String): ByteArray? =
+    thumbnailsSeriesRepository.findByIdOrNull(thumbnailId)?.let {
       getBytesFromThumbnailSeries(it)
     }
-  }
 
   fun getThumbnailBytes(seriesId: String, userId: String): ByteArray? {
     getThumbnail(seriesId)?.let {
