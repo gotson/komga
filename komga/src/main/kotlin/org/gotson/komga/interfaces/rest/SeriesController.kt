@@ -17,6 +17,7 @@ import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.DomainEvent
+import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
@@ -24,6 +25,7 @@ import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
+import org.gotson.komga.domain.model.ThumbnailSeries
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
@@ -373,18 +375,19 @@ class SeriesController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun postUserUploadedSeriesThumbnail(
     @PathVariable(name = "seriesId") seriesId: String,
-    @RequestParam("image") image: MultipartFile
+    @RequestParam("file") file: MultipartFile
   ) {
     val series = seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    image.inputStream.use { inputStream ->
-      inputStream.buffered().use { bufferedInputStream ->
-        val type = contentDetector.detectMediaType(bufferedInputStream)
-        if (!contentDetector.isImage(type)) {
-          throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-        }
-      }
-    }
-    seriesLifecycle.addUserUploadedThumbnailForSeries(series, image.bytes)
+    if (!contentDetector.isImage(file.inputStream.buffered().use { contentDetector.detectMediaType(it) }))
+      throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+    seriesLifecycle.addThumbnailForSeries(
+      ThumbnailSeries(
+        seriesId = series.id,
+        thumbnail = file.bytes,
+        type = ThumbnailSeries.Type.USER_UPLOADED
+      ),
+      MarkSelectedPreference.YES
+    )
   }
 
   @PutMapping("v1/series/{seriesId}/thumbnails/{thumbnailId}/selected")

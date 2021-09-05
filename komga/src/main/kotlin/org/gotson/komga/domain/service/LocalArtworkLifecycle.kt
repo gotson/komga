@@ -2,6 +2,7 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
+import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.infrastructure.metadata.localartwork.LocalArtworkProvider
@@ -35,7 +36,7 @@ class LocalArtworkLifecycle(
 
     if (library.importLocalArtwork)
       localArtworkProvider.getSeriesThumbnails(series).forEach {
-        seriesLifecycle.addThumbnailForSeries(it)
+        seriesLifecycle.addThumbnailForSeries(it, if (it.selected) MarkSelectedPreference.IF_NONE_EXIST else MarkSelectedPreference.NO)
       }
     else
       logger.info { "Library is not set to import local artwork, skipping" }

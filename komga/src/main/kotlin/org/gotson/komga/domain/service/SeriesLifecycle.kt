@@ -12,6 +12,7 @@ import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Library
+import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.model.Series
@@ -235,7 +236,7 @@ class SeriesLifecycle(
     return null
   }
 
-  fun addThumbnailForSeries(thumbnail: ThumbnailSeries) {
+  fun addThumbnailForSeries(thumbnail: ThumbnailSeries, markSelected: MarkSelectedPreference) {
     // delete existing thumbnail with the same url
     if (thumbnail.url != null) {
       thumbnailsSeriesRepository.findAllBySeriesId(thumbnail.seriesId)
@@ -246,26 +247,15 @@ class SeriesLifecycle(
     }
     thumbnailsSeriesRepository.insert(thumbnail.copy(selected = false))
 
-    eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesAdded(thumbnail))
-
-    if (thumbnail.selected)
+    if (markSelected == MarkSelectedPreference.YES ||
+      (
+        markSelected == MarkSelectedPreference.IF_NONE_EXIST &&
+          thumbnailsSeriesRepository.findSelectedBySeriesIdOrNull(thumbnail.seriesId) == null
+        )
+    ) {
       thumbnailsSeriesRepository.markSelected(thumbnail)
-  }
-
-  fun addUserUploadedThumbnailForSeries(series: Series, imageBytes: ByteArray) {
-    logger.info { "Trying to add custom cover for series: ${series.id}" }
-
-    val thumbnail = ThumbnailSeries(
-      url = null,
-      seriesId = series.id,
-      selected = true,
-      thumbnail = imageBytes,
-      type = ThumbnailSeries.Type.USER_UPLOADED
-    )
-    thumbnailsSeriesRepository.insert(thumbnail)
-    thumbnailsSeriesRepository.markSelected(thumbnail)
-
-    logger.info { "Custom cover has been set for series: ${series.id}" }
+      eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesAdded(thumbnail))
+    }
   }
 
   fun deleteThumbnailForSeries(thumbnail: ThumbnailSeries) {
