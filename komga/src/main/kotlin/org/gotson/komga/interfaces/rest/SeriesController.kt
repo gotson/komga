@@ -368,7 +368,7 @@ class SeriesController(
       .map { it.toDto() }
   }
 
-  @PostMapping(value = ["v1/series/{seriesId}/thumbnail"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+  @PostMapping(value = ["v1/series/{seriesId}/thumbnails"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun postUserUploadedSeriesThumbnail(
