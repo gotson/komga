@@ -327,21 +327,32 @@ class SeriesController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
-  @GetMapping(value = ["v1/series/{seriesId}/thumbnail", "v1/series/{seriesId}/thumbnails/{thumbnailId}"], produces = [MediaType.IMAGE_JPEG_VALUE])
-  fun getSeriesThumbnail(
+  @GetMapping(value = ["v1/series/{seriesId}/thumbnail"], produces = [MediaType.IMAGE_JPEG_VALUE])
+  fun getSeriesDefaultThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") seriesId: String,
-    @PathVariable(name = "thumbnailId") thumbnailId: String?
   ): ByteArray {
-    val series = seriesRepository.getLibraryId(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    if (!principal.user.canAccessLibrary(series)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    seriesRepository.getLibraryId(seriesId)?.let {
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    val thumbnail = if (thumbnailId != null) {
-      seriesLifecycle.getThumbnailBytesById(thumbnailId)
-    } else {
-      seriesLifecycle.getThumbnailBytes(seriesId, principal.user.id)
-    }
-    return thumbnail ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    return seriesLifecycle.getThumbnailBytes(seriesId, principal.user.id)
+      ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
+  @GetMapping(value = ["v1/series/{seriesId}/thumbnails/{thumbnailId}"], produces = [MediaType.IMAGE_JPEG_VALUE])
+  fun getSeriesThumbnailById(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable(name = "seriesId") seriesId: String,
+    @PathVariable(name = "thumbnailId") thumbnailId: String
+  ): ByteArray {
+    seriesRepository.getLibraryId(seriesId)?.let {
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+    return seriesLifecycle.getThumbnailBytesByThumbnailId(thumbnailId)
+      ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
   @GetMapping(value = ["v1/series/{seriesId}/thumbnails"], produces = [MediaType.APPLICATION_JSON_VALUE])
