@@ -398,8 +398,10 @@ class SeriesController(
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ) {
     seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    val thumbnail = thumbnailsSeriesRepository.findByIdOrNull(thumbnailId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    thumbnailsSeriesRepository.markSelected(thumbnail)
+    thumbnailsSeriesRepository.findByIdOrNull(thumbnailId)?.let {
+      thumbnailsSeriesRepository.markSelected(it)
+      eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesAdded(it))
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
   @DeleteMapping("v1/series/{seriesId}/thumbnails/{thumbnailId}")
