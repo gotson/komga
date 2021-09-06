@@ -1,6 +1,6 @@
 import {AxiosInstance} from 'axios'
 import {AuthorDto, BookDto} from '@/types/komga-books'
-import {GroupCountDto, SeriesDto, SeriesMetadataUpdateDto} from '@/types/komga-series'
+import {GroupCountDto, SeriesDto, SeriesMetadataUpdateDto, SeriesThumbnailDto} from '@/types/komga-series'
 
 const qs = require('qs')
 
@@ -208,6 +208,60 @@ export default class KomgaSeriesService {
       await this.http.delete(`${API_SERIES}/${seriesId}/read-progress`)
     } catch (e) {
       let msg = `An error occurred while trying to mark as unread for series '${seriesId}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async getThumbnails(seriesId: string): Promise<SeriesThumbnailDto[]> {
+    try {
+      return (await this.http.get(`${API_SERIES}/${seriesId}/thumbnails`)).data
+    } catch (e) {
+      let msg = `An error occurred while trying to retrieve thumbnails for series '${seriesId}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async uploadThumbnail(seriesId: string, file: any) {
+    const body = new FormData()
+    body.append('file', file)
+
+    try {
+      await this.http.post(`${API_SERIES}/${seriesId}/thumbnails`), {
+        data: body,
+        headers: { 'Content-Type': 'multipart/form-data' },
+      }
+    } catch (e) {
+      let msg = `An error occurred while trying to upload thumbnail for series '${seriesId}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async deleteThumbnail(seriesId: string, thumbnailId: string) {
+    try {
+      await this.http.delete(`${API_SERIES}/${seriesId}/thumbnails/${thumbnailId}`)
+    } catch (e) {
+      let msg = `An error occurred while trying to delete thumbnail for series '${seriesId}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async markThumbnailAsSelected(seriesId: string, thumbnailId: string) {
+    try {
+      await this.http.put(`${API_SERIES}/${seriesId}/thumbnails/${thumbnailId}/selected`)
+    } catch (e) {
+      let msg = `An error occurred while trying to mark thumbnail as selected for series '${seriesId}'`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

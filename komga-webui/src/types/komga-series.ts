@@ -81,3 +81,10 @@ export interface GroupCountDto {
   group: string,
   count: number,
 }
+
+export interface SeriesThumbnailDto {
+  id: string,
+  seriesId: string,
+  type: string,
+  selected: boolean
+}

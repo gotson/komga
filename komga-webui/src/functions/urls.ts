@@ -40,6 +40,10 @@ export function seriesThumbnailUrl (seriesId: string): string {
   return `${urls.originNoSlash}/api/v1/series/${seriesId}/thumbnail`
 }
 
+export function seriesThumbnailUrlByThumbnailId(seriesId: string, thumbnailId: string) {
+  return `${urls.originNoSlash}/api/v1/series/${seriesId}/thumbnails/${thumbnailId}`
+}
+
 export function collectionThumbnailUrl (collectionId: string): string {
   return `${urls.originNoSlash}/api/v1/collections/${collectionId}/thumbnail`
 }
