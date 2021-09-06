@@ -1,3 +1,16 @@
+# [0.122.0](https://github.com/gotson/komga/compare/v0.121.0...v0.122.0) (2021-09-06)
+
+
+### Bug Fixes
+
+* translated using Weblate ([8859241](https://github.com/gotson/komga/commit/8859241885be130e70cf6c1c98c57e52704d8479))
+
+
+### Features
+
+* **api:** support custom covers for series ([d7470dd](https://github.com/gotson/komga/commit/d7470dd7db785c1393c1a6d3da61446f42205f7f))
+* **webreader:** added gray backround option ([1ba6822](https://github.com/gotson/komga/commit/1ba6822fd55ebedf78ec6132aff5338ea2aaa8da))
+
 # [0.121.0](https://github.com/gotson/komga/compare/v0.120.3...v0.121.0) (2021-09-04)
 
 
