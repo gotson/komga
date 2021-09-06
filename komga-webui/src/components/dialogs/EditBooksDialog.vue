@@ -376,9 +376,15 @@ export default Vue.extend({
   },
   computed: {
     authorRoles(): NameValue[] {
-      return authorRoles.map((x: string) => ({
-        name: this.$t(`author_roles.${x}`).toString(),
-        value: x,
+      let remoteRoles = []
+      if (Array.isArray(this.books))
+        remoteRoles = this.books.flatMap(b => b.metadata.authors).map(a => a.role)
+      else
+        remoteRoles = this.books.metadata.authors.map(a => a.role)
+      const allRoles = this.$_.uniq([...authorRoles, ...remoteRoles])
+      return allRoles.map((role: string) => ({
+        name: this.$te(`author_roles.${role}`) ? this.$t(`author_roles.${role}`).toString() : role,
+        value: role,
       }))
     },
     single(): boolean {
