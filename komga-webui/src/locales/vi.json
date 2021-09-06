@@ -17,6 +17,14 @@
     "account_settings": "Cài đặt tài khoản",
     "change_password": "đổi mật khẩu"
   },
+  "authentication_activity": {
+    "datetime": "Ngày giờ",
+    "email": "Email",
+    "error": "Lỗi",
+    "ip": "IP",
+    "success": "Thành công",
+    "user_agent": "Thiết bị"
+  },
   "author_roles": {
     "colorist": "người tô màu",
     "cover": "bìa sách",
@@ -39,6 +47,7 @@
     "field_import_path": "Nhập từ thư mục",
     "info_part1": "Màn hình này cho phép bạn nhập các tệp nằm ngoài các thư viện hiện có của bạn. Bạn chỉ có thể nhập tệp vào Sê-ri hiện có, trong trường hợp đó, Komga sẽ di chuyển hoặc sao chép tệp vào thư mục của Sê-ri đã chọn.",
     "info_part2": "Nếu bạn chọn một số cho một cuốn sách và một cuốn sách đã tồn tại với con số đó, thì bạn sẽ có thể so sánh 2 cuốn sách. Nếu bạn quyết định nhập cuốn sách, Komga sẽ nâng cấp cuốn sách hiện có với cuốn sách mới, thay thế hiệu quả tệp cũ bằng tệp mới.",
+    "no_files_found": "Không tìm thấy tập tin",
     "row": {
       "error_analyze_first": "Sách cần được phân tích trước",
       "error_choose_series": "Chọn một sê-ri",
