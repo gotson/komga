@@ -221,6 +221,23 @@
                     </v-combobox>
                   </v-col>
                 </v-row>
+                <v-row>
+                  <v-col cols="12" md="6">
+                    <v-form
+                      v-model="customRoleValid"
+                      ref="customRoleForm"
+                      @submit.prevent="addRole"
+                    >
+                      <v-text-field
+                        label="Add custom role"
+                        append-outer-icon="mdi-plus"
+                        v-model.trim="customRole"
+                        @click:append-outer="addRole"
+                        :rules="customRoleRules"
+                      ></v-text-field>
+                    </v-form>
+                  </v-col>
+                </v-row>
               </v-container>
             </v-card>
           </v-tab-item>
@@ -296,6 +313,9 @@ export default Vue.extend({
     return {
       modal: false,
       tab: 0,
+      customRole: '',
+      customRoles: [] as string[],
+      customRoleValid: false,
       form: {
         title: '',
         titleLock: false,
@@ -376,12 +396,12 @@ export default Vue.extend({
   },
   computed: {
     authorRoles(): NameValue[] {
-      let remoteRoles = []
+      let remoteRoles = [] as string[]
       if (Array.isArray(this.books))
         remoteRoles = this.books.flatMap(b => b.metadata.authors).map(a => a.role)
-      else
+      else if (this.books?.metadata?.authors)
         remoteRoles = this.books.metadata.authors.map(a => a.role)
-      const allRoles = this.$_.uniq([...authorRoles, ...remoteRoles])
+      const allRoles = this.$_.uniq([...authorRoles, ...remoteRoles, ...this.customRoles])
       return allRoles.map((role: string) => ({
         name: this.$te(`author_roles.${role}`) ? this.$t(`author_roles.${role}`).toString() : role,
         value: role,
@@ -412,8 +432,19 @@ export default Vue.extend({
       !this.$v?.form?.isbn?.validIsbn && errors.push(this.$t('dialog.edit_books.field_isbn_error').toString())
       return errors
     },
+    customRoleRules(): any[] {
+      if (this.customRole === '') return ['Must not be empty']
+      if (this.authorRoles.map(n => n.value.toLowerCase()).includes(this.customRole?.toLowerCase())) return ['Already exists']
+      return [true]
+    },
   },
   methods: {
+    addRole() {
+      if ((this.$refs.customRoleForm as any).validate()) {
+        this.customRoles.push(this.customRole.toLowerCase());
+        (this.$refs.customRoleForm as any).reset()
+      }
+    },
     requiredErrors(fieldName: string): string[] {
       const errors = [] as string[]
       const formField = this.$v.form!![fieldName] as any
@@ -422,7 +453,9 @@ export default Vue.extend({
       return errors
     },
     dialogReset(books: BookDto | BookDto[]) {
-      this.tab = 0
+      this.tab = 0;
+      (this.$refs.customRoleForm as any)?.reset()
+      this.customRoles = []
       this.$v.$reset()
       if (Array.isArray(books) && books.length === 0) return
       else if (this.$_.isEmpty(books)) return
