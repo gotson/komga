@@ -36,6 +36,7 @@
     "inker": "inkers",
     "letterer": "letterers",
     "penciller": "pencillers",
+    "translator": "translators",
     "writer": "writers"
   },
   "book_card": {
