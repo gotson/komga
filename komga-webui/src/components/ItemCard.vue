@@ -267,7 +267,7 @@ export default Vue.extend({
       }
     },
     thumbnailSeriesAdded(event: ThumbnailSeriesSseDto) {
-      if (this.thumbnailError && (this.computedItem.type() === ItemTypes.SERIES && event.seriesId === this.item.id)) {
+      if (this.computedItem.type() === ItemTypes.SERIES && event.seriesId === this.item.id) {
         this.thumbnailCacheBust = '?' + this.$_.random(1000)
       }
     },

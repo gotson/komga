@@ -12,6 +12,7 @@ import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Library
+import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.model.Series
@@ -30,8 +31,6 @@ import org.gotson.komga.domain.persistence.ThumbnailSeriesRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 import java.io.File
-import java.nio.file.Files
-import java.nio.file.Paths
 import java.time.LocalDateTime
 
 private val logger = KotlinLogging.logger {}
@@ -194,10 +193,10 @@ class SeriesLifecycle(
     eventPublisher.publishEvent(DomainEvent.ReadProgressSeriesDeleted(seriesId, user.id))
   }
 
-  fun getThumbnail(seriesId: String): ThumbnailSeries? {
+  fun getSelectedThumbnail(seriesId: String): ThumbnailSeries? {
     val selected = thumbnailsSeriesRepository.findSelectedBySeriesIdOrNull(seriesId)
 
-    if (selected == null || !selected.exists()) {
+    if (selected == null || (selected.type == ThumbnailSeries.Type.SIDECAR && !selected.exists())) {
       thumbnailsHouseKeeping(seriesId)
       return thumbnailsSeriesRepository.findSelectedBySeriesIdOrNull(seriesId)
     }
@@ -205,9 +204,21 @@ class SeriesLifecycle(
     return selected
   }
 
+  private fun getBytesFromThumbnailSeries(thumbnail: ThumbnailSeries): ByteArray? =
+    when {
+      thumbnail.thumbnail != null -> thumbnail.thumbnail
+      thumbnail.url != null -> File(thumbnail.url.toURI()).readBytes()
+      else -> null
+    }
+
+  fun getThumbnailBytesByThumbnailId(thumbnailId: String): ByteArray? =
+    thumbnailsSeriesRepository.findByIdOrNull(thumbnailId)?.let {
+      getBytesFromThumbnailSeries(it)
+    }
+
   fun getThumbnailBytes(seriesId: String, userId: String): ByteArray? {
-    getThumbnail(seriesId)?.let {
-      return File(it.url.toURI()).readBytes()
+    getSelectedThumbnail(seriesId)?.let {
+      return getBytesFromThumbnailSeries(it)
     }
 
     seriesRepository.findByIdOrNull(seriesId)?.let { series ->
@@ -225,19 +236,31 @@ class SeriesLifecycle(
     return null
   }
 
-  fun addThumbnailForSeries(thumbnail: ThumbnailSeries) {
+  fun addThumbnailForSeries(thumbnail: ThumbnailSeries, markSelected: MarkSelectedPreference) {
     // delete existing thumbnail with the same url
-    thumbnailsSeriesRepository.findAllBySeriesId(thumbnail.seriesId)
-      .filter { it.url == thumbnail.url }
-      .forEach {
-        thumbnailsSeriesRepository.delete(it.id)
-      }
-    thumbnailsSeriesRepository.insert(thumbnail)
+    if (thumbnail.url != null) {
+      thumbnailsSeriesRepository.findAllBySeriesId(thumbnail.seriesId)
+        .filter { it.url == thumbnail.url }
+        .forEach {
+          thumbnailsSeriesRepository.delete(it.id)
+        }
+    }
+    thumbnailsSeriesRepository.insert(thumbnail.copy(selected = false))
 
-    eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesAdded(thumbnail))
-
-    if (thumbnail.selected)
+    if (markSelected == MarkSelectedPreference.YES ||
+      (
+        markSelected == MarkSelectedPreference.IF_NONE_EXIST &&
+          thumbnailsSeriesRepository.findSelectedBySeriesIdOrNull(thumbnail.seriesId) == null
+        )
+    ) {
       thumbnailsSeriesRepository.markSelected(thumbnail)
+      eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesAdded(thumbnail))
+    }
+  }
+
+  fun deleteThumbnailForSeries(thumbnail: ThumbnailSeries) {
+    require(thumbnail.type == ThumbnailSeries.Type.USER_UPLOADED) { "Only uploaded thumbnails can be deleted" }
+    thumbnailsSeriesRepository.delete(thumbnail.id)
   }
 
   private fun thumbnailsHouseKeeping(seriesId: String) {
@@ -263,6 +286,4 @@ class SeriesLifecycle(
       }
     }
   }
-
-  private fun ThumbnailSeries.exists(): Boolean = Files.exists(Paths.get(url.toURI()))
 }

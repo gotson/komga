@@ -6,6 +6,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.ThumbnailSeries
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -252,5 +253,14 @@ class SeriesLifecycleTest(
       assertThat(bookMetadataRepository.count()).isEqualTo(0)
       assertThat(bookRepository.count()).isEqualTo(0)
     }
+  }
+
+  @Test
+  fun `given a sidecar thumbnail when deleting then IllegarlArgumentException is thrown`() {
+    val thumbnail = ThumbnailSeries(type = ThumbnailSeries.Type.SIDECAR)
+
+    val thrown = catchThrowable { seriesLifecycle.deleteThumbnailForSeries(thumbnail) }
+
+    assertThat(thrown).isInstanceOf(IllegalArgumentException::class.java)
   }
 }
