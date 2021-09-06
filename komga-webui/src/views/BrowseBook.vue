@@ -251,7 +251,7 @@
              :key="role"
              class="align-center text-caption"
       >
-        <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $t(`author_roles.${role}`) }}</v-col>
+        <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $te(`author_roles.${role}`) ? $t(`author_roles.${role}`) : role }}</v-col>
         <v-col cols="8" sm="9" md="10" xl="11" class="py-1">
           <vue-horizontal>
             <template v-slot:btn-prev>
@@ -490,7 +490,8 @@ export default Vue.extend({
         }
     },
     displayedRoles(): string[] {
-      return authorRoles.filter(x => this.authorsByRole[x])
+      const allRoles = this.$_.uniq([...authorRoles, ...(this.book.metadata.authors.map(x => x.role))])
+      return allRoles.filter(x => this.authorsByRole[x])
     },
   },
   methods: {
