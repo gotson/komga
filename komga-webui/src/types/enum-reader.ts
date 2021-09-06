@@ -3,6 +3,7 @@
 export enum ScaleType {
   SCREEN = 'bookreader.scale_type.screen',
   WIDTH = 'bookreader.scale_type.width',
+  WIDTH_SHRINK_ONLY = 'bookreader.scale_type.width_shrink_only',
   HEIGHT = 'bookreader.scale_type.height',
   ORIGINAL = 'bookreader.scale_type.original'
 }

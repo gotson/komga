@@ -98,7 +98,8 @@
       "height": "Fit height",
       "original": "Original",
       "screen": "Screen",
-      "width": "Fit width"
+      "width": "Fit width",
+      "width_shrink_only": "Fit width (shrink only)"
     },
     "settings": {
       "always_fullscreen": "Always Full Screen",

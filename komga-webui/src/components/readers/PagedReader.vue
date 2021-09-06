@@ -201,6 +201,8 @@ export default Vue.extend({
       switch (this.scale) {
         case ScaleType.WIDTH:
           return double ? 'img-double-fit-width' : 'img-fit-width'
+        case ScaleType.WIDTH_SHRINK_ONLY:
+          return double ? 'img-double-fit-width-shrink-only' : 'img-fit-width-shrink-only'
         case ScaleType.HEIGHT:
           return 'img-fit-height'
         case ScaleType.SCREEN:
@@ -328,6 +330,16 @@ export default Vue.extend({
 .img-double-fit-width {
   width: 50vw;
   min-height: 100vh;
+  align-self: flex-start;
+}
+
+.img-fit-width-shrink-only {
+  max-width: 100vw;
+  align-self: flex-start;
+}
+
+.img-double-fit-width-shrink-only {
+  max-width: 50vw;
   align-self: flex-start;
 }
 
