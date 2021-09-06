@@ -403,8 +403,8 @@ export default Vue.extend({
       })),
       backgroundColors: [
         {text: this.$t('bookreader.settings.background_colors.white').toString(), value: 'white'},
-        {text: this.$t('bookreader.settings.background_colors.black').toString(), value: 'black'},
         {text: this.$t('bookreader.settings.background_colors.gray').toString(), value: '#212121'},
+        {text: this.$t('bookreader.settings.background_colors.black').toString(), value: 'black'},
       ],
     }
   },
