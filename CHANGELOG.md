@@ -1,3 +1,19 @@
+# [0.123.0](https://github.com/gotson/komga/compare/v0.122.0...v0.123.0) (2021-09-06)
+
+
+### Bug Fixes
+
+* make SeriesMetadata language tag lowercase ([fe2b756](https://github.com/gotson/komga/commit/fe2b756c2f37a022cbc8fdc7b7b530296950abcc)), closes [#661](https://github.com/gotson/komga/issues/661)
+* **webui:** display custom roles in book edit dialog ([055fb1c](https://github.com/gotson/komga/commit/055fb1c82721dd018aa343d54585d5791e9f30a7))
+* **webui:** display custom roles on book view ([2d14e69](https://github.com/gotson/komga/commit/2d14e698e6fa849bae806a4e7dde470371131621))
+
+
+### Features
+
+* **webreader:** fit width (shrink only) scale type ([9e9033d](https://github.com/gotson/komga/commit/9e9033dc0eef0947913ed4edb4b484384b0221ec)), closes [#584](https://github.com/gotson/komga/issues/584)
+* **webui:** add 'translator' author role ([8ff6c86](https://github.com/gotson/komga/commit/8ff6c8620efeae57516413213c44131916846c3a)), closes [#614](https://github.com/gotson/komga/issues/614)
+* **webui:** add custom roles in the book edit dialog ([e7c5c1a](https://github.com/gotson/komga/commit/e7c5c1af39c5d60ee291dfc3e5ed02f811af3848)), closes [#639](https://github.com/gotson/komga/issues/639)
+
 # [0.122.0](https://github.com/gotson/komga/compare/v0.121.0...v0.122.0) (2021-09-06)
 
 
