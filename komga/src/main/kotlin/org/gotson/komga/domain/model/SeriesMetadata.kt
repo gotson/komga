@@ -10,7 +10,7 @@ class SeriesMetadata(
   val readingDirection: ReadingDirection? = null,
   publisher: String = "",
   val ageRating: Int? = null,
-  val language: String = "",
+  language: String = "",
   genres: Set<String> = emptySet(),
   tags: Set<String> = emptySet(),
   val totalBookCount: Int? = null,
@@ -36,6 +36,7 @@ class SeriesMetadata(
   val titleSort = titleSort.trim()
   val summary = summary.trim()
   val publisher = publisher.trim()
+  val language = language.trim().lowercase()
   val tags = tags.map { it.lowercase().trim() }.filter { it.isNotBlank() }.toSet()
   val genres = genres.map { it.lowercase().trim() }.filter { it.isNotBlank() }.toSet()
 
