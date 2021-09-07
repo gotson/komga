@@ -31,6 +31,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
   implementation("org.springframework.boot:spring-boot-starter-artemis")
   implementation("org.springframework.boot:spring-boot-starter-jooq")
+  implementation("org.springframework.session:spring-session-jdbc")
 
   kapt("org.springframework.boot:spring-boot-configuration-processor:2.5.2")
 

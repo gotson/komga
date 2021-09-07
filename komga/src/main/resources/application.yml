@@ -35,6 +35,10 @@ spring:
   web:
     resources:
       add-mappings: false
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: never
 
 server:
   servlet.session.timeout: 7d
