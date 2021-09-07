@@ -1,4 +1,10 @@
-import {bookThumbnailUrl, collectionThumbnailUrl, readListThumbnailUrl, seriesThumbnailUrl} from '@/functions/urls'
+import {
+  bookThumbnailUrl,
+  collectionThumbnailUrl,
+  readListThumbnailUrl,
+  seriesThumbnailUrl,
+  seriesThumbnailUrlByThumbnailId,
+} from '@/functions/urls'
 import {RawLocation} from 'vue-router/types/router'
 import {BookDto} from '@/types/komga-books'
 import {SeriesDto} from '@/types/komga-series'
@@ -95,6 +101,10 @@ export class BookItem extends Item<BookDto> {
 export class SeriesItem extends Item<SeriesDto> {
   thumbnailUrl (): string {
     return seriesThumbnailUrl(this.item.id)
+  }
+
+  thumbnailUrlById (thumbnailId: string): string {
+    return seriesThumbnailUrlByThumbnailId(this.item.id, thumbnailId)
   }
 
   type (): ItemTypes {

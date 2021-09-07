@@ -399,6 +399,13 @@
       "tab_tags": "Tags",
       "tags_notice_multiple_edit": "You are editing tags for multiple series. This will override existing tags of each series."
     },
+    "edit_series_thumbnails": {
+      "button_close": "Close",
+      "dialog_title": "Edit thumbnails for {series}",
+      "field_upload_image": "Upload image",
+      "tab_upload": "Upload",
+      "tab_gallery": "Gallery"
+    },
     "edit_user": {
       "button_cancel": "Cancel",
       "button_confirm": "Save changes",

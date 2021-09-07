@@ -227,15 +227,12 @@ export default class KomgaSeriesService {
     }
   }
 
-  async uploadThumbnail(seriesId: string, file: any) {
+  async uploadThumbnail(seriesId: string, file: File) {
     const body = new FormData()
     body.append('file', file)
 
     try {
-      await this.http.post(`${API_SERIES}/${seriesId}/thumbnails`), {
-        data: body,
-        headers: { 'Content-Type': 'multipart/form-data' },
-      }
+      await this.http.post(`${API_SERIES}/${seriesId}/thumbnails`, body)
     } catch (e) {
       let msg = `An error occurred while trying to upload thumbnail for series '${seriesId}'`
       if (e.response.data.message) {
