@@ -236,7 +236,7 @@ export default Vue.extend({
       id: this.libraryId,
       route: LIBRARY_ROUTE.RECOMMENDED,
     })
-    this.reload()
+    this.loadAll(this.libraryId)
   },
   props: {
     libraryId: {
