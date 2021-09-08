@@ -1,3 +1,16 @@
+# [0.124.0](https://github.com/gotson/komga/compare/v0.123.0...v0.124.0) (2021-09-08)
+
+
+### Bug Fixes
+
+* **webui:** dashboard could show no data while still loading ([16c35ab](https://github.com/gotson/komga/commit/16c35ab6ff26ccc3ef7c8139830b42779a4242a7))
+* **webui:** series card thumbnail flicker when new book thumbnails are added ([0101473](https://github.com/gotson/komga/commit/010147306715638252a88ef8a22aa16e672754aa))
+
+
+### Features
+
+* store sessions in database ([4568914](https://github.com/gotson/komga/commit/4568914ef716a164a4443ef98269a1a1fa8f7957))
+
 # [0.123.0](https://github.com/gotson/komga/compare/v0.122.0...v0.123.0) (2021-09-06)
 
 
