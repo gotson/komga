@@ -31,6 +31,10 @@
             <v-icon left class="hidden-xs-only">mdi-tag-multiple</v-icon>
             {{ $t('dialog.edit_series.tab_tags') }}
           </v-tab>
+          <v-tab class="justify-start" v-if="single">
+            <v-icon left class="hidden-xs-only">mdi-image</v-icon>
+            {{ $t('dialog.edit_series.tab_thumbnails') }}
+          </v-tab>
 
           <!--  Tab: General  -->
           <v-tab-item>
@@ -311,6 +315,21 @@
               </v-container>
             </v-card>
           </v-tab-item>
+
+          <!--  Tab: Thumbnails  -->
+          <v-tab-item v-if="single">
+            <v-card flat>
+              <v-container fluid>
+                <!-- Upload -->
+                <v-row>
+                  <drop-zone @onInputChange="inputChangeHandler" />
+                </v-row>
+
+                <!-- Gallery -->
+                <!-- TODO -->
+              </v-container>
+            </v-card>
+          </v-tab-item>
         </v-tabs>
 
         <v-card-actions class="hidden-xs-only">
@@ -330,6 +349,7 @@ import {helpers, minValue, requiredIf} from 'vuelidate/lib/validators'
 import {ReadingDirection} from '@/types/enum-books'
 import {SeriesDto} from '@/types/komga-series'
 import {ERROR} from '@/types/events'
+import DropZone from '@/components/DropZone.vue'
 
 const tags = require('language-tags')
 
@@ -337,6 +357,7 @@ const validLanguage = (value: string) => !helpers.req(value) || tags.check(value
 
 export default Vue.extend({
   name: 'EditSeriesDialog',
+  components: {DropZone},
   data: () => {
     return {
       modal: false,
@@ -623,6 +644,10 @@ export default Vue.extend({
         }
         return true
       } else return false
+    },
+    inputChangeHandler: function (files: File[]) {
+      console.log(files)
+      // TODO
     },
   },
 })

@@ -30,10 +30,6 @@
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
 
-      <v-btn icon @click="editSeriesThumbnail" v-if="isAdmin">
-        <v-icon>mdi-image-edit-outline</v-icon>
-      </v-btn>
-
       <page-size-select v-model="pageSize"/>
 
       <v-btn icon @click="drawer = !drawer">
@@ -407,11 +403,6 @@
       </template>
 
     </v-container>
-
-    <series-edit-thumbnail
-      v-model="modalEditSeriesThumbnails"
-      :series="series"
-    />
   </div>
 </template>
 
@@ -457,14 +448,12 @@ import VueHorizontal from 'vue-horizontal'
 import RtlIcon from '@/components/RtlIcon.vue'
 import {throttle} from 'lodash'
 import {BookSseDto, CollectionSseDto, LibrarySseDto, ReadProgressSseDto, SeriesSseDto} from '@/types/komga-sse'
-import SeriesEditThumbnail from '@/components/dialogs/SeriesEditThumbnail.vue'
 
 const tags = require('language-tags')
 
 export default Vue.extend({
   name: 'BrowseSeries',
   components: {
-    SeriesEditThumbnail,
     ToolbarSticky,
     ItemBrowser,
     PageSizeSelect,
@@ -502,7 +491,6 @@ export default Vue.extend({
       filterOptions: {
         tag: [] as NameValue[],
       },
-      modalEditSeriesThumbnails: false,
     }
   },
   computed: {
@@ -818,9 +806,6 @@ export default Vue.extend({
     },
     editSeries() {
       this.$store.dispatch('dialogUpdateSeries', this.series)
-    },
-    editSeriesThumbnail() {
-      this.modalEditSeriesThumbnails = true
     },
     editSingleBook(book: BookDto) {
       this.$store.dispatch('dialogUpdateBooks', book)
