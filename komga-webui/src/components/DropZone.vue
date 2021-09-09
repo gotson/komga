@@ -46,15 +46,14 @@ export default Vue.extend({
 
 <style scoped>
 .drop-zone {
-  /* TODO: Add dark theme */
   background:repeating-linear-gradient(
     45deg,
-    #ececec,
-    #ececec 20px,
-    #e3e3e3 20px,
-    #e3e3e3 40px
+    var(--v-base-lighten1),
+    var(--v-base-lighten1) 20px,
+    var(--v-base-darken1) 20px,
+    var(--v-base-darken1) 40px
   );
-  color: black;
+  color: var(--v-contrast-light-2-base);
   display: block;
   font-weight: 600;
   padding: 3em;
@@ -63,12 +62,10 @@ export default Vue.extend({
 }
 
 .file-input {
-  /* TODO: Add dark theme */
-  color: #146BD6;
+  color: var(--v-info-base);
 }
 
 .file-input:hover {
-  /* TODO: Add dark theme */
-  color: #177FFF;
+  color: var(--v-info-lighten1);
 }
 </style>
