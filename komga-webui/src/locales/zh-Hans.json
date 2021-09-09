@@ -36,6 +36,7 @@
     "inker": "画图者",
     "letterer": "嵌字者",
     "penciller": "铅稿",
+    "translator": "翻译者",
     "writer": "作者"
   },
   "book_card": {
@@ -97,7 +98,8 @@
       "height": "适应高度",
       "original": "原始大小",
       "screen": "适应屏幕",
-      "width": "适应宽度"
+      "width": "适应宽度",
+      "width_shrink_only": "适合宽度（只收缩）"
     },
     "settings": {
       "always_fullscreen": "始终全屏",
@@ -105,6 +107,7 @@
       "background_color": "背景颜色",
       "background_colors": {
         "black": "黑色",
+        "gray": "灰色",
         "white": "白色"
       },
       "display": "显示",

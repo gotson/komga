@@ -36,6 +36,7 @@
     "inker": "inkistoj",
     "letterer": "skribistoj",
     "penciller": "desegnistoj",
+    "translator": "tradukistoj",
     "writer": "verkistoj"
   },
   "book_card": {
@@ -97,7 +98,8 @@
       "height": "Adapti al alto",
       "original": "Originalo",
       "screen": "Ekrano",
-      "width": "Adapti al larĝo"
+      "width": "Adapti al larĝo",
+      "width_shrink_only": "Adapti al larĝo (nur malgrandigi)"
     },
     "settings": {
       "always_fullscreen": "Ĉiam plenekranreĝime",
@@ -105,6 +107,7 @@
       "background_color": "Fona koloro",
       "background_colors": {
         "black": "Nigro",
+        "gray": "Grizo",
         "white": "Blanko"
       },
       "display": "Montrado",

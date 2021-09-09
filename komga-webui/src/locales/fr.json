@@ -36,6 +36,7 @@
     "inker": "encreurs",
     "letterer": "lettreurs",
     "penciller": "dessinateurs",
+    "translator": "traducteurs",
     "writer": "scénaristes"
   },
   "book_card": {
@@ -105,6 +106,7 @@
       "background_color": "Couleur d'arrière-plan",
       "background_colors": {
         "black": "Noir",
+        "gray": "Gris",
         "white": "Blanc"
       },
       "display": "Affichage",

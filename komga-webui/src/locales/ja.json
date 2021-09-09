@@ -3,6 +3,9 @@
     "dataFooter": {
       "pageText": "{2} 件中の {0}〜{1}"
     },
+    "dataIterator": {
+      "loadingText": "書籍を読込中..."
+    },
     "dataTable": {
       "itemsPerPageText": "ページ毎の行数:",
       "sortBy": "ソート方式"
@@ -18,7 +21,12 @@
     "change_password": "パスワード変更"
   },
   "authentication_activity": {
-    "email": "メールアドレス"
+    "datetime": "日時",
+    "email": "メールアドレス",
+    "error": "エラー",
+    "ip": "IP",
+    "success": "成功",
+    "user_agent": "User Agent"
   },
   "author_roles": {
     "colorist": "カラリスト",
@@ -27,6 +35,7 @@
     "inker": "インカー",
     "letterer": "レタラー",
     "penciller": "ペンシラー",
+    "translator": "トランスレーター",
     "writer": "ライター"
   },
   "book_card": {
@@ -42,6 +51,13 @@
     "field_import_path": "フォルダからインポート",
     "info_part1": "この画面では、既存のライブラリ以外のファイルをインポートすることができます。既存のシリーズにしかファイルをインポートできませんが、その場合、Komgaはファイルを選択したシリーズのディレクトリに移動またはコピーします。",
     "info_part2": "書籍番号を選択すると、その番号の書籍がすでに存在している場合、2つの書籍を比較することができます。また、書籍をインポートする場合、Komgaは既存の書籍を新しい書籍にアップグレードし、古いファイルを新しいファイルに置き換えます。",
+    "no_files_found": "ファイルが見つかりません",
+    "notification": {
+      "go_to_book": "書籍へ移動",
+      "import_failure": "書籍のインポートに失敗しました: {file}",
+      "import_successful": "書籍のインポートに成功しました: {book}",
+      "source_file": "書籍: {file}"
+    },
     "row": {
       "error_analyze_first": "本は事前に分析する必要があります",
       "error_choose_series": "シリーズを選択",
@@ -156,6 +172,7 @@
     "all_libraries": "全ライブラリ",
     "books": "書籍",
     "books_n": "0 冊 | 1 冊 | {count} 冊",
+    "books_total": "{count} / {total} 冊",
     "cancel": "キャンセル",
     "close": "閉じる",
     "collections": "コレクション",
@@ -166,6 +183,7 @@
     "filter_no_matches": "フィルタに一致するものはありません",
     "genre": "ジャンル",
     "go_to_library": "ライブラリへ移動",
+    "go_to_series": "シリーズへ移動",
     "locale_name": "日本語",
     "locale_rtl": "false",
     "n_selected": "{count} 冊を選択中",
@@ -508,13 +526,15 @@
     "add_to_readlist": "読書リストに追加",
     "analyze": "分析",
     "delete": "削除",
+    "deselect_all": "選択を解除",
     "download_series": "シリーズをダウンロード",
     "edit": "編集",
     "edit_metadata": "情報を編集",
     "mark_read": "既読にする",
     "mark_unread": "未読にする",
     "refresh_metadata": "情報を更新",
-    "scan_library_files": "ライブラリ内のファイルをスキャン"
+    "scan_library_files": "ライブラリ内のファイルをスキャン",
+    "select_all": "全て選択"
   },
   "navigation": {
     "home": "ホーム",

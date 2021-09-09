@@ -36,6 +36,7 @@
     "inker": "konturarbetare",
     "letterer": "typdesigner",
     "penciller": "formgivare",
+    "translator": "översättare",
     "writer": "författare"
   },
   "book_card": {
@@ -97,7 +98,8 @@
       "height": "Passa höjd",
       "original": "Original",
       "screen": "Skärm",
-      "width": "Passa bredd"
+      "width": "Passa bredd",
+      "width_shrink_only": "Anpassa bredd (endast krympning)"
     },
     "settings": {
       "always_fullscreen": "Alltid helskärm",
@@ -105,6 +107,7 @@
       "background_color": "Bakgrundsfärg",
       "background_colors": {
         "black": "Svart",
+        "gray": "Grå",
         "white": "Vit"
       },
       "display": "Visa",

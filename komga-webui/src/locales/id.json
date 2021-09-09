@@ -36,6 +36,7 @@
     "inker": "inkers",
     "letterer": "letterers",
     "penciller": "pencillers",
+    "translator": "Penerjemah",
     "writer": "penulis"
   },
   "book_card": {
@@ -97,7 +98,8 @@
       "height": "Pas tinggi",
       "original": "Bawaan",
       "screen": "Layar",
-      "width": "Pas lebar"
+      "width": "Pas lebar",
+      "width_shrink_only": "Pas lebar (hanya susutkan)"
     },
     "settings": {
       "always_fullscreen": "Selalu Layar Penuh",
@@ -105,6 +107,7 @@
       "background_color": "Warna latar belakang",
       "background_colors": {
         "black": "Hitam",
+        "gray": "Abu-abu",
         "white": "Putih"
       },
       "display": "Tampilan",
