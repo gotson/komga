@@ -326,17 +326,61 @@
                 </v-row>
 
                 <!-- To be uploaded -->
-                <v-img
-                  v-for="upload in uploadQueue"
-                  :key="upload.name"
-                  :src="previewImage(upload)" />
+                <p v-if="uploadQueue.length > 0">To be uploaded</p>
+                <div v-if="uploadQueue.length > 0" class="d-flex flex-row flex-wrap">
+                  <v-card
+                    class="ma-1"
+                    v-for="upload in uploadQueue"
+                    :key="upload.name"
+                    width="100px">
+                    <v-img
+                      :src="previewImage(upload)"
+                      aspect-ratio="0.7071"
+                      contain />
+                    <v-card-actions>
+                      <v-btn
+                        icon
+                      >
+                        <v-icon>mdi-check</v-icon>
+                      </v-btn>
+                      <v-btn
+                        icon
+                      >
+                        <v-icon>mdi-trash-can-outline</v-icon>
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </div>
+
 
                 <!-- Gallery -->
-                <v-img
-                  v-for="thumbnail in seriesThumbnails"
-                  :key="thumbnail.id"
-                  :src="getThumbnailById(thumbnail.id)" />
+                <p>Thumbnails</p>
+                <div class="d-flex flex-row flex-wrap">
+                  <v-card
+                    class="ma-1"
+                    v-for="thumbnail in seriesThumbnails"
+                    :key="thumbnail.id"
+                    width="100px">
+                    <v-img
+                      :src="getThumbnailById(thumbnail.id)"
+                      aspect-ratio="0.7071"
+                      contain />
+                    <v-card-actions>
+                      <v-btn
+                        icon
+                      >
+                        <v-icon>mdi-check</v-icon>
+                      </v-btn>
+                      <v-btn
+                        icon
+                      >
+                        <v-icon>mdi-trash-can-outline</v-icon>
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </div>
 
+                <!-- TODO: Extract duplicate code into component -->
                 <!-- TODO: Make selectable -->
                 <!-- TODO: Make deletable but not sidecar -->
 
@@ -364,6 +408,7 @@ import {SeriesDto, SeriesThumbnailDto} from '@/types/komga-series'
 import {ERROR} from '@/types/events'
 import DropZone from '@/components/DropZone.vue'
 import {seriesThumbnailUrlByThumbnailId} from '@/functions/urls'
+import {coverBase64} from '@/types/image'
 
 const tags = require('language-tags')
 
@@ -669,10 +714,11 @@ export default Vue.extend({
       return URL.createObjectURL(file)
     },
     getThumbnails: async function () {
-      if (!this.single) return
+      if (Array.isArray(this.series)) return
       this.seriesThumbnails = await this.$komgaSeries.getThumbnails(this.series.id)
     },
     getThumbnailById: function (thumbnailId: string): string {
+      if (Array.isArray(this.series)) return coverBase64
       return seriesThumbnailUrlByThumbnailId(this.series.id, thumbnailId)
     },
   },
