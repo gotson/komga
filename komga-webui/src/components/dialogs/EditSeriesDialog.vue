@@ -325,8 +325,21 @@
                   <drop-zone @onInputChange="inputChangeHandler" />
                 </v-row>
 
+                <!-- To be uploaded -->
+                <v-img
+                  v-for="upload in uploadQueue"
+                  :key="upload.name"
+                  :src="previewImage(upload)" />
+
                 <!-- Gallery -->
-                <!-- TODO -->
+                <v-img
+                  v-for="thumbnail in seriesThumbnails"
+                  :key="thumbnail.id"
+                  :src="getThumbnailById(thumbnail.id)" />
+
+                <!-- TODO: Make selectable -->
+                <!-- TODO: Make deletable but not sidecar -->
+
               </v-container>
             </v-card>
           </v-tab-item>
@@ -347,9 +360,10 @@ import Vue from 'vue'
 import {SeriesStatus} from '@/types/enum-series'
 import {helpers, minValue, requiredIf} from 'vuelidate/lib/validators'
 import {ReadingDirection} from '@/types/enum-books'
-import {SeriesDto} from '@/types/komga-series'
+import {SeriesDto, SeriesThumbnailDto} from '@/types/komga-series'
 import {ERROR} from '@/types/events'
 import DropZone from '@/components/DropZone.vue'
+import {seriesThumbnailUrlByThumbnailId} from '@/functions/urls'
 
 const tags = require('language-tags')
 
@@ -395,6 +409,8 @@ export default Vue.extend({
       },
       genresAvailable: [] as string[],
       tagsAvailable: [] as string[],
+      uploadQueue: [] as File[],
+      seriesThumbnails: [] as SeriesThumbnailDto[],
     }
   },
   props: {
@@ -413,6 +429,7 @@ export default Vue.extend({
     },
     series(val) {
       this.dialogReset(val)
+      this.getThumbnails()
     },
   },
   validations: {
@@ -646,8 +663,17 @@ export default Vue.extend({
       } else return false
     },
     inputChangeHandler: function (files: File[]) {
-      console.log(files)
-      // TODO
+      this.uploadQueue = files
+    },
+    previewImage: function (file: File): string {
+      return URL.createObjectURL(file)
+    },
+    getThumbnails: async function () {
+      if (!this.single) return
+      this.seriesThumbnails = await this.$komgaSeries.getThumbnails(this.series.id)
+    },
+    getThumbnailById: function (thumbnailId: string): string {
+      return seriesThumbnailUrlByThumbnailId(this.series.id, thumbnailId)
     },
   },
 })
