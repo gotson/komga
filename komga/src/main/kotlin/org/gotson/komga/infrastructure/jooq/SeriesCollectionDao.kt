@@ -68,7 +68,7 @@ class SeriesCollectionDao(
       .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
       .fetchAndMap(null)
 
-    val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
+    val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
     return PageImpl(
       items,
       if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
@@ -107,7 +107,7 @@ class SeriesCollectionDao(
       .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
       .fetchAndMap(filterOnLibraryIds)
 
-    val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
+    val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
     return PageImpl(
       items,
       if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)

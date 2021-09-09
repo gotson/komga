@@ -131,7 +131,7 @@ class BookDtoDao(
       .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
       .fetchAndMap()
 
-    val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
+    val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
     return PageImpl(
       dtos,
       if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
