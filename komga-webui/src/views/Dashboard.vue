@@ -49,12 +49,17 @@
       >
       </empty-state>
 
-      <horizontal-scroller v-if="inProgressBooks.length !== 0" class="mb-4">
+      <horizontal-scroller
+        v-if="loaderInProgressBooks && loaderInProgressBooks.items.length !== 0"
+        class="mb-4"
+        :tick="loaderInProgressBooks.page"
+        @scroll-changed="(percent) => scrollChanged(loaderInProgressBooks, percent)"
+      >
         <template v-slot:prepend>
           <div class="title">{{ $t('dashboard.keep_reading') }}</div>
         </template>
         <template v-slot:content>
-          <item-browser :items="inProgressBooks"
+          <item-browser :items="loaderInProgressBooks.items"
                         nowrap
                         :edit-function="isAdmin ? singleEditBook : undefined"
                         :selected.sync="selectedBooks"
@@ -64,12 +69,17 @@
         </template>
       </horizontal-scroller>
 
-      <horizontal-scroller v-if="onDeckBooks.length !== 0" class="mb-4">
+      <horizontal-scroller
+        v-if="loaderOnDeckBooks && loaderOnDeckBooks.items.length !== 0"
+        class="mb-4"
+        :tick="loaderOnDeckBooks.page"
+        @scroll-changed="(percent) => scrollChanged(loaderOnDeckBooks, percent)"
+      >
         <template v-slot:prepend>
           <div class="title">{{ $t('dashboard.on_deck') }}</div>
         </template>
         <template v-slot:content>
-          <item-browser :items="onDeckBooks"
+          <item-browser :items="loaderOnDeckBooks.items"
                         nowrap
                         :edit-function="isAdmin ? singleEditBook : undefined"
                         :selected.sync="selectedBooks"
@@ -79,12 +89,17 @@
         </template>
       </horizontal-scroller>
 
-      <horizontal-scroller v-if="recentlyReleasedBooks.length !== 0" class="mb-4">
+      <horizontal-scroller
+        v-if="loaderRecentlyReleasedBooks && loaderRecentlyReleasedBooks.items.length !== 0"
+        class="mb-4"
+        :tick="loaderRecentlyReleasedBooks.page"
+        @scroll-changed="(percent) => scrollChanged(loaderRecentlyReleasedBooks, percent)"
+      >
         <template v-slot:prepend>
           <div class="title">{{ $t('dashboard.recently_released_books') }}</div>
         </template>
         <template v-slot:content>
-          <item-browser :items="recentlyReleasedBooks"
+          <item-browser :items="loaderRecentlyReleasedBooks.items"
                         nowrap
                         :edit-function="isAdmin ? singleEditBook : undefined"
                         :selected.sync="selectedBooks"
@@ -94,12 +109,17 @@
         </template>
       </horizontal-scroller>
 
-      <horizontal-scroller v-if="latestBooks.length !== 0" class="mb-4">
+      <horizontal-scroller
+        v-if="loaderLatestBooks && loaderLatestBooks.items.length !== 0"
+        class="mb-4"
+        :tick="loaderLatestBooks.page"
+        @scroll-changed="(percent) => scrollChanged(loaderLatestBooks, percent)"
+      >
         <template v-slot:prepend>
           <div class="title">{{ $t('dashboard.recently_added_books') }}</div>
         </template>
         <template v-slot:content>
-          <item-browser :items="latestBooks"
+          <item-browser :items="loaderLatestBooks.items"
                         nowrap
                         :edit-function="isAdmin ? singleEditBook : undefined"
                         :selected.sync="selectedBooks"
@@ -109,12 +129,17 @@
         </template>
       </horizontal-scroller>
 
-      <horizontal-scroller v-if="newSeries.length !== 0" class="mb-4">
+      <horizontal-scroller
+        v-if="loaderNewSeries && loaderNewSeries.items.length !== 0"
+        class="mb-4"
+        :tick="loaderNewSeries.page"
+        @scroll-changed="(percent) => scrollChanged(loaderNewSeries, percent)"
+      >
         <template v-slot:prepend>
           <div class="title">{{ $t('dashboard.recently_added_series') }}</div>
         </template>
         <template v-slot:content>
-          <item-browser :items="newSeries"
+          <item-browser :items="loaderNewSeries.items"
                         nowrap
                         :edit-function="isAdmin ? singleEditSeries : undefined"
                         :selected.sync="selectedSeries"
@@ -124,12 +149,17 @@
         </template>
       </horizontal-scroller>
 
-      <horizontal-scroller v-if="updatedSeries.length !== 0" class="mb-4">
+      <horizontal-scroller
+        v-if="loaderUpdatedSeries && loaderUpdatedSeries.items.length !== 0"
+        class="mb-4"
+        :tick="loaderUpdatedSeries.page"
+        @scroll-changed="(percent) => scrollChanged(loaderUpdatedSeries, percent)"
+      >
         <template v-slot:prepend>
           <div class="title">{{ $t('dashboard.recently_updated_series') }}</div>
         </template>
         <template v-slot:content>
-          <item-browser :items="updatedSeries"
+          <item-browser :items="loaderUpdatedSeries.items"
                         nowrap
                         :edit-function="isAdmin ? singleEditSeries : undefined"
                         :selected.sync="selectedSeries"
@@ -139,12 +169,17 @@
         </template>
       </horizontal-scroller>
 
-      <horizontal-scroller v-if="recentlyReadBooks.length !== 0" class="mb-4">
+      <horizontal-scroller
+        v-if="loaderRecentlyReadBooks && loaderRecentlyReadBooks.items.length !== 0"
+        class="mb-4"
+        :tick="loaderRecentlyReadBooks.page"
+        @scroll-changed="(percent) => scrollChanged(loaderRecentlyReadBooks, percent)"
+      >
         <template v-slot:prepend>
           <div class="title">{{ $t('dashboard.recently_read_books') }}</div>
         </template>
         <template v-slot:content>
-          <item-browser :items="recentlyReadBooks"
+          <item-browser :items="loaderRecentlyReadBooks.items"
                         nowrap
                         :edit-function="isAdmin ? singleEditBook : undefined"
                         :selected.sync="selectedBooks"
@@ -184,6 +219,7 @@ import {throttle} from 'lodash'
 import {subMonths} from 'date-fns'
 import {BookSseDto, ReadProgressSseDto, SeriesSseDto} from '@/types/komga-sse'
 import {LibraryDto} from '@/types/komga-libraries'
+import {PageLoader} from '@/types/pageLoader'
 
 export default Vue.extend({
   name: 'Dashboard',
@@ -200,13 +236,13 @@ export default Vue.extend({
     return {
       loading: false,
       library: undefined as LibraryDto | undefined,
-      newSeries: [] as SeriesDto[],
-      updatedSeries: [] as SeriesDto[],
-      latestBooks: [] as BookDto[],
-      inProgressBooks: [] as BookDto[],
-      onDeckBooks: [] as BookDto[],
-      recentlyReleasedBooks: [] as BookDto[],
-      recentlyReadBooks: [] as BookDto[],
+      loaderNewSeries: undefined as unknown as PageLoader<SeriesDto>,
+      loaderUpdatedSeries: undefined as unknown as PageLoader<SeriesDto>,
+      loaderLatestBooks: undefined as unknown as PageLoader<BookDto>,
+      loaderInProgressBooks: undefined as unknown as PageLoader<BookDto>,
+      loaderOnDeckBooks: undefined as unknown as PageLoader<BookDto>,
+      loaderRecentlyReleasedBooks: undefined as unknown as PageLoader<BookDto>,
+      loaderRecentlyReadBooks: undefined as unknown as PageLoader<BookDto>,
       selectedSeries: [] as SeriesDto[],
       selectedBooks: [] as BookDto[],
     }
@@ -263,19 +299,22 @@ export default Vue.extend({
       return this.$vuetify.breakpoint.name === 'xs' ? 120 : 150
     },
     allEmpty(): boolean {
-      return this.newSeries.length === 0 &&
-        this.updatedSeries.length === 0 &&
-        this.latestBooks.length === 0 &&
-        this.inProgressBooks.length === 0 &&
-        this.onDeckBooks.length === 0 &&
-        this.recentlyReleasedBooks.length === 0 &&
-        this.recentlyReadBooks.length === 0
+      return this.loaderNewSeries?.items.length === 0 &&
+        this.loaderUpdatedSeries?.items.length === 0 &&
+        this.loaderLatestBooks?.items.length === 0 &&
+        this.loaderInProgressBooks?.items.length === 0 &&
+        this.loaderOnDeckBooks?.items.length === 0 &&
+        this.loaderRecentlyReleasedBooks?.items.length === 0 &&
+        this.loaderRecentlyReadBooks?.items.length === 0
     },
     individualLibrary(): boolean {
       return this.libraryId !== LIBRARIES_ALL
     },
   },
   methods: {
+    async scrollChanged(loader: PageLoader<any>, percent: number) {
+      if (percent > 0.95) await loader.loadNext()
+    },
     getRequestLibraryId(libraryId: string): string | undefined {
       return libraryId !== LIBRARIES_ALL ? libraryId : undefined
     },
@@ -290,11 +329,11 @@ export default Vue.extend({
       }
     },
     readProgressChanged(event: ReadProgressSseDto) {
-      if (this.inProgressBooks.some(b => b.id === event.bookId)) this.reload()
-      else if (this.latestBooks.some(b => b.id === event.bookId)) this.reload()
-      else if (this.onDeckBooks.some(b => b.id === event.bookId)) this.reload()
-      else if (this.recentlyReleasedBooks.some(b => b.id === event.bookId)) this.reload()
-      else if (this.recentlyReadBooks.some(b => b.id === event.bookId)) this.reload()
+      if (this.loaderInProgressBooks?.items.some(b => b.id === event.bookId)) this.reload()
+      else if (this.loaderLatestBooks?.items.some(b => b.id === event.bookId)) this.reload()
+      else if (this.loaderOnDeckBooks?.items.some(b => b.id === event.bookId)) this.reload()
+      else if (this.loaderRecentlyReleasedBooks?.items.some(b => b.id === event.bookId)) this.reload()
+      else if (this.loaderRecentlyReadBooks?.items.some(b => b.id === event.bookId)) this.reload()
     },
     reload: throttle(function (this: any) {
       this.loadAll(this.libraryId)
@@ -304,54 +343,48 @@ export default Vue.extend({
       this.library = this.getLibraryLazy(libraryId)
       this.selectedSeries = []
       this.selectedBooks = []
-      Promise.all([this.loadInProgressBooks(libraryId),
-        this.loadOnDeckBooks(libraryId),
-        this.loadRecentlyReleasedBooks(libraryId),
-        this.loadLatestBooks(libraryId),
-        this.loadNewSeries(libraryId),
-        this.loadUpdatedSeries(libraryId),
-        this.loadRecentlyReadBooks(libraryId),
-      ]).then(x => {
+
+      this.loaderInProgressBooks = new PageLoader<BookDto>(
+        {sort: ['readProgress.lastModified,desc']},
+        (pageable: PageRequest) => this.$komgaBooks.getBooks(this.getRequestLibraryId(libraryId), pageable, undefined, undefined, [ReadStatus.IN_PROGRESS]),
+      )
+      this.loaderOnDeckBooks = new PageLoader<BookDto>(
+        {},
+        () => this.$komgaBooks.getBooksOnDeck(this.getRequestLibraryId(libraryId)),
+      )
+      this.loaderLatestBooks = new PageLoader<BookDto>(
+        {sort: ['metadata.title,desc']},
+        (pageable: PageRequest) => this.$komgaBooks.getBooks(this.getRequestLibraryId(libraryId), pageable),
+      )
+      this.loaderRecentlyReleasedBooks = new PageLoader<BookDto>(
+        {sort: ['metadata.releaseDate,desc']},
+        (pageable: PageRequest) => this.$komgaBooks.getBooks(this.getRequestLibraryId(libraryId), pageable, undefined, undefined, undefined, subMonths(new Date(), 1)),
+      )
+      this.loaderRecentlyReadBooks = new PageLoader<BookDto>(
+        {sort: ['readProgress.lastModified,desc']},
+        (pageable: PageRequest) => this.$komgaBooks.getBooks(this.getRequestLibraryId(libraryId), pageable, undefined, undefined, [ReadStatus.READ]),
+      )
+
+      this.loaderNewSeries = new PageLoader<SeriesDto>(
+        {},
+        () => this.$komgaSeries.getNewSeries(this.getRequestLibraryId(libraryId)),
+      )
+      this.loaderUpdatedSeries = new PageLoader<SeriesDto>(
+        {},
+        () => this.$komgaSeries.getUpdatedSeries(this.getRequestLibraryId(libraryId)),
+      )
+
+      Promise.all([
+        this.loaderInProgressBooks.loadNext(),
+        this.loaderOnDeckBooks.loadNext(),
+        this.loaderRecentlyReleasedBooks.loadNext(),
+        this.loaderLatestBooks.loadNext(),
+        this.loaderNewSeries.loadNext(),
+        this.loaderUpdatedSeries.loadNext(),
+        this.loaderRecentlyReadBooks.loadNext(),
+      ]).then(() => {
         this.loading = false
       })
-    },
-    async loadNewSeries(libraryId: string) {
-      this.newSeries = (await this.$komgaSeries.getNewSeries(this.getRequestLibraryId(libraryId))).content
-    },
-    async loadUpdatedSeries(libraryId: string) {
-      this.updatedSeries = (await this.$komgaSeries.getUpdatedSeries(this.getRequestLibraryId(libraryId))).content
-    },
-    async loadLatestBooks(libraryId: string) {
-      const pageRequest = {
-        sort: ['createdDate,desc'],
-      } as PageRequest
-
-      this.latestBooks = (await this.$komgaBooks.getBooks(this.getRequestLibraryId(libraryId), pageRequest)).content
-    },
-    async loadRecentlyReleasedBooks(libraryId: string) {
-      const pageRequest = {
-        sort: ['metadata.releaseDate,desc'],
-      } as PageRequest
-
-      const releasedAfter = subMonths(new Date(), 1)
-      this.recentlyReleasedBooks = (await this.$komgaBooks.getBooks(this.getRequestLibraryId(libraryId), pageRequest, undefined, undefined, undefined, releasedAfter)).content
-    },
-    async loadRecentlyReadBooks(libraryId: string) {
-      const pageRequest = {
-        sort: ['readProgress.lastModified,desc'],
-      } as PageRequest
-
-      this.recentlyReadBooks = (await this.$komgaBooks.getBooks(this.getRequestLibraryId(libraryId), pageRequest, undefined, undefined, [ReadStatus.READ])).content
-    },
-    async loadInProgressBooks(libraryId: string) {
-      const pageRequest = {
-        sort: ['readProgress.lastModified,desc'],
-      } as PageRequest
-
-      this.inProgressBooks = (await this.$komgaBooks.getBooks(this.getRequestLibraryId(libraryId), pageRequest, undefined, undefined, [ReadStatus.IN_PROGRESS])).content
-    },
-    async loadOnDeckBooks(libraryId: string) {
-      this.onDeckBooks = (await this.$komgaBooks.getBooksOnDeck(this.getRequestLibraryId(libraryId))).content
     },
     singleEditSeries(series: SeriesDto) {
       this.$store.dispatch('dialogUpdateSeries', series)

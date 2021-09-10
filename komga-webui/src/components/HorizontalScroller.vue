@@ -22,7 +22,10 @@
          @scroll="computeScrollability"
          v-resize="computeScrollability"
     >
-      <slot name="content" class="content"/>
+      <div class="d-inline-flex">
+        <slot name="content" class="content"/>
+        <slot name="content-append"/>
+      </div>
     </div>
   </div>
 </template>
@@ -44,20 +47,35 @@ export default Vue.extend({
       adjustment: 100,
     }
   },
+  props: {
+    tick: {
+      type: Number,
+      default: 0,
+    },
+  },
   mounted() {
     this.container = this.$refs[this.id] as HTMLElement
     this.computeScrollability()
   },
+  watch: {
+    tick() {
+      setTimeout(this.computeScrollability, 200)
+    },
+  },
   methods: {
     computeScrollability() {
-      if (this.container !== undefined) {
+      if (this.container) {
+        let scrollPercent: number
         if (this.$vuetify.rtl) {
           this.canScrollBackward = Math.round(this.container.scrollLeft) < 0
           this.canScrollForward = (Math.round(this.container.scrollLeft) - this.container.clientWidth) > -this.container.scrollWidth
+          scrollPercent = (Math.round(this.container.scrollLeft) - this.container.clientWidth) / -this.container.scrollWidth
         } else {
           this.canScrollBackward = Math.round(this.container.scrollLeft) > 0
           this.canScrollForward = (Math.round(this.container.scrollLeft) + this.container.clientWidth) < this.container.scrollWidth
+          scrollPercent = (Math.round(this.container.scrollLeft) + this.container.clientWidth) / this.container.scrollWidth
         }
+        this.$emit('scroll-changed', scrollPercent)
       }
     },
     doScroll(direction: string) {
