@@ -1,3 +1,16 @@
+# [0.125.0](https://github.com/gotson/komga/compare/v0.124.0...v0.125.0) (2021-09-10)
+
+
+### Bug Fixes
+
+* **api:** incorrect page information when searching ([24b564a](https://github.com/gotson/komga/commit/24b564a707b24a33112bde3158e03f74f6189a18))
+* **api:** page.sort had incorrect value ([57f601b](https://github.com/gotson/komga/commit/57f601b8dd13f8d5c9fb20e2fd9dd71cb24d1c08))
+
+
+### Features
+
+* **webui:** horizontal scroller infinite scroll on dashboard and search results ([fe78f17](https://github.com/gotson/komga/commit/fe78f17e5e7c0502867e7b08e4f927801b0d26f4)), closes [#605](https://github.com/gotson/komga/issues/605)
+
 # [0.124.0](https://github.com/gotson/komga/compare/v0.123.0...v0.124.0) (2021-09-08)
 
 
