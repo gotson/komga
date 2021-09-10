@@ -5,6 +5,11 @@
     </v-row>
     <v-row>
       <v-col>
+        <v-btn @click="scanAllLibraries"
+               style="margin-right: 15px"
+               color="error"
+        >{{ $t('server.server_management.button_scan_libraries') }}
+        </v-btn>
         <v-btn @click="confirmEmptyTrash = true"
                style="margin-right: 15px"
                color="error"
@@ -59,6 +64,11 @@ export default Vue.extend({
     emptyTrash() {
       this.libraries.forEach(library => {
         this.$komgaLibraries.emptyTrash(library)
+      })
+    },
+    scanAllLibraries() {
+      this.libraries.forEach(library => {
+        this.$komgaLibraries.scanLibrary(library)
       })
     },
     async stopServer() {
