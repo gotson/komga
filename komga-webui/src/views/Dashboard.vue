@@ -52,7 +52,7 @@
       <horizontal-scroller
         v-if="loaderInProgressBooks && loaderInProgressBooks.items.length !== 0"
         class="mb-4"
-        :tick="loaderInProgressBooks.page"
+        :tick="loaderInProgressBooks.tick"
         @scroll-changed="(percent) => scrollChanged(loaderInProgressBooks, percent)"
       >
         <template v-slot:prepend>
@@ -72,7 +72,7 @@
       <horizontal-scroller
         v-if="loaderOnDeckBooks && loaderOnDeckBooks.items.length !== 0"
         class="mb-4"
-        :tick="loaderOnDeckBooks.page"
+        :tick="loaderOnDeckBooks.tick"
         @scroll-changed="(percent) => scrollChanged(loaderOnDeckBooks, percent)"
       >
         <template v-slot:prepend>
@@ -92,7 +92,7 @@
       <horizontal-scroller
         v-if="loaderRecentlyReleasedBooks && loaderRecentlyReleasedBooks.items.length !== 0"
         class="mb-4"
-        :tick="loaderRecentlyReleasedBooks.page"
+        :tick="loaderRecentlyReleasedBooks.tick"
         @scroll-changed="(percent) => scrollChanged(loaderRecentlyReleasedBooks, percent)"
       >
         <template v-slot:prepend>
@@ -112,7 +112,7 @@
       <horizontal-scroller
         v-if="loaderLatestBooks && loaderLatestBooks.items.length !== 0"
         class="mb-4"
-        :tick="loaderLatestBooks.page"
+        :tick="loaderLatestBooks.tick"
         @scroll-changed="(percent) => scrollChanged(loaderLatestBooks, percent)"
       >
         <template v-slot:prepend>
@@ -132,7 +132,7 @@
       <horizontal-scroller
         v-if="loaderNewSeries && loaderNewSeries.items.length !== 0"
         class="mb-4"
-        :tick="loaderNewSeries.page"
+        :tick="loaderNewSeries.tick"
         @scroll-changed="(percent) => scrollChanged(loaderNewSeries, percent)"
       >
         <template v-slot:prepend>
@@ -152,7 +152,7 @@
       <horizontal-scroller
         v-if="loaderUpdatedSeries && loaderUpdatedSeries.items.length !== 0"
         class="mb-4"
-        :tick="loaderUpdatedSeries.page"
+        :tick="loaderUpdatedSeries.tick"
         @scroll-changed="(percent) => scrollChanged(loaderUpdatedSeries, percent)"
       >
         <template v-slot:prepend>
@@ -172,7 +172,7 @@
       <horizontal-scroller
         v-if="loaderRecentlyReadBooks && loaderRecentlyReadBooks.items.length !== 0"
         class="mb-4"
-        :tick="loaderRecentlyReadBooks.page"
+        :tick="loaderRecentlyReadBooks.tick"
         @scroll-changed="(percent) => scrollChanged(loaderRecentlyReadBooks, percent)"
       >
         <template v-slot:prepend>
@@ -272,6 +272,7 @@ export default Vue.extend({
       id: this.libraryId,
       route: LIBRARY_ROUTE.RECOMMENDED,
     })
+    this.setupLoaders(this.libraryId)
     this.loadAll(this.libraryId)
   },
   props: {
@@ -282,6 +283,7 @@ export default Vue.extend({
   },
   watch: {
     libraryId(val) {
+      this.setupLoaders(val)
       this.loadAll(val)
     },
     '$store.state.komgaLibraries.libraries': {
@@ -336,14 +338,9 @@ export default Vue.extend({
       else if (this.loaderRecentlyReadBooks?.items.some(b => b.id === event.bookId)) this.reload()
     },
     reload: throttle(function (this: any) {
-      this.loadAll(this.libraryId)
+      this.loadAll(this.libraryId, true)
     }, 5000),
-    loadAll(libraryId: string) {
-      this.loading = true
-      this.library = this.getLibraryLazy(libraryId)
-      this.selectedSeries = []
-      this.selectedBooks = []
-
+    setupLoaders(libraryId: string) {
       this.loaderInProgressBooks = new PageLoader<BookDto>(
         {sort: ['readProgress.lastModified,desc']},
         (pageable: PageRequest) => this.$komgaBooks.getBooks(this.getRequestLibraryId(libraryId), pageable, undefined, undefined, [ReadStatus.IN_PROGRESS]),
@@ -373,18 +370,38 @@ export default Vue.extend({
         {},
         (pageable: PageRequest) => this.$komgaSeries.getUpdatedSeries(this.getRequestLibraryId(libraryId), pageable),
       )
+    },
+    loadAll(libraryId: string, reload: boolean = false) {
+      this.loading = true
+      this.library = this.getLibraryLazy(libraryId)
+      this.selectedSeries = []
+      this.selectedBooks = []
 
-      Promise.all([
-        this.loaderInProgressBooks.loadNext(),
-        this.loaderOnDeckBooks.loadNext(),
-        this.loaderRecentlyReleasedBooks.loadNext(),
-        this.loaderLatestBooks.loadNext(),
-        this.loaderNewSeries.loadNext(),
-        this.loaderUpdatedSeries.loadNext(),
-        this.loaderRecentlyReadBooks.loadNext(),
-      ]).then(() => {
-        this.loading = false
-      })
+      if(reload){
+        Promise.all([
+          this.loaderInProgressBooks.reload(),
+          this.loaderOnDeckBooks.reload(),
+          this.loaderRecentlyReleasedBooks.reload(),
+          this.loaderLatestBooks.reload(),
+          this.loaderNewSeries.reload(),
+          this.loaderUpdatedSeries.reload(),
+          this.loaderRecentlyReadBooks.reload(),
+        ]).then(() => {
+          this.loading = false
+        })
+      } else {
+        Promise.all([
+          this.loaderInProgressBooks.loadNext(),
+          this.loaderOnDeckBooks.loadNext(),
+          this.loaderRecentlyReleasedBooks.loadNext(),
+          this.loaderLatestBooks.loadNext(),
+          this.loaderNewSeries.loadNext(),
+          this.loaderUpdatedSeries.loadNext(),
+          this.loaderRecentlyReadBooks.loadNext(),
+        ]).then(() => {
+          this.loading = false
+        })
+      }
     },
     singleEditSeries(series: SeriesDto) {
       this.$store.dispatch('dialogUpdateSeries', series)

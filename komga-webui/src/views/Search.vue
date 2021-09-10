@@ -56,7 +56,7 @@
         <horizontal-scroller
           v-if="loaderSeries && loaderSeries.items.length !== 0"
           class="mb-4"
-          :tick="loaderSeries.page"
+          :tick="loaderSeries.tick"
           @scroll-changed="(percent) => scrollChanged(loaderSeries, percent)"
         >
           <template v-slot:prepend>
@@ -76,7 +76,7 @@
         <horizontal-scroller
           v-if="loaderBooks && loaderBooks.items.length !== 0"
           class="mb-4"
-          :tick="loaderBooks.page"
+          :tick="loaderBooks.tick"
           @scroll-changed="(percent) => scrollChanged(loaderBooks, percent)"
         >
           <template v-slot:prepend>
@@ -96,7 +96,7 @@
         <horizontal-scroller
           v-if="loaderCollections && loaderCollections.items.length !== 0"
           class="mb-4"
-          :tick="loaderCollections.page"
+          :tick="loaderCollections.tick"
           @scroll-changed="(percent) => scrollChanged(loaderCollections, percent)"
         >
           <template v-slot:prepend>
@@ -116,7 +116,7 @@
         <horizontal-scroller
           v-if="loaderReadLists && loaderReadLists.items.length !== 0"
           class="mb-4"
-          :tick="loaderReadLists.page"
+          :tick="loaderReadLists.tick"
           @scroll-changed="(percent) => scrollChanged(loaderReadLists, percent)"
         >
           <template v-slot:prepend>
@@ -230,6 +230,7 @@ export default Vue.extend({
   watch: {
     '$route.query.q': {
       handler: function (val) {
+        this.setupLoaders(val)
         this.loadResults(val)
         this.selectedBooks = []
         this.selectedSeries = []
@@ -352,34 +353,48 @@ export default Vue.extend({
       ))
     },
     reloadResults: throttle(function (this: any) {
-      this.loadResults(this.$route.query.q.toString())
+      this.loadResults(this.$route.query.q.toString(), true)
     }, 500),
-    async loadResults(search: string) {
-      this.selectedBooks = []
-      this.selectedSeries = []
-      this.selectedCollections = []
-      this.selectedReadLists = []
+    setupLoaders(search: string) {
       if (search) {
-        this.loading = true
-
         this.loaderSeries = new PageLoader<SeriesDto>({size: this.pageSize}, (pageable: PageRequest) => this.$komgaSeries.getSeries(undefined, pageable, search))
         this.loaderBooks = new PageLoader<BookDto>({size: this.pageSize}, (pageable: PageRequest) => this.$komgaBooks.getBooks(undefined, pageable, search))
         this.loaderCollections = new PageLoader<CollectionDto>({size: this.pageSize}, (pageable: PageRequest) => this.$komgaCollections.getCollections(undefined, pageable, search))
         this.loaderReadLists = new PageLoader<ReadListDto>({size: this.pageSize}, (pageable: PageRequest) => this.$komgaReadLists.getReadLists(undefined, pageable, search))
-
-        Promise.all([
-          this.loaderSeries.loadNext(),
-          this.loaderBooks.loadNext(),
-          this.loaderCollections.loadNext(),
-          this.loaderReadLists.loadNext(),
-        ]).then(() => {
-          this.loading = false
-        })
       } else {
         this.loaderSeries = null as unknown as PageLoader<SeriesDto>
         this.loaderBooks = null as unknown as PageLoader<BookDto>
         this.loaderCollections = null as unknown as PageLoader<CollectionDto>
         this.loaderReadLists = null as unknown as PageLoader<ReadListDto>
+      }
+    },
+    async loadResults(search: string, reload: boolean = false) {
+      this.selectedBooks = []
+      this.selectedSeries = []
+      this.selectedCollections = []
+      this.selectedReadLists = []
+
+      if (search) {
+        this.loading = true
+        if (reload) {
+          Promise.all([
+            this.loaderSeries.reload(),
+            this.loaderBooks.reload(),
+            this.loaderCollections.reload(),
+            this.loaderReadLists.reload(),
+          ]).then(() => {
+            this.loading = false
+          })
+        } else {
+          Promise.all([
+            this.loaderSeries.loadNext(),
+            this.loaderBooks.loadNext(),
+            this.loaderCollections.loadNext(),
+            this.loaderReadLists.loadNext(),
+          ]).then(() => {
+            this.loading = false
+          })
+        }
       }
     },
   },
