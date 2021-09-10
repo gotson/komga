@@ -325,6 +325,7 @@
                   <drop-zone @onInputChange="inputChangeHandler" />
                 </v-row>
 
+                <!-- Gallery -->
                 <v-container class="d-flex flex-row flex-wrap">
                   <thumbnail-card
                     v-for="item in [...uploadQueue, ...seriesThumbnails]"
@@ -336,9 +337,6 @@
                     @onDeleteThumbnail="deleteThumbnailHandler"
                   />
                 </v-container>
-
-                <!-- TODO: Add commit everything on save changes -->
-                <!-- TODO: Probably forgot something else -->
 
               </v-container>
             </v-card>
