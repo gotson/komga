@@ -325,64 +325,21 @@
                   <drop-zone @onInputChange="inputChangeHandler" />
                 </v-row>
 
-                <!-- To be uploaded -->
-                <p v-if="uploadQueue.length > 0">To be uploaded</p>
-                <div v-if="uploadQueue.length > 0" class="d-flex flex-row flex-wrap">
-                  <v-card
-                    class="ma-1"
-                    v-for="upload in uploadQueue"
-                    :key="upload.name"
-                    width="100px">
-                    <v-img
-                      :src="previewImage(upload)"
-                      aspect-ratio="0.7071"
-                      contain />
-                    <v-card-actions>
-                      <v-btn
-                        icon
-                      >
-                        <v-icon>mdi-check</v-icon>
-                      </v-btn>
-                      <v-btn
-                        icon
-                      >
-                        <v-icon>mdi-trash-can-outline</v-icon>
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </div>
+                <v-container class="d-flex flex-row flex-wrap">
+                  <thumbnail-card
+                    v-for="item in [...uploadQueue, ...seriesThumbnails]"
+                    :key="getKey(item)"
+                    :item="item"
+                    :selected="isSelected(item)"
+                    :toBeDeleted="toBeDeleted(item)"
+                    @onSelectThumbnail="selectThumbnailHandler"
+                    @onDeleteThumbnail="deleteThumbnailHandler"
+                  />
+                </v-container>
 
-
-                <!-- Gallery -->
-                <p>Thumbnails</p>
-                <div class="d-flex flex-row flex-wrap">
-                  <v-card
-                    class="ma-1"
-                    v-for="thumbnail in seriesThumbnails"
-                    :key="thumbnail.id"
-                    width="100px">
-                    <v-img
-                      :src="getThumbnailById(thumbnail.id)"
-                      aspect-ratio="0.7071"
-                      contain />
-                    <v-card-actions>
-                      <v-btn
-                        icon
-                      >
-                        <v-icon>mdi-check</v-icon>
-                      </v-btn>
-                      <v-btn
-                        icon
-                      >
-                        <v-icon>mdi-trash-can-outline</v-icon>
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </div>
-
-                <!-- TODO: Extract duplicate code into component -->
-                <!-- TODO: Make selectable -->
-                <!-- TODO: Make deletable but not sidecar -->
+                <!-- TODO: Add commit everything on save changes -->
+                <!-- TODO: Add clean up on cancel -->
+                <!-- TODO: Probably forgot something else -->
 
               </v-container>
             </v-card>
@@ -409,6 +366,7 @@ import {ERROR} from '@/types/events'
 import DropZone from '@/components/DropZone.vue'
 import {seriesThumbnailUrlByThumbnailId} from '@/functions/urls'
 import {coverBase64} from '@/types/image'
+import ThumbnailCard from '@/components/ThumbnailCard.vue'
 
 const tags = require('language-tags')
 
@@ -416,7 +374,7 @@ const validLanguage = (value: string) => !helpers.req(value) || tags.check(value
 
 export default Vue.extend({
   name: 'EditSeriesDialog',
-  components: {DropZone},
+  components: {ThumbnailCard, DropZone},
   data: () => {
     return {
       modal: false,
@@ -454,7 +412,9 @@ export default Vue.extend({
       },
       genresAvailable: [] as string[],
       tagsAvailable: [] as string[],
+      selectedThumbnail: '',
       uploadQueue: [] as File[],
+      deleteQueue: [] as SeriesThumbnailDto[],
       seriesThumbnails: [] as SeriesThumbnailDto[],
     }
   },
@@ -710,16 +670,53 @@ export default Vue.extend({
     inputChangeHandler: function (files: File[]) {
       this.uploadQueue = files
     },
-    previewImage: function (file: File): string {
-      return URL.createObjectURL(file)
-    },
     getThumbnails: async function () {
       if (Array.isArray(this.series)) return
-      this.seriesThumbnails = await this.$komgaSeries.getThumbnails(this.series.id)
+
+      const thumbnails = await this.$komgaSeries.getThumbnails(this.series.id)
+
+      this.selectThumbnailHandler(thumbnails.find(({selected}) => selected))
+
+      this.seriesThumbnails = thumbnails
     },
-    getThumbnailById: function (thumbnailId: string): string {
-      if (Array.isArray(this.series)) return coverBase64
-      return seriesThumbnailUrlByThumbnailId(this.series.id, thumbnailId)
+    getKey: function (item: File | SeriesThumbnailDto) {
+      return item instanceof File ? item.name : item.id
+    },
+    isSelected: function (item: File | SeriesThumbnailDto): boolean {
+      return item instanceof File ? item.name === this.selectedThumbnail : item.id === this.selectedThumbnail
+    },
+    selectThumbnailHandler: function (item: File | SeriesThumbnailDto | undefined) {
+      if (!item) {
+        return
+      } else if (item instanceof File) {
+        this.selectedThumbnail = item.name
+      } else {
+        this.selectedThumbnail = item.id
+      }
+    },
+    toBeDeleted: function (item: File | SeriesThumbnailDto) {
+      if (item instanceof File) {
+        return false
+      } else {
+        return this.deleteQueue.includes(item)
+      }
+    },
+    deleteThumbnailHandler: function (item: File | SeriesThumbnailDto) {
+      if (item instanceof File) {
+        const index = this.uploadQueue.indexOf(item, 0)
+        if (index > -1) {
+          this.uploadQueue.splice(index, 1)
+        }
+      } else {
+        if (this.toBeDeleted(item)) {
+          const index = this.deleteQueue.indexOf(item, 0)
+          if (index > -1) {
+            this.deleteQueue.splice(index, 1)
+          }
+        } else {
+          this.deleteQueue.push(item)
+        }
+      }
     },
   },
 })
