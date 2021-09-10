@@ -353,7 +353,7 @@ export default Vue.extend({
         () => this.$komgaBooks.getBooksOnDeck(this.getRequestLibraryId(libraryId)),
       )
       this.loaderLatestBooks = new PageLoader<BookDto>(
-        {sort: ['metadata.title,desc']},
+        {sort: ['createdDate,desc']},
         (pageable: PageRequest) => this.$komgaBooks.getBooks(this.getRequestLibraryId(libraryId), pageable),
       )
       this.loaderRecentlyReleasedBooks = new PageLoader<BookDto>(
