@@ -1,3 +1,10 @@
+## [0.125.2](https://github.com/gotson/komga/compare/v0.125.1...v0.125.2) (2021-09-10)
+
+
+### Bug Fixes
+
+* **webui:** dashboard infinite scroll not working for on deck and new/updated series ([4153603](https://github.com/gotson/komga/commit/415360387931fe01efa305aac4002224efcffac0))
+
 ## [0.125.1](https://github.com/gotson/komga/compare/v0.125.0...v0.125.1) (2021-09-10)
 
 
