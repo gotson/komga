@@ -118,7 +118,7 @@ class LibraryContentLifecycle(
       val seriesUrlWithDeletedBooks = seriesToSortAndRefresh.map { it.url }
 
       scannedSeries.forEach { (newSeries, newBooks) ->
-        val existingSeries = seriesRepository.findByLibraryIdAndUrlOrNull(library.id, newSeries.url)
+        val existingSeries = seriesRepository.findNotDeletedByLibraryIdAndUrlOrNull(library.id, newSeries.url)
 
         // if series does not exist, save it
         if (existingSeries == null) {
@@ -186,7 +186,7 @@ class LibraryContentLifecycle(
         if (existingSidecar == null || existingSidecar.lastModifiedTime.notEquals(newSidecar.lastModifiedTime)) {
           when (newSidecar.source) {
             Sidecar.Source.SERIES ->
-              seriesRepository.findByLibraryIdAndUrlOrNull(library.id, newSidecar.parentUrl)?.let { series ->
+              seriesRepository.findNotDeletedByLibraryIdAndUrlOrNull(library.id, newSidecar.parentUrl)?.let { series ->
                 logger.info { "Sidecar changed on disk (${newSidecar.url}, refresh Series for ${newSidecar.type}: $series" }
                 when (newSidecar.type) {
                   Sidecar.Type.ARTWORK -> taskReceiver.refreshSeriesLocalArtwork(series.id)
@@ -194,7 +194,7 @@ class LibraryContentLifecycle(
                 }
               }
             Sidecar.Source.BOOK ->
-              bookRepository.findByLibraryIdAndUrlOrNull(library.id, newSidecar.parentUrl)?.let { book ->
+              bookRepository.findNotDeletedByLibraryIdAndUrlOrNull(library.id, newSidecar.parentUrl)?.let { book ->
                 logger.info { "Sidecar changed on disk (${newSidecar.url}, refresh Book for ${newSidecar.type}: $book" }
                 when (newSidecar.type) {
                   Sidecar.Type.ARTWORK -> taskReceiver.refreshBookLocalArtwork(book.id)

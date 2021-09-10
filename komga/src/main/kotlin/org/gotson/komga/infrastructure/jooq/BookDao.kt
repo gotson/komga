@@ -39,9 +39,10 @@ class BookDao(
   override fun findByIdOrNull(bookId: String): Book? =
     findByIdOrNull(dsl, bookId)
 
-  override fun findByLibraryIdAndUrlOrNull(libraryId: String, url: URL): Book? =
+  override fun findNotDeletedByLibraryIdAndUrlOrNull(libraryId: String, url: URL): Book? =
     dsl.selectFrom(b)
       .where(b.LIBRARY_ID.eq(libraryId).and(b.URL.eq(url.toString())))
+      .and(b.DELETED_DATE.isNull)
       .fetchOneInto(b)
       ?.toDomain()
 

@@ -9,7 +9,7 @@ import java.net.URL
 
 interface BookRepository {
   fun findByIdOrNull(bookId: String): Book?
-  fun findByLibraryIdAndUrlOrNull(libraryId: String, url: URL): Book?
+  fun findNotDeletedByLibraryIdAndUrlOrNull(libraryId: String, url: URL): Book?
 
   fun findAll(): Collection<Book>
   fun findAllBySeriesId(seriesId: String): Collection<Book>

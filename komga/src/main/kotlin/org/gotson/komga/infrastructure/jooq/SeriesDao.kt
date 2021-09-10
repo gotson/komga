@@ -64,9 +64,10 @@ class SeriesDao(
       .map { it.toDomain() }
   }
 
-  override fun findByLibraryIdAndUrlOrNull(libraryId: String, url: URL): Series? =
+  override fun findNotDeletedByLibraryIdAndUrlOrNull(libraryId: String, url: URL): Series? =
     dsl.selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId).and(s.URL.eq(url.toString())))
+      .and(s.DELETED_DATE.isNull)
       .fetchOneInto(s)
       ?.toDomain()
 

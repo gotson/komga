@@ -6,7 +6,7 @@ import java.net.URL
 
 interface SeriesRepository {
   fun findByIdOrNull(seriesId: String): Series?
-  fun findByLibraryIdAndUrlOrNull(libraryId: String, url: URL): Series?
+  fun findNotDeletedByLibraryIdAndUrlOrNull(libraryId: String, url: URL): Series?
 
   fun findAll(): Collection<Series>
   fun findAllByLibraryId(libraryId: String): Collection<Series>
