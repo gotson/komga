@@ -5,9 +5,12 @@
     </v-row>
     <v-row>
       <v-col>
+        <v-btn @click="scanAllLibraries"
+               :class="$vuetify.rtl ? 'ml-4' : 'mr-4'"
+        >{{ $t('server.server_management.button_scan_libraries') }}
+        </v-btn>
         <v-btn @click="confirmEmptyTrash = true"
-               style="margin-right: 15px"
-               color="error"
+               :class="$vuetify.rtl ? 'ml-4' : 'mr-4'"
         >{{ $t('server.server_management.button_empty_trash') }}
         </v-btn>
         <v-btn @click="modalStopServer = true"
@@ -59,6 +62,11 @@ export default Vue.extend({
     emptyTrash() {
       this.libraries.forEach(library => {
         this.$komgaLibraries.emptyTrash(library)
+      })
+    },
+    scanAllLibraries() {
+      this.libraries.forEach(library => {
+        this.$komgaLibraries.scanLibrary(library)
       })
     },
     async stopServer() {
