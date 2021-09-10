@@ -1,3 +1,12 @@
+## [0.125.1](https://github.com/gotson/komga/compare/v0.125.0...v0.125.1) (2021-09-10)
+
+
+### Bug Fixes
+
+* don't update read progress data upon upgrade or restore ([eb9d505](https://github.com/gotson/komga/commit/eb9d505e179311a410291757487dd9a81582853e))
+* translated using Weblate ([1eb16b4](https://github.com/gotson/komga/commit/1eb16b4c2ada9b5b2da433a44ec46cc303475ef4))
+* **webui:** latest books on dashboard not sorted properly ([b691f30](https://github.com/gotson/komga/commit/b691f3098bda0fce1bb30b01208881527060a730))
+
 # [0.125.0](https://github.com/gotson/komga/compare/v0.124.0...v0.125.0) (2021-09-10)
 
 
