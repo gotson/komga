@@ -105,7 +105,8 @@ class ReadProgressDaoTest(
         book1.id,
         user1.id,
         10,
-        true
+        true,
+        lastModifiedDate = modificationDate,
       )
     )
 

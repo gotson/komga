@@ -9,8 +9,6 @@ import org.jooq.Query
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDateTime
-import java.time.ZoneId
 
 @Component
 class ReadProgressDao(
@@ -73,7 +71,7 @@ class ReadProgressDao(
       .onDuplicateKeyUpdate()
       .set(r.PAGE, readProgress.page)
       .set(r.COMPLETED, readProgress.completed)
-      .set(r.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
+      .set(r.LAST_MODIFIED_DATE, readProgress.lastModifiedDate.toUTC())
 
   @Transactional
   override fun delete(bookId: String, userId: String) {
