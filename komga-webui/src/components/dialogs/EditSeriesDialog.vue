@@ -338,7 +338,6 @@
                 </v-container>
 
                 <!-- TODO: Add commit everything on save changes -->
-                <!-- TODO: Add clean up on cancel -->
                 <!-- TODO: Probably forgot something else -->
 
               </v-container>
@@ -431,6 +430,7 @@ export default Vue.extend({
     },
     modal(val) {
       !val && this.dialogCancel()
+      val && this.getThumbnails()
     },
     series(val) {
       this.dialogReset(val)
@@ -572,6 +572,10 @@ export default Vue.extend({
         this.form.genres = []
         this.form.tags = []
         this.$_.merge(this.form, (series as SeriesDto).metadata)
+        this.selectedThumbnail = ''
+        this.deleteQueue = []
+        this.uploadQueue = []
+        this.seriesThumbnails = []
       }
     },
     dialogCancel() {
@@ -654,6 +658,31 @@ export default Vue.extend({
       return null
     },
     async editSeries(): Promise<boolean> {
+      if (this.single && this.uploadQueue.length > 0) {
+        const name = this.selectedThumbnail
+        const series = this.series as SeriesDto
+        for (const file of this.uploadQueue) {
+          const body = new FormData()
+          body.append('file', file)
+          body.append('selected', `${file.name === name}`)
+          await this.$komgaSeries.uploadThumbnail(series.id, body)
+        }
+      }
+
+      if (this.single && this.selectedThumbnail !== '') {
+        const id = this.selectedThumbnail
+        const series = this.series as SeriesDto
+        if (this.seriesThumbnails.find(value => value.id === id)) {
+          await this.$komgaSeries.markThumbnailAsSelected(series.id, id)
+        }
+      }
+
+      if (this.single && this.deleteQueue.length > 0) {
+        for (const toDelete of this.deleteQueue) {
+          await this.$komgaSeries.deleteThumbnail(toDelete.seriesId, toDelete.id)
+        }
+      }
+
       const metadata = this.validateForm()
       if (metadata) {
         const toUpdate = (this.single ? [this.series] : this.series) as SeriesDto[]
@@ -668,7 +697,11 @@ export default Vue.extend({
       } else return false
     },
     inputChangeHandler: function (files: File[]) {
-      this.uploadQueue = files
+      for (const file of files) {
+        if (!this.uploadQueue.includes(file)) {
+          this.uploadQueue.push(file)
+        }
+      }
     },
     getThumbnails: async function () {
       if (Array.isArray(this.series)) return
