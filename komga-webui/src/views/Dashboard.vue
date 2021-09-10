@@ -350,7 +350,7 @@ export default Vue.extend({
       )
       this.loaderOnDeckBooks = new PageLoader<BookDto>(
         {},
-        () => this.$komgaBooks.getBooksOnDeck(this.getRequestLibraryId(libraryId)),
+        (pageable: PageRequest) => this.$komgaBooks.getBooksOnDeck(this.getRequestLibraryId(libraryId), pageable),
       )
       this.loaderLatestBooks = new PageLoader<BookDto>(
         {sort: ['createdDate,desc']},
@@ -367,11 +367,11 @@ export default Vue.extend({
 
       this.loaderNewSeries = new PageLoader<SeriesDto>(
         {},
-        () => this.$komgaSeries.getNewSeries(this.getRequestLibraryId(libraryId)),
+        (pageable: PageRequest) => this.$komgaSeries.getNewSeries(this.getRequestLibraryId(libraryId), pageable),
       )
       this.loaderUpdatedSeries = new PageLoader<SeriesDto>(
         {},
-        () => this.$komgaSeries.getUpdatedSeries(this.getRequestLibraryId(libraryId)),
+        (pageable: PageRequest) => this.$komgaSeries.getUpdatedSeries(this.getRequestLibraryId(libraryId), pageable),
       )
 
       Promise.all([
