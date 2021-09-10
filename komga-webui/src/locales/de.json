@@ -189,6 +189,7 @@
     "go_to_library": "Gehe zu Bibliothek",
     "go_to_readlist": "Zur Leseliste gehen",
     "go_to_series": "Zu Serien gehen",
+    "library": "Bibliothek",
     "locale_name": "Deutsch",
     "locale_rtl": "false",
     "lock_all": "Alles verschliessen",
@@ -628,6 +629,7 @@
   },
   "server": {
     "server_management": {
+      "button_empty_trash": "Bereinige alle Bibliotheken von nicht vorhandenen Büchern",
       "button_shutdown": "Herunterfahren",
       "section_title": "Serververwaltung"
     },
