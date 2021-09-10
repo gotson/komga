@@ -1,3 +1,11 @@
+## [0.125.3](https://github.com/gotson/komga/compare/v0.125.2...v0.125.3) (2021-09-10)
+
+
+### Bug Fixes
+
+* **webui:** dashboard and search results pages would reload entirely upon events ([043c4d3](https://github.com/gotson/komga/commit/043c4d3a73498e6a9178e35cfaecc308baa329e4))
+* scan fails because of duplicate items by URL ([45d4421](https://github.com/gotson/komga/commit/45d4421cd68c2137cc378d3ade454038a04e8837)), closes [#663](https://github.com/gotson/komga/issues/663)
+
 ## [0.125.2](https://github.com/gotson/komga/compare/v0.125.1...v0.125.2) (2021-09-10)
 
 
