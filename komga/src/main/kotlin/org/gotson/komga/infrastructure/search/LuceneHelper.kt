@@ -30,7 +30,7 @@ class LuceneHelper(
 
   fun indexExists(): Boolean = DirectoryReader.indexExists(directory)
 
-  fun searchEntitiesIds(searchTerm: String?, entity: LuceneEntity, size: Int): List<String>? {
+  fun searchEntitiesIds(searchTerm: String?, entity: LuceneEntity): List<String>? {
     return if (!searchTerm.isNullOrBlank()) {
       try {
         val fieldsQuery = MultiFieldQueryParser(entity.defaultFields, analyzer).apply {
@@ -46,7 +46,7 @@ class LuceneHelper(
 
         getIndexReader().use { index ->
           val searcher = IndexSearcher(index)
-          val topDocs = searcher.search(booleanQuery, size)
+          val topDocs = searcher.search(booleanQuery, index.numDocs())
           topDocs.scoreDocs.map { searcher.doc(it.doc)[entity.id] }
         }
       } catch (e: ParseException) {

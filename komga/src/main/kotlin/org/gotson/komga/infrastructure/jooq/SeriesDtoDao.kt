@@ -109,7 +109,7 @@ class SeriesDtoDao(
   override fun countByFirstCharacter(search: SeriesSearchWithReadProgress, userId: String): List<GroupCountDto> {
     val conditions = search.toCondition()
     val joinConditions = search.toJoinConditions()
-    val seriesIds = luceneHelper.searchEntitiesIds(search.searchTerm, LuceneEntity.Series, 20)
+    val seriesIds = luceneHelper.searchEntitiesIds(search.searchTerm, LuceneEntity.Series)
     val searchCondition = s.ID.inOrNoCondition(seriesIds)
 
     val firstChar = lower(substring(d.TITLE_SORT, 1, 1))
@@ -167,7 +167,7 @@ class SeriesDtoDao(
     joinConditions: JoinConditions = JoinConditions(),
     searchTerm: String?,
   ): Page<SeriesDto> {
-    val seriesIds = luceneHelper.searchEntitiesIds(searchTerm, LuceneEntity.Series, if (pageable.isPaged) pageable.pageSize else 20)
+    val seriesIds = luceneHelper.searchEntitiesIds(searchTerm, LuceneEntity.Series)
     val searchCondition = s.ID.inOrNoCondition(seriesIds)
 
     val count = dsl.select(count(s.ID))

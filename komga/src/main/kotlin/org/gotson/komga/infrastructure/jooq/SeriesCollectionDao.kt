@@ -48,7 +48,7 @@ class SeriesCollectionDao(
       .firstOrNull()
 
   override fun findAll(search: String?, pageable: Pageable): Page<SeriesCollection> {
-    val collectionIds = luceneHelper.searchEntitiesIds(search, LuceneEntity.Collection, if (pageable.isPaged) pageable.pageSize else 20)
+    val collectionIds = luceneHelper.searchEntitiesIds(search, LuceneEntity.Collection)
     val searchCondition = c.ID.inOrNoCondition(collectionIds)
 
     val count = dsl.selectCount()
@@ -78,7 +78,7 @@ class SeriesCollectionDao(
   }
 
   override fun findAllByLibraryIds(belongsToLibraryIds: Collection<String>, filterOnLibraryIds: Collection<String>?, search: String?, pageable: Pageable): Page<SeriesCollection> {
-    val collectionIds = luceneHelper.searchEntitiesIds(search, LuceneEntity.Collection, if (pageable.isPaged) pageable.pageSize else 20)
+    val collectionIds = luceneHelper.searchEntitiesIds(search, LuceneEntity.Collection)
     val searchCondition = c.ID.inOrNoCondition(collectionIds)
 
     val conditions = s.LIBRARY_ID.`in`(belongsToLibraryIds)

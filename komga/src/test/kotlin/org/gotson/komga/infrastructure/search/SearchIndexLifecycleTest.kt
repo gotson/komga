@@ -101,7 +101,7 @@ class SearchIndexLifecycleTest(
       val series = seriesLifecycle.createSeries(makeSeries("Series", libraryId = library.id))
       seriesLifecycle.addBooks(series, listOf(makeBook("book", seriesId = series.id, libraryId = library.id)))
 
-      val found = luceneHelper.searchEntitiesIds("book", LuceneEntity.Book, 10)
+      val found = luceneHelper.searchEntitiesIds("book", LuceneEntity.Book)
 
       assertThat(found).isNotNull
       assertThat(found).hasSize(1)
@@ -113,7 +113,7 @@ class SearchIndexLifecycleTest(
       val book = makeBook("book", seriesId = series.id, libraryId = library.id)
       seriesLifecycle.addBooks(series, listOf(book))
 
-      luceneHelper.searchEntitiesIds("book", LuceneEntity.Book, 10).let { found ->
+      luceneHelper.searchEntitiesIds("book", LuceneEntity.Book).let { found ->
         assertThat(found).isNotNull
         assertThat(found).hasSize(1)
       }
@@ -123,11 +123,11 @@ class SearchIndexLifecycleTest(
       }
       mockEventPublisher.publishEvent(DomainEvent.BookUpdated(book))
 
-      luceneHelper.searchEntitiesIds("book", LuceneEntity.Book, 10).let { found ->
+      luceneHelper.searchEntitiesIds("book", LuceneEntity.Book).let { found ->
         assertThat(found).isNotNull
         assertThat(found).isEmpty()
       }
-      luceneHelper.searchEntitiesIds("updated", LuceneEntity.Book, 10).let { found ->
+      luceneHelper.searchEntitiesIds("updated", LuceneEntity.Book).let { found ->
         assertThat(found).isNotNull
         assertThat(found).hasSize(1)
       }
@@ -139,14 +139,14 @@ class SearchIndexLifecycleTest(
       val book = makeBook("book", seriesId = series.id, libraryId = library.id)
       seriesLifecycle.addBooks(series, listOf(book))
 
-      luceneHelper.searchEntitiesIds("book", LuceneEntity.Book, 10).let { found ->
+      luceneHelper.searchEntitiesIds("book", LuceneEntity.Book).let { found ->
         assertThat(found).isNotNull
         assertThat(found).hasSize(1)
       }
 
       bookLifecycle.deleteOne(book)
 
-      luceneHelper.searchEntitiesIds("book", LuceneEntity.Book, 10).let { found ->
+      luceneHelper.searchEntitiesIds("book", LuceneEntity.Book).let { found ->
         assertThat(found).isNotNull
         assertThat(found).isEmpty()
       }
@@ -159,7 +159,7 @@ class SearchIndexLifecycleTest(
     fun `given empty index when adding an entity then it is added to the index`() {
       seriesLifecycle.createSeries(makeSeries("Series", libraryId = library.id))
 
-      val found = luceneHelper.searchEntitiesIds("series", LuceneEntity.Series, 10)
+      val found = luceneHelper.searchEntitiesIds("series", LuceneEntity.Series)
 
       assertThat(found).isNotNull
       assertThat(found).hasSize(1)
@@ -169,7 +169,7 @@ class SearchIndexLifecycleTest(
     fun `given an entity when updating then it is updated in the index`() {
       val series = seriesLifecycle.createSeries(makeSeries("Series", libraryId = library.id))
 
-      luceneHelper.searchEntitiesIds("series", LuceneEntity.Series, 10).let { found ->
+      luceneHelper.searchEntitiesIds("series", LuceneEntity.Series).let { found ->
         assertThat(found).isNotNull
         assertThat(found).hasSize(1)
       }
@@ -179,11 +179,11 @@ class SearchIndexLifecycleTest(
       }
       mockEventPublisher.publishEvent(DomainEvent.SeriesUpdated(series))
 
-      luceneHelper.searchEntitiesIds("series", LuceneEntity.Series, 10).let { found ->
+      luceneHelper.searchEntitiesIds("series", LuceneEntity.Series).let { found ->
         assertThat(found).isNotNull
         assertThat(found).isEmpty()
       }
-      luceneHelper.searchEntitiesIds("updated", LuceneEntity.Series, 10).let { found ->
+      luceneHelper.searchEntitiesIds("updated", LuceneEntity.Series).let { found ->
         assertThat(found).isNotNull
         assertThat(found).hasSize(1)
       }
@@ -193,14 +193,14 @@ class SearchIndexLifecycleTest(
     fun `given an entity when deleting then it is removed from the index`() {
       val series = seriesLifecycle.createSeries(makeSeries("Series", libraryId = library.id))
 
-      luceneHelper.searchEntitiesIds("series", LuceneEntity.Series, 10).let { found ->
+      luceneHelper.searchEntitiesIds("series", LuceneEntity.Series).let { found ->
         assertThat(found).isNotNull
         assertThat(found).hasSize(1)
       }
 
       seriesLifecycle.deleteMany(listOf(series))
 
-      luceneHelper.searchEntitiesIds("series", LuceneEntity.Series, 10).let { found ->
+      luceneHelper.searchEntitiesIds("series", LuceneEntity.Series).let { found ->
         assertThat(found).isNotNull
         assertThat(found).isEmpty()
       }
@@ -214,7 +214,7 @@ class SearchIndexLifecycleTest(
       val collection = SeriesCollection("collection")
       collectionLifecycle.addCollection(collection)
 
-      val found = luceneHelper.searchEntitiesIds("collection", LuceneEntity.Collection, 10)
+      val found = luceneHelper.searchEntitiesIds("collection", LuceneEntity.Collection)
 
       assertThat(found).isNotNull
       assertThat(found).hasSize(1)
@@ -225,7 +225,7 @@ class SearchIndexLifecycleTest(
       val collection = SeriesCollection("collection")
       collectionLifecycle.addCollection(collection)
 
-      luceneHelper.searchEntitiesIds("collection", LuceneEntity.Collection, 10).let { found ->
+      luceneHelper.searchEntitiesIds("collection", LuceneEntity.Collection).let { found ->
         assertThat(found).isNotNull
         assertThat(found).hasSize(1)
       }
@@ -235,11 +235,11 @@ class SearchIndexLifecycleTest(
       }
       mockEventPublisher.publishEvent(DomainEvent.CollectionUpdated(collection))
 
-      luceneHelper.searchEntitiesIds("collection", LuceneEntity.Collection, 10).let { found ->
+      luceneHelper.searchEntitiesIds("collection", LuceneEntity.Collection).let { found ->
         assertThat(found).isNotNull
         assertThat(found).isEmpty()
       }
-      luceneHelper.searchEntitiesIds("updated", LuceneEntity.Collection, 10).let { found ->
+      luceneHelper.searchEntitiesIds("updated", LuceneEntity.Collection).let { found ->
         assertThat(found).isNotNull
         assertThat(found).hasSize(1)
       }
@@ -250,14 +250,14 @@ class SearchIndexLifecycleTest(
       val collection = SeriesCollection("collection")
       collectionLifecycle.addCollection(collection)
 
-      luceneHelper.searchEntitiesIds("collection", LuceneEntity.Collection, 10).let { found ->
+      luceneHelper.searchEntitiesIds("collection", LuceneEntity.Collection).let { found ->
         assertThat(found).isNotNull
         assertThat(found).hasSize(1)
       }
 
       collectionLifecycle.deleteCollection(collection)
 
-      luceneHelper.searchEntitiesIds("collection", LuceneEntity.Collection, 10).let { found ->
+      luceneHelper.searchEntitiesIds("collection", LuceneEntity.Collection).let { found ->
         assertThat(found).isNotNull
         assertThat(found).isEmpty()
       }
@@ -271,7 +271,7 @@ class SearchIndexLifecycleTest(
       val readList = ReadList("readlist")
       readListLifecycle.addReadList(readList)
 
-      val found = luceneHelper.searchEntitiesIds("readlist", LuceneEntity.ReadList, 10)
+      val found = luceneHelper.searchEntitiesIds("readlist", LuceneEntity.ReadList)
 
       assertThat(found).isNotNull
       assertThat(found).hasSize(1)
@@ -282,7 +282,7 @@ class SearchIndexLifecycleTest(
       val readList = org.gotson.komga.domain.model.ReadList("readlist")
       readListLifecycle.addReadList(readList)
 
-      luceneHelper.searchEntitiesIds("readlist", LuceneEntity.ReadList, 10).let { found ->
+      luceneHelper.searchEntitiesIds("readlist", LuceneEntity.ReadList).let { found ->
         assertThat(found).isNotNull
         assertThat(found).hasSize(1)
       }
@@ -292,11 +292,11 @@ class SearchIndexLifecycleTest(
       }
       mockEventPublisher.publishEvent(DomainEvent.ReadListUpdated(readList))
 
-      luceneHelper.searchEntitiesIds("readlist", LuceneEntity.ReadList, 10).let { found ->
+      luceneHelper.searchEntitiesIds("readlist", LuceneEntity.ReadList).let { found ->
         assertThat(found).isNotNull
         assertThat(found).isEmpty()
       }
-      luceneHelper.searchEntitiesIds("updated", LuceneEntity.ReadList, 10).let { found ->
+      luceneHelper.searchEntitiesIds("updated", LuceneEntity.ReadList).let { found ->
         assertThat(found).isNotNull
         assertThat(found).hasSize(1)
       }
@@ -307,14 +307,14 @@ class SearchIndexLifecycleTest(
       val readList = org.gotson.komga.domain.model.ReadList("readlist")
       readListLifecycle.addReadList(readList)
 
-      luceneHelper.searchEntitiesIds("readlist", LuceneEntity.ReadList, 10).let { found ->
+      luceneHelper.searchEntitiesIds("readlist", LuceneEntity.ReadList).let { found ->
         assertThat(found).isNotNull
         assertThat(found).hasSize(1)
       }
 
       readListLifecycle.deleteReadList(readList)
 
-      luceneHelper.searchEntitiesIds("readlist", LuceneEntity.ReadList, 10).let { found ->
+      luceneHelper.searchEntitiesIds("readlist", LuceneEntity.ReadList).let { found ->
         assertThat(found).isNotNull
         assertThat(found).isEmpty()
       }

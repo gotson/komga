@@ -49,7 +49,7 @@ class ReadListDao(
       .firstOrNull()
 
   override fun findAll(search: String?, pageable: Pageable): Page<ReadList> {
-    val readListIds = luceneHelper.searchEntitiesIds(search, LuceneEntity.ReadList, if (pageable.isPaged) pageable.pageSize else 20)
+    val readListIds = luceneHelper.searchEntitiesIds(search, LuceneEntity.ReadList)
     val searchCondition = rl.ID.inOrNoCondition(readListIds)
 
     val count = dsl.selectCount()
@@ -79,7 +79,7 @@ class ReadListDao(
   }
 
   override fun findAllByLibraryIds(belongsToLibraryIds: Collection<String>, filterOnLibraryIds: Collection<String>?, search: String?, pageable: Pageable): Page<ReadList> {
-    val readListIds = luceneHelper.searchEntitiesIds(search, LuceneEntity.ReadList, if (pageable.isPaged) pageable.pageSize else 20)
+    val readListIds = luceneHelper.searchEntitiesIds(search, LuceneEntity.ReadList)
     val searchCondition = rl.ID.inOrNoCondition(readListIds)
 
     val conditions = b.LIBRARY_ID.`in`(belongsToLibraryIds)

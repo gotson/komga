@@ -99,7 +99,7 @@ class BookDtoDao(
     filterOnLibraryIds: Collection<String>?,
     searchTerm: String?,
   ): Page<BookDto> {
-    val bookIds = luceneHelper.searchEntitiesIds(searchTerm, LuceneEntity.Book, if (pageable.isPaged) pageable.pageSize else 20)
+    val bookIds = luceneHelper.searchEntitiesIds(searchTerm, LuceneEntity.Book)
     val searchCondition = b.ID.inOrNoCondition(bookIds)
 
     val count = dsl.selectDistinct(b.ID)
