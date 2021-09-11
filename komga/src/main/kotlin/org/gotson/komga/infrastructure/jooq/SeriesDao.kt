@@ -8,6 +8,7 @@ import org.gotson.komga.jooq.tables.records.SeriesRecord
 import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.net.URL
@@ -16,9 +17,9 @@ import java.time.ZoneId
 
 @Component
 class SeriesDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
+  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : SeriesRepository {
-
   private val s = Tables.SERIES
   private val d = Tables.SERIES_METADATA
   private val cs = Tables.COLLECTION_SERIES
@@ -47,13 +48,16 @@ class SeriesDao(
     dsl.deleteFrom(u).execute()
 
     if (urls.isNotEmpty()) {
-      dsl.batch(
-        dsl.insertInto(u, u.URL).values(null as String?)
-      ).also { step ->
-        urls.forEach {
-          step.bind(it.toString())
+      urls.chunked(batchSize)
+        .forEach { chunk ->
+          dsl.batch(
+            dsl.insertInto(u, u.URL).values(null as String?)
+          ).also { step ->
+            chunk.forEach {
+              step.bind(it.toString())
+            }
+          }.execute()
         }
-      }.execute()
     }
 
     return dsl.selectFrom(s)

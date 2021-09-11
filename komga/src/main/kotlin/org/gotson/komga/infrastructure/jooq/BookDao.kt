@@ -8,6 +8,7 @@ import org.gotson.komga.jooq.tables.records.BookRecord
 import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -21,9 +22,9 @@ import java.time.ZoneId
 
 @Component
 class BookDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
+  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : BookRepository {
-
   private val b = Tables.BOOK
   private val m = Tables.MEDIA
   private val d = Tables.BOOK_METADATA
@@ -70,13 +71,15 @@ class BookDao(
     dsl.deleteFrom(u).execute()
 
     if (urls.isNotEmpty()) {
-      dsl.batch(
-        dsl.insertInto(u, u.URL).values(null as String?)
-      ).also { step ->
-        urls.forEach {
-          step.bind(it.toString())
-        }
-      }.execute()
+      urls.chunked(batchSize).forEach { chunk ->
+        dsl.batch(
+          dsl.insertInto(u, u.URL).values(null as String?)
+        ).also { step ->
+          chunk.forEach {
+            step.bind(it.toString())
+          }
+        }.execute()
+      }
     }
 
     return dsl.selectFrom(b)
@@ -243,36 +246,38 @@ class BookDao(
   @Transactional
   override fun insert(books: Collection<Book>) {
     if (books.isNotEmpty()) {
-      dsl.batch(
-        dsl.insertInto(
-          b,
-          b.ID,
-          b.NAME,
-          b.URL,
-          b.NUMBER,
-          b.FILE_LAST_MODIFIED,
-          b.FILE_SIZE,
-          b.FILE_HASH,
-          b.LIBRARY_ID,
-          b.SERIES_ID,
-          b.DELETED_DATE,
-        ).values(null as String?, null, null, null, null, null, null, null, null, null)
-      ).also { step ->
-        books.forEach {
-          step.bind(
-            it.id,
-            it.name,
-            it.url,
-            it.number,
-            it.fileLastModified,
-            it.fileSize,
-            it.fileHash,
-            it.libraryId,
-            it.seriesId,
-            it.deletedDate,
-          )
-        }
-      }.execute()
+      books.chunked(batchSize).forEach { chunk ->
+        dsl.batch(
+          dsl.insertInto(
+            b,
+            b.ID,
+            b.NAME,
+            b.URL,
+            b.NUMBER,
+            b.FILE_LAST_MODIFIED,
+            b.FILE_SIZE,
+            b.FILE_HASH,
+            b.LIBRARY_ID,
+            b.SERIES_ID,
+            b.DELETED_DATE,
+          ).values(null as String?, null, null, null, null, null, null, null, null, null)
+        ).also { step ->
+          chunk.forEach {
+            step.bind(
+              it.id,
+              it.name,
+              it.url,
+              it.number,
+              it.fileLastModified,
+              it.fileSize,
+              it.fileHash,
+              it.libraryId,
+              it.seriesId,
+              it.deletedDate,
+            )
+          }
+        }.execute()
+      }
     }
   }
 

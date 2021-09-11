@@ -7,6 +7,7 @@ import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.BookMetadataAuthorRecord
 import org.gotson.komga.jooq.tables.records.BookMetadataRecord
 import org.jooq.DSLContext
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -14,7 +15,8 @@ import java.time.ZoneId
 
 @Component
 class BookMetadataDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
+  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : BookMetadataRepository {
 
   private val d = Tables.BOOK_METADATA
@@ -60,46 +62,48 @@ class BookMetadataDao(
   @Transactional
   override fun insert(metadatas: Collection<BookMetadata>) {
     if (metadatas.isNotEmpty()) {
-      dsl.batch(
-        dsl.insertInto(
-          d,
-          d.BOOK_ID,
-          d.TITLE,
-          d.TITLE_LOCK,
-          d.SUMMARY,
-          d.SUMMARY_LOCK,
-          d.NUMBER,
-          d.NUMBER_LOCK,
-          d.NUMBER_SORT,
-          d.NUMBER_SORT_LOCK,
-          d.RELEASE_DATE,
-          d.RELEASE_DATE_LOCK,
-          d.AUTHORS_LOCK,
-          d.TAGS_LOCK,
-          d.ISBN,
-          d.ISBN_LOCK
-        ).values(null as String?, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
-      ).also { step ->
-        metadatas.forEach {
-          step.bind(
-            it.bookId,
-            it.title,
-            it.titleLock,
-            it.summary,
-            it.summaryLock,
-            it.number,
-            it.numberLock,
-            it.numberSort,
-            it.numberSortLock,
-            it.releaseDate,
-            it.releaseDateLock,
-            it.authorsLock,
-            it.tagsLock,
-            it.isbn,
-            it.isbnLock
-          )
-        }
-      }.execute()
+      metadatas.chunked(batchSize).forEach { chunk ->
+        dsl.batch(
+          dsl.insertInto(
+            d,
+            d.BOOK_ID,
+            d.TITLE,
+            d.TITLE_LOCK,
+            d.SUMMARY,
+            d.SUMMARY_LOCK,
+            d.NUMBER,
+            d.NUMBER_LOCK,
+            d.NUMBER_SORT,
+            d.NUMBER_SORT_LOCK,
+            d.RELEASE_DATE,
+            d.RELEASE_DATE_LOCK,
+            d.AUTHORS_LOCK,
+            d.TAGS_LOCK,
+            d.ISBN,
+            d.ISBN_LOCK
+          ).values(null as String?, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+        ).also { step ->
+          chunk.forEach {
+            step.bind(
+              it.bookId,
+              it.title,
+              it.titleLock,
+              it.summary,
+              it.summaryLock,
+              it.number,
+              it.numberLock,
+              it.numberSort,
+              it.numberSortLock,
+              it.releaseDate,
+              it.releaseDateLock,
+              it.authorsLock,
+              it.tagsLock,
+              it.isbn,
+              it.isbnLock
+            )
+          }
+        }.execute()
+      }
 
       insertAuthors(metadatas)
       insertTags(metadatas)
@@ -149,31 +153,35 @@ class BookMetadataDao(
 
   private fun insertAuthors(metadatas: Collection<BookMetadata>) {
     if (metadatas.any { it.authors.isNotEmpty() }) {
-      dsl.batch(
-        dsl.insertInto(a, a.BOOK_ID, a.NAME, a.ROLE)
-          .values(null as String?, null, null)
-      ).also { step ->
-        metadatas.forEach { metadata ->
-          metadata.authors.forEach {
-            step.bind(metadata.bookId, it.name, it.role)
+      metadatas.chunked(batchSize).forEach { chunk ->
+        dsl.batch(
+          dsl.insertInto(a, a.BOOK_ID, a.NAME, a.ROLE)
+            .values(null as String?, null, null)
+        ).also { step ->
+          chunk.forEach { metadata ->
+            metadata.authors.forEach {
+              step.bind(metadata.bookId, it.name, it.role)
+            }
           }
-        }
-      }.execute()
+        }.execute()
+      }
     }
   }
 
   private fun insertTags(metadatas: Collection<BookMetadata>) {
     if (metadatas.any { it.tags.isNotEmpty() }) {
-      dsl.batch(
-        dsl.insertInto(bt, bt.BOOK_ID, bt.TAG)
-          .values(null as String?, null)
-      ).also { step ->
-        metadatas.forEach { metadata ->
-          metadata.tags.forEach {
-            step.bind(metadata.bookId, it)
+      metadatas.chunked(batchSize).forEach { chunk ->
+        dsl.batch(
+          dsl.insertInto(bt, bt.BOOK_ID, bt.TAG)
+            .values(null as String?, null)
+        ).also { step ->
+          chunk.forEach { metadata ->
+            metadata.tags.forEach {
+              step.bind(metadata.bookId, it)
+            }
           }
-        }
-      }.execute()
+        }.execute()
+      }
     }
   }
 

@@ -7,6 +7,7 @@ import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.BookMetadataAggregationAuthorRecord
 import org.gotson.komga.jooq.tables.records.BookMetadataAggregationRecord
 import org.jooq.DSLContext
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -14,9 +15,9 @@ import java.time.ZoneId
 
 @Component
 class BookMetadataAggregationDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
+  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : BookMetadataAggregationRepository {
-
   private val d = Tables.BOOK_METADATA_AGGREGATION
   private val a = Tables.BOOK_METADATA_AGGREGATION_AUTHOR
   private val t = Tables.BOOK_METADATA_AGGREGATION_TAG
@@ -83,27 +84,31 @@ class BookMetadataAggregationDao(
 
   private fun insertAuthors(metadata: BookMetadataAggregation) {
     if (metadata.authors.isNotEmpty()) {
-      dsl.batch(
-        dsl.insertInto(a, a.SERIES_ID, a.NAME, a.ROLE)
-          .values(null as String?, null, null)
-      ).also { step ->
-        metadata.authors.forEach {
-          step.bind(metadata.seriesId, it.name, it.role)
-        }
-      }.execute()
+      metadata.authors.chunked(batchSize).forEach { chunk ->
+        dsl.batch(
+          dsl.insertInto(a, a.SERIES_ID, a.NAME, a.ROLE)
+            .values(null as String?, null, null)
+        ).also { step ->
+          chunk.forEach {
+            step.bind(metadata.seriesId, it.name, it.role)
+          }
+        }.execute()
+      }
     }
   }
 
   private fun insertTags(metadata: BookMetadataAggregation) {
     if (metadata.tags.isNotEmpty()) {
-      dsl.batch(
-        dsl.insertInto(t, t.SERIES_ID, t.TAG)
-          .values(null as String?, null)
-      ).also { step ->
-        metadata.tags.forEach {
-          step.bind(metadata.seriesId, it)
-        }
-      }.execute()
+      metadata.tags.chunked(batchSize).forEach { chunk ->
+        dsl.batch(
+          dsl.insertInto(t, t.SERIES_ID, t.TAG)
+            .values(null as String?, null)
+        ).also { step ->
+          chunk.forEach {
+            step.bind(metadata.seriesId, it)
+          }
+        }.execute()
+      }
     }
   }
 

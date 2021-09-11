@@ -6,15 +6,16 @@ import org.gotson.komga.domain.persistence.SidecarRepository
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.SidecarRecord
 import org.jooq.DSLContext
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.net.URL
 
 @Component
 class SidecarDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
+  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : SidecarRepository {
-
   private val sc = Tables.SIDECAR
   private val u = Tables.TEMP_URL_LIST
 
@@ -42,13 +43,15 @@ class SidecarDao(
     dsl.deleteFrom(u).execute()
 
     if (urls.isNotEmpty()) {
-      dsl.batch(
-        dsl.insertInto(u, u.URL).values(null as String?)
-      ).also { step ->
-        urls.forEach {
-          step.bind(it.toString())
-        }
-      }.execute()
+      urls.chunked(batchSize).forEach { chunk ->
+        dsl.batch(
+          dsl.insertInto(u, u.URL).values(null as String?)
+        ).also { step ->
+          chunk.forEach {
+            step.bind(it.toString())
+          }
+        }.execute()
+      }
     }
 
     dsl.deleteFrom(sc)

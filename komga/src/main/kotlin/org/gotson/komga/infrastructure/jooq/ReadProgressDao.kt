@@ -8,6 +8,7 @@ import org.gotson.komga.jooq.tables.records.ReadProgressRecord
 import org.jooq.DSLContext
 import org.jooq.Query
 import org.jooq.impl.DSL
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -15,7 +16,8 @@ import java.time.ZoneId
 
 @Component
 class ReadProgressDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
+  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : ReadProgressRepository {
 
   private val r = Tables.READ_PROGRESS
@@ -60,7 +62,7 @@ class ReadProgressDao(
   @Transactional
   override fun save(readProgresses: Collection<ReadProgress>) {
     val queries = readProgresses.map { saveQuery(it) }
-    dsl.batch(queries).execute()
+    queries.chunked(batchSize).forEach { chunk -> dsl.batch(chunk).execute() }
 
     readProgresses.groupBy { it.userId }
       .forEach { (userId, readProgresses) ->
