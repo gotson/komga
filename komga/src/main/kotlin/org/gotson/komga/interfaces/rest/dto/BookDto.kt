@@ -66,6 +66,8 @@ data class ReadProgressDto(
   val page: Int,
   val completed: Boolean,
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  val readDate: LocalDateTime,
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val created: LocalDateTime,
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val lastModified: LocalDateTime

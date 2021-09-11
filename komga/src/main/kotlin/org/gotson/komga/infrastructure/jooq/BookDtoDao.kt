@@ -70,6 +70,7 @@ class BookDtoDao(
     "metadata.numberSort" to d.NUMBER_SORT,
     "metadata.releaseDate" to d.RELEASE_DATE,
     "readProgress.lastModified" to r.LAST_MODIFIED_DATE,
+    "readProgress.readDate" to r.READ_DATE,
     "readList.number" to rlb.NUMBER,
   )
 
@@ -381,6 +382,7 @@ class BookDtoDao(
     ReadProgressDto(
       page = page,
       completed = completed,
+      readDate = readDate,
       created = createdDate,
       lastModified = lastModifiedDate
     )

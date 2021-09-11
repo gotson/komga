@@ -342,7 +342,7 @@ export default Vue.extend({
     }, 5000),
     setupLoaders(libraryId: string) {
       this.loaderInProgressBooks = new PageLoader<BookDto>(
-        {sort: ['readProgress.lastModified,desc']},
+        {sort: ['readProgress.readDate,desc']},
         (pageable: PageRequest) => this.$komgaBooks.getBooks(this.getRequestLibraryId(libraryId), pageable, undefined, undefined, [ReadStatus.IN_PROGRESS]),
       )
       this.loaderOnDeckBooks = new PageLoader<BookDto>(
@@ -358,7 +358,7 @@ export default Vue.extend({
         (pageable: PageRequest) => this.$komgaBooks.getBooks(this.getRequestLibraryId(libraryId), pageable, undefined, undefined, undefined, subMonths(new Date(), 1)),
       )
       this.loaderRecentlyReadBooks = new PageLoader<BookDto>(
-        {sort: ['readProgress.lastModified,desc']},
+        {sort: ['readProgress.readDate,desc']},
         (pageable: PageRequest) => this.$komgaBooks.getBooks(this.getRequestLibraryId(libraryId), pageable, undefined, undefined, [ReadStatus.READ]),
       )
 
@@ -377,7 +377,7 @@ export default Vue.extend({
       this.selectedSeries = []
       this.selectedBooks = []
 
-      if(reload){
+      if (reload) {
         Promise.all([
           this.loaderInProgressBooks.reload(),
           this.loaderOnDeckBooks.reload(),

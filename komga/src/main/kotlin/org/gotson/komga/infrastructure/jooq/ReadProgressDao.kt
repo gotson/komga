@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.persistence.ReadProgressRepository
+import org.gotson.komga.interfaces.rest.dto.toUTC
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.ReadProgressRecord
 import org.jooq.DSLContext
@@ -9,6 +10,8 @@ import org.jooq.Query
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Component
 class ReadProgressDao(
@@ -66,12 +69,26 @@ class ReadProgressDao(
   }
 
   private fun saveQuery(readProgress: ReadProgress): Query =
-    dsl.insertInto(r, r.BOOK_ID, r.USER_ID, r.PAGE, r.COMPLETED)
-      .values(readProgress.bookId, readProgress.userId, readProgress.page, readProgress.completed)
+    dsl.insertInto(
+      r,
+      r.BOOK_ID,
+      r.USER_ID,
+      r.PAGE,
+      r.COMPLETED,
+      r.READ_DATE,
+    )
+      .values(
+        readProgress.bookId,
+        readProgress.userId,
+        readProgress.page,
+        readProgress.completed,
+        readProgress.readDate.toUTC(),
+      )
       .onDuplicateKeyUpdate()
       .set(r.PAGE, readProgress.page)
       .set(r.COMPLETED, readProgress.completed)
-      .set(r.LAST_MODIFIED_DATE, readProgress.lastModifiedDate.toUTC())
+      .set(r.READ_DATE, readProgress.readDate.toUTC())
+      .set(r.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
 
   @Transactional
   override fun delete(bookId: String, userId: String) {
@@ -143,6 +160,7 @@ class ReadProgressDao(
       userId = userId,
       page = page,
       completed = completed,
+      readDate = readDate.toCurrentTimeZone(),
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone()
     )

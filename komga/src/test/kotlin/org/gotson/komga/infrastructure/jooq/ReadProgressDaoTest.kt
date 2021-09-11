@@ -81,9 +81,10 @@ class ReadProgressDaoTest(
       assertThat(page).isEqualTo(5)
       assertThat(completed).isEqualTo(false)
       assertThat(bookId).isEqualTo(book1.id)
+      assertThat(readDate).isCloseTo(now, offset)
       assertThat(createdDate)
         .isCloseTo(now, offset)
-        .isEqualTo(lastModifiedDate)
+        .isEqualToIgnoringNanos(lastModifiedDate)
     }
   }
 
@@ -99,6 +100,7 @@ class ReadProgressDaoTest(
     )
 
     val modificationDate = LocalDateTime.now()
+    val readDateInThePast = LocalDateTime.now().minusYears(1)
 
     readProgressDao.save(
       ReadProgress(
@@ -106,7 +108,7 @@ class ReadProgressDaoTest(
         user1.id,
         10,
         true,
-        lastModifiedDate = modificationDate,
+        readDate = readDateInThePast,
       )
     )
 
@@ -117,6 +119,7 @@ class ReadProgressDaoTest(
       assertThat(page).isEqualTo(10)
       assertThat(completed).isEqualTo(true)
       assertThat(bookId).isEqualTo(book1.id)
+      assertThat(readDate).isEqualTo(readDateInThePast)
       assertThat(createdDate)
         .isBefore(modificationDate)
         .isNotEqualTo(lastModifiedDate)
