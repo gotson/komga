@@ -633,6 +633,7 @@
   "server": {
     "server_management": {
       "button_empty_trash": "清空所有书库的垃圾箱",
+      "button_scan_libraries": "扫描所有书库",
       "button_shutdown": "关机",
       "section_title": "服务器管理"
     },

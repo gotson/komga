@@ -36,6 +36,7 @@
     "inker": "inkerzy",
     "letterer": "liternicy",
     "penciller": "rysownicy",
+    "translator": "tłumacze",
     "writer": "scenarzyści"
   },
   "book_card": {
@@ -97,7 +98,8 @@
       "height": "Dopasuj do wysokości",
       "original": "Bez zmian",
       "screen": "Ekran",
-      "width": "Dopasuj do szerokości"
+      "width": "Dopasuj do szerokości",
+      "width_shrink_only": "Dopasuj szerokość (tylko zmniejszanie)"
     },
     "settings": {
       "always_fullscreen": "Zawsze pełny ekran",
@@ -105,6 +107,7 @@
       "background_color": "Kolor tła",
       "background_colors": {
         "black": "czarny",
+        "gray": "Szary",
         "white": "biały"
       },
       "display": "Wyświetlanie",
@@ -174,14 +177,14 @@
   "common": {
     "all_libraries": "Wszystkie biblioteki",
     "books": "Książki",
-    "books_n": "Brak książek | 1 książka | {count} książki",
+    "books_n": "Brak tomów| 1 tom | {count} tomy | {count} tomów",
     "books_total": "{count} / {total} książek",
     "cancel": "Anuluj",
     "close": "Zamknij",
     "collections": "Kolekcje",
     "create": "Utwórz",
     "delete": "Usuń",
-    "dismiss": "Odrzucić",
+    "dismiss": "Odrzuć",
     "download": "Pobierz",
     "email": "Adres e-mail",
     "filter_no_matches": "Aktywny filtr nie zwrócił żadnych wyników",
@@ -216,7 +219,7 @@
   "dashboard": {
     "keep_reading": "Kontynuuj czytanie",
     "on_deck": "Na stosie",
-    "recently_added_books": "Ostatnio dodane książki",
+    "recently_added_books": "Ostatnio dodane tomy",
     "recently_added_series": "Ostatnio dodane cykle",
     "recently_read_books": "Ostatnio czytane książki",
     "recently_released_books": "Ostatnio wydane książki",
@@ -564,7 +567,7 @@
   "library_navigation": {
     "browse": "Przeglądaj",
     "collections": "Kolekcje",
-    "readlists": "Listy",
+    "readlists": "Listy czytanych",
     "recommended": "Zalecane"
   },
   "login": {
@@ -630,6 +633,7 @@
   "server": {
     "server_management": {
       "button_empty_trash": "Opróżnij kosz dla wszystkich bibliotek",
+      "button_scan_libraries": "Skanuj wszystkie biblioteki",
       "button_shutdown": "Wyłącz",
       "section_title": "Zarządzanie serwerem"
     },
