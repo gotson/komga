@@ -9,10 +9,10 @@ class MultilingualAnalyzerTest {
   private val analyzer = MultiLingualAnalyzer()
 
   private fun Analyzer.getTokens(text: String): List<String> {
-    val ts = tokenStream("text", text)
+    val tokenStream = tokenStream("text", text)
 
     val tokens = mutableListOf<String>()
-    ts.use { ts ->
+    tokenStream.use { ts ->
       ts.reset()
       while (ts.incrementToken()) {
         ts.reflectWith { _, key, value -> if (key == "term") tokens += value.toString() }

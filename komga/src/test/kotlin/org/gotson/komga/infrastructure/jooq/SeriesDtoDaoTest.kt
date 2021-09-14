@@ -650,7 +650,7 @@ class SeriesDtoDaoTest(
     @Test
     fun `given series when searching by deleted then results are matched`() {
       // given
-      val series = seriesLifecycle.createSeries(makeSeries("Batman", library.id).copy(deletedDate = LocalDateTime.now()))
+      seriesLifecycle.createSeries(makeSeries("Batman", library.id).copy(deletedDate = LocalDateTime.now()))
       seriesLifecycle.createSeries(makeSeries("Batman and Robin", library.id))
 
       searchIndexLifecycle.rebuildIndex()

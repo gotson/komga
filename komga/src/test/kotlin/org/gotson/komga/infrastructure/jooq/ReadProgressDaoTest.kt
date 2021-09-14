@@ -119,7 +119,7 @@ class ReadProgressDaoTest(
       assertThat(page).isEqualTo(10)
       assertThat(completed).isEqualTo(true)
       assertThat(bookId).isEqualTo(book1.id)
-      assertThat(readDate).isEqualTo(readDateInThePast)
+      assertThat(readDate).isEqualToIgnoringNanos(readDateInThePast)
       assertThat(createdDate)
         .isBefore(modificationDate)
         .isNotEqualTo(lastModifiedDate)

@@ -350,7 +350,7 @@ class BookControllerTest(
       val book1 = makeBook("1", libraryId = library.id)
       val book2 = makeBook("2", libraryId = library.id)
       val book3 = makeBook("3", libraryId = library.id)
-      val series = makeSeries(name = "series", libraryId = library.id).let { series ->
+      makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->
           val books = listOf(book1, book2, book3)
           seriesLifecycle.addBooks(created, books)
