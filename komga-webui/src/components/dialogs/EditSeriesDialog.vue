@@ -322,15 +322,15 @@
               <v-container fluid>
                 <!-- Upload -->
                 <v-row>
-                  <drop-zone @on-input-change="inputChangeHandler" />
+                  <drop-zone @on-input-change="filesChangeHandler" />
                 </v-row>
 
                 <!-- Gallery -->
                 <v-container class="d-flex flex-row flex-wrap">
                   <div
                     class="col-6 col-lg-3 pa-1"
-                    v-for="item in [...uploadQueue, ...seriesThumbnails]"
-                    :key="getKey(item)">
+                    v-for="(item, index) in [...uploadQueue, ...seriesThumbnails]"
+                    :key="index">
                     <thumbnail-card
                       :item="item"
                       :selected="isSelected(item)"
@@ -660,10 +660,9 @@ export default Vue.extend({
     },
     async editSeries(): Promise<boolean> {
       if (this.single && this.uploadQueue.length > 0) {
-        const name = this.selectedThumbnail
         const series = this.series as SeriesDto
         for (const file of this.uploadQueue) {
-          await this.$komgaSeries.uploadThumbnail(series.id, file, file.name === name)
+          await this.$komgaSeries.uploadThumbnail(series.id, file, file.name === this.selectedThumbnail)
         }
       }
 
@@ -671,13 +670,13 @@ export default Vue.extend({
         const id = this.selectedThumbnail
         const series = this.series as SeriesDto
         if (this.seriesThumbnails.find(value => value.id === id)) {
-          await this.$komgaSeries.markThumbnailAsSelected(series.id, id)
+          this.$komgaSeries.markThumbnailAsSelected(series.id, id)
         }
       }
 
       if (this.single && this.deleteQueue.length > 0) {
         for (const toDelete of this.deleteQueue) {
-          await this.$komgaSeries.deleteThumbnail(toDelete.seriesId, toDelete.id)
+          this.$komgaSeries.deleteThumbnail(toDelete.seriesId, toDelete.id)
         }
       }
 
@@ -694,7 +693,7 @@ export default Vue.extend({
         return true
       } else return false
     },
-    inputChangeHandler: function (files: File[]) {
+    filesChangeHandler: function (files: File[]) {
       for (const file of files) {
         if (!this.uploadQueue.includes(file)) {
           this.uploadQueue.push(file)
@@ -709,9 +708,6 @@ export default Vue.extend({
       this.selectThumbnailHandler(thumbnails.find(({selected}) => selected))
 
       this.seriesThumbnails = thumbnails
-    },
-    getKey: function (item: File | SeriesThumbnailDto) {
-      return item instanceof File ? item.name : item.id
     },
     isSelected: function (item: File | SeriesThumbnailDto): boolean {
       return item instanceof File ? item.name === this.selectedThumbnail : item.id === this.selectedThumbnail
@@ -734,9 +730,11 @@ export default Vue.extend({
     },
     deleteThumbnailHandler: function (item: File | SeriesThumbnailDto) {
       if (item instanceof File) {
-        const index = this.uploadQueue.indexOf(item, 0)
-        if (index > -1) {
-          this.uploadQueue.splice(index, 1)
+        if (this.uploadQueue.includes(item, 0)) {
+          this.$_.pull(this.uploadQueue, item)
+          if (item.name === this.selectedThumbnail) {
+            this.selectThumbnailHandler(this.seriesThumbnails.find(({selected}) => selected))
+          }
         }
       } else {
         if (this.toBeDeleted(item)) {
