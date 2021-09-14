@@ -322,7 +322,7 @@
               <v-container fluid>
                 <!-- Upload -->
                 <v-row>
-                  <drop-zone @onInputChange="inputChangeHandler" />
+                  <drop-zone @on-input-change="inputChangeHandler" />
                 </v-row>
 
                 <!-- Gallery -->

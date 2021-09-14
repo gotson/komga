@@ -10,34 +10,19 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'DropZone',
-  data() {
-    return {
-      files: [] as File[],
-    }
-  },
-  watch: {
-    files: function (value) {
-      this.$emit('onInputChange', value)
-    },
-  },
   methods: {
-    dropHandler: function (event: Event) {
-      this.files = []
+    dropHandler(event: Event) {
       if (event instanceof DragEvent && event.dataTransfer) {
         let droppedFiles = event.dataTransfer.files
         if (!droppedFiles) return
 
-        ([...droppedFiles]).forEach(file => {
-          this.files.push(file)
-        })
+        this.$emit('on-input-change', Array.from(droppedFiles))
       }
       if (event.target instanceof HTMLInputElement && event.target.files) {
         let selectedFiles = event.target.files
-        if (!selectedFiles) return;
+        if (!selectedFiles) return
 
-        ([...selectedFiles]).forEach(file => {
-          this.files.push(file)
-        })
+        this.$emit('on-input-change', Array.from(selectedFiles))
       }
     },
   },
