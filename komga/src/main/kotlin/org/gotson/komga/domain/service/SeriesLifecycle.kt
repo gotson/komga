@@ -176,7 +176,12 @@ class SeriesLifecycle(
   }
 
   fun markReadProgressCompleted(seriesId: String, user: KomgaUser) {
-    val progresses = mediaRepository.getPagesSizes(bookRepository.findAllIdsBySeriesId(seriesId))
+    val bookIds = bookRepository.findAllIdsBySeriesId(seriesId)
+      .filter { bookId ->
+        val readProgress = readProgressRepository.findByBookIdAndUserIdOrNull(bookId, user.id)
+        readProgress == null || !readProgress.completed
+      }
+    val progresses = mediaRepository.getPagesSizes(bookIds)
       .map { (bookId, pageSize) -> ReadProgress(bookId, user.id, pageSize, true) }
 
     readProgressRepository.save(progresses)
