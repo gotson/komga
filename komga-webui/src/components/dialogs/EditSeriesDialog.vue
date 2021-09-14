@@ -694,9 +694,14 @@ export default Vue.extend({
       } else return false
     },
     filesChangeHandler: function (files: File[]) {
+      let hasSelected = false
       for (const file of files) {
         if (!this.uploadQueue.find(value => value.name === file.name)) {
           this.uploadQueue.push(file)
+          if (!hasSelected) {
+            this.selectThumbnailHandler(file)
+            hasSelected = true
+          }
         }
       }
     },
