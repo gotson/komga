@@ -397,7 +397,7 @@
       "mixed": "MIXED",
       "tab_general": "General",
       "tab_tags": "Tags",
-      "tab_thumbnails": "Thumbnails",
+      "tab_poster": "Poster",
       "tags_notice_multiple_edit": "You are editing tags for multiple series. This will override existing tags of each series."
     },
     "edit_user": {
