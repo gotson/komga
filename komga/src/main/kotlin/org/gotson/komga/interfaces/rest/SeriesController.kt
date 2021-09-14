@@ -382,14 +382,13 @@ class SeriesController(
     if (!contentDetector.isImage(file.inputStream.buffered().use { contentDetector.detectMediaType(it) }))
       throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 
-    val markAsSelected = if (selected) MarkSelectedPreference.YES else MarkSelectedPreference.NO
     seriesLifecycle.addThumbnailForSeries(
       ThumbnailSeries(
         seriesId = series.id,
         thumbnail = file.bytes,
         type = ThumbnailSeries.Type.USER_UPLOADED
       ),
-      markAsSelected
+      if (selected) MarkSelectedPreference.YES else MarkSelectedPreference.NO
     )
   }
 
