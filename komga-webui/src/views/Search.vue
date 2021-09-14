@@ -264,32 +264,32 @@ export default Vue.extend({
       if (percent > 0.95) await loader.loadNext()
     },
     seriesChanged(event: SeriesSseDto) {
-      if (this.loaderSeries?.items.map(x => x.id).includes(event.seriesId)) {
+      if (this.loaderSeries?.items.some(x => x.id === event.seriesId)) {
         this.reloadResults()
       }
     },
     bookChanged(event: BookSseDto) {
-      if (this.loaderBooks?.items.map(x => x.id).includes(event.bookId)) {
+      if (this.loaderBooks?.items.some(x => x.id === event.bookId)) {
         this.reloadResults()
       }
     },
     readProgressChanged(event: ReadProgressSseDto) {
-      if (this.loaderBooks?.items.map(x => x.id).includes(event.bookId)) {
+      if (this.loaderBooks?.items.some(x => x.id === event.bookId)) {
         this.reloadResults()
       }
     },
     readProgressSeriesChanged(event: ReadProgressSeriesSseDto) {
-      if (this.loaderSeries?.items.map(x => x.id).includes(event.seriesId)) {
+      if (this.loaderSeries?.items.some(x => x.id === event.seriesId)) {
         this.reloadResults()
       }
     },
     collectionChanged(event: CollectionSseDto) {
-      if (this.loaderCollections?.items.map(x => x.id).includes(event.collectionId)) {
+      if (this.loaderCollections?.items.some(x => x.id === event.collectionId)) {
         this.reloadResults()
       }
     },
     readListChanged(event: ReadListSseDto) {
-      if (this.loaderReadLists?.items.map(x => x.id).includes(event.readListId)) {
+      if (this.loaderReadLists?.items.some(x => x.id === event.readListId)) {
         this.reloadResults()
       }
     },
