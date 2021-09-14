@@ -19,7 +19,7 @@ data class Series(
   val deletedDate: LocalDateTime? = null,
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
-  override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
+  override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable(), Serializable {
 
   @delegate:Transient

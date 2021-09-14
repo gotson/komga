@@ -17,7 +17,7 @@ data class ThumbnailBook(
   val bookId: String = "",
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
-  override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
+  override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable(), Serializable {
   enum class Type {
     GENERATED, SIDECAR

@@ -31,7 +31,7 @@ data class Library(
   val id: String = TsidCreator.getTsid256().toString(),
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
-  override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
+  override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable(), Serializable {
 
   enum class SeriesCover {

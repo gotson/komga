@@ -10,7 +10,7 @@ data class Media(
   val comment: String? = null,
   val bookId: String = "",
   override val createdDate: LocalDateTime = LocalDateTime.now(),
-  override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
+  override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable() {
 
   enum class Status {

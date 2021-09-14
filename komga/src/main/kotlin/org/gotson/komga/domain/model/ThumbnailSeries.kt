@@ -17,7 +17,7 @@ data class ThumbnailSeries(
   val seriesId: String = "",
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
-  override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
+  override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable(), Serializable {
   enum class Type {
     SIDECAR, USER_UPLOADED

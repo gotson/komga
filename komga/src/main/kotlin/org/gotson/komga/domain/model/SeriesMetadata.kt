@@ -30,7 +30,7 @@ class SeriesMetadata(
   val seriesId: String = "",
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
-  override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
+  override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable() {
   val title = title.trim()
   val titleSort = titleSort.trim()

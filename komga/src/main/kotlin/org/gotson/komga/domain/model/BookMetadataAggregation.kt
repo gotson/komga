@@ -13,5 +13,5 @@ data class BookMetadataAggregation(
   val seriesId: String = "",
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
-  override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
+  override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable()
