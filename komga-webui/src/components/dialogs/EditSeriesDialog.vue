@@ -660,10 +660,7 @@ export default Vue.extend({
         const name = this.selectedThumbnail
         const series = this.series as SeriesDto
         for (const file of this.uploadQueue) {
-          const body = new FormData()
-          body.append('file', file)
-          body.append('selected', `${file.name === name}`)
-          await this.$komgaSeries.uploadThumbnail(series.id, body)
+          await this.$komgaSeries.uploadThumbnail(series.id, file, file.name === name)
         }
       }
 
