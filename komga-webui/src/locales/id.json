@@ -153,7 +153,7 @@
     "navigation_within_readlist": "Navigasi dalam daftar bacaan: {name}",
     "outdated_tooltip": "Berkas untuk buku ini telah diubah, buku ini perlu dianalisis ulang",
     "read_book": "Baca buku",
-    "read_incognito": "Baca penyamaran",
+    "read_incognito": "Baca dalam penyamaran",
     "size": "UKURAN"
   },
   "browse_collection": {
@@ -565,7 +565,7 @@
     "translation": "Terjemahan"
   },
   "library_navigation": {
-    "browse": "Telusuri",
+    "browse": "Jelajahi",
     "collections": "Koleksi",
     "readlists": "Daftar Bacaan",
     "recommended": "Disarankan"
@@ -633,6 +633,7 @@
   "server": {
     "server_management": {
       "button_empty_trash": "Kosongkan sampah untuk seluruh pustaka",
+      "button_scan_libraries": "Pindai semua pustaka",
       "button_shutdown": "Matikan server",
       "section_title": "Manajemen Server"
     },

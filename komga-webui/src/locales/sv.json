@@ -633,6 +633,7 @@
   "server": {
     "server_management": {
       "button_empty_trash": "Töm papperskorgen för alla bibliotek",
+      "button_scan_libraries": "Skanna alla bibliotek",
       "button_shutdown": "Stäng av",
       "section_title": "Serverhantering"
     },
