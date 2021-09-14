@@ -328,7 +328,7 @@
                 <!-- Gallery -->
                 <v-container class="d-flex flex-row flex-wrap">
                   <div
-                    class="col-6 col-lg-3 pa-1"
+                    class="col-6 col-sm-4 col-lg-3 pa-1"
                     v-for="(item, index) in [...uploadQueue, ...seriesThumbnails]"
                     :key="index">
                     <thumbnail-card
