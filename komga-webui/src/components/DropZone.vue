@@ -13,13 +13,13 @@ export default Vue.extend({
   methods: {
     dropHandler(event: Event) {
       if (event instanceof DragEvent && event.dataTransfer) {
-        let droppedFiles = event.dataTransfer.files
+        const droppedFiles = event.dataTransfer.files
         if (!droppedFiles) return
 
         this.$emit('on-input-change', Array.from(droppedFiles))
       }
       if (event.target instanceof HTMLInputElement && event.target.files) {
-        let selectedFiles = event.target.files
+        const selectedFiles = event.target.files
         if (!selectedFiles) return
 
         this.$emit('on-input-change', Array.from(selectedFiles))
