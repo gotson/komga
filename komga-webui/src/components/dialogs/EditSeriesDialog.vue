@@ -695,7 +695,7 @@ export default Vue.extend({
     },
     filesChangeHandler: function (files: File[]) {
       for (const file of files) {
-        if (!this.uploadQueue.includes(file)) {
+        if (!this.uploadQueue.find(value => value.name === file.name)) {
           this.uploadQueue.push(file)
         }
       }
