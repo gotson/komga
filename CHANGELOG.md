@@ -1,3 +1,14 @@
+## [0.125.4](https://github.com/gotson/komga/compare/v0.125.3...v0.125.4) (2021-09-14)
+
+
+### Bug Fixes
+
+* translated using Weblate ([9205951](https://github.com/gotson/komga/commit/92059518cba627fa3253b21966589b5d3dfc0f81))
+* **webui:** dashboard would not reload when series read progress changed ([62d378c](https://github.com/gotson/komga/commit/62d378c7175f7e6faf71c625c7d5b164bdcf03e2))
+* don't update read progress data upon upgrade or restore ([72d3451](https://github.com/gotson/komga/commit/72d34511409678cc6b4f7a5d8ea9f5d8159565d9))
+* don't update read progress for already read books when series is marked as read ([a6164da](https://github.com/gotson/komga/commit/a6164dadb7dfe78b550b5bfcceca516afe5259c1))
+* insert batch in chunks ([1d0c578](https://github.com/gotson/komga/commit/1d0c57854c4b4ca63f66228193e64bcf8af2c091)), closes [#654](https://github.com/gotson/komga/issues/654)
+
 ## [0.125.3](https://github.com/gotson/komga/compare/v0.125.2...v0.125.3) (2021-09-10)
 
 

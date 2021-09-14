@@ -637,11 +637,11 @@
           "last": {
             "type": "boolean"
           },
-          "size": {
+          "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
-          "numberOfElements": {
+          "size": {
             "format": "int32",
             "type": "integer"
           },
@@ -784,11 +784,11 @@
           "last": {
             "type": "boolean"
           },
-          "size": {
+          "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
-          "numberOfElements": {
+          "size": {
             "format": "int32",
             "type": "integer"
           },
@@ -862,11 +862,11 @@
           "last": {
             "type": "boolean"
           },
-          "size": {
+          "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
-          "numberOfElements": {
+          "size": {
             "format": "int32",
             "type": "integer"
           },
@@ -927,11 +927,11 @@
           "last": {
             "type": "boolean"
           },
-          "size": {
+          "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
-          "numberOfElements": {
+          "size": {
             "format": "int32",
             "type": "integer"
           },
@@ -1003,11 +1003,11 @@
           "last": {
             "type": "boolean"
           },
-          "size": {
+          "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
-          "numberOfElements": {
+          "size": {
             "format": "int32",
             "type": "integer"
           },
@@ -1049,11 +1049,11 @@
           "last": {
             "type": "boolean"
           },
-          "size": {
+          "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
-          "numberOfElements": {
+          "size": {
             "format": "int32",
             "type": "integer"
           },
@@ -1730,10 +1730,15 @@
           "completed",
           "created",
           "lastModified",
-          "page"
+          "page",
+          "readDate"
         ],
         "properties": {
           "created": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "readDate": {
             "format": "date-time",
             "type": "string"
           },
