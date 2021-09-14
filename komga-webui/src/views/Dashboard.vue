@@ -208,6 +208,8 @@ import {
   BOOK_DELETED,
   READPROGRESS_CHANGED,
   READPROGRESS_DELETED,
+  READPROGRESS_SERIES_CHANGED,
+  READPROGRESS_SERIES_DELETED,
   SERIES_ADDED,
   SERIES_CHANGED,
   SERIES_DELETED,
@@ -217,7 +219,7 @@ import {SeriesDto} from '@/types/komga-series'
 import {LIBRARIES_ALL, LIBRARY_ROUTE} from '@/types/library'
 import {throttle} from 'lodash'
 import {subMonths} from 'date-fns'
-import {BookSseDto, ReadProgressSseDto, SeriesSseDto} from '@/types/komga-sse'
+import {BookSseDto, ReadProgressSeriesSseDto, ReadProgressSseDto, SeriesSseDto} from '@/types/komga-sse'
 import {LibraryDto} from '@/types/komga-libraries'
 import {PageLoader} from '@/types/pageLoader'
 
@@ -256,6 +258,8 @@ export default Vue.extend({
     this.$eventHub.$on(BOOK_DELETED, this.bookChanged)
     this.$eventHub.$on(READPROGRESS_CHANGED, this.readProgressChanged)
     this.$eventHub.$on(READPROGRESS_DELETED, this.readProgressChanged)
+    this.$eventHub.$on(READPROGRESS_SERIES_CHANGED, this.readProgressSeriesChanged)
+    this.$eventHub.$on(READPROGRESS_SERIES_DELETED, this.readProgressSeriesChanged)
   },
   beforeDestroy() {
     this.$eventHub.$off(SERIES_ADDED, this.seriesChanged)
@@ -266,6 +270,8 @@ export default Vue.extend({
     this.$eventHub.$off(BOOK_DELETED, this.bookChanged)
     this.$eventHub.$off(READPROGRESS_CHANGED, this.readProgressChanged)
     this.$eventHub.$off(READPROGRESS_DELETED, this.readProgressChanged)
+    this.$eventHub.$off(READPROGRESS_SERIES_CHANGED, this.readProgressSeriesChanged)
+    this.$eventHub.$off(READPROGRESS_SERIES_DELETED, this.readProgressSeriesChanged)
   },
   mounted() {
     if (this.individualLibrary) this.$store.commit('setLibraryRoute', {
@@ -336,6 +342,10 @@ export default Vue.extend({
       else if (this.loaderOnDeckBooks?.items.some(b => b.id === event.bookId)) this.reload()
       else if (this.loaderRecentlyReleasedBooks?.items.some(b => b.id === event.bookId)) this.reload()
       else if (this.loaderRecentlyReadBooks?.items.some(b => b.id === event.bookId)) this.reload()
+    },
+    readProgressSeriesChanged(event: ReadProgressSeriesSseDto) {
+      if (this.loaderUpdatedSeries?.items.some(s => s.id === event.seriesId)) this.reload()
+      else if (this.loaderNewSeries?.items.some(s => s.id === event.seriesId)) this.reload()
     },
     reload: throttle(function (this: any) {
       this.loadAll(this.libraryId, true)
