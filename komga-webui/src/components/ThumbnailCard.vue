@@ -1,37 +1,34 @@
 <template>
-  <div class="col-6 col-lg-3 pa-1">
-    <v-card>
-      <v-img
-        :src="getImage(item)"
-        aspect-ratio="0.7071"
-        contain />
-      <v-card-actions align="center">
-        <v-btn
-          icon
-          disabled>
-          <v-icon>
-            {{ getIcon(item) }}
-          </v-icon>
-        </v-btn>
-        <v-btn
-          icon
-          :color="selected ? 'success' : ''"
-          @click="onClickSelect"
-        >
-          <v-icon>mdi-check</v-icon>
-        </v-btn>
-        <v-btn
-          icon
-          v-if="isDeletable(item)"
-          :color="toBeDeleted ? 'error' : ''"
-          @click="onClickDelete"
-        >
-          <v-icon>mdi-trash-can-outline</v-icon>
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </div>
-
+  <v-card>
+    <v-img
+      :src="getImage(item)"
+      aspect-ratio="0.7071"
+      contain />
+    <v-card-actions align="center">
+      <v-btn
+        icon
+        disabled>
+        <v-icon>
+          {{ getIcon(item) }}
+        </v-icon>
+      </v-btn>
+      <v-btn
+        icon
+        :color="selected ? 'success' : ''"
+        @click="onClickSelect"
+      >
+        <v-icon>mdi-check</v-icon>
+      </v-btn>
+      <v-btn
+        icon
+        v-if="isDeletable(item)"
+        :color="toBeDeleted ? 'error' : ''"
+        @click="onClickDelete"
+      >
+        <v-icon>mdi-trash-can-outline</v-icon>
+      </v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script lang="ts">
@@ -56,40 +53,36 @@ export default Vue.extend({
     },
   },
   methods: {
-    getIcon: function (item: File | SeriesThumbnailDto): string {
+    getIcon(item: File | SeriesThumbnailDto): string {
       if (item instanceof File) {
         return 'mdi-cloud-upload-outline'
       } else {
         return item.type === 'SIDECAR' ? 'mdi-folder-outline' : 'mdi-cloud-check-outline'
       }
     },
-    getImage: function (item: File | SeriesThumbnailDto): string {
+    getImage(item: File | SeriesThumbnailDto): string {
       if (item instanceof File) {
         return this.extractImageFromFile(item)
       } else {
         return this.getThumbnailById(item)
       }
     },
-    extractImageFromFile: function (file: File): string {
-      return URL.createObjectURL(file)
-    },
-    getThumbnailById: function (thumbnail: SeriesThumbnailDto): string {
-      return seriesThumbnailUrlByThumbnailId(thumbnail.seriesId, thumbnail.id)
-    },
-    onClickSelect: function () {
+    extractImageFromFile: (file: File): string => URL.createObjectURL(file),
+    getThumbnailById: (thumbnail: SeriesThumbnailDto): string => seriesThumbnailUrlByThumbnailId(thumbnail.seriesId, thumbnail.id),
+    onClickSelect() {
       if (!this.selected) {
-        this.$emit('onSelectThumbnail', this.item)
+        this.$emit('on-select-thumbnail', this.item)
       }
     },
-    isDeletable: function (item: File | SeriesThumbnailDto) {
+    isDeletable(item: File | SeriesThumbnailDto) {
       if (item instanceof File) {
         return true
       } else {
         return item.type !== 'SIDECAR'
       }
     },
-    onClickDelete: function () {
-      this.$emit('onDeleteThumbnail', this.item)
+    onClickDelete() {
+      this.$emit('on-delete-thumbnail', this.item)
     },
   },
 })

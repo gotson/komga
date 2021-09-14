@@ -327,15 +327,18 @@
 
                 <!-- Gallery -->
                 <v-container class="d-flex flex-row flex-wrap">
-                  <thumbnail-card
+                  <div
+                    class="col-6 col-lg-3 pa-1"
                     v-for="item in [...uploadQueue, ...seriesThumbnails]"
-                    :key="getKey(item)"
-                    :item="item"
-                    :selected="isSelected(item)"
-                    :toBeDeleted="toBeDeleted(item)"
-                    @onSelectThumbnail="selectThumbnailHandler"
-                    @onDeleteThumbnail="deleteThumbnailHandler"
-                  />
+                    :key="getKey(item)">
+                    <thumbnail-card
+                      :item="item"
+                      :selected="isSelected(item)"
+                      :toBeDeleted="toBeDeleted(item)"
+                      @on-select-thumbnail="selectThumbnailHandler"
+                      @on-delete-thumbnail="deleteThumbnailHandler"
+                    />
+                  </div>
                 </v-container>
 
               </v-container>
