@@ -663,32 +663,6 @@ class BookDtoDaoTest(
     }
 
     @Test
-    fun `given books when searching by single letter then results are ordered by rank`() {
-      // given
-      seriesLifecycle.addBooks(
-        series,
-        listOf(
-          makeBook("J", seriesId = series.id, libraryId = library.id),
-          makeBook("Adventures of J. J.", seriesId = series.id, libraryId = library.id),
-          makeBook("Jackal", seriesId = series.id, libraryId = library.id),
-        )
-      )
-
-      searchIndexLifecycle.rebuildIndex()
-
-      // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(searchTerm = "j"),
-        user.id,
-        UnpagedSorted(Sort.by("relevance")),
-      ).content
-
-      // then
-      assertThat(found).hasSize(2)
-      assertThat(found.map { it.name }).containsExactly("J", "Adventures of J. J.")
-    }
-
-    @Test
     fun `when searching by unknown field then empty result are returned and no exception is thrown`() {
       assertThatCode {
         // when
