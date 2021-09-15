@@ -1,3 +1,17 @@
+# [0.126.0](https://github.com/gotson/komga/compare/v0.125.4...v0.126.0) (2021-09-15)
+
+
+### Bug Fixes
+
+* disable http session in database for now ([3448140](https://github.com/gotson/komga/commit/3448140f2d16d35e208d83b65f524aa37b70b7f0))
+
+
+### Features
+
+* index ngrams to allow partial search ([6e0c51e](https://github.com/gotson/komga/commit/6e0c51ed1d88417b78cb95c01ca17102806726bb))
+* index titleSort for series ([817c293](https://github.com/gotson/komga/commit/817c2939b038efa548bb0a348d0dcad60b0e6909)), closes [#626](https://github.com/gotson/komga/issues/626)
+* index updater facility on startup ([a7204e8](https://github.com/gotson/komga/commit/a7204e85b986e890f367be558b144d872205990a))
+
 ## [0.125.4](https://github.com/gotson/komga/compare/v0.125.3...v0.125.4) (2021-09-14)
 
 
