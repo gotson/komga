@@ -21,10 +21,11 @@ private val logger = KotlinLogging.logger {}
 @Component
 class LuceneHelper(
   private val directory: Directory,
-  private val analyzer: Analyzer,
+  private val indexAnalyzer: Analyzer,
+  private val searchAnalyzer: Analyzer,
 ) {
 
-  fun getIndexWriter() = IndexWriter(directory, IndexWriterConfig(analyzer))
+  fun getIndexWriter() = IndexWriter(directory, IndexWriterConfig(indexAnalyzer))
 
   fun getIndexReader(): DirectoryReader = DirectoryReader.open(directory)
 
@@ -33,7 +34,7 @@ class LuceneHelper(
   fun searchEntitiesIds(searchTerm: String?, entity: LuceneEntity): List<String>? {
     return if (!searchTerm.isNullOrBlank()) {
       try {
-        val fieldsQuery = MultiFieldQueryParser(entity.defaultFields, analyzer).apply {
+        val fieldsQuery = MultiFieldQueryParser(entity.defaultFields, searchAnalyzer).apply {
           defaultOperator = QueryParser.Operator.AND
         }.parse(searchTerm)
 

@@ -55,5 +55,17 @@ class KomgaProperties {
   class Lucene {
     @get:NotBlank
     var dataDirectory: String = ""
+
+    var indexAnalyzer = IndexAnalyzer()
+
+    class IndexAnalyzer {
+      @get:Positive
+      var minGram: Int = 3
+
+      @get:Positive
+      var maxGram: Int = 10
+
+      var preserveOriginal: Boolean = true
+    }
   }
 }

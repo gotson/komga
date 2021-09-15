@@ -3,45 +3,7 @@ package org.gotson.komga.infrastructure.search
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class MultilingualAnalyzerTest {
-
-  private val analyzer = MultiLingualAnalyzer()
-
-  @Test
-  fun `english text`() {
-    // given
-    val text = "The incredible adventures of Batman, the man who is also a bat!"
-
-    // when
-    val tokens = analyzer.getTokens(text)
-
-    // then
-    assertThat(tokens).containsExactly("the", "incredible", "adventures", "of", "batman", "the", "man", "who", "is", "also", "a", "bat")
-  }
-
-  @Test
-  fun accents() {
-    // given
-    val text = "Éric èl rojo"
-
-    // when
-    val tokens = analyzer.getTokens(text)
-
-    // then
-    assertThat(tokens).containsExactlyInAnyOrder("eric", "el", "rojo")
-  }
-
-  @Test
-  fun isbn() {
-    // given
-    val text = "9782413016878"
-
-    // when
-    val tokens = analyzer.getTokens(text)
-
-    // then
-    assertThat(tokens).containsExactly("9782413016878")
-  }
+class MultilingualNGramAnalyzerTest {
 
   @Test
   fun `single letter`() {
@@ -49,10 +11,12 @@ class MultilingualAnalyzerTest {
     val text = "J"
 
     // when
-    val tokens = analyzer.getTokens(text)
+    val tokens = MultiLingualNGramAnalyzer(3, 8, false).getTokens(text)
+    val tokensPreserveOriginal = MultiLingualNGramAnalyzer(3, 8, true).getTokens(text)
 
     // then
-    assertThat(tokens).containsExactly("j")
+    assertThat(tokensPreserveOriginal).containsExactly("j")
+    assertThat(tokens).isEmpty()
   }
 
   @Test
@@ -61,7 +25,7 @@ class MultilingualAnalyzerTest {
     val text = "[不道德公會][河添太一 ][東立]Vol.04-搬运"
 
     // when
-    val tokens = analyzer.getTokens(text)
+    val tokens = MultiLingualNGramAnalyzer(3, 8, true).getTokens(text)
 
     // then
     assertThat(tokens).containsExactly("不道", "道德", "德公", "公會", "河添", "添太", "太一", "東立", "vol", "04", "搬运")
@@ -73,7 +37,7 @@ class MultilingualAnalyzerTest {
     val text = "不道德公會河添太一東立搬运"
 
     // when
-    val tokens = analyzer.getTokens(text)
+    val tokens = MultiLingualNGramAnalyzer(3, 8, true).getTokens(text)
 
     // then
     assertThat(tokens).containsExactly("不道", "道德", "德公", "公會", "會河", "河添", "添太", "太一", "一東", "東立", "立搬", "搬运")
@@ -85,7 +49,7 @@ class MultilingualAnalyzerTest {
     val text = "探偵はもう、死んでいる。"
 
     // when
-    val tokens = analyzer.getTokens(text)
+    val tokens = MultiLingualNGramAnalyzer(3, 8, true).getTokens(text)
 
     // then
     assertThat(tokens).containsExactly("探偵", "偵は", "はも", "もう", "死ん", "んで", "でい", "いる")
@@ -97,7 +61,7 @@ class MultilingualAnalyzerTest {
     val text = "ワンパンマン"
 
     // when
-    val tokens = analyzer.getTokens(text)
+    val tokens = MultiLingualNGramAnalyzer(3, 8, true).getTokens(text)
 
     // then
     assertThat(tokens).containsExactly("ワン", "ンパ", "パン", "ンマ", "マン")
@@ -109,7 +73,7 @@ class MultilingualAnalyzerTest {
     val text = "고교생을 환불해 주세요"
 
     // when
-    val tokens = analyzer.getTokens(text)
+    val tokens = MultiLingualNGramAnalyzer(3, 8, true).getTokens(text)
 
     // then
     assertThat(tokens).containsExactly("고교", "교생", "생을", "환불", "불해", "주세", "세요")
