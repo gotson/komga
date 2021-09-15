@@ -63,8 +63,13 @@ export default Vue.extend({
   name: 'ThumbnailCard',
   props: {
     item: {
-      type:  Object as () => File | SeriesThumbnailDto,
       required: true,
+      validator: value => {
+        if (value instanceof File) {
+          return true
+        }
+        return value.id && value.seriesId && value.type && value.selected
+      },
     },
     selected: {
       type: Boolean,
