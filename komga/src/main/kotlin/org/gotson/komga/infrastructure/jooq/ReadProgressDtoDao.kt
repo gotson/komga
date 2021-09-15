@@ -58,9 +58,15 @@ class ReadProgressDtoDao(
       .fetch()
       .toList()
 
+    val maxNumberSort = dsl.select(DSL.max(d.NUMBER_SORT))
+      .from(b)
+      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
+      .where(b.SERIES_ID.eq(seriesId))
+      .fetchOne(DSL.max(d.NUMBER_SORT)) ?: 0F
+
     val booksCount = getSeriesBooksCount(seriesId, userId)
 
-    return booksCountToDtoV2(booksCount, numberSortReadProgress.lastRead() ?: 0F)
+    return booksCountToDtoV2(booksCount, numberSortReadProgress.lastRead() ?: 0F, maxNumberSort)
   }
 
   private fun getSeriesBooksCount(seriesId: String, userId: String) = dsl
@@ -122,13 +128,14 @@ class ReadProgressDtoDao(
       lastReadContinuousIndex = lastReadContinuousIndex,
     )
 
-  private fun booksCountToDtoV2(booksCount: BooksCount, lastReadContinuousNumberSort: Float): TachiyomiReadProgressV2Dto =
+  private fun booksCountToDtoV2(booksCount: BooksCount, lastReadContinuousNumberSort: Float, maxNumberSort: Float): TachiyomiReadProgressV2Dto =
     TachiyomiReadProgressV2Dto(
       booksCount = booksCount.totalCount,
       booksUnreadCount = booksCount.unreadCount,
       booksInProgressCount = booksCount.inProgressCount,
       booksReadCount = booksCount.readCount,
       lastReadContinuousNumberSort = lastReadContinuousNumberSort,
+      maxNumberSort = maxNumberSort,
     )
 
   private fun readProgressCondition(userId: String): Condition = r.USER_ID.eq(userId).or(r.USER_ID.isNull)

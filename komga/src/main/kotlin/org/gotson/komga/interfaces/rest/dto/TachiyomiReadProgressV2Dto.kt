@@ -6,4 +6,5 @@ data class TachiyomiReadProgressV2Dto(
   val booksUnreadCount: Int,
   val booksInProgressCount: Int,
   val lastReadContinuousNumberSort: Float,
+  val maxNumberSort: Float,
 )
