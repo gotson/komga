@@ -661,9 +661,22 @@ export default Vue.extend({
     async editSeries(): Promise<boolean> {
       if (this.single && this.uploadQueue.length > 0) {
         const series = this.series as SeriesDto
+        let hadErrors = false
         for (const file of this.uploadQueue) {
-          await this.$komgaSeries.uploadThumbnail(series.id, file, file.name === this.selectedThumbnail)
+          try {
+            const result = await this.$komgaSeries.uploadThumbnail(series.id, file, file.name === this.selectedThumbnail)
+            if (result.violations) {
+              for (const violation of result.violations) {
+                this.$eventHub.$emit(ERROR, {message: violation.message} as ErrorEvent)
+              }
+              hadErrors = true
+            }
+          } catch (e) {
+            this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
+            hadErrors = true
+          }
         }
+        if (hadErrors) return false
       }
 
       if (this.single && this.selectedThumbnail !== '') {

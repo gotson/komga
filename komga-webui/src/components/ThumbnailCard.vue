@@ -4,14 +4,37 @@
       :src="getImage(item)"
       aspect-ratio="0.7071"
       contain />
-    <v-card-actions align="center">
-      <v-btn
-        icon
-        disabled>
-        <v-icon>
-          {{ getIcon(item) }}
-        </v-icon>
-      </v-btn>
+    <v-card-actions v-if="isFileToBig(item)">
+      <v-tooltip top>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            icon
+            color="error"
+            v-bind="attrs"
+            v-on="on">
+            <v-icon>
+              mdi-alert-circle
+            </v-icon>
+          </v-btn>
+        </template>
+        <span>File to big!</span>
+      </v-tooltip>
+    </v-card-actions>
+    <v-card-actions v-else align="center">
+      <v-tooltip top>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            icon
+            v-bind="attrs"
+            v-on="on">
+            <v-icon>
+              {{ getIcon(item) }}
+            </v-icon>
+          </v-btn>
+        </template>
+        <span>{{ getTooltip(item) }}</span>
+      </v-tooltip>
+
       <v-btn
         icon
         :color="selected ? 'success' : ''"
@@ -58,6 +81,20 @@ export default Vue.extend({
         return 'mdi-cloud-upload-outline'
       } else {
         return item.type === 'SIDECAR' ? 'mdi-folder-outline' : 'mdi-cloud-check-outline'
+      }
+    },
+    getTooltip(item: File | SeriesThumbnailDto): string {
+      if (item instanceof File) {
+        return 'To be uploaded'
+      } else {
+        return item.type === 'SIDECAR' ? 'Folder file' : 'User uploaded'
+      }
+    },
+    isFileToBig(item: File | SeriesThumbnailDto): boolean {
+      if (item instanceof File) {
+        return item.size > 1_000_000
+      } else {
+        return false
       }
     },
     getImage(item: File | SeriesThumbnailDto): string {
