@@ -23,6 +23,11 @@ class SearchIndexController(
     if (!luceneHelper.indexExists()) {
       logger.info { "Lucene index not found, trigger rebuild" }
       taskReceiver.rebuildIndex(HIGHEST_PRIORITY)
+    } else {
+      logger.info { "Lucene index version: ${luceneHelper.getIndexVersion()}" }
+      when (luceneHelper.getIndexVersion()) {
+        1 -> taskReceiver.rebuildIndex(HIGHEST_PRIORITY)
+      }
     }
   }
 }

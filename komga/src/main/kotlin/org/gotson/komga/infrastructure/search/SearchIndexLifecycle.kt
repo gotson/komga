@@ -26,6 +26,7 @@ import kotlin.math.ceil
 import kotlin.time.measureTime
 
 private val logger = KotlinLogging.logger {}
+private const val INDEX_VERSION = 2
 
 @Component
 class SearchIndexLifecycle(
@@ -71,6 +72,9 @@ class SearchIndexLifecycle(
         logger.info { "Wrote ${entity.name} index in $duration" }
       }
     }
+
+    luceneHelper.setIndexVersion(INDEX_VERSION)
+    logger.info { "Lucene index version: ${luceneHelper.getIndexVersion()}" }
   }
 
   @JmsListener(destination = QUEUE_SSE, selector = QUEUE_SSE_SELECTOR, containerFactory = TOPIC_FACTORY)

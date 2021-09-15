@@ -2,6 +2,9 @@ package org.gotson.komga.infrastructure.search
 
 import mu.KotlinLogging
 import org.apache.lucene.analysis.Analyzer
+import org.apache.lucene.document.Document
+import org.apache.lucene.document.Field
+import org.apache.lucene.document.StringField
 import org.apache.lucene.index.DirectoryReader
 import org.apache.lucene.index.IndexWriter
 import org.apache.lucene.index.IndexWriterConfig
@@ -30,6 +33,23 @@ class LuceneHelper(
   fun getIndexReader(): DirectoryReader = DirectoryReader.open(directory)
 
   fun indexExists(): Boolean = DirectoryReader.indexExists(directory)
+
+  fun setIndexVersion(version: Int) {
+    getIndexWriter().use { indexWriter ->
+      val doc = Document().apply {
+        add(StringField("index_version", version.toString(), Field.Store.YES))
+        add(StringField("type", "index_version", Field.Store.NO))
+      }
+      indexWriter.updateDocument(Term("type", "index_version"), doc)
+    }
+  }
+
+  fun getIndexVersion(): Int =
+    getIndexReader().use { index ->
+      val searcher = IndexSearcher(index)
+      val topDocs = searcher.search(TermQuery(Term("type", "index_version")), 1)
+      topDocs.scoreDocs.map { searcher.doc(it.doc)["index_version"] }.firstOrNull()?.toIntOrNull() ?: 1
+    }
 
   fun searchEntitiesIds(searchTerm: String?, entity: LuceneEntity): List<String>? {
     return if (!searchTerm.isNullOrBlank()) {
