@@ -64,11 +64,11 @@ export default Vue.extend({
   props: {
     item: {
       required: true,
-      validator: value => {
+      validator: (value: any) => {
         if (value instanceof File) {
           return true
         }
-        return value.id && value.seriesId && value.type && value.selected
+        return 'id' in value && 'seriesId' in value && 'type' in value && 'selected' in value
       },
     },
     selected: {
