@@ -175,7 +175,7 @@ class SearchIndexLifecycleTest(
       }
 
       seriesMetadataRepository.findById(series.id).let {
-        seriesMetadataRepository.update(it.copy(title = "updated"))
+        seriesMetadataRepository.update(it.copy(title = "updated", titleSort = "updated"))
       }
       mockEventPublisher.publishEvent(DomainEvent.SeriesUpdated(series))
 
@@ -279,7 +279,7 @@ class SearchIndexLifecycleTest(
 
     @Test
     fun `given an entity when updating then it is updated in the index`() {
-      val readList = org.gotson.komga.domain.model.ReadList("readlist")
+      val readList = ReadList("readlist")
       readListLifecycle.addReadList(readList)
 
       luceneHelper.searchEntitiesIds("readlist", LuceneEntity.ReadList).let { found ->
@@ -304,7 +304,7 @@ class SearchIndexLifecycleTest(
 
     @Test
     fun `given an entity when deleting then it is removed from the index`() {
-      val readList = org.gotson.komga.domain.model.ReadList("readlist")
+      val readList = ReadList("readlist")
       readListLifecycle.addReadList(readList)
 
       luceneHelper.searchEntitiesIds("readlist", LuceneEntity.ReadList).let { found ->
