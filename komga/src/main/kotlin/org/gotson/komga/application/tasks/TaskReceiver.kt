@@ -24,7 +24,7 @@ private val logger = KotlinLogging.logger {}
 
 @Service
 class TaskReceiver(
-  private val connectionFactory: ConnectionFactory,
+  connectionFactory: ConnectionFactory,
   private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
   private val bookConverter: BookConverter,
