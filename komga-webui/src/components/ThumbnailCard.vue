@@ -104,13 +104,11 @@ export default Vue.extend({
     },
     getImage(item: File | SeriesThumbnailDto): string {
       if (item instanceof File) {
-        return this.extractImageFromFile(item)
+        return URL.createObjectURL(item)
       } else {
-        return this.getThumbnailById(item)
+        return seriesThumbnailUrlByThumbnailId(item.seriesId, item.id)
       }
     },
-    extractImageFromFile: (file: File): string => URL.createObjectURL(file),
-    getThumbnailById: (thumbnail: SeriesThumbnailDto): string => seriesThumbnailUrlByThumbnailId(thumbnail.seriesId, thumbnail.id),
     onClickSelect() {
       if (!this.selected) {
         this.$emit('on-select-thumbnail', this.item)

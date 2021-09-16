@@ -322,15 +322,18 @@
               <v-container fluid>
                 <!-- Upload -->
                 <v-row>
-                  <drop-zone @on-input-change="filesChangeHandler" />
+                  <v-col>
+                  <drop-zone @on-input-change="filesChangeHandler" class="pa-8"/>
+                  </v-col>
                 </v-row>
 
                 <!-- Gallery -->
-                <v-container class="d-flex flex-row flex-wrap">
-                  <div
-                    class="col-6 col-sm-4 col-lg-3 pa-1"
+                <v-row>
+                  <v-col
+                    cols="6" sm="4" lg="3" class="pa-1"
                     v-for="(item, index) in [...uploadQueue, ...seriesThumbnails]"
-                    :key="index">
+                    :key="index"
+                  >
                     <thumbnail-card
                       :item="item"
                       :selected="isSelected(item)"
@@ -338,8 +341,8 @@
                       @on-select-thumbnail="selectThumbnailHandler"
                       @on-delete-thumbnail="deleteThumbnailHandler"
                     />
-                  </div>
-                </v-container>
+                  </v-col>
+                </v-row>
 
               </v-container>
             </v-card>
@@ -362,7 +365,7 @@ import {SeriesStatus} from '@/types/enum-series'
 import {helpers, minValue, requiredIf} from 'vuelidate/lib/validators'
 import {ReadingDirection} from '@/types/enum-books'
 import {SeriesDto, SeriesThumbnailDto} from '@/types/komga-series'
-import {ERROR} from '@/types/events'
+import {ERROR, ErrorEvent} from '@/types/events'
 import DropZone from '@/components/DropZone.vue'
 import {seriesThumbnailUrlByThumbnailId} from '@/functions/urls'
 import {coverBase64} from '@/types/image'
