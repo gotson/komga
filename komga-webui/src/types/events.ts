@@ -28,7 +28,12 @@ export const THUMBNAILBOOK_ADDED = 'thumbnailbook-added'
 export const THUMBNAILSERIES_ADDED = 'thumbnailseries-added'
 
 export const ERROR = 'error'
+export const NOTIFICATION = 'notification'
 
-export interface ErrorEvent{
+export interface ErrorEvent {
+  message: string,
+}
+
+export interface NotificationEvent {
   message: string,
 }

@@ -4,15 +4,19 @@
       <v-col><span class="text-h5">{{ $t('server.server_management.section_title') }}</span></v-col>
     </v-row>
     <v-row>
-      <v-col>
-        <v-btn @click="scanAllLibraries"
-               :class="$vuetify.rtl ? 'ml-4' : 'mr-4'"
-        >{{ $t('server.server_management.button_scan_libraries') }}
+      <v-col cols="auto">
+        <v-btn @click="scanAllLibraries">{{ $t('server.server_management.button_scan_libraries') }}</v-btn>
+      </v-col>
+      <v-col cols="auto">
+        <v-btn @click="confirmEmptyTrash = true">{{ $t('server.server_management.button_empty_trash') }}</v-btn>
+      </v-col>
+      <v-col cols="auto">
+        <v-btn @click="cancelAllTasks"
+               color="warning"
+        >{{ $t('server.server_management.button_cancel_all_tasks') }}
         </v-btn>
-        <v-btn @click="confirmEmptyTrash = true"
-               :class="$vuetify.rtl ? 'ml-4' : 'mr-4'"
-        >{{ $t('server.server_management.button_empty_trash') }}
-        </v-btn>
+      </v-col>
+      <v-col cols="auto">
         <v-btn @click="modalStopServer = true"
                color="error"
         >{{ $t('server.server_management.button_shutdown') }}
@@ -43,7 +47,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
-import {ERROR} from '@/types/events'
+import {ERROR, ErrorEvent, NOTIFICATION, NotificationEvent} from '@/types/events'
 import {LibraryDto} from '@/types/komga-libraries'
 
 export default Vue.extend({
@@ -68,6 +72,12 @@ export default Vue.extend({
       this.libraries.forEach(library => {
         this.$komgaLibraries.scanLibrary(library)
       })
+    },
+    async cancelAllTasks() {
+      const count = await this.$komgaTasks.deleteAllTasks()
+      this.$eventHub.$emit(NOTIFICATION, {
+        message: this.$tc('server.server_management.notification_tasks_cancelled', count),
+      } as NotificationEvent)
     },
     async stopServer() {
       try {

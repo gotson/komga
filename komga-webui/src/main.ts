@@ -18,6 +18,7 @@ import komgaSeries from './plugins/komga-series.plugin'
 import komgaUsers from './plugins/komga-users.plugin'
 import komgaTransientBooks from './plugins/komga-transientbooks.plugin'
 import komgaSse from './plugins/komga-sse.plugin'
+import komgaTasks from './plugins/komga-tasks.plugin'
 import vuetify from './plugins/vuetify'
 import './public-path'
 import router from './router'
@@ -43,6 +44,7 @@ Vue.use(komgaUsers, {store: store, http: Vue.prototype.$http})
 Vue.use(komgaLibraries, {store: store, http: Vue.prototype.$http})
 Vue.use(komgaSse, {eventHub: Vue.prototype.$eventHub, store: store})
 Vue.use(actuator, {http: Vue.prototype.$http})
+Vue.use(komgaTasks, {http: Vue.prototype.$http})
 
 
 Vue.config.productionTip = false
