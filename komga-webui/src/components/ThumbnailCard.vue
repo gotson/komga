@@ -34,11 +34,10 @@
         <span>{{ $t('thumbnail_card.tooltip_mark_as_selected') }}</span>
       </v-tooltip>
 
-      <v-tooltip top>
+      <v-tooltip v-if="isDeletable(item)" top>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             icon
-            v-if="isDeletable(item)"
             :color="toBeDeleted ? 'error' : ''"
             @click="onClickDelete"
             v-bind="attrs"
