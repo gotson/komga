@@ -667,19 +667,17 @@ export default Vue.extend({
         let hadErrors = false
         for (const file of this.poster.uploadQueue) {
           try {
-            const result = await this.$komgaSeries.uploadThumbnail(series.id, file, file.name === this.poster.selectedThumbnail)
-            if (result.violations) {
-              for (const violation of result.violations) {
-                this.$eventHub.$emit(ERROR, {message: violation.message} as ErrorEvent)
-              }
-              hadErrors = true
-            }
+            await this.$komgaSeries.uploadThumbnail(series.id, file, file.name === this.poster.selectedThumbnail)
+            this.deleteThumbnailHandler(file)
           } catch (e) {
             this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
             hadErrors = true
           }
         }
-        if (hadErrors) return false
+        if (hadErrors) {
+          await this.getThumbnails(series)
+          return false
+        }
       }
 
       if (this.single && this.poster.selectedThumbnail !== '') {
