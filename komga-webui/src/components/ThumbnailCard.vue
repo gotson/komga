@@ -7,15 +7,13 @@
     <v-card-actions align="center">
       <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            icon
+          <v-icon
+            class="v-btn--icon v-size--default px-2"
             :color="getColor(item)"
             v-bind="attrs"
             v-on="on">
-            <v-icon>
-              {{ getIcon(item) }}
-            </v-icon>
-          </v-btn>
+            {{ getIcon(item) }}
+          </v-icon>
         </template>
         <span>{{ getTooltip(item) }}</span>
       </v-tooltip>
