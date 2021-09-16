@@ -1,3 +1,16 @@
+# [0.127.0](https://github.com/gotson/komga/compare/v0.126.0...v0.127.0) (2021-09-16)
+
+
+### Bug Fixes
+
+* **api:** add maxNumberSort to TachiyomiReadProgressV2Dto.kt ([5e9cb43](https://github.com/gotson/komga/commit/5e9cb43710a1263aead9fe3479a7a3c4c532535e))
+
+
+### Features
+
+* **api:** cancel all tasks ([aff4418](https://github.com/gotson/komga/commit/aff4418256bd437d1da40e0bcc612ecfa9312d0a))
+* **webui:** cancel all tasks from Server Settings ([3bbb521](https://github.com/gotson/komga/commit/3bbb521bd6284e44cb396cf5a58b189813207744)), closes [#658](https://github.com/gotson/komga/issues/658)
+
 # [0.126.0](https://github.com/gotson/komga/compare/v0.125.4...v0.126.0) (2021-09-15)
 
 

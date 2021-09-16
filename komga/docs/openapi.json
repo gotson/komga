@@ -602,10 +602,15 @@
           "booksInProgressCount",
           "booksReadCount",
           "booksUnreadCount",
-          "lastReadContinuousNumberSort"
+          "lastReadContinuousNumberSort",
+          "maxNumberSort"
         ],
         "properties": {
           "lastReadContinuousNumberSort": {
+            "format": "float",
+            "type": "number"
+          },
+          "maxNumberSort": {
             "format": "float",
             "type": "number"
           },
@@ -3522,6 +3527,37 @@
         ],
         "tags": [
           "library-controller"
+        ]
+      }
+    },
+    "/api/v1/tasks": {
+      "delete": {
+        "operationId": "emptyTaskQueue",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "int32",
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "task-controller"
         ]
       }
     },
