@@ -32,7 +32,7 @@ export default Vue.extend({
 <style scoped>
 .drop-zone {
   background:repeating-linear-gradient(
-    45deg,
+    135deg,
     var(--v-base-lighten1),
     var(--v-base-lighten1) 20px,
     var(--v-base-darken1) 20px,
@@ -41,7 +41,6 @@ export default Vue.extend({
   color: var(--v-contrast-light-2-base);
   display: block;
   font-weight: 600;
-  padding: 3em;
   text-align: center;
   width: 100%;
 }
