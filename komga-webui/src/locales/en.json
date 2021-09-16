@@ -681,5 +681,13 @@
     "add_library": "Add library",
     "no_libraries_yet": "No libraries have been added yet!",
     "welcome_message": "Welcome to Komga"
+  },
+  "thumbnail_card": {
+    "tooltip_to_big": "File to big!",
+    "tooltip_to_be_uploaded": "To be uploaded",
+    "tooltip_sidecar": "Folder file",
+    "tooltip_user_uploaded": "User uploaded",
+    "tooltip_mark_as_selected": "Mark as selected",
+    "tooltip_delete": "Delete"
   }
 }

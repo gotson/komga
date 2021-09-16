@@ -4,27 +4,12 @@
       :src="getImage(item)"
       aspect-ratio="0.7071"
       contain />
-    <v-card-actions v-if="isFileToBig(item)">
+    <v-card-actions align="center">
       <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             icon
-            color="error"
-            v-bind="attrs"
-            v-on="on">
-            <v-icon>
-              mdi-alert-circle
-            </v-icon>
-          </v-btn>
-        </template>
-        <span>File to big!</span>
-      </v-tooltip>
-    </v-card-actions>
-    <v-card-actions v-else align="center">
-      <v-tooltip top>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            icon
+            :color="getColor(item)"
             v-bind="attrs"
             v-on="on">
             <v-icon>
@@ -35,21 +20,34 @@
         <span>{{ getTooltip(item) }}</span>
       </v-tooltip>
 
-      <v-btn
-        icon
-        :color="selected ? 'success' : ''"
-        @click="onClickSelect"
-      >
-        <v-icon>mdi-check</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        v-if="isDeletable(item)"
-        :color="toBeDeleted ? 'error' : ''"
-        @click="onClickDelete"
-      >
-        <v-icon>mdi-trash-can-outline</v-icon>
-      </v-btn>
+      <v-tooltip v-if="!isFileToBig(item)" top>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            icon
+            :color="selected ? 'success' : ''"
+            @click="onClickSelect"
+            v-bind="attrs"
+            v-on="on">
+            <v-icon>mdi-check</v-icon>
+          </v-btn>
+        </template>
+        <span>{{ $t('thumbnail_card.tooltip_mark_as_selected') }}</span>
+      </v-tooltip>
+
+      <v-tooltip top>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            icon
+            v-if="isDeletable(item)"
+            :color="toBeDeleted ? 'error' : ''"
+            @click="onClickDelete"
+            v-bind="attrs"
+            v-on="on">
+            <v-icon>mdi-trash-can-outline</v-icon>
+          </v-btn>
+        </template>
+        <span>{{ $t('thumbnail_card.tooltip_delete') }}</span>
+      </v-tooltip>
     </v-card-actions>
   </v-card>
 </template>
@@ -83,16 +81,35 @@ export default Vue.extend({
   methods: {
     getIcon(item: File | SeriesThumbnailDto): string {
       if (item instanceof File) {
-        return 'mdi-cloud-upload-outline'
+        if (this.isFileToBig(item)) {
+          return 'mdi-alert-circle'
+        } else {
+          return 'mdi-cloud-upload-outline'
+        }
       } else {
-        return item.type === 'SIDECAR' ? 'mdi-folder-outline' : 'mdi-cloud-check-outline'
+        if (item.type === 'SIDECAR') {
+          return 'mdi-folder-outline'
+        } else {
+          return 'mdi-cloud-check-outline'
+        }
       }
+    },
+    getColor(item: File | SeriesThumbnailDto): string {
+      return item instanceof File && this.isFileToBig(item) ? 'error' : ''
     },
     getTooltip(item: File | SeriesThumbnailDto): string {
       if (item instanceof File) {
-        return 'To be uploaded'
+        if (this.isFileToBig(item)) {
+          return this.$tc('thumbnail_card.tooltip_to_big')
+        } else {
+          return this.$tc('thumbnail_card.tooltip_to_be_uploaded')
+        }
       } else {
-        return item.type === 'SIDECAR' ? 'Folder file' : 'User uploaded'
+        if (item.type === 'SIDECAR') {
+          return this.$tc('thumbnail_card.tooltip_sidecar')
+        } else {
+          return this.$tc('thumbnail_card.tooltip_user_uploaded')
+        }
       }
     },
     isFileToBig(item: File | SeriesThumbnailDto): boolean {
