@@ -1,3 +1,15 @@
+# [0.128.0](https://github.com/gotson/komga/compare/v0.127.0...v0.128.0) (2021-09-17)
+
+
+### Bug Fixes
+
+* **webui:** recompute scrollability on mutation ([d2212c6](https://github.com/gotson/komga/commit/d2212c63fc775d702b6f54a658fbbe5704daa883)), closes [#680](https://github.com/gotson/komga/issues/680)
+
+
+### Features
+
+* **webui:** edit series thumbnails ([6757acf](https://github.com/gotson/komga/commit/6757acfd24b40e8b8258c5a4f9a90164f3a8c1c1))
+
 # [0.127.0](https://github.com/gotson/komga/compare/v0.126.0...v0.127.0) (2021-09-16)
 
 
