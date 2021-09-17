@@ -22,7 +22,7 @@
          @scroll="computeScrollability"
          v-resize="computeScrollability"
     >
-      <div class="d-inline-flex">
+      <div class="d-inline-flex" v-mutate="computeScrollability">
         <slot name="content" class="content"/>
         <slot name="content-append"/>
       </div>
