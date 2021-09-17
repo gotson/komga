@@ -3,19 +3,19 @@
     <v-img
       :src="getImage(item)"
       aspect-ratio="0.7071"
-      contain />
+      contain/>
     <v-card-actions align="center">
       <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
           <v-icon
             class="v-btn--icon v-size--default px-2"
-            :color="getColor(item)"
+            :color="isFileToBig(item) ? 'error' : ''"
             v-bind="attrs"
             v-on="on">
-            {{ getIcon(item) }}
+            {{ getStatusIcon(item) }}
           </v-icon>
         </template>
-        <span>{{ getTooltip(item) }}</span>
+        <span>{{ getStatusTooltip(item) }}</span>
       </v-tooltip>
 
       <v-tooltip v-if="!isFileToBig(item)" top>
@@ -29,7 +29,9 @@
             <v-icon>mdi-check</v-icon>
           </v-btn>
         </template>
-        <span>{{ $t('thumbnail_card.tooltip_mark_as_selected') }}</span>
+        <span>{{
+            selected ? $t('thumbnail_card.tooltip_selected') : $t('thumbnail_card.tooltip_mark_as_selected')
+          }}</span>
       </v-tooltip>
 
       <v-tooltip v-if="isDeletable(item)" top>
@@ -43,7 +45,9 @@
             <v-icon>mdi-trash-can-outline</v-icon>
           </v-btn>
         </template>
-        <span>{{ $t('thumbnail_card.tooltip_delete') }}</span>
+        <span>{{
+            toBeDeleted ? $t('thumbnail_card.tooltip_to_be_deleted') : $t('thumbnail_card.tooltip_delete')
+          }}</span>
       </v-tooltip>
     </v-card-actions>
   </v-card>
@@ -76,7 +80,7 @@ export default Vue.extend({
     },
   },
   methods: {
-    getIcon(item: File | SeriesThumbnailDto): string {
+    getStatusIcon(item: File | SeriesThumbnailDto): string {
       if (item instanceof File) {
         if (this.isFileToBig(item)) {
           return 'mdi-alert-circle'
@@ -91,21 +95,18 @@ export default Vue.extend({
         }
       }
     },
-    getColor(item: File | SeriesThumbnailDto): string {
-      return item instanceof File && this.isFileToBig(item) ? 'error' : ''
-    },
-    getTooltip(item: File | SeriesThumbnailDto): string {
+    getStatusTooltip(item: File | SeriesThumbnailDto): string {
       if (item instanceof File) {
         if (this.isFileToBig(item)) {
-          return this.$tc('thumbnail_card.tooltip_to_big')
+          return this.$t('thumbnail_card.tooltip_too_big').toString()
         } else {
-          return this.$tc('thumbnail_card.tooltip_to_be_uploaded')
+          return this.$t('thumbnail_card.tooltip_to_be_uploaded').toString()
         }
       } else {
         if (item.type === 'SIDECAR') {
-          return this.$tc('thumbnail_card.tooltip_sidecar')
+          return this.$t('thumbnail_card.tooltip_sidecar').toString()
         } else {
-          return this.$tc('thumbnail_card.tooltip_user_uploaded')
+          return this.$t('thumbnail_card.tooltip_user_uploaded').toString()
         }
       }
     },

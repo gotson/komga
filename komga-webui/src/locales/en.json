@@ -107,8 +107,8 @@
       "background_color": "Background color",
       "background_colors": {
         "black": "Black",
-        "white": "White",
-        "gray": "Gray"
+        "gray": "Gray",
+        "white": "White"
       },
       "display": "Display",
       "general": "General",
@@ -175,7 +175,6 @@
     "title": "{name} collection"
   },
   "common": {
-    "library": "Library",
     "all_libraries": "All Libraries",
     "books": "Books",
     "books_n": "No book | 1 book | {count} books",
@@ -193,6 +192,7 @@
     "go_to_library": "Go to library",
     "go_to_readlist": "Go to read list",
     "go_to_series": "Go to series",
+    "library": "Library",
     "locale_name": "English",
     "locale_rtl": "false",
     "lock_all": "Lock all",
@@ -396,8 +396,8 @@
       "field_total_book_count_error": "Total book count must be 1 or more",
       "mixed": "MIXED",
       "tab_general": "General",
-      "tab_tags": "Tags",
       "tab_poster": "Poster",
+      "tab_tags": "Tags",
       "tags_notice_multiple_edit": "You are editing tags for multiple series. This will override existing tags of each series."
     },
     "edit_user": {
@@ -667,6 +667,16 @@
     "light": "Light",
     "system": "System"
   },
+  "thumbnail_card": {
+    "tooltip_delete": "Delete",
+    "tooltip_mark_as_selected": "Mark as selected",
+    "tooltip_selected": "Selected",
+    "tooltip_sidecar": "Local artwork",
+    "tooltip_to_be_deleted": "To be deleted",
+    "tooltip_to_be_uploaded": "To be uploaded",
+    "tooltip_too_big": "File too big!",
+    "tooltip_user_uploaded": "User uploaded"
+  },
   "user_roles": {
     "ADMIN": "Administrator",
     "FILE_DOWNLOAD": "File download",
@@ -681,13 +691,5 @@
     "add_library": "Add library",
     "no_libraries_yet": "No libraries have been added yet!",
     "welcome_message": "Welcome to Komga"
-  },
-  "thumbnail_card": {
-    "tooltip_to_big": "File to big!",
-    "tooltip_to_be_uploaded": "To be uploaded",
-    "tooltip_sidecar": "Folder file",
-    "tooltip_user_uploaded": "User uploaded",
-    "tooltip_mark_as_selected": "Mark as selected",
-    "tooltip_delete": "Delete"
   }
 }

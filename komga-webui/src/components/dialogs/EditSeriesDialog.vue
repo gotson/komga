@@ -323,7 +323,7 @@
                 <!-- Upload -->
                 <v-row>
                   <v-col class="pa-1">
-                  <drop-zone @on-input-change="filesChangeHandler" class="pa-8"/>
+                    <drop-zone @on-input-change="addThumbnail" class="pa-8"/>
                   </v-col>
                 </v-row>
 
@@ -336,10 +336,10 @@
                   >
                     <thumbnail-card
                       :item="item"
-                      :selected="isSelected(item)"
-                      :toBeDeleted="toBeDeleted(item)"
-                      @on-select-thumbnail="selectThumbnailHandler"
-                      @on-delete-thumbnail="deleteThumbnailHandler"
+                      :selected="isThumbnailSelected(item)"
+                      :toBeDeleted="isThumbnailToBeDeleted(item)"
+                      @on-select-thumbnail="selectThumbnail"
+                      @on-delete-thumbnail="deleteThumbnail"
                     />
                   </v-col>
                 </v-row>
@@ -668,7 +668,7 @@ export default Vue.extend({
         for (const file of this.poster.uploadQueue) {
           try {
             await this.$komgaSeries.uploadThumbnail(series.id, file, file.name === this.poster.selectedThumbnail)
-            this.deleteThumbnailHandler(file)
+            this.deleteThumbnail(file)
           } catch (e) {
             this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
             hadErrors = true
@@ -689,9 +689,7 @@ export default Vue.extend({
       }
 
       if (this.single && this.poster.deleteQueue.length > 0) {
-        for (const toDelete of this.poster.deleteQueue) {
-          this.$komgaSeries.deleteThumbnail(toDelete.seriesId, toDelete.id)
-        }
+        this.poster.deleteQueue.forEach(toDelete => this.$komgaSeries.deleteThumbnail(toDelete.seriesId, toDelete.id))
       }
 
       const metadata = this.validateForm()
@@ -707,31 +705,31 @@ export default Vue.extend({
         return true
       } else return false
     },
-    filesChangeHandler: function (files: File[]) {
+    addThumbnail(files: File[]) {
       let hasSelected = false
       for (const file of files) {
         if (!this.poster.uploadQueue.find(value => value.name === file.name)) {
           this.poster.uploadQueue.push(file)
           if (!hasSelected) {
-            this.selectThumbnailHandler(file)
+            this.selectThumbnail(file)
             hasSelected = true
           }
         }
       }
     },
-    getThumbnails: async function (series: SeriesDto | SeriesDto[]) {
+    async getThumbnails(series: SeriesDto | SeriesDto[]) {
       if (Array.isArray(series)) return
 
       const thumbnails = await this.$komgaSeries.getThumbnails(series.id)
 
-      this.selectThumbnailHandler(thumbnails.find(({selected}) => selected))
+      this.selectThumbnail(thumbnails.find(x => x.selected))
 
       this.poster.seriesThumbnails = thumbnails
     },
-    isSelected: function (item: File | SeriesThumbnailDto): boolean {
+    isThumbnailSelected(item: File | SeriesThumbnailDto): boolean {
       return item instanceof File ? item.name === this.poster.selectedThumbnail : item.id === this.poster.selectedThumbnail
     },
-    selectThumbnailHandler: function (item: File | SeriesThumbnailDto | undefined) {
+    selectThumbnail(item: File | SeriesThumbnailDto | undefined) {
       if (!item) {
         return
       } else if (item instanceof File) {
@@ -740,24 +738,25 @@ export default Vue.extend({
         this.poster.selectedThumbnail = item.id
       }
     },
-    toBeDeleted: function (item: File | SeriesThumbnailDto) {
+    isThumbnailToBeDeleted(item: File | SeriesThumbnailDto) {
       if (item instanceof File) {
         return false
       } else {
         return this.poster.deleteQueue.includes(item)
       }
     },
-    deleteThumbnailHandler: function (item: File | SeriesThumbnailDto) {
+    deleteThumbnail(item: File | SeriesThumbnailDto) {
       if (item instanceof File) {
         const index = this.poster.uploadQueue.indexOf(item, 0)
         if (index > -1) {
           this.poster.uploadQueue.splice(index, 1)
         }
         if (item.name === this.poster.selectedThumbnail) {
-          this.selectThumbnailHandler(this.poster.seriesThumbnails.find(({selected}) => selected))
+          this.selectThumbnail(this.poster.seriesThumbnails.find(x => x.selected))
         }
       } else {
-        if (this.toBeDeleted(item)) {
+        // if thumbnail was marked for deletion, unmark it
+        if (this.isThumbnailToBeDeleted(item)) {
           const index = this.poster.deleteQueue.indexOf(item, 0)
           if (index > -1) {
             this.poster.deleteQueue.splice(index, 1)
