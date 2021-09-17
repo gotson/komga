@@ -375,18 +375,20 @@ class SeriesController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun postUserUploadedSeriesThumbnail(
     @PathVariable(name = "seriesId") seriesId: String,
-    @RequestParam("file") file: MultipartFile
+    @RequestParam("file") file: MultipartFile,
+    @RequestParam("selected") selected: Boolean = true,
   ) {
     val series = seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     if (!contentDetector.isImage(file.inputStream.buffered().use { contentDetector.detectMediaType(it) }))
       throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+
     seriesLifecycle.addThumbnailForSeries(
       ThumbnailSeries(
         seriesId = series.id,
         thumbnail = file.bytes,
         type = ThumbnailSeries.Type.USER_UPLOADED
       ),
-      MarkSelectedPreference.YES
+      if (selected) MarkSelectedPreference.YES else MarkSelectedPreference.NO
     )
   }
 

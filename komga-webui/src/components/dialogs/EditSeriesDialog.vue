@@ -31,6 +31,10 @@
             <v-icon left class="hidden-xs-only">mdi-tag-multiple</v-icon>
             {{ $t('dialog.edit_series.tab_tags') }}
           </v-tab>
+          <v-tab class="justify-start" v-if="single">
+            <v-icon left class="hidden-xs-only">mdi-image</v-icon>
+            {{ $t('dialog.edit_series.tab_poster') }}
+          </v-tab>
 
           <!--  Tab: General  -->
           <v-tab-item>
@@ -311,6 +315,38 @@
               </v-container>
             </v-card>
           </v-tab-item>
+
+          <!--  Tab: Thumbnails  -->
+          <v-tab-item v-if="single">
+            <v-card flat>
+              <v-container fluid>
+                <!-- Upload -->
+                <v-row>
+                  <v-col class="pa-1">
+                    <drop-zone @on-input-change="addThumbnail" class="pa-8"/>
+                  </v-col>
+                </v-row>
+
+                <!-- Gallery -->
+                <v-row>
+                  <v-col
+                    cols="6" sm="4" lg="3" class="pa-1"
+                    v-for="(item, index) in [...poster.uploadQueue, ...poster.seriesThumbnails]"
+                    :key="index"
+                  >
+                    <thumbnail-card
+                      :item="item"
+                      :selected="isThumbnailSelected(item)"
+                      :toBeDeleted="isThumbnailToBeDeleted(item)"
+                      @on-select-thumbnail="selectThumbnail"
+                      @on-delete-thumbnail="deleteThumbnail"
+                    />
+                  </v-col>
+                </v-row>
+
+              </v-container>
+            </v-card>
+          </v-tab-item>
         </v-tabs>
 
         <v-card-actions class="hidden-xs-only">
@@ -328,8 +364,10 @@ import Vue from 'vue'
 import {SeriesStatus} from '@/types/enum-series'
 import {helpers, minValue, requiredIf} from 'vuelidate/lib/validators'
 import {ReadingDirection} from '@/types/enum-books'
-import {SeriesDto} from '@/types/komga-series'
-import {ERROR} from '@/types/events'
+import {SeriesDto, SeriesThumbnailDto} from '@/types/komga-series'
+import {ERROR, ErrorEvent} from '@/types/events'
+import DropZone from '@/components/DropZone.vue'
+import ThumbnailCard from '@/components/ThumbnailCard.vue'
 
 const tags = require('language-tags')
 
@@ -337,6 +375,7 @@ const validLanguage = (value: string) => !helpers.req(value) || tags.check(value
 
 export default Vue.extend({
   name: 'EditSeriesDialog',
+  components: {ThumbnailCard, DropZone},
   data: () => {
     return {
       modal: false,
@@ -372,6 +411,12 @@ export default Vue.extend({
         ageRating: false,
         language: false,
       },
+      poster: {
+        selectedThumbnail: '',
+        uploadQueue: [] as File[],
+        deleteQueue: [] as SeriesThumbnailDto[],
+        seriesThumbnails: [] as SeriesThumbnailDto[],
+      },
       genresAvailable: [] as string[],
       tagsAvailable: [] as string[],
     }
@@ -389,9 +434,11 @@ export default Vue.extend({
     },
     modal(val) {
       !val && this.dialogCancel()
+      val && this.getThumbnails(this.series)
     },
     series(val) {
       this.dialogReset(val)
+      this.getThumbnails(val)
     },
   },
   validations: {
@@ -529,6 +576,10 @@ export default Vue.extend({
         this.form.genres = []
         this.form.tags = []
         this.$_.merge(this.form, (series as SeriesDto).metadata)
+        this.poster.selectedThumbnail = ''
+        this.poster.deleteQueue = []
+        this.poster.uploadQueue = []
+        this.poster.seriesThumbnails = []
       }
     },
     dialogCancel() {
@@ -611,6 +662,36 @@ export default Vue.extend({
       return null
     },
     async editSeries(): Promise<boolean> {
+      if (this.single && this.poster.uploadQueue.length > 0) {
+        const series = this.series as SeriesDto
+        let hadErrors = false
+        for (const file of this.poster.uploadQueue) {
+          try {
+            await this.$komgaSeries.uploadThumbnail(series.id, file, file.name === this.poster.selectedThumbnail)
+            this.deleteThumbnail(file)
+          } catch (e) {
+            this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
+            hadErrors = true
+          }
+        }
+        if (hadErrors) {
+          await this.getThumbnails(series)
+          return false
+        }
+      }
+
+      if (this.single && this.poster.selectedThumbnail !== '') {
+        const id = this.poster.selectedThumbnail
+        const series = this.series as SeriesDto
+        if (this.poster.seriesThumbnails.find(value => value.id === id)) {
+          this.$komgaSeries.markThumbnailAsSelected(series.id, id)
+        }
+      }
+
+      if (this.single && this.poster.deleteQueue.length > 0) {
+        this.poster.deleteQueue.forEach(toDelete => this.$komgaSeries.deleteThumbnail(toDelete.seriesId, toDelete.id))
+      }
+
       const metadata = this.validateForm()
       if (metadata) {
         const toUpdate = (this.single ? [this.series] : this.series) as SeriesDto[]
@@ -623,6 +704,67 @@ export default Vue.extend({
         }
         return true
       } else return false
+    },
+    addThumbnail(files: File[]) {
+      let hasSelected = false
+      for (const file of files) {
+        if (!this.poster.uploadQueue.find(value => value.name === file.name)) {
+          this.poster.uploadQueue.push(file)
+          if (!hasSelected) {
+            this.selectThumbnail(file)
+            hasSelected = true
+          }
+        }
+      }
+    },
+    async getThumbnails(series: SeriesDto | SeriesDto[]) {
+      if (Array.isArray(series)) return
+
+      const thumbnails = await this.$komgaSeries.getThumbnails(series.id)
+
+      this.selectThumbnail(thumbnails.find(x => x.selected))
+
+      this.poster.seriesThumbnails = thumbnails
+    },
+    isThumbnailSelected(item: File | SeriesThumbnailDto): boolean {
+      return item instanceof File ? item.name === this.poster.selectedThumbnail : item.id === this.poster.selectedThumbnail
+    },
+    selectThumbnail(item: File | SeriesThumbnailDto | undefined) {
+      if (!item) {
+        return
+      } else if (item instanceof File) {
+        this.poster.selectedThumbnail = item.name
+      } else {
+        this.poster.selectedThumbnail = item.id
+      }
+    },
+    isThumbnailToBeDeleted(item: File | SeriesThumbnailDto) {
+      if (item instanceof File) {
+        return false
+      } else {
+        return this.poster.deleteQueue.includes(item)
+      }
+    },
+    deleteThumbnail(item: File | SeriesThumbnailDto) {
+      if (item instanceof File) {
+        const index = this.poster.uploadQueue.indexOf(item, 0)
+        if (index > -1) {
+          this.poster.uploadQueue.splice(index, 1)
+        }
+        if (item.name === this.poster.selectedThumbnail) {
+          this.selectThumbnail(this.poster.seriesThumbnails.find(x => x.selected))
+        }
+      } else {
+        // if thumbnail was marked for deletion, unmark it
+        if (this.isThumbnailToBeDeleted(item)) {
+          const index = this.poster.deleteQueue.indexOf(item, 0)
+          if (index > -1) {
+            this.poster.deleteQueue.splice(index, 1)
+          }
+        } else {
+          this.poster.deleteQueue.push(item)
+        }
+      }
     },
   },
 })

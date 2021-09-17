@@ -396,6 +396,7 @@
       "field_total_book_count_error": "Total book count must be 1 or more",
       "mixed": "MIXED",
       "tab_general": "General",
+      "tab_poster": "Poster",
       "tab_tags": "Tags",
       "tags_notice_multiple_edit": "You are editing tags for multiple series. This will override existing tags of each series."
     },
@@ -668,6 +669,16 @@
     "dark": "Dark",
     "light": "Light",
     "system": "System"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "Delete",
+    "tooltip_mark_as_selected": "Mark as selected",
+    "tooltip_selected": "Selected",
+    "tooltip_sidecar": "Local artwork",
+    "tooltip_to_be_deleted": "To be deleted",
+    "tooltip_to_be_uploaded": "To be uploaded",
+    "tooltip_too_big": "File too big!",
+    "tooltip_user_uploaded": "User uploaded"
   },
   "user_roles": {
     "ADMIN": "Administrator",
