@@ -1,3 +1,10 @@
+## [0.128.1](https://github.com/gotson/komga/compare/v0.128.0...v0.128.1) (2021-09-17)
+
+
+### Bug Fixes
+
+* **api:** missing error messages ([bc774d9](https://github.com/gotson/komga/commit/bc774d961548c6cec3c89d6ba51a30d217bc8a6e))
+
 # [0.128.0](https://github.com/gotson/komga/compare/v0.127.0...v0.128.0) (2021-09-17)
 
 
