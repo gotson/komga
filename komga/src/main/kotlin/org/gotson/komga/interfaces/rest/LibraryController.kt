@@ -132,7 +132,18 @@ class LibraryController(
         emptyTrashAfterScan = library.emptyTrashAfterScan,
         seriesCover = library.seriesCover.toDomain(),
       )
-      libraryLifecycle.updateLibrary(toUpdate)
+      try {
+        libraryLifecycle.updateLibrary(toUpdate)
+      } catch (e: Exception) {
+        when (e) {
+          is FileNotFoundException,
+          is DirectoryNotFoundException,
+          is DuplicateNameException,
+          is PathContainedInPath ->
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
+          else -> throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+      }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 

@@ -44,6 +44,8 @@ server:
   servlet.session.timeout: 7d
   forward-headers-strategy: framework
   shutdown: graceful
+  error:
+    include-message: always
 
 management:
   endpoints.web.exposure.include: "*"
