@@ -195,8 +195,8 @@ class BookImporter(
 
       sidecars.forEach { (sourceSidecar, destPath) ->
         when (sourceSidecar.type) {
-          Sidecar.Type.ARTWORK -> taskReceiver.refreshBookLocalArtwork(importedBook.id)
-          Sidecar.Type.METADATA -> taskReceiver.refreshBookMetadata(importedBook.id)
+          Sidecar.Type.ARTWORK -> taskReceiver.refreshBookLocalArtwork(importedBook)
+          Sidecar.Type.METADATA -> taskReceiver.refreshBookMetadata(importedBook)
         }
         val destSidecar = sourceSidecar.copy(
           url = destPath.toUri().toURL(),

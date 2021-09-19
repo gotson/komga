@@ -200,29 +200,31 @@ class BookDao(
       .fetch(b.ID)
   }
 
-  override fun findAllIdsByLibraryIdAndMediaTypes(libraryId: String, mediaTypes: Collection<String>): Collection<String> =
-    dsl.select(b.ID)
+  override fun findAllByLibraryIdAndMediaTypes(libraryId: String, mediaTypes: Collection<String>): Collection<Book> =
+    dsl.select(*b.fields())
       .from(b)
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .where(b.LIBRARY_ID.eq(libraryId))
       .and(m.MEDIA_TYPE.`in`(mediaTypes))
-      .fetch(b.ID)
+      .fetchInto(b)
+      .map { it.toDomain() }
 
-  override fun findAllIdsByLibraryIdAndMismatchedExtension(libraryId: String, mediaType: String, extension: String): Collection<String> =
-    dsl.select(b.ID)
+  override fun findAllByLibraryIdAndMismatchedExtension(libraryId: String, mediaType: String, extension: String): Collection<Book> =
+    dsl.select(*b.fields())
       .from(b)
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .where(b.LIBRARY_ID.eq(libraryId))
       .and(m.MEDIA_TYPE.eq(mediaType))
       .and(b.URL.notLike("%.$extension"))
-      .fetch(b.ID)
+      .fetchInto(b)
+      .map { it.toDomain() }
 
-  override fun findAllIdsByLibraryIdAndWithEmptyHash(libraryId: String): Collection<String> =
-    dsl.select(b.ID)
-      .from(b)
+  override fun findAllByLibraryIdAndWithEmptyHash(libraryId: String): Collection<Book> =
+    dsl.selectFrom(b)
       .where(b.LIBRARY_ID.eq(libraryId))
       .and(b.FILE_HASH.eq(""))
-      .fetch(b.ID)
+      .fetchInto(b)
+      .map { it.toDomain() }
 
   @Transactional
   override fun insert(book: Book) {

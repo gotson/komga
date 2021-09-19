@@ -40,7 +40,7 @@ class TaskHandler(
   private val searchIndexLifecycle: SearchIndexLifecycle,
 ) {
 
-  @JmsListener(destination = QUEUE_TASKS, selector = QUEUE_TASKS_SELECTOR, containerFactory = QUEUE_FACTORY)
+  @JmsListener(destination = QUEUE_TASKS, selector = QUEUE_TASKS_SELECTOR, containerFactory = QUEUE_FACTORY, concurrency = "#{@komgaProperties.taskConsumers}-#{@komgaProperties.taskConsumersMax}")
   fun handleTask(task: Task) {
     logger.info { "Executing task: $task" }
     try {
@@ -65,8 +65,8 @@ class TaskHandler(
           is Task.AnalyzeBook ->
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
               if (bookLifecycle.analyzeAndPersist(book)) {
-                taskReceiver.generateBookThumbnail(book.id, priority = task.priority + 1)
-                taskReceiver.refreshBookMetadata(book.id, priority = task.priority + 1)
+                taskReceiver.generateBookThumbnail(book, priority = task.priority + 1)
+                taskReceiver.refreshBookMetadata(book, priority = task.priority + 1)
               }
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
@@ -105,7 +105,7 @@ class TaskHandler(
           is Task.ImportBook ->
             seriesRepository.findByIdOrNull(task.seriesId)?.let { series ->
               val importedBook = bookImporter.importBook(Paths.get(task.sourceFile), series, task.copyMode, task.destinationName, task.upgradeBookId)
-              taskReceiver.analyzeBook(importedBook.id, priority = task.priority + 1)
+              taskReceiver.analyzeBook(importedBook, priority = task.priority + 1)
             } ?: logger.warn { "Cannot execute task $task: Series does not exist" }
 
           is Task.ConvertBook ->

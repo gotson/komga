@@ -90,20 +90,23 @@ class SeriesLifecycle(
       sorted.mapIndexed { index, (book, _) -> book.copy(number = index + 1) },
     )
 
-    val oldToNew = sorted.mapIndexedNotNull { index, (_, metadata) ->
+    val oldToNew = sorted.mapIndexedNotNull { index, (book, metadata) ->
       if (metadata.numberLock && metadata.numberSortLock) null
-      else metadata to metadata.copy(
-        number = if (!metadata.numberLock) (index + 1).toString() else metadata.number,
-        numberSort = if (!metadata.numberSortLock) (index + 1).toFloat() else metadata.numberSort,
+      else Triple(
+        book, metadata,
+        metadata.copy(
+          number = if (!metadata.numberLock) (index + 1).toString() else metadata.number,
+          numberSort = if (!metadata.numberSortLock) (index + 1).toFloat() else metadata.numberSort
+        )
       )
     }
-    bookMetadataRepository.update(oldToNew.map { it.second })
+    bookMetadataRepository.update(oldToNew.map { it.third })
 
     // refresh metadata to reimport book number, else the series resorting would overwrite it
-    oldToNew.forEach { (old, new) ->
+    oldToNew.forEach { (book, old, new) ->
       if (old.number != new.number || old.numberSort != new.numberSort) {
         logger.debug { "Metadata numbering has changed, refreshing metadata for book ${new.bookId} " }
-        taskReceiver.refreshBookMetadata(new.bookId, setOf(BookMetadataPatchCapability.NUMBER, BookMetadataPatchCapability.NUMBER_SORT))
+        taskReceiver.refreshBookMetadata(book, setOf(BookMetadataPatchCapability.NUMBER, BookMetadataPatchCapability.NUMBER_SORT))
       }
     }
 

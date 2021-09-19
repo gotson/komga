@@ -18,6 +18,9 @@ interface BookRepository {
   fun findAll(bookSearch: BookSearch): Collection<Book>
   fun findAll(bookSearch: BookSearch, pageable: Pageable): Page<Book>
   fun findAllDeletedByFileSize(fileSize: Long): Collection<Book>
+  fun findAllByLibraryIdAndWithEmptyHash(libraryId: String): Collection<Book>
+  fun findAllByLibraryIdAndMediaTypes(libraryId: String, mediaTypes: Collection<String>): Collection<Book>
+  fun findAllByLibraryIdAndMismatchedExtension(libraryId: String, mediaType: String, extension: String): Collection<Book>
 
   fun getLibraryIdOrNull(bookId: String): String?
   fun getSeriesIdOrNull(bookId: String): String?
@@ -28,9 +31,6 @@ interface BookRepository {
   fun findAllIdsBySeriesId(seriesId: String): Collection<String>
   fun findAllIdsBySeriesIds(seriesIds: Collection<String>): Collection<String>
   fun findAllIdsByLibraryId(libraryId: String): Collection<String>
-  fun findAllIdsByLibraryIdAndMediaTypes(libraryId: String, mediaTypes: Collection<String>): Collection<String>
-  fun findAllIdsByLibraryIdAndMismatchedExtension(libraryId: String, mediaType: String, extension: String): Collection<String>
-  fun findAllIdsByLibraryIdAndWithEmptyHash(libraryId: String): Collection<String>
   fun findAllIds(bookSearch: BookSearch, sort: Sort): Collection<String>
 
   fun insert(book: Book)

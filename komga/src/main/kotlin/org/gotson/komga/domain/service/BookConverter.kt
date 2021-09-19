@@ -53,8 +53,8 @@ class BookConverter(
   private val failedConversions = mutableListOf<String>()
   private val skippedRepairs = mutableListOf<String>()
 
-  fun getConvertibleBookIds(library: Library): Collection<String> =
-    bookRepository.findAllIdsByLibraryIdAndMediaTypes(library.id, convertibleTypes)
+  fun getConvertibleBooks(library: Library): Collection<Book> =
+    bookRepository.findAllByLibraryIdAndMediaTypes(library.id, convertibleTypes)
 
   fun convertToCbz(book: Book) {
     if (!libraryRepository.findById(book.libraryId).convertToCbz)
@@ -133,9 +133,9 @@ class BookConverter(
     }
   }
 
-  fun getMismatchedExtensionBookIds(library: Library): Collection<String> =
+  fun getMismatchedExtensionBooks(library: Library): Collection<Book> =
     mediaTypeToExtension.flatMap { (mediaType, extension) ->
-      bookRepository.findAllIdsByLibraryIdAndMismatchedExtension(library.id, mediaType, extension)
+      bookRepository.findAllByLibraryIdAndMismatchedExtension(library.id, mediaType, extension)
     }
 
   fun repairExtension(book: Book) {

@@ -4,7 +4,14 @@ import com.github.f4b6a3.tsid.TsidCreator
 import java.net.URL
 import java.time.LocalDateTime
 
-fun makeBook(name: String, fileLastModified: LocalDateTime = LocalDateTime.now(), libraryId: String = "", seriesId: String = "", url: URL? = null): Book {
+fun makeBook(
+  name: String,
+  fileLastModified: LocalDateTime = LocalDateTime.now(),
+  libraryId: String = "",
+  seriesId: String = "",
+  url: URL? = null,
+  id: String = TsidCreator.getTsid256().toString(),
+): Book {
   Thread.sleep(5)
   return Book(
     name = name,
@@ -12,6 +19,7 @@ fun makeBook(name: String, fileLastModified: LocalDateTime = LocalDateTime.now()
     fileLastModified = fileLastModified,
     libraryId = libraryId,
     seriesId = seriesId,
+    id = id,
   )
 }
 

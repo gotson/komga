@@ -9,6 +9,8 @@ komga:
     file: ":memory:"
   cors.allowed-origins:
     - http://localhost:8081
+  task-consumers: 5
+  task-consumers-max: 20
 #  delete-empty-collections: true
 #  delete-empty-read-lists: true
   oauth2-account-creation: false

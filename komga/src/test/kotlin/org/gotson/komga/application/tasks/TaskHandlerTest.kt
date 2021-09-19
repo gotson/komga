@@ -66,8 +66,9 @@ class TaskHandlerTest(
     every { mockBookLifecycle.analyzeAndPersist(any()) } returns false
 
     jmsListenerEndpointRegistry.stop()
+    val book = makeBook("book")
     repeat(100) {
-      taskReceiver.analyzeBook("id")
+      taskReceiver.analyzeBook(book)
     }
     jmsListenerEndpointRegistry.start()
 
@@ -88,7 +89,7 @@ class TaskHandlerTest(
 
     jmsListenerEndpointRegistry.stop()
     (0..9).forEach {
-      taskReceiver.analyzeBook("$it", it)
+      taskReceiver.analyzeBook(makeBook("$it", id = "$it"), it)
     }
     jmsListenerEndpointRegistry.start()
 

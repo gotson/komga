@@ -46,6 +46,12 @@ class KomgaProperties {
 
   var configDir: String? = null
 
+  @Positive
+  var taskConsumers: Int = 1
+
+  @Positive
+  var taskConsumersMax: Int = 1
+
   class RememberMe {
     @get:NotBlank
     var key: String? = null
