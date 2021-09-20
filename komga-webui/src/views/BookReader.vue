@@ -420,6 +420,9 @@ export default Vue.extend({
     if (screenfull.isEnabled) screenfull.on('change', this.fullscreenChanged)
   },
   async mounted() {
+    this.$log.debug('mounted')
+    this.$log.debug(`route.query:  ${JSON.stringify(this.$route.query)}`)
+
     this.readingDirection = this.$store.state.persistedState.webreader.readingDirection
     this.animations = this.$store.state.persistedState.webreader.animations
     this.pageLayout = this.$store.state.persistedState.webreader.paged.pageLayout
@@ -451,6 +454,7 @@ export default Vue.extend({
       // route update means either:
       // - going to previous/next book, in this case the query.page is not set, so it will default to first page
       // - pressing the back button of the browser and navigating to the previous book, in this case the query.page is set, so we honor it
+      this.$log.debug(`beforeRouteUpdate, to.query: ${JSON.stringify(to.query)}`)
       this.setup(to.params.bookId, Number(to.query.page))
     }
     next()
@@ -625,6 +629,7 @@ export default Vue.extend({
       this.shortcuts[e.key]?.execute(this)
     },
     async setup(bookId: string, page?: number) {
+      this.$log.debug(`setup bookId:${bookId}, page:${page}`)
       this.book = await this.$komgaBooks.getBook(bookId)
       this.series = await this.$komgaSeries.getOneSeries(this.book.seriesId)
 
@@ -649,6 +654,8 @@ export default Vue.extend({
       pageDtos.forEach((p: any) => p['url'] = this.getPageUrl(p))
       this.pages = pageDtos as PageDtoWithUrl[]
 
+      this.$log.debug(`pages count: ${this.pagesCount}`)
+      this.$log.debug(`read progress: ${JSON.stringify(this.book.readProgress)}`)
       if (page && page >= 1 && page <= this.pagesCount) {
         this.goTo(page)
       } else if (this.book.readProgress?.completed === false) {
@@ -729,6 +736,7 @@ export default Vue.extend({
       }
     },
     goTo(page: number) {
+      this.$log.debug(`goTo: ${page}`)
       this.page = page
       this.markProgress(page)
     },

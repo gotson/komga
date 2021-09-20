@@ -17,6 +17,7 @@
     "js-file-downloader": "^1.1.22",
     "language-tags": "^1.0.5",
     "lodash": "^4.17.21",
+    "loglevel": "^1.7.1",
     "qs": "^6.10.1",
     "screenfull": "^5.1.0",
     "vue": "^2.6.14",

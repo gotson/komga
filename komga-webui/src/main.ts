@@ -24,9 +24,14 @@ import './public-path'
 import router from './router'
 import store from './store'
 import i18n from './i18n'
+import log from 'loglevel'
 
 Vue.prototype.$_ = _
 Vue.prototype.$eventHub = new Vue()
+
+Vue.prototype.$log = log
+if (process.env.VUE_APP_LOG_LEVEL)
+  Vue.prototype.$log.setLevel(process.env.VUE_APP_LOG_LEVEL)
 
 Vue.use(Vuelidate)
 Vue.use(lineClamp)
@@ -63,6 +68,7 @@ declare module 'vue/types/vue' {
   interface Vue {
     $_: LoDashStatic;
     $eventHub: Vue;
+    $log: log.RootLogger;
   }
 }
 
