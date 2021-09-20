@@ -1,3 +1,10 @@
+## [0.128.2](https://github.com/gotson/komga/compare/v0.128.1...v0.128.2) (2021-09-20)
+
+
+### Bug Fixes
+
+* **webui:** add logs in the frontend ([9b2c971](https://github.com/gotson/komga/commit/9b2c971ae77900a21006060a41d3002f66630648))
+
 ## [0.128.1](https://github.com/gotson/komga/compare/v0.128.0...v0.128.1) (2021-09-17)
 
 
