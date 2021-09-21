@@ -84,8 +84,9 @@ import {buildSpreads} from '@/functions/book-spreads'
 
 export default Vue.extend({
   name: 'PagedReader',
-  data: () => {
+  data: function () {
     return {
+      logger: 'PagedReader',
       carouselPage: 0,
       spreads: [] as PageDtoWithUrl[][],
     }
@@ -122,19 +123,23 @@ export default Vue.extend({
   },
   watch: {
     pages: {
-      handler (val) {
+      handler(val) {
         this.spreads = buildSpreads(val, this.pageLayout)
       },
       immediate: true,
     },
-    currentPage (val) {
+    currentPage(val, old) {
+      this.$logDebug('[watch:currentPage]', `old:${old}`, `new:${val}`)()
       this.$emit('update:page', val)
     },
-    page (val) {
-      this.carouselPage = this.toSpreadIndex(val)
+    page(val, old) {
+      this.$logDebug('[watch:page]', `old:${old}`, `new:${val}`)()
+      const spreadIndex = this.toSpreadIndex(val)
+      this.$logDebug('[watch:page]', `toSpreadIndex:${spreadIndex}`)()
+      this.carouselPage = spreadIndex
     },
     pageLayout: {
-      handler (val) {
+      handler(val) {
         const current = this.page
         this.spreads = buildSpreads(this.pages, val)
         this.carouselPage = this.toSpreadIndex(current)
@@ -142,14 +147,14 @@ export default Vue.extend({
       immediate: true,
     },
   },
-  created () {
+  created() {
     window.addEventListener('keydown', this.keyPressed)
   },
-  destroyed () {
+  destroyed() {
     window.removeEventListener('keydown', this.keyPressed)
   },
   computed: {
-    shortcuts (): any {
+    shortcuts(): any {
       const shortcuts = []
       switch (this.readingDirection) {
         case ReadingDirection.LEFT_TO_RIGHT:
@@ -164,39 +169,40 @@ export default Vue.extend({
       }
       return this.$_.keyBy(shortcuts, x => x.key)
     },
-    flipDirection (): boolean {
+    flipDirection(): boolean {
       return this.readingDirection === ReadingDirection.RIGHT_TO_LEFT
     },
-    vertical (): boolean {
+    vertical(): boolean {
       return this.readingDirection === ReadingDirection.VERTICAL
     },
-    currentSlide (): number {
+    currentSlide(): number {
       return this.carouselPage + 1
     },
-    currentPage (): number {
+    currentPage(): number {
+      this.$logDebug('[currentPage]', `carouselPage:${this.carouselPage}`, `spreads.length:${this.spreads.length}`)()
       if (this.carouselPage >= 0 && this.carouselPage < this.spreads.length && this.spreads.length > 0) {
         return this.spreads[this.carouselPage][0].number
       }
       return 1
     },
-    slidesCount (): number {
+    slidesCount(): number {
       return this.spreads.length
     },
-    canPrev (): boolean {
+    canPrev(): boolean {
       return this.currentSlide > 1
     },
-    canNext (): boolean {
+    canNext(): boolean {
       return this.currentSlide < this.slidesCount
     },
-    isDoublePages (): boolean {
+    isDoublePages(): boolean {
       return this.pageLayout === PagedReaderLayout.DOUBLE_PAGES || this.pageLayout === PagedReaderLayout.DOUBLE_NO_COVER
     },
   },
   methods: {
-    keyPressed (e: KeyboardEvent) {
+    keyPressed(e: KeyboardEvent) {
       this.shortcuts[e.key]?.execute(this)
     },
-    imgClass (spread: PageDtoWithUrl[]): string {
+    imgClass(spread: PageDtoWithUrl[]): string {
       const double = spread.length > 1
       switch (this.scale) {
         case ScaleType.WIDTH:
@@ -211,27 +217,27 @@ export default Vue.extend({
           return 'img-fit-original'
       }
     },
-    eagerLoad (spreadIndex: number): boolean {
+    eagerLoad(spreadIndex: number): boolean {
       return Math.abs(this.carouselPage - spreadIndex) <= 2
     },
-    centerClick () {
+    centerClick() {
       this.$emit('menu')
     },
-    turnRight () {
+    turnRight() {
       if (!this.vertical)
         this.flipDirection ? this.prev() : this.next()
     },
-    turnLeft () {
+    turnLeft() {
       if (!this.vertical)
         this.flipDirection ? this.next() : this.prev()
     },
-    verticalPrev () {
+    verticalPrev() {
       if (this.vertical) this.prev()
     },
-    verticalNext () {
+    verticalNext() {
       if (this.vertical) this.next()
     },
-    prev () {
+    prev() {
       if (this.canPrev) {
         this.carouselPage--
         window.scrollTo(0, 0)
@@ -239,7 +245,7 @@ export default Vue.extend({
         this.$emit('jump-previous')
       }
     },
-    next () {
+    next() {
       if (this.canNext) {
         this.carouselPage++
         window.scrollTo(0, 0)
@@ -247,7 +253,8 @@ export default Vue.extend({
         this.$emit('jump-next')
       }
     },
-    toSpreadIndex (i: number): number {
+    toSpreadIndex(i: number): number {
+      this.$logDebug('[toSpreadIndex]', `i:${i}`, `isDoublePages:${this.isDoublePages}`)()
       if (this.spreads.length > 0) {
         if (this.isDoublePages) {
           for (let j = 0; j < this.spreads.length; j++) {
