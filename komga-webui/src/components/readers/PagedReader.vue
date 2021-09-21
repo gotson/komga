@@ -129,13 +129,13 @@ export default Vue.extend({
       immediate: true,
     },
     currentPage(val, old) {
-      this.$logDebug('[watch:currentPage]', `old:${old}`, `new:${val}`)()
+      this.$debug('[watch:currentPage]', `old:${old}`, `new:${val}`)
       this.$emit('update:page', val)
     },
     page(val, old) {
-      this.$logDebug('[watch:page]', `old:${old}`, `new:${val}`)()
+      this.$debug('[watch:page]', `old:${old}`, `new:${val}`)
       const spreadIndex = this.toSpreadIndex(val)
-      this.$logDebug('[watch:page]', `toSpreadIndex:${spreadIndex}`)()
+      this.$debug('[watch:page]', `toSpreadIndex:${spreadIndex}`)
       this.carouselPage = spreadIndex
     },
     pageLayout: {
@@ -179,7 +179,7 @@ export default Vue.extend({
       return this.carouselPage + 1
     },
     currentPage(): number {
-      this.$logDebug('[currentPage]', `carouselPage:${this.carouselPage}`, `spreads.length:${this.spreads.length}`)()
+      this.$debug('[currentPage]', `carouselPage:${this.carouselPage}`, `spreads.length:${this.spreads.length}`)
       if (this.carouselPage >= 0 && this.carouselPage < this.spreads.length && this.spreads.length > 0) {
         return this.spreads[this.carouselPage][0].number
       }
@@ -254,7 +254,7 @@ export default Vue.extend({
       }
     },
     toSpreadIndex(i: number): number {
-      this.$logDebug('[toSpreadIndex]', `i:${i}`, `isDoublePages:${this.isDoublePages}`)()
+      this.$debug('[toSpreadIndex]', `i:${i}`, `isDoublePages:${this.isDoublePages}`)
       if (this.spreads.length > 0) {
         if (this.isDoublePages) {
           for (let j = 0; j < this.spreads.length; j++) {

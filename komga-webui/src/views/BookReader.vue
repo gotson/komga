@@ -420,7 +420,7 @@ export default Vue.extend({
     if (screenfull.isEnabled) screenfull.on('change', this.fullscreenChanged)
   },
   async mounted() {
-    this.$logDebug('[mounted]', 'route.query:', this.$route.query)()
+    this.$debug('[mounted]', 'route.query:', this.$route.query)
 
     this.readingDirection = this.$store.state.persistedState.webreader.readingDirection
     this.animations = this.$store.state.persistedState.webreader.animations
@@ -453,7 +453,7 @@ export default Vue.extend({
       // route update means either:
       // - going to previous/next book, in this case the query.page is not set, so it will default to first page
       // - pressing the back button of the browser and navigating to the previous book, in this case the query.page is set, so we honor it
-      this.$logDebug('[beforeRouteUpdate]', 'to.query:', to.query)()
+      this.$debug('[beforeRouteUpdate]', 'to.query:', to.query)
       this.setup(to.params.bookId, Number(to.query.page))
     }
     next()
@@ -628,7 +628,7 @@ export default Vue.extend({
       this.shortcuts[e.key]?.execute(this)
     },
     async setup(bookId: string, page?: number) {
-      this.$logDebug('[setup]', `bookId:${bookId}`, `page:${page}`)()
+      this.$debug('[setup]', `bookId:${bookId}`, `page:${page}`)
       this.book = await this.$komgaBooks.getBook(bookId)
       this.series = await this.$komgaSeries.getOneSeries(this.book.seriesId)
 
@@ -653,7 +653,7 @@ export default Vue.extend({
       pageDtos.forEach((p: any) => p['url'] = this.getPageUrl(p))
       this.pages = pageDtos as PageDtoWithUrl[]
 
-      this.$logDebug('[setup]', `pages count:${this.pagesCount}`, 'read progress:', this.book.readProgress)()
+      this.$debug('[setup]', `pages count:${this.pagesCount}`, 'read progress:', this.book.readProgress)
       if (page && page >= 1 && page <= this.pagesCount) {
         this.goTo(page)
       } else if (this.book.readProgress?.completed === false) {
@@ -734,7 +734,7 @@ export default Vue.extend({
       }
     },
     goTo(page: number) {
-      this.$logDebug('[goTo]', `page:${page}`)()
+      this.$debug('[goTo]', `page:${page}`)
       this.page = page
       this.markProgress(page)
     },
