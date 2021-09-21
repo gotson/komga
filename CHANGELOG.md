@@ -1,3 +1,10 @@
+## [0.128.3](https://github.com/gotson/komga/compare/v0.128.2...v0.128.3) (2021-09-21)
+
+
+### Bug Fixes
+
+* **webui:** more logs in the frontend ([cefd3f0](https://github.com/gotson/komga/commit/cefd3f0ee8b24724ccaf41f00fdf382c0c74a513))
+
 ## [0.128.2](https://github.com/gotson/komga/compare/v0.128.1...v0.128.2) (2021-09-20)
 
 
