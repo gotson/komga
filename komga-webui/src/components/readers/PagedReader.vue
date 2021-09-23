@@ -128,9 +128,13 @@ export default Vue.extend({
       },
       immediate: true,
     },
-    currentPage(val, old) {
-      this.$debug('[watch:currentPage]', `old:${old}`, `new:${val}`)
-      this.$emit('update:page', val)
+    carouselPage(val, old) {
+      this.$debug('[watch:carouselPage', `old:${old}`, `new:${val}`)
+      if (this.carouselPage >= 0 && this.carouselPage < this.spreads.length && this.spreads.length > 0) {
+        this.$emit('update:page', this.spreads[this.carouselPage][0].number)
+      } else {
+        this.$emit('update:page', 1)
+      }
     },
     page(val, old) {
       this.$debug('[watch:page]', `old:${old}`, `new:${val}`)
@@ -177,13 +181,6 @@ export default Vue.extend({
     },
     currentSlide(): number {
       return this.carouselPage + 1
-    },
-    currentPage(): number {
-      this.$debug('[currentPage]', `carouselPage:${this.carouselPage}`, `spreads.length:${this.spreads.length}`)
-      if (this.carouselPage >= 0 && this.carouselPage < this.spreads.length && this.spreads.length > 0) {
-        return this.spreads[this.carouselPage][0].number
-      }
-      return 1
     },
     slidesCount(): number {
       return this.spreads.length
