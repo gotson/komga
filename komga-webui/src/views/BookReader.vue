@@ -625,6 +625,7 @@ export default Vue.extend({
       else this.fullscreenIcon = 'mdi-fullscreen'
     },
     keyPressed(e: KeyboardEvent) {
+      if(e.ctrlKey || e.altKey || e.shiftKey || e.metaKey) return
       this.shortcuts[e.key]?.execute(this)
     },
     async setup(bookId: string, page?: number) {
