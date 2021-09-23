@@ -1,3 +1,14 @@
+## [0.128.4](https://github.com/gotson/komga/compare/v0.128.3...v0.128.4) (2021-09-23)
+
+
+### Bug Fixes
+
+* search with only NOT conditions doesn't return results ([ff6861c](https://github.com/gotson/komga/commit/ff6861c5545f4e90d0948c723af8f84b1f8dd1d1)), closes [#694](https://github.com/gotson/komga/issues/694)
+* **webreader:** always hide scrollbars ([85ddae4](https://github.com/gotson/komga/commit/85ddae4f4801f0fd0be66fce130b8951fec18b8c)), closes [#640](https://github.com/gotson/komga/issues/640)
+* **webreader:** ignore key presses with modifiers ([7898190](https://github.com/gotson/komga/commit/7898190ac49b34afab9e7250e7361405b6168554))
+* **webreader:** incorrect page when going to next book ([13760c5](https://github.com/gotson/komga/commit/13760c5ef3117749966e90db9612674f5ab68b33))
+* **webui:** hide scrollbar on Firefox for horizontal-scroller ([5d7fdb3](https://github.com/gotson/komga/commit/5d7fdb355794af344f5f3deb7bb0e99e8c9bbc06))
+
 ## [0.128.3](https://github.com/gotson/komga/compare/v0.128.2...v0.128.3) (2021-09-21)
 
 
