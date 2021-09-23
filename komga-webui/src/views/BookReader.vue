@@ -420,6 +420,8 @@ export default Vue.extend({
     if (screenfull.isEnabled) screenfull.on('change', this.fullscreenChanged)
   },
   async mounted() {
+    document.documentElement.classList.add('html-reader')
+
     this.$debug('[mounted]', 'route.query:', this.$route.query)
 
     this.readingDirection = this.$store.state.persistedState.webreader.readingDirection
@@ -435,6 +437,8 @@ export default Vue.extend({
     this.setup(this.bookId, Number(this.$route.query.page))
   },
   destroyed() {
+    document.documentElement.classList.remove('html-reader')
+
     this.$vuetify.rtl = (this.$t('common.locale_rtl') === 'true')
     window.removeEventListener('keydown', this.keyPressed)
     if (screenfull.isEnabled) {
@@ -862,5 +866,13 @@ export default Vue.extend({
 
 .full-width {
   width: 100%;
+}
+</style>
+<style>
+.html-reader::-webkit-scrollbar {
+  display: none;
+}
+.html-reader {
+  scrollbar-width: none;
 }
 </style>
