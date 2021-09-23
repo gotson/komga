@@ -111,6 +111,7 @@ export default Vue.extend({
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
+  scrollbar-width: none;
 }
 
 .scrolling-wrapper::-webkit-scrollbar {
