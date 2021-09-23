@@ -56,7 +56,7 @@ class LuceneHelper(
       try {
         val fieldsQuery = MultiFieldQueryParser(entity.defaultFields, searchAnalyzer).apply {
           defaultOperator = QueryParser.Operator.AND
-        }.parse(searchTerm)
+        }.parse("$searchTerm *:*")
 
         val typeQuery = TermQuery(Term(LuceneEntity.TYPE, entity.type))
 
