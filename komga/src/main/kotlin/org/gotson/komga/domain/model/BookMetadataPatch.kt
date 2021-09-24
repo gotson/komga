@@ -9,6 +9,7 @@ data class BookMetadataPatch(
   val numberSort: Float? = null,
   val releaseDate: LocalDate? = null,
   val authors: List<Author>? = null,
+  val tags: Set<String>? = null,
   val isbn: String? = null,
 
   val readLists: List<ReadListEntry> = emptyList()
