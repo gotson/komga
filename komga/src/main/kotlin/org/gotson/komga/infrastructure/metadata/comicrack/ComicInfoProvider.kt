@@ -37,6 +37,7 @@ class ComicInfoProvider(
       BookMetadataPatchCapability.RELEASE_DATE,
       BookMetadataPatchCapability.AUTHORS,
       BookMetadataPatchCapability.READ_LISTS,
+      BookMetadataPatchCapability.TAGS,
     )
 
   override fun getBookMetadataFromBook(book: BookWithMedia): BookMetadataPatch? {
@@ -64,6 +65,8 @@ class ComicInfoProvider(
         )
       }
 
+      val tags = comicInfo.tags?.split(',')?.mapNotNull { it.trim().ifBlank { null } }
+
       comicInfo.storyArc?.let { value ->
         // get list of arcs and corresponding number, split by `,`
         val arcs = value.split(",").map { it.trim().ifBlank { null } }
@@ -87,7 +90,8 @@ class ComicInfoProvider(
         numberSort = comicInfo.number?.toFloatOrNull(),
         releaseDate = releaseDate,
         authors = authors.ifEmpty { null },
-        readLists = readLists
+        readLists = readLists,
+        tags = if (!tags.isNullOrEmpty()) tags.toSet() else null
       )
     }
     return null
