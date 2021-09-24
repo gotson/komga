@@ -32,6 +32,7 @@
             <xs:element minOccurs="0" maxOccurs="1" default="Unknown" name="BlackAndWhite" type="YesNo" />
             <xs:element minOccurs="0" maxOccurs="1" default="Unknown" name="Manga" type="YesNo" />
             <xs:element minOccurs="0" maxOccurs="1" name="Pages" type="ArrayOfComicPageInfo" />
+            <xs:element minOccurs="0" maxOccurs="1" default="" name="Tags" type="xs:string" />
         </xs:sequence>
     </xs:complexType>
     <xs:simpleType name="YesNo">
