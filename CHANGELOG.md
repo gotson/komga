@@ -1,3 +1,11 @@
+# [0.129.0](https://github.com/gotson/komga/compare/v0.128.4...v0.129.0) (2021-09-24)
+
+
+### Features
+
+* **webui:** add link to changelog on version number ([eb67356](https://github.com/gotson/komga/commit/eb67356472887a08eb103bb293241233c06efefd)), closes [#691](https://github.com/gotson/komga/issues/691)
+* docker image can load application.yml from /config mounted folder ([8fa0ba6](https://github.com/gotson/komga/commit/8fa0ba6bc21e9c8eb9bec2a8b346f049e4ee3869))
+
 ## [0.128.4](https://github.com/gotson/komga/compare/v0.128.3...v0.128.4) (2021-09-23)
 
 
