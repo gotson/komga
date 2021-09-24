@@ -88,7 +88,8 @@
             <v-list-item-subtitle
               v-if="l.unavailable"
               class="error--text caption"
-            >{{ $t('common.unavailable') }}</v-list-item-subtitle>
+            >{{ $t('common.unavailable') }}
+            </v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action v-if="isAdmin">
             <library-actions-menu :library="l"/>
@@ -173,7 +174,13 @@
         <div v-if="isAdmin && !$_.isEmpty(info)"
              class="pa-2 pb-6 text-caption"
         >
-          <div>v{{ info.build.version }}-{{ info.git.branch }}</div>
+          <a href="https://github.com/gotson/komga/blob/master/CHANGELOG.md"
+             target="_blank"
+             class="link-none"
+          >
+            v{{ info.build.version }}-{{ info.git.branch }}
+          </a>
+          <v-icon x-small color="grey">mdi-open-in-new</v-icon>
         </div>
       </template>
     </v-navigation-drawer>
