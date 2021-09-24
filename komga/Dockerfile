@@ -12,5 +12,5 @@ ENV KOMGA_LUCENE_DATA_DIRECTORY="/config/lucene"
 ENV SPRING_ARTEMIS_EMBEDDED_DATA_DIRECTORY="/config/artemis"
 ENV LOGGING_FILE_NAME="/config/logs/komga.log"
 ENV LC_ALL=en_US.UTF-8
-ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher", "--spring.config.additional-location=file:/config/"]
 EXPOSE 8080
