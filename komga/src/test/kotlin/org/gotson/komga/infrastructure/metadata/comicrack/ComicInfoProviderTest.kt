@@ -51,6 +51,7 @@ class ComicInfoProviderTest {
         alternateSeries = "story arc"
         alternateNumber = "5"
         storyArc = "one, two, three"
+        tags = "tag1, tag 2"
       }
 
       every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
@@ -63,6 +64,8 @@ class ComicInfoProviderTest {
         assertThat(number).isEqualTo("010")
         assertThat(numberSort).isEqualTo(10F)
         assertThat(releaseDate).isEqualTo(LocalDate.of(2020, 2, 1))
+        assertThat(tags).containsExactlyInAnyOrder("tag1", "tag 2")
+
 
         assertThat(readLists).hasSize(4)
         assertThat(readLists).containsExactlyInAnyOrder(
@@ -207,6 +210,7 @@ class ComicInfoProviderTest {
         alternateNumber = ""
         storyArc = ""
         penciller = ""
+        tags = ""
       }
 
       every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
@@ -220,6 +224,7 @@ class ComicInfoProviderTest {
         assertThat(numberSort).isNull()
         assertThat(authors).isNull()
         assertThat(readLists).isEmpty()
+        assertThat(tags).isNull()
       }
     }
 
