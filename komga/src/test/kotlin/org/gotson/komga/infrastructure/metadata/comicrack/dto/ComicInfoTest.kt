@@ -32,6 +32,7 @@ class ComicInfoTest {
       assertThat(blackAndWhite).isEqualTo(YesNo.NO)
       assertThat(manga).isEqualTo(Manga.NO)
       assertThat(seriesGroup).isEqualTo("Sandman")
+      assertThat(tags).isEqualTo("Tag1, Tag 2")
     }
   }
 
@@ -60,6 +61,7 @@ class ComicInfoTest {
       assertThat(year).isEqualTo(2018)
       assertThat(month).isEqualTo(10)
       assertThat(day).isEqualTo(30)
+      assertThat(tags).isEqualTo("Tag1, Tag 2")
     }
   }
 
