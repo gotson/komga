@@ -27,3 +27,6 @@ ERR_1020 | Book to upgrade does not belong to provided series
 ERR_1021 | Destination file already exists
 ERR_1022 | Newly imported book could not be scanned
 ERR_1023 | Book already present in ReadingList
+ERR_1024 | OAuth2 login error: no email attribute
+ERR_1025 | OAuth2 login error: no local user exist with that email
+ERR_1026 | OpenIDConnect login error: email not verified

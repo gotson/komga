@@ -13,6 +13,7 @@ data class AuthenticationActivityDto(
   val error: String?,
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val dateTime: LocalDateTime,
+  val source: String?,
 )
 
 fun AuthenticationActivity.toDto() =
@@ -24,4 +25,5 @@ fun AuthenticationActivity.toDto() =
     success = success,
     error = error,
     dateTime = dateTime,
+    source = source,
   )

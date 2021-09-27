@@ -74,8 +74,8 @@ class AuthenticationActivityDao(
   }
 
   override fun insert(activity: AuthenticationActivity) {
-    dsl.insertInto(aa, aa.USER_ID, aa.EMAIL, aa.IP, aa.USER_AGENT, aa.SUCCESS, aa.ERROR)
-      .values(activity.userId, activity.email, activity.ip, activity.userAgent, activity.success, activity.error)
+    dsl.insertInto(aa, aa.USER_ID, aa.EMAIL, aa.IP, aa.USER_AGENT, aa.SUCCESS, aa.ERROR, aa.SOURCE)
+      .values(activity.userId, activity.email, activity.ip, activity.userAgent, activity.success, activity.error, activity.source)
       .execute()
   }
 
@@ -101,5 +101,6 @@ class AuthenticationActivityDao(
       success = success,
       error = error,
       dateTime = dateTime.toCurrentTimeZone(),
+      source = source,
     )
 }
