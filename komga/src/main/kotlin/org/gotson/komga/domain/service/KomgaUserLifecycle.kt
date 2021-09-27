@@ -8,9 +8,6 @@ import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.springframework.security.core.session.SessionRegistry
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
@@ -26,12 +23,7 @@ class KomgaUserLifecycle(
   private val sessionRegistry: SessionRegistry,
   private val transactionTemplate: TransactionTemplate,
 
-) : UserDetailsService {
-
-  override fun loadUserByUsername(username: String): UserDetails =
-    userRepository.findByEmailIgnoreCaseOrNull(username)?.let {
-      KomgaPrincipal(it)
-    } ?: throw UsernameNotFoundException(username)
+) {
 
   fun updatePassword(user: KomgaUser, newPassword: String, expireSessions: Boolean) {
     logger.info { "Changing password for user ${user.email}" }
