@@ -1,3 +1,11 @@
+# [0.130.0](https://github.com/gotson/komga/compare/v0.129.0...v0.130.0) (2021-09-27)
+
+
+### Features
+
+* **webui:** oauth2 login ([73d8dab](https://github.com/gotson/komga/commit/73d8dab60c92e508a12c037b2bc54c1b19d69770))
+* oauth2 login ([7438bf4](https://github.com/gotson/komga/commit/7438bf4c95ec44ef473ee1e8cc9336bb43f26811)), closes [#143](https://github.com/gotson/komga/issues/143)
+
 # [0.129.0](https://github.com/gotson/komga/compare/v0.128.4...v0.129.0) (2021-09-24)
 
 
