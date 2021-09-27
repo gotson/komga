@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException
@@ -30,8 +31,11 @@ class SecurityConfiguration(
   private val komgaUserDetailsLifecycle: UserDetailsService,
   private val oauth2UserService: OAuth2UserService<OAuth2UserRequest, OAuth2User>,
   private val oidcUserService: OAuth2UserService<OidcUserRequest, OidcUser>,
-  private val sessionRegistry: SessionRegistry
+  private val sessionRegistry: SessionRegistry,
+  clientRegistrationRepository: InMemoryClientRegistrationRepository?,
 ) : WebSecurityConfigurerAdapter() {
+
+  private val oauth2Enabled = clientRegistrationRepository != null
 
   override fun configure(http: HttpSecurity) {
     val userAgentWebAuthenticationDetailsSource = UserAgentWebAuthenticationDetailsSource()
@@ -66,7 +70,18 @@ class SecurityConfiguration(
         it.authenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
       }
 
-      .oauth2Login { oauth2 ->
+      .logout {
+        it.logoutUrl("/api/v1/users/logout")
+        it.deleteCookies("JSESSIONID")
+        it.invalidateHttpSession(true)
+      }
+
+      .sessionManagement()
+      .maximumSessions(10)
+      .sessionRegistry(sessionRegistry)
+
+    if (oauth2Enabled) {
+      http.oauth2Login { oauth2 ->
         oauth2.userInfoEndpoint {
           it.userService(oauth2UserService)
           it.oidcUserService(oidcUserService)
@@ -83,16 +98,7 @@ class SecurityConfiguration(
             SimpleUrlAuthenticationFailureHandler(url).onAuthenticationFailure(request, response, exception)
           }
       }
-
-      .logout {
-        it.logoutUrl("/api/v1/users/logout")
-        it.deleteCookies("JSESSIONID")
-        it.invalidateHttpSession(true)
-      }
-
-      .sessionManagement()
-      .maximumSessions(10)
-      .sessionRegistry(sessionRegistry)
+    }
 
     if (!komgaProperties.rememberMe.key.isNullOrBlank()) {
       logger.info { "RememberMe is active, validity: ${komgaProperties.rememberMe.validity}s" }
