@@ -42,4 +42,5 @@ interface AuthenticationActivityDto {
   success: Boolean,
   error?: string,
   dateTime: string,
+  source?: string,
 }

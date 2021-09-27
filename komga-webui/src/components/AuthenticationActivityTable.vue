@@ -66,6 +66,7 @@ export default Vue.extend({
         {text: this.$t('authentication_activity.ip').toString(), value: 'ip'},
         {text: this.$t('authentication_activity.user_agent').toString(), value: 'userAgent'},
         {text: this.$t('authentication_activity.success').toString(), value: 'success'},
+        {text: this.$t('authentication_activity.source').toString(), value: 'source'},
         {text: this.$t('authentication_activity.error').toString(), value: 'error'},
         {text: this.$t('authentication_activity.datetime').toString(), value: 'dateTime', groupable: false},
       )
