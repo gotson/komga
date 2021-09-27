@@ -11,6 +11,7 @@ import org.gotson.komga.domain.service.BookMetadataLifecycle
 import org.gotson.komga.domain.service.LibraryContentLifecycle
 import org.gotson.komga.domain.service.LocalArtworkLifecycle
 import org.gotson.komga.domain.service.SeriesMetadataLifecycle
+import org.gotson.komga.infrastructure.jms.QUEUE_FACTORY
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS_SELECTOR
 import org.gotson.komga.infrastructure.search.SearchIndexLifecycle
@@ -37,7 +38,7 @@ class TaskHandler(
   private val searchIndexLifecycle: SearchIndexLifecycle,
 ) {
 
-  @JmsListener(destination = QUEUE_TASKS, selector = QUEUE_TASKS_SELECTOR)
+  @JmsListener(destination = QUEUE_TASKS, selector = QUEUE_TASKS_SELECTOR, containerFactory = QUEUE_FACTORY)
   fun handleTask(task: Task) {
     logger.info { "Executing task: $task" }
     try {
