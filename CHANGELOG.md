@@ -1,3 +1,10 @@
+## [0.130.1](https://github.com/gotson/komga/compare/v0.130.0...v0.130.1) (2021-09-29)
+
+
+### Bug Fixes
+
+* **webui:** open oauth2 login in popup ([0a07250](https://github.com/gotson/komga/commit/0a0725058322d6a6f92a8435091644ec4bb1727e))
+
 # [0.130.0](https://github.com/gotson/komga/compare/v0.129.0...v0.130.0) (2021-09-27)
 
 
