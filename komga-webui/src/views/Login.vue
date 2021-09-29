@@ -74,7 +74,7 @@
           >
             <v-btn
               :disabled="unclaimed"
-              :href="`${urls.originNoSlash}/oauth2/authorization/${provider.registrationId}`"
+              @click="oauth2Login(provider)"
               min-width="250"
               :class="$_.get(socialButtons[provider.registrationId.toLowerCase()], 'text') ? `${socialButtons[provider.registrationId.toLowerCase()].text}--text` : undefined"
               :color="$_.get(socialButtons[provider.registrationId.toLowerCase()], 'color')"
@@ -216,9 +216,28 @@ export default Vue.extend({
     this.getClaimStatus()
     this.$komgaOauth2.getProviders()
       .then((providers) => this.oauth2Providers = providers)
-    if(this.$route.query.error) this.showSnack(convertErrorCodes(this.$route.query.error.toString()))
+    if (this.$route.query.error) this.showSnack(convertErrorCodes(this.$route.query.error.toString()))
   },
   methods: {
+    oauth2Login(provider: OAuth2ClientDto) {
+      const url = `${urls.originNoSlash}/oauth2/authorization/${provider.registrationId}`
+      const height = 600
+      const width = 600
+      const y = window.top.outerHeight / 2 + window.top.screenY - (height / 2)
+      const x = window.top.outerWidth / 2 + window.top.screenX - (width / 2)
+      window.open(url, 'oauth2Login',
+        `toolbar=no,
+        location=off,
+        status=no,
+        menubar=no,
+        scrollbars=yes,
+        resizable=yes,
+        top=${y},
+        left=${x},
+        width=${height},
+        height=${width}`,
+      )
+    },
     getErrors(fieldName: string): string[] {
       const errors = [] as string[]
 

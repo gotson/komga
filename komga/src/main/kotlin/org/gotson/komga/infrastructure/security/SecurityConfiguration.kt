@@ -88,13 +88,13 @@ class SecurityConfiguration(
         }
         oauth2.authenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
         oauth2.loginPage("/login")
-          .defaultSuccessUrl("/", true)
+          .defaultSuccessUrl("/?server_redirect=Y", true)
           .failureHandler { request, response, exception ->
             val errorMessage = when (exception) {
               is OAuth2AuthenticationException -> exception.error.errorCode
               else -> exception.message
             }
-            val url = "/login?error=$errorMessage"
+            val url = "/login?server_redirect=Y&error=$errorMessage"
             SimpleUrlAuthenticationFailureHandler(url).onAuthenticationFailure(request, response, exception)
           }
       }
