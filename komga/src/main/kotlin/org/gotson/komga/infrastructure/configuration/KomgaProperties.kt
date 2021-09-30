@@ -1,8 +1,11 @@
 package org.gotson.komga.infrastructure.configuration
 
 import org.springframework.boot.context.properties.ConfigurationProperties
+import org.springframework.boot.convert.DurationUnit
 import org.springframework.stereotype.Component
 import org.springframework.validation.annotation.Validated
+import java.time.Duration
+import java.time.temporal.ChronoUnit
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Positive
 
@@ -23,6 +26,9 @@ class KomgaProperties {
   var fileHashing: Boolean = true
 
   var rememberMe = RememberMe()
+
+  @DurationUnit(ChronoUnit.SECONDS)
+  var sessionTimeout: Duration = Duration.ofMinutes(30)
 
   var nativeWebp: Boolean = true
 

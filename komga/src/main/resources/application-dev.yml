@@ -26,6 +26,7 @@ logging:
 #    web: DEBUG
 #    com.zaxxer.hikari: DEBUG
 #    org.springframework.jms: DEBUG
+#    org.springframework.boot.autoconfigure: DEBUG
 #    org.springframework.security.web.FilterChainProxy: DEBUG
   logback:
     rollingpolicy:

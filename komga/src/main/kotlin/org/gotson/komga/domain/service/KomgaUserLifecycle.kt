@@ -60,10 +60,8 @@ class KomgaUserLifecycle(
 
   private fun expireSessions(user: KomgaUser) {
     logger.info { "Expiring all sessions for user: ${user.email}" }
-    sessionRegistry.allPrincipals
-      .filterIsInstance<KomgaPrincipal>()
-      .filter { it.user.id == user.id }
-      .flatMap { sessionRegistry.getAllSessions(it, false) }
+    sessionRegistry
+      .getAllSessions(KomgaPrincipal(user), false)
       .forEach {
         logger.info { "Expiring session: ${it.sessionId}" }
         it.expireNow()

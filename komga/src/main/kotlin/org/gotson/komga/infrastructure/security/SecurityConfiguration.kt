@@ -20,6 +20,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException
 import org.springframework.security.oauth2.core.oidc.user.OidcUser
 import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices
 
 private val logger = KotlinLogging.logger {}
@@ -32,14 +33,14 @@ class SecurityConfiguration(
   private val oauth2UserService: OAuth2UserService<OAuth2UserRequest, OAuth2User>,
   private val oidcUserService: OAuth2UserService<OidcUserRequest, OidcUser>,
   private val sessionRegistry: SessionRegistry,
+  private val sessionCookieName: String,
+  private val userAgentWebAuthenticationDetailsSource: WebAuthenticationDetailsSource,
   clientRegistrationRepository: InMemoryClientRegistrationRepository?,
 ) : WebSecurityConfigurerAdapter() {
 
   private val oauth2Enabled = clientRegistrationRepository != null
 
   override fun configure(http: HttpSecurity) {
-    val userAgentWebAuthenticationDetailsSource = UserAgentWebAuthenticationDetailsSource()
-
     http
       .cors {}
       .csrf { it.disable() }
@@ -52,6 +53,7 @@ class SecurityConfiguration(
         it.antMatchers(
           "/api/v1/claim",
           "/api/v1/oauth2/providers",
+          "/set-cookie",
         ).permitAll()
 
         // all other endpoints are restricted to authenticated users
@@ -72,7 +74,7 @@ class SecurityConfiguration(
 
       .logout {
         it.logoutUrl("/api/v1/users/logout")
-        it.deleteCookies("JSESSIONID")
+        it.deleteCookies(sessionCookieName)
         it.invalidateHttpSession(true)
       }
 

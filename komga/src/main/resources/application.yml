@@ -16,6 +16,7 @@ komga:
     file: \${user.home}/.komga/database.sqlite
   lucene:
     data-directory: \${user.home}/.komga/lucene
+  session-timeout: 7d
 
 spring:
   flyway:
@@ -35,10 +36,6 @@ spring:
   web:
     resources:
       add-mappings: false
-  session:
-    store-type: none
-    jdbc:
-      initialize-schema: never
 
 server:
   servlet.session.timeout: 7d
