@@ -1,0 +1,241 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} z {2}"
+    },
+    "dataIterator": {
+      "noResultsText": "Žádné položky nenalezeny"
+    },
+    "dataTable": {
+      "sortBy": "Seřadit podle"
+    },
+    "fileInput": {
+      "counter": "{0} souborů",
+      "counterSize": "{0} souborů ({1} celkem)"
+    },
+    "noDataText": "Data nejsou dostupná"
+  },
+  "account_settings": {
+    "account_settings": "Nastavení účtu",
+    "change_password": "změnit heslo"
+  },
+  "authentication_activity": {
+    "datetime": "Datum a čas",
+    "email": "Email",
+    "error": "Chyba",
+    "ip": "IP",
+    "source": "Zdroj",
+    "success": "Úspěch"
+  },
+  "author_roles": {
+    "colorist": "koloristé",
+    "cover": "přebal",
+    "editor": "editoři",
+    "translator": "překladatelé",
+    "writer": "autoři"
+  },
+  "book_card": {
+    "error": "Chyba",
+    "unknown": "Čeká na analýzu",
+    "unsupported": "Nepodporováno"
+  },
+  "book_import": {
+    "button_browse": "Procházet",
+    "button_import": "Importovat",
+    "button_scan": "Skenovat",
+    "button_select_series": "Vybrat série",
+    "field_import_path": "Importovat ze složky",
+    "info_part1": "Na této stránce lze importovat soubory které jsou uloženy mimo existující knihovny. Lze importovat pouze do existujících sérií, Komga tyto soubory přesune nebo zkopíruje do složky dané série.",
+    "info_part2": "Pokud knížka s vybraným číslem již existuje, budete moct knížky porovnat. Pokud se rozhodnete knížku importovat, Komga nahradí existující knížku novou knížkou.",
+    "no_files_found": "Žádné soubory nenalezeny",
+    "notification": {
+      "go_to_book": "Ke knížce",
+      "import_failure": "Import knížky se nezdařil: {file}",
+      "import_successful": "Knížka úspěšně importována: {book}",
+      "source_file": "Zdrojový soubor: {file}"
+    },
+    "row": {
+      "error_analyze_first": "Knížka musí být nejdříve analyzována",
+      "error_choose_series": "Vybrat sérii",
+      "error_only_import_no_errors": "Lze importovat pouze knížky bez chyb"
+    },
+    "table": {
+      "file_name": "Název souboru",
+      "number": "Číslo",
+      "series": "Série"
+    },
+    "title": "Importovat"
+  },
+  "bookreader": {
+    "beginning_of_book": "Jsi na začátku knížky.",
+    "changing_reading_direction": "Změnit směr čtení na",
+    "download_current_page": "Stáhnout aktuální stránku",
+    "end_of_book": "Dostal jsi se na konec knížky.",
+    "from_series_metadata": "z metadat série",
+    "paged_reader_layout": {
+      "double": "Dvojstránka",
+      "double_no_cover": "Dvoustránka (žádný přebal)",
+      "single": "Jednostránka"
+    },
+    "reader_settings": "Nastavení prohlížení",
+    "scale_type": {
+      "continuous_original": "Původní",
+      "continuous_width": "Přizpůsobit šířce",
+      "height": "Přizpůsobit výšce",
+      "original": "Původní",
+      "screen": "Obrazovka",
+      "width": "Přizpůsobit šířce",
+      "width_shrink_only": "Přizpůsobit šířce (pouze zmenšení"
+    },
+    "settings": {
+      "always_fullscreen": "Vždy na celou obrazovku",
+      "animate_page_transitions": "Animovat přechody stránek",
+      "background_color": "Barva pozadí",
+      "background_colors": {
+        "black": "Černá",
+        "gray": "Šedá",
+        "white": "Bílá"
+      },
+      "display": "Zobrazení",
+      "general": "Obecný",
+      "gestures": "Gesta",
+      "page_layout": "Rozložení stránky",
+      "reading_mode": "Režim čtení",
+      "scale_type": "Typ úpravy velikosti",
+      "side_padding": "Boční odsazení",
+      "side_padding_none": "Žádný"
+    },
+    "shortcuts": {
+      "close": "Zavřít",
+      "first_page": "První stránka",
+      "last_page": "Poslední stránka",
+      "left_to_right": "Zleva doprava",
+      "menus": "Nabídky",
+      "next_page": "Následující stránka",
+      "previous_page": "Předchozí stránka",
+      "right_to_left": "Zprava doleva",
+      "settings": "Nastavení",
+      "show_hide_help": "Ukázat/schovat nápovědu",
+      "show_hide_settings": "Ukázat/schovat nastavení",
+      "show_hide_toolbars": "Zobrazit/skrýt panel nástrojů",
+      "vertical": "Svisle",
+      "webtoon": "Webový komiks"
+    },
+    "tooltip_incognito": "Postup čtení nebude uložen"
+  },
+  "browse_book": {
+    "comment": "KOMENTOVAT",
+    "download_file": "Stáhnout soubor",
+    "file": "SOUBOR",
+    "format": "FORMÁT",
+    "isbn": "ISBN",
+    "outdated_tooltip": "Soubor této knížky se změnil, tuto knížku je potřeba znova analyzovat",
+    "read_book": "Číst knihu",
+    "read_incognito": "Číst anonymně",
+    "size": "VELIKOST"
+  },
+  "browse_collection": {
+    "edit_collection": "Upravit kolekci",
+    "edit_elements": "Upravit element",
+    "manual_ordering": "manuální řazení"
+  },
+  "browse_readlist": {
+    "edit_elements": "Upravit element"
+  },
+  "browse_series": {
+    "series_no_summary": "Tato série nemá souhrn, proto jsme pro tebe jeden vybrali!",
+    "summary_from_book": "Souhrn z knížky {number}:"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "Spravovat kolekci",
+    "title": "{name} kolekce"
+  },
+  "common": {
+    "all_libraries": "Všechny knihovny",
+    "books": "Knihy",
+    "books_n": "Žádná knížka | 1 knížka | {count} knížek",
+    "books_total": "{count} / {total} knížek",
+    "cancel": "Zrušit",
+    "close": "Zavřít",
+    "collections": "Kolekce",
+    "create": "Vytvořit",
+    "delete": "Odstranit",
+    "dismiss": "Odejít",
+    "download": "Stáhnout",
+    "email": "Email",
+    "filter_no_matches": "Zadaný filtr nemá žádné výsledky",
+    "genre": "Žánr",
+    "go_to_library": "Ke knihovně",
+    "go_to_series": "K sérii",
+    "library": "Knihovna",
+    "locale_name": "Čeština",
+    "locale_rtl": "false",
+    "lock_all": "Uzamknout vše",
+    "n_selected": "{count} vybráno",
+    "nothing_to_show": "Není co ukázat",
+    "outdated": "Zastaralé",
+    "pages_n": "Žádné stránky | 1 stránka | {count} stránek",
+    "password": "Heslo",
+    "publisher": "Vydavatel",
+    "read": "Číst",
+    "required": "Vyžadováno",
+    "reset_filters": "Zresetovat Filtr",
+    "roles": "Role",
+    "series": "Série",
+    "tags": "Štítky",
+    "unavailable": "Není k dispozici",
+    "unlock_all": "Odemknout vše",
+    "year": "rok"
+  },
+  "dashboard": {
+    "keep_reading": "Pokračovat ve čtení",
+    "recently_added_books": "Nedávno přidané knížky",
+    "recently_added_series": "Nedávno přidané série",
+    "recently_read_books": "Nedávno přečtené knížky",
+    "recently_released_books": "Nedávno vydané knížky"
+  },
+  "data_import": {
+    "book_number": "Číslo knížky: {name}",
+    "book_series": "Série: {name}",
+    "button_import": "Importovat",
+    "imported_as": "Importováno jako {name}",
+    "size_limit": "Velikost by měla být méně než {size} MB",
+    "tab_title": "Import dat"
+  },
+  "dialog": {
+    "add_to_collection": {
+      "button_create": "Vytvořit",
+      "card_collection_subtitle": "Žádné série | 1 série | {count} sérií",
+      "dialog_title": "Přidat do kolekce",
+      "field_search_create": "Vyhledat nebo vytvořit kolekci",
+      "field_search_create_error": "Kolekce s tímto názvem již existuje",
+      "label_no_matching_collection": "Žádná kolekce neodpovídá"
+    },
+    "add_to_readlist": {
+      "button_create": "Vytvořit",
+      "card_readlist_subtitle": "Žádná knížka | 1 knížka | {count} knížek"
+    },
+    "add_user": {
+      "button_cancel": "Zrušit",
+      "button_confirm": "Přidat",
+      "dialog_title": "Přidat uživatele",
+      "field_email": "Email",
+      "field_email_error": "Musí být validní emailová adresa",
+      "field_password": "Heslo",
+      "field_role_administrator": "Administrátor",
+      "field_role_file_download": "Stahování souboru",
+      "label_roles": "Role"
+    },
+    "analyze_library": {
+      "button_confirm": "Analyzovat",
+      "title": "Analyzovat knihovnu"
+    },
+    "delete_collection": {
+      "button_confirm": "Odstranit",
+      "confirm_delete": "Ano, smazat kolekci \"{name}\"",
+      "confirm_delete_multiple": "Ano, smazat {count} kolekce",
+      "dialog_title": "Smazat kolekci",
+      "dialog_title_multiple": "Smazat kolekce"
+    }
+  }
+}

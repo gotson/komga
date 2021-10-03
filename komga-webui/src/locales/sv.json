@@ -26,6 +26,7 @@
     "email": "E-post",
     "error": "Fel",
     "ip": "IP",
+    "source": "Källa",
     "success": "Lyckades",
     "user_agent": "Användaragent"
   },
@@ -396,6 +397,7 @@
       "field_total_book_count_error": "Totalt antal böcker måste vara minst 1",
       "mixed": "BLANDAD",
       "tab_general": "Allämnt",
+      "tab_poster": "Affisch",
       "tab_tags": "Taggar",
       "tags_notice_multiple_edit": "Du redigerar taggar för flera serier. Detta skriver över befintliga taggar i varje serie."
     },
@@ -540,7 +542,10 @@
     "ERR_1020": "Boken att uppgradera tillhör inte den medföljande serien",
     "ERR_1021": "Destinationsfilen finns redan",
     "ERR_1022": "Nyimporterad boken kunde inte skannas",
-    "ERR_1023": "Boken finns redan i Läslistan"
+    "ERR_1023": "Boken finns redan i Läslistan",
+    "ERR_1024": "OAuth2 inloggningsfel: inget e-postattribut",
+    "ERR_1025": "OAuth2 inloggningsfel: det finns ingen lokal användare med den e-postadressen",
+    "ERR_1026": "OpenID Connect inloggningsfel: e-post är inte verifierad"
   },
   "filter": {
     "age_rating": "åldersgräns",
@@ -632,9 +637,11 @@
   },
   "server": {
     "server_management": {
+      "button_cancel_all_tasks": "Avbryt alla aktiviteter",
       "button_empty_trash": "Töm papperskorgen för alla bibliotek",
       "button_scan_libraries": "Skanna alla bibliotek",
       "button_shutdown": "Stäng av",
+      "notification_tasks_cancelled": "Inga aktiviteter att avbryta | En aktivitet avbruten | {count} aktiviteter avbröts",
       "section_title": "Serverhantering"
     },
     "tab_title": "Server"
@@ -666,6 +673,16 @@
     "dark": "Mörkt",
     "light": "Ljust",
     "system": "System"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "Ta bort",
+    "tooltip_mark_as_selected": "Markera som vald",
+    "tooltip_selected": "Vald",
+    "tooltip_sidecar": "Lokala bilder",
+    "tooltip_to_be_deleted": "Ska tas bort",
+    "tooltip_to_be_uploaded": "Ska laddas upp",
+    "tooltip_too_big": "Filen är för stor!",
+    "tooltip_user_uploaded": "Användaren har laddat upp"
   },
   "user_roles": {
     "ADMIN": "Administratör",

@@ -36,6 +36,7 @@
     "inker": "entintadores",
     "letterer": "letristas",
     "penciller": "dibujantes",
+    "translator": "traductores",
     "writer": "escritores"
   },
   "book_card": {
@@ -105,6 +106,7 @@
       "background_color": "Color de fondo",
       "background_colors": {
         "black": "Negro",
+        "gray": "Gris",
         "white": "Blanco"
       },
       "display": "Visualización",
@@ -189,6 +191,7 @@
     "go_to_library": "Ir a la biblioteca",
     "go_to_readlist": "Ir a lista de lectura",
     "go_to_series": "Ir a serie",
+    "library": "Biblioteca",
     "locale_name": "Español",
     "locale_rtl": "false",
     "n_selected": "Nada seleccionado | 1 seleccionado | {count} seleccionados",

@@ -25,7 +25,8 @@
     "datetime": "日期/时间",
     "email": "邮箱",
     "error": "错误",
-    "ip": "IP地址",
+    "ip": "IP 地址",
+    "source": "源",
     "success": "成功",
     "user_agent": "用户代理"
   },
@@ -396,6 +397,7 @@
       "field_total_book_count_error": "书籍总数必须为 1 或更多",
       "mixed": "混合",
       "tab_general": "常规",
+      "tab_poster": "海报",
       "tab_tags": "标签",
       "tags_notice_multiple_edit": "您正在编辑多个系列的标签。这将覆盖每个系列的现有标签。"
     },
@@ -540,7 +542,10 @@
     "ERR_1020": "要升级的书籍不属于提供的系列",
     "ERR_1021": "目标文件已存在",
     "ERR_1022": "无法扫描新导入的书籍",
-    "ERR_1023": "书籍已经在阅读列表中"
+    "ERR_1023": "书籍已经在阅读列表中",
+    "ERR_1024": "OAuth2 登录错误：没有电子邮件属性",
+    "ERR_1025": "OAuth2 登录错误：没有使用该电子邮件的本地用户",
+    "ERR_1026": "OpenID Connect 登录错误：电子邮件未验证"
   },
   "filter": {
     "age_rating": "年龄限制",
@@ -632,9 +637,11 @@
   },
   "server": {
     "server_management": {
+      "button_cancel_all_tasks": "取消所有任务",
       "button_empty_trash": "清空所有书库的垃圾箱",
       "button_scan_libraries": "扫描所有书库",
       "button_shutdown": "关机",
+      "notification_tasks_cancelled": "无可取消任务 | 取消了一个任务 | 取消了 {count} 个任务",
       "section_title": "服务器管理"
     },
     "tab_title": "服务器"
@@ -666,6 +673,16 @@
     "dark": "暗",
     "light": "亮",
     "system": "系统"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "删除",
+    "tooltip_mark_as_selected": "标为已选",
+    "tooltip_selected": "已选中",
+    "tooltip_sidecar": "本地插图",
+    "tooltip_to_be_deleted": "将被删除",
+    "tooltip_to_be_uploaded": "将被上传",
+    "tooltip_too_big": "文件太大！",
+    "tooltip_user_uploaded": "用户上传的"
   },
   "user_roles": {
     "ADMIN": "管理员",
