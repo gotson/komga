@@ -541,7 +541,7 @@ export default Vue.extend({
       return this.$store.getters.meFileDownload && !this.unavailable
     },
     fileUrl(): string {
-      return seriesFileUrl(this.series.id)
+      return seriesFileUrl(this.seriesId)
     },
     thumbnailUrl(): string {
       return seriesThumbnailUrl(this.seriesId)

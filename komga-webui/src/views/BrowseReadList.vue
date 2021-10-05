@@ -94,7 +94,19 @@
         </v-col>
       </v-row>
 
-      <v-divider v-if="readList.summary" class="my-3"/>
+      <v-row class="px-2">
+        <v-col>
+          <v-btn :title="$t('menu.download_readlist')"
+                 small
+                 :disabled="!canDownload"
+                 :href="fileUrl">
+            <v-icon left small>mdi-file-download</v-icon>
+            {{ $t('common.download') }}
+          </v-btn>
+        </v-col>
+      </v-row>
+
+      <v-divider class="my-3"/>
 
       <item-browser
         :items.sync="books"
@@ -136,6 +148,7 @@ import {authorRoles} from '@/types/author-roles'
 import {LibraryDto} from '@/types/komga-libraries'
 import {mergeFilterParams, toNameValue} from '@/functions/filter'
 import {Location} from 'vue-router'
+import {readListFileUrl} from '@/functions/urls'
 
 export default Vue.extend({
   name: 'BrowseReadList',
@@ -241,6 +254,12 @@ export default Vue.extend({
     },
     isAdmin(): boolean {
       return this.$store.getters.meAdmin
+    },
+    canDownload(): boolean {
+      return this.$store.getters.meFileDownload
+    },
+    fileUrl(): string {
+      return readListFileUrl(this.readListId)
     },
     filterActive(): boolean {
       return Object.keys(this.filters).some(x => this.filters[x].length !== 0)

@@ -52,6 +52,10 @@ export function readListThumbnailUrl (readListId: string): string {
   return `${urls.originNoSlash}/api/v1/readlists/${readListId}/thumbnail`
 }
 
+export function readListFileUrl (readListId: string): string {
+  return `${urls.originNoSlash}/api/v1/readlists/${readListId}/file`
+}
+
 export function transientBookPageUrl (transientBookId: string, page: number): string {
   return `${urls.originNoSlash}/api/v1/transient-books/${transientBookId}/pages/${page}`
 }
