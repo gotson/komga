@@ -234,7 +234,8 @@ router.beforeEach((to, from, next) => {
   }
 
   if (to.name !== 'startup' && to.name !== 'login' && !lStore.getters.authenticated) {
-    next({name: 'startup', query: {redirect: to.fullPath}})
+    const query = Object.assign({}, to.query, {redirect: to.fullPath})
+    next({name: 'startup', query: query})
   } else next()
 })
 

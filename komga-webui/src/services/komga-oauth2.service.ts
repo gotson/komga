@@ -3,7 +3,7 @@ import {OAuth2ClientDto} from '@/types/komga-oauth2'
 
 const API_OAUTH2 = '/api/v1/oauth2'
 
-export default class KomgaOauht2Service {
+export default class KomgaOauth2Service {
   private http: AxiosInstance
 
   constructor(http: AxiosInstance) {

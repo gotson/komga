@@ -13,13 +13,21 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'Startup',
-  async mounted () {
+  async mounted() {
     try {
+      if (this.$route.query.xAuthToken) {
+        try {
+          await this.$komgaLogin.setCookie(this.$route.query.xAuthToken.toString())
+        } catch (e) {
+          this.$debug(e.message)
+        }
+      }
+
       await this.$store.dispatch('getMe')
       await this.$store.dispatch('getLibraries')
       this.$router.back()
     } catch (e) {
-      this.$router.push({ name: 'login', query: { redirect: this.$route.query.redirect } })
+      this.$router.push({name: 'login', query: {redirect: this.$route.query.redirect}})
     }
   },
 })
