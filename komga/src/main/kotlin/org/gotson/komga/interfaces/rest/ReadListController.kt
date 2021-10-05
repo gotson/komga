@@ -5,13 +5,18 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
+import org.apache.commons.io.IOUtils
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ROLE_ADMIN
+import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadStatus
+import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.ReadListLifecycle
@@ -32,11 +37,14 @@ import org.gotson.komga.interfaces.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.rest.dto.toDto
 import org.gotson.komga.interfaces.rest.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.rest.persistence.ReadProgressDtoRepository
+import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.http.CacheControl
+import org.springframework.http.ContentDisposition
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -55,7 +63,10 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
+import java.io.OutputStream
 import java.util.concurrent.TimeUnit
+import java.util.zip.Deflater
 import javax.validation.Valid
 
 private val logger = KotlinLogging.logger {}
@@ -66,6 +77,7 @@ class ReadListController(
   private val readListRepository: ReadListRepository,
   private val readListLifecycle: ReadListLifecycle,
   private val bookDtoRepository: BookDtoRepository,
+  private val bookRepository: BookRepository,
   private val readProgressDtoRepository: ReadProgressDtoRepository,
   private val bookLifecycle: BookLifecycle,
 ) {
@@ -298,6 +310,52 @@ class ReadListController(
         UnpagedSorted(Sort.by(Sort.Order.asc("readList.number")))
       ).filterIndexed { index, _ -> index < readProgress.lastBookRead }
         .forEach { book -> bookLifecycle.markReadProgressCompleted(book.id, principal.user) }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @GetMapping("{id}/file", produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
+  @PreAuthorize("hasRole('$ROLE_FILE_DOWNLOAD')")
+  fun getReadListFile(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable id: String
+  ): ResponseEntity<StreamingResponseBody> {
+    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
+
+      val books = readList.bookIds
+        .mapNotNull { bookRepository.findByIdOrNull(it.value)?.let { book -> it.key to book } }
+        .toMap()
+
+      val streamingResponse = StreamingResponseBody { responseStream: OutputStream ->
+        ZipArchiveOutputStream(responseStream).use { zipStream ->
+          zipStream.setMethod(ZipArchiveOutputStream.DEFLATED)
+          zipStream.setLevel(Deflater.NO_COMPRESSION)
+          books.forEach { (index, book) ->
+            val file = FileSystemResource(book.path)
+            if (!file.exists()) {
+              logger.warn { "Book file not found, skipping archive entry: ${file.path}" }
+              return@forEach
+            }
+
+            logger.debug { "Adding file to zip archive: ${file.path}" }
+            file.inputStream.use {
+              zipStream.putArchiveEntry(ZipArchiveEntry("${index + 1} - ${file.filename}"))
+              IOUtils.copyLarge(it, zipStream, ByteArray(8192))
+              zipStream.closeArchiveEntry()
+            }
+          }
+        }
+      }
+
+      return ResponseEntity.ok()
+        .headers(
+          HttpHeaders().apply {
+            contentDisposition = ContentDisposition.builder("attachment")
+              .filename(readList.name + ".zip")
+              .build()
+          }
+        )
+        .contentType(MediaType.parseMediaType("application/zip"))
+        .body(streamingResponse)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 }
