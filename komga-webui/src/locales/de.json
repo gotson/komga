@@ -36,6 +36,7 @@
     "inker": "Tuscher",
     "letterer": "Setzer",
     "penciller": "Zeichner",
+    "translator": "Übersetzer",
     "writer": "Schriftsteller"
   },
   "book_card": {
@@ -97,7 +98,8 @@
       "height": "An Höhe ausrichten",
       "original": "Original",
       "screen": "Bildschirm",
-      "width": "An Breite ausrichten"
+      "width": "An Breite ausrichten",
+      "width_shrink_only": "An Breite ausrichten (nur verkleinern)"
     },
     "settings": {
       "always_fullscreen": "Dauerhaftes Vollbild",
@@ -105,6 +107,7 @@
       "background_color": "Hintergrundfarbe",
       "background_colors": {
         "black": "Schwarz",
+        "gray": "Grau",
         "white": "Weiß"
       },
       "display": "Anzeige",
@@ -393,6 +396,7 @@
       "field_total_book_count_error": "Anzahl der Bücher einer Serie muß größer eins sein",
       "mixed": "Vermischtes",
       "tab_general": "Allgemein",
+      "tab_poster": "Poster",
       "tab_tags": "Stichwörter",
       "tags_notice_multiple_edit": "Sie verändern mehrere Stichwörter. Dies wird die existierenden Einträge der Stichwörter aller Serien durch den neuen Eintrag ersetzen."
     },
@@ -629,8 +633,11 @@
   },
   "server": {
     "server_management": {
+      "button_cancel_all_tasks": "Alle Aufgaben abbrechen",
       "button_empty_trash": "Bereinige alle Bibliotheken von nicht vorhandenen Büchern",
+      "button_scan_libraries": "Scanne alle Bibliotheken",
       "button_shutdown": "Herunterfahren",
+      "notification_tasks_cancelled": "Keine Aufgaben abzubrechen | Eine Aufgabe abgebrochen | {count} Aufgaben abgebrochen",
       "section_title": "Serververwaltung"
     },
     "tab_title": "Server"
@@ -662,6 +669,16 @@
     "dark": "Dunkel",
     "light": "Hell",
     "system": "System"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "Löschen",
+    "tooltip_mark_as_selected": "Als ausgewählt markieren",
+    "tooltip_selected": "Ausgewählt",
+    "tooltip_sidecar": "Lokale Grafik",
+    "tooltip_to_be_deleted": "Wird gelöscht werden",
+    "tooltip_to_be_uploaded": "Wird hochgeladen werden",
+    "tooltip_too_big": "Datei zu groß!",
+    "tooltip_user_uploaded": "Von Nutzer hochgeladen"
   },
   "user_roles": {
     "ADMIN": "Systemverwalter",

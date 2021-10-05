@@ -26,6 +26,7 @@
     "email": "Retpoŝta adreso",
     "error": "Eraro",
     "ip": "IP-adreso",
+    "source": "Fonto",
     "success": "Sukceso",
     "user_agent": "Klienta Aplikaĵo"
   },
@@ -396,6 +397,7 @@
       "field_total_book_count_error": "Totala nombro de libroj devas esti almenaŭ 1",
       "mixed": "MIKSITA",
       "tab_general": "Ĝenerala",
+      "tab_poster": "Afiŝo",
       "tab_tags": "Etikedoj",
       "tags_notice_multiple_edit": "Vi redaktas etikedojn de pluraj serioj. Tio ŝanĝos la aŭtorojn de ĉiu el tiuj serioj."
     },
@@ -540,7 +542,10 @@
     "ERR_1020": "Anstataŭigota libro ne apartenas al la specifita serio",
     "ERR_1021": "Cela dosiero jam ekzistas",
     "ERR_1022": "Nova enportita libro ne estas skanebla",
-    "ERR_1023": "Libro jam en legolisto"
+    "ERR_1023": "Libro jam en legolisto",
+    "ERR_1024": "Eraro de OAuth2 dum salutado: mankas atributo de retpoŝta adreso",
+    "ERR_1025": "Eraro de OAuth2 dum salutado: ne ekzistas loka uzanto de tiu retpoŝta adreso",
+    "ERR_1026": "Eraro de OAuth2 dum salutado: retpoŝta adreso ne estas konfirmita"
   },
   "filter": {
     "age_rating": "aĝolimo",
@@ -632,8 +637,11 @@
   },
   "server": {
     "server_management": {
+      "button_cancel_all_tasks": "Nuligi ĉiujn taskojn",
       "button_empty_trash": "Malplenigi rubujon por ĉiuj bibliotekoj",
+      "button_scan_libraries": "Skani ĉiujn bibliotekojn",
       "button_shutdown": "Haltigi",
+      "notification_tasks_cancelled": "Neniu tasko nuligita | Unu tasko nuligita | {count} taskoj nuligitaj",
       "section_title": "Administrado de Servilo"
     },
     "tab_title": "Servilo"
@@ -665,6 +673,16 @@
     "dark": "Malhela",
     "light": "Hela",
     "system": "Sistema"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "Forigi",
+    "tooltip_mark_as_selected": "Marki kiel elektitan",
+    "tooltip_selected": "Elektita",
+    "tooltip_sidecar": "Loka artaĵo",
+    "tooltip_to_be_deleted": "Forigota",
+    "tooltip_to_be_uploaded": "Alŝutota",
+    "tooltip_too_big": "Dosiero tro granda!",
+    "tooltip_user_uploaded": "Alŝutita de uzanto"
   },
   "user_roles": {
     "ADMIN": "Administranto",

@@ -98,7 +98,8 @@
       "height": "Ajuster hauteur",
       "original": "Original",
       "screen": "Écran",
-      "width": "Ajuster largeur"
+      "width": "Ajuster largeur",
+      "width_shrink_only": "Ajuster largeur (réduire uniquement)"
     },
     "settings": {
       "always_fullscreen": "Toujours en plein écran",
@@ -631,6 +632,7 @@
   },
   "server": {
     "server_management": {
+      "button_cancel_all_tasks": "Annuler toutes les tâches",
       "button_empty_trash": "Vider la corbeille pour toutes les bibliothèques",
       "button_shutdown": "Éteindre",
       "section_title": "Gestion du serveur"

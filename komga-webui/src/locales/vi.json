@@ -3,6 +3,10 @@
     "dataFooter": {
       "pageText": "{0}-{1} của {2}"
     },
+    "dataIterator": {
+      "loadingText": "Đang tải thành phần...",
+      "noResultsText": "Không thấy dữ liệu trùng khớp"
+    },
     "dataTable": {
       "itemsPerPageText": "Hàng trên mỗi trang:",
       "sortBy": "Sắp xếp theo"
@@ -32,6 +36,7 @@
     "inker": "người tô đậm",
     "letterer": "người viết hội thoại",
     "penciller": "người vẽ nháp",
+    "translator": "Người dịch",
     "writer": "tác giả"
   },
   "book_card": {
@@ -48,6 +53,11 @@
     "info_part1": "Màn hình này cho phép bạn nhập các tệp nằm ngoài các thư viện hiện có của bạn. Bạn chỉ có thể nhập tệp vào Sê-ri hiện có, trong trường hợp đó, Komga sẽ di chuyển hoặc sao chép tệp vào thư mục của Sê-ri đã chọn.",
     "info_part2": "Nếu bạn chọn một số cho một cuốn sách và một cuốn sách đã tồn tại với con số đó, thì bạn sẽ có thể so sánh 2 cuốn sách. Nếu bạn quyết định nhập cuốn sách, Komga sẽ nâng cấp cuốn sách hiện có với cuốn sách mới, thay thế hiệu quả tệp cũ bằng tệp mới.",
     "no_files_found": "Không tìm thấy tập tin",
+    "notification": {
+      "import_failure": "Không thể thêm sách: {file}",
+      "import_successful": "Thêm sách thành công: {book}",
+      "source_file": "Nguồn: {file}"
+    },
     "row": {
       "error_analyze_first": "Sách cần được phân tích trước",
       "error_choose_series": "Chọn một sê-ri",
@@ -60,7 +70,8 @@
       "number": "Số",
       "series": "Sê-ri"
     },
-    "title": "Nhập"
+    "title": "Nhập",
+    "try_another_directory": "Thử tìm một đường dẫn khác"
   },
   "bookreader": {
     "beginning_of_book": "Bạn đang ở phần đầu của cuốn sách.",
@@ -86,14 +97,17 @@
       "height": "Vừa chiều dọc",
       "original": "Nguyên gốc",
       "screen": "Màn hình",
-      "width": "Vừa chiều ngang"
+      "width": "Vừa chiều ngang",
+      "width_shrink_only": "Vừa chiều ngang ( chỉ khi co lại )"
     },
     "settings": {
+      "always_fullscreen": "Luôn toàn màn hình",
       "animate_page_transitions": "Hoạt ảnh chuyển trang",
       "background_color": "Màu nền",
       "background_colors": {
-        "black": "Đen",
-        "white": "Trắng"
+        "black": "Màu Đen",
+        "gray": "Màu xám",
+        "white": "Màu Trắng"
       },
       "display": "Hiển thị",
       "general": "Chung",
@@ -136,7 +150,9 @@
     "format": "ĐỊNH DẠNG",
     "isbn": "ISBN",
     "navigation_within_readlist": "Điều hướng trong danh sách đọc: {name}",
+    "outdated_tooltip": "Dữ liệu của sách đã bị thay đổi, cuốn sách này cần phải được phân tích lại",
     "read_book": "Đọc sách",
+    "read_incognito": "Đọc ở chế độ ẩn danh",
     "size": "KÍCH THƯỚC"
   },
   "browse_collection": {
@@ -161,30 +177,40 @@
     "all_libraries": "Tất cả thư viện",
     "books": "Sách",
     "books_n": "Không có sách | 1 cuốn sách | {count} sách",
+    "books_total": "{count} / {total} sách",
     "cancel": "Hủy",
     "close": "Đóng",
     "collections": "Bộ sưu tập",
     "create": "Tạo",
     "delete": "Xóa",
+    "dismiss": "Bỏ qua",
     "download": "Tải xuống",
     "email": "Email",
     "filter_no_matches": "Bộ lọc đang hoạt động không có kết quả phù hợp nào",
     "genre": "Thể loại",
     "go_to_library": "Đi tới thư viện",
+    "go_to_readlist": "Tới danh sách đọc",
+    "library": "Thư viện",
     "locale_name": "Tiếng Việt",
     "locale_rtl": "false",
+    "lock_all": "Khóa tất cả",
     "n_selected": "{count} đã chọn",
     "nothing_to_show": "Không có gì để hiển thị",
+    "outdated": "Đã lỗi thời",
     "pages": "trang",
     "pages_n": "Không có trang | 1 trang | {count} trang",
     "password": "Mật khẩu",
+    "pending_tasks": "Đang không có tác vụ chờ | 1 tác vụ đang chờ | {count} tác vụ đang chờ",
     "publisher": "Nhà xuất bản",
     "read": "Đọc",
     "readlists": "Đọc Danh sách",
     "required": "Cần thiết",
+    "reset_filters": "Reset bộ lọc",
     "roles": "Vai trò",
     "series": "Sê-ri",
     "tags": "Thẻ",
+    "unavailable": "Không khả dụng",
+    "unlock_all": "Mở khóa tất cả",
     "use_filter_panel_to_change_filter": "Sử dụng bảng điều khiển bộ lọc để thay đổi bộ lọc đang hoạt động",
     "year": "năm"
   },
@@ -193,6 +219,8 @@
     "on_deck": "Trong tiến trình",
     "recently_added_books": "Sách đã thêm gần đây",
     "recently_added_series": "Sê-ri đã thêm gần đây",
+    "recently_read_books": "Danh sách đã đọc gần đây",
+    "recently_released_books": "Các sách mới ra mắt",
     "recently_updated_series": "Sê-ri cập nhật gần đây"
   },
   "data_import": {
@@ -236,10 +264,17 @@
       "field_role_page_streaming": "Truyền phát Trang",
       "label_roles": "Vai trò"
     },
+    "analyze_library": {
+      "body": "Phân tích tất cả dữ liệu trong thư viện. Việc phân tích sẽ thu được thông tin của dữ liệu. Phụ thuộc vào kích thước thư viện mà việc này có thể sẽ mất nhiều thời gian.",
+      "button_confirm": "Phân tích",
+      "title": "Phân tích thư viện"
+    },
     "delete_collection": {
       "button_confirm": "Xóa",
       "confirm_delete": "Có, xóa bộ sưu tập \"{name}\"",
+      "confirm_delete_multiple": "Đúng, xóa {count} bộ sưu tập",
       "dialog_title": "Xoá bộ sưu tập",
+      "dialog_title_multiple": "Xóa bộ sưu tập",
       "warning_html": "Bộ sưu tập <b>{name}</b> sẽ bị xóa khỏi máy chủ này. Các tệp phương tiện của bạn sẽ không bị ảnh hưởng. Điều này <b> không thể hoàn tác</b>. Tiếp tục?"
     },
     "delete_library": {

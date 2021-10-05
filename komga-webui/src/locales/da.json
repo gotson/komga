@@ -34,6 +34,9 @@
     "cover": "forside",
     "editor": "redaktører",
     "inker": "formvalser",
+    "letterer": "skribent",
+    "penciller": "tegner",
+    "translator": "oversættere",
     "writer": "forfattere"
   },
   "book_card": {
@@ -49,6 +52,7 @@
     "field_import_path": "Importér fra mappe",
     "info_part1": "Denne side lader dig importére filer, der er uden for dine eksisterende biblioteker. Du kan kun importére filer ind i eksisterende Serier, i hvilket tilfælde Komga vil flytte eller kopiere filerne ind i mappen af den valgte Serie.",
     "info_part2": "Hvis du vælger et tal for en bog, og en bog allerede eksistere med det nummer, så får du mulighed for at sammenligne de 2 bøger. Hvis du vælger at importére bogen, Komga vil opgradere den eksisterende bog med den nye, hvor den udskifter den gamle fil med den nye.",
+    "no_files_found": "Ingen filer fundet",
     "notification": {
       "go_to_book": "Gå til bog",
       "import_failure": "Kunne ikke importére bog: {file}",
@@ -67,7 +71,8 @@
       "number": "Nummer",
       "series": "Serie"
     },
-    "title": "Importér"
+    "title": "Importér",
+    "try_another_directory": "Prøv at søge i et andet bibliotek"
   },
   "bookreader": {
     "beginning_of_book": "Du er i begyndelsen af bogen.",
@@ -97,6 +102,7 @@
       "background_color": "Baggrundsfarve",
       "background_colors": {
         "black": "Sort",
+        "gray": "Grå",
         "white": "Hvid"
       },
       "display": "Skærm",
@@ -128,7 +134,40 @@
       "webtoon": "Webtoon"
     }
   },
+  "browse_book": {
+    "format": "FORMAT",
+    "isbn": "ISBN"
+  },
   "common": {
     "locale_name": "Dansk"
+  },
+  "settings_user": {
+    "role_user": "Bruger"
+  },
+  "sort": {
+    "books_count": "Bog antal",
+    "date_added": "Tilføjelsesdato",
+    "date_updated": "Dato opdateret",
+    "file_name": "Filnavn",
+    "file_size": "Filstørrelse",
+    "folder_name": "Mappenavn",
+    "name": "Navn",
+    "number": "Antal",
+    "release_date": "Udgivelsesdato"
+  },
+  "theme": {
+    "dark": "Mørk",
+    "light": "Lys",
+    "system": "System"
+  },
+  "user_roles": {
+    "ADMIN": "Administrator",
+    "USER": "Bruger"
+  },
+  "users": {
+    "users": "Brugere"
+  },
+  "welcome": {
+    "welcome_message": "Velkommen til Komga"
   }
 }

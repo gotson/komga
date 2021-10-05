@@ -26,6 +26,7 @@
     "email": "Email",
     "error": "Error",
     "ip": "IP",
+    "source": "Sumber",
     "success": "Sukses",
     "user_agent": "Agen Pengguna"
   },
@@ -396,6 +397,7 @@
       "field_total_book_count_error": "Jumlah buku total harus 1 atau lebih",
       "mixed": "CAMPURAN",
       "tab_general": "Umum",
+      "tab_poster": "Poster",
       "tab_tags": "Tag",
       "tags_notice_multiple_edit": "Anda sedang mengedit tag untuk beberapa seri. Ini akan menimpa tag yang ada dari setiap seri."
     },
@@ -540,7 +542,10 @@
     "ERR_1020": "Buku untuk ditingkatkan bukan milik seri yang disediakan",
     "ERR_1021": "Berkas tujuan sudah ada",
     "ERR_1022": "Buku yang baru diimpor tidak dapat dipindai",
-    "ERR_1023": "Buku sudah ada di ReadingList"
+    "ERR_1023": "Buku sudah ada di ReadingList",
+    "ERR_1024": "Kesalahan masuk OAuth2: tidak ada atribut email",
+    "ERR_1025": "Kesalahan masuk OAuth2: tidak ada pengguna lokal dengan email itu",
+    "ERR_1026": "Kesalahan masuk OpenID Connect: email tidak diverifikasi"
   },
   "filter": {
     "age_rating": "peringkat usia",
@@ -632,9 +637,11 @@
   },
   "server": {
     "server_management": {
+      "button_cancel_all_tasks": "Batalkan semua tugas",
       "button_empty_trash": "Kosongkan sampah untuk seluruh pustaka",
       "button_scan_libraries": "Pindai semua pustaka",
       "button_shutdown": "Matikan server",
+      "notification_tasks_cancelled": "Tidak ada tugas untuk dibatalkan | Satu tugas dibatalkan | {count} tugas dibatalkan",
       "section_title": "Manajemen Server"
     },
     "tab_title": "Server"
@@ -666,6 +673,16 @@
     "dark": "Gelap",
     "light": "Terang",
     "system": "Sistem"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "Hapus",
+    "tooltip_mark_as_selected": "Tandai sebagai dipilih",
+    "tooltip_selected": "Terpilih",
+    "tooltip_sidecar": "Artwork lokal",
+    "tooltip_to_be_deleted": "Untuk dihapus",
+    "tooltip_to_be_uploaded": "Untuk diunggah",
+    "tooltip_too_big": "Berkas terlalu besar!",
+    "tooltip_user_uploaded": "Unggahan pengguna"
   },
   "user_roles": {
     "ADMIN": "Administrator",
