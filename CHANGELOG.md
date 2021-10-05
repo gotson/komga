@@ -1,3 +1,12 @@
+# [0.131.0](https://github.com/gotson/komga/compare/v0.130.1...v0.131.0) (2021-10-05)
+
+
+### Features
+
+* **api:** download read list as zip ([7a176f2](https://github.com/gotson/komga/commit/7a176f23078d14e82981bdea86032f113581f5d2))
+* **webui:** download read list as zip ([acdea3d](https://github.com/gotson/komga/commit/acdea3daf1f1667508457b7964e0427ec8ef2591)), closes [#411](https://github.com/gotson/komga/issues/411)
+* translated using Weblate (Czech) ([#677](https://github.com/gotson/komga/issues/677)) ([5313cbc](https://github.com/gotson/komga/commit/5313cbced4c84b24ccf59804d1c059812b83c3ca))
+
 ## [0.130.1](https://github.com/gotson/komga/compare/v0.130.0...v0.130.1) (2021-09-29)
 
 
