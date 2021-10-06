@@ -28,6 +28,7 @@ import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.ThumbnailSeriesRepository
+import org.gotson.komga.infrastructure.language.stripAccents
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 import java.io.File
@@ -54,6 +55,8 @@ class SeriesLifecycle(
   private val transactionTemplate: TransactionTemplate,
 ) {
 
+  private val whitespacePattern = """\s+""".toRegex()
+
   fun sortBooks(series: Series) {
     logger.debug { "Sorting books for $series" }
 
@@ -63,7 +66,14 @@ class SeriesLifecycle(
     logger.debug { "Existing metadata: $metadatas" }
 
     val sorted = books
-      .sortedWith(compareBy(natSortComparator) { it.name })
+      .sortedWith(
+        compareBy(natSortComparator) {
+          it.name
+            .trim()
+            .stripAccents()
+            .replace(whitespacePattern, " ")
+        }
+      )
       .map { book -> book to metadatas.first { it.bookId == book.id } }
     logger.debug { "Sorted books: $sorted" }
 
