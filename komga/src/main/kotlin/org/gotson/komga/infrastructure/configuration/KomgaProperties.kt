@@ -42,8 +42,8 @@ class KomgaProperties {
     @get:NotBlank
     var key: String? = null
 
-    @get:Positive
-    var validity: Int = 1209600 // 2 weeks
+    @DurationUnit(ChronoUnit.SECONDS)
+    var validity: Duration = Duration.ofDays(14)
   }
 
   class Cors {

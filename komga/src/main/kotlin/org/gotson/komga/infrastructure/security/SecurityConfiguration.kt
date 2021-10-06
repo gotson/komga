@@ -103,13 +103,13 @@ class SecurityConfiguration(
     }
 
     if (!komgaProperties.rememberMe.key.isNullOrBlank()) {
-      logger.info { "RememberMe is active, validity: ${komgaProperties.rememberMe.validity}s" }
+      logger.info { "RememberMe is active, validity: ${komgaProperties.rememberMe.validity}" }
 
       http
         .rememberMe {
           it.rememberMeServices(
             TokenBasedRememberMeServices(komgaProperties.rememberMe.key, komgaUserDetailsLifecycle).apply {
-              setTokenValiditySeconds(komgaProperties.rememberMe.validity)
+              setTokenValiditySeconds(komgaProperties.rememberMe.validity.seconds.toInt())
               setAlwaysRemember(true)
               setAuthenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
             }
