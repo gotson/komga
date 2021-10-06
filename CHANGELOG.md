@@ -1,3 +1,13 @@
+# [0.132.0](https://github.com/gotson/komga/compare/v0.131.0...v0.132.0) (2021-10-06)
+
+
+### Features
+
+* ignore accents and multiple whitespace when sorting books ([cebdef1](https://github.com/gotson/komga/commit/cebdef1e5823b18890741e95d97cb5d032715347)), closes [s#702](https://github.com/s/issues/702)
+* remember-me validity can be configured using duration notation ([f592a9e](https://github.com/gotson/komga/commit/f592a9eda2e7209a8d776af6239cbe5dabdc5684))
+* **api:** more flexible session management ([a85b5f8](https://github.com/gotson/komga/commit/a85b5f8d2874660c04973a539039ddf7943bcc9f))
+* **webui:** accept xAuthToken as query param and convert to session cookie ([e088c76](https://github.com/gotson/komga/commit/e088c76c4e2e5f9e765c299e1e3d2aaa9ab116d4))
+
 # [0.131.0](https://github.com/gotson/komga/compare/v0.130.1...v0.131.0) (2021-10-05)
 
 

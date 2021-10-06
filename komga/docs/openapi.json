@@ -3523,6 +3523,29 @@
         ]
       }
     },
+    "/api/v1/login/set-cookie": {
+      "get": {
+        "operationId": "headerToCookie",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "login-controller"
+        ]
+      }
+    },
     "/api/v1/libraries/{libraryId}/scan": {
       "post": {
         "operationId": "scan",
