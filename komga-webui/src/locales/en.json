@@ -151,7 +151,7 @@
     "file": "File",
     "format": "Format",
     "isbn": "ISBN",
-    "navigation_within_readlist": "Navigation within the readlist: {name}",
+    "navigation_within_readlist": "Navigation within the reading list: {name}",
     "outdated_tooltip": "The file for this book has changed, this book must be re-analyzed",
     "read_book": "Read book",
     "read_incognito": "Read incognito",
@@ -164,7 +164,7 @@
   },
   "browse_readlist": {
     "edit_elements": "Edit elements",
-    "edit_readlist": "Edit read list"
+    "edit_readlist": "Edit reading list"
   },
   "browse_series": {
     "earliest_year_from_release_dates": "This is the earliest year any book was released in the series",
@@ -191,7 +191,7 @@
     "filter_no_matches": "The active filter has no matches",
     "genre": "Genre",
     "go_to_library": "Go to library",
-    "go_to_readlist": "Go to read list",
+    "go_to_readlist": "Go to reading list",
     "go_to_series": "Go to series",
     "library": "Library",
     "locale_name": "English",
@@ -206,7 +206,7 @@
     "pending_tasks": "No pending tasks | One pending task | {count} pending tasks",
     "publisher": "Publisher",
     "read": "Read",
-    "readlists": "Read Lists",
+    "readlists": "Reading Lists",
     "required": "Required",
     "reset_filters": "Reset filters",
     "roles": "Roles",
@@ -253,7 +253,7 @@
       "dialog_title": "Add to read list",
       "field_search_create": "Search or create read list",
       "field_search_create_error": "A read list with this name already exists",
-      "label_no_matching_readlist": "No matching readlist"
+      "label_no_matching_readlist": "No matching reading list"
     },
     "add_user": {
       "button_cancel": "Cancel",
@@ -342,7 +342,7 @@
       "field_import_barcode_isbn": "ISBN barcode",
       "field_import_comicinfo_book": "Book metadata",
       "field_import_comicinfo_collections": "Collections",
-      "field_import_comicinfo_readlists": "Read lists",
+      "field_import_comicinfo_readlists": "Reading lists",
       "field_import_comicinfo_series": "Series metadata",
       "field_import_epub_book": "Book metadata",
       "field_import_epub_series": "Series metadata",
@@ -572,7 +572,7 @@
   "library_navigation": {
     "browse": "Browse",
     "collections": "Collections",
-    "readlists": "Read Lists",
+    "readlists": "Reading Lists",
     "recommended": "Recommended"
   },
   "login": {
@@ -591,12 +591,12 @@
   },
   "menu": {
     "add_to_collection": "Add to collection",
-    "add_to_readlist": "Add to read list",
+    "add_to_readlist": "Add to reading list",
     "analyze": "Analyze",
     "bulk_edit_metadata": "Bulk edit metadata",
     "delete": "Delete",
     "deselect_all": "Deselect all",
-    "download_readlist": "Download read list",
+    "download_readlist": "Download reading list",
     "download_series": "Download series",
     "edit": "Edit",
     "edit_metadata": "Edit metadata",
@@ -622,7 +622,7 @@
     "more": "Read more"
   },
   "readlists_expansion_panel": {
-    "manage_readlist": "Manage read list",
+    "manage_readlist": "Manage reading list",
     "title": "{name} read list"
   },
   "search": {
