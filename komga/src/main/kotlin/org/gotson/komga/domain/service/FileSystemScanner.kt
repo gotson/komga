@@ -23,6 +23,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import kotlin.io.path.exists
 import kotlin.io.path.extension
+import kotlin.io.path.listDirectoryEntries
 import kotlin.io.path.name
 import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.pathString
@@ -73,7 +74,7 @@ class FileSystemScanner(
         root, setOf(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE,
         object : FileVisitor<Path> {
           override fun preVisitDirectory(dir: Path, attrs: BasicFileAttributes): FileVisitResult {
-            logger.trace { "preVisit: $dir" }
+            logger.trace { "preVisit: $dir (regularFile:${attrs.isRegularFile}, directory:${attrs.isDirectory}, symbolicLink:${attrs.isSymbolicLink}, other:${attrs.isOther})" }
             if (dir.name.startsWith(".") ||
               komgaProperties.librariesScanDirectoryExclusions.any { exclude ->
                 dir.pathString.contains(exclude, true)
@@ -90,8 +91,8 @@ class FileSystemScanner(
           }
 
           override fun visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult {
-            logger.trace { "visitFile: $file" }
-            if (attrs.isRegularFile) {
+            logger.trace { "visitFile: $file (regularFile:${attrs.isRegularFile}, directory:${attrs.isDirectory}, symbolicLink:${attrs.isSymbolicLink}, other:${attrs.isOther})" }
+            if (!attrs.isSymbolicLink && !attrs.isDirectory) {
               if (supportedExtensions.contains(file.extension.lowercase()) &&
                 !file.name.startsWith(".")
               ) {
@@ -172,6 +173,18 @@ class FileSystemScanner(
     if (!path.exists()) return null
 
     return pathToBook(path, path.readAttributes())
+  }
+
+  fun scanBookSidecars(path: Path): List<Sidecar> {
+    val bookBaseName = path.nameWithoutExtension
+    val parent = path.parent
+    return parent.listDirectoryEntries()
+      .filter { candidate -> sidecarBookPrefilter.any { it.matches(candidate.name) } }
+      .mapNotNull { candidate ->
+        sidecarBookConsumers.firstOrNull { it.isSidecarBookMatch(bookBaseName, candidate.name) }?.let {
+          Sidecar(candidate.toUri().toURL(), parent.toUri().toURL(), candidate.readAttributes<BasicFileAttributes>().getUpdatedTime(), it.getSidecarBookType(), Sidecar.Source.BOOK)
+        }
+      }
   }
 
   private fun pathToBook(path: Path, attrs: BasicFileAttributes): Book =

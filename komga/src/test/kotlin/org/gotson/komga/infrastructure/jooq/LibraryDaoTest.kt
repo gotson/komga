@@ -61,10 +61,13 @@ class LibraryDaoTest(
         importComicInfoSeries = false,
         importComicInfoBook = false,
         importComicInfoReadList = false,
+        importMylarSeries = false,
         importBarcodeIsbn = false,
         importLocalArtwork = false,
         repairExtensions = true,
         convertToCbz = true,
+        emptyTrashAfterScan = true,
+        seriesCover = Library.SeriesCover.LAST,
       )
     }
 
@@ -87,8 +90,11 @@ class LibraryDaoTest(
     assertThat(modified.importComicInfoReadList).isEqualTo(updated.importComicInfoReadList)
     assertThat(modified.importBarcodeIsbn).isEqualTo(updated.importBarcodeIsbn)
     assertThat(modified.importLocalArtwork).isEqualTo(updated.importLocalArtwork)
+    assertThat(modified.importMylarSeries).isEqualTo(updated.importMylarSeries)
     assertThat(modified.repairExtensions).isEqualTo(updated.repairExtensions)
     assertThat(modified.convertToCbz).isEqualTo(updated.convertToCbz)
+    assertThat(modified.emptyTrashAfterScan).isEqualTo(updated.emptyTrashAfterScan)
+    assertThat(modified.seriesCover).isEqualTo(updated.seriesCover)
   }
 
   @Test

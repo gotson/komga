@@ -1,5 +1,5 @@
 import {Context} from '@/types/context'
-import {CopyMode} from "@/types/enum-books";
+import {CopyMode} from '@/types/enum-books'
 
 export interface BookDto {
   id: string,
@@ -13,7 +13,8 @@ export interface BookDto {
   size: string,
   media: MediaDto,
   metadata: BookMetadataDto,
-  readProgress?: ReadProgressDto
+  readProgress?: ReadProgressDto,
+  deleted: boolean,
 
   // custom fields
   context: Context
@@ -88,6 +89,10 @@ export interface BookMetadataUpdateDto {
   tagsLock?: boolean
   isbn?: string,
   isbnLock?: boolean
+}
+
+export interface BookMetadataUpdateBatchDto {
+  [bookId: string]: BookMetadataUpdateBatchDto
 }
 
 export interface AuthorDto {

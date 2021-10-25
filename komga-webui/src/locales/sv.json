@@ -26,6 +26,7 @@
     "email": "E-post",
     "error": "Fel",
     "ip": "IP",
+    "source": "Källa",
     "success": "Lyckades",
     "user_agent": "Användaragent"
   },
@@ -36,6 +37,7 @@
     "inker": "konturarbetare",
     "letterer": "typdesigner",
     "penciller": "formgivare",
+    "translator": "översättare",
     "writer": "författare"
   },
   "book_card": {
@@ -51,6 +53,7 @@
     "field_import_path": "Importera från mapp",
     "info_part1": "Den här skärmen låter dig importera filer som ligger utanför dina befintliga bibliotek. Du kan bara importera filer till befintlig serie, i vilket fall Komga flyttar eller kopierar filerna till katalogen för den valda serien.",
     "info_part2": "Om du väljer ett nummer för en bok och det redan finns en bok med det numret du kommer att kunna jämföra de två böckerna. Om du väljer att importera boken kommer Komga att uppgradera den befintliga boken med den nya, ersätter effektivt den gamla filen med den nya.",
+    "no_files_found": "Inga filer funna",
     "notification": {
       "go_to_book": "Gå till boken",
       "import_failure": "Det gick inte att importera boken: {file}",
@@ -69,7 +72,8 @@
       "number": "Nummer",
       "series": "Serie"
     },
-    "title": "Importera"
+    "title": "Importera",
+    "try_another_directory": "Försök att söka i en annan katalog"
   },
   "bookreader": {
     "beginning_of_book": "Du är i början av boken.",
@@ -95,13 +99,16 @@
       "height": "Passa höjd",
       "original": "Original",
       "screen": "Skärm",
-      "width": "Passa bredd"
+      "width": "Passa bredd",
+      "width_shrink_only": "Anpassa bredd (endast krympning)"
     },
     "settings": {
+      "always_fullscreen": "Alltid helskärm",
       "animate_page_transitions": "Animera sidbyten",
       "background_color": "Bakgrundsfärg",
       "background_colors": {
         "black": "Svart",
+        "gray": "Grå",
         "white": "Vit"
       },
       "display": "Visa",
@@ -145,6 +152,7 @@
     "format": "FORMAT",
     "isbn": "ISBN",
     "navigation_within_readlist": "Navigering inom läslistan: {name}",
+    "outdated_tooltip": "Filen för den här boken har ändrats, boken måste analyseras om",
     "read_book": "Läs bok",
     "read_incognito": "Läs incognito",
     "size": "STORLEK"
@@ -171,6 +179,7 @@
     "all_libraries": "Alla bibliotek",
     "books": "Böcker",
     "books_n": "Ingen bok | 1 bok | {count} böcker",
+    "books_total": "{count} / {total} böcker",
     "cancel": "Avbryt",
     "close": "Stäng",
     "collections": "Samlingar",
@@ -184,10 +193,13 @@
     "go_to_library": "Gå till bibliotek",
     "go_to_readlist": "Gå till läslistan",
     "go_to_series": "Gå till serien",
+    "library": "Bibliotek",
     "locale_name": "Svenska",
     "locale_rtl": "false",
+    "lock_all": "Lås alla",
     "n_selected": "{count} valda",
     "nothing_to_show": "Inget att visa",
+    "outdated": "Föråldrad",
     "pages": "sidor",
     "pages_n": "Inga sidor | 1 sida | {count} sidor",
     "password": "Lösenord",
@@ -200,6 +212,8 @@
     "roles": "Roller",
     "series": "Serier",
     "tags": "Taggar",
+    "unavailable": "Otillgänglig",
+    "unlock_all": "Lås upp alla",
     "use_filter_panel_to_change_filter": "Använd filterpanelen för att ändra det aktiva filtret",
     "year": "år"
   },
@@ -208,6 +222,8 @@
     "on_deck": "Pågående",
     "recently_added_books": "Nyligen tillagda böcker",
     "recently_added_series": "Nyligen tillagda serier",
+    "recently_read_books": "Nyligen lästa böcker",
+    "recently_released_books": "Nyligen släppta böcker",
     "recently_updated_series": "Nyligen uppdaterad serier"
   },
   "data_import": {
@@ -250,6 +266,11 @@
       "field_role_file_download": "Filnerladdning",
       "field_role_page_streaming": "Sidströmmning",
       "label_roles": "Roller"
+    },
+    "analyze_library": {
+      "body": "Analyserar alla mediefiler i biblioteket. Analysen samlar in information om medierna. Beroende på bibliotekets storlek kan detta ta lång tid.",
+      "button_confirm": "Analysera",
+      "title": "Analysera biblioteket"
     },
     "delete_collection": {
       "button_confirm": "Radera",
@@ -314,6 +335,7 @@
       "button_cancel": "Avbryt",
       "button_confirm_add": "Lägg till",
       "button_confirm_edit": "Redigera",
+      "button_next": "Nästa",
       "dialog_title_add": "Lägg till bibliotek",
       "dialot_title_edit": "Lägg till bibliotek",
       "field_convert_to_cbz": "Konvertera automatiskt till CBZ",
@@ -325,11 +347,14 @@
       "field_import_epub_book": "Bok metadata",
       "field_import_epub_series": "Serie metadata",
       "field_import_local_artwork": "Lokala bilder",
+      "field_import_mylar_series": "Metadata om serien",
       "field_name": "Namn",
       "field_repair_extensions": "Reparera automatiskt felaktiga filtillägg",
       "field_root_folder": "Rotkatalog",
       "field_scanner_deep_scan": "Djup skanning",
+      "field_scanner_empty_trash_after_scan": "Töm papperskorgen automatiskt efter varje skanning",
       "field_scanner_force_directory_modified_time": "Tvinga katalogen att söka baserat på tidsstämpeln",
+      "field_series_cover": "Serieomslag",
       "file_browser_dialog_button_confirm": "Välj",
       "file_browser_dialog_title": "Bibliotekets rotkatalog",
       "label_file_management": "Filhantering",
@@ -337,15 +362,19 @@
       "label_import_comicinfo": "Importera metadata för CBR/CBZ som innehåller en ComicInfo.xml-fil",
       "label_import_epub": "Importera metadata från EPUB-filer",
       "label_import_local": "Importera lokala mediatillgångar",
+      "label_import_mylar": "Importera metadata genererade av Mylar",
       "label_scanner": "Skanning",
+      "label_series_cover": "Serieomslag",
       "tab_general": "Allmänt",
+      "tab_metadata": "Metadata",
       "tab_options": "Alternativ"
     },
     "edit_readlist": {
       "button_cancel": "Avbryt",
       "button_confirm": "Spara ändringar",
       "dialog_title": "Redigera läslistan",
-      "field_name": "Namn"
+      "field_name": "Namn",
+      "field_summary": "Sammanfattning"
     },
     "edit_series": {
       "button_cancel": "Avbryt",
@@ -356,6 +385,7 @@
       "field_age_rating_error": "Åldersgränsen måste vara 0 eller mer",
       "field_genres": "Genrer",
       "field_language": "Språk",
+      "field_language_hint": "IETF BCP 47 språk tagg",
       "field_publisher": "Utgivare",
       "field_reading_direction": "Läsriktning",
       "field_sort_title": "Sorteringstitel",
@@ -363,8 +393,11 @@
       "field_summary": "Sammanfatting",
       "field_tags": "Taggar",
       "field_title": "Titel",
+      "field_total_book_count": "Totalt antal böcker",
+      "field_total_book_count_error": "Totalt antal böcker måste vara minst 1",
       "mixed": "BLANDAD",
       "tab_general": "Allämnt",
+      "tab_poster": "Affisch",
       "tab_tags": "Taggar",
       "tags_notice_multiple_edit": "Du redigerar taggar för flera serier. Detta skriver över befintliga taggar i varje serie."
     },
@@ -380,6 +413,11 @@
       "dialog_title": "Redigera delade bibliotek",
       "field_all_libraries": "Alla bibliotek",
       "label_shared_with": "Delat med {name}"
+    },
+    "empty_trash": {
+      "body": "Som standard tar mediaservern inte bort information för media direkt. Detta hjälper om en enhet tillfälligt kopplas bort. När du tömmer papperskorgen för ett bibliotek raderas all information om saknade media.",
+      "button_confirm": "Töm",
+      "title": "Töm papperskorgen för biblioteket"
     },
     "file_browser": {
       "button_cancel": "Avbryt",
@@ -405,6 +443,11 @@
       "field_new_password_error": "Nytt lösenord krävs.",
       "field_repeat_password": "Upprepa nytt lösenord",
       "field_repeat_password_error": "Lösenorden måste vara identiska."
+    },
+    "refresh_library_metadata": {
+      "body": "Uppdaterar metadata för alla mediefiler i biblioteket. Beroende på biblioteksstorlek kan det ta lång tid.",
+      "button_confirm": "Uppdatera",
+      "title": "Uppdatera metadata för biblioteket"
     },
     "series_picker": {
       "label_search_series": "Sök serie",
@@ -462,6 +505,12 @@
       "VERTICAL": "Lodrät",
       "WEBTOON": "Webtoon"
     },
+    "series_cover": {
+      "FIRST": "Första",
+      "FIRST_UNREAD_OR_FIRST": "Första olästa annars första",
+      "FIRST_UNREAD_OR_LAST": "Första olästa annars sista",
+      "LAST": "Sista"
+    },
     "series_status": {
       "ABANDONED": "Övergiven",
       "ENDED": "Avslutad",
@@ -492,7 +541,11 @@
     "ERR_1019": "Det går inte att importera filer som ingår i ett befintligt bibliotek",
     "ERR_1020": "Boken att uppgradera tillhör inte den medföljande serien",
     "ERR_1021": "Destinationsfilen finns redan",
-    "ERR_1022": "Nyimporterad boken kunde inte skannas"
+    "ERR_1022": "Nyimporterad boken kunde inte skannas",
+    "ERR_1023": "Boken finns redan i Läslistan",
+    "ERR_1024": "OAuth2 inloggningsfel: inget e-postattribut",
+    "ERR_1025": "OAuth2 inloggningsfel: det finns ingen lokal användare med den e-postadressen",
+    "ERR_1026": "OpenID Connect inloggningsfel: e-post är inte verifierad"
   },
   "filter": {
     "age_rating": "åldersgräns",
@@ -540,11 +593,13 @@
     "add_to_collection": "Lägg till i samling",
     "add_to_readlist": "Lägg till i läslista",
     "analyze": "Analysera",
+    "bulk_edit_metadata": "Massredigering av metadata",
     "delete": "Radera",
     "deselect_all": "Avmarkera alla",
     "download_series": "Ladda ner serie",
     "edit": "Redigera",
     "edit_metadata": "Redigera metadata",
+    "empty_trash": "Töm papperskorgen",
     "mark_read": "Markera som läst",
     "mark_unread": "Markera som oläst",
     "refresh_metadata": "Uppdatera metadata",
@@ -582,7 +637,11 @@
   },
   "server": {
     "server_management": {
+      "button_cancel_all_tasks": "Avbryt alla aktiviteter",
+      "button_empty_trash": "Töm papperskorgen för alla bibliotek",
+      "button_scan_libraries": "Skanna alla bibliotek",
       "button_shutdown": "Stäng av",
+      "notification_tasks_cancelled": "Inga aktiviteter att avbryta | En aktivitet avbruten | {count} aktiviteter avbröts",
       "section_title": "Serverhantering"
     },
     "tab_title": "Server"
@@ -614,6 +673,16 @@
     "dark": "Mörkt",
     "light": "Ljust",
     "system": "System"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "Ta bort",
+    "tooltip_mark_as_selected": "Markera som vald",
+    "tooltip_selected": "Vald",
+    "tooltip_sidecar": "Lokala bilder",
+    "tooltip_to_be_deleted": "Ska tas bort",
+    "tooltip_to_be_uploaded": "Ska laddas upp",
+    "tooltip_too_big": "Filen är för stor!",
+    "tooltip_user_uploaded": "Användaren har laddat upp"
   },
   "user_roles": {
     "ADMIN": "Administratör",

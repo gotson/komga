@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable
 interface SeriesCollectionRepository {
   fun findByIdOrNull(collectionId: String): SeriesCollection?
 
-  fun searchAll(search: String? = null, pageable: Pageable): Page<SeriesCollection>
+  fun findAll(search: String? = null, pageable: Pageable): Page<SeriesCollection>
 
   /**
    * Find one SeriesCollection by collectionId,
@@ -27,6 +27,8 @@ interface SeriesCollectionRepository {
    */
   fun findAllContainingSeriesId(containsSeriesId: String, filterOnLibraryIds: Collection<String>?): Collection<SeriesCollection>
 
+  fun findAllEmpty(): Collection<SeriesCollection>
+
   fun findByNameOrNull(name: String): SeriesCollection?
 
   fun insert(collection: SeriesCollection)
@@ -36,8 +38,8 @@ interface SeriesCollectionRepository {
   fun removeSeriesFromAll(seriesIds: Collection<String>)
 
   fun delete(collectionId: String)
+  fun delete(collectionIds: Collection<String>)
   fun deleteAll()
-  fun deleteEmpty()
 
   fun existsByName(name: String): Boolean
 }

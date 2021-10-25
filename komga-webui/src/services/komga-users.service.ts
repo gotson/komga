@@ -29,8 +29,10 @@ export default class KomgaUsersService {
           msg = 'Invalid authentication'
         }
       }
-      if (e.response.data.message) {
+      if (e.response?.data?.message) {
         msg += `: ${e.response.data.message}`
+      } else {
+        msg += `: ${e.message}`
       }
       throw new Error(msg)
     }
@@ -124,7 +126,7 @@ export default class KomgaUsersService {
     try {
       await this.http.post(`${API_USERS}/logout`)
     } catch (e) {
-      let msg = `An error occurred while trying to logout`
+      let msg = 'An error occurred while trying to logout'
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

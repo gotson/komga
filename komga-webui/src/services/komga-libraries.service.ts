@@ -1,4 +1,5 @@
-import { AxiosInstance } from 'axios'
+import {AxiosInstance} from 'axios'
+import {LibraryCreationDto, LibraryDto, LibraryUpdateDto} from '@/types/komga-libraries'
 
 const API_LIBRARIES = '/api/v1/libraries'
 
@@ -98,6 +99,18 @@ export default class KomgaLibrariesService {
       await this.http.post(`${API_LIBRARIES}/${library.id}/metadata/refresh`)
     } catch (e) {
       let msg = `An error occurred while trying to refresh metadata for library '${library.name}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async emptyTrash (library: LibraryDto) {
+    try {
+      await this.http.post(`${API_LIBRARIES}/${library.id}/empty-trash`)
+    } catch (e) {
+      let msg = `An error occurred while trying to empty trash for library '${library.name}'`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

@@ -13,14 +13,17 @@ data class Book(
   val url: URL,
   val fileLastModified: LocalDateTime,
   val fileSize: Long = 0,
+  val fileHash: String = "",
   val number: Int = 0,
 
   val id: String = TsidCreator.getTsid256().toString(),
   val seriesId: String = "",
   val libraryId: String = "",
 
+  val deletedDate: LocalDateTime? = null,
+
   override val createdDate: LocalDateTime = LocalDateTime.now(),
-  override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
+  override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable(), Serializable {
 
   @delegate:Transient

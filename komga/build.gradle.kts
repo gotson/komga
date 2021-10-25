@@ -7,7 +7,7 @@ plugins {
     kotlin("plugin.spring")
     kotlin("kapt")
   }
-  id("org.springframework.boot") version "2.5.2"
+  id("org.springframework.boot") version "2.5.5"
   id("com.gorylenko.gradle-git-properties") version "2.3.1"
   id("nu.studer.jooq") version "5.2.2"
   id("org.flywaydb.flyway") version "7.10.0"
@@ -22,17 +22,20 @@ dependencies {
   implementation(kotlin("stdlib-jdk8"))
   implementation(kotlin("reflect"))
 
-  implementation(platform("org.springframework.boot:spring-boot-dependencies:2.5.2"))
+  implementation(platform("org.springframework.boot:spring-boot-dependencies:2.5.5"))
 
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-validation")
   implementation("org.springframework.boot:spring-boot-starter-actuator")
   implementation("org.springframework.boot:spring-boot-starter-security")
+  implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
   implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
   implementation("org.springframework.boot:spring-boot-starter-artemis")
   implementation("org.springframework.boot:spring-boot-starter-jooq")
+  implementation("org.springframework.session:spring-session-core")
+  implementation("com.github.gotson:spring-session-caffeine:1.0.3")
 
-  kapt("org.springframework.boot:spring-boot-configuration-processor:2.5.2")
+  kapt("org.springframework.boot:spring-boot-configuration-processor:2.5.5")
 
   implementation("org.apache.activemq:artemis-jms-server")
 
@@ -57,6 +60,13 @@ dependencies {
   implementation("org.apache.commons:commons-lang3:3.12.0")
   implementation("commons-validator:commons-validator:1.7")
 
+  run {
+    val luceneVersion = "8.9.0"
+    implementation("org.apache.lucene:lucene-core:$luceneVersion")
+    implementation("org.apache.lucene:lucene-analyzers-common:$luceneVersion")
+    implementation("org.apache.lucene:lucene-queryparser:$luceneVersion")
+  }
+
   implementation("com.ibm.icu:icu4j:69.1")
 
   implementation("org.apache.tika:tika-core:1.26")
@@ -64,13 +74,13 @@ dependencies {
   implementation("com.github.junrar:junrar:7.4.0")
   implementation("org.apache.pdfbox:pdfbox:2.0.23")
   implementation("net.grey-panther:natural-comparator:1.1")
-  implementation("org.jsoup:jsoup:1.13.1")
+  implementation("org.jsoup:jsoup:1.13.1") // TODO: once updated to 1.14.2, address changes in EpubMetadataProvider.kt
 
   implementation("net.coobird:thumbnailator:0.4.14")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.7.0")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.7.0")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-webp:3.7.0")
-  implementation("com.github.gotson:webp-imageio:0.2.1")
+  implementation("com.github.gotson:webp-imageio:0.2.2")
   // support for jpeg2000
   runtimeOnly("com.github.jai-imageio:jai-imageio-jpeg2000:1.4.0")
   runtimeOnly("org.apache.pdfbox:jbig2-imageio:3.0.3")
@@ -84,11 +94,8 @@ dependencies {
 
   implementation("com.github.ben-manes.caffeine:caffeine:2.9.0")
 
-//  While waiting for https://github.com/xerial/sqlite-jdbc/pull/491 and https://github.com/xerial/sqlite-jdbc/pull/494
-//  runtimeOnly("org.xerial:sqlite-jdbc:3.32.3.2")
-//  jooqGenerator("org.xerial:sqlite-jdbc:3.32.3.2")
-  runtimeOnly("com.github.gotson:sqlite-jdbc:3.32.3.6")
-  jooqGenerator("com.github.gotson:sqlite-jdbc:3.32.3.6")
+  implementation("org.xerial:sqlite-jdbc:3.36.0.3")
+  jooqGenerator("org.xerial:sqlite-jdbc:3.36.0.3")
 
   testImplementation("org.springframework.boot:spring-boot-starter-test") {
     exclude(module = "mockito-core")
@@ -100,7 +107,7 @@ dependencies {
 
   testImplementation("com.tngtech.archunit:archunit-junit5:0.19.0")
 
-  developmentOnly("org.springframework.boot:spring-boot-devtools:2.5.2")
+  developmentOnly("org.springframework.boot:spring-boot-devtools:2.5.5")
 }
 
 val webui = "$rootDir/komga-webui"

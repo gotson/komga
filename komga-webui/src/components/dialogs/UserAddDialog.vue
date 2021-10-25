@@ -89,7 +89,7 @@
 import {UserRoles} from '@/types/enum-users'
 import Vue from 'vue'
 import {email, required} from 'vuelidate/lib/validators'
-import {ERROR} from "@/types/events";
+import {ERROR} from '@/types/events'
 
 export default Vue.extend({
   name: 'UserAddDialog',

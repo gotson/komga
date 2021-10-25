@@ -9,7 +9,7 @@ import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.gotson.komga.infrastructure.mediacontainer.EpubExtractor
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
-import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
+import org.gotson.komga.infrastructure.metadata.SeriesMetadataFromBookProvider
 import org.gotson.komga.infrastructure.validation.BCP47TagValidator
 import org.jsoup.Jsoup
 import org.jsoup.parser.Parser
@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter
 class EpubMetadataProvider(
   private val epubExtractor: EpubExtractor,
   private val isbnValidator: ISBNValidator
-) : BookMetadataProvider, SeriesMetadataProvider {
+) : BookMetadataProvider, SeriesMetadataFromBookProvider {
 
   private val relators = mapOf(
     "aut" to "writer",
@@ -51,6 +51,7 @@ class EpubMetadataProvider(
       val description = opf.selectFirst("metadata > dc|description")?.text()?.let { Jsoup.clean(it, Whitelist.none()) }?.ifBlank { null }
       val date = opf.selectFirst("metadata > dc|date")?.text()?.let { parseDate(it) }
 
+      // TODO: widcard matching for no namespace will be available in Jsoup 1.14.2
       val authorRoles = (
         opf.select("metadata > *|meta[property=role][scheme=marc:relators]") +
           opf.select("metadata > meta[property=role][scheme=marc:relators]")
@@ -89,6 +90,7 @@ class EpubMetadataProvider(
     epubExtractor.getPackageFile(book.book.path)?.let { packageFile ->
       val opf = Jsoup.parse(packageFile, "", Parser.xmlParser())
 
+      // TODO: widcard matching for no namespace will be available in Jsoup 1.14.2
       val series = (
         opf.selectFirst("metadata > meta[property=belongs-to-collection]")
           ?: opf.selectFirst("metadata > *|meta[property=belongs-to-collection]")
@@ -118,6 +120,7 @@ class EpubMetadataProvider(
         summary = null,
         language = if (language != null && BCP47TagValidator.isValid(language)) language else null,
         genres = genres,
+        totalBookCount = null,
         collections = emptyList()
       )
     }

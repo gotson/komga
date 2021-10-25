@@ -6,6 +6,7 @@ export const authorRoles = [
   'letterer',
   'cover',
   'editor',
+  'translator',
 ]
 
 export const authorRolesSeries = [

@@ -1,5 +1,5 @@
 import {AxiosInstance} from 'axios'
-import {AuthorDto} from "@/types/komga-books";
+import {AuthorDto} from '@/types/komga-books'
 
 const qs = require('qs')
 const tags = require('language-tags')
@@ -11,7 +11,7 @@ export default class KomgaReferentialService {
     this.http = http
   }
 
-  async getAuthors(search?: string, role?: string, libraryId?: string, collectionId?: string, seriesId?: string): Promise<Page<AuthorDto>> {
+  async getAuthors(search?: string, role?: string, libraryId?: string, collectionId?: string, seriesId?: string, readListId?: string): Promise<Page<AuthorDto>> {
     try {
       const params = {} as any
       if (search) params.search = search
@@ -19,6 +19,7 @@ export default class KomgaReferentialService {
       if (libraryId) params.library_id = libraryId
       if (collectionId) params.collection_id = collectionId
       if (seriesId) params.series_id = seriesId
+      if (readListId) params.readlist_id = readListId
 
       return (await this.http.get('/api/v2/authors', {
         params: params,
@@ -83,18 +84,18 @@ export default class KomgaReferentialService {
     }
   }
 
-  async getSeriesTags(libraryId?: string, collectionId?: string): Promise<string[]> {
+  async getSeriesAndBookTags(libraryId?: string, collectionId?: string): Promise<string[]> {
     try {
       const params = {} as any
       if (libraryId) params.library_id = libraryId
       if (collectionId) params.collection_id = collectionId
 
-      return (await this.http.get('/api/v1/tags/series', {
+      return (await this.http.get('/api/v1/tags', {
         params: params,
         paramsSerializer: params => qs.stringify(params, {indices: false}),
       })).data
     } catch (e) {
-      let msg = 'An error occurred while trying to retrieve series tags'
+      let msg = 'An error occurred while trying to retrieve series and book tags'
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }
@@ -102,10 +103,11 @@ export default class KomgaReferentialService {
     }
   }
 
-  async getBookTags(seriesId?: string): Promise<string[]> {
+  async getBookTags(seriesId?: string, readListId?: string): Promise<string[]> {
     try {
       const params = {} as any
       if (seriesId) params.series_id = seriesId
+      if (readListId) params.readlist_id = readListId
 
       return (await this.http.get('/api/v1/tags/book', {
         params: params,

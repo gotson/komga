@@ -136,11 +136,12 @@ import FilterPanels from '@/components/FilterPanels.vue'
 import FilterList from '@/components/FilterList.vue'
 import {Location} from 'vue-router'
 import EmptyState from '@/components/EmptyState.vue'
-import {SeriesDto} from "@/types/komga-series"
-import {authorRoles} from "@/types/author-roles"
-import {AuthorDto} from "@/types/komga-books"
-import {CollectionSseDto, ReadProgressSeriesSseDto, SeriesSseDto} from "@/types/komga-sse"
+import {SeriesDto} from '@/types/komga-series'
+import {authorRoles} from '@/types/author-roles'
+import {AuthorDto} from '@/types/komga-books'
+import {CollectionSseDto, ReadProgressSeriesSseDto, SeriesSseDto} from '@/types/komga-sse'
 import {throttle} from 'lodash'
+import {LibraryDto} from '@/types/komga-libraries'
 
 export default Vue.extend({
   name: 'BrowseCollection',
@@ -287,7 +288,7 @@ export default Vue.extend({
 
       const [genres, tags, publishers, languages, ageRatings, releaseDates] = await Promise.all([
         this.$komgaReferential.getGenres(undefined, collectionId),
-        this.$komgaReferential.getSeriesTags(undefined, collectionId),
+        this.$komgaReferential.getSeriesAndBookTags(undefined, collectionId),
         this.$komgaReferential.getPublishers(undefined, collectionId),
         this.$komgaReferential.getLanguages(undefined, collectionId),
         this.$komgaReferential.getAgeRatings(undefined, collectionId),

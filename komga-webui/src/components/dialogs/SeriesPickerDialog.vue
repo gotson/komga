@@ -69,9 +69,9 @@
 
 <script lang="ts">
 import Vue, {PropType} from 'vue'
-import {SeriesDto} from "@/types/komga-series"
+import {SeriesDto} from '@/types/komga-series'
 import {debounce} from 'lodash'
-import {seriesThumbnailUrl} from "@/functions/urls";
+import {seriesThumbnailUrl} from '@/functions/urls'
 
 export default Vue.extend({
   name: 'SeriesPickerDialog',
@@ -120,14 +120,14 @@ export default Vue.extend({
       this.results = []
     },
     select(s: SeriesDto) {
-      this.$emit("update:series", s)
+      this.$emit('update:series', s)
       this.dialogClose()
     },
     dialogClose() {
       this.$emit('input', false)
     },
     getLibraryName(item: SeriesDto): string {
-      return this.$store.getters.getLibraryById(item.libraryId).name;
+      return this.$store.getters.getLibraryById(item.libraryId).name
     },
     seriesThumbnailUrl(seriesId: string): string {
       return seriesThumbnailUrl(seriesId)

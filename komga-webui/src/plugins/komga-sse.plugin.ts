@@ -1,14 +1,16 @@
 import _Vue from 'vue'
-import KomgaSseService from "@/services/komga-sse.service"
-import {Module} from "vuex";
+import KomgaSseService from '@/services/komga-sse.service'
+import {Module} from 'vuex'
 
 const vuexModule: Module<any, any> = {
   state: {
     taskCount: 0,
+    taskCountByType: {} as { [key: string]: number },
   },
   mutations: {
-    setTaskCount (state, val) {
-      state.taskCount = val
+    setTaskCount (state, event) {
+      state.taskCount = event.count
+      state.taskCountByType = event.countByType
     },
   },
 }

@@ -36,11 +36,12 @@
     "inker": "Tuscher",
     "letterer": "Setzer",
     "penciller": "Zeichner",
+    "translator": "Übersetzer",
     "writer": "Schriftsteller"
   },
   "book_card": {
     "error": "Fehler",
-    "unknown": "Noch nicht analisiert",
+    "unknown": "Noch nicht analysiert",
     "unsupported": "Nicht unterstützt"
   },
   "book_import": {
@@ -51,6 +52,7 @@
     "field_import_path": "Aus Ordner importieren",
     "info_part1": "Diese Option ermöglicht das Importieren von Dateien welche ausserhalb der bestehende Bibliothek existieren.Es können nur Dateien in eine vorhandene Serie importiert werden. Beim Einlesen wird die Datei entweder in das bestehende Verzeichnis kopiert oder verschoben.",
     "info_part2": "Sollte ein Buch mit einer Nummer versehen werden, die in Komga schon existiert, dann bekommen Sie die Möglichkeit die Bücher zu vergleichen. Sollten Sie sich entscheiden das Buch dennoch zu importieren, wird Komga das bestehende Buch durch das neue ersetzen.",
+    "no_files_found": "Keine Dateien gefunden",
     "notification": {
       "go_to_book": "Zum Buch",
       "import_failure": "Buch kann nicht importiert werden: {file}",
@@ -69,7 +71,8 @@
       "number": "Nummer",
       "series": "Serie"
     },
-    "title": "Importieren"
+    "title": "Importieren",
+    "try_another_directory": "Versuchen Sie, ein anderes Verzeichnis zu durchsuchen"
   },
   "bookreader": {
     "beginning_of_book": "Sie sind am Anfang des Buches.",
@@ -95,13 +98,16 @@
       "height": "An Höhe ausrichten",
       "original": "Original",
       "screen": "Bildschirm",
-      "width": "An Breite ausrichten"
+      "width": "An Breite ausrichten",
+      "width_shrink_only": "An Breite ausrichten (nur verkleinern)"
     },
     "settings": {
+      "always_fullscreen": "Dauerhaftes Vollbild",
       "animate_page_transitions": "Fließender Seitenübergangseffekt",
       "background_color": "Hintergrundfarbe",
       "background_colors": {
         "black": "Schwarz",
+        "gray": "Grau",
         "white": "Weiß"
       },
       "display": "Anzeige",
@@ -145,6 +151,7 @@
     "format": "FORMAT",
     "isbn": "ISBN",
     "navigation_within_readlist": "Wechseln zur Leseliste: {name}",
+    "outdated_tooltip": "Die Buchdatei hat sich geändert, das Buch muss analysiert werden",
     "read_book": "Lese Buch",
     "read_incognito": "Inkognito lesen",
     "size": "GRÖẞE"
@@ -171,6 +178,7 @@
     "all_libraries": "Alle Bibliotheken",
     "books": "Bücher",
     "books_n": "Kein Buch | 1 Buch | {count} Bücher",
+    "books_total": "{count} / {total} Bücher",
     "cancel": "Abbrechen",
     "close": "Schließen",
     "collections": "Sammlungen",
@@ -184,10 +192,13 @@
     "go_to_library": "Gehe zu Bibliothek",
     "go_to_readlist": "Zur Leseliste gehen",
     "go_to_series": "Zu Serien gehen",
+    "library": "Bibliothek",
     "locale_name": "Deutsch",
     "locale_rtl": "false",
+    "lock_all": "Alles verschliessen",
     "n_selected": "{count} markiert",
     "nothing_to_show": "Nichts anzuzeigen",
+    "outdated": "Nicht mehr aktuell",
     "pages": "Seiten",
     "pages_n": "Keine Seite | 1 Seite | {count} Seiten",
     "password": "Passwort",
@@ -200,6 +211,8 @@
     "roles": "Rollen",
     "series": "Serie",
     "tags": "Stichwörter",
+    "unavailable": "Nicht verfügbar",
+    "unlock_all": "Alles öffnen",
     "use_filter_panel_to_change_filter": "Mit dem Suchfeld können die Suchkriterien eingestellt werden",
     "year": "Jahr"
   },
@@ -208,6 +221,8 @@
     "on_deck": "Oben auf dem Stapel",
     "recently_added_books": "Kürzlich hinzugefügte Bücher",
     "recently_added_series": "Kürzlich hinzugefügte Serien",
+    "recently_read_books": "Kürzlich gelesene Bücher",
+    "recently_released_books": "Neuerscheinungen",
     "recently_updated_series": "Kürzlich aktualisierte Serien"
   },
   "data_import": {
@@ -250,6 +265,11 @@
       "field_role_file_download": "Datei-Herunterladen",
       "field_role_page_streaming": "Seitenaufbau",
       "label_roles": "Rollen"
+    },
+    "analyze_library": {
+      "body": "Analysiert alle Mediendateien in der Bibliothek. Bei der Analyse werden Informationen über die Medien erfasst. Je nach Größe Ihrer Bibliothek kann dies sehr lange dauern.",
+      "button_confirm": "Analysieren",
+      "title": "Bibliothek analysieren"
     },
     "delete_collection": {
       "button_confirm": "Löschen",
@@ -314,6 +334,7 @@
       "button_cancel": "Abbrechen",
       "button_confirm_add": "Hinzufügen",
       "button_confirm_edit": "Übernehmen",
+      "button_next": "Weiter",
       "dialog_title_add": "Bibliothek hinzufügen",
       "dialot_title_edit": "Bibliothek bearbeiten",
       "field_convert_to_cbz": "Automatisch in CBZ konvertieren",
@@ -325,11 +346,14 @@
       "field_import_epub_book": "Buch Metadaten",
       "field_import_epub_series": "Serien Metadaten",
       "field_import_local_artwork": "Lokale Artwork",
+      "field_import_mylar_series": "Serien Metadaten",
       "field_name": "Name",
       "field_repair_extensions": "Falsche Dateierweiterungen automatisch reparieren",
       "field_root_folder": "Stammordner",
       "field_scanner_deep_scan": "Tiefensuche",
+      "field_scanner_empty_trash_after_scan": "Automatische Bereinigung nach jedem Scan",
       "field_scanner_force_directory_modified_time": "Erzwinge das Durchsuchen des Verzeichnis auf Basis des Zeitstempels",
+      "field_series_cover": "Serien Titelbild",
       "file_browser_dialog_button_confirm": "Auswählen",
       "file_browser_dialog_title": "Bibliothekshauptverzeichnis",
       "label_file_management": "Dateiverwaltung",
@@ -337,15 +361,19 @@
       "label_import_comicinfo": "Importiere aus einer vorhandenen ComicInfo.xml Datei die Metadaten für CBR/CBZ",
       "label_import_epub": "Importiere für EPUB Dateien die Metadaten",
       "label_import_local": "Importiere lokale Medienbestände",
+      "label_import_mylar": "Importiere Mylar generierte Metadaten",
       "label_scanner": "Scanner",
+      "label_series_cover": "Serien Titelbild",
       "tab_general": "Allgemein",
+      "tab_metadata": "Metadaten",
       "tab_options": "Optionen"
     },
     "edit_readlist": {
       "button_cancel": "Abbrechen",
       "button_confirm": "Änderungen speichern",
       "dialog_title": "Bearbeite die Leseliste",
-      "field_name": "Name"
+      "field_name": "Name",
+      "field_summary": "Zusammenfassung"
     },
     "edit_series": {
       "button_cancel": "Abbrechen",
@@ -356,6 +384,7 @@
       "field_age_rating_error": "Altersfreigabe muß größer 0 sein",
       "field_genres": "Genre",
       "field_language": "Sprache",
+      "field_language_hint": "IETF BCP 47 Abkürzungsformat",
       "field_publisher": "Verlag",
       "field_reading_direction": "Leserichtung",
       "field_sort_title": "Nach Titel sortiert",
@@ -363,8 +392,11 @@
       "field_summary": "Zusammenfassung",
       "field_tags": "Stichwörter",
       "field_title": "Titel",
+      "field_total_book_count": "Anzahl aller Bücher der Serie",
+      "field_total_book_count_error": "Anzahl der Bücher einer Serie muß größer eins sein",
       "mixed": "Vermischtes",
       "tab_general": "Allgemein",
+      "tab_poster": "Poster",
       "tab_tags": "Stichwörter",
       "tags_notice_multiple_edit": "Sie verändern mehrere Stichwörter. Dies wird die existierenden Einträge der Stichwörter aller Serien durch den neuen Eintrag ersetzen."
     },
@@ -380,6 +412,11 @@
       "dialog_title": "Bearbeite gemeinsame Bibliotheken",
       "field_all_libraries": "Alle Bibliotheken",
       "label_shared_with": "Teile mit {name}"
+    },
+    "empty_trash": {
+      "body": "Standardmäßig entfernt der Medienserver nicht sofort alle Informationen bei mehr vorhandenen Medien. Dies ist zum Schutz der Metadaten gedacht, sollte ein Datenträger temporär nicht verfügbar sein. Wenn Sie eine Bibliothek bereinigen, werden alle Informationen über fehlende Medien gelöscht.",
+      "button_confirm": "Bereinigen",
+      "title": "Bereinigen der Bibliothek"
     },
     "file_browser": {
       "button_cancel": "Abbrechen",
@@ -405,6 +442,11 @@
       "field_new_password_error": "Passworterneuerung ist notwendig.",
       "field_repeat_password": "Neues Passwort wiederholen",
       "field_repeat_password_error": "Das Passwort muss übereinstimmen."
+    },
+    "refresh_library_metadata": {
+      "body": "Aktualisiert die Metadaten für alle Mediendateien in der Bibliothek. Je nach Größe Ihrer Bibliothek kann dies sehr lange dauern.",
+      "button_confirm": "Aktualisieren",
+      "title": "Metadaten der Bibliothek aktualisieren"
     },
     "series_picker": {
       "label_search_series": "Serie suchen",
@@ -462,6 +504,12 @@
       "VERTICAL": "Vertikal",
       "WEBTOON": "Webtoon"
     },
+    "series_cover": {
+      "FIRST": "Erstes",
+      "FIRST_UNREAD_OR_FIRST": "Erstes ungelesene oder Erstes",
+      "FIRST_UNREAD_OR_LAST": "Erstes ungelesene oder letztes",
+      "LAST": "Letztes"
+    },
     "series_status": {
       "ABANDONED": "Abgebrochen",
       "ENDED": "Abgeschlossen",
@@ -492,7 +540,8 @@
     "ERR_1019": "Eine Datei, die Teil einer vorhandenen Bibliothek ist, kann nicht importiert werden",
     "ERR_1020": "Das zu aktualisierende Buch gehört nicht zu den angebotenen Serien",
     "ERR_1021": "Zieldatei ist bereits vorhanden",
-    "ERR_1022": "Ein neu importiertes Buch konnte nicht gescannt werden"
+    "ERR_1022": "Ein neu importiertes Buch konnte nicht gescannt werden",
+    "ERR_1023": "Buch ist in der Leseliste schon vorhanden"
   },
   "filter": {
     "age_rating": "Altersfreigabe",
@@ -505,7 +554,7 @@
     "read": "Gelesen",
     "release_date": "Veröffentlichungsdatum",
     "status": "Status",
-    "tag": "Srichwort",
+    "tag": "Stichwort",
     "unread": "Ungelesen"
   },
   "filter_drawer": {
@@ -540,11 +589,13 @@
     "add_to_collection": "Zu Sammlung hinzufügen",
     "add_to_readlist": "Füge zur Leseliste hinzu",
     "analyze": "Analysieren",
+    "bulk_edit_metadata": "Massenverarbeitung Metadaten",
     "delete": "Löschen",
     "deselect_all": "Auswahl für alle aufheben",
     "download_series": "Lade die gesamte Serie herunter",
     "edit": "Bearbeiten",
     "edit_metadata": "Metadaten bearbeiten",
+    "empty_trash": "Bereinigen",
     "mark_read": "Als gelesen markieren",
     "mark_unread": "Als ungelesen markieren",
     "refresh_metadata": "Erneuere Metadaten",
@@ -582,7 +633,11 @@
   },
   "server": {
     "server_management": {
+      "button_cancel_all_tasks": "Alle Aufgaben abbrechen",
+      "button_empty_trash": "Bereinige alle Bibliotheken von nicht vorhandenen Büchern",
+      "button_scan_libraries": "Scanne alle Bibliotheken",
       "button_shutdown": "Herunterfahren",
+      "notification_tasks_cancelled": "Keine Aufgaben abzubrechen | Eine Aufgabe abgebrochen | {count} Aufgaben abgebrochen",
       "section_title": "Serververwaltung"
     },
     "tab_title": "Server"
@@ -614,6 +669,16 @@
     "dark": "Dunkel",
     "light": "Hell",
     "system": "System"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "Löschen",
+    "tooltip_mark_as_selected": "Als ausgewählt markieren",
+    "tooltip_selected": "Ausgewählt",
+    "tooltip_sidecar": "Lokale Grafik",
+    "tooltip_to_be_deleted": "Wird gelöscht werden",
+    "tooltip_to_be_uploaded": "Wird hochgeladen werden",
+    "tooltip_too_big": "Datei zu groß!",
+    "tooltip_user_uploaded": "Von Nutzer hochgeladen"
   },
   "user_roles": {
     "ADMIN": "Systemverwalter",

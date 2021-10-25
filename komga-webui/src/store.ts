@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {BookDto} from '@/types/komga-books'
-import {SeriesDto} from "@/types/komga-series"
-import createPersistedState from "vuex-persistedstate"
+import {SeriesDto} from '@/types/komga-series'
+import createPersistedState from 'vuex-persistedstate'
 import {persistedModule} from './plugins/persisted-state'
+import {LibraryDto} from '@/types/komga-libraries'
 
 Vue.use(Vuex)
 
@@ -35,6 +36,10 @@ export default new Vuex.Store({
     // books
     updateBooks: {} as BookDto | BookDto[],
     updateBooksDialog: false,
+    // books bulk
+    updateBulkBooks: [] as BookDto[],
+    updateBulkBooksDialog: false,
+
     // series
     updateSeries: {} as SeriesDto | SeriesDto[],
     updateSeriesDialog: false,
@@ -99,6 +104,13 @@ export default new Vuex.Store({
     },
     setUpdateBooksDialog(state, dialog) {
       state.updateBooksDialog = dialog
+    },
+    // Books bulk
+    setUpdateBulkBooks(state, books) {
+      state.updateBulkBooks = books
+    },
+    setUpdateBulkBooksDialog(state, dialog) {
+      state.updateBulkBooksDialog = dialog
     },
     // Series
     setUpdateSeries(state, series) {
@@ -182,6 +194,14 @@ export default new Vuex.Store({
     },
     dialogUpdateBooksDisplay({commit}, value) {
       commit('setUpdateBooksDialog', value)
+    },
+    // books bulk
+    dialogUpdateBulkBooks({commit}, books) {
+      commit('setUpdateBulkBooks', books)
+      commit('setUpdateBulkBooksDialog', true)
+    },
+    dialogUpdateBulkBooksDisplay({commit}, value) {
+      commit('setUpdateBulkBooksDialog', value)
     },
     // series
     dialogUpdateSeries({commit}, series) {

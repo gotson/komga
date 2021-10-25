@@ -1,11 +1,11 @@
-import {buildSpreads} from "@/functions/book-spreads";
-import {PagedReaderLayout} from "@/types/enum-reader";
-import {PageDtoWithUrl} from "@/types/komga-books";
+import {buildSpreads} from '@/functions/book-spreads'
+import {PagedReaderLayout} from '@/types/enum-reader'
+import {PageDtoWithUrl} from '@/types/komga-books'
 
-describe("Single Page", () => {
+describe('Single Page', () => {
   const pageLayout = PagedReaderLayout.SINGLE_PAGE
 
-  test("given no pages then it should return no spreads", () => {
+  test('given no pages then it should return no spreads', () => {
     const pages = [] as PageDtoWithUrl[]
 
     const spreads = buildSpreads(pages, pageLayout)
@@ -13,7 +13,7 @@ describe("Single Page", () => {
     expect(spreads.length).toEqual(0)
   })
 
-  test("given single page then it should return single spread with single page", () => {
+  test('given single page then it should return single spread with single page', () => {
     const pages = [
       {
         number: 1,
@@ -28,10 +28,10 @@ describe("Single Page", () => {
   })
 })
 
-describe("Double Pages", () => {
+describe('Double Pages', () => {
   const pageLayout = PagedReaderLayout.DOUBLE_PAGES
 
-  test("given no pages then it should return no spreads", () => {
+  test('given no pages then it should return no spreads', () => {
     const pages = [] as PageDtoWithUrl[]
 
     const spreads = buildSpreads(pages, pageLayout)
@@ -39,7 +39,7 @@ describe("Double Pages", () => {
     expect(spreads.length).toEqual(0)
   })
 
-  test("given single page then it should return single spread with single page", () => {
+  test('given single page then it should return single spread with single page', () => {
     const pages = [
       {
         number: 1,
@@ -53,7 +53,7 @@ describe("Double Pages", () => {
     expect(spreads[0][0].number).toEqual(1)
   })
 
-  test("given even pages then it should return correct spreads", () => {
+  test('given even pages then it should return correct spreads', () => {
     const pages = [
       {number: 1} as PageDtoWithUrl,
       {number: 2} as PageDtoWithUrl,
@@ -82,7 +82,7 @@ describe("Double Pages", () => {
     expect(spreads[3][0].number).toEqual(6)
   })
 
-  test("given odd pages then it should return correct spreads", () => {
+  test('given odd pages then it should return correct spreads', () => {
     const pages = [
       {number: 1} as PageDtoWithUrl,
       {number: 2} as PageDtoWithUrl,
@@ -110,10 +110,10 @@ describe("Double Pages", () => {
   })
 })
 
-describe("Double Pages No Cover", () => {
+describe('Double Pages No Cover', () => {
   const pageLayout = PagedReaderLayout.DOUBLE_NO_COVER
 
-  test("given no pages then it should return no spreads", () => {
+  test('given no pages then it should return no spreads', () => {
     const pages = [] as PageDtoWithUrl[]
 
     const spreads = buildSpreads(pages, pageLayout)
@@ -121,7 +121,7 @@ describe("Double Pages No Cover", () => {
     expect(spreads.length).toEqual(0)
   })
 
-  test("given single page then it should return single spread with single page", () => {
+  test('given single page then it should return single spread with single page', () => {
     const pages = [
       {
         number: 1,

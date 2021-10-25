@@ -67,7 +67,7 @@
 
 <script lang="ts">
 import Vue, {PropType} from 'vue'
-import SearchBoxBase from "@/components/SearchBoxBase.vue";
+import SearchBoxBase from '@/components/SearchBoxBase.vue'
 
 export default Vue.extend({
   name: 'FilterPanels',
@@ -91,7 +91,7 @@ export default Vue.extend({
     },
     groupActive(key: string): boolean {
       if (!(key in this.filtersActive)) return false
-      return this.filtersActive[key].length > 0;
+      return this.filtersActive[key].length > 0
     },
     click(key: string, value: string) {
       let r = this.$_.cloneDeep(this.filtersActive)

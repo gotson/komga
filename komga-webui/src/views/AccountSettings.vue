@@ -53,7 +53,7 @@
 <script lang="ts">
 import PasswordChangeDialog from '@/components/dialogs/PasswordChangeDialog.vue'
 import Vue from 'vue'
-import AuthenticationActivityTable from "@/components/AuthenticationActivityTable.vue";
+import AuthenticationActivityTable from '@/components/AuthenticationActivityTable.vue'
 
 export default Vue.extend({
   name: 'AccountSettings',

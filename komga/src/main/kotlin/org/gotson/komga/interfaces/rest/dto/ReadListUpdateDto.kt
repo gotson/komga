@@ -6,5 +6,6 @@ import org.hibernate.validator.constraints.UniqueElements
 
 data class ReadListUpdateDto(
   @get:NullOrNotBlank val name: String?,
+  val summary: String?,
   @get:NullOrNotEmpty @get:UniqueElements val bookIds: List<String>?
 )

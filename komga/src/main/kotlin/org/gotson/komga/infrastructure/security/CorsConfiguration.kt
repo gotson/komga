@@ -18,13 +18,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import java.util.Collections
 
 @Configuration
-class CorsConfiguration(
-  private val komgaProperties: KomgaProperties
-) {
+class CorsConfiguration {
 
   @Bean
   @Conditional(CorsAllowedOriginsPresent::class)
-  fun corsConfigurationSource(): UrlBasedCorsConfigurationSource =
+  fun corsConfigurationSource(sessionHeaderName: String, komgaProperties: KomgaProperties): UrlBasedCorsConfigurationSource =
     UrlBasedCorsConfigurationSource().apply {
       registerCorsConfiguration(
         "/**",
@@ -33,6 +31,7 @@ class CorsConfiguration(
           allowedMethods = HttpMethod.values().map { it.name }
           allowCredentials = true
           addExposedHeader(HttpHeaders.CONTENT_DISPOSITION)
+          addExposedHeader(sessionHeaderName)
         }
       )
     }

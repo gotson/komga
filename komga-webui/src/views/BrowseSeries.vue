@@ -17,7 +17,6 @@
       <series-actions-menu v-if="series"
                            :series="series"
       />
-
       <v-toolbar-title>
         <span v-if="$_.get(series, 'metadata.title')">{{ series.metadata.title }}</span>
         <v-chip label class="mx-4" v-if="totalElements">
@@ -47,6 +46,7 @@
       @mark-read="markSelectedRead"
       @mark-unread="markSelectedUnread"
       @add-to-readlist="addToReadList"
+      @bulk-edit="bulkEditMultipleBooks"
       @edit="editMultipleBooks"
     />
 
@@ -95,7 +95,14 @@
           <v-container>
             <v-row>
               <v-col class="py-1">
-                <div class="text-h5" v-if="$_.get(series, 'metadata.title')">{{ series.metadata.title }}</div>
+                <span class="text-h5" v-if="$_.get(series, 'metadata.title')">{{ series.metadata.title }}</span>
+                <router-link
+                  class="caption link-underline"
+                  :class="$vuetify.breakpoint.smAndUp ? 'mx-2' : ''"
+                  :style="$vuetify.breakpoint.xsOnly ? 'display: block' : ''"
+                  :to="{name:'browse-libraries', params: {libraryId: series.libraryId }}"
+                >{{ $t('searchbox.in_library', {library: getLibraryName(series)}) }}
+                </router-link>
               </v-col>
             </v-row>
 
@@ -119,25 +126,40 @@
                   {{ $t(`enums.series_status.${series.metadata.status}`) }}
                 </v-chip>
               </v-col>
-              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto">
-                <v-chip label small link v-if="series.metadata.ageRating"
+              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="series.metadata.ageRating">
+                <v-chip label small link
                         :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {ageRating: [series.metadata.ageRating]}}"
                 >
                   {{ series.metadata.ageRating }}+
                 </v-chip>
               </v-col>
-              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto">
+              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="series.metadata.language">
                 <v-chip label small link
                         :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {language: [series.metadata.language]}}"
-                        v-if="series.metadata.language"
                 >
                   {{ languageDisplay }}
                 </v-chip>
               </v-col>
-              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto">
-                <v-chip label small v-if="series.metadata.readingDirection">
+              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto"
+                     v-if="series.metadata.readingDirection">
+                <v-chip label small>
                   {{ $t(`enums.reading_direction.${series.metadata.readingDirection}`) }}
                 </v-chip>
+              </v-col>
+              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="unavailable">
+                <v-chip label small color="error">
+                  {{ $t('common.unavailable') }}
+                </v-chip>
+              </v-col>
+            </v-row>
+
+            <v-row class="text-caption" align="center">
+              <v-col cols="auto" v-if="series.metadata.totalBookCount">
+                {{ $t('common.books_total', {count: series.booksCount, total: series.metadata.totalBookCount}) }}
+              </v-col>
+
+              <v-col cols="auto" v-else>
+                {{ $tc('common.books_n', series.booksCount) }}
               </v-col>
             </v-row>
 
@@ -264,7 +286,8 @@
       </v-row>
 
       <!--  Tags    -->
-      <v-row v-if="series.metadata.tags.length > 0" class="align-center text-caption">
+      <v-row v-if="series.metadata.tags.length > 0 || series.booksMetadata.tags.length > 0"
+             class="align-center text-caption">
         <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $t('common.tags') }}</v-col>
         <v-col cols="8" sm="9" md="10" xl="11" class="py-1 text-capitalize">
           <vue-horizontal>
@@ -279,8 +302,8 @@
                 <v-icon>mdi-chevron-right</v-icon>
               </v-btn>
             </template>
-            <v-chip v-for="(t, i) in series.metadata.tags"
-                    :key="i"
+            <v-chip v-for="(t, i) in $_.sortBy(series.metadata.tags)"
+                    :key="`series_${i}`"
                     :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
                     :title="t"
                     :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {tag: [t]}}"
@@ -288,6 +311,18 @@
                     small
                     outlined
                     link
+            >{{ t }}
+            </v-chip>
+            <v-chip v-for="(t, i) in $_(series.booksMetadata.tags).difference(series.metadata.tags).sortBy()"
+                    :key="`book_${i}`"
+                    :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+                    :title="t"
+                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {tag: [t]}}"
+                    label
+                    small
+                    outlined
+                    link
+                    color="contrast-light-2"
             >{{ t }}
             </v-chip>
           </vue-horizontal>
@@ -406,14 +441,14 @@ import FilterList from '@/components/FilterList.vue'
 import SortList from '@/components/SortList.vue'
 import {mergeFilterParams, sortOrFilterActive, toNameValue} from '@/functions/filter'
 import FilterPanels from '@/components/FilterPanels.vue'
-import {SeriesDto} from "@/types/komga-series";
-import {groupAuthorsByRole} from "@/functions/authors";
-import ReadMore from "@/components/ReadMore.vue";
-import {authorRoles, authorRolesSeries} from "@/types/author-roles";
-import VueHorizontal from "vue-horizontal";
-import RtlIcon from "@/components/RtlIcon.vue";
-import {throttle} from "lodash";
-import {BookSseDto, CollectionSseDto, LibrarySseDto, ReadProgressSseDto, SeriesSseDto} from "@/types/komga-sse";
+import {SeriesDto} from '@/types/komga-series'
+import {groupAuthorsByRole} from '@/functions/authors'
+import ReadMore from '@/components/ReadMore.vue'
+import {authorRoles, authorRolesSeries} from '@/types/author-roles'
+import VueHorizontal from 'vue-horizontal'
+import RtlIcon from '@/components/RtlIcon.vue'
+import {throttle} from 'lodash'
+import {BookSseDto, CollectionSseDto, LibrarySseDto, ReadProgressSseDto, SeriesSseDto} from '@/types/komga-sse'
 
 const tags = require('language-tags')
 
@@ -499,11 +534,14 @@ export default Vue.extend({
     isAdmin(): boolean {
       return this.$store.getters.meAdmin
     },
+    unavailable(): boolean {
+      return this.series.deleted || this.$store.getters.getLibraryById(this.series.libraryId).unavailable
+    },
     canDownload(): boolean {
-      return this.$store.getters.meFileDownload
+      return this.$store.getters.meFileDownload && !this.unavailable
     },
     fileUrl(): string {
-      return seriesFileUrl(this.series.id)
+      return seriesFileUrl(this.seriesId)
     },
     thumbnailUrl(): string {
       return seriesThumbnailUrl(this.seriesId)
@@ -616,6 +654,9 @@ export default Vue.extend({
     next()
   },
   methods: {
+    getLibraryName(item: SeriesDto): string {
+      return this.$store.getters.getLibraryById(item.libraryId).name
+    },
     resetSortAndFilters() {
       this.drawer = false
       for (const prop in this.filters) {
@@ -773,6 +814,9 @@ export default Vue.extend({
     editMultipleBooks() {
       this.$store.dispatch('dialogUpdateBooks', this.selectedBooks)
     },
+    bulkEditMultipleBooks() {
+      this.$store.dispatch('dialogUpdateBulkBooks', this.$_.sortBy(this.selectedBooks, ['metadata.numberSort']))
+    },
     addToReadList() {
       this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks)
     },
@@ -780,13 +824,13 @@ export default Vue.extend({
       await Promise.all(this.selectedBooks.map(b =>
         this.$komgaBooks.updateReadProgress(b.id, {completed: true}),
       ))
-      await this.loadSeries(this.seriesId)
+      this.selectedBooks = []
     },
     async markSelectedUnread() {
       await Promise.all(this.selectedBooks.map(b =>
         this.$komgaBooks.deleteReadProgress(b.id),
       ))
-      await this.loadSeries(this.seriesId)
+      this.selectedBooks = []
     },
   },
 })

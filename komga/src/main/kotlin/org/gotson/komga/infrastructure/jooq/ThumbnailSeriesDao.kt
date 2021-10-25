@@ -15,6 +15,12 @@ class ThumbnailSeriesDao(
 ) : ThumbnailSeriesRepository {
   private val ts = Tables.THUMBNAIL_SERIES
 
+  override fun findByIdOrNull(thumbnailId: String): ThumbnailSeries? =
+    dsl.selectFrom(ts)
+      .where(ts.ID.eq(thumbnailId))
+      .fetchOneInto(ts)
+      ?.toDomain()
+
   override fun findAllBySeriesId(seriesId: String): Collection<ThumbnailSeries> =
     dsl.selectFrom(ts)
       .where(ts.SERIES_ID.eq(seriesId))
@@ -34,7 +40,9 @@ class ThumbnailSeriesDao(
     dsl.insertInto(ts)
       .set(ts.ID, thumbnail.id)
       .set(ts.SERIES_ID, thumbnail.seriesId)
-      .set(ts.URL, thumbnail.url.toString())
+      .set(ts.URL, thumbnail.url?.toString())
+      .set(ts.THUMBNAIL, thumbnail.thumbnail)
+      .set(ts.TYPE, thumbnail.type.toString())
       .set(ts.SELECTED, thumbnail.selected)
       .execute()
   }
@@ -68,8 +76,10 @@ class ThumbnailSeriesDao(
 
   private fun ThumbnailSeriesRecord.toDomain() =
     ThumbnailSeries(
-      url = URL(url),
+      thumbnail = thumbnail,
+      url = url?.let { URL(it) },
       selected = selected,
+      type = ThumbnailSeries.Type.valueOf(type),
       id = id,
       seriesId = seriesId,
       createdDate = createdDate,

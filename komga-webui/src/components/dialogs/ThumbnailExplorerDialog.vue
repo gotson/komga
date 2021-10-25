@@ -21,11 +21,10 @@
             >
               <v-img
                 :src="url"
-                lazy-src="../../assets/cover.svg"
                 aspect-ratio="0.7071"
-                :contain="true"
-                max-height="200"
-                max-width="140"
+                contain
+                height="200"
+                width="140"
                 class="ma-2"
                 @click="input = false; goTo(((page - 1 ) * perPage + i + 1))"
                 style="cursor: pointer"
@@ -42,7 +41,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { bookPageThumbnailUrl } from '@/functions/urls'
+import {bookPageThumbnailUrl} from '@/functions/urls'
 
 export default Vue.extend({
   name: 'ThumbnailExplorerDialog',

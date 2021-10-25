@@ -101,8 +101,18 @@
           <v-container>
             <v-row>
               <v-col class="py-1">
-                <router-link :to="{name:'browse-series', params: {seriesId: book.seriesId}}" class="link-underline">
-                  <span class="text-h5" v-if="!$_.isEmpty(series)">{{ series.metadata.title }}</span>
+                <router-link
+                  v-if="!$_.isEmpty(series)"
+                  :to="{name:'browse-series', params: {seriesId: book.seriesId}}"
+                  class="link-underline text-h5"
+                >{{ series.metadata.title }}
+                </router-link>
+                <router-link
+                  class="caption link-underline"
+                  :class="$vuetify.breakpoint.smAndUp ? 'mx-1' : ''"
+                  :style="$vuetify.breakpoint.xsOnly ? 'display: block' : ''"
+                  :to="{name:'browse-libraries', params: {libraryId: book.libraryId }}"
+                >{{ $t('searchbox.in_library', {library: getLibraryName(book)}) }}
                 </router-link>
               </v-col>
             </v-row>
@@ -112,14 +122,38 @@
               </v-col>
             </v-row>
 
-            <v-row class="text-caption">
-              <v-col cols="auto">
-                {{ book.metadata.number }} · {{ book.media.pagesCount }} {{ $t('common.pages') }}
+            <v-row class="text-caption" align="center">
+              <v-col cols="auto" v-if="book.media.status === MediaStatus.UNKNOWN">
+                {{ book.metadata.number }} · {{ $t('book_card.unknown') }}
               </v-col>
+
+              <v-col cols="auto" v-else>
+                {{ book.metadata.number }} · {{ $tc('common.pages_n', book.media.pagesCount) }}
+              </v-col>
+
               <v-col cols="auto" v-if="book.metadata.releaseDate">
                 {{
                   new Intl.DateTimeFormat($i18n.locale, {dateStyle: 'long'}).format(new Date(book.metadata.releaseDate))
                 }}
+              </v-col>
+
+              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')"
+                     cols="auto"
+                     v-if="book.media.status === MediaStatus.OUTDATED">
+                <v-tooltip bottom :disabled="!isAdmin">
+                  <template v-slot:activator="{ on }">
+                    <v-chip label small color="warning" v-on="on">
+                      {{ $t('common.outdated') }}
+                    </v-chip>
+                  </template>
+                  {{ $t('browse_book.outdated_tooltip') }}
+                </v-tooltip>
+              </v-col>
+
+              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="unavailable">
+                <v-chip label small color="error">
+                  {{ $t('common.unavailable') }}
+                </v-chip>
               </v-col>
             </v-row>
 
@@ -131,7 +165,7 @@
                          small
                          :title="$t('browse_book.read_book')"
                          :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id}}"
-                         :disabled="book.media.status !== 'READY' || !canReadPages"
+                         :disabled="!canRead"
                   >
                     <v-icon left small>mdi-book-open-page-variant</v-icon>
                     {{ $t('common.read') }}
@@ -142,7 +176,7 @@
                   <v-btn small
                          :title="$t('browse_book.read_incognito')"
                          :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id, incognito: true}}"
-                         :disabled="book.media.status !== 'READY' || !canReadPages"
+                         :disabled="!canRead"
                   >
                     <v-icon left small>mdi-incognito</v-icon>
                     {{ $t('common.read') }}
@@ -177,7 +211,7 @@
                    small
                    :title="$t('browse_book.read_book')"
                    :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id}}"
-                   :disabled="book.media.status !== 'READY' || !canReadPages"
+                   :disabled="!canRead"
             >
               <v-icon left small>mdi-book-open-page-variant</v-icon>
               {{ $t('common.read') }}
@@ -188,7 +222,7 @@
             <v-btn small
                    :title="$t('browse_book.read_incognito')"
                    :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id, incognito: true}}"
-                   :disabled="book.media.status !== 'READY' || !canReadPages"
+                   :disabled="!canRead"
             >
               <v-icon left small>mdi-incognito</v-icon>
               {{ $t('common.read') }}
@@ -217,7 +251,7 @@
              :key="role"
              class="align-center text-caption"
       >
-        <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $t(`author_roles.${role}`) }}</v-col>
+        <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $te(`author_roles.${role}`) ? $t(`author_roles.${role}`) : role }}</v-col>
         <v-col cols="8" sm="9" md="10" xl="11" class="py-1">
           <vue-horizontal>
             <template v-slot:btn-prev>
@@ -321,7 +355,7 @@ import {getBookFormatFromMediaType} from '@/functions/book-format'
 import {getReadProgress, getReadProgressPercentage} from '@/functions/book-progress'
 import {getBookTitleCompact} from '@/functions/book-title'
 import {bookFileUrl, bookThumbnailUrl} from '@/functions/urls'
-import {ReadStatus} from '@/types/enum-books'
+import {MediaStatus, ReadStatus} from '@/types/enum-books'
 import {
   BOOK_CHANGED,
   BOOK_DELETED,
@@ -336,19 +370,20 @@ import Vue from 'vue'
 import ReadListsExpansionPanels from '@/components/ReadListsExpansionPanels.vue'
 import {BookDto, BookFormat} from '@/types/komga-books'
 import {Context, ContextOrigin} from '@/types/context'
-import {SeriesDto} from "@/types/komga-series";
-import ReadMore from "@/components/ReadMore.vue";
-import VueHorizontal from "vue-horizontal";
-import {authorRoles} from "@/types/author-roles";
-import {convertErrorCodes} from "@/functions/error-codes";
-import RtlIcon from "@/components/RtlIcon.vue";
-import {BookSseDto, LibrarySseDto, ReadListSseDto, ReadProgressSseDto} from "@/types/komga-sse";
+import {SeriesDto} from '@/types/komga-series'
+import ReadMore from '@/components/ReadMore.vue'
+import VueHorizontal from 'vue-horizontal'
+import {authorRoles} from '@/types/author-roles'
+import {convertErrorCodes} from '@/functions/error-codes'
+import RtlIcon from '@/components/RtlIcon.vue'
+import {BookSseDto, LibrarySseDto, ReadListSseDto, ReadProgressSseDto} from '@/types/komga-sse'
 
 export default Vue.extend({
   name: 'BrowseBook',
   components: {ReadMore, ToolbarSticky, ItemCard, BookActionsMenu, ReadListsExpansionPanels, VueHorizontal, RtlIcon},
   data: () => {
     return {
+      MediaStatus,
       book: {} as BookDto,
       series: {} as SeriesDto,
       context: {} as Context,
@@ -397,11 +432,14 @@ export default Vue.extend({
     isAdmin(): boolean {
       return this.$store.getters.meAdmin
     },
-    canReadPages(): boolean {
-      return this.$store.getters.mePageStreaming
+    unavailable(): boolean {
+      return this.book.deleted || this.$store.getters.getLibraryById(this.book.libraryId).unavailable
+    },
+    canRead(): boolean {
+      return this.book.media.status === 'READY' && this.$store.getters.mePageStreaming && !this.unavailable
     },
     canDownload(): boolean {
-      return this.$store.getters.meFileDownload
+      return this.$store.getters.meFileDownload && !this.unavailable
     },
     thumbnailUrl(): string {
       return bookThumbnailUrl(this.bookId)
@@ -452,17 +490,21 @@ export default Vue.extend({
         }
     },
     displayedRoles(): string[] {
-      return authorRoles.filter(x => this.authorsByRole[x])
+      const allRoles = this.$_.uniq([...authorRoles, ...(this.book.metadata.authors.map(x => x.role))])
+      return allRoles.filter(x => this.authorsByRole[x])
     },
   },
   methods: {
+    getLibraryName(item: BookDto): string {
+      return this.$store.getters.getLibraryById(item.libraryId).name
+    },
     libraryDeleted(event: LibrarySseDto) {
       if (event.libraryId === this.book.libraryId) {
         this.$router.push({name: 'home'})
       }
     },
     readListChanged(event: ReadListSseDto) {
-      if(event.bookIds.includes(this.bookId) || this.readLists.map(x => x.id).includes(event.readListId)){
+      if (event.bookIds.includes(this.bookId) || this.readLists.map(x => x.id).includes(event.readListId)) {
         this.$komgaBooks.getReadLists(this.bookId)
           .then(v => this.readLists = v)
       }
@@ -471,11 +513,11 @@ export default Vue.extend({
       if (event.bookId === this.bookId) this.loadBook(this.bookId)
     },
     bookDeleted(event: BookSseDto) {
-      if (event.bookId === this.bookId){
-        this.$router.push({name:'browse-series', params: {seriesId: this.series.id }})
+      if (event.bookId === this.bookId) {
+        this.$router.push({name: 'browse-series', params: {seriesId: this.series.id}})
       }
     },
-    readProgressChanged(event: ReadProgressSseDto){
+    readProgressChanged(event: ReadProgressSseDto) {
       if (event.bookId === this.bookId) this.loadBook(this.bookId)
     },
     async loadBook(bookId: string) {

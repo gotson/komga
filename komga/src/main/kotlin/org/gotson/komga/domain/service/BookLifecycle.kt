@@ -18,14 +18,14 @@ import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
+import org.gotson.komga.infrastructure.configuration.KomgaProperties
+import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.support.TransactionTemplate
 import java.io.File
-import java.nio.file.Files
-import java.nio.file.Paths
+import java.time.LocalDateTime
 
 private val logger = KotlinLogging.logger {}
 
@@ -41,6 +41,8 @@ class BookLifecycle(
   private val imageConverter: ImageConverter,
   private val eventPublisher: EventPublisher,
   private val transactionTemplate: TransactionTemplate,
+  private val hasher: Hasher,
+  private val komgaProperties: KomgaProperties,
 ) {
 
   fun analyzeAndPersist(book: Book): Boolean {
@@ -61,6 +63,19 @@ class BookLifecycle(
     eventPublisher.publishEvent(DomainEvent.BookUpdated(book))
 
     return media.status == Media.Status.READY
+  }
+
+  fun hashAndPersist(book: Book) {
+    if (!komgaProperties.fileHashing)
+      return logger.info { "File hashing is disabled, it may have changed since the task was submitted, skipping" }
+
+    logger.info { "Hash and persist book: $book" }
+    if (book.fileHash.isBlank()) {
+      val hash = hasher.computeHash(book.path)
+      bookRepository.update(book.copy(fileHash = hash))
+    } else {
+      logger.info { "Book already has a hash, skipping" }
+    }
   }
 
   fun generateThumbnailAndPersist(book: Book) {
@@ -144,15 +159,6 @@ class BookLifecycle(
     }
   }
 
-  private fun ThumbnailBook.exists(): Boolean {
-    if (type == ThumbnailBook.Type.SIDECAR) {
-      if (url != null)
-        return Files.exists(Paths.get(url.toURI()))
-      return false
-    }
-    return true
-  }
-
   @Throws(
     ImageConversionException::class,
     MediaNotReadyException::class,
@@ -200,35 +206,45 @@ class BookLifecycle(
     }
   }
 
-  @Transactional
   fun deleteOne(book: Book) {
     logger.info { "Delete book id: ${book.id}" }
 
-    readProgressRepository.deleteByBookId(book.id)
-    readListRepository.removeBookFromAll(book.id)
+    transactionTemplate.executeWithoutResult {
+      readProgressRepository.deleteByBookId(book.id)
+      readListRepository.removeBookFromAll(book.id)
 
-    mediaRepository.delete(book.id)
-    thumbnailBookRepository.deleteByBookId(book.id)
-    bookMetadataRepository.delete(book.id)
+      mediaRepository.delete(book.id)
+      thumbnailBookRepository.deleteByBookId(book.id)
+      bookMetadataRepository.delete(book.id)
 
-    bookRepository.delete(book.id)
+      bookRepository.delete(book.id)
+    }
 
     eventPublisher.publishEvent(DomainEvent.BookDeleted(book))
   }
 
-  @Transactional
+  fun softDeleteMany(books: Collection<Book>) {
+    logger.info { "Soft delete books: $books" }
+    val deletedDate = LocalDateTime.now()
+    bookRepository.update(books.map { it.copy(deletedDate = deletedDate) })
+
+    books.forEach { eventPublisher.publishEvent(DomainEvent.BookUpdated(it)) }
+  }
+
   fun deleteMany(books: Collection<Book>) {
     val bookIds = books.map { it.id }
     logger.info { "Delete book ids: $bookIds" }
 
-    readProgressRepository.deleteByBookIds(bookIds)
-    readListRepository.removeBooksFromAll(bookIds)
+    transactionTemplate.executeWithoutResult {
+      readProgressRepository.deleteByBookIds(bookIds)
+      readListRepository.removeBooksFromAll(bookIds)
 
-    mediaRepository.deleteByBookIds(bookIds)
-    thumbnailBookRepository.deleteByBookIds(bookIds)
-    bookMetadataRepository.delete(bookIds)
+      mediaRepository.deleteByBookIds(bookIds)
+      thumbnailBookRepository.deleteByBookIds(bookIds)
+      bookMetadataRepository.delete(bookIds)
 
-    bookRepository.delete(bookIds)
+      bookRepository.delete(bookIds)
+    }
 
     books.forEach { eventPublisher.publishEvent(DomainEvent.BookDeleted(it)) }
   }

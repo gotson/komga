@@ -6,6 +6,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.ThumbnailSeries
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -71,9 +72,11 @@ class SeriesLifecycleTest(
     // given
     val books = listOf(
       makeBook("book 1", libraryId = library.id),
-      makeBook("book 05", libraryId = library.id),
-      makeBook("book 6", libraryId = library.id),
-      makeBook("book 002", libraryId = library.id)
+      makeBook("boôk 05", libraryId = library.id),
+      makeBook("  book 3", libraryId = library.id),
+      makeBook("book   4   ", libraryId = library.id),
+      makeBook("book  6", libraryId = library.id),
+      makeBook("book  002", libraryId = library.id)
     )
     val createdSeries = makeSeries(name = "series", libraryId = library.id).let {
       seriesLifecycle.createSeries(it)
@@ -85,11 +88,11 @@ class SeriesLifecycleTest(
 
     // then
     assertThat(seriesRepository.count()).isEqualTo(1)
-    assertThat(bookRepository.count()).isEqualTo(4)
+    assertThat(bookRepository.count()).isEqualTo(6)
 
     val savedBooks = bookRepository.findAllBySeriesId(createdSeries.id).sortedBy { it.number }
-    assertThat(savedBooks.map { it.name }).containsExactly("book 1", "book 002", "book 05", "book 6")
-    assertThat(savedBooks.map { it.number }).containsExactly(1, 2, 3, 4)
+    assertThat(savedBooks.map { it.name }).containsExactly("book 1", "book  002", "  book 3", "book   4   ", "boôk 05", "book  6")
+    assertThat(savedBooks.map { it.number }).containsExactly(1, 2, 3, 4, 5, 6)
   }
 
   @Test
@@ -252,5 +255,14 @@ class SeriesLifecycleTest(
       assertThat(bookMetadataRepository.count()).isEqualTo(0)
       assertThat(bookRepository.count()).isEqualTo(0)
     }
+  }
+
+  @Test
+  fun `given a sidecar thumbnail when deleting then IllegarlArgumentException is thrown`() {
+    val thumbnail = ThumbnailSeries(type = ThumbnailSeries.Type.SIDECAR)
+
+    val thrown = catchThrowable { seriesLifecycle.deleteThumbnailForSeries(thumbnail) }
+
+    assertThat(thrown).isInstanceOf(IllegalArgumentException::class.java)
   }
 }

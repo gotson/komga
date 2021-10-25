@@ -2,11 +2,13 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.persistence.ReadProgressRepository
+import org.gotson.komga.interfaces.rest.dto.toUTC
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.ReadProgressRecord
 import org.jooq.DSLContext
 import org.jooq.Query
 import org.jooq.impl.DSL
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -14,7 +16,8 @@ import java.time.ZoneId
 
 @Component
 class ReadProgressDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
+  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : ReadProgressRepository {
 
   private val r = Tables.READ_PROGRESS
@@ -59,7 +62,7 @@ class ReadProgressDao(
   @Transactional
   override fun save(readProgresses: Collection<ReadProgress>) {
     val queries = readProgresses.map { saveQuery(it) }
-    dsl.batch(queries).execute()
+    queries.chunked(batchSize).forEach { chunk -> dsl.batch(chunk).execute() }
 
     readProgresses.groupBy { it.userId }
       .forEach { (userId, readProgresses) ->
@@ -68,11 +71,25 @@ class ReadProgressDao(
   }
 
   private fun saveQuery(readProgress: ReadProgress): Query =
-    dsl.insertInto(r, r.BOOK_ID, r.USER_ID, r.PAGE, r.COMPLETED)
-      .values(readProgress.bookId, readProgress.userId, readProgress.page, readProgress.completed)
+    dsl.insertInto(
+      r,
+      r.BOOK_ID,
+      r.USER_ID,
+      r.PAGE,
+      r.COMPLETED,
+      r.READ_DATE,
+    )
+      .values(
+        readProgress.bookId,
+        readProgress.userId,
+        readProgress.page,
+        readProgress.completed,
+        readProgress.readDate.toUTC(),
+      )
       .onDuplicateKeyUpdate()
       .set(r.PAGE, readProgress.page)
       .set(r.COMPLETED, readProgress.completed)
+      .set(r.READ_DATE, readProgress.readDate.toUTC())
       .set(r.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
 
   @Transactional
@@ -145,6 +162,7 @@ class ReadProgressDao(
       userId = userId,
       page = page,
       completed = completed,
+      readDate = readDate.toCurrentTimeZone(),
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone()
     )

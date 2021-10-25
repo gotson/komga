@@ -5,16 +5,27 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
+import org.apache.commons.io.IOUtils
+import org.gotson.komga.domain.model.Author
+import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.DuplicateNameException
+import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ROLE_ADMIN
+import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
 import org.gotson.komga.domain.model.ReadList
+import org.gotson.komga.domain.model.ReadStatus
+import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.ReadListLifecycle
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.language.toIndexedMap
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
+import org.gotson.komga.infrastructure.swagger.AuthorsAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
+import org.gotson.komga.infrastructure.web.Authors
 import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.ReadListCreationDto
 import org.gotson.komga.interfaces.rest.dto.ReadListDto
@@ -26,11 +37,14 @@ import org.gotson.komga.interfaces.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.rest.dto.toDto
 import org.gotson.komga.interfaces.rest.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.rest.persistence.ReadProgressDtoRepository
+import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.http.CacheControl
+import org.springframework.http.ContentDisposition
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -49,7 +63,10 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
+import java.io.OutputStream
 import java.util.concurrent.TimeUnit
+import java.util.zip.Deflater
 import javax.validation.Valid
 
 private val logger = KotlinLogging.logger {}
@@ -60,6 +77,7 @@ class ReadListController(
   private val readListRepository: ReadListRepository,
   private val readListLifecycle: ReadListLifecycle,
   private val bookDtoRepository: BookDtoRepository,
+  private val bookRepository: BookRepository,
   private val readProgressDtoRepository: ReadProgressDtoRepository,
   private val bookLifecycle: BookLifecycle,
 ) {
@@ -73,16 +91,21 @@ class ReadListController(
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<ReadListDto> {
+    val sort = when {
+      !searchTerm.isNullOrBlank() -> Sort.by("relevance")
+      else -> Sort.by(Sort.Order.asc("name"))
+    }
+
     val pageRequest =
-      if (unpaged) UnpagedSorted(Sort.by(Sort.Order.asc("name")))
+      if (unpaged) UnpagedSorted(sort)
       else PageRequest.of(
         page.pageNumber,
         page.pageSize,
-        Sort.by(Sort.Order.asc("name"))
+        sort
       )
 
     return when {
-      principal.user.sharedAllLibraries && libraryIds == null -> readListRepository.searchAll(
+      principal.user.sharedAllLibraries && libraryIds == null -> readListRepository.findAll(
         searchTerm,
         pageable = pageRequest
       )
@@ -138,6 +161,7 @@ class ReadListController(
       readListLifecycle.addReadList(
         ReadList(
           name = readList.name,
+          summary = readList.summary,
           bookIds = readList.bookIds.toIndexedMap()
         )
       ).toDto()
@@ -162,6 +186,7 @@ class ReadListController(
     readListRepository.findByIdOrNull(id)?.let { existing ->
       val updated = existing.copy(
         name = readList.name ?: existing.name,
+        summary = readList.summary ?: existing.summary,
         bookIds = readList.bookIds?.toIndexedMap() ?: existing.bookIds
       )
       try {
@@ -184,11 +209,18 @@ class ReadListController(
   }
 
   @PageableWithoutSortAsQueryParam
+  @AuthorsAsQueryParam
   @GetMapping("{id}/books")
   fun getBooksForReadList(
     @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
+    @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
+    @RequestParam(name = "tag", required = false) tags: List<String>?,
+    @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
+    @RequestParam(name = "deleted", required = false) deleted: Boolean?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
+    @Parameter(hidden = true) @Authors authors: List<Author>?,
     @Parameter(hidden = true) page: Pageable
   ): Page<BookDto> =
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
@@ -202,10 +234,20 @@ class ReadListController(
           sort
         )
 
+      val bookSearch = BookSearchWithReadProgress(
+        libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
+        readStatus = readStatus,
+        mediaStatus = mediaStatus,
+        deleted = deleted,
+        tags = tags,
+        authors = authors,
+      )
+
       bookDtoRepository.findAllByReadListId(
         readList.id,
         principal.user.id,
         principal.user.getAuthorizedLibraryIds(null),
+        bookSearch,
         pageRequest
       )
         .map { it.restrictUrl(!principal.user.roleAdmin) }
@@ -264,9 +306,56 @@ class ReadListController(
         readList.id,
         principal.user.id,
         principal.user.getAuthorizedLibraryIds(null),
+        BookSearchWithReadProgress(),
         UnpagedSorted(Sort.by(Sort.Order.asc("readList.number")))
       ).filterIndexed { index, _ -> index < readProgress.lastBookRead }
         .forEach { book -> bookLifecycle.markReadProgressCompleted(book.id, principal.user) }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @GetMapping("{id}/file", produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
+  @PreAuthorize("hasRole('$ROLE_FILE_DOWNLOAD')")
+  fun getReadListFile(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable id: String
+  ): ResponseEntity<StreamingResponseBody> {
+    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
+
+      val books = readList.bookIds
+        .mapNotNull { bookRepository.findByIdOrNull(it.value)?.let { book -> it.key to book } }
+        .toMap()
+
+      val streamingResponse = StreamingResponseBody { responseStream: OutputStream ->
+        ZipArchiveOutputStream(responseStream).use { zipStream ->
+          zipStream.setMethod(ZipArchiveOutputStream.DEFLATED)
+          zipStream.setLevel(Deflater.NO_COMPRESSION)
+          books.forEach { (index, book) ->
+            val file = FileSystemResource(book.path)
+            if (!file.exists()) {
+              logger.warn { "Book file not found, skipping archive entry: ${file.path}" }
+              return@forEach
+            }
+
+            logger.debug { "Adding file to zip archive: ${file.path}" }
+            file.inputStream.use {
+              zipStream.putArchiveEntry(ZipArchiveEntry("${index + 1} - ${file.filename}"))
+              IOUtils.copyLarge(it, zipStream, ByteArray(8192))
+              zipStream.closeArchiveEntry()
+            }
+          }
+        }
+      }
+
+      return ResponseEntity.ok()
+        .headers(
+          HttpHeaders().apply {
+            contentDisposition = ContentDisposition.builder("attachment")
+              .filename(readList.name + ".zip")
+              .build()
+          }
+        )
+        .contentType(MediaType.parseMediaType("application/zip"))
+        .body(streamingResponse)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 }

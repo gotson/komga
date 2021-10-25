@@ -317,7 +317,7 @@ class ReadListControllerTest(
     @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given admin user when creating read list then return ok`() {
       val jsonString = """
-        {"name":"readlist","bookIds":["${booksLibrary1.first().id}"]}
+        {"name":"readlist","summary":"summary","bookIds":["${booksLibrary1.first().id}"]}
       """.trimIndent()
 
       mockMvc.post("/api/v1/readlists") {
@@ -327,6 +327,7 @@ class ReadListControllerTest(
         status { isOk() }
         jsonPath("$.bookIds.length()") { value(1) }
         jsonPath("$.name") { value("readlist") }
+        jsonPath("$.summary") { value("summary") }
       }
     }
 
@@ -386,7 +387,7 @@ class ReadListControllerTest(
       makeReadLists()
 
       val jsonString = """
-        {"name":"updated","bookIds":["${booksLibrary1.first().id}"]}
+        {"name":"updated","summary":"updatedSummary","bookIds":["${booksLibrary1.first().id}"]}
       """.trimIndent()
 
       mockMvc.patch("/api/v1/readlists/${rlLib1.id}") {
@@ -400,6 +401,7 @@ class ReadListControllerTest(
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("updated") }
+          jsonPath("$.summary") { value("updatedSummary") }
           jsonPath("$.bookIds.length()") { value(1) }
           jsonPath("$.filtered") { value(false) }
         }
@@ -449,6 +451,20 @@ class ReadListControllerTest(
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("newName") }
+          jsonPath("$.summary") { value("") }
+          jsonPath("$.bookIds.length()") { value(5) }
+        }
+
+      mockMvc.patch("/api/v1/readlists/${rlLib1.id}") {
+        contentType = MediaType.APPLICATION_JSON
+        content = """{"summary":"newSummary"}"""
+      }
+
+      mockMvc.get("/api/v1/readlists/${rlLib1.id}")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.name") { value("Lib1") }
+          jsonPath("$.summary") { value("newSummary") }
           jsonPath("$.bookIds.length()") { value(5) }
         }
 
@@ -461,6 +477,7 @@ class ReadListControllerTest(
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Lib1+2") }
+          jsonPath("$.summary") { value("") }
           jsonPath("$.bookIds.length()") { value(1) }
         }
     }

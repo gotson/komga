@@ -16,8 +16,10 @@ data class Series(
   val libraryId: String = "",
   val bookCount: Int = 0,
 
+  val deletedDate: LocalDateTime? = null,
+
   override val createdDate: LocalDateTime = LocalDateTime.now(),
-  override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
+  override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable(), Serializable {
 
   @delegate:Transient

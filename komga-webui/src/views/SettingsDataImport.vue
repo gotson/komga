@@ -89,7 +89,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {convertErrorCodes} from "@/functions/error-codes";
+import {convertErrorCodes} from '@/functions/error-codes'
 
 export default Vue.extend({
   name: 'SettingsDataImport',

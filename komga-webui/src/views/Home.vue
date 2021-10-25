@@ -42,7 +42,11 @@
               v-on="on"
             />
           </template>
-          <span>{{ $tc('common.pending_tasks', taskCount) }}</span>
+          <div class="mb-2">{{ $tc('common.pending_tasks', taskCount) }}</div>
+          <div v-for="taskType in Object.keys(taskCountByType)"
+               :key="taskType"
+          >{{ taskType }}: {{ taskCountByType[taskType] }}
+          </div>
         </v-tooltip>
       </v-list-item>
 
@@ -81,6 +85,11 @@
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>{{ l.name }}</v-list-item-title>
+            <v-list-item-subtitle
+              v-if="l.unavailable"
+              class="error--text caption"
+            >{{ $t('common.unavailable') }}
+            </v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action v-if="isAdmin">
             <library-actions-menu :library="l"/>
@@ -165,7 +174,13 @@
         <div v-if="isAdmin && !$_.isEmpty(info)"
              class="pa-2 pb-6 text-caption"
         >
-          <div>v{{ info.build.version }}-{{ info.git.branch }}</div>
+          <a href="https://github.com/gotson/komga/blob/master/CHANGELOG.md"
+             target="_blank"
+             class="link-none"
+          >
+            v{{ info.build.version }}-{{ info.git.branch }}
+          </a>
+          <v-icon x-small color="grey">mdi-open-in-new</v-icon>
         </div>
       </template>
     </v-navigation-drawer>
@@ -184,9 +199,10 @@ import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import SearchBox from '@/components/SearchBox.vue'
 import {Theme} from '@/types/themes'
 import Vue from 'vue'
-import {LIBRARIES_ALL} from "@/types/library"
-import Toaster from "@/components/Toaster.vue"
-import {MediaStatus} from "@/types/enum-books";
+import {LIBRARIES_ALL} from '@/types/library'
+import Toaster from '@/components/Toaster.vue'
+import {MediaStatus} from '@/types/enum-books'
+import {LibraryDto} from '@/types/komga-libraries'
 
 export default Vue.extend({
   name: 'home',
@@ -212,6 +228,9 @@ export default Vue.extend({
     },
     taskCount(): number {
       return this.$store.state.komgaSse.taskCount
+    },
+    taskCountByType(): { [key: string]: number } {
+      return this.$store.state.komgaSse.taskCountByType
     },
     libraries(): LibraryDto[] {
       return this.$store.state.komgaLibraries.libraries

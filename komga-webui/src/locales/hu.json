@@ -3,6 +3,9 @@
     "dataFooter": {
       "pageText": "{0}-{1} / {2}"
     },
+    "dataIterator": {
+      "loadingText": "Elemek betöltése..."
+    },
     "dataTable": {
       "itemsPerPageText": "Sorok oldalanként:",
       "sortBy": "Sorrend"
@@ -17,6 +20,14 @@
     "account_settings": "Fiókbeállítások",
     "change_password": "jelszó módosítása"
   },
+  "authentication_activity": {
+    "datetime": "Dátum / idő",
+    "email": "E-mail",
+    "error": "Hiba",
+    "ip": "IP cím",
+    "success": "Sikeres",
+    "user_agent": "User Agent"
+  },
   "author_roles": {
     "colorist": "színezők",
     "cover": "borító",
@@ -24,6 +35,7 @@
     "inker": "tintázók",
     "letterer": "betűzők",
     "penciller": "ceruzázók",
+    "translator": "fordítók",
     "writer": "írók"
   },
   "book_card": {
@@ -39,6 +51,13 @@
     "field_import_path": "Importálás mappából",
     "info_part1": "Ez az ablak a meglévő könyvtáraidban nem található fájlokat engedi importálni. Csak meglévő könyvsorozatokba tudsz fájlokat importálni, amikor Komga áthelyezi vagy átmásolja a könyvtárukba a fájlokat.",
     "info_part2": "Ha olyan számot választasz a könyvnek, ami már létezik, össze fogod tudni hasonlítani a két könyvet. Ha ezt követően mégis importálni szeretnéd a könyvet, Komga lefrissíti a meglévő könyvet az újjal, ezzel lecserélve az eredeti fájlt az újra.",
+    "no_files_found": "Nem találtunk fájlokat",
+    "notification": {
+      "go_to_book": "Menj a könyvhöz",
+      "import_failure": "A könyv importálása sikertelen: {file}",
+      "import_successful": "A könyv importálása sikeres: {book}",
+      "source_file": "Forrásfájl: {file}"
+    },
     "row": {
       "error_analyze_first": "A könyvet először elemezni kell",
       "error_choose_series": "Válassz egy könyvsorozatot",
@@ -51,7 +70,8 @@
       "number": "Szám",
       "series": "Könyvsorozat"
     },
-    "title": "Importálás"
+    "title": "Importálás",
+    "try_another_directory": "Próbálj keresni egy másik könyvtárban"
   },
   "bookreader": {
     "beginning_of_book": "A könyv elején jársz.",
@@ -80,6 +100,7 @@
       "width": "Szélességhez igazítás"
     },
     "settings": {
+      "always_fullscreen": "Mindig teljes képernyős",
       "animate_page_transitions": "Oldal váltás animálása",
       "background_color": "Háttérszín",
       "background_colors": {
@@ -127,6 +148,7 @@
     "format": "FORMÁTUM",
     "isbn": "ISBN",
     "navigation_within_readlist": "Navigáció az olvasólistán belül: {name}",
+    "outdated_tooltip": "A fájlja ennek a könyvnek megváltozott, ezt a könyvet újra kell elemezni",
     "read_book": "Könyv olvasása",
     "read_incognito": "Olvasás inkognitóban",
     "size": "MÉRET"
@@ -153,11 +175,13 @@
     "all_libraries": "Minden könyvtár",
     "books": "Könyvek",
     "books_n": "Nincs könyv | 1 könyv | {count} könyv",
+    "books_total": "{count} / {total} könyv",
     "cancel": "Mégse",
     "close": "Bezárás",
     "collections": "Gyűjtemények",
     "create": "Létrehozás",
     "delete": "Törlés",
+    "dismiss": "Elvet",
     "download": "Letöltés",
     "email": "E-mail cím",
     "filter_no_matches": "A jelenleg aktív szűrő szerint üres",
@@ -169,9 +193,11 @@
     "locale_rtl": "false",
     "n_selected": "{count} kiválasztva",
     "nothing_to_show": "Nincs mit mutatni",
+    "outdated": "Elavult",
     "pages": "oldalak",
     "pages_n": "Nincs oldal | 1 oldal | {count} oldal",
     "password": "Jelszó",
+    "pending_tasks": "Nincs függőben lévő feladat | 1 függőben lévő feladat | {count} függőben lévő feladat",
     "publisher": "Kiadó",
     "read": "Olvasás",
     "readlists": "Olvasólisták",
@@ -180,6 +206,7 @@
     "roles": "Szerepek",
     "series": "Könyvsorozatok",
     "tags": "Címkék",
+    "unavailable": "Nem elérhető",
     "use_filter_panel_to_change_filter": "A szűrőpanelen változtasd meg az aktív szűrőt",
     "year": "év"
   },
@@ -188,6 +215,8 @@
     "on_deck": "Folyamatban",
     "recently_added_books": "Nemrég hozzáadott könyvek",
     "recently_added_series": "Nemrég hozzáadott könyvsorozatok",
+    "recently_read_books": "Nemrég olvasott könyvek",
+    "recently_released_books": "Nemrég megjelent könyvek",
     "recently_updated_series": "Nemrég frissített könyvsorozatok"
   },
   "data_import": {
@@ -231,11 +260,18 @@
       "field_role_page_streaming": "Oldalmegosztás",
       "label_roles": "Szerepek"
     },
+    "analyze_library": {
+      "button_confirm": "Elemez",
+      "title": "Könyvtár elemzése"
+    },
     "delete_collection": {
       "button_confirm": "Törlés",
       "confirm_delete": "Igen, törölje a(z) \"{name}\" gyűjteményt",
+      "confirm_delete_multiple": "Igen, legyen {count} gyűjtemény törölve",
       "dialog_title": "Gyűjtemény törlése",
-      "warning_html": "A gyűjtemény <b>{name}</b> törölve lesz erről a szerverről. A médiafájljaid nem lesznek befolyásolva. Ez <b>nem</b> fordítható vissza. Folytatod?"
+      "dialog_title_multiple": "Gyűjtemények törlése",
+      "warning_html": "A gyűjtemény <b>{name}</b> törölve lesz erről a szerverről. A médiafájljaid nem lesznek befolyásolva. Ez <b>nem</b> fordítható vissza. Folytatod?",
+      "warning_multiple_html": "{count} gyűjtemény törölve lesz a szerverről. A médiafájljaid nem lesznek befolyásolva. Ez <b>nem</b> fordítható vissza. Folytatod?"
     },
     "delete_library": {
       "button_confirm": "Törlés",
@@ -246,8 +282,11 @@
     "delete_readlist": {
       "button_confirm": "Törlés",
       "confirm_delete": "Igen, törölje a(z) \"{name}\" olvasólistát",
+      "confirm_delete_multiple": "Igen, töröljön {count} olvasólistát",
       "dialog_title": "Olvasólista törlése",
-      "warning_html": "Az olvasólista <b>{name}</b> törölve lesz erről a szerverről. A médiafájljaid nem lesznek befolyásolva. Ez <b>nem</b> fordítható vissza. Folytatod?"
+      "dialog_title_multiple": "Olvasólisták törlése",
+      "warning_html": "Az olvasólista <b>{name}</b> törölve lesz erről a szerverről. A médiafájljaid nem lesznek befolyásolva. Ez <b>nem</b> fordítható vissza. Folytatod?",
+      "warning_multiple_html": "{count} olvasólista törölve lesz a szerverről. A médiafájljaid nem lesznek befolyásolva. Ez <b>nem</b> fordítható vissza. Folytatod?"
     },
     "delete_user": {
       "button_confirm": "Törlés",
@@ -288,6 +327,7 @@
       "button_cancel": "Mégse",
       "button_confirm_add": "Hozzáad",
       "button_confirm_edit": "Szerkesztés",
+      "button_next": "Következő",
       "dialog_title_add": "Könyvtár hozzáadása",
       "dialot_title_edit": "Könyvtár szerkesztése",
       "field_convert_to_cbz": "Automatikus konvertálás CBZ-re",
@@ -299,11 +339,14 @@
       "field_import_epub_book": "Könyv metaadat",
       "field_import_epub_series": "Sorozat metaadat",
       "field_import_local_artwork": "Helyi műalkotás",
+      "field_import_mylar_series": "Sorozat metaadat",
       "field_name": "Név",
       "field_repair_extensions": "Automatikus helytelen fájlkiterjesztés javítás",
       "field_root_folder": "Gyökérkönyvtár",
       "field_scanner_deep_scan": "Mély beolvasás",
+      "field_scanner_empty_trash_after_scan": "Minden vizsgálat után automatikusan űrítse a szemetest",
       "field_scanner_force_directory_modified_time": "Kényszerített könyvtár-módosítási idő",
+      "field_series_cover": "Sorozat borító",
       "file_browser_dialog_button_confirm": "Kiválaszt",
       "file_browser_dialog_title": "A könyvtár gyökérkönyvtára",
       "label_file_management": "Fájlkezelés",
@@ -311,15 +354,19 @@
       "label_import_comicinfo": "ComicInfo.xml fájlt tartalmazó CBR/CBZ metaadatok importálása",
       "label_import_epub": "Metaadatok importálása EPUB fájlokból",
       "label_import_local": "Helyi médiafájlok importálása",
+      "label_import_mylar": "Mylar által generált metaadatok importálása",
       "label_scanner": "Beolvasó",
+      "label_series_cover": "Sorozat borító",
       "tab_general": "Általános",
+      "tab_metadata": "Metaadat",
       "tab_options": "Opciók"
     },
     "edit_readlist": {
       "button_cancel": "Mégse",
       "button_confirm": "Módosítások mentése",
       "dialog_title": "Olvasólista szerkesztése",
-      "field_name": "Név"
+      "field_name": "Név",
+      "field_summary": "Összefoglaló"
     },
     "edit_series": {
       "button_cancel": "Mégse",
@@ -330,6 +377,7 @@
       "field_age_rating_error": "Korhatár-besorolásnak 0-nak vagy nagyobbnak kell lennie",
       "field_genres": "Műfajok",
       "field_language": "Nyelv",
+      "field_language_hint": "IETF BCP 47 nyelv címke",
       "field_publisher": "Kiadó",
       "field_reading_direction": "Olvasási irány",
       "field_sort_title": "Cím rendezése",
@@ -337,6 +385,8 @@
       "field_summary": "Összefoglaló",
       "field_tags": "Címkék",
       "field_title": "Cím",
+      "field_total_book_count": "Összes könyvszám",
+      "field_total_book_count_error": "Összes könyvszámnak legalább 1-nek kell lennie",
       "mixed": "VEGYES",
       "tab_general": "Általános",
       "tab_tags": "Címkék",
@@ -354,6 +404,10 @@
       "dialog_title": "Megosztott könyvtárak szerkesztése",
       "field_all_libraries": "Minden könyvtár",
       "label_shared_with": "Megosztva a következővel: {name}"
+    },
+    "empty_trash": {
+      "button_confirm": "Üres",
+      "title": "Könyvtár szemetesének kiűrítése"
     },
     "file_browser": {
       "button_cancel": "Mégse",
@@ -379,6 +433,10 @@
       "field_new_password_error": "Új jelszó szükséges.",
       "field_repeat_password": "Új jelszó megismétlése",
       "field_repeat_password_error": "A jelszavaknak meg kell egyeznie."
+    },
+    "refresh_library_metadata": {
+      "button_confirm": "Frissítés",
+      "title": "Könyvtár metaadatok frissítése"
     },
     "series_picker": {
       "label_search_series": "Könyvsorozat keresése",
@@ -436,6 +494,12 @@
       "VERTICAL": "Függőleges",
       "WEBTOON": "Webtoon"
     },
+    "series_cover": {
+      "FIRST": "Első",
+      "FIRST_UNREAD_OR_FIRST": "Első olvasatlan különben első",
+      "FIRST_UNREAD_OR_LAST": "Első olvasatlan különben utolsó",
+      "LAST": "Utolsó"
+    },
     "series_status": {
       "ABANDONED": "Elhagyott",
       "ENDED": "Véget ért",
@@ -461,7 +525,12 @@
     "ERR_1014": "Nincs egyezés a könyvsorozatban található könyvszámhoz",
     "ERR_1015": "Hiba ComicRack olvasólista deszerializálása közben",
     "ERR_1016": "Könyvtár nem érhető el, vagy nem könyvtár",
-    "ERR_1017": "Nem lehet beolvasni egy meglévő könyvtár részét képező mappát"
+    "ERR_1017": "Nem lehet beolvasni egy meglévő könyvtár részét képező mappát",
+    "ERR_1018": "Fájl nem található",
+    "ERR_1019": "Nem lehet importálni egy létező könyvtárban található fájlt",
+    "ERR_1020": "A frissítendő könyv nem tartozik a megadott sorozathoz",
+    "ERR_1021": "A célfájl már létezik",
+    "ERR_1022": "Az újonnan importált könyvet nem lehetett beolvasni"
   },
   "filter": {
     "age_rating": "korhatár-besorolás",
@@ -510,13 +579,16 @@
     "add_to_readlist": "Hozzáadás az olvasólistához",
     "analyze": "Elemzés",
     "delete": "Törlés",
+    "deselect_all": "Összes kijelölés megszüntetése",
     "download_series": "Könyvsorozat letöltése",
     "edit": "Szerkesztés",
     "edit_metadata": "Metaadatok szerkesztése",
+    "empty_trash": "Szemetes űrítése",
     "mark_read": "Olvasottként jelölés",
     "mark_unread": "Olvasatlanként jelölés",
     "refresh_metadata": "Metaadatok frissítése",
-    "scan_library_files": "Könyvtári fájlok beolvasása"
+    "scan_library_files": "Könyvtári fájlok beolvasása",
+    "select_all": "Összes kijelölése"
   },
   "navigation": {
     "home": "Főoldal",
@@ -558,8 +630,11 @@
     "server_settings": "Szerverbeállítások"
   },
   "settings_user": {
+    "change_password": "Jelszó módosítása",
     "edit_shared_libraries": "Megosztott könyvtárak szerkesztése",
     "edit_user": "Felhasználó szerkesztése",
+    "latest_activity": "Utolsó aktivitás: {date}",
+    "no_recent_activity": "Nincs mostani aktivitás",
     "role_administrator": "Adminisztrátor",
     "role_user": "Felhasználó"
   },
@@ -586,6 +661,7 @@
     "USER": "Felhasználó"
   },
   "users": {
+    "authentication_activity": "Hitelesítési aktivitás",
     "users": "Felhasználók"
   },
   "welcome": {

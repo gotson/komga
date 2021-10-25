@@ -45,6 +45,7 @@ class ReadListMatcher(
           when {
             bookMatches.size > 1 -> unmatchedBooks += ReadListRequestResultBook(book, "ERR_1013")
             bookMatches.isEmpty() -> unmatchedBooks += ReadListRequestResultBook(book, "ERR_1014")
+            bookIds.contains(bookMatches.first()) -> unmatchedBooks += ReadListRequestResultBook(book, "ERR_1023")
             else -> bookIds.add(bookMatches.first())
           }
         }

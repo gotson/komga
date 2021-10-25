@@ -5,7 +5,7 @@ import Vuetify from 'vuetify/lib'
 import colors from 'vuetify/lib/util/colors'
 
 import {Touch} from 'vuetify/lib/directives'
-import i18n from "@/i18n";
+import i18n from '@/i18n'
 
 Vue.use(Vuetify, {
   directives: {
@@ -33,6 +33,7 @@ export default new Vuetify({
         secondary: '#fec000',
         accent: '#ff0335',
         'contrast-1': colors.grey.lighten4,
+        'contrast-light-2': colors.grey.darken2,
       },
       dark: {
         base: colors.shades.black,
@@ -40,6 +41,7 @@ export default new Vuetify({
         secondary: '#fec000',
         accent: '#ff0335',
         'contrast-1': colors.grey.darken4,
+        'contrast-light-2': colors.grey.lighten2,
       },
     },
   },

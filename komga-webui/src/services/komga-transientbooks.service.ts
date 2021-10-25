@@ -1,5 +1,5 @@
 import {AxiosInstance} from 'axios'
-import {TransientBookDto} from "@/types/komga-transientbooks";
+import {TransientBookDto} from '@/types/komga-transientbooks'
 
 const API_TRANSIENT_BOOKS = '/api/v1/transient-books'
 
@@ -25,7 +25,7 @@ export default class KomgaTransientBooksService {
     try {
       return (await this.http.post(`${API_TRANSIENT_BOOKS}/${id}/analyze`)).data
     } catch (e) {
-      let msg = `An error occurred while trying to analyze transient book`
+      let msg = 'An error occurred while trying to analyze transient book'
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

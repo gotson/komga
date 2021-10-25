@@ -44,6 +44,7 @@ export interface ThumbnailSeriesSseDto {
 
 export interface TaskQueueSseDto {
   count: number,
+  countByType: { [key: string]: number }
 }
 
 export interface BookImportSseDto {

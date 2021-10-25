@@ -74,8 +74,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {SeriesDto} from "@/types/komga-series";
-import {ERROR} from "@/types/events";
+import {SeriesDto} from '@/types/komga-series'
+import {ERROR} from '@/types/events'
 
 export default Vue.extend({
   name: 'CollectionAddToDialog',

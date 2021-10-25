@@ -10,9 +10,10 @@ class SeriesMetadata(
   val readingDirection: ReadingDirection? = null,
   publisher: String = "",
   val ageRating: Int? = null,
-  val language: String = "",
+  language: String = "",
   genres: Set<String> = emptySet(),
   tags: Set<String> = emptySet(),
+  val totalBookCount: Int? = null,
 
   val statusLock: Boolean = false,
   val titleLock: Boolean = false,
@@ -24,16 +25,18 @@ class SeriesMetadata(
   val languageLock: Boolean = false,
   val genresLock: Boolean = false,
   val tagsLock: Boolean = false,
+  val totalBookCountLock: Boolean = false,
 
   val seriesId: String = "",
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
-  override val lastModifiedDate: LocalDateTime = LocalDateTime.now()
+  override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable() {
   val title = title.trim()
   val titleSort = titleSort.trim()
   val summary = summary.trim()
   val publisher = publisher.trim()
+  val language = language.trim().lowercase()
   val tags = tags.map { it.lowercase().trim() }.filter { it.isNotBlank() }.toSet()
   val genres = genres.map { it.lowercase().trim() }.filter { it.isNotBlank() }.toSet()
 
@@ -48,6 +51,7 @@ class SeriesMetadata(
     language: String = this.language,
     genres: Set<String> = this.genres,
     tags: Set<String> = this.tags,
+    totalBookCount: Int? = this.totalBookCount,
     statusLock: Boolean = this.statusLock,
     titleLock: Boolean = this.titleLock,
     titleSortLock: Boolean = this.titleSortLock,
@@ -58,6 +62,7 @@ class SeriesMetadata(
     languageLock: Boolean = this.languageLock,
     genresLock: Boolean = this.genresLock,
     tagsLock: Boolean = this.tagsLock,
+    totalBookCountLock: Boolean = this.totalBookCountLock,
     seriesId: String = this.seriesId,
     createdDate: LocalDateTime = this.createdDate,
     lastModifiedDate: LocalDateTime = this.lastModifiedDate
@@ -73,6 +78,7 @@ class SeriesMetadata(
       language = language,
       genres = genres,
       tags = tags,
+      totalBookCount = totalBookCount,
       statusLock = statusLock,
       titleLock = titleLock,
       titleSortLock = titleSortLock,
@@ -83,6 +89,7 @@ class SeriesMetadata(
       languageLock = languageLock,
       genresLock = genresLock,
       tagsLock = tagsLock,
+      totalBookCountLock = totalBookCountLock,
       seriesId = seriesId,
       createdDate = createdDate,
       lastModifiedDate = lastModifiedDate
@@ -100,6 +107,6 @@ class SeriesMetadata(
   }
 
   override fun toString(): String {
-    return "SeriesMetadata(status=$status, readingDirection=$readingDirection, ageRating=$ageRating, language=$language, genres=$genres, statusLock=$statusLock, titleLock=$titleLock, titleSortLock=$titleSortLock, readingDirectionLock=$readingDirectionLock, publisherLock=$publisherLock, ageRatingLock=$ageRatingLock, languageLock=$languageLock, genresLock=$genresLock, seriesId='$seriesId', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate, title='$title', titleSort='$titleSort', summary='$summary', publisher='$publisher')"
+    return "SeriesMetadata(status=$status, readingDirection=$readingDirection, ageRating=$ageRating, language='$language', totalBookCount=$totalBookCount, statusLock=$statusLock, titleLock=$titleLock, titleSortLock=$titleSortLock, summaryLock=$summaryLock, readingDirectionLock=$readingDirectionLock, publisherLock=$publisherLock, ageRatingLock=$ageRatingLock, languageLock=$languageLock, genresLock=$genresLock, tagsLock=$tagsLock, totalBookCountLock=$totalBookCountLock, seriesId='$seriesId', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate, title='$title', titleSort='$titleSort', summary='$summary', publisher='$publisher', tags=$tags, genres=$genres)"
   }
 }

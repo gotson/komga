@@ -189,7 +189,8 @@ class OpdsController(
     val seriesSearch = SeriesSearch(
       libraryIds = principal.user.getAuthorizedLibraryIds(null),
       searchTerm = searchTerm,
-      publishers = publishers
+      publishers = publishers,
+      deleted = false,
     )
 
     val entries = seriesRepository.findAll(seriesSearch)
@@ -215,7 +216,8 @@ class OpdsController(
     @AuthenticationPrincipal principal: KomgaPrincipal
   ): OpdsFeed {
     val seriesSearch = SeriesSearch(
-      libraryIds = principal.user.getAuthorizedLibraryIds(null)
+      libraryIds = principal.user.getAuthorizedLibraryIds(null),
+      deleted = false,
     )
 
     val entries = seriesRepository.findAll(seriesSearch)
@@ -243,7 +245,8 @@ class OpdsController(
   ): OpdsFeed {
     val bookSearch = BookSearch(
       libraryIds = principal.user.getAuthorizedLibraryIds(null),
-      mediaStatus = setOf(Media.Status.READY)
+      mediaStatus = setOf(Media.Status.READY),
+      deleted = false,
     )
     val pageRequest = PageRequest.of(0, 50, Sort.by(Sort.Order.desc("createdDate")))
 
@@ -295,7 +298,7 @@ class OpdsController(
     val pageRequest = UnpagedSorted(Sort.by(Sort.Order.asc("name")))
     val collections =
       if (principal.user.sharedAllLibraries) {
-        collectionRepository.searchAll(pageable = pageRequest)
+        collectionRepository.findAll(pageable = pageRequest)
       } else {
         collectionRepository.findAllByLibraryIds(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, pageable = pageRequest)
       }
@@ -319,7 +322,7 @@ class OpdsController(
     val pageRequest = UnpagedSorted(Sort.by(Sort.Order.asc("name")))
     val readLists =
       if (principal.user.sharedAllLibraries) {
-        readListRepository.searchAll(pageable = pageRequest)
+        readListRepository.findAll(pageable = pageRequest)
       } else {
         readListRepository.findAllByLibraryIds(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, pageable = pageRequest)
       }
@@ -376,7 +379,8 @@ class OpdsController(
       val books = bookRepository.findAll(
         BookSearch(
           seriesIds = listOf(id),
-          mediaStatus = setOf(Media.Status.READY)
+          mediaStatus = setOf(Media.Status.READY),
+          deleted = false,
         )
       )
       val metadata = seriesMetadataRepository.findById(series.id)
@@ -407,7 +411,10 @@ class OpdsController(
     libraryRepository.findByIdOrNull(id)?.let { library ->
       if (!principal.user.canAccessLibrary(library)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
 
-      val seriesSearch = SeriesSearch(libraryIds = setOf(library.id))
+      val seriesSearch = SeriesSearch(
+        libraryIds = setOf(library.id),
+        deleted = false,
+      )
 
       val entries = seriesRepository.findAll(seriesSearch)
         .map { SeriesWithInfo(it, seriesMetadataRepository.findById(it.id)) }
@@ -434,6 +441,7 @@ class OpdsController(
   ): OpdsFeed {
     return collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { collection ->
       val series = collection.seriesIds.mapNotNull { seriesRepository.findByIdOrNull(it) }
+        .filterNot { it.deletedDate != null }
         .map { SeriesWithInfo(it, seriesMetadataRepository.findById(it.id)) }
 
       val sorted =
@@ -465,6 +473,7 @@ class OpdsController(
   ): OpdsFeed {
     return readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
       val books = readList.bookIds.values.mapNotNull { bookRepository.findByIdOrNull(it) }
+        .filterNot { it.deletedDate != null }
         .map { BookWithInfo(it, mediaRepository.findById(it.id), bookMetadataRepository.findById(it.id)) }
 
       val entries = books.mapIndexed { index, it ->

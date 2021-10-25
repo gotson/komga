@@ -11,6 +11,7 @@
                 @input="updateInput"
                 @change="updateInput"
                 class="float-right"
+                :disabled="disabled"
       >
       </v-switch>
     </v-col>
@@ -31,6 +32,10 @@ export default Vue.extend({
     },
     status: {
       type: String,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {

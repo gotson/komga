@@ -161,6 +161,7 @@ class UserController(
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
   ): Page<AuthenticationActivityDto> {
+    if (demo && !principal.user.roleAdmin) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     val sort =
       if (page.sort.isSorted) page.sort
       else Sort.by(Sort.Order.desc("dateTime"))

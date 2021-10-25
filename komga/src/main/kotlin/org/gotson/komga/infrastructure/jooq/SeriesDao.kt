@@ -8,19 +8,22 @@ import org.gotson.komga.jooq.tables.records.SeriesRecord
 import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.net.URL
 import java.time.LocalDateTime
 import java.time.ZoneId
 
 @Component
 class SeriesDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
+  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : SeriesRepository {
-
   private val s = Tables.SERIES
   private val d = Tables.SERIES_METADATA
   private val cs = Tables.COLLECTION_SERIES
+  private val u = Tables.TEMP_URL_LIST
 
   override fun findAll(): Collection<Series> =
     dsl.selectFrom(s)
@@ -39,15 +42,36 @@ class SeriesDao(
       .fetchInto(s)
       .map { it.toDomain() }
 
-  override fun findAllByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): List<Series> =
-    dsl.selectFrom(s)
-      .where(s.LIBRARY_ID.eq(libraryId).and(s.URL.notIn(urls.map { it.toString() })))
+  @Transactional
+  override fun findAllNotDeletedByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): List<Series> {
+    // insert urls in a temporary table, else the select size can exceed the statement limit
+    dsl.deleteFrom(u).execute()
+
+    if (urls.isNotEmpty()) {
+      urls.chunked(batchSize)
+        .forEach { chunk ->
+          dsl.batch(
+            dsl.insertInto(u, u.URL).values(null as String?)
+          ).also { step ->
+            chunk.forEach {
+              step.bind(it.toString())
+            }
+          }.execute()
+        }
+    }
+
+    return dsl.selectFrom(s)
+      .where(s.LIBRARY_ID.eq(libraryId))
+      .and(s.DELETED_DATE.isNull)
+      .and(s.URL.notIn(dsl.select(u.URL).from(u)))
       .fetchInto(s)
       .map { it.toDomain() }
+  }
 
-  override fun findByLibraryIdAndUrlOrNull(libraryId: String, url: URL): Series? =
+  override fun findNotDeletedByLibraryIdAndUrlOrNull(libraryId: String, url: URL): Series? =
     dsl.selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId).and(s.URL.eq(url.toString())))
+      .and(s.DELETED_DATE.isNull)
       .fetchOneInto(s)
       ?.toDomain()
 
@@ -90,6 +114,7 @@ class SeriesDao(
       .set(s.URL, series.url.toString())
       .set(s.FILE_LAST_MODIFIED, series.fileLastModified)
       .set(s.LIBRARY_ID, series.libraryId)
+      .set(s.DELETED_DATE, series.deletedDate)
       .execute()
   }
 
@@ -100,6 +125,7 @@ class SeriesDao(
       .set(s.FILE_LAST_MODIFIED, series.fileLastModified)
       .set(s.LIBRARY_ID, series.libraryId)
       .set(s.BOOK_COUNT, series.bookCount)
+      .set(s.DELETED_DATE, series.deletedDate)
       .set(s.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(s.ID.eq(series.id))
       .execute()
@@ -125,11 +151,21 @@ class SeriesDao(
     if (!libraryIds.isNullOrEmpty()) c = c.and(s.LIBRARY_ID.`in`(libraryIds))
     if (!collectionIds.isNullOrEmpty()) c = c.and(cs.COLLECTION_ID.`in`(collectionIds))
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
+    searchRegex?.let { c = c.and((it.second.toColumn()).likeRegex(it.first)) }
     if (!metadataStatus.isNullOrEmpty()) c = c.and(d.STATUS.`in`(metadataStatus))
     if (!publishers.isNullOrEmpty()) c = c.and(DSL.lower(d.PUBLISHER).`in`(publishers.map { it.lowercase() }))
+    if (deleted == true) c = c.and(s.DELETED_DATE.isNotNull)
+    if (deleted == false) c = c.and(s.DELETED_DATE.isNull)
 
     return c
   }
+
+  private fun SeriesSearch.SearchField.toColumn() =
+    when (this) {
+      SeriesSearch.SearchField.NAME -> s.NAME
+      SeriesSearch.SearchField.TITLE -> d.TITLE
+      SeriesSearch.SearchField.TITLE_SORT -> d.TITLE_SORT
+    }
 
   private fun SeriesRecord.toDomain() =
     Series(
@@ -139,6 +175,7 @@ class SeriesDao(
       id = id,
       libraryId = libraryId,
       bookCount = bookCount,
+      deletedDate = deletedDate,
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone()
     )

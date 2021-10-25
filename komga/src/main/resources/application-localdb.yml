@@ -1,3 +1,5 @@
 komga:
   database:
     file: ./localdb.sqlite
+  lucene:
+    data-directory: ./lucene/localdb

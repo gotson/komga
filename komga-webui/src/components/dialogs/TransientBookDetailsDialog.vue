@@ -67,10 +67,10 @@
 
 <script lang="ts">
 import Vue, {PropType} from 'vue'
-import {TransientBookDto} from "@/types/komga-transientbooks";
-import {BookDto, PageDto} from "@/types/komga-books";
-import {getBookFormatFromMediaType} from "@/functions/book-format";
-import PagesTable from "@/components/PagesTable.vue";
+import {TransientBookDto} from '@/types/komga-transientbooks'
+import {BookDto, PageDto} from '@/types/komga-books'
+import {getBookFormatFromMediaType} from '@/functions/book-format'
+import PagesTable from '@/components/PagesTable.vue'
 
 export default Vue.extend({
   name: 'TransientBookDetailsDialog',

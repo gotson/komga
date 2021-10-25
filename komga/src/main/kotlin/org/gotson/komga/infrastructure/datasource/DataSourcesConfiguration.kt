@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.datasource
 
+import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.springframework.boot.jdbc.DataSourceBuilder
@@ -15,14 +16,20 @@ class DataSourcesConfiguration(
 
   @Bean("sqliteDataSource")
   @Primary
-  fun sqliteDataSource(): DataSource =
-    (
-      DataSourceBuilder.create()
-        .apply {
-          driverClassName("org.sqlite.JDBC")
-          url("jdbc:sqlite:${komgaProperties.database.file}?foreign_keys=on;")
-        }.type(HikariDataSource::class.java)
-        .build() as HikariDataSource
-      )
-      .apply { maximumPoolSize = 1 }
+  fun sqliteDataSource(): DataSource {
+
+    val sqliteUdfDataSource = DataSourceBuilder.create()
+      .driverClassName("org.sqlite.JDBC")
+      .url("jdbc:sqlite:${komgaProperties.database.file}?foreign_keys=on;")
+      .type(SqliteUdfDataSource::class.java)
+      .build()
+
+    return HikariDataSource(
+      HikariConfig().apply {
+        dataSource = sqliteUdfDataSource
+        poolName = "SqliteUdfPool"
+        maximumPoolSize = 1
+      }
+    )
+  }
 }

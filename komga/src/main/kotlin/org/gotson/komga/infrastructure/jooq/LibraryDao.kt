@@ -67,12 +67,16 @@ class LibraryDao(
       .set(l.IMPORT_COMICINFO_READLIST, library.importComicInfoReadList)
       .set(l.IMPORT_EPUB_BOOK, library.importEpubBook)
       .set(l.IMPORT_EPUB_SERIES, library.importEpubSeries)
+      .set(l.IMPORT_MYLAR_SERIES, library.importMylarSeries)
       .set(l.IMPORT_LOCAL_ARTWORK, library.importLocalArtwork)
       .set(l.IMPORT_BARCODE_ISBN, library.importBarcodeIsbn)
       .set(l.SCAN_FORCE_MODIFIED_TIME, library.scanForceModifiedTime)
       .set(l.SCAN_DEEP, library.scanDeep)
       .set(l.REPAIR_EXTENSIONS, library.repairExtensions)
       .set(l.CONVERT_TO_CBZ, library.convertToCbz)
+      .set(l.EMPTY_TRASH_AFTER_SCAN, library.emptyTrashAfterScan)
+      .set(l.UNAVAILABLE_DATE, library.unavailableDate)
+      .set(l.SERIES_COVER, library.seriesCover.toString())
       .execute()
   }
 
@@ -87,12 +91,16 @@ class LibraryDao(
       .set(l.IMPORT_COMICINFO_READLIST, library.importComicInfoReadList)
       .set(l.IMPORT_EPUB_BOOK, library.importEpubBook)
       .set(l.IMPORT_EPUB_SERIES, library.importEpubSeries)
+      .set(l.IMPORT_MYLAR_SERIES, library.importMylarSeries)
       .set(l.IMPORT_LOCAL_ARTWORK, library.importLocalArtwork)
       .set(l.IMPORT_BARCODE_ISBN, library.importBarcodeIsbn)
       .set(l.SCAN_FORCE_MODIFIED_TIME, library.scanForceModifiedTime)
       .set(l.SCAN_DEEP, library.scanDeep)
       .set(l.REPAIR_EXTENSIONS, library.repairExtensions)
       .set(l.CONVERT_TO_CBZ, library.convertToCbz)
+      .set(l.EMPTY_TRASH_AFTER_SCAN, library.emptyTrashAfterScan)
+      .set(l.SERIES_COVER, library.seriesCover.toString())
+      .set(l.UNAVAILABLE_DATE, library.unavailableDate)
       .set(l.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(l.ID.eq(library.id))
       .execute()
@@ -110,12 +118,16 @@ class LibraryDao(
       importComicInfoReadList = importComicinfoReadlist,
       importEpubBook = importEpubBook,
       importEpubSeries = importEpubSeries,
+      importMylarSeries = importMylarSeries,
       importLocalArtwork = importLocalArtwork,
       importBarcodeIsbn = importBarcodeIsbn,
       scanForceModifiedTime = scanForceModifiedTime,
       scanDeep = scanDeep,
       repairExtensions = repairExtensions,
       convertToCbz = convertToCbz,
+      emptyTrashAfterScan = emptyTrashAfterScan,
+      seriesCover = Library.SeriesCover.valueOf(seriesCover),
+      unavailableDate = unavailableDate,
       id = id,
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone()

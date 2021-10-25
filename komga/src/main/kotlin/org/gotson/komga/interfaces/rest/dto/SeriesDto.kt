@@ -3,7 +3,6 @@ package org.gotson.komga.interfaces.rest.dto
 import com.fasterxml.jackson.annotation.JsonFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
-import javax.validation.constraints.PositiveOrZero
 
 data class SeriesDto(
   val id: String,
@@ -22,6 +21,7 @@ data class SeriesDto(
   val booksInProgressCount: Int,
   val metadata: SeriesMetadataDto,
   val booksMetadata: BookMetadataAggregationDto,
+  val deleted: Boolean,
 )
 
 fun SeriesDto.restrictUrl(restrict: Boolean) =
@@ -48,6 +48,8 @@ data class SeriesMetadataDto(
   val genresLock: Boolean,
   val tags: Set<String>,
   val tagsLock: Boolean,
+  val totalBookCount: Int?,
+  val totalBookCountLock: Boolean,
 
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val created: LocalDateTime,
@@ -57,6 +59,7 @@ data class SeriesMetadataDto(
 
 data class BookMetadataAggregationDto(
   val authors: List<AuthorDto> = emptyList(),
+  val tags: Set<String> = emptySet(),
   @JsonFormat(pattern = "yyyy-MM-dd")
   val releaseDate: LocalDate?,
   val summary: String,
@@ -66,8 +69,4 @@ data class BookMetadataAggregationDto(
   val created: LocalDateTime,
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val lastModified: LocalDateTime
-)
-
-data class TachiyomiReadProgressUpdateDto(
-  @get:PositiveOrZero val lastBookRead: Int,
 )

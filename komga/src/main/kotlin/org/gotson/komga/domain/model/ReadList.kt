@@ -7,13 +7,14 @@ import java.util.SortedMap
 
 data class ReadList(
   val name: String,
+  val summary: String = "",
 
   val bookIds: SortedMap<Int, String> = sortedMapOf(),
 
   val id: String = TsidCreator.getTsid256().toString(),
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
-  override val lastModifiedDate: LocalDateTime = LocalDateTime.now(),
+  override val lastModifiedDate: LocalDateTime = createdDate,
 
   /**
    * Indicates that the bookIds have been filtered and is not exhaustive.

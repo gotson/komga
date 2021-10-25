@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable
 interface ReadListRepository {
   fun findByIdOrNull(readListId: String): ReadList?
 
-  fun searchAll(search: String? = null, pageable: Pageable): Page<ReadList>
+  fun findAll(search: String? = null, pageable: Pageable): Page<ReadList>
 
   /**
    * Find one ReadList by readListId,
@@ -27,6 +27,8 @@ interface ReadListRepository {
    */
   fun findAllContainingBookId(containsBookId: String, filterOnLibraryIds: Collection<String>?): Collection<ReadList>
 
+  fun findAllEmpty(): Collection<ReadList>
+
   fun findByNameOrNull(name: String): ReadList?
 
   fun insert(readList: ReadList)
@@ -36,8 +38,8 @@ interface ReadListRepository {
   fun removeBooksFromAll(bookIds: Collection<String>)
 
   fun delete(readListId: String)
+  fun delete(readListIds: Collection<String>)
   fun deleteAll()
-  fun deleteEmpty()
 
   fun existsByName(name: String): Boolean
 }

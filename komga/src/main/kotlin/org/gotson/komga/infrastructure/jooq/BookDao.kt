@@ -8,6 +8,7 @@ import org.gotson.komga.jooq.tables.records.BookRecord
 import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -21,12 +22,14 @@ import java.time.ZoneId
 
 @Component
 class BookDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
+  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : BookRepository {
-
   private val b = Tables.BOOK
   private val m = Tables.MEDIA
   private val d = Tables.BOOK_METADATA
+  private val r = Tables.READ_PROGRESS
+  private val u = Tables.TEMP_URL_LIST
 
   private val sorts = mapOf(
     "createdDate" to b.CREATED_DATE,
@@ -37,9 +40,10 @@ class BookDao(
   override fun findByIdOrNull(bookId: String): Book? =
     findByIdOrNull(dsl, bookId)
 
-  override fun findByLibraryIdAndUrlOrNull(libraryId: String, url: URL): Book? =
+  override fun findNotDeletedByLibraryIdAndUrlOrNull(libraryId: String, url: URL): Book? =
     dsl.selectFrom(b)
       .where(b.LIBRARY_ID.eq(libraryId).and(b.URL.eq(url.toString())))
+      .and(b.DELETED_DATE.isNull)
       .fetchOneInto(b)
       ?.toDomain()
 
@@ -61,9 +65,39 @@ class BookDao(
       .fetchInto(b)
       .map { it.toDomain() }
 
+  @Transactional
+  override fun findAllNotDeletedByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): Collection<Book> {
+    // insert urls in a temporary table, else the select size can exceed the statement limit
+    dsl.deleteFrom(u).execute()
+
+    if (urls.isNotEmpty()) {
+      urls.chunked(batchSize).forEach { chunk ->
+        dsl.batch(
+          dsl.insertInto(u, u.URL).values(null as String?)
+        ).also { step ->
+          chunk.forEach {
+            step.bind(it.toString())
+          }
+        }.execute()
+      }
+    }
+
+    return dsl.selectFrom(b)
+      .where(b.LIBRARY_ID.eq(libraryId))
+      .and(b.DELETED_DATE.isNull)
+      .and(b.URL.notIn(dsl.select(u.URL).from(u)))
+      .fetchInto(b)
+      .map { it.toDomain() }
+  }
+
+  override fun findAllDeletedByFileSize(fileSize: Long): Collection<Book> =
+    dsl.selectFrom(b)
+      .where(b.DELETED_DATE.isNotNull.and(b.FILE_SIZE.eq(fileSize)))
+      .fetchInto(b)
+      .map { it.toDomain() }
+
   override fun findAll(): Collection<Book> =
-    dsl.select(*b.fields())
-      .from(b)
+    dsl.selectFrom(b)
       .fetchInto(b)
       .map { it.toDomain() }
 
@@ -98,7 +132,7 @@ class BookDao(
       .fetchInto(b)
       .map { it.toDomain() }
 
-    val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
+    val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
     return PageImpl(
       items,
       if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
@@ -124,6 +158,26 @@ class BookDao(
       .from(b)
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .where(b.SERIES_ID.eq(seriesId))
+      .orderBy(d.NUMBER_SORT)
+      .limit(1)
+      .fetchOne(b.ID)
+
+  override fun findLastIdInSeriesOrNull(seriesId: String): String? =
+    dsl.select(b.ID)
+      .from(b)
+      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
+      .where(b.SERIES_ID.eq(seriesId))
+      .orderBy(d.NUMBER_SORT.desc())
+      .limit(1)
+      .fetchOne(b.ID)
+
+  override fun findFirstUnreadIdInSeriesOrNull(seriesId: String, userId: String): String? =
+    dsl.select(b.ID)
+      .from(b)
+      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
+      .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(r.USER_ID.eq(userId).or(r.USER_ID.isNull))
+      .where(b.SERIES_ID.eq(seriesId))
+      .and(r.COMPLETED.isNull)
       .orderBy(d.NUMBER_SORT)
       .limit(1)
       .fetchOne(b.ID)
@@ -177,6 +231,13 @@ class BookDao(
       .and(b.URL.notLike("%.$extension"))
       .fetch(b.ID)
 
+  override fun findAllIdsByLibraryIdAndWithEmptyHash(libraryId: String): Collection<String> =
+    dsl.select(b.ID)
+      .from(b)
+      .where(b.LIBRARY_ID.eq(libraryId))
+      .and(b.FILE_HASH.eq(""))
+      .fetch(b.ID)
+
   @Transactional
   override fun insert(book: Book) {
     insert(listOf(book))
@@ -185,32 +246,38 @@ class BookDao(
   @Transactional
   override fun insert(books: Collection<Book>) {
     if (books.isNotEmpty()) {
-      dsl.batch(
-        dsl.insertInto(
-          b,
-          b.ID,
-          b.NAME,
-          b.URL,
-          b.NUMBER,
-          b.FILE_LAST_MODIFIED,
-          b.FILE_SIZE,
-          b.LIBRARY_ID,
-          b.SERIES_ID
-        ).values(null as String?, null, null, null, null, null, null, null)
-      ).also { step ->
-        books.forEach {
-          step.bind(
-            it.id,
-            it.name,
-            it.url,
-            it.number,
-            it.fileLastModified,
-            it.fileSize,
-            it.libraryId,
-            it.seriesId
-          )
-        }
-      }.execute()
+      books.chunked(batchSize).forEach { chunk ->
+        dsl.batch(
+          dsl.insertInto(
+            b,
+            b.ID,
+            b.NAME,
+            b.URL,
+            b.NUMBER,
+            b.FILE_LAST_MODIFIED,
+            b.FILE_SIZE,
+            b.FILE_HASH,
+            b.LIBRARY_ID,
+            b.SERIES_ID,
+            b.DELETED_DATE,
+          ).values(null as String?, null, null, null, null, null, null, null, null, null)
+        ).also { step ->
+          chunk.forEach {
+            step.bind(
+              it.id,
+              it.name,
+              it.url,
+              it.number,
+              it.fileLastModified,
+              it.fileSize,
+              it.fileHash,
+              it.libraryId,
+              it.seriesId,
+              it.deletedDate,
+            )
+          }
+        }.execute()
+      }
     }
   }
 
@@ -231,8 +298,10 @@ class BookDao(
       .set(b.NUMBER, book.number)
       .set(b.FILE_LAST_MODIFIED, book.fileLastModified)
       .set(b.FILE_SIZE, book.fileSize)
+      .set(b.FILE_HASH, book.fileHash)
       .set(b.LIBRARY_ID, book.libraryId)
       .set(b.SERIES_ID, book.seriesId)
+      .set(b.DELETED_DATE, book.deletedDate)
       .set(b.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(b.ID.eq(book.id))
       .execute()
@@ -259,6 +328,9 @@ class BookDao(
     if (!seriesIds.isNullOrEmpty()) c = c.and(b.SERIES_ID.`in`(seriesIds))
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
     if (!mediaStatus.isNullOrEmpty()) c = c.and(m.STATUS.`in`(mediaStatus))
+    if (deleted == true) c = c.and(b.DELETED_DATE.isNotNull)
+    if (deleted == false) c = c.and(b.DELETED_DATE.isNull)
+    if (releasedAfter != null) c = c.and(d.RELEASE_DATE.gt(releasedAfter))
 
     return c
   }
@@ -269,9 +341,11 @@ class BookDao(
       url = URL(url),
       fileLastModified = fileLastModified,
       fileSize = fileSize,
+      fileHash = fileHash,
       id = id,
       libraryId = libraryId,
       seriesId = seriesId,
+      deletedDate = deletedDate,
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
       number = number

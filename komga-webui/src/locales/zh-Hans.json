@@ -25,7 +25,8 @@
     "datetime": "日期/时间",
     "email": "邮箱",
     "error": "错误",
-    "ip": "IP地址",
+    "ip": "IP 地址",
+    "source": "源",
     "success": "成功",
     "user_agent": "用户代理"
   },
@@ -36,6 +37,7 @@
     "inker": "画图者",
     "letterer": "嵌字者",
     "penciller": "铅稿",
+    "translator": "翻译者",
     "writer": "作者"
   },
   "book_card": {
@@ -51,6 +53,7 @@
     "field_import_path": "从文件夹导入",
     "info_part1": "此屏幕允许您导入现有库之外的文件. 只能将文件导入到现有序列, 在这种情况下Komga会将文件移动或复制到所选序列的目录中.",
     "info_part2": "如果您为一本书选择了一个编号, 并且已经存在一本带有该编号的书,你可以比较这两本书.如果您决定导入该书. Komga将升级现有的书使用新文件, 有效地用新文件替换旧文件.",
+    "no_files_found": "未找到文件",
     "notification": {
       "go_to_book": "转到书籍",
       "import_failure": "无法导入书籍:{file}",
@@ -69,7 +72,8 @@
       "number": "编号",
       "series": "系列"
     },
-    "title": "导入"
+    "title": "导入",
+    "try_another_directory": "尝试搜索另一个目录"
   },
   "bookreader": {
     "beginning_of_book": "你可以开始阅读这本书.",
@@ -95,13 +99,16 @@
       "height": "适应高度",
       "original": "原始大小",
       "screen": "适应屏幕",
-      "width": "适应宽度"
+      "width": "适应宽度",
+      "width_shrink_only": "适合宽度（只收缩）"
     },
     "settings": {
+      "always_fullscreen": "始终全屏",
       "animate_page_transitions": "页面过渡动画",
       "background_color": "背景颜色",
       "background_colors": {
         "black": "黑色",
+        "gray": "灰色",
         "white": "白色"
       },
       "display": "显示",
@@ -145,6 +152,7 @@
     "format": "格式",
     "isbn": "ISBN",
     "navigation_within_readlist": "阅读列表中的导航: {name}",
+    "outdated_tooltip": "此书的文件已更改，必须重新分析这本书",
     "read_book": "阅读书籍",
     "read_incognito": "隐私(无痕)阅读",
     "size": "文件大小"
@@ -171,6 +179,7 @@
     "all_libraries": "所有库",
     "books": "书",
     "books_n": "无 | 1本书 | {count} 本书",
+    "books_total": "{count} / 共 {total} 本书",
     "cancel": "取消",
     "close": "关闭",
     "collections": "收藏",
@@ -184,15 +193,18 @@
     "go_to_library": "前往库",
     "go_to_readlist": "转到阅读列表",
     "go_to_series": "转到系列",
+    "library": "书库",
     "locale_name": "中文简体",
     "locale_rtl": "false",
+    "lock_all": "锁定全部",
     "n_selected": "{count} 选择",
     "nothing_to_show": "没有什么可显示",
+    "outdated": "过时的",
     "pages": "页",
     "pages_n": "无 | 1 页 | {count} 页",
     "password": "密码",
     "pending_tasks": "无挂起任务| 1个挂起任务|{count}个挂起任务",
-    "publisher": "发布者",
+    "publisher": "出版商",
     "read": "阅读",
     "readlists": "阅读列表",
     "required": "要求",
@@ -200,6 +212,8 @@
     "roles": "角色",
     "series": "系列",
     "tags": "标签",
+    "unavailable": "不可用",
+    "unlock_all": "解锁全部",
     "use_filter_panel_to_change_filter": "使用过滤器修改过滤项",
     "year": "年"
   },
@@ -208,13 +222,15 @@
     "on_deck": "导航",
     "recently_added_books": "最近添加的书",
     "recently_added_series": "最近添加的系列",
+    "recently_read_books": "最近阅读的书籍",
+    "recently_released_books": "近期发布的书籍",
     "recently_updated_series": "最近更新的系列"
   },
   "data_import": {
     "book_number": "书号: {name}",
     "book_series": "系列: {name}",
     "button_import": "导入",
-    "comicrack_preambule_html": "您可以导入<code>.cbl</code>格式的阅读列表.<br>Komga将尝试将你提供的系列和书号与你的库中的系列和书号相匹配.",
+    "comicrack_preambule_html": "您可以导入现有的 ComicRack 阅读列表，其为 <code>.cbl</code>格式。<br>Komga 会试着将你提供的系列和书籍与你库中的相匹配。",
     "field_files_label": "阅读列表（.cbl）",
     "import_read_lists": "导入阅读列表",
     "imported_as": "导入为 {name}",
@@ -250,6 +266,11 @@
       "field_role_file_download": "支持下载",
       "field_role_page_streaming": "支持浏览",
       "label_roles": "角色"
+    },
+    "analyze_library": {
+      "body": "分析库中的所有媒体文件。该分析获取有关媒体的信息。根据库的大小，这可能需要很长时间。",
+      "button_confirm": "分析",
+      "title": "分析库"
     },
     "delete_collection": {
       "button_confirm": "删除",
@@ -314,6 +335,7 @@
       "button_cancel": "取消",
       "button_confirm_add": "添加",
       "button_confirm_edit": "编辑",
+      "button_next": "下一本",
       "dialog_title_add": "添加库",
       "dialot_title_edit": "编辑库",
       "field_convert_to_cbz": "自动转换为CBZ格式",
@@ -325,11 +347,14 @@
       "field_import_epub_book": "书籍元数据",
       "field_import_epub_series": "系列元数据",
       "field_import_local_artwork": "本地图片(插图)",
+      "field_import_mylar_series": "系列元数据",
       "field_name": "名称",
       "field_repair_extensions": "自动修复不正确的文件扩展名",
       "field_root_folder": "根文件夹",
       "field_scanner_deep_scan": "深度扫描",
+      "field_scanner_empty_trash_after_scan": "每次扫描后自动清空垃圾箱",
       "field_scanner_force_directory_modified_time": "强制目录修改时间",
+      "field_series_cover": "系列封面",
       "file_browser_dialog_button_confirm": "选择",
       "file_browser_dialog_title": "库的根文件夹",
       "label_file_management": "文件管理",
@@ -337,15 +362,19 @@
       "label_import_comicinfo": "导入含有ComicInfo.xml的CBR/CBZ压缩包",
       "label_import_epub": "导入EPUB文件的元数据",
       "label_import_local": "导入本地媒体",
+      "label_import_mylar": "导入 Mylar 生成的元数据",
       "label_scanner": "扫描器",
+      "label_series_cover": "系列封面",
       "tab_general": "常规",
+      "tab_metadata": "元数据",
       "tab_options": "选项"
     },
     "edit_readlist": {
       "button_cancel": "取消",
       "button_confirm": "保存修改",
       "dialog_title": "编辑阅读列表",
-      "field_name": "名称"
+      "field_name": "名称",
+      "field_summary": "概要"
     },
     "edit_series": {
       "button_cancel": "取消",
@@ -356,15 +385,19 @@
       "field_age_rating_error": "年龄限制必须为0或更高",
       "field_genres": "风格",
       "field_language": "语言",
-      "field_publisher": "发布者",
+      "field_language_hint": "IETF BCP 47 语言标签",
+      "field_publisher": "出版商",
       "field_reading_direction": "阅读方向",
       "field_sort_title": "排序标题",
       "field_status": "状态",
       "field_summary": "概要",
       "field_tags": "标签",
       "field_title": "标题",
+      "field_total_book_count": "书籍总数",
+      "field_total_book_count_error": "书籍总数必须为 1 或更多",
       "mixed": "混合",
       "tab_general": "常规",
+      "tab_poster": "海报",
       "tab_tags": "标签",
       "tags_notice_multiple_edit": "您正在编辑多个系列的标签。这将覆盖每个系列的现有标签。"
     },
@@ -380,6 +413,11 @@
       "dialog_title": "编辑共享库",
       "field_all_libraries": "所有库",
       "label_shared_with": "{name}共享"
+    },
+    "empty_trash": {
+      "body": "默认情况下，媒体服务器不会立即删除媒体的信息。这对驱动器暂时断开连接的情况有所帮助。清空库的回收站时，所有丢失媒体的信息都会被删除。",
+      "button_confirm": "清空",
+      "title": "清空媒体库垃圾箱"
     },
     "file_browser": {
       "button_cancel": "取消",
@@ -405,6 +443,11 @@
       "field_new_password_error": "需要新密码.",
       "field_repeat_password": "确认新密码",
       "field_repeat_password_error": "密码必须相同."
+    },
+    "refresh_library_metadata": {
+      "body": "刷新库中所有媒体文件的元数据。根据库的大小，这可能需要很长时间。",
+      "button_confirm": "刷新",
+      "title": "刷新库元数据"
     },
     "series_picker": {
       "label_search_series": "搜索系列",
@@ -462,6 +505,12 @@
       "VERTICAL": "垂直模式",
       "WEBTOON": "Webtoon模式"
     },
+    "series_cover": {
+      "FIRST": "第一张",
+      "FIRST_UNREAD_OR_FIRST": "第一张未读封面或第一张封面",
+      "FIRST_UNREAD_OR_LAST": "第一张未读封面或最后一张",
+      "LAST": "最后一张"
+    },
     "series_status": {
       "ABANDONED": "已放弃",
       "ENDED": "已完结",
@@ -492,7 +541,11 @@
     "ERR_1019": "无法导入属于现有库的文件",
     "ERR_1020": "要升级的书籍不属于提供的系列",
     "ERR_1021": "目标文件已存在",
-    "ERR_1022": "无法扫描新导入的书籍"
+    "ERR_1022": "无法扫描新导入的书籍",
+    "ERR_1023": "书籍已经在阅读列表中",
+    "ERR_1024": "OAuth2 登录错误：没有电子邮件属性",
+    "ERR_1025": "OAuth2 登录错误：没有使用该电子邮件的本地用户",
+    "ERR_1026": "OpenID Connect 登录错误：电子邮件未验证"
   },
   "filter": {
     "age_rating": "年龄限制",
@@ -501,7 +554,7 @@
     "in_progress": "正在进行",
     "language": "语言",
     "library": "库",
-    "publisher": "发布者",
+    "publisher": "出版商",
     "read": "已读",
     "release_date": "发行日期",
     "status": "状态",
@@ -540,11 +593,13 @@
     "add_to_collection": "添加到收藏",
     "add_to_readlist": "添加到阅读列表",
     "analyze": "分析",
+    "bulk_edit_metadata": "批量编辑元数据",
     "delete": "删除",
     "deselect_all": "取消选中所有",
     "download_series": "下载系列",
     "edit": "编辑",
     "edit_metadata": "编辑元数据",
+    "empty_trash": "清空垃圾箱",
     "mark_read": "标记为已读",
     "mark_unread": "标记为未读",
     "refresh_metadata": "刷新元数据",
@@ -582,7 +637,11 @@
   },
   "server": {
     "server_management": {
+      "button_cancel_all_tasks": "取消所有任务",
+      "button_empty_trash": "清空所有书库的垃圾箱",
+      "button_scan_libraries": "扫描所有书库",
       "button_shutdown": "关机",
+      "notification_tasks_cancelled": "无可取消任务 | 取消了一个任务 | 取消了 {count} 个任务",
       "section_title": "服务器管理"
     },
     "tab_title": "服务器"
@@ -614,6 +673,16 @@
     "dark": "暗",
     "light": "亮",
     "system": "系统"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "删除",
+    "tooltip_mark_as_selected": "标为已选",
+    "tooltip_selected": "已选中",
+    "tooltip_sidecar": "本地插图",
+    "tooltip_to_be_deleted": "将被删除",
+    "tooltip_to_be_uploaded": "将被上传",
+    "tooltip_too_big": "文件太大！",
+    "tooltip_user_uploaded": "用户上传的"
   },
   "user_roles": {
     "ADMIN": "管理员",

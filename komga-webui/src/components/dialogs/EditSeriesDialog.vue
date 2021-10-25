@@ -31,6 +31,10 @@
             <v-icon left class="hidden-xs-only">mdi-tag-multiple</v-icon>
             {{ $t('dialog.edit_series.tab_tags') }}
           </v-tab>
+          <v-tab class="justify-start" v-if="single">
+            <v-icon left class="hidden-xs-only">mdi-image</v-icon>
+            {{ $t('dialog.edit_series.tab_poster') }}
+          </v-tab>
 
           <!--  Tab: General  -->
           <v-tab-item>
@@ -133,6 +137,7 @@
                                   dense
                                   :placeholder="!single && mixed.language ? $t('dialog.edit_series.mixed') : ''"
                                   :error-messages="languageErrors"
+                                  :hint="$t('dialog.edit_series.field_language_hint')"
                                   @input="$v.form.language.$touch()"
                                   @change="form.languageLock = true"
                     >
@@ -216,6 +221,31 @@
                   </v-col>
                 </v-row>
 
+                <v-row v-if="single">
+                  <!--  Total book count  -->
+                  <v-col cols="6">
+                    <v-text-field v-model="form.totalBookCount"
+                                  :label="$t('dialog.edit_series.field_total_book_count')"
+                                  clearable
+                                  filled
+                                  dense
+                                  type="number"
+                                  :error-messages="totalBookCountErrors"
+                                  @input="$v.form.totalBookCount.$touch()"
+                                  @blur="$v.form.totalBookCount.$touch()"
+                                  @change="form.totalBookCountLock = true"
+                    >
+                      <template v-slot:prepend>
+                        <v-icon :color="form.totalBookCountLock ? 'secondary' : ''"
+                                @click="form.totalBookCountLock = !form.totalBookCountLock"
+                        >
+                          {{ form.totalBookCountLock ? 'mdi-lock' : 'mdi-lock-open' }}
+                        </v-icon>
+                      </template>
+                    </v-text-field>
+                  </v-col>
+                </v-row>
+
               </v-container>
             </v-card>
           </v-tab-item>
@@ -285,6 +315,38 @@
               </v-container>
             </v-card>
           </v-tab-item>
+
+          <!--  Tab: Thumbnails  -->
+          <v-tab-item v-if="single">
+            <v-card flat>
+              <v-container fluid>
+                <!-- Upload -->
+                <v-row>
+                  <v-col class="pa-1">
+                    <drop-zone @on-input-change="addThumbnail" class="pa-8"/>
+                  </v-col>
+                </v-row>
+
+                <!-- Gallery -->
+                <v-row>
+                  <v-col
+                    cols="6" sm="4" lg="3" class="pa-1"
+                    v-for="(item, index) in [...poster.uploadQueue, ...poster.seriesThumbnails]"
+                    :key="index"
+                  >
+                    <thumbnail-card
+                      :item="item"
+                      :selected="isThumbnailSelected(item)"
+                      :toBeDeleted="isThumbnailToBeDeleted(item)"
+                      @on-select-thumbnail="selectThumbnail"
+                      @on-delete-thumbnail="deleteThumbnail"
+                    />
+                  </v-col>
+                </v-row>
+
+              </v-container>
+            </v-card>
+          </v-tab-item>
         </v-tabs>
 
         <v-card-actions class="hidden-xs-only">
@@ -302,8 +364,10 @@ import Vue from 'vue'
 import {SeriesStatus} from '@/types/enum-series'
 import {helpers, minValue, requiredIf} from 'vuelidate/lib/validators'
 import {ReadingDirection} from '@/types/enum-books'
-import {SeriesDto} from "@/types/komga-series";
-import {ERROR} from "@/types/events";
+import {SeriesDto, SeriesThumbnailDto} from '@/types/komga-series'
+import {ERROR, ErrorEvent} from '@/types/events'
+import DropZone from '@/components/DropZone.vue'
+import ThumbnailCard from '@/components/ThumbnailCard.vue'
 
 const tags = require('language-tags')
 
@@ -311,6 +375,7 @@ const validLanguage = (value: string) => !helpers.req(value) || tags.check(value
 
 export default Vue.extend({
   name: 'EditSeriesDialog',
+  components: {ThumbnailCard, DropZone},
   data: () => {
     return {
       modal: false,
@@ -328,7 +393,7 @@ export default Vue.extend({
         readingDirectionLock: false,
         publisher: '',
         publisherLock: false,
-        ageRating: undefined as unknown as number,
+        ageRating: undefined as number | undefined,
         ageRatingLock: false,
         language: '',
         languageLock: false,
@@ -336,6 +401,8 @@ export default Vue.extend({
         genresLock: false,
         tags: [],
         tagsLock: false,
+        totalBookCount: undefined as number | undefined,
+        totalBookCountLock: false,
       },
       mixed: {
         status: false,
@@ -343,6 +410,12 @@ export default Vue.extend({
         publisher: false,
         ageRating: false,
         language: false,
+      },
+      poster: {
+        selectedThumbnail: '',
+        uploadQueue: [] as File[],
+        deleteQueue: [] as SeriesThumbnailDto[],
+        seriesThumbnails: [] as SeriesThumbnailDto[],
       },
       genresAvailable: [] as string[],
       tagsAvailable: [] as string[],
@@ -361,9 +434,11 @@ export default Vue.extend({
     },
     modal(val) {
       !val && this.dialogCancel()
+      val && this.getThumbnails(this.series)
     },
     series(val) {
       this.dialogReset(val)
+      this.getThumbnails(val)
     },
   },
   validations: {
@@ -392,6 +467,7 @@ export default Vue.extend({
       ageRating: {minValue: minValue(0)},
       readingDirection: {},
       publisher: {},
+      totalBookCount: {minValue: minValue(1)},
     },
   },
   async created() {
@@ -420,6 +496,12 @@ export default Vue.extend({
       const errors = [] as string[]
       if (!this.$v.form?.ageRating?.$dirty) return errors
       !this.$v?.form?.ageRating?.minValue && errors.push(this.$t('dialog.edit_series.field_age_rating_error').toString())
+      return errors
+    },
+    totalBookCountErrors(): string[] {
+      const errors = [] as string[]
+      if (!this.$v.form?.totalBookCount?.$dirty) return errors
+      !this.$v?.form?.totalBookCount?.minValue && errors.push(this.$t('dialog.edit_series.field_total_book_count_error').toString())
       return errors
     },
     languageErrors(): string[] {
@@ -461,7 +543,7 @@ export default Vue.extend({
         this.form.readingDirectionLock = readingDirectionLock.length > 1 ? false : readingDirectionLock[0]
 
         const ageRating = this.$_.uniq(series.map(x => x.metadata.ageRating))
-        this.form.ageRating = ageRating.length > 1 ? undefined as unknown as number : ageRating[0]
+        this.form.ageRating = ageRating.length > 1 ? undefined : ageRating[0]
         this.mixed.ageRating = ageRating.length > 1
 
         const ageRatingLock = this.$_.uniq(series.map(x => x.metadata.ageRatingLock))
@@ -494,6 +576,10 @@ export default Vue.extend({
         this.form.genres = []
         this.form.tags = []
         this.$_.merge(this.form, (series as SeriesDto).metadata)
+        this.poster.selectedThumbnail = ''
+        this.poster.deleteQueue = []
+        this.poster.uploadQueue = []
+        this.poster.seriesThumbnails = []
       }
     },
     dialogCancel() {
@@ -515,6 +601,7 @@ export default Vue.extend({
           languageLock: this.form.languageLock,
           genresLock: this.form.genresLock,
           tagsLock: this.form.tagsLock,
+          totalBookCountLock: this.form.totalBookCountLock,
         }
 
         if (this.$v.form?.status?.$dirty) {
@@ -550,6 +637,7 @@ export default Vue.extend({
             titleLock: this.form.titleLock,
             titleSortLock: this.form.titleSortLock,
             summaryLock: this.form.summaryLock,
+            totalBookCountLock: this.form.totalBookCountLock,
           })
 
           if (this.$v.form?.title?.$dirty) {
@@ -563,6 +651,10 @@ export default Vue.extend({
           if (this.$v.form?.summary?.$dirty) {
             this.$_.merge(metadata, {summary: this.form.summary})
           }
+
+          if (this.$v.form?.totalBookCount?.$dirty) {
+            this.$_.merge(metadata, {totalBookCount: this.form.totalBookCount})
+          }
         }
 
         return metadata
@@ -570,6 +662,36 @@ export default Vue.extend({
       return null
     },
     async editSeries(): Promise<boolean> {
+      if (this.single && this.poster.uploadQueue.length > 0) {
+        const series = this.series as SeriesDto
+        let hadErrors = false
+        for (const file of this.poster.uploadQueue) {
+          try {
+            await this.$komgaSeries.uploadThumbnail(series.id, file, file.name === this.poster.selectedThumbnail)
+            this.deleteThumbnail(file)
+          } catch (e) {
+            this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
+            hadErrors = true
+          }
+        }
+        if (hadErrors) {
+          await this.getThumbnails(series)
+          return false
+        }
+      }
+
+      if (this.single && this.poster.selectedThumbnail !== '') {
+        const id = this.poster.selectedThumbnail
+        const series = this.series as SeriesDto
+        if (this.poster.seriesThumbnails.find(value => value.id === id)) {
+          this.$komgaSeries.markThumbnailAsSelected(series.id, id)
+        }
+      }
+
+      if (this.single && this.poster.deleteQueue.length > 0) {
+        this.poster.deleteQueue.forEach(toDelete => this.$komgaSeries.deleteThumbnail(toDelete.seriesId, toDelete.id))
+      }
+
       const metadata = this.validateForm()
       if (metadata) {
         const toUpdate = (this.single ? [this.series] : this.series) as SeriesDto[]
@@ -582,6 +704,67 @@ export default Vue.extend({
         }
         return true
       } else return false
+    },
+    addThumbnail(files: File[]) {
+      let hasSelected = false
+      for (const file of files) {
+        if (!this.poster.uploadQueue.find(value => value.name === file.name)) {
+          this.poster.uploadQueue.push(file)
+          if (!hasSelected) {
+            this.selectThumbnail(file)
+            hasSelected = true
+          }
+        }
+      }
+    },
+    async getThumbnails(series: SeriesDto | SeriesDto[]) {
+      if (Array.isArray(series)) return
+
+      const thumbnails = await this.$komgaSeries.getThumbnails(series.id)
+
+      this.selectThumbnail(thumbnails.find(x => x.selected))
+
+      this.poster.seriesThumbnails = thumbnails
+    },
+    isThumbnailSelected(item: File | SeriesThumbnailDto): boolean {
+      return item instanceof File ? item.name === this.poster.selectedThumbnail : item.id === this.poster.selectedThumbnail
+    },
+    selectThumbnail(item: File | SeriesThumbnailDto | undefined) {
+      if (!item) {
+        return
+      } else if (item instanceof File) {
+        this.poster.selectedThumbnail = item.name
+      } else {
+        this.poster.selectedThumbnail = item.id
+      }
+    },
+    isThumbnailToBeDeleted(item: File | SeriesThumbnailDto) {
+      if (item instanceof File) {
+        return false
+      } else {
+        return this.poster.deleteQueue.includes(item)
+      }
+    },
+    deleteThumbnail(item: File | SeriesThumbnailDto) {
+      if (item instanceof File) {
+        const index = this.poster.uploadQueue.indexOf(item, 0)
+        if (index > -1) {
+          this.poster.uploadQueue.splice(index, 1)
+        }
+        if (item.name === this.poster.selectedThumbnail) {
+          this.selectThumbnail(this.poster.seriesThumbnails.find(x => x.selected))
+        }
+      } else {
+        // if thumbnail was marked for deletion, unmark it
+        if (this.isThumbnailToBeDeleted(item)) {
+          const index = this.poster.deleteQueue.indexOf(item, 0)
+          if (index > -1) {
+            this.poster.deleteQueue.splice(index, 1)
+          }
+        } else {
+          this.poster.deleteQueue.push(item)
+        }
+      }
     },
   },
 })

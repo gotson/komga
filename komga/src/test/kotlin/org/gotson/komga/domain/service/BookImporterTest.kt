@@ -2,8 +2,14 @@ package org.gotson.komga.domain.service
 
 import com.google.common.jimfs.Configuration
 import com.google.common.jimfs.Jimfs
+import com.ninjasquad.springmockk.MockkBean
+import io.mockk.Runs
+import io.mockk.every
+import io.mockk.just
+import io.mockk.verify
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
+import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.CopyMode
 import org.gotson.komga.domain.model.KomgaUser
@@ -25,6 +31,7 @@ import org.gotson.komga.infrastructure.language.toIndexedMap
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,7 +39,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.io.FileNotFoundException
 import java.nio.file.FileAlreadyExistsException
-import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.io.path.createDirectories
 import kotlin.io.path.createDirectory
@@ -59,6 +65,9 @@ class BookImporterTest(
   private val user1 = KomgaUser("user1@example.org", "", false)
   private val user2 = KomgaUser("user2@example.org", "", false)
 
+  @MockkBean
+  private lateinit var mockTackReceiver: TaskReceiver
+
   @BeforeAll
   fun init() {
     libraryRepository.insert(library)
@@ -72,6 +81,12 @@ class BookImporterTest(
     libraryRepository.deleteAll()
     readProgressRepository.deleteAll()
     userRepository.deleteAll()
+  }
+
+  @BeforeEach
+  fun initMocks() {
+    every { mockTackReceiver.refreshBookMetadata(any(), any(), any()) } just Runs
+    every { mockTackReceiver.refreshBookLocalArtwork(any(), any()) } just Runs
   }
 
   @AfterEach
@@ -136,7 +151,7 @@ class BookImporterTest(
   }
 
   @Test
-  fun `given source file parf of a Komga library when importing then exception is thrown`() {
+  fun `given source file part of a Komga library when importing then exception is thrown`() {
     Jimfs.newFileSystem(Configuration.unix()).use { fs ->
       // given
       val sourceDir = fs.getPath("/source").createDirectory()
@@ -202,13 +217,81 @@ class BookImporterTest(
   }
 
   @Test
-  fun `given existing book when importing with upgrade then existing book is deleted`() {
+  fun `given book with sidecars when importing then book and sidecars are imported`() {
+    Jimfs.newFileSystem(Configuration.unix()).use { fs ->
+      // given
+      val sourceDir = fs.getPath("/source").createDirectory()
+      val sourceFile = sourceDir.resolve("book 2.cbz").createFile()
+      sourceDir.resolve("book 2.jpg").createFile()
+      sourceDir.resolve("BOOK 2-1.jpg").createFile()
+      val destDir = fs.getPath("/library/series").createDirectories()
+
+      val existingBooks = listOf(
+        makeBook("1", libraryId = library.id),
+        makeBook("3", libraryId = library.id),
+      )
+      val series = makeSeries("series", url = destDir.toUri().toURL(), libraryId = library.id)
+        .also { series ->
+          seriesLifecycle.createSeries(series)
+          seriesLifecycle.addBooks(series, existingBooks)
+          seriesLifecycle.sortBooks(series)
+        }
+
+      // when
+      bookImporter.importBook(sourceFile, series, CopyMode.COPY)
+
+      // then
+      verify(exactly = 2) { mockTackReceiver.refreshBookLocalArtwork(any()) }
+
+      assertThat(destDir.resolve("book 2.cbz")).exists()
+      assertThat(destDir.resolve("book 2.jpg")).exists()
+      assertThat(destDir.resolve("BOOK 2-1.jpg")).exists()
+    }
+  }
+
+  @Test
+  fun `given book with sidecars when importing with destination name then book and sidecars are imported`() {
+    Jimfs.newFileSystem(Configuration.unix()).use { fs ->
+      // given
+      val sourceDir = fs.getPath("/source").createDirectory()
+      val sourceFile = sourceDir.resolve("book 2.cbz").createFile()
+      sourceDir.resolve("book 2.jpg").createFile()
+      sourceDir.resolve("BOOK 2-1.jpg").createFile()
+      val destDir = fs.getPath("/library/series").createDirectories()
+
+      val existingBooks = listOf(
+        makeBook("1", libraryId = library.id),
+        makeBook("3", libraryId = library.id),
+      )
+      val series = makeSeries("series", url = destDir.toUri().toURL(), libraryId = library.id)
+        .also { series ->
+          seriesLifecycle.createSeries(series)
+          seriesLifecycle.addBooks(series, existingBooks)
+          seriesLifecycle.sortBooks(series)
+        }
+
+      // when
+      bookImporter.importBook(sourceFile, series, CopyMode.COPY, destinationName = "book 5")
+
+      // then
+      verify(exactly = 2) { mockTackReceiver.refreshBookLocalArtwork(any()) }
+
+      assertThat(destDir.resolve("book 5.cbz")).exists()
+      assertThat(destDir.resolve("book 5.jpg")).exists()
+      assertThat(destDir.resolve("book 5-1.jpg")).exists()
+    }
+  }
+
+  @Test
+  fun `given existing book when importing with upgrade then existing book and sidecars are deleted`() {
     Jimfs.newFileSystem(Configuration.unix()).use { fs ->
       // given
       val sourceDir = fs.getPath("/source").createDirectory()
       val sourceFile = sourceDir.resolve("source.cbz").createFile()
       val destDir = fs.getPath("/library/series").createDirectories()
       val existingFile = destDir.resolve("4.cbz").createFile()
+      val existingSidecar = destDir.resolve("4.jpg").createFile()
+      val existingSidecar2 = destDir.resolve("4-1.jpg").createFile()
 
       val bookToUpgrade = makeBook("2", libraryId = library.id, url = existingFile.toUri().toURL())
       val otherBooks = listOf(
@@ -237,7 +320,11 @@ class BookImporterTest(
       val upgradedMedia = mediaRepository.findById(books[2].id)
       assertThat(upgradedMedia.status).isEqualTo(Media.Status.OUTDATED)
 
-      assertThat(Files.notExists(sourceFile)).isTrue
+      assertThat(sourceFile).doesNotExist()
+
+      assertThat(existingFile).doesNotExist()
+      assertThat(existingSidecar).doesNotExist()
+      assertThat(existingSidecar2).doesNotExist()
     }
   }
 
@@ -297,7 +384,7 @@ class BookImporterTest(
         assertThat(numberSortLock).isTrue
       }
 
-      assertThat(Files.notExists(sourceFile)).isTrue
+      assertThat(sourceFile).doesNotExist()
     }
   }
 
@@ -337,7 +424,7 @@ class BookImporterTest(
       val upgradedMedia = mediaRepository.findById(books[1].id)
       assertThat(upgradedMedia.status).isEqualTo(Media.Status.OUTDATED)
 
-      assertThat(Files.exists(sourceFile)).isTrue
+      assertThat(sourceFile).exists()
     }
   }
 

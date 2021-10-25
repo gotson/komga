@@ -32,9 +32,9 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {BOOK_IMPORTED, ERROR} from "@/types/events";
-import {convertErrorCodes} from "@/functions/error-codes";
-import {BookImportSseDto} from "@/types/komga-sse";
+import {BOOK_IMPORTED, ERROR, ErrorEvent, NOTIFICATION, NotificationEvent} from '@/types/events'
+import {convertErrorCodes} from '@/functions/error-codes'
+import {BookImportSseDto} from '@/types/komga-sse'
 
 export default Vue.extend({
   name: 'Toaster',
@@ -59,10 +59,12 @@ export default Vue.extend({
   created() {
     this.$eventHub.$on(BOOK_IMPORTED, this.onBookImported)
     this.$eventHub.$on(ERROR, this.onError)
+    this.$eventHub.$on(NOTIFICATION, this.onNotification)
   },
   beforeDestroy() {
     this.$eventHub.$off(BOOK_IMPORTED, this.onBookImported)
     this.$eventHub.$off(ERROR, this.onError)
+    this.$eventHub.$off(NOTIFICATION, this.onNotification)
   },
   watch: {
     'snackbar.show'(val) {
@@ -98,6 +100,11 @@ export default Vue.extend({
       this.queue.push({
         text: event.message,
         color: 'error',
+      })
+    },
+    onNotification(event: NotificationEvent) {
+      this.queue.push({
+        text: event.message,
       })
     },
     async onBookImported(event: BookImportSseDto) {

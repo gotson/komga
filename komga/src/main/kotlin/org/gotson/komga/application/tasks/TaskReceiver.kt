@@ -9,6 +9,8 @@ import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.service.BookConverter
+import org.gotson.komga.infrastructure.configuration.KomgaProperties
+import org.gotson.komga.infrastructure.jms.QUEUE_SUB_TYPE
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS_TYPE
 import org.gotson.komga.infrastructure.jms.QUEUE_TYPE
@@ -22,10 +24,11 @@ private val logger = KotlinLogging.logger {}
 
 @Service
 class TaskReceiver(
-  private val connectionFactory: ConnectionFactory,
+  connectionFactory: ConnectionFactory,
   private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
   private val bookConverter: BookConverter,
+  private val komgaProperties: KomgaProperties,
 ) {
 
   private val jmsTemplates = (0..9).associateWith {
@@ -43,6 +46,10 @@ class TaskReceiver(
     submitTask(Task.ScanLibrary(libraryId))
   }
 
+  fun emptyTrash(libraryId: String, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.EmptyTrash(libraryId, priority))
+  }
+
   fun analyzeUnknownAndOutdatedBooks(library: Library) {
     bookRepository.findAllIds(
       BookSearch(
@@ -53,6 +60,13 @@ class TaskReceiver(
     ).forEach {
       submitTask(Task.AnalyzeBook(it))
     }
+  }
+
+  fun hashBooksWithoutHash(library: Library) {
+    if (komgaProperties.fileHashing)
+      bookRepository.findAllIdsByLibraryIdAndWithEmptyHash(library.id).forEach {
+        submitTask(Task.HashBook(it, LOWEST_PRIORITY))
+      }
   }
 
   fun convertBooksToCbz(library: Library, priority: Int = DEFAULT_PRIORITY) {
@@ -103,12 +117,17 @@ class TaskReceiver(
     submitTask(Task.ImportBook(sourceFile, seriesId, copyMode, destinationName, upgradeBookId, priority))
   }
 
+  fun rebuildIndex(priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.RebuildIndex(priority))
+  }
+
   private fun submitTask(task: Task) {
     logger.info { "Sending task: $task" }
     jmsTemplates[task.priority]!!.convertAndSend(QUEUE_TASKS, task) {
       it.apply {
         setStringProperty(QUEUE_TYPE, QUEUE_TASKS_TYPE)
         setStringProperty(QUEUE_UNIQUE_ID, task.uniqueId())
+        setStringProperty(QUEUE_SUB_TYPE, task::class.simpleName)
       }
     }
   }

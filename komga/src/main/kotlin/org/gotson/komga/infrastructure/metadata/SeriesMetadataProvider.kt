@@ -1,8 +1,8 @@
 package org.gotson.komga.infrastructure.metadata
 
-import org.gotson.komga.domain.model.BookWithMedia
+import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesMetadataPatch
 
 interface SeriesMetadataProvider {
-  fun getSeriesMetadataFromBook(book: BookWithMedia): SeriesMetadataPatch?
+  fun getSeriesMetadata(series: Series): SeriesMetadataPatch?
 }

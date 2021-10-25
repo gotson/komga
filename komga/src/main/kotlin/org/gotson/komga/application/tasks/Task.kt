@@ -17,6 +17,11 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY) : Serializable {
     override fun uniqueId() = "SCAN_LIBRARY_$libraryId"
   }
 
+  class EmptyTrash(val libraryId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
+    override fun uniqueId() = "EMPTY_TRASH_$libraryId"
+    override fun toString(): String = "EmptyTrash(libraryId='$libraryId', priority='$priority')"
+  }
+
   class AnalyzeBook(val bookId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
     override fun uniqueId() = "ANALYZE_BOOK_$bookId"
     override fun toString(): String = "AnalyzeBook(bookId='$bookId', priority='$priority')"
@@ -30,6 +35,11 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY) : Serializable {
   class RefreshBookMetadata(val bookId: String, val capabilities: List<BookMetadataPatchCapability>, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
     override fun uniqueId() = "REFRESH_BOOK_METADATA_$bookId"
     override fun toString(): String = "RefreshBookMetadata(bookId='$bookId', capabilities=$capabilities, priority='$priority')"
+  }
+
+  class HashBook(val bookId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
+    override fun uniqueId() = "HASH_BOOK_$bookId"
+    override fun toString(): String = "HashBook(bookId='$bookId', priority='$priority')"
   }
 
   class RefreshSeriesMetadata(val seriesId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
@@ -66,5 +76,10 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY) : Serializable {
   class RepairExtension(val bookId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
     override fun uniqueId(): String = "REPAIR_EXTENSION_$bookId"
     override fun toString(): String = "RepairExtension(bookId='$bookId', priority='$priority')"
+  }
+
+  class RebuildIndex(priority: Int = DEFAULT_PRIORITY) : Task(priority) {
+    override fun uniqueId() = "REBUILD_INDEX"
+    override fun toString(): String = "RebuildIndex(priority='$priority')"
   }
 }

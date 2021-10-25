@@ -1,4 +1,4 @@
-import {PageDto} from "@/types/komga-books";
+import {PageDto} from '@/types/komga-books'
 
 export interface ScanRequestDto {
   path: string,

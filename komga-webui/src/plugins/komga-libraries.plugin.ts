@@ -2,6 +2,7 @@ import KomgaLibrariesService from '@/services/komga-libraries.service'
 import {AxiosInstance} from 'axios'
 import _Vue from 'vue'
 import {Module} from 'vuex/types'
+import {LibraryDto} from '@/types/komga-libraries'
 
 let service: KomgaLibrariesService
 

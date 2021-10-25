@@ -23,7 +23,8 @@ data class BookDto(
   val size: String = BinaryByteUnit.format(sizeBytes),
   val media: MediaDto,
   val metadata: BookMetadataDto,
-  val readProgress: ReadProgressDto? = null
+  val readProgress: ReadProgressDto? = null,
+  val deleted: Boolean,
 )
 
 fun BookDto.restrictUrl(restrict: Boolean) =
@@ -64,6 +65,8 @@ data class BookMetadataDto(
 data class ReadProgressDto(
   val page: Int,
   val completed: Boolean,
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  val readDate: LocalDateTime,
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val created: LocalDateTime,
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")

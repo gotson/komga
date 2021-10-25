@@ -10,7 +10,7 @@ import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
-import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
+import org.gotson.komga.infrastructure.metadata.SeriesMetadataFromBookProvider
 import org.gotson.komga.infrastructure.metadata.comicrack.dto.ComicInfo
 import org.gotson.komga.infrastructure.metadata.comicrack.dto.Manga
 import org.gotson.komga.infrastructure.validation.BCP47TagValidator
@@ -26,7 +26,7 @@ private const val COMIC_INFO = "ComicInfo.xml"
 class ComicInfoProvider(
   @Autowired(required = false) private val mapper: XmlMapper = XmlMapper(),
   private val bookAnalyzer: BookAnalyzer
-) : BookMetadataProvider, SeriesMetadataProvider {
+) : BookMetadataProvider, SeriesMetadataFromBookProvider {
 
   override fun getCapabilities(): List<BookMetadataPatchCapability> =
     listOf(
@@ -65,8 +65,19 @@ class ComicInfoProvider(
       }
 
       comicInfo.storyArc?.let { value ->
-        val arcs = value.split(",").mapNotNull { it.trim().ifBlank { null } }
-        readLists.addAll(arcs.map { BookMetadataPatch.ReadListEntry(it) })
+        // get list of arcs and corresponding number, split by `,`
+        val arcs = value.split(",").map { it.trim().ifBlank { null } }
+        val numbers = comicInfo.storyArcNumber?.split(",")?.map { it.trim().toIntOrNull() }
+
+        if (!numbers.isNullOrEmpty()) {
+          // if there is associated numbers, add each valid association as a read list entry
+          (arcs zip numbers).forEach { (arc, number) ->
+            if (arc != null && number != null) readLists.add(BookMetadataPatch.ReadListEntry(arc, number))
+          }
+        } else {
+          // if there is no numbers, only use the arcs name
+          readLists.addAll(arcs.filterNotNull().map { BookMetadataPatch.ReadListEntry(it) })
+        }
       }
 
       return BookMetadataPatch(
@@ -103,6 +114,7 @@ class ComicInfoProvider(
         ageRating = comicInfo.ageRating?.ageRating,
         language = if (comicInfo.languageISO != null && BCP47TagValidator.isValid(comicInfo.languageISO!!)) comicInfo.languageISO else null,
         genres = if (!genres.isNullOrEmpty()) genres.toSet() else null,
+        totalBookCount = comicInfo.count,
         collections = listOfNotNull(comicInfo.seriesGroup?.ifBlank { null })
       )
     }
@@ -119,7 +131,7 @@ class ComicInfoProvider(
       val fileContent = bookAnalyzer.getFileContent(book, COMIC_INFO)
       return mapper.readValue(fileContent, ComicInfo::class.java)
     } catch (e: Exception) {
-      logger.error(e) { "Error while retrieving metadata from ComicInfo.xml" }
+      logger.error(e) { "Error while retrieving metadata from $COMIC_INFO" }
       return null
     }
   }

@@ -1,6 +1,5 @@
 import _, {LoDashStatic} from 'lodash'
 import Vue from 'vue'
-import VueCookies from 'vue-cookies'
 // @ts-ignore
 import * as lineClamp from 'vue-line-clamp'
 import Vuelidate from 'vuelidate'
@@ -19,7 +18,11 @@ import komgaSeries from './plugins/komga-series.plugin'
 import komgaUsers from './plugins/komga-users.plugin'
 import komgaTransientBooks from './plugins/komga-transientbooks.plugin'
 import komgaSse from './plugins/komga-sse.plugin'
+import komgaTasks from './plugins/komga-tasks.plugin'
+import komgaOauth2 from './plugins/komga-oauth2.plugin'
+import komgaLogin from './plugins/komga-login.plugin'
 import vuetify from './plugins/vuetify'
+import logger from './plugins/logger.plugin'
 import './public-path'
 import router from './router'
 import store from './store'
@@ -30,9 +33,9 @@ Vue.prototype.$eventHub = new Vue()
 
 Vue.use(Vuelidate)
 Vue.use(lineClamp)
-Vue.use(VueCookies)
 
 Vue.use(httpPlugin)
+Vue.use(logger)
 Vue.use(komgaFileSystem, {http: Vue.prototype.$http})
 Vue.use(komgaSeries, {http: Vue.prototype.$http})
 Vue.use(komgaCollections, {http: Vue.prototype.$http})
@@ -45,6 +48,9 @@ Vue.use(komgaUsers, {store: store, http: Vue.prototype.$http})
 Vue.use(komgaLibraries, {store: store, http: Vue.prototype.$http})
 Vue.use(komgaSse, {eventHub: Vue.prototype.$eventHub, store: store})
 Vue.use(actuator, {http: Vue.prototype.$http})
+Vue.use(komgaTasks, {http: Vue.prototype.$http})
+Vue.use(komgaOauth2, {http: Vue.prototype.$http})
+Vue.use(komgaLogin, {http: Vue.prototype.$http})
 
 
 Vue.config.productionTip = false

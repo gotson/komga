@@ -69,16 +69,21 @@ class SeriesCollectionController(
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable
   ): Page<CollectionDto> {
+    val sort = when {
+      !searchTerm.isNullOrBlank() -> Sort.by("relevance")
+      else -> Sort.by(Sort.Order.asc("name"))
+    }
+
     val pageRequest =
-      if (unpaged) UnpagedSorted(Sort.by(Sort.Order.asc("name")))
+      if (unpaged) UnpagedSorted(sort)
       else PageRequest.of(
         page.pageNumber,
         page.pageSize,
-        Sort.by(Sort.Order.asc("name"))
+        sort
       )
 
     return when {
-      principal.user.sharedAllLibraries && libraryIds == null -> collectionRepository.searchAll(searchTerm, pageable = pageRequest)
+      principal.user.sharedAllLibraries && libraryIds == null -> collectionRepository.findAll(searchTerm, pageable = pageRequest)
       principal.user.sharedAllLibraries && libraryIds != null -> collectionRepository.findAllByLibraryIds(libraryIds, null, searchTerm, pageable = pageRequest)
       !principal.user.sharedAllLibraries && libraryIds != null -> collectionRepository.findAllByLibraryIds(libraryIds, principal.user.sharedLibrariesIds, searchTerm, pageable = pageRequest)
       else -> collectionRepository.findAllByLibraryIds(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, searchTerm, pageable = pageRequest)
@@ -103,7 +108,7 @@ class SeriesCollectionController(
     collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
       return ResponseEntity.ok()
         .cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS).cachePrivate())
-        .body(collectionLifecycle.getThumbnailBytes(it))
+        .body(collectionLifecycle.getThumbnailBytes(it, principal.user.id))
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -171,6 +176,7 @@ class SeriesCollectionController(
     @RequestParam(name = "tag", required = false) tags: List<String>?,
     @RequestParam(name = "age_rating", required = false) ageRatings: List<String>?,
     @RequestParam(name = "release_year", required = false) release_years: List<String>?,
+    @RequestParam(name = "deleted", required = false) deleted: Boolean?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) @Authors authors: List<Author>?,
     @Parameter(hidden = true) page: Pageable
@@ -193,6 +199,7 @@ class SeriesCollectionController(
         metadataStatus = metadataStatus,
         readStatus = readStatus,
         publishers = publishers,
+        deleted = deleted,
         languages = languages,
         genres = genres,
         tags = tags,

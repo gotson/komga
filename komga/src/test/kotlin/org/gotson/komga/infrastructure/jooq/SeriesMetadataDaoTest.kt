@@ -61,6 +61,7 @@ class SeriesMetadataDaoTest(
       genres = setOf("Action", "Adventure"),
       tags = setOf("tag", "another"),
       language = "en",
+      totalBookCount = 5,
       titleLock = true,
       titleSortLock = true,
       summaryLock = true,
@@ -70,6 +71,7 @@ class SeriesMetadataDaoTest(
       genresLock = true,
       languageLock = true,
       tagsLock = true,
+      totalBookCountLock = true,
       seriesId = series.id
     )
 
@@ -90,6 +92,7 @@ class SeriesMetadataDaoTest(
     assertThat(created.language).isEqualTo(metadata.language)
     assertThat(created.genres).containsAll(metadata.genres)
     assertThat(created.tags).containsAll(metadata.tags)
+    assertThat(created.totalBookCount).isEqualTo(metadata.totalBookCount)
 
     assertThat(created.titleLock).isEqualTo(metadata.titleLock)
     assertThat(created.titleSortLock).isEqualTo(metadata.titleSortLock)
@@ -101,6 +104,7 @@ class SeriesMetadataDaoTest(
     assertThat(created.genresLock).isEqualTo(metadata.genresLock)
     assertThat(created.languageLock).isEqualTo(metadata.languageLock)
     assertThat(created.tagsLock).isEqualTo(metadata.tagsLock)
+    assertThat(created.totalBookCountLock).isEqualTo(metadata.totalBookCountLock)
   }
 
   @Test
@@ -122,25 +126,27 @@ class SeriesMetadataDaoTest(
 
     assertThat(created.title).isEqualTo(metadata.title)
     assertThat(created.titleSort).isEqualTo(metadata.title)
-    assertThat(created.summary).isBlank()
+    assertThat(created.summary).isBlank
     assertThat(created.status).isEqualTo(SeriesMetadata.Status.ONGOING)
     assertThat(created.readingDirection).isNull()
-    assertThat(created.publisher).isBlank()
-    assertThat(created.language).isBlank()
+    assertThat(created.publisher).isBlank
+    assertThat(created.language).isBlank
     assertThat(created.ageRating).isNull()
     assertThat(created.genres).isEmpty()
     assertThat(created.tags).isEmpty()
+    assertThat(created.totalBookCount).isNull()
 
-    assertThat(created.titleLock).isFalse()
-    assertThat(created.titleSortLock).isFalse()
-    assertThat(created.statusLock).isFalse()
-    assertThat(created.summaryLock).isFalse()
-    assertThat(created.readingDirectionLock).isFalse()
-    assertThat(created.publisherLock).isFalse()
-    assertThat(created.ageRatingLock).isFalse()
-    assertThat(created.genresLock).isFalse()
-    assertThat(created.languageLock).isFalse()
-    assertThat(created.tagsLock).isFalse()
+    assertThat(created.titleLock).isFalse
+    assertThat(created.titleSortLock).isFalse
+    assertThat(created.statusLock).isFalse
+    assertThat(created.summaryLock).isFalse
+    assertThat(created.readingDirectionLock).isFalse
+    assertThat(created.publisherLock).isFalse
+    assertThat(created.ageRatingLock).isFalse
+    assertThat(created.genresLock).isFalse
+    assertThat(created.languageLock).isFalse
+    assertThat(created.tagsLock).isFalse
+    assertThat(created.totalBookCountLock).isFalse
   }
 
   @Test
@@ -191,6 +197,7 @@ class SeriesMetadataDaoTest(
       language = "en",
       genres = setOf("Action"),
       tags = setOf("tag"),
+      totalBookCount = 3,
       seriesId = series.id
     )
     seriesMetadataDao.insert(metadata)
@@ -210,6 +217,7 @@ class SeriesMetadataDaoTest(
         language = "jp",
         genres = setOf("Adventure"),
         tags = setOf("Another"),
+        totalBookCount = 8,
         statusLock = true,
         titleLock = true,
         titleSortLock = true,
@@ -219,7 +227,8 @@ class SeriesMetadataDaoTest(
         ageRatingLock = true,
         languageLock = true,
         genresLock = true,
-        tagsLock = true
+        tagsLock = true,
+        totalBookCountLock = true,
       )
     }
 
@@ -241,16 +250,18 @@ class SeriesMetadataDaoTest(
     assertThat(modified.language).isEqualTo(updated.language)
     assertThat(modified.genres).containsAll(updated.genres)
     assertThat(modified.tags).containsAll(updated.tags)
+    assertThat(modified.totalBookCount).isEqualTo(updated.totalBookCount)
 
-    assertThat(modified.titleLock).isTrue()
-    assertThat(modified.titleSortLock).isTrue()
-    assertThat(modified.statusLock).isTrue()
-    assertThat(modified.summaryLock).isTrue()
-    assertThat(modified.readingDirectionLock).isTrue()
-    assertThat(modified.ageRatingLock).isTrue()
-    assertThat(modified.languageLock).isTrue()
-    assertThat(modified.genresLock).isTrue()
-    assertThat(modified.publisherLock).isTrue()
-    assertThat(modified.tagsLock).isTrue()
+    assertThat(modified.titleLock).isTrue
+    assertThat(modified.titleSortLock).isTrue
+    assertThat(modified.statusLock).isTrue
+    assertThat(modified.summaryLock).isTrue
+    assertThat(modified.readingDirectionLock).isTrue
+    assertThat(modified.ageRatingLock).isTrue
+    assertThat(modified.languageLock).isTrue
+    assertThat(modified.genresLock).isTrue
+    assertThat(modified.publisherLock).isTrue
+    assertThat(modified.tagsLock).isTrue
+    assertThat(modified.totalBookCountLock).isTrue
   }
 }

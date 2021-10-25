@@ -10,7 +10,7 @@
         <!--      Thumbnail-->
         <v-img
           :src="thumbnailUrl"
-          lazy-src="../assets/cover.svg"
+          :lazy-src="thumbnailError ? coverBase64 : undefined"
           aspect-ratio="0.7071"
           contain
           @error="thumbnailError = true"
@@ -128,9 +128,10 @@ import Vue from 'vue'
 import {RawLocation} from 'vue-router'
 import ReadListActionsMenu from '@/components/menus/ReadListActionsMenu.vue'
 import {BookDto} from '@/types/komga-books'
-import {SeriesDto} from "@/types/komga-series";
-import {THUMBNAILBOOK_ADDED, THUMBNAILSERIES_ADDED} from "@/types/events";
-import {ThumbnailBookSseDto, ThumbnailSeriesSseDto} from "@/types/komga-sse";
+import {SeriesDto} from '@/types/komga-series'
+import {THUMBNAILBOOK_ADDED, THUMBNAILSERIES_ADDED} from '@/types/events'
+import {ThumbnailBookSseDto, ThumbnailSeriesSseDto} from '@/types/komga-sse'
+import {coverBase64} from '@/types/image'
 
 export default Vue.extend({
   name: 'ItemCard',
@@ -189,6 +190,7 @@ export default Vue.extend({
       actionMenuState: false,
       thumbnailError: false,
       thumbnailCacheBust: '',
+      coverBase64,
     }
   },
   created() {
@@ -207,7 +209,10 @@ export default Vue.extend({
       return this.onEdit !== undefined || this.onSelected !== undefined || this.bookReady || this.canReadPages || this.actionMenu
     },
     computedItem(): Item<BookDto | SeriesDto | CollectionDto | ReadListDto> {
-      return createItem(this.item)
+      let item = this.item
+      if ('libraryId' in this.item && this.$store.getters.getLibraryById((this.item as any).libraryId).unavailable)
+        item = {...item, deleted: true}
+      return createItem(item)
     },
     disableHover(): boolean {
       return !this.overlay
@@ -262,7 +267,7 @@ export default Vue.extend({
       }
     },
     thumbnailSeriesAdded(event: ThumbnailSeriesSseDto) {
-      if (this.thumbnailError && (this.computedItem.type() === ItemTypes.SERIES && event.seriesId === this.item.id)) {
+      if (this.computedItem.type() === ItemTypes.SERIES && event.seriesId === this.item.id) {
         this.thumbnailCacheBust = '?' + this.$_.random(1000)
       }
     },

@@ -10,4 +10,5 @@ data class AuthenticationActivity(
   val success: Boolean,
   val error: String? = null,
   val dateTime: LocalDateTime = LocalDateTime.now(),
+  val source: String? = null,
 )

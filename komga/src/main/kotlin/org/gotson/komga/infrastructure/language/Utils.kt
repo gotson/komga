@@ -1,8 +1,12 @@
 package org.gotson.komga.infrastructure.language
 
+import org.apache.commons.lang3.StringUtils
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalUnit
+import java.util.Date
 import java.util.Enumeration
 import java.util.SortedMap
 
@@ -26,5 +30,17 @@ fun <T> List<T>.toEnumeration(): Enumeration<T> {
   }
 }
 
+fun <T, R : Any> Iterable<T>.mostFrequent(transform: (T) -> R?): R? {
+  return this
+    .mapNotNull(transform)
+    .groupingBy { it }
+    .eachCount()
+    .maxByOrNull { it.value }?.key
+}
+
 fun LocalDateTime.notEquals(other: LocalDateTime, precision: TemporalUnit = ChronoUnit.MILLIS) =
   this.truncatedTo(precision) != other.truncatedTo(precision)
+
+fun String.stripAccents(): String = StringUtils.stripAccents(this)
+
+fun LocalDate.toDate(): Date = Date.from(this.atStartOfDay(ZoneId.of("Z")).toInstant())

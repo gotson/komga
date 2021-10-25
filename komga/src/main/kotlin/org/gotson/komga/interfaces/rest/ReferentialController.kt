@@ -42,11 +42,12 @@ class ReferentialController(
   @GetMapping("v2/authors")
   fun getAuthors(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestParam(name = "search", defaultValue = "") search: String,
-    @RequestParam(name = "role") role: String?,
+    @RequestParam(name = "search", required = false) search: String?,
+    @RequestParam(name = "role", required = false) role: String?,
     @RequestParam(name = "library_id", required = false) libraryId: String?,
     @RequestParam(name = "collection_id", required = false) collectionId: String?,
     @RequestParam(name = "series_id", required = false) seriesId: String?,
+    @RequestParam(name = "readlist_id", required = false) readListId: String?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
   ): Page<AuthorDto> {
@@ -61,6 +62,7 @@ class ReferentialController(
       libraryId != null -> referentialRepository.findAllAuthorsByNameAndLibrary(search, role, libraryId, principal.user.getAuthorizedLibraryIds(null), pageRequest)
       collectionId != null -> referentialRepository.findAllAuthorsByNameAndCollection(search, role, collectionId, principal.user.getAuthorizedLibraryIds(null), pageRequest)
       seriesId != null -> referentialRepository.findAllAuthorsByNameAndSeries(search, role, seriesId, principal.user.getAuthorizedLibraryIds(null), pageRequest)
+      readListId != null -> referentialRepository.findAllAuthorsByNameAndReadList(search, role, readListId, principal.user.getAuthorizedLibraryIds(null), pageRequest)
       else -> referentialRepository.findAllAuthorsByName(search, role, principal.user.getAuthorizedLibraryIds(null), pageRequest)
     }.map { it.toDto() }
   }
@@ -93,15 +95,12 @@ class ReferentialController(
   @GetMapping("v1/tags")
   fun getTags(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    // TODO: remove those parameters once Tachiyomi Extension is using the new /tags/series endpoint (changed in 0.87.4 - 21 Apr 2021)
     @RequestParam(name = "library_id", required = false) libraryId: String?,
-    @RequestParam(name = "series_id", required = false) seriesId: String?,
     @RequestParam(name = "collection_id", required = false) collectionId: String?
   ): Set<String> =
     when {
-      libraryId != null -> referentialRepository.findAllSeriesTagsByLibrary(libraryId, principal.user.getAuthorizedLibraryIds(null))
-      seriesId != null -> referentialRepository.findAllBookTagsBySeries(seriesId, principal.user.getAuthorizedLibraryIds(null))
-      collectionId != null -> referentialRepository.findAllSeriesTagsByCollection(collectionId, principal.user.getAuthorizedLibraryIds(null))
+      libraryId != null -> referentialRepository.findAllSeriesAndBookTagsByLibrary(libraryId, principal.user.getAuthorizedLibraryIds(null))
+      collectionId != null -> referentialRepository.findAllSeriesAndBookTagsByCollection(collectionId, principal.user.getAuthorizedLibraryIds(null))
       else -> referentialRepository.findAllSeriesAndBookTags(principal.user.getAuthorizedLibraryIds(null))
     }
 
@@ -109,9 +108,11 @@ class ReferentialController(
   fun getBookTags(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "series_id", required = false) seriesId: String?,
+    @RequestParam(name = "readlist_id", required = false) readListId: String?,
   ): Set<String> =
     when {
       seriesId != null -> referentialRepository.findAllBookTagsBySeries(seriesId, principal.user.getAuthorizedLibraryIds(null))
+      readListId != null -> referentialRepository.findAllBookTagsByReadList(readListId, principal.user.getAuthorizedLibraryIds(null))
       else -> referentialRepository.findAllBookTags(principal.user.getAuthorizedLibraryIds(null))
     }
 

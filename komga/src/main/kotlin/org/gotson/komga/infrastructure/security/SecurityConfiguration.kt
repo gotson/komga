@@ -12,6 +12,15 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException
+import org.springframework.security.oauth2.core.oidc.user.OidcUser
+import org.springframework.security.oauth2.core.user.OAuth2User
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices
 
 private val logger = KotlinLogging.logger {}
@@ -21,65 +30,92 @@ private val logger = KotlinLogging.logger {}
 class SecurityConfiguration(
   private val komgaProperties: KomgaProperties,
   private val komgaUserDetailsLifecycle: UserDetailsService,
-  private val sessionRegistry: SessionRegistry
+  private val oauth2UserService: OAuth2UserService<OAuth2UserRequest, OAuth2User>,
+  private val oidcUserService: OAuth2UserService<OidcUserRequest, OidcUser>,
+  private val sessionRegistry: SessionRegistry,
+  private val sessionCookieName: String,
+  private val userAgentWebAuthenticationDetailsSource: WebAuthenticationDetailsSource,
+  clientRegistrationRepository: InMemoryClientRegistrationRepository?,
 ) : WebSecurityConfigurerAdapter() {
 
+  private val oauth2Enabled = clientRegistrationRepository != null
+
   override fun configure(http: HttpSecurity) {
-    // @formatter:off
-    val userAgentWebAuthenticationDetailsSource = UserAgentWebAuthenticationDetailsSource()
-
     http
-      .cors()
-      .and()
-      .csrf().disable()
+      .cors {}
+      .csrf { it.disable() }
 
-      .authorizeRequests()
-      // restrict all actuator endpoints to ADMIN only
-      .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole(ROLE_ADMIN)
+      .authorizeRequests {
+        // restrict all actuator endpoints to ADMIN only
+        it.requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole(ROLE_ADMIN)
 
-      // claim is unprotected
-      .antMatchers("/api/v1/claim").permitAll()
+        // claim is unprotected
+        it.antMatchers(
+          "/api/v1/claim",
+          "/api/v1/oauth2/providers",
+          "/set-cookie",
+        ).permitAll()
 
-      // all other endpoints are restricted to authenticated users
-      .antMatchers(
-        "/api/**",
-        "/opds/**",
-        "/sse/**"
-      ).hasRole(ROLE_USER)
+        // all other endpoints are restricted to authenticated users
+        it.antMatchers(
+          "/api/**",
+          "/opds/**",
+          "/sse/**"
+        ).hasRole(ROLE_USER)
+      }
 
-      .and()
       .headers {
         it.cacheControl().disable() // headers are set in WebMvcConfiguration
       }
 
-      .httpBasic()
-      .authenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
+      .httpBasic {
+        it.authenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
+      }
 
-      .and()
-      .logout()
-      .logoutUrl("/api/v1/users/logout")
-      .deleteCookies("JSESSIONID")
-      .invalidateHttpSession(true)
+      .logout {
+        it.logoutUrl("/api/v1/users/logout")
+        it.deleteCookies(sessionCookieName)
+        it.invalidateHttpSession(true)
+      }
 
-      .and()
       .sessionManagement()
       .maximumSessions(10)
       .sessionRegistry(sessionRegistry)
 
+    if (oauth2Enabled) {
+      http.oauth2Login { oauth2 ->
+        oauth2.userInfoEndpoint {
+          it.userService(oauth2UserService)
+          it.oidcUserService(oidcUserService)
+        }
+        oauth2.authenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
+        oauth2.loginPage("/login")
+          .defaultSuccessUrl("/?server_redirect=Y", true)
+          .failureHandler { request, response, exception ->
+            val errorMessage = when (exception) {
+              is OAuth2AuthenticationException -> exception.error.errorCode
+              else -> exception.message
+            }
+            val url = "/login?server_redirect=Y&error=$errorMessage"
+            SimpleUrlAuthenticationFailureHandler(url).onAuthenticationFailure(request, response, exception)
+          }
+      }
+    }
+
     if (!komgaProperties.rememberMe.key.isNullOrBlank()) {
-      logger.info { "RememberMe is active, validity: ${komgaProperties.rememberMe.validity}s" }
+      logger.info { "RememberMe is active, validity: ${komgaProperties.rememberMe.validity}" }
 
       http
-        .rememberMe()
-        .rememberMeServices(
-          TokenBasedRememberMeServices(komgaProperties.rememberMe.key, komgaUserDetailsLifecycle).apply {
-            setTokenValiditySeconds(komgaProperties.rememberMe.validity)
-            setAlwaysRemember(true)
-            setAuthenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
-          }
-        )
+        .rememberMe {
+          it.rememberMeServices(
+            TokenBasedRememberMeServices(komgaProperties.rememberMe.key, komgaUserDetailsLifecycle).apply {
+              setTokenValiditySeconds(komgaProperties.rememberMe.validity.seconds.toInt())
+              setAlwaysRemember(true)
+              setAuthenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
+            }
+          )
+        }
     }
-    // @formatter:on
   }
 
   override fun configure(web: WebSecurity) {
@@ -97,6 +133,7 @@ class SecurityConfiguration(
         "/apple-touch-icon-180x180.png",
         "/android-chrome-192x192.png",
         "/android-chrome-512x512.png",
+        "/manifest.json",
         "/",
         "/index.html"
       )

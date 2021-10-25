@@ -5,6 +5,7 @@ import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.SeriesMetadataRecord
 import org.jooq.DSLContext
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -12,7 +13,8 @@ import java.time.ZoneId
 
 @Component
 class SeriesMetadataDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
+  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : SeriesMetadataRepository {
 
   private val d = Tables.SERIES_METADATA
@@ -68,6 +70,8 @@ class SeriesMetadataDao(
       .set(d.LANGUAGE_LOCK, metadata.languageLock)
       .set(d.GENRES_LOCK, metadata.genresLock)
       .set(d.TAGS_LOCK, metadata.tagsLock)
+      .set(d.TOTAL_BOOK_COUNT, metadata.totalBookCount)
+      .set(d.TOTAL_BOOK_COUNT_LOCK, metadata.totalBookCountLock)
       .execute()
 
     insertGenres(metadata)
@@ -95,6 +99,8 @@ class SeriesMetadataDao(
       .set(d.LANGUAGE_LOCK, metadata.languageLock)
       .set(d.GENRES_LOCK, metadata.genresLock)
       .set(d.TAGS_LOCK, metadata.tagsLock)
+      .set(d.TOTAL_BOOK_COUNT, metadata.totalBookCount)
+      .set(d.TOTAL_BOOK_COUNT_LOCK, metadata.totalBookCountLock)
       .set(d.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(d.SERIES_ID.eq(metadata.seriesId))
       .execute()
@@ -113,27 +119,31 @@ class SeriesMetadataDao(
 
   private fun insertGenres(metadata: SeriesMetadata) {
     if (metadata.genres.isNotEmpty()) {
-      dsl.batch(
-        dsl.insertInto(g, g.SERIES_ID, g.GENRE)
-          .values(null as String?, null)
-      ).also { step ->
-        metadata.genres.forEach {
-          step.bind(metadata.seriesId, it)
-        }
-      }.execute()
+      metadata.genres.chunked(batchSize).forEach { chunk ->
+        dsl.batch(
+          dsl.insertInto(g, g.SERIES_ID, g.GENRE)
+            .values(null as String?, null)
+        ).also { step ->
+          chunk.forEach {
+            step.bind(metadata.seriesId, it)
+          }
+        }.execute()
+      }
     }
   }
 
   private fun insertTags(metadata: SeriesMetadata) {
     if (metadata.tags.isNotEmpty()) {
-      dsl.batch(
-        dsl.insertInto(st, st.SERIES_ID, st.TAG)
-          .values(null as String?, null)
-      ).also { step ->
-        metadata.tags.forEach {
-          step.bind(metadata.seriesId, it)
-        }
-      }.execute()
+      metadata.tags.chunked(batchSize).forEach { chunk ->
+        dsl.batch(
+          dsl.insertInto(st, st.SERIES_ID, st.TAG)
+            .values(null as String?, null)
+        ).also { step ->
+          chunk.forEach {
+            step.bind(metadata.seriesId, it)
+          }
+        }.execute()
+      }
     }
   }
 
@@ -167,6 +177,7 @@ class SeriesMetadataDao(
       language = language,
       genres = genres,
       tags = tags,
+      totalBookCount = totalBookCount,
 
       statusLock = statusLock,
       titleLock = titleLock,
@@ -178,6 +189,7 @@ class SeriesMetadataDao(
       languageLock = languageLock,
       genresLock = genresLock,
       tagsLock = tagsLock,
+      totalBookCountLock = totalBookCountLock,
 
       seriesId = seriesId,
 

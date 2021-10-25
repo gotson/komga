@@ -2,12 +2,14 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
+import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
+import org.gotson.komga.infrastructure.search.LuceneEntity
+import org.gotson.komga.infrastructure.search.LuceneHelper
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.CollectionRecord
 import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.ResultQuery
-import org.jooq.impl.DSL
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -20,7 +22,8 @@ import java.time.ZoneId
 
 @Component
 class SeriesCollectionDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
+  private val luceneHelper: LuceneHelper,
 ) : SeriesCollectionRepository {
 
   private val c = Tables.COLLECTION
@@ -28,7 +31,7 @@ class SeriesCollectionDao(
   private val s = Tables.SERIES
 
   private val sorts = mapOf(
-    "name" to DSL.lower(c.NAME)
+    "name" to c.NAME.collate(SqliteUdfDataSource.collationUnicode3),
   )
 
   override fun findByIdOrNull(collectionId: String): SeriesCollection? =
@@ -44,24 +47,28 @@ class SeriesCollectionDao(
       .fetchAndMap(filterOnLibraryIds)
       .firstOrNull()
 
-  override fun searchAll(search: String?, pageable: Pageable): Page<SeriesCollection> {
-    val conditions = search?.let { c.NAME.containsIgnoreCase(it) }
-      ?: DSL.trueCondition()
+  override fun findAll(search: String?, pageable: Pageable): Page<SeriesCollection> {
+    val collectionIds = luceneHelper.searchEntitiesIds(search, LuceneEntity.Collection)
+    val searchCondition = c.ID.inOrNoCondition(collectionIds)
 
     val count = dsl.selectCount()
       .from(c)
-      .where(conditions)
+      .where(searchCondition)
       .fetchOne(0, Long::class.java) ?: 0
 
-    val orderBy = pageable.sort.toOrderBy(sorts)
+    val orderBy =
+      pageable.sort.mapNotNull {
+        if (it.property == "relevance" && !collectionIds.isNullOrEmpty()) c.ID.sortByValues(collectionIds, it.isAscending)
+        else it.toSortField(sorts)
+      }
 
     val items = selectBase()
-      .where(conditions)
+      .where(searchCondition)
       .orderBy(orderBy)
       .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
       .fetchAndMap(null)
 
-    val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
+    val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
     return PageImpl(
       items,
       if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
@@ -71,27 +78,36 @@ class SeriesCollectionDao(
   }
 
   override fun findAllByLibraryIds(belongsToLibraryIds: Collection<String>, filterOnLibraryIds: Collection<String>?, search: String?, pageable: Pageable): Page<SeriesCollection> {
+    val collectionIds = luceneHelper.searchEntitiesIds(search, LuceneEntity.Collection)
+    val searchCondition = c.ID.inOrNoCondition(collectionIds)
+
+    val conditions = s.LIBRARY_ID.`in`(belongsToLibraryIds)
+      .and(searchCondition)
+      .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
+
     val ids = dsl.selectDistinct(c.ID)
       .from(c)
       .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
       .leftJoin(s).on(cs.SERIES_ID.eq(s.ID))
-      .where(s.LIBRARY_ID.`in`(belongsToLibraryIds))
-      .apply { search?.let { and(c.NAME.containsIgnoreCase(it)) } }
+      .where(conditions)
       .fetch(0, String::class.java)
 
     val count = ids.size
 
-    val orderBy = pageable.sort.toOrderBy(sorts)
+    val orderBy =
+      pageable.sort.mapNotNull {
+        if (it.property == "relevance" && !collectionIds.isNullOrEmpty()) c.ID.sortByValues(collectionIds, it.isAscending)
+        else it.toSortField(sorts)
+      }
 
     val items = selectBase()
       .where(c.ID.`in`(ids))
-      .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .apply { search?.let { and(c.NAME.containsIgnoreCase(it)) } }
+      .and(conditions)
       .orderBy(orderBy)
       .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
       .fetchAndMap(filterOnLibraryIds)
 
-    val pageSort = if (orderBy.size > 1) pageable.sort else Sort.unsorted()
+    val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
     return PageImpl(
       items,
       if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
@@ -112,6 +128,18 @@ class SeriesCollectionDao(
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
       .fetchAndMap(filterOnLibraryIds)
   }
+
+  override fun findAllEmpty(): Collection<SeriesCollection> =
+    dsl.selectFrom(c)
+      .where(
+        c.ID.`in`(
+          dsl.select(c.ID)
+            .from(c)
+            .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
+            .where(cs.COLLECTION_ID.isNull)
+        )
+      ).fetchInto(c)
+      .map { it.toDomain(emptyList()) }
 
   override fun findByNameOrNull(name: String): SeriesCollection? =
     selectBase()
@@ -192,27 +220,21 @@ class SeriesCollectionDao(
 
   @Transactional
   override fun delete(collectionId: String) {
+
     dsl.deleteFrom(cs).where(cs.COLLECTION_ID.eq(collectionId)).execute()
     dsl.deleteFrom(c).where(c.ID.eq(collectionId)).execute()
+  }
+
+  @Transactional
+  override fun delete(collectionIds: Collection<String>) {
+    dsl.deleteFrom(cs).where(cs.COLLECTION_ID.`in`(collectionIds)).execute()
+    dsl.deleteFrom(c).where(c.ID.`in`(collectionIds)).execute()
   }
 
   @Transactional
   override fun deleteAll() {
     dsl.deleteFrom(cs).execute()
     dsl.deleteFrom(c).execute()
-  }
-
-  @Transactional
-  override fun deleteEmpty() {
-    dsl.deleteFrom(c)
-      .where(
-        c.ID.`in`(
-          dsl.select(c.ID)
-            .from(c)
-            .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
-            .where(cs.COLLECTION_ID.isNull)
-        )
-      ).execute()
   }
 
   override fun existsByName(name: String): Boolean =

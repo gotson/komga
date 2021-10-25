@@ -36,6 +36,7 @@
     "inker": "encreurs",
     "letterer": "lettreurs",
     "penciller": "dessinateurs",
+    "translator": "traducteurs",
     "writer": "scénaristes"
   },
   "book_card": {
@@ -51,6 +52,7 @@
     "field_import_path": "Importer à partir du dossier",
     "info_part1": "Cet écran vous permet d'importer des fichiers qui se trouvent en dehors de vos bibliothèques existantes. Vous pouvez uniquement importer des fichiers dans une Série existante, auquel cas Komga déplacera ou copiera les fichiers dans le répertoire de la Série choisie.",
     "info_part2": "Si vous choisissez un numéro pour un livre, et qu'un livre existe déjà avec ce numéro, alors vous pourrez comparer les deux livres. Si vous décidez d'importer le livre, Komga mettra à jour le livre existant avec le nouveau, remplaçant effectivement l'ancien fichier par le nouveau.",
+    "no_files_found": "Aucun fichier trouvé",
     "notification": {
       "go_to_book": "Voir le livre",
       "import_failure": "Échec de l'import du livre : {file}",
@@ -69,7 +71,8 @@
       "number": "Numéro",
       "series": "Série"
     },
-    "title": "Importer"
+    "title": "Importer",
+    "try_another_directory": "Essayez de rechercher dans un autre dossier"
   },
   "bookreader": {
     "beginning_of_book": "Vous êtes au début du livre.",
@@ -95,13 +98,16 @@
       "height": "Ajuster hauteur",
       "original": "Original",
       "screen": "Écran",
-      "width": "Ajuster largeur"
+      "width": "Ajuster largeur",
+      "width_shrink_only": "Ajuster largeur (réduire uniquement)"
     },
     "settings": {
+      "always_fullscreen": "Toujours en plein écran",
       "animate_page_transitions": "Activer les transitions de page",
       "background_color": "Couleur d'arrière-plan",
       "background_colors": {
         "black": "Noir",
+        "gray": "Gris",
         "white": "Blanc"
       },
       "display": "Affichage",
@@ -145,6 +151,7 @@
     "format": "FORMAT",
     "isbn": "ISBN",
     "navigation_within_readlist": "Navigation dans la liste de lecture : {name}",
+    "outdated_tooltip": "Le fichier de ce livre a été modifié, ce livre doit être analysé à nouveau",
     "read_book": "Lire le livre",
     "read_incognito": "Lire incognito",
     "size": "TAILLE"
@@ -171,6 +178,7 @@
     "all_libraries": "Toutes les bibliothèques",
     "books": "Livres",
     "books_n": "Aucun livre | 1 livre | {count} livres",
+    "books_total": "{count} / {total} livres",
     "cancel": "Annuler",
     "close": "Fermer",
     "collections": "Collections",
@@ -184,10 +192,13 @@
     "go_to_library": "Aller à la bibliothèque",
     "go_to_readlist": "Aller à la liste de lecture",
     "go_to_series": "Aller à la série",
+    "library": "Bibliothèque",
     "locale_name": "Français",
     "locale_rtl": "false",
+    "lock_all": "Tout verrouiller",
     "n_selected": "{count} sélectionné | {count} sélectionnés",
     "nothing_to_show": "Rien à afficher",
+    "outdated": "Obsolète",
     "pages": "pages",
     "pages_n": "Aucune page | 1 page | {count} pages",
     "password": "Mot de passe",
@@ -200,6 +211,8 @@
     "roles": "Rôles",
     "series": "Séries",
     "tags": "Étiquettes",
+    "unavailable": "Indisponible",
+    "unlock_all": "Tout déverrouiller",
     "use_filter_panel_to_change_filter": "Utilisez le panneau des filtres pour modifier les filtres actuels",
     "year": "année"
   },
@@ -208,6 +221,8 @@
     "on_deck": "En cours",
     "recently_added_books": "Livres ajoutés récemment",
     "recently_added_series": "Séries ajoutées récemment",
+    "recently_read_books": "Livres lus récemment",
+    "recently_released_books": "Livres sortis récemment",
     "recently_updated_series": "Séries mises à jour récemment"
   },
   "data_import": {
@@ -250,6 +265,11 @@
       "field_role_file_download": "Téléchargement de fichier",
       "field_role_page_streaming": "Lecture en ligne",
       "label_roles": "Rôles"
+    },
+    "analyze_library": {
+      "body": "Analyse tous les fichiers média de la bibliothèque. L'analyse récupère les informations sur le médias. En fonction de la taille de votre bibliothèque, cela peut prendre un certain temps.",
+      "button_confirm": "Analyser",
+      "title": "Analyser la bibliothèque"
     },
     "delete_collection": {
       "button_confirm": "Supprimer",
@@ -314,6 +334,7 @@
       "button_cancel": "Annuler",
       "button_confirm_add": "Ajouter",
       "button_confirm_edit": "Modifier",
+      "button_next": "Suivant",
       "dialog_title_add": "Ajouter une bibliothèque",
       "dialot_title_edit": "Modifier la bibliothèque",
       "field_convert_to_cbz": "Convertir automatiquement en CBZ",
@@ -325,11 +346,14 @@
       "field_import_epub_book": "Métadonnées du livre",
       "field_import_epub_series": "Métadonnées de la série",
       "field_import_local_artwork": "Couverture locale",
+      "field_import_mylar_series": "Métadonnées de la série",
       "field_name": "Nom",
       "field_repair_extensions": "Réparer automatiquement les extensions de fichier incorrectes",
       "field_root_folder": "Dossier racine",
       "field_scanner_deep_scan": "Analyse en profondeur",
+      "field_scanner_empty_trash_after_scan": "Vider la corbeille automatiquement après chaque analyse",
       "field_scanner_force_directory_modified_time": "Forcer l'heure de modification des dossiers",
+      "field_series_cover": "Couverture de la série",
       "file_browser_dialog_button_confirm": "Sélectionner",
       "file_browser_dialog_title": "Dossier racine de la bibliothèque",
       "label_file_management": "Gestion de fichiers",
@@ -337,15 +361,19 @@
       "label_import_comicinfo": "Importer les métadonnées pour les fichiers CBR/CBZ contenant un fichier ComicInfo.xml",
       "label_import_epub": "Importer les métadonnées des fichiers EPUB",
       "label_import_local": "Importer les médias locaux",
+      "label_import_mylar": "Importer les métadonnées générées par Mylar",
       "label_scanner": "Scanneur",
+      "label_series_cover": "Couverture de la série",
       "tab_general": "Général",
+      "tab_metadata": "Métadonnées",
       "tab_options": "Options"
     },
     "edit_readlist": {
       "button_cancel": "Annuler",
       "button_confirm": "Enregistrer les modifications",
       "dialog_title": "Modifier la liste de lecture",
-      "field_name": "Nom"
+      "field_name": "Nom",
+      "field_summary": "Résumé"
     },
     "edit_series": {
       "button_cancel": "Annuler",
@@ -356,6 +384,7 @@
       "field_age_rating_error": "L'âge minimal doit être supérieur ou égal à 0",
       "field_genres": "Genres",
       "field_language": "Langue",
+      "field_language_hint": "Étiquette de langage IETF BCP 47",
       "field_publisher": "Éditeur",
       "field_reading_direction": "Sens de lecture",
       "field_sort_title": "Titre pour le tri",
@@ -363,6 +392,8 @@
       "field_summary": "Résumé",
       "field_tags": "Étiquettes",
       "field_title": "Titre",
+      "field_total_book_count": "Nombre total de livres",
+      "field_total_book_count_error": "Le nombre total de livres doit être supérieur ou égal à 1",
       "mixed": "MIXTE",
       "tab_general": "Général",
       "tab_tags": "Étiquettes",
@@ -380,6 +411,11 @@
       "dialog_title": "Modifier les bibliothèques partagées",
       "field_all_libraries": "Toutes les bibliothèques",
       "label_shared_with": "Partagées avec {name}"
+    },
+    "empty_trash": {
+      "body": "Par défaut, le serveur de médias ne supprime pas immédiatement les informations relatives aux médias. Ceci est utile si un lecteur est temporairement déconnecté. Lorsque vous videz la corbeille d'une bibliothèque, toutes les informations relatives aux médias manquants sont supprimées.",
+      "button_confirm": "Vider",
+      "title": "Vider la corbeille de la bibliothèque"
     },
     "file_browser": {
       "button_cancel": "Annuler",
@@ -405,6 +441,11 @@
       "field_new_password_error": "Le nouveau mot de passe est requis.",
       "field_repeat_password": "Répéter le nouveau mot de passe",
       "field_repeat_password_error": "Les mots de passe doivent être identiques."
+    },
+    "refresh_library_metadata": {
+      "body": "Actualise les métadonnées de tous les fichiers média de la bibliothèque. En fonction de la taille de votre bibliothèque, ceci peut prendre un certain temps.",
+      "button_confirm": "Actualiser",
+      "title": "Actualiser les métadonnées pour la bibliothèque"
     },
     "series_picker": {
       "label_search_series": "Chercher une série",
@@ -462,6 +503,12 @@
       "VERTICAL": "Vertical",
       "WEBTOON": "Webtoon"
     },
+    "series_cover": {
+      "FIRST": "Premier",
+      "FIRST_UNREAD_OR_FIRST": "Premier non lu ou premier",
+      "FIRST_UNREAD_OR_LAST": "Premier non lu ou dernier",
+      "LAST": "Dernier"
+    },
     "series_status": {
       "ABANDONED": "Abandonnée",
       "ENDED": "Terminée",
@@ -492,7 +539,8 @@
     "ERR_1019": "Impossible d'importer un fichier faisant partie d'une bibliothèque existante",
     "ERR_1020": "Le livre à mettre à jour n'appartient pas à la série indiquée",
     "ERR_1021": "Le fichier de destination existe déjà",
-    "ERR_1022": "Le livre nouvellement importé n'a pas pu être numérisé"
+    "ERR_1022": "Le livre nouvellement importé n'a pas pu être numérisé",
+    "ERR_1023": "Le livre est déjà présent dans la liste de lecture"
   },
   "filter": {
     "age_rating": "Âge minimal",
@@ -540,11 +588,13 @@
     "add_to_collection": "Ajouter à la collection",
     "add_to_readlist": "Ajouter à la liste de lecture",
     "analyze": "Analyser",
+    "bulk_edit_metadata": "Modifier les métadonnées brutes",
     "delete": "Supprimer",
     "deselect_all": "Tout désélectionner",
     "download_series": "Télécharger la série",
     "edit": "Modifier",
     "edit_metadata": "Modifier les métadonnées",
+    "empty_trash": "Vider la corbeille",
     "mark_read": "Marquer comme lu",
     "mark_unread": "Marquer comme non lu",
     "refresh_metadata": "Actualiser les métadonnées",
@@ -582,6 +632,8 @@
   },
   "server": {
     "server_management": {
+      "button_cancel_all_tasks": "Annuler toutes les tâches",
+      "button_empty_trash": "Vider la corbeille pour toutes les bibliothèques",
       "button_shutdown": "Éteindre",
       "section_title": "Gestion du serveur"
     },

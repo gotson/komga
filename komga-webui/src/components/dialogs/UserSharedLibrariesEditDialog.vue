@@ -55,7 +55,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {ERROR} from "@/types/events";
+import {ERROR} from '@/types/events'
+import {LibraryDto} from '@/types/komga-libraries'
 
 export default Vue.extend({
   name: 'UserSharedLibrariesEditDialog',

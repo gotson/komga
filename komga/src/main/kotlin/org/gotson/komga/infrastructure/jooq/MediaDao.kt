@@ -8,6 +8,7 @@ import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.MediaPageRecord
 import org.gotson.komga.jooq.tables.records.MediaRecord
 import org.jooq.DSLContext
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -15,7 +16,8 @@ import java.time.ZoneId
 
 @Component
 class MediaDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
+  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : MediaRepository {
 
   private val m = Tables.MEDIA
@@ -67,26 +69,28 @@ class MediaDao(
   @Transactional
   override fun insert(medias: Collection<Media>) {
     if (medias.isNotEmpty()) {
-      dsl.batch(
-        dsl.insertInto(
-          m,
-          m.BOOK_ID,
-          m.STATUS,
-          m.MEDIA_TYPE,
-          m.COMMENT,
-          m.PAGE_COUNT
-        ).values(null as String?, null, null, null, null)
-      ).also { step ->
-        medias.forEach {
-          step.bind(
-            it.bookId,
-            it.status,
-            it.mediaType,
-            it.comment,
-            it.pages.size
-          )
-        }
-      }.execute()
+      medias.chunked(batchSize).forEach { chunk ->
+        dsl.batch(
+          dsl.insertInto(
+            m,
+            m.BOOK_ID,
+            m.STATUS,
+            m.MEDIA_TYPE,
+            m.COMMENT,
+            m.PAGE_COUNT
+          ).values(null as String?, null, null, null, null)
+        ).also { step ->
+          chunk.forEach {
+            step.bind(
+              it.bookId,
+              it.status,
+              it.mediaType,
+              it.comment,
+              it.pages.size
+            )
+          }
+        }.execute()
+      }
 
       insertPages(medias)
       insertFiles(medias)
@@ -95,51 +99,55 @@ class MediaDao(
 
   private fun insertPages(medias: Collection<Media>) {
     if (medias.any { it.pages.isNotEmpty() }) {
-      dsl.batch(
-        dsl.insertInto(
-          p,
-          p.BOOK_ID,
-          p.FILE_NAME,
-          p.MEDIA_TYPE,
-          p.NUMBER,
-          p.WIDTH,
-          p.HEIGHT
-        ).values(null as String?, null, null, null, null, null)
-      ).also {
-        medias.forEach { media ->
-          media.pages.forEachIndexed { index, page ->
-            it.bind(
-              media.bookId,
-              page.fileName,
-              page.mediaType,
-              index,
-              page.dimension?.width,
-              page.dimension?.height
-            )
+      medias.chunked(batchSize).forEach { chunk ->
+        dsl.batch(
+          dsl.insertInto(
+            p,
+            p.BOOK_ID,
+            p.FILE_NAME,
+            p.MEDIA_TYPE,
+            p.NUMBER,
+            p.WIDTH,
+            p.HEIGHT
+          ).values(null as String?, null, null, null, null, null)
+        ).also { step ->
+          chunk.forEach { media ->
+            media.pages.forEachIndexed { index, page ->
+              step.bind(
+                media.bookId,
+                page.fileName,
+                page.mediaType,
+                index,
+                page.dimension?.width,
+                page.dimension?.height
+              )
+            }
           }
-        }
-      }.execute()
+        }.execute()
+      }
     }
   }
 
   private fun insertFiles(medias: Collection<Media>) {
     if (medias.any { it.files.isNotEmpty() }) {
-      dsl.batch(
-        dsl.insertInto(
-          f,
-          f.BOOK_ID,
-          f.FILE_NAME
-        ).values(null as String?, null)
-      ).also { step ->
-        medias.forEach { media ->
-          media.files.forEach {
-            step.bind(
-              media.bookId,
-              it
-            )
+      medias.chunked(batchSize).forEach { chunk ->
+        dsl.batch(
+          dsl.insertInto(
+            f,
+            f.BOOK_ID,
+            f.FILE_NAME
+          ).values(null as String?, null)
+        ).also { step ->
+          chunk.forEach { media ->
+            media.files.forEach {
+              step.bind(
+                media.bookId,
+                it
+              )
+            }
           }
-        }
-      }.execute()
+        }.execute()
+      }
     }
   }
 

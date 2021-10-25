@@ -1,6 +1,6 @@
-import {PageDtoWithUrl} from "@/types/komga-books"
-import {PagedReaderLayout} from "@/types/enum-reader"
-import {isPageLandscape} from "@/functions/page"
+import {PageDtoWithUrl} from '@/types/komga-books'
+import {PagedReaderLayout} from '@/types/enum-reader'
+import {isPageLandscape} from '@/functions/page'
 import {cloneDeep} from 'lodash'
 
 

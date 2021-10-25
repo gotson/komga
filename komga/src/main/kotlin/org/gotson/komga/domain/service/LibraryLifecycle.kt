@@ -12,7 +12,7 @@ import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.SidecarRepository
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.support.TransactionTemplate
 import java.io.FileNotFoundException
 import java.nio.file.Files
 
@@ -26,6 +26,7 @@ class LibraryLifecycle(
   private val sidecarRepository: SidecarRepository,
   private val taskReceiver: TaskReceiver,
   private val eventPublisher: EventPublisher,
+  private val transactionTemplate: TransactionTemplate,
 ) {
 
   @Throws(
@@ -78,15 +79,16 @@ class LibraryLifecycle(
     }
   }
 
-  @Transactional
   fun deleteLibrary(library: Library) {
     logger.info { "Deleting library: $library" }
 
     val series = seriesRepository.findAllByLibraryId(library.id)
-    seriesLifecycle.deleteMany(series)
-    sidecarRepository.deleteByLibraryId(library.id)
+    transactionTemplate.executeWithoutResult {
+      seriesLifecycle.deleteMany(series)
+      sidecarRepository.deleteByLibraryId(library.id)
 
-    libraryRepository.delete(library.id)
+      libraryRepository.delete(library.id)
+    }
 
     eventPublisher.publishEvent(DomainEvent.LibraryDeleted(library))
   }

@@ -8,12 +8,9 @@ import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.springframework.security.core.session.SessionRegistry
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.support.TransactionTemplate
 
 private val logger = KotlinLogging.logger {}
 
@@ -24,13 +21,9 @@ class KomgaUserLifecycle(
   private val authenticationActivityRepository: AuthenticationActivityRepository,
   private val passwordEncoder: PasswordEncoder,
   private val sessionRegistry: SessionRegistry,
+  private val transactionTemplate: TransactionTemplate,
 
-) : UserDetailsService {
-
-  override fun loadUserByUsername(username: String): UserDetails =
-    userRepository.findByEmailIgnoreCaseOrNull(username)?.let {
-      KomgaPrincipal(it)
-    } ?: throw UsernameNotFoundException(username)
+) {
 
   fun updatePassword(user: KomgaUser, newPassword: String, expireSessions: Boolean) {
     logger.info { "Changing password for user ${user.email}" }
@@ -53,23 +46,22 @@ class KomgaUserLifecycle(
     return createdUser
   }
 
-  @Transactional
   fun deleteUser(user: KomgaUser) {
     logger.info { "Deleting user: $user" }
 
-    readProgressRepository.deleteByUserId(user.id)
-    authenticationActivityRepository.deleteByUser(user)
-    userRepository.delete(user.id)
+    transactionTemplate.executeWithoutResult {
+      readProgressRepository.deleteByUserId(user.id)
+      authenticationActivityRepository.deleteByUser(user)
+      userRepository.delete(user.id)
+    }
 
     expireSessions(user)
   }
 
   private fun expireSessions(user: KomgaUser) {
     logger.info { "Expiring all sessions for user: ${user.email}" }
-    sessionRegistry.allPrincipals
-      .filterIsInstance<KomgaPrincipal>()
-      .filter { it.user.id == user.id }
-      .flatMap { sessionRegistry.getAllSessions(it, false) }
+    sessionRegistry
+      .getAllSessions(KomgaPrincipal(user), false)
       .forEach {
         logger.info { "Expiring session: ${it.sessionId}" }
         it.expireNow()

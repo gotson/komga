@@ -9,23 +9,28 @@ import java.net.URL
 
 interface BookRepository {
   fun findByIdOrNull(bookId: String): Book?
-  fun findByLibraryIdAndUrlOrNull(libraryId: String, url: URL): Book?
+  fun findNotDeletedByLibraryIdAndUrlOrNull(libraryId: String, url: URL): Book?
 
   fun findAll(): Collection<Book>
   fun findAllBySeriesId(seriesId: String): Collection<Book>
   fun findAllBySeriesIds(seriesIds: Collection<String>): Collection<Book>
+  fun findAllNotDeletedByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): Collection<Book>
   fun findAll(bookSearch: BookSearch): Collection<Book>
   fun findAll(bookSearch: BookSearch, pageable: Pageable): Page<Book>
+  fun findAllDeletedByFileSize(fileSize: Long): Collection<Book>
 
   fun getLibraryIdOrNull(bookId: String): String?
   fun getSeriesIdOrNull(bookId: String): String?
   fun findFirstIdInSeriesOrNull(seriesId: String): String?
+  fun findLastIdInSeriesOrNull(seriesId: String): String?
+  fun findFirstUnreadIdInSeriesOrNull(seriesId: String, userId: String): String?
 
   fun findAllIdsBySeriesId(seriesId: String): Collection<String>
   fun findAllIdsBySeriesIds(seriesIds: Collection<String>): Collection<String>
   fun findAllIdsByLibraryId(libraryId: String): Collection<String>
   fun findAllIdsByLibraryIdAndMediaTypes(libraryId: String, mediaTypes: Collection<String>): Collection<String>
   fun findAllIdsByLibraryIdAndMismatchedExtension(libraryId: String, mediaType: String, extension: String): Collection<String>
+  fun findAllIdsByLibraryIdAndWithEmptyHash(libraryId: String): Collection<String>
   fun findAllIds(bookSearch: BookSearch, sort: Sort): Collection<String>
 
   fun insert(book: Book)

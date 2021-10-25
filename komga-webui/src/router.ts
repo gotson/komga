@@ -2,7 +2,7 @@ import urls from '@/functions/urls'
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from './store'
-import {LIBRARIES_ALL, LIBRARY_ROUTE} from "@/types/library"
+import {LIBRARIES_ALL, LIBRARY_ROUTE} from '@/types/library'
 
 const qs = require('qs')
 
@@ -217,8 +217,25 @@ router.beforeEach((to, from, next) => {
   if (!['read-book', 'browse-book', 'browse-series'].includes(<string>to.name)) {
     document.title = 'Komga'
   }
+
+  if (window.opener !== null &&
+    window.name === 'oauth2Login' &&
+    to.query.server_redirect === 'Y'
+  ) {
+    if (!to.query.error) {
+      // authentication succeeded, we redirect the parent window so that it can login via cookie
+      window.opener.location.href = urls.origin
+    } else {
+      // authentication failed, we cascade the error message to the parent
+      window.opener.location.href = window.location
+    }
+    // we can close the popup
+    window.close()
+  }
+
   if (to.name !== 'startup' && to.name !== 'login' && !lStore.getters.authenticated) {
-    next({name: 'startup', query: {redirect: to.fullPath}})
+    const query = Object.assign({}, to.query, {redirect: to.fullPath})
+    next({name: 'startup', query: query})
   } else next()
 })
 

@@ -1,4 +1,6 @@
-interface LibraryCreationDto {
+import {SeriesCoverDto} from '@/types/enum-libraries'
+
+export interface LibraryCreationDto {
   name: string,
   root: string,
   importComicInfoBook: boolean,
@@ -7,15 +9,18 @@ interface LibraryCreationDto {
   importComicInfoReadList: boolean,
   importEpubBook: boolean,
   importEpubSeries: boolean,
+  importMylarSeries: boolean,
   importLocalArtwork: boolean,
   importBarcodeIsbn: boolean,
   scanForceModifiedTime: boolean,
   scanDeep: boolean,
   repairExtensions: boolean,
-  convertToCbz: boolean
+  convertToCbz: boolean,
+  emptyTrashAfterScan: boolean,
+  seriesCover: SeriesCoverDto,
 }
 
-interface LibraryUpdateDto {
+export interface LibraryUpdateDto {
   name: string,
   root: string,
   importComicInfoBook: boolean,
@@ -24,15 +29,18 @@ interface LibraryUpdateDto {
   importComicInfoReadList: boolean,
   importEpubBook: boolean,
   importEpubSeries: boolean,
+  importMylarSeries: boolean,
   importLocalArtwork: boolean,
   importBarcodeIsbn: boolean,
   scanForceModifiedTime: boolean,
   scanDeep: boolean,
   repairExtensions: boolean,
-  convertToCbz: boolean
+  convertToCbz: boolean,
+  emptyTrashAfterScan: boolean,
+  seriesCover: SeriesCoverDto,
 }
 
-interface LibraryDto {
+export interface LibraryDto {
   id: string,
   name: string,
   root: string,
@@ -42,10 +50,14 @@ interface LibraryDto {
   importComicInfoReadList: boolean,
   importEpubBook: boolean,
   importEpubSeries: boolean,
+  importMylarSeries: boolean,
   importLocalArtwork: boolean,
   importBarcodeIsbn: boolean,
   scanForceModifiedTime: boolean,
   scanDeep: boolean,
   repairExtensions: boolean,
-  convertToCbz: boolean
+  convertToCbz: boolean,
+  emptyTrashAfterScan: boolean,
+  seriesCover: SeriesCoverDto,
+  unavailable: boolean,
 }
