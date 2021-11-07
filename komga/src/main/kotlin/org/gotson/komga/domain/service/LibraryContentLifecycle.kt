@@ -264,6 +264,7 @@ class LibraryContentLifecycle(
               deleted.copy(
                 seriesId = newSeries.id,
                 title = if (deleted.titleLock) deleted.title else newlyAdded.title,
+                titleSort = if (deleted.titleSortLock) deleted.titleSort else newlyAdded.titleSort
               )
             )
           }

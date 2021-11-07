@@ -1379,7 +1379,7 @@ class LibraryContentLifecycleTest(
       libraryContentLifecycle.scanRootFolder(library) // creation
 
       seriesRepository.findAll().first().let {
-        seriesMetadataRepository.update(seriesMetadataRepository.findById(it.id).copy(title = "Updated", titleLock = true))
+        seriesMetadataRepository.update(seriesMetadataRepository.findById(it.id).copy(title = "Updated", titleLock = true, titleSort = "SortTitle", titleSortLock = true))
       }
 
       bookRepository.findAll().forEach { book ->
@@ -1404,6 +1404,8 @@ class LibraryContentLifecycleTest(
         seriesMetadataRepository.findById(series2.id).let {
           assertThat(it.title).isEqualTo("Updated")
           assertThat(it.titleLock).isTrue
+          assertThat(it.titleSort).isEqualTo("SortTitle")
+          assertThat(it.titleSortLock).isTrue
         }
         assertThat(bookRepository.findAllBySeriesId(series2.id)).hasSize(2)
       }
@@ -1444,7 +1446,10 @@ class LibraryContentLifecycleTest(
       assertThat(allSeries).hasSize(1)
       allSeries.first().let { series2 ->
         assertThat(series2.name).isEqualTo("series2")
-        assertThat(seriesMetadataRepository.findById(series2.id).title).isEqualTo("series2")
+        with(seriesMetadataRepository.findById(series2.id)) {
+          assertThat(title).isEqualTo("series2")
+          assertThat(titleSort).isEqualTo("series2")
+        }
         assertThat(bookRepository.findAllBySeriesId(series2.id)).hasSize(2)
       }
 
