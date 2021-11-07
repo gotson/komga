@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository
@@ -32,7 +31,6 @@ class SecurityConfiguration(
   private val komgaUserDetailsLifecycle: UserDetailsService,
   private val oauth2UserService: OAuth2UserService<OAuth2UserRequest, OAuth2User>,
   private val oidcUserService: OAuth2UserService<OidcUserRequest, OidcUser>,
-  private val sessionRegistry: SessionRegistry,
   private val sessionCookieName: String,
   private val userAgentWebAuthenticationDetailsSource: WebAuthenticationDetailsSource,
   clientRegistrationRepository: InMemoryClientRegistrationRepository?,
@@ -77,10 +75,6 @@ class SecurityConfiguration(
         it.deleteCookies(sessionCookieName)
         it.invalidateHttpSession(true)
       }
-
-      .sessionManagement()
-      .maximumSessions(10)
-      .sessionRegistry(sessionRegistry)
 
     if (oauth2Enabled) {
       http.oauth2Login { oauth2 ->
