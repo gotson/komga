@@ -1,3 +1,11 @@
+## [0.132.1](https://github.com/gotson/komga/compare/v0.132.0...v0.132.1) (2021-11-07)
+
+
+### Bug Fixes
+
+* remove session concurrency ([ac05560](https://github.com/gotson/komga/commit/ac0556044f98b70f7bbc737f05dd342c73afae98)), closes [#717](https://github.com/gotson/komga/issues/717)
+* series titleSort not updated when folder is renamed ([b972601](https://github.com/gotson/komga/commit/b9726018565f07b067aa65c9c05aeba20bcaa05e)), closes [#718](https://github.com/gotson/komga/issues/718)
+
 # [0.132.0](https://github.com/gotson/komga/compare/v0.131.0...v0.132.0) (2021-10-06)
 
 
