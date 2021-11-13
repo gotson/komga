@@ -1,0 +1,15 @@
+{
+  "$vuetify": {
+    "dataIterator": {
+      "loadingText": "ምጽዓን ነገራት...",
+      "noResultsText": "መወዳድርቲ ዘይብሉ መዝገብ"
+    }
+  },
+  "authentication_activity": {
+    "email": "ኢሜል",
+    "error": "ጌጋ"
+  },
+  "common": {
+    "locale_name": "ኢንግሊሽ"
+  }
+}

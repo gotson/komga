@@ -25,7 +25,8 @@
     "datetime": "Fecha y Hora",
     "email": "Correo",
     "error": "Error",
-    "ip": "Ip",
+    "ip": "IP",
+    "source": "Fuente",
     "success": "Correcto",
     "user_agent": "Agente de Usuario"
   },
@@ -98,7 +99,8 @@
       "height": "Ajustar a altura",
       "original": "Original",
       "screen": "Pantalla",
-      "width": "Ajustar a ancho"
+      "width": "Ajustar a ancho",
+      "width_shrink_only": "Ajustar ancho (solo encoger)"
     },
     "settings": {
       "always_fullscreen": "Siempre Pantalla Completa",
@@ -194,6 +196,7 @@
     "library": "Biblioteca",
     "locale_name": "Español",
     "locale_rtl": "false",
+    "lock_all": "Bloquear todas",
     "n_selected": "Nada seleccionado | 1 seleccionado | {count} seleccionados",
     "nothing_to_show": "Nada que mostrar",
     "outdated": "Desactualizado",
@@ -210,6 +213,7 @@
     "series": "Serie",
     "tags": "Etiquetas",
     "unavailable": "No disponible",
+    "unlock_all": "Desbloquear todo",
     "use_filter_panel_to_change_filter": "Use el panel de filtros para cambiar el filtro activo",
     "year": "año"
   },
@@ -393,6 +397,7 @@
       "field_total_book_count_error": "El recuento total de libros debe ser 1 o más",
       "mixed": "MIXTO",
       "tab_general": "General",
+      "tab_poster": "Portada",
       "tab_tags": "Etiquetas",
       "tags_notice_multiple_edit": "Estás editando las etiquetas de varias series. Esto sobreescribirá las etiquetas existentes en cada una."
     },
@@ -536,7 +541,11 @@
     "ERR_1019": "No se puede importar un archivo que es parte de una librería existente",
     "ERR_1020": "Libro a actualizar no pertenece a la serie proveída",
     "ERR_1021": "Archivo de destino ya existe",
-    "ERR_1022": "No se ha podido escanear el libro recién importado"
+    "ERR_1022": "No se ha podido escanear el libro recién importado",
+    "ERR_1023": "Libro ya presente en Lista de Lectura",
+    "ERR_1024": "Error de inicio de sesión OAuth2: sin atributo email",
+    "ERR_1025": "Error de inicio de sesión OAuth2: no existe usuario local con ese correo",
+    "ERR_1026": "Error de inicio de sesión de OpenID Connect: correo no verificado"
   },
   "filter": {
     "age_rating": "edad mínima",
@@ -584,8 +593,10 @@
     "add_to_collection": "Añadir a colección",
     "add_to_readlist": "Añadir a lista de lectura",
     "analyze": "Analizar",
+    "bulk_edit_metadata": "Editar metadatos en cantidad",
     "delete": "Eliminar",
     "deselect_all": "Deseleccionar todo",
+    "download_readlist": "Descargar lista de lectura",
     "download_series": "Descargar serie",
     "edit": "Editar",
     "edit_metadata": "Editar metadatos",
@@ -627,7 +638,11 @@
   },
   "server": {
     "server_management": {
+      "button_cancel_all_tasks": "Cancelar todas las tareas",
+      "button_empty_trash": "Limpiar papelera para todas las librerías",
+      "button_scan_libraries": "Escanear todas las librerías",
       "button_shutdown": "Apagar",
+      "notification_tasks_cancelled": "No hay tareas para cancelar | Una tarea cancelada | {count} tareas canceladas",
       "section_title": "Administración de Servidor"
     },
     "tab_title": "Servidor"
@@ -659,6 +674,16 @@
     "dark": "Oscuro",
     "light": "Claro",
     "system": "Sistema"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "Eliminar",
+    "tooltip_mark_as_selected": "Marcar como seleccionado",
+    "tooltip_selected": "Seleccionado",
+    "tooltip_sidecar": "Arte local",
+    "tooltip_to_be_deleted": "A elimir",
+    "tooltip_to_be_uploaded": "A subir",
+    "tooltip_too_big": "¡Archivo muy grande!",
+    "tooltip_user_uploaded": "Subido por usuario"
   },
   "user_roles": {
     "ADMIN": "Administrador",
