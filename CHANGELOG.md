@@ -1,3 +1,10 @@
+## [0.132.2](https://github.com/gotson/komga/compare/v0.132.1...v0.132.2) (2021-11-16)
+
+
+### Bug Fixes
+
+* **webreader:** jump to previous or next book via keyboard ([ac3d969](https://github.com/gotson/komga/commit/ac3d969a0f79bc1888be8d356caf364dd1e568cb)), closes [#722](https://github.com/gotson/komga/issues/722)
+
 ## [0.132.1](https://github.com/gotson/komga/compare/v0.132.0...v0.132.1) (2021-11-07)
 
 
