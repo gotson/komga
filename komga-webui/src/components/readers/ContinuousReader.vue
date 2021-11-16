@@ -39,6 +39,7 @@
 import Vue from 'vue'
 import {ContinuousScaleType} from '@/types/enum-reader'
 import {PageDtoWithUrl} from '@/types/komga-books'
+import {throttle} from 'lodash'
 
 export default Vue.extend({
   name: 'ContinuousReader',
@@ -81,7 +82,7 @@ export default Vue.extend({
       immediate: true,
     },
     page: {
-      handler (val) {
+      handler(val) {
         if (val != this.currentPage) {
           this.$vuetify.goTo(`#page${val}`, {
             duration: 0,
@@ -90,6 +91,12 @@ export default Vue.extend({
       },
       immediate: false,
     },
+  },
+  created() {
+    window.addEventListener('keydown', this.keyPressed)
+  },
+  destroyed() {
+    window.removeEventListener('keydown', this.keyPressed)
   },
   mounted() {
     if (this.page != this.currentPage) {
@@ -114,6 +121,19 @@ export default Vue.extend({
     },
   },
   methods: {
+    keyPressed: throttle(function (this: any, e: KeyboardEvent) {
+      switch (e.key) {
+        case ' ':
+        case 'PageDown':
+        case 'ArrowDown':
+          if (!this.canNext) this.$emit('jump-next')
+          break
+        case 'PageUp':
+        case 'ArrowUp':
+          if (!this.canPrev) this.$emit('jump-previous')
+          break
+      }
+    }, 500),
     onScroll(e: any) {
       this.offsetTop = e.target.scrollingElement.scrollTop
       this.totalHeight = e.target.scrollingElement.scrollHeight
