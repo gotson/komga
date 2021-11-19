@@ -1,7 +1,7 @@
 <template>
   <label class="drop-zone" v-cloak @drop.prevent="dropHandler" @dragover.prevent>
     <span class="file-input">Choose an image</span> - drag and drop
-    <input hidden aria-hidden="true" type="file" accept="image/*" multiple @change="dropHandler" >
+    <input ref="input" hidden aria-hidden="true" type="file" accept="image/*" multiple @change="dropHandler">
   </label>
 </template>
 
@@ -24,6 +24,9 @@ export default Vue.extend({
 
         this.$emit('on-input-change', Array.from(selectedFiles))
       }
+    },
+    reset() {
+      (this.$refs.input as HTMLInputElement).value = ''
     },
   },
 })
