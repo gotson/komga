@@ -1,3 +1,12 @@
+## [0.132.3](https://github.com/gotson/komga/compare/v0.132.2...v0.132.3) (2021-11-22)
+
+
+### Bug Fixes
+
+* use more specific error code when file is not found during analysis ([ebfc5e1](https://github.com/gotson/komga/commit/ebfc5e13764ee49cfab897f872b3a26e22654b14))
+* **webui:** series cover uploads ([#729](https://github.com/gotson/komga/issues/729)) ([32f4d7f](https://github.com/gotson/komga/commit/32f4d7f651ee0243a42e516f7c891d6888fa50db))
+* added translation using Weblate (Romanian, Tigrinya) ([9199407](https://github.com/gotson/komga/commit/91994076448bca56600a4d62774548cdcff31384))
+
 ## [0.132.2](https://github.com/gotson/komga/compare/v0.132.1...v0.132.2) (2021-11-16)
 
 

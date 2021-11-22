@@ -7798,7 +7798,7 @@
         ]
       },
       "patch": {
-        "operationId": "getProviders_2",
+        "operationId": "getProviders_3",
         "responses": {
           "200": {
             "description": "OK",
@@ -7860,7 +7860,7 @@
         ]
       },
       "get": {
-        "operationId": "getProviders_1",
+        "operationId": "getProviders_2",
         "responses": {
           "200": {
             "description": "OK",
@@ -7891,7 +7891,7 @@
         ]
       },
       "options": {
-        "operationId": "getProviders_5",
+        "operationId": "getProviders_4",
         "responses": {
           "200": {
             "description": "OK",
@@ -7922,7 +7922,7 @@
         ]
       },
       "delete": {
-        "operationId": "getProviders_3",
+        "operationId": "getProviders_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -7953,7 +7953,7 @@
         ]
       },
       "put": {
-        "operationId": "getProviders_4",
+        "operationId": "getProviders_5",
         "responses": {
           "200": {
             "description": "OK",
