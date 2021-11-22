@@ -4,7 +4,8 @@
       "pageText": "{2} 件中の {0}〜{1}"
     },
     "dataIterator": {
-      "loadingText": "書籍を読込中..."
+      "loadingText": "アイテムをロードしています…",
+      "noResultsText": "該当する記録は見つかりません"
     },
     "dataTable": {
       "itemsPerPageText": "ページ毎の行数:",
@@ -18,25 +19,26 @@
   },
   "account_settings": {
     "account_settings": "アカウント設定",
-    "change_password": "パスワード変更"
+    "change_password": "パスワードの変更"
   },
   "authentication_activity": {
-    "datetime": "日時",
+    "datetime": "日 / 時",
     "email": "メールアドレス",
     "error": "エラー",
     "ip": "IP",
+    "source": "ソース",
     "success": "成功",
-    "user_agent": "User Agent"
+    "user_agent": "ユーザーエージェント"
   },
   "author_roles": {
     "colorist": "カラリスト",
-    "cover": "カバー",
+    "cover": "表紙",
     "editor": "エディター",
     "inker": "インカー",
     "letterer": "レタラー",
     "penciller": "ペンシラー",
-    "translator": "トランスレーター",
-    "writer": "ライター"
+    "translator": "翻訳",
+    "writer": "著者"
   },
   "book_card": {
     "error": "エラー",
@@ -93,17 +95,20 @@
     "reader_settings": "リーダー設定",
     "scale_type": {
       "continuous_original": "オリジナル",
-      "continuous_width": "幅にあわせる",
-      "height": "高さにあわせる",
+      "continuous_width": "幅に合わせる",
+      "height": "高さに合わせる",
       "original": "オリジナル",
-      "screen": "画面にあわせる",
-      "width": "幅にあわせる"
+      "screen": "画面に合わせる",
+      "width": "幅にあわせる",
+      "width_shrink_only": "フィット幅(縮小のみ)"
     },
     "settings": {
-      "animate_page_transitions": "ページめくりのアニメーション",
+      "always_fullscreen": "常に全画面",
+      "animate_page_transitions": "ページ遷移エフェクトを表示",
       "background_color": "背景色",
       "background_colors": {
         "black": "黒",
+        "gray": "グレー",
         "white": "白"
       },
       "display": "表示",
@@ -111,7 +116,7 @@
       "gestures": "ジェスチャー",
       "page_layout": "ページレイアウト",
       "paged": "リーダーのページ設定",
-      "reading_mode": "読書モード",
+      "reading_mode": "ビューアモード",
       "scale_type": "大きさ",
       "side_padding": "左右の余白",
       "side_padding_none": "なし",
@@ -147,6 +152,7 @@
     "format": "フォーマット",
     "isbn": "ISBN",
     "navigation_within_readlist": "この読書リスト内の一覧: {name}",
+    "outdated_tooltip": "この本のファイルが変更されました。この本を再分析する必要があります",
     "read_book": "書籍を読む",
     "size": "サイズ"
   },
@@ -178,26 +184,35 @@
     "collections": "コレクション",
     "create": "作成",
     "delete": "削除",
+    "dismiss": "却下",
     "download": "ダウンロード",
     "email": "メールアドレス",
     "filter_no_matches": "フィルタに一致するものはありません",
     "genre": "ジャンル",
     "go_to_library": "ライブラリへ移動",
+    "go_to_readlist": "リストを開く",
     "go_to_series": "シリーズへ移動",
+    "library": "ライブラリー",
     "locale_name": "日本語",
     "locale_rtl": "false",
+    "lock_all": "すべてをロックする",
     "n_selected": "{count} 冊を選択中",
     "nothing_to_show": "表示するものはありません",
+    "outdated": "古い",
     "pages": "ページ",
     "pages_n": "0 ページ | 1 ページ | {count} ページ",
     "password": "パスワード",
+    "pending_tasks": "保留中のタスクなし | 1タスク保留中 | {count} タスク保留中",
     "publisher": "出版社",
     "read": "読む",
     "readlists": "読書リスト",
     "required": "必須",
+    "reset_filters": "フィルタのリセット",
     "roles": "役割",
     "series": "シリーズ",
     "tags": "タグ",
+    "unavailable": "利用できません",
+    "unlock_all": "全てアンロック",
     "use_filter_panel_to_change_filter": "フィルターパネルを使って有効なフィルタを変更する",
     "year": "年"
   },
@@ -206,6 +221,8 @@
     "on_deck": "次に読む",
     "recently_added_books": "最近追加された書籍",
     "recently_added_series": "最近追加されたシリーズ",
+    "recently_read_books": "最近読んだ本",
+    "recently_released_books": "最近リリースされた本",
     "recently_updated_series": "最近更新されたシリーズ"
   },
   "data_import": {
@@ -249,11 +266,19 @@
       "field_role_page_streaming": "ストリーム配信",
       "label_roles": "役割"
     },
+    "analyze_library": {
+      "body": "ライブラリ内のすべてのメディアファイルを解析します。解析によりメディアの情報を収集します。ライブラリのサイズによっては、時間がかかる場合があります。",
+      "button_confirm": "解析",
+      "title": "ライブラリを解析"
+    },
     "delete_collection": {
       "button_confirm": "削除",
       "confirm_delete": "はい、コレクション「{name}」を削除します",
+      "confirm_delete_multiple": "はい、{count}件 コレクションを削除します",
       "dialog_title": "コレクションを削除",
-      "warning_html": "コレクション <b>{name}</b> はこのサーバから削除されます。メディアファイルには影響しません。削除はなかったことに<b>できません</b>。続けますか？"
+      "dialog_title_multiple": "コレクションを削除",
+      "warning_html": "コレクション <b>{name}</b> はこのサーバから削除されます。メディアファイルには影響しません。削除はなかったことに<b>できません</b>。続けますか？",
+      "warning_multiple_html": "{count}件のコレクションがサーバーより削除されます。メディアファイルは影響を受けません。<b>この操作は元に戻すことができません。</b>続けますか？"
     },
     "delete_library": {
       "button_confirm": "削除",
@@ -264,8 +289,11 @@
     "delete_readlist": {
       "button_confirm": "削除",
       "confirm_delete": "はい、読書リスト「{name}」を削除します",
+      "confirm_delete_multiple": "はい、{count}件の読書リストを削除します",
       "dialog_title": "読書リストを削除",
-      "warning_html": "読書リスト<b>{name}</b>はこのサーバから削除されます。メディアファイルには影響しません。削除はなかったことに<b>できません</b>。続けますか？"
+      "dialog_title_multiple": "読書リストを削除",
+      "warning_html": "読書リスト<b>{name}</b>はこのサーバから削除されます。メディアファイルには影響しません。削除はなかったことに<b>できません</b>。続けますか？",
+      "warning_multiple_html": "{count}件の読書リストが削除されます。メディアファイルには影響しません。<b>取り消すことはできません</b>。よろしいですか？"
     },
     "delete_user": {
       "button_confirm": "削除",
@@ -306,6 +334,7 @@
       "button_cancel": "キャンセル",
       "button_confirm_add": "追加",
       "button_confirm_edit": "編集",
+      "button_next": "次へ",
       "dialog_title_add": "ライブラリを追加",
       "dialot_title_edit": "ライブラリを編集",
       "field_convert_to_cbz": "自動的にCBZに変換",
@@ -317,11 +346,14 @@
       "field_import_epub_book": "書誌情報",
       "field_import_epub_series": "シリーズ情報",
       "field_import_local_artwork": "ローカルのアートワーク",
+      "field_import_mylar_series": "シリーズ情報",
       "field_name": "ライブラリ名",
       "field_repair_extensions": "不正なファイル拡張子を自動的に修復",
       "field_root_folder": "ルートフォルダ",
       "field_scanner_deep_scan": "ディープスキャン",
+      "field_scanner_empty_trash_after_scan": "スキャン後、ゴミ箱を自動的に空する",
       "field_scanner_force_directory_modified_time": "ディレクトリの変更時刻が更新されているものと見なす",
+      "field_series_cover": "シリーズカバー",
       "file_browser_dialog_button_confirm": "選択",
       "file_browser_dialog_title": "ライブラリのルートフォルダ",
       "label_file_management": "ファイル管理",
@@ -329,15 +361,19 @@
       "label_import_comicinfo": "ComicInfo.xml ファイルを含んだ CBR/CBZ から情報をインポート",
       "label_import_epub": "EPUB ファイルから書誌情報をインポート",
       "label_import_local": "ローカルのメディアをインポート",
+      "label_import_mylar": "Mylar によって生成されたメタデータをインポートする",
       "label_scanner": "スキャナ",
+      "label_series_cover": "シリーズカバー",
       "tab_general": "一般",
+      "tab_metadata": "メタデータ",
       "tab_options": "オプション"
     },
     "edit_readlist": {
       "button_cancel": "キャンセル",
       "button_confirm": "変更を保存",
       "dialog_title": "読書リストを編集",
-      "field_name": "リスト名"
+      "field_name": "リスト名",
+      "field_summary": "概要"
     },
     "edit_series": {
       "button_cancel": "キャンセル",
@@ -348,6 +384,7 @@
       "field_age_rating_error": "年齢レーティングは 0 以上にしてください",
       "field_genres": "ジャンル",
       "field_language": "言語",
+      "field_language_hint": "IETF BCP 47 言語タグ",
       "field_publisher": "出版社",
       "field_reading_direction": "読み方向",
       "field_sort_title": "ソート用タイトル",
@@ -355,8 +392,11 @@
       "field_summary": "サマリ",
       "field_tags": "タグ",
       "field_title": "タイトル",
+      "field_total_book_count": "総冊数",
+      "field_total_book_count_error": "総冊数が1冊以上である必要があります",
       "mixed": "MIXED",
       "tab_general": "全般",
+      "tab_poster": "ポスター",
       "tab_tags": "タグ",
       "tags_notice_multiple_edit": "複数シリーズまとめてタグを編集しています。それぞれのシリーズのタグより優先されるようになります。"
     },
@@ -372,6 +412,11 @@
       "dialog_title": "共有ライブラリを編集",
       "field_all_libraries": "全ライブラリ",
       "label_shared_with": "{name} と共有"
+    },
+    "empty_trash": {
+      "body": "デフォルトでは、メディアサーバーはメディアの情報をすぐには削除しません。これは、ドライブが一時的に切断された場合に役立ちます。ライブラリのゴミ箱を空にすると、見つからないメディアに関するすべての情報が削除されます。",
+      "button_confirm": "空",
+      "title": "ライブラリのゴミ箱を空にする"
     },
     "file_browser": {
       "button_cancel": "キャンセル",

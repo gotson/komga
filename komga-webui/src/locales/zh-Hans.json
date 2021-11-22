@@ -596,6 +596,7 @@
     "bulk_edit_metadata": "批量编辑元数据",
     "delete": "删除",
     "deselect_all": "取消选中所有",
+    "download_readlist": "下载阅读列表",
     "download_series": "下载系列",
     "edit": "编辑",
     "edit_metadata": "编辑元数据",
