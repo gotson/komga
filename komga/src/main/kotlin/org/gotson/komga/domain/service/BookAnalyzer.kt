@@ -13,6 +13,7 @@ import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.mediacontainer.MediaContainerExtractor
 import org.springframework.stereotype.Service
 import java.nio.file.AccessDeniedException
+import java.nio.file.NoSuchFileException
 
 private val logger = KotlinLogging.logger {}
 
@@ -75,6 +76,9 @@ class BookAnalyzer(
     } catch (ade: AccessDeniedException) {
       logger.error(ade) { "Error while analyzing book: $book" }
       return Media(status = Media.Status.ERROR, comment = "ERR_1000", bookId = book.id)
+    } catch (ex: NoSuchFileException) {
+      logger.error(ex) { "Error while analyzing book: $book" }
+      return Media(status = Media.Status.ERROR, comment = "ERR_1018", bookId = book.id)
     } catch (ex: Exception) {
       logger.error(ex) { "Error while analyzing book: $book" }
       return Media(status = Media.Status.ERROR, comment = "ERR_1005", bookId = book.id)
