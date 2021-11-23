@@ -12,9 +12,12 @@ import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
+import org.gotson.komga.domain.model.ThumbnailSeriesCollection
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
+import org.gotson.komga.domain.persistence.ThumbnailSeriesCollectionRepository
 import org.gotson.komga.domain.service.SeriesCollectionLifecycle
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
+import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.AuthorsAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
@@ -23,6 +26,7 @@ import org.gotson.komga.interfaces.rest.dto.CollectionCreationDto
 import org.gotson.komga.interfaces.rest.dto.CollectionDto
 import org.gotson.komga.interfaces.rest.dto.CollectionUpdateDto
 import org.gotson.komga.interfaces.rest.dto.SeriesDto
+import org.gotson.komga.interfaces.rest.dto.ThumbnailSeriesCollectionDto
 import org.gotson.komga.interfaces.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.rest.dto.toDto
 import org.gotson.komga.interfaces.rest.persistence.SeriesDtoRepository
@@ -41,11 +45,13 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
 import java.util.concurrent.TimeUnit
 import javax.validation.Valid
@@ -57,7 +63,9 @@ private val logger = KotlinLogging.logger {}
 class SeriesCollectionController(
   private val collectionRepository: SeriesCollectionRepository,
   private val collectionLifecycle: SeriesCollectionLifecycle,
-  private val seriesDtoRepository: SeriesDtoRepository
+  private val seriesDtoRepository: SeriesDtoRepository,
+  private val contentDetector: ContentDetector,
+  private val thumbnailSeriesCollectionRepository: ThumbnailSeriesCollectionRepository,
 ) {
 
   @PageableWithoutSortAsQueryParam
@@ -109,6 +117,84 @@ class SeriesCollectionController(
       return ResponseEntity.ok()
         .cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS).cachePrivate())
         .body(collectionLifecycle.getThumbnailBytes(it, principal.user.id))
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
+  @GetMapping(value = ["{id}/thumbnails/{thumbnailId}"], produces = [MediaType.IMAGE_JPEG_VALUE])
+  fun getCollectionThumbnailById(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable(name = "id") id: String,
+    @PathVariable(name = "thumbnailId") thumbnailId: String
+  ): ByteArray {
+    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
+      return collectionLifecycle.getThumbnailBytes(thumbnailId)
+        ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @GetMapping(value = ["{id}/thumbnails"], produces = [MediaType.APPLICATION_JSON_VALUE])
+  fun getCollectionThumbnails(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable(name = "id") id: String,
+  ): Collection<ThumbnailSeriesCollectionDto> {
+    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
+      return thumbnailSeriesCollectionRepository.findAllByCollectionId(id).map { it.toDto() }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @PostMapping(value = ["{id}/thumbnails"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun addUserUploadedCollectionThumbnail(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable(name = "id") id: String,
+    @RequestParam("file") file: MultipartFile,
+    @RequestParam("selected") selected: Boolean = true,
+  ) {
+    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { collection ->
+
+      if (!contentDetector.isImage(file.inputStream.buffered().use { contentDetector.detectMediaType(it) }))
+        throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+
+      collectionLifecycle.addThumbnail(
+        ThumbnailSeriesCollection(
+          collectionId = collection.id,
+          thumbnail = file.bytes,
+          type = ThumbnailSeriesCollection.Type.USER_UPLOADED,
+          selected = selected
+        ),
+      )
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @PutMapping("{id}/thumbnails/{thumbnailId}/selected")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun markSelectedCollectionThumbnail(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable(name = "id") id: String,
+    @PathVariable(name = "thumbnailId") thumbnailId: String,
+  ) {
+    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
+      thumbnailSeriesCollectionRepository.findByIdOrNull(thumbnailId)?.let {
+        collectionLifecycle.markSelectedThumbnail(it)
+      }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @DeleteMapping("{id}/thumbnails/{thumbnailId}")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun deleteUserUploadedCollectionThumbnail(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable(name = "id") id: String,
+    @PathVariable(name = "thumbnailId") thumbnailId: String,
+  ) {
+    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
+      thumbnailSeriesCollectionRepository.findByIdOrNull(thumbnailId)?.let {
+        collectionLifecycle.deleteThumbnail(it)
+      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 

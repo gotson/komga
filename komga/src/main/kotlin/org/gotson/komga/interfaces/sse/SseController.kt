@@ -21,6 +21,8 @@ import org.gotson.komga.interfaces.sse.dto.ReadProgressSseDto
 import org.gotson.komga.interfaces.sse.dto.SeriesSseDto
 import org.gotson.komga.interfaces.sse.dto.TaskQueueSseDto
 import org.gotson.komga.interfaces.sse.dto.ThumbnailBookSseDto
+import org.gotson.komga.interfaces.sse.dto.ThumbnailReadListSseDto
+import org.gotson.komga.interfaces.sse.dto.ThumbnailSeriesCollectionSseDto
 import org.gotson.komga.interfaces.sse.dto.ThumbnailSeriesSseDto
 import org.springframework.http.MediaType
 import org.springframework.jms.annotation.JmsListener
@@ -100,7 +102,13 @@ class SseController(
       is DomainEvent.ReadProgressSeriesDeleted -> emitSse("ReadProgressSeriesDeleted", ReadProgressSeriesSseDto(event.seriesId, event.userId), userIdOnly = event.userId)
 
       is DomainEvent.ThumbnailBookAdded -> emitSse("ThumbnailBookAdded", ThumbnailBookSseDto(event.thumbnail.bookId, bookRepository.getSeriesIdOrNull(event.thumbnail.bookId).orEmpty()))
+      is DomainEvent.ThumbnailBookDeleted -> emitSse("ThumbnailBookDeleted", ThumbnailBookSseDto(event.thumbnail.bookId, bookRepository.getSeriesIdOrNull(event.thumbnail.bookId).orEmpty()))
       is DomainEvent.ThumbnailSeriesAdded -> emitSse("ThumbnailSeriesAdded", ThumbnailSeriesSseDto(event.thumbnail.seriesId))
+      is DomainEvent.ThumbnailSeriesDeleted -> emitSse("ThumbnailSeriesDeleted", ThumbnailSeriesSseDto(event.thumbnail.seriesId))
+      is DomainEvent.ThumbnailSeriesCollectionAdded -> emitSse("ThumbnailSeriesCollectionAdded", ThumbnailSeriesCollectionSseDto(event.thumbnail.collectionId))
+      is DomainEvent.ThumbnailSeriesCollectionDeleted -> emitSse("ThumbnailSeriesCollectionDeleted", ThumbnailSeriesCollectionSseDto(event.thumbnail.collectionId))
+      is DomainEvent.ThumbnailReadListAdded -> emitSse("ThumbnailReadListAdded", ThumbnailReadListSseDto(event.thumbnail.readListId))
+      is DomainEvent.ThumbnailReadListDeleted -> emitSse("ThumbnailReadListDeleted", ThumbnailReadListSseDto(event.thumbnail.readListId))
     }
   }
 

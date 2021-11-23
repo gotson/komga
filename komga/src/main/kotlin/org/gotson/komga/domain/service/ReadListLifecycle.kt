@@ -6,7 +6,9 @@ import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadListRequestResult
+import org.gotson.komga.domain.model.ThumbnailReadList
 import org.gotson.komga.domain.persistence.ReadListRepository
+import org.gotson.komga.domain.persistence.ThumbnailReadListRepository
 import org.gotson.komga.infrastructure.image.MosaicGenerator
 import org.gotson.komga.infrastructure.metadata.comicrack.ReadListProvider
 import org.springframework.stereotype.Service
@@ -16,6 +18,7 @@ private val logger = KotlinLogging.logger {}
 @Service
 class ReadListLifecycle(
   private val readListRepository: ReadListRepository,
+  private val thumbnailReadListRepository: ThumbnailReadListRepository,
   private val bookLifecycle: BookLifecycle,
   private val mosaicGenerator: MosaicGenerator,
   private val readListMatcher: ReadListMatcher,
@@ -65,7 +68,38 @@ class ReadListLifecycle(
     toDelete.forEach { eventPublisher.publishEvent(DomainEvent.ReadListDeleted(it)) }
   }
 
+  fun addThumbnail(thumbnail: ThumbnailReadList) {
+    when (thumbnail.type) {
+      ThumbnailReadList.Type.USER_UPLOADED -> {
+        thumbnailReadListRepository.insert(thumbnail)
+        if (thumbnail.selected) {
+          thumbnailReadListRepository.markSelected(thumbnail)
+        }
+      }
+    }
+
+    eventPublisher.publishEvent(DomainEvent.ThumbnailReadListAdded(thumbnail))
+  }
+
+  fun markSelectedThumbnail(thumbnail: ThumbnailReadList) {
+    thumbnailReadListRepository.markSelected(thumbnail)
+    eventPublisher.publishEvent(DomainEvent.ThumbnailReadListAdded(thumbnail))
+  }
+
+  fun deleteThumbnail(thumbnail: ThumbnailReadList) {
+    thumbnailReadListRepository.delete(thumbnail.id)
+    thumbnailsHouseKeeping(thumbnail.readListId)
+    eventPublisher.publishEvent(DomainEvent.ThumbnailReadListDeleted(thumbnail))
+  }
+
+  fun getThumbnailBytes(thumbnailId: String): ByteArray? =
+    thumbnailReadListRepository.findByIdOrNull(thumbnailId)?.thumbnail
+
   fun getThumbnailBytes(readList: ReadList): ByteArray {
+    thumbnailReadListRepository.findSelectedByReadListIdOrNull(readList.id)?.let {
+      return it.thumbnail
+    }
+
     val ids = with(mutableListOf<String>()) {
       while (size < 4) {
         this += readList.bookIds.values.take(4)
@@ -91,6 +125,23 @@ class ReadListLifecycle(
         result.copy(readList = readListRepository.findByIdOrNull(result.readList.id)!!)
       }
       else -> result
+    }
+  }
+
+  private fun thumbnailsHouseKeeping(readListId: String) {
+    logger.info { "House keeping thumbnails for read list: $readListId" }
+    val all = thumbnailReadListRepository.findAllByReadListId(readListId)
+
+    val selected = all.filter { it.selected }
+    when {
+      selected.size > 1 -> {
+        logger.info { "More than one thumbnail is selected, removing extra ones" }
+        thumbnailReadListRepository.markSelected(selected[0])
+      }
+      selected.isEmpty() && all.isNotEmpty() -> {
+        logger.info { "Read list has no selected thumbnail, choosing one automatically" }
+        thumbnailReadListRepository.markSelected(all.first())
+      }
     }
   }
 }

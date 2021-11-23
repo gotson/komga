@@ -20,10 +20,12 @@ import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
 import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
 import org.gotson.komga.domain.model.ReadStatus
+import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
+import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
@@ -39,6 +41,7 @@ import org.gotson.komga.interfaces.rest.dto.BookMetadataUpdateDto
 import org.gotson.komga.interfaces.rest.dto.PageDto
 import org.gotson.komga.interfaces.rest.dto.ReadListDto
 import org.gotson.komga.interfaces.rest.dto.ReadProgressUpdateDto
+import org.gotson.komga.interfaces.rest.dto.ThumbnailBookDto
 import org.gotson.komga.interfaces.rest.dto.patch
 import org.gotson.komga.interfaces.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.rest.dto.toDto
@@ -61,12 +64,14 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.context.request.WebRequest
+import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
 import java.io.FileNotFoundException
@@ -91,6 +96,7 @@ class BookController(
   private val readListRepository: ReadListRepository,
   private val contentDetector: ContentDetector,
   private val eventPublisher: EventPublisher,
+  private val thumbnailBookRepository: ThumbnailBookRepository
 ) {
 
   @PageableAsQueryParam
@@ -243,6 +249,98 @@ class BookController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return bookLifecycle.getThumbnailBytes(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
+  @GetMapping(value = ["api/v1/books/{bookId}/thumbnails/{thumbnailId}"], produces = [MediaType.IMAGE_JPEG_VALUE])
+  fun getBookThumbnailById(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable(name = "bookId") bookId: String,
+    @PathVariable(name = "thumbnailId") thumbnailId: String
+  ): ByteArray {
+    bookRepository.getLibraryIdOrNull(bookId)?.let {
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+    return bookLifecycle.getThumbnailBytesByThumbnailId(thumbnailId)
+      ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @GetMapping(value = ["api/v1/books/{bookId}/thumbnails"], produces = [MediaType.APPLICATION_JSON_VALUE])
+  fun getBookThumbnails(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable(name = "bookId") bookId: String,
+  ): Collection<ThumbnailBookDto> {
+    bookRepository.getLibraryIdOrNull(bookId)?.let {
+      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+    return thumbnailBookRepository.findAllByBookId(bookId)
+      .map { it.toDto() }
+  }
+
+  @PostMapping(value = ["api/v1/books/{bookId}/thumbnails"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun addUserUploadedBookThumbnail(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable(name = "bookId") bookId: String,
+    @RequestParam("file") file: MultipartFile,
+    @RequestParam("selected") selected: Boolean = true,
+  ) {
+    val book = bookRepository.findByIdOrNull(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+
+    if (!contentDetector.isImage(file.inputStream.buffered().use { contentDetector.detectMediaType(it) }))
+      throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+
+    bookLifecycle.addThumbnailForBook(
+      ThumbnailBook(
+        bookId = book.id,
+        thumbnail = file.bytes,
+        type = ThumbnailBook.Type.USER_UPLOADED,
+        selected = selected
+      ),
+    )
+  }
+
+  @PutMapping("api/v1/books/{bookId}/thumbnails/{thumbnailId}/selected")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun markSelectedBookThumbnail(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable(name = "bookId") bookId: String,
+    @PathVariable(name = "thumbnailId") thumbnailId: String,
+  ) {
+    bookRepository.findByIdOrNull(bookId)?.let { book ->
+      if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+    thumbnailBookRepository.findByIdOrNull(thumbnailId)?.let {
+      thumbnailBookRepository.markSelected(it)
+      eventPublisher.publishEvent(DomainEvent.ThumbnailBookAdded(it))
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @DeleteMapping("api/v1/books/{bookId}/thumbnails/{thumbnailId}")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun deleteUserUploadedBookThumbnail(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable(name = "bookId") bookId: String,
+    @PathVariable(name = "thumbnailId") thumbnailId: String,
+  ) {
+    bookRepository.findByIdOrNull(bookId)?.let { book ->
+      if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+    thumbnailBookRepository.findByIdOrNull(thumbnailId)?.let {
+      try {
+        bookLifecycle.deleteThumbnailForBook(it)
+      } catch (e: IllegalArgumentException) {
+        throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
+      }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
   @Operation(description = "Download the book file.")

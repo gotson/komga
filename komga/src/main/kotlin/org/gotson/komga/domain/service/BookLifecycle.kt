@@ -103,14 +103,24 @@ class BookLifecycle(
           }
         thumbnailBookRepository.insert(thumbnail)
       }
+      ThumbnailBook.Type.USER_UPLOADED -> {
+        thumbnailBookRepository.insert(thumbnail)
+      }
     }
-
-    eventPublisher.publishEvent(DomainEvent.ThumbnailBookAdded(thumbnail))
 
     if (thumbnail.selected)
       thumbnailBookRepository.markSelected(thumbnail)
     else
       thumbnailsHouseKeeping(thumbnail.bookId)
+
+    eventPublisher.publishEvent(DomainEvent.ThumbnailBookAdded(thumbnail))
+  }
+
+  fun deleteThumbnailForBook(thumbnail: ThumbnailBook) {
+    require(thumbnail.type == ThumbnailBook.Type.USER_UPLOADED) { "Only uploaded thumbnails can be deleted" }
+    thumbnailBookRepository.delete(thumbnail.id)
+    thumbnailsHouseKeeping(thumbnail.bookId)
+    eventPublisher.publishEvent(DomainEvent.ThumbnailBookDeleted(thumbnail))
   }
 
   fun getThumbnail(bookId: String): ThumbnailBook? {
@@ -134,6 +144,18 @@ class BookLifecycle(
     }
     return null
   }
+
+  fun getThumbnailBytesByThumbnailId(thumbnailId: String): ByteArray? =
+    thumbnailBookRepository.findByIdOrNull(thumbnailId)?.let {
+      getBytesFromThumbnailBook(it)
+    }
+
+  private fun getBytesFromThumbnailBook(thumbnail: ThumbnailBook): ByteArray? =
+    when {
+      thumbnail.thumbnail != null -> thumbnail.thumbnail
+      thumbnail.url != null -> File(thumbnail.url.toURI()).readBytes()
+      else -> null
+    }
 
   private fun thumbnailsHouseKeeping(bookId: String) {
     logger.info { "House keeping thumbnails for book: $bookId" }
