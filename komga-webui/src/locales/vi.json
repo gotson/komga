@@ -5,7 +5,7 @@
     },
     "dataIterator": {
       "loadingText": "Đang tải thành phần...",
-      "noResultsText": "Không thấy dữ liệu trùng khớp"
+      "noResultsText": "Không tìm thấy dữ liệu trùng khớp"
     },
     "dataTable": {
       "itemsPerPageText": "Hàng trên mỗi trang:",
@@ -26,6 +26,7 @@
     "email": "Email",
     "error": "Lỗi",
     "ip": "IP",
+    "source": "Nguồn",
     "success": "Thành công",
     "user_agent": "Thiết bị"
   },
