@@ -7798,7 +7798,7 @@
         ]
       },
       "patch": {
-        "operationId": "getProviders_3",
+        "operationId": "getProviders_5",
         "responses": {
           "200": {
             "description": "OK",
@@ -7860,37 +7860,6 @@
         ]
       },
       "get": {
-        "operationId": "getProviders_2",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/OAuth2ClientDto"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "o-auth-2-controller"
-        ]
-      },
-      "options": {
         "operationId": "getProviders_4",
         "responses": {
           "200": {
@@ -7921,7 +7890,7 @@
           "o-auth-2-controller"
         ]
       },
-      "delete": {
+      "options": {
         "operationId": "getProviders_1",
         "responses": {
           "200": {
@@ -7952,8 +7921,39 @@
           "o-auth-2-controller"
         ]
       },
+      "delete": {
+        "operationId": "getProviders_2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OAuth2ClientDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "o-auth-2-controller"
+        ]
+      },
       "put": {
-        "operationId": "getProviders_5",
+        "operationId": "getProviders_3",
         "responses": {
           "200": {
             "description": "OK",

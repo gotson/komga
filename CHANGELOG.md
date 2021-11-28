@@ -1,3 +1,11 @@
+## [0.132.4](https://github.com/gotson/komga/compare/v0.132.3...v0.132.4) (2021-11-28)
+
+
+### Bug Fixes
+
+* **api:** only mark unread book as read for tachiyomi readlist ([6609e4c](https://github.com/gotson/komga/commit/6609e4ce04fa7f9c8b61268d0c8edb127671985d))
+* translated using Weblate ([884573e](https://github.com/gotson/komga/commit/884573e20de1b905515d6e3ae5d9fbef55485fd1))
+
 ## [0.132.3](https://github.com/gotson/komga/compare/v0.132.2...v0.132.3) (2021-11-22)
 
 
