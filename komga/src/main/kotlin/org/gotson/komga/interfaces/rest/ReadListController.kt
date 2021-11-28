@@ -309,7 +309,10 @@ class ReadListController(
         BookSearchWithReadProgress(),
         UnpagedSorted(Sort.by(Sort.Order.asc("readList.number")))
       ).filterIndexed { index, _ -> index < readProgress.lastBookRead }
-        .forEach { book -> bookLifecycle.markReadProgressCompleted(book.id, principal.user) }
+        .forEach { book ->
+          if (book.readProgress?.completed != true)
+            bookLifecycle.markReadProgressCompleted(book.id, principal.user)
+        }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
