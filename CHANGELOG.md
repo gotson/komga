@@ -1,3 +1,10 @@
+# [0.133.0](https://github.com/gotson/komga/compare/v0.132.4...v0.133.0) (2021-11-30)
+
+
+### Features
+
+* automatic oauth2 user creation ([fed2294](https://github.com/gotson/komga/commit/fed2294b844133f5763ecfce4b2f6a902d65f2cc)), closes [#716](https://github.com/gotson/komga/issues/716)
+
 ## [0.132.4](https://github.com/gotson/komga/compare/v0.132.3...v0.132.4) (2021-11-28)
 
 

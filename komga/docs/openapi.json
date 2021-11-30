@@ -639,16 +639,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -786,16 +786,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -864,16 +864,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -929,16 +929,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -1005,16 +1005,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -1066,16 +1066,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -7798,68 +7798,6 @@
         ]
       },
       "patch": {
-        "operationId": "getProviders_5",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/OAuth2ClientDto"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "o-auth-2-controller"
-        ]
-      },
-      "post": {
-        "operationId": "getProviders",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/OAuth2ClientDto"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "o-auth-2-controller"
-        ]
-      },
-      "get": {
         "operationId": "getProviders_4",
         "responses": {
           "200": {
@@ -7890,7 +7828,38 @@
           "o-auth-2-controller"
         ]
       },
-      "options": {
+      "post": {
+        "operationId": "getProviders_5",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OAuth2ClientDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "o-auth-2-controller"
+        ]
+      },
+      "get": {
         "operationId": "getProviders_1",
         "responses": {
           "200": {
@@ -7921,8 +7890,39 @@
           "o-auth-2-controller"
         ]
       },
+      "options": {
+        "operationId": "getProviders_3",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OAuth2ClientDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "o-auth-2-controller"
+        ]
+      },
       "delete": {
-        "operationId": "getProviders_2",
+        "operationId": "getProviders",
         "responses": {
           "200": {
             "description": "OK",
@@ -7953,7 +7953,7 @@
         ]
       },
       "put": {
-        "operationId": "getProviders_3",
+        "operationId": "getProviders_2",
         "responses": {
           "200": {
             "description": "OK",
