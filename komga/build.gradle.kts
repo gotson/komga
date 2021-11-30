@@ -1,6 +1,15 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+// TODO: remove once https://github.com/n0mer/gradle-git-properties/issues/195 and https://github.com/ajoberstar/grgit/issues/339 are addressed (2021-11-30)
+buildscript {
+  dependencies {
+    "classpath"("org.eclipse.jgit:org.eclipse.jgit:5.13.0.202109080827-r") {
+      isForce = true
+    }
+  }
+}
+
 plugins {
   run {
     kotlin("jvm")
