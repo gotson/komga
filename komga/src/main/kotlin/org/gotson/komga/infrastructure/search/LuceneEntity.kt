@@ -8,8 +8,8 @@ import org.apache.lucene.document.TextField
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.infrastructure.language.toDate
-import org.gotson.komga.interfaces.rest.dto.BookDto
-import org.gotson.komga.interfaces.rest.dto.SeriesDto
+import org.gotson.komga.interfaces.api.rest.dto.BookDto
+import org.gotson.komga.interfaces.api.rest.dto.SeriesDto
 
 enum class LuceneEntity(val type: String, val id: String, val defaultFields: Array<String>) {
   Book("book", "book_id", arrayOf("title", "isbn")),
