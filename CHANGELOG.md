@@ -1,3 +1,10 @@
+# [0.134.0](https://github.com/gotson/komga/compare/v0.133.0...v0.134.0) (2021-12-02)
+
+
+### Features
+
+* **opds:** optionally mark progress when streaming pages ([f17bbd5](https://github.com/gotson/komga/commit/f17bbd50769c36038d4fc73aa5cac7b5014e10f6)), closes [#710](https://github.com/gotson/komga/issues/710)
+
 # [0.133.0](https://github.com/gotson/komga/compare/v0.132.4...v0.133.0) (2021-11-30)
 
 
