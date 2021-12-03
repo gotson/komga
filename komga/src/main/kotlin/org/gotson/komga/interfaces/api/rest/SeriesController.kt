@@ -230,7 +230,7 @@ class SeriesController(
 
   @Operation(description = "Return recently added or updated series.")
   @PageableWithoutSortAsQueryParam
-  @GetMapping("v1/series//latest")
+  @GetMapping("v1/series/latest")
   fun getLatestSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
