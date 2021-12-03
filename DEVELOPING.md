@@ -26,7 +26,7 @@ Komga is composed of 2 projects:
 ### Spring profiles
 
 Komga uses Spring Profiles extensively:
-- `dev`: add more logging, disable periodic scanning, in-memory database
+- `dev`: add more logging, disable periodic scanning, in-memory database, and enable CORS from `localhost:8081` (the frontend dev server)
 - `localdb`: a dev profile that stores the database in `./localdb`.
 - `noclaim`: will create initial users at startup if none exist and output users and passwords in the standard output
   - if `dev` is active, will create `admin@example.org` with password `admin`, and `user@example.org` with password `user`
@@ -60,3 +60,4 @@ SET SPRING_PROFILES_ACTIVE=dev
 
 You can run a live development server with `npm run serve` from `/komga-webui`. The dev server will override the URL to connect to `localhost:8080`, so you can also run `gradle bootRun` to have a backend running, serving the API requests. The frontend will be loaded from `localhost:8081`.
 
+Make sure you start the backend with the `dev` profile, else the frontend requests will be denied because of CORS.
