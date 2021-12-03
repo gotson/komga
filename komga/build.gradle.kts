@@ -1,15 +1,6 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-// TODO: remove once https://github.com/n0mer/gradle-git-properties/issues/195 and https://github.com/ajoberstar/grgit/issues/339 are addressed (2021-11-30)
-buildscript {
-  dependencies {
-    "classpath"("org.eclipse.jgit:org.eclipse.jgit:5.13.0.202109080827-r") {
-      isForce = true
-    }
-  }
-}
-
 plugins {
   run {
     kotlin("jvm")
@@ -17,7 +8,7 @@ plugins {
     kotlin("kapt")
   }
   id("org.springframework.boot") version "2.5.5"
-  id("com.gorylenko.gradle-git-properties") version "2.3.1"
+  id("com.gorylenko.gradle-git-properties") version "2.3.2"
   id("nu.studer.jooq") version "5.2.2"
   id("org.flywaydb.flyway") version "7.10.0"
   id("com.github.johnrengelman.processes") version "0.5.0"
