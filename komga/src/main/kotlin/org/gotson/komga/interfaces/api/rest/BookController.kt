@@ -343,7 +343,7 @@ class BookController(
     @Parameter(description = "If set to true, pages will start at index 0. If set to false, pages will start at index 1.")
     @RequestParam(value = "zero_based", defaultValue = "false") zeroBasedIndex: Boolean,
     @Parameter(description = "If set to true, read progress will be marked on the requested paged. Works only for OPDS.")
-    @RequestParam(name = MARK_READ, required = false) markRead: Boolean = false,
+    @RequestParam(name = MARK_READ, required = false) markRead: Boolean?,
   ): ResponseEntity<ByteArray> =
     bookRepository.findByIdOrNull((bookId))?.let { book ->
       val media = mediaRepository.findById(bookId)
@@ -366,7 +366,7 @@ class BookController(
 
         val pageContent = bookLifecycle.getBookPage(book, pageNum, convertFormat)
 
-        if (markRead && request.request.requestURI.startsWith("/opds")) {
+        if (markRead == true && request.request.requestURI.startsWith("/opds")) {
           bookLifecycle.markReadProgress(book, principal.user, pageNum)
         }
 
