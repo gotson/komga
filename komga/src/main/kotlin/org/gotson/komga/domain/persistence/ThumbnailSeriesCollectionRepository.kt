@@ -11,5 +11,7 @@ interface ThumbnailSeriesCollectionRepository {
   fun update(thumbnail: ThumbnailSeriesCollection)
   fun markSelected(thumbnail: ThumbnailSeriesCollection)
 
-  fun delete(thumbnailBookId: String)
+  fun delete(thumbnailCollectionId: String)
+  fun deleteByCollectionId(collectionId: String)
+  fun deleteByCollectionIds(collectionIds: Collection<String>)
 }

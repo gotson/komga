@@ -70,8 +70,16 @@ class ThumbnailSeriesCollectionDao(
       .execute()
   }
 
-  override fun delete(thumbnailBookId: String) {
-    dsl.deleteFrom(tc).where(tc.ID.eq(thumbnailBookId)).execute()
+  override fun delete(thumbnailCollectionId: String) {
+    dsl.deleteFrom(tc).where(tc.ID.eq(thumbnailCollectionId)).execute()
+  }
+
+  override fun deleteByCollectionId(collectionId: String) {
+    dsl.deleteFrom(tc).where(tc.COLLECTION_ID.eq(collectionId)).execute()
+  }
+
+  override fun deleteByCollectionIds(collectionIds: Collection<String>) {
+    dsl.deleteFrom(tc).where(tc.COLLECTION_ID.`in`(collectionIds)).execute()
   }
 
   private fun ThumbnailCollectionRecord.toDomain() =

@@ -70,8 +70,16 @@ class ThumbnailReadListDao(
       .execute()
   }
 
-  override fun delete(thumbnailBookId: String) {
-    dsl.deleteFrom(tr).where(tr.ID.eq(thumbnailBookId)).execute()
+  override fun delete(thumbnailReadListId: String) {
+    dsl.deleteFrom(tr).where(tr.ID.eq(thumbnailReadListId)).execute()
+  }
+
+  override fun deleteByReadListId(readListId: String) {
+    dsl.deleteFrom(tr).where(tr.READLIST_ID.eq(readListId)).execute()
+  }
+
+  override fun deleteByReadListIds(readListIds: Collection<String>) {
+    dsl.deleteFrom(tr).where(tr.READLIST_ID.`in`(readListIds)).execute()
   }
 
   private fun ThumbnailReadlistRecord.toDomain() =

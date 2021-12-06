@@ -10,6 +10,7 @@ import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.ThumbnailSeriesCollectionRepository
 import org.gotson.komga.infrastructure.image.MosaicGenerator
 import org.springframework.stereotype.Service
+import org.springframework.transaction.support.TransactionTemplate
 
 private val logger = KotlinLogging.logger {}
 
@@ -20,6 +21,7 @@ class SeriesCollectionLifecycle(
   private val seriesLifecycle: SeriesLifecycle,
   private val mosaicGenerator: MosaicGenerator,
   private val eventPublisher: EventPublisher,
+  private val transactionTemplate: TransactionTemplate,
 ) {
 
   @Throws(
@@ -53,15 +55,22 @@ class SeriesCollectionLifecycle(
   }
 
   fun deleteCollection(collection: SeriesCollection) {
-    collectionRepository.delete(collection.id)
+    transactionTemplate.executeWithoutResult {
+      thumbnailSeriesCollectionRepository.deleteByCollectionId(collection.id)
+      collectionRepository.delete(collection.id)
+    }
     eventPublisher.publishEvent(DomainEvent.CollectionDeleted(collection))
   }
 
   fun deleteEmptyCollections() {
     logger.info { "Deleting empty collections" }
-    val toDelete = collectionRepository.findAllEmpty()
-    collectionRepository.delete(toDelete.map { it.id })
-    toDelete.forEach { eventPublisher.publishEvent(DomainEvent.CollectionDeleted(it)) }
+    transactionTemplate.executeWithoutResult {
+      val toDelete = collectionRepository.findAllEmpty()
+      thumbnailSeriesCollectionRepository.deleteByCollectionIds(toDelete.map { it.id })
+      collectionRepository.delete(toDelete.map { it.id })
+
+      toDelete.forEach { eventPublisher.publishEvent(DomainEvent.CollectionDeleted(it)) }
+    }
   }
 
   fun addThumbnail(thumbnail: ThumbnailSeriesCollection) {

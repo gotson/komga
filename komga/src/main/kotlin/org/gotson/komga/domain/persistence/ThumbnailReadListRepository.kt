@@ -11,5 +11,7 @@ interface ThumbnailReadListRepository {
   fun update(thumbnail: ThumbnailReadList)
   fun markSelected(thumbnail: ThumbnailReadList)
 
-  fun delete(thumbnailBookId: String)
+  fun delete(thumbnailReadListId: String)
+  fun deleteByReadListId(readListId: String)
+  fun deleteByReadListIds(readListIds: Collection<String>)
 }
