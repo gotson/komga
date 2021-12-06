@@ -156,9 +156,11 @@ class SeriesMetadataDao(
 
   @Transactional
   override fun delete(seriesIds: Collection<String>) {
-    dsl.deleteFrom(g).where(g.SERIES_ID.`in`(seriesIds)).execute()
-    dsl.deleteFrom(st).where(st.SERIES_ID.`in`(seriesIds)).execute()
-    dsl.deleteFrom(d).where(d.SERIES_ID.`in`(seriesIds)).execute()
+    dsl.insertTempStrings(batchSize, seriesIds)
+
+    dsl.deleteFrom(g).where(g.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
+    dsl.deleteFrom(st).where(st.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
+    dsl.deleteFrom(d).where(d.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
   }
 
   override fun count(): Long = dsl.fetchCount(d).toLong()

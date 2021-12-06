@@ -5,13 +5,15 @@ import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.ThumbnailBookRecord
 import org.jooq.DSLContext
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.net.URL
 
 @Component
 class ThumbnailBookDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
+  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : ThumbnailBookRepository {
   private val tb = Tables.THUMBNAIL_BOOK
 
@@ -82,8 +84,11 @@ class ThumbnailBookDao(
     dsl.deleteFrom(tb).where(tb.BOOK_ID.eq(bookId)).execute()
   }
 
+  @Transactional
   override fun deleteByBookIds(bookIds: Collection<String>) {
-    dsl.deleteFrom(tb).where(tb.BOOK_ID.`in`(bookIds)).execute()
+    dsl.insertTempStrings(batchSize, bookIds)
+
+    dsl.deleteFrom(tb).where(tb.BOOK_ID.`in`(dsl.selectTempStrings())).execute()
   }
 
   override fun deleteByBookIdAndType(bookId: String, type: ThumbnailBook.Type) {

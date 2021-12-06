@@ -10,6 +10,7 @@ import org.gotson.komga.jooq.tables.records.ReadlistRecord
 import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.ResultQuery
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -25,6 +26,7 @@ import java.util.SortedMap
 class ReadListDao(
   private val dsl: DSLContext,
   private val luceneHelper: LuceneHelper,
+  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : ReadListRepository {
 
   private val rl = Tables.READLIST
@@ -212,9 +214,12 @@ class ReadListDao(
       .execute()
   }
 
+  @Transactional
   override fun removeBooksFromAll(bookIds: Collection<String>) {
+    dsl.insertTempStrings(batchSize, bookIds)
+
     dsl.deleteFrom(rlb)
-      .where(rlb.BOOK_ID.`in`(bookIds))
+      .where(rlb.BOOK_ID.`in`(dsl.selectTempStrings()))
       .execute()
   }
 

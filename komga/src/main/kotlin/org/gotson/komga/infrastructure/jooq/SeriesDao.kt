@@ -23,7 +23,6 @@ class SeriesDao(
   private val s = Tables.SERIES
   private val d = Tables.SERIES_METADATA
   private val cs = Tables.COLLECTION_SERIES
-  private val u = Tables.TEMP_URL_LIST
 
   override fun findAll(): Collection<Series> =
     dsl.selectFrom(s)
@@ -44,26 +43,12 @@ class SeriesDao(
 
   @Transactional
   override fun findAllNotDeletedByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): List<Series> {
-    // insert urls in a temporary table, else the select size can exceed the statement limit
-    dsl.deleteFrom(u).execute()
-
-    if (urls.isNotEmpty()) {
-      urls.chunked(batchSize)
-        .forEach { chunk ->
-          dsl.batch(
-            dsl.insertInto(u, u.URL).values(null as String?)
-          ).also { step ->
-            chunk.forEach {
-              step.bind(it.toString())
-            }
-          }.execute()
-        }
-    }
+    dsl.insertTempStrings(batchSize, urls.map { it.toString() })
 
     return dsl.selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId))
       .and(s.DELETED_DATE.isNull)
-      .and(s.URL.notIn(dsl.select(u.URL).from(u)))
+      .and(s.URL.notIn(dsl.selectTempStrings()))
       .fetchInto(s)
       .map { it.toDomain() }
   }
@@ -139,8 +124,11 @@ class SeriesDao(
     dsl.deleteFrom(s).execute()
   }
 
+  @Transactional
   override fun delete(seriesIds: Collection<String>) {
-    dsl.deleteFrom(s).where(s.ID.`in`(seriesIds)).execute()
+    dsl.insertTempStrings(batchSize, seriesIds)
+
+    dsl.deleteFrom(s).where(s.ID.`in`(dsl.selectTempStrings())).execute()
   }
 
   override fun count(): Long = dsl.fetchCount(s).toLong()

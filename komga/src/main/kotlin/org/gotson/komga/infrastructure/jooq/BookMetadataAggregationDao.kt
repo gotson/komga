@@ -121,9 +121,11 @@ class BookMetadataAggregationDao(
 
   @Transactional
   override fun delete(seriesIds: Collection<String>) {
-    dsl.deleteFrom(a).where(a.SERIES_ID.`in`(seriesIds)).execute()
-    dsl.deleteFrom(t).where(t.SERIES_ID.`in`(seriesIds)).execute()
-    dsl.deleteFrom(d).where(d.SERIES_ID.`in`(seriesIds)).execute()
+    dsl.insertTempStrings(batchSize, seriesIds)
+
+    dsl.deleteFrom(a).where(a.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
+    dsl.deleteFrom(t).where(t.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
+    dsl.deleteFrom(d).where(d.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
   }
 
   override fun count(): Long = dsl.fetchCount(d).toLong()

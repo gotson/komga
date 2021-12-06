@@ -112,17 +112,24 @@ class ReadProgressDao(
 
   @Transactional
   override fun deleteByBookIds(bookIds: Collection<String>) {
-    dsl.deleteFrom(r).where(r.BOOK_ID.`in`(bookIds)).execute()
+    dsl.insertTempStrings(batchSize, bookIds)
+
+    dsl.deleteFrom(r).where(r.BOOK_ID.`in`(dsl.selectTempStrings())).execute()
     aggregateSeriesProgress(bookIds)
   }
 
+  @Transactional
   override fun deleteBySeriesIds(seriesIds: Collection<String>) {
-    dsl.deleteFrom(rs).where(rs.SERIES_ID.`in`(seriesIds)).execute()
+    dsl.insertTempStrings(batchSize, seriesIds)
+
+    dsl.deleteFrom(rs).where(rs.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
   }
 
   @Transactional
   override fun deleteByBookIdsAndUserId(bookIds: Collection<String>, userId: String) {
-    dsl.deleteFrom(r).where(r.BOOK_ID.`in`(bookIds)).and(r.USER_ID.eq(userId)).execute()
+    dsl.insertTempStrings(batchSize, bookIds)
+
+    dsl.deleteFrom(r).where(r.BOOK_ID.`in`(dsl.selectTempStrings())).and(r.USER_ID.eq(userId)).execute()
     aggregateSeriesProgress(bookIds, userId)
   }
 
@@ -133,13 +140,14 @@ class ReadProgressDao(
   }
 
   private fun aggregateSeriesProgress(bookIds: Collection<String>, userId: String? = null) {
-    val seriesIds = dsl.select(b.SERIES_ID)
+    dsl.insertTempStrings(batchSize, bookIds)
+
+    val seriesIdsQuery = dsl.select(b.SERIES_ID)
       .from(b)
-      .where(b.ID.`in`(bookIds))
-      .fetch(b.SERIES_ID)
+      .where(b.ID.`in`(dsl.selectTempStrings()))
 
     dsl.deleteFrom(rs)
-      .where(rs.SERIES_ID.`in`(seriesIds))
+      .where(rs.SERIES_ID.`in`(seriesIdsQuery))
       .apply { userId?.let { and(rs.USER_ID.eq(it)) } }
       .execute()
 
@@ -150,7 +158,7 @@ class ReadProgressDao(
           .select(DSL.sum(DSL.`when`(r.COMPLETED.isFalse, 1).otherwise(0)))
           .from(b)
           .innerJoin(r).on(b.ID.eq(r.BOOK_ID))
-          .where(b.SERIES_ID.`in`(seriesIds))
+          .where(b.SERIES_ID.`in`(seriesIdsQuery))
           .apply { userId?.let { and(r.USER_ID.eq(it)) } }
           .groupBy(b.SERIES_ID, r.USER_ID)
       ).execute()
