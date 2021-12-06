@@ -1,6 +1,11 @@
 package org.gotson.komga.infrastructure.security.oauth2
 
+import mu.KotlinLogging
+import org.apache.commons.lang3.RandomStringUtils
+import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.persistence.KomgaUserRepository
+import org.gotson.komga.domain.service.KomgaUserLifecycle
+import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -13,9 +18,13 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException
 import org.springframework.security.oauth2.core.oidc.user.OidcUser
 import org.springframework.security.oauth2.core.user.OAuth2User
 
+private val logger = KotlinLogging.logger {}
+
 @Configuration
 class KomgaOAuth2UserServiceConfiguration(
   private val userRepository: KomgaUserRepository,
+  private val userLifecycle: KomgaUserLifecycle,
+  private val komgaProperties: KomgaProperties,
 ) {
 
   @Bean
@@ -34,9 +43,10 @@ class KomgaOAuth2UserServiceConfiguration(
       val email = oAuth2User.getAttribute<String>("email")
         ?: throw OAuth2AuthenticationException("ERR_1024")
 
-      userRepository.findByEmailIgnoreCaseOrNull(email)?.let {
-        KomgaPrincipal(it, oAuth2User = oAuth2User)
-      } ?: throw OAuth2AuthenticationException("ERR_1025")
+      val existingUser = userRepository.findByEmailIgnoreCaseOrNull(email)
+        ?: tryCreateNewUser(email)
+
+      KomgaPrincipal(existingUser, oAuth2User = oAuth2User)
     }
   }
 
@@ -48,9 +58,16 @@ class KomgaOAuth2UserServiceConfiguration(
 
       if (!oidcUser.emailVerified) throw OAuth2AuthenticationException("ERR_1026")
 
-      userRepository.findByEmailIgnoreCaseOrNull(oidcUser.email)?.let {
-        KomgaPrincipal(it, oidcUser)
-      } ?: throw OAuth2AuthenticationException("ERR_1025")
+      val existingUser = userRepository.findByEmailIgnoreCaseOrNull(oidcUser.email)
+        ?: tryCreateNewUser(oidcUser.email)
+
+      KomgaPrincipal(existingUser, oidcUser)
     }
   }
+
+  private fun tryCreateNewUser(email: String) =
+    if (komgaProperties.oauth2AccountCreation) {
+      logger.info { "Creating new user from OAuth2 login: $email" }
+      userLifecycle.createUser(KomgaUser(email, RandomStringUtils.randomAlphanumeric(12), roleAdmin = false))
+    } else throw OAuth2AuthenticationException("ERR_1025")
 }

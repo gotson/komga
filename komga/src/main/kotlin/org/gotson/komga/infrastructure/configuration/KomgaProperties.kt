@@ -32,6 +32,8 @@ class KomgaProperties {
 
   var nativeWebp: Boolean = true
 
+  var oauth2AccountCreation: Boolean = false
+
   var database = Database()
 
   var cors = Cors()

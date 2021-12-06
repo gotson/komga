@@ -183,9 +183,11 @@ class MediaDao(
 
   @Transactional
   override fun deleteByBookIds(bookIds: Collection<String>) {
-    dsl.deleteFrom(p).where(p.BOOK_ID.`in`(bookIds)).execute()
-    dsl.deleteFrom(f).where(f.BOOK_ID.`in`(bookIds)).execute()
-    dsl.deleteFrom(m).where(m.BOOK_ID.`in`(bookIds)).execute()
+    dsl.insertTempStrings(batchSize, bookIds)
+
+    dsl.deleteFrom(p).where(p.BOOK_ID.`in`(dsl.selectTempStrings())).execute()
+    dsl.deleteFrom(f).where(f.BOOK_ID.`in`(dsl.selectTempStrings())).execute()
+    dsl.deleteFrom(m).where(m.BOOK_ID.`in`(dsl.selectTempStrings())).execute()
   }
 
   override fun count(): Long = dsl.fetchCount(m).toLong()

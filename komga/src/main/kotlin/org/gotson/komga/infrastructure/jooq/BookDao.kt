@@ -29,7 +29,6 @@ class BookDao(
   private val m = Tables.MEDIA
   private val d = Tables.BOOK_METADATA
   private val r = Tables.READ_PROGRESS
-  private val u = Tables.TEMP_URL_LIST
 
   private val sorts = mapOf(
     "createdDate" to b.CREATED_DATE,
@@ -67,25 +66,12 @@ class BookDao(
 
   @Transactional
   override fun findAllNotDeletedByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): Collection<Book> {
-    // insert urls in a temporary table, else the select size can exceed the statement limit
-    dsl.deleteFrom(u).execute()
-
-    if (urls.isNotEmpty()) {
-      urls.chunked(batchSize).forEach { chunk ->
-        dsl.batch(
-          dsl.insertInto(u, u.URL).values(null as String?)
-        ).also { step ->
-          chunk.forEach {
-            step.bind(it.toString())
-          }
-        }.execute()
-      }
-    }
+    dsl.insertTempStrings(batchSize, urls.map { it.toString() })
 
     return dsl.selectFrom(b)
       .where(b.LIBRARY_ID.eq(libraryId))
       .and(b.DELETED_DATE.isNull)
-      .and(b.URL.notIn(dsl.select(u.URL).from(u)))
+      .and(b.URL.notIn(dsl.selectTempStrings()))
       .fetchInto(b)
       .map { it.toDomain() }
   }
@@ -311,8 +297,11 @@ class BookDao(
     dsl.deleteFrom(b).where(b.ID.eq(bookId)).execute()
   }
 
+  @Transactional
   override fun delete(bookIds: Collection<String>) {
-    dsl.deleteFrom(b).where(b.ID.`in`(bookIds)).execute()
+    dsl.insertTempStrings(batchSize, bookIds)
+
+    dsl.deleteFrom(b).where(b.ID.`in`(dsl.selectTempStrings())).execute()
   }
 
   override fun deleteAll() {

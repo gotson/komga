@@ -1,7 +1,9 @@
 package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
+import org.gotson.komga.jooq.Tables
 import org.jooq.Condition
+import org.jooq.DSLContext
 import org.jooq.Field
 import org.jooq.SortField
 import org.jooq.impl.DSL
@@ -44,3 +46,20 @@ fun LocalDateTime.toCurrentTimeZone(): LocalDateTime =
 
 fun Field<String>.udfStripAccents() =
   DSL.function(SqliteUdfDataSource.udfStripAccents, String::class.java, this)
+
+fun DSLContext.insertTempStrings(batchSize: Int, collection: Collection<String>) {
+  this.deleteFrom(Tables.TEMP_STRING_LIST).execute()
+  if (collection.isNotEmpty()) {
+    collection.chunked(batchSize).forEach { chunk ->
+      this.batch(
+        this.insertInto(Tables.TEMP_STRING_LIST, Tables.TEMP_STRING_LIST.STRING).values(null as String?)
+      ).also { step ->
+        chunk.forEach {
+          step.bind(it)
+        }
+      }.execute()
+    }
+  }
+}
+
+fun DSLContext.selectTempStrings() = this.select(Tables.TEMP_STRING_LIST.STRING).from(Tables.TEMP_STRING_LIST)

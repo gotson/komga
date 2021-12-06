@@ -8,7 +8,7 @@ plugins {
     kotlin("kapt")
   }
   id("org.springframework.boot") version "2.5.5"
-  id("com.gorylenko.gradle-git-properties") version "2.3.1"
+  id("com.gorylenko.gradle-git-properties") version "2.3.2"
   id("nu.studer.jooq") version "5.2.2"
   id("org.flywaydb.flyway") version "7.10.0"
   id("com.github.johnrengelman.processes") version "0.5.0"

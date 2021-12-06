@@ -1,3 +1,32 @@
+## [0.134.1](https://github.com/gotson/komga/compare/v0.134.0...v0.134.1) (2021-12-06)
+
+
+### Bug Fixes
+
+* exceptions SQLITE_TOOBIG could arise when deleting many books or series ([adf9e14](https://github.com/gotson/komga/commit/adf9e14fb26936f307177886171fa442dae1aec0))
+
+# [0.134.0](https://github.com/gotson/komga/compare/v0.133.0...v0.134.0) (2021-12-02)
+
+
+### Features
+
+* **opds:** optionally mark progress when streaming pages ([f17bbd5](https://github.com/gotson/komga/commit/f17bbd50769c36038d4fc73aa5cac7b5014e10f6)), closes [#710](https://github.com/gotson/komga/issues/710)
+
+# [0.133.0](https://github.com/gotson/komga/compare/v0.132.4...v0.133.0) (2021-11-30)
+
+
+### Features
+
+* automatic oauth2 user creation ([fed2294](https://github.com/gotson/komga/commit/fed2294b844133f5763ecfce4b2f6a902d65f2cc)), closes [#716](https://github.com/gotson/komga/issues/716)
+
+## [0.132.4](https://github.com/gotson/komga/compare/v0.132.3...v0.132.4) (2021-11-28)
+
+
+### Bug Fixes
+
+* **api:** only mark unread book as read for tachiyomi readlist ([6609e4c](https://github.com/gotson/komga/commit/6609e4ce04fa7f9c8b61268d0c8edb127671985d))
+* translated using Weblate ([884573e](https://github.com/gotson/komga/commit/884573e20de1b905515d6e3ae5d9fbef55485fd1))
+
 ## [0.132.3](https://github.com/gotson/komga/compare/v0.132.2...v0.132.3) (2021-11-22)
 
 

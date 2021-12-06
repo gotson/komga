@@ -35,6 +35,7 @@ import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.infrastructure.web.getMediaTypeOrDefault
 import org.gotson.komga.infrastructure.web.setCachePrivate
+import org.gotson.komga.interfaces.opds.MARK_READ
 import org.gotson.komga.interfaces.rest.dto.BookDto
 import org.gotson.komga.interfaces.rest.dto.BookImportBatchDto
 import org.gotson.komga.interfaces.rest.dto.BookMetadataUpdateDto
@@ -70,6 +71,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.context.request.ServletWebRequest
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
@@ -428,7 +430,7 @@ class BookController(
   @PreAuthorize("hasRole('$ROLE_PAGE_STREAMING')")
   fun getBookPage(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    request: WebRequest,
+    request: ServletWebRequest,
     @PathVariable bookId: String,
     @PathVariable pageNumber: Int,
     @Parameter(
@@ -437,7 +439,9 @@ class BookController(
     )
     @RequestParam(value = "convert", required = false) convertTo: String?,
     @Parameter(description = "If set to true, pages will start at index 0. If set to false, pages will start at index 1.")
-    @RequestParam(value = "zero_based", defaultValue = "false") zeroBasedIndex: Boolean
+    @RequestParam(value = "zero_based", defaultValue = "false") zeroBasedIndex: Boolean,
+    @Parameter(description = "If set to true, read progress will be marked on the requested paged. Works only for OPDS.")
+    @RequestParam(name = MARK_READ, required = false) markRead: Boolean = false,
   ): ResponseEntity<ByteArray> =
     bookRepository.findByIdOrNull((bookId))?.let { book ->
       val media = mediaRepository.findById(bookId)
@@ -459,6 +463,10 @@ class BookController(
         val pageNum = if (zeroBasedIndex) pageNumber + 1 else pageNumber
 
         val pageContent = bookLifecycle.getBookPage(book, pageNum, convertFormat)
+
+        if (markRead && request.request.requestURI.startsWith("/opds")) {
+          bookLifecycle.markReadProgress(book, principal.user, pageNum)
+        }
 
         ResponseEntity.ok()
           .headers(
