@@ -18,6 +18,8 @@ import org.gotson.komga.infrastructure.search.SearchIndexLifecycle
 import org.springframework.jms.annotation.JmsListener
 import org.springframework.stereotype.Service
 import java.nio.file.Paths
+import kotlin.io.path.deleteIfExists
+import kotlin.io.path.toPath
 import kotlin.time.measureTime
 
 private val logger = KotlinLogging.logger {}
@@ -121,6 +123,10 @@ class TaskHandler(
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
           is Task.RebuildIndex -> searchIndexLifecycle.rebuildIndex()
+
+          is Task.DeleteFile -> {
+            task.url.toURI().toPath().deleteIfExists()
+          }
         }
       }.also {
         logger.info { "Task $task executed in $it" }

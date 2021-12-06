@@ -185,6 +185,24 @@ class SeriesLifecycle(
     series.forEach { eventPublisher.publishEvent(DomainEvent.SeriesDeleted(it)) }
   }
 
+  fun deleteOne(series: Series) {
+    logger.info { "Delete series id: ${series.id}" }
+
+    transactionTemplate.executeWithoutResult {
+      bookLifecycle.deleteMany(bookRepository.findAllBySeriesId(series.id))
+
+      readProgressRepository.deleteBySeriesId(series.id)
+      collectionRepository.removeSeriesFromAll(series.id)
+      thumbnailsSeriesRepository.deleteBySeriesId(series.id)
+      seriesMetadataRepository.delete(series.id)
+      bookMetadataAggregationRepository.delete(series.id)
+
+      seriesRepository.delete(series.id)
+    }
+
+    eventPublisher.publishEvent(DomainEvent.SeriesDeleted(series))
+  }
+
   fun markReadProgressCompleted(seriesId: String, user: KomgaUser) {
     val bookIds = bookRepository.findAllIdsBySeriesId(seriesId)
       .filter { bookId ->

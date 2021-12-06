@@ -272,6 +272,15 @@
       "button_confirm": "Analyze",
       "title": "Analyze library"
     },
+    "delete_book": {
+      "button_confirm": "Delete",
+      "confirm_delete": "Yes, delete book \"{name}\" and it's files",
+      "confirm_delete_multiple": "Yes, delete {count} books and their files",
+      "dialog_title": "Delete Book",
+      "dialog_title_multiple": "Delete Books",
+      "warning_html": "The book <b>{name}</b> will be removed from this server alongside with stored media files. This <b>cannot</b> be undone. Continue?",
+      "warning_multiple_html": "{count} books will be removed from this server alongside with stored media files. This <b>cannot</b> be undone. Continue?"
+    },
     "delete_collection": {
       "button_confirm": "Delete",
       "confirm_delete": "Yes, delete the collection \"{name}\"",
@@ -301,6 +310,14 @@
       "confirm_delete": "Yes, delete the user \"{name}\"",
       "dialog_title": "Delete User",
       "warning_html": "The user <b>{name}</b> will be deleted from this server. This <b>cannot</b> be undone. Continue?"
+    },
+    "delete_series": {
+      "button_confirm": "Delete",
+      "confirm_delete": "Yes, delete series \"{name}\" and it's files",
+      "confirm_delete_multiple": "Yes, delete {count} series and their files",
+      "dialog_title": "Delete Series",
+      "warning_html": "The Series <b>{name}</b> will be removed from this server alongside with stored media files. This <b>cannot</b> be undone. Continue?",
+      "warning_multiple_html": "{count} series will be removed from this server alongside with stored media files. This <b>cannot</b> be undone. Continue?"
     },
     "edit_books": {
       "authors_notice_multiple_edit": "You are editing authors for multiple books. This will override existing authors of each book.",

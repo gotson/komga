@@ -12,6 +12,7 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
 import org.apache.commons.io.IOUtils
 import org.gotson.komga.application.events.EventPublisher
+import org.gotson.komga.application.tasks.DEFAULT_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.Author
@@ -83,6 +84,7 @@ import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
 import java.io.OutputStream
+import java.nio.file.Files
 import java.util.zip.Deflater
 import javax.validation.Valid
 
@@ -681,5 +683,26 @@ class SeriesController(
       )
       .contentType(MediaType.parseMediaType("application/zip"))
       .body(streamingResponse)
+  }
+
+  @DeleteMapping("v1/series/{seriesId}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  fun deleteSeries(
+    @PathVariable seriesId: String,
+    @AuthenticationPrincipal principal: KomgaPrincipal
+  ) {
+    seriesRepository.findByIdOrNull(seriesId)?.let { series ->
+      if (!principal.user.canAccessSeries(series)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+
+      val books = bookRepository.findAllBySeriesId(seriesId)
+      books.find { b -> !Files.isWritable(b.path) }?.let {
+        logger.warn { "Cannot delete ${it.path}: Permission denied" }
+        throw ResponseStatusException(HttpStatus.CONFLICT)
+      }
+
+      seriesLifecycle.deleteOne(series)
+      books.forEach { taskReceiver.deleteFile(it.url) }
+      taskReceiver.deleteFile(series.url, DEFAULT_PRIORITY)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 }

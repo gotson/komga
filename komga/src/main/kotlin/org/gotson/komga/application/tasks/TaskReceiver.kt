@@ -18,6 +18,7 @@ import org.gotson.komga.infrastructure.jms.QUEUE_UNIQUE_ID
 import org.springframework.data.domain.Sort
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.stereotype.Service
+import java.net.URL
 import javax.jms.ConnectionFactory
 
 private val logger = KotlinLogging.logger {}
@@ -119,6 +120,10 @@ class TaskReceiver(
 
   fun rebuildIndex(priority: Int = DEFAULT_PRIORITY) {
     submitTask(Task.RebuildIndex(priority))
+  }
+
+  fun deleteFile(url: URL, priority: Int = HIGH_PRIORITY) {
+    submitTask(Task.DeleteFile(url, priority))
   }
 
   private fun submitTask(task: Task) {

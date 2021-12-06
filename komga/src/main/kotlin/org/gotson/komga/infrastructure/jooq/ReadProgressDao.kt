@@ -118,6 +118,10 @@ class ReadProgressDao(
     aggregateSeriesProgress(bookIds)
   }
 
+  override fun deleteBySeriesId(seriesId: String) {
+    dsl.deleteFrom(rs).where(rs.SERIES_ID.eq(seriesId)).execute()
+  }
+
   @Transactional
   override fun deleteBySeriesIds(seriesIds: Collection<String>) {
     dsl.insertTempStrings(batchSize, seriesIds)

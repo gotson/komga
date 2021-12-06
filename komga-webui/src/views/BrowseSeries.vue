@@ -48,6 +48,7 @@
       @add-to-readlist="addToReadList"
       @bulk-edit="bulkEditMultipleBooks"
       @edit="editMultipleBooks"
+      @delete="deleteBooks"
     />
 
     <filter-drawer
@@ -831,6 +832,9 @@ export default Vue.extend({
         this.$komgaBooks.deleteReadProgress(b.id),
       ))
       this.selectedBooks = []
+    },
+    deleteBooks() {
+      this.$store.dispatch('dialogDeleteBook', this.selectedBooks)
     },
   },
 })

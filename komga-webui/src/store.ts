@@ -36,6 +36,8 @@ export default new Vuex.Store({
     // books
     updateBooks: {} as BookDto | BookDto[],
     updateBooksDialog: false,
+    deleteBooks: {} as BookDto | BookDto[],
+    deleteBookDialog: false,
     // books bulk
     updateBulkBooks: [] as BookDto[],
     updateBulkBooksDialog: false,
@@ -43,6 +45,8 @@ export default new Vuex.Store({
     // series
     updateSeries: {} as SeriesDto | SeriesDto[],
     updateSeriesDialog: false,
+    deleteSeries: {} as SeriesDto | SeriesDto[],
+    deleteSeriesDialog: false,
 
     booksToCheck: 0,
   },
@@ -105,6 +109,12 @@ export default new Vuex.Store({
     setUpdateBooksDialog(state, dialog) {
       state.updateBooksDialog = dialog
     },
+    setDeleteBooks(state, books) {
+      state.deleteBooks = books
+    },
+    setDeleteBookDialog(state, dialog) {
+      state.deleteBookDialog = dialog
+    },
     // Books bulk
     setUpdateBulkBooks(state, books) {
       state.updateBulkBooks = books
@@ -121,6 +131,12 @@ export default new Vuex.Store({
     },
     setBooksToCheck(state, count) {
       state.booksToCheck = count
+    },
+    setDeleteSeries(state, series) {
+      state.deleteSeries = series
+    },
+    setDeleteSeriesDialog(state, dialog) {
+      state.deleteSeriesDialog = dialog
     },
   },
   actions: {
@@ -195,6 +211,13 @@ export default new Vuex.Store({
     dialogUpdateBooksDisplay({commit}, value) {
       commit('setUpdateBooksDialog', value)
     },
+    dialogDeleteBook({commit}, books) {
+      commit('setDeleteBooks', books)
+      commit('setDeleteBookDialog', true)
+    },
+    dialogDeleteBookDisplay({commit}, value) {
+      commit('setDeleteBookDialog', value)
+    },
     // books bulk
     dialogUpdateBulkBooks({commit}, books) {
       commit('setUpdateBulkBooks', books)
@@ -210,6 +233,13 @@ export default new Vuex.Store({
     },
     dialogUpdateSeriesDisplay({commit}, value) {
       commit('setUpdateSeriesDialog', value)
+    },
+    dialogDeleteSeries({commit}, series) {
+      commit('setDeleteSeries', series)
+      commit('setDeleteSeriesDialog', true)
+    },
+    dialogDeleteSeriesDisplay({commit}, value) {
+      commit('setDeleteSeriesDialog', value)
     },
   },
   modules: {
