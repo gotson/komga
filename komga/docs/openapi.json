@@ -7924,7 +7924,7 @@
         ]
       },
       "patch": {
-        "operationId": "getProviders",
+        "operationId": "getProviders_3",
         "responses": {
           "200": {
             "description": "OK",
@@ -7955,7 +7955,7 @@
         ]
       },
       "post": {
-        "operationId": "getProviders_2",
+        "operationId": "getProviders_6",
         "responses": {
           "200": {
             "description": "OK",
@@ -8017,7 +8017,7 @@
         ]
       },
       "options": {
-        "operationId": "getProviders_3",
+        "operationId": "getProviders_2",
         "responses": {
           "200": {
             "description": "OK",
@@ -8079,7 +8079,7 @@
         ]
       },
       "put": {
-        "operationId": "getProviders_6",
+        "operationId": "getProviders",
         "responses": {
           "200": {
             "description": "OK",

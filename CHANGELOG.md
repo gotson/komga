@@ -1,3 +1,10 @@
+## [0.134.1](https://github.com/gotson/komga/compare/v0.134.0...v0.134.1) (2021-12-06)
+
+
+### Bug Fixes
+
+* exceptions SQLITE_TOOBIG could arise when deleting many books or series ([adf9e14](https://github.com/gotson/komga/commit/adf9e14fb26936f307177886171fa442dae1aec0))
+
 # [0.134.0](https://github.com/gotson/komga/compare/v0.133.0...v0.134.0) (2021-12-02)
 
 
