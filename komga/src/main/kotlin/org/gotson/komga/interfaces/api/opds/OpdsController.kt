@@ -17,7 +17,6 @@ import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageAsQueryParam
-import org.gotson.komga.interfaces.api.MARK_READ
 import org.gotson.komga.interfaces.api.opds.dto.OpdsAuthor
 import org.gotson.komga.interfaces.api.opds.dto.OpdsEntryAcquisition
 import org.gotson.komga.interfaces.api.opds.dto.OpdsEntryNavigation
@@ -104,13 +103,11 @@ class OpdsController(
 
   private val opdsPseSupportedFormats = listOf("image/jpeg", "image/png", "image/gif")
 
-  private fun uriBuilder(path: String, markRead: Boolean?) =
+  private val linkStart = OpdsLinkFeedNavigation(OpdsLinkRel.START, uriBuilder(ROUTE_CATALOG).toUriString())
+
+  private fun uriBuilder(path: String) =
     UriComponentsBuilder
       .fromPath("$routeBase$path")
-      .queryParamIfPresent(MARK_READ, Optional.ofNullable(markRead))
-
-  private fun linkStart(markRead: Boolean?) =
-    OpdsLinkFeedNavigation(OpdsLinkRel.START, uriBuilder(ROUTE_CATALOG, markRead).toUriString())
 
   private fun <T> linkPage(uriBuilder: UriComponentsBuilder, page: Page<T>): List<OpdsLink> {
     val pageBuilder = uriBuilder.cloneBuilder()
@@ -131,17 +128,15 @@ class OpdsController(
   }
 
   @GetMapping(ROUTE_CATALOG)
-  fun getCatalog(
-    @RequestParam(name = MARK_READ, required = false) markRead: Boolean?,
-  ): OpdsFeed = OpdsFeedNavigation(
+  fun getCatalog(): OpdsFeed = OpdsFeedNavigation(
     id = "root",
     title = "Komga OPDS catalog",
     updated = ZonedDateTime.now(),
     author = komgaAuthor,
     links = listOf(
-      OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder(ROUTE_CATALOG, markRead).toUriString()),
-      linkStart(markRead),
-      OpdsLinkSearch(uriBuilder(ROUTE_SEARCH, markRead).toUriString()),
+      OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder(ROUTE_CATALOG).toUriString()),
+      linkStart,
+      OpdsLinkSearch(uriBuilder(ROUTE_SEARCH).toUriString()),
     ),
     entries = listOf(
       OpdsEntryNavigation(
@@ -149,60 +144,58 @@ class OpdsController(
         updated = ZonedDateTime.now(),
         id = ID_SERIES_ALL,
         content = "Browse by series",
-        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder(ROUTE_SERIES_ALL, markRead).toUriString()),
+        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder(ROUTE_SERIES_ALL).toUriString()),
       ),
       OpdsEntryNavigation(
         title = "Latest series",
         updated = ZonedDateTime.now(),
         id = ID_SERIES_LATEST,
         content = "Browse latest series",
-        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder(ROUTE_SERIES_LATEST, markRead).toUriString()),
+        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder(ROUTE_SERIES_LATEST).toUriString()),
       ),
       OpdsEntryNavigation(
         title = "Latest books",
         updated = ZonedDateTime.now(),
         id = ID_BOOKS_LATEST,
         content = "Browse latest books",
-        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder(ROUTE_BOOKS_LATEST, markRead).toUriString()),
+        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder(ROUTE_BOOKS_LATEST).toUriString()),
       ),
       OpdsEntryNavigation(
         title = "All libraries",
         updated = ZonedDateTime.now(),
         id = ID_LIBRARIES_ALL,
         content = "Browse by library",
-        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder(ROUTE_LIBRARIES_ALL, markRead).toUriString()),
+        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder(ROUTE_LIBRARIES_ALL).toUriString()),
       ),
       OpdsEntryNavigation(
         title = "All collections",
         updated = ZonedDateTime.now(),
         id = ID_COLLECTIONS_ALL,
         content = "Browse by collection",
-        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder(ROUTE_COLLECTIONS_ALL, markRead).toUriString()),
+        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder(ROUTE_COLLECTIONS_ALL).toUriString()),
       ),
       OpdsEntryNavigation(
         title = "All read lists",
         updated = ZonedDateTime.now(),
         id = ID_READLISTS_ALL,
         content = "Browse by read lists",
-        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder(ROUTE_READLISTS_ALL, markRead).toUriString()),
+        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder(ROUTE_READLISTS_ALL).toUriString()),
       ),
       OpdsEntryNavigation(
         title = "All publishers",
         updated = ZonedDateTime.now(),
         id = ID_PUBLISHERS_ALL,
         content = "Browse by publishers",
-        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder(ROUTE_PUBLISHERS_ALL, markRead).toUriString()),
+        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder(ROUTE_PUBLISHERS_ALL).toUriString()),
       )
     )
   )
 
   @GetMapping(ROUTE_SEARCH)
-  fun getSearch(
-    @RequestParam(name = MARK_READ, required = false) markRead: Boolean?,
-  ): OpenSearchDescription = OpenSearchDescription(
+  fun getSearch(): OpenSearchDescription = OpenSearchDescription(
     shortName = "Search",
     description = "Search for series",
-    url = OpenSearchDescription.OpenSearchUrl("$routeBase$ROUTE_SERIES_ALL?search={searchTerms}${markRead?.let { "&$MARK_READ=$it" } ?: ""}"),
+    url = OpenSearchDescription.OpenSearchUrl("$routeBase$ROUTE_SERIES_ALL?search={searchTerms}"),
   )
 
   @PageAsQueryParam
@@ -211,7 +204,6 @@ class OpdsController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) searchTerm: String?,
     @RequestParam(name = "publisher", required = false) publishers: List<String>?,
-    @RequestParam(name = MARK_READ, required = false) markRead: Boolean?,
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed {
     val sort =
@@ -228,7 +220,7 @@ class OpdsController(
 
     val seriesPage = seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageable)
 
-    val builder = uriBuilder(ROUTE_SERIES_ALL, markRead)
+    val builder = uriBuilder(ROUTE_SERIES_ALL)
       .queryParamIfPresent("search", Optional.ofNullable(searchTerm))
 
     return OpdsFeedNavigation(
@@ -238,10 +230,10 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, builder.toUriString()),
-        linkStart(markRead),
+        linkStart,
         *linkPage(builder, seriesPage).toTypedArray(),
       ),
-      entries = seriesPage.content.map { it.toOpdsEntry(markRead) },
+      entries = seriesPage.content.map { it.toOpdsEntry() },
     )
   }
 
@@ -249,7 +241,6 @@ class OpdsController(
   @GetMapping(ROUTE_SERIES_LATEST)
   fun getLatestSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestParam(name = MARK_READ, required = false) markRead: Boolean?,
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed {
     val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.desc("lastModified")))
@@ -261,7 +252,7 @@ class OpdsController(
 
     val seriesPage = seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageable)
 
-    val uriBuilder = uriBuilder(ROUTE_SERIES_LATEST, markRead)
+    val uriBuilder = uriBuilder(ROUTE_SERIES_LATEST)
 
     return OpdsFeedNavigation(
       id = ID_SERIES_LATEST,
@@ -270,10 +261,10 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.build().toUriString()),
-        linkStart(markRead),
+        linkStart,
         *linkPage(uriBuilder, seriesPage).toTypedArray(),
       ),
-      entries = seriesPage.content.map { it.toOpdsEntry(markRead) },
+      entries = seriesPage.content.map { it.toOpdsEntry() },
     )
   }
 
@@ -282,7 +273,6 @@ class OpdsController(
   fun getLatestBooks(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestHeader(name = HttpHeaders.USER_AGENT, required = false, defaultValue = "") userAgent: String,
-    @RequestParam(name = MARK_READ, required = false) markRead: Boolean?,
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed {
     val bookSearch = BookSearchWithReadProgress(
@@ -293,9 +283,9 @@ class OpdsController(
     val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.desc("createdDate")))
 
     val entries = bookDtoRepository.findAll(bookSearch, principal.user.id, pageable)
-      .map { it.toOpdsEntry(mediaRepository.findById(it.id), markRead, shouldPrependBookNumbers(userAgent)) }
+      .map { it.toOpdsEntry(mediaRepository.findById(it.id), shouldPrependBookNumbers(userAgent)) }
 
-    val uriBuilder = uriBuilder(ROUTE_BOOKS_LATEST, markRead)
+    val uriBuilder = uriBuilder(ROUTE_BOOKS_LATEST)
 
     return OpdsFeedAcquisition(
       id = ID_BOOKS_LATEST,
@@ -304,7 +294,7 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.build().toUriString()),
-        linkStart(markRead),
+        linkStart,
         *linkPage(uriBuilder, entries).toTypedArray(),
       ),
       entries = entries.content,
@@ -314,7 +304,6 @@ class OpdsController(
   @GetMapping(ROUTE_LIBRARIES_ALL)
   fun getLibraries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestParam(name = MARK_READ, required = false) markRead: Boolean?,
   ): OpdsFeed {
     val libraries =
       if (principal.user.sharedAllLibraries) {
@@ -328,10 +317,10 @@ class OpdsController(
       updated = ZonedDateTime.now(),
       author = komgaAuthor,
       links = listOf(
-        OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder(ROUTE_LIBRARIES_ALL, markRead).toUriString()),
-        linkStart(markRead),
+        OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder(ROUTE_LIBRARIES_ALL).toUriString()),
+        linkStart,
       ),
-      entries = libraries.map { it.toOpdsEntry(markRead) }
+      entries = libraries.map { it.toOpdsEntry() }
     )
   }
 
@@ -339,7 +328,6 @@ class OpdsController(
   @GetMapping(ROUTE_COLLECTIONS_ALL)
   fun getCollections(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestParam(name = MARK_READ, required = false) markRead: Boolean?,
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed {
     val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.asc("name")))
@@ -350,7 +338,7 @@ class OpdsController(
         collectionRepository.findAllByLibraryIds(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, pageable = pageable)
       }
 
-    val uriBuilder = uriBuilder(ROUTE_COLLECTIONS_ALL, markRead)
+    val uriBuilder = uriBuilder(ROUTE_COLLECTIONS_ALL)
 
     return OpdsFeedNavigation(
       id = ID_COLLECTIONS_ALL,
@@ -359,10 +347,10 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-        linkStart(markRead),
+        linkStart,
         *linkPage(uriBuilder, collections).toTypedArray(),
       ),
-      entries = collections.content.map { it.toOpdsEntry(markRead) }
+      entries = collections.content.map { it.toOpdsEntry() }
     )
   }
 
@@ -370,7 +358,6 @@ class OpdsController(
   @GetMapping(ROUTE_READLISTS_ALL)
   fun getReadLists(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestParam(name = MARK_READ, required = false) markRead: Boolean?,
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed {
     val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.asc("name")))
@@ -381,7 +368,7 @@ class OpdsController(
         readListRepository.findAllByLibraryIds(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, pageable = pageable)
       }
 
-    val uriBuilder = uriBuilder(ROUTE_READLISTS_ALL, markRead)
+    val uriBuilder = uriBuilder(ROUTE_READLISTS_ALL)
 
     return OpdsFeedNavigation(
       id = ID_READLISTS_ALL,
@@ -390,10 +377,10 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-        linkStart(markRead),
+        linkStart,
         *linkPage(uriBuilder, readLists).toTypedArray(),
       ),
-      entries = readLists.content.map { it.toOpdsEntry(markRead) }
+      entries = readLists.content.map { it.toOpdsEntry() }
     )
   }
 
@@ -401,12 +388,11 @@ class OpdsController(
   @GetMapping(ROUTE_PUBLISHERS_ALL)
   fun getPublishers(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestParam(name = MARK_READ, required = false) markRead: Boolean?,
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed {
     val publishers = referentialRepository.findAllPublishers(principal.user.getAuthorizedLibraryIds(null), page)
 
-    val uriBuilder = uriBuilder(ROUTE_PUBLISHERS_ALL, markRead)
+    val uriBuilder = uriBuilder(ROUTE_PUBLISHERS_ALL)
 
     return OpdsFeedNavigation(
       id = ID_PUBLISHERS_ALL,
@@ -415,7 +401,7 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-        linkStart(markRead),
+        linkStart,
         *linkPage(uriBuilder, publishers).toTypedArray(),
       ),
       entries = publishers.content.map { publisher ->
@@ -424,7 +410,7 @@ class OpdsController(
           updated = ZonedDateTime.now(),
           id = "publisher:${UriUtils.encodeQueryParam(publisher, StandardCharsets.UTF_8)}",
           content = "",
-          link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder(ROUTE_SERIES_ALL, markRead).queryParam("publisher", publisher).toUriString()),
+          link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder(ROUTE_SERIES_ALL).queryParam("publisher", publisher).toUriString()),
         )
       }
     )
@@ -436,7 +422,6 @@ class OpdsController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestHeader(name = HttpHeaders.USER_AGENT, required = false, defaultValue = "") userAgent: String,
     @PathVariable id: String,
-    @RequestParam(name = MARK_READ, required = false) markRead: Boolean?,
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed =
     seriesDtoRepository.findByIdOrNull(id, principal.user.id)?.let { series ->
@@ -450,9 +435,9 @@ class OpdsController(
       val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.asc("metadata.numberSort")))
 
       val entries = bookDtoRepository.findAll(bookSearch, principal.user.id, pageable)
-        .map { it.toOpdsEntry(mediaRepository.findById(it.id), markRead, shouldPrependBookNumbers(userAgent)) }
+        .map { it.toOpdsEntry(mediaRepository.findById(it.id), shouldPrependBookNumbers(userAgent)) }
 
-      val uriBuilder = uriBuilder("series/$id", markRead)
+      val uriBuilder = uriBuilder("series/$id")
 
       OpdsFeedAcquisition(
         id = series.id,
@@ -461,7 +446,7 @@ class OpdsController(
         author = komgaAuthor,
         links = listOf(
           OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-          linkStart(markRead),
+          linkStart,
           *linkPage(uriBuilder, entries).toTypedArray(),
         ),
         entries = entries.content,
@@ -473,7 +458,6 @@ class OpdsController(
   fun getOneLibrary(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String,
-    @RequestParam(name = MARK_READ, required = false) markRead: Boolean?,
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed =
     libraryRepository.findByIdOrNull(id)?.let { library ->
@@ -487,9 +471,9 @@ class OpdsController(
       val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.asc("metadata.titleSort")))
 
       val entries = seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageable)
-        .map { it.toOpdsEntry(markRead) }
+        .map { it.toOpdsEntry() }
 
-      val uriBuilder = uriBuilder("libraries/$id", markRead)
+      val uriBuilder = uriBuilder("libraries/$id")
 
       OpdsFeedNavigation(
         id = library.id,
@@ -498,7 +482,7 @@ class OpdsController(
         author = komgaAuthor,
         links = listOf(
           OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-          linkStart(markRead),
+          linkStart,
           *linkPage(uriBuilder, entries).toTypedArray(),
         ),
         entries = entries.content
@@ -510,7 +494,6 @@ class OpdsController(
   fun getOneCollection(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String,
-    @RequestParam(name = MARK_READ, required = false) markRead: Boolean?,
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed =
     collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { collection ->
@@ -527,10 +510,10 @@ class OpdsController(
       val entries = seriesDtoRepository.findAllByCollectionId(collection.id, seriesSearch, principal.user.id, pageable)
         .map { seriesDto ->
           val index = if (collection.ordered) collection.seriesIds.indexOf(seriesDto.id) + 1 else null
-          seriesDto.toOpdsEntry(markRead, index)
+          seriesDto.toOpdsEntry(index)
         }
 
-      val uriBuilder = uriBuilder("collections/$id", markRead)
+      val uriBuilder = uriBuilder("collections/$id")
 
       OpdsFeedNavigation(
         id = collection.id,
@@ -539,7 +522,7 @@ class OpdsController(
         author = komgaAuthor,
         links = listOf(
           OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-          linkStart(markRead),
+          linkStart,
           *linkPage(uriBuilder, entries).toTypedArray(),
         ),
         entries = entries.content
@@ -551,7 +534,6 @@ class OpdsController(
   fun getOneReadList(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String,
-    @RequestParam(name = MARK_READ, required = false) markRead: Boolean?,
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed =
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
@@ -569,10 +551,10 @@ class OpdsController(
 
       val entries = booksPage.map { bookDto ->
         val index = readList.bookIds.filterValues { it == bookDto.id }.keys.first()
-        bookDto.toOpdsEntry(mediaRepository.findById(bookDto.id), markRead, prependNumber = false, prepend = index + 1)
+        bookDto.toOpdsEntry(mediaRepository.findById(bookDto.id), prependNumber = false, prepend = index + 1)
       }
 
-      val uriBuilder = uriBuilder("readlists/$id", markRead)
+      val uriBuilder = uriBuilder("readlists/$id")
 
       OpdsFeedAcquisition(
         id = readList.id,
@@ -581,25 +563,25 @@ class OpdsController(
         author = komgaAuthor,
         links = listOf(
           OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-          linkStart(markRead),
+          linkStart,
           *linkPage(uriBuilder, booksPage).toTypedArray(),
         ),
         entries = entries.content
       )
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  private fun SeriesDto.toOpdsEntry(markRead: Boolean?, prepend: Int? = null): OpdsEntryNavigation {
+  private fun SeriesDto.toOpdsEntry(prepend: Int? = null): OpdsEntryNavigation {
     val pre = prepend?.let { decimalFormat.format(it) + " - " } ?: ""
     return OpdsEntryNavigation(
       title = pre + metadata.title,
       updated = lastModified.atZone(ZoneId.of("Z")) ?: ZonedDateTime.now(),
       id = id,
       content = "",
-      link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder("series/$id", markRead).toUriString()),
+      link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder("series/$id").toUriString()),
     )
   }
 
-  private fun BookDto.toOpdsEntry(media: Media, markRead: Boolean?, prependNumber: Boolean, prepend: Int? = null): OpdsEntryAcquisition {
+  private fun BookDto.toOpdsEntry(media: Media, prependNumber: Boolean, prepend: Int? = null): OpdsEntryAcquisition {
     val pre = prepend?.let { decimalFormat.format(it) + " - " } ?: ""
     return OpdsEntryAcquisition(
       title = "$pre${if (prependNumber) "${decimalFormat.format(metadata.numberSort)} - " else ""}${metadata.title}",
@@ -613,49 +595,49 @@ class OpdsController(
       },
       authors = metadata.authors.map { OpdsAuthor(it.name) },
       links = listOf(
-        OpdsLinkImageThumbnail("image/jpeg", uriBuilder("books/$id/thumbnail", null).toUriString()),
-        OpdsLinkImage(media.pages[0].mediaType, uriBuilder("books/$id/pages/1", null).toUriString()),
-        OpdsLinkFileAcquisition(media.mediaType, uriBuilder("books/$id/file/${sanitize(FilenameUtils.getName(url))}", null).toUriString()),
-        media.toOpdsLinkPageStreaming(id, markRead),
+        OpdsLinkImageThumbnail("image/jpeg", uriBuilder("books/$id/thumbnail").toUriString()),
+        OpdsLinkImage(media.pages[0].mediaType, uriBuilder("books/$id/pages/1").toUriString()),
+        OpdsLinkFileAcquisition(media.mediaType, uriBuilder("books/$id/file/${sanitize(FilenameUtils.getName(url))}").toUriString()),
+        media.toOpdsLinkPageStreaming(id),
       )
     )
   }
 
-  private fun Media.toOpdsLinkPageStreaming(bookId: String, markRead: Boolean?): OpdsLinkPageStreaming {
+  private fun Media.toOpdsLinkPageStreaming(bookId: String): OpdsLinkPageStreaming {
     val mediaTypes = pages.map { it.mediaType }.distinct()
 
     return if (mediaTypes.size == 1 && mediaTypes.first() in opdsPseSupportedFormats) {
-      OpdsLinkPageStreaming(mediaTypes.first(), "${routeBase}books/$bookId/pages/{pageNumber}?zero_based=true${markRead?.let { "&$MARK_READ=$it" } ?: ""}", pages.size)
+      OpdsLinkPageStreaming(mediaTypes.first(), "${routeBase}books/$bookId/pages/{pageNumber}?zero_based=true", pages.size)
     } else {
-      OpdsLinkPageStreaming("image/jpeg", "${routeBase}books/$bookId/pages/{pageNumber}?convert=jpeg&zero_based=true${markRead?.let { "&$MARK_READ=$it" } ?: ""}", pages.size)
+      OpdsLinkPageStreaming("image/jpeg", "${routeBase}books/$bookId/pages/{pageNumber}?convert=jpeg&zero_based=true", pages.size)
     }
   }
 
-  private fun Library.toOpdsEntry(markRead: Boolean?): OpdsEntryNavigation =
+  private fun Library.toOpdsEntry(): OpdsEntryNavigation =
     OpdsEntryNavigation(
       title = name,
       updated = lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
       id = id,
       content = "",
-      link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder("libraries/$id", markRead).toUriString())
+      link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder("libraries/$id").toUriString())
     )
 
-  private fun SeriesCollection.toOpdsEntry(markRead: Boolean?): OpdsEntryNavigation =
+  private fun SeriesCollection.toOpdsEntry(): OpdsEntryNavigation =
     OpdsEntryNavigation(
       title = name,
       updated = lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
       id = id,
       content = "",
-      link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder("collections/$id", markRead).toUriString())
+      link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder("collections/$id").toUriString())
     )
 
-  private fun ReadList.toOpdsEntry(markRead: Boolean?): OpdsEntryNavigation =
+  private fun ReadList.toOpdsEntry(): OpdsEntryNavigation =
     OpdsEntryNavigation(
       title = name,
       updated = lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
       id = id,
       content = "",
-      link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder("readlists/$id", markRead).toUriString())
+      link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder("readlists/$id").toUriString())
     )
 
   private fun shouldPrependBookNumbers(userAgent: String) =
