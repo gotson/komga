@@ -61,7 +61,10 @@ class OpdsLinkPageStreaming(
   href: String,
 
   @get:JacksonXmlProperty(isAttribute = true, namespace = OPDS_PSE)
-  val count: Int
+  val count: Int,
+
+  @get:JacksonXmlProperty(isAttribute = true, namespace = OPDS_PSE)
+  val lastRead: Int?,
 ) : OpdsLink(
   type = mediaType,
   rel = "http://vaemendis.net/opds-pse/stream",

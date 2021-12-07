@@ -582,6 +582,14 @@ class OpdsController(
   }
 
   private fun BookDto.toOpdsEntry(media: Media, prependNumber: Boolean, prepend: Int? = null): OpdsEntryAcquisition {
+    val mediaTypes = media.pages.map { it.mediaType }.distinct()
+
+    val opdsLinkPageStreaming = if (mediaTypes.size == 1 && mediaTypes.first() in opdsPseSupportedFormats) {
+      OpdsLinkPageStreaming(mediaTypes.first(), "${routeBase}books/$id/pages/{pageNumber}?zero_based=true", media.pages.size, readProgress?.page)
+    } else {
+      OpdsLinkPageStreaming("image/jpeg", "${routeBase}books/$id/pages/{pageNumber}?convert=jpeg&zero_based=true", media.pages.size, readProgress?.page)
+    }
+
     val pre = prepend?.let { decimalFormat.format(it) + " - " } ?: ""
     return OpdsEntryAcquisition(
       title = "$pre${if (prependNumber) "${decimalFormat.format(metadata.numberSort)} - " else ""}${metadata.title}",
@@ -598,19 +606,9 @@ class OpdsController(
         OpdsLinkImageThumbnail("image/jpeg", uriBuilder("books/$id/thumbnail").toUriString()),
         OpdsLinkImage(media.pages[0].mediaType, uriBuilder("books/$id/pages/1").toUriString()),
         OpdsLinkFileAcquisition(media.mediaType, uriBuilder("books/$id/file/${sanitize(FilenameUtils.getName(url))}").toUriString()),
-        media.toOpdsLinkPageStreaming(id),
+        opdsLinkPageStreaming,
       )
     )
-  }
-
-  private fun Media.toOpdsLinkPageStreaming(bookId: String): OpdsLinkPageStreaming {
-    val mediaTypes = pages.map { it.mediaType }.distinct()
-
-    return if (mediaTypes.size == 1 && mediaTypes.first() in opdsPseSupportedFormats) {
-      OpdsLinkPageStreaming(mediaTypes.first(), "${routeBase}books/$bookId/pages/{pageNumber}?zero_based=true", pages.size)
-    } else {
-      OpdsLinkPageStreaming("image/jpeg", "${routeBase}books/$bookId/pages/{pageNumber}?convert=jpeg&zero_based=true", pages.size)
-    }
   }
 
   private fun Library.toOpdsEntry(): OpdsEntryNavigation =
