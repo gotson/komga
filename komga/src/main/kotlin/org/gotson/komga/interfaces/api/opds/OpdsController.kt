@@ -7,6 +7,7 @@ import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ReadList
+import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
 import org.gotson.komga.domain.persistence.LibraryRepository
@@ -65,6 +66,8 @@ private val logger = KotlinLogging.logger {}
 
 private const val ROUTE_BASE = "/opds/v1.2/"
 private const val ROUTE_CATALOG = "catalog"
+private const val ROUTE_ON_DECK = "ondeck"
+private const val ROUTE_KEEP_READING = "keep-reading"
 private const val ROUTE_SERIES_ALL = "series"
 private const val ROUTE_SERIES_LATEST = "series/latest"
 private const val ROUTE_BOOKS_LATEST = "books/latest"
@@ -74,6 +77,8 @@ private const val ROUTE_READLISTS_ALL = "readlists"
 private const val ROUTE_PUBLISHERS_ALL = "publishers"
 private const val ROUTE_SEARCH = "search"
 
+private const val ID_ON_DECK = "ondeck"
+private const val ID_KEEP_READING = "keepReading"
 private const val ID_SERIES_ALL = "allSeries"
 private const val ID_SERIES_LATEST = "latestSeries"
 private const val ID_BOOKS_LATEST = "latestBooks"
@@ -140,6 +145,20 @@ class OpdsController(
     ),
     entries = listOf(
       OpdsEntryNavigation(
+        title = "Keep Reading",
+        updated = ZonedDateTime.now(),
+        id = ID_KEEP_READING,
+        content = "Continue reading your in progress books",
+        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder(ROUTE_KEEP_READING).toUriString()),
+      ),
+      OpdsEntryNavigation(
+        title = "On Deck",
+        updated = ZonedDateTime.now(),
+        id = ID_ON_DECK,
+        content = "Browse what to read next",
+        link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder(ROUTE_ON_DECK).toUriString()),
+      ),
+      OpdsEntryNavigation(
         title = "All series",
         updated = ZonedDateTime.now(),
         id = ID_SERIES_ALL,
@@ -197,6 +216,71 @@ class OpdsController(
     description = "Search for series",
     url = OpenSearchDescription.OpenSearchUrl("$routeBase$ROUTE_SERIES_ALL?search={searchTerms}"),
   )
+
+  @PageAsQueryParam
+  @GetMapping(ROUTE_ON_DECK)
+  fun getOnDeck(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @Parameter(hidden = true) page: Pageable,
+  ): OpdsFeed {
+    val entries = bookDtoRepository.findAllOnDeck(
+      principal.user.id,
+      principal.user.getAuthorizedLibraryIds(null),
+      page,
+    ).map { it.toOpdsEntry(mediaRepository.findById(it.id), false) }
+
+    val builder = uriBuilder(ROUTE_ON_DECK)
+
+    return OpdsFeedAcquisition(
+      id = ID_ON_DECK,
+      title = "On Deck",
+      updated = ZonedDateTime.now(),
+      author = komgaAuthor,
+      links = listOf(
+        OpdsLinkFeedNavigation(OpdsLinkRel.SELF, builder.toUriString()),
+        linkStart,
+        *linkPage(builder, entries).toTypedArray(),
+      ),
+      entries = entries.content,
+    )
+  }
+
+  @PageAsQueryParam
+  @GetMapping(ROUTE_KEEP_READING)
+  fun getKeepReading(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @Parameter(hidden = true) page: Pageable,
+  ): OpdsFeed {
+    val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.desc("readProgress.readDate")))
+
+    val bookSearch = BookSearchWithReadProgress(
+      libraryIds = principal.user.getAuthorizedLibraryIds(null),
+      readStatus = setOf(ReadStatus.IN_PROGRESS),
+      mediaStatus = setOf(Media.Status.READY),
+      deleted = false,
+    )
+
+    val entries = bookDtoRepository.findAll(
+      bookSearch,
+      principal.user.id,
+      pageable,
+    ).map { it.toOpdsEntry(mediaRepository.findById(it.id), false) }
+
+    val builder = uriBuilder(ROUTE_ON_DECK)
+
+    return OpdsFeedAcquisition(
+      id = ID_KEEP_READING,
+      title = "Keep Reading",
+      updated = ZonedDateTime.now(),
+      author = komgaAuthor,
+      links = listOf(
+        OpdsLinkFeedNavigation(OpdsLinkRel.SELF, builder.toUriString()),
+        linkStart,
+        *linkPage(builder, entries).toTypedArray(),
+      ),
+      entries = entries.content,
+    )
+  }
 
   @PageAsQueryParam
   @GetMapping(ROUTE_SERIES_ALL)
@@ -260,7 +344,7 @@ class OpdsController(
       updated = ZonedDateTime.now(),
       author = komgaAuthor,
       links = listOf(
-        OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.build().toUriString()),
+        OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
         linkStart,
         *linkPage(uriBuilder, seriesPage).toTypedArray(),
       ),
@@ -293,7 +377,7 @@ class OpdsController(
       updated = ZonedDateTime.now(),
       author = komgaAuthor,
       links = listOf(
-        OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.build().toUriString()),
+        OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
         linkStart,
         *linkPage(uriBuilder, entries).toTypedArray(),
       ),
@@ -539,7 +623,10 @@ class OpdsController(
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
       val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.asc("readList.number")))
 
-      val bookSearch = BookSearchWithReadProgress(deleted = false)
+      val bookSearch = BookSearchWithReadProgress(
+        mediaStatus = setOf(Media.Status.READY),
+        deleted = false,
+      )
 
       val booksPage = bookDtoRepository.findAllByReadListId(
         readList.id,
