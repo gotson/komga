@@ -639,16 +639,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -786,16 +786,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -864,16 +864,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -929,16 +929,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -1005,16 +1005,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -1066,16 +1066,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -2155,11 +2155,11 @@
         "parameters": [
           {
             "schema": {
-              "type": "boolean"
+              "type": "integer"
             },
             "in": "query",
-            "name": "markread",
-            "required": false
+            "name": "page",
+            "description": "Zero-based page index (0..N)"
           }
         ],
         "tags": [
@@ -2633,11 +2633,11 @@
         "parameters": [
           {
             "schema": {
-              "type": "boolean"
+              "type": "integer"
             },
             "in": "query",
-            "name": "markread",
-            "required": false
+            "name": "page",
+            "description": "Zero-based page index (0..N)"
           }
         ],
         "tags": [
@@ -2934,11 +2934,11 @@
           },
           {
             "schema": {
-              "type": "boolean"
+              "type": "integer"
             },
             "in": "query",
-            "name": "markread",
-            "required": false
+            "name": "page",
+            "description": "Zero-based page index (0..N)"
           }
         ],
         "tags": [
@@ -3200,11 +3200,11 @@
           },
           {
             "schema": {
-              "type": "boolean"
+              "type": "integer"
             },
             "in": "query",
-            "name": "markread",
-            "required": false
+            "name": "page",
+            "description": "Zero-based page index (0..N)"
           }
         ],
         "tags": [
@@ -3502,15 +3502,6 @@
             "name": "zero_based",
             "description": "If set to true, pages will start at index 0. If set to false, pages will start at index 1.",
             "required": false
-          },
-          {
-            "schema": {
-              "type": "boolean"
-            },
-            "in": "query",
-            "name": "markread",
-            "description": "If set to true, read progress will be marked on the requested paged. Works only for OPDS.",
-            "required": false
           }
         ],
         "tags": [
@@ -3564,11 +3555,11 @@
           },
           {
             "schema": {
-              "type": "boolean"
+              "type": "integer"
             },
             "in": "query",
-            "name": "markread",
-            "required": false
+            "name": "page",
+            "description": "Zero-based page index (0..N)"
           }
         ],
         "tags": [
@@ -3803,11 +3794,11 @@
           },
           {
             "schema": {
-              "type": "boolean"
+              "type": "integer"
             },
             "in": "query",
-            "name": "markread",
-            "required": false
+            "name": "page",
+            "description": "Zero-based page index (0..N)"
           }
         ],
         "tags": [
@@ -3927,11 +3918,11 @@
         "parameters": [
           {
             "schema": {
-              "type": "boolean"
+              "type": "integer"
             },
             "in": "query",
-            "name": "markread",
-            "required": false
+            "name": "page",
+            "description": "Zero-based page index (0..N)"
           }
         ],
         "tags": [
@@ -4056,15 +4047,6 @@
             "in": "query",
             "name": "zero_based",
             "description": "If set to true, pages will start at index 0. If set to false, pages will start at index 1.",
-            "required": false
-          },
-          {
-            "schema": {
-              "type": "boolean"
-            },
-            "in": "query",
-            "name": "markread",
-            "description": "If set to true, read progress will be marked on the requested paged. Works only for OPDS.",
             "required": false
           }
         ],
@@ -4348,6 +4330,56 @@
         ]
       }
     },
+    "/opds/v1.2/keep-reading": {
+      "get": {
+        "operationId": "getKeepReading",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "application/atom+xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "page",
+            "description": "Zero-based page index (0..N)"
+          }
+        ],
+        "tags": [
+          "opds-controller"
+        ]
+      }
+    },
     "/api/v1/users/{id}": {
       "patch": {
         "requestBody": {
@@ -4468,11 +4500,61 @@
           },
           {
             "schema": {
-              "type": "boolean"
+              "type": "integer"
             },
             "in": "query",
-            "name": "markread",
-            "required": false
+            "name": "page",
+            "description": "Zero-based page index (0..N)"
+          }
+        ],
+        "tags": [
+          "opds-controller"
+        ]
+      }
+    },
+    "/opds/v1.2/ondeck": {
+      "get": {
+        "operationId": "getOnDeck",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "application/atom+xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpdsFeed"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "page",
+            "description": "Zero-based page index (0..N)"
           }
         ],
         "tags": [
@@ -4515,16 +4597,6 @@
             }
           }
         },
-        "parameters": [
-          {
-            "schema": {
-              "type": "boolean"
-            },
-            "in": "query",
-            "name": "markread",
-            "required": false
-          }
-        ],
         "tags": [
           "opds-controller"
         ]
@@ -5838,16 +5910,6 @@
             }
           }
         },
-        "parameters": [
-          {
-            "schema": {
-              "type": "boolean"
-            },
-            "in": "query",
-            "name": "markread",
-            "required": false
-          }
-        ],
         "tags": [
           "opds-controller"
         ]
@@ -5891,11 +5953,11 @@
         "parameters": [
           {
             "schema": {
-              "type": "boolean"
+              "type": "integer"
             },
             "in": "query",
-            "name": "markread",
-            "required": false
+            "name": "page",
+            "description": "Zero-based page index (0..N)"
           }
         ],
         "tags": [
@@ -6491,11 +6553,11 @@
           },
           {
             "schema": {
-              "type": "boolean"
+              "type": "integer"
             },
             "in": "query",
-            "name": "markread",
-            "required": false
+            "name": "page",
+            "description": "Zero-based page index (0..N)"
           }
         ],
         "tags": [
@@ -7893,7 +7955,7 @@
     },
     "/api/v1/oauth2/providers": {
       "head": {
-        "operationId": "getProviders_4",
+        "operationId": "getProviders",
         "responses": {
           "200": {
             "description": "OK",
@@ -7924,7 +7986,7 @@
         ]
       },
       "patch": {
-        "operationId": "getProviders_3",
+        "operationId": "getProviders_4",
         "responses": {
           "200": {
             "description": "OK",
@@ -7955,99 +8017,6 @@
         ]
       },
       "post": {
-        "operationId": "getProviders_6",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/OAuth2ClientDto"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "o-auth-2-controller"
-        ]
-      },
-      "get": {
-        "operationId": "getProviders_1",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/OAuth2ClientDto"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "o-auth-2-controller"
-        ]
-      },
-      "options": {
-        "operationId": "getProviders_2",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/OAuth2ClientDto"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "o-auth-2-controller"
-        ]
-      },
-      "delete": {
         "operationId": "getProviders_5",
         "responses": {
           "200": {
@@ -8078,8 +8047,101 @@
           "o-auth-2-controller"
         ]
       },
+      "get": {
+        "operationId": "getProviders_2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OAuth2ClientDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "o-auth-2-controller"
+        ]
+      },
+      "options": {
+        "operationId": "getProviders_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OAuth2ClientDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "o-auth-2-controller"
+        ]
+      },
+      "delete": {
+        "operationId": "getProviders_3",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OAuth2ClientDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "o-auth-2-controller"
+        ]
+      },
       "put": {
-        "operationId": "getProviders",
+        "operationId": "getProviders_6",
         "responses": {
           "200": {
             "description": "OK",
@@ -8193,16 +8255,6 @@
             }
           }
         },
-        "parameters": [
-          {
-            "schema": {
-              "type": "boolean"
-            },
-            "in": "query",
-            "name": "markread",
-            "required": false
-          }
-        ],
         "tags": [
           "opds-controller"
         ]
