@@ -277,7 +277,41 @@ class SeriesLifecycleTest(
   }
 
   @Test
-  fun `given a series with a sidecar when deleting series then series is deleted with all book files `() {
+  fun `given a series when deleting series then series directory is deleted`() {
+    Jimfs.newFileSystem(Configuration.unix()).use { fs ->
+      // given
+      val root = fs.getPath("/root")
+      Files.createDirectory(root)
+      val seriesPath = root.resolve("series")
+      Files.createDirectory(seriesPath)
+      val book1Path = seriesPath.resolve("book1.cbz")
+      Files.createFile(book1Path)
+      val book2Path = seriesPath.resolve("book2.cbz")
+      Files.createFile(book2Path)
+      val bookSidecarPath = seriesPath.resolve("sidecar1.png")
+      Files.createFile(bookSidecarPath)
+
+      val series = makeSeries(name = "series", libraryId = library.id, url = seriesPath.toUri().toURL())
+      val books = listOf(
+        makeBook("1", libraryId = library.id, url = book1Path.toUri().toURL()),
+        makeBook("2", libraryId = library.id, url = book2Path.toUri().toURL()),
+      )
+      val bookSidecar = ThumbnailBook(bookId = books[0].id, type = ThumbnailBook.Type.SIDECAR, url = bookSidecarPath.toUri().toURL())
+
+      seriesLifecycle.createSeries(series)
+      seriesLifecycle.addBooks(series, books)
+      thumbnailBookRepository.insert(bookSidecar)
+
+      // when
+      seriesLifecycle.deleteSeriesFiles(series)
+
+      // then
+      assertThat(Files.notExists(seriesPath))
+    }
+  }
+
+  @Test
+  fun `given a series with a series sidecar when deleting series then series directory is deleted`() {
     Jimfs.newFileSystem(Configuration.unix()).use { fs ->
       // given
       val root = fs.getPath("/root")

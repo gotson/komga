@@ -37,6 +37,7 @@ import java.io.FileNotFoundException
 import java.nio.file.Path
 import java.time.LocalDateTime
 import kotlin.io.path.deleteIfExists
+import kotlin.io.path.exists
 import kotlin.io.path.isWritable
 import kotlin.io.path.listDirectoryEntries
 import kotlin.io.path.notExists
@@ -303,7 +304,7 @@ class SeriesLifecycle(
 
     thumbnails.forEach(Path::deleteIfExists)
 
-    if (series.path.listDirectoryEntries().isEmpty())
+    if (series.path.exists() && series.path.listDirectoryEntries().isEmpty())
       series.path.deleteIfExists()
   }
 
