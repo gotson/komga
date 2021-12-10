@@ -1,18 +1,18 @@
 package org.gotson.komga.interfaces.api.rest.dto
 
-import org.gotson.komga.domain.model.ThumbnailBook
+import org.gotson.komga.domain.model.ThumbnailSeriesCollection
 
-data class ThumbnailBookDto(
+data class ThumbnailSeriesCollectionDto(
   val id: String,
-  val bookId: String,
+  val collectionId: String,
   val type: String,
   val selected: Boolean
 )
 
-fun ThumbnailBook.toDto() =
-  ThumbnailBookDto(
+fun ThumbnailSeriesCollection.toDto() =
+  ThumbnailSeriesCollectionDto(
     id = id,
-    bookId = bookId,
+    collectionId = collectionId,
     type = type.toString(),
     selected = selected
   )

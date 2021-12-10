@@ -27,7 +27,7 @@ import org.gotson.komga.interfaces.api.rest.dto.CollectionCreationDto
 import org.gotson.komga.interfaces.api.rest.dto.CollectionDto
 import org.gotson.komga.interfaces.api.rest.dto.CollectionUpdateDto
 import org.gotson.komga.interfaces.api.rest.dto.SeriesDto
-import org.gotson.komga.interfaces.rest.dto.ThumbnailSeriesCollectionDto
+import org.gotson.komga.interfaces.api.rest.dto.ThumbnailSeriesCollectionDto
 import org.gotson.komga.interfaces.api.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.api.rest.dto.toDto
 import org.springframework.data.domain.Page

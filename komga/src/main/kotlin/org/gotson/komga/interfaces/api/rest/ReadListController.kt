@@ -36,9 +36,9 @@ import org.gotson.komga.interfaces.api.rest.dto.ReadListCreationDto
 import org.gotson.komga.interfaces.api.rest.dto.ReadListDto
 import org.gotson.komga.interfaces.api.rest.dto.ReadListRequestResultDto
 import org.gotson.komga.interfaces.api.rest.dto.ReadListUpdateDto
-import org.gotson.komga.interfaces.rest.dto.ThumbnailReadListDto
 import org.gotson.komga.interfaces.api.rest.dto.TachiyomiReadProgressDto
 import org.gotson.komga.interfaces.api.rest.dto.TachiyomiReadProgressUpdateDto
+import org.gotson.komga.interfaces.api.rest.dto.ThumbnailReadListDto
 import org.gotson.komga.interfaces.api.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.api.rest.dto.toDto
 import org.springframework.core.io.FileSystemResource
