@@ -18,6 +18,7 @@ import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.ThumbnailSeries
+import org.gotson.komga.domain.model.withCode
 import org.gotson.komga.domain.persistence.BookMetadataAggregationRepository
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
@@ -32,7 +33,14 @@ import org.gotson.komga.infrastructure.language.stripAccents
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 import java.io.File
+import java.io.FileNotFoundException
+import java.nio.file.Path
 import java.time.LocalDateTime
+import kotlin.io.path.deleteIfExists
+import kotlin.io.path.isWritable
+import kotlin.io.path.listDirectoryEntries
+import kotlin.io.path.notExists
+import kotlin.io.path.toPath
 
 private val logger = KotlinLogging.logger {}
 private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
@@ -185,24 +193,6 @@ class SeriesLifecycle(
     series.forEach { eventPublisher.publishEvent(DomainEvent.SeriesDeleted(it)) }
   }
 
-  fun deleteOne(series: Series) {
-    logger.info { "Delete series id: ${series.id}" }
-
-    transactionTemplate.executeWithoutResult {
-      bookLifecycle.deleteMany(bookRepository.findAllBySeriesId(series.id))
-
-      readProgressRepository.deleteBySeriesId(series.id)
-      collectionRepository.removeSeriesFromAll(series.id)
-      thumbnailsSeriesRepository.deleteBySeriesId(series.id)
-      seriesMetadataRepository.delete(series.id)
-      bookMetadataAggregationRepository.delete(series.id)
-
-      seriesRepository.delete(series.id)
-    }
-
-    eventPublisher.publishEvent(DomainEvent.SeriesDeleted(series))
-  }
-
   fun markReadProgressCompleted(seriesId: String, user: KomgaUser) {
     val bookIds = bookRepository.findAllIdsBySeriesId(seriesId)
       .filter { bookId ->
@@ -294,6 +284,27 @@ class SeriesLifecycle(
   fun deleteThumbnailForSeries(thumbnail: ThumbnailSeries) {
     require(thumbnail.type == ThumbnailSeries.Type.USER_UPLOADED) { "Only uploaded thumbnails can be deleted" }
     thumbnailsSeriesRepository.delete(thumbnail.id)
+  }
+
+  fun deleteSeriesFiles(series: Series) {
+    if (series.path.notExists() || !series.path.isWritable())
+      throw FileNotFoundException("File is not accessible : ${series.path}").withCode("ERR_1018")
+
+    val thumbnails = thumbnailsSeriesRepository.findAllBySeriesId(series.id)
+      .filter { it.type == ThumbnailSeries.Type.SIDECAR }
+      .map { it.url!!.toURI().toPath() }
+
+    thumbnails.find { it.notExists() || !it.isWritable() }?.let {
+      throw FileNotFoundException("File is not accessible : $it").withCode("ERR_1018")
+    }
+
+    val books = bookRepository.findAllBySeriesId(series.id)
+    books.forEach { bookLifecycle.deleteBookFiles(it) }
+
+    thumbnails.forEach(Path::deleteIfExists)
+
+    if (series.path.listDirectoryEntries().isEmpty())
+      series.path.deleteIfExists()
   }
 
   private fun thumbnailsHouseKeeping(seriesId: String) {

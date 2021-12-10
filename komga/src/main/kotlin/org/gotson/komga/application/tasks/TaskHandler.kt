@@ -10,6 +10,7 @@ import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.BookMetadataLifecycle
 import org.gotson.komga.domain.service.LibraryContentLifecycle
 import org.gotson.komga.domain.service.LocalArtworkLifecycle
+import org.gotson.komga.domain.service.SeriesLifecycle
 import org.gotson.komga.domain.service.SeriesMetadataLifecycle
 import org.gotson.komga.infrastructure.jms.QUEUE_FACTORY
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
@@ -18,8 +19,6 @@ import org.gotson.komga.infrastructure.search.SearchIndexLifecycle
 import org.springframework.jms.annotation.JmsListener
 import org.springframework.stereotype.Service
 import java.nio.file.Paths
-import kotlin.io.path.deleteIfExists
-import kotlin.io.path.toPath
 import kotlin.time.measureTime
 
 private val logger = KotlinLogging.logger {}
@@ -33,6 +32,7 @@ class TaskHandler(
   private val libraryContentLifecycle: LibraryContentLifecycle,
   private val bookLifecycle: BookLifecycle,
   private val bookMetadataLifecycle: BookMetadataLifecycle,
+  private val seriesLifecycle: SeriesLifecycle,
   private val seriesMetadataLifecycle: SeriesMetadataLifecycle,
   private val localArtworkLifecycle: LocalArtworkLifecycle,
   private val bookImporter: BookImporter,
@@ -124,8 +124,18 @@ class TaskHandler(
 
           is Task.RebuildIndex -> searchIndexLifecycle.rebuildIndex()
 
-          is Task.DeleteFile -> {
-            task.url.toURI().toPath().deleteIfExists()
+          is Task.DeleteBook -> {
+            bookRepository.findByIdOrNull(task.bookId)?.let { book ->
+              bookLifecycle.deleteBookFiles(book)
+              taskReceiver.scanLibrary(book.libraryId)
+            }
+          }
+
+          is Task.DeleteSeries -> {
+            seriesRepository.findByIdOrNull(task.seriesId)?.let { series ->
+              seriesLifecycle.deleteSeriesFiles(series)
+              taskReceiver.scanLibrary(series.libraryId)
+            }
           }
         }
       }.also {

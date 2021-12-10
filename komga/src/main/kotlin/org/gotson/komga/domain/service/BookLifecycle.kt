@@ -12,6 +12,7 @@ import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.model.ThumbnailBook
+import org.gotson.komga.domain.model.withCode
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
@@ -25,7 +26,15 @@ import org.gotson.komga.infrastructure.image.ImageType
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 import java.io.File
+import java.io.FileNotFoundException
+import java.nio.file.Path
 import java.time.LocalDateTime
+import kotlin.io.path.deleteExisting
+import kotlin.io.path.deleteIfExists
+import kotlin.io.path.isWritable
+import kotlin.io.path.listDirectoryEntries
+import kotlin.io.path.notExists
+import kotlin.io.path.toPath
 
 private val logger = KotlinLogging.logger {}
 
@@ -271,5 +280,24 @@ class BookLifecycle(
       readProgressRepository.delete(book.id, user.id)
       eventPublisher.publishEvent(DomainEvent.ReadProgressDeleted(progress))
     }
+  }
+
+  fun deleteBookFiles(book: Book) {
+    if (book.path.notExists() || !book.path.isWritable())
+      throw FileNotFoundException("File is not accessible : ${book.path}").withCode("ERR_1018")
+
+    val thumbnails = thumbnailBookRepository.findAllByBookId(book.id)
+      .filter { it.type == ThumbnailBook.Type.SIDECAR }
+      .mapNotNull { it.url?.toURI()?.toPath() }
+
+    thumbnails.find { it.notExists() || !it.isWritable() }?.let {
+      throw FileNotFoundException("File is not accessible : ${book.path}").withCode("ERR_1018")
+    }
+
+    book.path.deleteIfExists()
+    thumbnails.forEach(Path::deleteIfExists)
+
+    if (book.path.parent.listDirectoryEntries().isEmpty())
+      book.path.parent.deleteExisting()
   }
 }

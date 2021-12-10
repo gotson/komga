@@ -3,7 +3,6 @@ package org.gotson.komga.application.tasks
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.CopyMode
 import java.io.Serializable
-import java.net.URL
 
 const val HIGHEST_PRIORITY = 8
 const val HIGH_PRIORITY = 6
@@ -84,8 +83,13 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY) : Serializable {
     override fun toString(): String = "RebuildIndex(priority='$priority')"
   }
 
-  class DeleteFile(val url: URL, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
-    override fun uniqueId() = "DELETE_FILE_$url"
-    override fun toString(): String = "DeleteFile(priority='$priority')"
+  class DeleteBook(val bookId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
+    override fun uniqueId() = "DELETE_BOOK_$bookId"
+    override fun toString(): String = "DeleteBook(bookId='$bookId', priority='$priority')"
+  }
+
+  class DeleteSeries(val seriesId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
+    override fun uniqueId() = "DELETE_SERIES_$seriesId"
+    override fun toString(): String = "DeleteSeries(seriesId='$seriesId', priority='$priority')"
   }
 }

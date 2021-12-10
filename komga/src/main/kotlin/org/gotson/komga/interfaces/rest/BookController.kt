@@ -73,7 +73,6 @@ import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
 import java.io.FileNotFoundException
 import java.io.OutputStream
-import java.nio.file.Files
 import java.nio.file.NoSuchFileException
 import java.time.LocalDate
 import java.time.ZoneOffset
@@ -553,21 +552,19 @@ class BookController(
 
   @DeleteMapping("api/v1/books/{bookId}")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @ResponseStatus(HttpStatus.ACCEPTED)
   fun deleteBook(
     @PathVariable bookId: String,
     @AuthenticationPrincipal principal: KomgaPrincipal
   ) {
-    bookRepository.findByIdOrNull(bookId)?.let { book ->
-      if (!principal.user.canAccessBook(book)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-      if (!Files.isWritable(book.path)) {
-        logger.warn { "Cannot delete ${book.path}: Permission denied" }
-        throw ResponseStatusException(HttpStatus.CONFLICT)
-      }
-
-      bookLifecycle.deleteOne(book)
-      taskReceiver.deleteFile(book.url)
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    try {
+      taskReceiver.deleteBook(
+        bookId = bookId,
+        priority = HIGHEST_PRIORITY,
+      )
+    } catch (e: Exception) {
+      logger.error(e) { "Error while creating book delete task for: $bookId" }
+    }
   }
 
   private fun ResponseEntity.BodyBuilder.setNotModified(media: Media) =
