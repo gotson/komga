@@ -7,6 +7,15 @@ import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Target(AnnotationTarget.ANNOTATION_CLASS, AnnotationTarget.FUNCTION)
+@Parameter(
+  description = "Zero-based page index (0..N)",
+  `in` = ParameterIn.QUERY,
+  name = "page",
+  schema = Schema(type = "integer")
+)
+annotation class PageAsQueryParam
+
+@Target(AnnotationTarget.ANNOTATION_CLASS, AnnotationTarget.FUNCTION)
 @Parameters(
   Parameter(
     description = "Zero-based page index (0..N)",

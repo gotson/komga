@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalUnit
 import java.util.Date
@@ -44,3 +45,6 @@ fun LocalDateTime.notEquals(other: LocalDateTime, precision: TemporalUnit = Chro
 fun String.stripAccents(): String = StringUtils.stripAccents(this)
 
 fun LocalDate.toDate(): Date = Date.from(this.atStartOfDay(ZoneId.of("Z")).toInstant())
+
+fun LocalDateTime.toUTC(): LocalDateTime =
+  atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime()

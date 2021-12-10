@@ -2,7 +2,7 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.persistence.ReadProgressRepository
-import org.gotson.komga.interfaces.rest.dto.toUTC
+import org.gotson.komga.infrastructure.language.toUTC
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.ReadProgressRecord
 import org.jooq.DSLContext

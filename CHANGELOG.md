@@ -1,3 +1,17 @@
+# [0.135.0](https://github.com/gotson/komga/compare/v0.134.1...v0.135.0) (2021-12-10)
+
+
+### Features
+
+* **opds:** acquisition feeds are paginated ([734403a](https://github.com/gotson/komga/commit/734403a3663f8b0a5858b85cd389255c5086b6a7)), closes [#572](https://github.com/gotson/komga/issues/572)
+* **opds:** add Keep Reading and On Deck ([c9d12d0](https://github.com/gotson/komga/commit/c9d12d042b3463779cc20c39aa52720e7404365e)), closes [#737](https://github.com/gotson/komga/issues/737)
+* **opds:** support lastRead attribute on OPSD PSE links ([ce51373](https://github.com/gotson/komga/commit/ce513733446ff4ddbef1fab2cefa14a84bac7a6c))
+
+
+### Reverts
+
+* remove the OPDS markread feature ([e55f493](https://github.com/gotson/komga/commit/e55f493632f441a51372317988894a0cf333e00e))
+
 ## [0.134.1](https://github.com/gotson/komga/compare/v0.134.0...v0.134.1) (2021-12-06)
 
 
