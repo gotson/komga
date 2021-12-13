@@ -33,7 +33,7 @@ spring:
   mvc:
     throw-exception-if-no-handler-found: true
     async:
-      request-timeout: 3600000
+      request-timeout: 1h
   artemis:
     embedded:
       persistent: true
