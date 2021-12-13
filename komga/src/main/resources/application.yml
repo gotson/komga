@@ -1,7 +1,12 @@
 application.version: ${version}
 
 logging:
-  logback.rollingpolicy.max-history: 10
+  logback:
+    rollingpolicy:
+      max-history: 7
+      total-size-cap: 1GB
+      clean-history-on-start: true
+      max-file-size: 10MB
   file:
     name: \${user.home}/.komga/komga.log
   level:
