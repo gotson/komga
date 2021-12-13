@@ -1,3 +1,11 @@
+## [0.135.1](https://github.com/gotson/komga/compare/v0.135.0...v0.135.1) (2021-12-13)
+
+
+### Bug Fixes
+
+* change default rolling policy for logs ([c1cc96c](https://github.com/gotson/komga/commit/c1cc96cefe6ac512e82b4b9231533d0e46a04418)), closes [#745](https://github.com/gotson/komga/issues/745)
+* change default scan interval to every 8 hours ([8eef8d9](https://github.com/gotson/komga/commit/8eef8d99c997a9b42f9af76f5deb0cecdebde3b4))
+
 # [0.135.0](https://github.com/gotson/komga/compare/v0.134.1...v0.135.0) (2021-12-10)
 
 
