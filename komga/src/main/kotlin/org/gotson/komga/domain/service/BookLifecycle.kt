@@ -53,6 +53,7 @@ class BookLifecycle(
       // if the number of pages has changed, delete all read progress for that book
       mediaRepository.findById(book.id).let { previous ->
         if (previous.status == Media.Status.OUTDATED && previous.pages.size != media.pages.size) {
+          logger.info { "Number of pages differ, reset read progress for book" }
           readProgressRepository.deleteByBookId(book.id)
         }
       }
