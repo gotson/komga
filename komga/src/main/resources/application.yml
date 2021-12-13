@@ -8,7 +8,7 @@ logging:
     org.apache.activemq.audit: WARN
 
 komga:
-  libraries-scan-cron: "0 */15 * * * ?"
+  libraries-scan-cron: "0 0 */8 * * ?"
   libraries-scan-directory-exclusions:
     - "#recycle"
     - "@eaDir"
