@@ -5,6 +5,7 @@ import org.assertj.core.groups.Tuple.tuple
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ThumbnailBook
@@ -474,7 +475,8 @@ class BookControllerTest(
           thumbnail = Random.nextBytes(100),
           bookId = book.id,
           type = ThumbnailBook.Type.GENERATED
-        )
+        ),
+        MarkSelectedPreference.YES
       )
 
       val url = "/api/v1/books/${book.id}/thumbnail"
@@ -533,7 +535,8 @@ class BookControllerTest(
           thumbnail = Random.nextBytes(1),
           bookId = book.id,
           type = ThumbnailBook.Type.GENERATED
-        )
+        ),
+        MarkSelectedPreference.YES
       )
 
       val url = "/api/v1/books/${book.id}/thumbnail"
@@ -546,7 +549,8 @@ class BookControllerTest(
           thumbnail = Random.nextBytes(1),
           bookId = book.id,
           type = ThumbnailBook.Type.GENERATED
-        )
+        ),
+        MarkSelectedPreference.YES
       )
 
       mockMvc.get(url) {

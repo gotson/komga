@@ -14,6 +14,7 @@ import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.ImageConversionException
+import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.ROLE_ADMIN
@@ -302,6 +303,7 @@ class BookController(
         type = ThumbnailBook.Type.USER_UPLOADED,
         selected = selected
       ),
+      if (selected) MarkSelectedPreference.YES else MarkSelectedPreference.NO
     )
   }
 

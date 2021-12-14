@@ -8,6 +8,7 @@ import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.ImageConversionException
 import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.ReadProgress
@@ -81,18 +82,18 @@ class BookLifecycle(
   fun generateThumbnailAndPersist(book: Book) {
     logger.info { "Generate thumbnail and persist for book: $book" }
     try {
-      addThumbnailForBook(bookAnalyzer.generateThumbnail(BookWithMedia(book, mediaRepository.findById(book.id))))
+      addThumbnailForBook(bookAnalyzer.generateThumbnail(BookWithMedia(book, mediaRepository.findById(book.id))), MarkSelectedPreference.IF_NONE_EXIST)
     } catch (ex: Exception) {
       logger.error(ex) { "Error while creating thumbnail" }
     }
   }
 
-  fun addThumbnailForBook(thumbnail: ThumbnailBook) {
+  fun addThumbnailForBook(thumbnail: ThumbnailBook, markSelected: MarkSelectedPreference) {
     when (thumbnail.type) {
       ThumbnailBook.Type.GENERATED -> {
         // only one generated thumbnail is allowed
         thumbnailBookRepository.deleteByBookIdAndType(thumbnail.bookId, ThumbnailBook.Type.GENERATED)
-        thumbnailBookRepository.insert(thumbnail)
+        thumbnailBookRepository.insert(thumbnail.copy(selected = false))
       }
       ThumbnailBook.Type.SIDECAR -> {
         // delete existing thumbnail with the same url
@@ -101,16 +102,21 @@ class BookLifecycle(
           .forEach {
             thumbnailBookRepository.delete(it.id)
           }
-        thumbnailBookRepository.insert(thumbnail)
+        thumbnailBookRepository.insert(thumbnail.copy(selected = false))
       }
       ThumbnailBook.Type.USER_UPLOADED -> {
-        thumbnailBookRepository.insert(thumbnail)
+        thumbnailBookRepository.insert(thumbnail.copy(selected = false))
       }
     }
 
-    if (thumbnail.selected)
+    if (markSelected == MarkSelectedPreference.YES ||
+      (
+        markSelected == MarkSelectedPreference.IF_NONE_EXIST &&
+          thumbnailBookRepository.findSelectedByBookIdOrNull(thumbnail.bookId) == null
+        )
+    ) {
       thumbnailBookRepository.markSelected(thumbnail)
-    else
+    } else
       thumbnailsHouseKeeping(thumbnail.bookId)
 
     eventPublisher.publishEvent(DomainEvent.ThumbnailBookAdded(thumbnail))

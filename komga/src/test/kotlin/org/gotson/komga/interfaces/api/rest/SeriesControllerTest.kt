@@ -3,6 +3,7 @@ package org.gotson.komga.interfaces.api.rest
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.SeriesMetadata
@@ -580,7 +581,8 @@ class SeriesControllerTest(
             thumbnail = Random.nextBytes(1),
             bookId = book.id,
             type = ThumbnailBook.Type.GENERATED
-          )
+          ),
+          MarkSelectedPreference.YES
         )
       }
 
@@ -614,7 +616,8 @@ class SeriesControllerTest(
             thumbnail = Random.nextBytes(1),
             bookId = book.id,
             type = ThumbnailBook.Type.GENERATED
-          )
+          ),
+          MarkSelectedPreference.YES
         )
       }
 
