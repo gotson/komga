@@ -11,8 +11,12 @@ export function buildSpreads(pages: PageDtoWithUrl[], pageLayout: PagedReaderLay
     const pagesClone = cloneDeep(pages)
     let lastPages = undefined
     if (pageLayout === PagedReaderLayout.DOUBLE_PAGES) {
-      spreads.push([pagesClone.shift()] as PageDtoWithUrl[])
-      if (pagesClone.length > 0) lastPages = [pagesClone.pop()] as PageDtoWithUrl[]
+      const firstPage = pagesClone.shift() as PageDtoWithUrl
+      spreads.push([createEmptyPage(firstPage), firstPage] as PageDtoWithUrl[])
+      if (pagesClone.length > 0) {
+        const lastPage = pagesClone.pop() as PageDtoWithUrl
+        lastPages = [lastPage, createEmptyPage(lastPage)] as PageDtoWithUrl[]
+      }
     }
     while (pagesClone.length > 0) {
       const p = pagesClone.shift() as PageDtoWithUrl
@@ -22,13 +26,13 @@ export function buildSpreads(pages: PageDtoWithUrl[], pageLayout: PagedReaderLay
         if (pagesClone.length > 0) {
           const p2 = pagesClone.shift() as PageDtoWithUrl
           if (isPageLandscape(p2)) {
-            spreads.push([p])
+            spreads.push([p, createEmptyPage(p)])
             spreads.push([p2])
           } else {
             spreads.push([p, p2])
           }
         } else {
-          spreads.push([p])
+          spreads.push([p, createEmptyPage(p)])
         }
       }
     }
@@ -37,4 +41,24 @@ export function buildSpreads(pages: PageDtoWithUrl[], pageLayout: PagedReaderLay
   } else {
     return pages.map(p => [p])
   }
+}
+
+function createEmptyPage(page: PageDtoWithUrl): PageDtoWithUrl {
+  return {
+    url: createTransparentDataUrl(page?.width || 20, page?.height || 30),
+  } as PageDtoWithUrl
+}
+
+function createTransparentDataUrl(w: number, h: number): string {
+  const canvas = document.createElement('canvas')
+  canvas.width = w
+  canvas.height = h
+
+  const ctx = canvas.getContext('2d')
+  if (ctx) {
+    ctx.fillStyle = 'rgb(0,0,0,0)'
+    ctx.fillRect(0, 0, w, h)
+  }
+
+  return canvas.toDataURL()
 }
