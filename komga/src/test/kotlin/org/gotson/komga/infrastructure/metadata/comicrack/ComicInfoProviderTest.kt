@@ -261,6 +261,7 @@ class ComicInfoProviderTest {
         inker = "inker"
         colorist = "colorist"
         editor = "editor"
+        translator = "translator"
         letterer = "letterer"
         coverArtist = "coverArtist"
       }
@@ -270,9 +271,9 @@ class ComicInfoProviderTest {
       val patch = comicInfoProvider.getBookMetadataFromBook(BookWithMedia(book, media))
 
       with(patch!!) {
-        assertThat(authors).hasSize(7)
-        assertThat(authors?.map { it.name }).containsExactlyInAnyOrder("writer", "penciller", "inker", "colorist", "editor", "letterer", "coverArtist")
-        assertThat(authors?.map { it.role }).containsExactlyInAnyOrder("writer", "penciller", "inker", "colorist", "editor", "letterer", "cover")
+        assertThat(authors).hasSize(8)
+        assertThat(authors?.map { it.name }).containsExactlyInAnyOrder("writer", "penciller", "inker", "colorist", "editor", "letterer", "translator", "coverArtist")
+        assertThat(authors?.map { it.role }).containsExactlyInAnyOrder("writer", "penciller", "inker", "colorist", "editor", "letterer", "translator", "cover")
       }
     }
 
@@ -284,6 +285,7 @@ class ComicInfoProviderTest {
         inker = "inker, inker2"
         colorist = "colorist, colorist2"
         editor = "editor, editor2"
+        translator = "translator, translator2"
         letterer = "letterer, letterer2"
         coverArtist = "coverArtist, coverArtist2"
       }
@@ -293,9 +295,9 @@ class ComicInfoProviderTest {
       val patch = comicInfoProvider.getBookMetadataFromBook(BookWithMedia(book, media))
 
       with(patch!!) {
-        assertThat(authors).hasSize(14)
-        assertThat(authors?.map { it.name }).containsExactlyInAnyOrder("writer", "penciller", "inker", "colorist", "editor", "letterer", "coverArtist", "writer2", "penciller2", "inker2", "colorist2", "editor2", "letterer2", "coverArtist2")
-        assertThat(authors?.map { it.role }?.distinct()).containsExactlyInAnyOrder("writer", "penciller", "inker", "colorist", "editor", "letterer", "cover")
+        assertThat(authors).hasSize(16)
+        assertThat(authors?.map { it.name }).containsExactlyInAnyOrder("writer", "penciller", "inker", "colorist", "editor", "letterer", "coverArtist", "writer2", "penciller2", "inker2", "colorist2", "editor2", "letterer2", "coverArtist2", "translator", "translator2")
+        assertThat(authors?.map { it.role }?.distinct()).containsExactlyInAnyOrder("writer", "penciller", "inker", "colorist", "editor", "letterer", "cover", "translator")
       }
     }
 

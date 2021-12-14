@@ -53,6 +53,7 @@ class ComicInfoProvider(
       comicInfo.letterer?.splitWithRole("letterer")?.let { authors += it }
       comicInfo.coverArtist?.splitWithRole("cover")?.let { authors += it }
       comicInfo.editor?.splitWithRole("editor")?.let { authors += it }
+      comicInfo.translator?.splitWithRole("translator")?.let { authors += it }
 
       val readLists = mutableListOf<BookMetadataPatch.ReadListEntry>()
       if (!comicInfo.alternateSeries.isNullOrBlank()) {
