@@ -1,3 +1,10 @@
+# [0.137.0](https://github.com/gotson/komga/compare/v0.136.0...v0.137.0) (2021-12-14)
+
+
+### Features
+
+* import Translator from ComicInfo.xml ([fe8c21d](https://github.com/gotson/komga/commit/fe8c21d1ad6fc3ee552bdc17a4cd60397ec3d827)), closes [#740](https://github.com/gotson/komga/issues/740)
+
 # [0.136.0](https://github.com/gotson/komga/compare/v0.135.1...v0.136.0) (2021-12-14)
 
 

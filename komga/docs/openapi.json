@@ -639,16 +639,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -786,16 +786,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -864,16 +864,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -929,16 +929,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -1005,16 +1005,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -1066,16 +1066,16 @@
             "format": "int32",
             "type": "integer"
           },
+          "size": {
+            "format": "int32",
+            "type": "integer"
+          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
-          },
-          "size": {
-            "format": "int32",
-            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -7955,7 +7955,7 @@
     },
     "/api/v1/oauth2/providers": {
       "head": {
-        "operationId": "getProviders_2",
+        "operationId": "getProviders_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -8017,7 +8017,7 @@
         ]
       },
       "post": {
-        "operationId": "getProviders_4",
+        "operationId": "getProviders_5",
         "responses": {
           "200": {
             "description": "OK",
@@ -8048,7 +8048,7 @@
         ]
       },
       "get": {
-        "operationId": "getProviders_3",
+        "operationId": "getProviders_2",
         "responses": {
           "200": {
             "description": "OK",
@@ -8079,7 +8079,7 @@
         ]
       },
       "options": {
-        "operationId": "getProviders_5",
+        "operationId": "getProviders_4",
         "responses": {
           "200": {
             "description": "OK",
@@ -8141,7 +8141,7 @@
         ]
       },
       "put": {
-        "operationId": "getProviders_1",
+        "operationId": "getProviders_3",
         "responses": {
           "200": {
             "description": "OK",
