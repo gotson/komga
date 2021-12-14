@@ -127,14 +127,14 @@ class TaskHandler(
           is Task.DeleteBook -> {
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
               bookLifecycle.deleteBookFiles(book)
-              taskReceiver.scanLibrary(book.libraryId)
+              taskReceiver.scanLibrary(book.libraryId, task.priority)
             }
           }
 
           is Task.DeleteSeries -> {
             seriesRepository.findByIdOrNull(task.seriesId)?.let { series ->
               seriesLifecycle.deleteSeriesFiles(series)
-              taskReceiver.scanLibrary(series.libraryId)
+              taskReceiver.scanLibrary(series.libraryId, task.priority)
             }
           }
         }

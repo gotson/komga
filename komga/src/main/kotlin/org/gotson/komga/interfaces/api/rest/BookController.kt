@@ -550,14 +550,10 @@ class BookController(
     @PathVariable bookId: String,
     @AuthenticationPrincipal principal: KomgaPrincipal
   ) {
-    try {
-      taskReceiver.deleteBook(
-        bookId = bookId,
-        priority = HIGHEST_PRIORITY,
-      )
-    } catch (e: Exception) {
-      logger.error(e) { "Error while creating book delete task for: $bookId" }
-    }
+    taskReceiver.deleteBook(
+      bookId = bookId,
+      priority = HIGHEST_PRIORITY,
+    )
   }
 
   private fun ResponseEntity.BodyBuilder.setNotModified(media: Media) =

@@ -184,7 +184,7 @@ class BookLifecycleTest(
   }
 
   @Test
-  fun `given a book and a non-existent sidecar file when deleting book then exception is thrown and no files are deleted`() {
+  fun `given a book and a non-existent sidecar file when deleting book then book should be deleted`() {
     Jimfs.newFileSystem(Configuration.unix()).use { fs ->
       // given
       val root = fs.getPath("/root")
@@ -208,13 +208,10 @@ class BookLifecycleTest(
       thumbnailBookRepository.insert(sidecar2)
 
       // when
-      val thrown = catchThrowable { bookLifecycle.deleteBookFiles(book) }
+      bookLifecycle.deleteBookFiles(book)
 
       // then
-      assertThat(thrown).hasCauseInstanceOf(FileNotFoundException::class.java)
-      assertThat(Files.exists(bookPath))
-      assertThat(Files.exists(sidecar1Path))
-      assertThat(Files.notExists(sidecar2Path))
+      assertThat(Files.notExists(seriesPath))
     }
   }
 

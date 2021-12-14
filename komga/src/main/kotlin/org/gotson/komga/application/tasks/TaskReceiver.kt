@@ -42,7 +42,7 @@ class TaskReceiver(
     libraryRepository.findAll().forEach { scanLibrary(it.id) }
   }
 
-  fun scanLibrary(libraryId: String) {
+  fun scanLibrary(libraryId: String, priority: Int = DEFAULT_PRIORITY) {
     submitTask(Task.ScanLibrary(libraryId))
   }
 

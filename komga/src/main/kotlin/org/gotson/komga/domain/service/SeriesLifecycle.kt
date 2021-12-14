@@ -291,17 +291,12 @@ class SeriesLifecycle(
     if (series.path.notExists() || !series.path.isWritable())
       throw FileNotFoundException("File is not accessible : ${series.path}").withCode("ERR_1018")
 
-    val thumbnails = thumbnailsSeriesRepository.findAllBySeriesId(series.id)
-      .filter { it.type == ThumbnailSeries.Type.SIDECAR }
+    val thumbnails = thumbnailsSeriesRepository.findAllBySeriesIdIdAndType(series.id, ThumbnailSeries.Type.SIDECAR)
       .map { it.url!!.toURI().toPath() }
-
-    thumbnails.find { it.notExists() || !it.isWritable() }?.let {
-      throw FileNotFoundException("File is not accessible : $it").withCode("ERR_1018")
-    }
+      .filter { it.exists() && it.isWritable() }
 
     val books = bookRepository.findAllBySeriesId(series.id)
     books.forEach { bookLifecycle.deleteBookFiles(it) }
-
     thumbnails.forEach(Path::deleteIfExists)
 
     if (series.path.exists() && series.path.listDirectoryEntries().isEmpty())

@@ -13,8 +13,9 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY) : Serializable {
   abstract fun uniqueId(): String
   val priority = priority.coerceIn(0, 9)
 
-  data class ScanLibrary(val libraryId: String) : Task() {
+  class ScanLibrary(val libraryId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
     override fun uniqueId() = "SCAN_LIBRARY_$libraryId"
+    override fun toString(): String = "ScanLibrary(libraryId='$libraryId', priority='$priority')"
   }
 
   class EmptyTrash(val libraryId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {

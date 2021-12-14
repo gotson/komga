@@ -407,7 +407,7 @@ class SeriesLifecycleTest(
   }
 
   @Test
-  fun `given a series and a non-existent sidecar file when deleting series then exception is thrown and no files are deleted`() {
+  fun `given a series and a non-existent sidecar file when deleting series then series should be deleted`() {
     Jimfs.newFileSystem(Configuration.unix()).use { fs ->
       // given
       val root = fs.getPath("/root")
@@ -436,15 +436,10 @@ class SeriesLifecycleTest(
       thumbnailSeriesRepository.insert(seriesSidecar)
 
       // when
-      val thrown = catchThrowable { seriesLifecycle.deleteSeriesFiles(series) }
+      seriesLifecycle.deleteSeriesFiles(series)
 
       // then
-      assertThat(thrown).hasCauseInstanceOf(FileNotFoundException::class.java)
-      assertThat(Files.exists(seriesPath))
-      assertThat(Files.exists(book1Path))
-      assertThat(Files.exists(book2Path))
-      assertThat(Files.exists(bookSidecarPath))
-      assertThat(Files.notExists(seriesSidecarPath))
+      assertThat(Files.notExists(seriesPath))
     }
   }
 }

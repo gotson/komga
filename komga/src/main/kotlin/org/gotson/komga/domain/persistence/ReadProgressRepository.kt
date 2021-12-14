@@ -18,7 +18,6 @@ interface ReadProgressRepository {
   fun deleteByBookId(bookId: String)
   fun deleteByBookIds(bookIds: Collection<String>)
   fun deleteByBookIdsAndUserId(bookIds: Collection<String>, userId: String)
-  fun deleteBySeriesId(seriesId: String)
   fun deleteBySeriesIds(seriesIds: Collection<String>)
   fun deleteAll()
 }

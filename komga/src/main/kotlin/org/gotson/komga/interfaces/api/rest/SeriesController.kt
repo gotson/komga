@@ -690,13 +690,9 @@ class SeriesController(
     @PathVariable seriesId: String,
     @AuthenticationPrincipal principal: KomgaPrincipal
   ) {
-    try {
-      taskReceiver.deleteSeries(
-        seriesId = seriesId,
-        priority = HIGHEST_PRIORITY,
-      )
-    } catch (e: Exception) {
-      logger.error(e) { "Error while creating series delete task for: $seriesId" }
-    }
+    taskReceiver.deleteSeries(
+      seriesId = seriesId,
+      priority = HIGHEST_PRIORITY,
+    )
   }
 }

@@ -31,6 +31,7 @@ import java.nio.file.Path
 import java.time.LocalDateTime
 import kotlin.io.path.deleteExisting
 import kotlin.io.path.deleteIfExists
+import kotlin.io.path.exists
 import kotlin.io.path.isWritable
 import kotlin.io.path.listDirectoryEntries
 import kotlin.io.path.notExists
@@ -286,13 +287,9 @@ class BookLifecycle(
     if (book.path.notExists() || !book.path.isWritable())
       throw FileNotFoundException("File is not accessible : ${book.path}").withCode("ERR_1018")
 
-    val thumbnails = thumbnailBookRepository.findAllByBookId(book.id)
-      .filter { it.type == ThumbnailBook.Type.SIDECAR }
+    val thumbnails = thumbnailBookRepository.findAllByBookIdAndType(book.id, ThumbnailBook.Type.SIDECAR)
       .mapNotNull { it.url?.toURI()?.toPath() }
-
-    thumbnails.find { it.notExists() || !it.isWritable() }?.let {
-      throw FileNotFoundException("File is not accessible : ${book.path}").withCode("ERR_1018")
-    }
+      .filter { it.exists() && it.isWritable() }
 
     book.path.deleteIfExists()
     thumbnails.forEach(Path::deleteIfExists)
