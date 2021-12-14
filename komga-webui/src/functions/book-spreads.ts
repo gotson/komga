@@ -46,6 +46,7 @@ export function buildSpreads(pages: PageDtoWithUrl[], pageLayout: PagedReaderLay
 function createEmptyPage(page: PageDtoWithUrl): PageDtoWithUrl {
   return {
     url: createTransparentDataUrl(page?.width || 20, page?.height || 30),
+    number: 0,
   } as PageDtoWithUrl
 }
 
