@@ -1,3 +1,10 @@
+# [0.136.0](https://github.com/gotson/komga/compare/v0.135.1...v0.136.0) (2021-12-14)
+
+
+### Features
+
+* **webreader:** align double pages according to reading direction ([218fd79](https://github.com/gotson/komga/commit/218fd79e517670e2f3f1d9ddb14e649432e10075)), closes [#670](https://github.com/gotson/komga/issues/670)
+
 ## [0.135.1](https://github.com/gotson/komga/compare/v0.135.0...v0.135.1) (2021-12-13)
 
 
