@@ -25,7 +25,8 @@
     "datetime": "날짜 시간",
     "email": "이메일",
     "error": "오류",
-    "ip": "Ip",
+    "ip": "IP",
+    "source": "출처",
     "success": "성공",
     "user_agent": "사용자 에이전트"
   },
@@ -33,10 +34,11 @@
     "colorist": "채색",
     "cover": "표지",
     "editor": "편집",
-    "inker": "그림",
+    "inker": "선화",
     "letterer": "글자",
-    "penciller": "글",
-    "writer": "저자"
+    "penciller": "그림",
+    "translator": "번역",
+    "writer": "글"
   },
   "book_card": {
     "error": "오류",
@@ -82,9 +84,9 @@
     "download_current_page": "현재 페이지 다운로드",
     "end_of_book": "책에 마지막 페이지입니다.",
     "from_series_metadata": "시리즈 메타 데이터에서",
-    "move_next": "다음 책으로 이동하려면 다음을 선택하거나 다시 한번 눌러주세요.",
-    "move_next_exit": "읽기를 종료하려면 다음을 선택하거나 다시 한번 눌러주세요.",
-    "move_previous": "이전 책으로 이동하려면 이전을 선택하거나 다시 한번 눌러주세요.",
+    "move_next": "다음 책으로 이동하려면 \"다음\"을 다시 한번 눌러주세요.",
+    "move_next_exit": "읽기를 종료하려면 \"다음\"을 다시 한번 눌러주세요.",
+    "move_previous": "이전 책으로 이동하려면 \"이전\"을 다시 한번 눌러주세요.",
     "paged_reader_layout": {
       "double": "두쪽 보기",
       "double_no_cover": "두쪽 보기 (표지 포함)",
@@ -97,25 +99,28 @@
       "height": "높이 맞춤",
       "original": "원래 크기",
       "screen": "화면에 맞춤",
-      "width": "너비 맞춤"
+      "width": "너비 맞춤",
+      "width_shrink_only": "너비 맞춤(축소만 해당)"
     },
     "settings": {
+      "always_fullscreen": "항상 전체 화면",
       "animate_page_transitions": "페이지 넘김 효과",
       "background_color": "배경 색상",
       "background_colors": {
         "black": "검정",
+        "gray": "회색",
         "white": "흰색"
       },
       "display": "화면",
       "general": "일반",
       "gestures": "제스처",
       "page_layout": "페이지 배치",
-      "paged": "페이지",
+      "paged": "페이지 읽기 설정",
       "reading_mode": "읽기 방식",
       "scale_type": "비율 종류",
       "side_padding": "여백 추가",
       "side_padding_none": "없음",
-      "webtoon": "웹툰"
+      "webtoon": "웹툰 읽기 설정"
     },
     "shortcuts": {
       "close": "닫기",
@@ -174,6 +179,7 @@
     "all_libraries": "모든 서재",
     "books": "권",
     "books_n": "없음 | 1 권 | {count} 권",
+    "books_total": "{count} / {total} 권",
     "cancel": "취소",
     "close": "닫기",
     "collections": "모음집",
@@ -187,8 +193,10 @@
     "go_to_library": "서재로 가기",
     "go_to_readlist": "읽기 목록으로 이동",
     "go_to_series": "시리즈로 이동",
+    "library": "서재",
     "locale_name": "한국어",
     "locale_rtl": "false",
+    "lock_all": "모두 잠금",
     "n_selected": "{count}선택 됨",
     "nothing_to_show": "내용 없음",
     "outdated": "구식의",
@@ -197,7 +205,7 @@
     "password": "비밀번호",
     "pending_tasks": "보류 중인 작업 없음 | 1개의 보류중인 작업 | {count}개의 보류중인 작업",
     "publisher": "출판사",
-    "read": "읽음",
+    "read": "읽기",
     "readlists": "읽기 목록",
     "required": "요청",
     "reset_filters": "필터 재설정",
@@ -205,6 +213,7 @@
     "series": "시리즈",
     "tags": "태그",
     "unavailable": "이용할 수 없는",
+    "unlock_all": "모두 잠금 해제",
     "use_filter_panel_to_change_filter": "필터패널에서 선택을 바꿔보세요",
     "year": "년"
   },
@@ -213,6 +222,7 @@
     "on_deck": "올려 두기",
     "recently_added_books": "최근 추가된 책",
     "recently_added_series": "최근 추가된 시리즈",
+    "recently_read_books": "최근 읽은 책",
     "recently_released_books": "최근 출시된 책",
     "recently_updated_series": "최근 갱신된 시리즈"
   },
@@ -220,7 +230,13 @@
     "book_number": "책 번호: {name}",
     "book_series": "시리즈: {name}",
     "button_import": "가져오기",
-    "imported_as": "{name} 으로 가져왔음"
+    "comicrack_preambule_html": "기존 ComicRack 읽기 목록을 <code>.cbl</code> 형식으로 가져올 수 있습니다.<br>Komga는 제공된 시리즈 및 책 번호를 귀하의 서재에 있는 시리즈 및 책과 일치시킵니다.",
+    "field_files_label": "ComicRack 읽기 목록 (.cbl)",
+    "import_read_lists": "읽기 목록 가져오기",
+    "imported_as": "{name} 으로 가져왔음",
+    "results_preambule": "가져오기 결과는 아래와 같습니다. 제공된 각 파일에 대해 일치하지 않는 책을 확인할 수 있습니다.",
+    "size_limit": "크기는 {size} MB 보다 작아야 합니다",
+    "tab_title": "데이터 가져오기"
   },
   "dialog": {
     "add_to_collection": {
@@ -251,6 +267,11 @@
       "field_role_page_streaming": "페이지 스트리밍",
       "label_roles": "역할"
     },
+    "analyze_library": {
+      "body": "서재의 모든 미디어 파일을 분석합니다. 이 분석은 미디어에 대한 정보를 캡처합니다. 서재 크기에 따라 시간이 오래 걸릴 수 있습니다.",
+      "button_confirm": "분석",
+      "title": "서재 분석하기"
+    },
     "delete_collection": {
       "button_confirm": "삭제",
       "confirm_delete": "예, 모음집 \"{name}\"을 삭제합니다",
@@ -279,23 +300,53 @@
       "authors_notice_multiple_edit": "다수의 저자를 일괄 편집합니다. 기존 저자가 수정될 수 있습니다.",
       "button_cancel": "취소",
       "button_confirm": "변경사항 저장",
+      "field_isbn": "ISBN",
+      "field_isbn_error": "ISBN은 13자리여야 합니다",
+      "field_number": "번호",
+      "field_number_sort": "분류 번호",
+      "field_number_sort_hint": "십진수를 사용할 수 있습니다",
+      "field_release_date": "발매일",
+      "field_release_date_error": "YYYY-MM-DD 형식의 날짜여야 합니다",
+      "field_summary": "요약",
       "field_tags": "태그",
+      "field_title": "제목",
+      "tab_authors": "작가",
+      "tab_general": "일반",
+      "tab_tags": "태그",
       "tags_notice_multiple_edit": "다수의 태그를 일괄 편집합니다. 기존 태그가 수정될 수 있습니다."
+    },
+    "edit_collection": {
+      "button_cancel": "취소",
+      "button_confirm": "변경사항 저장",
+      "dialog_title": "모음집 수정",
+      "field_manual_ordering": "수동 순서 정렬",
+      "label_ordering": "기본적으로 모음집의 열은 이름순으로 정렬됩니다. 수동 순서 정렬을 활성화하여 사용자 고유의 순서를 정의할 수 있습니다."
     },
     "edit_library": {
       "button_browse": "찾기",
       "button_cancel": "취소",
       "button_confirm_add": "추가",
       "button_confirm_edit": "수정",
+      "button_next": "다음",
       "dialog_title_add": "서재 추가하기",
+      "dialot_title_edit": "서재 편집",
+      "field_convert_to_cbz": "CBZ로 자동 변환",
+      "field_import_barcode_isbn": "ISBN 바코드",
       "field_import_comicinfo_book": "책 메타데이터",
       "field_import_comicinfo_collections": "모음집",
       "field_import_comicinfo_readlists": "읽기 목록",
       "field_import_comicinfo_series": "시리즈 메타데이터",
       "field_import_epub_book": "책 메타데이터",
       "field_import_epub_series": "시리즈 메타데이터",
+      "field_import_local_artwork": "로컬 아트웍스",
+      "field_import_mylar_series": "시리즈 메타데이터",
       "field_name": "이름",
+      "field_repair_extensions": "잘못된 파일 확장명 자동 복구",
       "field_root_folder": "루트 폴더",
+      "field_scanner_deep_scan": "정밀 스캔",
+      "field_scanner_empty_trash_after_scan": "스캔 후 자동으로 휴지통 비우기",
+      "field_scanner_force_directory_modified_time": "디렉토리 수정 시간 강제 적용",
+      "field_series_cover": "시리즈 표지",
       "file_browser_dialog_button_confirm": "선택",
       "file_browser_dialog_title": "서재의 루트 폴더",
       "label_import_comicinfo": "ComicInfo.xml 파일이 포함된 CBR/CBZ의 메타데이터 가져오기",
@@ -311,6 +362,7 @@
       "field_age_rating_error": "연령 등급은 0 이상이어야 합니다",
       "field_genres": "장르",
       "field_language": "언어",
+      "field_language_hint": "IETF BCP 47 언어 태그",
       "field_publisher": "출판사",
       "field_reading_direction": "읽기 방향",
       "field_sort_title": "정렬 제목",
@@ -319,6 +371,7 @@
       "field_tags": "태그",
       "field_title": "제목",
       "tab_general": "일반",
+      "tab_poster": "표지",
       "tab_tags": "태그",
       "tags_notice_multiple_edit": "다수의 시리즈를 일괄 편집합니다. 기존 태그가 수정될 수 있습니다."
     },
@@ -332,6 +385,11 @@
       "button_confirm": "변경 저장",
       "dialog_title": "공유된 서재 수정",
       "field_all_libraries": "모든 서재"
+    },
+    "empty_trash": {
+      "body": "기본적으로 미디어 서버는 미디어에 대한 정보를 즉시 제거하지 않습니다. 이 방법은 드라이브 연결이 일시적으로 끊어질 때 도움이 됩니다. 라이브러리의 휴지통을 비우면 누락된 미디어에 대한 모든 정보가 삭제됩니다.",
+      "button_confirm": "비우기",
+      "title": "서재의 휴지통 비우기"
     },
     "file_browser": {
       "button_cancel": "취소",
@@ -367,9 +425,11 @@
     "age_rating": "연령 등급",
     "age_rating_none": "없음",
     "genre": "장르",
+    "in_progress": "읽는 중",
     "language": "언어",
     "library": "서재",
     "publisher": "출판사",
+    "read": "읽음",
     "release_date": "발매일",
     "status": "상태",
     "tag": "태그",
@@ -386,7 +446,8 @@
   "library_navigation": {
     "browse": "탐색",
     "collections": "모음집",
-    "readlists": "읽기 목록"
+    "readlists": "읽기 목록",
+    "recommended": "추천"
   },
   "login": {
     "create_user_account": "사용자 계정 만들기",
@@ -406,14 +467,19 @@
     "add_to_collection": "모음집에 추가",
     "add_to_readlist": "읽기 목록에 추가",
     "analyze": "분석",
+    "bulk_edit_metadata": "메타데이터 일괄 수정",
     "delete": "삭제",
+    "deselect_all": "전체 선택 취소",
+    "download_readlist": "읽기 목록 다운로드",
     "download_series": "시리즈 다운로드",
     "edit": "편집",
     "edit_metadata": "메타데이터 수정",
+    "empty_trash": "휴지통 비우기",
     "mark_read": "읽음으로 표시",
     "mark_unread": "읽지 않음으로 표시",
     "refresh_metadata": "메타데이터 새로고침",
-    "scan_library_files": "서재 파일 스캔"
+    "scan_library_files": "서재 파일 스캔",
+    "select_all": "전체 선택"
   },
   "navigation": {
     "home": "홈",
@@ -452,6 +518,7 @@
     "server_settings": "서버 설정"
   },
   "settings_user": {
+    "change_password": "비밀번호 변경",
     "edit_shared_libraries": "공유된 서재 편집",
     "edit_user": "사용자 수정",
     "role_administrator": "관리자",

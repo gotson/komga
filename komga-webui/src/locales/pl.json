@@ -8,31 +8,32 @@
       "noResultsText": "Nie znaleziono pasujących rekordów"
     },
     "dataTable": {
-      "itemsPerPageText": "Rekordów na stronę:",
-      "sortBy": "Sortowanie po"
+      "itemsPerPageText": "Wiersze na stronę:",
+      "sortBy": "Sortuj według"
     },
     "fileInput": {
       "counter": "{0} plików",
-      "counterSize": "{0} plików ({1} wszystkich)"
+      "counterSize": "{0} plików (łącznie {1})"
     },
     "noDataText": "Brak dostępnych danych"
   },
   "account_settings": {
     "account_settings": "Ustawienia konta",
-    "change_password": "zmiana hasła"
+    "change_password": "zmień hasło"
   },
   "authentication_activity": {
     "datetime": "Data i czas",
     "email": "E-mail",
     "error": "Błąd",
-    "ip": "Adres Ip",
+    "ip": "Adres IP",
+    "source": "Źródło",
     "success": "Sukces",
     "user_agent": "Agent użytkownika"
   },
   "author_roles": {
     "colorist": "koloryści",
     "cover": "okładka",
-    "editor": "edytorzy",
+    "editor": "redaktorzy",
     "inker": "inkerzy",
     "letterer": "liternicy",
     "penciller": "rysownicy",
@@ -41,18 +42,18 @@
   },
   "book_card": {
     "error": "Błąd",
-    "unknown": "Do analizy",
+    "unknown": "Do przeanalizowania",
     "unsupported": "Nieobsługiwany"
   },
   "book_import": {
     "button_browse": "Przeglądaj",
-    "button_import": "Import",
-    "button_scan": "Skan",
+    "button_import": "Importuj",
+    "button_scan": "Skanuj",
     "button_select_series": "Wybierz cykl",
     "field_import_path": "Importuj z folderu",
     "info_part1": "Ten ekran umożliwia importowanie plików, które nie znajdują się w istniejących bibliotekach. Pliki można importować tylko do istniejących cykli, w tym przypadku Komga przeniesie lub skopiuje pliki do katalogu wybranego cyklu.",
     "info_part2": "Jeśli wybierzesz numer dla książki, a książka o tym numerze już istnieje, będziesz mógł porównać obie książki. Jeśli zdecydujesz się na import książki, Komga zaktualizuje istniejącą książkę do nowej, zastępując w ten sposób stary plik nowym.",
-    "no_files_found": "Nie znaleziono plików",
+    "no_files_found": "Nie znaleziono żadnych plików",
     "notification": {
       "go_to_book": "Przejdź do książki",
       "import_failure": "Nie udało się zaimportować książki: {file}",
@@ -71,7 +72,7 @@
       "number": "Numer",
       "series": "Cykle"
     },
-    "title": "Import",
+    "title": "Importuj",
     "try_another_directory": "Spróbuj przeszukać inny katalog"
   },
   "bookreader": {
@@ -157,7 +158,7 @@
     "size": "ROZMIAR"
   },
   "browse_collection": {
-    "edit_collection": "Edycja kolekcji",
+    "edit_collection": "Edytuj kolekcję",
     "edit_elements": "Edycja elementów",
     "manual_ordering": "sortowanie manualne"
   },
@@ -396,6 +397,7 @@
       "field_total_book_count_error": "Całkowita liczba tomów musi wynosić co najmniej 1",
       "mixed": "MIESZANY",
       "tab_general": "Ogólne",
+      "tab_poster": "Plakat",
       "tab_tags": "Tagi",
       "tags_notice_multiple_edit": "Edytujesz tagi dla wielu cykli. Spowoduje to zastąpienie istniejących tagów w każdym cyklu."
     },
@@ -540,7 +542,10 @@
     "ERR_1020": "Tom do aktualizacji nie jest częścią wybranego cyklu",
     "ERR_1021": "Plik docelowy już istnieje",
     "ERR_1022": "Nie udało się zeskanować nowo zaimportowanego tomu",
-    "ERR_1023": "Tom już znajduje się na liście czytania"
+    "ERR_1023": "Tom już znajduje się na liście czytania",
+    "ERR_1024": "Błąd logowania OAuth2: brak atrybutu adresu e-mail",
+    "ERR_1025": "Błąd logowania OAuth2: nie istnieje lokalny użytkownik z tym adresem e-mail",
+    "ERR_1026": "Błąd logowania OpenID Connect: e-mail nie został zweryfikowany"
   },
   "filter": {
     "age_rating": "Klasyfikacja wiekowa",
@@ -572,7 +577,7 @@
   },
   "login": {
     "create_user_account": "Tworzenie konta użytkownika",
-    "login": "Zaloguj",
+    "login": "Zaloguj się",
     "unclaimed_html": "Ten serwer Komga nie jest jeszcze aktywny, musisz utworzyć konto użytkownika, by móc uzyskać do niego dostęp.<br><br>Wybierz <strong>e-mail</strong> oraz <strong>hasło</strong> i kliknij na <strong>Utwórz konto użytkownika</strong>."
   },
   "media_analysis": {
@@ -591,6 +596,7 @@
     "bulk_edit_metadata": "Zbiorcza edycja metadanych",
     "delete": "Usuń",
     "deselect_all": "Odznacz wszystkie",
+    "download_readlist": "Pobierz listę",
     "download_series": "Pobierz cykl",
     "edit": "Edytuj",
     "edit_metadata": "Edytuj metadane",
@@ -632,9 +638,11 @@
   },
   "server": {
     "server_management": {
+      "button_cancel_all_tasks": "Anuluj wszystkie zadania",
       "button_empty_trash": "Opróżnij kosz dla wszystkich bibliotek",
       "button_scan_libraries": "Skanuj wszystkie biblioteki",
       "button_shutdown": "Wyłącz",
+      "notification_tasks_cancelled": "Brak zadań do anulowania | Anulowano jedno zadanie | Anulowano {count} zadań",
       "section_title": "Zarządzanie serwerem"
     },
     "tab_title": "Serwer"
@@ -666,6 +674,16 @@
     "dark": "Ciemny",
     "light": "Jasny",
     "system": "Systemowy"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "Usuń",
+    "tooltip_mark_as_selected": "Oznacz jako wybrane",
+    "tooltip_selected": "Wybrane",
+    "tooltip_sidecar": "Lokalna okładka",
+    "tooltip_to_be_deleted": "Do usunięcia",
+    "tooltip_to_be_uploaded": "Do przesłania",
+    "tooltip_too_big": "Plik jest za duży!",
+    "tooltip_user_uploaded": "Przesłane przez użytkownika"
   },
   "user_roles": {
     "ADMIN": "Administrator",
