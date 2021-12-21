@@ -543,12 +543,11 @@ class BookController(
     }
   }
 
-  @DeleteMapping("api/v1/books/{bookId}")
+  @DeleteMapping("api/v1/books/{bookId}/file")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun deleteBook(
-    @PathVariable bookId: String,
-    @AuthenticationPrincipal principal: KomgaPrincipal
+    @PathVariable bookId: String
   ) {
     taskReceiver.deleteBook(
       bookId = bookId,

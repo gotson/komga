@@ -292,11 +292,11 @@ class SeriesLifecycle(
       throw FileNotFoundException("File is not accessible : ${series.path}").withCode("ERR_1018")
 
     val thumbnails = thumbnailsSeriesRepository.findAllBySeriesIdIdAndType(series.id, ThumbnailSeries.Type.SIDECAR)
-      .map { it.url!!.toURI().toPath() }
+      .mapNotNull { it.url?.toURI()?.toPath() }
       .filter { it.exists() && it.isWritable() }
 
-    val books = bookRepository.findAllBySeriesId(series.id)
-    books.forEach { bookLifecycle.deleteBookFiles(it) }
+    bookRepository.findAllBySeriesId(series.id)
+      .forEach { bookLifecycle.deleteBookFiles(it) }
     thumbnails.forEach(Path::deleteIfExists)
 
     if (series.path.exists() && series.path.listDirectoryEntries().isEmpty())

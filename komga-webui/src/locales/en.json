@@ -274,7 +274,7 @@
     },
     "delete_book": {
       "button_confirm": "Delete",
-      "confirm_delete": "Yes, delete book \"{name}\" and it's files",
+      "confirm_delete": "Yes, delete book \"{name}\" and its files",
       "confirm_delete_multiple": "Yes, delete {count} books and their files",
       "dialog_title": "Delete Book",
       "dialog_title_multiple": "Delete Books",
@@ -313,7 +313,7 @@
     },
     "delete_series": {
       "button_confirm": "Delete",
-      "confirm_delete": "Yes, delete series \"{name}\" and it's files",
+      "confirm_delete": "Yes, delete series \"{name}\" and its files",
       "confirm_delete_multiple": "Yes, delete {count} series and their files",
       "dialog_title": "Delete Series",
       "warning_html": "The Series <b>{name}</b> will be removed from this server alongside with stored media files. This <b>cannot</b> be undone. Continue?",

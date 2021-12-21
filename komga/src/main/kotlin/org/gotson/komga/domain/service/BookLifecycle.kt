@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 import java.io.File
 import java.io.FileNotFoundException
-import java.nio.file.Path
 import java.time.LocalDateTime
 import kotlin.io.path.deleteExisting
 import kotlin.io.path.deleteIfExists
@@ -292,7 +291,7 @@ class BookLifecycle(
       .filter { it.exists() && it.isWritable() }
 
     book.path.deleteIfExists()
-    thumbnails.forEach(Path::deleteIfExists)
+    thumbnails.forEach { it.deleteIfExists() }
 
     if (book.path.parent.listDirectoryEntries().isEmpty())
       book.path.parent.deleteExisting()

@@ -43,7 +43,7 @@ class TaskReceiver(
   }
 
   fun scanLibrary(libraryId: String, priority: Int = DEFAULT_PRIORITY) {
-    submitTask(Task.ScanLibrary(libraryId))
+    submitTask(Task.ScanLibrary(libraryId, priority))
   }
 
   fun emptyTrash(libraryId: String, priority: Int = DEFAULT_PRIORITY) {

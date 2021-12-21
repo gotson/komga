@@ -684,11 +684,11 @@ class SeriesController(
       .body(streamingResponse)
   }
 
-  @DeleteMapping("v1/series/{seriesId}")
+  @DeleteMapping("v1/series/{seriesId}/file")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun deleteSeries(
-    @PathVariable seriesId: String,
-    @AuthenticationPrincipal principal: KomgaPrincipal
+    @PathVariable seriesId: String
   ) {
     taskReceiver.deleteSeries(
       seriesId = seriesId,
