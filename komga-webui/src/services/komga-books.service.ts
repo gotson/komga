@@ -215,7 +215,7 @@ export default class KomgaBooksService {
 
   async deleteBook(bookId: string) {
     try {
-      await this.http.delete(`${API_BOOKS}/${bookId}`)
+      await this.http.delete(`${API_BOOKS}/${bookId}/file`)
     } catch (e) {
       let msg = 'An error occurred while trying to delete book'
       if (e.response.data.message) {

@@ -268,7 +268,7 @@ export default class KomgaSeriesService {
 
   async deleteSeries(seriesId: string) {
     try {
-      await this.http.delete(`${API_SERIES}/${seriesId}`)
+      await this.http.delete(`${API_SERIES}/${seriesId}/file`)
     } catch (e) {
       let msg = `An error occurred while trying delete series '${seriesId}'`
       if (e.response.data.message) {
