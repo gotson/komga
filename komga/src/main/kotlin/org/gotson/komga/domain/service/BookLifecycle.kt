@@ -109,15 +109,21 @@ class BookLifecycle(
       }
     }
 
-    if (markSelected == MarkSelectedPreference.YES ||
-      (
-        markSelected == MarkSelectedPreference.IF_NONE_EXIST &&
-          thumbnailBookRepository.findSelectedByBookIdOrNull(thumbnail.bookId) == null
-        )
-    ) {
-      thumbnailBookRepository.markSelected(thumbnail)
-    } else
-      thumbnailsHouseKeeping(thumbnail.bookId)
+    when (markSelected) {
+      MarkSelectedPreference.YES -> {
+        thumbnailBookRepository.markSelected(thumbnail)
+      }
+      MarkSelectedPreference.IF_NONE_EXIST -> {
+        val selectedThumbnail = thumbnailBookRepository.findSelectedByBookIdOrNull(thumbnail.bookId)
+
+        if (selectedThumbnail == null || selectedThumbnail.type == ThumbnailBook.Type.GENERATED)
+          thumbnailBookRepository.markSelected(thumbnail)
+        else thumbnailsHouseKeeping(thumbnail.bookId)
+      }
+      MarkSelectedPreference.NO -> {
+        thumbnailsHouseKeeping(thumbnail.bookId)
+      }
+    }
 
     eventPublisher.publishEvent(DomainEvent.ThumbnailBookAdded(thumbnail))
   }
