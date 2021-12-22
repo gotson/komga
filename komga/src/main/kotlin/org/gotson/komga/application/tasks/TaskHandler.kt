@@ -10,6 +10,7 @@ import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.BookMetadataLifecycle
 import org.gotson.komga.domain.service.LibraryContentLifecycle
 import org.gotson.komga.domain.service.LocalArtworkLifecycle
+import org.gotson.komga.domain.service.SeriesLifecycle
 import org.gotson.komga.domain.service.SeriesMetadataLifecycle
 import org.gotson.komga.infrastructure.jms.QUEUE_FACTORY
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
@@ -31,6 +32,7 @@ class TaskHandler(
   private val libraryContentLifecycle: LibraryContentLifecycle,
   private val bookLifecycle: BookLifecycle,
   private val bookMetadataLifecycle: BookMetadataLifecycle,
+  private val seriesLifecycle: SeriesLifecycle,
   private val seriesMetadataLifecycle: SeriesMetadataLifecycle,
   private val localArtworkLifecycle: LocalArtworkLifecycle,
   private val bookImporter: BookImporter,
@@ -121,6 +123,20 @@ class TaskHandler(
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
           is Task.RebuildIndex -> searchIndexLifecycle.rebuildIndex()
+
+          is Task.DeleteBook -> {
+            bookRepository.findByIdOrNull(task.bookId)?.let { book ->
+              bookLifecycle.deleteBookFiles(book)
+              taskReceiver.scanLibrary(book.libraryId, task.priority)
+            }
+          }
+
+          is Task.DeleteSeries -> {
+            seriesRepository.findByIdOrNull(task.seriesId)?.let { series ->
+              seriesLifecycle.deleteSeriesFiles(series)
+              taskReceiver.scanLibrary(series.libraryId, task.priority)
+            }
+          }
         }
       }.also {
         logger.info { "Task $task executed in $it" }

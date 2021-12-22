@@ -8,6 +8,7 @@ interface ThumbnailSeriesRepository {
   fun findSelectedBySeriesIdOrNull(seriesId: String): ThumbnailSeries?
 
   fun findAllBySeriesId(seriesId: String): Collection<ThumbnailSeries>
+  fun findAllBySeriesIdIdAndType(seriesId: String, type: ThumbnailSeries.Type): Collection<ThumbnailSeries>
 
   fun insert(thumbnail: ThumbnailSeries)
   fun markSelected(thumbnail: ThumbnailSeries)

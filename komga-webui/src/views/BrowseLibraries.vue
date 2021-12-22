@@ -35,6 +35,7 @@
       @mark-unread="markSelectedUnread"
       @add-to-collection="addToCollection"
       @edit="editMultipleSeries"
+      @delete="deleteSeries"
     />
 
     <library-navigation v-if="$vuetify.breakpoint.name === 'xs'" :libraryId="libraryId" bottom-navigation/>
@@ -553,6 +554,9 @@ export default Vue.extend({
     },
     editMultipleSeries() {
       this.$store.dispatch('dialogUpdateSeries', this.selectedSeries)
+    },
+    deleteSeries() {
+      this.$store.dispatch('dialogDeleteSeries', this.selectedSeries)
     },
   },
 })

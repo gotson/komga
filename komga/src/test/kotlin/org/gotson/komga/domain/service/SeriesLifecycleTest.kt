@@ -1,11 +1,14 @@
 package org.gotson.komga.domain.service
 
+import com.google.common.jimfs.Configuration
+import com.google.common.jimfs.Jimfs
 import com.ninjasquad.springmockk.SpykBean
 import io.mockk.every
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.model.ThumbnailSeries
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
@@ -17,6 +20,8 @@ import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
+import org.gotson.komga.domain.persistence.ThumbnailBookRepository
+import org.gotson.komga.domain.persistence.ThumbnailSeriesRepository
 import org.jooq.exception.DataAccessException
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
@@ -27,6 +32,9 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import java.io.FileNotFoundException
+import java.nio.file.Files
+import java.nio.file.Paths
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
@@ -35,7 +43,9 @@ class SeriesLifecycleTest(
   @Autowired private val bookLifecycle: BookLifecycle,
   @Autowired private val seriesRepository: SeriesRepository,
   @Autowired private val bookRepository: BookRepository,
-  @Autowired private val libraryRepository: LibraryRepository
+  @Autowired private val libraryRepository: LibraryRepository,
+  @Autowired private val thumbnailSeriesRepository: ThumbnailSeriesRepository,
+  @Autowired private val thumbnailBookRepository: ThumbnailBookRepository
 ) {
 
   @SpykBean
@@ -264,5 +274,172 @@ class SeriesLifecycleTest(
     val thrown = catchThrowable { seriesLifecycle.deleteThumbnailForSeries(thumbnail) }
 
     assertThat(thrown).isInstanceOf(IllegalArgumentException::class.java)
+  }
+
+  @Test
+  fun `given a series when deleting series then series directory is deleted`() {
+    Jimfs.newFileSystem(Configuration.unix()).use { fs ->
+      // given
+      val root = fs.getPath("/root")
+      Files.createDirectory(root)
+      val seriesPath = root.resolve("series")
+      Files.createDirectory(seriesPath)
+      val book1Path = seriesPath.resolve("book1.cbz")
+      Files.createFile(book1Path)
+      val book2Path = seriesPath.resolve("book2.cbz")
+      Files.createFile(book2Path)
+      val bookSidecarPath = seriesPath.resolve("sidecar1.png")
+      Files.createFile(bookSidecarPath)
+
+      val series = makeSeries(name = "series", libraryId = library.id, url = seriesPath.toUri().toURL())
+      val books = listOf(
+        makeBook("1", libraryId = library.id, url = book1Path.toUri().toURL()),
+        makeBook("2", libraryId = library.id, url = book2Path.toUri().toURL()),
+      )
+      val bookSidecar = ThumbnailBook(bookId = books[0].id, type = ThumbnailBook.Type.SIDECAR, url = bookSidecarPath.toUri().toURL())
+
+      seriesLifecycle.createSeries(series)
+      seriesLifecycle.addBooks(series, books)
+      thumbnailBookRepository.insert(bookSidecar)
+
+      // when
+      seriesLifecycle.deleteSeriesFiles(series)
+
+      // then
+      assertThat(Files.notExists(seriesPath))
+    }
+  }
+
+  @Test
+  fun `given a series with a series sidecar when deleting series then series directory is deleted`() {
+    Jimfs.newFileSystem(Configuration.unix()).use { fs ->
+      // given
+      val root = fs.getPath("/root")
+      Files.createDirectory(root)
+      val seriesPath = root.resolve("series")
+      Files.createDirectory(seriesPath)
+      val book1Path = seriesPath.resolve("book1.cbz")
+      Files.createFile(book1Path)
+      val book2Path = seriesPath.resolve("book2.cbz")
+      Files.createFile(book2Path)
+      val bookSidecarPath = seriesPath.resolve("sidecar1.png")
+      Files.createFile(bookSidecarPath)
+      val seriesSidecarPath = seriesPath.resolve("cover.png")
+      Files.createFile(seriesSidecarPath)
+
+      val series = makeSeries(name = "series", libraryId = library.id, url = seriesPath.toUri().toURL())
+      val books = listOf(
+        makeBook("1", libraryId = library.id, url = book1Path.toUri().toURL()),
+        makeBook("2", libraryId = library.id, url = book2Path.toUri().toURL()),
+      )
+      val bookSidecar = ThumbnailBook(bookId = books[0].id, type = ThumbnailBook.Type.SIDECAR, url = bookSidecarPath.toUri().toURL())
+      val seriesSidecar = ThumbnailSeries(seriesId = series.id, type = ThumbnailSeries.Type.SIDECAR, url = seriesSidecarPath.toUri().toURL())
+
+      seriesLifecycle.createSeries(series)
+      seriesLifecycle.addBooks(series, books)
+      thumbnailBookRepository.insert(bookSidecar)
+      thumbnailSeriesRepository.insert(seriesSidecar)
+
+      // when
+      seriesLifecycle.deleteSeriesFiles(series)
+
+      // then
+      assertThat(Files.notExists(seriesPath))
+    }
+  }
+
+  @Test
+  fun `given a series directory with unrelated files when deleting series then series directory should not be deleted`() {
+    Jimfs.newFileSystem(Configuration.unix()).use { fs ->
+      // given
+      val root = fs.getPath("/root")
+      Files.createDirectory(root)
+      val seriesPath = root.resolve("series")
+      Files.createDirectory(seriesPath)
+      val book1Path = seriesPath.resolve("book1.cbz")
+      Files.createFile(book1Path)
+      val book2Path = seriesPath.resolve("book2.cbz")
+      Files.createFile(book2Path)
+      val filePath = seriesPath.resolve("file.txt")
+      Files.createFile(filePath)
+      val bookSidecarPath = seriesPath.resolve("sidecar1.png")
+      Files.createFile(bookSidecarPath)
+      val seriesSidecarPath = seriesPath.resolve("cover.png")
+      Files.createFile(seriesSidecarPath)
+
+      val series = makeSeries(name = "series", libraryId = library.id, url = seriesPath.toUri().toURL())
+      val books = listOf(
+        makeBook("1", libraryId = library.id, url = book1Path.toUri().toURL()),
+        makeBook("2", libraryId = library.id, url = book2Path.toUri().toURL()),
+      )
+      val bookSidecar = ThumbnailBook(bookId = books[0].id, type = ThumbnailBook.Type.SIDECAR, url = bookSidecarPath.toUri().toURL())
+      val seriesSidecar = ThumbnailSeries(seriesId = series.id, type = ThumbnailSeries.Type.SIDECAR, url = seriesSidecarPath.toUri().toURL())
+
+      seriesLifecycle.createSeries(series)
+      seriesLifecycle.addBooks(series, books)
+      thumbnailBookRepository.insert(bookSidecar)
+      thumbnailSeriesRepository.insert(seriesSidecar)
+
+      // when
+      seriesLifecycle.deleteSeriesFiles(series)
+
+      // then
+      assertThat(Files.exists(seriesPath))
+      assertThat(Files.exists(filePath))
+      assertThat(Files.notExists(book1Path))
+      assertThat(Files.notExists(book2Path))
+      assertThat(Files.notExists(bookSidecarPath))
+      assertThat(Files.notExists(seriesSidecarPath))
+    }
+  }
+
+  @Test
+  fun `given a non-existent series directory when deleting series then exception is thrown`() {
+    // given
+    val seriesPath = Paths.get("/non-existent")
+    val series = makeSeries(name = "series", libraryId = library.id, url = seriesPath.toUri().toURL())
+
+    // when
+    val thrown = catchThrowable { seriesLifecycle.deleteSeriesFiles(series) }
+
+    // then
+    assertThat(thrown).hasCauseInstanceOf(FileNotFoundException::class.java)
+  }
+
+  @Test
+  fun `given a series and a non-existent sidecar file when deleting series then series should be deleted`() {
+    Jimfs.newFileSystem(Configuration.unix()).use { fs ->
+      // given
+      val root = fs.getPath("/root")
+      Files.createDirectory(root)
+      val seriesPath = root.resolve("series")
+      Files.createDirectory(seriesPath)
+      val book1Path = seriesPath.resolve("book1.cbz")
+      Files.createFile(book1Path)
+      val book2Path = seriesPath.resolve("book2.cbz")
+      Files.createFile(book2Path)
+      val bookSidecarPath = seriesPath.resolve("sidecar1.png")
+      Files.createFile(bookSidecarPath)
+      val seriesSidecarPath = seriesPath.resolve("cover.png")
+
+      val series = makeSeries(name = "series", libraryId = library.id, url = seriesPath.toUri().toURL())
+      val books = listOf(
+        makeBook("1", libraryId = library.id, url = book1Path.toUri().toURL()),
+        makeBook("2", libraryId = library.id, url = book2Path.toUri().toURL()),
+      )
+      val bookSidecar = ThumbnailBook(bookId = books[0].id, type = ThumbnailBook.Type.SIDECAR, url = bookSidecarPath.toUri().toURL())
+      val seriesSidecar = ThumbnailSeries(seriesId = series.id, type = ThumbnailSeries.Type.SIDECAR, url = seriesSidecarPath.toUri().toURL())
+
+      seriesLifecycle.createSeries(series)
+      seriesLifecycle.addBooks(series, books)
+      thumbnailBookRepository.insert(bookSidecar)
+      thumbnailSeriesRepository.insert(seriesSidecar)
+
+      // when
+      seriesLifecycle.deleteSeriesFiles(series)
+
+      // then
+      assertThat(Files.notExists(seriesPath))
+    }
   }
 }

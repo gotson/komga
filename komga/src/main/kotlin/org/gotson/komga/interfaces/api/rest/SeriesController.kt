@@ -12,6 +12,7 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
 import org.apache.commons.io.IOUtils
 import org.gotson.komga.application.events.EventPublisher
+import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.Author
@@ -681,5 +682,17 @@ class SeriesController(
       )
       .contentType(MediaType.parseMediaType("application/zip"))
       .body(streamingResponse)
+  }
+
+  @DeleteMapping("v1/series/{seriesId}/file")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun deleteSeries(
+    @PathVariable seriesId: String
+  ) {
+    taskReceiver.deleteSeries(
+      seriesId = seriesId,
+      priority = HIGHEST_PRIORITY,
+    )
   }
 }

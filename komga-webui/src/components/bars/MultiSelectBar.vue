@@ -79,7 +79,7 @@
         </v-tooltip>
       </v-btn>
 
-      <v-btn icon @click="doDelete" v-if="isAdmin && (kind === 'collections' || kind === 'readlists')">
+      <v-btn icon @click="doDelete" v-if="isAdmin">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-icon v-on="on">mdi-delete</v-icon>

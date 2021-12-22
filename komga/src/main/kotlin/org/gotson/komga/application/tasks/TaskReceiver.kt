@@ -42,8 +42,8 @@ class TaskReceiver(
     libraryRepository.findAll().forEach { scanLibrary(it.id) }
   }
 
-  fun scanLibrary(libraryId: String) {
-    submitTask(Task.ScanLibrary(libraryId))
+  fun scanLibrary(libraryId: String, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.ScanLibrary(libraryId, priority))
   }
 
   fun emptyTrash(libraryId: String, priority: Int = DEFAULT_PRIORITY) {
@@ -119,6 +119,14 @@ class TaskReceiver(
 
   fun rebuildIndex(priority: Int = DEFAULT_PRIORITY) {
     submitTask(Task.RebuildIndex(priority))
+  }
+
+  fun deleteBook(bookId: String, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.DeleteBook(bookId, priority))
+  }
+
+  fun deleteSeries(seriesId: String, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.DeleteSeries(seriesId, priority))
   }
 
   private fun submitTask(task: Task) {

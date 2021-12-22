@@ -70,6 +70,26 @@
       :series="updateSeries"
     />
 
+    <confirmation-dialog
+      v-model="deleteSeriesDialog"
+      :title="$t('dialog.delete_series.dialog_title')"
+      :body-html="seriesToDeleteSingle ? $t('dialog.delete_series.warning_html', {name: seriesToDelete.name}) : $t('dialog.delete_series.warning_multiple_html', {count: seriesToDelete.length})"
+      :confirm-text="seriesToDeleteSingle ? $t('dialog.delete_series.confirm_delete', {name: seriesToDelete.name}) : $t('dialog.delete_series.confirm_delete_multiple', {count: seriesToDelete.length})"
+      :button-confirm="$t('dialog.delete_series.button_confirm')"
+      button-confirm-color="error"
+      @confirm="deleteSeries"
+    />
+
+    <confirmation-dialog
+      v-model="deleteBookDialog"
+      :title="booksToDeleteSingle ? $t('dialog.delete_book.dialog_title') : $t('dialog.delete_book.dialog_title_multiple')"
+      :body-html="booksToDeleteSingle ? $t('dialog.delete_book.warning_html', {name: booksToDelete.name}) : $t('dialog.delete_book.warning_multiple_html', {count: booksToDelete.length})"
+      :confirm-text="booksToDeleteSingle ? $t('dialog.delete_book.confirm_delete', {name: booksToDelete.name}) : $t('dialog.delete_book.confirm_delete_multiple', {count: booksToDelete.length})"
+      :button-confirm="$t('dialog.delete_book.button_confirm')"
+      button-confirm-color="error"
+      @confirm="deleteBooks"
+    />
+
   </div>
 </template>
 
@@ -224,6 +244,20 @@ export default Vue.extend({
     updateBulkBooks(): BookDto[] {
       return this.$store.state.updateBulkBooks
     },
+    deleteBookDialog: {
+      get(): boolean {
+        return this.$store.state.deleteBookDialog
+      },
+      set(val) {
+        this.$store.dispatch('dialogDeleteBookDisplay', val)
+      },
+    },
+    booksToDelete(): BookDto | BookDto[] {
+      return this.$store.state.deleteBooks
+    },
+    booksToDeleteSingle(): boolean {
+      return !Array.isArray(this.booksToDelete)
+    },
     // series
     updateSeriesDialog: {
       get(): boolean {
@@ -235,6 +269,20 @@ export default Vue.extend({
     },
     updateSeries(): SeriesDto | SeriesDto[] {
       return this.$store.state.updateSeries
+    },
+    deleteSeriesDialog: {
+      get(): boolean {
+        return this.$store.state.deleteSeriesDialog
+      },
+      set(val) {
+        this.$store.dispatch('dialogDeleteSeriesDisplay', val)
+      },
+    },
+    seriesToDelete(): SeriesDto | SeriesDto[] {
+      return this.$store.state.deleteSeries
+    },
+    seriesToDeleteSingle(): boolean {
+      return !Array.isArray(this.seriesToDelete)
     },
   },
   methods: {
@@ -260,6 +308,26 @@ export default Vue.extend({
       for (const b of toUpdate) {
         try {
           await this.$komgaCollections.deleteCollection(b.id)
+        } catch (e) {
+          this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
+        }
+      }
+    },
+    async deleteSeries() {
+      const toUpdate = (this.seriesToDeleteSingle ? [this.seriesToDelete] : this.seriesToDelete) as SeriesDto[]
+      for (const b of toUpdate) {
+        try {
+          await this.$komgaSeries.deleteSeries(b.id)
+        } catch (e) {
+          this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
+        }
+      }
+    },
+    async deleteBooks() {
+      const toUpdate = (this.booksToDeleteSingle ? [this.booksToDelete] : this.booksToDelete) as BookDto[]
+      for (const b of toUpdate) {
+        try {
+          await this.$komgaBooks.deleteBook(b.id)
         } catch (e) {
           this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
         }

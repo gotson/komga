@@ -643,6 +643,18 @@ class BookController(
     }
   }
 
+  @DeleteMapping("api/v1/books/{bookId}/file")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun deleteBook(
+    @PathVariable bookId: String
+  ) {
+    taskReceiver.deleteBook(
+      bookId = bookId,
+      priority = HIGHEST_PRIORITY,
+    )
+  }
+
   private fun ResponseEntity.BodyBuilder.setNotModified(media: Media) =
     this.setCachePrivate().lastModified(getBookLastModified(media))
 

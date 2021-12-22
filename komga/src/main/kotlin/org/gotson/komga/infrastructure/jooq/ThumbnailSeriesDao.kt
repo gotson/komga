@@ -29,6 +29,13 @@ class ThumbnailSeriesDao(
       .fetchInto(ts)
       .map { it.toDomain() }
 
+  override fun findAllBySeriesIdIdAndType(seriesId: String, type: ThumbnailSeries.Type): Collection<ThumbnailSeries> =
+    dsl.selectFrom(ts)
+      .where(ts.SERIES_ID.eq(seriesId))
+      .and(ts.TYPE.eq(type.toString()))
+      .fetchInto(ts)
+      .map { it.toDomain() }
+
   override fun findSelectedBySeriesIdOrNull(seriesId: String): ThumbnailSeries? =
     dsl.selectFrom(ts)
       .where(ts.SERIES_ID.eq(seriesId))
