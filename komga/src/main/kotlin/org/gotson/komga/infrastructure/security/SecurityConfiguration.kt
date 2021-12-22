@@ -47,14 +47,14 @@ class SecurityConfiguration(
         it.requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole(ROLE_ADMIN)
 
         // claim is unprotected
-        it.antMatchers(
+        it.mvcMatchers(
           "/api/v1/claim",
           "/api/v1/oauth2/providers",
           "/set-cookie",
         ).permitAll()
 
         // all other endpoints are restricted to authenticated users
-        it.antMatchers(
+        it.mvcMatchers(
           "/api/**",
           "/opds/**",
           "/sse/**"
@@ -110,7 +110,7 @@ class SecurityConfiguration(
 
   override fun configure(web: WebSecurity) {
     web.ignoring()
-      .antMatchers(
+      .mvcMatchers(
         "/error**",
         "/css/**",
         "/img/**",
