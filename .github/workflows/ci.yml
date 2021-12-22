@@ -66,11 +66,15 @@ jobs:
           java-package: 'jdk'
           distribution: 'adopt'
           cache: 'gradle'
-      - name: npmBuild
-        run: ./gradlew npmBuild
-      - name: npmTest
-        run: npm run test:unit
+      - name: npm install
         working-directory: komga-webui
+        run: npm install
+      - name: npm build
+        working-directory: komga-webui
+        run: npm run build
+      - name: npm test
+        working-directory: komga-webui
+        run: npm run test:unit
 
   release:
     name: Semantic Release
