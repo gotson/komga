@@ -193,7 +193,7 @@ class ReadListDaoTest(
       assertThat(bookIds.values)
         .hasSize(1)
         .containsExactly(bookLibrary1.id)
-      assertThat(filtered).isTrue()
+      assertThat(filtered).isTrue
     }
 
     assertThat(foundLibrary1Unfiltered).hasSize(2)
@@ -202,7 +202,7 @@ class ReadListDaoTest(
       assertThat(bookIds.values)
         .hasSize(2)
         .containsExactly(bookLibrary1.id, bookLibrary2.id)
-      assertThat(filtered).isFalse()
+      assertThat(filtered).isFalse
     }
 
     assertThat(foundLibrary2Filtered).hasSize(2)
@@ -211,7 +211,7 @@ class ReadListDaoTest(
       assertThat(bookIds.values)
         .hasSize(1)
         .containsExactly(bookLibrary2.id)
-      assertThat(filtered).isTrue()
+      assertThat(filtered).isTrue
     }
 
     assertThat(foundLibrary2Unfiltered).hasSize(2)
@@ -220,7 +220,7 @@ class ReadListDaoTest(
       assertThat(bookIds.values)
         .hasSize(2)
         .containsExactly(bookLibrary1.id, bookLibrary2.id)
-      assertThat(filtered).isFalse()
+      assertThat(filtered).isFalse
     }
 
     assertThat(foundBothUnfiltered).hasSize(3)
@@ -229,7 +229,7 @@ class ReadListDaoTest(
       assertThat(bookIds.values)
         .hasSize(2)
         .containsExactly(bookLibrary1.id, bookLibrary2.id)
-      assertThat(filtered).isFalse()
+      assertThat(filtered).isFalse
     }
   }
 }
