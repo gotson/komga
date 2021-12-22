@@ -20,8 +20,8 @@ class BookMetadataUpdateDto {
 
   var summary: String?
     by Delegates.observable(null) { prop, _, _ ->
-    isSet[prop.name] = true
-  }
+      isSet[prop.name] = true
+    }
 
   var summaryLock: Boolean? = null
 
@@ -36,31 +36,31 @@ class BookMetadataUpdateDto {
 
   var releaseDate: LocalDate?
     by Delegates.observable(null) { prop, _, _ ->
-    isSet[prop.name] = true
-  }
+      isSet[prop.name] = true
+    }
 
   var releaseDateLock: Boolean? = null
 
   @get:Valid
   var authors: List<AuthorUpdateDto>?
     by Delegates.observable(null) { prop, _, _ ->
-    isSet[prop.name] = true
-  }
+      isSet[prop.name] = true
+    }
 
   var authorsLock: Boolean? = null
 
   var tags: Set<String>?
     by Delegates.observable(null) { prop, _, _ ->
-    isSet[prop.name] = true
-  }
+      isSet[prop.name] = true
+    }
 
   var tagsLock: Boolean? = null
 
   @get:NullOrBlankOrISBN
   var isbn: String?
     by Delegates.observable(null) { prop, _, _ ->
-    isSet[prop.name] = true
-  }
+      isSet[prop.name] = true
+    }
 
   var isbnLock: Boolean? = null
 }

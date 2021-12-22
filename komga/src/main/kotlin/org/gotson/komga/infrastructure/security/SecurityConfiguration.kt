@@ -42,7 +42,6 @@ class SecurityConfiguration(
     http
       .cors {}
       .csrf { it.disable() }
-
       .authorizeRequests {
         // restrict all actuator endpoints to ADMIN only
         it.requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole(ROLE_ADMIN)
@@ -61,15 +60,12 @@ class SecurityConfiguration(
           "/sse/**"
         ).hasRole(ROLE_USER)
       }
-
       .headers {
         it.cacheControl().disable() // headers are set in WebMvcConfiguration
       }
-
       .httpBasic {
         it.authenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
       }
-
       .logout {
         it.logoutUrl("/api/v1/users/logout")
         it.deleteCookies(sessionCookieName)
