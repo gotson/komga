@@ -37,7 +37,7 @@
               indeterminate
               absolute
               bottom
-              height="2"
+              height="5"
               color="secondary"
               v-on="on"
             />
