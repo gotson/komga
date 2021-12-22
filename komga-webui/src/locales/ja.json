@@ -443,6 +443,11 @@
       "field_repeat_password": "新しいパスワードを再入力",
       "field_repeat_password_error": "パスワードを一致させてください。"
     },
+    "refresh_library_metadata": {
+      "body": "ライブラリ内のすべてのメディアファイルのメタデータを更新します。ライブラリのサイズによっては、時間がかかる場合があります。",
+      "button_confirm": "更新",
+      "title": "ライブラリのメタデータを更新する"
+    },
     "series_picker": {
       "label_search_series": "シリーズを検索",
       "title": "シリーズの選択"

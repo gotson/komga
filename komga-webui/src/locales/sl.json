@@ -1,0 +1,223 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} od {2}"
+    },
+    "dataIterator": {
+      "loadingText": "Nalagam predmete...",
+      "noResultsText": "Ne najdem ujemajočih zapisov"
+    },
+    "dataTable": {
+      "itemsPerPageText": "Vrstic na stran:",
+      "sortBy": "Razvrsti po"
+    },
+    "fileInput": {
+      "counter": "{0} datotek",
+      "counterSize": "{0} datotek ({1} skupno)"
+    },
+    "noDataText": "Podatki niso na voljo"
+  },
+  "account_settings": {
+    "account_settings": "Nastavitve računa",
+    "change_password": "spremeni geslo"
+  },
+  "authentication_activity": {
+    "datetime": "Datum in čas",
+    "email": "Email",
+    "error": "Napaka",
+    "ip": "IP",
+    "source": "Vir",
+    "success": "Uspeh",
+    "user_agent": "Uporabniški agent"
+  },
+  "author_roles": {
+    "cover": "naslovnica",
+    "editor": "uredniki",
+    "writer": "pisatelji"
+  },
+  "book_card": {
+    "error": "Napaka",
+    "unknown": "Čaka na analizo",
+    "unsupported": "Nepodprto"
+  },
+  "book_import": {
+    "button_browse": "Brskaj",
+    "button_import": "Uvozi",
+    "button_scan": "Skeniraj",
+    "button_select_series": "Izberi serijo",
+    "field_import_path": "Uvozi iz mape",
+    "info_part1": "Ta zaslon dovoljuje uvoz datotek izven obstoječe knjižnice. Uvoziš lahko le v obstoječe serije, Komga pa bo premaknil ali kopiral datoteke v mapo izbrane serije.",
+    "info_part2": "Če izbereš številko knjige, ki že obstaja boš lahko primerjali obe knjigi. Če boš knjigo uvozili bo Komga nadgradil obstoječo knjigo in efektivno nadomestil staro datoteko z novo.",
+    "no_files_found": "Ne najdem datotek",
+    "notification": {
+      "go_to_book": "Pojdi na knjigo",
+      "import_failure": "Napaka pri uvažanju knjige: {file}",
+      "import_successful": "Knjiga uspešno uvožena: {book}",
+      "source_file": "Vir: {file}"
+    },
+    "row": {
+      "error_analyze_first": "Knjigo je potrebno predhodno analizirati",
+      "error_choose_series": "Izberi serijo",
+      "error_only_import_no_errors": "Uvozi se lahko samo knjige brez napak",
+      "warning_upgrade": "Obstoječa knjiga bo nadgrajena"
+    },
+    "table": {
+      "file_name": "Ime datoteke",
+      "number": "Številka",
+      "series": "Serija"
+    },
+    "title": "Uvozi",
+    "try_another_directory": "Poskusi iskanje v drugi mapi"
+  },
+  "bookreader": {
+    "beginning_of_book": "Si na začetku knjige.",
+    "changing_reading_direction": "Spremeni smer branja na",
+    "download_current_page": "Prenesi trenutno stran",
+    "end_of_book": "Prišel si do konca knjige.",
+    "from_series_metadata": "iz meta-podatkov serije",
+    "move_next": "Klikni ali ponovno pritisni \"Naprej\" za premik na naslednjo knjigo.",
+    "move_next_exit": "Klikni ali ponovno pritisni \"Naprej\" za izhod iz bralnika.",
+    "move_previous": "Klikni ali ponovno pritisni \"Nazaj\" za premik na predhodno knjigo.",
+    "paged_reader_layout": {
+      "double": "Dvojne strani",
+      "double_no_cover": "Dvojne strani (brez naslovnice)",
+      "single": "Enojna stran"
+    },
+    "reader_settings": "Nastavitve bralnika",
+    "scale_type": {
+      "continuous_original": "Izvirno",
+      "continuous_width": "Prilagodi po širini",
+      "height": "Prilagodi po višini",
+      "original": "Izvirno",
+      "screen": "Zaslon",
+      "width": "Prilagodi po širini",
+      "width_shrink_only": "Prilagodi po širini (samo zmanjšaj)"
+    },
+    "settings": {
+      "always_fullscreen": "Vedno v polnem zaslonu",
+      "animate_page_transitions": "Animacija prehodov strani",
+      "background_color": "Barva ozadja",
+      "background_colors": {
+        "black": "Črna",
+        "gray": "Siva",
+        "white": "Bela"
+      },
+      "display": "Prikaz",
+      "general": "Splošno",
+      "page_layout": "Postavitev strani",
+      "reading_mode": "Način branja",
+      "scale_type": "Način prilagajanja velikosti",
+      "side_padding": "Stranski odmik",
+      "side_padding_none": "Brez",
+      "webtoon": "Nastavitve Webtoon bralnika"
+    },
+    "shortcuts": {
+      "close": "Zapri",
+      "cycle_page_layout": "Spremeni postavitev strani",
+      "cycle_scale": "Spremeni prilagajanje velikosti",
+      "cycle_side_padding": "Spremeni stranski odmik",
+      "first_page": "Prva stran",
+      "last_page": "Zadnja stran",
+      "left_to_right": "Iz leve proti desni",
+      "menus": "Meniji",
+      "next_page": "Naslednja stran",
+      "previous_page": "Prejšnja stran",
+      "reader_navigation": "Navigacija v bralniku",
+      "right_to_left": "Iz desne proti levi",
+      "settings": "Nastavitve",
+      "show_hide_help": "Prikaži/skrij pomoč",
+      "show_hide_settings": "Prikaži/skrij nastavitve",
+      "show_hide_thumbnails": "Prikaži/skrij miniaturne slike",
+      "show_hide_toolbars": "Prikaži/skrij orodjarno",
+      "vertical": "Vertikalno",
+      "webtoon": "Webtoon"
+    },
+    "tooltip_incognito": "Doseg branja ne bo shranjen"
+  },
+  "browse_book": {
+    "comment": "KOMENTAR",
+    "download_file": "Prenesi datoteko",
+    "file": "DATOTEKA",
+    "format": "FORMAT",
+    "isbn": "ISBN",
+    "outdated_tooltip": "Datoteka te knjige je bila spremenjena zato je potrebno knjigo ponovno analizirati",
+    "read_book": "Beri knjigo",
+    "read_incognito": "Beri inkognito",
+    "size": "VELIKOST"
+  },
+  "browse_collection": {
+    "edit_collection": "Urejaj zbirko",
+    "edit_elements": "Urejaj elemente",
+    "manual_ordering": "ročno razvrščanje"
+  },
+  "browse_readlist": {
+    "edit_elements": "Urejaj elemente",
+    "edit_readlist": "Urejaj bralni seznam"
+  },
+  "browse_series": {
+    "earliest_year_from_release_dates": "To je najzgodnješe leto vseh izdaj knjig v seriji",
+    "series_no_summary": "Serija nima obnove, zato smo ga zate izbrali mi!",
+    "summary_from_book": "Obnova iz knjige {number}:"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "Urejaj zbirko",
+    "title": "{name} zbirka"
+  },
+  "common": {
+    "books_total": "{count} / {total} knjig",
+    "cancel": "Prekliči",
+    "close": "Zapri",
+    "collections": "Zbirke",
+    "create": "Ustvari",
+    "delete": "Zbriši",
+    "dismiss": "Prekliči",
+    "download": "Prenesi",
+    "email": "Email",
+    "filter_no_matches": "Aktivni filter nima rezultatov",
+    "genre": "Zvrst",
+    "go_to_library": "Pojdi v knjižnico",
+    "go_to_readlist": "Pojdi na bralni seznam",
+    "go_to_series": "Pojdi na serijo",
+    "library": "Knjižnica",
+    "locale_name": "Slovenščina",
+    "locale_rtl": "false",
+    "lock_all": "Zakleni vse",
+    "n_selected": "{count} izbranih",
+    "nothing_to_show": "Ničesar za prikaz",
+    "outdated": "Zastarano",
+    "pages": "strani",
+    "pages_n": "Brez strani | 1 stran | {count} strani",
+    "password": "Geslo",
+    "pending_tasks": "Brez nalog v teku | 1 naloga v teku | {count} nalog v teku",
+    "publisher": "Založnik",
+    "read": "Beri",
+    "readlists": "Bralni seznami",
+    "required": "Obvezno",
+    "reset_filters": "Po-nastavi filtre",
+    "roles": "Vloge",
+    "series": "Serije",
+    "tags": "Značka",
+    "unavailable": "Ni na voljo",
+    "unlock_all": "Odkleni vse",
+    "use_filter_panel_to_change_filter": "Uporabi nadzorno ploščo s filtri za spreminjanje aktivnega filtra",
+    "year": "leto"
+  },
+  "dashboard": {
+    "keep_reading": "Nadaljuj z branjem",
+    "on_deck": "Na palubi",
+    "recently_added_books": "Pred kratkim dodane knjige",
+    "recently_added_series": "Pred kratkim dodane serije",
+    "recently_read_books": "Pred kratkim brane knjige",
+    "recently_released_books": "Pred kratkim izdane knjige",
+    "recently_updated_series": "Pred kratkim popravljene serije"
+  },
+  "data_import": {
+    "book_number": "Številka knjige: {name}",
+    "book_series": "Serija: {name}",
+    "button_import": "Uvozi",
+    "comicrack_preambule_html": "Uvoziš lahko ComicRack bralne sezname v <code>.cbl</code> obliki.<br>Komga bo poskusil upariti serije in knjige s serijami in knjigami v tvojih knjižnicah.",
+    "field_files_label": "ComicRack bralni seznami (.cbl)",
+    "import_read_lists": "Uvozi bralne sezname",
+    "imported_as": "Uvozi kot {name}"
+  }
+}
