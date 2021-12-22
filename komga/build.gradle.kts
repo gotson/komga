@@ -70,7 +70,7 @@ dependencies {
 
   implementation("com.ibm.icu:icu4j:70.1")
 
-  implementation("org.apache.tika:tika-core:1.26")
+  implementation("org.apache.tika:tika-core:2.2.0")
   implementation("org.apache.commons:commons-compress:1.21")
   implementation("com.github.junrar:junrar:7.4.0")
   implementation("org.apache.pdfbox:pdfbox:2.0.25")
