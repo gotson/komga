@@ -82,7 +82,7 @@ class BookLifecycle(
   fun generateThumbnailAndPersist(book: Book) {
     logger.info { "Generate thumbnail and persist for book: $book" }
     try {
-      addThumbnailForBook(bookAnalyzer.generateThumbnail(BookWithMedia(book, mediaRepository.findById(book.id))), MarkSelectedPreference.IF_NONE_EXIST)
+      addThumbnailForBook(bookAnalyzer.generateThumbnail(BookWithMedia(book, mediaRepository.findById(book.id))), MarkSelectedPreference.IF_NONE_OR_GENERATED)
     } catch (ex: Exception) {
       logger.error(ex) { "Error while creating thumbnail" }
     }
@@ -113,7 +113,7 @@ class BookLifecycle(
       MarkSelectedPreference.YES -> {
         thumbnailBookRepository.markSelected(thumbnail)
       }
-      MarkSelectedPreference.IF_NONE_EXIST -> {
+      MarkSelectedPreference.IF_NONE_OR_GENERATED -> {
         val selectedThumbnail = thumbnailBookRepository.findSelectedByBookIdOrNull(thumbnail.bookId)
 
         if (selectedThumbnail == null || selectedThumbnail.type == ThumbnailBook.Type.GENERATED)

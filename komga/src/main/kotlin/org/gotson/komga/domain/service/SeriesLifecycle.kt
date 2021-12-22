@@ -264,7 +264,7 @@ class SeriesLifecycle(
 
     if (markSelected == MarkSelectedPreference.YES ||
       (
-        markSelected == MarkSelectedPreference.IF_NONE_EXIST &&
+        markSelected == MarkSelectedPreference.IF_NONE_OR_GENERATED &&
           thumbnailsSeriesRepository.findSelectedBySeriesIdOrNull(thumbnail.seriesId) == null
         )
     ) {

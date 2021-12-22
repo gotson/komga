@@ -24,7 +24,7 @@ class LocalArtworkLifecycle(
 
     if (library.importLocalArtwork)
       localArtworkProvider.getBookThumbnails(book).forEach {
-        bookLifecycle.addThumbnailForBook(it, if (it.selected) MarkSelectedPreference.IF_NONE_EXIST else MarkSelectedPreference.NO)
+        bookLifecycle.addThumbnailForBook(it, if (it.selected) MarkSelectedPreference.IF_NONE_OR_GENERATED else MarkSelectedPreference.NO)
       }
     else
       logger.info { "Library is not set to import local artwork, skipping" }
@@ -36,7 +36,7 @@ class LocalArtworkLifecycle(
 
     if (library.importLocalArtwork)
       localArtworkProvider.getSeriesThumbnails(series).forEach {
-        seriesLifecycle.addThumbnailForSeries(it, if (it.selected) MarkSelectedPreference.IF_NONE_EXIST else MarkSelectedPreference.NO)
+        seriesLifecycle.addThumbnailForSeries(it, if (it.selected) MarkSelectedPreference.IF_NONE_OR_GENERATED else MarkSelectedPreference.NO)
       }
     else
       logger.info { "Library is not set to import local artwork, skipping" }
