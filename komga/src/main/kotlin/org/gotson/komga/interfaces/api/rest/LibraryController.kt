@@ -1,5 +1,6 @@
 package org.gotson.komga.interfaces.api.rest
 
+import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
 import org.gotson.komga.application.tasks.TaskReceiver
 import org.gotson.komga.domain.model.DirectoryNotFoundException
@@ -161,7 +162,7 @@ class LibraryController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun scan(@PathVariable libraryId: String) {
     libraryRepository.findByIdOrNull(libraryId)?.let { library ->
-      taskReceiver.scanLibrary(library.id)
+      taskReceiver.scanLibrary(library.id, HIGHEST_PRIORITY)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
