@@ -3,6 +3,8 @@ package org.gotson.komga.domain.persistence
 import org.gotson.komga.domain.model.ThumbnailBook
 
 interface ThumbnailBookRepository {
+  fun findByIdOrNull(thumbnailId: String): ThumbnailBook?
+
   fun findSelectedByBookIdOrNull(bookId: String): ThumbnailBook?
 
   fun findAllByBookId(bookId: String): Collection<ThumbnailBook>

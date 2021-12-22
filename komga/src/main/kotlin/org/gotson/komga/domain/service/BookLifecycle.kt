@@ -8,6 +8,7 @@ import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.ImageConversionException
 import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.ReadProgress
@@ -82,18 +83,18 @@ class BookLifecycle(
   fun generateThumbnailAndPersist(book: Book) {
     logger.info { "Generate thumbnail and persist for book: $book" }
     try {
-      addThumbnailForBook(bookAnalyzer.generateThumbnail(BookWithMedia(book, mediaRepository.findById(book.id))))
+      addThumbnailForBook(bookAnalyzer.generateThumbnail(BookWithMedia(book, mediaRepository.findById(book.id))), MarkSelectedPreference.IF_NONE_OR_GENERATED)
     } catch (ex: Exception) {
       logger.error(ex) { "Error while creating thumbnail" }
     }
   }
 
-  fun addThumbnailForBook(thumbnail: ThumbnailBook) {
+  fun addThumbnailForBook(thumbnail: ThumbnailBook, markSelected: MarkSelectedPreference) {
     when (thumbnail.type) {
       ThumbnailBook.Type.GENERATED -> {
         // only one generated thumbnail is allowed
         thumbnailBookRepository.deleteByBookIdAndType(thumbnail.bookId, ThumbnailBook.Type.GENERATED)
-        thumbnailBookRepository.insert(thumbnail)
+        thumbnailBookRepository.insert(thumbnail.copy(selected = false))
       }
       ThumbnailBook.Type.SIDECAR -> {
         // delete existing thumbnail with the same url
@@ -102,16 +103,37 @@ class BookLifecycle(
           .forEach {
             thumbnailBookRepository.delete(it.id)
           }
-        thumbnailBookRepository.insert(thumbnail)
+        thumbnailBookRepository.insert(thumbnail.copy(selected = false))
+      }
+      ThumbnailBook.Type.USER_UPLOADED -> {
+        thumbnailBookRepository.insert(thumbnail.copy(selected = false))
+      }
+    }
+
+    when (markSelected) {
+      MarkSelectedPreference.YES -> {
+        thumbnailBookRepository.markSelected(thumbnail)
+      }
+      MarkSelectedPreference.IF_NONE_OR_GENERATED -> {
+        val selectedThumbnail = thumbnailBookRepository.findSelectedByBookIdOrNull(thumbnail.bookId)
+
+        if (selectedThumbnail == null || selectedThumbnail.type == ThumbnailBook.Type.GENERATED)
+          thumbnailBookRepository.markSelected(thumbnail)
+        else thumbnailsHouseKeeping(thumbnail.bookId)
+      }
+      MarkSelectedPreference.NO -> {
+        thumbnailsHouseKeeping(thumbnail.bookId)
       }
     }
 
     eventPublisher.publishEvent(DomainEvent.ThumbnailBookAdded(thumbnail))
+  }
 
-    if (thumbnail.selected)
-      thumbnailBookRepository.markSelected(thumbnail)
-    else
-      thumbnailsHouseKeeping(thumbnail.bookId)
+  fun deleteThumbnailForBook(thumbnail: ThumbnailBook) {
+    require(thumbnail.type == ThumbnailBook.Type.USER_UPLOADED) { "Only uploaded thumbnails can be deleted" }
+    thumbnailBookRepository.delete(thumbnail.id)
+    thumbnailsHouseKeeping(thumbnail.bookId)
+    eventPublisher.publishEvent(DomainEvent.ThumbnailBookDeleted(thumbnail))
   }
 
   fun getThumbnail(bookId: String): ThumbnailBook? {
@@ -135,6 +157,18 @@ class BookLifecycle(
     }
     return null
   }
+
+  fun getThumbnailBytesByThumbnailId(thumbnailId: String): ByteArray? =
+    thumbnailBookRepository.findByIdOrNull(thumbnailId)?.let {
+      getBytesFromThumbnailBook(it)
+    }
+
+  private fun getBytesFromThumbnailBook(thumbnail: ThumbnailBook): ByteArray? =
+    when {
+      thumbnail.thumbnail != null -> thumbnail.thumbnail
+      thumbnail.url != null -> File(thumbnail.url.toURI()).readBytes()
+      else -> null
+    }
 
   private fun thumbnailsHouseKeeping(bookId: String) {
     logger.info { "House keeping thumbnails for book: $bookId" }

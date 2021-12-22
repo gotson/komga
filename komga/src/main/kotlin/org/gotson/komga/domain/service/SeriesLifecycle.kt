@@ -264,7 +264,7 @@ class SeriesLifecycle(
 
     if (markSelected == MarkSelectedPreference.YES ||
       (
-        markSelected == MarkSelectedPreference.IF_NONE_EXIST &&
+        markSelected == MarkSelectedPreference.IF_NONE_OR_GENERATED &&
           thumbnailsSeriesRepository.findSelectedBySeriesIdOrNull(thumbnail.seriesId) == null
         )
     ) {
@@ -276,6 +276,7 @@ class SeriesLifecycle(
   fun deleteThumbnailForSeries(thumbnail: ThumbnailSeries) {
     require(thumbnail.type == ThumbnailSeries.Type.USER_UPLOADED) { "Only uploaded thumbnails can be deleted" }
     thumbnailsSeriesRepository.delete(thumbnail.id)
+    eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesDeleted(thumbnail))
   }
 
   private fun thumbnailsHouseKeeping(seriesId: String) {

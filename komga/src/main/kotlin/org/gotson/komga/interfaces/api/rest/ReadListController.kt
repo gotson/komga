@@ -16,12 +16,15 @@ import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadStatus
+import org.gotson.komga.domain.model.ThumbnailReadList
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
+import org.gotson.komga.domain.persistence.ThumbnailReadListRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.ReadListLifecycle
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.language.toIndexedMap
+import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.AuthorsAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
@@ -35,6 +38,7 @@ import org.gotson.komga.interfaces.api.rest.dto.ReadListRequestResultDto
 import org.gotson.komga.interfaces.api.rest.dto.ReadListUpdateDto
 import org.gotson.komga.interfaces.api.rest.dto.TachiyomiReadProgressDto
 import org.gotson.komga.interfaces.api.rest.dto.TachiyomiReadProgressUpdateDto
+import org.gotson.komga.interfaces.api.rest.dto.ThumbnailReadListDto
 import org.gotson.komga.interfaces.api.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.api.rest.dto.toDto
 import org.springframework.core.io.FileSystemResource
@@ -79,6 +83,8 @@ class ReadListController(
   private val bookDtoRepository: BookDtoRepository,
   private val bookRepository: BookRepository,
   private val readProgressDtoRepository: ReadProgressDtoRepository,
+  private val thumbnailReadListRepository: ThumbnailReadListRepository,
+  private val contentDetector: ContentDetector,
   private val bookLifecycle: BookLifecycle,
 ) {
 
@@ -149,6 +155,84 @@ class ReadListController(
       return ResponseEntity.ok()
         .cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS).cachePrivate())
         .body(readListLifecycle.getThumbnailBytes(it))
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
+  @GetMapping(value = ["{id}/thumbnails/{thumbnailId}"], produces = [MediaType.IMAGE_JPEG_VALUE])
+  fun getReadListThumbnailById(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable(name = "id") id: String,
+    @PathVariable(name = "thumbnailId") thumbnailId: String
+  ): ByteArray {
+    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
+      return readListLifecycle.getThumbnailBytes(thumbnailId)
+        ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @GetMapping(value = ["{id}/thumbnails"], produces = [MediaType.APPLICATION_JSON_VALUE])
+  fun getReadListThumbnails(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable(name = "id") id: String,
+  ): Collection<ThumbnailReadListDto> {
+    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
+      return thumbnailReadListRepository.findAllByReadListId(id).map { it.toDto() }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @PostMapping(value = ["{id}/thumbnails"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun addUserUploadedReadListThumbnail(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable(name = "id") id: String,
+    @RequestParam("file") file: MultipartFile,
+    @RequestParam("selected") selected: Boolean = true,
+  ) {
+    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
+
+      if (!contentDetector.isImage(file.inputStream.buffered().use { contentDetector.detectMediaType(it) }))
+        throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+
+      readListLifecycle.addThumbnail(
+        ThumbnailReadList(
+          readListId = readList.id,
+          thumbnail = file.bytes,
+          type = ThumbnailReadList.Type.USER_UPLOADED,
+          selected = selected
+        ),
+      )
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @PutMapping("{id}/thumbnails/{thumbnailId}/selected")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun markSelectedReadListThumbnail(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable(name = "id") id: String,
+    @PathVariable(name = "thumbnailId") thumbnailId: String,
+  ) {
+    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
+      thumbnailReadListRepository.findByIdOrNull(thumbnailId)?.let {
+        readListLifecycle.markSelectedThumbnail(it)
+      }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  @DeleteMapping("{id}/thumbnails/{thumbnailId}")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun deleteUserUploadedReadListThumbnail(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable(name = "id") id: String,
+    @PathVariable(name = "thumbnailId") thumbnailId: String,
+  ) {
+    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
+      thumbnailReadListRepository.findByIdOrNull(thumbnailId)?.let {
+        readListLifecycle.deleteThumbnail(it)
+      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
