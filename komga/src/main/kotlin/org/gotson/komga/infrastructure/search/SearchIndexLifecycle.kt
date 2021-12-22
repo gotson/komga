@@ -26,7 +26,7 @@ import kotlin.math.ceil
 import kotlin.time.measureTime
 
 private val logger = KotlinLogging.logger {}
-private const val INDEX_VERSION = 2
+private const val INDEX_VERSION = 3
 
 @Component
 class SearchIndexLifecycle(

@@ -26,7 +26,7 @@ class SearchIndexController(
     } else {
       logger.info { "Lucene index version: ${luceneHelper.getIndexVersion()}" }
       when (luceneHelper.getIndexVersion()) {
-        1 -> taskReceiver.rebuildIndex(HIGHEST_PRIORITY)
+        1, 2 -> taskReceiver.rebuildIndex(HIGHEST_PRIORITY)
       }
     }
   }
