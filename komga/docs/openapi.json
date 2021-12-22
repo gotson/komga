@@ -506,6 +506,29 @@
           }
         }
       },
+      "ThumbnailSeriesCollectionDto": {
+        "type": "object",
+        "required": [
+          "collectionId",
+          "id",
+          "selected",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "collectionId": {
+            "type": "string"
+          },
+          "selected": {
+            "type": "boolean"
+          }
+        }
+      },
       "CollectionUpdateDto": {
         "type": "object",
         "properties": {
@@ -582,6 +605,29 @@
           }
         }
       },
+      "ThumbnailReadListDto": {
+        "type": "object",
+        "required": [
+          "id",
+          "readListId",
+          "selected",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "readListId": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "selected": {
+            "type": "boolean"
+          }
+        }
+      },
       "ReadProgressUpdateDto": {
         "description": "page can be omitted if completed is set to true. completed can be omitted, and will be set accordingly depending on the page passed and the total number of pages in the book.",
         "type": "object",
@@ -639,16 +685,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -675,6 +721,29 @@
           },
           "empty": {
             "type": "boolean"
+          }
+        }
+      },
+      "ThumbnailBookDto": {
+        "type": "object",
+        "required": [
+          "bookId",
+          "id",
+          "selected",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "selected": {
+            "type": "boolean"
+          },
+          "bookId": {
+            "type": "string"
           }
         }
       },
@@ -786,16 +855,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -864,16 +933,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -929,16 +998,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -1005,16 +1074,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -1066,16 +1135,16 @@
             "format": "int32",
             "type": "integer"
           },
-          "size": {
-            "format": "int32",
-            "type": "integer"
-          },
           "numberOfElements": {
             "format": "int32",
             "type": "integer"
           },
           "last": {
             "type": "boolean"
+          },
+          "size": {
+            "format": "int32",
+            "type": "integer"
           },
           "totalPages": {
             "format": "int32",
@@ -2207,6 +2276,47 @@
         ]
       }
     },
+    "/api/v1/collections/{id}/thumbnails/{thumbnailId}/selected": {
+      "put": {
+        "operationId": "markSelectedCollectionThumbnail",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "thumbnailId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "series-collection-controller"
+        ]
+      }
+    },
     "/api/v1/libraries": {
       "post": {
         "requestBody": {
@@ -3019,6 +3129,47 @@
             },
             "in": "path",
             "name": "id",
+            "required": true
+          }
+        ],
+        "tags": [
+          "read-list-controller"
+        ]
+      }
+    },
+    "/api/v1/readlists/{id}/thumbnails/{thumbnailId}/selected": {
+      "put": {
+        "operationId": "markSelectedReadListThumbnail",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "thumbnailId",
             "required": true
           }
         ],
@@ -4330,6 +4481,47 @@
         ]
       }
     },
+    "/api/v1/books/{bookId}/thumbnails/{thumbnailId}/selected": {
+      "put": {
+        "operationId": "markSelectedBookThumbnail",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "bookId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "thumbnailId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "book-controller"
+        ]
+      }
+    },
     "/opds/v1.2/keep-reading": {
       "get": {
         "operationId": "getKeepReading",
@@ -4559,6 +4751,106 @@
         ],
         "tags": [
           "opds-controller"
+        ]
+      }
+    },
+    "/api/v1/readlists/{id}/thumbnails": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "format": "binary",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "addUserUploadedReadListThumbnail",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "selected",
+            "required": false
+          }
+        ],
+        "tags": [
+          "read-list-controller"
+        ]
+      },
+      "get": {
+        "operationId": "getReadListThumbnails",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ThumbnailReadListDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "tags": [
+          "read-list-controller"
         ]
       }
     },
@@ -5609,6 +5901,94 @@
         ]
       }
     },
+    "/api/v1/collections/{id}/thumbnails/{thumbnailId}": {
+      "get": {
+        "operationId": "getCollectionThumbnailById",
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "format": "binary",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "thumbnailId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "series-collection-controller"
+        ]
+      },
+      "delete": {
+        "operationId": "deleteUserUploadedCollectionThumbnail",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "thumbnailId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "series-collection-controller"
+        ]
+      }
+    },
     "/api/v1/books/ondeck": {
       "get": {
         "description": "Return first unread book of series with at least one book read and no books in progress.",
@@ -6030,6 +6410,37 @@
                 }
               }
             }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "bookId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "book-controller"
+        ]
+      },
+      "delete": {
+        "operationId": "deleteBook",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
           }
         },
         "parameters": [
@@ -6506,6 +6917,94 @@
         ]
       }
     },
+    "/api/v1/books/{bookId}/thumbnails/{thumbnailId}": {
+      "get": {
+        "operationId": "getBookThumbnailById",
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "format": "binary",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "bookId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "thumbnailId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "book-controller"
+        ]
+      },
+      "delete": {
+        "operationId": "deleteUserUploadedBookThumbnail",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "bookId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "thumbnailId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "book-controller"
+        ]
+      }
+    },
     "/opds/v1.2/books/latest": {
       "get": {
         "operationId": "getLatestBooks",
@@ -6595,6 +7094,106 @@
         ],
         "tags": [
           "book-controller"
+        ]
+      }
+    },
+    "/api/v1/collections/{id}/thumbnails": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "format": "binary",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "addUserUploadedCollectionThumbnail",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "selected",
+            "required": false
+          }
+        ],
+        "tags": [
+          "series-collection-controller"
+        ]
+      },
+      "get": {
+        "operationId": "getCollectionThumbnails",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ThumbnailSeriesCollectionDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "tags": [
+          "series-collection-controller"
         ]
       }
     },
@@ -6994,6 +7593,37 @@
                 }
               }
             }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "seriesId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "series-controller"
+        ]
+      },
+      "delete": {
+        "operationId": "deleteSeries",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
           }
         },
         "parameters": [
@@ -7667,6 +8297,94 @@
         ]
       }
     },
+    "/api/v1/readlists/{id}/thumbnails/{thumbnailId}": {
+      "get": {
+        "operationId": "getReadListThumbnailById",
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "format": "binary",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "thumbnailId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "read-list-controller"
+        ]
+      },
+      "delete": {
+        "operationId": "deleteUserUploadedReadListThumbnail",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "thumbnailId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "read-list-controller"
+        ]
+      }
+    },
     "/api/v1/readlists": {
       "post": {
         "requestBody": {
@@ -8048,37 +8766,6 @@
         ]
       },
       "get": {
-        "operationId": "getProviders_2",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/OAuth2ClientDto"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "o-auth-2-controller"
-        ]
-      },
-      "options": {
         "operationId": "getProviders_4",
         "responses": {
           "200": {
@@ -8109,8 +8796,39 @@
           "o-auth-2-controller"
         ]
       },
+      "options": {
+        "operationId": "getProviders_3",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OAuth2ClientDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "o-auth-2-controller"
+        ]
+      },
       "delete": {
-        "operationId": "getProviders",
+        "operationId": "getProviders_2",
         "responses": {
           "200": {
             "description": "OK",
@@ -8141,7 +8859,7 @@
         ]
       },
       "put": {
-        "operationId": "getProviders_3",
+        "operationId": "getProviders",
         "responses": {
           "200": {
             "description": "OK",
@@ -8257,6 +8975,106 @@
         },
         "tags": [
           "opds-controller"
+        ]
+      }
+    },
+    "/api/v1/books/{bookId}/thumbnails": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "format": "binary",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "addUserUploadedBookThumbnail",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "bookId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "selected",
+            "required": false
+          }
+        ],
+        "tags": [
+          "book-controller"
+        ]
+      },
+      "get": {
+        "operationId": "getBookThumbnails",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ThumbnailBookDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "bookId",
+            "required": true
+          }
+        ],
+        "tags": [
+          "book-controller"
         ]
       }
     },

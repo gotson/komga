@@ -1,3 +1,18 @@
+# [0.138.0](https://github.com/gotson/komga/compare/v0.137.0...v0.138.0) (2021-12-22)
+
+
+### Bug Fixes
+
+* **api:** library scan is always highest priority ([e60acb8](https://github.com/gotson/komga/commit/e60acb86ff4bc156f5b907e9688156cf2b2f9480))
+* **webui:** increase height of activity bar ([5fc4013](https://github.com/gotson/komga/commit/5fc4013934965f06f4e136afa3fa25d0fb4d469c))
+
+
+### Features
+
+* added translation using Weblate (Slovenian) ([7d4d811](https://github.com/gotson/komga/commit/7d4d811af8f181023db850e1eb7fad8c492b77ef))
+* **api:** cover upload for books, read lists and collections ([31ad351](https://github.com/gotson/komga/commit/31ad351144fd88ed59ac606af1156c6b66694d3a))
+* series and book files deletion ([e626ff8](https://github.com/gotson/komga/commit/e626ff850f0687e227df0fd26c336705c024b273)), closes [#731](https://github.com/gotson/komga/issues/731)
+
 # [0.137.0](https://github.com/gotson/komga/compare/v0.136.0...v0.137.0) (2021-12-14)
 
 
