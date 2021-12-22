@@ -214,7 +214,7 @@ class ReadListController(
     @PathVariable(name = "id") id: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ) {
-    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
+    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
       thumbnailReadListRepository.findByIdOrNull(thumbnailId)?.let {
         readListLifecycle.markSelectedThumbnail(it)
       }
@@ -229,7 +229,7 @@ class ReadListController(
     @PathVariable(name = "id") id: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ) {
-    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
+    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
       thumbnailReadListRepository.findByIdOrNull(thumbnailId)?.let {
         readListLifecycle.deleteThumbnail(it)
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
