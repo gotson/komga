@@ -626,6 +626,9 @@ export default Vue.extend({
     enterFullscreen() {
       if (screenfull.isEnabled) screenfull.request(document.documentElement, {navigationUI: 'hide'})
     },
+    switchFullscreen() {
+      if (screenfull.isEnabled) screenfull.isFullscreen ? screenfull.exit() : this.enterFullscreen()
+    },
     fullscreenChanged() {
       if (screenfull.isEnabled && screenfull.isFullscreen) this.fullscreenIcon = 'mdi-fullscreen-exit'
       else this.fullscreenIcon = 'mdi-fullscreen'
