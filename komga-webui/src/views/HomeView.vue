@@ -186,27 +186,27 @@
     </v-navigation-drawer>
 
     <v-main class="fill-height">
-      <dialogs/>
-      <toaster/>
+      <reusable-dialogs/>
+      <toaster-notification/>
       <router-view/>
     </v-main>
   </div>
 </template>
 
 <script lang="ts">
-import Dialogs from '@/components/Dialogs.vue'
+import ReusableDialogs from '@/components/ReusableDialogs.vue'
 import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import SearchBox from '@/components/SearchBox.vue'
 import {Theme} from '@/types/themes'
 import Vue from 'vue'
 import {LIBRARIES_ALL} from '@/types/library'
-import Toaster from '@/components/Toaster.vue'
+import ToasterNotification from '@/components/ToasterNotification.vue'
 import {MediaStatus} from '@/types/enum-books'
 import {LibraryDto} from '@/types/komga-libraries'
 
 export default Vue.extend({
-  name: 'home',
-  components: {Toaster, LibraryActionsMenu, SearchBox, Dialogs},
+  name: 'HomeView',
+  components: {ToasterNotification, LibraryActionsMenu, SearchBox, ReusableDialogs},
   data: function () {
     return {
       LIBRARIES_ALL,

@@ -50,24 +50,24 @@ const router = new Router({
       path: '/',
       name: 'home',
       redirect: {name: 'dashboard'},
-      component: () => import(/* webpackChunkName: "home" */ './views/Home.vue'),
+      component: () => import(/* webpackChunkName: "home" */ './views/HomeView.vue'),
       children: [
         {
           path: '/welcome',
           name: 'welcome',
-          component: () => import(/* webpackChunkName: "welcome" */ './views/Welcome.vue'),
+          component: () => import(/* webpackChunkName: "welcome" */ './views/WelcomeView.vue'),
         },
         {
           path: '/dashboard',
           name: 'dashboard',
           beforeEnter: noLibraryGuard,
-          component: () => import(/* webpackChunkName: "dashboard" */ './views/Dashboard.vue'),
+          component: () => import(/* webpackChunkName: "dashboard" */ './views/DashboardView.vue'),
         },
         {
           path: '/settings',
           name: 'settings',
           redirect: {name: 'settings-analysis'},
-          component: () => import(/* webpackChunkName: "settings" */ './views/Settings.vue'),
+          component: () => import(/* webpackChunkName: "settings" */ './views/SettingsHolder.vue'),
           children: [
             {
               path: '/settings/users',
@@ -119,7 +119,7 @@ const router = new Router({
           path: '/libraries/:libraryId/recommended',
           name: 'recommended-libraries',
           beforeEnter: noLibraryGuard,
-          component: () => import(/* webpackChunkName: "dashboard" */ './views/Dashboard.vue'),
+          component: () => import(/* webpackChunkName: "dashboard" */ './views/DashboardView.vue'),
           props: (route) => ({libraryId: route.params.libraryId}),
         },
         {
@@ -170,7 +170,7 @@ const router = new Router({
         {
           path: '/search',
           name: 'search',
-          component: () => import(/* webpackChunkName: "search" */ './views/Search.vue'),
+          component: () => import(/* webpackChunkName: "search" */ './views/SearchView.vue'),
         },
         {
           path: '/import',
@@ -183,12 +183,12 @@ const router = new Router({
     {
       path: '/startup',
       name: 'startup',
-      component: () => import(/* webpackChunkName: "startup" */ './views/Startup.vue'),
+      component: () => import(/* webpackChunkName: "startup" */ './views/StartupView.vue'),
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import(/* webpackChunkName: "login" */ './views/Login.vue'),
+      component: () => import(/* webpackChunkName: "login" */ './views/LoginView.vue'),
     },
     {
       path: '/book/:bookId/read',

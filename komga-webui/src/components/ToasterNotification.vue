@@ -37,7 +37,7 @@ import {convertErrorCodes} from '@/functions/error-codes'
 import {BookImportSseDto} from '@/types/komga-sse'
 
 export default Vue.extend({
-  name: 'Toaster',
+  name: 'ToasterNotification',
   data: function () {
     return {
       queue: [] as any[],

@@ -175,7 +175,7 @@ import {throttle} from 'lodash'
 import {PageLoader} from '@/types/pageLoader'
 
 export default Vue.extend({
-  name: 'Search',
+  name: 'SearchView',
   components: {
     EmptyState,
     ToolbarSticky,

@@ -12,7 +12,7 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'Startup',
+  name: 'StartupView',
   async mounted() {
     try {
       if (this.$route.query.xAuthToken) {

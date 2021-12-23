@@ -224,7 +224,7 @@ import {LibraryDto} from '@/types/komga-libraries'
 import {PageLoader} from '@/types/pageLoader'
 
 export default Vue.extend({
-  name: 'Dashboard',
+  name: 'DashboardView',
   components: {
     HorizontalScroller,
     EmptyState,

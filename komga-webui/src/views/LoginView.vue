@@ -132,7 +132,7 @@ import {socialButtons} from '@/types/social'
 import {convertErrorCodes} from '@/functions/error-codes'
 
 export default Vue.extend({
-  name: 'Login',
+  name: 'LoginView',
   data: function () {
     return {
       urls,

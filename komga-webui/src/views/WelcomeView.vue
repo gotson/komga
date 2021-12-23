@@ -19,7 +19,7 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'Welcome',
+  name: 'WelcomeView',
   computed: {
     isAdmin (): boolean {
       return this.$store.getters.meAdmin

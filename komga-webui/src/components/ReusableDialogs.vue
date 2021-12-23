@@ -110,7 +110,7 @@ import {LibraryDto} from '@/types/komga-libraries'
 import BulkEditBooksDialog from '@/components/dialogs/BulkEditBooksDialog.vue'
 
 export default Vue.extend({
-  name: 'Dialogs',
+  name: 'ReusableDialogs',
   components: {
     BulkEditBooksDialog,
     ConfirmationDialog,

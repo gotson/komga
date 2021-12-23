@@ -45,11 +45,11 @@ export default Vue.extend({
   props: {
     leftPages: {
       type: Array as PropType<PageDto[]>,
-      default: [],
+      default: () => [],
     },
     rightPages: {
       type: Array as PropType<PageDto[]>,
-      default: [],
+      default: () => [],
     },
   },
   computed: {

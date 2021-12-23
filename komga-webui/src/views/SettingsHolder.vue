@@ -22,7 +22,7 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'Settings',
+  name: 'SettingsHolder',
   computed: {
     booksToCheck(): number {
       return this.$store.state.booksToCheck
