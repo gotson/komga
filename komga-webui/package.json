@@ -34,7 +34,7 @@
     "vuex-router-sync": "^5.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.5",
+    "@babel/core": "^7.16.5",
     "@mdi/font": "^5.9.55",
     "@types/jest": "^24.9.1",
     "@types/lodash": "^4.14.172",
@@ -42,7 +42,7 @@
     "@types/webpack": "^4.4.0",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
-    "@vue/cli-plugin-babel": "^4.4.6",
+    "@vue/cli-plugin-babel": "^4.5.15",
     "@vue/cli-plugin-eslint": "^4.4.6",
     "@vue/cli-plugin-router": "^4.4.6",
     "@vue/cli-plugin-typescript": "^4.4.6",
@@ -52,7 +52,6 @@
     "@vue/eslint-config-standard": "^5.1.2",
     "@vue/eslint-config-typescript": "^5.0.2",
     "@vue/test-utils": "1.2.2",
-    "babel-eslint": "^10.1.0",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-node": "^11.1.0",
