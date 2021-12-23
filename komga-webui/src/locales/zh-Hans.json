@@ -272,6 +272,15 @@
       "button_confirm": "分析",
       "title": "分析库"
     },
+    "delete_book": {
+      "button_confirm": "删除",
+      "confirm_delete": "是，删除书籍 \"{name}\" 及其文件",
+      "confirm_delete_multiple": "是，删除 {count} 本书及它们的文件",
+      "dialog_title": "删除书籍",
+      "dialog_title_multiple": "删除书籍",
+      "warning_html": "</b>{name}</b> 连同所存储媒体文件将从此服务器中删除。此操作<b>无法</b>撤销。继续吗？",
+      "warning_multiple_html": "{count} 本书连同所存储的媒体文件件从此服务器中删除。此操作<b>无法撤销</b>。继续吗？"
+    },
     "delete_collection": {
       "button_confirm": "删除",
       "confirm_delete": "是否确定删除 \"{name}\"收藏",
@@ -295,6 +304,14 @@
       "dialog_title_multiple": "删除阅读列表",
       "warning_html": "<b>{name}</b>列表将从此服务器中删除. 您的媒体文件不会受到影响. 此操作<b>不能撤消</b>. 继续吗？",
       "warning_multiple_html": "将从此服务器中删除 {count} 个阅读列表。你的媒体文件不会受影响。此操作 <b>无法</b>撤销。继续吗？"
+    },
+    "delete_series": {
+      "button_confirm": "删除",
+      "confirm_delete": "是，删除连载 “{name}”及其文件",
+      "confirm_delete_multiple": "是，删除 {count} 个连载及它们的文件",
+      "dialog_title": "删除连载",
+      "warning_html": "连载 <b>{name}</b>及所存储媒体文件将从此服务器中删除。此操作<b>无法</b>撤销。继续吗？",
+      "warning_multiple_html": "{count}个连载及所存储媒体文件将从此服务器中删除。此操作<b>无法</b>撤销。继续吗？"
     },
     "delete_user": {
       "button_confirm": "删除",
