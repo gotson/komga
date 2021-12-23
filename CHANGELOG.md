@@ -1,3 +1,19 @@
+# [0.139.0](https://github.com/gotson/komga/compare/v0.138.0...v0.139.0) (2021-12-23)
+
+
+### Bug Fixes
+
+* translated using Weblate ([5c69c05](https://github.com/gotson/komga/commit/5c69c058fe731ba97ab3a7efbee29fa29b0371cb))
+* upgrade lucene version ([4ee30dd](https://github.com/gotson/komga/commit/4ee30dde96b1a9e8170e44512d5f041290b72892))
+
+
+### Features
+
+* detect JPEG XL images ([610c51f](https://github.com/gotson/komga/commit/610c51fd5d206ce3089f7caba95a91ad5bd6d578))
+* **webreader:** add fullscreen keyboard shortcut ([a72a3ba](https://github.com/gotson/komga/commit/a72a3bab627a80df5c29ac6b1d055c96216e52a7))
+* **webreader:** detect browser support for JPEG XL ([27f5ba6](https://github.com/gotson/komga/commit/27f5ba6348e7d252f08bcb698666baac7c5461b9))
+* **webui:** move read lists import view in import menu ([2529a96](https://github.com/gotson/komga/commit/2529a9623a2bf1aca7df5b7bd6854faa0cdc3af7))
+
 # [0.138.0](https://github.com/gotson/komga/compare/v0.137.0...v0.138.0) (2021-12-22)
 
 
