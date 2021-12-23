@@ -94,12 +94,6 @@ const router = new Router({
               beforeEnter: adminGuard,
               component: () => import(/* webpackChunkName: "settings-server" */ './views/SettingsServer.vue'),
             },
-            {
-              path: '/settings/data-import',
-              name: 'settings-data-import',
-              beforeEnter: adminGuard,
-              component: () => import(/* webpackChunkName: "settings-data-import" */ './views/SettingsDataImport.vue'),
-            },
           ],
         },
         {
@@ -175,8 +169,23 @@ const router = new Router({
         {
           path: '/import',
           name: 'import',
+          redirect: {name: 'import-books'},
           beforeEnter: adminGuard,
-          component: () => import(/* webpackChunkName: "book-import" */ './views/BookImport.vue'),
+          component: () => import(/* webpackChunkName: "import" */ './views/ImportHolder.vue'),
+          children: [
+            {
+              path: '/import/books',
+              name: 'import-books',
+              beforeEnter: adminGuard,
+              component: () => import(/* webpackChunkName: "import-books" */ './views/ImportBooks.vue'),
+            },
+            {
+              path: '/import/readlists',
+              name: 'import-readlists',
+              beforeEnter: adminGuard,
+              component: () => import(/* webpackChunkName: "import-readlists" */ './views/ImportReadLists.vue'),
+            },
+          ],
         },
       ],
     },

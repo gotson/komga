@@ -1,12 +1,9 @@
 <template>
   <v-container fluid class="pa-6">
-    <v-row>
-      <v-col class="text-h5">{{ $t('data_import.import_read_lists') }}</v-col>
-    </v-row>
+    <v-alert type="info" text class="body-2">
+      <div v-html="$t('data_import.comicrack_preambule_html')"/>
+    </v-alert>
     <v-form v-model="valid" ref="form">
-      <v-row>
-        <v-col class="body-2" v-html="$t('data_import.comicrack_preambule_html')"></v-col>
-      </v-row>
       <v-row align="center">
         <v-col cols>
           <v-file-input
@@ -21,6 +18,7 @@
         </v-col>
         <v-col cols="auto">
           <v-btn
+            color="primary"
             :disabled="!valid"
             @click="importFiles"
           >{{ $t('data_import.button_import') }}
@@ -92,7 +90,7 @@ import Vue from 'vue'
 import {convertErrorCodes} from '@/functions/error-codes'
 
 export default Vue.extend({
-  name: 'SettingsDataImport',
+  name: 'ImportReadLists',
   data: () => ({
     convertErrorCodes,
     files: [],

@@ -115,7 +115,7 @@ import {ERROR} from '@/types/events'
 import EmptyState from '@/components/EmptyState.vue'
 
 export default Vue.extend({
-  name: 'BookImport',
+  name: 'ImportBooks',
   components: {EmptyState, FileBrowserDialog, FileImportRow, SeriesPickerDialog},
   data: () => ({
     modalFileBrowser: false,
