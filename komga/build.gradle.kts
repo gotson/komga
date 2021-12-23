@@ -22,6 +22,7 @@ dependencies {
   implementation(kotlin("stdlib-jdk8"))
   implementation(kotlin("reflect"))
 
+  // 2.6.0 brings assertj-core 3.21.0 which causes type inference issues in Kotlin, should be fixed in Kotlin 1.6.20
   implementation(platform("org.springframework.boot:spring-boot-dependencies:2.5.8"))
 
   implementation("org.springframework.boot:spring-boot-starter-web")
