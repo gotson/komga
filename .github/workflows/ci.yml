@@ -15,7 +15,7 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
           java-package: 'jdk'
-          distribution: 'adopt'
+          distribution: 'temurin'
           cache: 'gradle'
       - name: Build
         run: ./gradlew build
@@ -88,7 +88,7 @@ jobs:
         with:
           java-version: '8'
           java-package: 'jdk'
-          distribution: 'adopt'
+          distribution: 'temurin'
           cache: 'gradle'
       - name: Install dependencies
         run: npm install --only=production
