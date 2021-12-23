@@ -60,12 +60,6 @@ jobs:
           cache-dependency-path: |
             package-lock.json
             komga-webui/package-lock.json
-      - uses: actions/setup-java@v2
-        with:
-          java-version: '8'
-          java-package: 'jdk'
-          distribution: 'adopt'
-          cache: 'gradle'
       - name: npm install
         working-directory: komga-webui
         run: npm install
