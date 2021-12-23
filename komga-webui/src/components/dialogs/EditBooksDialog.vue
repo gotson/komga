@@ -413,6 +413,7 @@ export default Vue.extend({
     authorSearchResultsFull(): string[] {
       // merge local values with server search, so that already input value is available
       const local = (this.$_.values(this.form.authors).flat()) as unknown as string[]
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       return this.$_.sortBy(this.$_.union(local, this.authorSearchResults), x => x.toLowerCase())
     },
     dialogTitle(): string {
