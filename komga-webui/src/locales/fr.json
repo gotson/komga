@@ -128,6 +128,7 @@
       "cycle_scale": "Changer la mise à l'échelle",
       "cycle_side_padding": "Changer la bordure latérale",
       "first_page": "Première page",
+      "fullscreen": "Entrer/Quitter le plein écran",
       "last_page": "Dernière page",
       "left_to_right": "De gauche à droite",
       "menus": "Menus",
@@ -272,6 +273,15 @@
       "button_confirm": "Analyser",
       "title": "Analyser la bibliothèque"
     },
+    "delete_book": {
+      "button_confirm": "Supprimer",
+      "confirm_delete": "Oui, supprimer le livre « {name} » et ses fichiers",
+      "confirm_delete_multiple": "Oui, supprimer {count} livres et leurs fichiers",
+      "dialog_title": "Supprimer le livre",
+      "dialog_title_multiple": "Supprimer les livres",
+      "warning_html": "Le livre <b>{name}</b> sera supprimé de ce serveur ainsi que ses fichiers médias associés. Ceci <b>ne peut pas</b> être annulé. Continuer ?",
+      "warning_multiple_html": "{count} livres seront supprimés de ce serveur ainsi que leurs fichiers médias associés. Ceci <b>ne peut pas</b> être annulé. Continuer ?"
+    },
     "delete_collection": {
       "button_confirm": "Supprimer",
       "confirm_delete": "Oui, supprimer la collection « {name} »",
@@ -295,6 +305,14 @@
       "dialog_title_multiple": "Supprimer les listes de lecture",
       "warning_html": "La liste de lecture <b>{name}</b> sera supprimée de ce serveur. Vos fichiers médias ne seront pas affectés. Cette action <b>est irréversible</b>. Voulez-vous continuer ?",
       "warning_multiple_html": "{count} listes de lecture seront supprimées de ce serveur. Vos fichiers médias ne seront pas affectés. Cette action est <b>irréversible</b>. Voulez-vous continuer ?"
+    },
+    "delete_series": {
+      "button_confirm": "Supprimer",
+      "confirm_delete": "Oui, supprimer la série « {name} » et ses fichiers",
+      "confirm_delete_multiple": "Oui, supprimer {count} séries et leurs fichiers",
+      "dialog_title": "Supprimer la série",
+      "warning_html": "La série <b>{name}</b> sera supprimée de ce serveur ainsi que ses fichiers médias associés. Ceci <b>ne peut pas</b> être annulé. Continuer ?",
+      "warning_multiple_html": "{count} séries seront supprimées de ce serveur ainsi que leurs fichiers médias associés. Ceci <b>ne peut pas</b> être annulé. Continuer ?"
     },
     "delete_user": {
       "button_confirm": "Supprimer",
