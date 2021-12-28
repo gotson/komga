@@ -94,7 +94,7 @@ export interface BookMetadataUpdateDto {
 }
 
 export interface BookMetadataUpdateBatchDto {
-  [bookId: string]: BookMetadataUpdateBatchDto
+  [bookId: string]: BookMetadataUpdateDto
 }
 
 export interface AuthorDto {
