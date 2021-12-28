@@ -63,6 +63,8 @@ export interface BookMetadataDto {
   tagsLock: boolean,
   isbn: string,
   isbnLock: boolean
+  links?: WebLinkDto[],
+  linksLock?: boolean
 }
 
 export interface ReadProgressDto {
@@ -98,6 +100,11 @@ export interface BookMetadataUpdateBatchDto {
 export interface AuthorDto {
   name: string,
   role: string
+}
+
+export interface WebLinkDto {
+  label: string,
+  url: string
 }
 
 export interface ReadProgressUpdateDto {

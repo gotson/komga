@@ -152,6 +152,7 @@
     "file": "FILE",
     "format": "FORMAT",
     "isbn": "ISBN",
+    "links": "LINKS",
     "navigation_within_readlist": "Navigation within the readlist: {name}",
     "outdated_tooltip": "The file for this book has changed, this book must be re-analyzed",
     "read_book": "Read book",
@@ -306,12 +307,6 @@
       "warning_html": "The read list <b>{name}</b> will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue?",
       "warning_multiple_html": "{count} read lists will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue?"
     },
-    "delete_user": {
-      "button_confirm": "Delete",
-      "confirm_delete": "Yes, delete the user \"{name}\"",
-      "dialog_title": "Delete User",
-      "warning_html": "The user <b>{name}</b> will be deleted from this server. This <b>cannot</b> be undone. Continue?"
-    },
     "delete_series": {
       "button_confirm": "Delete",
       "confirm_delete": "Yes, delete series \"{name}\" and its files",
@@ -319,6 +314,12 @@
       "dialog_title": "Delete Series",
       "warning_html": "The Series <b>{name}</b> will be removed from this server alongside with stored media files. This <b>cannot</b> be undone. Continue?",
       "warning_multiple_html": "{count} series will be removed from this server alongside with stored media files. This <b>cannot</b> be undone. Continue?"
+    },
+    "delete_user": {
+      "button_confirm": "Delete",
+      "confirm_delete": "Yes, delete the user \"{name}\"",
+      "dialog_title": "Delete User",
+      "warning_html": "The user <b>{name}</b> will be deleted from this server. This <b>cannot</b> be undone. Continue?"
     },
     "edit_books": {
       "authors_notice_multiple_edit": "You are editing authors for multiple books. This will override existing authors of each book.",

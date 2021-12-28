@@ -12,6 +12,7 @@ import org.gotson.komga.interfaces.api.rest.dto.BookDto
 import org.gotson.komga.interfaces.api.rest.dto.BookMetadataDto
 import org.gotson.komga.interfaces.api.rest.dto.MediaDto
 import org.gotson.komga.interfaces.api.rest.dto.ReadProgressDto
+import org.gotson.komga.interfaces.api.rest.dto.WebLinkDto
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.BookMetadataRecord
 import org.gotson.komga.jooq.tables.records.BookRecord
@@ -49,6 +50,7 @@ class BookDtoDao(
   private val s = Tables.SERIES
   private val rlb = Tables.READLIST_BOOK
   private val bt = Tables.BOOK_METADATA_TAG
+  private val bl = Tables.BOOK_METADATA_LINK
 
   private val countUnread: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isNull, 1).otherwise(0))
   private val countRead: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isTrue, 1).otherwise(0))
@@ -281,7 +283,13 @@ class BookDtoDao(
           .where(bt.BOOK_ID.eq(br.id))
           .fetchSet(bt.TAG)
 
-        br.toDto(mr.toDto(), dr.toDto(authors, tags), if (rr.userId != null) rr.toDto() else null)
+        val links = dsl.select(bl.LABEL, bl.URL)
+          .from(bl)
+          .where(bl.BOOK_ID.eq(br.id))
+          .fetchInto(bl)
+          .map { WebLinkDto(it.label, it.url) }
+
+        br.toDto(mr.toDto(), dr.toDto(authors, tags, links), if (rr.userId != null) rr.toDto() else null)
       }
 
   private fun BookSearchWithReadProgress.toCondition(): Condition {
@@ -356,7 +364,7 @@ class BookDtoDao(
       comment = comment ?: ""
     )
 
-  private fun BookMetadataRecord.toDto(authors: List<AuthorDto>, tags: Set<String>) =
+  private fun BookMetadataRecord.toDto(authors: List<AuthorDto>, tags: Set<String>, links: List<WebLinkDto>) =
     BookMetadataDto(
       title = title,
       titleLock = titleLock,
@@ -374,6 +382,8 @@ class BookDtoDao(
       tagsLock = tagsLock,
       isbn = isbn,
       isbnLock = isbnLock,
+      links = links,
+      linksLock = linksLock,
       created = createdDate,
       lastModified = lastModifiedDate
     )
