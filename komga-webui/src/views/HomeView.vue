@@ -9,7 +9,7 @@
         offset-y="20"
         :value="drawerVisible ? 0 : booksToCheck"
         color="accent"
-        :style="`margin-${$vuetify.rtl ? 'right' : 'left' }: -12px`"
+        class="ms-n3"
       >
         <v-app-bar-nav-icon @click.stop="toggleDrawer"/>
       </v-badge>
