@@ -23,6 +23,7 @@ class MetadataApplier {
         releaseDate = getIfNotLocked(releaseDate, patch.releaseDate, releaseDateLock),
         authors = getIfNotLocked(authors, patch.authors, authorsLock),
         isbn = getIfNotLocked(isbn, patch.isbn, isbnLock),
+        links = getIfNotLocked(links, patch.links, linksLock),
       )
     }
 
@@ -38,7 +39,7 @@ class MetadataApplier {
         publisher = getIfNotLocked(publisher, patch.publisher, publisherLock),
         language = getIfNotLocked(language, patch.language, languageLock),
         genres = getIfNotLocked(genres, patch.genres, genresLock),
-        totalBookCount = getIfNotLocked(totalBookCount, patch.totalBookCount, totalBookCountLock)
+        totalBookCount = getIfNotLocked(totalBookCount, patch.totalBookCount, totalBookCountLock),
       )
     }
 }
