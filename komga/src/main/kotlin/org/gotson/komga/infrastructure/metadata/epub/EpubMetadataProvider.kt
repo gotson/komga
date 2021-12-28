@@ -31,6 +31,7 @@ class EpubMetadataProvider(
     "edt" to "editor",
     "art" to "penciller",
     "ill" to "penciller",
+    "trl" to "translator",
   )
 
   override fun getCapabilities(): List<BookMetadataPatchCapability> =
