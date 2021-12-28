@@ -308,56 +308,6 @@ export default Vue.extend({
     },
     validateForm(): any {
       if ((this.$refs.form as any).validate()) {
-        // const metadata = {
-        //   authorsLock: this.form.authorsLock,
-        //   tagsLock: this.form.tagsLock,
-        // }
-        //
-        // if (this.$v.form?.authors?.$dirty) {
-        //   this.$_.merge(metadata, {
-        //     authors: this.$_.keys(this.form.authors).flatMap((role: string) =>
-        //       this.$_.get(this.form.authors, role).map((name: string) => ({name: name, role: role})),
-        //     ),
-        //   })
-        // }
-        //
-        // if (this.$v.form?.tags?.$dirty) {
-        //   this.$_.merge(metadata, {tags: this.form.tags})
-        // }
-        //
-        // this.$_.merge(metadata, {
-        //   titleLock: this.form.titleLock,
-        //   numberLock: this.form.numberLock,
-        //   numberSortLock: this.form.numberSortLock,
-        //   summaryLock: this.form.summaryLock,
-        //   releaseDateLock: this.form.releaseDateLock,
-        //   isbnLock: this.form.isbnLock,
-        // })
-        //
-        // if (this.$v.form?.title?.$dirty) {
-        //   this.$_.merge(metadata, {title: this.form.title})
-        // }
-        //
-        // if (this.$v.form?.number?.$dirty) {
-        //   this.$_.merge(metadata, {number: this.form.number})
-        // }
-        //
-        // if (this.$v.form?.numberSort?.$dirty) {
-        //   this.$_.merge(metadata, {numberSort: this.form.numberSort})
-        // }
-        //
-        // if (this.$v.form?.summary?.$dirty) {
-        //   this.$_.merge(metadata, {summary: this.form.summary})
-        // }
-        //
-        // if (this.$v.form?.releaseDate?.$dirty) {
-        //   this.$_.merge(metadata, {releaseDate: this.form.releaseDate ? this.form.releaseDate : null})
-        // }
-        //
-        // if (this.$v.form?.isbn?.$dirty) {
-        //   this.$_.merge(metadata, {isbn: this.form.isbn})
-        // }
-
         return this.form
       }
       return null
