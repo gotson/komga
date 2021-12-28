@@ -91,7 +91,7 @@ class TaskReceiver(
 
   fun refreshBookMetadata(
     bookId: String,
-    capabilities: List<BookMetadataPatchCapability> = BookMetadataPatchCapability.values().toList(),
+    capabilities: Set<BookMetadataPatchCapability> = BookMetadataPatchCapability.values().toSet(),
     priority: Int = DEFAULT_PRIORITY,
   ) {
     submitTask(Task.RefreshBookMetadata(bookId, capabilities, priority))

@@ -33,7 +33,7 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY) : Serializable {
     override fun toString(): String = "GenerateBookThumbnail(bookId='$bookId', priority='$priority')"
   }
 
-  class RefreshBookMetadata(val bookId: String, val capabilities: List<BookMetadataPatchCapability>, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
+  class RefreshBookMetadata(val bookId: String, val capabilities: Set<BookMetadataPatchCapability>, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
     override fun uniqueId() = "REFRESH_BOOK_METADATA_$bookId"
     override fun toString(): String = "RefreshBookMetadata(bookId='$bookId', capabilities=$capabilities, priority='$priority')"
   }

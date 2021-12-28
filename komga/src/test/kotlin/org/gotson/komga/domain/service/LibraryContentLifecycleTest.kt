@@ -771,7 +771,7 @@ class LibraryContentLifecycleTest(
 
       // then
       verify(exactly = 1) { mockHasher.computeHash(any()) }
-      verify(exactly = 0) { mockTaskReceiver.refreshBookMetadata(bookRenamed.id, listOf(BookMetadataPatchCapability.TITLE)) }
+      verify(exactly = 0) { mockTaskReceiver.refreshBookMetadata(bookRenamed.id, setOf(BookMetadataPatchCapability.TITLE)) }
 
       val allSeries = seriesRepository.findAll()
       val allBooks = bookRepository.findAll().sortedBy { it.number }
@@ -815,7 +815,7 @@ class LibraryContentLifecycleTest(
 
       // then
       verify(exactly = 1) { mockHasher.computeHash(any()) }
-      verify(exactly = 1) { mockTaskReceiver.refreshBookMetadata(bookRenamed.id, listOf(BookMetadataPatchCapability.TITLE)) }
+      verify(exactly = 1) { mockTaskReceiver.refreshBookMetadata(bookRenamed.id, setOf(BookMetadataPatchCapability.TITLE)) }
 
       val allSeries = seriesRepository.findAll()
       val allBooks = bookRepository.findAll().sortedBy { it.number }
@@ -1140,7 +1140,7 @@ class LibraryContentLifecycleTest(
       libraryContentLifecycle.scanRootFolder(library) // rename
 
       // then
-      verify(exactly = 0) { mockTaskReceiver.refreshBookMetadata(book2Moved.id, listOf(BookMetadataPatchCapability.TITLE)) }
+      verify(exactly = 0) { mockTaskReceiver.refreshBookMetadata(book2Moved.id, setOf(BookMetadataPatchCapability.TITLE)) }
 
       val allSeries = seriesRepository.findAll()
       val allBooks = bookRepository.findAll().sortedBy { it.number }
@@ -1198,7 +1198,7 @@ class LibraryContentLifecycleTest(
       libraryContentLifecycle.scanRootFolder(library) // rename
 
       // then
-      verify(exactly = 1) { mockTaskReceiver.refreshBookMetadata(book2Moved.id, listOf(BookMetadataPatchCapability.TITLE)) }
+      verify(exactly = 1) { mockTaskReceiver.refreshBookMetadata(book2Moved.id, setOf(BookMetadataPatchCapability.TITLE)) }
 
       val allSeries = seriesRepository.findAll()
       val allBooks = bookRepository.findAll().sortedBy { it.number }

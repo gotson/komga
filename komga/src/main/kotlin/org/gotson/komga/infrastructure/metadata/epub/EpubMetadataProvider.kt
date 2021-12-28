@@ -34,8 +34,8 @@ class EpubMetadataProvider(
     "trl" to "translator",
   )
 
-  override fun getCapabilities(): List<BookMetadataPatchCapability> =
-    listOf(
+  override fun getCapabilities(): Set<BookMetadataPatchCapability> =
+    setOf(
       BookMetadataPatchCapability.TITLE,
       BookMetadataPatchCapability.SUMMARY,
       BookMetadataPatchCapability.RELEASE_DATE,

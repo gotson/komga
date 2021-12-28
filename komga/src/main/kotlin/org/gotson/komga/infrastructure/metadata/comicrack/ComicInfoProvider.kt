@@ -27,11 +27,11 @@ private const val COMIC_INFO = "ComicInfo.xml"
 @Service
 class ComicInfoProvider(
   @Autowired(required = false) private val mapper: XmlMapper = XmlMapper(),
-  private val bookAnalyzer: BookAnalyzer
+  private val bookAnalyzer: BookAnalyzer,
 ) : BookMetadataProvider, SeriesMetadataFromBookProvider {
 
-  override fun getCapabilities(): List<BookMetadataPatchCapability> =
-    listOf(
+  override fun getCapabilities(): Set<BookMetadataPatchCapability> =
+    setOf(
       BookMetadataPatchCapability.TITLE,
       BookMetadataPatchCapability.SUMMARY,
       BookMetadataPatchCapability.NUMBER,
@@ -63,8 +63,8 @@ class ComicInfoProvider(
         readLists.add(
           BookMetadataPatch.ReadListEntry(
             comicInfo.alternateSeries!!,
-            comicInfo.alternateNumber?.toIntOrNull()
-          )
+            comicInfo.alternateNumber?.toIntOrNull(),
+          ),
         )
       }
 
@@ -130,7 +130,7 @@ class ComicInfoProvider(
         language = if (comicInfo.languageISO != null && BCP47TagValidator.isValid(comicInfo.languageISO!!)) comicInfo.languageISO else null,
         genres = if (!genres.isNullOrEmpty()) genres.toSet() else null,
         totalBookCount = comicInfo.count,
-        collections = listOfNotNull(comicInfo.seriesGroup?.ifBlank { null })
+        collections = listOfNotNull(comicInfo.seriesGroup?.ifBlank { null }),
       )
     }
     return null

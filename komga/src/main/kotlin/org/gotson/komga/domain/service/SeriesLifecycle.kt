@@ -103,7 +103,7 @@ class SeriesLifecycle(
     oldToNew.forEach { (old, new) ->
       if (old.number != new.number || old.numberSort != new.numberSort) {
         logger.debug { "Metadata numbering has changed, refreshing metadata for book ${new.bookId} " }
-        taskReceiver.refreshBookMetadata(new.bookId, listOf(BookMetadataPatchCapability.NUMBER, BookMetadataPatchCapability.NUMBER_SORT))
+        taskReceiver.refreshBookMetadata(new.bookId, setOf(BookMetadataPatchCapability.NUMBER, BookMetadataPatchCapability.NUMBER_SORT))
       }
     }
 

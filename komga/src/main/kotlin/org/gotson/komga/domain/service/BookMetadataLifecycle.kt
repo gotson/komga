@@ -32,7 +32,7 @@ class BookMetadataLifecycle(
   private val eventPublisher: EventPublisher,
 ) {
 
-  fun refreshMetadata(book: Book, capabilities: List<BookMetadataPatchCapability>) {
+  fun refreshMetadata(book: Book, capabilities: Set<BookMetadataPatchCapability>) {
     logger.info { "Refresh metadata for book: $book with capabilities: $capabilities" }
     val media = mediaRepository.findById(book.id)
 
@@ -89,7 +89,7 @@ class BookMetadataLifecycle(
               existing.bookIds.lastKey() + 1
             } else {
               logger.debug { "Adding book '${book.name}' to existing read list '${existing.name}'" }
-              readList.number ?: existing.bookIds.lastKey() + 1
+              readList.number ?: (existing.bookIds.lastKey() + 1)
             }
             map[key] = book.id
             readListLifecycle.updateReadList(
