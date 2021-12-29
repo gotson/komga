@@ -2,8 +2,11 @@ package org.gotson.komga.interfaces.api.rest.dto
 
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookMetadata
+import org.gotson.komga.domain.model.WebLink
 import org.gotson.komga.infrastructure.validation.NullOrBlankOrISBN
 import org.gotson.komga.infrastructure.validation.NullOrNotBlank
+import org.hibernate.validator.constraints.URL
+import java.net.URI
 import java.time.LocalDate
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
@@ -63,6 +66,14 @@ class BookMetadataUpdateDto {
     }
 
   var isbnLock: Boolean? = null
+
+  @get:Valid
+  var links: List<WebLinkUpdateDto>?
+    by Delegates.observable(null) { prop, _, _ ->
+      isSet[prop.name] = true
+    }
+
+  var linksLock: Boolean? = null
 }
 
 class AuthorUpdateDto {
@@ -71,6 +82,14 @@ class AuthorUpdateDto {
 
   @get:NotBlank
   val role: String? = null
+}
+
+class WebLinkUpdateDto {
+  @get:NotBlank
+  val label: String? = null
+
+  @get:URL
+  val url: String? = null
 }
 
 fun BookMetadata.patch(patch: BookMetadataUpdateDto) =
@@ -95,6 +114,10 @@ fun BookMetadata.patch(patch: BookMetadataUpdateDto) =
       } else this.tags,
       tagsLock = patch.tagsLock ?: this.tagsLock,
       isbn = if (patch.isSet("isbn")) patch.isbn?.filter { it.isDigit() } ?: "" else this.isbn,
-      isbnLock = patch.isbnLock ?: this.isbnLock
+      isbnLock = patch.isbnLock ?: this.isbnLock,
+      links = if (patch.isSet("links")) {
+        if (patch.links != null) patch.links!!.map { WebLink(it.label!!, URI(it.url!!)) } else emptyList()
+      } else this.links,
+      linksLock = patch.linksLock ?: this.linksLock,
     )
   }

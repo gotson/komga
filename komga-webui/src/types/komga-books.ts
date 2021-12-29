@@ -90,7 +90,9 @@ export interface BookMetadataUpdateDto {
   tags?: string[],
   tagsLock?: boolean
   isbn?: string,
-  isbnLock?: boolean
+  isbnLock?: boolean,
+  links?: WebLinkDto[],
+  linksLock?: boolean
 }
 
 export interface BookMetadataUpdateBatchDto {
@@ -117,7 +119,7 @@ export interface BookFormat {
   color: string
 }
 
-export interface BookImportBatchDto{
+export interface BookImportBatchDto {
   books: BookImportDto[],
   copyMode: CopyMode,
 }

@@ -35,6 +35,10 @@
             <v-icon left class="hidden-xs-only">mdi-tag-multiple</v-icon>
             {{ $t('dialog.edit_books.tab_tags') }}
           </v-tab>
+          <v-tab class="justify-start" v-if="single">
+            <v-icon left class="hidden-xs-only">mdi-link</v-icon>
+            {{ $t('dialog.edit_books.tab_links') }}
+          </v-tab>
 
           <!--  Tab: General  -->
           <v-tab-item v-if="single">
@@ -282,6 +286,77 @@
             </v-card>
           </v-tab-item>
 
+          <!--  Tab: Links  -->
+          <v-tab-item v-if="single">
+            <v-card flat min-height="100">
+              <v-container fluid>
+                <!-- Links -->
+                <v-form
+                  v-model="linksValid"
+                  ref="linksForm"
+                >
+                  <v-row
+                    v-for="(link, i) in form.links"
+                    :key="i"
+                  >
+                    <v-col cols="4" class="py-0">
+                      <v-text-field v-model="form.links[i].label"
+                                    :label="$t('dialog.edit_books.field_link_label')"
+                                    filled
+                                    dense
+                                    :rules="[linksLabelRules]"
+                                    @input="$v.form.links.$touch()"
+                                    @blur="$v.form.links.$touch()"
+                                    @change="form.linksLock = true"
+                      >
+                        <template v-slot:prepend>
+                          <v-icon :color="form.linksLock ? 'secondary' : ''"
+                                  @click="form.linksLock = !form.linksLock"
+                          >
+                            {{ form.linksLock ? 'mdi-lock' : 'mdi-lock-open' }}
+                          </v-icon>
+                        </template>
+                      </v-text-field>
+                    </v-col>
+
+                    <v-col cols="8" class="py-0">
+                      <v-text-field v-model="form.links[i].url"
+                                    :label="$t('dialog.edit_books.field_link_url')"
+                                    filled
+                                    dense
+                                    :rules="[linksUrlRules]"
+                                    @input="$v.form.links.$touch()"
+                                    @blur="$v.form.links.$touch()"
+                                    @change="form.linksLock = true"
+                      >
+                        <template v-slot:append-outer>
+                          <v-icon @click="form.links.splice(i, 1)">mdi-delete</v-icon>
+                        </template>
+                      </v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-form>
+
+                <v-row>
+                  <v-spacer/>
+                  <v-col cols="auto">
+                    <v-btn
+                      elevation="2"
+                      fab
+                      small
+                      bottom
+                      right
+                      color="primary"
+                      @click="form.links.push({label:'', url:''})"
+                    >
+                      <v-icon>mdi-plus</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card>
+          </v-tab-item>
+
         </v-tabs>
 
         <v-card-actions class="hidden-xs-only">
@@ -316,6 +391,7 @@ export default Vue.extend({
       customRole: '',
       customRoles: [] as string[],
       customRoleValid: false,
+      linksValid: false,
       form: {
         title: '',
         titleLock: false,
@@ -333,6 +409,8 @@ export default Vue.extend({
         tagsLock: false,
         isbn: '',
         isbnLock: false,
+        links: [],
+        linksLock: false,
       },
       authorSearch: [],
       authorSearchResults: [] as string[],
@@ -389,6 +467,7 @@ export default Vue.extend({
       summary: {},
       authors: {},
       isbn: {validIsbn},
+      links: {},
     },
   },
   async created() {
@@ -434,12 +513,26 @@ export default Vue.extend({
       return errors
     },
     customRoleRules(): any[] {
-      if (this.customRole === '') return ['Must not be empty']
-      if (this.authorRoles.map(n => n.value.toLowerCase()).includes(this.customRole?.toLowerCase())) return ['Already exists']
+      if (this.customRole === '') return [this.$t('common.required').toString()]
+      if (this.authorRoles.map(n => n.value.toLowerCase()).includes(this.customRole?.toLowerCase())) return [this.$t('dialog.edit_books.add_author_role_error_duplicate').toString()]
       return [true]
     },
   },
   methods: {
+    linksLabelRules(label: string): boolean | string {
+      if (!!this.$_.trim(label)) return true
+      return this.$t('common.required').toString()
+    },
+    linksUrlRules(value: string): boolean | string {
+      let url
+      try {
+        url = new URL(value)
+      } catch (_) {
+        return this.$t('dialog.edit_books.field_link_url_error_url').toString()
+      }
+      if (url.protocol === 'http:' || url.protocol === 'https:') return true
+      return this.$t('dialog.edit_books.field_link_url_error_protocol').toString()
+    },
     addRole() {
       if ((this.$refs.customRoleForm as any).validate()) {
         this.customRoles.push(this.customRole.toLowerCase());
@@ -456,12 +549,14 @@ export default Vue.extend({
     dialogReset(books: BookDto | BookDto[]) {
       this.tab = 0;
       (this.$refs.customRoleForm as any)?.reset()
+      (this.$refs.linksForm as any)?.resetValidation()
       this.customRoles = []
       this.$v.$reset()
       if (Array.isArray(books) && books.length === 0) return
       else if (this.$_.isEmpty(books)) return
       if (Array.isArray(books) && books.length > 0) {
         this.form.authors = {}
+        this.form.links = []
 
         const authorsLock = this.$_.uniq(books.map(x => x.metadata.authorsLock))
         this.form.authorsLock = authorsLock.length > 1 ? false : authorsLock[0]
@@ -472,6 +567,7 @@ export default Vue.extend({
         this.form.tagsLock = tagsLock.length > 1 ? false : tagsLock[0]
       } else {
         this.form.tags = []
+        this.form.links = []
         const book = books as BookDto
         this.$_.merge(this.form, book.metadata)
         this.form.authors = groupAuthorsByRole(book.metadata.authors)
@@ -487,7 +583,7 @@ export default Vue.extend({
       }
     },
     validateForm(): any {
-      if (!this.$v.$invalid) {
+      if (!this.$v.$invalid && (!this.single || (this.$refs.linksForm as any).validate())) {
         const metadata = {
           authorsLock: this.form.authorsLock,
           tagsLock: this.form.tagsLock,
@@ -513,6 +609,7 @@ export default Vue.extend({
             summaryLock: this.form.summaryLock,
             releaseDateLock: this.form.releaseDateLock,
             isbnLock: this.form.isbnLock,
+            linksLock: this.form.linksLock,
           })
 
           if (this.$v.form?.title?.$dirty) {
@@ -537,6 +634,10 @@ export default Vue.extend({
 
           if (this.$v.form?.isbn?.$dirty) {
             this.$_.merge(metadata, {isbn: this.form.isbn})
+          }
+
+          if (this.$v.form?.links?.$dirty || this.form.links.length != (this.books as BookDto).metadata.links?.length) {
+            this.$_.merge(metadata, {links: this.form.links})
           }
         }
 

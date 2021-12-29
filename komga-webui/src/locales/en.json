@@ -322,6 +322,7 @@
       "warning_html": "The user <b>{name}</b> will be deleted from this server. This <b>cannot</b> be undone. Continue?"
     },
     "edit_books": {
+      "add_author_role_error_duplicate": "Already exists",
       "authors_notice_multiple_edit": "You are editing authors for multiple books. This will override existing authors of each book.",
       "button_cancel": "Cancel",
       "button_confirm": "Save changes",
@@ -329,6 +330,10 @@
       "dialog_title_single": "Edit {book}",
       "field_isbn": "ISBN",
       "field_isbn_error": "Must be a valid ISBN 13",
+      "field_link_label": "Label",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "Must be http or https",
+      "field_link_url_error_url": "Must be a valid URL",
       "field_number": "Number",
       "field_number_sort": "Sort Number",
       "field_number_sort_hint": "You can use decimal numbers",
@@ -339,6 +344,7 @@
       "field_title": "Title",
       "tab_authors": "Authors",
       "tab_general": "General",
+      "tab_links": "Links",
       "tab_tags": "Tags",
       "tags_notice_multiple_edit": "You are editing tags for multiple books. This will override existing tags of each book."
     },
