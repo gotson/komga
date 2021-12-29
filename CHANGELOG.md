@@ -1,3 +1,19 @@
+# [0.140.0](https://github.com/gotson/komga/compare/v0.139.0...v0.140.0) (2021-12-29)
+
+
+### Bug Fixes
+
+* translated using Weblate ([b6f2696](https://github.com/gotson/komga/commit/b6f269641ebee83c412a79fc07ce31202251b09e))
+* **webui:** adjust import views display on small screens ([394123d](https://github.com/gotson/komga/commit/394123d26382439a235b07258489b3f942c93b6b))
+
+
+### Features
+
+* parse translator field from epub ([4f6f85c](https://github.com/gotson/komga/commit/4f6f85c474397baa04f1c1d018403cb25d4674c3))
+* parse Web element from ComicInfo.xml ([5a464fd](https://github.com/gotson/komga/commit/5a464fd13e24c881dd3cebb63ea07954e4449aa7)), closes [#750](https://github.com/gotson/komga/issues/750)
+* **webui:** display book links ([ff38516](https://github.com/gotson/komga/commit/ff38516b11a15b66c94bedaaf67c47cf94799878)), closes [#750](https://github.com/gotson/komga/issues/750)
+* **webui:** edit book links ([7195547](https://github.com/gotson/komga/commit/719554766cb96dde6bcd0f42a335c8a5e840ade4))
+
 # [0.139.0](https://github.com/gotson/komga/compare/v0.138.0...v0.139.0) (2021-12-23)
 
 
