@@ -6,7 +6,7 @@
     </v-alert>
 
     <v-row align="center">
-      <v-col>
+      <v-col cols="12" sm="">
         <v-text-field
           v-model="importPath"
           clearable

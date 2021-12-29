@@ -5,7 +5,7 @@
     </v-alert>
     <v-form v-model="valid" ref="form">
       <v-row align="center">
-        <v-col cols>
+        <v-col cols="12" sm="">
           <v-file-input
             v-model="files"
             :label="$t('data_import.field_files_label')"
