@@ -152,6 +152,7 @@
     "file": "文件来源",
     "format": "格式",
     "isbn": "ISBN",
+    "links": "链接",
     "navigation_within_readlist": "阅读列表中的导航: {name}",
     "outdated_tooltip": "此书的文件已更改，必须重新分析这本书",
     "read_book": "阅读书籍",
@@ -321,6 +322,7 @@
       "warning_html": "<b>{name}</b>用户将从此服务器中删除. 您的媒体文件不会受到影响. 此操作<b>不能撤消</b>. 继续吗？"
     },
     "edit_books": {
+      "add_author_role_error_duplicate": "已存在",
       "authors_notice_multiple_edit": "您正在编辑多本书的作者。这将覆盖每本书的现有的作者。",
       "button_cancel": "取消",
       "button_confirm": "保存修改",
@@ -328,6 +330,10 @@
       "dialog_title_single": "编辑 {book}",
       "field_isbn": "ISBN",
       "field_isbn_error": "ISBN必须是13位数",
+      "field_link_label": "标签",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "必须为 http 或 https",
+      "field_link_url_error_url": "必须是有效的 URL",
       "field_number": "序号",
       "field_number_sort": "短序号",
       "field_number_sort_hint": "你可以用十进制数",
@@ -338,6 +344,7 @@
       "field_title": "标题",
       "tab_authors": "作者",
       "tab_general": "常规",
+      "tab_links": "链接",
       "tab_tags": "标签",
       "tags_notice_multiple_edit": "您正在编辑多本书的标签。这将覆盖每本书的现有标签。"
     },
