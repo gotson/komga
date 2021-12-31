@@ -1,3 +1,11 @@
+# [0.142.0](https://github.com/gotson/komga/compare/v0.141.0...v0.142.0) (2021-12-31)
+
+
+### Features
+
+* **api:** get duplicate books by filehash ([3c97c20](https://github.com/gotson/komga/commit/3c97c204810b7739044bbd6bf978a187a4f5e68a))
+* **webui:** new duplicates tab in server settings ([38ad00c](https://github.com/gotson/komga/commit/38ad00c30723a3ecbea02d76c830ff9fb469078d)), closes [#590](https://github.com/gotson/komga/issues/590)
+
 # [0.141.0](https://github.com/gotson/komga/compare/v0.140.0...v0.141.0) (2021-12-31)
 
 
