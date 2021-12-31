@@ -16,7 +16,7 @@ export default class KomgaSeriesService {
   async getSeries(libraryId?: string, pageRequest?: PageRequest, search?: string, status?: string[],
                   readStatus?: string[], genre?: string[], tag?: string[], language?: string[],
                   publisher?: string[], ageRating?: string[], releaseDate?: string[], authors?: AuthorDto[],
-                  searchRegex?: string): Promise<Page<SeriesDto>> {
+                  searchRegex?: string, complete?: boolean): Promise<Page<SeriesDto>> {
     try {
       const params = {...pageRequest} as any
       if (libraryId) params.library_id = libraryId
@@ -31,6 +31,7 @@ export default class KomgaSeriesService {
       if (ageRating) params.age_rating = ageRating
       if (releaseDate) params.release_year = releaseDate
       if (authors) params.author = authors.map(a => `${a.name},${a.role}`)
+      if (complete !== undefined) params.complete = complete
 
       return (await this.http.get(API_SERIES, {
         params: params,
@@ -47,7 +48,7 @@ export default class KomgaSeriesService {
 
   async getAlphabeticalGroups(libraryId?: string, search?: string, status?: string[],
                               readStatus?: string[], genre?: string[], tag?: string[], language?: string[],
-                              publisher?: string[], ageRating?: string[], releaseDate?: string[], authors?: AuthorDto[]): Promise<GroupCountDto[]> {
+                              publisher?: string[], ageRating?: string[], releaseDate?: string[], authors?: AuthorDto[], complete?: boolean): Promise<GroupCountDto[]> {
     try {
       const params = {} as any
       if (libraryId) params.library_id = libraryId
@@ -61,6 +62,7 @@ export default class KomgaSeriesService {
       if (ageRating) params.age_rating = ageRating
       if (releaseDate) params.release_year = releaseDate
       if (authors) params.author = authors.map(a => `${a.name},${a.role}`)
+      if (complete !== undefined) params.complete = complete
 
       return (await this.http.get(`${API_SERIES}/alphabetical-groups`, {
         params: params,

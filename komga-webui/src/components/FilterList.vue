@@ -6,10 +6,13 @@
       <v-subheader v-if="f.name">{{ f.name }}</v-subheader>
       <v-list-item v-for="v in f.values"
                    :key="v.value"
-                   @click.stop="click(key, v.value)"
+                   @click.stop="click(key, v.value, v.nValue)"
       >
         <v-list-item-icon>
-          <v-icon v-if="key in filtersActive && filtersActive[key].includes(v.value)" color="secondary">
+          <v-icon v-if="key in filtersActive && filtersActive[key].includes(v.nValue)" color="secondary">
+            mdi-minus-box
+          </v-icon>
+          <v-icon v-else-if="key in filtersActive && filtersActive[key].includes(v.value)" color="secondary">
             mdi-checkbox-marked
           </v-icon>
           <v-icon v-else>
@@ -38,11 +41,16 @@ export default Vue.extend({
     },
   },
   methods: {
-    click (key: string, value: string) {
+    click(key: string, value: string, nValue?: string) {
       let r = this.$_.cloneDeep(this.filtersActive)
       if (!(key in r)) r[key] = []
-      if (r[key].includes(value)) this.$_.pull(r[key], (value))
-      else r[key].push(value)
+      if (nValue && r[key].includes(nValue))
+        this.$_.pull(r[key], (nValue))
+      else if (r[key].includes(value)) {
+        this.$_.pull(r[key], (value))
+        if (nValue)
+          r[key].push(nValue)
+      } else r[key].push(value)
 
       this.$emit('update:filtersActive', r)
     },
