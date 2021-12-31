@@ -15,6 +15,7 @@ import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS_TYPE
 import org.gotson.komga.infrastructure.jms.QUEUE_TYPE
 import org.gotson.komga.infrastructure.jms.QUEUE_UNIQUE_ID
+import org.gotson.komga.infrastructure.search.LuceneEntity
 import org.springframework.data.domain.Sort
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.stereotype.Service
@@ -117,8 +118,8 @@ class TaskReceiver(
     submitTask(Task.ImportBook(sourceFile, seriesId, copyMode, destinationName, upgradeBookId, priority))
   }
 
-  fun rebuildIndex(priority: Int = DEFAULT_PRIORITY) {
-    submitTask(Task.RebuildIndex(priority))
+  fun rebuildIndex(priority: Int = DEFAULT_PRIORITY, entities: Set<LuceneEntity>? = null) {
+    submitTask(Task.RebuildIndex(entities, priority))
   }
 
   fun deleteBook(bookId: String, priority: Int = DEFAULT_PRIORITY) {

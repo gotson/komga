@@ -69,6 +69,7 @@ fun SeriesDto.toDocument() =
     }
     if (booksMetadata.releaseDate != null) add(TextField("release_date", DateTools.dateToString(booksMetadata.releaseDate.toDate(), DateTools.Resolution.YEAR), Field.Store.NO))
     add(TextField("deleted", deleted.toString(), Field.Store.NO))
+    if (metadata.totalBookCount != null) add(TextField("complete", (metadata.totalBookCount == booksCount).toString(), Field.Store.NO))
 
     add(StringField(LuceneEntity.TYPE, LuceneEntity.Series.type, Field.Store.NO))
     add(StringField(LuceneEntity.Series.id, id, Field.Store.YES))

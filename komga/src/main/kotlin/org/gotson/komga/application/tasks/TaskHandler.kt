@@ -122,7 +122,7 @@ class TaskHandler(
               bookLifecycle.hashAndPersist(book)
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
-          is Task.RebuildIndex -> searchIndexLifecycle.rebuildIndex()
+          is Task.RebuildIndex -> searchIndexLifecycle.rebuildIndex(task.entities)
 
           is Task.DeleteBook -> {
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->

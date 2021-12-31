@@ -131,6 +131,7 @@ class SeriesController(
     @RequestParam(name = "age_rating", required = false) ageRatings: List<String>?,
     @RequestParam(name = "release_year", required = false) release_years: List<String>?,
     @RequestParam(name = "deleted", required = false) deleted: Boolean?,
+    @RequestParam(name = "complete", required = false) complete: Boolean?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) @Authors authors: List<Author>?,
     @Parameter(hidden = true) page: Pageable
@@ -165,6 +166,7 @@ class SeriesController(
       readStatus = readStatus,
       publishers = publishers,
       deleted = deleted,
+      complete = complete,
       languages = languages,
       genres = genres,
       tags = tags,
@@ -200,6 +202,7 @@ class SeriesController(
     @RequestParam(name = "age_rating", required = false) ageRatings: List<String>?,
     @RequestParam(name = "release_year", required = false) release_years: List<String>?,
     @RequestParam(name = "deleted", required = false) deleted: Boolean?,
+    @RequestParam(name = "complete", required = false) complete: Boolean?,
     @Parameter(hidden = true) @Authors authors: List<Author>?,
     @Parameter(hidden = true) page: Pageable
   ): List<GroupCountDto> {
@@ -218,6 +221,7 @@ class SeriesController(
       readStatus = readStatus,
       publishers = publishers,
       deleted = deleted,
+      complete = complete,
       languages = languages,
       genres = genres,
       tags = tags,

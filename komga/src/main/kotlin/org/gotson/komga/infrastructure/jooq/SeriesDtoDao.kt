@@ -87,7 +87,7 @@ class SeriesDtoDao(
     collectionId: String,
     search: SeriesSearchWithReadProgress,
     userId: String,
-    pageable: Pageable
+    pageable: Pageable,
   ): Page<SeriesDto> {
     val conditions = search.toCondition().and(cs.COLLECTION_ID.eq(collectionId))
     val joinConditions = search.toJoinConditions().copy(selectCollectionNumber = true, collection = true)
@@ -98,7 +98,7 @@ class SeriesDtoDao(
   override fun findAllRecentlyUpdated(
     search: SeriesSearchWithReadProgress,
     userId: String,
-    pageable: Pageable
+    pageable: Pageable,
   ): Page<SeriesDto> {
     val conditions = search.toCondition()
       .and(s.CREATED_DATE.ne(s.LAST_MODIFIED_DATE))
@@ -143,7 +143,7 @@ class SeriesDtoDao(
 
   private fun selectBase(
     userId: String,
-    joinConditions: JoinConditions = JoinConditions()
+    joinConditions: JoinConditions = JoinConditions(),
   ): SelectOnConditionStep<Record> =
     dsl.selectDistinct(*groupFields)
       .apply { if (joinConditions.selectCollectionNumber) select(cs.NUMBER) }
@@ -205,7 +205,7 @@ class SeriesDtoDao(
       dtos,
       if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
       else PageRequest.of(0, maxOf(count, 20), pageSort),
-      count.toLong()
+      count.toLong(),
     )
   }
 
@@ -248,7 +248,7 @@ class SeriesDtoDao(
           booksUnreadCount,
           booksInProgressCount,
           dr.toDto(genres, tags),
-          bmar.toDto(aggregatedAuthors, aggregatedTags)
+          bmar.toDto(aggregatedAuthors, aggregatedTags),
         )
       }
 
@@ -262,6 +262,8 @@ class SeriesDtoDao(
     if (!publishers.isNullOrEmpty()) c = c.and(lower(d.PUBLISHER).`in`(publishers.map { it.lowercase() }))
     if (deleted == true) c = c.and(s.DELETED_DATE.isNotNull)
     if (deleted == false) c = c.and(s.DELETED_DATE.isNull)
+    if (complete == false) c = c.and(d.TOTAL_BOOK_COUNT.isNotNull.and(d.TOTAL_BOOK_COUNT.ne(s.BOOK_COUNT)))
+    if (complete == true) c = c.and(d.TOTAL_BOOK_COUNT.isNotNull.and(d.TOTAL_BOOK_COUNT.eq(s.BOOK_COUNT)))
     if (!languages.isNullOrEmpty()) c = c.and(lower(d.LANGUAGE).`in`(languages.map { it.lowercase() }))
     if (!genres.isNullOrEmpty()) c = c.and(lower(g.GENRE).`in`(genres.map { it.lowercase() }))
     if (!tags.isNullOrEmpty()) c = c.and(lower(st.TAG).`in`(tags.map { it.lowercase() }).or(lower(bmat.TAG).`in`(tags.map { it.lowercase() })))
@@ -322,7 +324,7 @@ class SeriesDtoDao(
     booksUnreadCount: Int,
     booksInProgressCount: Int,
     metadata: SeriesMetadataDto,
-    booksMetadata: BookMetadataAggregationDto
+    booksMetadata: BookMetadataAggregationDto,
   ) =
     SeriesDto(
       id = id,
@@ -378,6 +380,6 @@ class SeriesDtoDao(
       summaryNumber = summaryNumber,
 
       created = createdDate.toCurrentTimeZone(),
-      lastModified = lastModifiedDate.toCurrentTimeZone()
+      lastModified = lastModifiedDate.toCurrentTimeZone(),
     )
 }
