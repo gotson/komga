@@ -1,3 +1,17 @@
+# [0.141.0](https://github.com/gotson/komga/compare/v0.140.0...v0.141.0) (2021-12-31)
+
+
+### Bug Fixes
+
+* translated using Weblate ([f06d967](https://github.com/gotson/komga/commit/f06d9677b964f2e3f4ed56bf70e4e9ba752b2e30))
+* **webui:** edit book dialog would not save or reset properly ([e4b912e](https://github.com/gotson/komga/commit/e4b912e60783b4f2812fdc579dd065664c7cea91))
+
+
+### Features
+
+* **api:** search series by completeness ([494bdf2](https://github.com/gotson/komga/commit/494bdf28a110c566843e20ae558181fb4e0b4a32))
+* **webui:** filter series by completeness ([c3a3fa3](https://github.com/gotson/komga/commit/c3a3fa343b921ef151552ea364d865ef7b11beeb)), closes [#590](https://github.com/gotson/komga/issues/590)
+
 # [0.140.0](https://github.com/gotson/komga/compare/v0.139.0...v0.140.0) (2021-12-29)
 
 

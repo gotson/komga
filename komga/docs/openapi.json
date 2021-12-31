@@ -3995,6 +3995,14 @@
             }
           },
           {
+            "name": "complete",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "unpaged",
             "in": "query",
             "required": false,
@@ -4920,6 +4928,14 @@
             }
           },
           {
+            "name": "complete",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "search_regex",
             "in": "query",
             "description": "Search by regex criteria, in the form: regex,field. Supported fields are TITLE and TITLE_SORT.",
@@ -5805,6 +5821,14 @@
           },
           {
             "name": "deleted",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "complete",
             "in": "query",
             "required": false,
             "schema": {
@@ -7087,7 +7111,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_6",
+        "operationId": "getProviders_2",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7118,7 +7142,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_1",
+        "operationId": "getProviders_4",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7180,7 +7204,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_4",
+        "operationId": "getProviders_3",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7211,7 +7235,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_3",
+        "operationId": "getProviders_1",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7242,7 +7266,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders",
+        "operationId": "getProviders_6",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7273,7 +7297,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_2",
+        "operationId": "getProviders",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8263,6 +8287,12 @@
               "type": "string"
             }
           },
+          "authors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthorUpdateDto"
+            }
+          },
           "links": {
             "type": "array",
             "items": {
@@ -8271,12 +8301,6 @@
           },
           "summary": {
             "type": "string"
-          },
-          "authors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AuthorUpdateDto"
-            }
           },
           "releaseDate": {
             "type": "string",
@@ -8513,12 +8537,12 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "last": {
             "type": "boolean"
@@ -8677,12 +8701,12 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "last": {
             "type": "boolean"
@@ -8767,12 +8791,12 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "last": {
             "type": "boolean"
@@ -9249,12 +9273,12 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "last": {
             "type": "boolean"
@@ -9357,12 +9381,12 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "last": {
             "type": "boolean"
@@ -9426,12 +9450,12 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "last": {
             "type": "boolean"
