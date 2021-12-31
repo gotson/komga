@@ -89,6 +89,12 @@ const router = new Router({
               component: () => import(/* webpackChunkName: "settings-analysis" */ './views/SettingsMediaAnalysis.vue'),
             },
             {
+              path: '/settings/duplicates',
+              name: 'settings-duplicates',
+              beforeEnter: adminGuard,
+              component: () => import(/* webpackChunkName: "settings-duplicates" */ './views/SettingsDuplicates.vue'),
+            },
+            {
               path: '/settings/server',
               name: 'settings-server',
               beforeEnter: adminGuard,

@@ -512,6 +512,12 @@
       "title_comparison": "Book Comparison"
     }
   },
+  "duplicates": {
+    "file_hash": "File hash",
+    "size": "Size",
+    "title": "Duplicate Files",
+    "url": "URL"
+  },
   "enums": {
     "copy_mode": {
       "HARDLINK": "Hardlink/Copy Files",

@@ -51,6 +51,21 @@ export default class KomgaBooksService {
     }
   }
 
+  async getDuplicateBooks(pageRequest?: PageRequest): Promise<Page<BookDto>> {
+    try {
+      return (await this.http.get(`${API_BOOKS}/duplicates`, {
+        params: pageRequest,
+        paramsSerializer: params => qs.stringify(params, {indices: false}),
+      })).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve duplicate books'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
   async getBooksOnDeck(libraryId?: string, pageRequest?: PageRequest): Promise<Page<BookDto>> {
     try {
       const params = {...pageRequest} as any

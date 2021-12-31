@@ -10,6 +10,7 @@
           {{ $t('media_analysis.media_analysis') }}
         </v-badge>
       </v-tab>
+      <v-tab :to="{name: 'settings-duplicates'}">{{ $t('duplicates.title') }}</v-tab>
       <v-tab :to="{name: 'settings-users'}">{{ $t('users.users') }}</v-tab>
       <v-tab :to="{name: 'settings-server'}">{{ $t('server.tab_title') }}</v-tab>
     </v-tabs>
