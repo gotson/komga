@@ -25,6 +25,7 @@ data class BookDto(
   val metadata: BookMetadataDto,
   val readProgress: ReadProgressDto? = null,
   val deleted: Boolean,
+  val fileHash: String,
 )
 
 fun BookDto.restrictUrl(restrict: Boolean) =

@@ -64,6 +64,7 @@ class BookDtoDao(
     "lastModifiedDate" to b.LAST_MODIFIED_DATE,
     "fileSize" to b.FILE_SIZE,
     "size" to b.FILE_SIZE,
+    "fileHash" to b.FILE_HASH,
     "url" to b.URL.noCase(),
     "media.status" to m.STATUS.noCase(),
     "media.comment" to m.COMMENT.noCase(),
@@ -87,7 +88,7 @@ class BookDtoDao(
     userId: String,
     filterOnLibraryIds: Collection<String>?,
     search: BookSearchWithReadProgress,
-    pageable: Pageable
+    pageable: Pageable,
   ): Page<BookDto> {
     val conditions = rlb.READLIST_ID.eq(readListId).and(search.toCondition())
 
@@ -139,7 +140,7 @@ class BookDtoDao(
       dtos,
       if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
       else PageRequest.of(0, maxOf(count, 20), pageSort),
-      count.toLong()
+      count.toLong(),
     )
   }
 
@@ -159,7 +160,7 @@ class BookDtoDao(
     readListId: String,
     bookId: String,
     userId: String,
-    filterOnLibraryIds: Collection<String>?
+    filterOnLibraryIds: Collection<String>?,
   ): BookDto? =
     findSiblingReadList(readListId, bookId, userId, filterOnLibraryIds, next = false)
 
@@ -167,7 +168,7 @@ class BookDtoDao(
     readListId: String,
     bookId: String,
     userId: String,
-    filterOnLibraryIds: Collection<String>?
+    filterOnLibraryIds: Collection<String>?,
   ): BookDto? =
     findSiblingReadList(readListId, bookId, userId, filterOnLibraryIds, next = true)
 
@@ -200,7 +201,34 @@ class BookDtoDao(
     return PageImpl(
       dtos,
       PageRequest.of(pageable.pageNumber, pageable.pageSize, pageable.sort),
-      seriesIds.size.toLong()
+      seriesIds.size.toLong(),
+    )
+  }
+
+  override fun findAllDuplicates(userId: String, pageable: Pageable): Page<BookDto> {
+    val hashes = dsl.select(b.FILE_HASH, DSL.count(b.FILE_HASH))
+      .from(b)
+      .where(b.FILE_HASH.ne(""))
+      .groupBy(b.FILE_HASH)
+      .having(DSL.count(b.FILE_HASH).gt(1))
+      .fetch()
+      .associate { it.value1() to it.value2() }
+
+    val count = hashes.values.sum()
+
+    val orderBy = pageable.sort.toOrderBy(sorts)
+    val dtos = selectBase(userId)
+      .where(b.FILE_HASH.`in`(hashes.keys))
+      .orderBy(orderBy)
+      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+      .fetchAndMap()
+
+    val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
+    return PageImpl(
+      dtos,
+      if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
+      else PageRequest.of(0, maxOf(count, 20), pageSort),
+      count.toLong(),
     )
   }
 
@@ -229,7 +257,7 @@ class BookDtoDao(
     bookId: String,
     userId: String,
     filterOnLibraryIds: Collection<String>?,
-    next: Boolean
+    next: Boolean,
   ): BookDto? {
     val numberSort = dsl.select(rlb.NUMBER)
       .from(b)
@@ -254,7 +282,7 @@ class BookDtoDao(
       *b.fields(),
       *m.fields(),
       *d.fields(),
-      *r.fields()
+      *r.fields(),
     ).apply { if (joinConditions.selectReadListNumber) select(rlb.NUMBER) }
       .from(b)
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
@@ -354,6 +382,7 @@ class BookDtoDao(
       metadata = metadata,
       readProgress = readProgress,
       deleted = deletedDate != null,
+      fileHash = fileHash,
     )
 
   private fun MediaRecord.toDto() =
@@ -361,7 +390,7 @@ class BookDtoDao(
       status = status,
       mediaType = mediaType ?: "",
       pagesCount = pageCount.toInt(),
-      comment = comment ?: ""
+      comment = comment ?: "",
     )
 
   private fun BookMetadataRecord.toDto(authors: List<AuthorDto>, tags: Set<String>, links: List<WebLinkDto>) =
@@ -385,7 +414,7 @@ class BookDtoDao(
       links = links,
       linksLock = linksLock,
       created = createdDate,
-      lastModified = lastModifiedDate
+      lastModified = lastModifiedDate,
     )
 
   private fun ReadProgressRecord.toDto() =
@@ -394,6 +423,6 @@ class BookDtoDao(
       completed = completed,
       readDate = readDate,
       created = createdDate,
-      lastModified = lastModifiedDate
+      lastModified = lastModifiedDate,
     )
 }

@@ -39,4 +39,6 @@ interface BookDtoRepository {
   ): BookDto?
 
   fun findAllOnDeck(userId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<BookDto>
+
+  fun findAllDuplicates(userId: String, pageable: Pageable): Page<BookDto>
 }
