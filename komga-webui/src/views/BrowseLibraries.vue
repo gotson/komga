@@ -282,7 +282,7 @@ export default Vue.extend({
           ],
         },
         complete: {
-          values: [{name: 'Complete', value: 'true', nValue: 'false'}],
+          values: [{name: this.$t('filter.complete').toString(), value: 'true', nValue: 'false'}],
         },
       } as FiltersOptions
     },

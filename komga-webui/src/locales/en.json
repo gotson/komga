@@ -575,6 +575,7 @@
   "filter": {
     "age_rating": "age rating",
     "age_rating_none": "None",
+    "complete": "Complete",
     "genre": "genre",
     "in_progress": "In Progress",
     "language": "language",

@@ -233,7 +233,7 @@ export default Vue.extend({
           ],
         },
         complete: {
-          values: [{name: 'Complete', value: 'true', nValue: 'false'}],
+          values: [{name: this.$t('filter.complete').toString(), value: 'true', nValue: 'false'}],
         },
       } as FiltersOptions
     },
@@ -361,7 +361,7 @@ export default Vue.extend({
       }
     },
     collectionDeleted(event: CollectionSseDto) {
-      if(event.collectionId === this.collectionId) {
+      if (event.collectionId === this.collectionId) {
         this.$router.push({name: 'browse-collections', params: {libraryId: LIBRARIES_ALL}})
       }
     },
