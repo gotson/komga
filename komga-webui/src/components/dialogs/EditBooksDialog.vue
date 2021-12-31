@@ -548,7 +548,7 @@ export default Vue.extend({
     },
     dialogReset(books: BookDto | BookDto[]) {
       this.tab = 0;
-      (this.$refs.customRoleForm as any)?.reset()
+      (this.$refs.customRoleForm as any)?.reset();
       (this.$refs.linksForm as any)?.resetValidation()
       this.customRoles = []
       this.$v.$reset()
@@ -583,7 +583,7 @@ export default Vue.extend({
       }
     },
     validateForm(): any {
-      if (!this.$v.$invalid && (!this.single || (this.$refs.linksForm as any).validate())) {
+      if (!this.$v.$invalid && (!this.single || !this.$refs.linksForm || (this.$refs.linksForm as any).validate())) {
         const metadata = {
           authorsLock: this.form.authorsLock,
           tagsLock: this.form.tagsLock,
