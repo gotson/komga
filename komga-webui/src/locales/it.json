@@ -26,6 +26,7 @@
     "email": "Email",
     "error": "Errore",
     "ip": "IP",
+    "source": "Fonte",
     "success": "Successo",
     "user_agent": "User agent"
   },
@@ -36,6 +37,7 @@
     "inker": "inchiostratori",
     "letterer": "letteristi",
     "penciller": "disegnatori",
+    "translator": "traduttori",
     "writer": "scrittori"
   },
   "book_card": {
@@ -100,10 +102,12 @@
       "width": "Adatta a larghezza"
     },
     "settings": {
+      "always_fullscreen": "Forza Schermo Intero",
       "animate_page_transitions": "Anima le transizioni di pagina",
       "background_color": "Colore sfondo",
       "background_colors": {
         "black": "Nero",
+        "gray": "Grigio",
         "white": "Bianco"
       },
       "display": "Visualizzazione",
@@ -147,6 +151,7 @@
     "format": "FORMATO",
     "isbn": "ISBN",
     "navigation_within_readlist": "Navigazione all'interno della lista di lettura: {name}",
+    "outdated_tooltip": "Il file di questo fumetto è cambiato, questo fumetto deve essere ri-analizzato",
     "read_book": "Leggi fumetto",
     "read_incognito": "Leggi in incognito",
     "size": "DIMENSIONE"
@@ -173,6 +178,7 @@
     "all_libraries": "Tutte le librerie",
     "books": "Fumetti",
     "books_n": "Nessun fumetto | 1 fumetto | {count} fumetti",
+    "books_total": "{count} / {total} fumetti",
     "cancel": "Annulla",
     "close": "Chiudi",
     "collections": "Raccolte",
@@ -186,8 +192,10 @@
     "go_to_library": "Vai alla libreria",
     "go_to_readlist": "Vai all'elenco di lettura",
     "go_to_series": "Vai alle serie",
+    "library": "Libreria",
     "locale_name": "Italiano",
     "locale_rtl": "false",
+    "lock_all": "Blocca tutti",
     "n_selected": "{count} selezionati",
     "nothing_to_show": "Niente da mostrare",
     "pages": "pagine",
@@ -202,6 +210,8 @@
     "roles": "Permessi",
     "series": "Serie",
     "tags": "Etichette",
+    "unavailable": "Non disponibile",
+    "unlock_all": "Sblocca tutti",
     "use_filter_panel_to_change_filter": "Usa il pannello dei filtri per cambiare il filtro attivo",
     "year": "anno"
   },
@@ -210,6 +220,8 @@
     "on_deck": "Primo Piano",
     "recently_added_books": "Fumetti aggiunti di recente",
     "recently_added_series": "Serie aggiunte di recente",
+    "recently_read_books": "Fumetti letti di recente",
+    "recently_released_books": "Fumetti rilasciati di recente",
     "recently_updated_series": "Serie aggiornate di recente"
   },
   "data_import": {
@@ -332,11 +344,14 @@
       "field_import_epub_book": "Metadati del fumetto",
       "field_import_epub_series": "Metadati della serie",
       "field_import_local_artwork": "Copertine locali",
+      "field_import_mylar_series": "Metadati della serie",
       "field_name": "Nome",
       "field_repair_extensions": "Ripara automaticamente le estensioni errate dei file",
       "field_root_folder": "Cartella principale",
       "field_scanner_deep_scan": "Scansione profonda",
+      "field_scanner_empty_trash_after_scan": "Svuota il cestino in automatico dopo ogni scansione",
       "field_scanner_force_directory_modified_time": "Usa data di modifica delle cartelle",
+      "field_series_cover": "Copertina della serie",
       "file_browser_dialog_button_confirm": "Scegli",
       "file_browser_dialog_title": "Cartella principale della libreria",
       "label_file_management": "Gestione dei file",
@@ -344,15 +359,19 @@
       "label_import_comicinfo": "Importa metadati per CBR/CBZ contenenti un file ComicInfo.xml",
       "label_import_epub": "Importa metadati dai file EPUB",
       "label_import_local": "Importa risorse multimediali locali",
+      "label_import_mylar": "Importa i metadati generati da Mylar",
       "label_scanner": "Scanner",
+      "label_series_cover": "Copertina della serie",
       "tab_general": "Generale",
+      "tab_metadata": "Metadati",
       "tab_options": "Opzioni"
     },
     "edit_readlist": {
       "button_cancel": "Annulla",
       "button_confirm": "Salva modifiche",
       "dialog_title": "Modifica elenco di lettura",
-      "field_name": "Nome"
+      "field_name": "Nome",
+      "field_summary": "Sommario"
     },
     "edit_series": {
       "button_cancel": "Annulla",
@@ -370,8 +389,10 @@
       "field_summary": "Riassunto",
       "field_tags": "Etichette",
       "field_title": "Titolo",
+      "field_total_book_count": "Fumetti totali",
       "mixed": "MISTO",
       "tab_general": "Generale",
+      "tab_poster": "Poster",
       "tab_tags": "Etichette",
       "tags_notice_multiple_edit": "Stai modificando le etichette per più serie. Questo sovrascriverà le etichette esistenti di ogni serie."
     },
@@ -387,6 +408,11 @@
       "dialog_title": "Modifica librerie condivise",
       "field_all_libraries": "Tutte le librerie",
       "label_shared_with": "Condiviso con {name}"
+    },
+    "empty_trash": {
+      "body": "Di default il media server non rimuove le informazioni sui media immediatamente. Questo è utile se un drive è temporaneamente disconnesso. Quando svuoti il cestino di una libreria, tutte le informazioni dei media mancanti sono cancellate.",
+      "button_confirm": "Vuoto",
+      "title": "Svuota il cestino per la libreria"
     },
     "file_browser": {
       "button_cancel": "Annulla",
@@ -474,6 +500,9 @@
       "VERTICAL": "Verticale",
       "WEBTOON": "Webtoon"
     },
+    "series_cover": {
+      "FIRST": "Primo"
+    },
     "series_status": {
       "ABANDONED": "Abbandonato",
       "ENDED": "Concluso",
@@ -504,7 +533,8 @@
     "ERR_1019": "Impossibile eseguire la scansione di una cartella che fa parte di una libreria esistente",
     "ERR_1020": "Il fumetto da aggiornare non appartiene alla serie fornita",
     "ERR_1021": "Il file di destinazione esiste già",
-    "ERR_1022": "Impossibile scansionare il fumetto appena importato"
+    "ERR_1022": "Impossibile scansionare il fumetto appena importato",
+    "ERR_1023": "Fumetto già presente nella lista di lettura"
   },
   "filter": {
     "age_rating": "Fascia d'età",
@@ -536,7 +566,7 @@
   },
   "login": {
     "create_user_account": "Crea account utente",
-    "login": "Entra",
+    "login": "Accedi",
     "unclaimed_html": "Questo server Komga non è ancora attivo, devi creare un account utente per potervi accedere.<br><br>Scegli un'<strong>e-mail</strong> e una <strong>password</strong> e clicca su <strong>Crea account utente</strong>."
   },
   "media_analysis": {
@@ -552,11 +582,13 @@
     "add_to_collection": "Aggiungi alla raccolta",
     "add_to_readlist": "Aggiungi all'elenco di lettura",
     "analyze": "Analizza",
+    "bulk_edit_metadata": "Modifica metadati in massa",
     "delete": "Elimina",
     "deselect_all": "Deseleziona tutti",
     "download_series": "Scarica serie",
     "edit": "Modifica",
     "edit_metadata": "Modifica metadati",
+    "empty_trash": "Svuota cestino",
     "mark_read": "Segna come letto",
     "mark_unread": "Segna come non letto",
     "refresh_metadata": "Aggiorna metadati",
@@ -594,6 +626,8 @@
   },
   "server": {
     "server_management": {
+      "button_empty_trash": "Svuota il cestino per tutte le librerie",
+      "button_scan_libraries": "Scansiona tutte le librerie",
       "button_shutdown": "Spegni",
       "section_title": "Gestione server"
     },
@@ -626,6 +660,12 @@
     "dark": "Scuro",
     "light": "Chiaro",
     "system": "Sistema"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "Cancella",
+    "tooltip_selected": "Selezionato",
+    "tooltip_sidecar": "Copertine locali",
+    "tooltip_too_big": "File troppo grande!"
   },
   "user_roles": {
     "ADMIN": "Amministratore",

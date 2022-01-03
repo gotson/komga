@@ -20,7 +20,7 @@ data class ThumbnailBook(
   override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable(), Serializable {
   enum class Type {
-    GENERATED, SIDECAR
+    GENERATED, SIDECAR, USER_UPLOADED
   }
 
   override fun equals(other: Any?): Boolean {

@@ -32,6 +32,7 @@ class ComicInfoTest {
       assertThat(blackAndWhite).isEqualTo(YesNo.NO)
       assertThat(manga).isEqualTo(Manga.NO)
       assertThat(seriesGroup).isEqualTo("Sandman")
+      assertThat(translator).isEqualTo("The translator")
     }
   }
 

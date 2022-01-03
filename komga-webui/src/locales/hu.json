@@ -25,6 +25,7 @@
     "email": "E-mail",
     "error": "Hiba",
     "ip": "IP cím",
+    "source": "Forrás",
     "success": "Sikeres",
     "user_agent": "User Agent"
   },
@@ -97,7 +98,8 @@
       "height": "Magassághoz igazítás",
       "original": "Eredeti",
       "screen": "Képernyő",
-      "width": "Szélességhez igazítás"
+      "width": "Szélességhez igazítás",
+      "width_shrink_only": "Szélességhez igazítás (csak kicsinyítés)"
     },
     "settings": {
       "always_fullscreen": "Mindig teljes képernyős",
@@ -105,6 +107,7 @@
       "background_color": "Háttérszín",
       "background_colors": {
         "black": "Fekete",
+        "gray": "Szürke",
         "white": "Fehér"
       },
       "display": "Megjelenítés",
@@ -183,14 +186,16 @@
     "delete": "Törlés",
     "dismiss": "Elvet",
     "download": "Letöltés",
-    "email": "E-mail cím",
+    "email": "E-mail-cím",
     "filter_no_matches": "A jelenleg aktív szűrő szerint üres",
     "genre": "Műfaj",
     "go_to_library": "Menj a könyvtárba",
     "go_to_readlist": "Olvasólistához lépés",
     "go_to_series": "Könyvsorozathoz lépés",
-    "locale_name": "Magyar",
+    "library": "Könyvtár",
+    "locale_name": "magyar",
     "locale_rtl": "false",
+    "lock_all": "Összes lezárása",
     "n_selected": "{count} kiválasztva",
     "nothing_to_show": "Nincs mit mutatni",
     "outdated": "Elavult",
@@ -207,6 +212,7 @@
     "series": "Könyvsorozatok",
     "tags": "Címkék",
     "unavailable": "Nem elérhető",
+    "unlock_all": "Összes megnyitása",
     "use_filter_panel_to_change_filter": "A szűrőpanelen változtasd meg az aktív szűrőt",
     "year": "év"
   },
@@ -252,7 +258,7 @@
       "button_cancel": "Mégse",
       "button_confirm": "Hozzáadás",
       "dialog_title": "Felhasználó hozzáadása",
-      "field_email": "E-mail cím",
+      "field_email": "E-mail-cím",
       "field_email_error": "Érvényes e-mail címnek kell lennie",
       "field_password": "Jelszó",
       "field_role_administrator": "Adminisztrátor",
@@ -389,6 +395,7 @@
       "field_total_book_count_error": "Összes könyvszámnak legalább 1-nek kell lennie",
       "mixed": "VEGYES",
       "tab_general": "Általános",
+      "tab_poster": "Poszter",
       "tab_tags": "Címkék",
       "tags_notice_multiple_edit": "Több könyvsorozat címkéit szerkeszted. Ez felülírja az összes könyvsorozat meglévő címkéjét."
     },
@@ -530,7 +537,11 @@
     "ERR_1019": "Nem lehet importálni egy létező könyvtárban található fájlt",
     "ERR_1020": "A frissítendő könyv nem tartozik a megadott sorozathoz",
     "ERR_1021": "A célfájl már létezik",
-    "ERR_1022": "Az újonnan importált könyvet nem lehetett beolvasni"
+    "ERR_1022": "Az újonnan importált könyvet nem lehetett beolvasni",
+    "ERR_1023": "A könyv már megtalálható az olvasólistában",
+    "ERR_1024": "OAuth2 bejelentkezési hiba: nincs e-mail attribútum",
+    "ERR_1025": "OAuth2 bejelentkezési hiba: nem létezik helyi felhasználó az e-mail-lel",
+    "ERR_1026": "OpenId Connect bejelentkezési hiba: e-mail nem igazolt"
   },
   "filter": {
     "age_rating": "korhatár-besorolás",
@@ -578,8 +589,10 @@
     "add_to_collection": "Hozzáadás a gyűjteményhez",
     "add_to_readlist": "Hozzáadás az olvasólistához",
     "analyze": "Elemzés",
+    "bulk_edit_metadata": "Metaadatok tömeges szerkesztése",
     "delete": "Törlés",
     "deselect_all": "Összes kijelölés megszüntetése",
+    "download_readlist": "Olvasólista letöltése",
     "download_series": "Könyvsorozat letöltése",
     "edit": "Szerkesztés",
     "edit_metadata": "Metaadatok szerkesztése",
@@ -622,6 +635,7 @@
   "server": {
     "server_management": {
       "button_shutdown": "Leállitás",
+      "notification_tasks_cancelled": "Nincs visszavont feladat | 1 visszavont feladat | {count} visszavont feladat",
       "section_title": "Szerverkezelés"
     },
     "tab_title": "Szerver"

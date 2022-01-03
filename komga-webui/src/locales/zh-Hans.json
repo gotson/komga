@@ -128,6 +128,7 @@
       "cycle_scale": "切换缩放",
       "cycle_side_padding": "切换边距",
       "first_page": "第一页",
+      "fullscreen": "进入/退出全屏",
       "last_page": "最后一页",
       "left_to_right": "从左到右",
       "menus": "菜单",
@@ -151,6 +152,7 @@
     "file": "文件来源",
     "format": "格式",
     "isbn": "ISBN",
+    "links": "链接",
     "navigation_within_readlist": "阅读列表中的导航: {name}",
     "outdated_tooltip": "此书的文件已更改，必须重新分析这本书",
     "read_book": "阅读书籍",
@@ -272,6 +274,15 @@
       "button_confirm": "分析",
       "title": "分析库"
     },
+    "delete_book": {
+      "button_confirm": "删除",
+      "confirm_delete": "是，删除书籍 \"{name}\" 及其文件",
+      "confirm_delete_multiple": "是，删除 {count} 本书及它们的文件",
+      "dialog_title": "删除书籍",
+      "dialog_title_multiple": "删除书籍",
+      "warning_html": "</b>{name}</b> 连同所存储媒体文件将从此服务器中删除。此操作<b>无法</b>撤销。继续吗？",
+      "warning_multiple_html": "{count} 本书连同所存储的媒体文件件从此服务器中删除。此操作<b>无法撤销</b>。继续吗？"
+    },
     "delete_collection": {
       "button_confirm": "删除",
       "confirm_delete": "是否确定删除 \"{name}\"收藏",
@@ -296,6 +307,14 @@
       "warning_html": "<b>{name}</b>列表将从此服务器中删除. 您的媒体文件不会受到影响. 此操作<b>不能撤消</b>. 继续吗？",
       "warning_multiple_html": "将从此服务器中删除 {count} 个阅读列表。你的媒体文件不会受影响。此操作 <b>无法</b>撤销。继续吗？"
     },
+    "delete_series": {
+      "button_confirm": "删除",
+      "confirm_delete": "是，删除连载 “{name}”及其文件",
+      "confirm_delete_multiple": "是，删除 {count} 个连载及它们的文件",
+      "dialog_title": "删除连载",
+      "warning_html": "连载 <b>{name}</b>及所存储媒体文件将从此服务器中删除。此操作<b>无法</b>撤销。继续吗？",
+      "warning_multiple_html": "{count}个连载及所存储媒体文件将从此服务器中删除。此操作<b>无法</b>撤销。继续吗？"
+    },
     "delete_user": {
       "button_confirm": "删除",
       "confirm_delete": "是的,删除用户“{name}”",
@@ -303,6 +322,7 @@
       "warning_html": "<b>{name}</b>用户将从此服务器中删除. 您的媒体文件不会受到影响. 此操作<b>不能撤消</b>. 继续吗？"
     },
     "edit_books": {
+      "add_author_role_error_duplicate": "已存在",
       "authors_notice_multiple_edit": "您正在编辑多本书的作者。这将覆盖每本书的现有的作者。",
       "button_cancel": "取消",
       "button_confirm": "保存修改",
@@ -310,6 +330,10 @@
       "dialog_title_single": "编辑 {book}",
       "field_isbn": "ISBN",
       "field_isbn_error": "ISBN必须是13位数",
+      "field_link_label": "标签",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "必须为 http 或 https",
+      "field_link_url_error_url": "必须是有效的 URL",
       "field_number": "序号",
       "field_number_sort": "短序号",
       "field_number_sort_hint": "你可以用十进制数",
@@ -320,6 +344,7 @@
       "field_title": "标题",
       "tab_authors": "作者",
       "tab_general": "常规",
+      "tab_links": "链接",
       "tab_tags": "标签",
       "tags_notice_multiple_edit": "您正在编辑多本书的标签。这将覆盖每本书的现有标签。"
     },
@@ -596,6 +621,7 @@
     "bulk_edit_metadata": "批量编辑元数据",
     "delete": "删除",
     "deselect_all": "取消选中所有",
+    "download_readlist": "下载阅读列表",
     "download_series": "下载系列",
     "edit": "编辑",
     "edit_metadata": "编辑元数据",

@@ -183,7 +183,8 @@
             </v-list-item>
 
             <v-list-item>
-              <settings-switch v-model="alwaysFullscreen" :label="$t('bookreader.settings.always_fullscreen')" :disabled="!screenfull.isEnabled"/>
+              <settings-switch v-model="alwaysFullscreen" :label="$t('bookreader.settings.always_fullscreen')"
+                               :disabled="!screenfull.isEnabled"/>
             </v-list-item>
 
             <v-subheader class="font-weight-black text-h6">{{ $t('bookreader.settings.display') }}</v-subheader>
@@ -304,7 +305,7 @@ import SettingsSwitch from '@/components/SettingsSwitch.vue'
 import ThumbnailExplorerDialog from '@/components/dialogs/ThumbnailExplorerDialog.vue'
 import ShortcutHelpDialog from '@/components/dialogs/ShortcutHelpDialog.vue'
 import {getBookTitleCompact} from '@/functions/book-title'
-import {checkWebpFeature} from '@/functions/check-webp'
+import {checkImageSupport, ImageFeature} from '@/functions/check-image'
 import {bookPageUrl} from '@/functions/urls'
 import {ReadingDirection} from '@/types/enum-books'
 import Vue from 'vue'
@@ -410,10 +411,11 @@ export default Vue.extend({
   },
   created() {
     this.$vuetify.rtl = false
-    checkWebpFeature('lossy', (feature, isSupported) => {
-      if (isSupported) {
-        this.supportedMediaTypes.push('image/webp')
-      }
+    checkImageSupport(ImageFeature.WEBP_LOSSY, (isSupported) => {
+      if (isSupported) this.supportedMediaTypes.push('image/webp')
+    })
+    checkImageSupport(ImageFeature.JPEG_XL, (isSupported) => {
+      if (isSupported) this.supportedMediaTypes.push('image/jxl')
     })
     this.shortcuts = this.$_.keyBy([...shortcutsSettings, ...shortcutsSettingsPaged, ...shortcutsSettingsContinuous, ...shortcutsMenus, ...shortcutsAll], x => x.key)
     window.addEventListener('keydown', this.keyPressed)
@@ -615,7 +617,7 @@ export default Vue.extend({
       set: function (alwaysFullscreen: boolean): void {
         this.settings.alwaysFullscreen = alwaysFullscreen
         this.$store.commit('setWebreaderAlwaysFullscreen', alwaysFullscreen)
-        if(alwaysFullscreen) this.enterFullscreen()
+        if (alwaysFullscreen) this.enterFullscreen()
         else screenfull.isEnabled && screenfull.exit()
       },
     },
@@ -624,12 +626,15 @@ export default Vue.extend({
     enterFullscreen() {
       if (screenfull.isEnabled) screenfull.request(document.documentElement, {navigationUI: 'hide'})
     },
+    switchFullscreen() {
+      if (screenfull.isEnabled) screenfull.isFullscreen ? screenfull.exit() : this.enterFullscreen()
+    },
     fullscreenChanged() {
       if (screenfull.isEnabled && screenfull.isFullscreen) this.fullscreenIcon = 'mdi-fullscreen-exit'
       else this.fullscreenIcon = 'mdi-fullscreen'
     },
     keyPressed(e: KeyboardEvent) {
-      if(e.ctrlKey || e.altKey || e.shiftKey || e.metaKey) return
+      if (e.ctrlKey || e.altKey || e.shiftKey || e.metaKey) return
       this.shortcuts[e.key]?.execute(this)
     },
     async setup(bookId: string, page?: number) {
@@ -872,6 +877,7 @@ export default Vue.extend({
 .html-reader::-webkit-scrollbar {
   display: none;
 }
+
 .html-reader {
   scrollbar-width: none;
 }

@@ -12,6 +12,7 @@ class BookMetadata(
   val authors: List<Author> = emptyList(),
   tags: Set<String> = emptySet(),
   val isbn: String = "",
+  val links: List<WebLink> = emptyList(),
 
   val titleLock: Boolean = false,
   val summaryLock: Boolean = false,
@@ -21,6 +22,7 @@ class BookMetadata(
   val authorsLock: Boolean = false,
   val tagsLock: Boolean = false,
   val isbnLock: Boolean = false,
+  val linksLock: Boolean = false,
 
   val bookId: String = "",
 
@@ -42,6 +44,7 @@ class BookMetadata(
     authors: List<Author> = this.authors.toList(),
     tags: Set<String> = this.tags,
     isbn: String = this.isbn,
+    links: List<WebLink> = this.links,
     titleLock: Boolean = this.titleLock,
     summaryLock: Boolean = this.summaryLock,
     numberLock: Boolean = this.numberLock,
@@ -50,9 +53,10 @@ class BookMetadata(
     authorsLock: Boolean = this.authorsLock,
     tagsLock: Boolean = this.tagsLock,
     isbnLock: Boolean = this.isbnLock,
+    linksLock: Boolean = this.linksLock,
     bookId: String = this.bookId,
     createdDate: LocalDateTime = this.createdDate,
-    lastModifiedDate: LocalDateTime = this.lastModifiedDate
+    lastModifiedDate: LocalDateTime = this.lastModifiedDate,
   ) =
     BookMetadata(
       title = title,
@@ -63,6 +67,7 @@ class BookMetadata(
       authors = authors,
       tags = tags,
       isbn = isbn,
+      links = links,
       titleLock = titleLock,
       summaryLock = summaryLock,
       numberLock = numberLock,
@@ -71,11 +76,12 @@ class BookMetadata(
       authorsLock = authorsLock,
       tagsLock = tagsLock,
       isbnLock = isbnLock,
+      linksLock = linksLock,
       bookId = bookId,
       createdDate = createdDate,
-      lastModifiedDate = lastModifiedDate
+      lastModifiedDate = lastModifiedDate,
     )
 
   override fun toString(): String =
-    "BookMetadata(numberSort=$numberSort, releaseDate=$releaseDate, authors=$authors, isbn='$isbn', titleLock=$titleLock, summaryLock=$summaryLock, numberLock=$numberLock, numberSortLock=$numberSortLock, releaseDateLock=$releaseDateLock, authorsLock=$authorsLock, tagsLock=$tagsLock, isbnLock=$isbnLock, bookId='$bookId', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate, title='$title', summary='$summary', number='$number', tags=$tags)"
+    "BookMetadata(numberSort=$numberSort, releaseDate=$releaseDate, authors=$authors, isbn='$isbn', links=$links, titleLock=$titleLock, summaryLock=$summaryLock, numberLock=$numberLock, numberSortLock=$numberSortLock, releaseDateLock=$releaseDateLock, authorsLock=$authorsLock, tagsLock=$tagsLock, isbnLock=$isbnLock, linksLock=$linksLock, bookId='$bookId', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate, title='$title', summary='$summary', number='$number', tags=$tags)"
 }

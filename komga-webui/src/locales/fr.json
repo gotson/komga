@@ -26,6 +26,7 @@
     "email": "Adresse e-mail",
     "error": "Erreur",
     "ip": "Adresse IP",
+    "source": "Source",
     "success": "Succès",
     "user_agent": "User Agent"
   },
@@ -127,6 +128,7 @@
       "cycle_scale": "Changer la mise à l'échelle",
       "cycle_side_padding": "Changer la bordure latérale",
       "first_page": "Première page",
+      "fullscreen": "Entrer/Quitter le plein écran",
       "last_page": "Dernière page",
       "left_to_right": "De gauche à droite",
       "menus": "Menus",
@@ -271,6 +273,15 @@
       "button_confirm": "Analyser",
       "title": "Analyser la bibliothèque"
     },
+    "delete_book": {
+      "button_confirm": "Supprimer",
+      "confirm_delete": "Oui, supprimer le livre « {name} » et ses fichiers",
+      "confirm_delete_multiple": "Oui, supprimer {count} livres et leurs fichiers",
+      "dialog_title": "Supprimer le livre",
+      "dialog_title_multiple": "Supprimer les livres",
+      "warning_html": "Le livre <b>{name}</b> sera supprimé de ce serveur ainsi que ses fichiers médias associés. Ceci <b>ne peut pas</b> être annulé. Continuer ?",
+      "warning_multiple_html": "{count} livres seront supprimés de ce serveur ainsi que leurs fichiers médias associés. Ceci <b>ne peut pas</b> être annulé. Continuer ?"
+    },
     "delete_collection": {
       "button_confirm": "Supprimer",
       "confirm_delete": "Oui, supprimer la collection « {name} »",
@@ -294,6 +305,14 @@
       "dialog_title_multiple": "Supprimer les listes de lecture",
       "warning_html": "La liste de lecture <b>{name}</b> sera supprimée de ce serveur. Vos fichiers médias ne seront pas affectés. Cette action <b>est irréversible</b>. Voulez-vous continuer ?",
       "warning_multiple_html": "{count} listes de lecture seront supprimées de ce serveur. Vos fichiers médias ne seront pas affectés. Cette action est <b>irréversible</b>. Voulez-vous continuer ?"
+    },
+    "delete_series": {
+      "button_confirm": "Supprimer",
+      "confirm_delete": "Oui, supprimer la série « {name} » et ses fichiers",
+      "confirm_delete_multiple": "Oui, supprimer {count} séries et leurs fichiers",
+      "dialog_title": "Supprimer la série",
+      "warning_html": "La série <b>{name}</b> sera supprimée de ce serveur ainsi que ses fichiers médias associés. Ceci <b>ne peut pas</b> être annulé. Continuer ?",
+      "warning_multiple_html": "{count} séries seront supprimées de ce serveur ainsi que leurs fichiers médias associés. Ceci <b>ne peut pas</b> être annulé. Continuer ?"
     },
     "delete_user": {
       "button_confirm": "Supprimer",
@@ -396,6 +415,7 @@
       "field_total_book_count_error": "Le nombre total de livres doit être supérieur ou égal à 1",
       "mixed": "MIXTE",
       "tab_general": "Général",
+      "tab_poster": "Couverture",
       "tab_tags": "Étiquettes",
       "tags_notice_multiple_edit": "Vous êtes en train de modifier les étiquettes pour plusieurs séries. Cela écrasera les étiquettes existantes pour chacune des séries."
     },
@@ -540,7 +560,10 @@
     "ERR_1020": "Le livre à mettre à jour n'appartient pas à la série indiquée",
     "ERR_1021": "Le fichier de destination existe déjà",
     "ERR_1022": "Le livre nouvellement importé n'a pas pu être numérisé",
-    "ERR_1023": "Le livre est déjà présent dans la liste de lecture"
+    "ERR_1023": "Le livre est déjà présent dans la liste de lecture",
+    "ERR_1024": "Erreur de connexion OAuth2 : pas d'attribut email",
+    "ERR_1025": "Erreur de connexion OAuth2 : aucun utilisateur local existant avec cette adresse e-mail",
+    "ERR_1026": "Erreur de connexion OpenId Connect : e-mail non vérifié"
   },
   "filter": {
     "age_rating": "Âge minimal",
@@ -591,6 +614,7 @@
     "bulk_edit_metadata": "Modifier les métadonnées brutes",
     "delete": "Supprimer",
     "deselect_all": "Tout désélectionner",
+    "download_readlist": "Télécharger la liste de lecture",
     "download_series": "Télécharger la série",
     "edit": "Modifier",
     "edit_metadata": "Modifier les métadonnées",
@@ -634,7 +658,9 @@
     "server_management": {
       "button_cancel_all_tasks": "Annuler toutes les tâches",
       "button_empty_trash": "Vider la corbeille pour toutes les bibliothèques",
+      "button_scan_libraries": "Analyser toutes les bibliothèques",
       "button_shutdown": "Éteindre",
+      "notification_tasks_cancelled": "Aucune tâche à annuler | Une tâche annulée | {count} tâches annulées",
       "section_title": "Gestion du serveur"
     },
     "tab_title": "Serveur"
@@ -666,6 +692,16 @@
     "dark": "Sombre",
     "light": "Clair",
     "system": "Système"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "Supprimer",
+    "tooltip_mark_as_selected": "Marquer comme sélectionné",
+    "tooltip_selected": "Sélectionné",
+    "tooltip_sidecar": "Couverture locale",
+    "tooltip_to_be_deleted": "À supprimer",
+    "tooltip_to_be_uploaded": "À mettre en ligne",
+    "tooltip_too_big": "Le fichier est trop lourd !",
+    "tooltip_user_uploaded": "Utilisateur mis en ligne"
   },
   "user_roles": {
     "ADMIN": "Administrateur",

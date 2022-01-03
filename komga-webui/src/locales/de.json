@@ -25,7 +25,8 @@
     "datetime": "Datum/Uhrzeit",
     "email": "E-Mail",
     "error": "Fehler",
-    "ip": "IP-Adresse",
+    "ip": "IP",
+    "source": "Quelle",
     "success": "Erfolgreich",
     "user_agent": "User Agent"
   },
@@ -195,7 +196,7 @@
     "library": "Bibliothek",
     "locale_name": "Deutsch",
     "locale_rtl": "false",
-    "lock_all": "Alles verschliessen",
+    "lock_all": "Alle sperren",
     "n_selected": "{count} markiert",
     "nothing_to_show": "Nichts anzuzeigen",
     "outdated": "Nicht mehr aktuell",
@@ -212,7 +213,7 @@
     "series": "Serie",
     "tags": "Stichwörter",
     "unavailable": "Nicht verfügbar",
-    "unlock_all": "Alles öffnen",
+    "unlock_all": "Alle entsperren",
     "use_filter_panel_to_change_filter": "Mit dem Suchfeld können die Suchkriterien eingestellt werden",
     "year": "Jahr"
   },
@@ -462,7 +463,7 @@
       "label_key": "Schlüssel"
     },
     "transient_book_details": {
-      "label_candidate": "Kandidat",
+      "label_candidate": "Mögliche Begriffe",
       "label_existing": "Existierend",
       "label_format": "Format",
       "label_name": "Name",
@@ -479,7 +480,7 @@
       "title_comparison": "Buchvergleich"
     },
     "transient_book_viewer": {
-      "label_candidate": "Kandidat",
+      "label_candidate": "Mögliche Begriffe",
       "label_existing": "Existierend",
       "page_of_pages": "{page} / {pages}",
       "title": "Buch inspizieren",
@@ -541,7 +542,10 @@
     "ERR_1020": "Das zu aktualisierende Buch gehört nicht zu den angebotenen Serien",
     "ERR_1021": "Zieldatei ist bereits vorhanden",
     "ERR_1022": "Ein neu importiertes Buch konnte nicht gescannt werden",
-    "ERR_1023": "Buch ist in der Leseliste schon vorhanden"
+    "ERR_1023": "Buch ist in der Leseliste schon vorhanden",
+    "ERR_1024": "OAuth2 Anmeldefehler: Kein E-Mail Attribut",
+    "ERR_1025": "OAuth2 Anmeldefehler: Keinen lokalen Nutzer mit eingegebener E-Mail gefunden",
+    "ERR_1026": "OpenID Connect Anmeldefehler: E-Mail nicht verifiziert"
   },
   "filter": {
     "age_rating": "Altersfreigabe",
@@ -592,6 +596,7 @@
     "bulk_edit_metadata": "Massenverarbeitung Metadaten",
     "delete": "Löschen",
     "deselect_all": "Auswahl für alle aufheben",
+    "download_readlist": "Leseliste herunterladen",
     "download_series": "Lade die gesamte Serie herunter",
     "edit": "Bearbeiten",
     "edit_metadata": "Metadaten bearbeiten",
@@ -634,7 +639,7 @@
   "server": {
     "server_management": {
       "button_cancel_all_tasks": "Alle Aufgaben abbrechen",
-      "button_empty_trash": "Bereinige alle Bibliotheken von nicht vorhandenen Büchern",
+      "button_empty_trash": "Papierkorb für alle Bibliotheken leeren",
       "button_scan_libraries": "Scanne alle Bibliotheken",
       "button_shutdown": "Herunterfahren",
       "notification_tasks_cancelled": "Keine Aufgaben abzubrechen | Eine Aufgabe abgebrochen | {count} Aufgaben abgebrochen",
@@ -674,10 +679,10 @@
     "tooltip_delete": "Löschen",
     "tooltip_mark_as_selected": "Als ausgewählt markieren",
     "tooltip_selected": "Ausgewählt",
-    "tooltip_sidecar": "Lokale Grafik",
+    "tooltip_sidecar": "Lokales Artwork",
     "tooltip_to_be_deleted": "Wird gelöscht werden",
     "tooltip_to_be_uploaded": "Wird hochgeladen werden",
-    "tooltip_too_big": "Datei zu groß!",
+    "tooltip_too_big": "Datei ist zu groß!",
     "tooltip_user_uploaded": "Von Nutzer hochgeladen"
   },
   "user_roles": {

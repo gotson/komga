@@ -9,6 +9,8 @@ interface FiltersOptions {
 interface NameValue {
   name: string,
   value: string,
+  // an optional negative value
+  nValue?: string,
 }
 
 interface FiltersActive {

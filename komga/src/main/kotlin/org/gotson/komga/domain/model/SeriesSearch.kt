@@ -8,6 +8,7 @@ open class SeriesSearch(
   val metadataStatus: Collection<SeriesMetadata.Status>? = null,
   val publishers: Collection<String>? = null,
   val deleted: Boolean? = null,
+  val complete: Boolean? = null,
 ) {
   enum class SearchField {
     NAME, TITLE, TITLE_SORT
@@ -22,6 +23,7 @@ class SeriesSearchWithReadProgress(
   metadataStatus: Collection<SeriesMetadata.Status>? = null,
   publishers: Collection<String>? = null,
   deleted: Boolean? = null,
+  complete: Boolean? = null,
   val languages: Collection<String>? = null,
   val genres: Collection<String>? = null,
   val tags: Collection<String>? = null,
@@ -37,4 +39,5 @@ class SeriesSearchWithReadProgress(
   metadataStatus = metadataStatus,
   publishers = publishers,
   deleted = deleted,
+  complete = complete,
 )

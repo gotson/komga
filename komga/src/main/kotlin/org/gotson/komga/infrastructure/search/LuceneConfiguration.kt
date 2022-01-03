@@ -18,12 +18,12 @@ class LuceneConfiguration(
   @Bean
   fun indexAnalyzer() =
     with(komgaProperties.lucene.indexAnalyzer) {
-      MultiLingualNGramAnalyzer(minGram, maxGram, preserveOriginal).apply { version = Version.LUCENE_8_9_0 }
+      MultiLingualNGramAnalyzer(minGram, maxGram, preserveOriginal).apply { version = Version.LUCENE_8_11_1 }
     }
 
   @Bean
   fun searchAnalyzer() =
-    MultiLingualAnalyzer().apply { version = Version.LUCENE_8_9_0 }
+    MultiLingualAnalyzer().apply { version = Version.LUCENE_8_11_1 }
 
   @Bean
   @Profile("test")

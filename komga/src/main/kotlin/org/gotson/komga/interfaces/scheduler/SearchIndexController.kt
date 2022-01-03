@@ -3,6 +3,7 @@ package org.gotson.komga.interfaces.scheduler
 import mu.KotlinLogging
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.TaskReceiver
+import org.gotson.komga.infrastructure.search.LuceneEntity
 import org.gotson.komga.infrastructure.search.LuceneHelper
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.annotation.Profile
@@ -26,7 +27,8 @@ class SearchIndexController(
     } else {
       logger.info { "Lucene index version: ${luceneHelper.getIndexVersion()}" }
       when (luceneHelper.getIndexVersion()) {
-        1 -> taskReceiver.rebuildIndex(HIGHEST_PRIORITY)
+        1, 2 -> taskReceiver.rebuildIndex(HIGHEST_PRIORITY)
+        3 -> taskReceiver.rebuildIndex(HIGHEST_PRIORITY, setOf(LuceneEntity.Series))
       }
     }
   }

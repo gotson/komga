@@ -13,10 +13,10 @@ import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.infrastructure.jms.QUEUE_SSE
 import org.gotson.komga.infrastructure.jms.QUEUE_SSE_SELECTOR
 import org.gotson.komga.infrastructure.jms.TOPIC_FACTORY
-import org.gotson.komga.interfaces.rest.dto.BookDto
-import org.gotson.komga.interfaces.rest.dto.SeriesDto
-import org.gotson.komga.interfaces.rest.persistence.BookDtoRepository
-import org.gotson.komga.interfaces.rest.persistence.SeriesDtoRepository
+import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
+import org.gotson.komga.interfaces.api.persistence.SeriesDtoRepository
+import org.gotson.komga.interfaces.api.rest.dto.BookDto
+import org.gotson.komga.interfaces.api.rest.dto.SeriesDto
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -26,7 +26,7 @@ import kotlin.math.ceil
 import kotlin.time.measureTime
 
 private val logger = KotlinLogging.logger {}
-private const val INDEX_VERSION = 2
+private const val INDEX_VERSION = 4
 
 @Component
 class SearchIndexLifecycle(
@@ -37,10 +37,12 @@ class SearchIndexLifecycle(
   private val luceneHelper: LuceneHelper,
 ) {
 
-  fun rebuildIndex() {
-    logger.info { "Rebuild all indexes" }
+  fun rebuildIndex(entities: Set<LuceneEntity>? = null) {
+    val targetEntities = entities ?: LuceneEntity.values().toSet()
 
-    LuceneEntity.values().forEach {
+    logger.info { "Rebuild index for: ${targetEntities.map { it.type }}" }
+
+    targetEntities.forEach {
       when (it) {
         LuceneEntity.Book -> rebuildIndex(it, { p: Pageable -> bookDtoRepository.findAll(BookSearchWithReadProgress(), "unused", p) }, { e: BookDto -> e.toDocument() })
         LuceneEntity.Series -> rebuildIndex(it, { p: Pageable -> seriesDtoRepository.findAll(SeriesSearchWithReadProgress(), "unused", p) }, { e: SeriesDto -> e.toDocument() })
@@ -63,7 +65,7 @@ class SearchIndexLifecycle(
         indexWriter.deleteDocuments(Term(LuceneEntity.TYPE, entity.type))
 
         (0 until pages).forEach { page ->
-          logger.info { "Processing page $page of $batchSize elements" }
+          logger.info { "Processing page ${page + 1} of $pages ($batchSize elements)" }
           val entityDocs = provider(PageRequest.of(page, batchSize)).content
             .map { toDoc(it) }
           indexWriter.addDocuments(entityDocs)

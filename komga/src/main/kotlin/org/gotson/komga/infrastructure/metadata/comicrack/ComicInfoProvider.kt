@@ -8,6 +8,7 @@ import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesMetadataPatch
+import org.gotson.komga.domain.model.WebLink
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataFromBookProvider
@@ -16,6 +17,7 @@ import org.gotson.komga.infrastructure.metadata.comicrack.dto.Manga
 import org.gotson.komga.infrastructure.validation.BCP47TagValidator
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.net.URI
 import java.time.LocalDate
 
 private val logger = KotlinLogging.logger {}
@@ -25,11 +27,11 @@ private const val COMIC_INFO = "ComicInfo.xml"
 @Service
 class ComicInfoProvider(
   @Autowired(required = false) private val mapper: XmlMapper = XmlMapper(),
-  private val bookAnalyzer: BookAnalyzer
+  private val bookAnalyzer: BookAnalyzer,
 ) : BookMetadataProvider, SeriesMetadataFromBookProvider {
 
-  override fun getCapabilities(): List<BookMetadataPatchCapability> =
-    listOf(
+  override fun getCapabilities(): Set<BookMetadataPatchCapability> =
+    setOf(
       BookMetadataPatchCapability.TITLE,
       BookMetadataPatchCapability.SUMMARY,
       BookMetadataPatchCapability.NUMBER,
@@ -37,6 +39,7 @@ class ComicInfoProvider(
       BookMetadataPatchCapability.RELEASE_DATE,
       BookMetadataPatchCapability.AUTHORS,
       BookMetadataPatchCapability.READ_LISTS,
+      BookMetadataPatchCapability.LINKS,
     )
 
   override fun getBookMetadataFromBook(book: BookWithMedia): BookMetadataPatch? {
@@ -53,14 +56,15 @@ class ComicInfoProvider(
       comicInfo.letterer?.splitWithRole("letterer")?.let { authors += it }
       comicInfo.coverArtist?.splitWithRole("cover")?.let { authors += it }
       comicInfo.editor?.splitWithRole("editor")?.let { authors += it }
+      comicInfo.translator?.splitWithRole("translator")?.let { authors += it }
 
       val readLists = mutableListOf<BookMetadataPatch.ReadListEntry>()
       if (!comicInfo.alternateSeries.isNullOrBlank()) {
         readLists.add(
           BookMetadataPatch.ReadListEntry(
             comicInfo.alternateSeries!!,
-            comicInfo.alternateNumber?.toIntOrNull()
-          )
+            comicInfo.alternateNumber?.toIntOrNull(),
+          ),
         )
       }
 
@@ -80,6 +84,16 @@ class ComicInfoProvider(
         }
       }
 
+      val link = comicInfo.web?.let {
+        try {
+          val uri = URI(it)
+          listOf(WebLink(uri.host, uri))
+        } catch (e: Exception) {
+          logger.error(e) { "Could not parse Web element as valid URI: $it" }
+          null
+        }
+      }
+
       return BookMetadataPatch(
         title = comicInfo.title?.ifBlank { null },
         summary = comicInfo.summary?.ifBlank { null },
@@ -87,7 +101,8 @@ class ComicInfoProvider(
         numberSort = comicInfo.number?.toFloatOrNull(),
         releaseDate = releaseDate,
         authors = authors.ifEmpty { null },
-        readLists = readLists
+        readLists = readLists,
+        links = link,
       )
     }
     return null
@@ -115,7 +130,7 @@ class ComicInfoProvider(
         language = if (comicInfo.languageISO != null && BCP47TagValidator.isValid(comicInfo.languageISO!!)) comicInfo.languageISO else null,
         genres = if (!genres.isNullOrEmpty()) genres.toSet() else null,
         totalBookCount = comicInfo.count,
-        collections = listOfNotNull(comicInfo.seriesGroup?.ifBlank { null })
+        collections = listOfNotNull(comicInfo.seriesGroup?.ifBlank { null }),
       )
     }
     return null

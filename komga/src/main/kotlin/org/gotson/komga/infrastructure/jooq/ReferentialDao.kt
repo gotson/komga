@@ -357,6 +357,30 @@ class ReferentialDao(
       .orderBy(sd.PUBLISHER.collate(SqliteUdfDataSource.collationUnicode3))
       .fetchSet(sd.PUBLISHER)
 
+  override fun findAllPublishers(filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<String> {
+    val query = dsl.selectDistinct(sd.PUBLISHER)
+      .from(sd)
+      .apply { filterOnLibraryIds?.let { leftJoin(s).on(sd.SERIES_ID.eq(s.ID)) } }
+      .where(sd.PUBLISHER.ne(""))
+      .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
+
+    val count = dsl.fetchCount(query)
+    val sort = sd.PUBLISHER.collate(SqliteUdfDataSource.collationUnicode3)
+
+    val items = query
+      .orderBy(sort)
+      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+      .fetch(sd.PUBLISHER)
+
+    val pageSort = Sort.by("name")
+    return PageImpl(
+      items,
+      if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
+      else PageRequest.of(0, maxOf(count, 20), pageSort),
+      count.toLong()
+    )
+  }
+
   override fun findAllPublishersByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
     dsl.selectDistinct(sd.PUBLISHER)
       .from(sd)

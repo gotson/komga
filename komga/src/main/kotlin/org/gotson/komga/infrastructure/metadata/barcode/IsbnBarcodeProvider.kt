@@ -33,8 +33,8 @@ class IsbnBarcodeProvider(
     DecodeHintType.TRY_HARDER to true
   )
 
-  override fun getCapabilities(): List<BookMetadataPatchCapability> =
-    listOf(BookMetadataPatchCapability.ISBN)
+  override fun getCapabilities(): Set<BookMetadataPatchCapability> =
+    setOf(BookMetadataPatchCapability.ISBN)
 
   override fun getBookMetadataFromBook(book: BookWithMedia): BookMetadataPatch? {
     val pagesToTry = (1..book.media.pages.size).toList().let {

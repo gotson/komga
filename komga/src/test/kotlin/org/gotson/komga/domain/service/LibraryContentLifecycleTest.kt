@@ -13,6 +13,7 @@ import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ScanResult
@@ -36,7 +37,7 @@ import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.infrastructure.language.toIndexedMap
-import org.gotson.komga.interfaces.rest.persistence.SeriesDtoRepository
+import org.gotson.komga.interfaces.api.persistence.SeriesDtoRepository
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
@@ -577,8 +578,8 @@ class LibraryContentLifecycleTest(
       bookRepository.findByIdOrNull(book.id)?.let {
         bookRepository.update(it.copy(fileHash = "sameHash"))
         mediaRepository.update(mediaRepository.findById(it.id).copy(status = Media.Status.READY))
-        bookLifecycle.addThumbnailForBook(ThumbnailBook(thumbnail = ByteArray(0), type = ThumbnailBook.Type.GENERATED, bookId = book.id))
-        bookLifecycle.addThumbnailForBook(ThumbnailBook(url = URL("file:/sidecar"), type = ThumbnailBook.Type.SIDECAR, bookId = book.id))
+        bookLifecycle.addThumbnailForBook(ThumbnailBook(thumbnail = ByteArray(0), type = ThumbnailBook.Type.GENERATED, bookId = book.id), MarkSelectedPreference.NO)
+        bookLifecycle.addThumbnailForBook(ThumbnailBook(url = URL("file:/sidecar"), type = ThumbnailBook.Type.SIDECAR, bookId = book.id), MarkSelectedPreference.NO)
       }
 
       every { mockHasher.computeHash(any()) } returns "sameHash"
@@ -623,8 +624,8 @@ class LibraryContentLifecycleTest(
       bookRepository.findByIdOrNull(book.id)?.let {
         bookRepository.update(it.copy(fileHash = "sameHash"))
         mediaRepository.update(mediaRepository.findById(it.id).copy(status = Media.Status.READY))
-        bookLifecycle.addThumbnailForBook(ThumbnailBook(thumbnail = ByteArray(0), type = ThumbnailBook.Type.GENERATED, bookId = book.id))
-        bookLifecycle.addThumbnailForBook(ThumbnailBook(url = URL("file:/sidecar"), type = ThumbnailBook.Type.SIDECAR, bookId = book.id))
+        bookLifecycle.addThumbnailForBook(ThumbnailBook(thumbnail = ByteArray(0), type = ThumbnailBook.Type.GENERATED, bookId = book.id), MarkSelectedPreference.NO)
+        bookLifecycle.addThumbnailForBook(ThumbnailBook(url = URL("file:/sidecar"), type = ThumbnailBook.Type.SIDECAR, bookId = book.id), MarkSelectedPreference.NO)
       }
 
       every { mockHasher.computeHash(any()) } returns "sameHash"
@@ -770,7 +771,7 @@ class LibraryContentLifecycleTest(
 
       // then
       verify(exactly = 1) { mockHasher.computeHash(any()) }
-      verify(exactly = 0) { mockTaskReceiver.refreshBookMetadata(bookRenamed.id, listOf(BookMetadataPatchCapability.TITLE)) }
+      verify(exactly = 0) { mockTaskReceiver.refreshBookMetadata(bookRenamed.id, setOf(BookMetadataPatchCapability.TITLE)) }
 
       val allSeries = seriesRepository.findAll()
       val allBooks = bookRepository.findAll().sortedBy { it.number }
@@ -814,7 +815,7 @@ class LibraryContentLifecycleTest(
 
       // then
       verify(exactly = 1) { mockHasher.computeHash(any()) }
-      verify(exactly = 1) { mockTaskReceiver.refreshBookMetadata(bookRenamed.id, listOf(BookMetadataPatchCapability.TITLE)) }
+      verify(exactly = 1) { mockTaskReceiver.refreshBookMetadata(bookRenamed.id, setOf(BookMetadataPatchCapability.TITLE)) }
 
       val allSeries = seriesRepository.findAll()
       val allBooks = bookRepository.findAll().sortedBy { it.number }
@@ -1139,7 +1140,7 @@ class LibraryContentLifecycleTest(
       libraryContentLifecycle.scanRootFolder(library) // rename
 
       // then
-      verify(exactly = 0) { mockTaskReceiver.refreshBookMetadata(book2Moved.id, listOf(BookMetadataPatchCapability.TITLE)) }
+      verify(exactly = 0) { mockTaskReceiver.refreshBookMetadata(book2Moved.id, setOf(BookMetadataPatchCapability.TITLE)) }
 
       val allSeries = seriesRepository.findAll()
       val allBooks = bookRepository.findAll().sortedBy { it.number }
@@ -1197,7 +1198,7 @@ class LibraryContentLifecycleTest(
       libraryContentLifecycle.scanRootFolder(library) // rename
 
       // then
-      verify(exactly = 1) { mockTaskReceiver.refreshBookMetadata(book2Moved.id, listOf(BookMetadataPatchCapability.TITLE)) }
+      verify(exactly = 1) { mockTaskReceiver.refreshBookMetadata(book2Moved.id, setOf(BookMetadataPatchCapability.TITLE)) }
 
       val allSeries = seriesRepository.findAll()
       val allBooks = bookRepository.findAll().sortedBy { it.number }
@@ -1379,7 +1380,7 @@ class LibraryContentLifecycleTest(
       libraryContentLifecycle.scanRootFolder(library) // creation
 
       seriesRepository.findAll().first().let {
-        seriesMetadataRepository.update(seriesMetadataRepository.findById(it.id).copy(title = "Updated", titleLock = true))
+        seriesMetadataRepository.update(seriesMetadataRepository.findById(it.id).copy(title = "Updated", titleLock = true, titleSort = "SortTitle", titleSortLock = true))
       }
 
       bookRepository.findAll().forEach { book ->
@@ -1404,6 +1405,8 @@ class LibraryContentLifecycleTest(
         seriesMetadataRepository.findById(series2.id).let {
           assertThat(it.title).isEqualTo("Updated")
           assertThat(it.titleLock).isTrue
+          assertThat(it.titleSort).isEqualTo("SortTitle")
+          assertThat(it.titleSortLock).isTrue
         }
         assertThat(bookRepository.findAllBySeriesId(series2.id)).hasSize(2)
       }
@@ -1444,7 +1447,10 @@ class LibraryContentLifecycleTest(
       assertThat(allSeries).hasSize(1)
       allSeries.first().let { series2 ->
         assertThat(series2.name).isEqualTo("series2")
-        assertThat(seriesMetadataRepository.findById(series2.id).title).isEqualTo("series2")
+        with(seriesMetadataRepository.findById(series2.id)) {
+          assertThat(title).isEqualTo("series2")
+          assertThat(titleSort).isEqualTo("series2")
+        }
         assertThat(bookRepository.findAllBySeriesId(series2.id)).hasSize(2)
       }
 

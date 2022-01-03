@@ -18,6 +18,7 @@ import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.ThumbnailSeries
+import org.gotson.komga.domain.model.withCode
 import org.gotson.komga.domain.persistence.BookMetadataAggregationRepository
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
@@ -32,7 +33,15 @@ import org.gotson.komga.infrastructure.language.stripAccents
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 import java.io.File
+import java.io.FileNotFoundException
+import java.nio.file.Path
 import java.time.LocalDateTime
+import kotlin.io.path.deleteIfExists
+import kotlin.io.path.exists
+import kotlin.io.path.isWritable
+import kotlin.io.path.listDirectoryEntries
+import kotlin.io.path.notExists
+import kotlin.io.path.toPath
 
 private val logger = KotlinLogging.logger {}
 private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
@@ -94,7 +103,7 @@ class SeriesLifecycle(
     oldToNew.forEach { (old, new) ->
       if (old.number != new.number || old.numberSort != new.numberSort) {
         logger.debug { "Metadata numbering has changed, refreshing metadata for book ${new.bookId} " }
-        taskReceiver.refreshBookMetadata(new.bookId, listOf(BookMetadataPatchCapability.NUMBER, BookMetadataPatchCapability.NUMBER_SORT))
+        taskReceiver.refreshBookMetadata(new.bookId, setOf(BookMetadataPatchCapability.NUMBER, BookMetadataPatchCapability.NUMBER_SORT))
       }
     }
 
@@ -264,7 +273,7 @@ class SeriesLifecycle(
 
     if (markSelected == MarkSelectedPreference.YES ||
       (
-        markSelected == MarkSelectedPreference.IF_NONE_EXIST &&
+        markSelected == MarkSelectedPreference.IF_NONE_OR_GENERATED &&
           thumbnailsSeriesRepository.findSelectedBySeriesIdOrNull(thumbnail.seriesId) == null
         )
     ) {
@@ -276,6 +285,23 @@ class SeriesLifecycle(
   fun deleteThumbnailForSeries(thumbnail: ThumbnailSeries) {
     require(thumbnail.type == ThumbnailSeries.Type.USER_UPLOADED) { "Only uploaded thumbnails can be deleted" }
     thumbnailsSeriesRepository.delete(thumbnail.id)
+    eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesDeleted(thumbnail))
+  }
+
+  fun deleteSeriesFiles(series: Series) {
+    if (series.path.notExists() || !series.path.isWritable())
+      throw FileNotFoundException("File is not accessible : ${series.path}").withCode("ERR_1018")
+
+    val thumbnails = thumbnailsSeriesRepository.findAllBySeriesIdIdAndType(series.id, ThumbnailSeries.Type.SIDECAR)
+      .mapNotNull { it.url?.toURI()?.toPath() }
+      .filter { it.exists() && it.isWritable() }
+
+    bookRepository.findAllBySeriesId(series.id)
+      .forEach { bookLifecycle.deleteBookFiles(it) }
+    thumbnails.forEach(Path::deleteIfExists)
+
+    if (series.path.exists() && series.path.listDirectoryEntries().isEmpty())
+      series.path.deleteIfExists()
   }
 
   private fun thumbnailsHouseKeeping(seriesId: String) {

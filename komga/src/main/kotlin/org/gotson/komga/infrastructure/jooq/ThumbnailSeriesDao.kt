@@ -5,13 +5,15 @@ import org.gotson.komga.domain.persistence.ThumbnailSeriesRepository
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.ThumbnailSeriesRecord
 import org.jooq.DSLContext
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.net.URL
 
 @Component
 class ThumbnailSeriesDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
+  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : ThumbnailSeriesRepository {
   private val ts = Tables.THUMBNAIL_SERIES
 
@@ -24,6 +26,13 @@ class ThumbnailSeriesDao(
   override fun findAllBySeriesId(seriesId: String): Collection<ThumbnailSeries> =
     dsl.selectFrom(ts)
       .where(ts.SERIES_ID.eq(seriesId))
+      .fetchInto(ts)
+      .map { it.toDomain() }
+
+  override fun findAllBySeriesIdIdAndType(seriesId: String, type: ThumbnailSeries.Type): Collection<ThumbnailSeries> =
+    dsl.selectFrom(ts)
+      .where(ts.SERIES_ID.eq(seriesId))
+      .and(ts.TYPE.eq(type.toString()))
       .fetchInto(ts)
       .map { it.toDomain() }
 
@@ -70,8 +79,11 @@ class ThumbnailSeriesDao(
     dsl.deleteFrom(ts).where(ts.SERIES_ID.eq(seriesId)).execute()
   }
 
+  @Transactional
   override fun deleteBySeriesIds(seriesIds: Collection<String>) {
-    dsl.deleteFrom(ts).where(ts.SERIES_ID.`in`(seriesIds)).execute()
+    dsl.insertTempStrings(batchSize, seriesIds)
+
+    dsl.deleteFrom(ts).where(ts.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
   }
 
   private fun ThumbnailSeriesRecord.toDomain() =

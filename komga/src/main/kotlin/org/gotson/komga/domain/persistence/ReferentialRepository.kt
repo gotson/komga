@@ -38,6 +38,7 @@ interface ReferentialRepository {
   fun findAllLanguagesByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<String>
 
   fun findAllPublishers(filterOnLibraryIds: Collection<String>?): Set<String>
+  fun findAllPublishers(filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<String>
   fun findAllPublishersByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<String>
   fun findAllPublishersByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<String>
 

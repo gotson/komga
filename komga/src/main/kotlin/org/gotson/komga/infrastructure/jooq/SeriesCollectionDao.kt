@@ -10,6 +10,7 @@ import org.gotson.komga.jooq.tables.records.CollectionRecord
 import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.ResultQuery
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -24,6 +25,7 @@ import java.time.ZoneId
 class SeriesCollectionDao(
   private val dsl: DSLContext,
   private val luceneHelper: LuceneHelper,
+  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : SeriesCollectionRepository {
 
   private val c = Tables.COLLECTION
@@ -213,8 +215,10 @@ class SeriesCollectionDao(
 
   @Transactional
   override fun removeSeriesFromAll(seriesIds: Collection<String>) {
+    dsl.insertTempStrings(batchSize, seriesIds)
+
     dsl.deleteFrom(cs)
-      .where(cs.SERIES_ID.`in`(seriesIds))
+      .where(cs.SERIES_ID.`in`(dsl.selectTempStrings()))
       .execute()
   }
 

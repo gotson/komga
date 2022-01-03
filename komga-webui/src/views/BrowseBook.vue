@@ -7,8 +7,7 @@
                  v-on="on"
                  :to="parent.route"
           >
-            <v-icon v-if="$vuetify.rtl">mdi-arrow-right</v-icon>
-            <v-icon v-else>mdi-arrow-left</v-icon>
+            <rtl-icon icon="mdi-arrow-left" rtl="mdi-arrow-right"/>
           </v-btn>
         </template>
         <span v-if="contextReadList">{{ $t('common.go_to_readlist') }}</span>
@@ -137,7 +136,7 @@
                 }}
               </v-col>
 
-              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')"
+              <v-col class="py-1 pe-0"
                      cols="auto"
                      v-if="book.media.status === MediaStatus.OUTDATED">
                 <v-tooltip bottom :disabled="!isAdmin">
@@ -150,7 +149,7 @@
                 </v-tooltip>
               </v-col>
 
-              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="unavailable">
+              <v-col class="py-1 pe-0" cols="auto" v-if="unavailable">
                 <v-chip label small color="error">
                   {{ $t('common.unavailable') }}
                 </v-chip>
@@ -251,7 +250,9 @@
              :key="role"
              class="align-center text-caption"
       >
-        <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $te(`author_roles.${role}`) ? $t(`author_roles.${role}`) : role }}</v-col>
+        <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">
+          {{ $te(`author_roles.${role}`) ? $t(`author_roles.${role}`) : role }}
+        </v-col>
         <v-col cols="8" sm="9" md="10" xl="11" class="py-1">
           <vue-horizontal>
             <template v-slot:btn-prev>
@@ -267,7 +268,7 @@
             </template>
             <v-chip v-for="(name, i) in authorsByRole[role]"
                     :key="i"
-                    :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+                    class="me-2"
                     :title="name"
                     :to="{name:'browse-series', params: {seriesId: book.seriesId }, query: {[role]: [name]}}"
                     label
@@ -297,7 +298,7 @@
             </template>
             <v-chip v-for="(t, i) in book.metadata.tags"
                     :key="i"
-                    :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+                    class="me-2"
                     :title="t"
                     :to="{name:'browse-series', params: {seriesId: book.seriesId}, query: {tag: [t]}}"
                     label
@@ -313,6 +314,32 @@
       <v-row>
         <v-col>
           <read-lists-expansion-panels :read-lists="readLists"/>
+        </v-col>
+      </v-row>
+
+      <v-row v-if="book.metadata.links.length > 0" class="align-center text-caption">
+        <v-col class="py-1" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.links') }}</v-col>
+        <v-col class="py-1" cols="8" sm="9" md="10" xl="11">
+          <v-chip
+            v-for="(link, i) in book.metadata.links"
+            :href="link.url"
+            target="_blank"
+            class="me-2"
+            label
+            small
+            outlined
+            link
+            :key="i"
+          >
+            {{ link.label }}
+            <v-icon
+              x-small
+              color="grey"
+              class="ps-1"
+            >
+              mdi-open-in-new
+            </v-icon>
+          </v-chip>
         </v-col>
       </v-row>
 

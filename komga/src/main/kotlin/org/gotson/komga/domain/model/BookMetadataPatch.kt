@@ -10,6 +10,7 @@ data class BookMetadataPatch(
   val releaseDate: LocalDate? = null,
   val authors: List<Author>? = null,
   val isbn: String? = null,
+  val links: List<WebLink>? = null,
 
   val readLists: List<ReadListEntry> = emptyList()
 ) {
@@ -30,4 +31,5 @@ enum class BookMetadataPatchCapability {
   ISBN,
   READ_LISTS,
   THUMBNAILS,
+  LINKS,
 }

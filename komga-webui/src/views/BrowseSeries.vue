@@ -48,6 +48,7 @@
       @add-to-readlist="addToReadList"
       @bulk-edit="bulkEditMultipleBooks"
       @edit="editMultipleBooks"
+      @delete="deleteBooks"
     />
 
     <filter-drawer
@@ -120,33 +121,33 @@
             </v-row>
 
             <v-row class="text-body-2">
-              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto">
+              <v-col class="py-1 pe-0" cols="auto">
                 <v-chip label small link :color="statusChip.color" :text-color="statusChip.text"
                         :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {status: [series.metadata.status]}}">
                   {{ $t(`enums.series_status.${series.metadata.status}`) }}
                 </v-chip>
               </v-col>
-              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="series.metadata.ageRating">
+              <v-col class="py-1 pe-0" cols="auto" v-if="series.metadata.ageRating">
                 <v-chip label small link
                         :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {ageRating: [series.metadata.ageRating]}}"
                 >
                   {{ series.metadata.ageRating }}+
                 </v-chip>
               </v-col>
-              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="series.metadata.language">
+              <v-col class="py-1 pe-0" cols="auto" v-if="series.metadata.language">
                 <v-chip label small link
                         :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {language: [series.metadata.language]}}"
                 >
                   {{ languageDisplay }}
                 </v-chip>
               </v-col>
-              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto"
+              <v-col class="py-1 pe-0" cols="auto"
                      v-if="series.metadata.readingDirection">
                 <v-chip label small>
                   {{ $t(`enums.reading_direction.${series.metadata.readingDirection}`) }}
                 </v-chip>
               </v-col>
-              <v-col :class="'py-1 ' + ($vuetify.rtl ? 'pl-0' : 'pr-0')" cols="auto" v-if="unavailable">
+              <v-col class="py-1 pe-0" cols="auto" v-if="unavailable">
                 <v-chip label small color="error">
                   {{ $t('common.unavailable') }}
                 </v-chip>
@@ -242,7 +243,7 @@
         <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $t('common.publisher') }}</v-col>
         <v-col cols="8" sm="9" md="10" xl="11" class="py-1">
           <v-chip
-            :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+            class="me-2"
             :title="series.metadata.publisher"
             :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {publisher: [series.metadata.publisher]}}"
             label
@@ -272,7 +273,7 @@
             </template>
             <v-chip v-for="(t, i) in series.metadata.genres"
                     :key="i"
-                    :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+                    class="me-2"
                     :title="t"
                     :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {genre: [t]}}"
                     label
@@ -304,7 +305,7 @@
             </template>
             <v-chip v-for="(t, i) in $_.sortBy(series.metadata.tags)"
                     :key="`series_${i}`"
-                    :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+                    class="me-2"
                     :title="t"
                     :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {tag: [t]}}"
                     label
@@ -315,7 +316,7 @@
             </v-chip>
             <v-chip v-for="(t, i) in $_(series.booksMetadata.tags).difference(series.metadata.tags).sortBy()"
                     :key="`book_${i}`"
-                    :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+                    class="me-2"
                     :title="t"
                     :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {tag: [t]}}"
                     label
@@ -351,7 +352,7 @@
 
             <v-chip v-for="(name, i) in authorsByRole[role].sort()"
                     :key="i"
-                    :class="$vuetify.rtl ? 'ml-2' : 'mr-2'"
+                    class="me-2"
                     :title="name"
                     :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {[role]: [name]}}"
                     label
@@ -831,6 +832,9 @@ export default Vue.extend({
         this.$komgaBooks.deleteReadProgress(b.id),
       ))
       this.selectedBooks = []
+    },
+    deleteBooks() {
+      this.$store.dispatch('dialogDeleteBook', this.selectedBooks)
     },
   },
 })

@@ -1,14 +1,19 @@
 application.version: ${version}
 
 logging:
-  logback.rollingpolicy.max-history: 10
+  logback:
+    rollingpolicy:
+      max-history: 7
+      total-size-cap: 1GB
+      clean-history-on-start: true
+      max-file-size: 10MB
   file:
     name: \${user.home}/.komga/komga.log
   level:
     org.apache.activemq.audit: WARN
 
 komga:
-  libraries-scan-cron: "0 */15 * * * ?"
+  libraries-scan-cron: "0 0 */8 * * ?"
   libraries-scan-directory-exclusions:
     - "#recycle"
     - "@eaDir"
@@ -28,7 +33,7 @@ spring:
   mvc:
     throw-exception-if-no-handler-found: true
     async:
-      request-timeout: 3600000
+      request-timeout: 1h
   artemis:
     embedded:
       persistent: true

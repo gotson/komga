@@ -1,3 +1,161 @@
+# [0.142.0](https://github.com/gotson/komga/compare/v0.141.0...v0.142.0) (2021-12-31)
+
+
+### Features
+
+* **api:** get duplicate books by filehash ([3c97c20](https://github.com/gotson/komga/commit/3c97c204810b7739044bbd6bf978a187a4f5e68a))
+* **webui:** new duplicates tab in server settings ([38ad00c](https://github.com/gotson/komga/commit/38ad00c30723a3ecbea02d76c830ff9fb469078d)), closes [#590](https://github.com/gotson/komga/issues/590)
+
+# [0.141.0](https://github.com/gotson/komga/compare/v0.140.0...v0.141.0) (2021-12-31)
+
+
+### Bug Fixes
+
+* translated using Weblate ([f06d967](https://github.com/gotson/komga/commit/f06d9677b964f2e3f4ed56bf70e4e9ba752b2e30))
+* **webui:** edit book dialog would not save or reset properly ([e4b912e](https://github.com/gotson/komga/commit/e4b912e60783b4f2812fdc579dd065664c7cea91))
+
+
+### Features
+
+* **api:** search series by completeness ([494bdf2](https://github.com/gotson/komga/commit/494bdf28a110c566843e20ae558181fb4e0b4a32))
+* **webui:** filter series by completeness ([c3a3fa3](https://github.com/gotson/komga/commit/c3a3fa343b921ef151552ea364d865ef7b11beeb)), closes [#590](https://github.com/gotson/komga/issues/590)
+
+# [0.140.0](https://github.com/gotson/komga/compare/v0.139.0...v0.140.0) (2021-12-29)
+
+
+### Bug Fixes
+
+* translated using Weblate ([b6f2696](https://github.com/gotson/komga/commit/b6f269641ebee83c412a79fc07ce31202251b09e))
+* **webui:** adjust import views display on small screens ([394123d](https://github.com/gotson/komga/commit/394123d26382439a235b07258489b3f942c93b6b))
+
+
+### Features
+
+* parse translator field from epub ([4f6f85c](https://github.com/gotson/komga/commit/4f6f85c474397baa04f1c1d018403cb25d4674c3))
+* parse Web element from ComicInfo.xml ([5a464fd](https://github.com/gotson/komga/commit/5a464fd13e24c881dd3cebb63ea07954e4449aa7)), closes [#750](https://github.com/gotson/komga/issues/750)
+* **webui:** display book links ([ff38516](https://github.com/gotson/komga/commit/ff38516b11a15b66c94bedaaf67c47cf94799878)), closes [#750](https://github.com/gotson/komga/issues/750)
+* **webui:** edit book links ([7195547](https://github.com/gotson/komga/commit/719554766cb96dde6bcd0f42a335c8a5e840ade4))
+
+# [0.139.0](https://github.com/gotson/komga/compare/v0.138.0...v0.139.0) (2021-12-23)
+
+
+### Bug Fixes
+
+* translated using Weblate ([5c69c05](https://github.com/gotson/komga/commit/5c69c058fe731ba97ab3a7efbee29fa29b0371cb))
+* upgrade lucene version ([4ee30dd](https://github.com/gotson/komga/commit/4ee30dde96b1a9e8170e44512d5f041290b72892))
+
+
+### Features
+
+* detect JPEG XL images ([610c51f](https://github.com/gotson/komga/commit/610c51fd5d206ce3089f7caba95a91ad5bd6d578))
+* **webreader:** add fullscreen keyboard shortcut ([a72a3ba](https://github.com/gotson/komga/commit/a72a3bab627a80df5c29ac6b1d055c96216e52a7))
+* **webreader:** detect browser support for JPEG XL ([27f5ba6](https://github.com/gotson/komga/commit/27f5ba6348e7d252f08bcb698666baac7c5461b9))
+* **webui:** move read lists import view in import menu ([2529a96](https://github.com/gotson/komga/commit/2529a9623a2bf1aca7df5b7bd6854faa0cdc3af7))
+
+# [0.138.0](https://github.com/gotson/komga/compare/v0.137.0...v0.138.0) (2021-12-22)
+
+
+### Bug Fixes
+
+* **api:** library scan is always highest priority ([e60acb8](https://github.com/gotson/komga/commit/e60acb86ff4bc156f5b907e9688156cf2b2f9480))
+* **webui:** increase height of activity bar ([5fc4013](https://github.com/gotson/komga/commit/5fc4013934965f06f4e136afa3fa25d0fb4d469c))
+
+
+### Features
+
+* added translation using Weblate (Slovenian) ([7d4d811](https://github.com/gotson/komga/commit/7d4d811af8f181023db850e1eb7fad8c492b77ef))
+* **api:** cover upload for books, read lists and collections ([31ad351](https://github.com/gotson/komga/commit/31ad351144fd88ed59ac606af1156c6b66694d3a))
+* series and book files deletion ([e626ff8](https://github.com/gotson/komga/commit/e626ff850f0687e227df0fd26c336705c024b273)), closes [#731](https://github.com/gotson/komga/issues/731)
+
+# [0.137.0](https://github.com/gotson/komga/compare/v0.136.0...v0.137.0) (2021-12-14)
+
+
+### Features
+
+* import Translator from ComicInfo.xml ([fe8c21d](https://github.com/gotson/komga/commit/fe8c21d1ad6fc3ee552bdc17a4cd60397ec3d827)), closes [#740](https://github.com/gotson/komga/issues/740)
+
+# [0.136.0](https://github.com/gotson/komga/compare/v0.135.1...v0.136.0) (2021-12-14)
+
+
+### Features
+
+* **webreader:** align double pages according to reading direction ([218fd79](https://github.com/gotson/komga/commit/218fd79e517670e2f3f1d9ddb14e649432e10075)), closes [#670](https://github.com/gotson/komga/issues/670)
+
+## [0.135.1](https://github.com/gotson/komga/compare/v0.135.0...v0.135.1) (2021-12-13)
+
+
+### Bug Fixes
+
+* change default rolling policy for logs ([c1cc96c](https://github.com/gotson/komga/commit/c1cc96cefe6ac512e82b4b9231533d0e46a04418)), closes [#745](https://github.com/gotson/komga/issues/745)
+* change default scan interval to every 8 hours ([8eef8d9](https://github.com/gotson/komga/commit/8eef8d99c997a9b42f9af76f5deb0cecdebde3b4))
+
+# [0.135.0](https://github.com/gotson/komga/compare/v0.134.1...v0.135.0) (2021-12-10)
+
+
+### Features
+
+* **opds:** acquisition feeds are paginated ([734403a](https://github.com/gotson/komga/commit/734403a3663f8b0a5858b85cd389255c5086b6a7)), closes [#572](https://github.com/gotson/komga/issues/572)
+* **opds:** add Keep Reading and On Deck ([c9d12d0](https://github.com/gotson/komga/commit/c9d12d042b3463779cc20c39aa52720e7404365e)), closes [#737](https://github.com/gotson/komga/issues/737)
+* **opds:** support lastRead attribute on OPSD PSE links ([ce51373](https://github.com/gotson/komga/commit/ce513733446ff4ddbef1fab2cefa14a84bac7a6c))
+
+
+### Reverts
+
+* remove the OPDS markread feature ([e55f493](https://github.com/gotson/komga/commit/e55f493632f441a51372317988894a0cf333e00e))
+
+## [0.134.1](https://github.com/gotson/komga/compare/v0.134.0...v0.134.1) (2021-12-06)
+
+
+### Bug Fixes
+
+* exceptions SQLITE_TOOBIG could arise when deleting many books or series ([adf9e14](https://github.com/gotson/komga/commit/adf9e14fb26936f307177886171fa442dae1aec0))
+
+# [0.134.0](https://github.com/gotson/komga/compare/v0.133.0...v0.134.0) (2021-12-02)
+
+
+### Features
+
+* **opds:** optionally mark progress when streaming pages ([f17bbd5](https://github.com/gotson/komga/commit/f17bbd50769c36038d4fc73aa5cac7b5014e10f6)), closes [#710](https://github.com/gotson/komga/issues/710)
+
+# [0.133.0](https://github.com/gotson/komga/compare/v0.132.4...v0.133.0) (2021-11-30)
+
+
+### Features
+
+* automatic oauth2 user creation ([fed2294](https://github.com/gotson/komga/commit/fed2294b844133f5763ecfce4b2f6a902d65f2cc)), closes [#716](https://github.com/gotson/komga/issues/716)
+
+## [0.132.4](https://github.com/gotson/komga/compare/v0.132.3...v0.132.4) (2021-11-28)
+
+
+### Bug Fixes
+
+* **api:** only mark unread book as read for tachiyomi readlist ([6609e4c](https://github.com/gotson/komga/commit/6609e4ce04fa7f9c8b61268d0c8edb127671985d))
+* translated using Weblate ([884573e](https://github.com/gotson/komga/commit/884573e20de1b905515d6e3ae5d9fbef55485fd1))
+
+## [0.132.3](https://github.com/gotson/komga/compare/v0.132.2...v0.132.3) (2021-11-22)
+
+
+### Bug Fixes
+
+* use more specific error code when file is not found during analysis ([ebfc5e1](https://github.com/gotson/komga/commit/ebfc5e13764ee49cfab897f872b3a26e22654b14))
+* **webui:** series cover uploads ([#729](https://github.com/gotson/komga/issues/729)) ([32f4d7f](https://github.com/gotson/komga/commit/32f4d7f651ee0243a42e516f7c891d6888fa50db))
+* added translation using Weblate (Romanian, Tigrinya) ([9199407](https://github.com/gotson/komga/commit/91994076448bca56600a4d62774548cdcff31384))
+
+## [0.132.2](https://github.com/gotson/komga/compare/v0.132.1...v0.132.2) (2021-11-16)
+
+
+### Bug Fixes
+
+* **webreader:** jump to previous or next book via keyboard ([ac3d969](https://github.com/gotson/komga/commit/ac3d969a0f79bc1888be8d356caf364dd1e568cb)), closes [#722](https://github.com/gotson/komga/issues/722)
+
+## [0.132.1](https://github.com/gotson/komga/compare/v0.132.0...v0.132.1) (2021-11-07)
+
+
+### Bug Fixes
+
+* remove session concurrency ([ac05560](https://github.com/gotson/komga/commit/ac0556044f98b70f7bbc737f05dd342c73afae98)), closes [#717](https://github.com/gotson/komga/issues/717)
+* series titleSort not updated when folder is renamed ([b972601](https://github.com/gotson/komga/commit/b9726018565f07b067aa65c9c05aeba20bcaa05e)), closes [#718](https://github.com/gotson/komga/issues/718)
+
 # [0.132.0](https://github.com/gotson/komga/compare/v0.131.0...v0.132.0) (2021-10-06)
 
 

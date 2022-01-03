@@ -15,6 +15,7 @@ module.exports = {
     'comma-dangle': ['error', 'always-multiline'],
     'semi': ['error', 'never'],
     'quotes': ['error', 'single'],
+    'vue/valid-v-slot': 'off',
   },
   parserOptions: {
     parser: '@typescript-eslint/parser',

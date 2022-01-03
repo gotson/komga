@@ -128,6 +128,7 @@
       "cycle_scale": "Cycle scale",
       "cycle_side_padding": "Cycle side padding",
       "first_page": "First page",
+      "fullscreen": "Enter/exit full screen",
       "last_page": "Last page",
       "left_to_right": "Left to Right →",
       "menus": "Menus",
@@ -151,7 +152,7 @@
     "file": "File",
     "format": "Format",
     "isbn": "ISBN",
-    "navigation_within_readlist": "Navigation within the reading list: {name}",
+    "links": "Links",
     "outdated_tooltip": "The file for this book has changed, this book must be re-analyzed",
     "read_book": "Read book",
     "read_incognito": "Read incognito",
@@ -272,6 +273,15 @@
       "button_confirm": "Analyze",
       "title": "Analyze library"
     },
+    "delete_book": {
+      "button_confirm": "Delete",
+      "confirm_delete": "Yes, delete book \"{name}\" and its files",
+      "confirm_delete_multiple": "Yes, delete {count} books and their files",
+      "dialog_title": "Delete Book",
+      "dialog_title_multiple": "Delete Books",
+      "warning_html": "The book <b>{name}</b> will be removed from this server alongside with stored media files. This <b>cannot</b> be undone. Continue?",
+      "warning_multiple_html": "{count} books will be removed from this server alongside with stored media files. This <b>cannot</b> be undone. Continue?"
+    },
     "delete_collection": {
       "button_confirm": "Delete",
       "confirm_delete": "Yes, delete the \"{name}\" collection",
@@ -296,6 +306,14 @@
       "warning_html": "The read list <b>{name}</b> will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue?",
       "warning_multiple_html": "{count} read lists will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue?"
     },
+    "delete_series": {
+      "button_confirm": "Delete",
+      "confirm_delete": "Yes, delete series \"{name}\" and its files",
+      "confirm_delete_multiple": "Yes, delete {count} series and their files",
+      "dialog_title": "Delete Series",
+      "warning_html": "The Series <b>{name}</b> will be removed from this server alongside with stored media files. This <b>cannot</b> be undone. Continue?",
+      "warning_multiple_html": "{count} series will be removed from this server alongside with stored media files. This <b>cannot</b> be undone. Continue?"
+    },
     "delete_user": {
       "button_confirm": "Delete",
       "confirm_delete": "Yes, delete the user \"{name}\"",
@@ -303,6 +321,7 @@
       "warning_html": "The user <b>{name}</b> will be deleted from this server. This <b>cannot</b> be undone. Continue?"
     },
     "edit_books": {
+      "add_author_role_error_duplicate": "Already exists",
       "authors_notice_multiple_edit": "You are editing authors for multiple books. This will override existing authors of each book.",
       "button_cancel": "Cancel",
       "button_confirm": "Save changes",
@@ -310,6 +329,10 @@
       "dialog_title_single": "Edit {book}",
       "field_isbn": "ISBN",
       "field_isbn_error": "Must be a valid ISBN 13",
+      "field_link_label": "Label",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "Must be http or https",
+      "field_link_url_error_url": "Must be a valid URL",
       "field_number": "Number",
       "field_number_sort": "Sorting Number",
       "field_number_sort_hint": "You can use decimal numbers",
@@ -320,6 +343,7 @@
       "field_title": "Title",
       "tab_authors": "Authors",
       "tab_general": "General",
+      "tab_links": "Links",
       "tab_tags": "Tags",
       "tags_notice_multiple_edit": "You are editing tags for multiple books. This will override existing tags of each book."
     },
@@ -487,6 +511,12 @@
       "title_comparison": "Book Comparison"
     }
   },
+  "duplicates": {
+    "file_hash": "File hash",
+    "size": "Size",
+    "title": "Duplicate Files",
+    "url": "URL"
+  },
   "enums": {
     "copy_mode": {
       "HARDLINK": "Hardlink/Copy Files",
@@ -550,6 +580,7 @@
   "filter": {
     "age_rating": "age rating",
     "age_rating_none": "None",
+    "complete": "Complete",
     "genre": "genre",
     "in_progress": "In Progress",
     "language": "language",

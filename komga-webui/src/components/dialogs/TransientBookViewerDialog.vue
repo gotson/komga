@@ -61,7 +61,9 @@
                 <v-btn icon :disabled="!canPrevRight" @click="previousPageRight">
                   <rtl-icon icon="mdi-chevron-left" rtl="mdi-chevron-right"/>
                 </v-btn>
-                {{ $t('dialog.transient_book_viewer.page_of_pages', {page: rightPageNumber, pages: rightPages.length}) }}
+                {{
+                  $t('dialog.transient_book_viewer.page_of_pages', {page: rightPageNumber, pages: rightPages.length})
+                }}
                 <v-btn icon :disabled="!canNextRight" @click="nextPageRight">
                   <rtl-icon icon="mdi-chevron-right" rtl="mdi-chevron-left"/>
                 </v-btn>
@@ -130,11 +132,11 @@ export default Vue.extend({
     value: Boolean,
     leftPages: {
       type: Array as PropType<PageDtoWithUrl[]>,
-      default: [],
+      default: () => [],
     },
     rightPages: {
       type: Array as PropType<PageDtoWithUrl[]>,
-      default: [],
+      default: () => [],
     },
   },
   watch: {

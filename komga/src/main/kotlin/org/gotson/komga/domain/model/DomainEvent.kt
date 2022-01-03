@@ -32,5 +32,14 @@ sealed class DomainEvent : Serializable {
   data class ReadProgressSeriesDeleted(val seriesId: String, val userId: String) : DomainEvent()
 
   data class ThumbnailBookAdded(val thumbnail: ThumbnailBook) : DomainEvent()
+  data class ThumbnailBookDeleted(val thumbnail: ThumbnailBook) : DomainEvent()
+
   data class ThumbnailSeriesAdded(val thumbnail: ThumbnailSeries) : DomainEvent()
+  data class ThumbnailSeriesDeleted(val thumbnail: ThumbnailSeries) : DomainEvent()
+
+  data class ThumbnailSeriesCollectionAdded(val thumbnail: ThumbnailSeriesCollection) : DomainEvent()
+  data class ThumbnailSeriesCollectionDeleted(val thumbnail: ThumbnailSeriesCollection) : DomainEvent()
+
+  data class ThumbnailReadListAdded(val thumbnail: ThumbnailReadList) : DomainEvent()
+  data class ThumbnailReadListDeleted(val thumbnail: ThumbnailReadList) : DomainEvent()
 }

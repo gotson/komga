@@ -49,3 +49,4 @@ nbdist/
 /komga/src/main/resources/public/
 /komga/artemis/
 /komga/lucene/
+application-oauth2.yml

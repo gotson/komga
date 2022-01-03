@@ -142,6 +142,7 @@ import {AuthorDto} from '@/types/komga-books'
 import {CollectionSseDto, ReadProgressSeriesSseDto, SeriesSseDto} from '@/types/komga-sse'
 import {throttle} from 'lodash'
 import {LibraryDto} from '@/types/komga-libraries'
+import {parseBooleanFilter} from '@/functions/query-params'
 
 export default Vue.extend({
   name: 'BrowseCollection',
@@ -231,6 +232,9 @@ export default Vue.extend({
             {name: this.$t('filter.read').toString(), value: ReadStatus.READ},
           ],
         },
+        complete: {
+          values: [{name: this.$t('filter.complete').toString(), value: 'true', nValue: 'false'}],
+        },
       } as FiltersOptions
     },
     filterOptionsPanel(): FiltersOptions {
@@ -303,7 +307,7 @@ export default Vue.extend({
 
       // get filter from query params or local storage and validate with available filter values
       let activeFilters: any
-      if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating || route.query.library || route.query.publisher || authorRoles.some(role => role in route.query)) {
+      if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating || route.query.library || route.query.publisher || authorRoles.some(role => role in route.query) || route.query.complete) {
         activeFilters = {
           status: route.query.status || [],
           readStatus: route.query.readStatus || [],
@@ -314,6 +318,7 @@ export default Vue.extend({
           language: route.query.language || [],
           ageRating: route.query.ageRating || [],
           releaseDate: route.query.releaseDate || [],
+          complete: route.query.complete || [],
         }
         authorRoles.forEach((role: string) => {
           activeFilters[role] = route.query[role] || []
@@ -334,6 +339,7 @@ export default Vue.extend({
         language: filters.language?.filter(x => this.filterOptions.language.map(n => n.value).includes(x)) || [],
         ageRating: filters.ageRating?.filter(x => this.filterOptions.ageRating.map(n => n.value).includes(x)) || [],
         releaseDate: filters.releaseDate?.filter(x => this.filterOptions.releaseDate.map(n => n.value).includes(x)) || [],
+        complete: filters.complete?.filter(x => x === 'true' || x === 'false') || [],
       } as any
       authorRoles.forEach((role: string) => {
         validFilter[role] = filters[role] || []
@@ -355,7 +361,7 @@ export default Vue.extend({
       }
     },
     collectionDeleted(event: CollectionSseDto) {
-      if(event.collectionId === this.collectionId) {
+      if (event.collectionId === this.collectionId) {
         this.$router.push({name: 'browse-collections', params: {libraryId: LIBRARIES_ALL}})
       }
     },
@@ -379,7 +385,8 @@ export default Vue.extend({
         }))
       })
 
-      this.series = (await this.$komgaCollections.getSeries(collectionId, {unpaged: true} as PageRequest, this.filters.library, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter)).content
+      const complete = parseBooleanFilter(this.filters.complete)
+      this.series = (await this.$komgaCollections.getSeries(collectionId, {unpaged: true} as PageRequest, this.filters.library, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, complete)).content
       this.seriesCopy = [...this.series]
       this.selectedSeries = []
     },

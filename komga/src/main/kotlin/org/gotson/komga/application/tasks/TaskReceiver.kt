@@ -15,6 +15,7 @@ import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS_TYPE
 import org.gotson.komga.infrastructure.jms.QUEUE_TYPE
 import org.gotson.komga.infrastructure.jms.QUEUE_UNIQUE_ID
+import org.gotson.komga.infrastructure.search.LuceneEntity
 import org.springframework.data.domain.Sort
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.stereotype.Service
@@ -42,8 +43,8 @@ class TaskReceiver(
     libraryRepository.findAll().forEach { scanLibrary(it.id) }
   }
 
-  fun scanLibrary(libraryId: String) {
-    submitTask(Task.ScanLibrary(libraryId))
+  fun scanLibrary(libraryId: String, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.ScanLibrary(libraryId, priority))
   }
 
   fun emptyTrash(libraryId: String, priority: Int = DEFAULT_PRIORITY) {
@@ -91,7 +92,7 @@ class TaskReceiver(
 
   fun refreshBookMetadata(
     bookId: String,
-    capabilities: List<BookMetadataPatchCapability> = BookMetadataPatchCapability.values().toList(),
+    capabilities: Set<BookMetadataPatchCapability> = BookMetadataPatchCapability.values().toSet(),
     priority: Int = DEFAULT_PRIORITY,
   ) {
     submitTask(Task.RefreshBookMetadata(bookId, capabilities, priority))
@@ -117,8 +118,16 @@ class TaskReceiver(
     submitTask(Task.ImportBook(sourceFile, seriesId, copyMode, destinationName, upgradeBookId, priority))
   }
 
-  fun rebuildIndex(priority: Int = DEFAULT_PRIORITY) {
-    submitTask(Task.RebuildIndex(priority))
+  fun rebuildIndex(priority: Int = DEFAULT_PRIORITY, entities: Set<LuceneEntity>? = null) {
+    submitTask(Task.RebuildIndex(entities, priority))
+  }
+
+  fun deleteBook(bookId: String, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.DeleteBook(bookId, priority))
+  }
+
+  fun deleteSeries(seriesId: String, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.DeleteSeries(seriesId, priority))
   }
 
   private fun submitTask(task: Task) {

@@ -22,6 +22,9 @@
         <v-list-item @click="markUnread" v-if="!isUnread">
           <v-list-item-title>{{ $t('menu.mark_unread') }}</v-list-item-title>
         </v-list-item>
+        <v-list-item @click="promptDeleteSeries" class="list-warning" v-if="isAdmin">
+          <v-list-item-title>{{ $t('menu.delete') }}</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-menu>
   </div>
@@ -80,6 +83,9 @@ export default Vue.extend({
     async markUnread () {
       await this.$komgaSeries.markAsUnread(this.series.id)
       // this.$eventHub.$emit(SERIES_CHANGED, seriesToEventSeriesChanged(this.series))
+    },
+    promptDeleteSeries () {
+      this.$store.dispatch('dialogDeleteSeries', this.series)
     },
   },
 })

@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookMetadata
+import org.gotson.komga.domain.model.WebLink
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import java.net.URI
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -27,7 +29,7 @@ class BookMetadataDaoTest(
   @Autowired private val bookMetadataDao: BookMetadataDao,
   @Autowired private val bookRepository: BookRepository,
   @Autowired private val seriesRepository: SeriesRepository,
-  @Autowired private val libraryRepository: LibraryRepository
+  @Autowired private val libraryRepository: LibraryRepository,
 ) {
   private val library = makeLibrary()
   private val series = makeSeries("Series")
@@ -68,6 +70,7 @@ class BookMetadataDaoTest(
       authors = listOf(Author("author", "role")),
       tags = setOf("tag", "another"),
       isbn = "987654321",
+      links = listOf(WebLink("Comicvine", URI("https://comicvine.gamespot.com/doctor-strange-30-a-gathering-of-fear/4000-18731/"))),
       bookId = book.id,
       titleLock = true,
       summaryLock = true,
@@ -98,6 +101,10 @@ class BookMetadataDaoTest(
     }
     assertThat(created.tags).containsAll(metadata.tags)
     assertThat(created.isbn).isEqualTo(metadata.isbn)
+    with(created.links.first()) {
+      assertThat(label).isEqualTo(metadata.links.first().label)
+      assertThat(url).isEqualTo(metadata.links.first().url)
+    }
 
     assertThat(created.titleLock).isEqualTo(metadata.titleLock)
     assertThat(created.summaryLock).isEqualTo(metadata.summaryLock)
@@ -107,6 +114,7 @@ class BookMetadataDaoTest(
     assertThat(created.authorsLock).isEqualTo(metadata.authorsLock)
     assertThat(created.tagsLock).isEqualTo(metadata.tagsLock)
     assertThat(created.isbnLock).isEqualTo(metadata.isbnLock)
+    assertThat(created.linksLock).isEqualTo(metadata.linksLock)
   }
 
   @Test
@@ -115,7 +123,7 @@ class BookMetadataDaoTest(
       title = "Book",
       number = "1",
       numberSort = 1F,
-      bookId = book.id
+      bookId = book.id,
     )
 
     bookMetadataDao.insert(metadata)
@@ -131,6 +139,7 @@ class BookMetadataDaoTest(
     assertThat(created.authors).isEmpty()
     assertThat(created.tags).isEmpty()
     assertThat(created.isbn).isBlank
+    assertThat(created.links).isEmpty()
 
     assertThat(created.titleLock).isFalse
     assertThat(created.summaryLock).isFalse
@@ -140,6 +149,7 @@ class BookMetadataDaoTest(
     assertThat(created.authorsLock).isFalse
     assertThat(created.tagsLock).isFalse
     assertThat(created.isbnLock).isFalse
+    assertThat(created.linksLock).isFalse
   }
 
   @Test
@@ -152,7 +162,8 @@ class BookMetadataDaoTest(
       releaseDate = LocalDate.now(),
       authors = listOf(Author("author", "role")),
       tags = setOf("tag"),
-      bookId = book.id
+      links = listOf(WebLink("Comicvine", URI("https://comicvine.gamespot.com/doctor-strange-30-a-gathering-of-fear/4000-18731/"))),
+      bookId = book.id,
     )
     bookMetadataDao.insert(metadata)
 
@@ -167,6 +178,7 @@ class BookMetadataDaoTest(
         authors = listOf(Author("author2", "role2")),
         tags = setOf("another"),
         isbn = "987654321",
+        links = listOf(WebLink("Bedetheque", URI("https://www.bedetheque.com/BD-AD-Grand-Riviere-Tome-1-Terre-d-election-12596.html"))),
         titleLock = true,
         summaryLock = true,
         numberLock = true,
@@ -175,6 +187,7 @@ class BookMetadataDaoTest(
         authorsLock = true,
         tagsLock = true,
         isbnLock = true,
+        linksLock = true,
       )
     }
 
@@ -201,10 +214,13 @@ class BookMetadataDaoTest(
     assertThat(modified.authorsLock).isEqualTo(updated.authorsLock)
     assertThat(modified.tagsLock).isEqualTo(updated.tagsLock)
     assertThat(modified.isbnLock).isEqualTo(updated.isbnLock)
+    assertThat(modified.linksLock).isEqualTo(updated.linksLock)
 
     assertThat(modified.tags).containsAll(updated.tags)
     assertThat(modified.authors.first().name).isEqualTo(updated.authors.first().name)
     assertThat(modified.authors.first().role).isEqualTo(updated.authors.first().role)
+    assertThat(modified.links.first().label).isEqualTo(updated.links.first().label)
+    assertThat(modified.links.first().url).isEqualTo(updated.links.first().url)
   }
 
   @Test
@@ -216,7 +232,7 @@ class BookMetadataDaoTest(
       numberSort = 1F,
       releaseDate = LocalDate.now(),
       authors = listOf(Author("author", "role")),
-      bookId = book.id
+      bookId = book.id,
     )
     bookMetadataDao.insert(metadata)
 

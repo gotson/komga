@@ -51,6 +51,21 @@ export default class KomgaBooksService {
     }
   }
 
+  async getDuplicateBooks(pageRequest?: PageRequest): Promise<Page<BookDto>> {
+    try {
+      return (await this.http.get(`${API_BOOKS}/duplicates`, {
+        params: pageRequest,
+        paramsSerializer: params => qs.stringify(params, {indices: false}),
+      })).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve duplicate books'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
   async getBooksOnDeck(libraryId?: string, pageRequest?: PageRequest): Promise<Page<BookDto>> {
     try {
       const params = {...pageRequest} as any
@@ -206,6 +221,18 @@ export default class KomgaBooksService {
       await this.http.post(`${API_BOOKS}/import`, batch)
     } catch (e) {
       let msg = 'An error occurred while trying to submit book import batch'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async deleteBook(bookId: string) {
+    try {
+      await this.http.delete(`${API_BOOKS}/${bookId}/file`)
+    } catch (e) {
+      let msg = 'An error occurred while trying to delete book'
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

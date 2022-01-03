@@ -17,7 +17,6 @@ class SidecarDao(
   @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : SidecarRepository {
   private val sc = Tables.SIDECAR
-  private val u = Tables.TEMP_URL_LIST
 
   override fun findAll(): Collection<SidecarStored> =
     dsl.selectFrom(sc).fetch().map { it.toDomain() }
@@ -39,24 +38,11 @@ class SidecarDao(
 
   @Transactional
   override fun deleteByLibraryIdAndUrls(libraryId: String, urls: Collection<URL>) {
-    // insert urls in a temporary table, else the select size can exceed the statement limit
-    dsl.deleteFrom(u).execute()
-
-    if (urls.isNotEmpty()) {
-      urls.chunked(batchSize).forEach { chunk ->
-        dsl.batch(
-          dsl.insertInto(u, u.URL).values(null as String?)
-        ).also { step ->
-          chunk.forEach {
-            step.bind(it.toString())
-          }
-        }.execute()
-      }
-    }
+    dsl.insertTempStrings(batchSize, urls.map { it.toString() })
 
     dsl.deleteFrom(sc)
       .where(sc.LIBRARY_ID.eq(libraryId))
-      .and(sc.URL.`in`(dsl.select(u.URL).from(u)))
+      .and(sc.URL.`in`(dsl.selectTempStrings()))
       .execute()
   }
 

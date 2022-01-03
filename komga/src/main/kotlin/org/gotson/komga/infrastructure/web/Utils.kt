@@ -28,7 +28,7 @@ fun getMediaTypeOrDefault(mediaTypeString: String?): MediaType {
   mediaTypeString?.let {
     try {
       return MediaType.parseMediaType(mediaTypeString)
-    } catch (ex: Exception) {
+    } catch (_: Exception) {
     }
   }
   return MediaType.APPLICATION_OCTET_STREAM

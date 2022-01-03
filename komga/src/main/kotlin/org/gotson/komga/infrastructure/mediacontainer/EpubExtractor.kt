@@ -3,6 +3,7 @@ package org.gotson.komga.infrastructure.mediacontainer
 import mu.KotlinLogging
 import org.apache.commons.compress.archivers.zip.ZipFile
 import org.gotson.komga.domain.model.MediaContainerEntry
+import org.gotson.komga.domain.model.MediaUnsupportedException
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.jsoup.Jsoup
 import org.springframework.stereotype.Service
@@ -75,7 +76,8 @@ class EpubExtractor(
   private fun getPackagePath(zip: ZipFile): String =
     zip.getEntry("META-INF/container.xml").let { entry ->
       val container = zip.getInputStream(entry).use { Jsoup.parse(it, null, "") }
-      container.getElementsByTag("rootfile").first().attr("full-path")
+      container.getElementsByTag("rootfile").first()?.attr("full-path")
+        ?: throw MediaUnsupportedException("META-INF/container.xml does not contain rootfile tag")
     }
 
   fun getPackageFile(path: Path): String? =

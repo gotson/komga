@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookMetadata
+import org.gotson.komga.domain.model.WebLink
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.BookMetadataAuthorRecord
@@ -10,6 +11,7 @@ import org.jooq.DSLContext
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import java.net.URI
 import java.time.LocalDateTime
 import java.time.ZoneId
 
@@ -22,6 +24,7 @@ class BookMetadataDao(
   private val d = Tables.BOOK_METADATA
   private val a = Tables.BOOK_METADATA_AUTHOR
   private val bt = Tables.BOOK_METADATA_TAG
+  private val bl = Tables.BOOK_METADATA_LINK
 
   private val groupFields = arrayOf(*d.fields(), *a.fields())
 
@@ -41,9 +44,9 @@ class BookMetadataDao(
       .where(d.BOOK_ID.`in`(bookIds))
       .groupBy(*groupFields)
       .fetchGroups(
-        { it.into(d) }, { it.into(a) }
+        { it.into(d) }, { it.into(a) },
       ).map { (dr, ar) ->
-        dr.toDomain(ar.filterNot { it.name == null }.map { it.toDomain() }, findTags(dr.bookId))
+        dr.toDomain(ar.filterNot { it.name == null }.map { it.toDomain() }, findTags(dr.bookId), findLinks(dr.bookId))
       }
 
   private fun findTags(bookId: String) =
@@ -53,6 +56,13 @@ class BookMetadataDao(
       .fetchInto(bt)
       .mapNotNull { it.tag }
       .toSet()
+
+  private fun findLinks(bookId: String) =
+    dsl.select(bl.LABEL, bl.URL)
+      .from(bl)
+      .where(bl.BOOK_ID.eq(bookId))
+      .fetchInto(bl)
+      .map { WebLink(it.label, URI(it.url)) }
 
   @Transactional
   override fun insert(metadata: BookMetadata) {
@@ -80,8 +90,9 @@ class BookMetadataDao(
             d.AUTHORS_LOCK,
             d.TAGS_LOCK,
             d.ISBN,
-            d.ISBN_LOCK
-          ).values(null as String?, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+            d.ISBN_LOCK,
+            d.LINKS_LOCK,
+          ).values(null as String?, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null),
         ).also { step ->
           chunk.forEach {
             step.bind(
@@ -99,7 +110,8 @@ class BookMetadataDao(
               it.authorsLock,
               it.tagsLock,
               it.isbn,
-              it.isbnLock
+              it.isbnLock,
+              it.linksLock,
             )
           }
         }.execute()
@@ -107,6 +119,7 @@ class BookMetadataDao(
 
       insertAuthors(metadatas)
       insertTags(metadatas)
+      insertLinks(metadatas)
     }
   }
 
@@ -136,6 +149,7 @@ class BookMetadataDao(
       .set(d.TAGS_LOCK, metadata.tagsLock)
       .set(d.ISBN, metadata.isbn)
       .set(d.ISBN_LOCK, metadata.isbnLock)
+      .set(d.LINKS_LOCK, metadata.linksLock)
       .set(d.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(d.BOOK_ID.eq(metadata.bookId))
       .execute()
@@ -146,9 +160,13 @@ class BookMetadataDao(
     dsl.deleteFrom(bt)
       .where(bt.BOOK_ID.eq(metadata.bookId))
       .execute()
+    dsl.deleteFrom(bl)
+      .where(bl.BOOK_ID.eq(metadata.bookId))
+      .execute()
 
     insertAuthors(listOf(metadata))
     insertTags(listOf(metadata))
+    insertLinks(listOf(metadata))
   }
 
   private fun insertAuthors(metadatas: Collection<BookMetadata>) {
@@ -156,7 +174,7 @@ class BookMetadataDao(
       metadatas.chunked(batchSize).forEach { chunk ->
         dsl.batch(
           dsl.insertInto(a, a.BOOK_ID, a.NAME, a.ROLE)
-            .values(null as String?, null, null)
+            .values(null as String?, null, null),
         ).also { step ->
           chunk.forEach { metadata ->
             metadata.authors.forEach {
@@ -173,7 +191,7 @@ class BookMetadataDao(
       metadatas.chunked(batchSize).forEach { chunk ->
         dsl.batch(
           dsl.insertInto(bt, bt.BOOK_ID, bt.TAG)
-            .values(null as String?, null)
+            .values(null as String?, null),
         ).also { step ->
           chunk.forEach { metadata ->
             metadata.tags.forEach {
@@ -185,23 +203,44 @@ class BookMetadataDao(
     }
   }
 
+  private fun insertLinks(metadatas: Collection<BookMetadata>) {
+    if (metadatas.any { it.links.isNotEmpty() }) {
+      metadatas.chunked(batchSize).forEach { chunk ->
+        dsl.batch(
+          dsl.insertInto(bl, bl.BOOK_ID, bl.LABEL, bl.URL)
+            .values(null as String?, null, null),
+        ).also { step ->
+          chunk.forEach { metadata ->
+            metadata.links.forEach {
+              step.bind(metadata.bookId, it.label, it.url.toString())
+            }
+          }
+        }.execute()
+      }
+    }
+  }
+
   @Transactional
   override fun delete(bookId: String) {
     dsl.deleteFrom(a).where(a.BOOK_ID.eq(bookId)).execute()
     dsl.deleteFrom(bt).where(bt.BOOK_ID.eq(bookId)).execute()
+    dsl.deleteFrom(bl).where(bl.BOOK_ID.eq(bookId)).execute()
     dsl.deleteFrom(d).where(d.BOOK_ID.eq(bookId)).execute()
   }
 
   @Transactional
   override fun delete(bookIds: Collection<String>) {
-    dsl.deleteFrom(a).where(a.BOOK_ID.`in`(bookIds)).execute()
-    dsl.deleteFrom(bt).where(bt.BOOK_ID.`in`(bookIds)).execute()
-    dsl.deleteFrom(d).where(d.BOOK_ID.`in`(bookIds)).execute()
+    dsl.insertTempStrings(batchSize, bookIds)
+
+    dsl.deleteFrom(a).where(a.BOOK_ID.`in`(dsl.selectTempStrings())).execute()
+    dsl.deleteFrom(bt).where(bt.BOOK_ID.`in`(dsl.selectTempStrings())).execute()
+    dsl.deleteFrom(bl).where(bl.BOOK_ID.`in`(dsl.selectTempStrings())).execute()
+    dsl.deleteFrom(d).where(d.BOOK_ID.`in`(dsl.selectTempStrings())).execute()
   }
 
   override fun count(): Long = dsl.fetchCount(d).toLong()
 
-  private fun BookMetadataRecord.toDomain(authors: List<Author>, tags: Set<String>) =
+  private fun BookMetadataRecord.toDomain(authors: List<Author>, tags: Set<String>, links: List<WebLink>) =
     BookMetadata(
       title = title,
       summary = summary,
@@ -211,6 +250,7 @@ class BookMetadataDao(
       authors = authors,
       tags = tags,
       isbn = isbn,
+      links = links,
 
       bookId = bookId,
 
@@ -225,11 +265,12 @@ class BookMetadataDao(
       authorsLock = authorsLock,
       tagsLock = tagsLock,
       isbnLock = isbnLock,
+      linksLock = linksLock,
     )
 
   private fun BookMetadataAuthorRecord.toDomain() =
     Author(
       name = name,
-      role = role
+      role = role,
     )
 }

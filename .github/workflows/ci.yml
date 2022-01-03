@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ 8, 11 ]
+        java: [ 8, 11, 17 ]
     name: Test JDK ${{ matrix.java }}
     steps:
       - uses: actions/checkout@v2
@@ -15,7 +15,7 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
           java-package: 'jdk'
-          distribution: 'adopt'
+          distribution: 'temurin'
           cache: 'gradle'
       - name: Build
         run: ./gradlew build
@@ -60,17 +60,15 @@ jobs:
           cache-dependency-path: |
             package-lock.json
             komga-webui/package-lock.json
-      - uses: actions/setup-java@v2
-        with:
-          java-version: '8'
-          java-package: 'jdk'
-          distribution: 'adopt'
-          cache: 'gradle'
-      - name: npmBuild
-        run: ./gradlew npmBuild
-      - name: npmTest
-        run: npm run test:unit
+      - name: npm install
         working-directory: komga-webui
+        run: npm install
+      - name: npm build
+        working-directory: komga-webui
+        run: npm run build
+      - name: npm test
+        working-directory: komga-webui
+        run: npm run test:unit
 
   release:
     name: Semantic Release
@@ -90,7 +88,7 @@ jobs:
         with:
           java-version: '8'
           java-package: 'jdk'
-          distribution: 'adopt'
+          distribution: 'temurin'
           cache: 'gradle'
       - name: Install dependencies
         run: npm install --only=production

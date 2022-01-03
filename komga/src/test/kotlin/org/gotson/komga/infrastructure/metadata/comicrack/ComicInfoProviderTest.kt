@@ -8,6 +8,7 @@ import org.gotson.komga.domain.model.BookMetadataPatch
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.SeriesMetadata
+import org.gotson.komga.domain.model.WebLink
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.infrastructure.metadata.comicrack.dto.AgeRating
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import java.net.URI
 import java.time.LocalDate
 import java.util.stream.Stream
 
@@ -34,7 +36,7 @@ class ComicInfoProviderTest {
   private val media = Media(
     status = Media.Status.READY,
     mediaType = "application/zip",
-    files = listOf("ComicInfo.xml")
+    files = listOf("ComicInfo.xml"),
   )
 
   @Nested
@@ -51,6 +53,7 @@ class ComicInfoProviderTest {
         alternateSeries = "story arc"
         alternateNumber = "5"
         storyArc = "one, two, three"
+        web = "https://www.comixology.com/Sandman/digital-comic/727888"
       }
 
       every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
@@ -71,6 +74,11 @@ class ComicInfoProviderTest {
           BookMetadataPatch.ReadListEntry("two"),
           BookMetadataPatch.ReadListEntry("three"),
         )
+
+        assertThat(links).hasSize(1)
+        assertThat(links).containsExactlyInAnyOrder(
+          WebLink("www.comixology.com", URI("https://www.comixology.com/Sandman/digital-comic/727888")),
+        )
       }
     }
 
@@ -88,7 +96,7 @@ class ComicInfoProviderTest {
       with(patch!!) {
         assertThat(readLists).hasSize(1)
         assertThat(readLists).containsExactlyInAnyOrder(
-          BookMetadataPatch.ReadListEntry("one", 6)
+          BookMetadataPatch.ReadListEntry("one", 6),
         )
       }
     }
@@ -261,6 +269,7 @@ class ComicInfoProviderTest {
         inker = "inker"
         colorist = "colorist"
         editor = "editor"
+        translator = "translator"
         letterer = "letterer"
         coverArtist = "coverArtist"
       }
@@ -270,9 +279,9 @@ class ComicInfoProviderTest {
       val patch = comicInfoProvider.getBookMetadataFromBook(BookWithMedia(book, media))
 
       with(patch!!) {
-        assertThat(authors).hasSize(7)
-        assertThat(authors?.map { it.name }).containsExactlyInAnyOrder("writer", "penciller", "inker", "colorist", "editor", "letterer", "coverArtist")
-        assertThat(authors?.map { it.role }).containsExactlyInAnyOrder("writer", "penciller", "inker", "colorist", "editor", "letterer", "cover")
+        assertThat(authors).hasSize(8)
+        assertThat(authors?.map { it.name }).containsExactlyInAnyOrder("writer", "penciller", "inker", "colorist", "editor", "letterer", "translator", "coverArtist")
+        assertThat(authors?.map { it.role }).containsExactlyInAnyOrder("writer", "penciller", "inker", "colorist", "editor", "letterer", "translator", "cover")
       }
     }
 
@@ -284,6 +293,7 @@ class ComicInfoProviderTest {
         inker = "inker, inker2"
         colorist = "colorist, colorist2"
         editor = "editor, editor2"
+        translator = "translator, translator2"
         letterer = "letterer, letterer2"
         coverArtist = "coverArtist, coverArtist2"
       }
@@ -293,9 +303,9 @@ class ComicInfoProviderTest {
       val patch = comicInfoProvider.getBookMetadataFromBook(BookWithMedia(book, media))
 
       with(patch!!) {
-        assertThat(authors).hasSize(14)
-        assertThat(authors?.map { it.name }).containsExactlyInAnyOrder("writer", "penciller", "inker", "colorist", "editor", "letterer", "coverArtist", "writer2", "penciller2", "inker2", "colorist2", "editor2", "letterer2", "coverArtist2")
-        assertThat(authors?.map { it.role }?.distinct()).containsExactlyInAnyOrder("writer", "penciller", "inker", "colorist", "editor", "letterer", "cover")
+        assertThat(authors).hasSize(16)
+        assertThat(authors?.map { it.name }).containsExactlyInAnyOrder("writer", "penciller", "inker", "colorist", "editor", "letterer", "coverArtist", "writer2", "penciller2", "inker2", "colorist2", "editor2", "letterer2", "coverArtist2", "translator", "translator2")
+        assertThat(authors?.map { it.role }?.distinct()).containsExactlyInAnyOrder("writer", "penciller", "inker", "colorist", "editor", "letterer", "cover", "translator")
       }
     }
 
@@ -417,13 +427,16 @@ class ComicInfoProviderTest {
     }
   }
 
-  fun computeSeriesFromSeriesAndVolumeArguments() = Stream.of(
-    Arguments.of("", null, null),
-    Arguments.of(null, null, null),
-    Arguments.of("Series", null, "Series"),
-    Arguments.of("Series", 1, "Series"),
-    Arguments.of("Series", 10, "Series (10)"),
-  )
+  companion object {
+    @JvmStatic
+    fun computeSeriesFromSeriesAndVolumeArguments(): Stream<Arguments> = Stream.of(
+      Arguments.of("", null, null),
+      Arguments.of(null, null, null),
+      Arguments.of("Series", null, "Series"),
+      Arguments.of("Series", 1, "Series"),
+      Arguments.of("Series", 10, "Series (10)"),
+    )
+  }
 
   @ParameterizedTest
   @MethodSource("computeSeriesFromSeriesAndVolumeArguments")

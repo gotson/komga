@@ -264,6 +264,7 @@ class LibraryContentLifecycle(
               deleted.copy(
                 seriesId = newSeries.id,
                 title = if (deleted.titleLock) deleted.title else newlyAdded.title,
+                titleSort = if (deleted.titleSortLock) deleted.titleSort else newlyAdded.titleSort
               )
             )
           }
@@ -335,7 +336,7 @@ class LibraryContentLifecycle(
                   title = if (deleted.titleLock) deleted.title else newlyAdded.title,
                 )
               )
-              if (!deleted.titleLock) taskReceiver.refreshBookMetadata(bookToAdd.id, listOf(BookMetadataPatchCapability.TITLE))
+              if (!deleted.titleLock) taskReceiver.refreshBookMetadata(bookToAdd.id, setOf(BookMetadataPatchCapability.TITLE))
             }
 
             // copy read progress

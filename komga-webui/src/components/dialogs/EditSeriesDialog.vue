@@ -323,7 +323,7 @@
                 <!-- Upload -->
                 <v-row>
                   <v-col class="pa-1">
-                    <drop-zone @on-input-change="addThumbnail" class="pa-8"/>
+                    <drop-zone ref="thumbnailsUpload" @on-input-change="addThumbnail" class="pa-8"/>
                   </v-col>
                 </v-row>
 
@@ -665,7 +665,7 @@ export default Vue.extend({
       if (this.single && this.poster.uploadQueue.length > 0) {
         const series = this.series as SeriesDto
         let hadErrors = false
-        for (const file of this.poster.uploadQueue) {
+        for (const file of this.poster.uploadQueue.slice()) {
           try {
             await this.$komgaSeries.uploadThumbnail(series.id, file, file.name === this.poster.selectedThumbnail)
             this.deleteThumbnail(file)
@@ -716,6 +716,8 @@ export default Vue.extend({
           }
         }
       }
+
+      (this.$refs.thumbnailsUpload as any).reset()
     },
     async getThumbnails(series: SeriesDto | SeriesDto[]) {
       if (Array.isArray(series)) return
@@ -752,7 +754,7 @@ export default Vue.extend({
           this.poster.uploadQueue.splice(index, 1)
         }
         if (item.name === this.poster.selectedThumbnail) {
-          this.selectThumbnail(this.poster.seriesThumbnails.find(x => x.selected))
+          this.poster.selectedThumbnail = ''
         }
       } else {
         // if thumbnail was marked for deletion, unmark it
