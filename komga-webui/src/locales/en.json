@@ -543,7 +543,7 @@
     "ERR_1021": "Destination file already exists",
     "ERR_1022": "Could not scan newly imported book",
     "ERR_1023": "Book already present in ReadingList",
-    "ERR_1024": "OAuth 2.0 login error: no email attribute",
+    "ERR_1024": "OAuth 2.0 login error: no e-mail attribute",
     "ERR_1025": "OAuth2 2.0 login error: no local user with that email exists",
     "ERR_1026": "OpenID Connect login error: e-mail not verified"
   },
