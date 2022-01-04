@@ -168,8 +168,8 @@
     "edit_readlist": "Edit reading list"
   },
   "browse_series": {
-    "earliest_year_from_release_dates": "This is the earliest year any book was released in the series",
-    "series_no_summary": "Picked summary for series without one.",
+    "earliest_year_from_release_dates": "Earliest year of any released book in this series.",
+    "series_no_summary": "This series has no summary, so one was randomly selected from one of the series books.",
     "summary_from_book": "Summary of book {number}:"
   },
   "collections_expansion_panel": {
@@ -250,7 +250,7 @@
     },
     "add_to_readlist": {
       "button_create": "Create",
-      "card_readlist_subtitle": "No book | One book | {count} books",
+      "card_readlist_subtitle": "No book | 1 book | {count} books",
       "dialog_title": "Add to read list",
       "field_search_create": "Search or create read list",
       "field_search_create_error": "A read list with this name already exists",
