@@ -147,16 +147,16 @@
     "tooltip_incognito": "Your reading progress will not be saved"
   },
   "browse_book": {
-    "comment": "Comment",
+    "comment": "COMMENT",
     "download_file": "Download file",
-    "file": "File",
-    "format": "Format",
+    "file": "FILE",
+    "format": "FORMAT",
     "isbn": "ISBN",
-    "links": "Links",
+    "links": "LINKS",
     "outdated_tooltip": "The file for this book has changed, this book must be re-analyzed",
     "read_book": "Read book",
     "read_incognito": "Read incognito",
-    "size": "Size"
+    "size": "SIZE"
   },
   "browse_collection": {
     "edit_collection": "Edit collection",
@@ -169,7 +169,7 @@
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Earliest year of any book with a known release date in this series.",
-    "series_no_summary": "This series has no summary, so one was randomly selected from one of the series books.",
+    "series_no_summary": "This series has no summary, so one was selected from a book in the series.",
     "summary_from_book": "Summary of book {number}:"
   },
   "collections_expansion_panel": {
