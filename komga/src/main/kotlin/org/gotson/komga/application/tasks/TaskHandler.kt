@@ -53,8 +53,8 @@ class TaskHandler(
               taskReceiver.analyzeUnknownAndOutdatedBooks(library)
               taskReceiver.hashBooksWithoutHash(library)
               taskReceiver.hashBookPagesWithMissingHash(library)
-              if (library.repairExtensions) taskReceiver.repairExtensions(library, LOWEST_PRIORITY)
-              if (library.convertToCbz) taskReceiver.convertBooksToCbz(library, LOWEST_PRIORITY)
+              taskReceiver.repairExtensions(library, LOWEST_PRIORITY)
+              taskReceiver.convertBooksToCbz(library, LOWEST_PRIORITY)
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 
           is Task.EmptyTrash ->

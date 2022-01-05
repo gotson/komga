@@ -79,15 +79,17 @@ class TaskReceiver(
   }
 
   fun convertBooksToCbz(library: Library, priority: Int = DEFAULT_PRIORITY) {
-    bookConverter.getConvertibleBookIds(library).forEach {
-      submitTask(Task.ConvertBook(it, priority))
-    }
+    if (library.convertToCbz)
+      bookConverter.getConvertibleBookIds(library).forEach {
+        submitTask(Task.ConvertBook(it, priority))
+      }
   }
 
   fun repairExtensions(library: Library, priority: Int = DEFAULT_PRIORITY) {
-    bookConverter.getMismatchedExtensionBookIds(library).forEach {
-      submitTask(Task.RepairExtension(it, priority))
-    }
+    if (library.repairExtensions)
+      bookConverter.getMismatchedExtensionBookIds(library).forEach {
+        submitTask(Task.RepairExtension(it, priority))
+      }
   }
 
   fun analyzeBook(bookId: String, priority: Int = DEFAULT_PRIORITY) {
