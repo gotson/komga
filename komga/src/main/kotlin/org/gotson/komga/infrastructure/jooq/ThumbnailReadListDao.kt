@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Component
 class ThumbnailReadListDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
 ) : ThumbnailReadListRepository {
   private val tr = Tables.THUMBNAIL_READLIST
 
@@ -90,6 +90,6 @@ class ThumbnailReadListDao(
       id = id,
       readListId = readlistId,
       createdDate = createdDate,
-      lastModifiedDate = lastModifiedDate
+      lastModifiedDate = lastModifiedDate,
     )
 }

@@ -14,7 +14,7 @@ class V20210624165023__missing_series_metadata : BaseJavaMigration() {
     val jdbcTemplate = JdbcTemplate(SingleConnectionDataSource(context.connection, true))
 
     val seriesWithoutMetada = jdbcTemplate.queryForList(
-      """select s.ID, s.NAME from SERIES s where s.ID not in (select sm.SERIES_ID from SERIES_METADATA sm)"""
+      """select s.ID, s.NAME from SERIES s where s.ID not in (select sm.SERIES_ID from SERIES_METADATA sm)""",
     )
 
     if (seriesWithoutMetada.isNotEmpty()) {

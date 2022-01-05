@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Component
 class ThumbnailSeriesCollectionDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
 ) : ThumbnailSeriesCollectionRepository {
   private val tc = Tables.THUMBNAIL_COLLECTION
 
@@ -90,6 +90,6 @@ class ThumbnailSeriesCollectionDao(
       id = id,
       collectionId = collectionId,
       createdDate = createdDate,
-      lastModifiedDate = lastModifiedDate
+      lastModifiedDate = lastModifiedDate,
     )
 }

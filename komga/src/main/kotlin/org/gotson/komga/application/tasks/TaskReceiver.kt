@@ -55,9 +55,9 @@ class TaskReceiver(
     bookRepository.findAllIds(
       BookSearch(
         libraryIds = listOf(library.id),
-        mediaStatus = listOf(Media.Status.UNKNOWN, Media.Status.OUTDATED)
+        mediaStatus = listOf(Media.Status.UNKNOWN, Media.Status.OUTDATED),
       ),
-      Sort.by(Sort.Order.asc("seriesId"), Sort.Order.asc("number"))
+      Sort.by(Sort.Order.asc("seriesId"), Sort.Order.asc("number")),
     ).forEach {
       submitTask(Task.AnalyzeBook(it))
     }

@@ -97,7 +97,7 @@ class OpdsController(
   private val seriesDtoRepository: SeriesDtoRepository,
   private val bookDtoRepository: BookDtoRepository,
   private val mediaRepository: MediaRepository,
-  private val referentialRepository: ReferentialRepository
+  private val referentialRepository: ReferentialRepository,
 ) {
 
   private val routeBase = "${servletContext.contextPath}$ROUTE_BASE"
@@ -121,12 +121,12 @@ class OpdsController(
     return listOfNotNull(
       if (!page.isFirst) OpdsLinkFeedNavigation(
         OpdsLinkRel.PREVIOUS,
-        pageBuilder.expand(mapOf("page" to page.pageable.previousOrFirst().pageNumber)).toUriString()
+        pageBuilder.expand(mapOf("page" to page.pageable.previousOrFirst().pageNumber)).toUriString(),
       )
       else null,
       if (!page.isLast) OpdsLinkFeedNavigation(
         OpdsLinkRel.NEXT,
-        pageBuilder.expand(mapOf("page" to page.pageable.next().pageNumber)).toUriString()
+        pageBuilder.expand(mapOf("page" to page.pageable.next().pageNumber)).toUriString(),
       )
       else null,
     )
@@ -206,8 +206,8 @@ class OpdsController(
         id = ID_PUBLISHERS_ALL,
         content = "Browse by publishers",
         link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder(ROUTE_PUBLISHERS_ALL).toUriString()),
-      )
-    )
+      ),
+    ),
   )
 
   @GetMapping(ROUTE_SEARCH)
@@ -404,7 +404,7 @@ class OpdsController(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder(ROUTE_LIBRARIES_ALL).toUriString()),
         linkStart,
       ),
-      entries = libraries.map { it.toOpdsEntry() }
+      entries = libraries.map { it.toOpdsEntry() },
     )
   }
 
@@ -434,7 +434,7 @@ class OpdsController(
         linkStart,
         *linkPage(uriBuilder, collections).toTypedArray(),
       ),
-      entries = collections.content.map { it.toOpdsEntry() }
+      entries = collections.content.map { it.toOpdsEntry() },
     )
   }
 
@@ -464,7 +464,7 @@ class OpdsController(
         linkStart,
         *linkPage(uriBuilder, readLists).toTypedArray(),
       ),
-      entries = readLists.content.map { it.toOpdsEntry() }
+      entries = readLists.content.map { it.toOpdsEntry() },
     )
   }
 
@@ -496,7 +496,7 @@ class OpdsController(
           content = "",
           link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder(ROUTE_SERIES_ALL).queryParam("publisher", publisher).toUriString()),
         )
-      }
+      },
     )
   }
 
@@ -569,7 +569,7 @@ class OpdsController(
           linkStart,
           *linkPage(uriBuilder, entries).toTypedArray(),
         ),
-        entries = entries.content
+        entries = entries.content,
       )
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
@@ -609,7 +609,7 @@ class OpdsController(
           linkStart,
           *linkPage(uriBuilder, entries).toTypedArray(),
         ),
-        entries = entries.content
+        entries = entries.content,
       )
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
@@ -653,7 +653,7 @@ class OpdsController(
           linkStart,
           *linkPage(uriBuilder, booksPage).toTypedArray(),
         ),
-        entries = entries.content
+        entries = entries.content,
       )
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
@@ -694,7 +694,7 @@ class OpdsController(
         OpdsLinkImage(media.pages[0].mediaType, uriBuilder("books/$id/pages/1").toUriString()),
         OpdsLinkFileAcquisition(media.mediaType, uriBuilder("books/$id/file/${sanitize(FilenameUtils.getName(url))}").toUriString()),
         opdsLinkPageStreaming,
-      )
+      ),
     )
   }
 
@@ -704,7 +704,7 @@ class OpdsController(
       updated = lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
       id = id,
       content = "",
-      link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder("libraries/$id").toUriString())
+      link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder("libraries/$id").toUriString()),
     )
 
   private fun SeriesCollection.toOpdsEntry(): OpdsEntryNavigation =
@@ -713,7 +713,7 @@ class OpdsController(
       updated = lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
       id = id,
       content = "",
-      link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder("collections/$id").toUriString())
+      link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder("collections/$id").toUriString()),
     )
 
   private fun ReadList.toOpdsEntry(): OpdsEntryNavigation =
@@ -722,7 +722,7 @@ class OpdsController(
       updated = lastModifiedDate.atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
       id = id,
       content = "",
-      link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder("readlists/$id").toUriString())
+      link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder("readlists/$id").toUriString()),
     )
 
   private fun shouldPrependBookNumbers(userAgent: String) =

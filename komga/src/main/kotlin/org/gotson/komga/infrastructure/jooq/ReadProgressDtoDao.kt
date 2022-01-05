@@ -15,7 +15,7 @@ import java.math.BigDecimal
 
 @Component
 class ReadProgressDtoDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
 ) : ReadProgressDtoRepository {
 
   private val rlb = Tables.READLIST_BOOK

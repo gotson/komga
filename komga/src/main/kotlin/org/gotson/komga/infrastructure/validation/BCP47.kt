@@ -12,7 +12,7 @@ import kotlin.reflect.KClass
 annotation class BCP47(
   val message: String = "Must be a valid BCP 47 language tag",
   val groups: Array<KClass<out Any>> = [],
-  val payload: Array<KClass<out Any>> = []
+  val payload: Array<KClass<out Any>> = [],
 )
 
 class BCP47Validator : ConstraintValidator<BCP47, String> {

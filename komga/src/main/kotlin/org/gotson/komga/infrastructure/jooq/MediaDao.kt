@@ -51,7 +51,7 @@ class MediaDao(
       .groupBy(*groupFields)
       .orderBy(p.NUMBER.asc())
       .fetchGroups(
-        { it.into(m) }, { it.into(p) }
+        { it.into(m) }, { it.into(p) },
       ).map { (mr, pr) ->
         val files = dsl.selectFrom(f)
           .where(f.BOOK_ID.eq(bookId))
@@ -77,8 +77,8 @@ class MediaDao(
             m.STATUS,
             m.MEDIA_TYPE,
             m.COMMENT,
-            m.PAGE_COUNT
-          ).values(null as String?, null, null, null, null)
+            m.PAGE_COUNT,
+          ).values(null as String?, null, null, null, null),
         ).also { step ->
           chunk.forEach {
             step.bind(
@@ -86,7 +86,7 @@ class MediaDao(
               it.status,
               it.mediaType,
               it.comment,
-              it.pages.size
+              it.pages.size,
             )
           }
         }.execute()
@@ -108,8 +108,8 @@ class MediaDao(
             p.MEDIA_TYPE,
             p.NUMBER,
             p.WIDTH,
-            p.HEIGHT
-          ).values(null as String?, null, null, null, null, null)
+            p.HEIGHT,
+          ).values(null as String?, null, null, null, null, null),
         ).also { step ->
           chunk.forEach { media ->
             media.pages.forEachIndexed { index, page ->
@@ -119,7 +119,7 @@ class MediaDao(
                 page.mediaType,
                 index,
                 page.dimension?.width,
-                page.dimension?.height
+                page.dimension?.height,
               )
             }
           }
@@ -135,14 +135,14 @@ class MediaDao(
           dsl.insertInto(
             f,
             f.BOOK_ID,
-            f.FILE_NAME
-          ).values(null as String?, null)
+            f.FILE_NAME,
+          ).values(null as String?, null),
         ).also { step ->
           chunk.forEach { media ->
             media.files.forEach {
               step.bind(
                 media.bookId,
-                it
+                it,
               )
             }
           }
@@ -201,13 +201,13 @@ class MediaDao(
       comment = comment,
       bookId = bookId,
       createdDate = createdDate.toCurrentTimeZone(),
-      lastModifiedDate = lastModifiedDate.toCurrentTimeZone()
+      lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
     )
 
   private fun MediaPageRecord.toDomain() =
     BookPage(
       fileName = fileName,
       mediaType = mediaType,
-      dimension = if (width != null && height != null) Dimension(width, height) else null
+      dimension = if (width != null && height != null) Dimension(width, height) else null,
     )
 }

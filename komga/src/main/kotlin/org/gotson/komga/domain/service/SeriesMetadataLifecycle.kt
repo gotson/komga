@@ -91,7 +91,7 @@ class SeriesMetadataLifecycle(
 
   private fun handlePatchForCollections(
     patches: List<SeriesMetadataPatch>,
-    series: Series
+    series: Series,
   ) {
     patches.flatMap { it.collections }.distinct().forEach { collection ->
       collectionRepository.findByNameOrNull(collection).let { existing ->
@@ -101,7 +101,7 @@ class SeriesMetadataLifecycle(
           else {
             logger.debug { "Adding series '${series.name}' to existing collection '${existing.name}'" }
             collectionLifecycle.updateCollection(
-              existing.copy(seriesIds = existing.seriesIds + series.id)
+              existing.copy(seriesIds = existing.seriesIds + series.id),
             )
           }
         } else {
@@ -109,8 +109,8 @@ class SeriesMetadataLifecycle(
           collectionLifecycle.addCollection(
             SeriesCollection(
               name = collection,
-              seriesIds = listOf(series.id)
-            )
+              seriesIds = listOf(series.id),
+            ),
           )
         }
       }
@@ -119,7 +119,7 @@ class SeriesMetadataLifecycle(
 
   private fun handlePatchForSeriesMetadata(
     patches: List<SeriesMetadataPatch>,
-    series: Series
+    series: Series,
   ) {
     val aggregatedPatch = SeriesMetadataPatch(
       title = patches.mostFrequent { it.title },
@@ -132,7 +132,7 @@ class SeriesMetadataLifecycle(
       ageRating = patches.mapNotNull { it.ageRating }.maxOrNull(),
       publisher = patches.mostFrequent { it.publisher },
       totalBookCount = patches.mapNotNull { it.totalBookCount }.maxOrNull(),
-      collections = emptyList()
+      collections = emptyList(),
     )
 
     handlePatchForSeriesMetadata(aggregatedPatch, series)
@@ -140,7 +140,7 @@ class SeriesMetadataLifecycle(
 
   private fun handlePatchForSeriesMetadata(
     patch: SeriesMetadataPatch,
-    series: Series
+    series: Series,
   ) {
     seriesMetadataRepository.findById(series.id).let {
       logger.debug { "Apply metadata for series: $series" }

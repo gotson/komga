@@ -19,7 +19,7 @@ annotation class WithMockCustomUser(
   val roles: Array<String> = [ROLE_FILE_DOWNLOAD, ROLE_PAGE_STREAMING],
   val sharedAllLibraries: Boolean = true,
   val sharedLibraries: Array<String> = [],
-  val id: String = "0"
+  val id: String = "0",
 )
 
 class WithMockCustomUserSecurityContextFactory : WithSecurityContextFactory<WithMockCustomUser> {
@@ -35,8 +35,8 @@ class WithMockCustomUserSecurityContextFactory : WithSecurityContextFactory<With
         rolePageStreaming = customUser.roles.contains(ROLE_PAGE_STREAMING),
         sharedAllLibraries = customUser.sharedAllLibraries,
         sharedLibrariesIds = customUser.sharedLibraries.toSet(),
-        id = customUser.id
-      )
+        id = customUser.id,
+      ),
     )
     val auth = UsernamePasswordAuthenticationToken(principal, "", principal.authorities)
     context.authentication = auth

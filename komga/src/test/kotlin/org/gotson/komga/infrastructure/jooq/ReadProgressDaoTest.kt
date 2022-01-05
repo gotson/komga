@@ -27,7 +27,7 @@ class ReadProgressDaoTest(
   @Autowired private val userRepository: KomgaUserRepository,
   @Autowired private val bookRepository: BookRepository,
   @Autowired private val seriesRepository: SeriesRepository,
-  @Autowired private val libraryRepository: LibraryRepository
+  @Autowired private val libraryRepository: LibraryRepository,
 ) {
   private val library = makeLibrary()
   private val series = makeSeries("Series")
@@ -70,8 +70,8 @@ class ReadProgressDaoTest(
         book1.id,
         user1.id,
         5,
-        false
-      )
+        false,
+      ),
     )
 
     val readProgressList = readProgressDao.findAllByUserId(user1.id)
@@ -95,8 +95,8 @@ class ReadProgressDaoTest(
         book1.id,
         user1.id,
         5,
-        false
-      )
+        false,
+      ),
     )
 
     val modificationDate = LocalDateTime.now()
@@ -109,7 +109,7 @@ class ReadProgressDaoTest(
         10,
         true,
         readDate = readDateInThePast,
-      )
+      ),
     )
 
     val readProgressList = readProgressDao.findAllByUserId(user1.id)

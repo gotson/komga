@@ -89,8 +89,8 @@ class BookLifecycleTest(
       mediaRepository.update(
         media.copy(
           status = Media.Status.OUTDATED,
-          pages = (1..10).map { BookPage("$it", "image/jpeg") }
-        )
+          pages = (1..10).map { BookPage("$it", "image/jpeg") },
+        ),
       )
     }
 
@@ -122,8 +122,8 @@ class BookLifecycleTest(
       mediaRepository.update(
         media.copy(
           status = Media.Status.OUTDATED,
-          pages = (1..10).map { BookPage("$it", "image/jpeg") }
-        )
+          pages = (1..10).map { BookPage("$it", "image/jpeg") },
+        ),
       )
     }
 

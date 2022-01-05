@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 @SpringBootTest
 class SeriesDaoTest(
   @Autowired private val seriesDao: SeriesDao,
-  @Autowired private val libraryRepository: LibraryRepository
+  @Autowired private val libraryRepository: LibraryRepository,
 ) {
 
   private val library = makeLibrary()
@@ -107,7 +107,7 @@ class SeriesDaoTest(
       name = "Series",
       url = URL("file://series"),
       fileLastModified = LocalDateTime.now(),
-      libraryId = library.id
+      libraryId = library.id,
     )
 
     seriesDao.insert(series)
@@ -125,14 +125,14 @@ class SeriesDaoTest(
       name = "Series",
       url = URL("file://series"),
       fileLastModified = now,
-      libraryId = library.id
+      libraryId = library.id,
     )
 
     val series2 = Series(
       name = "Series2",
       url = URL("file://series2"),
       fileLastModified = now,
-      libraryId = library.id
+      libraryId = library.id,
     )
 
     seriesDao.insert(series)
@@ -151,14 +151,14 @@ class SeriesDaoTest(
       name = "Series",
       url = URL("file://series"),
       fileLastModified = now,
-      libraryId = library.id
+      libraryId = library.id,
     )
 
     val series2 = Series(
       name = "Series2",
       url = URL("file://series2"),
       fileLastModified = now,
-      libraryId = library.id
+      libraryId = library.id,
     )
 
     seriesDao.insert(series)
@@ -176,7 +176,7 @@ class SeriesDaoTest(
       name = "Series",
       url = URL("file://series"),
       fileLastModified = LocalDateTime.now(),
-      libraryId = library.id
+      libraryId = library.id,
     )
 
     seriesDao.insert(series)
@@ -200,13 +200,13 @@ class SeriesDaoTest(
       name = "Series",
       url = URL("file://series"),
       fileLastModified = LocalDateTime.now(),
-      libraryId = library.id
+      libraryId = library.id,
     )
 
     seriesDao.insert(series)
 
     val search = SeriesSearch(
-      libraryIds = listOf(library.id)
+      libraryIds = listOf(library.id),
     )
     val found = seriesDao.findAll(search)
 
@@ -219,7 +219,7 @@ class SeriesDaoTest(
       name = "my Series",
       url = URL("file://series"),
       fileLastModified = LocalDateTime.now(),
-      libraryId = library.id
+      libraryId = library.id,
     )
     seriesDao.insert(series)
 
@@ -234,7 +234,7 @@ class SeriesDaoTest(
       name = "Series",
       url = URL("file://series"),
       fileLastModified = LocalDateTime.now(),
-      libraryId = library.id
+      libraryId = library.id,
     )
     seriesDao.insert(series)
 
@@ -250,7 +250,7 @@ class SeriesDaoTest(
       name = "Series",
       url = URL("file://series"),
       fileLastModified = LocalDateTime.now(),
-      libraryId = library.id
+      libraryId = library.id,
     )
     seriesDao.insert(series)
 
@@ -265,7 +265,7 @@ class SeriesDaoTest(
       name = "Series",
       url = URL("file://series"),
       fileLastModified = LocalDateTime.now(),
-      libraryId = library.id
+      libraryId = library.id,
     )
     seriesDao.insert(series)
 
@@ -284,7 +284,7 @@ class SeriesDaoTest(
       name = "Series",
       url = URL("file://series"),
       fileLastModified = LocalDateTime.now(),
-      libraryId = library.id
+      libraryId = library.id,
     )
     seriesDao.insert(series)
 

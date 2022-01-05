@@ -20,7 +20,7 @@ private val logger = KotlinLogging.logger {}
 
 @Service
 class PdfExtractor(
-  private val imageAnalyzer: ImageAnalyzer
+  private val imageAnalyzer: ImageAnalyzer,
 ) : MediaContainerExtractor {
 
   private val mediaType = "image/jpeg"

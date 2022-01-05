@@ -35,7 +35,7 @@ data class MediaDto(
   val status: String,
   val mediaType: String,
   val pagesCount: Int,
-  val comment: String
+  val comment: String,
 )
 
 data class BookMetadataDto(
@@ -62,7 +62,7 @@ data class BookMetadataDto(
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val created: LocalDateTime,
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-  val lastModified: LocalDateTime
+  val lastModified: LocalDateTime,
 )
 
 data class ReadProgressDto(
@@ -73,5 +73,5 @@ data class ReadProgressDto(
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val created: LocalDateTime,
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-  val lastModified: LocalDateTime
+  val lastModified: LocalDateTime,
 )

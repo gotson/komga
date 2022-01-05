@@ -26,7 +26,7 @@ class MediaDaoTest(
   @Autowired private val mediaDao: MediaDao,
   @Autowired private val bookRepository: BookRepository,
   @Autowired private val seriesRepository: SeriesRepository,
-  @Autowired private val libraryRepository: LibraryRepository
+  @Autowired private val libraryRepository: LibraryRepository,
 ) {
   private val library = makeLibrary()
   private val series = makeSeries("Series")
@@ -64,12 +64,12 @@ class MediaDaoTest(
       pages = listOf(
         BookPage(
           fileName = "1.jpg",
-          mediaType = "image/jpeg"
-        )
+          mediaType = "image/jpeg",
+        ),
       ),
       files = listOf("ComicInfo.xml"),
       comment = "comment",
-      bookId = book.id
+      bookId = book.id,
     )
 
     mediaDao.insert(media)
@@ -113,12 +113,12 @@ class MediaDaoTest(
       pages = listOf(
         BookPage(
           fileName = "1.jpg",
-          mediaType = "image/jpeg"
-        )
+          mediaType = "image/jpeg",
+        ),
       ),
       files = listOf("ComicInfo.xml"),
       comment = "comment",
-      bookId = book.id
+      bookId = book.id,
     )
     mediaDao.insert(media)
 
@@ -131,11 +131,11 @@ class MediaDaoTest(
         pages = listOf(
           BookPage(
             fileName = "2.png",
-            mediaType = "image/png"
-          )
+            mediaType = "image/png",
+          ),
         ),
         files = listOf("id.txt"),
-        comment = "comment2"
+        comment = "comment2",
       )
     }
 
@@ -163,12 +163,12 @@ class MediaDaoTest(
       pages = listOf(
         BookPage(
           fileName = "1.jpg",
-          mediaType = "image/jpeg"
-        )
+          mediaType = "image/jpeg",
+        ),
       ),
       files = listOf("ComicInfo.xml"),
       comment = "comment",
-      bookId = book.id
+      bookId = book.id,
     )
     mediaDao.insert(media)
 

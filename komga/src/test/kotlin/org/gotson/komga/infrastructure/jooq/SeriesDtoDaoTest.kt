@@ -103,7 +103,7 @@ class SeriesDtoDaoTest(
           created,
           (1..3).map {
             makeBook("$it", seriesId = created.id, libraryId = library.id)
-          }
+          },
         )
         seriesLifecycle.sortBooks(created)
       }
@@ -137,7 +137,7 @@ class SeriesDtoDaoTest(
       val found = seriesDtoDao.findAll(
         SeriesSearchWithReadProgress(readStatus = listOf(ReadStatus.READ)),
         user.id,
-        PageRequest.of(0, 20)
+        PageRequest.of(0, 20),
       ).sortedBy { it.name }
 
       // then
@@ -156,7 +156,7 @@ class SeriesDtoDaoTest(
       val found = seriesDtoDao.findAll(
         SeriesSearchWithReadProgress(readStatus = listOf(ReadStatus.UNREAD)),
         user.id,
-        PageRequest.of(0, 20)
+        PageRequest.of(0, 20),
       ).sortedBy { it.name }
 
       // then
@@ -175,7 +175,7 @@ class SeriesDtoDaoTest(
       val found = seriesDtoDao.findAll(
         SeriesSearchWithReadProgress(readStatus = listOf(ReadStatus.IN_PROGRESS)),
         user.id,
-        PageRequest.of(0, 20)
+        PageRequest.of(0, 20),
       ).sortedBy { it.name }
 
       // then
@@ -197,7 +197,7 @@ class SeriesDtoDaoTest(
       val found = seriesDtoDao.findAll(
         SeriesSearchWithReadProgress(readStatus = listOf(ReadStatus.READ, ReadStatus.UNREAD)),
         user.id,
-        PageRequest.of(0, 20)
+        PageRequest.of(0, 20),
       ).sortedBy { it.name }
 
       // then
@@ -214,7 +214,7 @@ class SeriesDtoDaoTest(
       val found = seriesDtoDao.findAll(
         SeriesSearchWithReadProgress(readStatus = listOf(ReadStatus.READ, ReadStatus.IN_PROGRESS)),
         user.id,
-        PageRequest.of(0, 20)
+        PageRequest.of(0, 20),
       ).sortedBy { it.name }
 
       // then
@@ -231,7 +231,7 @@ class SeriesDtoDaoTest(
       val found = seriesDtoDao.findAll(
         SeriesSearchWithReadProgress(readStatus = listOf(ReadStatus.UNREAD, ReadStatus.IN_PROGRESS)),
         user.id,
-        PageRequest.of(0, 20)
+        PageRequest.of(0, 20),
       ).sortedBy { it.name }
 
       // then
@@ -248,7 +248,7 @@ class SeriesDtoDaoTest(
       val found = seriesDtoDao.findAll(
         SeriesSearchWithReadProgress(readStatus = listOf(ReadStatus.READ, ReadStatus.IN_PROGRESS, ReadStatus.UNREAD)),
         user.id,
-        PageRequest.of(0, 20)
+        PageRequest.of(0, 20),
       ).sortedBy { it.name }
 
       // then
@@ -265,7 +265,7 @@ class SeriesDtoDaoTest(
       val found = seriesDtoDao.findAll(
         SeriesSearchWithReadProgress(),
         user.id,
-        PageRequest.of(0, 20)
+        PageRequest.of(0, 20),
       ).sortedBy { it.name }
 
       // then
@@ -546,8 +546,8 @@ class SeriesDtoDaoTest(
         series,
         listOf(
           makeBook("Batman 01", seriesId = series.id, libraryId = library.id),
-          makeBook("Batman 02", seriesId = series.id, libraryId = library.id)
-        )
+          makeBook("Batman 02", seriesId = series.id, libraryId = library.id),
+        ),
       )
       seriesLifecycle.sortBooks(series)
       seriesLifecycle.createSeries(makeSeries("Batman and Robin", library.id))
@@ -582,9 +582,9 @@ class SeriesDtoDaoTest(
         bookMetadataRepository.update(
           it.copy(
             authors = listOf(
-              Author("David", "penciller")
-            )
-          )
+              Author("David", "penciller"),
+            ),
+          ),
         )
       }
 

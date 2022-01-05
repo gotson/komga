@@ -41,5 +41,5 @@ data class MylarMetadata(
   @field:JsonProperty("publication_run")
   val publicationRun: String,
 
-  val status: Status
+  val status: Status,
 )

@@ -26,7 +26,7 @@ import org.springframework.test.web.servlet.post
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
 class LibraryControllerTest(
   @Autowired private val mockMvc: MockMvc,
-  @Autowired private val libraryRepository: LibraryRepository
+  @Autowired private val libraryRepository: LibraryRepository,
 ) {
 
   private val route = "/api/v1/libraries"

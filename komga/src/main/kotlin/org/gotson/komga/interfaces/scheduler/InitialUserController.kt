@@ -17,7 +17,7 @@ private val logger = KotlinLogging.logger {}
 @Component
 class InitialUserController(
   private val userLifecycle: KomgaUserLifecycle,
-  private val initialUsers: List<KomgaUser>
+  private val initialUsers: List<KomgaUser>,
 ) {
 
   @EventListener(ApplicationReadyEvent::class)
@@ -40,7 +40,7 @@ class InitialUsersDevConfiguration {
   @Bean
   fun initialUsers(): List<KomgaUser> = listOf(
     KomgaUser("admin@example.org", "admin", roleAdmin = true),
-    KomgaUser("user@example.org", "user", roleAdmin = false)
+    KomgaUser("user@example.org", "user", roleAdmin = false),
   )
 }
 
@@ -49,6 +49,6 @@ class InitialUsersDevConfiguration {
 class InitialUsersProdConfiguration {
   @Bean
   fun initialUsers(): List<KomgaUser> = listOf(
-    KomgaUser("admin@example.org", RandomStringUtils.randomAlphanumeric(12), roleAdmin = true)
+    KomgaUser("admin@example.org", RandomStringUtils.randomAlphanumeric(12), roleAdmin = true),
   )
 }

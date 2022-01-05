@@ -21,7 +21,7 @@ private val logger = KotlinLogging.logger {}
 class BookAnalyzer(
   private val contentDetector: ContentDetector,
   extractors: List<MediaContainerExtractor>,
-  private val imageConverter: ImageConverter
+  private val imageConverter: ImageConverter,
 ) {
 
   val supportedMediaTypes = extractors
@@ -54,7 +54,7 @@ class BookAnalyzer(
         }.let { (images, others) ->
           Pair(
             images.map { BookPage(it.name, it.mediaType!!, it.dimension) },
-            others
+            others,
           )
         }
 
@@ -106,13 +106,13 @@ class BookAnalyzer(
     return ThumbnailBook(
       thumbnail = thumbnail,
       type = ThumbnailBook.Type.GENERATED,
-      bookId = book.book.id
+      bookId = book.book.id,
     )
   }
 
   @Throws(
     MediaNotReadyException::class,
-    IndexOutOfBoundsException::class
+    IndexOutOfBoundsException::class,
   )
   fun getPageContent(book: BookWithMedia, number: Int): ByteArray {
     logger.info { "Get page #$number for book: $book" }
@@ -131,7 +131,7 @@ class BookAnalyzer(
   }
 
   @Throws(
-    MediaNotReadyException::class
+    MediaNotReadyException::class,
   )
   fun getFileContent(book: BookWithMedia, fileName: String): ByteArray {
     logger.info { "Get file $fileName for book: $book" }

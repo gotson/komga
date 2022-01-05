@@ -11,7 +11,7 @@ fun makeBook(name: String, fileLastModified: LocalDateTime = LocalDateTime.now()
     url = url ?: URL("file:/${name.replace(" ", "_")}"),
     fileLastModified = fileLastModified,
     libraryId = libraryId,
-    seriesId = seriesId
+    seriesId = seriesId,
   )
 }
 
@@ -21,7 +21,7 @@ fun makeSeries(name: String, libraryId: String = "", url: URL? = null): Series {
     name = name,
     url = url ?: URL("file:/${name.replace(" ", "_")}"),
     fileLastModified = LocalDateTime.now(),
-    libraryId = libraryId
+    libraryId = libraryId,
   )
 }
 
@@ -29,7 +29,7 @@ fun makeLibrary(name: String = "default", path: String = "file:/${name.replace("
   return Library(
     name = name,
     root = url ?: URL(path),
-    id = id
+    id = id,
   )
 }
 

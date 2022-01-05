@@ -75,7 +75,7 @@ class SeriesCollectionController(
     @RequestParam(name = "search", required = false) searchTerm: String?,
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
-    @Parameter(hidden = true) page: Pageable
+    @Parameter(hidden = true) page: Pageable,
   ): Page<CollectionDto> {
     val sort = when {
       !searchTerm.isNullOrBlank() -> Sort.by("relevance")
@@ -87,7 +87,7 @@ class SeriesCollectionController(
       else PageRequest.of(
         page.pageNumber,
         page.pageSize,
-        sort
+        sort,
       )
 
     return when {
@@ -101,7 +101,7 @@ class SeriesCollectionController(
   @GetMapping("{id}")
   fun getOne(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @PathVariable id: String
+    @PathVariable id: String,
   ): CollectionDto =
     collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))
       ?.toDto()
@@ -111,7 +111,7 @@ class SeriesCollectionController(
   @GetMapping(value = ["{id}/thumbnail"], produces = [MediaType.IMAGE_JPEG_VALUE])
   fun getCollectionThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @PathVariable id: String
+    @PathVariable id: String,
   ): ResponseEntity<ByteArray> {
     collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
       return ResponseEntity.ok()
@@ -125,7 +125,7 @@ class SeriesCollectionController(
   fun getCollectionThumbnailById(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "id") id: String,
-    @PathVariable(name = "thumbnailId") thumbnailId: String
+    @PathVariable(name = "thumbnailId") thumbnailId: String,
   ): ByteArray {
     collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
       return collectionLifecycle.getThumbnailBytes(thumbnailId)
@@ -162,7 +162,7 @@ class SeriesCollectionController(
           collectionId = collection.id,
           thumbnail = file.bytes,
           type = ThumbnailSeriesCollection.Type.USER_UPLOADED,
-          selected = selected
+          selected = selected,
         ),
       )
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -201,15 +201,15 @@ class SeriesCollectionController(
   @PostMapping
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   fun addOne(
-    @Valid @RequestBody collection: CollectionCreationDto
+    @Valid @RequestBody collection: CollectionCreationDto,
   ): CollectionDto =
     try {
       collectionLifecycle.addCollection(
         SeriesCollection(
           name = collection.name,
           ordered = collection.ordered,
-          seriesIds = collection.seriesIds
-        )
+          seriesIds = collection.seriesIds,
+        ),
       ).toDto()
     } catch (e: DuplicateNameException) {
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
@@ -220,13 +220,13 @@ class SeriesCollectionController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateOne(
     @PathVariable id: String,
-    @Valid @RequestBody collection: CollectionUpdateDto
+    @Valid @RequestBody collection: CollectionUpdateDto,
   ) {
     collectionRepository.findByIdOrNull(id)?.let { existing ->
       val updated = existing.copy(
         name = collection.name ?: existing.name,
         ordered = collection.ordered ?: existing.ordered,
-        seriesIds = collection.seriesIds ?: existing.seriesIds
+        seriesIds = collection.seriesIds ?: existing.seriesIds,
       )
       try {
         collectionLifecycle.updateCollection(updated)
@@ -240,7 +240,7 @@ class SeriesCollectionController(
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun deleteOne(
-    @PathVariable id: String
+    @PathVariable id: String,
   ) {
     collectionRepository.findByIdOrNull(id)?.let {
       collectionLifecycle.deleteCollection(it)
@@ -266,7 +266,7 @@ class SeriesCollectionController(
     @RequestParam(name = "complete", required = false) complete: Boolean?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) @Authors authors: List<Author>?,
-    @Parameter(hidden = true) page: Pageable
+    @Parameter(hidden = true) page: Pageable,
   ): Page<SeriesDto> =
     collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { collection ->
       val sort =
@@ -278,7 +278,7 @@ class SeriesCollectionController(
         else PageRequest.of(
           page.pageNumber,
           page.pageSize,
-          sort
+          sort,
         )
 
       val seriesSearch = SeriesSearchWithReadProgress(
@@ -293,7 +293,7 @@ class SeriesCollectionController(
         tags = tags,
         ageRatings = ageRatings?.map { it.toIntOrNull() },
         releaseYears = release_years,
-        authors = authors
+        authors = authors,
       )
 
       seriesDtoRepository.findAllByCollectionId(collection.id, seriesSearch, principal.user.id, pageRequest)

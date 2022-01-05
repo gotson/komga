@@ -19,7 +19,7 @@ import java.nio.file.Files
 @SpringBootTest
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
 class FileSystemControllerTest(
-  @Autowired private val mockMvc: MockMvc
+  @Autowired private val mockMvc: MockMvc,
 ) {
   private val route = "/api/v1/filesystem"
 

@@ -15,7 +15,7 @@ class LocalArtworkLifecycle(
   private val libraryRepository: LibraryRepository,
   private val bookLifecycle: BookLifecycle,
   private val seriesLifecycle: SeriesLifecycle,
-  private val localArtworkProvider: LocalArtworkProvider
+  private val localArtworkProvider: LocalArtworkProvider,
 ) {
 
   fun refreshLocalArtwork(book: Book) {

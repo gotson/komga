@@ -16,7 +16,7 @@ abstract class OpdsEntry(
   @get:JacksonXmlProperty(namespace = ATOM)
   val id: String,
 
-  content: String
+  content: String,
 ) {
   @get:JacksonXmlProperty(namespace = ATOM)
   val content: String = content.replace("\n", "<br/>")
@@ -29,7 +29,7 @@ class OpdsEntryNavigation(
   content: String,
 
   @JacksonXmlProperty(namespace = ATOM)
-  val link: OpdsLink
+  val link: OpdsLink,
 ) : OpdsEntry(title, updated, id, content)
 
 class OpdsEntryAcquisition(
@@ -44,5 +44,5 @@ class OpdsEntryAcquisition(
 
   @JacksonXmlElementWrapper(useWrapping = false)
   @JacksonXmlProperty(localName = "link", namespace = ATOM)
-  val links: List<OpdsLink>
+  val links: List<OpdsLink>,
 ) : OpdsEntry(title, updated, id, content)

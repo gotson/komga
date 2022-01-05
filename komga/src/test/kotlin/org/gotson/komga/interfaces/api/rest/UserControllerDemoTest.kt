@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.patch
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
 @ActiveProfiles("demo", "test")
 class UserControllerDemoTest(
-  @Autowired private val mockMvc: MockMvc
+  @Autowired private val mockMvc: MockMvc,
 
 ) {
   @Test

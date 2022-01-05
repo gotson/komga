@@ -18,7 +18,7 @@ import java.time.LocalDateTime
 
 @Component
 class AuthenticationActivityDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
 ) : AuthenticationActivityRepository {
 
   private val aa = Tables.AUTHENTICATION_ACTIVITY

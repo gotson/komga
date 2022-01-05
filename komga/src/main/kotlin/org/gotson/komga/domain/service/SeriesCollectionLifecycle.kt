@@ -25,7 +25,7 @@ class SeriesCollectionLifecycle(
 ) {
 
   @Throws(
-    DuplicateNameException::class
+    DuplicateNameException::class,
   )
   fun addCollection(collection: SeriesCollection): SeriesCollection {
     logger.info { "Adding new collection: $collection" }

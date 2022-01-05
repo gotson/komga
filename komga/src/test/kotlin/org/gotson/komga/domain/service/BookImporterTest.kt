@@ -357,7 +357,7 @@ class BookImporterTest(
             numberLock = true,
             numberSort = 100F,
             numberSortLock = true,
-          )
+          ),
         )
       }
 
@@ -449,8 +449,8 @@ class BookImporterTest(
         mediaRepository.update(
           media.copy(
             status = Media.Status.READY,
-            pages = (1..10).map { BookPage("$it", "image/jpeg") }
-          )
+            pages = (1..10).map { BookPage("$it", "image/jpeg") },
+          ),
         )
       }
 

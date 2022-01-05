@@ -165,6 +165,6 @@ class SeriesDao(
       bookCount = bookCount,
       deletedDate = deletedDate,
       createdDate = createdDate.toCurrentTimeZone(),
-      lastModifiedDate = lastModifiedDate.toCurrentTimeZone()
+      lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
     )
 }

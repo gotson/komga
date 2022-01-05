@@ -17,7 +17,7 @@ private val logger = KotlinLogging.logger {}
 class EpubExtractor(
   private val zipExtractor: ZipExtractor,
   private val contentDetector: ContentDetector,
-  private val imageAnalyzer: ImageAnalyzer
+  private val imageAnalyzer: ImageAnalyzer,
 ) : MediaContainerExtractor {
 
   override fun mediaTypes(): List<String> = listOf("application/epub+zip")
@@ -94,6 +94,6 @@ class EpubExtractor(
   private data class ManifestItem(
     val id: String,
     val href: String,
-    val mediaType: String
+    val mediaType: String,
   )
 }

@@ -57,7 +57,7 @@ class SecurityConfiguration(
         it.mvcMatchers(
           "/api/**",
           "/opds/**",
-          "/sse/**"
+          "/sse/**",
         ).hasRole(ROLE_USER)
       }
       .headers {
@@ -102,7 +102,7 @@ class SecurityConfiguration(
               setTokenValiditySeconds(komgaProperties.rememberMe.validity.seconds.toInt())
               setAlwaysRemember(true)
               setAuthenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
-            }
+            },
           )
         }
     }
@@ -125,7 +125,7 @@ class SecurityConfiguration(
         "/android-chrome-512x512.png",
         "/manifest.json",
         "/",
-        "/index.html"
+        "/index.html",
       )
   }
 }

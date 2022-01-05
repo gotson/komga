@@ -11,14 +11,14 @@ import javax.validation.constraints.NotBlank
 data class UserDto(
   val id: String,
   val email: String,
-  val roles: List<String>
+  val roles: List<String>,
 )
 
 fun KomgaUser.toDto() =
   UserDto(
     id = id,
     email = email,
-    roles = roles().toList()
+    roles = roles().toList(),
   )
 
 fun KomgaPrincipal.toDto() = user.toDto()
@@ -28,11 +28,11 @@ data class UserWithSharedLibrariesDto(
   val email: String,
   val roles: List<String>,
   val sharedAllLibraries: Boolean,
-  val sharedLibraries: List<SharedLibraryDto>
+  val sharedLibraries: List<SharedLibraryDto>,
 )
 
 data class SharedLibraryDto(
-  val id: String
+  val id: String,
 )
 
 fun KomgaUser.toWithSharedLibrariesDto() =
@@ -41,13 +41,13 @@ fun KomgaUser.toWithSharedLibrariesDto() =
     email = email,
     roles = roles().toList(),
     sharedAllLibraries = sharedAllLibraries,
-    sharedLibraries = sharedLibrariesIds.map { SharedLibraryDto(it) }
+    sharedLibraries = sharedLibrariesIds.map { SharedLibraryDto(it) },
   )
 
 data class UserCreationDto(
   @get:Email(regexp = ".+@.+\\..+") val email: String,
   @get:NotBlank val password: String,
-  val roles: List<String> = emptyList()
+  val roles: List<String> = emptyList(),
 ) {
   fun toDomain(): KomgaUser =
     KomgaUser(
@@ -55,19 +55,19 @@ data class UserCreationDto(
       password,
       roleAdmin = roles.contains(ROLE_ADMIN),
       roleFileDownload = roles.contains(ROLE_FILE_DOWNLOAD),
-      rolePageStreaming = roles.contains(ROLE_PAGE_STREAMING)
+      rolePageStreaming = roles.contains(ROLE_PAGE_STREAMING),
     )
 }
 
 data class PasswordUpdateDto(
-  @get:NotBlank val password: String
+  @get:NotBlank val password: String,
 )
 
 data class SharedLibrariesUpdateDto(
   val all: Boolean,
-  val libraryIds: Set<String>
+  val libraryIds: Set<String>,
 )
 
 data class RolesUpdateDto(
-  val roles: List<String>
+  val roles: List<String>,
 )

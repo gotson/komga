@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
 @ReadProgressUpdateDtoConstraint
 data class ReadProgressUpdateDto(
   @get:Positive val page: Int?,
-  val completed: Boolean?
+  val completed: Boolean?,
 )
 
 @Constraint(validatedBy = [ReadProgressUpdateDtoValidator::class])
@@ -18,7 +18,7 @@ data class ReadProgressUpdateDto(
 annotation class ReadProgressUpdateDtoConstraint(
   val message: String = "page must be specified if completed is false or null",
   val groups: Array<KClass<out Any>> = [],
-  val payload: Array<KClass<out Any>> = []
+  val payload: Array<KClass<out Any>> = [],
 )
 
 class ReadProgressUpdateDtoValidator : ConstraintValidator<ReadProgressUpdateDtoConstraint, ReadProgressUpdateDto> {

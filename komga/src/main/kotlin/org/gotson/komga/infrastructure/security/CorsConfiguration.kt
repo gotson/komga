@@ -32,7 +32,7 @@ class CorsConfiguration {
           allowCredentials = true
           addExposedHeader(HttpHeaders.CONTENT_DISPOSITION)
           addExposedHeader(sessionHeaderName)
-        }
+        },
       )
     }
 

@@ -24,7 +24,7 @@ import java.time.LocalDateTime
 class BookDaoTest(
   @Autowired private val bookDao: BookDao,
   @Autowired private val seriesRepository: SeriesRepository,
-  @Autowired private val libraryRepository: LibraryRepository
+  @Autowired private val libraryRepository: LibraryRepository,
 ) {
 
   private val library = makeLibrary()
@@ -125,7 +125,7 @@ class BookDaoTest(
       fileLastModified = LocalDateTime.now(),
       fileSize = 3,
       seriesId = series.id,
-      libraryId = library.id
+      libraryId = library.id,
     )
     bookDao.insert(book)
 
@@ -159,7 +159,7 @@ class BookDaoTest(
 
     val search = BookSearch(
       libraryIds = listOf(library.id),
-      seriesIds = listOf(series.id)
+      seriesIds = listOf(series.id),
     )
     val found = bookDao.findAll(search)
 

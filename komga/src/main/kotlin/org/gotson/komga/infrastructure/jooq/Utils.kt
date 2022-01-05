@@ -52,7 +52,7 @@ fun DSLContext.insertTempStrings(batchSize: Int, collection: Collection<String>)
   if (collection.isNotEmpty()) {
     collection.chunked(batchSize).forEach { chunk ->
       this.batch(
-        this.insertInto(Tables.TEMP_STRING_LIST, Tables.TEMP_STRING_LIST.STRING).values(null as String?)
+        this.insertInto(Tables.TEMP_STRING_LIST, Tables.TEMP_STRING_LIST.STRING).values(null as String?),
       ).also { step ->
         chunk.forEach {
           step.bind(it)

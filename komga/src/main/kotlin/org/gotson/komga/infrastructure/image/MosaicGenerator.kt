@@ -19,7 +19,7 @@ class MosaicGenerator {
           0 to 0,
           106 to 0,
           0 to 150,
-          106 to 150
+          106 to 150,
         ).forEachIndexed { index, (x, y) ->
           thumbs.getOrNull(index)?.let { drawImage(it, x, y, null) }
         }

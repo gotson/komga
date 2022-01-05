@@ -10,5 +10,5 @@ data class OpdsAuthor(
 
   @JsonInclude(JsonInclude.Include.NON_NULL)
   @JacksonXmlProperty(namespace = ATOM)
-  val uri: URI? = null
+  val uri: URI? = null,
 )

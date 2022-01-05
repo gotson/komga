@@ -96,7 +96,7 @@ class BookConverter(
       ?.copy(
         id = book.id,
         seriesId = book.seriesId,
-        libraryId = book.libraryId
+        libraryId = book.libraryId,
       )
       ?: throw IllegalStateException("Newly converted book could not be scanned: $destinationFilename")
 
@@ -172,7 +172,7 @@ class BookConverter(
       ?.copy(
         id = book.id,
         seriesId = book.seriesId,
-        libraryId = book.libraryId
+        libraryId = book.libraryId,
       )
       ?: throw IllegalStateException("Repaired book could not be scanned: $destinationFilename")
 

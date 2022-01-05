@@ -36,7 +36,7 @@ class SeriesCollectionControllerTest(
   @Autowired private val collectionRepository: SeriesCollectionRepository,
   @Autowired private val libraryLifecycle: LibraryLifecycle,
   @Autowired private val libraryRepository: LibraryRepository,
-  @Autowired private val seriesLifecycle: SeriesLifecycle
+  @Autowired private val seriesLifecycle: SeriesLifecycle,
 ) {
 
   private val library1 = makeLibrary("Library1", id = "1")
@@ -77,22 +77,22 @@ class SeriesCollectionControllerTest(
     colLib1 = collectionLifecycle.addCollection(
       SeriesCollection(
         name = "Lib1",
-        seriesIds = seriesLibrary1.map { it.id }
-      )
+        seriesIds = seriesLibrary1.map { it.id },
+      ),
     )
 
     colLib2 = collectionLifecycle.addCollection(
       SeriesCollection(
         name = "Lib2",
-        seriesIds = seriesLibrary2.map { it.id }
-      )
+        seriesIds = seriesLibrary2.map { it.id },
+      ),
     )
 
     colLibBoth = collectionLifecycle.addCollection(
       SeriesCollection(
         name = "Lib1+2",
-        seriesIds = (seriesLibrary1 + seriesLibrary2).map { it.id }
-      )
+        seriesIds = (seriesLibrary1 + seriesLibrary2).map { it.id },
+      ),
     )
   }
 

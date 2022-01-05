@@ -14,7 +14,7 @@ class DelimitedPairHandlerMethodArgumentResolver : HandlerMethodArgumentResolver
     parameter: MethodParameter,
     mavContainer: ModelAndViewContainer?,
     webRequest: NativeWebRequest,
-    binderFactory: WebDataBinderFactory?
+    binderFactory: WebDataBinderFactory?,
   ): Pair<String, String>? {
     val paramName = parameter.getParameterAnnotation(DelimitedPair::class.java)?.parameterName ?: return null
     val param = webRequest.getParameterValues(paramName) ?: return null

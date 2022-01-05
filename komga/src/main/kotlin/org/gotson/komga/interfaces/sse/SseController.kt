@@ -124,7 +124,7 @@ class SseController(
             emitter.send(
               SseEmitter.event()
                 .name(name)
-                .data(data, MediaType.APPLICATION_JSON)
+                .data(data, MediaType.APPLICATION_JSON),
             )
           } catch (e: IOException) {
           }

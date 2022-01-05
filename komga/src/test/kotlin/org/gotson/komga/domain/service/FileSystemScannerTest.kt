@@ -123,7 +123,7 @@ class FileSystemScannerTest {
 
       val subDirs = listOf(
         "series1" to listOf("volume1.cbz", "volume2.cbz"),
-        "series2" to listOf("book1.cbz", "book2.cbz")
+        "series2" to listOf("book1.cbz", "book2.cbz"),
       ).toMap()
 
       subDirs.forEach { (dir, files) ->
@@ -140,13 +140,13 @@ class FileSystemScannerTest {
       assertThat(series.map { it.name }).containsExactlyInAnyOrderElementsOf(subDirs.keys)
       series.forEach { s ->
         assertThat(
-          scan.getValue(s).map { it.name }
+          scan.getValue(s).map { it.name },
         ).containsExactlyInAnyOrderElementsOf(
           subDirs[s.name]?.map {
             FilenameUtils.removeExtension(
-              it
+              it,
             )
-          }
+          },
         )
       }
     }
@@ -164,7 +164,7 @@ class FileSystemScannerTest {
 
       val subDirs = listOf(
         "series1" to listOf("volume1.cbz", "volume2.cbz"),
-        "series2" to listOf("book1.cbz", "book2.cbz")
+        "series2" to listOf("book1.cbz", "book2.cbz"),
       ).toMap()
 
       subDirs.forEach { (dir, files) ->
@@ -181,13 +181,13 @@ class FileSystemScannerTest {
       assertThat(series.map { it.name }).containsExactlyInAnyOrderElementsOf(subDirs.keys)
       series.forEach { s ->
         assertThat(
-          scan.getValue(s).map { it.name }
+          scan.getValue(s).map { it.name },
         ).containsExactlyInAnyOrderElementsOf(
           subDirs[s.name]?.map {
             FilenameUtils.removeExtension(
-              it
+              it,
             )
-          }
+          },
         )
       }
     }
@@ -202,7 +202,7 @@ class FileSystemScannerTest {
 
       val subDirs = listOf(
         "series1" to listOf("volume1.cbz", "volume2.cbz"),
-        "series2" to listOf("book1.cbz", "book2.cbz")
+        "series2" to listOf("book1.cbz", "book2.cbz"),
       ).toMap()
 
       subDirs.forEach { (dir, files) ->
@@ -220,13 +220,13 @@ class FileSystemScannerTest {
       assertThat(series.map { it.name }).containsExactlyInAnyOrderElementsOf(subDirs.keys + subDirs.keys.map { "${it}_link" })
       series.forEach { s ->
         assertThat(
-          scan.getValue(s).map { it.name }
+          scan.getValue(s).map { it.name },
         ).containsExactlyInAnyOrderElementsOf(
           subDirs[s.name.removeSuffix("_link")]?.map {
             FilenameUtils.removeExtension(
-              it
+              it,
             )
-          }
+          },
         )
       }
     }

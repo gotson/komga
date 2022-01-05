@@ -14,7 +14,7 @@ private val logger = KotlinLogging.logger {}
 @Service
 class RarExtractor(
   private val contentDetector: ContentDetector,
-  private val imageAnalyzer: ImageAnalyzer
+  private val imageAnalyzer: ImageAnalyzer,
 ) : MediaContainerExtractor {
 
   private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()

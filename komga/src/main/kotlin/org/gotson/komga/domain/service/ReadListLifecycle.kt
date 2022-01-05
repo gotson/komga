@@ -29,7 +29,7 @@ class ReadListLifecycle(
 ) {
 
   @Throws(
-    DuplicateNameException::class
+    DuplicateNameException::class,
   )
   fun addReadList(readList: ReadList): ReadList {
     logger.info { "Adding new read list: $readList" }

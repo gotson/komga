@@ -18,7 +18,7 @@ import java.time.LocalDateTime
 @SpringBootTest
 class KomgaUserDaoTest(
   @Autowired private val komgaUserDao: KomgaUserDao,
-  @Autowired private val libraryRepository: LibraryRepository
+  @Autowired private val libraryRepository: LibraryRepository,
 ) {
 
   private val library = makeLibrary()
@@ -47,7 +47,7 @@ class KomgaUserDaoTest(
       password = "password",
       roleAdmin = false,
       sharedLibrariesIds = setOf(library.id),
-      sharedAllLibraries = false
+      sharedAllLibraries = false,
     )
 
     komgaUserDao.insert(user)
@@ -72,7 +72,7 @@ class KomgaUserDaoTest(
       password = "password",
       roleAdmin = false,
       sharedLibrariesIds = setOf(library.id),
-      sharedAllLibraries = false
+      sharedAllLibraries = false,
     )
 
     komgaUserDao.insert(user)
@@ -83,7 +83,7 @@ class KomgaUserDaoTest(
       password = "password2",
       roleAdmin = true,
       sharedLibrariesIds = emptySet(),
-      sharedAllLibraries = true
+      sharedAllLibraries = true,
     )
     val modifiedDate = LocalDateTime.now()
     komgaUserDao.update(modified)
@@ -113,7 +113,7 @@ class KomgaUserDaoTest(
     assertThat(users).hasSize(2)
     assertThat(users.map { it.email }).containsExactlyInAnyOrder(
       "user1@example.org",
-      "user2@example.org"
+      "user2@example.org",
     )
   }
 
@@ -157,7 +157,7 @@ class KomgaUserDaoTest(
   @Test
   fun `given users when checking if exists by email then return true or false`() {
     komgaUserDao.insert(
-      KomgaUser("user1@example.org", "p", false)
+      KomgaUser("user1@example.org", "p", false),
     )
 
     val exists = komgaUserDao.existsByEmailIgnoreCase("USER1@EXAMPLE.ORG")
@@ -170,7 +170,7 @@ class KomgaUserDaoTest(
   @Test
   fun `given users when finding by email then return user`() {
     komgaUserDao.insert(
-      KomgaUser("user1@example.org", "p", false)
+      KomgaUser("user1@example.org", "p", false),
     )
 
     val found = komgaUserDao.findByEmailIgnoreCaseOrNull("USER1@EXAMPLE.ORG")

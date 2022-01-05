@@ -95,6 +95,6 @@ class ThumbnailSeriesDao(
       id = id,
       seriesId = seriesId,
       createdDate = createdDate,
-      lastModifiedDate = lastModifiedDate
+      lastModifiedDate = lastModifiedDate,
     )
 }

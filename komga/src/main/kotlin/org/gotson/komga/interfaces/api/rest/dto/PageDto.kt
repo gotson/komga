@@ -5,5 +5,5 @@ data class PageDto(
   val fileName: String,
   val mediaType: String,
   val width: Int?,
-  val height: Int?
+  val height: Int?,
 )

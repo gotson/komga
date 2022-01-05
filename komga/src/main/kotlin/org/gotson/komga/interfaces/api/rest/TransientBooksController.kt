@@ -37,7 +37,7 @@ class TransientBooksController(
 
   @PostMapping
   fun scanForTransientBooks(
-    @RequestBody request: ScanRequestDto
+    @RequestBody request: ScanRequestDto,
   ): List<TransientBookDto> =
     try {
       transientBookLifecycle.scanAndPersist(request.path)
@@ -56,7 +56,7 @@ class TransientBooksController(
 
   @GetMapping(
     value = ["{id}/pages/{pageNumber}"],
-    produces = [MediaType.ALL_VALUE]
+    produces = [MediaType.ALL_VALUE],
   )
   fun getSourcePage(
     @PathVariable id: String,

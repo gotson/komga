@@ -12,7 +12,7 @@ class V20200820150923__metadata_fields_part_2 : BaseJavaMigration() {
     val bookMetadata = jdbcTemplate.queryForList(
       """select m.AGE_RATING, m.AGE_RATING_LOCK, m.PUBLISHER, m.PUBLISHER_LOCK, m.READING_DIRECTION, m.READING_DIRECTION_LOCK, b.SERIES_ID, m.NUMBER_SORT
 from BOOK_METADATA m
-left join BOOK B on B.ID = m.BOOK_ID"""
+left join BOOK B on B.ID = m.BOOK_ID""",
     )
 
     if (bookMetadata.isNotEmpty()) {
@@ -41,7 +41,7 @@ left join BOOK B on B.ID = m.BOOK_ID"""
 
       jdbcTemplate.batchUpdate(
         "UPDATE SERIES_METADATA SET AGE_RATING = ?, AGE_RATING_LOCK = ?, PUBLISHER = ?, PUBLISHER_LOCK = ?, READING_DIRECTION = ?, READING_DIRECTION_LOCK = ? WHERE SERIES_ID = ?",
-        parameters
+        parameters,
       )
     }
   }

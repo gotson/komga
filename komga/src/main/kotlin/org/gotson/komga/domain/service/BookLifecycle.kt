@@ -206,7 +206,7 @@ class BookLifecycle(
   @Throws(
     ImageConversionException::class,
     MediaNotReadyException::class,
-    IndexOutOfBoundsException::class
+    IndexOutOfBoundsException::class,
   )
   fun getBookPage(book: Book, number: Int, convertTo: ImageType? = null, resizeTo: Int? = null): BookPageContent {
     val media = mediaRepository.findById(book.id)

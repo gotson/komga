@@ -14,7 +14,7 @@ import java.time.LocalDateTime
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
 class LibraryDaoTest(
-  @Autowired private val libraryDao: LibraryDao
+  @Autowired private val libraryDao: LibraryDao,
 ) {
 
   @AfterEach
@@ -28,7 +28,7 @@ class LibraryDaoTest(
     val now = LocalDateTime.now()
     val library = Library(
       name = "Library",
-      root = URL("file://library")
+      root = URL("file://library"),
     )
 
     libraryDao.insert(library)
@@ -45,7 +45,7 @@ class LibraryDaoTest(
   fun `given existing library when updating then it is persisted`() {
     val library = Library(
       name = "Library",
-      root = URL("file://library")
+      root = URL("file://library"),
     )
     libraryDao.insert(library)
 
@@ -101,7 +101,7 @@ class LibraryDaoTest(
   fun `given a library when deleting then it is deleted`() {
     val library = Library(
       name = "Library",
-      root = URL("file://library")
+      root = URL("file://library"),
     )
 
     libraryDao.insert(library)
@@ -116,11 +116,11 @@ class LibraryDaoTest(
   fun `given libraries when deleting all then all are deleted`() {
     val library = Library(
       name = "Library",
-      root = URL("file://library")
+      root = URL("file://library"),
     )
     val library2 = Library(
       name = "Library2",
-      root = URL("file://library2")
+      root = URL("file://library2"),
     )
 
     libraryDao.insert(library)
@@ -136,11 +136,11 @@ class LibraryDaoTest(
   fun `given libraries when finding all then all are returned`() {
     val library = Library(
       name = "Library",
-      root = URL("file://library")
+      root = URL("file://library"),
     )
     val library2 = Library(
       name = "Library2",
-      root = URL("file://library2")
+      root = URL("file://library2"),
     )
 
     libraryDao.insert(library)
@@ -156,11 +156,11 @@ class LibraryDaoTest(
   fun `given libraries when finding all by id then all are returned`() {
     val library = Library(
       name = "Library",
-      root = URL("file://library")
+      root = URL("file://library"),
     )
     val library2 = Library(
       name = "Library2",
-      root = URL("file://library2")
+      root = URL("file://library2"),
     )
 
     libraryDao.insert(library)
@@ -176,7 +176,7 @@ class LibraryDaoTest(
   fun `given existing library when finding by id then library is returned`() {
     val library = Library(
       name = "Library",
-      root = URL("file://library")
+      root = URL("file://library"),
     )
 
     libraryDao.insert(library)

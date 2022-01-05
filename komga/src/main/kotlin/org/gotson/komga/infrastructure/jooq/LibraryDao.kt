@@ -13,7 +13,7 @@ import java.time.ZoneId
 
 @Component
 class LibraryDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
 ) : LibraryRepository {
 
   private val l = Tables.LIBRARY
@@ -130,6 +130,6 @@ class LibraryDao(
       unavailableDate = unavailableDate,
       id = id,
       createdDate = createdDate.toCurrentTimeZone(),
-      lastModifiedDate = lastModifiedDate.toCurrentTimeZone()
+      lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
     )
 }

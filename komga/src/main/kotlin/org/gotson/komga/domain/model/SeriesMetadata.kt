@@ -65,7 +65,7 @@ class SeriesMetadata(
     totalBookCountLock: Boolean = this.totalBookCountLock,
     seriesId: String = this.seriesId,
     createdDate: LocalDateTime = this.createdDate,
-    lastModifiedDate: LocalDateTime = this.lastModifiedDate
+    lastModifiedDate: LocalDateTime = this.lastModifiedDate,
   ) =
     SeriesMetadata(
       status = status,
@@ -92,7 +92,7 @@ class SeriesMetadata(
       totalBookCountLock = totalBookCountLock,
       seriesId = seriesId,
       createdDate = createdDate,
-      lastModifiedDate = lastModifiedDate
+      lastModifiedDate = lastModifiedDate,
     )
 
   enum class Status {

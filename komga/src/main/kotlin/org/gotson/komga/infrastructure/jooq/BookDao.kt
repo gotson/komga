@@ -123,7 +123,7 @@ class BookDao(
       items,
       if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
       else PageRequest.of(0, maxOf(count.toInt(), 20), pageSort),
-      count
+      count,
     )
   }
 
@@ -246,7 +246,7 @@ class BookDao(
             b.LIBRARY_ID,
             b.SERIES_ID,
             b.DELETED_DATE,
-          ).values(null as String?, null, null, null, null, null, null, null, null, null)
+          ).values(null as String?, null, null, null, null, null, null, null, null, null),
         ).also { step ->
           chunk.forEach {
             step.bind(
@@ -337,6 +337,6 @@ class BookDao(
       deletedDate = deletedDate,
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
-      number = number
+      number = number,
     )
 }

@@ -103,7 +103,7 @@ class ReadListMatcherTest(
         ReadListRequestBook(series = "joker", number = "02"),
         ReadListRequestBook(series = "Batman: White Knight", number = "2"),
         ReadListRequestBook(series = "joker", number = "25"),
-      )
+      ),
     )
 
     // when
@@ -123,7 +123,7 @@ class ReadListMatcherTest(
             1 to booksSeries2[1].id,
             2 to booksSeries1[1].id,
             3 to booksSeries2[0].id,
-          )
+          ),
         )
       }
     }
@@ -133,7 +133,7 @@ class ReadListMatcherTest(
   fun `given request with existing read list when matching then result has no readlist and appropriate error code`() {
     // given
     readListLifecycle.addReadList(
-      ReadList(name = "my ReadList")
+      ReadList(name = "my ReadList"),
     )
 
     val request = ReadListRequest(
@@ -143,7 +143,7 @@ class ReadListMatcherTest(
         ReadListRequestBook(series = "joker", number = "2"),
         ReadListRequestBook(series = "BATMAN: WHITE KNIGHT", number = "2"),
         ReadListRequestBook(series = "joker", number = "25"),
-      )
+      ),
     )
 
     // when
@@ -194,7 +194,7 @@ class ReadListMatcherTest(
         ReadListRequestBook(series = "batman", number = "3"),
         ReadListRequestBook(series = "joker", number = "3"),
         ReadListRequestBook(series = "batman", number = "2"),
-      )
+      ),
     )
 
     // when
@@ -240,7 +240,7 @@ class ReadListMatcherTest(
         ReadListRequestBook(series = "batman", number = "1"),
         ReadListRequestBook(series = "batman", number = "2"),
         ReadListRequestBook(series = "batman", number = "2"),
-      )
+      ),
     )
 
     // when
@@ -256,7 +256,7 @@ class ReadListMatcherTest(
           mapOf(
             0 to booksSeries1[0].id,
             1 to booksSeries1[1].id,
-          )
+          ),
         )
       }
 

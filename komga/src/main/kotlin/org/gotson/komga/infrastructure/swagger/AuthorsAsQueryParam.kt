@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Parameters(
   Parameter(
     description = "Author criteria in the format: name,role. Multiple author criteria are supported.",
-    `in` = ParameterIn.QUERY, name = "author", array = ArraySchema(schema = Schema(type = "string"))
-  )
+    `in` = ParameterIn.QUERY, name = "author", array = ArraySchema(schema = Schema(type = "string")),
+  ),
 )
 annotation class AuthorsAsQueryParam

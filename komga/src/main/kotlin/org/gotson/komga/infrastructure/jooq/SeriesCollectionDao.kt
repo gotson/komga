@@ -75,7 +75,7 @@ class SeriesCollectionDao(
       items,
       if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
       else PageRequest.of(0, maxOf(count.toInt(), 20), pageSort),
-      count
+      count,
     )
   }
 
@@ -114,7 +114,7 @@ class SeriesCollectionDao(
       items,
       if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
       else PageRequest.of(0, maxOf(count, 20), pageSort),
-      count.toLong()
+      count.toLong(),
     )
   }
 
@@ -138,8 +138,8 @@ class SeriesCollectionDao(
           dsl.select(c.ID)
             .from(c)
             .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
-            .where(cs.COLLECTION_ID.isNull)
-        )
+            .where(cs.COLLECTION_ID.isNull),
+        ),
       ).fetchInto(c)
       .map { it.toDomain(emptyList()) }
 
@@ -244,7 +244,7 @@ class SeriesCollectionDao(
   override fun existsByName(name: String): Boolean =
     dsl.fetchExists(
       dsl.selectFrom(c)
-        .where(c.NAME.equalIgnoreCase(name))
+        .where(c.NAME.equalIgnoreCase(name)),
     )
 
   private fun CollectionRecord.toDomain(seriesIds: List<String>) =
@@ -255,6 +255,6 @@ class SeriesCollectionDao(
       id = id,
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
-      filtered = seriesCount != seriesIds.size
+      filtered = seriesCount != seriesIds.size,
     )
 }

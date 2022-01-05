@@ -760,7 +760,7 @@ class LibraryContentLifecycleTest(
           bookMetadataRepository.findById(it.id).copy(
             title = "Updated Title",
             titleLock = true,
-          )
+          ),
         )
       }
 
@@ -1130,7 +1130,7 @@ class LibraryContentLifecycleTest(
           bookMetadataRepository.findById(it.id).copy(
             title = "Updated Title",
             titleLock = true,
-          )
+          ),
         )
       }
 

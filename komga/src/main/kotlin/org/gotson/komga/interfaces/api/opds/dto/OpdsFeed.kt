@@ -26,7 +26,7 @@ abstract class OpdsFeed(
 
   @JacksonXmlElementWrapper(useWrapping = false)
   @JacksonXmlProperty(localName = "entry", namespace = ATOM)
-  val entries: List<OpdsEntry>
+  val entries: List<OpdsEntry>,
 )
 
 @JsonSerialize(`as` = OpdsFeed::class)
@@ -36,7 +36,7 @@ class OpdsFeedNavigation(
   updated: ZonedDateTime,
   author: OpdsAuthor,
   links: List<OpdsLink>,
-  entries: List<OpdsEntryNavigation>
+  entries: List<OpdsEntryNavigation>,
 ) : OpdsFeed(id, title, updated, author, links, entries)
 
 @JsonSerialize(`as` = OpdsFeed::class)
@@ -46,5 +46,5 @@ class OpdsFeedAcquisition(
   updated: ZonedDateTime,
   author: OpdsAuthor,
   links: List<OpdsLink>,
-  entries: List<OpdsEntryAcquisition>
+  entries: List<OpdsEntryAcquisition>,
 ) : OpdsFeed(id, title, updated, author, links, entries)

@@ -11,7 +11,7 @@ import javax.sql.DataSource
 
 @Configuration
 class DataSourcesConfiguration(
-  private val komgaProperties: KomgaProperties
+  private val komgaProperties: KomgaProperties,
 ) {
 
   @Bean("sqliteDataSource")
@@ -29,7 +29,7 @@ class DataSourcesConfiguration(
         dataSource = sqliteUdfDataSource
         poolName = "SqliteUdfPool"
         maximumPoolSize = 1
-      }
+      },
     )
   }
 }

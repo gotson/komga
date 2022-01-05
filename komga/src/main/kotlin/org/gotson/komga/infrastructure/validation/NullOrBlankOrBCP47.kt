@@ -16,5 +16,5 @@ import kotlin.reflect.KClass
 annotation class NullOrBlankOrBCP47(
   val message: String = "Must be null or blank or valid BCP 47 language tag",
   val groups: Array<KClass<out Any>> = [],
-  val payload: Array<KClass<out Any>> = []
+  val payload: Array<KClass<out Any>> = [],
 )

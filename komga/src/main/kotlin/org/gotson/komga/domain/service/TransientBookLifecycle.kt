@@ -43,7 +43,7 @@ class TransientBookLifecycle(
 
   @Throws(
     MediaNotReadyException::class,
-    IndexOutOfBoundsException::class
+    IndexOutOfBoundsException::class,
   )
   fun getBookPage(transientBook: BookWithMedia, number: Int): BookPageContent {
     val pageContent = bookAnalyzer.getPageContent(transientBook, number)

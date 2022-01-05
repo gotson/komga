@@ -6,7 +6,7 @@ data class ThumbnailReadListDto(
   val id: String,
   val readListId: String,
   val type: String,
-  val selected: Boolean
+  val selected: Boolean,
 )
 
 fun ThumbnailReadList.toDto() =
@@ -14,5 +14,5 @@ fun ThumbnailReadList.toDto() =
     id = id,
     readListId = readListId,
     type = type.toString(),
-    selected = selected
+    selected = selected,
   )

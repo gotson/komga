@@ -28,14 +28,14 @@ interface BookDtoRepository {
     readListId: String,
     bookId: String,
     userId: String,
-    filterOnLibraryIds: Collection<String>?
+    filterOnLibraryIds: Collection<String>?,
   ): BookDto?
 
   fun findNextInReadListOrNull(
     readListId: String,
     bookId: String,
     userId: String,
-    filterOnLibraryIds: Collection<String>?
+    filterOnLibraryIds: Collection<String>?,
   ): BookDto?
 
   fun findAllOnDeck(userId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<BookDto>

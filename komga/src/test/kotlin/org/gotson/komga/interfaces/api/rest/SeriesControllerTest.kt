@@ -61,7 +61,7 @@ class SeriesControllerTest(
   @Autowired private val bookMetadataRepository: BookMetadataRepository,
   @Autowired private val userRepository: KomgaUserRepository,
   @Autowired private val userLifecycle: KomgaUserLifecycle,
-  @Autowired private val mockMvc: MockMvc
+  @Autowired private val mockMvc: MockMvc,
 ) {
 
   private val library = makeLibrary(id = "1")
@@ -421,8 +421,8 @@ class SeriesControllerTest(
         """{"titleSort":""}""",
         """{"ageRating":-1}""",
         """{"totalBookCount":0}""",
-        """{"language":"japanese"}"""
-      ]
+        """{"language":"japanese"}""",
+      ],
     )
     @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given invalid json when updating metadata then raise validation error`(jsonString: String) {
@@ -580,9 +580,9 @@ class SeriesControllerTest(
           ThumbnailBook(
             thumbnail = Random.nextBytes(1),
             bookId = book.id,
-            type = ThumbnailBook.Type.GENERATED
+            type = ThumbnailBook.Type.GENERATED,
           ),
-          MarkSelectedPreference.YES
+          MarkSelectedPreference.YES,
         )
       }
 
@@ -615,9 +615,9 @@ class SeriesControllerTest(
           ThumbnailBook(
             thumbnail = Random.nextBytes(1),
             bookId = book.id,
-            type = ThumbnailBook.Type.GENERATED
+            type = ThumbnailBook.Type.GENERATED,
           ),
-          MarkSelectedPreference.YES
+          MarkSelectedPreference.YES,
         )
       }
 
@@ -659,8 +659,8 @@ class SeriesControllerTest(
           mediaRepository.update(
             media.copy(
               status = Media.Status.READY,
-              pages = (1..10).map { BookPage("$it", "image/jpeg") }
-            )
+              pages = (1..10).map { BookPage("$it", "image/jpeg") },
+            ),
           )
         }
       }
@@ -702,8 +702,8 @@ class SeriesControllerTest(
           mediaRepository.update(
             media.copy(
               status = Media.Status.READY,
-              pages = (1..10).map { BookPage("$it", "image/jpeg") }
-            )
+              pages = (1..10).map { BookPage("$it", "image/jpeg") },
+            ),
           )
         }
       }
@@ -742,7 +742,7 @@ class SeriesControllerTest(
           val books = listOf(
             makeBook("1.cbr", libraryId = library.id),
             makeBook("2.cbr", libraryId = library.id),
-            makeBook("3.cbr", libraryId = library.id)
+            makeBook("3.cbr", libraryId = library.id),
           )
           seriesLifecycle.addBooks(created, books)
           seriesLifecycle.sortBooks(created)
@@ -754,8 +754,8 @@ class SeriesControllerTest(
           mediaRepository.update(
             media.copy(
               status = Media.Status.READY,
-              pages = (1..10).map { BookPage("$it", "image/jpeg") }
-            )
+              pages = (1..10).map { BookPage("$it", "image/jpeg") },
+            ),
           )
         }
       }

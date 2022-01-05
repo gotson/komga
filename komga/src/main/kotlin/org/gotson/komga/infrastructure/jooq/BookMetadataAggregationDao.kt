@@ -34,7 +34,7 @@ class BookMetadataAggregationDao(
       .leftJoin(a).on(d.SERIES_ID.eq(a.SERIES_ID))
       .where(d.SERIES_ID.`in`(seriesIds))
       .fetchGroups(
-        { it.into(d) }, { it.into(a) }
+        { it.into(d) }, { it.into(a) },
       ).map { (dr, ar) ->
         dr.toDomain(ar.filterNot { it.name == null }.map { it.toDomain() }, findTags(dr.seriesId))
       }
@@ -87,7 +87,7 @@ class BookMetadataAggregationDao(
       metadata.authors.chunked(batchSize).forEach { chunk ->
         dsl.batch(
           dsl.insertInto(a, a.SERIES_ID, a.NAME, a.ROLE)
-            .values(null as String?, null, null)
+            .values(null as String?, null, null),
         ).also { step ->
           chunk.forEach {
             step.bind(metadata.seriesId, it.name, it.role)
@@ -102,7 +102,7 @@ class BookMetadataAggregationDao(
       metadata.tags.chunked(batchSize).forEach { chunk ->
         dsl.batch(
           dsl.insertInto(t, t.SERIES_ID, t.TAG)
-            .values(null as String?, null)
+            .values(null as String?, null),
         ).also { step ->
           chunk.forEach {
             step.bind(metadata.seriesId, it)
@@ -141,12 +141,12 @@ class BookMetadataAggregationDao(
       seriesId = seriesId,
 
       createdDate = createdDate.toCurrentTimeZone(),
-      lastModifiedDate = lastModifiedDate.toCurrentTimeZone()
+      lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
     )
 
   private fun BookMetadataAggregationAuthorRecord.toDomain() =
     Author(
       name = name,
-      role = role
+      role = role,
     )
 }

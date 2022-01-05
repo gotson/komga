@@ -45,7 +45,7 @@ class SeriesLifecycleTest(
   @Autowired private val bookRepository: BookRepository,
   @Autowired private val libraryRepository: LibraryRepository,
   @Autowired private val thumbnailSeriesRepository: ThumbnailSeriesRepository,
-  @Autowired private val thumbnailBookRepository: ThumbnailBookRepository
+  @Autowired private val thumbnailBookRepository: ThumbnailBookRepository,
 ) {
 
   @SpykBean
@@ -86,7 +86,7 @@ class SeriesLifecycleTest(
       makeBook("  book 3", libraryId = library.id),
       makeBook("book   4   ", libraryId = library.id),
       makeBook("book  6", libraryId = library.id),
-      makeBook("book  002", libraryId = library.id)
+      makeBook("book  002", libraryId = library.id),
     )
     val createdSeries = makeSeries(name = "series", libraryId = library.id).let {
       seriesLifecycle.createSeries(it)
@@ -112,7 +112,7 @@ class SeriesLifecycleTest(
       makeBook("book 1", libraryId = library.id),
       makeBook("book 2", libraryId = library.id),
       makeBook("book 3", libraryId = library.id),
-      makeBook("book 4", libraryId = library.id)
+      makeBook("book 4", libraryId = library.id),
     )
     val createdSeries = makeSeries(name = "series", libraryId = library.id).let {
       seriesLifecycle.createSeries(it)
@@ -141,7 +141,7 @@ class SeriesLifecycleTest(
       makeBook("book 1", libraryId = library.id),
       makeBook("book 2", libraryId = library.id),
       makeBook("book 4", libraryId = library.id),
-      makeBook("book 5", libraryId = library.id)
+      makeBook("book 5", libraryId = library.id),
     )
     val createdSeries = makeSeries(name = "series", libraryId = library.id).let {
       seriesLifecycle.createSeries(it)

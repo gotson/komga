@@ -13,7 +13,7 @@ import java.time.ZoneId
 
 @Component
 class KomgaUserDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
 ) : KomgaUserRepository {
 
   private val u = Tables.USER
@@ -51,7 +51,7 @@ class KomgaUserDao(
           sharedAllLibraries = ur.sharedAllLibraries,
           id = ur.id,
           createdDate = ur.createdDate.toCurrentTimeZone(),
-          lastModifiedDate = ur.lastModifiedDate.toCurrentTimeZone()
+          lastModifiedDate = ur.lastModifiedDate.toCurrentTimeZone(),
         )
       }
 
@@ -115,7 +115,7 @@ class KomgaUserDao(
   override fun existsByEmailIgnoreCase(email: String): Boolean =
     dsl.fetchExists(
       dsl.selectFrom(u)
-        .where(u.EMAIL.equalIgnoreCase(email))
+        .where(u.EMAIL.equalIgnoreCase(email)),
     )
 
   override fun findByEmailIgnoreCaseOrNull(email: String): KomgaUser? =

@@ -15,7 +15,7 @@ private val logger = KotlinLogging.logger {}
 @Service
 class ZipExtractor(
   private val contentDetector: ContentDetector,
-  private val imageAnalyzer: ImageAnalyzer
+  private val imageAnalyzer: ImageAnalyzer,
 ) : MediaContainerExtractor {
 
   private val cache = Caffeine.newBuilder()

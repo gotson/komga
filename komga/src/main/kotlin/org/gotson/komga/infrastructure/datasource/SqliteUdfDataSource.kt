@@ -41,7 +41,7 @@ class SqliteUdfDataSource : SimpleDriverDataSource() {
 
           result(if (regexp.containsMatchIn(text)) 1 else 0)
         }
-      }
+      },
     )
   }
 
@@ -55,7 +55,7 @@ class SqliteUdfDataSource : SimpleDriverDataSource() {
             null -> error("Argument must not be null")
             else -> result(text.stripAccents())
           }
-      }
+      },
     )
   }
 
@@ -70,7 +70,7 @@ class SqliteUdfDataSource : SimpleDriverDataSource() {
         }
 
         override fun xCompare(str1: String, str2: String): Int = collator.compare(str1, str2)
-      }
+      },
     )
   }
 }

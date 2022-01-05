@@ -17,7 +17,7 @@ data class ReadListDto(
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val lastModifiedDate: LocalDateTime,
 
-  val filtered: Boolean
+  val filtered: Boolean,
 )
 
 fun ReadList.toDto() =
@@ -28,5 +28,5 @@ fun ReadList.toDto() =
     bookIds = bookIds.values.toList(),
     createdDate = createdDate.toUTC(),
     lastModifiedDate = lastModifiedDate.toUTC(),
-    filtered = filtered
+    filtered = filtered,
   )
