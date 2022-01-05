@@ -183,7 +183,7 @@ class BookController(
       page,
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
 
-  @PageableWithoutSortAsQueryParam
+  @PageableAsQueryParam
   @GetMapping("api/v1/books/duplicates")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   fun getDuplicateBooks(
