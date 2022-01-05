@@ -38,7 +38,7 @@ class BookAnalyzer(
   private val thumbnailSize = 300
   private val thumbnailFormat = "jpeg"
 
-  fun analyze(book: Book): Media {
+  fun analyze(book: Book, analyzeDimensions: Boolean): Media {
     logger.info { "Trying to analyze book: $book" }
     try {
       val mediaType = contentDetector.detectMediaType(book.path)
@@ -47,7 +47,7 @@ class BookAnalyzer(
         return Media(mediaType = mediaType, status = Media.Status.UNSUPPORTED, comment = "ERR_1001", bookId = book.id)
 
       val entries = try {
-        supportedMediaTypes.getValue(mediaType).getEntries(book.path)
+        supportedMediaTypes.getValue(mediaType).getEntries(book.path, analyzeDimensions)
       } catch (ex: MediaUnsupportedException) {
         return Media(mediaType = mediaType, status = Media.Status.UNSUPPORTED, comment = ex.code, bookId = book.id)
       } catch (ex: Exception) {

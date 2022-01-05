@@ -2,6 +2,7 @@ package org.gotson.komga.domain.service
 
 import com.ninjasquad.springmockk.SpykBean
 import io.mockk.every
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookPage
@@ -40,7 +41,7 @@ class BookAnalyzerTest(
     val file = ClassPathResource("archives/rar4.rar")
     val book = Book("book", file.url, LocalDateTime.now())
 
-    val media = bookAnalyzer.analyze(book)
+    val media = bookAnalyzer.analyze(book, false)
 
     assertThat(media.mediaType).isEqualTo("application/x-rar-compressed; version=4")
     assertThat(media.status).isEqualTo(Media.Status.READY)
@@ -57,7 +58,7 @@ class BookAnalyzerTest(
     val file = ClassPathResource("archives/rar4-solid.rar")
     val book = Book("book", file.url, LocalDateTime.now())
 
-    val media = bookAnalyzer.analyze(book)
+    val media = bookAnalyzer.analyze(book, false)
 
     assertThat(media.mediaType).isEqualTo("application/x-rar-compressed; version=4")
     assertThat(media.status).isEqualTo(Media.Status.UNSUPPORTED)
@@ -73,7 +74,7 @@ class BookAnalyzerTest(
     val file = ClassPathResource("archives/$fileName")
     val book = Book("book", file.url, LocalDateTime.now())
 
-    val media = bookAnalyzer.analyze(book)
+    val media = bookAnalyzer.analyze(book, false)
 
     assertThat(media.mediaType).isEqualTo("application/x-rar-compressed; version=5")
     assertThat(media.status).isEqualTo(Media.Status.UNSUPPORTED)
@@ -89,7 +90,7 @@ class BookAnalyzerTest(
     val file = ClassPathResource("archives/$fileName")
     val book = Book("book", file.url, LocalDateTime.now())
 
-    val media = bookAnalyzer.analyze(book)
+    val media = bookAnalyzer.analyze(book, false)
 
     assertThat(media.mediaType).isEqualTo("application/x-7z-compressed")
     assertThat(media.status).isEqualTo(Media.Status.UNSUPPORTED)
@@ -105,7 +106,7 @@ class BookAnalyzerTest(
     val file = ClassPathResource("archives/$fileName")
     val book = Book("book", file.url, LocalDateTime.now())
 
-    val media = bookAnalyzer.analyze(book)
+    val media = bookAnalyzer.analyze(book, false)
 
     assertThat(media.mediaType).isEqualTo("application/zip")
     assertThat(media.status).isEqualTo(Media.Status.READY)
@@ -117,7 +118,7 @@ class BookAnalyzerTest(
     val file = ClassPathResource("archives/zip-encrypted.zip")
     val book = Book("book", file.url, LocalDateTime.now())
 
-    val media = bookAnalyzer.analyze(book)
+    val media = bookAnalyzer.analyze(book, false)
 
     assertThat(media.mediaType).isEqualTo("application/zip")
     assertThat(media.status).isEqualTo(Media.Status.ERROR)
@@ -128,7 +129,7 @@ class BookAnalyzerTest(
     val file = ClassPathResource("archives/epub3.epub")
     val book = Book("book", file.url, LocalDateTime.now())
 
-    val media = bookAnalyzer.analyze(book)
+    val media = bookAnalyzer.analyze(book, false)
 
     assertThat(media.mediaType).isEqualTo("application/epub+zip")
     assertThat(media.status).isEqualTo(Media.Status.READY)

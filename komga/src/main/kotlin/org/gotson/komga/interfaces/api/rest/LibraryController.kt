@@ -92,6 +92,9 @@ class LibraryController(
           convertToCbz = library.convertToCbz,
           emptyTrashAfterScan = library.emptyTrashAfterScan,
           seriesCover = library.seriesCover.toDomain(),
+          hashFiles = library.hashFiles,
+          hashPages = library.hashPages,
+          analyzeDimensions = library.analyzeDimensions,
         ),
       ).toDto(includeRoot = principal.user.roleAdmin)
     } catch (e: Exception) {
@@ -133,6 +136,9 @@ class LibraryController(
         convertToCbz = library.convertToCbz,
         emptyTrashAfterScan = library.emptyTrashAfterScan,
         seriesCover = library.seriesCover.toDomain(),
+        hashFiles = library.hashFiles,
+        hashPages = library.hashPages,
+        analyzeDimensions = library.analyzeDimensions,
       )
       try {
         libraryLifecycle.updateLibrary(toUpdate)

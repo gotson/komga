@@ -66,16 +66,17 @@ class TaskReceiver(
   }
 
   fun hashBooksWithoutHash(library: Library) {
-    if (komgaProperties.fileHashing)
+    if (library.hashFiles)
       bookRepository.findAllIdsByLibraryIdAndWithEmptyHash(library.id).forEach {
         submitTask(Task.HashBook(it, LOWEST_PRIORITY))
       }
   }
 
   fun hashBookPagesWithMissingHash(library: Library) {
-    mediaRepository.findAllBookIdsByLibraryIdAndWithMissingPageHash(library.id, komgaProperties.pageHashing).forEach {
-      submitTask(Task.HashBookPages(it, LOWEST_PRIORITY))
-    }
+    if (library.hashPages)
+      mediaRepository.findAllBookIdsByLibraryIdAndWithMissingPageHash(library.id, komgaProperties.pageHashing).forEach {
+        submitTask(Task.HashBookPages(it, LOWEST_PRIORITY))
+      }
   }
 
   fun convertBooksToCbz(library: Library, priority: Int = DEFAULT_PRIORITY) {

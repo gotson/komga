@@ -35,12 +35,12 @@ class PdfExtractor(
 
   override fun mediaTypes(): List<String> = listOf("application/pdf")
 
-  override fun getEntries(path: Path): List<MediaContainerEntry> =
+  override fun getEntries(path: Path, analyzeDimensions: Boolean): List<MediaContainerEntry> =
     PDDocument.load(path.toFile()).use { pdf ->
       (0 until pdf.numberOfPages).map { index ->
         val page = pdf.getPage(index)
         val scale = page.getScale()
-        val dimension = Dimension((page.cropBox.width * scale).roundToInt(), (page.cropBox.height * scale).roundToInt())
+        val dimension = if (analyzeDimensions) Dimension((page.cropBox.width * scale).roundToInt(), (page.cropBox.height * scale).roundToInt()) else null
         MediaContainerEntry(name = index.toString(), mediaType = mediaType, dimension = dimension)
       }
     }

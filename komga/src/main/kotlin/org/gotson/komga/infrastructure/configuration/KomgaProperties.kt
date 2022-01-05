@@ -23,6 +23,7 @@ class KomgaProperties {
 
   var deleteEmptyCollections: Boolean = true
 
+  @Deprecated("Deprecated since 0.143.0, you can configure this in the library options directly")
   var fileHashing: Boolean = true
 
   @Positive

@@ -284,7 +284,7 @@ class LibraryContentLifecycleTest(
         )
       libraryContentLifecycle.scanRootFolder(library)
 
-      every { mockAnalyzer.analyze(any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")), bookId = book1.id)
+      every { mockAnalyzer.analyze(any(), any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")), bookId = book1.id)
       bookRepository.findAll().map { bookLifecycle.analyzeAndPersist(it) }
 
       // when
@@ -292,7 +292,7 @@ class LibraryContentLifecycleTest(
 
       // then
       verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
-      verify(exactly = 1) { mockAnalyzer.analyze(any()) }
+      verify(exactly = 1) { mockAnalyzer.analyze(any(), any()) }
 
       bookRepository.findAll().first().let { book ->
         assertThat(book.lastModifiedDate).isNotEqualTo(book.createdDate)
@@ -320,7 +320,7 @@ class LibraryContentLifecycleTest(
         )
       libraryContentLifecycle.scanRootFolder(library)
 
-      every { mockAnalyzer.analyze(any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")), bookId = book1.id)
+      every { mockAnalyzer.analyze(any(), any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")), bookId = book1.id)
       every { mockHasher.computeHash(any<Path>()) }.returnsMany("abc", "def")
 
       bookRepository.findAll().map {
@@ -333,7 +333,7 @@ class LibraryContentLifecycleTest(
 
       // then
       verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
-      verify(exactly = 1) { mockAnalyzer.analyze(any()) }
+      verify(exactly = 1) { mockAnalyzer.analyze(any(), any()) }
       verify(exactly = 1) { mockHasher.computeHash(any<Path>()) }
 
       bookRepository.findAll().first().let { book ->

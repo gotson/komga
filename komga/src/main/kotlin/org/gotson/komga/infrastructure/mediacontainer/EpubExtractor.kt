@@ -22,7 +22,7 @@ class EpubExtractor(
 
   override fun mediaTypes(): List<String> = listOf("application/epub+zip")
 
-  override fun getEntries(path: Path): List<MediaContainerEntry> {
+  override fun getEntries(path: Path, analyzeDimensions: Boolean): List<MediaContainerEntry> {
     ZipFile(path.toFile()).use { zip ->
       try {
         val opfFile = getPackagePath(zip)
@@ -56,7 +56,7 @@ class EpubExtractor(
           val mediaType = manifest.values.first {
             it.href == (opfDir?.relativize(image) ?: image).invariantSeparatorsPathString
           }.mediaType
-          val dimension = if (contentDetector.isImage(mediaType))
+          val dimension = if (analyzeDimensions && contentDetector.isImage(mediaType))
             zip.getInputStream(zip.getEntry(name)).use { imageAnalyzer.getDimension(it) }
           else
             null
@@ -64,7 +64,7 @@ class EpubExtractor(
         }
       } catch (e: Exception) {
         logger.error(e) { "File is not a proper Epub, treating it as a zip file" }
-        return zipExtractor.getEntries(path)
+        return zipExtractor.getEntries(path, analyzeDimensions)
       }
     }
   }

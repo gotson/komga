@@ -92,18 +92,81 @@
                         hide-details
                         class="mx-4"
                       />
+
                       <v-checkbox
                         v-model="form.scanForceModifiedTime"
                         :label="$t('dialog.edit_library.field_scanner_force_directory_modified_time')"
                         hide-details
                         class="mx-4"
-                      />
+                      >
+                        <template v-slot:append>
+                          <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                              <v-icon v-on="on" color="info">mdi-help-circle-outline</v-icon>
+                            </template>
+                            {{ $t('dialog.edit_library.tooltip_scanner_force_modified_time') }}
+                          </v-tooltip>
+                        </template>
+                      </v-checkbox>
+
                       <v-checkbox
                         v-model="form.scanDeep"
                         :label="$t('dialog.edit_library.field_scanner_deep_scan')"
                         hide-details
                         class="mx-4"
                       />
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="auto">
+                      <span class="text-subtitle-1 text--primary">{{ $t('dialog.edit_library.label_analysis') }}</span>
+                      <v-checkbox
+                        v-model="form.hashFiles"
+                        :label="$t('dialog.edit_library.field_analysis_hash_files')"
+                        hide-details
+                        class="mx-4 align-center"
+                      >
+                        <template v-slot:append>
+                          <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                              <v-icon v-on="on" color="warning">mdi-alert-circle-outline</v-icon>
+                            </template>
+                            {{ $t('dialog.edit_library.tooltip_use_resources') }}
+                          </v-tooltip>
+                        </template>
+                      </v-checkbox>
+
+                      <v-checkbox
+                        v-model="form.hashPages"
+                        :label="$t('dialog.edit_library.field_analysis_hash_pages')"
+                        hide-details
+                        class="mx-4"
+                      >
+                        <template v-slot:append>
+                          <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                              <v-icon v-on="on" color="warning">mdi-alert-circle-outline</v-icon>
+                            </template>
+                            {{ $t('dialog.edit_library.tooltip_use_resources') }}
+                          </v-tooltip>
+                        </template>
+                      </v-checkbox>
+
+                      <v-checkbox
+                        v-model="form.analyzeDimensions"
+                        :label="$t('dialog.edit_library.field_analysis_analyze_dimensions')"
+                        hide-details
+                        class="mx-4"
+                      >
+                        <template v-slot:append>
+                          <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                              <v-icon v-on="on" color="warning">mdi-alert-circle-outline</v-icon>
+                            </template>
+                            {{ $t('dialog.edit_library.tooltip_use_resources') }}
+                          </v-tooltip>
+                        </template>
+                      </v-checkbox>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -138,7 +201,9 @@
                   </v-row>
                   <v-row>
                     <v-col>
-                      <span class="text-subtitle-1 text--primary">{{ $t('dialog.edit_library.label_series_cover') }}</span>
+                      <span class="text-subtitle-1 text--primary">{{
+                          $t('dialog.edit_library.label_series_cover')
+                        }}</span>
                       <v-select :items="seriesCover"
                                 v-model="form.seriesCover"
                                 :label="$t('dialog.edit_library.field_series_cover')"
@@ -224,7 +289,9 @@
                   </v-row>
                   <v-row>
                     <v-col>
-                      <span class="text-subtitle-1 text--primary">{{ $t('dialog.edit_library.label_import_mylar') }}</span>
+                      <span class="text-subtitle-1 text--primary">{{
+                          $t('dialog.edit_library.label_import_mylar')
+                        }}</span>
                       <v-checkbox
                         v-model="form.importMylarSeries"
                         :label="$t('dialog.edit_library.field_import_mylar_series')"
@@ -256,7 +323,16 @@
                         :label="$t('dialog.edit_library.field_import_barcode_isbn')"
                         hide-details
                         class="mx-4"
-                      />
+                      >
+                        <template v-slot:append>
+                          <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                              <v-icon v-on="on" color="warning">mdi-alert-circle-outline</v-icon>
+                            </template>
+                            {{ $t('dialog.edit_library.tooltip_use_resources') }}
+                          </v-tooltip>
+                        </template>
+                      </v-checkbox>
                     </v-col>
                   </v-row>
 
@@ -307,13 +383,16 @@ export default Vue.extend({
         importEpubSeries: true,
         importMylarSeries: true,
         importLocalArtwork: true,
-        importBarcodeIsbn: true,
+        importBarcodeIsbn: false,
         scanForceModifiedTime: false,
         scanDeep: false,
         repairExtensions: false,
         convertToCbz: false,
         emptyTrashAfterScan: false,
         seriesCover: SeriesCoverDto.FIRST as SeriesCoverDto,
+        hashFiles: true,
+        hashPages: false,
+        analyzeDimensions: true,
       },
       validationFieldNames: new Map([]),
     }
@@ -435,13 +514,16 @@ export default Vue.extend({
       this.form.importEpubSeries = library ? library.importEpubSeries : true
       this.form.importMylarSeries = library ? library.importMylarSeries : true
       this.form.importLocalArtwork = library ? library.importLocalArtwork : true
-      this.form.importBarcodeIsbn = library ? library.importBarcodeIsbn : true
+      this.form.importBarcodeIsbn = library ? library.importBarcodeIsbn : false
       this.form.scanForceModifiedTime = library ? library.scanForceModifiedTime : false
       this.form.scanDeep = library ? library.scanDeep : false
       this.form.repairExtensions = library ? library.repairExtensions : false
       this.form.convertToCbz = library ? library.convertToCbz : false
       this.form.emptyTrashAfterScan = library ? library.emptyTrashAfterScan : false
       this.form.seriesCover = library ? library.seriesCover : SeriesCoverDto.FIRST
+      this.form.hashFiles = library ? library.hashFiles : true
+      this.form.hashPages = library ? library.hashPages : false
+      this.form.analyzeDimensions = library ? library.analyzeDimensions : true
       this.$v.$reset()
     },
     validateLibrary() {
@@ -466,6 +548,9 @@ export default Vue.extend({
           convertToCbz: this.form.convertToCbz,
           emptyTrashAfterScan: this.form.emptyTrashAfterScan,
           seriesCover: this.form.seriesCover,
+          hashFiles: this.form.hashFiles,
+          hashPages: this.form.hashPages,
+          analyzeDimensions: this.form.analyzeDimensions,
         }
       }
       return null

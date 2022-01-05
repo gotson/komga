@@ -33,7 +33,7 @@ class TransientBookLifecycle(
   }
 
   fun analyzeAndPersist(transientBook: BookWithMedia): BookWithMedia {
-    val media = bookAnalyzer.analyze(transientBook.book)
+    val media = bookAnalyzer.analyze(transientBook.book, true)
 
     val updated = transientBook.copy(media = media)
     transientBookRepository.save(updated)

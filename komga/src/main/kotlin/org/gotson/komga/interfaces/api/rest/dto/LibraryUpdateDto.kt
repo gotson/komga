@@ -20,4 +20,7 @@ data class LibraryUpdateDto(
   val convertToCbz: Boolean,
   val emptyTrashAfterScan: Boolean,
   val seriesCover: SeriesCoverDto,
+  val hashFiles: Boolean,
+  val hashPages: Boolean,
+  val analyzeDimensions: Boolean,
 )

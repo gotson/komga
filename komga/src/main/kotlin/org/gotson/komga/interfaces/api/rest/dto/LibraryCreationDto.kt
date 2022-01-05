@@ -20,4 +20,7 @@ data class LibraryCreationDto(
   val convertToCbz: Boolean = false,
   val emptyTrashAfterScan: Boolean = false,
   val seriesCover: SeriesCoverDto = SeriesCoverDto.FIRST,
+  val hashFiles: Boolean = true,
+  val hashPages: Boolean = false,
+  val analyzeDimensions: Boolean = true,
 )
