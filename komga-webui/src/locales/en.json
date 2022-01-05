@@ -236,7 +236,7 @@
     "field_files_label": "ComicRack Reading Lists (.cbl)",
     "import_read_lists": "Import Read Lists",
     "imported_as": "Imported as {name}",
-    "results_preambule": "Result of the import is shown below. You can check the unmatched books for each provided file.",
+    "results_preambule": "The result of the import is shown below. You can check the unmatched books for each provided file.",
     "size_limit": "The size should be less than {size} MB",
     "tab_title": "Data Import"
   },
