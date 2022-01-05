@@ -51,7 +51,7 @@
     "button_scan": "Scan",
     "button_select_series": "Select Series",
     "field_import_path": "Import from folder",
-    "info_part1": "Here you can import files into a selected series of your existing libraries.",
+    "info_part1": "Here you can import yet unincluded files into a selected series of your existing libraries.",
     "info_part2": "Choose a number for a book and compare the two if it exists. Importing the book upgrades the entry and replaces the old file.",
     "no_files_found": "No files found",
     "notification": {
@@ -61,7 +61,7 @@
       "source_file": "Source file: {file}"
     },
     "row": {
-      "error_analyze_first": "The book must be analyzed first",
+      "error_analyze_first": "The book is not yet analyzed",
       "error_choose_series": "Choose a series",
       "error_only_import_no_errors": "Can only import books without errors",
       "warning_upgrade": "The existing book will be upgraded"
@@ -130,7 +130,7 @@
       "first_page": "First page",
       "fullscreen": "Enter/exit full screen",
       "last_page": "Last page",
-      "left_to_right": "Left to Right →",
+      "left_to_right": "Left to right",
       "menus": "Menus",
       "next_page": "Next page",
       "previous_page": "Previous page",
@@ -144,10 +144,10 @@
       "vertical": "Vertical",
       "webtoon": "Webtoon"
     },
-    "tooltip_incognito": "Reading progress will not be saved"
+    "tooltip_incognito": "Your reading progress will not be saved"
   },
   "browse_book": {
-    "comment": "Coment",
+    "comment": "Comment",
     "download_file": "Download file",
     "file": "File",
     "format": "Format",
@@ -168,7 +168,7 @@
     "edit_readlist": "Edit reading list"
   },
   "browse_series": {
-    "earliest_year_from_release_dates": "Earliest year of any released book in this series.",
+    "earliest_year_from_release_dates": "Earliest year of any book with a known release date in this series.",
     "series_no_summary": "This series has no summary, so one was randomly selected from one of the series books.",
     "summary_from_book": "Summary of book {number}:"
   },
@@ -231,7 +231,7 @@
     "book_number": "Book number: {name}",
     "book_series": "Series: {name}",
     "button_import": "Import",
-    "comicrack_preambule_html": "When import existing ComicRack Reading Lists in <code>.cbl</code> format<br/>Komga tries to match the provided series and book number with series and books in your libraries.",
+    "comicrack_preambule_html": "When importing existing ComicRack Reading Lists in <code>.cbl</code> format<br/>Komga tries to match the provided series and book number with series and books in your libraries.",
     "field_files_label": "ComicRack Reading Lists (.cbl)",
     "import_read_lists": "Import Read Lists",
     "imported_as": "Imported as {name}",
@@ -334,7 +334,7 @@
       "field_link_url_error_protocol": "Must be http or https",
       "field_link_url_error_url": "Must be a valid URL",
       "field_number": "Number",
-      "field_number_sort": "Sorting Number",
+      "field_number_sort": "Number used for sorting",
       "field_number_sort_hint": "You can use decimal numbers",
       "field_release_date": "Release Date",
       "field_release_date_error": "Must be a valid date in YYYY-MM-DD format",
@@ -419,7 +419,7 @@
       "field_title": "Title",
       "field_total_book_count": "Total Book Count",
       "field_total_book_count_error": "Total book count must be 1 or more",
-      "mixed": "Mixed",
+      "mixed": "MIXED",
       "tab_general": "General",
       "tab_poster": "Poster",
       "tab_tags": "Tags",
@@ -530,8 +530,8 @@
       "UNSUPPORTED": "Unsupported"
     },
     "reading_direction": {
-      "LEFT_TO_RIGHT": "Left to right →",
-      "RIGHT_TO_LEFT": "Right to left ←",
+      "LEFT_TO_RIGHT": "Left to right",
+      "RIGHT_TO_LEFT": "Right to left",
       "VERTICAL": "Vertical ↓",
       "WEBTOON": "Webtoon"
     },
