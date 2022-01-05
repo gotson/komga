@@ -8,12 +8,17 @@ import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaUnsupportedException
 import org.gotson.komga.domain.model.ThumbnailBook
+import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.infrastructure.image.ImageConverter
+import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.mediacontainer.MediaContainerExtractor
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import java.io.ByteArrayOutputStream
 import java.nio.file.AccessDeniedException
 import java.nio.file.NoSuchFileException
+import javax.imageio.ImageIO
 
 private val logger = KotlinLogging.logger {}
 
@@ -22,6 +27,8 @@ class BookAnalyzer(
   private val contentDetector: ContentDetector,
   extractors: List<MediaContainerExtractor>,
   private val imageConverter: ImageConverter,
+  private val hasher: Hasher,
+  @Value("#{@komgaProperties.pageHashing}") private val pageHashing: Int,
 ) {
 
   val supportedMediaTypes = extractors
@@ -115,7 +122,7 @@ class BookAnalyzer(
     IndexOutOfBoundsException::class,
   )
   fun getPageContent(book: BookWithMedia, number: Int): ByteArray {
-    logger.info { "Get page #$number for book: $book" }
+    logger.debug { "Get page #$number for book: $book" }
 
     if (book.media.status != Media.Status.READY) {
       logger.warn { "Book media is not ready, cannot get pages" }
@@ -142,5 +149,41 @@ class BookAnalyzer(
     }
 
     return supportedMediaTypes.getValue(book.media.mediaType!!).getEntryStream(book.book.path, fileName)
+  }
+
+  /**
+   * Will hash the first and last pages of the given book.
+   * The number of pages hashed from start/end is configurable.
+   *
+   * See [org.gotson.komga.infrastructure.configuration.KomgaProperties.pageHashing]
+   */
+  fun hashPages(book: BookWithMedia): Media {
+    val hashedPages = book.media.pages.mapIndexed { index, bookPage ->
+      if (bookPage.fileHash.isBlank() && (index < pageHashing || index >= (book.media.pages.size - pageHashing))) {
+        val content = getPageContent(book, index + 1)
+        val hash = hashPage(bookPage, content)
+        bookPage.copy(fileHash = hash)
+      } else bookPage
+    }
+
+    return book.media.copy(pages = hashedPages)
+  }
+
+  /**
+   * Hash a single page, using the file content for hashing.
+   *
+   * For JPEG, the image is read/written to remove the metadata.
+   */
+  fun hashPage(page: BookPage, content: ByteArray): String {
+    val bytes =
+      if (page.mediaType == ImageType.JPEG.mediaType) {
+        // JPEG could contain different EXIF data, reading and writing back the image will get rid of it
+        ByteArrayOutputStream().use { buffer ->
+          ImageIO.write(ImageIO.read(content.inputStream()), ImageType.JPEG.imageIOFormat, buffer)
+          buffer.toByteArray()
+        }
+      } else content
+
+    return hasher.computeHash(bytes.inputStream())
   }
 }

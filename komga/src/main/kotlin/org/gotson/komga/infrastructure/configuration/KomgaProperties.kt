@@ -25,6 +25,9 @@ class KomgaProperties {
 
   var fileHashing: Boolean = true
 
+  @Positive
+  var pageHashing: Int = 3
+
   var rememberMe = RememberMe()
 
   @DurationUnit(ChronoUnit.SECONDS)

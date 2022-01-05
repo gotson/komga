@@ -89,6 +89,12 @@ class BookLifecycle(
     }
   }
 
+  fun hashPagesAndPersist(book: Book) {
+    logger.info { "Hash and persist pages for book: $book" }
+
+    mediaRepository.update(bookAnalyzer.hashPages(BookWithMedia(book, mediaRepository.findById(book.id))))
+  }
+
   fun generateThumbnailAndPersist(book: Book) {
     logger.info { "Generate thumbnail and persist for book: $book" }
     try {
