@@ -153,6 +153,7 @@
     "format": "FORMAT",
     "isbn": "ISBN",
     "links": "LINKS",
+    "navigation_within_readlist": "Navigation within the reading list: {name}",
     "outdated_tooltip": "The file for this book has changed, this book must be re-analyzed",
     "read_book": "Read book",
     "read_incognito": "Read incognito",
