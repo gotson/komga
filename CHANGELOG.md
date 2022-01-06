@@ -1,3 +1,13 @@
+# [0.143.0](https://github.com/gotson/komga/compare/v0.142.0...v0.143.0) (2022-01-06)
+
+
+### Features
+
+* add library options for hashing and dimensions analysis ([5d4ec94](https://github.com/gotson/komga/commit/5d4ec94e01832774cdde2cf475d91d9d4a14496d)), closes [#645](https://github.com/gotson/komga/issues/645)
+* get file size for pages during analysis ([432ed4e](https://github.com/gotson/komga/commit/432ed4e14c01d66fecf4f333994875f2edea38cb))
+* hash pages to detect duplicates ([195ec29](https://github.com/gotson/komga/commit/195ec29d6d8ad2598f55e0c7009687abf231522e))
+* **webui:** display page size in book import dialog ([6f26c2c](https://github.com/gotson/komga/commit/6f26c2c9268fdf8c07fe71226727e3c616ae3a61))
+
 # [0.142.0](https://github.com/gotson/komga/compare/v0.141.0...v0.142.0) (2021-12-31)
 
 
