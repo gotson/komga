@@ -5,4 +5,5 @@ data class BookPage(
   val mediaType: String,
   val dimension: Dimension? = null,
   val fileHash: String = "",
+  val fileSize: Long? = null,
 )

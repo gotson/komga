@@ -36,7 +36,8 @@ class RarExtractor(
               buffer.inputStream().use { imageAnalyzer.getDimension(it) }
             else
               null
-            MediaContainerEntry(name = entry.fileName, mediaType = mediaType, dimension = dimension)
+            val fileSize = entry.fullUnpackSize
+            MediaContainerEntry(name = entry.fileName, mediaType = mediaType, dimension = dimension, fileSize = fileSize)
           } catch (e: Exception) {
             logger.warn(e) { "Could not analyze entry: ${entry.fileName}" }
             MediaContainerEntry(name = entry.fileName, comment = e.message)

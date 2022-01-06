@@ -3,6 +3,7 @@ package org.gotson.komga.infrastructure.mediacontainer
 import com.github.benmanes.caffeine.cache.Caffeine
 import mu.KotlinLogging
 import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
+import org.apache.commons.compress.archivers.ArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipFile
 import org.gotson.komga.domain.model.MediaContainerEntry
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
@@ -40,7 +41,8 @@ class ZipExtractor(
                 imageAnalyzer.getDimension(stream)
               else
                 null
-              MediaContainerEntry(name = entry.name, mediaType = mediaType, dimension = dimension)
+              val fileSize = if (entry.size == ArchiveEntry.SIZE_UNKNOWN) null else entry.size
+              MediaContainerEntry(name = entry.name, mediaType = mediaType, dimension = dimension, fileSize = fileSize)
             }
           } catch (e: Exception) {
             logger.warn(e) { "Could not analyze entry: ${entry.name}" }

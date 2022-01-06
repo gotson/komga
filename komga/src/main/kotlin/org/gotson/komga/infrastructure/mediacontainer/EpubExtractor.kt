@@ -1,6 +1,7 @@
 package org.gotson.komga.infrastructure.mediacontainer
 
 import mu.KotlinLogging
+import org.apache.commons.compress.archivers.ArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipFile
 import org.gotson.komga.domain.model.MediaContainerEntry
 import org.gotson.komga.domain.model.MediaUnsupportedException
@@ -56,11 +57,13 @@ class EpubExtractor(
           val mediaType = manifest.values.first {
             it.href == (opfDir?.relativize(image) ?: image).invariantSeparatorsPathString
           }.mediaType
+          val zipEntry = zip.getEntry(name)
           val dimension = if (analyzeDimensions && contentDetector.isImage(mediaType))
-            zip.getInputStream(zip.getEntry(name)).use { imageAnalyzer.getDimension(it) }
+            zip.getInputStream(zipEntry).use { imageAnalyzer.getDimension(it) }
           else
             null
-          MediaContainerEntry(name = name, mediaType = mediaType, dimension = dimension)
+          val fileSize = if (zipEntry.size == ArchiveEntry.SIZE_UNKNOWN) null else zipEntry.size
+          MediaContainerEntry(name = name, mediaType = mediaType, dimension = dimension, fileSize = fileSize)
         }
       } catch (e: Exception) {
         logger.error(e) { "File is not a proper Epub, treating it as a zip file" }

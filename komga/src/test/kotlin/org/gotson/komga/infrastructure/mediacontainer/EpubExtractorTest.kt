@@ -26,6 +26,7 @@ class EpubExtractorTest {
       assertThat(name).isEqualTo("cover.jpeg")
       assertThat(mediaType).isEqualTo("image/jpeg")
       assertThat(dimension).isEqualTo(Dimension(461, 616))
+      assertThat(fileSize).isEqualTo(56756)
     }
   }
 

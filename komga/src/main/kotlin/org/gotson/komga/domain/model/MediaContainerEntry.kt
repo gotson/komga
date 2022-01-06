@@ -5,4 +5,5 @@ data class MediaContainerEntry(
   val mediaType: String? = null,
   val comment: String? = null,
   val dimension: Dimension? = null,
+  val fileSize: Long? = null,
 )

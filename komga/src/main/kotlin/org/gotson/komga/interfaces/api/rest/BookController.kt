@@ -432,8 +432,15 @@ class BookController(
         )
         Media.Status.ERROR -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
         Media.Status.UNSUPPORTED -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book format is not supported")
-        Media.Status.READY -> media.pages.mapIndexed { index, s ->
-          PageDto(index + 1, s.fileName, s.mediaType, s.dimension?.width, s.dimension?.height)
+        Media.Status.READY -> media.pages.mapIndexed { index, bookPage ->
+          PageDto(
+            number = index + 1,
+            fileName = bookPage.fileName,
+            mediaType = bookPage.mediaType,
+            width = bookPage.dimension?.width,
+            height = bookPage.dimension?.height,
+            sizeBytes = bookPage.fileSize,
+          )
         }
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)

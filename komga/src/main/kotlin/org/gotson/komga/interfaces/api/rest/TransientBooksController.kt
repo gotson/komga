@@ -96,6 +96,7 @@ private fun BookWithMedia.toDto() =
         mediaType = bookPage.mediaType,
         width = bookPage.dimension?.width,
         height = bookPage.dimension?.height,
+        sizeBytes = bookPage.fileSize,
       )
     },
     files = media.files,

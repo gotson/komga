@@ -131,7 +131,8 @@ class MediaDao(
             p.WIDTH,
             p.HEIGHT,
             p.FILE_HASH,
-          ).values(null as String?, null, null, null, null, null, null),
+            p.FILE_SIZE
+          ).values(null as String?, null, null, null, null, null, null, null),
         ).also { step ->
           chunk.forEach { media ->
             media.pages.forEachIndexed { index, page ->
@@ -143,6 +144,7 @@ class MediaDao(
                 page.dimension?.width,
                 page.dimension?.height,
                 page.fileHash,
+                page.fileSize,
               )
             }
           }
@@ -233,5 +235,6 @@ class MediaDao(
       mediaType = mediaType,
       dimension = if (width != null && height != null) Dimension(width, height) else null,
       fileHash = fileHash,
+      fileSize = fileSize
     )
 }

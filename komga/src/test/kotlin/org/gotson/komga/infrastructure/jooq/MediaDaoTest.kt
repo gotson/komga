@@ -3,6 +3,7 @@ package org.gotson.komga.infrastructure.jooq
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.domain.model.BookPage
+import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
@@ -68,6 +69,9 @@ class MediaDaoTest(
         BookPage(
           fileName = "1.jpg",
           mediaType = "image/jpeg",
+          dimension = Dimension(10, 10),
+          fileHash = "hashed",
+          fileSize = 10,
         ),
       ),
       files = listOf("ComicInfo.xml"),
@@ -88,6 +92,9 @@ class MediaDaoTest(
     with(created.pages.first()) {
       assertThat(fileName).isEqualTo(media.pages.first().fileName)
       assertThat(mediaType).isEqualTo(media.pages.first().mediaType)
+      assertThat(dimension).isEqualTo(media.pages.first().dimension)
+      assertThat(fileHash).isEqualTo(media.pages.first().fileHash)
+      assertThat(fileSize).isEqualTo(media.pages.first().fileSize)
     }
     assertThat(created.files).hasSize(1)
     assertThat(created.files.first()).isEqualTo(media.files.first())
@@ -135,6 +142,9 @@ class MediaDaoTest(
           BookPage(
             fileName = "2.png",
             mediaType = "image/png",
+            dimension = Dimension(10, 10),
+            fileHash = "hashed",
+            fileSize = 10,
           ),
         ),
         files = listOf("id.txt"),
@@ -155,6 +165,9 @@ class MediaDaoTest(
     assertThat(modified.comment).isEqualTo(updated.comment)
     assertThat(modified.pages.first().fileName).isEqualTo(updated.pages.first().fileName)
     assertThat(modified.pages.first().mediaType).isEqualTo(updated.pages.first().mediaType)
+    assertThat(modified.pages.first().dimension).isEqualTo(updated.pages.first().dimension)
+    assertThat(modified.pages.first().fileHash).isEqualTo(updated.pages.first().fileHash)
+    assertThat(modified.pages.first().fileSize).isEqualTo(updated.pages.first().fileSize)
     assertThat(modified.files.first()).isEqualTo(updated.files.first())
   }
 
