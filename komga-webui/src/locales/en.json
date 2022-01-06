@@ -505,6 +505,7 @@
         "height": "Height",
         "index": "Index",
         "media_type": "Media type",
+        "size": "Size",
         "width": "Width"
       },
       "title": "Book Details",

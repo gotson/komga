@@ -19,32 +19,32 @@
               <thead v-if="rightBook">
               <tr>
                 <th></th>
-                <th>{{ $t('dialog.transient_book_details.label_candidate') }}</th>
+                <th :class="rightBook ? 'diff' : ''">{{ $t('dialog.transient_book_details.label_candidate') }}</th>
                 <th>{{ $t('dialog.transient_book_details.label_existing') }}</th>
               </tr>
               </thead>
               <tbody>
               <tr>
                 <td class="font-weight-medium">{{ $t('dialog.transient_book_details.label_name') }}</td>
-                <td>{{ leftBook.name }}</td>
+                <td :class="rightBook ? 'diff' : ''">{{ leftBook.name }}</td>
                 <td v-if="rightBook">{{ rightBook.metadata.title }}</td>
               </tr>
 
               <tr>
                 <td class="font-weight-medium">{{ $t('dialog.transient_book_details.label_size') }}</td>
-                <td>{{ leftBook.size }}</td>
+                <td :class="rightBook ? 'diff' : ''">{{ leftBook.size }}</td>
                 <td v-if="rightBook">{{ rightBook.size }}</td>
               </tr>
 
               <tr>
                 <td class="font-weight-medium">{{ $t('dialog.transient_book_details.label_format') }}</td>
-                <td>{{ getBookFormatFromMediaType(leftBook.mediaType).type }}</td>
+                <td :class="rightBook ? 'diff' : ''">{{ getBookFormatFromMediaType(leftBook.mediaType).type }}</td>
                 <td v-if="rightBook">{{ getBookFormatFromMediaType(rightBook.media.mediaType).type }}</td>
               </tr>
 
               <tr>
                 <td class="font-weight-medium">{{ $t('dialog.transient_book_details.label_pages') }}</td>
-                <td>{{ leftBook.pages.length }}</td>
+                <td :class="rightBook ? 'diff' : ''">{{ leftBook.pages.length }}</td>
                 <td v-if="rightBook">{{ rightBook.media.pagesCount }}</td>
               </tr>
 
