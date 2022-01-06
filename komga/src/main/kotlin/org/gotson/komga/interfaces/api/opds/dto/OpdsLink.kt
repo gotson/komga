@@ -11,49 +11,49 @@ open class OpdsLink(
   val rel: String,
 
   @get:JacksonXmlProperty(isAttribute = true)
-  val href: String
+  val href: String,
 )
 
 @JsonSerialize(`as` = OpdsLink::class)
 class OpdsLinkFeedNavigation(rel: String, href: String) : OpdsLink(
   type = "application/atom+xml;profile=opds-catalog;kind=navigation",
   rel = rel,
-  href = href
+  href = href,
 )
 
 @JsonSerialize(`as` = OpdsLink::class)
 class OpdsLinkFeedAcquisition(rel: String, href: String) : OpdsLink(
   type = "application/atom+xml;profile=opds-catalog;kind=acquisition",
   rel = rel,
-  href = href
+  href = href,
 )
 
 @JsonSerialize(`as` = OpdsLink::class)
 class OpdsLinkImage(mediaType: String, href: String) : OpdsLink(
   type = mediaType,
   rel = "http://opds-spec.org/image",
-  href = href
+  href = href,
 )
 
 @JsonSerialize(`as` = OpdsLink::class)
 class OpdsLinkImageThumbnail(mediaType: String, href: String) : OpdsLink(
   type = mediaType,
   rel = "http://opds-spec.org/image/thumbnail",
-  href = href
+  href = href,
 )
 
 @JsonSerialize(`as` = OpdsLink::class)
 class OpdsLinkFileAcquisition(mediaType: String?, href: String) : OpdsLink(
   type = mediaType ?: "application/octet-stream",
   rel = "http://opds-spec.org/acquisition",
-  href = href
+  href = href,
 )
 
 @JsonSerialize(`as` = OpdsLink::class)
 class OpdsLinkSearch(href: String) : OpdsLink(
   type = "application/opensearchdescription+xml",
   rel = "search",
-  href = href
+  href = href,
 )
 
 class OpdsLinkPageStreaming(
@@ -68,7 +68,7 @@ class OpdsLinkPageStreaming(
 ) : OpdsLink(
   type = mediaType,
   rel = "http://vaemendis.net/opds-pse/stream",
-  href = href
+  href = href,
 )
 
 class OpdsLinkRel {

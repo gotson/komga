@@ -52,8 +52,9 @@ class TaskHandler(
               libraryContentLifecycle.scanRootFolder(library)
               taskReceiver.analyzeUnknownAndOutdatedBooks(library)
               taskReceiver.hashBooksWithoutHash(library)
-              if (library.repairExtensions) taskReceiver.repairExtensions(library, LOWEST_PRIORITY)
-              if (library.convertToCbz) taskReceiver.convertBooksToCbz(library, LOWEST_PRIORITY)
+              taskReceiver.hashBookPagesWithMissingHash(library)
+              taskReceiver.repairExtensions(library, LOWEST_PRIORITY)
+              taskReceiver.convertBooksToCbz(library, LOWEST_PRIORITY)
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 
           is Task.EmptyTrash ->
@@ -120,6 +121,11 @@ class TaskHandler(
           is Task.HashBook ->
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
               bookLifecycle.hashAndPersist(book)
+            } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
+
+          is Task.HashBookPages ->
+            bookRepository.findByIdOrNull(task.bookId)?.let { book ->
+              bookLifecycle.hashPagesAndPersist(book)
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
           is Task.RebuildIndex -> searchIndexLifecycle.rebuildIndex(task.entities)

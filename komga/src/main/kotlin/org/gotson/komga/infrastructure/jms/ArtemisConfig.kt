@@ -40,18 +40,18 @@ class ArtemisConfig : ArtemisConfigurationCustomizer {
         QUEUE_TASKS,
         AddressSettings().apply {
           defaultConsumerWindowSize = 0
-        }
+        },
       )
       it.addQueueConfiguration(
         QueueConfiguration(QUEUE_TASKS)
           .setAddress(QUEUE_TASKS)
           .setLastValueKey(QUEUE_UNIQUE_ID)
-          .setRoutingType(RoutingType.ANYCAST)
+          .setRoutingType(RoutingType.ANYCAST),
       )
       it.addQueueConfiguration(
         QueueConfiguration(QUEUE_SSE)
           .setAddress(QUEUE_SSE)
-          .setRoutingType(RoutingType.MULTICAST)
+          .setRoutingType(RoutingType.MULTICAST),
       )
     }
   }

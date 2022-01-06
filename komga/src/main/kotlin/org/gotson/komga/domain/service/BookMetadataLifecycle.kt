@@ -74,7 +74,7 @@ class BookMetadataLifecycle(
 
   private fun handlePatchForReadLists(
     patch: BookMetadataPatch?,
-    book: Book
+    book: Book,
   ) {
     patch?.readLists?.forEach { readList ->
 
@@ -93,7 +93,7 @@ class BookMetadataLifecycle(
             }
             map[key] = book.id
             readListLifecycle.updateReadList(
-              existing.copy(bookIds = map)
+              existing.copy(bookIds = map),
             )
           }
         } else {
@@ -101,8 +101,8 @@ class BookMetadataLifecycle(
           readListLifecycle.addReadList(
             ReadList(
               name = readList.name,
-              bookIds = mapOf((readList.number ?: 0) to book.id).toSortedMap()
-            )
+              bookIds = mapOf((readList.number ?: 0) to book.id).toSortedMap(),
+            ),
           )
         }
       }
@@ -111,7 +111,7 @@ class BookMetadataLifecycle(
 
   private fun handlePatchForBookMetadata(
     patch: BookMetadataPatch?,
-    book: Book
+    book: Book,
   ) {
     patch?.let { bPatch ->
       bookMetadataRepository.findById(book.id).let {

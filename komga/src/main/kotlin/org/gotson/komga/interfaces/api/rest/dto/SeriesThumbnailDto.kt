@@ -6,7 +6,7 @@ data class SeriesThumbnailDto(
   val id: String,
   val seriesId: String,
   val type: String,
-  val selected: Boolean
+  val selected: Boolean,
 )
 
 fun ThumbnailSeries.toDto() =
@@ -14,5 +14,5 @@ fun ThumbnailSeries.toDto() =
     id = id,
     seriesId = seriesId,
     type = type.toString(),
-    selected = selected
+    selected = selected,
   )

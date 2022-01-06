@@ -26,7 +26,7 @@ class ReadListDaoTest(
   @Autowired private val readListDao: ReadListDao,
   @Autowired private val bookRepository: BookRepository,
   @Autowired private val seriesRepository: SeriesRepository,
-  @Autowired private val libraryRepository: LibraryRepository
+  @Autowired private val libraryRepository: LibraryRepository,
 ) {
 
   private val library = makeLibrary()
@@ -61,7 +61,7 @@ class ReadListDaoTest(
     val readList = ReadList(
       name = "MyReadList",
       summary = "summary",
-      bookIds = books.map { it.id }.toIndexedMap()
+      bookIds = books.map { it.id }.toIndexedMap(),
     )
 
     // when
@@ -89,7 +89,7 @@ class ReadListDaoTest(
 
     val readList = ReadList(
       name = "MyReadList",
-      bookIds = books.map { it.id }.toIndexedMap()
+      bookIds = books.map { it.id }.toIndexedMap(),
     )
 
     readListDao.insert(readList)
@@ -98,7 +98,7 @@ class ReadListDaoTest(
     val updatedReadList = readList.copy(
       name = "UpdatedReadList",
       summary = "summary",
-      bookIds = readList.bookIds.values.take(5).toIndexedMap()
+      bookIds = readList.bookIds.values.take(5).toIndexedMap(),
     )
 
     val now = LocalDateTime.now()
@@ -125,13 +125,13 @@ class ReadListDaoTest(
 
     val readList1 = ReadList(
       name = "MyReadList",
-      bookIds = books.map { it.id }.toIndexedMap()
+      bookIds = books.map { it.id }.toIndexedMap(),
     )
     readListDao.insert(readList1)
 
     val readList2 = ReadList(
       name = "MyReadList",
-      bookIds = books.map { it.id }.take(5).toIndexedMap()
+      bookIds = books.map { it.id }.take(5).toIndexedMap(),
     )
     readListDao.insert(readList2)
 
@@ -161,22 +161,22 @@ class ReadListDaoTest(
     readListDao.insert(
       ReadList(
         name = "readListLibrary1",
-        bookIds = listOf(bookLibrary1.id).toIndexedMap()
-      )
+        bookIds = listOf(bookLibrary1.id).toIndexedMap(),
+      ),
     )
 
     readListDao.insert(
       ReadList(
         name = "readListLibrary2",
-        bookIds = listOf(bookLibrary2.id).toIndexedMap()
-      )
+        bookIds = listOf(bookLibrary2.id).toIndexedMap(),
+      ),
     )
 
     readListDao.insert(
       ReadList(
         name = "readListLibraryBoth",
-        bookIds = listOf(bookLibrary1.id, bookLibrary2.id).toIndexedMap()
-      )
+        bookIds = listOf(bookLibrary1.id, bookLibrary2.id).toIndexedMap(),
+      ),
     )
 
     // when

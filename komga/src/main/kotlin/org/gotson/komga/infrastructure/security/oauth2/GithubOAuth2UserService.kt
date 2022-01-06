@@ -32,7 +32,7 @@ class GithubOAuth2UserService : DefaultOAuth2UserService() {
           RequestEntity<Any>(
             HttpHeaders().apply { setBearerAuth(userRequest.accessToken.tokenValue) },
             HttpMethod.GET,
-            UriComponentsBuilder.fromUriString("${userRequest.clientRegistration.providerDetails.userInfoEndpoint.uri}/emails").build().toUri()
+            UriComponentsBuilder.fromUriString("${userRequest.clientRegistration.providerDetails.userInfoEndpoint.uri}/emails").build().toUri(),
           ),
           parameterizedResponseType,
         )

@@ -113,6 +113,6 @@ class ThumbnailBookDao(
       id = id,
       bookId = bookId,
       createdDate = createdDate,
-      lastModifiedDate = lastModifiedDate
+      lastModifiedDate = lastModifiedDate,
     )
 }

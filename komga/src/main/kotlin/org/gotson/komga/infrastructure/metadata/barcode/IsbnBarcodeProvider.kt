@@ -25,12 +25,12 @@ private const val PAGES_FIRST = 3
 @Service
 class IsbnBarcodeProvider(
   private val bookAnalyzer: BookAnalyzer,
-  private val validator: ISBNValidator
+  private val validator: ISBNValidator,
 ) : BookMetadataProvider {
 
   private val hints = mapOf(
     DecodeHintType.POSSIBLE_FORMATS to EnumSet.of(BarcodeFormat.EAN_13),
-    DecodeHintType.TRY_HARDER to true
+    DecodeHintType.TRY_HARDER to true,
   )
 
   override fun getCapabilities(): Set<BookMetadataPatchCapability> =

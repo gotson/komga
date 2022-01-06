@@ -19,13 +19,28 @@ class EpubExtractorTest {
   fun `given epub 3 file when parsing for entries then returns all images contained in pages`() {
     val epubResource = ClassPathResource("epub/The Incomplete Theft - Ralph Burke.epub")
 
-    val entries = epubExtractor.getEntries(epubResource.file.toPath())
+    val entries = epubExtractor.getEntries(epubResource.file.toPath(), true)
 
     assertThat(entries).hasSize(1)
     with(entries.first()) {
       assertThat(name).isEqualTo("cover.jpeg")
       assertThat(mediaType).isEqualTo("image/jpeg")
       assertThat(dimension).isEqualTo(Dimension(461, 616))
+      assertThat(fileSize).isEqualTo(56756)
+    }
+  }
+
+  @Test
+  fun `given epub 3 file when parsing for entries without analyzing dimensions then returns all images contained in pages without dimensions`() {
+    val epubResource = ClassPathResource("epub/The Incomplete Theft - Ralph Burke.epub")
+
+    val entries = epubExtractor.getEntries(epubResource.file.toPath(), false)
+
+    assertThat(entries).hasSize(1)
+    with(entries.first()) {
+      assertThat(name).isEqualTo("cover.jpeg")
+      assertThat(mediaType).isEqualTo("image/jpeg")
+      assertThat(dimension).isNull()
     }
   }
 }

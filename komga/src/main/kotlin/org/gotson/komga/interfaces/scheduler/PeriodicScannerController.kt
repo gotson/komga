@@ -13,7 +13,7 @@ private val logger = KotlinLogging.logger {}
 @Profile("!test")
 @Component
 class PeriodicScannerController(
-  private val taskReceiver: TaskReceiver
+  private val taskReceiver: TaskReceiver,
 ) {
 
   @EventListener(classes = [ApplicationReadyEvent::class], condition = "@komgaProperties.librariesScanStartup")

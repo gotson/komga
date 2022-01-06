@@ -38,7 +38,7 @@ class LoginListener(
       ip = event.getIp(),
       userAgent = event.getUserAgent(),
       success = true,
-      source = source
+      source = source,
     )
 
     logger.info { activity }

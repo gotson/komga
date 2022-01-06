@@ -20,7 +20,7 @@ import javax.validation.constraints.NotBlank
 @RequestMapping("api/v1/claim", produces = [MediaType.APPLICATION_JSON_VALUE])
 @Validated
 class ClaimController(
-  private val userDetailsLifecycle: KomgaUserLifecycle
+  private val userDetailsLifecycle: KomgaUserLifecycle,
 ) {
 
   @GetMapping
@@ -29,7 +29,7 @@ class ClaimController(
   @PostMapping
   fun claimAdmin(
     @Email(regexp = ".+@.+\\..+") @RequestHeader("X-Komga-Email") email: String,
-    @NotBlank @RequestHeader("X-Komga-Password") password: String
+    @NotBlank @RequestHeader("X-Komga-Password") password: String,
   ): UserDto {
     if (userDetailsLifecycle.countUsers() > 0)
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, "This server has already been claimed")
@@ -38,12 +38,12 @@ class ClaimController(
       KomgaUser(
         email = email,
         password = password,
-        roleAdmin = true
-      )
+        roleAdmin = true,
+      ),
     ).toDto()
   }
 
   data class ClaimStatus(
-    val isClaimed: Boolean
+    val isClaimed: Boolean,
   )
 }

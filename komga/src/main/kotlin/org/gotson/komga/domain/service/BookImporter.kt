@@ -68,12 +68,12 @@ class BookImporter(
 
       val destFile = series.path.resolve(
         if (destinationName != null) Paths.get("$destinationName.${sourceFile.extension}").name
-        else sourceFile.name
+        else sourceFile.name,
       )
       val sidecars = fileSystemScanner.scanBookSidecars(sourceFile).associateWith {
         series.path.resolve(
           if (destinationName != null) it.url.toURI().toPath().name.replace(sourceFile.nameWithoutExtension, destinationName, true)
-          else it.url.toURI().toPath().name
+          else it.url.toURI().toPath().name,
         )
       }
 
@@ -159,7 +159,7 @@ class BookImporter(
             it.copy(
               bookId = importedBook.id,
               status = Media.Status.OUTDATED,
-            )
+            ),
           )
         }
 
@@ -178,8 +178,8 @@ class BookImporter(
           .forEach { rl ->
             readListRepository.update(
               rl.copy(
-                bookIds = rl.bookIds.values.map { if (it == bookToUpgrade.id) importedBook.id else it }.toIndexedMap()
-              )
+                bookIds = rl.bookIds.values.map { if (it == bookToUpgrade.id) importedBook.id else it }.toIndexedMap(),
+              ),
             )
           }
 
@@ -201,7 +201,7 @@ class BookImporter(
         val destSidecar = sourceSidecar.copy(
           url = destPath.toUri().toURL(),
           parentUrl = destPath.parent.toUri().toURL(),
-          lastModifiedTime = destPath.readAttributes<BasicFileAttributes>().getUpdatedTime()
+          lastModifiedTime = destPath.readAttributes<BasicFileAttributes>().getUpdatedTime(),
         )
         sidecarRepository.save(importedBook.libraryId, destSidecar)
       }

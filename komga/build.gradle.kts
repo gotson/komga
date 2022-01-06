@@ -228,6 +228,7 @@ val migrationDirsSqlite = listOf(
 flyway {
   url = dbSqlite["url"]
   locations = arrayOf("classpath:db/migration/sqlite")
+  placeholders = mapOf("library-file-hashing" to "true")
 }
 tasks.flywayMigrate {
   // in order to include the Java migrations, flywayClasses must be run before flywayMigrate

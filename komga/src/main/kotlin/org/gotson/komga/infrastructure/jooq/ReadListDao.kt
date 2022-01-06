@@ -76,7 +76,7 @@ class ReadListDao(
       items,
       if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
       else PageRequest.of(0, maxOf(count.toInt(), 20), pageSort),
-      count
+      count,
     )
   }
 
@@ -115,7 +115,7 @@ class ReadListDao(
       items,
       if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
       else PageRequest.of(0, maxOf(count, 20), pageSort),
-      count.toLong()
+      count.toLong(),
     )
   }
 
@@ -139,8 +139,8 @@ class ReadListDao(
           dsl.select(rl.ID)
             .from(rl)
             .leftJoin(rlb).on(rl.ID.eq(rlb.READLIST_ID))
-            .where(rlb.READLIST_ID.isNull)
-        )
+            .where(rlb.READLIST_ID.isNull),
+        ),
       ).fetchInto(rl)
       .map { it.toDomain(sortedMapOf()) }
 
@@ -244,7 +244,7 @@ class ReadListDao(
   override fun existsByName(name: String): Boolean =
     dsl.fetchExists(
       dsl.selectFrom(rl)
-        .where(rl.NAME.equalIgnoreCase(name))
+        .where(rl.NAME.equalIgnoreCase(name)),
     )
 
   private fun ReadlistRecord.toDomain(bookIds: SortedMap<Int, String>) =
@@ -255,6 +255,6 @@ class ReadListDao(
       id = id,
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
-      filtered = bookCount != bookIds.size
+      filtered = bookCount != bookIds.size,
     )
 }

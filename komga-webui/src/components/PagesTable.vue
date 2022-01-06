@@ -3,15 +3,17 @@
     <thead>
       <tr>
         <th>{{ $t('dialog.transient_book_details.pages_table.index') }}</th>
-        <th>{{ $t('dialog.transient_book_details.pages_table.filename') }}</th>
-        <th>{{ $t('dialog.transient_book_details.pages_table.media_type') }}</th>
-        <th>{{ $t('dialog.transient_book_details.pages_table.width') }}</th>
-        <th>{{ $t('dialog.transient_book_details.pages_table.height') }}</th>
+        <th :class="rightPages.length > 0 ? 'diff' : ''">{{ $t('dialog.transient_book_details.pages_table.filename') }}</th>
+        <th :class="rightPages.length > 0 ? 'diff' : ''">{{ $t('dialog.transient_book_details.pages_table.media_type') }}</th>
+        <th :class="rightPages.length > 0 ? 'diff' : ''">{{ $t('dialog.transient_book_details.pages_table.width') }}</th>
+        <th :class="rightPages.length > 0 ? 'diff' : ''">{{ $t('dialog.transient_book_details.pages_table.height') }}</th>
+        <th :class="rightPages.length > 0 ? 'diff' : ''">{{ $t('dialog.transient_book_details.pages_table.size') }}</th>
         <template v-if="rightPages.length > 0">
           <th>{{ $t('dialog.transient_book_details.pages_table.filename') }}</th>
           <th>{{ $t('dialog.transient_book_details.pages_table.media_type') }}</th>
           <th>{{ $t('dialog.transient_book_details.pages_table.width') }}</th>
           <th>{{ $t('dialog.transient_book_details.pages_table.height') }}</th>
+          <th>{{ $t('dialog.transient_book_details.pages_table.size') }}</th>
         </template>
       </tr>
     </thead>
@@ -21,15 +23,17 @@
         :key="i"
       >
         <td>{{ n }}</td>
-        <td>{{ $_.get(leftPages[n-1], 'fileName', '') }}</td>
-        <td>{{ $_.get(leftPages[n-1], 'mediaType', '') }}</td>
-        <td>{{ $_.get(leftPages[n-1], 'width', '') }}</td>
-        <td>{{ $_.get(leftPages[n-1], 'height', '') }}</td>
+        <td :class="rightPages.length > 0 ? 'diff' : ''">{{ $_.get(leftPages[n-1], 'fileName', '') }}</td>
+        <td :class="rightPages.length > 0 ? 'diff' : ''">{{ $_.get(leftPages[n-1], 'mediaType', '') }}</td>
+        <td :class="rightPages.length > 0 ? 'diff' : ''">{{ $_.get(leftPages[n-1], 'width', '') }}</td>
+        <td :class="rightPages.length > 0 ? 'diff' : ''">{{ $_.get(leftPages[n-1], 'height', '') }}</td>
+        <td :class="rightPages.length > 0 ? 'diff' : ''">{{ $_.get(leftPages[n-1], 'size', '') }}</td>
         <template v-if="rightPages.length > 0">
           <td>{{ $_.get(rightPages[n-1], 'fileName', '') }}</td>
           <td>{{ $_.get(rightPages[n-1], 'mediaType', '') }}</td>
           <td>{{ $_.get(rightPages[n-1], 'width', '') }}</td>
           <td>{{ $_.get(rightPages[n-1], 'height', '') }}</td>
+          <td>{{ $_.get(rightPages[n-1], 'size', '') }}</td>
         </template>
       </tr>
     </tbody>

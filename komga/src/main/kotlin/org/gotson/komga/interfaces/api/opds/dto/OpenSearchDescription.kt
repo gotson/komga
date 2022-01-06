@@ -21,11 +21,11 @@ class OpenSearchDescription(
   val outputEncoding: String = "UTF-8",
 
   @JacksonXmlProperty(localName = "Url", namespace = OPENSEARCH)
-  val url: OpenSearchUrl
+  val url: OpenSearchUrl,
 ) {
   class OpenSearchUrl(
     @JacksonXmlProperty(isAttribute = true)
-    val template: String
+    val template: String,
   ) {
     @JacksonXmlProperty(isAttribute = true)
     val type = "application/atom+xml;profile=opds-catalog;kind=acquisition"

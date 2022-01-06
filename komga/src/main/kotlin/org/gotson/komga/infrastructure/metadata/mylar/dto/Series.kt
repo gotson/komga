@@ -4,5 +4,5 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Series(
-  val metadata: MylarMetadata
+  val metadata: MylarMetadata,
 )

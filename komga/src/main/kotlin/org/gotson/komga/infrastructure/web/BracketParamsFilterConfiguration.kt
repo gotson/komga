@@ -16,7 +16,7 @@ class BracketParamsFilterConfiguration {
     FilterRegistrationBean(BracketParamsFilter())
       .also {
         it.addUrlPatterns(
-          "/api/*"
+          "/api/*",
         )
         it.setName("queryParamsFilter")
       }

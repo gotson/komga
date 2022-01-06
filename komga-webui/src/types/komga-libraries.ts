@@ -18,6 +18,9 @@ export interface LibraryCreationDto {
   convertToCbz: boolean,
   emptyTrashAfterScan: boolean,
   seriesCover: SeriesCoverDto,
+  hashFiles: boolean,
+  hashPages: boolean,
+  analyzeDimensions: boolean,
 }
 
 export interface LibraryUpdateDto {
@@ -38,6 +41,9 @@ export interface LibraryUpdateDto {
   convertToCbz: boolean,
   emptyTrashAfterScan: boolean,
   seriesCover: SeriesCoverDto,
+  hashFiles: boolean,
+  hashPages: boolean,
+  analyzeDimensions: boolean,
 }
 
 export interface LibraryDto {
@@ -59,5 +65,8 @@ export interface LibraryDto {
   convertToCbz: boolean,
   emptyTrashAfterScan: boolean,
   seriesCover: SeriesCoverDto,
+  hashFiles: boolean,
+  hashPages: boolean,
+  analyzeDimensions: boolean,
   unavailable: boolean,
 }

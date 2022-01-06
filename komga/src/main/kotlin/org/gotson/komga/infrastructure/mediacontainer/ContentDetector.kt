@@ -13,7 +13,7 @@ private val logger = KotlinLogging.logger {}
 
 @Service
 class ContentDetector(
-  private val tika: TikaConfig
+  private val tika: TikaConfig,
 ) {
 
   fun detectMediaType(path: Path): String {

@@ -28,6 +28,8 @@ spring:
     enabled: true
     locations: classpath:db/migration/{vendor}
     mixed: true
+    placeholders:
+      library-file-hashing: \${komga.file-hashing:true}
   thymeleaf:
     prefix: classpath:/public/
   mvc:

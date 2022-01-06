@@ -7,7 +7,7 @@ import javax.servlet.ServletContext
 
 @Controller
 class IndexController(
-  servletContext: ServletContext
+  servletContext: ServletContext,
 ) {
   private val baseUrl: String = "${servletContext.contextPath}/"
 

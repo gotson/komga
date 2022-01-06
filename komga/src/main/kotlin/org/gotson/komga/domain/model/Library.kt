@@ -25,6 +25,9 @@ data class Library(
   val convertToCbz: Boolean = false,
   val emptyTrashAfterScan: Boolean = false,
   val seriesCover: SeriesCover = SeriesCover.FIRST,
+  val hashFiles: Boolean = true,
+  val hashPages: Boolean = false,
+  val analyzeDimensions: Boolean = true,
 
   val unavailableDate: LocalDateTime? = null,
 

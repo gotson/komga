@@ -96,11 +96,11 @@ class BookConverter(
       ?.copy(
         id = book.id,
         seriesId = book.seriesId,
-        libraryId = book.libraryId
+        libraryId = book.libraryId,
       )
       ?: throw IllegalStateException("Newly converted book could not be scanned: $destinationFilename")
 
-    val convertedMedia = bookAnalyzer.analyze(convertedBook)
+    val convertedMedia = bookAnalyzer.analyze(convertedBook, libraryRepository.findById(book.libraryId).analyzeDimensions)
 
     try {
       when {
@@ -172,7 +172,7 @@ class BookConverter(
       ?.copy(
         id = book.id,
         seriesId = book.seriesId,
-        libraryId = book.libraryId
+        libraryId = book.libraryId,
       )
       ?: throw IllegalStateException("Repaired book could not be scanned: $destinationFilename")
 

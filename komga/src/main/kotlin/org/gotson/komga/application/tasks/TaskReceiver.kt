@@ -8,6 +8,7 @@ import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
+import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.service.BookConverter
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.gotson.komga.infrastructure.jms.QUEUE_SUB_TYPE
@@ -28,6 +29,7 @@ class TaskReceiver(
   connectionFactory: ConnectionFactory,
   private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
+  private val mediaRepository: MediaRepository,
   private val bookConverter: BookConverter,
   private val komgaProperties: KomgaProperties,
 ) {
@@ -55,31 +57,40 @@ class TaskReceiver(
     bookRepository.findAllIds(
       BookSearch(
         libraryIds = listOf(library.id),
-        mediaStatus = listOf(Media.Status.UNKNOWN, Media.Status.OUTDATED)
+        mediaStatus = listOf(Media.Status.UNKNOWN, Media.Status.OUTDATED),
       ),
-      Sort.by(Sort.Order.asc("seriesId"), Sort.Order.asc("number"))
+      Sort.by(Sort.Order.asc("seriesId"), Sort.Order.asc("number")),
     ).forEach {
       submitTask(Task.AnalyzeBook(it))
     }
   }
 
   fun hashBooksWithoutHash(library: Library) {
-    if (komgaProperties.fileHashing)
+    if (library.hashFiles)
       bookRepository.findAllIdsByLibraryIdAndWithEmptyHash(library.id).forEach {
         submitTask(Task.HashBook(it, LOWEST_PRIORITY))
       }
   }
 
+  fun hashBookPagesWithMissingHash(library: Library) {
+    if (library.hashPages)
+      mediaRepository.findAllBookIdsByLibraryIdAndWithMissingPageHash(library.id, komgaProperties.pageHashing).forEach {
+        submitTask(Task.HashBookPages(it, LOWEST_PRIORITY))
+      }
+  }
+
   fun convertBooksToCbz(library: Library, priority: Int = DEFAULT_PRIORITY) {
-    bookConverter.getConvertibleBookIds(library).forEach {
-      submitTask(Task.ConvertBook(it, priority))
-    }
+    if (library.convertToCbz)
+      bookConverter.getConvertibleBookIds(library).forEach {
+        submitTask(Task.ConvertBook(it, priority))
+      }
   }
 
   fun repairExtensions(library: Library, priority: Int = DEFAULT_PRIORITY) {
-    bookConverter.getMismatchedExtensionBookIds(library).forEach {
-      submitTask(Task.RepairExtension(it, priority))
-    }
+    if (library.repairExtensions)
+      bookConverter.getMismatchedExtensionBookIds(library).forEach {
+        submitTask(Task.RepairExtension(it, priority))
+      }
   }
 
   fun analyzeBook(bookId: String, priority: Int = DEFAULT_PRIORITY) {

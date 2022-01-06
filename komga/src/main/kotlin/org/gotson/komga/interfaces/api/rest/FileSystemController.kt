@@ -23,11 +23,11 @@ class FileSystemController {
 
   @PostMapping
   fun getDirectoryListing(
-    @RequestBody(required = false) request: DirectoryRequestDto = DirectoryRequestDto()
+    @RequestBody(required = false) request: DirectoryRequestDto = DirectoryRequestDto(),
   ): DirectoryListingDto =
     if (request.path.isEmpty()) {
       DirectoryListingDto(
-        directories = fs.rootDirectories.map { it.toDto() }
+        directories = fs.rootDirectories.map { it.toDto() },
       )
     } else {
       val p = fs.getPath(request.path)
@@ -42,7 +42,7 @@ class FileSystemController {
               .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.toString() })
               .map { it.toDto() }
               .toList()
-          }
+          },
         )
       } catch (e: Exception) {
         throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Path does not exist")
@@ -51,24 +51,24 @@ class FileSystemController {
 }
 
 data class DirectoryRequestDto(
-  val path: String = ""
+  val path: String = "",
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class DirectoryListingDto(
   val parent: String? = null,
-  val directories: List<PathDto>
+  val directories: List<PathDto>,
 )
 
 data class PathDto(
   val type: String,
   val name: String,
-  val path: String
+  val path: String,
 )
 
 fun Path.toDto(): PathDto =
   PathDto(
     type = if (Files.isDirectory(this)) "directory" else "file",
     name = (fileName ?: this).toString(),
-    path = toString()
+    path = toString(),
   )

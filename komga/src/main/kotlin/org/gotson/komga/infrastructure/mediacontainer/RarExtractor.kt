@@ -14,14 +14,14 @@ private val logger = KotlinLogging.logger {}
 @Service
 class RarExtractor(
   private val contentDetector: ContentDetector,
-  private val imageAnalyzer: ImageAnalyzer
+  private val imageAnalyzer: ImageAnalyzer,
 ) : MediaContainerExtractor {
 
   private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
 
   override fun mediaTypes(): List<String> = listOf("application/x-rar-compressed", "application/x-rar-compressed; version=4")
 
-  override fun getEntries(path: Path): List<MediaContainerEntry> =
+  override fun getEntries(path: Path, analyzeDimensions: Boolean): List<MediaContainerEntry> =
     Archive(path.toFile()).use { rar ->
       if (rar.isPasswordProtected) throw MediaUnsupportedException("Encrypted RAR archives are not supported", "ERR_1002")
       if (rar.mainHeader.isSolid) throw MediaUnsupportedException("Solid RAR archives are not supported", "ERR_1003")
@@ -32,11 +32,12 @@ class RarExtractor(
           try {
             val buffer = rar.getInputStream(entry).use { it.readBytes() }
             val mediaType = buffer.inputStream().use { contentDetector.detectMediaType(it) }
-            val dimension = if (contentDetector.isImage(mediaType))
+            val dimension = if (analyzeDimensions && contentDetector.isImage(mediaType))
               buffer.inputStream().use { imageAnalyzer.getDimension(it) }
             else
               null
-            MediaContainerEntry(name = entry.fileName, mediaType = mediaType, dimension = dimension)
+            val fileSize = entry.fullUnpackSize
+            MediaContainerEntry(name = entry.fileName, mediaType = mediaType, dimension = dimension, fileSize = fileSize)
           } catch (e: Exception) {
             logger.warn(e) { "Could not analyze entry: ${entry.fileName}" }
             MediaContainerEntry(name = entry.fileName, comment = e.message)

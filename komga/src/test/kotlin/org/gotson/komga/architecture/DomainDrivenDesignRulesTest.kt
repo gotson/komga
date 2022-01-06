@@ -19,7 +19,7 @@ class DomainDrivenDesignRulesTest {
         "..infrastructure..",
         "..interfaces..",
         "..domain.persistence..",
-        "..domain.service.."
+        "..domain.service..",
       )
 
   @ArchTest

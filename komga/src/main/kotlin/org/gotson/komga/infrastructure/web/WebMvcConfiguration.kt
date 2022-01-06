@@ -38,7 +38,7 @@ class WebMvcConfiguration : WebMvcConfigurer {
         "/apple-touch-icon-180x180.png",
         "/android-chrome-192x192.png",
         "/android-chrome-512x512.png",
-        "/manifest.json"
+        "/manifest.json",
       )
       .addResourceLocations(
         "classpath:public/index.html",
@@ -50,7 +50,7 @@ class WebMvcConfiguration : WebMvcConfigurer {
         "classpath:public/apple-touch-icon-180x180.png",
         "classpath:public/android-chrome-192x192.png",
         "classpath:public/android-chrome-512x512.png",
-        "classpath:public/manifest.json"
+        "classpath:public/manifest.json",
       )
       .setCacheControl(CacheControl.noStore())
 
@@ -59,13 +59,13 @@ class WebMvcConfiguration : WebMvcConfigurer {
         "/css/**",
         "/fonts/**",
         "/img/**",
-        "/js/**"
+        "/js/**",
       )
       .addResourceLocations(
         "classpath:public/css/",
         "classpath:public/fonts/",
         "classpath:public/img/",
-        "classpath:public/js/"
+        "classpath:public/js/",
       )
       .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS).cachePublic())
   }
@@ -75,9 +75,9 @@ class WebMvcConfiguration : WebMvcConfigurer {
       WebContentInterceptor().apply {
         addCacheMapping(
           cachePrivate,
-          "/api/**", "/opds/**"
+          "/api/**", "/opds/**",
         )
-      }
+      },
     )
   }
 

@@ -22,7 +22,7 @@ import java.nio.file.Files
 @SpringBootTest
 class LibraryLifecycleTest(
   @Autowired private val libraryRepository: LibraryRepository,
-  @Autowired private val libraryLifecycle: LibraryLifecycle
+  @Autowired private val libraryLifecycle: LibraryLifecycle,
 ) {
 
   @AfterEach

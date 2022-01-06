@@ -13,7 +13,7 @@ class EtagFilterConfiguration {
       .also {
         it.addUrlPatterns(
           "/api/*",
-          "/opds/*"
+          "/opds/*",
         )
         it.setName("etagFilter")
       }

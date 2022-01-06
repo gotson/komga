@@ -81,20 +81,20 @@ class SeriesLifecycle(
             .trim()
             .stripAccents()
             .replace(whitespacePattern, " ")
-        }
+        },
       )
       .map { book -> book to metadatas.first { it.bookId == book.id } }
     logger.debug { "Sorted books: $sorted" }
 
     bookRepository.update(
-      sorted.mapIndexed { index, (book, _) -> book.copy(number = index + 1) }
+      sorted.mapIndexed { index, (book, _) -> book.copy(number = index + 1) },
     )
 
     val oldToNew = sorted.mapIndexedNotNull { index, (_, metadata) ->
       if (metadata.numberLock && metadata.numberSortLock) null
       else metadata to metadata.copy(
         number = if (!metadata.numberLock) (index + 1).toString() else metadata.number,
-        numberSort = if (!metadata.numberSortLock) (index + 1).toFloat() else metadata.numberSort
+        numberSort = if (!metadata.numberSortLock) (index + 1).toFloat() else metadata.numberSort,
       )
     }
     bookMetadataRepository.update(oldToNew.map { it.second })
@@ -131,7 +131,7 @@ class SeriesLifecycle(
           title = it.name,
           number = it.number.toString(),
           numberSort = it.number.toFloat(),
-          bookId = it.id
+          bookId = it.id,
         )
       }.let { bookMetadataRepository.insert(it) }
     }
@@ -147,12 +147,12 @@ class SeriesLifecycle(
         SeriesMetadata(
           title = series.name,
           titleSort = StringUtils.stripAccents(series.name),
-          seriesId = series.id
-        )
+          seriesId = series.id,
+        ),
       )
 
       bookMetadataAggregationRepository.insert(
-        BookMetadataAggregation(seriesId = series.id)
+        BookMetadataAggregation(seriesId = series.id),
       )
     }
 

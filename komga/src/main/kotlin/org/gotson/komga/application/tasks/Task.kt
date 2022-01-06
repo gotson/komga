@@ -44,6 +44,11 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY) : Serializable {
     override fun toString(): String = "HashBook(bookId='$bookId', priority='$priority')"
   }
 
+  class HashBookPages(val bookId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
+    override fun uniqueId() = "HASH_BOOK_PAGES_$bookId"
+    override fun toString(): String = "HashBookPages(bookId='$bookId', priority='$priority')"
+  }
+
   class RefreshSeriesMetadata(val seriesId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
     override fun uniqueId() = "REFRESH_SERIES_METADATA_$seriesId"
     override fun toString(): String = "RefreshSeriesMetadata(seriesId='$seriesId', priority='$priority')"

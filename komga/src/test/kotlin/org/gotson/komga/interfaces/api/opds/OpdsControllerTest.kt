@@ -44,7 +44,7 @@ class OpdsControllerTest(
   @Autowired private val mediaRepository: MediaRepository,
   @Autowired private val userRepository: KomgaUserRepository,
   @Autowired private val userLifecycle: KomgaUserLifecycle,
-  @Autowired private val mockMvc: MockMvc
+  @Autowired private val mockMvc: MockMvc,
 ) {
 
   private val library = makeLibrary(id = "1")

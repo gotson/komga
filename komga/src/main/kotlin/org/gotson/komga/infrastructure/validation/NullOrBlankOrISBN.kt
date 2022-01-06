@@ -17,5 +17,5 @@ import kotlin.reflect.KClass
 annotation class NullOrBlankOrISBN(
   val message: String = "Must be null or blank or valid ISBN-13",
   val groups: Array<KClass<out Any>> = [],
-  val payload: Array<KClass<out Any>> = []
+  val payload: Array<KClass<out Any>> = [],
 )

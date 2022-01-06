@@ -20,7 +20,7 @@ private val logger = KotlinLogging.logger {}
 
 @Service
 class LocalArtworkProvider(
-  private val contentDetector: ContentDetector
+  private val contentDetector: ContentDetector,
 ) : SidecarSeriesConsumer, SidecarBookConsumer {
 
   val supportedExtensions = listOf("png", "jpeg", "jpg", "tbn")
@@ -45,7 +45,7 @@ class LocalArtworkProvider(
             url = path.toUri().toURL(),
             type = ThumbnailBook.Type.SIDECAR,
             bookId = book.id,
-            selected = index == 0
+            selected = index == 0,
           )
         }.toList()
     }
@@ -66,7 +66,7 @@ class LocalArtworkProvider(
             url = path.toUri().toURL(),
             seriesId = series.id,
             selected = index == 0,
-            type = ThumbnailSeries.Type.SIDECAR
+            type = ThumbnailSeries.Type.SIDECAR,
           )
         }.toList()
     }

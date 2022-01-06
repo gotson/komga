@@ -11,7 +11,7 @@ import kotlin.reflect.KClass
 annotation class Blank(
   val message: String = "Must be blank",
   val groups: Array<KClass<out Any>> = [],
-  val payload: Array<KClass<out Any>> = []
+  val payload: Array<KClass<out Any>> = [],
 )
 
 class BlankValidator : ConstraintValidator<Blank, String> {

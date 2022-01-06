@@ -363,6 +363,9 @@
       "button_next": "Next",
       "dialog_title_add": "Add Library",
       "dialot_title_edit": "Edit Library",
+      "field_analysis_analyze_dimensions": "Analyze pages dimensions",
+      "field_analysis_hash_files": "Compute hash for files",
+      "field_analysis_hash_pages": "Compute hash for pages",
       "field_convert_to_cbz": "Automatically convert to CBZ",
       "field_import_barcode_isbn": "ISBN barcode",
       "field_import_comicinfo_book": "Book metadata",
@@ -382,6 +385,7 @@
       "field_series_cover": "Series cover",
       "file_browser_dialog_button_confirm": "Choose",
       "file_browser_dialog_title": "Library root folder",
+      "label_analysis": "Analysis",
       "label_file_management": "File management",
       "label_import_barcode_isbn": "Import ISBN within barcode",
       "label_import_comicinfo": "Import metadata for CBR/CBZ containing a ComicInfo.xml file",
@@ -392,7 +396,9 @@
       "label_series_cover": "Series cover",
       "tab_general": "General",
       "tab_metadata": "Metadata",
-      "tab_options": "Options"
+      "tab_options": "Options",
+      "tooltip_scanner_force_modified_time": "Enable if the library is on a Google Drive",
+      "tooltip_use_resources": "Can consume lots of resources on large libraries or slow hardware"
     },
     "edit_readlist": {
       "button_cancel": "Cancel",
@@ -499,6 +505,7 @@
         "height": "Height",
         "index": "Index",
         "media_type": "Media type",
+        "size": "Size",
         "width": "Width"
       },
       "title": "Book Details",

@@ -33,6 +33,8 @@ export interface PageDto {
   mediaType: string,
   width?: number,
   height?: number,
+  sizeBytes?: number,
+  size: string,
 }
 
 export interface PageDtoWithUrl {
@@ -41,6 +43,8 @@ export interface PageDtoWithUrl {
   mediaType: string,
   width?: number,
   height?: number,
+  sizeBytes?: number,
+  size: string,
   url: string,
 }
 

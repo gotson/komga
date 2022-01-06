@@ -22,7 +22,7 @@ import java.time.LocalDateTime
 class SeriesMetadataDaoTest(
   @Autowired private val seriesMetadataDao: SeriesMetadataDao,
   @Autowired private val seriesRepository: SeriesRepository,
-  @Autowired private val libraryRepository: LibraryRepository
+  @Autowired private val libraryRepository: LibraryRepository,
 ) {
 
   private val library = makeLibrary()
@@ -72,7 +72,7 @@ class SeriesMetadataDaoTest(
       languageLock = true,
       tagsLock = true,
       totalBookCountLock = true,
-      seriesId = series.id
+      seriesId = series.id,
     )
 
     seriesMetadataDao.insert(metadata)
@@ -114,7 +114,7 @@ class SeriesMetadataDaoTest(
     val now = LocalDateTime.now()
     val metadata = SeriesMetadata(
       title = "Series",
-      seriesId = series.id
+      seriesId = series.id,
     )
 
     seriesMetadataDao.insert(metadata)
@@ -157,7 +157,7 @@ class SeriesMetadataDaoTest(
       status = SeriesMetadata.Status.ENDED,
       title = "Series",
       titleSort = "Series, The",
-      seriesId = series.id
+      seriesId = series.id,
     )
 
     seriesMetadataDao.insert(metadata)
@@ -198,7 +198,7 @@ class SeriesMetadataDaoTest(
       genres = setOf("Action"),
       tags = setOf("tag"),
       totalBookCount = 3,
-      seriesId = series.id
+      seriesId = series.id,
     )
     seriesMetadataDao.insert(metadata)
     val created = seriesMetadataDao.findById(metadata.seriesId)

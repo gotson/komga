@@ -264,8 +264,8 @@ class LibraryContentLifecycle(
               deleted.copy(
                 seriesId = newSeries.id,
                 title = if (deleted.titleLock) deleted.title else newlyAdded.title,
-                titleSort = if (deleted.titleSortLock) deleted.titleSort else newlyAdded.titleSort
-              )
+                titleSort = if (deleted.titleSortLock) deleted.titleSort else newlyAdded.titleSort,
+              ),
             )
           }
 
@@ -274,8 +274,8 @@ class LibraryContentLifecycle(
             .forEach { col ->
               collectionRepository.update(
                 col.copy(
-                  seriesIds = col.seriesIds.map { if (it == match.first.id) newSeries.id else it }
-                )
+                  seriesIds = col.seriesIds.map { if (it == match.first.id) newSeries.id else it },
+                ),
               )
             }
 
@@ -334,7 +334,7 @@ class LibraryContentLifecycle(
                 deleted.copy(
                   bookId = bookToAdd.id,
                   title = if (deleted.titleLock) deleted.title else newlyAdded.title,
-                )
+                ),
               )
               if (!deleted.titleLock) taskReceiver.refreshBookMetadata(bookToAdd.id, setOf(BookMetadataPatchCapability.TITLE))
             }
@@ -349,8 +349,8 @@ class LibraryContentLifecycle(
               .forEach { rl ->
                 readListRepository.update(
                   rl.copy(
-                    bookIds = rl.bookIds.values.map { if (it == match.id) bookToAdd.id else it }.toIndexedMap()
-                  )
+                    bookIds = rl.bookIds.values.map { if (it == match.id) bookToAdd.id else it }.toIndexedMap(),
+                  ),
                 )
               }
 

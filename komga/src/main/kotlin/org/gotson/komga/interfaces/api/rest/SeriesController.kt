@@ -112,8 +112,8 @@ class SeriesController(
   @Parameters(
     Parameter(
       description = "Search by regex criteria, in the form: regex,field. Supported fields are TITLE and TITLE_SORT.",
-      `in` = ParameterIn.QUERY, name = "search_regex", schema = Schema(type = "string")
-    )
+      `in` = ParameterIn.QUERY, name = "search_regex", schema = Schema(type = "string"),
+    ),
   )
   @GetMapping("v1/series")
   fun getAllSeries(
@@ -134,7 +134,7 @@ class SeriesController(
     @RequestParam(name = "complete", required = false) complete: Boolean?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) @Authors authors: List<Author>?,
-    @Parameter(hidden = true) page: Pageable
+    @Parameter(hidden = true) page: Pageable,
   ): Page<SeriesDto> {
     val sort =
       when {
@@ -148,7 +148,7 @@ class SeriesController(
       else PageRequest.of(
         page.pageNumber,
         page.pageSize,
-        sort
+        sort,
       )
 
     val seriesSearch = SeriesSearchWithReadProgress(
@@ -172,7 +172,7 @@ class SeriesController(
       tags = tags,
       ageRatings = ageRatings?.map { it.toIntOrNull() },
       releaseYears = release_years,
-      authors = authors
+      authors = authors,
     )
 
     return seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageRequest)
@@ -183,8 +183,8 @@ class SeriesController(
   @Parameters(
     Parameter(
       description = "Search by regex criteria, in the form: regex,field. Supported fields are TITLE and TITLE_SORT.",
-      `in` = ParameterIn.QUERY, name = "search_regex", schema = Schema(type = "string")
-    )
+      `in` = ParameterIn.QUERY, name = "search_regex", schema = Schema(type = "string"),
+    ),
   )
   @GetMapping("v1/series/alphabetical-groups")
   fun getAlphabeticalGroups(
@@ -204,7 +204,7 @@ class SeriesController(
     @RequestParam(name = "deleted", required = false) deleted: Boolean?,
     @RequestParam(name = "complete", required = false) complete: Boolean?,
     @Parameter(hidden = true) @Authors authors: List<Author>?,
-    @Parameter(hidden = true) page: Pageable
+    @Parameter(hidden = true) page: Pageable,
   ): List<GroupCountDto> {
     val seriesSearch = SeriesSearchWithReadProgress(
       libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
@@ -227,7 +227,7 @@ class SeriesController(
       tags = tags,
       ageRatings = ageRatings?.map { it.toIntOrNull() },
       releaseYears = release_years,
-      authors = authors
+      authors = authors,
     )
 
     return seriesDtoRepository.countByFirstCharacter(seriesSearch, principal.user.id)
@@ -241,7 +241,7 @@ class SeriesController(
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
     @RequestParam(name = "deleted", required = false) deleted: Boolean?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
-    @Parameter(hidden = true) page: Pageable
+    @Parameter(hidden = true) page: Pageable,
   ): Page<SeriesDto> {
     val sort = Sort.by(Sort.Order.desc("lastModified"))
 
@@ -250,7 +250,7 @@ class SeriesController(
       else PageRequest.of(
         page.pageNumber,
         page.pageSize,
-        sort
+        sort,
       )
 
     return seriesDtoRepository.findAll(
@@ -259,7 +259,7 @@ class SeriesController(
         deleted = deleted,
       ),
       principal.user.id,
-      pageRequest
+      pageRequest,
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
@@ -271,7 +271,7 @@ class SeriesController(
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
     @RequestParam(name = "deleted", required = false) deleted: Boolean?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
-    @Parameter(hidden = true) page: Pageable
+    @Parameter(hidden = true) page: Pageable,
   ): Page<SeriesDto> {
     val sort = Sort.by(Sort.Order.desc("created"))
 
@@ -280,7 +280,7 @@ class SeriesController(
       else PageRequest.of(
         page.pageNumber,
         page.pageSize,
-        sort
+        sort,
       )
 
     return seriesDtoRepository.findAll(
@@ -289,7 +289,7 @@ class SeriesController(
         deleted = deleted,
       ),
       principal.user.id,
-      pageRequest
+      pageRequest,
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
@@ -301,7 +301,7 @@ class SeriesController(
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
     @RequestParam(name = "deleted", required = false) deleted: Boolean?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
-    @Parameter(hidden = true) page: Pageable
+    @Parameter(hidden = true) page: Pageable,
   ): Page<SeriesDto> {
     val sort = Sort.by(Sort.Order.desc("lastModified"))
 
@@ -310,7 +310,7 @@ class SeriesController(
       else PageRequest.of(
         page.pageNumber,
         page.pageSize,
-        sort
+        sort,
       )
 
     return seriesDtoRepository.findAllRecentlyUpdated(
@@ -319,14 +319,14 @@ class SeriesController(
         deleted = deleted,
       ),
       principal.user.id,
-      pageRequest
+      pageRequest,
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
   @GetMapping("v1/series/{seriesId}")
   fun getOneSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @PathVariable(name = "seriesId") id: String
+    @PathVariable(name = "seriesId") id: String,
   ): SeriesDto =
     seriesDtoRepository.findByIdOrNull(id, principal.user.id)?.let {
       if (!principal.user.canAccessLibrary(it.libraryId)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
@@ -352,7 +352,7 @@ class SeriesController(
   fun getSeriesThumbnailById(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") seriesId: String,
-    @PathVariable(name = "thumbnailId") thumbnailId: String
+    @PathVariable(name = "thumbnailId") thumbnailId: String,
   ): ByteArray {
     seriesRepository.getLibraryId(seriesId)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
@@ -365,7 +365,7 @@ class SeriesController(
   @GetMapping(value = ["v1/series/{seriesId}/thumbnails"], produces = [MediaType.APPLICATION_JSON_VALUE])
   fun getSeriesThumbnails(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @PathVariable(name = "seriesId") seriesId: String
+    @PathVariable(name = "seriesId") seriesId: String,
   ): Collection<SeriesThumbnailDto> {
     seriesRepository.getLibraryId(seriesId)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
@@ -391,9 +391,9 @@ class SeriesController(
       ThumbnailSeries(
         seriesId = series.id,
         thumbnail = file.bytes,
-        type = ThumbnailSeries.Type.USER_UPLOADED
+        type = ThumbnailSeries.Type.USER_UPLOADED,
       ),
-      if (selected) MarkSelectedPreference.YES else MarkSelectedPreference.NO
+      if (selected) MarkSelectedPreference.YES else MarkSelectedPreference.NO,
     )
   }
 
@@ -440,7 +440,7 @@ class SeriesController(
     @RequestParam(name = "deleted", required = false) deleted: Boolean?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) @Authors authors: List<Author>?,
-    @Parameter(hidden = true) page: Pageable
+    @Parameter(hidden = true) page: Pageable,
   ): Page<BookDto> {
     seriesRepository.getLibraryId(seriesId)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
@@ -454,7 +454,7 @@ class SeriesController(
       else PageRequest.of(
         page.pageNumber,
         page.pageSize,
-        sort
+        sort,
       )
 
     return bookDtoRepository.findAll(
@@ -467,14 +467,14 @@ class SeriesController(
         authors = authors,
       ),
       principal.user.id,
-      pageRequest
+      pageRequest,
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
   @GetMapping("v1/series/{seriesId}/collections")
   fun getAllCollectionsBySeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @PathVariable(name = "seriesId") seriesId: String
+    @PathVariable(name = "seriesId") seriesId: String,
   ): List<CollectionDto> {
     seriesRepository.getLibraryId(seriesId)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
@@ -511,7 +511,7 @@ class SeriesController(
     @PathVariable seriesId: String,
     @Parameter(description = "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don't want to update.")
     @Valid @RequestBody newMetadata: SeriesMetadataUpdateDto,
-    @AuthenticationPrincipal principal: KomgaPrincipal
+    @AuthenticationPrincipal principal: KomgaPrincipal,
   ) =
     seriesMetadataRepository.findByIdOrNull(seriesId)?.let { existing ->
       val updated = with(newMetadata) {
@@ -554,7 +554,7 @@ class SeriesController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun markAsRead(
     @PathVariable seriesId: String,
-    @AuthenticationPrincipal principal: KomgaPrincipal
+    @AuthenticationPrincipal principal: KomgaPrincipal,
   ) {
     seriesRepository.getLibraryId(seriesId)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
@@ -568,7 +568,7 @@ class SeriesController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun markAsUnread(
     @PathVariable seriesId: String,
-    @AuthenticationPrincipal principal: KomgaPrincipal
+    @AuthenticationPrincipal principal: KomgaPrincipal,
   ) {
     seriesRepository.getLibraryId(seriesId)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
@@ -647,7 +647,7 @@ class SeriesController(
   @PreAuthorize("hasRole('$ROLE_FILE_DOWNLOAD')")
   fun getSeriesFile(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @PathVariable seriesId: String
+    @PathVariable seriesId: String,
   ): ResponseEntity<StreamingResponseBody> {
     seriesRepository.getLibraryId(seriesId)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
@@ -682,7 +682,7 @@ class SeriesController(
           contentDisposition = ContentDisposition.builder("attachment")
             .filename(seriesMetadataRepository.findById(seriesId).title + ".zip")
             .build()
-        }
+        },
       )
       .contentType(MediaType.parseMediaType("application/zip"))
       .body(streamingResponse)
@@ -692,7 +692,7 @@ class SeriesController(
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun deleteSeries(
-    @PathVariable seriesId: String
+    @PathVariable seriesId: String,
   ) {
     taskReceiver.deleteSeries(
       seriesId = seriesId,

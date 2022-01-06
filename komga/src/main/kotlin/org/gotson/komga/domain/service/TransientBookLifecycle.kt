@@ -33,7 +33,7 @@ class TransientBookLifecycle(
   }
 
   fun analyzeAndPersist(transientBook: BookWithMedia): BookWithMedia {
-    val media = bookAnalyzer.analyze(transientBook.book)
+    val media = bookAnalyzer.analyze(transientBook.book, true)
 
     val updated = transientBook.copy(media = media)
     transientBookRepository.save(updated)
@@ -43,7 +43,7 @@ class TransientBookLifecycle(
 
   @Throws(
     MediaNotReadyException::class,
-    IndexOutOfBoundsException::class
+    IndexOutOfBoundsException::class,
   )
   fun getBookPage(transientBook: BookWithMedia, number: Int): BookPageContent {
     val pageContent = bookAnalyzer.getPageContent(transientBook, number)

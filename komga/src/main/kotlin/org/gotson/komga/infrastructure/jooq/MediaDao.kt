@@ -8,6 +8,7 @@ import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.MediaPageRecord
 import org.gotson.komga.jooq.tables.records.MediaRecord
 import org.jooq.DSLContext
+import org.jooq.impl.DSL
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -23,11 +24,31 @@ class MediaDao(
   private val m = Tables.MEDIA
   private val p = Tables.MEDIA_PAGE
   private val f = Tables.MEDIA_FILE
+  private val b = Tables.BOOK
 
   private val groupFields = arrayOf(*m.fields(), *p.fields())
 
   override fun findById(bookId: String): Media =
     find(dsl, bookId)
+
+  override fun findAllBookIdsByLibraryIdAndWithMissingPageHash(libraryId: String, pageHashing: Int): Collection<String> {
+    val pagesCount = DSL.count(p.BOOK_ID)
+    val hashedCount = DSL.sum(DSL.`when`(p.FILE_HASH.eq(""), 0).otherwise(1)).cast(Int::class.java)
+    val neededHash = pageHashing * 2
+    val neededHashForBook = DSL.`when`(pagesCount.lt(neededHash), pagesCount).otherwise(neededHash)
+
+    val r = dsl.select(b.ID)
+      .from(b)
+      .leftJoin(p).on(b.ID.eq(p.BOOK_ID))
+      .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
+      .where(b.LIBRARY_ID.eq(libraryId))
+      .and(m.STATUS.eq(Media.Status.READY.name))
+      .groupBy(b.ID)
+      .having(hashedCount.lt(neededHashForBook))
+      .fetch()
+
+    return r.getValues(b.ID)
+  }
 
   override fun getPagesSize(bookId: String): Int =
     dsl.select(m.PAGE_COUNT)
@@ -51,7 +72,7 @@ class MediaDao(
       .groupBy(*groupFields)
       .orderBy(p.NUMBER.asc())
       .fetchGroups(
-        { it.into(m) }, { it.into(p) }
+        { it.into(m) }, { it.into(p) },
       ).map { (mr, pr) ->
         val files = dsl.selectFrom(f)
           .where(f.BOOK_ID.eq(bookId))
@@ -77,8 +98,8 @@ class MediaDao(
             m.STATUS,
             m.MEDIA_TYPE,
             m.COMMENT,
-            m.PAGE_COUNT
-          ).values(null as String?, null, null, null, null)
+            m.PAGE_COUNT,
+          ).values(null as String?, null, null, null, null),
         ).also { step ->
           chunk.forEach {
             step.bind(
@@ -86,7 +107,7 @@ class MediaDao(
               it.status,
               it.mediaType,
               it.comment,
-              it.pages.size
+              it.pages.size,
             )
           }
         }.execute()
@@ -108,8 +129,10 @@ class MediaDao(
             p.MEDIA_TYPE,
             p.NUMBER,
             p.WIDTH,
-            p.HEIGHT
-          ).values(null as String?, null, null, null, null, null)
+            p.HEIGHT,
+            p.FILE_HASH,
+            p.FILE_SIZE
+          ).values(null as String?, null, null, null, null, null, null, null),
         ).also { step ->
           chunk.forEach { media ->
             media.pages.forEachIndexed { index, page ->
@@ -119,7 +142,9 @@ class MediaDao(
                 page.mediaType,
                 index,
                 page.dimension?.width,
-                page.dimension?.height
+                page.dimension?.height,
+                page.fileHash,
+                page.fileSize,
               )
             }
           }
@@ -135,14 +160,14 @@ class MediaDao(
           dsl.insertInto(
             f,
             f.BOOK_ID,
-            f.FILE_NAME
-          ).values(null as String?, null)
+            f.FILE_NAME,
+          ).values(null as String?, null),
         ).also { step ->
           chunk.forEach { media ->
             media.files.forEach {
               step.bind(
                 media.bookId,
-                it
+                it,
               )
             }
           }
@@ -201,13 +226,15 @@ class MediaDao(
       comment = comment,
       bookId = bookId,
       createdDate = createdDate.toCurrentTimeZone(),
-      lastModifiedDate = lastModifiedDate.toCurrentTimeZone()
+      lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
     )
 
   private fun MediaPageRecord.toDomain() =
     BookPage(
       fileName = fileName,
       mediaType = mediaType,
-      dimension = if (width != null && height != null) Dimension(width, height) else null
+      dimension = if (width != null && height != null) Dimension(width, height) else null,
+      fileHash = fileHash,
+      fileSize = fileSize
     )
 }

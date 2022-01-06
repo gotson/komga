@@ -20,7 +20,7 @@ import java.time.LocalDate
 
 @Component
 class ReferentialDao(
-  private val dsl: DSLContext
+  private val dsl: DSLContext,
 ) : ReferentialRepository {
 
   private val a = Tables.BOOK_METADATA_AUTHOR
@@ -151,7 +151,7 @@ class ReferentialDao(
       items,
       if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
       else PageRequest.of(0, maxOf(count, 20), pageSort),
-      count.toLong()
+      count.toLong(),
     )
   }
 
@@ -214,7 +214,7 @@ class ReferentialDao(
       .union(
         select(st.TAG.`as`("tag"))
           .from(st)
-          .apply { filterOnLibraryIds?.let { leftJoin(s).on(st.SERIES_ID.eq(s.ID)).where(s.LIBRARY_ID.`in`(it)) } }
+          .apply { filterOnLibraryIds?.let { leftJoin(s).on(st.SERIES_ID.eq(s.ID)).where(s.LIBRARY_ID.`in`(it)) } },
       )
       .fetchSet(0, String::class.java)
       .sortedBy { it.stripAccents().lowercase() }
@@ -231,7 +231,7 @@ class ReferentialDao(
           .from(st)
           .leftJoin(s).on(st.SERIES_ID.eq(s.ID))
           .where(s.LIBRARY_ID.eq(libraryId))
-          .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
+          .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } },
       )
       .fetchSet(0, String::class.java)
       .sortedBy { it.stripAccents().lowercase() }
@@ -250,7 +250,7 @@ class ReferentialDao(
           .leftJoin(cs).on(st.SERIES_ID.eq(cs.SERIES_ID))
           .leftJoin(s).on(st.SERIES_ID.eq(s.ID))
           .where(cs.COLLECTION_ID.eq(collectionId))
-          .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
+          .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } },
       )
       .fetchSet(0, String::class.java)
       .sortedBy { it.stripAccents().lowercase() }
@@ -377,7 +377,7 @@ class ReferentialDao(
       items,
       if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
       else PageRequest.of(0, maxOf(count, 20), pageSort),
-      count.toLong()
+      count.toLong(),
     )
   }
 
@@ -466,12 +466,12 @@ class ReferentialDao(
   private fun BookMetadataAuthorRecord.toDomain(): Author =
     Author(
       name = name,
-      role = role
+      role = role,
     )
 
   private fun BookMetadataAggregationAuthorRecord.toDomain(): Author =
     Author(
       name = name,
-      role = role
+      role = role,
     )
 }

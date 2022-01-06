@@ -53,7 +53,7 @@ class UserController(
   private val userRepository: KomgaUserRepository,
   private val libraryRepository: LibraryRepository,
   private val authenticationActivityRepository: AuthenticationActivityRepository,
-  env: Environment
+  env: Environment,
 ) {
 
   private val demo = env.activeProfiles.contains("demo")
@@ -66,7 +66,7 @@ class UserController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateMyPassword(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @Valid @RequestBody newPasswordDto: PasswordUpdateDto
+    @Valid @RequestBody newPasswordDto: PasswordUpdateDto,
   ) {
     if (demo) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     userRepository.findByEmailIgnoreCaseOrNull(principal.username)?.let { user ->
@@ -94,7 +94,7 @@ class UserController(
   @PreAuthorize("hasRole('$ROLE_ADMIN') and #principal.user.id != #id")
   fun delete(
     @PathVariable id: String,
-    @AuthenticationPrincipal principal: KomgaPrincipal
+    @AuthenticationPrincipal principal: KomgaPrincipal,
   ) {
     userRepository.findByIdOrNull(id)?.let {
       userLifecycle.deleteUser(it)
@@ -107,13 +107,13 @@ class UserController(
   fun updateUserRoles(
     @PathVariable id: String,
     @Valid @RequestBody patch: RolesUpdateDto,
-    @AuthenticationPrincipal principal: KomgaPrincipal
+    @AuthenticationPrincipal principal: KomgaPrincipal,
   ) {
     userRepository.findByIdOrNull(id)?.let { user ->
       val updatedUser = user.copy(
         roleAdmin = patch.roles.contains(ROLE_ADMIN),
         roleFileDownload = patch.roles.contains(ROLE_FILE_DOWNLOAD),
-        rolePageStreaming = patch.roles.contains(ROLE_PAGE_STREAMING)
+        rolePageStreaming = patch.roles.contains(ROLE_PAGE_STREAMING),
       )
       userRepository.update(updatedUser)
       logger.info { "Updated user roles: $updatedUser" }
@@ -126,7 +126,7 @@ class UserController(
   fun updatePassword(
     @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @Valid @RequestBody newPasswordDto: PasswordUpdateDto
+    @Valid @RequestBody newPasswordDto: PasswordUpdateDto,
   ) {
     if (demo) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     userRepository.findByIdOrNull(id)?.let { user ->
@@ -139,7 +139,7 @@ class UserController(
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   fun updateSharesLibraries(
     @PathVariable id: String,
-    @Valid @RequestBody sharedLibrariesUpdateDto: SharedLibrariesUpdateDto
+    @Valid @RequestBody sharedLibrariesUpdateDto: SharedLibrariesUpdateDto,
   ) {
     userRepository.findByIdOrNull(id)?.let { user ->
       val updatedUser = user.copy(
@@ -147,7 +147,7 @@ class UserController(
         sharedLibrariesIds = if (sharedLibrariesUpdateDto.all) emptySet()
         else libraryRepository.findAllByIds(sharedLibrariesUpdateDto.libraryIds)
           .map { it.id }
-          .toSet()
+          .toSet(),
       )
       userRepository.update(updatedUser)
       logger.info { "Updated user shared libraries: $updatedUser" }
@@ -171,7 +171,7 @@ class UserController(
       else PageRequest.of(
         page.pageNumber,
         page.pageSize,
-        sort
+        sort,
       )
 
     return authenticationActivityRepository.findAllByUser(principal.user, pageRequest).map { it.toDto() }
@@ -193,7 +193,7 @@ class UserController(
       else PageRequest.of(
         page.pageNumber,
         page.pageSize,
-        sort
+        sort,
       )
 
     return authenticationActivityRepository.findAll(pageRequest).map { it.toDto() }

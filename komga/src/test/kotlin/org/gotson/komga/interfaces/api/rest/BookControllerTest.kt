@@ -65,7 +65,7 @@ class BookControllerTest(
   @Autowired private val bookLifecycle: BookLifecycle,
   @Autowired private val userRepository: KomgaUserRepository,
   @Autowired private val userLifecycle: KomgaUserLifecycle,
-  @Autowired private val mockMvc: MockMvc
+  @Autowired private val mockMvc: MockMvc,
 ) {
 
   private val library = makeLibrary(id = "1")
@@ -333,8 +333,8 @@ class BookControllerTest(
       mediaRepository.update(
         it.copy(
           status = Media.Status.READY,
-          pages = listOf(BookPage("file", "image/jpeg"))
-        )
+          pages = listOf(BookPage("file", "image/jpeg")),
+        ),
       )
     }
 
@@ -474,9 +474,9 @@ class BookControllerTest(
         ThumbnailBook(
           thumbnail = Random.nextBytes(100),
           bookId = book.id,
-          type = ThumbnailBook.Type.GENERATED
+          type = ThumbnailBook.Type.GENERATED,
         ),
-        MarkSelectedPreference.YES
+        MarkSelectedPreference.YES,
       )
 
       val url = "/api/v1/books/${book.id}/thumbnail"
@@ -534,9 +534,9 @@ class BookControllerTest(
         ThumbnailBook(
           thumbnail = Random.nextBytes(1),
           bookId = book.id,
-          type = ThumbnailBook.Type.GENERATED
+          type = ThumbnailBook.Type.GENERATED,
         ),
-        MarkSelectedPreference.YES
+        MarkSelectedPreference.YES,
       )
 
       val url = "/api/v1/books/${book.id}/thumbnail"
@@ -548,9 +548,9 @@ class BookControllerTest(
         ThumbnailBook(
           thumbnail = Random.nextBytes(1),
           bookId = book.id,
-          type = ThumbnailBook.Type.GENERATED
+          type = ThumbnailBook.Type.GENERATED,
         ),
-        MarkSelectedPreference.YES
+        MarkSelectedPreference.YES,
       )
 
       mockMvc.get(url) {
@@ -584,7 +584,7 @@ class BookControllerTest(
         """{"authors":"[{"name":""}]"}""",
         """{"isbn":"1617290459"}""", // isbn 10
         """{"isbn":"978-123-456-789-6"}""", // invalid check digit
-      ]
+      ],
     )
     @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given invalid json when updating metadata then raise validation error`(jsonString: String) {
@@ -657,7 +657,7 @@ class BookControllerTest(
           .extracting("name", "role")
           .containsExactlyInAnyOrder(
             tuple("newAuthor", "newauthorrole"),
-            tuple("newAuthor2", "newauthorrole2")
+            tuple("newAuthor2", "newauthorrole2"),
           )
         assertThat(tags).containsExactly("tag")
         assertThat(isbn).isEqualTo("9781617290459")
@@ -834,8 +834,8 @@ class BookControllerTest(
       strings = [
         """{"completed": false}""",
         """{}""",
-        """{"page":0}"""
-      ]
+        """{"page":0}""",
+      ],
     )
     @WithMockCustomUser
     fun `given invalid payload when marking book in progress then validation error is returned`(jsonString: String) {
@@ -862,8 +862,8 @@ class BookControllerTest(
         mediaRepository.update(
           media.copy(
             status = Media.Status.READY,
-            pages = (1..10).map { BookPage("$it", "image/jpeg") }
-          )
+            pages = (1..10).map { BookPage("$it", "image/jpeg") },
+          ),
         )
       }
 
@@ -903,8 +903,8 @@ class BookControllerTest(
         mediaRepository.update(
           media.copy(
             status = Media.Status.READY,
-            pages = (1..10).map { BookPage("$it", "image/jpeg") }
-          )
+            pages = (1..10).map { BookPage("$it", "image/jpeg") },
+          ),
         )
       }
 
@@ -944,8 +944,8 @@ class BookControllerTest(
         mediaRepository.update(
           media.copy(
             status = Media.Status.READY,
-            pages = (1..10).map { BookPage("$it", "image/jpeg") }
-          )
+            pages = (1..10).map { BookPage("$it", "image/jpeg") },
+          ),
         )
       }
 
@@ -991,8 +991,8 @@ class BookControllerTest(
       mediaRepository.update(
         media.copy(
           status = Media.Status.READY,
-          pages = (1..10).map { BookPage("$it", "image/jpeg") }
-        )
+          pages = (1..10).map { BookPage("$it", "image/jpeg") },
+        ),
       )
     }
 
@@ -1007,25 +1007,25 @@ class BookControllerTest(
         .patch("/api/v1/books/${book.id}/read-progress")
         .with(user(KomgaPrincipal(user)))
         .contentType(MediaType.APPLICATION_JSON)
-        .content(jsonString)
+        .content(jsonString),
     )
 
     mockMvc.perform(
       MockMvcRequestBuilders
         .get("/api/v1/books")
         .with(user(KomgaPrincipal(user)))
-        .contentType(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON),
     ).andExpect(
-      jsonPath("$.totalElements").value(2)
+      jsonPath("$.totalElements").value(2),
     )
 
     mockMvc.perform(
       MockMvcRequestBuilders
         .get("/api/v1/books")
         .with(user(KomgaPrincipal(user2)))
-        .contentType(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON),
     ).andExpect(
-      jsonPath("$.totalElements").value(2)
+      jsonPath("$.totalElements").value(2),
     )
   }
 }

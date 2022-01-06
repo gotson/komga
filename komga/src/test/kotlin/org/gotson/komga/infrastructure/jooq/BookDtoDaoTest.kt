@@ -102,7 +102,7 @@ class BookDtoDaoTest(
       series,
       (1..3).map {
         makeBook("$it", seriesId = series.id, libraryId = library.id)
-      }
+      },
     )
 
     val books = bookRepository.findAll().sortedBy { it.name }
@@ -121,7 +121,7 @@ class BookDtoDaoTest(
       val found = bookDtoDao.findAll(
         BookSearchWithReadProgress(readStatus = listOf(ReadStatus.READ)),
         user.id,
-        PageRequest.of(0, 20)
+        PageRequest.of(0, 20),
       )
 
       // then
@@ -139,7 +139,7 @@ class BookDtoDaoTest(
       val found = bookDtoDao.findAll(
         BookSearchWithReadProgress(readStatus = listOf(ReadStatus.UNREAD)),
         user.id,
-        PageRequest.of(0, 20)
+        PageRequest.of(0, 20),
       )
 
       // then
@@ -157,7 +157,7 @@ class BookDtoDaoTest(
       val found = bookDtoDao.findAll(
         BookSearchWithReadProgress(readStatus = listOf(ReadStatus.IN_PROGRESS)),
         user.id,
-        PageRequest.of(0, 20)
+        PageRequest.of(0, 20),
       )
 
       // then
@@ -175,7 +175,7 @@ class BookDtoDaoTest(
       val found = bookDtoDao.findAll(
         BookSearchWithReadProgress(readStatus = listOf(ReadStatus.READ, ReadStatus.UNREAD)),
         user.id,
-        PageRequest.of(0, 20)
+        PageRequest.of(0, 20),
       )
 
       // then
@@ -192,7 +192,7 @@ class BookDtoDaoTest(
       val found = bookDtoDao.findAll(
         BookSearchWithReadProgress(readStatus = listOf(ReadStatus.READ, ReadStatus.IN_PROGRESS)),
         user.id,
-        PageRequest.of(0, 20)
+        PageRequest.of(0, 20),
       )
 
       // then
@@ -209,7 +209,7 @@ class BookDtoDaoTest(
       val found = bookDtoDao.findAll(
         BookSearchWithReadProgress(readStatus = listOf(ReadStatus.UNREAD, ReadStatus.IN_PROGRESS)),
         user.id,
-        PageRequest.of(0, 20)
+        PageRequest.of(0, 20),
       )
 
       // then
@@ -226,7 +226,7 @@ class BookDtoDaoTest(
       val found = bookDtoDao.findAll(
         BookSearchWithReadProgress(readStatus = listOf(ReadStatus.UNREAD, ReadStatus.IN_PROGRESS, ReadStatus.READ)),
         user.id,
-        PageRequest.of(0, 20)
+        PageRequest.of(0, 20),
       )
 
       // then
@@ -243,7 +243,7 @@ class BookDtoDaoTest(
       val found = bookDtoDao.findAll(
         BookSearchWithReadProgress(),
         user.id,
-        PageRequest.of(0, 20)
+        PageRequest.of(0, 20),
       )
 
       // then
@@ -263,7 +263,7 @@ class BookDtoDaoTest(
       val found = bookDtoDao.findAllOnDeck(
         user.id,
         null,
-        PageRequest.of(0, 20)
+        PageRequest.of(0, 20),
       )
 
       // then
@@ -277,14 +277,14 @@ class BookDtoDaoTest(
         series,
         (1..3).map {
           makeBook("$it", seriesId = series.id, libraryId = library.id)
-        }
+        },
       )
 
       // when
       val found = bookDtoDao.findAllOnDeck(
         user.id,
         null,
-        PageRequest.of(0, 20)
+        PageRequest.of(0, 20),
       )
 
       // then
@@ -298,7 +298,7 @@ class BookDtoDaoTest(
         series,
         (1..3).map {
           makeBook("$it", seriesId = series.id, libraryId = library.id)
-        }
+        },
       )
 
       val books = bookRepository.findAll().sortedBy { it.name }
@@ -308,7 +308,7 @@ class BookDtoDaoTest(
       val found = bookDtoDao.findAllOnDeck(
         user.id,
         null,
-        PageRequest.of(0, 20)
+        PageRequest.of(0, 20),
       )
 
       // then
@@ -329,7 +329,7 @@ class BookDtoDaoTest(
           makeBook("Robin", seriesId = series.id, libraryId = library.id),
           makeBook("Batman and Robin", seriesId = series.id, libraryId = library.id),
           makeBook("Batman", seriesId = series.id, libraryId = library.id),
-        )
+        ),
       )
 
       searchIndexLifecycle.rebuildIndex()
@@ -357,7 +357,7 @@ class BookDtoDaoTest(
           makeBook("Robin", seriesId = series.id, libraryId = library.id),
           makeBook("Batman and Robin", seriesId = series.id, libraryId = library.id),
           makeBook("Batman", seriesId = series.id, libraryId = library.id),
-        )
+        ),
       )
 
       bookMetadataRepository.findById(book1.id).let {
@@ -389,7 +389,7 @@ class BookDtoDaoTest(
           makeBook("Robin", seriesId = series.id, libraryId = library.id),
           makeBook("Batman and Robin", seriesId = series.id, libraryId = library.id),
           makeBook("Batman", seriesId = series.id, libraryId = library.id),
-        )
+        ),
       )
 
       bookMetadataRepository.findById(book1.id).let {
@@ -418,7 +418,7 @@ class BookDtoDaoTest(
         series,
         listOf(
           book1,
-        )
+        ),
       )
 
       bookMetadataRepository.findById(book1.id).let {
@@ -447,7 +447,7 @@ class BookDtoDaoTest(
         series,
         listOf(
           book1,
-        )
+        ),
       )
 
       bookMetadataRepository.findById(book1.id).let {
@@ -567,7 +567,7 @@ class BookDtoDaoTest(
         listOf(
           book1,
           makeBook("Batman", seriesId = series.id, libraryId = library.id),
-        )
+        ),
       )
 
       searchIndexLifecycle.rebuildIndex()
@@ -592,7 +592,7 @@ class BookDtoDaoTest(
         listOf(
           makeBook("S.W.O.R.D.", seriesId = series.id, libraryId = library.id),
           makeBook("Batman", seriesId = series.id, libraryId = library.id),
-        )
+        ),
       )
 
       searchIndexLifecycle.rebuildIndex()
@@ -619,7 +619,7 @@ class BookDtoDaoTest(
           makeBook("Robin and Batman", seriesId = series.id, libraryId = library.id),
           makeBook("Batman and Robin", seriesId = series.id, libraryId = library.id),
           makeBook("Batman", seriesId = series.id, libraryId = library.id),
-        )
+        ),
       )
 
       searchIndexLifecycle.rebuildIndex()
@@ -645,7 +645,7 @@ class BookDtoDaoTest(
           makeBook("Batman", seriesId = series.id, libraryId = library.id),
           makeBook("Another X-Men adventure", seriesId = series.id, libraryId = library.id),
           makeBook("X-Men", seriesId = series.id, libraryId = library.id),
-        )
+        ),
       )
 
       searchIndexLifecycle.rebuildIndex()
@@ -684,7 +684,7 @@ class BookDtoDaoTest(
         series,
         listOf(
           makeBook("[不道德公會][河添太一 ][東立]Vol.04-搬运", seriesId = series.id, libraryId = library.id, url = URL("file:/file.cbz")),
-        )
+        ),
       )
 
       searchIndexLifecycle.rebuildIndex()

@@ -48,7 +48,7 @@ class LibraryController(
 
   @GetMapping
   fun getAll(
-    @AuthenticationPrincipal principal: KomgaPrincipal
+    @AuthenticationPrincipal principal: KomgaPrincipal,
   ): List<LibraryDto> =
     if (principal.user.sharedAllLibraries) {
       libraryRepository.findAll()
@@ -59,7 +59,7 @@ class LibraryController(
   @GetMapping("{libraryId}")
   fun getOne(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @PathVariable libraryId: String
+    @PathVariable libraryId: String,
   ): LibraryDto =
     libraryRepository.findByIdOrNull(libraryId)?.let {
       if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
@@ -70,7 +70,7 @@ class LibraryController(
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   fun addOne(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @Valid @RequestBody library: LibraryCreationDto
+    @Valid @RequestBody library: LibraryCreationDto,
   ): LibraryDto =
     try {
       libraryLifecycle.addLibrary(
@@ -92,14 +92,18 @@ class LibraryController(
           convertToCbz = library.convertToCbz,
           emptyTrashAfterScan = library.emptyTrashAfterScan,
           seriesCover = library.seriesCover.toDomain(),
-        )
+          hashFiles = library.hashFiles,
+          hashPages = library.hashPages,
+          analyzeDimensions = library.analyzeDimensions,
+        ),
       ).toDto(includeRoot = principal.user.roleAdmin)
     } catch (e: Exception) {
       when (e) {
         is FileNotFoundException,
         is DirectoryNotFoundException,
         is DuplicateNameException,
-        is PathContainedInPath ->
+        is PathContainedInPath,
+        ->
           throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
         else -> throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
       }
@@ -110,7 +114,7 @@ class LibraryController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateOne(
     @PathVariable libraryId: String,
-    @Valid @RequestBody library: LibraryUpdateDto
+    @Valid @RequestBody library: LibraryUpdateDto,
   ) {
     libraryRepository.findByIdOrNull(libraryId)?.let {
       val toUpdate = Library(
@@ -132,6 +136,9 @@ class LibraryController(
         convertToCbz = library.convertToCbz,
         emptyTrashAfterScan = library.emptyTrashAfterScan,
         seriesCover = library.seriesCover.toDomain(),
+        hashFiles = library.hashFiles,
+        hashPages = library.hashPages,
+        analyzeDimensions = library.analyzeDimensions,
       )
       try {
         libraryLifecycle.updateLibrary(toUpdate)
@@ -140,7 +147,8 @@ class LibraryController(
           is FileNotFoundException,
           is DirectoryNotFoundException,
           is DuplicateNameException,
-          is PathContainedInPath ->
+          is PathContainedInPath,
+          ->
             throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
           else -> throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
         }

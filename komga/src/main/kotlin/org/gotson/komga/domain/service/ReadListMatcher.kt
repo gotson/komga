@@ -55,13 +55,13 @@ class ReadListMatcher(
     return if (bookIds.isNotEmpty())
       ReadListRequestResult(
         readList = ReadList(name = request.name, bookIds = bookIds.toIndexedMap()),
-        unmatchedBooks = unmatchedBooks
+        unmatchedBooks = unmatchedBooks,
       )
     else {
       ReadListRequestResult(
         readList = null,
         unmatchedBooks = unmatchedBooks,
-        errorCode = "ERR_1010"
+        errorCode = "ERR_1010",
       )
     }
   }

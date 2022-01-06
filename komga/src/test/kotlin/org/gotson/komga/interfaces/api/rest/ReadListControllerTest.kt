@@ -38,7 +38,7 @@ class ReadListControllerTest(
   @Autowired private val readListRepository: ReadListRepository,
   @Autowired private val libraryLifecycle: LibraryLifecycle,
   @Autowired private val libraryRepository: LibraryRepository,
-  @Autowired private val seriesLifecycle: SeriesLifecycle
+  @Autowired private val seriesLifecycle: SeriesLifecycle,
 ) {
 
   private val library1 = makeLibrary("Library1", id = "1")
@@ -82,22 +82,22 @@ class ReadListControllerTest(
     rlLib1 = readListLifecycle.addReadList(
       ReadList(
         name = "Lib1",
-        bookIds = booksLibrary1.map { it.id }.toIndexedMap()
-      )
+        bookIds = booksLibrary1.map { it.id }.toIndexedMap(),
+      ),
     )
 
     rlLib2 = readListLifecycle.addReadList(
       ReadList(
         name = "Lib2",
-        bookIds = booksLibrary2.map { it.id }.toIndexedMap()
-      )
+        bookIds = booksLibrary2.map { it.id }.toIndexedMap(),
+      ),
     )
 
     rlLibBoth = readListLifecycle.addReadList(
       ReadList(
         name = "Lib1+2",
-        bookIds = (booksLibrary1 + booksLibrary2).map { it.id }.toIndexedMap()
-      )
+        bookIds = (booksLibrary1 + booksLibrary2).map { it.id }.toIndexedMap(),
+      ),
     )
   }
 

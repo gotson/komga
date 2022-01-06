@@ -89,8 +89,8 @@ class BookLifecycleTest(
       mediaRepository.update(
         media.copy(
           status = Media.Status.OUTDATED,
-          pages = (1..10).map { BookPage("$it", "image/jpeg") }
-        )
+          pages = (1..10).map { BookPage("$it", "image/jpeg") },
+        ),
       )
     }
 
@@ -100,7 +100,7 @@ class BookLifecycleTest(
     assertThat(readProgressRepository.findAll()).hasSize(2)
 
     // when
-    every { mockAnalyzer.analyze(any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")), bookId = book.id)
+    every { mockAnalyzer.analyze(any(), any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")), bookId = book.id)
     bookLifecycle.analyzeAndPersist(book)
 
     // then
@@ -122,8 +122,8 @@ class BookLifecycleTest(
       mediaRepository.update(
         media.copy(
           status = Media.Status.OUTDATED,
-          pages = (1..10).map { BookPage("$it", "image/jpeg") }
-        )
+          pages = (1..10).map { BookPage("$it", "image/jpeg") },
+        ),
       )
     }
 
@@ -133,7 +133,7 @@ class BookLifecycleTest(
     assertThat(readProgressRepository.findAll()).hasSize(2)
 
     // when
-    every { mockAnalyzer.analyze(any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = (1..10).map { BookPage("$it", "image/jpeg") }, bookId = book.id)
+    every { mockAnalyzer.analyze(any(), any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = (1..10).map { BookPage("$it", "image/jpeg") }, bookId = book.id)
     bookLifecycle.analyzeAndPersist(book)
 
     // then

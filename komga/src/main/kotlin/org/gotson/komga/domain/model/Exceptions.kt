@@ -11,6 +11,7 @@ open class CodedException : Exception {
     this.code = code
   }
 }
+
 fun Exception.withCode(code: String) = CodedException(this, code)
 
 class MediaNotReadyException : Exception()

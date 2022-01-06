@@ -24,20 +24,20 @@ class SwaggerConfiguration {
           Komga offers 2 APIs: REST and OPDS.
 
           Both APIs are secured using HTTP Basic Authentication.
-            """.trimIndent()
+            """.trimIndent(),
           )
-          .license(License().name("MIT").url("https://github.com/gotson/komga/blob/master/LICENSE"))
+          .license(License().name("MIT").url("https://github.com/gotson/komga/blob/master/LICENSE")),
       )
       .externalDocs(
         ExternalDocumentation()
           .description("Komga documentation")
-          .url("https://komga.org")
+          .url("https://komga.org"),
       )
       .components(
         Components()
           .addSecuritySchemes(
             "basicAuth",
-            SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("basic")
-          )
+            SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("basic"),
+          ),
       )
 }

@@ -16,11 +16,11 @@ import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.model.withCode
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
+import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
-import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
@@ -47,17 +47,17 @@ class BookLifecycle(
   private val readProgressRepository: ReadProgressRepository,
   private val thumbnailBookRepository: ThumbnailBookRepository,
   private val readListRepository: ReadListRepository,
+  private val libraryRepository: LibraryRepository,
   private val bookAnalyzer: BookAnalyzer,
   private val imageConverter: ImageConverter,
   private val eventPublisher: EventPublisher,
   private val transactionTemplate: TransactionTemplate,
   private val hasher: Hasher,
-  private val komgaProperties: KomgaProperties,
 ) {
 
   fun analyzeAndPersist(book: Book): Boolean {
     logger.info { "Analyze and persist book: $book" }
-    val media = bookAnalyzer.analyze(book)
+    val media = bookAnalyzer.analyze(book, libraryRepository.findById(book.libraryId).analyzeDimensions)
 
     transactionTemplate.executeWithoutResult {
       // if the number of pages has changed, delete all read progress for that book
@@ -77,8 +77,8 @@ class BookLifecycle(
   }
 
   fun hashAndPersist(book: Book) {
-    if (!komgaProperties.fileHashing)
-      return logger.info { "File hashing is disabled, it may have changed since the task was submitted, skipping" }
+    if (!libraryRepository.findById(book.libraryId).hashFiles)
+      return logger.info { "File hashing is disabled for the library, it may have changed since the task was submitted, skipping" }
 
     logger.info { "Hash and persist book: $book" }
     if (book.fileHash.isBlank()) {
@@ -87,6 +87,15 @@ class BookLifecycle(
     } else {
       logger.info { "Book already has a hash, skipping" }
     }
+  }
+
+  fun hashPagesAndPersist(book: Book) {
+    if (!libraryRepository.findById(book.libraryId).hashPages)
+      return logger.info { "Page hashing is disabled for the library, it may have changed since the task was submitted, skipping" }
+
+    logger.info { "Hash and persist pages for book: $book" }
+
+    mediaRepository.update(bookAnalyzer.hashPages(BookWithMedia(book, mediaRepository.findById(book.id))))
   }
 
   fun generateThumbnailAndPersist(book: Book) {
@@ -206,7 +215,7 @@ class BookLifecycle(
   @Throws(
     ImageConversionException::class,
     MediaNotReadyException::class,
-    IndexOutOfBoundsException::class
+    IndexOutOfBoundsException::class,
   )
   fun getBookPage(book: Book, number: Int, convertTo: ImageType? = null, resizeTo: Int? = null): BookPageContent {
     val media = mediaRepository.findById(book.id)

@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.post
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
 @ActiveProfiles("test")
 class ClaimControllerTest(
-  @Autowired private val mockMvc: MockMvc
+  @Autowired private val mockMvc: MockMvc,
 
 ) {
   @ParameterizedTest

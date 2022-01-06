@@ -48,8 +48,8 @@ class LocalArtworkProviderTest {
         Book(
           name = "Book",
           url = bookFile.toUri().toURL(),
-          fileLastModified = LocalDateTime.now()
-        )
+          fileLastModified = LocalDateTime.now(),
+        ),
       )
       every { book.path } returns bookFile
 
@@ -82,8 +82,8 @@ class LocalArtworkProviderTest {
         Series(
           name = "Series",
           url = seriesFile.toUri().toURL(),
-          fileLastModified = LocalDateTime.now()
-        )
+          fileLastModified = LocalDateTime.now(),
+        ),
       )
       every { series.path } returns seriesFile
 

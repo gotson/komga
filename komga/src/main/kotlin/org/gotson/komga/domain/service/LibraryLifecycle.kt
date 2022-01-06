@@ -33,7 +33,7 @@ class LibraryLifecycle(
     FileNotFoundException::class,
     DirectoryNotFoundException::class,
     DuplicateNameException::class,
-    PathContainedInPath::class
+    PathContainedInPath::class,
   )
   fun addLibrary(library: Library): Library {
     logger.info { "Adding new library: ${library.name} with root folder: ${library.root}" }

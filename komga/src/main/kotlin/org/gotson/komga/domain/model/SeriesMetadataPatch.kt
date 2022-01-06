@@ -12,5 +12,5 @@ data class SeriesMetadataPatch(
   val genres: Set<String>?,
   val totalBookCount: Int?,
 
-  val collections: List<String>
+  val collections: List<String>,
 )

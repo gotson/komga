@@ -17,7 +17,7 @@ data class CollectionDto(
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val lastModifiedDate: LocalDateTime,
 
-  val filtered: Boolean
+  val filtered: Boolean,
 )
 
 fun SeriesCollection.toDto() =
@@ -28,5 +28,5 @@ fun SeriesCollection.toDto() =
     seriesIds = seriesIds,
     createdDate = createdDate.toUTC(),
     lastModifiedDate = lastModifiedDate.toUTC(),
-    filtered = filtered
+    filtered = filtered,
   )

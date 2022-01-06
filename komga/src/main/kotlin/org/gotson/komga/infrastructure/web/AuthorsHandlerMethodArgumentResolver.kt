@@ -15,7 +15,7 @@ class AuthorsHandlerMethodArgumentResolver : HandlerMethodArgumentResolver {
     parameter: MethodParameter,
     mavContainer: ModelAndViewContainer?,
     webRequest: NativeWebRequest,
-    binderFactory: WebDataBinderFactory?
+    binderFactory: WebDataBinderFactory?,
   ): Any? {
     val param = webRequest.getParameterValues("author") ?: return null
 

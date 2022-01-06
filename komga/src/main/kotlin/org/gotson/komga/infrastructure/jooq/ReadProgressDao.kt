@@ -160,7 +160,7 @@ class ReadProgressDao(
           .innerJoin(r).on(b.ID.eq(r.BOOK_ID))
           .where(b.SERIES_ID.`in`(seriesIdsQuery))
           .apply { userId?.let { and(r.USER_ID.eq(it)) } }
-          .groupBy(b.SERIES_ID, r.USER_ID)
+          .groupBy(b.SERIES_ID, r.USER_ID),
       ).execute()
   }
 
@@ -172,6 +172,6 @@ class ReadProgressDao(
       completed = completed,
       readDate = readDate.toCurrentTimeZone(),
       createdDate = createdDate.toCurrentTimeZone(),
-      lastModifiedDate = lastModifiedDate.toCurrentTimeZone()
+      lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
     )
 }

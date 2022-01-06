@@ -18,7 +18,7 @@ private val logger = KotlinLogging.logger {}
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
 class ArtemisConfigTest(
-  @Autowired private val jmsTemplate: JmsTemplate
+  @Autowired private val jmsTemplate: JmsTemplate,
 ) {
 
   init {
@@ -37,7 +37,7 @@ class ArtemisConfigTest(
     for (i in 1..5) {
       jmsTemplate.convertAndSend(
         QUEUE_TASKS,
-        "message $i"
+        "message $i",
       ) {
         it.apply { setStringProperty(QUEUE_UNIQUE_ID, "1") }
       }
@@ -58,7 +58,7 @@ class ArtemisConfigTest(
     for (i in 1..6) {
       jmsTemplate.convertAndSend(
         QUEUE_TASKS,
-        "message $i"
+        "message $i",
       ) {
         it.apply { setStringProperty(QUEUE_UNIQUE_ID, i.rem(2).toString()) }
       }
@@ -79,7 +79,7 @@ class ArtemisConfigTest(
     for (i in 1..5) {
       jmsTemplate.convertAndSend(
         QUEUE_TASKS,
-        "message $i"
+        "message $i",
       )
     }
 
@@ -100,7 +100,7 @@ class ArtemisConfigTest(
       jmsTemplate.isExplicitQosEnabled = true
       jmsTemplate.convertAndSend(
         QUEUE_TASKS,
-        "message A $i"
+        "message A $i",
       )
     }
 
@@ -109,7 +109,7 @@ class ArtemisConfigTest(
       jmsTemplate.isExplicitQosEnabled = true
       jmsTemplate.convertAndSend(
         QUEUE_TASKS,
-        "message B $i"
+        "message B $i",
       )
     }
 

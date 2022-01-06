@@ -122,7 +122,7 @@ class SeriesMetadataDao(
       metadata.genres.chunked(batchSize).forEach { chunk ->
         dsl.batch(
           dsl.insertInto(g, g.SERIES_ID, g.GENRE)
-            .values(null as String?, null)
+            .values(null as String?, null),
         ).also { step ->
           chunk.forEach {
             step.bind(metadata.seriesId, it)
@@ -137,7 +137,7 @@ class SeriesMetadataDao(
       metadata.tags.chunked(batchSize).forEach { chunk ->
         dsl.batch(
           dsl.insertInto(st, st.SERIES_ID, st.TAG)
-            .values(null as String?, null)
+            .values(null as String?, null),
         ).also { step ->
           chunk.forEach {
             step.bind(metadata.seriesId, it)
@@ -196,6 +196,6 @@ class SeriesMetadataDao(
       seriesId = seriesId,
 
       createdDate = createdDate.toCurrentTimeZone(),
-      lastModifiedDate = lastModifiedDate.toCurrentTimeZone()
+      lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
     )
 }
