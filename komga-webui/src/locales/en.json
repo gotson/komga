@@ -5,7 +5,7 @@
     },
     "dataIterator": {
       "loadingText": "Loading items…",
-      "noResultsText": "Could not find any such record"
+      "noResultsText": "No matching records found"
     },
     "dataTable": {
       "itemsPerPageText": "Rows per page:",
@@ -23,7 +23,7 @@
   },
   "authentication_activity": {
     "datetime": "Date Time",
-    "email": "E-mail",
+    "email": "Email",
     "error": "Error",
     "ip": "IP",
     "source": "Source",
@@ -189,7 +189,7 @@
     "delete": "Delete",
     "dismiss": "Dismiss",
     "download": "Download",
-    "email": "E-mail",
+    "email": "Email",
     "filter_no_matches": "The active filter has no matches",
     "genre": "Genre",
     "go_to_library": "Go to library",
@@ -533,7 +533,7 @@
     "reading_direction": {
       "LEFT_TO_RIGHT": "Left to right",
       "RIGHT_TO_LEFT": "Right to left",
-      "VERTICAL": "Vertical ↓",
+      "VERTICAL": "Vertical",
       "WEBTOON": "Webtoon"
     },
     "series_cover": {
@@ -550,12 +550,12 @@
     }
   },
   "error_codes": {
-    "ERR_1000": "Could access file during analysis",
+    "ERR_1000": "Could not access file during analysis",
     "ERR_1001": "Unsupported media type",
     "ERR_1002": "Encrypted RAR archives are not supported",
     "ERR_1003": "Solid RAR archives are not supported",
     "ERR_1004": "Multi-Volume RAR archives are not supported",
-    "ERR_1005": "Unknown error during book analysis",
+    "ERR_1005": "Unknown error while analyzing book",
     "ERR_1006": "No pages in book",
     "ERR_1007": "Could not be analyze some pages",
     "ERR_1008": "Could not fetch the book's entries, for unknown reason",
@@ -609,7 +609,7 @@
   },
   "login": {
     "create_user_account": "Create user account",
-    "login": "Log in",
+    "login": "Sign in",
     "unclaimed_html": "This Komga server is not yet active. Create a user account to access it.<br/><br/>Choose an <strong>e-mail address</strong> and a <strong>password</strong> and click on <strong>Create user account</strong>."
   },
   "media_analysis": {
