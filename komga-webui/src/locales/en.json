@@ -180,7 +180,7 @@
   "common": {
     "all_libraries": "All Libraries",
     "books": "Books",
-    "books_n": "No book | 1 book | {count} books",
+    "books_n": "0 books | 1 book | {count} books",
     "books_total": "{count} / {total} books",
     "cancel": "Cancel",
     "close": "Close",
@@ -203,9 +203,9 @@
     "nothing_to_show": "Nothing to show",
     "outdated": "Outdated",
     "pages": "pages",
-    "pages_n": "No pages | One page | {count} pages",
+    "pages_n": "0 pages | 1 page | {count} pages",
     "password": "Password",
-    "pending_tasks": "No pending tasks | One pending task | {count} pending tasks",
+    "pending_tasks": "0 pending tasks | 1 pending task | {count} pending tasks",
     "publisher": "Publisher",
     "read": "Read",
     "readlists": "Reading Lists",
@@ -243,7 +243,7 @@
   "dialog": {
     "add_to_collection": {
       "button_create": "Create",
-      "card_collection_subtitle": "No series | One series | {count} series",
+      "card_collection_subtitle": "0 series | 1 series | {count} series",
       "dialog_title": "Add to collection",
       "field_search_create": "Search or create collection",
       "field_search_create_error": "A collection with this name already exists",
@@ -251,7 +251,7 @@
     },
     "add_to_readlist": {
       "button_create": "Create",
-      "card_readlist_subtitle": "No book | 1 book | {count} books",
+      "card_readlist_subtitle": "0 book | 1 book | {count} books",
       "dialog_title": "Add to read list",
       "field_search_create": "Search or create read list",
       "field_search_create_error": "A read list with this name already exists",
@@ -681,7 +681,7 @@
       "button_empty_trash": "Empty trash for all libraries",
       "button_scan_libraries": "Scan all libraries",
       "button_shutdown": "Shut down",
-      "notification_tasks_cancelled": "No tasks to cancel | One task cancelled | {count} tasks cancelled",
+      "notification_tasks_cancelled": "0 tasks to cancel | 1 task cancelled | {count} tasks cancelled",
       "section_title": "Server Management"
     },
     "tab_title": "Server"
