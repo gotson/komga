@@ -1,3 +1,11 @@
+## [0.143.1](https://github.com/gotson/komga/compare/v0.143.0...v0.143.1) (2022-01-10)
+
+
+### Bug Fixes
+
+* find duplicate books by hash and file size ([4e055f0](https://github.com/gotson/komga/commit/4e055f037a9fc480efb6377bfcafc6198dfac912)), closes [#771](https://github.com/gotson/komga/issues/771)
+* improper json deserialization when missing mandatory fields ([594194f](https://github.com/gotson/komga/commit/594194fafd7101a8ec848d72851030bad545c4af))
+
 # [0.143.0](https://github.com/gotson/komga/compare/v0.142.0...v0.143.0) (2022-01-06)
 
 
