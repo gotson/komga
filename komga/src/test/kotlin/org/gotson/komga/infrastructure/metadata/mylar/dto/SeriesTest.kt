@@ -1,15 +1,23 @@
 package org.gotson.komga.infrastructure.metadata.mylar.dto
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.exc.MismatchedInputException
+import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.catchThrowable
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.io.ClassPathResource
+import org.springframework.test.context.junit.jupiter.SpringExtension
 
-class SeriesTest {
-
-  private val mapper = ObjectMapper().registerKotlinModule()
+@ExtendWith(SpringExtension::class)
+@SpringBootTest
+class SeriesTest(
+  @Autowired private val mapper: ObjectMapper,
+) {
 
   @Test
   fun `given valid json file when deserializing then properties are available`() {
@@ -59,5 +67,29 @@ class SeriesTest {
       assertThat(publicationRun).isEqualTo("June 2019 - Present")
       assertThat(status).isEqualTo(Status.Ended)
     }
+  }
+
+  @Test
+  fun `given invalid json file missing year when deserializing then it fails`() {
+    val file = ClassPathResource("mylar/series-missing-year.json")
+    val thrown = catchThrowable { mapper.readValue<Series>(file.url) }
+
+    assertThat(thrown).isInstanceOf(MismatchedInputException::class.java)
+  }
+
+  @Test
+  fun `given invalid json file missing publisher when deserializing then it fails`() {
+    val file = ClassPathResource("mylar/series-missing-publisher.json")
+    val thrown = catchThrowable { mapper.readValue<Series>(file.url) }
+
+    assertThat(thrown).isInstanceOf(MissingKotlinParameterException::class.java)
+  }
+
+  @Test
+  fun `given invalid json file missing status when deserializing then it fails`() {
+    val file = ClassPathResource("mylar/series-missing-status.json")
+    val thrown = catchThrowable { mapper.readValue<Series>(file.url) }
+
+    assertThat(thrown).isInstanceOf(MissingKotlinParameterException::class.java)
   }
 }

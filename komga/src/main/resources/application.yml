@@ -43,6 +43,9 @@ spring:
   web:
     resources:
       add-mappings: false
+  jackson:
+    deserialization:
+      FAIL_ON_NULL_FOR_PRIMITIVES: true
 
 server:
   servlet.session.timeout: 7d
