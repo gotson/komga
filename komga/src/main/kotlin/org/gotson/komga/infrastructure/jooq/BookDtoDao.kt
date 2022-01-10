@@ -206,11 +206,11 @@ class BookDtoDao(
   }
 
   override fun findAllDuplicates(userId: String, pageable: Pageable): Page<BookDto> {
-    val hashes = dsl.select(b.FILE_HASH, DSL.count(b.FILE_HASH))
+    val hashes = dsl.select(b.FILE_HASH, DSL.count(b.ID))
       .from(b)
       .where(b.FILE_HASH.ne(""))
-      .groupBy(b.FILE_HASH)
-      .having(DSL.count(b.FILE_HASH).gt(1))
+      .groupBy(b.FILE_HASH, b.FILE_SIZE)
+      .having(DSL.count(b.ID).gt(1))
       .fetch()
       .associate { it.value1() to it.value2() }
 
