@@ -18,17 +18,17 @@
     "noDataText": "No data available"
   },
   "account_settings": {
-    "account_settings": "Account Settings",
+    "account_settings": "Account settings",
     "change_password": "change password"
   },
   "authentication_activity": {
-    "datetime": "Date Time",
+    "datetime": "Date time",
     "email": "Email",
     "error": "Error",
     "ip": "IP",
     "source": "Source",
     "success": "Success",
-    "user_agent": "User Agent"
+    "user_agent": "User agent"
   },
   "author_roles": {
     "colorist": "colorists",
@@ -78,9 +78,9 @@
   "bookreader": {
     "beginning_of_book": "You're at the beginning of the book.",
     "changing_reading_direction": "Changing reading direction to",
-    "cycling_page_layout": "Cycling Page Layout",
-    "cycling_scale": "Cycling Scale",
-    "cycling_side_padding": "Cycling Side Padding",
+    "cycling_page_layout": "Cycling page layout",
+    "cycling_scale": "Cycling scale",
+    "cycling_side_padding": "Cycling side padding",
     "download_current_page": "Download current page",
     "end_of_book": "You've reached the end of the book.",
     "from_series_metadata": "from series metadata",
@@ -92,7 +92,7 @@
       "double_no_cover": "Double pages (no cover)",
       "single": "Single page"
     },
-    "reader_settings": "Reader Settings",
+    "reader_settings": "Reader settings",
     "scale_type": {
       "continuous_original": "Original",
       "continuous_width": "Fit width",
@@ -103,7 +103,7 @@
       "width_shrink_only": "Fit width (shrink only)"
     },
     "settings": {
-      "always_fullscreen": "Always Full Screen",
+      "always_fullscreen": "Always fullscreen",
       "animate_page_transitions": "Animate page transitions",
       "background_color": "Background",
       "background_colors": {
@@ -115,7 +115,7 @@
       "general": "General",
       "gestures": "Gestures",
       "page_layout": "Page layout",
-      "paged": "Paginated Reader Options",
+      "paged": "Paginated Reader options",
       "reading_mode": "Reading mode",
       "scale_type": "Scale type",
       "side_padding": "Side padding",
@@ -126,16 +126,16 @@
       "close": "Close",
       "cycle_page_layout": "Cycle page layout",
       "cycle_scale": "Cycle scale",
-      "cycle_side_padding": "Cycle side padding",
+      "cycle_side_padding": "Cycle side-padding",
       "first_page": "First page",
-      "fullscreen": "Enter/exit full screen",
+      "fullscreen": "Enter/exit fullscreen",
       "last_page": "Last page",
       "left_to_right": "Left to right",
       "menus": "Menus",
       "next_page": "Next page",
       "previous_page": "Previous page",
-      "reader_navigation": "Reader Navigation",
-      "right_to_left": "Right to Left",
+      "reader_navigation": "Reader navigation",
+      "right_to_left": "Right to left",
       "settings": "Settings",
       "show_hide_help": "Show/hide help",
       "show_hide_settings": "Show/hide settings menu",
@@ -208,7 +208,7 @@
     "pending_tasks": "0 pending tasks | 1 pending task | {count} pending tasks",
     "publisher": "Publisher",
     "read": "Read",
-    "readlists": "Reading Lists",
+    "readlists": "Reading lists",
     "required": "Required",
     "reset_filters": "Reset filters",
     "roles": "Roles",
@@ -220,25 +220,25 @@
     "year": "year"
   },
   "dashboard": {
-    "keep_reading": "Keep Reading",
-    "on_deck": "On Deck",
-    "recently_added_books": "Recently Added Books",
-    "recently_added_series": "Recently Added Series",
-    "recently_read_books": "Recently Read Books",
-    "recently_released_books": "Recently Released Books",
-    "recently_updated_series": "Recently Updated Series"
+    "keep_reading": "Keep reading",
+    "on_deck": "On deck",
+    "recently_added_books": "Recently added books",
+    "recently_added_series": "Recently added series",
+    "recently_read_books": "Recently read books",
+    "recently_released_books": "Recently released books",
+    "recently_updated_series": "Recently updated series"
   },
   "data_import": {
     "book_number": "Book number: {name}",
     "book_series": "Series: {name}",
     "button_import": "Import",
-    "comicrack_preambule_html": "When importing existing ComicRack Reading Lists in <code>.cbl</code> format<br/>Komga tries to match the provided series and book number with series and books in your libraries.",
-    "field_files_label": "ComicRack Reading Lists (.cbl)",
-    "import_read_lists": "Import Read Lists",
+    "comicrack_preambule_html": "When importing existing ComicRack reading lists in <code>.cbl</code> format\nKomga tries to match the provided series and book number with series and books in your libraries.",
+    "field_files_label": "ComicRack reading lists (.cbl)",
+    "import_read_lists": "Import reading lists",
     "imported_as": "Imported as {name}",
     "results_preambule": "The result of the import is shown below. You can check the unmatched books for each provided file.",
     "size_limit": "The size should be less than {size} MB",
-    "tab_title": "Data Import"
+    "tab_title": "Data import"
   },
   "dialog": {
     "add_to_collection": {
@@ -252,21 +252,21 @@
     "add_to_readlist": {
       "button_create": "Create",
       "card_readlist_subtitle": "0 book | 1 book | {count} books",
-      "dialog_title": "Add to read list",
-      "field_search_create": "Search or create read list",
-      "field_search_create_error": "A read list with this name already exists",
+      "dialog_title": "Add to reading list",
+      "field_search_create": "Search or create reading list",
+      "field_search_create_error": "A reading list with this name already exists",
       "label_no_matching_readlist": "No matching reading list"
     },
     "add_user": {
       "button_cancel": "Cancel",
       "button_confirm": "Add",
-      "dialog_title": "Add User",
+      "dialog_title": "Add user",
       "field_email": "Email",
       "field_email_error": "Must be a valid email address",
       "field_password": "Password",
       "field_role_administrator": "Administrator",
-      "field_role_file_download": "File Download",
-      "field_role_page_streaming": "Page Streaming",
+      "field_role_file_download": "File download",
+      "field_role_page_streaming": "Page streaming",
       "label_roles": "Roles"
     },
     "analyze_library": {
@@ -279,51 +279,51 @@
       "confirm_delete": "Yes, delete book \"{name}\" and its files",
       "confirm_delete_multiple": "Yes, delete {count} books and their files",
       "dialog_title": "Delete Book",
-      "dialog_title_multiple": "Delete Books",
-      "warning_html": "The book <b>{name}</b> will be removed from this server alongside with stored media files. This <b>cannot</b> be undone. Continue?",
-      "warning_multiple_html": "{count} books will be removed from this server alongside with stored media files. This <b>cannot</b> be undone. Continue?"
+      "dialog_title_multiple": "Delete books",
+      "warning_html": "Remove the {name} book from this server along with its stored media files permanently?",
+      "warning_multiple_html": "Remove these {count} books from this server along with its stored media files permanently?"
     },
     "delete_collection": {
       "button_confirm": "Delete",
       "confirm_delete": "Yes, delete the \"{name}\" collection",
       "confirm_delete_multiple": "Yes, delete {count} collections",
-      "dialog_title": "Delete Collection",
-      "dialog_title_multiple": "Delete Collections",
-      "warning_html": "The collection <b>{name}</b> will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue?",
-      "warning_multiple_html": "{count} collections will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue?"
+      "dialog_title": "Delete collection",
+      "dialog_title_multiple": "Delete collections",
+      "warning_html": "Remove the {name} collection from this server permanently? (Your media files will not be affected.)",
+      "warning_multiple_html": "Remove these {count} collections from this server permanently? (Your media files will not be affected.)"
     },
     "delete_library": {
       "button_confirm": "Delete",
       "confirm_delete": "Yes, delete the \"{name}\" library",
-      "title": "Delete Library",
-      "warning_html": "The <b>{name}</b> library will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue?"
+      "title": "Delete library",
+      "warning_html": "Remove the {name} library from this server permanently? (Your media files will not be affected.)"
     },
     "delete_readlist": {
       "button_confirm": "Delete",
-      "confirm_delete": "Yes, delete the read list \"{name}\"",
-      "confirm_delete_multiple": "Yes, delete {count} read lists",
-      "dialog_title": "Delete Read List",
-      "dialog_title_multiple": "Delete Read Lists",
-      "warning_html": "The read list <b>{name}</b> will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue?",
-      "warning_multiple_html": "{count} read lists will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue?"
+      "confirm_delete": "Yes, delete the reading list \"{name}\"",
+      "confirm_delete_multiple": "Yes, delete {count} reading lists",
+      "dialog_title": "Delete reading list",
+      "dialog_title_multiple": "Delete reading lists",
+      "warning_html": "Remove the \"{name}\" reading list from this server permanently? (Your media files will not be affected.)",
+      "warning_multiple_html": "Remove {count} reading lists from this server permanently? (Your media files will not be affected.)"
     },
     "delete_series": {
       "button_confirm": "Delete",
       "confirm_delete": "Yes, delete series \"{name}\" and its files",
       "confirm_delete_multiple": "Yes, delete {count} series and their files",
-      "dialog_title": "Delete Series",
-      "warning_html": "The Series <b>{name}</b> will be removed from this server alongside with stored media files. This <b>cannot</b> be undone. Continue?",
-      "warning_multiple_html": "{count} series will be removed from this server alongside with stored media files. This <b>cannot</b> be undone. Continue?"
+      "dialog_title": "Delete series",
+      "warning_html": "Remove the {name} series from this server along with its stored media files permanently?",
+      "warning_multiple_html": "Remove these {count} series from this server along with its stored media files permanently?"
     },
     "delete_user": {
       "button_confirm": "Delete",
       "confirm_delete": "Yes, delete the user \"{name}\"",
-      "dialog_title": "Delete User",
-      "warning_html": "The user <b>{name}</b> will be deleted from this server. This <b>cannot</b> be undone. Continue?"
+      "dialog_title": "Delete user",
+      "warning_html": "Delete the user \"{name}\" permanently from this server?"
     },
     "edit_books": {
       "add_author_role_error_duplicate": "Already exists",
-      "authors_notice_multiple_edit": "You are editing authors for multiple books. This will override existing authors of each book.",
+      "authors_notice_multiple_edit": "Editing authors for multiple books overrides the existing authors of each book.",
       "button_cancel": "Cancel",
       "button_confirm": "Save changes",
       "dialog_title_multiple": "Edit {count} book | Edit {count} books",
@@ -337,7 +337,7 @@
       "field_number": "Number",
       "field_number_sort": "Number used for sorting",
       "field_number_sort_hint": "You can use decimal numbers",
-      "field_release_date": "Release Date",
+      "field_release_date": "Release date",
       "field_release_date_error": "Must be a valid date in YYYY-MM-DD format",
       "field_summary": "Summary",
       "field_tags": "Tags",
@@ -346,7 +346,7 @@
       "tab_general": "General",
       "tab_links": "Links",
       "tab_tags": "Tags",
-      "tags_notice_multiple_edit": "You are editing tags for multiple books. This will override existing tags of each book."
+      "tags_notice_multiple_edit": "Editing tags for multiple books overrides the existing tags of each book."
     },
     "edit_collection": {
       "button_cancel": "Cancel",
@@ -361,8 +361,8 @@
       "button_confirm_add": "Add",
       "button_confirm_edit": "Edit",
       "button_next": "Next",
-      "dialog_title_add": "Add Library",
-      "dialot_title_edit": "Edit Library",
+      "dialog_title_add": "Add library",
+      "dialot_title_edit": "Edit library",
       "field_analysis_analyze_dimensions": "Analyze pages dimensions",
       "field_analysis_hash_files": "Compute hash for files",
       "field_analysis_hash_pages": "Compute hash for pages",
@@ -403,7 +403,7 @@
     "edit_readlist": {
       "button_cancel": "Cancel",
       "button_confirm": "Save changes",
-      "dialog_title": "Edit read list",
+      "dialog_title": "Edit reading list",
       "field_name": "Name",
       "field_summary": "Summary"
     },
@@ -412,20 +412,20 @@
       "button_confirm": "Save changes",
       "dialog_title_multiple": "Edit {count} series | Edit {count} series",
       "dialog_title_single": "Edit {series}",
-      "field_age_rating": "Age Rating",
+      "field_age_rating": "Age rating",
       "field_age_rating_error": "Age rating must be 0 or above",
       "field_genres": "Genres",
       "field_language": "Language",
       "field_language_hint": "IETF BCP 47 language tag",
       "field_publisher": "Publisher",
-      "field_reading_direction": "Reading Direction",
-      "field_sort_title": "Sort Title",
+      "field_reading_direction": "Reading direction",
+      "field_sort_title": "Sort title",
       "field_status": "Status",
       "field_summary": "Summary",
       "field_tags": "Tags",
       "field_title": "Title",
-      "field_total_book_count": "Total Book Count",
-      "field_total_book_count_error": "Total book count must be 1 or more",
+      "field_total_book_count": "Total amount of books",
+      "field_total_book_count_error": "The total amount of books must be 1 or more",
       "mixed": "MIXED",
       "tab_general": "General",
       "tab_poster": "Poster",
@@ -453,7 +453,7 @@
     "file_browser": {
       "button_cancel": "Cancel",
       "button_confirm_default": "Choose",
-      "dialog_title_default": "File Browser",
+      "dialog_title_default": "File browser",
       "parent_directory": "Parent"
     },
     "filename_chooser": {
@@ -461,10 +461,10 @@
       "field_destination_filename": "Destination filename",
       "label_source_filename": "Source filename",
       "table": {
-        "existing_file": "Existing File",
+        "existing_file": "Existing file",
         "order": "Order"
       },
-      "title": "Destination Filename"
+      "title": "Destination filename"
     },
     "password_change": {
       "button_cancel": "Cancel",
@@ -473,7 +473,7 @@
       "field_new_password": "New password",
       "field_new_password_error": "New password required.",
       "field_repeat_password": "Repeat the password",
-      "field_repeat_password_error": "Mismatching passwords."
+      "field_repeat_password_error": "Mismatching passwords"
     },
     "refresh_library_metadata": {
       "body": "Refreshes metadata for all the media files in the library. Depending on your library size, this may take a long time.",
@@ -481,8 +481,8 @@
       "title": "Refresh metadata for library"
     },
     "series_picker": {
-      "label_search_series": "Search Series",
-      "title": "Select Series"
+      "label_search_series": "Search series",
+      "title": "Select series"
     },
     "server_stop": {
       "button_confirm": "Stop",
@@ -508,26 +508,26 @@
         "size": "Size",
         "width": "Width"
       },
-      "title": "Book Details",
-      "title_comparison": "Book Comparison"
+      "title": "Book details",
+      "title_comparison": "Book comparison"
     },
     "transient_book_viewer": {
       "label_candidate": "Candidate",
       "label_existing": "Existing",
       "page_of_pages": "{page} / {pages}",
-      "title": "Inspect Book",
-      "title_comparison": "Book Comparison"
+      "title": "Inspect book",
+      "title_comparison": "Book comparison"
     }
   },
   "duplicates": {
     "file_hash": "File hash",
     "size": "Size",
-    "title": "Duplicate Files",
+    "title": "Duplicate files",
     "url": "URL"
   },
   "enums": {
     "copy_mode": {
-      "HARDLINK": "Hardlink/Copy Files",
+      "HARDLINK": "Hardlink/copy files",
       "MOVE": "Move Files"
     },
     "media_status": {
@@ -557,33 +557,33 @@
     }
   },
   "error_codes": {
-    "ERR_1000": "Could not access file during analysis",
+    "ERR_1000": "Could not access the file during analysis",
     "ERR_1001": "Unsupported media type",
     "ERR_1002": "Encrypted RAR archives are not supported",
     "ERR_1003": "Solid RAR archives are not supported",
-    "ERR_1004": "Multi-Volume RAR archives are not supported",
+    "ERR_1004": "Multi-volume RAR archives are not supported",
     "ERR_1005": "Unknown error while analyzing book",
     "ERR_1006": "There are no pages in the book",
-    "ERR_1007": "Could not analyze some pages",
+    "ERR_1007": "Could not analyze some of the entries",
     "ERR_1008": "Could not fetch the book's entries, for unknown reason",
-    "ERR_1009": "A read list with that name already exists",
-    "ERR_1010": "Could not find any books from read list request",
-    "ERR_1011": "Could not find that specific book in the series",
-    "ERR_1012": "Could not find anything like that in the series",
-    "ERR_1013": "Could not find this book number in the series",
+    "ERR_1009": "A reading list with that name already exists",
+    "ERR_1010": "Could not find any books from reading list request",
+    "ERR_1011": "No unique match for series
+    "ERR_1012": "No match for series",
+    "ERR_1013": "Could not find this book number in the series when looking for its book number",
     "ERR_1014": "No match for book number within series",
-    "ERR_1015": "Could not deserialize ComicRack ReadingList",
-    "ERR_1016": "Inaccessible or non-existing directory",
-    "ERR_1017": "Cannot scan a folder in an existing library",
-    "ERR_1018": "File not found",
+    "ERR_1015": "Could not deserialize ComicRack reading list",
+    "ERR_1016": "The directory is inaccessible or does not exist",
+    "ERR_1017": "Cannot scan a folder that is part of an existing library",
+    "ERR_1018": "Could not find that file",
     "ERR_1019": "Cannot import file from an existing library",
     "ERR_1020": "The book to upgrade does not belong to the provided series",
-    "ERR_1021": "Destination file already exists",
+    "ERR_1021": "The destination file already exists",
     "ERR_1022": "Could not scan the recently imported book",
-    "ERR_1023": "Book already present in ReadingList",
+    "ERR_1023": "The book is already present in reading list",
     "ERR_1024": "OAuth 2.0 login error: no email attribute",
     "ERR_1025": "OAuth2 2.0 login error: no local user with that email exists",
-    "ERR_1026": "OpenID Connect login error: email not verified"
+    "ERR_1026": "OpenID Connect login error: the email is not verified"
   },
   "filter": {
     "age_rating": "age rating",
@@ -617,12 +617,12 @@
   "login": {
     "create_user_account": "Create user account",
     "login": "Sign in",
-    "unclaimed_html": "This Komga server is not yet active. Create a user account to access it.<br/><br/>Choose an <strong>email address</strong> and a <strong>password</strong> and click on <strong>Create user account</strong>."
+    "unclaimed_html": "This Komga server is not yet active. Create a user account to access it.\n\nChoose an email address and a password, and then click on \"Create user account\"."
   },
   "media_analysis": {
     "comment": "Comment",
     "media_analysis": "Media analysis",
-    "media_type": "Media Type",
+    "media_type": "Media type",
     "name": "Name",
     "size": "Size",
     "status": "Status",
@@ -649,7 +649,7 @@
   "navigation": {
     "home": "Home",
     "libraries": "Libraries",
-    "logout": "Log Out"
+    "logout": "Log out"
   },
   "page_not_found": {
     "go_back_to_home_page": "Go back to home page",
@@ -662,7 +662,7 @@
   },
   "readlists_expansion_panel": {
     "manage_readlist": "Manage reading list",
-    "title": "{name} read list"
+    "title": "{name} reading list"
   },
   "search": {
     "no_results": "The search returned no results",
@@ -682,12 +682,12 @@
       "button_scan_libraries": "Scan all libraries",
       "button_shutdown": "Shut down",
       "notification_tasks_cancelled": "0 tasks to cancel | 1 task cancelled | {count} tasks cancelled",
-      "section_title": "Server Management"
+      "section_title": "Server management"
     },
     "tab_title": "Server"
   },
   "server_settings": {
-    "server_settings": "Server Settings"
+    "server_settings": "Server settings"
   },
   "settings_user": {
     "change_password": "Change password",
@@ -721,7 +721,7 @@
     "tooltip_sidecar": "Local artwork",
     "tooltip_to_be_deleted": "To be deleted",
     "tooltip_to_be_uploaded": "To be uploaded",
-    "tooltip_too_big": "File too big!",
+    "tooltip_too_big": "The file too big",
     "tooltip_user_uploaded": "User uploaded"
   },
   "user_roles": {
@@ -731,12 +731,12 @@
     "USER": "User"
   },
   "users": {
-    "authentication_activity": "Authentication Activity",
+    "authentication_activity": "Authentication activity",
     "users": "Users"
   },
   "welcome": {
     "add_library": "Add library",
-    "no_libraries_yet": "No libraries added yet!",
+    "no_libraries_yet": "No libraries added yet",
     "welcome_message": "Welcome to Komga"
   }
 }
