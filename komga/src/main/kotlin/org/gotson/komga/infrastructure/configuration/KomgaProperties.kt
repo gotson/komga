@@ -44,6 +44,8 @@ class KomgaProperties {
 
   var lucene = Lucene()
 
+  var configDir: String? = null
+
   class RememberMe {
     @get:NotBlank
     var key: String? = null

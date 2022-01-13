@@ -8,7 +8,7 @@ logging:
       clean-history-on-start: true
       max-file-size: 10MB
   file:
-    name: \${user.home}/.komga/komga.log
+    name: \${komga.config-dir}/logs/komga.log
   level:
     org.apache.activemq.audit: WARN
 
@@ -18,10 +18,11 @@ komga:
     - "#recycle"
     - "@eaDir"
   database:
-    file: \${user.home}/.komga/database.sqlite
+    file: \${komga.config-dir}/database.sqlite
   lucene:
-    data-directory: \${user.home}/.komga/lucene
+    data-directory: \${komga.config-dir}/lucene
   session-timeout: 7d
+  config-dir: \${user.home}/.komga
 
 spring:
   flyway:
@@ -39,13 +40,18 @@ spring:
   artemis:
     embedded:
       persistent: true
-      data-directory: \${user.home}/.komga/artemis
+      data-directory: \${komga.config-dir}/artemis
   web:
     resources:
       add-mappings: false
   jackson:
     deserialization:
       FAIL_ON_NULL_FOR_PRIMITIVES: true
+  config:
+    import:
+      - "optional:file:\${komga.config-dir}/application.yml"
+      - "optional:file:\${komga.config-dir}/application.yaml"
+      - "optional:file:\${komga.config-dir}/application.properties"
 
 server:
   servlet.session.timeout: 7d
