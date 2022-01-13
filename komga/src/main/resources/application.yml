@@ -38,6 +38,7 @@ spring:
     async:
       request-timeout: 1h
   artemis:
+    broker-url: tcp://localhost:18515
     embedded:
       persistent: true
       data-directory: \${komga.config-dir}/artemis
