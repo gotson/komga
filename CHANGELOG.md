@@ -1,3 +1,15 @@
+# [0.144.0](https://github.com/gotson/komga/compare/v0.143.1...v0.144.0) (2022-01-13)
+
+
+### Bug Fixes
+
+* change artemis port ([4fb7dc7](https://github.com/gotson/komga/commit/4fb7dc75ecfff93ed0ea6ba2c2ac407c10180e9d))
+
+
+### Features
+
+* configurable config directory ([c643d55](https://github.com/gotson/komga/commit/c643d55ee84bd901da59ee0aa804203b3d501b95))
+
 ## [0.143.1](https://github.com/gotson/komga/compare/v0.143.0...v0.143.1) (2022-01-10)
 
 
