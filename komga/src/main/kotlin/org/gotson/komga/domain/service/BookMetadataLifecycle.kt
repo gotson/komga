@@ -50,7 +50,7 @@ class BookMetadataLifecycle(
         provider is IsbnBarcodeProvider && !library.importBarcodeIsbn ->
           logger.info { "Library is not set to import book metadata from Barcode ISBN, skipping" }
         else -> {
-          logger.debug { "Provider: $provider" }
+          logger.debug { "Provider: ${provider.javaClass.simpleName}" }
           val patch = provider.getBookMetadataFromBook(BookWithMedia(book, media))
 
           if (

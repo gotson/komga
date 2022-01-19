@@ -141,7 +141,7 @@ class BookAnalyzer(
     MediaNotReadyException::class,
   )
   fun getFileContent(book: BookWithMedia, fileName: String): ByteArray {
-    logger.info { "Get file $fileName for book: $book" }
+    logger.debug { "Get file $fileName for book: $book" }
 
     if (book.media.status != Media.Status.READY) {
       logger.warn { "Book media is not ready, cannot get files" }

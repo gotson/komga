@@ -67,7 +67,7 @@ class SeriesLifecycle(
   private val whitespacePattern = """\s+""".toRegex()
 
   fun sortBooks(series: Series) {
-    logger.debug { "Sorting books for $series" }
+    logger.info { "Sorting books for $series" }
 
     val books = bookRepository.findAllBySeriesId(series.id)
     val metadatas = bookMetadataRepository.findAllByIds(books.map { it.id })

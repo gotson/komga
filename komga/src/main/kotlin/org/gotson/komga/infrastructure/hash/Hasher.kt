@@ -16,7 +16,7 @@ private const val SEED = 0
 class Hasher {
 
   fun computeHash(path: Path): String {
-    logger.info { "Hashing: $path" }
+    logger.debug { "Hashing: $path" }
 
     return computeHash(path.inputStream())
   }

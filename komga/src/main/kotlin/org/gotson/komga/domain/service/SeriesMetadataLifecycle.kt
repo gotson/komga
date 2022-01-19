@@ -52,7 +52,7 @@ class SeriesMetadataLifecycle(
         provider is ComicInfoProvider && !library.importComicInfoSeries && !library.importComicInfoCollection -> logger.info { "Library is not set to import series and collection metadata from ComicInfo, skipping" }
         provider is EpubMetadataProvider && !library.importEpubSeries -> logger.info { "Library is not set to import series metadata from Epub, skipping" }
         else -> {
-          logger.debug { "Provider: ${provider::class.simpleName}" }
+          logger.debug { "Provider: ${provider.javaClass.simpleName}" }
           val patches = bookRepository.findAllBySeriesId(series.id)
             .mapNotNull { provider.getSeriesMetadataFromBook(BookWithMedia(it, mediaRepository.findById(it.id))) }
 
@@ -75,7 +75,7 @@ class SeriesMetadataLifecycle(
       when {
         provider is MylarSeriesProvider && !library.importMylarSeries -> logger.info { "Library is not set to import series metadata from Mylar, skipping" }
         else -> {
-          logger.debug { "Provider: $provider" }
+          logger.debug { "Provider: ${provider.javaClass.simpleName}" }
           val patch = provider.getSeriesMetadata(series)
 
           if (provider is MylarSeriesProvider && library.importMylarSeries && patch != null) {
