@@ -54,6 +54,7 @@ class ComicInfoProviderTest {
         alternateNumber = "5"
         storyArc = "one, two, three"
         web = "https://www.comixology.com/Sandman/digital-comic/727888"
+        tags = "dark, Occult"
       }
 
       every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
@@ -67,18 +68,24 @@ class ComicInfoProviderTest {
         assertThat(numberSort).isEqualTo(10F)
         assertThat(releaseDate).isEqualTo(LocalDate.of(2020, 2, 1))
 
-        assertThat(readLists).hasSize(4)
-        assertThat(readLists).containsExactlyInAnyOrder(
-          BookMetadataPatch.ReadListEntry("story arc", 5),
-          BookMetadataPatch.ReadListEntry("one"),
-          BookMetadataPatch.ReadListEntry("two"),
-          BookMetadataPatch.ReadListEntry("three"),
-        )
+        assertThat(readLists)
+          .hasSize(4)
+          .containsExactlyInAnyOrder(
+            BookMetadataPatch.ReadListEntry("story arc", 5),
+            BookMetadataPatch.ReadListEntry("one"),
+            BookMetadataPatch.ReadListEntry("two"),
+            BookMetadataPatch.ReadListEntry("three"),
+          )
 
-        assertThat(links).hasSize(1)
-        assertThat(links).containsExactlyInAnyOrder(
-          WebLink("www.comixology.com", URI("https://www.comixology.com/Sandman/digital-comic/727888")),
-        )
+        assertThat(links)
+          .hasSize(1)
+          .containsExactlyInAnyOrder(
+            WebLink("www.comixology.com", URI("https://www.comixology.com/Sandman/digital-comic/727888")),
+          )
+
+        assertThat(tags)
+          .hasSize(2)
+          .containsExactlyInAnyOrder("dark", "occult")
       }
     }
 

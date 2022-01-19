@@ -45,6 +45,7 @@ class MetadataApplierTest {
         authors = listOf(Author("Marcel", "writer")),
         isbn = "9782811632397",
         links = listOf(WebLink("Comixology", URI("https://www.comixology.com/Sandman/digital-comic/727888"))),
+        tags = setOf("tag1", "tag2"),
       )
 
       val patched = metadataApplier.apply(patch, metadata)
@@ -58,6 +59,7 @@ class MetadataApplierTest {
       assertThat(patched.tags).isEmpty()
       assertThat(patched.isbn).isEqualTo("")
       assertThat(patched.links).isEmpty()
+      assertThat(patched.tags).isEmpty()
     }
 
     @Test
@@ -77,6 +79,7 @@ class MetadataApplierTest {
         authors = listOf(Author("Marcel", "writer")),
         isbn = "9782811632397",
         links = listOf(WebLink("Comixology", URI("https://www.comixology.com/Sandman/digital-comic/727888"))),
+        tags = setOf("tag1", "tag2"),
       )
 
       val patched = metadataApplier.apply(patch, metadata)
@@ -91,13 +94,15 @@ class MetadataApplierTest {
           Author("Marcel", "writer"),
         )
       assertThat(patched.releaseDate).isEqualTo(patch.releaseDate)
-      assertThat(patched.tags).isEmpty()
       assertThat(patched.isbn).isEqualTo(patch.isbn)
       assertThat(patched.links)
         .hasSize(1)
         .containsExactlyInAnyOrder(
           WebLink("Comixology", URI("https://www.comixology.com/Sandman/digital-comic/727888")),
         )
+      assertThat(patched.tags)
+        .hasSize(2)
+        .containsExactlyInAnyOrder("tag1", "tag2")
     }
   }
 

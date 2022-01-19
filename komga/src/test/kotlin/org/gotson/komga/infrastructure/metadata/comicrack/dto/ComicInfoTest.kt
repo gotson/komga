@@ -25,6 +25,7 @@ class ComicInfoTest {
       assertThat(imprint).isEqualTo("Vertigo")
       assertThat(count).isEqualTo(10)
       assertThat(genre).isEqualTo("Fantasy, Supernatural/Occult, Horror, Mature, Superhero, Mythology, Drama")
+      assertThat(tags).isEqualTo("dark, Occult")
       assertThat(pageCount).isEqualTo(237)
       assertThat(languageISO).isEqualTo("en")
       assertThat(scanInformation).isEqualTo("")

@@ -94,6 +94,8 @@ class ComicInfoProvider(
         }
       }
 
+      val tags = comicInfo.tags?.split(',')?.mapNotNull { it.trim().lowercase().ifBlank { null } }
+
       return BookMetadataPatch(
         title = comicInfo.title?.ifBlank { null },
         summary = comicInfo.summary?.ifBlank { null },
@@ -103,6 +105,7 @@ class ComicInfoProvider(
         authors = authors.ifEmpty { null },
         readLists = readLists,
         links = link,
+        tags = if (!tags.isNullOrEmpty()) tags.toSet() else null,
       )
     }
     return null
