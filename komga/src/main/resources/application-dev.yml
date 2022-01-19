@@ -12,13 +12,8 @@ komga:
 #  delete-empty-collections: true
 #  delete-empty-read-lists: true
   oauth2-account-creation: false
-spring:
-  artemis:
-    embedded:
-      data-directory: ./artemis
+  config-dir: ${rootDir}/config-dir
 logging:
-  file:
-    name: komga-dev.log
   level:
     org.apache.activemq.audit.message: WARN
     org.gotson.komga: DEBUG

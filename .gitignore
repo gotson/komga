@@ -13,10 +13,6 @@ node_modules
 *.tmp
 *.bak
 
-### H2 databases
-*.mv.db
-*.trace.db
-
 ### SQLite databases
 *.sqlite
 *.sqlite-journal
@@ -47,6 +43,5 @@ nbdist/
 
 ### Komga
 /komga/src/main/resources/public/
-/komga/artemis/
-/komga/lucene/
+/config-dir/
 application-oauth2.yml

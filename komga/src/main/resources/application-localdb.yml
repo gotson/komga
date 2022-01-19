@@ -1,5 +1,5 @@
 komga:
   database:
-    file: ./localdb.sqlite
+    file: \${komga.config-dir}/localdb.sqlite
   lucene:
-    data-directory: ./lucene/localdb
+    data-directory: \${komga.config-dir}/lucene/localdb
