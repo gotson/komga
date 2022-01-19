@@ -1,3 +1,12 @@
+# [0.145.0](https://github.com/gotson/komga/compare/v0.144.0...v0.145.0) (2022-01-19)
+
+
+### Features
+
+* check changed book hash before resetting during scan ([39f686b](https://github.com/gotson/komga/commit/39f686bebeb35a9bcf61de461cfa958b4fd40a7d))
+* import ComicInfo Tags element ([d3daaf1](https://github.com/gotson/komga/commit/d3daaf1f9cba544510a501162c19a2bb832d58ec)), closes [#541](https://github.com/gotson/komga/issues/541)
+* tasks concurrency (configurable) ([2fd95e5](https://github.com/gotson/komga/commit/2fd95e5a7fce0995f499b9dcd2f2a30afb1fdbd8))
+
 # [0.144.0](https://github.com/gotson/komga/compare/v0.143.1...v0.144.0) (2022-01-13)
 
 
