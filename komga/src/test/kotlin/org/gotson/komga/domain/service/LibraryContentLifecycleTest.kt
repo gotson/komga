@@ -197,11 +197,57 @@ class LibraryContentLifecycleTest(
       val allBooks = bookRepository.findAll()
 
       verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
+      verify(exactly = 0) { mockHasher.computeHash(any<Path>()) }
 
       assertThat(allSeries).hasSize(1)
       assertThat(allBooks).hasSize(1)
-      assertThat(allBooks.map { it.name }).containsExactly("book1")
-      assertThat(allBooks.first().lastModifiedDate).isNotEqualTo(allBooks.first().createdDate)
+      val book = allBooks.first()
+      assertThat(book.name).isEqualTo("book1")
+      assertThat(book.lastModifiedDate).isNotEqualTo(book.createdDate)
+      val media = mediaRepository.findById(book.id)
+      assertThat(media.status).isEqualTo(Media.Status.OUTDATED)
+    }
+
+    @Test
+    fun `given existing series when scanning and updated files have the same hash then books are not marked outdated`() {
+      // given
+      val library = makeLibrary()
+      libraryRepository.insert(library)
+
+      every { mockScanner.scanRootFolder(any()) }
+        .returnsMany(
+          mapOf(makeSeries(name = "series") to listOf(makeBook("book1"))).toScanResult(),
+          mapOf(makeSeries(name = "series") to listOf(makeBook("book1"))).toScanResult(),
+        )
+      libraryContentLifecycle.scanRootFolder(library)
+
+      bookRepository.findAll().first().let { book ->
+        bookRepository.update(book.copy(fileHash = "hashed"))
+        mediaRepository.update(mediaRepository.findById(book.id).copy(status = Media.Status.READY))
+      }
+
+      every { mockHasher.computeHash(any<Path>()) } returns "hashed"
+
+      // when
+      libraryContentLifecycle.scanRootFolder(library)
+
+      // then
+      val allSeries = seriesRepository.findAll()
+      val allBooks = bookRepository.findAll()
+
+      verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
+      verify(exactly = 1) { mockHasher.computeHash(any<Path>()) }
+
+      assertThat(allSeries).hasSize(1)
+      assertThat(allBooks).hasSize(1)
+      val book = allBooks.first()
+      assertThat(book.name).isEqualTo("book1")
+      assertThat(book.lastModifiedDate).isNotEqualTo(book.createdDate)
+      assertThat(book.fileHash).isEqualTo("hashed")
+      val media = mediaRepository.findById(book.id)
+      assertThat(media.status)
+        .isNotEqualTo(Media.Status.OUTDATED)
+        .isEqualTo(Media.Status.READY)
     }
 
     @Test
@@ -307,7 +353,7 @@ class LibraryContentLifecycleTest(
     }
 
     @Test
-    fun `given existing book with different last modified date when rescanning then media is marked as outdated and hash is reset`() {
+    fun `given existing book with different last modified date and hash when rescanning then media is marked as outdated and hash is reset`() {
       // given
       val library = makeLibrary()
       libraryRepository.insert(library)
@@ -334,11 +380,11 @@ class LibraryContentLifecycleTest(
       // then
       verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
       verify(exactly = 1) { mockAnalyzer.analyze(any(), any()) }
-      verify(exactly = 1) { mockHasher.computeHash(any<Path>()) }
+      verify(exactly = 2) { mockHasher.computeHash(any<Path>()) }
 
       bookRepository.findAll().first().let { book ->
         assertThat(book.lastModifiedDate).isNotEqualTo(book.createdDate)
-        assertThat(book.fileHash).isEmpty()
+        assertThat(book.fileHash).isEqualTo("def")
 
         mediaRepository.findById(book.id).let { media ->
           assertThat(media.status).isEqualTo(Media.Status.OUTDATED)

@@ -147,17 +147,30 @@ class LibraryContentLifecycle(
               existingBooks.find { it.url == newBook.url && it.deletedDate == null }?.let { existingBook ->
                 logger.debug { "Matched existing book: $existingBook" }
                 if (newBook.fileLastModified.notEquals(existingBook.fileLastModified)) {
-                  logger.info { "Book changed on disk, update and reset media status: $existingBook" }
-                  val updatedBook = existingBook.copy(
-                    fileLastModified = newBook.fileLastModified,
-                    fileSize = newBook.fileSize,
-                    fileHash = "",
-                  )
-                  transactionTemplate.executeWithoutResult {
-                    mediaRepository.findById(existingBook.id).let {
-                      mediaRepository.update(it.copy(status = Media.Status.OUTDATED))
-                    }
+                  val hash = if (existingBook.fileHash.isNotBlank()) {
+                    hasher.computeHash(newBook.path)
+                  } else null
+                  if (hash == existingBook.fileHash) {
+                    logger.info { "Book changed on disk, but still has the same hash, no need to reset media status: $existingBook" }
+                    val updatedBook = existingBook.copy(
+                      fileLastModified = newBook.fileLastModified,
+                      fileSize = newBook.fileSize,
+                      fileHash = hash,
+                    )
                     bookRepository.update(updatedBook)
+                  } else {
+                    logger.info { "Book changed on disk, update and reset media status: $existingBook" }
+                    val updatedBook = existingBook.copy(
+                      fileLastModified = newBook.fileLastModified,
+                      fileSize = newBook.fileSize,
+                      fileHash = hash ?: "",
+                    )
+                    transactionTemplate.executeWithoutResult {
+                      mediaRepository.findById(existingBook.id).let {
+                        mediaRepository.update(it.copy(status = Media.Status.OUTDATED))
+                      }
+                      bookRepository.update(updatedBook)
+                    }
                   }
                 }
               }
