@@ -152,6 +152,7 @@
     "file": "FICHIER",
     "format": "FORMAT",
     "isbn": "ISBN",
+    "links": "LIENS",
     "navigation_within_readlist": "Navigation dans la liste de lecture : {name}",
     "outdated_tooltip": "Le fichier de ce livre a été modifié, ce livre doit être analysé à nouveau",
     "read_book": "Lire le livre",
@@ -321,6 +322,7 @@
       "warning_html": "L'utilisateur <b>{name}</b> sera supprimé de ce serveur. Cette action <b>est irréversible</b>. Voulez-vous continuer ?"
     },
     "edit_books": {
+      "add_author_role_error_duplicate": "Rôle déjà existant",
       "authors_notice_multiple_edit": "Vous êtes en train de modifier les auteurs pour plusieurs livres. Cela écrasera les auteurs existants pour chacun des livres.",
       "button_cancel": "Annuler",
       "button_confirm": "Enregistrer les modifications",
@@ -328,6 +330,10 @@
       "dialog_title_single": "Modifier {book}",
       "field_isbn": "ISBN",
       "field_isbn_error": "Doit être un code ISBN 13 valide",
+      "field_link_label": "Texte",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "Doit être au format http ou https",
+      "field_link_url_error_url": "Doit être une URL valide",
       "field_number": "Numéro",
       "field_number_sort": "Numéro pour le tri",
       "field_number_sort_hint": "Vous pouvez utiliser des nombres décimaux",
@@ -338,6 +344,7 @@
       "field_title": "Titre",
       "tab_authors": "Auteurs",
       "tab_general": "Général",
+      "tab_links": "Liens",
       "tab_tags": "Étiquettes",
       "tags_notice_multiple_edit": "Vous êtes en train de modifier les étiquettes pour plusieurs livres. Cela écrasera les étiquettes existantes pour chacun des livres."
     },
@@ -356,6 +363,9 @@
       "button_next": "Suivant",
       "dialog_title_add": "Ajouter une bibliothèque",
       "dialot_title_edit": "Modifier la bibliothèque",
+      "field_analysis_analyze_dimensions": "Analyser les dimensions des pages",
+      "field_analysis_hash_files": "Calculer une empreinte pour les fichiers",
+      "field_analysis_hash_pages": "Calculer une empreinte pour les pages",
       "field_convert_to_cbz": "Convertir automatiquement en CBZ",
       "field_import_barcode_isbn": "Code-barres ISBN",
       "field_import_comicinfo_book": "Métadonnées du livre",
@@ -375,6 +385,7 @@
       "field_series_cover": "Couverture de la série",
       "file_browser_dialog_button_confirm": "Sélectionner",
       "file_browser_dialog_title": "Dossier racine de la bibliothèque",
+      "label_analysis": "Analyse",
       "label_file_management": "Gestion de fichiers",
       "label_import_barcode_isbn": "Importer l'ISBN des code-barres",
       "label_import_comicinfo": "Importer les métadonnées pour les fichiers CBR/CBZ contenant un fichier ComicInfo.xml",
@@ -385,7 +396,9 @@
       "label_series_cover": "Couverture de la série",
       "tab_general": "Général",
       "tab_metadata": "Métadonnées",
-      "tab_options": "Options"
+      "tab_options": "Options",
+      "tooltip_scanner_force_modified_time": "Activez si la bibliothèque est stockée sur Google Drive",
+      "tooltip_use_resources": "Peut utiliser un grand nombre de ressources avec de grandes bibliothèques ou un matériel lent"
     },
     "edit_readlist": {
       "button_cancel": "Annuler",
@@ -492,6 +505,7 @@
         "height": "Hauteur",
         "index": "Index",
         "media_type": "Type de média",
+        "size": "Taille",
         "width": "Largeur"
       },
       "title": "Détails du livre",
@@ -504,6 +518,12 @@
       "title": "Inspecter le livre",
       "title_comparison": "Comparaison du livre"
     }
+  },
+  "duplicates": {
+    "file_hash": "Empreinte du fichier",
+    "size": "Taille",
+    "title": "Fichiers en doublon",
+    "url": "URL"
   },
   "enums": {
     "copy_mode": {
@@ -568,6 +588,7 @@
   "filter": {
     "age_rating": "Âge minimal",
     "age_rating_none": "Aucun",
+    "complete": "Terminé",
     "genre": "Genre",
     "in_progress": "En cours",
     "language": "Langue",

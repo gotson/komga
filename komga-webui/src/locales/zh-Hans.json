@@ -363,6 +363,9 @@
       "button_next": "下一本",
       "dialog_title_add": "添加库",
       "dialot_title_edit": "编辑库",
+      "field_analysis_analyze_dimensions": "分析页面尺寸",
+      "field_analysis_hash_files": "计算文件哈希值",
+      "field_analysis_hash_pages": "计算页面哈希",
       "field_convert_to_cbz": "自动转换为CBZ格式",
       "field_import_barcode_isbn": "ISBN条行码",
       "field_import_comicinfo_book": "书籍元数据",
@@ -382,6 +385,7 @@
       "field_series_cover": "系列封面",
       "file_browser_dialog_button_confirm": "选择",
       "file_browser_dialog_title": "库的根文件夹",
+      "label_analysis": "分析",
       "label_file_management": "文件管理",
       "label_import_barcode_isbn": "从条形码中导入ISBN",
       "label_import_comicinfo": "导入含有ComicInfo.xml的CBR/CBZ压缩包",
@@ -392,7 +396,9 @@
       "label_series_cover": "系列封面",
       "tab_general": "常规",
       "tab_metadata": "元数据",
-      "tab_options": "选项"
+      "tab_options": "选项",
+      "tooltip_scanner_force_modified_time": "如果库在谷歌云盘上则启用",
+      "tooltip_use_resources": "大型库或老旧硬件上开启会消耗大量资源"
     },
     "edit_readlist": {
       "button_cancel": "取消",
@@ -499,6 +505,7 @@
         "height": "高",
         "index": "索引",
         "media_type": "媒体类型",
+        "size": "尺寸",
         "width": "宽"
       },
       "title": "书籍详情",
@@ -511,6 +518,12 @@
       "title": "查验书籍",
       "title_comparison": "书籍比较"
     }
+  },
+  "duplicates": {
+    "file_hash": "文件哈希值",
+    "size": "大小",
+    "title": "重复文件",
+    "url": "URL"
   },
   "enums": {
     "copy_mode": {
@@ -575,6 +588,7 @@
   "filter": {
     "age_rating": "年龄限制",
     "age_rating_none": "无",
+    "complete": "完结",
     "genre": "流派",
     "in_progress": "正在进行",
     "language": "语言",

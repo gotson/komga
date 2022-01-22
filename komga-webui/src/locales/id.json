@@ -128,6 +128,7 @@
       "cycle_scale": "Skala perputaran",
       "cycle_side_padding": "Padding sisi perputaran",
       "first_page": "Halaman pertama",
+      "fullscreen": "Masuk/keluar mode layar penuh",
       "last_page": "Halaman terakhir",
       "left_to_right": "Kiri ke Kanan",
       "menus": "Menu",
@@ -151,6 +152,7 @@
     "file": "BERKAS",
     "format": "FORMAT",
     "isbn": "ISBN",
+    "links": "LINK",
     "navigation_within_readlist": "Navigasi dalam daftar bacaan: {name}",
     "outdated_tooltip": "Berkas untuk buku ini telah diubah, buku ini perlu dianalisis ulang",
     "read_book": "Baca buku",
@@ -272,6 +274,15 @@
       "button_confirm": "Analisa",
       "title": "Analisa pustaka"
     },
+    "delete_book": {
+      "button_confirm": "Hapus",
+      "confirm_delete": "Ya, hapus buku \"{name}\" beserta filenya",
+      "confirm_delete_multiple": "Ya, hapus {count} buku beserta filenya",
+      "dialog_title": "Hapus Buku",
+      "dialog_title_multiple": "Hapus Buku",
+      "warning_html": "Buku <b>{name}</b> akan dihapus dari server ini bersama dengan file media yang disimpan. Tindakan ini <b>tidak dapat</b> dibatalkan. Lanjutkan?",
+      "warning_multiple_html": "{count} buku akan dihapus dari server ini bersama dengan file media yang disimpan. Tindakan ini <b>tidak dapat</b> dibatalkan. Lanjutkan?"
+    },
     "delete_collection": {
       "button_confirm": "Hapus",
       "confirm_delete": "Ya, hapus koleksi \"{name}\"",
@@ -296,6 +307,14 @@
       "warning_html": "Daftar baca <b>{name}</b> akan dihapus dari server ini. Berkas media Anda tidak akan terpengaruh. Ini <b>tidak dapat</b> diurungkan. Lanjutkan?",
       "warning_multiple_html": "{count} daftar baca akan dihapus dari server ini. Berkas media Anda tidak akan terpengaruh. Ini <b>tidak dapat</b> diurungkan. Lanjutkan?"
     },
+    "delete_series": {
+      "button_confirm": "Hapus",
+      "confirm_delete": "Ya, hapus seri \"{name}\" dan filenya",
+      "confirm_delete_multiple": "Ya, hapus {count} seri dan filenya",
+      "dialog_title": "Hapus Seri",
+      "warning_html": "Seri <b>{name}</b> akan dihapus dari server ini bersama dengan file media yang tersimpan. Tindakan ini <b> tidak dapat </b> dibatalkan. Lanjutkan?",
+      "warning_multiple_html": "{count} seri akan dihapus dari server ini bersama dengan file media yang disimpan. Tindakan ini <b>tidak dapat</b> dibatalkan. Lanjutkan?"
+    },
     "delete_user": {
       "button_confirm": "Hapus",
       "confirm_delete": "Ya, hapus pengguna \"{name}\"",
@@ -303,6 +322,7 @@
       "warning_html": "Pengguna <b>{name}</b> akan dihapus dari server ini. Ini <b>tidak dapat</b> diurungkan. Lanjutkan?"
     },
     "edit_books": {
+      "add_author_role_error_duplicate": "Sudah ada",
       "authors_notice_multiple_edit": "Anda sedang mengedit penulis untuk beberapa buku. Ini akan menimpa penulis yang ada dari setiap buku.",
       "button_cancel": "Batal",
       "button_confirm": "Simpan perubahan",
@@ -310,6 +330,10 @@
       "dialog_title_single": "Ubah {book}",
       "field_isbn": "ISBN",
       "field_isbn_error": "Harus memiliki ISBN 13 yang valid",
+      "field_link_label": "Label",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "Harus http atau https",
+      "field_link_url_error_url": "Harus URL yang valid",
       "field_number": "Nomor",
       "field_number_sort": "Nomor Urut",
       "field_number_sort_hint": "Anda dapat menggunakan angka desimal",
@@ -320,6 +344,7 @@
       "field_title": "Judul",
       "tab_authors": "Pengarang",
       "tab_general": "Umum",
+      "tab_links": "Link",
       "tab_tags": "Tag",
       "tags_notice_multiple_edit": "Anda sedang mengedit tag untuk beberapa buku. Ini akan menggantikan tag yang ada dari setiap buku."
     },
@@ -338,6 +363,9 @@
       "button_next": "Selanjutnya",
       "dialog_title_add": "Tambah Pustaka",
       "dialot_title_edit": "Edit Pustaka",
+      "field_analysis_analyze_dimensions": "Analisis dimensi halaman",
+      "field_analysis_hash_files": "Hitung hash untuk file",
+      "field_analysis_hash_pages": "Hitung hash untuk halaman",
       "field_convert_to_cbz": "Secara otomatis dikonversi ke CBZ",
       "field_import_barcode_isbn": "Barkode ISBN",
       "field_import_comicinfo_book": "Metadata buku",
@@ -357,6 +385,7 @@
       "field_series_cover": "Sampul seri",
       "file_browser_dialog_button_confirm": "Pilih",
       "file_browser_dialog_title": "Folder akar Pustaka",
+      "label_analysis": "Analisis",
       "label_file_management": "Manajemen berkas",
       "label_import_barcode_isbn": "Impor ISBN dalam barcode",
       "label_import_comicinfo": "Impor metadata untuk CBR/CBZ yang berisi berkas ComicInfo.xml",
@@ -367,7 +396,9 @@
       "label_series_cover": "Sampul seri",
       "tab_general": "Umum",
       "tab_metadata": "Metadata",
-      "tab_options": "Pilihan"
+      "tab_options": "Pilihan",
+      "tooltip_scanner_force_modified_time": "Aktifkan jika pustaka ada di Google Drive",
+      "tooltip_use_resources": "Dapat menghabiskan banyak sumber daya di pustaka yang besar atau perangkat keras yang lambat"
     },
     "edit_readlist": {
       "button_cancel": "Batal",
@@ -474,6 +505,7 @@
         "height": "Tinggi",
         "index": "Indeks",
         "media_type": "Tipe media",
+        "size": "Ukuran",
         "width": "Lebar"
       },
       "title": "Detail Buku",
@@ -486,6 +518,12 @@
       "title": "Periksa Buku",
       "title_comparison": "Perbandingan Buku"
     }
+  },
+  "duplicates": {
+    "file_hash": "File hash",
+    "size": "Ukuran",
+    "title": "File Duplikat",
+    "url": "URL"
   },
   "enums": {
     "copy_mode": {
@@ -550,6 +588,7 @@
   "filter": {
     "age_rating": "peringkat usia",
     "age_rating_none": "Tanpa rating",
+    "complete": "Selesai",
     "genre": "Genre",
     "in_progress": "Sedang Dibaca",
     "language": "Bahasa",

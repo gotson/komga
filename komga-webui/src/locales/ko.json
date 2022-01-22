@@ -270,17 +270,29 @@
     "analyze_library": {
       "body": "서재의 모든 미디어 파일을 분석합니다. 이 분석은 미디어에 대한 정보를 캡처합니다. 서재 크기에 따라 시간이 오래 걸릴 수 있습니다.",
       "button_confirm": "분석",
-      "title": "서재 분석하기"
+      "title": "서재 분석"
+    },
+    "delete_book": {
+      "button_confirm": "삭제",
+      "confirm_delete": "네, \"{name}\" 및 그 파일들을 삭제합니다",
+      "confirm_delete_multiple": "네, {count}권의 책 및 그 파일들을 삭제합니다",
+      "dialog_title": "책 삭제",
+      "dialog_title_multiple": "책 삭제",
+      "warning_html": "<b>{name}</b>은(는) 저장된 미디어 파일들과 함께 이 서버에서 제거될 것입니다. <b>이 작업은 돌이킬 수 없습니다.</b> 계속하시겠습니까?",
+      "warning_multiple_html": "{count}권의 책들은 저장된 미디어 파일들과 함께 이 서버에서 제거될 것입니다. <b>이 작업은 돌이킬 수 없습니다.</b> 계속하시겠습니까?"
     },
     "delete_collection": {
       "button_confirm": "삭제",
-      "confirm_delete": "예, 모음집 \"{name}\"을 삭제합니다",
+      "confirm_delete": "네, 모음집 \"{name}\"을 삭제합니다",
+      "confirm_delete_multiple": "네, {count}개의 모음집을 삭제합니다",
       "dialog_title": "모음집 삭제",
-      "warning_html": "모음집 <b>{name}</b> 이(가) 이 서버에서 제거됩니다. 미디어 파일은 영향을 받지 않습니다. <b>이 일은 되돌릴 수 없습니다.</b> 계속 하시겠습니까?"
+      "dialog_title_multiple": "모음집 삭제",
+      "warning_html": "모음집 <b>{name}</b> 이(가) 이 서버에서 제거됩니다. 미디어 파일은 영향을 받지 않습니다. <b>이 일은 되돌릴 수 없습니다.</b> 계속 하시겠습니까?",
+      "warning_multiple_html": "{count}개의 모음집이 이 서버에서 제거됩니다. 미디어 파일은 영향을 받지 않습니다. <b>이 작업은 돌이킬 수 없습니다.</b> 계속하시겠습니까?"
     },
     "delete_library": {
       "button_confirm": "삭제",
-      "confirm_delete": "네, 서재 \"{name}\" 를 삭제합니다",
+      "confirm_delete": "네, 서재 \"{name}\" 을(를) 삭제합니다",
       "title": "서재 삭제",
       "warning_html": "서재 <b>{name}</b> 이(가) 이 서버에서 제거됩니다. 미디어 파일은 영향을 받지 않습니다. <b>이 일은 되돌릴 수 없습니다.</b> 계속 하시겠습니까?"
     },

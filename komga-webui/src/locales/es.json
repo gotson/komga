@@ -23,7 +23,7 @@
   },
   "authentication_activity": {
     "datetime": "Fecha y Hora",
-    "email": "Correo",
+    "email": "Correo electrónico",
     "error": "Error",
     "ip": "IP",
     "source": "Fuente",

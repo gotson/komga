@@ -128,6 +128,7 @@
       "cycle_scale": "Ändern der Skalierung",
       "cycle_side_padding": "Seitenrand ändern",
       "first_page": "Erste Seite",
+      "fullscreen": "Vollbild an/aus",
       "last_page": "Letzte Seite",
       "left_to_right": "Von links nach rechts",
       "menus": "Menüs",
@@ -151,6 +152,7 @@
     "file": "DATEI",
     "format": "FORMAT",
     "isbn": "ISBN",
+    "links": "LINKS",
     "navigation_within_readlist": "Wechseln zur Leseliste: {name}",
     "outdated_tooltip": "Die Buchdatei hat sich geändert, das Buch muss analysiert werden",
     "read_book": "Lese Buch",
@@ -272,6 +274,15 @@
       "button_confirm": "Analysieren",
       "title": "Bibliothek analysieren"
     },
+    "delete_book": {
+      "button_confirm": "Löschen",
+      "confirm_delete": "Ja, lösche das Buch \"{name}\" und die dazugehörige Datei",
+      "confirm_delete_multiple": "Ja, lösche {count} Bücher und die dazugehörigen Dateien",
+      "dialog_title": "Buch löschen",
+      "dialog_title_multiple": "Bücher löschen",
+      "warning_html": "Das Buch <b>{name}</b> wird vom Server inklusive der gespeicherten Daten auf der Festplatte entfernt. Dies <b>kann nicht</b> rückgängig gemacht werden. Forfahren?",
+      "warning_multiple_html": "{count} Bücher werden vom Server inklusive der gespeicherten Daten auf der Festplatte entfernt. Dies <b>kann nicht</b> rückgängig gemacht werden. Forfahren?"
+    },
     "delete_collection": {
       "button_confirm": "Löschen",
       "confirm_delete": "Ja, die Sammlung „{name}“ löschen",
@@ -296,6 +307,14 @@
       "warning_html": "Die Leseliste <b>{name}</b> wird vom Server entfernt. Die physikalischen Dateien bleiben unverändert. Dies kann <b>NICHT</b> rückgängig gemacht werden. Fortfahren?",
       "warning_multiple_html": "{count} Leselisten werden von diesem Server entfernt. Ihre Mediendateien sind davon nicht betroffen. Dies <b>kann nicht</b> rückgängig gemacht werden. Fortsetzen?"
     },
+    "delete_series": {
+      "button_confirm": "Löschen",
+      "confirm_delete": "Ja, lösche die Serie \"{name}\" mit allen Dateien",
+      "confirm_delete_multiple": "Ja, lösche {count} Serien mit allen Dateien",
+      "dialog_title": "Lösche Serie",
+      "warning_html": "Die Serie <b>{name}</b> wird vom Server inklusive der gespeicherten Daten auf der Festplatte entfernt. Dies <b>kann nicht</b> rückgängig gemacht werden. Forfahren?",
+      "warning_multiple_html": "{count} Serien werden vom Server inklusive der gespeicherten Daten auf der Festplatte entfernt. Dies <b>kann nicht</b> rückgängig gemacht werden. Forfahren?"
+    },
     "delete_user": {
       "button_confirm": "Löschen",
       "confirm_delete": "Ja, den Benutzer „{name}“ löschen",
@@ -303,6 +322,7 @@
       "warning_html": "Der Benutzer <b>{name}</b> wird gelöscht. Dies kann <b>NICHT</b> rückgängig gemacht werden. Fortfahren?"
     },
     "edit_books": {
+      "add_author_role_error_duplicate": "Author existiert bereits",
       "authors_notice_multiple_edit": "Sie verändern mehrere Bücher. Dies wird die existierenden Einträge der Autoren jedes einzelnen Buches durch den neuen Eintrag ersetzen.",
       "button_cancel": "Abbrechen",
       "button_confirm": "Änderungen speichern",
@@ -310,6 +330,10 @@
       "dialog_title_single": "Bearbeite {book}",
       "field_isbn": "ISBN",
       "field_isbn_error": "Muss eine gültige ISBN 13 Nummer sein",
+      "field_link_label": "Label",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "Das Protokoll muss http oder https sein",
+      "field_link_url_error_url": "Keine valide URL",
       "field_number": "Nummer",
       "field_number_sort": "Reihenfolgennummer",
       "field_number_sort_hint": "Sie können Dezimalzahlen verwenden",
@@ -320,6 +344,7 @@
       "field_title": "Titel",
       "tab_authors": "Autoren",
       "tab_general": "Allgemein",
+      "tab_links": "Links",
       "tab_tags": "Stichwörter",
       "tags_notice_multiple_edit": "Sie verändern die Stichwörter von mehreren Büchern. Dies wird die existierenden Einträge der Stichwörter jedes einzelnen Buches durch den neuen Eintrag ersetzen."
     },
@@ -338,6 +363,9 @@
       "button_next": "Weiter",
       "dialog_title_add": "Bibliothek hinzufügen",
       "dialot_title_edit": "Bibliothek bearbeiten",
+      "field_analysis_analyze_dimensions": "Analysiere Seitenformat",
+      "field_analysis_hash_files": "Erzeuge einen Hash für Dateien",
+      "field_analysis_hash_pages": "Erzeuge einen Hash für Seiten",
       "field_convert_to_cbz": "Automatisch in CBZ konvertieren",
       "field_import_barcode_isbn": "ISBN Strichcode",
       "field_import_comicinfo_book": "Buch Metadaten",
@@ -357,6 +385,7 @@
       "field_series_cover": "Serien Titelbild",
       "file_browser_dialog_button_confirm": "Auswählen",
       "file_browser_dialog_title": "Bibliothekshauptverzeichnis",
+      "label_analysis": "Analysiere",
       "label_file_management": "Dateiverwaltung",
       "label_import_barcode_isbn": "Importieren Sie die ISBN aus einem Barcode",
       "label_import_comicinfo": "Importiere aus einer vorhandenen ComicInfo.xml Datei die Metadaten für CBR/CBZ",
@@ -367,7 +396,9 @@
       "label_series_cover": "Serien Titelbild",
       "tab_general": "Allgemein",
       "tab_metadata": "Metadaten",
-      "tab_options": "Optionen"
+      "tab_options": "Optionen",
+      "tooltip_scanner_force_modified_time": "Einschalten, wenn es sich um eine Bibliothek auf Google Drive handelt",
+      "tooltip_use_resources": "Diese Option kann bei großen Bibliotheken oder langsamer Hardware lange benötigen und viele Ressourcen belegen"
     },
     "edit_readlist": {
       "button_cancel": "Abbrechen",
@@ -474,6 +505,7 @@
         "height": "Höhe",
         "index": "Index",
         "media_type": "Medientyp",
+        "size": "Größe",
         "width": "Breite"
       },
       "title": "Buchdetail",
@@ -486,6 +518,12 @@
       "title": "Buch inspizieren",
       "title_comparison": "Buchvergleich"
     }
+  },
+  "duplicates": {
+    "file_hash": "Datei Hash",
+    "size": "Größe",
+    "title": "Doppelte Datei",
+    "url": "URL"
   },
   "enums": {
     "copy_mode": {
@@ -550,6 +588,7 @@
   "filter": {
     "age_rating": "Altersfreigabe",
     "age_rating_none": "Keine",
+    "complete": "Fertig",
     "genre": "Genre",
     "in_progress": "In Bearbeitung",
     "language": "Sprache",

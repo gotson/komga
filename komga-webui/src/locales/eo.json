@@ -272,6 +272,13 @@
       "button_confirm": "Analizi",
       "title": "Analizi bibliotekon"
     },
+    "delete_book": {
+      "button_confirm": "Forigi",
+      "confirm_delete": "Jes, forigu la libron «{name}» kaj ĝiajn dosierojn",
+      "confirm_delete_multiple": "Jes, forigu {count} librojn kaj iliajn dosierojn",
+      "dialog_title": "Forigi Libron",
+      "dialog_title_multiple": "Forigi Librojn"
+    },
     "delete_collection": {
       "button_confirm": "Forigi",
       "confirm_delete": "Jes, forigu la kolekton «{name}»",
@@ -296,6 +303,12 @@
       "warning_html": "La legolisto <b>{name}</b> estas forigota de ĉi tiu servilo. Viaj dosieroj ne ŝanĝiĝos. Tio <b>ne</b> esteas malfarebla. Ĉu daŭrigi?",
       "warning_multiple_html": "{count} legolistoj estas forigotaj de ĉi tiu servilo. Viaj dosieroj ne ŝanĝiĝos. Tio <b>ne</b> esteas malfarebla. Ĉu daŭrigi?"
     },
+    "delete_series": {
+      "button_confirm": "Forigi",
+      "confirm_delete": "Jes, forigu la serion «{name}» kaj ĝiajn dosierojn",
+      "confirm_delete_multiple": "Jes, forigu {count} seriojn kaj iliajn dosierojn",
+      "dialog_title": "Forigi Serion"
+    },
     "delete_user": {
       "button_confirm": "Forigi",
       "confirm_delete": "Jes, forigu la uzanton «{name}»",
@@ -303,6 +316,7 @@
       "warning_html": "La uzanto <b>{name}</b> estas forigota de ĉi tiu servilo. Tio <b>ne</b> esteas malfarebla. Ĉu daŭrigi?"
     },
     "edit_books": {
+      "add_author_role_error_duplicate": "Jam ekzistas",
       "authors_notice_multiple_edit": "Vi redaktas aŭtorojn de pluraj libroj. Tio ŝanĝos la aŭtorojn de ĉiu el tiuj libroj.",
       "button_cancel": "Nuligi",
       "button_confirm": "Konservi ŝanĝojn",
@@ -310,6 +324,8 @@
       "dialog_title_single": "Redakti libron {book}",
       "field_isbn": "ISBN",
       "field_isbn_error": "Devas esti valida ISBN-13",
+      "field_link_label": "Etikedo",
+      "field_link_url_error_protocol": "Devas esti per HTTP aŭ HTTPS",
       "field_number": "Numero",
       "field_number_sort": "Ordiga Numero",
       "field_number_sort_hint": "Vi povas uzi decimalojn",
@@ -357,6 +373,7 @@
       "field_series_cover": "Kovrilo de serio",
       "file_browser_dialog_button_confirm": "Elekti",
       "file_browser_dialog_title": "La radika dosierujo de biblioteko",
+      "label_analysis": "Analizo",
       "label_file_management": "Dosieradministrado",
       "label_import_barcode_isbn": "Enporti ISBN el strikodo",
       "label_import_comicinfo": "Enporti metadatenojn el CBR/CBZ-dosiero enhavanta dosieron ComicsInfo.xml",
@@ -474,6 +491,7 @@
         "height": "Alto",
         "index": "Indekso",
         "media_type": "Tipo",
+        "size": "Grando",
         "width": "Larĝo"
       },
       "title": "Detaloj pri Libro",
@@ -486,6 +504,9 @@
       "title": "Inspekti Libron",
       "title_comparison": "Komparo inter Libroj"
     }
+  },
+  "duplicates": {
+    "size": "Grando"
   },
   "enums": {
     "copy_mode": {
@@ -550,6 +571,7 @@
   "filter": {
     "age_rating": "aĝolimo",
     "age_rating_none": "Nenio",
+    "complete": "Kompleta",
     "genre": "ĝenro",
     "in_progress": "En progreso",
     "language": "lingvo",
