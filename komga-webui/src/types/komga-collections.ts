@@ -19,3 +19,10 @@ interface CollectionUpdateDto {
   ordered?: boolean,
   seriesIds?: string[]
 }
+
+interface CollectionThumbnailDto {
+  id: string,
+  collectionId: string,
+  type: string,
+  selected: boolean
+}

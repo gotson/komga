@@ -407,7 +407,7 @@ class SeriesController(
     seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     thumbnailsSeriesRepository.findByIdOrNull(thumbnailId)?.let {
       thumbnailsSeriesRepository.markSelected(it)
-      eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesAdded(it))
+      eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesAdded(it.copy(selected = true)))
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 

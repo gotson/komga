@@ -111,4 +111,55 @@ export default class KomgaCollectionsService {
       throw new Error(msg)
     }
   }
+
+  async getThumbnails(collectionId: string): Promise<CollectionThumbnailDto[]> {
+    try {
+      return (await this.http.get(`${API_COLLECTIONS}/${collectionId}/thumbnails`)).data
+    } catch (e) {
+      let msg = `An error occurred while trying to retrieve thumbnails for series '${collectionId}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async uploadThumbnail(collecitonId: string, file: File, selected: boolean) {
+    try {
+      const body = new FormData()
+      body.append('file', file)
+      body.append('selected', `${selected}`)
+      await this.http.post(`${API_COLLECTIONS}/${collecitonId}/thumbnails`, body)
+    } catch (e) {
+      let msg = `An error occurred while trying to upload thumbnail for series '${collecitonId}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async deleteThumbnail(collectionId: string, thumbnailId: string) {
+    try {
+      await this.http.delete(`${API_COLLECTIONS}/${collectionId}/thumbnails/${thumbnailId}`)
+    } catch (e) {
+      let msg = `An error occurred while trying to delete thumbnail for series '${collectionId}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async markThumbnailAsSelected(collectionId: string, thumbnailId: string) {
+    try {
+      await this.http.put(`${API_COLLECTIONS}/${collectionId}/thumbnails/${thumbnailId}/selected`)
+    } catch (e) {
+      let msg = `An error occurred while trying to mark thumbnail as selected for series '${collectionId}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
 }

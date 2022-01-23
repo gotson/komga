@@ -274,15 +274,17 @@ class SeriesLifecycle(
     }
     thumbnailsSeriesRepository.insert(thumbnail.copy(selected = false))
 
-    if (markSelected == MarkSelectedPreference.YES ||
-      (
-        markSelected == MarkSelectedPreference.IF_NONE_OR_GENERATED &&
-          thumbnailsSeriesRepository.findSelectedBySeriesIdOrNull(thumbnail.seriesId) == null
-        )
-    ) {
-      thumbnailsSeriesRepository.markSelected(thumbnail)
-      eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesAdded(thumbnail))
+    val selected = when (markSelected) {
+      MarkSelectedPreference.YES -> true
+      MarkSelectedPreference.IF_NONE_OR_GENERATED -> {
+        thumbnailsSeriesRepository.findSelectedBySeriesIdOrNull(thumbnail.seriesId) == null
+      }
+      MarkSelectedPreference.NO -> false
     }
+
+    if (selected) thumbnailsSeriesRepository.markSelected(thumbnail)
+
+    eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesAdded(thumbnail.copy(selected = selected)))
   }
 
   fun deleteThumbnailForSeries(thumbnail: ThumbnailSeries) {

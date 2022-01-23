@@ -12,15 +12,19 @@ const urls = {
 
 export default urls
 
-export function bookThumbnailUrl (bookId: string): string {
+export function bookThumbnailUrl(bookId: string): string {
   return `${urls.originNoSlash}/api/v1/books/${bookId}/thumbnail`
 }
 
-export function bookFileUrl (bookId: string): string {
+export function bookThumbnailUrlByThumbnailId(bookId: string, thumbnailId: string) {
+  return `${urls.originNoSlash}/api/v1/books/${bookId}/thumbnails/${thumbnailId}`
+}
+
+export function bookFileUrl(bookId: string): string {
   return `${urls.originNoSlash}/api/v1/books/${bookId}/file`
 }
 
-export function bookPageUrl (bookId: string, page: number, convertTo?: string): string {
+export function bookPageUrl(bookId: string, page: number, convertTo?: string): string {
   let url = `${urls.originNoSlash}/api/v1/books/${bookId}/pages/${page}`
   if (convertTo) {
     url += `?convert=${convertTo}`
@@ -28,15 +32,15 @@ export function bookPageUrl (bookId: string, page: number, convertTo?: string): 
   return url
 }
 
-export function bookPageThumbnailUrl (bookId: string, page: number): string {
+export function bookPageThumbnailUrl(bookId: string, page: number): string {
   return `${urls.originNoSlash}/api/v1/books/${bookId}/pages/${page}/thumbnail`
 }
 
-export function seriesFileUrl (seriesId: string): string {
+export function seriesFileUrl(seriesId: string): string {
   return `${urls.originNoSlash}/api/v1/series/${seriesId}/file`
 }
 
-export function seriesThumbnailUrl (seriesId: string): string {
+export function seriesThumbnailUrl(seriesId: string): string {
   return `${urls.originNoSlash}/api/v1/series/${seriesId}/thumbnail`
 }
 
@@ -44,18 +48,26 @@ export function seriesThumbnailUrlByThumbnailId(seriesId: string, thumbnailId: s
   return `${urls.originNoSlash}/api/v1/series/${seriesId}/thumbnails/${thumbnailId}`
 }
 
-export function collectionThumbnailUrl (collectionId: string): string {
+export function collectionThumbnailUrl(collectionId: string): string {
   return `${urls.originNoSlash}/api/v1/collections/${collectionId}/thumbnail`
 }
 
-export function readListThumbnailUrl (readListId: string): string {
+export function collectionUrlByThumbnailId(collectionId: string, thumbnailId: string) {
+  return `${urls.originNoSlash}/api/v1/collections/${collectionId}/thumbnails/${thumbnailId}`
+}
+
+export function readListThumbnailUrl(readListId: string): string {
   return `${urls.originNoSlash}/api/v1/readlists/${readListId}/thumbnail`
 }
 
-export function readListFileUrl (readListId: string): string {
+export function readListFileUrl(readListId: string): string {
   return `${urls.originNoSlash}/api/v1/readlists/${readListId}/file`
 }
 
-export function transientBookPageUrl (transientBookId: string, page: number): string {
+export function readListUrlByThumbnailId(readListId: string, thumbnailId: string) {
+  return `${urls.originNoSlash}/api/v1/readlists/${readListId}/thumbnails/${thumbnailId}`
+}
+
+export function transientBookPageUrl(transientBookId: string, page: number): string {
   return `${urls.originNoSlash}/api/v1/transient-books/${transientBookId}/pages/${page}`
 }

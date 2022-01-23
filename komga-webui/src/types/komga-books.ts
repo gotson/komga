@@ -134,3 +134,10 @@ export interface BookImportDto {
   upgradeBookId?: string,
   destinationName?: string,
 }
+
+export interface BookThumbnailDto {
+  id: string,
+  bookId: string,
+  type: string,
+  selected: boolean
+}

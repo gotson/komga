@@ -129,8 +129,18 @@ import {RawLocation} from 'vue-router'
 import ReadListActionsMenu from '@/components/menus/ReadListActionsMenu.vue'
 import {BookDto} from '@/types/komga-books'
 import {SeriesDto} from '@/types/komga-series'
-import {THUMBNAILBOOK_ADDED, THUMBNAILSERIES_ADDED} from '@/types/events'
-import {ThumbnailBookSseDto, ThumbnailSeriesSseDto} from '@/types/komga-sse'
+import {
+  THUMBNAILBOOK_ADDED, THUMBNAILBOOK_DELETED,
+  THUMBNAILCOLLECTION_ADDED, THUMBNAILCOLLECTION_DELETED,
+  THUMBNAILREADLIST_ADDED, THUMBNAILREADLIST_DELETED,
+  THUMBNAILSERIES_ADDED, THUMBNAILSERIES_DELETED,
+} from '@/types/events'
+import {
+  ThumbnailBookSseDto,
+  ThumbnailCollectionSseDto,
+  ThumbnailReadListSseDto,
+  ThumbnailSeriesSseDto,
+} from '@/types/komga-sse'
 import {coverBase64} from '@/types/image'
 
 export default Vue.extend({
@@ -194,12 +204,30 @@ export default Vue.extend({
     }
   },
   created() {
-    this.$eventHub.$on(THUMBNAILBOOK_ADDED, this.thumbnailBookAdded)
-    this.$eventHub.$on(THUMBNAILSERIES_ADDED, this.thumbnailSeriesAdded)
+    this.$eventHub.$on(THUMBNAILBOOK_ADDED, this.thumbnailBookChanged)
+    this.$eventHub.$on(THUMBNAILBOOK_DELETED, this.thumbnailBookChanged)
+
+    this.$eventHub.$on(THUMBNAILSERIES_ADDED, this.thumbnailSeriesChanged)
+    this.$eventHub.$on(THUMBNAILSERIES_DELETED, this.thumbnailSeriesChanged)
+
+    this.$eventHub.$on(THUMBNAILREADLIST_ADDED, this.thumbnailReadListChanged)
+    this.$eventHub.$on(THUMBNAILREADLIST_DELETED, this.thumbnailReadListChanged)
+
+    this.$eventHub.$on(THUMBNAILCOLLECTION_ADDED, this.thumbnailCollectionChanged)
+    this.$eventHub.$on(THUMBNAILCOLLECTION_DELETED, this.thumbnailCollectionChanged)
   },
   beforeDestroy() {
-    this.$eventHub.$off(THUMBNAILBOOK_ADDED, this.thumbnailBookAdded)
-    this.$eventHub.$off(THUMBNAILSERIES_ADDED, this.thumbnailSeriesAdded)
+    this.$eventHub.$off(THUMBNAILBOOK_ADDED, this.thumbnailBookChanged)
+    this.$eventHub.$off(THUMBNAILBOOK_DELETED, this.thumbnailBookChanged)
+
+    this.$eventHub.$off(THUMBNAILSERIES_ADDED, this.thumbnailSeriesChanged)
+    this.$eventHub.$off(THUMBNAILSERIES_DELETED, this.thumbnailSeriesChanged)
+
+    this.$eventHub.$off(THUMBNAILREADLIST_ADDED, this.thumbnailReadListChanged)
+    this.$eventHub.$off(THUMBNAILREADLIST_DELETED, this.thumbnailReadListChanged)
+
+    this.$eventHub.$off(THUMBNAILCOLLECTION_ADDED, this.thumbnailCollectionChanged)
+    this.$eventHub.$off(THUMBNAILCOLLECTION_DELETED, this.thumbnailCollectionChanged)
   },
   computed: {
     canReadPages(): boolean {
@@ -259,15 +287,25 @@ export default Vue.extend({
     },
   },
   methods: {
-    thumbnailBookAdded(event: ThumbnailBookSseDto) {
-      if (this.thumbnailError &&
-        ((this.computedItem.type() === ItemTypes.BOOK && event.bookId === this.item.id) || (this.computedItem.type() === ItemTypes.SERIES && event.seriesId === this.item.id))
+    thumbnailBookChanged(event: ThumbnailBookSseDto) {
+      if (event.selected && (this.computedItem.type() === ItemTypes.BOOK && event.bookId === this.item.id)
+        || (this.computedItem.type() === ItemTypes.SERIES && event.seriesId === this.item.id)
       ) {
         this.thumbnailCacheBust = '?' + this.$_.random(1000)
       }
     },
-    thumbnailSeriesAdded(event: ThumbnailSeriesSseDto) {
-      if (this.computedItem.type() === ItemTypes.SERIES && event.seriesId === this.item.id) {
+    thumbnailSeriesChanged(event: ThumbnailSeriesSseDto) {
+      if (event.selected && this.computedItem.type() === ItemTypes.SERIES && event.seriesId === this.item.id) {
+        this.thumbnailCacheBust = '?' + this.$_.random(1000)
+      }
+    },
+    thumbnailReadListChanged(event: ThumbnailReadListSseDto) {
+      if (event.selected && this.computedItem.type() === ItemTypes.READLIST && event.readListId === this.item.id) {
+        this.thumbnailCacheBust = '?' + this.$_.random(1000)
+      }
+    },
+    thumbnailCollectionChanged(event: ThumbnailCollectionSseDto) {
+      if (event.selected && this.computedItem.type() === ItemTypes.COLLECTION && event.collectionId === this.item.id) {
         this.thumbnailCacheBust = '?' + this.$_.random(1000)
       }
     },

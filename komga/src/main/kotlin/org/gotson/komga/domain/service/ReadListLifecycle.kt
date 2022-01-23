@@ -92,7 +92,7 @@ class ReadListLifecycle(
 
   fun markSelectedThumbnail(thumbnail: ThumbnailReadList) {
     thumbnailReadListRepository.markSelected(thumbnail)
-    eventPublisher.publishEvent(DomainEvent.ThumbnailReadListAdded(thumbnail))
+    eventPublisher.publishEvent(DomainEvent.ThumbnailReadListAdded(thumbnail.copy(selected = true)))
   }
 
   fun deleteThumbnail(thumbnail: ThumbnailReadList) {

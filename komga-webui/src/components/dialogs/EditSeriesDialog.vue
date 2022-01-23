@@ -737,6 +737,9 @@ export default Vue.extend({
       } else if (item instanceof File) {
         this.poster.selectedThumbnail = item.name
       } else {
+        const index = this.poster.deleteQueue.indexOf(item, 0)
+        if (index > -1) this.poster.deleteQueue.splice(index, 1)
+
         this.poster.selectedThumbnail = item.id
       }
     },
@@ -765,6 +768,7 @@ export default Vue.extend({
           }
         } else {
           this.poster.deleteQueue.push(item)
+          if (item.id === this.poster.selectedThumbnail) this.poster.selectedThumbnail = ''
         }
       }
     },
