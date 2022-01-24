@@ -58,8 +58,8 @@ import Vue from 'vue'
 import {SeriesThumbnailDto} from '@/types/komga-series'
 import {
   bookThumbnailUrlByThumbnailId,
-  collectionUrlByThumbnailId,
-  readListUrlByThumbnailId,
+  collectionThumbnailUrlByThumbnailId,
+  readListThumbnailUrlByThumbnailId,
   seriesThumbnailUrlByThumbnailId,
 } from '@/functions/urls'
 import {BookThumbnailDto} from '@/types/komga-books'
@@ -136,9 +136,9 @@ export default Vue.extend({
       } else if ('bookId' in item) {
         return bookThumbnailUrlByThumbnailId(item.bookId, item.id)
       } else if ('readListId' in item) {
-        return readListUrlByThumbnailId(item.readListId, item.id)
+        return readListThumbnailUrlByThumbnailId(item.readListId, item.id)
       } else if ('collectionId' in item) {
-        return collectionUrlByThumbnailId(item.collectionId, item.id)
+        return collectionThumbnailUrlByThumbnailId(item.collectionId, item.id)
       } else {
         throw new Error('The given item type is not known!')
       }

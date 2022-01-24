@@ -52,7 +52,7 @@ export function collectionThumbnailUrl(collectionId: string): string {
   return `${urls.originNoSlash}/api/v1/collections/${collectionId}/thumbnail`
 }
 
-export function collectionUrlByThumbnailId(collectionId: string, thumbnailId: string) {
+export function collectionThumbnailUrlByThumbnailId(collectionId: string, thumbnailId: string) {
   return `${urls.originNoSlash}/api/v1/collections/${collectionId}/thumbnails/${thumbnailId}`
 }
 
@@ -64,7 +64,7 @@ export function readListFileUrl(readListId: string): string {
   return `${urls.originNoSlash}/api/v1/readlists/${readListId}/file`
 }
 
-export function readListUrlByThumbnailId(readListId: string, thumbnailId: string) {
+export function readListThumbnailUrlByThumbnailId(readListId: string, thumbnailId: string) {
   return `${urls.originNoSlash}/api/v1/readlists/${readListId}/thumbnails/${thumbnailId}`
 }
 
