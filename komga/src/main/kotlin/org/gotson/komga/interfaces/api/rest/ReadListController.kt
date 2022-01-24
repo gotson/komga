@@ -8,8 +8,10 @@ import mu.KotlinLogging
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
 import org.apache.commons.io.IOUtils
+import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
+import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ROLE_ADMIN
@@ -86,6 +88,7 @@ class ReadListController(
   private val thumbnailReadListRepository: ThumbnailReadListRepository,
   private val contentDetector: ContentDetector,
   private val bookLifecycle: BookLifecycle,
+  private val eventPublisher: EventPublisher,
 ) {
 
   @PageableWithoutSortAsQueryParam
@@ -217,6 +220,7 @@ class ReadListController(
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
       thumbnailReadListRepository.findByIdOrNull(thumbnailId)?.let {
         readListLifecycle.markSelectedThumbnail(it)
+        eventPublisher.publishEvent(DomainEvent.ThumbnailReadListAdded(it.copy(selected = true)))
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
