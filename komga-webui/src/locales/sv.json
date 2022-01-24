@@ -128,6 +128,7 @@
       "cycle_scale": "Växla skala",
       "cycle_side_padding": "Växla sidofyllning",
       "first_page": "Första sidan",
+      "fullscreen": "Öppna/avsluta helskärm",
       "last_page": "Sista sidan",
       "left_to_right": "Vänster till höger",
       "menus": "Menyer",
@@ -151,6 +152,7 @@
     "file": "FIL",
     "format": "FORMAT",
     "isbn": "ISBN",
+    "links": "LÄNKAR",
     "navigation_within_readlist": "Navigering inom läslistan: {name}",
     "outdated_tooltip": "Filen för den här boken har ändrats, boken måste analyseras om",
     "read_book": "Läs bok",
@@ -272,6 +274,15 @@
       "button_confirm": "Analysera",
       "title": "Analysera biblioteket"
     },
+    "delete_book": {
+      "button_confirm": "Ta bort",
+      "confirm_delete": "Ja, radera boken \"{name}\" och dess filer",
+      "confirm_delete_multiple": "Ja, ta bort {count} böcker och deras filer",
+      "dialog_title": "Ta bort bok",
+      "dialog_title_multiple": "Ta bort böcker",
+      "warning_html": "Boken <b>{name}</b> kommer att tas bort från denna server tillsammans med lagrade mediefiler. Detta <b> kan inte</b> ångras. Fortsätta?",
+      "warning_multiple_html": "{count} böcker kommer att tas bort från den här servern tillsammans med lagrade mediefiler. Detta <b> kan inte</b> ångras. Fortsätta?"
+    },
     "delete_collection": {
       "button_confirm": "Radera",
       "confirm_delete": "Ja, radera samlingen ”{name}”",
@@ -296,6 +307,14 @@
       "warning_html": "Läslistan <b>{name}</b> tas bort från den här servern. Dina mediefiler påverkas inte. Detta <b>kan inte</b> ångras. Fortsätta?",
       "warning_multiple_html": "{count} läslistor kommer att tas bort från denna server. Dina mediefiler påverkas inte. Denna <b> kan inte </b> ångras. Fortsätta?"
     },
+    "delete_series": {
+      "button_confirm": "Ta bort",
+      "confirm_delete": "Ja, radera serien \"{name}\" och dess filer",
+      "confirm_delete_multiple": "Ja, radera {count} serier och deras filer",
+      "dialog_title": "Ta bort serier",
+      "warning_html": "Serien <b>{name}</b> kommer att tas bort från den här servern tillsammans med lagrade mediefiler. Detta <b>kan inte</b> ångras. Fortsätta?",
+      "warning_multiple_html": "{count} serier kommer att tas bort från den här servern tillsammans med lagrade mediefiler. Detta <b> kan inte</b> ångras. Fortsätta?"
+    },
     "delete_user": {
       "button_confirm": "Radera",
       "confirm_delete": "Ja, radera användare ”{name}”",
@@ -303,6 +322,7 @@
       "warning_html": "Användaren <b>{name}</b> kommer att tas bort från den här servern. Detta <b>kan inte</b> ångras. Fortsätta?"
     },
     "edit_books": {
+      "add_author_role_error_duplicate": "Finns redan",
       "authors_notice_multiple_edit": "Du redigerar författare för flera böcker. Detta kommer att skriva över befintliga författare till varje bok.",
       "button_cancel": "Avbryt",
       "button_confirm": "Spara ändringar",
@@ -310,6 +330,10 @@
       "dialog_title_single": "Redigera {book}",
       "field_isbn": "ISBN",
       "field_isbn_error": "Måste vara ett giltigt ISBN 13",
+      "field_link_label": "Etikett",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "Måste vara http eller https",
+      "field_link_url_error_url": "Måste vara en giltig URL",
       "field_number": "Nummer",
       "field_number_sort": "Sorteringsnummer",
       "field_number_sort_hint": "Du kan använda decimaltal",
@@ -320,6 +344,7 @@
       "field_title": "Titel",
       "tab_authors": "Författare",
       "tab_general": "Allmänt",
+      "tab_links": "Länkar",
       "tab_tags": "Taggar",
       "tags_notice_multiple_edit": "Du redigerar taggar för flera böcker. Detta skriver över befintliga taggar i varje bok."
     },
@@ -338,6 +363,9 @@
       "button_next": "Nästa",
       "dialog_title_add": "Lägg till bibliotek",
       "dialot_title_edit": "Lägg till bibliotek",
+      "field_analysis_analyze_dimensions": "Analysera sidornas dimensioner",
+      "field_analysis_hash_files": "Beräkna hash för filer",
+      "field_analysis_hash_pages": "Beräkna hash för sidor",
       "field_convert_to_cbz": "Konvertera automatiskt till CBZ",
       "field_import_barcode_isbn": "ISBN streckkod",
       "field_import_comicinfo_book": "Bok metadata",
@@ -357,6 +385,7 @@
       "field_series_cover": "Serieomslag",
       "file_browser_dialog_button_confirm": "Välj",
       "file_browser_dialog_title": "Bibliotekets rotkatalog",
+      "label_analysis": "Analys",
       "label_file_management": "Filhantering",
       "label_import_barcode_isbn": "Importera ISBN streckkod",
       "label_import_comicinfo": "Importera metadata för CBR/CBZ som innehåller en ComicInfo.xml-fil",
@@ -367,7 +396,9 @@
       "label_series_cover": "Serieomslag",
       "tab_general": "Allmänt",
       "tab_metadata": "Metadata",
-      "tab_options": "Alternativ"
+      "tab_options": "Alternativ",
+      "tooltip_scanner_force_modified_time": "Aktivera om biblioteket finns på en Google Drive",
+      "tooltip_use_resources": "Kan ta mycket resurser i anspråk på stora bibliotek eller långsam hårdvara"
     },
     "edit_readlist": {
       "button_cancel": "Avbryt",
@@ -474,6 +505,7 @@
         "height": "Höjd",
         "index": "Index",
         "media_type": "Mediatyp",
+        "size": "Storlek",
         "width": "Bredd"
       },
       "title": "Bokinformation",
@@ -486,6 +518,12 @@
       "title": "Inspektera boken",
       "title_comparison": "Bokjämförelse"
     }
+  },
+  "duplicates": {
+    "file_hash": "Filhash",
+    "size": "Storlek",
+    "title": "Duplicera filer",
+    "url": "URL"
   },
   "enums": {
     "copy_mode": {
@@ -550,6 +588,7 @@
   "filter": {
     "age_rating": "åldersgräns",
     "age_rating_none": "Ingen",
+    "complete": "Komplett",
     "genre": "genre",
     "in_progress": "Pågående",
     "language": "språk",

@@ -4,7 +4,8 @@
       "pageText": "{0}-{1} av {2}"
     },
     "dataIterator": {
-      "loadingText": "Laster inn elementer …"
+      "loadingText": "Laster inn elementer …",
+      "noResultsText": "Fant ingen samsvarende oppføringer"
     },
     "dataTable": {
       "itemsPerPageText": "Rader per side:",
@@ -24,6 +25,7 @@
     "email": "E-post",
     "error": "Feil",
     "ip": "IP",
+    "source": "Kilde",
     "success": "Vellykket",
     "user_agent": "Brukeragent"
   },
@@ -34,6 +36,7 @@
     "inker": "tusjere",
     "letterer": "settere",
     "penciller": "tegnere",
+    "translator": "oversettere",
     "writer": "skribenter"
   },
   "book_card": {
@@ -46,6 +49,7 @@
     "button_scan": "Skann",
     "button_select_series": "Velg serie",
     "field_import_path": "Importer fra mappe",
+    "no_files_found": "Fant ingen filer",
     "notification": {
       "go_to_book": "Gå til boken",
       "import_failure": "Kunne ikke importere bok: {file}",
@@ -53,7 +57,9 @@
       "source_file": "Kildefil: {file}"
     },
     "row": {
+      "error_analyze_first": "Boken må analyseres først",
       "error_choose_series": "Velg en serie",
+      "error_only_import_no_errors": "Kan kun importere bøker uten feil",
       "warning_upgrade": "Eksisterende bok vil bli oppgradert"
     },
     "table": {
@@ -62,7 +68,8 @@
       "number": "Nummer",
       "series": "Serie"
     },
-    "title": "Importer"
+    "title": "Importer",
+    "try_another_directory": "Prøv å søke i en annen mappe"
   },
   "bookreader": {
     "beginning_of_book": "Du er på begynnelsen av boka.",
@@ -91,10 +98,12 @@
       "width": "Tilpass til bredden"
     },
     "settings": {
+      "always_fullscreen": "Alltid fullskjermsvisning",
       "animate_page_transitions": "Animer sideoverganger",
       "background_color": "Bakgrunnsfarge",
       "background_colors": {
         "black": "Svart",
+        "gray": "Grå",
         "white": "Hvit"
       },
       "display": "Visning",
@@ -198,6 +207,8 @@
     "recently_updated_series": "Nylig oppdaterte serier"
   },
   "data_import": {
+    "imported_as": "Importer som «{name}»",
+    "size_limit": "Filstørrelse må være mindre enn {size} MB",
     "tab_title": "Dataimport"
   },
   "dialog": {
@@ -233,6 +244,9 @@
       "button_confirm": "Analyser",
       "title": "Analyser bibliotek"
     },
+    "delete_book": {
+      "dialog_title_multiple": "Slett bøker"
+    },
     "delete_collection": {
       "button_confirm": "Slett",
       "confirm_delete": "Ja, slett samlingen ved navn «{name}»",
@@ -262,6 +276,7 @@
       "warning_html": "Brukeren <b>{name}</b> vil bli fjernet fra tjeneren. Dette kan <b>ikke</b> angres. Fortsett?"
     },
     "edit_books": {
+      "add_author_role_error_duplicate": "Finnes allerede",
       "authors_notice_multiple_edit": "Du redigerer forfattere for flere bøker. Dette vil overskrive eksisterende forfattere for hver bok.",
       "button_cancel": "Avbryt",
       "button_confirm": "Lagre endringer",
@@ -269,6 +284,9 @@
       "dialog_title_single": "Rediger {book}",
       "field_isbn": "ISBN",
       "field_isbn_error": "Må være en gyldig trettensifret ISBN",
+      "field_link_url": "Nettadresse",
+      "field_link_url_error_protocol": "Må være HTTP eller HTTPS",
+      "field_link_url_error_url": "Må være en gyldig nettadresse",
       "field_number": "Nummer",
       "field_number_sort": "Sorteringsnummer",
       "field_number_sort_hint": "Du kan bruke desimaltall",
@@ -279,6 +297,7 @@
       "field_title": "Tittel",
       "tab_authors": "Forfattere",
       "tab_general": "Generelt",
+      "tab_links": "Lenker",
       "tab_tags": "Etiketter",
       "tags_notice_multiple_edit": "Du redigerer etiketter til flere bøker. Dette vil overskrive eksisterende etiketter til hver bok."
     },
@@ -297,6 +316,7 @@
       "button_next": "Neste",
       "dialog_title_add": "Legg til bibliotek",
       "dialot_title_edit": "Rediger bibliotek",
+      "field_convert_to_cbz": "Konverter til CBZ automatisk",
       "field_import_barcode_isbn": "ISBN-strekkode",
       "field_import_comicinfo_book": "Bok-metadata",
       "field_import_comicinfo_collections": "Samlinger",
@@ -305,25 +325,29 @@
       "field_import_epub_book": "Bok-metadata",
       "field_import_epub_series": "Serie-metadata",
       "field_import_local_artwork": "Lokale bilder",
+      "field_import_mylar_series": "Serie-metadata",
       "field_name": "Navn",
       "field_root_folder": "Rotmappe",
       "field_scanner_deep_scan": "Dypskanning",
       "field_scanner_force_directory_modified_time": "Påtving mappe-modifisert tid",
       "file_browser_dialog_button_confirm": "Velg",
       "file_browser_dialog_title": "Bibliotekets rotmappe",
+      "label_file_management": "Filhåndtering",
       "label_import_barcode_isbn": "Importer ISBN med strekkode",
       "label_import_comicinfo": "Importer metadata for CBR/CBZ som har en ComicInfo.xml fil",
       "label_import_epub": "Importer metadata fra EPUB-filer",
       "label_import_local": "Importer lokale medieressurser",
       "label_scanner": "Skanner",
       "tab_general": "Generelt",
+      "tab_metadata": "Metadata",
       "tab_options": "Alternativer"
     },
     "edit_readlist": {
       "button_cancel": "Avbryt",
       "button_confirm": "Lagre endringer",
       "dialog_title": "Rediger leseliste",
-      "field_name": "Navn"
+      "field_name": "Navn",
+      "field_summary": "Sammendrag"
     },
     "edit_series": {
       "button_cancel": "Avbryt",
@@ -341,6 +365,7 @@
       "field_summary": "Sammendrag",
       "field_tags": "Etiketter",
       "field_title": "Tittel",
+      "field_total_book_count": "Totalt antall bøker",
       "mixed": "Blandet",
       "tab_general": "Generelt",
       "tab_tags": "Etiketter",
@@ -388,6 +413,9 @@
       "field_repeat_password": "Gjenta nytt passord",
       "field_repeat_password_error": "Passordene må samsvare."
     },
+    "series_picker": {
+      "title": "Velg serie"
+    },
     "server_stop": {
       "button_confirm": "Stopp",
       "confirmation_message": "Er du sikker på at du vil stoppe Komga?",
@@ -421,6 +449,12 @@
       "title_comparison": "Boksammenligning"
     }
   },
+  "duplicates": {
+    "file_hash": "Fil-sjekksum",
+    "size": "Størrelse",
+    "title": "Dupliser filer",
+    "url": "Nettadresse"
+  },
   "enums": {
     "copy_mode": {
       "MOVE": "Flytt filer"
@@ -452,7 +486,10 @@
     }
   },
   "error_codes": {
-    "ERR_1021": "Målfil finnes allerede"
+    "ERR_1006": "Boken har ingen sider",
+    "ERR_1018": "Fant ikke filen",
+    "ERR_1021": "Målfil finnes allerede",
+    "ERR_1023": "Boken er allerede i leselisten"
   },
   "filter": {
     "age_rating": "aldersgrense",
@@ -477,7 +514,8 @@
   "library_navigation": {
     "browse": "Utforsk",
     "collections": "Samlinger",
-    "readlists": "Leselister"
+    "readlists": "Leselister",
+    "recommended": "Anbefalt"
   },
   "login": {
     "create_user_account": "Opprett brukerkonto",
@@ -498,6 +536,8 @@
     "add_to_readlist": "Legg til i leseliste",
     "analyze": "Analyser",
     "delete": "Slett",
+    "deselect_all": "Fravelg alt",
+    "download_readlist": "Last ned leseliste",
     "download_series": "Last ned serie",
     "edit": "Rediger",
     "edit_metadata": "Rediger metadata",
@@ -539,6 +579,7 @@
   },
   "server": {
     "server_management": {
+      "button_scan_libraries": "Skann alle bibliotek",
       "button_shutdown": "Slå av",
       "section_title": "Tjenerhåndtering"
     },
@@ -551,6 +592,7 @@
     "change_password": "Endre passord",
     "edit_shared_libraries": "Rediger delte bibliotek",
     "edit_user": "Rediger bruker",
+    "no_recent_activity": "Ingen nylig aktivitet",
     "role_administrator": "Administrator",
     "role_user": "Bruker"
   },
@@ -569,6 +611,11 @@
     "dark": "Mørk",
     "light": "Lys",
     "system": "System"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "Slett",
+    "tooltip_mark_as_selected": "Marker som valgt",
+    "tooltip_selected": "Valgt"
   },
   "user_roles": {
     "ADMIN": "Administrator",
