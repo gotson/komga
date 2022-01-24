@@ -7178,7 +7178,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_2",
+        "operationId": "getProviders_3",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7240,7 +7240,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_1",
+        "operationId": "getProviders_2",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7271,7 +7271,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_3",
+        "operationId": "getProviders_4",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7302,7 +7302,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_4",
+        "operationId": "getProviders",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7333,7 +7333,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_6",
+        "operationId": "getProviders_1",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7364,7 +7364,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders",
+        "operationId": "getProviders_6",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8262,10 +8262,6 @@
               "type": "string"
             }
           },
-          "ageRating": {
-            "type": "integer",
-            "format": "int32"
-          },
           "genres": {
             "uniqueItems": true,
             "type": "array",
@@ -8281,6 +8277,10 @@
               "VERTICAL",
               "WEBTOON"
             ]
+          },
+          "ageRating": {
+            "type": "integer",
+            "format": "int32"
           },
           "totalBookCount": {
             "type": "integer",
@@ -8404,10 +8404,6 @@
               "$ref": "#/components/schemas/WebLinkUpdateDto"
             }
           },
-          "releaseDate": {
-            "type": "string",
-            "format": "date"
-          },
           "summary": {
             "type": "string"
           },
@@ -8416,6 +8412,10 @@
             "items": {
               "$ref": "#/components/schemas/AuthorUpdateDto"
             }
+          },
+          "releaseDate": {
+            "type": "string",
+            "format": "date"
           },
           "isbn": {
             "type": "string"

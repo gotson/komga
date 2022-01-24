@@ -1,3 +1,12 @@
+## [0.145.1](https://github.com/gotson/komga/compare/v0.145.0...v0.145.1) (2022-01-24)
+
+
+### Bug Fixes
+
+* **opds:** links are missing the publisher parameter ([9963665](https://github.com/gotson/komga/commit/996366528d6c4ddabcc75b8fabdba87294c5567d)), closes [#777](https://github.com/gotson/komga/issues/777)
+* translated using Weblate ([853a988](https://github.com/gotson/komga/commit/853a9886a8c1cc9d2257e30e945ad50e6edbca1b))
+* **webreader:** mark read could miss the last page in double pages ([ecbba65](https://github.com/gotson/komga/commit/ecbba653bf7045ffa781b70b80baf77a47ba2651)), closes [#772](https://github.com/gotson/komga/issues/772)
+
 # [0.145.0](https://github.com/gotson/komga/compare/v0.144.0...v0.145.0) (2022-01-19)
 
 
