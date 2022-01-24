@@ -245,7 +245,7 @@ export default class KomgaBooksService {
     try {
       return (await this.http.get(`${API_BOOKS}/${bookId}/thumbnails`)).data
     } catch (e) {
-      let msg = `An error occurred while trying to retrieve thumbnails for series '${bookId}'`
+      let msg = `An error occurred while trying to retrieve thumbnails for book '${bookId}'`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }
@@ -260,7 +260,7 @@ export default class KomgaBooksService {
       body.append('selected', `${selected}`)
       await this.http.post(`${API_BOOKS}/${bookId}/thumbnails`, body)
     } catch (e) {
-      let msg = `An error occurred while trying to upload thumbnail for series '${bookId}'`
+      let msg = `An error occurred while trying to upload thumbnail for book '${bookId}'`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }
@@ -272,7 +272,7 @@ export default class KomgaBooksService {
     try {
       await this.http.delete(`${API_BOOKS}/${bookId}/thumbnails/${thumbnailId}`)
     } catch (e) {
-      let msg = `An error occurred while trying to delete thumbnail for series '${bookId}'`
+      let msg = `An error occurred while trying to delete thumbnail for book '${bookId}'`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }
@@ -284,7 +284,7 @@ export default class KomgaBooksService {
     try {
       await this.http.put(`${API_BOOKS}/${bookId}/thumbnails/${thumbnailId}/selected`)
     } catch (e) {
-      let msg = `An error occurred while trying to mark thumbnail as selected for series '${bookId}'`
+      let msg = `An error occurred while trying to mark thumbnail as selected for book '${bookId}'`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

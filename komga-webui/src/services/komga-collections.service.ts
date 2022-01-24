@@ -104,7 +104,7 @@ export default class KomgaCollectionsService {
         paramsSerializer: params => qs.stringify(params, {indices: false}),
       })).data
     } catch (e) {
-      let msg = 'An error occurred while trying to retrieve series'
+      let msg = `An error occurred while trying to retrieve series for collection '${collectionId}'`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }
@@ -116,7 +116,7 @@ export default class KomgaCollectionsService {
     try {
       return (await this.http.get(`${API_COLLECTIONS}/${collectionId}/thumbnails`)).data
     } catch (e) {
-      let msg = `An error occurred while trying to retrieve thumbnails for series '${collectionId}'`
+      let msg = `An error occurred while trying to retrieve thumbnails for collection '${collectionId}'`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }
@@ -131,7 +131,7 @@ export default class KomgaCollectionsService {
       body.append('selected', `${selected}`)
       await this.http.post(`${API_COLLECTIONS}/${collecitonId}/thumbnails`, body)
     } catch (e) {
-      let msg = `An error occurred while trying to upload thumbnail for series '${collecitonId}'`
+      let msg = `An error occurred while trying to upload thumbnail for collection '${collecitonId}'`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }
@@ -143,7 +143,7 @@ export default class KomgaCollectionsService {
     try {
       await this.http.delete(`${API_COLLECTIONS}/${collectionId}/thumbnails/${thumbnailId}`)
     } catch (e) {
-      let msg = `An error occurred while trying to delete thumbnail for series '${collectionId}'`
+      let msg = `An error occurred while trying to delete thumbnail for collection '${collectionId}'`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }
@@ -155,7 +155,7 @@ export default class KomgaCollectionsService {
     try {
       await this.http.put(`${API_COLLECTIONS}/${collectionId}/thumbnails/${thumbnailId}/selected`)
     } catch (e) {
-      let msg = `An error occurred while trying to mark thumbnail as selected for series '${collectionId}'`
+      let msg = `An error occurred while trying to mark thumbnail as selected for collection '${collectionId}'`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

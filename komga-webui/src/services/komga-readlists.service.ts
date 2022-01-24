@@ -148,7 +148,7 @@ export default class KomgaReadListsService {
     try {
       return (await this.http.get(`${API_READLISTS}/${readListId}/thumbnails`)).data
     } catch (e) {
-      let msg = `An error occurred while trying to retrieve thumbnails for series '${readListId}'`
+      let msg = `An error occurred while trying to retrieve thumbnails for readlist '${readListId}'`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }
@@ -163,7 +163,7 @@ export default class KomgaReadListsService {
       body.append('selected', `${selected}`)
       await this.http.post(`${API_READLISTS}/${readListId}/thumbnails`, body)
     } catch (e) {
-      let msg = `An error occurred while trying to upload thumbnail for series '${readListId}'`
+      let msg = `An error occurred while trying to upload thumbnail for readlist '${readListId}'`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }
@@ -175,7 +175,7 @@ export default class KomgaReadListsService {
     try {
       await this.http.delete(`${API_READLISTS}/${readListId}/thumbnails/${thumbnailId}`)
     } catch (e) {
-      let msg = `An error occurred while trying to delete thumbnail for series '${readListId}'`
+      let msg = `An error occurred while trying to delete thumbnail for readlist '${readListId}'`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }
@@ -187,7 +187,7 @@ export default class KomgaReadListsService {
     try {
       await this.http.put(`${API_READLISTS}/${readListId}/thumbnails/${thumbnailId}/selected`)
     } catch (e) {
-      let msg = `An error occurred while trying to mark thumbnail as selected for series '${readListId}'`
+      let msg = `An error occurred while trying to mark thumbnail as selected for readlist '${readListId}'`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }
