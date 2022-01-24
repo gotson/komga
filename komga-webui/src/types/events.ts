@@ -25,7 +25,16 @@ export const READPROGRESS_SERIES_CHANGED = 'readprogress-series-changed'
 export const READPROGRESS_SERIES_DELETED = 'readprogress-series-deleted'
 
 export const THUMBNAILBOOK_ADDED = 'thumbnailbook-added'
+export const THUMBNAILBOOK_DELETED = 'thumbnailbook-deleted'
+
 export const THUMBNAILSERIES_ADDED = 'thumbnailseries-added'
+export const THUMBNAILSERIES_DELETED = 'thumbnailseries-deleted'
+
+export const THUMBNAILREADLIST_ADDED = 'thumbnailreadlist-added'
+export const THUMBNAILREADLIST_DELETED = 'thumbnailreadlist-deleted'
+
+export const THUMBNAILCOLLECTION_ADDED = 'thumbnailcollection-added'
+export const THUMBNAILCOLLECTION_DELETED = 'thumbnailcollection-deleted'
 
 export const ERROR = 'error'
 export const NOTIFICATION = 'notification'

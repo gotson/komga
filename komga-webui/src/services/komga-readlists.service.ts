@@ -109,7 +109,7 @@ export default class KomgaReadListsService {
 
       return (await this.http.get(`${API_READLISTS}/${readListId}/books`, {
         params: params,
-        paramsSerializer: params => qs.stringify(params, { indices: false }),
+        paramsSerializer: params => qs.stringify(params, {indices: false}),
       })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve books'
@@ -137,6 +137,57 @@ export default class KomgaReadListsService {
       return (await this.http.get(`${API_READLISTS}/${readListId}/books/${bookId}/previous`)).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve book'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async getThumbnails(readListId: string): Promise<ReadListThumbnailDto[]> {
+    try {
+      return (await this.http.get(`${API_READLISTS}/${readListId}/thumbnails`)).data
+    } catch (e) {
+      let msg = `An error occurred while trying to retrieve thumbnails for readlist '${readListId}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async uploadThumbnail(readListId: string, file: File, selected: boolean) {
+    try {
+      const body = new FormData()
+      body.append('file', file)
+      body.append('selected', `${selected}`)
+      await this.http.post(`${API_READLISTS}/${readListId}/thumbnails`, body)
+    } catch (e) {
+      let msg = `An error occurred while trying to upload thumbnail for readlist '${readListId}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async deleteThumbnail(readListId: string, thumbnailId: string) {
+    try {
+      await this.http.delete(`${API_READLISTS}/${readListId}/thumbnails/${thumbnailId}`)
+    } catch (e) {
+      let msg = `An error occurred while trying to delete thumbnail for readlist '${readListId}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async markThumbnailAsSelected(readListId: string, thumbnailId: string) {
+    try {
+      await this.http.put(`${API_READLISTS}/${readListId}/thumbnails/${thumbnailId}/selected`)
+    } catch (e) {
+      let msg = `An error occurred while trying to mark thumbnail as selected for readlist '${readListId}'`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

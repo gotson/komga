@@ -21,7 +21,13 @@ import {
   SERIES_CHANGED,
   SERIES_DELETED,
   THUMBNAILBOOK_ADDED,
+  THUMBNAILBOOK_DELETED,
+  THUMBNAILCOLLECTION_ADDED,
+  THUMBNAILCOLLECTION_DELETED,
+  THUMBNAILREADLIST_ADDED,
+  THUMBNAILREADLIST_DELETED,
   THUMBNAILSERIES_ADDED,
+  THUMBNAILSERIES_DELETED,
 } from '@/types/events'
 import Vue from 'vue'
 import {TaskQueueSseDto} from '@/types/komga-sse'
@@ -83,7 +89,16 @@ export default class KomgaSseService {
 
     // Thumbnails
     this.eventSource.addEventListener('ThumbnailBookAdded', (event: any) => this.emit(THUMBNAILBOOK_ADDED, event))
+    this.eventSource.addEventListener('ThumbnailBookDeleted', (event: any) => this.emit(THUMBNAILBOOK_DELETED, event))
+
     this.eventSource.addEventListener('ThumbnailSeriesAdded', (event: any) => this.emit(THUMBNAILSERIES_ADDED, event))
+    this.eventSource.addEventListener('ThumbnailSeriesDeleted', (event: any) => this.emit(THUMBNAILSERIES_DELETED, event))
+
+    this.eventSource.addEventListener('ThumbnailReadListAdded', (event: any) => this.emit(THUMBNAILREADLIST_ADDED, event))
+    this.eventSource.addEventListener('ThumbnailReadListDeleted', (event: any) => this.emit(THUMBNAILREADLIST_DELETED, event))
+
+    this.eventSource.addEventListener('ThumbnailSeriesCollectionAdded', (event: any) => this.emit(THUMBNAILCOLLECTION_ADDED, event))
+    this.eventSource.addEventListener('ThumbnailSeriesCollectionDeleted', (event: any) => this.emit(THUMBNAILCOLLECTION_DELETED, event))
 
     this.eventSource.addEventListener('TaskQueueStatus', (event: any) => this.updateTaskCount(event))
   }

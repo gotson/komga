@@ -56,7 +56,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import {SeriesThumbnailDto} from '@/types/komga-series'
-import {seriesThumbnailUrlByThumbnailId} from '@/functions/urls'
+import {
+  bookThumbnailUrlByThumbnailId,
+  collectionThumbnailUrlByThumbnailId,
+  readListThumbnailUrlByThumbnailId,
+  seriesThumbnailUrlByThumbnailId,
+} from '@/functions/urls'
+import {BookThumbnailDto} from '@/types/komga-books'
 
 export default Vue.extend({
   name: 'ThumbnailCard',
@@ -67,7 +73,7 @@ export default Vue.extend({
         if (value instanceof File) {
           return true
         }
-        return 'id' in value && 'seriesId' in value && 'type' in value && 'selected' in value
+        return 'id' in value && 'type' in value && 'selected' in value && ('seriesId' in value || 'bookId' in value || 'readListId' in value || 'collectionId' in value)
       },
     },
     selected: {
@@ -80,7 +86,7 @@ export default Vue.extend({
     },
   },
   methods: {
-    getStatusIcon(item: File | SeriesThumbnailDto): string {
+    getStatusIcon(item: File | SeriesThumbnailDto | BookThumbnailDto | ReadListThumbnailDto | CollectionThumbnailDto): string {
       if (item instanceof File) {
         if (this.isFileToBig(item)) {
           return 'mdi-alert-circle'
@@ -90,12 +96,14 @@ export default Vue.extend({
       } else {
         if (item.type === 'SIDECAR') {
           return 'mdi-folder-outline'
+        } else if (item.type === 'GENERATED') {
+          return 'mdi-file-outline'
         } else {
           return 'mdi-cloud-check-outline'
         }
       }
     },
-    getStatusTooltip(item: File | SeriesThumbnailDto): string {
+    getStatusTooltip(item: File | SeriesThumbnailDto | BookThumbnailDto | ReadListThumbnailDto | CollectionThumbnailDto): string {
       if (item instanceof File) {
         if (this.isFileToBig(item)) {
           return this.$t('thumbnail_card.tooltip_too_big').toString()
@@ -105,23 +113,34 @@ export default Vue.extend({
       } else {
         if (item.type === 'SIDECAR') {
           return this.$t('thumbnail_card.tooltip_sidecar').toString()
+        }
+        if (item.type === 'GENERATED') {
+          return this.$t('thumbnail_card.tooltip_generated').toString()
         } else {
           return this.$t('thumbnail_card.tooltip_user_uploaded').toString()
         }
       }
     },
-    isFileToBig(item: File | SeriesThumbnailDto): boolean {
+    isFileToBig(item: File | SeriesThumbnailDto | BookThumbnailDto | ReadListThumbnailDto | CollectionThumbnailDto): boolean {
       if (item instanceof File) {
         return item.size > 1_000_000
       } else {
         return false
       }
     },
-    getImage(item: File | SeriesThumbnailDto): string {
+    getImage(item: File | SeriesThumbnailDto | BookThumbnailDto | ReadListThumbnailDto | CollectionThumbnailDto): string {
       if (item instanceof File) {
         return URL.createObjectURL(item)
-      } else {
+      } else if ('seriesId' in item) {
         return seriesThumbnailUrlByThumbnailId(item.seriesId, item.id)
+      } else if ('bookId' in item) {
+        return bookThumbnailUrlByThumbnailId(item.bookId, item.id)
+      } else if ('readListId' in item) {
+        return readListThumbnailUrlByThumbnailId(item.readListId, item.id)
+      } else if ('collectionId' in item) {
+        return collectionThumbnailUrlByThumbnailId(item.collectionId, item.id)
+      } else {
+        throw new Error('The given item type is not known!')
       }
     },
     onClickSelect() {
@@ -129,11 +148,11 @@ export default Vue.extend({
         this.$emit('on-select-thumbnail', this.item)
       }
     },
-    isDeletable(item: File | SeriesThumbnailDto) {
+    isDeletable(item: File | SeriesThumbnailDto | BookThumbnailDto | ReadListThumbnailDto | CollectionThumbnailDto) {
       if (item instanceof File) {
         return true
       } else {
-        return item.type !== 'SIDECAR'
+        return item.type !== 'SIDECAR' && item.type !== 'GENERATED'
       }
     },
     onClickDelete() {

@@ -345,6 +345,7 @@
       "tab_authors": "Authors",
       "tab_general": "General",
       "tab_links": "Links",
+      "tab_poster": "Poster",
       "tab_tags": "Tags",
       "tags_notice_multiple_edit": "You are editing tags for multiple books. This will override existing tags of each book."
     },
@@ -353,7 +354,9 @@
       "button_confirm": "Save changes",
       "dialog_title": "Edit collection",
       "field_manual_ordering": "Manual ordering",
-      "label_ordering": "By default, series in a collection will be ordered by name. You can enable manual ordering to define your own order."
+      "label_ordering": "By default, series in a collection will be ordered by name. You can enable manual ordering to define your own order.",
+      "tab_general": "General",
+      "tab_poster": "Poster"
     },
     "edit_library": {
       "button_browse": "Browse",
@@ -405,7 +408,9 @@
       "button_confirm": "Save changes",
       "dialog_title": "Edit read list",
       "field_name": "Name",
-      "field_summary": "Summary"
+      "field_summary": "Summary",
+      "tab_general": "General",
+      "tab_poster": "Poster"
     },
     "edit_series": {
       "button_cancel": "Cancel",
@@ -716,6 +721,7 @@
   },
   "thumbnail_card": {
     "tooltip_delete": "Delete",
+    "tooltip_generated": "Generated artwork",
     "tooltip_mark_as_selected": "Mark as selected",
     "tooltip_selected": "Selected",
     "tooltip_sidecar": "Local artwork",

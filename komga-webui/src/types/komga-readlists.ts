@@ -36,3 +36,10 @@ interface ReadListRequestBookDto {
   series: string,
   number: string,
 }
+
+interface ReadListThumbnailDto {
+  id: string,
+  readListId: string,
+  type: string,
+  selected: boolean
+}

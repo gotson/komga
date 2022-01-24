@@ -346,7 +346,7 @@ class BookController(
 
     thumbnailBookRepository.findByIdOrNull(thumbnailId)?.let {
       thumbnailBookRepository.markSelected(it)
-      eventPublisher.publishEvent(DomainEvent.ThumbnailBookAdded(it))
+      eventPublisher.publishEvent(DomainEvent.ThumbnailBookAdded(it.copy(selected = true)))
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 

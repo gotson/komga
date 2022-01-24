@@ -88,7 +88,7 @@ class SeriesCollectionLifecycle(
 
   fun markSelectedThumbnail(thumbnail: ThumbnailSeriesCollection) {
     thumbnailSeriesCollectionRepository.markSelected(thumbnail)
-    eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesCollectionAdded(thumbnail))
+    eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesCollectionAdded(thumbnail.copy(selected = true)))
   }
 
   fun deleteThumbnail(thumbnail: ThumbnailSeriesCollection) {

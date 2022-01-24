@@ -128,23 +128,19 @@ class BookLifecycle(
       }
     }
 
-    when (markSelected) {
-      MarkSelectedPreference.YES -> {
-        thumbnailBookRepository.markSelected(thumbnail)
-      }
+    val selected = when (markSelected) {
+      MarkSelectedPreference.YES -> true
       MarkSelectedPreference.IF_NONE_OR_GENERATED -> {
         val selectedThumbnail = thumbnailBookRepository.findSelectedByBookIdOrNull(thumbnail.bookId)
-
-        if (selectedThumbnail == null || selectedThumbnail.type == ThumbnailBook.Type.GENERATED)
-          thumbnailBookRepository.markSelected(thumbnail)
-        else thumbnailsHouseKeeping(thumbnail.bookId)
+        selectedThumbnail == null || selectedThumbnail.type == ThumbnailBook.Type.GENERATED
       }
-      MarkSelectedPreference.NO -> {
-        thumbnailsHouseKeeping(thumbnail.bookId)
-      }
+      MarkSelectedPreference.NO -> false
     }
 
-    eventPublisher.publishEvent(DomainEvent.ThumbnailBookAdded(thumbnail))
+    if (selected) thumbnailBookRepository.markSelected(thumbnail)
+    else thumbnailsHouseKeeping(thumbnail.bookId)
+
+    eventPublisher.publishEvent(DomainEvent.ThumbnailBookAdded(thumbnail.copy(selected = selected)))
   }
 
   fun deleteThumbnailForBook(thumbnail: ThumbnailBook) {

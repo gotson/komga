@@ -5,7 +5,9 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
+import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.Author
+import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ReadStatus
@@ -66,6 +68,7 @@ class SeriesCollectionController(
   private val seriesDtoRepository: SeriesDtoRepository,
   private val contentDetector: ContentDetector,
   private val thumbnailSeriesCollectionRepository: ThumbnailSeriesCollectionRepository,
+  private val eventPublisher: EventPublisher,
 ) {
 
   @PageableWithoutSortAsQueryParam
@@ -179,6 +182,7 @@ class SeriesCollectionController(
     collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
       thumbnailSeriesCollectionRepository.findByIdOrNull(thumbnailId)?.let {
         collectionLifecycle.markSelectedThumbnail(it)
+        eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesCollectionAdded(it.copy(selected = true)))
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
