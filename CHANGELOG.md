@@ -1,3 +1,10 @@
+# [0.146.0](https://github.com/gotson/komga/compare/v0.145.1...v0.146.0) (2022-01-24)
+
+
+### Features
+
+* **webui:** custom cover upload ([2a56fff](https://github.com/gotson/komga/commit/2a56fffa9af46b5852976131c04f2f8cf7207080)), closes [#473](https://github.com/gotson/komga/issues/473)
+
 ## [0.145.1](https://github.com/gotson/komga/compare/v0.145.0...v0.145.1) (2022-01-24)
 
 
