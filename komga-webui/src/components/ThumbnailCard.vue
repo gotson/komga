@@ -94,8 +94,10 @@ export default Vue.extend({
           return 'mdi-cloud-upload-outline'
         }
       } else {
-        if (item.type === 'SIDECAR' || item.type === 'GENERATED') {
+        if (item.type === 'SIDECAR') {
           return 'mdi-folder-outline'
+        } else if (item.type === 'GENERATED') {
+          return 'mdi-file-outline'
         } else {
           return 'mdi-cloud-check-outline'
         }
