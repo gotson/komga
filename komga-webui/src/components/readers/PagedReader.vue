@@ -131,7 +131,9 @@ export default Vue.extend({
     carouselPage(val, old) {
       this.$debug('[watch:carouselPage', `old:${old}`, `new:${val}`)
       if (this.carouselPage >= 0 && this.carouselPage < this.spreads.length && this.spreads.length > 0) {
-        this.$emit('update:page', this.spreads[this.carouselPage][0].number)
+        const currentSpread = this.spreads[this.carouselPage]
+        const currentPage = currentSpread.length == 2 && currentSpread[1].mediaType ? currentSpread[1] : currentSpread[0]
+        this.$emit('update:page', currentPage.number)
       } else {
         this.$emit('update:page', 1)
       }
