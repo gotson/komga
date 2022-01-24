@@ -19,5 +19,5 @@ jobs:
             for your contributions.
           days-before-stale: 90
           days-before-close: 14
-          exempt-issue-labels: 'pinned,security,tech debt'
+          exempt-issue-labels: 'pinned,security,tech debt,enhancement,bug'
           exempt-all-assignees: true
