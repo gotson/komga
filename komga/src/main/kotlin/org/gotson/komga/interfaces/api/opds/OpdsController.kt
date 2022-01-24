@@ -306,6 +306,7 @@ class OpdsController(
 
     val builder = uriBuilder(ROUTE_SERIES_ALL)
       .queryParamIfPresent("search", Optional.ofNullable(searchTerm))
+      .queryParamIfPresent("publisher", Optional.ofNullable(publishers))
 
     return OpdsFeedNavigation(
       id = ID_SERIES_ALL,
