@@ -1,3 +1,17 @@
+# [0.147.0](https://github.com/gotson/komga/compare/v0.146.0...v0.147.0) (2022-01-25)
+
+
+### Bug Fixes
+
+* **webui:** display clickable links for duplicate files ([4453c03](https://github.com/gotson/komga/commit/4453c0320036fd9b62ce5c451dc77b8c0c16fbe0))
+* **webui:** drop poster from browser images ([7cb2a87](https://github.com/gotson/komga/commit/7cb2a87a7f274f5695ffdd14d083e824c818c1f6))
+
+
+### Features
+
+* **webui:** add refresh button and unavailable status to media analysis view ([a116d17](https://github.com/gotson/komga/commit/a116d1788315718fddeef62853ca05db97f4dc42))
+* **webui:** delete book from duplicate view ([b1fd257](https://github.com/gotson/komga/commit/b1fd257a149682a16b3505e48a550524abd7d829)), closes [#764](https://github.com/gotson/komga/issues/764)
+
 # [0.146.0](https://github.com/gotson/komga/compare/v0.145.1...v0.146.0) (2022-01-24)
 
 
