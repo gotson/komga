@@ -16,6 +16,18 @@
       <template v-slot:item.name="{ item }">
         <router-link :to="{name:'browse-book', params: {bookId: item.id}}">{{ item.name }}</router-link>
       </template>
+
+      <template v-slot:item.deleted="{ item }">
+        <v-chip
+          v-if="item.deleted"
+          label small color="error">
+          {{ $t('common.unavailable') }}
+        </v-chip>
+      </template>
+
+      <template v-slot:footer.prepend>
+        <v-btn icon @click="loadBooks"><v-icon>mdi-refresh</v-icon></v-btn>
+      </template>
     </v-data-table>
   </v-container>
 </template>
@@ -53,6 +65,7 @@ export default Vue.extend({
         {text: this.$i18n.t('media_analysis.media_type').toString(), value: 'media.mediaType'},
         {text: this.$i18n.t('media_analysis.url').toString(), value: 'url'},
         {text: this.$i18n.t('media_analysis.size').toString(), value: 'size'},
+        {text: '', value: 'deleted', groupable: false, sortable: false},
       ]
     },
     booksData():BookDto[] {
