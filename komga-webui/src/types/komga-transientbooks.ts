@@ -1,9 +1,5 @@
 import {PageDto} from '@/types/komga-books'
 
-export interface ScanRequestDto {
-  path: string,
-}
-
 export interface TransientBookDto {
   id: string,
   name: string,
