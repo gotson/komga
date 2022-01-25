@@ -15,8 +15,8 @@
         itemsPerPageOptions: [20, 50, 100]
       }"
     >
-      <template v-slot:item.name="{ item }">
-        <router-link :to="{name:'browse-book', params: {bookId: item.id}}">{{ item.name }}</router-link>
+      <template v-slot:item.url="{ item }">
+        <router-link :to="{name:'browse-book', params: {bookId: item.id}}">{{ item.url }}</router-link>
       </template>
     </v-data-table>
   </v-container>
@@ -24,9 +24,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {MediaStatus} from '@/types/enum-books'
 import {BookDto} from '@/types/komga-books'
-import {convertErrorCodes} from '@/functions/error-codes'
 
 export default Vue.extend({
   name: 'SettingsDuplicates',
