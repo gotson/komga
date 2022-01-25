@@ -5,12 +5,12 @@
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "is-ci": "^3.0.1",
-    "semantic-release": "^18.0.1"
+    "semantic-release": "^19.0.2"
   },
   "devDependencies": {
-    "@commitlint/cli": "^15.0.0",
-    "@commitlint/config-conventional": "^15.0.0",
-    "commitlint": "^15.0.0",
+    "@commitlint/cli": "^16.1.0",
+    "@commitlint/config-conventional": "^16.0.0",
+    "commitlint": "^16.1.0",
     "husky": "^7.0.4",
     "pinst": "^2.1.6"
   },
