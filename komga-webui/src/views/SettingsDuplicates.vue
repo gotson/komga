@@ -18,6 +18,28 @@
       <template v-slot:item.url="{ item }">
         <router-link :to="{name:'browse-book', params: {bookId: item.id}}">{{ item.url }}</router-link>
       </template>
+
+      <template v-slot:item.deleted="{ item }">
+        <v-chip
+          v-if="item.deleted"
+          label small color="error">
+          {{ $t('common.unavailable') }}
+        </v-chip>
+      </template>
+
+      <template v-slot:item.id="{ item }">
+        <v-btn
+          icon
+          color="error"
+          @click="promptDeleteBook(item)"
+        >
+          <v-icon>mdi-trash-can-outline</v-icon>
+        </v-btn>
+      </template>
+
+      <template v-slot:footer.prepend>
+        <v-btn icon @click="loadBooks"><v-icon>mdi-refresh</v-icon></v-btn>
+      </template>
     </v-data-table>
   </v-container>
 </template>
@@ -50,6 +72,8 @@ export default Vue.extend({
         {text: this.$i18n.t('duplicates.file_hash').toString(), value: 'fileHash'},
         {text: this.$i18n.t('duplicates.url').toString(), value: 'url', groupable: false},
         {text: this.$i18n.t('duplicates.size').toString(), value: 'size', groupable: false},
+        {text: '', value: 'deleted', groupable: false, sortable: false},
+        {text: this.$i18n.t('menu.delete').toString(), value: 'id', groupable: false},
       ]
     },
   },
@@ -77,6 +101,9 @@ export default Vue.extend({
       this.books = booksPage.content
 
       this.loading = false
+    },
+    promptDeleteBook(book: BookDto) {
+      this.$store.dispatch('dialogDeleteBook', book)
     },
   },
 })
