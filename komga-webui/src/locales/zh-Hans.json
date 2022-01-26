@@ -202,6 +202,8 @@
     "n_selected": "{count} 选择",
     "nothing_to_show": "没有什么可显示",
     "outdated": "过时的",
+    "page": "页面",
+    "page_number": "页码",
     "pages": "页",
     "pages_n": "无 | 1 页 | {count} 页",
     "password": "密码",
@@ -216,6 +218,7 @@
     "tags": "标签",
     "unavailable": "不可用",
     "unlock_all": "解锁全部",
+    "url": "URL",
     "use_filter_panel_to_change_filter": "使用过滤器修改过滤项",
     "year": "年"
   },
@@ -345,6 +348,7 @@
       "tab_authors": "作者",
       "tab_general": "常规",
       "tab_links": "链接",
+      "tab_poster": "海报",
       "tab_tags": "标签",
       "tags_notice_multiple_edit": "您正在编辑多本书的标签。这将覆盖每本书的现有标签。"
     },
@@ -353,7 +357,9 @@
       "button_confirm": "保存修改",
       "dialog_title": "编辑收藏",
       "field_manual_ordering": "手动排序",
-      "label_ordering": "默认情况下，收藏中的系列将按名称排序,您可以启用手动排序来整理想要的顺序."
+      "label_ordering": "默认情况下，收藏中的系列将按名称排序,您可以启用手动排序来整理想要的顺序.",
+      "tab_general": "常规",
+      "tab_poster": "海报"
     },
     "edit_library": {
       "button_browse": "浏览",
@@ -405,7 +411,9 @@
       "button_confirm": "保存修改",
       "dialog_title": "编辑阅读列表",
       "field_name": "名称",
-      "field_summary": "概要"
+      "field_summary": "概要",
+      "tab_general": "常规",
+      "tab_poster": "海报"
     },
     "edit_series": {
       "button_cancel": "取消",
@@ -518,6 +526,14 @@
       "title": "查验书籍",
       "title_comparison": "书籍比较"
     }
+  },
+  "duplicate_pages": {
+    "action_delete_auto": "自动删除",
+    "action_delete_manual": "手动删除",
+    "action_ignore": "忽略",
+    "matches_n": "无匹配 | 1 个匹配 | {count} 个匹配",
+    "title": "重复页面",
+    "unknown_size": "未知大小"
   },
   "duplicates": {
     "file_hash": "文件哈希值",
@@ -716,6 +732,7 @@
   },
   "thumbnail_card": {
     "tooltip_delete": "删除",
+    "tooltip_generated": "生成的插图",
     "tooltip_mark_as_selected": "标为已选",
     "tooltip_selected": "已选中",
     "tooltip_sidecar": "本地插图",

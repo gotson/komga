@@ -345,6 +345,7 @@
       "tab_authors": "Författare",
       "tab_general": "Allmänt",
       "tab_links": "Länkar",
+      "tab_poster": "Affisch",
       "tab_tags": "Taggar",
       "tags_notice_multiple_edit": "Du redigerar taggar för flera böcker. Detta skriver över befintliga taggar i varje bok."
     },
@@ -353,7 +354,9 @@
       "button_confirm": "Spara ändringar",
       "dialog_title": "Redigera samling",
       "field_manual_ordering": "Manuell sortering",
-      "label_ordering": "Som standard kommer serier i en samling att sorteras efter namn. Du kan aktivera manuell sortering för att definiera din egen sortering."
+      "label_ordering": "Som standard kommer serier i en samling att sorteras efter namn. Du kan aktivera manuell sortering för att definiera din egen sortering.",
+      "tab_general": "Allmänt",
+      "tab_poster": "Affisch"
     },
     "edit_library": {
       "button_browse": "Bläddra",
@@ -405,7 +408,9 @@
       "button_confirm": "Spara ändringar",
       "dialog_title": "Redigera läslistan",
       "field_name": "Namn",
-      "field_summary": "Sammanfattning"
+      "field_summary": "Sammanfattning",
+      "tab_general": "Allmänt",
+      "tab_poster": "Affisch"
     },
     "edit_series": {
       "button_cancel": "Avbryt",
@@ -716,6 +721,7 @@
   },
   "thumbnail_card": {
     "tooltip_delete": "Ta bort",
+    "tooltip_generated": "Genererat konstverk",
     "tooltip_mark_as_selected": "Markera som vald",
     "tooltip_selected": "Vald",
     "tooltip_sidecar": "Lokala bilder",
