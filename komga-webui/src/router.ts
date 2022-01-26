@@ -95,6 +95,12 @@ const router = new Router({
               component: () => import(/* webpackChunkName: "settings-duplicates" */ './views/SettingsDuplicates.vue'),
             },
             {
+              path: '/settings/duplicate-pages',
+              name: 'settings-duplicate-pages',
+              beforeEnter: adminGuard,
+              component: () => import(/* webpackChunkName: "settings-duplicate-pages" */ './views/SettingsDuplicatePages.vue'),
+            },
+            {
               path: '/settings/server',
               name: 'settings-server',
               beforeEnter: adminGuard,

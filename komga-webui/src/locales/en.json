@@ -202,6 +202,8 @@
     "n_selected": "{count} selected",
     "nothing_to_show": "Nothing to show",
     "outdated": "Outdated",
+    "page": "Page",
+    "page_number": "Page number",
     "pages": "pages",
     "pages_n": "No pages | 1 page | {count} pages",
     "password": "Password",
@@ -216,6 +218,7 @@
     "tags": "Tags",
     "unavailable": "Unavailable",
     "unlock_all": "Unlock all",
+    "url": "URL",
     "use_filter_panel_to_change_filter": "Use the filter panel to change the active filter",
     "year": "year"
   },
@@ -523,6 +526,14 @@
       "title": "Inspect Book",
       "title_comparison": "Book Comparison"
     }
+  },
+  "duplicate_pages": {
+    "action_delete_auto": "Auto delete",
+    "action_delete_manual": "Manual delete",
+    "action_ignore": "Ignore",
+    "matches_n": "No matches | 1 match | {count} matches",
+    "title": "Duplicate pages",
+    "unknown_size": "Unknown size"
   },
   "duplicates": {
     "file_hash": "File hash",

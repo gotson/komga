@@ -71,3 +71,11 @@ export function readListThumbnailUrlByThumbnailId(readListId: string, thumbnailI
 export function transientBookPageUrl(transientBookId: string, page: number): string {
   return `${urls.originNoSlash}/api/v1/transient-books/${transientBookId}/pages/${page}`
 }
+
+export function pageHashUnknownThumbnailUrl(hash: string, resize?: number): string {
+  let url = `${urls.originNoSlash}/api/v1/page-hashes/unknown/${hash}/thumbnail`
+  if(resize) {
+    url += `?resize=${resize}`
+  }
+  return url
+}
