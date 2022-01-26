@@ -1,3 +1,11 @@
+# [0.148.0](https://github.com/gotson/komga/compare/v0.147.0...v0.148.0) (2022-01-26)
+
+
+### Features
+
+* **api:** wip version of the page-hashes endpoints ([5777952](https://github.com/gotson/komga/commit/5777952c05246f8e1ab8408dbd11c130b70ef113))
+* **webui:** view duplicate pages ([79d265c](https://github.com/gotson/komga/commit/79d265c85211a2430d0bae784bad91522eba36aa))
+
 # [0.147.0](https://github.com/gotson/komga/compare/v0.146.0...v0.147.0) (2022-01-25)
 
 

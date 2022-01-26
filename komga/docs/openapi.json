@@ -347,6 +347,102 @@
         }
       }
     },
+    "/api/v1/page-hashes": {
+      "get": {
+        "tags": [
+          "page-hash-controller"
+        ],
+        "operationId": "getPageHashes",
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "DELETE_AUTO",
+                  "DELETE_MANUAL",
+                  "IGNORE"
+                ]
+              }
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagePageHashDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "page-hash-controller"
+        ],
+        "operationId": "updatePageHash",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          }
+        }
+      }
+    },
     "/api/v1/libraries/{libraryId}": {
       "get": {
         "tags": [
@@ -5438,6 +5534,223 @@
         }
       }
     },
+    "/api/v1/page-hashes/{hash}/thumbnail": {
+      "get": {
+        "tags": [
+          "page-hash-controller"
+        ],
+        "operationId": "getPageHashThumbnail",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/page-hashes/unknown": {
+      "get": {
+        "tags": [
+          "page-hash-controller"
+        ],
+        "operationId": "getUnknownPageHashes",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagePageHashUnknownDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/page-hashes/unknown/{hash}": {
+      "get": {
+        "tags": [
+          "page-hash-controller"
+        ],
+        "operationId": "getUnknownPageHashMatches",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagePageHashMatchDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/page-hashes/unknown/{hash}/thumbnail": {
+      "get": {
+        "tags": [
+          "page-hash-controller"
+        ],
+        "operationId": "getUnknownPageHashThumbnail",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "resize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/login/set-cookie": {
       "get": {
         "tags": [
@@ -7178,7 +7491,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_5",
+        "operationId": "getProviders",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7209,7 +7522,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_4",
+        "operationId": "getProviders_5",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7240,7 +7553,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_2",
+        "operationId": "getProviders_6",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7271,7 +7584,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_6",
+        "operationId": "getProviders_4",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7333,7 +7646,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders",
+        "operationId": "getProviders_3",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7364,7 +7677,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_3",
+        "operationId": "getProviders_2",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8255,13 +8568,6 @@
           "totalBookCountLock": {
             "type": "boolean"
           },
-          "tags": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "readingDirection": {
             "type": "string",
             "enum": [
@@ -8271,9 +8577,16 @@
               "WEBTOON"
             ]
           },
-          "ageRating": {
+          "totalBookCount": {
             "type": "integer",
             "format": "int32"
+          },
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "genres": {
             "uniqueItems": true,
@@ -8282,7 +8595,7 @@
               "type": "string"
             }
           },
-          "totalBookCount": {
+          "ageRating": {
             "type": "integer",
             "format": "int32"
           }
@@ -8407,10 +8720,6 @@
           "summary": {
             "type": "string"
           },
-          "releaseDate": {
-            "type": "string",
-            "format": "date"
-          },
           "authors": {
             "type": "array",
             "items": {
@@ -8419,6 +8728,10 @@
           },
           "isbn": {
             "type": "string"
+          },
+          "releaseDate": {
+            "type": "string",
+            "format": "date"
           }
         },
         "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update."
@@ -8683,6 +8996,9 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
+          "paged": {
+            "type": "boolean"
+          },
           "pageNumber": {
             "type": "integer",
             "format": "int32"
@@ -8690,9 +9006,6 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
-          },
-          "paged": {
-            "type": "boolean"
           },
           "unpaged": {
             "type": "boolean"
@@ -9544,6 +9857,234 @@
             "type": "string"
           },
           "selected": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageHashDto": {
+        "required": [
+          "action",
+          "created",
+          "deleteCount",
+          "hash",
+          "lastModified",
+          "mediaType"
+        ],
+        "type": "object",
+        "properties": {
+          "hash": {
+            "type": "string"
+          },
+          "mediaType": {
+            "type": "string"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "DELETE_AUTO",
+              "DELETE_MANUAL",
+              "IGNORE"
+            ]
+          },
+          "deleteCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastModified": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "PagePageHashDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PageHashDto"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageHashUnknownDto": {
+        "required": [
+          "hash",
+          "matchCount",
+          "mediaType"
+        ],
+        "type": "object",
+        "properties": {
+          "hash": {
+            "type": "string"
+          },
+          "mediaType": {
+            "type": "string"
+          },
+          "sizeBytes": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "size": {
+            "type": "string"
+          },
+          "matchCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PagePageHashUnknownDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PageHashUnknownDto"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageHashMatchDto": {
+        "required": [
+          "bookId",
+          "pageNumber",
+          "url"
+        ],
+        "type": "object",
+        "properties": {
+          "bookId": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PagePageHashMatchDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PageHashMatchDto"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "empty": {
             "type": "boolean"
           }
         }
