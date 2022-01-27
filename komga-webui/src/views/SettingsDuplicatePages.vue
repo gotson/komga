@@ -31,14 +31,21 @@
               <v-card-text>
                 <div>{{ element.mediaType }}</div>
                 <div>{{ element.size || $t('duplicate_pages.unknown_size') }}</div>
+
                 <v-btn
                   @click="showDialogMatches(element)"
                   outlined
                   rounded
-                  class="mt-2"
+                  class="my-4"
                 >
                   {{ $tc('duplicate_pages.matches_n', element.matchCount) }}
                 </v-btn>
+
+                <div
+                  v-if="element.totalSize"
+                  style="max-width: 100px"
+                >{{ $t('duplicate_pages.delete_to_save', {size: element.totalSize}) }}
+                </div>
               </v-card-text>
             </v-col>
           </v-row>

@@ -8,6 +8,7 @@ data class PageHashUnknownDto(
   val mediaType: String,
   val sizeBytes: Long?,
   val size: String? = sizeBytes?.let { BinaryByteUnit.format(it) },
+  val totalSize: String ? = sizeBytes?.let { BinaryByteUnit.format(it * matchCount) },
   val matchCount: Int,
 )
 

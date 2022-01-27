@@ -3,6 +3,7 @@ export interface PageHashUnknownDto {
   mediaType: string,
   sizeBytes?: number,
   size?: string,
+  totalSize?: string,
   matchCount: number,
 }
 
