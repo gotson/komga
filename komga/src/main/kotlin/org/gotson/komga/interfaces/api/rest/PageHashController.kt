@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.gotson.komga.domain.model.PageHash
+import org.gotson.komga.domain.model.PageHashUnknown
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.persistence.PageHashRepository
 import org.gotson.komga.domain.service.PageHashLifecycle
@@ -45,7 +46,7 @@ class PageHashController(
   ): Page<PageHashDto> =
     pageHashRepository.findAllKnown(actions, page).map { it.toDto() }
 
-  @GetMapping("/{hash}/thumbnail", produces = [MediaType.IMAGE_JPEG_VALUE],)
+  @GetMapping("/{hash}/thumbnail", produces = [MediaType.IMAGE_JPEG_VALUE])
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
   fun getPageHashThumbnail(@PathVariable hash: String): ByteArray =
     pageHashRepository.getKnownThumbnail(hash) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -57,21 +58,39 @@ class PageHashController(
   ): Page<PageHashUnknownDto> =
     pageHashRepository.findAllUnknown(page).map { it.toDto() }
 
-  @GetMapping("unknown/{hash}")
+  @GetMapping("unknown/{pageHash}")
   @PageableAsQueryParam
   fun getUnknownPageHashMatches(
-    @PathVariable hash: String,
+    @PathVariable pageHash: String,
+    @RequestParam("media_type") mediaType: String,
+    @RequestParam("size") size: Long,
     @Parameter(hidden = true) page: Pageable,
   ): Page<PageHashMatchDto> =
-    pageHashRepository.findMatchesByHash(hash, page).map { it.toDto() }
+    pageHashRepository.findMatchesByHash(
+      PageHashUnknown(
+        hash = pageHash,
+        mediaType = mediaType,
+        size = if (size < 0) null else size,
+      ),
+      page,
+    ).map { it.toDto() }
 
-  @GetMapping("unknown/{hash}/thumbnail", produces = [MediaType.IMAGE_JPEG_VALUE],)
+  @GetMapping("unknown/{pageHash}/thumbnail", produces = [MediaType.IMAGE_JPEG_VALUE])
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
   fun getUnknownPageHashThumbnail(
-    @PathVariable hash: String,
+    @PathVariable pageHash: String,
+    @RequestParam("media_type") mediaType: String,
+    @RequestParam("size") size: Long,
     @RequestParam("resize") resize: Int? = null,
   ): ResponseEntity<ByteArray> =
-    pageHashLifecycle.getPage(hash, resize)?.let {
+    pageHashLifecycle.getPage(
+      PageHashUnknown(
+        hash = pageHash,
+        mediaType = mediaType,
+        size = if (size < 0) null else size,
+      ),
+      resize,
+    )?.let {
       ResponseEntity.ok()
         .contentType(getMediaTypeOrDefault(it.mediaType))
         .body(it.content)

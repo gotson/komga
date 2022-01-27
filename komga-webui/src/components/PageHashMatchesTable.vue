@@ -31,15 +31,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue, {PropType} from 'vue'
 import {bookPageThumbnailUrl} from '@/functions/urls'
-import {PageHashMatchDto} from '@/types/komga-pagehashes'
+import {PageHashMatchDto, PageHashUnknownDto} from '@/types/komga-pagehashes'
 
 export default Vue.extend({
   name: 'PageHashMatchesTable',
   props: {
     hash: {
-      type: String,
+      type: Object as PropType<PageHashUnknownDto>,
     },
   },
   data() {
@@ -73,7 +73,7 @@ export default Vue.extend({
     },
   },
   methods: {
-    async loadData(hash: string) {
+    async loadData(hash: PageHashUnknownDto) {
       this.loading = true
 
       const {sortBy, sortDesc, page, itemsPerPage} = this.options

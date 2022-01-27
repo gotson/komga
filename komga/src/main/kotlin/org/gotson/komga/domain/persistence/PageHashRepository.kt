@@ -10,7 +10,7 @@ interface PageHashRepository {
   fun findAllKnown(actions: List<PageHash.Action>?, pageable: Pageable): Page<PageHash>
   fun findAllUnknown(pageable: Pageable): Page<PageHashUnknown>
 
-  fun findMatchesByHash(hash: String, pageable: Pageable): Page<PageHashMatch>
+  fun findMatchesByHash(pageHash: PageHashUnknown, pageable: Pageable): Page<PageHashMatch>
 
   fun getKnownThumbnail(hash: String): ByteArray?
 }

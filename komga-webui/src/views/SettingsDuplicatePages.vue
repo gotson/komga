@@ -21,8 +21,8 @@
                 width="200"
                 height="300"
                 contain
-                @click="showDialogImage(element.hash)"
-                :src="pageHashUnknownThumbnailUrl(element.hash, 500)"
+                @click="showDialogImage(element)"
+                :src="pageHashUnknownThumbnailUrl(element, 500)"
                 style="cursor: zoom-in"
               />
 
@@ -32,7 +32,7 @@
                 <div>{{ element.mediaType }}</div>
                 <div>{{ element.size || $t('duplicate_pages.unknown_size') }}</div>
                 <v-btn
-                  @click="showDialogMatches(element.hash)"
+                  @click="showDialogMatches(element)"
                   outlined
                   rounded
                   class="mt-2"
@@ -59,7 +59,7 @@
           <v-img
             @click="dialogImage = false"
             contain
-            :src="pageHashUnknownThumbnailUrl(dialogImageHash)"
+            :src="pageHashUnknownThumbnailUrl(dialogImagePageHash)"
             style="cursor: zoom-out;"
           />
         </v-card-text>
@@ -73,7 +73,7 @@
       <v-card>
         <v-card-text>
           <page-hash-matches-table
-            :hash="dialogMatchesHash"
+            :hash="dialogMatchesPageHash"
             class="my-2"
           />
         </v-card-text>
@@ -102,8 +102,8 @@ export default Vue.extend({
       totalPages: 1,
       dialogImage: false,
       dialogMatches: false,
-      dialogImageHash: '',
-      dialogMatchesHash: '',
+      dialogImagePageHash: {} as PageHashUnknownDto,
+      dialogMatchesPageHash: {} as PageHashUnknownDto,
       pageHashUnknownThumbnailUrl,
     }
   },
@@ -142,12 +142,12 @@ export default Vue.extend({
       this.totalPages = itemsPage.totalPages
       this.elements = itemsPage.content
     },
-    showDialogImage(hash: string) {
-      this.dialogImageHash = hash
+    showDialogImage(pageHash: PageHashUnknownDto) {
+      this.dialogImagePageHash = pageHash
       this.dialogImage = true
     },
-    showDialogMatches(hash: string) {
-      this.dialogMatchesHash = hash
+    showDialogMatches(pageHash: PageHashUnknownDto) {
+      this.dialogMatchesPageHash = pageHash
       this.dialogMatches = true
     },
   },

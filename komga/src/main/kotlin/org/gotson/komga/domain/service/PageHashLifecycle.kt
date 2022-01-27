@@ -1,6 +1,7 @@
 package org.gotson.komga.domain.service
 
 import org.gotson.komga.domain.model.BookPageContent
+import org.gotson.komga.domain.model.PageHashUnknown
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.PageHashRepository
 import org.springframework.data.domain.Pageable
@@ -13,7 +14,7 @@ class PageHashLifecycle(
   private val bookRepository: BookRepository,
 ) {
 
-  fun getPage(hash: String, resizeTo: Int? = null): BookPageContent? {
+  fun getPage(hash: PageHashUnknown, resizeTo: Int? = null): BookPageContent? {
     val match = pageHashRepository.findMatchesByHash(hash, Pageable.ofSize(1)).firstOrNull() ?: return null
     val book = bookRepository.findByIdOrNull(match.bookId) ?: return null
 

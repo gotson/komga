@@ -27,10 +27,15 @@ export default class KomgaPageHashesService {
     }
   }
 
-  async getUnknownPageHashMatches(hash: string, pageRequest?: PageRequest): Promise<Page<PageHashMatchDto>> {
+  async getUnknownPageHashMatches(hash: PageHashUnknownDto, pageRequest?: PageRequest): Promise<Page<PageHashMatchDto>> {
     try {
-      return (await this.http.get(`${API_PAGE_HASH}/unknown/${hash}`, {
-        params: pageRequest,
+      const params = {
+        ...pageRequest,
+        media_type: hash.mediaType,
+        size: hash.sizeBytes || -1,
+      }
+      return (await this.http.get(`${API_PAGE_HASH}/unknown/${hash.hash}`, {
+        params: params,
         paramsSerializer: params => qs.stringify(params, {indices: false}),
       })).data
     } catch (e) {
