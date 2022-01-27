@@ -26,8 +26,9 @@ class PageHashDao(
   private val sorts = mapOf(
     "hash" to p.FILE_HASH,
     "mediatype" to p.MEDIA_TYPE,
-    "size" to DSL.field("size"),
+    "size" to p.FILE_SIZE,
     "matchCount" to DSL.field("count"),
+    "totalSize" to DSL.field("totalSize"),
     "url" to b.URL,
     "bookId" to b.ID,
     "pageNumber" to p.NUMBER,
@@ -38,11 +39,13 @@ class PageHashDao(
   }
 
   override fun findAllUnknown(pageable: Pageable): Page<PageHashUnknown> {
+    val bookCount = DSL.count(p.BOOK_ID)
     val query = dsl.select(
       p.FILE_HASH,
       p.MEDIA_TYPE,
       p.FILE_SIZE,
-      DSL.count(p.BOOK_ID).`as`("count"),
+      bookCount.`as`("count"),
+      (bookCount * p.FILE_SIZE).`as`("totalSize"),
     )
       .from(p)
       .where(p.FILE_HASH.ne(""))

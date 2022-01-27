@@ -535,7 +535,12 @@
     "matches_n": "No matches | 1 match | {count} matches",
     "title": "Duplicate pages",
     "unknown_size": "Unknown size",
-    "delete_to_save": "Delete to save {size}"
+    "delete_to_save": "Delete to save {size}",
+    "filter": {
+      "total_size": "Total size",
+      "size": "Size",
+      "count": "Count"
+    }
   },
   "duplicates": {
     "file_hash": "File hash",

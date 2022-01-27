@@ -1,12 +1,39 @@
 <template>
   <v-container fluid class="pa-6">
-    <v-pagination
-      v-if="totalPages > 1"
-      v-model="page"
-      :total-visible="paginationVisible"
-      :length="totalPages"
-      class="mb-2"
-    />
+    <v-row align="center">
+      <v-col cols="auto">
+        <v-pagination
+          v-if="totalPages > 1"
+          v-model="page"
+          :total-visible="paginationVisible"
+          :length="totalPages"
+        />
+      </v-col>
+
+      <v-spacer/>
+
+      <v-col
+        v-for="sortOption in sortOptions"
+        :key="sortOption.key"
+        cols="auto"
+      >
+        <v-btn
+          rounded
+          small
+          :color="sortActive.key === sortOption.key ? 'primary' : ''"
+          @click="setSort(sortOption.key)"
+        >
+          {{ sortOption.name }}
+          <v-icon
+            v-if="sortActive.key === sortOption.key"
+            class="ms-2"
+          >
+            {{ sortActive.order === 'desc' ? 'mdi-sort-variant' : 'mdi-sort-reverse-variant' }}
+          </v-icon>
+        </v-btn>
+      </v-col>
+
+    </v-row>
 
     <v-row>
       <v-card
@@ -60,6 +87,17 @@
 
     </v-row>
 
+    <v-row>
+      <v-col cols="12">
+        <v-pagination
+          v-if="totalPages > 1"
+          v-model="page"
+          :total-visible="paginationVisible"
+          :length="totalPages"
+        />
+      </v-col>
+    </v-row>
+
     <v-dialog v-model="dialogImage">
       <v-card>
         <v-card-text>
@@ -107,6 +145,7 @@ export default Vue.extend({
       totalElements: 0,
       page: 1,
       totalPages: 1,
+      sortActive: {key: 'totalSize', order: 'desc'} as SortActive,
       dialogImage: false,
       dialogMatches: false,
       dialogImagePageHash: {} as PageHashUnknownDto,
@@ -115,14 +154,24 @@ export default Vue.extend({
     }
   },
   async mounted() {
-    await this.loadData(this.page)
+    await this.loadData(this.page, this.sortActive)
   },
   watch: {
     page(val) {
-      this.loadData(val)
+      this.loadData(val, this.sortActive)
+    },
+    sortActive(val) {
+      this.loadData(this.page, val)
     },
   },
   computed: {
+    sortOptions(): SortOption[] {
+      return [
+        {name: this.$t('duplicate_pages.filter.total_size').toString(), key: 'totalSize'},
+        {name: this.$t('duplicate_pages.filter.size').toString(), key: 'size'},
+        {name: this.$t('duplicate_pages.filter.count').toString(), key: 'matchCount'},
+      ]
+    },
     paginationVisible(): number {
       switch (this.$vuetify.breakpoint.name) {
         case 'xs':
@@ -138,16 +187,27 @@ export default Vue.extend({
     },
   },
   methods: {
-    async loadData(page: number) {
+    async loadData(page: number, sort: SortActive) {
       const pageRequest = {
         page: page - 1,
-        sort: ['matchCount,desc'],
+        sort: [`${sort.key},${sort.order}`],
       } as PageRequest
 
       const itemsPage = await this.$komgaPageHashes.getUnknownHashes(pageRequest)
       this.totalElements = itemsPage.totalElements
       this.totalPages = itemsPage.totalPages
       this.elements = itemsPage.content
+    },
+    setSort(key: string) {
+      if (this.sortActive.key === key) {
+        if (this.sortActive.order === 'desc') {
+          this.sortActive = {key: key, order: 'asc'}
+        } else {
+          this.sortActive = {key: key, order: 'desc'}
+        }
+      } else {
+        this.sortActive = {key: key, order: 'desc'}
+      }
     },
     showDialogImage(pageHash: PageHashUnknownDto) {
       this.dialogImagePageHash = pageHash
