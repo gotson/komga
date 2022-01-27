@@ -1,3 +1,14 @@
+## [0.148.1](https://github.com/gotson/komga/compare/v0.148.0...v0.148.1) (2022-01-27)
+
+
+### Bug Fixes
+
+* **webui:** duplicate page card action bar alignment ([7a3f80c](https://github.com/gotson/komga/commit/7a3f80ce92aead63f2e8310301fef402b885d964))
+* **webui:** duplicate page matches show filenames ([388c4f5](https://github.com/gotson/komga/commit/388c4f5f305fdadb3f23e45a307159a0ee2c6e60))
+* **webui:** duplicate page matches were not showing exact matches only ([5844521](https://github.com/gotson/komga/commit/58445212865da65c70d92ebe94f3b1ebe4be983d))
+* **webui:** duplicate pages filters ([1120f19](https://github.com/gotson/komga/commit/1120f1943ad201805104b485cc497316e92d3899))
+* **webui:** duplicate pages show total size saving ([e9bf064](https://github.com/gotson/komga/commit/e9bf064cb2accd47545f16fe6359c1f8e4858dae))
+
 # [0.148.0](https://github.com/gotson/komga/compare/v0.147.0...v0.148.0) (2022-01-26)
 
 

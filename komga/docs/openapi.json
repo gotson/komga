@@ -5634,7 +5634,7 @@
         }
       }
     },
-    "/api/v1/page-hashes/unknown/{hash}": {
+    "/api/v1/page-hashes/unknown/{pageHash}": {
       "get": {
         "tags": [
           "page-hash-controller"
@@ -5642,7 +5642,7 @@
         "operationId": "getUnknownPageHashMatches",
         "parameters": [
           {
-            "name": "hash",
+            "name": "pageHash",
             "in": "path",
             "required": true,
             "schema": {
@@ -5650,17 +5650,26 @@
             }
           },
           {
-            "name": "page",
+            "name": "media_type",
             "in": "query",
-            "description": "Zero-based page index (0..N)",
+            "required": true,
             "schema": {
-              "type": "integer"
+              "type": "string"
             }
           },
           {
             "name": "size",
             "in": "query",
             "description": "The size of the page to be returned",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
             "schema": {
               "type": "integer"
             }
@@ -5701,7 +5710,7 @@
         }
       }
     },
-    "/api/v1/page-hashes/unknown/{hash}/thumbnail": {
+    "/api/v1/page-hashes/unknown/{pageHash}/thumbnail": {
       "get": {
         "tags": [
           "page-hash-controller"
@@ -5709,11 +5718,28 @@
         "operationId": "getUnknownPageHashThumbnail",
         "parameters": [
           {
-            "name": "hash",
+            "name": "pageHash",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "media_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
             }
           },
           {
@@ -7491,7 +7517,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders",
+        "operationId": "getProviders_2",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7522,7 +7548,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_5",
+        "operationId": "getProviders",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7553,7 +7579,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_6",
+        "operationId": "getProviders_3",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7584,7 +7610,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_4",
+        "operationId": "getProviders_1",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7615,7 +7641,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_1",
+        "operationId": "getProviders_6",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7646,7 +7672,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_3",
+        "operationId": "getProviders_4",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7677,7 +7703,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_2",
+        "operationId": "getProviders_5",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8568,25 +8594,16 @@
           "totalBookCountLock": {
             "type": "boolean"
           },
-          "readingDirection": {
-            "type": "string",
-            "enum": [
-              "LEFT_TO_RIGHT",
-              "RIGHT_TO_LEFT",
-              "VERTICAL",
-              "WEBTOON"
-            ]
-          },
-          "totalBookCount": {
-            "type": "integer",
-            "format": "int32"
-          },
           "tags": {
             "uniqueItems": true,
             "type": "array",
             "items": {
               "type": "string"
             }
+          },
+          "totalBookCount": {
+            "type": "integer",
+            "format": "int32"
           },
           "genres": {
             "uniqueItems": true,
@@ -8598,6 +8615,15 @@
           "ageRating": {
             "type": "integer",
             "format": "int32"
+          },
+          "readingDirection": {
+            "type": "string",
+            "enum": [
+              "LEFT_TO_RIGHT",
+              "RIGHT_TO_LEFT",
+              "VERTICAL",
+              "WEBTOON"
+            ]
           }
         },
         "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update."
@@ -8711,14 +8737,12 @@
               "type": "string"
             }
           },
-          "links": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/WebLinkUpdateDto"
-            }
-          },
           "summary": {
             "type": "string"
+          },
+          "releaseDate": {
+            "type": "string",
+            "format": "date"
           },
           "authors": {
             "type": "array",
@@ -8729,9 +8753,11 @@
           "isbn": {
             "type": "string"
           },
-          "releaseDate": {
-            "type": "string",
-            "format": "date"
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WebLinkUpdateDto"
+            }
           }
         },
         "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update."
@@ -8996,9 +9022,6 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
-          "paged": {
-            "type": "boolean"
-          },
           "pageNumber": {
             "type": "integer",
             "format": "int32"
@@ -9006,6 +9029,9 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "paged": {
+            "type": "boolean"
           },
           "unpaged": {
             "type": "boolean"
@@ -9971,6 +9997,9 @@
           "size": {
             "type": "string"
           },
+          "totalSize": {
+            "type": "string"
+          },
           "matchCount": {
             "type": "integer",
             "format": "int32"
@@ -10026,6 +10055,7 @@
       "PageHashMatchDto": {
         "required": [
           "bookId",
+          "fileName",
           "pageNumber",
           "url"
         ],
@@ -10040,6 +10070,9 @@
           "pageNumber": {
             "type": "integer",
             "format": "int32"
+          },
+          "fileName": {
+            "type": "string"
           }
         }
       },
