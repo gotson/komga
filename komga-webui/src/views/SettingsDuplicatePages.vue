@@ -14,11 +14,12 @@
         :key="i"
         class="ma-2"
       >
-        <v-container>
+        <v-container fluid>
           <v-row>
             <v-col>
               <v-img
                 width="200"
+                height="300"
                 contain
                 @click="showDialogImage(element.hash)"
                 :src="pageHashUnknownThumbnailUrl(element.hash, 500)"
@@ -41,13 +42,13 @@
               </v-card-text>
             </v-col>
           </v-row>
-
-          <v-card-actions>
-            <v-btn text disabled>{{ $t('duplicate_pages.action_ignore') }}</v-btn>
-            <v-btn text disabled>{{ $t('duplicate_pages.action_delete_manual') }}</v-btn>
-            <v-btn text disabled>{{ $t('duplicate_pages.action_delete_auto') }}</v-btn>
-          </v-card-actions>
         </v-container>
+
+        <v-card-actions>
+          <v-btn text disabled>{{ $t('duplicate_pages.action_ignore') }}</v-btn>
+          <v-btn text disabled>{{ $t('duplicate_pages.action_delete_manual') }}</v-btn>
+          <v-btn text disabled>{{ $t('duplicate_pages.action_delete_auto') }}</v-btn>
+        </v-card-actions>
       </v-card>
 
     </v-row>
