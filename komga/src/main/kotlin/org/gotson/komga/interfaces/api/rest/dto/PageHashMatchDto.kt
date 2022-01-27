@@ -7,6 +7,7 @@ data class PageHashMatchDto(
   val bookId: String,
   val url: String,
   val pageNumber: Int,
+  val fileName: String,
 )
 
 fun PageHashMatch.toDto() =
@@ -14,4 +15,5 @@ fun PageHashMatch.toDto() =
     bookId = bookId,
     url = url.toFilePath(),
     pageNumber = pageNumber,
+    fileName = fileName,
   )

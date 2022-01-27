@@ -69,7 +69,7 @@ class PageHashDao(
   }
 
   override fun findMatchesByHash(pageHash: PageHashUnknown, pageable: Pageable): Page<PageHashMatch> {
-    val query = dsl.select(p.BOOK_ID, b.URL, p.NUMBER)
+    val query = dsl.select(p.BOOK_ID, b.URL, p.NUMBER, p.FILE_NAME)
       .from(p)
       .leftJoin(b).on(p.BOOK_ID.eq(b.ID))
       .where(p.FILE_HASH.eq(pageHash.hash))
@@ -90,6 +90,7 @@ class PageHashDao(
           bookId = it.value1(),
           url = URL(it.value2()),
           pageNumber = it.value3() + 1,
+          fileName = it.value4(),
         )
       }
 

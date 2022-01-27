@@ -6,4 +6,5 @@ data class PageHashMatch(
   val bookId: String,
   val url: URL,
   val pageNumber: Int,
+  val fileName: String,
 )

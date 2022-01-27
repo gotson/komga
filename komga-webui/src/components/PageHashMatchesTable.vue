@@ -67,6 +67,7 @@ export default Vue.extend({
     headers(): object[] {
       return [
         {text: this.$t('common.url').toString(), value: 'url'},
+        {text: this.$t('common.filename').toString(), value: 'fileName'},
         {text: this.$t('common.page_number').toString(), value: 'pageNumber'},
         {text: this.$t('common.page').toString(), value: 'bookId'},
       ]
