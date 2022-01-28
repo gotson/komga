@@ -55,7 +55,7 @@
 
             </v-col>
             <v-col>
-              <v-card-text>
+              <v-card-text style="min-width: 200px">
                 <div>{{ element.mediaType }}</div>
                 <div>{{ element.size || $t('duplicate_pages.unknown_size') }}</div>
 
