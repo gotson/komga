@@ -63,7 +63,7 @@ class PageHashController(
   fun getUnknownPageHashMatches(
     @PathVariable pageHash: String,
     @RequestParam("media_type") mediaType: String,
-    @RequestParam("size") size: Long,
+    @RequestParam("file_size") size: Long,
     @Parameter(hidden = true) page: Pageable,
   ): Page<PageHashMatchDto> =
     pageHashRepository.findMatchesByHash(
@@ -80,7 +80,7 @@ class PageHashController(
   fun getUnknownPageHashThumbnail(
     @PathVariable pageHash: String,
     @RequestParam("media_type") mediaType: String,
-    @RequestParam("size") size: Long,
+    @RequestParam("file_size") size: Long,
     @RequestParam("resize") resize: Int? = null,
   ): ResponseEntity<ByteArray> =
     pageHashLifecycle.getPage(

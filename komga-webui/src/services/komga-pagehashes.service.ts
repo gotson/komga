@@ -32,7 +32,7 @@ export default class KomgaPageHashesService {
       const params = {
         ...pageRequest,
         media_type: hash.mediaType,
-        size: hash.sizeBytes || -1,
+        file_size: hash.sizeBytes || -1,
       }
       return (await this.http.get(`${API_PAGE_HASH}/unknown/${hash.hash}`, {
         params: params,

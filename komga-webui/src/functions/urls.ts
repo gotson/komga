@@ -75,7 +75,7 @@ export function transientBookPageUrl(transientBookId: string, page: number): str
 }
 
 export function pageHashUnknownThumbnailUrl(pageHash: PageHashUnknownDto, resize?: number): string {
-  let url = `${urls.originNoSlash}/api/v1/page-hashes/unknown/${pageHash.hash}/thumbnail?media_type=${pageHash.mediaType}&size=${pageHash.sizeBytes || -1}`
+  let url = `${urls.originNoSlash}/api/v1/page-hashes/unknown/${pageHash.hash}/thumbnail?media_type=${pageHash.mediaType}&file_size=${pageHash.sizeBytes || -1}`
   if(resize) {
     url += `&resize=${resize}`
   }

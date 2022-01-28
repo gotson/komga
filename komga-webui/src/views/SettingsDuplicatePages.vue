@@ -168,7 +168,7 @@ export default Vue.extend({
     sortOptions(): SortOption[] {
       return [
         {name: this.$t('duplicate_pages.filter.total_size').toString(), key: 'totalSize'},
-        {name: this.$t('duplicate_pages.filter.size').toString(), key: 'size'},
+        {name: this.$t('duplicate_pages.filter.size').toString(), key: 'fileSize'},
         {name: this.$t('duplicate_pages.filter.count').toString(), key: 'matchCount'},
       ]
     },

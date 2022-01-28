@@ -26,7 +26,7 @@ class PageHashDao(
   private val sorts = mapOf(
     "hash" to p.FILE_HASH,
     "mediatype" to p.MEDIA_TYPE,
-    "size" to p.FILE_SIZE,
+    "fileSize" to p.FILE_SIZE,
     "matchCount" to DSL.field("count"),
     "totalSize" to DSL.field("totalSize"),
     "url" to b.URL,
