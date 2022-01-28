@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🖥️ Komga website
+    url: https://komga.org/faq/
+    about: Guides, troubleshooting, and answers to common questions
+  - name: ⚠️ Tachiyomi extension
+    url: https://github.com/tachiyomiorg/tachiyomi-extensions/issues/new/choose
+    about: Issues and requests about the Tachiyomi extension should be opened in the tachiyomi-extensions repository instead

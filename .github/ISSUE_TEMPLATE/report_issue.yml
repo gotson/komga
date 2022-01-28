@@ -1,0 +1,92 @@
+name: 🐞 Issue report
+description: Report an issue in Komga
+labels:
+  - bug
+body:
+
+  - type: textarea
+    id: reproduce-steps
+    attributes:
+      label: Steps to reproduce
+      description: Provide an example of the issue.
+      placeholder: |
+        Example:
+          1. First step
+          2. Second step
+          3. Issue here
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: Explain what you should expect to happen.
+      placeholder: |
+        Example:
+          "This should happen..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual behavior
+      description: Explain what actually happens.
+      placeholder: |
+        Example:
+          "This happened instead..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: logfile
+    attributes:
+      label: Logs
+      description: |
+        If applicable, add an excerpt of the log file (max 20 lines) _AND_ attach the complete log file or a link to a gist/pastebin containing the log file ([where to find the logs](https://komga.org/faq/#where-can-i-find-the-log-files)).
+      placeholder: |
+        You can paste the logs in pure text or upload it as an attachment.
+
+  - type: input
+    id: komga-version
+    attributes:
+      label: Komga version
+      description: You can find your Komga version at the bottom of the side bar.
+      placeholder: |
+        Example: "0.143.0"
+    validations:
+      required: true
+
+  - type: input
+    id: operating-system
+    attributes:
+      label: Operating system
+      placeholder: |
+        Example: "Windows 11"
+    validations:
+      required: true
+
+  - type: textarea
+    id: other-details
+    attributes:
+      label: Other details
+      placeholder: |
+        Additional details and attachments.
+
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: Acknowledgements
+      description: Read this carefully, we will close and ignore your issue if you skimmed through this.
+      options:
+        - label: I have searched the existing issues and this is a new ticket, **NOT** a duplicate or related to another open issue.
+          required: true
+        - label: I have written a short but informative title.
+          required: true
+        - label: I have checked the [FAQ](https://komga.org/faq/).
+          required: true
+        - label: I have updated the app to the latest version.
+          required: true
+        - label: I will fill out all of the requested information in this form.
+          required: true
