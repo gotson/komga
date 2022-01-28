@@ -13,9 +13,7 @@ You will need:
 
 Komga's commit messages follow the [Conventional Commits](https://www.conventionalcommits.org/) standard. This enables automatic versioning, releases, and release notes generation.
 
-Commit messages are enforced using commit hooks ran on the developer's PC. To install the necessary tooling, you need to run `npm install` in the root folder of the project. This will install the necessary commit hooks. You must then run `npm install` again within the `komga-webui` folder to get the tools the commit hooks use.
-
-To commit changes, you must run `git commit` from within the `komga-webui` folder.
+Commit messages are enforced using commit hooks ran on the developer's PC. To install the necessary tooling, you need to run `npm install` in the root folder of the project. This will install the necessary commit hooks.
 
 ## Project organization
 
