@@ -1,3 +1,18 @@
+## [0.148.2](https://github.com/gotson/komga/compare/v0.148.1...v0.148.2) (2022-01-31)
+
+
+### Bug Fixes
+
+* **api:** request param conflict ([160c767](https://github.com/gotson/komga/commit/160c767c4016a16e6496e9a27d84941891b9a8f5))
+* synchronous cache eviction when closing PDDocument ([f25c74f](https://github.com/gotson/komga/commit/f25c74f759f3ac3f172d8f2ada517bb8987688d8))
+* translated using Weblate ([2d554af](https://github.com/gotson/komga/commit/2d554afec4b67359244ce3921a8b6fb023929b4f))
+* **webui:** duplicate pages card size ([fedaa33](https://github.com/gotson/komga/commit/fedaa338554958d7b4c91a9387ebf0a4e684cbab))
+
+
+### Performance Improvements
+
+* use temp files for PDF streams ([8da2489](https://github.com/gotson/komga/commit/8da2489671b4a1f00675b126abe71f6f2f57ea49))
+
 ## [0.148.1](https://github.com/gotson/komga/compare/v0.148.0...v0.148.1) (2022-01-27)
 
 

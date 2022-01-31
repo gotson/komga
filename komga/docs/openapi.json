@@ -5658,18 +5658,26 @@
             }
           },
           {
-            "name": "size",
+            "name": "file_size",
             "in": "query",
-            "description": "The size of the page to be returned",
             "required": true,
             "schema": {
-              "type": "integer"
+              "type": "integer",
+              "format": "int64"
             }
           },
           {
             "name": "page",
             "in": "query",
             "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
             "schema": {
               "type": "integer"
             }
@@ -5734,7 +5742,7 @@
             }
           },
           {
-            "name": "size",
+            "name": "file_size",
             "in": "query",
             "required": true,
             "schema": {
@@ -7517,7 +7525,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_2",
+        "operationId": "getProviders_6",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7548,7 +7556,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders",
+        "operationId": "getProviders_4",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7579,7 +7587,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_3",
+        "operationId": "getProviders",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7610,7 +7618,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_1",
+        "operationId": "getProviders_2",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7641,7 +7649,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_6",
+        "operationId": "getProviders_3",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7672,7 +7680,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_4",
+        "operationId": "getProviders_5",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7703,7 +7711,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_5",
+        "operationId": "getProviders_1",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8594,14 +8602,16 @@
           "totalBookCountLock": {
             "type": "boolean"
           },
-          "tags": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "readingDirection": {
+            "type": "string",
+            "enum": [
+              "LEFT_TO_RIGHT",
+              "RIGHT_TO_LEFT",
+              "VERTICAL",
+              "WEBTOON"
+            ]
           },
-          "totalBookCount": {
+          "ageRating": {
             "type": "integer",
             "format": "int32"
           },
@@ -8612,18 +8622,16 @@
               "type": "string"
             }
           },
-          "ageRating": {
+          "totalBookCount": {
             "type": "integer",
             "format": "int32"
           },
-          "readingDirection": {
-            "type": "string",
-            "enum": [
-              "LEFT_TO_RIGHT",
-              "RIGHT_TO_LEFT",
-              "VERTICAL",
-              "WEBTOON"
-            ]
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         },
         "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update."
@@ -8730,13 +8738,6 @@
           "linksLock": {
             "type": "boolean"
           },
-          "tags": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "summary": {
             "type": "string"
           },
@@ -8752,6 +8753,13 @@
           },
           "isbn": {
             "type": "string"
+          },
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "links": {
             "type": "array",
@@ -9022,6 +9030,9 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
+          "paged": {
+            "type": "boolean"
+          },
           "pageNumber": {
             "type": "integer",
             "format": "int32"
@@ -9029,9 +9040,6 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
-          },
-          "paged": {
-            "type": "boolean"
           },
           "unpaged": {
             "type": "boolean"
