@@ -34,7 +34,7 @@ class PdfExtractor : MediaContainerExtractor {
   override fun mediaTypes(): List<String> = listOf("application/pdf")
 
   override fun getEntries(path: Path, analyzeDimensions: Boolean): List<MediaContainerEntry> =
-    PDDocument.load(path.toFile()).use { pdf ->
+    PDDocument.load(path.toFile(), MemoryUsageSetting.setupTempFileOnly()).use { pdf ->
       (0 until pdf.numberOfPages).map { index ->
         val page = pdf.getPage(index)
         val scale = page.getScale()
