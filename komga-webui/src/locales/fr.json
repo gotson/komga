@@ -345,6 +345,7 @@
       "tab_authors": "Auteurs",
       "tab_general": "Général",
       "tab_links": "Liens",
+      "tab_poster": "Couverture",
       "tab_tags": "Étiquettes",
       "tags_notice_multiple_edit": "Vous êtes en train de modifier les étiquettes pour plusieurs livres. Cela écrasera les étiquettes existantes pour chacun des livres."
     },
@@ -353,7 +354,9 @@
       "button_confirm": "Enregistrer les modifications",
       "dialog_title": "Modifier la collection",
       "field_manual_ordering": "Tri manuel",
-      "label_ordering": "Par défaut, les séries dans une collection seront triées par nom. Vous pouvez activer le tri manuel pour définir votre propre ordre."
+      "label_ordering": "Par défaut, les séries dans une collection seront triées par nom. Vous pouvez activer le tri manuel pour définir votre propre ordre.",
+      "tab_general": "Général",
+      "tab_poster": "Couverture"
     },
     "edit_library": {
       "button_browse": "Parcourir",
@@ -405,7 +408,9 @@
       "button_confirm": "Enregistrer les modifications",
       "dialog_title": "Modifier la liste de lecture",
       "field_name": "Nom",
-      "field_summary": "Résumé"
+      "field_summary": "Résumé",
+      "tab_general": "Général",
+      "tab_poster": "Couverture"
     },
     "edit_series": {
       "button_cancel": "Annuler",
@@ -716,6 +721,7 @@
   },
   "thumbnail_card": {
     "tooltip_delete": "Supprimer",
+    "tooltip_generated": "Couverture générée",
     "tooltip_mark_as_selected": "Marquer comme sélectionné",
     "tooltip_selected": "Sélectionné",
     "tooltip_sidecar": "Couverture locale",
