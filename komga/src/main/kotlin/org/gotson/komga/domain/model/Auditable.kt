@@ -2,7 +2,7 @@ package org.gotson.komga.domain.model
 
 import java.time.LocalDateTime
 
-abstract class Auditable {
-  abstract val createdDate: LocalDateTime
-  abstract val lastModifiedDate: LocalDateTime
+interface Auditable {
+  val createdDate: LocalDateTime
+  val lastModifiedDate: LocalDateTime
 }

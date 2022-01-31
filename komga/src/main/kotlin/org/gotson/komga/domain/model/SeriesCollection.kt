@@ -19,4 +19,4 @@ data class SeriesCollection(
    * Indicates that the seriesIds have been filtered and is not exhaustive.
    */
   val filtered: Boolean = false,
-) : Auditable(), Serializable
+) : Auditable, Serializable

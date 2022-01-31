@@ -35,7 +35,7 @@ data class Library(
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
-) : Auditable(), Serializable {
+) : Auditable, Serializable {
 
   enum class SeriesCover {
     FIRST,

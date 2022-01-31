@@ -12,4 +12,4 @@ data class ReadProgress(
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
-) : Auditable(), Serializable
+) : Auditable, Serializable

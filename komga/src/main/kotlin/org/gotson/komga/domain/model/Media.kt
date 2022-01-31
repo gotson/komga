@@ -11,7 +11,7 @@ data class Media(
   val bookId: String = "",
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
-) : Auditable() {
+) : Auditable {
 
   enum class Status {
     UNKNOWN, ERROR, READY, UNSUPPORTED, OUTDATED

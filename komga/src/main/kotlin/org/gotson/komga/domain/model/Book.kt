@@ -24,7 +24,7 @@ data class Book(
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
-) : Auditable(), Serializable {
+) : Auditable, Serializable {
 
   @delegate:Transient
   val path: Path by lazy { this.url.toURI().toPath() }

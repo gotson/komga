@@ -14,7 +14,7 @@ data class ThumbnailSeriesCollection(
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
-) : Auditable(), Serializable {
+) : Auditable, Serializable {
   enum class Type {
     USER_UPLOADED
   }

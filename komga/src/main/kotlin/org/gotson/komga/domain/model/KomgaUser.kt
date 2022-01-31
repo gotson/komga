@@ -25,7 +25,7 @@ data class KomgaUser(
   val id: String = TsidCreator.getTsid256().toString(),
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
-) : Auditable(), Serializable {
+) : Auditable, Serializable {
 
   fun roles(): Set<String> {
     val roles = mutableSetOf(ROLE_USER)
