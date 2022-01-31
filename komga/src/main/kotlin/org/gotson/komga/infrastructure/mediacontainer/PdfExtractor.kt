@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.mediacontainer
 
 import com.github.benmanes.caffeine.cache.Caffeine
 import mu.KotlinLogging
+import org.apache.pdfbox.io.MemoryUsageSetting
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.rendering.ImageType
@@ -43,7 +44,7 @@ class PdfExtractor : MediaContainerExtractor {
     }
 
   override fun getEntryStream(path: Path, entryName: String): ByteArray {
-    val pdf = cache.get(path) { PDDocument.load(path.toFile()) }!!
+    val pdf = cache.get(path) { PDDocument.load(path.toFile(), MemoryUsageSetting.setupTempFileOnly()) }!!
     val pageNumber = entryName.toInt()
     val page = pdf.getPage(pageNumber)
     val image = PDFRenderer(pdf).renderImage(pageNumber, page.getScale(), ImageType.RGB)
