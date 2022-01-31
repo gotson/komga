@@ -11,4 +11,8 @@ else
     DOCKER_CHANNEL=$2
 fi
 
+VERSION_ARRAY=( ${1//./ } )
+VERSION_MAJOR="${VERSION_ARRAY[0]}"
+
 echo "DockerHub channel: $DOCKER_CHANNEL"
+echo "Major version: $VERSION_MAJOR"
