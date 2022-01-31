@@ -22,7 +22,7 @@ class ZipExtractor(
   private val cache = Caffeine.newBuilder()
     .maximumSize(20)
     .expireAfterAccess(1, TimeUnit.MINUTES)
-    .removalListener { _: Path?, zip: ZipFile?, _ -> zip?.close() }
+    .evictionListener { _: Path?, zip: ZipFile?, _ -> zip?.close() }
     .build<Path, ZipFile>()
 
   private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()

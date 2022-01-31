@@ -27,7 +27,7 @@ class PdfExtractor : MediaContainerExtractor {
   private val cache = Caffeine.newBuilder()
     .maximumSize(20)
     .expireAfterAccess(1, TimeUnit.MINUTES)
-    .removalListener { _: Path?, pdf: PDDocument?, _ -> pdf?.close() }
+    .evictionListener { _: Path?, pdf: PDDocument?, _ -> pdf?.close() }
     .build<Path, PDDocument>()
 
   override fun mediaTypes(): List<String> = listOf("application/pdf")
