@@ -190,6 +190,7 @@
     "dismiss": "解除",
     "download": "下载",
     "email": "邮箱",
+    "filename": "文件名",
     "filter_no_matches": "过滤器没有匹配的",
     "genre": "流派",
     "go_to_library": "前往库",
@@ -531,6 +532,12 @@
     "action_delete_auto": "自动删除",
     "action_delete_manual": "手动删除",
     "action_ignore": "忽略",
+    "delete_to_save": "删除以节省 {size}",
+    "filter": {
+      "count": "数目",
+      "size": "大小",
+      "total_size": "总大小"
+    },
     "matches_n": "无匹配 | 1 个匹配 | {count} 个匹配",
     "title": "重复页面",
     "unknown_size": "未知大小"

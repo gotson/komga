@@ -127,6 +127,7 @@
       "cycle_scale": "Cambia scala",
       "cycle_side_padding": "Cambia distanziamento laterale",
       "first_page": "Prima pagina",
+      "fullscreen": "Entra/esci da schermo intero",
       "last_page": "Ultima pagina",
       "left_to_right": "Da sinistra a destra",
       "menus": "Menu",
@@ -150,6 +151,7 @@
     "file": "FILE",
     "format": "FORMATO",
     "isbn": "ISBN",
+    "links": "COLLEGAMENTO",
     "navigation_within_readlist": "Navigazione all'interno della lista di lettura: {name}",
     "outdated_tooltip": "Il file di questo fumetto è cambiato, questo fumetto deve essere ri-analizzato",
     "read_book": "Leggi fumetto",
@@ -187,6 +189,7 @@
     "dismiss": "Chiudi",
     "download": "Scarica",
     "email": "E-mail",
+    "filename": "Nome file",
     "filter_no_matches": "Il filtro attivo non ha corrispondenze",
     "genre": "Genere",
     "go_to_library": "Vai alla libreria",
@@ -198,6 +201,9 @@
     "lock_all": "Blocca tutti",
     "n_selected": "{count} selezionati",
     "nothing_to_show": "Niente da mostrare",
+    "outdated": "Scaduto",
+    "page": "Pagina",
+    "page_number": "Numero pagina",
     "pages": "pagine",
     "pages_n": "Nessuna pagina | 1 pagina | {count} pagine",
     "password": "Password",
@@ -212,6 +218,7 @@
     "tags": "Etichette",
     "unavailable": "Non disponibile",
     "unlock_all": "Sblocca tutti",
+    "url": "URL",
     "use_filter_panel_to_change_filter": "Usa il pannello dei filtri per cambiare il filtro attivo",
     "year": "anno"
   },
@@ -270,6 +277,14 @@
       "button_confirm": "Analizza",
       "title": "Analizza libreria"
     },
+    "delete_book": {
+      "button_confirm": "Cancella",
+      "confirm_delete": "Sì, elimina il libro '{name}' e i suoi file",
+      "confirm_delete_multiple": "Si, cancella {count} libri e i loro file",
+      "dialog_title": "Elimina Libro",
+      "dialog_title_multiple": "Elimina Libri",
+      "warning_multiple_html": "{count} Libri verranno rimossi da questo server insieme a file multimediali memorizzati. Questo <b>non può</b> essere annullato. Continua?"
+    },
     "delete_collection": {
       "button_confirm": "Elimina",
       "confirm_delete": "Sì, elimina la raccolta «{name}»",
@@ -294,6 +309,14 @@
       "warning_html": "La lista di lettura <b>{name}</b> sarà rimossa da questo server. I tuoi file multimediali non saranno interessati. Questo <b>non può</b> essere annullato. Continuare?",
       "warning_multiple_html": "{count} raccolte verranno rimosse da questo server. I file non saranno interessati. Questo <b>non</b> può essere annullato. Continuare?"
     },
+    "delete_series": {
+      "button_confirm": "Elimina",
+      "confirm_delete": "Sì, elimina la serie '{name}' e i relativi file",
+      "confirm_delete_multiple": "Sì, elimina {count} serie e i relativi file",
+      "dialog_title": "Elimina le serie",
+      "warning_html": "La serie <b>{name}</b> verrà rimossa da questo server insieme ai file multimediali archiviati. Questo <b>non può</b> essere annullato. Continua?",
+      "warning_multiple_html": "{count} serie verranno rimosse da questo server insieme ai file multimediali archiviati. Questo <b>non può</b> essere annullato. Continua?"
+    },
     "delete_user": {
       "button_confirm": "Elimina",
       "confirm_delete": "Sì, elimina l'utente «{name}»",
@@ -301,6 +324,7 @@
       "warning_html": "L'utente <b>{name}</b> sarà cancellato da questo server. Questo <b>non può</b> essere annullato. Continuare?"
     },
     "edit_books": {
+      "add_author_role_error_duplicate": "Esiste già",
       "authors_notice_multiple_edit": "Stai modificando gli autori per più fumetti. Questo sovrascriverà gli autori esistenti di ogni fumetto.",
       "button_cancel": "Annulla",
       "button_confirm": "Salva modifiche",
@@ -308,6 +332,10 @@
       "dialog_title_single": "Modifica {book}",
       "field_isbn": "ISBN",
       "field_isbn_error": "Deve essere un ISBN 13 valido",
+      "field_link_label": "Etichetta",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "Deve essere http o https",
+      "field_link_url_error_url": "Deve essere un URL valido",
       "field_number": "Numero",
       "field_number_sort": "Numero di ordinamento",
       "field_number_sort_hint": "Puoi usare numeri decimali",
@@ -318,6 +346,7 @@
       "field_title": "Titolo",
       "tab_authors": "Autori",
       "tab_general": "Generale",
+      "tab_links": "Links",
       "tab_tags": "Etichette",
       "tags_notice_multiple_edit": "Stai modificando le etichette per più fumetti. Questo sovrascriverà le etichette esistenti di ogni fumetto."
     },
@@ -326,15 +355,20 @@
       "button_confirm": "Salva modifiche",
       "dialog_title": "Modifica raccolta",
       "field_manual_ordering": "Ordinamento manuale",
-      "label_ordering": "Per impostazione predefinita, le serie in una collezione saranno ordinate per nome. Puoi abilitare l'ordinamento manuale per definire il proprio ordine."
+      "label_ordering": "Per impostazione predefinita, le serie in una collezione saranno ordinate per nome. Puoi abilitare l'ordinamento manuale per definire il proprio ordine.",
+      "tab_general": "Generale"
     },
     "edit_library": {
       "button_browse": "Sfoglia",
       "button_cancel": "Annulla",
       "button_confirm_add": "Aggiungi",
       "button_confirm_edit": "Modifica",
+      "button_next": "Prossimo",
       "dialog_title_add": "Aggiungi Libreria",
       "dialot_title_edit": "Modifica Libreria",
+      "field_analysis_analyze_dimensions": "Analizza le dimensioni delle pagine",
+      "field_analysis_hash_files": "Calcola hash per i file",
+      "field_analysis_hash_pages": "Calcola gli hash per le pagine",
       "field_convert_to_cbz": "Converti automaticamente in CBZ",
       "field_import_barcode_isbn": "Codice a barre ISBN",
       "field_import_comicinfo_book": "Metadati del fumetto",
@@ -354,6 +388,7 @@
       "field_series_cover": "Copertina della serie",
       "file_browser_dialog_button_confirm": "Scegli",
       "file_browser_dialog_title": "Cartella principale della libreria",
+      "label_analysis": "Analisi",
       "label_file_management": "Gestione dei file",
       "label_import_barcode_isbn": "Importa ISBN all'interno del codice a barre",
       "label_import_comicinfo": "Importa metadati per CBR/CBZ contenenti un file ComicInfo.xml",
@@ -364,14 +399,18 @@
       "label_series_cover": "Copertina della serie",
       "tab_general": "Generale",
       "tab_metadata": "Metadati",
-      "tab_options": "Opzioni"
+      "tab_options": "Opzioni",
+      "tooltip_scanner_force_modified_time": "Abilita se la libreria si trova su Google Drive",
+      "tooltip_use_resources": "Può consumare molte risorse su librerie di grandi dimensioni o hardware lento"
     },
     "edit_readlist": {
       "button_cancel": "Annulla",
       "button_confirm": "Salva modifiche",
       "dialog_title": "Modifica elenco di lettura",
       "field_name": "Nome",
-      "field_summary": "Sommario"
+      "field_summary": "Sommario",
+      "tab_general": "Generale",
+      "tab_poster": "Poster"
     },
     "edit_series": {
       "button_cancel": "Annulla",
@@ -390,6 +429,7 @@
       "field_tags": "Etichette",
       "field_title": "Titolo",
       "field_total_book_count": "Fumetti totali",
+      "field_total_book_count_error": "La conta dei libri totali deve essere 1 o più",
       "mixed": "MISTO",
       "tab_general": "Generale",
       "tab_poster": "Poster",
@@ -469,6 +509,7 @@
         "height": "Altezza",
         "index": "Indice",
         "media_type": "Tipo media",
+        "size": "Dimensione",
         "width": "Larghezza"
       },
       "title": "Dettagli fumetto",
@@ -481,6 +522,23 @@
       "title": "Ispeziona fumetto",
       "title_comparison": "Confronto fumetto"
     }
+  },
+  "duplicate_pages": {
+    "action_delete_auto": "Elimina automatico",
+    "action_delete_manual": "Elimina manuale",
+    "action_ignore": "Ignora",
+    "filter": {
+      "size": "Dimensione",
+      "total_size": "Dimensione totale"
+    },
+    "title": "Pagine duplicate",
+    "unknown_size": "Dimensione sconosciuta"
+  },
+  "duplicates": {
+    "file_hash": "File hash",
+    "size": "Dimensioni",
+    "title": "File duplicati",
+    "url": "URL"
   },
   "enums": {
     "copy_mode": {
@@ -501,7 +559,8 @@
       "WEBTOON": "Webtoon"
     },
     "series_cover": {
-      "FIRST": "Primo"
+      "FIRST": "Primo",
+      "LAST": "Ultimo"
     },
     "series_status": {
       "ABANDONED": "Abbandonato",
@@ -534,11 +593,13 @@
     "ERR_1020": "Il fumetto da aggiornare non appartiene alla serie fornita",
     "ERR_1021": "Il file di destinazione esiste già",
     "ERR_1022": "Impossibile scansionare il fumetto appena importato",
-    "ERR_1023": "Fumetto già presente nella lista di lettura"
+    "ERR_1023": "Fumetto già presente nella lista di lettura",
+    "ERR_1025": "OAuth2 Errore di accesso: nessun utente locale esiste con quell'e-mail"
   },
   "filter": {
     "age_rating": "Fascia d'età",
     "age_rating_none": "Nessuna",
+    "complete": "Completato",
     "genre": "genere",
     "in_progress": "In corso",
     "language": "lingua",
@@ -585,6 +646,7 @@
     "bulk_edit_metadata": "Modifica metadati in massa",
     "delete": "Elimina",
     "deselect_all": "Deseleziona tutti",
+    "download_readlist": "Scarica elenco di lettura",
     "download_series": "Scarica serie",
     "edit": "Modifica",
     "edit_metadata": "Modifica metadati",
@@ -626,9 +688,11 @@
   },
   "server": {
     "server_management": {
+      "button_cancel_all_tasks": "Annulla tutte le attività",
       "button_empty_trash": "Svuota il cestino per tutte le librerie",
       "button_scan_libraries": "Scansiona tutte le librerie",
       "button_shutdown": "Spegni",
+      "notification_tasks_cancelled": "Nessuna attività da annullare | Un'attività annullata | {count} attività annullate",
       "section_title": "Gestione server"
     },
     "tab_title": "Server"
@@ -663,8 +727,11 @@
   },
   "thumbnail_card": {
     "tooltip_delete": "Cancella",
+    "tooltip_mark_as_selected": "Contrassegna come selezionato",
     "tooltip_selected": "Selezionato",
     "tooltip_sidecar": "Copertine locali",
+    "tooltip_to_be_deleted": "Da cancellare",
+    "tooltip_to_be_uploaded": "Da caricare",
     "tooltip_too_big": "File troppo grande!"
   },
   "user_roles": {
