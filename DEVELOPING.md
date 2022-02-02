@@ -12,7 +12,7 @@ You will need:
 ## Setting up the project
 
 - run `npm install` in the root folder of the project. This will install the necessary commit hooks.
-- run `npm install in the `komga-webui` folder of the project. This will install the necessary tooling for the webui.
+- run `npm install` in the `komga-webui` folder of the project. This will install the necessary tooling for the webui.
 
 ## Commit messages
 
