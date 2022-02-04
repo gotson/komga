@@ -7525,7 +7525,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_6",
+        "operationId": "getProviders_5",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7556,7 +7556,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_4",
+        "operationId": "getProviders_3",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7587,7 +7587,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders",
+        "operationId": "getProviders_6",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7618,7 +7618,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_2",
+        "operationId": "getProviders",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7649,7 +7649,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_3",
+        "operationId": "getProviders_4",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7680,7 +7680,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_5",
+        "operationId": "getProviders_2",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8602,6 +8602,20 @@
           "totalBookCountLock": {
             "type": "boolean"
           },
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "genres": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "readingDirection": {
             "type": "string",
             "enum": [
@@ -8615,23 +8629,9 @@
             "type": "integer",
             "format": "int32"
           },
-          "genres": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "totalBookCount": {
             "type": "integer",
             "format": "int32"
-          },
-          "tags": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           }
         },
         "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update."
@@ -8738,21 +8738,11 @@
           "linksLock": {
             "type": "boolean"
           },
-          "summary": {
-            "type": "string"
-          },
-          "releaseDate": {
-            "type": "string",
-            "format": "date"
-          },
           "authors": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/AuthorUpdateDto"
             }
-          },
-          "isbn": {
-            "type": "string"
           },
           "tags": {
             "uniqueItems": true,
@@ -8761,11 +8751,21 @@
               "type": "string"
             }
           },
+          "releaseDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "isbn": {
+            "type": "string"
+          },
           "links": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/WebLinkUpdateDto"
             }
+          },
+          "summary": {
+            "type": "string"
           }
         },
         "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update."
@@ -8999,11 +8999,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
           "last": {
             "type": "boolean"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "size": {
             "type": "integer",
@@ -9163,11 +9163,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
           "last": {
             "type": "boolean"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "size": {
             "type": "integer",
@@ -9253,11 +9253,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
           "last": {
             "type": "boolean"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "size": {
             "type": "integer",
@@ -9739,11 +9739,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
           "last": {
             "type": "boolean"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "size": {
             "type": "integer",
@@ -9847,11 +9847,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
           "last": {
             "type": "boolean"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "size": {
             "type": "integer",
@@ -9959,11 +9959,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
           "last": {
             "type": "boolean"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "size": {
             "type": "integer",
@@ -10035,11 +10035,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
           "last": {
             "type": "boolean"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "size": {
             "type": "integer",
@@ -10105,11 +10105,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
           "last": {
             "type": "boolean"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "size": {
             "type": "integer",
@@ -10151,11 +10151,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
           "last": {
             "type": "boolean"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "size": {
             "type": "integer",

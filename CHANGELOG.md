@@ -1,3 +1,16 @@
+## [0.148.3](https://github.com/gotson/komga/compare/v0.148.2...v0.148.3) (2022-02-04)
+
+
+### Bug Fixes
+
+* a TooManyRowsException may crash the scan ([0368060](https://github.com/gotson/komga/commit/036806016691e748ee99decec7c7f3ea41405125))
+* filtering may not work with some unicode characters ([656f433](https://github.com/gotson/komga/commit/656f433b9d1d1d7c9b33e6fc48ebf5a2b92fe00a)), closes [#789](https://github.com/gotson/komga/issues/789)
+* **opds:** incorrect url encode for next/previous links ([288858c](https://github.com/gotson/komga/commit/288858cf6416f8e7a08c92940feae91c53d53198)), closes [#792](https://github.com/gotson/komga/issues/792)
+* translated using Weblate ([f0d2833](https://github.com/gotson/komga/commit/f0d2833bd6601b772b388a2c8b9f0d73975f7654))
+* use temp files for PDF when getting entries ([deb8e5f](https://github.com/gotson/komga/commit/deb8e5fff44c8f95ecd13a6174516f488d77e263))
+* **webui:** better display of readlist context information for small screen ([add2574](https://github.com/gotson/komga/commit/add2574859847c47f9b36c04a96f17b15e03d2a2)), closes [#791](https://github.com/gotson/komga/issues/791)
+* **webui:** don't reload series card thumbnail on every book update ([8bd36b4](https://github.com/gotson/komga/commit/8bd36b45afc84186afc58472e6cc5bf5fe4fd0f1))
+
 ## [0.148.2](https://github.com/gotson/komga/compare/v0.148.1...v0.148.2) (2022-01-31)
 
 
