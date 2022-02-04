@@ -4,6 +4,7 @@ import mu.KotlinLogging
 import org.apache.commons.compress.archivers.ArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipFile
 import org.gotson.komga.domain.model.MediaContainerEntry
+import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.domain.model.MediaUnsupportedException
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.jsoup.Jsoup
@@ -21,7 +22,7 @@ class EpubExtractor(
   private val imageAnalyzer: ImageAnalyzer,
 ) : MediaContainerExtractor {
 
-  override fun mediaTypes(): List<String> = listOf("application/epub+zip")
+  override fun mediaTypes(): List<String> = listOf(MediaType.EPUB.value)
 
   override fun getEntries(path: Path, analyzeDimensions: Boolean): List<MediaContainerEntry> {
     ZipFile(path.toFile()).use { zip ->

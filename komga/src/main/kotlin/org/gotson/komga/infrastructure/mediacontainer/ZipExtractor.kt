@@ -6,6 +6,7 @@ import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.apache.commons.compress.archivers.ArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipFile
 import org.gotson.komga.domain.model.MediaContainerEntry
+import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.springframework.stereotype.Service
 import java.nio.file.Path
@@ -27,7 +28,7 @@ class ZipExtractor(
 
   private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
 
-  override fun mediaTypes(): List<String> = listOf("application/zip")
+  override fun mediaTypes(): List<String> = listOf(MediaType.ZIP.value)
 
   override fun getEntries(path: Path, analyzeDimensions: Boolean): List<MediaContainerEntry> =
     ZipFile(path.toFile()).use { zip ->

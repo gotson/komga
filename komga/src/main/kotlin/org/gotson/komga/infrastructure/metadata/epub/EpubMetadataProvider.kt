@@ -5,6 +5,7 @@ import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookMetadataPatch
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.BookWithMedia
+import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.gotson.komga.infrastructure.mediacontainer.EpubExtractor
@@ -44,7 +45,7 @@ class EpubMetadataProvider(
     )
 
   override fun getBookMetadataFromBook(book: BookWithMedia): BookMetadataPatch? {
-    if (book.media.mediaType != "application/epub+zip") return null
+    if (book.media.mediaType != MediaType.EPUB.value) return null
     epubExtractor.getPackageFile(book.book.path)?.let { packageFile ->
       val opf = Jsoup.parse(packageFile, "", Parser.xmlParser())
 
@@ -82,7 +83,7 @@ class EpubMetadataProvider(
   }
 
   override fun getSeriesMetadataFromBook(book: BookWithMedia): SeriesMetadataPatch? {
-    if (book.media.mediaType != "application/epub+zip") return null
+    if (book.media.mediaType != MediaType.EPUB.value) return null
     epubExtractor.getPackageFile(book.book.path)?.let { packageFile ->
       val opf = Jsoup.parse(packageFile, "", Parser.xmlParser())
 

@@ -10,6 +10,7 @@ import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
+import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.domain.model.MediaUnsupportedException
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
@@ -41,14 +42,11 @@ class BookConverter(
   private val transactionTemplate: TransactionTemplate,
 ) {
 
-  private val convertibleTypes = listOf("application/x-rar-compressed; version=4")
+  private val convertibleTypes = listOf(MediaType.RAR_4.value)
 
-  private val mediaTypeToExtension = mapOf(
-    "application/x-rar-compressed; version=4" to "cbr",
-    "application/zip" to "cbz",
-    "application/epub+zip" to "epub",
-    "application/pdf" to "pdf",
-  )
+  private val mediaTypeToExtension =
+    listOf(MediaType.RAR_4, MediaType.ZIP, MediaType.PDF, MediaType.EPUB)
+      .associate { it.value to it.fileExtension }
 
   private val failedConversions = mutableListOf<String>()
   private val skippedRepairs = mutableListOf<String>()
@@ -107,7 +105,7 @@ class BookConverter(
         convertedMedia.status != Media.Status.READY
         -> throw BookConversionException("Converted file could not be analyzed, aborting conversion")
 
-        convertedMedia.mediaType != "application/zip"
+        convertedMedia.mediaType != MediaType.ZIP.value
         -> throw BookConversionException("Converted file is not a zip file, aborting conversion")
 
         !convertedMedia.pages.map { FilenameUtils.getName(it.fileName) to it.mediaType }

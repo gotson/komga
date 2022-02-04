@@ -9,6 +9,7 @@ import org.apache.pdfbox.rendering.ImageType
 import org.apache.pdfbox.rendering.PDFRenderer
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.MediaContainerEntry
+import org.gotson.komga.domain.model.MediaType
 import org.springframework.stereotype.Service
 import java.io.ByteArrayOutputStream
 import java.nio.file.Path
@@ -31,7 +32,7 @@ class PdfExtractor : MediaContainerExtractor {
     .evictionListener { _: Path?, pdf: PDDocument?, _ -> pdf?.close() }
     .build<Path, PDDocument>()
 
-  override fun mediaTypes(): List<String> = listOf("application/pdf")
+  override fun mediaTypes(): List<String> = listOf(MediaType.PDF.value)
 
   override fun getEntries(path: Path, analyzeDimensions: Boolean): List<MediaContainerEntry> =
     PDDocument.load(path.toFile(), MemoryUsageSetting.setupTempFileOnly()).use { pdf ->

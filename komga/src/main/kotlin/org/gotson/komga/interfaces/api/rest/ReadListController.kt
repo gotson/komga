@@ -14,6 +14,7 @@ import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.MediaType.ZIP
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
 import org.gotson.komga.domain.model.ReadList
@@ -445,7 +446,7 @@ class ReadListController(
               .build()
           },
         )
-        .contentType(MediaType.parseMediaType("application/zip"))
+        .contentType(MediaType.parseMediaType(ZIP.value))
         .body(streamingResponse)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
