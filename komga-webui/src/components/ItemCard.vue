@@ -289,7 +289,7 @@ export default Vue.extend({
   methods: {
     thumbnailBookChanged(event: ThumbnailBookSseDto) {
       if (event.selected && (this.computedItem.type() === ItemTypes.BOOK && event.bookId === this.item.id)
-        || (this.computedItem.type() === ItemTypes.SERIES && event.seriesId === this.item.id)
+        || (this.thumbnailError && this.computedItem.type() === ItemTypes.SERIES && event.seriesId === this.item.id)
       ) {
         this.thumbnailCacheBust = '?' + this.$_.random(1000)
       }
