@@ -25,7 +25,6 @@ import org.jooq.Record
 import org.jooq.ResultQuery
 import org.jooq.impl.DSL
 import org.jooq.impl.DSL.inline
-import org.jooq.impl.DSL.lower
 import org.jooq.impl.DSL.noCondition
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -329,7 +328,7 @@ class BookDtoDao(
     if (deleted == true) c = c.and(b.DELETED_DATE.isNotNull)
     if (deleted == false) c = c.and(b.DELETED_DATE.isNull)
     if (releasedAfter != null) c = c.and(d.RELEASE_DATE.gt(releasedAfter))
-    if (!tags.isNullOrEmpty()) c = c.and(lower(bt.TAG).`in`(tags.map { it.lowercase() }))
+    if (!tags.isNullOrEmpty()) c = c.and(bt.TAG.collate(SqliteUdfDataSource.collationUnicode3).`in`(tags))
 
     if (readStatus != null) {
       val cr = readStatus.map {

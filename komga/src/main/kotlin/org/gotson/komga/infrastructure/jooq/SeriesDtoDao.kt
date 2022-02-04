@@ -259,14 +259,14 @@ class SeriesDtoDao(
     if (!collectionIds.isNullOrEmpty()) c = c.and(cs.COLLECTION_ID.`in`(collectionIds))
     searchRegex?.let { c = c.and((it.second.toColumn()).likeRegex(it.first)) }
     if (!metadataStatus.isNullOrEmpty()) c = c.and(d.STATUS.`in`(metadataStatus))
-    if (!publishers.isNullOrEmpty()) c = c.and(lower(d.PUBLISHER).`in`(publishers.map { it.lowercase() }))
+    if (!publishers.isNullOrEmpty()) c = c.and(d.PUBLISHER.collate(SqliteUdfDataSource.collationUnicode3).`in`(publishers))
     if (deleted == true) c = c.and(s.DELETED_DATE.isNotNull)
     if (deleted == false) c = c.and(s.DELETED_DATE.isNull)
     if (complete == false) c = c.and(d.TOTAL_BOOK_COUNT.isNotNull.and(d.TOTAL_BOOK_COUNT.ne(s.BOOK_COUNT)))
     if (complete == true) c = c.and(d.TOTAL_BOOK_COUNT.isNotNull.and(d.TOTAL_BOOK_COUNT.eq(s.BOOK_COUNT)))
-    if (!languages.isNullOrEmpty()) c = c.and(lower(d.LANGUAGE).`in`(languages.map { it.lowercase() }))
-    if (!genres.isNullOrEmpty()) c = c.and(lower(g.GENRE).`in`(genres.map { it.lowercase() }))
-    if (!tags.isNullOrEmpty()) c = c.and(lower(st.TAG).`in`(tags.map { it.lowercase() }).or(lower(bmat.TAG).`in`(tags.map { it.lowercase() })))
+    if (!languages.isNullOrEmpty()) c = c.and(d.LANGUAGE.collate(SqliteUdfDataSource.collationUnicode3).`in`(languages))
+    if (!genres.isNullOrEmpty()) c = c.and(g.GENRE.collate(SqliteUdfDataSource.collationUnicode3).`in`(genres))
+    if (!tags.isNullOrEmpty()) c = c.and(st.TAG.collate(SqliteUdfDataSource.collationUnicode3).`in`(tags).or(bmat.TAG.collate(SqliteUdfDataSource.collationUnicode3).`in`(tags)))
     if (!ageRatings.isNullOrEmpty()) {
       val c1 = if (ageRatings.contains(null)) d.AGE_RATING.isNull else DSL.noCondition()
       val c2 = if (ageRatings.filterNotNull().isNotEmpty()) d.AGE_RATING.`in`(ageRatings.filterNotNull()) else DSL.noCondition()

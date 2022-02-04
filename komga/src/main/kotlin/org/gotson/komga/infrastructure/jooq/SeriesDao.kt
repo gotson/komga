@@ -3,6 +3,7 @@ package org.gotson.komga.infrastructure.jooq
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.persistence.SeriesRepository
+import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.SeriesRecord
 import org.jooq.Condition
@@ -141,7 +142,7 @@ class SeriesDao(
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
     searchRegex?.let { c = c.and((it.second.toColumn()).likeRegex(it.first)) }
     if (!metadataStatus.isNullOrEmpty()) c = c.and(d.STATUS.`in`(metadataStatus))
-    if (!publishers.isNullOrEmpty()) c = c.and(DSL.lower(d.PUBLISHER).`in`(publishers.map { it.lowercase() }))
+    if (!publishers.isNullOrEmpty()) c = c.and(d.PUBLISHER.collate(SqliteUdfDataSource.collationUnicode3).`in`(publishers))
     if (deleted == true) c = c.and(s.DELETED_DATE.isNotNull)
     if (deleted == false) c = c.and(s.DELETED_DATE.isNull)
 
