@@ -115,18 +115,15 @@ class OpdsController(
       .fromPath("$routeBase$path")
 
   private fun <T> linkPage(uriBuilder: UriComponentsBuilder, page: Page<T>): List<OpdsLink> {
-    val pageBuilder = uriBuilder.cloneBuilder()
-      .queryParam("page", "{page}")
-      .build()
     return listOfNotNull(
       if (!page.isFirst) OpdsLinkFeedNavigation(
         OpdsLinkRel.PREVIOUS,
-        pageBuilder.expand(mapOf("page" to page.pageable.previousOrFirst().pageNumber)).toUriString(),
+        uriBuilder.cloneBuilder().queryParam("page", page.pageable.previousOrFirst().pageNumber).toUriString(),
       )
       else null,
       if (!page.isLast) OpdsLinkFeedNavigation(
         OpdsLinkRel.NEXT,
-        pageBuilder.expand(mapOf("page" to page.pageable.next().pageNumber)).toUriString(),
+        uriBuilder.cloneBuilder().queryParam("page", page.pageable.next().pageNumber).toUriString(),
       )
       else null,
     )
