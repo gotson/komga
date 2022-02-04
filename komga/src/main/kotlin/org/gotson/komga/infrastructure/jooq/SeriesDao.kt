@@ -58,7 +58,9 @@ class SeriesDao(
     dsl.selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId).and(s.URL.eq(url.toString())))
       .and(s.DELETED_DATE.isNull)
-      .fetchOneInto(s)
+      .orderBy(s.LAST_MODIFIED_DATE.desc())
+      .fetchInto(s)
+      .firstOrNull()
       ?.toDomain()
 
   override fun findAllByTitle(title: String): Collection<Series> =

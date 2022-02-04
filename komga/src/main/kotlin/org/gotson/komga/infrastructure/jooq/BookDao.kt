@@ -43,7 +43,9 @@ class BookDao(
     dsl.selectFrom(b)
       .where(b.LIBRARY_ID.eq(libraryId).and(b.URL.eq(url.toString())))
       .and(b.DELETED_DATE.isNull)
-      .fetchOneInto(b)
+      .orderBy(b.LAST_MODIFIED_DATE.desc())
+      .fetchInto(b)
+      .firstOrNull()
       ?.toDomain()
 
   private fun findByIdOrNull(dsl: DSLContext, bookId: String): Book? =
