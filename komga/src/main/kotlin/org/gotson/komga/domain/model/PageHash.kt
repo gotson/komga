@@ -11,7 +11,7 @@ data class PageHash(
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
-) : Auditable() {
+) : Auditable {
   enum class Action {
     DELETE_AUTO,
     DELETE_MANUAL,
