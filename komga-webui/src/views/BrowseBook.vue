@@ -27,7 +27,7 @@
 
       <!--   Context notification for navigation   -->
       <v-alert
-        v-if="contextReadList"
+        v-if="contextReadList && $vuetify.breakpoint.mdAndUp"
         type="info"
         text
         dense
@@ -84,6 +84,19 @@
     </toolbar-sticky>
 
     <v-container fluid class="pa-6">
+      <!--   Context notification for navigation   -->
+      <v-row>
+        <v-alert
+          v-if="contextReadList && $vuetify.breakpoint.smAndDown"
+          type="info"
+          text
+          dense
+          border="right"
+          class="mb-0"
+        >{{ $t('browse_book.navigation_within_readlist', {name: contextName}) }}
+        </v-alert>
+      </v-row>
+
       <v-row>
         <v-col cols="4" sm="4" md="auto" lg="auto" xl="auto">
           <item-card
