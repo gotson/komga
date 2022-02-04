@@ -1,0 +1,122 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} από {2}"
+    },
+    "dataIterator": {
+      "loadingText": "Φόρτωση αντικειμένων...",
+      "noResultsText": "Δε βρέθηκαν εγγραφές"
+    },
+    "dataTable": {
+      "itemsPerPageText": "Σειρές ανά σελίδα:",
+      "sortBy": "Ταξινόμηση κατά"
+    },
+    "fileInput": {
+      "counter": "{0} αρχεία",
+      "counterSize": "{0} αρχεία ({1} σύνολο)"
+    },
+    "noDataText": "Δεδομένα μη διαθέσιμα"
+  },
+  "account_settings": {
+    "account_settings": "Ρυθμίσεις λογαριασμού",
+    "change_password": "αλλαγή κωδικού"
+  },
+  "authentication_activity": {
+    "datetime": "Ημερομηνία Ώρα",
+    "email": "Email",
+    "error": "Σφάλμα",
+    "ip": "IP",
+    "source": "Πηγή",
+    "success": "Επιτυχία"
+  },
+  "author_roles": {
+    "cover": "εξώφυλλο",
+    "editor": "συντάκτες",
+    "translator": "μεταφραστές",
+    "writer": "συγγραφείς"
+  },
+  "book_card": {
+    "error": "Σφάλμα",
+    "unknown": "Προς ανάλυση"
+  },
+  "book_import": {
+    "button_import": "Εισαγωγή",
+    "button_scan": "Σάρωση",
+    "button_select_series": "Επιλογή Σειράς",
+    "field_import_path": "Εισαγωγή από φάκελο",
+    "info_part1": "Αυτή η οθόνη σας επιτρέπει να εισάγετε αρχεία που βρίσκονται εκτός των υπάρχουσων βιβλιοθηκών σας. Μπορείτε να εισάγετε αρχεία μόνο σε υπάρχουσες βιβλιοθήκες, όπου το Komga θα μετακινήσει ή αντιγράψει τα αρχεία στο φάκελο της Σειράς που θα επιλέξετε.",
+    "info_part2": "Αν διαλέξετε έναν αριθμό για το βιβλίο, και κάποιο βιβλίο υπάρχει ήδη με αυτόν τον αριθμό, τότε θα μπορείτε να συγκρίνετε τα 2 αυτά βιβλία. Αν αποφασίσετε να εισάγετε το βιβλίο, το Komga θα αντικαταστήσει το υπάρχον βιβλίο με το καινούργιο.",
+    "no_files_found": "Δε βρέθηκαν αρχεία",
+    "notification": {
+      "go_to_book": "Πήγαινε στο βιβλίο",
+      "import_failure": "Αποτυχία εισαγωγής βιβλίου: {file}",
+      "import_successful": "Το βιβλίο εισήχθει με επιτυχία: {book}",
+      "source_file": "Αρχείο πηγής: {file}"
+    },
+    "row": {
+      "error_analyze_first": "Το βιβλίο πρέπει πρώτα να αναλυθεί",
+      "error_choose_series": "Επιλέξτε σειρά",
+      "error_only_import_no_errors": "Μπορείτε να εισάγετε μονο βιβλία χωρίς σφάλματα",
+      "warning_upgrade": "Το υπάρχον βιβλίο θα αναβαθμιστεί"
+    },
+    "table": {
+      "destination_name": "Όνομα προορισμού",
+      "file_name": "Όνομα αρχείου",
+      "number": "Αριθμός",
+      "series": "Σειρά"
+    },
+    "title": "Εισαγωγή",
+    "try_another_directory": "Δοκιμάστε να αναζητήσετε σε διαφορετικό φάκελο"
+  },
+  "bookreader": {
+    "beginning_of_book": "Βρίσκεστε στην αρχή του βιβλίου.",
+    "changing_reading_direction": "Αλλαγή κατεύθυνσης ανάγνωσης σε",
+    "cycling_page_layout": "Εναλλαγή Διάταξης Σελίδας",
+    "cycling_scale": "Εναλλαγή Κλίμακας",
+    "cycling_side_padding": "Εναλλαγή Περιθωρίου",
+    "download_current_page": "Κατέβασμα τρέχουσας σελίδας",
+    "end_of_book": "Φτάσατε στο τέλος του βιβλίου.",
+    "from_series_metadata": "από τα μεταδεδομένα της σειράς",
+    "move_next": "Κάντε κλικ ή πατήστε \"Επόμενο\" ξανά για να μεταφερθείτε στο επόμενο βιβλίο.",
+    "move_next_exit": "Κάντε κλικ ή πατήστε \"Επόμενο\" ξανά για έξοδο από το αναγνωστικό.",
+    "move_previous": "Κάντε κλικ ή πατήστε \"Προηγούμενο\" ξανά για να μεταφερθείτε στο προηγούμενο βιβλίο.",
+    "paged_reader_layout": {
+      "double": "Διπλές σελίδες",
+      "double_no_cover": "Διπλές σελίδες (χωρίς εξώφυλλο)",
+      "single": "Μονή σελίδα"
+    },
+    "reader_settings": "Επιλογές Ανάγνωσης",
+    "scale_type": {
+      "continuous_original": "Πρωτότυπο",
+      "continuous_width": "Προσαρμογή κατά πλάτος",
+      "height": "Προσαρμογή κατά ύψος",
+      "original": "Πρωτότυπο",
+      "screen": "Οθόνη",
+      "width": "Προσαρμογή κατά πλάτος",
+      "width_shrink_only": "Προσαρμογή κατά πλάτος (μόνο σμύκρινση)"
+    },
+    "settings": {
+      "always_fullscreen": "Πάντα Πλήρης Οθόνη",
+      "background_color": "Χρώμα φόντου",
+      "background_colors": {
+        "black": "Μαύρο",
+        "gray": "Γκρι",
+        "white": "Άσπρο"
+      },
+      "display": "Εμφάνιση",
+      "general": "Γενικά",
+      "page_layout": "Διάταξη σελίδας",
+      "reading_mode": "Λειτουργία ανάγνωσης",
+      "scale_type": "Τύπος κλίμακας",
+      "side_padding": "Περιθώρια",
+      "side_padding_none": "Κανένα",
+      "webtoon": "Επιλογές Ανάγνωσης Webtoon"
+    },
+    "shortcuts": {
+      "close": "Κλείσιμο"
+    }
+  },
+  "common": {
+    "locale_name": "Ελληνικά"
+  }
+}

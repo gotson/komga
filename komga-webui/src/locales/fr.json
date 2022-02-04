@@ -190,6 +190,7 @@
     "dismiss": "Masquer",
     "download": "Télécharger",
     "email": "E-mail",
+    "filename": "Nom du fichier",
     "filter_no_matches": "Aucun résultats avec les filtres actuels",
     "genre": "Genre",
     "go_to_library": "Aller à la bibliothèque",
@@ -202,6 +203,8 @@
     "n_selected": "{count} sélectionné | {count} sélectionnés",
     "nothing_to_show": "Rien à afficher",
     "outdated": "Obsolète",
+    "page": "Page",
+    "page_number": "Numéro de page",
     "pages": "pages",
     "pages_n": "Aucune page | 1 page | {count} pages",
     "password": "Mot de passe",
@@ -216,6 +219,7 @@
     "tags": "Étiquettes",
     "unavailable": "Indisponible",
     "unlock_all": "Tout déverrouiller",
+    "url": "URL",
     "use_filter_panel_to_change_filter": "Utilisez le panneau des filtres pour modifier les filtres actuels",
     "year": "année"
   },
@@ -523,6 +527,20 @@
       "title": "Inspecter le livre",
       "title_comparison": "Comparaison du livre"
     }
+  },
+  "duplicate_pages": {
+    "action_delete_auto": "Suppression automatique",
+    "action_delete_manual": "Suppression manuelle",
+    "action_ignore": "Ignorer",
+    "delete_to_save": "Supprimer pour économiser {size}",
+    "filter": {
+      "count": "Nombre",
+      "size": "Taille",
+      "total_size": "Taille totale"
+    },
+    "matches_n": "Aucune correspondance | 1 correspondance | {count} correspondances",
+    "title": "Dupliquer les pages",
+    "unknown_size": "Taille inconnue"
   },
   "duplicates": {
     "file_hash": "Empreinte du fichier",
