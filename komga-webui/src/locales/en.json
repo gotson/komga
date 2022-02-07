@@ -531,16 +531,21 @@
   "duplicate_pages": {
     "action_delete_auto": "Auto delete",
     "action_delete_manual": "Manual delete",
+    "action_delete_matches": "Delete matches",
     "action_ignore": "Ignore",
-    "matches_n": "No matches | 1 match | {count} matches",
-    "title": "Duplicate pages",
-    "unknown_size": "Unknown size",
     "delete_to_save": "Delete to save {size}",
+    "deleted_count": "Deleted {count} times",
     "filter": {
-      "total_size": "Total size",
+      "count": "Count",
+      "delete_count": "Deletion count",
+      "delete_size": "Space saved",
       "size": "Size",
-      "count": "Count"
-    }
+      "total_size": "Total size"
+    },
+    "matches_n": "No matches | 1 match | {count} matches",
+    "saved_size": "Saved {size}",
+    "title": "Duplicate pages",
+    "unknown_size": "Unknown size"
   },
   "duplicates": {
     "file_hash": "File hash",
@@ -559,6 +564,11 @@
       "READY": "Ready",
       "UNKNOWN": "Unknown",
       "UNSUPPORTED": "Unsupported"
+    },
+    "page_hash_action": {
+      "DELETE_AUTO": "Auto delete",
+      "DELETE_MANUAL": "Manual delete",
+      "IGNORE": "Ignore"
     },
     "reading_direction": {
       "LEFT_TO_RIGHT": "Left to right",

@@ -5,6 +5,7 @@ import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -213,19 +214,40 @@ class MediaDaoTest(
             mediaType = "image/jpeg",
           ),
         ),
+        mediaType = MediaType.ZIP.value,
         bookId = book.id,
       )
       mediaDao.insert(media)
 
-      val found = mediaDao.findAllBookIdsByLibraryIdAndWithMissingPageHash(book.libraryId, komgaProperties.pageHashing)
+      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.value), komgaProperties.pageHashing)
 
       assertThat(found)
         .hasSize(1)
-        .containsOnly(book.id)
+        .containsOnly(Pair(book.id, book.seriesId))
     }
 
     @Test
-    fun `given media with no pages hashed when finding for missing page hash then it is returned`() {
+    fun `given non-convertible media not hashed when finding for missing page hash then it is returned`() {
+      val media = Media(
+        status = Media.Status.READY,
+        pages = listOf(
+          BookPage(
+            fileName = "1.jpg",
+            mediaType = "image/jpeg",
+          ),
+        ),
+        mediaType = MediaType.RAR_4.value,
+        bookId = book.id,
+      )
+      mediaDao.insert(media)
+
+      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.value), komgaProperties.pageHashing)
+
+      assertThat(found).isEmpty()
+    }
+
+    @Test
+    fun `given media with no pages hashed when finding for missing page hash then it is not returned`() {
       val media = Media(
         status = Media.Status.READY,
         pages = (1..12).map {
@@ -234,15 +256,16 @@ class MediaDaoTest(
             mediaType = "image/jpeg",
           )
         },
+        mediaType = MediaType.ZIP.value,
         bookId = book.id,
       )
       mediaDao.insert(media)
 
-      val found = mediaDao.findAllBookIdsByLibraryIdAndWithMissingPageHash(book.libraryId, komgaProperties.pageHashing)
+      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.value), komgaProperties.pageHashing)
 
       assertThat(found)
         .hasSize(1)
-        .containsOnly(book.id)
+        .containsOnly(Pair(book.id, book.seriesId))
     }
 
     @Test
@@ -256,11 +279,12 @@ class MediaDaoTest(
             fileHash = "hashed",
           ),
         ),
+        mediaType = MediaType.ZIP.value,
         bookId = book.id,
       )
       mediaDao.insert(media)
 
-      val found = mediaDao.findAllBookIdsByLibraryIdAndWithMissingPageHash(book.libraryId, komgaProperties.pageHashing)
+      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.value), komgaProperties.pageHashing)
 
       assertThat(found).isEmpty()
     }
@@ -276,11 +300,12 @@ class MediaDaoTest(
             fileHash = if (it <= 3 || it >= 9) "hashed" else "",
           )
         },
+        mediaType = MediaType.ZIP.value,
         bookId = book.id,
       )
       mediaDao.insert(media)
 
-      val found = mediaDao.findAllBookIdsByLibraryIdAndWithMissingPageHash(book.libraryId, komgaProperties.pageHashing)
+      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.value), komgaProperties.pageHashing)
 
       assertThat(found).isEmpty()
     }
@@ -296,11 +321,12 @@ class MediaDaoTest(
             fileHash = "hashed",
           )
         },
+        mediaType = MediaType.ZIP.value,
         bookId = book.id,
       )
       mediaDao.insert(media)
 
-      val found = mediaDao.findAllBookIdsByLibraryIdAndWithMissingPageHash(book.libraryId, komgaProperties.pageHashing)
+      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.value), komgaProperties.pageHashing)
 
       assertThat(found).isEmpty()
     }

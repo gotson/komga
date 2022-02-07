@@ -31,23 +31,23 @@ class MediaDao(
   override fun findById(bookId: String): Media =
     find(dsl, bookId)
 
-  override fun findAllBookIdsByLibraryIdAndWithMissingPageHash(libraryId: String, pageHashing: Int): Collection<String> {
+  override fun findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(libraryId: String, mediaTypes: Collection<String>, pageHashing: Int): Collection<Pair<String, String>> {
     val pagesCount = DSL.count(p.BOOK_ID)
     val hashedCount = DSL.sum(DSL.`when`(p.FILE_HASH.eq(""), 0).otherwise(1)).cast(Int::class.java)
     val neededHash = pageHashing * 2
     val neededHashForBook = DSL.`when`(pagesCount.lt(neededHash), pagesCount).otherwise(neededHash)
 
-    val r = dsl.select(b.ID)
+    return dsl.select(b.ID, b.SERIES_ID)
       .from(b)
       .leftJoin(p).on(b.ID.eq(p.BOOK_ID))
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .where(b.LIBRARY_ID.eq(libraryId))
       .and(m.STATUS.eq(Media.Status.READY.name))
-      .groupBy(b.ID)
+      .and(m.MEDIA_TYPE.`in`(mediaTypes))
+      .groupBy(b.ID, b.SERIES_ID)
       .having(hashedCount.lt(neededHashForBook))
       .fetch()
-
-    return r.getValues(b.ID)
+      .map { Pair(it.value1(), it.value2()) }
   }
 
   override fun getPagesSize(bookId: String): Int =

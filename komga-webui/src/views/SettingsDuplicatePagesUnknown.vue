@@ -36,54 +36,19 @@
     </v-row>
 
     <v-row>
-      <v-card
+      <v-slide-x-transition
         v-for="(element, i) in elements"
         :key="i"
-        class="ma-2"
       >
-        <v-container fluid>
-          <v-row>
-            <v-col>
-              <v-img
-                width="200"
-                height="300"
-                contain
-                @click="showDialogImage(element)"
-                :src="pageHashUnknownThumbnailUrl(element, 500)"
-                style="cursor: zoom-in"
-              />
-
-            </v-col>
-            <v-col>
-              <v-card-text style="min-width: 200px">
-                <div>{{ element.mediaType }}</div>
-                <div>{{ element.size || $t('duplicate_pages.unknown_size') }}</div>
-
-                <v-btn
-                  @click="showDialogMatches(element)"
-                  outlined
-                  rounded
-                  class="my-4"
-                >
-                  {{ $tc('duplicate_pages.matches_n', element.matchCount) }}
-                </v-btn>
-
-                <div
-                  v-if="element.totalSize"
-                  style="max-width: 100px"
-                >{{ $t('duplicate_pages.delete_to_save', {size: element.totalSize}) }}
-                </div>
-              </v-card-text>
-            </v-col>
-          </v-row>
-        </v-container>
-
-        <v-card-actions>
-          <v-btn text disabled>{{ $t('duplicate_pages.action_ignore') }}</v-btn>
-          <v-btn text disabled>{{ $t('duplicate_pages.action_delete_manual') }}</v-btn>
-          <v-btn text disabled>{{ $t('duplicate_pages.action_delete_auto') }}</v-btn>
-        </v-card-actions>
-      </v-card>
+        <page-hash-unknown-card
+          v-show="!hiddenElements.includes(element)"
+          class="ma-2"
+          :hash="element"
+          @image-clicked="showDialogImage(element)"
+          @matches-clicked="showDialogMatches(element)"
+          @created="pageHashCreated(element)"
+        />
+      </v-slide-x-transition>
 
     </v-row>
 
@@ -132,16 +97,18 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {PageHashUnknownDto} from '@/types/komga-pagehashes'
+import {PageHashDto, PageHashUnknownDto} from '@/types/komga-pagehashes'
 import {pageHashUnknownThumbnailUrl} from '@/functions/urls'
 import PageHashMatchesTable from '@/components/PageHashMatchesTable.vue'
+import PageHashUnknownCard from '@/components/PageHashUnknownCard.vue'
 
 export default Vue.extend({
-  name: 'SettingsDuplicatePages',
-  components: {PageHashMatchesTable},
+  name: 'SettingsDuplicatePagesUnknown',
+  components: {PageHashUnknownCard, PageHashMatchesTable},
   data: function () {
     return {
       elements: [] as PageHashUnknownDto[],
+      hiddenElements: [] as PageHashUnknownDto[],
       totalElements: 0,
       page: 1,
       totalPages: 1,
@@ -149,7 +116,7 @@ export default Vue.extend({
       dialogImage: false,
       dialogMatches: false,
       dialogImagePageHash: {} as PageHashUnknownDto,
-      dialogMatchesPageHash: {} as PageHashUnknownDto,
+      dialogMatchesPageHash: {} as PageHashDto,
       pageHashUnknownThumbnailUrl,
     }
   },
@@ -197,6 +164,7 @@ export default Vue.extend({
       this.totalElements = itemsPage.totalElements
       this.totalPages = itemsPage.totalPages
       this.elements = itemsPage.content
+      if (this.page > this.totalPages) this.page = this.totalPages
     },
     setSort(key: string) {
       if (this.sortActive.key === key) {
@@ -213,9 +181,15 @@ export default Vue.extend({
       this.dialogImagePageHash = pageHash
       this.dialogImage = true
     },
-    showDialogMatches(pageHash: PageHashUnknownDto) {
+    showDialogMatches(pageHash: PageHashDto) {
       this.dialogMatchesPageHash = pageHash
       this.dialogMatches = true
+    },
+    pageHashCreated(pageHash: PageHashUnknownDto) {
+      this.hiddenElements.push(pageHash)
+      if (this.elements.every(x => this.hiddenElements.includes(x))) {
+        this.loadData(this.page, this.sortActive)
+      }
     },
   },
 })

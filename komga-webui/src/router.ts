@@ -97,8 +97,22 @@ const router = new Router({
             {
               path: '/settings/duplicate-pages',
               name: 'settings-duplicate-pages',
-              beforeEnter: adminGuard,
-              component: () => import(/* webpackChunkName: "settings-duplicate-pages" */ './views/SettingsDuplicatePages.vue'),
+              redirect: {name: 'settings-duplicate-pages-known'},
+              component: () => import(/* webpackChunkName: "settings-duplicate-pages" */ './views/SettingsDuplicatePagesHolder.vue'),
+              children: [
+                {
+                  path: '/settings/duplicate-pages/known',
+                  name: 'settings-duplicate-pages-known',
+                  beforeEnter: adminGuard,
+                  component: () => import(/* webpackChunkName: "settings-duplicate-pages" */ './views/SettingsDuplicatePagesKnown.vue'),
+                },
+                {
+                  path: '/settings/duplicate-pages/unknown',
+                  name: 'settings-duplicate-pages-unknown',
+                  beforeEnter: adminGuard,
+                  component: () => import(/* webpackChunkName: "settings-duplicate-pages" */ './views/SettingsDuplicatePagesUnknown.vue'),
+                },
+              ],
             },
             {
               path: '/settings/server',

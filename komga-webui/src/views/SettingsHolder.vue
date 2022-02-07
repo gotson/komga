@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-tabs>
+    <v-tabs grow>
       <v-tab :to="{name: 'settings-analysis'}">
         <v-badge
           dot

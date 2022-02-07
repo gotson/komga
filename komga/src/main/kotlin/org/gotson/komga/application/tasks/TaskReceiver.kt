@@ -9,9 +9,8 @@ import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
-import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.service.BookConverter
-import org.gotson.komga.infrastructure.configuration.KomgaProperties
+import org.gotson.komga.domain.service.PageHashLifecycle
 import org.gotson.komga.infrastructure.jms.QUEUE_SUB_TYPE
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS_TYPE
@@ -31,9 +30,8 @@ class TaskReceiver(
   connectionFactory: ConnectionFactory,
   private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
-  private val mediaRepository: MediaRepository,
   private val bookConverter: BookConverter,
-  private val komgaProperties: KomgaProperties,
+  private val pageHashLifecycle: PageHashLifecycle,
 ) {
 
   private val jmsTemplates = (0..9).associateWith {
@@ -76,8 +74,8 @@ class TaskReceiver(
 
   fun hashBookPagesWithMissingHash(library: Library) {
     if (library.hashPages)
-      mediaRepository.findAllBookIdsByLibraryIdAndWithMissingPageHash(library.id, komgaProperties.pageHashing).forEach {
-        submitTask(Task.HashBookPages(it, LOWEST_PRIORITY, bookRepository.getSeriesIdOrNull(it) ?: ""))
+      pageHashLifecycle.getBookAndSeriesIdsWithMissingPageHash(library).forEach {
+        submitTask(Task.HashBookPages(it.first, LOWEST_PRIORITY, it.second))
       }
   }
 
