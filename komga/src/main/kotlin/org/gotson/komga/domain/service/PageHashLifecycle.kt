@@ -1,6 +1,7 @@
 package org.gotson.komga.domain.service
 
 import org.gotson.komga.domain.model.BookPageContent
+import org.gotson.komga.domain.model.BookPageNumbered
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.domain.model.PageHash
@@ -30,10 +31,33 @@ class PageHashLifecycle(
     mediaRepository.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(library.id, hashableMediaTypes, komgaProperties.pageHashing)
 
   fun getPage(pageHash: PageHash, resizeTo: Int? = null): BookPageContent? {
-    val match = pageHashRepository.findMatchesByHash(pageHash, Pageable.ofSize(1)).firstOrNull() ?: return null
+    val match = pageHashRepository.findMatchesByHash(pageHash, null, Pageable.ofSize(1)).firstOrNull() ?: return null
     val book = bookRepository.findByIdOrNull(match.bookId) ?: return null
 
     return bookLifecycle.getBookPage(book, match.pageNumber, resizeTo = resizeTo)
+  }
+
+  fun getBookPagesToDeleteAutomatically(library: Library): Map<String, Collection<BookPageNumbered>> {
+    val hashesAutoDelete = pageHashRepository.findAllKnown(listOf(PageHashKnown.Action.DELETE_AUTO), Pageable.unpaged()).content
+
+    return hashesAutoDelete.map { hash ->
+      pageHashRepository.findMatchesByHash(hash, library.id, Pageable.unpaged()).content
+        .groupBy(
+          { it.bookId },
+          {
+            BookPageNumbered(
+              fileName = it.fileName,
+              mediaType = hash.mediaType,
+              fileHash = hash.hash,
+              fileSize = hash.size,
+              pageNumber = it.pageNumber,
+            )
+          },
+        )
+    }.flatMap { it.entries }
+      .groupBy({ it.key }, { it.value })
+      .mapValues { it.value.flatten() }
+      .filter { it.value.isNotEmpty() }
   }
 
   fun createOrUpdate(pageHash: PageHashKnown) {
@@ -43,7 +67,7 @@ class PageHashLifecycle(
     if (existing == null) {
       pageHashRepository.insert(pageHash, getPage(pageHash, 500)?.content)
     } else {
-      pageHashRepository.update(pageHash)
+      pageHashRepository.update(existing.copy(action = pageHash.action))
     }
   }
 

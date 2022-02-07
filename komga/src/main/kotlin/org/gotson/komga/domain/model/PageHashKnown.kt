@@ -17,4 +17,18 @@ class PageHashKnown(
     DELETE_MANUAL,
     IGNORE,
   }
+
+  fun copy(
+    hash: String = this.hash,
+    mediaType: String = this.mediaType,
+    size: Long? = this.size,
+    action: Action = this.action,
+    deleteCount: Int = this.deleteCount,
+  ) = PageHashKnown(
+    hash = hash,
+    mediaType = mediaType,
+    size = size,
+    action = action,
+    deleteCount = deleteCount,
+  )
 }

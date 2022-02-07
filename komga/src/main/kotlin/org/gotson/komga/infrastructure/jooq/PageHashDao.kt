@@ -128,7 +128,7 @@ class PageHashDao(
     )
   }
 
-  override fun findMatchesByHash(pageHash: PageHash, pageable: Pageable): Page<PageHashMatch> {
+  override fun findMatchesByHash(pageHash: PageHash, libraryId: String?, pageable: Pageable): Page<PageHashMatch> {
     val query = dsl.select(p.BOOK_ID, b.URL, p.NUMBER, p.FILE_NAME)
       .from(p)
       .leftJoin(b).on(p.BOOK_ID.eq(b.ID))
@@ -138,6 +138,7 @@ class PageHashDao(
         if (pageHash.size == null) and(p.FILE_SIZE.isNull)
         else and(p.FILE_SIZE.eq(pageHash.size))
       }
+      .apply { libraryId?.let { and(b.LIBRARY_ID.eq(it)) } }
 
     val count = dsl.fetchCount(query)
 
@@ -196,6 +197,7 @@ class PageHashDao(
   override fun update(pageHash: PageHashKnown) {
     dsl.update(ph)
       .set(ph.ACTION, pageHash.action.name)
+      .set(ph.DELETE_COUNT, pageHash.deleteCount)
       .set(ph.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(ph.HASH.eq(pageHash.hash))
       .and(ph.MEDIA_TYPE.eq(pageHash.mediaType))

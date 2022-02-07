@@ -1,6 +1,7 @@
 package org.gotson.komga.application.tasks
 
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
+import org.gotson.komga.domain.model.BookPageNumbered
 import org.gotson.komga.domain.model.CopyMode
 import org.gotson.komga.infrastructure.search.LuceneEntity
 import java.io.Serializable
@@ -83,6 +84,11 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY, val groupId: String? = null)
   class RepairExtension(val bookId: String, priority: Int = DEFAULT_PRIORITY, groupId: String) : Task(priority, groupId.takeLast(1)) {
     override fun uniqueId(): String = "REPAIR_EXTENSION_$bookId"
     override fun toString(): String = "RepairExtension(bookId='$bookId', priority='$priority')"
+  }
+
+  class RemoveHashedPages(val bookId: String, val pages: Collection<BookPageNumbered>, priority: Int = DEFAULT_PRIORITY, groupId: String) : Task(priority, groupId.takeLast(1)) {
+    override fun uniqueId(): String = "REMOVE_HASHED_PAGES_$bookId"
+    override fun toString(): String = "RemoveHashedPages(bookId='$bookId', priority='$priority')"
   }
 
   class RebuildIndex(val entities: Set<LuceneEntity>?, priority: Int = DEFAULT_PRIORITY) : Task(priority) {

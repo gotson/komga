@@ -55,6 +55,7 @@ class BookConverter(
     bookRepository.findAllByLibraryIdAndMediaTypes(library.id, convertibleTypes)
 
   fun convertToCbz(book: Book) {
+    // TODO: check if file has changed on disk before doing conversion
     if (!libraryRepository.findById(book.libraryId).convertToCbz)
       return logger.info { "Book conversion is disabled for the library, it may have changed since the task was submitted, skipping" }
 
@@ -127,6 +128,7 @@ class BookConverter(
 
     transactionTemplate.executeWithoutResult {
       bookRepository.update(convertedBook)
+      // TODO: restore page hash from existing media
       mediaRepository.update(convertedMedia)
     }
   }

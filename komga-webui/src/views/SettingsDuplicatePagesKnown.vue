@@ -1,5 +1,9 @@
 <template>
   <v-container fluid class="pa-6">
+    <v-alert type="warning" dismissible text class="body-2">
+      <div>{{ $t('duplicate_pages.info') }}</div>
+    </v-alert>
+
     <v-row align="center">
       <v-col cols="auto">
         <v-pagination

@@ -3,6 +3,7 @@ package org.gotson.komga.application.tasks
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
+import org.gotson.komga.domain.model.BookPageNumbered
 import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.CopyMode
 import org.gotson.komga.domain.model.Library
@@ -91,6 +92,16 @@ class TaskReceiver(
       bookConverter.getMismatchedExtensionBooks(library).forEach {
         submitTask(Task.RepairExtension(it.id, priority, it.seriesId))
       }
+  }
+
+  fun removeDuplicatePages(library: Library, priority: Int = DEFAULT_PRIORITY) {
+    pageHashLifecycle.getBookPagesToDeleteAutomatically(library).forEach { (bookId, pages) ->
+      removeDuplicatePages(bookId, pages, priority)
+    }
+  }
+
+  fun removeDuplicatePages(bookId: String, pages: Collection<BookPageNumbered>, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.RemoveHashedPages(bookId, pages, priority, bookId))
   }
 
   fun analyzeBook(book: Book, priority: Int = DEFAULT_PRIORITY) {

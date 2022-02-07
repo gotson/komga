@@ -81,4 +81,23 @@ export default class KomgaPageHashesService {
       throw new Error(msg)
     }
   }
+
+  async performDelete(pageHash: PageHashKnownDto) {
+    try {
+      const params = {
+        media_type: pageHash.mediaType,
+        file_size: pageHash.size || -1,
+      }
+      await this.http.post(`${API_PAGE_HASH}/${pageHash.hash}/perform-delete`, pageHash, {
+        params: params,
+        paramsSerializer: params => qs.stringify(params, {indices: false}),
+      })
+    } catch (e) {
+      let msg = `An error occurred while trying to execute perform-delete on page hash ${pageHash}`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
 }

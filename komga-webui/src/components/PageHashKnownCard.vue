@@ -65,9 +65,15 @@
     </v-container>
 
     <v-card-actions>
-      <v-btn v-if="hash.action === PageHashAction.DELETE_MANUAL" color="primary" @click="deleteMatches">
+      <v-btn v-if="hash.action === PageHashAction.DELETE_MANUAL"
+             :color="deleteRequested ? 'success': 'primary'"
+             :disabled="matchCount === 0"
+             @click="deleteMatches"
+      >
+        <v-icon left v-if="deleteRequested">mdi-check</v-icon>
         {{ $t('duplicate_pages.action_delete_matches') }}
       </v-btn>
+
       <v-btn v-if="hash.action !== PageHashAction.IGNORE" text @click="ignore">{{
           $t('duplicate_pages.action_ignore')
         }}
@@ -102,6 +108,7 @@ export default Vue.extend({
       getFileSize,
       PageHashAction,
       matchCount: undefined as number | undefined,
+      deleteRequested: false,
     }
   },
   computed: {
@@ -134,7 +141,11 @@ export default Vue.extend({
       else
         this.matchCount = undefined
     },
-    deleteMatches() {
+    async deleteMatches() {
+      if(!this.deleteRequested) {
+        await this.$komgaPageHashes.performDelete(this.hash)
+        this.deleteRequested = true
+      }
     },
     ignore() {
       this.updatePageHash(PageHashAction.IGNORE)

@@ -8,6 +8,7 @@ import org.gotson.komga.domain.service.BookConverter
 import org.gotson.komga.domain.service.BookImporter
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.BookMetadataLifecycle
+import org.gotson.komga.domain.service.BookPageEditor
 import org.gotson.komga.domain.service.LibraryContentLifecycle
 import org.gotson.komga.domain.service.LocalArtworkLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
@@ -37,6 +38,7 @@ class TaskHandler(
   private val localArtworkLifecycle: LocalArtworkLifecycle,
   private val bookImporter: BookImporter,
   private val bookConverter: BookConverter,
+  private val bookPageEditor: BookPageEditor,
   private val searchIndexLifecycle: SearchIndexLifecycle,
 ) {
 
@@ -55,6 +57,7 @@ class TaskHandler(
               taskReceiver.hashBookPagesWithMissingHash(library)
               taskReceiver.repairExtensions(library, LOWEST_PRIORITY)
               taskReceiver.convertBooksToCbz(library, LOWEST_PRIORITY)
+              taskReceiver.removeDuplicatePages(library, LOWEST_PRIORITY)
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 
           is Task.EmptyTrash ->
@@ -116,6 +119,11 @@ class TaskHandler(
           is Task.RepairExtension ->
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
               bookConverter.repairExtension(book)
+            } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
+
+          is Task.RemoveHashedPages ->
+            bookRepository.findByIdOrNull(task.bookId)?.let { book ->
+              bookPageEditor.removeHashedPages(book, task.pages)
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
           is Task.HashBook ->

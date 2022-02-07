@@ -1,5 +1,9 @@
 <template>
   <v-container fluid class="pa-6">
+    <v-alert type="warning" dismissible text class="body-2">
+      <div>{{ $t('duplicate_pages.info') }}</div>
+    </v-alert>
+
     <v-row align="center">
       <v-col cols="auto">
         <v-pagination
@@ -142,11 +146,11 @@ export default Vue.extend({
     paginationVisible(): number {
       switch (this.$vuetify.breakpoint.name) {
         case 'xs':
-          return 5
         case 'sm':
         case 'md':
-          return 10
+          return 5
         case 'lg':
+          return 10
         case 'xl':
         default:
           return 15
