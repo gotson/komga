@@ -137,7 +137,7 @@ export default Vue.extend({
   methods: {
     async getMatchCount() {
       if (this.hash?.action === PageHashAction.DELETE_MANUAL)
-        this.matchCount = (await this.$komgaPageHashes.getUnknownPageHashMatches(this.hash, {size: 0})).totalElements
+        this.matchCount = (await this.$komgaPageHashes.getPageHashMatches(this.hash, {size: 0})).totalElements
       else
         this.matchCount = undefined
     },

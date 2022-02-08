@@ -50,14 +50,14 @@ export default class KomgaPageHashesService {
     }
   }
 
-  async getUnknownPageHashMatches(pageHash: PageHashDto, pageRequest?: PageRequest): Promise<Page<PageHashMatchDto>> {
+  async getPageHashMatches(pageHash: PageHashDto, pageRequest?: PageRequest): Promise<Page<PageHashMatchDto>> {
     try {
       const params = {
         ...pageRequest,
         media_type: pageHash.mediaType,
         file_size: pageHash.size || -1,
       }
-      return (await this.http.get(`${API_PAGE_HASH}/unknown/${pageHash.hash}`, {
+      return (await this.http.get(`${API_PAGE_HASH}/${pageHash.hash}`, {
         params: params,
         paramsSerializer: params => qs.stringify(params, {indices: false}),
       })).data

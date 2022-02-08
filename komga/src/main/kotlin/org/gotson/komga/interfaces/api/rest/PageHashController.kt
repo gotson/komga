@@ -70,9 +70,9 @@ class PageHashController(
   ): Page<PageHashUnknownDto> =
     pageHashRepository.findAllUnknown(page).map { it.toDto() }
 
-  @GetMapping("unknown/{pageHash}")
+  @GetMapping("{pageHash}")
   @PageableAsQueryParam
-  fun getUnknownPageHashMatches(
+  fun getPageHashMatches(
     @PathVariable pageHash: String,
     @RequestParam("media_type") mediaType: String,
     @RequestParam("file_size") size: Long,

@@ -89,7 +89,7 @@ export default Vue.extend({
         pageRequest.sort!!.push(`${sortBy[i]},${sortDesc[i] ? 'desc' : 'asc'}`)
       }
 
-      const elementsPage = await this.$komgaPageHashes.getUnknownPageHashMatches(hash, pageRequest)
+      const elementsPage = await this.$komgaPageHashes.getPageHashMatches(hash, pageRequest)
       this.totalElements = elementsPage.totalElements
       this.elements = elementsPage.content
 
