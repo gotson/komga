@@ -352,7 +352,7 @@
         "tags": [
           "page-hash-controller"
         ],
-        "operationId": "getPageHashes",
+        "operationId": "getKnownPageHashes",
         "parameters": [
           {
             "name": "action",
@@ -414,7 +414,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PagePageHashDto"
+                  "$ref": "#/components/schemas/PagePageHashKnownDto"
                 }
               }
             }
@@ -425,7 +425,17 @@
         "tags": [
           "page-hash-controller"
         ],
-        "operationId": "updatePageHash",
+        "operationId": "createOrUpdateKnownPageHash",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PageHashCreationDto"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -1286,6 +1296,116 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/v1/page-hashes/{pageHash}/delete-match": {
+      "post": {
+        "tags": [
+          "page-hash-controller"
+        ],
+        "operationId": "deleteSingleMatch",
+        "parameters": [
+          {
+            "name": "pageHash",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "media_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "file_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PageHashMatchDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          }
+        }
+      }
+    },
+    "/api/v1/page-hashes/{pageHash}/delete-all": {
+      "post": {
+        "tags": [
+          "page-hash-controller"
+        ],
+        "operationId": "performDelete",
+        "parameters": [
+          {
+            "name": "pageHash",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "media_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "file_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
           }
         }
       }
@@ -5534,19 +5654,120 @@
         }
       }
     },
-    "/api/v1/page-hashes/{hash}/thumbnail": {
+    "/api/v1/page-hashes/{pageHash}": {
       "get": {
         "tags": [
           "page-hash-controller"
         ],
-        "operationId": "getPageHashThumbnail",
+        "operationId": "getPageHashMatches",
         "parameters": [
           {
-            "name": "hash",
+            "name": "pageHash",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "media_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "file_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagePageHashMatchDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/page-hashes/{pageHash}/thumbnail": {
+      "get": {
+        "tags": [
+          "page-hash-controller"
+        ],
+        "operationId": "getKnownPageHashThumbnail",
+        "parameters": [
+          {
+            "name": "pageHash",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "media_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "file_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
             }
           }
         ],
@@ -5627,90 +5848,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PagePageHashUnknownDto"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/page-hashes/unknown/{pageHash}": {
-      "get": {
-        "tags": [
-          "page-hash-controller"
-        ],
-        "operationId": "getUnknownPageHashMatches",
-        "parameters": [
-          {
-            "name": "pageHash",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "media_type",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "file_size",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Zero-based page index (0..N)",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "description": "The size of the page to be returned",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "sort",
-            "in": "query",
-            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PagePageHashMatchDto"
                 }
               }
             }
@@ -7525,7 +7662,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_5",
+        "operationId": "getProviders_1",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7556,7 +7693,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_3",
+        "operationId": "getProviders_6",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7587,7 +7724,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_6",
+        "operationId": "getProviders_2",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7618,7 +7755,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders",
+        "operationId": "getProviders_3",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7649,7 +7786,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_4",
+        "operationId": "getProviders",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7680,7 +7817,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_2",
+        "operationId": "getProviders_5",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7711,7 +7848,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_1",
+        "operationId": "getProviders_4",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7788,6 +7925,34 @@
           "lastBookRead": {
             "type": "integer",
             "format": "int32"
+          }
+        }
+      },
+      "PageHashCreationDto": {
+        "required": [
+          "action",
+          "hash",
+          "mediaType"
+        ],
+        "type": "object",
+        "properties": {
+          "hash": {
+            "type": "string"
+          },
+          "mediaType": {
+            "type": "string"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "DELETE_AUTO",
+              "DELETE_MANUAL",
+              "IGNORE"
+            ]
           }
         }
       },
@@ -8147,6 +8312,30 @@
             "type": "string"
           },
           "requestName": {
+            "type": "string"
+          }
+        }
+      },
+      "PageHashMatchDto": {
+        "required": [
+          "bookId",
+          "fileName",
+          "pageNumber",
+          "url"
+        ],
+        "type": "object",
+        "properties": {
+          "bookId": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fileName": {
             "type": "string"
           }
         }
@@ -8609,13 +8798,6 @@
               "type": "string"
             }
           },
-          "genres": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "readingDirection": {
             "type": "string",
             "enum": [
@@ -8628,6 +8810,13 @@
           "ageRating": {
             "type": "integer",
             "format": "int32"
+          },
+          "genres": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "totalBookCount": {
             "type": "integer",
@@ -8738,10 +8927,10 @@
           "linksLock": {
             "type": "boolean"
           },
-          "authors": {
+          "links": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AuthorUpdateDto"
+              "$ref": "#/components/schemas/WebLinkUpdateDto"
             }
           },
           "tags": {
@@ -8751,20 +8940,20 @@
               "type": "string"
             }
           },
+          "summary": {
+            "type": "string"
+          },
+          "authors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthorUpdateDto"
+            }
+          },
           "releaseDate": {
             "type": "string",
             "format": "date"
           },
           "isbn": {
-            "type": "string"
-          },
-          "links": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/WebLinkUpdateDto"
-            }
-          },
-          "summary": {
             "type": "string"
           }
         },
@@ -8999,11 +9188,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "last": {
-            "type": "boolean"
-          },
           "pageable": {
             "$ref": "#/components/schemas/PageableObject"
+          },
+          "last": {
+            "type": "boolean"
           },
           "size": {
             "type": "integer",
@@ -9030,9 +9219,6 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
-          "paged": {
-            "type": "boolean"
-          },
           "pageNumber": {
             "type": "integer",
             "format": "int32"
@@ -9040,6 +9226,9 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "paged": {
+            "type": "boolean"
           },
           "unpaged": {
             "type": "boolean"
@@ -9163,11 +9352,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "last": {
-            "type": "boolean"
-          },
           "pageable": {
             "$ref": "#/components/schemas/PageableObject"
+          },
+          "last": {
+            "type": "boolean"
           },
           "size": {
             "type": "integer",
@@ -9253,11 +9442,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "last": {
-            "type": "boolean"
-          },
           "pageable": {
             "$ref": "#/components/schemas/PageableObject"
+          },
+          "last": {
+            "type": "boolean"
           },
           "size": {
             "type": "integer",
@@ -9739,11 +9928,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "last": {
-            "type": "boolean"
-          },
           "pageable": {
             "$ref": "#/components/schemas/PageableObject"
+          },
+          "last": {
+            "type": "boolean"
           },
           "size": {
             "type": "integer",
@@ -9847,11 +10036,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "last": {
-            "type": "boolean"
-          },
           "pageable": {
             "$ref": "#/components/schemas/PageableObject"
+          },
+          "last": {
+            "type": "boolean"
           },
           "size": {
             "type": "integer",
@@ -9895,7 +10084,7 @@
           }
         }
       },
-      "PageHashDto": {
+      "PageHashKnownDto": {
         "required": [
           "action",
           "created",
@@ -9938,7 +10127,7 @@
           }
         }
       },
-      "PagePageHashDto": {
+      "PagePageHashKnownDto": {
         "type": "object",
         "properties": {
           "totalElements": {
@@ -9959,11 +10148,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "last": {
-            "type": "boolean"
-          },
           "pageable": {
             "$ref": "#/components/schemas/PageableObject"
+          },
+          "last": {
+            "type": "boolean"
           },
           "size": {
             "type": "integer",
@@ -9972,7 +10161,53 @@
           "content": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/PageHashDto"
+              "$ref": "#/components/schemas/PageHashKnownDto"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PagePageHashMatchDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PageHashMatchDto"
             }
           },
           "number": {
@@ -9998,15 +10233,9 @@
           "mediaType": {
             "type": "string"
           },
-          "sizeBytes": {
+          "size": {
             "type": "integer",
             "format": "int64"
-          },
-          "size": {
-            "type": "string"
-          },
-          "totalSize": {
-            "type": "string"
           },
           "matchCount": {
             "type": "integer",
@@ -10035,11 +10264,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "last": {
-            "type": "boolean"
-          },
           "pageable": {
             "$ref": "#/components/schemas/PageableObject"
+          },
+          "last": {
+            "type": "boolean"
           },
           "size": {
             "type": "integer",
@@ -10049,76 +10278,6 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PageHashUnknownDto"
-            }
-          },
-          "number": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "empty": {
-            "type": "boolean"
-          }
-        }
-      },
-      "PageHashMatchDto": {
-        "required": [
-          "bookId",
-          "fileName",
-          "pageNumber",
-          "url"
-        ],
-        "type": "object",
-        "properties": {
-          "bookId": {
-            "type": "string"
-          },
-          "url": {
-            "type": "string"
-          },
-          "pageNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "fileName": {
-            "type": "string"
-          }
-        }
-      },
-      "PagePageHashMatchDto": {
-        "type": "object",
-        "properties": {
-          "totalElements": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "first": {
-            "type": "boolean"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/Sort"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "last": {
-            "type": "boolean"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
-          "size": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "content": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PageHashMatchDto"
             }
           },
           "number": {
@@ -10151,11 +10310,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "last": {
-            "type": "boolean"
-          },
           "pageable": {
             "$ref": "#/components/schemas/PageableObject"
+          },
+          "last": {
+            "type": "boolean"
           },
           "size": {
             "type": "integer",

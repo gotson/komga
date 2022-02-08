@@ -1,3 +1,20 @@
+# [0.149.0](https://github.com/gotson/komga/compare/v0.148.3...v0.149.0) (2022-02-08)
+
+
+### Bug Fixes
+
+* book conversion will conserve page hashes ([83a59b8](https://github.com/gotson/komga/commit/83a59b8bd32d3d20f8930a8d846394992db316b2))
+* soft delete after deleting files instead of triggering a scan ([dabe398](https://github.com/gotson/komga/commit/dabe3982745bec5eb6cc8c945ac4ae7ef2313029))
+* translated using Weblate ([4ec8f32](https://github.com/gotson/komga/commit/4ec8f327fdc23f0c29f53c3c771d68d1638b54f1))
+* **webreader:** don't pad landscape covers in double page mode ([352f9a8](https://github.com/gotson/komga/commit/352f9a852528f325971eb1e251a503379281f41e))
+
+
+### Features
+
+* delete duplicate page match individually ([b53fbc7](https://github.com/gotson/komga/commit/b53fbc7217bc014211a017280cd60272b9343991))
+* deletion of duplicate pages ([c080f43](https://github.com/gotson/komga/commit/c080f433af72505399f9fe6adce3acc25530c253))
+* page hashing enhancement ([a96335d](https://github.com/gotson/komga/commit/a96335dbeec3fc4379d0668f5aadf6f92141e6a1))
+
 ## [0.148.3](https://github.com/gotson/komga/compare/v0.148.2...v0.148.3) (2022-02-04)
 
 
