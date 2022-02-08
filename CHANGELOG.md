@@ -1,3 +1,11 @@
+## [0.149.1](https://github.com/gotson/komga/compare/v0.149.0...v0.149.1) (2022-02-08)
+
+
+### Bug Fixes
+
+* **api:** cannot delete duplicate page match if it is unknown ([a6dece2](https://github.com/gotson/komga/commit/a6dece2b8158deec940198879f7902de6694d972))
+* **webui:** display issue for duplicate page card without size ([a9556d9](https://github.com/gotson/komga/commit/a9556d9069b1758e4cdb0edc3d08ef700d7854b1))
+
 # [0.149.0](https://github.com/gotson/komga/compare/v0.148.3...v0.149.0) (2022-02-08)
 
 
