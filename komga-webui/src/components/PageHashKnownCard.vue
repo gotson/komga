@@ -130,6 +130,7 @@ export default Vue.extend({
     hash: {
       handler() {
         this.getMatchCount()
+        this.deleteRequested = false
       },
       deep: true,
     },
