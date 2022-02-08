@@ -3,9 +3,10 @@ package org.gotson.komga.domain.service
 import com.google.common.jimfs.Configuration
 import com.google.common.jimfs.Jimfs
 import com.ninjasquad.springmockk.MockkBean
+import com.ninjasquad.springmockk.SpykBean
 import io.mockk.every
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Media
@@ -29,14 +30,12 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import java.io.FileNotFoundException
 import java.nio.file.Files
 import java.nio.file.Paths
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
 class BookLifecycleTest(
-  @Autowired private val bookLifecycle: BookLifecycle,
   @Autowired private val bookRepository: BookRepository,
   @Autowired private val libraryRepository: LibraryRepository,
   @Autowired private val seriesRepository: SeriesRepository,
@@ -46,6 +45,9 @@ class BookLifecycleTest(
   @Autowired private val userRepository: KomgaUserRepository,
   @Autowired private val thumbnailBookRepository: ThumbnailBookRepository,
 ) {
+
+  @SpykBean
+  private lateinit var bookLifecycle: BookLifecycle
 
   @MockkBean
   private lateinit var mockAnalyzer: BookAnalyzer
@@ -154,7 +156,7 @@ class BookLifecycleTest(
       Files.createFile(sidecarPath)
 
       val series = makeSeries(name = "series", libraryId = library.id, url = seriesPath.toUri().toURL())
-      val book = makeBook("1", libraryId = library.id, url = bookPath.toUri().toURL())
+      val book = makeBook("1", libraryId = library.id, seriesId = series.id, url = bookPath.toUri().toURL())
       val sidecar = ThumbnailBook(bookId = book.id, type = ThumbnailBook.Type.SIDECAR, url = sidecarPath.toUri().toURL())
 
       seriesLifecycle.createSeries(series)
@@ -171,16 +173,16 @@ class BookLifecycleTest(
   }
 
   @Test
-  fun `given a non-existent book file when deleting book then exception is thrown`() {
+  fun `given a non-existent book file when deleting book then it returns`() {
     // given
     val bookPath = Paths.get("/non-existent")
     val book = makeBook("1", libraryId = library.id, url = bookPath.toUri().toURL())
 
     // when
-    val thrown = catchThrowable { bookLifecycle.deleteBookFiles(book) }
+    bookLifecycle.deleteBookFiles(book)
 
     // then
-    assertThat(thrown).hasCauseInstanceOf(FileNotFoundException::class.java)
+    verify(exactly = 0) { bookLifecycle.softDeleteMany(any()) }
   }
 
   @Test
@@ -198,7 +200,7 @@ class BookLifecycleTest(
       val sidecar2Path = seriesPath.resolve("sidecar2.png")
 
       val series = makeSeries(name = "series", libraryId = library.id, url = seriesPath.toUri().toURL())
-      val book = makeBook("1", libraryId = library.id, url = bookPath.toUri().toURL())
+      val book = makeBook("1", libraryId = library.id, seriesId = series.id, url = bookPath.toUri().toURL())
       val sidecar1 = ThumbnailBook(bookId = book.id, type = ThumbnailBook.Type.SIDECAR, url = sidecar1Path.toUri().toURL())
       val sidecar2 = ThumbnailBook(bookId = book.id, type = ThumbnailBook.Type.SIDECAR, url = sidecar2Path.toUri().toURL())
 
@@ -227,7 +229,7 @@ class BookLifecycleTest(
       Files.createFile(bookPath)
 
       val series = makeSeries(name = "series", libraryId = library.id, url = seriesPath.toUri().toURL())
-      val book = makeBook("1", libraryId = library.id, url = bookPath.toUri().toURL())
+      val book = makeBook("1", libraryId = library.id, seriesId = series.id, url = bookPath.toUri().toURL())
 
       seriesLifecycle.createSeries(series)
       seriesLifecycle.addBooks(series, listOf(book))
@@ -254,7 +256,7 @@ class BookLifecycleTest(
       Files.createFile(filePath)
 
       val series = makeSeries(name = "series", libraryId = library.id, url = seriesPath.toUri().toURL())
-      val book = makeBook("1", libraryId = library.id, url = bookPath.toUri().toURL())
+      val book = makeBook("1", libraryId = library.id, seriesId = series.id, url = bookPath.toUri().toURL())
 
       seriesLifecycle.createSeries(series)
       seriesLifecycle.addBooks(series, listOf(book))

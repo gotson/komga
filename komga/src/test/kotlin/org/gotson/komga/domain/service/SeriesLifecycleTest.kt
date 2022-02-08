@@ -4,6 +4,7 @@ import com.google.common.jimfs.Configuration
 import com.google.common.jimfs.Jimfs
 import com.ninjasquad.springmockk.SpykBean
 import io.mockk.every
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.domain.model.BookMetadata
@@ -32,7 +33,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import java.io.FileNotFoundException
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -40,13 +40,15 @@ import java.nio.file.Paths
 @SpringBootTest
 class SeriesLifecycleTest(
   @Autowired private val seriesLifecycle: SeriesLifecycle,
-  @Autowired private val bookLifecycle: BookLifecycle,
   @Autowired private val seriesRepository: SeriesRepository,
   @Autowired private val bookRepository: BookRepository,
   @Autowired private val libraryRepository: LibraryRepository,
   @Autowired private val thumbnailSeriesRepository: ThumbnailSeriesRepository,
   @Autowired private val thumbnailBookRepository: ThumbnailBookRepository,
 ) {
+
+  @SpykBean
+  private lateinit var bookLifecycle: BookLifecycle
 
   @SpykBean
   private lateinit var seriesMetadataRepository: SeriesMetadataRepository
@@ -394,16 +396,16 @@ class SeriesLifecycleTest(
   }
 
   @Test
-  fun `given a non-existent series directory when deleting series then exception is thrown`() {
+  fun `given a non-existent series directory when deleting series then it returns`() {
     // given
     val seriesPath = Paths.get("/non-existent")
     val series = makeSeries(name = "series", libraryId = library.id, url = seriesPath.toUri().toURL())
 
     // when
-    val thrown = catchThrowable { seriesLifecycle.deleteSeriesFiles(series) }
+    seriesLifecycle.deleteSeriesFiles(series)
 
     // then
-    assertThat(thrown).hasCauseInstanceOf(FileNotFoundException::class.java)
+    verify(exactly = 0) { bookLifecycle.softDeleteMany(any()) }
   }
 
   @Test
