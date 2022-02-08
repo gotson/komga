@@ -4,17 +4,21 @@ import mu.KotlinLogging
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
 import org.apache.commons.io.FilenameUtils
+import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookConversionException
 import org.gotson.komga.domain.model.BookWithMedia
+import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.domain.model.MediaUnsupportedException
+import org.gotson.komga.domain.model.restoreHashFrom
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
+import org.gotson.komga.infrastructure.language.notEquals
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 import java.io.FileNotFoundException
@@ -40,6 +44,7 @@ class BookConverter(
   private val mediaRepository: MediaRepository,
   private val libraryRepository: LibraryRepository,
   private val transactionTemplate: TransactionTemplate,
+  private val eventPublisher: EventPublisher,
 ) {
 
   private val convertibleTypes = listOf(MediaType.RAR_4.value)
@@ -55,22 +60,27 @@ class BookConverter(
     bookRepository.findAllByLibraryIdAndMediaTypes(library.id, convertibleTypes)
 
   fun convertToCbz(book: Book) {
-    // TODO: check if file has changed on disk before doing conversion
+    // perform various checks
     if (!libraryRepository.findById(book.libraryId).convertToCbz)
       return logger.info { "Book conversion is disabled for the library, it may have changed since the task was submitted, skipping" }
 
     if (failedConversions.contains(book.id))
       return logger.info { "Book conversion already failed before, skipping" }
 
-    if (book.path.notExists()) throw FileNotFoundException("File not found: ${book.path}")
+    fileSystemScanner.scanFile(book.path)?.let { scannedBook ->
+      if (scannedBook.fileLastModified.notEquals(book.fileLastModified))
+        return logger.info { "Book has changed on disk, skipping" }
+    } ?: throw FileNotFoundException("File not found: ${book.path}")
 
     val media = mediaRepository.findById(book.id)
 
     if (!convertibleTypes.contains(media.mediaType))
       throw MediaUnsupportedException("${media.mediaType} cannot be converted. Must be one of $convertibleTypes")
+
     if (media.status != Media.Status.READY)
       throw MediaNotReadyException()
 
+    // perform conversion
     val destinationFilename = "${book.path.nameWithoutExtension}.$CBZ_EXTENSION"
     val destinationPath = book.path.parent.resolve(destinationFilename)
     if (destinationPath.exists())
@@ -91,6 +101,7 @@ class BookConverter(
         }
     }
 
+    // perform checks on new file
     val convertedBook = fileSystemScanner.scanFile(destinationPath)
       ?.copy(
         id = book.id,
@@ -124,13 +135,16 @@ class BookConverter(
     }
 
     if (book.path.deleteIfExists())
-      logger.info { "Deleted converted file: ${book.path}" }
+      logger.info { "Deleted old file: ${book.path}" }
+
+    val mediaWithHashes = convertedMedia.copy(pages = convertedMedia.pages.restoreHashFrom(media.pages))
 
     transactionTemplate.executeWithoutResult {
       bookRepository.update(convertedBook)
-      // TODO: restore page hash from existing media
-      mediaRepository.update(convertedMedia)
+      mediaRepository.update(mediaWithHashes)
     }
+
+    eventPublisher.publishEvent(DomainEvent.BookUpdated(convertedBook))
   }
 
   fun getMismatchedExtensionBooks(library: Library): Collection<Book> =
