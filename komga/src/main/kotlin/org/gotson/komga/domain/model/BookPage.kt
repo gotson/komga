@@ -25,3 +25,14 @@ open class BookPage(
     fileSize = fileSize,
   )
 }
+
+fun Collection<BookPage>.restoreHashFrom(restoreFrom: Collection<BookPage>): List<BookPage> =
+  this.map { newPage ->
+    restoreFrom.find {
+      it.fileSize == newPage.fileSize &&
+        it.mediaType == newPage.mediaType &&
+        it.fileName == newPage.fileName &&
+        it.fileHash.isNotBlank()
+    }?.let { newPage.copy(fileHash = it.fileHash) }
+      ?: newPage
+  }

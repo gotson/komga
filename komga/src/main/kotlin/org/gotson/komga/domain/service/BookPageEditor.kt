@@ -4,16 +4,18 @@ import mu.KotlinLogging
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
 import org.apache.commons.io.FilenameUtils
+import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookConversionException
-import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.BookPageNumbered
 import org.gotson.komga.domain.model.BookWithMedia
+import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.domain.model.MediaUnsupportedException
 import org.gotson.komga.domain.model.PageHash
+import org.gotson.komga.domain.model.restoreHashFrom
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
@@ -41,6 +43,7 @@ class BookPageEditor(
   private val libraryRepository: LibraryRepository,
   private val pageHashRepository: PageHashRepository,
   private val transactionTemplate: TransactionTemplate,
+  private val eventPublisher: EventPublisher,
 ) {
   private val convertibleTypes = listOf(MediaType.ZIP.value)
 
@@ -138,7 +141,7 @@ class BookPageEditor(
       )
       ?: throw IllegalStateException("Newly created book could not be scanned after replacing existing one: ${book.path}")
 
-    val mediaWithHashes = createdMedia.copy(pages = restorePageHash(createdMedia.pages, media.pages))
+    val mediaWithHashes = createdMedia.copy(pages = createdMedia.pages.restoreHashFrom(media.pages))
 
     transactionTemplate.executeWithoutResult {
       bookRepository.update(newBook)
@@ -147,16 +150,7 @@ class BookPageEditor(
         .mapNotNull { pageHashRepository.findKnown(PageHash(it.fileHash, it.mediaType, it.fileSize)) }
         .forEach { pageHashRepository.update(it.copy(deleteCount = it.deleteCount + 1)) }
     }
-  }
 
-  private fun restorePageHash(newPages: List<BookPage>, restoreFrom: List<BookPage>): List<BookPage> =
-    newPages.map { newPage ->
-      restoreFrom.find {
-        it.fileSize == newPage.fileSize &&
-          it.mediaType == newPage.mediaType &&
-          it.fileName == newPage.fileName &&
-          it.fileHash.isNotBlank()
-      }?.let { newPage.copy(fileHash = it.fileHash) }
-        ?: newPage
-    }
+    eventPublisher.publishEvent(DomainEvent.BookUpdated(newBook))
+  }
 }
