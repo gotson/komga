@@ -56,7 +56,7 @@ class BookPageEditor(
 
     fileSystemScanner.scanFile(book.path)?.let { scannedBook ->
       if (scannedBook.fileLastModified.notEquals(book.fileLastModified))
-        return logger.info { "Book has changed on disk, skipping" }
+        return logger.info { "Book has changed on disk, skipping. Db: ${book.fileLastModified}. Scanned: ${scannedBook.fileLastModified}" }
     } ?: throw FileNotFoundException("File not found: ${book.path}")
 
     val media = mediaRepository.findById(book.id)
