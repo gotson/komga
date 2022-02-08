@@ -17,6 +17,12 @@
     "account_settings": "Tilin asetukset",
     "change_password": "Vaihda salasana"
   },
+  "authentication_activity": {
+    "email": "Sähköposti",
+    "error": "Virhe",
+    "source": "Lähde",
+    "success": "Onnistui"
+  },
   "author_roles": {
     "colorist": "värittäjät",
     "cover": "kansi",
@@ -24,12 +30,19 @@
     "inker": "ääriviivatyöntekijät",
     "letterer": "kirjoittajat",
     "penciller": "piirtäjät",
+    "translator": "kääntäjät",
     "writer": "kirjailijat"
   },
   "book_card": {
     "error": "Virhe",
     "unknown": "Ei vielä analysoitu",
     "unsupported": "Ei tuettu"
+  },
+  "book_import": {
+    "button_browse": "Selaa",
+    "button_import": "Tuo",
+    "button_scan": "Skannaa",
+    "field_import_path": "Tuo kansiosta"
   },
   "bookreader": {
     "beginning_of_book": "Olet kirjan alussa.",
