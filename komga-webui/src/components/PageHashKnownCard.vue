@@ -143,7 +143,7 @@ export default Vue.extend({
     },
     async deleteMatches() {
       if(!this.deleteRequested) {
-        await this.$komgaPageHashes.performDelete(this.hash)
+        await this.$komgaPageHashes.deleteAllMatches(this.hash)
         this.deleteRequested = true
       }
     },

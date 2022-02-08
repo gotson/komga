@@ -82,13 +82,13 @@ export default class KomgaPageHashesService {
     }
   }
 
-  async performDelete(pageHash: PageHashKnownDto) {
+  async deleteAllMatches(pageHash: PageHashKnownDto) {
     try {
       const params = {
         media_type: pageHash.mediaType,
         file_size: pageHash.size || -1,
       }
-      await this.http.post(`${API_PAGE_HASH}/${pageHash.hash}/perform-delete`, pageHash, {
+      await this.http.post(`${API_PAGE_HASH}/${pageHash.hash}/delete-all`, pageHash, {
         params: params,
         paramsSerializer: params => qs.stringify(params, {indices: false}),
       })

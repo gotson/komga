@@ -120,7 +120,7 @@ class PageHashController(
     }
   }
 
-  @PostMapping("{pageHash}/perform-delete")
+  @PostMapping("{pageHash}/delete-all")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun performDelete(
     @PathVariable pageHash: String,
