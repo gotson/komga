@@ -53,7 +53,7 @@
                   </div>
 
                   <div
-                    v-if="hash.deleteCount"
+                    v-if="hash.size && hash.deleteCount"
                   >{{ $t('duplicate_pages.saved_size', {size: getFileSize(hash.size * hash.deleteCount)}) }}
                   </div>
                 </v-col>
