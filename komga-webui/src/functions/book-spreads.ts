@@ -12,10 +12,16 @@ export function buildSpreads(pages: PageDtoWithUrl[], pageLayout: PagedReaderLay
     let lastPages = undefined
     if (pageLayout === PagedReaderLayout.DOUBLE_PAGES) {
       const firstPage = pagesClone.shift() as PageDtoWithUrl
-      spreads.push([createEmptyPage(firstPage), firstPage] as PageDtoWithUrl[])
+      if (isPageLandscape(firstPage))
+        spreads.push([firstPage] as PageDtoWithUrl[])
+      else
+        spreads.push([createEmptyPage(firstPage), firstPage] as PageDtoWithUrl[])
       if (pagesClone.length > 0) {
         const lastPage = pagesClone.pop() as PageDtoWithUrl
-        lastPages = [lastPage, createEmptyPage(lastPage)] as PageDtoWithUrl[]
+        if(isPageLandscape(lastPage))
+          lastPages = [lastPage] as PageDtoWithUrl[]
+        else
+          lastPages = [lastPage, createEmptyPage(lastPage)] as PageDtoWithUrl[]
       }
     }
     while (pagesClone.length > 0) {
