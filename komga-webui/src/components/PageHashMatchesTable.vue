@@ -22,8 +22,18 @@
       />
     </template>
 
+    <template v-slot:item.delete="{ item }">
+      <v-btn
+        icon
+        color="error"
+        @click="deleteMatch(item)"
+      >
+        <v-icon>mdi-trash-can-outline</v-icon>
+      </v-btn>
+    </template>
+
     <template v-slot:footer.prepend>
-      <v-btn icon @click="loadData">
+      <v-btn icon @click="loadData(hash)">
         <v-icon>mdi-refresh</v-icon>
       </v-btn>
     </template>
@@ -33,7 +43,7 @@
 <script lang="ts">
 import Vue, {PropType} from 'vue'
 import {bookPageThumbnailUrl} from '@/functions/urls'
-import {PageHashDto, PageHashMatchDto, PageHashUnknownDto} from '@/types/komga-pagehashes'
+import {PageHashDto, PageHashMatchDto} from '@/types/komga-pagehashes'
 
 export default Vue.extend({
   name: 'PageHashMatchesTable',
@@ -70,6 +80,7 @@ export default Vue.extend({
         {text: this.$t('common.filename').toString(), value: 'fileName'},
         {text: this.$t('common.page_number').toString(), value: 'pageNumber'},
         {text: this.$t('common.page').toString(), value: 'bookId'},
+        {text: this.$t('menu.delete').toString(), value: 'delete'},
       ]
     },
   },
@@ -94,6 +105,9 @@ export default Vue.extend({
       this.elements = elementsPage.content
 
       this.loading = false
+    },
+    async deleteMatch(match: PageHashMatchDto) {
+      await this.$komgaPageHashes.deleteSingleMatch(this.hash, match)
     },
   },
 })

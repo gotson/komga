@@ -146,4 +146,31 @@ class PageHashController(
 
     toRemove.forEach { taskReceiver.removeDuplicatePages(it.key, it.value) }
   }
+
+  @PostMapping("{pageHash}/delete-match")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun deleteSingleMatch(
+    @PathVariable pageHash: String,
+    @RequestParam("media_type") mediaType: String,
+    @RequestParam("file_size") size: Long,
+    @RequestBody matchDto: PageHashMatchDto,
+  ) {
+    val hash = pageHashRepository.findKnown(PageHash(pageHash, mediaType, size))
+      ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+    val toRemove = Pair(
+      matchDto.bookId,
+      listOf(
+        BookPageNumbered(
+          fileName = matchDto.fileName,
+          mediaType = hash.mediaType,
+          fileHash = hash.hash,
+          fileSize = hash.size,
+          pageNumber = matchDto.pageNumber,
+        ),
+      ),
+    )
+
+    taskReceiver.removeDuplicatePages(toRemove.first, toRemove.second)
+  }
 }
