@@ -127,8 +127,7 @@ class PageHashController(
     @RequestParam("media_type") mediaType: String,
     @RequestParam("file_size") size: Long,
   ) {
-    val hash = pageHashRepository.findKnown(PageHash(pageHash, mediaType, size))
-      ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    val hash = PageHash(pageHash, mediaType, size)
 
     val toRemove = pageHashRepository.findMatchesByHash(hash, null, Pageable.unpaged())
       .groupBy(
@@ -155,17 +154,14 @@ class PageHashController(
     @RequestParam("file_size") size: Long,
     @RequestBody matchDto: PageHashMatchDto,
   ) {
-    val hash = pageHashRepository.findKnown(PageHash(pageHash, mediaType, size))
-      ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-
     val toRemove = Pair(
       matchDto.bookId,
       listOf(
         BookPageNumbered(
           fileName = matchDto.fileName,
-          mediaType = hash.mediaType,
-          fileHash = hash.hash,
-          fileSize = hash.size,
+          mediaType = mediaType,
+          fileHash = pageHash,
+          fileSize = size,
           pageNumber = matchDto.pageNumber,
         ),
       ),
