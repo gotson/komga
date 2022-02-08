@@ -1,3 +1,11 @@
+## [0.149.2](https://github.com/gotson/komga/compare/v0.149.1...v0.149.2) (2022-02-08)
+
+
+### Bug Fixes
+
+* release 0.149.0 could wipe some database entries ([5f2ce0f](https://github.com/gotson/komga/commit/5f2ce0fb30c1fc22a70406693756d8b672ab9383))
+* **webui:** known hash card button would not reset properly ([ce66f87](https://github.com/gotson/komga/commit/ce66f8778b4389189893a441e6f7c9735b5b71e9))
+
 ## [0.149.1](https://github.com/gotson/komga/compare/v0.149.0...v0.149.1) (2022-02-08)
 
 
