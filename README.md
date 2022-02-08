@@ -22,7 +22,11 @@ Komga is a free and open source comics/mangas server.
 - Webreader with multiple reading modes
 - Manage multiple users, with per-library access control
 - Offers a REST API, many community tools and scripts can interact with Komga
-- Download book files
+- Download book files, whole series, or read lists
+- Duplicate files detection
+- Duplicate pages detection and removal
+- Import books from outside your libraries directly into your series folder
+- Import ComicRack `cbl` read lists
 
 ## Download
 
