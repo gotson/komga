@@ -18,7 +18,6 @@ import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.ThumbnailSeries
-import org.gotson.komga.domain.model.withCode
 import org.gotson.komga.domain.persistence.BookMetadataAggregationRepository
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
@@ -33,8 +32,6 @@ import org.gotson.komga.infrastructure.language.stripAccents
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 import java.io.File
-import java.io.FileNotFoundException
-import java.nio.file.Path
 import java.time.LocalDateTime
 import kotlin.io.path.deleteIfExists
 import kotlin.io.path.exists
@@ -96,8 +93,8 @@ class SeriesLifecycle(
         book, metadata,
         metadata.copy(
           number = if (!metadata.numberLock) (index + 1).toString() else metadata.number,
-          numberSort = if (!metadata.numberSortLock) (index + 1).toFloat() else metadata.numberSort
-        )
+          numberSort = if (!metadata.numberSortLock) (index + 1).toFloat() else metadata.numberSort,
+        ),
       )
     }
     bookMetadataRepository.update(oldToNew.map { it.third })
@@ -294,8 +291,8 @@ class SeriesLifecycle(
   }
 
   fun deleteSeriesFiles(series: Series) {
-    if (series.path.notExists() || !series.path.isWritable())
-      throw FileNotFoundException("File is not accessible : ${series.path}").withCode("ERR_1018")
+    if (series.path.notExists()) return logger.info { "Cannot delete series folder, path does not exist: ${series.path}" }
+    if (!series.path.isWritable()) return logger.info { "Cannot delete series folder, path is not writable: ${series.path}" }
 
     val thumbnails = thumbnailsSeriesRepository.findAllBySeriesIdIdAndType(series.id, ThumbnailSeries.Type.SIDECAR)
       .mapNotNull { it.url?.toURI()?.toPath() }
@@ -303,10 +300,14 @@ class SeriesLifecycle(
 
     bookRepository.findAllBySeriesId(series.id)
       .forEach { bookLifecycle.deleteBookFiles(it) }
-    thumbnails.forEach(Path::deleteIfExists)
+    thumbnails.forEach {
+      if (it.deleteIfExists()) logger.info { "Deleted file: $it" }
+    }
 
     if (series.path.exists() && series.path.listDirectoryEntries().isEmpty())
-      series.path.deleteIfExists()
+      if (series.path.deleteIfExists()) logger.info { "Deleted directory: ${series.path}" }
+
+    softDeleteMany(listOf(series))
   }
 
   private fun thumbnailsHouseKeeping(seriesId: String) {
