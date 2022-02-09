@@ -129,8 +129,9 @@ export default Vue.extend({
   watch: {
     hash: {
       handler() {
-        this.getMatchCount()
         this.deleteRequested = false
+        this.matchCount = undefined
+        this.getMatchCount()
       },
       deep: true,
     },
