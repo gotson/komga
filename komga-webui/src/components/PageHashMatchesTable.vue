@@ -69,7 +69,9 @@ export default Vue.extend({
       deep: true,
     },
     hash(val) {
-      this.options.page = 1
+      this.options = {}
+      this.elements = []
+      this.totalElements = 0
       this.loadData(val)
     },
   },
