@@ -12,10 +12,8 @@ import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.service.BookConverter
 import org.gotson.komga.domain.service.PageHashLifecycle
-import org.gotson.komga.infrastructure.jms.QUEUE_SUB_TYPE
+import org.gotson.komga.infrastructure.jms.JMS_PROPERTY_TYPE
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
-import org.gotson.komga.infrastructure.jms.QUEUE_TASKS_TYPE
-import org.gotson.komga.infrastructure.jms.QUEUE_TYPE
 import org.gotson.komga.infrastructure.jms.QUEUE_UNIQUE_ID
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.search.LuceneEntity
@@ -156,9 +154,8 @@ class TaskReceiver(
     logger.info { "Sending task: $task" }
     jmsTemplates[task.priority]!!.convertAndSend(QUEUE_TASKS, task) {
       it.apply {
-        setStringProperty(QUEUE_TYPE, QUEUE_TASKS_TYPE)
         setStringProperty(QUEUE_UNIQUE_ID, task.uniqueId())
-        setStringProperty(QUEUE_SUB_TYPE, task::class.simpleName)
+        setStringProperty(JMS_PROPERTY_TYPE, task.javaClass.simpleName)
         task.groupId?.let { groupId -> setStringProperty("JMSXGroupID", groupId) }
       }
     }

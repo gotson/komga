@@ -1,9 +1,8 @@
 package org.gotson.komga.application.events
 
 import org.gotson.komga.domain.model.DomainEvent
-import org.gotson.komga.infrastructure.jms.QUEUE_SSE
-import org.gotson.komga.infrastructure.jms.QUEUE_SSE_TYPE
-import org.gotson.komga.infrastructure.jms.QUEUE_TYPE
+import org.gotson.komga.infrastructure.jms.JMS_PROPERTY_TYPE
+import org.gotson.komga.infrastructure.jms.TOPIC_EVENTS
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.stereotype.Service
 import javax.jms.ConnectionFactory
@@ -17,9 +16,9 @@ class EventPublisher(
   }
 
   fun publishEvent(event: DomainEvent) {
-    jmsTemplate.convertAndSend(QUEUE_SSE, event) {
+    jmsTemplate.convertAndSend(TOPIC_EVENTS, event) {
       it.apply {
-        setStringProperty(QUEUE_TYPE, QUEUE_SSE_TYPE)
+        setStringProperty(JMS_PROPERTY_TYPE, event.javaClass.simpleName)
       }
     }
   }

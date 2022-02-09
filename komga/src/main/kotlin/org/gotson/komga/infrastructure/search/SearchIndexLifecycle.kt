@@ -10,8 +10,7 @@ import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
-import org.gotson.komga.infrastructure.jms.QUEUE_SSE
-import org.gotson.komga.infrastructure.jms.QUEUE_SSE_SELECTOR
+import org.gotson.komga.infrastructure.jms.TOPIC_EVENTS
 import org.gotson.komga.infrastructure.jms.TOPIC_FACTORY
 import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.api.persistence.SeriesDtoRepository
@@ -79,7 +78,7 @@ class SearchIndexLifecycle(
     logger.info { "Lucene index version: ${luceneHelper.getIndexVersion()}" }
   }
 
-  @JmsListener(destination = QUEUE_SSE, selector = QUEUE_SSE_SELECTOR, containerFactory = TOPIC_FACTORY)
+  @JmsListener(destination = TOPIC_EVENTS, containerFactory = TOPIC_FACTORY)
   fun consumeEvents(event: DomainEvent) {
     when (event) {
       is DomainEvent.SeriesAdded -> seriesDtoRepository.findByIdOrNull(event.series.id, "unused")?.toDocument()?.let { addEntity(it) }

@@ -4,10 +4,9 @@ import mu.KotlinLogging
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.persistence.BookRepository
-import org.gotson.komga.infrastructure.jms.QUEUE_SSE
-import org.gotson.komga.infrastructure.jms.QUEUE_SSE_SELECTOR
-import org.gotson.komga.infrastructure.jms.QUEUE_SUB_TYPE
+import org.gotson.komga.infrastructure.jms.JMS_PROPERTY_TYPE
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
+import org.gotson.komga.infrastructure.jms.TOPIC_EVENTS
 import org.gotson.komga.infrastructure.jms.TOPIC_FACTORY
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.web.toFilePath
@@ -64,7 +63,7 @@ class SseController(
     if (emitters.isNotEmpty()) {
       val tasksCount = jmsTemplate.browse(QUEUE_TASKS) { _: Session, browser: QueueBrowser ->
         browser.enumeration.toList()
-          .groupingBy { (it as ObjectMessage).getStringProperty(QUEUE_SUB_TYPE) ?: "unknown" }
+          .groupingBy { (it as ObjectMessage).getStringProperty(JMS_PROPERTY_TYPE) ?: "unknown" }
           .eachCount()
       } ?: emptyMap()
 
@@ -72,7 +71,7 @@ class SseController(
     }
   }
 
-  @JmsListener(destination = QUEUE_SSE, selector = QUEUE_SSE_SELECTOR, containerFactory = TOPIC_FACTORY)
+  @JmsListener(destination = TOPIC_EVENTS, containerFactory = TOPIC_FACTORY)
   fun handleSseEvent(event: DomainEvent) {
     when (event) {
       is DomainEvent.LibraryAdded -> emitSse("LibraryAdded", LibrarySseDto(event.library.id))
