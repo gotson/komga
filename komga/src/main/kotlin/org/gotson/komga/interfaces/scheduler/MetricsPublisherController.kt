@@ -18,6 +18,7 @@ import org.gotson.komga.domain.persistence.SidecarRepository
 import org.gotson.komga.infrastructure.jms.TOPIC_EVENTS
 import org.gotson.komga.infrastructure.jms.TOPIC_FACTORY
 import org.springframework.boot.context.event.ApplicationReadyEvent
+import org.springframework.context.annotation.Profile
 import org.springframework.context.event.EventListener
 import org.springframework.jms.annotation.JmsListener
 import org.springframework.stereotype.Component
@@ -36,6 +37,7 @@ private const val SIDECARS = "sidecars"
 const val METER_TASKS_EXECUTION = "komga.tasks.execution"
 const val METER_TASKS_FAILURE = "komga.tasks.failure"
 
+@Profile("!test")
 @Component
 class MetricsPublisherController(
   private val libraryRepository: LibraryRepository,
