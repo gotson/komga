@@ -67,7 +67,7 @@
     <v-card-actions>
       <v-btn v-if="hash.action === PageHashAction.DELETE_MANUAL"
              :color="deleteRequested ? 'success': 'primary'"
-             :disabled="matchCount === 0"
+             :disabled="!matchCount"
              @click="deleteMatches"
       >
         <v-icon left v-if="deleteRequested">mdi-check</v-icon>
