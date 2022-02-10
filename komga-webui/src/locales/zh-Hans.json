@@ -531,14 +531,20 @@
   "duplicate_pages": {
     "action_delete_auto": "自动删除",
     "action_delete_manual": "手动删除",
+    "action_delete_matches": "删除匹配",
     "action_ignore": "忽略",
     "delete_to_save": "删除以节省 {size}",
+    "deleted_count": "删除了 {count} 次",
     "filter": {
       "count": "数目",
+      "delete_count": "删除计数",
+      "delete_size": "节省的空间",
       "size": "大小",
       "total_size": "总大小"
     },
+    "info": "删除重复的页面会修改你的文件。使用自动删除之前备份文件并使用手动删除。",
     "matches_n": "无匹配 | 1 个匹配 | {count} 个匹配",
+    "saved_size": "节省了 {size}",
     "title": "重复页面",
     "unknown_size": "未知大小"
   },
@@ -559,6 +565,11 @@
       "READY": "就绪",
       "UNKNOWN": "未知",
       "UNSUPPORTED": "不支持"
+    },
+    "page_hash_action": {
+      "DELETE_AUTO": "自动删除",
+      "DELETE_MANUAL": "手动删除",
+      "IGNORE": "忽略"
     },
     "reading_direction": {
       "LEFT_TO_RIGHT": "从左到右",
