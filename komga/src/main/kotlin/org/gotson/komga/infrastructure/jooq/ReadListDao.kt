@@ -247,6 +247,8 @@ class ReadListDao(
         .where(rl.NAME.equalIgnoreCase(name)),
     )
 
+  override fun count(): Long = dsl.fetchCount(rl).toLong()
+
   private fun ReadlistRecord.toDomain(bookIds: SortedMap<Int, String>) =
     ReadList(
       name = name,

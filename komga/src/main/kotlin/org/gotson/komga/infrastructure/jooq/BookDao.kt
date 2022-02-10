@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import java.math.BigDecimal
 import java.net.URL
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -29,6 +30,7 @@ class BookDao(
   private val m = Tables.MEDIA
   private val d = Tables.BOOK_METADATA
   private val r = Tables.READ_PROGRESS
+  private val l = Tables.LIBRARY
 
   private val sorts = mapOf(
     "createdDate" to b.CREATED_DATE,
@@ -313,6 +315,20 @@ class BookDao(
   }
 
   override fun count(): Long = dsl.fetchCount(b).toLong()
+
+  override fun countGroupedByLibraryName(): Map<String, Int> =
+    dsl.select(l.NAME, DSL.count(b.ID))
+      .from(l)
+      .leftJoin(b).on(l.ID.eq(b.LIBRARY_ID))
+      .groupBy(l.NAME)
+      .fetchMap(l.NAME, DSL.count(b.ID))
+
+  override fun getFilesizeGroupedByLibraryName(): Map<String, BigDecimal> =
+    dsl.select(l.NAME, DSL.sum(b.FILE_SIZE))
+      .from(l)
+      .leftJoin(b).on(l.ID.eq(b.LIBRARY_ID))
+      .groupBy(l.NAME)
+      .fetchMap(l.NAME, DSL.sum(b.FILE_SIZE))
 
   private fun BookSearch.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()

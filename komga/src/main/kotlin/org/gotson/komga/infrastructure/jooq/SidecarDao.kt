@@ -6,6 +6,7 @@ import org.gotson.komga.domain.persistence.SidecarRepository
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.SidecarRecord
 import org.jooq.DSLContext
+import org.jooq.impl.DSL
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -17,6 +18,7 @@ class SidecarDao(
   @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : SidecarRepository {
   private val sc = Tables.SIDECAR
+  private val l = Tables.LIBRARY
 
   override fun findAll(): Collection<SidecarStored> =
     dsl.selectFrom(sc).fetch().map { it.toDomain() }
@@ -51,6 +53,13 @@ class SidecarDao(
       .where(sc.LIBRARY_ID.eq(libraryId))
       .execute()
   }
+
+  override fun countGroupedByLibraryName(): Map<String, Int> =
+    dsl.select(l.NAME, DSL.count(sc.URL))
+      .from(l)
+      .leftJoin(sc).on(l.ID.eq(sc.LIBRARY_ID))
+      .groupBy(l.NAME)
+      .fetchMap(l.NAME, DSL.count(sc.URL))
 
   private fun SidecarRecord.toDomain() =
     SidecarStored(

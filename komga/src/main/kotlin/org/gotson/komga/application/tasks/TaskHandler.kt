@@ -1,5 +1,6 @@
 package org.gotson.komga.application.tasks
 
+import io.micrometer.core.instrument.MeterRegistry
 import mu.KotlinLogging
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
@@ -16,10 +17,13 @@ import org.gotson.komga.domain.service.SeriesMetadataLifecycle
 import org.gotson.komga.infrastructure.jms.QUEUE_FACTORY
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.gotson.komga.infrastructure.search.SearchIndexLifecycle
+import org.gotson.komga.interfaces.scheduler.METER_TASKS_EXECUTION
+import org.gotson.komga.interfaces.scheduler.METER_TASKS_FAILURE
 import org.springframework.jms.annotation.JmsListener
 import org.springframework.stereotype.Service
 import java.nio.file.Paths
 import kotlin.time.measureTime
+import kotlin.time.toJavaDuration
 
 private val logger = KotlinLogging.logger {}
 
@@ -39,6 +43,7 @@ class TaskHandler(
   private val bookConverter: BookConverter,
   private val bookPageEditor: BookPageEditor,
   private val searchIndexLifecycle: SearchIndexLifecycle,
+  private val meterRegistry: MeterRegistry,
 ) {
 
   @JmsListener(destination = QUEUE_TASKS, containerFactory = QUEUE_FACTORY, concurrency = "#{@komgaProperties.taskConsumers}-#{@komgaProperties.taskConsumersMax}")
@@ -151,9 +156,11 @@ class TaskHandler(
         }
       }.also {
         logger.info { "Task $task executed in $it" }
+        meterRegistry.timer(METER_TASKS_EXECUTION, "type", task.javaClass.simpleName).record(it.toJavaDuration())
       }
     } catch (e: Exception) {
       logger.error(e) { "Task $task execution failed" }
+      meterRegistry.counter(METER_TASKS_FAILURE, "type", task.javaClass.simpleName).increment()
     }
   }
 }

@@ -24,6 +24,7 @@ class SeriesDao(
   private val s = Tables.SERIES
   private val d = Tables.SERIES_METADATA
   private val cs = Tables.COLLECTION_SERIES
+  private val l = Tables.LIBRARY
 
   override fun findAll(): Collection<Series> =
     dsl.selectFrom(s)
@@ -135,6 +136,13 @@ class SeriesDao(
   }
 
   override fun count(): Long = dsl.fetchCount(s).toLong()
+
+  override fun countGroupedByLibraryName(): Map<String, Int> =
+    dsl.select(l.NAME, DSL.count(s.ID))
+      .from(l)
+      .leftJoin(s).on(l.ID.eq(s.LIBRARY_ID))
+      .groupBy(l.NAME)
+      .fetchMap(l.NAME, DSL.count(s.ID))
 
   private fun SeriesSearch.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()

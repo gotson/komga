@@ -231,6 +231,8 @@ class LibraryContentLifecycle(
       if (library.emptyTrashAfterScan) emptyTrash(library)
       else cleanupEmptySets()
     }.also { logger.info { "Library updated in $it" } }
+
+    eventPublisher.publishEvent(DomainEvent.LibraryScanned(library))
   }
 
   /**

@@ -8,6 +8,7 @@ sealed class DomainEvent : Serializable {
   data class LibraryAdded(val library: Library) : DomainEvent()
   data class LibraryUpdated(val library: Library) : DomainEvent()
   data class LibraryDeleted(val library: Library) : DomainEvent()
+  data class LibraryScanned(val library: Library) : DomainEvent()
 
   data class SeriesAdded(val series: Series) : DomainEvent()
   data class SeriesUpdated(val series: Series) : DomainEvent()

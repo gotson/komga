@@ -247,6 +247,8 @@ class SeriesCollectionDao(
         .where(c.NAME.equalIgnoreCase(name)),
     )
 
+  override fun count(): Long = dsl.fetchCount(c).toLong()
+
   private fun CollectionRecord.toDomain(seriesIds: List<String>) =
     SeriesCollection(
       name = name,

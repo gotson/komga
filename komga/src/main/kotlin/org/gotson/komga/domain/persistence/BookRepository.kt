@@ -5,6 +5,7 @@ import org.gotson.komga.domain.model.BookSearch
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
+import java.math.BigDecimal
 import java.net.URL
 
 interface BookRepository {
@@ -43,4 +44,7 @@ interface BookRepository {
   fun deleteAll()
 
   fun count(): Long
+  fun countGroupedByLibraryName(): Map<String, Int>
+
+  fun getFilesizeGroupedByLibraryName(): Map<String, BigDecimal>
 }

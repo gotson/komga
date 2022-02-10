@@ -77,6 +77,7 @@ class SseController(
       is DomainEvent.LibraryAdded -> emitSse("LibraryAdded", LibrarySseDto(event.library.id))
       is DomainEvent.LibraryUpdated -> emitSse("LibraryChanged", LibrarySseDto(event.library.id))
       is DomainEvent.LibraryDeleted -> emitSse("LibraryDeleted", LibrarySseDto(event.library.id))
+      is DomainEvent.LibraryScanned -> Unit
 
       is DomainEvent.SeriesAdded -> emitSse("SeriesAdded", SeriesSseDto(event.series.id, event.series.libraryId))
       is DomainEvent.SeriesUpdated -> emitSse("SeriesChanged", SeriesSseDto(event.series.id, event.series.libraryId))
