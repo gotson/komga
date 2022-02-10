@@ -33,6 +33,7 @@ export const persistedModule: Module<any, any> = {
       route: {},
     },
     importPath: '',
+     duplicatesNewPageSize: 10,
   },
   getters: {
     getCollectionFilter: (state) => (id: string) => {
@@ -105,6 +106,9 @@ export const persistedModule: Module<any, any> = {
     },
     setImportPath(state, val) {
       state.importPath = val ?? ''
+    },
+    setDuplicatesNewPageSize(state, val) {
+      state.duplicatesNewPageSize = val
     },
   },
 }

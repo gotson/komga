@@ -37,6 +37,10 @@
         </v-btn>
       </v-col>
 
+      <v-col>
+        <page-size-select v-model="pageSize" :items="[1, 2, 5, 10, 20]"/>
+      </v-col>
+
     </v-row>
 
     <v-row>
@@ -105,10 +109,11 @@ import {PageHashDto, PageHashUnknownDto} from '@/types/komga-pagehashes'
 import {pageHashUnknownThumbnailUrl} from '@/functions/urls'
 import PageHashMatchesTable from '@/components/PageHashMatchesTable.vue'
 import PageHashUnknownCard from '@/components/PageHashUnknownCard.vue'
+import PageSizeSelect from '@/components/PageSizeSelect.vue'
 
 export default Vue.extend({
   name: 'SettingsDuplicatePagesUnknown',
-  components: {PageHashUnknownCard, PageHashMatchesTable},
+  components: {PageHashUnknownCard, PageHashMatchesTable, PageSizeSelect},
   data: function () {
     return {
       elements: [] as PageHashUnknownDto[],
@@ -156,11 +161,21 @@ export default Vue.extend({
           return 15
       }
     },
+    pageSize: {
+      get: function (): number {
+        return this.$store.state.persistedState.duplicatesNewPageSize
+      },
+      set: function (value: number): void {
+        this.$store.commit('setDuplicatesNewPageSize', value)
+        this.loadData(this.page, this.sortActive)
+      },
+    },
   },
   methods: {
     async loadData(page: number, sort: SortActive) {
       const pageRequest = {
         page: page - 1,
+        size: this.pageSize,
         sort: [`${sort.key},${sort.order}`],
       } as PageRequest
 
