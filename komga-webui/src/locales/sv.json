@@ -533,12 +533,15 @@
     "action_delete_manual": "Manuell radering",
     "action_ignore": "Ignorera",
     "delete_to_save": "Radera för att spara {size}",
+    "deleted_count": "Raderat {count} gånger",
     "filter": {
       "count": "Antal",
+      "delete_count": "Antal gånger raderat",
       "size": "Storlek",
       "total_size": "Total storlek"
     },
     "matches_n": "Inga träffar | 1 träff | {count} träffar",
+    "saved_size": "Sparat {size}",
     "title": "Duplicerade sidor",
     "unknown_size": "Okänd storlek"
   },

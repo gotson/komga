@@ -531,14 +531,20 @@
   "duplicate_pages": {
     "action_delete_auto": "Suppression automatique",
     "action_delete_manual": "Suppression manuelle",
+    "action_delete_matches": "Supprimer les correspondances",
     "action_ignore": "Ignorer",
     "delete_to_save": "Supprimer pour économiser {size}",
+    "deleted_count": "Supprimé {count} fois",
     "filter": {
       "count": "Nombre",
+      "delete_count": "Compteur de suppression",
+      "delete_size": "Espace économisé",
       "size": "Taille",
       "total_size": "Taille totale"
     },
+    "info": "Supprimer les pages en doublon va modifier vos fichiers. Sauvegardez vos fichiers et utilisez la suppression manuelle avant d'utiliser la suppression automatique.",
     "matches_n": "Aucune correspondance | 1 correspondance | {count} correspondances",
+    "saved_size": "{size} économisés",
     "title": "Dupliquer les pages",
     "unknown_size": "Taille inconnue"
   },
@@ -559,6 +565,11 @@
       "READY": "Prêt",
       "UNKNOWN": "Inconnu",
       "UNSUPPORTED": "Non supporté"
+    },
+    "page_hash_action": {
+      "DELETE_AUTO": "Suppression automatique",
+      "DELETE_MANUAL": "Suppression manuelle",
+      "IGNORE": "Ignorer"
     },
     "reading_direction": {
       "LEFT_TO_RIGHT": "De gauche à droite",

@@ -128,6 +128,7 @@
       "cycle_scale": "大きさを切り替える",
       "cycle_side_padding": "左右の余白を切り替える",
       "first_page": "最初のページ",
+      "fullscreen": "全画面表示/解除",
       "last_page": "最後のページ",
       "left_to_right": "左から右に",
       "menus": "メニュー",
@@ -151,9 +152,11 @@
     "file": "ファイル名",
     "format": "フォーマット",
     "isbn": "ISBN",
+    "links": "リンク集",
     "navigation_within_readlist": "この読書リスト内の一覧: {name}",
     "outdated_tooltip": "この本のファイルが変更されました。この本を再分析する必要があります",
     "read_book": "書籍を読む",
+    "read_incognito": "シークレットモードで読む",
     "size": "サイズ"
   },
   "browse_collection": {
@@ -187,6 +190,7 @@
     "dismiss": "却下",
     "download": "ダウンロード",
     "email": "メールアドレス",
+    "filename": "ファイル名",
     "filter_no_matches": "フィルタに一致するものはありません",
     "genre": "ジャンル",
     "go_to_library": "ライブラリへ移動",
@@ -213,6 +217,7 @@
     "tags": "タグ",
     "unavailable": "利用できません",
     "unlock_all": "全てアンロック",
+    "url": "URL",
     "use_filter_panel_to_change_filter": "フィルターパネルを使って有効なフィルタを変更する",
     "year": "年"
   },
@@ -485,6 +490,12 @@
       "title": "書籍の検査",
       "title_comparison": "書籍の比較"
     }
+  },
+  "duplicate_pages": {
+    "action_ignore": "無視"
+  },
+  "duplicates": {
+    "title": "重複ファイル"
   },
   "enums": {
     "copy_mode": {
