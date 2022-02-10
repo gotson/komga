@@ -187,6 +187,7 @@
     "collections": "Collections",
     "create": "Create",
     "delete": "Delete",
+    "disk_space": "Disk space",
     "dismiss": "Dismiss",
     "download": "Download",
     "email": "Email",
@@ -216,6 +217,7 @@
     "reset_filters": "Reset filters",
     "roles": "Roles",
     "series": "Series",
+    "sidecars": "Sidecars",
     "tags": "Tags",
     "unavailable": "Unavailable",
     "unlock_all": "Unlock all",
@@ -542,11 +544,11 @@
       "size": "Size",
       "total_size": "Total size"
     },
+    "info": "Deleting duplicate pages will modify your files. Backup your files and use manual deletion before using automatic deletion.",
     "matches_n": "No matches | 1 match | {count} matches",
     "saved_size": "Saved {size}",
     "title": "Duplicate pages",
-    "unknown_size": "Unknown size",
-    "info": "Deleting duplicate pages will modify your files. Backup your files and use manual deletion before using automatic deletion."
+    "unknown_size": "Unknown size"
   },
   "duplicates": {
     "file_hash": "File hash",
@@ -679,6 +681,15 @@
     "refresh_metadata": "Refresh metadata",
     "scan_library_files": "Scan library files",
     "select_all": "Select all"
+  },
+  "metrics": {
+    "library_books": "Books per library",
+    "library_disk_space": "Library disk space",
+    "library_series": "Series per library",
+    "library_sidecars": "Sidecars per library",
+    "tasks_executed": "Tasks executed",
+    "tasks_total_time": "Tasks total time",
+    "title": "Metrics"
   },
   "navigation": {
     "home": "Home",

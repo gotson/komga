@@ -11,6 +11,7 @@
   "dependencies": {
     "@saekitominaga/isbn-verify": "^1.4.1",
     "axios": "^0.25.0",
+    "chart.js": "^2.9.4",
     "core-js": "^3.20.3",
     "date-fns": "^2.28.0",
     "filesize": "^8.0.7",
@@ -20,6 +21,7 @@
     "qs": "^6.10.3",
     "screenfull": "^5.2.0",
     "vue": "^2.6.14",
+    "vue-chartkick": "^0.6.1",
     "vue-horizontal": "^0.8.12",
     "vue-i18n": "^8.27.0",
     "vue-line-clamp": "^1.3.2",
@@ -36,8 +38,10 @@
   "devDependencies": {
     "@babel/core": "^7.16.12",
     "@mdi/font": "^6.5.95",
+    "@types/chart.js": "^2.9.35",
     "@types/jest": "^24.9.1",
     "@types/lodash": "^4.14.178",
+    "@types/vue-chartkick": "^0.5.1",
     "@types/vuelidate": "^0.7.15",
     "@types/webpack": "^4.41.32",
     "@typescript-eslint/eslint-plugin": "^4.33.0",

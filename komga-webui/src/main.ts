@@ -3,6 +3,10 @@ import Vue from 'vue'
 // @ts-ignore
 import * as lineClamp from 'vue-line-clamp'
 import Vuelidate from 'vuelidate'
+// @ts-ignore
+import Chartkick from 'vue-chartkick'
+// @ts-ignore
+import Chart from 'chart.js'
 import {sync} from 'vuex-router-sync'
 import App from './App.vue'
 import actuator from './plugins/actuator.plugin'
@@ -22,6 +26,7 @@ import komgaTasks from './plugins/komga-tasks.plugin'
 import komgaOauth2 from './plugins/komga-oauth2.plugin'
 import komgaLogin from './plugins/komga-login.plugin'
 import komgaPageHashes from './plugins/komga-pagehashes.plugin'
+import komgaMetrics from './plugins/komga-metrics.plugin'
 import vuetify from './plugins/vuetify'
 import logger from './plugins/logger.plugin'
 import './public-path'
@@ -32,8 +37,19 @@ import i18n from './i18n'
 Vue.prototype.$_ = _
 Vue.prototype.$eventHub = new Vue()
 
+Chartkick.options = {
+  colors: [
+    '#7eb0d5', '#fd7f6f', '#b2e061', '#ffb55a',
+    '#8bd3c7', '#ffee65', '#bd7ebe', '#fdcce5',
+    '#beb9db', '#ea5545', '#f46a9b', '#ef9b20',
+    '#edbf33', '#ede15b', '#bdcf32', '#87bc45',
+    '#27aeef', '#b33dc6',
+  ],
+}
+
 Vue.use(Vuelidate)
 Vue.use(lineClamp)
+Vue.use(Chartkick.use(Chart))
 
 Vue.use(httpPlugin)
 Vue.use(logger)
@@ -53,6 +69,7 @@ Vue.use(komgaTasks, {http: Vue.prototype.$http})
 Vue.use(komgaOauth2, {http: Vue.prototype.$http})
 Vue.use(komgaLogin, {http: Vue.prototype.$http})
 Vue.use(komgaPageHashes, {http: Vue.prototype.$http})
+Vue.use(komgaMetrics, {http: Vue.prototype.$http})
 
 
 Vue.config.productionTip = false
