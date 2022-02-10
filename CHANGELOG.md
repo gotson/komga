@@ -1,3 +1,19 @@
+# [0.150.0](https://github.com/gotson/komga/compare/v0.149.2...v0.150.0) (2022-02-10)
+
+
+### Bug Fixes
+
+* translated using Weblate ([5d253a0](https://github.com/gotson/komga/commit/5d253a0fc507d85ec0a5bcc01fd9f06c315510bb))
+* **webui:** reset duplicate match table when hash is changed ([b051528](https://github.com/gotson/komga/commit/b051528cba8884338cc00dd91aa656bf6579b1ef))
+* **webui:** reset hash card when hash is changed ([745fe09](https://github.com/gotson/komga/commit/745fe09ec255a7ef24c04c5ac8527bf78029a235))
+
+
+### Features
+
+* **api:** publish business metrics ([78174db](https://github.com/gotson/komga/commit/78174db6fb74541c99c517df89a96b9db0011547))
+* **webui:** metrics dashboard in server settings ([9467c93](https://github.com/gotson/komga/commit/9467c93b88c78f7610bdf11cfdf95b761fa33263))
+* **webui:** page size selection for new duplicate pages view ([960546a](https://github.com/gotson/komga/commit/960546a1e0a7e15a4308e5cdc3fa58c49ce9cb88))
+
 ## [0.149.2](https://github.com/gotson/komga/compare/v0.149.1...v0.149.2) (2022-02-08)
 
 

@@ -7662,7 +7662,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_1",
+        "operationId": "getProviders_3",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7724,7 +7724,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_6",
+        "operationId": "getProviders",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7786,7 +7786,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_3",
+        "operationId": "getProviders_1",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7817,7 +7817,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders",
+        "operationId": "getProviders_2",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7848,7 +7848,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_2",
+        "operationId": "getProviders_6",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8940,13 +8940,6 @@
               "$ref": "#/components/schemas/WebLinkUpdateDto"
             }
           },
-          "releaseDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "isbn": {
-            "type": "string"
-          },
           "summary": {
             "type": "string"
           },
@@ -8955,6 +8948,13 @@
             "items": {
               "$ref": "#/components/schemas/AuthorUpdateDto"
             }
+          },
+          "releaseDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "isbn": {
+            "type": "string"
           }
         },
         "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update."
@@ -9181,6 +9181,19 @@
           "first": {
             "type": "boolean"
           },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "last": {
+            "type": "boolean"
+          },
           "size": {
             "type": "integer",
             "format": "int32"
@@ -9195,19 +9208,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "sort": {
-            "$ref": "#/components/schemas/Sort"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
-          "last": {
-            "type": "boolean"
-          },
           "empty": {
             "type": "boolean"
           }
@@ -9216,15 +9216,8 @@
       "PageableObject": {
         "type": "object",
         "properties": {
-          "offset": {
-            "type": "integer",
-            "format": "int64"
-          },
           "sort": {
             "$ref": "#/components/schemas/Sort"
-          },
-          "paged": {
-            "type": "boolean"
           },
           "pageNumber": {
             "type": "integer",
@@ -9234,21 +9227,28 @@
             "type": "integer",
             "format": "int32"
           },
+          "paged": {
+            "type": "boolean"
+          },
           "unpaged": {
             "type": "boolean"
+          },
+          "offset": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
       "Sort": {
         "type": "object",
         "properties": {
-          "empty": {
-            "type": "boolean"
-          },
           "sorted": {
             "type": "boolean"
           },
           "unsorted": {
+            "type": "boolean"
+          },
+          "empty": {
             "type": "boolean"
           }
         }
@@ -9345,6 +9345,19 @@
           "first": {
             "type": "boolean"
           },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "last": {
+            "type": "boolean"
+          },
           "size": {
             "type": "integer",
             "format": "int32"
@@ -9358,19 +9371,6 @@
           "number": {
             "type": "integer",
             "format": "int32"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/Sort"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
-          "last": {
-            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -9435,6 +9435,19 @@
           "first": {
             "type": "boolean"
           },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "last": {
+            "type": "boolean"
+          },
           "size": {
             "type": "integer",
             "format": "int32"
@@ -9448,19 +9461,6 @@
           "number": {
             "type": "integer",
             "format": "int32"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/Sort"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
-          "last": {
-            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -9921,6 +9921,19 @@
           "first": {
             "type": "boolean"
           },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "last": {
+            "type": "boolean"
+          },
           "size": {
             "type": "integer",
             "format": "int32"
@@ -9934,19 +9947,6 @@
           "number": {
             "type": "integer",
             "format": "int32"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/Sort"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
-          "last": {
-            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -10029,6 +10029,19 @@
           "first": {
             "type": "boolean"
           },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "last": {
+            "type": "boolean"
+          },
           "size": {
             "type": "integer",
             "format": "int32"
@@ -10042,19 +10055,6 @@
           "number": {
             "type": "integer",
             "format": "int32"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/Sort"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
-          "last": {
-            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -10141,6 +10141,19 @@
           "first": {
             "type": "boolean"
           },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "last": {
+            "type": "boolean"
+          },
           "size": {
             "type": "integer",
             "format": "int32"
@@ -10154,19 +10167,6 @@
           "number": {
             "type": "integer",
             "format": "int32"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/Sort"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
-          "last": {
-            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -10187,6 +10187,19 @@
           "first": {
             "type": "boolean"
           },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "last": {
+            "type": "boolean"
+          },
           "size": {
             "type": "integer",
             "format": "int32"
@@ -10200,19 +10213,6 @@
           "number": {
             "type": "integer",
             "format": "int32"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/Sort"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
-          "last": {
-            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -10257,6 +10257,19 @@
           "first": {
             "type": "boolean"
           },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "last": {
+            "type": "boolean"
+          },
           "size": {
             "type": "integer",
             "format": "int32"
@@ -10270,19 +10283,6 @@
           "number": {
             "type": "integer",
             "format": "int32"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/Sort"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
-          "last": {
-            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -10303,6 +10303,19 @@
           "first": {
             "type": "boolean"
           },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "last": {
+            "type": "boolean"
+          },
           "size": {
             "type": "integer",
             "format": "int32"
@@ -10316,19 +10329,6 @@
           "number": {
             "type": "integer",
             "format": "int32"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/Sort"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
-          "last": {
-            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
