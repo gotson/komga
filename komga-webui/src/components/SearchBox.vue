@@ -50,7 +50,10 @@
           </v-img>
           <v-list-item-content>
             <v-list-item-title>{{ data.item.metadata.title }}</v-list-item-title>
-            <v-list-item-subtitle>{{ $t('searchbox.in_library', {library: getLibraryName(data.item)}) }}</v-list-item-subtitle>
+            <v-list-item-subtitle>{{
+                $t('searchbox.in_library', {library: getLibraryName(data.item)})
+              }}
+            </v-list-item-subtitle>
           </v-list-item-content>
         </template>
 
@@ -66,7 +69,11 @@
 
           <v-list-item-content>
             <v-list-item-title>{{ data.item.metadata.title }}</v-list-item-title>
-            <v-list-item-subtitle>{{ $t('searchbox.in_library', {library: getLibraryName(data.item)}) }}</v-list-item-subtitle>
+            <v-list-item-subtitle>{{ data.item.seriesTitle }} - {{ data.item.metadata.number }}</v-list-item-subtitle>
+            <v-list-item-subtitle>{{
+                $t('searchbox.in_library', {library: getLibraryName(data.item)})
+              }}
+            </v-list-item-subtitle>
           </v-list-item-content>
         </template>
 
