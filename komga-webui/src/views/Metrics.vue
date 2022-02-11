@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="pa-6">
     <v-row>
-      <v-col>
+      <v-col v-if="tasksCount">
         <v-card>
           <v-card-title>{{ $t('metrics.tasks_executed') }}</v-card-title>
           <v-card-text>
@@ -10,7 +10,7 @@
         </v-card>
       </v-col>
 
-      <v-col>
+      <v-col v-if="tasksTotalTime">
         <v-card>
           <v-card-title>{{ $t('metrics.tasks_total_time') }}</v-card-title>
           <v-card-text>
@@ -27,27 +27,27 @@
           <v-card-text>
             <v-simple-table>
               <tbody>
-              <tr>
+              <tr v-if="booksFileSize">
                 <td>{{ $t('common.disk_space') }}</td>
                 <td> {{ getFileSize(booksFileSize.measurements[0].value) }}</td>
               </tr>
-              <tr>
+              <tr v-if="series">
                 <td>{{ $t('common.series') }}</td>
                 <td> {{ series.measurements[0].value }}</td>
               </tr>
-              <tr>
+              <tr v-if="books">
                 <td>{{ $t('common.books') }}</td>
                 <td> {{ books.measurements[0].value }}</td>
               </tr>
-              <tr>
+              <tr v-if="collections">
                 <td>{{ $t('common.collections') }}</td>
                 <td> {{ collections.measurements[0].value }}</td>
               </tr>
-              <tr>
+              <tr v-if="readlists">
                 <td>{{ $t('common.readlists') }}</td>
                 <td> {{ readlists.measurements[0].value }}</td>
               </tr>
-              <tr>
+              <tr v-if="sidecars">
                 <td>{{ $t('common.sidecars') }}</td>
                 <td> {{ sidecars.measurements[0].value }}</td>
               </tr>
@@ -57,7 +57,7 @@
         </v-card>
       </v-col>
 
-      <v-col>
+      <v-col v-if="fileSizeAllTags">
         <v-card>
           <v-card-title>{{ $t('metrics.library_disk_space') }}</v-card-title>
           <v-card-text>
@@ -66,7 +66,7 @@
         </v-card>
       </v-col>
 
-      <v-col>
+      <v-col v-if="booksAllTags">
         <v-card>
           <v-card-title>{{ $t('metrics.library_books') }}</v-card-title>
           <v-card-text>
@@ -75,7 +75,7 @@
         </v-card>
       </v-col>
 
-      <v-col>
+      <v-col v-if="seriesAllTags">
         <v-card>
           <v-card-title>{{ $t('metrics.library_series') }}</v-card-title>
           <v-card-text>
@@ -84,7 +84,7 @@
         </v-card>
       </v-col>
 
-      <v-col>
+      <v-col v-if="sidecarsAllTags">
         <v-card>
           <v-card-title>{{ $t('metrics.library_sidecars') }}</v-card-title>
           <v-card-text>
@@ -106,19 +106,19 @@ export default Vue.extend({
   name: 'Metrics',
   data: () => ({
     getFileSize,
-    tasks: {} as MetricDto,
-    tasksCount: {} as { [key: string]: number | undefined } | undefined,
-    tasksTotalTime: {} as { [key: string]: number | undefined } | undefined,
-    series: {} as MetricDto,
-    seriesAllTags: {} as { [key: string]: number | undefined } | undefined,
-    books: {} as MetricDto,
-    booksAllTags: {} as { [key: string]: number | undefined } | undefined,
-    sidecars: {} as MetricDto,
-    sidecarsAllTags: {} as { [key: string]: number | undefined } | undefined,
-    booksFileSize: {} as MetricDto,
-    fileSizeAllTags: {} as { [key: string]: number | undefined } | undefined,
-    collections: {} as MetricDto,
-    readlists: {} as MetricDto,
+    tasks: undefined as unknown as MetricDto,
+    tasksCount: undefined as unknown as { [key: string]: number | undefined } | undefined,
+    tasksTotalTime: undefined as unknown as { [key: string]: number | undefined } | undefined,
+    series: undefined as unknown as MetricDto,
+    seriesAllTags: undefined as unknown as { [key: string]: number | undefined } | undefined,
+    books: undefined as unknown as MetricDto,
+    booksAllTags: undefined as unknown as { [key: string]: number | undefined } | undefined,
+    sidecars: undefined as unknown as MetricDto,
+    sidecarsAllTags: undefined as unknown as { [key: string]: number | undefined } | undefined,
+    booksFileSize: undefined as unknown as MetricDto,
+    fileSizeAllTags: undefined as unknown as { [key: string]: number | undefined } | undefined,
+    collections: undefined as unknown as MetricDto,
+    readlists: undefined as unknown as MetricDto,
   }),
   computed: {},
   mounted() {
