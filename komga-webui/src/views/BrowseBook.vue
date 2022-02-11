@@ -66,7 +66,9 @@
               :key="i"
               :to="{ name: 'browse-book', params: { bookId: book.id }, query: { context: context.origin, contextId: context.id} }"
             >
-              <v-list-item-title class="text-wrap text-body-2">{{ book.metadata.number }} - {{ book.metadata.title }}
+              <v-list-item-title class="text-wrap text-body-2">
+                <template v-if="contextReadList">{{ book.seriesTitle }} {{ book.metadata.number }}: {{ book.metadata.title }}</template>
+                <template v-else>{{ book.metadata.number }} - {{ book.metadata.title }}</template>
               </v-list-item-title>
             </v-list-item>
           </v-list-item-group>
