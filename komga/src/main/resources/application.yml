@@ -73,6 +73,9 @@ management:
     export:
       influx:
         enabled: false
+      simple:
+        enabled: true
+        step: 24h
 springdoc:
   group-configs:
     - group: REST API
