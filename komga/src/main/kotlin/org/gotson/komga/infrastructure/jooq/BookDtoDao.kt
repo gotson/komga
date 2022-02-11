@@ -47,6 +47,7 @@ class BookDtoDao(
   private val r = Tables.READ_PROGRESS
   private val a = Tables.BOOK_METADATA_AUTHOR
   private val s = Tables.SERIES
+  private val sd = Tables.SERIES_METADATA
   private val rlb = Tables.READLIST_BOOK
   private val bt = Tables.BOOK_METADATA_TAG
   private val bl = Tables.BOOK_METADATA_LINK
@@ -282,11 +283,13 @@ class BookDtoDao(
       *m.fields(),
       *d.fields(),
       *r.fields(),
+      sd.TITLE,
     ).apply { if (joinConditions.selectReadListNumber) select(rlb.NUMBER) }
       .from(b)
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
+      .leftJoin(sd).on(b.SERIES_ID.eq(sd.SERIES_ID))
       .apply { if (joinConditions.tag) leftJoin(bt).on(b.ID.eq(bt.BOOK_ID)) }
       .apply { if (joinConditions.selectReadListNumber) leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID)) }
       .apply { if (joinConditions.author) leftJoin(a).on(b.ID.eq(a.BOOK_ID)) }
@@ -298,6 +301,7 @@ class BookDtoDao(
         val mr = rec.into(m)
         val dr = rec.into(d)
         val rr = rec.into(r)
+        val seriesTitle = rec.into(sd.TITLE).component1()
 
         val authors = dsl.selectFrom(a)
           .where(a.BOOK_ID.eq(br.id))
@@ -316,7 +320,7 @@ class BookDtoDao(
           .fetchInto(bl)
           .map { WebLinkDto(it.label, it.url) }
 
-        br.toDto(mr.toDto(), dr.toDto(authors, tags, links), if (rr.userId != null) rr.toDto() else null)
+        br.toDto(mr.toDto(), dr.toDto(authors, tags, links), if (rr.userId != null) rr.toDto() else null, seriesTitle)
       }
 
   private fun BookSearchWithReadProgress.toCondition(): Condition {
@@ -365,10 +369,11 @@ class BookDtoDao(
     val author: Boolean = false,
   )
 
-  private fun BookRecord.toDto(media: MediaDto, metadata: BookMetadataDto, readProgress: ReadProgressDto?) =
+  private fun BookRecord.toDto(media: MediaDto, metadata: BookMetadataDto, readProgress: ReadProgressDto?, seriesTitle: String) =
     BookDto(
       id = id,
       seriesId = seriesId,
+      seriesTitle = seriesTitle,
       libraryId = libraryId,
       name = name,
       url = URL(url).toFilePath(),

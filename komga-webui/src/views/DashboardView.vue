@@ -60,6 +60,7 @@
         </template>
         <template v-slot:content>
           <item-browser :items="loaderInProgressBooks.items"
+                        :item-context="[ItemContext.SHOW_SERIES]"
                         nowrap
                         :edit-function="isAdmin ? singleEditBook : undefined"
                         :selected.sync="selectedBooks"
@@ -80,6 +81,7 @@
         </template>
         <template v-slot:content>
           <item-browser :items="loaderOnDeckBooks.items"
+                        :item-context="[ItemContext.SHOW_SERIES]"
                         nowrap
                         :edit-function="isAdmin ? singleEditBook : undefined"
                         :selected.sync="selectedBooks"
@@ -100,6 +102,7 @@
         </template>
         <template v-slot:content>
           <item-browser :items="loaderRecentlyReleasedBooks.items"
+                        :item-context="[ItemContext.RELEASE_DATE, ItemContext.SHOW_SERIES]"
                         nowrap
                         :edit-function="isAdmin ? singleEditBook : undefined"
                         :selected.sync="selectedBooks"
@@ -120,6 +123,7 @@
         </template>
         <template v-slot:content>
           <item-browser :items="loaderLatestBooks.items"
+                        :item-context="[ItemContext.SHOW_SERIES]"
                         nowrap
                         :edit-function="isAdmin ? singleEditBook : undefined"
                         :selected.sync="selectedBooks"
@@ -180,6 +184,7 @@
         </template>
         <template v-slot:content>
           <item-browser :items="loaderRecentlyReadBooks.items"
+                        :item-context="[ItemContext.SHOW_SERIES, ItemContext.READ_DATE]"
                         nowrap
                         :edit-function="isAdmin ? singleEditBook : undefined"
                         :selected.sync="selectedBooks"
@@ -222,6 +227,7 @@ import {subMonths} from 'date-fns'
 import {BookSseDto, ReadProgressSeriesSseDto, ReadProgressSseDto, SeriesSseDto} from '@/types/komga-sse'
 import {LibraryDto} from '@/types/komga-libraries'
 import {PageLoader} from '@/types/pageLoader'
+import {ItemContext} from '@/types/items'
 
 export default Vue.extend({
   name: 'DashboardView',
@@ -236,6 +242,7 @@ export default Vue.extend({
   },
   data: () => {
     return {
+      ItemContext,
       loading: false,
       library: undefined as LibraryDto | undefined,
       loaderNewSeries: undefined as unknown as PageLoader<SeriesDto>,

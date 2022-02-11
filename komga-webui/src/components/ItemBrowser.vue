@@ -26,6 +26,7 @@
                 <item-card
                   class="item-card"
                   :item="item"
+                  :item-context="itemContext"
                   :width="itemWidth"
                   :selected="active"
                   :no-link="draggable || deletable"
@@ -76,6 +77,7 @@ import ItemCard from '@/components/ItemCard.vue'
 import {computeCardWidth} from '@/functions/grid-utilities'
 import Vue from 'vue'
 import draggable from 'vuedraggable'
+import {ItemContext} from '@/types/items'
 
 export default Vue.extend({
   name: 'ItemBrowser',
@@ -84,6 +86,10 @@ export default Vue.extend({
     items: {
       type: Array,
       required: true,
+    },
+    itemContext: {
+      type: Array as () => ItemContext[],
+      default: () => [],
     },
     fixedItemWidth: {
       type: Number,

@@ -5,6 +5,7 @@ export interface SeriesDto {
   libraryId: string,
   name: string,
   url: string,
+  created: string,
   lastModified: string,
   booksCount: number,
   booksReadCount: number,

@@ -84,6 +84,7 @@
           </template>
           <template v-slot:content>
             <item-browser :items="loaderBooks.items"
+                          :item-context="[ItemContext.SHOW_SERIES]"
                           nowrap
                           :edit-function="isAdmin ? singleEditBook : undefined"
                           :selected.sync="selectedBooks"
@@ -173,6 +174,7 @@ import {
 } from '@/types/komga-sse'
 import {throttle} from 'lodash'
 import {PageLoader} from '@/types/pageLoader'
+import {ItemContext} from '@/types/items'
 
 export default Vue.extend({
   name: 'SearchView',
@@ -185,6 +187,7 @@ export default Vue.extend({
   },
   data: () => {
     return {
+      ItemContext,
       loaderSeries: undefined as unknown as PageLoader<SeriesDto>,
       loaderBooks: undefined as unknown as PageLoader<BookDto>,
       loaderCollections: undefined as unknown as PageLoader<CollectionDto>,

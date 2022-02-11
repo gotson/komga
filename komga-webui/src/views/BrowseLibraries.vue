@@ -104,6 +104,7 @@
 
         <item-browser
           :items="series"
+          :item-context="itemContext"
           :selected.sync="selectedSeries"
           :edit-function="isAdmin ? editSingleSeries : undefined"
         />
@@ -155,6 +156,7 @@ import {LibrarySseDto, ReadProgressSeriesSseDto, SeriesSseDto} from '@/types/kom
 import {throttle} from 'lodash'
 import AlphabeticalNavigation from '@/components/AlphabeticalNavigation.vue'
 import {LibraryDto} from '@/types/komga-libraries'
+import { ItemContext } from '@/types/items'
 
 export default Vue.extend({
   name: 'BrowseLibraries',
@@ -262,6 +264,12 @@ export default Vue.extend({
     next()
   },
   computed: {
+    itemContext(): ItemContext[] {
+      if(this.sortActive.key === 'booksMetadata.releaseDate') return [ItemContext.RELEASE_DATE]
+      if(this.sortActive.key === 'createdDate') return [ItemContext.DATE_ADDED]
+      if(this.sortActive.key === 'lastModifiedDate') return [ItemContext.DATE_UPDATED]
+      return []
+    },
     sortOptions(): SortOption[] {
       return [
         {name: this.$t('sort.name').toString(), key: 'metadata.titleSort'},

@@ -4,10 +4,12 @@ import {CopyMode} from '@/types/enum-books'
 export interface BookDto {
   id: string,
   seriesId: string,
+  seriesTitle: string,
   libraryId: string,
   name: string,
   url: string,
   number: number,
+  created: string,
   lastModified: string,
   sizeBytes: number,
   size: string,

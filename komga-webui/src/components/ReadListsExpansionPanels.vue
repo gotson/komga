@@ -13,6 +13,7 @@
           </template>
           <template v-slot:content>
             <item-browser :items="readListsContent[index]"
+                          :item-context="[ItemContext.SHOW_SERIES]"
                           nowrap
                           :selectable="false"
                           :action-menu="false"
@@ -31,6 +32,7 @@ import ItemBrowser from '@/components/ItemBrowser.vue'
 import Vue from 'vue'
 import {BookDto} from '@/types/komga-books'
 import {ContextOrigin} from '@/types/context'
+import {ItemContext} from '@/types/items'
 
 export default Vue.extend({
   name: 'ReadListsExpansionPanels',
@@ -46,6 +48,7 @@ export default Vue.extend({
   },
   data: () => {
     return {
+      ItemContext,
       readListPanel: undefined as number | undefined,
       readListsContent: [[]] as any[],
     }

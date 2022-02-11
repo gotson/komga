@@ -391,6 +391,7 @@
         />
 
         <item-browser :items="books"
+                      :item-context="itemContext"
                       :selected.sync="selectedBooks"
                       :edit-function="isAdmin ? editSingleBook : undefined"
         />
@@ -450,6 +451,7 @@ import VueHorizontal from 'vue-horizontal'
 import RtlIcon from '@/components/RtlIcon.vue'
 import {throttle} from 'lodash'
 import {BookSseDto, CollectionSseDto, LibrarySseDto, ReadProgressSseDto, SeriesSseDto} from '@/types/komga-sse'
+import {ItemContext} from '@/types/items'
 
 const tags = require('language-tags')
 
@@ -496,6 +498,12 @@ export default Vue.extend({
     }
   },
   computed: {
+    itemContext(): ItemContext[] {
+      if(this.sortActive.key === 'metadata.releaseDate') return [ItemContext.RELEASE_DATE]
+      if(this.sortActive.key === 'createdDate') return [ItemContext.DATE_ADDED]
+      if(this.sortActive.key === 'fileSize') return [ItemContext.FILE_SIZE]
+      return []
+    },
     sortOptions(): SortOption[] {
       return [
         {name: this.$t('sort.number').toString(), key: 'metadata.numberSort'},

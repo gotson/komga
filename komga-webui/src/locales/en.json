@@ -43,7 +43,9 @@
   "book_card": {
     "error": "Error",
     "unknown": "To be analyzed",
-    "unsupported": "Unsupported"
+    "unread": "Unread",
+    "unsupported": "Unsupported",
+    "no_release_date": "No release date"
   },
   "book_import": {
     "button_browse": "Browse",

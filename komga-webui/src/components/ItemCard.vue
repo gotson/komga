@@ -101,14 +101,28 @@
 
         <!--      Description-->
         <template v-if="!thumbnailOnly">
-          <router-link :to="to" class="link-underline">
+          <router-link v-if="!Array.isArray(title)" :to="title.to" class="link-underline" @click.native="$event.stopImmediatePropagation()">
             <v-card-subtitle
               v-line-clamp="2"
               v-bind="subtitleProps"
-              v-html="title"
-            >
-            </v-card-subtitle>
+              v-html="title.title"
+            />
           </router-link>
+          <template v-if="Array.isArray(title)">
+            <v-card-subtitle
+              v-bind="subtitleProps"
+            >
+              <router-link
+                v-for="(t, i) in title"
+                :key="i"
+                :to="t.to"
+                @click.native="$event.stopImmediatePropagation()"
+                class="link-underline text-truncate"
+                v-html="t.title"
+                style="display: block"
+              />
+            </v-card-subtitle>
+          </template>
           <v-card-text class="px-2" v-html="body">
           </v-card-text>
         </template>
@@ -123,17 +137,21 @@ import CollectionActionsMenu from '@/components/menus/CollectionActionsMenu.vue'
 import SeriesActionsMenu from '@/components/menus/SeriesActionsMenu.vue'
 import {getReadProgress, getReadProgressPercentage} from '@/functions/book-progress'
 import {ReadStatus} from '@/types/enum-books'
-import {createItem, Item, ItemTypes} from '@/types/items'
+import {createItem, Item, ItemContext, ItemTitle, ItemTypes} from '@/types/items'
 import Vue from 'vue'
 import {RawLocation} from 'vue-router'
 import ReadListActionsMenu from '@/components/menus/ReadListActionsMenu.vue'
 import {BookDto} from '@/types/komga-books'
 import {SeriesDto} from '@/types/komga-series'
 import {
-  THUMBNAILBOOK_ADDED, THUMBNAILBOOK_DELETED,
-  THUMBNAILCOLLECTION_ADDED, THUMBNAILCOLLECTION_DELETED,
-  THUMBNAILREADLIST_ADDED, THUMBNAILREADLIST_DELETED,
-  THUMBNAILSERIES_ADDED, THUMBNAILSERIES_DELETED,
+  THUMBNAILBOOK_ADDED,
+  THUMBNAILBOOK_DELETED,
+  THUMBNAILCOLLECTION_ADDED,
+  THUMBNAILCOLLECTION_DELETED,
+  THUMBNAILREADLIST_ADDED,
+  THUMBNAILREADLIST_DELETED,
+  THUMBNAILSERIES_ADDED,
+  THUMBNAILSERIES_DELETED,
 } from '@/types/events'
 import {
   ThumbnailBookSseDto,
@@ -150,6 +168,10 @@ export default Vue.extend({
     item: {
       type: Object as () => BookDto | SeriesDto | CollectionDto | ReadListDto,
       required: true,
+    },
+    itemContext: {
+      type: Array as () => ItemContext[],
+      default: () => [],
     },
     // hide the bottom part of the card
     thumbnailOnly: {
@@ -248,14 +270,14 @@ export default Vue.extend({
     thumbnailUrl(): string {
       return this.computedItem.thumbnailUrl() + this.thumbnailCacheBust
     },
-    title(): string {
-      return this.computedItem.title()
+    title(): ItemTitle | ItemTitle[] {
+      return this.computedItem.title(this.itemContext)
     },
     subtitleProps(): Object {
       return this.computedItem.subtitleProps()
     },
     body(): string {
-      return this.computedItem.body()
+      return this.computedItem.body(this.itemContext)
     },
     isInProgress(): boolean {
       if (this.computedItem.type() === ItemTypes.BOOK) return getReadProgress(this.item as BookDto) === ReadStatus.IN_PROGRESS
