@@ -1,3 +1,27 @@
+# [0.151.0](https://github.com/gotson/komga/compare/v0.150.0...v0.151.0) (2022-02-14)
+
+
+### Bug Fixes
+
+* **metrics:** configure step for 24h ([55df968](https://github.com/gotson/komga/commit/55df968651d2d27183bed70deca7737a947a073f))
+* remove caching of ZipFile ([57082bd](https://github.com/gotson/komga/commit/57082bd990dfc450f23014f57ccbb862e40dacfb)), closes [#801](https://github.com/gotson/komga/issues/801)
+* **webui:** don't show metrics if there's no data ([9fe50fd](https://github.com/gotson/komga/commit/9fe50fd5ceb9fd657d50eaa678dc6c13f46023d1))
+* **webui:** page hash matches dialog would not reset properly ([c0c7b09](https://github.com/gotson/komga/commit/c0c7b09faa904ea29d39bde7966b8208403bd72b))
+* **webui:** properly set known hash card button initial status ([17c76de](https://github.com/gotson/komga/commit/17c76de3083a92c8b2a3064d0a29904492f98503))
+
+
+### Features
+
+* **webui:** adapt card content depending on context ([35bf05e](https://github.com/gotson/komga/commit/35bf05eb39fc05b6d36beaedca5d64aace81302e)), closes [#679](https://github.com/gotson/komga/issues/679)
+* **webui:** show series for books in search bar ([1463078](https://github.com/gotson/komga/commit/14630783670a1a19a692c600468209e6ce659ba8)), closes [#678](https://github.com/gotson/komga/issues/678)
+* **webui:** show series title within read list navigation ([f388e9b](https://github.com/gotson/komga/commit/f388e9bf7687c8d49ee55aa7ee3623763952385b))
+
+
+### Performance Improvements
+
+* **webui:** reduce number of API calls on app initial load ([f7dc98a](https://github.com/gotson/komga/commit/f7dc98aa7e52b22a94a53ec4df62d519d953505c))
+* **webui:** reduce number of API calls on book details screen ([5f8894d](https://github.com/gotson/komga/commit/5f8894d47a89f299445d6bc779fc3ba90944a9a5))
+
 # [0.150.0](https://github.com/gotson/komga/compare/v0.149.2...v0.150.0) (2022-02-10)
 
 
