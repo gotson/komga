@@ -433,8 +433,13 @@ export default Vue.extend({
       this.modal = val
     },
     modal(val) {
-      !val && this.dialogCancel()
-      val && this.getThumbnails(this.series)
+      if(val) {
+        this.getThumbnails(this.series)
+        this.loadAvailableTags()
+        this.loadAvailableGenres()
+      } else {
+        this.dialogCancel()
+      }
     },
     series(val) {
       this.dialogReset(val)
@@ -469,10 +474,6 @@ export default Vue.extend({
       publisher: {},
       totalBookCount: {minValue: minValue(1)},
     },
-  },
-  async created() {
-    this.genresAvailable = await this.$komgaReferential.getGenres()
-    this.tagsAvailable = await this.$komgaReferential.getTags()
   },
   computed: {
     single(): boolean {
@@ -516,6 +517,12 @@ export default Vue.extend({
     },
   },
   methods: {
+    async loadAvailableTags() {
+      this.tagsAvailable = await this.$komgaReferential.getTags()
+    },
+    async loadAvailableGenres() {
+      this.genresAvailable = await this.$komgaReferential.getGenres()
+    },
     requiredErrors(fieldName: string): string[] {
       const errors = [] as string[]
       const formField = this.$v.form!![fieldName] as any

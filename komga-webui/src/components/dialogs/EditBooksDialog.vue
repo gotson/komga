@@ -473,8 +473,12 @@ export default Vue.extend({
       this.modal = val
     },
     modal(val) {
-      !val && this.dialogCancel()
-      val && this.getThumbnails(this.books)
+      if (val) {
+        this.getThumbnails(this.books)
+        this.loadAvailableTags()
+      } else {
+        this.dialogCancel()
+      }
     },
     books: {
       immediate: true,
@@ -514,9 +518,6 @@ export default Vue.extend({
       isbn: {validIsbn},
       links: {},
     },
-  },
-  async created() {
-    this.tagsAvailable = await this.$komgaReferential.getTags()
   },
   computed: {
     authorRoles(): NameValue[] {
@@ -564,6 +565,9 @@ export default Vue.extend({
     },
   },
   methods: {
+    async loadAvailableTags() {
+      this.tagsAvailable = await this.$komgaReferential.getTags()
+    },
     linksLabelRules(label: string): boolean | string {
       if (!!this.$_.trim(label)) return true
       return this.$t('common.required').toString()
