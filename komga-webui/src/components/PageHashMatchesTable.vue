@@ -69,7 +69,9 @@ export default Vue.extend({
       deep: true,
     },
     hash(val) {
-      this.options = {}
+      this.options.page = 1
+      this.options.sortBy = []
+      this.options.sortDesc = []
       this.elements = []
       this.totalElements = 0
       this.loadData(val)
