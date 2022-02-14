@@ -5,7 +5,7 @@
         <template v-slot:activator="{ on }">
           <v-btn icon
                  v-on="on"
-                 :to="parent.route"
+                 :to="parentLocation"
           >
             <rtl-icon icon="mdi-arrow-left" rtl="mdi-arrow-right"/>
           </v-btn>
@@ -116,10 +116,9 @@
             <v-row>
               <v-col class="py-1">
                 <router-link
-                  v-if="!$_.isEmpty(series)"
                   :to="{name:'browse-series', params: {seriesId: book.seriesId}}"
                   class="link-underline text-h5"
-                >{{ series.metadata.title }}
+                >{{ book.seriesTitle }}
                 </router-link>
                 <router-link
                   class="caption link-underline"
@@ -412,13 +411,13 @@ import Vue from 'vue'
 import ReadListsExpansionPanels from '@/components/ReadListsExpansionPanels.vue'
 import {BookDto, BookFormat} from '@/types/komga-books'
 import {Context, ContextOrigin} from '@/types/context'
-import {SeriesDto} from '@/types/komga-series'
 import ReadMore from '@/components/ReadMore.vue'
 import VueHorizontal from 'vue-horizontal'
 import {authorRoles} from '@/types/author-roles'
 import {convertErrorCodes} from '@/functions/error-codes'
 import RtlIcon from '@/components/RtlIcon.vue'
 import {BookSseDto, LibrarySseDto, ReadListSseDto, ReadProgressSseDto} from '@/types/komga-sse'
+import {RawLocation} from 'vue-router/types/router'
 
 export default Vue.extend({
   name: 'BrowseBook',
@@ -427,7 +426,6 @@ export default Vue.extend({
     return {
       MediaStatus,
       book: {} as BookDto,
-      series: {} as SeriesDto,
       context: {} as Context,
       contextName: '',
       siblings: [] as BookDto[],
@@ -519,17 +517,11 @@ export default Vue.extend({
     mediaComment(): string {
       return convertErrorCodes(this.book.media.comment)
     },
-    parent(): object {
+    parentLocation(): RawLocation {
       if (this.contextReadList)
-        return {
-          name: this.contextName,
-          route: {name: 'browse-readlist', params: {readListId: this.context.id}},
-        }
+        return {name: 'browse-readlist', params: {readListId: this.context.id}}
       else
-        return {
-          name: this.series.name,
-          route: {name: 'browse-series', params: {seriesId: this.book.seriesId}},
-        }
+        return {name: 'browse-series', params: {seriesId: this.book.seriesId}}
     },
     displayedRoles(): string[] {
       const allRoles = this.$_.uniq([...authorRoles, ...(this.book.metadata.authors.map(x => x.role))])
@@ -556,7 +548,7 @@ export default Vue.extend({
     },
     bookDeleted(event: BookSseDto) {
       if (event.bookId === this.bookId) {
-        this.$router.push({name: 'browse-series', params: {seriesId: this.series.id}})
+        this.$router.push({name: 'browse-series', params: {seriesId: this.book.seriesId}})
       }
     },
     readProgressChanged(event: ReadProgressSseDto) {
@@ -564,7 +556,6 @@ export default Vue.extend({
     },
     async loadBook(bookId: string) {
       this.book = await this.$komgaBooks.getBook(bookId)
-      this.series = await this.$komgaSeries.getOneSeries(this.book.seriesId)
 
       // parse query params to get context and contextId
       if (this.$route.query.contextId && this.$route.query.context
@@ -591,7 +582,7 @@ export default Vue.extend({
         .then(v => this.readLists = v)
 
       if (this.$_.has(this.book, 'metadata.title')) {
-        document.title = `Komga - ${getBookTitleCompact(this.book.metadata.title, this.series.metadata.title)}`
+        document.title = `Komga - ${getBookTitleCompact(this.book.metadata.title, this.book.seriesTitle)}`
       }
 
       if (this?.context.origin === ContextOrigin.READLIST) {
