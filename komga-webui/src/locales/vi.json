@@ -55,6 +55,7 @@
     "info_part2": "Nếu bạn chọn một số cho một cuốn sách và một cuốn sách đã tồn tại với con số đó, thì bạn sẽ có thể so sánh 2 cuốn sách. Nếu bạn quyết định nhập cuốn sách, Komga sẽ nâng cấp cuốn sách hiện có với cuốn sách mới, thay thế hiệu quả tệp cũ bằng tệp mới.",
     "no_files_found": "Không tìm thấy tập tin",
     "notification": {
+      "go_to_book": "Đi đến sách",
       "import_failure": "Không thể thêm sách: {file}",
       "import_successful": "Thêm sách thành công: {book}",
       "source_file": "Nguồn: {file}"
@@ -127,6 +128,7 @@
       "cycle_scale": "Tỷ lệ theo chu kỳ",
       "cycle_side_padding": "Lề trái và phải theo chu kỳ",
       "first_page": "Trang đầu tiên",
+      "fullscreen": "Vào / thoát toàn màn hình",
       "last_page": "Trang cuối cùng",
       "left_to_right": "Trái sang phải",
       "menus": "Menu",
@@ -150,6 +152,7 @@
     "file": "TỆP",
     "format": "ĐỊNH DẠNG",
     "isbn": "ISBN",
+    "links": "LIÊN KẾT",
     "navigation_within_readlist": "Điều hướng trong danh sách đọc: {name}",
     "outdated_tooltip": "Dữ liệu của sách đã bị thay đổi, cuốn sách này cần phải được phân tích lại",
     "read_book": "Đọc sách",
@@ -184,20 +187,25 @@
     "collections": "Bộ sưu tập",
     "create": "Tạo",
     "delete": "Xóa",
+    "disk_space": "Dung lượng đĩa",
     "dismiss": "Bỏ qua",
     "download": "Tải xuống",
     "email": "Email",
+    "filename": "Tên tệp",
     "filter_no_matches": "Bộ lọc đang hoạt động không có kết quả phù hợp nào",
     "genre": "Thể loại",
     "go_to_library": "Đi tới thư viện",
     "go_to_readlist": "Tới danh sách đọc",
+    "go_to_series": "Đi đến series",
     "library": "Thư viện",
     "locale_name": "Tiếng Việt",
     "locale_rtl": "false",
     "lock_all": "Khóa tất cả",
     "n_selected": "{count} đã chọn",
     "nothing_to_show": "Không có gì để hiển thị",
-    "outdated": "Đã lỗi thời",
+    "outdated": "Lỗi thời",
+    "page": "Trang",
+    "page_number": "Số trang",
     "pages": "trang",
     "pages_n": "Không có trang | 1 trang | {count} trang",
     "password": "Mật khẩu",
@@ -206,12 +214,13 @@
     "read": "Đọc",
     "readlists": "Đọc Danh sách",
     "required": "Cần thiết",
-    "reset_filters": "Reset bộ lọc",
+    "reset_filters": "Đặt lại bộ lọc",
     "roles": "Vai trò",
     "series": "Sê-ri",
     "tags": "Thẻ",
-    "unavailable": "Không khả dụng",
+    "unavailable": "Không có sẵn",
     "unlock_all": "Mở khóa tất cả",
+    "url": "URL",
     "use_filter_panel_to_change_filter": "Sử dụng bảng điều khiển bộ lọc để thay đổi bộ lọc đang hoạt động",
     "year": "năm"
   },
@@ -270,6 +279,15 @@
       "button_confirm": "Phân tích",
       "title": "Phân tích thư viện"
     },
+    "delete_book": {
+      "button_confirm": "Xóa",
+      "confirm_delete": "Có, xóa sách \"{name}\" và các tệp trong đó",
+      "confirm_delete_multiple": "Có, xóa {count} sách và các tệp của chúng",
+      "dialog_title": "Xóa Sách",
+      "dialog_title_multiple": "Xóa Các Sách",
+      "warning_html": "Cuốn sách <b>{name}</b> sẽ bị xóa khỏi máy chủ này cùng với các tệp phương tiện được lưu trữ. Điều này <b>không thể hoàn tác</b>. Tiếp tục?",
+      "warning_multiple_html": "{count} sách sẽ bị xóa khỏi máy chủ này cùng với các tệp phương tiện được lưu trữ. Điều này <b>không thể hoàn tác</b>. Tiếp tục?"
+    },
     "delete_collection": {
       "button_confirm": "Xóa",
       "confirm_delete": "Có, xóa bộ sưu tập \"{name}\"",
@@ -287,8 +305,16 @@
     "delete_readlist": {
       "button_confirm": "Xóa",
       "confirm_delete": "Có, xóa danh sách đọc \"{name}\"",
+      "confirm_delete_multiple": "Có, xóa {count} danh sách đọc",
       "dialog_title": "Xóa Bỏ Danh sách Đọc",
       "warning_html": "Danh sách đọc <b>{name}</b> sẽ bị xóa khỏi máy chủ này. Các tệp phương tiện của bạn sẽ không bị ảnh hưởng. Điều này <b>không thể hoàn tác</b>. tiếp tục?"
+    },
+    "delete_series": {
+      "button_confirm": "Xóa",
+      "confirm_delete": "Có, xóa series \"{name}\" và các tệp của nó",
+      "dialog_title": "Xóa Series",
+      "warning_html": "Series <b>{name}</b> sẽ bị xóa khỏi máy chủ này cùng với các tệp phương tiện được lưu trữ. Điều này <b>không thể hoàn tác</b>. Tiếp tục?",
+      "warning_multiple_html": "{count} series sẽ bị xóa khỏi máy chủ này cùng với các tệp phương tiện được lưu trữ. Không thể hoàn tác <b> này </b>. Tiếp tục?"
     },
     "delete_user": {
       "button_confirm": "Xóa",
@@ -297,6 +323,7 @@
       "warning_html": "Người dùng <b>{name}</b> sẽ bị xóa khỏi máy chủ này. Điều này <b> không thể hoàn tác</b> được hoàn tác. tiếp tục?"
     },
     "edit_books": {
+      "add_author_role_error_duplicate": "Đã tồn tại",
       "authors_notice_multiple_edit": "Bạn đang chỉnh sửa tác giả cho nhiều cuốn sách. Điều này sẽ ghi đè lên các tác giả hiện có của mỗi cuốn sách.",
       "button_cancel": "Hủy",
       "button_confirm": "Lưu thay đổi",
@@ -304,6 +331,10 @@
       "dialog_title_single": "Chỉnh sửa {book}",
       "field_isbn": "ISBN",
       "field_isbn_error": "Phải là ISBN 13 hợp lệ",
+      "field_link_label": "Nhãn",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "Phải là http hoặc https",
+      "field_link_url_error_url": "Phải là một URL hợp lệ",
       "field_number": "Số",
       "field_number_sort": "Sắp xếp số",
       "field_number_sort_hint": "Bạn có thể sử dụng số thập phân",
@@ -314,6 +345,8 @@
       "field_title": "Tiêu đề",
       "tab_authors": "Tác giả",
       "tab_general": "Chung",
+      "tab_links": "Liên kết",
+      "tab_poster": "Áp phích",
       "tab_tags": "Thẻ",
       "tags_notice_multiple_edit": "Bạn đang chỉnh sửa thẻ cho nhiều cuốn sách. Điều này sẽ ghi đè lên các thẻ hiện có của mỗi cuốn sách."
     },
@@ -322,7 +355,8 @@
       "button_confirm": "Lưu thay đổi",
       "dialog_title": "Chỉnh sửa bộ sưu tập",
       "field_manual_ordering": "Sắp xếp thủ công",
-      "label_ordering": "Theo mặc định, sê-ri trong bộ sưu tập sẽ được sắp xếp theo tên. Bạn có thể tự sắp xếp thủ công để xác định sự sắp xếp của riêng bạn."
+      "label_ordering": "Theo mặc định, sê-ri trong bộ sưu tập sẽ được sắp xếp theo tên. Bạn có thể tự sắp xếp thủ công để xác định sự sắp xếp của riêng bạn.",
+      "tab_general": "Chung"
     },
     "edit_library": {
       "button_browse": "Duyệt",
@@ -360,7 +394,9 @@
       "button_cancel": "Hủy",
       "button_confirm": "Lưu thay đổi",
       "dialog_title": "Sửa danh sách đọc",
-      "field_name": "Tên"
+      "field_name": "Tên",
+      "tab_general": "Chung",
+      "tab_poster": "Áp phích"
     },
     "edit_series": {
       "button_cancel": "Hủy",

@@ -42,7 +42,9 @@
   },
   "book_card": {
     "error": "Erreur",
+    "no_release_date": "Pas de date de sortie",
     "unknown": "À analyser",
+    "unread": "Non lu",
     "unsupported": "Non pris en charge"
   },
   "book_import": {
@@ -187,6 +189,7 @@
     "collections": "Collections",
     "create": "Créer",
     "delete": "Supprimer",
+    "disk_space": "Espace disque",
     "dismiss": "Masquer",
     "download": "Télécharger",
     "email": "E-mail",
@@ -216,6 +219,7 @@
     "reset_filters": "Réinitialiser les filtres",
     "roles": "Rôles",
     "series": "Séries",
+    "sidecars": "Sidecars",
     "tags": "Étiquettes",
     "unavailable": "Indisponible",
     "unlock_all": "Tout déverrouiller",
@@ -679,6 +683,15 @@
     "refresh_metadata": "Actualiser les métadonnées",
     "scan_library_files": "Scanner les fichiers de la bibliothèque",
     "select_all": "Tout sélectionner"
+  },
+  "metrics": {
+    "library_books": "Livres par bibliothèque",
+    "library_disk_space": "Espace disque de la bibliothèque",
+    "library_series": "Séries par bibliothèque",
+    "library_sidecars": "Sidecars par bibliothèque",
+    "tasks_executed": "Tâches exécutées",
+    "tasks_total_time": "Durée totale des tâches",
+    "title": "Statistiques"
   },
   "navigation": {
     "home": "Accueil",
