@@ -42,7 +42,9 @@
   },
   "book_card": {
     "error": "错误",
+    "no_release_date": "无发行日期",
     "unknown": "待分析",
+    "unread": "未阅读",
     "unsupported": "不支持"
   },
   "book_import": {
@@ -187,6 +189,7 @@
     "collections": "收藏",
     "create": "创建",
     "delete": "删除",
+    "disk_space": "磁盘空间",
     "dismiss": "解除",
     "download": "下载",
     "email": "邮箱",
@@ -679,6 +682,14 @@
     "refresh_metadata": "刷新元数据",
     "scan_library_files": "扫描库文件",
     "select_all": "选择所有"
+  },
+  "metrics": {
+    "library_books": "每个库的书籍",
+    "library_disk_space": "库磁盘空间",
+    "library_series": "每个库的连载",
+    "tasks_executed": "已执行的任务",
+    "tasks_total_time": "任务总时间",
+    "title": "度量"
   },
   "navigation": {
     "home": "主页",

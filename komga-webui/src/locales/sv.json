@@ -42,7 +42,9 @@
   },
   "book_card": {
     "error": "Fel",
+    "no_release_date": "Inget utgivningsdatum",
     "unknown": "Ska analyseras",
+    "unread": "Oläst",
     "unsupported": "Stödjs inte"
   },
   "book_import": {
@@ -187,6 +189,7 @@
     "collections": "Samlingar",
     "create": "Skapa",
     "delete": "Redera",
+    "disk_space": "Diskutrymme",
     "dismiss": "Avfärda",
     "download": "Ladda ner",
     "email": "E-post",
@@ -216,6 +219,7 @@
     "reset_filters": "Återställ filter",
     "roles": "Roller",
     "series": "Serier",
+    "sidecars": "Sidovagnar",
     "tags": "Taggar",
     "unavailable": "Otillgänglig",
     "unlock_all": "Lås upp alla",
@@ -531,15 +535,18 @@
   "duplicate_pages": {
     "action_delete_auto": "Automatisk radering",
     "action_delete_manual": "Manuell radering",
+    "action_delete_matches": "Ta bort matchningar",
     "action_ignore": "Ignorera",
     "delete_to_save": "Radera för att spara {size}",
     "deleted_count": "Raderat {count} gånger",
     "filter": {
       "count": "Antal",
       "delete_count": "Antal gånger raderat",
+      "delete_size": "Sparat utrymme",
       "size": "Storlek",
       "total_size": "Total storlek"
     },
+    "info": "Om du tar bort dubbla sidor ändras dina filer. Säkerhetskopiera dina filer och använd manuell radering innan du använder automatisk radering.",
     "matches_n": "Inga träffar | 1 träff | {count} träffar",
     "saved_size": "Sparat {size}",
     "title": "Duplicerade sidor",
@@ -562,6 +569,11 @@
       "READY": "Redo",
       "UNKNOWN": "Okänd",
       "UNSUPPORTED": "Saknar stöd"
+    },
+    "page_hash_action": {
+      "DELETE_AUTO": "Ta bort automatiskt",
+      "DELETE_MANUAL": "Manuell radering",
+      "IGNORE": "Ignorera"
     },
     "reading_direction": {
       "LEFT_TO_RIGHT": "Vänster till höger",
@@ -671,6 +683,15 @@
     "refresh_metadata": "Uppdatera metadata",
     "scan_library_files": "Skanna biblioteksfiler",
     "select_all": "Välj alla"
+  },
+  "metrics": {
+    "library_books": "Böcker per bibliotek",
+    "library_disk_space": "Bibliotekets diskutrymme",
+    "library_series": "Serier per bibliotek",
+    "library_sidecars": "Sidovagnar per bibliotek",
+    "tasks_executed": "Utförda uppgifter",
+    "tasks_total_time": "Uppdragens totala tid",
+    "title": "Mätvärden"
   },
   "navigation": {
     "home": "Hem",
