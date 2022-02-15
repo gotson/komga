@@ -680,11 +680,9 @@ class OpdsController(
       title = "$pre${if (prependNumber) "${decimalFormat.format(metadata.numberSort)} - " else ""}${metadata.title}",
       updated = lastModified.toCurrentTimeZone().atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
       id = id,
-      content = run {
-        var content = "${FilenameUtils.getExtension(url).lowercase()} - $size"
-        if (metadata.summary.isNotBlank())
-          content += "\n\n${metadata.summary}"
-        content
+      content = buildString {
+        append("${FilenameUtils.getExtension(url).lowercase()} - $size")
+        if (metadata.summary.isNotBlank()) append("\n\n${metadata.summary}")
       },
       authors = metadata.authors.map { OpdsAuthor(it.name) },
       links = listOf(
