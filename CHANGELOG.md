@@ -1,3 +1,12 @@
+## [0.151.1](https://github.com/gotson/komga/compare/v0.151.0...v0.151.1) (2022-02-15)
+
+
+### Bug Fixes
+
+* **opds:** better titles for entries ([9f2808d](https://github.com/gotson/komga/commit/9f2808dfdc6d91b947743386849c42594df3d9b4))
+* translated using Weblate ([6975728](https://github.com/gotson/komga/commit/6975728974e16e0508e1df112ece3870fda12bdf))
+* **webui:** clearer item card display ([052f3d3](https://github.com/gotson/komga/commit/052f3d38049ee0d9decd6eaff1f9a6f91a4c1cef))
+
 # [0.151.0](https://github.com/gotson/komga/compare/v0.150.0...v0.151.0) (2022-02-14)
 
 
