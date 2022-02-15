@@ -120,10 +120,11 @@
                 class="link-underline text-truncate"
                 v-html="t.title"
                 style="display: block"
+                :class="i !== 0 ? 'font-weight-light' : ''"
               />
             </v-card-subtitle>
           </template>
-          <v-card-text class="px-2" v-html="body">
+          <v-card-text class="px-2 font-weight-light" v-html="body">
           </v-card-text>
         </template>
       </v-card>
