@@ -218,13 +218,14 @@ class OpdsController(
   @GetMapping(ROUTE_ON_DECK)
   fun getOnDeck(
     @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestHeader(name = HttpHeaders.USER_AGENT, required = false, defaultValue = "") userAgent: String,
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed {
-    val entries = bookDtoRepository.findAllOnDeck(
+    val bookPage = bookDtoRepository.findAllOnDeck(
       principal.user.id,
       principal.user.getAuthorizedLibraryIds(null),
       page,
-    ).map { it.toOpdsEntry(mediaRepository.findById(it.id), false) }
+    )
 
     val builder = uriBuilder(ROUTE_ON_DECK)
 
@@ -236,9 +237,9 @@ class OpdsController(
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, builder.toUriString()),
         linkStart,
-        *linkPage(builder, entries).toTypedArray(),
+        *linkPage(builder, bookPage).toTypedArray(),
       ),
-      entries = entries.content,
+      entries = bookPage.getEntriesWithSeriesTitle(userAgent),
     )
   }
 
@@ -246,6 +247,7 @@ class OpdsController(
   @GetMapping(ROUTE_KEEP_READING)
   fun getKeepReading(
     @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestHeader(name = HttpHeaders.USER_AGENT, required = false, defaultValue = "") userAgent: String,
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed {
     val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.desc("readProgress.readDate")))
@@ -257,11 +259,11 @@ class OpdsController(
       deleted = false,
     )
 
-    val entries = bookDtoRepository.findAll(
+    val bookPage = bookDtoRepository.findAll(
       bookSearch,
       principal.user.id,
       pageable,
-    ).map { it.toOpdsEntry(mediaRepository.findById(it.id), false) }
+    )
 
     val builder = uriBuilder(ROUTE_ON_DECK)
 
@@ -273,9 +275,9 @@ class OpdsController(
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, builder.toUriString()),
         linkStart,
-        *linkPage(builder, entries).toTypedArray(),
+        *linkPage(builder, bookPage).toTypedArray(),
       ),
-      entries = entries.content,
+      entries = bookPage.getEntriesWithSeriesTitle(userAgent),
     )
   }
 
@@ -323,6 +325,7 @@ class OpdsController(
   @GetMapping(ROUTE_SERIES_LATEST)
   fun getLatestSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestHeader(name = HttpHeaders.USER_AGENT, required = false, defaultValue = "") userAgent: String,
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed {
     val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.desc("lastModified")))
@@ -336,6 +339,11 @@ class OpdsController(
 
     val uriBuilder = uriBuilder(ROUTE_SERIES_LATEST)
 
+    val pageIndex = seriesPage.number * seriesPage.size
+    val entries = seriesPage.mapIndexed { index, seriesDto ->
+      seriesDto.toOpdsEntry(if (shouldEnforceSort(userAgent)) pageIndex + index + 1 else null)
+    }
+
     return OpdsFeedNavigation(
       id = ID_SERIES_LATEST,
       title = "Latest series",
@@ -346,7 +354,7 @@ class OpdsController(
         linkStart,
         *linkPage(uriBuilder, seriesPage).toTypedArray(),
       ),
-      entries = seriesPage.content.map { it.toOpdsEntry() },
+      entries = entries,
     )
   }
 
@@ -364,8 +372,7 @@ class OpdsController(
     )
     val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.desc("createdDate")))
 
-    val entries = bookDtoRepository.findAll(bookSearch, principal.user.id, pageable)
-      .map { it.toOpdsEntry(mediaRepository.findById(it.id), shouldPrependBookNumbers(userAgent)) }
+    val bookPage = bookDtoRepository.findAll(bookSearch, principal.user.id, pageable)
 
     val uriBuilder = uriBuilder(ROUTE_BOOKS_LATEST)
 
@@ -377,9 +384,9 @@ class OpdsController(
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
         linkStart,
-        *linkPage(uriBuilder, entries).toTypedArray(),
+        *linkPage(uriBuilder, bookPage).toTypedArray(),
       ),
-      entries = entries.content,
+      entries = bookPage.getEntriesWithSeriesTitle(userAgent),
     )
   }
 
@@ -517,7 +524,7 @@ class OpdsController(
       val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.asc("metadata.numberSort")))
 
       val entries = bookDtoRepository.findAll(bookSearch, principal.user.id, pageable)
-        .map { it.toOpdsEntry(mediaRepository.findById(it.id), shouldPrependBookNumbers(userAgent)) }
+        .map { bookDto -> bookDto.toOpdsEntry(mediaRepository.findById(bookDto.id)) { if (shouldEnforceSort(userAgent)) "${decimalFormat.format(it.metadata.numberSort)} - " else "" } }
 
       val uriBuilder = uriBuilder("series/$id")
 
@@ -575,6 +582,7 @@ class OpdsController(
   @GetMapping("collections/{id}")
   fun getOneCollection(
     @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestHeader(name = HttpHeaders.USER_AGENT, required = false, defaultValue = "") userAgent: String,
     @PathVariable id: String,
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed =
@@ -591,7 +599,7 @@ class OpdsController(
 
       val entries = seriesDtoRepository.findAllByCollectionId(collection.id, seriesSearch, principal.user.id, pageable)
         .map { seriesDto ->
-          val index = if (collection.ordered) collection.seriesIds.indexOf(seriesDto.id) + 1 else null
+          val index = if (shouldEnforceSort(userAgent)) collection.seriesIds.indexOf(seriesDto.id) + 1 else null
           seriesDto.toOpdsEntry(index)
         }
 
@@ -615,6 +623,7 @@ class OpdsController(
   @GetMapping("readlists/{id}")
   fun getOneReadList(
     @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestHeader(name = HttpHeaders.USER_AGENT, required = false, defaultValue = "") userAgent: String,
     @PathVariable id: String,
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed =
@@ -636,7 +645,7 @@ class OpdsController(
 
       val entries = booksPage.map { bookDto ->
         val index = readList.bookIds.filterValues { it == bookDto.id }.keys.first()
-        bookDto.toOpdsEntry(mediaRepository.findById(bookDto.id), prependNumber = false, prepend = index + 1)
+        bookDto.toOpdsEntry(mediaRepository.findById(bookDto.id)) { "${if (shouldEnforceSort(userAgent)) "${decimalFormat.format(index + 1)} - " else ""}${it.seriesTitle} ${it.metadata.number}: " }
       }
 
       val uriBuilder = uriBuilder("readlists/$id")
@@ -666,7 +675,7 @@ class OpdsController(
     )
   }
 
-  private fun BookDto.toOpdsEntry(media: Media, prependNumber: Boolean, prepend: Int? = null): OpdsEntryAcquisition {
+  private fun BookDto.toOpdsEntry(media: Media, prepend: (BookDto) -> String = { "" }): OpdsEntryAcquisition {
     val mediaTypes = media.pages.map { it.mediaType }.distinct()
 
     val opdsLinkPageStreaming = if (mediaTypes.size == 1 && mediaTypes.first() in opdsPseSupportedFormats) {
@@ -675,9 +684,8 @@ class OpdsController(
       OpdsLinkPageStreaming("image/jpeg", "${routeBase}books/$id/pages/{pageNumber}?convert=jpeg&zero_based=true", media.pages.size, readProgress?.page)
     }
 
-    val pre = prepend?.let { decimalFormat.format(it) + " - " } ?: ""
     return OpdsEntryAcquisition(
-      title = "$pre${if (prependNumber) "${decimalFormat.format(metadata.numberSort)} - " else ""}${metadata.title}",
+      title = "${prepend(this)}${metadata.title}",
       updated = lastModified.toCurrentTimeZone().atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
       id = id,
       content = buildString {
@@ -721,7 +729,14 @@ class OpdsController(
       link = OpdsLinkFeedNavigation(OpdsLinkRel.SUBSECTION, uriBuilder("readlists/$id").toUriString()),
     )
 
-  private fun shouldPrependBookNumbers(userAgent: String) =
+  private fun Page<BookDto>.getEntriesWithSeriesTitle(userAgent: String): List<OpdsEntryAcquisition> {
+    val pageIndex = (this.number * this.size)
+    return this.mapIndexed { index, bookDto ->
+      bookDto.toOpdsEntry(mediaRepository.findById(bookDto.id)) { "${if (shouldEnforceSort(userAgent)) "${pageIndex + index + 1} - " else ""}${it.seriesTitle} ${it.metadata.number}: " }
+    }
+  }
+
+  private fun shouldEnforceSort(userAgent: String) =
     userAgent.contains("chunky", ignoreCase = true)
 
   private fun sanitize(fileName: String): String =
