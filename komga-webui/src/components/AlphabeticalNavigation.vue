@@ -13,10 +13,9 @@
           icon
           @click="clicked(symbol)"
           :color="selected === symbol ? 'secondary' : undefined"
-          :disabled="groupCount ? getCount(symbol) === 0 : false"
+          :disabled="groupCount && selected !== symbol ? getCount(symbol) === 0 : false"
           v-on="on"
         >
-<!--          <v-icon>mdi-alpha-{{ symbol.toLowerCase() }}</v-icon>-->
           {{ symbol }}
         </v-btn>
       </template>

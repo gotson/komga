@@ -69,6 +69,14 @@
     </filter-drawer>
 
     <v-container fluid>
+      <alphabetical-navigation
+        class="text-center"
+        :symbols="alphabeticalNavigation"
+        :selected="selectedSymbol"
+        :group-count="seriesGroups"
+        @clicked="filterByStarting"
+      />
+
       <empty-state
         v-if="totalPages === 0 && sortOrFilterActive"
         :title="$t('common.filter_no_matches')"
@@ -87,14 +95,6 @@
       />
 
       <template v-if="totalPages > 0">
-        <alphabetical-navigation
-          class="text-center"
-          :symbols="alphabeticalNavigation"
-          :selected="selectedSymbol"
-          :group-count="seriesGroups"
-          @clicked="filterByStarting"
-        />
-
         <v-pagination
           v-if="totalPages > 1"
           v-model="page"
@@ -156,7 +156,7 @@ import {LibrarySseDto, ReadProgressSeriesSseDto, SeriesSseDto} from '@/types/kom
 import {throttle} from 'lodash'
 import AlphabeticalNavigation from '@/components/AlphabeticalNavigation.vue'
 import {LibraryDto} from '@/types/komga-libraries'
-import { ItemContext } from '@/types/items'
+import {ItemContext} from '@/types/items'
 
 export default Vue.extend({
   name: 'BrowseLibraries',
@@ -180,7 +180,6 @@ export default Vue.extend({
       series: [] as SeriesDto[],
       seriesGroups: [] as GroupCountDto[],
       alphabeticalNavigation: ['ALL', '#', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
-      searchRegex: undefined as any,
       selectedSymbol: 'ALL',
       selectedSeries: [] as SeriesDto[],
       page: 1,
@@ -237,6 +236,7 @@ export default Vue.extend({
     await this.resetParams(this.$route, this.libraryId)
     if (this.$route.query.page) this.page = Number(this.$route.query.page)
     if (this.$route.query.pageSize) this.pageSize = Number(this.$route.query.pageSize)
+    if (this.$route.query.nav) this.selectedSymbol = this.$route.query.nav.toString()
 
     this.loadLibrary(this.libraryId)
 
@@ -254,7 +254,6 @@ export default Vue.extend({
       this.series = []
       this.seriesGroups = []
       this.selectedSymbol = 'ALL'
-      this.searchRegex = undefined
 
       this.loadLibrary(to.params.libraryId)
 
@@ -264,10 +263,15 @@ export default Vue.extend({
     next()
   },
   computed: {
+    searchRegex(): string | undefined {
+        if (this.selectedSymbol === 'ALL') return undefined
+        if (this.selectedSymbol === '#') return '^[^a-z],title_sort'
+        return `^${this.selectedSymbol},title_sort`
+    },
     itemContext(): ItemContext[] {
-      if(this.sortActive.key === 'booksMetadata.releaseDate') return [ItemContext.RELEASE_DATE]
-      if(this.sortActive.key === 'createdDate') return [ItemContext.DATE_ADDED]
-      if(this.sortActive.key === 'lastModifiedDate') return [ItemContext.DATE_UPDATED]
+      if (this.sortActive.key === 'booksMetadata.releaseDate') return [ItemContext.RELEASE_DATE]
+      if (this.sortActive.key === 'createdDate') return [ItemContext.DATE_ADDED]
+      if (this.sortActive.key === 'lastModifiedDate') return [ItemContext.DATE_UPDATED]
       return []
     },
     sortOptions(): SortOption[] {
@@ -345,12 +349,9 @@ export default Vue.extend({
   },
   methods: {
     filterByStarting(symbol: string) {
-      if (symbol === 'ALL') this.searchRegex = undefined
-      else if (symbol === '#') this.searchRegex = '^[^a-z],title_sort'
-      else this.searchRegex = `^${symbol},title_sort`
-
       this.selectedSymbol = symbol
       this.page = 1
+      this.updateRoute()
       this.loadPage(this.libraryId, 1, this.sortActive, this.searchRegex)
     },
     resetSortAndFilters() {
@@ -493,6 +494,7 @@ export default Vue.extend({
           page: `${this.page}`,
           pageSize: `${this.pageSize}`,
           sort: `${this.sortActive.key},${this.sortActive.order}`,
+          nav: this.selectedSymbol,
         },
       } as Location
       mergeFilterParams(this.filters, loc.query)
