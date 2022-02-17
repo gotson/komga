@@ -2,7 +2,7 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import org.gotson.komga.application.events.EventPublisher
-import org.gotson.komga.application.tasks.TaskReceiver
+import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.BookSearch
@@ -50,7 +50,7 @@ class LibraryContentLifecycle(
   private val readListLifecycle: ReadListLifecycle,
   private val sidecarRepository: SidecarRepository,
   private val komgaProperties: KomgaProperties,
-  private val taskReceiver: TaskReceiver,
+  private val taskEmitter: TaskEmitter,
   private val transactionTemplate: TransactionTemplate,
   private val hasher: Hasher,
   private val bookMetadataRepository: BookMetadataRepository,
@@ -190,7 +190,7 @@ class LibraryContentLifecycle(
       // for all series where books have been removed or added, trigger a sort and refresh metadata
       seriesToSortAndRefresh.distinctBy { it.id }.forEach {
         seriesLifecycle.sortBooks(it)
-        taskReceiver.refreshSeriesMetadata(it.id)
+        taskEmitter.refreshSeriesMetadata(it.id)
       }
 
       val existingSidecars = sidecarRepository.findAll()
@@ -202,16 +202,16 @@ class LibraryContentLifecycle(
               seriesRepository.findNotDeletedByLibraryIdAndUrlOrNull(library.id, newSidecar.parentUrl)?.let { series ->
                 logger.info { "Sidecar changed on disk (${newSidecar.url}, refresh Series for ${newSidecar.type}: $series" }
                 when (newSidecar.type) {
-                  Sidecar.Type.ARTWORK -> taskReceiver.refreshSeriesLocalArtwork(series.id)
-                  Sidecar.Type.METADATA -> taskReceiver.refreshSeriesMetadata(series.id)
+                  Sidecar.Type.ARTWORK -> taskEmitter.refreshSeriesLocalArtwork(series.id)
+                  Sidecar.Type.METADATA -> taskEmitter.refreshSeriesMetadata(series.id)
                 }
               }
             Sidecar.Source.BOOK ->
               bookRepository.findNotDeletedByLibraryIdAndUrlOrNull(library.id, newSidecar.parentUrl)?.let { book ->
                 logger.info { "Sidecar changed on disk (${newSidecar.url}, refresh Book for ${newSidecar.type}: $book" }
                 when (newSidecar.type) {
-                  Sidecar.Type.ARTWORK -> taskReceiver.refreshBookLocalArtwork(book)
-                  Sidecar.Type.METADATA -> taskReceiver.refreshBookMetadata(book)
+                  Sidecar.Type.ARTWORK -> taskEmitter.refreshBookLocalArtwork(book)
+                  Sidecar.Type.METADATA -> taskEmitter.refreshBookMetadata(book)
                 }
               }
           }
@@ -351,7 +351,7 @@ class LibraryContentLifecycle(
                   title = if (deleted.titleLock) deleted.title else newlyAdded.title,
                 ),
               )
-              if (!deleted.titleLock) taskReceiver.refreshBookMetadata(bookToAdd, setOf(BookMetadataPatchCapability.TITLE))
+              if (!deleted.titleLock) taskEmitter.refreshBookMetadata(bookToAdd, setOf(BookMetadataPatchCapability.TITLE))
             }
 
             // copy read progress

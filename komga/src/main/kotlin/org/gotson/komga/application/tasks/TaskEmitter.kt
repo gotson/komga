@@ -24,7 +24,7 @@ import javax.jms.ConnectionFactory
 private val logger = KotlinLogging.logger {}
 
 @Service
-class TaskReceiver(
+class TaskEmitter(
   connectionFactory: ConnectionFactory,
   private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,

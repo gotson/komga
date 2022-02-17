@@ -4,7 +4,7 @@ import mu.KotlinLogging
 import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.apache.commons.lang3.StringUtils
 import org.gotson.komga.application.events.EventPublisher
-import org.gotson.komga.application.tasks.TaskReceiver
+import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.BookMetadataAggregation
@@ -56,7 +56,7 @@ class SeriesLifecycle(
   private val bookMetadataAggregationRepository: BookMetadataAggregationRepository,
   private val collectionRepository: SeriesCollectionRepository,
   private val readProgressRepository: ReadProgressRepository,
-  private val taskReceiver: TaskReceiver,
+  private val taskEmitter: TaskEmitter,
   private val eventPublisher: EventPublisher,
   private val transactionTemplate: TransactionTemplate,
 ) {
@@ -103,7 +103,7 @@ class SeriesLifecycle(
     oldToNew.forEach { (book, old, new) ->
       if (old.number != new.number || old.numberSort != new.numberSort) {
         logger.debug { "Metadata numbering has changed, refreshing metadata for book ${new.bookId} " }
-        taskReceiver.refreshBookMetadata(book, setOf(BookMetadataPatchCapability.NUMBER, BookMetadataPatchCapability.NUMBER_SORT))
+        taskEmitter.refreshBookMetadata(book, setOf(BookMetadataPatchCapability.NUMBER, BookMetadataPatchCapability.NUMBER_SORT))
       }
     }
 

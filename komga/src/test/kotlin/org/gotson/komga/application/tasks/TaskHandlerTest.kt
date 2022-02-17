@@ -32,7 +32,7 @@ private val logger = KotlinLogging.logger {}
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
 class TaskHandlerTest(
-  @Autowired private val taskReceiver: TaskReceiver,
+  @Autowired private val taskEmitter: TaskEmitter,
   @Autowired private val jmsTemplate: JmsTemplate,
   @Autowired private val jmsListenerEndpointRegistry: JmsListenerEndpointRegistry,
 ) {
@@ -68,7 +68,7 @@ class TaskHandlerTest(
     jmsListenerEndpointRegistry.stop()
     val book = makeBook("book")
     repeat(100) {
-      taskReceiver.analyzeBook(book)
+      taskEmitter.analyzeBook(book)
     }
     jmsListenerEndpointRegistry.start()
 
@@ -89,7 +89,7 @@ class TaskHandlerTest(
 
     jmsListenerEndpointRegistry.stop()
     (0..9).forEach {
-      taskReceiver.analyzeBook(makeBook("$it", id = "$it"), it)
+      taskEmitter.analyzeBook(makeBook("$it", id = "$it"), it)
     }
     jmsListenerEndpointRegistry.start()
 
@@ -112,7 +112,7 @@ class TaskHandlerTest(
 
     jmsListenerEndpointRegistry.stop()
     (0..9).forEach {
-      taskReceiver.refreshSeriesMetadata("$it", it)
+      taskEmitter.refreshSeriesMetadata("$it", it)
     }
     jmsListenerEndpointRegistry.start()
 

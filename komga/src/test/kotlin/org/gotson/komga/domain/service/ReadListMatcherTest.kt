@@ -5,7 +5,7 @@ import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
 import org.assertj.core.api.Assertions.assertThat
-import org.gotson.komga.application.tasks.TaskReceiver
+import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadListRequest
 import org.gotson.komga.domain.model.ReadListRequestBook
@@ -43,7 +43,7 @@ class ReadListMatcherTest(
   private val library = makeLibrary()
 
   @MockkBean
-  private lateinit var mockTaskReceiver: TaskReceiver
+  private lateinit var mockTaskEmitter: TaskEmitter
 
   @BeforeAll
   fun `setup library`() {
@@ -52,7 +52,7 @@ class ReadListMatcherTest(
 
   @BeforeEach
   fun beforeEach() {
-    every { mockTaskReceiver.refreshBookMetadata(any(), any()) } just Runs
+    every { mockTaskEmitter.refreshBookMetadata(any(), any()) } just Runs
   }
 
   @AfterAll

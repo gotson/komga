@@ -2,7 +2,7 @@ package org.gotson.komga.interfaces.scheduler
 
 import mu.KotlinLogging
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
-import org.gotson.komga.application.tasks.TaskReceiver
+import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.infrastructure.search.LuceneEntity
 import org.gotson.komga.infrastructure.search.LuceneHelper
 import org.springframework.boot.context.event.ApplicationReadyEvent
@@ -16,19 +16,19 @@ private val logger = KotlinLogging.logger {}
 @Component
 class SearchIndexController(
   private val luceneHelper: LuceneHelper,
-  private val taskReceiver: TaskReceiver,
+  private val taskEmitter: TaskEmitter,
 ) {
 
   @EventListener(ApplicationReadyEvent::class)
   fun createIndexIfNoneExist() {
     if (!luceneHelper.indexExists()) {
       logger.info { "Lucene index not found, trigger rebuild" }
-      taskReceiver.rebuildIndex(HIGHEST_PRIORITY)
+      taskEmitter.rebuildIndex(HIGHEST_PRIORITY)
     } else {
       logger.info { "Lucene index version: ${luceneHelper.getIndexVersion()}" }
       when (luceneHelper.getIndexVersion()) {
-        1, 2 -> taskReceiver.rebuildIndex(HIGHEST_PRIORITY)
-        3 -> taskReceiver.rebuildIndex(HIGHEST_PRIORITY, setOf(LuceneEntity.Series))
+        1, 2 -> taskEmitter.rebuildIndex(HIGHEST_PRIORITY)
+        3 -> taskEmitter.rebuildIndex(HIGHEST_PRIORITY, setOf(LuceneEntity.Series))
       }
     }
   }

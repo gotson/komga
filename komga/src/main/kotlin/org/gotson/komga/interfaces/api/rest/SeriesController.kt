@@ -14,7 +14,7 @@ import org.apache.commons.io.IOUtils
 import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
-import org.gotson.komga.application.tasks.TaskReceiver
+import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.DomainEvent
@@ -93,7 +93,7 @@ private val logger = KotlinLogging.logger {}
 @RestController
 @RequestMapping("api", produces = [MediaType.APPLICATION_JSON_VALUE])
 class SeriesController(
-  private val taskReceiver: TaskReceiver,
+  private val taskEmitter: TaskEmitter,
   private val seriesRepository: SeriesRepository,
   private val seriesLifecycle: SeriesLifecycle,
   private val seriesMetadataRepository: SeriesMetadataRepository,
@@ -490,7 +490,7 @@ class SeriesController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable seriesId: String) {
     bookRepository.findAllBySeriesId(seriesId).forEach {
-      taskReceiver.analyzeBook(it, HIGH_PRIORITY)
+      taskEmitter.analyzeBook(it, HIGH_PRIORITY)
     }
   }
 
@@ -499,10 +499,10 @@ class SeriesController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun refreshMetadata(@PathVariable seriesId: String) {
     bookRepository.findAllBySeriesId(seriesId).forEach {
-      taskReceiver.refreshBookMetadata(it, priority = HIGH_PRIORITY)
-      taskReceiver.refreshBookLocalArtwork(it, priority = HIGH_PRIORITY)
+      taskEmitter.refreshBookMetadata(it, priority = HIGH_PRIORITY)
+      taskEmitter.refreshBookLocalArtwork(it, priority = HIGH_PRIORITY)
     }
-    taskReceiver.refreshSeriesLocalArtwork(seriesId, priority = HIGH_PRIORITY)
+    taskEmitter.refreshSeriesLocalArtwork(seriesId, priority = HIGH_PRIORITY)
   }
 
   @PatchMapping("v1/series/{seriesId}/metadata")
@@ -695,7 +695,7 @@ class SeriesController(
   fun deleteSeries(
     @PathVariable seriesId: String,
   ) {
-    taskReceiver.deleteSeries(
+    taskEmitter.deleteSeries(
       seriesId = seriesId,
       priority = HIGHEST_PRIORITY,
     )

@@ -8,7 +8,7 @@ import io.mockk.slot
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
-import org.gotson.komga.application.tasks.TaskReceiver
+import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.DirectoryNotFoundException
@@ -88,7 +88,7 @@ class LibraryContentLifecycleTest(
   private lateinit var mockHasher: Hasher
 
   @MockkBean
-  private lateinit var mockTaskReceiver: TaskReceiver
+  private lateinit var mockTaskEmitter: TaskEmitter
 
   private val user = KomgaUser("user@example.org", "", false, id = "1")
 
@@ -99,8 +99,8 @@ class LibraryContentLifecycleTest(
 
   @BeforeEach
   fun beforeEach() {
-    every { mockTaskReceiver.refreshBookMetadata(any(), any()) } just Runs
-    every { mockTaskReceiver.refreshSeriesMetadata(any(), any()) } just Runs
+    every { mockTaskEmitter.refreshBookMetadata(any(), any()) } just Runs
+    every { mockTaskEmitter.refreshSeriesMetadata(any(), any()) } just Runs
   }
 
   @AfterAll
@@ -855,7 +855,7 @@ class LibraryContentLifecycleTest(
 
       // then
       verify(exactly = 1) { mockHasher.computeHash(any<Path>()) }
-      verify(exactly = 0) { mockTaskReceiver.refreshBookMetadata(bookRenamed, setOf(BookMetadataPatchCapability.TITLE)) }
+      verify(exactly = 0) { mockTaskEmitter.refreshBookMetadata(bookRenamed, setOf(BookMetadataPatchCapability.TITLE)) }
 
       val allSeries = seriesRepository.findAll()
       val allBooks = bookRepository.findAll().sortedBy { it.number }
@@ -899,7 +899,7 @@ class LibraryContentLifecycleTest(
 
       // then
       verify(exactly = 1) { mockHasher.computeHash(any<Path>()) }
-      verify(exactly = 1) { mockTaskReceiver.refreshBookMetadata(withArg { assertThat(it.id).isEqualTo(bookRenamed.id) }, setOf(BookMetadataPatchCapability.TITLE)) }
+      verify(exactly = 1) { mockTaskEmitter.refreshBookMetadata(withArg { assertThat(it.id).isEqualTo(bookRenamed.id) }, setOf(BookMetadataPatchCapability.TITLE)) }
 
       val allSeries = seriesRepository.findAll()
       val allBooks = bookRepository.findAll().sortedBy { it.number }
@@ -1224,7 +1224,7 @@ class LibraryContentLifecycleTest(
       libraryContentLifecycle.scanRootFolder(library) // rename
 
       // then
-      verify(exactly = 0) { mockTaskReceiver.refreshBookMetadata(book2Moved, setOf(BookMetadataPatchCapability.TITLE)) }
+      verify(exactly = 0) { mockTaskEmitter.refreshBookMetadata(book2Moved, setOf(BookMetadataPatchCapability.TITLE)) }
 
       val allSeries = seriesRepository.findAll()
       val allBooks = bookRepository.findAll().sortedBy { it.number }
@@ -1282,7 +1282,7 @@ class LibraryContentLifecycleTest(
       libraryContentLifecycle.scanRootFolder(library) // rename
 
       // then
-      verify(exactly = 1) { mockTaskReceiver.refreshBookMetadata(withArg { assertThat(it.id).isEqualTo(book2Moved.id) }, setOf(BookMetadataPatchCapability.TITLE)) }
+      verify(exactly = 1) { mockTaskEmitter.refreshBookMetadata(withArg { assertThat(it.id).isEqualTo(book2Moved.id) }, setOf(BookMetadataPatchCapability.TITLE)) }
 
       val allSeries = seriesRepository.findAll()
       val allBooks = bookRepository.findAll().sortedBy { it.number }

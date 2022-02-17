@@ -10,7 +10,7 @@ import org.apache.commons.io.IOUtils
 import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
-import org.gotson.komga.application.tasks.TaskReceiver
+import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.ImageConversionException
@@ -89,7 +89,7 @@ private val logger = KotlinLogging.logger {}
 @RestController
 @RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
 class BookController(
-  private val taskReceiver: TaskReceiver,
+  private val taskEmitter: TaskEmitter,
   private val bookLifecycle: BookLifecycle,
   private val bookRepository: BookRepository,
   private val bookMetadataRepository: BookMetadataRepository,
@@ -564,7 +564,7 @@ class BookController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable bookId: String) {
     bookRepository.findByIdOrNull(bookId)?.let { book ->
-      taskReceiver.analyzeBook(book, HIGH_PRIORITY)
+      taskEmitter.analyzeBook(book, HIGH_PRIORITY)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -573,8 +573,8 @@ class BookController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun refreshMetadata(@PathVariable bookId: String) {
     bookRepository.findByIdOrNull(bookId)?.let { book ->
-      taskReceiver.refreshBookMetadata(book, priority = HIGH_PRIORITY)
-      taskReceiver.refreshBookLocalArtwork(book, priority = HIGH_PRIORITY)
+      taskEmitter.refreshBookMetadata(book, priority = HIGH_PRIORITY)
+      taskEmitter.refreshBookLocalArtwork(book, priority = HIGH_PRIORITY)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -591,7 +591,7 @@ class BookController(
       bookMetadataRepository.update(updated)
 
       bookRepository.findByIdOrNull(bookId)?.let { updatedBook ->
-        taskReceiver.aggregateSeriesMetadata(updatedBook.seriesId)
+        taskEmitter.aggregateSeriesMetadata(updatedBook.seriesId)
         updatedBook.let { eventPublisher.publishEvent(DomainEvent.BookUpdated(it)) }
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -613,7 +613,7 @@ class BookController(
     }
 
     updatedBooks.forEach { eventPublisher.publishEvent(DomainEvent.BookUpdated(it)) }
-    updatedBooks.map { it.seriesId }.distinct().forEach { taskReceiver.aggregateSeriesMetadata(it) }
+    updatedBooks.map { it.seriesId }.distinct().forEach { taskEmitter.aggregateSeriesMetadata(it) }
   }
 
   @Operation(description = "Mark book as read and/or change page progress")
@@ -661,7 +661,7 @@ class BookController(
   ) {
     bookImportBatch.books.forEach {
       try {
-        taskReceiver.importBook(
+        taskEmitter.importBook(
           sourceFile = it.sourceFile,
           seriesId = it.seriesId,
           copyMode = bookImportBatch.copyMode,
@@ -681,7 +681,7 @@ class BookController(
   fun deleteBook(
     @PathVariable bookId: String,
   ) {
-    taskReceiver.deleteBook(
+    taskEmitter.deleteBook(
       bookId = bookId,
       priority = HIGHEST_PRIORITY,
     )

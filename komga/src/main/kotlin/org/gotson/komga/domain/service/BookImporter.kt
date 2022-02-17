@@ -2,7 +2,7 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import org.gotson.komga.application.events.EventPublisher
-import org.gotson.komga.application.tasks.TaskReceiver
+import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.CodedException
 import org.gotson.komga.domain.model.CopyMode
@@ -55,7 +55,7 @@ class BookImporter(
   private val libraryRepository: LibraryRepository,
   private val sidecarRepository: SidecarRepository,
   private val eventPublisher: EventPublisher,
-  private val taskReceiver: TaskReceiver,
+  private val taskEmitter: TaskEmitter,
 ) {
 
   fun importBook(sourceFile: Path, series: Series, copyMode: CopyMode, destinationName: String? = null, upgradeBookId: String? = null): Book {
@@ -195,8 +195,8 @@ class BookImporter(
 
       sidecars.forEach { (sourceSidecar, destPath) ->
         when (sourceSidecar.type) {
-          Sidecar.Type.ARTWORK -> taskReceiver.refreshBookLocalArtwork(importedBook)
-          Sidecar.Type.METADATA -> taskReceiver.refreshBookMetadata(importedBook)
+          Sidecar.Type.ARTWORK -> taskEmitter.refreshBookLocalArtwork(importedBook)
+          Sidecar.Type.METADATA -> taskEmitter.refreshBookMetadata(importedBook)
         }
         val destSidecar = sourceSidecar.copy(
           url = destPath.toUri().toURL(),

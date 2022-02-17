@@ -2,7 +2,7 @@ package org.gotson.komga.interfaces.api.rest
 
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
-import org.gotson.komga.application.tasks.TaskReceiver
+import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.domain.model.DuplicateNameException
@@ -40,7 +40,7 @@ import javax.validation.Valid
 @RestController
 @RequestMapping("api/v1/libraries", produces = [MediaType.APPLICATION_JSON_VALUE])
 class LibraryController(
-  private val taskReceiver: TaskReceiver,
+  private val taskEmitter: TaskEmitter,
   private val libraryLifecycle: LibraryLifecycle,
   private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
@@ -171,7 +171,7 @@ class LibraryController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun scan(@PathVariable libraryId: String) {
     libraryRepository.findByIdOrNull(libraryId)?.let { library ->
-      taskReceiver.scanLibrary(library.id, HIGHEST_PRIORITY)
+      taskEmitter.scanLibrary(library.id, HIGHEST_PRIORITY)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -180,7 +180,7 @@ class LibraryController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable libraryId: String) {
     bookRepository.findAll(BookSearch(libraryIds = listOf(libraryId))).forEach {
-      taskReceiver.analyzeBook(it, HIGH_PRIORITY)
+      taskEmitter.analyzeBook(it, HIGH_PRIORITY)
     }
   }
 
@@ -189,11 +189,11 @@ class LibraryController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun refreshMetadata(@PathVariable libraryId: String) {
     bookRepository.findAll(BookSearch(libraryIds = listOf(libraryId))).forEach {
-      taskReceiver.refreshBookMetadata(it, priority = HIGH_PRIORITY)
-      taskReceiver.refreshBookLocalArtwork(it, priority = HIGH_PRIORITY)
+      taskEmitter.refreshBookMetadata(it, priority = HIGH_PRIORITY)
+      taskEmitter.refreshBookLocalArtwork(it, priority = HIGH_PRIORITY)
     }
     seriesRepository.findAllIdsByLibraryId(libraryId).forEach {
-      taskReceiver.refreshSeriesLocalArtwork(it, priority = HIGH_PRIORITY)
+      taskEmitter.refreshSeriesLocalArtwork(it, priority = HIGH_PRIORITY)
     }
   }
 
@@ -202,7 +202,7 @@ class LibraryController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun emptyTrash(@PathVariable libraryId: String) {
     libraryRepository.findByIdOrNull(libraryId)?.let { library ->
-      taskReceiver.emptyTrash(library.id, HIGH_PRIORITY)
+      taskEmitter.emptyTrash(library.id, HIGH_PRIORITY)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 }

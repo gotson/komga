@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
-import org.gotson.komga.application.tasks.TaskReceiver
+import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.BookPageNumbered
 import org.gotson.komga.domain.model.PageHash
 import org.gotson.komga.domain.model.PageHashKnown
@@ -42,7 +42,7 @@ import javax.validation.Valid
 class PageHashController(
   private val pageHashRepository: PageHashRepository,
   private val pageHashLifecycle: PageHashLifecycle,
-  private val taskReceiver: TaskReceiver,
+  private val taskEmitter: TaskEmitter,
 ) {
 
   @GetMapping
@@ -143,7 +143,7 @@ class PageHashController(
         },
       )
 
-    toRemove.forEach { taskReceiver.removeDuplicatePages(it.key, it.value) }
+    toRemove.forEach { taskEmitter.removeDuplicatePages(it.key, it.value) }
   }
 
   @PostMapping("{pageHash}/delete-match")
@@ -167,6 +167,6 @@ class PageHashController(
       ),
     )
 
-    taskReceiver.removeDuplicatePages(toRemove.first, toRemove.second)
+    taskEmitter.removeDuplicatePages(toRemove.first, toRemove.second)
   }
 }

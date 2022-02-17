@@ -2,7 +2,7 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import org.gotson.komga.application.events.EventPublisher
-import org.gotson.komga.application.tasks.TaskReceiver
+import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
@@ -24,7 +24,7 @@ class LibraryLifecycle(
   private val seriesLifecycle: SeriesLifecycle,
   private val seriesRepository: SeriesRepository,
   private val sidecarRepository: SidecarRepository,
-  private val taskReceiver: TaskReceiver,
+  private val taskEmitter: TaskEmitter,
   private val eventPublisher: EventPublisher,
   private val transactionTemplate: TransactionTemplate,
 ) {
@@ -42,7 +42,7 @@ class LibraryLifecycle(
     checkLibraryValidity(library, existing)
 
     libraryRepository.insert(library)
-    taskReceiver.scanLibrary(library.id)
+    taskEmitter.scanLibrary(library.id)
 
     eventPublisher.publishEvent(DomainEvent.LibraryAdded(library))
 
@@ -56,7 +56,7 @@ class LibraryLifecycle(
     checkLibraryValidity(toUpdate, existing)
 
     libraryRepository.update(toUpdate)
-    taskReceiver.scanLibrary(toUpdate.id)
+    taskEmitter.scanLibrary(toUpdate.id)
 
     eventPublisher.publishEvent(DomainEvent.LibraryUpdated(toUpdate))
   }

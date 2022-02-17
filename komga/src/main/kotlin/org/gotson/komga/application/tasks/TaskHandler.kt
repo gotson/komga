@@ -30,7 +30,7 @@ private val logger = KotlinLogging.logger {}
 
 @Service
 class TaskHandler(
-  private val taskReceiver: TaskReceiver,
+  private val taskEmitter: TaskEmitter,
   private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
   private val seriesRepository: SeriesRepository,
@@ -58,32 +58,32 @@ class TaskHandler(
           is Task.ScanLibrary ->
             libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
               libraryContentLifecycle.scanRootFolder(library)
-              taskReceiver.analyzeUnknownAndOutdatedBooks(library)
-              taskReceiver.repairExtensions(library, LOW_PRIORITY)
-              taskReceiver.findBooksToConvert(library, LOWEST_PRIORITY)
-              taskReceiver.findBooksWithMissingPageHash(library, LOWEST_PRIORITY)
-              taskReceiver.findDuplicatePagesToDelete(library, LOWEST_PRIORITY)
-              taskReceiver.hashBooksWithoutHash(library)
+              taskEmitter.analyzeUnknownAndOutdatedBooks(library)
+              taskEmitter.repairExtensions(library, LOW_PRIORITY)
+              taskEmitter.findBooksToConvert(library, LOWEST_PRIORITY)
+              taskEmitter.findBooksWithMissingPageHash(library, LOWEST_PRIORITY)
+              taskEmitter.findDuplicatePagesToDelete(library, LOWEST_PRIORITY)
+              taskEmitter.hashBooksWithoutHash(library)
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 
           is Task.FindBooksToConvert ->
             libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
               bookConverter.getConvertibleBooks(library).forEach {
-                taskReceiver.convertBookToCbz(it, task.priority + 1)
+                taskEmitter.convertBookToCbz(it, task.priority + 1)
               }
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 
           is Task.FindBooksWithMissingPageHash ->
             libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
               pageHashLifecycle.getBookAndSeriesIdsWithMissingPageHash(library).forEach {
-                taskReceiver.hashBookPages(it.first, it.second, task.priority + 1)
+                taskEmitter.hashBookPages(it.first, it.second, task.priority + 1)
               }
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 
           is Task.FindDuplicatePagesToDelete ->
             libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
               pageHashLifecycle.getBookPagesToDeleteAutomatically(library).forEach { (bookId, pages) ->
-                taskReceiver.removeDuplicatePages(bookId, pages, task.priority + 1)
+                taskEmitter.removeDuplicatePages(bookId, pages, task.priority + 1)
               }
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 
@@ -95,8 +95,8 @@ class TaskHandler(
           is Task.AnalyzeBook ->
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
               if (bookLifecycle.analyzeAndPersist(book)) {
-                taskReceiver.generateBookThumbnail(book, priority = task.priority + 1)
-                taskReceiver.refreshBookMetadata(book, priority = task.priority + 1)
+                taskEmitter.generateBookThumbnail(book, priority = task.priority + 1)
+                taskEmitter.refreshBookMetadata(book, priority = task.priority + 1)
               }
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
@@ -108,13 +108,13 @@ class TaskHandler(
           is Task.RefreshBookMetadata ->
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
               bookMetadataLifecycle.refreshMetadata(book, task.capabilities)
-              taskReceiver.refreshSeriesMetadata(book.seriesId, priority = task.priority - 1)
+              taskEmitter.refreshSeriesMetadata(book.seriesId, priority = task.priority - 1)
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
           is Task.RefreshSeriesMetadata ->
             seriesRepository.findByIdOrNull(task.seriesId)?.let { series ->
               seriesMetadataLifecycle.refreshMetadata(series)
-              taskReceiver.aggregateSeriesMetadata(series.id, priority = task.priority)
+              taskEmitter.aggregateSeriesMetadata(series.id, priority = task.priority)
             } ?: logger.warn { "Cannot execute task $task: Series does not exist" }
 
           is Task.AggregateSeriesMetadata ->
@@ -135,7 +135,7 @@ class TaskHandler(
           is Task.ImportBook ->
             seriesRepository.findByIdOrNull(task.seriesId)?.let { series ->
               val importedBook = bookImporter.importBook(Paths.get(task.sourceFile), series, task.copyMode, task.destinationName, task.upgradeBookId)
-              taskReceiver.analyzeBook(importedBook, priority = task.priority + 1)
+              taskEmitter.analyzeBook(importedBook, priority = task.priority + 1)
             } ?: logger.warn { "Cannot execute task $task: Series does not exist" }
 
           is Task.ConvertBook ->

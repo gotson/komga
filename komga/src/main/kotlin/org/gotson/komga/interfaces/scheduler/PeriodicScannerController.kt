@@ -1,7 +1,7 @@
 package org.gotson.komga.interfaces.scheduler
 
 import mu.KotlinLogging
-import org.gotson.komga.application.tasks.TaskReceiver
+import org.gotson.komga.application.tasks.TaskEmitter
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.annotation.Profile
 import org.springframework.context.event.EventListener
@@ -13,13 +13,13 @@ private val logger = KotlinLogging.logger {}
 @Profile("!test")
 @Component
 class PeriodicScannerController(
-  private val taskReceiver: TaskReceiver,
+  private val taskEmitter: TaskEmitter,
 ) {
 
   @EventListener(classes = [ApplicationReadyEvent::class], condition = "@komgaProperties.librariesScanStartup")
   @Scheduled(cron = "#{@komgaProperties.librariesScanCron ?: '-'}")
   fun scanAllLibraries() {
     logger.info { "Periodic libraries scan starting" }
-    taskReceiver.scanLibraries()
+    taskEmitter.scanLibraries()
   }
 }

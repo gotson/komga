@@ -9,7 +9,7 @@ import io.mockk.just
 import io.mockk.verify
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
-import org.gotson.komga.application.tasks.TaskReceiver
+import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.CopyMode
 import org.gotson.komga.domain.model.KomgaUser
@@ -66,7 +66,7 @@ class BookImporterTest(
   private val user2 = KomgaUser("user2@example.org", "", false)
 
   @MockkBean
-  private lateinit var mockTackReceiver: TaskReceiver
+  private lateinit var mockTackReceiver: TaskEmitter
 
   @BeforeAll
   fun init() {
