@@ -1,3 +1,18 @@
+## [0.151.2](https://github.com/gotson/komga/compare/v0.151.1...v0.151.2) (2022-02-17)
+
+
+### Bug Fixes
+
+* **webui:** links not showing underline on hover on dark theme ([e476d78](https://github.com/gotson/komga/commit/e476d78770086330fb58f770efa266cf38e2f8c3))
+* **webui:** restore library alphabetical navigation from url ([1faaf12](https://github.com/gotson/komga/commit/1faaf12de4f000244547b6917b791df8b983b377))
+
+
+### Performance Improvements
+
+* convert to cbz on first scan ([b724f20](https://github.com/gotson/komga/commit/b724f205cd065d614319e98856f5b1cbf29d7568))
+* don't recompute book hash during scan if filesize is different ([33cd19a](https://github.com/gotson/komga/commit/33cd19ae04ec06c216091ac0ef7ee2c79eb3c8ad))
+* hash and delete pages in a single scan ([b436e90](https://github.com/gotson/komga/commit/b436e90a8c429749b5c10a52ae39821eb939d5a0))
+
 ## [0.151.1](https://github.com/gotson/komga/compare/v0.151.0...v0.151.1) (2022-02-15)
 
 
