@@ -20,6 +20,11 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY, val groupId: String? = null)
     override fun toString(): String = "ScanLibrary(libraryId='$libraryId', priority='$priority')"
   }
 
+  class FindBooksToConvert(val libraryId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
+    override fun uniqueId() = "FIND_BOOKS_TO_CONVERT_$libraryId"
+    override fun toString(): String = "FindBooksToConvert(libraryId='$libraryId', priority='$priority')"
+  }
+
   class EmptyTrash(val libraryId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
     override fun uniqueId() = "EMPTY_TRASH_$libraryId"
     override fun toString(): String = "EmptyTrash(libraryId='$libraryId', priority='$priority')"

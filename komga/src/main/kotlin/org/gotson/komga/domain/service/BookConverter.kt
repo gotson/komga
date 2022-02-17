@@ -57,7 +57,13 @@ class BookConverter(
   private val skippedRepairs = mutableListOf<String>()
 
   fun getConvertibleBooks(library: Library): Collection<Book> =
-    bookRepository.findAllByLibraryIdAndMediaTypes(library.id, convertibleTypes)
+    if (library.convertToCbz)
+      bookRepository.findAllByLibraryIdAndMediaTypes(library.id, convertibleTypes)
+        .also { logger.info { "Found ${it.size} books to convert" } }
+    else {
+      logger.info { "CBZ conversion is not enabled, skipping" }
+      emptyList()
+    }
 
   fun convertToCbz(book: Book) {
     // perform various checks

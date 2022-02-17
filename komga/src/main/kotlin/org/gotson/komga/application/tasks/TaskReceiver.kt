@@ -58,7 +58,7 @@ class TaskReceiver(
         libraryIds = listOf(library.id),
         mediaStatus = listOf(Media.Status.UNKNOWN, Media.Status.OUTDATED),
       ),
-      UnpagedSorted(Sort.by(Sort.Order.asc("seriesId"), Sort.Order.asc("number")))
+      UnpagedSorted(Sort.by(Sort.Order.asc("seriesId"), Sort.Order.asc("number"))),
     ).forEach {
       submitTask(Task.AnalyzeBook(it.id, groupId = it.seriesId))
     }
@@ -78,11 +78,12 @@ class TaskReceiver(
       }
   }
 
-  fun convertBooksToCbz(library: Library, priority: Int = DEFAULT_PRIORITY) {
-    if (library.convertToCbz)
-      bookConverter.getConvertibleBooks(library).forEach {
-        submitTask(Task.ConvertBook(it.id, priority, it.seriesId))
-      }
+  fun findBooksToConvert(library: Library, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.FindBooksToConvert(library.id, priority))
+  }
+
+  fun convertBookToCbz(book: Book, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.ConvertBook(book.id, priority, book.seriesId))
   }
 
   fun repairExtensions(library: Library, priority: Int = DEFAULT_PRIORITY) {

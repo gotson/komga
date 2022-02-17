@@ -60,8 +60,15 @@ class TaskHandler(
               taskReceiver.hashBooksWithoutHash(library)
               taskReceiver.hashBookPagesWithMissingHash(library)
               taskReceiver.repairExtensions(library, LOWEST_PRIORITY)
-              taskReceiver.convertBooksToCbz(library, LOWEST_PRIORITY)
+              taskReceiver.findBooksToConvert(library, LOWEST_PRIORITY)
               taskReceiver.removeDuplicatePages(library, LOWEST_PRIORITY)
+            } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
+
+          is Task.FindBooksToConvert ->
+            libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
+              bookConverter.getConvertibleBooks(library).forEach {
+                taskReceiver.convertBookToCbz(it, task.priority + 1)
+              }
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 
           is Task.EmptyTrash ->
