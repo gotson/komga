@@ -147,7 +147,7 @@ class LibraryContentLifecycle(
               existingBooks.find { it.url == newBook.url && it.deletedDate == null }?.let { existingBook ->
                 logger.debug { "Matched existing book: $existingBook" }
                 if (newBook.fileLastModified.notEquals(existingBook.fileLastModified)) {
-                  val hash = if (existingBook.fileHash.isNotBlank()) {
+                  val hash = if (existingBook.fileSize == newBook.fileSize && existingBook.fileHash.isNotBlank()) {
                     hasher.computeHash(newBook.path)
                   } else null
                   if (hash == existingBook.fileHash) {

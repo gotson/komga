@@ -209,6 +209,44 @@ class LibraryContentLifecycleTest(
     }
 
     @Test
+    fun `given existing series when scanning and updated files have a different size then books are marked outdated`() {
+      // given
+      val library = makeLibrary()
+      libraryRepository.insert(library)
+
+      every { mockScanner.scanRootFolder(any()) }
+        .returnsMany(
+          mapOf(makeSeries(name = "series") to listOf(makeBook("book1").copy(fileSize = 1))).toScanResult(),
+          mapOf(makeSeries(name = "series") to listOf(makeBook("book1").copy(fileSize = 2))).toScanResult(),
+        )
+      libraryContentLifecycle.scanRootFolder(library)
+
+      bookRepository.findAll().first().let { book ->
+        bookRepository.update(book.copy(fileHash = "hashed"))
+        mediaRepository.update(mediaRepository.findById(book.id).copy(status = Media.Status.READY))
+      }
+
+      // when
+      libraryContentLifecycle.scanRootFolder(library)
+
+      // then
+      val allSeries = seriesRepository.findAll()
+      val allBooks = bookRepository.findAll()
+
+      verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
+      verify(exactly = 0) { mockHasher.computeHash(any<Path>()) }
+
+      assertThat(allSeries).hasSize(1)
+      assertThat(allBooks).hasSize(1)
+      val book = allBooks.first()
+      assertThat(book.name).isEqualTo("book1")
+      assertThat(book.lastModifiedDate).isNotEqualTo(book.createdDate)
+      assertThat(book.fileHash).isBlank
+      val media = mediaRepository.findById(book.id)
+      assertThat(media.status).isEqualTo(Media.Status.OUTDATED)
+    }
+
+    @Test
     fun `given existing series when scanning and updated files have the same hash then books are not marked outdated`() {
       // given
       val library = makeLibrary()
