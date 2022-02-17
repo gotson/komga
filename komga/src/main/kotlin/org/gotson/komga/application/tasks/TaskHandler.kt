@@ -12,6 +12,7 @@ import org.gotson.komga.domain.service.BookMetadataLifecycle
 import org.gotson.komga.domain.service.BookPageEditor
 import org.gotson.komga.domain.service.LibraryContentLifecycle
 import org.gotson.komga.domain.service.LocalArtworkLifecycle
+import org.gotson.komga.domain.service.PageHashLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
 import org.gotson.komga.domain.service.SeriesMetadataLifecycle
 import org.gotson.komga.infrastructure.jms.QUEUE_FACTORY
@@ -43,6 +44,7 @@ class TaskHandler(
   private val bookConverter: BookConverter,
   private val bookPageEditor: BookPageEditor,
   private val searchIndexLifecycle: SearchIndexLifecycle,
+  private val pageHashLifecycle: PageHashLifecycle,
   private val meterRegistry: MeterRegistry,
 ) {
 
@@ -57,17 +59,31 @@ class TaskHandler(
             libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
               libraryContentLifecycle.scanRootFolder(library)
               taskReceiver.analyzeUnknownAndOutdatedBooks(library)
-              taskReceiver.hashBooksWithoutHash(library)
-              taskReceiver.hashBookPagesWithMissingHash(library)
-              taskReceiver.repairExtensions(library, LOWEST_PRIORITY)
+              taskReceiver.repairExtensions(library, LOW_PRIORITY)
               taskReceiver.findBooksToConvert(library, LOWEST_PRIORITY)
-              taskReceiver.removeDuplicatePages(library, LOWEST_PRIORITY)
+              taskReceiver.findBooksWithMissingPageHash(library, LOWEST_PRIORITY)
+              taskReceiver.findDuplicatePagesToDelete(library, LOWEST_PRIORITY)
+              taskReceiver.hashBooksWithoutHash(library)
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 
           is Task.FindBooksToConvert ->
             libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
               bookConverter.getConvertibleBooks(library).forEach {
                 taskReceiver.convertBookToCbz(it, task.priority + 1)
+              }
+            } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
+
+          is Task.FindBooksWithMissingPageHash ->
+            libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
+              pageHashLifecycle.getBookAndSeriesIdsWithMissingPageHash(library).forEach {
+                taskReceiver.hashBookPages(it.first, it.second, task.priority + 1)
+              }
+            } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
+
+          is Task.FindDuplicatePagesToDelete ->
+            libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
+              pageHashLifecycle.getBookPagesToDeleteAutomatically(library).forEach { (bookId, pages) ->
+                taskReceiver.removeDuplicatePages(bookId, pages, task.priority + 1)
               }
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 

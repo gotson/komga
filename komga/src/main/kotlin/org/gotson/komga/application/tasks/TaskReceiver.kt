@@ -11,7 +11,6 @@ import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.service.BookConverter
-import org.gotson.komga.domain.service.PageHashLifecycle
 import org.gotson.komga.infrastructure.jms.JMS_PROPERTY_TYPE
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.gotson.komga.infrastructure.jms.QUEUE_UNIQUE_ID
@@ -30,7 +29,6 @@ class TaskReceiver(
   private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
   private val bookConverter: BookConverter,
-  private val pageHashLifecycle: PageHashLifecycle,
 ) {
 
   private val jmsTemplates = (0..9).associateWith {
@@ -71,11 +69,12 @@ class TaskReceiver(
       }
   }
 
-  fun hashBookPagesWithMissingHash(library: Library) {
-    if (library.hashPages)
-      pageHashLifecycle.getBookAndSeriesIdsWithMissingPageHash(library).forEach {
-        submitTask(Task.HashBookPages(it.first, LOWEST_PRIORITY, it.second))
-      }
+  fun findBooksWithMissingPageHash(library: Library, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.FindBooksWithMissingPageHash(library.id, priority))
+  }
+
+  fun hashBookPages(bookId: String, seriesId: String, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.HashBookPages(bookId, priority, seriesId))
   }
 
   fun findBooksToConvert(library: Library, priority: Int = DEFAULT_PRIORITY) {
@@ -93,10 +92,8 @@ class TaskReceiver(
       }
   }
 
-  fun removeDuplicatePages(library: Library, priority: Int = DEFAULT_PRIORITY) {
-    pageHashLifecycle.getBookPagesToDeleteAutomatically(library).forEach { (bookId, pages) ->
-      removeDuplicatePages(bookId, pages, priority)
-    }
+  fun findDuplicatePagesToDelete(library: Library, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.FindDuplicatePagesToDelete(library.id, priority))
   }
 
   fun removeDuplicatePages(bookId: String, pages: Collection<BookPageNumbered>, priority: Int = DEFAULT_PRIORITY) {

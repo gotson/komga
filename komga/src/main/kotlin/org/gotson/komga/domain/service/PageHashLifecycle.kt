@@ -1,5 +1,6 @@
 package org.gotson.komga.domain.service
 
+import mu.KotlinLogging
 import org.gotson.komga.domain.model.BookPageContent
 import org.gotson.komga.domain.model.BookPageNumbered
 import org.gotson.komga.domain.model.Library
@@ -12,6 +13,8 @@ import org.gotson.komga.domain.persistence.PageHashRepository
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+
+private val logger = KotlinLogging.logger {}
 
 @Service
 class PageHashLifecycle(
@@ -28,7 +31,13 @@ class PageHashLifecycle(
    * @return a Collection of Pair of BookId/SeriesId
    */
   fun getBookAndSeriesIdsWithMissingPageHash(library: Library): Collection<Pair<String, String>> =
-    mediaRepository.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(library.id, hashableMediaTypes, komgaProperties.pageHashing)
+    if (library.hashPages)
+      mediaRepository.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(library.id, hashableMediaTypes, komgaProperties.pageHashing)
+        .also { logger.info { "Found ${it.size} books with missing page hash" } }
+    else {
+      logger.info { "Page hashing is not enabled, skipping" }
+      emptyList()
+    }
 
   fun getPage(pageHash: PageHash, resizeTo: Int? = null): BookPageContent? {
     val match = pageHashRepository.findMatchesByHash(pageHash, null, Pageable.ofSize(1)).firstOrNull() ?: return null

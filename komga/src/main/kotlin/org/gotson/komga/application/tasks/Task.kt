@@ -9,6 +9,7 @@ import java.io.Serializable
 const val HIGHEST_PRIORITY = 8
 const val HIGH_PRIORITY = 6
 const val DEFAULT_PRIORITY = 4
+const val LOW_PRIORITY = 2
 const val LOWEST_PRIORITY = 0
 
 sealed class Task(priority: Int = DEFAULT_PRIORITY, val groupId: String? = null) : Serializable {
@@ -23,6 +24,16 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY, val groupId: String? = null)
   class FindBooksToConvert(val libraryId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
     override fun uniqueId() = "FIND_BOOKS_TO_CONVERT_$libraryId"
     override fun toString(): String = "FindBooksToConvert(libraryId='$libraryId', priority='$priority')"
+  }
+
+  class FindBooksWithMissingPageHash(val libraryId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
+    override fun uniqueId() = "FIND_BOOKS_WITH_MISSING_PAGE_HASH_$libraryId"
+    override fun toString(): String = "FindBooksWithMissingPageHash(libraryId='$libraryId', priority='$priority')"
+  }
+
+  class FindDuplicatePagesToDelete(val libraryId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
+    override fun uniqueId() = "FIND_DUPLICATE_PAGES_TO_DELETE_$libraryId"
+    override fun toString(): String = "FindDuplicatePagesToDelete(libraryId='$libraryId', priority='$priority')"
   }
 
   class EmptyTrash(val libraryId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
