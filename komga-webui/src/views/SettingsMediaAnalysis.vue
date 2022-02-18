@@ -78,9 +78,6 @@ export default Vue.extend({
       }))
     },
   },
-  async mounted() {
-    this.loadBooks()
-  },
   methods: {
     async loadBooks() {
       this.loading = true

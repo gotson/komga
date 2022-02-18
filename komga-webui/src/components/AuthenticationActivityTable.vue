@@ -73,9 +73,6 @@ export default Vue.extend({
       return headers
     },
   },
-  async mounted() {
-    this.loadData()
-  },
   methods: {
     async loadData() {
       this.loading = true
