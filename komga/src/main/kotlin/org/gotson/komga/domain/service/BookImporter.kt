@@ -7,6 +7,7 @@ import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.CodedException
 import org.gotson.komga.domain.model.CopyMode
 import org.gotson.komga.domain.model.DomainEvent
+import org.gotson.komga.domain.model.HistoricalEvent
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.PathContainedInPath
 import org.gotson.komga.domain.model.Series
@@ -14,6 +15,7 @@ import org.gotson.komga.domain.model.Sidecar
 import org.gotson.komga.domain.model.withCode
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
+import org.gotson.komga.domain.persistence.HistoricalEventRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
@@ -56,6 +58,7 @@ class BookImporter(
   private val sidecarRepository: SidecarRepository,
   private val eventPublisher: EventPublisher,
   private val taskEmitter: TaskEmitter,
+  private val historicalEventRepository: HistoricalEventRepository,
 ) {
 
   fun importBook(sourceFile: Path, series: Series, copyMode: CopyMode, destinationName: String? = null, upgradeBookId: String? = null): Book {
@@ -90,6 +93,7 @@ class BookImporter(
           logger.info { "Deleting existing file: ${bookToUpgrade.path}" }
           try {
             bookToUpgrade.path.deleteExisting()
+            historicalEventRepository.insert(HistoricalEvent.BookFileDeleted(bookToUpgrade, "File was deleted to import an upgrade"))
             deletedUpgradedFile = true
           } catch (e: NoSuchFileException) {
             logger.warn { "Could not delete upgraded book: ${bookToUpgrade.path}" }
@@ -184,8 +188,10 @@ class BookImporter(
           }
 
         // delete upgraded book file on disk if it has not been replaced earlier
-        if (!deletedUpgradedFile && bookToUpgrade.path.deleteIfExists())
+        if (!deletedUpgradedFile && bookToUpgrade.path.deleteIfExists()) {
           logger.info { "Deleted existing file: ${bookToUpgrade.path}" }
+          historicalEventRepository.insert(HistoricalEvent.BookFileDeleted(bookToUpgrade, "File was deleted to import an upgrade"))
+        }
 
         // delete upgraded book
         bookLifecycle.deleteOne(bookToUpgrade)
@@ -206,6 +212,7 @@ class BookImporter(
         sidecarRepository.save(importedBook.libraryId, destSidecar)
       }
 
+      historicalEventRepository.insert(HistoricalEvent.BookImported(importedBook, series, sourceFile, upgradeBookId != null))
       eventPublisher.publishEvent(DomainEvent.BookImported(importedBook, sourceFile.toUri().toURL(), success = true))
 
       return importedBook

@@ -10,6 +10,7 @@ import org.gotson.komga.domain.model.BookConversionException
 import org.gotson.komga.domain.model.BookPageNumbered
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.DomainEvent
+import org.gotson.komga.domain.model.HistoricalEvent
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaType
@@ -17,6 +18,7 @@ import org.gotson.komga.domain.model.MediaUnsupportedException
 import org.gotson.komga.domain.model.PageHash
 import org.gotson.komga.domain.model.restoreHashFrom
 import org.gotson.komga.domain.persistence.BookRepository
+import org.gotson.komga.domain.persistence.HistoricalEventRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.PageHashRepository
@@ -44,6 +46,7 @@ class BookPageEditor(
   private val pageHashRepository: PageHashRepository,
   private val transactionTemplate: TransactionTemplate,
   private val eventPublisher: EventPublisher,
+  private val historicalEventRepository: HistoricalEventRepository,
 ) {
   private val convertibleTypes = listOf(MediaType.ZIP.value)
 
@@ -151,6 +154,7 @@ class BookPageEditor(
         .forEach { pageHashRepository.update(it.copy(deleteCount = it.deleteCount + 1)) }
     }
 
+    pagesToDelete.forEach { historicalEventRepository.insert(HistoricalEvent.DuplicatePageDeleted(book, it)) }
     eventPublisher.publishEvent(DomainEvent.BookUpdated(newBook))
   }
 }

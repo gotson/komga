@@ -10,6 +10,7 @@ import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.BookMetadataAggregation
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.DomainEvent
+import org.gotson.komga.domain.model.HistoricalEvent
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.MarkSelectedPreference
@@ -21,6 +22,7 @@ import org.gotson.komga.domain.model.ThumbnailSeries
 import org.gotson.komga.domain.persistence.BookMetadataAggregationRepository
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
+import org.gotson.komga.domain.persistence.HistoricalEventRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
@@ -59,6 +61,7 @@ class SeriesLifecycle(
   private val taskEmitter: TaskEmitter,
   private val eventPublisher: EventPublisher,
   private val transactionTemplate: TransactionTemplate,
+  private val historicalEventRepository: HistoricalEventRepository,
 ) {
 
   private val whitespacePattern = """\s+""".toRegex()
@@ -305,7 +308,10 @@ class SeriesLifecycle(
     }
 
     if (series.path.exists() && series.path.listDirectoryEntries().isEmpty())
-      if (series.path.deleteIfExists()) logger.info { "Deleted directory: ${series.path}" }
+      if (series.path.deleteIfExists()) {
+        logger.info { "Deleted directory: ${series.path}" }
+        historicalEventRepository.insert(HistoricalEvent.SeriesFolderDeleted(series, "Folder was deleted because it was empty"))
+      }
 
     softDeleteMany(listOf(series))
   }
