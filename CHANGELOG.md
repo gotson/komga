@@ -1,3 +1,17 @@
+# [0.152.0](https://github.com/gotson/komga/compare/v0.151.2...v0.152.0) (2022-02-18)
+
+
+### Features
+
+* **api:** new history endpoint to retrieve historical events ([88f7f57](https://github.com/gotson/komga/commit/88f7f57a5d8d4d68c6be47db48602a779e2dac53))
+* **webui:** history view ([f8bea23](https://github.com/gotson/komga/commit/f8bea23b2a0a7eeda22c2840bb57c09b8464d6e6))
+* **webui:** move some views into media management section ([90caee9](https://github.com/gotson/komga/commit/90caee988eaf0048688f278f8f45dedd425fd228))
+
+
+### Performance Improvements
+
+* **webui:** reduce duplicate api calls for components with datatables ([1a82497](https://github.com/gotson/komga/commit/1a8249732db89f9346d47cc21a6189a7e88f4529))
+
 ## [0.151.2](https://github.com/gotson/komga/compare/v0.151.1...v0.151.2) (2022-02-17)
 
 
