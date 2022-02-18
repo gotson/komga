@@ -112,7 +112,7 @@ import PageHashUnknownCard from '@/components/PageHashUnknownCard.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 
 export default Vue.extend({
-  name: 'SettingsDuplicatePagesUnknown',
+  name: 'DuplicatePagesUnknown',
   components: {PageHashUnknownCard, PageHashMatchesTable, PageSizeSelect},
   data: function () {
     return {

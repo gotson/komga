@@ -66,7 +66,7 @@ const router = new Router({
         {
           path: '/settings',
           name: 'settings',
-          redirect: {name: 'settings-analysis'},
+          redirect: {name: 'settings-users'},
           component: () => import(/* webpackChunkName: "settings" */ './views/SettingsHolder.vue'),
           children: [
             {
@@ -83,38 +83,6 @@ const router = new Router({
               ],
             },
             {
-              path: '/settings/analysis',
-              name: 'settings-analysis',
-              beforeEnter: adminGuard,
-              component: () => import(/* webpackChunkName: "settings-analysis" */ './views/SettingsMediaAnalysis.vue'),
-            },
-            {
-              path: '/settings/duplicates',
-              name: 'settings-duplicates',
-              beforeEnter: adminGuard,
-              component: () => import(/* webpackChunkName: "settings-duplicates" */ './views/SettingsDuplicates.vue'),
-            },
-            {
-              path: '/settings/duplicate-pages',
-              name: 'settings-duplicate-pages',
-              redirect: {name: 'settings-duplicate-pages-known'},
-              component: () => import(/* webpackChunkName: "settings-duplicate-pages" */ './views/SettingsDuplicatePagesHolder.vue'),
-              children: [
-                {
-                  path: '/settings/duplicate-pages/known',
-                  name: 'settings-duplicate-pages-known',
-                  beforeEnter: adminGuard,
-                  component: () => import(/* webpackChunkName: "settings-duplicate-pages" */ './views/SettingsDuplicatePagesKnown.vue'),
-                },
-                {
-                  path: '/settings/duplicate-pages/unknown',
-                  name: 'settings-duplicate-pages-unknown',
-                  beforeEnter: adminGuard,
-                  component: () => import(/* webpackChunkName: "settings-duplicate-pages" */ './views/SettingsDuplicatePagesUnknown.vue'),
-                },
-              ],
-            },
-            {
               path: '/settings/server',
               name: 'settings-server',
               beforeEnter: adminGuard,
@@ -125,6 +93,46 @@ const router = new Router({
               name: 'metrics',
               beforeEnter: adminGuard,
               component: () => import(/* webpackChunkName: "metrics" */ './views/Metrics.vue'),
+            },
+          ],
+        },
+        {
+          path: '/media-management',
+          name: 'media-management',
+          redirect: {name: 'media-analysis'},
+          component: () => import(/* webpackChunkName: "media-management" */ './views/MediaManagement.vue'),
+          children: [
+            {
+              path: '/media-management/analysis',
+              name: 'media-analysis',
+              beforeEnter: adminGuard,
+              component: () => import(/* webpackChunkName: "media-analysis" */ './views/MediaAnalysis.vue'),
+            },
+            {
+              path: '/media-management/duplicate-files',
+              name: 'duplicate-files',
+              beforeEnter: adminGuard,
+              component: () => import(/* webpackChunkName: "duplicate-files" */ './views/DuplicateFiles.vue'),
+            },
+            {
+              path: '/media-management/duplicate-pages',
+              name: 'duplicate-pages',
+              redirect: {name: 'settings-duplicate-pages-known'},
+              component: () => import(/* webpackChunkName: "duplicate-pages" */ './views/DuplicatePagesHolder.vue'),
+              children: [
+                {
+                  path: '/media-management/duplicate-pages/known',
+                  name: 'settings-duplicate-pages-known',
+                  beforeEnter: adminGuard,
+                  component: () => import(/* webpackChunkName: "duplicate-pages" */ './views/DuplicatePagesKnown.vue'),
+                },
+                {
+                  path: '/media-management/duplicate-pages/unknown',
+                  name: 'settings-duplicate-pages-unknown',
+                  beforeEnter: adminGuard,
+                  component: () => import(/* webpackChunkName: "duplicate-pages" */ './views/DuplicatePagesUnknown.vue'),
+                },
+              ],
             },
           ],
         },

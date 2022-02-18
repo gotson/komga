@@ -683,6 +683,9 @@
     "status": "Status",
     "url": "URL"
   },
+  "media_management": {
+    "title": "Media Management"
+  },
   "menu": {
     "add_to_collection": "Add to collection",
     "add_to_readlist": "Add to read list",

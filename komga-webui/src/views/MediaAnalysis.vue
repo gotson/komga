@@ -39,7 +39,7 @@ import {BookDto} from '@/types/komga-books'
 import {convertErrorCodes} from '@/functions/error-codes'
 
 export default Vue.extend({
-  name: 'SettingsMediaAnalysis',
+  name: 'MediaAnalysis',
   data: function () {
     return {
       books: [] as BookDto[],

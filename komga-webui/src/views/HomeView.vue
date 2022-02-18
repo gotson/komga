@@ -105,6 +105,22 @@
           </v-list-item-content>
         </v-list-item>
 
+        <v-list-item :to="{name: 'media-management'}" v-if="isAdmin">
+          <v-list-item-action>
+            <v-icon>mdi-book-cog</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-badge
+              dot
+              inline
+              :value="booksToCheck"
+              color="accent"
+            >
+              <v-list-item-title>{{ $t('media_management.title') }}</v-list-item-title>
+            </v-badge>
+          </v-list-item-content>
+        </v-list-item>
+
         <v-list-item :to="{name: 'history'}" v-if="isAdmin">
           <v-list-item-icon>
             <v-icon>mdi-clock-time-four-outline</v-icon>
@@ -119,14 +135,7 @@
             <v-icon>mdi-cog</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-badge
-              dot
-              inline
-              :value="booksToCheck"
-              color="accent"
-            >
-              <v-list-item-title>{{ $t('server_settings.server_settings') }}</v-list-item-title>
-            </v-badge>
+            <v-list-item-title>{{ $t('server_settings.server_settings') }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 

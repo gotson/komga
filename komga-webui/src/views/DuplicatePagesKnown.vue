@@ -119,7 +119,7 @@ import {PageHashAction} from '@/types/enum-pagehashes'
 import PageHashMatchesTable from '@/components/PageHashMatchesTable.vue'
 
 export default Vue.extend({
-  name: 'SettingsDuplicatePagesKnown',
+  name: 'DuplicatePagesKnown',
   components: {PageHashKnownCard, PageHashMatchesTable},
   data: function () {
     return {
