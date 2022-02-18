@@ -42,10 +42,10 @@
   },
   "book_card": {
     "error": "Error",
+    "no_release_date": "No release date",
     "unknown": "To be analyzed",
     "unread": "Unread",
-    "unsupported": "Unsupported",
-    "no_release_date": "No release date"
+    "unsupported": "Unsupported"
   },
   "book_import": {
     "button_browse": "Browse",
@@ -563,6 +563,13 @@
       "HARDLINK": "Hardlink/Copy Files",
       "MOVE": "Move Files"
     },
+    "historical_event_type": {
+      "BookConverted": "Book converted",
+      "BookFileDeleted": "Book file deleted",
+      "BookImported": "Book imported",
+      "DuplicatePageDeleted": "Duplicate page deleted",
+      "SeriesFolderDeleted": "Series folder deleted"
+    },
     "media_status": {
       "ERROR": "Error",
       "OUTDATED": "Outdated",
@@ -641,6 +648,16 @@
   "filter_drawer": {
     "filter": "filter",
     "sort": "sort"
+  },
+  "history": {
+    "header": {
+      "book": "Book",
+      "date": "Date",
+      "details": "Details",
+      "series": "Series",
+      "type": "Type"
+    },
+    "title": "History"
   },
   "home": {
     "theme": "Theme",

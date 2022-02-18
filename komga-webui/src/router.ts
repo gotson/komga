@@ -129,6 +129,12 @@ const router = new Router({
           ],
         },
         {
+          path: '/history',
+          name: 'history',
+          component: () => import(/* webpackChunkName: "history" */ './views/HistoryView.vue'),
+        },
+
+        {
           path: '/account',
           name: 'account',
           component: () => import(/* webpackChunkName: "account" */ './views/AccountSettings.vue'),
