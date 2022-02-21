@@ -14,7 +14,7 @@
 
       <v-spacer/>
 
-      <library-navigation v-if="$vuetify.breakpoint.name !== 'xs'" :libraryId="libraryId"/>
+      <library-navigation v-if="$vuetify.breakpoint.mdAndUp" :libraryId="libraryId"/>
 
       <v-spacer/>
 
@@ -38,7 +38,7 @@
       @delete="deleteSeries"
     />
 
-    <library-navigation v-if="$vuetify.breakpoint.name === 'xs'" :libraryId="libraryId" bottom-navigation/>
+    <library-navigation v-if="$vuetify.breakpoint.smAndDown" :libraryId="libraryId" bottom-navigation/>
 
     <filter-drawer
       v-model="drawer"

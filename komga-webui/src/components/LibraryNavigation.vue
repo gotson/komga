@@ -3,7 +3,7 @@
     <v-bottom-navigation
       v-if="show && bottomNavigation"
       grow color="primary"
-      :fixed="$vuetify.breakpoint.name === 'xs'"
+      :fixed="bottomNavigation"
     >
       <v-btn v-if="showRecommended"
              :to="{name: 'recommended-libraries', params: {libraryId: libraryId}}"

@@ -11,13 +11,13 @@
 
       <v-spacer/>
 
-      <library-navigation v-if="individualLibrary && $vuetify.breakpoint.name !== 'xs'" :libraryId="libraryId"/>
+      <library-navigation v-if="individualLibrary && $vuetify.breakpoint.mdAndUp" :libraryId="libraryId"/>
 
       <v-spacer/>
 
     </toolbar-sticky>
 
-    <library-navigation v-if="individualLibrary && $vuetify.breakpoint.name === 'xs'" :libraryId="libraryId"
+    <library-navigation v-if="individualLibrary && $vuetify.breakpoint.smAndDown" :libraryId="libraryId"
                         bottom-navigation/>
 
     <multi-select-bar
