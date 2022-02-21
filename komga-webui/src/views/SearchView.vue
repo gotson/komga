@@ -249,7 +249,7 @@ export default Vue.extend({
       return this.$store.getters.meAdmin
     },
     fixedCardWidth(): number {
-      return this.$vuetify.breakpoint.name === 'xs' ? 120 : 150
+      return this.$vuetify.breakpoint.xs ? 120 : 150
     },
     showToolbar(): boolean {
       return this.selectedSeries.length === 0 && this.selectedBooks.length === 0 && this.selectedCollections.length === 0 && this.selectedReadLists.length === 0

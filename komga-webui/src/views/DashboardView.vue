@@ -1,5 +1,5 @@
 <template>
-  <div :style="$vuetify.breakpoint.name === 'xs' ? 'margin-bottom: 56px' : undefined">
+  <div :style="$vuetify.breakpoint.xs ? 'margin-bottom: 56px' : undefined">
     <toolbar-sticky v-if="individualLibrary && selectedSeries.length === 0">
       <!--   Action menu   -->
       <library-actions-menu v-if="library"
@@ -311,7 +311,7 @@ export default Vue.extend({
       return this.$store.getters.meAdmin
     },
     fixedCardWidth(): number {
-      return this.$vuetify.breakpoint.name === 'xs' ? 120 : 150
+      return this.$vuetify.breakpoint.xs ? 120 : 150
     },
     allEmpty(): boolean {
       return this.loaderNewSeries?.items.length === 0 &&

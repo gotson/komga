@@ -1,5 +1,5 @@
 <template>
-  <div :style="$vuetify.breakpoint.name === 'xs' ? 'margin-bottom: 56px' : undefined">
+  <div :style="$vuetify.breakpoint.xs ? 'margin-bottom: 56px' : undefined">
     <toolbar-sticky v-if="selectedCollections.length === 0">
       <!--   Action menu   -->
       <library-actions-menu v-if="library"
