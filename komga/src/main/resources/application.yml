@@ -15,8 +15,9 @@ logging:
 komga:
   libraries-scan-cron: "0 0 */8 * * ?"
   libraries-scan-directory-exclusions:
-    - "#recycle"
-    - "@eaDir"
+    - "#recycle"  # Synology
+    - "@eaDir"    # Synology
+    - "@Recycle"  # Qnap
   database:
     file: \${komga.config-dir}/database.sqlite
   lucene:
