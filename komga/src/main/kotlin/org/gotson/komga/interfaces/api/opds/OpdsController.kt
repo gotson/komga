@@ -18,6 +18,7 @@ import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageAsQueryParam
+import org.gotson.komga.interfaces.api.checkContentRestriction
 import org.gotson.komga.interfaces.api.opds.dto.OpdsAuthor
 import org.gotson.komga.interfaces.api.opds.dto.OpdsEntryAcquisition
 import org.gotson.komga.interfaces.api.opds.dto.OpdsEntryNavigation
@@ -225,6 +226,7 @@ class OpdsController(
       principal.user.id,
       principal.user.getAuthorizedLibraryIds(null),
       page,
+      principal.user.restrictions,
     )
 
     val builder = uriBuilder(ROUTE_ON_DECK)
@@ -263,6 +265,7 @@ class OpdsController(
       bookSearch,
       principal.user.id,
       pageable,
+      principal.user.restrictions,
     )
 
     val builder = uriBuilder(ROUTE_ON_DECK)
@@ -301,7 +304,7 @@ class OpdsController(
       deleted = false,
     )
 
-    val seriesPage = seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageable)
+    val seriesPage = seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageable, principal.user.restrictions)
 
     val builder = uriBuilder(ROUTE_SERIES_ALL)
       .queryParamIfPresent("search", Optional.ofNullable(searchTerm))
@@ -335,7 +338,7 @@ class OpdsController(
       deleted = false,
     )
 
-    val seriesPage = seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageable)
+    val seriesPage = seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageable, principal.user.restrictions)
 
     val uriBuilder = uriBuilder(ROUTE_SERIES_LATEST)
 
@@ -372,7 +375,7 @@ class OpdsController(
     )
     val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.desc("createdDate")))
 
-    val bookPage = bookDtoRepository.findAll(bookSearch, principal.user.id, pageable)
+    val bookPage = bookDtoRepository.findAll(bookSearch, principal.user.id, pageable, principal.user.restrictions)
 
     val uriBuilder = uriBuilder(ROUTE_BOOKS_LATEST)
 
@@ -420,12 +423,7 @@ class OpdsController(
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed {
     val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.asc("name")))
-    val collections =
-      if (principal.user.sharedAllLibraries) {
-        collectionRepository.findAll(pageable = pageable)
-      } else {
-        collectionRepository.findAllByLibraryIds(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, pageable = pageable)
-      }
+    val collections = collectionRepository.findAll(principal.user.getAuthorizedLibraryIds(null), principal.user.getAuthorizedLibraryIds(null), pageable = pageable)
 
     val uriBuilder = uriBuilder(ROUTE_COLLECTIONS_ALL)
 
@@ -450,12 +448,7 @@ class OpdsController(
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed {
     val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.asc("name")))
-    val readLists =
-      if (principal.user.sharedAllLibraries) {
-        readListRepository.findAll(pageable = pageable)
-      } else {
-        readListRepository.findAllByLibraryIds(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, pageable = pageable)
-      }
+    val readLists = readListRepository.findAll(principal.user.getAuthorizedLibraryIds(null), principal.user.getAuthorizedLibraryIds(null), pageable = pageable)
 
     val uriBuilder = uriBuilder(ROUTE_READLISTS_ALL)
 
@@ -514,7 +507,7 @@ class OpdsController(
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed =
     seriesDtoRepository.findByIdOrNull(id, principal.user.id)?.let { series ->
-      if (!principal.user.canAccessLibrary(series.libraryId)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+      principal.user.checkContentRestriction(series)
 
       val bookSearch = BookSearchWithReadProgress(
         seriesIds = listOf(id),
@@ -559,7 +552,7 @@ class OpdsController(
 
       val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.asc("metadata.titleSort")))
 
-      val entries = seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageable)
+      val entries = seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageable, principal.user.restrictions)
         .map { it.toOpdsEntry() }
 
       val uriBuilder = uriBuilder("libraries/$id")
@@ -597,7 +590,7 @@ class OpdsController(
         deleted = false,
       )
 
-      val entries = seriesDtoRepository.findAllByCollectionId(collection.id, seriesSearch, principal.user.id, pageable)
+      val entries = seriesDtoRepository.findAllByCollectionId(collection.id, seriesSearch, principal.user.id, pageable, principal.user.restrictions)
         .map { seriesDto ->
           val index = if (shouldEnforceSort(userAgent)) collection.seriesIds.indexOf(seriesDto.id) + 1 else null
           seriesDto.toOpdsEntry(index)

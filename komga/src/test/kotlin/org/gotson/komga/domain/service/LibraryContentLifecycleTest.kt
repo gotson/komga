@@ -1628,8 +1628,8 @@ class LibraryContentLifecycleTest(
       libraryContentLifecycle.emptyTrash(library)
 
       // then
-      val collections = collectionRepository.findAll(null, Pageable.unpaged())
-      val readLists = readListRepository.findAll(null, Pageable.unpaged())
+      val collections = collectionRepository.findAll(pageable = Pageable.unpaged())
+      val readLists = readListRepository.findAll(pageable = Pageable.unpaged())
 
       assertThat(collections.content).isEmpty()
       assertThat(readLists.content).isEmpty()

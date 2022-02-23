@@ -180,11 +180,11 @@ class ReadListDaoTest(
     )
 
     // when
-    val foundLibrary1Filtered = readListDao.findAllByLibraryIds(listOf(library.id), listOf(library.id), pageable = Pageable.unpaged()).content
-    val foundLibrary1Unfiltered = readListDao.findAllByLibraryIds(listOf(library.id), null, pageable = Pageable.unpaged()).content
-    val foundLibrary2Filtered = readListDao.findAllByLibraryIds(listOf(library2.id), listOf(library2.id), pageable = Pageable.unpaged()).content
-    val foundLibrary2Unfiltered = readListDao.findAllByLibraryIds(listOf(library2.id), null, pageable = Pageable.unpaged()).content
-    val foundBothUnfiltered = readListDao.findAllByLibraryIds(listOf(library.id, library2.id), null, pageable = Pageable.unpaged()).content
+    val foundLibrary1Filtered = readListDao.findAll(listOf(library.id), listOf(library.id), pageable = Pageable.unpaged()).content
+    val foundLibrary1Unfiltered = readListDao.findAll(listOf(library.id), null, pageable = Pageable.unpaged()).content
+    val foundLibrary2Filtered = readListDao.findAll(listOf(library2.id), listOf(library2.id), pageable = Pageable.unpaged()).content
+    val foundLibrary2Unfiltered = readListDao.findAll(listOf(library2.id), null, pageable = Pageable.unpaged()).content
+    val foundBothUnfiltered = readListDao.findAll(listOf(library.id, library2.id), null, pageable = Pageable.unpaged()).content
 
     // then
     assertThat(foundLibrary1Filtered).hasSize(2)

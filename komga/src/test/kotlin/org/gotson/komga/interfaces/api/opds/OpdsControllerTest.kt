@@ -106,6 +106,117 @@ class OpdsControllerTest(
   }
 
   @Nested
+  inner class ContentRestriction {
+    @Test
+    @WithMockCustomUser(allowAgeUnder = 10)
+    fun `given user only allowed content with specific age rating when getting series then only gets series that satisfies this criteria`() {
+      val series10 = makeSeries(name = "series_10", libraryId = library.id).also { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(makeBook("1", libraryId = library.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+        seriesMetadataRepository.findById(series.id).let {
+          seriesMetadataRepository.update(it.copy(ageRating = 10))
+        }
+      }
+
+      val series5 = makeSeries(name = "series_5", libraryId = library.id).also { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(makeBook("1", libraryId = library.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+        seriesMetadataRepository.findById(series.id).let {
+          seriesMetadataRepository.update(it.copy(ageRating = 5))
+        }
+      }
+
+      val series15 = makeSeries(name = "series_15", libraryId = library.id).also { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(makeBook("1", libraryId = library.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+        seriesMetadataRepository.findById(series.id).let {
+          seriesMetadataRepository.update(it.copy(ageRating = 15))
+        }
+      }
+
+      val series = makeSeries(name = "series_no", libraryId = library.id).also { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(makeBook("1", libraryId = library.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+      }
+
+      mockMvc.get("/opds/v1.2/series/${series5.id}").andExpect { status { isOk() } }
+      mockMvc.get("/opds/v1.2/series/${series10.id}").andExpect { status { isOk() } }
+      mockMvc.get("/opds/v1.2/series/${series15.id}").andExpect { status { isForbidden() } }
+      mockMvc.get("/opds/v1.2/series/${series.id}").andExpect { status { isForbidden() } }
+
+      mockMvc.get("/opds/v1.2/series")
+        .andExpect {
+          status { isOk() }
+          xpath("/feed/entry/id") { nodeCount(2) }
+          xpath("/feed/entry[1]/id") { string(series10.id) }
+          xpath("/feed/entry[2]/id") { string(series5.id) }
+        }
+    }
+
+    @Test
+    @WithMockCustomUser(excludeAgeOver = 16)
+    fun `given user disallowed content with specific age rating when getting series then only gets series that satisfies this criteria`() {
+      val series10 = makeSeries(name = "series_10", libraryId = library.id).also { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(makeBook("1", libraryId = library.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+        seriesMetadataRepository.findById(series.id).let {
+          seriesMetadataRepository.update(it.copy(ageRating = 10))
+        }
+      }
+
+      val series18 = makeSeries(name = "series_18", libraryId = library.id).also { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(makeBook("1", libraryId = library.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+        seriesMetadataRepository.findById(series.id).let {
+          seriesMetadataRepository.update(it.copy(ageRating = 18))
+        }
+      }
+
+      val series16 = makeSeries(name = "series_16", libraryId = library.id).also { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(makeBook("1", libraryId = library.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+        seriesMetadataRepository.findById(series.id).let {
+          seriesMetadataRepository.update(it.copy(ageRating = 16))
+        }
+      }
+
+      val series = makeSeries(name = "series_no", libraryId = library.id).also { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(makeBook("1", libraryId = library.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+      }
+
+      mockMvc.get("/opds/v1.2/series/${series.id}").andExpect { status { isOk() } }
+      mockMvc.get("/opds/v1.2/series/${series10.id}").andExpect { status { isOk() } }
+      mockMvc.get("/opds/v1.2/series/${series16.id}").andExpect { status { isForbidden() } }
+      mockMvc.get("/opds/v1.2/series/${series18.id}").andExpect { status { isForbidden() } }
+
+      mockMvc.get("/opds/v1.2/series")
+        .andExpect {
+          status { isOk() }
+          xpath("/feed/entry/id") { nodeCount(2) }
+          xpath("/feed/entry[1]/id") { string(series10.id) }
+          xpath("/feed/entry[2]/id") { string(series.id) }
+        }
+    }
+  }
+
+  @Nested
   inner class SeriesSort {
     @Test
     @WithMockCustomUser

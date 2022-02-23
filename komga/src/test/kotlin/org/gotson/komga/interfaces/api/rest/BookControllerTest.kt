@@ -17,6 +17,7 @@ import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
+import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.KomgaUserLifecycle
@@ -56,6 +57,7 @@ import kotlin.random.Random
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
 class BookControllerTest(
   @Autowired private val seriesRepository: SeriesRepository,
+  @Autowired private val seriesMetadataRepository: SeriesMetadataRepository,
   @Autowired private val seriesLifecycle: SeriesLifecycle,
   @Autowired private val mediaRepository: MediaRepository,
   @Autowired private val bookMetadataRepository: BookMetadataRepository,
@@ -120,6 +122,125 @@ class BookControllerTest(
           status { isOk() }
           jsonPath("$.content.length()") { value(1) }
           jsonPath("$.content[0].name") { value("1") }
+        }
+    }
+  }
+
+  @Nested
+  inner class RestrictedContent {
+    @Test
+    @WithMockCustomUser(allowAgeUnder = 10)
+    fun `given user only allowed content with specific age rating when getting series then only gets books that satisfies this criteria`() {
+      val book10 = makeBook("book_10", libraryId = library.id)
+      makeSeries(name = "series_10", libraryId = library.id).also { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(book10)
+          seriesLifecycle.addBooks(created, books)
+        }
+        seriesMetadataRepository.findById(series.id).let {
+          seriesMetadataRepository.update(it.copy(ageRating = 10))
+        }
+      }
+
+      val book5 = makeBook("book_5", libraryId = library.id)
+      makeSeries(name = "series_5", libraryId = library.id).also { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(book5)
+          seriesLifecycle.addBooks(created, books)
+        }
+        seriesMetadataRepository.findById(series.id).let {
+          seriesMetadataRepository.update(it.copy(ageRating = 5))
+        }
+      }
+
+      val book15 = makeBook("book_15", libraryId = library.id)
+      makeSeries(name = "series_15", libraryId = library.id).also { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(book15)
+          seriesLifecycle.addBooks(created, books)
+        }
+        seriesMetadataRepository.findById(series.id).let {
+          seriesMetadataRepository.update(it.copy(ageRating = 15))
+        }
+      }
+
+      val book = makeBook("book", libraryId = library.id)
+      makeSeries(name = "series_no", libraryId = library.id).also { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(book)
+          seriesLifecycle.addBooks(created, books)
+        }
+      }
+
+      mockMvc.get("/api/v1/books/${book5.id}").andExpect { status { isOk() } }
+      mockMvc.get("/api/v1/books/${book10.id}").andExpect { status { isOk() } }
+      mockMvc.get("/api/v1/books/${book15.id}").andExpect { status { isForbidden() } }
+      mockMvc.get("/api/v1/books/${book.id}").andExpect { status { isForbidden() } }
+
+      mockMvc.get("/api/v1/books")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.content.length()") { value(2) }
+          jsonPath("$.content[0].name") { value(book10.name) }
+          jsonPath("$.content[1].name") { value(book5.name) }
+        }
+    }
+
+    @Test
+    @WithMockCustomUser(excludeAgeOver = 10)
+    fun `given user disallowed content with specific age rating when getting series then only gets books that satisfies this criteria`() {
+      val book10 = makeBook("book_10", libraryId = library.id)
+      makeSeries(name = "series_10", libraryId = library.id).also { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(book10)
+          seriesLifecycle.addBooks(created, books)
+        }
+        seriesMetadataRepository.findById(series.id).let {
+          seriesMetadataRepository.update(it.copy(ageRating = 10))
+        }
+      }
+
+      val book5 = makeBook("book_5", libraryId = library.id)
+      makeSeries(name = "series_5", libraryId = library.id).also { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(book5)
+          seriesLifecycle.addBooks(created, books)
+        }
+        seriesMetadataRepository.findById(series.id).let {
+          seriesMetadataRepository.update(it.copy(ageRating = 5))
+        }
+      }
+
+      val book15 = makeBook("book_15", libraryId = library.id)
+      makeSeries(name = "series_15", libraryId = library.id).also { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(book15)
+          seriesLifecycle.addBooks(created, books)
+        }
+        seriesMetadataRepository.findById(series.id).let {
+          seriesMetadataRepository.update(it.copy(ageRating = 15))
+        }
+      }
+
+      val book = makeBook("book", libraryId = library.id)
+      makeSeries(name = "series_no", libraryId = library.id).also { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(book)
+          seriesLifecycle.addBooks(created, books)
+        }
+      }
+
+      mockMvc.get("/api/v1/books/${book5.id}").andExpect { status { isOk() } }
+      mockMvc.get("/api/v1/books/${book.id}").andExpect { status { isOk() } }
+      mockMvc.get("/api/v1/books/${book10.id}").andExpect { status { isForbidden() } }
+      mockMvc.get("/api/v1/books/${book15.id}").andExpect { status { isForbidden() } }
+
+      mockMvc.get("/api/v1/books")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.content.length()") { value(2) }
+          jsonPath("$.content[0].name") { value(book.name) }
+          jsonPath("$.content[1].name") { value(book5.name) }
         }
     }
   }

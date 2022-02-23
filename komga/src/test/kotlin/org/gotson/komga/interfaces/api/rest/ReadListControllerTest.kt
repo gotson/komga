@@ -8,6 +8,7 @@ import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
+import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.domain.service.ReadListLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
@@ -39,6 +40,7 @@ class ReadListControllerTest(
   @Autowired private val libraryLifecycle: LibraryLifecycle,
   @Autowired private val libraryRepository: LibraryRepository,
   @Autowired private val seriesLifecycle: SeriesLifecycle,
+  @Autowired private val seriesMetadataRepository: SeriesMetadataRepository,
 ) {
 
   private val library1 = makeLibrary("Library1", id = "1")
@@ -166,6 +168,88 @@ class ReadListControllerTest(
       mockMvc.get("/api/v1/readlists/${rlLib2.id}")
         .andExpect {
           status { isNotFound() }
+        }
+    }
+  }
+
+  @Nested
+  inner class ContentRestriction {
+    @Test
+    @WithMockCustomUser(allowAgeUnder = 10)
+    fun `given user only allowed content with specific age rating when getting collections then only get collections that satisfies this criteria`() {
+      val book10 = makeBook("book_10", libraryId = library1.id)
+      val series10 = makeSeries(name = "series_10", libraryId = library1.id).also { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(book10)
+          seriesLifecycle.addBooks(created, books)
+        }
+        seriesMetadataRepository.findById(series.id).let {
+          seriesMetadataRepository.update(it.copy(ageRating = 10))
+        }
+      }
+
+      val book = makeBook("book", libraryId = library1.id)
+      val series = makeSeries(name = "series_no", libraryId = library1.id).also { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(book)
+          seriesLifecycle.addBooks(created, books)
+        }
+      }
+
+      val rlAllowed = readListLifecycle.addReadList(
+        ReadList(
+          name = "Allowed",
+          bookIds = listOf(book10.id).toIndexedMap(),
+        ),
+      )
+
+      val rlFiltered = readListLifecycle.addReadList(
+        ReadList(
+          name = "Filtered",
+          bookIds = listOf(book10.id, book.id).toIndexedMap(),
+        ),
+      )
+
+      val rlDenied = readListLifecycle.addReadList(
+        ReadList(
+          name = "Denied",
+          bookIds = listOf(book.id).toIndexedMap(),
+        ),
+      )
+
+      mockMvc.get("/api/v1/readlists")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.totalElements") { value(2) }
+          jsonPath("$.content[?(@.name == '${rlAllowed.name}')].filtered") { value(false) }
+          jsonPath("$.content[?(@.name == '${rlFiltered.name}')].filtered") { value(true) }
+        }
+
+      mockMvc.get("/api/v1/readlists/${rlAllowed.id}")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.bookIds.length()") { value(1) }
+          jsonPath("$.filtered") { value(false) }
+        }
+
+      mockMvc.get("/api/v1/readlists/${rlFiltered.id}")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.bookIds.length()") { value(1) }
+          jsonPath("$.filtered") { value(true) }
+        }
+
+      mockMvc.get("/api/v1/readlists/${rlDenied.id}")
+        .andExpect {
+          status { isNotFound() }
+        }
+
+      mockMvc.get("/api/v1/books/${book10.id}/readlists")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.length()") { value(2) }
+          jsonPath("$[?(@.name == '${rlAllowed.name}')].filtered") { value(false) }
+          jsonPath("$[?(@.name == '${rlFiltered.name}')].filtered") { value(true) }
         }
     }
   }

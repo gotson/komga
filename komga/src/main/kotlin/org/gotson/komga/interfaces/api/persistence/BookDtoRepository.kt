@@ -1,12 +1,13 @@
 package org.gotson.komga.interfaces.api.persistence
 
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
+import org.gotson.komga.domain.model.ContentRestriction
 import org.gotson.komga.interfaces.api.rest.dto.BookDto
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
 interface BookDtoRepository {
-  fun findAll(search: BookSearchWithReadProgress, userId: String, pageable: Pageable): Page<BookDto>
+  fun findAll(search: BookSearchWithReadProgress, userId: String, pageable: Pageable, restrictions: Set<ContentRestriction> = emptySet()): Page<BookDto>
 
   /**
    * Find books that are part of a readlist, optionally filtered by library
@@ -38,7 +39,7 @@ interface BookDtoRepository {
     filterOnLibraryIds: Collection<String>?,
   ): BookDto?
 
-  fun findAllOnDeck(userId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable): Page<BookDto>
+  fun findAllOnDeck(userId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable, restrictions: Set<ContentRestriction> = emptySet()): Page<BookDto>
 
   fun findAllDuplicates(userId: String, pageable: Pageable): Page<BookDto>
 }

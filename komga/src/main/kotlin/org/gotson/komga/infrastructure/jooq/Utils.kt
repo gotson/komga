@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.jooq
 
+import org.gotson.komga.domain.model.ContentRestriction
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.jooq.Tables
 import org.jooq.Condition
@@ -34,7 +35,7 @@ fun Field<String>.sortByValues(values: List<String>, asc: Boolean = true): Field
   return c.otherwise(Int.MAX_VALUE)
 }
 
-fun Field<String>.inOrNoCondition(list: List<String>?): Condition =
+fun Field<String>.inOrNoCondition(list: Collection<String>?): Condition =
   when {
     list == null -> DSL.noCondition()
     list.isEmpty() -> DSL.falseCondition()
@@ -63,3 +64,16 @@ fun DSLContext.insertTempStrings(batchSize: Int, collection: Collection<String>)
 }
 
 fun DSLContext.selectTempStrings() = this.select(Tables.TEMP_STRING_LIST.STRING).from(Tables.TEMP_STRING_LIST)
+
+fun Set<ContentRestriction>.toCondition(): Condition =
+  this.fold(DSL.noCondition()) { accumulator, restriction ->
+    accumulator.and(
+      when (restriction) {
+        is ContentRestriction.AgeRestriction.AllowOnlyUnder -> Tables.SERIES_METADATA.AGE_RATING.lessOrEqual(restriction.age)
+        is ContentRestriction.AgeRestriction.ExcludeOver -> Tables.SERIES_METADATA.AGE_RATING.isNull.or(Tables.SERIES_METADATA.AGE_RATING.lessThan(restriction.age))
+        // TODO: add conditions for sharing labels
+        is ContentRestriction.LabelsRestriction.AllowOnly -> DSL.noCondition()
+        is ContentRestriction.LabelsRestriction.Exclude -> DSL.noCondition()
+      },
+    )
+  }

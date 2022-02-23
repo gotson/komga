@@ -18,6 +18,7 @@ import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.DomainEvent
+import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaType.ZIP
@@ -43,6 +44,7 @@ import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.infrastructure.web.Authors
 import org.gotson.komga.infrastructure.web.DelimitedPair
+import org.gotson.komga.interfaces.api.checkContentRestriction
 import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.api.persistence.ReadProgressDtoRepository
 import org.gotson.komga.interfaces.api.persistence.SeriesDtoRepository
@@ -176,7 +178,7 @@ class SeriesController(
       authors = authors,
     )
 
-    return seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageRequest)
+    return seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageRequest, principal.user.restrictions)
       .map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
@@ -231,7 +233,7 @@ class SeriesController(
       authors = authors,
     )
 
-    return seriesDtoRepository.countByFirstCharacter(seriesSearch, principal.user.id)
+    return seriesDtoRepository.countByFirstCharacter(seriesSearch, principal.user.id, principal.user.restrictions)
   }
 
   @Operation(description = "Return recently added or updated series.")
@@ -261,6 +263,7 @@ class SeriesController(
       ),
       principal.user.id,
       pageRequest,
+      principal.user.restrictions,
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
@@ -291,6 +294,7 @@ class SeriesController(
       ),
       principal.user.id,
       pageRequest,
+      principal.user.restrictions,
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
@@ -320,6 +324,7 @@ class SeriesController(
         deleted = deleted,
       ),
       principal.user.id,
+      principal.user.restrictions,
       pageRequest,
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
@@ -330,7 +335,7 @@ class SeriesController(
     @PathVariable(name = "seriesId") id: String,
   ): SeriesDto =
     seriesDtoRepository.findByIdOrNull(id, principal.user.id)?.let {
-      if (!principal.user.canAccessLibrary(it.libraryId)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+      principal.user.checkContentRestriction(it)
       it.restrictUrl(!principal.user.roleAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
@@ -340,9 +345,7 @@ class SeriesController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") seriesId: String,
   ): ByteArray {
-    seriesRepository.getLibraryId(seriesId)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    principal.user.checkContentRestriction(seriesId)
 
     return seriesLifecycle.getThumbnailBytes(seriesId, principal.user.id)
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -355,9 +358,7 @@ class SeriesController(
     @PathVariable(name = "seriesId") seriesId: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ): ByteArray {
-    seriesRepository.getLibraryId(seriesId)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    principal.user.checkContentRestriction(seriesId)
 
     return seriesLifecycle.getThumbnailBytesByThumbnailId(thumbnailId)
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -368,9 +369,7 @@ class SeriesController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") seriesId: String,
   ): Collection<SeriesThumbnailDto> {
-    seriesRepository.getLibraryId(seriesId)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    principal.user.checkContentRestriction(seriesId)
 
     return thumbnailsSeriesRepository.findAllBySeriesId(seriesId)
       .map { it.toDto() }
@@ -443,9 +442,8 @@ class SeriesController(
     @Parameter(hidden = true) @Authors authors: List<Author>?,
     @Parameter(hidden = true) page: Pageable,
   ): Page<BookDto> {
-    seriesRepository.getLibraryId(seriesId)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    principal.user.checkContentRestriction(seriesId)
+
     val sort =
       if (page.sort.isSorted) page.sort
       else Sort.by(Sort.Order.asc("metadata.numberSort"))
@@ -477,11 +475,9 @@ class SeriesController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") seriesId: String,
   ): List<CollectionDto> {
-    seriesRepository.getLibraryId(seriesId)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    principal.user.checkContentRestriction(seriesId)
 
-    return collectionRepository.findAllContainingSeriesId(seriesId, principal.user.getAuthorizedLibraryIds(null))
+    return collectionRepository.findAllContainingSeriesId(seriesId, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)
       .map { it.toDto() }
   }
 
@@ -557,9 +553,7 @@ class SeriesController(
     @PathVariable seriesId: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ) {
-    seriesRepository.getLibraryId(seriesId)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    principal.user.checkContentRestriction(seriesId)
 
     seriesLifecycle.markReadProgressCompleted(seriesId, principal.user)
   }
@@ -571,9 +565,7 @@ class SeriesController(
     @PathVariable seriesId: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ) {
-    seriesRepository.getLibraryId(seriesId)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    principal.user.checkContentRestriction(seriesId)
 
     seriesLifecycle.deleteReadProgress(seriesId, principal.user)
   }
@@ -583,21 +575,21 @@ class SeriesController(
   fun getReadProgressTachiyomi(
     @PathVariable seriesId: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
-  ): TachiyomiReadProgressDto =
-    seriesRepository.getLibraryId(seriesId)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-      return readProgressDtoRepository.findProgressBySeries(seriesId, principal.user.id)
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  ): TachiyomiReadProgressDto {
+    principal.user.checkContentRestriction(seriesId)
+
+    return readProgressDtoRepository.findProgressBySeries(seriesId, principal.user.id)
+  }
 
   @GetMapping("v2/series/{seriesId}/read-progress/tachiyomi")
   fun getReadProgressTachiyomiV2(
     @PathVariable seriesId: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
-  ): TachiyomiReadProgressV2Dto =
-    seriesRepository.getLibraryId(seriesId)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-      return readProgressDtoRepository.findProgressV2BySeries(seriesId, principal.user.id)
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  ): TachiyomiReadProgressV2Dto {
+    principal.user.checkContentRestriction(seriesId)
+
+    return readProgressDtoRepository.findProgressV2BySeries(seriesId, principal.user.id)
+  }
 
   @Deprecated("Use v2 for proper handling of chapter number with numberSort")
   @PutMapping("v1/series/{seriesId}/read-progress/tachiyomi")
@@ -607,9 +599,7 @@ class SeriesController(
     @Valid @RequestBody readProgress: TachiyomiReadProgressUpdateDto,
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ) {
-    seriesRepository.getLibraryId(seriesId)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    principal.user.checkContentRestriction(seriesId)
 
     bookDtoRepository.findAll(
       BookSearchWithReadProgress(seriesIds = listOf(seriesId)),
@@ -629,9 +619,7 @@ class SeriesController(
     @RequestBody readProgress: TachiyomiReadProgressUpdateV2Dto,
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ) {
-    seriesRepository.getLibraryId(seriesId)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    principal.user.checkContentRestriction(seriesId)
 
     bookDtoRepository.findAll(
       BookSearchWithReadProgress(seriesIds = listOf(seriesId)),
@@ -650,9 +638,7 @@ class SeriesController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable seriesId: String,
   ): ResponseEntity<StreamingResponseBody> {
-    seriesRepository.getLibraryId(seriesId)?.let {
-      if (!principal.user.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    principal.user.checkContentRestriction(seriesId)
 
     val books = bookRepository.findAllBySeriesId(seriesId)
 
@@ -699,5 +685,22 @@ class SeriesController(
       seriesId = seriesId,
       priority = HIGHEST_PRIORITY,
     )
+  }
+
+  /**
+   * Convenience function to check for content restriction.
+   * This will retrieve data from repositories if needed.
+   *
+   * @throws[ResponseStatusException] if the user cannot access the content
+   */
+  private fun KomgaUser.checkContentRestriction(seriesId: String) {
+    if (!sharedAllLibraries) {
+      seriesRepository.getLibraryId(seriesId)?.let {
+        if (!canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    }
+    if (restrictions.isNotEmpty()) seriesMetadataRepository.findById(seriesId).let {
+      if (isContentRestricted(ageRating = it.ageRating)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    }
   }
 }

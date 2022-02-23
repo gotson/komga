@@ -1,5 +1,6 @@
 package org.gotson.komga.interfaces.api.rest
 
+import org.gotson.komga.domain.model.ContentRestriction
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
@@ -20,6 +21,10 @@ annotation class WithMockCustomUser(
   val sharedAllLibraries: Boolean = true,
   val sharedLibraries: Array<String> = [],
   val id: String = "0",
+  val allowAgeUnder: Int = -1,
+  val excludeAgeOver: Int = -1,
+  val allowLabels: Array<String> = [],
+  val excludeLabels: Array<String> = [],
 )
 
 class WithMockCustomUserSecurityContextFactory : WithSecurityContextFactory<WithMockCustomUser> {
@@ -35,6 +40,16 @@ class WithMockCustomUserSecurityContextFactory : WithSecurityContextFactory<With
         rolePageStreaming = customUser.roles.contains(ROLE_PAGE_STREAMING),
         sharedAllLibraries = customUser.sharedAllLibraries,
         sharedLibrariesIds = customUser.sharedLibraries.toSet(),
+        restrictions = buildSet {
+          if (customUser.allowAgeUnder >= 0) add(ContentRestriction.AgeRestriction.AllowOnlyUnder(customUser.allowAgeUnder))
+          if (customUser.excludeAgeOver >= 0) add(ContentRestriction.AgeRestriction.ExcludeOver(customUser.excludeAgeOver))
+          if (customUser.allowLabels.isNotEmpty()) {
+            add(ContentRestriction.LabelsRestriction.AllowOnly(customUser.allowLabels.toSet()))
+          }
+          if (customUser.excludeLabels.isNotEmpty()) {
+            add(ContentRestriction.LabelsRestriction.Exclude(customUser.excludeLabels.toSet()))
+          }
+        },
         id = customUser.id,
       ),
     )

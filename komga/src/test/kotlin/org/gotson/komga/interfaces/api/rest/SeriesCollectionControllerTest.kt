@@ -3,10 +3,12 @@ package org.gotson.komga.interfaces.api.rest
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesCollection
+import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
+import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.domain.service.SeriesCollectionLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
@@ -37,6 +39,7 @@ class SeriesCollectionControllerTest(
   @Autowired private val libraryLifecycle: LibraryLifecycle,
   @Autowired private val libraryRepository: LibraryRepository,
   @Autowired private val seriesLifecycle: SeriesLifecycle,
+  @Autowired private val seriesMetadataRepository: SeriesMetadataRepository,
 ) {
 
   private val library1 = makeLibrary("Library1", id = "1")
@@ -161,6 +164,86 @@ class SeriesCollectionControllerTest(
       mockMvc.get("/api/v1/collections/${colLib2.id}")
         .andExpect {
           status { isNotFound() }
+        }
+    }
+  }
+
+  @Nested
+  inner class ContentRestriction {
+    @Test
+    @WithMockCustomUser(allowAgeUnder = 10)
+    fun `given user only allowed content with specific age rating when getting collections then only get collections that satisfies this criteria`() {
+      val series10 = makeSeries(name = "series_10", libraryId = library1.id).also { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(makeBook("1", libraryId = library1.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+        seriesMetadataRepository.findById(series.id).let {
+          seriesMetadataRepository.update(it.copy(ageRating = 10))
+        }
+      }
+
+      val series = makeSeries(name = "series_no", libraryId = library1.id).also { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(makeBook("1", libraryId = library1.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+      }
+
+      val colAllowed = collectionLifecycle.addCollection(
+        SeriesCollection(
+          name = "Allowed",
+          seriesIds = listOf(series10.id),
+        ),
+      )
+
+      val colFiltered = collectionLifecycle.addCollection(
+        SeriesCollection(
+          name = "Filtered",
+          seriesIds = listOf(series10.id, series.id),
+        ),
+      )
+
+      val colDenied = collectionLifecycle.addCollection(
+        SeriesCollection(
+          name = "Denied",
+          seriesIds = listOf(series.id),
+        ),
+      )
+
+      mockMvc.get("/api/v1/collections")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.totalElements") { value(2) }
+          jsonPath("$.content[?(@.name == '${colAllowed.name}')].filtered") { value(false) }
+          jsonPath("$.content[?(@.name == '${colFiltered.name}')].filtered") { value(true) }
+        }
+
+      mockMvc.get("/api/v1/collections/${colAllowed.id}")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.seriesIds.length()") { value(1) }
+          jsonPath("$.filtered") { value(false) }
+        }
+
+      mockMvc.get("/api/v1/collections/${colFiltered.id}")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.seriesIds.length()") { value(1) }
+          jsonPath("$.filtered") { value(true) }
+        }
+
+      mockMvc.get("/api/v1/collections/${colDenied.id}")
+        .andExpect {
+          status { isNotFound() }
+        }
+
+      mockMvc.get("/api/v1/series/${series10.id}/collections")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.length()") { value(2) }
+          jsonPath("$[?(@.name == '${colAllowed.name}')].filtered") { value(false) }
+          jsonPath("$[?(@.name == '${colFiltered.name}')].filtered") { value(true) }
         }
     }
   }

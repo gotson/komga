@@ -93,12 +93,8 @@ class SeriesCollectionController(
         sort,
       )
 
-    return when {
-      principal.user.sharedAllLibraries && libraryIds == null -> collectionRepository.findAll(searchTerm, pageable = pageRequest)
-      principal.user.sharedAllLibraries && libraryIds != null -> collectionRepository.findAllByLibraryIds(libraryIds, null, searchTerm, pageable = pageRequest)
-      !principal.user.sharedAllLibraries && libraryIds != null -> collectionRepository.findAllByLibraryIds(libraryIds, principal.user.sharedLibrariesIds, searchTerm, pageable = pageRequest)
-      else -> collectionRepository.findAllByLibraryIds(principal.user.sharedLibrariesIds, principal.user.sharedLibrariesIds, searchTerm, pageable = pageRequest)
-    }.map { it.toDto() }
+    return collectionRepository.findAll(principal.user.getAuthorizedLibraryIds(libraryIds), principal.user.getAuthorizedLibraryIds(null), searchTerm, pageRequest, principal.user.restrictions)
+      .map { it.toDto() }
   }
 
   @GetMapping("{id}")
@@ -106,7 +102,7 @@ class SeriesCollectionController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String,
   ): CollectionDto =
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))
+    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)
       ?.toDto()
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
@@ -116,7 +112,7 @@ class SeriesCollectionController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String,
   ): ResponseEntity<ByteArray> {
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
+    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let {
       return ResponseEntity.ok()
         .cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS).cachePrivate())
         .body(collectionLifecycle.getThumbnailBytes(it, principal.user.id))
@@ -130,7 +126,7 @@ class SeriesCollectionController(
     @PathVariable(name = "id") id: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ): ByteArray {
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
+    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let {
       return collectionLifecycle.getThumbnailBytes(thumbnailId)
         ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -141,7 +137,7 @@ class SeriesCollectionController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "id") id: String,
   ): Collection<ThumbnailSeriesCollectionDto> {
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
+    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let {
       return thumbnailSeriesCollectionRepository.findAllByCollectionId(id).map { it.toDto() }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
@@ -272,7 +268,7 @@ class SeriesCollectionController(
     @Parameter(hidden = true) @Authors authors: List<Author>?,
     @Parameter(hidden = true) page: Pageable,
   ): Page<SeriesDto> =
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { collection ->
+    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let { collection ->
       val sort =
         if (collection.ordered) Sort.by(Sort.Order.asc("collection.number"))
         else Sort.by(Sort.Order.asc("metadata.titleSort"))
@@ -300,7 +296,7 @@ class SeriesCollectionController(
         authors = authors,
       )
 
-      seriesDtoRepository.findAllByCollectionId(collection.id, seriesSearch, principal.user.id, pageRequest)
+      seriesDtoRepository.findAllByCollectionId(collection.id, seriesSearch, principal.user.id, pageRequest, principal.user.restrictions)
         .map { it.restrictUrl(!principal.user.roleAdmin) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 }

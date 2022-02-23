@@ -22,6 +22,7 @@ data class KomgaUser(
   val rolePageStreaming: Boolean = true,
   val sharedLibrariesIds: Set<String> = emptySet(),
   val sharedAllLibraries: Boolean = true,
+  val restrictions: Set<ContentRestriction> = emptySet(),
   val id: String = TsidCreator.getTsid256().toString(),
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
@@ -64,6 +65,18 @@ data class KomgaUser(
 
   fun canAccessLibrary(library: Library): Boolean {
     return sharedAllLibraries || sharedLibrariesIds.any { it == library.id }
+  }
+
+  fun isContentRestricted(ageRating: Int? = null, sharingLabels: Set<String> = emptySet()): Boolean {
+    restrictions.forEach { restriction ->
+      when (restriction) {
+        is ContentRestriction.AgeRestriction.AllowOnlyUnder -> if (ageRating == null || ageRating > restriction.age) return true
+        is ContentRestriction.AgeRestriction.ExcludeOver -> ageRating?.let { if (it >= restriction.age) return true }
+        is ContentRestriction.LabelsRestriction.AllowOnly -> if (restriction.labels.intersect(sharingLabels).isEmpty()) return true
+        is ContentRestriction.LabelsRestriction.Exclude -> if (restriction.labels.intersect(sharingLabels).isNotEmpty()) return true
+      }
+    }
+    return false
   }
 
   override fun toString(): String {
