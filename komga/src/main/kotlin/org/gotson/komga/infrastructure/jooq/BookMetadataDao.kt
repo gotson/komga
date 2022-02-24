@@ -53,9 +53,7 @@ class BookMetadataDao(
     dsl.select(bt.TAG)
       .from(bt)
       .where(bt.BOOK_ID.eq(bookId))
-      .fetchInto(bt)
-      .mapNotNull { it.tag }
-      .toSet()
+      .fetchSet(bt.TAG)
 
   private fun findLinks(bookId: String) =
     dsl.select(bl.LABEL, bl.URL)

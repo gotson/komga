@@ -43,9 +43,7 @@ class BookMetadataAggregationDao(
     dsl.select(t.TAG)
       .from(t)
       .where(t.SERIES_ID.eq(seriesId))
-      .fetchInto(t)
-      .mapNotNull { it.tag }
-      .toSet()
+      .fetchSet(t.TAG)
 
   @Transactional
   override fun insert(metadata: BookMetadataAggregation) {
