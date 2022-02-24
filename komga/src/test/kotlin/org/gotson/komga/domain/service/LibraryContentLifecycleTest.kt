@@ -36,8 +36,8 @@ import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.infrastructure.hash.Hasher
-import org.gotson.komga.infrastructure.language.toIndexedMap
 import org.gotson.komga.interfaces.api.persistence.SeriesDtoRepository
+import org.gotson.komga.language.toIndexedMap
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll

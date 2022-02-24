@@ -2,7 +2,7 @@ package org.gotson.komga.infrastructure.datasource
 
 import com.ibm.icu.text.Collator
 import mu.KotlinLogging
-import org.gotson.komga.infrastructure.language.stripAccents
+import org.gotson.komga.language.stripAccents
 import org.springframework.jdbc.datasource.SimpleDriverDataSource
 import org.sqlite.Collation
 import org.sqlite.Function

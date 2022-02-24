@@ -27,8 +27,8 @@ import org.gotson.komga.domain.persistence.SidecarRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.gotson.komga.infrastructure.hash.Hasher
-import org.gotson.komga.infrastructure.language.notEquals
-import org.gotson.komga.infrastructure.language.toIndexedMap
+import org.gotson.komga.language.notEquals
+import org.gotson.komga.language.toIndexedMap
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 import java.nio.file.Paths

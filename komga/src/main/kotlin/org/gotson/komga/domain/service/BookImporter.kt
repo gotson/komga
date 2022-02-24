@@ -21,7 +21,7 @@ import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.domain.persistence.SidecarRepository
-import org.gotson.komga.infrastructure.language.toIndexedMap
+import org.gotson.komga.language.toIndexedMap
 import org.springframework.stereotype.Service
 import java.io.FileNotFoundException
 import java.nio.file.FileAlreadyExistsException

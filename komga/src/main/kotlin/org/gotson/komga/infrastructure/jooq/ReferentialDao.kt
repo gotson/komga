@@ -3,10 +3,10 @@ package org.gotson.komga.infrastructure.jooq
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.persistence.ReferentialRepository
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
-import org.gotson.komga.infrastructure.language.stripAccents
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.BookMetadataAggregationAuthorRecord
 import org.gotson.komga.jooq.tables.records.BookMetadataAuthorRecord
+import org.gotson.komga.language.stripAccents
 import org.jooq.DSLContext
 import org.jooq.impl.DSL.noCondition
 import org.jooq.impl.DSL.select

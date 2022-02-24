@@ -26,7 +26,6 @@ import org.gotson.komga.domain.persistence.ThumbnailReadListRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.ReadListLifecycle
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
-import org.gotson.komga.infrastructure.language.toIndexedMap
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.AuthorsAsQueryParam
@@ -44,6 +43,7 @@ import org.gotson.komga.interfaces.api.rest.dto.TachiyomiReadProgressUpdateDto
 import org.gotson.komga.interfaces.api.rest.dto.ThumbnailReadListDto
 import org.gotson.komga.interfaces.api.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.api.rest.dto.toDto
+import org.gotson.komga.language.toIndexedMap
 import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest

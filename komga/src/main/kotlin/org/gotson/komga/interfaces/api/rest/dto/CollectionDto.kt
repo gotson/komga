@@ -2,7 +2,7 @@ package org.gotson.komga.interfaces.api.rest.dto
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import org.gotson.komga.domain.model.SeriesCollection
-import org.gotson.komga.infrastructure.language.toUTC
+import org.gotson.komga.language.toUTC
 import java.time.LocalDateTime
 
 data class CollectionDto(

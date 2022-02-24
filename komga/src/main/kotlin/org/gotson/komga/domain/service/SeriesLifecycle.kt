@@ -30,7 +30,7 @@ import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.ThumbnailSeriesRepository
-import org.gotson.komga.infrastructure.language.stripAccents
+import org.gotson.komga.language.stripAccents
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 import java.io.File

@@ -1,4 +1,4 @@
-package org.gotson.komga.infrastructure.language
+package org.gotson.komga.language
 
 import org.apache.commons.lang3.StringUtils
 import java.time.LocalDate
@@ -38,6 +38,12 @@ fun <T, R : Any> Iterable<T>.mostFrequent(transform: (T) -> R?): R? {
     .eachCount()
     .maxByOrNull { it.value }?.key
 }
+
+fun Iterable<String>.lowerNotBlank() =
+  this.map { it.lowercase().trim() }.filter { it.isNotBlank() }
+
+fun <T> Iterable<T>.toSetOrNull() =
+  this.toSet().ifEmpty { null }
 
 fun LocalDateTime.notEquals(other: LocalDateTime, precision: TemporalUnit = ChronoUnit.MILLIS) =
   this.truncatedTo(precision) != other.truncatedTo(precision)

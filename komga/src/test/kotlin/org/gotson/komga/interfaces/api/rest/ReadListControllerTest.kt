@@ -12,7 +12,7 @@ import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.domain.service.ReadListLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
-import org.gotson.komga.infrastructure.language.toIndexedMap
+import org.gotson.komga.language.toIndexedMap
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll

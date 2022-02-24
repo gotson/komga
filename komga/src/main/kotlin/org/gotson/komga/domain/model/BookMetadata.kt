@@ -1,5 +1,6 @@
 package org.gotson.komga.domain.model
 
+import org.gotson.komga.language.lowerNotBlank
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -33,7 +34,7 @@ class BookMetadata(
   val title = title.trim()
   val summary = summary.trim()
   val number = number.trim()
-  val tags = tags.map { it.lowercase().trim() }.filter { it.isNotBlank() }.toSet()
+  val tags = tags.lowerNotBlank().toSet()
 
   fun copy(
     title: String = this.title,

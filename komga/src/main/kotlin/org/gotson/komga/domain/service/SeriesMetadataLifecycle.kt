@@ -14,12 +14,12 @@ import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
-import org.gotson.komga.infrastructure.language.mostFrequent
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataFromBookProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
 import org.gotson.komga.infrastructure.metadata.comicrack.ComicInfoProvider
 import org.gotson.komga.infrastructure.metadata.epub.EpubMetadataProvider
 import org.gotson.komga.infrastructure.metadata.mylar.MylarSeriesProvider
+import org.gotson.komga.language.mostFrequent
 import org.springframework.stereotype.Service
 
 private val logger = KotlinLogging.logger {}

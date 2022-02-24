@@ -1,6 +1,6 @@
 package org.gotson.komga.infrastructure.web
 
-import org.gotson.komga.infrastructure.language.toEnumeration
+import org.gotson.komga.language.toEnumeration
 import java.util.Enumeration
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletRequestWrapper
