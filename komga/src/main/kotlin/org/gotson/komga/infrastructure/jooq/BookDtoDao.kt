@@ -1,7 +1,7 @@
 package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
-import org.gotson.komga.domain.model.ContentRestriction
+import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.infrastructure.search.LuceneEntity
@@ -78,8 +78,8 @@ class BookDtoDao(
     "readList.number" to rlb.NUMBER,
   )
 
-  override fun findAll(search: BookSearchWithReadProgress, userId: String, pageable: Pageable, restrictions: Set<ContentRestriction>): Page<BookDto> {
-    val conditions = search.toCondition().and(restrictions.toCondition())
+  override fun findAll(search: BookSearchWithReadProgress, userId: String, pageable: Pageable, restrictions: ContentRestrictions): Page<BookDto> {
+    val conditions = search.toCondition().and(restrictions.toCondition(dsl))
 
     return findAll(conditions, userId, pageable, search.toJoinConditions(), null, search.searchTerm)
   }
@@ -174,13 +174,13 @@ class BookDtoDao(
   ): BookDto? =
     findSiblingReadList(readListId, bookId, userId, filterOnLibraryIds, next = true)
 
-  override fun findAllOnDeck(userId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable, restrictions: Set<ContentRestriction>): Page<BookDto> {
+  override fun findAllOnDeck(userId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable, restrictions: ContentRestrictions): Page<BookDto> {
     val seriesIds = dsl.select(s.ID)
       .from(s)
       .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
       .leftJoin(sd).on(b.SERIES_ID.eq(sd.SERIES_ID))
-      .where(restrictions.toCondition())
+      .where(restrictions.toCondition(dsl))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
       .groupBy(s.ID)
       .having(countUnread.ge(inline(1.toBigDecimal())))

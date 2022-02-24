@@ -1,7 +1,7 @@
 package org.gotson.komga.infrastructure.jooq
 
 import mu.KotlinLogging
-import org.gotson.komga.domain.model.ContentRestriction
+import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
@@ -26,6 +26,7 @@ import org.jooq.ResultQuery
 import org.jooq.SelectOnConditionStep
 import org.jooq.impl.DSL
 import org.jooq.impl.DSL.count
+import org.jooq.impl.DSL.countDistinct
 import org.jooq.impl.DSL.lower
 import org.jooq.impl.DSL.substring
 import org.springframework.data.domain.Page
@@ -78,8 +79,8 @@ class SeriesDtoDao(
     "booksCount" to s.BOOK_COUNT,
   )
 
-  override fun findAll(search: SeriesSearchWithReadProgress, userId: String, pageable: Pageable, restrictions: Set<ContentRestriction>): Page<SeriesDto> {
-    val conditions = search.toCondition().and(restrictions.toCondition())
+  override fun findAll(search: SeriesSearchWithReadProgress, userId: String, pageable: Pageable, restrictions: ContentRestrictions): Page<SeriesDto> {
+    val conditions = search.toCondition().and(restrictions.toCondition(dsl))
 
     return findAll(conditions, userId, pageable, search.toJoinConditions(), search.searchTerm)
   }
@@ -89,9 +90,9 @@ class SeriesDtoDao(
     search: SeriesSearchWithReadProgress,
     userId: String,
     pageable: Pageable,
-    restrictions: Set<ContentRestriction>,
+    restrictions: ContentRestrictions,
   ): Page<SeriesDto> {
-    val conditions = search.toCondition().and(restrictions.toCondition()).and(cs.COLLECTION_ID.eq(collectionId))
+    val conditions = search.toCondition().and(restrictions.toCondition(dsl)).and(cs.COLLECTION_ID.eq(collectionId))
     val joinConditions = search.toJoinConditions().copy(selectCollectionNumber = true, collection = true)
 
     return findAll(conditions, userId, pageable, joinConditions, search.searchTerm)
@@ -100,18 +101,18 @@ class SeriesDtoDao(
   override fun findAllRecentlyUpdated(
     search: SeriesSearchWithReadProgress,
     userId: String,
-    restrictions: Set<ContentRestriction>,
+    restrictions: ContentRestrictions,
     pageable: Pageable,
   ): Page<SeriesDto> {
     val conditions = search.toCondition()
-      .and(restrictions.toCondition())
+      .and(restrictions.toCondition(dsl))
       .and(s.CREATED_DATE.notEqual(s.LAST_MODIFIED_DATE))
 
     return findAll(conditions, userId, pageable, search.toJoinConditions(), search.searchTerm)
   }
 
-  override fun countByFirstCharacter(search: SeriesSearchWithReadProgress, userId: String, restrictions: Set<ContentRestriction>): List<GroupCountDto> {
-    val conditions = search.toCondition().and(restrictions.toCondition())
+  override fun countByFirstCharacter(search: SeriesSearchWithReadProgress, userId: String, restrictions: ContentRestrictions): List<GroupCountDto> {
+    val conditions = search.toCondition().and(restrictions.toCondition(dsl))
     val joinConditions = search.toJoinConditions()
     val seriesIds = luceneHelper.searchEntitiesIds(search.searchTerm, LuceneEntity.Series)
     val searchCondition = s.ID.inOrNoCondition(seriesIds)
@@ -174,7 +175,7 @@ class SeriesDtoDao(
     val seriesIds = luceneHelper.searchEntitiesIds(searchTerm, LuceneEntity.Series)
     val searchCondition = s.ID.inOrNoCondition(seriesIds)
 
-    val count = dsl.select(count(s.ID))
+    val count = dsl.select(countDistinct(s.ID))
       .from(s)
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
       .leftJoin(bma).on(s.ID.eq(bma.SERIES_ID))
@@ -189,7 +190,7 @@ class SeriesDtoDao(
       .apply { if (joinConditions.aggregationAuthor) leftJoin(bmaa).on(s.ID.eq(bmaa.SERIES_ID)) }
       .where(conditions)
       .and(searchCondition)
-      .fetchOne(count(s.ID)) ?: 0
+      .fetchOne(countDistinct(s.ID)) ?: 0
 
     val orderBy =
       pageable.sort.mapNotNull {

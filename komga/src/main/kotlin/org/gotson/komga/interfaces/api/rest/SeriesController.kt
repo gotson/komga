@@ -699,8 +699,8 @@ class SeriesController(
         if (!canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     }
-    if (restrictions.isNotEmpty()) seriesMetadataRepository.findById(seriesId).let {
-      if (isContentRestricted(ageRating = it.ageRating)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    if (restrictions.isRestricted()) seriesMetadataRepository.findById(seriesId).let {
+      if (!isContentAllowed(it.ageRating, it.sharingLabels)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     }
   }
 }

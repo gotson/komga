@@ -12,5 +12,5 @@ import org.springframework.web.server.ResponseStatusException
  */
 fun KomgaUser.checkContentRestriction(series: SeriesDto) {
   if (!canAccessLibrary(series.libraryId)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-  if (isContentRestricted(ageRating = series.metadata.ageRating)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+  if (!isContentAllowed(series.metadata.ageRating, series.metadata.sharingLabels)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
 }

@@ -1,6 +1,7 @@
 package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.ContentRestriction
+import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.jooq.Tables
 import org.jooq.Condition
@@ -65,15 +66,34 @@ fun DSLContext.insertTempStrings(batchSize: Int, collection: Collection<String>)
 
 fun DSLContext.selectTempStrings() = this.select(Tables.TEMP_STRING_LIST.STRING).from(Tables.TEMP_STRING_LIST)
 
-fun Set<ContentRestriction>.toCondition(): Condition =
-  this.fold(DSL.noCondition()) { accumulator, restriction ->
-    accumulator.and(
-      when (restriction) {
-        is ContentRestriction.AgeRestriction.AllowOnlyUnder -> Tables.SERIES_METADATA.AGE_RATING.lessOrEqual(restriction.age)
-        is ContentRestriction.AgeRestriction.ExcludeOver -> Tables.SERIES_METADATA.AGE_RATING.isNull.or(Tables.SERIES_METADATA.AGE_RATING.lessThan(restriction.age))
-        // TODO: add conditions for sharing labels
-        is ContentRestriction.LabelsRestriction.AllowOnly -> DSL.noCondition()
-        is ContentRestriction.LabelsRestriction.Exclude -> DSL.noCondition()
-      },
-    )
-  }
+fun ContentRestrictions.toCondition(dsl: DSLContext): Condition {
+  val ageAllowed = if (ageRestriction is ContentRestriction.AgeRestriction.AllowOnlyUnder) {
+    Tables.SERIES_METADATA.AGE_RATING.isNotNull.and(Tables.SERIES_METADATA.AGE_RATING.lessOrEqual(ageRestriction.age))
+  } else DSL.noCondition()
+
+  val labelAllowed =
+    if (labelsAllowRestriction != null)
+      Tables.SERIES_METADATA.SERIES_ID.`in`(
+        dsl.select(Tables.SERIES_METADATA_SHARING.SERIES_ID)
+          .from(Tables.SERIES_METADATA_SHARING)
+          .where(Tables.SERIES_METADATA_SHARING.LABEL.`in`(labelsAllowRestriction.labels)),
+      )
+    else DSL.noCondition()
+
+  val ageDenied =
+    if (ageRestriction is ContentRestriction.AgeRestriction.ExcludeOver)
+      Tables.SERIES_METADATA.AGE_RATING.isNull.or(Tables.SERIES_METADATA.AGE_RATING.lessThan(ageRestriction.age))
+    else DSL.noCondition()
+
+  val labelDenied =
+    if (labelsExcludeRestriction != null)
+      Tables.SERIES_METADATA.SERIES_ID.notIn(
+        dsl.select(Tables.SERIES_METADATA_SHARING.SERIES_ID)
+          .from(Tables.SERIES_METADATA_SHARING)
+          .where(Tables.SERIES_METADATA_SHARING.LABEL.`in`(labelsExcludeRestriction.labels)),
+      )
+    else DSL.noCondition()
+
+  return ageAllowed.or(labelAllowed)
+    .and(ageDenied.and(labelDenied))
+}

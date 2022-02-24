@@ -1,6 +1,7 @@
 package org.gotson.komga.interfaces.api.rest
 
 import org.gotson.komga.domain.model.ContentRestriction
+import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
@@ -40,16 +41,13 @@ class WithMockCustomUserSecurityContextFactory : WithSecurityContextFactory<With
         rolePageStreaming = customUser.roles.contains(ROLE_PAGE_STREAMING),
         sharedAllLibraries = customUser.sharedAllLibraries,
         sharedLibrariesIds = customUser.sharedLibraries.toSet(),
-        restrictions = buildSet {
-          if (customUser.allowAgeUnder >= 0) add(ContentRestriction.AgeRestriction.AllowOnlyUnder(customUser.allowAgeUnder))
-          if (customUser.excludeAgeOver >= 0) add(ContentRestriction.AgeRestriction.ExcludeOver(customUser.excludeAgeOver))
-          if (customUser.allowLabels.isNotEmpty()) {
-            add(ContentRestriction.LabelsRestriction.AllowOnly(customUser.allowLabels.toSet()))
-          }
-          if (customUser.excludeLabels.isNotEmpty()) {
-            add(ContentRestriction.LabelsRestriction.Exclude(customUser.excludeLabels.toSet()))
-          }
-        },
+        restrictions = ContentRestrictions(
+          ageRestriction = if (customUser.allowAgeUnder >= 0) ContentRestriction.AgeRestriction.AllowOnlyUnder(customUser.allowAgeUnder)
+          else if (customUser.excludeAgeOver >= 0) ContentRestriction.AgeRestriction.ExcludeOver(customUser.excludeAgeOver)
+          else null,
+          labelsAllow = customUser.allowLabels.toSet(),
+          labelsExclude = customUser.excludeLabels.toSet(),
+        ),
         id = customUser.id,
       ),
     )

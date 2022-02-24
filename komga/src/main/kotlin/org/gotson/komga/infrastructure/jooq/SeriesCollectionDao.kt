@@ -1,6 +1,6 @@
 package org.gotson.komga.infrastructure.jooq
 
-import org.gotson.komga.domain.model.ContentRestriction
+import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
@@ -38,25 +38,25 @@ class SeriesCollectionDao(
     "name" to c.NAME.collate(SqliteUdfDataSource.collationUnicode3),
   )
 
-  override fun findByIdOrNull(collectionId: String, filterOnLibraryIds: Collection<String>?, restrictions: Set<ContentRestriction>): SeriesCollection? =
-    selectBase(restrictions.isNotEmpty())
+  override fun findByIdOrNull(collectionId: String, filterOnLibraryIds: Collection<String>?, restrictions: ContentRestrictions): SeriesCollection? =
+    selectBase(restrictions.isRestricted())
       .where(c.ID.eq(collectionId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .apply { if (restrictions.isNotEmpty()) and(restrictions.toCondition()) }
+      .apply { if (restrictions.isRestricted()) and(restrictions.toCondition(dsl)) }
       .fetchAndMap(filterOnLibraryIds, restrictions)
       .firstOrNull()
 
-  override fun findAll(belongsToLibraryIds: Collection<String>?, filterOnLibraryIds: Collection<String>?, search: String?, pageable: Pageable, restrictions: Set<ContentRestriction>): Page<SeriesCollection> {
+  override fun findAll(belongsToLibraryIds: Collection<String>?, filterOnLibraryIds: Collection<String>?, search: String?, pageable: Pageable, restrictions: ContentRestrictions): Page<SeriesCollection> {
     val collectionIds = luceneHelper.searchEntitiesIds(search, LuceneEntity.Collection)
     val searchCondition = c.ID.inOrNoCondition(collectionIds)
 
     val conditions = searchCondition
       .and(s.LIBRARY_ID.inOrNoCondition(belongsToLibraryIds))
       .and(s.LIBRARY_ID.inOrNoCondition(filterOnLibraryIds))
-      .and(restrictions.toCondition())
+      .and(restrictions.toCondition(dsl))
 
     val queryIds =
-      if (belongsToLibraryIds == null && filterOnLibraryIds == null && restrictions.isEmpty()) null
+      if (belongsToLibraryIds == null && filterOnLibraryIds == null && !restrictions.isRestricted()) null
       else
         dsl.selectDistinct(c.ID)
           .from(c)
@@ -75,7 +75,7 @@ class SeriesCollectionDao(
         else it.toSortField(sorts)
       }
 
-    val items = selectBase(restrictions.isNotEmpty())
+    val items = selectBase(restrictions.isRestricted())
       .where(conditions)
       .apply { if (queryIds != null) and(c.ID.`in`(queryIds)) }
       .orderBy(orderBy)
@@ -91,18 +91,18 @@ class SeriesCollectionDao(
     )
   }
 
-  override fun findAllContainingSeriesId(containsSeriesId: String, filterOnLibraryIds: Collection<String>?, restrictions: Set<ContentRestriction>): Collection<SeriesCollection> {
+  override fun findAllContainingSeriesId(containsSeriesId: String, filterOnLibraryIds: Collection<String>?, restrictions: ContentRestrictions): Collection<SeriesCollection> {
     val queryIds = dsl.select(c.ID)
       .from(c)
       .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
-      .apply { if (restrictions.isNotEmpty()) leftJoin(sd).on(cs.SERIES_ID.eq(sd.SERIES_ID)) }
+      .apply { if (restrictions.isRestricted()) leftJoin(sd).on(cs.SERIES_ID.eq(sd.SERIES_ID)) }
       .where(cs.SERIES_ID.eq(containsSeriesId))
-      .apply { if (restrictions.isNotEmpty()) and(restrictions.toCondition()) }
+      .apply { if (restrictions.isRestricted()) and(restrictions.toCondition(dsl)) }
 
-    return selectBase(restrictions.isNotEmpty())
+    return selectBase(restrictions.isRestricted())
       .where(c.ID.`in`(queryIds))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .apply { if (restrictions.isNotEmpty()) and(restrictions.toCondition()) }
+      .apply { if (restrictions.isRestricted()) and(restrictions.toCondition(dsl)) }
       .fetchAndMap(filterOnLibraryIds, restrictions)
   }
 
@@ -131,16 +131,16 @@ class SeriesCollectionDao(
       .leftJoin(s).on(cs.SERIES_ID.eq(s.ID))
       .apply { if (joinOnSeriesMetadata) leftJoin(sd).on(cs.SERIES_ID.eq(sd.SERIES_ID)) }
 
-  private fun ResultQuery<Record>.fetchAndMap(filterOnLibraryIds: Collection<String>?, restrictions: Set<ContentRestriction> = emptySet()): List<SeriesCollection> =
+  private fun ResultQuery<Record>.fetchAndMap(filterOnLibraryIds: Collection<String>?, restrictions: ContentRestrictions = ContentRestrictions()): List<SeriesCollection> =
     fetchInto(c)
       .map { cr ->
         val seriesIds = dsl.select(*cs.fields())
           .from(cs)
           .leftJoin(s).on(cs.SERIES_ID.eq(s.ID))
-          .apply { if (restrictions.isNotEmpty()) leftJoin(sd).on(cs.SERIES_ID.eq(sd.SERIES_ID)) }
+          .apply { if (restrictions.isRestricted()) leftJoin(sd).on(cs.SERIES_ID.eq(sd.SERIES_ID)) }
           .where(cs.COLLECTION_ID.eq(cr.id))
           .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-          .apply { if (restrictions.isNotEmpty()) and(restrictions.toCondition()) }
+          .apply { if (restrictions.isRestricted()) and(restrictions.toCondition(dsl)) }
           .orderBy(cs.NUMBER.asc())
           .fetchInto(cs)
           .mapNotNull { it.seriesId }
