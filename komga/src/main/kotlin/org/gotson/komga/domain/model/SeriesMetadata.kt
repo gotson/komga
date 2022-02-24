@@ -1,5 +1,6 @@
 package org.gotson.komga.domain.model
 
+import org.gotson.komga.language.lowerNotBlank
 import java.time.LocalDateTime
 
 class SeriesMetadata(
@@ -14,6 +15,7 @@ class SeriesMetadata(
   genres: Set<String> = emptySet(),
   tags: Set<String> = emptySet(),
   val totalBookCount: Int? = null,
+  sharingLabels: Set<String> = emptySet(),
 
   val statusLock: Boolean = false,
   val titleLock: Boolean = false,
@@ -26,6 +28,7 @@ class SeriesMetadata(
   val genresLock: Boolean = false,
   val tagsLock: Boolean = false,
   val totalBookCountLock: Boolean = false,
+  val sharingLabelsLock: Boolean = false,
 
   val seriesId: String = "",
 
@@ -37,8 +40,9 @@ class SeriesMetadata(
   val summary = summary.trim()
   val publisher = publisher.trim()
   val language = language.trim().lowercase()
-  val tags = tags.map { it.lowercase().trim() }.filter { it.isNotBlank() }.toSet()
-  val genres = genres.map { it.lowercase().trim() }.filter { it.isNotBlank() }.toSet()
+  val tags = tags.lowerNotBlank().toSet()
+  val genres = genres.lowerNotBlank().toSet()
+  val sharingLabels = sharingLabels.lowerNotBlank().toSet()
 
   fun copy(
     status: Status = this.status,
@@ -52,6 +56,7 @@ class SeriesMetadata(
     genres: Set<String> = this.genres,
     tags: Set<String> = this.tags,
     totalBookCount: Int? = this.totalBookCount,
+    sharingLabels: Set<String> = this.sharingLabels,
     statusLock: Boolean = this.statusLock,
     titleLock: Boolean = this.titleLock,
     titleSortLock: Boolean = this.titleSortLock,
@@ -63,6 +68,7 @@ class SeriesMetadata(
     genresLock: Boolean = this.genresLock,
     tagsLock: Boolean = this.tagsLock,
     totalBookCountLock: Boolean = this.totalBookCountLock,
+    sharingLabelsLock: Boolean = this.sharingLabelsLock,
     seriesId: String = this.seriesId,
     createdDate: LocalDateTime = this.createdDate,
     lastModifiedDate: LocalDateTime = this.lastModifiedDate,
@@ -79,6 +85,7 @@ class SeriesMetadata(
       genres = genres,
       tags = tags,
       totalBookCount = totalBookCount,
+      sharingLabels = sharingLabels,
       statusLock = statusLock,
       titleLock = titleLock,
       titleSortLock = titleSortLock,
@@ -90,6 +97,7 @@ class SeriesMetadata(
       genresLock = genresLock,
       tagsLock = tagsLock,
       totalBookCountLock = totalBookCountLock,
+      sharingLabelsLock = sharingLabelsLock,
       seriesId = seriesId,
       createdDate = createdDate,
       lastModifiedDate = lastModifiedDate,
@@ -106,7 +114,6 @@ class SeriesMetadata(
     WEBTOON
   }
 
-  override fun toString(): String {
-    return "SeriesMetadata(status=$status, readingDirection=$readingDirection, ageRating=$ageRating, language='$language', totalBookCount=$totalBookCount, statusLock=$statusLock, titleLock=$titleLock, titleSortLock=$titleSortLock, summaryLock=$summaryLock, readingDirectionLock=$readingDirectionLock, publisherLock=$publisherLock, ageRatingLock=$ageRatingLock, languageLock=$languageLock, genresLock=$genresLock, tagsLock=$tagsLock, totalBookCountLock=$totalBookCountLock, seriesId='$seriesId', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate, title='$title', titleSort='$titleSort', summary='$summary', publisher='$publisher', tags=$tags, genres=$genres)"
-  }
+  override fun toString(): String =
+    "SeriesMetadata(status=$status, readingDirection=$readingDirection, ageRating=$ageRating, totalBookCount=$totalBookCount, statusLock=$statusLock, titleLock=$titleLock, titleSortLock=$titleSortLock, summaryLock=$summaryLock, readingDirectionLock=$readingDirectionLock, publisherLock=$publisherLock, ageRatingLock=$ageRatingLock, languageLock=$languageLock, genresLock=$genresLock, tagsLock=$tagsLock, totalBookCountLock=$totalBookCountLock, sharingLabelsLock=$sharingLabelsLock, seriesId='$seriesId', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate, title='$title', titleSort='$titleSort', summary='$summary', publisher='$publisher', language='$language', tags=$tags, genres=$genres, sharingLabels=$sharingLabels)"
 }

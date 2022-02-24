@@ -54,6 +54,7 @@ class SeriesDtoDao(
   private val cs = Tables.COLLECTION_SERIES
   private val g = Tables.SERIES_METADATA_GENRE
   private val st = Tables.SERIES_METADATA_TAG
+  private val sl = Tables.SERIES_METADATA_SHARING
   private val bma = Tables.BOOK_METADATA_AGGREGATION
   private val bmaa = Tables.BOOK_METADATA_AGGREGATION_AUTHOR
   private val bmat = Tables.BOOK_METADATA_AGGREGATION_TAG
@@ -235,6 +236,11 @@ class SeriesDtoDao(
           .where(st.SERIES_ID.eq(sr.id))
           .fetchSet(st.TAG)
 
+        val sharingLabels = dsl.select(sl.LABEL)
+          .from(sl)
+          .where(sl.SERIES_ID.eq(sr.id))
+          .fetchSet(sl.LABEL)
+
         val aggregatedAuthors = dsl.selectFrom(bmaa)
           .where(bmaa.SERIES_ID.eq(sr.id))
           .fetchInto(bmaa)
@@ -250,7 +256,7 @@ class SeriesDtoDao(
           booksReadCount,
           booksUnreadCount,
           booksInProgressCount,
-          dr.toDto(genres, tags),
+          dr.toDto(genres, tags, sharingLabels),
           bmar.toDto(aggregatedAuthors, aggregatedTags),
         )
       }
@@ -346,7 +352,7 @@ class SeriesDtoDao(
       deleted = deletedDate != null,
     )
 
-  private fun SeriesMetadataRecord.toDto(genres: Set<String>, tags: Set<String>) =
+  private fun SeriesMetadataRecord.toDto(genres: Set<String>, tags: Set<String>, sharingLabels: Set<String>) =
     SeriesMetadataDto(
       status = status,
       statusLock = statusLock,
@@ -372,6 +378,8 @@ class SeriesDtoDao(
       tagsLock = tagsLock,
       totalBookCount = totalBookCount,
       totalBookCountLock = totalBookCountLock,
+      sharingLabels = sharingLabels,
+      sharingLabelsLock = sharingLabelsLock,
     )
 
   private fun BookMetadataAggregationRecord.toDto(authors: List<AuthorDto>, tags: Set<String>) =

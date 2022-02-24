@@ -50,6 +50,8 @@ data class SeriesMetadataDto(
   val tagsLock: Boolean,
   val totalBookCount: Int?,
   val totalBookCountLock: Boolean,
+  val sharingLabels: Set<String>,
+  val sharingLabelsLock: Boolean,
 
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val created: LocalDateTime,

@@ -20,12 +20,13 @@ class SeriesMetadataDao(
   private val d = Tables.SERIES_METADATA
   private val g = Tables.SERIES_METADATA_GENRE
   private val st = Tables.SERIES_METADATA_TAG
+  private val sl = Tables.SERIES_METADATA_SHARING
 
   override fun findById(seriesId: String): SeriesMetadata =
-    findOne(seriesId)!!.toDomain(findGenres(seriesId), findTags(seriesId))
+    findOne(seriesId)!!.toDomain(findGenres(seriesId), findTags(seriesId), findSharingLabels(seriesId))
 
   override fun findByIdOrNull(seriesId: String): SeriesMetadata? =
-    findOne(seriesId)?.toDomain(findGenres(seriesId), findTags(seriesId))
+    findOne(seriesId)?.toDomain(findGenres(seriesId), findTags(seriesId), findSharingLabels(seriesId))
 
   private fun findOne(seriesId: String) =
     dsl.selectFrom(d)
@@ -36,17 +37,19 @@ class SeriesMetadataDao(
     dsl.select(g.GENRE)
       .from(g)
       .where(g.SERIES_ID.eq(seriesId))
-      .fetchInto(g)
-      .mapNotNull { it.genre }
-      .toSet()
+      .fetchSet(g.GENRE)
 
   private fun findTags(seriesId: String) =
     dsl.select(st.TAG)
       .from(st)
       .where(st.SERIES_ID.eq(seriesId))
-      .fetchInto(st)
-      .mapNotNull { it.tag }
-      .toSet()
+      .fetchSet(st.TAG)
+
+  private fun findSharingLabels(seriesId: String) =
+    dsl.select(sl.LABEL)
+      .from(sl)
+      .where(sl.SERIES_ID.eq(seriesId))
+      .fetchSet(sl.LABEL)
 
   @Transactional
   override fun insert(metadata: SeriesMetadata) {
@@ -72,10 +75,12 @@ class SeriesMetadataDao(
       .set(d.TAGS_LOCK, metadata.tagsLock)
       .set(d.TOTAL_BOOK_COUNT, metadata.totalBookCount)
       .set(d.TOTAL_BOOK_COUNT_LOCK, metadata.totalBookCountLock)
+      .set(d.SHARING_LABELS_LOCK, metadata.sharingLabelsLock)
       .execute()
 
     insertGenres(metadata)
     insertTags(metadata)
+    insertSharingLabels(metadata)
   }
 
   @Transactional
@@ -101,6 +106,7 @@ class SeriesMetadataDao(
       .set(d.TAGS_LOCK, metadata.tagsLock)
       .set(d.TOTAL_BOOK_COUNT, metadata.totalBookCount)
       .set(d.TOTAL_BOOK_COUNT_LOCK, metadata.totalBookCountLock)
+      .set(d.SHARING_LABELS_LOCK, metadata.sharingLabelsLock)
       .set(d.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(d.SERIES_ID.eq(metadata.seriesId))
       .execute()
@@ -113,8 +119,13 @@ class SeriesMetadataDao(
       .where(st.SERIES_ID.eq(metadata.seriesId))
       .execute()
 
+    dsl.deleteFrom(sl)
+      .where(sl.SERIES_ID.eq(metadata.seriesId))
+      .execute()
+
     insertGenres(metadata)
     insertTags(metadata)
+    insertSharingLabels(metadata)
   }
 
   private fun insertGenres(metadata: SeriesMetadata) {
@@ -147,10 +158,26 @@ class SeriesMetadataDao(
     }
   }
 
+  private fun insertSharingLabels(metadata: SeriesMetadata) {
+    if (metadata.sharingLabels.isNotEmpty()) {
+      metadata.sharingLabels.chunked(batchSize).forEach { chunk ->
+        dsl.batch(
+          dsl.insertInto(sl, sl.SERIES_ID, sl.LABEL)
+            .values(null as String?, null),
+        ).also { step ->
+          chunk.forEach {
+            step.bind(metadata.seriesId, it)
+          }
+        }.execute()
+      }
+    }
+  }
+
   @Transactional
   override fun delete(seriesId: String) {
     dsl.deleteFrom(g).where(g.SERIES_ID.eq(seriesId)).execute()
     dsl.deleteFrom(st).where(st.SERIES_ID.eq(seriesId)).execute()
+    dsl.deleteFrom(sl).where(sl.SERIES_ID.eq(seriesId)).execute()
     dsl.deleteFrom(d).where(d.SERIES_ID.eq(seriesId)).execute()
   }
 
@@ -160,12 +187,13 @@ class SeriesMetadataDao(
 
     dsl.deleteFrom(g).where(g.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
     dsl.deleteFrom(st).where(st.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
+    dsl.deleteFrom(sl).where(sl.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
     dsl.deleteFrom(d).where(d.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
   }
 
   override fun count(): Long = dsl.fetchCount(d).toLong()
 
-  private fun SeriesMetadataRecord.toDomain(genres: Set<String>, tags: Set<String>) =
+  private fun SeriesMetadataRecord.toDomain(genres: Set<String>, tags: Set<String>, sharingLabels: Set<String>) =
     SeriesMetadata(
       status = SeriesMetadata.Status.valueOf(status),
       title = title,
@@ -180,6 +208,7 @@ class SeriesMetadataDao(
       genres = genres,
       tags = tags,
       totalBookCount = totalBookCount,
+      sharingLabels = sharingLabels,
 
       statusLock = statusLock,
       titleLock = titleLock,
@@ -192,6 +221,7 @@ class SeriesMetadataDao(
       genresLock = genresLock,
       tagsLock = tagsLock,
       totalBookCountLock = totalBookCountLock,
+      sharingLabelsLock = sharingLabelsLock,
 
       seriesId = seriesId,
 
