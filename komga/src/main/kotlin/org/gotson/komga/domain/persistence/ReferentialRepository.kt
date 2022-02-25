@@ -49,4 +49,8 @@ interface ReferentialRepository {
   fun findAllSeriesReleaseDates(filterOnLibraryIds: Collection<String>?): Set<LocalDate>
   fun findAllSeriesReleaseDatesByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<LocalDate>
   fun findAllSeriesReleaseDatesByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<LocalDate>
+
+  fun findAllSharingLabels(filterOnLibraryIds: Collection<String>?): Set<String>
+  fun findAllSharingLabelsByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<String>
+  fun findAllSharingLabelsByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<String>
 }

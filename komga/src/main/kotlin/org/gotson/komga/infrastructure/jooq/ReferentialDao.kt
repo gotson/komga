@@ -35,6 +35,7 @@ class ReferentialDao(
   private val st = Tables.SERIES_METADATA_TAG
   private val cs = Tables.COLLECTION_SERIES
   private val rb = Tables.READLIST_BOOK
+  private val sl = Tables.SERIES_METADATA_SHARING
 
   override fun findAllAuthorsByName(search: String, filterOnLibraryIds: Collection<String>?): List<Author> =
     dsl.selectDistinct(a.NAME, a.ROLE)
@@ -462,6 +463,37 @@ class ReferentialDao(
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
       .orderBy(bma.RELEASE_DATE.desc())
       .fetchSet(bma.RELEASE_DATE)
+
+  override fun findAllSharingLabels(filterOnLibraryIds: Collection<String>?): Set<String> =
+    dsl.selectDistinct(sl.LABEL)
+      .from(sl)
+      .apply {
+        filterOnLibraryIds?.let {
+          leftJoin(s).on(sl.SERIES_ID.eq(s.ID))
+            .where(s.LIBRARY_ID.`in`(it))
+        }
+      }
+      .orderBy(sl.LABEL.collate(SqliteUdfDataSource.collationUnicode3))
+      .fetchSet(sl.LABEL)
+
+  override fun findAllSharingLabelsByLibrary(libraryId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
+    dsl.selectDistinct(sl.LABEL)
+      .from(sl)
+      .leftJoin(s).on(sl.SERIES_ID.eq(s.ID))
+      .where(s.LIBRARY_ID.eq(libraryId))
+      .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
+      .orderBy(sl.LABEL.collate(SqliteUdfDataSource.collationUnicode3))
+      .fetchSet(sl.LABEL)
+
+  override fun findAllSharingLabelsByCollection(collectionId: String, filterOnLibraryIds: Collection<String>?): Set<String> =
+    dsl.selectDistinct(sl.LABEL)
+      .from(sl)
+      .leftJoin(cs).on(sl.SERIES_ID.eq(cs.SERIES_ID))
+      .apply { filterOnLibraryIds?.let { leftJoin(s).on(sl.SERIES_ID.eq(s.ID)) } }
+      .where(cs.COLLECTION_ID.eq(collectionId))
+      .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
+      .orderBy(sl.LABEL.collate(SqliteUdfDataSource.collationUnicode3))
+      .fetchSet(sl.LABEL)
 
   private fun BookMetadataAuthorRecord.toDomain(): Author =
     Author(

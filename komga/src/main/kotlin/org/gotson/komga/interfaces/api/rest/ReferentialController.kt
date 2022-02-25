@@ -92,6 +92,18 @@ class ReferentialController(
       else -> referentialRepository.findAllGenres(principal.user.getAuthorizedLibraryIds(null))
     }
 
+  @GetMapping("v1/sharing-labels")
+  fun getSharingLabels(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestParam(name = "library_id", required = false) libraryId: String?,
+    @RequestParam(name = "collection_id", required = false) collectionId: String?,
+  ): Set<String> =
+    when {
+      libraryId != null -> referentialRepository.findAllSharingLabelsByLibrary(libraryId, principal.user.getAuthorizedLibraryIds(null))
+      collectionId != null -> referentialRepository.findAllSharingLabelsByCollection(collectionId, principal.user.getAuthorizedLibraryIds(null))
+      else -> referentialRepository.findAllSharingLabels(principal.user.getAuthorizedLibraryIds(null))
+    }
+
   @GetMapping("v1/tags")
   fun getTags(
     @AuthenticationPrincipal principal: KomgaPrincipal,
