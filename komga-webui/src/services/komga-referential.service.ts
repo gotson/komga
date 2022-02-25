@@ -84,6 +84,25 @@ export default class KomgaReferentialService {
     }
   }
 
+  async getSharingLabels(libraryId?: string, collectionId?: string): Promise<string[]> {
+    try {
+      const params = {} as any
+      if (libraryId) params.library_id = libraryId
+      if (collectionId) params.collection_id = collectionId
+
+      return (await this.http.get('/api/v1/sharing-labels', {
+        params: params,
+        paramsSerializer: params => qs.stringify(params, {indices: false}),
+      })).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve sharing labels'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
   async getSeriesAndBookTags(libraryId?: string, collectionId?: string): Promise<string[]> {
     try {
       const params = {} as any

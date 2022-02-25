@@ -41,6 +41,8 @@ export interface SeriesMetadataDto {
   tagsLock: boolean,
   totalBookCount?: number,
   totalBookCountLock: boolean,
+  sharingLabels: string[],
+  sharingLabelsLock: boolean,
 }
 
 export interface SeriesBooksMetadataDto {
@@ -76,6 +78,8 @@ export interface SeriesMetadataUpdateDto {
   tagsLock?: boolean,
   totalBookCount?: number,
   totalBookCountLock: boolean,
+  sharingLabels?: string[],
+  sharingLabelsLock: boolean,
 }
 
 export interface GroupCountDto {

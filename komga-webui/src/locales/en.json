@@ -428,6 +428,7 @@
       "field_age_rating": "Age Rating",
       "field_age_rating_error": "Age rating must be 0 or more",
       "field_genres": "Genres",
+      "field_labels": "Labels",
       "field_language": "Language",
       "field_language_hint": "IETF BCP 47 language tag",
       "field_publisher": "Publisher",
@@ -442,6 +443,7 @@
       "mixed": "MIXED",
       "tab_general": "General",
       "tab_poster": "Poster",
+      "tab_sharing": "Sharing",
       "tab_tags": "Tags",
       "tags_notice_multiple_edit": "You are editing tags for multiple series. This will override existing tags of each series."
     },

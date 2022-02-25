@@ -35,6 +35,10 @@
             <v-icon left class="hidden-xs-only">mdi-image</v-icon>
             {{ $t('dialog.edit_series.tab_poster') }}
           </v-tab>
+          <v-tab class="justify-start">
+            <v-icon left class="hidden-xs-only">mdi-account-multiple</v-icon>
+            {{ $t('dialog.edit_series.tab_sharing') }}
+          </v-tab>
 
           <!--  Tab: General  -->
           <v-tab-item>
@@ -347,6 +351,46 @@
               </v-container>
             </v-card>
           </v-tab-item>
+
+          <!--  Tab: Sharing  -->
+          <v-tab-item>
+            <v-card flat>
+              <v-container fluid>
+                <v-alert v-if="!single"
+                         type="warning"
+                         outlined
+                         dense
+                >{{ $t('dialog.edit_series.tags_notice_multiple_edit') }}
+                </v-alert>
+
+                <!-- Sharing Labels -->
+                <v-row>
+                  <v-col cols="12">
+                    <span class="text-body-2">{{ $t('dialog.edit_series.field_labels') }}</span>
+                    <v-combobox v-model="form.sharingLabels"
+                                :items="sharingLabelsAvailable"
+                                @input="$v.form.sharingLabels.$touch()"
+                                @change="form.sharingLabelsLock = true"
+                                hide-selected
+                                chips
+                                deletable-chips
+                                multiple
+                                filled
+                                dense
+                    >
+                      <template v-slot:prepend>
+                        <v-icon :color="form.sharingLabelsLock ? 'secondary' : ''"
+                                @click="form.sharingLabelsLock = !form.sharingLabelsLock"
+                        >
+                          {{ form.sharingLabelsLock ? 'mdi-lock' : 'mdi-lock-open' }}
+                        </v-icon>
+                      </template>
+                    </v-combobox>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card>
+          </v-tab-item>
         </v-tabs>
 
         <v-card-actions class="hidden-xs-only">
@@ -403,6 +447,8 @@ export default Vue.extend({
         tagsLock: false,
         totalBookCount: undefined as number | undefined,
         totalBookCountLock: false,
+        sharingLabels: [],
+        sharingLabelsLock: false,
       },
       mixed: {
         status: false,
@@ -419,6 +465,7 @@ export default Vue.extend({
       },
       genresAvailable: [] as string[],
       tagsAvailable: [] as string[],
+      sharingLabelsAvailable: [] as string[],
     }
   },
   props: {
@@ -437,6 +484,7 @@ export default Vue.extend({
         this.getThumbnails(this.series)
         this.loadAvailableTags()
         this.loadAvailableGenres()
+        this.loadAvailableSharingLabels()
       } else {
         this.dialogCancel()
       }
@@ -469,6 +517,7 @@ export default Vue.extend({
       },
       genres: {},
       tags: {},
+      sharingLabels: {},
       ageRating: {minValue: minValue(0)},
       readingDirection: {},
       publisher: {},
@@ -522,6 +571,9 @@ export default Vue.extend({
     },
     async loadAvailableGenres() {
       this.genresAvailable = await this.$komgaReferential.getGenres()
+    },
+    async loadAvailableSharingLabels() {
+      this.sharingLabelsAvailable = await this.$komgaReferential.getSharingLabels()
     },
     requiredErrors(fieldName: string): string[] {
       const errors = [] as string[]
@@ -579,9 +631,15 @@ export default Vue.extend({
 
         const tagsLock = this.$_.uniq(series.map(x => x.metadata.tagsLock))
         this.form.tagsLock = tagsLock.length > 1 ? false : tagsLock[0]
+
+        this.form.sharingLabels = []
+
+        const sharingLabelsLock = this.$_.uniq(series.map(x => x.metadata.sharingLabelsLock))
+        this.form.sharingLabelsLock = sharingLabelsLock.length > 1 ? false : sharingLabelsLock[0]
       } else {
         this.form.genres = []
         this.form.tags = []
+        this.form.sharingLabels = []
         this.$_.merge(this.form, (series as SeriesDto).metadata)
         this.poster.selectedThumbnail = ''
         this.poster.deleteQueue = []
@@ -609,6 +667,7 @@ export default Vue.extend({
           genresLock: this.form.genresLock,
           tagsLock: this.form.tagsLock,
           totalBookCountLock: this.form.totalBookCountLock,
+          sharingLabelsLock: this.form.sharingLabelsLock,
         }
 
         if (this.$v.form?.status?.$dirty) {
@@ -637,6 +696,10 @@ export default Vue.extend({
 
         if (this.$v.form?.language?.$dirty) {
           this.$_.merge(metadata, {language: this.form.language})
+        }
+
+        if (this.$v.form?.sharingLabels?.$dirty) {
+          this.$_.merge(metadata, {sharingLabels: this.form.sharingLabels})
         }
 
         if (this.single) {
