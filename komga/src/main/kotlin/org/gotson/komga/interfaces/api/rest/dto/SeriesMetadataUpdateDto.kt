@@ -74,4 +74,11 @@ class SeriesMetadataUpdateDto {
     }
 
   var totalBookCountLock: Boolean? = null
+
+  var sharingLabels: Set<String>?
+    by Delegates.observable(null) { prop, _, _ ->
+      isSet[prop.name] = true
+    }
+
+  var sharingLabelsLock: Boolean? = null
 }

@@ -539,6 +539,10 @@ class SeriesController(
           tagsLock = tagsLock ?: existing.tagsLock,
           totalBookCount = if (isSet("totalBookCount")) totalBookCount else existing.totalBookCount,
           totalBookCountLock = totalBookCountLock ?: existing.totalBookCountLock,
+          sharingLabels = if (isSet("sharingLabels")) {
+            if (sharingLabels != null) sharingLabels!! else emptySet()
+          } else existing.sharingLabels,
+          sharingLabelsLock = sharingLabelsLock ?: existing.sharingLabelsLock,
         )
       }
       seriesMetadataRepository.update(updated)
