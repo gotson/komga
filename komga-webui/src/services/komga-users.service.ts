@@ -2,7 +2,7 @@ import {AxiosInstance} from 'axios'
 
 const qs = require('qs')
 
-const API_USERS = '/api/v1/users'
+const API_USERS = '/api/v2/users'
 
 export default class KomgaUsersService {
   private http: AxiosInstance
@@ -50,7 +50,7 @@ export default class KomgaUsersService {
     }
   }
 
-  async getAll(): Promise<UserWithSharedLibrariesDto[]> {
+  async getAll(): Promise<UserDto[]> {
     try {
       return (await this.http.get(`${API_USERS}`)).data
     } catch (e) {
@@ -74,9 +74,9 @@ export default class KomgaUsersService {
     }
   }
 
-  async patchUserRoles(userId: string, roles: RolesUpdateDto): Promise<UserDto> {
+  async patchUser(userId: string, patch: UserUpdateDto) {
     try {
-      return (await this.http.patch(`${API_USERS}/${userId}`, roles)).data
+      await this.http.patch(`${API_USERS}/${userId}`, patch)
     } catch (e) {
       let msg = `An error occurred while trying to patch user '${userId}'`
       if (e.response.data.message) {
@@ -100,7 +100,7 @@ export default class KomgaUsersService {
 
   async patchUserPassword(user: UserDto, newPassword: PasswordUpdateDto) {
     try {
-      return (await this.http.patch(`${API_USERS}/${user.id}/password`, newPassword)).data
+      await this.http.patch(`${API_USERS}/${user.id}/password`, newPassword)
     } catch (e) {
       let msg = `An error occurred while trying to update password for user ${user.email}`
       if (e.response.data.message) {
@@ -110,21 +110,9 @@ export default class KomgaUsersService {
     }
   }
 
-  async patchUserSharedLibraries(user: UserDto, sharedLibrariesUpdateDto: SharedLibrariesUpdateDto) {
-    try {
-      return (await this.http.patch(`${API_USERS}/${user.id}/shared-libraries`, sharedLibrariesUpdateDto)).data
-    } catch (e) {
-      let msg = `An error occurred while trying to update shared libraries for user ${user.email}`
-      if (e.response.data.message) {
-        msg += `: ${e.response.data.message}`
-      }
-      throw new Error(msg)
-    }
-  }
-
   async logout() {
     try {
-      await this.http.post(`${API_USERS}/logout`)
+      await this.http.post('api/logout')
     } catch (e) {
       let msg = 'An error occurred while trying to logout'
       if (e.response.data.message) {

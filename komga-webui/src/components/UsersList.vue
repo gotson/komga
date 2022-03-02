@@ -142,7 +142,7 @@ export default Vue.extend({
     modalDeleteUser: false,
     userToDelete: {} as UserDto,
     modalEditSharedLibraries: false,
-    userToEditSharedLibraries: {} as UserWithSharedLibrariesDto,
+    userToEditSharedLibraries: {} as UserDto,
     modalEditUser: false,
     userToEdit: {} as UserDto,
     modalChangePassword: false,
@@ -150,7 +150,7 @@ export default Vue.extend({
     usersLastActivity: {} as any,
   }),
   computed: {
-    users(): UserWithSharedLibrariesDto[] {
+    users(): UserDto[] {
       return this.$store.state.komgaUsers.users
     },
     me(): UserDto {
@@ -175,7 +175,7 @@ export default Vue.extend({
       this.userToDelete = user
       this.modalDeleteUser = true
     },
-    editSharedLibraries(user: UserWithSharedLibrariesDto) {
+    editSharedLibraries(user: UserDto) {
       this.userToEditSharedLibraries = user
       this.modalEditSharedLibraries = true
     },

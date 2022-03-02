@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.gotson.komga.interfaces.api.rest
 
 import io.swagger.v3.oas.annotations.Parameter
@@ -46,9 +48,10 @@ import javax.validation.Valid
 
 private val logger = KotlinLogging.logger {}
 
+@Deprecated("User api/v2/users instead")
 @RestController
 @RequestMapping("api/v1/users", produces = [MediaType.APPLICATION_JSON_VALUE])
-class UserController(
+class UserV1Controller(
   private val userLifecycle: KomgaUserLifecycle,
   private val userRepository: KomgaUserRepository,
   private val libraryRepository: LibraryRepository,
@@ -59,10 +62,12 @@ class UserController(
   private val demo = env.activeProfiles.contains("demo")
 
   @GetMapping("me")
+  @Deprecated("User api/v2/users instead")
   fun getMe(@AuthenticationPrincipal principal: KomgaPrincipal): UserDto =
     principal.user.toDto()
 
   @PatchMapping("me/password")
+  @Deprecated("User api/v2/users instead")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateMyPassword(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -76,12 +81,14 @@ class UserController(
 
   @GetMapping
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @Deprecated("User api/v2/users instead")
   fun getAll(): List<UserWithSharedLibrariesDto> =
     userRepository.findAll().map { it.toWithSharedLibrariesDto() }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @Deprecated("User api/v2/users instead")
   fun addOne(@Valid @RequestBody newUser: UserCreationDto): UserDto =
     try {
       userLifecycle.createUser(newUser.toDomain()).toDto()
@@ -92,6 +99,7 @@ class UserController(
   @DeleteMapping("{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PreAuthorize("hasRole('$ROLE_ADMIN') and #principal.user.id != #id")
+  @Deprecated("User api/v2/users instead")
   fun delete(
     @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -104,6 +112,7 @@ class UserController(
   @PatchMapping("{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PreAuthorize("hasRole('$ROLE_ADMIN') and #principal.user.id != #id")
+  @Deprecated("User api/v2/users instead")
   fun updateUserRoles(
     @PathVariable id: String,
     @Valid @RequestBody patch: RolesUpdateDto,
@@ -123,6 +132,7 @@ class UserController(
   @PatchMapping("{id}/password")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PreAuthorize("hasRole('$ROLE_ADMIN') or #principal.user.id == #id")
+  @Deprecated("User api/v2/users instead")
   fun updatePassword(
     @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -137,6 +147,7 @@ class UserController(
   @PatchMapping("{id}/shared-libraries")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @Deprecated("User api/v2/users instead")
   fun updateSharesLibraries(
     @PathVariable id: String,
     @Valid @RequestBody sharedLibrariesUpdateDto: SharedLibrariesUpdateDto,
@@ -156,6 +167,7 @@ class UserController(
 
   @GetMapping("me/authentication-activity")
   @PageableAsQueryParam
+  @Deprecated("User api/v2/users instead")
   fun getMyAuthenticationActivity(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
@@ -180,6 +192,7 @@ class UserController(
   @GetMapping("authentication-activity")
   @PageableAsQueryParam
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @Deprecated("User api/v2/users instead")
   fun getAuthenticationActivity(
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
@@ -201,6 +214,7 @@ class UserController(
 
   @GetMapping("{id}/authentication-activity/latest")
   @PreAuthorize("hasRole('$ROLE_ADMIN') or #principal.user.id == #id")
+  @Deprecated("User api/v2/users instead")
   fun getLatestAuthenticationActivityForUser(
     @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,

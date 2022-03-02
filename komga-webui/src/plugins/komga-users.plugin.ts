@@ -9,7 +9,7 @@ let service: KomgaUsersService
 const vuexModule: Module<any, any> = {
   state: {
     me: {} as UserDto,
-    users: [] as UserWithSharedLibrariesDto[],
+    users: [] as UserDto[],
   },
   getters: {
     meAdmin: state => state.me.hasOwnProperty('roles') && state.me.roles.includes(UserRoles.ADMIN),
@@ -21,7 +21,7 @@ const vuexModule: Module<any, any> = {
     setMe (state, user: UserDto) {
       state.me = user
     },
-    setAllUsers (state, users: UserWithSharedLibrariesDto[]) {
+    setAllUsers (state, users: UserDto[]) {
       state.users = users
     },
   },
@@ -46,16 +46,12 @@ const vuexModule: Module<any, any> = {
       await service.postUser(user)
       dispatch('getAllUsers')
     },
-    async updateUserRoles ({ dispatch }, { userId, roles }: { userId: string, roles: RolesUpdateDto }) {
-      await service.patchUserRoles(userId, roles)
+    async updateUser ({ dispatch }, { userId, patch }: { userId: string, patch: UserUpdateDto }) {
+      await service.patchUser(userId, patch)
       dispatch('getAllUsers')
     },
     async deleteUser ({ dispatch }, user: UserDto) {
       await service.deleteUser(user)
-      dispatch('getAllUsers')
-    },
-    async updateUserSharedLibraries ({ dispatch }, { user, sharedLibraries }: { user: UserDto, sharedLibraries: SharedLibrariesUpdateDto }) {
-      await service.patchUserSharedLibraries(user, sharedLibraries)
       dispatch('getAllUsers')
     },
   },

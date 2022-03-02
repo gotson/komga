@@ -91,12 +91,12 @@ export default Vue.extend({
     },
   },
   methods: {
-    dialogReset(user: UserWithSharedLibrariesDto) {
+    dialogReset(user: UserDto) {
       this.allLibraries = user.sharedAllLibraries
       if (user.sharedAllLibraries) {
         this.selectedLibraries = this.libraries.map(x => x.id)
       } else {
-        this.selectedLibraries = user.sharedLibraries.map(x => x.id)
+        this.selectedLibraries = user.sharedLibrariesIds
       }
     },
     dialogCancel() {
@@ -110,12 +110,14 @@ export default Vue.extend({
     },
     async editUser() {
       try {
-        const sharedLibraries = {
-          all: this.allLibraries,
-          libraryIds: this.selectedLibraries,
-        } as SharedLibrariesUpdateDto
+        const patch = {
+          sharedLibraries: {
+            all: this.allLibraries,
+            libraryIds: this.selectedLibraries,
+          },
+        } as UserUpdateDto
 
-        await this.$store.dispatch('updateUserSharedLibraries', {user: this.user, sharedLibraries: sharedLibraries})
+        await this.$store.dispatch('updateUser', {userId: this.user.id, patch: patch})
       } catch (e) {
         this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
       }

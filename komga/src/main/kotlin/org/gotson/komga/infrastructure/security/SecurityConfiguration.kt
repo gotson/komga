@@ -67,7 +67,7 @@ class SecurityConfiguration(
         it.authenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
       }
       .logout {
-        it.logoutUrl("/api/v1/users/logout")
+        it.logoutUrl("/api/logout")
         it.deleteCookies(sessionCookieName)
         it.invalidateHttpSession(true)
       }

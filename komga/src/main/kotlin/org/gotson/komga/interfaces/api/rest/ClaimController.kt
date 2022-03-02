@@ -2,8 +2,8 @@ package org.gotson.komga.interfaces.api.rest
 
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.service.KomgaUserLifecycle
-import org.gotson.komga.interfaces.api.rest.dto.UserDto
-import org.gotson.komga.interfaces.api.rest.dto.toDto
+import org.gotson.komga.interfaces.api.rest.dto.UserDtoV2
+import org.gotson.komga.interfaces.api.rest.dto.toDtoV2
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.validation.annotation.Validated
@@ -30,7 +30,7 @@ class ClaimController(
   fun claimAdmin(
     @Email(regexp = ".+@.+\\..+") @RequestHeader("X-Komga-Email") email: String,
     @NotBlank @RequestHeader("X-Komga-Password") password: String,
-  ): UserDto {
+  ): UserDtoV2 {
     if (userDetailsLifecycle.countUsers() > 0)
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, "This server has already been claimed")
 
@@ -40,7 +40,7 @@ class ClaimController(
         password = password,
         roleAdmin = true,
       ),
-    ).toDto()
+    ).toDtoV2()
   }
 
   data class ClaimStatus(

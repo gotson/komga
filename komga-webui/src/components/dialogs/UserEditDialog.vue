@@ -104,11 +104,11 @@ export default Vue.extend({
     },
     async editUser() {
       try {
-        const roles = {
+        const patch = {
           roles: this.roles,
-        } as RolesUpdateDto
+        } as UserUpdateDto
 
-        await this.$store.dispatch('updateUserRoles', {userId: this.user.id, roles: roles})
+        await this.$store.dispatch('updateUser', {userId: this.user.id, patch: patch})
       } catch (e) {
         this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
       }

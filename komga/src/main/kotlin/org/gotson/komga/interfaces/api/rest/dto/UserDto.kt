@@ -8,12 +8,14 @@ import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 
+@Deprecated("Deprecated since 0.153.0. Use UserDtoV2 instead")
 data class UserDto(
   val id: String,
   val email: String,
   val roles: List<String>,
 )
 
+@Deprecated("Deprecated since 0.153.0. Use toDtoV2() instead")
 fun KomgaUser.toDto() =
   UserDto(
     id = id,
@@ -21,8 +23,29 @@ fun KomgaUser.toDto() =
     roles = roles().toList(),
   )
 
+@Deprecated("Deprecated since 0.153.0. Use toDtoV2() instead")
 fun KomgaPrincipal.toDto() = user.toDto()
 
+data class UserDtoV2(
+  val id: String,
+  val email: String,
+  val roles: Set<String>,
+  val sharedAllLibraries: Boolean,
+  val sharedLibrariesIds: Set<String>,
+)
+
+fun KomgaUser.toDtoV2() =
+  UserDtoV2(
+    id = id,
+    email = email,
+    roles = roles(),
+    sharedAllLibraries = sharedAllLibraries,
+    sharedLibrariesIds = sharedLibrariesIds,
+  )
+
+fun KomgaPrincipal.toDtoV2() = user.toDtoV2()
+
+@Deprecated("Deprecated since 0.153.0. Use UserDtoV2 instead")
 data class UserWithSharedLibrariesDto(
   val id: String,
   val email: String,
@@ -31,10 +54,12 @@ data class UserWithSharedLibrariesDto(
   val sharedLibraries: List<SharedLibraryDto>,
 )
 
+@Deprecated("Deprecated since 0.153.0. Use UserDtoV2 instead")
 data class SharedLibraryDto(
   val id: String,
 )
 
+@Deprecated("Deprecated since 0.153.0. Use toDtoV2() instead")
 fun KomgaUser.toWithSharedLibrariesDto() =
   UserWithSharedLibrariesDto(
     id = id,
@@ -63,11 +88,7 @@ data class PasswordUpdateDto(
   @get:NotBlank val password: String,
 )
 
-data class SharedLibrariesUpdateDto(
-  val all: Boolean,
-  val libraryIds: Set<String>,
-)
-
+@Deprecated("Deprecated since 0.153.0")
 data class RolesUpdateDto(
   val roles: List<String>,
 )
