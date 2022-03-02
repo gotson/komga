@@ -17,7 +17,7 @@ sealed class ContentRestriction {
     class ExcludeOver(age: Int) : AgeRestriction(age)
   }
 
-  sealed class LabelsRestriction(val labels: Collection<String>) : ContentRestriction() {
+  sealed class LabelsRestriction(val labels: Set<String>) : ContentRestriction() {
     /**
      * Allow only content that has at least one of the provided sharing [labels]
      *

@@ -1,5 +1,7 @@
 package org.gotson.komga.infrastructure.jooq
 
+import org.gotson.komga.domain.model.ContentRestriction
+import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.jooq.Tables
@@ -18,6 +20,7 @@ class KomgaUserDao(
 
   private val u = Tables.USER
   private val ul = Tables.USER_LIBRARY_SHARING
+  private val us = Tables.USER_SHARING
 
   override fun count(): Long = dsl.fetchCount(u).toLong()
 
@@ -41,6 +44,9 @@ class KomgaUserDao(
   private fun ResultQuery<Record>.fetchAndMap() =
     this.fetchGroups({ it.into(u) }, { it.into(ul) })
       .map { (ur, ulr) ->
+        val usr = dsl.selectFrom(us)
+          .where(us.USER_ID.eq(ur.id))
+          .toList()
         KomgaUser(
           email = ur.email,
           password = ur.password,
@@ -49,6 +55,14 @@ class KomgaUserDao(
           rolePageStreaming = ur.rolePageStreaming,
           sharedLibrariesIds = ulr.mapNotNull { it.libraryId }.toSet(),
           sharedAllLibraries = ur.sharedAllLibraries,
+          restrictions = ContentRestrictions(
+            ageRestriction = if (ur.ageRestriction != null && ur.ageRestrictionAllowOnly != null)
+              if (ur.ageRestrictionAllowOnly) ContentRestriction.AgeRestriction.AllowOnlyUnder(ur.ageRestriction)
+              else ContentRestriction.AgeRestriction.ExcludeOver(ur.ageRestriction)
+            else null,
+            labelsAllow = usr.filter { it.allow }.map { it.label }.toSet(),
+            labelsExclude = usr.filterNot { it.allow }.map { it.label }.toSet(),
+          ),
           id = ur.id,
           createdDate = ur.createdDate.toCurrentTimeZone(),
           lastModifiedDate = ur.lastModifiedDate.toCurrentTimeZone(),
@@ -65,14 +79,19 @@ class KomgaUserDao(
       .set(u.ROLE_FILE_DOWNLOAD, user.roleFileDownload)
       .set(u.ROLE_PAGE_STREAMING, user.rolePageStreaming)
       .set(u.SHARED_ALL_LIBRARIES, user.sharedAllLibraries)
+      .set(u.AGE_RESTRICTION, user.restrictions.ageRestriction?.age)
+      .set(
+        u.AGE_RESTRICTION_ALLOW_ONLY,
+        when (user.restrictions.ageRestriction) {
+          is ContentRestriction.AgeRestriction.AllowOnlyUnder -> true
+          is ContentRestriction.AgeRestriction.ExcludeOver -> false
+          null -> null
+        },
+      )
       .execute()
 
-    user.sharedLibrariesIds.forEach {
-      dsl.insertInto(ul)
-        .columns(ul.USER_ID, ul.LIBRARY_ID)
-        .values(user.id, it)
-        .execute()
-    }
+    insertSharedLibraries(user)
+    insertSharingRestrictions(user)
   }
 
   @Transactional
@@ -84,6 +103,15 @@ class KomgaUserDao(
       .set(u.ROLE_FILE_DOWNLOAD, user.roleFileDownload)
       .set(u.ROLE_PAGE_STREAMING, user.rolePageStreaming)
       .set(u.SHARED_ALL_LIBRARIES, user.sharedAllLibraries)
+      .set(u.AGE_RESTRICTION, user.restrictions.ageRestriction?.age)
+      .set(
+        u.AGE_RESTRICTION_ALLOW_ONLY,
+        when (user.restrictions.ageRestriction) {
+          is ContentRestriction.AgeRestriction.AllowOnlyUnder -> true
+          is ContentRestriction.AgeRestriction.ExcludeOver -> false
+          null -> null
+        },
+      )
       .set(u.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(u.ID.eq(user.id))
       .execute()
@@ -92,6 +120,15 @@ class KomgaUserDao(
       .where(ul.USER_ID.eq(user.id))
       .execute()
 
+    dsl.deleteFrom(us)
+      .where(us.USER_ID.eq(user.id))
+      .execute()
+
+    insertSharedLibraries(user)
+    insertSharingRestrictions(user)
+  }
+
+  private fun insertSharedLibraries(user: KomgaUser) {
     user.sharedLibrariesIds.forEach {
       dsl.insertInto(ul)
         .columns(ul.USER_ID, ul.LIBRARY_ID)
@@ -100,14 +137,32 @@ class KomgaUserDao(
     }
   }
 
+  private fun insertSharingRestrictions(user: KomgaUser) {
+    user.restrictions.labelsAllowRestriction?.labels?.forEach { label ->
+      dsl.insertInto(us)
+        .columns(us.USER_ID, us.ALLOW, us.LABEL)
+        .values(user.id, true, label)
+        .execute()
+    }
+
+    user.restrictions.labelsExcludeRestriction?.labels?.forEach { label ->
+      dsl.insertInto(us)
+        .columns(us.USER_ID, us.ALLOW, us.LABEL)
+        .values(user.id, false, label)
+        .execute()
+    }
+  }
+
   @Transactional
   override fun delete(userId: String) {
+    dsl.deleteFrom(us).where(us.USER_ID.equal(userId)).execute()
     dsl.deleteFrom(ul).where(ul.USER_ID.equal(userId)).execute()
     dsl.deleteFrom(u).where(u.ID.equal(userId)).execute()
   }
 
   @Transactional
   override fun deleteAll() {
+    dsl.deleteFrom(us).execute()
     dsl.deleteFrom(ul).execute()
     dsl.deleteFrom(u).execute()
   }

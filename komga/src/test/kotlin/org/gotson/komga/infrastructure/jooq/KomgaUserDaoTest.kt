@@ -1,6 +1,8 @@
 package org.gotson.komga.infrastructure.jooq
 
 import org.assertj.core.api.Assertions.assertThat
+import org.gotson.komga.domain.model.ContentRestriction
+import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.persistence.LibraryRepository
@@ -59,9 +61,12 @@ class KomgaUserDaoTest(
       assertThat(lastModifiedDate).isCloseTo(now, offset)
       assertThat(email).isEqualTo("user@example.org")
       assertThat(password).isEqualTo("password")
-      assertThat(roleAdmin).isFalse()
+      assertThat(roleAdmin).isFalse
       assertThat(sharedLibrariesIds).containsExactly(library.id)
-      assertThat(sharedAllLibraries).isFalse()
+      assertThat(sharedAllLibraries).isFalse
+      assertThat(restrictions.ageRestriction).isNull()
+      assertThat(restrictions.labelsAllowRestriction).isNull()
+      assertThat(restrictions.labelsExcludeRestriction).isNull()
     }
   }
 
@@ -73,10 +78,29 @@ class KomgaUserDaoTest(
       roleAdmin = false,
       sharedLibrariesIds = setOf(library.id),
       sharedAllLibraries = false,
+      restrictions = ContentRestrictions(
+        ageRestriction = ContentRestriction.AgeRestriction.AllowOnlyUnder(10),
+        labelsAllow = setOf("allow"),
+        labelsExclude = setOf("exclude"),
+      )
     )
 
     komgaUserDao.insert(user)
     val created = komgaUserDao.findByIdOrNull(user.id)!!
+    with(created) {
+      assertThat(restrictions.ageRestriction)
+        .isNotNull
+        .isExactlyInstanceOf(ContentRestriction.AgeRestriction.AllowOnlyUnder::class.java)
+      assertThat(restrictions.ageRestriction!!.age).isEqualTo(10)
+      assertThat(restrictions.labelsAllowRestriction)
+        .isNotNull
+        .isExactlyInstanceOf(ContentRestriction.LabelsRestriction.AllowOnly::class.java)
+      assertThat(restrictions.labelsAllowRestriction!!.labels).containsExactly("allow")
+      assertThat(restrictions.labelsExcludeRestriction)
+        .isNotNull
+        .isExactlyInstanceOf(ContentRestriction.LabelsRestriction.Exclude::class.java)
+      assertThat(restrictions.labelsExcludeRestriction!!.labels).containsExactly("exclude")
+    }
 
     val modified = created.copy(
       email = "user2@example.org",
@@ -84,6 +108,11 @@ class KomgaUserDaoTest(
       roleAdmin = true,
       sharedLibrariesIds = emptySet(),
       sharedAllLibraries = true,
+      restrictions = ContentRestrictions(
+        ageRestriction = ContentRestriction.AgeRestriction.ExcludeOver(16),
+        labelsAllow = setOf("allow2"),
+        labelsExclude = setOf("exclude2"),
+      ),
     )
     val modifiedDate = LocalDateTime.now()
     komgaUserDao.update(modified)
@@ -97,9 +126,28 @@ class KomgaUserDaoTest(
         .isNotEqualTo(modified.createdDate)
       assertThat(email).isEqualTo("user2@example.org")
       assertThat(password).isEqualTo("password2")
-      assertThat(roleAdmin).isTrue()
+      assertThat(roleAdmin).isTrue
       assertThat(sharedLibrariesIds).isEmpty()
-      assertThat(sharedAllLibraries).isTrue()
+      assertThat(sharedAllLibraries).isTrue
+      assertThat(restrictions.ageRestriction)
+        .isNotNull
+        .isExactlyInstanceOf(ContentRestriction.AgeRestriction.ExcludeOver::class.java)
+      assertThat(restrictions.ageRestriction!!.age).isEqualTo(16)
+      assertThat(restrictions.labelsAllowRestriction)
+        .isNotNull
+        .isExactlyInstanceOf(ContentRestriction.LabelsRestriction.AllowOnly::class.java)
+      assertThat(restrictions.labelsAllowRestriction!!.labels).containsExactly("allow2")
+      assertThat(restrictions.labelsExcludeRestriction)
+        .isNotNull
+        .isExactlyInstanceOf(ContentRestriction.LabelsRestriction.Exclude::class.java)
+      assertThat(restrictions.labelsExcludeRestriction!!.labels).containsExactly("exclude2")
+    }
+
+    komgaUserDao.update(modifiedSaved.copy(restrictions = ContentRestrictions()))
+    with(komgaUserDao.findByIdOrNull(modified.id)!!) {
+      assertThat(restrictions.ageRestriction).isNull()
+      assertThat(restrictions.labelsAllowRestriction).isNull()
+      assertThat(restrictions.labelsExcludeRestriction).isNull()
     }
   }
 
