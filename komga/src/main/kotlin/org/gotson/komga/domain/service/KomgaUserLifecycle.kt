@@ -45,7 +45,7 @@ class KomgaUserLifecycle(
     logger.info { "Update user: $toUpdate" }
     userRepository.update(toUpdate)
 
-    val expireSessions = existing.roles() != user.roles() ||
+    val expireSessions = existing.roles != user.roles ||
       existing.restrictions != user.restrictions ||
       existing.sharedAllLibraries != user.sharedAllLibraries ||
       existing.sharedLibrariesIds != user.sharedLibrariesIds

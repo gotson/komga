@@ -29,12 +29,14 @@ data class KomgaUser(
   override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable, Serializable {
 
-  fun roles(): Set<String> {
-    val roles = mutableSetOf(ROLE_USER)
-    if (roleAdmin) roles.add(ROLE_ADMIN)
-    if (roleFileDownload) roles.add(ROLE_FILE_DOWNLOAD)
-    if (rolePageStreaming) roles.add(ROLE_PAGE_STREAMING)
-    return roles
+  @delegate:Transient
+  val roles: Set<String> by lazy {
+    buildSet {
+      add(ROLE_USER)
+      if (roleAdmin) add(ROLE_ADMIN)
+      if (roleFileDownload) add(ROLE_FILE_DOWNLOAD)
+      if (rolePageStreaming) add(ROLE_PAGE_STREAMING)
+    }
   }
 
   /**

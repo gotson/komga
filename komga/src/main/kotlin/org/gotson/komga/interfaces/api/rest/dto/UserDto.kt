@@ -24,7 +24,7 @@ fun KomgaUser.toDto() =
   UserDto(
     id = id,
     email = email,
-    roles = roles().toList(),
+    roles = roles.toList(),
   )
 
 @Deprecated("Deprecated since 0.153.0. Use toDtoV2() instead")
@@ -52,7 +52,7 @@ fun KomgaUser.toDtoV2() =
   UserDtoV2(
     id = id,
     email = email,
-    roles = roles(),
+    roles = roles,
     sharedAllLibraries = sharedAllLibraries,
     sharedLibrariesIds = sharedLibrariesIds,
     labelsAllow = restrictions.labelsAllow,
@@ -81,7 +81,7 @@ fun KomgaUser.toWithSharedLibrariesDto() =
   UserWithSharedLibrariesDto(
     id = id,
     email = email,
-    roles = roles().toList(),
+    roles = roles.toList(),
     sharedAllLibraries = sharedAllLibraries,
     sharedLibraries = sharedLibrariesIds.map { SharedLibraryDto(it) },
   )

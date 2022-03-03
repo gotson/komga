@@ -16,7 +16,7 @@ class KomgaPrincipal(
 ) : UserDetails, OAuth2User, OidcUser {
 
   override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
-    user.roles()
+    user.roles
       .map { SimpleGrantedAuthority("ROLE_$it") }
       .toMutableSet()
 
