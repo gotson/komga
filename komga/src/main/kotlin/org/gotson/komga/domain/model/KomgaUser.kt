@@ -101,7 +101,6 @@ data class KomgaUser(
     return !ageDenied && !labelDenied
   }
 
-  override fun toString(): String {
-    return "KomgaUser(email='$email', roleAdmin=$roleAdmin, roleFileDownload=$roleFileDownload, rolePageStreaming=$rolePageStreaming, sharedLibrariesIds=$sharedLibrariesIds, sharedAllLibraries=$sharedAllLibraries, id=$id, createdDate=$createdDate, lastModifiedDate=$lastModifiedDate)"
-  }
+  override fun toString(): String =
+    "KomgaUser(email='$email', roleAdmin=$roleAdmin, roleFileDownload=$roleFileDownload, rolePageStreaming=$rolePageStreaming, sharedLibrariesIds=$sharedLibrariesIds, sharedAllLibraries=$sharedAllLibraries, restrictions=$restrictions, id='$id', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate)"
 }
