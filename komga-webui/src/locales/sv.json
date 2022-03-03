@@ -452,11 +452,7 @@
       "label_roles_for": "Roller för {name}"
     },
     "edit_user_shared_libraries": {
-      "button_cancel": "Avbryt",
-      "button_confirm": "Spara ändringar",
-      "dialog_title": "Redigera delade bibliotek",
-      "field_all_libraries": "Alla bibliotek",
-      "label_shared_with": "Delat med {name}"
+      "field_all_libraries": "Alla bibliotek"
     },
     "empty_trash": {
       "body": "Som standard tar mediaservern inte bort information för media direkt. Detta hjälper om en enhet tillfälligt kopplas bort. När du tömmer papperskorgen för ett bibliotek raderas all information om saknade media.",
@@ -563,6 +559,13 @@
       "HARDLINK": "Hårdlänk/kopiera filer",
       "MOVE": "Flytta filer"
     },
+    "historical_event_type": {
+      "BookConverted": "Boken konverterad",
+      "BookFileDeleted": "Bokfilen raderad",
+      "BookImported": "Boken importerad",
+      "DuplicatePageDeleted": "Duplicerad sida borttagen",
+      "SeriesFolderDeleted": "Seriemappen borttagen"
+    },
     "media_status": {
       "ERROR": "Fel",
       "OUTDATED": "Föråldrad",
@@ -642,6 +645,16 @@
     "filter": "filter",
     "sort": "sortera"
   },
+  "history": {
+    "header": {
+      "book": "Bok",
+      "date": "Datum",
+      "details": "Detaljer",
+      "series": "Serie",
+      "type": "Typ"
+    },
+    "title": "Historik"
+  },
   "home": {
     "theme": "Tema",
     "translation": "Översättning"
@@ -665,6 +678,9 @@
     "size": "Storlek",
     "status": "Status",
     "url": "URL"
+  },
+  "media_management": {
+    "title": "Mediehantering"
   },
   "menu": {
     "add_to_collection": "Lägg till i samling",
@@ -738,7 +754,6 @@
   },
   "settings_user": {
     "change_password": "Byt lösenord",
-    "edit_shared_libraries": "Redigera delade bibliotek",
     "edit_user": "Redigera användare",
     "latest_activity": "Senaste aktivitet: {date}",
     "no_recent_activity": "Ingen aktivitet nyligen",

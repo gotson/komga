@@ -332,11 +332,7 @@
       "label_roles_for": "Roolit käyttäjälle {name}"
     },
     "edit_user_shared_libraries": {
-      "button_cancel": "Peruuta",
-      "button_confirm": "Tallenna muutokset",
-      "dialog_title": "Muokkaa jaettuja kirjastoja",
-      "field_all_libraries": "Kaikki kirjastot",
-      "label_shared_with": "Jaettu käyttäjän {name} kanssa"
+      "field_all_libraries": "Kaikki kirjastot"
     },
     "file_browser": {
       "button_cancel": "Peruuta",
@@ -493,7 +489,6 @@
     "server_settings": "Palvelimen asetukset"
   },
   "settings_user": {
-    "edit_shared_libraries": "Muokkaa jaettuja kirjastoja",
     "edit_user": "Muokkaa käyttäjää",
     "role_administrator": "Järjestelmänvalvoja",
     "role_user": "Käyttäjä"

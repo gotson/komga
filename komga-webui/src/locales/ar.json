@@ -3,6 +3,10 @@
     "dataFooter": {
       "pageText": "{0}-{1} من {2}"
     },
+    "dataIterator": {
+      "loadingText": "جارٍ تحميل العناصر ...",
+      "noResultsText": "لم يتم العثور على سجلات مطابقة"
+    },
     "dataTable": {
       "itemsPerPageText": "الصفوف لكل صفحة:",
       "sortBy": "مفروزة حسب"
@@ -17,6 +21,15 @@
     "account_settings": "إعدادات الحساب",
     "change_password": "تغيير كلمة السر"
   },
+  "authentication_activity": {
+    "datetime": "تاريخ الوقت",
+    "email": "البريد الإلكتروني",
+    "error": "خطأ",
+    "ip": "IP",
+    "source": "مصدر",
+    "success": "نجاح",
+    "user_agent": "وكيل المستخدم"
+  },
   "author_roles": {
     "colorist": "ملونين",
     "cover": "الغلاف",
@@ -24,11 +37,14 @@
     "inker": "محبرين",
     "letterer": "كاتب الحروف",
     "penciller": "رسامين",
+    "translator": "المترجمون",
     "writer": "الكتاب"
   },
   "book_card": {
     "error": "خطأ",
+    "no_release_date": "لا يوجد تاريخ إصدار",
     "unknown": "ليتم تحليلها",
+    "unread": "غير مقروء",
     "unsupported": "غير مدعوم"
   },
   "book_import": {
@@ -39,6 +55,13 @@
     "field_import_path": "استيراد من مجلد",
     "info_part1": "تتيح لك هذه الشاشة استيراد الملفات الموجودة خارج المكتبات الموجودة لديك. يمكنك استيراد الملفات فقط إلى السلسلة الموجودة، وفي هذه الحالة ستقوم Komga بنقل الملفات أو نسخها إلى دليل السلسلة المختارة.",
     "info_part2": "إذا اخترت رقمًا لكتاب ، وكان الكتاب موجودًا بالفعل بهذا الرقم ، فستتمكن من مقارنة الكتابين. إذا قررت استيراد الكتاب ، فسيقوم Komga بترقية الكتاب الحالي بالكتاب الجديد ، واستبدال الملف القديم بالجديد بشكل فعال.",
+    "no_files_found": "لم يتم العثور على ملفات",
+    "notification": {
+      "go_to_book": "اذهب للكتاب",
+      "import_failure": "فشل استيراد الكتاب: {file}",
+      "import_successful": "تم استيراد الكتاب بنجاح: {book}",
+      "source_file": "المصدر: {file}"
+    },
     "row": {
       "error_analyze_first": "يحتاج الكتاب للتحليل أولا",
       "error_choose_series": "اختر سلسلة",
@@ -51,7 +74,8 @@
       "number": "رقم",
       "series": "سلسلة"
     },
-    "title": "إستيراد"
+    "title": "إستيراد",
+    "try_another_directory": "حاول البحث في دليل آخر"
   },
   "bookreader": {
     "beginning_of_book": "أنت في بداية الكتاب.",
@@ -77,13 +101,16 @@
       "height": "ملائمة الطول",
       "original": "الأصلي",
       "screen": "شاشة",
-      "width": "ملائمة العرض"
+      "width": "ملائمة العرض",
+      "width_shrink_only": "عرض مناسب (يتقلص فقط)"
     },
     "settings": {
+      "always_fullscreen": "ملء الشاشة دائمًا",
       "animate_page_transitions": "مؤثرات الانتقال بين الصفحات",
       "background_color": "لون الخلفية",
       "background_colors": {
         "black": "أسود",
+        "gray": "رمادي",
         "white": "أبيض"
       },
       "display": "العرض",
@@ -103,6 +130,7 @@
       "cycle_scale": "مقياس الدورة",
       "cycle_side_padding": "تغيير الحدود الجانبية",
       "first_page": "الصفحة الأولى",
+      "fullscreen": "إدخال/إنهاء ملء الشاشة",
       "last_page": "آخر صفحة",
       "left_to_right": "من اليسار إلى اليمين",
       "menus": "القوائم",
@@ -126,7 +154,9 @@
     "file": "ملف",
     "format": "صيغة",
     "isbn": "ردمك",
+    "links": "الروابط",
     "navigation_within_readlist": "التنقل ضمن قائمة القراءة: {name}",
+    "outdated_tooltip": "تم تغيير ملف هذا الكتاب ، يجب إعادة تحليل هذا الكتاب",
     "read_book": "قراءة كتاب",
     "read_incognito": "قراءة التصفح المتخفي",
     "size": "حجم"
@@ -153,25 +183,35 @@
     "all_libraries": "كل المكتبات",
     "books": "كتب",
     "books_n": "لا يوجد كتاب | 1 كتاب | {count} كتب",
+    "books_total": "كتب {count} / {total}",
     "cancel": "إلغاء",
     "close": "إغلاق",
     "collections": "ديوان كتب مصورة",
     "create": "خلق",
     "delete": "حذف",
+    "disk_space": "مساحة القرص",
+    "dismiss": "رفض",
     "download": "تحميل",
     "email": "البريد الإلكتروني",
+    "filename": "اسم الملف",
     "filter_no_matches": "الفلتر النشط ليس له تطابق",
     "genre": "نوع",
     "go_to_library": "اذهب إلى المكتبة",
     "go_to_readlist": "انتقل إلى قائمة القراءة",
     "go_to_series": "الانتقال إلى السلسلة",
+    "library": "مكتبة",
     "locale_name": "العربية",
     "locale_rtl": "true",
+    "lock_all": "قفل الكل",
     "n_selected": "{count} مختار",
     "nothing_to_show": "لا شيء للعرض",
+    "outdated": "متقادمة",
+    "page": "صفحة",
+    "page_number": "رقم الصفحة",
     "pages": "صفحة",
     "pages_n": "لا توجد صفحات | 1 صفحة | {count} صفحة",
     "password": "كلمة السر",
+    "pending_tasks": "لا توجد مهام معلقة | مهمة واحدة معلقة | {count} مهام معلقة",
     "publisher": "الناشر",
     "read": "اقرأ",
     "readlists": "قوائم القراءة",
@@ -179,7 +219,11 @@
     "reset_filters": "إعادة تعيين فلتر",
     "roles": "أدوار",
     "series": "سلسلة",
+    "sidecars": "Sidecars",
     "tags": "التصنيف",
+    "unavailable": "غير متوفر",
+    "unlock_all": "فتح الكل",
+    "url": "عنوان URL",
     "use_filter_panel_to_change_filter": "استخدام لوحة الفلتر لتغيير فلتر نشط",
     "year": "سنة"
   },
@@ -188,6 +232,8 @@
     "on_deck": "على السطح",
     "recently_added_books": "كتب مصورة مضافة مؤخرًا",
     "recently_added_series": "سلاسل أضيفت مؤخرا",
+    "recently_read_books": "كتب تمت قراءتها مؤخرًا",
+    "recently_released_books": "الكتب التي صدرت مؤخرا",
     "recently_updated_series": "سلاسل تم تحديثها مؤخرًا"
   },
   "data_import": {
@@ -231,11 +277,28 @@
       "field_role_page_streaming": "تدفق الصفحة",
       "label_roles": "أدوار"
     },
+    "analyze_library": {
+      "body": "يحلل جميع ملفات الوسائط في المكتبة. التحليل يلتقط معلومات حول وسائل الإعلام. اعتمادًا على حجم مكتبتك ، قد يستغرق هذا وقتًا طويلاً.",
+      "button_confirm": "حلل",
+      "title": "تحليل المكتبة"
+    },
+    "delete_book": {
+      "button_confirm": "حذف",
+      "confirm_delete": "نعم، حذف كتاب \"{name}\" وملفاته",
+      "confirm_delete_multiple": "نعم ، احذف كتب {count} وملفاتها",
+      "dialog_title": "حذف الكتاب",
+      "dialog_title_multiple": "حذف الكتب",
+      "warning_html": "ستتم إزالة الكتاب <b> {name} </b> من هذا الخادم جنبًا إلى جنب مع ملفات الوسائط المخزنة. لا يمكن التراجع عن <b> هذا </b>. يكمل؟",
+      "warning_multiple_html": "ستتم إزالة كتب {count} من هذا الخادم جنبًا إلى جنب مع ملفات الوسائط المخزنة. لا يمكن التراجع عن <b> هذا </b>. يكمل؟"
+    },
     "delete_collection": {
       "button_confirm": "حذف",
       "confirm_delete": "نعم ، احذف المجموعة \"{name}\"",
+      "confirm_delete_multiple": "نعم، حذف مجموعات {count}",
       "dialog_title": "حذف المجموعة",
-      "warning_html": "ستتم إزالة المجموعة <b>{name}</b>; من هذا الخادم. لن تتأثر الملفات. لا يمكن التراجع عن هذا . مواصله؟"
+      "dialog_title_multiple": "حذف المجموعات",
+      "warning_html": "ستتم إزالة المجموعة <b>{name}</b>; من هذا الخادم. لن تتأثر الملفات. لا يمكن التراجع عن هذا . مواصله؟",
+      "warning_multiple_html": "ستتم إزالة مجموعات {count} من هذا الخادم. لن تتأثر ملفات الوسائط الخاصة بك. لا يمكن التراجع عن <b> هذا </b>. استمر؟"
     },
     "delete_library": {
       "button_confirm": "حذف",
@@ -246,8 +309,19 @@
     "delete_readlist": {
       "button_confirm": "حذف",
       "confirm_delete": "نعم ، احذف قائمة القراءة \"{name}\"",
+      "confirm_delete_multiple": "نعم ، احذف قوائم القراءة {count}",
       "dialog_title": "حذف قائمة القراءة",
-      "warning_html": "ستتم إزالة قائمة القراءة <b>{name}</b> من هذا الخادم. ملفات الوسائط الخاصة بك لن تتأثر. هذا لا يمكن التراجع عنه. مواصله؟"
+      "dialog_title_multiple": "حذف قوائم القراءة",
+      "warning_html": "ستتم إزالة قائمة القراءة <b>{name}</b> من هذا الخادم. ملفات الوسائط الخاصة بك لن تتأثر. هذا لا يمكن التراجع عنه. مواصله؟",
+      "warning_multiple_html": "ستتم إزالة قوائم القراءة {count} من هذا الخادم. لن تتأثر ملفات الوسائط الخاصة بك. لا يمكن التراجع عن <b> هذا </b>. استمر؟"
+    },
+    "delete_series": {
+      "button_confirm": "حذف",
+      "confirm_delete": "نعم ، احذف السلسلة \"{name}\" وملفاتها",
+      "confirm_delete_multiple": "نعم ، احذف سلسلة {count} وملفاتها",
+      "dialog_title": "حذف السلسلة",
+      "warning_html": "ستتم إزالة السلسلة <b> {name} </b> من هذا الخادم جنبًا إلى جنب مع ملفات الوسائط المخزنة. لا يمكن التراجع عن <b> هذا </b>. استمر؟",
+      "warning_multiple_html": "ستتم إزالة سلسلة {count} من هذا الخادم جنبًا إلى جنب مع ملفات الوسائط المخزنة. لا يمكن التراجع عن <b> هذا </b>. استمر؟"
     },
     "delete_user": {
       "button_confirm": "حذف",
@@ -256,6 +330,7 @@
       "warning_html": "المستخدم <b>{name}</b> سيتم حذفه من هذا الخادم. هذا لا يمكن التراجع عنه. مواصله؟"
     },
     "edit_books": {
+      "add_author_role_error_duplicate": "موجود مسبقا",
       "authors_notice_multiple_edit": "أنت تقوم بتحرير مؤلفين لكتب متعددة. سيؤدي هذا إلى تجاوز المؤلفين الحاليين لكل كتاب.",
       "button_cancel": "إلغاء",
       "button_confirm": "حفظ التغييرات",
@@ -263,6 +338,10 @@
       "dialog_title_single": "تحرير {book}",
       "field_isbn": "ردمك",
       "field_isbn_error": "يجب أن يكون رقم ردمك 13 صالحًا",
+      "field_link_label": "ملصق",
+      "field_link_url": "عنوان URL",
+      "field_link_url_error_protocol": "يجب أن يكون http أو https",
+      "field_link_url_error_url": "يجب أن يكون عنوان URL صالحا",
       "field_number": "رقم",
       "field_number_sort": "رقم الفرز",
       "field_number_sort_hint": "يمكنك استخدام الأرقام العشرية",
@@ -273,6 +352,8 @@
       "field_title": "العنوان",
       "tab_authors": "المؤلفون",
       "tab_general": "إعدادات عامة",
+      "tab_links": "الروابط",
+      "tab_poster": "ملصق",
       "tab_tags": "التصنيف",
       "tags_notice_multiple_edit": "أنت تقوم بتحرير العلامات لكتب متعددة. سيؤدي هذا إلى تجاوز العلامات الموجودة لكل كتاب."
     },
@@ -281,15 +362,21 @@
       "button_confirm": "حفظ التغييرات",
       "dialog_title": "تحرير المجموعة",
       "field_manual_ordering": "ترتيب يدوي",
-      "label_ordering": "بشكل افتراضي ، سيتم ترتيب السلسلة في المجموعة حسب الاسم. يمكنك تمكين الطلب اليدوي لتحديد طلبك."
+      "label_ordering": "بشكل افتراضي ، سيتم ترتيب السلسلة في المجموعة حسب الاسم. يمكنك تمكين الطلب اليدوي لتحديد طلبك.",
+      "tab_general": "عام",
+      "tab_poster": "ملصق"
     },
     "edit_library": {
       "button_browse": "تصفّح",
       "button_cancel": "إلغاء",
       "button_confirm_add": "إضافة",
       "button_confirm_edit": "تعديل",
+      "button_next": "التالي",
       "dialog_title_add": "إضافة مكتبة",
       "dialot_title_edit": "تحرير المكتبة",
+      "field_analysis_analyze_dimensions": "تحليل أبعاد الصفحات",
+      "field_analysis_hash_files": "حساب تجزئة للملفات",
+      "field_analysis_hash_pages": "حساب تجزئة الصفحات",
       "field_convert_to_cbz": "تحويل تلقائيا إلى CBZ",
       "field_import_barcode_isbn": "الباركود ردمك",
       "field_import_comicinfo_book": "البيانات الوصفية للكتاب",
@@ -299,27 +386,39 @@
       "field_import_epub_book": "البيانات الوصفية للكتاب",
       "field_import_epub_series": "سلسلة البيانات الوصفية",
       "field_import_local_artwork": "الأعمال الفنية المحلية",
+      "field_import_mylar_series": "سلسلة البيانات الوصفية",
       "field_name": "الاسم",
       "field_repair_extensions": "إصلاح ملحقات الملفات غير الصحيحة تلقائيًا",
       "field_root_folder": "المجلد الرئيسي",
       "field_scanner_deep_scan": "تفحص بعمق",
+      "field_scanner_empty_trash_after_scan": "تفريغ المهملات تلقائيا بعد كل فحص",
       "field_scanner_force_directory_modified_time": "فرض وقت تعديل الدليل",
+      "field_series_cover": "غلاف السلسلة",
       "file_browser_dialog_button_confirm": "إختيار",
       "file_browser_dialog_title": "المجلد الجذر للمكتبة",
+      "label_analysis": "تحليل",
       "label_file_management": "إدارة الملفات",
       "label_import_barcode_isbn": "استيراد رقم ردمك داخل الباركود",
       "label_import_comicinfo": "استيراد البيانات الوصفية لـ CBR/CBZ التي تحتوي على ملف ComicInfo.xml",
       "label_import_epub": "استيراد البيانات الوصفية من ملفات EPUB",
       "label_import_local": "استيراد أصول الوسائط المحلية",
+      "label_import_mylar": "استيراد البيانات الوصفية التي تم إنشاؤها بواسطة Mylar",
       "label_scanner": "الماسح الضوئي",
+      "label_series_cover": "غلاف السلسلة",
       "tab_general": "إعدادات عامة",
-      "tab_options": "الخيارات"
+      "tab_metadata": "البيانات الوصفية",
+      "tab_options": "الخيارات",
+      "tooltip_scanner_force_modified_time": "تمكين إذا كانت المكتبة على Google Drive",
+      "tooltip_use_resources": "يمكن أن تستهلك الكثير من الموارد في مكتبات كبيرة أو أجهزة بطيئة"
     },
     "edit_readlist": {
       "button_cancel": "إلغاء",
       "button_confirm": "حفظ التغييرات",
       "dialog_title": "تحرير قائمة القراءة",
-      "field_name": "الاسم"
+      "field_name": "الاسم",
+      "field_summary": "ملخص",
+      "tab_general": "عام",
+      "tab_poster": "ملصق"
     },
     "edit_series": {
       "button_cancel": "إلغاء",
@@ -330,6 +429,7 @@
       "field_age_rating_error": "يجب أن يكون التصنيف العمري 0 أو أكثر",
       "field_genres": "الأنواع",
       "field_language": "اللغة",
+      "field_language_hint": "علامة لغة IETF BCP 47",
       "field_publisher": "الناشر",
       "field_reading_direction": "اتجاه القراءة",
       "field_sort_title": "فرز العنوان",
@@ -337,8 +437,11 @@
       "field_summary": "ملخص",
       "field_tags": "التصنيف",
       "field_title": "العنوان",
+      "field_total_book_count": "إجمالي عدد الكتاب",
+      "field_total_book_count_error": "يجب أن يكون إجمالي عدد الكتب 1 أو أكثر",
       "mixed": "مختلط",
       "tab_general": "إعدادات عامة",
+      "tab_poster": "ملصق",
       "tab_tags": "التصنيف",
       "tags_notice_multiple_edit": "أنت تقوم بتحرير العلامات لسلسلة متعددة. سيؤدي هذا إلى تجاوز العلامات الموجودة في كل سلسلة."
     },
@@ -349,11 +452,12 @@
       "label_roles_for": "أدوار ل {name}"
     },
     "edit_user_shared_libraries": {
-      "button_cancel": "إلغاء",
-      "button_confirm": "حفظ التغييرات",
-      "dialog_title": "تحرير المكتبات المشتركة",
-      "field_all_libraries": "كل المكتبات",
-      "label_shared_with": "مشترك مع {name}"
+      "field_all_libraries": "كل المكتبات"
+    },
+    "empty_trash": {
+      "body": "بشكل افتراضي ، لا يزيل خادم الوسائط معلومات الوسائط على الفور. هذا يساعد إذا تم فصل محرك الأقراص مؤقتًا. عندما تقوم بإفراغ سلة المهملات الخاصة بمكتبة ما ، يتم حذف جميع المعلومات المتعلقة بالوسائط المفقودة.",
+      "button_confirm": "فارغة",
+      "title": "قم بإفراغ سلة المهملات للمكتبة"
     },
     "file_browser": {
       "button_cancel": "إلغاء",
@@ -380,6 +484,11 @@
       "field_repeat_password": "كرر كلمة السر الجديدة",
       "field_repeat_password_error": "يجب أن تكون كلمات السر متطابقة."
     },
+    "refresh_library_metadata": {
+      "body": "تحديث بيانات التعريف لكافة ملفات الوسائط في المكتبة. اعتمادا على حجم المكتبة، قد يستغرق ذلك وقتا طويلا.",
+      "button_confirm": "تحديث",
+      "title": "تحديث البيانات الوصفية للمكتبة"
+    },
     "series_picker": {
       "label_search_series": "سلسلة البحث",
       "title": "اختيار سلسلة"
@@ -405,6 +514,7 @@
         "height": "طول",
         "index": "فهرس‎",
         "media_type": "نوع الوسائط",
+        "size": "حجم",
         "width": "العرض"
       },
       "title": "تفاصيل الكتاب",
@@ -416,6 +526,21 @@
       "page_of_pages": "{page} / {pages}",
       "title": "فحص الكتاب",
       "title_comparison": "مقارنة الكتاب"
+    }
+  },
+  "duplicate_pages": {
+    "action_delete_auto": "حذف تلقائي",
+    "action_delete_manual": "حذف يدوي",
+    "action_delete_matches": "حذف المطابقات",
+    "action_ignore": "تجاهل",
+    "delete_to_save": "حذف لحفظ {size}",
+    "deleted_count": "تم حذف {count} مرة",
+    "filter": {
+      "count": "عدد",
+      "delete_count": "عدد الحذف",
+      "delete_size": "المساحة المحفوظة",
+      "size": "حجم",
+      "total_size": "الحجم الإجمالي"
     }
   },
   "enums": {
@@ -558,7 +683,6 @@
     "server_settings": "اعدادات الخادم"
   },
   "settings_user": {
-    "edit_shared_libraries": "تحرير المكتبات المشتركة",
     "edit_user": "تحرير المستخدم",
     "role_administrator": "مدير",
     "role_user": "مستخدم"

@@ -410,11 +410,7 @@
       "label_roles_for": "Funciones para {name}"
     },
     "edit_user_shared_libraries": {
-      "button_cancel": "Cancelar",
-      "button_confirm": "Guardar cambios",
-      "dialog_title": "Editar bibliotecas compartidas",
-      "field_all_libraries": "Todas las bibliotecas",
-      "label_shared_with": "Compartida con {name}"
+      "field_all_libraries": "Todas las bibliotecas"
     },
     "empty_trash": {
       "body": "De forma predeterminada, el servidor de medios no elimina la información de los medios de inmediato. Esto ayuda si una unidad se desconecta temporalmente. Cuando vacía la papelera de una biblioteca, se elimina toda la información sobre los medios faltantes.",
@@ -654,7 +650,6 @@
   },
   "settings_user": {
     "change_password": "Cambiar contraseña",
-    "edit_shared_libraries": "Editar bibliotecas compartidas",
     "edit_user": "Editar usuario",
     "latest_activity": "Última actividad: {date}",
     "no_recent_activity": "Sin actividad reciente",

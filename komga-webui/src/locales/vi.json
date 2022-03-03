@@ -42,7 +42,9 @@
   },
   "book_card": {
     "error": "Lỗi",
+    "no_release_date": "Không có ngày xuất bản",
     "unknown": "Cần phân tích",
+    "unread": "Chưa đọc",
     "unsupported": "Không được hỗ trợ"
   },
   "book_import": {
@@ -294,7 +296,8 @@
       "confirm_delete_multiple": "Đúng, xóa {count} bộ sưu tập",
       "dialog_title": "Xoá bộ sưu tập",
       "dialog_title_multiple": "Xóa bộ sưu tập",
-      "warning_html": "Bộ sưu tập <b>{name}</b> sẽ bị xóa khỏi máy chủ này. Các tệp phương tiện của bạn sẽ không bị ảnh hưởng. Điều này <b> không thể hoàn tác</b>. Tiếp tục?"
+      "warning_html": "Bộ sưu tập <b>{name}</b> sẽ bị xóa khỏi máy chủ này. Các tệp phương tiện của bạn sẽ không bị ảnh hưởng. Điều này <b> không thể hoàn tác</b>. Tiếp tục?",
+      "warning_multiple_html": "{count} bộ sưu tập sẽ bị xóa khỏi máy chủ này. Tệp dữ liệu của bạn vẫn sẽ không bị ảnh hưởng. Việc này <b> không thể</b> hoàn tác. Vẫn tiếp tục?"
     },
     "delete_library": {
       "button_confirm": "Xóa",
@@ -307,7 +310,9 @@
       "confirm_delete": "Có, xóa danh sách đọc \"{name}\"",
       "confirm_delete_multiple": "Có, xóa {count} danh sách đọc",
       "dialog_title": "Xóa Bỏ Danh sách Đọc",
-      "warning_html": "Danh sách đọc <b>{name}</b> sẽ bị xóa khỏi máy chủ này. Các tệp phương tiện của bạn sẽ không bị ảnh hưởng. Điều này <b>không thể hoàn tác</b>. tiếp tục?"
+      "dialog_title_multiple": "Xóa danh sách đọc",
+      "warning_html": "Danh sách đọc <b>{name}</b> sẽ bị xóa khỏi máy chủ này. Các tệp phương tiện của bạn sẽ không bị ảnh hưởng. Điều này <b>không thể hoàn tác</b>. tiếp tục?",
+      "warning_multiple_html": "{count} danh sách đọc sẽ bị xóa khỏi máy chủ này. Các tệp phương tiện của bạn sẽ không bị ảnh hưởng. Điều này <b> không thể hoàn tác</b>. Vẫn tiếp tục?"
     },
     "delete_series": {
       "button_confirm": "Xóa",
@@ -426,11 +431,7 @@
       "label_roles_for": "Vai trò cho {name}"
     },
     "edit_user_shared_libraries": {
-      "button_cancel": "Hủy",
-      "button_confirm": "Lưu thay đổi",
-      "dialog_title": "Chỉnh sửa thư viện được chia sẻ",
-      "field_all_libraries": "Tất cả các thư viện",
-      "label_shared_with": "Chia sẻ với {name}"
+      "field_all_libraries": "Tất cả các thư viện"
     },
     "file_browser": {
       "button_cancel": "Hủy",
@@ -632,7 +633,6 @@
     "server_settings": "Cài đặt máy chủ"
   },
   "settings_user": {
-    "edit_shared_libraries": "Chỉnh sửa thư viện được chia sẻ",
     "edit_user": "Chỉnh sửa người dùng",
     "role_administrator": "Người quản lý",
     "role_user": "Người dùng"

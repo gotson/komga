@@ -425,11 +425,7 @@
       "label_roles_for": "Roloj de {name}"
     },
     "edit_user_shared_libraries": {
-      "button_cancel": "Nuligi",
-      "button_confirm": "Konservi ŝanĝojn",
-      "dialog_title": "Redakti komunajn bibliotekojn",
-      "field_all_libraries": "Ĉiuj bibliotekoj",
-      "label_shared_with": "Komuna kun {name}"
+      "field_all_libraries": "Ĉiuj bibliotekoj"
     },
     "empty_trash": {
       "body": "Implicite, la servilo ne tuje forviŝas informojn pri dosieroj. Tio helpus, se disko provizore malkonektiĝus. Se vi malplenigus la rubujon de biblioteko, ĉiuj informoj pri mankantaj dosieroj forviŝiĝus.",
@@ -674,7 +670,6 @@
   },
   "settings_user": {
     "change_password": "Ŝanĝi pasvorton",
-    "edit_shared_libraries": "Redakti komunajn bibliotekojn",
     "edit_user": "Redakti uzanton",
     "latest_activity": "Lasta interago: {date}",
     "no_recent_activity": "Neniu ĵusa interago",

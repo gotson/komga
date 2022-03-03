@@ -408,11 +408,7 @@
       "label_roles_for": "Role dla {name}"
     },
     "edit_user_shared_libraries": {
-      "button_cancel": "Anuluj",
-      "button_confirm": "Zapisz zmiany",
-      "dialog_title": "Edycja bibliotek udostępnionych",
-      "field_all_libraries": "Wszystkie biblioteki",
-      "label_shared_with": "Udostępnione {name}"
+      "field_all_libraries": "Wszystkie biblioteki"
     },
     "empty_trash": {
       "body": "Domyślnie serwer nie usuwa od razu informacji o mediach. Pomaga to, jeśli dysk jest tymczasowo odłączony. Po opróżnieniu kosza dla biblioteki wszystkie informacje o brakujących mediach są usuwane.",
@@ -652,7 +648,6 @@
   },
   "settings_user": {
     "change_password": "Zmień hasło",
-    "edit_shared_libraries": "Edycja bibliotek udostępnionych",
     "edit_user": "Edycja użytkownika",
     "latest_activity": "Ostatnia aktywność: {date}",
     "no_recent_activity": "Brak ostatniej aktywności",

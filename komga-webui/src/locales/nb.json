@@ -378,11 +378,7 @@
       "label_roles_for": "Roller til {name}"
     },
     "edit_user_shared_libraries": {
-      "button_cancel": "Avbryt",
-      "button_confirm": "Lagre endringer",
-      "dialog_title": "Rediger lagrede bibliotek",
-      "field_all_libraries": "Alle bibliotek",
-      "label_shared_with": "Delt med {name}"
+      "field_all_libraries": "Alle bibliotek"
     },
     "empty_trash": {
       "button_confirm": "Tøm",
@@ -590,7 +586,6 @@
   },
   "settings_user": {
     "change_password": "Endre passord",
-    "edit_shared_libraries": "Rediger delte bibliotek",
     "edit_user": "Rediger bruker",
     "no_recent_activity": "Ingen nylig aktivitet",
     "role_administrator": "Administrator",

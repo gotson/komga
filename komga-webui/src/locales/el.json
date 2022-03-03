@@ -18,7 +18,7 @@
     "noDataText": "Δεδομένα μη διαθέσιμα"
   },
   "account_settings": {
-    "account_settings": "Ρυθμίσεις λογαριασμού",
+    "account_settings": "Ρυθμίσεις Λογαριασμού",
     "change_password": "αλλαγή κωδικού"
   },
   "authentication_activity": {
@@ -113,10 +113,104 @@
       "webtoon": "Επιλογές Ανάγνωσης Webtoon"
     },
     "shortcuts": {
-      "close": "Κλείσιμο"
-    }
+      "close": "Κλείσιμο",
+      "first_page": "Πρώτη σελίδα",
+      "last_page": "Τελευταία σελίδα",
+      "left_to_right": "Αριστερά προς δεξιά",
+      "menus": "Μενού",
+      "next_page": "Επόμενη σελίδα",
+      "previous_page": "Προηγούμενη σελίδα",
+      "right_to_left": "Δεξιά προς αριστερά",
+      "settings": "Ρυθμίσεις",
+      "show_hide_help": "Εμφάνιση/απόκρυψη βοήθειας",
+      "show_hide_settings": "Εμφάνιση/απόκρυψη μενού ρυθμίσεων",
+      "vertical": "Κάθετα"
+    },
+    "tooltip_incognito": "Η πρόοδος ανάγνωσης δεν θα αποθηκευτεί"
+  },
+  "browse_book": {
+    "comment": "ΣΧΟΛΙΟ",
+    "download_file": "Κατέβασμα αρχείου",
+    "file": "ΑΡΧΕΙΟ",
+    "format": "ΜΟΡΦΗ",
+    "isbn": "ISBN",
+    "links": "ΣΥΝΔΕΣΜΟΙ",
+    "outdated_tooltip": "Το αρχείο για αυτό το βιβλίο έχει αλλάξει, το βιβλίο πρέπει να αναλυθεί ξανά",
+    "read_book": "Ανάγνωση βιβλίου",
+    "read_incognito": "Ανάγνωση ινκόγκνιτο",
+    "size": "ΜΕΓΕΘΟΣ"
+  },
+  "browse_collection": {
+    "edit_collection": "Επεξεργασία συλλογής",
+    "edit_elements": "Επεξεργασία στοιχείων",
+    "manual_ordering": "χειροκίνητη σειρά"
+  },
+  "browse_readlist": {
+    "edit_elements": "Επεξεργασία στοιχείων",
+    "edit_readlist": "Επεξεργασία λίστας ανάγνωσης"
+  },
+  "browse_series": {
+    "series_no_summary": "Η σειρά δεν έχει σύνοψη, γι αυτό διαλέξαμε μια για σένα!",
+    "summary_from_book": "Σύνοψη από το βιβλίο {number}:"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "Διαχείριση συλλογής",
+    "title": "Συλλογή {name}"
   },
   "common": {
-    "locale_name": "Ελληνικά"
+    "all_libraries": "Όλες οι βιβλιοθήκες",
+    "books": "Βιβλία",
+    "books_n": "Κανένα βιβλίο | 1 βιβλίο | {count} βιβλία",
+    "books_total": "{count} / {total} βιβλία",
+    "cancel": "Άκυρο",
+    "close": "Κλείσιμο",
+    "collections": "Συλλογές",
+    "create": "Δημιουργία",
+    "delete": "Διαγραφή",
+    "disk_space": "Χώρος στο δίσκο",
+    "download": "Κατέβασμα",
+    "email": "Email",
+    "filename": "Όνομα αρχείου",
+    "filter_no_matches": "Το ενεργό φίλτρο δεν έχει αποτελέσματα",
+    "genre": "Είδος",
+    "go_to_library": "Πήγαινε στη βιβλιοθήκη",
+    "go_to_readlist": "Πήγαινε στη λίστα ανάγνωσης",
+    "go_to_series": "Πήγαινε στη σειρά",
+    "library": "Βιβλιοθήκη",
+    "locale_name": "Ελληνικά",
+    "lock_all": "Κλείδωμα όλων",
+    "n_selected": "{count} επιλεγμένα",
+    "page": "Σελίδα",
+    "page_number": "Αριθμός σελίδας",
+    "pages": "σελίδες",
+    "pages_n": "Καμία σελίδα | 1 σελίδα | {count} σελίδες",
+    "password": "Κωδικός",
+    "pending_tasks": "Καμία εκκρεμής εργασία | 1 εκκρεμής εργασία | {count} εκκρεμείς εργασίες",
+    "publisher": "Εκδότης",
+    "read": "Ανάγνωση",
+    "readlists": "Λίστες ανάγνωσης",
+    "required": "Απαιτείται",
+    "reset_filters": "Επαναφορά φίλτρων",
+    "roles": "Ρόλοι",
+    "series": "Σειρές",
+    "tags": "Ετικέτες",
+    "unavailable": "Μη διαθέσιμο",
+    "unlock_all": "Ξεκλείδωμα όλων",
+    "url": "URL",
+    "use_filter_panel_to_change_filter": "Χρησιμοποιήστε τον πίνακα φίλτρου για να αλλάξετε το ενεργό φίλτρο",
+    "year": "έτος"
+  },
+  "dashboard": {
+    "keep_reading": "Συνέχεια ανάγνωσης",
+    "recently_added_books": "Βιβλία που προστέθηκαν πρόσφατα",
+    "recently_added_series": "Σειρές που προστέθηκαν πρόσφατα",
+    "recently_read_books": "Πρόσφατα διαβασμένα βιβλία",
+    "recently_released_books": "Βιβλία που κυκλοφόρησαν πρόσφατα",
+    "recently_updated_series": "Σειρές που ενημερώθηκαν πρόσφατα"
+  },
+  "data_import": {
+    "book_number": "Αριθμός βιβλίου: {name}",
+    "book_series": "Σειρά: {name}",
+    "button_import": "Εισαγωγή"
   }
 }

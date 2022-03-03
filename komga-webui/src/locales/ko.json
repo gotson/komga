@@ -393,9 +393,6 @@
       "dialog_title": "사용자 수정"
     },
     "edit_user_shared_libraries": {
-      "button_cancel": "취소",
-      "button_confirm": "변경 저장",
-      "dialog_title": "공유된 서재 수정",
       "field_all_libraries": "모든 서재"
     },
     "empty_trash": {
@@ -531,7 +528,6 @@
   },
   "settings_user": {
     "change_password": "비밀번호 변경",
-    "edit_shared_libraries": "공유된 서재 편집",
     "edit_user": "사용자 수정",
     "role_administrator": "관리자",
     "role_user": "사용자"

@@ -452,11 +452,7 @@
       "label_roles_for": "Rôles pour {name}"
     },
     "edit_user_shared_libraries": {
-      "button_cancel": "Annuler",
-      "button_confirm": "Enregistrer les modifications",
-      "dialog_title": "Modifier les bibliothèques partagées",
-      "field_all_libraries": "Toutes les bibliothèques",
-      "label_shared_with": "Partagées avec {name}"
+      "field_all_libraries": "Toutes les bibliothèques"
     },
     "empty_trash": {
       "body": "Par défaut, le serveur de médias ne supprime pas immédiatement les informations relatives aux médias. Ceci est utile si un lecteur est temporairement déconnecté. Lorsque vous videz la corbeille d'une bibliothèque, toutes les informations relatives aux médias manquants sont supprimées.",
@@ -563,6 +559,13 @@
       "HARDLINK": "Fichiers Hardlink/Copier",
       "MOVE": "Déplacer les fichiers"
     },
+    "historical_event_type": {
+      "BookConverted": "Livre converti",
+      "BookFileDeleted": "Fichier de livre détecté",
+      "BookImported": "Livre importé",
+      "DuplicatePageDeleted": "Page en doublon supprimée",
+      "SeriesFolderDeleted": "Dossier des séries supprimé"
+    },
     "media_status": {
       "ERROR": "Erreur",
       "OUTDATED": "Dépassé",
@@ -642,6 +645,16 @@
     "filter": "Filtrer",
     "sort": "Trier"
   },
+  "history": {
+    "header": {
+      "book": "Livre",
+      "date": "Date",
+      "details": "Informations",
+      "series": "Séries",
+      "type": "Type"
+    },
+    "title": "Historique"
+  },
   "home": {
     "theme": "Thème",
     "translation": "Traduction"
@@ -665,6 +678,9 @@
     "size": "Taille",
     "status": "Statut",
     "url": "URL"
+  },
+  "media_management": {
+    "title": "Gestion des médias"
   },
   "menu": {
     "add_to_collection": "Ajouter à la collection",
@@ -738,7 +754,6 @@
   },
   "settings_user": {
     "change_password": "Modifier le mot de passe",
-    "edit_shared_libraries": "Modifier les bibliothèques partagées",
     "edit_user": "Modifier l'utilisateur",
     "latest_activity": "Dernière activité : {date}",
     "no_recent_activity": "Aucune activité récente",
