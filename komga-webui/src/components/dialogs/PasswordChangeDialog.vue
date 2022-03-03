@@ -59,6 +59,7 @@
 import Vue from 'vue'
 import {required, sameAs} from 'vuelidate/lib/validators'
 import {ERROR} from '@/types/events'
+import { PasswordUpdateDto } from '@/types/komga-users'
 
 export default Vue.extend({
   name: 'PasswordChangeDialog',

@@ -56,6 +56,7 @@ import {UserRoles} from '@/types/enum-users'
 import Vue from 'vue'
 import {ERROR} from '@/types/events'
 import {LibraryDto} from '@/types/komga-libraries'
+import {UserDto, UserUpdateDto} from '@/types/komga-users'
 
 export default Vue.extend({
   name: 'UserEditDialog',

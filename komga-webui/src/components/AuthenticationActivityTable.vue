@@ -33,6 +33,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import {ERROR} from '@/types/events'
+import { AuthenticationActivityDto } from '@/types/komga-users'
 
 export default Vue.extend({
   name: 'AuthenticationActivityTable',

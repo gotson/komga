@@ -1,4 +1,11 @@
 import {AxiosInstance} from 'axios'
+import {
+  AuthenticationActivityDto,
+  PasswordUpdateDto,
+  UserCreationDto,
+  UserDto,
+  UserUpdateDto,
+} from '@/types/komga-users'
 
 const qs = require('qs')
 

@@ -1,29 +1,43 @@
-interface UserDto {
+import {AllowExclude} from '@/types/enum-users'
+
+export interface UserDto {
   id: string,
   email: string,
   roles: string[],
   sharedAllLibraries: boolean,
-  sharedLibrariesIds: string[]
+  sharedLibrariesIds: string[],
+  labelsAllow: string[],
+  labelsExclude: string[],
+  ageRestriction?: {
+    age: number,
+    restriction: AllowExclude,
+  },
 }
 
-interface UserCreationDto {
+export interface UserCreationDto {
   email: string,
   roles: string[]
 }
 
-interface PasswordUpdateDto {
+export interface PasswordUpdateDto {
   password: string
 }
 
-interface UserUpdateDto {
+export interface UserUpdateDto {
   roles?: string[],
   sharedLibraries?: {
     all: boolean,
     libraryIds: string[]
   },
+  ageRestriction?: {
+    age: number,
+    restriction: AllowExclude,
+  }
+  labelsAllow?: string[],
+  labelsExclude?: string[],
 }
 
-interface AuthenticationActivityDto {
+export interface AuthenticationActivityDto {
   userId?: string,
   email?: string,
   ip?: string,

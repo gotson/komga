@@ -40,12 +40,12 @@
           <v-list-item-action>
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
-                <v-btn icon @click="editSharedLibraries(u)" :disabled="u.roles.includes(UserRoles.ADMIN)"
+                <v-btn icon @click="editRestrictions(u)" :disabled="u.roles.includes(UserRoles.ADMIN)"
                        v-on="on">
                   <v-icon>mdi-book-lock</v-icon>
                 </v-btn>
               </template>
-              <span>{{ $t('settings_user.edit_shared_libraries') }}</span>
+              <span>{{ $t('settings_user.edit_restrictions') }}</span>
             </v-tooltip>
           </v-list-item-action>
 
@@ -93,8 +93,8 @@
       <v-icon>mdi-plus</v-icon>
     </v-btn>
 
-    <user-shared-libraries-edit-dialog v-model="modalEditSharedLibraries"
-                                       :user="userToEditSharedLibraries"
+    <user-restrictions-edit-dialog v-model="modalEditRestrictions"
+                                       :user="userToEditRestrictions"
     />
 
     <password-change-dialog v-model="modalChangePassword"
@@ -121,18 +121,19 @@
 
 <script lang="ts">
 import UserEditDialog from '@/components/dialogs/UserEditDialog.vue'
-import UserSharedLibrariesEditDialog from '@/components/dialogs/UserSharedLibrariesEditDialog.vue'
+import UserRestrictionsEditDialog from '@/components/dialogs/UserRestrictionsEditDialog.vue'
 import {UserRoles} from '@/types/enum-users'
 import Vue from 'vue'
 import PasswordChangeDialog from '@/components/dialogs/PasswordChangeDialog.vue'
 import {ERROR} from '@/types/events'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
+import { UserDto } from '@/types/komga-users'
 
 export default Vue.extend({
   name: 'UsersList',
   components: {
     ConfirmationDialog,
-    UserSharedLibrariesEditDialog,
+    UserRestrictionsEditDialog,
     UserEditDialog,
     PasswordChangeDialog,
   },
@@ -141,8 +142,8 @@ export default Vue.extend({
     modalAddUser: false,
     modalDeleteUser: false,
     userToDelete: {} as UserDto,
-    modalEditSharedLibraries: false,
-    userToEditSharedLibraries: {} as UserDto,
+    modalEditRestrictions: false,
+    userToEditRestrictions: {} as UserDto,
     modalEditUser: false,
     userToEdit: {} as UserDto,
     modalChangePassword: false,
@@ -175,9 +176,9 @@ export default Vue.extend({
       this.userToDelete = user
       this.modalDeleteUser = true
     },
-    editSharedLibraries(user: UserDto) {
-      this.userToEditSharedLibraries = user
-      this.modalEditSharedLibraries = true
+    editRestrictions(user: UserDto) {
+      this.userToEditRestrictions = user
+      this.modalEditRestrictions = true
     },
     editUser(user: UserDto) {
       this.userToEdit = user

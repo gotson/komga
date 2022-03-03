@@ -180,6 +180,7 @@
     "title": "{name} collection"
   },
   "common": {
+    "age": "Age",
     "all_libraries": "All Libraries",
     "books": "Books",
     "books_n": "No book | 1 book | {count} books",
@@ -218,6 +219,7 @@
     "required": "Required",
     "reset_filters": "Reset filters",
     "roles": "Roles",
+    "save_changes": "Save changes",
     "series": "Series",
     "sidecars": "Sidecars",
     "tags": "Tags",
@@ -453,12 +455,18 @@
       "dialog_title": "Edit user",
       "label_roles_for": "Roles for {name}"
     },
-    "edit_user_shared_libraries": {
-      "button_cancel": "Cancel",
-      "button_confirm": "Save changes",
-      "dialog_title": "Edit shared libraries",
-      "field_all_libraries": "All libraries",
-      "label_shared_with": "Shared with {name}"
+    "edit_user_restrictions": {
+      "age_restriction": {
+        "allow_under": "Allow only under",
+        "exclude_over": "Exclude over",
+        "none": "No restriction"
+      },
+      "edit_restrictions_for": "Edit restrictions for {name}",
+      "label_age_restriction": "Age restriction",
+      "label_allow_only_labels": "Allow only labels",
+      "label_exclude_labels": "Exclude labels",
+      "tab_content_restrictions": "Content Restrictions",
+      "tab_shared_libraries": "Shared Libraries"
     },
     "empty_trash": {
       "body": "By default the media server doesn't remove information for media right away. This helps if a drive is temporarily disconnected. When you empty the trash for a library, all information about missing media is deleted.",
@@ -760,7 +768,7 @@
   },
   "settings_user": {
     "change_password": "Change password",
-    "edit_shared_libraries": "Edit shared libraries",
+    "edit_restrictions": "Edit restrictions",
     "edit_user": "Edit user",
     "latest_activity": "Latest activity: {date}",
     "no_recent_activity": "No recent activity",
@@ -803,6 +811,9 @@
   "users": {
     "authentication_activity": "Authentication Activity",
     "users": "Users"
+  },
+  "validation": {
+    "zero_or_more": "Must be 0 or more"
   },
   "welcome": {
     "add_library": "Add library",

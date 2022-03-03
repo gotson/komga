@@ -54,6 +54,7 @@
 import PasswordChangeDialog from '@/components/dialogs/PasswordChangeDialog.vue'
 import Vue from 'vue'
 import AuthenticationActivityTable from '@/components/AuthenticationActivityTable.vue'
+import { UserDto } from '@/types/komga-users'
 
 export default Vue.extend({
   name: 'AccountSettings',

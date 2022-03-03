@@ -3,6 +3,7 @@ import {UserRoles} from '@/types/enum-users'
 import {AxiosInstance} from 'axios'
 import _Vue from 'vue'
 import {Module} from 'vuex/types'
+import {UserCreationDto, UserDto, UserUpdateDto} from '@/types/komga-users'
 
 let service: KomgaUsersService
 

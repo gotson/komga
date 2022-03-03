@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios'
+import {UserDto} from '@/types/komga-users'
 
 const API_CLAIM = '/api/v1/claim'
 
