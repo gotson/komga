@@ -451,11 +451,7 @@
       "label_roles_for": "{name}的权限"
     },
     "edit_user_shared_libraries": {
-      "button_cancel": "取消",
-      "button_confirm": "保存修改",
-      "dialog_title": "编辑共享库",
-      "field_all_libraries": "所有库",
-      "label_shared_with": "{name}共享"
+      "field_all_libraries": "所有库"
     },
     "empty_trash": {
       "body": "默认情况下，媒体服务器不会立即删除媒体的信息。这对驱动器暂时断开连接的情况有所帮助。清空库的回收站时，所有丢失媒体的信息都会被删除。",
@@ -562,6 +558,13 @@
       "HARDLINK": "硬链接/复制文件",
       "MOVE": "移动文件"
     },
+    "historical_event_type": {
+      "BookConverted": "已转换的书籍",
+      "BookFileDeleted": "已删除的书籍文件",
+      "BookImported": "导入的书籍",
+      "DuplicatePageDeleted": "删除的重复页面",
+      "SeriesFolderDeleted": "删除的连载文件夹"
+    },
     "media_status": {
       "ERROR": "错误",
       "OUTDATED": "过期",
@@ -641,6 +644,16 @@
     "filter": "过滤",
     "sort": "排序"
   },
+  "history": {
+    "header": {
+      "book": "书籍",
+      "date": "日期",
+      "details": "详情",
+      "series": "连载",
+      "type": "类型"
+    },
+    "title": "历史记录"
+  },
   "home": {
     "theme": "主题",
     "translation": "翻译"
@@ -664,6 +677,9 @@
     "size": "大小",
     "status": "状态",
     "url": "地址"
+  },
+  "media_management": {
+    "title": "媒体管理"
   },
   "menu": {
     "add_to_collection": "添加到收藏",
@@ -736,7 +752,6 @@
   },
   "settings_user": {
     "change_password": "更改密码",
-    "edit_shared_libraries": "编辑共享库",
     "edit_user": "编辑用户",
     "latest_activity": "最新活动：{date}",
     "no_recent_activity": "近期无活动",

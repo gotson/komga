@@ -406,11 +406,7 @@
       "label_roles_for": "{name} szerepei"
     },
     "edit_user_shared_libraries": {
-      "button_cancel": "Mégse",
-      "button_confirm": "Módosítások mentése",
-      "dialog_title": "Megosztott könyvtárak szerkesztése",
-      "field_all_libraries": "Minden könyvtár",
-      "label_shared_with": "Megosztva a következővel: {name}"
+      "field_all_libraries": "Minden könyvtár"
     },
     "empty_trash": {
       "button_confirm": "Üres",
@@ -645,7 +641,6 @@
   },
   "settings_user": {
     "change_password": "Jelszó módosítása",
-    "edit_shared_libraries": "Megosztott könyvtárak szerkesztése",
     "edit_user": "Felhasználó szerkesztése",
     "latest_activity": "Utolsó aktivitás: {date}",
     "no_recent_activity": "Nincs mostani aktivitás",

@@ -349,11 +349,7 @@
       "label_roles_for": "Rollen voor {name}"
     },
     "edit_user_shared_libraries": {
-      "button_cancel": "Annuleren",
-      "button_confirm": "Wijzigingen opslaan",
-      "dialog_title": "Bewerk gedeelde bibliotheken",
-      "field_all_libraries": "Alle bibliotheken",
-      "label_shared_with": "Gedeeld met {name}"
+      "field_all_libraries": "Alle bibliotheken"
     },
     "file_browser": {
       "button_cancel": "Annuleren",
@@ -558,7 +554,6 @@
     "server_settings": "Serverinstellingen"
   },
   "settings_user": {
-    "edit_shared_libraries": "Bewerk gedeelde bibliotheken",
     "edit_user": "Bewerk gebruiker",
     "role_administrator": "Administrator",
     "role_user": "Gebruiker"

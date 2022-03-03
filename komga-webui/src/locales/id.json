@@ -42,7 +42,9 @@
   },
   "book_card": {
     "error": "Error",
+    "no_release_date": "Tidak ada tanggal rilis",
     "unknown": "Untuk dianalisis",
+    "unread": "Belum dibaca",
     "unsupported": "Tidak didukung"
   },
   "book_import": {
@@ -187,9 +189,11 @@
     "collections": "Koleksi",
     "create": "Buat",
     "delete": "Hapus",
+    "disk_space": "Ruang disk",
     "dismiss": "Hentikan",
     "download": "Unduh",
     "email": "Email",
+    "filename": "Nama berkas",
     "filter_no_matches": "Filter aktif tidak memiliki kecocokan",
     "genre": "Genre",
     "go_to_library": "Menuju pustaka",
@@ -202,6 +206,8 @@
     "n_selected": "{count} terpilih",
     "nothing_to_show": "Tidak ada yang dapat ditampilkan",
     "outdated": "Kedaluwarsa",
+    "page": "Halaman",
+    "page_number": "Nomor halaman",
     "pages": "halaman",
     "pages_n": "Tidak ada halaman | 1 halaman | {count} halaman",
     "password": "Kata sandi",
@@ -213,9 +219,11 @@
     "reset_filters": "Setel ulang filter",
     "roles": "Peran",
     "series": "Seri",
+    "sidecars": "Sidecars",
     "tags": "Tag",
     "unavailable": "Tidak tersedia",
     "unlock_all": "Buka seluruhnya",
+    "url": "URL",
     "use_filter_panel_to_change_filter": "Gunakan panel filter untuk mengubah filter aktif",
     "year": "tahun"
   },
@@ -345,6 +353,7 @@
       "tab_authors": "Pengarang",
       "tab_general": "Umum",
       "tab_links": "Link",
+      "tab_poster": "Poster",
       "tab_tags": "Tag",
       "tags_notice_multiple_edit": "Anda sedang mengedit tag untuk beberapa buku. Ini akan menggantikan tag yang ada dari setiap buku."
     },
@@ -353,7 +362,9 @@
       "button_confirm": "Simpan perubahan",
       "dialog_title": "Edit koleksi",
       "field_manual_ordering": "Urutkan manual",
-      "label_ordering": "Secara default, seri dalam koleksi akan diurutkan berdasarkan nama. Anda dapat mengaktifkan pemesanan manual untuk menentukan pesanan Anda sendiri."
+      "label_ordering": "Secara default, seri dalam koleksi akan diurutkan berdasarkan nama. Anda dapat mengaktifkan pemesanan manual untuk menentukan pesanan Anda sendiri.",
+      "tab_general": "Umum",
+      "tab_poster": "Poster"
     },
     "edit_library": {
       "button_browse": "Telusuri",
@@ -405,7 +416,9 @@
       "button_confirm": "Simpan perubahan",
       "dialog_title": "Edit daftar bacaan",
       "field_name": "Nama",
-      "field_summary": "Ringkasan"
+      "field_summary": "Ringkasan",
+      "tab_general": "Umum",
+      "tab_poster": "Poster"
     },
     "edit_series": {
       "button_cancel": "Batal",
@@ -439,11 +452,7 @@
       "label_roles_for": "Peran untuk {name}"
     },
     "edit_user_shared_libraries": {
-      "button_cancel": "Batal",
-      "button_confirm": "Simpan perubahan",
-      "dialog_title": "Edit pustaka bersama",
-      "field_all_libraries": "Semua Pustaka",
-      "label_shared_with": "Dibagikan dengan {name}"
+      "field_all_libraries": "Semua Pustaka"
     },
     "empty_trash": {
       "body": "Secara default, server media tidak langsung menghapus informasi untuk media. Ini membantu jika drive terputus sementara. Saat Anda mengosongkan sampah untuk perpustakaan, semua informasi tentang media yang hilang akan dihapus.",
@@ -519,6 +528,26 @@
       "title_comparison": "Perbandingan Buku"
     }
   },
+  "duplicate_pages": {
+    "action_delete_auto": "Hapus otomatis",
+    "action_delete_manual": "Hapus manual",
+    "action_delete_matches": "Hapus kecocokan",
+    "action_ignore": "Abaikan",
+    "delete_to_save": "Hapus untuk mengosongkan {size}",
+    "deleted_count": "Dihapus {count} kali",
+    "filter": {
+      "count": "Hitung",
+      "delete_count": "Jumlah penghapusan",
+      "delete_size": "Ruang disimpan",
+      "size": "Ukuran",
+      "total_size": "Ukuran keseluruhan"
+    },
+    "info": "Menghapus halaman duplikat akan mengubah file Anda. Cadangkan file Anda dan gunakan penghapusan manual sebelum menggunakan penghapusan otomatis.",
+    "matches_n": "Tidak ada kecocokan | 1 kecocokan| {count} kecocokan",
+    "saved_size": "{size} terbebas",
+    "title": "Halaman duplikat",
+    "unknown_size": "Ukuran tidak diketahui"
+  },
   "duplicates": {
     "file_hash": "File hash",
     "size": "Ukuran",
@@ -529,6 +558,11 @@
     "copy_mode": {
       "HARDLINK": "Hardlink/Salin Berkas",
       "MOVE": "Pindahkan Berkas"
+    },
+    "historical_event_type": {
+      "BookConverted": "Buku dikonversi",
+      "BookFileDeleted": "Berkas buku dihapus",
+      "BookImported": "Pesan diimpor"
     },
     "media_status": {
       "ERROR": "Kesalahan",
@@ -691,7 +725,6 @@
   },
   "settings_user": {
     "change_password": "Ganti kata sandi",
-    "edit_shared_libraries": "Edit pustaka bersama",
     "edit_user": "Edit pengguna",
     "latest_activity": "Aktivitas terbaru: {date}",
     "no_recent_activity": "Tidak ada aktivitas terbaru",

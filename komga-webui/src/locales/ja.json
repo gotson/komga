@@ -412,11 +412,7 @@
       "label_roles_for": "{name} がもつ役割"
     },
     "edit_user_shared_libraries": {
-      "button_cancel": "キャンセル",
-      "button_confirm": "変更を保存",
-      "dialog_title": "共有ライブラリを編集",
-      "field_all_libraries": "全ライブラリ",
-      "label_shared_with": "{name} と共有"
+      "field_all_libraries": "全ライブラリ"
     },
     "empty_trash": {
       "body": "デフォルトでは、メディアサーバーはメディアの情報をすぐには削除しません。これは、ドライブが一時的に切断された場合に役立ちます。ライブラリのゴミ箱を空にすると、見つからないメディアに関するすべての情報が削除されます。",
@@ -636,7 +632,6 @@
     "server_settings": "サーバ設定"
   },
   "settings_user": {
-    "edit_shared_libraries": "共有ライブラリの編集",
     "edit_user": "ユーザの編集",
     "role_administrator": "管理者",
     "role_user": "ユーザ"

@@ -408,11 +408,7 @@
       "label_roles_for": "Cargos para {name}"
     },
     "edit_user_shared_libraries": {
-      "button_cancel": "Cancelar",
-      "button_confirm": "Salvar mudanças",
-      "dialog_title": "Editar bibliotecas compartilhadas",
-      "field_all_libraries": "Todas as bibliotecas",
-      "label_shared_with": "Compartilhado com {name}"
+      "field_all_libraries": "Todas as bibliotecas"
     },
     "empty_trash": {
       "body": "Por padrão, o servidor de mídia não remove as informações da mídia imediatamente. Isso ajuda se uma unidade estiver temporariamente desconectada. Quando você esvazia a lixeira de uma biblioteca, todas as informações sobre mídia ausente são excluídas.",
@@ -652,7 +648,6 @@
   },
   "settings_user": {
     "change_password": "Alterar senha",
-    "edit_shared_libraries": "Editar bibliotecas compartilhadas",
     "edit_user": "Editar Usuário",
     "latest_activity": "Última atividade: {date}",
     "no_recent_activity": "Nenhuma atividade recente",

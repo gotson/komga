@@ -42,7 +42,9 @@
   },
   "book_card": {
     "error": "Fehler",
+    "no_release_date": "Kein Veröffentlichungsdatum",
     "unknown": "Noch nicht analysiert",
+    "unread": "Ungelesen",
     "unsupported": "Nicht unterstützt"
   },
   "book_import": {
@@ -187,9 +189,11 @@
     "collections": "Sammlungen",
     "create": "Erstellen",
     "delete": "Löschen",
+    "disk_space": "Festplattenspeicher",
     "dismiss": "Verwerfen",
     "download": "Herunterladen",
     "email": "E-Mail",
+    "filename": "Dateiname",
     "filter_no_matches": "Die Suchkriterien haben kein Ergebnis geliefert",
     "genre": "Genre",
     "go_to_library": "Gehe zu Bibliothek",
@@ -202,6 +206,8 @@
     "n_selected": "{count} markiert",
     "nothing_to_show": "Nichts anzuzeigen",
     "outdated": "Nicht mehr aktuell",
+    "page": "Seite",
+    "page_number": "Seitennummer",
     "pages": "Seiten",
     "pages_n": "Keine Seite | 1 Seite | {count} Seiten",
     "password": "Passwort",
@@ -213,9 +219,11 @@
     "reset_filters": "Filter Zurücksetzen",
     "roles": "Rollen",
     "series": "Serie",
+    "sidecars": "Sidecars",
     "tags": "Stichwörter",
     "unavailable": "Nicht verfügbar",
     "unlock_all": "Alle entsperren",
+    "url": "URL",
     "use_filter_panel_to_change_filter": "Mit dem Suchfeld können die Suchkriterien eingestellt werden",
     "year": "Jahr"
   },
@@ -345,6 +353,7 @@
       "tab_authors": "Autoren",
       "tab_general": "Allgemein",
       "tab_links": "Links",
+      "tab_poster": "Poster",
       "tab_tags": "Stichwörter",
       "tags_notice_multiple_edit": "Sie verändern die Stichwörter von mehreren Büchern. Dies wird die existierenden Einträge der Stichwörter jedes einzelnen Buches durch den neuen Eintrag ersetzen."
     },
@@ -353,7 +362,9 @@
       "button_confirm": "Änderungen speichern",
       "dialog_title": "Sammlung bearbeiten",
       "field_manual_ordering": "Manuelle Sortierung",
-      "label_ordering": "Sammlungen werden standardmäßig nach Namen sortiert. Sie können die manuelle Sortierung aktivieren und eine eigene Sortierfolge festlegen."
+      "label_ordering": "Sammlungen werden standardmäßig nach Namen sortiert. Sie können die manuelle Sortierung aktivieren und eine eigene Sortierfolge festlegen.",
+      "tab_general": "Allgemein",
+      "tab_poster": "Poster"
     },
     "edit_library": {
       "button_browse": "Durchsuchen",
@@ -405,7 +416,9 @@
       "button_confirm": "Änderungen speichern",
       "dialog_title": "Bearbeite die Leseliste",
       "field_name": "Name",
-      "field_summary": "Zusammenfassung"
+      "field_summary": "Zusammenfassung",
+      "tab_general": "Allgemein",
+      "tab_poster": "Poster"
     },
     "edit_series": {
       "button_cancel": "Abbrechen",
@@ -439,11 +452,7 @@
       "label_roles_for": "Rollen für {name}"
     },
     "edit_user_shared_libraries": {
-      "button_cancel": "Abbrechen",
-      "button_confirm": "Änderungen speichern",
-      "dialog_title": "Bearbeite gemeinsame Bibliotheken",
-      "field_all_libraries": "Alle Bibliotheken",
-      "label_shared_with": "Teile mit {name}"
+      "field_all_libraries": "Alle Bibliotheken"
     },
     "empty_trash": {
       "body": "Standardmäßig entfernt der Medienserver nicht sofort alle Informationen bei mehr vorhandenen Medien. Dies ist zum Schutz der Metadaten gedacht, sollte ein Datenträger temporär nicht verfügbar sein. Wenn Sie eine Bibliothek bereinigen, werden alle Informationen über fehlende Medien gelöscht.",
@@ -519,6 +528,26 @@
       "title_comparison": "Buchvergleich"
     }
   },
+  "duplicate_pages": {
+    "action_delete_auto": "Automatisch löschen",
+    "action_delete_manual": "Manuelles Löschen",
+    "action_delete_matches": "Treffer löschen",
+    "action_ignore": "Ignorieren",
+    "delete_to_save": "Löschen, um {size} freizugeben",
+    "deleted_count": "{count} Einträge gelöscht",
+    "filter": {
+      "count": "Anzahl",
+      "delete_count": "Anzahl der Löschungen",
+      "delete_size": "Speicherersparnis",
+      "size": "Größe",
+      "total_size": "Gesamtgröße"
+    },
+    "info": "Durch das Löschen von Duplikaten werden Ihre Dateien verändert. Sichern Sie Ihre Dateien und nutzen Sie die manuelle Löschung, bevor Sie die automatische Löschung verwenden.",
+    "matches_n": "Keine Übereinstimmungen | 1 Übereinstimmung| {count} Übereinstimmungen",
+    "saved_size": "{size} gespart",
+    "title": "Doppelte Seiten",
+    "unknown_size": "Unbekannte Größe"
+  },
   "duplicates": {
     "file_hash": "Datei Hash",
     "size": "Größe",
@@ -530,12 +559,24 @@
       "HARDLINK": "Hardlink/Dateien kopieren",
       "MOVE": "Dateien übertragen"
     },
+    "historical_event_type": {
+      "BookConverted": "Buch umgewandelt",
+      "BookFileDeleted": "Buchdatei gelöscht",
+      "BookImported": "Buch importiert",
+      "DuplicatePageDeleted": "Doppelte Seiten gelöscht",
+      "SeriesFolderDeleted": "Serienordner gelöscht"
+    },
     "media_status": {
       "ERROR": "Fehler",
       "OUTDATED": "Veraltet",
       "READY": "Fertig",
       "UNKNOWN": "Unbekannt",
       "UNSUPPORTED": "Nicht unterstützt"
+    },
+    "page_hash_action": {
+      "DELETE_AUTO": "Automatisches Löschen",
+      "DELETE_MANUAL": "Manuelles Löschen",
+      "IGNORE": "Ignorieren"
     },
     "reading_direction": {
       "LEFT_TO_RIGHT": "Von links nach rechts",
@@ -604,6 +645,16 @@
     "filter": "Filter",
     "sort": "Sortierung"
   },
+  "history": {
+    "header": {
+      "book": "Buch",
+      "date": "Datum",
+      "details": "Details",
+      "series": "Serie",
+      "type": "Type"
+    },
+    "title": "Historie"
+  },
   "home": {
     "theme": "Design",
     "translation": "Übersetzung"
@@ -628,6 +679,9 @@
     "status": "Status",
     "url": "URL"
   },
+  "media_management": {
+    "title": "Medium Verwaltung"
+  },
   "menu": {
     "add_to_collection": "Zu Sammlung hinzufügen",
     "add_to_readlist": "Füge zur Leseliste hinzu",
@@ -645,6 +699,15 @@
     "refresh_metadata": "Erneuere Metadaten",
     "scan_library_files": "Überprüfe (Scan) Bibliotheksdateien",
     "select_all": "Alle auswählen"
+  },
+  "metrics": {
+    "library_books": "Bücher pro Bibliothek",
+    "library_disk_space": "Speicherverbrauch der Bibliothek",
+    "library_series": "Serien pro Bibliothek",
+    "library_sidecars": "Sidecars pro Bibliothek",
+    "tasks_executed": "Aufgaben ausgeführt",
+    "tasks_total_time": "Benötigte Gesamtzeit für die Aufgaben",
+    "title": "Metriken"
   },
   "navigation": {
     "home": "Übersicht",
@@ -691,7 +754,6 @@
   },
   "settings_user": {
     "change_password": "Passwort ändern",
-    "edit_shared_libraries": "Bearbeite gemeinsame Bibliotheken",
     "edit_user": "Benutzerdaten bearbeiten",
     "latest_activity": "Letzte Aktivität: {date}",
     "no_recent_activity": "Keine letzten Aktivitäten",
@@ -716,6 +778,7 @@
   },
   "thumbnail_card": {
     "tooltip_delete": "Löschen",
+    "tooltip_generated": "Generiertes Artwork",
     "tooltip_mark_as_selected": "Als ausgewählt markieren",
     "tooltip_selected": "Ausgewählt",
     "tooltip_sidecar": "Lokales Artwork",
