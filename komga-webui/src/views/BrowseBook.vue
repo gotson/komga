@@ -420,7 +420,6 @@ import {convertErrorCodes} from '@/functions/error-codes'
 import RtlIcon from '@/components/RtlIcon.vue'
 import {BookSseDto, LibrarySseDto, ReadListSseDto, ReadProgressSseDto} from '@/types/komga-sse'
 import {RawLocation} from 'vue-router/types/router'
-import {zonedTimeToUtc} from 'date-fns-tz'
 
 export default Vue.extend({
   name: 'BrowseBook',
