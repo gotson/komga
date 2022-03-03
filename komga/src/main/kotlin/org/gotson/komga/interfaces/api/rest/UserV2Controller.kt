@@ -2,6 +2,8 @@ package org.gotson.komga.interfaces.api.rest
 
 import io.swagger.v3.oas.annotations.Parameter
 import mu.KotlinLogging
+import org.gotson.komga.domain.model.ContentRestriction
+import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
 import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
@@ -12,6 +14,7 @@ import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
+import org.gotson.komga.interfaces.api.rest.dto.AllowExclude
 import org.gotson.komga.interfaces.api.rest.dto.AuthenticationActivityDto
 import org.gotson.komga.interfaces.api.rest.dto.PasswordUpdateDto
 import org.gotson.komga.interfaces.api.rest.dto.UserCreationDto
@@ -118,10 +121,22 @@ class UserV2Controller(
             if (sharedLibraries!!.all) emptySet()
             else libraryRepository.findAllByIds(sharedLibraries!!.libraryIds).map { it.id }.toSet()
           } else existing.sharedLibrariesIds,
+          restrictions = ContentRestrictions(
+            ageRestriction = if (isSet("ageRestriction")) {
+              if (ageRestriction == null) null
+              else when (ageRestriction!!.restriction) {
+                AllowExclude.ALLOW_ONLY -> ContentRestriction.AgeRestriction.AllowOnlyUnder(ageRestriction!!.age)
+                AllowExclude.EXCLUDE -> ContentRestriction.AgeRestriction.ExcludeOver(ageRestriction!!.age)
+              }
+            } else existing.restrictions.ageRestriction,
+            labelsAllow = if (isSet("labelsAllow")) labelsAllow
+              ?: emptySet() else existing.restrictions.labelsAllowRestriction?.labels ?: emptySet(),
+            labelsExclude = if (isSet("labelsExclude")) labelsExclude
+              ?: emptySet() else existing.restrictions.labelsExcludeRestriction?.labels ?: emptySet(),
+          ),
         )
       }
-      userRepository.update(updatedUser)
-      logger.info { "Updated user: $updatedUser" }
+      userLifecycle.updateUser(updatedUser)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 

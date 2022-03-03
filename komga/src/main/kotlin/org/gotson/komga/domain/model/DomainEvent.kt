@@ -43,4 +43,7 @@ sealed class DomainEvent : Serializable {
 
   data class ThumbnailReadListAdded(val thumbnail: ThumbnailReadList) : DomainEvent()
   data class ThumbnailReadListDeleted(val thumbnail: ThumbnailReadList) : DomainEvent()
+
+  data class UserUpdated(val user: KomgaUser, val expireSession: Boolean) : DomainEvent()
+  data class UserDeleted(val user: KomgaUser) : DomainEvent()
 }

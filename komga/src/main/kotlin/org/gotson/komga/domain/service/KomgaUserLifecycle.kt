@@ -1,6 +1,8 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
+import org.gotson.komga.application.events.EventPublisher
+import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.UserEmailAlreadyExistsException
 import org.gotson.komga.domain.persistence.AuthenticationActivityRepository
@@ -22,7 +24,7 @@ class KomgaUserLifecycle(
   private val passwordEncoder: PasswordEncoder,
   private val sessionRegistry: SessionRegistry,
   private val transactionTemplate: TransactionTemplate,
-
+  private val eventPublisher: EventPublisher,
 ) {
 
   fun updatePassword(user: KomgaUser, newPassword: String, expireSessions: Boolean) {
@@ -31,6 +33,26 @@ class KomgaUserLifecycle(
     userRepository.update(updatedUser)
 
     if (expireSessions) expireSessions(updatedUser)
+
+    eventPublisher.publishEvent(DomainEvent.UserUpdated(updatedUser, expireSessions))
+  }
+
+  fun updateUser(user: KomgaUser) {
+    val existing = userRepository.findByIdOrNull(user.id)
+    requireNotNull(existing) { "User doesn't exist, cannot update: $user" }
+
+    val toUpdate = user.copy(password = existing.password)
+    logger.info { "Update user: $toUpdate" }
+    userRepository.update(toUpdate)
+
+    val expireSessions = existing.roles() != user.roles() ||
+      existing.restrictions != user.restrictions ||
+      existing.sharedAllLibraries != user.sharedAllLibraries ||
+      existing.sharedLibrariesIds != user.sharedLibrariesIds
+
+    if (expireSessions) expireSessions(toUpdate)
+
+    eventPublisher.publishEvent(DomainEvent.UserUpdated(toUpdate, expireSessions))
   }
 
   fun countUsers() = userRepository.count()
@@ -56,9 +78,11 @@ class KomgaUserLifecycle(
     }
 
     expireSessions(user)
+
+    eventPublisher.publishEvent(DomainEvent.UserUpdated(user, true))
   }
 
-  private fun expireSessions(user: KomgaUser) {
+  fun expireSessions(user: KomgaUser) {
     logger.info { "Expiring all sessions for user: ${user.email}" }
     sessionRegistry
       .getAllSessions(KomgaPrincipal(user), false)

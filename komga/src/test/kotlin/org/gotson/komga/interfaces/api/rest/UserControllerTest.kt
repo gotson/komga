@@ -1,6 +1,10 @@
 package org.gotson.komga.interfaces.api.rest
 
+import com.ninjasquad.springmockk.SpykBean
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
+import org.gotson.komga.domain.model.ContentRestriction
+import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
@@ -37,8 +41,11 @@ class UserControllerTest(
   @Autowired private val libraryRepository: LibraryRepository,
   @Autowired private val libraryLifecycle: LibraryLifecycle,
   @Autowired private val userRepository: KomgaUserRepository,
-  @Autowired private val userLifecycle: KomgaUserLifecycle,
 ) {
+
+  @SpykBean
+  private lateinit var userLifecycle: KomgaUserLifecycle
+
   private val admin = KomgaUser("admin@example.org", "", true, id = "admin")
 
   @BeforeAll
@@ -106,6 +113,8 @@ class UserControllerTest(
         assertThat(this.rolePageStreaming).isTrue
         assertThat(this.roleAdmin).isFalse
       }
+
+      verify(exactly = 1) { userLifecycle.expireSessions(any()) }
     }
 
     @Test
@@ -133,6 +142,8 @@ class UserControllerTest(
         assertThat(this.rolePageStreaming).isFalse
         assertThat(this.roleAdmin).isFalse
       }
+
+      verify(exactly = 1) { userLifecycle.expireSessions(any()) }
     }
 
     @Test
@@ -162,6 +173,8 @@ class UserControllerTest(
         assertThat(this!!.sharedAllLibraries).isFalse
         assertThat(this.sharedLibrariesIds).containsExactlyInAnyOrder("1", "2")
       }
+
+      verify(exactly = 1) { userLifecycle.expireSessions(any()) }
     }
 
     @Test
@@ -191,11 +204,13 @@ class UserControllerTest(
         assertThat(this!!.sharedAllLibraries).isFalse
         assertThat(this.sharedLibrariesIds).containsExactlyInAnyOrder("2")
       }
+
+      verify(exactly = 1) { userLifecycle.expireSessions(any()) }
     }
 
     @Test
     @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
-    fun `given user with library restrictions when removing restrictions then they restrictions are updated`() {
+    fun `given user with library restrictions when removing restrictions then the restrictions are updated`() {
       val user = KomgaUser("user@example.org", "", false, id = "user", sharedAllLibraries = false, sharedLibrariesIds = setOf("2"))
       userLifecycle.createUser(user)
 
@@ -220,6 +235,196 @@ class UserControllerTest(
         assertThat(this!!.sharedAllLibraries).isTrue
         assertThat(this.sharedLibrariesIds).isEmpty()
       }
+
+      verify(exactly = 1) { userLifecycle.expireSessions(any()) }
+    }
+
+    @Test
+    @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
+    fun `given user without labels restrictions when adding restrictions then restrictions are updated`() {
+      val user = KomgaUser("user@example.org", "", false, id = "user")
+      userLifecycle.createUser(user)
+
+      val jsonString = """
+        {
+          "labelsAllow": ["cute", "kids"],
+          "labelsExclude": ["adult"]
+        }
+      """.trimIndent()
+
+      mockMvc.patch("/api/v2/users/${user.id}") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
+        status { isNoContent() }
+      }
+
+      with(userRepository.findByIdOrNull(user.id)) {
+        assertThat(this).isNotNull
+        assertThat(this!!.restrictions.labelsAllowRestriction!!.labels).containsExactlyInAnyOrder("cute", "kids")
+        assertThat(this.restrictions.labelsExcludeRestriction!!.labels).containsOnly("adult")
+      }
+
+      verify(exactly = 1) { userLifecycle.expireSessions(any()) }
+    }
+
+    @Test
+    @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
+    fun `given user with labels restrictions when removing restrictions then restrictions are updated`() {
+      val user = KomgaUser(
+        "user@example.org", "", false, id = "user",
+        restrictions = ContentRestrictions(
+          labelsAllow = setOf("kids", "cute"),
+          labelsExclude = setOf("adult"),
+        ),
+      )
+      userLifecycle.createUser(user)
+
+      val jsonString = """
+        {
+          "labelsAllow": [],
+          "labelsExclude": null
+        }
+      """.trimIndent()
+
+      mockMvc.patch("/api/v2/users/${user.id}") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
+        status { isNoContent() }
+      }
+
+      with(userRepository.findByIdOrNull(user.id)) {
+        assertThat(this).isNotNull
+        assertThat(this!!.restrictions.labelsAllowRestriction).isNull()
+        assertThat(this.restrictions.labelsExcludeRestriction).isNull()
+      }
+
+      verify(exactly = 1) { userLifecycle.expireSessions(any()) }
+    }
+
+    @Test
+    @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
+    fun `given user without age restriction when adding restrictions then restrictions are updated`() {
+      val user = KomgaUser("user@example.org", "", false, id = "user")
+      userLifecycle.createUser(user)
+
+      val jsonString = """
+        {
+          "ageRestriction": {
+            "age": 12,
+            "restriction": "ALLOW_ONLY"
+          }
+        }
+      """.trimIndent()
+
+      mockMvc.patch("/api/v2/users/${user.id}") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
+        status { isNoContent() }
+      }
+
+      with(userRepository.findByIdOrNull(user.id)) {
+        assertThat(this).isNotNull
+        assertThat(this!!.restrictions.ageRestriction).isNotNull
+        assertThat(this.restrictions.ageRestriction).isInstanceOf(ContentRestriction.AgeRestriction.AllowOnlyUnder::class.java)
+        assertThat(this.restrictions.ageRestriction!!.age).isEqualTo(12)
+      }
+
+      verify(exactly = 1) { userLifecycle.expireSessions(any()) }
+    }
+
+    @Test
+    @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
+    fun `given user without age restriction when adding incorrect restrictions then bad request`() {
+      val user = KomgaUser("user@example.org", "", false, id = "user")
+      userLifecycle.createUser(user)
+
+      val jsonString = """
+        {
+          "ageRestriction": {
+            "age": -12,
+            "restriction": "ALLOW_ONLY"
+          }
+        }
+      """.trimIndent()
+
+      mockMvc.patch("/api/v2/users/${user.id}") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
+        status { isBadRequest() }
+      }
+    }
+
+    @Test
+    @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
+    fun `given user with age restriction when removing restriction then restrictions are updated`() {
+      val user = KomgaUser(
+        "user@example.org", "", false, id = "user",
+        restrictions = ContentRestrictions(
+          ageRestriction = ContentRestriction.AgeRestriction.AllowOnlyUnder(12),
+        ),
+      )
+      userLifecycle.createUser(user)
+
+      val jsonString = """
+        {
+          "ageRestriction": null
+        }
+      """.trimIndent()
+
+      mockMvc.patch("/api/v2/users/${user.id}") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
+        status { isNoContent() }
+      }
+
+      with(userRepository.findByIdOrNull(user.id)) {
+        assertThat(this).isNotNull
+        assertThat(this!!.restrictions.ageRestriction).isNull()
+      }
+
+      verify(exactly = 1) { userLifecycle.expireSessions(any()) }
+    }
+
+    @Test
+    @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
+    fun `given user with age restriction when changing restriction then restrictions are updated`() {
+      val user = KomgaUser(
+        "user@example.org", "", false, id = "user",
+        restrictions = ContentRestrictions(
+          ageRestriction = ContentRestriction.AgeRestriction.AllowOnlyUnder(12),
+        ),
+      )
+      userLifecycle.createUser(user)
+
+      val jsonString = """
+        {
+          "ageRestriction": {
+            "age": 16,
+            "restriction": "EXCLUDE"
+          }
+        }
+      """.trimIndent()
+
+      mockMvc.patch("/api/v2/users/${user.id}") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
+        status { isNoContent() }
+      }
+
+      with(userRepository.findByIdOrNull(user.id)) {
+        assertThat(this).isNotNull
+        assertThat(this!!.restrictions.ageRestriction).isNotNull
+        assertThat(this.restrictions.ageRestriction).isExactlyInstanceOf(ContentRestriction.AgeRestriction.ExcludeOver::class.java)
+        assertThat(this.restrictions.ageRestriction!!.age).isEqualTo(16)
+      }
+
+      verify(exactly = 1) { userLifecycle.expireSessions(any()) }
     }
   }
 }
