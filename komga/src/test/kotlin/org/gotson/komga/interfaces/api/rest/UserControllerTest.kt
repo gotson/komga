@@ -3,7 +3,8 @@ package org.gotson.komga.interfaces.api.rest
 import com.ninjasquad.springmockk.SpykBean
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
-import org.gotson.komga.domain.model.ContentRestriction
+import org.gotson.komga.domain.model.AgeRestriction
+import org.gotson.komga.domain.model.AllowExclude
 import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.ROLE_ADMIN
@@ -261,8 +262,8 @@ class UserControllerTest(
 
       with(userRepository.findByIdOrNull(user.id)) {
         assertThat(this).isNotNull
-        assertThat(this!!.restrictions.labelsAllowRestriction!!.labels).containsExactlyInAnyOrder("cute", "kids")
-        assertThat(this.restrictions.labelsExcludeRestriction!!.labels).containsOnly("adult")
+        assertThat(this!!.restrictions.labelsAllow).containsExactlyInAnyOrder("cute", "kids")
+        assertThat(this.restrictions.labelsExclude).containsOnly("adult")
       }
 
       verify(exactly = 1) { userLifecycle.expireSessions(any()) }
@@ -296,8 +297,8 @@ class UserControllerTest(
 
       with(userRepository.findByIdOrNull(user.id)) {
         assertThat(this).isNotNull
-        assertThat(this!!.restrictions.labelsAllowRestriction).isNull()
-        assertThat(this.restrictions.labelsExcludeRestriction).isNull()
+        assertThat(this!!.restrictions.labelsAllow).isEmpty()
+        assertThat(this.restrictions.labelsExclude).isEmpty()
       }
 
       verify(exactly = 1) { userLifecycle.expireSessions(any()) }
@@ -328,8 +329,8 @@ class UserControllerTest(
       with(userRepository.findByIdOrNull(user.id)) {
         assertThat(this).isNotNull
         assertThat(this!!.restrictions.ageRestriction).isNotNull
-        assertThat(this.restrictions.ageRestriction).isInstanceOf(ContentRestriction.AgeRestriction.AllowOnlyUnder::class.java)
         assertThat(this.restrictions.ageRestriction!!.age).isEqualTo(12)
+        assertThat(this.restrictions.ageRestriction!!.restriction).isEqualTo(AllowExclude.ALLOW_ONLY)
       }
 
       verify(exactly = 1) { userLifecycle.expireSessions(any()) }
@@ -364,7 +365,7 @@ class UserControllerTest(
       val user = KomgaUser(
         "user@example.org", "", false, id = "user",
         restrictions = ContentRestrictions(
-          ageRestriction = ContentRestriction.AgeRestriction.AllowOnlyUnder(12),
+          ageRestriction = AgeRestriction(12, AllowExclude.ALLOW_ONLY),
         ),
       )
       userLifecycle.createUser(user)
@@ -396,7 +397,7 @@ class UserControllerTest(
       val user = KomgaUser(
         "user@example.org", "", false, id = "user",
         restrictions = ContentRestrictions(
-          ageRestriction = ContentRestriction.AgeRestriction.AllowOnlyUnder(12),
+          ageRestriction = AgeRestriction(12, AllowExclude.ALLOW_ONLY),
         ),
       )
       userLifecycle.createUser(user)
@@ -420,8 +421,8 @@ class UserControllerTest(
       with(userRepository.findByIdOrNull(user.id)) {
         assertThat(this).isNotNull
         assertThat(this!!.restrictions.ageRestriction).isNotNull
-        assertThat(this.restrictions.ageRestriction).isExactlyInstanceOf(ContentRestriction.AgeRestriction.ExcludeOver::class.java)
         assertThat(this.restrictions.ageRestriction!!.age).isEqualTo(16)
+        assertThat(this.restrictions.ageRestriction!!.restriction).isEqualTo(AllowExclude.EXCLUDE)
       }
 
       verify(exactly = 1) { userLifecycle.expireSessions(any()) }

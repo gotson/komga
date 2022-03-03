@@ -10,34 +10,32 @@ class ContentRestrictionsTest {
     val restriction = ContentRestrictions()
 
     assertThat(restriction.ageRestriction).isNull()
-    assertThat(restriction.labelsAllowRestriction).isNull()
-    assertThat(restriction.labelsExcludeRestriction).isNull()
+    assertThat(restriction.labelsAllow).isEmpty()
+    assertThat(restriction.labelsExclude).isEmpty()
   }
 
   @Test
   fun `given AllowOnlyUnder restriction only when creating restriction then label restrictions are null`() {
-    val restriction = ContentRestrictions(ContentRestriction.AgeRestriction.AllowOnlyUnder(10))
+    val restriction = ContentRestrictions(AgeRestriction(10, AllowExclude.ALLOW_ONLY))
 
-    assertThat(restriction.ageRestriction)
-      .isNotNull
-      .isInstanceOf(ContentRestriction.AgeRestriction.AllowOnlyUnder::class.java)
+    assertThat(restriction.ageRestriction).isNotNull
     assertThat(restriction.ageRestriction!!.age).isEqualTo(10)
+    assertThat(restriction.ageRestriction!!.restriction).isEqualTo(AllowExclude.ALLOW_ONLY)
 
-    assertThat(restriction.labelsAllowRestriction).isNull()
-    assertThat(restriction.labelsExcludeRestriction).isNull()
+    assertThat(restriction.labelsAllow).isEmpty()
+    assertThat(restriction.labelsExclude).isEmpty()
   }
 
   @Test
   fun `given ExcludeOver only when creating restriction then label restrictions are null`() {
-    val restriction = ContentRestrictions(ContentRestriction.AgeRestriction.ExcludeOver(10))
+    val restriction = ContentRestrictions(AgeRestriction(10, AllowExclude.EXCLUDE))
 
-    assertThat(restriction.ageRestriction)
-      .isNotNull
-      .isInstanceOf(ContentRestriction.AgeRestriction.ExcludeOver::class.java)
+    assertThat(restriction.ageRestriction).isNotNull
     assertThat(restriction.ageRestriction!!.age).isEqualTo(10)
+    assertThat(restriction.ageRestriction!!.restriction).isEqualTo(AllowExclude.EXCLUDE)
 
-    assertThat(restriction.labelsAllowRestriction).isNull()
-    assertThat(restriction.labelsExcludeRestriction).isNull()
+    assertThat(restriction.labelsAllow).isEmpty()
+    assertThat(restriction.labelsExclude).isEmpty()
   }
 
   @Test
@@ -47,8 +45,8 @@ class ContentRestrictionsTest {
       labelsExclude = setOf("", " "),
     )
 
-    assertThat(restriction.labelsAllowRestriction).isNull()
-    assertThat(restriction.labelsExcludeRestriction).isNull()
+    assertThat(restriction.labelsAllow).isEmpty()
+    assertThat(restriction.labelsExclude).isEmpty()
   }
 
   @Test
@@ -58,10 +56,8 @@ class ContentRestrictionsTest {
       labelsExclude = setOf("c", "d", "D", "d ", "d", " D ")
     )
 
-    assertThat(restriction.labelsAllowRestriction).isNotNull
-    assertThat(restriction.labelsAllowRestriction!!.labels).containsExactlyInAnyOrder("a", "b")
-    assertThat(restriction.labelsExcludeRestriction).isNotNull
-    assertThat(restriction.labelsExcludeRestriction!!.labels).containsExactlyInAnyOrder("c", "d")
+    assertThat(restriction.labelsAllow).containsExactlyInAnyOrder("a", "b")
+    assertThat(restriction.labelsExclude).containsExactlyInAnyOrder("c", "d")
   }
 
   @Test
@@ -71,10 +67,8 @@ class ContentRestrictionsTest {
       labelsExclude = setOf(" A ", "d", "D", "d ", "d", " D ")
     )
 
-    assertThat(restriction.labelsAllowRestriction).isNotNull
-    assertThat(restriction.labelsAllowRestriction!!.labels).containsExactlyInAnyOrder("b")
-    assertThat(restriction.labelsExcludeRestriction).isNotNull
-    assertThat(restriction.labelsExcludeRestriction!!.labels).containsExactlyInAnyOrder("a", "d")
+    assertThat(restriction.labelsAllow).containsExactlyInAnyOrder("b")
+    assertThat(restriction.labelsExclude).containsExactlyInAnyOrder("a", "d")
   }
 
   @Test
@@ -84,8 +78,7 @@ class ContentRestrictionsTest {
       labelsExclude = setOf(" A ", "b", "B", "B ", "b", " B ")
     )
 
-    assertThat(restriction.labelsAllowRestriction).isNull()
-    assertThat(restriction.labelsExcludeRestriction).isNotNull
-    assertThat(restriction.labelsExcludeRestriction!!.labels).containsExactlyInAnyOrder("a", "b")
+    assertThat(restriction.labelsAllow).isEmpty()
+    assertThat(restriction.labelsExclude).containsExactlyInAnyOrder("a", "b")
   }
 }

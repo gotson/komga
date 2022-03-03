@@ -1,6 +1,6 @@
 package org.gotson.komga.infrastructure.jooq
 
-import org.gotson.komga.domain.model.ContentRestriction
+import org.gotson.komga.domain.model.AllowExclude
 import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.jooq.Tables
@@ -67,30 +67,30 @@ fun DSLContext.insertTempStrings(batchSize: Int, collection: Collection<String>)
 fun DSLContext.selectTempStrings() = this.select(Tables.TEMP_STRING_LIST.STRING).from(Tables.TEMP_STRING_LIST)
 
 fun ContentRestrictions.toCondition(dsl: DSLContext): Condition {
-  val ageAllowed = if (ageRestriction is ContentRestriction.AgeRestriction.AllowOnlyUnder) {
+  val ageAllowed = if (ageRestriction?.restriction == AllowExclude.ALLOW_ONLY) {
     Tables.SERIES_METADATA.AGE_RATING.isNotNull.and(Tables.SERIES_METADATA.AGE_RATING.lessOrEqual(ageRestriction.age))
   } else DSL.noCondition()
 
   val labelAllowed =
-    if (labelsAllowRestriction != null)
+    if (labelsAllow.isNotEmpty())
       Tables.SERIES_METADATA.SERIES_ID.`in`(
         dsl.select(Tables.SERIES_METADATA_SHARING.SERIES_ID)
           .from(Tables.SERIES_METADATA_SHARING)
-          .where(Tables.SERIES_METADATA_SHARING.LABEL.`in`(labelsAllowRestriction.labels)),
+          .where(Tables.SERIES_METADATA_SHARING.LABEL.`in`(labelsAllow)),
       )
     else DSL.noCondition()
 
   val ageDenied =
-    if (ageRestriction is ContentRestriction.AgeRestriction.ExcludeOver)
+    if (ageRestriction?.restriction == AllowExclude.EXCLUDE)
       Tables.SERIES_METADATA.AGE_RATING.isNull.or(Tables.SERIES_METADATA.AGE_RATING.lessThan(ageRestriction.age))
     else DSL.noCondition()
 
   val labelDenied =
-    if (labelsExcludeRestriction != null)
+    if (labelsExclude.isNotEmpty())
       Tables.SERIES_METADATA.SERIES_ID.notIn(
         dsl.select(Tables.SERIES_METADATA_SHARING.SERIES_ID)
           .from(Tables.SERIES_METADATA_SHARING)
-          .where(Tables.SERIES_METADATA_SHARING.LABEL.`in`(labelsExcludeRestriction.labels)),
+          .where(Tables.SERIES_METADATA_SHARING.LABEL.`in`(labelsExclude)),
       )
     else DSL.noCondition()
 

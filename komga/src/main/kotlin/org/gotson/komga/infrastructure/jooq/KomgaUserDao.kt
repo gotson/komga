@@ -1,6 +1,7 @@
 package org.gotson.komga.infrastructure.jooq
 
-import org.gotson.komga.domain.model.ContentRestriction
+import org.gotson.komga.domain.model.AgeRestriction
+import org.gotson.komga.domain.model.AllowExclude
 import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.persistence.KomgaUserRepository
@@ -57,8 +58,7 @@ class KomgaUserDao(
           sharedAllLibraries = ur.sharedAllLibraries,
           restrictions = ContentRestrictions(
             ageRestriction = if (ur.ageRestriction != null && ur.ageRestrictionAllowOnly != null)
-              if (ur.ageRestrictionAllowOnly) ContentRestriction.AgeRestriction.AllowOnlyUnder(ur.ageRestriction)
-              else ContentRestriction.AgeRestriction.ExcludeOver(ur.ageRestriction)
+              AgeRestriction(ur.ageRestriction, if (ur.ageRestrictionAllowOnly) AllowExclude.ALLOW_ONLY else AllowExclude.EXCLUDE)
             else null,
             labelsAllow = usr.filter { it.allow }.map { it.label }.toSet(),
             labelsExclude = usr.filterNot { it.allow }.map { it.label }.toSet(),
@@ -82,9 +82,9 @@ class KomgaUserDao(
       .set(u.AGE_RESTRICTION, user.restrictions.ageRestriction?.age)
       .set(
         u.AGE_RESTRICTION_ALLOW_ONLY,
-        when (user.restrictions.ageRestriction) {
-          is ContentRestriction.AgeRestriction.AllowOnlyUnder -> true
-          is ContentRestriction.AgeRestriction.ExcludeOver -> false
+        when (user.restrictions.ageRestriction?.restriction) {
+          AllowExclude.ALLOW_ONLY -> true
+          AllowExclude.EXCLUDE -> false
           null -> null
         },
       )
@@ -106,9 +106,9 @@ class KomgaUserDao(
       .set(u.AGE_RESTRICTION, user.restrictions.ageRestriction?.age)
       .set(
         u.AGE_RESTRICTION_ALLOW_ONLY,
-        when (user.restrictions.ageRestriction) {
-          is ContentRestriction.AgeRestriction.AllowOnlyUnder -> true
-          is ContentRestriction.AgeRestriction.ExcludeOver -> false
+        when (user.restrictions.ageRestriction?.restriction) {
+          AllowExclude.ALLOW_ONLY -> true
+          AllowExclude.EXCLUDE -> false
           null -> null
         },
       )
@@ -138,14 +138,14 @@ class KomgaUserDao(
   }
 
   private fun insertSharingRestrictions(user: KomgaUser) {
-    user.restrictions.labelsAllowRestriction?.labels?.forEach { label ->
+    user.restrictions.labelsAllow.forEach { label ->
       dsl.insertInto(us)
         .columns(us.USER_ID, us.ALLOW, us.LABEL)
         .values(user.id, true, label)
         .execute()
     }
 
-    user.restrictions.labelsExcludeRestriction?.labels?.forEach { label ->
+    user.restrictions.labelsExclude.forEach { label ->
       dsl.insertInto(us)
         .columns(us.USER_ID, us.ALLOW, us.LABEL)
         .values(user.id, false, label)

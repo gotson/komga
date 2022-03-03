@@ -1,6 +1,7 @@
 package org.gotson.komga.interfaces.api.rest
 
-import org.gotson.komga.domain.model.ContentRestriction
+import org.gotson.komga.domain.model.AgeRestriction
+import org.gotson.komga.domain.model.AllowExclude
 import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.ROLE_ADMIN
@@ -42,8 +43,8 @@ class WithMockCustomUserSecurityContextFactory : WithSecurityContextFactory<With
         sharedAllLibraries = customUser.sharedAllLibraries,
         sharedLibrariesIds = customUser.sharedLibraries.toSet(),
         restrictions = ContentRestrictions(
-          ageRestriction = if (customUser.allowAgeUnder >= 0) ContentRestriction.AgeRestriction.AllowOnlyUnder(customUser.allowAgeUnder)
-          else if (customUser.excludeAgeOver >= 0) ContentRestriction.AgeRestriction.ExcludeOver(customUser.excludeAgeOver)
+          ageRestriction = if (customUser.allowAgeUnder >= 0) AgeRestriction(customUser.allowAgeUnder, AllowExclude.ALLOW_ONLY)
+          else if (customUser.excludeAgeOver >= 0) AgeRestriction(customUser.excludeAgeOver, AllowExclude.EXCLUDE)
           else null,
           labelsAllow = customUser.allowLabels.toSet(),
           labelsExclude = customUser.excludeLabels.toSet(),

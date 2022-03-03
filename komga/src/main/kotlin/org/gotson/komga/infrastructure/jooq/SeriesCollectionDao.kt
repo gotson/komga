@@ -39,10 +39,10 @@ class SeriesCollectionDao(
   )
 
   override fun findByIdOrNull(collectionId: String, filterOnLibraryIds: Collection<String>?, restrictions: ContentRestrictions): SeriesCollection? =
-    selectBase(restrictions.isRestricted())
+    selectBase(restrictions.isRestricted)
       .where(c.ID.eq(collectionId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .apply { if (restrictions.isRestricted()) and(restrictions.toCondition(dsl)) }
+      .apply { if (restrictions.isRestricted) and(restrictions.toCondition(dsl)) }
       .fetchAndMap(filterOnLibraryIds, restrictions)
       .firstOrNull()
 
@@ -56,7 +56,7 @@ class SeriesCollectionDao(
       .and(restrictions.toCondition(dsl))
 
     val queryIds =
-      if (belongsToLibraryIds == null && filterOnLibraryIds == null && !restrictions.isRestricted()) null
+      if (belongsToLibraryIds == null && filterOnLibraryIds == null && !restrictions.isRestricted) null
       else
         dsl.selectDistinct(c.ID)
           .from(c)
@@ -75,7 +75,7 @@ class SeriesCollectionDao(
         else it.toSortField(sorts)
       }
 
-    val items = selectBase(restrictions.isRestricted())
+    val items = selectBase(restrictions.isRestricted)
       .where(conditions)
       .apply { if (queryIds != null) and(c.ID.`in`(queryIds)) }
       .orderBy(orderBy)
@@ -95,14 +95,14 @@ class SeriesCollectionDao(
     val queryIds = dsl.select(c.ID)
       .from(c)
       .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
-      .apply { if (restrictions.isRestricted()) leftJoin(sd).on(cs.SERIES_ID.eq(sd.SERIES_ID)) }
+      .apply { if (restrictions.isRestricted) leftJoin(sd).on(cs.SERIES_ID.eq(sd.SERIES_ID)) }
       .where(cs.SERIES_ID.eq(containsSeriesId))
-      .apply { if (restrictions.isRestricted()) and(restrictions.toCondition(dsl)) }
+      .apply { if (restrictions.isRestricted) and(restrictions.toCondition(dsl)) }
 
-    return selectBase(restrictions.isRestricted())
+    return selectBase(restrictions.isRestricted)
       .where(c.ID.`in`(queryIds))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .apply { if (restrictions.isRestricted()) and(restrictions.toCondition(dsl)) }
+      .apply { if (restrictions.isRestricted) and(restrictions.toCondition(dsl)) }
       .fetchAndMap(filterOnLibraryIds, restrictions)
   }
 
@@ -137,10 +137,10 @@ class SeriesCollectionDao(
         val seriesIds = dsl.select(*cs.fields())
           .from(cs)
           .leftJoin(s).on(cs.SERIES_ID.eq(s.ID))
-          .apply { if (restrictions.isRestricted()) leftJoin(sd).on(cs.SERIES_ID.eq(sd.SERIES_ID)) }
+          .apply { if (restrictions.isRestricted) leftJoin(sd).on(cs.SERIES_ID.eq(sd.SERIES_ID)) }
           .where(cs.COLLECTION_ID.eq(cr.id))
           .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-          .apply { if (restrictions.isRestricted()) and(restrictions.toCondition(dsl)) }
+          .apply { if (restrictions.isRestricted) and(restrictions.toCondition(dsl)) }
           .orderBy(cs.NUMBER.asc())
           .fetchInto(cs)
           .mapNotNull { it.seriesId }

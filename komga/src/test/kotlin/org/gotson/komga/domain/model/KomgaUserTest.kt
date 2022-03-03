@@ -1,7 +1,6 @@
 package org.gotson.komga.domain.model
 
 import org.assertj.core.api.Assertions.assertThat
-import org.gotson.komga.domain.model.ContentRestriction.AgeRestriction
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -14,7 +13,7 @@ class KomgaUserTest {
 
     @Test
     fun `given user with age AllowOnlyUnder restriction when checking for content restriction then it is accurate`() {
-      val user = defaultUser.copy(restrictions = ContentRestrictions(AgeRestriction.AllowOnlyUnder(5)))
+      val user = defaultUser.copy(restrictions = ContentRestrictions(AgeRestriction(5, AllowExclude.ALLOW_ONLY)))
 
       assertThat(user.isContentAllowed(ageRating = 3)).isTrue
       assertThat(user.isContentAllowed(ageRating = 5)).isTrue
@@ -24,7 +23,7 @@ class KomgaUserTest {
 
     @Test
     fun `given user with age ExcludeOver restriction when checking for content restriction then it is accurate`() {
-      val user = defaultUser.copy(restrictions = ContentRestrictions(AgeRestriction.ExcludeOver(16)))
+      val user = defaultUser.copy(restrictions = ContentRestrictions(AgeRestriction(16, AllowExclude.EXCLUDE)))
 
       assertThat(user.isContentAllowed(ageRating = 10)).`as`("age 10 is allowed").isTrue
       assertThat(user.isContentAllowed(ageRating = null)).`as`("age null is allowed").isTrue
@@ -73,9 +72,9 @@ class KomgaUserTest {
     fun `given user with both age AllowOnlyUnder restriction and sharing label AllowOnly restriction when checking for content restriction then it is accurate`() {
       val user = defaultUser.copy(
         restrictions = ContentRestrictions(
-          ageRestriction = AgeRestriction.AllowOnlyUnder(10),
+          ageRestriction = AgeRestriction(10, AllowExclude.ALLOW_ONLY),
           labelsAllow = setOf("allow"),
-        )
+        ),
       )
 
       assertThat(user.isContentAllowed(ageRating = 5)).`as`("age 5 only is sufficient").isTrue
@@ -94,9 +93,9 @@ class KomgaUserTest {
     fun `given user with both age AllowOnlyUnder restriction and sharing label Exclude restriction when checking for content restriction then it is accurate`() {
       val user = defaultUser.copy(
         restrictions = ContentRestrictions(
-          ageRestriction = AgeRestriction.AllowOnlyUnder(10),
+          ageRestriction = AgeRestriction(10, AllowExclude.ALLOW_ONLY),
           labelsExclude = setOf("exclude"),
-        )
+        ),
       )
 
       assertThat(user.isContentAllowed(ageRating = 5)).isTrue

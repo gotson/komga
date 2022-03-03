@@ -2,7 +2,8 @@
 
 package org.gotson.komga.interfaces.api.rest.dto
 
-import org.gotson.komga.domain.model.ContentRestriction
+import org.gotson.komga.domain.model.AgeRestriction
+import org.gotson.komga.domain.model.AllowExclude
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
@@ -45,9 +46,7 @@ data class AgeRestrictionDto(
   val restriction: AllowExclude,
 )
 
-enum class AllowExclude {
-  ALLOW_ONLY, EXCLUDE,
-}
+fun AgeRestriction.toDto() = AgeRestrictionDto(age, restriction)
 
 fun KomgaUser.toDtoV2() =
   UserDtoV2(
@@ -56,13 +55,9 @@ fun KomgaUser.toDtoV2() =
     roles = roles(),
     sharedAllLibraries = sharedAllLibraries,
     sharedLibrariesIds = sharedLibrariesIds,
-    labelsAllow = restrictions.labelsAllowRestriction?.labels ?: emptySet(),
-    labelsExclude = restrictions.labelsExcludeRestriction?.labels ?: emptySet(),
-    ageRestriction = when (restrictions.ageRestriction) {
-      is ContentRestriction.AgeRestriction.AllowOnlyUnder -> AgeRestrictionDto(restrictions.ageRestriction.age, AllowExclude.ALLOW_ONLY)
-      is ContentRestriction.AgeRestriction.ExcludeOver -> AgeRestrictionDto(restrictions.ageRestriction.age, AllowExclude.EXCLUDE)
-      null -> null
-    }
+    labelsAllow = restrictions.labelsAllow,
+    labelsExclude = restrictions.labelsExclude,
+    ageRestriction = restrictions.ageRestriction?.toDto(),
   )
 
 fun KomgaPrincipal.toDtoV2() = user.toDtoV2()

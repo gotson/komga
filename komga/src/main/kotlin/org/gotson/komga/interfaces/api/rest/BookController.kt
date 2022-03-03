@@ -691,7 +691,7 @@ class BookController(
    */
   private fun KomgaUser.checkContentRestriction(book: BookDto) {
     if (!canAccessLibrary(book.libraryId)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-    if (restrictions.isRestricted()) seriesMetadataRepository.findById(book.seriesId).let {
+    if (restrictions.isRestricted) seriesMetadataRepository.findById(book.seriesId).let {
       if (!isContentAllowed(it.ageRating, it.sharingLabels)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     }
   }
@@ -704,7 +704,7 @@ class BookController(
    */
   private fun KomgaUser.checkContentRestriction(book: Book) {
     if (!canAccessLibrary(book.libraryId)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-    if (restrictions.isRestricted()) seriesMetadataRepository.findById(book.seriesId).let {
+    if (restrictions.isRestricted) seriesMetadataRepository.findById(book.seriesId).let {
       if (!isContentAllowed(it.ageRating, it.sharingLabels)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     }
   }
@@ -721,7 +721,7 @@ class BookController(
         if (!canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     }
-    if (restrictions.isRestricted()) bookRepository.getSeriesIdOrNull(bookId)?.let { seriesId ->
+    if (restrictions.isRestricted) bookRepository.getSeriesIdOrNull(bookId)?.let { seriesId ->
       seriesMetadataRepository.findById(seriesId).let {
         if (!isContentAllowed(it.ageRating, it.sharingLabels)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
       }

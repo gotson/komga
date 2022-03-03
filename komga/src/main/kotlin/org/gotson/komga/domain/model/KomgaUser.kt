@@ -72,13 +72,13 @@ data class KomgaUser(
     val labels = sharingLabels.lowerNotBlank().toSet()
 
     val ageAllowed =
-      if (restrictions.ageRestriction is ContentRestriction.AgeRestriction.AllowOnlyUnder)
+      if (restrictions.ageRestriction?.restriction == AllowExclude.ALLOW_ONLY)
         ageRating != null && ageRating <= restrictions.ageRestriction.age
       else null
 
     val labelAllowed =
-      if (restrictions.labelsAllowRestriction != null)
-        restrictions.labelsAllowRestriction.labels.intersect(labels).isNotEmpty()
+      if (restrictions.labelsAllow.isNotEmpty())
+        restrictions.labelsAllow.intersect(labels).isNotEmpty()
       else null
 
     val allowed = when {
@@ -89,13 +89,13 @@ data class KomgaUser(
     if (!allowed) return false
 
     val ageDenied =
-      if (restrictions.ageRestriction is ContentRestriction.AgeRestriction.ExcludeOver)
+      if (restrictions.ageRestriction?.restriction == AllowExclude.EXCLUDE)
         ageRating != null && ageRating >= restrictions.ageRestriction.age
       else false
 
     val labelDenied =
-      if (restrictions.labelsExcludeRestriction != null)
-        restrictions.labelsExcludeRestriction.labels.intersect(labels).isNotEmpty()
+      if (restrictions.labelsExclude.isNotEmpty())
+        restrictions.labelsExclude.intersect(labels).isNotEmpty()
       else false
 
     return !ageDenied && !labelDenied

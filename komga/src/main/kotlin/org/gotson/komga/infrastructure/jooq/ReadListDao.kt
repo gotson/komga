@@ -40,10 +40,10 @@ class ReadListDao(
   )
 
   override fun findByIdOrNull(readListId: String, filterOnLibraryIds: Collection<String>?, restrictions: ContentRestrictions): ReadList? =
-    selectBase(restrictions.isRestricted())
+    selectBase(restrictions.isRestricted)
       .where(rl.ID.eq(readListId))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-      .apply { if (restrictions.isRestricted()) and(restrictions.toCondition(dsl)) }
+      .apply { if (restrictions.isRestricted) and(restrictions.toCondition(dsl)) }
       .fetchAndMap(filterOnLibraryIds, restrictions)
       .firstOrNull()
 
@@ -57,13 +57,13 @@ class ReadListDao(
       .and(restrictions.toCondition(dsl))
 
     val queryIds =
-      if (belongsToLibraryIds == null && filterOnLibraryIds == null && !restrictions.isRestricted()) null
+      if (belongsToLibraryIds == null && filterOnLibraryIds == null && !restrictions.isRestricted) null
       else
         dsl.selectDistinct(rl.ID)
           .from(rl)
           .leftJoin(rlb).on(rl.ID.eq(rlb.READLIST_ID))
           .leftJoin(b).on(rlb.BOOK_ID.eq(b.ID))
-          .apply { if (restrictions.isRestricted()) leftJoin(sd).on(sd.SERIES_ID.eq(b.SERIES_ID)) }
+          .apply { if (restrictions.isRestricted) leftJoin(sd).on(sd.SERIES_ID.eq(b.SERIES_ID)) }
           .where(conditions)
 
     val count =
@@ -76,7 +76,7 @@ class ReadListDao(
         else it.toSortField(sorts)
       }
 
-    val items = selectBase(restrictions.isRestricted())
+    val items = selectBase(restrictions.isRestricted)
       .where(conditions)
       .apply { if (queryIds != null) and(rl.ID.`in`(queryIds)) }
       .orderBy(orderBy)
@@ -96,14 +96,14 @@ class ReadListDao(
     val queryIds = dsl.select(rl.ID)
       .from(rl)
       .leftJoin(rlb).on(rl.ID.eq(rlb.READLIST_ID))
-      .apply { if (restrictions.isRestricted()) leftJoin(b).on(rlb.BOOK_ID.eq(b.ID)).leftJoin(sd).on(sd.SERIES_ID.eq(b.SERIES_ID)) }
+      .apply { if (restrictions.isRestricted) leftJoin(b).on(rlb.BOOK_ID.eq(b.ID)).leftJoin(sd).on(sd.SERIES_ID.eq(b.SERIES_ID)) }
       .where(rlb.BOOK_ID.eq(containsBookId))
-      .apply { if (restrictions.isRestricted()) and(restrictions.toCondition(dsl)) }
+      .apply { if (restrictions.isRestricted) and(restrictions.toCondition(dsl)) }
 
-    return selectBase(restrictions.isRestricted())
+    return selectBase(restrictions.isRestricted)
       .where(rl.ID.`in`(queryIds))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-      .apply { if (restrictions.isRestricted()) and(restrictions.toCondition(dsl)) }
+      .apply { if (restrictions.isRestricted) and(restrictions.toCondition(dsl)) }
       .fetchAndMap(filterOnLibraryIds, restrictions)
   }
 
@@ -138,10 +138,10 @@ class ReadListDao(
         val bookIds = dsl.select(*rlb.fields())
           .from(rlb)
           .leftJoin(b).on(rlb.BOOK_ID.eq(b.ID))
-          .apply { if (restrictions.isRestricted()) leftJoin(sd).on(sd.SERIES_ID.eq(b.SERIES_ID)) }
+          .apply { if (restrictions.isRestricted) leftJoin(sd).on(sd.SERIES_ID.eq(b.SERIES_ID)) }
           .where(rlb.READLIST_ID.eq(rr.id))
           .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-          .apply { if (restrictions.isRestricted()) and(restrictions.toCondition(dsl)) }
+          .apply { if (restrictions.isRestricted) and(restrictions.toCondition(dsl)) }
           .orderBy(rlb.NUMBER.asc())
           .fetchInto(rlb)
           .mapNotNull { it.number to it.bookId }
