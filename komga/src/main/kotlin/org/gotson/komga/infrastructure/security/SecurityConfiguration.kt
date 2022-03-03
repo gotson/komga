@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository
@@ -33,6 +34,7 @@ class SecurityConfiguration(
   private val oidcUserService: OAuth2UserService<OidcUserRequest, OidcUser>,
   private val sessionCookieName: String,
   private val userAgentWebAuthenticationDetailsSource: WebAuthenticationDetailsSource,
+  private val sessionRegistry: SessionRegistry,
   clientRegistrationRepository: InMemoryClientRegistrationRepository?,
 ) : WebSecurityConfigurerAdapter() {
 
@@ -70,6 +72,12 @@ class SecurityConfiguration(
         it.logoutUrl("/api/logout")
         it.deleteCookies(sessionCookieName)
         it.invalidateHttpSession(true)
+      }
+      .sessionManagement { session ->
+        session.sessionConcurrency {
+          it.sessionRegistry(sessionRegistry)
+          it.maximumSessions(-1)
+        }
       }
 
     if (oauth2Enabled) {
