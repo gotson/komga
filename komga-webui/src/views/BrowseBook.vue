@@ -67,7 +67,9 @@
               :to="{ name: 'browse-book', params: { bookId: book.id }, query: { context: context.origin, contextId: context.id} }"
             >
               <v-list-item-title class="text-wrap text-body-2">
-                <template v-if="contextReadList">{{ book.seriesTitle }} {{ book.metadata.number }}: {{ book.metadata.title }}</template>
+                <template v-if="contextReadList">{{ book.seriesTitle }} {{ book.metadata.number }}:
+                  {{ book.metadata.title }}
+                </template>
                 <template v-else>{{ book.metadata.number }} - {{ book.metadata.title }}</template>
               </v-list-item-title>
             </v-list-item>
@@ -146,7 +148,7 @@
 
               <v-col cols="auto" v-if="book.metadata.releaseDate">
                 {{
-                  new Intl.DateTimeFormat($i18n.locale, {dateStyle: 'long'}).format(new Date(book.metadata.releaseDate))
+                  new Intl.DateTimeFormat($i18n.locale, {dateStyle: 'long', timeZone: 'UTC'}).format(new Date(book.metadata.releaseDate))
                 }}
               </v-col>
 
@@ -418,6 +420,7 @@ import {convertErrorCodes} from '@/functions/error-codes'
 import RtlIcon from '@/components/RtlIcon.vue'
 import {BookSseDto, LibrarySseDto, ReadListSseDto, ReadProgressSseDto} from '@/types/komga-sse'
 import {RawLocation} from 'vue-router/types/router'
+import {zonedTimeToUtc} from 'date-fns-tz'
 
 export default Vue.extend({
   name: 'BrowseBook',

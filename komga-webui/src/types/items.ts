@@ -104,7 +104,7 @@ export class BookItem extends Item<BookDto> {
       default:
         let text
         if (context.includes(ItemContext.RELEASE_DATE))
-          text = this.item.metadata.releaseDate ? new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium'} as Intl.DateTimeFormatOptions).format(new Date(this.item.metadata.releaseDate)) : i18n.t('book_card.no_release_date')
+          text = this.item.metadata.releaseDate ? new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium', timeZone: 'UTC'} as Intl.DateTimeFormatOptions).format(new Date(this.item.metadata.releaseDate)) : i18n.t('book_card.no_release_date')
         else if (context.includes(ItemContext.DATE_ADDED))
           text = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium'} as Intl.DateTimeFormatOptions).format(new Date(this.item.created))
         else if (context.includes(ItemContext.READ_DATE))
@@ -162,7 +162,7 @@ export class SeriesItem extends Item<SeriesDto> {
 
     let text
     if (context.includes(ItemContext.RELEASE_DATE))
-      text = this.item.booksMetadata.releaseDate ? new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium'} as Intl.DateTimeFormatOptions).format(new Date(this.item.booksMetadata.releaseDate)) : i18n.t('book_card.no_release_date')
+      text = this.item.booksMetadata.releaseDate ? new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium', timeZone: 'UTC'} as Intl.DateTimeFormatOptions).format(new Date(this.item.booksMetadata.releaseDate)) : i18n.t('book_card.no_release_date')
     else if (context.includes(ItemContext.DATE_ADDED))
       text = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium'} as Intl.DateTimeFormatOptions).format(new Date(this.item.created))
     else if (context.includes(ItemContext.DATE_UPDATED))
