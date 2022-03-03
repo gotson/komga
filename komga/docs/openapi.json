@@ -647,12 +647,83 @@
         }
       }
     },
+    "/api/v2/users": {
+      "get": {
+        "tags": [
+          "user-v-2-controller"
+        ],
+        "operationId": "getAll",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDtoV2"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "user-v-2-controller"
+        ],
+        "operationId": "addOne",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreationDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDtoV2"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/users": {
       "get": {
         "tags": [
-          "user-controller"
+          "user-v-1-controller"
         ],
-        "operationId": "getAll",
+        "operationId": "getAll_1",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -677,13 +748,14 @@
               }
             }
           }
-        }
+        },
+        "deprecated": true
       },
       "post": {
         "tags": [
-          "user-controller"
+          "user-v-1-controller"
         ],
-        "operationId": "addOne",
+        "operationId": "addOne_1",
         "requestBody": {
           "content": {
             "application/json": {
@@ -715,7 +787,8 @@
               }
             }
           }
-        }
+        },
+        "deprecated": true
       }
     },
     "/api/v1/transient-books": {
@@ -1038,7 +1111,7 @@
         "tags": [
           "read-list-controller"
         ],
-        "operationId": "getAll_1",
+        "operationId": "getAll_2",
         "parameters": [
           {
             "name": "search",
@@ -1111,7 +1184,7 @@
         "tags": [
           "read-list-controller"
         ],
-        "operationId": "addOne_1",
+        "operationId": "addOne_2",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1415,7 +1488,7 @@
         "tags": [
           "library-controller"
         ],
-        "operationId": "getAll_2",
+        "operationId": "getAll_3",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -1446,7 +1519,7 @@
         "tags": [
           "library-controller"
         ],
-        "operationId": "addOne_2",
+        "operationId": "addOne_3",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1657,7 +1730,7 @@
         "tags": [
           "series-collection-controller"
         ],
-        "operationId": "getAll_4",
+        "operationId": "getAll_5",
         "parameters": [
           {
             "name": "search",
@@ -1730,7 +1803,7 @@
         "tags": [
           "series-collection-controller"
         ],
-        "operationId": "addOne_3",
+        "operationId": "addOne_4",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1933,7 +2006,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDto"
+                  "$ref": "#/components/schemas/UserDtoV2"
                 }
               }
             }
@@ -2140,10 +2213,10 @@
         }
       }
     },
-    "/api/v1/users/{id}": {
+    "/api/v2/users/{id}": {
       "delete": {
         "tags": [
-          "user-controller"
+          "user-v-2-controller"
         ],
         "operationId": "delete",
         "parameters": [
@@ -2174,9 +2247,9 @@
       },
       "patch": {
         "tags": [
-          "user-controller"
+          "user-v-2-controller"
         ],
-        "operationId": "updateUserRoles",
+        "operationId": "updateUser",
         "parameters": [
           {
             "name": "id",
@@ -2191,7 +2264,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RolesUpdateDto"
+                "$ref": "#/components/schemas/UserUpdateDto"
               }
             }
           },
@@ -2214,53 +2287,10 @@
         }
       }
     },
-    "/api/v1/users/{id}/shared-libraries": {
+    "/api/v2/users/{id}/password": {
       "patch": {
         "tags": [
-          "user-controller"
-        ],
-        "operationId": "updateSharesLibraries",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SharedLibrariesUpdateDto"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
-      }
-    },
-    "/api/v1/users/{id}/password": {
-      "patch": {
-        "tags": [
-          "user-controller"
+          "user-v-2-controller"
         ],
         "operationId": "updatePassword",
         "parameters": [
@@ -2300,10 +2330,10 @@
         }
       }
     },
-    "/api/v1/users/me/password": {
+    "/api/v2/users/me/password": {
       "patch": {
         "tags": [
-          "user-controller"
+          "user-v-2-controller"
         ],
         "operationId": "updateMyPassword",
         "requestBody": {
@@ -2331,6 +2361,204 @@
             "description": "No Content"
           }
         }
+      }
+    },
+    "/api/v1/users/{id}": {
+      "delete": {
+        "tags": [
+          "user-v-1-controller"
+        ],
+        "operationId": "delete_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "deprecated": true
+      },
+      "patch": {
+        "tags": [
+          "user-v-1-controller"
+        ],
+        "operationId": "updateUserRoles",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RolesUpdateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/api/v1/users/{id}/shared-libraries": {
+      "patch": {
+        "tags": [
+          "user-v-1-controller"
+        ],
+        "operationId": "updateSharesLibraries",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SharedLibrariesUpdateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/api/v1/users/{id}/password": {
+      "patch": {
+        "tags": [
+          "user-v-1-controller"
+        ],
+        "operationId": "updatePassword_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordUpdateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/api/v1/users/me/password": {
+      "patch": {
+        "tags": [
+          "user-v-1-controller"
+        ],
+        "operationId": "updateMyPassword_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordUpdateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "deprecated": true
       }
     },
     "/api/v1/series/{seriesId}/metadata": {
@@ -3590,6 +3818,214 @@
         }
       }
     },
+    "/api/v2/users/{id}/authentication-activity/latest": {
+      "get": {
+        "tags": [
+          "user-v-2-controller"
+        ],
+        "operationId": "getLatestAuthenticationActivityForUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationActivityDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/users/me": {
+      "get": {
+        "tags": [
+          "user-v-2-controller"
+        ],
+        "operationId": "getMe",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDtoV2"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/users/me/authentication-activity": {
+      "get": {
+        "tags": [
+          "user-v-2-controller"
+        ],
+        "operationId": "getMyAuthenticationActivity",
+        "parameters": [
+          {
+            "name": "unpaged",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageAuthenticationActivityDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/users/authentication-activity": {
+      "get": {
+        "tags": [
+          "user-v-2-controller"
+        ],
+        "operationId": "getAuthenticationActivity",
+        "parameters": [
+          {
+            "name": "unpaged",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageAuthenticationActivityDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/authors": {
       "get": {
         "tags": [
@@ -3697,9 +4133,9 @@
     "/api/v1/users/{id}/authentication-activity/latest": {
       "get": {
         "tags": [
-          "user-controller"
+          "user-v-1-controller"
         ],
-        "operationId": "getLatestAuthenticationActivityForUser",
+        "operationId": "getLatestAuthenticationActivityForUser_1",
         "parameters": [
           {
             "name": "id",
@@ -3731,15 +4167,16 @@
               }
             }
           }
-        }
+        },
+        "deprecated": true
       }
     },
     "/api/v1/users/me": {
       "get": {
         "tags": [
-          "user-controller"
+          "user-v-1-controller"
         ],
-        "operationId": "getMe",
+        "operationId": "getMe_1",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -3761,15 +4198,16 @@
               }
             }
           }
-        }
+        },
+        "deprecated": true
       }
     },
     "/api/v1/users/me/authentication-activity": {
       "get": {
         "tags": [
-          "user-controller"
+          "user-v-1-controller"
         ],
-        "operationId": "getMyAuthenticationActivity",
+        "operationId": "getMyAuthenticationActivity_1",
         "parameters": [
           {
             "name": "unpaged",
@@ -3830,15 +4268,16 @@
               }
             }
           }
-        }
+        },
+        "deprecated": true
       }
     },
     "/api/v1/users/authentication-activity": {
       "get": {
         "tags": [
-          "user-controller"
+          "user-v-1-controller"
         ],
-        "operationId": "getAuthenticationActivity",
+        "operationId": "getAuthenticationActivity_1",
         "parameters": [
           {
             "name": "unpaged",
@@ -3899,7 +4338,8 @@
               }
             }
           }
-        }
+        },
+        "deprecated": true
       }
     },
     "/api/v1/transient-books/{id}/pages/{pageNumber}": {
@@ -4076,6 +4516,58 @@
           },
           {
             "name": "readlist_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "uniqueItems": true,
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sharing-labels": {
+      "get": {
+        "tags": [
+          "referential-controller"
+        ],
+        "operationId": "getSharingLabels",
+        "parameters": [
+          {
+            "name": "library_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "collection_id",
             "in": "query",
             "required": false,
             "schema": {
@@ -6047,7 +6539,7 @@
         "tags": [
           "historical-event-controller"
         ],
-        "operationId": "getAll_3",
+        "operationId": "getAll_4",
         "parameters": [
           {
             "name": "page",
@@ -7766,7 +8258,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_6",
+        "operationId": "getProviders_5",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7797,7 +8289,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_4",
+        "operationId": "getProviders",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7828,7 +8320,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders",
+        "operationId": "getProviders_4",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7890,7 +8382,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_2",
+        "operationId": "getProviders_6",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7921,7 +8413,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_5",
+        "operationId": "getProviders_3",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -7952,7 +8444,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_3",
+        "operationId": "getProviders_2",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8172,6 +8664,80 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "AgeRestrictionDto": {
+        "required": [
+          "age",
+          "restriction"
+        ],
+        "type": "object",
+        "properties": {
+          "age": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "restriction": {
+            "type": "string",
+            "enum": [
+              "ALLOW_ONLY",
+              "EXCLUDE"
+            ]
+          }
+        }
+      },
+      "UserDtoV2": {
+        "required": [
+          "email",
+          "id",
+          "labelsAllow",
+          "labelsExclude",
+          "roles",
+          "sharedAllLibraries",
+          "sharedLibrariesIds"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "roles": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sharedAllLibraries": {
+            "type": "boolean"
+          },
+          "sharedLibrariesIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "labelsAllow": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "labelsExclude": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ageRestriction": {
+            "$ref": "#/components/schemas/AgeRestrictionDto"
           }
         }
       },
@@ -8791,17 +9357,23 @@
           }
         }
       },
-      "RolesUpdateDto": {
+      "AgeRestrictionUpdateDto": {
         "required": [
-          "roles"
+          "age",
+          "restriction"
         ],
         "type": "object",
         "properties": {
-          "roles": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "age": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "restriction": {
+            "type": "string",
+            "enum": [
+              "ALLOW_ONLY",
+              "EXCLUDE"
+            ]
           }
         }
       },
@@ -8824,6 +9396,38 @@
           }
         }
       },
+      "UserUpdateDto": {
+        "type": "object",
+        "properties": {
+          "roles": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "labelsAllow": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ageRestriction": {
+            "$ref": "#/components/schemas/AgeRestrictionUpdateDto"
+          },
+          "labelsExclude": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sharedLibraries": {
+            "$ref": "#/components/schemas/SharedLibrariesUpdateDto"
+          }
+        }
+      },
       "PasswordUpdateDto": {
         "required": [
           "password"
@@ -8832,6 +9436,20 @@
         "properties": {
           "password": {
             "type": "string"
+          }
+        }
+      },
+      "RolesUpdateDto": {
+        "required": [
+          "roles"
+        ],
+        "type": "object",
+        "properties": {
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -8895,6 +9513,9 @@
           "totalBookCountLock": {
             "type": "boolean"
           },
+          "sharingLabelsLock": {
+            "type": "boolean"
+          },
           "readingDirection": {
             "type": "string",
             "enum": [
@@ -8903,10 +9524,6 @@
               "VERTICAL",
               "WEBTOON"
             ]
-          },
-          "ageRating": {
-            "type": "integer",
-            "format": "int32"
           },
           "genres": {
             "uniqueItems": true,
@@ -8920,6 +9537,17 @@
             "format": "int32"
           },
           "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ageRating": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sharingLabels": {
             "uniqueItems": true,
             "type": "array",
             "items": {
@@ -9035,16 +9663,10 @@
             "type": "string",
             "format": "date"
           },
-          "authors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AuthorUpdateDto"
-            }
-          },
-          "summary": {
+          "isbn": {
             "type": "string"
           },
-          "isbn": {
+          "summary": {
             "type": "string"
           },
           "tags": {
@@ -9052,6 +9674,12 @@
             "type": "array",
             "items": {
               "type": "string"
+            }
+          },
+          "authors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthorUpdateDto"
             }
           },
           "links": {
@@ -9219,6 +9847,126 @@
           }
         }
       },
+      "AuthenticationActivityDto": {
+        "required": [
+          "dateTime",
+          "success"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "ip": {
+            "type": "string"
+          },
+          "userAgent": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "error": {
+            "type": "string"
+          },
+          "dateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "source": {
+            "type": "string"
+          }
+        }
+      },
+      "PageAuthenticationActivityDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthenticationActivityDto"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageableObject": {
+        "type": "object",
+        "properties": {
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "paged": {
+            "type": "boolean"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unpaged": {
+            "type": "boolean"
+          },
+          "offset": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "Sort": {
+        "type": "object",
+        "properties": {
+          "sorted": {
+            "type": "boolean"
+          },
+          "unsorted": {
+            "type": "boolean"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
       "TachiyomiReadProgressV2Dto": {
         "required": [
           "booksCount",
@@ -9274,13 +10022,13 @@
       "PageAuthorDto": {
         "type": "object",
         "properties": {
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
           "totalElements": {
             "type": "integer",
             "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
           },
           "first": {
             "type": "boolean"
@@ -9311,46 +10059,6 @@
           "number": {
             "type": "integer",
             "format": "int32"
-          },
-          "empty": {
-            "type": "boolean"
-          }
-        }
-      },
-      "PageableObject": {
-        "type": "object",
-        "properties": {
-          "sort": {
-            "$ref": "#/components/schemas/Sort"
-          },
-          "pageNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "paged": {
-            "type": "boolean"
-          },
-          "unpaged": {
-            "type": "boolean"
-          },
-          "offset": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
-      "Sort": {
-        "type": "object",
-        "properties": {
-          "sorted": {
-            "type": "boolean"
-          },
-          "unsorted": {
-            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -9401,86 +10109,6 @@
           }
         }
       },
-      "AuthenticationActivityDto": {
-        "required": [
-          "dateTime",
-          "success"
-        ],
-        "type": "object",
-        "properties": {
-          "userId": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "ip": {
-            "type": "string"
-          },
-          "userAgent": {
-            "type": "string"
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "error": {
-            "type": "string"
-          },
-          "dateTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "source": {
-            "type": "string"
-          }
-        }
-      },
-      "PageAuthenticationActivityDto": {
-        "type": "object",
-        "properties": {
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalElements": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "first": {
-            "type": "boolean"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/Sort"
-          },
-          "last": {
-            "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
-          },
-          "size": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "content": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AuthenticationActivityDto"
-            }
-          },
-          "number": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "empty": {
-            "type": "boolean"
-          }
-        }
-      },
       "BookMetadataAggregationDto": {
         "required": [
           "authors",
@@ -9528,13 +10156,13 @@
       "PageSeriesDto": {
         "type": "object",
         "properties": {
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
           "totalElements": {
             "type": "integer",
             "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
           },
           "first": {
             "type": "boolean"
@@ -9654,6 +10282,8 @@
           "publisherLock",
           "readingDirection",
           "readingDirectionLock",
+          "sharingLabels",
+          "sharingLabelsLock",
           "status",
           "statusLock",
           "summary",
@@ -9742,6 +10372,16 @@
             "format": "int32"
           },
           "totalBookCountLock": {
+            "type": "boolean"
+          },
+          "sharingLabels": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sharingLabelsLock": {
             "type": "boolean"
           },
           "created": {
@@ -10018,13 +10658,13 @@
       "PageBookDto": {
         "type": "object",
         "properties": {
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
           "totalElements": {
             "type": "integer",
             "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
           },
           "first": {
             "type": "boolean"
@@ -10126,13 +10766,13 @@
       "PageReadListDto": {
         "type": "object",
         "properties": {
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
           "totalElements": {
             "type": "integer",
             "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
           },
           "first": {
             "type": "boolean"
@@ -10238,13 +10878,13 @@
       "PagePageHashKnownDto": {
         "type": "object",
         "properties": {
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
           "totalElements": {
             "type": "integer",
             "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
           },
           "first": {
             "type": "boolean"
@@ -10284,13 +10924,13 @@
       "PagePageHashMatchDto": {
         "type": "object",
         "properties": {
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
           "totalElements": {
             "type": "integer",
             "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
           },
           "first": {
             "type": "boolean"
@@ -10354,13 +10994,13 @@
       "PagePageHashUnknownDto": {
         "type": "object",
         "properties": {
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
           "totalElements": {
             "type": "integer",
             "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
           },
           "first": {
             "type": "boolean"
@@ -10429,13 +11069,13 @@
       "PageHistoricalEventDto": {
         "type": "object",
         "properties": {
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
           "totalElements": {
             "type": "integer",
             "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
           },
           "first": {
             "type": "boolean"
@@ -10475,13 +11115,13 @@
       "PageCollectionDto": {
         "type": "object",
         "properties": {
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
           "totalElements": {
             "type": "integer",
             "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
           },
           "first": {
             "type": "boolean"

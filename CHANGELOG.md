@@ -1,3 +1,29 @@
+# [0.153.0](https://github.com/gotson/komga/compare/v0.152.0...v0.153.0) (2022-03-03)
+
+
+### Bug Fixes
+
+* **api:** expired sessions would not be destroyed ([5ecc9c6](https://github.com/gotson/komga/commit/5ecc9c6785ae1e672b25f141339cca2fa9a91218))
+* ignore Qnap @Recycle directories by default ([2621500](https://github.com/gotson/komga/commit/2621500666b7e7fcdf69298faabb7c56697815d9))
+* **webui:** books selection bar wouldn't hide the toolbar on Dashboard ([02d51b9](https://github.com/gotson/komga/commit/02d51b96c8a6e4826109ec355698d9ce1d59b657))
+* **webui:** display library navigation as bottom bar for sm screens ([70a546f](https://github.com/gotson/komga/commit/70a546f19c7a4c085ec43fb4a54e49aac45960dd))
+* **webui:** display release date without timezone adjustment ([d343740](https://github.com/gotson/komga/commit/d343740f3021686bae9a41fd73c2102a51239faa)), closes [#818](https://github.com/gotson/komga/issues/818)
+
+
+### Features
+
+* **api:** add /api/v2/users and deprecate /api/v1/users ([fa04d95](https://github.com/gotson/komga/commit/fa04d9511a394ca6003a8177b97997814ac57674))
+* **api:** manage restrictions for users ([e345d6f](https://github.com/gotson/komga/commit/e345d6f9ef0a0d2aa1e71bb08509b5c605cb169e))
+* **api:** restrict content according to user's restrictions ([b0d6314](https://github.com/gotson/komga/commit/b0d6314ec9c8eec049034daab1f65b8463d20fcb))
+* **api:** retrieve all sharing labels ([562c57c](https://github.com/gotson/komga/commit/562c57ccc8f3c39d494dd8b929e65db975370a1b))
+* **api:** update series sharing labels ([769b0e6](https://github.com/gotson/komga/commit/769b0e6a0ca3c5c9dbbceb115c9e9d579a820bde))
+* persist user content restriction ([f1ab136](https://github.com/gotson/komga/commit/f1ab136b5e9b3d35a67247814de8d74e757527ad))
+* restrict content by labels ([8d4eb68](https://github.com/gotson/komga/commit/8d4eb68f7d4d294fe7a5379d7c94c63fff5b3ec8))
+* sharing labels for series ([496ebb0](https://github.com/gotson/komga/commit/496ebb0aac88e981d1bb1e2ac36776a72f167303))
+* **webui:** edit user restrictions ([37dfa92](https://github.com/gotson/komga/commit/37dfa923e91d2a6b272936d2741fcbee87bc5c15))
+* **webui:** logout when session expired ([093610e](https://github.com/gotson/komga/commit/093610e18687feaf93d92de41a34c4e338156972))
+* **webui:** update series sharing labels ([c7c5592](https://github.com/gotson/komga/commit/c7c5592c50490741d6824c64d276ac5c26b8b306))
+
 # [0.152.0](https://github.com/gotson/komga/compare/v0.151.2...v0.152.0) (2022-02-18)
 
 
