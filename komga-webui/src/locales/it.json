@@ -451,9 +451,6 @@
       "dialog_title": "Modifica utente",
       "label_roles_for": "Permessi per {name}"
     },
-    "edit_user_shared_libraries": {
-      "field_all_libraries": "Tutte le librerie"
-    },
     "empty_trash": {
       "body": "Di default il media server non rimuove le informazioni sui media immediatamente. Questo è utile se un drive è temporaneamente disconnesso. Quando svuoti il cestino di una libreria, tutte le informazioni dei media mancanti sono cancellate.",
       "button_confirm": "Vuoto",

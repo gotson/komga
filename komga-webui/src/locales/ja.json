@@ -411,9 +411,6 @@
       "dialog_title": "ユーザを編集",
       "label_roles_for": "{name} がもつ役割"
     },
-    "edit_user_shared_libraries": {
-      "field_all_libraries": "全ライブラリ"
-    },
     "empty_trash": {
       "body": "デフォルトでは、メディアサーバーはメディアの情報をすぐには削除しません。これは、ドライブが一時的に切断された場合に役立ちます。ライブラリのゴミ箱を空にすると、見つからないメディアに関するすべての情報が削除されます。",
       "button_confirm": "空",

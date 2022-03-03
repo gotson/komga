@@ -407,9 +407,6 @@
       "dialog_title": "Edycja użytkownika",
       "label_roles_for": "Role dla {name}"
     },
-    "edit_user_shared_libraries": {
-      "field_all_libraries": "Wszystkie biblioteki"
-    },
     "empty_trash": {
       "body": "Domyślnie serwer nie usuwa od razu informacji o mediach. Pomaga to, jeśli dysk jest tymczasowo odłączony. Po opróżnieniu kosza dla biblioteki wszystkie informacje o brakujących mediach są usuwane.",
       "button_confirm": "Pusty",

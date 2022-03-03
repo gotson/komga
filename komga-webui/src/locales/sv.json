@@ -451,9 +451,6 @@
       "dialog_title": "Redigera användare",
       "label_roles_for": "Roller för {name}"
     },
-    "edit_user_shared_libraries": {
-      "field_all_libraries": "Alla bibliotek"
-    },
     "empty_trash": {
       "body": "Som standard tar mediaservern inte bort information för media direkt. Detta hjälper om en enhet tillfälligt kopplas bort. När du tömmer papperskorgen för ett bibliotek raderas all information om saknade media.",
       "button_confirm": "Töm",

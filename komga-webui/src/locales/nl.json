@@ -348,9 +348,6 @@
       "dialog_title": "Bewerk gebruiker",
       "label_roles_for": "Rollen voor {name}"
     },
-    "edit_user_shared_libraries": {
-      "field_all_libraries": "Alle bibliotheken"
-    },
     "file_browser": {
       "button_cancel": "Annuleren",
       "button_confirm_default": "Kies",

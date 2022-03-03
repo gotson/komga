@@ -377,9 +377,6 @@
       "dialog_title": "Rediger bruker",
       "label_roles_for": "Roller til {name}"
     },
-    "edit_user_shared_libraries": {
-      "field_all_libraries": "Alle bibliotek"
-    },
     "empty_trash": {
       "button_confirm": "Tøm",
       "title": "Tøm bibliotekspapirkurv"

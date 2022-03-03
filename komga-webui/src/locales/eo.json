@@ -424,9 +424,6 @@
       "dialog_title": "Redakti uzanton",
       "label_roles_for": "Roloj de {name}"
     },
-    "edit_user_shared_libraries": {
-      "field_all_libraries": "Ĉiuj bibliotekoj"
-    },
     "empty_trash": {
       "body": "Implicite, la servilo ne tuje forviŝas informojn pri dosieroj. Tio helpus, se disko provizore malkonektiĝus. Se vi malplenigus la rubujon de biblioteko, ĉiuj informoj pri mankantaj dosieroj forviŝiĝus.",
       "button_confirm": "Malplenigi",

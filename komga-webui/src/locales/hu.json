@@ -405,9 +405,6 @@
       "dialog_title": "Felhasználó szerkesztése",
       "label_roles_for": "{name} szerepei"
     },
-    "edit_user_shared_libraries": {
-      "field_all_libraries": "Minden könyvtár"
-    },
     "empty_trash": {
       "button_confirm": "Üres",
       "title": "Könyvtár szemetesének kiűrítése"
