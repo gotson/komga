@@ -54,6 +54,10 @@ export interface ThumbnailCollectionSseDto {
   selected: boolean,
 }
 
+export interface SessionExpiredDto {
+  userId: string,
+}
+
 export interface TaskQueueSseDto {
   count: number,
   countByType: { [key: string]: number }

@@ -6,8 +6,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import {Theme} from '@/types/themes'
-import {LIBRARY_ADDED, LIBRARY_CHANGED, LIBRARY_DELETED} from '@/types/events'
-import {LibrarySseDto} from '@/types/komga-sse'
+import {LIBRARY_ADDED, LIBRARY_CHANGED, LIBRARY_DELETED, SESSION_EXPIRED} from '@/types/events'
+import {LibrarySseDto, SessionExpiredDto} from '@/types/komga-sse'
 
 export default Vue.extend({
   name: 'App',
@@ -17,6 +17,8 @@ export default Vue.extend({
     this.$eventHub.$on(LIBRARY_ADDED, this.reloadLibraries)
     this.$eventHub.$on(LIBRARY_DELETED, this.reloadLibraries)
     this.$eventHub.$on(LIBRARY_CHANGED, this.reloadLibraries)
+
+    this.$eventHub.$on(SESSION_EXPIRED, this.logout)
   },
   beforeDestroy() {
     window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', this.systemThemeChange)
@@ -24,6 +26,8 @@ export default Vue.extend({
     this.$eventHub.$off(LIBRARY_ADDED, this.reloadLibraries)
     this.$eventHub.$off(LIBRARY_DELETED, this.reloadLibraries)
     this.$eventHub.$off(LIBRARY_CHANGED, this.reloadLibraries)
+
+    this.$eventHub.$off(SESSION_EXPIRED, this.logout)
   },
   watch: {
     '$store.state.persistedState.locale': {
@@ -67,6 +71,10 @@ export default Vue.extend({
     },
     reloadLibraries(event: LibrarySseDto) {
       this.$store.dispatch('getLibraries')
+    },
+    logout(event: SessionExpiredDto) {
+      this.$komgaUsers.logout()
+      this.$router.push({name: 'login'})
     },
   },
 })

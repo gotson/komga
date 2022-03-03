@@ -18,6 +18,7 @@ import org.gotson.komga.interfaces.sse.dto.ReadListSseDto
 import org.gotson.komga.interfaces.sse.dto.ReadProgressSeriesSseDto
 import org.gotson.komga.interfaces.sse.dto.ReadProgressSseDto
 import org.gotson.komga.interfaces.sse.dto.SeriesSseDto
+import org.gotson.komga.interfaces.sse.dto.SessionExpiredDto
 import org.gotson.komga.interfaces.sse.dto.TaskQueueSseDto
 import org.gotson.komga.interfaces.sse.dto.ThumbnailBookSseDto
 import org.gotson.komga.interfaces.sse.dto.ThumbnailReadListSseDto
@@ -109,6 +110,9 @@ class SseController(
       is DomainEvent.ThumbnailSeriesCollectionDeleted -> emitSse("ThumbnailSeriesCollectionDeleted", ThumbnailSeriesCollectionSseDto(event.thumbnail.collectionId, event.thumbnail.selected))
       is DomainEvent.ThumbnailReadListAdded -> emitSse("ThumbnailReadListAdded", ThumbnailReadListSseDto(event.thumbnail.readListId, event.thumbnail.selected))
       is DomainEvent.ThumbnailReadListDeleted -> emitSse("ThumbnailReadListDeleted", ThumbnailReadListSseDto(event.thumbnail.readListId, event.thumbnail.selected))
+
+      is DomainEvent.UserUpdated -> if (event.expireSession) emitSse("SessionExpired", SessionExpiredDto(event.user.id), userIdOnly = event.user.id)
+      is DomainEvent.UserDeleted -> emitSse("SessionExpired", SessionExpiredDto(event.user.id), userIdOnly = event.user.id)
     }
   }
 

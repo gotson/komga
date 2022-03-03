@@ -19,7 +19,7 @@ import {
   READPROGRESS_SERIES_DELETED,
   SERIES_ADDED,
   SERIES_CHANGED,
-  SERIES_DELETED,
+  SERIES_DELETED, SESSION_EXPIRED,
   THUMBNAILBOOK_ADDED,
   THUMBNAILBOOK_DELETED,
   THUMBNAILCOLLECTION_ADDED,
@@ -101,6 +101,8 @@ export default class KomgaSseService {
     this.eventSource.addEventListener('ThumbnailSeriesCollectionDeleted', (event: any) => this.emit(THUMBNAILCOLLECTION_DELETED, event))
 
     this.eventSource.addEventListener('TaskQueueStatus', (event: any) => this.updateTaskCount(event))
+
+    this.eventSource.addEventListener('SessionExpired', (event: any) => this.emit(SESSION_EXPIRED, event))
   }
 
   disconnect() {

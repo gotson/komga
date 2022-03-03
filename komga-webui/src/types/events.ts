@@ -36,6 +36,8 @@ export const THUMBNAILREADLIST_DELETED = 'thumbnailreadlist-deleted'
 export const THUMBNAILCOLLECTION_ADDED = 'thumbnailcollection-added'
 export const THUMBNAILCOLLECTION_DELETED = 'thumbnailcollection-deleted'
 
+export const SESSION_EXPIRED = 'session-expired'
+
 export const ERROR = 'error'
 export const NOTIFICATION = 'notification'
 
