@@ -59,10 +59,6 @@ data class KomgaUser(
       else -> null
     }
 
-  fun canAccessBook(book: Book): Boolean {
-    return sharedAllLibraries || sharedLibrariesIds.any { it == book.libraryId }
-  }
-
   fun canAccessLibrary(libraryId: String): Boolean =
     sharedAllLibraries || sharedLibrariesIds.any { it == libraryId }
 
