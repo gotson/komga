@@ -331,9 +331,6 @@
       "dialog_title": "Muokkaa käyttäjää",
       "label_roles_for": "Roolit käyttäjälle {name}"
     },
-    "edit_user_shared_libraries": {
-      "field_all_libraries": "Kaikki kirjastot"
-    },
     "file_browser": {
       "button_cancel": "Peruuta",
       "button_confirm_default": "Valitse",

@@ -430,9 +430,6 @@
       "dialog_title": "Chỉnh sửa người dùng",
       "label_roles_for": "Vai trò cho {name}"
     },
-    "edit_user_shared_libraries": {
-      "field_all_libraries": "Tất cả các thư viện"
-    },
     "file_browser": {
       "button_cancel": "Hủy",
       "button_confirm_default": "Chọn",

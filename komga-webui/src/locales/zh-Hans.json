@@ -450,9 +450,6 @@
       "dialog_title": "编辑用户",
       "label_roles_for": "{name}的权限"
     },
-    "edit_user_shared_libraries": {
-      "field_all_libraries": "所有库"
-    },
     "empty_trash": {
       "body": "默认情况下，媒体服务器不会立即删除媒体的信息。这对驱动器暂时断开连接的情况有所帮助。清空库的回收站时，所有丢失媒体的信息都会被删除。",
       "button_confirm": "清空",

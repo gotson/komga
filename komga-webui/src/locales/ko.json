@@ -392,9 +392,6 @@
       "button_confirm": "변경 저장",
       "dialog_title": "사용자 수정"
     },
-    "edit_user_shared_libraries": {
-      "field_all_libraries": "모든 서재"
-    },
     "empty_trash": {
       "body": "기본적으로 미디어 서버는 미디어에 대한 정보를 즉시 제거하지 않습니다. 이 방법은 드라이브 연결이 일시적으로 끊어질 때 도움이 됩니다. 라이브러리의 휴지통을 비우면 누락된 미디어에 대한 모든 정보가 삭제됩니다.",
       "button_confirm": "비우기",

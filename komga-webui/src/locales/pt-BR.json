@@ -407,9 +407,6 @@
       "dialog_title": "Editar usuário",
       "label_roles_for": "Cargos para {name}"
     },
-    "edit_user_shared_libraries": {
-      "field_all_libraries": "Todas as bibliotecas"
-    },
     "empty_trash": {
       "body": "Por padrão, o servidor de mídia não remove as informações da mídia imediatamente. Isso ajuda se uma unidade estiver temporariamente desconectada. Quando você esvazia a lixeira de uma biblioteca, todas as informações sobre mídia ausente são excluídas.",
       "button_confirm": "Vazio",

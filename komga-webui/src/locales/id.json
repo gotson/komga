@@ -451,9 +451,6 @@
       "dialog_title": "Edit pengguna",
       "label_roles_for": "Peran untuk {name}"
     },
-    "edit_user_shared_libraries": {
-      "field_all_libraries": "Semua Pustaka"
-    },
     "empty_trash": {
       "body": "Secara default, server media tidak langsung menghapus informasi untuk media. Ini membantu jika drive terputus sementara. Saat Anda mengosongkan sampah untuk perpustakaan, semua informasi tentang media yang hilang akan dihapus.",
       "button_confirm": "Kosong",

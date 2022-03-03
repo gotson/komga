@@ -451,9 +451,6 @@
       "dialog_title": "Benutzerdaten bearbeiten",
       "label_roles_for": "Rollen für {name}"
     },
-    "edit_user_shared_libraries": {
-      "field_all_libraries": "Alle Bibliotheken"
-    },
     "empty_trash": {
       "body": "Standardmäßig entfernt der Medienserver nicht sofort alle Informationen bei mehr vorhandenen Medien. Dies ist zum Schutz der Metadaten gedacht, sollte ein Datenträger temporär nicht verfügbar sein. Wenn Sie eine Bibliothek bereinigen, werden alle Informationen über fehlende Medien gelöscht.",
       "button_confirm": "Bereinigen",

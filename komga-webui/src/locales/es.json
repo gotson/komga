@@ -409,9 +409,6 @@
       "dialog_title": "Editar usuario",
       "label_roles_for": "Funciones para {name}"
     },
-    "edit_user_shared_libraries": {
-      "field_all_libraries": "Todas las bibliotecas"
-    },
     "empty_trash": {
       "body": "De forma predeterminada, el servidor de medios no elimina la información de los medios de inmediato. Esto ayuda si una unidad se desconecta temporalmente. Cuando vacía la papelera de una biblioteca, se elimina toda la información sobre los medios faltantes.",
       "button_confirm": "Vacío",

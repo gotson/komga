@@ -451,9 +451,6 @@
       "dialog_title": "Modifier l'utilisateur",
       "label_roles_for": "Rôles pour {name}"
     },
-    "edit_user_shared_libraries": {
-      "field_all_libraries": "Toutes les bibliothèques"
-    },
     "empty_trash": {
       "body": "Par défaut, le serveur de médias ne supprime pas immédiatement les informations relatives aux médias. Ceci est utile si un lecteur est temporairement déconnecté. Lorsque vous videz la corbeille d'une bibliothèque, toutes les informations relatives aux médias manquants sont supprimées.",
       "button_confirm": "Vider",
