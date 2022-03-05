@@ -180,6 +180,7 @@
     "title": "{name} 的收藏"
   },
   "common": {
+    "age": "年龄",
     "all_libraries": "所有库",
     "books": "书",
     "books_n": "无 | 1本书 | {count} 本书",
@@ -218,6 +219,7 @@
     "required": "要求",
     "reset_filters": "重置过滤器",
     "roles": "角色",
+    "save_changes": "保存更改",
     "series": "系列",
     "tags": "标签",
     "unavailable": "不可用",
@@ -427,6 +429,7 @@
       "field_age_rating": "年龄限制",
       "field_age_rating_error": "年龄限制必须为0或更高",
       "field_genres": "风格",
+      "field_labels": "标签",
       "field_language": "语言",
       "field_language_hint": "IETF BCP 47 语言标签",
       "field_publisher": "出版商",
@@ -441,6 +444,7 @@
       "mixed": "混合",
       "tab_general": "常规",
       "tab_poster": "海报",
+      "tab_sharing": "分享",
       "tab_tags": "标签",
       "tags_notice_multiple_edit": "您正在编辑多个系列的标签。这将覆盖每个系列的现有标签。"
     },
@@ -449,6 +453,19 @@
       "button_confirm": "保存修改",
       "dialog_title": "编辑用户",
       "label_roles_for": "{name}的权限"
+    },
+    "edit_user_restrictions": {
+      "age_restriction": {
+        "allow_under": "仅允许适合多少岁以下人士的漫画",
+        "exclude_over": "排除适合高于多少岁人士的漫画",
+        "none": "无限制"
+      },
+      "edit_restrictions_for": "编辑 {name} 的限制",
+      "label_age_restriction": "年龄限制",
+      "label_allow_only_labels": "“仅允许”标签",
+      "label_exclude_labels": "“排除”标签",
+      "tab_content_restrictions": "内容限制",
+      "tab_shared_libraries": "共享的库"
     },
     "empty_trash": {
       "body": "默认情况下，媒体服务器不会立即删除媒体的信息。这对驱动器暂时断开连接的情况有所帮助。清空库的回收站时，所有丢失媒体的信息都会被删除。",
@@ -749,6 +766,7 @@
   },
   "settings_user": {
     "change_password": "更改密码",
+    "edit_restrictions": "编辑限制",
     "edit_user": "编辑用户",
     "latest_activity": "最新活动：{date}",
     "no_recent_activity": "近期无活动",
@@ -791,6 +809,9 @@
   "users": {
     "authentication_activity": "身份验证活动",
     "users": "用户"
+  },
+  "validation": {
+    "zero_or_more": "必须为 0 或更大"
   },
   "welcome": {
     "add_library": "添加库",
