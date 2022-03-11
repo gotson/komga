@@ -1,4 +1,5 @@
 import org.apache.tools.ant.taskdefs.condition.Os
+import org.gradle.crypto.checksum.Checksum
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -13,6 +14,8 @@ plugins {
   id("org.flywaydb.flyway") version "7.15.0"
   id("com.github.johnrengelman.processes") version "0.5.0"
   id("org.springdoc.openapi-gradle-plugin") version "1.3.3"
+  id("org.gradle.crypto.checksum") version "1.4.0"
+
   jacoco
 }
 
@@ -141,6 +144,12 @@ tasks {
 
   getByName<Jar>("jar") {
     enabled = false
+  }
+
+  register<Checksum>("checksums") {
+    group = "build"
+    inputFiles.from(files(bootJar))
+    appendFileNameToChecksum.set(true)
   }
 
   // unpack Spring Boot's fat jar for better Docker image layering

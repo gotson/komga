@@ -70,6 +70,9 @@
           "assets": [
             {
               "path": "komga/build/libs/*.jar"
+            },
+            {
+              "path": "komga/build/checksums/*"
             }
           ]
         }
