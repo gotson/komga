@@ -263,7 +263,7 @@ class SeriesLifecycle(
     return null
   }
 
-  fun addThumbnailForSeries(thumbnail: ThumbnailSeries, markSelected: MarkSelectedPreference) {
+  fun addThumbnailForSeries(thumbnail: ThumbnailSeries, markSelected: MarkSelectedPreference): ThumbnailSeries {
     // delete existing thumbnail with the same url
     if (thumbnail.url != null) {
       thumbnailsSeriesRepository.findAllBySeriesId(thumbnail.seriesId)
@@ -284,7 +284,9 @@ class SeriesLifecycle(
 
     if (selected) thumbnailsSeriesRepository.markSelected(thumbnail)
 
-    eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesAdded(thumbnail.copy(selected = selected)))
+    val newThumbnail = thumbnail.copy(selected = selected)
+    eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesAdded(newThumbnail))
+    return newThumbnail
   }
 
   fun deleteThumbnailForSeries(thumbnail: ThumbnailSeries) {

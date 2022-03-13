@@ -73,7 +73,7 @@ class SeriesCollectionLifecycle(
     }
   }
 
-  fun addThumbnail(thumbnail: ThumbnailSeriesCollection) {
+  fun addThumbnail(thumbnail: ThumbnailSeriesCollection): ThumbnailSeriesCollection {
     when (thumbnail.type) {
       ThumbnailSeriesCollection.Type.USER_UPLOADED -> {
         thumbnailSeriesCollectionRepository.insert(thumbnail)
@@ -84,6 +84,7 @@ class SeriesCollectionLifecycle(
     }
 
     eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesCollectionAdded(thumbnail))
+    return thumbnail
   }
 
   fun markSelectedThumbnail(thumbnail: ThumbnailSeriesCollection) {

@@ -107,7 +107,7 @@ class BookLifecycle(
     }
   }
 
-  fun addThumbnailForBook(thumbnail: ThumbnailBook, markSelected: MarkSelectedPreference) {
+  fun addThumbnailForBook(thumbnail: ThumbnailBook, markSelected: MarkSelectedPreference): ThumbnailBook {
     when (thumbnail.type) {
       ThumbnailBook.Type.GENERATED -> {
         // only one generated thumbnail is allowed
@@ -140,7 +140,9 @@ class BookLifecycle(
     if (selected) thumbnailBookRepository.markSelected(thumbnail)
     else thumbnailsHouseKeeping(thumbnail.bookId)
 
-    eventPublisher.publishEvent(DomainEvent.ThumbnailBookAdded(thumbnail.copy(selected = selected)))
+    val newThumbnail = thumbnail.copy(selected = selected)
+    eventPublisher.publishEvent(DomainEvent.ThumbnailBookAdded(newThumbnail))
+    return newThumbnail
   }
 
   fun deleteThumbnailForBook(thumbnail: ThumbnailBook) {
