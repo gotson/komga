@@ -180,6 +180,7 @@
     "title": "Collection {name}"
   },
   "common": {
+    "age": "Âge",
     "all_libraries": "Toutes les bibliothèques",
     "books": "Livres",
     "books_n": "Aucun livre | 1 livre | {count} livres",
@@ -218,6 +219,7 @@
     "required": "Requis",
     "reset_filters": "Réinitialiser les filtres",
     "roles": "Rôles",
+    "save_changes": "Enregistrer les modifications",
     "series": "Séries",
     "sidecars": "Sidecars",
     "tags": "Étiquettes",
@@ -428,6 +430,7 @@
       "field_age_rating": "Âge mininal",
       "field_age_rating_error": "L'âge minimal doit être supérieur ou égal à 0",
       "field_genres": "Genres",
+      "field_labels": "Étiquettes",
       "field_language": "Langue",
       "field_language_hint": "Étiquette de langage IETF BCP 47",
       "field_publisher": "Éditeur",
@@ -442,6 +445,7 @@
       "mixed": "MIXTE",
       "tab_general": "Général",
       "tab_poster": "Couverture",
+      "tab_sharing": "Partage",
       "tab_tags": "Étiquettes",
       "tags_notice_multiple_edit": "Vous êtes en train de modifier les étiquettes pour plusieurs séries. Cela écrasera les étiquettes existantes pour chacune des séries."
     },
@@ -450,6 +454,19 @@
       "button_confirm": "Enregistrer les modifications",
       "dialog_title": "Modifier l'utilisateur",
       "label_roles_for": "Rôles pour {name}"
+    },
+    "edit_user_restrictions": {
+      "age_restriction": {
+        "allow_under": "Autoriser en dessous uniquement",
+        "exclude_over": "Exclure au dessus",
+        "none": "Aucune restriction"
+      },
+      "edit_restrictions_for": "Modifier les restrictions pour {name}",
+      "label_age_restriction": "Restriction d'âge",
+      "label_allow_only_labels": "Autoriser uniquement les étiquettes",
+      "label_exclude_labels": "Exclure les étiquettes",
+      "tab_content_restrictions": "Restrictions de contenu",
+      "tab_shared_libraries": "Bibliothèques partagées"
     },
     "empty_trash": {
       "body": "Par défaut, le serveur de médias ne supprime pas immédiatement les informations relatives aux médias. Ceci est utile si un lecteur est temporairement déconnecté. Lorsque vous videz la corbeille d'une bibliothèque, toutes les informations relatives aux médias manquants sont supprimées.",
@@ -751,6 +768,7 @@
   },
   "settings_user": {
     "change_password": "Modifier le mot de passe",
+    "edit_restrictions": "Modifier les restrictions",
     "edit_user": "Modifier l'utilisateur",
     "latest_activity": "Dernière activité : {date}",
     "no_recent_activity": "Aucune activité récente",
@@ -793,6 +811,9 @@
   "users": {
     "authentication_activity": "Activité d'authentification",
     "users": "Utilisateurs"
+  },
+  "validation": {
+    "zero_or_more": "Doit être supérieur ou égal à 0"
   },
   "welcome": {
     "add_library": "Ajouter une bibliothèque",
