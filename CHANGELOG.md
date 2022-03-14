@@ -1,3 +1,12 @@
+## [0.153.1](https://github.com/gotson/komga/compare/v0.153.0...v0.153.1) (2022-03-14)
+
+
+### Bug Fixes
+
+* **api:** return created thumbnail ([dd1ffbe](https://github.com/gotson/komga/commit/dd1ffbe54ade732dafb3db00bdb829274276b1e6))
+* translated using Weblate ([b778a2a](https://github.com/gotson/komga/commit/b778a2afc217c35277a23967c932f0261cd5a232))
+* translated using Weblate ([6449f22](https://github.com/gotson/komga/commit/6449f2247d84a160596608b617c518c823222179))
+
 # [0.153.0](https://github.com/gotson/komga/compare/v0.152.0...v0.153.0) (2022-03-03)
 
 
