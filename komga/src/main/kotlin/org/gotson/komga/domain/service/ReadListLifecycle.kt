@@ -77,7 +77,7 @@ class ReadListLifecycle(
     }
   }
 
-  fun addThumbnail(thumbnail: ThumbnailReadList) {
+  fun addThumbnail(thumbnail: ThumbnailReadList): ThumbnailReadList {
     when (thumbnail.type) {
       ThumbnailReadList.Type.USER_UPLOADED -> {
         thumbnailReadListRepository.insert(thumbnail)
@@ -88,6 +88,7 @@ class ReadListLifecycle(
     }
 
     eventPublisher.publishEvent(DomainEvent.ThumbnailReadListAdded(thumbnail))
+    return thumbnail
   }
 
   fun markSelectedThumbnail(thumbnail: ThumbnailReadList) {

@@ -303,19 +303,18 @@ class BookController(
 
   @PostMapping(value = ["api/v1/books/{bookId}/thumbnails"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
-  @ResponseStatus(HttpStatus.ACCEPTED)
   fun addUserUploadedBookThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "bookId") bookId: String,
     @RequestParam("file") file: MultipartFile,
     @RequestParam("selected") selected: Boolean = true,
-  ) {
+  ): ThumbnailBookDto {
     val book = bookRepository.findByIdOrNull(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     if (!contentDetector.isImage(file.inputStream.buffered().use { contentDetector.detectMediaType(it) }))
       throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 
-    bookLifecycle.addThumbnailForBook(
+    return bookLifecycle.addThumbnailForBook(
       ThumbnailBook(
         bookId = book.id,
         thumbnail = file.bytes,
@@ -323,7 +322,7 @@ class BookController(
         selected = selected,
       ),
       if (selected) MarkSelectedPreference.YES else MarkSelectedPreference.NO,
-    )
+    ).toDto()
   }
 
   @PutMapping("api/v1/books/{bookId}/thumbnails/{thumbnailId}/selected")

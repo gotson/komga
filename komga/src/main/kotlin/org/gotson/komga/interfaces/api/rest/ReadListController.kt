@@ -165,26 +165,25 @@ class ReadListController(
 
   @PostMapping(value = ["{id}/thumbnails"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
-  @ResponseStatus(HttpStatus.ACCEPTED)
   fun addUserUploadedReadListThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "id") id: String,
     @RequestParam("file") file: MultipartFile,
     @RequestParam("selected") selected: Boolean = true,
-  ) {
+  ): ThumbnailReadListDto {
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let { readList ->
 
       if (!contentDetector.isImage(file.inputStream.buffered().use { contentDetector.detectMediaType(it) }))
         throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 
-      readListLifecycle.addThumbnail(
+      return readListLifecycle.addThumbnail(
         ThumbnailReadList(
           readListId = readList.id,
           thumbnail = file.bytes,
           type = ThumbnailReadList.Type.USER_UPLOADED,
           selected = selected,
         ),
-      )
+      ).toDto()
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 

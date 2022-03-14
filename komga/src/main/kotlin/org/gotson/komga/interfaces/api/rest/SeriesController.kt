@@ -377,24 +377,23 @@ class SeriesController(
 
   @PostMapping(value = ["v1/series/{seriesId}/thumbnails"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
-  @ResponseStatus(HttpStatus.ACCEPTED)
   fun postUserUploadedSeriesThumbnail(
     @PathVariable(name = "seriesId") seriesId: String,
     @RequestParam("file") file: MultipartFile,
     @RequestParam("selected") selected: Boolean = true,
-  ) {
+  ): SeriesThumbnailDto {
     val series = seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     if (!contentDetector.isImage(file.inputStream.buffered().use { contentDetector.detectMediaType(it) }))
       throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 
-    seriesLifecycle.addThumbnailForSeries(
+    return seriesLifecycle.addThumbnailForSeries(
       ThumbnailSeries(
         seriesId = series.id,
         thumbnail = file.bytes,
         type = ThumbnailSeries.Type.USER_UPLOADED,
       ),
       if (selected) MarkSelectedPreference.YES else MarkSelectedPreference.NO,
-    )
+    ).toDto()
   }
 
   @PutMapping("v1/series/{seriesId}/thumbnails/{thumbnailId}/selected")

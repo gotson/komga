@@ -144,26 +144,25 @@ class SeriesCollectionController(
 
   @PostMapping(value = ["{id}/thumbnails"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
-  @ResponseStatus(HttpStatus.ACCEPTED)
   fun addUserUploadedCollectionThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "id") id: String,
     @RequestParam("file") file: MultipartFile,
     @RequestParam("selected") selected: Boolean = true,
-  ) {
+  ): ThumbnailSeriesCollectionDto {
     collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { collection ->
 
       if (!contentDetector.isImage(file.inputStream.buffered().use { contentDetector.detectMediaType(it) }))
         throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 
-      collectionLifecycle.addThumbnail(
+      return collectionLifecycle.addThumbnail(
         ThumbnailSeriesCollection(
           collectionId = collection.id,
           thumbnail = file.bytes,
           type = ThumbnailSeriesCollection.Type.USER_UPLOADED,
           selected = selected,
         ),
-      )
+      ).toDto()
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
