@@ -180,6 +180,7 @@
     "title": "{name} samling"
   },
   "common": {
+    "age": "Ålder",
     "all_libraries": "Alla bibliotek",
     "books": "Böcker",
     "books_n": "Ingen bok | 1 bok | {count} böcker",
@@ -218,6 +219,7 @@
     "required": "Krävs",
     "reset_filters": "Återställ filter",
     "roles": "Roller",
+    "save_changes": "Spara ändringar",
     "series": "Serier",
     "sidecars": "Sidovagnar",
     "tags": "Taggar",
@@ -428,6 +430,7 @@
       "field_age_rating": "Åldersgräns",
       "field_age_rating_error": "Åldersgränsen måste vara 0 eller mer",
       "field_genres": "Genrer",
+      "field_labels": "Etiketter",
       "field_language": "Språk",
       "field_language_hint": "IETF BCP 47 språk tagg",
       "field_publisher": "Utgivare",
@@ -442,6 +445,7 @@
       "mixed": "BLANDAD",
       "tab_general": "Allämnt",
       "tab_poster": "Affisch",
+      "tab_sharing": "Delning",
       "tab_tags": "Taggar",
       "tags_notice_multiple_edit": "Du redigerar taggar för flera serier. Detta skriver över befintliga taggar i varje serie."
     },
@@ -450,6 +454,19 @@
       "button_confirm": "Spara ändringar",
       "dialog_title": "Redigera användare",
       "label_roles_for": "Roller för {name}"
+    },
+    "edit_user_restrictions": {
+      "age_restriction": {
+        "allow_under": "Tillåt endast under",
+        "exclude_over": "Uteslut över",
+        "none": "Inga begränsningar"
+      },
+      "edit_restrictions_for": "Redigera begränsningar för {name}",
+      "label_age_restriction": "Åldersgräns",
+      "label_allow_only_labels": "Tillåt endast etiketter",
+      "label_exclude_labels": "Uteslut etiketter",
+      "tab_content_restrictions": "Begränsningar av innehållet",
+      "tab_shared_libraries": "Delade bibliotek"
     },
     "empty_trash": {
       "body": "Som standard tar mediaservern inte bort information för media direkt. Detta hjälper om en enhet tillfälligt kopplas bort. När du tömmer papperskorgen för ett bibliotek raderas all information om saknade media.",
@@ -751,6 +768,7 @@
   },
   "settings_user": {
     "change_password": "Byt lösenord",
+    "edit_restrictions": "Redigera begränsningar",
     "edit_user": "Redigera användare",
     "latest_activity": "Senaste aktivitet: {date}",
     "no_recent_activity": "Ingen aktivitet nyligen",
@@ -793,6 +811,9 @@
   "users": {
     "authentication_activity": "Autentiseringsaktivitet",
     "users": "Användare"
+  },
+  "validation": {
+    "zero_or_more": "Måste vara 0 eller mer"
   },
   "welcome": {
     "add_library": "Lägg till bibliotek",
