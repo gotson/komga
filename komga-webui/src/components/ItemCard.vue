@@ -106,6 +106,7 @@
               v-line-clamp="2"
               v-bind="subtitleProps"
               v-html="title.title"
+              :title="title.title"
             />
           </router-link>
           <template v-if="Array.isArray(title)">
@@ -119,6 +120,7 @@
                 @click.native="$event.stopImmediatePropagation()"
                 class="link-underline text-truncate"
                 v-html="t.title"
+                :title="t.title"
                 style="display: block"
                 :class="i !== 0 ? 'font-weight-light' : ''"
               />
