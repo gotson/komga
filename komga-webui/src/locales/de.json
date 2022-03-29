@@ -180,6 +180,7 @@
     "title": "{name} Kollektion"
   },
   "common": {
+    "age": "Alter",
     "all_libraries": "Alle Bibliotheken",
     "books": "Bücher",
     "books_n": "Kein Buch | 1 Buch | {count} Bücher",
@@ -218,6 +219,7 @@
     "required": "Notwendig",
     "reset_filters": "Filter Zurücksetzen",
     "roles": "Rollen",
+    "save_changes": "Änderungen speichern",
     "series": "Serie",
     "sidecars": "Sidecars",
     "tags": "Stichwörter",
@@ -428,6 +430,7 @@
       "field_age_rating": "Altersfreigabe",
       "field_age_rating_error": "Altersfreigabe muß größer 0 sein",
       "field_genres": "Genre",
+      "field_labels": "Kennzeichnungen",
       "field_language": "Sprache",
       "field_language_hint": "IETF BCP 47 Abkürzungsformat",
       "field_publisher": "Verlag",
@@ -442,6 +445,7 @@
       "mixed": "Vermischtes",
       "tab_general": "Allgemein",
       "tab_poster": "Poster",
+      "tab_sharing": "Teilen",
       "tab_tags": "Stichwörter",
       "tags_notice_multiple_edit": "Sie verändern mehrere Stichwörter. Dies wird die existierenden Einträge der Stichwörter aller Serien durch den neuen Eintrag ersetzen."
     },
@@ -450,6 +454,19 @@
       "button_confirm": "Änderungen speichern",
       "dialog_title": "Benutzerdaten bearbeiten",
       "label_roles_for": "Rollen für {name}"
+    },
+    "edit_user_restrictions": {
+      "age_restriction": {
+        "allow_under": "Erlauben wenn jünger als",
+        "exclude_over": "Ausschließen wenn älter als",
+        "none": "Keine Beschränkungen"
+      },
+      "edit_restrictions_for": "Beschränkungen bearbeiten für {name}",
+      "label_age_restriction": "Altersbeschränkungen",
+      "label_allow_only_labels": "Erlaube nur mit Kennzeichnung",
+      "label_exclude_labels": "Ausschließen von Kennzeichnungen",
+      "tab_content_restrictions": "Inhaltsbeschränkungen",
+      "tab_shared_libraries": "Geteilte Bibliotheken"
     },
     "empty_trash": {
       "body": "Standardmäßig entfernt der Medienserver nicht sofort alle Informationen bei mehr vorhandenen Medien. Dies ist zum Schutz der Metadaten gedacht, sollte ein Datenträger temporär nicht verfügbar sein. Wenn Sie eine Bibliothek bereinigen, werden alle Informationen über fehlende Medien gelöscht.",
@@ -751,6 +768,7 @@
   },
   "settings_user": {
     "change_password": "Passwort ändern",
+    "edit_restrictions": "Einschränkungen bearbeiten",
     "edit_user": "Benutzerdaten bearbeiten",
     "latest_activity": "Letzte Aktivität: {date}",
     "no_recent_activity": "Keine letzten Aktivitäten",
@@ -793,6 +811,9 @@
   "users": {
     "authentication_activity": "Authentifizierungsaktivität",
     "users": "Benutzer"
+  },
+  "validation": {
+    "zero_or_more": "Muss größer oder gleich 0 sein"
   },
   "welcome": {
     "add_library": "Bibliothek hinzufügen",

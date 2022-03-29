@@ -42,7 +42,9 @@
   },
   "book_card": {
     "error": "Błąd",
-    "unknown": "Do przeanalizowania",
+    "no_release_date": "Brak daty wydania",
+    "unknown": "Oczekuje na analizę",
+    "unread": "Nieprzeczytany",
     "unsupported": "Nieobsługiwany"
   },
   "book_import": {
@@ -118,7 +120,7 @@
       "paged": "Konfiguracja stron w czytniku",
       "reading_mode": "Tryb czytania",
       "scale_type": "Tryb skalowania",
-      "side_padding": "Wypełnienie boczne",
+      "side_padding": "Odstępy po bokach",
       "side_padding_none": "Brak",
       "webtoon": "Konfiguracja czytnika Webtoon"
     },
@@ -128,6 +130,7 @@
       "cycle_scale": "Zmień skalowanie",
       "cycle_side_padding": "Zmień wypełnienie boczne",
       "first_page": "Pierwsza strona",
+      "fullscreen": "Włącz/wyłącz pełny ekran",
       "last_page": "Ostatnia strona",
       "left_to_right": "Od lewej do prawej",
       "menus": "Menu",
@@ -151,6 +154,7 @@
     "file": "PLIK",
     "format": "FORMAT",
     "isbn": "ISBN",
+    "links": "Odnośniki",
     "navigation_within_readlist": "Nawigacja w ramach listy: {name}",
     "outdated_tooltip": "Plik tej książki uległ zmianie, ta książka musi zostać ponownie przeanalizowana",
     "read_book": "Czytaj",
@@ -176,6 +180,7 @@
     "title": "kolekcja {name}"
   },
   "common": {
+    "age": "Wiek",
     "all_libraries": "Wszystkie biblioteki",
     "books": "Książki",
     "books_n": "Brak tomów| 1 tom | {count} tomy | {count} tomów",
@@ -185,9 +190,11 @@
     "collections": "Kolekcje",
     "create": "Utwórz",
     "delete": "Usuń",
+    "disk_space": "Przestrzeń dyskowa",
     "dismiss": "Odrzuć",
     "download": "Pobierz",
-    "email": "Adres e-mail",
+    "email": "E-mail",
+    "filename": "Nazwa pliku",
     "filter_no_matches": "Aktywny filtr nie zwrócił żadnych wyników",
     "genre": "Gatunek",
     "go_to_library": "Przejdź do biblioteki",
@@ -200,6 +207,8 @@
     "n_selected": "wybrano {count}",
     "nothing_to_show": "Nic do wyświetlenia",
     "outdated": "Nieaktualny",
+    "page": "Strona",
+    "page_number": "Numer strony",
     "pages": "strony",
     "pages_n": "Brak stron | 1 strona | {count} strony | {count} stron",
     "password": "Hasło",
@@ -210,10 +219,12 @@
     "required": "Wymagane",
     "reset_filters": "Zresetuj filtry",
     "roles": "Role",
-    "series": "Cykle",
+    "save_changes": "Zapisz zmiany",
+    "series": "Serie",
     "tags": "Tagi",
-    "unavailable": "Niedostępne",
+    "unavailable": "Niedostępny",
     "unlock_all": "Odblokuj wszystko",
+    "url": "URL",
     "use_filter_panel_to_change_filter": "Użyj panelu filtrów aby zmienić aktywny filtr",
     "year": "rok"
   },
@@ -263,7 +274,7 @@
       "field_email_error": "Adres e-mail musi być poprawny",
       "field_password": "Hasło",
       "field_role_administrator": "Administrator",
-      "field_role_file_download": "Pobieranie pliku",
+      "field_role_file_download": "Pobieranie plików",
       "field_role_page_streaming": "Strumieniowanie stron",
       "label_roles": "Role"
     },
@@ -271,6 +282,15 @@
       "body": "Analizuje wszystkie pliki w bibliotece. Analiza zbiera informacje o mediach. W zależności od rozmiaru biblioteki może to zająć dużo czasu.",
       "button_confirm": "Analizuj",
       "title": "Analizuj bibliotekę"
+    },
+    "delete_book": {
+      "button_confirm": "Usuń",
+      "confirm_delete": "Tak, usuń zeszyt \"{name}\" i jego zawartość",
+      "confirm_delete_multiple": "Tak, usuń następująca liczbę zeszytów: {count} i ich zawartość",
+      "dialog_title": "Usuń zeszyt",
+      "dialog_title_multiple": "Usuń zeszyty",
+      "warning_html": "Zeszyt <b>{name}</b> zostanie usunięty z serwera łącznie z plikami źródłowymi. Operacji <b>nie da</b> się cofnąć. Kontynuować?",
+      "warning_multiple_html": "{count} zeszytów zostanie usunięta z serwera łącznie z plikami źródłowymi. Operacji <b>nie da</b> się cofnąć. Kontynuować?"
     },
     "delete_collection": {
       "button_confirm": "Usuń",
@@ -296,6 +316,14 @@
       "warning_html": "Lista <b>{name}</b> zostanie usunięta z tego serwera. Nie będzie to miało wpływu na Twoje pliki. Ta czynność <b>nie może</b> być cofnięta. Kontynuować?",
       "warning_multiple_html": "Listy czytanych w liczbie {count} zostanie usunięte z tego serwera. Nie będzie to miało wpływu na Twoje pliki. To <b>nie może</b> być cofnięte. Kontynuować?"
     },
+    "delete_series": {
+      "button_confirm": "Usuń",
+      "confirm_delete": "Tak, usuń serię \"{name}\" oraz jej zawartość",
+      "confirm_delete_multiple": "Tak, usuń {count} serie oraz ich zawartość",
+      "dialog_title": "Usuń serię",
+      "warning_html": "Seria <b>{name}</b> zostanie usunięta z serwera łącznie z plikami źródłowymi. Operacji <b>nie da</b> się cofnąć. Kontynuować?",
+      "warning_multiple_html": "{count} serii zostanie usuniętych z serwera łącznie z plikami źródłowymi. Operacji <b>nie da</b> się cofnąć. Kontynuować?"
+    },
     "delete_user": {
       "button_confirm": "Usuń",
       "confirm_delete": "Tak, usuń użytkownika \"{name}\"",
@@ -303,6 +331,7 @@
       "warning_html": "Użytkownik <b>{name}</b> zostanie usunięty z tego serwera. Ta czynność <b>nie może</b> zostać cofnięta. Kontynuować?"
     },
     "edit_books": {
+      "add_author_role_error_duplicate": "Już istnieje",
       "authors_notice_multiple_edit": "Edytujesz autorów dla wielu książek. Spowoduje to zastąpienie istniejących autorów każdej książki.",
       "button_cancel": "Anuluj",
       "button_confirm": "Zapisz zmiany",
@@ -310,16 +339,22 @@
       "dialog_title_single": "Edycja {book}",
       "field_isbn": "ISBN",
       "field_isbn_error": "Musi być prawidłowym numerem ISBN 13",
+      "field_link_label": "Opis odnośnika",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "Musi zawierać http lub https",
+      "field_link_url_error_url": "Proszę podać poprawny URL",
       "field_number": "Numer",
       "field_number_sort": "Numer sortowania",
       "field_number_sort_hint": "Można użyć liczb dziesiętnych",
       "field_release_date": "Data wydania",
-      "field_release_date_error": "Musi być prawidłową datą w formacie RRRR-MM-DD",
+      "field_release_date_error": "Wymagana jest data w formacie RRRR-MM-DD",
       "field_summary": "Streszczenie",
       "field_tags": "Tagi",
       "field_title": "Tytuł",
-      "tab_authors": "Autorzy",
+      "tab_authors": "Twórcy",
       "tab_general": "Ogólne",
+      "tab_links": "Odnośniki",
+      "tab_poster": "Plakat",
       "tab_tags": "Tagi",
       "tags_notice_multiple_edit": "Edytujesz tagi dla wielu książek. Spowoduje to zastąpienie istniejących tagów każdej książki."
     },
@@ -328,7 +363,9 @@
       "button_confirm": "Zapisz zmiany",
       "dialog_title": "Edycja kolekcji",
       "field_manual_ordering": "Ręczne sortowanie",
-      "label_ordering": "Domyślnie cykle w kolekcji będą uporządkowane według nazwy. Można włączyć ręczne porządkowanie, aby zdefiniować własną kolejność."
+      "label_ordering": "Domyślnie cykle w kolekcji będą uporządkowane według nazwy. Można włączyć ręczne porządkowanie, aby zdefiniować własną kolejność.",
+      "tab_general": "Ogólne",
+      "tab_poster": "Plakat"
     },
     "edit_library": {
       "button_browse": "Przeglądaj",
@@ -338,6 +375,9 @@
       "button_next": "Następny",
       "dialog_title_add": "Dodawanie biblioteki",
       "dialot_title_edit": "Edycja biblioteki",
+      "field_analysis_analyze_dimensions": "Analizuj rozmiary stron",
+      "field_analysis_hash_files": "Wygeneruj hash pliku",
+      "field_analysis_hash_pages": "Wygeneruj hash dla stron",
       "field_convert_to_cbz": "Automatycznie konwertuj na CBZ",
       "field_import_barcode_isbn": "Kod kreskowy ISBN",
       "field_import_comicinfo_book": "Metadane książki",
@@ -350,13 +390,14 @@
       "field_import_mylar_series": "Metadane cykli",
       "field_name": "Nazwa",
       "field_repair_extensions": "Automatycznie napraw nieprawidłowe rozszerzenia plików",
-      "field_root_folder": "Folder główny",
+      "field_root_folder": "Katalog główny",
       "field_scanner_deep_scan": "Głębokie skanowanie",
       "field_scanner_empty_trash_after_scan": "Opróżnij kosz automatycznie po każdym skanowaniu",
       "field_scanner_force_directory_modified_time": "Wymuś czas modyfikacji katalogu",
       "field_series_cover": "Okładka cyklu",
       "file_browser_dialog_button_confirm": "Wybierz",
-      "file_browser_dialog_title": "Folder główny biblioteki",
+      "file_browser_dialog_title": "Katalog główny biblioteki",
+      "label_analysis": "Analiza",
       "label_file_management": "Zarządzanie plikami",
       "label_import_barcode_isbn": "Importowanie ISBN z kodu kreskowego",
       "label_import_comicinfo": "Importowanie metadanych dla CBR/CBZ zawierających plik ComicInfo.xml",
@@ -367,14 +408,18 @@
       "label_series_cover": "Okładka cyklu",
       "tab_general": "Ogólne",
       "tab_metadata": "Metadane",
-      "tab_options": "Opcje"
+      "tab_options": "Opcje",
+      "tooltip_scanner_force_modified_time": "Włącz jeżeli biblioteka znajduje się na Google Drive",
+      "tooltip_use_resources": "Może znacząco obciązyć zasoby jeżeli biblioteka jest duża lub sprzęt nie jest wydajny"
     },
     "edit_readlist": {
       "button_cancel": "Anuluj",
       "button_confirm": "Zapisz zmiany",
       "dialog_title": "Edycja listy",
       "field_name": "Nazwa",
-      "field_summary": "Streszczenie"
+      "field_summary": "Streszczenie",
+      "tab_general": "Ogólne",
+      "tab_poster": "Plakat"
     },
     "edit_series": {
       "button_cancel": "Anuluj",
@@ -384,8 +429,9 @@
       "field_age_rating": "Klasyfikacja wiekowa",
       "field_age_rating_error": "Klasyfikacja wiekowa musi wynosić 0 lub więcej",
       "field_genres": "Gatunki",
+      "field_labels": "Etykietki",
       "field_language": "Język",
-      "field_language_hint": "Znacznik języka IETF BCP 47",
+      "field_language_hint": "Kod języka według IETF BCP 47",
       "field_publisher": "Wydawca",
       "field_reading_direction": "Kierunek czytania",
       "field_sort_title": "Tytuł sortowania",
@@ -398,6 +444,7 @@
       "mixed": "MIESZANY",
       "tab_general": "Ogólne",
       "tab_poster": "Plakat",
+      "tab_sharing": "Udostępnianie",
       "tab_tags": "Tagi",
       "tags_notice_multiple_edit": "Edytujesz tagi dla wielu cykli. Spowoduje to zastąpienie istniejących tagów w każdym cyklu."
     },
@@ -407,10 +454,23 @@
       "dialog_title": "Edycja użytkownika",
       "label_roles_for": "Role dla {name}"
     },
+    "edit_user_restrictions": {
+      "age_restriction": {
+        "allow_under": "Dozwolone tylko poniżej",
+        "exclude_over": "Wyłącz powyżej",
+        "none": "Bez ograniczeń"
+      },
+      "edit_restrictions_for": "Edytuj ograniczenia dla {name}",
+      "label_age_restriction": "Ograniczenia wiekowe",
+      "label_allow_only_labels": "Zezwól tylko na etykietki",
+      "label_exclude_labels": "Wyłącz etykietki",
+      "tab_content_restrictions": "Ograniczenia zawartości",
+      "tab_shared_libraries": "Udostępnione bibioteki"
+    },
     "empty_trash": {
-      "body": "Domyślnie serwer nie usuwa od razu informacji o mediach. Pomaga to, jeśli dysk jest tymczasowo odłączony. Po opróżnieniu kosza dla biblioteki wszystkie informacje o brakujących mediach są usuwane.",
-      "button_confirm": "Pusty",
-      "title": "Opróżnij kosz dla bibliotekę"
+      "body": "Domyślnie serwer nie usuwa od razu informacji o mediach. Jest to pomocne, w momencie gdy dysk jest tymczasowo odłączony. Po opróżnieniu kosza wszystkie informacje o brakujących mediach są usuwane z biblioteki.",
+      "button_confirm": "Usuń",
+      "title": "Opróżnij kosz biblioteki"
     },
     "file_browser": {
       "button_cancel": "Anuluj",
@@ -424,7 +484,7 @@
       "label_source_filename": "Nazwa pliku źródłowego",
       "table": {
         "existing_file": "Istniejący plik",
-        "order": "Porządek"
+        "order": "Kolejność"
       },
       "title": "Nazwa pliku docelowego"
     },
@@ -434,20 +494,20 @@
       "dialog_title": "Zmiana hasła",
       "field_new_password": "Nowe hasło",
       "field_new_password_error": "Wymagane jest nowe hasło.",
-      "field_repeat_password": "Powtórzenie nowego hasła",
+      "field_repeat_password": "Powtórz nowe hasło",
       "field_repeat_password_error": "Hasła muszą być identyczne."
     },
     "refresh_library_metadata": {
-      "body": "Odświeża metadane dla wszystkich plików w bibliotece. W zależności od rozmiaru biblioteki, może to zająć dużo czasu.",
+      "body": "Odświeża metadane dla wszystkich plików w bibliotece. W zależności od rozmiaru biblioteki, może zająć to dużo czasu.",
       "button_confirm": "Odśwież",
       "title": "Odśwież metadane dla biblioteki"
     },
     "series_picker": {
-      "label_search_series": "Szukaj cykli",
-      "title": "Wybierz cykl"
+      "label_search_series": "Szukaj serii",
+      "title": "Wybierz serię"
     },
     "server_stop": {
-      "button_confirm": "Wyłącz",
+      "button_confirm": "Zatrzymaj",
       "confirmation_message": "Jesteś pewien, że chcesz wyłączyć Komgę?",
       "dialog_title": "Wyłączenie serwera"
     },
@@ -467,6 +527,7 @@
         "height": "Wysokość",
         "index": "Indeks",
         "media_type": "Typ mediów",
+        "size": "Rozmiar",
         "width": "Szerokość"
       },
       "title": "Szczegóły tomu",
@@ -479,6 +540,29 @@
       "title": "Sprawdź tom",
       "title_comparison": "Porównanie tomów"
     }
+  },
+  "duplicate_pages": {
+    "action_delete_auto": "Automtyczne usuwanie",
+    "action_delete_manual": "Ręczne usuwanie",
+    "action_delete_matches": "Usuń pasujące",
+    "action_ignore": "Ignoruj",
+    "filter": {
+      "count": "Ilość",
+      "delete_count": "Ilość usuniętych",
+      "delete_size": "Zaoszczędzona przestrzeń",
+      "size": "Rozmiar",
+      "total_size": "Rozmiar razem"
+    },
+    "info": "Usunięcie duplikatów stron zmieni zawartość Twoich plików. Zrób kopię zapasową i użyj usuwania ręcznego zanim użyjesz usuwania automatycznego.",
+    "saved_size": "Zaoszczędzono {size}",
+    "title": "Duplikaty stron",
+    "unknown_size": "Nieznany rozmiar"
+  },
+  "duplicates": {
+    "file_hash": "Hash pliku",
+    "size": "Rozmiar",
+    "title": "Duplikaty plików",
+    "url": "URL"
   },
   "enums": {
     "copy_mode": {
@@ -543,12 +627,13 @@
   "filter": {
     "age_rating": "Klasyfikacja wiekowa",
     "age_rating_none": "Brak",
+    "complete": "Ukończone",
     "genre": "gatunek",
     "in_progress": "W trakcie",
     "language": "język",
     "library": "biblioteka",
     "publisher": "wydawca",
-    "read": "Czytaj",
+    "read": "Przeczytane",
     "release_date": "data wydania",
     "status": "status",
     "tag": "tag",
@@ -558,6 +643,16 @@
     "filter": "filtr",
     "sort": "sortowanie"
   },
+  "history": {
+    "header": {
+      "book": "Zeszyt",
+      "date": "Data",
+      "details": "Szczegóły",
+      "series": "Serie",
+      "type": "Typ"
+    },
+    "title": "Historia"
+  },
   "home": {
     "theme": "Motyw",
     "translation": "Tłumaczenie"
@@ -566,12 +661,12 @@
     "browse": "Przeglądaj",
     "collections": "Kolekcje",
     "readlists": "Listy czytanych",
-    "recommended": "Zalecane"
+    "recommended": "Polecane"
   },
   "login": {
-    "create_user_account": "Tworzenie konta użytkownika",
+    "create_user_account": "Utwórz konto użytkownika",
     "login": "Zaloguj się",
-    "unclaimed_html": "Ten serwer Komga nie jest jeszcze aktywny, musisz utworzyć konto użytkownika, by móc uzyskać do niego dostęp.<br><br>Wybierz <strong>e-mail</strong> oraz <strong>hasło</strong> i kliknij na <strong>Utwórz konto użytkownika</strong>."
+    "unclaimed_html": "Serwer Komga nie jest jeszcze aktywny, musisz utworzyć konto użytkownika, by móc uzyskać do niego dostęp.<br><br>Wybierz <strong>e-mail</strong> oraz <strong>hasło</strong> i kliknij na <strong>Utwórz konto użytkownika</strong>."
   },
   "media_analysis": {
     "comment": "Komentarz",
@@ -600,6 +695,14 @@
     "scan_library_files": "Skanuj pliki bibliotek",
     "select_all": "Zaznacz wszystkie"
   },
+  "metrics": {
+    "library_books": "Ilość tomów na bibliotekę",
+    "library_disk_space": "Zużycie dysku przez bibliotekę",
+    "library_series": "Liczba serii na bibliotekę",
+    "tasks_executed": "Liczba wykonanych zadań",
+    "tasks_total_time": "Całkowity czas wykonania zadań",
+    "title": "Statystyki"
+  },
   "navigation": {
     "home": "Ekran główny",
     "libraries": "Biblioteki",
@@ -608,7 +711,7 @@
   "page_not_found": {
     "go_back_to_home_page": "Wróć do ekranu głównego",
     "page_does_not_exist": "Strona, której szukasz, nie istnieje.",
-    "page_not_found": "Strona nie znaleziona"
+    "page_not_found": "Strona nie została znaleziona"
   },
   "read_more": {
     "less": "Mniej",
@@ -616,12 +719,12 @@
   },
   "readlists_expansion_panel": {
     "manage_readlist": "Zarządzanie listami",
-    "title": "lista {name}"
+    "title": "Lista {name}"
   },
   "search": {
     "no_results": "Wyszukiwanie nie zwróciło żadnych wyników",
     "search": "Wyszukaj",
-    "search_for_something_else": "Spróbuj wyszukać coś innego",
+    "search_for_something_else": "Spróbuj poszukać czegoś innego",
     "search_results_for": "Wyniki wyszukiwania dla \"{name}\""
   },
   "searchbox": {
@@ -645,6 +748,7 @@
   },
   "settings_user": {
     "change_password": "Zmień hasło",
+    "edit_restrictions": "Konfiguruj ograniczenia",
     "edit_user": "Edycja użytkownika",
     "latest_activity": "Ostatnia aktywność: {date}",
     "no_recent_activity": "Brak ostatniej aktywności",
@@ -686,6 +790,9 @@
   "users": {
     "authentication_activity": "Czynność uwierzytelniania",
     "users": "Użytkownicy"
+  },
+  "validation": {
+    "zero_or_more": "Musi być 0 lub więcej"
   },
   "welcome": {
     "add_library": "Dodaj bibliotekę",
