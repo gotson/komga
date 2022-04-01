@@ -8,7 +8,7 @@ plugins {
     kotlin("plugin.spring")
     kotlin("kapt")
   }
-  id("org.springframework.boot") version "2.5.8"
+  id("org.springframework.boot") version "2.5.12"
   id("com.gorylenko.gradle-git-properties") version "2.3.2"
   id("nu.studer.jooq") version "5.2.2" // 6.0.0 requires Java 11
   id("org.flywaydb.flyway") version "7.15.0"
@@ -26,7 +26,7 @@ dependencies {
   implementation(kotlin("reflect"))
 
   // 2.6.0 brings assertj-core 3.21.0 which causes type inference issues in Kotlin, should be fixed in Kotlin 1.6.20
-  implementation(platform("org.springframework.boot:spring-boot-dependencies:2.5.8"))
+  implementation(platform("org.springframework.boot:spring-boot-dependencies:2.5.12"))
 
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -39,7 +39,7 @@ dependencies {
   implementation("org.springframework.session:spring-session-core")
   implementation("com.github.gotson:spring-session-caffeine:1.0.3")
 
-  kapt("org.springframework.boot:spring-boot-configuration-processor:2.5.8")
+  kapt("org.springframework.boot:spring-boot-configuration-processor:2.5.12")
 
   implementation("org.apache.activemq:artemis-jms-server")
 
@@ -111,7 +111,7 @@ dependencies {
 
   testImplementation("com.tngtech.archunit:archunit-junit5:0.22.0")
 
-  developmentOnly("org.springframework.boot:spring-boot-devtools:2.5.8")
+  developmentOnly("org.springframework.boot:spring-boot-devtools:2.5.12")
 }
 
 val webui = "$rootDir/komga-webui"
