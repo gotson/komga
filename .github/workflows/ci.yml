@@ -1,6 +1,10 @@
 name: CI
 
-on: [ pull_request, push ]
+on:
+  pull_request:
+  push:
+    branches-ignore:
+      - 'dependabot/**'
 
 jobs:
   test:
@@ -31,22 +35,6 @@ jobs:
         with:
           name: test-reports-jdk-${{ matrix.java }}
           path: komga/build/reports/tests/
-
-  publish-test-results:
-    name: "Publish Unit Tests Results"
-    needs: test
-    runs-on: ubuntu-latest
-    if: success() || failure()
-    steps:
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
-        with:
-          path: artifacts
-      - name: Publish Unit Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v1
-        if: always()
-        with:
-          files: artifacts/test-results-*/**/*.xml
 
   webui:
     runs-on: ubuntu-latest
