@@ -24,7 +24,7 @@
     "datetime": "Dátum / idő",
     "email": "E-mail",
     "error": "Hiba",
-    "ip": "IP cím",
+    "ip": "IP-cím",
     "source": "Forrás",
     "success": "Sikeres",
     "user_agent": "User Agent"
@@ -42,6 +42,7 @@
   "book_card": {
     "error": "Hiba",
     "unknown": "Elemzésre vár",
+    "unread": "Olvasatlan",
     "unsupported": "Nem támogatott"
   },
   "book_import": {
@@ -127,6 +128,7 @@
       "cycle_scale": "Méretezés megváltoztatás",
       "cycle_side_padding": "Oldalszél megváltoztatás",
       "first_page": "Első oldal",
+      "fullscreen": "Be/kilépés teljes képernyőről",
       "last_page": "Utolsó oldal",
       "left_to_right": "Balról jobbra",
       "menus": "Menük",
@@ -150,6 +152,7 @@
     "file": "FÁJL",
     "format": "FORMÁTUM",
     "isbn": "ISBN",
+    "links": "LINKEK",
     "navigation_within_readlist": "Navigáció az olvasólistán belül: {name}",
     "outdated_tooltip": "A fájlja ennek a könyvnek megváltozott, ezt a könyvet újra kell elemezni",
     "read_book": "Könyv olvasása",
@@ -175,6 +178,7 @@
     "title": "{name} gyűjtemény"
   },
   "common": {
+    "age": "Kor",
     "all_libraries": "Minden könyvtár",
     "books": "Könyvek",
     "books_n": "Nincs könyv | 1 könyv | {count} könyv",
@@ -184,9 +188,11 @@
     "collections": "Gyűjtemények",
     "create": "Létrehozás",
     "delete": "Törlés",
+    "disk_space": "Lemezterület",
     "dismiss": "Elvet",
     "download": "Letöltés",
     "email": "E-mail-cím",
+    "filename": "Fájlnév",
     "filter_no_matches": "A jelenleg aktív szűrő szerint üres",
     "genre": "Műfaj",
     "go_to_library": "Menj a könyvtárba",
@@ -199,6 +205,8 @@
     "n_selected": "{count} kiválasztva",
     "nothing_to_show": "Nincs mit mutatni",
     "outdated": "Elavult",
+    "page": "Oldal",
+    "page_number": "Oldalszám",
     "pages": "oldalak",
     "pages_n": "Nincs oldal | 1 oldal | {count} oldal",
     "password": "Jelszó",
@@ -209,10 +217,13 @@
     "required": "Kötelező",
     "reset_filters": "Szűrő visszaállítása",
     "roles": "Szerepek",
+    "save_changes": "Módosítások mentése",
     "series": "Könyvsorozatok",
+    "sidecars": "Oldalkocsik",
     "tags": "Címkék",
     "unavailable": "Nem elérhető",
     "unlock_all": "Összes megnyitása",
+    "url": "URL",
     "use_filter_panel_to_change_filter": "A szűrőpanelen változtasd meg az aktív szűrőt",
     "year": "év"
   },
@@ -270,6 +281,11 @@
       "button_confirm": "Elemez",
       "title": "Könyvtár elemzése"
     },
+    "delete_book": {
+      "button_confirm": "Törlés",
+      "dialog_title": "Könyv törlése",
+      "dialog_title_multiple": "Könyvek törlése"
+    },
     "delete_collection": {
       "button_confirm": "Törlés",
       "confirm_delete": "Igen, törölje a(z) \"{name}\" gyűjteményt",
@@ -293,6 +309,9 @@
       "dialog_title_multiple": "Olvasólisták törlése",
       "warning_html": "Az olvasólista <b>{name}</b> törölve lesz erről a szerverről. A médiafájljaid nem lesznek befolyásolva. Ez <b>nem</b> fordítható vissza. Folytatod?",
       "warning_multiple_html": "{count} olvasólista törölve lesz a szerverről. A médiafájljaid nem lesznek befolyásolva. Ez <b>nem</b> fordítható vissza. Folytatod?"
+    },
+    "delete_series": {
+      "button_confirm": "Törlés"
     },
     "delete_user": {
       "button_confirm": "Törlés",

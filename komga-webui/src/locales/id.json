@@ -180,6 +180,7 @@
     "title": "{name} koleksi"
   },
   "common": {
+    "age": "Umur",
     "all_libraries": "Semua Pustaka",
     "books": "Buku",
     "books_n": "Tidak ada buku | 1 buku | {count} buku",
@@ -218,6 +219,7 @@
     "required": "Diperlukan",
     "reset_filters": "Setel ulang filter",
     "roles": "Peran",
+    "save_changes": "Simpan perubahan",
     "series": "Seri",
     "sidecars": "Sidecars",
     "tags": "Tag",
@@ -428,6 +430,7 @@
       "field_age_rating": "Peringkat Usia",
       "field_age_rating_error": "Peringkat usia harus 0 atau lebih",
       "field_genres": "Genre",
+      "field_labels": "Label",
       "field_language": "Bahasa",
       "field_language_hint": "Tag bahasa IETF BCP 47",
       "field_publisher": "Penerbit",
@@ -442,6 +445,7 @@
       "mixed": "CAMPURAN",
       "tab_general": "Umum",
       "tab_poster": "Poster",
+      "tab_sharing": "Bagikan",
       "tab_tags": "Tag",
       "tags_notice_multiple_edit": "Anda sedang mengedit tag untuk beberapa seri. Ini akan menimpa tag yang ada dari setiap seri."
     },
@@ -450,6 +454,19 @@
       "button_confirm": "Simpan perubahan",
       "dialog_title": "Edit pengguna",
       "label_roles_for": "Peran untuk {name}"
+    },
+    "edit_user_restrictions": {
+      "age_restriction": {
+        "allow_under": "Izinkan hanya di bawah",
+        "exclude_over": "Kecualikan lebih dari",
+        "none": "Tidak ada batasan"
+      },
+      "edit_restrictions_for": "Edit batasan untuk {name}",
+      "label_age_restriction": "Batasan usia",
+      "label_allow_only_labels": "Hanya izinkan label",
+      "label_exclude_labels": "Kecualikan label",
+      "tab_content_restrictions": "Batasan Konten",
+      "tab_shared_libraries": "Pustaka Bersama"
     },
     "empty_trash": {
       "body": "Secara default, server media tidak langsung menghapus informasi untuk media. Ini membantu jika drive terputus sementara. Saat Anda mengosongkan sampah untuk perpustakaan, semua informasi tentang media yang hilang akan dihapus.",
@@ -559,7 +576,9 @@
     "historical_event_type": {
       "BookConverted": "Buku dikonversi",
       "BookFileDeleted": "Berkas buku dihapus",
-      "BookImported": "Pesan diimpor"
+      "BookImported": "Pesan diimpor",
+      "DuplicatePageDeleted": "Halaman duplikat dihapus",
+      "SeriesFolderDeleted": "Folder seri dihapus"
     },
     "media_status": {
       "ERROR": "Kesalahan",
@@ -567,6 +586,11 @@
       "READY": "Siap",
       "UNKNOWN": "Tidak dikenal",
       "UNSUPPORTED": "Tidak didukung"
+    },
+    "page_hash_action": {
+      "DELETE_AUTO": "Hapus otomatis",
+      "DELETE_MANUAL": "Hapus manual",
+      "IGNORE": "Abaikan"
     },
     "reading_direction": {
       "LEFT_TO_RIGHT": "Kiri ke kanan",
@@ -635,6 +659,16 @@
     "filter": "Saring",
     "sort": "urutkan"
   },
+  "history": {
+    "header": {
+      "book": "Buku",
+      "date": "Tanggal",
+      "details": "Rincian",
+      "series": "Seri",
+      "type": "Jenis"
+    },
+    "title": "Riwayat"
+  },
   "home": {
     "theme": "Tema",
     "translation": "Terjemahan"
@@ -659,6 +693,9 @@
     "status": "Status",
     "url": "URL"
   },
+  "media_management": {
+    "title": "Manajemen Media"
+  },
   "menu": {
     "add_to_collection": "Tambahkan ke koleksi",
     "add_to_readlist": "Tambah ke daftar bacaan",
@@ -676,6 +713,15 @@
     "refresh_metadata": "Segarkan metadata",
     "scan_library_files": "Pindai berkas pustaka",
     "select_all": "Pilih semua"
+  },
+  "metrics": {
+    "library_books": "Buku per pustaka",
+    "library_disk_space": "Ruang disk pustaka",
+    "library_series": "Seri per pustaka",
+    "library_sidecars": "Sidecars per pustaka",
+    "tasks_executed": "Tugas dieksekusi",
+    "tasks_total_time": "Total waktu tugas",
+    "title": "Metrik"
   },
   "navigation": {
     "home": "Beranda",
@@ -722,6 +768,7 @@
   },
   "settings_user": {
     "change_password": "Ganti kata sandi",
+    "edit_restrictions": "Edit batasan",
     "edit_user": "Edit pengguna",
     "latest_activity": "Aktivitas terbaru: {date}",
     "no_recent_activity": "Tidak ada aktivitas terbaru",
@@ -746,6 +793,7 @@
   },
   "thumbnail_card": {
     "tooltip_delete": "Hapus",
+    "tooltip_generated": "Karya seni yang dihasilkan",
     "tooltip_mark_as_selected": "Tandai sebagai dipilih",
     "tooltip_selected": "Terpilih",
     "tooltip_sidecar": "Artwork lokal",
@@ -763,6 +811,9 @@
   "users": {
     "authentication_activity": "Otentikasi Aktifitas",
     "users": "Pengguna"
+  },
+  "validation": {
+    "zero_or_more": "Harus lebih dari 0"
   },
   "welcome": {
     "add_library": "Tambah Pustaka",
