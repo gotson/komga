@@ -1,3 +1,11 @@
+## [0.153.2](https://github.com/gotson/komga/compare/v0.153.1...v0.153.2) (2022-04-01)
+
+
+### Bug Fixes
+
+* translated using Weblate ([52136db](https://github.com/gotson/komga/commit/52136dbeb3c29dc6c7c1b405a321f3e805a86012))
+* **webui:** show the full title of book/series on hover in cards ([59a6f7d](https://github.com/gotson/komga/commit/59a6f7d3cf189713e901c2f9eaab7b9328633844)), closes [#836](https://github.com/gotson/komga/issues/836)
+
 ## [0.153.1](https://github.com/gotson/komga/compare/v0.153.0...v0.153.1) (2022-03-14)
 
 
