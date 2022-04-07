@@ -63,6 +63,12 @@
               <v-list-item @click="downloadCurrentPage">
                 <v-list-item-title>{{ $t('bookreader.download_current_page') }}</v-list-item-title>
               </v-list-item>
+              <v-list-item @click="setCurrentPageAsBookPoster">
+                <v-list-item-title>{{ $t('bookreader.set_current_page_as_book_poster') }}</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="setCurrentPageAsSeriesPoster">
+                <v-list-item-title>{{ $t('bookreader.set_current_page_as_series_poster') }}</v-list-item-title>
+              </v-list-item>
             </v-list>
           </v-menu>
         </v-toolbar>
@@ -307,6 +313,7 @@ import ShortcutHelpDialog from '@/components/dialogs/ShortcutHelpDialog.vue'
 import {getBookTitleCompact} from '@/functions/book-title'
 import {checkImageSupport, ImageFeature} from '@/functions/check-image'
 import {bookPageUrl} from '@/functions/urls'
+import {getFileFromUrl} from '@/functions/file'
 import {ReadingDirection} from '@/types/enum-books'
 import Vue from 'vue'
 import {Location} from 'vue-router'
@@ -856,6 +863,64 @@ export default Vue.extend({
         withCredentials: true,
         forceDesktopMode: true,
       })
+    },
+    async setCurrentPageAsBookPoster() {
+      let imageFile = await getFileFromUrl(this.currentPage.url, 'poster', 'image/jpeg', {credentials: 'include'})
+      this.resizeImageForPoster(imageFile, async (newImageFile: File) => {
+        await this.$komgaBooks.uploadThumbnail(this.book.id, newImageFile, true)
+        this.sendNotification(`${this.$t('bookreader.book_poster_set_to_current_page')}`)
+      })
+    },
+    async setCurrentPageAsSeriesPoster() {
+      let imageFile = await getFileFromUrl(this.currentPage.url, 'poster', 'image/jpeg', {credentials: 'include'})
+      this.resizeImageForPoster(imageFile, async (newImageFile: File) => {
+        await this.$komgaSeries.uploadThumbnail(this.series.id, newImageFile, true)
+        this.sendNotification(`${this.$t('bookreader.series_poster_set_to_current_page')}`)
+      })
+    },
+    resizeImageForPoster(imageFile: File, uploadCallback: (newImageFile: File) => void) {
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+      if (ctx !== null) {
+        const img = new Image()
+        img.onload = (event) => {
+            var MAX_WIDTH = 500
+            var MAX_HEIGHT = 500
+            var width = img.width
+            var height = img.height
+
+            // Calculate width and height of the smaller image
+            if (width > height) {
+                if (width > MAX_WIDTH) {
+                    height = height * (MAX_WIDTH / width)
+                    width = MAX_WIDTH
+                }
+            } else {
+                if (height > MAX_HEIGHT) {
+                    width = width * (MAX_HEIGHT / height)
+                    height = MAX_HEIGHT
+                }
+            }
+
+            canvas.width = width
+            canvas.height = height
+            // Release blob data to save browser memory
+            URL.revokeObjectURL(img.src)
+            ctx.drawImage(img, 0, 0, width, height)
+            canvas.toBlob((blob) => {
+              if (blob !== null) {
+                uploadCallback(new File([blob], 'poster', {lastModified: Date.now()}))
+              } else {
+                // Resizing failed for some reason, just try with original image.
+                uploadCallback(imageFile)
+              }
+            })
+        }
+        img.src = URL.createObjectURL(imageFile)
+      } else {
+        // Browser does not support 2D canvas, just try with original image.
+        uploadCallback(imageFile)
+      }
     },
   },
 })
