@@ -54,6 +54,7 @@
                 color="accent"
                 style="position: absolute; top: 50%; left: 50%; margin-left: -36px; margin-top: -36px"
                 :to="fabTo"
+                @click.native="$event.stopImmediatePropagation()"
               >
                 <v-icon>mdi-book-open-page-variant</v-icon>
               </v-btn>
