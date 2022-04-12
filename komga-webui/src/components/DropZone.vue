@@ -1,6 +1,6 @@
 <template>
   <label class="drop-zone" v-cloak @drop.prevent="dropHandler" @dragover.prevent>
-    <span class="file-input">Choose an image</span> - drag and drop
+    <span class="file-input">{{ $t('common.choose_image') }}</span> - {{ $t('common.drag_drop') }}
     <input ref="input" hidden aria-hidden="true" type="file" accept="image/*" multiple @change="dropHandler">
   </label>
 </template>
