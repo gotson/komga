@@ -84,6 +84,7 @@ dependencies {
   runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.8.0")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.8.0")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-webp:3.8.0")
+  runtimeOnly("com.github.gotson.nightmonkeys:imageio-jxl:0.1.0")
   implementation("com.github.gotson:webp-imageio:0.2.2")
   // support for jpeg2000
   runtimeOnly("com.github.jai-imageio:jai-imageio-jpeg2000:1.4.0")
