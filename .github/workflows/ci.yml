@@ -21,9 +21,10 @@ jobs:
           java-version: ${{ matrix.java }}
           java-package: 'jdk'
           distribution: 'temurin'
-          cache: 'gradle'
       - name: Build
-        run: ./gradlew build
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build
       - name: Upload Unit Test Results
         if: always()
         uses: actions/upload-artifact@v2
