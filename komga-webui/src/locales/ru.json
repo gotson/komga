@@ -26,6 +26,7 @@
     "email": "Эл. почта",
     "error": "Ошибка",
     "ip": "IP-адрес",
+    "source": "Источник",
     "success": "Статус",
     "user_agent": "User Agent"
   },
@@ -36,11 +37,14 @@
     "inker": "контуровщики",
     "letterer": "шрифтовики",
     "penciller": "художники",
+    "translator": "переводчики",
     "writer": "писатели"
   },
   "book_card": {
     "error": "Ошибка",
+    "no_release_date": "Дата релиза отсутствует",
     "unknown": "Необходимо проанализировать",
+    "unread": "Не прочитано",
     "unsupported": "Неподдерживаемый"
   },
   "book_import": {
@@ -97,13 +101,16 @@
       "height": "По высоте",
       "original": "Исходное",
       "screen": "По экрану",
-      "width": "По ширине"
+      "width": "По ширине",
+      "width_shrink_only": "По ширине (с отступами)"
     },
     "settings": {
+      "always_fullscreen": "Всегда в полный экран",
       "animate_page_transitions": "Анимировать переходы страниц",
       "background_color": "Цвет фона",
       "background_colors": {
         "black": "Чёрный",
+        "gray": "Серый",
         "white": "Белый"
       },
       "display": "Отображение",
@@ -123,6 +130,7 @@
       "cycle_scale": "Переключить масштаб",
       "cycle_side_padding": "Переключить боковой отступ",
       "first_page": "Первая страница",
+      "fullscreen": "Войти/выйти из полноэкранного режима",
       "last_page": "Последняя страница",
       "left_to_right": "Слева Направо",
       "menus": "Меню",
@@ -146,6 +154,7 @@
     "file": "ФАЙЛ",
     "format": "ФОРМАТ",
     "isbn": "ISBN",
+    "links": "ССЫЛКИ",
     "navigation_within_readlist": "Навигация в пределах списка чтения: {name}",
     "outdated_tooltip": "Файл этой книги изменен, книгу необходимо повторно проанализировать",
     "read_book": "Читать книгу",
@@ -174,24 +183,32 @@
     "all_libraries": "Все Библиотеки",
     "books": "Книги",
     "books_n": "Книг нет | 1 книга | {count} книг",
+    "books_total": "{count} / {total} книг",
     "cancel": "Отмена",
+    "choose_image": "Выберите изображение",
     "close": "Закрыть",
     "collections": "Коллекции",
     "create": "Создать",
     "delete": "Удалить",
+    "disk_space": "Дисковое пространство",
     "dismiss": "Отклонить",
     "download": "Скачать",
     "email": "Эл. почта",
+    "filename": "Имя файла",
     "filter_no_matches": "Нет совпадений по заданному фильтру",
     "genre": "Жанр",
     "go_to_library": "Вернуться к библиотеке",
     "go_to_readlist": "Перейти к списку чтения",
     "go_to_series": "Перейти к серии",
+    "library": "Библиотека",
     "locale_name": "Русский",
     "locale_rtl": "false",
+    "lock_all": "Заблокировать все",
     "n_selected": "{count} выбрано",
     "nothing_to_show": "Нет данных для отображения",
     "outdated": "Устарело",
+    "page": "Страница",
+    "page_number": "Номер страницы",
     "pages": "страниц",
     "pages_n": "Страниц нет | 1 страница | {count} страниц",
     "password": "Пароль",
@@ -202,17 +219,21 @@
     "required": "Необходимо",
     "reset_filters": "Сбросить фильтры",
     "roles": "Роли",
+    "save_changes": "Сохранить изменения",
     "series": "Серии",
     "tags": "Теги",
     "unavailable": "Недоступно",
+    "unlock_all": "Разблокировать все",
+    "url": "Ссылка",
     "use_filter_panel_to_change_filter": "Воспользуйтесь панелью фильтров для изменения активного фильтра",
     "year": "год"
   },
   "dashboard": {
     "keep_reading": "Продолжить Чтение",
     "on_deck": "Текущее",
-    "recently_added_books": "Недавно Добавленные Книги",
-    "recently_added_series": "Недавно Добавленные Серии",
+    "recently_added_books": "Недавно добавленные книги",
+    "recently_added_series": "Недавно добавленные серии",
+    "recently_read_books": "Недавно прочитанные книги",
     "recently_released_books": "Недавно выпущенные книги",
     "recently_updated_series": "Недавно Обновленные Серии"
   },
@@ -262,6 +283,15 @@
       "button_confirm": "Анализировать",
       "title": "Анализ библиотеки"
     },
+    "delete_book": {
+      "button_confirm": "Удалить",
+      "confirm_delete": "Да, удалить книгу \"{name}\" и её файлы",
+      "confirm_delete_multiple": "Да, удалить {count} книг(и) и их файлы",
+      "dialog_title": "Удалить книгу",
+      "dialog_title_multiple": "Удалить книги",
+      "warning_html": "Книга <b>{name}</b> будет удалена с этого сервера вместе с сохраненными медиафайлами. Этот процесс <b>НЕ</b> обратим. Продолжить?",
+      "warning_multiple_html": "{count} книг(и) будут удалены с этого сервера вместе с сохраненными медиафайлами. Этот процесс <b>НЕ</b> обратим. Продолжить?"
+    },
     "delete_collection": {
       "button_confirm": "Удалить",
       "confirm_delete": "Да, удалить коллекцию \"{name}\"",
@@ -285,6 +315,12 @@
       "dialog_title_multiple": "Удалить Списки чтения",
       "warning_html": "Список чтения <b>{name}</b> будет удален с этого сервера. Ваши медиа файлы не будут затронуты. Это действие <b>не может</b> быть отменено. Продолжить?",
       "warning_multiple_html": "Выбранные ({count}) списки чтения будут удалены с этого сервера. Ваши медиафайлы не будут затронуты. Это действие <b>не может</b> быть отменено. Продолжить?"
+    },
+    "delete_series": {
+      "button_confirm": "Удалить",
+      "confirm_delete": "Да, удалить серию \"{name}\" и её файлы",
+      "confirm_delete_multiple": "Да, удалить {count} сери(й/и) и их файлы",
+      "dialog_title": "Удалить серии"
     },
     "delete_user": {
       "button_confirm": "Удалить",
@@ -361,7 +397,8 @@
       "button_cancel": "Отмена",
       "button_confirm": "Сохранить изменения",
       "dialog_title": "Редактировать список чтения",
-      "field_name": "Имя"
+      "field_name": "Имя",
+      "field_summary": "Сводка"
     },
     "edit_series": {
       "button_cancel": "Отмена",
@@ -382,6 +419,7 @@
       "field_title": "Название",
       "mixed": "СМЕШАННЫЙ",
       "tab_general": "Общее",
+      "tab_poster": "Постер",
       "tab_tags": "Теги",
       "tags_notice_multiple_edit": "Вы редактируете теги для нескольких серий. Это действие перезапишет существующие теги для каждой серии."
     },
@@ -481,6 +519,10 @@
       "RIGHT_TO_LEFT": "Справа налево",
       "VERTICAL": "Вертикально",
       "WEBTOON": "Webtoon"
+    },
+    "series_cover": {
+      "FIRST": "Первый",
+      "LAST": "Последний"
     },
     "series_status": {
       "ABANDONED": "Заброшена",
