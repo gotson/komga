@@ -9,11 +9,11 @@ plugins {
     kotlin("kapt")
   }
   id("org.springframework.boot") version "2.5.12"
-  id("com.gorylenko.gradle-git-properties") version "2.3.2"
+  id("com.gorylenko.gradle-git-properties") version "2.4.0"
   id("nu.studer.jooq") version "5.2.2" // 6.0.0 requires Java 11
   id("org.flywaydb.flyway") version "7.15.0"
   id("com.github.johnrengelman.processes") version "0.5.0"
-  id("org.springdoc.openapi-gradle-plugin") version "1.3.3"
+  id("org.springdoc.openapi-gradle-plugin") version "1.3.3" // cannot upgrade to 1.3.4 because of https://github.com/springdoc/springdoc-openapi-gradle-plugin/issues/75
   id("org.gradle.crypto.checksum") version "1.4.0"
 
   jacoco
@@ -25,7 +25,7 @@ dependencies {
   implementation(kotlin("stdlib-jdk8"))
   implementation(kotlin("reflect"))
 
-  // 2.6.0 brings assertj-core 3.21.0 which causes type inference issues in Kotlin, should be fixed in Kotlin 1.6.20
+  // 2.6.0 brings assertj-core 3.21.0 which causes type inference issues in Kotlin, should be fixed in Kotlin 1.7
   implementation(platform("org.springframework.boot:spring-boot-dependencies:2.5.12"))
 
   implementation("org.springframework.boot:spring-boot-starter-web")
@@ -47,7 +47,7 @@ dependencies {
 
   implementation("io.github.microutils:kotlin-logging-jvm:2.1.21")
   implementation("io.micrometer:micrometer-registry-influx")
-  implementation("io.hawt:hawtio-springboot:2.13.5")
+  implementation("io.hawt:hawtio-springboot:2.14.1") // cannot upgrade further because of https://github.com/hawtio/hawtio-integration/issues/139
 
   run {
     val springdocVersion = "1.5.12" // later uses Spring Boot 2.6.0
@@ -71,31 +71,31 @@ dependencies {
     implementation("org.apache.lucene:lucene-queryparser:$luceneVersion")
   }
 
-  implementation("com.ibm.icu:icu4j:70.1")
+  implementation("com.ibm.icu:icu4j:71.1")
 
-  implementation("org.apache.tika:tika-core:2.2.0")
+  implementation("org.apache.tika:tika-core:2.3.0")
   implementation("org.apache.commons:commons-compress:1.21")
-  implementation("com.github.junrar:junrar:7.4.0")
+  implementation("com.github.junrar:junrar:7.5.0")
   implementation("org.apache.pdfbox:pdfbox:2.0.25")
   implementation("net.grey-panther:natural-comparator:1.1")
   implementation("org.jsoup:jsoup:1.14.3")
 
-  implementation("net.coobird:thumbnailator:0.4.15")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.8.0")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.8.0")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-webp:3.8.0")
+  implementation("net.coobird:thumbnailator:0.4.17")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.8.2")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.8.2")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-webp:3.8.2")
   runtimeOnly("com.github.gotson.nightmonkeys:imageio-jxl:0.1.0")
   implementation("com.github.gotson:webp-imageio:0.2.2")
   // support for jpeg2000
   runtimeOnly("com.github.jai-imageio:jai-imageio-jpeg2000:1.4.0")
-  runtimeOnly("org.apache.pdfbox:jbig2-imageio:3.0.3")
+  runtimeOnly("org.apache.pdfbox:jbig2-imageio:3.0.4")
 
   // barcode scanning
   implementation("com.google.zxing:core:3.4.1")
 
   implementation("com.jakewharton.byteunits:byteunits:0.9.1")
 
-  implementation("com.github.f4b6a3:tsid-creator:4.1.4")
+  implementation("com.github.f4b6a3:tsid-creator:4.2.0")
 
   implementation("com.github.ben-manes.caffeine:caffeine:2.9.3") // 3.0.0 requires Java 11
 
@@ -106,11 +106,11 @@ dependencies {
     exclude(module = "mockito-core")
   }
   testImplementation("org.springframework.security:spring-security-test")
-  testImplementation("com.ninja-squad:springmockk:3.1.0")
-  testImplementation("io.mockk:mockk:1.12.1")
+  testImplementation("com.ninja-squad:springmockk:3.1.1")
+  testImplementation("io.mockk:mockk:1.12.2") // 1.12.3 make some tests fails when using withArg
   testImplementation("com.google.jimfs:jimfs:1.2")
 
-  testImplementation("com.tngtech.archunit:archunit-junit5:0.22.0")
+  testImplementation("com.tngtech.archunit:archunit-junit5:0.23.1")
 
   developmentOnly("org.springframework.boot:spring-boot-devtools:2.5.12")
 }
