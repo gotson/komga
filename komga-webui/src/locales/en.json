@@ -79,7 +79,6 @@
   },
   "bookreader": {
     "beginning_of_book": "You're at the beginning of the book.",
-    "book_poster_set_to_current_page": "Book poster is now set to the current page.",
     "changing_reading_direction": "Changing Reading Direction to",
     "cycling_page_layout": "Cycling Page Layout",
     "cycling_scale": "Cycling Scale",
@@ -90,6 +89,9 @@
     "move_next": "Click or press \"Next\" again to move to the next book.",
     "move_next_exit": "Click or press \"Next\" again to exit the reader.",
     "move_previous": "Click or press \"Previous\" again to move to the previous book.",
+    "notification_poster_set_book": "Book poster is now set to the current page.",
+    "notification_poster_set_readlist": "Read list poster is now set to the current page.",
+    "notification_poster_set_series": "Series poster is now set to the current page.",
     "paged_reader_layout": {
       "double": "Double pages",
       "double_no_cover": "Double pages (no cover)",
@@ -105,8 +107,8 @@
       "width": "Fit width",
       "width_shrink_only": "Fit width (shrink only)"
     },
-    "series_poster_set_to_current_page": "Series poster is now set to the current page.",
     "set_current_page_as_book_poster": "Set page as poster for book",
+    "set_current_page_as_readlist_poster": "Set page as poster for read list",
     "set_current_page_as_series_poster": "Set page as poster for series",
     "settings": {
       "always_fullscreen": "Always Full Screen",
