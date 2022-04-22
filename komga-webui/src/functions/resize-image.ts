@@ -1,5 +1,5 @@
 function getCanvasBlob(canvas: HTMLCanvasElement): Promise<Blob | null> {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     canvas.toBlob((blob: Blob | null) => { resolve(blob) })
   })
 }
