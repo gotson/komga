@@ -1,3 +1,18 @@
+# [0.154.0](https://github.com/gotson/komga/compare/v0.153.2...v0.154.0) (2022-04-22)
+
+
+### Bug Fixes
+
+* translated using Weblate ([18b181b](https://github.com/gotson/komga/commit/18b181bf8fbde86a6a652d9dc7f134d8e28cbc3a))
+* **webui:** extract translation strings for DropZone.vue ([2966c85](https://github.com/gotson/komga/commit/2966c854492157bb889ae8aff877e950a3bf67f3)), closes [#856](https://github.com/gotson/komga/issues/856)
+* **webui:** read button on card would not always work ([4dd1e7a](https://github.com/gotson/komga/commit/4dd1e7af768a7e4e4e80be18e9adb6289e137b28)), closes [#830](https://github.com/gotson/komga/issues/830)
+
+
+### Features
+
+* read support for jpeg xl ([dd5b7d0](https://github.com/gotson/komga/commit/dd5b7d03633a2302dbef625c6658921971d83b8c)), closes [#831](https://github.com/gotson/komga/issues/831)
+* **webui:** set the currently viewed page as poster for book/series/readlist ([49b7f59](https://github.com/gotson/komga/commit/49b7f592cbdb0e25687de26e13a1568ac7463a13)), closes [#838](https://github.com/gotson/komga/issues/838)
+
 ## [0.153.2](https://github.com/gotson/komga/compare/v0.153.1...v0.153.2) (2022-04-01)
 
 
