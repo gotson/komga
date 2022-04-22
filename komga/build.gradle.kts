@@ -126,7 +126,7 @@ tasks {
       jvmTarget = "1.8"
       freeCompilerArgs = listOf(
         "-Xjsr305=strict",
-        "-Xopt-in=kotlin.time.ExperimentalTime",
+        "-opt-in=kotlin.time.ExperimentalTime",
       )
     }
   }
