@@ -63,6 +63,15 @@
               <v-list-item @click="downloadCurrentPage">
                 <v-list-item-title>{{ $t('bookreader.download_current_page') }}</v-list-item-title>
               </v-list-item>
+              <v-list-item @click="setCurrentPageAsPoster(ItemTypes.BOOK)">
+                <v-list-item-title>{{ $t('bookreader.set_current_page_as_book_poster') }}</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="setCurrentPageAsPoster(ItemTypes.SERIES)">
+                <v-list-item-title>{{ $t('bookreader.set_current_page_as_series_poster') }}</v-list-item-title>
+              </v-list-item>
+              <v-list-item v-if="contextReadList"  @click="setCurrentPageAsPoster(ItemTypes.READLIST)">
+                <v-list-item-title>{{ $t('bookreader.set_current_page_as_readlist_poster') }}</v-list-item-title>
+              </v-list-item>
             </v-list>
           </v-menu>
         </v-toolbar>
@@ -307,6 +316,8 @@ import ShortcutHelpDialog from '@/components/dialogs/ShortcutHelpDialog.vue'
 import {getBookTitleCompact} from '@/functions/book-title'
 import {checkImageSupport, ImageFeature} from '@/functions/check-image'
 import {bookPageUrl} from '@/functions/urls'
+import {getFileFromUrl} from '@/functions/file'
+import {resizeImageFile} from '@/functions/resize-image'
 import {ReadingDirection} from '@/types/enum-books'
 import Vue from 'vue'
 import {Location} from 'vue-router'
@@ -327,6 +338,7 @@ import {Context, ContextOrigin} from '@/types/context'
 import {SeriesDto} from '@/types/komga-series'
 import jsFileDownloader from 'js-file-downloader'
 import screenfull from 'screenfull'
+import {ItemTypes} from '@/types/items'
 
 export default Vue.extend({
   name: 'BookReader',
@@ -340,6 +352,7 @@ export default Vue.extend({
   },
   data: function () {
     return {
+      ItemTypes,
       screenfull,
       fullscreenIcon: 'mdi-fullscreen',
       book: {} as BookDto,
@@ -856,6 +869,24 @@ export default Vue.extend({
         withCredentials: true,
         forceDesktopMode: true,
       })
+    },
+    async setCurrentPageAsPoster(type: ItemTypes) {
+      const imageFile = await getFileFromUrl(this.currentPage.url, 'poster', 'image/jpeg', {credentials: 'include'})
+      const newImageFile = await resizeImageFile(imageFile)
+      switch (type) {
+        case ItemTypes.BOOK:
+          await this.$komgaBooks.uploadThumbnail(this.book.id, newImageFile, true)
+          this.sendNotification(`${this.$t('bookreader.notification_poster_set_book')}`)
+          break
+        case ItemTypes.SERIES:
+          await this.$komgaSeries.uploadThumbnail(this.series.id, newImageFile, true)
+          this.sendNotification(`${this.$t('bookreader.notification_poster_set_series')}`)
+          break
+        case ItemTypes.READLIST:
+          await this.$komgaReadLists.uploadThumbnail(this.context.id, newImageFile, true)
+          this.sendNotification(`${this.$t('bookreader.notification_poster_set_readlist')}`)
+          break
+      }
     },
   },
 })
