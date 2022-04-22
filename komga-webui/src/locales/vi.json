@@ -180,6 +180,7 @@
     "title": "{name} bộ sưu tập"
   },
   "common": {
+    "age": "Độ tuổi",
     "all_libraries": "Tất cả thư viện",
     "books": "Sách",
     "books_n": "Không có sách | 1 cuốn sách | {count} sách",
@@ -218,7 +219,9 @@
     "required": "Cần thiết",
     "reset_filters": "Đặt lại bộ lọc",
     "roles": "Vai trò",
+    "save_changes": "Lưu thay đổi",
     "series": "Sê-ri",
+    "sidecars": "Sidecars",
     "tags": "Thẻ",
     "unavailable": "Không có sẵn",
     "unlock_all": "Mở khóa tất cả",
@@ -317,6 +320,7 @@
     "delete_series": {
       "button_confirm": "Xóa",
       "confirm_delete": "Có, xóa series \"{name}\" và các tệp của nó",
+      "confirm_delete_multiple": "Đúng, xóa {count} series và tệp của chúng",
       "dialog_title": "Xóa Series",
       "warning_html": "Series <b>{name}</b> sẽ bị xóa khỏi máy chủ này cùng với các tệp phương tiện được lưu trữ. Điều này <b>không thể hoàn tác</b>. Tiếp tục?",
       "warning_multiple_html": "{count} series sẽ bị xóa khỏi máy chủ này cùng với các tệp phương tiện được lưu trữ. Không thể hoàn tác <b> này </b>. Tiếp tục?"
@@ -361,15 +365,18 @@
       "dialog_title": "Chỉnh sửa bộ sưu tập",
       "field_manual_ordering": "Sắp xếp thủ công",
       "label_ordering": "Theo mặc định, sê-ri trong bộ sưu tập sẽ được sắp xếp theo tên. Bạn có thể tự sắp xếp thủ công để xác định sự sắp xếp của riêng bạn.",
-      "tab_general": "Chung"
+      "tab_general": "Chung",
+      "tab_poster": "Ảnh bìa"
     },
     "edit_library": {
       "button_browse": "Duyệt",
       "button_cancel": "Hủy",
       "button_confirm_add": "Thêm",
       "button_confirm_edit": "Sửa",
+      "button_next": "Tiếp",
       "dialog_title_add": "Thêm Thư viện",
       "dialot_title_edit": "Sửa Thư viện",
+      "field_analysis_analyze_dimensions": "Phân tích kích thước trang",
       "field_convert_to_cbz": "Tự động chuyển đổi sang CBZ",
       "field_import_barcode_isbn": "Mã vạch ISBN",
       "field_import_comicinfo_book": "Siêu dữ liệu sách",
@@ -379,27 +386,37 @@
       "field_import_epub_book": "Siêu dữ liệu sách",
       "field_import_epub_series": "Siêu dữ liệu sê-ri",
       "field_import_local_artwork": "Tác phẩm nghệ thuật địa phương",
+      "field_import_mylar_series": "Metadata của series",
       "field_name": "Tên",
       "field_repair_extensions": "Tự động sửa chữa phần mở rộng tệp không chính xác",
       "field_root_folder": "Thư mục gốc",
       "field_scanner_deep_scan": "Quét sâu",
+      "field_scanner_empty_trash_after_scan": "Dọn rác tự động sau mỗi lần quét",
       "field_scanner_force_directory_modified_time": "Buộc thời gian sửa đổi thư mục",
+      "field_series_cover": "Bìa series",
       "file_browser_dialog_button_confirm": "Chọn",
       "file_browser_dialog_title": "Thư mục gốc của thư viện",
+      "label_analysis": "Phân tích",
       "label_file_management": "Quản lý tệp",
       "label_import_barcode_isbn": "Nhập ISBN trong mã vạch",
       "label_import_comicinfo": "Nhập siêu dữ liệu cho CBR / CBZ chứa tệp ComicInfo.xml",
       "label_import_epub": "Nhập siêu dữ liệu từ tệp EPUB",
       "label_import_local": "Nhập nội dung phương tiện cục bộ",
+      "label_import_mylar": "Nạp metadata được tạo ra bởi Mylar",
       "label_scanner": "Máy quét",
+      "label_series_cover": "Bìa series",
       "tab_general": "Chung",
-      "tab_options": "Tùy chọn"
+      "tab_metadata": "Metadata",
+      "tab_options": "Tùy chọn",
+      "tooltip_scanner_force_modified_time": "Bật nếu thư viện ở Google Drive",
+      "tooltip_use_resources": "Sẽ tốn nhiều tài nguyên với thư viện lớn hoặc phần cứng thấp"
     },
     "edit_readlist": {
       "button_cancel": "Hủy",
       "button_confirm": "Lưu thay đổi",
       "dialog_title": "Sửa danh sách đọc",
       "field_name": "Tên",
+      "field_summary": "Tóm lược",
       "tab_general": "Chung",
       "tab_poster": "Áp phích"
     },
@@ -411,7 +428,9 @@
       "field_age_rating": "Xếp hạng độ tuổi",
       "field_age_rating_error": "Xếp hạng độ tuổi phải từ 0 trở lên",
       "field_genres": "Thể loại",
+      "field_labels": "Nhãn",
       "field_language": "Ngôn ngữ",
+      "field_language_hint": "Thẻ ngôn ngữ IETF BCP 47",
       "field_publisher": "Nhà xuất bản",
       "field_reading_direction": "Hướng đọc",
       "field_sort_title": "Sắp xếp tiêu đề",
@@ -419,8 +438,12 @@
       "field_summary": "Tóm tắt",
       "field_tags": "Thẻ",
       "field_title": "Tiêu đề",
+      "field_total_book_count": "Tổng số sách",
+      "field_total_book_count_error": "Tổng số sách phải từ 1 trở lên",
       "mixed": "HỖN HỢP",
       "tab_general": "Chung",
+      "tab_poster": "Ảnh bìa",
+      "tab_sharing": "Chia sẻ",
       "tab_tags": "Thẻ",
       "tags_notice_multiple_edit": "Bạn đang chỉnh sửa thẻ cho nhiều sê-ri. Điều này sẽ ghi đè lên các thẻ hiện có của mỗi sê-ri."
     },
@@ -429,6 +452,24 @@
       "button_confirm": "Lưu thay đổi",
       "dialog_title": "Chỉnh sửa người dùng",
       "label_roles_for": "Vai trò cho {name}"
+    },
+    "edit_user_restrictions": {
+      "age_restriction": {
+        "allow_under": "Chỉ được xem dưới độ tuổi",
+        "exclude_over": "Loại trừ với",
+        "none": "Không có giới hạn"
+      },
+      "edit_restrictions_for": "Chỉnh sửa giới hạn với {name}",
+      "label_age_restriction": "Giới hạn độ tuổi",
+      "label_allow_only_labels": "Chỉ cho phép các nhãn",
+      "label_exclude_labels": "Không gồm các nhãn",
+      "tab_content_restrictions": "Giới hạn nội dung",
+      "tab_shared_libraries": "Các thư viện được chia sẻ"
+    },
+    "empty_trash": {
+      "body": "Mặc định server sẽ không gỡ thông tin của dữ liệu ngay lập tức. Giúp cho việc giả sử một ổ cứng đang tạm thời ngắt kết nối. Nếu bạn xóa thùng rác thư viện thì tất cả thông tin của dữ liệu sẽ bị xóa hoàn toàn.",
+      "button_confirm": "Dọn rác",
+      "title": "Dọn rác thư viện"
     },
     "file_browser": {
       "button_cancel": "Hủy",
@@ -455,6 +496,11 @@
       "field_repeat_password": "Lặp lại mật khẩu mới",
       "field_repeat_password_error": "Mật khẩu phải giống hệt nhau."
     },
+    "refresh_library_metadata": {
+      "body": "Làm mới metadata cho tất cả tệp dữ liệu trong thư viện. Phụ thuộc vào kích thước thư viện mà việc này có thể sẽ tốn nhiều thời gian.",
+      "button_confirm": "Làm mới",
+      "title": "Làm mới metadata thư viện"
+    },
     "series_picker": {
       "label_search_series": "Tìm kiếm Sê-ri",
       "title": "Chọn sê-ri"
@@ -480,6 +526,7 @@
         "height": "Chiều cao",
         "index": "Mục lục",
         "media_type": "Loại phương tiện",
+        "size": "Kích thước",
         "width": "Chiều rộng"
       },
       "title": "Chi tiết sách",
@@ -493,10 +540,43 @@
       "title_comparison": "So sánh sách"
     }
   },
+  "duplicate_pages": {
+    "action_delete_auto": "Xóa tự động",
+    "action_delete_manual": "Xóa thủ công",
+    "action_delete_matches": "Xóa trùng lặp",
+    "action_ignore": "Bỏ qua",
+    "delete_to_save": "Xóa để tiết kiệm được {size}",
+    "deleted_count": "Xóa {count} lần",
+    "filter": {
+      "count": "Số lượng",
+      "delete_count": "Số lần xóa",
+      "delete_size": "Dung lượng lấy lại được",
+      "size": "Kích thước",
+      "total_size": "Tổng kích thước"
+    },
+    "info": "Xóa trang trùng lặp sẽ chỉnh sửa tập tin của bạn. Sao lưu và dùng xóa thủ công trước khi dùng xóa tự động.",
+    "matches_n": "Không có | 1 trùng | {count} trùng",
+    "saved_size": "Giải phóng được {size}",
+    "title": "Các trang bị trùng",
+    "unknown_size": "Kích thước không xác định"
+  },
+  "duplicates": {
+    "file_hash": "Tệp băm",
+    "size": "Kích thước",
+    "title": "Tệp trùng",
+    "url": "Đường dẫn"
+  },
   "enums": {
     "copy_mode": {
       "HARDLINK": "Hardlink / Sao chép tệp",
       "MOVE": "Di chuyển Tệp"
+    },
+    "historical_event_type": {
+      "BookConverted": "Chuyển đổi",
+      "BookFileDeleted": "Tệp sách đã xóa",
+      "BookImported": "Sách được nạp vào",
+      "DuplicatePageDeleted": "Trang trùng lặp đã xóa",
+      "SeriesFolderDeleted": "Tệp Series đã xóa"
     },
     "media_status": {
       "ERROR": "Lỗi",
@@ -505,11 +585,22 @@
       "UNKNOWN": "Không rõ",
       "UNSUPPORTED": "Không được hỗ trợ"
     },
+    "page_hash_action": {
+      "DELETE_AUTO": "Xóa tự động",
+      "DELETE_MANUAL": "Xóa thủ công",
+      "IGNORE": "Bỏ qua"
+    },
     "reading_direction": {
       "LEFT_TO_RIGHT": "Trái sang phải",
       "RIGHT_TO_LEFT": "Phải sang trái",
       "VERTICAL": "Theo chiều dọc",
       "WEBTOON": "Webtoon"
+    },
+    "series_cover": {
+      "FIRST": "Đầu tiên",
+      "FIRST_UNREAD_OR_FIRST": "Lần đầu chưa đọc khác trước",
+      "FIRST_UNREAD_OR_LAST": "Chưa đọc đầu tiên khác cuối cùng",
+      "LAST": "Cuối cùng"
     },
     "series_status": {
       "ABANDONED": "Bị bỏ rơi",
@@ -536,15 +627,26 @@
     "ERR_1014": "Không có kết quả phù hợp cho số sách trong sê-ri",
     "ERR_1015": "Lỗi khi xử lý danh sách đọc ComicRack",
     "ERR_1016": "Thư mục không thể truy cập hoặc không phải là một thư mục",
-    "ERR_1017": "Không thể quét thư mục là một phần của thư viện hiện có"
+    "ERR_1017": "Không thể quét thư mục là một phần của thư viện hiện có",
+    "ERR_1018": "Tệp không tìm thấy",
+    "ERR_1019": "Không thể nạp tệp vào khi đây đã có sẵn trong một thư viện",
+    "ERR_1021": "Tệp đích đã tồn tại",
+    "ERR_1022": "Sách mới nạp không thể quét",
+    "ERR_1023": "Sách đã nằm ở trong Danh sách đọc",
+    "ERR_1024": "Lỗi đăng nhập OAuth2: không thuộc tính email",
+    "ERR_1025": "Lỗi đăng nhập OAuth2: không có người dùng tồn tại với email đó",
+    "ERR_1026": "Lỗi đăng nhập OpenID Connect: email không hợp lệ"
   },
   "filter": {
     "age_rating": "xếp hạng độ tuổi",
     "age_rating_none": "Không",
+    "complete": "Hoàn tất",
     "genre": "thể loại",
+    "in_progress": "Vẫn đang thực hiện",
     "language": "ngôn ngữ",
     "library": "thư viện",
     "publisher": "nhà xuất bản",
+    "read": "Đọc",
     "release_date": "ngày phát hành",
     "status": "trạng thái",
     "tag": "thẻ",
@@ -553,6 +655,16 @@
   "filter_drawer": {
     "filter": "bộ lọc",
     "sort": "sắp xếp"
+  },
+  "history": {
+    "header": {
+      "book": "Sách",
+      "date": "Ngày",
+      "details": "Chi tiết",
+      "series": "Sê-ri",
+      "type": "Phân loại"
+    },
+    "title": "Lịch sử"
   },
   "home": {
     "theme": "Chủ đề",
@@ -578,18 +690,35 @@
     "status": "Trạng thái",
     "url": "URL"
   },
+  "media_management": {
+    "title": "Quản lý dữ liệu"
+  },
   "menu": {
     "add_to_collection": "Thêm vào bộ sưu tập",
     "add_to_readlist": "Thêm vào danh sách đọc",
     "analyze": "Phân tích",
+    "bulk_edit_metadata": "Chỉ sửa nhiều metadata",
     "delete": "Xóa",
+    "deselect_all": "Hủy chọn tất cả",
+    "download_readlist": "Tải danh sách đọc",
     "download_series": "Tải xuống sê-ri",
     "edit": "Sửa",
     "edit_metadata": "Sửa siêu dữ liệu",
+    "empty_trash": "Dọn rác",
     "mark_read": "Đánh dấu là đã đọc",
     "mark_unread": "Đánh dấu là chưa đọc",
     "refresh_metadata": "Làm mới siêu dữ liệu",
-    "scan_library_files": "Quét tệp thư viện"
+    "scan_library_files": "Quét tệp thư viện",
+    "select_all": "Chọn tất cả"
+  },
+  "metrics": {
+    "library_books": "Sách mỗi thư viện",
+    "library_disk_space": "Kích thước thư viện",
+    "library_series": "Sê-ri mỗi thư viện",
+    "library_sidecars": "Sidecars mỗi thư viện",
+    "tasks_executed": "Tác vụ đã thực hiện",
+    "tasks_total_time": "Thời gian tác vụ",
+    "title": "Chỉ số"
   },
   "navigation": {
     "home": "Trang Chủ",
@@ -616,12 +745,17 @@
     "search_results_for": "Kết quả tìm kiếm cho \"{name}\""
   },
   "searchbox": {
+    "in_library": "trong {library}",
     "no_results": "Không có kết quả",
     "search_all": "Tìm kiếm tất cả…"
   },
   "server": {
     "server_management": {
+      "button_cancel_all_tasks": "Hủy tất cả tác vụ",
+      "button_empty_trash": "Dọn rác tất cả thư viện",
+      "button_scan_libraries": "Quét tất cả thư viện",
       "button_shutdown": "Tắt",
+      "notification_tasks_cancelled": "Không có tác vụ để dừng | Một tác vụ đã dừng | {count} tác vụ đã dừng",
       "section_title": "Quản lý máy chủ"
     },
     "tab_title": "Máy chủ"
@@ -630,7 +764,11 @@
     "server_settings": "Cài đặt máy chủ"
   },
   "settings_user": {
+    "change_password": "Thay đổi mật khẩu",
+    "edit_restrictions": "Chỉnh sửa giới hạn",
     "edit_user": "Chỉnh sửa người dùng",
+    "latest_activity": "Hoạt động mới nhất: {date}",
+    "no_recent_activity": "Không có hoạt động gần đây",
     "role_administrator": "Người quản lý",
     "role_user": "Người dùng"
   },
@@ -650,6 +788,17 @@
     "light": "Sáng",
     "system": "Hệ thống"
   },
+  "thumbnail_card": {
+    "tooltip_delete": "Xóa",
+    "tooltip_generated": "Ảnh tự động",
+    "tooltip_mark_as_selected": "Đánh dấu đã chọn",
+    "tooltip_selected": "Đã chọn",
+    "tooltip_sidecar": "Ảnh lưu dưới tệp",
+    "tooltip_to_be_deleted": "Sẽ được xóa",
+    "tooltip_to_be_uploaded": "Sẽ được tải lên",
+    "tooltip_too_big": "Dữ liệu quá lớn!",
+    "tooltip_user_uploaded": "Người dùng tải lên"
+  },
   "user_roles": {
     "ADMIN": "Người quản lý",
     "FILE_DOWNLOAD": "Tải tệp xuống",
@@ -657,7 +806,11 @@
     "USER": "Người dùng"
   },
   "users": {
+    "authentication_activity": "Hoạt động xác thực",
     "users": "Người dùng"
+  },
+  "validation": {
+    "zero_or_more": "Phải là 0 hoặc hơn"
   },
   "welcome": {
     "add_library": "Thêm thư viện",

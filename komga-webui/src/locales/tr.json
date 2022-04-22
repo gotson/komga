@@ -1,4 +1,55 @@
 {
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} den {2}"
+    },
+    "dataIterator": {
+      "loadingText": "Maddeler Yüklenior...",
+      "noResultsText": "Uygun olan kayıtlar bulunamadı"
+    },
+    "dataTable": {
+      "itemsPerPageText": "Sayfa satırı:",
+      "sortBy": "Sıralama"
+    },
+    "fileInput": {
+      "counter": "Dosyalar",
+      "counterSize": "{0} Dosyalar ({1} toplam)"
+    },
+    "noDataText": "Veri bulunamadı"
+  },
+  "account_settings": {
+    "account_settings": "Hesap Ayarları",
+    "change_password": "Şifreni Değiştir"
+  },
+  "authentication_activity": {
+    "datetime": "Tarih ve Saat",
+    "email": "Email",
+    "error": "Hata",
+    "ip": "IP",
+    "source": "Kaynak",
+    "success": "Başarılı",
+    "user_agent": "Kullanıcı Aracısı"
+  },
+  "author_roles": {
+    "colorist": "Renk Uzmanı",
+    "cover": "Kapak",
+    "editor": "Editör",
+    "inker": "Mürekkepleyici",
+    "letterer": "Yazıcı",
+    "penciller": "İllüstratör",
+    "translator": "Çevirmen",
+    "writer": "Yazar"
+  },
+  "book_card": {
+    "error": "Hata",
+    "no_release_date": "Yayın Tarihi yok",
+    "unknown": "Analiz daha edilmedi",
+    "unread": "Okunmamış",
+    "unsupported": "Desteklenmiyor"
+  },
+  "book_import": {
+    "button_browse": "Araştır"
+  },
   "common": {
     "locale_name": "Türkçe"
   }
