@@ -8,11 +8,11 @@
     "semantic-release": "^19.0.2"
   },
   "devDependencies": {
-    "@commitlint/cli": "^16.1.0",
-    "@commitlint/config-conventional": "^16.0.0",
-    "commitlint": "^16.1.0",
+    "@commitlint/cli": "^16.2.3",
+    "@commitlint/config-conventional": "^16.2.1",
+    "commitlint": "^16.2.3",
     "husky": "^7.0.4",
-    "pinst": "^2.1.6"
+    "pinst": "^3.0.0"
   },
   "commitlint": {
     "extends": [
