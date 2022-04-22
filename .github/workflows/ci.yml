@@ -2,8 +2,8 @@ name: CI
 
 on:
   pull_request:
-    branches-ignore:
-      - 'weblate*'
+    paths-ignore:
+      - 'komga-webui/src/locales/*'
   push:
     branches-ignore:
       - 'dependabot/**'
