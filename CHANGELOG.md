@@ -1,3 +1,12 @@
+## [0.154.1](https://github.com/gotson/komga/compare/v0.154.0...v0.154.1) (2022-04-25)
+
+
+### Bug Fixes
+
+* read lists imported from cbl are not added to search index ([63e3d8a](https://github.com/gotson/komga/commit/63e3d8a6ae2924c6c12369c426410ca53f52e963)), closes [#868](https://github.com/gotson/komga/issues/868)
+* rebuild search index for readlists ([03de229](https://github.com/gotson/komga/commit/03de229da50831a0f9c2b88c4631101e5ef3099e)), closes [#868](https://github.com/gotson/komga/issues/868)
+* translated using Weblate ([a0c0daf](https://github.com/gotson/komga/commit/a0c0daf43f34d5bf5ce3b77d4c842834c6707348))
+
 # [0.154.0](https://github.com/gotson/komga/compare/v0.153.2...v0.154.0) (2022-04-22)
 
 
