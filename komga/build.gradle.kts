@@ -47,7 +47,7 @@ dependencies {
 
   implementation("io.github.microutils:kotlin-logging-jvm:2.1.21")
   implementation("io.micrometer:micrometer-registry-influx")
-  implementation("io.hawt:hawtio-springboot:2.14.1") // cannot upgrade further because of https://github.com/hawtio/hawtio-integration/issues/139
+  implementation("io.hawt:hawtio-springboot:2.14.1") // 2.14.2 requires Spring Boot 2.6 (https://github.com/hawtio/hawtio-integration/issues/139)
 
   run {
     val springdocVersion = "1.5.12" // later uses Spring Boot 2.6.0
