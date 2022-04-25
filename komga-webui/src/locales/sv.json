@@ -89,6 +89,9 @@
     "move_next": "Tryck ”Nästa” igen för att gå till nästa bok.",
     "move_next_exit": "Tryck ”Nästa” igen för att stänga läsaren.",
     "move_previous": "Tryck ”Föregående” igen för att gå till föregående bok.",
+    "notification_poster_set_book": "Bokens affisch är nu inställd på den aktuella sidan.",
+    "notification_poster_set_readlist": "Affischen i läslistan är nu inställd på den aktuella sidan.",
+    "notification_poster_set_series": "Serieaffischen är nu inställd på den aktuella sidan.",
     "paged_reader_layout": {
       "double": "Dubbla sidor",
       "double_no_cover": "Dubbla sidor (inget omslag)",
@@ -104,6 +107,9 @@
       "width": "Passa bredd",
       "width_shrink_only": "Anpassa bredd (endast krympning)"
     },
+    "set_current_page_as_book_poster": "Ange sida som affisch för bok",
+    "set_current_page_as_readlist_poster": "Ange sidan som affisch för läslista",
+    "set_current_page_as_series_poster": "Skapa en sida som affisch för serien",
     "settings": {
       "always_fullscreen": "Alltid helskärm",
       "animate_page_transitions": "Animera sidbyten",

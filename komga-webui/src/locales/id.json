@@ -89,6 +89,9 @@
     "move_next": "Klik atau tekan \"Selanjutnya\" lagi untuk berpindah ke buku berikutnya.",
     "move_next_exit": "Klik atau tekan \"Selanjutnya\" lagi untuk keluar dari pembaca.",
     "move_previous": "Klik atau tekan \"Sebelumnya\" lagi untuk berpindah ke buku sebelumnya.",
+    "notification_poster_set_book": "Poster buku sekarang diatur ke halaman saat ini.",
+    "notification_poster_set_readlist": "Poster daftar baca sekarang diatur ke halaman saat ini.",
+    "notification_poster_set_series": "Poster seri sekarang diatur ke halaman saat ini.",
     "paged_reader_layout": {
       "double": "Halaman ganda",
       "double_no_cover": "Halaman ganda (tanpa sampul)",
@@ -104,6 +107,9 @@
       "width": "Pas lebar",
       "width_shrink_only": "Pas lebar (hanya susutkan)"
     },
+    "set_current_page_as_book_poster": "Tetapkan halaman sebagai poster untuk buku",
+    "set_current_page_as_readlist_poster": "Tetapkan halaman sebagai poster untuk daftar bacaan",
+    "set_current_page_as_series_poster": "Tetapkan halaman sebagai poster untuk seri",
     "settings": {
       "always_fullscreen": "Selalu Layar Penuh",
       "animate_page_transitions": "Animasikan transisi halaman",
@@ -186,6 +192,7 @@
     "books_n": "Tidak ada buku | 1 buku | {count} buku",
     "books_total": "{count} / {total} buku",
     "cancel": "Batalkan",
+    "choose_image": "Pilih gambar",
     "close": "Tutup",
     "collections": "Koleksi",
     "create": "Buat",
@@ -193,6 +200,7 @@
     "disk_space": "Ruang disk",
     "dismiss": "Hentikan",
     "download": "Unduh",
+    "drag_drop": "drag dan drop",
     "email": "Email",
     "filename": "Nama berkas",
     "filter_no_matches": "Filter aktif tidak memiliki kecocokan",

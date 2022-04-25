@@ -89,6 +89,9 @@
     "move_next": "再次单击或按“下一步”移动到下一本书。",
     "move_next_exit": "再次单击或按“下一步”退出阅读。",
     "move_previous": "再次单击或按“上一页”可移动到上一本书。",
+    "notification_poster_set_book": "图书海报现已设为当前页面。",
+    "notification_poster_set_readlist": "阅读清单海报现已设为当前页面。",
+    "notification_poster_set_series": "连载海报已设为当前页面。",
     "paged_reader_layout": {
       "double": "双页",
       "double_no_cover": "双页 (无封面)",
@@ -104,6 +107,9 @@
       "width": "适应宽度",
       "width_shrink_only": "适合宽度（只收缩）"
     },
+    "set_current_page_as_book_poster": "将页面设为书籍海报",
+    "set_current_page_as_readlist_poster": "将页面设为阅读清单海报",
+    "set_current_page_as_series_poster": "将页面设为连载海报",
     "settings": {
       "always_fullscreen": "始终全屏",
       "animate_page_transitions": "页面过渡动画",
