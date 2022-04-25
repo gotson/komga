@@ -131,8 +131,7 @@ class ReadListLifecycle(
     val result = readListMatcher.matchReadListRequest(request)
     return when {
       result.readList != null -> {
-        readListRepository.insert(result.readList)
-        result.copy(readList = readListRepository.findByIdOrNull(result.readList.id)!!)
+        result.copy(readList = addReadList(result.readList))
       }
       else -> result
     }
