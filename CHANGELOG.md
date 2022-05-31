@@ -1,3 +1,12 @@
+## [0.154.2](https://github.com/gotson/komga/compare/v0.154.1...v0.154.2) (2022-05-31)
+
+
+### Bug Fixes
+
+* handle both cid and comicId for Mylar's series.json ([0bbe543](https://github.com/gotson/komga/commit/0bbe5438d0a3a389a2b2a6e0762835a5c2b6920a)), closes [#890](https://github.com/gotson/komga/issues/890) [#889](https://github.com/gotson/komga/issues/889)
+* translated using Weblate ([6581ffd](https://github.com/gotson/komga/commit/6581ffd4cd00294c45cffb10678a742cf0191998))
+* **webui:** display release date without timezone adjustment ([#875](https://github.com/gotson/komga/issues/875)) ([d0da11f](https://github.com/gotson/komga/commit/d0da11f23b1cb38e3f918a34b69ec9f12121cde2))
+
 ## [0.154.1](https://github.com/gotson/komga/compare/v0.154.0...v0.154.1) (2022-04-25)
 
 

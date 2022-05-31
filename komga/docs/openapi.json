@@ -8286,7 +8286,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_6",
+        "operationId": "getProviders_3",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8317,7 +8317,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders",
+        "operationId": "getProviders_1",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8348,7 +8348,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_5",
+        "operationId": "getProviders_2",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8379,7 +8379,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_4",
+        "operationId": "getProviders_6",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8410,7 +8410,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_2",
+        "operationId": "getProviders_4",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8441,7 +8441,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_3",
+        "operationId": "getProviders_5",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8472,7 +8472,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_1",
+        "operationId": "getProviders",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -9519,14 +9519,7 @@
       "UserUpdateDto": {
         "type": "object",
         "properties": {
-          "labelsAllow": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "labelsExclude": {
+          "roles": {
             "uniqueItems": true,
             "type": "array",
             "items": {
@@ -9539,7 +9532,14 @@
           "ageRestriction": {
             "$ref": "#/components/schemas/AgeRestrictionUpdateDto"
           },
-          "roles": {
+          "labelsAllow": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "labelsExclude": {
             "uniqueItems": true,
             "type": "array",
             "items": {
@@ -9643,13 +9643,6 @@
               "type": "string"
             }
           },
-          "sharingLabels": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "genres": {
             "uniqueItems": true,
             "type": "array",
@@ -9657,13 +9650,16 @@
               "type": "string"
             }
           },
-          "totalBookCount": {
-            "type": "integer",
-            "format": "int32"
-          },
           "ageRating": {
             "type": "integer",
             "format": "int32"
+          },
+          "sharingLabels": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "readingDirection": {
             "type": "string",
@@ -9673,6 +9669,10 @@
               "VERTICAL",
               "WEBTOON"
             ]
+          },
+          "totalBookCount": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update."
@@ -9779,13 +9779,6 @@
           "linksLock": {
             "type": "boolean"
           },
-          "tags": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "links": {
             "type": "array",
             "items": {
@@ -9795,15 +9788,22 @@
           "summary": {
             "type": "string"
           },
-          "releaseDate": {
-            "type": "string",
-            "format": "date"
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "authors": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/AuthorUpdateDto"
             }
+          },
+          "releaseDate": {
+            "type": "string",
+            "format": "date"
           },
           "isbn": {
             "type": "string"
@@ -10018,12 +10018,12 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
           },
           "last": {
             "type": "boolean"
@@ -10053,9 +10053,6 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
-          "paged": {
-            "type": "boolean"
-          },
           "pageNumber": {
             "type": "integer",
             "format": "int32"
@@ -10063,6 +10060,9 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "paged": {
+            "type": "boolean"
           },
           "unpaged": {
             "type": "boolean"
@@ -10156,12 +10156,12 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
           },
           "last": {
             "type": "boolean"
@@ -10290,12 +10290,12 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
           },
           "last": {
             "type": "boolean"
@@ -10769,12 +10769,12 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
           },
           "last": {
             "type": "boolean"
@@ -10877,12 +10877,12 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
           },
           "last": {
             "type": "boolean"
@@ -10966,12 +10966,12 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
           },
           "last": {
             "type": "boolean"
@@ -11012,12 +11012,12 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
           },
           "last": {
             "type": "boolean"
@@ -11082,12 +11082,12 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
           },
           "last": {
             "type": "boolean"
@@ -11157,12 +11157,12 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
           },
           "last": {
             "type": "boolean"
@@ -11203,12 +11203,12 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
           },
           "last": {
             "type": "boolean"
