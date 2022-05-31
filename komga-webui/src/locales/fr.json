@@ -89,6 +89,9 @@
     "move_next": "Cliquez ou appuyez à nouveau sur « Suivant » pour passer au livre suivant.",
     "move_next_exit": "Cliquez ou appuyez à nouveau sur « Suivant » pour quitter la liseuse.",
     "move_previous": "Cliquez ou appuyez à nouveau sur « Précédent » pour passer au livre précédent.",
+    "notification_poster_set_book": "La couverture du livre est désormais définie à la page courante.",
+    "notification_poster_set_readlist": "La couverture de la liste de lecture est désormais définie à la page courante.",
+    "notification_poster_set_series": "La couverture de la série est désormais définie à la page courante.",
     "paged_reader_layout": {
       "double": "Double pages",
       "double_no_cover": "Double pages (sans couverture)",
@@ -104,6 +107,9 @@
       "width": "Ajuster largeur",
       "width_shrink_only": "Ajuster largeur (réduire uniquement)"
     },
+    "set_current_page_as_book_poster": "Définir la page comme couverture du livre",
+    "set_current_page_as_readlist_poster": "Définir la page comme couverture de la liste de lecture",
+    "set_current_page_as_series_poster": "Définir la page comme couverture de la série",
     "settings": {
       "always_fullscreen": "Toujours en plein écran",
       "animate_page_transitions": "Activer les transitions de page",
