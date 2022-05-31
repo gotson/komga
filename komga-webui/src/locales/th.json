@@ -1,0 +1,47 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} จาก {2}"
+    },
+    "fileInput": {
+      "counter": "{0} ไฟล์"
+    }
+  },
+  "account_settings": {
+    "account_settings": "การตั้งค่าบัญชี",
+    "change_password": "เปลี่ยนรหัสผ่าน"
+  },
+  "authentication_activity": {
+    "email": "อีเมล",
+    "error": "ผิดพลาด",
+    "source": "ที่มา",
+    "success": "สำเร็จ"
+  },
+  "book_card": {
+    "error": "ผิดพลาด",
+    "unsupported": "ไม่สนับสนุน"
+  },
+  "book_import": {
+    "button_browse": "เรียกดู",
+    "button_import": "นำเข้า",
+    "field_import_path": "นำเข้าจากโฟลเดอร์",
+    "no_files_found": "ไม่พบไฟล์",
+    "table": {
+      "file_name": "ชื่อไฟล์",
+      "number": "หมายเลข"
+    },
+    "title": "นำเข้า"
+  },
+  "bookreader": {
+    "paged_reader_layout": {
+      "double": "หน้าคู่",
+      "single": "หน้าเดี่ยว"
+    }
+  },
+  "common": {
+    "locale_name": "ภาษาไทย"
+  },
+  "welcome": {
+    "welcome_message": "ยินดีต้อนรับสู่ Komga"
+  }
+}

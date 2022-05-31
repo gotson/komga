@@ -89,6 +89,9 @@
     "move_next": "Kliknij lub naciśnij \"Dalej\" ponownie aby przejść do następnej książki.",
     "move_next_exit": "Kliknij lub naciśnij \"Dalej\" ponownie aby zamknąć czytnik.",
     "move_previous": "Kliknij lub naciśnij \"Wstecz\" ponownie aby przejść do poprzedniej książki.",
+    "notification_poster_set_book": "Plakat zeszytu ustawiono jako obecną stronę.",
+    "notification_poster_set_readlist": "Plakat listy ustawiono jako obecną stronę.",
+    "notification_poster_set_series": "Plakat serii ustawiono jako obecną stronę.",
     "paged_reader_layout": {
       "double": "Podwójne strony",
       "double_no_cover": "Podwójne strony (bez okładki)",
@@ -104,6 +107,9 @@
       "width": "Dopasuj do szerokości",
       "width_shrink_only": "Dopasuj szerokość (tylko zmniejszanie)"
     },
+    "set_current_page_as_book_poster": "Ustaw jako plakat zeszytu",
+    "set_current_page_as_readlist_poster": "Ustaw jako plakat listy",
+    "set_current_page_as_series_poster": "Ustaw jako plakat serii",
     "settings": {
       "always_fullscreen": "Zawsze pełny ekran",
       "animate_page_transitions": "Animowane przejścia stron",
@@ -154,7 +160,7 @@
     "file": "PLIK",
     "format": "FORMAT",
     "isbn": "ISBN",
-    "links": "Odnośniki",
+    "links": "ODNOŚNIKI",
     "navigation_within_readlist": "Nawigacja w ramach listy: {name}",
     "outdated_tooltip": "Plik tej książki uległ zmianie, ta książka musi zostać ponownie przeanalizowana",
     "read_book": "Czytaj",
@@ -186,6 +192,7 @@
     "books_n": "Brak tomów| 1 tom | {count} tomy | {count} tomów",
     "books_total": "{count} / {total} książek",
     "cancel": "Anuluj",
+    "choose_image": "Wybierz obraz",
     "close": "Zamknij",
     "collections": "Kolekcje",
     "create": "Utwórz",
@@ -193,6 +200,7 @@
     "disk_space": "Przestrzeń dyskowa",
     "dismiss": "Odrzuć",
     "download": "Pobierz",
+    "drag_drop": "przeciągnij i upuść",
     "email": "E-mail",
     "filename": "Nazwa pliku",
     "filter_no_matches": "Aktywny filtr nie zwrócił żadnych wyników",
@@ -221,6 +229,7 @@
     "roles": "Role",
     "save_changes": "Zapisz zmiany",
     "series": "Serie",
+    "sidecars": "Dodatki",
     "tags": "Tagi",
     "unavailable": "Niedostępny",
     "unlock_all": "Odblokuj wszystko",
@@ -546,6 +555,8 @@
     "action_delete_manual": "Ręczne usuwanie",
     "action_delete_matches": "Usuń pasujące",
     "action_ignore": "Ignoruj",
+    "delete_to_save": "Usuń żeby zaoszczędzić {size}",
+    "deleted_count": "Usunięto 1 raz | Usunięto {count} razy",
     "filter": {
       "count": "Ilość",
       "delete_count": "Ilość usuniętych",
@@ -554,6 +565,7 @@
       "total_size": "Rozmiar razem"
     },
     "info": "Usunięcie duplikatów stron zmieni zawartość Twoich plików. Zrób kopię zapasową i użyj usuwania ręcznego zanim użyjesz usuwania automatycznego.",
+    "matches_n": "Brak wyników | 1 wynik| {count} wyników",
     "saved_size": "Zaoszczędzono {size}",
     "title": "Duplikaty stron",
     "unknown_size": "Nieznany rozmiar"
@@ -569,12 +581,24 @@
       "HARDLINK": "Połącz/Kopiuj pliki",
       "MOVE": "Przenieś pliki"
     },
+    "historical_event_type": {
+      "BookConverted": "Zeszyt skonwertowany",
+      "BookFileDeleted": "Plik został usunięty",
+      "BookImported": "Import zeszytu zakończony",
+      "DuplicatePageDeleted": "Duplikat strony został usunięty",
+      "SeriesFolderDeleted": "Usunięto katalog serii"
+    },
     "media_status": {
       "ERROR": "Błąd",
       "OUTDATED": "Nieaktualny",
       "READY": "Gotowy",
       "UNKNOWN": "Nieznany",
       "UNSUPPORTED": "Nieobsługiwany"
+    },
+    "page_hash_action": {
+      "DELETE_AUTO": "Automatyczne usuwanie",
+      "DELETE_MANUAL": "Usuwanie ręczne",
+      "IGNORE": "Ignoruj"
     },
     "reading_direction": {
       "LEFT_TO_RIGHT": "Od lewej do prawej",
@@ -677,6 +701,9 @@
     "status": "Status",
     "url": "Adres URL"
   },
+  "media_management": {
+    "title": "Zarządzanie zasobami"
+  },
   "menu": {
     "add_to_collection": "Dodaj do kolekcji",
     "add_to_readlist": "Dodaj do listy",
@@ -699,6 +726,7 @@
     "library_books": "Ilość tomów na bibliotekę",
     "library_disk_space": "Zużycie dysku przez bibliotekę",
     "library_series": "Liczba serii na bibliotekę",
+    "library_sidecars": "Dodatki per biblioteka",
     "tasks_executed": "Liczba wykonanych zadań",
     "tasks_total_time": "Całkowity czas wykonania zadań",
     "title": "Statystyki"
@@ -773,6 +801,7 @@
   },
   "thumbnail_card": {
     "tooltip_delete": "Usuń",
+    "tooltip_generated": "Wygenerowano grafikę",
     "tooltip_mark_as_selected": "Oznacz jako wybrane",
     "tooltip_selected": "Wybrane",
     "tooltip_sidecar": "Lokalna okładka",

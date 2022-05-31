@@ -229,6 +229,7 @@
     "roles": "角色",
     "save_changes": "保存更改",
     "series": "系列",
+    "sidecars": "边车",
     "tags": "标签",
     "unavailable": "不可用",
     "unlock_all": "解锁全部",
@@ -725,6 +726,7 @@
     "library_books": "每个库的书籍",
     "library_disk_space": "库磁盘空间",
     "library_series": "每个库的连载",
+    "library_sidecars": "每个库的边车",
     "tasks_executed": "已执行的任务",
     "tasks_total_time": "任务总时间",
     "title": "度量"

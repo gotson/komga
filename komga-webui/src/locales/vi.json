@@ -89,6 +89,9 @@
     "move_next": "Nhấp hoặc nhấn \"Tiếp theo\" một lần nữa để chuyển sang cuốn sách tiếp theo.",
     "move_next_exit": "Nhấp hoặc nhấn lại \"Tiếp theo\" để thoát khỏi trình đọc.",
     "move_previous": "Nhấp hoặc nhấn lại \"Trước\" để chuyển sang sách trước đó.",
+    "notification_poster_set_book": "Trang hiện tại đã trở thành bìa sách.",
+    "notification_poster_set_readlist": "Trang hiện tại đã trở thành bìa danh sách đọc.",
+    "notification_poster_set_series": "Trang hiện tại đã trở thành bìa sê-ri.",
     "paged_reader_layout": {
       "double": "Trang đôi",
       "double_no_cover": "Trang đôi (không có bìa)",
@@ -104,6 +107,9 @@
       "width": "Vừa chiều ngang",
       "width_shrink_only": "Vừa chiều ngang ( chỉ khi co lại )"
     },
+    "set_current_page_as_book_poster": "Đặt trang thành bìa cho sách",
+    "set_current_page_as_readlist_poster": "Đặt trang thành bìa cho danh sách đọc",
+    "set_current_page_as_series_poster": "Đặt trang thành bìa cho sê-ri",
     "settings": {
       "always_fullscreen": "Luôn toàn màn hình",
       "animate_page_transitions": "Hoạt ảnh chuyển trang",
@@ -186,6 +192,7 @@
     "books_n": "Không có sách | 1 cuốn sách | {count} sách",
     "books_total": "{count} / {total} sách",
     "cancel": "Hủy",
+    "choose_image": "Chọn hình ảnh",
     "close": "Đóng",
     "collections": "Bộ sưu tập",
     "create": "Tạo",
@@ -193,6 +200,7 @@
     "disk_space": "Dung lượng đĩa",
     "dismiss": "Bỏ qua",
     "download": "Tải xuống",
+    "drag_drop": "kéo và thả",
     "email": "Email",
     "filename": "Tên tệp",
     "filter_no_matches": "Bộ lọc đang hoạt động không có kết quả phù hợp nào",

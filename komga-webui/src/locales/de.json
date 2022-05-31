@@ -89,6 +89,9 @@
     "move_next": "Klicken oder drücken Sie „Weiter“, um zum nächsten Buch zu gelangen.",
     "move_next_exit": "Klicken oder drücken Sie „Weiter“ erneut, um den Lesemodus zu beenden.",
     "move_previous": "Klicken oder drücken Sie erneut auf „Vorherige Seite“, um zum letzten Buch zu wechseln.",
+    "notification_poster_set_book": "Die aktuelle Seite ist nun als Bücherplakat gesetzt.",
+    "notification_poster_set_readlist": "Die aktuelle Seite ist als Leselistenposter gesetzt.",
+    "notification_poster_set_series": "Die aktuelle Seite ist jetzt als Serienplakat gesetzt.",
     "paged_reader_layout": {
       "double": "Doppelseite",
       "double_no_cover": "Doppelseitig ohne Titelbild",
@@ -104,6 +107,8 @@
       "width": "An Breite ausrichten",
       "width_shrink_only": "An Breite ausrichten (nur verkleinern)"
     },
+    "set_current_page_as_book_poster": "Seite als Plakat für das Buch gesetzt",
+    "set_current_page_as_readlist_poster": "Setze die aktuelle Seite als Plakat für die Leseliste",
     "settings": {
       "always_fullscreen": "Dauerhaftes Vollbild",
       "animate_page_transitions": "Fließender Seitenübergangseffekt",
