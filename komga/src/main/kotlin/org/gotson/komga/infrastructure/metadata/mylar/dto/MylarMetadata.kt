@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.metadata.mylar.dto
 
+import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
@@ -13,7 +14,7 @@ data class MylarMetadata(
 
   val name: String,
 
-  @field:JsonProperty("cid")
+  @field:JsonAlias("cid")
   val comicId: String,
 
   val year: Int,
