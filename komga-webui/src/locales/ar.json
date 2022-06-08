@@ -9,7 +9,7 @@
     },
     "dataTable": {
       "itemsPerPageText": "الصفوف لكل صفحة:",
-      "sortBy": "مفروزة حسب"
+      "sortBy": "الفرز حسب"
     },
     "fileInput": {
       "counter": "{0} ملفات",
@@ -22,11 +22,11 @@
     "change_password": "تغيير كلمة السر"
   },
   "authentication_activity": {
-    "datetime": "تاريخ الوقت",
+    "datetime": "التاريخ والوقت",
     "email": "البريد الإلكتروني",
     "error": "خطأ",
-    "ip": "IP",
-    "source": "مصدر",
+    "ip": "عنوان بروتوكول الإنترنت",
+    "source": "المصدر",
     "success": "نجاح",
     "user_agent": "وكيل المستخدم"
   },
@@ -89,6 +89,9 @@
     "move_next": "انقر أو اضغط على \"التالي\" مرة أخرى للانتقال إلى الكتاب التالي.",
     "move_next_exit": "انقر أو اضغط \"التالي\" مرة أخرى للخروج من القارئ.",
     "move_previous": "انقر أو اضغط على \"السابق\" مرة أخرى للانتقال إلى الكتاب السابق.",
+    "notification_poster_set_book": "تم تعيين ملصق الكتاب كالصفحة الحالية.",
+    "notification_poster_set_readlist": "تم تعيين ملصق قائمة القراءة كالصفحة الحالية.",
+    "notification_poster_set_series": "تم تعيين ملصق السلسلة كالصفحة الحالية.",
     "paged_reader_layout": {
       "double": "صفحات مزدوجة",
       "double_no_cover": "صفحات مزدوجة (بدون غلاف)",
@@ -104,6 +107,9 @@
       "width": "ملائمة العرض",
       "width_shrink_only": "عرض مناسب (يتقلص فقط)"
     },
+    "set_current_page_as_book_poster": "عيّن الصفحة كملصق للكتاب",
+    "set_current_page_as_readlist_poster": "عيّن الصفحة كملصق لقائمة القراءة",
+    "set_current_page_as_series_poster": "عيّن الصفحة كملصق للسلسلة",
     "settings": {
       "always_fullscreen": "ملء الشاشة دائمًا",
       "animate_page_transitions": "مؤثرات الانتقال بين الصفحات",
@@ -180,18 +186,21 @@
     "title": "{name} مجموعة"
   },
   "common": {
+    "age": "العمر",
     "all_libraries": "كل المكتبات",
     "books": "كتب",
     "books_n": "لا يوجد كتاب | 1 كتاب | {count} كتب",
     "books_total": "كتب {count} / {total}",
     "cancel": "إلغاء",
+    "choose_image": "اختر صورة",
     "close": "إغلاق",
-    "collections": "ديوان كتب مصورة",
-    "create": "خلق",
+    "collections": "المجموعات",
+    "create": "صنع",
     "delete": "حذف",
     "disk_space": "مساحة القرص",
     "dismiss": "رفض",
     "download": "تحميل",
+    "drag_drop": "أمسك واسحب",
     "email": "البريد الإلكتروني",
     "filename": "اسم الملف",
     "filter_no_matches": "الفلتر النشط ليس له تطابق",
@@ -208,7 +217,7 @@
     "outdated": "متقادمة",
     "page": "صفحة",
     "page_number": "رقم الصفحة",
-    "pages": "صفحة",
+    "pages": "صفحات",
     "pages_n": "لا توجد صفحات | 1 صفحة | {count} صفحة",
     "password": "كلمة السر",
     "pending_tasks": "لا توجد مهام معلقة | مهمة واحدة معلقة | {count} مهام معلقة",
@@ -218,6 +227,7 @@
     "required": "مطلوب",
     "reset_filters": "إعادة تعيين فلتر",
     "roles": "أدوار",
+    "save_changes": "حفظ التغييرات",
     "series": "سلسلة",
     "sidecars": "Sidecars",
     "tags": "التصنيف",
@@ -230,8 +240,8 @@
   "dashboard": {
     "keep_reading": "مواصلة القراءة",
     "on_deck": "على السطح",
-    "recently_added_books": "كتب مصورة مضافة مؤخرًا",
-    "recently_added_series": "سلاسل أضيفت مؤخرا",
+    "recently_added_books": "كتب مضافة مؤخرًا",
+    "recently_added_series": "سلاسل مضافة مؤخرًا",
     "recently_read_books": "كتب تمت قراءتها مؤخرًا",
     "recently_released_books": "الكتب التي صدرت مؤخرا",
     "recently_updated_series": "سلاسل تم تحديثها مؤخرًا"
@@ -240,7 +250,7 @@
     "book_number": "رقم الكتاب: {name}",
     "book_series": "سلسلة: {name}",
     "button_import": "إستيراد",
-    "comicrack_preambule_html": "يمكنك استيراد قوائم قراءة ComicRack الحالية بتنسيق <code>.cbl</code>\n<br> سيحاول Komga مطابقة السلسلة ورقم الكتاب المقدمين مع السلسلة والكتب في مكتباتك.",
+    "comicrack_preambule_html": "يمكنك استيراد قوائم قراءة ComicRack الحالية بتنسيق <code>cbl</code>.<br>سيحاول Komga مطابقة السلسلة ورقم الكتاب المقدمين مع السلسلة والكتب في مكتباتك.",
     "field_files_label": "قوائم القراءة ComicRack (.cbl)",
     "import_read_lists": "استيراد قوائم القراءة",
     "imported_as": "مستورد كـ {name}",
@@ -428,6 +438,7 @@
       "field_age_rating": "التصنيف العمري",
       "field_age_rating_error": "يجب أن يكون التصنيف العمري 0 أو أكثر",
       "field_genres": "الأنواع",
+      "field_labels": "عبارات وصفية",
       "field_language": "اللغة",
       "field_language_hint": "علامة لغة IETF BCP 47",
       "field_publisher": "الناشر",
@@ -442,6 +453,7 @@
       "mixed": "مختلط",
       "tab_general": "إعدادات عامة",
       "tab_poster": "ملصق",
+      "tab_sharing": "مشاركة",
       "tab_tags": "التصنيف",
       "tags_notice_multiple_edit": "أنت تقوم بتحرير العلامات لسلسلة متعددة. سيؤدي هذا إلى تجاوز العلامات الموجودة في كل سلسلة."
     },
@@ -451,8 +463,21 @@
       "dialog_title": "تحرير المستخدم",
       "label_roles_for": "أدوار ل {name}"
     },
+    "edit_user_restrictions": {
+      "age_restriction": {
+        "allow_under": "اسمح فقط في حالة",
+        "exclude_over": "استبعد إذا",
+        "none": "لا قيود"
+      },
+      "edit_restrictions_for": "تعديل القيود لـ {name}",
+      "label_age_restriction": "قيد الفئة العمرية",
+      "label_allow_only_labels": "اسمح فقط للعبارات الوصفية",
+      "label_exclude_labels": "قم باستثناء العبارات الوصفية",
+      "tab_content_restrictions": "قيود المحتوى",
+      "tab_shared_libraries": "المكتبات المُشاركة"
+    },
     "empty_trash": {
-      "body": "بشكل افتراضي ، لا يزيل خادم الوسائط معلومات الوسائط على الفور. هذا يساعد إذا تم فصل محرك الأقراص مؤقتًا. عندما تقوم بإفراغ سلة المهملات الخاصة بمكتبة ما ، يتم حذف جميع المعلومات المتعلقة بالوسائط المفقودة.",
+      "body": "بشكل افتراضي، لا يزيل خادم الوسائط معلومات الوسائط على الفور. هذا يساعد إن فُصل محرك الأقراص مؤقتًا. عندما تقوم بإفراغ سلة المهملات الخاصة بمكتبة، تُحذف جميع المعلومات المتعلقة بالوسائط المفقودة.",
       "button_confirm": "فارغة",
       "title": "قم بإفراغ سلة المهملات للمكتبة"
     },
@@ -538,12 +563,30 @@
       "delete_size": "المساحة المحفوظة",
       "size": "حجم",
       "total_size": "الحجم الإجمالي"
-    }
+    },
+    "info": "حذف الصفحات المكررة سيغيّر ملفاتك. احتفظ بنسخة احتياطية من ملفاتك واستخدم الحذف اليدوي قبل استخدام الحذف التلقائي.",
+    "matches_n": "لا يوجد تطابق | 1 تطابق | {count} التطابق",
+    "saved_size": "حُفظ {size}",
+    "title": "صفحات مكررة",
+    "unknown_size": "حجم مجهول"
+  },
+  "duplicates": {
+    "file_hash": "رمز هاش الملف",
+    "size": "حجم",
+    "title": "ملفات مكررة",
+    "url": "الرابط الإلكتروني"
   },
   "enums": {
     "copy_mode": {
       "HARDLINK": "ملفات الروابط الثابتة/النسخ",
       "MOVE": "نقل الملفات"
+    },
+    "historical_event_type": {
+      "BookConverted": "تمّ تحويل الكتاب",
+      "BookFileDeleted": "تمّ مسح ملف الكتاب",
+      "BookImported": "تمّ استيراد الكتاب",
+      "DuplicatePageDeleted": "تمّ حذف الصفحة المكررة",
+      "SeriesFolderDeleted": "تمّ حذف مجلد السلسلة"
     },
     "media_status": {
       "ERROR": "خطأ",
@@ -552,11 +595,20 @@
       "UNKNOWN": "غير معروف",
       "UNSUPPORTED": "غير مدعوم"
     },
+    "page_hash_action": {
+      "DELETE_AUTO": "الحذف التلقائي",
+      "DELETE_MANUAL": "الحذف اليدوي",
+      "IGNORE": "تجاهل"
+    },
     "reading_direction": {
       "LEFT_TO_RIGHT": "من اليسار إلى اليمين",
       "RIGHT_TO_LEFT": "من اليمين الى اليسار",
       "VERTICAL": "عمودي",
       "WEBTOON": "ويبتون"
+    },
+    "series_cover": {
+      "FIRST": "أول",
+      "LAST": "أخير"
     },
     "series_status": {
       "ABANDONED": "مهجور",
@@ -583,11 +635,16 @@
     "ERR_1014": "لا توجد مطابقة فريدة لرقم الكتاب ضمن السلسلة",
     "ERR_1015": "خطأ أثناء إلغاء تسلسل قائمة القراءة ComicRack",
     "ERR_1016": "الدليل لا يمكن الوصول إليه أو أنه ليس دليلاً",
-    "ERR_1017": "لا يمكن مسح المجلد الذي هو جزء من مكتبة موجودة"
+    "ERR_1017": "لا يمكن مسح المجلد الذي هو جزء من مكتبة موجودة",
+    "ERR_1018": "لم يتمّ العثور على الملف",
+    "ERR_1019": "لا يمكن استيراد المجلد الذي هو جزء من مكتبة موجودة",
+    "ERR_1022": "لا يمكن مسح الكتاب حديث الاستيراد",
+    "ERR_1023": "الكتاب موجود سابقًا في قائمة القراءة"
   },
   "filter": {
     "age_rating": "التصنيف العمري",
     "age_rating_none": "لا شيء",
+    "complete": "اكتمل",
     "genre": "نوع",
     "in_progress": "قيد التقدم",
     "language": "اللغة",
@@ -603,6 +660,16 @@
     "filter": "منقي",
     "sort": "فرز"
   },
+  "history": {
+    "header": {
+      "book": "كتاب",
+      "date": "التاريخ",
+      "details": "معلومات",
+      "series": "سلسلة",
+      "type": "نوع"
+    },
+    "title": "المحفوظات"
+  },
   "home": {
     "theme": "السمة",
     "translation": "ترجمة"
@@ -616,7 +683,7 @@
   "login": {
     "create_user_account": "إنشاء حساب مستخدم",
     "login": "تسجيل الدخول",
-    "unclaimed_html": "خادم Komga هذا غير نشط بعد ، فأنت بحاجة إلى إنشاء حساب مستخدم لتتمكن من الوصول إليه.اختربريد إلكتروني وكلمة مرور وانقر على إنشاء حساب مستخدم."
+    "unclaimed_html": "خادم Komga هذا غير نشط بعد، فأنت بحاجة إلى إنشاء حساب مستخدم لتتمكن من الوصول إليه. اختر بريد إلكتروني وكلمة مرور وانقر على إنشاء حساب مستخدم."
   },
   "media_analysis": {
     "comment": "تعليق",
@@ -627,18 +694,31 @@
     "status": "حالة",
     "url": "رابط"
   },
+  "media_management": {
+    "title": "إدارة الوسائط"
+  },
   "menu": {
     "add_to_collection": "أضف إلى المجموعة",
     "add_to_readlist": "أضف إلى قائمة القراءة",
     "analyze": "تحليل",
     "delete": "حذف",
+    "deselect_all": "الغ تحديد الكل",
+    "download_readlist": "تحميل قائمة القراءة",
     "download_series": "تحميل سلسلة",
     "edit": "تعديل",
     "edit_metadata": "تحرير البيانات الوصفية",
+    "empty_trash": "إفراغ سلة المهملات",
     "mark_read": "تحديد كمقروء",
     "mark_unread": "تحديد كغير مقروء",
     "refresh_metadata": "تحديث البيانات الوصفية",
-    "scan_library_files": "فحص ملفات المكتبة"
+    "scan_library_files": "فحص ملفات المكتبة",
+    "select_all": "تحديد الكل"
+  },
+  "metrics": {
+    "library_disk_space": "مساحة قرص المكتبة",
+    "tasks_executed": "تمّ تنفيذ المهام",
+    "tasks_total_time": "الوقت الكلّي للمهام",
+    "title": "المقاييس"
   },
   "navigation": {
     "home": "الصفحة الرئيسية",
@@ -671,34 +751,52 @@
   },
   "server": {
     "server_management": {
+      "button_cancel_all_tasks": "إلغاء كل المهام",
+      "button_empty_trash": "إفراغ سلة المهملات لكل المكتبات",
+      "button_scan_libraries": "مسح جميع المكتبات",
       "button_shutdown": "إيقاف التشغيل",
+      "notification_tasks_cancelled": "لا يوجد مهام لإلغائها | تمّ إلغاء 1 مهمة | تمّ إلغاء {count} مهمة",
       "section_title": "إدارة الخادم"
     },
     "tab_title": "خادم"
   },
   "server_settings": {
-    "server_settings": "اعدادات الخادم"
+    "server_settings": "إعدادات الخادم"
   },
   "settings_user": {
+    "change_password": "تغيير كلمة السر",
+    "edit_restrictions": "قيود التعديل",
     "edit_user": "تحرير المستخدم",
+    "latest_activity": "النشاط الأخير: {date}",
+    "no_recent_activity": "لا أنشطة حديثة",
     "role_administrator": "مدير",
     "role_user": "مستخدم"
   },
   "sort": {
     "books_count": "عدد الكتب",
-    "date_added": "تاريخ الاضافة",
-    "date_updated": "تاريخ تحديث",
+    "date_added": "تاريخ الإضافة",
+    "date_updated": "تاريخ التحديث",
     "file_name": "اسم الملف",
     "file_size": "حجم الملف",
     "folder_name": "اسم المجلد",
     "name": "الاسم",
     "number": "رقم",
-    "release_date": "تاريخ الاصدار"
+    "release_date": "تاريخ الإصدار"
   },
   "theme": {
     "dark": "قاتم",
     "light": "فاتح",
     "system": "نظام"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "حذف",
+    "tooltip_generated": "عمل فني مولّد",
+    "tooltip_selected": "مختار",
+    "tooltip_sidecar": "الأعمال الفنية المحلية",
+    "tooltip_to_be_deleted": "ليُحذف",
+    "tooltip_to_be_uploaded": "ليُرفع",
+    "tooltip_too_big": "الملف كبير جدًا!",
+    "tooltip_user_uploaded": "تمّ الرفع بواسطة المستخدم"
   },
   "user_roles": {
     "ADMIN": "مدير",
@@ -708,6 +806,9 @@
   },
   "users": {
     "users": "المستخدمين"
+  },
+  "validation": {
+    "zero_or_more": "يجب أن يكون 0 أو أكثر"
   },
   "welcome": {
     "add_library": "إضافة مكتبة",
