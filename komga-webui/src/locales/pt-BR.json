@@ -22,13 +22,13 @@
     "change_password": "Alterar senha"
   },
   "authentication_activity": {
-    "datetime": "Data/Hora",
+    "datetime": "Data e Hora",
     "email": "E-mail",
     "error": "Erro",
     "ip": "IP",
     "source": "Origem",
-    "success": "Sucessso",
-    "user_agent": "User Agent"
+    "success": "Sucesso",
+    "user_agent": "Agente de Usuário"
   },
   "author_roles": {
     "colorist": "coloristas",
@@ -37,7 +37,7 @@
     "inker": "arte-finalistas",
     "letterer": "letristas",
     "penciller": "desenhistas",
-    "translator": "tradutores",
+    "translator": "Tradutores",
     "writer": "Escritores"
   },
   "book_card": {
