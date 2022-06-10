@@ -70,8 +70,8 @@ class ReadListLifecycle(
     logger.info { "Deleting empty read lists" }
     transactionTemplate.executeWithoutResult {
       val toDelete = readListRepository.findAllEmpty()
-      readListRepository.delete(toDelete.map { it.id })
       thumbnailReadListRepository.deleteByReadListIds(toDelete.map { it.id })
+      readListRepository.delete(toDelete.map { it.id })
 
       toDelete.forEach { eventPublisher.publishEvent(DomainEvent.ReadListDeleted(it)) }
     }
