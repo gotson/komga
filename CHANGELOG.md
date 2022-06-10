@@ -1,3 +1,12 @@
+## [0.154.3](https://github.com/gotson/komga/compare/v0.154.2...v0.154.3) (2022-06-10)
+
+
+### Bug Fixes
+
+* cannot delete read list with custom cover ([b73b869](https://github.com/gotson/komga/commit/b73b8690a42a7e6e6919c5f0e56c1c02959d15c1))
+* error when downloading book file over 2GB ([ad82d99](https://github.com/gotson/komga/commit/ad82d99dbeb70b5f40a920de40664b18e50fe3c9)), closes [#897](https://github.com/gotson/komga/issues/897)
+* translated using Weblate ([3f69206](https://github.com/gotson/komga/commit/3f692060641cfe7b25a679c16cb2a0a5a32f60d7))
+
 ## [0.154.2](https://github.com/gotson/komga/compare/v0.154.1...v0.154.2) (2022-05-31)
 
 
