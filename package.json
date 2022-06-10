@@ -5,7 +5,7 @@
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "is-ci": "^3.0.1",
-    "semantic-release": "^19.0.2"
+    "semantic-release": "^19.0.3"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.2.3",
