@@ -391,7 +391,6 @@ class BookController(
               },
             )
             .contentType(getMediaTypeOrDefault(media.mediaType))
-            .contentLength(this.contentLength())
             .body(stream)
         }
       } catch (ex: FileNotFoundException) {
