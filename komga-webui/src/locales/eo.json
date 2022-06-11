@@ -43,6 +43,7 @@
   "book_card": {
     "error": "Eraro",
     "unknown": "Analizota",
+    "unread": "Ne legita",
     "unsupported": "Ne subtenata"
   },
   "book_import": {
@@ -181,6 +182,7 @@
     "books_n": "Neniuj libroj | 1 libro | {count} libroj",
     "books_total": "{count} el {total} libroj",
     "cancel": "Nuligi",
+    "choose_image": "Elekti bildon",
     "close": "Fermi",
     "collections": "Kolektoj",
     "create": "Krei",
@@ -188,6 +190,7 @@
     "dismiss": "Fermi",
     "download": "Elŝuti",
     "email": "Retpoŝta adreso",
+    "filename": "Nomo de dosiero",
     "filter_no_matches": "La aktiva filtrilo ne lasas ion ajn",
     "genre": "Ĝenro",
     "go_to_library": "Iri al biblioteko",
@@ -200,6 +203,8 @@
     "n_selected": "{count} elektiĝis",
     "nothing_to_show": "Nenio por montri",
     "outdated": "Ne ĝisdata",
+    "page": "Paĝo",
+    "page_number": "Paĝnumero",
     "pages": "paĝoj",
     "pages_n": "Neniuj paĝoj | 1 paĝo | {count} paĝoj",
     "password": "Pasvorto",
@@ -210,6 +215,7 @@
     "required": "Deviga",
     "reset_filters": "Forigi filtrilojn",
     "roles": "Roloj",
+    "save_changes": "Konservi ŝanĝojn",
     "series": "Serio",
     "tags": "Etikedoj",
     "unavailable": "Nedisponebla",
@@ -325,6 +331,7 @@
       "field_isbn": "ISBN",
       "field_isbn_error": "Devas esti valida ISBN-13",
       "field_link_label": "Etikedo",
+      "field_link_url": "Reta adreso",
       "field_link_url_error_protocol": "Devas esti per HTTP aŭ HTTPS",
       "field_number": "Numero",
       "field_number_sort": "Ordiga Numero",
@@ -336,6 +343,8 @@
       "field_title": "Titolo",
       "tab_authors": "Aŭtoroj",
       "tab_general": "Ĝenerala",
+      "tab_links": "Ligoj",
+      "tab_poster": "Afiŝo",
       "tab_tags": "Etikedoj",
       "tags_notice_multiple_edit": "Vi redaktas etikedojn de pluraj libroj. Tio ŝanĝos la etikedojn de ĉiu el tiuj libroj."
     },
@@ -344,7 +353,9 @@
       "button_confirm": "Konservi ŝanĝojn",
       "dialog_title": "Redakti kolekton",
       "field_manual_ordering": "Mana ordigo",
-      "label_ordering": "Implicite, serioj en kolekto estas ordigitaj laŭ nomo. Vi povas ŝalti manan ordigon por difini vian propran ordon."
+      "label_ordering": "Implicite, serioj en kolekto estas ordigitaj laŭ nomo. Vi povas ŝalti manan ordigon por difini vian propran ordon.",
+      "tab_general": "Ĝenerala",
+      "tab_poster": "Afiŝo"
     },
     "edit_library": {
       "button_browse": "Foliumi",
@@ -354,6 +365,7 @@
       "button_next": "Sekva",
       "dialog_title_add": "Aldoni Bibliotekon",
       "dialot_title_edit": "Redakti Bibliotekon",
+      "field_analysis_analyze_dimensions": "Analizi formaton",
       "field_convert_to_cbz": "Aŭtomate konverti al CBZ",
       "field_import_barcode_isbn": "Strikodo de ISBN",
       "field_import_comicinfo_book": "Metadatenoj pri libro",
@@ -391,7 +403,9 @@
       "button_confirm": "Konservi ŝanĝojn",
       "dialog_title": "Redakti legoliston",
       "field_name": "Nomo",
-      "field_summary": "Resumo"
+      "field_summary": "Resumo",
+      "tab_general": "Ĝenerala",
+      "tab_poster": "Afiŝo"
     },
     "edit_series": {
       "button_cancel": "Nuligi",
@@ -401,6 +415,7 @@
       "field_age_rating": "Aĝolimo",
       "field_age_rating_error": "Aĝolimo devas esti ne negativa",
       "field_genres": "Ĝenroj",
+      "field_labels": "Etikedoj",
       "field_language": "Lingvo",
       "field_language_hint": "Lingva etikedo laŭ IETF BCP 47",
       "field_publisher": "Eldonejo",
@@ -498,7 +513,15 @@
       "title_comparison": "Komparo inter Libroj"
     }
   },
+  "duplicate_pages": {
+    "action_ignore": "Ignori",
+    "filter": {
+      "size": "Grando"
+    },
+    "unknown_size": "Nesciata grando"
+  },
   "duplicates": {
+    "file_hash": "Haketaĵo de dosiero",
     "size": "Grando"
   },
   "enums": {
@@ -512,6 +535,9 @@
       "READY": "Preta",
       "UNKNOWN": "Nekonata",
       "UNSUPPORTED": "Ne subtenata"
+    },
+    "page_hash_action": {
+      "IGNORE": "Ignori"
     },
     "reading_direction": {
       "LEFT_TO_RIGHT": "Demaldekstre dekstren",
@@ -579,6 +605,16 @@
   "filter_drawer": {
     "filter": "filtri",
     "sort": "ordigi"
+  },
+  "history": {
+    "header": {
+      "book": "Libro",
+      "date": "Dato",
+      "details": "Detaloj",
+      "series": "Serio",
+      "type": "Tipo"
+    },
+    "title": "Historio"
   },
   "home": {
     "theme": "Etoso",
