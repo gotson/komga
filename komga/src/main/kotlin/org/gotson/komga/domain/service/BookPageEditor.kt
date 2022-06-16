@@ -25,8 +25,8 @@ import org.gotson.komga.domain.persistence.PageHashRepository
 import org.gotson.komga.language.notEquals
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
+import java.io.File
 import java.io.FileNotFoundException
-import java.nio.file.Files
 import java.util.zip.Deflater
 import kotlin.io.path.deleteIfExists
 import kotlin.io.path.moveTo
@@ -87,7 +87,7 @@ class BookPageEditor(
     logger.debug { "Pages to delete: $pagesToDelete" }
     logger.debug { "Pages to keep: $pagesToKeep" }
 
-    val tempFile = Files.createTempFile(book.path.parent, TEMP_PREFIX, TEMP_SUFFIX)
+    val tempFile = File.createTempFile(TEMP_PREFIX, TEMP_SUFFIX, book.path.parent.toFile()).toPath()
     logger.info { "Creating new file: $tempFile" }
     ZipArchiveOutputStream(tempFile.outputStream()).use { zipStream ->
       zipStream.setMethod(ZipArchiveOutputStream.DEFLATED)
