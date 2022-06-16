@@ -1,3 +1,11 @@
+## [0.154.4](https://github.com/gotson/komga/compare/v0.154.3...v0.154.4) (2022-06-16)
+
+
+### Bug Fixes
+
+* files generated with removed pages could have incorrect permissions ([b3e3a4d](https://github.com/gotson/komga/commit/b3e3a4d7640e09547de1f7afd41c743d054771a0))
+* translated using Weblate ([2511879](https://github.com/gotson/komga/commit/251187918faf577f653027a9481a55098a1a77f6))
+
 ## [0.154.3](https://github.com/gotson/komga/compare/v0.154.2...v0.154.3) (2022-06-10)
 
 
