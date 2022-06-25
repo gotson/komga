@@ -22,13 +22,13 @@
     "change_password": "cambia password"
   },
   "authentication_activity": {
-    "datetime": "Data Ora",
-    "email": "Email",
+    "datetime": "Data / Ora",
+    "email": "E-mail",
     "error": "Errore",
-    "ip": "IP",
+    "ip": "Ip",
     "source": "Fonte",
     "success": "Successo",
-    "user_agent": "User agent"
+    "user_agent": "User Agent"
   },
   "author_roles": {
     "colorist": "coloristi",
@@ -37,7 +37,7 @@
     "inker": "inchiostratori",
     "letterer": "letteristi",
     "penciller": "disegnatori",
-    "translator": "traduttori",
+    "translator": "Traduttori",
     "writer": "scrittori"
   },
   "book_card": {
@@ -48,7 +48,7 @@
     "unsupported": "Non supportato"
   },
   "book_import": {
-    "button_browse": "Sfoglia",
+    "button_browse": "Esplora",
     "button_import": "Importa",
     "button_scan": "Scansiona",
     "button_select_series": "Seleziona la serie",
@@ -89,6 +89,9 @@
     "move_next": "Clicca o premi nuovamente «Avanti» per passare al fumetto successivo.",
     "move_next_exit": "Clicca o premi nuovamente «Avanti» per uscire dal lettore.",
     "move_previous": "Clicca o premi nuovamente «Indietro» per passare al fumetto precedente.",
+    "notification_poster_set_book": "La copertina del libro è ora la pagina corrente.",
+    "notification_poster_set_readlist": "La copertina dell'elenco di lettura è ora la pagina corrente.",
+    "notification_poster_set_series": "La copertina della serie è ora la pagina corrente.",
     "paged_reader_layout": {
       "double": "Pagine doppie",
       "double_no_cover": "Pagine doppie (senza copertina)",
@@ -104,6 +107,9 @@
       "width": "Adatta a larghezza",
       "width_shrink_only": "Adatta larghezza (solo restringimento)"
     },
+    "set_current_page_as_book_poster": "Imposta la pagina come copertina del libro",
+    "set_current_page_as_readlist_poster": "Imposta la pagina come copertina dell'elenco di lettura",
+    "set_current_page_as_series_poster": "Imposta la pagina come copertina della serie",
     "settings": {
       "always_fullscreen": "Forza Schermo Intero",
       "animate_page_transitions": "Anima le transizioni di pagina",
@@ -156,7 +162,7 @@
     "isbn": "ISBN",
     "links": "COLLEGAMENTO",
     "navigation_within_readlist": "Navigazione all'interno della lista di lettura: {name}",
-    "outdated_tooltip": "Il file di questo fumetto è cambiato, questo fumetto deve essere ri-analizzato",
+    "outdated_tooltip": "Il file di questo libro è cambiato, questo fumetto deve essere rianalizzato",
     "read_book": "Leggi fumetto",
     "read_incognito": "Leggi in incognito",
     "size": "DIMENSIONE"
@@ -180,18 +186,21 @@
     "title": "Raccolta {name}"
   },
   "common": {
+    "age": "Età",
     "all_libraries": "Tutte le librerie",
     "books": "Fumetti",
     "books_n": "Nessun fumetto | 1 fumetto | {count} fumetti",
-    "books_total": "{count} / {total} fumetti",
+    "books_total": "{count} / {total} libri",
     "cancel": "Annulla",
+    "choose_image": "Scegli un'immagine",
     "close": "Chiudi",
-    "collections": "Raccolte",
+    "collections": "Collezioni",
     "create": "Crea",
     "delete": "Elimina",
     "disk_space": "Spazio su disco",
     "dismiss": "Chiudi",
     "download": "Scarica",
+    "drag_drop": "trascina e rilascia",
     "email": "E-mail",
     "filename": "Nome file",
     "filter_no_matches": "Il filtro attivo non ha corrispondenze",
@@ -216,8 +225,9 @@
     "read": "Leggi",
     "readlists": "Liste di lettura",
     "required": "Richiesto",
-    "reset_filters": "Reimposta filtri",
+    "reset_filters": "Rimuovi filtri",
     "roles": "Permessi",
+    "save_changes": "Salva le modifiche",
     "series": "Serie",
     "sidecars": "Sidecar",
     "tags": "Etichette",
@@ -232,8 +242,8 @@
     "on_deck": "Primo Piano",
     "recently_added_books": "Fumetti aggiunti di recente",
     "recently_added_series": "Serie aggiunte di recente",
-    "recently_read_books": "Fumetti letti di recente",
-    "recently_released_books": "Fumetti rilasciati di recente",
+    "recently_read_books": "Libri letti di recente",
+    "recently_released_books": "Libri aggiunti di recente",
     "recently_updated_series": "Serie aggiornate di recente"
   },
   "data_import": {
@@ -353,7 +363,7 @@
       "tab_authors": "Autori",
       "tab_general": "Generale",
       "tab_links": "Links",
-      "tab_poster": "Poster",
+      "tab_poster": "Copertina",
       "tab_tags": "Etichette",
       "tags_notice_multiple_edit": "Stai modificando le etichette per più fumetti. Questo sovrascriverà le etichette esistenti di ogni fumetto."
     },
@@ -418,7 +428,7 @@
       "field_name": "Nome",
       "field_summary": "Sommario",
       "tab_general": "Generale",
-      "tab_poster": "Poster"
+      "tab_poster": "Copertina"
     },
     "edit_series": {
       "button_cancel": "Annulla",
@@ -428,6 +438,7 @@
       "field_age_rating": "Fascia d'età",
       "field_age_rating_error": "La fascia d'età deve essere pari o superiore a 0",
       "field_genres": "Generi",
+      "field_labels": "Etichette",
       "field_language": "Lingua",
       "field_language_hint": "Tag di lingua IETF BCP 47",
       "field_publisher": "Editore",
@@ -441,7 +452,8 @@
       "field_total_book_count_error": "La conta dei libri totali deve essere 1 o più",
       "mixed": "MISTO",
       "tab_general": "Generale",
-      "tab_poster": "Poster",
+      "tab_poster": "Copertina",
+      "tab_sharing": "Condivisione",
       "tab_tags": "Etichette",
       "tags_notice_multiple_edit": "Stai modificando le etichette per più serie. Questo sovrascriverà le etichette esistenti di ogni serie."
     },
@@ -450,6 +462,19 @@
       "button_confirm": "Salva modifiche",
       "dialog_title": "Modifica utente",
       "label_roles_for": "Permessi per {name}"
+    },
+    "edit_user_restrictions": {
+      "age_restriction": {
+        "allow_under": "Consenti solo sotto",
+        "exclude_over": "Escludi oltre",
+        "none": "Nessuna restrizione"
+      },
+      "edit_restrictions_for": "Modifica le restrizioni per {name}",
+      "label_age_restriction": "Limite di età",
+      "label_allow_only_labels": "Consenti solo etichette",
+      "label_exclude_labels": "Escludi etichette",
+      "tab_content_restrictions": "Restrizioni dei contenuti",
+      "tab_shared_libraries": "Librerie condivise"
     },
     "empty_trash": {
       "body": "Di default il media server non rimuove le informazioni sui media immediatamente. Questo è utile se un drive è temporaneamente disconnesso. Quando svuoti il cestino di una libreria, tutte le informazioni dei media mancanti sono cancellate.",
@@ -556,6 +581,13 @@
       "HARDLINK": "Hardlink / Copia File",
       "MOVE": "Sposta i file"
     },
+    "historical_event_type": {
+      "BookConverted": "Libro convertito",
+      "BookFileDeleted": "File cancellato",
+      "BookImported": "Libro importato",
+      "DuplicatePageDeleted": "Pagina doppia eliminata",
+      "SeriesFolderDeleted": "Cartella serie eliminata"
+    },
     "media_status": {
       "ERROR": "Errore",
       "OUTDATED": "Scaduto",
@@ -576,6 +608,8 @@
     },
     "series_cover": {
       "FIRST": "Primo",
+      "FIRST_UNREAD_OR_FIRST": "Primo numero non letto, altrimenti primo",
+      "FIRST_UNREAD_OR_LAST": "Primo numero non letto, altrimenti ultimo",
       "LAST": "Ultimo"
     },
     "series_status": {
@@ -611,7 +645,8 @@
     "ERR_1022": "Impossibile scansionare il fumetto appena importato",
     "ERR_1023": "Fumetto già presente nella lista di lettura",
     "ERR_1024": "Errore di accesso OAuth2: nessun attributo email",
-    "ERR_1025": "OAuth2 Errore di accesso: nessun utente locale esiste con quell'e-mail"
+    "ERR_1025": "OAuth2 Errore di accesso: nessun utente locale esiste con quell'e-mail",
+    "ERR_1026": "Errore di accesso a OpenID Connect: email non verificata"
   },
   "filter": {
     "age_rating": "Fascia d'età",
@@ -631,6 +666,16 @@
   "filter_drawer": {
     "filter": "ﬁltro",
     "sort": "ordina"
+  },
+  "history": {
+    "header": {
+      "book": "Libro",
+      "date": "Data",
+      "details": "Dettagli",
+      "series": "Serie",
+      "type": "Tipo"
+    },
+    "title": "Storia"
   },
   "home": {
     "theme": "Tema",
@@ -656,6 +701,9 @@
     "status": "Stato",
     "url": "URL"
   },
+  "media_management": {
+    "title": "Gestione Media"
+  },
   "menu": {
     "add_to_collection": "Aggiungi alla raccolta",
     "add_to_readlist": "Aggiungi all'elenco di lettura",
@@ -673,6 +721,15 @@
     "refresh_metadata": "Aggiorna metadati",
     "scan_library_files": "Scansiona i file della libreria",
     "select_all": "Seleziona Tutto"
+  },
+  "metrics": {
+    "library_books": "Libri per libreria",
+    "library_disk_space": "Spazio su disco della libreria",
+    "library_series": "Serie per libreria",
+    "library_sidecars": "Sidecar per libreria",
+    "tasks_executed": "Attività eseguite",
+    "tasks_total_time": "Tempo totale delle attività",
+    "title": "Metriche"
   },
   "navigation": {
     "home": "Home",
@@ -719,6 +776,7 @@
   },
   "settings_user": {
     "change_password": "Cambia password",
+    "edit_restrictions": "Modifica restrizioni",
     "edit_user": "Modifica utente",
     "latest_activity": "Ultima attività: {date}",
     "no_recent_activity": "Nessuna attività recente",
@@ -743,12 +801,14 @@
   },
   "thumbnail_card": {
     "tooltip_delete": "Cancella",
+    "tooltip_generated": "Copertina generata",
     "tooltip_mark_as_selected": "Contrassegna come selezionato",
     "tooltip_selected": "Selezionato",
     "tooltip_sidecar": "Copertine locali",
     "tooltip_to_be_deleted": "Da cancellare",
     "tooltip_to_be_uploaded": "Da caricare",
-    "tooltip_too_big": "File troppo grande!"
+    "tooltip_too_big": "File troppo grande!",
+    "tooltip_user_uploaded": "Utente caricato"
   },
   "user_roles": {
     "ADMIN": "Amministratore",
@@ -759,6 +819,9 @@
   "users": {
     "authentication_activity": "Attività di autenticazione",
     "users": "Utenti"
+  },
+  "validation": {
+    "zero_or_more": "Deve essere uguale o superiore a 0"
   },
   "welcome": {
     "add_library": "Aggiungi libreria",
