@@ -221,7 +221,7 @@ class MediaDaoTest(
 
       val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.value), komgaProperties.pageHashing)
 
-      assertThat(found)
+      assertThat(found as Iterable<Pair<String, String>>)
         .hasSize(1)
         .containsOnly(Pair(book.id, book.seriesId))
     }
@@ -263,7 +263,7 @@ class MediaDaoTest(
 
       val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.value), komgaProperties.pageHashing)
 
-      assertThat(found)
+      assertThat(found as Iterable<Pair<String, String>>)
         .hasSize(1)
         .containsOnly(Pair(book.id, book.seriesId))
     }

@@ -83,7 +83,7 @@ class ComicInfoProviderTest {
             WebLink("www.comixology.com", URI("https://www.comixology.com/Sandman/digital-comic/727888")),
           )
 
-        assertThat(tags)
+        assertThat(tags as Iterable<String>)
           .hasSize(2)
           .containsExactlyInAnyOrder("dark", "occult")
       }

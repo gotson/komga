@@ -100,7 +100,7 @@ class MetadataApplierTest {
         .containsExactlyInAnyOrder(
           WebLink("Comixology", URI("https://www.comixology.com/Sandman/digital-comic/727888")),
         )
-      assertThat(patched.tags)
+      assertThat(patched.tags as Iterable<String>)
         .hasSize(2)
         .containsExactlyInAnyOrder("tag1", "tag2")
     }
@@ -186,7 +186,7 @@ class MetadataApplierTest {
       assertThat(patched.ageRating).isEqualTo(patch.ageRating)
       assertThat(patched.language).isEqualTo(patch.language)
       assertThat(patched.totalBookCount).isEqualTo(patch.totalBookCount)
-      assertThat(patched.genres)
+      assertThat(patched.genres as Iterable<String>)
         .hasSize(1)
         .containsExactlyInAnyOrder("shonen")
       assertThat(patched.tags).isEmpty()

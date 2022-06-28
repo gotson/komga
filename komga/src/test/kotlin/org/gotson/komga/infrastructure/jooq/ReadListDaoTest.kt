@@ -110,7 +110,7 @@ class ReadListDaoTest(
     assertThat(updated.summary).isEqualTo(updatedReadList.summary)
     assertThat(updated.createdDate).isNotEqualTo(updated.lastModifiedDate)
     assertThat(updated.lastModifiedDate).isCloseTo(now, offset)
-    assertThat(updated.bookIds.values)
+    assertThat(updated.bookIds.values as Iterable<String>)
       .hasSize(5)
       .containsExactlyElementsOf(books.map { it.id }.take(5))
   }
@@ -140,12 +140,12 @@ class ReadListDaoTest(
 
     // then
     val rl1 = readListDao.findByIdOrNull(readList1.id)!!
-    assertThat(rl1.bookIds.values)
+    assertThat(rl1.bookIds.values as Iterable<String>)
       .hasSize(9)
       .doesNotContain(books.first().id)
 
     val col2 = readListDao.findByIdOrNull(readList2.id)!!
-    assertThat(col2.bookIds.values)
+    assertThat(col2.bookIds.values as Iterable<String>)
       .hasSize(4)
       .doesNotContain(books.first().id)
   }
@@ -190,7 +190,7 @@ class ReadListDaoTest(
     assertThat(foundLibrary1Filtered).hasSize(2)
     assertThat(foundLibrary1Filtered.map { it.name }).containsExactly("readListLibrary1", "readListLibraryBoth")
     with(foundLibrary1Filtered.find { it.name == "readListLibraryBoth" }!!) {
-      assertThat(bookIds.values)
+      assertThat(bookIds.values as Iterable<String>)
         .hasSize(1)
         .containsExactly(bookLibrary1.id)
       assertThat(filtered).isTrue
@@ -199,7 +199,7 @@ class ReadListDaoTest(
     assertThat(foundLibrary1Unfiltered).hasSize(2)
     assertThat(foundLibrary1Unfiltered.map { it.name }).containsExactly("readListLibrary1", "readListLibraryBoth")
     with(foundLibrary1Unfiltered.find { it.name == "readListLibraryBoth" }!!) {
-      assertThat(bookIds.values)
+      assertThat(bookIds.values as Iterable<String>)
         .hasSize(2)
         .containsExactly(bookLibrary1.id, bookLibrary2.id)
       assertThat(filtered).isFalse
@@ -208,7 +208,7 @@ class ReadListDaoTest(
     assertThat(foundLibrary2Filtered).hasSize(2)
     assertThat(foundLibrary2Filtered.map { it.name }).containsExactly("readListLibrary2", "readListLibraryBoth")
     with(foundLibrary2Filtered.find { it.name == "readListLibraryBoth" }!!) {
-      assertThat(bookIds.values)
+      assertThat(bookIds.values as Iterable<String>)
         .hasSize(1)
         .containsExactly(bookLibrary2.id)
       assertThat(filtered).isTrue
@@ -217,7 +217,7 @@ class ReadListDaoTest(
     assertThat(foundLibrary2Unfiltered).hasSize(2)
     assertThat(foundLibrary2Unfiltered.map { it.name }).containsExactly("readListLibrary2", "readListLibraryBoth")
     with(foundLibrary2Unfiltered.find { it.name == "readListLibraryBoth" }!!) {
-      assertThat(bookIds.values)
+      assertThat(bookIds.values as Iterable<String>)
         .hasSize(2)
         .containsExactly(bookLibrary1.id, bookLibrary2.id)
       assertThat(filtered).isFalse
@@ -226,7 +226,7 @@ class ReadListDaoTest(
     assertThat(foundBothUnfiltered).hasSize(3)
     assertThat(foundBothUnfiltered.map { it.name }).containsExactly("readListLibrary1", "readListLibrary2", "readListLibraryBoth")
     with(foundBothUnfiltered.find { it.name == "readListLibraryBoth" }!!) {
-      assertThat(bookIds.values)
+      assertThat(bookIds.values as Iterable<String>)
         .hasSize(2)
         .containsExactly(bookLibrary1.id, bookLibrary2.id)
       assertThat(filtered).isFalse
