@@ -77,6 +77,11 @@ management:
       simple:
         enabled: true
         step: 24h
+  info:
+    java:
+      enabled: true
+    os:
+      enabled: true
 springdoc:
   group-configs:
     - group: REST API
