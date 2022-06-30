@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import mu.KotlinLogging
+import org.apache.commons.compress.archivers.zip.Zip64Mode
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
 import org.apache.commons.io.IOUtils
@@ -398,6 +399,7 @@ class ReadListController(
         ZipArchiveOutputStream(responseStream).use { zipStream ->
           zipStream.setMethod(ZipArchiveOutputStream.DEFLATED)
           zipStream.setLevel(Deflater.NO_COMPRESSION)
+          zipStream.setUseZip64(Zip64Mode.Always)
           books.forEach { (index, book) ->
             val file = FileSystemResource(book.path)
             if (!file.exists()) {
