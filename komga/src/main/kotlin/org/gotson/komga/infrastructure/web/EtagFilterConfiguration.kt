@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServletRequest
 class EtagFilterConfiguration {
 
   private val excludePatterns = listOf(
-    PathPatternParser.defaultInstance.parse("/api/v1/books/{id}/file/**"),
-    PathPatternParser.defaultInstance.parse("/opds/v1.2/books/{id}/file/**"),
-    PathPatternParser.defaultInstance.parse("/api/v1/readlists/{id}/file/**"),
-    PathPatternParser.defaultInstance.parse("/api/v1/series/{id}/file/**"),
+    PathPatternParser.defaultInstance.parse("/api/v1/books/*/file/**"),
+    PathPatternParser.defaultInstance.parse("/opds/v1.2/books/*/file/**"),
+    PathPatternParser.defaultInstance.parse("/api/v1/readlists/*/file/**"),
+    PathPatternParser.defaultInstance.parse("/api/v1/series/*/file/**"),
   )
 
   @Bean
