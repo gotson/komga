@@ -1,3 +1,16 @@
+# [0.155.0](https://github.com/gotson/komga/compare/v0.154.4...v0.155.0) (2022-06-30)
+
+
+### Bug Fixes
+
+* re-enable content length header for book downloads ([535c6d7](https://github.com/gotson/komga/commit/535c6d7eca2caf48bb58df1b9039f56c9f10c302))
+* use zip64 for archive downloads ([73949d5](https://github.com/gotson/komga/commit/73949d514ec7ccb185821ce5a99bd3b70d3270c4))
+
+
+### Features
+
+* enable more providers for actuator info ([61f519a](https://github.com/gotson/komga/commit/61f519a6a0f2158397bdc5adbd9067fe22888070))
+
 ## [0.154.4](https://github.com/gotson/komga/compare/v0.154.3...v0.154.4) (2022-06-16)
 
 
