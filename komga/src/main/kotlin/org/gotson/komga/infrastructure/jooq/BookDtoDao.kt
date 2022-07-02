@@ -27,6 +27,7 @@ import org.jooq.ResultQuery
 import org.jooq.impl.DSL
 import org.jooq.impl.DSL.inline
 import org.jooq.impl.DSL.noCondition
+import org.jooq.impl.DSL.param
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -129,13 +130,17 @@ class BookDtoDao(
         else it.toSortField(sorts)
       }
 
-    val dtos = selectBase(userId, joinConditions)
-      .where(conditions)
-      .and(searchCondition)
-      .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-      .orderBy(orderBy)
-      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-      .fetchAndMap()
+    var dtos = listOf<BookDto>()
+    dsl.connection {
+      val ctx = DSL.using(it)
+      dtos = selectBase(ctx, userId, joinConditions)
+        .where(conditions)
+        .and(searchCondition)
+        .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
+        .orderBy(orderBy)
+        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+        .fetchAndMap(ctx)
+    }
 
     val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
     return PageImpl(
@@ -146,11 +151,17 @@ class BookDtoDao(
     )
   }
 
-  override fun findByIdOrNull(bookId: String, userId: String): BookDto? =
-    selectBase(userId)
-      .where(b.ID.eq(bookId))
-      .fetchAndMap()
-      .firstOrNull()
+  override fun findByIdOrNull(bookId: String, userId: String): BookDto? {
+    var dto: BookDto? = null
+    dsl.connection {
+      val ctx = DSL.using(it)
+      dto = selectBase(ctx, userId)
+        .where(b.ID.eq(bookId))
+        .fetchAndMap(ctx)
+        .firstOrNull()
+    }
+    return dto
+  }
 
   override fun findPreviousInSeriesOrNull(bookId: String, userId: String): BookDto? =
     findSiblingSeries(bookId, userId, next = false)
@@ -189,18 +200,22 @@ class BookDtoDao(
       .orderBy(DSL.max(r.LAST_MODIFIED_DATE).desc())
       .fetchInto(String::class.java)
 
-    val dtos = seriesIds
-      .drop(pageable.pageNumber * pageable.pageSize)
-      .take(pageable.pageSize)
-      .mapNotNull { seriesId ->
-        selectBase(userId)
-          .where(b.SERIES_ID.eq(seriesId))
-          .and(r.COMPLETED.isNull)
-          .orderBy(d.NUMBER_SORT.asc())
-          .limit(1)
-          .fetchAndMap()
-          .firstOrNull()
-      }
+    var dtos = listOf<BookDto>()
+    dsl.connection {
+      val ctx = DSL.using(it)
+      dtos = seriesIds
+        .drop(pageable.pageNumber * pageable.pageSize)
+        .take(pageable.pageSize)
+        .mapNotNull { seriesId ->
+          selectBase(ctx, userId)
+            .where(b.SERIES_ID.eq(seriesId))
+            .and(r.COMPLETED.isNull)
+            .orderBy(d.NUMBER_SORT.asc())
+            .limit(1)
+            .fetchAndMap(ctx)
+            .firstOrNull()
+        }
+    }
 
     return PageImpl(
       dtos,
@@ -221,11 +236,16 @@ class BookDtoDao(
     val count = hashes.values.sum()
 
     val orderBy = pageable.sort.toOrderBy(sorts)
-    val dtos = selectBase(userId)
-      .where(b.FILE_HASH.`in`(hashes.keys))
-      .orderBy(orderBy)
-      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-      .fetchAndMap()
+
+    var dtos = listOf<BookDto>()
+    dsl.connection {
+      val ctx = DSL.using(it)
+      dtos = selectBase(ctx, userId)
+        .where(b.FILE_HASH.`in`(hashes.keys))
+        .orderBy(orderBy)
+        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+        .fetchAndMap(ctx)
+    }
 
     val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
     return PageImpl(
@@ -247,13 +267,18 @@ class BookDtoDao(
     val seriesId = record.get(0, String::class.java)
     val numberSort = record.get(1, Float::class.java)
 
-    return selectBase(userId)
-      .where(b.SERIES_ID.eq(seriesId))
-      .orderBy(d.NUMBER_SORT.let { if (next) it.asc() else it.desc() })
-      .seek(numberSort)
-      .limit(1)
-      .fetchAndMap()
-      .firstOrNull()
+    var dto: BookDto? = null
+    dsl.connection {
+      val ctx = DSL.using(it)
+      dto = selectBase(ctx, userId)
+        .where(b.SERIES_ID.eq(seriesId))
+        .orderBy(d.NUMBER_SORT.let { if (next) it.asc() else it.desc() })
+        .seek(numberSort)
+        .limit(1)
+        .fetchAndMap(ctx)
+        .firstOrNull()
+    }
+    return dto
   }
 
   private fun findSiblingReadList(
@@ -271,18 +296,23 @@ class BookDtoDao(
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
       .fetchOne(0, Int::class.java)
 
-    return selectBase(userId, JoinConditions(selectReadListNumber = true))
-      .where(rlb.READLIST_ID.eq(readListId))
-      .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-      .orderBy(rlb.NUMBER.let { if (next) it.asc() else it.desc() })
-      .seek(numberSort)
-      .limit(1)
-      .fetchAndMap()
-      .firstOrNull()
+    var dto: BookDto? = null
+    dsl.connection {
+      val ctx = DSL.using(it)
+      dto = selectBase(ctx, userId, JoinConditions(selectReadListNumber = true))
+        .where(rlb.READLIST_ID.eq(readListId))
+        .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
+        .orderBy(rlb.NUMBER.let { if (next) it.asc() else it.desc() })
+        .seek(numberSort)
+        .limit(1)
+        .fetchAndMap(ctx)
+        .firstOrNull()
+    }
+    return dto
   }
 
-  private fun selectBase(userId: String, joinConditions: JoinConditions = JoinConditions()) =
-    dsl.selectDistinct(
+  private fun selectBase(ctx: DSLContext, userId: String, joinConditions: JoinConditions = JoinConditions()) =
+    ctx.selectDistinct(
       *b.fields(),
       *m.fields(),
       *d.fields(),
@@ -298,34 +328,37 @@ class BookDtoDao(
       .apply { if (joinConditions.selectReadListNumber) leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID)) }
       .apply { if (joinConditions.author) leftJoin(a).on(b.ID.eq(a.BOOK_ID)) }
 
-  private fun ResultQuery<Record>.fetchAndMap() =
-    fetch()
-      .map { rec ->
-        val br = rec.into(b)
-        val mr = rec.into(m)
-        val dr = rec.into(d)
-        val rr = rec.into(r)
-        val seriesTitle = rec.into(sd.TITLE).component1()
+  private fun ResultQuery<Record>.fetchAndMap(ctx: DSLContext) =
+    fetch().let { ret ->
+      val qAuthors = ctx.selectFrom(a).where(a.BOOK_ID.eq(param("id", ""))).keepStatement(true)
+      val qTags = ctx.select(bt.TAG).from(bt).where(bt.BOOK_ID.eq(param("id", ""))).keepStatement(true)
+      val qLinks = ctx.select(bl.LABEL, bl.URL).from(bl).where(bl.BOOK_ID.eq(param("id", ""))).keepStatement(true)
 
-        val authors = dsl.selectFrom(a)
-          .where(a.BOOK_ID.eq(br.id))
-          .fetchInto(a)
-          .filter { it.name != null }
-          .map { AuthorDto(it.name, it.role) }
+      qLinks.use {
+        qTags.use {
+          qAuthors.use {
+            ret.map { rec ->
+              val br = rec.into(b)
+              val mr = rec.into(m)
+              val dr = rec.into(d)
+              val rr = rec.into(r)
+              val seriesTitle = rec.into(sd.TITLE).component1()
 
-        val tags = dsl.select(bt.TAG)
-          .from(bt)
-          .where(bt.BOOK_ID.eq(br.id))
-          .fetchSet(bt.TAG)
+              val authors = qAuthors.bind("id", br.id)
+                .fetchInto(a)
+                .filter { it.name != null }
+                .map { AuthorDto(it.name, it.role) }
 
-        val links = dsl.select(bl.LABEL, bl.URL)
-          .from(bl)
-          .where(bl.BOOK_ID.eq(br.id))
-          .fetchInto(bl)
-          .map { WebLinkDto(it.label, it.url) }
+              val tags = qTags.bind("id", br.id).fetchSet(bt.TAG)
 
-        br.toDto(mr.toDto(), dr.toDto(authors, tags, links), if (rr.userId != null) rr.toDto() else null, seriesTitle)
+              val links = qLinks.bind("id", br.id).fetchInto(bl).map { WebLinkDto(it.label, it.url) }
+
+              br.toDto(mr.toDto(), dr.toDto(authors, tags, links), if (rr.userId != null) rr.toDto() else null, seriesTitle)
+            }
+          }
+        }
       }
+    }
 
   private fun BookSearchWithReadProgress.toCondition(): Condition {
     var c: Condition = noCondition()
