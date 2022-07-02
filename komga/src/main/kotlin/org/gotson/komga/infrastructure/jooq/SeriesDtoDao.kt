@@ -28,6 +28,7 @@ import org.jooq.impl.DSL
 import org.jooq.impl.DSL.count
 import org.jooq.impl.DSL.countDistinct
 import org.jooq.impl.DSL.lower
+import org.jooq.impl.DSL.param
 import org.jooq.impl.DSL.substring
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -139,18 +140,25 @@ class SeriesDtoDao(
       }
   }
 
-  override fun findByIdOrNull(seriesId: String, userId: String): SeriesDto? =
-    selectBase(userId)
-      .where(s.ID.eq(seriesId))
-      .groupBy(*groupFields)
-      .fetchAndMap()
-      .firstOrNull()
+  override fun findByIdOrNull(seriesId: String, userId: String): SeriesDto? {
+    var dto: SeriesDto? = null
+    dsl.connection {
+      val ctx = DSL.using(it)
+      dto = selectBase(ctx, userId)
+        .where(s.ID.eq(seriesId))
+        .groupBy(*groupFields)
+        .fetchAndMap(ctx)
+        .firstOrNull()
+    }
+    return dto
+  }
 
   private fun selectBase(
+    context: DSLContext,
     userId: String,
     joinConditions: JoinConditions = JoinConditions(),
   ): SelectOnConditionStep<Record> =
-    dsl.selectDistinct(*groupFields)
+    context.selectDistinct(*groupFields)
       .apply { if (joinConditions.selectCollectionNumber) select(cs.NUMBER) }
       .from(s)
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
@@ -198,12 +206,16 @@ class SeriesDtoDao(
         else it.toSortField(sorts)
       }
 
-    val dtos = selectBase(userId, joinConditions)
-      .where(conditions)
-      .and(searchCondition)
-      .orderBy(orderBy)
-      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-      .fetchAndMap()
+    var dtos = listOf<SeriesDto>()
+    dsl.connection {
+      val ctx = DSL.using(it)
+      dtos = selectBase(ctx, userId, joinConditions)
+        .where(conditions)
+        .and(searchCondition)
+        .orderBy(orderBy)
+        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+        .fetchAndMap(ctx)
+    }
 
     val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
     return PageImpl(
@@ -216,51 +228,63 @@ class SeriesDtoDao(
 
   private fun readProgressConditionSeries(userId: String): Condition = rs.USER_ID.eq(userId).or(rs.USER_ID.isNull)
 
-  private fun ResultQuery<Record>.fetchAndMap() =
-    fetch()
-      .map { rec ->
-        val sr = rec.into(s)
-        val dr = rec.into(d)
-        val bmar = rec.into(bma)
-        val rsr = rec.into(rs)
-        val booksReadCount = rsr.readCount ?: 0
-        val booksInProgressCount = rsr.inProgressCount ?: 0
-        val booksUnreadCount = sr.bookCount - booksReadCount - booksInProgressCount
-
-        val genres = dsl.select(g.GENRE)
-          .from(g)
-          .where(g.SERIES_ID.eq(sr.id))
-          .fetchSet(g.GENRE)
-
-        val tags = dsl.select(st.TAG)
+  private fun ResultQuery<Record>.fetchAndMap(ctx: DSLContext) =
+    fetch().let {
+      val qGenres = ctx.select(g.GENRE)
+        .from(g)
+        .where(g.SERIES_ID.eq(param("id", ""))).keepStatement(true)
+      qGenres.use {
+        val qTags = ctx.select(st.TAG)
           .from(st)
-          .where(st.SERIES_ID.eq(sr.id))
-          .fetchSet(st.TAG)
+          .where(st.SERIES_ID.eq(param("id", ""))).keepStatement(true)
+        qTags.use {
+          val qSharingLabels = ctx.select(sl.LABEL)
+            .from(sl)
+            .where(sl.SERIES_ID.eq(param("id", ""))).keepStatement(true)
+          qSharingLabels.use {
+            val qAggregatedAuthors = ctx.selectFrom(bmaa)
+              .where(bmaa.SERIES_ID.eq(param("id", ""))).keepStatement(true)
+            qAggregatedAuthors.use {
+              val qAggregatedTags = ctx.selectFrom(bmat)
+                .where(bmat.SERIES_ID.eq(param("id", ""))).keepStatement(true)
+              qAggregatedTags.use {
+                map { rec ->
+                  val sr = rec.into(s)
+                  val dr = rec.into(d)
+                  val bmar = rec.into(bma)
+                  val rsr = rec.into(rs)
+                  val booksReadCount = rsr.readCount ?: 0
+                  val booksInProgressCount = rsr.inProgressCount ?: 0
+                  val booksUnreadCount = sr.bookCount - booksReadCount - booksInProgressCount
 
-        val sharingLabels = dsl.select(sl.LABEL)
-          .from(sl)
-          .where(sl.SERIES_ID.eq(sr.id))
-          .fetchSet(sl.LABEL)
+                  val genres = qGenres.bind("id", sr.id).fetchSet(g.GENRE)
 
-        val aggregatedAuthors = dsl.selectFrom(bmaa)
-          .where(bmaa.SERIES_ID.eq(sr.id))
-          .fetchInto(bmaa)
-          .filter { it.name != null }
-          .map { AuthorDto(it.name, it.role) }
+                  val tags = qTags.bind("id", sr.id).fetchSet(st.TAG)
 
-        val aggregatedTags = dsl.selectFrom(bmat)
-          .where(bmat.SERIES_ID.eq(sr.id))
-          .fetchSet(bmat.TAG)
+                  val sharingLabels = qSharingLabels.bind("id", sr.id).fetchSet(sl.LABEL)
 
-        sr.toDto(
-          sr.bookCount,
-          booksReadCount,
-          booksUnreadCount,
-          booksInProgressCount,
-          dr.toDto(genres, tags, sharingLabels),
-          bmar.toDto(aggregatedAuthors, aggregatedTags),
-        )
+                  val aggregatedAuthors = qAggregatedAuthors.bind("id", sr.id)
+                    .fetchInto(bmaa)
+                    .filter { it.name != null }
+                    .map { AuthorDto(it.name, it.role) }
+
+                  val aggregatedTags = qAggregatedTags.bind("id", sr.id).fetchSet(bmat.TAG)
+
+                  sr.toDto(
+                    sr.bookCount,
+                    booksReadCount,
+                    booksUnreadCount,
+                    booksInProgressCount,
+                    dr.toDto(genres, tags, sharingLabels),
+                    bmar.toDto(aggregatedAuthors, aggregatedTags),
+                  )
+                }
+              }
+            }
+          }
+        }
       }
+    }
 
   private fun SeriesSearchWithReadProgress.toCondition(): Condition {
     var c = DSL.noCondition()
