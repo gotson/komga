@@ -109,12 +109,12 @@ class BookController(
   @GetMapping("api/v1/books")
   fun getAllBooks(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestParam(name = "search", required = false) searchTerm: String?,
-    @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
-    @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
-    @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
-    @RequestParam(name = "released_after", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) releasedAfter: LocalDate?,
-    @RequestParam(name = "tag", required = false) tags: List<String>?,
+    @RequestParam(name = "search", required = false) searchTerm: String? = null,
+    @RequestParam(name = "library_id", required = false) libraryIds: List<String>? = null,
+    @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>? = null,
+    @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>? = null,
+    @RequestParam(name = "released_after", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) releasedAfter: LocalDate? = null,
+    @RequestParam(name = "tag", required = false) tags: List<String>? = null,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
   ): Page<BookDto> {
@@ -179,7 +179,7 @@ class BookController(
   @GetMapping("api/v1/books/ondeck")
   fun getBooksOnDeck(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
+    @RequestParam(name = "library_id", required = false) libraryIds: List<String>? = null,
     @Parameter(hidden = true) page: Pageable,
   ): Page<BookDto> =
     bookDtoRepository.findAllOnDeck(

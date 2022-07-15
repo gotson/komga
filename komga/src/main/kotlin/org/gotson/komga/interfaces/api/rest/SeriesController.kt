@@ -122,22 +122,22 @@ class SeriesController(
   @GetMapping("v1/series")
   fun getAllSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestParam(name = "search", required = false) searchTerm: String?,
-    @Parameter(hidden = true) @DelimitedPair("search_regex") searchRegex: Pair<String, String>?,
-    @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
-    @RequestParam(name = "collection_id", required = false) collectionIds: List<String>?,
-    @RequestParam(name = "status", required = false) metadataStatus: List<SeriesMetadata.Status>?,
-    @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
-    @RequestParam(name = "publisher", required = false) publishers: List<String>?,
-    @RequestParam(name = "language", required = false) languages: List<String>?,
-    @RequestParam(name = "genre", required = false) genres: List<String>?,
-    @RequestParam(name = "tag", required = false) tags: List<String>?,
-    @RequestParam(name = "age_rating", required = false) ageRatings: List<String>?,
-    @RequestParam(name = "release_year", required = false) release_years: List<String>?,
-    @RequestParam(name = "deleted", required = false) deleted: Boolean?,
-    @RequestParam(name = "complete", required = false) complete: Boolean?,
+    @RequestParam(name = "search", required = false) searchTerm: String? = null,
+    @Parameter(hidden = true) @DelimitedPair("search_regex") searchRegex: Pair<String, String>? = null,
+    @RequestParam(name = "library_id", required = false) libraryIds: List<String>? = null,
+    @RequestParam(name = "collection_id", required = false) collectionIds: List<String>? = null,
+    @RequestParam(name = "status", required = false) metadataStatus: List<SeriesMetadata.Status>? = null,
+    @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>? = null,
+    @RequestParam(name = "publisher", required = false) publishers: List<String>? = null,
+    @RequestParam(name = "language", required = false) languages: List<String>? = null,
+    @RequestParam(name = "genre", required = false) genres: List<String>? = null,
+    @RequestParam(name = "tag", required = false) tags: List<String>? = null,
+    @RequestParam(name = "age_rating", required = false) ageRatings: List<String>? = null,
+    @RequestParam(name = "release_year", required = false) release_years: List<String>? = null,
+    @RequestParam(name = "deleted", required = false) deleted: Boolean? = null,
+    @RequestParam(name = "complete", required = false) complete: Boolean? = null,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
-    @Parameter(hidden = true) @Authors authors: List<Author>?,
+    @Parameter(hidden = true) @Authors authors: List<Author>? = null,
     @Parameter(hidden = true) page: Pageable,
   ): Page<SeriesDto> {
     val sort =
@@ -273,8 +273,8 @@ class SeriesController(
   @GetMapping("v1/series/new")
   fun getNewSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
-    @RequestParam(name = "deleted", required = false) deleted: Boolean?,
+    @RequestParam(name = "library_id", required = false) libraryIds: List<String>? = null,
+    @RequestParam(name = "deleted", required = false) deleted: Boolean? = null,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
   ): Page<SeriesDto> {
@@ -304,8 +304,8 @@ class SeriesController(
   @GetMapping("v1/series/updated")
   fun getUpdatedSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
-    @RequestParam(name = "deleted", required = false) deleted: Boolean?,
+    @RequestParam(name = "library_id", required = false) libraryIds: List<String>? = null,
+    @RequestParam(name = "deleted", required = false) deleted: Boolean? = null,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
   ): Page<SeriesDto> {
@@ -434,12 +434,12 @@ class SeriesController(
   fun getAllBooksBySeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") seriesId: String,
-    @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>?,
-    @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>?,
-    @RequestParam(name = "tag", required = false) tags: List<String>?,
-    @RequestParam(name = "deleted", required = false) deleted: Boolean?,
+    @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>? = null,
+    @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>? = null,
+    @RequestParam(name = "tag", required = false) tags: List<String>? = null,
+    @RequestParam(name = "deleted", required = false) deleted: Boolean? = null,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
-    @Parameter(hidden = true) @Authors authors: List<Author>?,
+    @Parameter(hidden = true) @Authors authors: List<Author>? = null,
     @Parameter(hidden = true) page: Pageable,
   ): Page<BookDto> {
     principal.user.checkContentRestriction(seriesId)
