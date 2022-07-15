@@ -8348,7 +8348,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_3",
+        "operationId": "getProviders_1",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8379,7 +8379,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_5",
+        "operationId": "getProviders_6",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8410,7 +8410,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_2",
+        "operationId": "getProviders_5",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8441,7 +8441,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_6",
+        "operationId": "getProviders_2",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8472,7 +8472,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_1",
+        "operationId": "getProviders_3",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -9519,18 +9519,15 @@
       "UserUpdateDto": {
         "type": "object",
         "properties": {
-          "ageRestriction": {
-            "$ref": "#/components/schemas/AgeRestrictionUpdateDto"
-          },
-          "sharedLibraries": {
-            "$ref": "#/components/schemas/SharedLibrariesUpdateDto"
-          },
-          "roles": {
+          "labelsExclude": {
             "uniqueItems": true,
             "type": "array",
             "items": {
               "type": "string"
             }
+          },
+          "ageRestriction": {
+            "$ref": "#/components/schemas/AgeRestrictionUpdateDto"
           },
           "labelsAllow": {
             "uniqueItems": true,
@@ -9539,7 +9536,10 @@
               "type": "string"
             }
           },
-          "labelsExclude": {
+          "sharedLibraries": {
+            "$ref": "#/components/schemas/SharedLibrariesUpdateDto"
+          },
+          "roles": {
             "uniqueItems": true,
             "type": "array",
             "items": {
@@ -9636,7 +9636,24 @@
           "sharingLabelsLock": {
             "type": "boolean"
           },
-          "sharingLabels": {
+          "readingDirection": {
+            "type": "string",
+            "enum": [
+              "LEFT_TO_RIGHT",
+              "RIGHT_TO_LEFT",
+              "VERTICAL",
+              "WEBTOON"
+            ]
+          },
+          "ageRating": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalBookCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tags": {
             "uniqueItems": true,
             "type": "array",
             "items": {
@@ -9650,24 +9667,7 @@
               "type": "string"
             }
           },
-          "ageRating": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "readingDirection": {
-            "type": "string",
-            "enum": [
-              "LEFT_TO_RIGHT",
-              "RIGHT_TO_LEFT",
-              "VERTICAL",
-              "WEBTOON"
-            ]
-          },
-          "totalBookCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "tags": {
+          "sharingLabels": {
             "uniqueItems": true,
             "type": "array",
             "items": {
@@ -9779,25 +9779,15 @@
           "linksLock": {
             "type": "boolean"
           },
-          "authors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AuthorUpdateDto"
-            }
-          },
           "isbn": {
+            "type": "string"
+          },
+          "summary": {
             "type": "string"
           },
           "releaseDate": {
             "type": "string",
             "format": "date"
-          },
-          "tags": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           },
           "links": {
             "type": "array",
@@ -9805,8 +9795,18 @@
               "$ref": "#/components/schemas/WebLinkUpdateDto"
             }
           },
-          "summary": {
-            "type": "string"
+          "authors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthorUpdateDto"
+            }
+          },
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         },
         "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update."
@@ -10050,6 +10050,9 @@
       "PageableObject": {
         "type": "object",
         "properties": {
+          "paged": {
+            "type": "boolean"
+          },
           "unpaged": {
             "type": "boolean"
           },
@@ -10064,9 +10067,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "paged": {
-            "type": "boolean"
-          },
           "offset": {
             "type": "integer",
             "format": "int64"
@@ -10076,10 +10076,10 @@
       "Sort": {
         "type": "object",
         "properties": {
-          "unsorted": {
+          "sorted": {
             "type": "boolean"
           },
-          "sorted": {
+          "unsorted": {
             "type": "boolean"
           },
           "empty": {

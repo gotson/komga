@@ -1,3 +1,16 @@
+## [0.155.1](https://github.com/gotson/komga/compare/v0.155.0...v0.155.1) (2022-07-15)
+
+
+### Bug Fixes
+
+* translated using Weblate ([21c2be4](https://github.com/gotson/komga/commit/21c2be4c4fdc28c99439b2620ce55f119f5d247f))
+
+
+### Performance Improvements
+
+* add database indices for faster querying ([0af5f5c](https://github.com/gotson/komga/commit/0af5f5c4d94014e939ca806dbbcbb83cc75b400f))
+* don't sort books and series by default ([31c89fc](https://github.com/gotson/komga/commit/31c89fc29836e9c5af27c92d6a85c8ef98f4a165))
+
 # [0.155.0](https://github.com/gotson/komga/compare/v0.154.4...v0.155.0) (2022-06-30)
 
 
