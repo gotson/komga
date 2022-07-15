@@ -144,7 +144,7 @@ class SeriesController(
       when {
         page.sort.isSorted -> page.sort
         !searchTerm.isNullOrBlank() -> Sort.by("relevance")
-        else -> Sort.by(Sort.Order.asc("metadata.titleSort"))
+        else -> Sort.unsorted()
       }
 
     val pageRequest =

@@ -177,7 +177,7 @@ class BookControllerTest(
       mockMvc.get("/api/v1/books/${book15.id}").andExpect { status { isForbidden() } }
       mockMvc.get("/api/v1/books/${book.id}").andExpect { status { isForbidden() } }
 
-      mockMvc.get("/api/v1/books")
+      mockMvc.get("/api/v1/books?sort=metadata.title")
         .andExpect {
           status { isOk() }
           jsonPath("$.content.length()") { value(2) }
@@ -235,7 +235,7 @@ class BookControllerTest(
       mockMvc.get("/api/v1/books/${book10.id}").andExpect { status { isForbidden() } }
       mockMvc.get("/api/v1/books/${book15.id}").andExpect { status { isForbidden() } }
 
-      mockMvc.get("/api/v1/books")
+      mockMvc.get("/api/v1/books?sort=metadata.title")
         .andExpect {
           status { isOk() }
           jsonPath("$.content.length()") { value(2) }
@@ -293,7 +293,7 @@ class BookControllerTest(
       mockMvc.get("/api/v1/books/${bookAdult.id}").andExpect { status { isForbidden() } }
       mockMvc.get("/api/v1/books/${book.id}").andExpect { status { isForbidden() } }
 
-      mockMvc.get("/api/v1/books")
+      mockMvc.get("/api/v1/books?sort=metadata.title")
         .andExpect {
           status { isOk() }
           jsonPath("$.content.length()") { value(2) }
@@ -351,7 +351,7 @@ class BookControllerTest(
       mockMvc.get("/api/v1/books/${bookAdult.id}").andExpect { status { isOk() } }
       mockMvc.get("/api/v1/books/${book.id}").andExpect { status { isOk() } }
 
-      mockMvc.get("/api/v1/books")
+      mockMvc.get("/api/v1/books?sort=metadata.title")
         .andExpect {
           status { isOk() }
           jsonPath("$.content.length()") { value(2) }
@@ -409,7 +409,7 @@ class BookControllerTest(
       mockMvc.get("/api/v1/books/${bookAdult.id}").andExpect { status { isForbidden() } }
       mockMvc.get("/api/v1/books/${book.id}").andExpect { status { isForbidden() } }
 
-      mockMvc.get("/api/v1/books")
+      mockMvc.get("/api/v1/books?sort=metadata.title")
         .andExpect {
           status { isOk() }
           jsonPath("$.content.length()") { value(2) }

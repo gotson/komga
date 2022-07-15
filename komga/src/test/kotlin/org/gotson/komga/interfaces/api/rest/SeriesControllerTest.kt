@@ -290,7 +290,7 @@ class SeriesControllerTest(
       mockMvc.get("/api/v1/series/${series15.id}").andExpect { status { isForbidden() } }
       mockMvc.get("/api/v1/series/${series.id}").andExpect { status { isForbidden() } }
 
-      mockMvc.get("/api/v1/series")
+      mockMvc.get("/api/v1/series?sort=metadata.titleSort")
         .andExpect {
           status { isOk() }
           jsonPath("$.content.length()") { value(2) }
@@ -344,7 +344,7 @@ class SeriesControllerTest(
       mockMvc.get("/api/v1/series/${series16.id}").andExpect { status { isForbidden() } }
       mockMvc.get("/api/v1/series/${series18.id}").andExpect { status { isForbidden() } }
 
-      mockMvc.get("/api/v1/series")
+      mockMvc.get("/api/v1/series?sort=metadata.titleSort")
         .andExpect {
           status { isOk() }
           jsonPath("$.content.length()") { value(2) }
@@ -398,7 +398,7 @@ class SeriesControllerTest(
       mockMvc.get("/api/v1/series/${seriesAdult.id}").andExpect { status { isForbidden() } }
       mockMvc.get("/api/v1/series/${series.id}").andExpect { status { isForbidden() } }
 
-      mockMvc.get("/api/v1/series")
+      mockMvc.get("/api/v1/series?sort=metadata.titleSort")
         .andExpect {
           status { isOk() }
           jsonPath("$.content.length()") { value(2) }
@@ -452,7 +452,7 @@ class SeriesControllerTest(
       mockMvc.get("/api/v1/series/${seriesAdult.id}").andExpect { status { isOk() } }
       mockMvc.get("/api/v1/series/${series.id}").andExpect { status { isOk() } }
 
-      mockMvc.get("/api/v1/series")
+      mockMvc.get("/api/v1/series?sort=metadata.titleSort")
         .andExpect {
           status { isOk() }
           jsonPath("$.content.length()") { value(2) }
@@ -506,7 +506,7 @@ class SeriesControllerTest(
       mockMvc.get("/api/v1/series/${seriesAdult.id}").andExpect { status { isForbidden() } }
       mockMvc.get("/api/v1/series/${series.id}").andExpect { status { isForbidden() } }
 
-      mockMvc.get("/api/v1/series")
+      mockMvc.get("/api/v1/series?sort=metadata.titleSort")
         .andExpect {
           status { isOk() }
           jsonPath("$.content.length()") { value(2) }

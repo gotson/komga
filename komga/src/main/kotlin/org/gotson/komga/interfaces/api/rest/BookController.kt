@@ -122,7 +122,7 @@ class BookController(
       when {
         page.sort.isSorted -> page.sort
         !searchTerm.isNullOrBlank() -> Sort.by("relevance")
-        else -> Sort.by(Sort.Order.asc("metadata.title"))
+        else -> Sort.unsorted()
       }
 
     val pageRequest =
