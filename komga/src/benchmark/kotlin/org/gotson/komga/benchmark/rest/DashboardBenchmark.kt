@@ -1,0 +1,107 @@
+package org.gotson.komga.benchmark.rest
+
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
+import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.ReadStatus
+import org.gotson.komga.interfaces.api.rest.dto.ReadProgressUpdateDto
+import org.openjdk.jmh.annotations.Benchmark
+import org.openjdk.jmh.annotations.Level
+import org.openjdk.jmh.annotations.OutputTimeUnit
+import org.openjdk.jmh.annotations.Setup
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import java.time.LocalDate
+import java.util.concurrent.TimeUnit
+
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
+class DashboardBenchmark : AbstractRestBenchmark() {
+
+  companion object {
+    lateinit var bookLatestReleaseDate: LocalDate
+  }
+
+  @Setup(Level.Trial)
+  override fun prepareData() {
+    super.prepareData()
+
+    // mark some books in progress
+    bookController.getAllBooks(principal, readStatus = listOf(ReadStatus.IN_PROGRESS), page = Pageable.ofSize(DEFAULT_PAGE_SIZE)).let { page ->
+      if (page.totalElements < DEFAULT_PAGE_SIZE) {
+        bookController.getAllBooks(principal, readStatus = listOf(ReadStatus.UNREAD), page = Pageable.ofSize(DEFAULT_PAGE_SIZE)).content.forEach { book ->
+          bookController.markReadProgress(book.id, ReadProgressUpdateDto(2, false), principal)
+        }
+      }
+    }
+
+    // retrieve most recent book release date
+    bookLatestReleaseDate = bookController.getAllBooks(principal, page = PageRequest.of(0, 1, Sort.by(Sort.Order.desc("metadata.releaseDate"))))
+      .content.firstOrNull()?.metadata?.releaseDate ?: LocalDate.now()
+  }
+
+  @Benchmark
+  fun loadDashboard() {
+    runBlocking {
+      withContext(Dispatchers.Default) {
+        launch { getBooksInProgress() }
+        launch { getBooksOnDeck() }
+        launch { getBooksLatest() }
+        launch { getBooksRecentlyReleased() }
+        launch { getSeriesNew() }
+        launch { getSeriesUpdated() }
+      }
+    }
+  }
+
+  val pageableBooksInProgress = PageRequest.of(0, DEFAULT_PAGE_SIZE, Sort.by(Sort.Order.desc("readProgress.readDate")))
+
+  @Benchmark
+  fun getBooksInProgress() {
+    bookController.getAllBooks(principal, readStatus = listOf(ReadStatus.IN_PROGRESS), page = pageableBooksInProgress)
+  }
+
+  val pageableBooksOnDeck = Pageable.ofSize(DEFAULT_PAGE_SIZE)
+
+  @Benchmark
+  fun getBooksOnDeck() {
+    bookController.getBooksOnDeck(principal, page = pageableBooksOnDeck)
+  }
+
+  val pageableBooksLatest = PageRequest.of(0, DEFAULT_PAGE_SIZE, Sort.by(Sort.Order.desc("createdDate")))
+
+  @Benchmark
+  fun getBooksLatest() {
+    bookController.getAllBooks(principal, page = pageableBooksLatest)
+  }
+
+  val pageableBooksRecentlyReleased = PageRequest.of(0, DEFAULT_PAGE_SIZE, Sort.by(Sort.Order.desc("metadata.releaseDate")))
+
+  @Benchmark
+  fun getBooksRecentlyReleased() {
+    bookController.getAllBooks(principal, releasedAfter = bookLatestReleaseDate.minusMonths(1), page = pageableBooksRecentlyReleased)
+  }
+
+  val pageableSeriesNew = Pageable.ofSize(DEFAULT_PAGE_SIZE)
+
+  @Benchmark
+  fun getSeriesNew() {
+    seriesController.getNewSeries(principal, page = pageableSeriesNew)
+  }
+
+  val pageableSeriesUpdated = Pageable.ofSize(DEFAULT_PAGE_SIZE)
+
+  @Benchmark
+  fun getSeriesUpdated() {
+    seriesController.getUpdatedSeries(principal, page = pageableSeriesUpdated)
+  }
+
+  val pageableBooksToCheck = Pageable.ofSize(1)
+
+  @Benchmark
+  fun getBooksToCheck() {
+    bookController.getAllBooks(principal, mediaStatus = listOf(Media.Status.ERROR, Media.Status.UNSUPPORTED), page = pageableBooksToCheck)
+  }
+}

@@ -1,0 +1,24 @@
+application.version: BENCHMARK
+
+benchmark:
+  result-folder: ${reportsDir}/benchmark
+  measurement-iterations: 5
+  warmup-iterations: 1
+  mode: averagetime
+  result-format: text
+komga:
+  config-dir: ${rootDir}/config-dir
+  workspace: diesel
+  database:
+    file: \${komga.config-dir}/\${komga.workspace}.sqlite
+  lucene:
+    data-directory: \${komga.config-dir}/lucene/\${komga.workspace}
+spring:
+  flyway:
+    enabled: true
+  artemis:
+    embedded:
+      data-directory: \${komga.config-dir}/artemis/\${komga.workspace}
+#logging:
+#  level:
+#    org.jooq: DEBUG

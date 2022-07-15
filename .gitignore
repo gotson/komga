@@ -45,3 +45,4 @@ nbdist/
 /komga/src/main/resources/public/
 /config-dir/
 application-oauth2.yml
+/benchmark

@@ -21,6 +21,20 @@ plugins {
 
 group = "org.gotson"
 
+val benchmarkSourceSet = sourceSets.create("benchmark") {
+  java {
+    compileClasspath += sourceSets.main.get().output
+    runtimeClasspath += sourceSets.main.get().runtimeClasspath
+  }
+}
+
+val benchmarkImplementation by configurations.getting {
+  extendsFrom(configurations.testImplementation.get())
+}
+val kaptBenchmark by configurations.getting {
+  extendsFrom(configurations.kaptTest.get())
+}
+
 dependencies {
   implementation(kotlin("stdlib-jdk8"))
   implementation(kotlin("reflect"))
@@ -111,6 +125,11 @@ dependencies {
 
   testImplementation("com.tngtech.archunit:archunit-junit5:0.23.1")
 
+  benchmarkImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+  benchmarkImplementation("org.openjdk.jmh:jmh-core:1.35")
+  kaptBenchmark("org.openjdk.jmh:jmh-generator-annprocess:1.35")
+  kaptBenchmark("org.springframework.boot:spring-boot-configuration-processor:2.7.1")
+
   developmentOnly("org.springframework.boot:spring-boot-devtools:2.7.1")
 }
 
@@ -174,7 +193,7 @@ tasks {
       } else {
         "npm"
       },
-      "install"
+      "install",
     )
   }
 
@@ -191,7 +210,7 @@ tasks {
         "npm"
       },
       "run",
-      "build"
+      "build",
     )
   }
 
@@ -201,6 +220,13 @@ tasks {
     dependsOn("npmBuild")
     from("$webui/dist/")
     into("$projectDir/src/main/resources/public/")
+  }
+
+  register<Test>("benchmark") {
+    group = "benchmark"
+    inputs.files(benchmarkSourceSet.output)
+    testClassesDirs = benchmarkSourceSet.output.classesDirs
+    classpath = benchmarkSourceSet.runtimeClasspath
   }
 }
 
@@ -228,11 +254,11 @@ sourceSets {
 }
 
 val dbSqlite = mapOf(
-  "url" to "jdbc:sqlite:${project.buildDir}/generated/flyway/database.sqlite"
+  "url" to "jdbc:sqlite:${project.buildDir}/generated/flyway/database.sqlite",
 )
 val migrationDirsSqlite = listOf(
   "$projectDir/src/flyway/resources/db/migration/sqlite",
-  "$projectDir/src/flyway/kotlin/db/migration/sqlite"
+  "$projectDir/src/flyway/kotlin/db/migration/sqlite",
 )
 flyway {
   url = dbSqlite["url"]
