@@ -89,6 +89,9 @@
     "move_next": "Для перехода к следующей книге щелкните или нажмите кнопку \"Далее\" еще раз.",
     "move_next_exit": "Для выхода из ридера щелкните или нажмите кнопку \"Далее\" еще раз.",
     "move_previous": "Для перехода к предыдущей книге щелкните или нажмите кнопку \"Назад\" еще раз.",
+    "notification_poster_set_book": "Текущая страница теперь используется в качестве постера книги.",
+    "notification_poster_set_readlist": "Текущая страница теперь используется в качестве постера списка чтения.",
+    "notification_poster_set_series": "Текущая страница теперь используется в качестве постера серии.",
     "paged_reader_layout": {
       "double": "Двойные страницы",
       "double_no_cover": "Двойные страницы (без обложки)",
@@ -104,6 +107,9 @@
       "width": "По ширине",
       "width_shrink_only": "По ширине (с отступами)"
     },
+    "set_current_page_as_book_poster": "Установить страницу в качестве постера для книги",
+    "set_current_page_as_readlist_poster": "Установить страницу в качестве постера для списка чтения",
+    "set_current_page_as_series_poster": "Установить страницу в качестве постера для серии",
     "settings": {
       "always_fullscreen": "Всегда в полный экран",
       "animate_page_transitions": "Анимировать переходы страниц",
@@ -180,6 +186,7 @@
     "title": "Коллекция {name}"
   },
   "common": {
+    "age": "Возраст",
     "all_libraries": "Все Библиотеки",
     "books": "Книги",
     "books_n": "Книг нет | 1 книга | {count} книг",
@@ -320,7 +327,8 @@
       "button_confirm": "Удалить",
       "confirm_delete": "Да, удалить серию \"{name}\" и её файлы",
       "confirm_delete_multiple": "Да, удалить {count} сери(й/и) и их файлы",
-      "dialog_title": "Удалить серии"
+      "dialog_title": "Удалить серии",
+      "warning_html": "Серия <b>{name}</b> будет удалена с этого сервера вместе с хранящимися медиа файлами. Это действие <b>не может</b> быть отменено. Продолжить?"
     },
     "delete_user": {
       "button_confirm": "Удалить",
@@ -329,6 +337,7 @@
       "warning_html": "Пользователь <b>{name}</b> буден удален с этого сервера. Это действие <b>не может</b> быть отменено. Продолжить?"
     },
     "edit_books": {
+      "add_author_role_error_duplicate": "Уже существует",
       "authors_notice_multiple_edit": "Вы редактируете авторов для нескольких книг. Это действие перезапишет существующих авторов для каждой книги.",
       "button_cancel": "Отмена",
       "button_confirm": "Сохранить изменения",
@@ -336,6 +345,8 @@
       "dialog_title_single": "Редактировать {book}",
       "field_isbn": "ISBN",
       "field_isbn_error": "Должен быть действительный ISBN-13",
+      "field_link_label": "Метка",
+      "field_link_url": "URL",
       "field_number": "Номер",
       "field_number_sort": "Номер сортировки",
       "field_number_sort_hint": "Вы можете использовать десятичные числа",
@@ -346,6 +357,8 @@
       "field_title": "Заголовок",
       "tab_authors": "Авторы",
       "tab_general": "Общее",
+      "tab_links": "Ссылки",
+      "tab_poster": "Постер",
       "tab_tags": "Теги",
       "tags_notice_multiple_edit": "Вы редактируете теги для нескольких книг. Это действие перзапишет существующие теги для каждой книги."
     },
@@ -354,7 +367,9 @@
       "button_confirm": "Сохранить изменения",
       "dialog_title": "Редактировать коллекцию",
       "field_manual_ordering": "Ручной порядок",
-      "label_ordering": "По умолчанию серии в коллекции будут отсортированы по имени. Вы можете включить ручной порядок, чтобы указать собственный порядок."
+      "label_ordering": "По умолчанию серии в коллекции будут отсортированы по имени. Вы можете включить ручной порядок, чтобы указать собственный порядок.",
+      "tab_general": "Общее",
+      "tab_poster": "Постер"
     },
     "edit_library": {
       "button_browse": "Обзор",
@@ -364,6 +379,9 @@
       "button_next": "Далее",
       "dialog_title_add": "Добавить Библиотеку",
       "dialot_title_edit": "Редактировать Библиотеку",
+      "field_analysis_analyze_dimensions": "Анализировать размеры страниц",
+      "field_analysis_hash_files": "Вычислять хеш-суммы файлов",
+      "field_analysis_hash_pages": "Вычислять хеш-суммы страниц",
       "field_convert_to_cbz": "Автоматическая конвертация в CBZ",
       "field_import_barcode_isbn": "ISBN штрихкод",
       "field_import_comicinfo_book": "Метаданные книг",
@@ -380,8 +398,10 @@
       "field_scanner_deep_scan": "Глубокое сканирование",
       "field_scanner_empty_trash_after_scan": "Автоматически очищать корзину после каждого сканирования",
       "field_scanner_force_directory_modified_time": "Выполнять поиск даты модификации каталога",
+      "field_series_cover": "Обложка серии",
       "file_browser_dialog_button_confirm": "Выбрать",
       "file_browser_dialog_title": "Корневой каталог библиотеки",
+      "label_analysis": "Анализ",
       "label_file_management": "Управление файлами",
       "label_import_barcode_isbn": "Импорт ISBN через штрихкод",
       "label_import_comicinfo": "Импорт метаданных для CBR/CBZ, содержащих файл ComicInfo.xml",
@@ -389,16 +409,21 @@
       "label_import_local": "Импорт локальных медиа данных",
       "label_import_mylar": "Импортировать метаданные созданные Mylar",
       "label_scanner": "Сканер",
+      "label_series_cover": "Обложка серии",
       "tab_general": "Общее",
       "tab_metadata": "Метаданные",
-      "tab_options": "Опции"
+      "tab_options": "Опции",
+      "tooltip_scanner_force_modified_time": "Включите если библиотека размещена на Google Drive",
+      "tooltip_use_resources": "Может потреблять много ресурсов на больших библиотеках или медленном оборудовании"
     },
     "edit_readlist": {
       "button_cancel": "Отмена",
       "button_confirm": "Сохранить изменения",
       "dialog_title": "Редактировать список чтения",
       "field_name": "Имя",
-      "field_summary": "Сводка"
+      "field_summary": "Сводка",
+      "tab_general": "Общее",
+      "tab_poster": "Постер"
     },
     "edit_series": {
       "button_cancel": "Отмена",
@@ -408,6 +433,7 @@
       "field_age_rating": "Возрастной Рейтинг",
       "field_age_rating_error": "Возрастной рейтинг должен быть 0 или больше",
       "field_genres": "Жанры",
+      "field_labels": "Метки",
       "field_language": "Язык",
       "field_language_hint": "Языковой тег IETF BCP 47",
       "field_publisher": "Издатель",
@@ -417,6 +443,8 @@
       "field_summary": "Краткое Описание",
       "field_tags": "Теги",
       "field_title": "Название",
+      "field_total_book_count": "Общее Количество Книг",
+      "field_total_book_count_error": "Общее количество книг может быть 1 или более",
       "mixed": "СМЕШАННЫЙ",
       "tab_general": "Общее",
       "tab_poster": "Постер",
@@ -428,6 +456,15 @@
       "button_confirm": "Сохранить изменения",
       "dialog_title": "Редактировать пользователя",
       "label_roles_for": "Роли для {name}"
+    },
+    "edit_user_restrictions": {
+      "age_restriction": {
+        "none": "Без ограничений"
+      },
+      "edit_restrictions_for": "Редактировать ограничения для {name}",
+      "label_age_restriction": "Ограничение по возрасту",
+      "label_allow_only_labels": "Разрешить только метки",
+      "label_exclude_labels": "Исключить метки"
     },
     "empty_trash": {
       "body": "По умолчанию медиа-сервер не удаляет информацию для медиа сразу. Это помогает, если диск временно отключен. Когда вы очищаете корзину для библиотеки, вся информация об отсутствующих медиафайлах удаляется.",
@@ -489,6 +526,7 @@
         "height": "Высота",
         "index": "Индекс",
         "media_type": "Тип медиа",
+        "size": "Размер",
         "width": "Ширина"
       },
       "title": "Подробная информация о книге",
@@ -502,10 +540,30 @@
       "title_comparison": "Сравнение книг"
     }
   },
+  "duplicate_pages": {
+    "filter": {
+      "count": "Количество",
+      "delete_count": "Количество удалений",
+      "size": "Размер",
+      "total_size": "Общий размер"
+    },
+    "info": "Удаление дубликатов страниц изменит ваши файлы. Сделайте резервную копию ваших файлов и используйте ручное удаление перед тем как использовать автоматическое удаление.",
+    "unknown_size": "Неизвестный размер"
+  },
+  "duplicates": {
+    "file_hash": "Хеш-сумма файла",
+    "url": "URL"
+  },
   "enums": {
     "copy_mode": {
       "HARDLINK": "Жёсткая ссылка/Копирование файлов",
       "MOVE": "Переместить файлы"
+    },
+    "historical_event_type": {
+      "BookConverted": "Книга сконвертирована",
+      "BookFileDeleted": "Файл книги удален",
+      "BookImported": "Книга импортирована",
+      "SeriesFolderDeleted": "Папка серии удалена"
     },
     "media_status": {
       "ERROR": "Ошибка",
@@ -521,8 +579,10 @@
       "WEBTOON": "Webtoon"
     },
     "series_cover": {
-      "FIRST": "Первый",
-      "LAST": "Последний"
+      "FIRST": "Первая",
+      "FIRST_UNREAD_OR_FIRST": "Первая непрочитанная или первая",
+      "FIRST_UNREAD_OR_LAST": "Первая непрочитанная или последняя",
+      "LAST": "Последняя"
     },
     "series_status": {
       "ABANDONED": "Заброшена",
@@ -559,6 +619,7 @@
   "filter": {
     "age_rating": "Возрастной Рейтинг",
     "age_rating_none": "Нет",
+    "complete": "Завершенные",
     "genre": "жанр",
     "in_progress": "Читаю",
     "language": "язык",
@@ -573,6 +634,16 @@
   "filter_drawer": {
     "filter": "фильтр",
     "sort": "сортировка"
+  },
+  "history": {
+    "header": {
+      "book": "Книга",
+      "date": "Дата",
+      "details": "Детали",
+      "series": "Серия",
+      "type": "Тип"
+    },
+    "title": "История"
   },
   "home": {
     "theme": "Тема",
@@ -598,12 +669,16 @@
     "status": "Статус",
     "url": "URL"
   },
+  "media_management": {
+    "title": "Управление Медиа"
+  },
   "menu": {
     "add_to_collection": "Добавить в коллекцию",
     "add_to_readlist": "Добавить в список чтения",
     "analyze": "Анализировать",
     "delete": "Удалить",
     "deselect_all": "Отменить выбор",
+    "download_readlist": "Скачать список чтения",
     "download_series": "Скачать серию",
     "edit": "Редактировать",
     "edit_metadata": "Редактировать метаданные",
@@ -613,6 +688,11 @@
     "refresh_metadata": "Обновить метаданные",
     "scan_library_files": "Сканировать файлы библиотеки",
     "select_all": "Выбрать всё"
+  },
+  "metrics": {
+    "tasks_executed": "Выполнено задач",
+    "tasks_total_time": "Общее время выполнения задач",
+    "title": "Метрики"
   },
   "navigation": {
     "home": "Главная",
@@ -645,6 +725,9 @@
   },
   "server": {
     "server_management": {
+      "button_cancel_all_tasks": "Отменить все задачи",
+      "button_empty_trash": "Очистить корзину для всех библиотек",
+      "button_scan_libraries": "Сканировать все библиотеки",
       "button_shutdown": "Выключить",
       "section_title": "Управление сервером"
     },
@@ -676,6 +759,9 @@
     "dark": "Тёмная",
     "light": "Светлая",
     "system": "Системная"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "Удалить"
   },
   "user_roles": {
     "ADMIN": "Администратор",
