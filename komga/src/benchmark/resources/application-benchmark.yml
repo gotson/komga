@@ -5,6 +5,9 @@ benchmark:
   measurement-iterations: 5
   warmup-iterations: 1
   mode: averagetime
+  #  measurement-iterations: 1
+  #  warmup-iterations: 0
+  #  mode: singleshottime
   result-format: text
 komga:
   config-dir: ${rootDir}/config-dir
@@ -21,4 +24,5 @@ spring:
       data-directory: \${komga.config-dir}/artemis/\${komga.workspace}
 #logging:
 #  level:
-#    org.jooq: DEBUG
+#    root: ERROR
+#    org.jooq.tools.LoggerListener: DEBUG

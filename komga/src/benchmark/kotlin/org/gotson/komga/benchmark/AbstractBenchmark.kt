@@ -38,7 +38,7 @@ abstract class AbstractBenchmark {
     val resultFile = Paths.get(benchmarkProperties.resultFolder, "${this.javaClass.name}.$extension").absolutePathString()
     val opt: Options = OptionsBuilder()
       .include("\\." + this.javaClass.simpleName + "\\.") // set the class name regex for benchmarks to search for to the current class
-      .warmupIterations(benchmarkProperties.warmupIterations)
+      .apply { if (benchmarkProperties.warmupIterations > 0) warmupIterations(benchmarkProperties.warmupIterations) }
       .measurementIterations(benchmarkProperties.measurementIterations)
       .forks(0) // do not use forking or the benchmark methods will not see references stored within its class
       .threads(1) // do not use multiple threads
