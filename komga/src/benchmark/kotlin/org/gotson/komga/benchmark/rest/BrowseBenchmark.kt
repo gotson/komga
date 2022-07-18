@@ -16,7 +16,7 @@ class BrowseBenchmark : AbstractRestBenchmark() {
     private lateinit var biggestSeriesId: String
   }
 
-  @Param("20", "100", "100", "200", "500")
+  @Param("20", "50", "100", "200", "500")
   private var pageSize: Int = DEFAULT_PAGE_SIZE
 
   @Setup(Level.Trial)
