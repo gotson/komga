@@ -27,12 +27,14 @@ import org.jooq.ResultQuery
 import org.jooq.impl.DSL
 import org.jooq.impl.DSL.inline
 import org.jooq.impl.DSL.noCondition
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
+import org.springframework.transaction.support.TransactionTemplate
 import java.math.BigDecimal
 import java.net.URL
 
@@ -40,6 +42,8 @@ import java.net.URL
 class BookDtoDao(
   private val dsl: DSLContext,
   private val luceneHelper: LuceneHelper,
+  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
+  private val transactionTemplate: TransactionTemplate,
 ) : BookDtoRepository {
 
   private val b = Tables.BOOK
@@ -298,8 +302,30 @@ class BookDtoDao(
       .apply { if (joinConditions.selectReadListNumber) leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID)) }
       .apply { if (joinConditions.author) leftJoin(a).on(b.ID.eq(a.BOOK_ID)) }
 
-  private fun ResultQuery<Record>.fetchAndMap() =
-    fetch()
+  private fun ResultQuery<Record>.fetchAndMap(): MutableList<BookDto> {
+    val records = fetch()
+    val bookIds = records.getValues(b.ID)
+
+    lateinit var authors: Map<String, List<AuthorDto>>
+    lateinit var tags: Map<String, List<String>>
+    lateinit var links: Map<String, List<WebLinkDto>>
+    transactionTemplate.executeWithoutResult {
+      dsl.insertTempStrings(batchSize, bookIds)
+      authors = dsl.selectFrom(a)
+        .where(a.BOOK_ID.`in`(dsl.selectTempStrings()))
+        .filter { it.name != null }
+        .groupBy({ it.bookId }, { AuthorDto(it.name, it.role) })
+
+      tags = dsl.selectFrom(bt)
+        .where(bt.BOOK_ID.`in`(dsl.selectTempStrings()))
+        .groupBy({ it.bookId }, { it.tag })
+
+      links = dsl.selectFrom(bl)
+        .where(bl.BOOK_ID.`in`(dsl.selectTempStrings()))
+        .groupBy({ it.bookId }, { WebLinkDto(it.label, it.url) })
+    }
+
+    return records
       .map { rec ->
         val br = rec.into(b)
         val mr = rec.into(m)
@@ -307,25 +333,9 @@ class BookDtoDao(
         val rr = rec.into(r)
         val seriesTitle = rec.into(sd.TITLE).component1()
 
-        val authors = dsl.selectFrom(a)
-          .where(a.BOOK_ID.eq(br.id))
-          .fetchInto(a)
-          .filter { it.name != null }
-          .map { AuthorDto(it.name, it.role) }
-
-        val tags = dsl.select(bt.TAG)
-          .from(bt)
-          .where(bt.BOOK_ID.eq(br.id))
-          .fetchSet(bt.TAG)
-
-        val links = dsl.select(bl.LABEL, bl.URL)
-          .from(bl)
-          .where(bl.BOOK_ID.eq(br.id))
-          .fetchInto(bl)
-          .map { WebLinkDto(it.label, it.url) }
-
-        br.toDto(mr.toDto(), dr.toDto(authors, tags, links), if (rr.userId != null) rr.toDto() else null, seriesTitle)
+        br.toDto(mr.toDto(), dr.toDto(authors[br.id].orEmpty(), tags[br.id].orEmpty().toSet(), links[br.id].orEmpty()), if (rr.userId != null) rr.toDto() else null, seriesTitle)
       }
+  }
 
   private fun BookSearchWithReadProgress.toCondition(): Condition {
     var c: Condition = noCondition()

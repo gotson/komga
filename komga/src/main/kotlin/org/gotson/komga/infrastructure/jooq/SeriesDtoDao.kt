@@ -29,12 +29,14 @@ import org.jooq.impl.DSL.count
 import org.jooq.impl.DSL.countDistinct
 import org.jooq.impl.DSL.lower
 import org.jooq.impl.DSL.substring
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
+import org.springframework.transaction.support.TransactionTemplate
 import java.net.URL
 
 private val logger = KotlinLogging.logger {}
@@ -47,6 +49,8 @@ const val BOOKS_READ_COUNT = "booksReadCount"
 class SeriesDtoDao(
   private val dsl: DSLContext,
   private val luceneHelper: LuceneHelper,
+  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
+  private val transactionTemplate: TransactionTemplate,
 ) : SeriesDtoRepository {
 
   private val s = Tables.SERIES
@@ -216,8 +220,40 @@ class SeriesDtoDao(
 
   private fun readProgressConditionSeries(userId: String): Condition = rs.USER_ID.eq(userId).or(rs.USER_ID.isNull)
 
-  private fun ResultQuery<Record>.fetchAndMap() =
-    fetch()
+  private fun ResultQuery<Record>.fetchAndMap(): MutableList<SeriesDto> {
+    val records = fetch()
+    val seriesIds = records.getValues(s.ID)
+
+    lateinit var genres: Map<String, List<String>>
+    lateinit var tags: Map<String, List<String>>
+    lateinit var sharingLabels: Map<String, List<String>>
+    lateinit var aggregatedAuthors: Map<String, List<AuthorDto>>
+    lateinit var aggregatedTags: Map<String, List<String>>
+    transactionTemplate.executeWithoutResult {
+      dsl.insertTempStrings(batchSize, seriesIds)
+      genres = dsl.selectFrom(g)
+        .where(g.SERIES_ID.`in`(dsl.selectTempStrings()))
+        .groupBy({ it.seriesId }, { it.genre })
+
+      tags = dsl.selectFrom(st)
+        .where(st.SERIES_ID.`in`(dsl.selectTempStrings()))
+        .groupBy({ it.seriesId }, { it.tag })
+
+      sharingLabels = dsl.selectFrom(sl)
+        .where(sl.SERIES_ID.`in`(dsl.selectTempStrings()))
+        .groupBy({ it.seriesId }, { it.label })
+
+      aggregatedAuthors = dsl.selectFrom(bmaa)
+        .where(bmaa.SERIES_ID.`in`(dsl.selectTempStrings()))
+        .filter { it.name != null }
+        .groupBy({ it.seriesId }, { AuthorDto(it.name, it.role) })
+
+      aggregatedTags = dsl.selectFrom(bmat)
+        .where(bmat.SERIES_ID.`in`(dsl.selectTempStrings()))
+        .groupBy({ it.seriesId }, { it.tag })
+    }
+
+    return records
       .map { rec ->
         val sr = rec.into(s)
         val dr = rec.into(d)
@@ -227,40 +263,16 @@ class SeriesDtoDao(
         val booksInProgressCount = rsr.inProgressCount ?: 0
         val booksUnreadCount = sr.bookCount - booksReadCount - booksInProgressCount
 
-        val genres = dsl.select(g.GENRE)
-          .from(g)
-          .where(g.SERIES_ID.eq(sr.id))
-          .fetchSet(g.GENRE)
-
-        val tags = dsl.select(st.TAG)
-          .from(st)
-          .where(st.SERIES_ID.eq(sr.id))
-          .fetchSet(st.TAG)
-
-        val sharingLabels = dsl.select(sl.LABEL)
-          .from(sl)
-          .where(sl.SERIES_ID.eq(sr.id))
-          .fetchSet(sl.LABEL)
-
-        val aggregatedAuthors = dsl.selectFrom(bmaa)
-          .where(bmaa.SERIES_ID.eq(sr.id))
-          .fetchInto(bmaa)
-          .filter { it.name != null }
-          .map { AuthorDto(it.name, it.role) }
-
-        val aggregatedTags = dsl.selectFrom(bmat)
-          .where(bmat.SERIES_ID.eq(sr.id))
-          .fetchSet(bmat.TAG)
-
         sr.toDto(
           sr.bookCount,
           booksReadCount,
           booksUnreadCount,
           booksInProgressCount,
-          dr.toDto(genres, tags, sharingLabels),
-          bmar.toDto(aggregatedAuthors, aggregatedTags),
+          dr.toDto(genres[sr.id].orEmpty().toSet(), tags[sr.id].orEmpty().toSet(), sharingLabels[sr.id].orEmpty().toSet()),
+          bmar.toDto(aggregatedAuthors[sr.id].orEmpty(), aggregatedTags[sr.id].orEmpty().toSet()),
         )
       }
+  }
 
   private fun SeriesSearchWithReadProgress.toCondition(): Condition {
     var c = DSL.noCondition()
