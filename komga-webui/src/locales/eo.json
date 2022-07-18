@@ -187,6 +187,7 @@
     "collections": "Kolektoj",
     "create": "Krei",
     "delete": "Forigi",
+    "disk_space": "Diskospaco",
     "dismiss": "Fermi",
     "download": "Elŝuti",
     "email": "Retpoŝta adreso",
@@ -516,7 +517,8 @@
   "duplicate_pages": {
     "action_ignore": "Ignori",
     "filter": {
-      "size": "Grando"
+      "size": "Grando",
+      "total_size": "Totala grando"
     },
     "unknown_size": "Nesciata grando"
   },
@@ -528,6 +530,11 @@
     "copy_mode": {
       "HARDLINK": "Rekte Ligi/Kopii Dosierojn",
       "MOVE": "Movi Dosierojn"
+    },
+    "historical_event_type": {
+      "BookConverted": "Libro konvertita",
+      "BookFileDeleted": "Librodosiero forviŝita",
+      "BookImported": "Libro enportita"
     },
     "media_status": {
       "ERROR": "Eraro",
