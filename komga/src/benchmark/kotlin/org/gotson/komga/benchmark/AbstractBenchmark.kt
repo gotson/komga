@@ -18,7 +18,7 @@ import kotlin.io.path.absolutePathString
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-@ActiveProfiles("test", "benchmark")
+@ActiveProfiles("benchmark")
 @State(Scope.Benchmark)
 abstract class AbstractBenchmark {
   @Autowired
