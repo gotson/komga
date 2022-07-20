@@ -24,11 +24,15 @@ class DataSourcesConfiguration(
       .type(SqliteUdfDataSource::class.java)
       .build()
 
+    val poolSize =
+      if (komgaProperties.database.file.contains(":memory:")) 1
+      else Runtime.getRuntime().availableProcessors().coerceAtMost(komgaProperties.database.maxPoolSize)
+
     return HikariDataSource(
       HikariConfig().apply {
         dataSource = sqliteUdfDataSource
         poolName = "SqliteUdfPool"
-        maximumPoolSize = 1
+        maximumPoolSize = poolSize
       },
     )
   }

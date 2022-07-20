@@ -70,6 +70,9 @@ class KomgaProperties {
 
     @get:Positive
     var batchChunkSize: Int = 1000
+
+    @get:Positive
+    var maxPoolSize: Int = 8
   }
 
   class Lucene {
