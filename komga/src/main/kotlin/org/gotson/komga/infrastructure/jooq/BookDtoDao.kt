@@ -112,7 +112,7 @@ class BookDtoDao(
     val searchCondition = b.ID.inOrNoCondition(bookIds)
 
     val count = dsl.fetchCount(
-      dsl.selectDistinct(b.ID)
+      dsl.select(b.ID)
         .from(b)
         .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
         .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
@@ -240,7 +240,7 @@ class BookDtoDao(
     )
   }
 
-  private fun readProgressCondition(userId: String): Condition = r.USER_ID.eq(userId).or(r.USER_ID.isNull)
+  private fun readProgressCondition(userId: String): Condition = r.USER_ID.eq(userId)
 
   private fun findSiblingSeries(bookId: String, userId: String, next: Boolean): BookDto? {
     val record = dsl.select(b.SERIES_ID, d.NUMBER_SORT)
@@ -286,7 +286,7 @@ class BookDtoDao(
   }
 
   private fun selectBase(userId: String, joinConditions: JoinConditions = JoinConditions()) =
-    dsl.selectDistinct(
+    dsl.select(
       *b.fields(),
       *m.fields(),
       *d.fields(),
