@@ -1,3 +1,17 @@
+## [0.155.2](https://github.com/gotson/komga/compare/v0.155.1...v0.155.2) (2022-07-20)
+
+
+### Bug Fixes
+
+* translated using Weblate ([11bdf0e](https://github.com/gotson/komga/commit/11bdf0ebf7240d0121490e8cbefa0b1f76e6e483))
+
+
+### Performance Improvements
+
+* database connection pooling ([58fde3e](https://github.com/gotson/komga/commit/58fde3e7aa7a1cc622556a93bc7259f9cdec736f))
+* remove distinct on BookDtoDao ([3256f3f](https://github.com/gotson/komga/commit/3256f3f300e0021ffdcc57587ac8f594c37a6165))
+* retrieve one to many collections in bulk ([8e9d93f](https://github.com/gotson/komga/commit/8e9d93f6f947dfa4422f95c184f97ef499a453ac))
+
 ## [0.155.1](https://github.com/gotson/komga/compare/v0.155.0...v0.155.1) (2022-07-15)
 
 
