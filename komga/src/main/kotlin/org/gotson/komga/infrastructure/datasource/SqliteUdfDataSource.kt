@@ -3,15 +3,15 @@ package org.gotson.komga.infrastructure.datasource
 import com.ibm.icu.text.Collator
 import mu.KotlinLogging
 import org.gotson.komga.language.stripAccents
-import org.springframework.jdbc.datasource.SimpleDriverDataSource
 import org.sqlite.Collation
 import org.sqlite.Function
 import org.sqlite.SQLiteConnection
+import org.sqlite.SQLiteDataSource
 import java.sql.Connection
 
 private val log = KotlinLogging.logger {}
 
-class SqliteUdfDataSource : SimpleDriverDataSource() {
+class SqliteUdfDataSource : SQLiteDataSource() {
 
   companion object {
     const val udfStripAccents = "UDF_STRIP_ACCENTS"
@@ -21,8 +21,8 @@ class SqliteUdfDataSource : SimpleDriverDataSource() {
   override fun getConnection(): Connection =
     super.getConnection().also { addAllUdf(it as SQLiteConnection) }
 
-  override fun getConnection(username: String, password: String): Connection =
-    super.getConnection(username, password).also { addAllUdf(it as SQLiteConnection) }
+  override fun getConnection(username: String?, password: String?): SQLiteConnection =
+    super.getConnection(username, password).also { addAllUdf(it) }
 
   private fun addAllUdf(connection: SQLiteConnection) {
     createUdfRegexp(connection)

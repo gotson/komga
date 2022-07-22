@@ -20,9 +20,12 @@ class DataSourcesConfiguration(
 
     val sqliteUdfDataSource = DataSourceBuilder.create()
       .driverClassName("org.sqlite.JDBC")
-      .url("jdbc:sqlite:${komgaProperties.database.file}?foreign_keys=on;")
+      .url("jdbc:sqlite:${komgaProperties.database.file}")
       .type(SqliteUdfDataSource::class.java)
       .build()
+
+    sqliteUdfDataSource.setEnforceForeignKeys(true)
+    sqliteUdfDataSource.setTransactionMode(komgaProperties.database.transactionMode.name)
 
     val poolSize =
       if (komgaProperties.database.file.contains(":memory:")) 1

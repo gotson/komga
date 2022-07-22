@@ -4,6 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.convert.DurationUnit
 import org.springframework.stereotype.Component
 import org.springframework.validation.annotation.Validated
+import org.sqlite.SQLiteConfig.TransactionMode
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 import javax.validation.constraints.NotBlank
@@ -73,6 +74,8 @@ class KomgaProperties {
 
     @get:Positive
     var maxPoolSize: Int = 8
+
+    var transactionMode: TransactionMode = TransactionMode.DEFERRED
   }
 
   class Lucene {
