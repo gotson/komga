@@ -13,7 +13,7 @@ import org.gotson.komga.language.toDate
 
 enum class LuceneEntity(val type: String, val id: String, val defaultFields: Array<String>) {
   Book("book", "book_id", arrayOf("title", "isbn")),
-  Series("series", "series_id", arrayOf("title")),
+  Series("series", "series_id", arrayOf("title", "alternative_title")),
   Collection("collection", "collection_id", arrayOf("name")),
   ReadList("readlist", "readlist_id", arrayOf("name"));
 
@@ -60,6 +60,9 @@ fun SeriesDto.toDocument() =
     }
     metadata.genres.forEach {
       add(TextField("genre", it, Field.Store.NO))
+    }
+    metadata.alternativeTitles.forEach {
+      add(TextField("alternative_title", it, Field.Store.NO))
     }
     if (metadata.totalBookCount != null) add(TextField("total_book_count", metadata.totalBookCount.toString(), Field.Store.NO))
     add(TextField("book_count", booksCount.toString(), Field.Store.NO))

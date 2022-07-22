@@ -298,6 +298,30 @@ class SeriesDtoDaoTest(
     }
 
     @Test
+    fun `given series when searching by alternative title then results are matched`() {
+      // given
+      val series = seriesLifecycle.createSeries(makeSeries("Batman", library.id))
+      seriesLifecycle.createSeries(makeSeries("Robin", library.id))
+
+      seriesMetadataRepository.findById(series.id).let {
+        seriesMetadataRepository.update(it.copy(alternativeTitles = setOf("Batman and Robin")))
+      }
+
+      searchIndexLifecycle.rebuildIndex()
+
+      // when
+      val found = seriesDtoDao.findAll(
+        SeriesSearchWithReadProgress(searchTerm = "alternative_title:\"Batman and Robin\""),
+        user.id,
+        UnpagedSorted(Sort.by("relevance")),
+      ).content
+
+      // then
+      assertThat(found).hasSize(1)
+      assertThat(found.map { it.metadata.title }).containsExactly("Batman")
+    }
+
+    @Test
     fun `given series when searching by publisher then results are matched`() {
       // given
       val series = seriesLifecycle.createSeries(makeSeries("Batman", library.id))

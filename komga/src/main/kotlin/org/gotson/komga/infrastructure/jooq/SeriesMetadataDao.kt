@@ -21,12 +21,13 @@ class SeriesMetadataDao(
   private val g = Tables.SERIES_METADATA_GENRE
   private val st = Tables.SERIES_METADATA_TAG
   private val sl = Tables.SERIES_METADATA_SHARING
+  private val sat = Tables.SERIES_METADATA_ALTERNATIVE_TITLE
 
   override fun findById(seriesId: String): SeriesMetadata =
-    findOne(seriesId)!!.toDomain(findGenres(seriesId), findTags(seriesId), findSharingLabels(seriesId))
+    findOne(seriesId)!!.toDomain(findGenres(seriesId), findTags(seriesId), findSharingLabels(seriesId), findAlternativeTitles(seriesId))
 
   override fun findByIdOrNull(seriesId: String): SeriesMetadata? =
-    findOne(seriesId)?.toDomain(findGenres(seriesId), findTags(seriesId), findSharingLabels(seriesId))
+    findOne(seriesId)?.toDomain(findGenres(seriesId), findTags(seriesId), findSharingLabels(seriesId), findAlternativeTitles(seriesId))
 
   private fun findOne(seriesId: String) =
     dsl.selectFrom(d)
@@ -51,6 +52,12 @@ class SeriesMetadataDao(
       .where(sl.SERIES_ID.eq(seriesId))
       .fetchSet(sl.LABEL)
 
+  private fun findAlternativeTitles(seriesId: String) =
+    dsl.select(sat.TITLE)
+      .from(sat)
+      .where(sat.SERIES_ID.eq(seriesId))
+      .fetchSet(sat.TITLE)
+
   @Transactional
   override fun insert(metadata: SeriesMetadata) {
     dsl.insertInto(d)
@@ -66,6 +73,7 @@ class SeriesMetadataDao(
       .set(d.STATUS_LOCK, metadata.statusLock)
       .set(d.TITLE_LOCK, metadata.titleLock)
       .set(d.TITLE_SORT_LOCK, metadata.titleSortLock)
+      .set(d.ALTERNATIVE_TITLES_LOCK, metadata.alternativeTitlesLock)
       .set(d.SUMMARY_LOCK, metadata.summaryLock)
       .set(d.READING_DIRECTION_LOCK, metadata.readingDirectionLock)
       .set(d.PUBLISHER_LOCK, metadata.publisherLock)
@@ -81,6 +89,7 @@ class SeriesMetadataDao(
     insertGenres(metadata)
     insertTags(metadata)
     insertSharingLabels(metadata)
+    insertAlternativeTitles(metadata)
   }
 
   @Transactional
@@ -97,6 +106,7 @@ class SeriesMetadataDao(
       .set(d.STATUS_LOCK, metadata.statusLock)
       .set(d.TITLE_LOCK, metadata.titleLock)
       .set(d.TITLE_SORT_LOCK, metadata.titleSortLock)
+      .set(d.ALTERNATIVE_TITLES_LOCK, metadata.alternativeTitlesLock)
       .set(d.SUMMARY_LOCK, metadata.summaryLock)
       .set(d.READING_DIRECTION_LOCK, metadata.readingDirectionLock)
       .set(d.PUBLISHER_LOCK, metadata.publisherLock)
@@ -122,10 +132,14 @@ class SeriesMetadataDao(
     dsl.deleteFrom(sl)
       .where(sl.SERIES_ID.eq(metadata.seriesId))
       .execute()
+    dsl.deleteFrom(sat)
+      .where(sat.SERIES_ID.eq(metadata.seriesId))
+      .execute()
 
     insertGenres(metadata)
     insertTags(metadata)
     insertSharingLabels(metadata)
+    insertAlternativeTitles(metadata)
   }
 
   private fun insertGenres(metadata: SeriesMetadata) {
@@ -173,12 +187,28 @@ class SeriesMetadataDao(
     }
   }
 
+  private fun insertAlternativeTitles(metadata: SeriesMetadata) {
+    if (metadata.alternativeTitles.isNotEmpty()) {
+      metadata.alternativeTitles.chunked(batchSize).forEach { chunk ->
+        dsl.batch(
+          dsl.insertInto(sat, sat.SERIES_ID, sat.TITLE)
+            .values(null as String?, null),
+        ).also { step ->
+          chunk.forEach {
+            step.bind(metadata.seriesId, it)
+          }
+        }.execute()
+      }
+    }
+  }
+
   @Transactional
   override fun delete(seriesId: String) {
     dsl.deleteFrom(g).where(g.SERIES_ID.eq(seriesId)).execute()
     dsl.deleteFrom(st).where(st.SERIES_ID.eq(seriesId)).execute()
     dsl.deleteFrom(sl).where(sl.SERIES_ID.eq(seriesId)).execute()
     dsl.deleteFrom(d).where(d.SERIES_ID.eq(seriesId)).execute()
+    dsl.deleteFrom(sat).where(sat.SERIES_ID.eq(seriesId)).execute()
   }
 
   @Transactional
@@ -189,15 +219,17 @@ class SeriesMetadataDao(
     dsl.deleteFrom(st).where(st.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
     dsl.deleteFrom(sl).where(sl.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
     dsl.deleteFrom(d).where(d.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
+    dsl.deleteFrom(sat).where(sat.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
   }
 
   override fun count(): Long = dsl.fetchCount(d).toLong()
 
-  private fun SeriesMetadataRecord.toDomain(genres: Set<String>, tags: Set<String>, sharingLabels: Set<String>) =
+  private fun SeriesMetadataRecord.toDomain(genres: Set<String>, tags: Set<String>, sharingLabels: Set<String>, alternativeTitles: Set<String>) =
     SeriesMetadata(
       status = SeriesMetadata.Status.valueOf(status),
       title = title,
       titleSort = titleSort,
+      alternativeTitles = alternativeTitles,
       summary = summary,
       readingDirection = readingDirection?.let {
         SeriesMetadata.ReadingDirection.valueOf(readingDirection)
@@ -213,6 +245,7 @@ class SeriesMetadataDao(
       statusLock = statusLock,
       titleLock = titleLock,
       titleSortLock = titleSortLock,
+      alternativeTitlesLock = alternativeTitlesLock,
       summaryLock = summaryLock,
       readingDirectionLock = readingDirectionLock,
       publisherLock = publisherLock,

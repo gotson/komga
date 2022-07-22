@@ -60,6 +60,7 @@ class SeriesDtoDao(
   private val g = Tables.SERIES_METADATA_GENRE
   private val st = Tables.SERIES_METADATA_TAG
   private val sl = Tables.SERIES_METADATA_SHARING
+  private val sat = Tables.SERIES_METADATA_ALTERNATIVE_TITLE
   private val bma = Tables.BOOK_METADATA_AGGREGATION
   private val bmaa = Tables.BOOK_METADATA_AGGREGATION_AUTHOR
   private val bmat = Tables.BOOK_METADATA_AGGREGATION_TAG
@@ -227,6 +228,7 @@ class SeriesDtoDao(
     lateinit var genres: Map<String, List<String>>
     lateinit var tags: Map<String, List<String>>
     lateinit var sharingLabels: Map<String, List<String>>
+    lateinit var alternativeTitles: Map<String, List<String>>
     lateinit var aggregatedAuthors: Map<String, List<AuthorDto>>
     lateinit var aggregatedTags: Map<String, List<String>>
     transactionTemplate.executeWithoutResult {
@@ -242,6 +244,10 @@ class SeriesDtoDao(
       sharingLabels = dsl.selectFrom(sl)
         .where(sl.SERIES_ID.`in`(dsl.selectTempStrings()))
         .groupBy({ it.seriesId }, { it.label })
+
+      alternativeTitles = dsl.selectFrom(sat)
+        .where(sat.SERIES_ID.`in`(dsl.selectTempStrings()))
+        .groupBy({ it.seriesId }, { it.title })
 
       aggregatedAuthors = dsl.selectFrom(bmaa)
         .where(bmaa.SERIES_ID.`in`(dsl.selectTempStrings()))
@@ -268,7 +274,7 @@ class SeriesDtoDao(
           booksReadCount,
           booksUnreadCount,
           booksInProgressCount,
-          dr.toDto(genres[sr.id].orEmpty().toSet(), tags[sr.id].orEmpty().toSet(), sharingLabels[sr.id].orEmpty().toSet()),
+          dr.toDto(genres[sr.id].orEmpty().toSet(), tags[sr.id].orEmpty().toSet(), sharingLabels[sr.id].orEmpty().toSet(), alternativeTitles[sr.id].orEmpty().toSet()),
           bmar.toDto(aggregatedAuthors[sr.id].orEmpty(), aggregatedTags[sr.id].orEmpty().toSet()),
         )
       }
@@ -365,7 +371,7 @@ class SeriesDtoDao(
       deleted = deletedDate != null,
     )
 
-  private fun SeriesMetadataRecord.toDto(genres: Set<String>, tags: Set<String>, sharingLabels: Set<String>) =
+  private fun SeriesMetadataRecord.toDto(genres: Set<String>, tags: Set<String>, sharingLabels: Set<String>, alternativeTitles: Set<String>) =
     SeriesMetadataDto(
       status = status,
       statusLock = statusLock,
@@ -375,6 +381,8 @@ class SeriesDtoDao(
       titleLock = titleLock,
       titleSort = titleSort,
       titleSortLock = titleSortLock,
+      alternativeTitles = alternativeTitles,
+      alternativeTitlesLock = alternativeTitlesLock,
       summary = summary,
       summaryLock = summaryLock,
       readingDirection = readingDirection ?: "",

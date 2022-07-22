@@ -30,6 +30,7 @@ class SearchIndexController(
         1, 2 -> taskEmitter.rebuildIndex(HIGHEST_PRIORITY)
         3 -> taskEmitter.rebuildIndex(HIGHEST_PRIORITY, setOf(LuceneEntity.Series))
         4 -> taskEmitter.rebuildIndex(HIGHEST_PRIORITY, setOf(LuceneEntity.ReadList))
+        5 -> taskEmitter.rebuildIndex(HIGHEST_PRIORITY, setOf(LuceneEntity.Series))
       }
     }
   }

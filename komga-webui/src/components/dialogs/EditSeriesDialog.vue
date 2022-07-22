@@ -91,6 +91,33 @@
                   </v-col>
                 </v-row>
 
+                <!--  Alternative Titles  -->
+                <v-row v-if="single">
+                  <v-col cols="12">
+                    <v-combobox v-model="form.alternativeTitles"
+                                :label="$t('dialog.edit_series.field_alternative_titles')"
+                                @input="$v.form.alternativeTitles.$touch()"
+                                @blur="$v.form.alternativeTitles.$touch()"
+                                @change="form.alternativeTitlesLock = true"
+                                hide-selected
+                                chips
+                                deletable-chips
+                                multiple
+                                filled
+                                dense
+                                append-icon=""
+                    >
+                      <template v-slot:prepend>
+                        <v-icon :color="form.alternativeTitlesLock ? 'secondary' : ''"
+                                @click="form.alternativeTitlesLock = !form.alternativeTitlesLock"
+                        >
+                          {{ form.alternativeTitlesLock ? 'mdi-lock' : 'mdi-lock-open' }}
+                        </v-icon>
+                      </template>
+                    </v-combobox>
+                  </v-col>
+                </v-row>
+
                 <!--  Summary  -->
                 <v-row v-if="single">
                   <v-col cols="12">
@@ -431,6 +458,8 @@ export default Vue.extend({
         titleLock: false,
         titleSort: '',
         titleSortLock: false,
+        alternativeTitles: [],
+        alternativeTitlesLock: false,
         summary: '',
         summaryLock: false,
         readingDirection: '',
@@ -480,7 +509,7 @@ export default Vue.extend({
       this.modal = val
     },
     modal(val) {
-      if(val) {
+      if (val) {
         this.getThumbnails(this.series)
         this.loadAvailableTags()
         this.loadAvailableGenres()
@@ -518,6 +547,7 @@ export default Vue.extend({
       genres: {},
       tags: {},
       sharingLabels: {},
+      alternativeTitles: {},
       ageRating: {minValue: minValue(0)},
       readingDirection: {},
       publisher: {},
@@ -640,6 +670,7 @@ export default Vue.extend({
         this.form.genres = []
         this.form.tags = []
         this.form.sharingLabels = []
+        this.form.alternativeTitles = []
         this.$_.merge(this.form, (series as SeriesDto).metadata)
         this.poster.selectedThumbnail = ''
         this.poster.deleteQueue = []
@@ -706,12 +737,17 @@ export default Vue.extend({
           this.$_.merge(metadata, {
             titleLock: this.form.titleLock,
             titleSortLock: this.form.titleSortLock,
+            alternativeTitlesLock: this.form.alternativeTitlesLock,
             summaryLock: this.form.summaryLock,
             totalBookCountLock: this.form.totalBookCountLock,
           })
 
           if (this.$v.form?.title?.$dirty) {
             this.$_.merge(metadata, {title: this.form.title})
+          }
+
+          if (this.$v.form?.alternativeTitles?.$dirty) {
+            this.$_.merge(metadata, {alternativeTitles: this.form.alternativeTitles})
           }
 
           if (this.$v.form?.titleSort?.$dirty) {

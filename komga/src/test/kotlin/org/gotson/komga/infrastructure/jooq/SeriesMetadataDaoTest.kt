@@ -54,6 +54,7 @@ class SeriesMetadataDaoTest(
       status = SeriesMetadata.Status.ENDED,
       title = "Series",
       titleSort = "Series, The",
+      alternativeTitles = setOf("Alternative Series"),
       summary = "Summary",
       readingDirection = SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT,
       publisher = "publisher",
@@ -65,6 +66,7 @@ class SeriesMetadataDaoTest(
       sharingLabels = setOf("kids"),
       titleLock = true,
       titleSortLock = true,
+      alternativeTitlesLock = true,
       summaryLock = true,
       readingDirectionLock = true,
       publisherLock = true,
@@ -86,6 +88,7 @@ class SeriesMetadataDaoTest(
 
     assertThat(created.title).isEqualTo(metadata.title)
     assertThat(created.titleSort).isEqualTo(metadata.titleSort)
+    assertThat(created.alternativeTitles).containsAll(metadata.alternativeTitles)
     assertThat(created.summary).isEqualTo(metadata.summary)
     assertThat(created.status).isEqualTo(SeriesMetadata.Status.ENDED)
     assertThat(created.readingDirection).isEqualTo(metadata.readingDirection)
@@ -99,6 +102,7 @@ class SeriesMetadataDaoTest(
 
     assertThat(created.titleLock).isEqualTo(metadata.titleLock)
     assertThat(created.titleSortLock).isEqualTo(metadata.titleSortLock)
+    assertThat(created.alternativeTitlesLock).isEqualTo(metadata.alternativeTitlesLock)
     assertThat(created.statusLock).isEqualTo(metadata.statusLock)
     assertThat(created.summaryLock).isEqualTo(metadata.summaryLock)
     assertThat(created.readingDirectionLock).isEqualTo(metadata.readingDirectionLock)
@@ -130,6 +134,7 @@ class SeriesMetadataDaoTest(
 
     assertThat(created.title).isEqualTo(metadata.title)
     assertThat(created.titleSort).isEqualTo(metadata.title)
+    assertThat(created.alternativeTitles).isEmpty()
     assertThat(created.summary).isBlank
     assertThat(created.status).isEqualTo(SeriesMetadata.Status.ONGOING)
     assertThat(created.readingDirection).isNull()
@@ -143,6 +148,7 @@ class SeriesMetadataDaoTest(
 
     assertThat(created.titleLock).isFalse
     assertThat(created.titleSortLock).isFalse
+    assertThat(created.alternativeTitlesLock).isFalse
     assertThat(created.statusLock).isFalse
     assertThat(created.summaryLock).isFalse
     assertThat(created.readingDirectionLock).isFalse
@@ -196,6 +202,7 @@ class SeriesMetadataDaoTest(
       status = SeriesMetadata.Status.ENDED,
       title = "Series",
       titleSort = "Series, The",
+      alternativeTitles = setOf("Alternative Series"),
       summary = "Summary",
       readingDirection = SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT,
       publisher = "publisher",
@@ -217,6 +224,7 @@ class SeriesMetadataDaoTest(
         status = SeriesMetadata.Status.HIATUS,
         title = "Changed",
         titleSort = "Changed, The",
+        alternativeTitles = setOf("Changed Alternative"),
         summary = "SummaryUpdated",
         readingDirection = SeriesMetadata.ReadingDirection.RIGHT_TO_LEFT,
         publisher = "publisher2",
@@ -229,6 +237,7 @@ class SeriesMetadataDaoTest(
         statusLock = true,
         titleLock = true,
         titleSortLock = true,
+        alternativeTitlesLock = true,
         summaryLock = true,
         readingDirectionLock = true,
         publisherLock = true,
@@ -251,6 +260,7 @@ class SeriesMetadataDaoTest(
       .isNotEqualTo(modified.createdDate)
     assertThat(modified.title).isEqualTo(updated.title)
     assertThat(modified.titleSort).isEqualTo(updated.titleSort)
+    assertThat(modified.alternativeTitles).containsAll(updated.alternativeTitles)
     assertThat(modified.summary).isEqualTo(updated.summary)
     assertThat(modified.status).isEqualTo(updated.status)
     assertThat(modified.readingDirection).isEqualTo(updated.readingDirection)
@@ -264,6 +274,7 @@ class SeriesMetadataDaoTest(
 
     assertThat(modified.titleLock).isTrue
     assertThat(modified.titleSortLock).isTrue
+    assertThat(modified.alternativeTitlesLock).isTrue
     assertThat(modified.statusLock).isTrue
     assertThat(modified.summaryLock).isTrue
     assertThat(modified.readingDirectionLock).isTrue

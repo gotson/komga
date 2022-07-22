@@ -519,6 +519,10 @@ class SeriesController(
           titleLock = titleLock ?: existing.titleLock,
           titleSort = titleSort ?: existing.titleSort,
           titleSortLock = titleSortLock ?: existing.titleSortLock,
+          alternativeTitles = if (isSet("alternativeTitles")) {
+            if (alternativeTitles != null) alternativeTitles!! else emptySet()
+          } else existing.alternativeTitles,
+          alternativeTitlesLock = alternativeTitlesLock ?: existing.alternativeTitlesLock,
           summary = summary ?: existing.summary,
           summaryLock = summaryLock ?: existing.summaryLock,
           language = language ?: existing.language,

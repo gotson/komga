@@ -238,6 +238,35 @@
         </v-row>
       </template>
 
+      <!--  Alternative Tiles    -->
+      <v-row v-if="series.metadata.alternativeTitles.length > 0" class="align-center text-caption">
+        <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $t('common.alternative_titles') }}</v-col>
+        <v-col cols="8" sm="9" md="10" xl="11" class="py-1 text-capitalize">
+          <vue-horizontal>
+            <template v-slot:btn-prev>
+              <v-btn icon small>
+                <v-icon>mdi-chevron-left</v-icon>
+              </v-btn>
+            </template>
+
+            <template v-slot:btn-next>
+              <v-btn icon small>
+                <v-icon>mdi-chevron-right</v-icon>
+              </v-btn>
+            </template>
+            <v-chip v-for="(t, i) in $_.sortBy(series.metadata.alternativeTitles)"
+                    :key="i"
+                    class="me-2"
+                    :title="t"
+                    label
+                    small
+                    outlined
+            >{{ t }}
+            </v-chip>
+          </vue-horizontal>
+        </v-col>
+      </v-row>
+
       <!--  Publisher    -->
       <v-row v-if="series.metadata.publisher" class="align-center text-caption">
         <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $t('common.publisher') }}</v-col>

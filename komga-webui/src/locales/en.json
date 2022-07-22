@@ -188,6 +188,7 @@
   "common": {
     "age": "Age",
     "all_libraries": "All Libraries",
+    "alternative_titles": "Alternative Title",
     "books": "Books",
     "books_n": "No book | 1 book | {count} books",
     "books_total": "{count} / {total} books",
@@ -437,6 +438,7 @@
       "dialog_title_single": "Edit {series}",
       "field_age_rating": "Age Rating",
       "field_age_rating_error": "Age rating must be 0 or more",
+      "field_alternative_titles": "Alternative Titles",
       "field_genres": "Genres",
       "field_labels": "Labels",
       "field_language": "Language",

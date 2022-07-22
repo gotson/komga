@@ -7,6 +7,7 @@ class SeriesMetadata(
   val status: Status = Status.ONGOING,
   title: String,
   titleSort: String = title,
+  alternativeTitles: Set<String> = emptySet(),
   summary: String = "",
   val readingDirection: ReadingDirection? = null,
   publisher: String = "",
@@ -20,6 +21,7 @@ class SeriesMetadata(
   val statusLock: Boolean = false,
   val titleLock: Boolean = false,
   val titleSortLock: Boolean = false,
+  val alternativeTitlesLock: Boolean = false,
   val summaryLock: Boolean = false,
   val readingDirectionLock: Boolean = false,
   val publisherLock: Boolean = false,
@@ -37,6 +39,7 @@ class SeriesMetadata(
 ) : Auditable {
   val title = title.trim()
   val titleSort = titleSort.trim()
+  val alternativeTitles = alternativeTitles.map { it.trim() }.toSet()
   val summary = summary.trim()
   val publisher = publisher.trim()
   val language = language.trim().lowercase()
@@ -48,6 +51,7 @@ class SeriesMetadata(
     status: Status = this.status,
     title: String = this.title,
     titleSort: String = this.titleSort,
+    alternativeTitles: Set<String> = this.alternativeTitles,
     summary: String = this.summary,
     readingDirection: ReadingDirection? = this.readingDirection,
     publisher: String = this.publisher,
@@ -60,6 +64,7 @@ class SeriesMetadata(
     statusLock: Boolean = this.statusLock,
     titleLock: Boolean = this.titleLock,
     titleSortLock: Boolean = this.titleSortLock,
+    alternativeTitlesLock: Boolean = this.alternativeTitlesLock,
     summaryLock: Boolean = this.summaryLock,
     readingDirectionLock: Boolean = this.readingDirectionLock,
     publisherLock: Boolean = this.publisherLock,
@@ -77,6 +82,7 @@ class SeriesMetadata(
       status = status,
       title = title,
       titleSort = titleSort,
+      alternativeTitles = alternativeTitles,
       summary = summary,
       readingDirection = readingDirection,
       publisher = publisher,
@@ -89,6 +95,7 @@ class SeriesMetadata(
       statusLock = statusLock,
       titleLock = titleLock,
       titleSortLock = titleSortLock,
+      alternativeTitlesLock = alternativeTitlesLock,
       summaryLock = summaryLock,
       readingDirectionLock = readingDirectionLock,
       publisherLock = publisherLock,
@@ -115,5 +122,5 @@ class SeriesMetadata(
   }
 
   override fun toString(): String =
-    "SeriesMetadata(status=$status, readingDirection=$readingDirection, ageRating=$ageRating, totalBookCount=$totalBookCount, statusLock=$statusLock, titleLock=$titleLock, titleSortLock=$titleSortLock, summaryLock=$summaryLock, readingDirectionLock=$readingDirectionLock, publisherLock=$publisherLock, ageRatingLock=$ageRatingLock, languageLock=$languageLock, genresLock=$genresLock, tagsLock=$tagsLock, totalBookCountLock=$totalBookCountLock, sharingLabelsLock=$sharingLabelsLock, seriesId='$seriesId', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate, title='$title', titleSort='$titleSort', summary='$summary', publisher='$publisher', language='$language', tags=$tags, genres=$genres, sharingLabels=$sharingLabels)"
+    "SeriesMetadata(status=$status, readingDirection=$readingDirection, ageRating=$ageRating, totalBookCount=$totalBookCount, statusLock=$statusLock, titleLock=$titleLock, titleSortLock=$titleSortLock, alternativeTitlesLock=$alternativeTitlesLock, summaryLock=$summaryLock, readingDirectionLock=$readingDirectionLock, publisherLock=$publisherLock, ageRatingLock=$ageRatingLock, languageLock=$languageLock, genresLock=$genresLock, tagsLock=$tagsLock, totalBookCountLock=$totalBookCountLock, sharingLabelsLock=$sharingLabelsLock, seriesId='$seriesId', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate, title='$title', titleSort='$titleSort', alternativeTitles=$alternativeTitles, summary='$summary', publisher='$publisher', language='$language', tags=$tags, genres=$genres, sharingLabels=$sharingLabels)"
 }

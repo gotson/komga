@@ -25,6 +25,13 @@ class SeriesMetadataUpdateDto {
 
   val titleSortLock: Boolean? = null
 
+  var alternativeTitles: Set<String>?
+    by Delegates.observable(null) { prop, _, _ ->
+      isSet[prop.name] = true
+    }
+
+  var alternativeTitlesLock: Boolean? = null
+
   var summary: String? = null
 
   var summaryLock: Boolean? = null
