@@ -8286,7 +8286,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_6",
+        "operationId": "getProviders",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8317,7 +8317,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders",
+        "operationId": "getProviders_3",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8410,7 +8410,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_3",
+        "operationId": "getProviders_6",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -9522,6 +9522,13 @@
           "ageRestriction": {
             "$ref": "#/components/schemas/AgeRestrictionUpdateDto"
           },
+          "roles": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "labelsExclude": {
             "uniqueItems": true,
             "type": "array",
@@ -9530,13 +9537,6 @@
             }
           },
           "labelsAllow": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "roles": {
             "uniqueItems": true,
             "type": "array",
             "items": {
@@ -9636,6 +9636,13 @@
           "sharingLabelsLock": {
             "type": "boolean"
           },
+          "genres": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "sharingLabels": {
             "uniqueItems": true,
             "type": "array",
@@ -9644,6 +9651,10 @@
             }
           },
           "ageRating": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalBookCount": {
             "type": "integer",
             "format": "int32"
           },
@@ -9656,18 +9667,7 @@
               "WEBTOON"
             ]
           },
-          "totalBookCount": {
-            "type": "integer",
-            "format": "int32"
-          },
           "tags": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "genres": {
             "uniqueItems": true,
             "type": "array",
             "items": {
@@ -9779,12 +9779,6 @@
           "linksLock": {
             "type": "boolean"
           },
-          "authors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AuthorUpdateDto"
-            }
-          },
           "releaseDate": {
             "type": "string",
             "format": "date"
@@ -9797,6 +9791,12 @@
             "type": "array",
             "items": {
               "type": "string"
+            }
+          },
+          "authors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthorUpdateDto"
             }
           },
           "links": {
@@ -10076,10 +10076,10 @@
       "Sort": {
         "type": "object",
         "properties": {
-          "sorted": {
+          "unsorted": {
             "type": "boolean"
           },
-          "unsorted": {
+          "sorted": {
             "type": "boolean"
           },
           "empty": {

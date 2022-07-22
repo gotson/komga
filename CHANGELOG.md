@@ -1,3 +1,10 @@
+## [0.155.3](https://github.com/gotson/komga/compare/v0.155.2...v0.155.3) (2022-07-22)
+
+
+### Bug Fixes
+
+* expose configuration for transaction mode ([218e300](https://github.com/gotson/komga/commit/218e3006f9c6209ea7b29e70ef2e01aa1e9f31b5))
+
 ## [0.155.2](https://github.com/gotson/komga/compare/v0.155.1...v0.155.2) (2022-07-20)
 
 
