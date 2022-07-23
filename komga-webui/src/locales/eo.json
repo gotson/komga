@@ -177,6 +177,7 @@
     "title": "Kolekto {name}"
   },
   "common": {
+    "age": "Aĝo",
     "all_libraries": "Ĉiuj Bibliotekoj",
     "books": "Libroj",
     "books_n": "Neniuj libroj | 1 libro | {count} libroj",
@@ -515,6 +516,7 @@
     }
   },
   "duplicate_pages": {
+    "action_delete_manual": "Mane forviŝi",
     "action_ignore": "Ignori",
     "filter": {
       "size": "Grando",
@@ -544,6 +546,8 @@
       "UNSUPPORTED": "Ne subtenata"
     },
     "page_hash_action": {
+      "DELETE_AUTO": "Aŭtomate forviŝi",
+      "DELETE_MANUAL": "Mane forviŝi",
       "IGNORE": "Ignori"
     },
     "reading_direction": {

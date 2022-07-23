@@ -109,6 +109,7 @@
     },
     "set_current_page_as_book_poster": "Seite als Plakat für das Buch gesetzt",
     "set_current_page_as_readlist_poster": "Setze die aktuelle Seite als Plakat für die Leseliste",
+    "set_current_page_as_series_poster": "Seite zu Serienposter",
     "settings": {
       "always_fullscreen": "Dauerhaftes Vollbild",
       "animate_page_transitions": "Fließender Seitenübergangseffekt",
