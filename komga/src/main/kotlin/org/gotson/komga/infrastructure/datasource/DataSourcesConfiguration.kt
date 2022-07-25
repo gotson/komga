@@ -18,14 +18,22 @@ class DataSourcesConfiguration(
   @Primary
   fun sqliteDataSource(): DataSource {
 
+    val extraPragmas = komgaProperties.database.pragmas.let {
+      if (it.isEmpty()) ""
+      else "?" + it.map { (key, value) -> "$key=$value" }.joinToString(separator = "&")
+    }
+
     val sqliteUdfDataSource = DataSourceBuilder.create()
       .driverClassName("org.sqlite.JDBC")
-      .url("jdbc:sqlite:${komgaProperties.database.file}")
+      .url("jdbc:sqlite:${komgaProperties.database.file}$extraPragmas")
       .type(SqliteUdfDataSource::class.java)
       .build()
 
     sqliteUdfDataSource.setEnforceForeignKeys(true)
-    sqliteUdfDataSource.setTransactionMode(komgaProperties.database.transactionMode.name)
+    with(komgaProperties.database) {
+      journalMode?.let { sqliteUdfDataSource.setJournalMode(it.name) }
+      busyTimeout?.let { sqliteUdfDataSource.config.busyTimeout = it.toMillis().toInt() }
+    }
 
     val poolSize =
       if (komgaProperties.database.file.contains(":memory:")) 1
