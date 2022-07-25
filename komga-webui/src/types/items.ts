@@ -78,7 +78,7 @@ export class BookItem extends Item<BookDto> {
     if (context.includes(ItemContext.SHOW_SERIES))
       return [
         {
-          title: `${this.item.seriesTitle}`,
+          title: this.item.seriesTitle,
           to: this.seriesTo(),
         },
         {
