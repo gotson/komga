@@ -16,6 +16,7 @@ import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
 import org.gotson.komga.application.tasks.TaskEmitter
+import org.gotson.komga.domain.model.AlternativeTitle
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.DomainEvent
@@ -520,7 +521,7 @@ class SeriesController(
           titleSort = titleSort ?: existing.titleSort,
           titleSortLock = titleSortLock ?: existing.titleSortLock,
           alternativeTitles = if (isSet("alternativeTitles")) {
-            if (alternativeTitles != null) alternativeTitles!! else emptySet()
+            if (alternativeTitles != null) alternativeTitles!!.map { AlternativeTitle(it.title!!, it.hint) } else emptyList()
           } else existing.alternativeTitles,
           alternativeTitlesLock = alternativeTitlesLock ?: existing.alternativeTitlesLock,
           summary = summary ?: existing.summary,

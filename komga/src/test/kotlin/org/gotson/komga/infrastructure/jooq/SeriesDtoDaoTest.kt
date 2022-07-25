@@ -6,6 +6,7 @@ import io.mockk.every
 import io.mockk.just
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.application.events.EventPublisher
+import org.gotson.komga.domain.model.AlternativeTitle
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.ReadProgress
@@ -304,7 +305,7 @@ class SeriesDtoDaoTest(
       seriesLifecycle.createSeries(makeSeries("Robin", library.id))
 
       seriesMetadataRepository.findById(series.id).let {
-        seriesMetadataRepository.update(it.copy(alternativeTitles = setOf("Batman and Robin")))
+        seriesMetadataRepository.update(it.copy(alternativeTitles = listOf(AlternativeTitle("Batman and Robin", "English"))))
       }
 
       searchIndexLifecycle.rebuildIndex()

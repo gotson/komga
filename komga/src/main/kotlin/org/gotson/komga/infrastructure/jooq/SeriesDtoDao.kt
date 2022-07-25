@@ -10,6 +10,7 @@ import org.gotson.komga.infrastructure.search.LuceneEntity
 import org.gotson.komga.infrastructure.search.LuceneHelper
 import org.gotson.komga.infrastructure.web.toFilePath
 import org.gotson.komga.interfaces.api.persistence.SeriesDtoRepository
+import org.gotson.komga.interfaces.api.rest.dto.AlternativeTitleDto
 import org.gotson.komga.interfaces.api.rest.dto.AuthorDto
 import org.gotson.komga.interfaces.api.rest.dto.BookMetadataAggregationDto
 import org.gotson.komga.interfaces.api.rest.dto.GroupCountDto
@@ -228,7 +229,7 @@ class SeriesDtoDao(
     lateinit var genres: Map<String, List<String>>
     lateinit var tags: Map<String, List<String>>
     lateinit var sharingLabels: Map<String, List<String>>
-    lateinit var alternativeTitles: Map<String, List<String>>
+    lateinit var alternativeTitles: Map<String, List<AlternativeTitleDto>>
     lateinit var aggregatedAuthors: Map<String, List<AuthorDto>>
     lateinit var aggregatedTags: Map<String, List<String>>
     transactionTemplate.executeWithoutResult {
@@ -247,7 +248,7 @@ class SeriesDtoDao(
 
       alternativeTitles = dsl.selectFrom(sat)
         .where(sat.SERIES_ID.`in`(dsl.selectTempStrings()))
-        .groupBy({ it.seriesId }, { it.title })
+        .groupBy({ it.seriesId }, { AlternativeTitleDto(it.title, it.hint) })
 
       aggregatedAuthors = dsl.selectFrom(bmaa)
         .where(bmaa.SERIES_ID.`in`(dsl.selectTempStrings()))
@@ -274,7 +275,7 @@ class SeriesDtoDao(
           booksReadCount,
           booksUnreadCount,
           booksInProgressCount,
-          dr.toDto(genres[sr.id].orEmpty().toSet(), tags[sr.id].orEmpty().toSet(), sharingLabels[sr.id].orEmpty().toSet(), alternativeTitles[sr.id].orEmpty().toSet()),
+          dr.toDto(genres[sr.id].orEmpty().toSet(), tags[sr.id].orEmpty().toSet(), sharingLabels[sr.id].orEmpty().toSet(), alternativeTitles[sr.id].orEmpty()),
           bmar.toDto(aggregatedAuthors[sr.id].orEmpty(), aggregatedTags[sr.id].orEmpty().toSet()),
         )
       }
@@ -371,7 +372,7 @@ class SeriesDtoDao(
       deleted = deletedDate != null,
     )
 
-  private fun SeriesMetadataRecord.toDto(genres: Set<String>, tags: Set<String>, sharingLabels: Set<String>, alternativeTitles: Set<String>) =
+  private fun SeriesMetadataRecord.toDto(genres: Set<String>, tags: Set<String>, sharingLabels: Set<String>, alternativeTitles: List<AlternativeTitleDto>) =
     SeriesMetadataDto(
       status = status,
       statusLock = statusLock,

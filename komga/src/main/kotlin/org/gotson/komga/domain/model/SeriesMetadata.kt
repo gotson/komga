@@ -7,7 +7,7 @@ class SeriesMetadata(
   val status: Status = Status.ONGOING,
   title: String,
   titleSort: String = title,
-  alternativeTitles: Set<String> = emptySet(),
+  val alternativeTitles: List<AlternativeTitle> = emptyList(),
   summary: String = "",
   val readingDirection: ReadingDirection? = null,
   publisher: String = "",
@@ -39,7 +39,6 @@ class SeriesMetadata(
 ) : Auditable {
   val title = title.trim()
   val titleSort = titleSort.trim()
-  val alternativeTitles = alternativeTitles.map { it.trim() }.toSet()
   val summary = summary.trim()
   val publisher = publisher.trim()
   val language = language.trim().lowercase()
@@ -51,7 +50,7 @@ class SeriesMetadata(
     status: Status = this.status,
     title: String = this.title,
     titleSort: String = this.titleSort,
-    alternativeTitles: Set<String> = this.alternativeTitles,
+    alternativeTitles: List<AlternativeTitle> = this.alternativeTitles,
     summary: String = this.summary,
     readingDirection: ReadingDirection? = this.readingDirection,
     publisher: String = this.publisher,

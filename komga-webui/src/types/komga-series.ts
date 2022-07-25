@@ -25,7 +25,7 @@ export interface SeriesMetadataDto {
   titleLock: boolean,
   titleSort: string,
   titleSortLock: boolean,
-  alternativeTitles: string[],
+  alternativeTitles: AlternativeTitleDto[],
   alternativeTitlesLock: boolean,
   summary: string,
   summaryLock: boolean,
@@ -64,7 +64,7 @@ export interface SeriesMetadataUpdateDto {
   titleLock?: boolean,
   titleSort?: string,
   titleSortLock?: boolean,
-  alternativeTitles?: string[],
+  alternativeTitles?: AlternativeTitleDto[],
   alternativeTitlesLock?: boolean,
   summary?: string,
   summaryLock?: boolean,
@@ -96,4 +96,8 @@ export interface SeriesThumbnailDto {
   seriesId: string,
   type: string,
   selected: boolean
+}
+export interface AlternativeTitleDto {
+  title: string,
+  hint?: string
 }

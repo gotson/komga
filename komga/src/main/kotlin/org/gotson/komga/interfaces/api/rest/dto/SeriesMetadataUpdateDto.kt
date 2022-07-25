@@ -3,6 +3,8 @@ package org.gotson.komga.interfaces.api.rest.dto
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.infrastructure.validation.NullOrBlankOrBCP47
 import org.gotson.komga.infrastructure.validation.NullOrNotBlank
+import javax.validation.Valid
+import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Positive
 import javax.validation.constraints.PositiveOrZero
 import kotlin.properties.Delegates
@@ -25,7 +27,8 @@ class SeriesMetadataUpdateDto {
 
   val titleSortLock: Boolean? = null
 
-  var alternativeTitles: Set<String>?
+  @get:Valid
+  var alternativeTitles: List<AlternativeTitleUpdateDto>?
     by Delegates.observable(null) { prop, _, _ ->
       isSet[prop.name] = true
     }
@@ -88,4 +91,11 @@ class SeriesMetadataUpdateDto {
     }
 
   var sharingLabelsLock: Boolean? = null
+}
+
+class AlternativeTitleUpdateDto {
+  @get:NotBlank
+  val title: String? = null
+
+  val hint: String? = null
 }

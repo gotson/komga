@@ -32,6 +32,10 @@
             {{ $t('dialog.edit_series.tab_tags') }}
           </v-tab>
           <v-tab class="justify-start" v-if="single">
+            <v-icon left class="hidden-xs-only">mdi-link</v-icon>
+            alternative titles
+          </v-tab>
+          <v-tab class="justify-start" v-if="single">
             <v-icon left class="hidden-xs-only">mdi-image</v-icon>
             {{ $t('dialog.edit_series.tab_poster') }}
           </v-tab>
@@ -88,33 +92,6 @@
                         </v-icon>
                       </template>
                     </v-text-field>
-                  </v-col>
-                </v-row>
-
-                <!--  Alternative Titles  -->
-                <v-row v-if="single">
-                  <v-col cols="12">
-                    <v-combobox v-model="form.alternativeTitles"
-                                :label="$t('dialog.edit_series.field_alternative_titles')"
-                                @input="$v.form.alternativeTitles.$touch()"
-                                @blur="$v.form.alternativeTitles.$touch()"
-                                @change="form.alternativeTitlesLock = true"
-                                hide-selected
-                                chips
-                                deletable-chips
-                                multiple
-                                filled
-                                dense
-                                append-icon=""
-                    >
-                      <template v-slot:prepend>
-                        <v-icon :color="form.alternativeTitlesLock ? 'secondary' : ''"
-                                @click="form.alternativeTitlesLock = !form.alternativeTitlesLock"
-                        >
-                          {{ form.alternativeTitlesLock ? 'mdi-lock' : 'mdi-lock-open' }}
-                        </v-icon>
-                      </template>
-                    </v-combobox>
                   </v-col>
                 </v-row>
 
@@ -347,6 +324,76 @@
             </v-card>
           </v-tab-item>
 
+          <!--  Tab: Alternative Titles  -->
+          <v-tab-item v-if="single">
+            <v-card flat>
+              <v-container fluid>
+                <!-- Alternative Titles -->
+                <v-form
+                  v-model="alternativeTitlesValid"
+                  ref="linksForm"
+                >
+                  <v-row
+                    v-for="(title, i) in form.alternativeTitles"
+                    :key="i"
+                  >
+                    <v-col cols="4" class="py-0">
+                      <v-text-field v-model="form.alternativeTitles[i].hint"
+                                    :label="$t('dialog.edit_series.field_alternative_title_hint')"
+                                    filled
+                                    dense
+                                    @input="$v.form.alternativeTitles.$touch()"
+                                    @blur="$v.form.alternativeTitles.$touch()"
+                                    @change="form.linksLock = true"
+                      >
+                        <template v-slot:prepend>
+                          <v-icon :color="form.alternativeTitlesLock ? 'secondary' : ''"
+                                  @click="form.alternativeTitlesLock = !form.alternativeTitlesLock"
+                          >
+                            {{ form.alternativeTitlesLock ? 'mdi-lock' : 'mdi-lock-open' }}
+                          </v-icon>
+                        </template>
+                      </v-text-field>
+                    </v-col>
+
+                    <v-col cols="8" class="py-0">
+                      <v-text-field v-model="form.alternativeTitles[i].title"
+                                    :label="$t('dialog.edit_series.field_alternative_title_title')"
+                                    filled
+                                    dense
+                                    :rules="[alternativeTitleRules]"
+                                    @input="$v.form.alternativeTitles.$touch()"
+                                    @blur="$v.form.alternativeTitles.$touch()"
+                                    @change="form.alternativeTitlesLock = true"
+                      >
+                        <template v-slot:append-outer>
+                          <v-icon @click="form.alternativeTitles.splice(i, 1)">mdi-delete</v-icon>
+                        </template>
+                      </v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-form>
+
+                <v-row>
+                  <v-spacer/>
+                  <v-col cols="auto">
+                    <v-btn
+                      elevation="2"
+                      fab
+                      small
+                      bottom
+                      right
+                      color="primary"
+                      @click="form.alternativeTitles.push({title:'', hint:''})"
+                    >
+                      <v-icon>mdi-plus</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card>
+          </v-tab-item>
+
           <!--  Tab: Thumbnails  -->
           <v-tab-item v-if="single">
             <v-card flat>
@@ -451,6 +498,7 @@ export default Vue.extend({
     return {
       modal: false,
       tab: 0,
+      alternativeTitlesValid: false,
       form: {
         status: '',
         statusLock: false,
@@ -596,6 +644,10 @@ export default Vue.extend({
     },
   },
   methods: {
+    alternativeTitleRules(title: string): boolean | string {
+      if (!!this.$_.trim(title)) return true
+      return this.$t('common.required').toString()
+    },
     async loadAvailableTags() {
       this.tagsAvailable = await this.$komgaReferential.getTags()
     },
@@ -672,6 +724,7 @@ export default Vue.extend({
         this.form.sharingLabels = []
         this.form.alternativeTitles = []
         this.$_.merge(this.form, (series as SeriesDto).metadata)
+        this.form.alternativeTitles = this.$_.sortBy(this.form.alternativeTitles, 'hint')
         this.poster.selectedThumbnail = ''
         this.poster.deleteQueue = []
         this.poster.uploadQueue = []
@@ -746,7 +799,7 @@ export default Vue.extend({
             this.$_.merge(metadata, {title: this.form.title})
           }
 
-          if (this.$v.form?.alternativeTitles?.$dirty) {
+          if (this.$v.form?.alternativeTitles?.$dirty || this.form.alternativeTitles.length != (this.series as SeriesDto).metadata.alternativeTitles?.length) {
             this.$_.merge(metadata, {alternativeTitles: this.form.alternativeTitles})
           }
 

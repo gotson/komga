@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
+import org.gotson.komga.domain.model.AlternativeTitle
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -54,7 +55,7 @@ class SeriesMetadataDaoTest(
       status = SeriesMetadata.Status.ENDED,
       title = "Series",
       titleSort = "Series, The",
-      alternativeTitles = setOf("Alternative Series"),
+      alternativeTitles = listOf(AlternativeTitle("Alternative Title", "English")),
       summary = "Summary",
       readingDirection = SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT,
       publisher = "publisher",
@@ -202,7 +203,7 @@ class SeriesMetadataDaoTest(
       status = SeriesMetadata.Status.ENDED,
       title = "Series",
       titleSort = "Series, The",
-      alternativeTitles = setOf("Alternative Series"),
+      alternativeTitles = listOf(AlternativeTitle("Alternative Title", "English")),
       summary = "Summary",
       readingDirection = SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT,
       publisher = "publisher",
@@ -224,7 +225,7 @@ class SeriesMetadataDaoTest(
         status = SeriesMetadata.Status.HIATUS,
         title = "Changed",
         titleSort = "Changed, The",
-        alternativeTitles = setOf("Changed Alternative"),
+        alternativeTitles = listOf(AlternativeTitle("Updated Title", "English")),
         summary = "SummaryUpdated",
         readingDirection = SeriesMetadata.ReadingDirection.RIGHT_TO_LEFT,
         publisher = "publisher2",

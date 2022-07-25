@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.jooq
 
+import org.gotson.komga.domain.model.AlternativeTitle
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.jooq.Tables
@@ -53,10 +54,11 @@ class SeriesMetadataDao(
       .fetchSet(sl.LABEL)
 
   private fun findAlternativeTitles(seriesId: String) =
-    dsl.select(sat.TITLE)
+    dsl.select(sat.TITLE, sat.HINT)
       .from(sat)
       .where(sat.SERIES_ID.eq(seriesId))
-      .fetchSet(sat.TITLE)
+      .fetchInto(sat)
+      .map { AlternativeTitle(it.title, it.hint) }
 
   @Transactional
   override fun insert(metadata: SeriesMetadata) {
@@ -191,11 +193,11 @@ class SeriesMetadataDao(
     if (metadata.alternativeTitles.isNotEmpty()) {
       metadata.alternativeTitles.chunked(batchSize).forEach { chunk ->
         dsl.batch(
-          dsl.insertInto(sat, sat.SERIES_ID, sat.TITLE)
-            .values(null as String?, null),
+          dsl.insertInto(sat, sat.SERIES_ID, sat.TITLE, sat.HINT)
+            .values(null as String?, null, null),
         ).also { step ->
           chunk.forEach {
-            step.bind(metadata.seriesId, it)
+            step.bind(metadata.seriesId, it.title, it.hint)
           }
         }.execute()
       }
@@ -224,7 +226,7 @@ class SeriesMetadataDao(
 
   override fun count(): Long = dsl.fetchCount(d).toLong()
 
-  private fun SeriesMetadataRecord.toDomain(genres: Set<String>, tags: Set<String>, sharingLabels: Set<String>, alternativeTitles: Set<String>) =
+  private fun SeriesMetadataRecord.toDomain(genres: Set<String>, tags: Set<String>, sharingLabels: Set<String>, alternativeTitles: List<AlternativeTitle>) =
     SeriesMetadata(
       status = SeriesMetadata.Status.valueOf(status),
       title = title,

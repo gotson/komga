@@ -34,7 +34,7 @@ data class SeriesMetadataDto(
   val titleLock: Boolean,
   val titleSort: String,
   val titleSortLock: Boolean,
-  val alternativeTitles: Set<String>,
+  val alternativeTitles: List<AlternativeTitleDto>,
   val alternativeTitlesLock: Boolean,
   val summary: String,
   val summaryLock: Boolean,

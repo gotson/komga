@@ -62,7 +62,7 @@ fun SeriesDto.toDocument() =
       add(TextField("genre", it, Field.Store.NO))
     }
     metadata.alternativeTitles.forEach {
-      add(TextField("alternative_title", it, Field.Store.NO))
+      add(TextField("alternative_title", it.title, Field.Store.NO))
     }
     if (metadata.totalBookCount != null) add(TextField("total_book_count", metadata.totalBookCount.toString(), Field.Store.NO))
     add(TextField("book_count", booksCount.toString(), Field.Store.NO))
