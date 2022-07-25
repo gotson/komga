@@ -454,6 +454,7 @@
       "field_total_book_count": "Total Book Count",
       "field_total_book_count_error": "Total book count must be 1 or more",
       "mixed": "MIXED",
+      "tab_alternative_titles": "Alternative Titles",
       "tab_general": "General",
       "tab_poster": "Poster",
       "tab_sharing": "Sharing",

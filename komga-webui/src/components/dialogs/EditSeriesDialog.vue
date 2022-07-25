@@ -27,13 +27,13 @@
             <v-icon left class="hidden-xs-only">mdi-format-align-center</v-icon>
             {{ $t('dialog.edit_series.tab_general') }}
           </v-tab>
+          <v-tab class="justify-start" v-if="single">
+            <v-icon left class="hidden-xs-only">mdi-format-text-variant-outline</v-icon>
+            {{ $t('dialog.edit_series.tab_alternative_titles') }}
+          </v-tab>
           <v-tab class="justify-start">
             <v-icon left class="hidden-xs-only">mdi-tag-multiple</v-icon>
             {{ $t('dialog.edit_series.tab_tags') }}
-          </v-tab>
-          <v-tab class="justify-start" v-if="single">
-            <v-icon left class="hidden-xs-only">mdi-link</v-icon>
-            alternative titles
           </v-tab>
           <v-tab class="justify-start" v-if="single">
             <v-icon left class="hidden-xs-only">mdi-image</v-icon>
@@ -258,72 +258,6 @@
             </v-card>
           </v-tab-item>
 
-          <!--  Tab: Tags  -->
-          <v-tab-item>
-            <v-card flat>
-              <v-container fluid>
-                <v-alert v-if="!single"
-                         type="warning"
-                         outlined
-                         dense
-                >{{ $t('dialog.edit_series.tags_notice_multiple_edit') }}
-                </v-alert>
-
-                <!-- Genres -->
-                <v-row>
-                  <v-col cols="12">
-                    <span class="text-body-2">{{ $t('dialog.edit_series.field_genres') }}</span>
-                    <v-combobox v-model="form.genres"
-                                :items="genresAvailable"
-                                @input="$v.form.genres.$touch()"
-                                @change="form.genresLock = true"
-                                hide-selected
-                                chips
-                                deletable-chips
-                                multiple
-                                filled
-                                dense
-                    >
-                      <template v-slot:prepend>
-                        <v-icon :color="form.genresLock ? 'secondary' : ''"
-                                @click="form.genresLock = !form.genresLock"
-                        >
-                          {{ form.genresLock ? 'mdi-lock' : 'mdi-lock-open' }}
-                        </v-icon>
-                      </template>
-                    </v-combobox>
-                  </v-col>
-                </v-row>
-
-                <!-- Tags -->
-                <v-row>
-                  <v-col cols="12">
-                    <span class="text-body-2">{{ $t('dialog.edit_series.field_tags') }}</span>
-                    <v-combobox v-model="form.tags"
-                                :items="tagsAvailable"
-                                @input="$v.form.tags.$touch()"
-                                @change="form.tagsLock = true"
-                                hide-selected
-                                chips
-                                deletable-chips
-                                multiple
-                                filled
-                                dense
-                    >
-                      <template v-slot:prepend>
-                        <v-icon :color="form.tagsLock ? 'secondary' : ''"
-                                @click="form.tagsLock = !form.tagsLock"
-                        >
-                          {{ form.tagsLock ? 'mdi-lock' : 'mdi-lock-open' }}
-                        </v-icon>
-                      </template>
-                    </v-combobox>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card>
-          </v-tab-item>
-
           <!--  Tab: Alternative Titles  -->
           <v-tab-item v-if="single">
             <v-card flat>
@@ -388,6 +322,72 @@
                     >
                       <v-icon>mdi-plus</v-icon>
                     </v-btn>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card>
+          </v-tab-item>
+
+          <!--  Tab: Tags  -->
+          <v-tab-item>
+            <v-card flat>
+              <v-container fluid>
+                <v-alert v-if="!single"
+                         type="warning"
+                         outlined
+                         dense
+                >{{ $t('dialog.edit_series.tags_notice_multiple_edit') }}
+                </v-alert>
+
+                <!-- Genres -->
+                <v-row>
+                  <v-col cols="12">
+                    <span class="text-body-2">{{ $t('dialog.edit_series.field_genres') }}</span>
+                    <v-combobox v-model="form.genres"
+                                :items="genresAvailable"
+                                @input="$v.form.genres.$touch()"
+                                @change="form.genresLock = true"
+                                hide-selected
+                                chips
+                                deletable-chips
+                                multiple
+                                filled
+                                dense
+                    >
+                      <template v-slot:prepend>
+                        <v-icon :color="form.genresLock ? 'secondary' : ''"
+                                @click="form.genresLock = !form.genresLock"
+                        >
+                          {{ form.genresLock ? 'mdi-lock' : 'mdi-lock-open' }}
+                        </v-icon>
+                      </template>
+                    </v-combobox>
+                  </v-col>
+                </v-row>
+
+                <!-- Tags -->
+                <v-row>
+                  <v-col cols="12">
+                    <span class="text-body-2">{{ $t('dialog.edit_series.field_tags') }}</span>
+                    <v-combobox v-model="form.tags"
+                                :items="tagsAvailable"
+                                @input="$v.form.tags.$touch()"
+                                @change="form.tagsLock = true"
+                                hide-selected
+                                chips
+                                deletable-chips
+                                multiple
+                                filled
+                                dense
+                    >
+                      <template v-slot:prepend>
+                        <v-icon :color="form.tagsLock ? 'secondary' : ''"
+                                @click="form.tagsLock = !form.tagsLock"
+                        >
+                          {{ form.tagsLock ? 'mdi-lock' : 'mdi-lock-open' }}
+                        </v-icon>
+                      </template>
+                    </v-combobox>
                   </v-col>
                 </v-row>
               </v-container>
