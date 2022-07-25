@@ -74,11 +74,12 @@ export class BookItem extends Item<BookDto> {
     return ItemTypes.BOOK
   }
 
+
   title(context: ItemContext[]): ItemTitle | ItemTitle[] {
     if (context.includes(ItemContext.SHOW_SERIES))
       return [
         {
-          title: `${this.item.seriesTitle}`,
+          title: this.item.seriesTitle,
           to: this.seriesTo(),
         },
         {
@@ -198,8 +199,7 @@ export class CollectionItem extends Item<CollectionDto> {
   }
 
   body(context: ItemContext[] = []): string {
-    const c = this.item.seriesIds.length
-    return `<span>${c} Series</span>`
+    return `<span>${i18n.tc('dialog.add_to_collection.card_collection_subtitle', this.item.seriesIds.length)}</span>`
   }
 
   to(): RawLocation {
@@ -228,8 +228,7 @@ export class ReadListItem extends Item<ReadListDto> {
   }
 
   body(context: ItemContext[] = []): string {
-    const c = this.item.bookIds.length
-    return `<span>${c} Books</span>`
+    return `<span>${i18n.tc('dialog.add_to_readlist.card_readlist_subtitle', this.item.bookIds.length)}</span>`
   }
 
   to(): RawLocation {

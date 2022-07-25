@@ -102,13 +102,14 @@
 
         <!--      Description-->
         <template v-if="!thumbnailOnly">
-          <router-link v-if="!Array.isArray(title)" :to="title.to" class="link-underline" @click.native="$event.stopImmediatePropagation()">
+          <router-link v-if="!Array.isArray(title)" :to="title.to" class="link-underline"
+                       @click.native="$event.stopImmediatePropagation()">
             <v-card-subtitle
               v-line-clamp="2"
               v-bind="subtitleProps"
-              v-html="title.title"
               :title="title.title"
-            />
+            >{{ title.title }}
+            </v-card-subtitle>
           </router-link>
           <template v-if="Array.isArray(title)">
             <v-card-subtitle
@@ -120,11 +121,11 @@
                 :to="t.to"
                 @click.native="$event.stopImmediatePropagation()"
                 class="link-underline text-truncate"
-                v-html="t.title"
                 :title="t.title"
                 style="display: block"
                 :class="i !== 0 ? 'font-weight-light' : ''"
-              />
+              >{{ t.title }}
+              </router-link>
             </v-card-subtitle>
           </template>
           <v-card-text class="px-2 font-weight-light" v-html="body">
