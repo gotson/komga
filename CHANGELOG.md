@@ -1,3 +1,17 @@
+# [0.156.0](https://github.com/gotson/komga/compare/v0.155.3...v0.156.0) (2022-07-26)
+
+
+### Bug Fixes
+
+* translated using Weblate ([85236d9](https://github.com/gotson/komga/commit/85236d9e9305f084e71389fb160d4c360cd47fe3))
+* **webui:** missing i18n strings ([775dd5c](https://github.com/gotson/komga/commit/775dd5c666752d2e40bc18d36bbe82beb1d6c7e8))
+* **webui:** series name not showing on card if it starts with '<' ([599b605](https://github.com/gotson/komga/commit/599b605d923c65fa6976d7811edee5feba484a31)), closes [#930](https://github.com/gotson/komga/issues/930)
+
+
+### Features
+
+* expose sqlite pragma configuration ([3c51430](https://github.com/gotson/komga/commit/3c5143071cd82890668df17f1520907f206e3ccd))
+
 ## [0.155.3](https://github.com/gotson/komga/compare/v0.155.2...v0.155.3) (2022-07-22)
 
 
