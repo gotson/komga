@@ -37,6 +37,7 @@ class DataSourcesConfiguration(
 
     val poolSize =
       if (komgaProperties.database.file.contains(":memory:")) 1
+      else if (komgaProperties.database.poolSize != null) komgaProperties.database.poolSize!!
       else Runtime.getRuntime().availableProcessors().coerceAtMost(komgaProperties.database.maxPoolSize)
 
     return HikariDataSource(
