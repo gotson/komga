@@ -8286,7 +8286,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_2",
+        "operationId": "getProviders",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8317,7 +8317,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders",
+        "operationId": "getProviders_1",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8348,7 +8348,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_4",
+        "operationId": "getProviders_3",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8379,7 +8379,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_3",
+        "operationId": "getProviders_2",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8441,7 +8441,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_1",
+        "operationId": "getProviders_4",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -9519,6 +9519,13 @@
       "UserUpdateDto": {
         "type": "object",
         "properties": {
+          "roles": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "ageRestriction": {
             "$ref": "#/components/schemas/AgeRestrictionUpdateDto"
           },
@@ -9538,13 +9545,6 @@
           },
           "sharedLibraries": {
             "$ref": "#/components/schemas/SharedLibrariesUpdateDto"
-          },
-          "roles": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           }
         }
       },
@@ -9636,13 +9636,12 @@
           "sharingLabelsLock": {
             "type": "boolean"
           },
-          "ageRating": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalBookCount": {
-            "type": "integer",
-            "format": "int32"
+          "sharingLabels": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "readingDirection": {
             "type": "string",
@@ -9653,12 +9652,13 @@
               "WEBTOON"
             ]
           },
-          "sharingLabels": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "ageRating": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalBookCount": {
+            "type": "integer",
+            "format": "int32"
           },
           "tags": {
             "uniqueItems": true,
@@ -9779,6 +9779,12 @@
           "linksLock": {
             "type": "boolean"
           },
+          "authors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthorUpdateDto"
+            }
+          },
           "releaseDate": {
             "type": "string",
             "format": "date"
@@ -9793,20 +9799,14 @@
               "type": "string"
             }
           },
-          "authors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AuthorUpdateDto"
-            }
+          "summary": {
+            "type": "string"
           },
           "links": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/WebLinkUpdateDto"
             }
-          },
-          "summary": {
-            "type": "string"
           }
         },
         "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update."
@@ -10057,7 +10057,7 @@
             "type": "integer",
             "format": "int64"
           },
-          "unpaged": {
+          "paged": {
             "type": "boolean"
           },
           "pageNumber": {
@@ -10068,7 +10068,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "paged": {
+          "unpaged": {
             "type": "boolean"
           }
         }

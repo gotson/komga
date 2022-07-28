@@ -1,3 +1,17 @@
+# [0.157.0](https://github.com/gotson/komga/compare/v0.156.0...v0.157.0) (2022-07-28)
+
+
+### Bug Fixes
+
+* add configuration to set the database pool size ([76e6241](https://github.com/gotson/komga/commit/76e624140d83a6dcad3f58043f50b0ba4c4b64d5))
+* default the max pool size to 1 ([c962f8a](https://github.com/gotson/komga/commit/c962f8a7ab0e3c132435fc1b3b18262135e023c6))
+* translated using Weblate ([2cbd124](https://github.com/gotson/komga/commit/2cbd124d6174733afbbbde40aeff0ac4a3fac7db))
+
+
+### Features
+
+* **api:** allow readlist custom sorting ([b9e69a1](https://github.com/gotson/komga/commit/b9e69a1c9a194c9c0fd60ebfe2b8f954e6f9ca04))
+
 # [0.156.0](https://github.com/gotson/komga/compare/v0.155.3...v0.156.0) (2022-07-26)
 
 
