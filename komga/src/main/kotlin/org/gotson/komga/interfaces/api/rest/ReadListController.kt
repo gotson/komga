@@ -103,6 +103,7 @@ class ReadListController(
     @Parameter(hidden = true) page: Pageable,
   ): Page<ReadListDto> {
     val sort = when {
+      page.sort.isSorted -> page.sort
       !searchTerm.isNullOrBlank() -> Sort.by("relevance")
       else -> Sort.by(Sort.Order.asc("name"))
     }

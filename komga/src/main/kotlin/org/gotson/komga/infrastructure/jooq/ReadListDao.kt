@@ -37,6 +37,8 @@ class ReadListDao(
 
   private val sorts = mapOf(
     "name" to rl.NAME.collate(SqliteUdfDataSource.collationUnicode3),
+    "createdDate" to rl.CREATED_DATE,
+    "lastModifiedDate" to rl.LAST_MODIFIED_DATE,
   )
 
   override fun findByIdOrNull(readListId: String, filterOnLibraryIds: Collection<String>?, restrictions: ContentRestrictions): ReadList? =
