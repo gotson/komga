@@ -73,7 +73,7 @@ class KomgaProperties {
     var batchChunkSize: Int = 1000
 
     @get:Positive
-    var maxPoolSize: Int = 8
+    var maxPoolSize: Int = 1
 
     var journalMode: JournalMode? = null
 
