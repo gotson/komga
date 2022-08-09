@@ -44,6 +44,9 @@ import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
 import kotlin.random.Random
 
 @ExtendWith(SpringExtension::class)
@@ -1074,5 +1077,26 @@ class SeriesControllerTest(
           jsonPath("$.booksInProgressCount") { value(1) }
         }
     }
+  }
+
+  @Test
+  @WithMockCustomUser
+  fun `given series with Unicode name when getting series file then attachment name is correct`() {
+    val name = "アキラ"
+    val tempFile = Files.createTempFile(name, ".cbz")
+      .also { it.toFile().deleteOnExit() }
+    val series = makeSeries(name = name, libraryId = library.id).let { series ->
+      seriesLifecycle.createSeries(series).let { created ->
+        val books = listOf(makeBook(name, libraryId = library.id, url = tempFile.toUri().toURL()))
+        seriesLifecycle.addBooks(created, books)
+      }
+      series
+    }
+
+    mockMvc.get("/api/v1/series/${series.id}/file")
+      .andExpect {
+        status { isOk() }
+        header { string("Content-Disposition", Matchers.containsString(URLEncoder.encode(name, StandardCharsets.UTF_8.name()))) }
+      }
   }
 }

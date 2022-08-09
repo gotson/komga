@@ -88,6 +88,7 @@ import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
 import java.io.OutputStream
+import java.nio.charset.StandardCharsets.UTF_8
 import java.util.zip.Deflater
 import javax.validation.Valid
 
@@ -672,7 +673,7 @@ class SeriesController(
       .headers(
         HttpHeaders().apply {
           contentDisposition = ContentDisposition.builder("attachment")
-            .filename(seriesMetadataRepository.findById(seriesId).title + ".zip")
+            .filename(seriesMetadataRepository.findById(seriesId).title + ".zip", UTF_8)
             .build()
         },
       )

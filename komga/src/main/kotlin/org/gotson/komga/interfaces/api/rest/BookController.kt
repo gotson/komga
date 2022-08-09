@@ -81,6 +81,7 @@ import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
 import java.io.FileNotFoundException
 import java.io.OutputStream
+import java.nio.charset.StandardCharsets.UTF_8
 import java.nio.file.NoSuchFileException
 import java.time.LocalDate
 import java.time.ZoneOffset
@@ -386,7 +387,7 @@ class BookController(
             .headers(
               HttpHeaders().apply {
                 contentDisposition = ContentDisposition.builder("attachment")
-                  .filename(book.path.name)
+                  .filename(book.path.name, UTF_8)
                   .build()
               },
             )
