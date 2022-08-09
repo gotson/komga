@@ -13,6 +13,7 @@ import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.domain.service.ReadListLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
 import org.gotson.komga.language.toIndexedMap
+import org.hamcrest.Matchers
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
@@ -29,6 +30,9 @@ import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
@@ -978,5 +982,33 @@ class ReadListControllerTest(
           status { isNotFound() }
         }
     }
+  }
+
+  @Test
+  @WithMockCustomUser
+  fun `given readlist with Unicode name when getting readlist file then attachment name is correct`() {
+    val name = "アキラ"
+    val tempFile = Files.createTempFile(name, ".cbz")
+      .also { it.toFile().deleteOnExit() }
+    val book = makeBook(name, libraryId = library1.id, url = tempFile.toUri().toURL())
+    makeSeries(name = "series", libraryId = library1.id).let { series ->
+      seriesLifecycle.createSeries(series).let { created ->
+        val books = listOf(book)
+        seriesLifecycle.addBooks(created, books)
+      }
+    }
+
+    val readlist = readListLifecycle.addReadList(
+      ReadList(
+        name = name,
+        bookIds = listOf(book.id).toIndexedMap(),
+      ),
+    )
+
+    mockMvc.get("/api/v1/readlists/${readlist.id}/file")
+      .andExpect {
+        status { isOk() }
+        header { string("Content-Disposition", Matchers.containsString(URLEncoder.encode(name, StandardCharsets.UTF_8.name()))) }
+      }
   }
 }

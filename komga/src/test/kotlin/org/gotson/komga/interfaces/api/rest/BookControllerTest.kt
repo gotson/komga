@@ -25,6 +25,7 @@ import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.hamcrest.Matchers
+import org.hamcrest.Matchers.containsString
 import org.hamcrest.core.IsNull
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
@@ -49,6 +50,9 @@ import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
 import java.time.LocalDate
 import kotlin.random.Random
 
@@ -1345,5 +1349,27 @@ class BookControllerTest(
     ).andExpect(
       jsonPath("$.totalElements").value(2),
     )
+  }
+
+  @Test
+  @WithMockCustomUser
+  fun `given book with Unicode name when getting book file then attachment name is correct`() {
+    val bookName = "アキラ"
+    val tempFile = Files.createTempFile(bookName, ".cbz")
+      .also { it.toFile().deleteOnExit() }
+    makeSeries(name = "series", libraryId = library.id).let { series ->
+      seriesLifecycle.createSeries(series).let { created ->
+        val books = listOf(makeBook(bookName, libraryId = library.id, url = tempFile.toUri().toURL()))
+        seriesLifecycle.addBooks(created, books)
+      }
+    }
+
+    val book = bookRepository.findAll().first()
+
+    mockMvc.get("/api/v1/books/${book.id}/file")
+      .andExpect {
+        status { isOk() }
+        header { string("Content-Disposition", containsString(URLEncoder.encode(bookName, StandardCharsets.UTF_8.name()))) }
+      }
   }
 }
