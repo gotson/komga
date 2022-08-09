@@ -25,6 +25,7 @@ import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.ResultQuery
 import org.jooq.impl.DSL
+import org.jooq.impl.DSL.falseCondition
 import org.jooq.impl.DSL.inline
 import org.jooq.impl.DSL.noCondition
 import org.springframework.beans.factory.annotation.Value
@@ -109,37 +110,60 @@ class BookDtoDao(
     searchTerm: String?,
   ): Page<BookDto> {
     val bookIds = luceneHelper.searchEntitiesIds(searchTerm, LuceneEntity.Book)
-    val searchCondition = b.ID.inOrNoCondition(bookIds)
 
-    val count = dsl.fetchCount(
-      dsl.select(b.ID)
-        .from(b)
-        .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
-        .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
-        .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
-        .leftJoin(sd).on(b.SERIES_ID.eq(sd.SERIES_ID))
-        .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-        .apply { if (joinConditions.tag) leftJoin(bt).on(b.ID.eq(bt.BOOK_ID)) }
-        .apply { if (joinConditions.selectReadListNumber) leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID)) }
-        .apply { if (joinConditions.author) leftJoin(a).on(b.ID.eq(a.BOOK_ID)) }
-        .where(conditions)
-        .and(searchCondition)
-        .groupBy(b.ID),
-    )
+    val searchCondition = when {
+      bookIds == null -> noCondition()
+      bookIds.isEmpty() -> falseCondition()
+      // use temp table in case there are many search results
+      else -> b.ID.`in`(dsl.selectTempStrings())
+    }
+
+    // we can handle paging from the search results directly to reduce the sql query complexity
+    val (bookIdsPaged, pagingBySearch) = when {
+      bookIds.isNullOrEmpty() -> emptyList<String>() to false
+      pageable.isPaged -> bookIds.drop(pageable.pageSize * pageable.pageNumber).take(pageable.pageSize) to true
+      else -> bookIds to false
+    }
 
     val orderBy =
       pageable.sort.mapNotNull {
-        if (it.property == "relevance" && !bookIds.isNullOrEmpty()) b.ID.sortByValues(bookIds, it.isAscending)
+        if (it.property == "relevance" && !bookIds.isNullOrEmpty()) b.ID.sortByValues(bookIdsPaged, it.isAscending)
         else it.toSortField(sorts)
       }
 
-    val dtos = selectBase(userId, joinConditions)
-      .where(conditions)
-      .and(searchCondition)
-      .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-      .orderBy(orderBy)
-      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-      .fetchAndMap()
+    val (count, dtos) = transactionTemplate.execute {
+      // only insert if we know we are going to select on that condition
+      if (!bookIds.isNullOrEmpty()) dsl.insertTempStrings(batchSize, bookIds)
+
+      val count = dsl.fetchCount(
+        dsl.select(b.ID)
+          .from(b)
+          .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
+          .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
+          .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
+          .leftJoin(sd).on(b.SERIES_ID.eq(sd.SERIES_ID))
+          .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
+          .apply { if (joinConditions.tag) leftJoin(bt).on(b.ID.eq(bt.BOOK_ID)) }
+          .apply { if (joinConditions.selectReadListNumber) leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID)) }
+          .apply { if (joinConditions.author) leftJoin(a).on(b.ID.eq(a.BOOK_ID)) }
+          .where(conditions)
+          .and(searchCondition)
+          .groupBy(b.ID),
+      )
+
+      // adjust temp table if we are paging by search results
+      if (pagingBySearch) dsl.insertTempStrings(batchSize, bookIdsPaged)
+
+      val dtos = selectBase(userId, joinConditions)
+        .where(conditions)
+        .and(searchCondition)
+        .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
+        .orderBy(orderBy)
+        .apply { if (!pagingBySearch && pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+        .fetchAndMap()
+
+      count to dtos
+    }!!
 
     val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
     return PageImpl(
