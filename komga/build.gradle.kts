@@ -13,7 +13,7 @@ plugins {
   id("nu.studer.jooq") version "5.2.2" // 6.0.0 requires Java 11
   id("org.flywaydb.flyway") version "8.5.13"
   id("com.github.johnrengelman.processes") version "0.5.0"
-  id("org.springdoc.openapi-gradle-plugin") version "1.3.3" // cannot upgrade to 1.3.4 because of https://github.com/springdoc/springdoc-openapi-gradle-plugin/issues/75
+  id("org.springdoc.openapi-gradle-plugin") version "1.4.0"
   id("org.gradle.crypto.checksum") version "1.4.0"
 
   jacoco
@@ -307,5 +307,7 @@ tasks.named<nu.studer.gradle.jooq.JooqGenerate>("generateJooq") {
 
 openApi {
   outputDir.set(file("$projectDir/docs"))
-  forkProperties.set("-Dspring.profiles.active=claim")
+  customBootRun {
+    args.add("--spring.profiles.active=claim")
+  }
 }
