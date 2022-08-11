@@ -76,6 +76,7 @@
 import Vue from 'vue'
 import {SeriesDto} from '@/types/komga-series'
 import {ERROR} from '@/types/events'
+import {stripAccents} from '@/functions/string'
 
 export default Vue.extend({
   name: 'CollectionAddToDialog',
@@ -120,7 +121,7 @@ export default Vue.extend({
       } else return ''
     },
     collectionsFiltered(): CollectionDto[] {
-      return this.collections.filter((x: CollectionDto) => x.name.toLowerCase().includes(this.newCollection.toLowerCase()))
+      return this.collections.filter((x: CollectionDto) => stripAccents(x.name.toLowerCase()).includes(stripAccents(this.newCollection.toLowerCase())))
     },
   },
   methods: {

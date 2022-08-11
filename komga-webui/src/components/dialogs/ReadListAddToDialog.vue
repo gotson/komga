@@ -77,6 +77,7 @@
 import Vue from 'vue'
 import {BookDto} from '@/types/komga-books'
 import {ERROR} from '@/types/events'
+import {stripAccents} from '@/functions/string'
 
 export default Vue.extend({
   name: 'ReadListAddToDialog',
@@ -121,7 +122,7 @@ export default Vue.extend({
       } else return ''
     },
     readListsFiltered(): ReadListDto[] {
-      return this.readLists.filter((x: ReadListDto) => x.name.toLowerCase().includes(this.newReadList.toLowerCase()))
+      return this.readLists.filter((x: ReadListDto) => stripAccents(x.name.toLowerCase()).includes(stripAccents(this.newReadList.toLowerCase())))
     },
   },
   methods: {
