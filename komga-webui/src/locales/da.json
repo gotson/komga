@@ -26,6 +26,7 @@
     "email": "Email",
     "error": "Fejl",
     "ip": "IP",
+    "source": "Kilde",
     "success": "Succes",
     "user_agent": "Bruger Agent"
   },
@@ -41,7 +42,9 @@
   },
   "book_card": {
     "error": "Fejl",
+    "no_release_date": "Ingen udgivelsesdato",
     "unknown": "Skal analyseres",
+    "unread": "Ulæst",
     "unsupported": "Ikke understøttet"
   },
   "book_import": {
@@ -83,6 +86,8 @@
     "move_next": "Klik \"Næste\" igen for at gå til den næste bog.",
     "move_next_exit": "Klik \"Næste\" igen for at gå ud af læseren.",
     "move_previous": "Klik \"Forrige\" igen for at gå til den forrige bog.",
+    "notification_poster_set_book": "Bogomslaget er nu indstillet til den aktuelle side.",
+    "notification_poster_set_readlist": "Læselisteforsiden er nu sat til den aktuelle side.",
     "paged_reader_layout": {
       "double": "Dobblet sider",
       "double_no_cover": "Dobbelt sider (ingen forside)",
@@ -140,6 +145,21 @@
   },
   "common": {
     "locale_name": "Dansk"
+  },
+  "history": {
+    "title": "Historik"
+  },
+  "home": {
+    "theme": "Tema",
+    "translation": "Oversættelse"
+  },
+  "library_navigation": {
+    "browse": "Gennemse",
+    "collections": "Samlinger",
+    "readlists": "Læseliste"
+  },
+  "media_management": {
+    "title": "Mediehåndtering"
   },
   "settings_user": {
     "role_user": "Bruger"
