@@ -1,3 +1,14 @@
+## [0.157.1](https://github.com/gotson/komga/compare/v0.157.0...v0.157.1) (2022-08-18)
+
+
+### Bug Fixes
+
+* **api:** prevent SQLITE_TOOBIG book search returns many matches ([f8cc3cd](https://github.com/gotson/komga/commit/f8cc3cd4ca3236b201c66640d1f58967a8293947)), closes [#940](https://github.com/gotson/komga/issues/940)
+* encode filenames in UTF-8 when downloading ([#941](https://github.com/gotson/komga/issues/941)) ([cf98e69](https://github.com/gotson/komga/commit/cf98e69374ccc2713790cea94d77a4b79227f004))
+* translated using Weblate ([c85f267](https://github.com/gotson/komga/commit/c85f267c10fb8e594ae43c34bf51b01c30531336))
+* **webui:** iOS icon without black edges ([#949](https://github.com/gotson/komga/issues/949)) ([a3929e2](https://github.com/gotson/komga/commit/a3929e2e1ff0a0abfe78d78ebf21c9efee5fb91c))
+* **webui:** search for collection/readlist in the "add to" dialog should ignore accents ([ac67924](https://github.com/gotson/komga/commit/ac67924fbaa8163396a779c26be86338624316df)), closes [#944](https://github.com/gotson/komga/issues/944)
+
 # [0.157.0](https://github.com/gotson/komga/compare/v0.156.0...v0.157.0) (2022-07-28)
 
 
