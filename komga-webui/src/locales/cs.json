@@ -4,9 +4,11 @@
       "pageText": "{0}-{1} z {2}"
     },
     "dataIterator": {
+      "loadingText": "Načítání položek...",
       "noResultsText": "Žádné položky nenalezeny"
     },
     "dataTable": {
+      "itemsPerPageText": "Řádků na stránce:",
       "sortBy": "Seřadit podle"
     },
     "fileInput": {
@@ -25,7 +27,8 @@
     "error": "Chyba",
     "ip": "IP",
     "source": "Zdroj",
-    "success": "Úspěch"
+    "success": "Úspěch",
+    "user_agent": "Identifikace klienta"
   },
   "author_roles": {
     "colorist": "koloristé",
@@ -36,7 +39,9 @@
   },
   "book_card": {
     "error": "Chyba",
+    "no_release_date": "Bez data vydání",
     "unknown": "Čeká na analýzu",
+    "unread": "Nepřečtené",
     "unsupported": "Nepodporováno"
   },
   "book_import": {
@@ -60,17 +65,19 @@
       "error_only_import_no_errors": "Lze importovat pouze knížky bez chyb"
     },
     "table": {
+      "destination_name": "Jméno umístění",
       "file_name": "Název souboru",
       "number": "Číslo",
       "series": "Série"
     },
-    "title": "Importovat"
+    "title": "Importovat",
+    "try_another_directory": "Zkusit prohladat jiný adresář"
   },
   "bookreader": {
     "beginning_of_book": "Jsi na začátku knížky.",
     "changing_reading_direction": "Změnit směr čtení na",
     "download_current_page": "Stáhnout aktuální stránku",
-    "end_of_book": "Dostal jsi se na konec knížky.",
+    "end_of_book": "Dostali jste se na konec knížky.",
     "from_series_metadata": "z metadat série",
     "paged_reader_layout": {
       "double": "Dvojstránka",
@@ -108,15 +115,18 @@
     "shortcuts": {
       "close": "Zavřít",
       "first_page": "První stránka",
+      "fullscreen": "Spustit/ukončit režim celé obrazovky",
       "last_page": "Poslední stránka",
       "left_to_right": "Zleva doprava",
       "menus": "Nabídky",
       "next_page": "Následující stránka",
       "previous_page": "Předchozí stránka",
+      "reader_navigation": "Ovládání módu čtení",
       "right_to_left": "Zprava doleva",
       "settings": "Nastavení",
       "show_hide_help": "Ukázat/schovat nápovědu",
       "show_hide_settings": "Ukázat/schovat nastavení",
+      "show_hide_thumbnails": "Ukázat/schovat prohlížeč náhledů",
       "show_hide_toolbars": "Zobrazit/skrýt panel nástrojů",
       "vertical": "Svisle",
       "webtoon": "Webový komiks"
@@ -129,6 +139,7 @@
     "file": "SOUBOR",
     "format": "FORMÁT",
     "isbn": "ISBN",
+    "links": "ODKAZY",
     "outdated_tooltip": "Soubor této knížky se změnil, tuto knížku je potřeba znova analyzovat",
     "read_book": "Číst knihu",
     "read_incognito": "Číst anonymně",
@@ -151,21 +162,27 @@
     "title": "{name} kolekce"
   },
   "common": {
+    "age": "Stáří",
     "all_libraries": "Všechny knihovny",
     "books": "Knihy",
     "books_n": "Žádná knížka | 1 knížka | {count} knížek",
     "books_total": "{count} / {total} knížek",
     "cancel": "Zrušit",
+    "choose_image": "Vybrat obrázek",
     "close": "Zavřít",
     "collections": "Kolekce",
     "create": "Vytvořit",
     "delete": "Odstranit",
+    "disk_space": "Místo na disku",
     "dismiss": "Odejít",
     "download": "Stáhnout",
+    "drag_drop": "přetáhnout",
     "email": "Email",
+    "filename": "Jméno souboru",
     "filter_no_matches": "Zadaný filtr nemá žádné výsledky",
     "genre": "Žánr",
     "go_to_library": "Ke knihovně",
+    "go_to_readlist": "Na seznam čtení",
     "go_to_series": "K sérii",
     "library": "Knihovna",
     "locale_name": "Čeština",
@@ -174,17 +191,24 @@
     "n_selected": "{count} vybráno",
     "nothing_to_show": "Není co ukázat",
     "outdated": "Zastaralé",
+    "page": "Strana",
+    "page_number": "Číslo strany",
+    "pages": "stran",
     "pages_n": "Žádné stránky | 1 stránka | {count} stránek",
     "password": "Heslo",
+    "pending_tasks": "Žádné čekající úlohy | 1 čekající úloha | {count} čekajících úloh",
     "publisher": "Vydavatel",
     "read": "Číst",
+    "readlists": "Seznam čtení",
     "required": "Vyžadováno",
     "reset_filters": "Zresetovat Filtr",
     "roles": "Role",
+    "save_changes": "Uložit změny",
     "series": "Série",
     "tags": "Štítky",
     "unavailable": "Není k dispozici",
     "unlock_all": "Odemknout vše",
+    "url": "URL",
     "year": "rok"
   },
   "dashboard": {

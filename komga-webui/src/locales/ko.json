@@ -5,11 +5,11 @@
     },
     "dataIterator": {
       "loadingText": "아이템 로딩 중...",
-      "noResultsText": "일치하는 기록을 차지 못함"
+      "noResultsText": "일치하는 기록을 찾지 못함"
     },
     "dataTable": {
       "itemsPerPageText": "페이지 당 행 수:",
-      "sortBy": "정렬 기준"
+      "sortBy": "정렬"
     },
     "fileInput": {
       "counter": "{0} 파일",
@@ -26,7 +26,7 @@
     "email": "이메일",
     "error": "오류",
     "ip": "IP",
-    "source": "출처",
+    "source": "소스",
     "success": "성공",
     "user_agent": "사용자 에이전트"
   },
@@ -42,7 +42,9 @@
   },
   "book_card": {
     "error": "오류",
+    "no_release_date": "출시일 미확인",
     "unknown": "분석 예정",
+    "unread": "읽지 않음",
     "unsupported": "미지원"
   },
   "book_import": {
@@ -53,7 +55,7 @@
     "field_import_path": "폴더에서 가져오기",
     "info_part1": "이 화면에서 기존 라이브러리 외부에 있는 파일을 가져올 수 있습니다. 기존 시리즈로만 파일을 가져올 수 있으며, 이 경우 Komga는 선택한 시리즈의 디렉토리로 파일을 이동하거나 복사합니다.",
     "info_part2": "책의 번호를 선택하고 해당 번호를 가진 책이 이미 있는 경우 두 책을 비교할 수 있습니다. 책을 가져오기로 결정하면 Komga는 기존 책을 새 책으로 업그레이드하여 이전 파일을 새 파일로 효과적으로 교체합니다.",
-    "no_files_found": "파일을 찾을 수 없습니다",
+    "no_files_found": "파일이 없습니다",
     "notification": {
       "go_to_book": "책으로 이동",
       "import_failure": "책 가져오기 실패: {file}",
@@ -82,11 +84,14 @@
     "cycling_scale": "비율 전환",
     "cycling_side_padding": "여백 전환",
     "download_current_page": "현재 페이지 다운로드",
-    "end_of_book": "책에 마지막 페이지입니다.",
+    "end_of_book": "책의 마지막 페이지입니다.",
     "from_series_metadata": "시리즈 메타 데이터에서",
-    "move_next": "다음 책으로 이동하려면 \"다음\"을 다시 한번 눌러주세요.",
+    "move_next": "다음 책으로 이동하려면 다음 페이지를 한번 더 누르세요.",
     "move_next_exit": "읽기를 종료하려면 \"다음\"을 다시 한번 눌러주세요.",
     "move_previous": "이전 책으로 이동하려면 \"이전\"을 다시 한번 눌러주세요.",
+    "notification_poster_set_book": "현재 페이지를 책 표지로 설정했습니다.",
+    "notification_poster_set_readlist": "현재 페이지를 읽기 목록의 표지로 설정했습니다.",
+    "notification_poster_set_series": "현재 페이지를 시리즈 표지로 설정했습니다.",
     "paged_reader_layout": {
       "double": "두쪽 보기",
       "double_no_cover": "두쪽 보기 (표지 포함)",
@@ -97,11 +102,14 @@
       "continuous_original": "원래 크기",
       "continuous_width": "너비 맞춤",
       "height": "높이 맞춤",
-      "original": "원래 크기",
+      "original": "원본 크기",
       "screen": "화면에 맞춤",
       "width": "너비 맞춤",
       "width_shrink_only": "너비 맞춤(축소만 해당)"
     },
+    "set_current_page_as_book_poster": "현재 페이지를 책 표지로 설정",
+    "set_current_page_as_readlist_poster": "현재 페이지를 읽기 목록의 표지로 설정",
+    "set_current_page_as_series_poster": "현재 페이지를 시리즈 표지로 설정",
     "settings": {
       "always_fullscreen": "항상 전체 화면",
       "animate_page_transitions": "페이지 넘김 효과",
@@ -117,7 +125,7 @@
       "page_layout": "페이지 배치",
       "paged": "페이지 읽기 설정",
       "reading_mode": "읽기 방식",
-      "scale_type": "비율 종류",
+      "scale_type": "스케일 종류",
       "side_padding": "여백 추가",
       "side_padding_none": "없음",
       "webtoon": "웹툰 읽기 설정"
@@ -128,6 +136,7 @@
       "cycle_scale": "비율 전환",
       "cycle_side_padding": "여백 전환",
       "first_page": "첫 페이지",
+      "fullscreen": "전체 화면 끄기/켜기",
       "last_page": "마지막 페이지",
       "left_to_right": "왼쪽에서 오른쪽",
       "menus": "메뉴",
@@ -140,7 +149,7 @@
       "show_hide_settings": "설정 메뉴 켜기/끄기",
       "show_hide_thumbnails": "썸네일 탐색기 켜기/끄기",
       "show_hide_toolbars": "툴바 켜기/끄기",
-      "vertical": "세로",
+      "vertical": "수직",
       "webtoon": "웹툰"
     },
     "tooltip_incognito": "읽기 진행률은 저장되지 않습니다"
@@ -149,8 +158,9 @@
     "comment": "논평",
     "download_file": "파일 다운로드",
     "file": "파일",
-    "format": "파일 형식",
+    "format": "형식",
     "isbn": "ISBN",
+    "links": "링크",
     "navigation_within_readlist": "읽기 목록 내 탐색: {name}",
     "outdated_tooltip": "이 책의 파일이 변경되었으므로 이 책을 다시 분석해야 합니다",
     "read_book": "책 읽기",
@@ -176,18 +186,23 @@
     "title": "{name} 모음집"
   },
   "common": {
+    "age": "연령",
     "all_libraries": "모든 서재",
-    "books": "권",
+    "books": "도서",
     "books_n": "없음 | 1 권 | {count} 권",
     "books_total": "{count} / {total} 권",
     "cancel": "취소",
+    "choose_image": "이미지 선택",
     "close": "닫기",
     "collections": "모음집",
     "create": "만들기",
     "delete": "삭제",
+    "disk_space": "디스크 공간",
     "dismiss": "닫기",
     "download": "다운로드",
+    "drag_drop": "드래그 앤 드롭",
     "email": "이메일",
+    "filename": "파일 이름",
     "filter_no_matches": "선택된 필터에 일치하는 항목이 없습니다",
     "genre": "장르",
     "go_to_library": "서재로 가기",
@@ -197,9 +212,11 @@
     "locale_name": "한국어",
     "locale_rtl": "false",
     "lock_all": "모두 잠금",
-    "n_selected": "{count}선택 됨",
+    "n_selected": "{count} 선택됨",
     "nothing_to_show": "내용 없음",
     "outdated": "구식의",
+    "page": "페이지",
+    "page_number": "페이지 번호",
     "pages": "페이지",
     "pages_n": "페이지 없음 | 1 페이지 | {count} 페이지",
     "password": "비밀번호",
@@ -207,13 +224,16 @@
     "publisher": "출판사",
     "read": "읽기",
     "readlists": "읽기 목록",
-    "required": "요청",
+    "required": "필요",
     "reset_filters": "필터 재설정",
     "roles": "역할",
+    "save_changes": "변경 사항 저장",
     "series": "시리즈",
+    "sidecars": "사이드카",
     "tags": "태그",
-    "unavailable": "이용할 수 없는",
-    "unlock_all": "모두 잠금 해제",
+    "unavailable": "사용할 수 없음",
+    "unlock_all": "전체 잠금 해제",
+    "url": "URL",
     "use_filter_panel_to_change_filter": "필터패널에서 선택을 바꿔보세요",
     "year": "년"
   },
@@ -278,8 +298,8 @@
       "confirm_delete_multiple": "네, {count}권의 책 및 그 파일들을 삭제합니다",
       "dialog_title": "책 삭제",
       "dialog_title_multiple": "책 삭제",
-      "warning_html": "<b>{name}</b>은(는) 저장된 미디어 파일들과 함께 이 서버에서 제거될 것입니다. <b>이 작업은 돌이킬 수 없습니다.</b> 계속하시겠습니까?",
-      "warning_multiple_html": "{count}권의 책들은 저장된 미디어 파일들과 함께 이 서버에서 제거될 것입니다. <b>이 작업은 돌이킬 수 없습니다.</b> 계속하시겠습니까?"
+      "warning_html": "<b>{name}</b>은(는) 저장된 미디어 파일들과 함께 이 서버에서 제거될 것입니다. <b>이 작업은 되돌릴 수 없습니다.</b> 계속하시겠습니까?",
+      "warning_multiple_html": "{count}권의 책들은 저장된 미디어 파일들과 함께 이 서버에서 제거될 것입니다. <b>이 작업은 되돌릴 수 없습니다.</b> 계속하시겠습니까?"
     },
     "delete_collection": {
       "button_confirm": "삭제",
@@ -287,33 +307,51 @@
       "confirm_delete_multiple": "네, {count}개의 모음집을 삭제합니다",
       "dialog_title": "모음집 삭제",
       "dialog_title_multiple": "모음집 삭제",
-      "warning_html": "모음집 <b>{name}</b> 이(가) 이 서버에서 제거됩니다. 미디어 파일은 영향을 받지 않습니다. <b>이 일은 되돌릴 수 없습니다.</b> 계속 하시겠습니까?",
-      "warning_multiple_html": "{count}개의 모음집이 이 서버에서 제거됩니다. 미디어 파일은 영향을 받지 않습니다. <b>이 작업은 돌이킬 수 없습니다.</b> 계속하시겠습니까?"
+      "warning_html": "모음집 <b>{name}</b> 이(가) 이 서버에서 제거됩니다. 미디어 파일은 영향을 받지 않습니다. <b>이 일은 되돌릴 수 없습니다.</b> 계속하시겠습니까?",
+      "warning_multiple_html": "{count}개의 모음집이 이 서버에서 제거됩니다. 미디어 파일은 영향을 받지 않습니다. <b>이 작업은 되돌릴 수 없습니다.</b> 계속하시겠습니까?"
     },
     "delete_library": {
       "button_confirm": "삭제",
       "confirm_delete": "네, 서재 \"{name}\" 을(를) 삭제합니다",
       "title": "서재 삭제",
-      "warning_html": "서재 <b>{name}</b> 이(가) 이 서버에서 제거됩니다. 미디어 파일은 영향을 받지 않습니다. <b>이 일은 되돌릴 수 없습니다.</b> 계속 하시겠습니까?"
+      "warning_html": "서재 <b>{name}</b> 이(가) 이 서버에서 제거됩니다. 미디어 파일은 영향을 받지 않습니다. <b>이 일은 되돌릴 수 없습니다.</b> 계속하시겠습니까?"
     },
     "delete_readlist": {
       "button_confirm": "삭제",
-      "confirm_delete": "예, 읽기 목록 \"{name}\"을 삭제합니다",
+      "confirm_delete": "네, 읽기 목록 \"{name}\"을(를) 삭제합니다",
+      "confirm_delete_multiple": "네, {count}개의 읽기 목록을 삭제합니다",
       "dialog_title": "읽기 목록 삭제",
-      "warning_html": "읽기 목록 <b>{name}</b> 이(가) 이 서버에서 제거됩니다. 미디어 파일은 영향을 받지 않습니다. <b>이 일은 되돌릴 수 없습니다.</b> 계속 하시겠습니까?"
+      "dialog_title_multiple": "읽기 목록 삭제",
+      "warning_html": "읽기 목록 <b>{name}</b> 이(가) 이 서버에서 제거됩니다. 미디어 파일은 영향을 받지 않습니다. <b>이 일은 되돌릴 수 없습니다.</b> 계속하시겠습니까?",
+      "warning_multiple_html": "{count}개의 읽기 목록이 서버에서 제거됩니다. 미디어 파일은 영향을 받지 않습니다. <b>이 일은 되돌릴 수 없습니다.</b> 계속하시겠습니까?"
+    },
+    "delete_series": {
+      "button_confirm": "삭제",
+      "confirm_delete": "네, 시리즈 \"{name}\"와(과) 파일을 삭제합니다",
+      "confirm_delete_multiple": "네, {count}개의 시리즈와 파일을 삭제합니다",
+      "dialog_title": "시리즈 삭제",
+      "warning_html": "시리즈 <b>{name}</b> 이(가) 저장된 미디어 파일과 함께 이 서버에서 제거됩니다. <b>이 일은 되돌릴 수 없습니다.</b> 계속하시겠습니까?",
+      "warning_multiple_html": "{count}개의 시리즈가 저장된 미디어 파일과 함께 이 서버에서 제거됩니다. <b>이 일은 되돌릴 수 없습니다.</b> 계속하시겠습니까?"
     },
     "delete_user": {
       "button_confirm": "삭제",
       "confirm_delete": "네, 사용자 {name}를 삭제합니다",
       "dialog_title": "사용자 삭제",
-      "warning_html": "사용자 <b>{name}</b> 가 서버에서 삭제됩니다. 삭제 시 <b>되돌릴 수 없습니다.</b> 계속하시겠습니까?"
+      "warning_html": "사용자 <b>{name}</b> 가 서버에서 삭제됩니다. <b>이 일은 되돌릴 수 없습니다.</b> 계속하시겠습니까?"
     },
     "edit_books": {
+      "add_author_role_error_duplicate": "이미 존재함",
       "authors_notice_multiple_edit": "다수의 저자를 일괄 편집합니다. 기존 저자가 수정될 수 있습니다.",
       "button_cancel": "취소",
-      "button_confirm": "변경사항 저장",
+      "button_confirm": "변경 사항 저장",
+      "dialog_title_multiple": "{count}권 편집",
+      "dialog_title_single": "{book} 편집",
       "field_isbn": "ISBN",
       "field_isbn_error": "ISBN은 13자리여야 합니다",
+      "field_link_label": "라벨",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "http 또는 https 이어야 합니다",
+      "field_link_url_error_url": "유효한 URL이어야 합니다",
       "field_number": "번호",
       "field_number_sort": "분류 번호",
       "field_number_sort_hint": "십진수를 사용할 수 있습니다",
@@ -322,26 +360,33 @@
       "field_summary": "요약",
       "field_tags": "태그",
       "field_title": "제목",
-      "tab_authors": "작가",
+      "tab_authors": "저자",
       "tab_general": "일반",
+      "tab_links": "링크",
+      "tab_poster": "표지",
       "tab_tags": "태그",
       "tags_notice_multiple_edit": "다수의 태그를 일괄 편집합니다. 기존 태그가 수정될 수 있습니다."
     },
     "edit_collection": {
       "button_cancel": "취소",
-      "button_confirm": "변경사항 저장",
+      "button_confirm": "변경 사항 저장",
       "dialog_title": "모음집 수정",
-      "field_manual_ordering": "수동 순서 정렬",
-      "label_ordering": "기본적으로 모음집의 열은 이름순으로 정렬됩니다. 수동 순서 정렬을 활성화하여 사용자 고유의 순서를 정의할 수 있습니다."
+      "field_manual_ordering": "수동 정렬",
+      "label_ordering": "기본적으로 모음집의 열은 이름순으로 정렬됩니다. 수동 순서 정렬을 활성화하여 사용자 고유의 순서를 정의할 수 있습니다.",
+      "tab_general": "일반",
+      "tab_poster": "표지"
     },
     "edit_library": {
-      "button_browse": "찾기",
+      "button_browse": "찾아보기",
       "button_cancel": "취소",
       "button_confirm_add": "추가",
-      "button_confirm_edit": "수정",
+      "button_confirm_edit": "편집",
       "button_next": "다음",
       "dialog_title_add": "서재 추가하기",
       "dialot_title_edit": "서재 편집",
+      "field_analysis_analyze_dimensions": "페이지 크기 분석",
+      "field_analysis_hash_files": "파일 해시 계산",
+      "field_analysis_hash_pages": "페이지 해시 계산",
       "field_convert_to_cbz": "CBZ로 자동 변환",
       "field_import_barcode_isbn": "ISBN 바코드",
       "field_import_comicinfo_book": "책 메타데이터",
@@ -361,36 +406,75 @@
       "field_series_cover": "시리즈 표지",
       "file_browser_dialog_button_confirm": "선택",
       "file_browser_dialog_title": "서재의 루트 폴더",
+      "label_analysis": "분석",
+      "label_file_management": "파일 관리",
+      "label_import_barcode_isbn": "바코드로 ISBN 가져오기",
       "label_import_comicinfo": "ComicInfo.xml 파일이 포함된 CBR/CBZ의 메타데이터 가져오기",
       "label_import_epub": "EPUB 파일에서 메타데이터 가져오기",
+      "label_import_local": "로컬 미디어 에셋 가져오기",
+      "label_import_mylar": "Mylar에서 생성된 메타데이터 가져오기",
       "label_scanner": "스캐너",
+      "label_series_cover": "시리즈 표지",
       "tab_general": "일반",
-      "tab_options": "옵션"
+      "tab_metadata": "메타데이터",
+      "tab_options": "옵션",
+      "tooltip_scanner_force_modified_time": "라이브러리가 구글 드라이브에 있으면 활성화",
+      "tooltip_use_resources": "큰 라이브러리 또는 저사양 하드웨어에서 많은 자원을 소모할 수 있음"
+    },
+    "edit_readlist": {
+      "button_cancel": "취소",
+      "button_confirm": "변경 사항 저장",
+      "dialog_title": "읽기 목록 수정",
+      "field_name": "이름",
+      "field_summary": "요약",
+      "tab_general": "일반",
+      "tab_poster": "표지"
     },
     "edit_series": {
       "button_cancel": "취소",
-      "button_confirm": "변경 저장",
+      "button_confirm": "변경 사항 저장",
+      "dialog_title_multiple": "{count} 시리즈 편집",
+      "dialog_title_single": "{series} 편집",
       "field_age_rating": "연령 등급",
       "field_age_rating_error": "연령 등급은 0 이상이어야 합니다",
       "field_genres": "장르",
+      "field_labels": "라벨",
       "field_language": "언어",
       "field_language_hint": "IETF BCP 47 언어 태그",
       "field_publisher": "출판사",
       "field_reading_direction": "읽기 방향",
       "field_sort_title": "정렬 제목",
       "field_status": "상태",
-      "field_summary": "개요",
+      "field_summary": "요약",
       "field_tags": "태그",
       "field_title": "제목",
+      "field_total_book_count": "총 도서 수",
+      "field_total_book_count_error": "총 도서 수는 1 이상이어야 합니다",
+      "mixed": "MIXED",
       "tab_general": "일반",
       "tab_poster": "표지",
+      "tab_sharing": "공유",
       "tab_tags": "태그",
       "tags_notice_multiple_edit": "다수의 시리즈를 일괄 편집합니다. 기존 태그가 수정될 수 있습니다."
     },
     "edit_user": {
       "button_cancel": "취소",
-      "button_confirm": "변경 저장",
-      "dialog_title": "사용자 수정"
+      "button_confirm": "변경 사항 저장",
+      "dialog_title": "사용자 수정",
+      "label_roles_for": "{name}의 역할"
+    },
+    "edit_user_restrictions": {
+      "age_restriction": {
+        "allow_under": "설정한 연령 미만만 허용",
+        "exclude_over": "설정한 연령 이상도 허용",
+        "none": "제한 없음"
+      },
+      "edit_restrictions_for": "{name} 제한 편집",
+      "label_age_restriction": "연령 제한",
+      "label_allow_only_labels": "설정한 라벨만 허용",
+      "label_exclude_labels": "설정한 라벨 제외",
+      "tab_content_restrictions": "콘텐츠 제한",
+      "tab_shared_libraries": "공유 라이브러리"
     },
     "empty_trash": {
       "body": "기본적으로 미디어 서버는 미디어에 대한 정보를 즉시 제거하지 않습니다. 이 방법은 드라이브 연결이 일시적으로 끊어질 때 도움이 됩니다. 라이브러리의 휴지통을 비우면 누락된 미디어에 대한 모든 정보가 삭제됩니다.",
@@ -403,6 +487,16 @@
       "dialog_title_default": "파일 탐색기",
       "parent_directory": "상위 폴더"
     },
+    "filename_chooser": {
+      "button_choose": "선택",
+      "field_destination_filename": "대상 파일",
+      "label_source_filename": "소스 파일",
+      "table": {
+        "existing_file": "기존 파일",
+        "order": "순서"
+      },
+      "title": "대상 파일"
+    },
     "password_change": {
       "button_cancel": "취소",
       "button_confirm": "비밀번호 변경",
@@ -411,14 +505,112 @@
       "field_new_password_error": "새로운 비밀번호가 필요합니다.",
       "field_repeat_password": "새로운 비밀번호 반복 입력",
       "field_repeat_password_error": "비밀번호는 동일해야 합니다."
+    },
+    "refresh_library_metadata": {
+      "body": "라이브러리의 모든 미디어 파일에 대한 메타데이터를 새로 고칩니다. 라이브러리 크기에 따라 시간이 오래 걸릴 수 있습니다.",
+      "button_confirm": "새로고침",
+      "title": "라이브러리 메타데이터 새로고침"
+    },
+    "series_picker": {
+      "label_search_series": "시리즈 검색",
+      "title": "시리즈 선택"
+    },
+    "server_stop": {
+      "button_confirm": "중지",
+      "confirmation_message": "정말로 Komga를 중지하시겠습니까?",
+      "dialog_title": "시스템 종료"
+    },
+    "shortcut_help": {
+      "label_description": "설명",
+      "label_key": "키"
+    },
+    "transient_book_details": {
+      "label_candidate": "후보",
+      "label_existing": "기존",
+      "label_format": "포맷",
+      "label_name": "이름",
+      "label_pages": "페이지",
+      "label_size": "크기",
+      "pages_table": {
+        "filename": "파일 이름",
+        "height": "높이",
+        "index": "색인",
+        "media_type": "미디어 유형",
+        "size": "크기",
+        "width": "너비"
+      },
+      "title": "도서 세부 정보",
+      "title_comparison": "도서 비교"
+    },
+    "transient_book_viewer": {
+      "label_candidate": "후보",
+      "label_existing": "기존",
+      "page_of_pages": "{page} / {pages}",
+      "title": "도서 검사",
+      "title_comparison": "도서 비교"
     }
   },
+  "duplicate_pages": {
+    "action_delete_auto": "자동 삭제",
+    "action_delete_manual": "수동 삭제",
+    "action_delete_matches": "일치 삭제",
+    "action_ignore": "무시",
+    "delete_to_save": "삭제하여 {size} 절약",
+    "deleted_count": "{count}회 삭제됨",
+    "filter": {
+      "count": "횟수",
+      "delete_count": "삭제 횟수",
+      "delete_size": "절약된 공간",
+      "size": "크기",
+      "total_size": "총 크기"
+    },
+    "info": "중복 페이지를 삭제하면 원본 파일을 수정됩니다. 자동 삭제를 사용하기 전에 파일을 백업하고 수동 삭제를 사용하세요.",
+    "matches_n": "일치 항목 없음 | 1 항목 일치 | {count} 항목 일치",
+    "saved_size": "{size} 절약됨",
+    "title": "중복 페이지",
+    "unknown_size": "알 수 없는 크기"
+  },
+  "duplicates": {
+    "file_hash": "파일 해시",
+    "size": "크기",
+    "title": "중복 파일",
+    "url": "URL"
+  },
   "enums": {
+    "copy_mode": {
+      "HARDLINK": "하드 링크/파일 복사",
+      "MOVE": "파일 이동"
+    },
+    "historical_event_type": {
+      "BookConverted": "책 변환됨",
+      "BookFileDeleted": "책 파일 삭제됨",
+      "BookImported": "책 가져옴",
+      "DuplicatePageDeleted": "중복 페이지 삭제됨",
+      "SeriesFolderDeleted": "시리즈 폴더 삭제됨"
+    },
+    "media_status": {
+      "ERROR": "오류",
+      "OUTDATED": "오래됨",
+      "READY": "준비",
+      "UNKNOWN": "알 수 없음",
+      "UNSUPPORTED": "미지원"
+    },
+    "page_hash_action": {
+      "DELETE_AUTO": "자동 삭제",
+      "DELETE_MANUAL": "수동 삭제",
+      "IGNORE": "무시"
+    },
     "reading_direction": {
       "LEFT_TO_RIGHT": "왼쪽에서 오른쪽",
       "RIGHT_TO_LEFT": "오른쪽에서 왼쪽",
-      "VERTICAL": "세로",
+      "VERTICAL": "수직으로",
       "WEBTOON": "웹툰"
+    },
+    "series_cover": {
+      "FIRST": "처음",
+      "FIRST_UNREAD_OR_FIRST": "읽지 않은 항목의 처음",
+      "FIRST_UNREAD_OR_LAST": "읽지 않은 항목의 마지막",
+      "LAST": "마지막"
     },
     "series_status": {
       "ABANDONED": "연재 중단",
@@ -427,9 +619,39 @@
       "ONGOING": "연재"
     }
   },
+  "error_codes": {
+    "ERR_1000": "분석 중인 파일 접근 불가",
+    "ERR_1001": "지원하지 않는 미디어 유형",
+    "ERR_1002": "암호화된 RAR 압축 미지원",
+    "ERR_1003": "솔리드 RAR 압축 미지원",
+    "ERR_1004": "분할 RAR 압축 미지원",
+    "ERR_1005": "책 분석 중 알 수 없는 오류",
+    "ERR_1006": "책에 페이지가 포함되지 않음",
+    "ERR_1007": "일부 항목을 분석할 수 없음",
+    "ERR_1008": "책 항목을 가져오는 중 알 수 없는 오류",
+    "ERR_1009": "같은 이름의 읽기 목록이 이미 존재합니다",
+    "ERR_1010": "요청한 읽기 목록에 일치하는 책이 없습니다",
+    "ERR_1011": "시리즈에 대한 고유 일치 항목 없음",
+    "ERR_1012": "시리즈에 대한 일치 항목 없음",
+    "ERR_1013": "시리즈 내 도서 번호에 대한 고유 일치 항목 없음",
+    "ERR_1014": "시리즈 내 도서 번호에 대한 일치 항목 없음",
+    "ERR_1015": "ComicRack 읽기 목록 역직렬화 오류",
+    "ERR_1016": "디렉토리가 아니거나 접근 불가",
+    "ERR_1017": "기존 라이브러리의 일부인 폴더를 스캔할 수 없습니다",
+    "ERR_1018": "파일을 찾을 수 없음",
+    "ERR_1019": "기존 라이브러리의 일부인 파일을 가져올 수 없습니다",
+    "ERR_1020": "업그레이드할 책은 제공된 시리즈에 속하지 않습니다",
+    "ERR_1021": "대상 파일이 이미 존재합니다",
+    "ERR_1022": "새로 가져온 책을 스캔할 수 업습니다",
+    "ERR_1023": "읽기 목록에 이미 있는 책",
+    "ERR_1024": "OAuth2 로그인 오류: 이메일 속성 없음",
+    "ERR_1025": "OAuth2 로그인 오류: 해당 이메일에 로컬 사용자 없음",
+    "ERR_1026": "OpenID Connect 로그인 오류: 이메일이 확인되지 않음"
+  },
   "filter": {
     "age_rating": "연령 등급",
     "age_rating_none": "없음",
+    "complete": "완결",
     "genre": "장르",
     "in_progress": "읽는 중",
     "language": "언어",
@@ -445,12 +667,22 @@
     "filter": "필터",
     "sort": "정렬"
   },
+  "history": {
+    "header": {
+      "book": "도서",
+      "date": "날짜",
+      "details": "세부",
+      "series": "시리즈",
+      "type": "유형"
+    },
+    "title": "히스토리"
+  },
   "home": {
     "theme": "테마",
-    "translation": "언어"
+    "translation": "번역"
   },
   "library_navigation": {
-    "browse": "탐색",
+    "browse": "찾아보기",
     "collections": "모음집",
     "readlists": "읽기 목록",
     "recommended": "추천"
@@ -463,11 +695,14 @@
   "media_analysis": {
     "comment": "설명",
     "media_analysis": "미디어 분석",
-    "media_type": "미디어 타입",
+    "media_type": "미디어 유형",
     "name": "이름",
-    "size": "용량",
+    "size": "크기",
     "status": "상태",
     "url": "URL"
+  },
+  "media_management": {
+    "title": "미디어 관리"
   },
   "menu": {
     "add_to_collection": "모음집에 추가",
@@ -475,7 +710,7 @@
     "analyze": "분석",
     "bulk_edit_metadata": "메타데이터 일괄 수정",
     "delete": "삭제",
-    "deselect_all": "전체 선택 취소",
+    "deselect_all": "모두 선택 취소",
     "download_readlist": "읽기 목록 다운로드",
     "download_series": "시리즈 다운로드",
     "edit": "편집",
@@ -486,6 +721,15 @@
     "refresh_metadata": "메타데이터 새로고침",
     "scan_library_files": "서재 파일 스캔",
     "select_all": "전체 선택"
+  },
+  "metrics": {
+    "library_books": "서재당 도서",
+    "library_disk_space": "서재 디스크 공간",
+    "library_series": "서재당 시리즈",
+    "library_sidecars": "서재당 사이드카",
+    "tasks_executed": "작업 실행됨",
+    "tasks_total_time": "총 작업 시간",
+    "title": "측정"
   },
   "navigation": {
     "home": "홈",
@@ -502,7 +746,8 @@
     "more": "더 보기"
   },
   "readlists_expansion_panel": {
-    "manage_readlist": "읽기 목록 관리"
+    "manage_readlist": "읽기 목록 관리",
+    "title": "{name} 읽기 목록"
   },
   "search": {
     "no_results": "검색 결과 없음",
@@ -511,11 +756,17 @@
     "search_results_for": "\"{name}\"검색 결과"
   },
   "searchbox": {
-    "no_results": "결과 없음"
+    "in_library": "{library} 에서",
+    "no_results": "결과 없음",
+    "search_all": "모두 검색…"
   },
   "server": {
     "server_management": {
+      "button_cancel_all_tasks": "모든 작업 취소",
+      "button_empty_trash": "모든 서재의 휴지통 비우기",
+      "button_scan_libraries": "모든 서재 스캔",
       "button_shutdown": "시스템 종료",
+      "notification_tasks_cancelled": "취소할 작업 없음 | 작업 취소됨 | {count} 개의 작업 취소됨",
       "section_title": "서버 관리"
     },
     "tab_title": "서버"
@@ -525,24 +776,39 @@
   },
   "settings_user": {
     "change_password": "비밀번호 변경",
+    "edit_restrictions": "제한 편집",
     "edit_user": "사용자 수정",
+    "latest_activity": "마지막 활동: {date}",
+    "no_recent_activity": "최근 활동 없음",
     "role_administrator": "관리자",
     "role_user": "사용자"
   },
   "sort": {
+    "books_count": "도서의 수",
     "date_added": "추가된 날짜",
     "date_updated": "갱신된 날짜",
     "file_name": "파일명",
     "file_size": "파일 크기",
     "folder_name": "폴더 이름",
-    "name": "제목",
+    "name": "이름",
     "number": "번호",
     "release_date": "발매일"
   },
   "theme": {
-    "dark": "어두운",
-    "light": "밝은",
+    "dark": "어두움",
+    "light": "밝음",
     "system": "시스템"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "삭제",
+    "tooltip_generated": "생성된 아트워크",
+    "tooltip_mark_as_selected": "선택한 것으로 표시",
+    "tooltip_selected": "선택됨",
+    "tooltip_sidecar": "로컬 아트워크",
+    "tooltip_to_be_deleted": "삭제 예정",
+    "tooltip_to_be_uploaded": "업로드 예정",
+    "tooltip_too_big": "파일이 너무 큽니다!",
+    "tooltip_user_uploaded": "사용자 업로드"
   },
   "user_roles": {
     "ADMIN": "관리자",
@@ -551,7 +817,11 @@
     "USER": "사용자"
   },
   "users": {
+    "authentication_activity": "접근 내역",
     "users": "사용자"
+  },
+  "validation": {
+    "zero_or_more": "0 또는 그 이상이어야 함"
   },
   "welcome": {
     "add_library": "서재 추가",
