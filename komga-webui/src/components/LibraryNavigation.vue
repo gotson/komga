@@ -3,6 +3,7 @@
     <v-bottom-navigation
       v-if="show && bottomNavigation"
       grow color="primary"
+      :app="$vuetify.breakpoint.smAndUp"
       :fixed="bottomNavigation"
     >
       <v-btn v-if="showRecommended"
