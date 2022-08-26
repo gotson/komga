@@ -13,6 +13,9 @@ docker buildx build \
     --tag gotson/komga:$DOCKER_CHANNEL \
     --tag gotson/komga:$VERSION_MAJOR.x \
     --tag gotson/komga:$1 \
+    --tag ghcr.io/gotson/komga:$DOCKER_CHANNEL \
+    --tag ghcr.io/gotson/komga:$VERSION_MAJOR.x \
+    --tag ghcr.io/gotson/komga:$1 \
     --file ./Dockerfile . \
     --push
 
@@ -23,5 +26,8 @@ docker buildx build \
     --tag gotson/komga:$DOCKER_CHANNEL-legacy \
     --tag gotson/komga:$VERSION_MAJOR.x-legacy \
     --tag gotson/komga:$1-legacy \
+    --tag ghcr.io/gotson/komga:$DOCKER_CHANNEL-legacy \
+    --tag ghcr.io/gotson/komga:$VERSION_MAJOR.x-legacy \
+    --tag ghcr.io/gotson/komga:$1-legacy \
     --file ./Dockerfile.legacy . \
     --push
