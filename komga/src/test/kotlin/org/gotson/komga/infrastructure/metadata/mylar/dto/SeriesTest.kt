@@ -30,7 +30,7 @@ class SeriesTest(
       assertThat(publisher).isEqualTo("DC Comics")
       assertThat(imprint).isNull()
       assertThat(name).isEqualTo("American Vampire 1976")
-      assertThat(comicId).isEqualTo("130865")
+      assertThat(comicid).isEqualTo("130865")
       assertThat(year).isEqualTo(2020)
       assertThat(descriptionText).isEqualTo("Nine issue mini-series, the closing chapter of American Vampire")
       assertThat(descriptionFormatted).isEqualTo("Nine issue mini-series, the closing chapter of American Vampire")
@@ -55,7 +55,7 @@ class SeriesTest(
       assertThat(publisher).isEqualTo("IDW Publishing")
       assertThat(imprint).isNull()
       assertThat(name).isEqualTo("Usagi Yojimbo")
-      assertThat(comicId).isEqualTo("119731")
+      assertThat(comicid).isEqualTo("119731")
       assertThat(year).isEqualTo(2019)
       assertThat(descriptionText).isNull()
       assertThat(descriptionFormatted).isNull()
@@ -65,6 +65,31 @@ class SeriesTest(
       assertThat(comicImage).isEqualTo("https://comicvine1.cbsistatic.com/uploads/scale_large/6/67663/6974029-01a.jpg")
       assertThat(totalIssues).isEqualTo(20)
       assertThat(publicationRun).isEqualTo("June 2019 - Present")
+      assertThat(status).isEqualTo(Status.Ended)
+    }
+  }
+
+  @Test
+  fun `given yet another valid json file when deserializing then properties are available`() {
+    val file = ClassPathResource("mylar/series-gh961.json")
+    val seriesJson = mapper.readValue<Series>(file.url)
+
+    assertThat(seriesJson.metadata).isNotNull
+    with(seriesJson.metadata) {
+      assertThat(type).isEqualTo("comicSeries")
+      assertThat(publisher).isEqualTo("Kodansha Comics USA")
+      assertThat(imprint).isNull()
+      assertThat(name).isEqualTo("Vinland Saga")
+      assertThat(comicid).isEqualTo("69157")
+      assertThat(year).isEqualTo(2013)
+      assertThat(descriptionText).isEqualTo("English translation of Vinland Saga (ヴィンランド・サガ).Vinland Saga is the first series from Kodansha Comics USA to be released in hardcovers, each collection collects and translates two volumes of the original Japanese manga")
+      assertThat(descriptionFormatted).isEqualTo("English translation of Vinland Saga (ヴィンランド・サガ).Vinland Saga is the first series from Kodansha Comics USA to be released in hardcovers, each collection collects and translates two volumes of the original Japanese manga")
+      assertThat(volume).isNull()
+      assertThat(bookType).isEqualTo("Print")
+      assertThat(ageRating).isNull()
+      assertThat(comicImage).isEqualTo("https://comicvine.gamespot.com/a/uploads/scale_large/6/67663/3439178-01.jpg")
+      assertThat(totalIssues).isEqualTo(12)
+      assertThat(publicationRun).isEqualTo("November 2013 - December 2021")
       assertThat(status).isEqualTo(Status.Ended)
     }
   }

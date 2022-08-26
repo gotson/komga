@@ -15,7 +15,7 @@ data class MylarMetadata(
   val name: String,
 
   @field:JsonAlias("cid")
-  val comicId: String,
+  val comicid: String,
 
   val year: Int,
 
