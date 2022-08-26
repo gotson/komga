@@ -45,7 +45,7 @@ jobs:
     name: Test webui builds
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: '16'
           cache: 'npm'
@@ -69,7 +69,7 @@ jobs:
     if: ${{ github.event_name == 'workflow_dispatch' }}
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: '16'
           cache: 'npm'
