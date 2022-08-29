@@ -29,13 +29,13 @@ jobs:
           arguments: build
       - name: Upload Unit Test Results
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: test-results-jdk-${{ matrix.java }}
           path: komga/build/test-results/
       - name: Upload Unit Test Reports
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: test-reports-jdk-${{ matrix.java }}
           path: komga/build/reports/tests/
