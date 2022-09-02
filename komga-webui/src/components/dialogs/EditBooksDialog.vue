@@ -412,6 +412,7 @@ import {helpers, requiredIf} from 'vuelidate/lib/validators'
 import {BookDto, BookThumbnailDto} from '@/types/komga-books'
 import IsbnVerify from '@saekitominaga/isbn-verify'
 import {isMatch} from 'date-fns'
+import {debounce} from 'lodash'
 import {ERROR, ErrorEvent} from '@/types/events'
 import DropZone from '@/components/DropZone.vue'
 import ThumbnailCard from '@/components/ThumbnailCard.vue'
@@ -490,7 +491,7 @@ export default Vue.extend({
       deep: true,
       async handler(val: []) {
         const index = val.findIndex(x => x !== null)
-        this.authorSearchResults = await this.$komgaReferential.getAuthorsNames(val[index])
+        this.searchAuthors(val[index])
       },
     },
   },
@@ -809,6 +810,9 @@ export default Vue.extend({
         }
       }
     },
+    searchAuthors: debounce(async function (this: any, query: string) {
+      this.authorSearchResults = await this.$komgaReferential.getAuthorsNames(query)
+    }, 500),
   },
 })
 </script>
