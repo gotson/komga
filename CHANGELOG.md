@@ -1,3 +1,11 @@
+## [0.157.2](https://github.com/gotson/komga/compare/v0.157.1...v0.157.2) (2022-09-13)
+
+
+### Bug Fixes
+
+* cannot parse series.json ([122f0c9](https://github.com/gotson/komga/commit/122f0c92adef008357bfd783ce71f700311ebd01)), closes [#961](https://github.com/gotson/komga/issues/961)
+* **webui:** bottom pagination hidden by navigation bar on SM breakpoint ([234dae0](https://github.com/gotson/komga/commit/234dae0841159b33b5527720ea6475d1f11d77c4)), closes [#953](https://github.com/gotson/komga/issues/953)
+
 ## [0.157.1](https://github.com/gotson/komga/compare/v0.157.0...v0.157.1) (2022-08-18)
 
 
