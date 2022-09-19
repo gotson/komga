@@ -1,7 +1,7 @@
 name: 🐞 Issue report
 description: Report an issue in Komga
 labels:
-  - bug
+  - triage
 body:
 
   - type: textarea

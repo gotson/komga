@@ -1,7 +1,7 @@
 name: ⭐ Feature request
 description: Suggest a feature to improve Komga
 labels:
-  - enhancement
+  - triage
 body:
 
   - type: textarea
