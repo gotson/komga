@@ -51,7 +51,7 @@
     "button_browse": "Examinar",
     "button_import": "Importar",
     "button_scan": "Escanear",
-    "button_select_series": "Seleccionar serie:",
+    "button_select_series": "Seleccionar Serie",
     "field_import_path": "Importar desde carpeta",
     "info_part1": "Esta pantalla le permitirá importar arcivos que están fuera de las librerías existentes. Solo se puede importar archivos a las Series existentes, en ese caso Komga moverá o copiará los archivos hacia un directorio de la Serie seleccionada.",
     "info_part2": "Si elige un número para un libro y ya existe un libro con ese número, podrá comparar los 2 libros. Si decide importar el libro, Komga actualizará el libro existente con el nuevo, reemplazando efectivamente el archivo antiguo por el nuevo.",

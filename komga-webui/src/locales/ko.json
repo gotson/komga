@@ -78,7 +78,7 @@
     "try_another_directory": "다른 디렉토리를 검색해 보세요"
   },
   "bookreader": {
-    "beginning_of_book": "책에 첫 페이지입니다.",
+    "beginning_of_book": "책의 첫 페이지입니다.",
     "changing_reading_direction": "읽는 방향 변경",
     "cycling_page_layout": "페이지 보기 전환",
     "cycling_scale": "비율 전환",
@@ -260,7 +260,7 @@
   },
   "dialog": {
     "add_to_collection": {
-      "button_create": "생성",
+      "button_create": "만들기",
       "card_collection_subtitle": "시리즈 없음 | 1 시리즈 | {count} 시리즈",
       "dialog_title": "모음집에 추가",
       "field_search_create": "모음집 검색 또는 만들기",
@@ -268,7 +268,7 @@
       "label_no_matching_collection": "일치하는 모음집이 없습니다"
     },
     "add_to_readlist": {
-      "button_create": "생성",
+      "button_create": "만들기",
       "card_readlist_subtitle": "책 없음 | 1 책 | {count} 책",
       "dialog_title": "읽기 목록에 추가",
       "field_search_create": "읽기 목록 검색 또는 만들기",
@@ -564,7 +564,7 @@
       "size": "크기",
       "total_size": "총 크기"
     },
-    "info": "중복 페이지를 삭제하면 원본 파일을 수정됩니다. 자동 삭제를 사용하기 전에 파일을 백업하고 수동 삭제를 사용하세요.",
+    "info": "중복 페이지 삭제는 원본 파일을 수정합니다. 자동 삭제를 사용하기 전에 파일을 백업하고 수동 삭제를 사용하세요.",
     "matches_n": "일치 항목 없음 | 1 항목 일치 | {count} 항목 일치",
     "saved_size": "{size} 절약됨",
     "title": "중복 페이지",
@@ -727,9 +727,9 @@
     "library_disk_space": "서재 디스크 공간",
     "library_series": "서재당 시리즈",
     "library_sidecars": "서재당 사이드카",
-    "tasks_executed": "작업 실행됨",
+    "tasks_executed": "실행된 작업",
     "tasks_total_time": "총 작업 시간",
-    "title": "측정"
+    "title": "통계"
   },
   "navigation": {
     "home": "홈",
