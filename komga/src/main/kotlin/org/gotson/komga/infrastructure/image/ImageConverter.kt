@@ -85,6 +85,7 @@ class ImageConverter(
     ByteArrayOutputStream().use {
       Thumbnails.of(imageBytes.inputStream())
         .size(size, size)
+        .imageType(BufferedImage.TYPE_INT_ARGB)
         .outputFormat(format)
         .toOutputStream(it)
       it.toByteArray()
