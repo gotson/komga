@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: DockerHub Description
-      uses: peter-evans/dockerhub-description@v3.1.0
+      uses: peter-evans/dockerhub-description@v3.1.1
       env:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKERHUB_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
