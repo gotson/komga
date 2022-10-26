@@ -52,7 +52,6 @@ class SecurityConfiguration(
         // restrict all other actuator endpoints to ADMIN only
         it.requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole(ROLE_ADMIN)
 
-
         // claim is unprotected
         it.mvcMatchers(
           "/api/v1/claim",
