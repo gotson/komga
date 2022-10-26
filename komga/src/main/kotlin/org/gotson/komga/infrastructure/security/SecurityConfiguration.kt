@@ -5,6 +5,7 @@ import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_USER
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
+import org.springframework.boot.actuate.health.HealthEndpoint
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
@@ -45,8 +46,12 @@ class SecurityConfiguration(
       .cors {}
       .csrf { it.disable() }
       .authorizeRequests {
-        // restrict all actuator endpoints to ADMIN only
+        // allow unauthorized access to actuator health endpoint
+        // this will only show limited details as `management.endpoint.health.show-details` is set to `when-authorized`
+        it.requestMatchers(EndpointRequest.to(HealthEndpoint::class.java)).permitAll()
+        // restrict all other actuator endpoints to ADMIN only
         it.requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole(ROLE_ADMIN)
+
 
         // claim is unprotected
         it.mvcMatchers(
