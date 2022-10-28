@@ -489,10 +489,10 @@ export default Vue.extend({
     },
     authorSearch: {
       deep: true,
-      async handler(val: []) {
+      handler: debounce(async function (this: any, val: []) {
         const index = val.findIndex(x => x !== null)
-        this.searchAuthors(val[index])
-      },
+        this.authorSearchResults = await this.$komgaReferential.getAuthorsNames(val[index])
+      }, 500),
     },
   },
   validations: {
@@ -810,9 +810,6 @@ export default Vue.extend({
         }
       }
     },
-    searchAuthors: debounce(async function (this: any, query: string) {
-      this.authorSearchResults = await this.$komgaReferential.getAuthorsNames(query)
-    }, 500),
   },
 })
 </script>
