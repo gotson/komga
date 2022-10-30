@@ -8286,7 +8286,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_4",
+        "operationId": "getProviders_1",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8348,7 +8348,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_5",
+        "operationId": "getProviders_6",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8379,7 +8379,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_1",
+        "operationId": "getProviders",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8410,7 +8410,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders",
+        "operationId": "getProviders_4",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8472,7 +8472,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_6",
+        "operationId": "getProviders_5",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -10024,10 +10024,6 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "size": {
             "type": "integer",
             "format": "int32"
@@ -10039,6 +10035,10 @@
             }
           },
           "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfElements": {
             "type": "integer",
             "format": "int32"
           },
@@ -10162,10 +10162,6 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "size": {
             "type": "integer",
             "format": "int32"
@@ -10177,6 +10173,10 @@
             }
           },
           "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfElements": {
             "type": "integer",
             "format": "int32"
           },
@@ -10296,10 +10296,6 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "size": {
             "type": "integer",
             "format": "int32"
@@ -10311,6 +10307,10 @@
             }
           },
           "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfElements": {
             "type": "integer",
             "format": "int32"
           },
@@ -10775,10 +10775,6 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "size": {
             "type": "integer",
             "format": "int32"
@@ -10790,6 +10786,10 @@
             }
           },
           "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfElements": {
             "type": "integer",
             "format": "int32"
           },
@@ -10883,10 +10883,6 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "size": {
             "type": "integer",
             "format": "int32"
@@ -10898,6 +10894,10 @@
             }
           },
           "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfElements": {
             "type": "integer",
             "format": "int32"
           },
@@ -10972,10 +10972,6 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "size": {
             "type": "integer",
             "format": "int32"
@@ -10987,6 +10983,10 @@
             }
           },
           "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfElements": {
             "type": "integer",
             "format": "int32"
           },
@@ -11018,10 +11018,6 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "size": {
             "type": "integer",
             "format": "int32"
@@ -11033,6 +11029,10 @@
             }
           },
           "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfElements": {
             "type": "integer",
             "format": "int32"
           },
@@ -11088,10 +11088,6 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "size": {
             "type": "integer",
             "format": "int32"
@@ -11103,6 +11099,10 @@
             }
           },
           "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfElements": {
             "type": "integer",
             "format": "int32"
           },
@@ -11163,10 +11163,6 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "size": {
             "type": "integer",
             "format": "int32"
@@ -11178,6 +11174,10 @@
             }
           },
           "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfElements": {
             "type": "integer",
             "format": "int32"
           },
@@ -11209,10 +11209,6 @@
           "sort": {
             "$ref": "#/components/schemas/Sort"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "size": {
             "type": "integer",
             "format": "int32"
@@ -11224,6 +11220,10 @@
             }
           },
           "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfElements": {
             "type": "integer",
             "format": "int32"
           },

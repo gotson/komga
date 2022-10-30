@@ -1,3 +1,12 @@
+## [0.157.3](https://github.com/gotson/komga/compare/v0.157.2...v0.157.3) (2022-10-30)
+
+
+### Bug Fixes
+
+* **api:** allow unauthorized access to health endpoint ([751d347](https://github.com/gotson/komga/commit/751d3472310e76618e59902e4c0ba7d62f9c5b4b)), closes [#992](https://github.com/gotson/komga/issues/992)
+* translated using Weblate ([3f4aa33](https://github.com/gotson/komga/commit/3f4aa33e49210172f68db908d023f6993a70a2b9))
+* **webui:** add debouncer when searching for author in Edit Book dialog ([da3d283](https://github.com/gotson/komga/commit/da3d2835031a97d43089cbf4b177c06c0c6b573c)), closes [#960](https://github.com/gotson/komga/issues/960)
+
 ## [0.157.2](https://github.com/gotson/komga/compare/v0.157.1...v0.157.2) (2022-09-13)
 
 
