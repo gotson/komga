@@ -1,0 +1,831 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{2}{0}-{1} از {2}"
+    },
+    "dataIterator": {
+      "loadingText": "در حال بارگزاری...",
+      "noResultsText": "موردی یافت نشد"
+    },
+    "dataTable": {
+      "itemsPerPageText": "تعداد در هر ردیف:",
+      "sortBy": "مرتب سازی"
+    },
+    "fileInput": {
+      "counter": "{0} فایل",
+      "counterSize": "{0} فایل (در کل {1} فایل)"
+    },
+    "noDataText": "داده ای وجود ندارد"
+  },
+  "account_settings": {
+    "account_settings": "تنظیمات حساب کاربری",
+    "change_password": "تغییر گذرواژه"
+  },
+  "authentication_activity": {
+    "datetime": "تاریخ و زمان",
+    "email": "ایمیل",
+    "error": "خطا",
+    "ip": "آدرس IP",
+    "source": "مبدا",
+    "success": "موفق",
+    "user_agent": "اطلاعات کاربر"
+  },
+  "author_roles": {
+    "colorist": "رنگآمیزی",
+    "cover": "کاور",
+    "editor": "ویرایش کنندگان",
+    "inker": "جوهر و قلم",
+    "letterer": "حروفچینی",
+    "penciller": "طراحی مداد",
+    "translator": "مترجمان",
+    "writer": "نویسندگان"
+  },
+  "book_card": {
+    "error": "خطا",
+    "no_release_date": "تاریخ انتشار وجود ندارد",
+    "unknown": "نیاز به بررسی",
+    "unread": "خوانده نشده",
+    "unsupported": "پشتیبانی نشده"
+  },
+  "book_import": {
+    "button_browse": "جستجو",
+    "button_import": "وارد کردن اطلاعات",
+    "button_scan": "اسکن",
+    "button_select_series": "انتخاب سری",
+    "field_import_path": "ورود اطلاعات از پوشه",
+    "info_part1": "این صفحه به شما امکان می دهد فایل هایی را وارد کنید که خارج از کتابخانه های موجود شما هستند. شما فقط می توانید فایل ها را به سری های موجود وارد کنید، در این صورت Komga فایل ها را به دایرکتوری سری انتخابی منتقل یا کپی می کند.",
+    "info_part2": "اگر عددی را برای یک کتاب انتخاب کنید و کتابی با آن شماره از قبل وجود داشته باشد، می‌توانید 2 کتاب را با هم مقایسه کنید. اگر تصمیم به وارد کردن کتاب دارید، کومگا کتاب موجود را با کتاب جدید ارتقا می‌دهد و عملاً فایل قدیمی را با جدید جایگزین می‌کند.",
+    "no_files_found": "فایلی پیدا نشد",
+    "notification": {
+      "go_to_book": "برو به رزرو",
+      "import_failure": "وارد کردن کتاب انجام نشد: {file}",
+      "import_successful": "کتاب با موفقیت وارد شد: {book}",
+      "source_file": "فایل منبع: {file}"
+    },
+    "row": {
+      "error_analyze_first": "کتاب ابتدا باید تحلیل شود",
+      "error_choose_series": "یک سری انتخاب کنید",
+      "error_only_import_no_errors": "فقط می توان کتاب ها را بدون خطا وارد کرد",
+      "warning_upgrade": "کتاب موجود ارتقاء خواهد یافت"
+    },
+    "table": {
+      "destination_name": "نام مقصد",
+      "file_name": "نام فایل",
+      "number": "عدد",
+      "series": "سلسله"
+    },
+    "title": "وارد كردن",
+    "try_another_directory": "سعی کنید فهرست دیگری را جستجو کنید"
+  },
+  "bookreader": {
+    "beginning_of_book": "شما در ابتدای کتاب هستید.",
+    "changing_reading_direction": "تغییر جهت خواندن به",
+    "cycling_page_layout": "چیدمان صفحه دوچرخه سواری",
+    "cycling_scale": "ترازو دوچرخه سواری",
+    "cycling_side_padding": "پد دوچرخه سواری",
+    "download_current_page": "صفحه فعلی را دانلود کنید",
+    "end_of_book": "شما به پایان کتاب رسیده اید.",
+    "from_series_metadata": "از ابرداده سری",
+    "move_next": "برای رفتن به کتاب بعدی دوباره روی «بعدی» کلیک کنید یا فشار دهید.",
+    "move_next_exit": "برای خروج از خواننده، دوباره روی «بعدی» کلیک کنید یا فشار دهید.",
+    "move_previous": "برای رفتن به کتاب قبلی، دوباره روی «قبلی» کلیک کنید یا فشار دهید.",
+    "notification_poster_set_book": "پوستر کتاب اکنون به صفحه فعلی تنظیم شده است.",
+    "notification_poster_set_readlist": "پوستر لیست خواندن اکنون روی صفحه فعلی تنظیم شده است.",
+    "notification_poster_set_series": "پوستر سریال اکنون روی صفحه فعلی تنظیم شده است.",
+    "paged_reader_layout": {
+      "double": "دو صفحه",
+      "double_no_cover": "دو صفحه (بدون جلد)",
+      "single": "تک صفحه"
+    },
+    "reader_settings": "تنظیمات خواننده",
+    "scale_type": {
+      "continuous_original": "اصلی",
+      "continuous_width": "متناسب با عرض",
+      "height": "ارتفاع مناسب",
+      "original": "اصلی",
+      "screen": "صفحه نمایش",
+      "width": "متناسب با عرض",
+      "width_shrink_only": "عرض مناسب (فقط کوچک شدن)"
+    },
+    "set_current_page_as_book_poster": "صفحه را به عنوان پوستر برای کتاب تنظیم کنید",
+    "set_current_page_as_readlist_poster": "صفحه را به عنوان پوستر برای لیست خواندن تنظیم کنید",
+    "set_current_page_as_series_poster": "صفحه را به عنوان پوستر سریال تنظیم کنید",
+    "settings": {
+      "always_fullscreen": "همیشه تمام صفحه",
+      "animate_page_transitions": "متحرک سازی انتقال صفحه",
+      "background_color": "رنگ پس زمینه",
+      "background_colors": {
+        "black": "مشکی",
+        "gray": "خاکستری",
+        "white": "سفید"
+      },
+      "display": "نمایش دادن",
+      "general": "عمومی",
+      "gestures": "حرکات",
+      "page_layout": "صفحه آرایی",
+      "paged": "گزینه های خواننده صفحه بندی شده",
+      "reading_mode": "حالت خواندن",
+      "scale_type": "نوع مقیاس",
+      "side_padding": "بالشتک جانبی",
+      "side_padding_none": "هیچ یک",
+      "webtoon": "گزینه های Webtoon Reader"
+    },
+    "shortcuts": {
+      "close": "نزدیک",
+      "cycle_page_layout": "چیدمان صفحه چرخه",
+      "cycle_scale": "مقیاس چرخه",
+      "cycle_side_padding": "پد چرخه سمت",
+      "first_page": "صفحه اول",
+      "fullscreen": "وارد/خروج تمام صفحه شوید",
+      "last_page": "آخرین صفحه",
+      "left_to_right": "چپ به راست",
+      "menus": "منوها",
+      "next_page": "صفحه بعد",
+      "previous_page": "صفحه قبلی",
+      "reader_navigation": "پیمایش خواننده",
+      "right_to_left": "راست به چپ",
+      "settings": "تنظیمات",
+      "show_hide_help": "نمایش/پنهان کردن کمک",
+      "show_hide_settings": "نمایش/پنهان کردن منوی تنظیمات",
+      "show_hide_thumbnails": "نمایش/پنهان کردن کاوشگر ریز عکسها",
+      "show_hide_toolbars": "نمایش/پنهان کردن نوار ابزار",
+      "vertical": "عمودی",
+      "webtoon": "وبتون"
+    },
+    "tooltip_incognito": "پیشرفت خواندن ذخیره نمی شود"
+  },
+  "browse_book": {
+    "comment": "اظهار نظر",
+    "download_file": "دریافت فایل",
+    "file": "فایل",
+    "format": "فرمت",
+    "isbn": "شابک",
+    "links": "پیوندها",
+    "navigation_within_readlist": "پیمایش در لیست خواندن: {name}",
+    "outdated_tooltip": "فایل این کتاب تغییر کرده است، این کتاب باید دوباره آنالیز شود",
+    "read_book": "کتاب بخوان",
+    "read_incognito": "ناشناس بخوانید",
+    "size": "اندازه"
+  },
+  "browse_collection": {
+    "edit_collection": "ویرایش مجموعه",
+    "edit_elements": "ویرایش عناصر",
+    "manual_ordering": "سفارش دستی"
+  },
+  "browse_readlist": {
+    "edit_elements": "ویرایش عناصر",
+    "edit_readlist": "ویرایش لیست خواندن"
+  },
+  "browse_series": {
+    "earliest_year_from_release_dates": "این اولین سال از تاریخ انتشار همه کتاب‌های این مجموعه است",
+    "series_no_summary": "این سریال هیچ خلاصه ای ندارد، بنابراین ما یکی را برای شما انتخاب کردیم!",
+    "summary_from_book": "خلاصه ای از کتاب {number}:"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "مدیریت مجموعه",
+    "title": "مجموعه {name}"
+  },
+  "common": {
+    "age": "سن",
+    "all_libraries": "همه کتابخانه ها",
+    "books": "کتاب ها",
+    "books_n": "بدون کتاب | 1 کتاب | {count} کتاب",
+    "books_total": "{count} / {total} کتاب",
+    "cancel": "لغو کنید",
+    "choose_image": "یک تصویر را انتخاب کنید",
+    "close": "نزدیک",
+    "collections": "مجموعه ها",
+    "create": "ایجاد کردن",
+    "delete": "حذف",
+    "disk_space": "فضای دیسک",
+    "dismiss": "رد",
+    "download": "دانلود",
+    "drag_drop": "کشیدن و انداختن",
+    "email": "پست الکترونیک",
+    "filename": "نام فایل",
+    "filter_no_matches": "فیلتر فعال هیچ منطبقی ندارد",
+    "genre": "ژانر. دسته",
+    "go_to_library": "به کتابخانه برو",
+    "go_to_readlist": "به لیست خواندن بروید",
+    "go_to_series": "برو به سریال",
+    "library": "کتابخانه",
+    "locale_name": "فارسی",
+    "locale_rtl": "true",
+    "lock_all": "همه را قفل کنید",
+    "n_selected": "{count} انتخاب شد",
+    "nothing_to_show": "چیزی برای نشان دادن نیست",
+    "outdated": "منسوخ شده",
+    "page": "صفحه",
+    "page_number": "شماره صفحه",
+    "pages": "صفحات",
+    "pages_n": "بدون صفحه | 1 صفحه | {count} صفحه",
+    "password": "کلمه عبور",
+    "pending_tasks": "بدون کار معلق | 1 کار معلق | {count} کار معلق",
+    "publisher": "ناشر",
+    "read": "خواندن",
+    "readlists": "لیست ها را بخوانید",
+    "required": "ضروری",
+    "reset_filters": "بازنشانی فیلترها",
+    "roles": "نقش ها",
+    "save_changes": "ذخیره تغییرات",
+    "series": "سلسله",
+    "sidecars": "ماشین های جانبی",
+    "tags": "برچسب ها",
+    "unavailable": "غیر قابل دسترسی",
+    "unlock_all": "باز کردن همه",
+    "url": "URL",
+    "use_filter_panel_to_change_filter": "از پنل فیلتر برای تغییر فیلتر فعال استفاده کنید",
+    "year": "سال"
+  },
+  "dashboard": {
+    "keep_reading": "به خواندن ادامه دهید",
+    "on_deck": "در عرشه",
+    "recently_added_books": "کتاب های اخیرا اضافه شده",
+    "recently_added_series": "سری اخیرا اضافه شده",
+    "recently_read_books": "کتاب های اخیرا خوانده شده",
+    "recently_released_books": "کتاب هایی که به تازگی منتشر شده است",
+    "recently_updated_series": "سری اخیرا به روز شده"
+  },
+  "data_import": {
+    "book_number": "شماره کتاب: {name}",
+    "book_series": "سری: {name}",
+    "button_import": "وارد كردن",
+    "comicrack_preambule_html": "می‌توانید فهرست‌های خواندنی ComicRack موجود را در قالب <code>.cbl</code> وارد کنید.<br>Komga سعی می‌کند سری ارائه‌شده و شماره کتاب را با مجموعه‌ها و کتاب‌های موجود در کتابخانه‌های شما مطابقت دهد.",
+    "field_files_label": "فهرست‌های خواندن ComicRack (.cbl)",
+    "import_read_lists": "وارد کردن لیست های خوانده شده",
+    "imported_as": "وارد شده به عنوان {name}",
+    "results_preambule": "نتیجه واردات در زیر نشان داده شده است. همچنین می توانید کتاب های بی همتا را برای هر فایل ارائه شده بررسی کنید.",
+    "size_limit": "اندازه باید کمتر از {size} مگابایت باشد",
+    "tab_title": "واردات داده"
+  },
+  "dialog": {
+    "add_to_collection": {
+      "button_create": "ایجاد کردن",
+      "card_collection_subtitle": "بدون سریال | 1 سری | {count} سری",
+      "dialog_title": "به کلکسیون اضافه کن",
+      "field_search_create": "جستجو یا ایجاد مجموعه",
+      "field_search_create_error": "مجموعه ای با این نام از قبل وجود دارد",
+      "label_no_matching_collection": "مجموعه منطبقی وجود ندارد"
+    },
+    "add_to_readlist": {
+      "button_create": "ایجاد کردن",
+      "card_readlist_subtitle": "بدون کتاب | 1 کتاب | {count} کتاب",
+      "dialog_title": "به لیست خواندن اضافه کنید",
+      "field_search_create": "جستجو یا ایجاد لیست خواندن",
+      "field_search_create_error": "یک لیست خوانده شده با این نام از قبل وجود دارد",
+      "label_no_matching_readlist": "لیست خواندن منطبقی وجود ندارد"
+    },
+    "add_user": {
+      "button_cancel": "لغو کنید",
+      "button_confirm": "اضافه کردن",
+      "dialog_title": "افزودن کاربر",
+      "field_email": "پست الکترونیک",
+      "field_email_error": "می بایست یک ایمیل ادرس معتبر باشد",
+      "field_password": "کلمه عبور",
+      "field_role_administrator": "مدیر",
+      "field_role_file_download": "دانلود فایل",
+      "field_role_page_streaming": "جریان صفحه",
+      "label_roles": "نقش ها"
+    },
+    "analyze_library": {
+      "body": "تمام فایل های رسانه ای موجود در کتابخانه را تجزیه و تحلیل می کند. تجزیه و تحلیل اطلاعات مربوط به رسانه ها را جمع آوری می کند. بسته به اندازه کتابخانه شما، ممکن است زمان زیادی طول بکشد.",
+      "button_confirm": "تجزیه و تحلیل",
+      "title": "تجزیه و تحلیل کتابخانه"
+    },
+    "delete_book": {
+      "button_confirm": "حذف",
+      "confirm_delete": "بله، کتاب \"{name}\" و فایل های آن را حذف کنید",
+      "confirm_delete_multiple": "بله، {count} کتاب و فایل‌های آنها حذف شود",
+      "dialog_title": "حذف کتاب",
+      "dialog_title_multiple": "حذف کتاب ها",
+      "warning_html": "کتاب <b>{name}</b> به همراه فایل‌های رسانه ذخیره شده از این سرور حذف خواهد شد. این <b>نمی توان</b> واگرد کرد. ادامه هید؟",
+      "warning_multiple_html": "{count} کتاب به همراه فایل‌های رسانه ذخیره شده از این سرور حذف خواهد شد. این <b>نمی توان</b> واگرد کرد. ادامه هید؟"
+    },
+    "delete_collection": {
+      "button_confirm": "حذف",
+      "confirm_delete": "بله، مجموعه \"{name}\" را حذف کنید",
+      "confirm_delete_multiple": "بله، مجموعه {count} حذف شود",
+      "dialog_title": "حذف مجموعه",
+      "dialog_title_multiple": "حذف مجموعه ها",
+      "warning_html": "مجموعه <b>{name}</b> از این سرور حذف خواهد شد. فایل های رسانه ای شما تحت تأثیر قرار نخواهند گرفت. این <b>نمی توان</b> واگرد کرد. ادامه هید؟",
+      "warning_multiple_html": "{count} مجموعه از این سرور حذف خواهد شد. فایل های رسانه ای شما تحت تأثیر قرار نخواهند گرفت. این <b>نمی توان</b> واگرد کرد. ادامه هید؟"
+    },
+    "delete_library": {
+      "button_confirm": "حذف",
+      "confirm_delete": "بله، کتابخانه \"{name}\" را حذف کنید",
+      "title": "حذف کتابخانه",
+      "warning_html": "کتابخانه <b>{name}</b> از این سرور حذف خواهد شد. فایل های رسانه ای شما تحت تأثیر قرار نخواهند گرفت. این <b>نمی توان</b> واگرد کرد. ادامه هید؟"
+    },
+    "delete_readlist": {
+      "button_confirm": "حذف",
+      "confirm_delete": "بله، فهرست خوانده شده \"{name}\" حذف شود",
+      "confirm_delete_multiple": "بله، فهرست‌های خواندنی {count} حذف شود",
+      "dialog_title": "حذف لیست خواندن",
+      "dialog_title_multiple": "حذف لیست های خوانده شده",
+      "warning_html": "لیست خوانده شده <b>{name}</b> از این سرور حذف خواهد شد. فایل های رسانه ای شما تحت تأثیر قرار نخواهند گرفت. این <b>نمی توان</b> واگرد کرد. ادامه هید؟",
+      "warning_multiple_html": "{count} لیست خوانده شده از این سرور حذف خواهد شد. فایل های رسانه ای شما تحت تأثیر قرار نخواهند گرفت. این <b>نمی توان</b> واگرد کرد. ادامه هید؟"
+    },
+    "delete_series": {
+      "button_confirm": "حذف",
+      "confirm_delete": "بله، سری \"{name}\" و فایل های آن را حذف کنید",
+      "confirm_delete_multiple": "بله، سری {count} و فایل‌های آنها حذف شود",
+      "dialog_title": "حذف سریال",
+      "warning_html": "مجموعه <b>{name}</b> به همراه فایل‌های رسانه ذخیره شده از این سرور حذف خواهد شد. این <b>نمی توان</b> واگرد کرد. ادامه هید؟",
+      "warning_multiple_html": "سری {count} به همراه فایل های رسانه ذخیره شده از این سرور حذف خواهد شد. این <b>نمی توان</b> واگرد کرد. ادامه هید؟"
+    },
+    "delete_user": {
+      "button_confirm": "حذف",
+      "confirm_delete": "بله، کاربر \"{name}\" را حذف کنید",
+      "dialog_title": "حذف کاربر",
+      "warning_html": "کاربر <b>{name}</b> از این سرور حذف خواهد شد. این <b>نمی توان</b> واگرد کرد. ادامه هید؟"
+    },
+    "edit_books": {
+      "add_author_role_error_duplicate": "درحال حاضر وجود دارد",
+      "authors_notice_multiple_edit": "شما در حال ویرایش نویسندگان برای چندین کتاب هستید. این امر نویسندگان موجود هر کتاب را زیر پا می گذارد.",
+      "button_cancel": "لغو کنید",
+      "button_confirm": "ذخیره تغییرات",
+      "dialog_title_multiple": "ویرایش {count} کتاب | ویرایش {count} کتاب",
+      "dialog_title_single": "ویرایش {book}",
+      "field_isbn": "شابک",
+      "field_isbn_error": "باید ISBN 13 معتبر باشد",
+      "field_link_label": "برچسب",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "باید http یا https باشد",
+      "field_link_url_error_url": "باید یک URL معتبر باشد",
+      "field_number": "عدد",
+      "field_number_sort": "مرتب سازی شماره",
+      "field_number_sort_hint": "می توانید از اعداد اعشاری استفاده کنید",
+      "field_release_date": "تاریخ انتشار",
+      "field_release_date_error": "باید یک تاریخ معتبر در قالب YYYY-MM-DD باشد",
+      "field_summary": "خلاصه",
+      "field_tags": "برچسب ها",
+      "field_title": "عنوان",
+      "tab_authors": "نویسندگان",
+      "tab_general": "عمومی",
+      "tab_links": "پیوندها",
+      "tab_poster": "پوستر",
+      "tab_tags": "برچسب ها",
+      "tags_notice_multiple_edit": "شما در حال ویرایش برچسب‌ها برای چندین کتاب هستید. با این کار برچسب های موجود هر کتاب لغو می شود."
+    },
+    "edit_collection": {
+      "button_cancel": "لغو کنید",
+      "button_confirm": "ذخیره تغییرات",
+      "dialog_title": "ویرایش مجموعه",
+      "field_manual_ordering": "سفارش دستی",
+      "label_ordering": "به‌طور پیش‌فرض، سری‌های مجموعه براساس نام مرتب می‌شوند. شما می توانید سفارش دستی را برای تعریف سفارش خود فعال کنید.",
+      "tab_general": "عمومی",
+      "tab_poster": "پوستر"
+    },
+    "edit_library": {
+      "button_browse": "مرور کردن",
+      "button_cancel": "لغو کنید",
+      "button_confirm_add": "اضافه کردن",
+      "button_confirm_edit": "ویرایش کنید",
+      "button_next": "بعد",
+      "dialog_title_add": "افزودن کتابخانه",
+      "dialot_title_edit": "ویرایش کتابخانه",
+      "field_analysis_analyze_dimensions": "تجزیه و تحلیل ابعاد صفحات",
+      "field_analysis_hash_files": "هش را برای فایل ها محاسبه کنید",
+      "field_analysis_hash_pages": "هش صفحات را محاسبه کنید",
+      "field_convert_to_cbz": "تبدیل خودکار به CBZ",
+      "field_import_barcode_isbn": "بارکد ISBN",
+      "field_import_comicinfo_book": "فراداده کتاب",
+      "field_import_comicinfo_collections": "مجموعه ها",
+      "field_import_comicinfo_readlists": "لیست ها را بخوانید",
+      "field_import_comicinfo_series": "فراداده سری",
+      "field_import_epub_book": "فراداده کتاب",
+      "field_import_epub_series": "فراداده سری",
+      "field_import_local_artwork": "آثار هنری محلی",
+      "field_import_mylar_series": "فراداده سری",
+      "field_name": "نام",
+      "field_repair_extensions": "پسوند فایل های نادرست را به طور خودکار تعمیر کنید",
+      "field_root_folder": "پوشه ریشه",
+      "field_scanner_deep_scan": "جستجوی عمیق",
+      "field_scanner_empty_trash_after_scan": "پس از هر اسکن، سطل زباله را به طور خودکار خالی کنید",
+      "field_scanner_force_directory_modified_time": "زمان تغییر دایرکتوری اجباری",
+      "field_series_cover": "جلد سری",
+      "file_browser_dialog_button_confirm": "انتخاب کنید",
+      "file_browser_dialog_title": "پوشه ریشه کتابخانه",
+      "label_analysis": "تحلیل و بررسی",
+      "label_file_management": "مدیریت فایل",
+      "label_import_barcode_isbn": "ISBN را در بارکد وارد کنید",
+      "label_import_comicinfo": "متادیتا را برای CBR/CBZ حاوی یک فایل ComicInfo.xml وارد کنید",
+      "label_import_epub": "متادیتا را از فایل های EPUB وارد کنید",
+      "label_import_local": "واردات دارایی های رسانه های محلی",
+      "label_import_mylar": "وارد کردن ابرداده تولید شده توسط Mylar",
+      "label_scanner": "اسکنر",
+      "label_series_cover": "جلد سری",
+      "tab_general": "عمومی",
+      "tab_metadata": "فراداده",
+      "tab_options": "گزینه ها",
+      "tooltip_scanner_force_modified_time": "اگر کتابخانه در Google Drive است فعال کنید",
+      "tooltip_use_resources": "می تواند منابع زیادی را در کتابخانه های بزرگ یا سخت افزارهای کند مصرف کند"
+    },
+    "edit_readlist": {
+      "button_cancel": "لغو کنید",
+      "button_confirm": "ذخیره تغییرات",
+      "dialog_title": "ویرایش لیست خواندن",
+      "field_name": "نام",
+      "field_summary": "خلاصه",
+      "tab_general": "عمومی",
+      "tab_poster": "پوستر"
+    },
+    "edit_series": {
+      "button_cancel": "لغو کنید",
+      "button_confirm": "ذخیره تغییرات",
+      "dialog_title_multiple": "ویرایش {count} سری | ویرایش {count} سری",
+      "dialog_title_single": "ویرایش {series}",
+      "field_age_rating": "رتبه بندی سنی",
+      "field_age_rating_error": "رده سنی باید 0 یا بیشتر باشد",
+      "field_genres": "ژانرها",
+      "field_labels": "برچسب ها",
+      "field_language": "زبان",
+      "field_language_hint": "برچسب زبان IETF BCP 47",
+      "field_publisher": "ناشر",
+      "field_reading_direction": "جهت خواندن",
+      "field_sort_title": "مرتب سازی عنوان",
+      "field_status": "وضعیت",
+      "field_summary": "خلاصه",
+      "field_tags": "برچسب ها",
+      "field_title": "عنوان",
+      "field_total_book_count": "تعداد کل کتاب",
+      "field_total_book_count_error": "تعداد کل کتاب باید 1 یا بیشتر باشد",
+      "mixed": "مخلوط شده",
+      "tab_general": "عمومی",
+      "tab_poster": "پوستر",
+      "tab_sharing": "اشتراک گذاری",
+      "tab_tags": "برچسب ها",
+      "tags_notice_multiple_edit": "شما در حال ویرایش برچسب‌ها برای چندین سری هستید. این تگ های موجود هر سری را لغو می کند."
+    },
+    "edit_user": {
+      "button_cancel": "لغو کنید",
+      "button_confirm": "ذخیره تغییرات",
+      "dialog_title": "کاربر را ویرایش کنید",
+      "label_roles_for": "نقش‌هایی برای {name}"
+    },
+    "edit_user_restrictions": {
+      "age_restriction": {
+        "allow_under": "فقط در زیر مجاز است",
+        "exclude_over": "حذف بیش از",
+        "none": "بدون محدودیت"
+      },
+      "edit_restrictions_for": "ویرایش محدودیت‌ها برای {name}",
+      "label_age_restriction": "محدودیت سنی",
+      "label_allow_only_labels": "فقط برچسب‌ها مجاز باشند",
+      "label_exclude_labels": "برچسب ها را حذف کنید",
+      "tab_content_restrictions": "محدودیت های محتوا",
+      "tab_shared_libraries": "کتابخانه های مشترک"
+    },
+    "empty_trash": {
+      "body": "به‌طور پیش‌فرض، سرور رسانه فوراً اطلاعات رسانه را حذف نمی‌کند. اگر یک درایو به طور موقت قطع شود، این کمک می کند. وقتی سطل زباله را برای یک کتابخانه خالی می کنید، تمام اطلاعات مربوط به رسانه از دست رفته حذف می شود.",
+      "button_confirm": "خالی",
+      "title": "خالی کردن سطل زباله برای کتابخانه"
+    },
+    "file_browser": {
+      "button_cancel": "لغو کنید",
+      "button_confirm_default": "انتخاب کنید",
+      "dialog_title_default": "مرورگر فایل",
+      "parent_directory": "والدین"
+    },
+    "filename_chooser": {
+      "button_choose": "انتخاب کنید",
+      "field_destination_filename": "نام فایل مقصد",
+      "label_source_filename": "نام فایل منبع",
+      "table": {
+        "existing_file": "فایل موجود",
+        "order": "سفارش"
+      },
+      "title": "نام فایل مقصد"
+    },
+    "password_change": {
+      "button_cancel": "لغو کنید",
+      "button_confirm": "رمز عبور را تغییر دهید",
+      "dialog_title": "رمز عبور را تغییر دهید",
+      "field_new_password": "رمز عبور جدید",
+      "field_new_password_error": "رمز عبور جدید مورد نیاز است.",
+      "field_repeat_password": "رمز عبور جدید را تکرار کنید",
+      "field_repeat_password_error": "رمزهای عبور باید یکسان باشند."
+    },
+    "refresh_library_metadata": {
+      "body": "ابرداده را برای همه فایل های رسانه ای موجود در کتابخانه به روز می کند. بسته به اندازه کتابخانه شما، ممکن است زمان زیادی طول بکشد.",
+      "button_confirm": "تازه کردن",
+      "title": "بازخوانی متادیتا برای کتابخانه"
+    },
+    "series_picker": {
+      "label_search_series": "جستجوی سری",
+      "title": "Series را انتخاب کنید"
+    },
+    "server_stop": {
+      "button_confirm": "متوقف کردن",
+      "confirmation_message": "آیا مطمئن هستید که می خواهید Komga را متوقف کنید؟",
+      "dialog_title": "سرور را خاموش کنید"
+    },
+    "shortcut_help": {
+      "label_description": "شرح",
+      "label_key": "کلید"
+    },
+    "transient_book_details": {
+      "label_candidate": "نامزد",
+      "label_existing": "موجود",
+      "label_format": "قالب",
+      "label_name": "نام",
+      "label_pages": "صفحات",
+      "label_size": "اندازه",
+      "pages_table": {
+        "filename": "نام فایل",
+        "height": "ارتفاع",
+        "index": "فهرست مطالب",
+        "media_type": "نوع رسانه",
+        "size": "اندازه",
+        "width": "عرض"
+      },
+      "title": "جزئیات کتاب",
+      "title_comparison": "مقایسه کتاب"
+    },
+    "transient_book_viewer": {
+      "label_candidate": "نامزد",
+      "label_existing": "موجود",
+      "page_of_pages": "{page} / {pages}",
+      "title": "کتاب بازرسی",
+      "title_comparison": "مقایسه کتاب"
+    }
+  },
+  "duplicate_pages": {
+    "action_delete_auto": "حذف خودکار",
+    "action_delete_manual": "حذف دستی",
+    "action_delete_matches": "حذف مسابقات",
+    "action_ignore": "چشم پوشی",
+    "delete_to_save": "حذف برای ذخیره {size}",
+    "deleted_count": "{count} بار حذف شد",
+    "filter": {
+      "count": "شمردن",
+      "delete_count": "تعداد حذف",
+      "delete_size": "فضا ذخیره شد",
+      "size": "اندازه",
+      "total_size": "اندازه کل"
+    },
+    "info": "حذف صفحات تکراری فایل های شما را تغییر می دهد. قبل از استفاده از حذف خودکار از فایل های خود نسخه پشتیبان تهیه کنید و از حذف دستی استفاده کنید.",
+    "matches_n": "بدون منطبق | 1 مسابقه | {count} منطبق",
+    "saved_size": "ذخیره شده {size}",
+    "title": "صفحات تکراری",
+    "unknown_size": "اندازه نامشخص"
+  },
+  "duplicates": {
+    "file_hash": "هش فایل",
+    "size": "اندازه",
+    "title": "فایل های تکراری",
+    "url": "URL"
+  },
+  "enums": {
+    "copy_mode": {
+      "HARDLINK": "هاردلینک/کپی فایل ها",
+      "MOVE": "انتقال فایل ها"
+    },
+    "historical_event_type": {
+      "BookConverted": "کتاب تبدیل شد",
+      "BookFileDeleted": "فایل کتاب حذف شد",
+      "BookImported": "کتاب وارد شد",
+      "DuplicatePageDeleted": "صفحه تکراری حذف شد",
+      "SeriesFolderDeleted": "پوشه سری حذف شد"
+    },
+    "media_status": {
+      "ERROR": "خطا",
+      "OUTDATED": "منسوخ شده",
+      "READY": "آماده",
+      "UNKNOWN": "ناشناس",
+      "UNSUPPORTED": "پشتیبانی نمی شود"
+    },
+    "page_hash_action": {
+      "DELETE_AUTO": "حذف خودکار",
+      "DELETE_MANUAL": "حذف دستی",
+      "IGNORE": "چشم پوشی"
+    },
+    "reading_direction": {
+      "LEFT_TO_RIGHT": "چپ به راست",
+      "RIGHT_TO_LEFT": "راست به چپ",
+      "VERTICAL": "عمودی",
+      "WEBTOON": "وبتون"
+    },
+    "series_cover": {
+      "FIRST": "اولین",
+      "FIRST_UNREAD_OR_FIRST": "اول خوانده نشده و اول",
+      "FIRST_UNREAD_OR_LAST": "اول خوانده نشده دیگر آخر",
+      "LAST": "آخر"
+    },
+    "series_status": {
+      "ABANDONED": "رها شده است",
+      "ENDED": "به پایان رسید",
+      "HIATUS": "وقفه",
+      "ONGOING": "در دست اقدام"
+    }
+  },
+  "error_codes": {
+    "ERR_1000": "فایل در طول تجزیه و تحلیل قابل دسترسی نبود",
+    "ERR_1001": "نوع رسانه پشتیبانی نمی شود",
+    "ERR_1002": "بایگانی های RAR رمزگذاری شده پشتیبانی نمی شوند",
+    "ERR_1003": "بایگانی های RAR جامد پشتیبانی نمی شوند",
+    "ERR_1004": "بایگانی های RAR چند جلدی پشتیبانی نمی شوند",
+    "ERR_1005": "خطای ناشناخته هنگام تجزیه و تحلیل کتاب",
+    "ERR_1006": "کتاب حاوی هیچ صفحه ای نیست",
+    "ERR_1007": "برخی از ورودی ها را نمی توان تجزیه و تحلیل کرد",
+    "ERR_1008": "خطای ناشناخته هنگام دریافت ورودی های کتاب",
+    "ERR_1009": "یک لیست خوانده شده با آن نام از قبل وجود دارد",
+    "ERR_1010": "هیچ کتابی با درخواست فهرست خوانده شده مطابقت نداشت",
+    "ERR_1011": "هیچ مسابقه منحصر به فردی برای سریال وجود ندارد",
+    "ERR_1012": "منطبق بر سریال نیست",
+    "ERR_1013": "هیچ منطبق منحصر به فردی برای شماره کتاب در مجموعه وجود ندارد",
+    "ERR_1014": "برای شماره کتاب در سری مطابقت ندارد",
+    "ERR_1015": "خطا در حین بی‌خطرسازی ComicRack ReadingList",
+    "ERR_1016": "دایرکتوری در دسترس نیست یا دایرکتوری نیست",
+    "ERR_1017": "پوشه ای که بخشی از کتابخانه موجود است را نمی توان اسکن کرد",
+    "ERR_1018": "فایل پیدا نشد",
+    "ERR_1019": "نمی توان فایلی را که بخشی از کتابخانه موجود است وارد کرد",
+    "ERR_1020": "کتاب برای ارتقا به سری های ارائه شده تعلق ندارد",
+    "ERR_1021": "فایل مقصد از قبل وجود دارد",
+    "ERR_1022": "کتاب تازه وارد شده اسکن نشد",
+    "ERR_1023": "کتاب از قبل در ReadingList موجود است",
+    "ERR_1024": "خطای ورود OAuth2: بدون ویژگی ایمیل",
+    "ERR_1025": "خطای ورود OAuth2: هیچ کاربر محلی با آن ایمیل وجود ندارد",
+    "ERR_1026": "خطای ورود OpenID Connect: ایمیل تأیید نشده است"
+  },
+  "filter": {
+    "age_rating": "رتبه بندی سنی",
+    "age_rating_none": "هیچ یک",
+    "complete": "کامل",
+    "genre": "ژانر. دسته",
+    "in_progress": "در حال پیش رفت",
+    "language": "زبان",
+    "library": "کتابخانه",
+    "publisher": "ناشر",
+    "read": "خواندن",
+    "release_date": "تاریخ انتشار",
+    "status": "وضعیت",
+    "tag": "برچسب زدن",
+    "unread": "خوانده نشده"
+  },
+  "filter_drawer": {
+    "filter": "فیلتر",
+    "sort": "مرتب سازی"
+  },
+  "history": {
+    "header": {
+      "book": "کتاب",
+      "date": "تاریخ",
+      "details": "جزئیات",
+      "series": "سلسله",
+      "type": "تایپ کنید"
+    },
+    "title": "تاریخ"
+  },
+  "home": {
+    "theme": "موضوع",
+    "translation": "ترجمه"
+  },
+  "library_navigation": {
+    "browse": "مرور کردن",
+    "collections": "مجموعه ها",
+    "readlists": "لیست ها را بخوانید",
+    "recommended": "توصیه شده"
+  },
+  "login": {
+    "create_user_account": "حساب کاربری ایجاد کنید",
+    "login": "ورود",
+    "unclaimed_html": "این سرور Komga هنوز فعال نیست، شما باید یک حساب کاربری ایجاد کنید تا بتوانید به آن دسترسی داشته باشید.<br><br>یک <strong>ایمیل</strong> و <strong>گذرواژه</strong> را انتخاب کنید و روی <strong>ایجاد حساب کاربری</strong> کلیک کنید."
+  },
+  "media_analysis": {
+    "comment": "اظهار نظر",
+    "media_analysis": "تحلیل رسانه ای",
+    "media_type": "نوع رسانه",
+    "name": "نام",
+    "size": "اندازه",
+    "status": "وضعیت",
+    "url": "URL"
+  },
+  "media_management": {
+    "title": "مدیریت رسانه"
+  },
+  "menu": {
+    "add_to_collection": "به کلکسیون اضافه کن",
+    "add_to_readlist": "به لیست خواندن اضافه کنید",
+    "analyze": "تجزیه و تحلیل",
+    "bulk_edit_metadata": "ویرایش انبوه متادیتا",
+    "delete": "حذف",
+    "deselect_all": "همه را لغو انتخاب کنید",
+    "download_readlist": "دانلود لیست خواندن",
+    "download_series": "دانلود سریال",
+    "edit": "ویرایش کنید",
+    "edit_metadata": "ویرایش متادیتا",
+    "empty_trash": "زباله ها را خالی کنید",
+    "mark_read": "به عنوان خوانده شده علامت بزن",
+    "mark_unread": "به عنوان \"خوانده نشده\" علامت گذاری کن",
+    "refresh_metadata": "بازخوانی متادیتا",
+    "scan_library_files": "اسکن فایل های کتابخانه",
+    "select_all": "انتخاب همه"
+  },
+  "metrics": {
+    "library_books": "کتاب در هر کتابخانه",
+    "library_disk_space": "فضای دیسک کتابخانه",
+    "library_series": "سری در هر کتابخانه",
+    "library_sidecars": "خودروهای جانبی در هر کتابخانه",
+    "tasks_executed": "وظایف اجرا شده",
+    "tasks_total_time": "زمان کل وظایف",
+    "title": "معیارهای"
+  },
+  "navigation": {
+    "home": "صفحه اصلی",
+    "libraries": "کتابخانه ها",
+    "logout": "خروج"
+  },
+  "page_not_found": {
+    "go_back_to_home_page": "به صفحه اصلی برگردید",
+    "page_does_not_exist": "صفحه ای که به دنبال آن هستید وجود ندارد.",
+    "page_not_found": "صفحه یافت نشد"
+  },
+  "read_more": {
+    "less": "کمتر بخوان",
+    "more": "ادامه مطلب"
+  },
+  "readlists_expansion_panel": {
+    "manage_readlist": "لیست خواندن را مدیریت کنید",
+    "title": "لیست خواندن {name}"
+  },
+  "search": {
+    "no_results": "جستجو نتیجه ای نداشت",
+    "search": "جستجو کردن",
+    "search_for_something_else": "سعی کنید چیز دیگری را جستجو کنید",
+    "search_results_for": "نتایج جستجو برای \"{name}\""
+  },
+  "searchbox": {
+    "in_library": "در {library}",
+    "no_results": "هیچ نتیجه ای",
+    "search_all": "جستجو در همه…"
+  },
+  "server": {
+    "server_management": {
+      "button_cancel_all_tasks": "تمام وظایف را لغو کنید",
+      "button_empty_trash": "سطل زباله برای همه کتابخانه ها خالی شود",
+      "button_scan_libraries": "تمام کتابخانه ها را اسکن کنید",
+      "button_shutdown": "خاموش کن",
+      "notification_tasks_cancelled": "هیچ کاری برای لغو | یک کار لغو شد | {count} کار لغو شد",
+      "section_title": "مدیریت سرور"
+    },
+    "tab_title": "سرور"
+  },
+  "server_settings": {
+    "server_settings": "تنظیمات سرور"
+  },
+  "settings_user": {
+    "change_password": "رمز عبور را تغییر دهید",
+    "edit_restrictions": "ویرایش محدودیت ها",
+    "edit_user": "کاربر را ویرایش کنید",
+    "latest_activity": "آخرین فعالیت: {date}",
+    "no_recent_activity": "هیچ فعالیت اخیری وجود ندارد",
+    "role_administrator": "مدیر",
+    "role_user": "کاربر"
+  },
+  "sort": {
+    "books_count": "کتاب ها به حساب می آیند",
+    "date_added": "تاریخ اضافه شده",
+    "date_updated": "تاریخ به روز رسانی",
+    "file_name": "نام فایل",
+    "file_size": "حجم فایل",
+    "folder_name": "نام پوشه",
+    "name": "نام",
+    "number": "عدد",
+    "release_date": "تاریخ انتشار"
+  },
+  "theme": {
+    "dark": "تاریک",
+    "light": "سبک",
+    "system": "سیستم"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "حذف",
+    "tooltip_generated": "اثر هنری تولید شده",
+    "tooltip_mark_as_selected": "علامت گذاری به عنوان انتخاب شده",
+    "tooltip_selected": "انتخاب شد",
+    "tooltip_sidecar": "آثار هنری محلی",
+    "tooltip_to_be_deleted": "حذف شود",
+    "tooltip_to_be_uploaded": "برای آپلود شدن",
+    "tooltip_too_big": "فایل خیلی بزرگ است!",
+    "tooltip_user_uploaded": "کاربر آپلود شد"
+  },
+  "user_roles": {
+    "ADMIN": "مدیر",
+    "FILE_DOWNLOAD": "دانلود فایل",
+    "PAGE_STREAMING": "صفحات جریانی",
+    "USER": "کاربر"
+  },
+  "users": {
+    "authentication_activity": "فعالیت احراز هویت",
+    "users": "کاربران"
+  },
+  "validation": {
+    "zero_or_more": "باید 0 یا بیشتر باشد"
+  },
+  "welcome": {
+    "add_library": "افزودن کتابخانه",
+    "no_libraries_yet": "هنوز هیچ کتابخانه ای اضافه نشده است!",
+    "welcome_message": "به کومگا خوش آمدید"
+  }
+}
