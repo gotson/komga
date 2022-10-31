@@ -33,6 +33,9 @@ node_modules
 *.iml
 *.ipr
 
+### IntelliJ Fleet
+.fleet/
+
 ### NetBeans
 nbproject/private/
 build/
