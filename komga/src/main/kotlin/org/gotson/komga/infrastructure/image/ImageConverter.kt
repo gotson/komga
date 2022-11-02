@@ -1,23 +1,17 @@
 package org.gotson.komga.infrastructure.image
 
-import com.luciad.imageio.webp.WebP
 import mu.KotlinLogging
 import net.coobird.thumbnailator.Thumbnails
-import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.springframework.stereotype.Service
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
-import javax.imageio.spi.IIORegistry
-import javax.imageio.spi.ImageReaderSpi
 
 private val logger = KotlinLogging.logger {}
 
 @Service
-class ImageConverter(
-  private val komgaProperties: KomgaProperties,
-) {
+class ImageConverter {
 
   val supportedReadFormats by lazy { ImageIO.getReaderFormatNames().toList() }
   val supportedReadMediaTypes by lazy { ImageIO.getReaderMIMETypes().toList() }
@@ -25,35 +19,6 @@ class ImageConverter(
   val supportedWriteMediaTypes by lazy { ImageIO.getWriterMIMETypes().toList() }
 
   init {
-    val registry = IIORegistry.getDefaultInstance()
-    val nativeWebp = try {
-      registry.getServiceProviderByClass(Class.forName("com.luciad.imageio.webp.WebPImageReaderSpi"))
-    } catch (e: Exception) {
-      null
-    } as ImageReaderSpi?
-    val javaWebp = try {
-      registry.getServiceProviderByClass(Class.forName("com.twelvemonkeys.imageio.plugins.webp.WebPImageReaderSpi"))
-    } catch (e: Exception) {
-      null
-    } as ImageReaderSpi?
-
-    if (nativeWebp != null) {
-      when {
-        !komgaProperties.nativeWebp -> {
-          logger.warn { "Unloading native WebP library" }
-          registry.deregisterServiceProvider(nativeWebp)
-        }
-        !WebP.loadNativeLibrary() -> {
-          logger.warn { "Could not load native WebP library" }
-          registry.deregisterServiceProvider(nativeWebp)
-        }
-        javaWebp != null -> {
-          logger.info { "Using native WebP library" }
-          registry.setOrdering(ImageReaderSpi::class.java, nativeWebp, javaWebp)
-        }
-      }
-    }
-
     logger.info { "Supported read formats: $supportedReadFormats" }
     logger.info { "Supported read mediaTypes: $supportedReadMediaTypes" }
     logger.info { "Supported write formats: $supportedWriteFormats" }
