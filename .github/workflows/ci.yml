@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ 8, 11, 17, 19 ]
+        java: [ 8, 11, 17, 18 ]
     name: Test JDK ${{ matrix.java }}
     steps:
       - uses: actions/checkout@v3
