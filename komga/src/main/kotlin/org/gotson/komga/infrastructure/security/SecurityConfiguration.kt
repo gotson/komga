@@ -6,11 +6,10 @@ import org.gotson.komga.domain.model.ROLE_USER
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
 import org.springframework.boot.actuate.health.HealthEndpoint
+import org.springframework.context.annotation.Bean
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest
@@ -20,6 +19,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException
 import org.springframework.security.oauth2.core.oidc.user.OidcUser
 import org.springframework.security.oauth2.core.user.OAuth2User
+import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices
@@ -37,11 +37,12 @@ class SecurityConfiguration(
   private val userAgentWebAuthenticationDetailsSource: WebAuthenticationDetailsSource,
   private val sessionRegistry: SessionRegistry,
   clientRegistrationRepository: InMemoryClientRegistrationRepository?,
-) : WebSecurityConfigurerAdapter() {
+) {
 
   private val oauth2Enabled = clientRegistrationRepository != null
 
-  override fun configure(http: HttpSecurity) {
+  @Bean
+  fun filterChain(http: HttpSecurity): SecurityFilterChain {
     http
       .cors {}
       .csrf { it.disable() }
@@ -52,11 +53,27 @@ class SecurityConfiguration(
         // restrict all other actuator endpoints to ADMIN only
         it.requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole(ROLE_ADMIN)
 
-        // claim is unprotected
         it.mvcMatchers(
+          // to claim server before any account is created
           "/api/v1/claim",
+          // used by webui
           "/api/v1/oauth2/providers",
           "/set-cookie",
+          "/error**",
+          "/css/**",
+          "/img/**",
+          "/js/**",
+          "/favicon.ico",
+          "/favicon-16x16.png",
+          "/favicon-32x32.png",
+          "/mstile-144x144.png",
+          "/apple-touch-icon.png",
+          "/apple-touch-icon-180x180.png",
+          "/android-chrome-192x192.png",
+          "/android-chrome-512x512.png",
+          "/manifest.json",
+          "/",
+          "/index.html",
         ).permitAll()
 
         // all other endpoints are restricted to authenticated users
@@ -118,26 +135,7 @@ class SecurityConfiguration(
           )
         }
     }
-  }
 
-  override fun configure(web: WebSecurity) {
-    web.ignoring()
-      .mvcMatchers(
-        "/error**",
-        "/css/**",
-        "/img/**",
-        "/js/**",
-        "/favicon.ico",
-        "/favicon-16x16.png",
-        "/favicon-32x32.png",
-        "/mstile-144x144.png",
-        "/apple-touch-icon.png",
-        "/apple-touch-icon-180x180.png",
-        "/android-chrome-192x192.png",
-        "/android-chrome-512x512.png",
-        "/manifest.json",
-        "/",
-        "/index.html",
-      )
+    return http.build()
   }
 }
