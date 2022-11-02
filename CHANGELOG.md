@@ -1,3 +1,15 @@
+## [0.157.4](https://github.com/gotson/komga/compare/v0.157.3...v0.157.4) (2022-11-02)
+
+
+### Bug Fixes
+
+* set image type when generating thumbnails to avoid missing channels ([40f3e16](https://github.com/gotson/komga/commit/40f3e1623db7b9dafc29667c36c56c098910c77c)), closes [#976](https://github.com/gotson/komga/issues/976)
+
+
+### Performance Improvements
+
+* optimize task FindDuplicatePagesToDelete ([59a0048](https://github.com/gotson/komga/commit/59a0048385aa8d2bb8c5b75920eb48950956704f))
+
 ## [0.157.3](https://github.com/gotson/komga/compare/v0.157.2...v0.157.3) (2022-10-30)
 
 
