@@ -58,7 +58,7 @@ dependencies {
 
   implementation("org.flywaydb:flyway-core")
 
-  implementation("io.github.microutils:kotlin-logging-jvm:2.1.23")
+  implementation("io.github.microutils:kotlin-logging-jvm:2.1.23") // 3.0 brings SLF4J 2
   implementation("io.micrometer:micrometer-registry-influx")
   implementation("io.hawt:hawtio-springboot:2.16.1")
 
