@@ -68,6 +68,6 @@ class KomgaOAuth2UserServiceConfiguration(
   private fun tryCreateNewUser(email: String) =
     if (komgaProperties.oauth2AccountCreation) {
       logger.info { "Creating new user from OAuth2 login: $email" }
-      userLifecycle.createUser(KomgaUser(email, RandomStringUtils.randomAlphanumeric(12), roleAdmin = false))
+      userLifecycle.createUser(KomgaUser(email, RandomStringUtils.randomAlphanumeric(12), roleAdmin = false, sharedAllLibraries = false))
     } else throw OAuth2AuthenticationException("ERR_1025")
 }
