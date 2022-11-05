@@ -573,7 +573,7 @@
   "duplicates": {
     "file_hash": "Datei Hash",
     "size": "Größe",
-    "title": "Doppelte Datei",
+    "title": "Doppelte Datei(en)",
     "url": "URL"
   },
   "enums": {
@@ -615,7 +615,7 @@
     "series_status": {
       "ABANDONED": "Abgebrochen",
       "ENDED": "Abgeschlossen",
-      "HIATUS": "Spalt",
+      "HIATUS": "Angehalten",
       "ONGOING": "Fortlaufend"
     }
   },
@@ -702,7 +702,7 @@
     "url": "URL"
   },
   "media_management": {
-    "title": "Medium Verwaltung"
+    "title": "Medien Verwaltung"
   },
   "menu": {
     "add_to_collection": "Zu Sammlung hinzufügen",

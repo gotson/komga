@@ -477,7 +477,7 @@
       "tab_shared_libraries": "Pustaka Bersama"
     },
     "empty_trash": {
-      "body": "Secara default, server media tidak langsung menghapus informasi untuk media. Ini membantu jika drive terputus sementara. Saat Anda mengosongkan sampah untuk perpustakaan, semua informasi tentang media yang hilang akan dihapus.",
+      "body": "Secara default, server media tidak langsung menghapus informasi untuk media. Ini akan membantu jika drive terputus sementara. Saat Anda mengosongkan sampah pustaka, semua informasi tentang media yang hilang akan dihapus.",
       "button_confirm": "Kosong",
       "title": "Kosongkan sampah untuk pustaka"
     },
@@ -805,7 +805,7 @@
     "tooltip_mark_as_selected": "Tandai sebagai dipilih",
     "tooltip_selected": "Terpilih",
     "tooltip_sidecar": "Artwork lokal",
-    "tooltip_to_be_deleted": "Untuk dihapus",
+    "tooltip_to_be_deleted": "Akan dihapus",
     "tooltip_to_be_uploaded": "Untuk diunggah",
     "tooltip_too_big": "Berkas terlalu besar!",
     "tooltip_user_uploaded": "Unggahan pengguna"
