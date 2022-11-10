@@ -13,7 +13,7 @@ plugins {
   }
   id("org.springframework.boot") version "3.0.2"
   id("com.gorylenko.gradle-git-properties") version "2.4.1"
-  id("nu.studer.jooq") version "5.2.2" // 6.0.0 requires Java 11
+  id("nu.studer.jooq") version "8.1"
   id("org.flywaydb.flyway") version "8.5.13"
   id("com.github.johnrengelman.processes") version "0.5.0"
   id("org.springdoc.openapi-gradle-plugin") version "1.5.0"
@@ -263,7 +263,7 @@ tasks.flywayMigrate {
 }
 
 jooq {
-  version.set("3.14.8")
+  version.set("3.17.4")
   configurations {
     create("main") {
       jooqConfiguration.apply {
