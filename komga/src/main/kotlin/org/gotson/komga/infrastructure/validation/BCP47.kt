@@ -24,7 +24,7 @@ class BCP47Validator : ConstraintValidator<BCP47, String> {
 }
 
 object BCP47TagValidator {
-  val languages by lazy { ULocale.getISOLanguages().toSet() }
+  private val languages by lazy { ULocale.getISOLanguages().toSet() }
 
   fun isValid(value: String): Boolean {
     return ULocale.forLanguageTag(value).let {
