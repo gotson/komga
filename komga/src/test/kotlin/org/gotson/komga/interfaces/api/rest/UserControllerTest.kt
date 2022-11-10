@@ -1,7 +1,5 @@
 package org.gotson.komga.interfaces.api.rest
 
-import com.ninjasquad.springmockk.SpykBean
-import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.AgeRestriction
 import org.gotson.komga.domain.model.AllowExclude
@@ -44,7 +42,7 @@ class UserControllerTest(
   @Autowired private val userRepository: KomgaUserRepository,
 ) {
 
-  @SpykBean
+  @Autowired
   private lateinit var userLifecycle: KomgaUserLifecycle
 
   private val admin = KomgaUser("admin@example.org", "", true, id = "admin")
@@ -116,8 +114,6 @@ class UserControllerTest(
         assertThat(this.rolePageStreaming).isTrue
         assertThat(this.roleAdmin).isFalse
       }
-
-      verify(exactly = 1) { userLifecycle.expireSessions(any()) }
     }
 
     @Test
@@ -146,8 +142,6 @@ class UserControllerTest(
         assertThat(this.rolePageStreaming).isFalse
         assertThat(this.roleAdmin).isFalse
       }
-
-      verify(exactly = 1) { userLifecycle.expireSessions(any()) }
     }
 
     @Test
@@ -178,8 +172,6 @@ class UserControllerTest(
         assertThat(this!!.sharedAllLibraries).isFalse
         assertThat(this.sharedLibrariesIds).containsExactlyInAnyOrder("1", "2")
       }
-
-      verify(exactly = 1) { userLifecycle.expireSessions(any()) }
     }
 
     @Test
@@ -210,8 +202,6 @@ class UserControllerTest(
         assertThat(this!!.sharedAllLibraries).isFalse
         assertThat(this.sharedLibrariesIds).containsExactlyInAnyOrder("2")
       }
-
-      verify(exactly = 1) { userLifecycle.expireSessions(any()) }
     }
 
     @Test
@@ -242,8 +232,6 @@ class UserControllerTest(
         assertThat(this!!.sharedAllLibraries).isTrue
         assertThat(this.sharedLibrariesIds).isEmpty()
       }
-
-      verify(exactly = 1) { userLifecycle.expireSessions(any()) }
     }
 
     @Test
@@ -272,8 +260,6 @@ class UserControllerTest(
         assertThat(this!!.restrictions.labelsAllow).containsExactlyInAnyOrder("cute", "kids")
         assertThat(this.restrictions.labelsExclude).containsOnly("adult")
       }
-
-      verify(exactly = 1) { userLifecycle.expireSessions(any()) }
     }
 
     @Test
@@ -311,8 +297,6 @@ class UserControllerTest(
         assertThat(this!!.restrictions.labelsAllow).isEmpty()
         assertThat(this.restrictions.labelsExclude).isEmpty()
       }
-
-      verify(exactly = 1) { userLifecycle.expireSessions(any()) }
     }
 
     @Test
@@ -344,8 +328,6 @@ class UserControllerTest(
         assertThat(this.restrictions.ageRestriction!!.age).isEqualTo(12)
         assertThat(this.restrictions.ageRestriction!!.restriction).isEqualTo(AllowExclude.ALLOW_ONLY)
       }
-
-      verify(exactly = 1) { userLifecycle.expireSessions(any()) }
     }
 
     @Test
@@ -404,8 +386,6 @@ class UserControllerTest(
         assertThat(this).isNotNull
         assertThat(this!!.restrictions.ageRestriction).isNull()
       }
-
-      verify(exactly = 1) { userLifecycle.expireSessions(any()) }
     }
 
     @Test
@@ -445,8 +425,6 @@ class UserControllerTest(
         assertThat(this.restrictions.ageRestriction!!.age).isEqualTo(16)
         assertThat(this.restrictions.ageRestriction!!.restriction).isEqualTo(AllowExclude.EXCLUDE)
       }
-
-      verify(exactly = 1) { userLifecycle.expireSessions(any()) }
     }
   }
 }
