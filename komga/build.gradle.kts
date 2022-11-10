@@ -11,7 +11,7 @@ plugins {
     kotlin("plugin.spring")
     kotlin("kapt")
   }
-  id("org.springframework.boot") version "2.7.5"
+  id("org.springframework.boot") version "3.0.2"
   id("com.gorylenko.gradle-git-properties") version "2.4.1"
   id("nu.studer.jooq") version "5.2.2" // 6.0.0 requires Java 11
   id("org.flywaydb.flyway") version "8.5.13"
@@ -42,7 +42,7 @@ dependencies {
   implementation(kotlin("stdlib-jdk8"))
   implementation(kotlin("reflect"))
 
-  implementation(platform("org.springframework.boot:spring-boot-dependencies:2.7.5"))
+  implementation(platform("org.springframework.boot:spring-boot-dependencies:3.0.2"))
 
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -55,9 +55,9 @@ dependencies {
   implementation("org.springframework.session:spring-session-core")
   implementation("com.github.gotson:spring-session-caffeine:1.0.3")
 
-  kapt("org.springframework.boot:spring-boot-configuration-processor:2.7.5")
+  kapt("org.springframework.boot:spring-boot-configuration-processor:3.0.2")
 
-  implementation("org.apache.activemq:artemis-jms-server")
+  implementation("org.apache.activemq:artemis-jakarta-server")
 
   implementation("org.flywaydb:flyway-core")
 
@@ -112,7 +112,7 @@ dependencies {
 
   implementation("com.github.f4b6a3:tsid-creator:5.2.3")
 
-  implementation("com.github.ben-manes.caffeine:caffeine:2.9.3") // 3.0.0 requires Java 11
+  implementation("com.github.ben-manes.caffeine:caffeine")
 
   implementation("org.xerial:sqlite-jdbc:3.40.1.0")
   jooqGenerator("org.xerial:sqlite-jdbc:3.40.1.0")
@@ -130,9 +130,9 @@ dependencies {
   benchmarkImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
   benchmarkImplementation("org.openjdk.jmh:jmh-core:1.36")
   kaptBenchmark("org.openjdk.jmh:jmh-generator-annprocess:1.36")
-  kaptBenchmark("org.springframework.boot:spring-boot-configuration-processor:2.7.5")
+  kaptBenchmark("org.springframework.boot:spring-boot-configuration-processor:3.0.2")
 
-  developmentOnly("org.springframework.boot:spring-boot-devtools:2.7.5")
+  developmentOnly("org.springframework.boot:spring-boot-devtools:3.0.2")
 }
 
 val webui = "$rootDir/komga-webui"
@@ -217,9 +217,9 @@ tasks {
 
 springBoot {
   buildInfo {
+    // prevent task bootBuildInfo to rerun every time
+    excludes.set(setOf("time"))
     properties {
-      // prevent task bootBuildInfo to rerun every time
-      time = null
       // but rerun if the gradle.properties file changed
       inputs.file("$rootDir/gradle.properties")
     }
