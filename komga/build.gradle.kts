@@ -14,7 +14,7 @@ plugins {
   id("org.springframework.boot") version "3.0.2"
   id("com.gorylenko.gradle-git-properties") version "2.4.1"
   id("nu.studer.jooq") version "8.1"
-  id("org.flywaydb.flyway") version "8.5.13"
+  id("org.flywaydb.flyway") version "9.7.0"
   id("com.github.johnrengelman.processes") version "0.5.0"
   id("org.springdoc.openapi-gradle-plugin") version "1.5.0"
   id("org.jreleaser") version "1.5.1"
