@@ -138,12 +138,12 @@ dependencies {
 val webui = "$rootDir/komga-webui"
 tasks {
   withType<JavaCompile> {
-    sourceCompatibility = "1.8"
-    targetCompatibility = "1.8"
+    sourceCompatibility = "17"
+    targetCompatibility = "17"
   }
   withType<KotlinCompile> {
     kotlinOptions {
-      jvmTarget = "1.8"
+      jvmTarget = "17"
       freeCompilerArgs = listOf(
         "-Xjsr305=strict",
         "-opt-in=kotlin.time.ExperimentalTime",
