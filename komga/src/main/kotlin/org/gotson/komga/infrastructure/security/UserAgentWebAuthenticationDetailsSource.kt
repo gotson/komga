@@ -1,8 +1,8 @@
 package org.gotson.komga.infrastructure.security
 
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.stereotype.Component
-import javax.servlet.http.HttpServletRequest
 
 @Component
 class UserAgentWebAuthenticationDetailsSource : WebAuthenticationDetailsSource() {

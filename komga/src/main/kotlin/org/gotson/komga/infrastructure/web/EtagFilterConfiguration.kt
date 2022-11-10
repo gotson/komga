@@ -1,12 +1,12 @@
 package org.gotson.komga.infrastructure.web
 
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.server.PathContainer
 import org.springframework.web.filter.ShallowEtagHeaderFilter
 import org.springframework.web.util.pattern.PathPatternParser
-import javax.servlet.http.HttpServletRequest
 
 @Configuration
 class EtagFilterConfiguration {

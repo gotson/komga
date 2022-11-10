@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.jms
 
+import jakarta.jms.ConnectionFactory
 import mu.KotlinLogging
 import org.apache.activemq.artemis.api.core.QueueConfiguration
 import org.apache.activemq.artemis.api.core.RoutingType
@@ -9,7 +10,6 @@ import org.springframework.boot.autoconfigure.jms.artemis.ArtemisConfigurationCu
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory
-import javax.jms.ConnectionFactory
 import org.apache.activemq.artemis.core.config.Configuration as ArtemisConfiguration
 
 private val logger = KotlinLogging.logger {}

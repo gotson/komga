@@ -1,5 +1,8 @@
 package org.gotson.komga.interfaces.sse
 
+import jakarta.jms.ObjectMessage
+import jakarta.jms.QueueBrowser
+import jakarta.jms.Session
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.KomgaUser
@@ -35,9 +38,6 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
 import java.io.IOException
 import java.util.Collections
-import javax.jms.ObjectMessage
-import javax.jms.QueueBrowser
-import javax.jms.Session
 
 private val logger = KotlinLogging.logger {}
 

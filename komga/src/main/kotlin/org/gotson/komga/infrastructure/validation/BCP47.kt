@@ -1,9 +1,9 @@
 package org.gotson.komga.infrastructure.validation
 
 import com.ibm.icu.util.ULocale
-import javax.validation.Constraint
-import javax.validation.ConstraintValidator
-import javax.validation.ConstraintValidatorContext
+import jakarta.validation.Constraint
+import jakarta.validation.ConstraintValidator
+import jakarta.validation.ConstraintValidatorContext
 import kotlin.reflect.KClass
 
 @Constraint(validatedBy = [BCP47Validator::class])

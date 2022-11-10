@@ -1,8 +1,8 @@
 package org.gotson.komga.interfaces.api.rest.dto
 
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotEmpty
 import org.hibernate.validator.constraints.UniqueElements
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotEmpty
 
 data class ReadListCreationDto(
   @get:NotBlank val name: String,

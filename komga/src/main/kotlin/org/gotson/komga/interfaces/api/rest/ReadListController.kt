@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import jakarta.validation.Valid
 import mu.KotlinLogging
 import org.apache.commons.compress.archivers.zip.Zip64Mode
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
@@ -77,7 +78,6 @@ import java.io.OutputStream
 import java.nio.charset.StandardCharsets.UTF_8
 import java.util.concurrent.TimeUnit
 import java.util.zip.Deflater
-import javax.validation.Valid
 
 private val logger = KotlinLogging.logger {}
 

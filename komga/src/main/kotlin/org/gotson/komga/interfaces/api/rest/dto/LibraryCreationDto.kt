@@ -1,6 +1,6 @@
 package org.gotson.komga.interfaces.api.rest.dto
 
-import javax.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotBlank
 
 data class LibraryCreationDto(
   @get:NotBlank val name: String,

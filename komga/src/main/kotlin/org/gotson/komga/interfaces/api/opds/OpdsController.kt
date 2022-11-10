@@ -1,6 +1,7 @@
 package org.gotson.komga.interfaces.api.opds
 
 import io.swagger.v3.oas.annotations.Parameter
+import jakarta.servlet.ServletContext
 import mu.KotlinLogging
 import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
@@ -61,7 +62,6 @@ import java.text.DecimalFormat
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.Optional
-import javax.servlet.ServletContext
 
 private val logger = KotlinLogging.logger {}
 

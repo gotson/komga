@@ -1,6 +1,8 @@
 package org.gotson.komga.infrastructure.jms
 
 import com.ninjasquad.springmockk.MockkBean
+import jakarta.jms.QueueBrowser
+import jakarta.jms.Session
 import mu.KotlinLogging
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.application.tasks.TaskHandler
@@ -12,8 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.jms.support.destination.JmsDestinationAccessor
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import javax.jms.QueueBrowser
-import javax.jms.Session
 
 private val logger = KotlinLogging.logger {}
 

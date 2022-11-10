@@ -1,6 +1,7 @@
 package org.gotson.komga.interfaces.api.rest
 
 import io.swagger.v3.oas.annotations.Parameter
+import jakarta.validation.Valid
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.AgeRestriction
 import org.gotson.komga.domain.model.ContentRestrictions
@@ -42,7 +43,6 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
-import javax.validation.Valid
 
 private val logger = KotlinLogging.logger {}
 

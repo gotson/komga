@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import jakarta.validation.Valid
 import mu.KotlinLogging
 import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.Author
@@ -56,7 +57,6 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
 import java.util.concurrent.TimeUnit
-import javax.validation.Valid
 
 private val logger = KotlinLogging.logger {}
 

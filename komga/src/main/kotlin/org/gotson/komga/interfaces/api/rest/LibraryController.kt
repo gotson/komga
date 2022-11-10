@@ -1,5 +1,6 @@
 package org.gotson.komga.interfaces.api.rest
 
+import jakarta.validation.Valid
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
 import org.gotson.komga.application.tasks.TaskEmitter
@@ -35,7 +36,6 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import java.io.FileNotFoundException
-import javax.validation.Valid
 
 @RestController
 @RequestMapping("api/v1/libraries", produces = [MediaType.APPLICATION_JSON_VALUE])

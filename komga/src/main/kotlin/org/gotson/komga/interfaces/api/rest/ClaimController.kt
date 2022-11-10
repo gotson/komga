@@ -1,5 +1,7 @@
 package org.gotson.komga.interfaces.api.rest
 
+import jakarta.validation.constraints.Email
+import jakarta.validation.constraints.NotBlank
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.interfaces.api.rest.dto.UserDtoV2
@@ -13,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
-import javax.validation.constraints.Email
-import javax.validation.constraints.NotBlank
 
 @RestController
 @RequestMapping("api/v1/claim", produces = [MediaType.APPLICATION_JSON_VALUE])

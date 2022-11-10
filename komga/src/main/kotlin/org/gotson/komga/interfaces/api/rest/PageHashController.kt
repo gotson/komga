@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import jakarta.validation.Valid
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.BookPageNumbered
 import org.gotson.komga.domain.model.PageHash
@@ -34,7 +35,6 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
-import javax.validation.Valid
 
 @RestController
 @RequestMapping("api/v1/page-hashes", produces = [MediaType.APPLICATION_JSON_VALUE])

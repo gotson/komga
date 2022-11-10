@@ -2,6 +2,8 @@
 
 package org.gotson.komga.interfaces.api.rest.dto
 
+import jakarta.validation.constraints.Email
+import jakarta.validation.constraints.NotBlank
 import org.gotson.komga.domain.model.AgeRestriction
 import org.gotson.komga.domain.model.AllowExclude
 import org.gotson.komga.domain.model.KomgaUser
@@ -9,8 +11,6 @@ import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
 import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
-import javax.validation.constraints.Email
-import javax.validation.constraints.NotBlank
 
 @Deprecated("Deprecated since 0.153.0. Use UserDtoV2 instead")
 data class UserDto(

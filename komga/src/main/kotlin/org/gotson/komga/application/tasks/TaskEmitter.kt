@@ -1,5 +1,6 @@
 package org.gotson.komga.application.tasks
 
+import jakarta.jms.ConnectionFactory
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
@@ -19,7 +20,6 @@ import org.gotson.komga.infrastructure.search.LuceneEntity
 import org.springframework.data.domain.Sort
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.stereotype.Service
-import javax.jms.ConnectionFactory
 
 private val logger = KotlinLogging.logger {}
 

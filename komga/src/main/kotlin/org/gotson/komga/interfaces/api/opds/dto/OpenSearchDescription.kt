@@ -2,7 +2,7 @@ package org.gotson.komga.interfaces.api.opds.dto
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
-import javax.validation.constraints.Size
+import jakarta.validation.constraints.Size
 
 @JacksonXmlRootElement(localName = "OpenSearchDescription", namespace = OPENSEARCH)
 class OpenSearchDescription(

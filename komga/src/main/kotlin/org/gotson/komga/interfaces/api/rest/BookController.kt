@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import jakarta.validation.Valid
 import mu.KotlinLogging
 import org.apache.commons.io.IOUtils
 import org.gotson.komga.application.events.EventPublisher
@@ -85,7 +86,6 @@ import java.nio.charset.StandardCharsets.UTF_8
 import java.nio.file.NoSuchFileException
 import java.time.LocalDate
 import java.time.ZoneOffset
-import javax.validation.Valid
 import kotlin.io.path.name
 
 private val logger = KotlinLogging.logger {}

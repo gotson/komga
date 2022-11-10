@@ -1,11 +1,11 @@
 package org.gotson.komga.application.events
 
+import jakarta.jms.ConnectionFactory
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.infrastructure.jms.JMS_PROPERTY_TYPE
 import org.gotson.komga.infrastructure.jms.TOPIC_EVENTS
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.stereotype.Service
-import javax.jms.ConnectionFactory
 
 @Service
 class EventPublisher(
