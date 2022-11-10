@@ -179,7 +179,7 @@ class SeriesCollectionDaoTest(
       assertThat(seriesIds)
         .hasSize(1)
         .containsExactly(seriesLibrary1.id)
-      assertThat(filtered).isTrue()
+      assertThat(filtered).isTrue
     }
 
     assertThat(foundLibrary1Unfiltered).hasSize(2)
@@ -188,7 +188,7 @@ class SeriesCollectionDaoTest(
       assertThat(seriesIds)
         .hasSize(2)
         .containsExactly(seriesLibrary1.id, seriesLibrary2.id)
-      assertThat(filtered).isFalse()
+      assertThat(filtered).isFalse
     }
 
     assertThat(foundLibrary2Filtered).hasSize(2)
@@ -197,7 +197,7 @@ class SeriesCollectionDaoTest(
       assertThat(seriesIds)
         .hasSize(1)
         .containsExactly(seriesLibrary2.id)
-      assertThat(filtered).isTrue()
+      assertThat(filtered).isTrue
     }
 
     assertThat(foundLibrary2Unfiltered).hasSize(2)
@@ -206,7 +206,7 @@ class SeriesCollectionDaoTest(
       assertThat(seriesIds)
         .hasSize(2)
         .containsExactly(seriesLibrary1.id, seriesLibrary2.id)
-      assertThat(filtered).isFalse()
+      assertThat(filtered).isFalse
     }
 
     assertThat(foundBothUnfiltered).hasSize(3)
@@ -215,7 +215,7 @@ class SeriesCollectionDaoTest(
       assertThat(seriesIds)
         .hasSize(2)
         .containsExactly(seriesLibrary1.id, seriesLibrary2.id)
-      assertThat(filtered).isFalse()
+      assertThat(filtered).isFalse
     }
   }
 }
