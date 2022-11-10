@@ -31,7 +31,7 @@ class ArtemisConfig : ArtemisConfigurationCustomizer {
       // default is 90, meaning the queue would block if disk is 90% full. Set it to 100 to avoid blocking.
       it.maxDiskUsage = 100
       // disable prefetch, ensures messages stay in the queue and last value can have desired effect
-      it.addAddressesSetting(
+      it.addAddressSetting(
         QUEUE_TASKS,
         AddressSettings().apply {
           defaultConsumerWindowSize = 0
