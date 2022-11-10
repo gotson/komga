@@ -125,7 +125,7 @@ dependencies {
   testImplementation("io.mockk:mockk:1.13.2")
   testImplementation("com.google.jimfs:jimfs:1.2")
 
-  testImplementation("com.tngtech.archunit:archunit-junit5:0.23.1")
+  testImplementation("com.tngtech.archunit:archunit-junit5:1.0.1")
 
   benchmarkImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
   benchmarkImplementation("org.openjdk.jmh:jmh-core:1.36")
