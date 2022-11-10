@@ -18,10 +18,9 @@ import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.interfaces.api.rest.dto.AuthenticationActivityDto
 import org.gotson.komga.interfaces.api.rest.dto.PasswordUpdateDto
 import org.gotson.komga.interfaces.api.rest.dto.UserCreationDto
-import org.gotson.komga.interfaces.api.rest.dto.UserDtoV2
+import org.gotson.komga.interfaces.api.rest.dto.UserDto
 import org.gotson.komga.interfaces.api.rest.dto.UserUpdateDto
 import org.gotson.komga.interfaces.api.rest.dto.toDto
-import org.gotson.komga.interfaces.api.rest.dto.toDtoV2
 import org.springdoc.core.converters.models.PageableAsQueryParam
 import org.springframework.core.env.Environment
 import org.springframework.data.domain.Page
@@ -48,7 +47,7 @@ private val logger = KotlinLogging.logger {}
 
 @RestController
 @RequestMapping("api/v2/users", produces = [MediaType.APPLICATION_JSON_VALUE])
-class UserV2Controller(
+class UserController(
   private val userLifecycle: KomgaUserLifecycle,
   private val userRepository: KomgaUserRepository,
   private val libraryRepository: LibraryRepository,
@@ -59,8 +58,8 @@ class UserV2Controller(
   private val demo = env.activeProfiles.contains("demo")
 
   @GetMapping("me")
-  fun getMe(@AuthenticationPrincipal principal: KomgaPrincipal): UserDtoV2 =
-    principal.toDtoV2()
+  fun getMe(@AuthenticationPrincipal principal: KomgaPrincipal): UserDto =
+    principal.toDto()
 
   @PatchMapping("me/password")
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -77,8 +76,8 @@ class UserV2Controller(
 
   @GetMapping
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
-  fun getAll(): List<UserDtoV2> =
-    userRepository.findAll().map { it.toDtoV2() }
+  fun getAll(): List<UserDto> =
+    userRepository.findAll().map { it.toDto() }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
@@ -86,9 +85,9 @@ class UserV2Controller(
   fun addOne(
     @Valid @RequestBody
     newUser: UserCreationDto,
-  ): UserDtoV2 =
+  ): UserDto =
     try {
-      userLifecycle.createUser(newUser.toDomain()).toDtoV2()
+      userLifecycle.createUser(newUser.toDomain()).toDto()
     } catch (e: UserEmailAlreadyExistsException) {
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, "A user with this email already exists")
     }

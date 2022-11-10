@@ -4,8 +4,8 @@ import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.service.KomgaUserLifecycle
-import org.gotson.komga.interfaces.api.rest.dto.UserDtoV2
-import org.gotson.komga.interfaces.api.rest.dto.toDtoV2
+import org.gotson.komga.interfaces.api.rest.dto.UserDto
+import org.gotson.komga.interfaces.api.rest.dto.toDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.validation.annotation.Validated
@@ -34,7 +34,7 @@ class ClaimController(
     @NotBlank
     @RequestHeader("X-Komga-Password")
     password: String,
-  ): UserDtoV2 {
+  ): UserDto {
     if (userDetailsLifecycle.countUsers() > 0)
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, "This server has already been claimed")
 
@@ -44,7 +44,7 @@ class ClaimController(
         password = password,
         roleAdmin = true,
       ),
-    ).toDtoV2()
+    ).toDto()
   }
 
   data class ClaimStatus(
