@@ -30,9 +30,12 @@ logging:
     rollingpolicy:
       max-history: 1
 
-management.metrics.export.influx:
-  #  enabled: true
-  uri: http://localhost:8086
+management:
+  influx:
+    metrics:
+      export:
+        uri: http://localhost:8086
+#        enabled: true
 
 springdoc:
   cache:
@@ -41,3 +44,4 @@ springdoc:
 #server:
 #  servlet:
 #    context-path: /komga
+

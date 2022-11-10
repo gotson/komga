@@ -70,18 +70,20 @@ management:
       show-details: when_authorized
     shutdown:
       enabled: true
-  metrics:
-    export:
-      influx:
-        enabled: false
-      simple:
-        enabled: true
-        step: 24h
   info:
     java:
       enabled: true
     os:
       enabled: true
+  simple:
+    metrics:
+      export:
+        enabled: true
+        step: 24h
+  influx:
+    metrics:
+      export:
+        enabled: false
 springdoc:
   group-configs:
     - group: REST API
