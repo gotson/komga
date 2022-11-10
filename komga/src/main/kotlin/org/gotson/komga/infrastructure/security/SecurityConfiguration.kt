@@ -7,7 +7,8 @@ import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
 import org.springframework.boot.actuate.health.HealthEndpoint
 import org.springframework.context.annotation.Bean
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
+import org.springframework.context.annotation.Configuration
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.core.session.SessionRegistry
@@ -26,8 +27,9 @@ import org.springframework.security.web.authentication.rememberme.TokenBasedReme
 
 private val logger = KotlinLogging.logger {}
 
+@Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity(prePostEnabled = true)
 class SecurityConfiguration(
   private val komgaProperties: KomgaProperties,
   private val komgaUserDetailsLifecycle: UserDetailsService,
@@ -46,38 +48,31 @@ class SecurityConfiguration(
     http
       .cors {}
       .csrf { it.disable() }
-      .authorizeRequests {
+      .securityMatchers {
+        // only apply security to those endpoints
+        it.requestMatchers(
+          "/api/**",
+          "/opds/**",
+          "/sse/**",
+        )
+        it.requestMatchers(EndpointRequest.toAnyEndpoint())
+      }
+      .authorizeHttpRequests {
         // allow unauthorized access to actuator health endpoint
         // this will only show limited details as `management.endpoint.health.show-details` is set to `when-authorized`
         it.requestMatchers(EndpointRequest.to(HealthEndpoint::class.java)).permitAll()
         // restrict all other actuator endpoints to ADMIN only
         it.requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole(ROLE_ADMIN)
 
-        it.mvcMatchers(
+        it.requestMatchers(
           // to claim server before any account is created
           "/api/v1/claim",
           // used by webui
           "/api/v1/oauth2/providers",
-          "/set-cookie",
-          "/error**",
-          "/css/**",
-          "/img/**",
-          "/js/**",
-          "/favicon.ico",
-          "/favicon-16x16.png",
-          "/favicon-32x32.png",
-          "/mstile-144x144.png",
-          "/apple-touch-icon.png",
-          "/apple-touch-icon-180x180.png",
-          "/android-chrome-192x192.png",
-          "/android-chrome-512x512.png",
-          "/manifest.json",
-          "/",
-          "/index.html",
         ).permitAll()
 
         // all other endpoints are restricted to authenticated users
-        it.mvcMatchers(
+        it.requestMatchers(
           "/api/**",
           "/opds/**",
           "/sse/**",
