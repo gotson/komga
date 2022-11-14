@@ -5,5 +5,5 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails
 import javax.servlet.http.HttpServletRequest
 
 class UserAgentWebAuthenticationDetails(request: HttpServletRequest) : WebAuthenticationDetails(request) {
-  val userAgent: String = request.getHeader(HttpHeaders.USER_AGENT)
+  val userAgent: String = request.getHeader(HttpHeaders.USER_AGENT).orEmpty()
 }
