@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest
@@ -90,6 +91,7 @@ class SecurityConfiguration(
         it.invalidateHttpSession(true)
       }
       .sessionManagement { session ->
+        session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
         session.sessionConcurrency {
           it.sessionRegistry(sessionRegistry)
           it.maximumSessions(-1)
