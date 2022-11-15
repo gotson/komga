@@ -53,7 +53,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-artemis")
   implementation("org.springframework.boot:spring-boot-starter-jooq")
   implementation("org.springframework.session:spring-session-core")
-  implementation("com.github.gotson:spring-session-caffeine:1.0.3")
+  implementation("com.github.gotson:spring-session-caffeine:2.0.0")
 
   kapt("org.springframework.boot:spring-boot-configuration-processor:3.0.2")
 
