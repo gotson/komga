@@ -33,7 +33,8 @@
     "vuetify": "^2.6.4",
     "vuex": "^3.6.2",
     "vuex-persistedstate": "^4.1.0",
-    "vuex-router-sync": "^5.0.0"
+    "vuex-router-sync": "^5.0.0",
+    "pspdfkit": "2022.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.16.12",

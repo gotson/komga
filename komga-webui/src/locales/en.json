@@ -150,7 +150,8 @@
       "show_hide_thumbnails": "Show/hide thumbnails explorer",
       "show_hide_toolbars": "Show/hide toolbars",
       "vertical": "Vertical",
-      "webtoon": "Webtoon"
+      "webtoon": "Webtoon",
+      "PDF":"PDF"
     },
     "tooltip_incognito": "Read progress will not be saved"
   },
@@ -604,7 +605,8 @@
       "LEFT_TO_RIGHT": "Left to right",
       "RIGHT_TO_LEFT": "Right to left",
       "VERTICAL": "Vertical",
-      "WEBTOON": "Webtoon"
+      "WEBTOON": "Webtoon",
+      "PDF":"PDF"
     },
     "series_cover": {
       "FIRST": "First",

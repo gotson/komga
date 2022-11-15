@@ -128,7 +128,8 @@
       "scale_type": "缩放模式",
       "side_padding": "切换边距",
       "side_padding_none": "无",
-      "webtoon": "Webtoon模式"
+      "webtoon": "Webtoon模式",
+      "PDF":"PDF"
     },
     "shortcuts": {
       "close": "关闭",
@@ -150,7 +151,8 @@
       "show_hide_thumbnails": "显示/隐藏缩略图资源管理器",
       "show_hide_toolbars": "显示/隐藏工具栏",
       "vertical": "垂直模式",
-      "webtoon": "Webtoon模式"
+      "webtoon": "Webtoon模式",
+      "PDF":"PDF"
     },
     "tooltip_incognito": "将不保存阅读进度"
   },
@@ -604,7 +606,8 @@
       "LEFT_TO_RIGHT": "从左到右",
       "RIGHT_TO_LEFT": "从右到左",
       "VERTICAL": "垂直模式",
-      "WEBTOON": "Webtoon模式"
+      "WEBTOON": "Webtoon模式",
+      "PDF":"PDF"
     },
     "series_cover": {
       "FIRST": "第一张",

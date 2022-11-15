@@ -97,6 +97,18 @@ export default class KomgaBooksService {
     }
   }
 
+  async getBookJwt(bookId: string): Promise<string> {
+    try {
+      return (await this.http.get(`${API_BOOKS}/${bookId}/jwt`)).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve book jwt token'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
   async getBookSiblingNext(bookId: string): Promise<BookDto> {
     try {
       return (await this.http.get(`${API_BOOKS}/${bookId}/next`)).data

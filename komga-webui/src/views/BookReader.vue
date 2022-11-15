@@ -122,8 +122,18 @@
     </div>
 
     <div class="full-height">
+      <PSPDFKitReader
+        v-if="PDFReader"
+        :pages="pages"
+        :page.sync="page"
+        :bookId="bookId"
+        @menu="toggleToolbars()"
+        @jump-previous="jumpToPrevious()"
+        @jump-next="jumpToNext()"
+      ></PSPDFKitReader>
+
       <continuous-reader
-        v-if="continuousReader"
+        v-else-if="continuousReader"
         :pages="pages"
         :page.sync="page"
         :animations="animations"
@@ -133,7 +143,7 @@
         @jump-previous="jumpToPrevious()"
         @jump-next="jumpToNext()"
       ></continuous-reader>
-
+      
       <paged-reader
         v-else
         :pages="pages"
@@ -242,7 +252,6 @@
               </v-list-item>
             </template>
 
-
           </v-list>
         </v-card-text>
       </v-card>
@@ -323,6 +332,7 @@ import Vue from 'vue'
 import {Location} from 'vue-router'
 import PagedReader from '@/components/readers/PagedReader.vue'
 import ContinuousReader from '@/components/readers/ContinuousReader.vue'
+import PSPDFKitReader from '@/components/readers/PSPDFKitReader.vue'
 import {ContinuousScaleType, PaddingPercentage, PagedReaderLayout, ScaleType} from '@/types/enum-reader'
 import {
   shortcutsLTR,
@@ -344,6 +354,7 @@ export default Vue.extend({
   name: 'BookReader',
   components: {
     ContinuousReader,
+    PSPDFKitReader,
     PagedReader,
     SettingsSwitch,
     SettingsSelect,
@@ -492,6 +503,9 @@ export default Vue.extend({
   computed: {
     continuousReader(): boolean {
       return this.readingDirection === ReadingDirection.WEBTOON
+    },
+    PDFReader():boolean{
+      return this.readingDirection===ReadingDirection.PDF
     },
     progress(): number {
       return this.page / this.pagesCount * 100

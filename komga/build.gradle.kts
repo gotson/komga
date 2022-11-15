@@ -114,6 +114,7 @@ dependencies {
 
   implementation("org.xerial:sqlite-jdbc:3.36.0.3")
   jooqGenerator("org.xerial:sqlite-jdbc:3.36.0.3")
+  implementation("com.auth0:java-jwt:4.2.1")
 
   testImplementation("org.springframework.boot:spring-boot-starter-test") {
     exclude(module = "mockito-core")

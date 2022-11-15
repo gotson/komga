@@ -55,6 +55,14 @@ class SecurityConfiguration(
           "/set-cookie",
         ).permitAll()
 
+        it.regexMatchers(
+          "/api/v1/books/.*/pspdfkit_download.*"
+        ).permitAll()
+
+        it.regexMatchers(
+          "/api/v1/pdf/i/.*"
+        ).permitAll()
+
         // all other endpoints are restricted to authenticated users
         it.mvcMatchers(
           "/api/**",

@@ -39,6 +39,7 @@ import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.infrastructure.web.getMediaTypeOrDefault
 import org.gotson.komga.infrastructure.web.setCachePrivate
+import org.gotson.komga.infrastructure.web.getPSPDFKitJwt
 import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.api.rest.dto.BookDto
 import org.gotson.komga.interfaces.api.rest.dto.BookImportBatchDto
@@ -61,6 +62,11 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.http.HttpMethod
+import org.springframework.http.RequestEntity
+import org.springframework.http.HttpEntity
+import org.springframework.web.client.RestTemplate
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -74,6 +80,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.context.request.ServletWebRequest
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.multipart.MultipartFile
@@ -87,6 +94,12 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 import javax.validation.Valid
 import kotlin.io.path.name
+import java.lang.Thread
+import javax.servlet.http.HttpServletRequest
+import java.net.URI
+import org.springframework.util.MultiValueMap
+import org.springframework.util.LinkedMultiValueMap
+import org.gotson.komga.infrastructure.configuration.KomgaProperties
 
 private val logger = KotlinLogging.logger {}
 
@@ -104,7 +117,9 @@ class BookController(
   private val contentDetector: ContentDetector,
   private val eventPublisher: EventPublisher,
   private val thumbnailBookRepository: ThumbnailBookRepository,
+  private val komgaProperties: KomgaProperties
 ) {
+  private val rest=RestTemplate()
 
   @PageableAsQueryParam
   @GetMapping("api/v1/books")
@@ -400,6 +415,63 @@ class BookController(
         throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+
+  @Operation(description="pspdfkit server proxy")
+  @RequestMapping("api/v1/pdf/**",consumes=[MediaType.ALL_VALUE],produces=[MediaType.ALL_VALUE])
+  fun PSPDFKitServerProxy(@RequestBody body:ByteArray?,method:HttpMethod,request:HttpServletRequest,@RequestHeader requestHeaders:HttpHeaders):ResponseEntity<ByteArray>{
+    val proxyURL=request.getRequestURI()
+    val realURL=proxyURL.replaceFirst("/api/v1/pdf","")
+    val uri=URI(komgaProperties.PSPDFKit.protocol,null,komgaProperties.PSPDFKit.host,komgaProperties.PSPDFKit.port,realURL,request.getQueryString(), null)
+    var proxyRequest:RequestEntity<Any>? = null
+    if(request.contentType!=null && request.contentType.contains(MediaType.MULTIPART_FORM_DATA_VALUE,ignoreCase = true)){
+      val proxyForms=request.parts
+      val form=LinkedMultiValueMap<String,Any>()
+      for (part in proxyForms) {
+        form.add(part.name,part.inputStream.bufferedReader().use { it.readText() })
+      }
+      proxyRequest=RequestEntity.method(method,uri).headers(requestHeaders).body(form)
+    }else {
+      proxyRequest=RequestEntity<Any>(body,requestHeaders,method,uri)
+    }
+    try{
+      val resp=rest.exchange(uri,method,proxyRequest,ByteArray::class.java)
+      return ResponseEntity.status(resp.statusCode).headers(resp.headers).body(resp.getBody())
+    }catch(e:HttpClientErrorException){
+      return ResponseEntity.status(e.statusCode).headers(e.responseHeaders).body(e.responseBodyAsString.toByteArray())
+    }
+  }
+
+  @Operation(description = "sync pdf to pspdfkit server and get book jwt")
+  @GetMapping("api/v1/books/{bookId}/jwt")
+  @PreAuthorize("hasRole('$ROLE_FILE_DOWNLOAD')")
+  fun PSPDFKitBookJwt(@PathVariable bookId:String): String? {
+    val headers = HttpHeaders()
+    headers.set("Authorization","Token token=${komgaProperties.PSPDFKit.token}")
+    val rest=RestTemplate()
+    val baseURL="${komgaProperties.PSPDFKit.protocol}://${komgaProperties.PSPDFKit.host}:${komgaProperties.PSPDFKit.port}"
+    try{
+      val requestEntity= HttpEntity<String>("", headers)
+      rest.exchange("$baseURL/api/documents/$bookId/properties",HttpMethod.GET,requestEntity, String::class.java ,bookId)
+      val jwt_token=getPSPDFKitJwt(bookId,komgaProperties.PSPDFKit.publicKey,komgaProperties.PSPDFKit.privateKey)
+      return jwt_token
+    } catch (e: HttpClientErrorException){
+      bookRepository.findByIdOrNull(bookId)?.let{ book ->
+        with(FileSystemResource(book.path)){
+          if(!exists()) throw FileNotFoundException(path)
+          val requestForm=LinkedMultiValueMap<String,Any>()
+          requestForm.add("copy_asset_to_storage_backend",true)
+          requestForm.add("document_id",bookId)
+          requestForm.add("title",bookId)
+          requestForm.add("file",this)
+          headers.set("Content-Type",MediaType.MULTIPART_FORM_DATA_VALUE)
+          val requestEntity=RequestEntity.method(HttpMethod.POST,"$baseURL/api/documents").headers(headers).body(requestForm)
+          rest.exchange("$baseURL/api/documents",HttpMethod.POST,requestEntity, String::class.java)
+          return getPSPDFKitJwt(bookId,komgaProperties.PSPDFKit.publicKey,komgaProperties.PSPDFKit.privateKey)
+        }
+      }?:throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    }
+  }
 
   @GetMapping("api/v1/books/{bookId}/pages")
   fun getBookPages(
