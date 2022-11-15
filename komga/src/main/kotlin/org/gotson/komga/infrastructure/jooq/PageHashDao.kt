@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.jooq
 
+import org.gotson.komga.domain.model.BookPageNumbered
 import org.gotson.komga.domain.model.PageHash
 import org.gotson.komga.domain.model.PageHashKnown
 import org.gotson.komga.domain.model.PageHashMatch
@@ -163,6 +164,30 @@ class PageHashDao(
       count.toLong(),
     )
   }
+
+  override fun findMatchesByKnownHashAction(actions: List<PageHashKnown.Action>?, libraryId: String?): Map<String, Collection<BookPageNumbered>> =
+    dsl.select(p.BOOK_ID, p.FILE_NAME, p.NUMBER, p.FILE_HASH, p.MEDIA_TYPE, p.FILE_SIZE)
+      .from(p)
+      .innerJoin(ph).on(
+        p.FILE_HASH.eq(ph.HASH)
+          .and(p.MEDIA_TYPE.eq(ph.MEDIA_TYPE))
+          .and(
+            p.FILE_SIZE.isNull.and(ph.SIZE.isNull).or(p.FILE_SIZE.isNotNull.and(ph.SIZE.isNotNull).and(p.FILE_SIZE.eq(ph.SIZE)))
+          )
+      )
+      .apply { libraryId?.let<String, Unit> { innerJoin(b).on(b.ID.eq(p.BOOK_ID)) } }
+      .where(ph.ACTION.`in`(actions))
+      .apply { libraryId?.let<String, Unit> { and(b.LIBRARY_ID.eq(it)) } }
+      .fetch {
+        it.value1() to BookPageNumbered(
+          fileName = it.value2(),
+          pageNumber = it.value3() + 1,
+          fileHash = it.value4(),
+          mediaType = it.value5(),
+          fileSize = it.value6(),
+        )
+      }.groupingBy { it.first }
+      .fold(emptyList()) { acc, (_, new) -> acc + new }
 
   override fun getKnownThumbnail(pageHash: PageHash): ByteArray? =
     dsl.select(pht.THUMBNAIL)

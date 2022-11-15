@@ -8,7 +8,7 @@ plugins {
     kotlin("plugin.spring")
     kotlin("kapt")
   }
-  id("org.springframework.boot") version "2.7.1"
+  id("org.springframework.boot") version "2.7.5"
   id("com.gorylenko.gradle-git-properties") version "2.4.1"
   id("nu.studer.jooq") version "5.2.2" // 6.0.0 requires Java 11
   id("org.flywaydb.flyway") version "8.5.13"
@@ -39,7 +39,7 @@ dependencies {
   implementation(kotlin("stdlib-jdk8"))
   implementation(kotlin("reflect"))
 
-  implementation(platform("org.springframework.boot:spring-boot-dependencies:2.7.1"))
+  implementation(platform("org.springframework.boot:spring-boot-dependencies:2.7.5"))
 
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -52,18 +52,18 @@ dependencies {
   implementation("org.springframework.session:spring-session-core")
   implementation("com.github.gotson:spring-session-caffeine:1.0.3")
 
-  kapt("org.springframework.boot:spring-boot-configuration-processor:2.7.1")
+  kapt("org.springframework.boot:spring-boot-configuration-processor:2.7.5")
 
   implementation("org.apache.activemq:artemis-jms-server")
 
   implementation("org.flywaydb:flyway-core")
 
-  implementation("io.github.microutils:kotlin-logging-jvm:2.1.23")
+  implementation("io.github.microutils:kotlin-logging-jvm:2.1.23") // 3.0 brings SLF4J 2
   implementation("io.micrometer:micrometer-registry-influx")
-  implementation("io.hawt:hawtio-springboot:2.15.0")
+  implementation("io.hawt:hawtio-springboot:2.16.1")
 
   run {
-    val springdocVersion = "1.6.9"
+    val springdocVersion = "1.6.12"
     implementation("org.springdoc:springdoc-openapi-ui:$springdocVersion")
     implementation("org.springdoc:springdoc-openapi-security:$springdocVersion")
     implementation("org.springdoc:springdoc-openapi-kotlin:$springdocVersion")
@@ -84,36 +84,36 @@ dependencies {
     implementation("org.apache.lucene:lucene-queryparser:$luceneVersion")
   }
 
-  implementation("com.ibm.icu:icu4j:71.1")
+  implementation("com.ibm.icu:icu4j:72.1")
 
-  implementation("org.apache.tika:tika-core:2.4.1")
-  implementation("org.apache.commons:commons-compress:1.21")
-  implementation("com.github.junrar:junrar:7.5.2")
-  implementation("org.apache.pdfbox:pdfbox:2.0.26")
+  implementation("org.apache.tika:tika-core:2.4.1") // 2.5.0 brings SLF4J 2
+  implementation("org.apache.commons:commons-compress:1.22")
+  implementation("com.github.junrar:junrar:7.5.3")
+  implementation("org.apache.pdfbox:pdfbox:2.0.27")
   implementation("net.grey-panther:natural-comparator:1.1")
-  implementation("org.jsoup:jsoup:1.15.1")
+  implementation("org.jsoup:jsoup:1.15.3")
 
-  implementation("net.coobird:thumbnailator:0.4.17")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.8.2")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.8.2")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-webp:3.8.2")
-  runtimeOnly("com.github.gotson.nightmonkeys:imageio-jxl:0.3.0")
-  implementation("com.github.gotson:webp-imageio:0.2.2")
+  implementation("net.coobird:thumbnailator:0.4.18")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.9.3")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.9.3")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-webp:3.9.3")
+  runtimeOnly("com.github.gotson.nightmonkeys:imageio-jxl:0.4.0")
   // support for jpeg2000
   runtimeOnly("com.github.jai-imageio:jai-imageio-jpeg2000:1.4.0")
   runtimeOnly("org.apache.pdfbox:jbig2-imageio:3.0.4")
 
   // barcode scanning
-  implementation("com.google.zxing:core:3.5.0")
+  implementation("com.google.zxing:core:3.5.1")
 
   implementation("com.jakewharton.byteunits:byteunits:0.9.1")
 
-  implementation("com.github.f4b6a3:tsid-creator:4.2.1")
+  implementation("com.github.f4b6a3:tsid-creator:5.0.2")
 
   implementation("com.github.ben-manes.caffeine:caffeine:2.9.3") // 3.0.0 requires Java 11
 
-  implementation("org.xerial:sqlite-jdbc:3.36.0.3")
-  jooqGenerator("org.xerial:sqlite-jdbc:3.36.0.3")
+
+  implementation("org.xerial:sqlite-jdbc:3.39.3.0")
+  jooqGenerator("org.xerial:sqlite-jdbc:3.39.3.0")
   implementation("com.auth0:java-jwt:4.2.1")
 
   testImplementation("org.springframework.boot:spring-boot-starter-test") {
@@ -121,7 +121,7 @@ dependencies {
   }
   testImplementation("org.springframework.security:spring-security-test")
   testImplementation("com.ninja-squad:springmockk:3.1.1")
-  testImplementation("io.mockk:mockk:1.12.4") // 1.12.3 make some tests fails when using withArg
+  testImplementation("io.mockk:mockk:1.13.2")
   testImplementation("com.google.jimfs:jimfs:1.2")
 
   testImplementation("com.tngtech.archunit:archunit-junit5:0.23.1")
@@ -129,9 +129,9 @@ dependencies {
   benchmarkImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
   benchmarkImplementation("org.openjdk.jmh:jmh-core:1.35")
   kaptBenchmark("org.openjdk.jmh:jmh-generator-annprocess:1.35")
-  kaptBenchmark("org.springframework.boot:spring-boot-configuration-processor:2.7.1")
+  kaptBenchmark("org.springframework.boot:spring-boot-configuration-processor:2.7.5")
 
-  developmentOnly("org.springframework.boot:spring-boot-devtools:2.7.1")
+  developmentOnly("org.springframework.boot:spring-boot-devtools:2.7.5")
 }
 
 val webui = "$rootDir/komga-webui"

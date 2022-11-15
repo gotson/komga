@@ -46,28 +46,8 @@ class PageHashLifecycle(
     return bookLifecycle.getBookPage(book, match.pageNumber, resizeTo = resizeTo)
   }
 
-  fun getBookPagesToDeleteAutomatically(library: Library): Map<String, Collection<BookPageNumbered>> {
-    val hashesAutoDelete = pageHashRepository.findAllKnown(listOf(PageHashKnown.Action.DELETE_AUTO), Pageable.unpaged()).content
-
-    return hashesAutoDelete.map { hash ->
-      pageHashRepository.findMatchesByHash(hash, library.id, Pageable.unpaged()).content
-        .groupBy(
-          { it.bookId },
-          {
-            BookPageNumbered(
-              fileName = it.fileName,
-              mediaType = hash.mediaType,
-              fileHash = hash.hash,
-              fileSize = hash.size,
-              pageNumber = it.pageNumber,
-            )
-          },
-        )
-    }.flatMap { it.entries }
-      .groupBy({ it.key }, { it.value })
-      .mapValues { it.value.flatten() }
-      .filter { it.value.isNotEmpty() }
-  }
+  fun getBookPagesToDeleteAutomatically(library: Library): Map<String, Collection<BookPageNumbered>> =
+    pageHashRepository.findMatchesByKnownHashAction(listOf(PageHashKnown.Action.DELETE_AUTO), library.id)
 
   fun createOrUpdate(pageHash: PageHashKnown) {
     if (pageHash.action == PageHashKnown.Action.DELETE_AUTO && pageHash.size == null) throw IllegalArgumentException("cannot create PageHash without size and Action.DELETE_AUTO")

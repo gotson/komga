@@ -35,8 +35,6 @@ class KomgaProperties {
   @DurationUnit(ChronoUnit.SECONDS)
   var sessionTimeout: Duration = Duration.ofMinutes(30)
 
-  var nativeWebp: Boolean = true
-
   var oauth2AccountCreation: Boolean = false
 
   var database = Database()

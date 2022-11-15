@@ -1,5 +1,6 @@
 package org.gotson.komga.domain.persistence
 
+import org.gotson.komga.domain.model.BookPageNumbered
 import org.gotson.komga.domain.model.PageHash
 import org.gotson.komga.domain.model.PageHashKnown
 import org.gotson.komga.domain.model.PageHashMatch
@@ -13,6 +14,7 @@ interface PageHashRepository {
   fun findAllUnknown(pageable: Pageable): Page<PageHashUnknown>
 
   fun findMatchesByHash(pageHash: PageHash, libraryId: String?, pageable: Pageable): Page<PageHashMatch>
+  fun findMatchesByKnownHashAction(actions: List<PageHashKnown.Action>?, libraryId: String?): Map<String, Collection<BookPageNumbered>>
 
   fun getKnownThumbnail(pageHash: PageHash): ByteArray?
 

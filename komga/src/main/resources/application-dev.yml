@@ -20,6 +20,7 @@ logging:
     org.apache.activemq.audit.message: WARN
     org.gotson.komga: DEBUG
 #    org.jooq: DEBUG
+#    org.jooq.tools.LoggerListener: DEBUG
 #    web: DEBUG
 #    com.zaxxer.hikari: DEBUG
 #    org.springframework.jms: DEBUG

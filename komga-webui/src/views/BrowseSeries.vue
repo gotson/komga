@@ -271,7 +271,7 @@
                 <v-icon>mdi-chevron-right</v-icon>
               </v-btn>
             </template>
-            <v-chip v-for="(t, i) in series.metadata.genres"
+            <v-chip v-for="(t, i) in $_.sortBy(series.metadata.genres)"
                     :key="i"
                     class="me-2"
                     :title="t"

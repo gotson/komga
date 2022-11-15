@@ -331,7 +331,7 @@
       "confirm_delete_multiple": "Đúng, xóa {count} series và tệp của chúng",
       "dialog_title": "Xóa Series",
       "warning_html": "Series <b>{name}</b> sẽ bị xóa khỏi máy chủ này cùng với các tệp phương tiện được lưu trữ. Điều này <b>không thể hoàn tác</b>. Tiếp tục?",
-      "warning_multiple_html": "{count} series sẽ bị xóa khỏi máy chủ này cùng với các tệp phương tiện được lưu trữ. Không thể hoàn tác <b> này </b>. Tiếp tục?"
+      "warning_multiple_html": "{count} series sẽ bị xóa khỏi máy chủ này cùng với các tệp phương tiện được lưu trữ. Việc này <b> không thể hoàn tác </b>. Tiếp tục?"
     },
     "delete_user": {
       "button_confirm": "Xóa",
@@ -466,7 +466,7 @@
     "edit_user_restrictions": {
       "age_restriction": {
         "allow_under": "Chỉ được xem dưới độ tuổi",
-        "exclude_over": "Loại trừ với",
+        "exclude_over": "Loại trừ khi lớn hơn",
         "none": "Không có giới hạn"
       },
       "edit_restrictions_for": "Chỉnh sửa giới hạn với {name}",
@@ -477,7 +477,7 @@
       "tab_shared_libraries": "Các thư viện được chia sẻ"
     },
     "empty_trash": {
-      "body": "Mặc định server sẽ không gỡ thông tin của dữ liệu ngay lập tức. Giúp cho việc giả sử một ổ cứng đang tạm thời ngắt kết nối. Nếu bạn xóa thùng rác thư viện thì tất cả thông tin của dữ liệu sẽ bị xóa hoàn toàn.",
+      "body": "Mặc định server sẽ không gỡ thông tin của dữ liệu ngay lập tức. Việc này sẽ giúp nếu một ổ cứng tạm thời ngắt kết nối. Nếu bạn xóa thùng rác thư viện, thì tất cả thông tin của dữ liệu sẽ bị xóa hoàn toàn.",
       "button_confirm": "Dọn rác",
       "title": "Dọn rác thư viện"
     },
@@ -804,7 +804,7 @@
     "tooltip_generated": "Ảnh tự động",
     "tooltip_mark_as_selected": "Đánh dấu đã chọn",
     "tooltip_selected": "Đã chọn",
-    "tooltip_sidecar": "Ảnh lưu dưới tệp",
+    "tooltip_sidecar": "Ảnh từ local",
     "tooltip_to_be_deleted": "Sẽ được xóa",
     "tooltip_to_be_uploaded": "Sẽ được tải lên",
     "tooltip_too_big": "Dữ liệu quá lớn!",

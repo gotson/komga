@@ -2,13 +2,13 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
   run {
-    val kotlinVersion = "1.7.0"
+    val kotlinVersion = "1.7.20"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     kotlin("kapt") version kotlinVersion
   }
-  id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
-  id("com.github.ben-manes.versions") version "0.42.0"
+  id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
+  id("com.github.ben-manes.versions") version "0.43.0"
 }
 
 fun isNonStable(version: String): Boolean {
@@ -36,7 +36,7 @@ allprojects {
   }
 
   configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-    version.set("0.45.2")
+    version.set("0.45.2") // plugin does not support 0.46+ - see https://github.com/JLLeitschuh/ktlint-gradle/issues/589
     filter {
       exclude("**/db/migration/**")
     }
@@ -44,6 +44,6 @@ allprojects {
 }
 
 tasks.wrapper {
-  gradleVersion = "7.4.2"
+  gradleVersion = "7.5.1"
   distributionType = Wrapper.DistributionType.ALL
 }
