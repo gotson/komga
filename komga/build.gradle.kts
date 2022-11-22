@@ -63,7 +63,7 @@ dependencies {
   implementation("io.hawt:hawtio-springboot:2.16.1")
 
   run {
-    val springdocVersion = "1.6.12"
+    val springdocVersion = "1.6.13"
     implementation("org.springdoc:springdoc-openapi-ui:$springdocVersion")
     implementation("org.springdoc:springdoc-openapi-security:$springdocVersion")
     implementation("org.springdoc:springdoc-openapi-kotlin:$springdocVersion")
