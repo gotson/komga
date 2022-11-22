@@ -2,7 +2,7 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
   run {
-    val kotlinVersion = "1.7.20"
+    val kotlinVersion = "1.7.21"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     kotlin("kapt") version kotlinVersion
