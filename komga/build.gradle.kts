@@ -88,7 +88,7 @@ dependencies {
 
   implementation("org.apache.tika:tika-core:2.4.1") // 2.5.0 brings SLF4J 2
   implementation("org.apache.commons:commons-compress:1.22")
-  implementation("com.github.junrar:junrar:7.5.3")
+  implementation("com.github.junrar:junrar:7.5.4")
   implementation("org.apache.pdfbox:pdfbox:2.0.27")
   implementation("net.grey-panther:natural-comparator:1.1")
   implementation("org.jsoup:jsoup:1.15.3")
