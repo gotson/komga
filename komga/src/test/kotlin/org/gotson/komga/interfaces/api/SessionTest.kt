@@ -84,7 +84,7 @@ class SessionTest(
       header(sessionHeaderName, sessionId!!)
     }.andExpect {
       header {
-        string(HttpHeaders.SET_COOKIE, containsString("${sessionCookieName}="))
+        string(HttpHeaders.SET_COOKIE, containsString("$sessionCookieName="))
         doesNotExist(sessionHeaderName)
       }
       cookie {
@@ -107,7 +107,7 @@ class SessionTest(
       header(sessionHeaderName, sessionId!!)
     }.andExpect {
       header {
-        string(HttpHeaders.SET_COOKIE, containsString("${sessionCookieName}=;"))
+        string(HttpHeaders.SET_COOKIE, containsString("$sessionCookieName=;"))
       }
       cookie {
         maxAge(sessionCookieName, 0)
