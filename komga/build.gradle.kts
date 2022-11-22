@@ -125,8 +125,8 @@ dependencies {
   testImplementation("com.tngtech.archunit:archunit-junit5:0.23.1")
 
   benchmarkImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-  benchmarkImplementation("org.openjdk.jmh:jmh-core:1.35")
-  kaptBenchmark("org.openjdk.jmh:jmh-generator-annprocess:1.35")
+  benchmarkImplementation("org.openjdk.jmh:jmh-core:1.36")
+  kaptBenchmark("org.openjdk.jmh:jmh-generator-annprocess:1.36")
   kaptBenchmark("org.springframework.boot:spring-boot-configuration-processor:2.7.5")
 
   developmentOnly("org.springframework.boot:spring-boot-devtools:2.7.5")
