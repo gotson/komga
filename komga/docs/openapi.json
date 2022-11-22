@@ -4639,11 +4639,8 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "format": "byte"
-                  }
+                  "type": "string",
+                  "format": "byte"
                 }
               }
             }
@@ -8286,7 +8283,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_1",
+        "operationId": "getProviders",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8317,7 +8314,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_5",
+        "operationId": "getProviders_3",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8379,7 +8376,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_4",
+        "operationId": "getProviders_5",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8441,7 +8438,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders",
+        "operationId": "getProviders_1",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -8472,7 +8469,7 @@
         "tags": [
           "o-auth-2-controller"
         ],
-        "operationId": "getProviders_3",
+        "operationId": "getProviders_4",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -9526,6 +9523,9 @@
               "type": "string"
             }
           },
+          "ageRestriction": {
+            "$ref": "#/components/schemas/AgeRestrictionUpdateDto"
+          },
           "labelsAllow": {
             "uniqueItems": true,
             "type": "array",
@@ -9539,9 +9539,6 @@
             "items": {
               "type": "string"
             }
-          },
-          "ageRestriction": {
-            "$ref": "#/components/schemas/AgeRestrictionUpdateDto"
           },
           "sharedLibraries": {
             "$ref": "#/components/schemas/SharedLibrariesUpdateDto"
@@ -9792,11 +9789,12 @@
               "$ref": "#/components/schemas/WebLinkUpdateDto"
             }
           },
-          "summary": {
-            "type": "string"
-          },
           "isbn": {
             "type": "string"
+          },
+          "releaseDate": {
+            "type": "string",
+            "format": "date"
           },
           "authors": {
             "type": "array",
@@ -9804,9 +9802,8 @@
               "$ref": "#/components/schemas/AuthorUpdateDto"
             }
           },
-          "releaseDate": {
-            "type": "string",
-            "format": "date"
+          "summary": {
+            "type": "string"
           }
         },
         "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update."
@@ -10022,7 +10019,7 @@
             "type": "boolean"
           },
           "sort": {
-            "$ref": "#/components/schemas/Sort"
+            "$ref": "#/components/schemas/SortObject"
           },
           "numberOfElements": {
             "type": "integer",
@@ -10065,7 +10062,7 @@
             "type": "boolean"
           },
           "sort": {
-            "$ref": "#/components/schemas/Sort"
+            "$ref": "#/components/schemas/SortObject"
           },
           "offset": {
             "type": "integer",
@@ -10073,7 +10070,7 @@
           }
         }
       },
-      "Sort": {
+      "SortObject": {
         "type": "object",
         "properties": {
           "sorted": {
@@ -10160,7 +10157,7 @@
             "type": "boolean"
           },
           "sort": {
-            "$ref": "#/components/schemas/Sort"
+            "$ref": "#/components/schemas/SortObject"
           },
           "numberOfElements": {
             "type": "integer",
@@ -10294,7 +10291,7 @@
             "type": "boolean"
           },
           "sort": {
-            "$ref": "#/components/schemas/Sort"
+            "$ref": "#/components/schemas/SortObject"
           },
           "numberOfElements": {
             "type": "integer",
@@ -10773,7 +10770,7 @@
             "type": "boolean"
           },
           "sort": {
-            "$ref": "#/components/schemas/Sort"
+            "$ref": "#/components/schemas/SortObject"
           },
           "numberOfElements": {
             "type": "integer",
@@ -10881,7 +10878,7 @@
             "type": "boolean"
           },
           "sort": {
-            "$ref": "#/components/schemas/Sort"
+            "$ref": "#/components/schemas/SortObject"
           },
           "numberOfElements": {
             "type": "integer",
@@ -10970,7 +10967,7 @@
             "type": "boolean"
           },
           "sort": {
-            "$ref": "#/components/schemas/Sort"
+            "$ref": "#/components/schemas/SortObject"
           },
           "numberOfElements": {
             "type": "integer",
@@ -11016,7 +11013,7 @@
             "type": "boolean"
           },
           "sort": {
-            "$ref": "#/components/schemas/Sort"
+            "$ref": "#/components/schemas/SortObject"
           },
           "numberOfElements": {
             "type": "integer",
@@ -11086,7 +11083,7 @@
             "type": "boolean"
           },
           "sort": {
-            "$ref": "#/components/schemas/Sort"
+            "$ref": "#/components/schemas/SortObject"
           },
           "numberOfElements": {
             "type": "integer",
@@ -11161,7 +11158,7 @@
             "type": "boolean"
           },
           "sort": {
-            "$ref": "#/components/schemas/Sort"
+            "$ref": "#/components/schemas/SortObject"
           },
           "numberOfElements": {
             "type": "integer",
@@ -11207,7 +11204,7 @@
             "type": "boolean"
           },
           "sort": {
-            "$ref": "#/components/schemas/Sort"
+            "$ref": "#/components/schemas/SortObject"
           },
           "numberOfElements": {
             "type": "integer",

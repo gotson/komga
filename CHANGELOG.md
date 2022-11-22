@@ -1,3 +1,12 @@
+## [0.157.5](https://github.com/gotson/komga/compare/v0.157.4...v0.157.5) (2022-11-22)
+
+
+### Bug Fixes
+
+* exception if user agent is null ([cb07581](https://github.com/gotson/komga/commit/cb07581daa850cc38902304e4d2ac8717e1f8696))
+* translated using Weblate ([1f504f4](https://github.com/gotson/komga/commit/1f504f4a7d6b2f1adf176f884d9403e0046bf7d3))
+* **webui:** sort genre on Browse Series screen ([665ce18](https://github.com/gotson/komga/commit/665ce1804c915a3d4783ede102c3a03bda9a48f6))
+
 ## [0.157.4](https://github.com/gotson/komga/compare/v0.157.3...v0.157.4) (2022-11-02)
 
 
