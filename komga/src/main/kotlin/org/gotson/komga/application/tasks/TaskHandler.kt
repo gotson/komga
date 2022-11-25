@@ -166,6 +166,8 @@ class TaskHandler(
 
           is Task.RebuildIndex -> searchIndexLifecycle.rebuildIndex(task.entities)
 
+          is Task.UpgradedIndex -> searchIndexLifecycle.upgradeIndex()
+
           is Task.DeleteBook -> {
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
               bookLifecycle.deleteBookFiles(book)

@@ -6,6 +6,7 @@ import org.apache.lucene.document.Document
 import org.apache.lucene.document.Field
 import org.apache.lucene.document.StringField
 import org.apache.lucene.index.DirectoryReader
+import org.apache.lucene.index.IndexUpgrader
 import org.apache.lucene.index.IndexWriter
 import org.apache.lucene.index.IndexWriterConfig
 import org.apache.lucene.index.Term
@@ -28,7 +29,9 @@ class LuceneHelper(
   private val searchAnalyzer: Analyzer,
 ) {
 
-  fun getIndexWriter() = IndexWriter(directory, IndexWriterConfig(indexAnalyzer))
+  private fun getIndexWriterConfig() = IndexWriterConfig(indexAnalyzer)
+
+  fun getIndexWriter() = IndexWriter(directory, getIndexWriterConfig())
 
   fun getIndexReader(): DirectoryReader = DirectoryReader.open(directory)
 
@@ -42,13 +45,14 @@ class LuceneHelper(
       }
       indexWriter.updateDocument(Term("type", "index_version"), doc)
     }
+    logger.info { "Lucene index version: ${getIndexVersion()}" }
   }
 
   fun getIndexVersion(): Int =
     getIndexReader().use { index ->
       val searcher = IndexSearcher(index)
       val topDocs = searcher.search(TermQuery(Term("type", "index_version")), 1)
-      topDocs.scoreDocs.map { searcher.doc(it.doc)["index_version"] }.firstOrNull()?.toIntOrNull() ?: 1
+      topDocs.scoreDocs.map { searcher.storedFields().document(it.doc)["index_version"] }.firstOrNull()?.toIntOrNull() ?: 1
     }
 
   fun searchEntitiesIds(searchTerm: String?, entity: LuceneEntity): List<String>? {
@@ -68,7 +72,7 @@ class LuceneHelper(
         getIndexReader().use { index ->
           val searcher = IndexSearcher(index)
           val topDocs = searcher.search(booleanQuery, index.numDocs())
-          topDocs.scoreDocs.map { searcher.doc(it.doc)[entity.id] }
+          topDocs.scoreDocs.map { searcher.storedFields().document(it.doc)[entity.id] }
         }
       } catch (e: ParseException) {
         emptyList()
@@ -77,5 +81,10 @@ class LuceneHelper(
         emptyList()
       }
     } else null
+  }
+
+  fun upgradeIndex() {
+    IndexUpgrader(directory, getIndexWriterConfig(), true).upgrade()
+    logger.info { "Lucene index upgraded" }
   }
 }

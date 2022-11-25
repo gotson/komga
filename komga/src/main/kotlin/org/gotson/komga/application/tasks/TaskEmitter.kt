@@ -140,6 +140,10 @@ class TaskEmitter(
     submitTask(Task.RebuildIndex(entities, priority))
   }
 
+  fun upgradeIndex(priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.UpgradedIndex(priority))
+  }
+
   fun deleteBook(bookId: String, priority: Int = DEFAULT_PRIORITY) {
     submitTask(Task.DeleteBook(bookId, priority))
   }

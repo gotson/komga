@@ -25,7 +25,7 @@ import kotlin.math.ceil
 import kotlin.time.measureTime
 
 private val logger = KotlinLogging.logger {}
-private const val INDEX_VERSION = 5
+private const val INDEX_VERSION = 6
 
 @Component
 class SearchIndexLifecycle(
@@ -35,6 +35,11 @@ class SearchIndexLifecycle(
   private val seriesDtoRepository: SeriesDtoRepository,
   private val luceneHelper: LuceneHelper,
 ) {
+
+  fun upgradeIndex() {
+    luceneHelper.upgradeIndex()
+    luceneHelper.setIndexVersion(INDEX_VERSION)
+  }
 
   fun rebuildIndex(entities: Set<LuceneEntity>? = null) {
     val targetEntities = entities ?: LuceneEntity.values().toSet()
@@ -49,6 +54,8 @@ class SearchIndexLifecycle(
         LuceneEntity.ReadList -> rebuildIndex(it, { p: Pageable -> readListRepository.findAll(pageable = p) }, { e: ReadList -> e.toDocument() })
       }
     }
+
+    luceneHelper.setIndexVersion(INDEX_VERSION)
   }
 
   private fun <T> rebuildIndex(entity: LuceneEntity, provider: (Pageable) -> Page<out T>, toDoc: (T) -> Document) {
@@ -73,9 +80,6 @@ class SearchIndexLifecycle(
         logger.info { "Wrote ${entity.name} index in $duration" }
       }
     }
-
-    luceneHelper.setIndexVersion(INDEX_VERSION)
-    logger.info { "Lucene index version: ${luceneHelper.getIndexVersion()}" }
   }
 
   @JmsListener(destination = TOPIC_EVENTS, containerFactory = TOPIC_FACTORY)

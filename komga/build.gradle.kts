@@ -80,10 +80,11 @@ dependencies {
   implementation("commons-validator:commons-validator:1.7")
 
   run {
-    val luceneVersion = "8.11.2" // 9.0.0 requires Java 11
+    val luceneVersion = "9.5.0"
     implementation("org.apache.lucene:lucene-core:$luceneVersion")
-    implementation("org.apache.lucene:lucene-analyzers-common:$luceneVersion")
+    implementation("org.apache.lucene:lucene-analysis-common:$luceneVersion")
     implementation("org.apache.lucene:lucene-queryparser:$luceneVersion")
+    implementation("org.apache.lucene:lucene-backward-codecs:$luceneVersion")
   }
 
   implementation("com.ibm.icu:icu4j:72.1")
