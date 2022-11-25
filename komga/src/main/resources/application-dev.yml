@@ -30,13 +30,6 @@ logging:
     rollingpolicy:
       max-history: 1
 
-management:
-  influx:
-    metrics:
-      export:
-        uri: http://localhost:8086
-#        enabled: true
-
 springdoc:
   cache:
     disabled: true

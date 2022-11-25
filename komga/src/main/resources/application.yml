@@ -80,10 +80,6 @@ management:
       export:
         enabled: true
         step: 24h
-  influx:
-    metrics:
-      export:
-        enabled: false
 springdoc:
   group-configs:
     - group: REST API

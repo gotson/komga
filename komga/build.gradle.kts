@@ -62,7 +62,6 @@ dependencies {
   implementation("org.flywaydb:flyway-core")
 
   implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
-  implementation("io.micrometer:micrometer-registry-influx")
   implementation("io.hawt:hawtio-springboot:2.16.1")
 
   run {
