@@ -16,7 +16,7 @@ plugins {
   id("nu.studer.jooq") version "8.1"
   id("org.flywaydb.flyway") version "9.7.0"
   id("com.github.johnrengelman.processes") version "0.5.0"
-  id("org.springdoc.openapi-gradle-plugin") version "1.5.0"
+  id("org.springdoc.openapi-gradle-plugin") version "1.6.0"
   id("org.jreleaser") version "1.5.1"
 
   jacoco
@@ -54,6 +54,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-jooq")
   implementation("org.springframework.session:spring-session-core")
   implementation("com.github.gotson:spring-session-caffeine:2.0.0")
+  implementation("org.springframework.data:spring-data-commons")
 
   kapt("org.springframework.boot:spring-boot-configuration-processor:3.0.2")
 
@@ -64,13 +65,7 @@ dependencies {
   implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
   implementation("io.hawt:hawtio-springboot:2.16.1")
 
-  run {
-    val springdocVersion = "1.6.13"
-    implementation("org.springdoc:springdoc-openapi-ui:$springdocVersion")
-    implementation("org.springdoc:springdoc-openapi-security:$springdocVersion")
-    implementation("org.springdoc:springdoc-openapi-kotlin:$springdocVersion")
-    implementation("org.springdoc:springdoc-openapi-data-rest:$springdocVersion")
-  }
+  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
 
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
