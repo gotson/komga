@@ -30,6 +30,9 @@ class KomgaProperties {
   @Positive
   var pageHashing: Int = 3
 
+  @Positive
+  var thumbnailHeight: Int = 300
+
   var rememberMe = RememberMe()
 
   @DurationUnit(ChronoUnit.SECONDS)

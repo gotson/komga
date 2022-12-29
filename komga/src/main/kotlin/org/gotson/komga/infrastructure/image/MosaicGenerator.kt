@@ -1,25 +1,30 @@
 package org.gotson.komga.infrastructure.image
 
 import net.coobird.thumbnailator.Thumbnails
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
 
 @Service
-class MosaicGenerator {
+class MosaicGenerator(
+  @Value("#{@komgaProperties.thumbnailHeight}") private val thumbnailHeight: Int,
+) {
 
   fun createMosaic(images: List<ByteArray>): ByteArray {
     val thumbs = images.map { resize(it, 150) }
 
+    val thumbnailWidth: Int = 212 * thumbnailHeight / 300
+
     return ByteArrayOutputStream().use { baos ->
-      val mosaic = BufferedImage(212, 300, BufferedImage.TYPE_INT_RGB)
+      val mosaic = BufferedImage(thumbnailWidth, thumbnailHeight, BufferedImage.TYPE_INT_RGB)
       mosaic.createGraphics().apply {
         listOf(
           0 to 0,
-          106 to 0,
-          0 to 150,
-          106 to 150,
+          (thumbnailWidth / 2) to 0,
+          0 to (thumbnailHeight / 2),
+          (thumbnailWidth / 2) to (thumbnailHeight / 2),
         ).forEachIndexed { index, (x, y) ->
           thumbs.getOrNull(index)?.let { drawImage(it, x, y, null) }
         }

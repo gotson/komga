@@ -29,13 +29,13 @@ class BookAnalyzer(
   private val imageConverter: ImageConverter,
   private val hasher: Hasher,
   @Value("#{@komgaProperties.pageHashing}") private val pageHashing: Int,
+  @Value("#{@komgaProperties.thumbnailHeight}") private val thumbnailHeight: Int,
 ) {
 
   val supportedMediaTypes = extractors
     .flatMap { e -> e.mediaTypes().map { it to e } }
     .toMap()
 
-  private val thumbnailSize = 300
   private val thumbnailFormat = "jpeg"
 
   fun analyze(book: Book, analyzeDimensions: Boolean): Media {
@@ -103,7 +103,7 @@ class BookAnalyzer(
 
     val thumbnail = try {
       supportedMediaTypes.getValue(book.media.mediaType!!).getEntryStream(book.book.path, book.media.pages.first().fileName).let { cover ->
-        imageConverter.resizeImage(cover, thumbnailFormat, thumbnailSize)
+        imageConverter.resizeImage(cover, thumbnailFormat, thumbnailHeight)
       }
     } catch (ex: Exception) {
       logger.warn(ex) { "Could not generate thumbnail for book: $book" }
