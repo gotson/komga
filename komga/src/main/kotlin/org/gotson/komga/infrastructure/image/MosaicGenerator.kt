@@ -13,7 +13,7 @@ class MosaicGenerator(
 ) {
 
   fun createMosaic(images: List<ByteArray>): ByteArray {
-    val thumbs = images.map { resize(it, 150) }
+    val thumbs = images.map { resize(it, thumbnailHeight / 2) }
 
     val thumbnailWidth: Int = 212 * thumbnailHeight / 300
 
