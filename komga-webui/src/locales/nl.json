@@ -664,6 +664,9 @@
   "users": {
     "users": "Gebruikers"
   },
+  "validation": {
+    "zero_or_more": "Moet groter of gelijk aan 0 zijn"
+  },
   "welcome": {
     "add_library": "Voeg bibliotheek toe",
     "no_libraries_yet": "Er zijn nog geen bibliotheken toegevoegd!",
