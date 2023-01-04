@@ -24,6 +24,7 @@ import org.gotson.komga.interfaces.sse.dto.ThumbnailBookSseDto
 import org.gotson.komga.interfaces.sse.dto.ThumbnailReadListSseDto
 import org.gotson.komga.interfaces.sse.dto.ThumbnailSeriesCollectionSseDto
 import org.gotson.komga.interfaces.sse.dto.ThumbnailSeriesSseDto
+import org.springframework.context.SmartLifecycle
 import org.springframework.http.MediaType
 import org.springframework.jms.annotation.JmsListener
 import org.springframework.jms.core.JmsTemplate
@@ -44,14 +45,16 @@ private val logger = KotlinLogging.logger {}
 class SseController(
   private val bookRepository: BookRepository,
   private val jmsTemplate: JmsTemplate,
-) {
+) : SmartLifecycle {
 
+  private var acceptingConnections = true
   private val emitters = Collections.synchronizedMap(HashMap<SseEmitter, KomgaUser>())
 
   @GetMapping("sse/v1/events")
   fun sse(
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ): SseEmitter {
+    if (!acceptingConnections) throw IllegalStateException("Server is shutting down, not accepting new SSE connections")
     val emitter = SseEmitter()
     emitter.onCompletion { synchronized(emitters) { emitters.remove(emitter) } }
     emitter.onTimeout { emitter.complete() }
@@ -135,4 +138,18 @@ class SseController(
         }
     }
   }
+
+  override fun start() = Unit
+
+  override fun stop() {
+    logger.debug { "Closing all SSE connections" }
+    acceptingConnections = false
+    synchronized(emitters) {
+      emitters.forEach { (emitter, _) -> emitter.completeWithError(Exception("Server stopping")) }
+    }
+  }
+
+  override fun isRunning(): Boolean = true
+
+  override fun getPhase(): Int = SmartLifecycle.DEFAULT_PHASE
 }
