@@ -145,7 +145,7 @@ class SseController(
     logger.debug { "Closing all SSE connections" }
     acceptingConnections = false
     synchronized(emitters) {
-      emitters.forEach { (emitter, _) -> emitter.completeWithError(Exception("Server stopping")) }
+      emitters.forEach { (emitter, _) -> emitter.complete() }
     }
   }
 
