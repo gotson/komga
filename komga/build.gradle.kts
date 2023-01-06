@@ -1,6 +1,9 @@
+
 import org.apache.tools.ant.taskdefs.condition.Os
-import org.gradle.crypto.checksum.Checksum
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jreleaser.model.Active
+import org.jreleaser.model.Distribution.DistributionType.SINGLE_JAR
+import org.jreleaser.model.api.common.Apply
 
 plugins {
   run {
@@ -14,7 +17,7 @@ plugins {
   id("org.flywaydb.flyway") version "8.5.13"
   id("com.github.johnrengelman.processes") version "0.5.0"
   id("org.springdoc.openapi-gradle-plugin") version "1.5.0"
-  id("org.gradle.crypto.checksum") version "1.4.0"
+  id("org.jreleaser") version "1.5.0"
 
   jacoco
 }
@@ -164,23 +167,6 @@ tasks {
     enabled = false
   }
 
-  register<Checksum>("checksums") {
-    group = "build"
-    inputFiles.from(files(bootJar))
-    appendFileNameToChecksum.set(true)
-  }
-
-  // unpack Spring Boot's fat jar for better Docker image layering
-  register<JavaExec>("unpack") {
-    dependsOn(bootJar)
-    classpath = files(bootJar)
-    jvmArgs = listOf("-Djarmode=layertools")
-    args = "extract --destination $buildDir/dependency".split(" ")
-    doFirst {
-      delete("$buildDir/dependency")
-    }
-  }
-
   register<Exec>("npmInstall") {
     group = "web"
     workingDir(webui)
@@ -319,4 +305,117 @@ configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
   filter {
     exclude("**/db/migration/**")
   }
+}
+
+jreleaser {
+  gitRootSearch.set(true)
+
+  project {
+    description.set("Media server for comics/mangas/BDs with API and OPDS support")
+    copyright.set("Gauthier Roebroeck")
+    authors.add("Gauthier Roebroeck")
+    license.set("MIT")
+    links {
+      homepage.set("https://komga.org")
+    }
+  }
+
+  release {
+    github {
+      discussionCategoryName.set("Announcements")
+
+      changelog {
+        formatted.set(Active.ALWAYS)
+        preset.set("conventional-commits")
+        skipMergeCommits.set(true)
+        links.set(true)
+        format.set("- {{#commitIsConventional}}{{#conventionalCommitIsBreakingChange}}🚨 {{/conventionalCommitIsBreakingChange}}{{#conventionalCommitScope}}**{{conventionalCommitScope}}**: {{/conventionalCommitScope}}{{conventionalCommitDescription}}{{#conventionalCommitBreakingChangeContent}}: *{{conventionalCommitBreakingChangeContent}}*{{/conventionalCommitBreakingChangeContent}} ({{commitShortHash}}){{/commitIsConventional}}{{^commitIsConventional}}{{commitTitle}} ({{commitShortHash}}){{/commitIsConventional}}{{#commitHasIssues}}, closes{{#commitIssues}} {{issue}}{{/commitIssues}}{{/commitHasIssues}}")
+        hide {
+          uncategorized.set(true)
+          contributors.set(listOf("Weblate", "GitHub", "semantic-release-bot", "[bot]", "github-actions"))
+        }
+        excludeLabels.add("chore")
+        category {
+          title.set("🏎 Perf")
+          key.set("perf")
+          labels.add("perf")
+          order.set(25)
+        }
+        labeler {
+          label.set("perf")
+          title.set("regex:^(?:perf(?:\\(.*\\))?!?):\\s.*")
+          order.set(120)
+        }
+        extraProperties.put("categorizeScopes", true)
+        append {
+          enabled.set(true)
+          title.set("# [{{projectVersion}}]({{repoUrl}}/compare/{{previousTagName}}...{{tagName}}) ({{#f_now}}YYYY-MM-dd{{/f_now}})")
+          target.set(rootDir.resolve("CHANGELOG.md"))
+          content.set(
+            """
+            {{changelogTitle}}
+            {{changelogChanges}}
+            """.trimIndent(),
+          )
+        }
+      }
+
+      issues {
+        enabled.set(true)
+        comment.set("🎉 This issue has been resolved in `{{tagName}}` ([Release Notes]({{releaseNotesUrl}}))")
+        applyMilestone.set(Apply.ALWAYS)
+        label {
+          name.set("released")
+          description.set("Issue has been released")
+          color.set("#ededed")
+        }
+      }
+    }
+  }
+
+  checksum.individual.set(true)
+
+  distributions {
+    create("komga") {
+      distributionType.set(SINGLE_JAR)
+      artifact {
+        path.set(files(tasks.bootJar).singleFile)
+      }
+    }
+  }
+
+  packagers {
+    docker {
+      active.set(Active.RELEASE)
+      templateDirectory.set(projectDir.resolve("docker"))
+      repository.active.set(Active.NEVER)
+      buildArgs.set(listOf("--cache-from", "gotson/komga:latest"))
+      imageNames.set(
+        listOf(
+          "komga:latest",
+          "komga:{{projectVersion}}",
+          "komga:{{projectVersionMajor}}.x",
+        ),
+      )
+      registries {
+        create("docker.io") { externalLogin.set(true) }
+        create("ghcr.io") { externalLogin.set(true) }
+      }
+      buildx {
+        enabled.set(true)
+        createBuilder.set(false)
+        platforms.set(
+          listOf(
+            "linux/amd64",
+            "linux/arm/v7",
+            "linux/arm64/v8",
+          ),
+        )
+      }
+    }
+  }
+}
+
+tasks.jreleaserPackage {
+  inputs.files(tasks.bootJar)
 }
