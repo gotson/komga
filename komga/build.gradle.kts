@@ -63,7 +63,7 @@ dependencies {
   implementation("org.flywaydb:flyway-core")
 
   implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
-  implementation("io.hawt:hawtio-springboot:2.16.1")
+  implementation("io.hawt:hawtio-springboot:2.17.0")
 
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
 
