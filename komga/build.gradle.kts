@@ -93,7 +93,7 @@ dependencies {
   implementation("net.grey-panther:natural-comparator:1.1")
   implementation("org.jsoup:jsoup:1.15.3")
 
-  implementation("net.coobird:thumbnailator:0.4.18")
+  implementation("net.coobird:thumbnailator:0.4.19")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.9.4")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.9.4")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-webp:3.9.4")
