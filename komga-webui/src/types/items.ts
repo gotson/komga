@@ -174,7 +174,10 @@ export class SeriesItem extends Item<SeriesDto> {
   }
 
   to(): RawLocation {
-    return {name: 'browse-series', params: {seriesId: this.item.id.toString()}}
+    return {
+      name: 'browse-series', params: {seriesId: this.item.id.toString()},
+      query: {context: this.item?.context?.origin, contextId: this.item?.context?.id},
+    }
   }
 
   fabTo(): RawLocation {

@@ -6,12 +6,13 @@
         <template v-slot:activator="{ on }">
           <v-btn icon
                  v-on="on"
-                 :to="{name:'browse-libraries', params: {libraryId: series.libraryId }}"
+                 :to="parentLocation"
           >
             <rtl-icon icon="mdi-arrow-left" rtl="mdi-arrow-right"/>
           </v-btn>
         </template>
-        <span>{{ $t('common.go_to_library') }}</span>
+        <span v-if="contextCollection">{{ $t('common.go_to_collection') }}</span>
+        <span v-else>{{ $t('common.go_to_library') }}</span>
       </v-tooltip>
 
       <series-actions-menu v-if="series"
@@ -452,6 +453,8 @@ import RtlIcon from '@/components/RtlIcon.vue'
 import {throttle} from 'lodash'
 import {BookSseDto, CollectionSseDto, LibrarySseDto, ReadProgressSseDto, SeriesSseDto} from '@/types/komga-sse'
 import {ItemContext} from '@/types/items'
+import {Context, ContextOrigin} from '@/types/context'
+import {RawLocation} from 'vue-router/types/router'
 
 const tags = require('language-tags')
 
@@ -477,6 +480,7 @@ export default Vue.extend({
   data: function () {
     return {
       series: {} as SeriesDto,
+      context: {} as Context,
       books: [] as BookDto[],
       selectedBooks: [] as BookDto[],
       page: 1,
@@ -590,6 +594,15 @@ export default Vue.extend({
     },
     displayedRoles(): string[] {
       return authorRolesSeries.filter(x => this.authorsByRole[x])
+    },
+    contextCollection(): boolean {
+      return this.context.origin === ContextOrigin.COLLECTION
+    },
+    parentLocation(): RawLocation {
+      if (this.contextCollection)
+        return {name: 'browse-collection', params: {collectionId: this.context.id}}
+      else
+        return {name: 'browse-libraries', params: {libraryId: this.series.libraryId}}
     },
   },
   props: {
@@ -759,6 +772,16 @@ export default Vue.extend({
         .then(v => this.series = v)
       this.$komgaSeries.getCollections(seriesId)
         .then(v => this.collections = v)
+
+      // parse query params to get context and contextId
+      if (this.$route.query.contextId && this.$route.query.context
+        && Object.values(ContextOrigin).includes(this.$route.query.context as ContextOrigin)) {
+        this.context = {
+          origin: this.$route.query.context as ContextOrigin,
+          id: this.$route.query.contextId as string,
+        }
+        this.series.context = this.context
+      }
 
       await this.loadPage(seriesId, this.page, this.sortActive)
     },

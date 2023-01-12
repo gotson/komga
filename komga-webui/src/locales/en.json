@@ -205,6 +205,7 @@
     "filename": "Filename",
     "filter_no_matches": "The active filter has no matches",
     "genre": "Genre",
+    "go_to_collection": "Go to collection",
     "go_to_library": "Go to library",
     "go_to_readlist": "Go to read list",
     "go_to_series": "Go to series",

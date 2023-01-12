@@ -1,4 +1,5 @@
 import {AuthorDto} from '@/types/komga-books'
+import {Context} from '@/types/context'
 
 export interface SeriesDto {
   id: string,
@@ -14,6 +15,9 @@ export interface SeriesDto {
   metadata: SeriesMetadataDto,
   booksMetadata: SeriesBooksMetadataDto,
   deleted: boolean,
+
+  // custom fields
+  context: Context
 }
 
 export interface SeriesMetadataDto {
