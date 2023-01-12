@@ -101,7 +101,7 @@ export default Vue.extend({
       this.modal = val
       if (val) {
         this.newReadList = ''
-        this.readLists = (await this.$komgaReadLists.getReadLists(undefined, {unpaged: true} as PageRequest)).content
+        this.readLists = this.$_.orderBy((await this.$komgaReadLists.getReadLists(undefined, {unpaged: true} as PageRequest)).content, ['lastModifiedDate'], ['desc'])
       }
     },
     modal(val) {
