@@ -9,6 +9,7 @@ data class LibraryUpdateDto(
   val importComicInfoSeries: Boolean,
   val importComicInfoCollection: Boolean,
   val importComicInfoReadList: Boolean,
+  val importComicInfoSeriesAppendVolume: Boolean,
   val importEpubBook: Boolean,
   val importEpubSeries: Boolean,
   val importMylarSeries: Boolean,

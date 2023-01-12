@@ -393,6 +393,7 @@
       "field_import_comicinfo_collections": "Collections",
       "field_import_comicinfo_readlists": "Read lists",
       "field_import_comicinfo_series": "Series metadata",
+      "field_import_comicinfo_series_append_volume": "Append volume to series title",
       "field_import_epub_book": "Book metadata",
       "field_import_epub_series": "Series metadata",
       "field_import_local_artwork": "Local artwork",

@@ -53,7 +53,7 @@ class SeriesMetadataLifecycle(
         else -> {
           logger.debug { "Provider: ${provider.javaClass.simpleName}" }
           val patches = bookRepository.findAllBySeriesId(series.id)
-            .mapNotNull { provider.getSeriesMetadataFromBook(BookWithMedia(it, mediaRepository.findById(it.id))) }
+            .mapNotNull { provider.getSeriesMetadataFromBook(BookWithMedia(it, mediaRepository.findById(it.id)), library) }
 
           if (provider.shouldLibraryHandlePatch(library, MetadataPatchTarget.SERIES)) {
             handlePatchForSeriesMetadata(patches, series)

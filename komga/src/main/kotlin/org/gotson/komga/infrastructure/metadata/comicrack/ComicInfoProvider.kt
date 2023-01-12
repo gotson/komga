@@ -113,7 +113,7 @@ class ComicInfoProvider(
     return null
   }
 
-  override fun getSeriesMetadataFromBook(book: BookWithMedia): SeriesMetadataPatch? {
+  override fun getSeriesMetadataFromBook(book: BookWithMedia, library: Library): SeriesMetadataPatch? {
     getComicInfo(book)?.let { comicInfo ->
       val readingDirection = when (comicInfo.manga) {
         Manga.NO -> SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT
@@ -122,7 +122,7 @@ class ComicInfoProvider(
       }
 
       val genres = comicInfo.genre?.split(',')?.mapNotNull { it.trim().ifBlank { null } }
-      val series = computeSeriesFromSeriesAndVolume(comicInfo.series, comicInfo.volume)
+      val series = if (library.importComicInfoSeriesAppendVolume) computeSeriesFromSeriesAndVolume(comicInfo.series, comicInfo.volume) else comicInfo.series
 
       return SeriesMetadataPatch(
         title = series,

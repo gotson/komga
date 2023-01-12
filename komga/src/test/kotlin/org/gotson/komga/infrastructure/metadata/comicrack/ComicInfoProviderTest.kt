@@ -10,6 +10,7 @@ import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.WebLink
 import org.gotson.komga.domain.model.makeBook
+import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.infrastructure.metadata.comicrack.dto.AgeRating
 import org.gotson.komga.infrastructure.metadata.comicrack.dto.ComicInfo
@@ -329,6 +330,9 @@ class ComicInfoProviderTest {
 
   @Nested
   inner class Series {
+
+    private val library = makeLibrary()
+    private val libraryNoAppend = library.copy(importComicInfoSeriesAppendVolume = false)
     @Test
     fun `given comicInfo when getting series metadata then metadata patch is valid`() {
       val comicInfo = ComicInfo().apply {
@@ -344,7 +348,7 @@ class ComicInfoProviderTest {
 
       every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
 
-      val patch = comicInfoProvider.getSeriesMetadataFromBook(BookWithMedia(book, media))!!
+      val patch = comicInfoProvider.getSeriesMetadataFromBook(BookWithMedia(book, media), library)!!
 
       with(patch) {
         assertThat(title).isEqualTo("series")
@@ -370,10 +374,16 @@ class ComicInfoProviderTest {
 
       every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
 
-      val patch = comicInfoProvider.getSeriesMetadataFromBook(BookWithMedia(book, media))!!
+      val patch = comicInfoProvider.getSeriesMetadataFromBook(BookWithMedia(book, media), library)!!
 
       with(patch) {
         assertThat(title).isEqualTo("series (2020)")
+      }
+
+      val patchNoAppend = comicInfoProvider.getSeriesMetadataFromBook(BookWithMedia(book, media), libraryNoAppend)!!
+
+      with(patchNoAppend) {
+        assertThat(title).isEqualTo("series")
       }
     }
 
@@ -386,9 +396,15 @@ class ComicInfoProviderTest {
 
       every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
 
-      val patch = comicInfoProvider.getSeriesMetadataFromBook(BookWithMedia(book, media))!!
+      val patch = comicInfoProvider.getSeriesMetadataFromBook(BookWithMedia(book, media), library)!!
 
       with(patch) {
+        assertThat(title).isEqualTo("series")
+      }
+
+      val patchNoAppend = comicInfoProvider.getSeriesMetadataFromBook(BookWithMedia(book, media), libraryNoAppend)!!
+
+      with(patchNoAppend) {
         assertThat(title).isEqualTo("series")
       }
     }
@@ -401,7 +417,7 @@ class ComicInfoProviderTest {
 
       every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
 
-      val patch = comicInfoProvider.getSeriesMetadataFromBook(BookWithMedia(book, media))!!
+      val patch = comicInfoProvider.getSeriesMetadataFromBook(BookWithMedia(book, media), library)!!
 
       with(patch) {
         assertThat(language).isNull()
@@ -421,7 +437,7 @@ class ComicInfoProviderTest {
 
       every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
 
-      val patch = comicInfoProvider.getSeriesMetadataFromBook(BookWithMedia(book, media))!!
+      val patch = comicInfoProvider.getSeriesMetadataFromBook(BookWithMedia(book, media), library)!!
 
       with(patch) {
         assertThat(title).isNull()

@@ -10,6 +10,7 @@ import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.makeBook
+import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.mediacontainer.EpubExtractor
@@ -118,12 +119,14 @@ class EpubMetadataProviderTest {
   @Nested
   inner class Series {
 
+    private val library = makeLibrary()
+
     @Test
     fun `given epub 3 opf when getting series metadata then metadata patch is valid`() {
       val opf = ClassPathResource("epub/Panik im Paradies.opf")
       every { mockExtractor.getPackageFile(any()) } returns opf.file.readText()
 
-      val patch = epubMetadataProvider.getSeriesMetadataFromBook(BookWithMedia(book, media))
+      val patch = epubMetadataProvider.getSeriesMetadataFromBook(BookWithMedia(book, media), library)
 
       with(patch!!) {
         assertThat(title).isEqualTo("Die drei ??? Kids")
@@ -140,7 +143,7 @@ class EpubMetadataProviderTest {
       val opf = ClassPathResource("epub/Die Drei 3.opf")
       every { mockExtractor.getPackageFile(any()) } returns opf.file.readText()
 
-      val patch = epubMetadataProvider.getSeriesMetadataFromBook(BookWithMedia(book, media))
+      val patch = epubMetadataProvider.getSeriesMetadataFromBook(BookWithMedia(book, media), library)
 
       with(patch!!) {
         assertThat(title).isEqualTo("Die drei ??? Kids")
@@ -157,7 +160,7 @@ class EpubMetadataProviderTest {
       val opf = ClassPathResource("epub/1979.opf")
       every { mockExtractor.getPackageFile(any()) } returns opf.file.readText()
 
-      val patch = epubMetadataProvider.getSeriesMetadataFromBook(BookWithMedia(book, media))
+      val patch = epubMetadataProvider.getSeriesMetadataFromBook(BookWithMedia(book, media), library)
 
       with(patch!!) {
         assertThat(title).isNull()
