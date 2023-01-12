@@ -42,7 +42,9 @@
   },
   "book_card": {
     "error": "エラー",
+    "no_release_date": "発売日はありません",
     "unknown": "分析待ち",
+    "unread": "未読",
     "unsupported": "非対応"
   },
   "book_import": {
@@ -87,6 +89,7 @@
     "move_next": "もう一度「次」を押すと次の書籍へ移動します。",
     "move_next_exit": "もう一度「次」を押すと書籍を閉じます。",
     "move_previous": "もう一度「前」を押すと前の書籍へ移動します。",
+    "notification_poster_set_book": "書籍のポスターが現在のページに設定されました。",
     "paged_reader_layout": {
       "double": "見開き",
       "double_no_cover": "見開き (カバーなし)",

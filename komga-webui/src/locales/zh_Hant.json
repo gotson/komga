@@ -1,0 +1,180 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} - {2}"
+    },
+    "dataIterator": {
+      "loadingText": "正在載入項目…",
+      "noResultsText": "未能找到匹配的記錄"
+    },
+    "dataTable": {
+      "itemsPerPageText": "每頁行數:",
+      "sortBy": "排序方式"
+    },
+    "fileInput": {
+      "counter": "{0} 個文件",
+      "counterSize": "{0} 個文件（共 {1}）"
+    },
+    "noDataText": "無數據可用"
+  },
+  "account_settings": {
+    "account_settings": "帳號設定",
+    "change_password": "修改密碼"
+  },
+  "authentication_activity": {
+    "datetime": "日期/時間",
+    "email": "電子郵件",
+    "error": "錯誤",
+    "ip": "IP 位址",
+    "source": "來源",
+    "success": "成功",
+    "user_agent": "使用者代理"
+  },
+  "author_roles": {
+    "colorist": "著色師",
+    "cover": "封面",
+    "editor": "編輯",
+    "inker": "繪圖者",
+    "letterer": "嵌字者",
+    "penciller": "構圖者",
+    "translator": "翻譯者",
+    "writer": "作者"
+  },
+  "book_card": {
+    "error": "錯誤",
+    "no_release_date": "沒有發布日期",
+    "unknown": "待分析",
+    "unread": "未讀",
+    "unsupported": "不支持"
+  },
+  "book_import": {
+    "button_browse": "瀏覽",
+    "button_import": "匯入",
+    "button_scan": "掃描",
+    "button_select_series": "選擇系列",
+    "field_import_path": "從資料夾匯入",
+    "info_part1": "此頁面允許您匯入現有書櫃之外的文件. 只能將文件匯入到現有序列, 在這種情況下Komga會將檔案移動或複製到所選序列的目錄中.",
+    "info_part2": "如果您為一本書選擇了一個編號, 並且已經存在一本帶有該編號的書,你可以比較這兩本書.如果您決定匯入該書. Komga將升級現有的書使用新文件, 有效地用新文件替換舊文件.",
+    "no_files_found": "找不到文件",
+    "notification": {
+      "go_to_book": "開啟書籍位置",
+      "import_failure": "無法匯入書籍:{file}",
+      "import_successful": "書籍導入成功：{book}",
+      "source_file": "來源文件：{file}"
+    },
+    "row": {
+      "error_analyze_first": "書籍需要先分析一下",
+      "error_choose_series": "選擇一個系列",
+      "error_only_import_no_errors": "只能匯入沒有錯誤的書",
+      "warning_upgrade": "將更新現有書籍"
+    },
+    "table": {
+      "destination_name": "目標名稱",
+      "file_name": "檔案名稱",
+      "number": "編號",
+      "series": "系列"
+    },
+    "title": "匯入",
+    "try_another_directory": "嘗試搜索其他目錄"
+  },
+  "bookreader": {
+    "beginning_of_book": "你可以開始閱讀這本書.",
+    "changing_reading_direction": "將閱讀方向變更為",
+    "cycling_page_layout": "切換頁面布局",
+    "cycling_scale": "切換縮放模式",
+    "cycling_side_padding": "切換邊距",
+    "download_current_page": "下載當前頁面",
+    "end_of_book": "你已經閱讀完這本書了.",
+    "move_next": "再單擊或按“下一步”移動到下一本.",
+    "move_next_exit": "再單擊或按“下一步”退出閱讀.",
+    "move_previous": "再單擊或按“下一步”退出閱讀.",
+    "notification_poster_set_book": "書籍封面現已設置為當前頁面.",
+    "notification_poster_set_readlist": "閱讀清單封面現已設置為當前頁面.",
+    "notification_poster_set_series": "系列封面現在設置為當前頁面。",
+    "paged_reader_layout": {
+      "double": "雙頁",
+      "double_no_cover": "雙頁（無封面）",
+      "single": "單頁"
+    },
+    "reader_settings": "閱讀器設置",
+    "scale_type": {
+      "continuous_original": "原始大小",
+      "continuous_width": "適應寬度",
+      "height": "適應高度",
+      "original": "原始大小",
+      "screen": "適應螢幕",
+      "width": "適應寬度",
+      "width_shrink_only": "適應寬度 (只缩小)"
+    },
+    "set_current_page_as_book_poster": "將頁面設為書籍封面",
+    "set_current_page_as_readlist_poster": "將頁面設為閱讀清單封面",
+    "set_current_page_as_series_poster": "將頁面設為系列封面",
+    "settings": {
+      "always_fullscreen": "始終全螢幕",
+      "animate_page_transitions": "為頁面過渡效果添加動畫效果",
+      "background_color": "背景顏色",
+      "background_colors": {
+        "black": "黑色",
+        "gray": "灰色",
+        "white": "白色"
+      },
+      "display": "顯示",
+      "general": "一般",
+      "gestures": "手勢",
+      "page_layout": "頁面佈局",
+      "paged": "頁面",
+      "reading_mode": "閱讀模式",
+      "scale_type": "縮放模式",
+      "side_padding": "側邊邊距",
+      "side_padding_none": "無",
+      "webtoon": "Webtoon模式"
+    },
+    "shortcuts": {
+      "close": "關閉",
+      "cycle_page_layout": "切換頁面模式",
+      "cycle_scale": "切換縮放模式",
+      "cycle_side_padding": "切換側邊邊距",
+      "first_page": "第一頁",
+      "fullscreen": "進入/退出全螢幕",
+      "last_page": "最後一頁",
+      "left_to_right": "從左到右",
+      "menus": "功能表",
+      "next_page": "下一頁",
+      "previous_page": "上一頁",
+      "reader_navigation": "閱讀器導航",
+      "right_to_left": "從右到左",
+      "settings": "設定",
+      "show_hide_help": "顯示/隱藏幫助",
+      "show_hide_settings": "顯示/隱藏設置功能表",
+      "show_hide_thumbnails": "顯示/隱藏縮圖資源管理器",
+      "show_hide_toolbars": "顯示/隱藏工具列",
+      "vertical": "垂直模式",
+      "webtoon": "Webtoon 模式"
+    },
+    "tooltip_incognito": "將不保存閱讀進度"
+  },
+  "browse_book": {
+    "comment": "註釋",
+    "download_file": "下載文件",
+    "file": "檔案位置",
+    "format": "格式",
+    "isbn": "ISBN",
+    "links": "鏈接",
+    "navigation_within_readlist": "在閱讀清單中導航：{name}",
+    "outdated_tooltip": "這本書的文件已經改變，必須重新分析這本書",
+    "read_incognito": "無痕閱讀",
+    "size": "文件大小"
+  },
+  "browse_collection": {
+    "edit_collection": "编辑收藏",
+    "edit_elements": "編輯元素",
+    "manual_ordering": "手動排序"
+  },
+  "browse_readlist": {
+    "edit_elements": "編輯元素",
+    "edit_readlist": "編輯閱讀清單"
+  },
+  "common": {
+    "locale_name": "繁體中文"
+  }
+}
