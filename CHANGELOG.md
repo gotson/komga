@@ -1,3 +1,18 @@
+# [0.158.0](https://github.com/gotson/komga/compare/v0.157.5...v0.158.0) (2023-01-12)
+
+
+### Bug Fixes
+
+* close SSE connections during shutdown ([3f773d1](https://github.com/gotson/komga/commit/3f773d1ed74fb265ea53f181cc22f71f1855c76e)), closes [#1028](https://github.com/gotson/komga/issues/1028)
+* translated using Weblate  ([f06c680](https://github.com/gotson/komga/commit/f06c68067faefeef51d67381c7527b10ff8f30a1))
+
+
+### Features
+
+* library option to append ComicInfo Volume to Series title ([63b3c83](https://github.com/gotson/komga/commit/63b3c83ce2cf6dbd43a7d437a876731b35321afa))
+* **webui:** navigate back to collection from series ([db56a38](https://github.com/gotson/komga/commit/db56a38476d8c8680e32dcb38c368ea50dd4af40)), closes [#1042](https://github.com/gotson/komga/issues/1042)
+* **webui:** order collections/readlists by most recently modified in the Add To dialog ([592f87c](https://github.com/gotson/komga/commit/592f87ca794e52e1d374ffc1d6b1c5c4c231274b)), closes [#862](https://github.com/gotson/komga/issues/862)
+
 ## [0.157.5](https://github.com/gotson/komga/compare/v0.157.4...v0.157.5) (2022-11-22)
 
 
