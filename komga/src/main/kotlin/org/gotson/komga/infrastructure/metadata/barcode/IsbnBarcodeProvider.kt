@@ -11,6 +11,8 @@ import org.apache.commons.validator.routines.ISBNValidator
 import org.gotson.komga.domain.model.BookMetadataPatch
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.BookWithMedia
+import org.gotson.komga.domain.model.Library
+import org.gotson.komga.domain.model.MetadataPatchTarget
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
 import org.springframework.stereotype.Service
@@ -69,4 +71,10 @@ class IsbnBarcodeProvider(
 
     return null
   }
+
+  override fun shouldLibraryHandlePatch(library: Library, target: MetadataPatchTarget): Boolean =
+    when (target) {
+      MetadataPatchTarget.BOOK -> library.importBarcodeIsbn
+      else -> false
+    }
 }

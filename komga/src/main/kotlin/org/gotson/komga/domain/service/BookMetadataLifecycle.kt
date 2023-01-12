@@ -7,15 +7,13 @@ import org.gotson.komga.domain.model.BookMetadataPatch
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.DomainEvent
+import org.gotson.komga.domain.model.MetadataPatchTarget
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
-import org.gotson.komga.infrastructure.metadata.barcode.IsbnBarcodeProvider
-import org.gotson.komga.infrastructure.metadata.comicrack.ComicInfoProvider
-import org.gotson.komga.infrastructure.metadata.epub.EpubMetadataProvider
 import org.springframework.stereotype.Service
 
 private val logger = KotlinLogging.logger {}
@@ -42,27 +40,21 @@ class BookMetadataLifecycle(
     bookMetadataProviders.forEach { provider ->
       when {
         capabilities.intersect(provider.getCapabilities()).isEmpty() ->
-          logger.info { "Provider does not support requested capabilities, skipping: $provider" }
-        provider is ComicInfoProvider && !library.importComicInfoBook && !library.importComicInfoReadList ->
-          logger.info { "Library is not set to import book and read lists metadata from ComicInfo, skipping" }
-        provider is EpubMetadataProvider && !library.importEpubBook ->
-          logger.info { "Library is not set to import book metadata from Epub, skipping" }
-        provider is IsbnBarcodeProvider && !library.importBarcodeIsbn ->
-          logger.info { "Library is not set to import book metadata from Barcode ISBN, skipping" }
+          logger.info { "Provider does not support requested capabilities, skipping: ${provider.javaClass.simpleName}" }
+
+        !(provider.shouldLibraryHandlePatch(library, MetadataPatchTarget.BOOK) || provider.shouldLibraryHandlePatch(library, MetadataPatchTarget.READLIST)) ->
+          logger.info { "Library is not set to import book or read lists metadata for this provider, skipping: ${provider.javaClass.simpleName}" }
+
         else -> {
           logger.debug { "Provider: ${provider.javaClass.simpleName}" }
           val patch = provider.getBookMetadataFromBook(BookWithMedia(book, media))
 
-          if (
-            (provider is ComicInfoProvider && library.importComicInfoBook) ||
-            (provider is EpubMetadataProvider && library.importEpubBook) ||
-            (provider is IsbnBarcodeProvider && library.importBarcodeIsbn)
-          ) {
+          if (provider.shouldLibraryHandlePatch(library, MetadataPatchTarget.BOOK)) {
             handlePatchForBookMetadata(patch, book)
             changed = true
           }
 
-          if (provider is ComicInfoProvider && library.importComicInfoReadList) {
+          if (provider.shouldLibraryHandlePatch(library, MetadataPatchTarget.READLIST)) {
             handlePatchForReadLists(patch, book)
           }
         }
@@ -118,7 +110,7 @@ class BookMetadataLifecycle(
         logger.debug { "Apply metadata for book: $book" }
 
         logger.debug { "Original metadata: $it" }
-        logger.debug { "Patch: $patch" }
+        logger.debug { "Patch: $bPatch" }
         val patched = metadataApplier.apply(bPatch, it)
         logger.debug { "Patched metadata: $patched" }
 
