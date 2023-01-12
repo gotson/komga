@@ -310,3 +310,7 @@ openApi {
     args.add("--spring.profiles.active=claim")
   }
 }
+
+tasks.jacocoTestReport {
+  dependsOn(tasks.test)
+}
