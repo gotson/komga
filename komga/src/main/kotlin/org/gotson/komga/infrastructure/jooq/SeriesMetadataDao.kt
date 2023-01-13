@@ -1,6 +1,7 @@
 package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.SeriesMetadata
+import org.gotson.komga.domain.model.WebLink
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.SeriesMetadataRecord
@@ -8,6 +9,7 @@ import org.jooq.DSLContext
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import java.net.URI
 import java.time.LocalDateTime
 import java.time.ZoneId
 
@@ -21,12 +23,13 @@ class SeriesMetadataDao(
   private val g = Tables.SERIES_METADATA_GENRE
   private val st = Tables.SERIES_METADATA_TAG
   private val sl = Tables.SERIES_METADATA_SHARING
+  private val slk = Tables.SERIES_METADATA_LINK
 
   override fun findById(seriesId: String): SeriesMetadata =
-    findOne(seriesId)!!.toDomain(findGenres(seriesId), findTags(seriesId), findSharingLabels(seriesId))
+    findOne(seriesId)!!.toDomain(findGenres(seriesId), findTags(seriesId), findSharingLabels(seriesId), findLinks(seriesId))
 
   override fun findByIdOrNull(seriesId: String): SeriesMetadata? =
-    findOne(seriesId)?.toDomain(findGenres(seriesId), findTags(seriesId), findSharingLabels(seriesId))
+    findOne(seriesId)?.toDomain(findGenres(seriesId), findTags(seriesId), findSharingLabels(seriesId), findLinks(seriesId))
 
   private fun findOne(seriesId: String) =
     dsl.selectFrom(d)
@@ -50,6 +53,12 @@ class SeriesMetadataDao(
       .from(sl)
       .where(sl.SERIES_ID.eq(seriesId))
       .fetchSet(sl.LABEL)
+  private fun findLinks(seriesId: String) =
+    dsl.select(slk.LABEL, slk.URL)
+      .from(slk)
+      .where(slk.SERIES_ID.eq(seriesId))
+      .fetchInto(slk)
+      .map { WebLink(it.label, URI(it.url)) }
 
   @Transactional
   override fun insert(metadata: SeriesMetadata) {
@@ -76,11 +85,13 @@ class SeriesMetadataDao(
       .set(d.TOTAL_BOOK_COUNT, metadata.totalBookCount)
       .set(d.TOTAL_BOOK_COUNT_LOCK, metadata.totalBookCountLock)
       .set(d.SHARING_LABELS_LOCK, metadata.sharingLabelsLock)
+      .set(d.LINKS_LOCK, metadata.linksLock)
       .execute()
 
     insertGenres(metadata)
     insertTags(metadata)
     insertSharingLabels(metadata)
+    insertLinks(metadata)
   }
 
   @Transactional
@@ -107,6 +118,7 @@ class SeriesMetadataDao(
       .set(d.TOTAL_BOOK_COUNT, metadata.totalBookCount)
       .set(d.TOTAL_BOOK_COUNT_LOCK, metadata.totalBookCountLock)
       .set(d.SHARING_LABELS_LOCK, metadata.sharingLabelsLock)
+      .set(d.LINKS_LOCK, metadata.linksLock)
       .set(d.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(d.SERIES_ID.eq(metadata.seriesId))
       .execute()
@@ -123,9 +135,14 @@ class SeriesMetadataDao(
       .where(sl.SERIES_ID.eq(metadata.seriesId))
       .execute()
 
+    dsl.deleteFrom(slk)
+      .where(slk.SERIES_ID.eq(metadata.seriesId))
+      .execute()
+
     insertGenres(metadata)
     insertTags(metadata)
     insertSharingLabels(metadata)
+    insertLinks(metadata)
   }
 
   private fun insertGenres(metadata: SeriesMetadata) {
@@ -173,11 +190,27 @@ class SeriesMetadataDao(
     }
   }
 
+  private fun insertLinks(metadata: SeriesMetadata) {
+    if (metadata.links.isNotEmpty()) {
+      metadata.links.chunked(batchSize).forEach { chunk ->
+        dsl.batch(
+          dsl.insertInto(slk, slk.SERIES_ID, slk.LABEL, slk.URL)
+            .values(null as String?, null, null),
+        ).also { step ->
+          chunk.forEach {
+            step.bind(metadata.seriesId, it.label, it.url.toString())
+          }
+        }.execute()
+      }
+    }
+  }
+
   @Transactional
   override fun delete(seriesId: String) {
     dsl.deleteFrom(g).where(g.SERIES_ID.eq(seriesId)).execute()
     dsl.deleteFrom(st).where(st.SERIES_ID.eq(seriesId)).execute()
     dsl.deleteFrom(sl).where(sl.SERIES_ID.eq(seriesId)).execute()
+    dsl.deleteFrom(slk).where(slk.SERIES_ID.eq(seriesId)).execute()
     dsl.deleteFrom(d).where(d.SERIES_ID.eq(seriesId)).execute()
   }
 
@@ -188,12 +221,13 @@ class SeriesMetadataDao(
     dsl.deleteFrom(g).where(g.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
     dsl.deleteFrom(st).where(st.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
     dsl.deleteFrom(sl).where(sl.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
+    dsl.deleteFrom(slk).where(slk.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
     dsl.deleteFrom(d).where(d.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
   }
 
   override fun count(): Long = dsl.fetchCount(d).toLong()
 
-  private fun SeriesMetadataRecord.toDomain(genres: Set<String>, tags: Set<String>, sharingLabels: Set<String>) =
+  private fun SeriesMetadataRecord.toDomain(genres: Set<String>, tags: Set<String>, sharingLabels: Set<String>, links: List<WebLink>) =
     SeriesMetadata(
       status = SeriesMetadata.Status.valueOf(status),
       title = title,
@@ -209,6 +243,7 @@ class SeriesMetadataDao(
       tags = tags,
       totalBookCount = totalBookCount,
       sharingLabels = sharingLabels,
+      links = links,
 
       statusLock = statusLock,
       titleLock = titleLock,
@@ -222,6 +257,7 @@ class SeriesMetadataDao(
       tagsLock = tagsLock,
       totalBookCountLock = totalBookCountLock,
       sharingLabelsLock = sharingLabelsLock,
+      linksLock = linksLock,
 
       seriesId = seriesId,
 

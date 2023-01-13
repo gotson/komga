@@ -32,6 +32,10 @@
             {{ $t('dialog.edit_series.tab_tags') }}
           </v-tab>
           <v-tab class="justify-start" v-if="single">
+            <v-icon left class="hidden-xs-only">mdi-link</v-icon>
+            {{ $t('dialog.edit_books.tab_links') }}
+          </v-tab>
+          <v-tab class="justify-start" v-if="single">
             <v-icon left class="hidden-xs-only">mdi-image</v-icon>
             {{ $t('dialog.edit_series.tab_poster') }}
           </v-tab>
@@ -320,6 +324,77 @@
             </v-card>
           </v-tab-item>
 
+          <!--  Tab: Links  -->
+          <v-tab-item v-if="single">
+            <v-card flat min-height="100">
+              <v-container fluid>
+                <!-- Links -->
+                <v-form
+                  v-model="linksValid"
+                  ref="linksForm"
+                >
+                  <v-row
+                    v-for="(link, i) in form.links"
+                    :key="i"
+                  >
+                    <v-col cols="4" class="py-0">
+                      <v-text-field v-model="form.links[i].label"
+                                    :label="$t('dialog.edit_books.field_link_label')"
+                                    filled
+                                    dense
+                                    :rules="[linksLabelRules]"
+                                    @input="$v.form.links.$touch()"
+                                    @blur="$v.form.links.$touch()"
+                                    @change="form.linksLock = true"
+                      >
+                        <template v-slot:prepend>
+                          <v-icon :color="form.linksLock ? 'secondary' : ''"
+                                  @click="form.linksLock = !form.linksLock"
+                          >
+                            {{ form.linksLock ? 'mdi-lock' : 'mdi-lock-open' }}
+                          </v-icon>
+                        </template>
+                      </v-text-field>
+                    </v-col>
+
+                    <v-col cols="8" class="py-0">
+                      <v-text-field v-model="form.links[i].url"
+                                    :label="$t('dialog.edit_books.field_link_url')"
+                                    filled
+                                    dense
+                                    :rules="[linksUrlRules]"
+                                    @input="$v.form.links.$touch()"
+                                    @blur="$v.form.links.$touch()"
+                                    @change="form.linksLock = true"
+                      >
+                        <template v-slot:append-outer>
+                          <v-icon @click="form.links.splice(i, 1)">mdi-delete</v-icon>
+                        </template>
+                      </v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-form>
+
+                <v-row>
+                  <v-spacer/>
+                  <v-col cols="auto">
+                    <v-btn
+                      elevation="2"
+                      fab
+                      small
+                      bottom
+                      right
+                      color="primary"
+                      @click="form.links.push({label:'', url:''})"
+                    >
+                      <v-icon>mdi-plus</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card>
+          </v-tab-item>
+
           <!--  Tab: Thumbnails  -->
           <v-tab-item v-if="single">
             <v-card flat>
@@ -424,6 +499,7 @@ export default Vue.extend({
     return {
       modal: false,
       tab: 0,
+      linksValid: false,
       form: {
         status: '',
         statusLock: false,
@@ -449,6 +525,8 @@ export default Vue.extend({
         totalBookCountLock: false,
         sharingLabels: [],
         sharingLabelsLock: false,
+        links: [],
+        linksLock: false,
       },
       mixed: {
         status: false,
@@ -522,6 +600,7 @@ export default Vue.extend({
       readingDirection: {},
       publisher: {},
       totalBookCount: {minValue: minValue(1)},
+      links: {},
     },
   },
   computed: {
@@ -566,6 +645,20 @@ export default Vue.extend({
     },
   },
   methods: {
+    linksLabelRules(label: string): boolean | string {
+      if (!!this.$_.trim(label)) return true
+      return this.$t('common.required').toString()
+    },
+    linksUrlRules(value: string): boolean | string {
+      let url
+      try {
+        url = new URL(value)
+      } catch (_) {
+        return this.$t('dialog.edit_books.field_link_url_error_url').toString()
+      }
+      if (url.protocol === 'http:' || url.protocol === 'https:') return true
+      return this.$t('dialog.edit_books.field_link_url_error_protocol').toString()
+    },
     async loadAvailableTags() {
       this.tagsAvailable = await this.$komgaReferential.getTags()
     },
@@ -584,7 +677,8 @@ export default Vue.extend({
     },
     dialogReset(series: SeriesDto | SeriesDto[]) {
       this.tab = 0
-      this.$v.$reset()
+      this.$v.$reset();
+      (this.$refs.linksForm as any)?.resetValidation()
       if (Array.isArray(series) && series.length === 0) return
       if (Array.isArray(series) && series.length > 0) {
         const status = this.$_.uniq(series.map(x => x.metadata.status))
@@ -636,10 +730,13 @@ export default Vue.extend({
 
         const sharingLabelsLock = this.$_.uniq(series.map(x => x.metadata.sharingLabelsLock))
         this.form.sharingLabelsLock = sharingLabelsLock.length > 1 ? false : sharingLabelsLock[0]
+
+        this.form.links = []
       } else {
         this.form.genres = []
         this.form.tags = []
         this.form.sharingLabels = []
+        this.form.links = []
         this.$_.merge(this.form, (series as SeriesDto).metadata)
         this.poster.selectedThumbnail = ''
         this.poster.deleteQueue = []
@@ -657,7 +754,7 @@ export default Vue.extend({
       }
     },
     validateForm(): any {
-      if (!this.$v.$invalid) {
+      if (!this.$v.$invalid && (!this.single || !this.$refs.linksForm || (this.$refs.linksForm as any).validate())) {
         const metadata = {
           statusLock: this.form.statusLock,
           readingDirectionLock: this.form.readingDirectionLock,
@@ -668,6 +765,7 @@ export default Vue.extend({
           tagsLock: this.form.tagsLock,
           totalBookCountLock: this.form.totalBookCountLock,
           sharingLabelsLock: this.form.sharingLabelsLock,
+          linksLock: this.form.linksLock,
         }
 
         if (this.$v.form?.status?.$dirty) {
@@ -724,6 +822,10 @@ export default Vue.extend({
 
           if (this.$v.form?.totalBookCount?.$dirty) {
             this.$_.merge(metadata, {totalBookCount: this.form.totalBookCount})
+          }
+
+          if (this.$v.form?.links?.$dirty || this.form.links.length != (this.series as SeriesDto).metadata.links?.length) {
+            this.$_.merge(metadata, {links: this.form.links})
           }
         }
 

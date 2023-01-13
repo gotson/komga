@@ -3,6 +3,7 @@ package org.gotson.komga.infrastructure.jooq
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.domain.model.SeriesMetadata
+import org.gotson.komga.domain.model.WebLink
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
 import org.gotson.komga.domain.persistence.LibraryRepository
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import java.net.URI
 import java.time.LocalDateTime
 
 @ExtendWith(SpringExtension::class)
@@ -63,6 +65,7 @@ class SeriesMetadataDaoTest(
       language = "en",
       totalBookCount = 5,
       sharingLabels = setOf("kids"),
+      links = listOf(WebLink("Comicvine", URI("https://comicvine.gamespot.com/doctor-strange/4050-2676/"))),
       titleLock = true,
       titleSortLock = true,
       summaryLock = true,
@@ -74,6 +77,7 @@ class SeriesMetadataDaoTest(
       tagsLock = true,
       totalBookCountLock = true,
       sharingLabelsLock = true,
+      linksLock = true,
       seriesId = series.id,
     )
 
@@ -96,6 +100,10 @@ class SeriesMetadataDaoTest(
     assertThat(created.tags).containsAll(metadata.tags)
     assertThat(created.totalBookCount).isEqualTo(metadata.totalBookCount)
     assertThat(created.sharingLabels).containsAll(metadata.sharingLabels)
+    with(created.links.first()) {
+      assertThat(label).isEqualTo(metadata.links.first().label)
+      assertThat(url).isEqualTo(metadata.links.first().url)
+    }
 
     assertThat(created.titleLock).isEqualTo(metadata.titleLock)
     assertThat(created.titleSortLock).isEqualTo(metadata.titleSortLock)
@@ -109,6 +117,7 @@ class SeriesMetadataDaoTest(
     assertThat(created.tagsLock).isEqualTo(metadata.tagsLock)
     assertThat(created.totalBookCountLock).isEqualTo(metadata.totalBookCountLock)
     assertThat(created.sharingLabelsLock).isEqualTo(metadata.sharingLabelsLock)
+    assertThat(created.linksLock).isEqualTo(metadata.linksLock)
   }
 
   @Test
@@ -140,6 +149,7 @@ class SeriesMetadataDaoTest(
     assertThat(created.tags).isEmpty()
     assertThat(created.totalBookCount).isNull()
     assertThat(created.sharingLabels).isEmpty()
+    assertThat(created.links).isEmpty()
 
     assertThat(created.titleLock).isFalse
     assertThat(created.titleSortLock).isFalse
@@ -153,6 +163,7 @@ class SeriesMetadataDaoTest(
     assertThat(created.tagsLock).isFalse
     assertThat(created.totalBookCountLock).isFalse
     assertThat(created.sharingLabelsLock).isFalse
+    assertThat(created.linksLock).isFalse
   }
 
   @Test
@@ -205,6 +216,7 @@ class SeriesMetadataDaoTest(
       tags = setOf("tag"),
       totalBookCount = 3,
       sharingLabels = setOf("kids"),
+      links = listOf(WebLink("Comicvine", URI("https://comicvine.gamespot.com/doctor-strange/4050-2676/"))),
       seriesId = series.id,
     )
     seriesMetadataDao.insert(metadata)
@@ -226,6 +238,7 @@ class SeriesMetadataDaoTest(
         tags = setOf("Another"),
         totalBookCount = 8,
         sharingLabels = setOf("adult"),
+        links = emptyList(),
         statusLock = true,
         titleLock = true,
         titleSortLock = true,
@@ -238,6 +251,7 @@ class SeriesMetadataDaoTest(
         tagsLock = true,
         totalBookCountLock = true,
         sharingLabelsLock = true,
+        linksLock = true,
       )
     }
 
@@ -261,6 +275,7 @@ class SeriesMetadataDaoTest(
     assertThat(modified.tags).containsAll(updated.tags)
     assertThat(modified.totalBookCount).isEqualTo(updated.totalBookCount)
     assertThat(modified.sharingLabels).containsAll(updated.sharingLabels)
+    assertThat(modified.links).isEmpty()
 
     assertThat(modified.titleLock).isTrue
     assertThat(modified.titleSortLock).isTrue
@@ -274,5 +289,6 @@ class SeriesMetadataDaoTest(
     assertThat(modified.tagsLock).isTrue
     assertThat(modified.totalBookCountLock).isTrue
     assertThat(modified.sharingLabelsLock).isTrue
+    assertThat(modified.linksLock).isTrue
   }
 }

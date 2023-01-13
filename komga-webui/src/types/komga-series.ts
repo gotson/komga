@@ -1,4 +1,4 @@
-import {AuthorDto} from '@/types/komga-books'
+import {AuthorDto, WebLinkDto} from '@/types/komga-books'
 import {Context} from '@/types/context'
 
 export interface SeriesDto {
@@ -47,6 +47,8 @@ export interface SeriesMetadataDto {
   totalBookCountLock: boolean,
   sharingLabels: string[],
   sharingLabelsLock: boolean,
+  links?: WebLinkDto[],
+  linksLock?: boolean
 }
 
 export interface SeriesBooksMetadataDto {
@@ -84,6 +86,8 @@ export interface SeriesMetadataUpdateDto {
   totalBookCountLock: boolean,
   sharingLabels?: string[],
   sharingLabelsLock: boolean,
+  links?: WebLinkDto[],
+  linksLock?: boolean,
 }
 
 export interface GroupCountDto {

@@ -331,6 +331,32 @@
         </v-col>
       </v-row>
 
+      <v-row v-if="series.metadata.links.length > 0" class="align-center text-caption">
+        <v-col class="py-1" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.links') }}</v-col>
+        <v-col class="py-1" cols="8" sm="9" md="10" xl="11">
+          <v-chip
+            v-for="(link, i) in series.metadata.links"
+            :href="link.url"
+            target="_blank"
+            class="me-2"
+            label
+            small
+            outlined
+            link
+            :key="i"
+          >
+            {{ link.label }}
+            <v-icon
+              x-small
+              color="grey"
+              class="ps-1"
+            >
+              mdi-open-in-new
+            </v-icon>
+          </v-chip>
+        </v-col>
+      </v-row>
+
       <v-divider v-if="series.booksMetadata.authors.length > 0" class="my-3"/>
       <v-row class="align-center text-caption"
              v-for="role in displayedRoles"
