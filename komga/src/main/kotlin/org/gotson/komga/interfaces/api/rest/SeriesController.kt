@@ -16,6 +16,7 @@ import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
 import org.gotson.komga.application.tasks.TaskEmitter
+import org.gotson.komga.domain.model.AlternateTitle
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.DomainEvent
@@ -550,6 +551,10 @@ class SeriesController(
             if (links != null) links!!.map { WebLink(it.label!!, URI(it.url!!)) } else emptyList()
           } else existing.links,
           linksLock = linksLock ?: existing.linksLock,
+          alternateTitles = if (isSet("alternateTitles")) {
+            if (alternateTitles != null) alternateTitles!!.map { AlternateTitle(it.label!!, it.title!!) } else emptyList()
+          } else existing.alternateTitles,
+          alternateTitlesLock = alternateTitlesLock ?: existing.alternateTitlesLock,
         )
       }
       seriesMetadataRepository.update(updated)

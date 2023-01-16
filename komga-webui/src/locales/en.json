@@ -347,6 +347,7 @@
       "button_confirm": "Save changes",
       "dialog_title_multiple": "Edit {count} book | Edit {count} books",
       "dialog_title_single": "Edit {book}",
+      "field_alternate_title": "Alternate title",
       "field_isbn": "ISBN",
       "field_isbn_error": "Must be a valid ISBN 13",
       "field_link_label": "Label",
@@ -457,6 +458,7 @@
       "tab_poster": "Poster",
       "tab_sharing": "Sharing",
       "tab_tags": "Tags",
+      "tab_titles": "Alternate Titles",
       "tags_notice_multiple_edit": "You are editing tags for multiple series. This will override existing tags of each series."
     },
     "edit_user": {
@@ -811,6 +813,10 @@
     "tooltip_to_be_uploaded": "To be uploaded",
     "tooltip_too_big": "File too big!",
     "tooltip_user_uploaded": "User uploaded"
+  },
+  "titles_more": {
+    "less": "Less titles",
+    "more": "More titles"
   },
   "user_roles": {
     "ADMIN": "Administrator",

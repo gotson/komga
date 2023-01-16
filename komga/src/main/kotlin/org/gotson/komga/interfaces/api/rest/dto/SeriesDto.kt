@@ -54,6 +54,8 @@ data class SeriesMetadataDto(
   val sharingLabelsLock: Boolean,
   val links: List<WebLinkDto>,
   val linksLock: Boolean,
+  val alternateTitles: List<AlternateTitleDto>,
+  val alternateTitlesLock: Boolean,
 
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   val created: LocalDateTime,

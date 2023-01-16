@@ -113,7 +113,10 @@
                 <v-tooltip right>
                   <template v-slot:activator="{ on }">
                   <span v-on="on">{{
-                      new Intl.DateTimeFormat($i18n.locale, {year: 'numeric', timeZone: 'UTC'}).format(new Date(series.booksMetadata.releaseDate))
+                      new Intl.DateTimeFormat($i18n.locale, {
+                        year: 'numeric',
+                        timeZone: 'UTC'
+                      }).format(new Date(series.booksMetadata.releaseDate))
                     }}</span>
                   </template>
                   {{ $t('browse_series.earliest_year_from_release_dates') }}
@@ -166,6 +169,17 @@
             </v-row>
 
             <template v-if="$vuetify.breakpoint.smAndUp">
+              <!-- Alternate titles  -->
+              <read-more class="mb-4" i18n-less="titles_more.less" i18n-more="titles_more.more">
+                <v-row v-for="(a, i) in series.metadata.alternateTitles"
+                       :key="i"
+                       class="align-center text-caption"
+                >
+                  <v-col cols="4" sm="3" md="2" xl="1" class="py-0 text-uppercase" :class="i===0 ? 'pt-4' : i === series.metadata.alternateTitles.length - 1 ? 'pb-4' : ''">{{ a.label }}</v-col>
+                  <v-col cols="8" sm="9" md="10" xl="11" class="py-0" :class="i===0 ? 'pt-4' : i === series.metadata.alternateTitles.length - 1 ? 'pb-4' : ''">{{ a.title }}</v-col>
+                </v-row>
+              </read-more>
+
               <v-row class="align-center">
                 <v-col cols="auto">
                   <v-btn :title="$t('menu.download_series')"
@@ -203,6 +217,17 @@
       </v-row>
 
       <template v-if="$vuetify.breakpoint.xsOnly">
+        <!-- Alternate titles  -->
+        <read-more class="mb-4" i18n-less="titles_more.less" i18n-more="titles_more.more">
+          <v-row v-for="(a, i) in series.metadata.alternateTitles"
+                 :key="i"
+                 class="align-center text-caption"
+          >
+            <v-col cols="4" class="py-0 text-uppercase" :class="i===0 ? 'pt-4' : i === series.metadata.alternateTitles.length - 1 ? 'pb-4' : ''">{{ a.label }}</v-col>
+            <v-col cols="8" class="py-0" :class="i===0 ? 'pt-4' : i === series.metadata.alternateTitles.length - 1 ? 'pb-4' : ''">{{ a.title }}</v-col>
+          </v-row>
+        </read-more>
+
         <!--   Download button     -->
         <v-row class="align-center">
           <v-col cols="auto">
@@ -529,9 +554,9 @@ export default Vue.extend({
   },
   computed: {
     itemContext(): ItemContext[] {
-      if(this.sortActive.key === 'metadata.releaseDate') return [ItemContext.RELEASE_DATE]
-      if(this.sortActive.key === 'createdDate') return [ItemContext.DATE_ADDED]
-      if(this.sortActive.key === 'fileSize') return [ItemContext.FILE_SIZE]
+      if (this.sortActive.key === 'metadata.releaseDate') return [ItemContext.RELEASE_DATE]
+      if (this.sortActive.key === 'createdDate') return [ItemContext.DATE_ADDED]
+      if (this.sortActive.key === 'fileSize') return [ItemContext.FILE_SIZE]
       return []
     },
     sortOptions(): SortOption[] {

@@ -47,8 +47,10 @@ export interface SeriesMetadataDto {
   totalBookCountLock: boolean,
   sharingLabels: string[],
   sharingLabelsLock: boolean,
-  links?: WebLinkDto[],
-  linksLock?: boolean
+  links: WebLinkDto[],
+  linksLock: boolean,
+  alternateTitles: AlternateTitleDto[],
+  alternateTitlesLock: boolean,
 }
 
 export interface SeriesBooksMetadataDto {
@@ -88,6 +90,8 @@ export interface SeriesMetadataUpdateDto {
   sharingLabelsLock: boolean,
   links?: WebLinkDto[],
   linksLock?: boolean,
+  alternateTitles?: AlternateTitleDto[],
+  alternateTitlesLock?: boolean,
 }
 
 export interface GroupCountDto {
@@ -100,4 +104,9 @@ export interface SeriesThumbnailDto {
   seriesId: string,
   type: string,
   selected: boolean
+}
+
+export interface AlternateTitleDto {
+  label: string,
+  title: string
 }

@@ -90,4 +90,12 @@ class SeriesMetadataUpdateDto {
     }
 
   var linksLock: Boolean? = null
+
+  @get:Valid
+  var alternateTitles: List<AlternateTitleUpdateDto>?
+    by Delegates.observable(null) { prop, _, _ ->
+      isSet[prop.name] = true
+    }
+
+  var alternateTitlesLock: Boolean? = null
 }

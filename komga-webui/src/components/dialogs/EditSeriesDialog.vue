@@ -28,6 +28,10 @@
             {{ $t('dialog.edit_series.tab_general') }}
           </v-tab>
           <v-tab class="justify-start">
+            <v-icon left class="hidden-xs-only">mdi-format-title</v-icon>
+            {{ $t('dialog.edit_series.tab_titles') }}
+          </v-tab>
+          <v-tab class="justify-start">
             <v-icon left class="hidden-xs-only">mdi-tag-multiple</v-icon>
             {{ $t('dialog.edit_series.tab_tags') }}
           </v-tab>
@@ -254,6 +258,77 @@
                   </v-col>
                 </v-row>
 
+              </v-container>
+            </v-card>
+          </v-tab-item>
+
+          <!--  Tab: Alternate Titles  -->
+          <v-tab-item v-if="single">
+            <v-card flat min-height="100">
+              <v-container fluid>
+                <!-- Titles -->
+                <v-form
+                  v-model="titlesValid"
+                  ref="titlesForm"
+                >
+                  <v-row
+                    v-for="(title, i) in form.alternateTitles"
+                    :key="i"
+                  >
+                    <v-col cols="4" class="py-0">
+                      <v-text-field v-model="form.alternateTitles[i].label"
+                                    :label="$t('dialog.edit_books.field_link_label')"
+                                    filled
+                                    dense
+                                    :rules="[alternateTitleRules]"
+                                    @input="$v.form.alternateTitles.$touch()"
+                                    @blur="$v.form.alternateTitles.$touch()"
+                                    @change="form.alternateTitlesLock = true"
+                      >
+                        <template v-slot:prepend>
+                          <v-icon :color="form.alternateTitlesLock ? 'secondary' : ''"
+                                  @click="form.alternateTitlesLock = !form.alternateTitlesLock"
+                          >
+                            {{ form.linksLock ? 'mdi-lock' : 'mdi-lock-open' }}
+                          </v-icon>
+                        </template>
+                      </v-text-field>
+                    </v-col>
+
+                    <v-col cols="8" class="py-0">
+                      <v-text-field v-model="form.alternateTitles[i].title"
+                                    :label="$t('dialog.edit_books.field_alternate_title')"
+                                    filled
+                                    dense
+                                    :rules="[alternateTitleRules]"
+                                    @input="$v.form.alternateTitles.$touch()"
+                                    @blur="$v.form.alternateTitles.$touch()"
+                                    @change="form.alternateTitlesLock = true"
+                      >
+                        <template v-slot:append-outer>
+                          <v-icon @click="form.alternateTitles.splice(i, 1)">mdi-delete</v-icon>
+                        </template>
+                      </v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-form>
+
+                <v-row>
+                  <v-spacer/>
+                  <v-col cols="auto">
+                    <v-btn
+                      elevation="2"
+                      fab
+                      small
+                      bottom
+                      right
+                      color="primary"
+                      @click="form.alternateTitles.push({label:'', title:''})"
+                    >
+                      <v-icon>mdi-plus</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-row>
               </v-container>
             </v-card>
           </v-tab-item>
@@ -500,6 +575,7 @@ export default Vue.extend({
       modal: false,
       tab: 0,
       linksValid: false,
+      titlesValid: false,
       form: {
         status: '',
         statusLock: false,
@@ -527,6 +603,8 @@ export default Vue.extend({
         sharingLabelsLock: false,
         links: [],
         linksLock: false,
+        alternateTitles: [],
+        alternateTitlesLock: false,
       },
       mixed: {
         status: false,
@@ -601,6 +679,7 @@ export default Vue.extend({
       publisher: {},
       totalBookCount: {minValue: minValue(1)},
       links: {},
+      alternateTitles: {},
     },
   },
   computed: {
@@ -645,6 +724,10 @@ export default Vue.extend({
     },
   },
   methods: {
+    alternateTitleRules(text: string): boolean | string {
+      if (!!this.$_.trim(text)) return true
+      return this.$t('common.required').toString()
+    },
     linksLabelRules(label: string): boolean | string {
       if (!!this.$_.trim(label)) return true
       return this.$t('common.required').toString()
@@ -678,7 +761,8 @@ export default Vue.extend({
     dialogReset(series: SeriesDto | SeriesDto[]) {
       this.tab = 0
       this.$v.$reset();
-      (this.$refs.linksForm as any)?.resetValidation()
+      (this.$refs.linksForm as any)?.resetValidation();
+      (this.$refs.titlesForm as any)?.resetValidation()
       if (Array.isArray(series) && series.length === 0) return
       if (Array.isArray(series) && series.length > 0) {
         const status = this.$_.uniq(series.map(x => x.metadata.status))
@@ -732,11 +816,13 @@ export default Vue.extend({
         this.form.sharingLabelsLock = sharingLabelsLock.length > 1 ? false : sharingLabelsLock[0]
 
         this.form.links = []
+        this.form.alternateTitles = []
       } else {
         this.form.genres = []
         this.form.tags = []
         this.form.sharingLabels = []
         this.form.links = []
+        this.form.alternateTitles = []
         this.$_.merge(this.form, (series as SeriesDto).metadata)
         this.poster.selectedThumbnail = ''
         this.poster.deleteQueue = []
@@ -754,7 +840,10 @@ export default Vue.extend({
       }
     },
     validateForm(): any {
-      if (!this.$v.$invalid && (!this.single || !this.$refs.linksForm || (this.$refs.linksForm as any).validate())) {
+      if (!this.$v.$invalid
+        && (!this.single || !this.$refs.linksForm || (this.$refs.linksForm as any).validate())
+        && (!this.single || !this.$refs.titlesForm || (this.$refs.titlesForm as any).validate())
+      ) {
         const metadata = {
           statusLock: this.form.statusLock,
           readingDirectionLock: this.form.readingDirectionLock,
@@ -766,6 +855,7 @@ export default Vue.extend({
           totalBookCountLock: this.form.totalBookCountLock,
           sharingLabelsLock: this.form.sharingLabelsLock,
           linksLock: this.form.linksLock,
+          alternateTitlesLock: this.form.alternateTitlesLock,
         }
 
         if (this.$v.form?.status?.$dirty) {
@@ -826,6 +916,10 @@ export default Vue.extend({
 
           if (this.$v.form?.links?.$dirty || this.form.links.length != (this.series as SeriesDto).metadata.links?.length) {
             this.$_.merge(metadata, {links: this.form.links})
+          }
+
+          if (this.$v.form?.alternateTitles?.$dirty || this.form.alternateTitles.length != (this.series as SeriesDto).metadata.alternateTitles?.length) {
+            this.$_.merge(metadata, {alternateTitles: this.form.alternateTitles})
           }
         }
 
