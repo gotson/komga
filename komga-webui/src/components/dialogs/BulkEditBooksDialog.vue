@@ -43,6 +43,32 @@
                 </v-btn>
 
                 <span class="subtitle-1">{{ prop.label }}</span>
+                <v-btn v-if="prop.prop === 'number'" icon @click="copyFromNumberSort">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <v-icon v-on="on">mdi-content-copy</v-icon>
+                    </template>
+                    <span>{{ $t('dialog.edit_books.copy_from', {field: $t('dialog.edit_books.field_number_sort')}) }}</span>
+                  </v-tooltip>
+                </v-btn>
+                <span v-if="prop.prop === 'numberSort'">
+                  <v-btn icon @click="numberSortDecrement">
+                    <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <v-icon v-on="on">mdi-numeric-negative-1</v-icon>
+                    </template>
+                    <span>{{ $t('dialog.edit_books.number_sort_decrement') }}</span>
+                  </v-tooltip>
+                  </v-btn>
+                  <v-btn icon @click="numberSortIncrement">
+                    <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <v-icon v-on="on">mdi-numeric-positive-1</v-icon>
+                    </template>
+                    <span>{{ $t('dialog.edit_books.number_sort_increment') }}</span>
+                  </v-tooltip>
+                  </v-btn>
+                </span>
               </v-col>
             </v-row>
           </v-container>
@@ -259,7 +285,7 @@ export default Vue.extend({
     validateReleaseDate(date: string): string | boolean {
       return date && !isMatch(date, 'yyyy-MM-dd') ? this.$t('dialog.edit_books.field_release_date_error').toString() : true
     },
-    bookDisplayName(book: BookDto):string {
+    bookDisplayName(book: BookDto): string {
       const parts = book.url.split('/')
       return parts[parts.length - 2] + '/' + parts[parts.length - 1]
     },
@@ -277,6 +303,21 @@ export default Vue.extend({
       const propLock = `${prop}Lock`
       for (const book of this.books) {
         this.form[book.id][propLock] = lock
+      }
+    },
+    numberSortDecrement() {
+      for (const book of this.books) {
+        this.form[book.id].numberSort = this.form[book.id].numberSort - 1
+      }
+    },
+    numberSortIncrement() {
+      for (const book of this.books) {
+        this.form[book.id].numberSort = this.form[book.id].numberSort + 1
+      }
+    },
+    copyFromNumberSort() {
+      for (const book of this.books) {
+        this.form[book.id].number = this.form[book.id].numberSort
       }
     },
     dialogReset(books: BookDto[]) {
