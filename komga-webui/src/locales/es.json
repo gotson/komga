@@ -205,6 +205,7 @@
     "filename": "Nombre del archivo",
     "filter_no_matches": "El filtro activo no tiene coincidencias",
     "genre": "Género",
+    "go_to_collection": "Ir a la colección",
     "go_to_library": "Ir a la biblioteca",
     "go_to_readlist": "Ir a lista de lectura",
     "go_to_series": "Ir a serie",
@@ -346,6 +347,7 @@
       "button_confirm": "Guardar cambios",
       "dialog_title_multiple": "Editar {count} libro | Editar {count} libros",
       "dialog_title_single": "Editar {book}",
+      "field_alternate_title": "Título alternativo",
       "field_isbn": "ISBN",
       "field_isbn_error": "Debe ser un código ISBN 13 válido",
       "field_link_label": "Etiqueta",
@@ -393,6 +395,7 @@
       "field_import_comicinfo_collections": "Colecciones",
       "field_import_comicinfo_readlists": "Listas de lectura",
       "field_import_comicinfo_series": "Metadatos de serie",
+      "field_import_comicinfo_series_append_volume": "Añadir un volumen al título de la serie",
       "field_import_epub_book": "Metadatos de libro",
       "field_import_epub_series": "Metadatos de serie",
       "field_import_local_artwork": "Portada local",
@@ -455,6 +458,7 @@
       "tab_poster": "Portada",
       "tab_sharing": "Compartiendo",
       "tab_tags": "Etiquetas",
+      "tab_titles": "Otros títulos",
       "tags_notice_multiple_edit": "Estás editando las etiquetas de varias series. Esto sobreescribirá las etiquetas existentes en cada una."
     },
     "edit_user": {
@@ -809,6 +813,10 @@
     "tooltip_to_be_uploaded": "A subir",
     "tooltip_too_big": "¡Archivo muy grande!",
     "tooltip_user_uploaded": "Subido por usuario"
+  },
+  "titles_more": {
+    "less": "Menos títulos",
+    "more": "Más títulos"
   },
   "user_roles": {
     "ADMIN": "Administrador",
