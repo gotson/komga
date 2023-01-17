@@ -225,6 +225,7 @@
     "pending_tasks": "No pending tasks | 1 pending task | {count} pending tasks",
     "publisher": "Publisher",
     "read": "Read",
+    "read_on": "Read on {date}",
     "readlists": "Read Lists",
     "required": "Required",
     "reset_filters": "Reset filters",
