@@ -111,6 +111,12 @@
             no-link
             :action-menu="false"
           ></item-card>
+          <div v-if="isInProgress"
+               class="text-caption text-center mt-1"
+               :title="$t('common.read_on', {date: readProgressDate})"
+          >
+            {{ $tc('common.pages_left', pagesLeft) }}
+          </div>
         </v-col>
 
         <v-col cols="8">
@@ -395,7 +401,7 @@ import ItemCard from '@/components/ItemCard.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import {groupAuthorsByRole} from '@/functions/authors'
 import {getBookFormatFromMediaType} from '@/functions/book-format'
-import {getReadProgress, getReadProgressPercentage} from '@/functions/book-progress'
+import {getPagesLeft, getReadProgress, getReadProgressPercentage} from '@/functions/book-progress'
 import {getBookTitleCompact} from '@/functions/book-title'
 import {bookFileUrl, bookThumbnailUrl} from '@/functions/urls'
 import {MediaStatus, ReadStatus} from '@/types/enum-books'
@@ -503,6 +509,9 @@ export default Vue.extend({
     },
     isInProgress(): boolean {
       return getReadProgress(this.book) === ReadStatus.IN_PROGRESS
+    },
+    pagesLeft(): number {
+      return getPagesLeft(this.book)
     },
     readProgressPercentage(): number {
       return getReadProgressPercentage(this.book)

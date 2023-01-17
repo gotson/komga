@@ -14,3 +14,10 @@ export function getReadProgressPercentage (book: BookDto): number {
   }
   return 0
 }
+
+export function getPagesLeft (book: BookDto): number {
+  if (book.readProgress?.completed === false) {
+    return book.media.pagesCount - book.readProgress?.page
+  }
+  return 0
+}

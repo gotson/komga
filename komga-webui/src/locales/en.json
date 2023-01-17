@@ -219,6 +219,7 @@
     "page": "Page",
     "page_number": "Page number",
     "pages": "pages",
+    "pages_left": "No pages left | 1 page left | {count} pages left",
     "pages_n": "No pages | 1 page | {count} pages",
     "password": "Password",
     "pending_tasks": "No pending tasks | 1 pending task | {count} pending tasks",
