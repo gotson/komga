@@ -1,3 +1,22 @@
+# [0.159.0](https://github.com/gotson/komga/compare/v0.158.0...v0.159.0) (2023-01-17)
+
+
+### Bug Fixes
+
+* **api:** include Z in datetime formats ([bb7b7fd](https://github.com/gotson/komga/commit/bb7b7fd8f01a7114a2966619a48b22e547938743))
+* **api:** some dates were not returned as UTC ([cdfb8e3](https://github.com/gotson/komga/commit/cdfb8e377f1eeef86b89305e5d8ec7ccb50f44eb))
+* translated using Weblate ([6ad0188](https://github.com/gotson/komga/commit/6ad0188bd3816c9f2f34bf08ebbbc980d5eaa334))
+
+
+### Features
+
+* add links field in series metadata ([f9f02a3](https://github.com/gotson/komga/commit/f9f02a395b1d92b5dd1b76a7fe0187d784da75d9)), closes [#938](https://github.com/gotson/komga/issues/938)
+* series metadata supports alternate titles ([8e0655f](https://github.com/gotson/komga/commit/8e0655f29a24fa9d887d7022d40ba2642edb3199)), closes [#878](https://github.com/gotson/komga/issues/878)
+* **webui:** display datetime when hovering date on item card ([4d97172](https://github.com/gotson/komga/commit/4d9717287acb277a146594d134d6a8c7fe475d82))
+* **webui:** display number of pages left on book details view ([77424b1](https://github.com/gotson/komga/commit/77424b1b1c1371d00036ea0bb08c59c543605020)), closes [#1012](https://github.com/gotson/komga/issues/1012)
+* **webui:** display read date on book details view ([c30c755](https://github.com/gotson/komga/commit/c30c755f63acc210267d79dfb6388a46c992a02a)), closes [#757](https://github.com/gotson/komga/issues/757)
+* **webui:** increment/decrement numberSort in bulk ([e7fbe57](https://github.com/gotson/komga/commit/e7fbe57e44e9850db6f68cefc6b1dde36c665d0c)), closes [#628](https://github.com/gotson/komga/issues/628)
+
 # [0.158.0](https://github.com/gotson/komga/compare/v0.157.5...v0.158.0) (2023-01-12)
 
 

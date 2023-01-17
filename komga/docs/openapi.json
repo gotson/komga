@@ -9582,6 +9582,21 @@
           }
         }
       },
+      "AlternateTitleUpdateDto": {
+        "required": [
+          "label",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        }
+      },
       "SeriesMetadataUpdateDto": {
         "type": "object",
         "properties": {
@@ -9645,11 +9660,23 @@
           "sharingLabelsLock": {
             "type": "boolean"
           },
+          "linksLock": {
+            "type": "boolean"
+          },
+          "alternateTitlesLock": {
+            "type": "boolean"
+          },
           "tags": {
             "uniqueItems": true,
             "type": "array",
             "items": {
               "type": "string"
+            }
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WebLinkUpdateDto"
             }
           },
           "ageRating": {
@@ -9676,6 +9703,12 @@
               "WEBTOON"
             ]
           },
+          "alternateTitles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlternateTitleUpdateDto"
+            }
+          },
           "sharingLabels": {
             "uniqueItems": true,
             "type": "array",
@@ -9685,6 +9718,20 @@
           }
         },
         "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update."
+      },
+      "WebLinkUpdateDto": {
+        "required": [
+          "label"
+        ],
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        }
       },
       "ReadListUpdateDto": {
         "type": "object",
@@ -9819,20 +9866,6 @@
           }
         },
         "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update."
-      },
-      "WebLinkUpdateDto": {
-        "required": [
-          "label"
-        ],
-        "type": "object",
-        "properties": {
-          "label": {
-            "type": "string"
-          },
-          "url": {
-            "type": "string"
-          }
-        }
       },
       "OpdsAuthor": {
         "required": [
@@ -10238,6 +10271,21 @@
           }
         }
       },
+      "AlternateTitleDto": {
+        "required": [
+          "label",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        }
+      },
       "BookMetadataAggregationDto": {
         "required": [
           "authors",
@@ -10401,12 +10449,16 @@
       "SeriesMetadataDto": {
         "required": [
           "ageRatingLock",
+          "alternateTitles",
+          "alternateTitlesLock",
           "created",
           "genres",
           "genresLock",
           "language",
           "languageLock",
           "lastModified",
+          "links",
+          "linksLock",
           "publisher",
           "publisherLock",
           "readingDirection",
@@ -10513,6 +10565,24 @@
           "sharingLabelsLock": {
             "type": "boolean"
           },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WebLinkDto"
+            }
+          },
+          "linksLock": {
+            "type": "boolean"
+          },
+          "alternateTitles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlternateTitleDto"
+            }
+          },
+          "alternateTitlesLock": {
+            "type": "boolean"
+          },
           "created": {
             "type": "string",
             "format": "date-time"
@@ -10520,6 +10590,21 @@
           "lastModified": {
             "type": "string",
             "format": "date-time"
+          }
+        }
+      },
+      "WebLinkDto": {
+        "required": [
+          "label",
+          "url"
+        ],
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
           }
         }
       },
@@ -10835,21 +10920,6 @@
           "lastModified": {
             "type": "string",
             "format": "date-time"
-          }
-        }
-      },
-      "WebLinkDto": {
-        "required": [
-          "label",
-          "url"
-        ],
-        "type": "object",
-        "properties": {
-          "label": {
-            "type": "string"
-          },
-          "url": {
-            "type": "string"
           }
         }
       },
