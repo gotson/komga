@@ -1,6 +1,7 @@
 package org.gotson.komga.interfaces.api.rest.dto
 
 import org.gotson.komga.domain.model.PageHashKnown
+import org.gotson.komga.language.toUTC
 import java.time.LocalDateTime
 
 data class PageHashKnownDto(
@@ -20,6 +21,6 @@ fun PageHashKnown.toDto() = PageHashKnownDto(
   size = size,
   action = action,
   deleteCount = deleteCount,
-  created = createdDate,
-  lastModified = lastModifiedDate,
+  created = createdDate.toUTC(),
+  lastModified = lastModifiedDate.toUTC(),
 )

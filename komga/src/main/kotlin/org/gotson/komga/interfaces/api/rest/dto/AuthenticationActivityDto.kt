@@ -2,6 +2,7 @@ package org.gotson.komga.interfaces.api.rest.dto
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import org.gotson.komga.domain.model.AuthenticationActivity
+import org.gotson.komga.language.toUTC
 import java.time.LocalDateTime
 
 data class AuthenticationActivityDto(
@@ -24,6 +25,6 @@ fun AuthenticationActivity.toDto() =
     userAgent = userAgent,
     success = success,
     error = error,
-    dateTime = dateTime,
+    dateTime = dateTime.toUTC(),
     source = source,
   )
