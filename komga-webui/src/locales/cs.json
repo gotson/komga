@@ -62,7 +62,8 @@
     "row": {
       "error_analyze_first": "Knížka musí být nejdříve analyzována",
       "error_choose_series": "Vybrat sérii",
-      "error_only_import_no_errors": "Lze importovat pouze knížky bez chyb"
+      "error_only_import_no_errors": "Lze importovat pouze knížky bez chyb",
+      "warning_upgrade": "Existující knížka bude aktualizovány"
     },
     "table": {
       "destination_name": "Jméno umístění",
@@ -76,13 +77,18 @@
   "bookreader": {
     "beginning_of_book": "Jsi na začátku knížky.",
     "changing_reading_direction": "Změnit směr čtení na",
+    "cycling_scale": "Změnit velikost",
+    "cycling_side_padding": "Změnit odsazení strany",
     "download_current_page": "Stáhnout aktuální stránku",
     "end_of_book": "Dostali jste se na konec knížky.",
     "from_series_metadata": "z metadat série",
+    "move_next": "Znovu použít \"Další\" pro přechod na další knížku.",
+    "move_next_exit": "Znovu použít \"Další\" pro opuštění čtečky.",
+    "move_previous": "Znovu použít \"Předchozí\" pro přechod na předchozí knížku.",
     "paged_reader_layout": {
       "double": "Dvojstránka",
       "double_no_cover": "Dvoustránka (žádný přebal)",
-      "single": "Jednostránka"
+      "single": "Jedna stránka"
     },
     "reader_settings": "Nastavení prohlížení",
     "scale_type": {
@@ -92,7 +98,7 @@
       "original": "Původní",
       "screen": "Obrazovka",
       "width": "Přizpůsobit šířce",
-      "width_shrink_only": "Přizpůsobit šířce (pouze zmenšení"
+      "width_shrink_only": "Přizpůsobit šířce (pouze zmenšení)"
     },
     "settings": {
       "always_fullscreen": "Vždy na celou obrazovku",
@@ -114,6 +120,8 @@
     },
     "shortcuts": {
       "close": "Zavřít",
+      "cycle_page_layout": "Změnit rozložení stránky",
+      "cycle_scale": "Změnit měřítko",
       "first_page": "První stránka",
       "fullscreen": "Spustit/ukončit režim celé obrazovky",
       "last_page": "Poslední stránka",
@@ -261,5 +269,40 @@
       "dialog_title": "Smazat kolekci",
       "dialog_title_multiple": "Smazat kolekce"
     }
+  },
+  "sort": {
+    "folder_name": "Název adresáře",
+    "name": "Jméno",
+    "number": "Číslo",
+    "release_date": "Datum vydání"
+  },
+  "theme": {
+    "dark": "Tmavý",
+    "light": "Světlý",
+    "system": "Systém"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "Odstranit",
+    "tooltip_mark_as_selected": "Označit jako vybrané",
+    "tooltip_selected": "Vybrané",
+    "tooltip_to_be_deleted": "K odstranění",
+    "tooltip_to_be_uploaded": "K nahrání",
+    "tooltip_too_big": "Soubor je příliš velký!"
+  },
+  "user_roles": {
+    "ADMIN": "Administrátor",
+    "FILE_DOWNLOAD": "Stažení souboru",
+    "USER": "Uživatel"
+  },
+  "users": {
+    "users": "Uživatelé"
+  },
+  "validation": {
+    "zero_or_more": "Musí být 0 nebo větší"
+  },
+  "welcome": {
+    "add_library": "Přidat knihovnu",
+    "no_libraries_yet": "Zatím nebyly přidány žádné knihovny.",
+    "welcome_message": "Vítejte v Komga"
   }
 }

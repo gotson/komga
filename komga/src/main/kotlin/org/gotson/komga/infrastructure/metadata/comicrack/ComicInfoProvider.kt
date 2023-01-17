@@ -6,6 +6,8 @@ import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookMetadataPatch
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.BookWithMedia
+import org.gotson.komga.domain.model.Library
+import org.gotson.komga.domain.model.MetadataPatchTarget
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.gotson.komga.domain.model.WebLink
@@ -111,7 +113,7 @@ class ComicInfoProvider(
     return null
   }
 
-  override fun getSeriesMetadataFromBook(book: BookWithMedia): SeriesMetadataPatch? {
+  override fun getSeriesMetadataFromBook(book: BookWithMedia, library: Library): SeriesMetadataPatch? {
     getComicInfo(book)?.let { comicInfo ->
       val readingDirection = when (comicInfo.manga) {
         Manga.NO -> SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT
@@ -120,7 +122,7 @@ class ComicInfoProvider(
       }
 
       val genres = comicInfo.genre?.split(',')?.mapNotNull { it.trim().ifBlank { null } }
-      val series = computeSeriesFromSeriesAndVolume(comicInfo.series, comicInfo.volume)
+      val series = if (library.importComicInfoSeriesAppendVolume) computeSeriesFromSeriesAndVolume(comicInfo.series, comicInfo.volume) else comicInfo.series
 
       return SeriesMetadataPatch(
         title = series,
@@ -138,6 +140,14 @@ class ComicInfoProvider(
     }
     return null
   }
+
+  override fun shouldLibraryHandlePatch(library: Library, target: MetadataPatchTarget): Boolean =
+    when (target) {
+      MetadataPatchTarget.BOOK -> library.importComicInfoBook
+      MetadataPatchTarget.SERIES -> library.importComicInfoSeries
+      MetadataPatchTarget.READLIST -> library.importComicInfoReadList
+      MetadataPatchTarget.COLLECTION -> library.importComicInfoCollection
+    }
 
   private fun getComicInfo(book: BookWithMedia): ComicInfo? {
     try {

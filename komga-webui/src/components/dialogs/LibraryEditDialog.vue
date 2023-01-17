@@ -247,6 +247,12 @@
                         class="mx-4"
                       />
                       <v-checkbox
+                        v-model="form.importComicInfoSeriesAppendVolume"
+                        :label="$t('dialog.edit_library.field_import_comicinfo_series_append_volume')"
+                        hide-details
+                        class="mx-4"
+                      />
+                      <v-checkbox
                         v-model="form.importComicInfoCollection"
                         :label="$t('dialog.edit_library.field_import_comicinfo_collections')"
                         hide-details
@@ -379,6 +385,7 @@ export default Vue.extend({
         importComicInfoSeries: true,
         importComicInfoCollection: true,
         importComicInfoReadList: true,
+        importComicInfoSeriesAppendVolume: true,
         importEpubBook: true,
         importEpubSeries: true,
         importMylarSeries: true,
@@ -416,7 +423,7 @@ export default Vue.extend({
 
     importComicInfo: {
       get: function (): number {
-        const val = [this.form.importComicInfoBook, this.form.importComicInfoCollection, this.form.importComicInfoReadList, this.form.importComicInfoSeries]
+        const val = [this.form.importComicInfoBook, this.form.importComicInfoCollection, this.form.importComicInfoReadList, this.form.importComicInfoSeries, this.form.importComicInfoSeriesAppendVolume]
         const count = val.filter(Boolean).length
         if (count === val.length) return 2
         if (count === 0) return 0
@@ -427,6 +434,7 @@ export default Vue.extend({
         this.form.importComicInfoCollection = value
         this.form.importComicInfoReadList = value
         this.form.importComicInfoSeries = value
+        this.form.importComicInfoSeriesAppendVolume = value
       },
     },
 
@@ -510,6 +518,7 @@ export default Vue.extend({
       this.form.importComicInfoSeries = library ? library.importComicInfoSeries : true
       this.form.importComicInfoCollection = library ? library.importComicInfoCollection : true
       this.form.importComicInfoReadList = library ? library.importComicInfoReadList : true
+      this.form.importComicInfoSeriesAppendVolume = library ? library.importComicInfoSeriesAppendVolume : true
       this.form.importEpubBook = library ? library.importEpubBook : true
       this.form.importEpubSeries = library ? library.importEpubSeries : true
       this.form.importMylarSeries = library ? library.importMylarSeries : true
@@ -537,6 +546,7 @@ export default Vue.extend({
           importComicInfoSeries: this.form.importComicInfoSeries,
           importComicInfoCollection: this.form.importComicInfoCollection,
           importComicInfoReadList: this.form.importComicInfoReadList,
+          importComicInfoSeriesAppendVolume: this.form.importComicInfoSeriesAppendVolume,
           importEpubBook: this.form.importEpubBook,
           importEpubSeries: this.form.importEpubSeries,
           importMylarSeries: this.form.importMylarSeries,

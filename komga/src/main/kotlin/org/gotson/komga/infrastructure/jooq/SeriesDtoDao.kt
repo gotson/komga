@@ -10,11 +10,13 @@ import org.gotson.komga.infrastructure.search.LuceneEntity
 import org.gotson.komga.infrastructure.search.LuceneHelper
 import org.gotson.komga.infrastructure.web.toFilePath
 import org.gotson.komga.interfaces.api.persistence.SeriesDtoRepository
+import org.gotson.komga.interfaces.api.rest.dto.AlternateTitleDto
 import org.gotson.komga.interfaces.api.rest.dto.AuthorDto
 import org.gotson.komga.interfaces.api.rest.dto.BookMetadataAggregationDto
 import org.gotson.komga.interfaces.api.rest.dto.GroupCountDto
 import org.gotson.komga.interfaces.api.rest.dto.SeriesDto
 import org.gotson.komga.interfaces.api.rest.dto.SeriesMetadataDto
+import org.gotson.komga.interfaces.api.rest.dto.WebLinkDto
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.BookMetadataAggregationRecord
 import org.gotson.komga.jooq.tables.records.SeriesMetadataRecord
@@ -60,6 +62,8 @@ class SeriesDtoDao(
   private val g = Tables.SERIES_METADATA_GENRE
   private val st = Tables.SERIES_METADATA_TAG
   private val sl = Tables.SERIES_METADATA_SHARING
+  private val slk = Tables.SERIES_METADATA_LINK
+  private val sat = Tables.SERIES_METADATA_ALTERNATE_TITLE
   private val bma = Tables.BOOK_METADATA_AGGREGATION
   private val bmaa = Tables.BOOK_METADATA_AGGREGATION_AUTHOR
   private val bmat = Tables.BOOK_METADATA_AGGREGATION_TAG
@@ -227,6 +231,8 @@ class SeriesDtoDao(
     lateinit var genres: Map<String, List<String>>
     lateinit var tags: Map<String, List<String>>
     lateinit var sharingLabels: Map<String, List<String>>
+    lateinit var links: Map<String, List<WebLinkDto>>
+    lateinit var alternateTitles: Map<String, List<AlternateTitleDto>>
     lateinit var aggregatedAuthors: Map<String, List<AuthorDto>>
     lateinit var aggregatedTags: Map<String, List<String>>
     transactionTemplate.executeWithoutResult {
@@ -242,6 +248,14 @@ class SeriesDtoDao(
       sharingLabels = dsl.selectFrom(sl)
         .where(sl.SERIES_ID.`in`(dsl.selectTempStrings()))
         .groupBy({ it.seriesId }, { it.label })
+
+      links = dsl.selectFrom(slk)
+        .where(slk.SERIES_ID.`in`(dsl.selectTempStrings()))
+        .groupBy({ it.seriesId }, { WebLinkDto(it.label, it.url) })
+
+      alternateTitles = dsl.selectFrom(sat)
+        .where(sat.SERIES_ID.`in`(dsl.selectTempStrings()))
+        .groupBy({ it.seriesId }, { AlternateTitleDto(it.label, it.title) })
 
       aggregatedAuthors = dsl.selectFrom(bmaa)
         .where(bmaa.SERIES_ID.`in`(dsl.selectTempStrings()))
@@ -268,7 +282,7 @@ class SeriesDtoDao(
           booksReadCount,
           booksUnreadCount,
           booksInProgressCount,
-          dr.toDto(genres[sr.id].orEmpty().toSet(), tags[sr.id].orEmpty().toSet(), sharingLabels[sr.id].orEmpty().toSet()),
+          dr.toDto(genres[sr.id].orEmpty().toSet(), tags[sr.id].orEmpty().toSet(), sharingLabels[sr.id].orEmpty().toSet(), links[sr.id].orEmpty(), alternateTitles[sr.id].orEmpty()),
           bmar.toDto(aggregatedAuthors[sr.id].orEmpty(), aggregatedTags[sr.id].orEmpty().toSet()),
         )
       }
@@ -365,7 +379,7 @@ class SeriesDtoDao(
       deleted = deletedDate != null,
     )
 
-  private fun SeriesMetadataRecord.toDto(genres: Set<String>, tags: Set<String>, sharingLabels: Set<String>) =
+  private fun SeriesMetadataRecord.toDto(genres: Set<String>, tags: Set<String>, sharingLabels: Set<String>, links: List<WebLinkDto>, alternateTitles: List<AlternateTitleDto>) =
     SeriesMetadataDto(
       status = status,
       statusLock = statusLock,
@@ -393,6 +407,10 @@ class SeriesDtoDao(
       totalBookCountLock = totalBookCountLock,
       sharingLabels = sharingLabels,
       sharingLabelsLock = sharingLabelsLock,
+      links = links,
+      linksLock = linksLock,
+      alternateTitles = alternateTitles,
+      alternateTitlesLock = alternateTitlesLock,
     )
 
   private fun BookMetadataAggregationRecord.toDto(authors: List<AuthorDto>, tags: Set<String>) =

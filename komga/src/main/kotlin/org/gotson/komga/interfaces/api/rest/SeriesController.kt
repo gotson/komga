@@ -16,6 +16,7 @@ import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
 import org.gotson.komga.application.tasks.TaskEmitter
+import org.gotson.komga.domain.model.AlternateTitle
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.DomainEvent
@@ -30,6 +31,7 @@ import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
 import org.gotson.komga.domain.model.ThumbnailSeries
+import org.gotson.komga.domain.model.WebLink
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
@@ -88,6 +90,7 @@ import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
 import java.io.OutputStream
+import java.net.URI
 import java.nio.charset.StandardCharsets.UTF_8
 import java.util.zip.Deflater
 import javax.validation.Valid
@@ -544,6 +547,14 @@ class SeriesController(
             if (sharingLabels != null) sharingLabels!! else emptySet()
           } else existing.sharingLabels,
           sharingLabelsLock = sharingLabelsLock ?: existing.sharingLabelsLock,
+          links = if (isSet("links")) {
+            if (links != null) links!!.map { WebLink(it.label!!, URI(it.url!!)) } else emptyList()
+          } else existing.links,
+          linksLock = linksLock ?: existing.linksLock,
+          alternateTitles = if (isSet("alternateTitles")) {
+            if (alternateTitles != null) alternateTitles!!.map { AlternateTitle(it.label!!, it.title!!) } else emptyList()
+          } else existing.alternateTitles,
+          alternateTitlesLock = alternateTitlesLock ?: existing.alternateTitlesLock,
         )
       }
       seriesMetadataRepository.update(updated)

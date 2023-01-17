@@ -6,12 +6,13 @@
         <template v-slot:activator="{ on }">
           <v-btn icon
                  v-on="on"
-                 :to="{name:'browse-libraries', params: {libraryId: series.libraryId }}"
+                 :to="parentLocation"
           >
             <rtl-icon icon="mdi-arrow-left" rtl="mdi-arrow-right"/>
           </v-btn>
         </template>
-        <span>{{ $t('common.go_to_library') }}</span>
+        <span v-if="contextCollection">{{ $t('common.go_to_collection') }}</span>
+        <span v-else>{{ $t('common.go_to_library') }}</span>
       </v-tooltip>
 
       <series-actions-menu v-if="series"
@@ -112,7 +113,10 @@
                 <v-tooltip right>
                   <template v-slot:activator="{ on }">
                   <span v-on="on">{{
-                      new Intl.DateTimeFormat($i18n.locale, {year: 'numeric', timeZone: 'UTC'}).format(new Date(series.booksMetadata.releaseDate))
+                      new Intl.DateTimeFormat($i18n.locale, {
+                        year: 'numeric',
+                        timeZone: 'UTC'
+                      }).format(new Date(series.booksMetadata.releaseDate))
                     }}</span>
                   </template>
                   {{ $t('browse_series.earliest_year_from_release_dates') }}
@@ -165,6 +169,17 @@
             </v-row>
 
             <template v-if="$vuetify.breakpoint.smAndUp">
+              <!-- Alternate titles  -->
+              <read-more class="mb-4" i18n-less="titles_more.less" i18n-more="titles_more.more">
+                <v-row v-for="(a, i) in series.metadata.alternateTitles"
+                       :key="i"
+                       class="align-center text-caption"
+                >
+                  <v-col cols="4" sm="3" md="2" xl="1" class="py-0 text-uppercase" :class="i===0 ? 'pt-4' : i === series.metadata.alternateTitles.length - 1 ? 'pb-4' : ''">{{ a.label }}</v-col>
+                  <v-col cols="8" sm="9" md="10" xl="11" class="py-0" :class="i===0 ? 'pt-4' : i === series.metadata.alternateTitles.length - 1 ? 'pb-4' : ''">{{ a.title }}</v-col>
+                </v-row>
+              </read-more>
+
               <v-row class="align-center">
                 <v-col cols="auto">
                   <v-btn :title="$t('menu.download_series')"
@@ -202,6 +217,17 @@
       </v-row>
 
       <template v-if="$vuetify.breakpoint.xsOnly">
+        <!-- Alternate titles  -->
+        <read-more class="mb-4" i18n-less="titles_more.less" i18n-more="titles_more.more">
+          <v-row v-for="(a, i) in series.metadata.alternateTitles"
+                 :key="i"
+                 class="align-center text-caption"
+          >
+            <v-col cols="4" class="py-0 text-uppercase" :class="i===0 ? 'pt-4' : i === series.metadata.alternateTitles.length - 1 ? 'pb-4' : ''">{{ a.label }}</v-col>
+            <v-col cols="8" class="py-0" :class="i===0 ? 'pt-4' : i === series.metadata.alternateTitles.length - 1 ? 'pb-4' : ''">{{ a.title }}</v-col>
+          </v-row>
+        </read-more>
+
         <!--   Download button     -->
         <v-row class="align-center">
           <v-col cols="auto">
@@ -330,6 +356,32 @@
         </v-col>
       </v-row>
 
+      <v-row v-if="series.metadata.links.length > 0" class="align-center text-caption">
+        <v-col class="py-1" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.links') }}</v-col>
+        <v-col class="py-1" cols="8" sm="9" md="10" xl="11">
+          <v-chip
+            v-for="(link, i) in series.metadata.links"
+            :href="link.url"
+            target="_blank"
+            class="me-2"
+            label
+            small
+            outlined
+            link
+            :key="i"
+          >
+            {{ link.label }}
+            <v-icon
+              x-small
+              color="grey"
+              class="ps-1"
+            >
+              mdi-open-in-new
+            </v-icon>
+          </v-chip>
+        </v-col>
+      </v-row>
+
       <v-divider v-if="series.booksMetadata.authors.length > 0" class="my-3"/>
       <v-row class="align-center text-caption"
              v-for="role in displayedRoles"
@@ -452,6 +504,8 @@ import RtlIcon from '@/components/RtlIcon.vue'
 import {throttle} from 'lodash'
 import {BookSseDto, CollectionSseDto, LibrarySseDto, ReadProgressSseDto, SeriesSseDto} from '@/types/komga-sse'
 import {ItemContext} from '@/types/items'
+import {Context, ContextOrigin} from '@/types/context'
+import {RawLocation} from 'vue-router/types/router'
 
 const tags = require('language-tags')
 
@@ -477,6 +531,7 @@ export default Vue.extend({
   data: function () {
     return {
       series: {} as SeriesDto,
+      context: {} as Context,
       books: [] as BookDto[],
       selectedBooks: [] as BookDto[],
       page: 1,
@@ -499,9 +554,9 @@ export default Vue.extend({
   },
   computed: {
     itemContext(): ItemContext[] {
-      if(this.sortActive.key === 'metadata.releaseDate') return [ItemContext.RELEASE_DATE]
-      if(this.sortActive.key === 'createdDate') return [ItemContext.DATE_ADDED]
-      if(this.sortActive.key === 'fileSize') return [ItemContext.FILE_SIZE]
+      if (this.sortActive.key === 'metadata.releaseDate') return [ItemContext.RELEASE_DATE]
+      if (this.sortActive.key === 'createdDate') return [ItemContext.DATE_ADDED]
+      if (this.sortActive.key === 'fileSize') return [ItemContext.FILE_SIZE]
       return []
     },
     sortOptions(): SortOption[] {
@@ -590,6 +645,15 @@ export default Vue.extend({
     },
     displayedRoles(): string[] {
       return authorRolesSeries.filter(x => this.authorsByRole[x])
+    },
+    contextCollection(): boolean {
+      return this.context.origin === ContextOrigin.COLLECTION
+    },
+    parentLocation(): RawLocation {
+      if (this.contextCollection)
+        return {name: 'browse-collection', params: {collectionId: this.context.id}}
+      else
+        return {name: 'browse-libraries', params: {libraryId: this.series.libraryId}}
     },
   },
   props: {
@@ -759,6 +823,16 @@ export default Vue.extend({
         .then(v => this.series = v)
       this.$komgaSeries.getCollections(seriesId)
         .then(v => this.collections = v)
+
+      // parse query params to get context and contextId
+      if (this.$route.query.contextId && this.$route.query.context
+        && Object.values(ContextOrigin).includes(this.$route.query.context as ContextOrigin)) {
+        this.context = {
+          origin: this.$route.query.context as ContextOrigin,
+          id: this.$route.query.contextId as string,
+        }
+        this.series.context = this.context
+      }
 
       await this.loadPage(seriesId, this.page, this.sortActive)
     },

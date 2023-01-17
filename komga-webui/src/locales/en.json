@@ -205,6 +205,7 @@
     "filename": "Filename",
     "filter_no_matches": "The active filter has no matches",
     "genre": "Genre",
+    "go_to_collection": "Go to collection",
     "go_to_library": "Go to library",
     "go_to_readlist": "Go to read list",
     "go_to_series": "Go to series",
@@ -218,11 +219,13 @@
     "page": "Page",
     "page_number": "Page number",
     "pages": "pages",
+    "pages_left": "No pages left | 1 page left | {count} pages left",
     "pages_n": "No pages | 1 page | {count} pages",
     "password": "Password",
     "pending_tasks": "No pending tasks | 1 pending task | {count} pending tasks",
     "publisher": "Publisher",
     "read": "Read",
+    "read_on": "Read on {date}",
     "readlists": "Read Lists",
     "required": "Required",
     "reset_filters": "Reset filters",
@@ -344,8 +347,10 @@
       "authors_notice_multiple_edit": "You are editing authors for multiple books. This will override existing authors of each book.",
       "button_cancel": "Cancel",
       "button_confirm": "Save changes",
+      "copy_from": "Copy from {field}",
       "dialog_title_multiple": "Edit {count} book | Edit {count} books",
       "dialog_title_single": "Edit {book}",
+      "field_alternate_title": "Alternate title",
       "field_isbn": "ISBN",
       "field_isbn_error": "Must be a valid ISBN 13",
       "field_link_label": "Label",
@@ -360,6 +365,8 @@
       "field_summary": "Summary",
       "field_tags": "Tags",
       "field_title": "Title",
+      "number_sort_decrement": "Decrement all by 1",
+      "number_sort_increment": "Increment all by 1",
       "tab_authors": "Authors",
       "tab_general": "General",
       "tab_links": "Links",
@@ -393,6 +400,7 @@
       "field_import_comicinfo_collections": "Collections",
       "field_import_comicinfo_readlists": "Read lists",
       "field_import_comicinfo_series": "Series metadata",
+      "field_import_comicinfo_series_append_volume": "Append volume to series title",
       "field_import_epub_book": "Book metadata",
       "field_import_epub_series": "Series metadata",
       "field_import_local_artwork": "Local artwork",
@@ -455,6 +463,7 @@
       "tab_poster": "Poster",
       "tab_sharing": "Sharing",
       "tab_tags": "Tags",
+      "tab_titles": "Alternate Titles",
       "tags_notice_multiple_edit": "You are editing tags for multiple series. This will override existing tags of each series."
     },
     "edit_user": {
@@ -809,6 +818,10 @@
     "tooltip_to_be_uploaded": "To be uploaded",
     "tooltip_too_big": "File too big!",
     "tooltip_user_uploaded": "User uploaded"
+  },
+  "titles_more": {
+    "less": "Less titles",
+    "more": "More titles"
   },
   "user_roles": {
     "ADMIN": "Administrator",

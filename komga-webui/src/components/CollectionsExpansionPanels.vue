@@ -29,6 +29,8 @@
 import HorizontalScroller from '@/components/HorizontalScroller.vue'
 import ItemBrowser from '@/components/ItemBrowser.vue'
 import Vue from 'vue'
+import {ContextOrigin} from '@/types/context'
+import {SeriesDto} from '@/types/komga-series'
 
 export default Vue.extend({
   name: 'CollectionsExpansionPanels',
@@ -61,6 +63,7 @@ export default Vue.extend({
         const collId = this.collections[val].id
         if (this.$_.isEmpty(this.collectionsContent[val])) {
           const content = (await this.$komgaCollections.getSeries(collId, { unpaged: true } as PageRequest)).content
+          content.forEach((x: SeriesDto) => x.context = { origin: ContextOrigin.COLLECTION, id: collId })
           this.collectionsContent.splice(val, 1, content)
         }
       }

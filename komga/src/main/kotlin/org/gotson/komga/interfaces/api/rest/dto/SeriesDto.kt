@@ -9,11 +9,11 @@ data class SeriesDto(
   val libraryId: String,
   val name: String,
   val url: String,
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   val created: LocalDateTime,
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   val lastModified: LocalDateTime,
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   val fileLastModified: LocalDateTime,
   val booksCount: Int,
   val booksReadCount: Int,
@@ -52,10 +52,14 @@ data class SeriesMetadataDto(
   val totalBookCountLock: Boolean,
   val sharingLabels: Set<String>,
   val sharingLabelsLock: Boolean,
+  val links: List<WebLinkDto>,
+  val linksLock: Boolean,
+  val alternateTitles: List<AlternateTitleDto>,
+  val alternateTitlesLock: Boolean,
 
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   val created: LocalDateTime,
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   val lastModified: LocalDateTime,
 )
 
@@ -67,8 +71,8 @@ data class BookMetadataAggregationDto(
   val summary: String,
   val summaryNumber: String,
 
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   val created: LocalDateTime,
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   val lastModified: LocalDateTime,
 )

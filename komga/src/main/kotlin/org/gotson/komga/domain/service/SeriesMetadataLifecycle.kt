@@ -4,6 +4,7 @@ import mu.KotlinLogging
 import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.DomainEvent
+import org.gotson.komga.domain.model.MetadataPatchTarget
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.SeriesMetadataPatch
@@ -16,9 +17,6 @@ import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataFromBookProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
-import org.gotson.komga.infrastructure.metadata.comicrack.ComicInfoProvider
-import org.gotson.komga.infrastructure.metadata.epub.EpubMetadataProvider
-import org.gotson.komga.infrastructure.metadata.mylar.MylarSeriesProvider
 import org.gotson.komga.language.mostFrequent
 import org.springframework.stereotype.Service
 
@@ -49,22 +47,20 @@ class SeriesMetadataLifecycle(
 
     seriesMetadataFromBookProviders.forEach { provider ->
       when {
-        provider is ComicInfoProvider && !library.importComicInfoSeries && !library.importComicInfoCollection -> logger.info { "Library is not set to import series and collection metadata from ComicInfo, skipping" }
-        provider is EpubMetadataProvider && !library.importEpubSeries -> logger.info { "Library is not set to import series metadata from Epub, skipping" }
+        !(provider.shouldLibraryHandlePatch(library, MetadataPatchTarget.SERIES) || provider.shouldLibraryHandlePatch(library, MetadataPatchTarget.COLLECTION)) ->
+          logger.info { "Library is not set to import series or collection metadata for this provider, skipping: ${provider.javaClass.simpleName}" }
+
         else -> {
           logger.debug { "Provider: ${provider.javaClass.simpleName}" }
           val patches = bookRepository.findAllBySeriesId(series.id)
-            .mapNotNull { provider.getSeriesMetadataFromBook(BookWithMedia(it, mediaRepository.findById(it.id))) }
+            .mapNotNull { provider.getSeriesMetadataFromBook(BookWithMedia(it, mediaRepository.findById(it.id)), library) }
 
-          if (
-            (provider is ComicInfoProvider && library.importComicInfoSeries) ||
-            (provider is EpubMetadataProvider && library.importEpubSeries)
-          ) {
+          if (provider.shouldLibraryHandlePatch(library, MetadataPatchTarget.SERIES)) {
             handlePatchForSeriesMetadata(patches, series)
             changed = true
           }
 
-          if (provider is ComicInfoProvider && library.importComicInfoCollection) {
+          if (provider.shouldLibraryHandlePatch(library, MetadataPatchTarget.COLLECTION)) {
             handlePatchForCollections(patches, series)
           }
         }
@@ -73,12 +69,13 @@ class SeriesMetadataLifecycle(
 
     seriesMetadataProviders.forEach { provider ->
       when {
-        provider is MylarSeriesProvider && !library.importMylarSeries -> logger.info { "Library is not set to import series metadata from Mylar, skipping" }
+        !provider.shouldLibraryHandlePatch(library, MetadataPatchTarget.SERIES) ->
+          logger.info { "Library is not set to import series metadata for this provider, skipping: ${provider.javaClass.simpleName}" }
         else -> {
           logger.debug { "Provider: ${provider.javaClass.simpleName}" }
           val patch = provider.getSeriesMetadata(series)
 
-          if (provider is MylarSeriesProvider && library.importMylarSeries && patch != null) {
+          if (provider.shouldLibraryHandlePatch(library, MetadataPatchTarget.SERIES)) {
             handlePatchForSeriesMetadata(patch, series)
             changed = true
           }
@@ -139,18 +136,20 @@ class SeriesMetadataLifecycle(
   }
 
   private fun handlePatchForSeriesMetadata(
-    patch: SeriesMetadataPatch,
+    patch: SeriesMetadataPatch?,
     series: Series,
   ) {
-    seriesMetadataRepository.findById(series.id).let {
-      logger.debug { "Apply metadata for series: $series" }
+    patch?.let { sPatch ->
+      seriesMetadataRepository.findById(series.id).let {
+        logger.debug { "Apply metadata for series: $series" }
 
-      logger.debug { "Original metadata: $it" }
-      logger.debug { "Patch: $patch" }
-      val patched = metadataApplier.apply(patch, it)
-      logger.debug { "Patched metadata: $patched" }
+        logger.debug { "Original metadata: $it" }
+        logger.debug { "Patch: $sPatch" }
+        val patched = metadataApplier.apply(sPatch, it)
+        logger.debug { "Patched metadata: $patched" }
 
-      seriesMetadataRepository.update(patched)
+        seriesMetadataRepository.update(patched)
+      }
     }
   }
 

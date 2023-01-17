@@ -12,9 +12,9 @@ data class ReadListDto(
 
   val bookIds: List<String>,
 
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   val createdDate: LocalDateTime,
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   val lastModifiedDate: LocalDateTime,
 
   val filtered: Boolean,

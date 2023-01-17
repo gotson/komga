@@ -16,6 +16,8 @@ class SeriesMetadata(
   tags: Set<String> = emptySet(),
   val totalBookCount: Int? = null,
   sharingLabels: Set<String> = emptySet(),
+  val links: List<WebLink> = emptyList(),
+  val alternateTitles: List<AlternateTitle> = emptyList(),
 
   val statusLock: Boolean = false,
   val titleLock: Boolean = false,
@@ -29,6 +31,8 @@ class SeriesMetadata(
   val tagsLock: Boolean = false,
   val totalBookCountLock: Boolean = false,
   val sharingLabelsLock: Boolean = false,
+  val linksLock: Boolean = false,
+  val alternateTitlesLock: Boolean = false,
 
   val seriesId: String = "",
 
@@ -57,6 +61,8 @@ class SeriesMetadata(
     tags: Set<String> = this.tags,
     totalBookCount: Int? = this.totalBookCount,
     sharingLabels: Set<String> = this.sharingLabels,
+    links: List<WebLink> = this.links,
+    alternateTitles: List<AlternateTitle> = this.alternateTitles,
     statusLock: Boolean = this.statusLock,
     titleLock: Boolean = this.titleLock,
     titleSortLock: Boolean = this.titleSortLock,
@@ -69,6 +75,8 @@ class SeriesMetadata(
     tagsLock: Boolean = this.tagsLock,
     totalBookCountLock: Boolean = this.totalBookCountLock,
     sharingLabelsLock: Boolean = this.sharingLabelsLock,
+    linksLock: Boolean = this.linksLock,
+    alternateTitlesLock: Boolean = this.alternateTitlesLock,
     seriesId: String = this.seriesId,
     createdDate: LocalDateTime = this.createdDate,
     lastModifiedDate: LocalDateTime = this.lastModifiedDate,
@@ -86,6 +94,8 @@ class SeriesMetadata(
       tags = tags,
       totalBookCount = totalBookCount,
       sharingLabels = sharingLabels,
+      links = links,
+      alternateTitles = alternateTitles,
       statusLock = statusLock,
       titleLock = titleLock,
       titleSortLock = titleSortLock,
@@ -98,6 +108,8 @@ class SeriesMetadata(
       tagsLock = tagsLock,
       totalBookCountLock = totalBookCountLock,
       sharingLabelsLock = sharingLabelsLock,
+      linksLock = linksLock,
+      alternateTitlesLock = alternateTitlesLock,
       seriesId = seriesId,
       createdDate = createdDate,
       lastModifiedDate = lastModifiedDate,
@@ -115,5 +127,5 @@ class SeriesMetadata(
   }
 
   override fun toString(): String =
-    "SeriesMetadata(status=$status, readingDirection=$readingDirection, ageRating=$ageRating, totalBookCount=$totalBookCount, statusLock=$statusLock, titleLock=$titleLock, titleSortLock=$titleSortLock, summaryLock=$summaryLock, readingDirectionLock=$readingDirectionLock, publisherLock=$publisherLock, ageRatingLock=$ageRatingLock, languageLock=$languageLock, genresLock=$genresLock, tagsLock=$tagsLock, totalBookCountLock=$totalBookCountLock, sharingLabelsLock=$sharingLabelsLock, seriesId='$seriesId', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate, title='$title', titleSort='$titleSort', summary='$summary', publisher='$publisher', language='$language', tags=$tags, genres=$genres, sharingLabels=$sharingLabels)"
+    "SeriesMetadata(status=$status, readingDirection=$readingDirection, ageRating=$ageRating, totalBookCount=$totalBookCount, links=$links, alternateTitles=$alternateTitles, statusLock=$statusLock, titleLock=$titleLock, titleSortLock=$titleSortLock, summaryLock=$summaryLock, readingDirectionLock=$readingDirectionLock, publisherLock=$publisherLock, ageRatingLock=$ageRatingLock, languageLock=$languageLock, genresLock=$genresLock, tagsLock=$tagsLock, totalBookCountLock=$totalBookCountLock, sharingLabelsLock=$sharingLabelsLock, linksLock=$linksLock, alternateTitlesLock=$alternateTitlesLock, seriesId='$seriesId', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate, title='$title', titleSort='$titleSort', summary='$summary', publisher='$publisher', language='$language', tags=$tags, genres=$genres, sharingLabels=$sharingLabels)"
 }

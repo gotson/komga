@@ -12,12 +12,8 @@ import org.jooq.impl.DSL
 import org.springframework.data.domain.Sort
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.ZoneOffset
 
 fun Field<String>.noCase() = this.collate("NOCASE")
-
-fun LocalDateTime.toUTC(): LocalDateTime =
-  atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime()
 
 fun Sort.toOrderBy(sorts: Map<String, Field<out Any>>): List<SortField<out Any>> =
   this.mapNotNull {

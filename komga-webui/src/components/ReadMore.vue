@@ -5,7 +5,7 @@
     </div>
     <template v-slot:more="value">
       <v-btn text small color="grey darken-1">
-        {{ value.open ? $t('read_more.less') : $t('read_more.more') }}
+        {{ value.open ? $t(i18nLess) : $t(i18nMore) }}
         <v-icon right>mdi-chevron-{{ value.open ? 'up' : 'down' }}</v-icon>
       </v-btn>
     </template>
@@ -20,6 +20,16 @@ import Vue from 'vue'
 export default Vue.extend({
   name: 'ReadMore',
   components: { VueReadMoreSmooth },
+  props: {
+    i18nMore: {
+      type: String,
+      default: 'read_more.more',
+    },
+    i18nLess: {
+      type: String,
+      default: 'read_more.less',
+    },
+  },
 })
 </script>
 

@@ -45,6 +45,7 @@ fun SeriesDto.toDocument() =
   Document().apply {
     add(TextField("title", metadata.title, Field.Store.NO))
     if (metadata.titleSort != metadata.title) add(TextField("title", metadata.titleSort, Field.Store.NO))
+    metadata.alternateTitles.forEach { add(TextField("title", it.title, Field.Store.NO)) }
     add(TextField("publisher", metadata.publisher, Field.Store.NO))
     add(TextField("status", metadata.status, Field.Store.NO))
     add(TextField("reading_direction", metadata.readingDirection, Field.Store.NO))

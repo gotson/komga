@@ -100,7 +100,7 @@ export default Vue.extend({
       this.modal = val
       if (val) {
         this.newCollection = ''
-        this.collections = (await this.$komgaCollections.getCollections(undefined, {unpaged: true} as PageRequest)).content
+        this.collections = this.$_.orderBy((await this.$komgaCollections.getCollections(undefined, {unpaged: true} as PageRequest)).content, ['lastModifiedDate'], ['desc'])
       }
     },
     modal(val) {

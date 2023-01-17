@@ -143,6 +143,7 @@ import {CollectionSseDto, ReadProgressSeriesSseDto, SeriesSseDto} from '@/types/
 import {throttle} from 'lodash'
 import {LibraryDto} from '@/types/komga-libraries'
 import {parseBooleanFilter} from '@/functions/query-params'
+import {ContextOrigin} from '@/types/context'
 
 export default Vue.extend({
   name: 'BrowseCollection',
@@ -387,6 +388,7 @@ export default Vue.extend({
 
       const complete = parseBooleanFilter(this.filters.complete)
       this.series = (await this.$komgaCollections.getSeries(collectionId, {unpaged: true} as PageRequest, this.filters.library, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, complete)).content
+      this.series.forEach((x: SeriesDto) => x.context = {origin: ContextOrigin.COLLECTION, id: collectionId})
       this.seriesCopy = [...this.series]
       this.selectedSeries = []
     },

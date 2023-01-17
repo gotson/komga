@@ -2,6 +2,8 @@ package org.gotson.komga.infrastructure.metadata.mylar
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import mu.KotlinLogging
+import org.gotson.komga.domain.model.Library
+import org.gotson.komga.domain.model.MetadataPatchTarget
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesMetadataPatch
@@ -55,6 +57,12 @@ class MylarSeriesProvider(
       return null
     }
   }
+
+  override fun shouldLibraryHandlePatch(library: Library, target: MetadataPatchTarget): Boolean =
+    when (target) {
+      MetadataPatchTarget.SERIES -> library.importMylarSeries
+      else -> false
+    }
 
   override fun getSidecarSeriesType(): Sidecar.Type = Sidecar.Type.METADATA
 

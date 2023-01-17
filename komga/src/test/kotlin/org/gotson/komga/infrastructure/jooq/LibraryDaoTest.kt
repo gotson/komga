@@ -34,7 +34,6 @@ class LibraryDaoTest(
     libraryDao.insert(library)
     val created = libraryDao.findById(library.id)
 
-    assertThat(created.id).isNotEqualTo(0)
     assertThat(created.createdDate).isCloseTo(now, offset)
     assertThat(created.lastModifiedDate).isCloseTo(now, offset)
     assertThat(created.name).isEqualTo(library.name)
@@ -61,6 +60,7 @@ class LibraryDaoTest(
         importComicInfoSeries = false,
         importComicInfoBook = false,
         importComicInfoReadList = false,
+        importComicInfoSeriesAppendVolume = false,
         importMylarSeries = false,
         importBarcodeIsbn = false,
         importLocalArtwork = false,
@@ -91,6 +91,7 @@ class LibraryDaoTest(
     assertThat(modified.importComicInfoSeries).isEqualTo(updated.importComicInfoSeries)
     assertThat(modified.importComicInfoBook).isEqualTo(updated.importComicInfoBook)
     assertThat(modified.importComicInfoReadList).isEqualTo(updated.importComicInfoReadList)
+    assertThat(modified.importComicInfoSeriesAppendVolume).isEqualTo(updated.importComicInfoSeriesAppendVolume)
     assertThat(modified.importBarcodeIsbn).isEqualTo(updated.importBarcodeIsbn)
     assertThat(modified.importLocalArtwork).isEqualTo(updated.importLocalArtwork)
     assertThat(modified.importMylarSeries).isEqualTo(updated.importMylarSeries)
