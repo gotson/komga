@@ -104,17 +104,28 @@ export class BookItem extends Item<BookDto> {
         return `<div class="text-truncate">${i18n.t('book_card.unknown')}</div>`
       default:
         let text
+        let title
         if (context.includes(ItemContext.RELEASE_DATE))
           text = this.item.metadata.releaseDate ? new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium', timeZone: 'UTC'} as Intl.DateTimeFormatOptions).format(new Date(this.item.metadata.releaseDate)) : i18n.t('book_card.no_release_date')
         else if (context.includes(ItemContext.DATE_ADDED))
-          text = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium'} as Intl.DateTimeFormatOptions).format(new Date(this.item.created))
-        else if (context.includes(ItemContext.READ_DATE))
-          text = this.item.readProgress?.lastModified ? new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium'} as Intl.DateTimeFormatOptions).format(new Date(this.item.readProgress?.lastModified)) : i18n.t('book_card.unread')
-        else if (context.includes(ItemContext.FILE_SIZE))
+          {
+            const date = new Date(this.item.created)
+            text = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium'} as Intl.DateTimeFormatOptions).format(date)
+            title = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'long', timeStyle: 'medium'} as Intl.DateTimeFormatOptions).format(date)
+          }
+        else if (context.includes(ItemContext.READ_DATE)) {
+          if (this.item.readProgress?.lastModified) {
+            const date = new Date(this.item.readProgress?.lastModified)
+            text = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium'} as Intl.DateTimeFormatOptions).format(date)
+            title = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'long', timeStyle: 'medium'} as Intl.DateTimeFormatOptions).format(date)
+          } else {
+            text = i18n.t('book_card.unread')
+          }
+        } else if (context.includes(ItemContext.FILE_SIZE))
           text = getFileSize(this.item.sizeBytes)
         else
           text = i18n.tc('common.pages_n', this.item.media.pagesCount)
-        return `<div class="text-truncate">${text}</div>`
+        return `<div class="text-truncate" title="${title}">${text}</div>`
     }
   }
 
@@ -162,15 +173,24 @@ export class SeriesItem extends Item<SeriesDto> {
     if (this.item.deleted) return `<div class="text-truncate error--text">${i18n.t('common.unavailable')}</div>`
 
     let text
+    let title
     if (context.includes(ItemContext.RELEASE_DATE))
       text = this.item.booksMetadata.releaseDate ? new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium', timeZone: 'UTC'} as Intl.DateTimeFormatOptions).format(new Date(this.item.booksMetadata.releaseDate)) : i18n.t('book_card.no_release_date')
     else if (context.includes(ItemContext.DATE_ADDED))
-      text = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium'} as Intl.DateTimeFormatOptions).format(new Date(this.item.created))
+      {
+        const date = new Date(this.item.created)
+        text = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium'} as Intl.DateTimeFormatOptions).format(date)
+        title = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'long', timeStyle: 'medium'} as Intl.DateTimeFormatOptions).format(date)
+      }
     else if (context.includes(ItemContext.DATE_UPDATED))
-      text = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium'} as Intl.DateTimeFormatOptions).format(new Date(this.item.lastModified))
+      {
+        const date = new Date(this.item.lastModified)
+        text = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium'} as Intl.DateTimeFormatOptions).format(date)
+        title = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'long', timeStyle: 'medium'} as Intl.DateTimeFormatOptions).format(date)
+      }
     else
       text = i18n.tc('common.books_n', this.item.booksCount)
-    return `<div class="text-truncate">${text}</div>`
+    return `<div class="text-truncate" title="${title}">${text}</div>`
   }
 
   to(): RawLocation {
