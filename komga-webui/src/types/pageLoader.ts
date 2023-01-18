@@ -1,6 +1,7 @@
 export class PageLoader<T> {
   private readonly pageable: PageRequest
   private readonly loader: (pageRequest: PageRequest) => Promise<Page<T>>
+  private readonly postProcessor: (item: T) => T
 
   private currentPage = undefined as unknown as Page<T>
   private loadedPages: number[] = []
@@ -15,9 +16,15 @@ export class PageLoader<T> {
     return this._tick
   }
 
-  constructor(pageable: PageRequest, loader: (pageRequest: PageRequest) => Promise<Page<T>>) {
+  // whether anything has been loaded yet
+  get hasLoadedAny() {
+    return this.currentPage
+  }
+
+  constructor(pageable: PageRequest, loader: (pageRequest: PageRequest) => Promise<Page<T>>, postProcessor: (item: T) => T = (item) => item) {
     this.pageable = pageable
     this.loader = loader
+    this.postProcessor = postProcessor
   }
 
   async reload() {
@@ -29,7 +36,7 @@ export class PageLoader<T> {
         page: 0,
       })
     const page = await this.loader(pageable)
-    this.items.splice(0, this.items.length, ...page.content)
+    this.items.splice(0, this.items.length, ...page.content.map(this.postProcessor))
     this._tick++
   }
 
@@ -38,7 +45,7 @@ export class PageLoader<T> {
     if (!this.currentPage) {
       this.loadedPages.push(this.pageable.page || 0)
       this.currentPage = await this.loader(this.pageable)
-      this.items.push(...this.currentPage.content)
+      this.items.push(...this.currentPage.content.map(this.postProcessor))
       this._tick++
       return true
     }
@@ -50,7 +57,7 @@ export class PageLoader<T> {
         this.loadedPages.push(nextPage)
         const pageable = Object.assign({}, this.pageable, {page: nextPage})
         this.currentPage = await this.loader(pageable)
-        this.items.push(...this.currentPage.content)
+        this.items.push(...this.currentPage.content.map(this.postProcessor))
         this._tick++
         return true
       }
