@@ -9683,6 +9683,15 @@
             "type": "integer",
             "format": "int32"
           },
+          "readingDirection": {
+            "type": "string",
+            "enum": [
+              "LEFT_TO_RIGHT",
+              "RIGHT_TO_LEFT",
+              "VERTICAL",
+              "WEBTOON"
+            ]
+          },
           "genres": {
             "uniqueItems": true,
             "type": "array",
@@ -9693,15 +9702,6 @@
           "totalBookCount": {
             "type": "integer",
             "format": "int32"
-          },
-          "readingDirection": {
-            "type": "string",
-            "enum": [
-              "LEFT_TO_RIGHT",
-              "RIGHT_TO_LEFT",
-              "VERTICAL",
-              "WEBTOON"
-            ]
           },
           "alternateTitles": {
             "type": "array",
@@ -9848,18 +9848,18 @@
               "$ref": "#/components/schemas/WebLinkUpdateDto"
             }
           },
-          "authors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AuthorUpdateDto"
-            }
-          },
           "isbn": {
             "type": "string"
           },
           "releaseDate": {
             "type": "string",
             "format": "date"
+          },
+          "authors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthorUpdateDto"
+            }
           },
           "summary": {
             "type": "string"

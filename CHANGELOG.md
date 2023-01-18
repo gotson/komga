@@ -1,3 +1,10 @@
+## [0.159.1](https://github.com/gotson/komga/compare/v0.159.0...v0.159.1) (2023-01-18)
+
+
+### Bug Fixes
+
+* **webui:** edit series dialog shows wrong tabs when editing multiple items ([12d2cbc](https://github.com/gotson/komga/commit/12d2cbcd09865471c447de9b71e24e8deb3b3675)), closes [#1049](https://github.com/gotson/komga/issues/1049)
+
 # [0.159.0](https://github.com/gotson/komga/compare/v0.158.0...v0.159.0) (2023-01-17)
 
 
