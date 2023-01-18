@@ -27,7 +27,7 @@
             <v-icon left class="hidden-xs-only">mdi-format-align-center</v-icon>
             {{ $t('dialog.edit_series.tab_general') }}
           </v-tab>
-          <v-tab class="justify-start">
+          <v-tab class="justify-start" v-if="single">
             <v-icon left class="hidden-xs-only">mdi-format-title</v-icon>
             {{ $t('dialog.edit_series.tab_titles') }}
           </v-tab>
