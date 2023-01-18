@@ -432,6 +432,7 @@
         icon="mdi-book-multiple"
         icon-color="secondary"
       >
+        <v-btn @click="resetSortAndFilters">{{ $t('common.reset_filters') }}</v-btn>
       </empty-state>
 
       <template v-else>
