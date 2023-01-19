@@ -408,6 +408,7 @@
 import BookActionsMenu from '@/components/menus/BookActionsMenu.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
+import {getCustomRoles} from '@/functions/author-roles'
 import {groupAuthorsByRole} from '@/functions/authors'
 import {getBookFormatFromMediaType, getBookReadRouteFromMediaProfile} from '@/functions/book-format'
 import {getPagesLeft, getReadProgress, getReadProgressPercentage} from '@/functions/book-progress'
@@ -648,7 +649,8 @@ export default Vue.extend({
       this.$komgaBooks.refreshMetadata(this.book)
     },
     editBook() {
-      this.$store.dispatch('dialogUpdateBooks', this.book)
+      const customRole = getCustomRoles(this.siblings)
+      this.$store.dispatch('dialogUpdateBooks', {books: this.book, roles: customRole})
     },
   },
 })
