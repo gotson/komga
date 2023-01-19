@@ -181,6 +181,7 @@ import FilterList from '@/components/FilterList.vue'
 import {ReadStatus} from '@/types/enum-books'
 import {authorRoles} from '@/types/author-roles'
 import {LibraryDto} from '@/types/komga-libraries'
+import {isAllSelectedSameSeries, getCustomRolesForSeries} from '@/functions/author-roles'
 import {mergeFilterParams, toNameValue} from '@/functions/filter'
 import {Location} from 'vue-router'
 import {readListFileUrl} from '@/functions/urls'
@@ -485,17 +486,17 @@ export default Vue.extend({
     async editSingleBook(book: BookDto) {
       if (book.oneshot) {
         const series = (await this.$komgaSeries.getOneSeries(book.seriesId))
-        this.$store.dispatch('dialogUpdateOneshots', {series: series, book: book})
+        this.$store.dispatch('dialogUpdateOneshots', {oneshots: {series: series, book: book}})
       } else
-        this.$store.dispatch('dialogUpdateBooks', book)
+        this.$store.dispatch('dialogUpdateBooks', {books: book})
     },
     async editMultipleBooks() {
       if (this.selectedBooks.every(b => b.oneshot)) {
         const series = await Promise.all(this.selectedBooks.map(b => this.$komgaSeries.getOneSeries(b.seriesId)))
         const oneshots = this.selectedBooks.map((b, index) => ({series: series[index], book: b} as Oneshot))
-        this.$store.dispatch('dialogUpdateOneshots', oneshots)
+        this.$store.dispatch('dialogUpdateOneshots', {oneshots})
       } else
-        this.$store.dispatch('dialogUpdateBooks', this.selectedBooks)
+        this.$store.dispatch('dialogUpdateBooks', {books: this.selectedBooks})
     },
     bulkEditMultipleBooks() {
       this.$store.dispatch('dialogUpdateBulkBooks', this.selectedBooks)
