@@ -1,3 +1,16 @@
+# [0.160.0](https://github.com/gotson/komga/compare/v0.159.1...v0.160.0) (2023-01-19)
+
+
+### Features
+
+* **webui:** add button to reset filters on Series view if there are no results ([17ca7f7](https://github.com/gotson/komga/commit/17ca7f74eb7e3068400e5be984864b05f712ad9f))
+* **webui:** add pagination to readlist/collection browse view ([ff70fea](https://github.com/gotson/komga/commit/ff70fea71a114e1a60a41bbe08d96fecf58b23d3)), closes [#817](https://github.com/gotson/komga/issues/817)
+
+
+### Performance Improvements
+
+* **webui:** readlist/collection expansion panels load data by page ([0b57dc9](https://github.com/gotson/komga/commit/0b57dc9c96fed24e6db440834f257aa4cf854f18)), closes [#817](https://github.com/gotson/komga/issues/817)
+
 ## [0.159.1](https://github.com/gotson/komga/compare/v0.159.0...v0.159.1) (2023-01-18)
 
 

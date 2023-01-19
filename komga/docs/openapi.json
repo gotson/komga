@@ -9528,22 +9528,11 @@
       "UserUpdateDto": {
         "type": "object",
         "properties": {
-          "roles": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "ageRestriction": {
             "$ref": "#/components/schemas/AgeRestrictionUpdateDto"
           },
-          "labelsAllow": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "sharedLibraries": {
+            "$ref": "#/components/schemas/SharedLibrariesUpdateDto"
           },
           "labelsExclude": {
             "uniqueItems": true,
@@ -9552,8 +9541,19 @@
               "type": "string"
             }
           },
-          "sharedLibraries": {
-            "$ref": "#/components/schemas/SharedLibrariesUpdateDto"
+          "roles": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "labelsAllow": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -9683,15 +9683,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "readingDirection": {
-            "type": "string",
-            "enum": [
-              "LEFT_TO_RIGHT",
-              "RIGHT_TO_LEFT",
-              "VERTICAL",
-              "WEBTOON"
-            ]
-          },
           "genres": {
             "uniqueItems": true,
             "type": "array",
@@ -9703,17 +9694,26 @@
             "type": "integer",
             "format": "int32"
           },
-          "alternateTitles": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AlternateTitleUpdateDto"
-            }
+          "readingDirection": {
+            "type": "string",
+            "enum": [
+              "LEFT_TO_RIGHT",
+              "RIGHT_TO_LEFT",
+              "VERTICAL",
+              "WEBTOON"
+            ]
           },
           "sharingLabels": {
             "uniqueItems": true,
             "type": "array",
             "items": {
               "type": "string"
+            }
+          },
+          "alternateTitles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlternateTitleUpdateDto"
             }
           }
         },
@@ -9848,18 +9848,18 @@
               "$ref": "#/components/schemas/WebLinkUpdateDto"
             }
           },
+          "authors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthorUpdateDto"
+            }
+          },
           "isbn": {
             "type": "string"
           },
           "releaseDate": {
             "type": "string",
             "format": "date"
-          },
-          "authors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AuthorUpdateDto"
-            }
           },
           "summary": {
             "type": "string"
