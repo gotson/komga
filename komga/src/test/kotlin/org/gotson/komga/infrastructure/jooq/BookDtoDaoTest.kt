@@ -112,6 +112,75 @@ class BookDtoDaoTest(
   }
 
   @Nested
+  inner class Criteria {
+    @Test
+    fun `given books when searching by multiple tags then results are matched and not duplicated`() {
+      // given
+      val book1 = makeBook("Éric le rouge", seriesId = series.id, libraryId = library.id)
+      val book2 = makeBook("Éric le bleu", seriesId = series.id, libraryId = library.id)
+      seriesLifecycle.addBooks(
+        series,
+        listOf(
+          book1,
+          book2
+        ),
+      )
+
+      bookMetadataRepository.findById(book1.id).let {
+        bookMetadataRepository.update(it.copy(tags = setOf("tag1", "tag2")))
+      }
+      bookMetadataRepository.findById(book2.id).let {
+        bookMetadataRepository.update(it.copy(tags = setOf("tag1", "tag2")))
+      }
+
+      // when
+      val page = bookDtoDao.findAll(
+        BookSearchWithReadProgress(tags = setOf("tag1", "tag2")),
+        user.id,
+        Pageable.unpaged(),
+      )
+
+      // then
+      assertThat(page.totalElements).isEqualTo(2)
+      assertThat(page.content).hasSize(2)
+      assertThat(page.content.map { it.metadata.title }).containsExactly("Éric le rouge", "Éric le bleu")
+    }
+
+    @Test
+    fun `given books when searching by multiple authors then results are matched and not duplicated`() {
+      // given
+      val book1 = makeBook("Éric le rouge", seriesId = series.id, libraryId = library.id)
+      val book2 = makeBook("Éric le bleu", seriesId = series.id, libraryId = library.id)
+      seriesLifecycle.addBooks(
+        series,
+        listOf(
+          book1,
+          book2
+        ),
+      )
+
+      bookMetadataRepository.findById(book1.id).let {
+        bookMetadataRepository.update(it.copy(authors = listOf(Author("Mark", "writer"), Author("Jim", "inker"))))
+      }
+      bookMetadataRepository.findById(book2.id).let {
+        bookMetadataRepository.update(it.copy(authors = listOf(Author("Mark", "writer"), Author("Jim", "inker"))))
+      }
+
+      // when
+      val page = bookDtoDao.findAll(
+        BookSearchWithReadProgress(authors = listOf(Author("Mark", "writer"), Author("Jim", "inker"))),
+        user.id,
+        Pageable.unpaged(),
+      )
+
+      // then
+      assertThat(page.totalElements).isEqualTo(2)
+      assertThat(page.content).hasSize(2)
+      assertThat(page.content.map { it.metadata.title }).containsExactly("Éric le rouge", "Éric le bleu")
+    }
+  }
+
+  @Nested
   inner class ReadProgress {
     @Test
     fun `given books in various read status when searching for read books then only read books are returned`() {
