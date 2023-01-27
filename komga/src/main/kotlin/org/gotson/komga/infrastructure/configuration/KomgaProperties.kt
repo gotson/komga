@@ -37,6 +37,8 @@ class KomgaProperties {
 
   var oauth2AccountCreation: Boolean = false
 
+  var oidcEmailVerification: Boolean = true
+
   var database = Database()
 
   var cors = Cors()
