@@ -54,6 +54,7 @@
       @mark-unread="markSelectedUnread"
       @add-to-collection="addToCollection"
       @edit="editMultipleSeries"
+      @delete="deleteSeries"
     />
 
     <!--  Edit elements sticky bar  -->
@@ -507,6 +508,9 @@ export default Vue.extend({
     },
     editMultipleSeries() {
       this.$store.dispatch('dialogUpdateSeries', this.selectedSeries)
+    },
+    deleteSeries() {
+      this.$store.dispatch('dialogDeleteSeries', this.selectedSeries)
     },
     async markSelectedRead() {
       await Promise.all(this.selectedSeries.map(s =>

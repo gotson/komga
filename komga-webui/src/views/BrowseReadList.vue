@@ -52,6 +52,7 @@
       @add-to-readlist="addToReadList"
       @edit="editMultipleBooks"
       @bulk-edit="bulkEditMultipleBooks"
+      @delete="deleteBooks"
     />
 
     <!--  Edit elements sticky bar  -->
@@ -471,6 +472,9 @@ export default Vue.extend({
     },
     bulkEditMultipleBooks() {
       this.$store.dispatch('dialogUpdateBulkBooks', this.selectedBooks)
+    },
+    deleteBooks() {
+      this.$store.dispatch('dialogDeleteBook', this.selectedBooks)
     },
     async markSelectedRead() {
       await Promise.all(this.selectedBooks.map(b =>

@@ -14,6 +14,7 @@
       @mark-unread="markSelectedSeriesUnread"
       @add-to-collection="addToCollection"
       @edit="editMultipleSeries"
+      @delete="deleteSeries"
     />
 
     <multi-select-bar
@@ -25,6 +26,7 @@
       @add-to-readlist="addToReadList"
       @edit="editMultipleBooks"
       @bulk-edit="bulkEditMultipleBooks"
+      @delete="deleteBooks"
     />
 
     <multi-select-bar
@@ -338,6 +340,12 @@ export default Vue.extend({
     },
     bulkEditMultipleBooks() {
       this.$store.dispatch('dialogUpdateBulkBooks', this.selectedBooks)
+    },
+    deleteSeries() {
+      this.$store.dispatch('dialogDeleteSeries', this.selectedSeries)
+    },
+    deleteBooks() {
+      this.$store.dispatch('dialogDeleteBook', this.selectedBooks)
     },
     deleteCollections() {
       this.$store.dispatch('dialogDeleteCollection', this.selectedCollections)
