@@ -1,3 +1,18 @@
+# [0.161.0](https://github.com/gotson/komga/compare/v0.160.0...v0.161.0) (2023-01-27)
+
+
+### Bug Fixes
+
+* **api:** multiple tag or author filters could generate duplicate book results ([88aa7ad](https://github.com/gotson/komga/commit/88aa7adaad97cbf7637012f65b6faa9c25133fe8)), closes [#1052](https://github.com/gotson/komga/issues/1052)
+* NPE when email_verified claim is missing in OIDC request ([72e5fd9](https://github.com/gotson/komga/commit/72e5fd9c9adde5cfeda7e2dee8d2edf4f57e2599)), closes [#1054](https://github.com/gotson/komga/issues/1054)
+* translated using Weblate ([faf95f2](https://github.com/gotson/komga/commit/faf95f2c69913236529fbd81e463155b8b813c45))
+* **webui:** multi-select bar delete button doesn't work on some views ([94fc5fa](https://github.com/gotson/komga/commit/94fc5fa4d5816b0c9c09783392a873d4a0676947)), closes [#1056](https://github.com/gotson/komga/issues/1056)
+
+
+### Features
+
+* add configuration option to skip email verification in OIDC login flow ([273b7d2](https://github.com/gotson/komga/commit/273b7d266cd1667f6a3c44b7d1ca479e0edb874a)), closes [#1054](https://github.com/gotson/komga/issues/1054)
+
 # [0.160.0](https://github.com/gotson/komga/compare/v0.159.1...v0.160.0) (2023-01-19)
 
 

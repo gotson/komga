@@ -9528,11 +9528,22 @@
       "UserUpdateDto": {
         "type": "object",
         "properties": {
+          "roles": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "ageRestriction": {
             "$ref": "#/components/schemas/AgeRestrictionUpdateDto"
           },
-          "sharedLibraries": {
-            "$ref": "#/components/schemas/SharedLibrariesUpdateDto"
+          "labelsAllow": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "labelsExclude": {
             "uniqueItems": true,
@@ -9541,19 +9552,8 @@
               "type": "string"
             }
           },
-          "roles": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "labelsAllow": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "sharedLibraries": {
+            "$ref": "#/components/schemas/SharedLibrariesUpdateDto"
           }
         }
       },
@@ -9703,17 +9703,17 @@
               "WEBTOON"
             ]
           },
+          "alternateTitles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlternateTitleUpdateDto"
+            }
+          },
           "sharingLabels": {
             "uniqueItems": true,
             "type": "array",
             "items": {
               "type": "string"
-            }
-          },
-          "alternateTitles": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AlternateTitleUpdateDto"
             }
           }
         },
