@@ -80,7 +80,6 @@
                   height="300"
                   contain
                   :src="pageHashKnownThumbnailUrl(getPageHash(dialogDetailsItem))"
-                  style="cursor: zoom-in"
                 />
               </td>
             </tr>
@@ -143,9 +142,11 @@ export default Vue.extend({
   methods: {
     getPageHash(item: HistoricalEventDto): PageHashKnownDto | undefined {
       if (item.type !== 'DuplicatePageDeleted') return undefined
+      let size: any = item.properties['page file size' as any]
+      if (size === 'null') size = -1
       return {
         hash: item.properties['page file hash' as any],
-        size: item.properties['page file size' as any],
+        size: size,
         mediaType: item.properties['page media type' as any],
       } as any
     },
