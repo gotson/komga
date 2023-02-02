@@ -7,7 +7,7 @@ plugins {
     kotlin("plugin.spring") version kotlinVersion
     kotlin("kapt") version kotlinVersion
   }
-  id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
+  id("org.jlleitschuh.gradle.ktlint") version "11.1.0"
   id("com.github.ben-manes.versions") version "0.44.0"
 }
 
@@ -36,7 +36,7 @@ allprojects {
   }
 
   configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-    version.set("0.45.2") // plugin does not support 0.46+ - see https://github.com/JLLeitschuh/ktlint-gradle/issues/589
+    version.set("0.48.2")
     filter {
       exclude("**/db/migration/**")
     }
