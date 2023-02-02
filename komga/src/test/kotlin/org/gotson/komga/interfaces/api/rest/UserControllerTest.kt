@@ -273,7 +273,10 @@ class UserControllerTest(
     @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
     fun `given user with labels restrictions when removing restrictions then restrictions are updated`() {
       val user = KomgaUser(
-        "user@example.org", "", false, id = "user",
+        "user@example.org",
+        "",
+        false,
+        id = "user",
         restrictions = ContentRestrictions(
           labelsAllow = setOf("kids", "cute"),
           labelsExclude = setOf("adult"),
@@ -363,7 +366,10 @@ class UserControllerTest(
     @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
     fun `given user with age restriction when removing restriction then restrictions are updated`() {
       val user = KomgaUser(
-        "user@example.org", "", false, id = "user",
+        "user@example.org",
+        "",
+        false,
+        id = "user",
         restrictions = ContentRestrictions(
           ageRestriction = AgeRestriction(12, AllowExclude.ALLOW_ONLY),
         ),
@@ -395,7 +401,10 @@ class UserControllerTest(
     @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
     fun `given user with age restriction when changing restriction then restrictions are updated`() {
       val user = KomgaUser(
-        "user@example.org", "", false, id = "user",
+        "user@example.org",
+        "",
+        false,
+        id = "user",
         restrictions = ContentRestrictions(
           ageRestriction = AgeRestriction(12, AllowExclude.ALLOW_ONLY),
         ),

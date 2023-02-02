@@ -71,7 +71,8 @@ class LibraryController(
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   fun addOne(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @Valid @RequestBody library: LibraryCreationDto,
+    @Valid @RequestBody
+    library: LibraryCreationDto,
   ): LibraryDto =
     try {
       libraryLifecycle.addLibrary(
@@ -116,7 +117,8 @@ class LibraryController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateOne(
     @PathVariable libraryId: String,
-    @Valid @RequestBody library: LibraryUpdateDto,
+    @Valid @RequestBody
+    library: LibraryUpdateDto,
   ) {
     libraryRepository.findByIdOrNull(libraryId)?.let {
       val toUpdate = Library(

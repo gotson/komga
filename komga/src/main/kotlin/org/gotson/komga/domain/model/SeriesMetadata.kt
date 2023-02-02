@@ -123,7 +123,7 @@ class SeriesMetadata(
     LEFT_TO_RIGHT,
     RIGHT_TO_LEFT,
     VERTICAL,
-    WEBTOON
+    WEBTOON,
   }
 
   override fun toString(): String =

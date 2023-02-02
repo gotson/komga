@@ -200,7 +200,8 @@ class SeriesCollectionController(
   @PostMapping
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   fun addOne(
-    @Valid @RequestBody collection: CollectionCreationDto,
+    @Valid @RequestBody
+    collection: CollectionCreationDto,
   ): CollectionDto =
     try {
       collectionLifecycle.addCollection(
@@ -219,7 +220,8 @@ class SeriesCollectionController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateOne(
     @PathVariable id: String,
-    @Valid @RequestBody collection: CollectionUpdateDto,
+    @Valid @RequestBody
+    collection: CollectionUpdateDto,
   ) {
     collectionRepository.findByIdOrNull(id)?.let { existing ->
       val updated = existing.copy(

@@ -122,7 +122,7 @@ class BookDtoDaoTest(
         series,
         listOf(
           book1,
-          book2
+          book2,
         ),
       )
 
@@ -155,7 +155,7 @@ class BookDtoDaoTest(
         series,
         listOf(
           book1,
-          book2
+          book2,
         ),
       )
 
@@ -785,7 +785,7 @@ class BookDtoDaoTest(
       )
 
       // when
-      val found = bookDtoDao.findAllDuplicates(user.id, Pageable.unpaged(),).content
+      val found = bookDtoDao.findAllDuplicates(user.id, Pageable.unpaged()).content
 
       // then
       assertThat(found).hasSize(2)
@@ -804,7 +804,7 @@ class BookDtoDaoTest(
       )
 
       // when
-      val found = bookDtoDao.findAllDuplicates(user.id, Pageable.unpaged(),).content
+      val found = bookDtoDao.findAllDuplicates(user.id, Pageable.unpaged()).content
 
       // then
       assertThat(found).isEmpty()

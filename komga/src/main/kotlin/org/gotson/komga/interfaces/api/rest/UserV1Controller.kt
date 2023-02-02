@@ -71,7 +71,8 @@ class UserV1Controller(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateMyPassword(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @Valid @RequestBody newPasswordDto: PasswordUpdateDto,
+    @Valid @RequestBody
+    newPasswordDto: PasswordUpdateDto,
   ) {
     if (demo) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     userRepository.findByEmailIgnoreCaseOrNull(principal.username)?.let { user ->
@@ -89,7 +90,10 @@ class UserV1Controller(
   @ResponseStatus(HttpStatus.CREATED)
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @Deprecated("User api/v2/users instead")
-  fun addOne(@Valid @RequestBody newUser: UserCreationDto): UserDto =
+  fun addOne(
+    @Valid @RequestBody
+    newUser: UserCreationDto,
+  ): UserDto =
     try {
       userLifecycle.createUser(newUser.toDomain()).toDto()
     } catch (e: UserEmailAlreadyExistsException) {
@@ -115,7 +119,8 @@ class UserV1Controller(
   @Deprecated("User api/v2/users instead")
   fun updateUserRoles(
     @PathVariable id: String,
-    @Valid @RequestBody patch: RolesUpdateDto,
+    @Valid @RequestBody
+    patch: RolesUpdateDto,
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ) {
     userRepository.findByIdOrNull(id)?.let { user ->
@@ -136,7 +141,8 @@ class UserV1Controller(
   fun updatePassword(
     @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @Valid @RequestBody newPasswordDto: PasswordUpdateDto,
+    @Valid @RequestBody
+    newPasswordDto: PasswordUpdateDto,
   ) {
     if (demo) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     userRepository.findByIdOrNull(id)?.let { user ->
@@ -150,7 +156,8 @@ class UserV1Controller(
   @Deprecated("User api/v2/users instead")
   fun updateSharesLibraries(
     @PathVariable id: String,
-    @Valid @RequestBody sharedLibrariesUpdateDto: SharedLibrariesUpdateDto,
+    @Valid @RequestBody
+    sharedLibrariesUpdateDto: SharedLibrariesUpdateDto,
   ) {
     userRepository.findByIdOrNull(id)?.let { user ->
       val updatedUser = user.copy(

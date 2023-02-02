@@ -54,7 +54,6 @@ class TaskHandler(
     try {
       measureTime {
         when (task) {
-
           is Task.ScanLibrary ->
             libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
               libraryContentLifecycle.scanRootFolder(library)

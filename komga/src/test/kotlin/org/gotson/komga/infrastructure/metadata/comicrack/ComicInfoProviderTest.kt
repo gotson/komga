@@ -333,6 +333,7 @@ class ComicInfoProviderTest {
 
     private val library = makeLibrary()
     private val libraryNoAppend = library.copy(importComicInfoSeriesAppendVolume = false)
+
     @Test
     fun `given comicInfo when getting series metadata then metadata patch is valid`() {
       val comicInfo = ComicInfo().apply {

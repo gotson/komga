@@ -224,7 +224,8 @@ class ReadListController(
   @PostMapping
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   fun addOne(
-    @Valid @RequestBody readList: ReadListCreationDto,
+    @Valid @RequestBody
+    readList: ReadListCreationDto,
   ): ReadListDto =
     try {
       readListLifecycle.addReadList(
@@ -250,7 +251,8 @@ class ReadListController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateOne(
     @PathVariable id: String,
-    @Valid @RequestBody readList: ReadListUpdateDto,
+    @Valid @RequestBody
+    readList: ReadListUpdateDto,
   ) {
     readListRepository.findByIdOrNull(id)?.let { existing ->
       val updated = existing.copy(
@@ -367,7 +369,8 @@ class ReadListController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun markReadProgressTachiyomi(
     @PathVariable id: String,
-    @Valid @RequestBody readProgress: TachiyomiReadProgressUpdateDto,
+    @Valid @RequestBody
+    readProgress: TachiyomiReadProgressUpdateDto,
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ) {
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->

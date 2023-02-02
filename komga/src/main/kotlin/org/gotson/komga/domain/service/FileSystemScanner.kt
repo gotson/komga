@@ -71,7 +71,9 @@ class FileSystemScanner(
       val pathToBookSidecars = mutableMapOf<Path, MutableList<TempSidecar>>()
 
       Files.walkFileTree(
-        root, setOf(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE,
+        root,
+        setOf(FileVisitOption.FOLLOW_LINKS),
+        Integer.MAX_VALUE,
         object : FileVisitor<Path> {
           override fun preVisitDirectory(dir: Path, attrs: BasicFileAttributes): FileVisitResult {
             logger.trace { "preVisit: $dir (regularFile:${attrs.isRegularFile}, directory:${attrs.isDirectory}, symbolicLink:${attrs.isSymbolicLink}, other:${attrs.isOther})" }

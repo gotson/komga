@@ -15,7 +15,8 @@ enum class LuceneEntity(val type: String, val id: String, val defaultFields: Arr
   Book("book", "book_id", arrayOf("title", "isbn")),
   Series("series", "series_id", arrayOf("title")),
   Collection("collection", "collection_id", arrayOf("name")),
-  ReadList("readlist", "readlist_id", arrayOf("name"));
+  ReadList("readlist", "readlist_id", arrayOf("name")),
+  ;
 
   companion object {
     const val TYPE = "type"

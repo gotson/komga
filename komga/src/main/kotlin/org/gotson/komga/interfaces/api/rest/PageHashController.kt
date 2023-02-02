@@ -104,7 +104,8 @@ class PageHashController(
   @PutMapping
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun createOrUpdateKnownPageHash(
-    @Valid @RequestBody pageHash: PageHashCreationDto,
+    @Valid @RequestBody
+    pageHash: PageHashCreationDto,
   ) {
     try {
       pageHashLifecycle.createOrUpdate(

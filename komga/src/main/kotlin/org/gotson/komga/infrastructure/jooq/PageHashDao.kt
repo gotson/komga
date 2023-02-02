@@ -172,8 +172,8 @@ class PageHashDao(
         p.FILE_HASH.eq(ph.HASH)
           .and(p.MEDIA_TYPE.eq(ph.MEDIA_TYPE))
           .and(
-            p.FILE_SIZE.isNull.and(ph.SIZE.isNull).or(p.FILE_SIZE.isNotNull.and(ph.SIZE.isNotNull).and(p.FILE_SIZE.eq(ph.SIZE)))
-          )
+            p.FILE_SIZE.isNull.and(ph.SIZE.isNull).or(p.FILE_SIZE.isNotNull.and(ph.SIZE.isNotNull).and(p.FILE_SIZE.eq(ph.SIZE))),
+          ),
       )
       .apply { libraryId?.let<String, Unit> { innerJoin(b).on(b.ID.eq(p.BOOK_ID)) } }
       .where(ph.ACTION.`in`(actions))

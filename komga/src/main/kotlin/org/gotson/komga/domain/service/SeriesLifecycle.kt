@@ -93,7 +93,8 @@ class SeriesLifecycle(
     val oldToNew = sorted.mapIndexedNotNull { index, (book, metadata) ->
       if (metadata.numberLock && metadata.numberSortLock) null
       else Triple(
-        book, metadata,
+        book,
+        metadata,
         metadata.copy(
           number = if (!metadata.numberLock) (index + 1).toString() else metadata.number,
           numberSort = if (!metadata.numberSortLock) (index + 1).toFloat() else metadata.numberSort,

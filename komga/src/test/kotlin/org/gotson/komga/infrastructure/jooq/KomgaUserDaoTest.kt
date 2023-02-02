@@ -83,7 +83,7 @@ class KomgaUserDaoTest(
         ageRestriction = AgeRestriction(10, AllowExclude.ALLOW_ONLY),
         labelsAllow = setOf("allow"),
         labelsExclude = setOf("exclude"),
-      )
+      ),
     )
 
     komgaUserDao.insert(user)

@@ -114,7 +114,9 @@ class BookController(
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>? = null,
     @RequestParam(name = "media_status", required = false) mediaStatus: List<Media.Status>? = null,
     @RequestParam(name = "read_status", required = false) readStatus: List<ReadStatus>? = null,
-    @RequestParam(name = "released_after", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) releasedAfter: LocalDate? = null,
+    @RequestParam(name = "released_after", required = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    releasedAfter: LocalDate? = null,
     @RequestParam(name = "tag", required = false) tags: List<String>? = null,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
@@ -456,9 +458,11 @@ class BookController(
       description = "Convert the image to the provided format.",
       schema = Schema(allowableValues = ["jpeg", "png"]),
     )
-    @RequestParam(value = "convert", required = false) convertTo: String?,
+    @RequestParam(value = "convert", required = false)
+    convertTo: String?,
     @Parameter(description = "If set to true, pages will start at index 0. If set to false, pages will start at index 1.")
-    @RequestParam(value = "zero_based", defaultValue = "false") zeroBasedIndex: Boolean,
+    @RequestParam(value = "zero_based", defaultValue = "false")
+    zeroBasedIndex: Boolean,
   ): ResponseEntity<ByteArray> =
     bookRepository.findByIdOrNull((bookId))?.let { book ->
       val media = mediaRepository.findById(bookId)
@@ -574,7 +578,9 @@ class BookController(
   fun updateMetadata(
     @PathVariable bookId: String,
     @Parameter(description = "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don't want to update.")
-    @Valid @RequestBody newMetadata: BookMetadataUpdateDto,
+    @Valid
+    @RequestBody
+    newMetadata: BookMetadataUpdateDto,
   ) =
     bookMetadataRepository.findByIdOrNull(bookId)?.let { existing ->
       val updated = existing.patch(newMetadata)
@@ -591,7 +597,9 @@ class BookController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateBatchMetadata(
     @Parameter(description = "A map of book IDs which values are the metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don't want to update.")
-    @Valid @RequestBody newMetadatas: Map<String, BookMetadataUpdateDto>,
+    @Valid
+    @RequestBody
+    newMetadatas: Map<String, BookMetadataUpdateDto>,
   ) {
     val updatedBooks = newMetadatas.mapNotNull { (bookId, newMetadata) ->
       bookMetadataRepository.findByIdOrNull(bookId)?.let { existing ->
@@ -612,7 +620,9 @@ class BookController(
   fun markReadProgress(
     @PathVariable bookId: String,
     @Parameter(description = "page can be omitted if completed is set to true. completed can be omitted, and will be set accordingly depending on the page passed and the total number of pages in the book.")
-    @Valid @RequestBody readProgress: ReadProgressUpdateDto,
+    @Valid
+    @RequestBody
+    readProgress: ReadProgressUpdateDto,
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ) {
     bookRepository.findByIdOrNull(bookId)?.let { book ->

@@ -72,7 +72,8 @@ class MediaDao(
       .groupBy(*groupFields)
       .orderBy(p.NUMBER.asc())
       .fetchGroups(
-        { it.into(m) }, { it.into(p) },
+        { it.into(m) },
+        { it.into(p) },
       ).map { (mr, pr) ->
         val files = dsl.selectFrom(f)
           .where(f.BOOK_ID.eq(bookId))
@@ -131,7 +132,7 @@ class MediaDao(
             p.WIDTH,
             p.HEIGHT,
             p.FILE_HASH,
-            p.FILE_SIZE
+            p.FILE_SIZE,
           ).values(null as String?, null, null, null, null, null, null, null),
         ).also { step ->
           chunk.forEach { media ->
@@ -235,6 +236,6 @@ class MediaDao(
       mediaType = mediaType,
       dimension = if (width != null && height != null) Dimension(width, height) else null,
       fileHash = fileHash,
-      fileSize = fileSize
+      fileSize = fileSize,
     )
 }

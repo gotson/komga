@@ -66,7 +66,8 @@ class UserV2Controller(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateMyPassword(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @Valid @RequestBody newPasswordDto: PasswordUpdateDto,
+    @Valid @RequestBody
+    newPasswordDto: PasswordUpdateDto,
   ) {
     if (demo) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     userRepository.findByEmailIgnoreCaseOrNull(principal.username)?.let { user ->
@@ -82,7 +83,10 @@ class UserV2Controller(
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
-  fun addOne(@Valid @RequestBody newUser: UserCreationDto): UserDtoV2 =
+  fun addOne(
+    @Valid @RequestBody
+    newUser: UserCreationDto,
+  ): UserDtoV2 =
     try {
       userLifecycle.createUser(newUser.toDomain()).toDtoV2()
     } catch (e: UserEmailAlreadyExistsException) {
@@ -106,7 +110,8 @@ class UserV2Controller(
   @PreAuthorize("hasRole('$ROLE_ADMIN') and #principal.user.id != #id")
   fun updateUser(
     @PathVariable id: String,
-    @Valid @RequestBody patch: UserUpdateDto,
+    @Valid @RequestBody
+    patch: UserUpdateDto,
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ) {
     userRepository.findByIdOrNull(id)?.let { existing ->
@@ -142,7 +147,8 @@ class UserV2Controller(
   fun updatePassword(
     @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @Valid @RequestBody newPasswordDto: PasswordUpdateDto,
+    @Valid @RequestBody
+    newPasswordDto: PasswordUpdateDto,
   ) {
     if (demo) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     userRepository.findByIdOrNull(id)?.let { user ->

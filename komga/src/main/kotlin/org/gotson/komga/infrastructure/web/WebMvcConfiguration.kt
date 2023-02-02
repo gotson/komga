@@ -75,7 +75,8 @@ class WebMvcConfiguration : WebMvcConfigurer {
       WebContentInterceptor().apply {
         addCacheMapping(
           cachePrivate,
-          "/api/**", "/opds/**",
+          "/api/**",
+          "/opds/**",
         )
       },
     )

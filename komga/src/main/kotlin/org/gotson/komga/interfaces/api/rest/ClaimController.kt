@@ -28,8 +28,12 @@ class ClaimController(
 
   @PostMapping
   fun claimAdmin(
-    @Email(regexp = ".+@.+\\..+") @RequestHeader("X-Komga-Email") email: String,
-    @NotBlank @RequestHeader("X-Komga-Password") password: String,
+    @Email(regexp = ".+@.+\\..+")
+    @RequestHeader("X-Komga-Email")
+    email: String,
+    @NotBlank
+    @RequestHeader("X-Komga-Password")
+    password: String,
   ): UserDtoV2 {
     if (userDetailsLifecycle.countUsers() > 0)
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, "This server has already been claimed")

@@ -48,7 +48,9 @@ annotation class PageableWithoutSortAsQueryParam
   ),
   Parameter(
     description = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
-    `in` = ParameterIn.QUERY, name = "sort", array = ArraySchema(schema = Schema(type = "string")),
+    `in` = ParameterIn.QUERY,
+    name = "sort",
+    array = ArraySchema(schema = Schema(type = "string")),
   ),
 )
 annotation class PageableAsQueryParam

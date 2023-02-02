@@ -120,14 +120,18 @@ class SeriesController(
   @Parameters(
     Parameter(
       description = "Search by regex criteria, in the form: regex,field. Supported fields are TITLE and TITLE_SORT.",
-      `in` = ParameterIn.QUERY, name = "search_regex", schema = Schema(type = "string"),
+      `in` = ParameterIn.QUERY,
+      name = "search_regex",
+      schema = Schema(type = "string"),
     ),
   )
   @GetMapping("v1/series")
   fun getAllSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) searchTerm: String? = null,
-    @Parameter(hidden = true) @DelimitedPair("search_regex") searchRegex: Pair<String, String>? = null,
+    @Parameter(hidden = true)
+    @DelimitedPair("search_regex")
+    searchRegex: Pair<String, String>? = null,
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>? = null,
     @RequestParam(name = "collection_id", required = false) collectionIds: List<String>? = null,
     @RequestParam(name = "status", required = false) metadataStatus: List<SeriesMetadata.Status>? = null,
@@ -191,14 +195,18 @@ class SeriesController(
   @Parameters(
     Parameter(
       description = "Search by regex criteria, in the form: regex,field. Supported fields are TITLE and TITLE_SORT.",
-      `in` = ParameterIn.QUERY, name = "search_regex", schema = Schema(type = "string"),
+      `in` = ParameterIn.QUERY,
+      name = "search_regex",
+      schema = Schema(type = "string"),
     ),
   )
   @GetMapping("v1/series/alphabetical-groups")
   fun getAlphabeticalGroups(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) searchTerm: String?,
-    @Parameter(hidden = true) @DelimitedPair("search_regex") searchRegex: Pair<String, String>?,
+    @Parameter(hidden = true)
+    @DelimitedPair("search_regex")
+    searchRegex: Pair<String, String>?,
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
     @RequestParam(name = "collection_id", required = false) collectionIds: List<String>?,
     @RequestParam(name = "status", required = false) metadataStatus: List<SeriesMetadata.Status>?,
@@ -511,7 +519,9 @@ class SeriesController(
   fun updateMetadata(
     @PathVariable seriesId: String,
     @Parameter(description = "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don't want to update.")
-    @Valid @RequestBody newMetadata: SeriesMetadataUpdateDto,
+    @Valid
+    @RequestBody
+    newMetadata: SeriesMetadataUpdateDto,
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ) =
     seriesMetadataRepository.findByIdOrNull(seriesId)?.let { existing ->
@@ -612,7 +622,8 @@ class SeriesController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun markReadProgressTachiyomi(
     @PathVariable seriesId: String,
-    @Valid @RequestBody readProgress: TachiyomiReadProgressUpdateDto,
+    @Valid @RequestBody
+    readProgress: TachiyomiReadProgressUpdateDto,
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ) {
     principal.user.checkContentRestriction(seriesId)

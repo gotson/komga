@@ -8,5 +8,5 @@ enum class AgeRating(@get:JsonValue val value: String, val ageRating: Int? = nul
   TWELVE("12+", 12),
   FIFTEEN("15+", 15),
   SEVENTEEN("17+", 17),
-  ADULT("Adult", 18)
+  ADULT("Adult", 18),
 }
