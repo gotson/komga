@@ -3,19 +3,10 @@ FROM node:16 AS build
 RUN apt-get update && apt-get install -y openjdk-11-jdk
 WORKDIR /proj
 
-# Copy only web source
-#COPY gradle ./gradle
-#COPY gradle.properties gradlew ./
-#COPY komga-webui ./komga-webui
-#COPY komga/build.gradle.kts ./komga/build.gradle.kts
-#COPY res ./res
-#COPY package*.json settings.gradle ./
-
 COPY . ./
 RUN ./gradlew copyWebDist
 
 # Copy java source
-#COPY komga ./komga
 RUN ./gradlew unpack
 
 RUN find build
