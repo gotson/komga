@@ -69,8 +69,17 @@ Make sure you start the backend with the `dev` profile, else the frontend reques
 
 ## Docker
 
-To build the Docker image, you need to:
-- have the webui built and copied to `/resources/public`. To do so, run `./gradlew copyWebDist`
-- unpack the jar into layers expected by the `Dockerfile`. To do so, run `./gradlew unpack`
+Build/tag the docker image:
 
-Then you can run `docker build -f ./komga/Dockerfile .`
+```bash
+docker build -t komga .
+```
+
+Run the container:
+
+```bash
+docker run -p '8080:8080' -v '/path/to/local/config:/config' komga
+```
+
+This will forward the `8080` port from the container to the host system, and ensure that `/config` will be persisted between container runs.
+
