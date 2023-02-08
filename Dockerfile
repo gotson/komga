@@ -5,12 +5,7 @@ WORKDIR /proj
 
 COPY . ./
 RUN ./gradlew copyWebDist
-
-# Copy java source
 RUN ./gradlew unpack
-
-RUN find build
-RUN find ./komga/build
 
 # Final runtime container
 FROM eclipse-temurin:11-jre
