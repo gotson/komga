@@ -314,3 +314,9 @@ openApi {
 tasks.jacocoTestReport {
   dependsOn(tasks.test)
 }
+
+configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+  filter {
+    exclude("**/db/migration/**")
+  }
+}

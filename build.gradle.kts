@@ -37,9 +37,6 @@ allprojects {
 
   configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
     version.set("0.48.2")
-    filter {
-      exclude("**/db/migration/**")
-    }
   }
 }
 
