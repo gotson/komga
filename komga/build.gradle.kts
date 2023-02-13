@@ -107,7 +107,7 @@ dependencies {
 
   implementation("com.jakewharton.byteunits:byteunits:0.9.1")
 
-  implementation("com.github.f4b6a3:tsid-creator:5.0.2")
+  implementation("com.github.f4b6a3:tsid-creator:5.2.3")
 
   implementation("com.github.ben-manes.caffeine:caffeine:2.9.3") // 3.0.0 requires Java 11
 
