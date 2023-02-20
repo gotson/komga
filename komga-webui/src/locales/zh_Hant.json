@@ -162,6 +162,7 @@
     "links": "鏈接",
     "navigation_within_readlist": "在閱讀清單中導航：{name}",
     "outdated_tooltip": "這本書的文件已經改變，必須重新分析這本書",
+    "read_book": "閱讀",
     "read_incognito": "無痕閱讀",
     "size": "文件大小"
   },
@@ -174,7 +175,51 @@
     "edit_elements": "編輯元素",
     "edit_readlist": "編輯閱讀清單"
   },
+  "browse_series": {
+    "earliest_year_from_release_dates": "系列書籍中最早書籍的發行年份",
+    "series_no_summary": "系列書籍沒有概要，所以我們為你挑選一個!",
+    "summary_from_book": "{number}書中的概要:"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "管理叢書",
+    "title": "{name}叢書"
+  },
   "common": {
-    "locale_name": "繁體中文"
+    "age": "年齡",
+    "all_libraries": "所有書庫",
+    "books": "書籍",
+    "books_n": "無書籍|1本書|{count}本書",
+    "books_total": "{count}/{total}本書",
+    "cancel": "取消",
+    "choose_image": "選擇圖片",
+    "close": "關閉",
+    "collections": "叢書",
+    "create": "創建",
+    "delete": "刪除",
+    "disk_space": "硬碟空間",
+    "dismiss": "解除",
+    "download": "下載",
+    "drag_drop": "拖放",
+    "email": "電子郵件",
+    "filename": "檔案名",
+    "filter_no_matches": "過濾器沒有符合的結果",
+    "genre": "類型",
+    "go_to_collection": "前往叢書",
+    "go_to_library": "前往書庫",
+    "go_to_readlist": "前往閱讀清單",
+    "go_to_series": "前往系列書",
+    "library": "書庫",
+    "locale_name": "繁體中文",
+    "locale_rtl": "false",
+    "lock_all": "鎖定全部",
+    "n_selected": "已選擇{count}",
+    "nothing_to_show": "沒東西可顯示",
+    "outdated": "已過時",
+    "page": "頁",
+    "page_number": "頁碼",
+    "pages": "頁",
+    "pages_left": "無剩餘頁 | 剩餘1頁 | 剩餘{count}頁",
+    "pages_n": "無頁面 | 1 頁 | {count} 頁",
+    "password": "密碼"
   }
 }
