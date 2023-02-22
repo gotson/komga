@@ -463,6 +463,7 @@
       "tab_poster": "Couverture",
       "tab_sharing": "Partage",
       "tab_tags": "Étiquettes",
+      "tab_titles": "Titres alternatifs",
       "tags_notice_multiple_edit": "Vous êtes en train de modifier les étiquettes pour plusieurs séries. Cela écrasera les étiquettes existantes pour chacune des séries."
     },
     "edit_user": {
@@ -654,7 +655,9 @@
     "ERR_1023": "Le livre est déjà présent dans la liste de lecture",
     "ERR_1024": "Erreur de connexion OAuth2 : pas d'attribut email",
     "ERR_1025": "Erreur de connexion OAuth2 : aucun utilisateur local existant avec cette adresse e-mail",
-    "ERR_1026": "Erreur de connexion OpenId Connect : e-mail non vérifié"
+    "ERR_1026": "Erreur de connexion OpenId Connect : e-mail non vérifié",
+    "ERR_1027": "Erreur de connexion OpenID Connect : pas d'attribut d'e-mail vérifié",
+    "ERR_1028": "Erreur de connexion OpenID Connect : pas d'attribut d'e-mail"
   },
   "filter": {
     "age_rating": "Âge minimal",
@@ -817,6 +820,10 @@
     "tooltip_to_be_uploaded": "À mettre en ligne",
     "tooltip_too_big": "Le fichier est trop lourd !",
     "tooltip_user_uploaded": "Utilisateur mis en ligne"
+  },
+  "titles_more": {
+    "less": "Moins de titres",
+    "more": "Plus de titres"
   },
   "user_roles": {
     "ADMIN": "Administrateur",

@@ -77,6 +77,7 @@
   "bookreader": {
     "beginning_of_book": "Jsi na začátku knížky.",
     "changing_reading_direction": "Změnit směr čtení na",
+    "cycling_page_layout": "Změnit vzhled stránky",
     "cycling_scale": "Změnit velikost",
     "cycling_side_padding": "Změnit odsazení strany",
     "download_current_page": "Stáhnout aktuální stránku",

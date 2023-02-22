@@ -205,6 +205,7 @@
     "filename": "Filnamn",
     "filter_no_matches": "Det aktiva filtret ger ingen träff",
     "genre": "Genre",
+    "go_to_collection": "Gå till samling",
     "go_to_library": "Gå till bibliotek",
     "go_to_readlist": "Gå till läslistan",
     "go_to_series": "Gå till serien",
@@ -218,11 +219,13 @@
     "page": "Sida",
     "page_number": "Sidnummer",
     "pages": "sidor",
+    "pages_left": "Inga sidor kvar | 1 sida kvar | {count} sidor kvar",
     "pages_n": "Inga sidor | 1 sida | {count} sidor",
     "password": "Lösenord",
     "pending_tasks": "Inga väntande uppgifter | 1 väntande uppgift | {count} väntande uppgifter",
     "publisher": "Utgivare",
     "read": "Läs",
+    "read_on": "Läst den {date}",
     "readlists": "Läslistor",
     "required": "Krävs",
     "reset_filters": "Återställ filter",
@@ -344,8 +347,10 @@
       "authors_notice_multiple_edit": "Du redigerar författare för flera böcker. Detta kommer att skriva över befintliga författare till varje bok.",
       "button_cancel": "Avbryt",
       "button_confirm": "Spara ändringar",
+      "copy_from": "Kopiera från {field}",
       "dialog_title_multiple": "Redigera {count} bok | Redigera {count} böcker",
       "dialog_title_single": "Redigera {book}",
+      "field_alternate_title": "Alternativ titel",
       "field_isbn": "ISBN",
       "field_isbn_error": "Måste vara ett giltigt ISBN 13",
       "field_link_label": "Etikett",
@@ -360,6 +365,8 @@
       "field_summary": "Sammanfattning",
       "field_tags": "Taggar",
       "field_title": "Titel",
+      "number_sort_decrement": "Minska alla med 1",
+      "number_sort_increment": "Öka alla med 1",
       "tab_authors": "Författare",
       "tab_general": "Allmänt",
       "tab_links": "Länkar",
@@ -393,6 +400,7 @@
       "field_import_comicinfo_collections": "Samlingar",
       "field_import_comicinfo_readlists": "Läslistor",
       "field_import_comicinfo_series": "Serie metadata",
+      "field_import_comicinfo_series_append_volume": "Lägg till volym till serietitel",
       "field_import_epub_book": "Bok metadata",
       "field_import_epub_series": "Serie metadata",
       "field_import_local_artwork": "Lokala bilder",
@@ -455,6 +463,7 @@
       "tab_poster": "Affisch",
       "tab_sharing": "Delning",
       "tab_tags": "Taggar",
+      "tab_titles": "Alternativa titlar",
       "tags_notice_multiple_edit": "Du redigerar taggar för flera serier. Detta skriver över befintliga taggar i varje serie."
     },
     "edit_user": {
@@ -646,7 +655,9 @@
     "ERR_1023": "Boken finns redan i Läslistan",
     "ERR_1024": "OAuth2 inloggningsfel: inget e-postattribut",
     "ERR_1025": "OAuth2 inloggningsfel: det finns ingen lokal användare med den e-postadressen",
-    "ERR_1026": "OpenID Connect inloggningsfel: e-post är inte verifierad"
+    "ERR_1026": "OpenID Connect inloggningsfel: e-post är inte verifierad",
+    "ERR_1027": "OpenID Connect inloggningsfel: inget email_verified attribut",
+    "ERR_1028": "OpenID connect inloggningsfel: inget e-post attribut"
   },
   "filter": {
     "age_rating": "åldersgräns",
@@ -809,6 +820,10 @@
     "tooltip_to_be_uploaded": "Ska laddas upp",
     "tooltip_too_big": "Filen är för stor!",
     "tooltip_user_uploaded": "Användaren har laddat upp"
+  },
+  "titles_more": {
+    "less": "Färre titlar",
+    "more": "Fler titlar"
   },
   "user_roles": {
     "ADMIN": "Administratör",

@@ -48,7 +48,10 @@
     "unsupported": "Desteklenmiyor"
   },
   "book_import": {
-    "button_browse": "Araştır"
+    "button_browse": "Araştır",
+    "button_scan": "Tara",
+    "button_select_series": "Seri Seç",
+    "field_import_path": "Klasörden içe aktar"
   },
   "common": {
     "locale_name": "Türkçe"
