@@ -46,6 +46,17 @@
                   </v-col>
                 </v-row>
 
+                <v-row>
+                  <v-col>
+                    <div class="text-body-2">{{ $t('dialog.edit_readlist.label_ordering') }}</div>
+                    <v-checkbox
+                      v-model="form.ordered"
+                      :label="$t('dialog.edit_readlist.field_manual_ordering')"
+                      hide-details
+                    />
+                  </v-col>
+                </v-row>
+
               </v-container>
             </v-card>
           </v-tab-item>
@@ -118,6 +129,7 @@ export default Vue.extend({
       form: {
         name: '',
         summary: '',
+        ordered: true,
       },
       poster: {
         selectedThumbnail: '',
@@ -170,6 +182,7 @@ export default Vue.extend({
       this.tab = 0
       this.form.name = readList.name
       this.form.summary = readList.summary
+      this.form.ordered = readList.ordered
 
       this.poster.selectedThumbnail = ''
       this.poster.deleteQueue = []
@@ -216,6 +229,7 @@ export default Vue.extend({
         const update = {
           name: this.form.name,
           summary: this.form.summary,
+          ordered: this.form.ordered,
         } as ReadListUpdateDto
 
         await this.$komgaReadLists.patchReadList(this.readList.id, update)

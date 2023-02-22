@@ -6,6 +6,7 @@ import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
+import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
@@ -14,9 +15,11 @@ import org.gotson.komga.domain.service.ReadListLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
 import org.gotson.komga.language.toIndexedMap
 import org.hamcrest.Matchers
+import org.hamcrest.Matchers.contains
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -33,6 +36,7 @@ import org.springframework.test.web.servlet.post
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
+import java.time.LocalDate
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
@@ -45,6 +49,7 @@ class ReadListControllerTest(
   @Autowired private val libraryRepository: LibraryRepository,
   @Autowired private val seriesLifecycle: SeriesLifecycle,
   @Autowired private val seriesMetadataRepository: SeriesMetadataRepository,
+  @Autowired private val bookMetadataRepository: BookMetadataRepository,
 ) {
 
   private val library1 = makeLibrary("Library1", id = "1")
@@ -1010,5 +1015,175 @@ class ReadListControllerTest(
         status { isOk() }
         header { string("Content-Disposition", Matchers.containsString(URLEncoder.encode(name, StandardCharsets.UTF_8.name()))) }
       }
+  }
+
+  @Nested
+  inner class Unordered {
+    private val library = makeLibrary("Library")
+    private val series = makeSeries("Series", library.id)
+    private lateinit var books: List<Book>
+    private lateinit var rlAllDiffDates: ReadList
+    private lateinit var rlAllNullDates: ReadList
+    private lateinit var rlAllBooks: ReadList
+
+    @BeforeAll
+    fun setup() {
+      libraryRepository.insert(library)
+
+      seriesLifecycle.createSeries(series)
+
+      books = (1..5).map { makeBook("Book_$it", libraryId = library.id, seriesId = series.id) }
+      seriesLifecycle.addBooks(series, books)
+
+      bookMetadataRepository.findById(books[0].id).let { bookMetadataRepository.update(it.copy(releaseDate = LocalDate.of(2020, 1, 1))) }
+      bookMetadataRepository.findById(books[1].id).let { bookMetadataRepository.update(it.copy(releaseDate = LocalDate.of(2020, 1, 1))) }
+      bookMetadataRepository.findById(books[2].id).let { bookMetadataRepository.update(it.copy(releaseDate = LocalDate.of(2021, 1, 1))) }
+    }
+
+    @BeforeEach
+    fun makeReadLists() {
+      rlAllDiffDates = readListLifecycle.addReadList(
+        ReadList(
+          name = "All different dates",
+          ordered = false,
+          bookIds = listOf(2, 1).map { books[it].id }.toIndexedMap(),
+        ),
+      )
+
+      rlAllNullDates = readListLifecycle.addReadList(
+        ReadList(
+          name = "All null dates",
+          ordered = false,
+          bookIds = books.drop(3).map { it.id }.toIndexedMap(),
+        ),
+      )
+
+      rlAllBooks = readListLifecycle.addReadList(
+        ReadList(
+          name = "All books",
+          ordered = false,
+          bookIds = books.map { it.id }.toIndexedMap(),
+        ),
+      )
+    }
+
+    @Test
+    @WithMockCustomUser
+    fun `given unordered read lists when getting books then books are sorted by release date`() {
+      mockMvc.get("/api/v1/readlists/${rlAllDiffDates.id}/books")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.content.[*].['id']") { contains(listOf(1, 2).map { books[it].id }) }
+        }
+
+      mockMvc.get("/api/v1/readlists/${rlAllNullDates.id}/books")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.content.[*].['id']") { contains(listOf(3, 4).map { books[it].id }) }
+        }
+
+      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.content.[*].['id']") { contains(listOf(3, 4, 0, 1, 2).map { books[it].id }) }
+        }
+    }
+
+    @Test
+    @WithMockCustomUser
+    fun `given unordered read lists when getting book siblings then it is returned according to release date sort or not found`() {
+      // rlAllDiffDates: 1, 2
+      // first book: id=1
+      mockMvc.get("/api/v1/readlists/${rlAllDiffDates.id}/books/${books[1].id}/previous")
+        .andExpect { status { isNotFound() } }
+      mockMvc.get("/api/v1/readlists/${rlAllDiffDates.id}/books/${books[1].id}/next")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.id") { value(books[2].id) }
+        }
+
+      // second book: id=2
+      mockMvc.get("/api/v1/readlists/${rlAllDiffDates.id}/books/${books[2].id}/previous")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.id") { value(books[1].id) }
+        }
+      mockMvc.get("/api/v1/readlists/${rlAllDiffDates.id}/books/${books[2].id}/next")
+        .andExpect { status { isNotFound() } }
+
+      // rlAllNullDates: 3, 4
+      // first book: id=3
+      mockMvc.get("/api/v1/readlists/${rlAllNullDates.id}/books/${books[3].id}/previous")
+        .andExpect { status { isNotFound() } }
+      mockMvc.get("/api/v1/readlists/${rlAllNullDates.id}/books/${books[3].id}/next")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.id") { value(books[4].id) }
+        }
+
+      // second book: id=4
+      mockMvc.get("/api/v1/readlists/${rlAllNullDates.id}/books/${books[4].id}/previous")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.id") { value(books[3].id) }
+        }
+      mockMvc.get("/api/v1/readlists/${rlAllNullDates.id}/books/${books[4].id}/next")
+        .andExpect { status { isNotFound() } }
+
+      // rlAllBooks: 3, 4, 0, 1, 2
+      // first book: id=3
+      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books/${books[3].id}/previous")
+        .andExpect { status { isNotFound() } }
+      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books/${books[3].id}/next")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.id") { value(books[4].id) }
+        }
+
+      // second book: id=4
+      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books/${books[4].id}/previous")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.id") { value(books[3].id) }
+        }
+      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books/${books[4].id}/next")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.id") { value(books[0].id) }
+        }
+
+      // third book: id=0
+      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books/${books[0].id}/previous")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.id") { value(books[4].id) }
+        }
+      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books/${books[0].id}/next")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.id") { value(books[1].id) }
+        }
+
+      // fourth book: id=1
+      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books/${books[1].id}/previous")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.id") { value(books[0].id) }
+        }
+      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books/${books[1].id}/next")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.id") { value(books[2].id) }
+        }
+
+      // last book: id=2
+      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books/${books[2].id}/previous")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.id") { value(books[1].id) }
+        }
+      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books/${books[2].id}/next")
+        .andExpect { status { isNotFound() } }
+    }
   }
 }

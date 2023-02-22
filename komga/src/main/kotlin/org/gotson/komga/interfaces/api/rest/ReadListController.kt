@@ -232,6 +232,7 @@ class ReadListController(
         ReadList(
           name = readList.name,
           summary = readList.summary,
+          ordered = readList.ordered,
           bookIds = readList.bookIds.toIndexedMap(),
         ),
       ).toDto()
@@ -258,6 +259,7 @@ class ReadListController(
       val updated = existing.copy(
         name = readList.name ?: existing.name,
         summary = readList.summary ?: existing.summary,
+        ordered = readList.ordered ?: existing.ordered,
         bookIds = readList.bookIds?.toIndexedMap() ?: existing.bookIds,
       )
       try {
@@ -295,7 +297,9 @@ class ReadListController(
     @Parameter(hidden = true) page: Pageable,
   ): Page<BookDto> =
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
-      val sort = Sort.by(Sort.Order.asc("readList.number"))
+      val sort =
+        if (readList.ordered) Sort.by(Sort.Order.asc("readList.number"))
+        else Sort.by(Sort.Order.asc("metadata.releaseDate"))
 
       val pageRequest =
         if (unpaged) UnpagedSorted(sort)
@@ -332,7 +336,7 @@ class ReadListController(
   ): BookDto =
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
       bookDtoRepository.findPreviousInReadListOrNull(
-        id,
+        it,
         bookId,
         principal.user.id,
         principal.user.getAuthorizedLibraryIds(null),
@@ -348,7 +352,7 @@ class ReadListController(
   ): BookDto =
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
       bookDtoRepository.findNextInReadListOrNull(
-        id,
+        it,
         bookId,
         principal.user.id,
         principal.user.getAuthorizedLibraryIds(null),

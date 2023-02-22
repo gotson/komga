@@ -174,7 +174,8 @@
   },
   "browse_readlist": {
     "edit_elements": "Edit elements",
-    "edit_readlist": "Edit read list"
+    "edit_readlist": "Edit read list",
+    "manual_ordering": "manual ordering"
   },
   "browse_series": {
     "earliest_year_from_release_dates": "This is the earliest year from the release dates from all books in the series",
@@ -434,7 +435,9 @@
       "button_confirm": "Save changes",
       "dialog_title": "Edit read list",
       "field_name": "Name",
+      "field_manual_ordering": "Manual ordering",
       "field_summary": "Summary",
+      "label_ordering": "By default, books in a read list are ordered manually. You can disable manual ordering to sort books by release date.",
       "tab_general": "General",
       "tab_poster": "Poster"
     },

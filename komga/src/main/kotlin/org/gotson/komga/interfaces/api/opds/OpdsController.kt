@@ -621,7 +621,10 @@ class OpdsController(
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed =
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
-      val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.asc("readList.number")))
+      val sort =
+        if (readList.ordered) Sort.by(Sort.Order.asc("readList.number"))
+        else Sort.by(Sort.Order.asc("metadata.releaseDate"))
+      val pageable = PageRequest.of(page.pageNumber, page.pageSize, sort)
 
       val bookSearch = BookSearchWithReadProgress(
         mediaStatus = setOf(Media.Status.READY),

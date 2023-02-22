@@ -2,6 +2,7 @@ interface ReadListDto {
   id: string,
   name: string,
   summary: string,
+  ordered: boolean,
   filtered: boolean,
   bookIds: string[],
   createdDate: string,
@@ -11,12 +12,14 @@ interface ReadListDto {
 interface ReadListCreationDto {
   name: string,
   summary?: string,
+  ordered?: boolean,
   bookIds: string[]
 }
 
 interface ReadListUpdateDto {
   name?: string,
   summary?: string,
+  ordered?: boolean,
   bookIds?: string[]
 }
 

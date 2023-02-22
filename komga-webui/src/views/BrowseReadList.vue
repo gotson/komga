@@ -11,6 +11,9 @@
         <v-chip label class="mx-4">
           <span style="font-size: 1.1rem">{{ readList.bookIds.length }}</span>
         </v-chip>
+        <span v-if="readList.ordered"
+              class="font-italic text-overline"
+        >({{ $t('browse_readlist.manual_ordering') }})</span>
       </v-toolbar-title>
 
       <v-spacer/>
@@ -131,10 +134,10 @@
 
         <item-browser
           :items.sync="books"
-          :item-context="[ItemContext.SHOW_SERIES]"
+          :item-context="itemContext"
           :selected.sync="selectedBooks"
           :edit-function="isAdmin ? editSingleBook : undefined"
-          :draggable="editElements"
+          :draggable="editElements && readList.ordered"
           :deletable="editElements"
         />
 
@@ -275,6 +278,10 @@ export default Vue.extend({
     next()
   },
   computed: {
+    itemContext(): ItemContext[] {
+      if(this.readList?.ordered === false) return [ItemContext.SHOW_SERIES, ItemContext.RELEASE_DATE]
+      return [ItemContext.SHOW_SERIES]
+    },
     paginationVisible(): number {
       switch (this.$vuetify.breakpoint.name) {
         case 'xs':

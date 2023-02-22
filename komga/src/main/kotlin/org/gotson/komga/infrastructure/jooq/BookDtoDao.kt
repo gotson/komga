@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.ContentRestrictions
+import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.infrastructure.search.LuceneEntity
@@ -185,20 +186,20 @@ class BookDtoDao(
     findSiblingSeries(bookId, userId, next = true)
 
   override fun findPreviousInReadListOrNull(
-    readListId: String,
+    readList: ReadList,
     bookId: String,
     userId: String,
     filterOnLibraryIds: Collection<String>?,
   ): BookDto? =
-    findSiblingReadList(readListId, bookId, userId, filterOnLibraryIds, next = false)
+    findSiblingReadList(readList, bookId, userId, filterOnLibraryIds, next = false)
 
   override fun findNextInReadListOrNull(
-    readListId: String,
+    readList: ReadList,
     bookId: String,
     userId: String,
     filterOnLibraryIds: Collection<String>?,
   ): BookDto? =
-    findSiblingReadList(readListId, bookId, userId, filterOnLibraryIds, next = true)
+    findSiblingReadList(readList, bookId, userId, filterOnLibraryIds, next = true)
 
   override fun findAllOnDeck(userId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable, restrictions: ContentRestrictions): Page<BookDto> {
     val seriesIds = dsl.select(s.ID)
@@ -283,28 +284,52 @@ class BookDtoDao(
   }
 
   private fun findSiblingReadList(
-    readListId: String,
+    readList: ReadList,
     bookId: String,
     userId: String,
     filterOnLibraryIds: Collection<String>?,
     next: Boolean,
   ): BookDto? {
-    val numberSort = dsl.select(rlb.NUMBER)
-      .from(b)
-      .leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID))
-      .where(b.ID.eq(bookId))
-      .and(rlb.READLIST_ID.eq(readListId))
-      .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-      .fetchOne(0, Int::class.java)
+    if (readList.ordered) {
+      val numberSort = dsl.select(rlb.NUMBER)
+        .from(b)
+        .leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID))
+        .where(b.ID.eq(bookId))
+        .and(rlb.READLIST_ID.eq(readList.id))
+        .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
+        .fetchOne(rlb.NUMBER)
 
-    return selectBase(userId, true)
-      .where(rlb.READLIST_ID.eq(readListId))
-      .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-      .orderBy(rlb.NUMBER.let { if (next) it.asc() else it.desc() })
-      .seek(numberSort)
-      .limit(1)
-      .fetchAndMap()
-      .firstOrNull()
+      return selectBase(userId, true)
+        .where(rlb.READLIST_ID.eq(readList.id))
+        .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
+        .orderBy(rlb.NUMBER.let { if (next) it.asc() else it.desc() })
+        .seek(numberSort)
+        .limit(1)
+        .fetchAndMap()
+        .firstOrNull()
+    } else {
+      // it is too complex to perform a seek by release date as it could be null and could also have multiple occurrences of the same value
+      // instead we pull the whole list of ids, and perform the seek on the list
+      val bookIds = dsl.select(b.ID)
+        .from(b)
+        .leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID))
+        .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
+        .where(rlb.READLIST_ID.eq(readList.id))
+        .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
+        .orderBy(d.RELEASE_DATE)
+        .fetch(b.ID)
+
+      val bookIndex = bookIds.indexOfFirst { it == bookId }
+      if (bookIndex == -1) return null
+      val siblingId = bookIds.getOrNull(bookIndex + if (next) 1 else -1) ?: return null
+
+      return selectBase(userId)
+        .where(b.ID.eq(siblingId))
+        .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
+        .limit(1)
+        .fetchAndMap()
+        .firstOrNull()
+    }
   }
 
   private fun selectBase(userId: String, selectReadListNumber: Boolean = false) =

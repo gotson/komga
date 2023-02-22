@@ -8,6 +8,10 @@ import java.util.SortedMap
 data class ReadList(
   val name: String,
   val summary: String = "",
+  /**
+   * Indicates whether the read list is ordered manually
+   */
+  val ordered: Boolean = true,
 
   val bookIds: SortedMap<Int, String> = sortedMapOf(),
 

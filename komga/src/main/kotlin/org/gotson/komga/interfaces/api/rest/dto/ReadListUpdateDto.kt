@@ -9,4 +9,5 @@ data class ReadListUpdateDto(
   val summary: String?,
   @get:NullOrNotEmpty @get:UniqueElements
   val bookIds: List<String>?,
+  val ordered: Boolean?,
 )

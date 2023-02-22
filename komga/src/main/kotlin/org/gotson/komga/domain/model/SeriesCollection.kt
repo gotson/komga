@@ -6,6 +6,9 @@ import java.time.LocalDateTime
 
 data class SeriesCollection(
   val name: String,
+  /**
+   * Indicates whether the collection is ordered manually
+   */
   val ordered: Boolean = false,
 
   val seriesIds: List<String> = emptyList(),

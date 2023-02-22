@@ -150,7 +150,7 @@ export default Vue.extend({
       } as ReadListCreationDto
 
       try {
-        const created = await this.$komgaReadLists.postReadList(toCreate)
+        await this.$komgaReadLists.postReadList(toCreate)
         this.dialogClose()
       } catch (e) {
         this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)

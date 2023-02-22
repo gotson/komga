@@ -2,6 +2,7 @@ package org.gotson.komga.interfaces.api.persistence
 
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.ContentRestrictions
+import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.interfaces.api.rest.dto.BookDto
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -26,14 +27,14 @@ interface BookDtoRepository {
   fun findNextInSeriesOrNull(bookId: String, userId: String): BookDto?
 
   fun findPreviousInReadListOrNull(
-    readListId: String,
+    readList: ReadList,
     bookId: String,
     userId: String,
     filterOnLibraryIds: Collection<String>?,
   ): BookDto?
 
   fun findNextInReadListOrNull(
-    readListId: String,
+    readList: ReadList,
     bookId: String,
     userId: String,
     filterOnLibraryIds: Collection<String>?,

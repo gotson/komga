@@ -7,6 +7,7 @@ import javax.validation.constraints.NotEmpty
 data class ReadListCreationDto(
   @get:NotBlank val name: String,
   val summary: String = "",
+  val ordered: Boolean = true,
   @get:NotEmpty @get:UniqueElements
   val bookIds: List<String>,
 )
