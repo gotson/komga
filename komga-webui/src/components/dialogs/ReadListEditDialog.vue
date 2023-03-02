@@ -172,7 +172,7 @@ export default Vue.extend({
     },
     getErrorsName(): string {
       if (this.form.name === '') return this.$t('common.required').toString()
-      if (this.form.name !== this.readList.name && this.readLists.some(e => e.name === this.form.name)) {
+      if (this.form.name.toLowerCase() !== this.readList.name.toLowerCase() && this.readLists.some(e => e.name.toLowerCase() === this.form.name.toLowerCase())) {
         return this.$t('dialog.add_to_readlist.field_search_create_error').toString()
       }
       return ''

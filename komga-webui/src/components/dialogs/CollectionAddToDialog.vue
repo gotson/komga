@@ -116,7 +116,7 @@ export default Vue.extend({
       else return [this.series.id]
     },
     duplicate(): string {
-      if (this.newCollection !== '' && this.collections.some(e => e.name === this.newCollection)) {
+      if (this.newCollection !== '' && this.collections.some(e => e.name.toLowerCase() === this.newCollection.toLowerCase())) {
         return this.$t('dialog.add_to_collection.field_search_create_error').toString()
       } else return ''
     },

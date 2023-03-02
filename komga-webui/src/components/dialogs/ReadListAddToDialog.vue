@@ -118,7 +118,7 @@ export default Vue.extend({
       else return [this.books.id]
     },
     duplicate(): string {
-      if (this.newReadList !== '' && this.readLists.some(e => e.name === this.newReadList)) {
+      if (this.newReadList !== '' && this.readLists.some(e => e.name.toLowerCase() === this.newReadList.toLowerCase())) {
         return this.$t('dialog.add_to_readlist.field_search_create_error').toString()
       } else return ''
     },
