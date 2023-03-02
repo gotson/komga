@@ -61,7 +61,7 @@ export interface BookMetadataDto {
   numberLock: boolean,
   numberSort: number,
   numberSortLock: boolean,
-  releaseDate: string,
+  releaseDate?: string,
   releaseDateLock: boolean,
   authors: AuthorDto[],
   authorsLock: boolean,
