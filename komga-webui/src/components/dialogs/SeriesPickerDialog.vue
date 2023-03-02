@@ -42,7 +42,10 @@
                       />
                       <v-list-item-content>
                         <v-list-item-title>{{ s.metadata.title }}</v-list-item-title>
-                        <v-list-item-subtitle>{{ $t('searchbox.in_library', {library: getLibraryName(s)}) }}</v-list-item-subtitle>
+                        <v-list-item-subtitle>{{
+                            $t('searchbox.in_library', {library: getLibraryName(s)})
+                          }}
+                        </v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
                     <v-divider v-if="index !== results.length-1"/>
@@ -53,7 +56,7 @@
                   v-if="results.length === 0 && showResults"
                   type="info"
                   text
-                >No Series found
+                >{{ $t('dialog.series_picker.no_results') }}
                 </v-alert>
 
               </v-col>
@@ -81,6 +84,7 @@ export default Vue.extend({
       results: [] as SeriesDto[],
       search: '',
       showResults: false,
+      seriesThumbnailUrl,
     }
   },
   props: {
@@ -128,9 +132,6 @@ export default Vue.extend({
     },
     getLibraryName(item: SeriesDto): string {
       return this.$store.getters.getLibraryById(item.libraryId).name
-    },
-    seriesThumbnailUrl(seriesId: string): string {
-      return seriesThumbnailUrl(seriesId)
     },
   },
 })
