@@ -262,7 +262,7 @@ class SeriesCollectionController(
     @RequestParam(name = "genre", required = false) genres: List<String>?,
     @RequestParam(name = "tag", required = false) tags: List<String>?,
     @RequestParam(name = "age_rating", required = false) ageRatings: List<String>?,
-    @RequestParam(name = "release_year", required = false) release_years: List<String>?,
+    @RequestParam(name = "release_years", required = false) releaseYears: List<String>?,
     @RequestParam(name = "deleted", required = false) deleted: Boolean?,
     @RequestParam(name = "complete", required = false) complete: Boolean?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
@@ -293,7 +293,7 @@ class SeriesCollectionController(
         genres = genres,
         tags = tags,
         ageRatings = ageRatings?.map { it.toIntOrNull() },
-        releaseYears = release_years,
+        releaseYears = releaseYears,
         authors = authors,
       )
 
