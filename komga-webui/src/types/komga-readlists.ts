@@ -1,4 +1,4 @@
-interface ReadListDto {
+export interface ReadListDto {
   id: string,
   name: string,
   summary: string,
@@ -9,38 +9,38 @@ interface ReadListDto {
   lastModifiedDate: string
 }
 
-interface ReadListCreationDto {
+export interface ReadListCreationDto {
   name: string,
   summary?: string,
   ordered?: boolean,
   bookIds: string[]
 }
 
-interface ReadListUpdateDto {
+export interface ReadListUpdateDto {
   name?: string,
   summary?: string,
   ordered?: boolean,
   bookIds?: string[]
 }
 
-interface ReadListRequestResultDto {
+export interface ReadListRequestResultDto {
   readList?: ReadListDto,
   unmatchedBooks: ReadListRequestResultBookDto[],
   errorCode: string,
   requestName: string,
 }
 
-interface ReadListRequestResultBookDto {
+export interface ReadListRequestResultBookDto {
   book: ReadListRequestBookDto,
   errorCode: string,
 }
 
-interface ReadListRequestBookDto {
+export interface ReadListRequestBookDto {
   series: string,
   number: string,
 }
 
-interface ReadListThumbnailDto {
+export interface ReadListThumbnailDto {
   id: string,
   readListId: string,
   type: string,

@@ -185,6 +185,7 @@ import {readListFileUrl} from '@/functions/urls'
 import {ItemContext} from '@/types/items'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import EmptyState from '@/components/EmptyState.vue'
+import {ReadListDto, ReadListUpdateDto} from '@/types/komga-readlists'
 
 export default Vue.extend({
   name: 'BrowseReadList',

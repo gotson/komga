@@ -108,6 +108,7 @@ import {ERROR} from '@/types/events'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import {LibraryDto} from '@/types/komga-libraries'
 import BulkEditBooksDialog from '@/components/dialogs/BulkEditBooksDialog.vue'
+import {ReadListDto} from '@/types/komga-readlists'
 
 export default Vue.extend({
   name: 'ReusableDialogs',

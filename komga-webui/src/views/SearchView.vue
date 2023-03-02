@@ -177,6 +177,7 @@ import {
 import {throttle} from 'lodash'
 import {PageLoader} from '@/types/pageLoader'
 import {ItemContext} from '@/types/items'
+import {ReadListDto} from '@/types/komga-readlists'
 
 export default Vue.extend({
   name: 'SearchView',

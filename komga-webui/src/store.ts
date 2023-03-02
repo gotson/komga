@@ -5,6 +5,7 @@ import {SeriesDto} from '@/types/komga-series'
 import createPersistedState from 'vuex-persistedstate'
 import {persistedModule} from './plugins/persisted-state'
 import {LibraryDto} from '@/types/komga-libraries'
+import {ReadListDto} from '@/types/komga-readlists'
 
 Vue.use(Vuex)
 

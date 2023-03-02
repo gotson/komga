@@ -38,6 +38,7 @@ import {BookDto} from '@/types/komga-books'
 import {ContextOrigin} from '@/types/context'
 import {ItemContext} from '@/types/items'
 import {PageLoader} from '@/types/pageLoader'
+import {ReadListDto} from '@/types/komga-readlists'
 
 export default Vue.extend({
   name: 'ReadListsExpansionPanels',

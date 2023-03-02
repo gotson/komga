@@ -17,6 +17,7 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
+import {ReadListDto} from '@/types/komga-readlists'
 
 export default Vue.extend({
   name: 'ReadListActionsMenu',

@@ -116,6 +116,7 @@ import {ERROR, ErrorEvent} from '@/types/events'
 import {LibraryDto} from '@/types/komga-libraries'
 import DropZone from '@/components/DropZone.vue'
 import ThumbnailCard from '@/components/ThumbnailCard.vue'
+import {ReadListDto, ReadListThumbnailDto, ReadListUpdateDto} from '@/types/komga-readlists'
 
 export default Vue.extend({
   name: 'ReadListEditDialog',

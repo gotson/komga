@@ -165,6 +165,7 @@ import {
   ThumbnailSeriesSseDto,
 } from '@/types/komga-sse'
 import {coverBase64} from '@/types/image'
+import {ReadListDto} from '@/types/komga-readlists'
 
 export default Vue.extend({
   name: 'ItemCard',
