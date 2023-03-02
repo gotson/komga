@@ -226,10 +226,10 @@ const router = new Router({
               component: () => import(/* webpackChunkName: "import-books" */ './views/ImportBooks.vue'),
             },
             {
-              path: '/import/readlists',
-              name: 'import-readlists',
+              path: '/import/readlist',
+              name: 'import-readlist',
               beforeEnter: adminGuard,
-              component: () => import(/* webpackChunkName: "import-readlists" */ './views/ImportReadLists.vue'),
+              component: () => import(/* webpackChunkName: "import-readlist" */ './views/ImportReadList.vue'),
             },
           ],
         },

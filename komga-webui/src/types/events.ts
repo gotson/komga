@@ -1,3 +1,5 @@
+import {Route} from 'vue-router'
+
 export const LIBRARY_ADDED = 'library-added'
 export const LIBRARY_CHANGED = 'library-changed'
 export const LIBRARY_DELETED = 'library-deleted'
@@ -47,4 +49,9 @@ export interface ErrorEvent {
 
 export interface NotificationEvent {
   message: string,
+  text2?: string,
+  goTo?: {
+    text: string,
+    click: () => Promise<Route>
+  }
 }

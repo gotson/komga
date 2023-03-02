@@ -46,3 +46,24 @@ export interface ReadListThumbnailDto {
   type: string,
   selected: boolean
 }
+
+export interface ReadListRequestMatchDto {
+  readListMatch: ReadListMatchDto,
+  matches: ReadListRequestBookMatchesDto[],
+  errorCode: string,
+}
+
+export interface ReadListMatchDto {
+  name: string,
+  errorCode: string,
+}
+
+export interface ReadListRequestBookMatchesDto {
+  request: ReadListRequestBookDto,
+  matches: ReadListRequestBookMatchDto[],
+}
+
+export interface ReadListRequestBookMatchDto {
+  seriesId: string,
+  bookIds: string[],
+}

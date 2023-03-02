@@ -189,6 +189,7 @@
   "common": {
     "age": "Age",
     "all_libraries": "All Libraries",
+    "book": "Book",
     "books": "Books",
     "books_n": "No book | 1 book | {count} books",
     "books_total": "{count} / {total} books",
@@ -227,6 +228,7 @@
     "publisher": "Publisher",
     "read": "Read",
     "read_on": "Read on {date}",
+    "readlist": "Read List",
     "readlists": "Read Lists",
     "required": "Required",
     "reset_filters": "Reset filters",
@@ -254,10 +256,15 @@
     "book_number": "Book number: {name}",
     "book_series": "Series: {name}",
     "button_import": "Import",
+    "button_match": "Match",
     "comicrack_preambule_html": "You can import existing ComicRack Reading Lists in <code>.cbl</code> format.<br/>Komga will try to match the provided series and book number with series and books in your libraries.",
+    "field_file_label": "ComicRack Reading List (.cbl)",
     "field_files_label": "ComicRack Reading Lists (.cbl)",
     "import_read_lists": "Import Read Lists",
     "imported_as": "Imported as {name}",
+    "readlist_created": "Read List created: {name}",
+    "requested_number": "Requested Number",
+    "requested_series": "Requested Series",
     "results_preambule": "Result of the import is shown below. You can also check the unmatched books for each provided file.",
     "size_limit": "Size should be less than {size} MB",
     "tab_title": "Data Import"
@@ -295,6 +302,10 @@
       "body": "Analyzes all the media files in the library. The analysis captures information about the media. Depending on your library size, this may take a long time.",
       "button_confirm": "Analyze",
       "title": "Analyze library"
+    },
+    "book_picker": {
+      "filter": "Filter by book number, title, or release date",
+      "title": "Select Book"
     },
     "delete_book": {
       "button_confirm": "Delete",
@@ -434,8 +445,8 @@
       "button_cancel": "Cancel",
       "button_confirm": "Save changes",
       "dialog_title": "Edit read list",
-      "field_name": "Name",
       "field_manual_ordering": "Manual ordering",
+      "field_name": "Name",
       "field_summary": "Summary",
       "label_ordering": "By default, books in a read list are ordered manually. You can disable manual ordering to sort books by release date.",
       "tab_general": "General",
@@ -525,6 +536,7 @@
     },
     "series_picker": {
       "label_search_series": "Search Series",
+      "no_results": "No Series found",
       "title": "Select Series"
     },
     "server_stop": {
@@ -758,6 +770,12 @@
   "read_more": {
     "less": "Read less",
     "more": "Read more"
+  },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "Duplicate book",
+      "error_choose_book": "Choose a book"
+    }
   },
   "readlists_expansion_panel": {
     "manage_readlist": "Manage read list",

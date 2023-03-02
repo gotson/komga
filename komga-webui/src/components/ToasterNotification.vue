@@ -105,6 +105,8 @@ export default Vue.extend({
     onNotification(event: NotificationEvent) {
       this.queue.push({
         text: event.message,
+        text2: event.text2,
+        goTo: event.goTo,
       })
     },
     async onBookImported(event: BookImportSseDto) {
