@@ -5,6 +5,8 @@ import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.ReadList
+import org.gotson.komga.domain.model.ReadListMatch
+import org.gotson.komga.domain.model.ReadListRequestMatch
 import org.gotson.komga.domain.model.ReadListRequestResult
 import org.gotson.komga.domain.model.ThumbnailReadList
 import org.gotson.komga.domain.persistence.ReadListRepository
@@ -128,13 +130,23 @@ class ReadListLifecycle(
       return ReadListRequestResult(null, emptyList(), "ERR_1015")
     }
 
-    val result = readListMatcher.matchReadListRequest(request)
+    val result = readListMatcher.matchAndCreateReadListRequest(request)
     return when {
       result.readList != null -> {
         result.copy(readList = addReadList(result.readList))
       }
       else -> result
     }
+  }
+
+  fun matchComicRackList(fileContent: ByteArray): ReadListRequestMatch {
+    val request = try {
+      readListProvider.importFromCbl(fileContent) ?: return ReadListRequestMatch(ReadListMatch(""), emptyList(), "ERR_1015")
+    } catch (e: Exception) {
+      return ReadListRequestMatch(ReadListMatch(""), emptyList(), "ERR_1015")
+    }
+
+    return readListMatcher.matchReadListRequest(request)
   }
 
   private fun thumbnailsHouseKeeping(readListId: String) {

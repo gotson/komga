@@ -37,6 +37,7 @@ import org.gotson.komga.interfaces.api.persistence.ReadProgressDtoRepository
 import org.gotson.komga.interfaces.api.rest.dto.BookDto
 import org.gotson.komga.interfaces.api.rest.dto.ReadListCreationDto
 import org.gotson.komga.interfaces.api.rest.dto.ReadListDto
+import org.gotson.komga.interfaces.api.rest.dto.ReadListRequestMatchDto
 import org.gotson.komga.interfaces.api.rest.dto.ReadListRequestResultDto
 import org.gotson.komga.interfaces.api.rest.dto.ReadListUpdateDto
 import org.gotson.komga.interfaces.api.rest.dto.TachiyomiReadProgressDto
@@ -240,12 +241,20 @@ class ReadListController(
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
     }
 
+  @Deprecated("Deprecated since 0.162.0, use api/v1/readlists/match/comicrack instead")
   @PostMapping("/import")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   fun importFromComicRackList(
     @RequestParam("files") files: List<MultipartFile>,
   ): List<ReadListRequestResultDto> =
     files.map { readListLifecycle.importReadList(it.bytes).toDto(it.originalFilename) }
+
+  @PostMapping("match/comicrack")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  fun matchFromComicRackList(
+    @RequestParam("file") file: MultipartFile,
+  ): ReadListRequestMatchDto =
+    readListLifecycle.matchComicRackList(file.bytes).toDto()
 
   @PatchMapping("{id}")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")

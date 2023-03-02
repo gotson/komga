@@ -2,7 +2,10 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.ReadList
+import org.gotson.komga.domain.model.ReadListMatch
 import org.gotson.komga.domain.model.ReadListRequest
+import org.gotson.komga.domain.model.ReadListRequestBookMatches
+import org.gotson.komga.domain.model.ReadListRequestMatch
 import org.gotson.komga.domain.model.ReadListRequestResult
 import org.gotson.komga.domain.model.ReadListRequestResultBook
 import org.gotson.komga.domain.persistence.BookMetadataRepository
@@ -22,7 +25,7 @@ class ReadListMatcher(
   private val bookMetadataRepository: BookMetadataRepository,
 ) {
 
-  fun matchReadListRequest(request: ReadListRequest): ReadListRequestResult {
+  fun matchAndCreateReadListRequest(request: ReadListRequest): ReadListRequestResult {
     logger.info { "Trying to match $request" }
     if (readListRepository.existsByName(request.name)) {
       return ReadListRequestResult(readList = null, unmatchedBooks = request.books.map { ReadListRequestResultBook(it) }, errorCode = "ERR_1009")
@@ -64,5 +67,24 @@ class ReadListMatcher(
         errorCode = "ERR_1010",
       )
     }
+  }
+
+  fun matchReadListRequest(request: ReadListRequest): ReadListRequestMatch {
+    logger.info { "Trying to match $request" }
+
+    val readListMatch =
+      if (readListRepository.existsByName(request.name)) ReadListMatch(request.name, "ERR_1009")
+      else ReadListMatch(request.name)
+
+
+    val matches = request.books.map { book ->
+      val matches = seriesRepository.findAllByTitle(book.series).associateWith { series ->
+        bookRepository.findAllBySeriesId(series.id)
+          .filter { (bookMetadataRepository.findById(it.id).number.trimStart('0') == book.number.trimStart('0')) }
+      }
+      ReadListRequestBookMatches(book, matches)
+    }
+
+    return ReadListRequestMatch(readListMatch, matches)
   }
 }

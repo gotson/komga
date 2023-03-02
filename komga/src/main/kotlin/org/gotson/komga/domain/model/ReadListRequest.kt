@@ -23,3 +23,19 @@ data class ReadListRequestResultBook(
   val book: ReadListRequestBook,
   val errorCode: String = "",
 )
+
+data class ReadListRequestMatch(
+  val readListMatch: ReadListMatch,
+  val matches: List<ReadListRequestBookMatches>,
+  val errorCode: String = "",
+)
+
+data class ReadListMatch(
+  val name: String,
+  val errorCode: String = "",
+)
+
+data class ReadListRequestBookMatches(
+  val request: ReadListRequestBook,
+  val matches: Map<Series, Collection<Book>>,
+)
