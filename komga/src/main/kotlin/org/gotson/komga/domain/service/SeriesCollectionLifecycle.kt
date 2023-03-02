@@ -46,7 +46,7 @@ class SeriesCollectionLifecycle(
     val existing = collectionRepository.findByIdOrNull(toUpdate.id)
       ?: throw IllegalArgumentException("Cannot update collection that does not exist")
 
-    if (existing.name != toUpdate.name && collectionRepository.existsByName(toUpdate.name))
+    if (!existing.name.equals(toUpdate.name, true) && collectionRepository.existsByName(toUpdate.name))
       throw DuplicateNameException("Collection name already exists")
 
     collectionRepository.update(toUpdate)

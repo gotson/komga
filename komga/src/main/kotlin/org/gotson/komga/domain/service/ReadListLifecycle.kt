@@ -49,7 +49,7 @@ class ReadListLifecycle(
     val existing = readListRepository.findByIdOrNull(toUpdate.id)
       ?: throw IllegalArgumentException("Cannot update read list that does not exist")
 
-    if (existing.name != toUpdate.name && readListRepository.existsByName(toUpdate.name))
+    if (!existing.name.equals(toUpdate.name, true) && readListRepository.existsByName(toUpdate.name))
       throw DuplicateNameException("Read list name already exists")
 
     readListRepository.update(toUpdate)
