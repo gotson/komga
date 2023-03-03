@@ -66,9 +66,6 @@ export default Vue.extend({
   components: {
     BookPickerDialog,
     SeriesPickerDialog,
-    TransientBookDetailsDialog,
-    TransientBookViewerDialog,
-    FileNameChooserDialog,
   },
   props: {
     match: {
