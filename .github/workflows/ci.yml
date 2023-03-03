@@ -153,6 +153,14 @@ jobs:
         env:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JRELEASER_DOCKER_DEFAULT_PASSWORD: workaround
+      - name: JReleaser release output
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: jreleaser-release
+          path: |
+            komga/build/jreleaser/trace.log
+            komga/build/jreleaser/output.properties
       - name: Release commit and push
         uses: EndBug/add-and-commit@v9
         with:
