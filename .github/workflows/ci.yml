@@ -152,7 +152,10 @@ jobs:
           arguments: copyWebDist generateOpenApiDocs jreleaserFullRelease
         env:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # workaround for https://github.com/jreleaser/jreleaser/issues/1232
           JRELEASER_DOCKER_DEFAULT_PASSWORD: workaround
+          # workaround for https://github.com/jreleaser/jreleaser/discussions/1233
+          JRELEASER_DISTRIBUTIONS_KOMGA_DOCKER_REPOSITORY_ACTIVE: NEVER
       - name: JReleaser release output
         if: always()
         uses: actions/upload-artifact@v3
