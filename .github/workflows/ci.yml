@@ -8,6 +8,21 @@ on:
     branches-ignore:
       - 'dependabot/**'
   workflow_dispatch:
+    inputs:
+      perform_release:
+        description: 'Perform release'
+        default: false
+        type: boolean
+      bump:
+        description: 'Bump type'
+        required: false
+        default: 'next'
+        type: choice
+        options:
+          - 'next'
+          - 'major'
+          - 'minor'
+          - 'patch'
 
 jobs:
   test:
@@ -62,13 +77,47 @@ jobs:
         working-directory: komga-webui
         run: npm run test:unit
 
-  release:
-    name: Semantic Release
-    runs-on: ubuntu-latest
-    needs: [ test, webui ]
-    if: ${{ github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/master' }}
+  version:
+    runs-on: macos-latest
+    if: inputs.perform_release
+    outputs:
+      version_current: ${{ steps.versions.outputs.version_current }}
+      version_next: ${{ steps.versions.outputs.version_next }}
+      should_release: ${{ steps.versions.outputs.should_release }}
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+      - name: Install svu
+        run: brew install caarlos0/tap/svu
+      - name: Compute next version for release
+        run: |
+          echo "VERSION_NEXT=`svu --pattern="v[0-9]*" --strip-prefix ${{ inputs.bump }}`" | tee -a $GITHUB_ENV
+          echo "VERSION_NEXT_SUFFIX=`svu --pattern="v[0-9]*" --strip-prefix ${{ inputs.bump }}`" | tee -a $GITHUB_ENV
+      - name: Set Versions
+        id: versions
+        run: |
+          echo "version_current=`svu --pattern="v[0-9]*" --strip-prefix current`" >> $GITHUB_OUTPUT
+          echo "version_next=${{ env.VERSION_NEXT_SUFFIX }}" >> $GITHUB_OUTPUT
+          [[ `svu --pattern="v[0-9]*" --strip-prefix current` != ${{ env.VERSION_NEXT }} ]] && echo "should_release=true" >> $GITHUB_OUTPUT || echo
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    needs: [ test, webui, version ]
+    if: needs.version.outputs.should_release
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Display versions
+        run: |
+          echo "Current version: ${{ needs.version.outputs.version_current }}, should release: ${{ needs.version.outputs.version_next }}"
+      - name: Update version in gradle.properties
+        run: sed -i -e "s/version=.*/version=${{ needs.version.outputs.version_next }}/" gradle.properties
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
@@ -82,8 +131,6 @@ jobs:
           java-package: 'jdk'
           distribution: 'temurin'
           cache: 'gradle'
-      - name: Install dependencies
-        run: npm install --only=production
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -99,7 +146,14 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Release
+      - name: JReleaser full release
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: copyWebDist assemble generateOpenApiDocs jreleaserFullRelease
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Release commit and push
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: 'chore(release): ${{ needs.version.outputs.version_next }} [skip ci]'
+          default_author: github_actions
