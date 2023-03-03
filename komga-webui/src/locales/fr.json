@@ -174,7 +174,8 @@
   },
   "browse_readlist": {
     "edit_elements": "Modifier les éléments",
-    "edit_readlist": "Modifier la liste de lecture"
+    "edit_readlist": "Modifier la liste de lecture",
+    "manual_ordering": "tri manuel"
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Il s'agit de l'année la plus ancienne parmi les dates de sortie de tous les livres de la série",
@@ -433,8 +434,10 @@
       "button_cancel": "Annuler",
       "button_confirm": "Enregistrer les modifications",
       "dialog_title": "Modifier la liste de lecture",
+      "field_manual_ordering": "Tri manuel",
       "field_name": "Nom",
       "field_summary": "Résumé",
+      "label_ordering": "Par défaut, les livres d'une liste de lecture sont classés manuellement. Vous pouvez désactiver le classement manuel pour trier les livres par date de publication.",
       "tab_general": "Général",
       "tab_poster": "Couverture"
     },

@@ -174,7 +174,8 @@
   },
   "browse_readlist": {
     "edit_elements": "Redigera element",
-    "edit_readlist": "Redigera läslista"
+    "edit_readlist": "Redigera läslista",
+    "manual_ordering": "manuell sortering"
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Detta är det tidigaste året från utgivningsdatum från alla böcker i serien",
@@ -433,8 +434,10 @@
       "button_cancel": "Avbryt",
       "button_confirm": "Spara ändringar",
       "dialog_title": "Redigera läslistan",
+      "field_manual_ordering": "Manuell sortering",
       "field_name": "Namn",
       "field_summary": "Sammanfattning",
+      "label_ordering": "Som standard, böcker i en läslista sorteras manuellt. Du kan inaktivera manuell sortering för att sortera böcker efter släppdatum.",
       "tab_general": "Allmänt",
       "tab_poster": "Affisch"
     },

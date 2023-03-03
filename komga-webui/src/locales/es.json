@@ -174,7 +174,8 @@
   },
   "browse_readlist": {
     "edit_elements": "Editar elementos",
-    "edit_readlist": "Editar lista de lectura"
+    "edit_readlist": "Editar lista de lectura",
+    "manual_ordering": "ordenación manual"
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Este es el año más antiguo de las fechas de publicación de todos los libros de la serie",
@@ -188,6 +189,7 @@
   "common": {
     "age": "Edad",
     "all_libraries": "Todas las bibliotecas",
+    "book": "Libro",
     "books": "Libros",
     "books_n": "Sin libros | 1 libro | {count} libros",
     "books_total": "{count} / {total} libros",
@@ -226,6 +228,7 @@
     "publisher": "Editorial",
     "read": "Leer",
     "read_on": "Leer la {date}",
+    "readlist": "Lista de lectura",
     "readlists": "Listas de lectura",
     "required": "Requerido",
     "reset_filters": "Reiniciar filtros",
@@ -253,10 +256,15 @@
     "book_number": "Número de libro: {name}",
     "book_series": "Serie: {name}",
     "button_import": "Importar",
+    "button_match": "Partido",
     "comicrack_preambule_html": "Puede importar Listas de lectura de ComicRack en formato <code>.cbl</code>.<br>Komga intentará hacer coincidir la serie y número de libro proporcionados con las series y libros en sus bibliotecas.",
+    "field_file_label": "Lista de lectura de ComicRack (.cbl)",
     "field_files_label": "Listas de lectura de ComicRack (.cbl)",
     "import_read_lists": "Importar listas de lectura",
     "imported_as": "Importado como {name}",
+    "readlist_created": "Lista de lectura creada: {name}",
+    "requested_number": "Número requerido",
+    "requested_series": "Serie requerida",
     "results_preambule": "El resultado de la importación se muestra abajo. También puede comprobar los libros sin emparejar para cada archivo proporcionado.",
     "size_limit": "El tamaño debe ser menor a {size} MB",
     "tab_title": "Importación de datos"
@@ -294,6 +302,10 @@
       "body": "Analiza todos los archivos multimedia en la biblioteca. El análisis obtiene información sobre los medios. Dependiendo del tamaño de su biblioteca, esto podría tomar mucho tiempo.",
       "button_confirm": "Analizar",
       "title": "Analizar biblioteca"
+    },
+    "book_picker": {
+      "filter": "Filtrar por número de libro, título o fecha de publicación",
+      "title": "Seleccionar un libro"
     },
     "delete_book": {
       "button_confirm": "Borrar",
@@ -433,8 +445,10 @@
       "button_cancel": "Cancelar",
       "button_confirm": "Guardar cambios",
       "dialog_title": "Modificar lista de lectura",
+      "field_manual_ordering": "Orden manual",
       "field_name": "Nombre",
       "field_summary": "Resumen",
+      "label_ordering": "Por defecto, los libros de una lista de lectura se ordenan manualmente. Puede desactivar la ordenación manual para ordenar los libros por fecha de publicación.",
       "tab_general": "General",
       "tab_poster": "Póster"
     },
@@ -522,6 +536,7 @@
     },
     "series_picker": {
       "label_search_series": "Buscar serie",
+      "no_results": "No se han encontrado series",
       "title": "Seleccionar serie"
     },
     "server_stop": {
@@ -755,6 +770,12 @@
   "read_more": {
     "less": "Leer menos",
     "more": "Leer más"
+  },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "Libro duplicado",
+      "error_choose_book": "Elige un libro"
+    }
   },
   "readlists_expansion_panel": {
     "manage_readlist": "Administrar lista de lectura",
