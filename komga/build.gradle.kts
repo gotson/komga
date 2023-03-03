@@ -419,3 +419,7 @@ jreleaser {
 tasks.jreleaserPackage {
   inputs.files(tasks.bootJar)
 }
+// Workaround for https://github.com/jreleaser/jreleaser/issues/1231
+tasks.jreleaserFullRelease {
+  inputs.files(tasks.bootJar)
+}
