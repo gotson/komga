@@ -387,6 +387,7 @@ jreleaser {
   packagers {
     docker {
       active.set(Active.RELEASE)
+      continueOnError.set(true)
       templateDirectory.set(projectDir.resolve("docker"))
       repository.active.set(Active.NEVER)
       buildArgs.set(listOf("--cache-from", "gotson/komga:latest"))
