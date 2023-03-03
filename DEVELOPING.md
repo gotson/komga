@@ -68,4 +68,5 @@ Make sure you start the backend with the `dev` profile, else the frontend reques
 
 To build the Docker image, you need to:
 - have the webui built and copied to `/resources/public`. To do so, run `./gradlew copyWebDist`
-- build the docker image via JReleaser. To do so, run `./gradlew jreleaserPackage`
+- prepare the docker image via JReleaser. To do so, run `./gradlew jreleaserPackage`
+- the `Dockerfile` will be available in `komga/build/jreleaser/package/docker/`
