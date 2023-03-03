@@ -149,9 +149,10 @@ jobs:
       - name: JReleaser full release
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: copyWebDist assemble generateOpenApiDocs jreleaserFullRelease
+          arguments: copyWebDist generateOpenApiDocs jreleaserFullRelease
         env:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JRELEASER_DOCKER_DEFAULT_PASSWORD: workaround
       - name: Release commit and push
         uses: EndBug/add-and-commit@v9
         with:
