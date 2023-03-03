@@ -400,7 +400,7 @@ class ReadListMatcherTest(
       // then
       with(result) {
         with(readListMatch) {
-          assertThat(name).isBlank
+          assertThat(name).isEqualTo(request.name)
           assertThat(errorCode).isEqualTo("ERR_1009")
         }
         assertThat(matches).hasSize(4)
