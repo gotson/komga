@@ -260,6 +260,23 @@ class ReadListControllerTest(
           jsonPath("$[?(@.name == '${rlAllowed.name}')].filtered") { value(false) }
           jsonPath("$[?(@.name == '${rlFiltered.name}')].filtered") { value(true) }
         }
+
+      mockMvc.get("/api/v1/readlists/${rlFiltered.id}/books")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.content.length()") { value(1) }
+          jsonPath("$.content[0].id") { value(book10.id) }
+        }
+
+      mockMvc.get("/api/v1/readlists/${rlFiltered.id}/books/${book10.id}/previous")
+        .andExpect {
+          status { isNotFound() }
+        }
+
+      mockMvc.get("/api/v1/readlists/${rlFiltered.id}/books/${book10.id}/next")
+        .andExpect {
+          status { isNotFound() }
+        }
     }
 
     @Test
@@ -306,6 +323,11 @@ class ReadListControllerTest(
         }
       }
 
+      bookMetadataRepository.findById(book10.id).let { bookMetadataRepository.update(it.copy(releaseDate = LocalDate.of(2000, 1, 1))) }
+      bookMetadataRepository.findById(book.id).let { bookMetadataRepository.update(it.copy(releaseDate = LocalDate.of(2001, 1, 1))) }
+      bookMetadataRepository.findById(book16.id).let { bookMetadataRepository.update(it.copy(releaseDate = LocalDate.of(2002, 1, 1))) }
+      bookMetadataRepository.findById(book18.id).let { bookMetadataRepository.update(it.copy(releaseDate = LocalDate.of(2003, 1, 1))) }
+
       val rlAllowed = readListLifecycle.addReadList(
         ReadList(
           name = "Allowed",
@@ -316,6 +338,7 @@ class ReadListControllerTest(
       val rlFiltered = readListLifecycle.addReadList(
         ReadList(
           name = "Filtered",
+          ordered = false,
           bookIds = listOf(book10.id, book.id, book16.id, book18.id).toIndexedMap(),
         ),
       )
@@ -360,6 +383,35 @@ class ReadListControllerTest(
           jsonPath("$.length()") { value(2) }
           jsonPath("$[?(@.name == '${rlAllowed.name}')].filtered") { value(false) }
           jsonPath("$[?(@.name == '${rlFiltered.name}')].filtered") { value(true) }
+        }
+
+      mockMvc.get("/api/v1/readlists/${rlFiltered.id}/books")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.content.length()") { value(2) }
+          jsonPath("$.content.[*].['id']") { contains(listOf(book10, book).map { it.id }) }
+        }
+
+      mockMvc.get("/api/v1/readlists/${rlFiltered.id}/books/${book10.id}/previous")
+        .andExpect {
+          status { isNotFound() }
+        }
+
+      mockMvc.get("/api/v1/readlists/${rlFiltered.id}/books/${book10.id}/next")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.id") { value(book.id) }
+        }
+
+      mockMvc.get("/api/v1/readlists/${rlFiltered.id}/books/${book.id}/previous")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.id") { value(book10.id) }
+        }
+
+      mockMvc.get("/api/v1/readlists/${rlFiltered.id}/books/${book.id}/next")
+        .andExpect {
+          status { isNotFound() }
         }
     }
 

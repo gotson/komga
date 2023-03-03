@@ -19,6 +19,7 @@ interface BookDtoRepository {
     filterOnLibraryIds: Collection<String>?,
     search: BookSearchWithReadProgress,
     pageable: Pageable,
+    restrictions: ContentRestrictions = ContentRestrictions(),
   ): Page<BookDto>
 
   fun findByIdOrNull(bookId: String, userId: String): BookDto?
@@ -31,6 +32,7 @@ interface BookDtoRepository {
     bookId: String,
     userId: String,
     filterOnLibraryIds: Collection<String>?,
+    restrictions: ContentRestrictions = ContentRestrictions(),
   ): BookDto?
 
   fun findNextInReadListOrNull(
@@ -38,6 +40,7 @@ interface BookDtoRepository {
     bookId: String,
     userId: String,
     filterOnLibraryIds: Collection<String>?,
+    restrictions: ContentRestrictions = ContentRestrictions(),
   ): BookDto?
 
   fun findAllOnDeck(userId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable, restrictions: ContentRestrictions = ContentRestrictions()): Page<BookDto>

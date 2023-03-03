@@ -76,7 +76,6 @@ class ReadListMatcher(
       if (readListRepository.existsByName(request.name)) ReadListMatch(request.name, "ERR_1009")
       else ReadListMatch(request.name)
 
-
     val matches = request.books.map { book ->
       val matches = seriesRepository.findAllByTitle(book.series).associateWith { series ->
         bookRepository.findAllBySeriesId(series.id)

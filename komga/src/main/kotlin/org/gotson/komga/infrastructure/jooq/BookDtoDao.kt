@@ -96,8 +96,9 @@ class BookDtoDao(
     filterOnLibraryIds: Collection<String>?,
     search: BookSearchWithReadProgress,
     pageable: Pageable,
+    restrictions: ContentRestrictions,
   ): Page<BookDto> {
-    val conditions = rlb.READLIST_ID.eq(readListId).and(search.toCondition())
+    val conditions = rlb.READLIST_ID.eq(readListId).and(search.toCondition()).and(restrictions.toCondition(dsl))
 
     return findAll(conditions, userId, pageable, true, filterOnLibraryIds, search.searchTerm)
   }
@@ -190,16 +191,18 @@ class BookDtoDao(
     bookId: String,
     userId: String,
     filterOnLibraryIds: Collection<String>?,
+    restrictions: ContentRestrictions,
   ): BookDto? =
-    findSiblingReadList(readList, bookId, userId, filterOnLibraryIds, next = false)
+    findSiblingReadList(readList, bookId, userId, filterOnLibraryIds, restrictions, next = false)
 
   override fun findNextInReadListOrNull(
     readList: ReadList,
     bookId: String,
     userId: String,
     filterOnLibraryIds: Collection<String>?,
+    restrictions: ContentRestrictions,
   ): BookDto? =
-    findSiblingReadList(readList, bookId, userId, filterOnLibraryIds, next = true)
+    findSiblingReadList(readList, bookId, userId, filterOnLibraryIds, restrictions, next = true)
 
   override fun findAllOnDeck(userId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable, restrictions: ContentRestrictions): Page<BookDto> {
     val seriesIds = dsl.select(s.ID)
@@ -288,6 +291,7 @@ class BookDtoDao(
     bookId: String,
     userId: String,
     filterOnLibraryIds: Collection<String>?,
+    restrictions: ContentRestrictions,
     next: Boolean,
   ): BookDto? {
     if (readList.ordered) {
@@ -301,6 +305,7 @@ class BookDtoDao(
 
       return selectBase(userId, true)
         .where(rlb.READLIST_ID.eq(readList.id))
+        .apply { if (restrictions.isRestricted) and(restrictions.toCondition(dsl)) }
         .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
         .orderBy(rlb.NUMBER.let { if (next) it.asc() else it.desc() })
         .seek(numberSort)
@@ -314,7 +319,9 @@ class BookDtoDao(
         .from(b)
         .leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID))
         .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
+        .apply { if (restrictions.isRestricted) leftJoin(sd).on(sd.SERIES_ID.eq(b.SERIES_ID)) }
         .where(rlb.READLIST_ID.eq(readList.id))
+        .apply { if (restrictions.isRestricted) and(restrictions.toCondition(dsl)) }
         .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
         .orderBy(d.RELEASE_DATE)
         .fetch(b.ID)

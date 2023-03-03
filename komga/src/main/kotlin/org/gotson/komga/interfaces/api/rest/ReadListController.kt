@@ -333,6 +333,7 @@ class ReadListController(
         principal.user.getAuthorizedLibraryIds(null),
         bookSearch,
         pageRequest,
+        principal.user.restrictions,
       )
         .map { it.restrictUrl(!principal.user.roleAdmin) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -349,6 +350,7 @@ class ReadListController(
         bookId,
         principal.user.id,
         principal.user.getAuthorizedLibraryIds(null),
+        principal.user.restrictions,
       )
         ?.restrictUrl(!principal.user.roleAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -365,6 +367,7 @@ class ReadListController(
         bookId,
         principal.user.id,
         principal.user.getAuthorizedLibraryIds(null),
+        principal.user.restrictions,
       )
         ?.restrictUrl(!principal.user.roleAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
