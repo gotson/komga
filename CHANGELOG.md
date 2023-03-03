@@ -1,3 +1,69 @@
+# [0.162.0](https://github.com/gotson/komga/compare/v0.161.0...v0.162.0) (2023-03-03)
+## 🚀 Features
+**api**
+- new endpoint to match a CBL file without creating the readlist ([400f7ba](https://github.com/gotson/komga/commits/400f7ba))
+
+**webui**
+- interactive readlist import ([648ebb4](https://github.com/gotson/komga/commits/648ebb4))
+
+**unscoped**
+- read lists books can be sorted by release date ([e3bf906](https://github.com/gotson/komga/commits/e3bf906)), closes [#846](https://github.com/gotson/komga/issues/846)
+
+## 🐛 Fixes
+**api**
+- filter readlist's books according to user's content restrictions ([a6895e1](https://github.com/gotson/komga/commits/a6895e1))
+- ignore name case when updating a readlist or collection ([ae17d9c](https://github.com/gotson/komga/commits/ae17d9c))
+
+**webui**
+- dismissible alert on Book Import view ([7f8a7f3](https://github.com/gotson/komga/commits/7f8a7f3))
+- perform case insensitive comparison for existing readlist or collection name ([2f97395](https://github.com/gotson/komga/commits/2f97395))
+- history view could not load deleted page thumbnail in some conditions ([0211650](https://github.com/gotson/komga/commits/0211650))
+- bulk edit books dialog incorrect validation for numberSort set to 0 ([4385f05](https://github.com/gotson/komga/commits/4385f05)), closes [#1057](https://github.com/gotson/komga/issues/1057)
+
+**unscoped**
+- translated using Weblate  ([fbc2ac1](https://github.com/gotson/komga/commits/fbc2ac1))
+- translated using Weblate ([22b1ab0](https://github.com/gotson/komga/commits/22b1ab0))
+
+## 🔄️ Changes
+**api**
+- change variable case ([aec3d3d](https://github.com/gotson/komga/commits/aec3d3d))
+
+**webui**
+- remove unused references ([b7ad808](https://github.com/gotson/komga/commits/b7ad808))
+- incorrect type ([9860d4e](https://github.com/gotson/komga/commits/9860d4e))
+- missing i18n field ([9e424b5](https://github.com/gotson/komga/commits/9e424b5))
+- export readlist types ([0984d9f](https://github.com/gotson/komga/commits/0984d9f))
+
+**unscoped**
+- remove semantic-release files ([b5e83ac](https://github.com/gotson/komga/commits/b5e83ac))
+- move specific ktlint configuration to subproject ([cb18b6b](https://github.com/gotson/komga/commits/cb18b6b))
+- apply ktlint format ([1d6485c](https://github.com/gotson/komga/commits/1d6485c))
+
+## 🛠  Build
+**deps**
+- bump minimist and mkdirp in /komga-webui ([c3ba85a](https://github.com/gotson/komga/commits/c3ba85a))
+- bump thumbnailator to 0.4.19 ([4821cdb](https://github.com/gotson/komga/commits/4821cdb))
+- bump sqlite-jdbc to 3.40.1.0 ([4614997](https://github.com/gotson/komga/commits/4614997))
+- bump tsid-creator to 5.2.3 ([0e4a331](https://github.com/gotson/komga/commits/0e4a331))
+- bump twelvemonkeys.imageio to 3.9.4 ([035a18a](https://github.com/gotson/komga/commits/035a18a))
+- bump ben-manes.versions to 0.45.0 ([c0cc6b5](https://github.com/gotson/komga/commits/c0cc6b5))
+- bump Kotlin to 1.7.22 ([e476d73](https://github.com/gotson/komga/commits/e476d73))
+
+**unscoped**
+- jreleaser workaround for JRELEASER_DOCKER_DEFAULT_PASSWORD ([cb332a6](https://github.com/gotson/komga/commits/cb332a6))
+- gradle task dependency workaround ([b7a28c8](https://github.com/gotson/komga/commits/b7a28c8))
+- release using JReleaser ([a1b058e](https://github.com/gotson/komga/commits/a1b058e))
+- add jreleaser ([3581e57](https://github.com/gotson/komga/commits/3581e57))
+- fix workflow file ([6583334](https://github.com/gotson/komga/commits/6583334))
+- only trigger release job on master ([d21a7a3](https://github.com/gotson/komga/commits/d21a7a3))
+- disable ktlint multiline-if-else rule ([1dc46be](https://github.com/gotson/komga/commits/1dc46be))
+- bump gradle.ktlint to 11.1.0 amd ktlint to 0.48.2 ([c8dd291](https://github.com/gotson/komga/commits/c8dd291))
+
+## 📝 Documentation
+
+- update DEVELOPING.md instructions ([cd3687d](https://github.com/gotson/komga/commits/cd3687d))
+- update CHANGELOG.md to match JReleaser format ([8666b94](https://github.com/gotson/komga/commits/8666b94))
+
 # [0.161.0](https://github.com/gotson/komga/compare/v0.160.0...v0.161.0) (2023-01-27)
 
 
