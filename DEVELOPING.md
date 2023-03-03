@@ -11,14 +11,11 @@ You will need:
 
 ## Setting up the project
 
-- run `npm install` in the root folder of the project. This will install the necessary commit hooks.
 - run `npm install` in the `komga-webui` folder of the project. This will install the necessary tooling for the webui.
 
 ## Commit messages
 
 Komga's commit messages follow the [Conventional Commits](https://www.conventionalcommits.org/) standard. This enables automatic versioning, releases, and release notes generation.
-
-Commit messages are enforced using commit hooks ran on the developer's PC.
 
 ## Project organization
 
@@ -71,6 +68,4 @@ Make sure you start the backend with the `dev` profile, else the frontend reques
 
 To build the Docker image, you need to:
 - have the webui built and copied to `/resources/public`. To do so, run `./gradlew copyWebDist`
-- unpack the jar into layers expected by the `Dockerfile`. To do so, run `./gradlew unpack`
-
-Then you can run `docker build -f ./komga/Dockerfile .`
+- build the docker image via JReleaser. To do so, run `./gradlew jreleaserPackage`
