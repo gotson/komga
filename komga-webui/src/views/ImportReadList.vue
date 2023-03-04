@@ -35,7 +35,7 @@
           <td>#</td>
           <td>{{ $t('data_import.requested_series') }}</td>
           <td>{{ $t('data_import.requested_number') }}</td>
-          <td>{{ $t('common.series') }}</td>
+          <td>{{ $tc('common.series', 1) }}</td>
           <td>{{ $t('common.book') }}</td>
           <td>
             <v-icon>mdi-alert-circle-outline</v-icon>

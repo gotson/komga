@@ -234,7 +234,7 @@
     "reset_filters": "Reset filters",
     "roles": "Roles",
     "save_changes": "Save changes",
-    "series": "Series",
+    "series": "Series | Series",
     "sidecars": "Sidecars",
     "tags": "Tags",
     "unavailable": "Unavailable",
@@ -589,7 +589,9 @@
       "total_size": "Total size"
     },
     "info": "Deleting duplicate pages will modify your files. Backup your files and use manual deletion before using automatic deletion.",
+    "known": "Known",
     "matches_n": "No matches | 1 match | {count} matches",
+    "new": "New",
     "saved_size": "Saved {size}",
     "title": "Duplicate pages",
     "unknown_size": "Unknown size"

@@ -1,8 +1,8 @@
 <template>
   <div>
     <v-tabs grow>
-      <v-tab :to="{name: 'settings-duplicate-pages-known'}">Known</v-tab>
-      <v-tab :to="{name: 'settings-duplicate-pages-unknown'}">New</v-tab>
+      <v-tab :to="{name: 'settings-duplicate-pages-known'}">{{ $t('duplicate_pages.known') }}</v-tab>
+      <v-tab :to="{name: 'settings-duplicate-pages-unknown'}">{{ $t('duplicate_pages.new') }}</v-tab>
     </v-tabs>
     <router-view/>
   </div>

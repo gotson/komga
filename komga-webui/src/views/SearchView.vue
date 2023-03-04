@@ -62,7 +62,7 @@
           @scroll-changed="(percent) => scrollChanged(loaderSeries, percent)"
         >
           <template v-slot:prepend>
-            <div class="title">{{ $t('common.series') }}</div>
+            <div class="title">{{ $tc('common.series', 2) }}</div>
           </template>
           <template v-slot:content>
             <item-browser :items="loaderSeries.items"

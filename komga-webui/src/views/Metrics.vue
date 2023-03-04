@@ -32,7 +32,7 @@
                 <td> {{ getFileSize(booksFileSize.measurements[0].value) }}</td>
               </tr>
               <tr v-if="series">
-                <td>{{ $t('common.series') }}</td>
+                <td>{{ $tc('common.series', 2) }}</td>
                 <td> {{ series.measurements[0].value }}</td>
               </tr>
               <tr v-if="books">
