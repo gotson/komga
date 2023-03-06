@@ -63,7 +63,7 @@ class TaskHandlerTest(
   @Test
   fun `when similar tasks are submitted then only one is executed`() {
     every { mockBookRepository.findByIdOrNull(any()) } returns makeBook("id")
-    every { mockBookLifecycle.analyzeAndPersist(any()) } returns false
+    every { mockBookLifecycle.analyzeAndPersist(any()) } returns emptySet()
 
     jmsListenerEndpointRegistry.stop()
     val book = makeBook("book")
@@ -85,7 +85,7 @@ class TaskHandlerTest(
       Thread.sleep(1_00)
       makeBook(slot.captured)
     }
-    every { mockBookLifecycle.analyzeAndPersist(capture(calls)) } returns false
+    every { mockBookLifecycle.analyzeAndPersist(capture(calls)) } returns emptySet()
 
     jmsListenerEndpointRegistry.stop()
     (0..9).forEach {

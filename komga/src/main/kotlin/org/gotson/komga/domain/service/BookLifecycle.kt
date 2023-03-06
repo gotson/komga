@@ -3,6 +3,7 @@ package org.gotson.komga.domain.service
 import mu.KotlinLogging
 import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.Book
+import org.gotson.komga.domain.model.BookAction
 import org.gotson.komga.domain.model.BookPageContent
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.DomainEvent
@@ -55,7 +56,7 @@ class BookLifecycle(
   private val historicalEventRepository: HistoricalEventRepository,
 ) {
 
-  fun analyzeAndPersist(book: Book): Boolean {
+  fun analyzeAndPersist(book: Book): Set<BookAction> {
     logger.info { "Analyze and persist book: $book" }
     val media = bookAnalyzer.analyze(book, libraryRepository.findById(book.libraryId).analyzeDimensions)
 
@@ -73,7 +74,7 @@ class BookLifecycle(
 
     eventPublisher.publishEvent(DomainEvent.BookUpdated(book))
 
-    return media.status == Media.Status.READY
+    return if (media.status == Media.Status.READY) setOf(BookAction.GENERATE_THUMBNAIL, BookAction.REFRESH_METADATA) else emptySet()
   }
 
   fun hashAndPersist(book: Book) {

@@ -94,10 +94,9 @@ class TaskHandler(
 
           is Task.AnalyzeBook ->
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
-              if (bookLifecycle.analyzeAndPersist(book)) {
-                taskEmitter.generateBookThumbnail(book, priority = task.priority + 1)
-                taskEmitter.refreshBookMetadata(book, priority = task.priority + 1)
-              }
+              val actions = bookLifecycle.analyzeAndPersist(book)
+              if (actions.contains(BookAction.GENERATE_THUMBNAIL)) taskEmitter.generateBookThumbnail(book, priority = task.priority + 1)
+              if (actions.contains(BookAction.REFRESH_METADATA)) taskEmitter.refreshBookMetadata(book, priority = task.priority + 1)
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
           is Task.GenerateBookThumbnail ->
