@@ -189,6 +189,7 @@
   "common": {
     "age": "Ålder",
     "all_libraries": "Alla bibliotek",
+    "book": "Bok",
     "books": "Böcker",
     "books_n": "Ingen bok | 1 bok | {count} böcker",
     "books_total": "{count} / {total} böcker",
@@ -227,12 +228,13 @@
     "publisher": "Utgivare",
     "read": "Läs",
     "read_on": "Läst den {date}",
+    "readlist": "Läslista",
     "readlists": "Läslistor",
     "required": "Krävs",
     "reset_filters": "Återställ filter",
     "roles": "Roller",
     "save_changes": "Spara ändringar",
-    "series": "Serier",
+    "series": "Serier | Serier",
     "sidecars": "Sidovagnar",
     "tags": "Taggar",
     "unavailable": "Otillgänglig",
@@ -254,10 +256,15 @@
     "book_number": "Boknummer: {name}",
     "book_series": "Serie: {name}",
     "button_import": "Importera",
+    "button_match": "Träff",
     "comicrack_preambule_html": "Du kan importera existerande ComicRack Läslistor i <code>.cbl</code>-format.<br>Komga kommer att försöka matcha innehållet med serier och böker i dina bibliotek.",
+    "field_file_label": "ComicRack Läslista (.cbl)",
     "field_files_label": "ComicRack Läslistor (.cbl)",
     "import_read_lists": "Importera Läslistor",
     "imported_as": "Importerad som {name}",
+    "readlist_created": "Skapat läslistan: {name}",
+    "requested_number": "Begärt nummer",
+    "requested_series": "Begärd Serie",
     "results_preambule": "Resultatet av importen visas nedan. Du kan också kontrollera omatchade böcker för varje fil.",
     "size_limit": "Filstorlek ska vara mindre än {size} MB",
     "tab_title": "Data import"
@@ -295,6 +302,10 @@
       "body": "Analyserar alla mediefiler i biblioteket. Analysen samlar in information om medierna. Beroende på bibliotekets storlek kan detta ta lång tid.",
       "button_confirm": "Analysera",
       "title": "Analysera biblioteket"
+    },
+    "book_picker": {
+      "filter": "Filtrera efter boknummer, titel, eller utgivningsdatum",
+      "title": "Välj bok"
     },
     "delete_book": {
       "button_confirm": "Ta bort",
@@ -525,6 +536,7 @@
     },
     "series_picker": {
       "label_search_series": "Sök serie",
+      "no_results": "Ingen serie hittad",
       "title": "Välj serie"
     },
     "server_stop": {
@@ -577,7 +589,9 @@
       "total_size": "Total storlek"
     },
     "info": "Om du tar bort dubbla sidor ändras dina filer. Säkerhetskopiera dina filer och använd manuell radering innan du använder automatisk radering.",
+    "known": "Känd",
     "matches_n": "Inga träffar | 1 träff | {count} träffar",
+    "new": "Ny",
     "saved_size": "Sparat {size}",
     "title": "Duplicerade sidor",
     "unknown_size": "Okänd storlek"
@@ -758,6 +772,12 @@
   "read_more": {
     "less": "Se mindre",
     "more": "Se mer"
+  },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "Duplicera bok",
+      "error_choose_book": "Välj en bok"
+    }
   },
   "readlists_expansion_panel": {
     "manage_readlist": "Hantera läslistan",

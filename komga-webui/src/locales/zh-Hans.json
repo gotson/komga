@@ -174,7 +174,8 @@
   },
   "browse_readlist": {
     "edit_elements": "编辑元素",
-    "edit_readlist": "编辑阅读列表"
+    "edit_readlist": "编辑阅读列表",
+    "manual_ordering": "手动排序"
   },
   "browse_series": {
     "earliest_year_from_release_dates": "这是该系列所有书发行日期最早的一年",
@@ -188,7 +189,8 @@
   "common": {
     "age": "年龄",
     "all_libraries": "所有库",
-    "books": "书",
+    "book": "书籍",
+    "books": "书籍",
     "books_n": "无书籍 | 1 本书 | {count} 本书",
     "books_total": "{count} / 共 {total} 本书",
     "cancel": "取消",
@@ -226,6 +228,7 @@
     "publisher": "出版商",
     "read": "阅读",
     "read_on": "于 {date} 阅读",
+    "readlist": "阅读列表",
     "readlists": "阅读列表",
     "required": "必填",
     "reset_filters": "重置过滤器",
@@ -253,10 +256,15 @@
     "book_number": "书号：{name}",
     "book_series": "系列：{name}",
     "button_import": "导入",
-    "comicrack_preambule_html": "您可以导入现有的 ComicRack 阅读列表，其为 <code>.cbl</code>格式。<br>Komga 会试着将你提供的系列和书籍与你库中的相匹配。",
-    "field_files_label": "阅读列表（.cbl）",
+    "button_match": "匹配",
+    "comicrack_preambule_html": "您可以导入现有的 ComicRack 阅读列表，其为 <code>.cbl</code>格式。<br>Komga 会试着将您提供的系列和书号与你库中的相匹配。",
+    "field_file_label": "ComicRack 阅读列表 (.cbl)",
+    "field_files_label": "ComicRack 阅读列表（.cbl）",
     "import_read_lists": "导入阅读列表",
     "imported_as": "导入为 {name}",
+    "readlist_created": "已创建阅读列表：{name}",
+    "requested_number": "请求书号",
+    "requested_series": "请求系列",
     "results_preambule": "导入结果如下所示。你还可以为每个提供的文件检查不匹配的书籍。",
     "size_limit": "大小应小于 {size} MB",
     "tab_title": "数据导入"
@@ -294,6 +302,10 @@
       "body": "分析库中的所有媒体文件。该分析获取有关媒体的信息。根据库的大小，这可能需要很长时间。",
       "button_confirm": "分析",
       "title": "分析库"
+    },
+    "book_picker": {
+      "filter": "按序号、标题或发行日期过滤",
+      "title": "选择书籍"
     },
     "delete_book": {
       "button_confirm": "删除",
@@ -409,7 +421,7 @@
       "field_repair_extensions": "自动修复不正确的文件扩展名",
       "field_root_folder": "根文件夹",
       "field_scanner_deep_scan": "深度扫描",
-      "field_scanner_empty_trash_after_scan": "每次扫描后自动清空垃圾箱",
+      "field_scanner_empty_trash_after_scan": "每次扫描后自动清理垃圾",
       "field_scanner_force_directory_modified_time": "强制目录修改时间",
       "field_series_cover": "系列封面",
       "file_browser_dialog_button_confirm": "选择",
@@ -433,8 +445,10 @@
       "button_cancel": "取消",
       "button_confirm": "保存修改",
       "dialog_title": "编辑阅读列表",
+      "field_manual_ordering": "手动排序",
       "field_name": "名称",
       "field_summary": "概要",
+      "label_ordering": "默认情况下，阅读列表中的书籍需要手动排序。您可以禁用手动排序来通过发行日期排序。",
       "tab_general": "常规",
       "tab_poster": "海报"
     },
@@ -486,9 +500,9 @@
       "tab_shared_libraries": "共享的库"
     },
     "empty_trash": {
-      "body": "默认情况下，媒体服务器不会立即删除媒体的信息。这对驱动器暂时断开连接的情况有所帮助。清空库的回收站时，所有丢失媒体的信息都会被删除。",
-      "button_confirm": "清空",
-      "title": "清空媒体库垃圾箱"
+      "body": "默认情况下，媒体服务器不会立即删除媒体的信息。这对驱动器暂时断开连接的情况有所帮助。清理垃圾时，所有丢失媒体相关的信息都会被删除。",
+      "button_confirm": "清理",
+      "title": "清理书库垃圾"
     },
     "file_browser": {
       "button_cancel": "取消",
@@ -522,6 +536,7 @@
     },
     "series_picker": {
       "label_search_series": "搜索系列",
+      "no_results": "未找到系列",
       "title": "选择系列"
     },
     "server_stop": {
@@ -573,8 +588,10 @@
       "size": "大小",
       "total_size": "总大小"
     },
-    "info": "删除重复的页面会修改你的文件。使用自动删除之前备份文件并使用手动删除。",
+    "info": "删除重复页面会修改您的文件。请在使用自动删除之前备份文件并手动删除。",
+    "known": "已知",
     "matches_n": "无匹配 | 1 个匹配 | {count} 个匹配",
+    "new": "新增",
     "saved_size": "节省了 {size}",
     "title": "重复页面",
     "unknown_size": "未知大小"
@@ -699,7 +716,7 @@
     "recommended": "推荐"
   },
   "login": {
-    "create_user_account": "创建用户帐户",
+    "create_user_account": "创建帐户",
     "login": "登录",
     "unclaimed_html": "该 Komga 服务器尚未激活，您需要创建一个用户帐户才能访问它。<br><br>选择一个 <strong>邮箱</strong> 和 <strong>密码</strong> 然后点击 <strong>创建账户</strong>。"
   },
@@ -726,7 +743,7 @@
     "download_series": "下载系列",
     "edit": "编辑",
     "edit_metadata": "编辑元数据",
-    "empty_trash": "清空垃圾箱",
+    "empty_trash": "清理垃圾",
     "mark_read": "标记为已读",
     "mark_unread": "标记为未读",
     "refresh_metadata": "刷新元数据",
@@ -756,6 +773,12 @@
     "less": "阅读更少",
     "more": "阅读更多"
   },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "重复书籍",
+      "error_choose_book": "选择一本书"
+    }
+  },
   "readlists_expansion_panel": {
     "manage_readlist": "管理阅读列表",
     "title": "阅读列表 {name}"
@@ -774,7 +797,7 @@
   "server": {
     "server_management": {
       "button_cancel_all_tasks": "取消所有任务",
-      "button_empty_trash": "清空所有书库的垃圾箱",
+      "button_empty_trash": "清理所有书库的垃圾",
       "button_scan_libraries": "扫描所有书库",
       "button_shutdown": "关机",
       "notification_tasks_cancelled": "无可取消任务 | 取消了一个任务 | 取消了 {count} 个任务",
@@ -827,8 +850,8 @@
   },
   "user_roles": {
     "ADMIN": "管理员",
-    "FILE_DOWNLOAD": "支持下载",
-    "PAGE_STREAMING": "支持浏览",
+    "FILE_DOWNLOAD": "允许下载",
+    "PAGE_STREAMING": "允许浏览",
     "USER": "用户"
   },
   "users": {
