@@ -6,6 +6,7 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
 import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.Book
+import org.gotson.komga.domain.model.BookAction
 import org.gotson.komga.domain.model.BookConversionException
 import org.gotson.komga.domain.model.BookPageNumbered
 import org.gotson.komga.domain.model.BookWithMedia
@@ -52,14 +53,18 @@ class BookPageEditor(
 
   private val failedPageRemoval = mutableListOf<String>()
 
-  fun removeHashedPages(book: Book, pagesToDelete: Collection<BookPageNumbered>) {
+  fun removeHashedPages(book: Book, pagesToDelete: Collection<BookPageNumbered>): BookAction? {
     // perform various checks
-    if (failedPageRemoval.contains(book.id))
-      return logger.info { "Book page removal already failed before, skipping" }
+    if (failedPageRemoval.contains(book.id)) {
+      logger.info { "Book page removal already failed before, skipping" }
+      return null
+    }
 
     fileSystemScanner.scanFile(book.path)?.let { scannedBook ->
-      if (scannedBook.fileLastModified.notEquals(book.fileLastModified))
-        return logger.info { "Book has changed on disk, skipping. Db: ${book.fileLastModified}. Scanned: ${scannedBook.fileLastModified}" }
+      if (scannedBook.fileLastModified.notEquals(book.fileLastModified)) {
+        logger.info { "Book has changed on disk, skipping. Db: ${book.fileLastModified}. Scanned: ${scannedBook.fileLastModified}" }
+        return null
+      }
     } ?: throw FileNotFoundException("File not found: ${book.path}")
 
     val media = mediaRepository.findById(book.id)
@@ -79,8 +84,10 @@ class BookPageEditor(
           candidate.pageNumber == index + 1
       } == null
     }
-    if (media.pages.size != (pagesToKeep.size + pagesToDelete.size))
-      return logger.info { "Should be removing ${pagesToDelete.size} pages from book, but count doesn't add up, skipping" }
+    if (media.pages.size != (pagesToKeep.size + pagesToDelete.size)) {
+      logger.info { "Should be removing ${pagesToDelete.size} pages from book, but count doesn't add up, skipping" }
+      return null
+    }
 
     logger.info { "Start removal of ${pagesToDelete.size} pages for book: $book" }
     logger.debug { "Pages: ${media.pages}" }
@@ -156,5 +163,7 @@ class BookPageEditor(
 
     pagesToDelete.forEach { historicalEventRepository.insert(HistoricalEvent.DuplicatePageDeleted(book, it)) }
     eventPublisher.publishEvent(DomainEvent.BookUpdated(newBook))
+
+    return if (pagesToDelete.any { it.pageNumber == 1 }) BookAction.GENERATE_THUMBNAIL else null
   }
 }

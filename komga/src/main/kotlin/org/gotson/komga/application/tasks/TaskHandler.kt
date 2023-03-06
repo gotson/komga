@@ -2,6 +2,7 @@ package org.gotson.komga.application.tasks
 
 import io.micrometer.core.instrument.MeterRegistry
 import mu.KotlinLogging
+import org.gotson.komga.domain.model.BookAction
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
@@ -149,7 +150,9 @@ class TaskHandler(
 
           is Task.RemoveHashedPages ->
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
-              bookPageEditor.removeHashedPages(book, task.pages)
+              if (bookPageEditor.removeHashedPages(book, task.pages) == BookAction.GENERATE_THUMBNAIL) {
+                taskEmitter.generateBookThumbnail(book, priority = task.priority + 1)
+              }
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
           is Task.HashBook ->
