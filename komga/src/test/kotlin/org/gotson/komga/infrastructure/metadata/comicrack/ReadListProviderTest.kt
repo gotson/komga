@@ -16,7 +16,6 @@ class ReadListProviderTest {
   private val mockMapper = mockk<XmlMapper>()
   private val readListProvider = ReadListProvider(mockMapper)
 
-
   @Nested
   inner class ImportFromCbl {
     @Test
@@ -49,12 +48,12 @@ class ReadListProviderTest {
         assertThat(books).hasSize(2)
 
         with(books[0]) {
-          assertThat(series).isEqualTo("series 1 (2005)")
+          assertThat(series).containsExactlyInAnyOrder("series 1 (2005)")
           assertThat(number).isEqualTo("4")
         }
 
         with(books[1]) {
-          assertThat(series).isEqualTo("series 2")
+          assertThat(series).containsExactlyInAnyOrder("series 2")
           assertThat(number).isEqualTo("1")
         }
       }
@@ -189,18 +188,17 @@ class ReadListProviderTest {
       val request = readListProvider.importFromCblV2(ByteArray(0))
 
       // then
-      assertThat(request).isNotNull
-      with(request!!) {
+      with(request) {
         assertThat(name).isEqualTo(cbl.name)
         assertThat(books).hasSize(2)
 
         with(books[0]) {
-          assertThat(series).isEqualTo("series 1 (2005)")
+          assertThat(series).containsExactlyInAnyOrder("series 1 (2005)", "series 1")
           assertThat(number).isEqualTo("4")
         }
 
         with(books[1]) {
-          assertThat(series).isEqualTo("series 2")
+          assertThat(series).containsExactlyInAnyOrder("series 2")
           assertThat(number).isEqualTo("1")
         }
       }

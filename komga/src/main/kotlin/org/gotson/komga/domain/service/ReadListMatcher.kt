@@ -35,7 +35,7 @@ class ReadListMatcher(
     val unmatchedBooks = mutableListOf<ReadListRequestResultBook>()
 
     request.books.forEach { book ->
-      val seriesMatches = seriesRepository.findAllByTitle(book.series)
+      val seriesMatches = seriesRepository.findAllByTitle(book.series.first())
       when {
         seriesMatches.size > 1 -> unmatchedBooks += ReadListRequestResultBook(book, "ERR_1011")
         seriesMatches.isEmpty() -> unmatchedBooks += ReadListRequestResultBook(book, "ERR_1012")
@@ -77,7 +77,7 @@ class ReadListMatcher(
       else ReadListMatch(request.name)
 
     val matches = request.books.map { book ->
-      val matches = seriesRepository.findAllByTitle(book.series).associateWith { series ->
+      val matches = book.series.flatMap { seriesRepository.findAllByTitle(it) }.associateWith { series ->
         bookRepository.findAllBySeriesId(series.id)
           .filter { (bookMetadataRepository.findById(it.id).number.trimStart('0') == book.number.trimStart('0')) }
       }

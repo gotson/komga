@@ -1,7 +1,9 @@
 <template>
   <tr v-if="match">
     <slot/>
-    <td>{{ match.request.series }}</td>
+    <td>
+      <div v-for="s in match.request.series" :key="s">{{ s }}</div>
+    </td>
     <td>{{ match.request.number }}</td>
 
     <!--  Series picker  -->
@@ -130,7 +132,7 @@ export default Vue.extend({
       if (match.matches.length === 1) {
         seriesId = match.matches[0].seriesId
       } else if (match.matches.length > 1) {
-        seriesId = match.matches.find((m) => m.bookIds.length > 1)?.seriesId
+        seriesId = match.matches.find((m) => m.bookIds.length > 0)?.seriesId
       }
       if (seriesId) {
         this.selectedSeries = await this.$komgaSeries.getOneSeries(seriesId)

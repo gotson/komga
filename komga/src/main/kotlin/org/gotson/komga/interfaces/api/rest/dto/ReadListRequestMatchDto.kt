@@ -1,6 +1,7 @@
 package org.gotson.komga.interfaces.api.rest.dto
 
 import org.gotson.komga.domain.model.ReadListMatch
+import org.gotson.komga.domain.model.ReadListRequestBook
 import org.gotson.komga.domain.model.ReadListRequestMatch
 
 data class ReadListRequestMatchDto(
@@ -14,7 +15,7 @@ fun ReadListRequestMatch.toDto() =
     readListMatch.toDto(),
     matches.map {
       ReadListRequestBookMatchesDto(
-        it.request.toDto(),
+        it.request.toDtoV2(),
         it.matches.entries.map { (series, books) ->
           ReadListRequestBookMatchDto(
             series.id,
@@ -31,9 +32,20 @@ data class ReadListMatchDto(
 )
 
 data class ReadListRequestBookMatchesDto(
-  val request: ReadListRequestBookDto,
+  val request: ReadListRequestBookV2Dto,
   val matches: List<ReadListRequestBookMatchDto>,
 )
+
+data class ReadListRequestBookV2Dto(
+  val series: Set<String>,
+  val number: String,
+)
+
+fun ReadListRequestBook.toDtoV2() =
+  ReadListRequestBookV2Dto(
+    series = series,
+    number = number,
+  )
 
 data class ReadListRequestBookMatchDto(
   val seriesId: String,

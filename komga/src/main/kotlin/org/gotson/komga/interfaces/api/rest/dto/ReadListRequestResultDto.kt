@@ -37,6 +37,6 @@ fun ReadListRequestResultBook.toDto() =
 
 fun ReadListRequestBook.toDto() =
   ReadListRequestBookDto(
-    series = series,
+    series = series.first(),
     number = number,
   )

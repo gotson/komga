@@ -40,6 +40,11 @@ export interface ReadListRequestBookDto {
   number: string,
 }
 
+export interface ReadListRequestBookV2Dto {
+  series: string[],
+  number: string,
+}
+
 export interface ReadListThumbnailDto {
   id: string,
   readListId: string,
@@ -59,7 +64,7 @@ export interface ReadListMatchDto {
 }
 
 export interface ReadListRequestBookMatchesDto {
-  request: ReadListRequestBookDto,
+  request: ReadListRequestBookV2Dto,
   matches: ReadListRequestBookMatchDto[],
 }
 

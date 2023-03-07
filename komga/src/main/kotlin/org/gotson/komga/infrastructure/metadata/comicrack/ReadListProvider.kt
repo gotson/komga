@@ -29,7 +29,7 @@ class ReadListProvider(
         val books = readingList.books.mapNotNull {
           val series = computeSeriesFromSeriesAndVolume(it.series, it.volume)
           if (!series.isNullOrBlank() && it.number != null)
-            ReadListRequestBook(series, it.number!!.trim())
+            ReadListRequestBook(setOf(series), it.number!!.trim())
           else {
             logger.warn { "Book is missing series or number, skipping: $it" }
             null
@@ -61,9 +61,9 @@ class ReadListProvider(
     if (readingList.books.isEmpty()) throw ComicRackListException("ReadingList does not contain any Book element", "ERR_1029")
 
     val books = readingList.books.map {
-      val series = computeSeriesFromSeriesAndVolume(it.series, it.volume)
-      if (series.isNullOrBlank() || it.number == null) throw ComicRackListException("Book is missing series or number: $it", "ERR_1031")
-      else ReadListRequestBook(series, it.number!!.trim())
+      if (it.series.isNullOrBlank() || it.number == null) throw ComicRackListException("Book is missing series or number: $it", "ERR_1031")
+      val series = setOfNotNull(computeSeriesFromSeriesAndVolume(it.series, it.volume), it.series?.ifBlank { null })
+      ReadListRequestBook(series, it.number!!.trim())
     }
 
     return ReadListRequest(name = readingList.name!!, books = books)
