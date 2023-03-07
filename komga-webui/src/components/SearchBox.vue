@@ -54,6 +54,13 @@
                 $t('searchbox.in_library', {library: getLibraryName(data.item)})
               }}
             </v-list-item-subtitle>
+            <v-list-item-subtitle v-if="data.item.booksMetadata.releaseDate">{{
+                new Intl.DateTimeFormat($i18n.locale, {
+                  year: 'numeric',
+                  timeZone: 'UTC'
+                }).format(new Date(data.item.booksMetadata.releaseDate))
+              }}
+            </v-list-item-subtitle>
           </v-list-item-content>
         </template>
 
@@ -162,7 +169,7 @@ export default Vue.extend({
       if (this.search) {
         results.push({type: 'search'})
         if (this.series.length > 0) {
-          results.push({header: this.$t('common.series').toString().toUpperCase()})
+          results.push({header: this.$tc('common.series', 2).toString().toUpperCase()})
           results.push(...this.series.map(o => ({...o, type: 'series'})))
         }
         if (this.books.length > 0) {
