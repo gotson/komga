@@ -396,6 +396,7 @@ class ReadListController(
         principal.user.getAuthorizedLibraryIds(null),
         BookSearchWithReadProgress(),
         UnpagedSorted(Sort.by(Sort.Order.asc("readList.number"))),
+        principal.user.restrictions,
       ).filterIndexed { index, _ -> index < readProgress.lastBookRead }
         .forEach { book ->
           if (book.readProgress?.completed != true)
