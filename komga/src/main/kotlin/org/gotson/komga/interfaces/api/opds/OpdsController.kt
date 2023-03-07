@@ -516,7 +516,7 @@ class OpdsController(
       )
       val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.asc("metadata.numberSort")))
 
-      val entries = bookDtoRepository.findAll(bookSearch, principal.user.id, pageable)
+      val entries = bookDtoRepository.findAll(bookSearch, principal.user.id, pageable, principal.user.restrictions)
         .map { bookDto -> bookDto.toOpdsEntry(mediaRepository.findById(bookDto.id)) { if (shouldEnforceSort(userAgent)) "${decimalFormat.format(it.metadata.numberSort)} - " else "" } }
 
       val uriBuilder = uriBuilder("series/$id")
@@ -637,6 +637,7 @@ class OpdsController(
         principal.user.getAuthorizedLibraryIds(null),
         bookSearch,
         pageable,
+        principal.user.restrictions,
       )
 
       val entries = booksPage.map { bookDto ->
