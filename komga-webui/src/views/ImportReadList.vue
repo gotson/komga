@@ -161,8 +161,12 @@ export default Vue.extend({
       return this.form.bookIds.filter((b) => b === bookId).length > 1
     },
     async matchFile() {
-      this.result = await this.$komgaReadLists.postReadListMatch(this.file)
-      this.form.name = this.result.readListMatch.name
+      try {
+        this.result = await this.$komgaReadLists.postReadListMatch(this.file)
+        this.form.name = this.result.readListMatch.name
+      } catch (e) {
+        this.$eventHub.$emit(ERROR, {message: convertErrorCodes(e.message)} as ErrorEvent)
+      }
       this.form.summary = ''
       this.form.ordered = true
       this.form.bookIds = []

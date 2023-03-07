@@ -661,7 +661,7 @@
     "ERR_1012": "No match for series",
     "ERR_1013": "No unique match for book number within series",
     "ERR_1014": "No match for book number within series",
-    "ERR_1015": "Error while deserializing ComicRack ReadingList",
+    "ERR_1015": "Error while deserializing ComicRack CBL",
     "ERR_1016": "Directory not accessible or not a directory",
     "ERR_1017": "Cannot scan folder that is part of an existing library",
     "ERR_1018": "File not found",
@@ -674,7 +674,10 @@
     "ERR_1025": "OAuth2 login error: no local user exist with that email",
     "ERR_1026": "OpenID Connect login error: email not verified",
     "ERR_1027": "OpenID Connect login error: no email_verified attribute",
-    "ERR_1028": "OpenID Connect login error: no email attribute"
+    "ERR_1028": "OpenID Connect login error: no email attribute",
+    "ERR_1029": "ComicRack CBL does not contain any Book element",
+    "ERR_1030": "ComicRack CBL has no Name element",
+    "ERR_1031": "ComicRack CBL Book is missing series or number"
   },
   "filter": {
     "age_rating": "age rating",
