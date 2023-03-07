@@ -26,7 +26,7 @@
 
             <v-divider/>
 
-            <v-list v-if="filteredBooks.length > 0">
+            <v-list v-if="filteredBooks.length > 0" three-line>
               <v-list-item-group color="primary" v-model="selectedItem">
                 <v-list-item
                   v-for="(book, index) in filteredBooks"

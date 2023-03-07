@@ -29,7 +29,7 @@
 
             <v-row v-if="results">
               <v-col>
-                <v-list elevation="5" v-if="results.length > 0" two-line>
+                <v-list elevation="5" v-if="results.length > 0" three-line>
                   <div v-for="(s, index) in results"
                        :key="index"
                   >
@@ -44,6 +44,13 @@
                         <v-list-item-title>{{ s.metadata.title }}</v-list-item-title>
                         <v-list-item-subtitle>{{
                             $t('searchbox.in_library', {library: getLibraryName(s)})
+                          }}
+                        </v-list-item-subtitle>
+                        <v-list-item-subtitle v-if="s.booksMetadata.releaseDate">{{
+                            new Intl.DateTimeFormat($i18n.locale, {
+                              year: 'numeric',
+                              timeZone: 'UTC'
+                            }).format(new Date(s.booksMetadata.releaseDate))
                           }}
                         </v-list-item-subtitle>
                       </v-list-item-content>
