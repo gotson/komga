@@ -6,12 +6,10 @@ import io.mockk.every
 import io.mockk.just
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.application.tasks.TaskEmitter
-import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadListRequest
 import org.gotson.komga.domain.model.ReadListRequestBook
 import org.gotson.komga.domain.model.ReadListRequestBookMatches
-import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -278,10 +276,6 @@ class ReadListMatcherTest(
 
   @Nested
   inner class Match {
-    private fun Map<ReadListRequestBook, Map<Series, Collection<Book>>>.mapIds(requestBooks: List<ReadListRequestBook>) = this
-      .mapKeys { requestBooks.indexOf(it.key) }
-      .mapValues { (_, v) -> v.mapKeys { it.key.id }.mapValues { it.value.map { book -> book.id } } }
-
     private fun Collection<ReadListRequestBookMatches>.mapIds() = map {
       it.matches
         .mapKeys { (series, _) -> series.id }

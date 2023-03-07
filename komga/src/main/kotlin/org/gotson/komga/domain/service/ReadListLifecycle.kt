@@ -5,7 +5,6 @@ import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.ReadList
-import org.gotson.komga.domain.model.ReadListMatch
 import org.gotson.komga.domain.model.ReadListRequestMatch
 import org.gotson.komga.domain.model.ReadListRequestResult
 import org.gotson.komga.domain.model.ThumbnailReadList
@@ -140,11 +139,7 @@ class ReadListLifecycle(
   }
 
   fun matchComicRackList(fileContent: ByteArray): ReadListRequestMatch {
-    val request = try {
-      readListProvider.importFromCbl(fileContent) ?: return ReadListRequestMatch(ReadListMatch(""), emptyList(), "ERR_1015")
-    } catch (e: Exception) {
-      return ReadListRequestMatch(ReadListMatch(""), emptyList(), "ERR_1015")
-    }
+    val request = readListProvider.importFromCblV2(fileContent)
 
     return readListMatcher.matchReadListRequest(request)
   }
@@ -159,6 +154,7 @@ class ReadListLifecycle(
         logger.info { "More than one thumbnail is selected, removing extra ones" }
         thumbnailReadListRepository.markSelected(selected[0])
       }
+
       selected.isEmpty() && all.isNotEmpty() -> {
         logger.info { "Read list has no selected thumbnail, choosing one automatically" }
         thumbnailReadListRepository.markSelected(all.first())

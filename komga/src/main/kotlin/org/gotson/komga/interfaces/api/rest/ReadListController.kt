@@ -12,6 +12,7 @@ import org.apache.commons.io.IOUtils
 import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
+import org.gotson.komga.domain.model.CodedException
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.Media
@@ -254,7 +255,11 @@ class ReadListController(
   fun matchFromComicRackList(
     @RequestParam("file") file: MultipartFile,
   ): ReadListRequestMatchDto =
-    readListLifecycle.matchComicRackList(file.bytes).toDto()
+    try {
+      readListLifecycle.matchComicRackList(file.bytes).toDto()
+    } catch (e: CodedException) {
+      throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.code)
+    }
 
   @PatchMapping("{id}")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")

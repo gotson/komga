@@ -31,6 +31,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.multipart
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
 import java.net.URLEncoder
@@ -1041,32 +1042,35 @@ class ReadListControllerTest(
     }
   }
 
-  @Test
-  @WithMockCustomUser
-  fun `given readlist with Unicode name when getting readlist file then attachment name is correct`() {
-    val name = "アキラ"
-    val tempFile = Files.createTempFile(name, ".cbz")
-      .also { it.toFile().deleteOnExit() }
-    val book = makeBook(name, libraryId = library1.id, url = tempFile.toUri().toURL())
-    makeSeries(name = "series", libraryId = library1.id).let { series ->
-      seriesLifecycle.createSeries(series).let { created ->
-        val books = listOf(book)
-        seriesLifecycle.addBooks(created, books)
+  @Nested
+  inner class FileDownload {
+    @Test
+    @WithMockCustomUser
+    fun `given readlist with Unicode name when getting readlist file then attachment name is correct`() {
+      val name = "アキラ"
+      val tempFile = Files.createTempFile(name, ".cbz")
+        .also { it.toFile().deleteOnExit() }
+      val book = makeBook(name, libraryId = library1.id, url = tempFile.toUri().toURL())
+      makeSeries(name = "series", libraryId = library1.id).let { series ->
+        seriesLifecycle.createSeries(series).let { created ->
+          val books = listOf(book)
+          seriesLifecycle.addBooks(created, books)
+        }
       }
+
+      val readlist = readListLifecycle.addReadList(
+        ReadList(
+          name = name,
+          bookIds = listOf(book.id).toIndexedMap(),
+        ),
+      )
+
+      mockMvc.get("/api/v1/readlists/${readlist.id}/file")
+        .andExpect {
+          status { isOk() }
+          header { string("Content-Disposition", Matchers.containsString(URLEncoder.encode(name, StandardCharsets.UTF_8.name()))) }
+        }
     }
-
-    val readlist = readListLifecycle.addReadList(
-      ReadList(
-        name = name,
-        bookIds = listOf(book.id).toIndexedMap(),
-      ),
-    )
-
-    mockMvc.get("/api/v1/readlists/${readlist.id}/file")
-      .andExpect {
-        status { isOk() }
-        header { string("Content-Disposition", Matchers.containsString(URLEncoder.encode(name, StandardCharsets.UTF_8.name()))) }
-      }
   }
 
   @Nested
@@ -1236,6 +1240,107 @@ class ReadListControllerTest(
         }
       mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books/${books[2].id}/next")
         .andExpect { status { isNotFound() } }
+    }
+  }
+
+  @Nested
+  inner class Match {
+    @Test
+    @WithMockCustomUser
+    fun `given non-admin user when matching cbl file then return forbidden`() {
+      mockMvc.multipart("/api/v1/readlists/match/comicrack") {
+        file("file", byteArrayOf())
+      }
+        .andExpect {
+          status { isForbidden() }
+        }
+    }
+
+    @Test
+    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    fun `given invalid cbl file when matching then return bad request`() {
+      val content = "garbled"
+
+      mockMvc.multipart("/api/v1/readlists/match/comicrack") {
+        file("file", content.toByteArray())
+      }
+        .andExpect {
+          status {
+            isBadRequest()
+            reason("ERR_1015")
+          }
+        }
+    }
+
+    @Test
+    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    fun `given cbl file without books when matching then return bad request`() {
+      val content = """
+        <?xml version="1.0"?>
+        <ReadingList>
+          <Name>RL</Name>
+          <Books>
+          </Books>
+        </ReadingList>
+      """.trimIndent()
+
+      mockMvc.multipart("/api/v1/readlists/match/comicrack") {
+        file("file", content.toByteArray())
+      }
+        .andExpect {
+          status {
+            isBadRequest()
+            reason("ERR_1029")
+          }
+        }
+    }
+
+    @Test
+    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    fun `given cbl file without name when matching then return bad request`() {
+      val content = """
+        <?xml version="1.0"?>
+        <ReadingList>
+          <Name></Name>
+          <Books>
+            <Book Series="Civil War" Number="1" Volume="2006" Year="2006"/>
+          </Books>
+        </ReadingList>
+      """.trimIndent()
+
+      mockMvc.multipart("/api/v1/readlists/match/comicrack") {
+        file("file", content.toByteArray())
+      }
+        .andExpect {
+          status {
+            isBadRequest()
+            reason("ERR_1030")
+          }
+        }
+    }
+
+    @Test
+    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    fun `given cbl file with book without series when matching then return bad request`() {
+      val content = """
+        <?xml version="1.0"?>
+        <ReadingList>
+          <Name>RL</Name>
+          <Books>
+            <Book Number="1" Volume="2006" Year="2006"/>
+          </Books>
+        </ReadingList>
+      """.trimIndent()
+
+      mockMvc.multipart("/api/v1/readlists/match/comicrack") {
+        file("file", content.toByteArray())
+      }
+        .andExpect {
+          status {
+            isBadRequest()
+            reason("ERR_1031")
+          }
+        }
     }
   }
 }
