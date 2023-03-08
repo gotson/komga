@@ -1,3 +1,52 @@
+# [0.163.0](https://github.com/gotson/komga/compare/v0.162.0...v0.163.0) (2023-03-08)
+## 🚀 Features
+**opds**
+- add support for OPDS-PSE 1.2 ([29e71b0](https://github.com/gotson/komga/commits/29e71b0))
+
+**webui**
+- display series release year in series picker dialog ([1d7c89a](https://github.com/gotson/komga/commits/1d7c89a)), closes [#1076](https://github.com/gotson/komga/issues/1076)
+- display series release year in search box results ([e95304e](https://github.com/gotson/komga/commits/e95304e))
+
+**unscoped**
+- comicrack read list matching will look for series with and without volume in brackets ([ac1e956](https://github.com/gotson/komga/commits/ac1e956)), closes [#1075](https://github.com/gotson/komga/issues/1075)
+
+## 🐛 Fixes
+**api**
+- incorrect time conversion for BookMetadataAggregationDto ([9a015c4](https://github.com/gotson/komga/commits/9a015c4))
+- better error handling for read list matching ([1961efe](https://github.com/gotson/komga/commits/1961efe))
+- user restrictions checks were missing ([c661a88](https://github.com/gotson/komga/commits/c661a88))
+
+**opds**
+- user restrictions checks were missing ([471895c](https://github.com/gotson/komga/commits/471895c))
+
+**webui**
+- better error handling for read list matching ([53b1137](https://github.com/gotson/komga/commits/53b1137))
+
+**unscoped**
+- translated using Weblate ([38f1e0b](https://github.com/gotson/komga/commits/38f1e0b))
+- regenerate thumbnail if first page is removed as duplicate ([cf2a5a2](https://github.com/gotson/komga/commits/cf2a5a2)), closes [#1078](https://github.com/gotson/komga/issues/1078)
+
+## 🔄️ Changes
+**webui**
+- fix some warnings in javascript console ([88abfcc](https://github.com/gotson/komga/commits/88abfcc))
+- missing i18n strings ([13444f8](https://github.com/gotson/komga/commits/13444f8))
+
+**unscoped**
+- use BookAction for analyzeAndPersist return type ([4d906f8](https://github.com/gotson/komga/commits/4d906f8))
+
+## 🛠  Build
+**deps**
+- bump peter-evans/dockerhub-description from 3.1.2 to 3.3.0 ([683b663](https://github.com/gotson/komga/commits/683b663))
+
+**unscoped**
+- jreleaser continue if docker fails ([2f1af32](https://github.com/gotson/komga/commits/2f1af32))
+- more JReleaser workaround ([e2e6d6e](https://github.com/gotson/komga/commits/e2e6d6e))
+- always upload JReleaser output [skip ci] ([b2d3b3b](https://github.com/gotson/komga/commits/b2d3b3b))
+
+## 📝 Documentation
+
+- clarify docker steps ([74dbe92](https://github.com/gotson/komga/commits/74dbe92))
+
 # [0.162.0](https://github.com/gotson/komga/compare/v0.161.0...v0.162.0) (2023-03-03)
 ## 🚀 Features
 **api**
