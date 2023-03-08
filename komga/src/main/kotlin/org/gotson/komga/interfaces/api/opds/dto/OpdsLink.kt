@@ -1,7 +1,9 @@
 package org.gotson.komga.interfaces.api.opds.dto
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
+import java.time.LocalDateTime
 
 open class OpdsLink(
   @get:JacksonXmlProperty(isAttribute = true)
@@ -65,6 +67,10 @@ class OpdsLinkPageStreaming(
 
   @get:JacksonXmlProperty(isAttribute = true, namespace = OPDS_PSE)
   val lastRead: Int?,
+
+  @get:JacksonXmlProperty(isAttribute = true, namespace = OPDS_PSE)
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  val lastReadDate: LocalDateTime?,
 ) : OpdsLink(
   type = mediaType,
   rel = "http://vaemendis.net/opds-pse/stream",
