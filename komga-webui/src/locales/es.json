@@ -234,7 +234,7 @@
     "reset_filters": "Reiniciar filtros",
     "roles": "Funciones",
     "save_changes": "Guardar cambios",
-    "series": "Serie",
+    "series": "Series | Series",
     "sidecars": "Sidecars",
     "tags": "Etiquetas",
     "unavailable": "No disponible",
@@ -256,7 +256,7 @@
     "book_number": "Número de libro: {name}",
     "book_series": "Serie: {name}",
     "button_import": "Importar",
-    "button_match": "Partido",
+    "button_match": "Coincidencia",
     "comicrack_preambule_html": "Puede importar Listas de lectura de ComicRack en formato <code>.cbl</code>.<br>Komga intentará hacer coincidir la serie y número de libro proporcionados con las series y libros en sus bibliotecas.",
     "field_file_label": "Lista de lectura de ComicRack (.cbl)",
     "field_files_label": "Listas de lectura de ComicRack (.cbl)",
@@ -589,7 +589,9 @@
       "total_size": "Tamaño total"
     },
     "info": "Borrar las páginas duplicadas modificará sus archivos. Respalde sus archivos y use el borrado manual antes de usar el borrado automático.",
+    "known": "Conocida",
     "matches_n": "Sin resultados | 1 resultado | {count} resultados",
+    "new": "Nueva",
     "saved_size": "Se recuperó {size}",
     "title": "Páginas duplicadas",
     "unknown_size": "Tamaño desconocido"
@@ -796,7 +798,7 @@
     "server_management": {
       "button_cancel_all_tasks": "Cancelar todas las tareas",
       "button_empty_trash": "Vaciar la papelera de todas las bibliotecas",
-      "button_scan_libraries": "Escanear todas las biblioteca",
+      "button_scan_libraries": "Escanear todas las bibliotecas",
       "button_shutdown": "Apagar",
       "notification_tasks_cancelled": "No hay tareas para cancelar | Una tarea cancelada | {count} tareas canceladas",
       "section_title": "Administración del servidor"
