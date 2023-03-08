@@ -421,7 +421,7 @@ class SeriesDtoDao(
       summary = summary,
       summaryNumber = summaryNumber,
 
-      created = createdDate.toCurrentTimeZone(),
-      lastModified = lastModifiedDate.toCurrentTimeZone(),
+      created = createdDate,
+      lastModified = lastModifiedDate,
     )
 }
