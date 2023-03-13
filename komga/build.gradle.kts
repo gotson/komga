@@ -341,10 +341,21 @@ jreleaser {
           labels.add("perf")
           order.set(25)
         }
+        category {
+          title.set("🌐 Translation")
+          key.set("i18n")
+          labels.add("i18n")
+          order.set(70)
+        }
         labeler {
           label.set("perf")
           title.set("regex:^(?:perf(?:\\(.*\\))?!?):\\s.*")
           order.set(120)
+        }
+        labeler {
+          label.set("i18n")
+          title.set("regex:^(?:i18n(?:\\(.*\\))?!?):\\s.*")
+          order.set(130)
         }
         extraProperties.put("categorizeScopes", true)
         append {
