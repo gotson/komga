@@ -69,212 +69,6 @@ class ReadListMatcherTest(
   }
 
   @Nested
-  inner class MatchAndCreate {
-    @Test
-    fun `given request with existing series and books when matching then result contains a read list with all books`() {
-      // given
-      val booksSeries1 = listOf(
-        makeBook("book1", libraryId = library.id),
-        makeBook("book5", libraryId = library.id),
-      )
-      makeSeries(name = "batman", libraryId = library.id).let { s ->
-        seriesLifecycle.createSeries(s)
-        seriesLifecycle.addBooks(s, booksSeries1)
-        seriesLifecycle.sortBooks(s)
-        seriesMetadataRepository.findById(s.id).let {
-          seriesMetadataRepository.update(it.copy(title = "Batman: White Knight"))
-        }
-      }
-
-      val booksSeries2 = listOf(
-        makeBook("book1", libraryId = library.id),
-        makeBook("book2", libraryId = library.id),
-      )
-      makeSeries(name = "joker", libraryId = library.id).let { s ->
-        seriesLifecycle.createSeries(s)
-        seriesLifecycle.addBooks(s, booksSeries2)
-        seriesLifecycle.sortBooks(s)
-
-        bookMetadataRepository.findById(booksSeries2[0].id).let {
-          bookMetadataRepository.update(it.copy(number = "0025"))
-        }
-      }
-
-      val request = ReadListRequest(
-        name = "readlist",
-        books = listOf(
-          ReadListRequestBook(series = setOf("Batman: White Knight"), number = "1"),
-          ReadListRequestBook(series = setOf("joker"), number = "02"),
-          ReadListRequestBook(series = setOf("Batman: White Knight"), number = "2"),
-          ReadListRequestBook(series = setOf("joker"), number = "25"),
-        ),
-      )
-
-      // when
-      val result = readListMatcher.matchAndCreateReadListRequest(request)
-
-      // then
-      with(result) {
-        assertThat(readList).isNotNull
-        assertThat(unmatchedBooks).isEmpty()
-        assertThat(errorCode).isBlank
-        with(readList!!) {
-          assertThat(name).isEqualTo(request.name)
-          assertThat(bookIds).hasSize(4)
-          assertThat(bookIds).containsExactlyEntriesOf(
-            mapOf(
-              0 to booksSeries1[0].id,
-              1 to booksSeries2[1].id,
-              2 to booksSeries1[1].id,
-              3 to booksSeries2[0].id,
-            ),
-          )
-        }
-      }
-    }
-
-    @Test
-    fun `given request with existing read list when matching then result has no readlist and appropriate error code`() {
-      // given
-      readListLifecycle.addReadList(
-        ReadList(name = "my ReadList"),
-      )
-
-      val request = ReadListRequest(
-        name = "my readlist",
-        books = listOf(
-          ReadListRequestBook(series = setOf("batman: white knight"), number = "1"),
-          ReadListRequestBook(series = setOf("joker"), number = "2"),
-          ReadListRequestBook(series = setOf("BATMAN: WHITE KNIGHT"), number = "2"),
-          ReadListRequestBook(series = setOf("joker"), number = "25"),
-        ),
-      )
-
-      // when
-      val result = readListMatcher.matchAndCreateReadListRequest(request)
-
-      // then
-      with(result) {
-        assertThat(readList).isNull()
-        assertThat(errorCode).isEqualTo("ERR_1009")
-        assertThat(unmatchedBooks.map { it.book }).containsExactlyElementsOf(request.books)
-      }
-    }
-
-    @Test
-    fun `given request and some matching series or books when matching then returns result with appropriate error codes`() {
-      // given
-      val booksSeries1 = listOf(
-        makeBook("book1", libraryId = library.id),
-        makeBook("book5", libraryId = library.id),
-      )
-      makeSeries(name = "batman", libraryId = library.id).let { s ->
-        seriesLifecycle.createSeries(s)
-        seriesLifecycle.addBooks(s, booksSeries1)
-        seriesLifecycle.sortBooks(s)
-
-        bookMetadataRepository.findById(booksSeries1[0].id).let {
-          bookMetadataRepository.update(it.copy(number = "2"))
-        }
-      }
-
-      val booksSeries2 = listOf(
-        makeBook("book1", libraryId = library.id),
-        makeBook("book2", libraryId = library.id),
-      )
-      makeSeries(name = "joker", libraryId = library.id).let { s ->
-        seriesLifecycle.createSeries(s)
-        seriesLifecycle.addBooks(s, booksSeries2)
-        seriesLifecycle.sortBooks(s)
-      }
-      makeSeries(name = "joker", libraryId = library.id).let { s ->
-        seriesLifecycle.createSeries(s)
-      }
-
-      val request = ReadListRequest(
-        name = "readlist",
-        books = listOf(
-          ReadListRequestBook(series = setOf("tokyo ghost"), number = "1"),
-          ReadListRequestBook(series = setOf("batman"), number = "3"),
-          ReadListRequestBook(series = setOf("joker"), number = "3"),
-          ReadListRequestBook(series = setOf("batman"), number = "2"),
-        ),
-      )
-
-      // when
-      val result = readListMatcher.matchAndCreateReadListRequest(request)
-
-      // then
-      with(result) {
-        assertThat(readList).isNull()
-        assertThat(errorCode).isEqualTo("ERR_1010")
-
-        assertThat(unmatchedBooks).hasSize(4)
-
-        assertThat(unmatchedBooks[0].book).isEqualTo(request.books[0])
-        assertThat(unmatchedBooks[0].errorCode).isEqualTo("ERR_1012")
-
-        assertThat(unmatchedBooks[1].book).isEqualTo(request.books[1])
-        assertThat(unmatchedBooks[1].errorCode).isEqualTo("ERR_1014")
-
-        assertThat(unmatchedBooks[2].book).isEqualTo(request.books[2])
-        assertThat(unmatchedBooks[2].errorCode).isEqualTo("ERR_1011")
-
-        assertThat(unmatchedBooks[3].book).isEqualTo(request.books[3])
-        assertThat(unmatchedBooks[3].errorCode).isEqualTo("ERR_1013")
-      }
-    }
-
-    @Test
-    fun `given request with duplicate books when matching then returns result with appropriate error codes`() {
-      // given
-      val booksSeries1 = listOf(
-        makeBook("book1", libraryId = library.id),
-        makeBook("book2", libraryId = library.id),
-      )
-      makeSeries(name = "batman", libraryId = library.id).let { s ->
-        seriesLifecycle.createSeries(s)
-        seriesLifecycle.addBooks(s, booksSeries1)
-        seriesLifecycle.sortBooks(s)
-      }
-
-      val request = ReadListRequest(
-        name = "readlist",
-        books = listOf(
-          ReadListRequestBook(series = setOf("batman"), number = "1"),
-          ReadListRequestBook(series = setOf("batman"), number = "2"),
-          ReadListRequestBook(series = setOf("batman"), number = "2"),
-        ),
-      )
-
-      // when
-      val result = readListMatcher.matchAndCreateReadListRequest(request)
-
-      // then
-      with(result) {
-        assertThat(readList).isNotNull
-        with(readList!!) {
-          assertThat(name).isEqualTo(request.name)
-          assertThat(bookIds).hasSize(2)
-          assertThat(bookIds).containsExactlyEntriesOf(
-            mapOf(
-              0 to booksSeries1[0].id,
-              1 to booksSeries1[1].id,
-            ),
-          )
-        }
-
-        assertThat(errorCode).isBlank
-
-        assertThat(unmatchedBooks).hasSize(1)
-
-        assertThat(unmatchedBooks[0].book).isEqualTo(request.books[2])
-        assertThat(unmatchedBooks[0].errorCode).isEqualTo("ERR_1023")
-      }
-    }
-  }
-
-  @Nested
   inner class Match {
     private fun Collection<ReadListRequestBookMatches>.mapIds() = map {
       it.matches
@@ -313,7 +107,7 @@ class ReadListMatcherTest(
       }
 
       val request = ReadListRequest(
-        name = "readlist",
+        name = "readlist request",
         books = listOf(
           ReadListRequestBook(series = setOf("Batman: White Knight"), number = "1"),
           ReadListRequestBook(series = setOf("joker"), number = "02"),
@@ -331,9 +125,9 @@ class ReadListMatcherTest(
           assertThat(name).isEqualTo(request.name)
           assertThat(errorCode).isBlank
         }
-        assertThat(matches).hasSize(4)
-        assertThat(matches.map { it.request }).containsExactlyElementsOf(request.books)
-        assertThat(matches.mapIds()).isEqualTo(
+        assertThat(requests).hasSize(4)
+        assertThat(requests.map { it.request }).containsExactlyElementsOf(request.books)
+        assertThat(requests.mapIds()).isEqualTo(
           listOf(
             mapOf(series1.id to listOf(booksSeries1[0].id)),
             mapOf(series2.id to listOf(booksSeries2[1].id)),
@@ -397,9 +191,9 @@ class ReadListMatcherTest(
           assertThat(name).isEqualTo(request.name)
           assertThat(errorCode).isEqualTo("ERR_1009")
         }
-        assertThat(matches).hasSize(4)
-        assertThat(matches.map { it.request }).containsExactlyElementsOf(request.books)
-        assertThat(matches.mapIds()).isEqualTo(
+        assertThat(requests).hasSize(4)
+        assertThat(requests.map { it.request }).containsExactlyElementsOf(request.books)
+        assertThat(requests.mapIds()).isEqualTo(
           listOf(
             mapOf(series1.id to listOf(booksSeries1[0].id)),
             mapOf(series2.id to listOf(booksSeries2[1].id)),
@@ -459,13 +253,13 @@ class ReadListMatcherTest(
           assertThat(name).isEqualTo(request.name)
           assertThat(errorCode).isBlank
         }
-        assertThat(matches).hasSize(4)
-        assertThat(matches.map { it.request }).containsExactlyElementsOf(request.books)
-        assertThat(matches.mapIds()).isEqualTo(
+        assertThat(requests).hasSize(4)
+        assertThat(requests.map { it.request }).containsExactlyElementsOf(request.books)
+        assertThat(requests.mapIds()).isEqualTo(
           listOf(
             emptyMap(),
-            mapOf(series1.id to emptyList()),
-            mapOf(series2.id to listOf(booksSeries2[1].id), series2dupe.id to emptyList()),
+            emptyMap(),
+            mapOf(series2.id to listOf(booksSeries2[1].id)),
             mapOf(series1.id to listOf(booksSeries1[0].id, booksSeries1[1].id)),
           ),
         )

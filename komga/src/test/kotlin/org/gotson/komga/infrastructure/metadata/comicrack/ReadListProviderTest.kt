@@ -42,152 +42,6 @@ class ReadListProviderTest {
       val request = readListProvider.importFromCbl(ByteArray(0))
 
       // then
-      assertThat(request).isNotNull
-      with(request!!) {
-        assertThat(name).isEqualTo(cbl.name)
-        assertThat(books).hasSize(2)
-
-        with(books[0]) {
-          assertThat(series).containsExactlyInAnyOrder("series 1 (2005)")
-          assertThat(number).isEqualTo("4")
-        }
-
-        with(books[1]) {
-          assertThat(series).containsExactlyInAnyOrder("series 2")
-          assertThat(number).isEqualTo("1")
-        }
-      }
-    }
-
-    @Test
-    fun `given CBL list with invalid books when getting ReadListRequest then it is null`() {
-      // given
-      val cbl = ReadingList().apply {
-        name = "my read list"
-        books = listOf(
-          Book().apply {
-            series = " "
-            number = "4"
-            volume = 2005
-          },
-          Book().apply {
-            series = null
-            number = "1"
-          },
-          Book().apply {
-            series = "Series"
-            number = null
-          },
-        )
-      }
-
-      every { mockMapper.readValue(any<ByteArray>(), ReadingList::class.java) } returns cbl
-
-      // when
-      val request = readListProvider.importFromCbl(ByteArray(0))
-
-      // then
-      assertThat(request).isNull()
-    }
-
-    @Test
-    fun `given CBL list without books when getting ReadListRequest then it is null`() {
-      // given
-      val cbl = ReadingList().apply {
-        name = "my read list"
-        books = emptyList()
-      }
-
-      every { mockMapper.readValue(any<ByteArray>(), ReadingList::class.java) } returns cbl
-
-      // when
-      val request = readListProvider.importFromCbl(ByteArray(0))
-
-      // then
-      assertThat(request).isNull()
-    }
-
-    @Test
-    fun `given CBL list without name when getting ReadListRequest then it is null`() {
-      // given
-      val cbl = ReadingList().apply {
-        name = null
-        books = listOf(
-          Book().apply {
-            series = "series 1"
-            number = "4"
-            volume = 2005
-          },
-          Book().apply {
-            series = "series 2"
-            number = "1"
-          },
-        )
-      }
-
-      every { mockMapper.readValue(any<ByteArray>(), ReadingList::class.java) } returns cbl
-
-      // when
-      val request = readListProvider.importFromCbl(ByteArray(0))
-
-      // then
-      assertThat(request).isNull()
-    }
-
-    @Test
-    fun `given CBL list with blank name when getting ReadListRequest then it is null`() {
-      // given
-      val cbl = ReadingList().apply {
-        name = "  "
-        books = listOf(
-          Book().apply {
-            series = "series 1"
-            number = "4"
-            volume = 2005
-          },
-          Book().apply {
-            series = "series 2"
-            number = "1"
-          },
-        )
-      }
-
-      every { mockMapper.readValue(any<ByteArray>(), ReadingList::class.java) } returns cbl
-
-      // when
-      val request = readListProvider.importFromCbl(ByteArray(0))
-
-      // then
-      assertThat(request).isNull()
-    }
-  }
-
-  @Nested
-  inner class ImportFromCblV2 {
-    @Test
-    fun `given CBL list with books when getting ReadListRequest then it is valid`() {
-      // given
-      val cbl = ReadingList().apply {
-        name = "my read list"
-        books = listOf(
-          Book().apply {
-            series = "series 1"
-            number = " 4 "
-            volume = 2005
-          },
-          Book().apply {
-            series = "series 2"
-            number = "1"
-          },
-        )
-      }
-
-      every { mockMapper.readValue(any<ByteArray>(), ReadingList::class.java) } returns cbl
-
-      // when
-      val request = readListProvider.importFromCblV2(ByteArray(0))
-
-      // then
       with(request) {
         assertThat(name).isEqualTo(cbl.name)
         assertThat(books).hasSize(2)
@@ -229,7 +83,7 @@ class ReadListProviderTest {
       every { mockMapper.readValue(any<ByteArray>(), ReadingList::class.java) } returns cbl
 
       // when
-      val thrown = catchThrowable { readListProvider.importFromCblV2(ByteArray(0)) }
+      val thrown = catchThrowable { readListProvider.importFromCbl(ByteArray(0)) }
 
       // then
       assertThat(thrown).isInstanceOf(ComicRackListException::class.java)
@@ -247,7 +101,7 @@ class ReadListProviderTest {
       every { mockMapper.readValue(any<ByteArray>(), ReadingList::class.java) } returns cbl
 
       // when
-      val thrown = catchThrowable { readListProvider.importFromCblV2(ByteArray(0)) }
+      val thrown = catchThrowable { readListProvider.importFromCbl(ByteArray(0)) }
 
       // then
       assertThat(thrown).isInstanceOf(ComicRackListException::class.java)
@@ -275,7 +129,7 @@ class ReadListProviderTest {
       every { mockMapper.readValue(any<ByteArray>(), ReadingList::class.java) } returns cbl
 
       // when
-      val thrown = catchThrowable { readListProvider.importFromCblV2(ByteArray(0)) }
+      val thrown = catchThrowable { readListProvider.importFromCbl(ByteArray(0)) }
 
       // then
       assertThat(thrown).isInstanceOf(ComicRackListException::class.java)
@@ -303,7 +157,7 @@ class ReadListProviderTest {
       every { mockMapper.readValue(any<ByteArray>(), ReadingList::class.java) } returns cbl
 
       // when
-      val thrown = catchThrowable { readListProvider.importFromCblV2(ByteArray(0)) }
+      val thrown = catchThrowable { readListProvider.importFromCbl(ByteArray(0)) }
 
       // then
       assertThat(thrown).isInstanceOf(ComicRackListException::class.java)

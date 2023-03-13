@@ -6,21 +6,18 @@ import org.gotson.komga.domain.model.ReadListRequestMatch
 
 data class ReadListRequestMatchDto(
   val readListMatch: ReadListMatchDto,
-  val matches: List<ReadListRequestBookMatchesDto>,
+  val requests: Collection<ReadListRequestBookMatchesDto>,
   val errorCode: String = "",
 )
 
 fun ReadListRequestMatch.toDto() =
   ReadListRequestMatchDto(
     readListMatch.toDto(),
-    matches.map {
+    requests.map { request ->
       ReadListRequestBookMatchesDto(
-        it.request.toDtoV2(),
-        it.matches.entries.map { (series, books) ->
-          ReadListRequestBookMatchDto(
-            series.id,
-            books.map { book -> book.id },
-          )
+        request.request.toDto(),
+        request.matches.entries.map { (series, books) ->
+          ReadListRequestBookMatchDto(ReadListRequestBookMatchSeriesDto(series.id, series.title), books.map { ReadListRequestBookMatchBookDto(it.id, it.number, it.title) })
         },
       )
     },
@@ -31,25 +28,35 @@ data class ReadListMatchDto(
   val errorCode: String = "",
 )
 
+fun ReadListMatch.toDto() = ReadListMatchDto(name, errorCode)
+
 data class ReadListRequestBookMatchesDto(
-  val request: ReadListRequestBookV2Dto,
+  val request: ReadListRequestBookDto,
   val matches: List<ReadListRequestBookMatchDto>,
 )
 
-data class ReadListRequestBookV2Dto(
+data class ReadListRequestBookDto(
   val series: Set<String>,
   val number: String,
 )
 
-fun ReadListRequestBook.toDtoV2() =
-  ReadListRequestBookV2Dto(
+fun ReadListRequestBook.toDto() =
+  ReadListRequestBookDto(
     series = series,
     number = number,
   )
 
 data class ReadListRequestBookMatchDto(
-  val seriesId: String,
-  val bookIds: List<String>,
+  val series: ReadListRequestBookMatchSeriesDto,
+  val books: Collection<ReadListRequestBookMatchBookDto>,
 )
 
-fun ReadListMatch.toDto() = ReadListMatchDto(name, errorCode)
+data class ReadListRequestBookMatchSeriesDto(
+  val seriesId: String,
+  val title: String,
+)
+data class ReadListRequestBookMatchBookDto(
+  val bookId: String,
+  val number: String,
+  val title: String,
+)

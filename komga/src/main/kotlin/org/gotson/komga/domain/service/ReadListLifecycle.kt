@@ -6,7 +6,6 @@ import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadListRequestMatch
-import org.gotson.komga.domain.model.ReadListRequestResult
 import org.gotson.komga.domain.model.ThumbnailReadList
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ThumbnailReadListRepository
@@ -122,24 +121,8 @@ class ReadListLifecycle(
     return mosaicGenerator.createMosaic(images)
   }
 
-  fun importReadList(fileContent: ByteArray): ReadListRequestResult {
-    val request = try {
-      readListProvider.importFromCbl(fileContent) ?: return ReadListRequestResult(null, emptyList(), "ERR_1015")
-    } catch (e: Exception) {
-      return ReadListRequestResult(null, emptyList(), "ERR_1015")
-    }
-
-    val result = readListMatcher.matchAndCreateReadListRequest(request)
-    return when {
-      result.readList != null -> {
-        result.copy(readList = addReadList(result.readList))
-      }
-      else -> result
-    }
-  }
-
   fun matchComicRackList(fileContent: ByteArray): ReadListRequestMatch {
-    val request = readListProvider.importFromCblV2(fileContent)
+    val request = readListProvider.importFromCbl(fileContent)
 
     return readListMatcher.matchReadListRequest(request)
   }

@@ -1,5 +1,5 @@
 komga:
-  workspace: localdb
+  workspace: diesel
   database:
     file: \${komga.config-dir}/\${komga.workspace}.sqlite
   lucene:

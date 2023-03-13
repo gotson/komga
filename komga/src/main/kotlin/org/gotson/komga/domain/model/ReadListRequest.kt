@@ -13,20 +13,9 @@ data class ReadListRequestBook(
   val number: String,
 )
 
-data class ReadListRequestResult(
-  val readList: ReadList?,
-  val unmatchedBooks: List<ReadListRequestResultBook> = emptyList(),
-  val errorCode: String = "",
-)
-
-data class ReadListRequestResultBook(
-  val book: ReadListRequestBook,
-  val errorCode: String = "",
-)
-
 data class ReadListRequestMatch(
   val readListMatch: ReadListMatch,
-  val matches: List<ReadListRequestBookMatches>,
+  val requests: Collection<ReadListRequestBookMatches>,
   val errorCode: String = "",
 )
 
@@ -37,5 +26,16 @@ data class ReadListMatch(
 
 data class ReadListRequestBookMatches(
   val request: ReadListRequestBook,
-  val matches: Map<Series, Collection<Book>>,
+  val matches: Map<ReadListRequestBookMatchSeries, Collection<ReadListRequestBookMatchBook>>,
+)
+
+data class ReadListRequestBookMatchSeries(
+  val id: String,
+  val title: String,
+)
+
+data class ReadListRequestBookMatchBook(
+  val id: String,
+  val number: String,
+  val title: String,
 )
