@@ -23,24 +23,7 @@ export interface ReadListUpdateDto {
   bookIds?: string[]
 }
 
-export interface ReadListRequestResultDto {
-  readList?: ReadListDto,
-  unmatchedBooks: ReadListRequestResultBookDto[],
-  errorCode: string,
-  requestName: string,
-}
-
-export interface ReadListRequestResultBookDto {
-  book: ReadListRequestBookDto,
-  errorCode: string,
-}
-
 export interface ReadListRequestBookDto {
-  series: string,
-  number: string,
-}
-
-export interface ReadListRequestBookV2Dto {
   series: string[],
   number: string,
 }
@@ -54,7 +37,7 @@ export interface ReadListThumbnailDto {
 
 export interface ReadListRequestMatchDto {
   readListMatch: ReadListMatchDto,
-  matches: ReadListRequestBookMatchesDto[],
+  requests: ReadListRequestBookMatchesDto[],
   errorCode: string,
 }
 
@@ -64,11 +47,22 @@ export interface ReadListMatchDto {
 }
 
 export interface ReadListRequestBookMatchesDto {
-  request: ReadListRequestBookV2Dto,
+  request: ReadListRequestBookDto,
   matches: ReadListRequestBookMatchDto[],
 }
 
 export interface ReadListRequestBookMatchDto {
+  series: ReadListRequestBookMatchSeriesDto,
+  books: ReadListRequestBookMatchBookDto[],
+}
+
+export interface ReadListRequestBookMatchSeriesDto {
   seriesId: string,
-  bookIds: string[],
+  title: string,
+}
+
+export interface ReadListRequestBookMatchBookDto {
+  bookId: string,
+  number: string,
+  title: string,
 }

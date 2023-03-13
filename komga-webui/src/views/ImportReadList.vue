@@ -18,7 +18,8 @@
         <v-col cols="auto">
           <v-btn
             color="primary"
-            :disabled="!validMatch"
+            :disabled="!validMatch || matching"
+            :loading="matching"
             @click="matchFile"
           >{{ $t('data_import.button_match') }}
           </v-btn>
@@ -43,11 +44,14 @@
         </tr>
         </thead>
         <tbody
-          v-for="(match, i) in result.matches"
+          v-for="(match, i) in result.requests"
           :key="i"
         >
-        <read-list-match-row :match="match" :book-id.sync="form.bookIds[i]"
-                             :duplicate="isDuplicateBook(form.bookIds[i])">
+        <read-list-match-row :request="match.request"
+                             :series.sync="series[i]"
+                             :book.sync="form.books[i]"
+                             :duplicate="isDuplicateBook(form.books[i])"
+        >
           <td>{{ i + 1 }}</td>
         </read-list-match-row>
         </tbody>
@@ -98,13 +102,18 @@
 <script lang="ts">
 import Vue from 'vue'
 import {convertErrorCodes} from '@/functions/error-codes'
-import {ReadListCreationDto, ReadListDto, ReadListRequestMatchDto} from '@/types/komga-readlists'
+import {
+  ReadListCreationDto,
+  ReadListDto,
+  ReadListRequestBookMatchBookDto,
+  ReadListRequestMatchDto, ReadListRequestBookMatchSeriesDto,
+} from '@/types/komga-readlists'
 import ReadListMatchRow from '@/components/ReadListMatchRow.vue'
 import {ERROR, NOTIFICATION, NotificationEvent} from '@/types/events'
 import {helpers, required} from 'vuelidate/lib/validators'
 
-function validBookIds(this: any, value: string[]) {
-  return value.filter(Boolean).length === this.result.matches.length && value.filter(Boolean).length === [...new Set(value)].length
+function validBookIds(this: any, value: any[]) {
+  return value.filter(Boolean).length === this.result.requests.length && value.filter(Boolean).length === [...new Set(value)].length
 }
 
 function validName(this: any, value: string) {
@@ -115,26 +124,27 @@ export default Vue.extend({
   name: 'ImportReadLists',
   components: {ReadListMatchRow},
   data: () => ({
-    convertErrorCodes,
     file: undefined,
-    result: undefined as unknown as ReadListRequestMatchDto,
+    result: undefined as unknown as ReadListRequestMatchDto | undefined,
     validMatch: true,
     validCreate: true,
+    series: [] as (ReadListRequestBookMatchSeriesDto | undefined)[],
     form: {
       name: '',
       ordered: true,
       summary: '',
-      bookIds: [] as string[],
+      books: [] as (ReadListRequestBookMatchBookDto | undefined)[],
     },
     readLists: [] as ReadListDto[],
     creationFinished: false,
+    matching: false,
   }),
   validations: {
     form: {
       name: {required, validName},
       ordered: {},
       summary: {},
-      bookIds: {validBookIds},
+      books: {validBookIds},
     },
   },
   computed: {
@@ -156,27 +166,37 @@ export default Vue.extend({
   async mounted() {
     this.readLists = (await this.$komgaReadLists.getReadLists(undefined, {unpaged: true} as PageRequest)).content
   },
+  watch: {},
   methods: {
-    isDuplicateBook(bookId: string): boolean {
-      return this.form.bookIds.filter((b) => b === bookId).length > 1
+    isDuplicateBook(book: ReadListRequestBookMatchBookDto): boolean {
+      return this.form.books.filter((b) => b?.bookId === book?.bookId).length > 1
     },
     async matchFile() {
+      this.matching = true
+      this.result = undefined
+      this.form.summary = ''
+      this.form.ordered = true
+      this.form.books = []
+      this.series = []
+      this.creationFinished = false
       try {
         this.result = await this.$komgaReadLists.postReadListMatch(this.file)
         this.form.name = this.result.readListMatch.name
+        this.result.requests.forEach((request, index) => {
+          const match = request.matches.find(Boolean)
+          this.$set(this.series, index, match?.series)
+          this.$set(this.form.books, index, match?.books.find(Boolean))
+        })
       } catch (e) {
         this.$eventHub.$emit(ERROR, {message: convertErrorCodes(e.message)} as ErrorEvent)
       }
-      this.form.summary = ''
-      this.form.ordered = true
-      this.form.bookIds = []
-      this.creationFinished = false
+      this.matching = false
     },
     validateForm(): ReadListCreationDto | undefined {
       if (this.$v.$invalid) return undefined
       return {
         name: this.form.name,
-        bookIds: this.form.bookIds,
+        bookIds: this.form.books.map(b => b?.bookId).filter(Boolean) as string[],
         ordered: this.form.ordered,
         summary: this.form.summary,
       }

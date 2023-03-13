@@ -1,32 +1,32 @@
 <template>
-  <tr v-if="match">
+  <tr v-if="request">
     <slot/>
     <td>
-      <div v-for="s in match.request.series" :key="s">{{ s }}</div>
+      <div v-for="s in request.series" :key="s">{{ s }}</div>
     </td>
-    <td>{{ match.request.number }}</td>
+    <td>{{ request.number }}</td>
 
     <!--  Series picker  -->
     <td @click="modalSeriesPicker = true" style="cursor: pointer">
-      <template v-if="selectedSeries">{{ selectedSeries.metadata.title }}</template>
+      <template v-if="series">{{ series.title }}</template>
       <template v-else>
         <div style="height: 2em" class="missing"></div>
       </template>
-      <series-picker-dialog v-model="modalSeriesPicker" :series.sync="selectedSeries"></series-picker-dialog>
+      <series-picker-dialog v-model="modalSeriesPicker" @update:series="pickedSeries"></series-picker-dialog>
     </td>
 
     <!--  Book picker  -->
-    <td @click="selectedSeries ? modalBookPicker = true : undefined" :style="selectedSeries ? 'cursor: pointer': ''">
-      <template v-if="selectedBook">
-        {{ selectedBook.metadata.number }} - {{ selectedBook.metadata.title }}
+    <td @click="series ? openBookPicker() : undefined" :style="series ? 'cursor: pointer': ''">
+      <template v-if="book">
+        {{ book.number }} - {{ book.title }}
       </template>
-      <template v-else-if="selectedSeries">
+      <template v-else-if="series">
         <div style="height: 2em" class="missing"></div>
       </template>
       <book-picker-dialog
         v-model="modalBookPicker"
         :books="seriesBooks"
-        :book.sync="selectedBook"
+        @update:book="pickedBook"
       ></book-picker-dialog>
     </td>
 
@@ -57,10 +57,11 @@ import Vue, {PropType} from 'vue'
 import {SeriesDto} from '@/types/komga-series'
 import {BookDto} from '@/types/komga-books'
 import SeriesPickerDialog from '@/components/dialogs/SeriesPickerDialog.vue'
-import TransientBookDetailsDialog from '@/components/dialogs/TransientBookDetailsDialog.vue'
-import TransientBookViewerDialog from '@/components/dialogs/TransientBookViewerDialog.vue'
-import FileNameChooserDialog from '@/components/dialogs/FileNameChooserDialog.vue'
-import {ReadListRequestBookMatchesDto} from '@/types/komga-readlists'
+import {
+  ReadListRequestBookDto,
+  ReadListRequestBookMatchBookDto,
+  ReadListRequestBookMatchSeriesDto,
+} from '@/types/komga-readlists'
 import BookPickerDialog from '@/components/dialogs/BookPickerDialog.vue'
 
 export default Vue.extend({
@@ -70,82 +71,72 @@ export default Vue.extend({
     SeriesPickerDialog,
   },
   props: {
-    match: {
-      type: Object as PropType<ReadListRequestBookMatchesDto>,
+    request: {
+      type: Object as PropType<ReadListRequestBookDto>,
       required: true,
+    },
+    series: {
+      type: Object as PropType<ReadListRequestBookMatchSeriesDto>,
+      required: false,
+    },
+    book: {
+      type: Object as PropType<ReadListRequestBookMatchBookDto>,
+      required: false,
     },
     duplicate: {
       type: Boolean,
       default: false,
     },
-    bookId: {
-      type: String,
-      required: false,
-    },
   },
   watch: {
-    match: {
-      handler(val) {
-        this.processMatch(val)
-      },
-      immediate: true,
-    },
-    selectedSeries: {
-      handler(val, old) {
-        if (!old) {
-          this.getSeriesBooks(val)
-        } else if (val?.id !== old?.id) {
-          this.selectedBook = undefined
-          this.getSeriesBooks(val)
+    series: {
+      handler(val: ReadListRequestBookMatchSeriesDto, old: ReadListRequestBookMatchSeriesDto) {
+        if(val?.seriesId !== old?.seriesId) {
+          this.seriesBooksCached = false
         }
       },
-      immediate: true,
-    },
-    selectedBook: {
-      handler(val) {
-        this.$emit('update:bookId', val?.id)
-      },
-      immediate: true,
     },
   },
   data: () => ({
     innerSelect: false,
-    selectedSeries: undefined as SeriesDto | undefined,
-    selectedBook: undefined as BookDto | undefined,
-    seriesBooks: [] as BookDto[],
     modalSeriesPicker: false,
     modalBookPicker: false,
+    seriesBooks: [] as BookDto[],
+    seriesBooksCached: false,
   }),
   computed: {
     existingFileNames(): string[] {
       return this.seriesBooks.map(x => x.name)
     },
     error(): string {
-      if (!this.selectedSeries) return this.$t('book_import.row.error_choose_series').toString()
-      if (!this.selectedBook) return this.$t('readlist_import.row.error_choose_book').toString()
+      if (!this.series) return this.$t('book_import.row.error_choose_series').toString()
+      if (!this.book) return this.$t('readlist_import.row.error_choose_book').toString()
       return ''
     },
   },
   methods: {
-    async processMatch(match: ReadListRequestBookMatchesDto) {
-      let seriesId: string | undefined
-      if (match.matches.length === 1) {
-        seriesId = match.matches[0].seriesId
-      } else if (match.matches.length > 1) {
-        seriesId = match.matches.find((m) => m.bookIds.length > 0)?.seriesId
+    openBookPicker() {
+      if(!this.seriesBooksCached) {
+        this.$komgaSeries.getBooks(this.series?.seriesId, {unpaged: true})
+          .then(r => {
+            this.seriesBooks = r.content
+            this.seriesBooksCached = true
+          })
       }
-      if (seriesId) {
-        this.selectedSeries = await this.$komgaSeries.getOneSeries(seriesId)
-        const bookId = match.matches.find((m) => m.seriesId === seriesId)?.bookIds.find(Boolean)
-        if (bookId) {
-          this.selectedBook = await this.$komgaBooks.getBook(bookId)
-        }
-      }
+      this.modalBookPicker = true
     },
-    async getSeriesBooks(series: SeriesDto) {
-      if (series) {
-        this.seriesBooks = (await this.$komgaSeries.getBooks(series.id, {unpaged: true})).content
-      }
+    pickedSeries(series: SeriesDto) {
+      this.$emit('update:series', {
+        seriesId: series.id,
+        title: series.metadata.title,
+      } as ReadListRequestBookMatchSeriesDto)
+    },
+    pickedBook(book: BookDto) {
+      this.$emit('update:book', {
+        bookId: book.id,
+        number: book.metadata.number,
+        title: book.metadata.title,
+      } as ReadListRequestBookMatchBookDto)
     },
   },
 })
