@@ -17,7 +17,7 @@ plugins {
   id("org.flywaydb.flyway") version "8.5.13"
   id("com.github.johnrengelman.processes") version "0.5.0"
   id("org.springdoc.openapi-gradle-plugin") version "1.5.0"
-  id("org.jreleaser") version "1.5.0"
+  id("org.jreleaser") version "1.5.1"
 
   jacoco
 }
