@@ -86,7 +86,7 @@
 
           <v-col cols="auto">
             <v-btn :color="creationFinished ? 'success': 'primary'"
-                   @click="create"
+                   @click="create(false)"
                    :disabled="$v.$invalid"
             >
               <v-icon left v-if="creationFinished">mdi-check</v-icon>
@@ -95,6 +95,12 @@
           </v-col>
         </v-row>
       </form>
+      <confirmation-dialog :title="$t('data_import.dialog_confirmation.title')"
+                           :button-confirm="$t('data_import.dialog_confirmation.create')"
+                           :body="missingDialogText"
+                           v-model="modalConfirmation"
+                           @confirm="create(true)"
+      />
     </template>
   </v-container>
 </template>
@@ -111,9 +117,11 @@ import {
 import ReadListMatchRow from '@/components/ReadListMatchRow.vue'
 import {ERROR, NOTIFICATION, NotificationEvent} from '@/types/events'
 import {helpers, required} from 'vuelidate/lib/validators'
+import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 
-function validBookIds(this: any, value: any[]) {
-  return value.filter(Boolean).length === this.result.requests.length && value.filter(Boolean).length === [...new Set(value)].length
+function duplicateBooks(this: any, value: any[]) {
+  const ids = value.filter(Boolean).map(b => b.bookId)
+  return ids.length === [...new Set(ids)].length
 }
 
 function validName(this: any, value: string) {
@@ -122,7 +130,7 @@ function validName(this: any, value: string) {
 
 export default Vue.extend({
   name: 'ImportReadLists',
-  components: {ReadListMatchRow},
+  components: {ConfirmationDialog, ReadListMatchRow},
   data: () => ({
     file: undefined,
     result: undefined as unknown as ReadListRequestMatchDto | undefined,
@@ -138,16 +146,23 @@ export default Vue.extend({
     readLists: [] as ReadListDto[],
     creationFinished: false,
     matching: false,
+    modalConfirmation: false,
   }),
   validations: {
     form: {
       name: {required, validName},
       ordered: {},
       summary: {},
-      books: {validBookIds},
+      books: {duplicateBooks},
     },
   },
   computed: {
+    missingDialogText(): string {
+      const total = this.result!!.requests.length
+      const matched = this.form.books.filter(Boolean).length
+      const unmatched = total - matched
+      return this.$t('data_import.dialog_confirmation.body', {unmatched: unmatched, total: total}).toString()
+    },
     importRules(): any {
       return [
         (value: any) => {
@@ -166,7 +181,6 @@ export default Vue.extend({
   async mounted() {
     this.readLists = (await this.$komgaReadLists.getReadLists(undefined, {unpaged: true} as PageRequest)).content
   },
-  watch: {},
   methods: {
     isDuplicateBook(book: ReadListRequestBookMatchBookDto): boolean {
       return this.form.books.filter((b) => b?.bookId === book?.bookId).length > 1
@@ -201,8 +215,12 @@ export default Vue.extend({
         summary: this.form.summary,
       }
     },
-    async create() {
+    async create(bypassMissing: boolean) {
       if (!this.creationFinished) {
+        if (!bypassMissing && this.form.books.filter(Boolean).length !== this.result?.requests.length) {
+          this.modalConfirmation = true
+          return
+        }
         const toCreate = this.validateForm()
         if (!toCreate) return
 

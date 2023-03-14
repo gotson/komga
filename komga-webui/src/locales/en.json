@@ -258,6 +258,11 @@
     "button_import": "Import",
     "button_match": "Match",
     "comicrack_preambule_html": "You can import existing ComicRack Reading Lists in <code>.cbl</code> format.<br/>Komga will try to match the provided series and book number with series and books in your libraries.",
+    "dialog_confirmation": {
+      "body": "{unmatched} / {total} books are unmatched",
+      "create": "Create anyway",
+      "title": "Some books are not matched"
+    },
     "field_file_label": "ComicRack Reading List (.cbl)",
     "field_files_label": "ComicRack Reading Lists (.cbl)",
     "import_read_lists": "Import Read Lists",
