@@ -1,3 +1,27 @@
+# [0.164.0](https://github.com/gotson/komga/compare/v0.163.0...v0.164.0) (2023-03-14)
+## 🚀 Features
+**webui**
+- allow CBL import with partial matching ([3a7d305](https://github.com/gotson/komga/commits/3a7d305)), closes [#1086](https://github.com/gotson/komga/issues/1086)
+
+## 🏎 Perf
+**api**
+- 🚨 faster readlist matching for cbl: *removed api/v1/readlists/import* ([2461c83](https://github.com/gotson/komga/commits/2461c83))
+
+**webui**
+- reduce amount of API requests when matching cbl ([e3d9cb7](https://github.com/gotson/komga/commits/e3d9cb7))
+
+## 🛠  Build
+**deps**
+- bump jreleaser to 1.5.1 ([df59ba6](https://github.com/gotson/komga/commits/df59ba6))
+
+**unscoped**
+- add JReleaser configuration for i18n commit type ([a3ebbdf](https://github.com/gotson/komga/commits/a3ebbdf))
+
+## 🌐 Translation
+
+- ttranslated using Weblate  ([0075499](https://github.com/gotson/komga/commits/0075499))
+- remove unused error codes ([094d03f](https://github.com/gotson/komga/commits/094d03f))
+
 # [0.163.0](https://github.com/gotson/komga/compare/v0.162.0...v0.163.0) (2023-03-08)
 ## 🚀 Features
 **opds**
