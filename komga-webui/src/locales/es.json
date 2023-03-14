@@ -656,12 +656,9 @@
     "ERR_1007": "Algunas entradas no pudieron ser analizadas",
     "ERR_1008": "Error desconocido al obtener las entradas del libro",
     "ERR_1009": "Ya existe una lista de lectura con ese nombre",
-    "ERR_1010": "No se encontró coincidencia para ningún libro dentro de la lista de lectura",
     "ERR_1011": "No hay coincidencia única para la serie",
-    "ERR_1012": "No existe coincidencia para la serie",
     "ERR_1013": "No hay coincidencia única para el número de libro dentro de la serie",
-    "ERR_1014": "No hay coincidencia para el número de libro dentro de la serie",
-    "ERR_1015": "Error al deserializar la lista de lectura de ComicRack",
+    "ERR_1015": "Error al deserializar ComicRack CBL",
     "ERR_1016": "Directorio no accesible o no es un directorio",
     "ERR_1017": "No se puede escanear una carpeta que es parte de una biblioteca existente",
     "ERR_1018": "Archivo no encontrado",
@@ -674,7 +671,10 @@
     "ERR_1025": "Error de inicio de sesión OAuth2: no existe usuario local con ese correo",
     "ERR_1026": "Error de inicio de sesión de OpenID Connect: correo no verificado",
     "ERR_1027": "Error de inicio de sesión de OpenID Connect: sin atributo email_verified",
-    "ERR_1028": "Error de inicio de sesión de OpenID Connect: sin atributo email"
+    "ERR_1028": "Error de inicio de sesión de OpenID Connect: sin atributo email",
+    "ERR_1029": "ComicRack CBL no contiene ningún Libro",
+    "ERR_1030": "ComicRack CBL no tiene ningún Nombre",
+    "ERR_1031": "ComicRack CBL al libro le falta una serie o un número"
   },
   "filter": {
     "age_rating": "clasificación de edad",
