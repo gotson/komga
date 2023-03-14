@@ -531,11 +531,8 @@
     "ERR_1007": "Sommige vermeldingen konden niet worden geanalyseerd",
     "ERR_1008": "Onbekende fout bij het ophalen van boekvermeldingen",
     "ERR_1009": "Er bestaat al een leeslijst met deze naam",
-    "ERR_1010": "Er is geen overeenkomst voor boeken in het leeslijstverzoek",
     "ERR_1011": "Geen unieke overeenkomst voor serie",
-    "ERR_1012": "Geen overeenkomst voor serie",
     "ERR_1013": "Geen unieke overeenkomst voor boeknummer binnen serie",
-    "ERR_1014": "Geen overeenkomst voor boeknummer binnen serie",
     "ERR_1015": "Fout bij het deserialiseren van ComicRack Leeslijst",
     "ERR_1016": "Map niet toegankelijk of geen map",
     "ERR_1017": "Kan map die deel uitmaakt van een bestaande bibliotheek niet scannen"
