@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.metadata.comicrack
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import mu.KotlinLogging
+import org.apache.commons.validator.routines.ISBNValidator
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookMetadataPatch
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
@@ -30,6 +31,7 @@ private const val COMIC_INFO = "ComicInfo.xml"
 class ComicInfoProvider(
   @Autowired(required = false) private val mapper: XmlMapper = XmlMapper(),
   private val bookAnalyzer: BookAnalyzer,
+  private val isbnValidator: ISBNValidator,
 ) : BookMetadataProvider, SeriesMetadataFromBookProvider {
 
   override fun getCapabilities(): Set<BookMetadataPatchCapability> =
@@ -98,6 +100,8 @@ class ComicInfoProvider(
 
       val tags = comicInfo.tags?.split(',')?.mapNotNull { it.trim().lowercase().ifBlank { null } }
 
+      val isbn = comicInfo.gtin?.let { isbnValidator.validate(it) }
+
       return BookMetadataPatch(
         title = comicInfo.title?.ifBlank { null },
         summary = comicInfo.summary?.ifBlank { null },
@@ -108,6 +112,7 @@ class ComicInfoProvider(
         readLists = readLists,
         links = link,
         tags = if (!tags.isNullOrEmpty()) tags.toSet() else null,
+        isbn = isbn,
       )
     }
     return null

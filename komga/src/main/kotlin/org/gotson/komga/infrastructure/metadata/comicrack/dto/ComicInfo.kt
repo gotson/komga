@@ -125,4 +125,7 @@ class ComicInfo {
 
   @JsonProperty(value = "AgeRating", defaultValue = "Unknown")
   var ageRating: AgeRating? = null
+
+  @JsonProperty(value = "GTIN")
+  var gtin: String? = null
 }

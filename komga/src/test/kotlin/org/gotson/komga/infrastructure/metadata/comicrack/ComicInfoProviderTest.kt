@@ -3,6 +3,7 @@ package org.gotson.komga.infrastructure.metadata.comicrack
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import io.mockk.every
 import io.mockk.mockk
+import org.apache.commons.validator.routines.ISBNValidator
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.BookMetadataPatch
 import org.gotson.komga.domain.model.BookWithMedia
@@ -30,8 +31,9 @@ class ComicInfoProviderTest {
   private val mockAnalyzer = mockk<BookAnalyzer>().also {
     every { it.getFileContent(any(), "ComicInfo.xml") } returns ByteArray(0)
   }
+  private val isbnValidator = ISBNValidator(true)
 
-  private val comicInfoProvider = ComicInfoProvider(mockMapper, mockAnalyzer)
+  private val comicInfoProvider = ComicInfoProvider(mockMapper, mockAnalyzer, isbnValidator)
 
   private val book = makeBook("book")
   private val media = Media(
@@ -56,6 +58,7 @@ class ComicInfoProviderTest {
         storyArc = "one, two, three"
         web = "https://www.comixology.com/Sandman/digital-comic/727888"
         tags = "dark, Occult"
+        gtin = "9783440077894"
       }
 
       every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
@@ -68,6 +71,7 @@ class ComicInfoProviderTest {
         assertThat(number).isEqualTo("010")
         assertThat(numberSort).isEqualTo(10F)
         assertThat(releaseDate).isEqualTo(LocalDate.of(2020, 2, 1))
+        assertThat(isbn).isEqualTo("9783440077894")
 
         assertThat(readLists)
           .hasSize(4)
@@ -223,6 +227,7 @@ class ComicInfoProviderTest {
         alternateNumber = ""
         storyArc = ""
         penciller = ""
+        gtin = ""
       }
 
       every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
@@ -236,6 +241,7 @@ class ComicInfoProviderTest {
         assertThat(numberSort).isNull()
         assertThat(authors).isNull()
         assertThat(readLists).isEmpty()
+        assertThat(isbn).isNull()
       }
     }
 

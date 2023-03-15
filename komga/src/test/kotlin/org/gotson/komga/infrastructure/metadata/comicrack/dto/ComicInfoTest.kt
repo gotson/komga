@@ -15,26 +15,26 @@ class ComicInfoTest {
     val xml = """
       <?xml version="1.0"?>
       <ComicInfo>
-          <Title>v01 - Preludes &amp; Nocturnes - 30th Anniversary Edition</Title>
-          <Series>Sandman</Series>
-          <Web>https://www.comixology.com/Sandman/digital-comic/727888</Web>
-          <Summary>Neil Gaiman's seminal series, THE SANDMAN, celebrates its 30th anniversary with an all-new edition of THE
-              SANDMAN VOL. 1: PRELUDES &amp; NOCTURNES!
+        <Title>v01 - Preludes &amp; Nocturnes - 30th Anniversary Edition</Title>
+        <Series>Sandman</Series>
+        <Web>https://www.comixology.com/Sandman/digital-comic/727888</Web>
+        <Summary>Neil Gaiman's seminal series, THE SANDMAN, celebrates its 30th anniversary with an all-new edition of THE
+            SANDMAN VOL. 1: PRELUDES &amp; NOCTURNES!
 
-               New York Times best-selling author Neil Gaiman's transcendent series THE SANDMAN is often hailed as the
-              definitive Vertigo title and one of the finest achievements in graphic storytelling. Gaiman created an
-              unforgettable tale of the forces that exist beyond life and death by weaving ancient mythology, folklore and
-              fairy tales with his own distinct narrative vision.
+             New York Times best-selling author Neil Gaiman's transcendent series THE SANDMAN is often hailed as the
+            definitive Vertigo title and one of the finest achievements in graphic storytelling. Gaiman created an
+            unforgettable tale of the forces that exist beyond life and death by weaving ancient mythology, folklore and
+            fairy tales with his own distinct narrative vision.
 
-               In PRELUDES &amp; NOCTURNES, an occultist attempting to capture Death to bargain for eternal life traps her
-              younger brother Dream instead. After his 70 year imprisonment and eventual escape, Dream, also known as
-              Morpheus, goes on a quest for his lost objects of power. On his arduous journey Morpheus encounters Lucifer,
-              John Constantine, and an all-powerful madman.
+             In PRELUDES &amp; NOCTURNES, an occultist attempting to capture Death to bargain for eternal life traps her
+            younger brother Dream instead. After his 70 year imprisonment and eventual escape, Dream, also known as
+            Morpheus, goes on a quest for his lost objects of power. On his arduous journey Morpheus encounters Lucifer,
+            John Constantine, and an all-powerful madman.
 
-               This book also includes the story "The Sound of Her Wings," which introduces us to the pragmatic and perky goth
-              girl Death.
+             This book also includes the story "The Sound of Her Wings," which introduces us to the pragmatic and perky goth
+            girl Death.
 
-       Collects THE SANDMAN #1-8.</Summary>
+             Collects THE SANDMAN #1-8.</Summary>
         <Notes>Scraped metadata from Comixology [CMXDB727888], [RELDATE:2018-10-30]</Notes>
         <Translator>The translator</Translator>
         <Publisher>DC</Publisher>
@@ -47,7 +47,8 @@ class ComicInfoTest {
         <AgeRating>Mature 17+</AgeRating>
         <BlackAndWhite>No</BlackAndWhite>
         <Manga>No</Manga>
-          <SeriesGroup>Sandman</SeriesGroup>
+        <SeriesGroup>Sandman</SeriesGroup>
+        <GTIN>ABC123</GTIN>
         <ScanInformation></ScanInformation>
       </ComicInfo>
     """.trimIndent()
@@ -72,6 +73,7 @@ class ComicInfoTest {
       assertThat(manga).isEqualTo(Manga.NO)
       assertThat(seriesGroup).isEqualTo("Sandman")
       assertThat(translator).isEqualTo("The translator")
+      assertThat(gtin).isEqualTo("ABC123")
     }
   }
 
