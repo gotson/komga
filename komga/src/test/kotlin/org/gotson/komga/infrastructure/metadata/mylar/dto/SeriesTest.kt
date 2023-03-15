@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.core.io.ClassPathResource
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
@@ -21,8 +20,31 @@ class SeriesTest(
 
   @Test
   fun `given valid json file when deserializing then properties are available`() {
-    val file = ClassPathResource("mylar/series.json")
-    val seriesJson = mapper.readValue<Series>(file.url)
+    // language=JSON
+    val json = """
+      {
+        "version": "1.0.1",
+        "metadata": {
+          "type": "comicSeries",
+          "publisher": "DC Comics",
+          "imprint": null,
+          "name": "American Vampire 1976",
+          "cid": 130865,
+          "year": 2020,
+          "description_text": "Nine issue mini-series, the closing chapter of American Vampire",
+          "description_formatted": "Nine issue mini-series, the closing chapter of American Vampire",
+          "volume": null,
+          "booktype": "Print",
+          "age_rating": "Adult",
+          "collects": null,
+          "ComicImage": "https://comicvine.gamespot.com/a/uploads/scale_large/6/67663/7603293-01.jpg",
+          "total_issues": 9,
+          "publication_run": "December 2020 - Present",
+          "status": "Continuing"
+        }
+      }
+    """.trimIndent()
+    val seriesJson = mapper.readValue<Series>(json)
 
     assertThat(seriesJson.metadata).isNotNull
     with(seriesJson.metadata) {
@@ -46,8 +68,31 @@ class SeriesTest(
 
   @Test
   fun `given another valid json file when deserializing then properties are available`() {
-    val file = ClassPathResource("mylar/series1.json")
-    val seriesJson = mapper.readValue<Series>(file.url)
+    // language=JSON
+    val json = """
+      {
+        "version": "1.0.1",
+        "metadata": {
+          "type": "comicSeries",
+          "publisher": "IDW Publishing",
+          "imprint": null,
+          "name": "Usagi Yojimbo",
+          "comicid": 119731,
+          "year": 2019,
+          "description_text": null,
+          "description_formatted": null,
+          "volume": 4,
+          "booktype": "Print",
+          "age_rating": null,
+          "collects": null,
+          "ComicImage": "https://comicvine1.cbsistatic.com/uploads/scale_large/6/67663/6974029-01a.jpg",
+          "total_issues": 20,
+          "publication_run": "June 2019 - Present",
+          "status": "Ended"
+        }
+      }
+    """.trimIndent()
+    val seriesJson = mapper.readValue<Series>(json)
 
     assertThat(seriesJson.metadata).isNotNull
     with(seriesJson.metadata) {
@@ -71,8 +116,31 @@ class SeriesTest(
 
   @Test
   fun `given yet another valid json file when deserializing then properties are available`() {
-    val file = ClassPathResource("mylar/series-gh961.json")
-    val seriesJson = mapper.readValue<Series>(file.url)
+    // language=JSON
+    val json = """
+      {
+        "version": "1.0.1",
+        "metadata": {
+          "type": "comicSeries",
+          "publisher": "Kodansha Comics USA",
+          "imprint": null,
+          "name": "Vinland Saga",
+          "comicid": 69157,
+          "year": 2013,
+          "description_text": "English translation of Vinland Saga (ヴィンランド・サガ).Vinland Saga is the first series from Kodansha Comics USA to be released in hardcovers, each collection collects and translates two volumes of the original Japanese manga",
+          "description_formatted": "English translation of Vinland Saga (ヴィンランド・サガ).Vinland Saga is the first series from Kodansha Comics USA to be released in hardcovers, each collection collects and translates two volumes of the original Japanese manga",
+          "volume": null,
+          "booktype": "Print",
+          "age_rating": null,
+          "collects": null,
+          "ComicImage": "https://comicvine.gamespot.com/a/uploads/scale_large/6/67663/3439178-01.jpg",
+          "total_issues": 12,
+          "publication_run": "November 2013 - December 2021",
+          "status": "Ended"
+        }
+      }
+    """.trimIndent()
+    val seriesJson = mapper.readValue<Series>(json)
 
     assertThat(seriesJson.metadata).isNotNull
     with(seriesJson.metadata) {
@@ -96,24 +164,91 @@ class SeriesTest(
 
   @Test
   fun `given invalid json file missing year when deserializing then it fails`() {
-    val file = ClassPathResource("mylar/series-missing-year.json")
-    val thrown = catchThrowable { mapper.readValue<Series>(file.url) }
+    // language=JSON
+    val json = """
+      {
+        "version": "1.0.1",
+        "metadata": {
+          "type": "comicSeries",
+          "publisher": "IDW Publishing",
+          "imprint": null,
+          "name": "Usagi Yojimbo",
+          "comicid": 119731,
+          "description_text": null,
+          "description_formatted": null,
+          "volume": 4,
+          "booktype": "Print",
+          "age_rating": null,
+          "collects": null,
+          "ComicImage": "https://comicvine1.cbsistatic.com/uploads/scale_large/6/67663/6974029-01a.jpg",
+          "total_issues": 20,
+          "publication_run": "June 2019 - Present",
+          "status": "Ended"
+        }
+      }
+    """.trimIndent()
+    val thrown = catchThrowable { mapper.readValue<Series>(json) }
 
     assertThat(thrown).isInstanceOf(MismatchedInputException::class.java)
   }
 
   @Test
   fun `given invalid json file missing publisher when deserializing then it fails`() {
-    val file = ClassPathResource("mylar/series-missing-publisher.json")
-    val thrown = catchThrowable { mapper.readValue<Series>(file.url) }
+    // language=JSON
+    val json = """
+      {
+        "version": "1.0.1",
+        "metadata": {
+          "type": "comicSeries",
+          "imprint": null,
+          "name": "Usagi Yojimbo",
+          "comicid": 119731,
+          "year": 2019,
+          "description_text": null,
+          "description_formatted": null,
+          "volume": 4,
+          "booktype": "Print",
+          "age_rating": null,
+          "collects": null,
+          "ComicImage": "https://comicvine1.cbsistatic.com/uploads/scale_large/6/67663/6974029-01a.jpg",
+          "total_issues": 20,
+          "publication_run": "June 2019 - Present",
+          "status": "Ended"
+        }
+      }
+    """.trimIndent()
+    val thrown = catchThrowable { mapper.readValue<Series>(json) }
 
     assertThat(thrown).isInstanceOf(MissingKotlinParameterException::class.java)
   }
 
   @Test
   fun `given invalid json file missing status when deserializing then it fails`() {
-    val file = ClassPathResource("mylar/series-missing-status.json")
-    val thrown = catchThrowable { mapper.readValue<Series>(file.url) }
+    // language=JSON
+    val json = """
+      {
+        "version": "1.0.1",
+        "metadata": {
+          "type": "comicSeries",
+          "publisher": "IDW Publishing",
+          "imprint": null,
+          "name": "Usagi Yojimbo",
+          "comicid": 119731,
+          "year": 2019,
+          "description_text": null,
+          "description_formatted": null,
+          "volume": 4,
+          "booktype": "Print",
+          "age_rating": null,
+          "collects": null,
+          "ComicImage": "https://comicvine1.cbsistatic.com/uploads/scale_large/6/67663/6974029-01a.jpg",
+          "total_issues": 20,
+          "publication_run": "June 2019 - Present"
+        }
+      }
+
+    """.trimIndent()
+    val thrown = catchThrowable { mapper.readValue<Series>(json) }
 
     assertThat(thrown).isInstanceOf(MissingKotlinParameterException::class.java)
   }
