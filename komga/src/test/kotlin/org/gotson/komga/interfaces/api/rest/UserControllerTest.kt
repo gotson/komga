@@ -77,6 +77,7 @@ class UserControllerTest(
   @ValueSource(strings = ["user", "user@domain"])
   @WithMockCustomUser(roles = [ROLE_ADMIN])
   fun `when creating a user with invalid email then returns bad request`(email: String) {
+    // language=JSON
     val jsonString = """{"email":"$email","password":"password"}"""
 
     mockMvc.post("/api/v2/users") {
@@ -95,6 +96,7 @@ class UserControllerTest(
       val user = KomgaUser("user@example.org", "", false, id = "user", roleFileDownload = false, rolePageStreaming = false)
       userLifecycle.createUser(user)
 
+      // language=JSON
       val jsonString = """
         {
           "roles": ["$ROLE_FILE_DOWNLOAD","$ROLE_PAGE_STREAMING"]
@@ -124,6 +126,7 @@ class UserControllerTest(
       val user = KomgaUser("user@example.org", "", true, id = "user", roleFileDownload = true, rolePageStreaming = true)
       userLifecycle.createUser(user)
 
+      // language=JSON
       val jsonString = """
         {
           "roles": []
@@ -153,6 +156,7 @@ class UserControllerTest(
       val user = KomgaUser("user@example.org", "", false, id = "user", sharedAllLibraries = false, sharedLibrariesIds = setOf("1"))
       userLifecycle.createUser(user)
 
+      // language=JSON
       val jsonString = """
         {
           "sharedLibraries": {
@@ -184,6 +188,7 @@ class UserControllerTest(
       val user = KomgaUser("user@example.org", "", false, id = "user", sharedAllLibraries = true)
       userLifecycle.createUser(user)
 
+      // language=JSON
       val jsonString = """
         {
           "sharedLibraries": {
@@ -215,6 +220,7 @@ class UserControllerTest(
       val user = KomgaUser("user@example.org", "", false, id = "user", sharedAllLibraries = false, sharedLibrariesIds = setOf("2"))
       userLifecycle.createUser(user)
 
+      // language=JSON
       val jsonString = """
         {
           "sharedLibraries": {
@@ -246,6 +252,7 @@ class UserControllerTest(
       val user = KomgaUser("user@example.org", "", false, id = "user")
       userLifecycle.createUser(user)
 
+      // language=JSON
       val jsonString = """
         {
           "labelsAllow": ["cute", "kids"],
@@ -284,6 +291,7 @@ class UserControllerTest(
       )
       userLifecycle.createUser(user)
 
+      // language=JSON
       val jsonString = """
         {
           "labelsAllow": [],
@@ -313,6 +321,7 @@ class UserControllerTest(
       val user = KomgaUser("user@example.org", "", false, id = "user")
       userLifecycle.createUser(user)
 
+      // language=JSON
       val jsonString = """
         {
           "ageRestriction": {
@@ -345,6 +354,7 @@ class UserControllerTest(
       val user = KomgaUser("user@example.org", "", false, id = "user")
       userLifecycle.createUser(user)
 
+      // language=JSON
       val jsonString = """
         {
           "ageRestriction": {
@@ -376,6 +386,7 @@ class UserControllerTest(
       )
       userLifecycle.createUser(user)
 
+      // language=JSON
       val jsonString = """
         {
           "ageRestriction": null
@@ -411,6 +422,7 @@ class UserControllerTest(
       )
       userLifecycle.createUser(user)
 
+      // language=JSON
       val jsonString = """
         {
           "ageRestriction": {

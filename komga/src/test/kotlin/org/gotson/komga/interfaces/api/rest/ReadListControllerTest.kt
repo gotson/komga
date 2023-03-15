@@ -832,6 +832,7 @@ class ReadListControllerTest(
     @Test
     @WithMockCustomUser
     fun `given non-admin user when creating read list then return forbidden`() {
+      // language=JSON
       val jsonString = """
         {"name":"readlist","bookIds":["3"]}
       """.trimIndent()
@@ -847,6 +848,7 @@ class ReadListControllerTest(
     @Test
     @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given admin user when creating read list then return ok`() {
+      // language=JSON
       val jsonString = """
         {"name":"readlist","summary":"summary","bookIds":["${booksLibrary1.first().id}"]}
       """.trimIndent()
@@ -867,6 +869,7 @@ class ReadListControllerTest(
     fun `given existing read lists when creating read list with existing name then return bad request`() {
       makeReadLists()
 
+      // language=JSON
       val jsonString = """
         {"name":"Lib1","bookIds":["${booksLibrary1.first().id}"]}
       """.trimIndent()
@@ -882,6 +885,7 @@ class ReadListControllerTest(
     @Test
     @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given read list with duplicate bookIds when creating read list then return bad request`() {
+      // language=JSON
       val jsonString = """
         {"name":"Lib1","bookIds":["${booksLibrary1.first().id}","${booksLibrary1.first().id}"]}
       """.trimIndent()
@@ -900,6 +904,7 @@ class ReadListControllerTest(
     @Test
     @WithMockCustomUser
     fun `given non-admin user when updating read list then return forbidden`() {
+      // language=JSON
       val jsonString = """
         {"name":"readlist","bookIds":["3"]}
       """.trimIndent()
@@ -917,6 +922,7 @@ class ReadListControllerTest(
     fun `given admin user when updating read list then return no content`() {
       makeReadLists()
 
+      // language=JSON
       val jsonString = """
         {"name":"updated","summary":"updatedSummary","bookIds":["${booksLibrary1.first().id}"]}
       """.trimIndent()
@@ -943,6 +949,7 @@ class ReadListControllerTest(
     fun `given existing read lists when updating read list with existing name then return bad request`() {
       makeReadLists()
 
+      // language=JSON
       val jsonString = """{"name":"Lib2"}"""
 
       mockMvc.patch("/api/v1/readlists/${rlLib1.id}") {
@@ -958,6 +965,7 @@ class ReadListControllerTest(
     fun `given existing read list when updating read list with duplicate bookIds then return bad request`() {
       makeReadLists()
 
+      // language=JSON
       val jsonString = """{"bookIds":["${booksLibrary1.first().id}","${booksLibrary1.first().id}"]}"""
 
       mockMvc.patch("/api/v1/readlists/${rlLib1.id}") {

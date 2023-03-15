@@ -930,6 +930,7 @@ class BookControllerTest(
 
       val bookId = bookRepository.findAll().first().id
 
+      // language=JSON
       val jsonString = """
         {
           "title":"newTitle",
@@ -1015,6 +1016,7 @@ class BookControllerTest(
         bookMetadataRepository.update(updated)
       }
 
+      // language=JSON
       val jsonString = """
         {
           "summary":"",
@@ -1067,6 +1069,7 @@ class BookControllerTest(
         assertThat(releaseDate).isEqualTo(testDate)
       }
 
+      // language=JSON
       val jsonString = """
         {
           "authors":null,
@@ -1123,6 +1126,7 @@ class BookControllerTest(
         bookMetadataRepository.update(updated)
       }
 
+      // language=JSON
       val jsonString = """
         {
         }
@@ -1189,6 +1193,7 @@ class BookControllerTest(
         )
       }
 
+      // language=JSON
       val jsonString = """
         {
           "page": 5
@@ -1230,6 +1235,7 @@ class BookControllerTest(
         )
       }
 
+      // language=JSON
       val jsonString = """
         {
           "completed": true
@@ -1271,6 +1277,7 @@ class BookControllerTest(
         )
       }
 
+      // language=JSON
       val jsonString = """
         {
           "page": 5,
@@ -1318,6 +1325,7 @@ class BookControllerTest(
       )
     }
 
+    // language=JSON
     val jsonString = """
         {
           "completed": true

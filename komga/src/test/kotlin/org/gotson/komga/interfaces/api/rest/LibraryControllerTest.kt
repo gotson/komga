@@ -55,6 +55,7 @@ class LibraryControllerTest(
     @Test
     @WithAnonymousUser
     fun `given anonymous user when addOne then return unauthorized`() {
+      // language=JSON
       val jsonString = """{"name":"test", "root": "C:\\Temp"}"""
 
       mockMvc.post(route) {
@@ -76,6 +77,7 @@ class LibraryControllerTest(
     @Test
     @WithMockUser(roles = [ROLE_USER])
     fun `given user with USER role when addOne then return forbidden`() {
+      // language=JSON
       val jsonString = """{"name":"test", "root": "C:\\Temp"}"""
 
       mockMvc.post(route) {

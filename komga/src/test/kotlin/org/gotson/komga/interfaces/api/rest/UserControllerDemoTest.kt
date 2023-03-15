@@ -23,6 +23,7 @@ class UserControllerDemoTest(
   @Test
   @WithMockCustomUser
   fun `given demo profile is active when a user tries to update its password via api then returns forbidden`() {
+    // language=JSON
     val jsonString = """{"password":"new"}"""
 
     mockMvc.patch("/api/v2/users/me/password") {

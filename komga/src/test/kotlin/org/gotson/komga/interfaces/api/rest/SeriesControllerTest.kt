@@ -742,6 +742,7 @@ class SeriesControllerTest(
         }
       }
 
+      // language=JSON
       val jsonString = """
         {
           "title":"newTitle",
@@ -833,6 +834,7 @@ class SeriesControllerTest(
         assertThat(genres).hasSize(1)
       }
 
+      // language=JSON
       val jsonString = """
         {
           "readingDirection":null,
