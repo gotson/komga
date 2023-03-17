@@ -64,8 +64,12 @@ class BookLifecycle(
       // if the number of pages has changed, delete all read progress for that book
       mediaRepository.findById(book.id).let { previous ->
         if (previous.status == Media.Status.OUTDATED && previous.pages.size != media.pages.size) {
-          logger.info { "Number of pages differ, reset read progress for book" }
-          readProgressRepository.deleteByBookId(book.id)
+          val adjustedProgress = readProgressRepository.findAllByBookId(book.id)
+            .map { it.copy(page = if (it.completed) media.pages.size else 1) }
+          if (adjustedProgress.isNotEmpty()) {
+            logger.info { "Number of pages differ, adjust read progress for book" }
+            readProgressRepository.save(adjustedProgress)
+          }
         }
       }
 
@@ -115,6 +119,7 @@ class BookLifecycle(
         thumbnailBookRepository.deleteByBookIdAndType(thumbnail.bookId, ThumbnailBook.Type.GENERATED)
         thumbnailBookRepository.insert(thumbnail.copy(selected = false))
       }
+
       ThumbnailBook.Type.SIDECAR -> {
         // delete existing thumbnail with the same url
         thumbnailBookRepository.findAllByBookIdAndType(thumbnail.bookId, ThumbnailBook.Type.SIDECAR)
@@ -124,6 +129,7 @@ class BookLifecycle(
           }
         thumbnailBookRepository.insert(thumbnail.copy(selected = false))
       }
+
       ThumbnailBook.Type.USER_UPLOADED -> {
         thumbnailBookRepository.insert(thumbnail.copy(selected = false))
       }
@@ -135,6 +141,7 @@ class BookLifecycle(
         val selectedThumbnail = thumbnailBookRepository.findSelectedByBookIdOrNull(thumbnail.bookId)
         selectedThumbnail == null || selectedThumbnail.type == ThumbnailBook.Type.GENERATED
       }
+
       MarkSelectedPreference.NO -> false
     }
 
@@ -204,6 +211,7 @@ class BookLifecycle(
         logger.info { "More than one thumbnail is selected, removing extra ones" }
         thumbnailBookRepository.markSelected(selected[0])
       }
+
       selected.isEmpty() && all.isNotEmpty() -> {
         logger.info { "Book has no selected thumbnail, choosing one automatically" }
         thumbnailBookRepository.markSelected(all.first())

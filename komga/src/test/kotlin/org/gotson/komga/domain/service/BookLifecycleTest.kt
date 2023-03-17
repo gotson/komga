@@ -77,7 +77,7 @@ class BookLifecycleTest(
   }
 
   @Test
-  fun `given outdated book with different number of pages than before when analyzing then existing read progress is deleted`() {
+  fun `given outdated book with different number of pages than before when analyzing then existing incomplete read progress is reset to 1`() {
     // given
     makeSeries(name = "series", libraryId = library.id).let { series ->
       seriesLifecycle.createSeries(series).let { created ->
@@ -106,7 +106,14 @@ class BookLifecycleTest(
     bookLifecycle.analyzeAndPersist(book)
 
     // then
-    assertThat(readProgressRepository.findAll()).isEmpty()
+    with(readProgressRepository.findByBookIdAndUserIdOrNull(book.id, user1.id)!!) {
+      assertThat(page).isEqualTo(2)
+      assertThat(completed).isTrue
+    }
+    with(readProgressRepository.findByBookIdAndUserIdOrNull(book.id, user2.id)!!) {
+      assertThat(page).isEqualTo(1)
+      assertThat(completed).isFalse
+    }
   }
 
   @Test
