@@ -1,3 +1,20 @@
+# [0.165.0](https://github.com/gotson/komga/compare/v0.164.0...v0.165.0) (2023-03-17)
+## 🚀 Features
+**metadata**
+- import Comicinfo.xml's GTIN element as ISBN ([a51bf46](https://github.com/gotson/komga/commits/a51bf46))
+
+**webui**
+- use a datepicker to select book release date ([14c0bf4](https://github.com/gotson/komga/commits/14c0bf4)), closes [#1094](https://github.com/gotson/komga/issues/1094)
+
+**unscoped**
+- better handling of read progress when a book file changed ([5050a4e](https://github.com/gotson/komga/commits/5050a4e)), closes [#1093](https://github.com/gotson/komga/issues/1093)
+
+## 🛠  Build
+
+- better handling of temp directories ([c0d6bf2](https://github.com/gotson/komga/commits/c0d6bf2))
+- add language injection for better readability ([c0d00cc](https://github.com/gotson/komga/commits/c0d00cc))
+- inline xml and json files for better readability ([867f895](https://github.com/gotson/komga/commits/867f895))
+
 # [0.164.0](https://github.com/gotson/komga/compare/v0.163.0...v0.164.0) (2023-03-14)
 ## 🚀 Features
 **webui**
