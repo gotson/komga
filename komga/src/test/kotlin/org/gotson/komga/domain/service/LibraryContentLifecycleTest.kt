@@ -116,6 +116,7 @@ class LibraryContentLifecycleTest(
       libraryLifecycle.deleteLibrary(it)
     }
   }
+
   @Nested
   inner class Scan {
     @Test
