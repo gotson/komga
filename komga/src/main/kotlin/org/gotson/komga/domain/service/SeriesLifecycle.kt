@@ -113,7 +113,7 @@ class SeriesLifecycle(
 
     // update book count for series
     seriesRepository.findByIdOrNull(series.id)?.let {
-      seriesRepository.update(it.copy(bookCount = books.size))
+      seriesRepository.update(it.copy(bookCount = books.size), false)
     }
   }
 

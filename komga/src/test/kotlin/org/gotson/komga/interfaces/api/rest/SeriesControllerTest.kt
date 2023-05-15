@@ -1,5 +1,7 @@
 package org.gotson.komga.interfaces.api.rest
 
+import com.ninjasquad.springmockk.MockkBean
+import io.mockk.every
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.KomgaUser
@@ -19,9 +21,12 @@ import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.BookLifecycle
+import org.gotson.komga.domain.service.FileSystemScanner
 import org.gotson.komga.domain.service.KomgaUserLifecycle
+import org.gotson.komga.domain.service.LibraryContentLifecycle
 import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
+import org.gotson.komga.toScanResult
 import org.hamcrest.Matchers
 import org.hamcrest.core.IsNull
 import org.junit.jupiter.api.AfterAll
@@ -58,6 +63,7 @@ class SeriesControllerTest(
   @Autowired private val seriesMetadataRepository: SeriesMetadataRepository,
   @Autowired private val libraryRepository: LibraryRepository,
   @Autowired private val libraryLifecycle: LibraryLifecycle,
+  @Autowired private val libraryContentLifecycle: LibraryContentLifecycle,
   @Autowired private val bookRepository: BookRepository,
   @Autowired private val bookLifecycle: BookLifecycle,
   @Autowired private val mediaRepository: MediaRepository,
@@ -66,6 +72,8 @@ class SeriesControllerTest(
   @Autowired private val userLifecycle: KomgaUserLifecycle,
   @Autowired private val mockMvc: MockMvc,
 ) {
+  @MockkBean
+  private lateinit var mockScanner: FileSystemScanner
 
   private val library = makeLibrary(id = "1")
 
@@ -1081,24 +1089,47 @@ class SeriesControllerTest(
     }
   }
 
-  @Test
-  @WithMockCustomUser
-  fun `given series with Unicode name when getting series file then attachment name is correct`() {
-    val name = "アキラ"
-    val tempFile = Files.createTempFile(name, ".cbz")
-      .also { it.toFile().deleteOnExit() }
-    val series = makeSeries(name = name, libraryId = library.id).let { series ->
-      seriesLifecycle.createSeries(series).let { created ->
-        val books = listOf(makeBook(name, libraryId = library.id, url = tempFile.toUri().toURL()))
-        seriesLifecycle.addBooks(created, books)
+  @Nested
+  inner class FileDownload {
+    @Test
+    @WithMockCustomUser
+    fun `given series with Unicode name when getting series file then attachment name is correct`() {
+      val name = "アキラ"
+      val tempFile = Files.createTempFile(name, ".cbz")
+        .also { it.toFile().deleteOnExit() }
+      val series = makeSeries(name = name, libraryId = library.id).let { series ->
+        seriesLifecycle.createSeries(series).let { created ->
+          val books = listOf(makeBook(name, libraryId = library.id, url = tempFile.toUri().toURL()))
+          seriesLifecycle.addBooks(created, books)
+        }
+        series
       }
-      series
-    }
 
-    mockMvc.get("/api/v1/series/${series.id}/file")
-      .andExpect {
-        status { isOk() }
-        header { string("Content-Disposition", Matchers.containsString(URLEncoder.encode(name, StandardCharsets.UTF_8.name()))) }
-      }
+      mockMvc.get("/api/v1/series/${series.id}/file")
+        .andExpect {
+          status { isOk() }
+          header { string("Content-Disposition", Matchers.containsString(URLEncoder.encode(name, StandardCharsets.UTF_8.name()))) }
+        }
+    }
+  }
+
+  @Nested
+  inner class RecentSeries {
+    @Test
+    @WithMockCustomUser
+    fun `given series that was just created when getting updated series then series is omitted`() {
+      every { mockScanner.scanRootFolder(any()) }
+        .returnsMany(
+          mapOf(makeSeries(name = "series") to listOf(makeBook("book1").copy(fileSize = 1))).toScanResult(),
+          mapOf(makeSeries(name = "series") to listOf(makeBook("book1").copy(fileSize = 2))).toScanResult(),
+        )
+      libraryContentLifecycle.scanRootFolder(library)
+
+      mockMvc.get("/api/v1/series/updated")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.content") { isEmpty() }
+        }
+    }
   }
 }

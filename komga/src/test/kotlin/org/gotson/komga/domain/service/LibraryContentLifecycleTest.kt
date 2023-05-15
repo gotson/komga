@@ -16,7 +16,6 @@ import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ReadList
-import org.gotson.komga.domain.model.ScanResult
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.ThumbnailBook
@@ -38,6 +37,7 @@ import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.interfaces.api.persistence.SeriesDtoRepository
 import org.gotson.komga.language.toIndexedMap
+import org.gotson.komga.toScanResult
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
@@ -116,10 +116,6 @@ class LibraryContentLifecycleTest(
       libraryLifecycle.deleteLibrary(it)
     }
   }
-
-  private fun Map<Series, List<Book>>.toScanResult() =
-    ScanResult(this, emptyList())
-
   @Nested
   inner class Scan {
     @Test

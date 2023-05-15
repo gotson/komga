@@ -19,7 +19,7 @@ interface SeriesRepository {
   fun findAllIdsByLibraryId(libraryId: String): Collection<String>
 
   fun insert(series: Series)
-  fun update(series: Series)
+  fun update(series: Series, updateModifiedTime: Boolean = true)
 
   fun delete(seriesId: String)
   fun delete(seriesIds: Collection<String>)

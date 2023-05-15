@@ -107,7 +107,7 @@ class SeriesDao(
       .execute()
   }
 
-  override fun update(series: Series) {
+  override fun update(series: Series, updateModifiedTime: Boolean) {
     dsl.update(s)
       .set(s.NAME, series.name)
       .set(s.URL, series.url.toString())
@@ -115,7 +115,7 @@ class SeriesDao(
       .set(s.LIBRARY_ID, series.libraryId)
       .set(s.BOOK_COUNT, series.bookCount)
       .set(s.DELETED_DATE, series.deletedDate)
-      .set(s.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
+      .apply { if (updateModifiedTime) set(s.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z"))) }
       .where(s.ID.eq(series.id))
       .execute()
   }
