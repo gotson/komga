@@ -82,7 +82,7 @@ dependencies {
     implementation("org.apache.lucene:lucene-backward-codecs:$luceneVersion")
   }
 
-  implementation("com.ibm.icu:icu4j:72.1")
+  implementation("com.ibm.icu:icu4j:73.1")
 
   implementation("org.apache.tika:tika-core:2.7.0")
   implementation("org.apache.commons:commons-compress:1.22")
