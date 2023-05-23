@@ -109,8 +109,8 @@ dependencies {
 
   implementation("com.github.ben-manes.caffeine:caffeine")
 
-  implementation("org.xerial:sqlite-jdbc:3.40.1.0")
-  jooqGenerator("org.xerial:sqlite-jdbc:3.40.1.0")
+  implementation("org.xerial:sqlite-jdbc:3.42.0.0")
+  jooqGenerator("org.xerial:sqlite-jdbc:3.42.0.0")
 
   testImplementation("org.springframework.boot:spring-boot-starter-test") {
     exclude(module = "mockito-core")
