@@ -122,7 +122,7 @@ dependencies {
 
   testImplementation("com.tngtech.archunit:archunit-junit5:1.0.1")
 
-  benchmarkImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+  benchmarkImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
   benchmarkImplementation("org.openjdk.jmh:jmh-core:1.36")
   kaptBenchmark("org.openjdk.jmh:jmh-generator-annprocess:1.36")
   kaptBenchmark("org.springframework.boot:spring-boot-configuration-processor:3.1.0")
