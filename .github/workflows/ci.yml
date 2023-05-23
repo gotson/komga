@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ 8, 11, 17, 19 ]
+        java: [ 17, 19 ]
     name: Test JDK ${{ matrix.java }}
     steps:
       - uses: actions/checkout@v3
@@ -127,7 +127,7 @@ jobs:
             komga-webui/package-lock.json
       - uses: actions/setup-java@v3
         with:
-          java-version: '8'
+          java-version: '17'
           java-package: 'jdk'
           distribution: 'temurin'
           cache: 'gradle'
