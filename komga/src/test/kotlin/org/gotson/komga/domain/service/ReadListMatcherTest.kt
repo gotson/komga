@@ -230,7 +230,7 @@ class ReadListMatcherTest(
         seriesLifecycle.addBooks(s, booksSeries2)
         seriesLifecycle.sortBooks(s)
       }
-      val series2dupe = makeSeries(name = "joker", libraryId = library.id).also { s ->
+      makeSeries(name = "joker", libraryId = library.id).also { s ->
         seriesLifecycle.createSeries(s)
       }
 

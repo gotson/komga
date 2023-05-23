@@ -79,8 +79,8 @@ class SecurityConfiguration(
           "/sse/**",
         ).hasRole(ROLE_USER)
       }
-      .headers {
-        it.cacheControl().disable() // headers are set in WebMvcConfiguration
+      .headers { headersConfigurer ->
+        headersConfigurer.cacheControl { it.disable() } // headers are set in WebMvcConfiguration
       }
       .httpBasic {
         it.authenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
