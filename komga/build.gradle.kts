@@ -39,7 +39,7 @@ val kaptBenchmark by configurations.getting {
 }
 
 dependencies {
-  implementation(kotlin("stdlib-jdk8"))
+  implementation(kotlin("stdlib"))
   implementation(kotlin("reflect"))
 
   implementation(platform("org.springframework.boot:spring-boot-dependencies:3.1.0"))
