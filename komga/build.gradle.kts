@@ -116,7 +116,7 @@ dependencies {
     exclude(module = "mockito-core")
   }
   testImplementation("org.springframework.security:spring-security-test")
-  testImplementation("com.ninja-squad:springmockk:4.0.0")
+  testImplementation("com.ninja-squad:springmockk:4.0.2")
   testImplementation("io.mockk:mockk:1.13.4")
   testImplementation("com.google.jimfs:jimfs:1.2")
 
