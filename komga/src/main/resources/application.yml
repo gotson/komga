@@ -61,6 +61,7 @@ server:
   shutdown: graceful
   error:
     include-message: always
+  port: 25600
 
 management:
   endpoints.web.exposure.include: "*"
