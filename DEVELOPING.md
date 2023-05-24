@@ -6,7 +6,7 @@ Thanks a lot for contributing to Komga!
 
 You will need:
 
-- Java JDK version 8+
+- Java JDK version 17+
 - Nodejs version 16+
 
 ## Setting up the project
@@ -60,7 +60,7 @@ SET SPRING_PROFILES_ACTIVE=dev
 
 ## Frontend development
 
-You can run a live development server with `npm run serve` from `/komga-webui`. The dev server will override the URL to connect to `localhost:8080`, so you can also run `gradle bootRun` to have a backend running, serving the API requests. The frontend will be loaded from `localhost:8081`.
+You can run a live development server with `npm run serve` from `/komga-webui`. The dev server will override the URL to connect to `localhost:25600`, so you can also run `gradle bootRun` to have a backend running, serving the API requests. The frontend will be loaded from `localhost:8081`.
 
 Make sure you start the backend with the `dev` profile, else the frontend requests will be denied because of CORS.
 
