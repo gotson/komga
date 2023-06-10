@@ -128,6 +128,7 @@
       "scale_type": "缩放模式",
       "side_padding": "边距",
       "side_padding_none": "无",
+      "simulate_spine": "模拟书脊",
       "webtoon": "Webtoon 模式"
     },
     "shortcuts": {
