@@ -9,6 +9,7 @@ export const persistedModule: Module<any, any> = {
       paged: {
         scale: '',
         pageLayout: '',
+        simulateSpine: true,
       },
       continuous: {
         scale: '',
@@ -73,6 +74,9 @@ export const persistedModule: Module<any, any> = {
     },
     setWebreaderReadingDirection(state, val) {
       state.webreader.readingDirection = val
+    },
+    setWebreaderPagedSimulateSpine(state, val) {
+      state.webreader.paged.simulateSpine = val
     },
     setWebreaderSwipe(state, val) {
       state.webreader.swipe = val

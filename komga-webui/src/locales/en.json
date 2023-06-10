@@ -128,6 +128,7 @@
       "scale_type": "Scale type",
       "side_padding": "Side padding",
       "side_padding_none": "None",
+      "simulate_spine": "Simulate spine",
       "webtoon": "Webtoon Reader Options"
     },
     "shortcuts": {

@@ -26,11 +26,14 @@
       >
         <div class="full-height d-flex flex-column justify-center">
           <div :class="`d-flex flex-row${flipDirection ? '-reverse' : ''} justify-center px-0 mx-0`">
+            <div :class="[spineClass(spread)]"
+                 z-index=0>
+            </div>
             <img v-for="(page, j) in spread"
                  :alt="`Page ${page.number}`"
                  :key="`spread${i}-${j}`"
                  :src="page.url"
-                 :class="imgClass(spread)"
+                 :class="[imgClass(spread), offsetClass(spread, i)]"
                  class="img-fit-all"
             />
           </div>
@@ -105,6 +108,10 @@ export default Vue.extend({
       required: true,
     },
     animations: {
+      type: Boolean,
+      required: true,
+    },
+    simulateSpine: {
       type: Boolean,
       required: true,
     },
@@ -196,10 +203,18 @@ export default Vue.extend({
     isDoublePages(): boolean {
       return this.pageLayout === PagedReaderLayout.DOUBLE_PAGES || this.pageLayout === PagedReaderLayout.DOUBLE_NO_COVER
     },
+    isSpineRequired(): boolean {
+      return this.simulateSpine
+             && (this.pageLayout === PagedReaderLayout.DOUBLE_NO_COVER
+                 || (this.pageLayout === PagedReaderLayout.DOUBLE_PAGES && this.canPrev && this.canNext))
+    },
   },
   methods: {
     keyPressed(e: KeyboardEvent) {
       this.shortcuts[e.key]?.execute(this)
+    },
+    spineClass(spread: PageDtoWithUrl[]): string {
+      return spread.length === 1 || !this.isSpineRequired ? 'spine-none' : 'spine'
     },
     imgClass(spread: PageDtoWithUrl[]): string {
       const double = spread.length > 1
@@ -215,6 +230,12 @@ export default Vue.extend({
         default:
           return 'img-fit-original'
       }
+    },
+    offsetClass(spread: PageDtoWithUrl[], index: number): string{
+      if (spread.length === 1 || !this.isSpineRequired) {
+        return 'offset-none'
+      }
+      return index % 2 === 1 ? 'offset-to-left' : 'offset-to-right'
     },
     eagerLoad(spreadIndex: number): boolean {
       return Math.abs(this.carouselPage - spreadIndex) <= 2
@@ -322,6 +343,20 @@ export default Vue.extend({
   position: absolute;
 }
 
+.spine {
+  width: 5px;
+  height: 100vh;
+  position: absolute;
+  background: linear-gradient(to right, transparent, black 50%, transparent);
+}
+
+.spine-none {
+  width: 5px;
+  height: 100vh;
+  position: absolute;
+  background: transparent;
+}
+
 .img-fit-all {
   object-fit: contain;
   object-position: center;
@@ -367,5 +402,17 @@ export default Vue.extend({
 .img-double-fit-screen {
   max-width: 50vw;
   height: 100vh;
+}
+
+.offset-to-left {
+  margin-right: 1px;
+}
+
+.offset-to-right {
+  margin-left: 1px;
+}
+
+.offset-none {
+  margin: 0;
 }
 </style>
