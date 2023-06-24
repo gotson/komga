@@ -630,8 +630,6 @@
     "ERR_1007": "Noen oppføringer kunne ikke analyseres",
     "ERR_1008": "Ukjent feil under innhenting av bokens oppføringer",
     "ERR_1009": "En leseliste med dette navnet finnes allerede",
-    "ERR_1011": "Ingen unike samsvar for denne serien",
-    "ERR_1013": "Ingen unike samsvar for boknummer i serie",
     "ERR_1015": "Kunne ikke deserialisere ComicRack-leseliste",
     "ERR_1016": "Mappen er ikke tilgjengelig, eller ikke en mappe",
     "ERR_1017": "Kan ikke skanne en mappe som er en del av et eksisterende bibliotek",
