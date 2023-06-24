@@ -258,6 +258,11 @@
     "button_import": "Importar",
     "button_match": "Coincidencia",
     "comicrack_preambule_html": "Puede importar Listas de lectura de ComicRack en formato <code>.cbl</code>.<br>Komga intentará hacer coincidir la serie y número de libro proporcionados con las series y libros en sus bibliotecas.",
+    "dialog_confirmation": {
+      "body": "{unmatched} / {total} libros no emparejados",
+      "create": "Crear de todos modos",
+      "title": "Algunos libros no coinciden"
+    },
     "field_file_label": "Lista de lectura de ComicRack (.cbl)",
     "field_files_label": "Listas de lectura de ComicRack (.cbl)",
     "import_read_lists": "Importar listas de lectura",
@@ -656,8 +661,6 @@
     "ERR_1007": "Algunas entradas no pudieron ser analizadas",
     "ERR_1008": "Error desconocido al obtener las entradas del libro",
     "ERR_1009": "Ya existe una lista de lectura con ese nombre",
-    "ERR_1011": "No hay coincidencia única para la serie",
-    "ERR_1013": "No hay coincidencia única para el número de libro dentro de la serie",
     "ERR_1015": "Error al deserializar ComicRack CBL",
     "ERR_1016": "Directorio no accesible o no es un directorio",
     "ERR_1017": "No se puede escanear una carpeta que es parte de una biblioteca existente",
