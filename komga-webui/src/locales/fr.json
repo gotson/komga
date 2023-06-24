@@ -8,7 +8,7 @@
       "noResultsText": "Aucun résultat ne correspond à votre recherche"
     },
     "dataTable": {
-      "itemsPerPageText": "Élements par page :",
+      "itemsPerPageText": "Lignes par page :",
       "sortBy": "Trier par"
     },
     "fileInput": {
@@ -189,6 +189,7 @@
   "common": {
     "age": "Âge",
     "all_libraries": "Toutes les bibliothèques",
+    "book": "Livre",
     "books": "Livres",
     "books_n": "Aucun livre | 1 livre | {count} livres",
     "books_total": "{count} / {total} livres",
@@ -214,7 +215,7 @@
     "locale_name": "Français",
     "locale_rtl": "false",
     "lock_all": "Tout verrouiller",
-    "n_selected": "{count} sélectionné | {count} sélectionnés",
+    "n_selected": "{count} sélectionné",
     "nothing_to_show": "Rien à afficher",
     "outdated": "Obsolète",
     "page": "Page",
@@ -227,12 +228,13 @@
     "publisher": "Éditeur",
     "read": "Lire",
     "read_on": "Lu le {date}",
+    "readlist": "Liste de lecture",
     "readlists": "Listes de lecture",
     "required": "Requis",
     "reset_filters": "Réinitialiser les filtres",
     "roles": "Rôles",
     "save_changes": "Enregistrer les modifications",
-    "series": "Séries",
+    "series": "Série | Séries",
     "sidecars": "Sidecars",
     "tags": "Étiquettes",
     "unavailable": "Indisponible",
@@ -254,10 +256,20 @@
     "book_number": "Nombre de livres : {name}",
     "book_series": "Série : {name}",
     "button_import": "Importer",
+    "button_match": "Correspondance",
     "comicrack_preambule_html": "Vous pouvez importer des listes de lecture ComicRack au format <code>.cbl</code>.<br>Komga tentera de faire correspondre les séries fournies et le numéro des livres avec les séries et livres de votre bibliothèque.",
+    "dialog_confirmation": {
+      "body": "{unmatched} / {total} livres ne correspondent pas",
+      "create": "Créer quand-même",
+      "title": "Certains livres ne correspondent pas"
+    },
+    "field_file_label": "Liste de lecture ComicRack (.cbl)",
     "field_files_label": "Listes de lecture ComicRack (.cbl)",
     "import_read_lists": "Importer des listes de lecture",
     "imported_as": "Importé comme {name}",
+    "readlist_created": "Liste de lecture créée : {name}",
+    "requested_number": "Numéro demandé",
+    "requested_series": "Série demandée",
     "results_preambule": "Le résultat de l'import est affiché ci-dessous. Vous pouvez également vérifier les livres pour lesquels aucune correspondance n'a été trouvée pour chaque fichier fourni.",
     "size_limit": "La taille du fichier doit être inférieure à {size} Mo",
     "tab_title": "Import de données"
@@ -295,6 +307,10 @@
       "body": "Analyse tous les fichiers média de la bibliothèque. L'analyse récupère les informations sur le médias. En fonction de la taille de votre bibliothèque, cela peut prendre un certain temps.",
       "button_confirm": "Analyser",
       "title": "Analyser la bibliothèque"
+    },
+    "book_picker": {
+      "filter": "Filtrer par numéro de livre, titre ou date de sortie",
+      "title": "Sélectionner un livre"
     },
     "delete_book": {
       "button_confirm": "Supprimer",
@@ -525,6 +541,7 @@
     },
     "series_picker": {
       "label_search_series": "Chercher une série",
+      "no_results": "Aucune série trouvée",
       "title": "Sélectionner une série"
     },
     "server_stop": {
@@ -577,7 +594,9 @@
       "total_size": "Taille totale"
     },
     "info": "Supprimer les pages en doublon va modifier vos fichiers. Sauvegardez vos fichiers et utilisez la suppression manuelle avant d'utiliser la suppression automatique.",
+    "known": "Connu",
     "matches_n": "Aucune correspondance | 1 correspondance | {count} correspondances",
+    "new": "Nouveau",
     "saved_size": "{size} économisés",
     "title": "Dupliquer les pages",
     "unknown_size": "Taille inconnue"
@@ -642,9 +661,7 @@
     "ERR_1007": "Certaines entrées n'ont pas pu être analysées",
     "ERR_1008": "Erreur inconnue pendant la recuperation des entrées",
     "ERR_1009": "Il existe déjà une liste de lecture avec ce nom",
-    "ERR_1011": "Aucune correspondance unique pour la série",
-    "ERR_1013": "Aucune correspondance unique pour le numéro de livre dans la série",
-    "ERR_1015": "Erreur lors de l'analyse de la liste de lecture ComicRack",
+    "ERR_1015": "Erreur lors de l'extraction du fichier ComicRack CBL",
     "ERR_1016": "Répertoire non accessible ou pas un répertoire",
     "ERR_1017": "Impossible de numériser un dossier qui fait partie d'une bibliothèque existante",
     "ERR_1018": "Fichier introuvable",
@@ -656,8 +673,10 @@
     "ERR_1024": "Erreur de connexion OAuth2 : pas d'attribut email",
     "ERR_1025": "Erreur de connexion OAuth2 : aucun utilisateur local existant avec cette adresse e-mail",
     "ERR_1026": "Erreur de connexion OpenId Connect : e-mail non vérifié",
-    "ERR_1027": "Erreur de connexion OpenID Connect : pas d'attribut d'e-mail vérifié",
-    "ERR_1028": "Erreur de connexion OpenID Connect : pas d'attribut d'e-mail"
+    "ERR_1027": "Erreur de connexion OpenID Connect : Pas d'attribut email_verified",
+    "ERR_1028": "Erreur de connexion OpenID Connect : Pas d'attribut email",
+    "ERR_1029": "Le fichier ComicRack CBL ne contient aucun livre",
+    "ERR_1030": "La liste de livres ComicRack n'a pas de nom"
   },
   "filter": {
     "age_rating": "Âge minimal",
@@ -755,6 +774,12 @@
   "read_more": {
     "less": "Lire moins",
     "more": "En savoir +"
+  },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "Dupliquer le livre",
+      "error_choose_book": "Sélectionner un livre"
+    }
   },
   "readlists_expansion_panel": {
     "manage_readlist": "Gérer la liste de lecture",
