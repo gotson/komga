@@ -1,18 +1,18 @@
 {
   "$vuetify": {
     "dataFooter": {
-      "pageText": "{0}-{1} den {2}"
+      "pageText": "{0}-{1} . sayfa (Toplam {2} sayfa)"
     },
     "dataIterator": {
-      "loadingText": "Maddeler Yüklenior...",
-      "noResultsText": "Uygun olan kayıtlar bulunamadı"
+      "loadingText": "Öğeler Yükleniyor...",
+      "noResultsText": "Uygun kayıt bulunamadı"
     },
     "dataTable": {
-      "itemsPerPageText": "Sayfa satırı:",
+      "itemsPerPageText": "Sayfa başı satır:",
       "sortBy": "Sıralama"
     },
     "fileInput": {
-      "counter": "Dosyalar",
+      "counter": "{0} dosya",
       "counterSize": "{0} Dosyalar ({1} toplam)"
     },
     "noDataText": "Veri bulunamadı"
@@ -25,17 +25,17 @@
     "datetime": "Tarih ve Saat",
     "email": "Email",
     "error": "Hata",
-    "ip": "IP",
+    "ip": "IP Adresi",
     "source": "Kaynak",
     "success": "Başarılı",
-    "user_agent": "Kullanıcı Aracısı"
+    "user_agent": "Kullanıcı Tarayıcı Kimliği"
   },
   "author_roles": {
     "colorist": "Renk Uzmanı",
     "cover": "Kapak",
     "editor": "Editör",
-    "inker": "Mürekkepleyici",
-    "letterer": "Yazıcı",
+    "inker": "Mürekkepleme Sanatçısı",
+    "letterer": "Dizgici",
     "penciller": "İllüstratör",
     "translator": "Çevirmen",
     "writer": "Yazar"
@@ -49,9 +49,11 @@
   },
   "book_import": {
     "button_browse": "Araştır",
+    "button_import": "İçe Aktar",
     "button_scan": "Tara",
     "button_select_series": "Seri Seç",
-    "field_import_path": "Klasörden içe aktar"
+    "field_import_path": "Klasörden içe aktar",
+    "no_files_found": "Herhangi bir dosya bulunamadı"
   },
   "common": {
     "locale_name": "Türkçe"
