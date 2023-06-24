@@ -174,7 +174,8 @@
   },
   "browse_readlist": {
     "edit_elements": "Ändere Eintrag",
-    "edit_readlist": "Ändere Leseliste"
+    "edit_readlist": "Ändere Leseliste",
+    "manual_ordering": "Manuelles Sortieren"
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Dies ist das früheste Erscheinungsjahr von allen Büchern in der Serie",
@@ -206,6 +207,7 @@
     "filename": "Dateiname",
     "filter_no_matches": "Die Suchkriterien haben kein Ergebnis geliefert",
     "genre": "Genre",
+    "go_to_collection": "Zur Kollektion gehen",
     "go_to_library": "Gehe zu Bibliothek",
     "go_to_readlist": "Zur Leseliste gehen",
     "go_to_series": "Zu Serien gehen",
@@ -219,17 +221,20 @@
     "page": "Seite",
     "page_number": "Seitennummer",
     "pages": "Seiten",
+    "pages_left": "Keine weiteren Seiten | 1 Seite noch übrig | Noch {count} Seiten übrig",
     "pages_n": "Keine Seite | 1 Seite | {count} Seiten",
     "password": "Passwort",
     "pending_tasks": "Keine ausstehenden Aufgaben | 1 ausstehende Aufgabe | {count} ausstehende Aufgaben",
     "publisher": "Verlag",
     "read": "Lesen",
+    "read_on": "Am {date} gelesen",
+    "readlist": "Leseliste",
     "readlists": "Leseliste",
     "required": "Notwendig",
     "reset_filters": "Filter Zurücksetzen",
     "roles": "Rollen",
     "save_changes": "Änderungen speichern",
-    "series": "Serie",
+    "series": "Serie | Serien",
     "sidecars": "Sidecars",
     "tags": "Stichwörter",
     "unavailable": "Nicht verfügbar",
@@ -251,10 +256,20 @@
     "book_number": "Buch Nummer: {name}",
     "book_series": "Serie: {name}",
     "button_import": "Importieren",
+    "button_match": "Übereinstimmung",
     "comicrack_preambule_html": "Es ist möglich ComicRack Leselisten im Format <code>.cbl</code> zu übernehmen.<br>Komga versucht die übernommenen Serien und Buchnummern mit den Serien und Büchern in der Bibliothek abzugleichen.",
+    "dialog_confirmation": {
+      "body": "{unmatched} / {total} Bücher haben keine Übereinstimmung",
+      "create": "Trotzdem erstellen",
+      "title": "Einige Bücher stimmen nicht überein"
+    },
+    "field_file_label": "ComicRack Leseliste (.cbl)",
     "field_files_label": "ComicRack Leseliste (.cbl)",
     "import_read_lists": "Übernehme Leseliste",
     "imported_as": "Übernehme als {name}",
+    "readlist_created": "Erstellte Leseliste: {name}",
+    "requested_number": "Angeforderte Nummer",
+    "requested_series": "Gewünschte Serie",
     "results_preambule": "Das Ergebnis der Übernahme wird unten angezeigt. Es ist möglich für jedes Buch, das nicht gefunden wurde, eine Einzelauswahl durchzuführen.",
     "size_limit": "Die Größe darf {size} MB nicht überschreiten",
     "tab_title": "Datenübernahme"
@@ -292,6 +307,10 @@
       "body": "Analysiert alle Mediendateien in der Bibliothek. Bei der Analyse werden Informationen über die Medien erfasst. Je nach Größe Ihrer Bibliothek kann dies sehr lange dauern.",
       "button_confirm": "Analysieren",
       "title": "Bibliothek analysieren"
+    },
+    "book_picker": {
+      "filter": "Filter nach Buchnummer, Titel oder Erscheinungsdatum",
+      "title": "Buch auswählen"
     },
     "delete_book": {
       "button_confirm": "Löschen",
@@ -345,8 +364,10 @@
       "authors_notice_multiple_edit": "Sie verändern mehrere Bücher. Dies wird die existierenden Einträge der Autoren jedes einzelnen Buches durch den neuen Eintrag ersetzen.",
       "button_cancel": "Abbrechen",
       "button_confirm": "Änderungen speichern",
+      "copy_from": "Kopie von {field}",
       "dialog_title_multiple": "Bearbeite {count} Bücher|Bearbeite {count} Bücher",
       "dialog_title_single": "Bearbeite {book}",
+      "field_alternate_title": "Alternativer Titel",
       "field_isbn": "ISBN",
       "field_isbn_error": "Muss eine gültige ISBN 13 Nummer sein",
       "field_link_label": "Label",
@@ -361,6 +382,8 @@
       "field_summary": "Zusammenfassung",
       "field_tags": "Stichwörter",
       "field_title": "Titel",
+      "number_sort_decrement": "Alle um 1 verringern",
+      "number_sort_increment": "Alle um 1 erhöhen",
       "tab_authors": "Autoren",
       "tab_general": "Allgemein",
       "tab_links": "Links",
@@ -394,6 +417,7 @@
       "field_import_comicinfo_collections": "Sammlungen",
       "field_import_comicinfo_readlists": "Leseliste",
       "field_import_comicinfo_series": "Serien Metadaten",
+      "field_import_comicinfo_series_append_volume": "Volume an Serientitel anhängen",
       "field_import_epub_book": "Buch Metadaten",
       "field_import_epub_series": "Serien Metadaten",
       "field_import_local_artwork": "Lokale Artwork",
@@ -426,8 +450,10 @@
       "button_cancel": "Abbrechen",
       "button_confirm": "Änderungen speichern",
       "dialog_title": "Bearbeite die Leseliste",
+      "field_manual_ordering": "Manuelles Sortieren",
       "field_name": "Name",
       "field_summary": "Zusammenfassung",
+      "label_ordering": "Standardmäßig werden die Bücher in einer Leseliste manuell sortiert. Sie können die manuelle Sortierung deaktivieren, um die Bücher nach Erscheinungsdatum zu sortieren.",
       "tab_general": "Allgemein",
       "tab_poster": "Poster"
     },
@@ -456,6 +482,7 @@
       "tab_poster": "Poster",
       "tab_sharing": "Teilen",
       "tab_tags": "Stichwörter",
+      "tab_titles": "Alternative Titel",
       "tags_notice_multiple_edit": "Sie verändern mehrere Stichwörter. Dies wird die existierenden Einträge der Stichwörter aller Serien durch den neuen Eintrag ersetzen."
     },
     "edit_user": {
@@ -514,6 +541,7 @@
     },
     "series_picker": {
       "label_search_series": "Serie suchen",
+      "no_results": "Keine Serie gefunden",
       "title": "Serie auswählen"
     },
     "server_stop": {
@@ -566,7 +594,9 @@
       "total_size": "Gesamtgröße"
     },
     "info": "Durch das Löschen von Duplikaten werden Ihre Dateien verändert. Sichern Sie Ihre Dateien und nutzen Sie die manuelle Löschung, bevor Sie die automatische Löschung verwenden.",
+    "known": "Bekannt",
     "matches_n": "Keine Übereinstimmungen | 1 Übereinstimmung| {count} Übereinstimmungen",
+    "new": "Neu",
     "saved_size": "{size} gespart",
     "title": "Doppelte Seiten",
     "unknown_size": "Unbekannte Größe"
@@ -631,8 +661,6 @@
     "ERR_1007": "Einige Einträge konnten nicht ausgewertet werden",
     "ERR_1008": "Unbekannter Fehler beim Abrufen der Bucheinträge",
     "ERR_1009": "Eine Leseliste mit diesem Namen existiert bereits",
-    "ERR_1011": "Kein eindeutige Übereinstimmung für diese Serie",
-    "ERR_1013": "Kein eindeutige Übereinstimmung für die Bücher der Serie",
     "ERR_1015": "Fehler bei der Abarbeitung der ComicRack Leseliste (CBL)",
     "ERR_1016": "Verzeichnis nicht erreichbar oder kein Verzeichnis",
     "ERR_1017": "Ordner, der Teil einer vorhandenen Bibliothek ist, kann nicht scannen",
@@ -644,7 +672,12 @@
     "ERR_1023": "Buch ist in der Leseliste schon vorhanden",
     "ERR_1024": "OAuth2 Anmeldefehler: Kein E-Mail Attribut",
     "ERR_1025": "OAuth2 Anmeldefehler: Keinen lokalen Nutzer mit eingegebener E-Mail gefunden",
-    "ERR_1026": "OpenID Connect Anmeldefehler: E-Mail nicht verifiziert"
+    "ERR_1026": "OpenID Connect Anmeldefehler: E-Mail nicht verifiziert",
+    "ERR_1027": "OpenID Connect-Anmeldefehler: Fehlendes email_verified Attribut",
+    "ERR_1028": "OpenID Connect-Anmeldefehler: kein E-Mail Attribut",
+    "ERR_1029": "ComicRack CBL enthält kein Buch Element",
+    "ERR_1030": "ComicRack CBL hat kein Name Element",
+    "ERR_1031": "ComicRack CBL für das Buch fehlt die Serie oder Nummer"
   },
   "filter": {
     "age_rating": "Altersfreigabe",
@@ -743,6 +776,12 @@
     "less": "Zeige weniger an",
     "more": "Weiterlesen"
   },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "Dupliziertes Buch",
+      "error_choose_book": "Wähle ein Buch"
+    }
+  },
   "readlists_expansion_panel": {
     "manage_readlist": "Leselistenverwaltung",
     "title": "{name} Leseliste"
@@ -807,6 +846,10 @@
     "tooltip_to_be_uploaded": "Wird hochgeladen werden",
     "tooltip_too_big": "Datei ist zu groß!",
     "tooltip_user_uploaded": "Von Nutzer hochgeladen"
+  },
+  "titles_more": {
+    "less": "Weniger Titel",
+    "more": "Weitere Titel"
   },
   "user_roles": {
     "ADMIN": "Systemverwalter",
