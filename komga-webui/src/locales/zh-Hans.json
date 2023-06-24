@@ -258,6 +258,11 @@
     "button_import": "导入",
     "button_match": "匹配",
     "comicrack_preambule_html": "您可以导入现有的 ComicRack 阅读列表，其为 <code>.cbl</code>格式。<br>Komga 会试着将您提供的系列和书号与你库中的相匹配。",
+    "dialog_confirmation": {
+      "body": "{unmatched} / {total} 本书匹配失败",
+      "create": "仍然创建",
+      "title": "有些书不匹配"
+    },
     "field_file_label": "ComicRack 阅读列表 (.cbl)",
     "field_files_label": "ComicRack 阅读列表（.cbl）",
     "import_read_lists": "导入阅读列表",
@@ -656,8 +661,6 @@
     "ERR_1007": "无法分析某些条目",
     "ERR_1008": "获取书籍条目时出现未知错误",
     "ERR_1009": "已存在该名称的阅读列表",
-    "ERR_1011": "系列没有唯一匹配",
-    "ERR_1013": "系列中的书号没有唯一匹配",
     "ERR_1015": "反序列化 ComicRack CBL 文件时出错",
     "ERR_1016": "目录不可访问",
     "ERR_1017": "无法扫描作为现有库一部分的文件夹",
@@ -673,7 +676,7 @@
     "ERR_1027": "OpenID Connect 登录错误：没有 email_verified 属性",
     "ERR_1028": "OpenID Connect 登录错误：没有 email 属性",
     "ERR_1029": "ComicRack CBL 文件中没有书籍",
-    "ERR_1030": "ComicRack CBL 文件中没有书名",
+    "ERR_1030": "ComicRack CBL 文件中没有书名元素",
     "ERR_1031": "ComicRack CBL 文件中的书籍没有系列或书号"
   },
   "filter": {
