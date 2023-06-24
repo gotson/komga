@@ -522,8 +522,6 @@
     "ERR_1007": "Algumas entradas não puderam ser analisadas",
     "ERR_1008": "Erro desconhecido ao obter entradas do livro",
     "ERR_1009": "Já existe uma lista de leitura com esse nome",
-    "ERR_1011": "Sem correspondência única para a série",
-    "ERR_1013": "Nenhuma correspondência única para o número do livro dentro da série",
     "ERR_1015": "Erro ao desserializar ComicRack ReadingList",
     "ERR_1016": "Diretório não acessível ou não é um diretório",
     "ERR_1017": "Não é possível digitalizar a pasta que faz parte de uma biblioteca existente",
