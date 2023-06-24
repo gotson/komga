@@ -580,8 +580,6 @@
     "ERR_1007": "Kelkaj rikordoj ne estis analizeblaj",
     "ERR_1008": "Nekonata eraro pri atingado de libro",
     "ERR_1009": "Jam ekzistas legolisto de tiu nomo",
-    "ERR_1011": "Kongrua serio ne estas unika",
-    "ERR_1013": "Kongrua numero de libro ne estas unika en serio",
     "ERR_1015": "Eraro pri enportado de legolisto ComicsRack",
     "ERR_1016": "Dosierujo aŭ ne estas atingebla aŭ fakte ne estas dosierujo",
     "ERR_1017": "Ne eblas skani dosierujon, kiu estas jam parto de ekzistanta biblioteko",
