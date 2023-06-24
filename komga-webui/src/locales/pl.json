@@ -630,8 +630,6 @@
     "ERR_1007": "Niektóre wpisy nie mogły zostać przeanalizowane",
     "ERR_1008": "Nieznany błąd podczas pobierania pozycji książki",
     "ERR_1009": "Lista o tej nazwie już istnieje",
-    "ERR_1011": "Brak unikalnego dopasowania dla cyklu",
-    "ERR_1013": "Brak unikalnego dopasowania dla numeru tomu w cyklu",
     "ERR_1015": "Błąd podczas deserializacji listy ComicRack",
     "ERR_1016": "Katalog jest niedostępny lub nie jest katalogiem",
     "ERR_1017": "Nie można skanować folderu, który jest częścią istniejącej biblioteki",
