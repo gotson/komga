@@ -258,6 +258,11 @@
     "button_import": "Importera",
     "button_match": "Träff",
     "comicrack_preambule_html": "Du kan importera existerande ComicRack Läslistor i <code>.cbl</code>-format.<br>Komga kommer att försöka matcha innehållet med serier och böker i dina bibliotek.",
+    "dialog_confirmation": {
+      "body": "{unmatched} / {total} böcker är ej matchade",
+      "create": "Skapa ändå",
+      "title": "Några böcker är inte matchade"
+    },
     "field_file_label": "ComicRack Läslista (.cbl)",
     "field_files_label": "ComicRack Läslistor (.cbl)",
     "import_read_lists": "Importera Läslistor",
@@ -656,9 +661,7 @@
     "ERR_1007": "Vissa poster kunde inte analyseras",
     "ERR_1008": "Okänt fel vid inhämtning av poster",
     "ERR_1009": "Det finns redan en läslista med det namnet",
-    "ERR_1011": "Ingen unik matchning för serier",
-    "ERR_1013": "Ingen unik matchning för boknummer inom serien",
-    "ERR_1015": "Fel vid avinstallation av ComicRack Läslista",
+    "ERR_1015": "Fel vid nedbrytning av ComicRack CBL",
     "ERR_1016": "Katalog inte tillgänglig eller är inte en katalog",
     "ERR_1017": "Kan inte skanna en mapp som är en del av ett befintligt bibliotek",
     "ERR_1018": "Filen hittades inte",
@@ -671,7 +674,10 @@
     "ERR_1025": "OAuth2 inloggningsfel: det finns ingen lokal användare med den e-postadressen",
     "ERR_1026": "OpenID Connect inloggningsfel: e-post är inte verifierad",
     "ERR_1027": "OpenID Connect inloggningsfel: inget email_verified attribut",
-    "ERR_1028": "OpenID connect inloggningsfel: inget e-post attribut"
+    "ERR_1028": "OpenID connect inloggningsfel: inget e-post attribut",
+    "ERR_1029": "ComicRack CBL innehåller inga bokelement",
+    "ERR_1030": "ComicRack CBL har inget namn-element",
+    "ERR_1031": "ComicRack CBL Book saknar serie eller nummer"
   },
   "filter": {
     "age_rating": "åldersgräns",
