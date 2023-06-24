@@ -174,7 +174,8 @@
   },
   "browse_readlist": {
     "edit_elements": "Modifica elementi",
-    "edit_readlist": "Modifica elenco lettura"
+    "edit_readlist": "Modifica elenco lettura",
+    "manual_ordering": "Ordinamento manuale"
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Questo è l'anno di uscita del primo fumetto della serie",
@@ -645,8 +646,6 @@
     "ERR_1007": "Non è stato possibile analizzare alcune voci",
     "ERR_1008": "Errore sconosciuto durante il recupero delle voci del fumetto",
     "ERR_1009": "Esiste già una lista di lettura con quel nome",
-    "ERR_1011": "Nessuna corrispondenza unica per la serie",
-    "ERR_1013": "Nessuna corrispondenza per il numero del fumetto nella serie",
     "ERR_1015": "Errore durante la deserializzazione della lista di lettura di ComicRack",
     "ERR_1016": "Cartella non accessibile o non è una cartella",
     "ERR_1017": "Impossibile eseguire la scansione di una cartella che fa parte di una libreria esistente",
