@@ -1,7 +1,7 @@
 package org.gotson.komga.infrastructure.hash
 
+import com.appmattus.crypto.Algorithm
 import mu.KotlinLogging
-import org.apache.commons.codec.digest.XXHash32
 import org.springframework.stereotype.Component
 import java.io.InputStream
 import java.nio.file.Path
@@ -9,7 +9,7 @@ import kotlin.io.path.inputStream
 
 private val logger = KotlinLogging.logger {}
 
-private const val DEFAULT_BUFFER_SIZE = 4096
+private const val DEFAULT_BUFFER_SIZE = 8192
 private const val SEED = 0
 
 @Component
@@ -22,7 +22,7 @@ class Hasher {
   }
 
   fun computeHash(stream: InputStream): String {
-    val hash = XXHash32(SEED)
+    val hash = Algorithm.XXH3_128.Seeded(SEED.toLong()).createDigest()
 
     stream.use {
       val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
@@ -34,6 +34,11 @@ class Hasher {
       } while (len >= 0)
     }
 
-    return hash.value.toString(36)
+    return hash.digest().toHexString()
+  }
+
+  @OptIn(ExperimentalUnsignedTypes::class)
+  private fun ByteArray.toHexString(): String = asUByteArray().joinToString("") {
+    it.toString(16).padStart(2, '0')
   }
 }
