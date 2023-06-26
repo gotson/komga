@@ -417,6 +417,60 @@ class BookDtoDaoTest(
     }
 
     @Test
+    fun `given books when searching by term and sort order then results are ordered by sort order`() {
+      // given
+      seriesLifecycle.addBooks(
+        series,
+        listOf(
+          makeBook("Book 3", seriesId = series.id, libraryId = library.id),
+          makeBook("Book 1", seriesId = series.id, libraryId = library.id),
+          makeBook("Book 2", seriesId = series.id, libraryId = library.id),
+        ),
+      )
+
+      searchIndexLifecycle.rebuildIndex()
+
+      // when
+      val found = bookDtoDao.findAll(
+        BookSearchWithReadProgress(searchTerm = "book"),
+        user.id,
+        UnpagedSorted(Sort.by("name")),
+      ).content
+      val pages = (0..2).map {
+        bookDtoDao.findAll(
+          BookSearchWithReadProgress(searchTerm = "book"),
+          user.id,
+          PageRequest.of(it, 1, Sort.by("name")),
+        )
+      }
+      val page0 = bookDtoDao.findAll(
+        BookSearchWithReadProgress(searchTerm = "book"),
+        user.id,
+        PageRequest.of(0, 2, Sort.by("name")),
+      )
+      val page1 = bookDtoDao.findAll(
+        BookSearchWithReadProgress(searchTerm = "book"),
+        user.id,
+        PageRequest.of(1, 2, Sort.by("name")),
+      )
+
+      // then
+      assertThat(found).hasSize(3)
+      assertThat(found.map { it.name }).containsExactly("Book 1", "Book 2", "Book 3")
+
+      assertThat(pages).hasSize(3)
+      assertThat(pages.map { it.totalPages }).containsOnly(3)
+      assertThat(pages.map { it.totalElements }).containsOnly(3)
+      assertThat(pages.map { it.size }).containsOnly(1)
+      assertThat(pages.flatMap { it.content }.map { it.name }).containsExactly("Book 1", "Book 2", "Book 3")
+
+      assertThat(page0).hasSize(2)
+      assertThat(page0.content.map { it.name }).containsExactly("Book 1", "Book 2")
+      assertThat(page1).hasSize(1)
+      assertThat(page1.content.map { it.name }).containsExactly("Book 3")
+    }
+
+    @Test
     fun `given books when searching by term with accent then results are matched accent insensitive`() {
       // given
       val book1 = makeBook("Éric le rouge", seriesId = series.id, libraryId = library.id)

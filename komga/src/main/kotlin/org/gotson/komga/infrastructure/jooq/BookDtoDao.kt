@@ -120,16 +120,9 @@ class BookDtoDao(
       else -> b.ID.`in`(dsl.selectTempStrings())
     }
 
-    // we can handle paging from the search results directly to reduce the sql query complexity
-    val (bookIdsPaged, pagingBySearch) = when {
-      bookIds.isNullOrEmpty() -> emptyList<String>() to false
-      pageable.isPaged -> bookIds.drop(pageable.pageSize * pageable.pageNumber).take(pageable.pageSize) to true
-      else -> bookIds to false
-    }
-
     val orderBy =
       pageable.sort.mapNotNull {
-        if (it.property == "relevance" && !bookIds.isNullOrEmpty()) b.ID.sortByValues(bookIdsPaged, it.isAscending)
+        if (it.property == "relevance" && !bookIds.isNullOrEmpty()) b.ID.sortByValues(bookIds, it.isAscending)
         else it.toSortField(sorts)
       }
 
@@ -151,15 +144,12 @@ class BookDtoDao(
           .groupBy(b.ID),
       )
 
-      // adjust temp table if we are paging by search results
-      if (pagingBySearch) dsl.insertTempStrings(batchSize, bookIdsPaged)
-
       val dtos = selectBase(userId, selectReadListNumber)
         .where(conditions)
         .and(searchCondition)
         .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
         .orderBy(orderBy)
-        .apply { if (!pagingBySearch && pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
         .fetchAndMap()
 
       count to dtos
