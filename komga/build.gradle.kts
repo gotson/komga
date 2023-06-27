@@ -82,7 +82,7 @@ dependencies {
     implementation("org.apache.lucene:lucene-backward-codecs:$luceneVersion")
   }
 
-  implementation("com.ibm.icu:icu4j:73.1")
+  implementation("com.ibm.icu:icu4j:73.2")
 
   implementation("com.appmattus.crypto:cryptohash:0.10.1")
 
