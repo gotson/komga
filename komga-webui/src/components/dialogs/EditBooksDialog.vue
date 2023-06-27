@@ -176,6 +176,8 @@
                       <v-date-picker v-model="form.releaseDate"
                                      :show-current="true"
                                      :show-adjacent-months="true"
+                                     :locale="$i18n.locale"
+                                     :first-day-of-week="new Intl.Locale($i18n.locale).weekInfo.firstDay"
                                      @input="menuDate = false"
                                      @change="form.releaseDateLock = true"
                       />
