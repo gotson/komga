@@ -211,7 +211,7 @@ export default Vue.extend({
     },
     pageHashUpdated(updated: PageHashKnownDto) {
       this.elements.find(x => {
-          if (x.hash === updated.hash && x.mediaType === updated.mediaType && x.size === updated.size) {
+          if (x.hash === updated.hash) {
             x.action = updated.action
             return true
           }

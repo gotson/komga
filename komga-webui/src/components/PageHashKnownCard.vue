@@ -26,7 +26,6 @@
 
               <v-row>
                 <v-col>
-                  <div>{{ hash.mediaType }}</div>
                   <div>{{ getFileSize(hash.size) || $t('duplicate_pages.unknown_size') }}</div>
                 </v-col>
               </v-row>

@@ -66,16 +66,14 @@ class PageHashDaoTest(
       val now = LocalDateTime.now()
       val pageHash = PageHashKnown(
         hash = "hashed",
-        mediaType = "image/jpeg",
         size = 10,
         action = PageHashKnown.Action.IGNORE,
       )
 
       pageHashDao.insert(pageHash, null)
-      val known = pageHashDao.findKnown(pageHash)!!
+      val known = pageHashDao.findKnown(pageHash.hash)!!
 
       assertThat(known.hash).isEqualTo(pageHash.hash)
-      assertThat(known.mediaType).isEqualTo(pageHash.mediaType)
       assertThat(known.size).isEqualTo(pageHash.size)
       assertThat(known.action).isEqualTo(pageHash.action)
       assertThat(known.createdDate).isCloseTo(now, offset)
@@ -91,7 +89,6 @@ class PageHashDaoTest(
       pageHashDao.insert(
         PageHashKnown(
           hash = "hash-1",
-          mediaType = "image/jpeg",
           size = 1,
           action = PageHashKnown.Action.IGNORE,
         ),
@@ -101,7 +98,6 @@ class PageHashDaoTest(
       pageHashDao.insert(
         PageHashKnown(
           hash = "hash-2",
-          mediaType = "image/jpeg",
           size = null,
           action = PageHashKnown.Action.IGNORE,
         ),
@@ -130,10 +126,11 @@ class PageHashDaoTest(
       val unknown = pageHashDao.findAllUnknown(Pageable.unpaged())
 
       // then
-      assertThat(unknown).hasSize(9)
+      assertThat(unknown).hasSize(8)
       assertThat(unknown.map { it.hash })
         .doesNotContain("hash-1")
-        .containsExactlyInAnyOrderElementsOf((2..10).map { "hash-$it" })
+        .doesNotContain("hash-2")
+        .containsExactlyInAnyOrderElementsOf((3..10).map { "hash-$it" })
     }
   }
 }

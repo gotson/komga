@@ -8,6 +8,8 @@ data class PageHashMatchDto(
   val url: String,
   val pageNumber: Int,
   val fileName: String,
+  val fileSize: Long,
+  val mediaType: String,
 )
 
 fun PageHashMatch.toDto() =
@@ -16,4 +18,6 @@ fun PageHashMatch.toDto() =
     url = url.toFilePath(),
     pageNumber = pageNumber,
     fileName = fileName,
+    fileSize = fileSize,
+    mediaType = mediaType,
   )

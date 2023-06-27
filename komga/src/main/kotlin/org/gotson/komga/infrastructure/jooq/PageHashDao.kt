@@ -1,7 +1,6 @@
 package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.BookPageNumbered
-import org.gotson.komga.domain.model.PageHash
 import org.gotson.komga.domain.model.PageHashKnown
 import org.gotson.komga.domain.model.PageHashMatch
 import org.gotson.komga.domain.model.PageHashUnknown
@@ -41,7 +40,6 @@ class PageHashDao(
 
   private val sortsUnknown = mapOf(
     "hash" to p.FILE_HASH,
-    "mediatype" to p.MEDIA_TYPE,
     "fileSize" to p.FILE_SIZE,
     "matchCount" to DSL.field("count"),
     "totalSize" to DSL.field("totalSize"),
@@ -50,14 +48,9 @@ class PageHashDao(
     "pageNumber" to p.NUMBER,
   )
 
-  override fun findKnown(pageHash: PageHash): PageHashKnown? =
+  override fun findKnown(pageHash: String): PageHashKnown? =
     dsl.selectFrom(ph)
-      .where(ph.HASH.eq(pageHash.hash))
-      .and(ph.MEDIA_TYPE.eq(pageHash.mediaType))
-      .apply {
-        if (pageHash.size == null) and(ph.SIZE.isNull)
-        else and(ph.SIZE.eq(pageHash.size))
-      }
+      .where(ph.HASH.eq(pageHash))
       .fetchOneInto(ph)
       ?.toDomain()
 
@@ -87,7 +80,6 @@ class PageHashDao(
     val bookCount = DSL.count(p.BOOK_ID)
     val query = dsl.select(
       p.FILE_HASH,
-      p.MEDIA_TYPE,
       p.FILE_SIZE,
       bookCount.`as`("count"),
       (bookCount * p.FILE_SIZE).`as`("totalSize"),
@@ -98,16 +90,10 @@ class PageHashDao(
         DSL.notExists(
           dsl.selectOne()
             .from(ph)
-            .where(ph.HASH.eq(p.FILE_HASH))
-            .and(ph.MEDIA_TYPE.eq(p.MEDIA_TYPE))
-            .and(
-              ph.SIZE.eq(p.FILE_SIZE).or(
-                ph.SIZE.isNull.and(p.FILE_SIZE.isNull),
-              ),
-            ),
+            .where(ph.HASH.eq(p.FILE_HASH)),
         ),
       )
-      .groupBy(p.FILE_HASH, p.MEDIA_TYPE, p.FILE_SIZE)
+      .groupBy(p.FILE_HASH)
       .having(DSL.count(p.BOOK_ID).gt(1))
 
     val count = dsl.fetchCount(query)
@@ -117,7 +103,7 @@ class PageHashDao(
       .orderBy(orderBy)
       .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
       .fetch {
-        PageHashUnknown(it.value1(), it.value2(), it.value3(), it.value4())
+        PageHashUnknown(it.value1(), it.value2(), it.value3())
       }
 
     val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
@@ -129,17 +115,11 @@ class PageHashDao(
     )
   }
 
-  override fun findMatchesByHash(pageHash: PageHash, libraryId: String?, pageable: Pageable): Page<PageHashMatch> {
-    val query = dsl.select(p.BOOK_ID, b.URL, p.NUMBER, p.FILE_NAME)
+  override fun findMatchesByHash(pageHash: String, pageable: Pageable): Page<PageHashMatch> {
+    val query = dsl.select(p.BOOK_ID, b.URL, p.NUMBER, p.FILE_NAME, p.FILE_SIZE, p.MEDIA_TYPE)
       .from(p)
       .leftJoin(b).on(p.BOOK_ID.eq(b.ID))
-      .where(p.FILE_HASH.eq(pageHash.hash))
-      .and(p.MEDIA_TYPE.eq(pageHash.mediaType))
-      .apply {
-        if (pageHash.size == null) and(p.FILE_SIZE.isNull)
-        else and(p.FILE_SIZE.eq(pageHash.size))
-      }
-      .apply { libraryId?.let { and(b.LIBRARY_ID.eq(it)) } }
+      .where(p.FILE_HASH.eq(pageHash))
 
     val count = dsl.fetchCount(query)
 
@@ -153,6 +133,8 @@ class PageHashDao(
           url = URL(it.value2()),
           pageNumber = it.value3() + 1,
           fileName = it.value4(),
+          fileSize = it.value5(),
+          mediaType = it.value6(),
         )
       }
 
@@ -168,13 +150,7 @@ class PageHashDao(
   override fun findMatchesByKnownHashAction(actions: List<PageHashKnown.Action>?, libraryId: String?): Map<String, Collection<BookPageNumbered>> =
     dsl.select(p.BOOK_ID, p.FILE_NAME, p.NUMBER, p.FILE_HASH, p.MEDIA_TYPE, p.FILE_SIZE)
       .from(p)
-      .innerJoin(ph).on(
-        p.FILE_HASH.eq(ph.HASH)
-          .and(p.MEDIA_TYPE.eq(ph.MEDIA_TYPE))
-          .and(
-            p.FILE_SIZE.isNull.and(ph.SIZE.isNull).or(p.FILE_SIZE.isNotNull.and(ph.SIZE.isNotNull).and(p.FILE_SIZE.eq(ph.SIZE))),
-          ),
-      )
+      .innerJoin(ph).on(p.FILE_HASH.eq(ph.HASH))
       .apply { libraryId?.let<String, Unit> { innerJoin(b).on(b.ID.eq(p.BOOK_ID)) } }
       .where(ph.ACTION.`in`(actions))
       .apply { libraryId?.let<String, Unit> { and(b.LIBRARY_ID.eq(it)) } }
@@ -189,22 +165,16 @@ class PageHashDao(
       }.groupingBy { it.first }
       .fold(emptyList()) { acc, (_, new) -> acc + new }
 
-  override fun getKnownThumbnail(pageHash: PageHash): ByteArray? =
+  override fun getKnownThumbnail(pageHash: String): ByteArray? =
     dsl.select(pht.THUMBNAIL)
       .from(pht)
-      .where(pht.HASH.eq(pageHash.hash))
-      .and(pht.MEDIA_TYPE.eq(pageHash.mediaType))
-      .apply {
-        if (pageHash.size == null) and(pht.SIZE.isNull)
-        else and(pht.SIZE.eq(pageHash.size))
-      }
+      .where(pht.HASH.eq(pageHash))
       .fetchOne()?.value1()
 
   @Transactional
   override fun insert(pageHash: PageHashKnown, thumbnail: ByteArray?) {
     dsl.insertInto(ph)
       .set(ph.HASH, pageHash.hash)
-      .set(ph.MEDIA_TYPE, pageHash.mediaType)
       .set(ph.SIZE, pageHash.size)
       .set(ph.ACTION, pageHash.action.name)
       .execute()
@@ -212,8 +182,6 @@ class PageHashDao(
     if (thumbnail != null) {
       dsl.insertInto(pht)
         .set(pht.HASH, pageHash.hash)
-        .set(pht.MEDIA_TYPE, pageHash.mediaType)
-        .set(pht.SIZE, pageHash.size)
         .set(pht.THUMBNAIL, thumbnail)
         .execute()
     }
@@ -222,14 +190,10 @@ class PageHashDao(
   override fun update(pageHash: PageHashKnown) {
     dsl.update(ph)
       .set(ph.ACTION, pageHash.action.name)
+      .set(ph.SIZE, pageHash.size)
       .set(ph.DELETE_COUNT, pageHash.deleteCount)
       .set(ph.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(ph.HASH.eq(pageHash.hash))
-      .and(ph.MEDIA_TYPE.eq(pageHash.mediaType))
-      .apply {
-        if (pageHash.size == null) and(ph.SIZE.isNull)
-        else and(ph.SIZE.eq(pageHash.size))
-      }
       .execute()
   }
 }
@@ -237,7 +201,6 @@ class PageHashDao(
 private fun PageHashRecord.toDomain() =
   PageHashKnown(
     hash = hash,
-    mediaType = mediaType,
     size = size,
     deleteCount = deleteCount,
     action = PageHashKnown.Action.valueOf(action),

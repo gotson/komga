@@ -7,4 +7,6 @@ data class PageHashMatch(
   val url: URL,
   val pageNumber: Int,
   val fileName: String,
+  val fileSize: Long,
+  val mediaType: String,
 )

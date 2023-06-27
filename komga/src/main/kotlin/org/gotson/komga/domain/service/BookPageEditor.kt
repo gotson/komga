@@ -16,7 +16,6 @@ import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.domain.model.MediaUnsupportedException
-import org.gotson.komga.domain.model.PageHash
 import org.gotson.komga.domain.model.restoreHashFrom
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.HistoricalEventRepository
@@ -157,7 +156,7 @@ class BookPageEditor(
       bookRepository.update(newBook)
       mediaRepository.update(mediaWithHashes)
       pagesToDelete
-        .mapNotNull { pageHashRepository.findKnown(PageHash(it.fileHash, it.mediaType, it.fileSize)) }
+        .mapNotNull { pageHashRepository.findKnown(it.fileHash) }
         .forEach { pageHashRepository.update(it.copy(deleteCount = it.deleteCount + 1)) }
     }
 

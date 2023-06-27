@@ -5,7 +5,6 @@ import org.gotson.komga.domain.model.BookPageContent
 import org.gotson.komga.domain.model.BookPageNumbered
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.MediaType
-import org.gotson.komga.domain.model.PageHash
 import org.gotson.komga.domain.model.PageHashKnown
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
@@ -39,8 +38,8 @@ class PageHashLifecycle(
       emptyList()
     }
 
-  fun getPage(pageHash: PageHash, resizeTo: Int? = null): BookPageContent? {
-    val match = pageHashRepository.findMatchesByHash(pageHash, null, Pageable.ofSize(1)).firstOrNull() ?: return null
+  fun getPage(pageHash: String, resizeTo: Int? = null): BookPageContent? {
+    val match = pageHashRepository.findMatchesByHash(pageHash, Pageable.ofSize(1)).firstOrNull() ?: return null
     val book = bookRepository.findByIdOrNull(match.bookId) ?: return null
 
     return bookLifecycle.getBookPage(book, match.pageNumber, resizeTo = resizeTo)
@@ -50,17 +49,11 @@ class PageHashLifecycle(
     pageHashRepository.findMatchesByKnownHashAction(listOf(PageHashKnown.Action.DELETE_AUTO), library.id)
 
   fun createOrUpdate(pageHash: PageHashKnown) {
-    if (pageHash.action == PageHashKnown.Action.DELETE_AUTO && pageHash.size == null) throw IllegalArgumentException("cannot create PageHash without size and Action.DELETE_AUTO")
-
-    val existing = pageHashRepository.findKnown(pageHash)
+    val existing = pageHashRepository.findKnown(pageHash.hash)
     if (existing == null) {
-      pageHashRepository.insert(pageHash, getPage(pageHash, 500)?.content)
+      pageHashRepository.insert(pageHash, getPage(pageHash.hash, 500)?.content)
     } else {
       pageHashRepository.update(existing.copy(action = pageHash.action))
     }
-  }
-
-  fun update(pageHash: PageHashKnown) {
-    if (pageHash.action == PageHashKnown.Action.DELETE_AUTO && pageHash.size == null) throw IllegalArgumentException("cannot create PageHash without size and Action.DELETE_AUTO")
   }
 }
