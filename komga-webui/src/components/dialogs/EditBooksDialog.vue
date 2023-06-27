@@ -158,7 +158,6 @@
                                       dense
                                       placeholder="YYYY-MM-DD"
                                       clearable
-                                      readonly
                                       :error-messages="releaseDateErrors"
                                       @blur="$v.form.releaseDate.$touch()"
                                       @change="form.releaseDateLock = true"
