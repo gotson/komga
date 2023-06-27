@@ -70,7 +70,7 @@ dependencies {
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
 
-  implementation("commons-io:commons-io:2.12.0")
+  implementation("commons-io:commons-io:2.13.0")
   implementation("org.apache.commons:commons-lang3:3.12.0")
   implementation("commons-validator:commons-validator:1.7")
 
