@@ -7,6 +7,7 @@ class PageHashKnown(
   size: Long? = null,
   val action: Action,
   val deleteCount: Int = 0,
+  val matchCount: Int = 0,
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
@@ -22,10 +23,12 @@ class PageHashKnown(
     size: Long? = this.size,
     action: Action = this.action,
     deleteCount: Int = this.deleteCount,
+    matchCount: Int = this.matchCount,
   ) = PageHashKnown(
     hash = hash,
     size = size,
     action = action,
     deleteCount = deleteCount,
+    matchCount = matchCount,
   )
 }

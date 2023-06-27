@@ -3,10 +3,10 @@ import {PageHashAction} from '@/types/enum-pagehashes'
 export interface PageHashDto {
   hash: string,
   size?: number,
+  matchCount: number,
 }
 
 export interface PageHashUnknownDto extends PageHashDto {
-  matchCount: number,
 }
 
 export interface PageHashMatchDto {

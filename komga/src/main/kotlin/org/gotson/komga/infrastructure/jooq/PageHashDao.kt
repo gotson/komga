@@ -32,8 +32,7 @@ class PageHashDao(
 
   private val sortsKnown = mapOf(
     "hash" to ph.HASH,
-    "mediatype" to ph.MEDIA_TYPE,
-    "fileSize" to ph.SIZE,
+    "matchCount" to DSL.field("count"),
     "deleteCount" to ph.DELETE_COUNT,
     "deleteSize" to ph.SIZE * ph.DELETE_COUNT,
   )
@@ -55,8 +54,11 @@ class PageHashDao(
       ?.toDomain()
 
   override fun findAllKnown(actions: List<PageHashKnown.Action>?, pageable: Pageable): Page<PageHashKnown> {
-    val query = dsl.selectFrom(ph)
+    val query = dsl.select(*ph.fields(), DSL.count(p.FILE_HASH).`as`("count"))
+      .from(ph)
+      .leftJoin(p).on(ph.HASH.eq(p.FILE_HASH))
       .apply { actions?.let { where(ph.ACTION.`in`(actions)) } }
+      .groupBy(*ph.fields())
 
     val count = dsl.fetchCount(query)
 
@@ -65,7 +67,7 @@ class PageHashDao(
       .orderBy(orderBy)
       .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
       .fetch()
-      .map { it.toDomain() }
+      .map { it.into(ph).toDomain(it.get("count", Int::class.java)) }
 
     val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
     return PageImpl(
@@ -198,11 +200,12 @@ class PageHashDao(
   }
 }
 
-private fun PageHashRecord.toDomain() =
+private fun PageHashRecord.toDomain(matchCount: Int = 0) =
   PageHashKnown(
     hash = hash,
     size = size,
     deleteCount = deleteCount,
+    matchCount = matchCount,
     action = PageHashKnown.Action.valueOf(action),
     createdDate = createdDate.toCurrentTimeZone(),
     lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),

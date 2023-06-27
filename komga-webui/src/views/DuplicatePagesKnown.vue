@@ -162,6 +162,7 @@ export default Vue.extend({
         {name: this.$t('duplicate_pages.filter.delete_size').toString(), key: 'deleteSize'},
         {name: this.$t('duplicate_pages.filter.size').toString(), key: 'fileSize'},
         {name: this.$t('duplicate_pages.filter.delete_count').toString(), key: 'deleteCount'},
+        {name: this.$t('duplicate_pages.filter.match_count').toString(), key: 'matchCount'},
       ]
     },
     paginationVisible(): number {

@@ -591,7 +591,8 @@
       "delete_count": "Deletion count",
       "delete_size": "Space saved",
       "size": "Size",
-      "total_size": "Total size"
+      "total_size": "Total size",
+      "match_count": "Match count"
     },
     "info": "Deleting duplicate pages will modify your files. Backup your files and use manual deletion before using automatic deletion.",
     "known": "Known",
