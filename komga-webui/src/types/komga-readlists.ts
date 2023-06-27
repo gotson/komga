@@ -59,6 +59,7 @@ export interface ReadListRequestBookMatchDto {
 export interface ReadListRequestBookMatchSeriesDto {
   seriesId: string,
   title: string,
+  releaseDate?: string,
 }
 
 export interface ReadListRequestBookMatchBookDto {

@@ -1,5 +1,7 @@
 package org.gotson.komga.domain.model
 
+import java.time.LocalDate
+
 /**
  * Represents a request to create a reading list.
  */
@@ -32,6 +34,7 @@ data class ReadListRequestBookMatches(
 data class ReadListRequestBookMatchSeries(
   val id: String,
   val title: String,
+  val releaseDate: LocalDate?,
 )
 
 data class ReadListRequestBookMatchBook(

@@ -12,6 +12,7 @@ import org.jooq.impl.DSL.row
 import org.jooq.impl.DSL.value
 import org.jooq.impl.DSL.values
 import org.springframework.stereotype.Component
+import java.time.LocalDate
 
 @Component
 class ReadListRequestDao(
@@ -20,6 +21,7 @@ class ReadListRequestDao(
   private val sd = Tables.SERIES_METADATA
   private val b = Tables.BOOK
   private val bd = Tables.BOOK_METADATA
+  private val bma = Tables.BOOK_METADATA_AGGREGATION
 
   override fun matchBookRequests(requests: Collection<ReadListRequestBook>): Collection<ReadListRequestBookMatches> {
     // use a table expression to join the requests to their potential matches
@@ -35,9 +37,11 @@ class ReadListRequestDao(
       bd.BOOK_ID,
       bd.NUMBER,
       bd.TITLE,
+      bma.RELEASE_DATE,
     )
       .from(requestsTable)
       .innerJoin(sd).on(requestsTable.field(seriesField, String::class.java)?.eq(sd.TITLE.noCase()))
+      .leftJoin(bma).on(sd.SERIES_ID.eq(bma.SERIES_ID))
       .innerJoin(b).on(sd.SERIES_ID.eq(b.SERIES_ID))
       .innerJoin(bd).on(
         b.ID.eq(bd.BOOK_ID)
@@ -46,7 +50,7 @@ class ReadListRequestDao(
       .mapValues { (_, records) ->
         // use the requests index to match results
         records.groupBy(
-          { ReadListRequestBookMatchSeries(it.get(1, String::class.java), it.get(2, String::class.java)) },
+          { ReadListRequestBookMatchSeries(it.get(1, String::class.java), it.get(2, String::class.java), it.get(6, LocalDate::class.java)) },
           { ReadListRequestBookMatchBook(it.get(3, String::class.java), it.get(4, String::class.java), it.get(5, String::class.java)) },
         )
       }

@@ -8,7 +8,15 @@
 
     <!--  Series picker  -->
     <td @click="modalSeriesPicker = true" style="cursor: pointer">
-      <template v-if="series">{{ series.title }}</template>
+      <template v-if="series">
+        <div>{{ series.title }}</div>
+        <div v-if="series.releaseDate">{{
+            new Intl.DateTimeFormat($i18n.locale, {
+              year: 'numeric',
+              timeZone: 'UTC'
+            }).format(new Date(series.releaseDate))
+            }}</div>
+      </template>
       <template v-else>
         <div style="height: 2em" class="missing"></div>
       </template>
@@ -91,7 +99,7 @@ export default Vue.extend({
   watch: {
     series: {
       handler(val: ReadListRequestBookMatchSeriesDto, old: ReadListRequestBookMatchSeriesDto) {
-        if(val?.seriesId !== old?.seriesId) {
+        if (val?.seriesId !== old?.seriesId) {
           this.seriesBooksCached = false
         }
       },
@@ -116,7 +124,7 @@ export default Vue.extend({
   },
   methods: {
     openBookPicker() {
-      if(!this.seriesBooksCached) {
+      if (!this.seriesBooksCached) {
         this.$komgaSeries.getBooks(this.series?.seriesId, {unpaged: true})
           .then(r => {
             this.seriesBooks = r.content

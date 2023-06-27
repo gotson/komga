@@ -1,8 +1,10 @@
 package org.gotson.komga.interfaces.api.rest.dto
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import org.gotson.komga.domain.model.ReadListMatch
 import org.gotson.komga.domain.model.ReadListRequestBook
 import org.gotson.komga.domain.model.ReadListRequestMatch
+import java.time.LocalDate
 
 data class ReadListRequestMatchDto(
   val readListMatch: ReadListMatchDto,
@@ -17,7 +19,7 @@ fun ReadListRequestMatch.toDto() =
       ReadListRequestBookMatchesDto(
         request.request.toDto(),
         request.matches.entries.map { (series, books) ->
-          ReadListRequestBookMatchDto(ReadListRequestBookMatchSeriesDto(series.id, series.title), books.map { ReadListRequestBookMatchBookDto(it.id, it.number, it.title) })
+          ReadListRequestBookMatchDto(ReadListRequestBookMatchSeriesDto(series.id, series.title, series.releaseDate), books.map { ReadListRequestBookMatchBookDto(it.id, it.number, it.title) })
         },
       )
     },
@@ -54,6 +56,8 @@ data class ReadListRequestBookMatchDto(
 data class ReadListRequestBookMatchSeriesDto(
   val seriesId: String,
   val title: String,
+  @JsonFormat(pattern = "yyyy-MM-dd")
+  val releaseDate: LocalDate?,
 )
 data class ReadListRequestBookMatchBookDto(
   val bookId: String,
