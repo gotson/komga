@@ -1,21 +1,30 @@
 package org.gotson.komga.interfaces.api.opds
 
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
 import jakarta.servlet.ServletContext
 import mu.KotlinLogging
 import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
+import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
+import org.gotson.komga.domain.model.ThumbnailBook
+import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ReferentialRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
+import org.gotson.komga.domain.persistence.SeriesMetadataRepository
+import org.gotson.komga.domain.service.BookLifecycle
+import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageAsQueryParam
@@ -96,9 +105,12 @@ class OpdsController(
   private val collectionRepository: SeriesCollectionRepository,
   private val readListRepository: ReadListRepository,
   private val seriesDtoRepository: SeriesDtoRepository,
+  private val seriesMetadataRepository: SeriesMetadataRepository,
   private val bookDtoRepository: BookDtoRepository,
   private val mediaRepository: MediaRepository,
   private val referentialRepository: ReferentialRepository,
+  private val bookRepository: BookRepository,
+  private val bookLifecycle: BookLifecycle,
 ) {
 
   private val routeBase = "${servletContext.contextPath}$ROUTE_BASE"
@@ -661,6 +673,40 @@ class OpdsController(
       )
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
+  @GetMapping(
+    value = ["books/{bookId}/thumbnail"],
+    produces = [MediaType.IMAGE_JPEG_VALUE],
+  )
+  fun getBookThumbnail(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: String,
+  ): ByteArray {
+    principal.user.checkContentRestriction(bookId)
+    val thumbnail = bookLifecycle.getThumbnail(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    return if (thumbnail.type == ThumbnailBook.Type.GENERATED) {
+      bookLifecycle.getBookPage(bookRepository.findByIdOrNull(bookId)!!, 1, ImageType.JPEG).content
+    } else {
+      bookLifecycle.getThumbnailBytes(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    }
+  }
+
+  @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
+  @GetMapping(
+    value = ["books/{bookId}/thumbnail/small"],
+    produces = [MediaType.IMAGE_JPEG_VALUE],
+  )
+  fun getBookThumbnailSmall(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: String,
+  ): ByteArray {
+    principal.user.checkContentRestriction(bookId)
+    val thumbnail = bookLifecycle.getThumbnail(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+    return bookLifecycle.getThumbnailBytes(bookId, if (thumbnail.type == ThumbnailBook.Type.GENERATED) null else 300)
+      ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
   private fun SeriesDto.toOpdsEntry(prepend: Int? = null): OpdsEntryNavigation {
     val pre = prepend?.let { decimalFormat.format(it) + " - " } ?: ""
     return OpdsEntryNavigation(
@@ -691,8 +737,8 @@ class OpdsController(
       },
       authors = metadata.authors.map { OpdsAuthor(it.name) },
       links = listOf(
-        OpdsLinkImageThumbnail("image/jpeg", uriBuilder("books/$id/thumbnail").toUriString()),
-        OpdsLinkImage(media.pages[0].mediaType, uriBuilder("books/$id/pages/1").toUriString()),
+        OpdsLinkImageThumbnail("image/jpeg", uriBuilder("books/$id/thumbnail/small").toUriString()),
+        OpdsLinkImage(media.pages[0].mediaType, uriBuilder("books/$id/thumbnail").toUriString()),
         OpdsLinkFileAcquisition(media.mediaType, uriBuilder("books/$id/file/${sanitize(FilenameUtils.getName(url))}").toUriString()),
         opdsLinkPageStreaming,
       ),
@@ -738,4 +784,23 @@ class OpdsController(
 
   private fun sanitize(fileName: String): String =
     fileName.replace(";", "")
+
+  /**
+   * Convenience function to check for content restriction.
+   * This will retrieve data from repositories if needed.
+   *
+   * @throws[ResponseStatusException] if the user cannot access the content
+   */
+  private fun KomgaUser.checkContentRestriction(bookId: String) {
+    if (!sharedAllLibraries) {
+      bookRepository.getLibraryIdOrNull(bookId)?.let {
+        if (!canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    }
+    if (restrictions.isRestricted) bookRepository.getSeriesIdOrNull(bookId)?.let { seriesId ->
+      seriesMetadataRepository.findById(seriesId).let {
+        if (!isContentAllowed(it.ageRating, it.sharingLabels)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+      }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
 }

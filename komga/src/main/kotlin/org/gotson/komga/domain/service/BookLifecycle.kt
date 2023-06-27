@@ -56,6 +56,8 @@ class BookLifecycle(
   private val historicalEventRepository: HistoricalEventRepository,
 ) {
 
+  private val resizeTargetFormat = ImageType.JPEG
+
   fun analyzeAndPersist(book: Book): Set<BookAction> {
     logger.info { "Analyze and persist book: $book" }
     val media = bookAnalyzer.analyze(book, libraryRepository.findById(book.libraryId).analyzeDimensions)
@@ -171,13 +173,24 @@ class BookLifecycle(
     return selected
   }
 
-  fun getThumbnailBytes(bookId: String): ByteArray? {
+  fun getThumbnailBytes(bookId: String, resizeTo: Int? = null): ByteArray? {
     getThumbnail(bookId)?.let {
-      return when {
+      val thumbnailBytes = when {
         it.thumbnail != null -> it.thumbnail
         it.url != null -> File(it.url.toURI()).readBytes()
-        else -> null
+        else -> return null
       }
+
+      if (resizeTo != null) {
+        return try {
+          imageConverter.resizeImage(thumbnailBytes, resizeTargetFormat.imageIOFormat, resizeTo)
+        } catch (e: Exception) {
+          logger.error(e) { "Resize thumbnail of book $bookId to $resizeTo: failed" }
+          thumbnailBytes
+        }
+      }
+
+      return thumbnailBytes
     }
     return null
   }
@@ -230,14 +243,13 @@ class BookLifecycle(
     val pageMediaType = media.pages[number - 1].mediaType
 
     if (resizeTo != null) {
-      val targetFormat = ImageType.JPEG
       val convertedPage = try {
-        imageConverter.resizeImage(pageContent, targetFormat.imageIOFormat, resizeTo)
+        imageConverter.resizeImage(pageContent, resizeTargetFormat.imageIOFormat, resizeTo)
       } catch (e: Exception) {
         logger.error(e) { "Resize page #$number of book $book to $resizeTo: failed" }
         throw e
       }
-      return BookPageContent(number, convertedPage, targetFormat.mediaType)
+      return BookPageContent(number, convertedPage, resizeTargetFormat.mediaType)
     } else {
       convertTo?.let {
         val msg = "Convert page #$number of book $book from $pageMediaType to ${it.mediaType}"

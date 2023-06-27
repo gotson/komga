@@ -265,10 +265,7 @@ class BookController(
 
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
   @GetMapping(
-    value = [
-      "api/v1/books/{bookId}/thumbnail",
-      "opds/v1.2/books/{bookId}/thumbnail",
-    ],
+    value = ["api/v1/books/{bookId}/thumbnail"],
     produces = [MediaType.IMAGE_JPEG_VALUE],
   )
   fun getBookThumbnail(
@@ -418,6 +415,7 @@ class BookController(
           HttpStatus.NOT_FOUND,
           "Book is outdated and must be re-analyzed",
         )
+
         Media.Status.ERROR -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
         Media.Status.UNSUPPORTED -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book format is not supported")
         Media.Status.READY -> media.pages.mapIndexed { index, bookPage ->
