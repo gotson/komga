@@ -137,7 +137,7 @@ class MetadataApplierTest {
         language = "en",
         genres = setOf("shonen"),
         totalBookCount = 12,
-        collections = emptyList(),
+        collections = emptySet(),
       )
 
       val patched = metadataApplier.apply(patch, metadata)
@@ -172,7 +172,7 @@ class MetadataApplierTest {
         language = "en",
         genres = setOf("shonen"),
         totalBookCount = 12,
-        collections = emptyList(),
+        collections = emptySet(),
       )
 
       val patched = metadataApplier.apply(patch, metadata)

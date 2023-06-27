@@ -116,7 +116,7 @@ class EpubMetadataProvider(
         language = if (language != null && BCP47TagValidator.isValid(language)) language else null,
         genres = genres,
         totalBookCount = null,
-        collections = emptyList(),
+        collections = emptySet(),
       )
     }
     return null

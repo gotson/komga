@@ -50,7 +50,7 @@ class MylarSeriesProvider(
         language = null,
         genres = null,
         totalBookCount = metadata.totalIssues,
-        collections = emptyList(),
+        collections = emptySet(),
       )
     } catch (e: Exception) {
       logger.error(e) { "Error while retrieving metadata from $SERIES_JSON" }
