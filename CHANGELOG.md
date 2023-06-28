@@ -1,3 +1,132 @@
+# [1.0.0](https://github.com/gotson/komga/compare/v0.165.0...v1.0.0) (2023-06-28)
+## 🚀 Features
+**webui**
+- book release date field is editable ([902f700](https://github.com/gotson/komga/commits/902f700)), closes [#1097](https://github.com/gotson/komga/issues/1097)
+
+**unscoped**
+- display matched series release year in reading list import view ([0f89cf3](https://github.com/gotson/komga/commits/0f89cf3)), closes [#1114](https://github.com/gotson/komga/issues/1114)
+- add match count sort for known duplicate pages ([bf1903b](https://github.com/gotson/komga/commits/bf1903b)), closes [#825](https://github.com/gotson/komga/issues/825)
+- identify duplicate pages by hash only ([2d95679](https://github.com/gotson/komga/commits/2d95679))
+- use XXH128 for hashing ([4f8dee7](https://github.com/gotson/komga/commits/4f8dee7))
+- 🚨 change default port from 8080 to 25600 ([9b519e4](https://github.com/gotson/komga/commits/9b519e4))
+
+## 🐛 Fixes
+**api**
+- paging and sort could be incorrect when searching for books ([c4cdd7a](https://github.com/gotson/komga/commits/c4cdd7a))
+- recently updated series endpoint would incorrectly return created series ([a876132](https://github.com/gotson/komga/commits/a876132))
+
+**opds**
+- provide correct thumbnails in full and small size ([4a3e394](https://github.com/gotson/komga/commits/4a3e394)), closes [#1099](https://github.com/gotson/komga/issues/1099)
+
+**webui**
+- apply chosen locale to the date picker dialog ([7b3534a](https://github.com/gotson/komga/commits/7b3534a)), closes [#1113](https://github.com/gotson/komga/issues/1113)
+
+**unscoped**
+- oauth2 login would not work ([3eaab0f](https://github.com/gotson/komga/commits/3eaab0f))
+- comicInfo.xml SeriesGroup is now split by comma ([fb13529](https://github.com/gotson/komga/commits/fb13529)), closes [#1122](https://github.com/gotson/komga/issues/1122)
+- mark books with missing page file size as outdated ([a03bda9](https://github.com/gotson/komga/commits/a03bda9))
+
+## 🔄️ Changes
+
+- make SeriesMetadataPatch#collections a Set ([85fb3fa](https://github.com/gotson/komga/commits/85fb3fa))
+- replace deprecated methods in build.gradle.kts ([c70cab4](https://github.com/gotson/komga/commits/c70cab4))
+- replace deprecations ([32cb52e](https://github.com/gotson/komga/commits/32cb52e))
+- specify session creation policy explicitly ([c202614](https://github.com/gotson/komga/commits/c202614))
+- replace HttpTrace by HttpExchange ([0112fcd](https://github.com/gotson/komga/commits/0112fcd))
+- make property private ([9c0905e](https://github.com/gotson/komga/commits/9c0905e))
+- 🚨 remove deprecated classes: */api/v1/users and /api/v1/series/{seriesId}/read-progress/tachiyomi have been removed* ([2a5ce25](https://github.com/gotson/komga/commits/2a5ce25))
+- remove unnecessary brackets ([d4aa113](https://github.com/gotson/komga/commits/d4aa113))
+- adapt SecurityConfiguration for Spring Security 6 ([cf7fb45](https://github.com/gotson/komga/commits/cf7fb45))
+- replace deprecated configuration keys ([1b69cd0](https://github.com/gotson/komga/commits/1b69cd0))
+- hide jooq tips on startup ([7a3c1d8](https://github.com/gotson/komga/commits/7a3c1d8))
+- replace private property with method ([3e2d2cf](https://github.com/gotson/komga/commits/3e2d2cf))
+- replace artemis deprecated usage ([50524b9](https://github.com/gotson/komga/commits/50524b9))
+- replace javax imports by jakarta ([b88b4c4](https://github.com/gotson/komga/commits/b88b4c4))
+
+## 🛠  Build
+**dependabot**
+- remove unused dependabot configuration for root folder ([432bbb8](https://github.com/gotson/komga/commits/432bbb8))
+
+**deps**
+- bump peter-evans/dockerhub-description from 3.4.1 to 3.4.2 ([7209667](https://github.com/gotson/komga/commits/7209667))
+- bump lucene from 9.6.0 to 9.7.0 ([28c1f88](https://github.com/gotson/komga/commits/28c1f88))
+- bump icu4j from 73.1 to 73.2 ([a27f91c](https://github.com/gotson/komga/commits/a27f91c))
+- bump hawtio-springboot from 2.17.2 to 2.17.4 ([27c8270](https://github.com/gotson/komga/commits/27c8270))
+- bump commons-io from 2.12.0 to 2.13.0 ([0308d82](https://github.com/gotson/komga/commits/0308d82))
+- bump jooq plugin from 8.2 to 8.2.1 ([f8a018c](https://github.com/gotson/komga/commits/f8a018c))
+- bump Spring Boot from 3.1.0 to 3.1.1 ([1485f5f](https://github.com/gotson/komga/commits/1485f5f))
+- bump Kotlin from 1.8.21 to 1.8.22 ([c5cc9a2](https://github.com/gotson/komga/commits/c5cc9a2))
+- bump ktlint gradle to 11.4.2 ([b7cb89d](https://github.com/gotson/komga/commits/b7cb89d))
+- bump commons-io to 2.12.0 ([93f138d](https://github.com/gotson/komga/commits/93f138d))
+- bump tika-core to 2.8.0 ([3471446](https://github.com/gotson/komga/commits/3471446))
+- bump pdfbox to 2.0.28 ([37514f0](https://github.com/gotson/komga/commits/37514f0))
+- bump mockk to 1.13.5 ([ac91116](https://github.com/gotson/komga/commits/ac91116))
+- bump ben-manes.versions to 0.46.0 ([5e89431](https://github.com/gotson/komga/commits/5e89431))
+- bump kotlinx-coroutines-core to 1.7.1 ([714334e](https://github.com/gotson/komga/commits/714334e))
+- bump springmockk to 4.0.2 ([dba0907](https://github.com/gotson/komga/commits/dba0907))
+- bump tsid-creator to 5.2.4 ([c86302d](https://github.com/gotson/komga/commits/c86302d))
+- bump jsoup to 1.16.1 ([2472bb6](https://github.com/gotson/komga/commits/2472bb6))
+- bump commons-compress to 1.23.0 ([9dd1074](https://github.com/gotson/komga/commits/9dd1074))
+- bump icu4j to 73.1 ([0fa540d](https://github.com/gotson/komga/commits/0fa540d))
+- bump lucene to 9.6.0 ([c01e774](https://github.com/gotson/komga/commits/c01e774))
+- bump hawtio to 2.17.2 ([aa31c74](https://github.com/gotson/komga/commits/aa31c74))
+- bump jreleaser to 1.6.0 ([528ff62](https://github.com/gotson/komga/commits/528ff62))
+- bump joog gradle plugin to 8.2 ([9c977d3](https://github.com/gotson/komga/commits/9c977d3))
+- bump gradle to 8.1.1 ([cb7c150](https://github.com/gotson/komga/commits/cb7c150))
+- bump springdoc to 2.1.0 ([77c1bb7](https://github.com/gotson/komga/commits/77c1bb7))
+- bump sqlite-jdbc to 3.42.0.0 ([b7f4849](https://github.com/gotson/komga/commits/b7f4849))
+- bump kotlin to 1.8.21 ([d5f3423](https://github.com/gotson/komga/commits/d5f3423))
+- bump springboot to 3.1.0 ([1617fdf](https://github.com/gotson/komga/commits/1617fdf))
+- bump hawtio-springboot to 2.17.0 ([2bf5dc3](https://github.com/gotson/komga/commits/2bf5dc3))
+- bump springmockk to 4.0.0 ([c84a1d3](https://github.com/gotson/komga/commits/c84a1d3))
+- bump springdoc to 2.0.2 ([c75d870](https://github.com/gotson/komga/commits/c75d870))
+- bump mockk to 1.13.4 ([fb22bfd](https://github.com/gotson/komga/commits/fb22bfd))
+- bump Lucene to 9.5.0 ([e6ba346](https://github.com/gotson/komga/commits/e6ba346))
+- drop micrometer-registry-influx ([bae1ddf](https://github.com/gotson/komga/commits/bae1ddf))
+- bump spring-session-caffeine to 2.0.0 ([70b6def](https://github.com/gotson/komga/commits/70b6def))
+- bump archunit-junit5 to 1.0.1 ([992c68f](https://github.com/gotson/komga/commits/992c68f))
+- bump tika-core to 2.7.0 ([471a759](https://github.com/gotson/komga/commits/471a759))
+- bump kotlin-logging-jvm to 3.0.5 ([a0bf86e](https://github.com/gotson/komga/commits/a0bf86e))
+- bump flyway's gradle plugin to 9.7.0 ([9104578](https://github.com/gotson/komga/commits/9104578))
+- bump jooq's gradle plugin to 8.1 ([03929e4](https://github.com/gotson/komga/commits/03929e4))
+- bump Spring Boot to 3.0.2 ([7828edc](https://github.com/gotson/komga/commits/7828edc))
+- bump peter-evans/dockerhub-description from 3.3.0 to 3.4.1 ([8716996](https://github.com/gotson/komga/commits/8716996))
+
+**webui**
+- update browserslist ([272b52d](https://github.com/gotson/komga/commits/272b52d))
+- fix .editorconfig ([e1c8780](https://github.com/gotson/komga/commits/e1c8780))
+
+**unscoped**
+- fix missing gradle tasks dependencies ([4d95e9d](https://github.com/gotson/komga/commits/4d95e9d))
+- fix openapi generator configuration ([65be72a](https://github.com/gotson/komga/commits/65be72a))
+- try to fix gradle error in CI ([9f44fc8](https://github.com/gotson/komga/commits/9f44fc8))
+- try to fix gradle error in CI ([49c2695](https://github.com/gotson/komga/commits/49c2695))
+- drop java below 17 ([9d7e193](https://github.com/gotson/komga/commits/9d7e193))
+- use property access syntax ([d449ef1](https://github.com/gotson/komga/commits/d449ef1))
+- remove SpykBean that would create flaky tests ([54c2e35](https://github.com/gotson/komga/commits/54c2e35))
+- add REST API test for get claim status ([5336477](https://github.com/gotson/komga/commits/5336477))
+- add OAuth2 REST API tests ([35be71e](https://github.com/gotson/komga/commits/35be71e))
+- add Actuator REST API tests ([f9b1351](https://github.com/gotson/komga/commits/f9b1351))
+- 🚨 target JDK 17: *Java 17 or above is now required* ([9569c5b](https://github.com/gotson/komga/commits/9569c5b))
+
+## 📝 Documentation
+
+- update development documentation for port change ([985f04f](https://github.com/gotson/komga/commits/985f04f))
+
+## 🌐 Translation
+
+- translated using Weblate (Japanese) ([28b8aff](https://github.com/gotson/komga/commits/28b8aff))
+- translated using Weblate (Chinese (Simplified)) ([05ad407](https://github.com/gotson/komga/commits/05ad407))
+- translated using Weblate (Italian) ([4154924](https://github.com/gotson/komga/commits/4154924))
+- translated using Weblate (Chinese (Traditional)) ([965a041](https://github.com/gotson/komga/commits/965a041))
+- translated using Weblate (Turkish) ([b5c9152](https://github.com/gotson/komga/commits/b5c9152))
+- translated using Weblate (Bulgarian) ([28c0234](https://github.com/gotson/komga/commits/28c0234))
+- translated using Weblate (Swedish) ([326c06e](https://github.com/gotson/komga/commits/326c06e))
+- translated using Weblate (Czech) ([ab8d748](https://github.com/gotson/komga/commits/ab8d748))
+- translated using Weblate (French) ([8e8a8ff](https://github.com/gotson/komga/commits/8e8a8ff))
+- translated using Weblate (Spanish) ([3cc7386](https://github.com/gotson/komga/commits/3cc7386))
+- translated using Weblate (German) ([dc5bf55](https://github.com/gotson/komga/commits/dc5bf55))
+
 # [0.165.0](https://github.com/gotson/komga/compare/v0.164.0...v0.165.0) (2023-03-17)
 ## 🚀 Features
 **metadata**
