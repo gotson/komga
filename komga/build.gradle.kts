@@ -292,6 +292,7 @@ openApi {
   outputDir.set(file("$projectDir/docs"))
   customBootRun {
     args.add("--spring.profiles.active=claim")
+    args.add("--server.port=8080")
   }
 }
 
