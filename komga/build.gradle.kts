@@ -154,12 +154,6 @@ tasks {
     maxHeapSize = "1G"
   }
 
-  withType<ProcessResources> {
-    filesMatching("application*.yml") {
-      expand(project.properties)
-    }
-  }
-
   getByName<Jar>("jar") {
     enabled = false
   }
@@ -202,6 +196,13 @@ tasks {
     dependsOn("npmBuild")
     from("$webui/dist/")
     into("$projectDir/src/main/resources/public/")
+  }
+
+  withType<ProcessResources> {
+    filesMatching("application*.yml") {
+      expand(project.properties)
+    }
+    inputs.files(getByName("copyWebDist").outputs.files)
   }
 
   register<Test>("benchmark") {
