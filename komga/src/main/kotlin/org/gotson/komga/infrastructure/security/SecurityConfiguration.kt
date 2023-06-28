@@ -55,6 +55,8 @@ class SecurityConfiguration(
           "/api/**",
           "/opds/**",
           "/sse/**",
+          "/oauth2/authorization/**",
+          "/login/oauth2/code/**",
         )
         it.requestMatchers(EndpointRequest.toAnyEndpoint())
       }
