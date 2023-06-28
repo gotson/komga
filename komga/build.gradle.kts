@@ -202,7 +202,7 @@ tasks {
     filesMatching("application*.yml") {
       expand(project.properties)
     }
-    inputs.files(getByName("copyWebDist").outputs.files)
+    mustRunAfter(getByName("copyWebDist"))
   }
 
   register<Test>("benchmark") {
