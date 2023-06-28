@@ -29,12 +29,11 @@ logging:
   logback:
     rollingpolicy:
       max-history: 1
-
 springdoc:
   cache:
     disabled: true
 
-#server:
+server:
+  port: 8080
 #  servlet:
 #    context-path: /komga
-
