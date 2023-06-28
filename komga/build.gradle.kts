@@ -427,6 +427,12 @@ jreleaser {
   }
 }
 
+project.afterEvaluate {
+  tasks.named("forkedSpringBootRun") {
+    mustRunAfter(tasks.bootJar)
+  }
+}
+
 tasks.jreleaserPackage {
   inputs.files(tasks.bootJar)
 }
