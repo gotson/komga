@@ -108,13 +108,6 @@
                           </v-tooltip>
                         </template>
                       </v-checkbox>
-
-                      <v-checkbox
-                        v-model="form.scanDeep"
-                        :label="$t('dialog.edit_library.field_scanner_deep_scan')"
-                        hide-details
-                        class="mx-4"
-                      />
                     </v-col>
                   </v-row>
                   <v-row>
@@ -392,7 +385,6 @@ export default Vue.extend({
         importLocalArtwork: true,
         importBarcodeIsbn: false,
         scanForceModifiedTime: false,
-        scanDeep: false,
         repairExtensions: false,
         convertToCbz: false,
         emptyTrashAfterScan: false,
@@ -525,7 +517,6 @@ export default Vue.extend({
       this.form.importLocalArtwork = library ? library.importLocalArtwork : true
       this.form.importBarcodeIsbn = library ? library.importBarcodeIsbn : false
       this.form.scanForceModifiedTime = library ? library.scanForceModifiedTime : false
-      this.form.scanDeep = library ? library.scanDeep : false
       this.form.repairExtensions = library ? library.repairExtensions : false
       this.form.convertToCbz = library ? library.convertToCbz : false
       this.form.emptyTrashAfterScan = library ? library.emptyTrashAfterScan : false
@@ -553,7 +544,6 @@ export default Vue.extend({
           importLocalArtwork: this.form.importLocalArtwork,
           importBarcodeIsbn: this.form.importBarcodeIsbn,
           scanForceModifiedTime: this.form.scanForceModifiedTime,
-          scanDeep: this.form.scanDeep,
           repairExtensions: this.form.repairExtensions,
           convertToCbz: this.form.convertToCbz,
           emptyTrashAfterScan: this.form.emptyTrashAfterScan,

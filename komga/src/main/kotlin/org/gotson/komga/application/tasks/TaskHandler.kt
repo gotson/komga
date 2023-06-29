@@ -57,7 +57,7 @@ class TaskHandler(
         when (task) {
           is Task.ScanLibrary ->
             libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
-              libraryContentLifecycle.scanRootFolder(library)
+              libraryContentLifecycle.scanRootFolder(library, task.scanDeep)
               taskEmitter.analyzeUnknownAndOutdatedBooks(library)
               taskEmitter.repairExtensions(library, LOW_PRIORITY)
               taskEmitter.findBooksToConvert(library, LOWEST_PRIORITY)

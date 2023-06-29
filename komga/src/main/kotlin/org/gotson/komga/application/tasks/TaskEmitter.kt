@@ -42,8 +42,8 @@ class TaskEmitter(
     libraryRepository.findAll().forEach { scanLibrary(it.id) }
   }
 
-  fun scanLibrary(libraryId: String, priority: Int = DEFAULT_PRIORITY) {
-    submitTask(Task.ScanLibrary(libraryId, priority))
+  fun scanLibrary(libraryId: String, scanDeep: Boolean = false, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.ScanLibrary(libraryId, scanDeep, priority))
   }
 
   fun emptyTrash(libraryId: String, priority: Int = DEFAULT_PRIORITY) {

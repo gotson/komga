@@ -8,7 +8,7 @@
       </template>
       <v-list dense>
         <v-list-item @click="promptDeleteCollection"
-                     class="list-warning">
+                     class="list-danger">
           <v-list-item-title>{{ $t('menu.delete') }}</v-list-item-title>
         </v-list-item>
       </v-list>

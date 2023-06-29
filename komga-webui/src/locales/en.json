@@ -425,7 +425,6 @@
       "field_name": "Name",
       "field_repair_extensions": "Automatically repair incorrect file extensions",
       "field_root_folder": "Root folder",
-      "field_scanner_deep_scan": "Deep scan",
       "field_scanner_empty_trash_after_scan": "Empty trash automatically after every scan",
       "field_scanner_force_directory_modified_time": "Force directory modified time",
       "field_series_cover": "Series cover",
@@ -590,9 +589,9 @@
       "count": "Count",
       "delete_count": "Deletion count",
       "delete_size": "Space saved",
+      "match_count": "Match count",
       "size": "Size",
-      "total_size": "Total size",
-      "match_count": "Match count"
+      "total_size": "Total size"
     },
     "info": "Deleting duplicate pages will modify your files. Backup your files and use manual deletion before using automatic deletion.",
     "known": "Known",
@@ -752,6 +751,7 @@
     "mark_unread": "Mark as unread",
     "refresh_metadata": "Refresh metadata",
     "scan_library_files": "Scan library files",
+    "scan_library_files_deep": "Scan library files (deep)",
     "select_all": "Select all"
   },
   "metrics": {
@@ -803,6 +803,7 @@
       "button_cancel_all_tasks": "Cancel all tasks",
       "button_empty_trash": "Empty trash for all libraries",
       "button_scan_libraries": "Scan all libraries",
+      "button_scan_libraries_deep": "Scan all libraries (deep)",
       "button_shutdown": "Shut down",
       "notification_tasks_cancelled": "No tasks to cancel | One task cancelled | {count} tasks cancelled",
       "section_title": "Server Management"

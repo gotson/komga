@@ -22,7 +22,7 @@
         <v-list-item @click="markUnread" v-if="!isUnread">
           <v-list-item-title>{{ $t('menu.mark_unread') }}</v-list-item-title>
         </v-list-item>
-        <v-list-item @click="promptDeleteBook" class="list-warning" v-if="isAdmin">
+        <v-list-item @click="promptDeleteBook" class="list-danger" v-if="isAdmin">
           <v-list-item-title>{{ $t('menu.delete') }}</v-list-item-title>
         </v-list-item>
       </v-list>

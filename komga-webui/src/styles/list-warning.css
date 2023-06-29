@@ -1,5 +1,13 @@
+.list-danger:hover {
+    background: #ff5252;
+}
+
+.list-danger:hover .v-list-item__title {
+    color: white;
+}
+
 .list-warning:hover {
-    background: #F44336;
+    background: #fb8c00;
 }
 
 .list-warning:hover .v-list-item__title {
