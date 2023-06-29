@@ -37,6 +37,7 @@
                     @click="$emit('matches-clicked')"
                     outlined
                     rounded
+                    :disabled="hash.matchCount == 0"
                   >
                     {{ $tc('duplicate_pages.matches_n', hash.matchCount) }}
                   </v-btn>
