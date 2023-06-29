@@ -177,7 +177,7 @@
                                      :show-current="true"
                                      :show-adjacent-months="true"
                                      :locale="$i18n.locale"
-                                     :first-day-of-week="new Intl.Locale($i18n.locale).weekInfo.firstDay"
+                                     :first-day-of-week="$store.getters.getLocaleFirstDay()"
                                      @input="menuDate = false"
                                      @change="form.releaseDateLock = true"
                       />
