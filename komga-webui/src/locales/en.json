@@ -583,8 +583,10 @@
     "action_delete_manual": "Manual delete",
     "action_delete_matches": "Delete matches",
     "action_ignore": "Ignore",
+    "action_ignore_remaining": "Ignore remaining ({count})",
     "delete_to_save": "Delete to save {size}",
     "deleted_count": "Deleted {count} times",
+    "empty_title": "No duplicate pages found",
     "filter": {
       "count": "Count",
       "delete_count": "Deletion count",
