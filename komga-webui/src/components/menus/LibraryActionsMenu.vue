@@ -7,7 +7,7 @@
         </v-btn>
       </template>
       <v-list dense>
-        <v-list-item @click="scan">
+        <v-list-item @click="scan(false)">
           <v-list-item-title>{{ $t('menu.scan_library_files') }}</v-list-item-title>
         </v-list-item>
         <v-list-item @click="scan(true)" class="list-warning">
@@ -84,7 +84,7 @@ export default Vue.extend({
     },
   },
   methods: {
-    scan(scanDeep: boolean = false) {
+    scan(scanDeep: boolean) {
       this.$komgaLibraries.scanLibrary(this.library, scanDeep)
     },
     analyze() {
