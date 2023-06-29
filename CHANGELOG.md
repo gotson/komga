@@ -1,3 +1,17 @@
+# [1.1.0](https://github.com/gotson/komga/compare/v1.0.0...v1.1.0) (2023-06-29)
+## 🚀 Features
+**webui**
+- add button to ignore all remaining duplicate pages at once ([da79569](https://github.com/gotson/komga/commits/da79569)), closes [#1136](https://github.com/gotson/komga/issues/1136)
+
+**unscoped**
+- library deep scan is now a parameter of the scan API ([63e3e7a](https://github.com/gotson/komga/commits/63e3e7a)), closes [#1137](https://github.com/gotson/komga/issues/1137)
+
+## 🐛 Fixes
+**webui**
+- library action menu scan would not work properly ([0fef983](https://github.com/gotson/komga/commits/0fef983))
+- disable match button on PageHashKnownCard if there's no matches ([f3a4319](https://github.com/gotson/komga/commits/f3a4319))
+- edit books dialog would not open on some browsers ([308a068](https://github.com/gotson/komga/commits/308a068)), closes [#1139](https://github.com/gotson/komga/issues/1139)
+
 # [1.0.0](https://github.com/gotson/komga/compare/v0.165.0...v1.0.0) (2023-06-28)
 ## 🚀 Features
 **webui**
