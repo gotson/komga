@@ -12,14 +12,11 @@ import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-@ExtendWith(SpringExtension::class)
 @SpringBootTest
 class BookMetadataAggregationDaoTest(
   @Autowired private val bookMetadataAggregationDao: BookMetadataAggregationDao,

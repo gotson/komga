@@ -19,17 +19,14 @@ import org.gotson.komga.domain.service.SeriesMetadataLifecycle
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jms.config.JmsListenerEndpointRegistry
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.jms.support.destination.JmsDestinationAccessor
-import org.springframework.test.context.junit.jupiter.SpringExtension
 
 private val logger = KotlinLogging.logger {}
 
-@ExtendWith(SpringExtension::class)
 @SpringBootTest
 class TaskHandlerTest(
   @Autowired private val taskEmitter: TaskEmitter,

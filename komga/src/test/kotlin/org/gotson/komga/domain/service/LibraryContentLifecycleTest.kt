@@ -44,17 +44,14 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.Pageable
-import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.net.URL
 import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.io.path.nameWithoutExtension
 
-@ExtendWith(SpringExtension::class)
 @SpringBootTest
 class LibraryContentLifecycleTest(
   @Autowired private val seriesRepository: SeriesRepository,
