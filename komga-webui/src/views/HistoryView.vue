@@ -41,7 +41,7 @@
           new Intl.DateTimeFormat($i18n.locale, {
             dateStyle: 'medium',
             timeStyle: 'short'
-          }).format(new Date(item.timestamp))
+          }).format(item.timestamp)
         }}
       </template>
 

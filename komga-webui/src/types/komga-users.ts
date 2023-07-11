@@ -44,6 +44,6 @@ export interface AuthenticationActivityDto {
   userAgent?: string,
   success: Boolean,
   error?: string,
-  dateTime: string,
+  dateTime: Date,
   source?: string,
 }

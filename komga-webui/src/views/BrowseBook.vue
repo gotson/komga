@@ -527,7 +527,7 @@ export default Vue.extend({
         return new Intl.DateTimeFormat(this.$i18n.locale, {
           dateStyle: 'medium',
           timeStyle: 'short',
-        } as Intl.DateTimeFormatOptions).format(new Date(this.book.readProgress.lastModified))
+        } as Intl.DateTimeFormatOptions).format(this.book.readProgress.readDate)
       return undefined
     },
     previousId(): string {

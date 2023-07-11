@@ -4,8 +4,8 @@ interface CollectionDto {
   ordered: boolean,
   filtered: boolean,
   seriesIds: string[],
-  createdDate: string,
-  lastModifiedDate: string
+  createdDate: Date,
+  lastModifiedDate: Date
 }
 
 interface CollectionCreationDto {

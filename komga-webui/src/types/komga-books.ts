@@ -9,8 +9,8 @@ export interface BookDto {
   name: string,
   url: string,
   number: number,
-  created: string,
-  lastModified: string,
+  created: Date,
+  lastModified: Date,
   sizeBytes: number,
   size: string,
   media: MediaDto,
@@ -76,8 +76,9 @@ export interface BookMetadataDto {
 export interface ReadProgressDto {
   page: number,
   completed: boolean,
-  created: string,
-  lastModified: string
+  readDate: Date,
+  created: Date,
+  lastModified: Date
 }
 
 export interface BookMetadataUpdateDto {

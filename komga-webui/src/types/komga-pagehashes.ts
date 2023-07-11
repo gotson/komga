@@ -27,6 +27,6 @@ export interface PageHashCreationDto {
 export interface PageHashKnownDto extends PageHashDto {
   action: PageHashAction
   deleteCount: number,
-  createdDate: string,
-  lastModifiedDate: string,
+  createdDate: Date,
+  lastModifiedDate: Date,
 }
