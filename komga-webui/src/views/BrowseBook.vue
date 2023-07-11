@@ -309,7 +309,7 @@
       </v-row>
 
       <v-row v-if="book.metadata.tags.length > 0" class="align-center text-caption">
-        <v-col cols="4" sm="3" md="2" xl="1" class="py-1">TAGS</v-col>
+        <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $i18n.t('common.tags') }}</v-col>
         <v-col cols="8" sm="9" md="10" xl="11" class="py-1 text-capitalize">
           <vue-horizontal>
             <template v-slot:btn-prev>
@@ -345,7 +345,7 @@
       </v-row>
 
       <v-row v-if="book.metadata.links.length > 0" class="align-center text-caption">
-        <v-col class="py-1" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.links') }}</v-col>
+        <v-col class="py-1 text-uppercase" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.links') }}</v-col>
         <v-col class="py-1" cols="8" sm="9" md="10" xl="11">
           <v-chip
             v-for="(link, i) in book.metadata.links"
@@ -371,27 +371,27 @@
       </v-row>
 
       <v-row class="align-center text-caption">
-        <v-col class="py-1" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.size') }}</v-col>
+        <v-col class="py-1 text-uppercase" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.size') }}</v-col>
         <v-col class="py-1" cols="8" sm="9" md="10" xl="11">{{ book.size }}</v-col>
       </v-row>
 
       <v-row v-if="book.media.comment" class="align-center text-caption">
-        <v-col class="py-1" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.comment') }}</v-col>
+        <v-col class="py-1 text-uppercase" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.comment') }}</v-col>
         <v-col class="py-1 error--text font-weight-bold" cols="8" sm="9" md="10" xl="11">{{ mediaComment }}</v-col>
       </v-row>
 
       <v-row class="align-center text-caption">
-        <v-col class="py-1" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.format') }}</v-col>
+        <v-col class="py-1 text-uppercase" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.format') }}</v-col>
         <v-col class="py-1" cols="8" sm="9" md="10" xl="11">{{ format.type }}</v-col>
       </v-row>
 
       <v-row v-if="book.metadata.isbn" class="align-center text-caption">
-        <v-col class="py-1" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.isbn') }}</v-col>
+        <v-col class="py-1 text-uppercase" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.isbn') }}</v-col>
         <v-col class="py-1" cols="8" sm="9" md="10" xl="11">{{ book.metadata.isbn }}</v-col>
       </v-row>
 
       <v-row class="align-center text-caption">
-        <v-col class="py-1" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.file') }}</v-col>
+        <v-col class="py-1 text-uppercase" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.file') }}</v-col>
         <v-col class="py-1" cols="8" sm="9" md="10" xl="11">{{ book.url }}</v-col>
       </v-row>
 

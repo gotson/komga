@@ -357,7 +357,7 @@
       </v-row>
 
       <v-row v-if="series.metadata.links.length > 0" class="align-center text-caption">
-        <v-col class="py-1" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.links') }}</v-col>
+        <v-col class="py-1 text-uppercase" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.links') }}</v-col>
         <v-col class="py-1" cols="8" sm="9" md="10" xl="11">
           <v-chip
             v-for="(link, i) in series.metadata.links"
