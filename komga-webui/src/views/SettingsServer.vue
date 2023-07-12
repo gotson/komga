@@ -5,7 +5,7 @@
     </v-row>
     <v-row>
       <v-col cols="auto">
-        <v-btn @click="scanAllLibraries">{{ $t('server.server_management.button_scan_libraries') }}</v-btn>
+        <v-btn @click="scanAllLibraries(false)">{{ $t('server.server_management.button_scan_libraries') }}</v-btn>
       </v-col>
       <v-col cols="auto">
         <v-btn @click="scanAllLibraries(true)"
@@ -74,7 +74,7 @@ export default Vue.extend({
         this.$komgaLibraries.emptyTrash(library)
       })
     },
-    scanAllLibraries(scanDeep: boolean = false) {
+    scanAllLibraries(scanDeep: boolean) {
       this.libraries.forEach(library => {
         this.$komgaLibraries.scanLibrary(library, scanDeep)
       })
