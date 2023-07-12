@@ -17,4 +17,7 @@ interface KomgaUserRepository {
 
   fun delete(userId: String)
   fun deleteAll()
+
+  fun findAnnouncementIdsReadByUserId(userId: String): Set<String>
+  fun saveAnnouncementIdsRead(user: KomgaUser, announcementIds: Set<String>)
 }

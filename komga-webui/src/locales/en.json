@@ -21,6 +21,11 @@
     "account_settings": "Account Settings",
     "change_password": "change password"
   },
+  "announcements": {
+    "mark_all_read": "Mark all as read",
+    "mark_read": "Mark as read",
+    "tab_title": "Announcements"
+  },
   "authentication_activity": {
     "datetime": "Date Time",
     "email": "Email",

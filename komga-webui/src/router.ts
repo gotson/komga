@@ -94,6 +94,12 @@ const router = new Router({
               beforeEnter: adminGuard,
               component: () => import(/* webpackChunkName: "metrics" */ './views/Metrics.vue'),
             },
+            {
+              path: '/settings/announcements',
+              name: 'announcements',
+              beforeEnter: adminGuard,
+              component: () => import(/* webpackChunkName: "announcements" */ './views/AnnouncementsView.vue'),
+            },
           ],
         },
         {

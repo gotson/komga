@@ -6,6 +6,7 @@ import createPersistedState from 'vuex-persistedstate'
 import {persistedModule} from './plugins/persisted-state'
 import {LibraryDto} from '@/types/komga-libraries'
 import {ReadListDto} from '@/types/komga-readlists'
+import {ItemDto, JsonFeedDto} from '@/types/json-feed'
 
 Vue.use(Vuex)
 
@@ -50,6 +51,15 @@ export default new Vuex.Store({
     deleteSeriesDialog: false,
 
     booksToCheck: 0,
+
+    announcements: {} as JsonFeedDto,
+  },
+  getters: {
+    getUnreadAnnouncementsCount: (state) => (): number => {
+      return state.announcements?.items
+        .filter((value: ItemDto) => false == value._komga?.read)
+        .length || 0
+    },
   },
   mutations: {
     // Collections
@@ -138,6 +148,9 @@ export default new Vuex.Store({
     },
     setDeleteSeriesDialog(state, dialog) {
       state.deleteSeriesDialog = dialog
+    },
+    setAnnouncements(state, announcements) {
+      state.announcements = announcements
     },
   },
   actions: {
