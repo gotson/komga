@@ -168,7 +168,7 @@ export default Vue.extend({
         default:
           l = 300
       }
-      return l / (this.unclaimed ? 2 : 1)
+      return l
     },
 
     locale: {
