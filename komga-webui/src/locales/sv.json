@@ -425,7 +425,6 @@
       "field_name": "Namn",
       "field_repair_extensions": "Reparera automatiskt felaktiga filtillägg",
       "field_root_folder": "Rotkatalog",
-      "field_scanner_deep_scan": "Djup skanning",
       "field_scanner_empty_trash_after_scan": "Töm papperskorgen automatiskt efter varje skanning",
       "field_scanner_force_directory_modified_time": "Tvinga katalogen att söka baserat på tidsstämpeln",
       "field_series_cover": "Serieomslag",
@@ -584,12 +583,15 @@
     "action_delete_manual": "Manuell radering",
     "action_delete_matches": "Ta bort matchningar",
     "action_ignore": "Ignorera",
+    "action_ignore_remaining": "Ignorera återstående ({count})",
     "delete_to_save": "Radera för att spara {size}",
     "deleted_count": "Raderat {count} gånger",
+    "empty_title": "Inga dubbletter av sidor hittades",
     "filter": {
       "count": "Antal",
       "delete_count": "Antal gånger raderat",
       "delete_size": "Sparat utrymme",
+      "match_count": "Matcha antal",
       "size": "Storlek",
       "total_size": "Total storlek"
     },
@@ -751,6 +753,7 @@
     "mark_unread": "Markera som oläst",
     "refresh_metadata": "Uppdatera metadata",
     "scan_library_files": "Skanna biblioteksfiler",
+    "scan_library_files_deep": "Skanna biblioteksfiler (djup)",
     "select_all": "Välj alla"
   },
   "metrics": {
@@ -802,6 +805,7 @@
       "button_cancel_all_tasks": "Avbryt alla aktiviteter",
       "button_empty_trash": "Töm papperskorgen för alla bibliotek",
       "button_scan_libraries": "Skanna alla bibliotek",
+      "button_scan_libraries_deep": "Skanna alla bibliotek (djup)",
       "button_shutdown": "Stäng av",
       "notification_tasks_cancelled": "Inga aktiviteter att avbryta | En aktivitet avbruten | {count} aktiviteter avbröts",
       "section_title": "Serverhantering"
