@@ -26,5 +26,5 @@ interface SeriesRepository {
   fun deleteAll()
 
   fun count(): Long
-  fun countGroupedByLibraryName(): Map<String, Int>
+  fun countGroupedByLibraryId(): Map<String, Int>
 }

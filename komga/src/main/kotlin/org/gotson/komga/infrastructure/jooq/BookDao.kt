@@ -316,19 +316,17 @@ class BookDao(
 
   override fun count(): Long = dsl.fetchCount(b).toLong()
 
-  override fun countGroupedByLibraryName(): Map<String, Int> =
-    dsl.select(l.NAME, DSL.count(b.ID))
-      .from(l)
-      .leftJoin(b).on(l.ID.eq(b.LIBRARY_ID))
-      .groupBy(l.NAME)
-      .fetchMap(l.NAME, DSL.count(b.ID))
+  override fun countGroupedByLibraryId(): Map<String, Int> =
+    dsl.select(b.LIBRARY_ID, DSL.count(b.ID))
+      .from(b)
+      .groupBy(b.LIBRARY_ID)
+      .fetchMap(b.LIBRARY_ID, DSL.count(b.ID))
 
-  override fun getFilesizeGroupedByLibraryName(): Map<String, BigDecimal> =
-    dsl.select(l.NAME, DSL.sum(b.FILE_SIZE))
-      .from(l)
-      .leftJoin(b).on(l.ID.eq(b.LIBRARY_ID))
-      .groupBy(l.NAME)
-      .fetchMap(l.NAME, DSL.sum(b.FILE_SIZE))
+  override fun getFilesizeGroupedByLibraryId(): Map<String, BigDecimal> =
+    dsl.select(b.LIBRARY_ID, DSL.sum(b.FILE_SIZE))
+      .from(b)
+      .groupBy(b.LIBRARY_ID)
+      .fetchMap(b.LIBRARY_ID, DSL.sum(b.FILE_SIZE))
 
   private fun BookSearch.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()
