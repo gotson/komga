@@ -400,7 +400,6 @@
       "field_name": "Tên",
       "field_repair_extensions": "Tự động sửa chữa phần mở rộng tệp không chính xác",
       "field_root_folder": "Thư mục gốc",
-      "field_scanner_deep_scan": "Quét sâu",
       "field_scanner_empty_trash_after_scan": "Dọn rác tự động sau mỗi lần quét",
       "field_scanner_force_directory_modified_time": "Buộc thời gian sửa đổi thư mục",
       "field_series_cover": "Bìa series",
