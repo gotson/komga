@@ -244,7 +244,7 @@
     "year": "година"
   },
   "dashboard": {
-    "keep_reading": "Продължавайте да четете",
+    "keep_reading": "Продължате да четете",
     "on_deck": "На Ред",
     "recently_added_books": "Наскоро добавени книги",
     "recently_added_series": "Наскоро добавени поредици",
@@ -425,7 +425,6 @@
       "field_name": "Име",
       "field_repair_extensions": "Автоматично поправяне на неправилни файлови разширения",
       "field_root_folder": "Основна папка",
-      "field_scanner_deep_scan": "Дълбоко сканиране",
       "field_scanner_empty_trash_after_scan": "Автоматично изпразване на кошчето след всяко сканиране",
       "field_scanner_force_directory_modified_time": "Принудителна промяна на време на промяна на директорията",
       "field_series_cover": "Корица на поредицата",
