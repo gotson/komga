@@ -381,7 +381,6 @@
       "field_name": "Nomo",
       "field_repair_extensions": "Aŭtomate korekti malĝustajn dosiersufiksojn",
       "field_root_folder": "Radika dosierujo",
-      "field_scanner_deep_scan": "Profunde skani",
       "field_scanner_empty_trash_after_scan": "Aŭtomate malplenigi rubujon post skano",
       "field_scanner_force_directory_modified_time": "Devigi modifotempon de dosierujo",
       "field_series_cover": "Kovrilo de serio",
