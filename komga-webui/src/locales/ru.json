@@ -395,7 +395,6 @@
       "field_name": "Имя",
       "field_repair_extensions": "Автоматическое исправление неправильных расширений файлов",
       "field_root_folder": "Корневой каталог",
-      "field_scanner_deep_scan": "Глубокое сканирование",
       "field_scanner_empty_trash_after_scan": "Автоматически очищать корзину после каждого сканирования",
       "field_scanner_force_directory_modified_time": "Выполнять поиск даты модификации каталога",
       "field_series_cover": "Обложка серии",
