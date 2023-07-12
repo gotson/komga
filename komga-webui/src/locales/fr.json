@@ -425,7 +425,6 @@
       "field_name": "Nom",
       "field_repair_extensions": "Réparer automatiquement les extensions de fichier incorrectes",
       "field_root_folder": "Dossier racine",
-      "field_scanner_deep_scan": "Analyse en profondeur",
       "field_scanner_empty_trash_after_scan": "Vider la corbeille automatiquement après chaque analyse",
       "field_scanner_force_directory_modified_time": "Forcer l'heure de modification des dossiers",
       "field_series_cover": "Couverture de la série",
