@@ -425,7 +425,6 @@
       "field_name": "名称",
       "field_repair_extensions": "自动修复不正确的文件扩展名",
       "field_root_folder": "根文件夹",
-      "field_scanner_deep_scan": "深度扫描",
       "field_scanner_empty_trash_after_scan": "每次扫描后自动清理垃圾",
       "field_scanner_force_directory_modified_time": "强制目录修改时间",
       "field_series_cover": "系列封面",
@@ -584,12 +583,15 @@
     "action_delete_manual": "手动删除",
     "action_delete_matches": "删除匹配",
     "action_ignore": "忽略",
+    "action_ignore_remaining": "其余忽略({count})",
     "delete_to_save": "删除以节省 {size}",
     "deleted_count": "删除了 {count} 次",
+    "empty_title": "未找到重复页面",
     "filter": {
       "count": "数目",
       "delete_count": "删除计数",
       "delete_size": "节省的空间",
+      "match_count": "匹配数",
       "size": "大小",
       "total_size": "总大小"
     },
@@ -751,6 +753,7 @@
     "mark_unread": "标记为未读",
     "refresh_metadata": "刷新元数据",
     "scan_library_files": "扫描库文件",
+    "scan_library_files_deep": "扫描库文件（深度）",
     "select_all": "选择所有"
   },
   "metrics": {
@@ -802,6 +805,7 @@
       "button_cancel_all_tasks": "取消所有任务",
       "button_empty_trash": "清理所有书库的垃圾",
       "button_scan_libraries": "扫描所有书库",
+      "button_scan_libraries_deep": "扫描所有库（深度）",
       "button_shutdown": "关机",
       "notification_tasks_cancelled": "无可取消任务 | 取消了一个任务 | 取消了 {count} 个任务",
       "section_title": "服务器管理"
