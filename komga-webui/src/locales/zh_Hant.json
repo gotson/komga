@@ -425,7 +425,6 @@
       "field_name": "名稱",
       "field_repair_extensions": "自動修復不正確的文件擴展名",
       "field_root_folder": "根資料夾",
-      "field_scanner_deep_scan": "深度掃描",
       "field_scanner_empty_trash_after_scan": "每次掃描後自動清理垃圾",
       "field_scanner_force_directory_modified_time": "強制目錄修改時間",
       "field_series_cover": "系列封面",
