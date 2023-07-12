@@ -400,7 +400,6 @@
       "field_name": "Nimi",
       "field_repair_extensions": "Korjaa virheelliset tiedostopäätteet automaattisesti",
       "field_root_folder": "Juurikansio",
-      "field_scanner_deep_scan": "Syvä skannaus",
       "field_scanner_empty_trash_after_scan": "Tyhjennä roskakori automaattisesti jokaisen skannauksen jälkeen",
       "field_scanner_force_directory_modified_time": "Pakota hakemiston muokattu aika",
       "field_series_cover": "Sarjan kansi",
