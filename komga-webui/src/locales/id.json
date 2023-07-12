@@ -401,7 +401,6 @@
       "field_name": "Nama",
       "field_repair_extensions": "Memperbaiki ekstensi berkas yang salah secara otomatis",
       "field_root_folder": "Folder akar",
-      "field_scanner_deep_scan": "Pindai mendalam",
       "field_scanner_empty_trash_after_scan": "Kosongkan tempat sampah setiap kali pemindaian",
       "field_scanner_force_directory_modified_time": "Paksa waktu modifikasi direktori",
       "field_series_cover": "Sampul seri",
