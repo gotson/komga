@@ -351,7 +351,6 @@
       "field_name": "Nome",
       "field_repair_extensions": "Reparar extensões de arquivo incorretas automaticamente",
       "field_root_folder": "Pasta raíz",
-      "field_scanner_deep_scan": "Varredura profunda",
       "field_scanner_empty_trash_after_scan": "Esvazie a lixeira automaticamente após cada verificação",
       "field_scanner_force_directory_modified_time": "Forçar data de modificação da pasta",
       "field_series_cover": "Capa da série",
