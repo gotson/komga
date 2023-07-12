@@ -400,7 +400,6 @@
       "field_name": "Navn",
       "field_repair_extensions": "Reparer uriktige filendelser automatisk",
       "field_root_folder": "Rotmappe",
-      "field_scanner_deep_scan": "Dypskanning",
       "field_scanner_empty_trash_after_scan": "Tøm papirkurv etter hver skanning automatisk",
       "field_scanner_force_directory_modified_time": "Påtving mappe-modifisert tid",
       "field_series_cover": "Serieomslag",
