@@ -139,6 +139,7 @@ class SeriesDtoDao(
       }
       .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
       .apply { if (joinConditions.aggregationAuthor) leftJoin(bmaa).on(s.ID.eq(bmaa.SERIES_ID)) }
+      .apply { if (joinConditions.sharingLabel) leftJoin(sl).on(s.ID.eq(sl.SERIES_ID)) }
       .where(conditions)
       .and(searchCondition)
       .groupBy(firstChar)
@@ -172,6 +173,7 @@ class SeriesDtoDao(
       }
       .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
       .apply { if (joinConditions.aggregationAuthor) leftJoin(bmaa).on(s.ID.eq(bmaa.SERIES_ID)) }
+      .apply { if (joinConditions.sharingLabel) leftJoin(sl).on(s.ID.eq(sl.SERIES_ID)) }
 
   private fun findAll(
     conditions: Condition,
@@ -196,6 +198,7 @@ class SeriesDtoDao(
       }
       .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
       .apply { if (joinConditions.aggregationAuthor) leftJoin(bmaa).on(s.ID.eq(bmaa.SERIES_ID)) }
+      .apply { if (joinConditions.sharingLabel) leftJoin(sl).on(s.ID.eq(sl.SERIES_ID)) }
       .where(conditions)
       .and(searchCondition)
       .fetchOne(countDistinct(s.ID)) ?: 0
@@ -317,6 +320,7 @@ class SeriesDtoDao(
       }
       c = c.and(ca)
     }
+    if (!sharingLabels.isNullOrEmpty()) c = c.and(sl.LABEL.collate(SqliteUdfDataSource.collationUnicode3).`in`(sharingLabels))
     if (!readStatus.isNullOrEmpty()) {
       val cr = readStatus.map {
         when (it) {
@@ -344,6 +348,7 @@ class SeriesDtoDao(
       tag = !tags.isNullOrEmpty(),
       collection = !collectionIds.isNullOrEmpty(),
       aggregationAuthor = !authors.isNullOrEmpty(),
+      sharingLabel = !sharingLabels.isNullOrEmpty(),
     )
 
   private data class JoinConditions(
@@ -352,6 +357,7 @@ class SeriesDtoDao(
     val tag: Boolean = false,
     val collection: Boolean = false,
     val aggregationAuthor: Boolean = false,
+    val sharingLabel: Boolean = false,
   )
 
   private fun SeriesRecord.toDto(

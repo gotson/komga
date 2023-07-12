@@ -139,7 +139,8 @@ class SeriesController(
     @RequestParam(name = "genre", required = false) genres: List<String>? = null,
     @RequestParam(name = "tag", required = false) tags: List<String>? = null,
     @RequestParam(name = "age_rating", required = false) ageRatings: List<String>? = null,
-    @RequestParam(name = "release_year", required = false) release_years: List<String>? = null,
+    @RequestParam(name = "release_year", required = false) releaseYears: List<String>? = null,
+    @RequestParam(name = "sharing_label", required = false) sharingLabels: List<String>? = null,
     @RequestParam(name = "deleted", required = false) deleted: Boolean? = null,
     @RequestParam(name = "complete", required = false) complete: Boolean? = null,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
@@ -181,8 +182,9 @@ class SeriesController(
       genres = genres,
       tags = tags,
       ageRatings = ageRatings?.map { it.toIntOrNull() },
-      releaseYears = release_years,
+      releaseYears = releaseYears,
       authors = authors,
+      sharingLabels = sharingLabels,
     )
 
     return seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageRequest, principal.user.restrictions)
@@ -214,7 +216,8 @@ class SeriesController(
     @RequestParam(name = "genre", required = false) genres: List<String>?,
     @RequestParam(name = "tag", required = false) tags: List<String>?,
     @RequestParam(name = "age_rating", required = false) ageRatings: List<String>?,
-    @RequestParam(name = "release_year", required = false) release_years: List<String>?,
+    @RequestParam(name = "release_year", required = false) releaseYears: List<String>?,
+    @RequestParam(name = "sharing_label", required = false) sharingLabels: List<String>? = null,
     @RequestParam(name = "deleted", required = false) deleted: Boolean?,
     @RequestParam(name = "complete", required = false) complete: Boolean?,
     @Parameter(hidden = true) @Authors authors: List<Author>?,
@@ -240,8 +243,9 @@ class SeriesController(
       genres = genres,
       tags = tags,
       ageRatings = ageRatings?.map { it.toIntOrNull() },
-      releaseYears = release_years,
+      releaseYears = releaseYears,
       authors = authors,
+      sharingLabels = sharingLabels,
     )
 
     return seriesDtoRepository.countByFirstCharacter(seriesSearch, principal.user.id, principal.user.restrictions)
