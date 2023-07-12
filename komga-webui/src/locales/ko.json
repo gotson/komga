@@ -400,7 +400,6 @@
       "field_name": "이름",
       "field_repair_extensions": "잘못된 파일 확장명 자동 복구",
       "field_root_folder": "루트 폴더",
-      "field_scanner_deep_scan": "정밀 스캔",
       "field_scanner_empty_trash_after_scan": "스캔 후 자동으로 휴지통 비우기",
       "field_scanner_force_directory_modified_time": "디렉토리 수정 시간 강제 적용",
       "field_series_cover": "시리즈 표지",
