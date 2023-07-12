@@ -201,6 +201,7 @@ export default Vue.extend({
         language: [] as NameValue[],
         ageRating: [] as NameValue[],
         releaseDate: [] as NameValue[],
+        sharingLabel: [] as NameValue[],
       },
     }
   },
@@ -325,6 +326,7 @@ export default Vue.extend({
           },
         }
       })
+      r['sharingLabel'] = {name: this.$t('filter.sharing_label').toString(), values: this.filterOptions.sharingLabel}
       return r
     },
     isAdmin(): boolean {
@@ -372,13 +374,14 @@ export default Vue.extend({
       const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
 
       // load dynamic filters
-      const [genres, tags, publishers, languages, ageRatings, releaseDates] = await Promise.all([
+      const [genres, tags, publishers, languages, ageRatings, releaseDates, sharingLabels] = await Promise.all([
         this.$komgaReferential.getGenres(requestLibraryId),
         this.$komgaReferential.getSeriesAndBookTags(requestLibraryId),
         this.$komgaReferential.getPublishers(requestLibraryId),
         this.$komgaReferential.getLanguages(requestLibraryId),
         this.$komgaReferential.getAgeRatings(requestLibraryId),
         this.$komgaReferential.getSeriesReleaseDates(requestLibraryId),
+        this.$komgaReferential.getSharingLabels(requestLibraryId),
       ])
       this.$set(this.filterOptions, 'genre', toNameValue(genres))
       this.$set(this.filterOptions, 'tag', toNameValue(tags))
@@ -386,10 +389,11 @@ export default Vue.extend({
       this.$set(this.filterOptions, 'language', (languages))
       this.$set(this.filterOptions, 'ageRating', toNameValue(ageRatings))
       this.$set(this.filterOptions, 'releaseDate', toNameValue(releaseDates))
+      this.$set(this.filterOptions, 'sharingLabel', toNameValue(sharingLabels))
 
       // get filter from query params or local storage and validate with available filter values
       let activeFilters: any
-      if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating || route.query.publisher || authorRoles.some(role => role in route.query) || route.query.complete) {
+      if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating || route.query.publisher || authorRoles.some(role => role in route.query) || route.query.complete || route.query.sharingLabel) {
         activeFilters = {
           status: route.query.status || [],
           readStatus: route.query.readStatus || [],
@@ -400,6 +404,7 @@ export default Vue.extend({
           ageRating: route.query.ageRating || [],
           releaseDate: route.query.releaseDate || [],
           complete: route.query.complete || [],
+          sharingLabel: route.query.sharingLabel || [],
         }
         authorRoles.forEach((role: string) => {
           activeFilters[role] = route.query[role] || []
@@ -420,6 +425,7 @@ export default Vue.extend({
         ageRating: filters.ageRating?.filter(x => this.filterOptions.ageRating.map(n => n.value).includes(x)) || [],
         releaseDate: filters.releaseDate?.filter(x => this.filterOptions.releaseDate.map(n => n.value).includes(x)) || [],
         complete: filters.complete?.filter(x => x === 'true' || x === 'false') || [],
+        sharingLabel: filters.sharingLabel?.filter(x => this.filterOptions.sharingLabel.map(n => n.value).includes(x)) || [],
       } as any
       authorRoles.forEach((role: string) => {
         validFilter[role] = filters[role] || []
@@ -526,13 +532,13 @@ export default Vue.extend({
 
       const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
       const complete = parseBooleanFilter(this.filters.complete)
-      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, searchRegex, complete)
+      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, searchRegex, complete, this.filters.sharingLabel)
 
       this.totalPages = seriesPage.totalPages
       this.totalElements = seriesPage.totalElements
       this.series = seriesPage.content
 
-      const seriesGroups = await this.$komgaSeries.getAlphabeticalGroups(requestLibraryId, undefined, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, complete)
+      const seriesGroups = await this.$komgaSeries.getAlphabeticalGroups(requestLibraryId, undefined, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, complete, this.filters.sharingLabel)
       const nonAlpha = seriesGroups
         .filter((g) => !(/[a-zA-Z]/).test(g.group))
         .reduce((a, b) => a + b.count, 0)
