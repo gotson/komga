@@ -375,7 +375,6 @@
       "field_name": "Naam",
       "field_repair_extensions": "Herstel automatisch onjuiste bestandsextensies",
       "field_root_folder": "Hoofdmap",
-      "field_scanner_deep_scan": "Diepe scan",
       "field_scanner_empty_trash_after_scan": "Prullenbak automatisch legen na iedere scan",
       "field_scanner_force_directory_modified_time": "Gewijzigde tijd van map forceren",
       "field_series_cover": "Serie omslag",
