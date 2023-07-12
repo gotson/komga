@@ -400,7 +400,6 @@
       "field_name": "نام",
       "field_repair_extensions": "پسوند فایل های نادرست را به طور خودکار تعمیر کنید",
       "field_root_folder": "پوشه ریشه",
-      "field_scanner_deep_scan": "جستجوی عمیق",
       "field_scanner_empty_trash_after_scan": "پس از هر اسکن، سطل زباله را به طور خودکار خالی کنید",
       "field_scanner_force_directory_modified_time": "زمان تغییر دایرکتوری اجباری",
       "field_series_cover": "جلد سری",
