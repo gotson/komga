@@ -359,7 +359,6 @@
       "field_name": "ライブラリ名",
       "field_repair_extensions": "不正なファイル拡張子を自動的に修復",
       "field_root_folder": "ルートフォルダ",
-      "field_scanner_deep_scan": "ディープスキャン",
       "field_scanner_empty_trash_after_scan": "スキャン後、ゴミ箱を自動的に空する",
       "field_scanner_force_directory_modified_time": "ディレクトリの変更時刻が更新されているものと見なす",
       "field_series_cover": "シリーズカバー",
