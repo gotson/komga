@@ -126,28 +126,74 @@ export default Vue.extend({
   },
   methods: {
     async loadData() {
-      this.tasks = await this.$komgaMetrics.getMetric('komga.tasks.execution')
-      this.tasksCount = await this.getStatisticForEachTagValue(this.tasks, 'type', 'COUNT')
-      this.tasksTotalTime = await this.getStatisticForEachTagValue(this.tasks, 'type', 'TOTAL_TIME')
+      this.$komgaMetrics.getMetric('komga.tasks.execution')
+        .then(m => {
+          this.tasks = m
+          this.getStatisticForEachTagValue(m, 'type', 'COUNT')
+            .then(m => this.tasksCount = m)
+            .catch(() => {
+            })
+          this.getStatisticForEachTagValue(m, 'type', 'TOTAL_TIME')
+            .then(m => this.tasksTotalTime = m)
+            .catch(() => {
+            })
+        })
+        .catch(() => {
+        })
 
-      this.series = await this.$komgaMetrics.getMetric('komga.series')
-      this.seriesAllTags = await this.getStatisticForEachTagValue(this.series, 'library')
+      this.$komgaMetrics.getMetric('komga.series')
+        .then(m => {
+            this.series = m
+            this.getStatisticForEachTagValue(m, 'library')
+              .then(v => this.seriesAllTags = v)
+          },
+        )
+        .catch(() => {
+        })
 
-      this.books = await this.$komgaMetrics.getMetric('komga.books')
-      this.booksAllTags = await this.getStatisticForEachTagValue(this.books, 'library')
+      this.$komgaMetrics.getMetric('komga.books')
+        .then(m => {
+            this.books = m
+            this.getStatisticForEachTagValue(m, 'library')
+              .then(v => this.booksAllTags = v)
+          },
+        )
+        .catch(() => {
+        })
 
-      this.booksFileSize = await this.$komgaMetrics.getMetric('komga.books.filesize')
-      this.fileSizeAllTags = await this.getStatisticForEachTagValue(this.booksFileSize, 'library')
+      this.$komgaMetrics.getMetric('komga.books.filesize')
+        .then(m => {
+            this.booksFileSize = m
+            this.getStatisticForEachTagValue(m, 'library')
+              .then(v => this.fileSizeAllTags = v)
+          },
+        )
+        .catch(() => {
+        })
 
-      this.sidecars = await this.$komgaMetrics.getMetric('komga.sidecars')
-      this.sidecarsAllTags = await this.getStatisticForEachTagValue(this.sidecars, 'library')
+      this.$komgaMetrics.getMetric('komga.sidecars')
+        .then(m => {
+            this.sidecars = m
+            this.getStatisticForEachTagValue(m, 'library')
+              .then(v => this.sidecarsAllTags = v)
+          },
+        )
+        .catch(() => {
+        })
 
-      this.collections = await this.$komgaMetrics.getMetric('komga.collections')
+      this.$komgaMetrics.getMetric('komga.collections')
+        .then(m => this.collections = m)
+        .catch(() => {
+        })
 
-      this.readlists = await this.$komgaMetrics.getMetric('komga.readlists')
-
+      this.$komgaMetrics.getMetric('komga.readlists')
+        .then(m => this.readlists = m)
+        .catch(() => {
+        })
     },
-    async getStatisticForEachTagValue(metric: MetricDto, tag: string, statistic: string = 'VALUE'): Promise<{ [key: string]: number | undefined } | undefined> {
+    async getStatisticForEachTagValue(metric: MetricDto, tag: string, statistic: string = 'VALUE'): Promise<{
+      [key: string]: number | undefined
+    } | undefined> {
       const tagDto = metric.availableTags.find(x => x.tag === tag)
       if (tagDto) {
         const tagToStatistic = tagDto.values.reduce((a, b) => {
