@@ -48,14 +48,15 @@
         </v-row>
 
         <v-row>
-          <v-col>
+          <v-col cols="auto">
             <v-btn color="primary"
                    type="submit"
                    :disabled="unclaimed"
             >{{ $t('login.login') }}
             </v-btn>
+          </v-col>
+          <v-col cols="auto">
             <v-btn v-if="unclaimed"
-                   class="mx-4"
                    color="primary"
                    @click="claim"
             >{{ $t('login.create_user_account') }}
@@ -63,7 +64,7 @@
           </v-col>
         </v-row>
 
-        <v-divider class="my-4"/>
+        <v-divider class="my-4 mt-2"/>
 
         <v-row>
           <v-col
