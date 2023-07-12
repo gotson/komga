@@ -425,7 +425,6 @@
       "field_name": "Name",
       "field_repair_extensions": "Falsche Dateierweiterungen automatisch reparieren",
       "field_root_folder": "Stammordner",
-      "field_scanner_deep_scan": "Tiefensuche",
       "field_scanner_empty_trash_after_scan": "Automatische Bereinigung nach jedem Scan",
       "field_scanner_force_directory_modified_time": "Erzwinge das Durchsuchen des Verzeichnis auf Basis des Zeitstempels",
       "field_series_cover": "Serien Titelbild",
