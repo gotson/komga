@@ -63,6 +63,9 @@ fun SeriesDto.toDocument() =
     metadata.genres.forEach {
       add(TextField("genre", it, Field.Store.NO))
     }
+    metadata.sharingLabels.forEach {
+      add(TextField("sharing_label", it, Field.Store.NO))
+    }
     if (metadata.totalBookCount != null) add(TextField("total_book_count", metadata.totalBookCount.toString(), Field.Store.NO))
     add(TextField("book_count", booksCount.toString(), Field.Store.NO))
     booksMetadata.authors.forEach {
