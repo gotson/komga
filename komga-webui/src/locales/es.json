@@ -425,7 +425,6 @@
       "field_name": "Nombre",
       "field_repair_extensions": "Automáticamente reparar extensiones de archivo incorrectas",
       "field_root_folder": "Carpeta raíz",
-      "field_scanner_deep_scan": "Análisis profundo",
       "field_scanner_empty_trash_after_scan": "Vaciar papelera automáticamente luego de cada escaneo",
       "field_scanner_force_directory_modified_time": "Forzar fecha de modificación de directorio",
       "field_series_cover": "Portada de serie",
@@ -584,12 +583,15 @@
     "action_delete_manual": "Borrado manual",
     "action_delete_matches": "Borrar coincidencias",
     "action_ignore": "Ignorar",
+    "action_ignore_remaining": "Ignorar restantes ({count})",
     "delete_to_save": "Borrar para recuperar {size}",
     "deleted_count": "Borrado {count} veces",
+    "empty_title": "No se encontraron páginas duplicadas",
     "filter": {
       "count": "Cantidad",
       "delete_count": "Cantidad de borrados",
       "delete_size": "Espacio recuperado",
+      "match_count": "Recuento de coincidencias",
       "size": "Tamaño",
       "total_size": "Tamaño total"
     },
@@ -751,6 +753,7 @@
     "mark_unread": "Marcar como no leído",
     "refresh_metadata": "Actualizar metadatos",
     "scan_library_files": "Escanear los archivos de la biblioteca",
+    "scan_library_files_deep": "Escanear los archivos de la biblioteca (en profundidad)",
     "select_all": "Seleccionar todo"
   },
   "metrics": {
@@ -802,6 +805,7 @@
       "button_cancel_all_tasks": "Cancelar todas las tareas",
       "button_empty_trash": "Vaciar la papelera de todas las bibliotecas",
       "button_scan_libraries": "Escanear todas las bibliotecas",
+      "button_scan_libraries_deep": "Escanear todas las bibliotecas (en profundidad)",
       "button_shutdown": "Apagar",
       "notification_tasks_cancelled": "No hay tareas para cancelar | Una tarea cancelada | {count} tareas canceladas",
       "section_title": "Administración del servidor"
