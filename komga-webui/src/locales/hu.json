@@ -368,7 +368,6 @@
       "field_name": "Név",
       "field_repair_extensions": "Automatikus helytelen fájlkiterjesztés javítás",
       "field_root_folder": "Gyökérkönyvtár",
-      "field_scanner_deep_scan": "Mély beolvasás",
       "field_scanner_empty_trash_after_scan": "Minden vizsgálat után automatikusan űrítse a szemetest",
       "field_scanner_force_directory_modified_time": "Kényszerített könyvtár-módosítási idő",
       "field_series_cover": "Sorozat borító",
