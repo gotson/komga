@@ -356,7 +356,6 @@
       "field_name": "Název",
       "field_repair_extensions": "Automaticky opravit nesprávné přípony souborů",
       "field_root_folder": "Kořenový adresář",
-      "field_scanner_deep_scan": "Hluboké skenování",
       "field_scanner_empty_trash_after_scan": "Po každém skenování automaticky vyprázdněte koš",
       "field_scanner_force_directory_modified_time": "Vynutit čas změny adresáře",
       "file_browser_dialog_button_confirm": "Vybrat",
