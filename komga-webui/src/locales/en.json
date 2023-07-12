@@ -584,11 +584,15 @@
     }
   },
   "duplicate_pages": {
+    "action_auto_delete_remaining": "Auto delete remaining ({count})",
     "action_delete_auto": "Auto delete",
     "action_delete_manual": "Manual delete",
     "action_delete_matches": "Delete matches",
     "action_ignore": "Ignore",
     "action_ignore_remaining": "Ignore remaining ({count})",
+    "action_manual_delete_remaining": "Manual delete remaining ({count})",
+    "confirm_auto_delete_remaining": "All of the remaining page hashes on this page ({count}) will be marked for automatic deletion.",
+    "confirm_manual_delete_remaining": "All of the remaining page hashes on this page ({count}) will be marked for manual deletion.",
     "delete_to_save": "Delete to save {size}",
     "deleted_count": "Deleted {count} times",
     "empty_title": "No duplicate pages found",

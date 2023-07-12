@@ -67,6 +67,29 @@
 
       </v-row>
 
+      <v-row justify="center">
+        <v-col cols="auto">
+          <v-btn @click="actionRemaining(PageHashAction.IGNORE)"
+                 :disabled="remainingCount < 1"
+          >{{ $t('duplicate_pages.action_ignore_remaining', {count: remainingCount}) }}
+          </v-btn>
+        </v-col>
+        <v-col cols="auto">
+          <v-btn @click="confirmRemaining(PageHashAction.DELETE_MANUAL)"
+                 :disabled="remainingCount < 1"
+                 color="warning"
+          >{{ $t('duplicate_pages.action_manual_delete_remaining', {count: remainingCount}) }}
+          </v-btn>
+        </v-col>
+        <v-col cols="auto">
+          <v-btn @click="confirmRemaining(PageHashAction.DELETE_AUTO)"
+                 :disabled="remainingCount < 1"
+                 color="warning"
+          >{{ $t('duplicate_pages.action_auto_delete_remaining', {count: remainingCount}) }}
+          </v-btn>
+        </v-col>
+      </v-row>
+
       <v-row align="center">
         <v-col cols="auto">
           <v-pagination
@@ -75,15 +98,6 @@
             :total-visible="paginationVisible"
             :length="totalPages"
           />
-        </v-col>
-
-        <v-spacer/>
-
-        <v-col>
-          <v-btn @click="ignoreRemaining"
-                 :disabled="remainingCount < 1"
-          >{{ $t('duplicate_pages.action_ignore_remaining', {count: remainingCount}) }}
-          </v-btn>
         </v-col>
       </v-row>
     </template>
@@ -117,6 +131,15 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <confirmation-dialog
+      v-model="modalConfirmRemaining"
+      :title="$t(`duplicate_pages.action_${dialogConfirmI18n}_remaining`, {count: remainingCount})"
+      :body-html="$t(`duplicate_pages.confirm_${dialogConfirmI18n}_remaining`, {count: remainingCount})"
+      :button-confirm="$t(`duplicate_pages.action_${dialogConfirmI18n}_remaining`, {count: remainingCount})"
+      button-confirm-color="warning"
+      @confirm="actionRemaining(confirmAction)"
+    />
   </v-container>
 </template>
 
@@ -129,10 +152,11 @@ import PageHashUnknownCard from '@/components/PageHashUnknownCard.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import {PageHashAction} from '@/types/enum-pagehashes'
 import EmptyState from '@/components/EmptyState.vue'
+import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 
 export default Vue.extend({
   name: 'DuplicatePagesUnknown',
-  components: {EmptyState, PageHashUnknownCard, PageHashMatchesTable, PageSizeSelect},
+  components: {ConfirmationDialog, EmptyState, PageHashUnknownCard, PageHashMatchesTable, PageSizeSelect},
   data: function () {
     return {
       elements: [] as PageHashUnknownDto[],
@@ -145,6 +169,9 @@ export default Vue.extend({
       dialogMatches: false,
       dialogImagePageHash: {} as PageHashUnknownDto,
       dialogMatchesPageHash: {} as PageHashDto,
+      modalConfirmRemaining: false,
+      confirmAction: {} as PageHashAction,
+      dialogConfirmI18n: '',
       pageHashUnknownThumbnailUrl,
     }
   },
@@ -160,6 +187,9 @@ export default Vue.extend({
     },
   },
   computed: {
+    PageHashAction() {
+      return PageHashAction
+    },
     sortOptions(): SortOption[] {
       return [
         {name: this.$t('duplicate_pages.filter.total_size').toString(), key: 'totalSize'},
@@ -233,14 +263,19 @@ export default Vue.extend({
         this.loadData(this.page, this.sortActive)
       }
     },
-    async ignoreRemaining() {
+    confirmRemaining(action: PageHashAction) {
+      this.confirmAction = action
+      this.dialogConfirmI18n = action === PageHashAction.DELETE_AUTO ? 'auto_delete' : 'manual_delete'
+      this.modalConfirmRemaining = true
+    },
+    async actionRemaining(action: PageHashAction) {
       for (const h of this.elements) {
         if (!this.hiddenElements.includes(h)) {
           this.$komgaPageHashes.createOrUpdatePageHash({
             hash: h.hash,
             size: h.size,
-            action: PageHashAction.IGNORE,
-          }).then(value => this.pageHashCreated(h))
+            action: action,
+          }).then(() => this.pageHashCreated(h))
         }
       }
     },
