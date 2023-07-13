@@ -1,3 +1,49 @@
+# [1.2.0](https://github.com/gotson/komga/compare/v1.1.0...v1.2.0) (2023-07-13)
+## 🚀 Features
+**api**
+- add sharing_label criteria to full text search for series ([040556e](https://github.com/gotson/komga/commits/040556e)), closes [#1146](https://github.com/gotson/komga/issues/1146)
+- search series by sharing label ([7a21fe0](https://github.com/gotson/komga/commits/7a21fe0)), closes [#1146](https://github.com/gotson/komga/issues/1146)
+
+**webui**
+- add buttons for auto and manual deletion of remaining page hashes ([e9135fb](https://github.com/gotson/komga/commits/e9135fb)), closes [#1147](https://github.com/gotson/komga/issues/1147)
+- add sharing label to filter panel ([737bf1b](https://github.com/gotson/komga/commits/737bf1b)), closes [#1146](https://github.com/gotson/komga/issues/1146)
+
+**unscoped**
+- display komga.org website announcements within the app ([72c1e8d](https://github.com/gotson/komga/commits/72c1e8d)), closes [#1149](https://github.com/gotson/komga/issues/1149)
+
+## 🐛 Fixes
+**api**
+- missing metrics if library name contains specific characters ([5ec7fa1](https://github.com/gotson/komga/commits/5ec7fa1)), closes [#1156](https://github.com/gotson/komga/issues/1156)
+
+**webui**
+- scan all libraries from Server Settings does not work ([a2f0c3d](https://github.com/gotson/komga/commits/a2f0c3d)), closes [#1155](https://github.com/gotson/komga/issues/1155)
+- better button alignment on smaller screens on login view ([223aea5](https://github.com/gotson/komga/commits/223aea5))
+- make logo on login view the same size even if server is unclaimed ([806d2b6](https://github.com/gotson/komga/commits/806d2b6))
+- startup logo fits small screens ([ecaf8d0](https://github.com/gotson/komga/commits/ecaf8d0))
+
+## 🏎 Perf
+**webui**
+- load metrics with promises instead of await ([66dd1c2](https://github.com/gotson/komga/commits/66dd1c2))
+
+## 🔄️ Changes
+**webui**
+- missing null safety ([5438444](https://github.com/gotson/komga/commits/5438444))
+- add missing uppercase class on some elements ([ea0a85c](https://github.com/gotson/komga/commits/ea0a85c))
+- convert dates using axios interceptor ([58c8187](https://github.com/gotson/komga/commits/58c8187))
+
+## 🛠  Build
+
+- remove redundant annotation ([438c40d](https://github.com/gotson/komga/commits/438c40d))
+
+## 🌐 Translation
+
+- translated using Weblate (Chinese (Simplified)) ([447f9c1](https://github.com/gotson/komga/commits/447f9c1))
+- translated using Weblate (Italian) ([a442439](https://github.com/gotson/komga/commits/a442439))
+- translated using Weblate (Hebrew) ([e4bf708](https://github.com/gotson/komga/commits/e4bf708))
+- translated using Weblate (Bulgarian) ([5d32ef0](https://github.com/gotson/komga/commits/5d32ef0))
+- translated using Weblate (Swedish) ([b751604](https://github.com/gotson/komga/commits/b751604))
+- translated using Weblate (Spanish) ([d7ba805](https://github.com/gotson/komga/commits/d7ba805))
+
 # [1.1.0](https://github.com/gotson/komga/compare/v1.0.0...v1.1.0) (2023-06-29)
 ## 🚀 Features
 **webui**
