@@ -125,6 +125,9 @@ export default Vue.extend({
     this.loadData()
   },
   methods: {
+    getLibraryNameById(id: string): string {
+      return this.$store.getters.getLibraryById(id).name
+    },
     async loadData() {
       this.$komgaMetrics.getMetric('komga.tasks.execution')
         .then(m => {
@@ -144,7 +147,7 @@ export default Vue.extend({
       this.$komgaMetrics.getMetric('komga.series')
         .then(m => {
             this.series = m
-            this.getStatisticForEachTagValue(m, 'library')
+            this.getStatisticForEachTagValue(m, 'library', 'VALUE', this.getLibraryNameById)
               .then(v => this.seriesAllTags = v)
           },
         )
@@ -154,7 +157,7 @@ export default Vue.extend({
       this.$komgaMetrics.getMetric('komga.books')
         .then(m => {
             this.books = m
-            this.getStatisticForEachTagValue(m, 'library')
+            this.getStatisticForEachTagValue(m, 'library', 'VALUE', this.getLibraryNameById)
               .then(v => this.booksAllTags = v)
           },
         )
@@ -164,7 +167,7 @@ export default Vue.extend({
       this.$komgaMetrics.getMetric('komga.books.filesize')
         .then(m => {
             this.booksFileSize = m
-            this.getStatisticForEachTagValue(m, 'library')
+            this.getStatisticForEachTagValue(m, 'library', 'VALUE', this.getLibraryNameById)
               .then(v => this.fileSizeAllTags = v)
           },
         )
@@ -174,7 +177,7 @@ export default Vue.extend({
       this.$komgaMetrics.getMetric('komga.sidecars')
         .then(m => {
             this.sidecars = m
-            this.getStatisticForEachTagValue(m, 'library')
+            this.getStatisticForEachTagValue(m, 'library', 'VALUE', this.getLibraryNameById)
               .then(v => this.sidecarsAllTags = v)
           },
         )
@@ -191,7 +194,7 @@ export default Vue.extend({
         .catch(() => {
         })
     },
-    async getStatisticForEachTagValue(metric: MetricDto, tag: string, statistic: string = 'VALUE'): Promise<{
+    async getStatisticForEachTagValue(metric: MetricDto, tag: string, statistic: string = 'VALUE', tagTransform: (t: string) => string = x => x): Promise<{
       [key: string]: number | undefined
     } | undefined> {
       const tagDto = metric.availableTags.find(x => x.tag === tag)
@@ -202,7 +205,7 @@ export default Vue.extend({
         }, {} as { [key: string]: number | undefined })
 
         for (let tagKey in tagToStatistic) {
-          tagToStatistic[tagKey] = (await this.$komgaMetrics.getMetric(metric.name, [{
+          tagToStatistic[tagTransform(tagKey)] = (await this.$komgaMetrics.getMetric(metric.name, [{
             key: tag,
             value: tagKey,
           }])).measurements.find(x => x.statistic === statistic)?.value
