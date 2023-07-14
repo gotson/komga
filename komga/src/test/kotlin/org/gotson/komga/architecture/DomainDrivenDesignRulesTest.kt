@@ -8,7 +8,7 @@ import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses
 import org.gotson.komga.Application
 
-@AnalyzeClasses(packagesOf = [Application::class], importOptions = [ImportOption.DoNotIncludeTests::class])
+@AnalyzeClasses(packagesOf = [Application::class], importOptions = [ImportOption.DoNotIncludeTests::class, DoNotIncludeAotTests::class])
 class DomainDrivenDesignRulesTest {
 
   @ArchTest

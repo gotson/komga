@@ -7,7 +7,7 @@ import com.tngtech.archunit.lang.ArchRule
 import com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices
 import org.gotson.komga.Application
 
-@AnalyzeClasses(packagesOf = [Application::class], importOptions = [ImportOption.DoNotIncludeTests::class])
+@AnalyzeClasses(packagesOf = [Application::class], importOptions = [ImportOption.DoNotIncludeTests::class, DoNotIncludeAotTests::class])
 class SlicesIsolationRulesTest {
   @ArchTest
   val interfaces_should_only_use_their_own_slice: ArchRule =
