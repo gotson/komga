@@ -1,3 +1,24 @@
+# [1.2.1](https://github.com/gotson/komga/compare/v1.2.0...v1.2.1) (2023-07-17)
+## 🐛 Fixes
+**api**
+- show values for actuator /env and /config-props endpoints ([e6eaf2f](https://github.com/gotson/komga/commits/e6eaf2f))
+
+**webui**
+- metrics pie charts show library name in tooltip ([318a444](https://github.com/gotson/komga/commits/318a444)), closes [#1159](https://github.com/gotson/komga/issues/1159)
+
+## 📝 Documentation
+
+- fix link in DOCKERHUB.md ([5e1755c](https://github.com/gotson/komga/commits/5e1755c))
+
+## 🌐 Translation
+
+- translated using Weblate (Indonesian) ([ba6b723](https://github.com/gotson/komga/commits/ba6b723))
+- translated using Weblate (Chinese (Simplified)) ([cd1ac38](https://github.com/gotson/komga/commits/cd1ac38))
+- translated using Weblate (Chinese (Traditional)) ([c010b33](https://github.com/gotson/komga/commits/c010b33))
+- translated using Weblate (Tamil) ([bd8b819](https://github.com/gotson/komga/commits/bd8b819))
+- translated using Weblate (Swedish) ([42230ed](https://github.com/gotson/komga/commits/42230ed))
+- translated using Weblate (Spanish) ([e0159b6](https://github.com/gotson/komga/commits/e0159b6))
+
 # [1.2.0](https://github.com/gotson/komga/compare/v1.1.0...v1.2.0) (2023-07-13)
 ## 🚀 Features
 **api**
