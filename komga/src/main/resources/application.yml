@@ -66,6 +66,12 @@ server:
 management:
   endpoints.web.exposure.include: "*"
   endpoint:
+    configprops:
+      roles: ADMIN
+      show-values: when_authorized
+    env:
+      roles: ADMIN
+      show-values: when_authorized
     health:
       roles: ADMIN
       show-details: when_authorized
