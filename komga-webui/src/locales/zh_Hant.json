@@ -21,6 +21,11 @@
     "account_settings": "帳號設定",
     "change_password": "修改密碼"
   },
+  "announcements": {
+    "mark_all_read": "標示全部已讀",
+    "mark_read": "標示已讀",
+    "tab_title": "公告"
+  },
   "authentication_activity": {
     "datetime": "日期/時間",
     "email": "電子郵件",
@@ -579,16 +584,20 @@
     }
   },
   "duplicate_pages": {
+    "action_auto_delete_remaining": "自動刪除剩餘的資料（{count}）",
     "action_delete_auto": "自動刪除",
     "action_delete_manual": "手動刪除",
     "action_delete_matches": "刪除匹配",
     "action_ignore": "忽略",
+    "action_ignore_remaining": "忽略剩餘部分（{count}）",
     "delete_to_save": "删除以節省 {size}",
     "deleted_count": "删除了 {count} 次",
+    "empty_title": "沒有找到重複的頁面",
     "filter": {
       "count": "數目",
       "delete_count": "删除計數",
       "delete_size": "節省的空間",
+      "match_count": "符合數量",
       "size": "大小",
       "total_size": "總大小"
     },
