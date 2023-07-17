@@ -21,6 +21,11 @@
     "account_settings": "Pengaturan Akun",
     "change_password": "ubah kata sandi"
   },
+  "announcements": {
+    "mark_all_read": "Tandai semua sebagai dibaca",
+    "mark_read": "Tandai telah dibaca",
+    "tab_title": "Pengumuman"
+  },
   "authentication_activity": {
     "datetime": "Tanggal & Waktu",
     "email": "Email",
@@ -174,7 +179,8 @@
   },
   "browse_readlist": {
     "edit_elements": "Edit elemen",
-    "edit_readlist": "Edit daftar bacaan"
+    "edit_readlist": "Edit daftar bacaan",
+    "manual_ordering": "pengurutan manual"
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Ini adalah tahun paling awal dari tanggal rilis dari semua buku dalam seri",
@@ -188,6 +194,7 @@
   "common": {
     "age": "Umur",
     "all_libraries": "Semua Pustaka",
+    "book": "Buku",
     "books": "Buku",
     "books_n": "Tidak ada buku | 1 buku | {count} buku",
     "books_total": "{count} / {total} buku",
@@ -219,17 +226,20 @@
     "page": "Halaman",
     "page_number": "Nomor halaman",
     "pages": "halaman",
+    "pages_left": "Tidak ada halaman tersisa | 1 halaman tersisa | {count} halaman tersisa",
     "pages_n": "Tidak ada halaman | 1 halaman | {count} halaman",
     "password": "Kata sandi",
     "pending_tasks": "Tidak ada tugas tertunda | 1 tugas tertunda | {count} tugas tertunda",
     "publisher": "Penerbit",
     "read": "Baca",
+    "read_on": "Telah dibaca pada {date}",
+    "readlist": "Daftar Bacaan",
     "readlists": "Daftar Bacaan",
     "required": "Diperlukan",
     "reset_filters": "Setel ulang filter",
     "roles": "Peran",
     "save_changes": "Simpan perubahan",
-    "series": "Seri",
+    "series": "Seri | Seri",
     "sidecars": "Sidecars",
     "tags": "Tag",
     "unavailable": "Tidak tersedia",
@@ -251,10 +261,20 @@
     "book_number": "Nomor buku: {name}",
     "book_series": "Seri: {name}",
     "button_import": "Impor",
+    "button_match": "Kecocokan",
     "comicrack_preambule_html": "Anda dapat mengimpor Daftar Bacaan ComicRack yang ada dalam format <code>.cbl</code>.<br>Komga akan mencoba mencocokkan seri dan nomor buku yang disediakan dengan seri dan buku di perpustakaan Anda.",
+    "dialog_confirmation": {
+      "body": "Tidak ditemukan kecocokan pada {unmatched} dari {total} buku",
+      "create": "Tetap buat",
+      "title": "Beberapa buku tidak cocok"
+    },
+    "field_file_label": "Daftar Bacaan ComicRack (.cbl)",
     "field_files_label": "Daftar Bacaan ComicRack (.cbl)",
     "import_read_lists": "Impor Daftar Bacaan",
     "imported_as": "Diimpor sebagai {name}",
+    "readlist_created": "Baca Daftar dibuat: {name}",
+    "requested_number": "Nomor yang Diminta",
+    "requested_series": "Seri yang Diminta",
     "results_preambule": "Hasil impor ditunjukkan di bawah ini. Anda juga dapat memeriksa buku yang tidak cocok untuk setiap berkas yang disediakan.",
     "size_limit": "Ukuran berkas harus kurang dari {size} MB",
     "tab_title": "Impor Data"
@@ -292,6 +312,10 @@
       "body": "Menganalisis semua berkas media di perpustakaan. Analisis menangkap informasi tentang media. Tergantung pada ukuran perpustakaan Anda, ini mungkin memakan waktu lama.",
       "button_confirm": "Analisa",
       "title": "Analisa pustaka"
+    },
+    "book_picker": {
+      "filter": "Filter berdasarkan nomor buku, judul, atau tanggal rilis",
+      "title": "Pilih Buku"
     },
     "delete_book": {
       "button_confirm": "Hapus",
@@ -345,8 +369,10 @@
       "authors_notice_multiple_edit": "Anda sedang mengedit penulis untuk beberapa buku. Ini akan menimpa penulis yang ada dari setiap buku.",
       "button_cancel": "Batal",
       "button_confirm": "Simpan perubahan",
+      "copy_from": "Salin dari {field}",
       "dialog_title_multiple": "Edit {count} buku | Edit {count} buku",
       "dialog_title_single": "Ubah {book}",
+      "field_alternate_title": "Judul alternatif",
       "field_isbn": "ISBN",
       "field_isbn_error": "Harus memiliki ISBN 13 yang valid",
       "field_link_label": "Label",
@@ -361,6 +387,8 @@
       "field_summary": "Ringkasan",
       "field_tags": "Tag",
       "field_title": "Judul",
+      "number_sort_decrement": "Kurangi semuanya dengan 1",
+      "number_sort_increment": "Naikkan semua dengan 1",
       "tab_authors": "Pengarang",
       "tab_general": "Umum",
       "tab_links": "Link",
@@ -394,6 +422,7 @@
       "field_import_comicinfo_collections": "Koleksi",
       "field_import_comicinfo_readlists": "Daftar bacaan",
       "field_import_comicinfo_series": "Metadata seri",
+      "field_import_comicinfo_series_append_volume": "Tambahkan volume ke judul seri",
       "field_import_epub_book": "Metadata buku",
       "field_import_epub_series": "Metadata seri",
       "field_import_local_artwork": "Artwork lokal",
@@ -425,8 +454,10 @@
       "button_cancel": "Batal",
       "button_confirm": "Simpan perubahan",
       "dialog_title": "Edit daftar bacaan",
+      "field_manual_ordering": "Pengurutan manual",
       "field_name": "Nama",
       "field_summary": "Ringkasan",
+      "label_ordering": "Secara default, buku dalam daftar baca diurutkan secara manual. Anda dapat menonaktifkan pengurutan manual untuk mengurutkan buku berdasarkan tanggal rilis.",
       "tab_general": "Umum",
       "tab_poster": "Poster"
     },
@@ -455,6 +486,7 @@
       "tab_poster": "Poster",
       "tab_sharing": "Bagikan",
       "tab_tags": "Tag",
+      "tab_titles": "Judul Alternatif",
       "tags_notice_multiple_edit": "Anda sedang mengedit tag untuk beberapa seri. Ini akan menimpa tag yang ada dari setiap seri."
     },
     "edit_user": {
@@ -513,6 +545,7 @@
     },
     "series_picker": {
       "label_search_series": "Cari Seri",
+      "no_results": "Tidak ada Seri yang ditemukan",
       "title": "Pilih Seri"
     },
     "server_stop": {
@@ -551,21 +584,30 @@
     }
   },
   "duplicate_pages": {
+    "action_auto_delete_remaining": "Hapus otomatis sisa ({count})",
     "action_delete_auto": "Hapus otomatis",
     "action_delete_manual": "Hapus manual",
     "action_delete_matches": "Hapus kecocokan",
     "action_ignore": "Abaikan",
+    "action_ignore_remaining": "Abaikan {count} yang tersisa",
+    "action_manual_delete_remaining": "Hapus otomatis ({count}) yang tersisa",
+    "confirm_auto_delete_remaining": "Semua hash halaman yang tersisa di halaman ini ({count}) akan ditandai untuk penghapusan otomatis.",
+    "confirm_manual_delete_remaining": "Semua hash halaman yang tersisa di halaman ini ({count}) akan ditandai untuk penghapusan manual.",
     "delete_to_save": "Hapus untuk mengosongkan {size}",
     "deleted_count": "Dihapus {count} kali",
+    "empty_title": "Tidak ada halaman duplikat yang ditemukan",
     "filter": {
       "count": "Hitung",
       "delete_count": "Jumlah penghapusan",
       "delete_size": "Ruang disimpan",
+      "match_count": "Cocokkan hitungan",
       "size": "Ukuran",
       "total_size": "Ukuran keseluruhan"
     },
     "info": "Menghapus halaman duplikat akan mengubah file Anda. Cadangkan file Anda dan gunakan penghapusan manual sebelum menggunakan penghapusan otomatis.",
+    "known": "Diketahui",
     "matches_n": "Tidak ada kecocokan | 1 kecocokan| {count} kecocokan",
+    "new": "Baru",
     "saved_size": "{size} terbebas",
     "title": "Halaman duplikat",
     "unknown_size": "Ukuran tidak diketahui"
@@ -630,7 +672,7 @@
     "ERR_1007": "Beberapa entri tidak dapat dianalisis",
     "ERR_1008": "Kesalahan tidak diketahui saat mendapatkan entri buku",
     "ERR_1009": "Daftar baca dengan nama tersebut sudah ada",
-    "ERR_1015": "Kesalahan saat menghapus serialisasi ComicRack ReadingList",
+    "ERR_1015": "Terjadi kesalahan saat deserialisasi ComicRack CBL",
     "ERR_1016": "Direktori tidak dapat diakses atau bukan direktori",
     "ERR_1017": "Tidak dapat memindai folder yang merupakan bagian dari perpustakaan yang ada",
     "ERR_1018": "Berkas tidak ditemukan",
@@ -641,7 +683,12 @@
     "ERR_1023": "Buku sudah ada di ReadingList",
     "ERR_1024": "Kesalahan masuk OAuth2: tidak ada atribut email",
     "ERR_1025": "Kesalahan masuk OAuth2: tidak ada pengguna lokal dengan email itu",
-    "ERR_1026": "Kesalahan masuk OpenID Connect: email tidak diverifikasi"
+    "ERR_1026": "Kesalahan masuk OpenID Connect: email tidak diverifikasi",
+    "ERR_1027": "Kesalahan login OpenID Connect: tidak ada atribut email_verified",
+    "ERR_1028": "Kesalahan login OpenID Connect: tidak ada atribut email",
+    "ERR_1029": "ComicRack CBL tidak mengandung elemen Buku apa pun",
+    "ERR_1030": "ComicRack CBL tidak memiliki elemen Nama",
+    "ERR_1031": "ComicRack CBL Book tidak memiliki seri atau nomor"
   },
   "filter": {
     "age_rating": "peringkat usia",
@@ -654,6 +701,7 @@
     "publisher": "Penerbit",
     "read": "Telah Dibaca",
     "release_date": "tanggal rilis",
+    "sharing_label": "Label Berbagi",
     "status": "status",
     "tag": "tag",
     "unread": "Belum dibaca"
@@ -715,6 +763,7 @@
     "mark_unread": "Tandai sebagai belum dibaca",
     "refresh_metadata": "Segarkan metadata",
     "scan_library_files": "Pindai berkas pustaka",
+    "scan_library_files_deep": "Pindai file pustaka (mendalam)",
     "select_all": "Pilih semua"
   },
   "metrics": {
@@ -740,6 +789,12 @@
     "less": "Baca lebih sedikit",
     "more": "Baca selengkapnya"
   },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "Buku duplikat",
+      "error_choose_book": "Pilih buku"
+    }
+  },
   "readlists_expansion_panel": {
     "manage_readlist": "Kelola daftar baca",
     "title": "{name} daftar baca"
@@ -760,6 +815,7 @@
       "button_cancel_all_tasks": "Batalkan semua tugas",
       "button_empty_trash": "Kosongkan sampah untuk seluruh pustaka",
       "button_scan_libraries": "Pindai semua pustaka",
+      "button_scan_libraries_deep": "Pindai semua pustaka (mendalam)",
       "button_shutdown": "Matikan server",
       "notification_tasks_cancelled": "Tidak ada tugas untuk dibatalkan | Satu tugas dibatalkan | {count} tugas dibatalkan",
       "section_title": "Manajemen Server"
@@ -804,6 +860,10 @@
     "tooltip_to_be_uploaded": "Untuk diunggah",
     "tooltip_too_big": "Berkas terlalu besar!",
     "tooltip_user_uploaded": "Unggahan pengguna"
+  },
+  "titles_more": {
+    "less": "Lebih sedikit judul",
+    "more": "Lebih banyak judul"
   },
   "user_roles": {
     "ADMIN": "Administrator",
