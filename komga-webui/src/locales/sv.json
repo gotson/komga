@@ -21,6 +21,11 @@
     "account_settings": "Kontoinställningar",
     "change_password": "ändra lösenord"
   },
+  "announcements": {
+    "mark_all_read": "Markera alla som lästa",
+    "mark_read": "Markera som läst",
+    "tab_title": "Annonseringar"
+  },
   "authentication_activity": {
     "datetime": "Datum & Tid",
     "email": "E-post",
@@ -579,11 +584,15 @@
     }
   },
   "duplicate_pages": {
+    "action_auto_delete_remaining": "Ta bort återstående automatiskt ({count})",
     "action_delete_auto": "Automatisk radering",
     "action_delete_manual": "Manuell radering",
     "action_delete_matches": "Ta bort matchningar",
     "action_ignore": "Ignorera",
     "action_ignore_remaining": "Ignorera återstående ({count})",
+    "action_manual_delete_remaining": "Återstående manuell radering ({count})",
+    "confirm_auto_delete_remaining": "Alla återstående sidhashar på den här sidan ({count}) kommer att markeras för automatisk radering.",
+    "confirm_manual_delete_remaining": "Alla återstående sidhashar på den här sidan ({count}) kommer att markeras för manuell radering.",
     "delete_to_save": "Radera för att spara {size}",
     "deleted_count": "Raderat {count} gånger",
     "empty_title": "Inga dubbletter av sidor hittades",
@@ -692,6 +701,7 @@
     "publisher": "utgivare",
     "read": "Läsa",
     "release_date": "utgivningsdatum",
+    "sharing_label": "Delningsetikett",
     "status": "status",
     "tag": "tag",
     "unread": "Olästa"
