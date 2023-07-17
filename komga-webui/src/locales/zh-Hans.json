@@ -21,6 +21,11 @@
     "account_settings": "账户设置",
     "change_password": "修改密码"
   },
+  "announcements": {
+    "mark_all_read": "全部标为已读",
+    "mark_read": "标为已读",
+    "tab_title": "通知"
+  },
   "authentication_activity": {
     "datetime": "日期/时间",
     "email": "邮箱",
@@ -579,11 +584,15 @@
     }
   },
   "duplicate_pages": {
+    "action_auto_delete_remaining": "自动删除剩余（{count}）",
     "action_delete_auto": "自动删除",
     "action_delete_manual": "手动删除",
     "action_delete_matches": "删除匹配",
     "action_ignore": "忽略",
     "action_ignore_remaining": "其余忽略({count})",
+    "action_manual_delete_remaining": "手动删除剩余（{count}）",
+    "confirm_auto_delete_remaining": "此页面上的所有剩余页面哈希值 ({count})都将被标记为自动删除。",
+    "confirm_manual_delete_remaining": "此页面上的所有剩余页面哈希({count})都将标记为手动删除。",
     "delete_to_save": "删除以节省 {size}",
     "deleted_count": "删除了 {count} 次",
     "empty_title": "未找到重复页面",
@@ -692,6 +701,7 @@
     "publisher": "出版商",
     "read": "已读",
     "release_date": "发行日期",
+    "sharing_label": "共享标签",
     "status": "状态",
     "tag": "标签",
     "unread": "未读"
