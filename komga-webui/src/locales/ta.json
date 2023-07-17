@@ -1,0 +1,15 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} இன் {2}"
+    },
+    "dataIterator": {
+      "loadingText": "பொருட்களை ஏற்றுகிறது...",
+      "noResultsText": "பொருத்தமான பதிவுகள் எதுவும் இல்லை"
+    },
+    "dataTable": {
+      "itemsPerPageText": "ஒரு பக்கத்திற்கு வரிசைகள்:",
+      "sortBy": "வரிசைப்படுத்து"
+    }
+  }
+}
