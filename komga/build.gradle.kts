@@ -1,4 +1,3 @@
-
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jreleaser.model.Active
@@ -18,6 +17,7 @@ plugins {
   id("com.github.johnrengelman.processes") version "0.5.0"
   id("org.springdoc.openapi-gradle-plugin") version "1.6.0"
   id("org.jreleaser") version "1.6.0"
+  id("com.google.devtools.ksp") version "1.8.22-1.0.11"
 
   jacoco
 }
@@ -114,6 +114,10 @@ dependencies {
 
   implementation("org.xerial:sqlite-jdbc:3.42.0.0")
   jooqGenerator("org.xerial:sqlite-jdbc:3.42.0.0")
+
+  if (version.toString().endsWith(".0.0")) {
+    ksp("com.github.gotson.bestbefore:bestbefore-processor-kotlin:0.1.0")
+  }
 
   testImplementation("org.springframework.boot:spring-boot-starter-test") {
     exclude(module = "mockito-core")
