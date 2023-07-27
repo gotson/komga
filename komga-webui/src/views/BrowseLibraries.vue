@@ -1,6 +1,6 @@
 <template>
   <div :style="$vuetify.breakpoint.xs ? 'margin-bottom: 56px' : undefined">
-    <toolbar-sticky v-if="selectedSeries.length === 0">
+    <toolbar-sticky v-if="selectedItems.length === 0">
       <!--   Action menu   -->
       <library-actions-menu v-if="library"
                             :library="library"/>
@@ -18,6 +18,8 @@
 
       <v-spacer/>
 
+      <library-item-type-select v-model="selectedItemType"/>
+
       <page-size-select v-model="pageSize"/>
 
       <v-btn icon @click="drawer = !drawer">
@@ -26,16 +28,18 @@
     </toolbar-sticky>
 
     <multi-select-bar
-      v-model="selectedSeries"
-      kind="series"
+      v-model="selectedItems"
+      :kind="itemSelectType"
       show-select-all
-      @unselect-all="selectedSeries = []"
-      @select-all="selectedSeries = series"
+      @unselect-all="selectedItems = []"
+      @select-all="selectedItems = items"
       @mark-read="markSelectedRead"
       @mark-unread="markSelectedUnread"
       @add-to-collection="addToCollection"
-      @edit="editMultipleSeries"
-      @delete="deleteSeries"
+      @add-to-readlist="addToReadList"
+      @[bulkEdit]="bulkEditMultipleBooks"
+      @edit="editMultipleItems"
+      @delete="deleteItems"
     />
 
     <library-navigation v-if="$vuetify.breakpoint.smAndDown" :libraryId="libraryId" bottom-navigation/>
@@ -73,7 +77,7 @@
         class="text-center"
         :symbols="alphabeticalNavigation"
         :selected="selectedSymbol"
-        :group-count="seriesGroups"
+        :group-count="itemGroups"
         @clicked="filterByStarting"
       />
 
@@ -103,10 +107,10 @@
         />
 
         <item-browser
-          :items="series"
+          :items="items"
           :item-context="itemContext"
-          :selected.sync="selectedSeries"
-          :edit-function="isAdmin ? editSingleSeries : undefined"
+          :selected.sync="selectedItems"
+          :edit-function="isAdmin ? editSingleItem : undefined"
         />
 
         <v-pagination
@@ -129,6 +133,7 @@ import ItemBrowser from '@/components/ItemBrowser.vue'
 import LibraryNavigation from '@/components/LibraryNavigation.vue'
 import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
+import LibraryItemTypeSelect from '@/components/LibraryItemTypeSelect.vue'
 import {parseBooleanFilter, parseQuerySort} from '@/functions/query-params'
 import {ReadStatus, replaceCompositeReadStatus} from '@/types/enum-books'
 import {SeriesStatus, SeriesStatusKeyValue} from '@/types/enum-series'
@@ -137,9 +142,14 @@ import {
   LIBRARY_DELETED,
   READPROGRESS_SERIES_CHANGED,
   READPROGRESS_SERIES_DELETED,
+  READPROGRESS_DELETED,
+  READPROGRESS_CHANGED,
   SERIES_ADDED,
   SERIES_CHANGED,
   SERIES_DELETED,
+  BOOK_ADDED,
+  BOOK_CHANGED,
+  BOOK_DELETED,
 } from '@/types/events'
 import Vue from 'vue'
 import {Location} from 'vue-router'
@@ -150,13 +160,14 @@ import FilterPanels from '@/components/FilterPanels.vue'
 import FilterList from '@/components/FilterList.vue'
 import {mergeFilterParams, sortOrFilterActive, toNameValue} from '@/functions/filter'
 import {GroupCountDto, SeriesDto} from '@/types/komga-series'
-import {AuthorDto} from '@/types/komga-books'
+import {AuthorDto, BookDto} from '@/types/komga-books'
 import {authorRoles} from '@/types/author-roles'
-import {LibrarySseDto, ReadProgressSeriesSseDto, SeriesSseDto} from '@/types/komga-sse'
+import {BookSseDto, LibrarySseDto, ReadProgressSeriesSseDto, ReadProgressSseDto, SeriesSseDto} from '@/types/komga-sse'
 import {throttle} from 'lodash'
 import AlphabeticalNavigation from '@/components/AlphabeticalNavigation.vue'
 import {LibraryDto} from '@/types/komga-libraries'
-import {ItemContext} from '@/types/items'
+import {ItemContext, ItemTypes} from '@/types/items'
+import { ContextOrigin } from '@/types/context'
 
 export default Vue.extend({
   name: 'BrowseLibraries',
@@ -167,6 +178,7 @@ export default Vue.extend({
     ToolbarSticky,
     ItemBrowser,
     PageSizeSelect,
+    LibraryItemTypeSelect,
     LibraryNavigation,
     MultiSelectBar,
     FilterDrawer,
@@ -177,22 +189,23 @@ export default Vue.extend({
   data: function () {
     return {
       library: undefined as LibraryDto | undefined,
-      series: [] as SeriesDto[],
-      seriesGroups: [] as GroupCountDto[],
+      items: [] as (SeriesDto | BookDto)[],
+      itemGroups: [] as GroupCountDto[],
       alphabeticalNavigation: ['ALL', '#', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
       selectedSymbol: 'ALL',
-      selectedSeries: [] as SeriesDto[],
+      selectedItems: [] as (SeriesDto | BookDto)[],
+      selectedItemType: ItemTypes.SERIES,
       page: 1,
       pageSize: 20,
       totalPages: 1,
       totalElements: null as number | null,
       sortActive: {} as SortActive,
-      sortDefault: {key: 'metadata.titleSort', order: 'asc'} as SortActive,
       filters: {} as FiltersActive,
       sortUnwatch: null as any,
       filterUnwatch: null as any,
       pageUnwatch: null as any,
       pageSizeUnwatch: null as any,
+      selectedItemTypeUnwatch: null as any,
       drawer: false,
       filterOptions: {
         genre: [] as NameValue[],
@@ -215,28 +228,40 @@ export default Vue.extend({
     this.$eventHub.$on(SERIES_ADDED, this.seriesChanged)
     this.$eventHub.$on(SERIES_CHANGED, this.seriesChanged)
     this.$eventHub.$on(SERIES_DELETED, this.seriesChanged)
+    this.$eventHub.$on(BOOK_ADDED, this.bookChanged)
+    this.$eventHub.$on(BOOK_CHANGED, this.bookChanged)
+    this.$eventHub.$on(BOOK_DELETED, this.bookChanged)
     this.$eventHub.$on(LIBRARY_DELETED, this.libraryDeleted)
     this.$eventHub.$on(LIBRARY_CHANGED, this.libraryChanged)
-    this.$eventHub.$on(READPROGRESS_SERIES_CHANGED, this.readProgressChanged)
-    this.$eventHub.$on(READPROGRESS_SERIES_DELETED, this.readProgressChanged)
+    this.$eventHub.$on(READPROGRESS_CHANGED, this.bookReadProgressChanged)
+    this.$eventHub.$on(READPROGRESS_DELETED, this.bookReadProgressChanged)
+    this.$eventHub.$on(READPROGRESS_SERIES_CHANGED, this.seriesReadProgressChanged)
+    this.$eventHub.$on(READPROGRESS_SERIES_DELETED, this.seriesReadProgressChanged)
   },
   beforeDestroy() {
     this.$eventHub.$off(SERIES_ADDED, this.seriesChanged)
     this.$eventHub.$off(SERIES_CHANGED, this.seriesChanged)
     this.$eventHub.$off(SERIES_DELETED, this.seriesChanged)
+    this.$eventHub.$off(BOOK_ADDED, this.bookChanged)
+    this.$eventHub.$off(BOOK_CHANGED, this.bookChanged)
+    this.$eventHub.$off(BOOK_DELETED, this.bookChanged)
     this.$eventHub.$off(LIBRARY_DELETED, this.libraryDeleted)
     this.$eventHub.$off(LIBRARY_CHANGED, this.libraryChanged)
-    this.$eventHub.$off(READPROGRESS_SERIES_CHANGED, this.readProgressChanged)
-    this.$eventHub.$off(READPROGRESS_SERIES_DELETED, this.readProgressChanged)
+    this.$eventHub.$off(READPROGRESS_CHANGED, this.bookReadProgressChanged)
+    this.$eventHub.$off(READPROGRESS_DELETED, this.bookReadProgressChanged)
+    this.$eventHub.$off(READPROGRESS_SERIES_CHANGED, this.seriesReadProgressChanged)
+    this.$eventHub.$off(READPROGRESS_SERIES_DELETED, this.seriesReadProgressChanged)
   },
   async mounted() {
     this.$store.commit('setLibraryRoute', {id: this.libraryId, route: LIBRARY_ROUTE.BROWSE})
     this.pageSize = this.$store.state.persistedState.browsingPageSize || this.pageSize
+    this.selectedItemType = (this.$store.getters.getLibraryItemType() !== undefined) ? this.$store.getters.getLibraryItemType() : this.selectedItemType
 
     // restore from query param
     await this.resetParams(this.$route, this.libraryId)
     if (this.$route.query.page) this.page = Number(this.$route.query.page)
     if (this.$route.query.pageSize) this.pageSize = Number(this.$route.query.pageSize)
+    if (this.$route.query.itemType) this.selectedItemType = Number(this.$route.query.itemType)
     if (this.$route.query.nav) this.selectedSymbol = this.$route.query.nav.toString()
 
     this.loadLibrary(this.libraryId)
@@ -244,7 +269,7 @@ export default Vue.extend({
     this.setWatches()
   },
   async beforeRouteUpdate(to, from, next) {
-    if (to.params.libraryId !== from.params.libraryId) {
+    if (to.params.libraryId !== from.params.libraryId || to.params.itemType !== from.params.itemType) {
       this.unsetWatches()
 
       // reset
@@ -252,8 +277,8 @@ export default Vue.extend({
       this.page = 1
       this.totalPages = 1
       this.totalElements = null
-      this.series = []
-      this.seriesGroups = []
+      this.items = []
+      this.itemGroups = []
       this.selectedSymbol = 'ALL'
 
       this.loadLibrary(to.params.libraryId)
@@ -266,27 +291,51 @@ export default Vue.extend({
   computed: {
     searchRegex(): string | undefined {
         if (this.selectedSymbol === 'ALL') return undefined
-        if (this.selectedSymbol === '#') return '^[^a-z],title_sort'
-        return `^${this.selectedSymbol},title_sort`
+        if (this.selectedItemType === ItemTypes.SERIES) {
+          if (this.selectedSymbol === '#') return '^[^a-z],title_sort'
+          return `^${this.selectedSymbol},title_sort`
+        } else if (this.selectedItemType === ItemTypes.BOOK) {
+          if (this.selectedSymbol === '#') return '^[^a-z]'
+          return `^${this.selectedSymbol}`
+        }
+        return undefined
     },
     itemContext(): ItemContext[] {
-      if (this.sortActive.key === 'booksMetadata.releaseDate') return [ItemContext.RELEASE_DATE]
-      if (this.sortActive.key === 'createdDate') return [ItemContext.DATE_ADDED]
-      if (this.sortActive.key === 'lastModifiedDate') return [ItemContext.DATE_UPDATED]
-      return []
+      var itemContext = []
+      if (this.sortActive.key === 'booksMetadata.releaseDate' || this.sortActive.key === 'metadata.releaseDate') itemContext.push(ItemContext.RELEASE_DATE)
+      if (this.sortActive.key === 'createdDate' || this.sortActive.key === 'created') itemContext.push(ItemContext.DATE_ADDED)
+      if (this.sortActive.key === 'lastModifiedDate' ||  this.sortActive.key === 'lastModified') itemContext.push(ItemContext.DATE_UPDATED)
+      if (this.selectedItemType === ItemTypes.BOOK) itemContext.push(ItemContext.SHOW_SERIES)
+      return itemContext
     },
     sortOptions(): SortOption[] {
-      return [
-        {name: this.$t('sort.name').toString(), key: 'metadata.titleSort'},
-        {name: this.$t('sort.date_added').toString(), key: 'createdDate'},
-        {name: this.$t('sort.date_updated').toString(), key: 'lastModifiedDate'},
-        {name: this.$t('sort.release_date').toString(), key: 'booksMetadata.releaseDate'},
-        {name: this.$t('sort.folder_name').toString(), key: 'name'},
-        {name: this.$t('sort.books_count').toString(), key: 'booksCount'},
-      ] as SortOption[]
+      var sortOptions : SortOption[]
+
+      if (this.selectedItemType === ItemTypes.SERIES) {
+        sortOptions = [
+          {name: this.$t('sort.name').toString(), key: 'metadata.titleSort'},
+          {name: this.$t('sort.date_added').toString(), key: 'createdDate'},
+          {name: this.$t('sort.date_updated').toString(), key: 'lastModifiedDate'},
+          {name: this.$t('sort.release_date').toString(), key: 'booksMetadata.releaseDate'},
+          {name: this.$t('sort.folder_name').toString(), key: 'name'},
+          {name: this.$t('sort.books_count').toString(), key: 'booksCount'},
+        ]
+      } else if (this.selectedItemType == ItemTypes.BOOK) {
+        sortOptions = [
+          {name: this.$t('sort.name').toString(), key: 'metadata.title'},
+          {name: this.$t('sort.date_added').toString(), key: 'created'},
+          {name: this.$t('sort.date_updated').toString(), key: 'lastModified'},
+          {name: this.$t('sort.release_date').toString(), key: 'metadata.releaseDate' },
+          {name: this.$t('sort.folder_name').toString(), key: 'name'},
+        ]
+      } else {
+        sortOptions = []
+      }
+
+      return sortOptions
     },
     filterOptionsList(): FiltersOptions {
-      return {
+      const filterOptions = {
         readStatus: {
           values: [
             {name: this.$t('filter.unread').toString(), value: ReadStatus.UNREAD_AND_IN_PROGRESS},
@@ -294,12 +343,17 @@ export default Vue.extend({
             {name: this.$t('filter.read').toString(), value: ReadStatus.READ},
           ],
         },
-        complete: {
-          values: [{name: this.$t('filter.complete').toString(), value: 'true', nValue: 'false'}],
-        },
       } as FiltersOptions
+
+      if (this.selectedItemType === ItemTypes.SERIES) {
+        filterOptions.complete = {
+          values: [{name: this.$t('filter.complete').toString(), value: 'true', nValue: 'false'}],
+        }
+      }
+
+      return filterOptions
     },
-    filterOptionsPanel(): FiltersOptions {
+    filterOptionsPanel(): FiltersOptions { //TODO: Remove Series only criteria for books, and vice versa
       const r = {
         status: {name: this.$t('filter.status').toString(), values: SeriesStatusKeyValue()},
         genre: {name: this.$t('filter.genre').toString(), values: this.filterOptions.genre},
@@ -327,6 +381,12 @@ export default Vue.extend({
         }
       })
       r['sharingLabel'] = {name: this.$t('filter.sharing_label').toString(), values: this.filterOptions.sharingLabel}
+
+      //TODO: It would be nice to have these for the issues view as well, but for the moment I don't see how to do that without a major rewrite of the backend book service
+      if (this.selectedItemType === ItemTypes.BOOK) {
+        delete r.status
+      }
+
       return r
     },
     isAdmin(): boolean {
@@ -347,6 +407,23 @@ export default Vue.extend({
     },
     sortOrFilterActive(): boolean {
       return sortOrFilterActive(this.sortActive, this.sortDefault, this.filters)
+    },
+    bulkEdit(): string | null {
+      return (this.selectedItemType === ItemTypes.BOOK) ? 'bulk-edit' : null
+    },
+    sortDefault() : SortActive {
+      if (this.selectedItemType === ItemTypes.BOOK) {
+        return {key: 'metadata.releaseDate', order: 'asc'}
+      } else {
+        return {key: 'metadata.titleSort', order: 'asc'}
+      } 
+    },
+    itemSelectType() : string {
+      if (this.selectedItemType === ItemTypes.BOOK) {
+        return 'books'
+      } else {
+        return 'series'
+      }
     },
   },
   methods: {
@@ -452,7 +529,11 @@ export default Vue.extend({
         this.$store.commit('setBrowsingPageSize', val)
         this.updateRouteAndReload()
       })
-
+      this.selectedItemTypeUnwatch = this.$watch('selectedItemType', (val) => {
+        this.$store.commit('setLibraryItemType', val)
+        this.resetSortAndFilters()
+        this.updateRouteAndReload()
+      }),
       this.pageUnwatch = this.$watch('page', (val) => {
         this.updateRoute()
         this.loadPage(this.libraryId, val, this.sortActive, this.searchRegex)
@@ -463,6 +544,7 @@ export default Vue.extend({
       this.filterUnwatch()
       this.pageUnwatch()
       this.pageSizeUnwatch()
+      this.selectedItemTypeUnwatch()
     },
     updateRouteAndReload() {
       this.unsetWatches()
@@ -475,7 +557,12 @@ export default Vue.extend({
       this.setWatches()
     },
     seriesChanged(event: SeriesSseDto) {
-      if (this.libraryId === LIBRARIES_ALL || event.libraryId === this.libraryId) {
+      if (this.selectedItemType === ItemTypes.SERIES && (this.libraryId === LIBRARIES_ALL || event.libraryId === this.libraryId)) {
+        this.reloadPage()
+      }
+    },
+    bookChanged(event: BookSseDto) {
+      if (this.selectedItemType === ItemTypes.BOOK && (this.libraryId === LIBRARIES_ALL || event.libraryId === this.libraryId)) {
         this.reloadPage()
       }
     },
@@ -484,8 +571,11 @@ export default Vue.extend({
         this.loadLibrary(this.libraryId)
       }
     },
-    readProgressChanged(event: ReadProgressSeriesSseDto) {
-      if (this.series.some(b => b.id === event.seriesId)) this.reloadPage()
+    seriesReadProgressChanged(event: ReadProgressSeriesSseDto) {
+      if (this.selectedItemType === ItemTypes.SERIES && this.items.some(s => s.id === event.seriesId)) this.reloadPage()
+    },
+    bookReadProgressChanged(event: ReadProgressSseDto) {
+      if (this.selectedItemType === ItemTypes.BOOK && this.items.some(b => b.id === event.bookId)) this.reloadPage()
     },
     async loadLibrary(libraryId: string) {
       this.library = this.getLibraryLazy(libraryId)
@@ -495,10 +585,13 @@ export default Vue.extend({
     updateRoute() {
       const loc = {
         name: this.$route.name,
-        params: {libraryId: this.$route.params.libraryId},
+        params: {
+          libraryId: this.$route.params.libraryId,
+        },
         query: {
           page: `${this.page}`,
           pageSize: `${this.pageSize}`,
+          itemType: `${this.selectedItemType}`,
           sort: `${this.sortActive.key},${this.sortActive.order}`,
           nav: this.selectedSymbol,
         },
@@ -511,7 +604,7 @@ export default Vue.extend({
       this.loadPage(this.libraryId, this.page, this.sortActive, this.searchRegex)
     }, 1000),
     async loadPage(libraryId: string, page: number, sort: SortActive, searchRegex?: string) {
-      this.selectedSeries = []
+      this.selectedItems = []
 
       const pageRequest = {
         page: page - 1,
@@ -532,22 +625,37 @@ export default Vue.extend({
 
       const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
       const complete = parseBooleanFilter(this.filters.complete)
-      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, searchRegex, complete, this.filters.sharingLabel)
-
-      this.totalPages = seriesPage.totalPages
-      this.totalElements = seriesPage.totalElements
-      this.series = seriesPage.content
+      if (this.selectedItemType === ItemTypes.SERIES) {
+        this.loadSeriesPage(pageRequest, authorsFilter, requestLibraryId, searchRegex, complete)
+      } else if (this.selectedItemType === ItemTypes.BOOK) {
+        this.loadBookPage(pageRequest, authorsFilter, requestLibraryId, complete, searchRegex)
+      }
 
       const seriesGroups = await this.$komgaSeries.getAlphabeticalGroups(requestLibraryId, undefined, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, complete, this.filters.sharingLabel)
       const nonAlpha = seriesGroups
         .filter((g) => !(/[a-zA-Z]/).test(g.group))
         .reduce((a, b) => a + b.count, 0)
       const all = seriesGroups.reduce((a, b) => a + b.count, 0)
-      this.seriesGroups = [
+      this.itemGroups = [
         ...seriesGroups.filter((g) => (/[a-zA-Z]/).test(g.group)),
         {group: '#', count: nonAlpha} as GroupCountDto,
         {group: 'ALL', count: all} as GroupCountDto,
       ]
+    },
+    async loadSeriesPage(pageRequest: PageRequest, authorsFilter: AuthorDto[], requestLibraryId?: string, searchRegex?: string, complete?: boolean) {
+      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, searchRegex, complete, this.filters.sharingLabel)
+
+      this.totalPages = seriesPage.totalPages
+      this.totalElements = seriesPage.totalElements
+      this.items = seriesPage.content
+    },
+    async loadBookPage(pageRequest: PageRequest, authorsFilter: AuthorDto[], requestLibraryId?: string, complete?: boolean, titlePrefix?: string) {
+      const booksPage = await this.$komgaBooks.getBooks(requestLibraryId, pageRequest, undefined, undefined, replaceCompositeReadStatus(this.filters.readStatus), undefined, titlePrefix, this.filters.publisher, this.filters.releaseDate, this.filters.tag, authorsFilter, this.filters.sharingLabel, this.filters.genre, this.filters.language, this.filters.ageRating)
+      booksPage.content.forEach((x: BookDto) => x.context = {origin: ContextOrigin.LIBRARY, id: this.libraryId})
+
+      this.totalPages = booksPage.totalPages
+      this.totalElements = booksPage.totalElements
+      this.items = booksPage.content
     },
     getLibraryLazy(libraryId: string): LibraryDto | undefined {
       if (libraryId !== LIBRARIES_ALL) {
@@ -557,28 +665,57 @@ export default Vue.extend({
       }
     },
     async markSelectedRead() {
-      await Promise.all(this.selectedSeries.map(s =>
-        this.$komgaSeries.markAsRead(s.id),
-      ))
-      this.selectedSeries = []
+      if (this.selectedItemType === ItemTypes.SERIES) {
+        await Promise.all(this.selectedItems.map(s =>
+          this.$komgaSeries.markAsRead(s.id),
+        ))
+      } else if (this.selectedItemType === ItemTypes.BOOK) {
+        await Promise.all(this.selectedItems.map(b =>
+          this.$komgaBooks.updateReadProgress(b.id, {completed: true}),
+        ))
+      }
+
+      this.selectedItems = []
     },
     async markSelectedUnread() {
-      await Promise.all(this.selectedSeries.map(s =>
-        this.$komgaSeries.markAsUnread(s.id),
-      ))
-      this.selectedSeries = []
+      if (this.selectedItemType === ItemTypes.SERIES) {
+        await Promise.all(this.selectedItems.map(s =>
+          this.$komgaSeries.markAsUnread(s.id),
+        ))
+      } else if (this.selectedItemType === ItemTypes.BOOK) {
+        await Promise.all(this.selectedItems.map(b =>
+          this.$komgaBooks.deleteReadProgress(b.id),
+        ))
+      }
+      this.selectedItems = []
     },
     addToCollection() {
-      this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries)
+      if (this.selectedItemType === ItemTypes.SERIES) {
+        this.$store.dispatch('dialogAddSeriesToCollection', this.selectedItems)
+      }
+    },
+    addToReadList() {
+      if (this.selectedItemType === ItemTypes.BOOK) {
+        this.$store.dispatch('dialogAddBooksToReadList', this.selectedItems)
+      }
+    },
+    editSingleItem(item: SeriesDto | BookDto) {
+      if (this.selectedItemType === ItemTypes.SERIES) this.$store.dispatch('dialogUpdateSeries', item)
+      if (this.selectedItemType === ItemTypes.BOOK) this.$store.dispatch('dialogUpdateBooks', item)
     },
     editSingleSeries(series: SeriesDto) {
       this.$store.dispatch('dialogUpdateSeries', series)
     },
-    editMultipleSeries() {
-      this.$store.dispatch('dialogUpdateSeries', this.selectedSeries)
+    editMultipleItems() {
+      if (this.selectedItemType === ItemTypes.SERIES) this.$store.dispatch('dialogUpdateSeries', this.selectedItems)
+      if (this.selectedItemType === ItemTypes.BOOK) this.$store.dispatch('dialogUpdateBooks', this.selectedItems)
     },
-    deleteSeries() {
-      this.$store.dispatch('dialogDeleteSeries', this.selectedSeries)
+    deleteItems() {
+      if (this.selectedItemType === ItemTypes.SERIES) this.$store.dispatch('dialogDeleteSeries', this.selectedItems)
+      if (this.selectedItemType === ItemTypes.BOOK) this.$store.dispatch('dialogDeleteBook', this.selectedItems)
+    },
+    bulkEditMultipleBooks() {
+      this.$store.dispatch('dialogUpdateBulkBooks', this.$_.sortBy(this.selectedItems, ['metadata.numberSort']))
     },
   },
 })

@@ -31,6 +31,7 @@ export const persistedModule: Module<any, any> = {
       filter: {},
       sort: {},
       route: {},
+      itemType: undefined as unknown as number,
     },
     importPath: '',
     duplicatesNewPageSize: 10,
@@ -66,6 +67,9 @@ export const persistedModule: Module<any, any> = {
     },
     getLibraryRoute: (state) => (id: string) => {
       return state.library.route[id]
+    },
+    getLibraryItemType: (state) => () => {
+      return state.library.itemType
     },
   },
   mutations: {
@@ -119,6 +123,9 @@ export const persistedModule: Module<any, any> = {
     },
     setLibraryRoute(state, {id, route}) {
       state.library.route[id] = route
+    },
+    setLibraryItemType(state, val) {
+      state.library.itemType = val
     },
     setImportPath(state, val) {
       state.importPath = val ?? ''
