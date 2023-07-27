@@ -27,6 +27,10 @@ data class BookDto(
   val readProgress: ReadProgressDto? = null,
   val deleted: Boolean,
   val fileHash: String,
+  val publisher: String?,
+  val seriesTags: Set<String>?,
+  val seriesGenres: Set<String>?,
+  var seriesSharingLabels: Set<String>?,
 )
 
 fun BookDto.restrictUrl(restrict: Boolean) =
