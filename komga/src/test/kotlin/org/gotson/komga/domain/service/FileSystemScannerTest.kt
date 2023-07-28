@@ -319,6 +319,37 @@ class FileSystemScannerTest {
     }
   }
 
+  @Test
+  fun `given oneshot directory when scanning then return a series per file`() {
+    Jimfs.newFileSystem(Configuration.unix()).use { fs ->
+      // given
+      val root = fs.getPath("/root")
+      Files.createDirectory(root)
+
+      val normal = makeSubDir(root, "normal", listOf("comic.cbz"))
+      makeSubDir(normal, "_oneshots", listOf("single4.cbz", "single5.cbz"))
+      makeSubDir(root, "_oneshots", listOf("single.cbz", "single2.cbz", "single3.cbz"))
+
+      // when
+      val scan = scanner.scanRootFolder(root).series
+
+      // then
+      assertThat(scan).hasSize(6)
+      assertThat(scan.keys.map { it.name })
+        .containsExactlyInAnyOrder("normal", "single", "single2", "single3", "single4", "single5")
+        .doesNotContain("_oneshots")
+      val (oneshots, regular) = scan.keys.partition { it.name.startsWith("single") }
+      assertThat(oneshots.map { it.oneshot }).containsOnly(true)
+      assertThat(oneshots.flatMap { scan[it] ?: emptyList() }.map { it.oneshot }).containsOnly(true)
+      assertThat(regular.map { it.oneshot }).containsOnly(false)
+      assertThat(regular.flatMap { scan[it] ?: emptyList() }.map { it.oneshot }).containsOnly(false)
+
+      scan.forEach { (_, books) ->
+        assertThat(books).hasSize(1)
+      }
+    }
+  }
+
   private fun makeSubDir(root: Path, name: String, files: List<String>): Path {
     val dir = root.resolve(name)
     Files.createDirectory(dir)

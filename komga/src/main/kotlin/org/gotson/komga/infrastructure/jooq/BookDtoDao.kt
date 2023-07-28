@@ -431,6 +431,7 @@ class BookDtoDao(
       readProgress = readProgress,
       deleted = deletedDate != null,
       fileHash = fileHash,
+      oneshot = oneshot,
     )
 
   private fun MediaRecord.toDto() =

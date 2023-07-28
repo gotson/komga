@@ -1,5 +1,6 @@
 package org.gotson.komga.interfaces.api.rest
 
+import io.swagger.v3.oas.annotations.Parameter
 import jakarta.validation.Valid
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
@@ -27,6 +28,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -98,6 +100,7 @@ class LibraryController(
           hashFiles = library.hashFiles,
           hashPages = library.hashPages,
           analyzeDimensions = library.analyzeDimensions,
+          oneshotsDirectory = library.oneshotsDirectory?.ifBlank { null },
         ),
       ).toDto(includeRoot = principal.user.roleAdmin)
     } catch (e: Exception) {
@@ -108,6 +111,7 @@ class LibraryController(
         is PathContainedInPath,
         ->
           throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
+
         else -> throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
       }
     }
@@ -115,35 +119,52 @@ class LibraryController(
   @PutMapping("/{libraryId}")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
+  @Deprecated("Use PATCH /v1/library instead", ReplaceWith("patchOne"))
   fun updateOne(
     @PathVariable libraryId: String,
     @Valid @RequestBody
     library: LibraryUpdateDto,
   ) {
-    libraryRepository.findByIdOrNull(libraryId)?.let {
-      val toUpdate = Library(
-        id = libraryId,
-        name = library.name,
-        root = filePathToUrl(library.root),
-        importComicInfoBook = library.importComicInfoBook,
-        importComicInfoSeries = library.importComicInfoSeries,
-        importComicInfoCollection = library.importComicInfoCollection,
-        importComicInfoReadList = library.importComicInfoReadList,
-        importComicInfoSeriesAppendVolume = library.importComicInfoSeriesAppendVolume,
-        importEpubBook = library.importEpubBook,
-        importEpubSeries = library.importEpubSeries,
-        importMylarSeries = library.importMylarSeries,
-        importLocalArtwork = library.importLocalArtwork,
-        importBarcodeIsbn = library.importBarcodeIsbn,
-        scanForceModifiedTime = library.scanForceModifiedTime,
-        repairExtensions = library.repairExtensions,
-        convertToCbz = library.convertToCbz,
-        emptyTrashAfterScan = library.emptyTrashAfterScan,
-        seriesCover = library.seriesCover.toDomain(),
-        hashFiles = library.hashFiles,
-        hashPages = library.hashPages,
-        analyzeDimensions = library.analyzeDimensions,
-      )
+    patchOne(libraryId, library)
+  }
+
+  @PatchMapping("/{libraryId}")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  fun patchOne(
+    @PathVariable libraryId: String,
+    @Parameter(description = "Fields to update. You can omit fields you don't want to update.")
+    @Valid
+    @RequestBody
+    library: LibraryUpdateDto,
+  ) {
+    libraryRepository.findByIdOrNull(libraryId)?.let { existing ->
+      val toUpdate = with(library) {
+        existing.copy(
+          id = libraryId,
+          name = name ?: existing.name,
+          root = root?.let { filePathToUrl(root!!) } ?: existing.root,
+          importComicInfoBook = importComicInfoBook ?: existing.importComicInfoBook,
+          importComicInfoSeries = importComicInfoSeries ?: existing.importComicInfoSeries,
+          importComicInfoCollection = importComicInfoCollection ?: existing.importComicInfoCollection,
+          importComicInfoReadList = importComicInfoReadList ?: existing.importComicInfoReadList,
+          importComicInfoSeriesAppendVolume = importComicInfoSeriesAppendVolume ?: existing.importComicInfoSeriesAppendVolume,
+          importEpubBook = importEpubBook ?: existing.importEpubBook,
+          importEpubSeries = importEpubSeries ?: existing.importEpubSeries,
+          importMylarSeries = importMylarSeries ?: existing.importMylarSeries,
+          importLocalArtwork = importLocalArtwork ?: existing.importLocalArtwork,
+          importBarcodeIsbn = importBarcodeIsbn ?: existing.importBarcodeIsbn,
+          scanForceModifiedTime = scanForceModifiedTime ?: existing.scanForceModifiedTime,
+          repairExtensions = repairExtensions ?: existing.repairExtensions,
+          convertToCbz = convertToCbz ?: existing.convertToCbz,
+          emptyTrashAfterScan = emptyTrashAfterScan ?: existing.emptyTrashAfterScan,
+          seriesCover = seriesCover?.toDomain() ?: existing.seriesCover,
+          hashFiles = hashFiles ?: existing.hashFiles,
+          hashPages = hashPages ?: existing.hashPages,
+          analyzeDimensions = analyzeDimensions ?: existing.analyzeDimensions,
+          oneshotsDirectory = if (isSet("oneshotsDirectory")) oneshotsDirectory?.ifBlank { null } else existing.oneshotsDirectory,
+        )
+      }
       try {
         libraryLifecycle.updateLibrary(toUpdate)
       } catch (e: Exception) {
@@ -154,6 +175,7 @@ class LibraryController(
           is PathContainedInPath,
           ->
             throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
+
           else -> throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
         }
       }

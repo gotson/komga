@@ -28,6 +28,7 @@ data class Library(
   val hashFiles: Boolean = true,
   val hashPages: Boolean = false,
   val analyzeDimensions: Boolean = true,
+  val oneshotsDirectory: String? = null,
 
   val unavailableDate: LocalDateTime? = null,
 

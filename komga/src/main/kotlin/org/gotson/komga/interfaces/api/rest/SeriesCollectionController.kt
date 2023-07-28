@@ -285,7 +285,6 @@ class SeriesCollectionController(
       val seriesSearch = SeriesSearchWithReadProgress(
         libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
         metadataStatus = metadataStatus,
-        readStatus = readStatus,
         publishers = publishers,
         deleted = deleted,
         complete = complete,
@@ -294,6 +293,7 @@ class SeriesCollectionController(
         tags = tags,
         ageRatings = ageRatings?.map { it.toIntOrNull() },
         releaseYears = releaseYears,
+        readStatus = readStatus,
         authors = authors,
       )
 

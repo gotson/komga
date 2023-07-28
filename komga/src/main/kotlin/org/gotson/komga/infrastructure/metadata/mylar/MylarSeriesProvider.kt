@@ -25,6 +25,11 @@ class MylarSeriesProvider(
 ) : SeriesMetadataProvider, SidecarSeriesConsumer {
 
   override fun getSeriesMetadata(series: Series): SeriesMetadataPatch? {
+    if (series.oneshot) {
+      logger.debug { "Disabled for oneshot series, skipping" }
+      return null
+    }
+
     try {
       val seriesJsonPath = series.path.resolve(SERIES_JSON)
       if (seriesJsonPath.notExists()) {
