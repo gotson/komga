@@ -48,7 +48,7 @@ export default class KomgaLibrariesService {
 
   async updateLibrary(libraryId: string, library: LibraryUpdateDto) {
     try {
-      await this.http.put(`${API_LIBRARIES}/${libraryId}`, library)
+      await this.http.patch(`${API_LIBRARIES}/${libraryId}`, library)
     } catch (e) {
       let msg = `An error occurred while trying to update library '${libraryId}'`
       if (e.response.data.message) {

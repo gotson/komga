@@ -31,7 +31,7 @@
       <template v-else>
         <div style="height: 2em" class="missing"></div>
       </template>
-      <series-picker-dialog v-model="modalSeriesPicker" :series.sync="selectedSeries"></series-picker-dialog>
+      <series-picker-dialog v-model="modalSeriesPicker" :series.sync="selectedSeries" :include-oneshots="false"/>
     </td>
 
     <!--  Book number chooser  -->

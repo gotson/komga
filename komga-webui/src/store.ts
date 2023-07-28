@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {BookDto} from '@/types/komga-books'
-import {SeriesDto} from '@/types/komga-series'
+import {Oneshot, SeriesDto} from '@/types/komga-series'
 import createPersistedState from 'vuex-persistedstate'
 import {persistedModule} from './plugins/persisted-state'
 import {LibraryDto} from '@/types/komga-libraries'
@@ -43,6 +43,10 @@ export default new Vuex.Store({
     // books bulk
     updateBulkBooks: [] as BookDto[],
     updateBulkBooksDialog: false,
+
+    // oneshots
+    updateOneshots: {} as Oneshot | Oneshot[],
+    updateOneshotsDialog: false,
 
     // series
     updateSeries: {} as SeriesDto | SeriesDto[],
@@ -132,6 +136,13 @@ export default new Vuex.Store({
     },
     setUpdateBulkBooksDialog(state, dialog) {
       state.updateBulkBooksDialog = dialog
+    },
+    // One-shots
+    setUpdateOneshots(state, oneshots) {
+      state.updateOneshots = oneshots
+    },
+    setUpdateOneshotsDialog(state, dialog) {
+      state.updateOneshotsDialog = dialog
     },
     // Series
     setUpdateSeries(state, series) {
@@ -240,6 +251,15 @@ export default new Vuex.Store({
     dialogUpdateBulkBooksDisplay({commit}, value) {
       commit('setUpdateBulkBooksDialog', value)
     },
+    // oneshots
+    dialogUpdateOneshots({commit}, oneshots) {
+      commit('setUpdateOneshots', oneshots)
+      commit('setUpdateOneshotsDialog', true)
+    },
+    dialogUpdateOneshotsDisplay({commit}, value) {
+      commit('setUpdateOneshotsDialog', value)
+    },
+
     // series
     dialogUpdateSeries({commit}, series) {
       commit('setUpdateSeries', series)

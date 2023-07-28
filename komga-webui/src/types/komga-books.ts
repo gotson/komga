@@ -17,6 +17,7 @@ export interface BookDto {
   metadata: BookMetadataDto,
   readProgress?: ReadProgressDto,
   deleted: boolean,
+  oneshot: boolean,
 
   // custom fields
   context: Context

@@ -16,7 +16,7 @@ export default class KomgaSeriesService {
   async getSeries(libraryId?: string, pageRequest?: PageRequest, search?: string, status?: string[],
                   readStatus?: string[], genre?: string[], tag?: string[], language?: string[],
                   publisher?: string[], ageRating?: string[], releaseDate?: string[], authors?: AuthorDto[],
-                  searchRegex?: string, complete?: boolean, sharingLabel?: string[]): Promise<Page<SeriesDto>> {
+                  searchRegex?: string, complete?: boolean, sharingLabel?: string[], oneshot?: boolean): Promise<Page<SeriesDto>> {
     try {
       const params = {...pageRequest} as any
       if (libraryId) params.library_id = libraryId
@@ -33,6 +33,7 @@ export default class KomgaSeriesService {
       if (authors) params.author = authors.map(a => `${a.name},${a.role}`)
       if (complete !== undefined) params.complete = complete
       if (sharingLabel) params.sharing_label = sharingLabel
+      if (oneshot !== undefined) params.oneshot = oneshot
 
       return (await this.http.get(API_SERIES, {
         params: params,
@@ -50,7 +51,7 @@ export default class KomgaSeriesService {
   async getAlphabeticalGroups(libraryId?: string, search?: string, status?: string[],
                               readStatus?: string[], genre?: string[], tag?: string[], language?: string[],
                               publisher?: string[], ageRating?: string[], releaseDate?: string[], authors?: AuthorDto[],
-                              complete?: boolean, sharingLabel?: string[]): Promise<GroupCountDto[]> {
+                              complete?: boolean, sharingLabel?: string[], oneshot?: boolean): Promise<GroupCountDto[]> {
     try {
       const params = {} as any
       if (libraryId) params.library_id = libraryId
@@ -66,6 +67,7 @@ export default class KomgaSeriesService {
       if (authors) params.author = authors.map(a => `${a.name},${a.role}`)
       if (complete !== undefined) params.complete = complete
       if (sharingLabel) params.sharing_label = sharingLabel
+      if (oneshot !== undefined) params.oneshot = oneshot
 
       return (await this.http.get(`${API_SERIES}/alphabetical-groups`, {
         params: params,
@@ -80,12 +82,11 @@ export default class KomgaSeriesService {
     }
   }
 
-  async getNewSeries(libraryId?: string, pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
+  async getNewSeries(libraryId?: string, oneshot?: boolean, pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
     try {
       const params = {...pageRequest} as any
-      if (libraryId) {
-        params.library_id = libraryId
-      }
+      if (libraryId) params.library_id = libraryId
+      if (oneshot !== undefined) params.oneshot = oneshot
       return (await this.http.get(`${API_SERIES}/new`, {
         params: params,
       })).data
@@ -98,12 +99,11 @@ export default class KomgaSeriesService {
     }
   }
 
-  async getUpdatedSeries(libraryId?: string, pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
+  async getUpdatedSeries(libraryId?: string, oneshot?: boolean, pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
     try {
       const params = {...pageRequest} as any
-      if (libraryId) {
-        params.library_id = libraryId
-      }
+      if (libraryId) params.library_id = libraryId
+      if (oneshot !== undefined) params.oneshot = oneshot
       return (await this.http.get(`${API_SERIES}/updated`, {
         params: params,
       })).data

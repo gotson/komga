@@ -34,10 +34,12 @@
     <multi-select-bar
       v-model="selectedBooks"
       kind="books"
+      :oneshots="selectedOneshots"
       @unselect-all="selectedBooks = []"
       @mark-read="markSelectedBooksRead"
       @mark-unread="markSelectedBooksUnread"
       @add-to-readlist="addToReadList"
+      @add-to-collection="addOneshotsToCollection"
       @edit="editMultipleBooks"
       @bulk-edit="bulkEditMultipleBooks"
       @delete="deleteBooks"
@@ -222,7 +224,7 @@ import {
   SERIES_DELETED,
 } from '@/types/events'
 import Vue from 'vue'
-import {SeriesDto} from '@/types/komga-series'
+import {Oneshot, SeriesDto} from '@/types/komga-series'
 import {LIBRARIES_ALL, LIBRARY_ROUTE} from '@/types/library'
 import {throttle} from 'lodash'
 import {subMonths} from 'date-fns'
@@ -327,6 +329,9 @@ export default Vue.extend({
     individualLibrary(): boolean {
       return this.libraryId !== LIBRARIES_ALL
     },
+    selectedOneshots(): boolean {
+      return this.selectedBooks.every(b => b.oneshot)
+    },
   },
   methods: {
     async scrollChanged(loader: PageLoader<any>, percent: number) {
@@ -383,11 +388,11 @@ export default Vue.extend({
 
       this.loaderNewSeries = new PageLoader<SeriesDto>(
         {},
-        (pageable: PageRequest) => this.$komgaSeries.getNewSeries(this.getRequestLibraryId(libraryId), pageable),
+        (pageable: PageRequest) => this.$komgaSeries.getNewSeries(this.getRequestLibraryId(libraryId), false, pageable),
       )
       this.loaderUpdatedSeries = new PageLoader<SeriesDto>(
         {},
-        (pageable: PageRequest) => this.$komgaSeries.getUpdatedSeries(this.getRequestLibraryId(libraryId), pageable),
+        (pageable: PageRequest) => this.$komgaSeries.getUpdatedSeries(this.getRequestLibraryId(libraryId), false, pageable),
       )
     },
     loadAll(libraryId: string, reload: boolean = false) {
@@ -422,11 +427,19 @@ export default Vue.extend({
         })
       }
     },
-    singleEditSeries(series: SeriesDto) {
-      this.$store.dispatch('dialogUpdateSeries', series)
+    async singleEditSeries(series: SeriesDto) {
+      if (series.oneshot) {
+        let book = (await this.$komgaSeries.getBooks(series.id)).content[0]
+        this.$store.dispatch('dialogUpdateOneshots', {series: series, book: book})
+      } else
+        this.$store.dispatch('dialogUpdateSeries', series)
     },
-    singleEditBook(book: BookDto) {
-      this.$store.dispatch('dialogUpdateBooks', book)
+    async singleEditBook(book: BookDto) {
+      if (book.oneshot) {
+        const series = (await this.$komgaSeries.getOneSeries(book.seriesId))
+        this.$store.dispatch('dialogUpdateOneshots', {series: series, book: book})
+      } else
+        this.$store.dispatch('dialogUpdateBooks', book)
     },
     async markSelectedSeriesRead() {
       await Promise.all(this.selectedSeries.map(s =>
@@ -444,11 +457,25 @@ export default Vue.extend({
       this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries.map(s => s.id))
       this.selectedSeries = []
     },
-    editMultipleSeries() {
-      this.$store.dispatch('dialogUpdateSeries', this.selectedSeries)
+    addOneshotsToCollection() {
+      this.$store.dispatch('dialogAddSeriesToCollection', this.selectedBooks.map(b => b.seriesId))
+      this.selectedBooks = []
     },
-    editMultipleBooks() {
-      this.$store.dispatch('dialogUpdateBooks', this.selectedBooks)
+    async editMultipleSeries() {
+      if (this.selectedSeries.every(s => s.oneshot)) {
+        const books = await Promise.all(this.selectedSeries.map(s => this.$komgaSeries.getBooks(s.id)))
+        const oneshots = this.selectedSeries.map((s, index) => ({series: s, book: books[index].content[0]} as Oneshot))
+        this.$store.dispatch('dialogUpdateOneshots', oneshots)
+      } else
+        this.$store.dispatch('dialogUpdateSeries', this.selectedSeries)
+    },
+    async editMultipleBooks() {
+      if (this.selectedBooks.every(b => b.oneshot)) {
+        const series = await Promise.all(this.selectedBooks.map(b => this.$komgaSeries.getOneSeries(b.seriesId)))
+        const oneshots = this.selectedBooks.map((b, index) => ({series: series[index], book: b} as Oneshot))
+        this.$store.dispatch('dialogUpdateOneshots', oneshots)
+      } else
+        this.$store.dispatch('dialogUpdateBooks', this.selectedBooks)
     },
     deleteSeries() {
       this.$store.dispatch('dialogDeleteSeries', this.selectedSeries)

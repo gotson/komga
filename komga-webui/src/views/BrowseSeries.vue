@@ -821,7 +821,11 @@ export default Vue.extend({
     }, 1000),
     async loadSeries(seriesId: string) {
       this.$komgaSeries.getOneSeries(seriesId)
-        .then(v => this.series = v)
+        .then(v => {
+          this.series = v
+          // for the cases where we can't change the origin target route because we don't have the full BookDto
+          if (this.series.oneshot) this.$router.replace({name: 'browse-oneshot', params: {seriesId: this.seriesId}})
+        })
       this.$komgaSeries.getCollections(seriesId)
         .then(v => this.collections = v)
 

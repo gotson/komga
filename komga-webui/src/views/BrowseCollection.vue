@@ -47,12 +47,14 @@
     <multi-select-bar
       v-model="selectedSeries"
       kind="series"
+      :oneshots="selectedOneshots"
       show-select-all
       @unselect-all="selectedSeries = []"
       @select-all="selectedSeries = series"
       @mark-read="markSelectedRead"
       @mark-unread="markSelectedUnread"
       @add-to-collection="addToCollection"
+      @add-to-readlist="addToReadList"
       @edit="editMultipleSeries"
       @delete="deleteSeries"
     />
@@ -154,9 +156,9 @@ import FilterPanels from '@/components/FilterPanels.vue'
 import FilterList from '@/components/FilterList.vue'
 import {Location} from 'vue-router'
 import EmptyState from '@/components/EmptyState.vue'
-import {SeriesDto} from '@/types/komga-series'
+import {Oneshot, SeriesDto} from '@/types/komga-series'
 import {authorRoles} from '@/types/author-roles'
-import {AuthorDto, BookDto} from '@/types/komga-books'
+import {AuthorDto} from '@/types/komga-books'
 import {CollectionSseDto, ReadProgressSeriesSseDto, SeriesSseDto} from '@/types/komga-sse'
 import {throttle} from 'lodash'
 import {LibraryDto} from '@/types/komga-libraries'
@@ -321,6 +323,9 @@ export default Vue.extend({
     },
     filterActive(): boolean {
       return Object.keys(this.filters).some(x => this.filters[x].length !== 0)
+    },
+    selectedOneshots(): boolean {
+      return this.selectedSeries.every(s => s.oneshot)
     },
   },
   methods: {
@@ -503,11 +508,20 @@ export default Vue.extend({
       this.$router.replace(loc).catch((_: any) => {
       })
     },
-    editSingleSeries(series: SeriesDto) {
-      this.$store.dispatch('dialogUpdateSeries', series)
+    async editSingleSeries(series: SeriesDto) {
+      if (series.oneshot) {
+        const book = (await this.$komgaSeries.getBooks(series.id)).content[0]
+        this.$store.dispatch('dialogUpdateOneshots', {series: series, book: book})
+      } else
+        this.$store.dispatch('dialogUpdateSeries', series)
     },
-    editMultipleSeries() {
-      this.$store.dispatch('dialogUpdateSeries', this.selectedSeries)
+    async editMultipleSeries() {
+      if (this.selectedSeries.every(s => s.oneshot)) {
+        const books = await Promise.all(this.selectedSeries.map(s => this.$komgaSeries.getBooks(s.id)))
+        const oneshots = this.selectedSeries.map((s, index) => ({series: s, book: books[index].content[0]} as Oneshot))
+        this.$store.dispatch('dialogUpdateOneshots', oneshots)
+      } else
+        this.$store.dispatch('dialogUpdateSeries', this.selectedSeries)
     },
     deleteSeries() {
       this.$store.dispatch('dialogDeleteSeries', this.selectedSeries)
@@ -526,6 +540,10 @@ export default Vue.extend({
     },
     addToCollection() {
       this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries.map(s => s.id))
+    },
+    async addToReadList() {
+      const books = await Promise.all(this.selectedSeries.map(s => this.$komgaSeries.getBooks(s.id)))
+      this.$store.dispatch('dialogAddBooksToReadList', books.map(b => b.content[0].id))
     },
     async startEditElements() {
       this.filters = {}

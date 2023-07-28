@@ -214,6 +214,12 @@ const router = new Router({
           props: (route) => ({bookId: route.params.bookId}),
         },
         {
+          path: '/oneshot/:seriesId',
+          name: 'browse-oneshot',
+          component: () => import(/* webpackChunkName: "browse-oneshot" */ './views/BrowseOneshot.vue'),
+          props: (route) => ({seriesId: route.params.seriesId}),
+        },
+        {
           path: '/search',
           name: 'search',
           component: () => import(/* webpackChunkName: "search" */ './views/SearchView.vue'),
