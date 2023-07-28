@@ -497,7 +497,7 @@ export default Vue.extend({
       this.selectedBooks = []
     },
     addToReadList() {
-      this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks)
+      this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks.map(b => b.id))
     },
     async startEditElements() {
       this.filters = {}

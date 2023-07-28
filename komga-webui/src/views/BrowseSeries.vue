@@ -902,7 +902,7 @@ export default Vue.extend({
       this.$store.dispatch('dialogUpdateBulkBooks', this.$_.sortBy(this.selectedBooks, ['metadata.numberSort']))
     },
     addToReadList() {
-      this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks)
+      this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks.map(b => b.id))
     },
     async markSelectedRead() {
       await Promise.all(this.selectedBooks.map(b =>

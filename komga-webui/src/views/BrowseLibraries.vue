@@ -569,7 +569,7 @@ export default Vue.extend({
       this.selectedSeries = []
     },
     addToCollection() {
-      this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries)
+      this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries.map(s => s.id))
     },
     editSingleSeries(series: SeriesDto) {
       this.$store.dispatch('dialogUpdateSeries', series)

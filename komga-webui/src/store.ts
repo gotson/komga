@@ -17,14 +17,14 @@ const persistedState = createPersistedState({
 export default new Vuex.Store({
   state: {
     // collections
-    addToCollectionSeries: {} as SeriesDto | SeriesDto[],
+    addToCollectionSeriesIds: [] as string[],
     addToCollectionDialog: false,
     editCollection: {} as CollectionDto,
     editCollectionDialog: false,
     deleteCollections: {} as CollectionDto | CollectionDto[],
     deleteCollectionDialog: false,
     // read lists
-    addToReadListBooks: {} as BookDto | BookDto[],
+    addToReadListBookIds: [] as string[],
     addToReadListDialog: false,
     editReadList: {} as ReadListDto,
     editReadListDialog: false,
@@ -63,8 +63,8 @@ export default new Vuex.Store({
   },
   mutations: {
     // Collections
-    setAddToCollectionSeries(state, series) {
-      state.addToCollectionSeries = series
+    setAddToCollectionSeriesIds(state, seriesIds: string[]) {
+      state.addToCollectionSeriesIds = seriesIds
     },
     setAddToCollectionDialog(state, dialog) {
       state.addToCollectionDialog = dialog
@@ -82,8 +82,8 @@ export default new Vuex.Store({
       state.deleteCollectionDialog = dialog
     },
     // Read Lists
-    setAddToReadListBooks(state, book) {
-      state.addToReadListBooks = book
+    setAddToReadListBookIds(state, bookIds: string[]) {
+      state.addToReadListBookIds = bookIds
     },
     setAddToReadListDialog(state, dialog) {
       state.addToReadListDialog = dialog
@@ -155,8 +155,8 @@ export default new Vuex.Store({
   },
   actions: {
     // collections
-    dialogAddSeriesToCollection({commit}, series) {
-      commit('setAddToCollectionSeries', series)
+    dialogAddSeriesToCollection({commit}, seriesIds: string[]) {
+      commit('setAddToCollectionSeriesIds', seriesIds)
       commit('setAddToCollectionDialog', true)
     },
     dialogAddSeriesToCollectionDisplay({commit}, value) {
@@ -177,8 +177,8 @@ export default new Vuex.Store({
       commit('setDeleteCollectionDialog', value)
     },
     // read lists
-    dialogAddBooksToReadList({commit}, books) {
-      commit('setAddToReadListBooks', books)
+    dialogAddBooksToReadList({commit}, bookIds: string[]) {
+      commit('setAddToReadListBookIds', bookIds)
       commit('setAddToReadListDialog', true)
     },
     dialogAddBooksToReadListDisplay({commit}, value) {

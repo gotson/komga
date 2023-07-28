@@ -328,10 +328,10 @@ export default Vue.extend({
       ))
     },
     addToCollection() {
-      this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries)
+      this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries.map(s => s.id))
     },
     addToReadList() {
-      this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks)
+      this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks.map(b => b.id))
     },
     editMultipleSeries() {
       this.$store.dispatch('dialogUpdateSeries', this.selectedSeries)

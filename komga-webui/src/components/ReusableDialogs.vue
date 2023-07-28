@@ -2,7 +2,7 @@
   <div>
     <collection-add-to-dialog
       v-model="addToCollectionDialog"
-      :series="addToCollectionSeries"
+      :series-ids="addToCollectionSeriesIds"
     />
 
     <collection-edit-dialog
@@ -22,7 +22,7 @@
 
     <read-list-add-to-dialog
       v-model="addToReadListDialog"
-      :books="addToReadListBooks"
+      :bookIds="addToReadListBookIds"
     />
 
     <read-list-edit-dialog
@@ -133,8 +133,8 @@ export default Vue.extend({
         this.$store.dispatch('dialogAddSeriesToCollectionDisplay', val)
       },
     },
-    addToCollectionSeries(): SeriesDto | SeriesDto[] {
-      return this.$store.state.addToCollectionSeries
+    addToCollectionSeriesIds(): string[] {
+      return this.$store.state.addToCollectionSeriesIds
     },
     editCollectionDialog: {
       get(): boolean {
@@ -170,8 +170,8 @@ export default Vue.extend({
         this.$store.dispatch('dialogAddBooksToReadListDisplay', val)
       },
     },
-    addToReadListBooks(): BookDto | BookDto[] {
-      return this.$store.state.addToReadListBooks
+    addToReadListBookIds(): string[] {
+      return this.$store.state.addToReadListBookIds
     },
     editReadListDialog: {
       get(): boolean {
