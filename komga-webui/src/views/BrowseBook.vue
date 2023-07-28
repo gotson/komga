@@ -550,7 +550,7 @@ export default Vue.extend({
       if (this.contextReadList)
         return {name: 'browse-readlist', params: {readListId: this.context.id}}
       else if (this.contextLibrary)
-        return {name: 'browse-libraries', params: {libraryId: this.context.id}}
+        return {name: 'browse-libraries-by-book', params: {libraryId: this.context.id}}
       else
         return {name: 'browse-series', params: {seriesId: this.book.seriesId}}
     },

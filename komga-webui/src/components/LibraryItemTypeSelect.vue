@@ -8,19 +8,20 @@
     <v-list>
       <v-list-item-group v-model="selection">
 
-        <v-list-item v-for="(item, index) in items"
-                     :key="index"
-                     @click="setLibraryType(item)"
-        >
-          <v-list-item-title>{{ $t(`enums.item_types.${itemTypeToString(item)}`) }}</v-list-item-title>
+        <v-list-item :to="{name: 'browse-libraries', params: {libraryId: libraryId}}">
+          <v-list-item-title>{{ $t(`enums.item_types.SERIES`) }}</v-list-item-title>
         </v-list-item>
+
+        <v-list-item :to="{name: 'browse-libraries-by-book', params: {libraryId: libraryId}}">
+          <v-list-item-title>{{ $t(`enums.item_types.BOOK`) }}</v-list-item-title>
+        </v-list-item>
+
       </v-list-item-group>
     </v-list>
   </v-menu>
 </template>
 
 <script lang="ts">
-import { ItemTypes } from '@/types/items'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -31,29 +32,9 @@ export default Vue.extend({
     }
   },
   props: {
-    items: {
-      type: Array,
-      default: () => [ItemTypes.SERIES, ItemTypes.BOOK],
-    },
-    value: {
-      type: Number,
+    libraryId: {
+      type: String,
       required: true,
-    },
-  },
-  watch: {
-    value: {
-      handler(val) {
-        this.selection = this.items.findIndex(x => x === val)
-      },
-      immediate: true,
-    },
-  },
-  methods: {
-    setLibraryType (type: ItemTypes) {
-      this.$emit('input', type)
-    },
-    itemTypeToString(type: ItemTypes): string {
-      return ItemTypes[type]
     },
   },
 })
