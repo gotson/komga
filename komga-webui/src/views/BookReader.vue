@@ -339,6 +339,7 @@ import {SeriesDto} from '@/types/komga-series'
 import jsFileDownloader from 'js-file-downloader'
 import screenfull from 'screenfull'
 import {ItemTypes} from '@/types/items'
+import { LIBRARIES_ALL } from '@/types/library'
 
 export default Vue.extend({
   name: 'BookReader',
@@ -663,7 +664,12 @@ export default Vue.extend({
           id: this.$route.query.contextId as string,
         }
         this.book.context = this.context
-        this.contextName = (await (this.$komgaReadLists.getOneReadList(this.context.id))).name
+        if (this.$route.query.context === ContextOrigin.READLIST) {
+          this.contextName = (await (this.$komgaReadLists.getOneReadList(this.context.id))).name
+        } else if (this.$route.query.context === ContextOrigin.LIBRARY && this.$route.query.contextId !== LIBRARIES_ALL) {
+          this.contextName = (await (this.$komgaLibraries.getLibrary(this.context.id))).name
+        }
+        
         document.title = `Komga - ${this.contextName} - ${this.book.metadata.title}`
       } else {
         document.title = `Komga - ${getBookTitleCompact(this.book.metadata.title, this.series.metadata.title)}`
