@@ -331,7 +331,7 @@ class FileSystemScannerTest {
       makeSubDir(root, "_oneshots", listOf("single.cbz", "single2.cbz", "single3.cbz"))
 
       // when
-      val scan = scanner.scanRootFolder(root).series
+      val scan = scanner.scanRootFolder(root, oneshotsDir = "_oneshots").series
 
       // then
       assertThat(scan).hasSize(6)
