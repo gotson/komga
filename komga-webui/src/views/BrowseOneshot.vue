@@ -670,7 +670,7 @@ export default Vue.extend({
       return allRoles.filter(x => this.authorsByRole[x])
     },
     languageDisplay(): string {
-      return tags(this.series.metadata.language).language().descriptions()[0]
+      return tags(this.series.metadata.language)?.language()?.descriptions()[0] || this.series.metadata.language
     },
   },
   methods: {

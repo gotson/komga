@@ -625,7 +625,7 @@ export default Vue.extend({
       }
     },
     languageDisplay(): string {
-      return tags(this.series.metadata.language).language().descriptions()[0]
+      return tags(this.series.metadata.language)?.language()?.descriptions()[0] || this.series.metadata.language
     },
     statusChip(): object {
       switch (this.series.metadata.status) {
