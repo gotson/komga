@@ -1,7 +1,7 @@
 blank_issues_enabled: false
 contact_links:
   - name: 🖥️ Komga website
-    url: https://komga.org/faq/
+    url: https://komga.org/docs/faq
     about: Guides, troubleshooting, and answers to common questions
   - name: ⚠️ Tachiyomi extension
     url: https://github.com/tachiyomiorg/tachiyomi-extensions/issues/new/choose
