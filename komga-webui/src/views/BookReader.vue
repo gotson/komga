@@ -781,11 +781,11 @@ export default Vue.extend({
     },
     closeBook() {
       this.$router.push(
-          {
-            name: this.book.oneshot ? 'browse-oneshot' : 'browse-book',
-            params: {bookId: this.bookId.toString(), seriesId: this.book.seriesId},
-            query: {context: this.context.origin, contextId: this.context.id},
-          })
+        {
+          name: this.book.oneshot ? 'browse-oneshot' : 'browse-book',
+          params: {bookId: this.bookId.toString(), seriesId: this.book.seriesId},
+          query: {context: this.context.origin, contextId: this.context.id},
+        })
     },
     changeReadingDir(dir: ReadingDirection) {
       this.readingDirection = dir
@@ -867,6 +867,7 @@ export default Vue.extend({
     downloadCurrentPage() {
       new jsFileDownloader({
         url: this.currentPage.url,
+        filename: `${this.book.name}-${this.currentPage.number}.${this.currentPage.fileName.split('.').pop()}`,
         withCredentials: true,
         forceDesktopMode: true,
       })
