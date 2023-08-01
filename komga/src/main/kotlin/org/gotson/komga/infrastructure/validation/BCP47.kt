@@ -31,4 +31,11 @@ object BCP47TagValidator {
       it.language.isNotBlank() && languages.contains(it.language)
     }
   }
+
+  fun normalize(value: String): String =
+    try {
+      ULocale.forLanguageTag(value).toLanguageTag()
+    } catch (e: Exception) {
+      ""
+    }
 }

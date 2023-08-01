@@ -1,5 +1,6 @@
 package org.gotson.komga.domain.model
 
+import org.gotson.komga.infrastructure.validation.BCP47TagValidator
 import org.gotson.komga.language.lowerNotBlank
 import java.time.LocalDateTime
 
@@ -43,7 +44,7 @@ class SeriesMetadata(
   val titleSort = titleSort.trim()
   val summary = summary.trim()
   val publisher = publisher.trim()
-  val language = language.trim().lowercase()
+  val language = BCP47TagValidator.normalize(language.trim())
   val tags = tags.lowerNotBlank().toSet()
   val genres = genres.lowerNotBlank().toSet()
   val sharingLabels = sharingLabels.lowerNotBlank().toSet()

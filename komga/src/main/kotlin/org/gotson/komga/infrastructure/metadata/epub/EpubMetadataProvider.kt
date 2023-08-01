@@ -113,7 +113,7 @@ class EpubMetadataProvider(
         publisher = publisher,
         ageRating = null,
         summary = null,
-        language = if (language != null && BCP47TagValidator.isValid(language)) language else null,
+        language = if (language != null && BCP47TagValidator.isValid(language)) BCP47TagValidator.normalize(language) else null,
         genres = genres,
         totalBookCount = null,
         collections = emptySet(),

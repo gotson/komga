@@ -764,7 +764,7 @@ class SeriesControllerTest(
           "ageRatingLock":true,
           "publisher":"newPublisher",
           "publisherLock":true,
-          "language":"ja",
+          "language":"fra",
           "languageLock":true,
           "genres":["Action"],
           "genresLock":true,
@@ -790,7 +790,7 @@ class SeriesControllerTest(
         assertThat(readingDirection).isEqualTo(SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT)
         assertThat(publisher).isEqualTo("newPublisher")
         assertThat(summary).isEqualTo("newSummary")
-        assertThat(language).isEqualTo("ja")
+        assertThat(language).isEqualTo("fr")
         assertThat(ageRating).isEqualTo(12)
         assertThat(genres).containsExactly("action")
         assertThat(tags).containsExactly("tag")
