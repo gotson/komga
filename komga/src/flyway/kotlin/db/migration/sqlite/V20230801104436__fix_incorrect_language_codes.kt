@@ -36,10 +36,12 @@ class V20230801104436__fix_incorrect_language_codes : BaseJavaMigration() {
     }
   }
 
-  private fun normalize(value: String): String =
-    try {
+  private fun normalize(value: String?): String {
+    if (value.isNullOrBlank()) return ""
+    return try {
       ULocale.forLanguageTag(value).toLanguageTag()
     } catch (e: Exception) {
       ""
     }
+  }
 }

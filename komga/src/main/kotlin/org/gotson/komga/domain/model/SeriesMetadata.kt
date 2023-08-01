@@ -1,6 +1,5 @@
 package org.gotson.komga.domain.model
 
-import org.gotson.komga.infrastructure.validation.BCP47TagValidator
 import org.gotson.komga.language.lowerNotBlank
 import java.time.LocalDateTime
 

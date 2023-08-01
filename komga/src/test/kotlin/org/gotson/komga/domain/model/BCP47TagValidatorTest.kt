@@ -1,4 +1,4 @@
-package org.gotson.komga.infrastructure.validation
+package org.gotson.komga.domain.model
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.params.ParameterizedTest
@@ -10,12 +10,14 @@ class BCP47TagValidatorTest {
 
   @ParameterizedTest
   @MethodSource("languagesNormalized")
-  fun `given source languageTag when normalizing then result is expected`(source: String, expected: String) {
+  fun `given source languageTag when normalizing then result is expected`(source: String?, expected: String) {
     assertThat(BCP47TagValidator.normalize(source)).isEqualTo(expected)
   }
 
   private fun languagesNormalized(): Stream<Arguments> =
     Stream.of(
+      Arguments.of(null, ""),
+      Arguments.of("", ""),
       Arguments.of("fra", "fr"),
       Arguments.of("fra-be", "fr-BE"),
       Arguments.of("JA", "ja"),
@@ -26,12 +28,14 @@ class BCP47TagValidatorTest {
 
   @ParameterizedTest
   @MethodSource("languagesValid")
-  fun `given source languageTag when validating then result is expected`(source: String, expected: Boolean) {
+  fun `given source languageTag when validating then result is expected`(source: String?, expected: Boolean) {
     assertThat(BCP47TagValidator.isValid(source)).isEqualTo(expected)
   }
 
-  fun languagesValid(): Stream<Arguments> =
+  private fun languagesValid(): Stream<Arguments> =
     Stream.of(
+      Arguments.of(null, false),
+      Arguments.of("", false),
       Arguments.of("fra", true),
       Arguments.of("fra-BE", true),
       Arguments.of("en-us", true),

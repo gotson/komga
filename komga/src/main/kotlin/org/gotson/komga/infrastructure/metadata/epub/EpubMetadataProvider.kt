@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.metadata.epub
 
 import org.apache.commons.validator.routines.ISBNValidator
 import org.gotson.komga.domain.model.Author
+import org.gotson.komga.domain.model.BCP47TagValidator
 import org.gotson.komga.domain.model.BookMetadataPatch
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.BookWithMedia
@@ -13,7 +14,6 @@ import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.gotson.komga.infrastructure.mediacontainer.EpubExtractor
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataFromBookProvider
-import org.gotson.komga.infrastructure.validation.BCP47TagValidator
 import org.jsoup.Jsoup
 import org.jsoup.parser.Parser
 import org.jsoup.safety.Safelist
