@@ -21,6 +21,11 @@
     "account_settings": "계정 설정",
     "change_password": "비밀번호 변경"
   },
+  "announcements": {
+    "mark_all_read": "모두 읽음으로 표시",
+    "mark_read": "읽음으로 표시",
+    "tab_title": "공지사항"
+  },
   "authentication_activity": {
     "datetime": "날짜 시간",
     "email": "이메일",
@@ -174,7 +179,8 @@
   },
   "browse_readlist": {
     "edit_elements": "요소 수정",
-    "edit_readlist": "읽기 목록 수정"
+    "edit_readlist": "읽기 목록 수정",
+    "manual_ordering": "수동 정렬"
   },
   "browse_series": {
     "earliest_year_from_release_dates": "올해는 시리즈의 모든 책들의 발매일로부터 가장 이른 해이다",
@@ -188,6 +194,7 @@
   "common": {
     "age": "연령",
     "all_libraries": "모든 서재",
+    "book": "도서",
     "books": "도서",
     "books_n": "없음 | 1 권 | {count} 권",
     "books_total": "{count} / {total} 권",
@@ -205,7 +212,8 @@
     "filename": "파일 이름",
     "filter_no_matches": "선택된 필터에 일치하는 항목이 없습니다",
     "genre": "장르",
-    "go_to_library": "서재로 가기",
+    "go_to_collection": "모음집으로 이동",
+    "go_to_library": "서재로 이동",
     "go_to_readlist": "읽기 목록으로 이동",
     "go_to_series": "시리즈로 이동",
     "library": "서재",
@@ -218,17 +226,20 @@
     "page": "페이지",
     "page_number": "페이지 번호",
     "pages": "페이지",
+    "pages_left": "남은 페이지 없음 | 1 페이지 남음 | {count} 페이지 남음",
     "pages_n": "페이지 없음 | 1 페이지 | {count} 페이지",
     "password": "비밀번호",
     "pending_tasks": "보류 중인 작업 없음 | 1개의 보류중인 작업 | {count}개의 보류중인 작업",
     "publisher": "출판사",
     "read": "읽기",
+    "read_on": "{date} 읽음",
+    "readlist": "읽기 목록",
     "readlists": "읽기 목록",
     "required": "필요",
     "reset_filters": "필터 재설정",
     "roles": "역할",
     "save_changes": "변경 사항 저장",
-    "series": "시리즈",
+    "series": "시리즈 | 시리즈",
     "sidecars": "사이드카",
     "tags": "태그",
     "unavailable": "사용할 수 없음",
@@ -250,10 +261,20 @@
     "book_number": "책 번호: {name}",
     "book_series": "시리즈: {name}",
     "button_import": "가져오기",
+    "button_match": "일치",
     "comicrack_preambule_html": "기존 ComicRack 읽기 목록을 <code>.cbl</code> 형식으로 가져올 수 있습니다.<br>Komga는 제공된 시리즈 및 책 번호를 귀하의 서재에 있는 시리즈 및 책과 일치시킵니다.",
+    "dialog_confirmation": {
+      "body": "{unmatched} / {total} 권 불일치",
+      "create": "무시하고 만들기",
+      "title": "일부 도서는 일치되지 않음"
+    },
+    "field_file_label": "ComicRack 읽기 목록 (.cbl)",
     "field_files_label": "ComicRack 읽기 목록 (.cbl)",
     "import_read_lists": "읽기 목록 가져오기",
     "imported_as": "{name} 으로 가져왔음",
+    "readlist_created": "읽기 목록 생성됨: {name}",
+    "requested_number": "요청 번호",
+    "requested_series": "요청 시리즈",
     "results_preambule": "가져오기 결과는 아래와 같습니다. 제공된 각 파일에 대해 일치하지 않는 책을 확인할 수 있습니다.",
     "size_limit": "크기는 {size} MB 보다 작아야 합니다",
     "tab_title": "데이터 가져오기"
@@ -291,6 +312,10 @@
       "body": "서재의 모든 미디어 파일을 분석합니다. 이 분석은 미디어에 대한 정보를 캡처합니다. 서재 크기에 따라 시간이 오래 걸릴 수 있습니다.",
       "button_confirm": "분석",
       "title": "서재 분석"
+    },
+    "book_picker": {
+      "filter": "책 번호, 제목 또는 발매일로 필터링",
+      "title": "책 선택"
     },
     "delete_book": {
       "button_confirm": "삭제",
@@ -344,8 +369,10 @@
       "authors_notice_multiple_edit": "다수의 저자를 일괄 편집합니다. 기존 저자가 수정될 수 있습니다.",
       "button_cancel": "취소",
       "button_confirm": "변경 사항 저장",
-      "dialog_title_multiple": "{count}권 편집",
+      "copy_from": "{field}로부터 복사",
+      "dialog_title_multiple": "{count}권 편집 | {count}권 편집",
       "dialog_title_single": "{book} 편집",
+      "field_alternate_title": "부제목",
       "field_isbn": "ISBN",
       "field_isbn_error": "ISBN은 13자리여야 합니다",
       "field_link_label": "라벨",
@@ -360,6 +387,8 @@
       "field_summary": "요약",
       "field_tags": "태그",
       "field_title": "제목",
+      "number_sort_decrement": "모두 1씩 감소",
+      "number_sort_increment": "모두 1씩 증가",
       "tab_authors": "저자",
       "tab_general": "일반",
       "tab_links": "링크",
@@ -393,6 +422,7 @@
       "field_import_comicinfo_collections": "모음집",
       "field_import_comicinfo_readlists": "읽기 목록",
       "field_import_comicinfo_series": "시리즈 메타데이터",
+      "field_import_comicinfo_series_append_volume": "시리즈 제목에 볼륨 추가",
       "field_import_epub_book": "책 메타데이터",
       "field_import_epub_series": "시리즈 메타데이터",
       "field_import_local_artwork": "로컬 아트웍스",
@@ -424,15 +454,17 @@
       "button_cancel": "취소",
       "button_confirm": "변경 사항 저장",
       "dialog_title": "읽기 목록 수정",
+      "field_manual_ordering": "수동 정렬",
       "field_name": "이름",
       "field_summary": "요약",
+      "label_ordering": "기본적으로 읽기 목록의 책은 수동으로 정렬됩니다. 수동 정렬을 비활성화하여 발매일 순으로 정렬할 수 있습니다.",
       "tab_general": "일반",
       "tab_poster": "표지"
     },
     "edit_series": {
       "button_cancel": "취소",
       "button_confirm": "변경 사항 저장",
-      "dialog_title_multiple": "{count} 시리즈 편집",
+      "dialog_title_multiple": "{count} 시리즈 편집 | {count} 시리즈 편집",
       "dialog_title_single": "{series} 편집",
       "field_age_rating": "연령 등급",
       "field_age_rating_error": "연령 등급은 0 이상이어야 합니다",
@@ -454,6 +486,7 @@
       "tab_poster": "표지",
       "tab_sharing": "공유",
       "tab_tags": "태그",
+      "tab_titles": "부제목",
       "tags_notice_multiple_edit": "다수의 시리즈를 일괄 편집합니다. 기존 태그가 수정될 수 있습니다."
     },
     "edit_user": {
@@ -512,6 +545,7 @@
     },
     "series_picker": {
       "label_search_series": "시리즈 검색",
+      "no_results": "시리즈를 찾을 수 없음",
       "title": "시리즈 선택"
     },
     "server_stop": {
@@ -550,21 +584,30 @@
     }
   },
   "duplicate_pages": {
+    "action_auto_delete_remaining": "자동 삭제 ({count})남음",
     "action_delete_auto": "자동 삭제",
     "action_delete_manual": "수동 삭제",
     "action_delete_matches": "일치 삭제",
     "action_ignore": "무시",
+    "action_ignore_remaining": "무시 ({count}) 남음",
+    "action_manual_delete_remaining": "수동 삭제 ({count}) 남음",
+    "confirm_auto_delete_remaining": "이 페이지의 나머지 모든 페이지 해시({count})는 자동 삭제로 표시됩니다.",
+    "confirm_manual_delete_remaining": "이 페이지의 나머지 모든 페이지 해시({count})는 수동 삭제로 표시됩니다.",
     "delete_to_save": "삭제하여 {size} 절약",
     "deleted_count": "{count}회 삭제됨",
+    "empty_title": "중복된 페이지를 찾을 수 없음",
     "filter": {
       "count": "횟수",
       "delete_count": "삭제 횟수",
       "delete_size": "절약된 공간",
+      "match_count": "일치 횟수",
       "size": "크기",
       "total_size": "총 크기"
     },
     "info": "중복 페이지 삭제는 원본 파일을 수정합니다. 자동 삭제를 사용하기 전에 파일을 백업하고 수동 삭제를 사용하세요.",
+    "known": "알려짐",
     "matches_n": "일치 항목 없음 | 1 항목 일치 | {count} 항목 일치",
+    "new": "새로 추가됨",
     "saved_size": "{size} 절약됨",
     "title": "중복 페이지",
     "unknown_size": "알 수 없는 크기"
@@ -629,7 +672,7 @@
     "ERR_1007": "일부 항목을 분석할 수 없음",
     "ERR_1008": "책 항목을 가져오는 중 알 수 없는 오류",
     "ERR_1009": "같은 이름의 읽기 목록이 이미 존재합니다",
-    "ERR_1015": "ComicRack 읽기 목록 역직렬화 오류",
+    "ERR_1015": "ComicRack CBL 역직렬화 오류",
     "ERR_1016": "디렉토리가 아니거나 접근 불가",
     "ERR_1017": "기존 라이브러리의 일부인 폴더를 스캔할 수 없습니다",
     "ERR_1018": "파일을 찾을 수 없음",
@@ -640,7 +683,12 @@
     "ERR_1023": "읽기 목록에 이미 있는 책",
     "ERR_1024": "OAuth2 로그인 오류: 이메일 속성 없음",
     "ERR_1025": "OAuth2 로그인 오류: 해당 이메일에 로컬 사용자 없음",
-    "ERR_1026": "OpenID Connect 로그인 오류: 이메일이 확인되지 않음"
+    "ERR_1026": "OpenID Connect 로그인 오류: 이메일이 확인되지 않음",
+    "ERR_1027": "OpenID Connect 로그인 오류: email_verified 속성 없음",
+    "ERR_1028": "OpenID Connect 로그인 오류: 이메일 속성 없음",
+    "ERR_1029": "ComicRack CBL에서 책 항목을 찾을 수 없음",
+    "ERR_1030": "ComicRack CBL에 이름 항목이 없음",
+    "ERR_1031": "ComicRack CBL 책에 시리즈 또는 번호가 없음"
   },
   "filter": {
     "age_rating": "연령 등급",
@@ -653,6 +701,7 @@
     "publisher": "출판사",
     "read": "읽음",
     "release_date": "발매일",
+    "sharing_label": "공유 라벨",
     "status": "상태",
     "tag": "태그",
     "unread": "읽지 않음"
@@ -714,6 +763,7 @@
     "mark_unread": "읽지 않음으로 표시",
     "refresh_metadata": "메타데이터 새로고침",
     "scan_library_files": "서재 파일 스캔",
+    "scan_library_files_deep": "서재 파일 스캔 (심층)",
     "select_all": "전체 선택"
   },
   "metrics": {
@@ -739,6 +789,12 @@
     "less": "읽기 없음",
     "more": "더 보기"
   },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "책 복제",
+      "error_choose_book": "책 선택"
+    }
+  },
   "readlists_expansion_panel": {
     "manage_readlist": "읽기 목록 관리",
     "title": "{name} 읽기 목록"
@@ -759,6 +815,7 @@
       "button_cancel_all_tasks": "모든 작업 취소",
       "button_empty_trash": "모든 서재의 휴지통 비우기",
       "button_scan_libraries": "모든 서재 스캔",
+      "button_scan_libraries_deep": "모든 서재 스캔 (심층)",
       "button_shutdown": "시스템 종료",
       "notification_tasks_cancelled": "취소할 작업 없음 | 작업 취소됨 | {count} 개의 작업 취소됨",
       "section_title": "서버 관리"
@@ -781,7 +838,7 @@
     "books_count": "도서의 수",
     "date_added": "추가된 날짜",
     "date_updated": "갱신된 날짜",
-    "file_name": "파일명",
+    "file_name": "파일 이름",
     "file_size": "파일 크기",
     "folder_name": "폴더 이름",
     "name": "이름",
@@ -803,6 +860,10 @@
     "tooltip_to_be_uploaded": "업로드 예정",
     "tooltip_too_big": "파일이 너무 큽니다!",
     "tooltip_user_uploaded": "사용자 업로드"
+  },
+  "titles_more": {
+    "less": "더 적은 제목",
+    "more": "더 많은 제목"
   },
   "user_roles": {
     "ADMIN": "관리자",
