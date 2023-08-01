@@ -19,7 +19,12 @@
   },
   "account_settings": {
     "account_settings": "Configurações de conta",
-    "change_password": "Alterar senha"
+    "change_password": "alterar senha"
+  },
+  "announcements": {
+    "mark_all_read": "Marque todos como lido",
+    "mark_read": "Marque como lido",
+    "tab_title": "Anúncios"
   },
   "authentication_activity": {
     "datetime": "Data e Hora",
@@ -42,7 +47,9 @@
   },
   "book_card": {
     "error": "Erro",
+    "no_release_date": "Sem data de lançamento",
     "unknown": "Em análise",
+    "unread": "Não lido",
     "unsupported": "Não suportado"
   },
   "book_import": {
@@ -87,6 +94,9 @@
     "move_next": "Clique ou pressione em \"Próximo\" novamente para mover ao próximo livro.",
     "move_next_exit": "Clique ou pressione em \"Próximo\" novamente para sair do leitor.",
     "move_previous": "Clique ou pressione em \"Anterior\" novamente para mover ao livro anterior.",
+    "notification_poster_set_book": "O livro pôster agora está definido para a página atual.",
+    "notification_poster_set_readlist": "A lista de leitura pôster agora está definida para a página atual.",
+    "notification_poster_set_series": "O pôster da série está definido agora para a página atual.",
     "paged_reader_layout": {
       "double": "Páginas duplas",
       "double_no_cover": "Páginas duplas (sem capa)",
@@ -102,6 +112,8 @@
       "width": "Ajustar à largura",
       "width_shrink_only": "Ajustar à largura (encolher apenas)"
     },
+    "set_current_page_as_book_poster": "Definir a página como pôster do livro",
+    "set_current_page_as_readlist_poster": "Definir a página como pôster para a lista de leitura",
     "settings": {
       "always_fullscreen": "Sempre em Tela Cheia",
       "animate_page_transitions": "Animar as transições de página",
@@ -190,6 +202,7 @@
     "email": "Email",
     "filter_no_matches": "O filtro ativo não contém correspondências",
     "genre": "Gênero",
+    "go_to_collection": "Ir para a coleção",
     "go_to_library": "Ir para biblioteca",
     "go_to_readlist": "Ir para lista de lidos",
     "go_to_series": "Ir para séries",
@@ -200,6 +213,7 @@
     "n_selected": "{count} selecionados",
     "nothing_to_show": "Nada para exibir",
     "outdated": "Desatualizado",
+    "page_number": "Número da página",
     "pages": "páginas",
     "pages_n": "Nenhuma página | 1 página | {count} páginas",
     "password": "Senha",
@@ -210,7 +224,7 @@
     "required": "Obrigatório",
     "reset_filters": "Redefinir filtros",
     "roles": "Funções",
-    "series": "Séries",
+    "series": "Séries | Séries",
     "tags": "Tags",
     "unavailable": "Indisponível",
     "unlock_all": "Desbloquear tudo",
@@ -313,7 +327,7 @@
       "field_number": "Número",
       "field_number_sort": "Número para Ordenação",
       "field_number_sort_hint": "Você pode usar números decimais",
-      "field_release_date": "Data de lançamento",
+      "field_release_date": "Data de Lançamento",
       "field_release_date_error": "Precisa ser uma data válida no formato AAAA-MM-DD",
       "field_summary": "Resumo",
       "field_tags": "Tags",
@@ -521,7 +535,7 @@
     "ERR_1007": "Algumas entradas não puderam ser analisadas",
     "ERR_1008": "Erro desconhecido ao obter entradas do livro",
     "ERR_1009": "Já existe uma lista de leitura com esse nome",
-    "ERR_1015": "Erro ao desserializar ComicRack ReadingList",
+    "ERR_1015": "Erro ao desserializar ComicRack CBL",
     "ERR_1016": "Diretório não acessível ou não é um diretório",
     "ERR_1017": "Não é possível digitalizar a pasta que faz parte de uma biblioteca existente",
     "ERR_1018": "Arquivo não encontrado",
