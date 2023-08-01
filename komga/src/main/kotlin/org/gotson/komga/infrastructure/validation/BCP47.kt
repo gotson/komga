@@ -22,5 +22,3 @@ class BCP47Validator : ConstraintValidator<BCP47, String> {
     return BCP47TagValidator.isValid(value)
   }
 }
-
-
