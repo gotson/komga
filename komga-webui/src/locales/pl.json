@@ -21,6 +21,11 @@
     "account_settings": "Ustawienia konta",
     "change_password": "zmień hasło"
   },
+  "announcements": {
+    "mark_all_read": "Oznacz wszystkie jako przeczytane",
+    "mark_read": "Oznacz jako przeczytane",
+    "tab_title": "Ogłoszenia"
+  },
   "authentication_activity": {
     "datetime": "Data i czas",
     "email": "E-mail",
@@ -579,12 +584,18 @@
     }
   },
   "duplicate_pages": {
+    "action_auto_delete_remaining": "Pozostało do automatycznego usunięcia ({count})",
     "action_delete_auto": "Automtyczne usuwanie",
     "action_delete_manual": "Ręczne usuwanie",
     "action_delete_matches": "Usuń pasujące",
     "action_ignore": "Ignoruj",
+    "action_ignore_remaining": "Zignoruj pozostałe ({count})",
+    "action_manual_delete_remaining": "Pozostało do usunięcia ręcznego ({count})",
+    "confirm_auto_delete_remaining": "Wszystkie pozostałe skróty stron na tej stronie ({count}) zostaną oznaczone do automatycznego usunięcia.",
+    "confirm_manual_delete_remaining": "Wszystkie pozostałe skróty strony na tej stronie ({count}) zostaną oznaczone do ręcznego usunięcia.",
     "delete_to_save": "Usuń żeby zaoszczędzić {size}",
     "deleted_count": "Usunięto 1 raz | Usunięto {count} razy",
+    "empty_title": "Nie znaleziono zduplikowanych stron",
     "filter": {
       "count": "Ilość",
       "delete_count": "Ilość usuniętych",
@@ -690,6 +701,7 @@
     "publisher": "wydawca",
     "read": "Przeczytane",
     "release_date": "data wydania",
+    "sharing_label": "Etykieta udostępniania",
     "status": "status",
     "tag": "tag",
     "unread": "Nieprzeczytane"
@@ -751,6 +763,7 @@
     "mark_unread": "Oznacz jako nieprzeczytane",
     "refresh_metadata": "Odśwież metadane",
     "scan_library_files": "Skanuj pliki bibliotek",
+    "scan_library_files_deep": "Skanuj pliki bibliotek (głębokie)",
     "select_all": "Zaznacz wszystkie"
   },
   "metrics": {
@@ -802,6 +815,7 @@
       "button_cancel_all_tasks": "Anuluj wszystkie zadania",
       "button_empty_trash": "Opróżnij kosz dla wszystkich bibliotek",
       "button_scan_libraries": "Skanuj wszystkie biblioteki",
+      "button_scan_libraries_deep": "Skanuj wszystkie biblioteki (głębokie)",
       "button_shutdown": "Wyłącz",
       "notification_tasks_cancelled": "Brak zadań do anulowania | Anulowano jedno zadanie | Anulowano {count} zadań",
       "section_title": "Zarządzanie serwerem"
