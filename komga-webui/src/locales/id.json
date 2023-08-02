@@ -429,6 +429,7 @@
       "field_import_local_artwork": "Artwork lokal",
       "field_import_mylar_series": "Metadata seri",
       "field_name": "Nama",
+      "field_oneshotsdirectory": "Direktori One-Shots",
       "field_repair_extensions": "Memperbaiki ekstensi berkas yang salah secara otomatis",
       "field_root_folder": "Folder akar",
       "field_scanner_empty_trash_after_scan": "Kosongkan tempat sampah setiap kali pemindaian",
@@ -448,6 +449,7 @@
       "tab_general": "Umum",
       "tab_metadata": "Metadata",
       "tab_options": "Pilihan",
+      "tooltip_oneshotsdirectory": "Biarkan kosong untuk menonaktifkan",
       "tooltip_scanner_force_modified_time": "Aktifkan jika pustaka ada di Google Drive",
       "tooltip_use_resources": "Dapat menghabiskan banyak sumber daya di pustaka yang besar atau perangkat keras yang lambat"
     },
@@ -699,6 +701,7 @@
     "in_progress": "Sedang Dibaca",
     "language": "Bahasa",
     "library": "pustaka",
+    "oneshot": "One-shot",
     "publisher": "Penerbit",
     "read": "Telah Dibaca",
     "release_date": "tanggal rilis",
