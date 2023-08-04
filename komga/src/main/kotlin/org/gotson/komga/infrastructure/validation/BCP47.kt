@@ -1,9 +1,9 @@
 package org.gotson.komga.infrastructure.validation
 
-import com.ibm.icu.util.ULocale
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
+import org.gotson.komga.domain.model.BCP47TagValidator
 import kotlin.reflect.KClass
 
 @Constraint(validatedBy = [BCP47Validator::class])
@@ -20,15 +20,5 @@ class BCP47Validator : ConstraintValidator<BCP47, String> {
   override fun isValid(value: String?, context: ConstraintValidatorContext?): Boolean {
     if (value == null) return false
     return BCP47TagValidator.isValid(value)
-  }
-}
-
-object BCP47TagValidator {
-  private val languages by lazy { ULocale.getISOLanguages().toSet() }
-
-  fun isValid(value: String): Boolean {
-    return ULocale.forLanguageTag(value).let {
-      it.language.isNotBlank() && languages.contains(it.language)
-    }
   }
 }

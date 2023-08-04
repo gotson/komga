@@ -30,12 +30,14 @@
     <multi-select-bar
       v-model="selectedSeries"
       kind="series"
+      :oneshots="selectedOneshots"
       show-select-all
       @unselect-all="selectedSeries = []"
       @select-all="selectedSeries = series"
       @mark-read="markSelectedRead"
       @mark-unread="markSelectedUnread"
       @add-to-collection="addToCollection"
+      @add-to-readlist="addToReadList"
       @edit="editMultipleSeries"
       @delete="deleteSeries"
     />
@@ -152,7 +154,7 @@ import SortList from '@/components/SortList.vue'
 import FilterPanels from '@/components/FilterPanels.vue'
 import FilterList from '@/components/FilterList.vue'
 import {mergeFilterParams, sortOrFilterActive, toNameValue} from '@/functions/filter'
-import {GroupCountDto, SeriesDto} from '@/types/komga-series'
+import {GroupCountDto, Oneshot, SeriesDto} from '@/types/komga-series'
 import {AuthorDto} from '@/types/komga-books'
 import {authorRoles} from '@/types/author-roles'
 import {LibrarySseDto, ReadProgressSeriesSseDto, SeriesSseDto} from '@/types/komga-sse'
@@ -269,9 +271,9 @@ export default Vue.extend({
   },
   computed: {
     searchRegex(): string | undefined {
-        if (this.selectedSymbol === 'ALL') return undefined
-        if (this.selectedSymbol === '#') return '^[^a-z],title_sort'
-        return `^${this.selectedSymbol},title_sort`
+      if (this.selectedSymbol === 'ALL') return undefined
+      if (this.selectedSymbol === '#') return '^[^a-z],title_sort'
+      return `^${this.selectedSymbol},title_sort`
     },
     itemContext(): ItemContext[] {
       if (this.sortActive.key === 'booksMetadata.releaseDate') return [ItemContext.RELEASE_DATE]
@@ -300,6 +302,9 @@ export default Vue.extend({
         },
         complete: {
           values: [{name: this.$t('filter.complete').toString(), value: 'true', nValue: 'false'}],
+        },
+        oneshot: {
+          values: [{name: this.$t('filter.oneshot').toString(), value: 'true', nValue: 'false'}],
         },
       } as FiltersOptions
     },
@@ -352,6 +357,9 @@ export default Vue.extend({
     sortOrFilterActive(): boolean {
       return sortOrFilterActive(this.sortActive, this.sortDefault, this.filters)
     },
+    selectedOneshots(): boolean {
+      return this.selectedSeries.every(s => s.oneshot)
+    },
   },
   methods: {
     filterByStarting(symbol: string) {
@@ -397,7 +405,7 @@ export default Vue.extend({
 
       // get filter from query params or local storage and validate with available filter values
       let activeFilters: any
-      if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating || route.query.publisher || authorRoles.some(role => role in route.query) || route.query.complete || route.query.sharingLabel) {
+      if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating || route.query.publisher || authorRoles.some(role => role in route.query) || route.query.complete || route.query.oneshot || route.query.sharingLabel) {
         activeFilters = {
           status: route.query.status || [],
           readStatus: route.query.readStatus || [],
@@ -408,6 +416,7 @@ export default Vue.extend({
           ageRating: route.query.ageRating || [],
           releaseDate: route.query.releaseDate || [],
           complete: route.query.complete || [],
+          oneshot: route.query.oneshot || [],
           sharingLabel: route.query.sharingLabel || [],
         }
         authorRoles.forEach((role: string) => {
@@ -429,6 +438,7 @@ export default Vue.extend({
         ageRating: filters.ageRating?.filter(x => this.filterOptions.ageRating.map(n => n.value).includes(x)) || [],
         releaseDate: filters.releaseDate?.filter(x => this.filterOptions.releaseDate.map(n => n.value).includes(x)) || [],
         complete: filters.complete?.filter(x => x === 'true' || x === 'false') || [],
+        oneshot: filters.oneshot?.filter(x => x === 'true' || x === 'false') || [],
         sharingLabel: filters.sharingLabel?.filter(x => this.filterOptions.sharingLabel.map(n => n.value).includes(x)) || [],
       } as any
       authorRoles.forEach((role: string) => {
@@ -536,13 +546,14 @@ export default Vue.extend({
 
       const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
       const complete = parseBooleanFilter(this.filters.complete)
-      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, searchRegex, complete, this.filters.sharingLabel)
+      const oneshot = parseBooleanFilter(this.filters.oneshot)
+      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, searchRegex, complete, this.filters.sharingLabel, oneshot)
 
       this.totalPages = seriesPage.totalPages
       this.totalElements = seriesPage.totalElements
       this.series = seriesPage.content
 
-      const seriesGroups = await this.$komgaSeries.getAlphabeticalGroups(requestLibraryId, undefined, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, complete, this.filters.sharingLabel)
+      const seriesGroups = await this.$komgaSeries.getAlphabeticalGroups(requestLibraryId, undefined, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, complete, this.filters.sharingLabel, oneshot)
       const nonAlpha = seriesGroups
         .filter((g) => !(/[a-zA-Z]/).test(g.group))
         .reduce((a, b) => a + b.count, 0)
@@ -573,13 +584,26 @@ export default Vue.extend({
       this.selectedSeries = []
     },
     addToCollection() {
-      this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries)
+      this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries.map(s => s.id))
     },
-    editSingleSeries(series: SeriesDto) {
-      this.$store.dispatch('dialogUpdateSeries', series)
+    async addToReadList() {
+      const books = await Promise.all(this.selectedSeries.map(s => this.$komgaSeries.getBooks(s.id)))
+      this.$store.dispatch('dialogAddBooksToReadList', books.map(b => b.content[0].id))
     },
-    editMultipleSeries() {
-      this.$store.dispatch('dialogUpdateSeries', this.selectedSeries)
+    async editSingleSeries(series: SeriesDto) {
+      if (series.oneshot) {
+        const book = (await this.$komgaSeries.getBooks(series.id)).content[0]
+        this.$store.dispatch('dialogUpdateOneshots', {series: series, book: book})
+      } else
+        this.$store.dispatch('dialogUpdateSeries', series)
+    },
+    async editMultipleSeries() {
+      if (this.selectedOneshots) {
+        const books = await Promise.all(this.selectedSeries.map(s => this.$komgaSeries.getBooks(s.id)))
+        const oneshots = this.selectedSeries.map((s, index) => ({series: s, book: books[index].content[0]} as Oneshot))
+        this.$store.dispatch('dialogUpdateOneshots', oneshots)
+      } else
+        this.$store.dispatch('dialogUpdateSeries', this.selectedSeries)
     },
     deleteSeries() {
       this.$store.dispatch('dialogDeleteSeries', this.selectedSeries)

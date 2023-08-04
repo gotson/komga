@@ -431,6 +431,30 @@ class ComicInfoProviderTest {
       }
     }
 
+    @ParameterizedTest
+    @MethodSource("languagesSource")
+    fun `given comicInfo with malformed BCP-47 language when getting series metadata then patch language is normalized`(source: String, expected: String) {
+      val comicInfo = ComicInfo().apply {
+        languageISO = source
+      }
+
+      every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
+
+      val patch = comicInfoProvider.getSeriesMetadataFromBook(BookWithMedia(book, media), library)!!
+
+      with(patch) {
+        assertThat(language).isEqualTo(expected)
+      }
+    }
+
+    private fun languagesSource(): Stream<Arguments> =
+      Stream.of(
+        Arguments.of("fra", "fr"),
+        Arguments.of("fra-be", "fr-BE"),
+        Arguments.of("JA", "ja"),
+        Arguments.of("en-us", "en-US"),
+      )
+
     @Test
     fun `given comicInfo with blank values when getting series metadata then blank values are omitted`() {
       val comicInfo = ComicInfo().apply {

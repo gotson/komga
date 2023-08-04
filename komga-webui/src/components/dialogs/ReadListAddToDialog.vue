@@ -75,7 +75,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {BookDto} from '@/types/komga-books'
 import {ERROR} from '@/types/events'
 import {stripAccents} from '@/functions/string'
 import {ReadListCreationDto, ReadListDto, ReadListUpdateDto} from '@/types/komga-readlists'
@@ -92,8 +91,8 @@ export default Vue.extend({
   },
   props: {
     value: Boolean,
-    books: {
-      type: [Object as () => BookDto, Array as () => BookDto[]],
+    bookIds: {
+      type: [Array as () => string[]],
       required: true,
     },
   },
@@ -113,10 +112,6 @@ export default Vue.extend({
 
   },
   computed: {
-    bookIds(): string[] {
-      if (Array.isArray(this.books)) return this.books.map(s => s.id)
-      else return [this.books.id]
-    },
     duplicate(): string {
       if (this.newReadList !== '' && this.readLists.some(e => e.name.toLowerCase() === this.newReadList.toLowerCase())) {
         return this.$t('dialog.add_to_readlist.field_search_create_error').toString()

@@ -25,6 +25,7 @@ data class LibraryDto(
   val hashFiles: Boolean,
   val hashPages: Boolean,
   val analyzeDimensions: Boolean,
+  val oneshotsDirectory: String?,
   val unavailable: Boolean,
 )
 
@@ -50,5 +51,6 @@ fun Library.toDto(includeRoot: Boolean) = LibraryDto(
   hashFiles = hashFiles,
   hashPages = hashPages,
   analyzeDimensions = analyzeDimensions,
+  oneshotsDirectory = oneshotsDirectory,
   unavailable = unavailableDate != null,
 )

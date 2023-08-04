@@ -52,6 +52,11 @@ class LocalArtworkProvider(
   }
 
   fun getSeriesThumbnails(series: Series): List<ThumbnailSeries> {
+    if (series.oneshot) {
+      logger.debug { "Disabled for oneshot series, skipping" }
+      return emptyList()
+    }
+
     logger.info { "Looking for local thumbnails for series: $series" }
 
     return Files.list(series.path).use { dirStream ->

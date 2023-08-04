@@ -21,6 +21,11 @@
     "account_settings": "Kontoeinstellungen",
     "change_password": "Passwort ändern"
   },
+  "announcements": {
+    "mark_all_read": "Alle als gelesen markieren",
+    "mark_read": "Als gelesen kennzeichnen",
+    "tab_title": "Ankündigungen"
+  },
   "authentication_activity": {
     "datetime": "Datum/Uhrzeit",
     "email": "E-Mail",
@@ -579,16 +584,23 @@
     }
   },
   "duplicate_pages": {
+    "action_auto_delete_remaining": "Noch ({count}) automatische Löschungen übrig",
     "action_delete_auto": "Automatisch löschen",
     "action_delete_manual": "Manuelles Löschen",
     "action_delete_matches": "Treffer löschen",
     "action_ignore": "Ignorieren",
+    "action_ignore_remaining": "Noch ({count}) ignorierte übrig",
+    "action_manual_delete_remaining": "Noch ({count}) manuell zu löschende übrig",
+    "confirm_auto_delete_remaining": "Alle verbleibenden Seiten mit dem Hash der Seite ({count}) werden zur automatischen Löschung markiert.",
+    "confirm_manual_delete_remaining": "Alle verbleibenden Seiten mit dem Hash der Seite ({count}) werden zur manuellen Löschung markiert.",
     "delete_to_save": "Löschen, um {size} freizugeben",
     "deleted_count": "{count} Einträge gelöscht",
+    "empty_title": "Keine doppelten Seiten gefunden",
     "filter": {
       "count": "Anzahl",
       "delete_count": "Anzahl der Löschungen",
       "delete_size": "Speicherersparnis",
+      "match_count": "Match Anzahl",
       "size": "Größe",
       "total_size": "Gesamtgröße"
     },
@@ -689,6 +701,7 @@
     "publisher": "Verlag",
     "read": "Gelesen",
     "release_date": "Veröffentlichungsdatum",
+    "sharing_label": "Gleiche Namen",
     "status": "Status",
     "tag": "Stichwort",
     "unread": "Ungelesen"
@@ -750,6 +763,7 @@
     "mark_unread": "Als ungelesen markieren",
     "refresh_metadata": "Erneuere Metadaten",
     "scan_library_files": "Überprüfe (Scan) Bibliotheksdateien",
+    "scan_library_files_deep": "(Tiefen) Scan der Bibliotheksdateien",
     "select_all": "Alle auswählen"
   },
   "metrics": {
@@ -801,6 +815,7 @@
       "button_cancel_all_tasks": "Alle Aufgaben abbrechen",
       "button_empty_trash": "Papierkorb für alle Bibliotheken leeren",
       "button_scan_libraries": "Scanne alle Bibliotheken",
+      "button_scan_libraries_deep": "(Tiefen) Scan aller Bibliotheken",
       "button_shutdown": "Herunterfahren",
       "notification_tasks_cancelled": "Keine Aufgaben abzubrechen | Eine Aufgabe abgebrochen | {count} Aufgaben abgebrochen",
       "section_title": "Serververwaltung"

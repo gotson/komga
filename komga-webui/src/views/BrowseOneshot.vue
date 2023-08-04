@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!$_.isEmpty(book)">
+  <div v-if="!$_.isEmpty(book) && !$_.isEmpty(series)">
     <toolbar-sticky>
       <v-tooltip bottom :disabled="!isAdmin">
         <template v-slot:activator="{ on }">
@@ -10,14 +10,15 @@
             <rtl-icon icon="mdi-arrow-left" rtl="mdi-arrow-right"/>
           </v-btn>
         </template>
-        <span v-if="contextReadList">{{ $t('common.go_to_readlist') }}</span>
-        <span v-else-if="contextLibrary">{{ $t('common.go_to_library') }}</span>
-        <span v-else>{{ $t('common.go_to_series') }}</span>
+        <span v-if="context.origin === ContextOrigin.READLIST">{{ $t('common.go_to_readlist') }}</span>
+        <span v-else-if="context.origin === ContextOrigin.COLLECTION">{{ $t('common.go_to_collection') }}</span>
+        <span v-else>{{ $t('common.go_to_library') }}</span>
       </v-tooltip>
 
       <!--   Action menu   -->
-      <book-actions-menu v-if="book"
-                         :book="book"
+      <oneshot-actions-menu v-if="book"
+                             :book="book"
+                             :series="series"
       />
 
       <v-btn icon @click="editBook" v-if="isAdmin">
@@ -28,7 +29,7 @@
 
       <!--   Context notification for navigation   -->
       <v-alert
-        v-if="contextReadList && $vuetify.breakpoint.mdAndUp"
+        v-if="context.origin === ContextOrigin.READLIST && $vuetify.breakpoint.mdAndUp"
         type="info"
         text
         dense
@@ -39,6 +40,7 @@
 
       <!--   Navigate to previous book   -->
       <v-btn
+        v-if="context.origin === ContextOrigin.READLIST"
         icon
         :disabled="$_.isEmpty(siblingPrevious)"
         :to="{ name: siblingPrevious.oneshot ? 'browse-oneshot' : 'browse-book', params: { seriesId: siblingPrevious.seriesId, bookId: previousId }, query: { context: context.origin, contextId: context.id}  }"
@@ -47,10 +49,12 @@
       </v-btn>
 
       <!--   List of all books in context (series/readlist) for navigation   -->
-      <v-menu bottom
-              offset-y
-              :max-height="$vuetify.breakpoint.height * .7"
-              :max-width="250"
+      <v-menu
+        v-if="context.origin === ContextOrigin.READLIST"
+        bottom
+        offset-y
+        :max-height="$vuetify.breakpoint.height * .7"
+        :max-width="250"
       >
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
@@ -68,10 +72,14 @@
               :to="{ name: book.oneshot ? 'browse-oneshot' : 'browse-book', params: { seriesId: book.seriesId, bookId: book.id }, query: { context: context.origin, contextId: context.id}  }"
             >
               <v-list-item-title class="text-wrap text-body-2">
-                <template v-if="contextReadList && !book.oneshot">{{ book.seriesTitle }} {{ book.metadata.number }}:
+                <template v-if="context.origin === ContextOrigin.READLIST && !book.oneshot">{{ book.seriesTitle }}
+                  {{ book.metadata.number }}:
                   {{ book.metadata.title }}
                 </template>
-                <template v-else-if="contextReadList && book.oneshot">{{ book.metadata.title }}</template>
+                <template v-else-if="context.origin === ContextOrigin.READLIST && book.oneshot">{{
+                    book.metadata.title
+                  }}
+                </template>
                 <template v-else>{{ book.metadata.number }} - {{ book.metadata.title }}</template>
               </v-list-item-title>
             </v-list-item>
@@ -81,6 +89,7 @@
 
       <!--   Navigate to next book   -->
       <v-btn
+        v-if="context.origin === ContextOrigin.READLIST"
         icon
         :disabled="$_.isEmpty(siblingNext)"
         :to="{ name: siblingNext.oneshot ? 'browse-oneshot' : 'browse-book', params: { seriesId: siblingNext.seriesId, bookId: nextId }, query: { context: context.origin, contextId: context.id}  }"
@@ -93,7 +102,7 @@
       <!--   Context notification for navigation   -->
       <v-row>
         <v-alert
-          v-if="contextReadList && $vuetify.breakpoint.smAndDown"
+          v-if="context.origin === ContextOrigin.READLIST && $vuetify.breakpoint.smAndDown"
           type="info"
           text
           dense
@@ -130,11 +139,7 @@
           <v-container>
             <v-row>
               <v-col class="py-1">
-                <router-link
-                  :to="{name:'browse-series', params: {seriesId: book.seriesId}}"
-                  class="link-underline text-h5"
-                >{{ book.seriesTitle }}
-                </router-link>
+                <span class="text-h6">{{ book.metadata.title }}</span>
                 <router-link
                   class="caption link-underline"
                   :class="$vuetify.breakpoint.smAndUp ? 'mx-1' : ''"
@@ -144,19 +149,42 @@
                 </router-link>
               </v-col>
             </v-row>
-            <v-row>
-              <v-col class="py-1">
-                <div class="text-h6">{{ book.metadata.title }}</div>
+
+            <v-row class="text-body-2">
+              <v-col class="py-1 pe-0" cols="auto" v-if="series.metadata && series.metadata.ageRating">
+                <v-chip label small link
+                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {ageRating: [series.metadata.ageRating]}}"
+                >
+                  {{ series.metadata.ageRating }}+
+                </v-chip>
+              </v-col>
+              <v-col class="py-1 pe-0" cols="auto" v-if="series.metadata.language">
+                <v-chip label small link
+                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {language: [series.metadata.language]}}"
+                >
+                  {{ languageDisplay }}
+                </v-chip>
+              </v-col>
+              <v-col class="py-1 pe-0" cols="auto"
+                     v-if="series.metadata.readingDirection">
+                <v-chip label small>
+                  {{ $t(`enums.reading_direction.${series.metadata.readingDirection}`) }}
+                </v-chip>
+              </v-col>
+              <v-col class="py-1 pe-0" cols="auto" v-if="unavailable">
+                <v-chip label small color="error">
+                  {{ $t('common.unavailable') }}
+                </v-chip>
               </v-col>
             </v-row>
 
             <v-row class="text-caption" align="center">
               <v-col cols="auto" v-if="book.media.status === MediaStatus.UNKNOWN">
-                {{ book.metadata.number }} · {{ $t('book_card.unknown') }}
+                {{ $t('book_card.unknown') }}
               </v-col>
 
               <v-col cols="auto" v-else>
-                {{ book.metadata.number }} · {{ $tc('common.pages_n', book.media.pagesCount) }}
+                {{ $tc('common.pages_n', book.media.pagesCount) }}
               </v-col>
 
               <v-col cols="auto" v-if="book.metadata.releaseDate">
@@ -188,14 +216,13 @@
               </v-col>
             </v-row>
 
-
             <template v-if="$vuetify.breakpoint.smAndUp">
               <v-row class="align-center">
                 <v-col cols="auto">
                   <v-btn color="accent"
                          small
                          :title="$t('browse_book.read_book')"
-                         :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id}}"
+                         :to="{name: 'read-book', params: { bookId: book.id}, query: { context: context.origin, contextId: context.id}}"
                          :disabled="!canRead"
                   >
                     <v-icon left small>mdi-book-open-page-variant</v-icon>
@@ -206,7 +233,7 @@
                 <v-col cols="auto">
                   <v-btn small
                          :title="$t('browse_book.read_incognito')"
-                         :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id, incognito: true}}"
+                         :to="{name: 'read-book', params: { bookId: book.id}, query: { context: context.origin, contextId: context.id, incognito: true}}"
                          :disabled="!canRead"
                   >
                     <v-icon left small>mdi-incognito</v-icon>
@@ -241,7 +268,7 @@
             <v-btn color="accent"
                    small
                    :title="$t('browse_book.read_book')"
-                   :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id}}"
+                   :to="{name: 'read-book', params: { bookId: book.id}, query: { context: context.origin, contextId: context.id}}"
                    :disabled="!canRead"
             >
               <v-icon left small>mdi-book-open-page-variant</v-icon>
@@ -252,7 +279,7 @@
           <v-col cols="auto">
             <v-btn small
                    :title="$t('browse_book.read_incognito')"
-                   :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id, incognito: true}}"
+                   :to="{name: 'read-book', params: { bookId: book.id}, query: { context: context.origin, contextId: context.id, incognito: true}}"
                    :disabled="!canRead"
             >
               <v-icon left small>mdi-incognito</v-icon>
@@ -278,6 +305,54 @@
         </v-row>
       </template>
 
+      <!--  Publisher    -->
+      <v-row v-if="series.metadata.publisher" class="align-center text-caption">
+        <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $t('common.publisher') }}</v-col>
+        <v-col cols="8" sm="9" md="10" xl="11" class="py-1">
+          <v-chip
+            class="me-2"
+            :title="series.metadata.publisher"
+            :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {publisher: [series.metadata.publisher]}}"
+            label
+            small
+            outlined
+            link
+          >{{ series.metadata.publisher }}
+          </v-chip>
+        </v-col>
+      </v-row>
+
+      <!--  Genres    -->
+      <v-row v-if="series.metadata.genres.length > 0" class="align-center text-caption">
+        <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $t('common.genre') }}</v-col>
+        <v-col cols="8" sm="9" md="10" xl="11" class="py-1 text-capitalize">
+          <vue-horizontal>
+            <template v-slot:btn-prev>
+              <v-btn icon small>
+                <v-icon>mdi-chevron-left</v-icon>
+              </v-btn>
+            </template>
+
+            <template v-slot:btn-next>
+              <v-btn icon small>
+                <v-icon>mdi-chevron-right</v-icon>
+              </v-btn>
+            </template>
+            <v-chip v-for="(t, i) in $_.sortBy(series.metadata.genres)"
+                    :key="i"
+                    class="me-2"
+                    :title="t"
+                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {genre: [t]}}"
+                    label
+                    small
+                    outlined
+                    link
+            >{{ t }}
+            </v-chip>
+          </vue-horizontal>
+        </v-col>
+      </v-row>
+
       <v-row v-for="role in displayedRoles"
              :key="role"
              class="align-center text-caption"
@@ -302,7 +377,7 @@
                     :key="i"
                     class="me-2"
                     :title="name"
-                    :to="{name:'browse-series', params: {seriesId: book.seriesId }, query: {[role]: [name]}}"
+                    :to="{name:'browse-libraries', params: {libraryId: book.libraryId }, query: {[role]: [name]}}"
                     label
                     small
                     outlined
@@ -332,7 +407,7 @@
                     :key="i"
                     class="me-2"
                     :title="t"
-                    :to="{name:'browse-series', params: {seriesId: book.seriesId}, query: {tag: [t]}}"
+                    :to="{name:'browse-libraries', params: {libraryId: book.libraryId}, query: {tag: [t]}}"
                     label
                     small
                     outlined
@@ -343,8 +418,12 @@
         </v-col>
       </v-row>
 
+
       <v-row>
-        <v-col>
+        <v-col cols="12" class="pb-1">
+          <collections-expansion-panels :collections="collections"/>
+        </v-col>
+        <v-col cols="12" class="pt-1">
           <read-lists-expansion-panels :read-lists="readLists"/>
         </v-col>
       </v-row>
@@ -413,17 +492,22 @@ import {groupAuthorsByRole} from '@/functions/authors'
 import {getBookFormatFromMediaType} from '@/functions/book-format'
 import {getPagesLeft, getReadProgress, getReadProgressPercentage} from '@/functions/book-progress'
 import {getBookTitleCompact} from '@/functions/book-title'
-import {bookFileUrl, bookThumbnailUrl} from '@/functions/urls'
+import {bookFileUrl, seriesThumbnailUrl} from '@/functions/urls'
 import {MediaStatus, ReadStatus} from '@/types/enum-books'
 import {
   BOOK_CHANGED,
   BOOK_DELETED,
+  COLLECTION_ADDED,
+  COLLECTION_CHANGED,
+  COLLECTION_DELETED,
   LIBRARY_DELETED,
   READLIST_ADDED,
   READLIST_CHANGED,
   READLIST_DELETED,
   READPROGRESS_CHANGED,
   READPROGRESS_DELETED,
+  SERIES_CHANGED,
+  SERIES_DELETED,
 } from '@/types/events'
 import Vue from 'vue'
 import ReadListsExpansionPanels from '@/components/ReadListsExpansionPanels.vue'
@@ -434,27 +518,48 @@ import VueHorizontal from 'vue-horizontal'
 import {authorRoles} from '@/types/author-roles'
 import {convertErrorCodes} from '@/functions/error-codes'
 import RtlIcon from '@/components/RtlIcon.vue'
-import {BookSseDto, LibrarySseDto, ReadListSseDto, ReadProgressSseDto} from '@/types/komga-sse'
+import {
+  BookSseDto,
+  CollectionSseDto,
+  LibrarySseDto,
+  ReadListSseDto,
+  ReadProgressSseDto,
+  SeriesSseDto,
+} from '@/types/komga-sse'
 import {RawLocation} from 'vue-router/types/router'
 import {ReadListDto} from '@/types/komga-readlists'
+import {Oneshot, SeriesDto} from '@/types/komga-series'
+import CollectionsExpansionPanels from '@/components/CollectionsExpansionPanels.vue'
+import OneshotActionsMenu from '@/components/menus/OneshotActionsMenu.vue'
+
+const tags = require('language-tags')
 
 export default Vue.extend({
-  name: 'BrowseBook',
-  components: {ReadMore, ToolbarSticky, ItemCard, BookActionsMenu, ReadListsExpansionPanels, VueHorizontal, RtlIcon},
+  name: 'BrowseOneshot',
+  components: {
+    OneshotActionsMenu,
+    CollectionsExpansionPanels,
+    ReadMore, ToolbarSticky, ItemCard, ReadListsExpansionPanels, VueHorizontal, RtlIcon,
+  },
   data: () => {
     return {
       MediaStatus,
+      ContextOrigin,
       book: {} as BookDto,
+      series: {} as SeriesDto,
       context: {} as Context,
-      contextName: '',
       siblings: [] as BookDto[],
       siblingPrevious: {} as BookDto,
       siblingNext: {} as BookDto,
+      contextName: '',
+      collections: [] as CollectionDto[],
       readLists: [] as ReadListDto[],
     }
   },
   async created() {
-    this.loadBook(this.bookId)
+    this.loadSeries(this.seriesId)
+    this.$eventHub.$on(SERIES_CHANGED, this.seriesChanged)
+    this.$eventHub.$on(SERIES_DELETED, this.seriesDeleted)
     this.$eventHub.$on(BOOK_CHANGED, this.bookChanged)
     this.$eventHub.$on(BOOK_DELETED, this.bookDeleted)
     this.$eventHub.$on(READPROGRESS_CHANGED, this.readProgressChanged)
@@ -463,8 +568,13 @@ export default Vue.extend({
     this.$eventHub.$on(READLIST_ADDED, this.readListChanged)
     this.$eventHub.$on(READLIST_CHANGED, this.readListChanged)
     this.$eventHub.$on(READLIST_DELETED, this.readListChanged)
+    this.$eventHub.$on(COLLECTION_ADDED, this.collectionChanged)
+    this.$eventHub.$on(COLLECTION_CHANGED, this.collectionChanged)
+    this.$eventHub.$on(COLLECTION_DELETED, this.collectionChanged)
   },
   beforeDestroy() {
+    this.$eventHub.$off(SERIES_CHANGED, this.seriesChanged)
+    this.$eventHub.$off(SERIES_DELETED, this.seriesDeleted)
     this.$eventHub.$off(BOOK_CHANGED, this.bookChanged)
     this.$eventHub.$off(BOOK_DELETED, this.bookDeleted)
     this.$eventHub.$off(READPROGRESS_CHANGED, this.readProgressChanged)
@@ -473,16 +583,19 @@ export default Vue.extend({
     this.$eventHub.$off(READLIST_ADDED, this.readListChanged)
     this.$eventHub.$off(READLIST_CHANGED, this.readListChanged)
     this.$eventHub.$off(READLIST_DELETED, this.readListChanged)
+    this.$eventHub.$off(COLLECTION_ADDED, this.collectionChanged)
+    this.$eventHub.$off(COLLECTION_CHANGED, this.collectionChanged)
+    this.$eventHub.$off(COLLECTION_DELETED, this.collectionChanged)
   },
   props: {
-    bookId: {
+    seriesId: {
       type: String,
       required: true,
     },
   },
   async beforeRouteUpdate(to, from, next) {
-    if (to.params.bookId !== from.params.bookId) {
-      this.loadBook(to.params.bookId)
+    if (to.params.seriesId !== from.params.seriesId) {
+      this.loadSeries(to.params.seriesId)
     }
 
     next()
@@ -501,10 +614,10 @@ export default Vue.extend({
       return this.$store.getters.meFileDownload && !this.unavailable
     },
     thumbnailUrl(): string {
-      return bookThumbnailUrl(this.bookId)
+      return seriesThumbnailUrl(this.seriesId)
     },
     fileUrl(): string {
-      return bookFileUrl(this.bookId)
+      return bookFileUrl(this.book.id)
     },
     format(): BookFormat {
       return getBookFormatFromMediaType(this.book.media.mediaType)
@@ -541,26 +654,23 @@ export default Vue.extend({
     nextId(): string {
       return this.siblingNext?.id?.toString() || '0'
     },
-    contextReadList(): boolean {
-      return this.context.origin === ContextOrigin.READLIST
-    },
-    contextLibrary(): boolean {
-      return this.context.origin === ContextOrigin.LIBRARY
-    },
     mediaComment(): string {
       return convertErrorCodes(this.book.media.comment)
     },
     parentLocation(): RawLocation {
-      if (this.contextReadList)
+      if (this.context.origin === ContextOrigin.READLIST)
         return {name: 'browse-readlist', params: {readListId: this.context.id}}
-      else if (this.contextLibrary)
-        return {name: 'browse-libraries-by-book', params: {libraryId: this.context.id}}
+      else if (this.context.origin === ContextOrigin.COLLECTION)
+        return {name: 'browse-collection', params: {collectionId: this.context.id}}
       else
-        return {name: 'browse-series', params: {seriesId: this.book.seriesId}}
+        return {name: 'browse-libraries', params: {libraryId: this.book.libraryId}}
     },
     displayedRoles(): string[] {
       const allRoles = this.$_.uniq([...authorRoles, ...(this.book.metadata.authors.map(x => x.role))])
       return allRoles.filter(x => this.authorsByRole[x])
+    },
+    languageDisplay(): string {
+      return tags(this.series.metadata.language)?.language()?.descriptions()[0] || this.series.metadata.language
     },
   },
   methods: {
@@ -573,29 +683,58 @@ export default Vue.extend({
       }
     },
     readListChanged(event: ReadListSseDto) {
-      if (event.bookIds.includes(this.bookId) || this.readLists.map(x => x.id).includes(event.readListId)) {
-        this.$komgaBooks.getReadLists(this.bookId)
+      if (event.bookIds.includes(this.book.id) || this.readLists.map(x => x.id).includes(event.readListId)) {
+        this.$komgaBooks.getReadLists(this.book.id)
           .then(v => this.readLists = v)
       }
     },
+    collectionChanged(event: CollectionSseDto) {
+      if (event.seriesIds.includes(this.seriesId) || this.collections.map(x => x.id).includes(event.collectionId)) {
+        this.$komgaSeries.getCollections(this.seriesId)
+          .then(v => this.collections = v)
+      }
+    },
+    seriesChanged(event: SeriesSseDto) {
+      if (event.seriesId === this.seriesId)
+        this.$komgaSeries.getOneSeries(this.seriesId)
+          .then(v => this.series = v)
+    },
+    seriesDeleted(event: SeriesSseDto) {
+      if (event.seriesId === this.seriesId) {
+        this.$router.push({name: 'browse-libraries', params: {libraryId: this.series.libraryId}})
+      }
+    },
     bookChanged(event: BookSseDto) {
-      if (event.bookId === this.bookId) this.loadBook(this.bookId)
+      if (event.bookId === this.book.id) this.loadBook(this.seriesId)
     },
     bookDeleted(event: BookSseDto) {
-      if (event.bookId === this.bookId) {
-        this.$router.push({name: 'browse-series', params: {seriesId: this.book.seriesId}})
+      if (event.bookId === this.book.id) {
+        this.$router.push({name: 'browse-libraries', params: {libraryId: this.book.libraryId}})
       }
     },
     readProgressChanged(event: ReadProgressSseDto) {
-      if (event.bookId === this.bookId) this.loadBook(this.bookId)
+      if (event.bookId === this.book.id) this.loadBook(this.seriesId)
     },
-    async loadBook(bookId: string) {
-      this.book = await this.$komgaBooks.getBook(bookId)
-      // for the cases where we can't change the origin target route because we don't have the full BookDto
-      if (this.book.oneshot) await this.$router.replace({
-        name: 'browse-oneshot',
-        params: {seriesId: this.book.seriesId},
-      })
+    async loadSeries(seriesId: string) {
+      this.$komgaSeries.getOneSeries(seriesId)
+        .then(v => this.series = v)
+      this.$komgaSeries.getCollections(seriesId)
+        .then(v => this.collections = v)
+
+      // parse query params to get context and contextId
+      if (this.$route.query.contextId && this.$route.query.context
+        && Object.values(ContextOrigin).includes(this.$route.query.context as ContextOrigin)) {
+        this.context = {
+          origin: this.$route.query.context as ContextOrigin,
+          id: this.$route.query.contextId as string,
+        }
+        this.series.context = this.context
+      }
+
+      await this.loadBook(seriesId)
+    },
+    async loadBook(seriesId: string) {
+      this.book = (await this.$komgaSeries.getBooks(seriesId)).content[0]
 
       // parse query params to get context and contextId
       if (this.$route.query.contextId && this.$route.query.context
@@ -605,8 +744,9 @@ export default Vue.extend({
           id: this.$route.query.contextId as string,
         }
         this.book.context = this.context
-        this.$komgaReadLists.getOneReadList(this.context.id)
-          .then(v => this.contextName = v.name)
+        if (this.context.origin === ContextOrigin.READLIST)
+          this.$komgaReadLists.getOneReadList(this.context.id)
+            .then(v => this.contextName = v.name)
       }
 
       // Get siblings depending on origin
@@ -614,11 +754,10 @@ export default Vue.extend({
         this.$komgaReadLists.getBooks(this.context.id, {unpaged: true} as PageRequest)
           .then(v => this.siblings = v.content)
       } else {
-        this.$komgaSeries.getBooks(this.book.seriesId, {unpaged: true} as PageRequest)
-          .then(v => this.siblings = v.content)
+        this.siblings = {} as BookDto[]
       }
 
-      this.$komgaBooks.getReadLists(this.bookId)
+      this.$komgaBooks.getReadLists(this.book.id)
         .then(v => this.readLists = v)
 
       if (this.$_.has(this.book, 'metadata.title')) {
@@ -626,22 +765,18 @@ export default Vue.extend({
       }
 
       if (this?.context.origin === ContextOrigin.READLIST) {
-        this.$komgaReadLists.getBookSiblingNext(this.context.id, bookId)
+        this.$komgaReadLists.getBookSiblingNext(this.context.id, this.book.id)
           .then(v => this.siblingNext = v)
           .catch(e => this.siblingNext = {} as BookDto)
       } else {
-        this.$komgaBooks.getBookSiblingNext(bookId)
-          .then(v => this.siblingNext = v)
-          .catch(e => this.siblingNext = {} as BookDto)
+        this.siblingNext = {} as BookDto
       }
       if (this?.context.origin === ContextOrigin.READLIST) {
-        this.$komgaReadLists.getBookSiblingPrevious(this.context.id, bookId)
+        this.$komgaReadLists.getBookSiblingPrevious(this.context.id, this.book.id)
           .then(v => this.siblingPrevious = v)
           .catch(e => this.siblingPrevious = {} as BookDto)
       } else {
-        this.$komgaBooks.getBookSiblingPrevious(bookId)
-          .then(v => this.siblingPrevious = v)
-          .catch(e => this.siblingPrevious = {} as BookDto)
+        this.siblingPrevious = {} as BookDto
       }
     },
     analyze() {
@@ -651,7 +786,7 @@ export default Vue.extend({
       this.$komgaBooks.refreshMetadata(this.book)
     },
     editBook() {
-      this.$store.dispatch('dialogUpdateBooks', this.book)
+      this.$store.dispatch('dialogUpdateOneshots', {series: this.series, book: this.book} as Oneshot)
     },
   },
 })

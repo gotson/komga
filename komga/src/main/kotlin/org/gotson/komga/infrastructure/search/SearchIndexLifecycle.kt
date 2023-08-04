@@ -48,7 +48,7 @@ class SearchIndexLifecycle(
 
     targetEntities.forEach {
       when (it) {
-        LuceneEntity.Book -> rebuildIndex(it, { p: Pageable -> bookDtoRepository.findAll(BookSearchWithReadProgress(), "unused", p) }, { e: BookDto -> e.toDocument() })
+        LuceneEntity.Book -> rebuildIndex(it, { p: Pageable -> bookDtoRepository.findAll(BookSearchWithReadProgress(), "unused", p) }, { e: BookDto -> e.bookToDocument() })
         LuceneEntity.Series -> rebuildIndex(it, { p: Pageable -> seriesDtoRepository.findAll(SeriesSearchWithReadProgress(), "unused", p) }, { e: SeriesDto -> e.toDocument() })
         LuceneEntity.Collection -> rebuildIndex(it, { p: Pageable -> collectionRepository.findAll(pageable = p) }, { e: SeriesCollection -> e.toDocument() })
         LuceneEntity.ReadList -> rebuildIndex(it, { p: Pageable -> readListRepository.findAll(pageable = p) }, { e: ReadList -> e.toDocument() })
@@ -58,7 +58,7 @@ class SearchIndexLifecycle(
     luceneHelper.setIndexVersion(INDEX_VERSION)
   }
 
-  private fun <T> rebuildIndex(entity: LuceneEntity, provider: (Pageable) -> Page<out T>, toDoc: (T) -> Document) {
+  private fun <T> rebuildIndex(entity: LuceneEntity, provider: (Pageable) -> Page<out T>, toDoc: (T) -> Document?) {
     logger.info { "Rebuilding index for ${entity.name}" }
 
     val count = provider(Pageable.ofSize(1)).totalElements
@@ -73,7 +73,7 @@ class SearchIndexLifecycle(
         (0 until pages).forEach { page ->
           logger.info { "Processing page ${page + 1} of $pages ($batchSize elements)" }
           val entityDocs = provider(PageRequest.of(page, batchSize)).content
-            .map { toDoc(it) }
+            .mapNotNull { toDoc(it) }
           indexWriter.addDocuments(entityDocs)
         }
       }.also { duration ->
@@ -89,8 +89,8 @@ class SearchIndexLifecycle(
       is DomainEvent.SeriesUpdated -> seriesDtoRepository.findByIdOrNull(event.series.id, "unused")?.toDocument()?.let { updateEntity(LuceneEntity.Series, event.series.id, it) }
       is DomainEvent.SeriesDeleted -> deleteEntity(LuceneEntity.Series, event.series.id)
 
-      is DomainEvent.BookAdded -> bookDtoRepository.findByIdOrNull(event.book.id, "unused")?.toDocument()?.let { addEntity(it) }
-      is DomainEvent.BookUpdated -> bookDtoRepository.findByIdOrNull(event.book.id, "unused")?.toDocument()?.let { updateEntity(LuceneEntity.Book, event.book.id, it) }
+      is DomainEvent.BookAdded -> bookDtoRepository.findByIdOrNull(event.book.id, "unused")?.bookToDocument()?.let { addEntity(it) }
+      is DomainEvent.BookUpdated -> bookDtoRepository.findByIdOrNull(event.book.id, "unused")?.bookToDocument()?.let { updateEntity(LuceneEntity.Book, event.book.id, it) }
       is DomainEvent.BookDeleted -> deleteEntity(LuceneEntity.Book, event.book.id)
 
       is DomainEvent.ReadListAdded -> readListRepository.findByIdOrNull(event.readList.id)?.toDocument()?.let { addEntity(it) }
@@ -104,6 +104,11 @@ class SearchIndexLifecycle(
       else -> Unit
     }
   }
+
+  private fun BookDto.bookToDocument(): Document =
+    if (this.oneshot) {
+      seriesDtoRepository.findByIdOrNull(seriesId, "unused")!!.oneshotDocument(toDocument())
+    } else this.toDocument()
 
   private fun addEntity(doc: Document) {
     luceneHelper.getIndexWriter().use { indexWriter ->

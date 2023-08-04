@@ -27,6 +27,7 @@ data class BookDto(
   val readProgress: ReadProgressDto? = null,
   val deleted: Boolean,
   val fileHash: String,
+  val oneshot: Boolean,
   val publisher: String?,
   val seriesTags: Set<String>?,
   val seriesGenres: Set<String>?,

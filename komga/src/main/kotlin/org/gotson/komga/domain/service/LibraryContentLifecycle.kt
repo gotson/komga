@@ -66,7 +66,7 @@ class LibraryContentLifecycle(
     logger.info { "Updating library: $library" }
     measureTime {
       val scanResult = try {
-        fileSystemScanner.scanRootFolder(Paths.get(library.root.toURI()), library.scanForceModifiedTime)
+        fileSystemScanner.scanRootFolder(Paths.get(library.root.toURI()), library.scanForceModifiedTime, library.oneshotsDirectory)
       } catch (e: DirectoryNotFoundException) {
         library.copy(unavailableDate = LocalDateTime.now()).let {
           libraryRepository.update(it)

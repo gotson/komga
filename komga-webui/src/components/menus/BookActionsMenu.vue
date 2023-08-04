@@ -76,7 +76,7 @@ export default Vue.extend({
       this.$komgaBooks.refreshMetadata(this.book)
     },
     addToReadList () {
-      this.$store.dispatch('dialogAddBooksToReadList', this.book)
+      this.$store.dispatch('dialogAddBooksToReadList', [this.book.id])
     },
     async markRead () {
       const readProgress = { completed: true } as ReadProgressUpdateDto

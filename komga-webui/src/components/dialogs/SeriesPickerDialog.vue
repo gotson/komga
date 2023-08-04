@@ -100,6 +100,10 @@ export default Vue.extend({
       type: Object as PropType<SeriesDto>,
       required: false,
     },
+    includeOneshots: {
+      type: Boolean,
+      default: true,
+    },
   },
   watch: {
     value(val) {
@@ -119,7 +123,7 @@ export default Vue.extend({
     searchItems: debounce(async function (this: any, query: string) {
       if (query) {
         this.showResults = false
-        this.results = (await this.$komgaSeries.getSeries(undefined, {unpaged: true}, query)).content
+        this.results = (await this.$komgaSeries.getSeries(undefined, {unpaged: true}, query, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, this.includeOneshots)).content
         this.showResults = true
       } else {
         this.clear()

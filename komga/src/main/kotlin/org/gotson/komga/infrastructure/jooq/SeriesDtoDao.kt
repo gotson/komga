@@ -303,6 +303,7 @@ class SeriesDtoDao(
     if (deleted == false) c = c.and(s.DELETED_DATE.isNull)
     if (complete == false) c = c.and(d.TOTAL_BOOK_COUNT.isNotNull.and(d.TOTAL_BOOK_COUNT.ne(s.BOOK_COUNT)))
     if (complete == true) c = c.and(d.TOTAL_BOOK_COUNT.isNotNull.and(d.TOTAL_BOOK_COUNT.eq(s.BOOK_COUNT)))
+    if (oneshot != null) c = c.and(s.ONESHOT.eq(oneshot))
     if (!languages.isNullOrEmpty()) c = c.and(d.LANGUAGE.collate(SqliteUdfDataSource.collationUnicode3).`in`(languages))
     if (!genres.isNullOrEmpty()) c = c.and(g.GENRE.collate(SqliteUdfDataSource.collationUnicode3).`in`(genres))
     if (!tags.isNullOrEmpty()) c = c.and(st.TAG.collate(SqliteUdfDataSource.collationUnicode3).`in`(tags).or(bmat.TAG.collate(SqliteUdfDataSource.collationUnicode3).`in`(tags)))
@@ -383,6 +384,7 @@ class SeriesDtoDao(
       metadata = metadata,
       booksMetadata = booksMetadata,
       deleted = deletedDate != null,
+      oneshot = oneshot,
     )
 
   private fun SeriesMetadataRecord.toDto(genres: Set<String>, tags: Set<String>, sharingLabels: Set<String>, links: List<WebLinkDto>, alternateTitles: List<AlternateTitleDto>) =

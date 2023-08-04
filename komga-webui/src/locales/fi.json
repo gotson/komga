@@ -21,6 +21,11 @@
     "account_settings": "Tilin Asetukset",
     "change_password": "Vaihda salasana"
   },
+  "announcements": {
+    "mark_all_read": "Merkitse kaikki luetuksi",
+    "mark_read": "Merkitse luetuksi",
+    "tab_title": "Tiedotteet"
+  },
   "authentication_activity": {
     "datetime": "Päivämäärä & Aika",
     "email": "Sähköposti",
@@ -174,7 +179,8 @@
   },
   "browse_readlist": {
     "edit_elements": "Muokkaa elementtejä",
-    "edit_readlist": "Muokkaa lukulistaa"
+    "edit_readlist": "Muokkaa lukulistaa",
+    "manual_ordering": "manuaalinen järjestely"
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Tämä on aikaisin vuosi kaikista sarjassa olevien kirjojen julkaisuvuosista",
@@ -188,6 +194,7 @@
   "common": {
     "age": "Ikä",
     "all_libraries": "Kaikki Kirjastot",
+    "book": "Kirja",
     "books": "Kirjat",
     "books_n": "Ei kirjaa | Yksi kirja | {count} kirjaa",
     "books_total": "{count} / {total} kirjaa",
@@ -205,6 +212,7 @@
     "filename": "Tiedostonimi",
     "filter_no_matches": "Aktiiviselle suodattimelle ei löytynyt tuloksia",
     "genre": "Tyylilaji",
+    "go_to_collection": "Siirry kokoelmaan",
     "go_to_library": "Siirry kirjastoon",
     "go_to_readlist": "Siirry lukulistaan",
     "go_to_series": "Siirry sarjaan",
@@ -218,17 +226,20 @@
     "page": "Sivu",
     "page_number": "Sivunumero",
     "pages": "sivua",
+    "pages_left": "Ei sivuja jäljellä | 1 sivu jäljellä | {count} sivua jäljellä",
     "pages_n": "Ei sivuja | Yksi sivu | {count} sivua",
     "password": "Salasana",
     "pending_tasks": "Ei odottavia tehtäviä | 1 odottava tehtävä | {count} odottavaa tehtävää",
     "publisher": "Julkaisija",
     "read": "Lue",
+    "read_on": "Luettu {date}",
+    "readlist": "Lukulista",
     "readlists": "Lukulistat",
     "required": "Pakollinen",
     "reset_filters": "Nollaa suodattimet",
     "roles": "Roolit",
     "save_changes": "Tallenna muutokset",
-    "series": "Sarja",
+    "series": "Sarja | Sarjat",
     "sidecars": "Sivuvaunut",
     "tags": "Tunnisteet",
     "unavailable": "Ei käytettävissä",
@@ -250,10 +261,20 @@
     "book_number": "Kirjan numero: {name}",
     "book_series": "Sarja: {name}",
     "button_import": "Tuo",
+    "button_match": "Sovita",
     "comicrack_preambule_html": "Voit tuoda valmiita ComicRack -lukulistoja <code>.cbl</code> -formaatissa.<br>Komga yrittää sovittaa annetun sarjan ja kirjan numeron kirjastossasi oleviin sarjoihin ja kirjoihin.",
+    "dialog_confirmation": {
+      "body": "{unmatched} / {total} kirjoista ei ole sovitettu",
+      "create": "Luo silti",
+      "title": "Joitakin kirjoja ei ole sovitettu"
+    },
+    "field_file_label": "ComicRack lukulista (.cbl)",
     "field_files_label": "ComicRack lukulistat (.cbl)",
     "import_read_lists": "Tuo lukulistat",
     "imported_as": "Tuotu nimellä {name}",
+    "readlist_created": "Lukulistan luonut: {name}",
+    "requested_number": "Pyydetty numero",
+    "requested_series": "Pyydetty sarja",
     "results_preambule": "Tuonnin tulokset on näytetty alla. Voit myös tarkistaa sovittamattomat kirjat jokaiselle annetulle tiedostolle.",
     "size_limit": "Koon pitäisi olla alle {size} MB",
     "tab_title": "Tietojen tuonti"
@@ -291,6 +312,10 @@
       "body": "Analysoi kaikki kirjaston mediatiedostot. Analyysi kerää tietoa mediasta. Kirjaston koosta riippuen tämä voi kestää kauan.",
       "button_confirm": "Analysoi",
       "title": "Analysoi kirjasto"
+    },
+    "book_picker": {
+      "filter": "Suodata kirjan numeron, nimen tai julkaisupäivän mukaan",
+      "title": "Valitse kirja"
     },
     "delete_book": {
       "button_confirm": "Poista",
@@ -344,8 +369,10 @@
       "authors_notice_multiple_edit": "Olet muokkaamassa useiden kirjojen kirjailijoita. Tämä ohittaa jokaisen kirjan nykyiset kirjailijat.",
       "button_cancel": "Peruuta",
       "button_confirm": "Tallenna muutokset",
+      "copy_from": "Kopioi {field}",
       "dialog_title_multiple": "Muokkaa {count} kirjaa | Muokkaa {count} kirjaa",
       "dialog_title_single": "Muokkaa {book}",
+      "field_alternate_title": "Vaihtoehoinen nimi",
       "field_isbn": "ISBN",
       "field_isbn_error": "Täytyy olla kelvollinen ISBN 13",
       "field_link_label": "Tunniste",
@@ -360,6 +387,8 @@
       "field_summary": "Yhteenveto",
       "field_tags": "Tunnisteet",
       "field_title": "Nimi",
+      "number_sort_decrement": "Vähennä kaikkia yhdellä",
+      "number_sort_increment": "Kasvata kaikkia yhdellä",
       "tab_authors": "Tekijät",
       "tab_general": "Yleiset",
       "tab_links": "Linkit",
@@ -393,6 +422,7 @@
       "field_import_comicinfo_collections": "Kokoelmat",
       "field_import_comicinfo_readlists": "Lukulistat",
       "field_import_comicinfo_series": "Sarjan metatiedot",
+      "field_import_comicinfo_series_append_volume": "Lisää nide sarjan nimeen",
       "field_import_epub_book": "Kirjan metatiedot",
       "field_import_epub_series": "Sarjan metatiedot",
       "field_import_local_artwork": "Paikallinen kuvamateriaali",
@@ -424,8 +454,10 @@
       "button_cancel": "Peruuta",
       "button_confirm": "Tallenna muutokset",
       "dialog_title": "Muokkaa lukulistaa",
+      "field_manual_ordering": "Manuaalinen järjestely",
       "field_name": "Nimi",
       "field_summary": "Yhteenveto",
+      "label_ordering": "Oletuksena kirjat on järjestelty manuaalisesti. Voit kääntää tämän pois päältä, jotta kirjat on järjestellään julkaisupäivän mukaan.",
       "tab_general": "Yleiset",
       "tab_poster": "Juliste"
     },
@@ -454,6 +486,7 @@
       "tab_poster": "Juliste",
       "tab_sharing": "Jakaminen",
       "tab_tags": "Tunnisteet",
+      "tab_titles": "Vaihtoehtoiset nimet",
       "tags_notice_multiple_edit": "Olet muokkaamassa usean sarjan tunnisteita. Tämä ohittaa jokaisen sarjan nykyiset tunnisteet."
     },
     "edit_user": {
@@ -512,6 +545,7 @@
     },
     "series_picker": {
       "label_search_series": "Etsi Sarjaa",
+      "no_results": "Sarjaa ei löytynyt",
       "title": "Valitse Sarja"
     },
     "server_stop": {
@@ -550,10 +584,12 @@
     }
   },
   "duplicate_pages": {
+    "action_auto_delete_remaining": "Automaattisia poistoja jäljellä ({count})",
     "action_delete_auto": "Automaattinen poisto",
     "action_delete_manual": "Manuaalinen poisto",
     "action_delete_matches": "Poista osumat",
     "action_ignore": "Jätä huomiotta",
+    "action_ignore_remaining": "Jätä loput huomioimatta ({count})",
     "delete_to_save": "Poista säästääksesi {size}",
     "deleted_count": "Poistettu {count} kertaa",
     "filter": {
@@ -565,6 +601,7 @@
     },
     "info": "Duplikaattisivujen poistaminen muokkaa tiedostojasi. Ota tiedostoistasi varmuuskopio ja käytä manuaalista poistoa ennen kuin käytät automaattista poistoa.",
     "matches_n": "Ei osumia | 1 osuma | {count} osumaa",
+    "new": "Uusi",
     "saved_size": "Säästetty {size}",
     "title": "Duplikaattisivut",
     "unknown_size": "Tuntematon koko"
@@ -629,7 +666,7 @@
     "ERR_1007": "Joitain merkintöjä ei voitu analysoida",
     "ERR_1008": "Tuntematon virhe kirjan merkintöjä haettaessa",
     "ERR_1009": "Tämänniminen lukulista on jo olemassa",
-    "ERR_1015": "Virhe deserialisoidessa ComicRack lukulistaa",
+    "ERR_1015": "Virhe deserialisoidessa ComicRack CBL:ää",
     "ERR_1016": "Kansio ei ole käytettävissä tai se ei ole kansio",
     "ERR_1017": "Ei voida skannata kansiota, joka on osa jo olemassa olevaa kirjastoa",
     "ERR_1018": "Tiedostoa ei löydy",

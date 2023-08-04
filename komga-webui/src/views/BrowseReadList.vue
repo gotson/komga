@@ -47,11 +47,13 @@
     <multi-select-bar
       v-model="selectedBooks"
       kind="books"
+      :oneshots="selectedOneshots"
       show-select-all
       @unselect-all="selectedBooks = []"
       @select-all="selectedBooks = books"
       @mark-read="markSelectedRead"
       @mark-unread="markSelectedUnread"
+      @add-to-collection="addToCollection"
       @add-to-readlist="addToReadList"
       @edit="editMultipleBooks"
       @bulk-edit="bulkEditMultipleBooks"
@@ -186,6 +188,7 @@ import {ItemContext} from '@/types/items'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import {ReadListDto, ReadListUpdateDto} from '@/types/komga-readlists'
+import {Oneshot} from '@/types/komga-series'
 
 export default Vue.extend({
   name: 'BrowseReadList',
@@ -336,6 +339,9 @@ export default Vue.extend({
     filterActive(): boolean {
       return Object.keys(this.filters).some(x => this.filters[x].length !== 0)
     },
+    selectedOneshots(): boolean {
+      return this.selectedBooks.every(b => b.oneshot)
+    },
   },
   methods: {
     resetFilters() {
@@ -472,11 +478,20 @@ export default Vue.extend({
     reloadPage: throttle(function (this: any) {
       this.loadPage(this.readListId, this.page)
     }, 1000),
-    editSingleBook(book: BookDto) {
-      this.$store.dispatch('dialogUpdateBooks', book)
+    async editSingleBook(book: BookDto) {
+      if (book.oneshot) {
+        const series = (await this.$komgaSeries.getOneSeries(book.seriesId))
+        this.$store.dispatch('dialogUpdateOneshots', {series: series, book: book})
+      } else
+        this.$store.dispatch('dialogUpdateBooks', book)
     },
-    editMultipleBooks() {
-      this.$store.dispatch('dialogUpdateBooks', this.selectedBooks)
+    async editMultipleBooks() {
+      if (this.selectedBooks.every(b => b.oneshot)) {
+        const series = await Promise.all(this.selectedBooks.map(b => this.$komgaSeries.getOneSeries(b.seriesId)))
+        const oneshots = this.selectedBooks.map((b, index) => ({series: series[index], book: b} as Oneshot))
+        this.$store.dispatch('dialogUpdateOneshots', oneshots)
+      } else
+        this.$store.dispatch('dialogUpdateBooks', this.selectedBooks)
     },
     bulkEditMultipleBooks() {
       this.$store.dispatch('dialogUpdateBulkBooks', this.selectedBooks)
@@ -496,8 +511,11 @@ export default Vue.extend({
       ))
       this.selectedBooks = []
     },
+    addToCollection() {
+      this.$store.dispatch('dialogAddSeriesToCollection', this.selectedBooks.map(b => b.seriesId))
+    },
     addToReadList() {
-      this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks)
+      this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks.map(b => b.id))
     },
     async startEditElements() {
       this.filters = {}

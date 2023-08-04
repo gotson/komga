@@ -2,7 +2,7 @@
   <div>
     <collection-add-to-dialog
       v-model="addToCollectionDialog"
-      :series="addToCollectionSeries"
+      :series-ids="addToCollectionSeriesIds"
     />
 
     <collection-edit-dialog
@@ -22,7 +22,7 @@
 
     <read-list-add-to-dialog
       v-model="addToReadListDialog"
-      :books="addToReadListBooks"
+      :bookIds="addToReadListBookIds"
     />
 
     <read-list-edit-dialog
@@ -65,6 +65,11 @@
       :books="updateBulkBooks"
     />
 
+    <edit-oneshot-dialog
+      v-model="updateOneshotsDialog"
+      :oneshots="updateOneshots"
+    />
+
     <edit-series-dialog
       v-model="updateSeriesDialog"
       :series="updateSeries"
@@ -103,16 +108,18 @@ import Vue from 'vue'
 import ReadListAddToDialog from '@/components/dialogs/ReadListAddToDialog.vue'
 import ReadListEditDialog from '@/components/dialogs/ReadListEditDialog.vue'
 import {BookDto} from '@/types/komga-books'
-import {SeriesDto} from '@/types/komga-series'
+import {Oneshot, SeriesDto} from '@/types/komga-series'
 import {ERROR} from '@/types/events'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import {LibraryDto} from '@/types/komga-libraries'
 import BulkEditBooksDialog from '@/components/dialogs/BulkEditBooksDialog.vue'
 import {ReadListDto} from '@/types/komga-readlists'
+import EditOneshotDialog from '@/components/dialogs/EditOneshotDialog.vue'
 
 export default Vue.extend({
   name: 'ReusableDialogs',
   components: {
+    EditOneshotDialog,
     BulkEditBooksDialog,
     ConfirmationDialog,
     CollectionAddToDialog,
@@ -133,8 +140,8 @@ export default Vue.extend({
         this.$store.dispatch('dialogAddSeriesToCollectionDisplay', val)
       },
     },
-    addToCollectionSeries(): SeriesDto | SeriesDto[] {
-      return this.$store.state.addToCollectionSeries
+    addToCollectionSeriesIds(): string[] {
+      return this.$store.state.addToCollectionSeriesIds
     },
     editCollectionDialog: {
       get(): boolean {
@@ -170,8 +177,8 @@ export default Vue.extend({
         this.$store.dispatch('dialogAddBooksToReadListDisplay', val)
       },
     },
-    addToReadListBooks(): BookDto | BookDto[] {
-      return this.$store.state.addToReadListBooks
+    addToReadListBookIds(): string[] {
+      return this.$store.state.addToReadListBookIds
     },
     editReadListDialog: {
       get(): boolean {
@@ -258,6 +265,18 @@ export default Vue.extend({
     },
     booksToDeleteSingle(): boolean {
       return !Array.isArray(this.booksToDelete)
+    },
+    // oneshots
+    updateOneshotsDialog: {
+      get(): boolean {
+        return this.$store.state.updateOneshotsDialog
+      },
+      set(val) {
+        this.$store.dispatch('dialogUpdateOneshotsDisplay', val)
+      },
+    },
+    updateOneshots(): Oneshot | Oneshot[] {
+      return this.$store.state.updateOneshots
     },
     // series
     updateSeriesDialog: {

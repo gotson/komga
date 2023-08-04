@@ -76,7 +76,10 @@
 
           <v-list-item-content>
             <v-list-item-title>{{ data.item.metadata.title }}</v-list-item-title>
-            <v-list-item-subtitle>{{ data.item.seriesTitle }} - {{ data.item.metadata.number }}</v-list-item-subtitle>
+            <v-list-item-subtitle v-if="!data.item.oneshot">{{ data.item.seriesTitle }} - {{
+                data.item.metadata.number
+              }}
+            </v-list-item-subtitle>
             <v-list-item-subtitle>{{
                 $t('searchbox.in_library', {library: getLibraryName(data.item)})
               }}
@@ -144,6 +147,10 @@ export default Vue.extend({
         })
 
         if (val.type === 'series') this.$router.push({name: 'browse-series', params: {seriesId: val.id}})
+        else if (val.type === 'book' && val.oneshot) this.$router.push({
+          name: 'browse-oneshot',
+          params: {seriesId: val.seriesId},
+        })
         else if (val.type === 'book') this.$router.push({name: 'browse-book', params: {bookId: val.id}})
         else if (val.type === 'collection') this.$router.push({
           name: 'browse-collection',

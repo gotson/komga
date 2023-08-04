@@ -1,3 +1,61 @@
+# [1.3.0](https://github.com/gotson/komga/compare/v1.2.1...v1.3.0) (2023-08-03)
+## 🚀 Features
+**api**
+- add support for oneshots directory in libraries ([739eeca](https://github.com/gotson/komga/commits/739eeca))
+
+**cli**
+- add command line interface commands ([f6cc958](https://github.com/gotson/komga/commits/f6cc958)), closes [#1175](https://github.com/gotson/komga/issues/1175)
+
+**docker**
+- enable jpeg-xl support for linux/amd64 ([466e980](https://github.com/gotson/komga/commits/466e980))
+
+**webui**
+- oneshots handling ([2b238cc](https://github.com/gotson/komga/commits/2b238cc))
+
+## 🐛 Fixes
+**api**
+- http header containing non-ascii character gets stripped ([419cb5a](https://github.com/gotson/komga/commits/419cb5a)), closes [#1161](https://github.com/gotson/komga/issues/1161) [#1176](https://github.com/gotson/komga/issues/1176)
+
+**webui**
+- invalid series language code can prevent some views to render ([8a03c50](https://github.com/gotson/komga/commits/8a03c50)), closes [#1173](https://github.com/gotson/komga/issues/1173)
+- better filenames when downloading book pages ([19abdce](https://github.com/gotson/komga/commits/19abdce))
+
+**unscoped**
+- normalize language codes ([1a2acac](https://github.com/gotson/komga/commits/1a2acac)), closes [#1173](https://github.com/gotson/komga/issues/1173)
+
+## 🏎 Perf
+**webui**
+- remove redundant API call in EditSeriesDialog ([11f8aaf](https://github.com/gotson/komga/commits/11f8aaf))
+
+## 🔄️ Changes
+**webui**
+- pass book or series id to reusable dialog instead of full DTO ([39e7ae9](https://github.com/gotson/komga/commits/39e7ae9))
+
+**unscoped**
+- ktlint format ([c2224f1](https://github.com/gotson/komga/commits/c2224f1))
+- harden BCP47 functions ([82dd23a](https://github.com/gotson/komga/commits/82dd23a))
+
+## 🛠  Build
+
+- fix tests for oneshots ([5a8f686](https://github.com/gotson/komga/commits/5a8f686))
+- add bestbefore to prevent shipping deprecated code on major versions ([7f1fded](https://github.com/gotson/komga/commits/7f1fded))
+
+## 📝 Documentation
+
+- update website url in issue templates ([f7b6e0d](https://github.com/gotson/komga/commits/f7b6e0d)), closes [#1178](https://github.com/gotson/komga/issues/1178)
+
+## 🌐 Translation
+
+- translated using Weblate (Indonesian) ([de01b70](https://github.com/gotson/komga/commits/de01b70))
+- translated using Weblate (Portuguese (Brazil)) ([aa92b69](https://github.com/gotson/komga/commits/aa92b69))
+- translated using Weblate (Polish) ([33d5a56](https://github.com/gotson/komga/commits/33d5a56))
+- translated using Weblate (Indonesian) ([cb4ce72](https://github.com/gotson/komga/commits/cb4ce72))
+- translated using Weblate (Japanese) ([9a6a75c](https://github.com/gotson/komga/commits/9a6a75c))
+- translated using Weblate (Korean) ([7f71355](https://github.com/gotson/komga/commits/7f71355))
+- translated using Weblate (Finnish) ([e3f66d3](https://github.com/gotson/komga/commits/e3f66d3))
+- translated using Weblate (Spanish) ([4ce904e](https://github.com/gotson/komga/commits/4ce904e))
+- translated using Weblate (German) ([8920415](https://github.com/gotson/komga/commits/8920415))
+
 # [1.2.1](https://github.com/gotson/komga/compare/v1.2.0...v1.2.1) (2023-07-17)
 ## 🐛 Fixes
 **api**

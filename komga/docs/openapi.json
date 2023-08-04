@@ -448,7 +448,8 @@
           "204": {
             "description": "No Content"
           }
-        }
+        },
+        "deprecated": true
       },
       "delete": {
         "tags": [
@@ -465,6 +466,47 @@
             }
           }
         ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "library-controller"
+        ],
+        "operationId": "patchOne",
+        "parameters": [
+          {
+            "name": "libraryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LibraryUpdateDto"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -4487,6 +4529,14 @@
             }
           },
           {
+            "name": "oneshot",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "unpaged",
             "in": "query",
             "required": false,
@@ -5015,6 +5065,14 @@
             }
           },
           {
+            "name": "oneshot",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "unpaged",
             "in": "query",
             "required": false,
@@ -5143,6 +5201,14 @@
             }
           },
           {
+            "name": "oneshot",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "unpaged",
             "in": "query",
             "required": false,
@@ -5212,6 +5278,14 @@
           },
           {
             "name": "deleted",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "oneshot",
             "in": "query",
             "required": false,
             "schema": {
@@ -5424,6 +5498,14 @@
           },
           {
             "name": "complete",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "oneshot",
             "in": "query",
             "required": false,
             "schema": {
@@ -8053,28 +8135,6 @@
         }
       },
       "LibraryUpdateDto": {
-        "required": [
-          "analyzeDimensions",
-          "convertToCbz",
-          "emptyTrashAfterScan",
-          "hashFiles",
-          "hashPages",
-          "importBarcodeIsbn",
-          "importComicInfoBook",
-          "importComicInfoCollection",
-          "importComicInfoReadList",
-          "importComicInfoSeries",
-          "importComicInfoSeriesAppendVolume",
-          "importEpubBook",
-          "importEpubSeries",
-          "importLocalArtwork",
-          "importMylarSeries",
-          "name",
-          "repairExtensions",
-          "root",
-          "scanForceModifiedTime",
-          "seriesCover"
-        ],
         "type": "object",
         "properties": {
           "name": {
@@ -8142,8 +8202,12 @@
           },
           "analyzeDimensions": {
             "type": "boolean"
+          },
+          "oneshotsDirectory": {
+            "type": "string"
           }
-        }
+        },
+        "description": "Fields to update. You can omit fields you don\u0027t want to update."
       },
       "UserCreationDto": {
         "required": [
@@ -8716,6 +8780,9 @@
           },
           "analyzeDimensions": {
             "type": "boolean"
+          },
+          "oneshotsDirectory": {
+            "type": "string"
           }
         }
       },
@@ -8814,6 +8881,9 @@
           },
           "analyzeDimensions": {
             "type": "boolean"
+          },
+          "oneshotsDirectory": {
+            "type": "string"
           },
           "unavailable": {
             "type": "boolean"
@@ -9068,6 +9138,9 @@
               "type": "string"
             }
           },
+          "ageRestriction": {
+            "$ref": "#/components/schemas/AgeRestrictionUpdateDto"
+          },
           "labelsAllow": {
             "uniqueItems": true,
             "type": "array",
@@ -9081,9 +9154,6 @@
             "items": {
               "type": "string"
             }
-          },
-          "ageRestriction": {
-            "$ref": "#/components/schemas/AgeRestrictionUpdateDto"
           },
           "sharedLibraries": {
             "$ref": "#/components/schemas/SharedLibrariesUpdateDto"
@@ -9222,17 +9292,17 @@
             "type": "integer",
             "format": "int32"
           },
+          "alternateTitles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlternateTitleUpdateDto"
+            }
+          },
           "sharingLabels": {
             "uniqueItems": true,
             "type": "array",
             "items": {
               "type": "string"
-            }
-          },
-          "alternateTitles": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AlternateTitleUpdateDto"
             }
           }
         },
@@ -9869,6 +9939,7 @@
           "libraryId",
           "metadata",
           "name",
+          "oneshot",
           "url"
         ],
         "type": "object",
@@ -9920,6 +9991,9 @@
             "$ref": "#/components/schemas/BookMetadataAggregationDto"
           },
           "deleted": {
+            "type": "boolean"
+          },
+          "oneshot": {
             "type": "boolean"
           }
         }
@@ -10102,6 +10176,7 @@
           "metadata",
           "name",
           "number",
+          "oneshot",
           "seriesId",
           "seriesTitle",
           "size",
@@ -10165,6 +10240,9 @@
           },
           "fileHash": {
             "type": "string"
+          },
+          "oneshot": {
+            "type": "boolean"
           }
         }
       },

@@ -647,7 +647,6 @@ export default Vue.extend({
     },
     series(val) {
       this.dialogReset(val)
-      this.getThumbnails(val)
     },
   },
   validations: {

@@ -143,6 +143,7 @@ class SeriesController(
     @RequestParam(name = "sharing_label", required = false) sharingLabels: List<String>? = null,
     @RequestParam(name = "deleted", required = false) deleted: Boolean? = null,
     @RequestParam(name = "complete", required = false) complete: Boolean? = null,
+    @RequestParam(name = "oneshot", required = false) oneshot: Boolean? = null,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) @Authors authors: List<Author>? = null,
     @Parameter(hidden = true) page: Pageable,
@@ -174,15 +175,16 @@ class SeriesController(
         }
       },
       metadataStatus = metadataStatus,
-      readStatus = readStatus,
       publishers = publishers,
       deleted = deleted,
       complete = complete,
+      oneshot = oneshot,
       languages = languages,
       genres = genres,
       tags = tags,
       ageRatings = ageRatings?.map { it.toIntOrNull() },
       releaseYears = releaseYears,
+      readStatus = readStatus,
       authors = authors,
       sharingLabels = sharingLabels,
     )
@@ -220,6 +222,7 @@ class SeriesController(
     @RequestParam(name = "sharing_label", required = false) sharingLabels: List<String>? = null,
     @RequestParam(name = "deleted", required = false) deleted: Boolean?,
     @RequestParam(name = "complete", required = false) complete: Boolean?,
+    @RequestParam(name = "oneshot", required = false) oneshot: Boolean? = null,
     @Parameter(hidden = true) @Authors authors: List<Author>?,
     @Parameter(hidden = true) page: Pageable,
   ): List<GroupCountDto> {
@@ -235,15 +238,16 @@ class SeriesController(
         }
       },
       metadataStatus = metadataStatus,
-      readStatus = readStatus,
       publishers = publishers,
       deleted = deleted,
       complete = complete,
+      oneshot = oneshot,
       languages = languages,
       genres = genres,
       tags = tags,
       ageRatings = ageRatings?.map { it.toIntOrNull() },
       releaseYears = releaseYears,
+      readStatus = readStatus,
       authors = authors,
       sharingLabels = sharingLabels,
     )
@@ -258,6 +262,7 @@ class SeriesController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
     @RequestParam(name = "deleted", required = false) deleted: Boolean?,
+    @RequestParam(name = "oneshot", required = false) oneshot: Boolean? = null,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
   ): Page<SeriesDto> {
@@ -275,6 +280,7 @@ class SeriesController(
       SeriesSearchWithReadProgress(
         libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
         deleted = deleted,
+        oneshot = oneshot,
       ),
       principal.user.id,
       pageRequest,
@@ -289,6 +295,7 @@ class SeriesController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>? = null,
     @RequestParam(name = "deleted", required = false) deleted: Boolean? = null,
+    @RequestParam(name = "oneshot", required = false) oneshot: Boolean? = null,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
   ): Page<SeriesDto> {
@@ -306,6 +313,7 @@ class SeriesController(
       SeriesSearchWithReadProgress(
         libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
         deleted = deleted,
+        oneshot = oneshot,
       ),
       principal.user.id,
       pageRequest,
@@ -320,6 +328,7 @@ class SeriesController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>? = null,
     @RequestParam(name = "deleted", required = false) deleted: Boolean? = null,
+    @RequestParam(name = "oneshot", required = false) oneshot: Boolean? = null,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
   ): Page<SeriesDto> {
@@ -337,6 +346,7 @@ class SeriesController(
       SeriesSearchWithReadProgress(
         libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
         deleted = deleted,
+        oneshot = oneshot,
       ),
       principal.user.id,
       principal.user.restrictions,

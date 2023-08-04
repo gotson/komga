@@ -511,7 +511,7 @@ class BookController(
               val extension = contentDetector.mediaTypeToExtension(pageContent.mediaType) ?: "jpeg"
               val imageFileName = "${book.name}-$pageNum$extension"
               contentDisposition = ContentDisposition.builder("inline")
-                .filename(imageFileName)
+                .filename(imageFileName, UTF_8)
                 .build()
             },
           )

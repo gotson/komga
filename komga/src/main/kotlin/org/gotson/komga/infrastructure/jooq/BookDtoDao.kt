@@ -485,6 +485,7 @@ class BookDtoDao(
       readProgress = readProgress,
       deleted = deletedDate != null,
       fileHash = fileHash,
+      oneshot = oneshot,
       publisher = publisher,
       seriesTags = seriesTags,
       seriesGenres = seriesGenres,

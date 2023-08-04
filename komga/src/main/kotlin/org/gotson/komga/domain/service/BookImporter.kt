@@ -64,6 +64,7 @@ class BookImporter(
   fun importBook(sourceFile: Path, series: Series, copyMode: CopyMode, destinationName: String? = null, upgradeBookId: String? = null): Book {
     try {
       if (sourceFile.notExists()) throw FileNotFoundException("File not found: $sourceFile").withCode("ERR_1018")
+      if (series.oneshot) throw IllegalArgumentException("Destination series is oneshot")
 
       libraryRepository.findAll().forEach { library ->
         if (sourceFile.startsWith(library.path)) throw PathContainedInPath("Cannot import file that is part of an existing library", "ERR_1019")
@@ -99,6 +100,7 @@ class BookImporter(
             logger.warn { "Could not delete upgraded book: ${bookToUpgrade.path}" }
           }
         }
+
         destFile.exists() -> throw FileAlreadyExistsException("Destination file already exists: $destFile").withCode("ERR_1021")
       }
       // delete existing sidecars
@@ -121,6 +123,7 @@ class BookImporter(
             }
           }
         }
+
         CopyMode.COPY -> {
           logger.info { "Copying file $sourceFile to $destFile" }
           sourceFile.copyTo(destFile)
@@ -131,6 +134,7 @@ class BookImporter(
             }
           }
         }
+
         CopyMode.HARDLINK -> try {
           logger.info { "Hardlink file $sourceFile to $destFile" }
           Files.createLink(destFile, sourceFile)

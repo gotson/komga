@@ -108,6 +108,22 @@
                           </v-tooltip>
                         </template>
                       </v-checkbox>
+
+                      <v-text-field v-model="form.oneshotsDirectory"
+                                    clearable
+                                    :label="$t('dialog.edit_library.field_oneshotsdirectory')"
+                                    :error-messages="getErrors('oneshotsDirectory')"
+                                    class="mx-4 mt-4"
+                      >
+                        <template v-slot:append-outer>
+                          <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                              <v-icon v-on="on" color="info">mdi-help-circle-outline</v-icon>
+                            </template>
+                            {{ $t('dialog.edit_library.tooltip_oneshotsdirectory') }}
+                          </v-tooltip>
+                        </template>
+                      </v-text-field>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -392,6 +408,7 @@ export default Vue.extend({
         hashFiles: true,
         hashPages: false,
         analyzeDimensions: true,
+        oneshotsDirectory: '',
       },
       validationFieldNames: new Map([]),
     }
@@ -524,6 +541,7 @@ export default Vue.extend({
       this.form.hashFiles = library ? library.hashFiles : true
       this.form.hashPages = library ? library.hashPages : false
       this.form.analyzeDimensions = library ? library.analyzeDimensions : true
+      this.form.oneshotsDirectory = library ? library.oneshotsDirectory : ''
       this.$v.$reset()
     },
     validateLibrary() {
@@ -551,6 +569,7 @@ export default Vue.extend({
           hashFiles: this.form.hashFiles,
           hashPages: this.form.hashPages,
           analyzeDimensions: this.form.analyzeDimensions,
+          oneshotsDirectory: this.form.oneshotsDirectory,
         }
       }
       return null

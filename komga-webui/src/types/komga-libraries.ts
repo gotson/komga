@@ -21,6 +21,7 @@ export interface LibraryCreationDto {
   hashFiles: boolean,
   hashPages: boolean,
   analyzeDimensions: boolean,
+  oneshotsDirectory: string,
 }
 
 export interface LibraryUpdateDto {
@@ -44,6 +45,7 @@ export interface LibraryUpdateDto {
   hashFiles: boolean,
   hashPages: boolean,
   analyzeDimensions: boolean,
+  oneshotsDirectory: string,
 }
 
 export interface LibraryDto {
@@ -68,5 +70,6 @@ export interface LibraryDto {
   hashFiles: boolean,
   hashPages: boolean,
   analyzeDimensions: boolean,
+  oneshotsDirectory: string,
   unavailable: boolean,
 }

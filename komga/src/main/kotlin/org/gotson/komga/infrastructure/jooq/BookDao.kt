@@ -252,7 +252,8 @@ class BookDao(
             b.LIBRARY_ID,
             b.SERIES_ID,
             b.DELETED_DATE,
-          ).values(null as String?, null, null, null, null, null, null, null, null, null),
+            b.ONESHOT,
+          ).values(null as String?, null, null, null, null, null, null, null, null, null, null),
         ).also { step ->
           chunk.forEach {
             step.bind(
@@ -266,6 +267,7 @@ class BookDao(
               it.libraryId,
               it.seriesId,
               it.deletedDate,
+              it.oneshot,
             )
           }
         }.execute()
@@ -295,6 +297,7 @@ class BookDao(
       .set(b.SERIES_ID, book.seriesId)
       .set(b.DELETED_DATE, book.deletedDate)
       .set(b.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
+      .set(b.ONESHOT, book.oneshot)
       .where(b.ID.eq(book.id))
       .execute()
   }
@@ -353,6 +356,7 @@ class BookDao(
       libraryId = libraryId,
       seriesId = seriesId,
       deletedDate = deletedDate,
+      oneshot = oneshot,
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
       number = number,
