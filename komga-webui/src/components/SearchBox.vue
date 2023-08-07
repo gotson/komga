@@ -202,7 +202,7 @@ export default Vue.extend({
     searchItems: debounce(async function (this: any, query: string) {
       if (query) {
         this.loading = true
-        this.series = (await this.$komgaSeries.getSeries(undefined, {size: this.pageSize}, query)).content
+        this.series = (await this.$komgaSeries.getSeries(undefined, {size: this.pageSize}, query, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, false)).content
         this.books = (await this.$komgaBooks.getBooks(undefined, {size: this.pageSize}, query)).content
         this.collections = (await this.$komgaCollections.getCollections(undefined, {size: this.pageSize}, query)).content
         this.readLists = (await this.$komgaReadLists.getReadLists(undefined, {size: this.pageSize}, query)).content

@@ -44,8 +44,7 @@ fun BookDto.toDocument() =
   }
 
 fun SeriesDto.toDocument() =
-  if (oneshot) null
-  else Document().apply {
+  Document().apply {
     add(TextField("title", metadata.title, Field.Store.NO))
     if (metadata.titleSort != metadata.title) add(TextField("title", metadata.titleSort, Field.Store.NO))
     metadata.alternateTitles.forEach { add(TextField("title", it.title, Field.Store.NO)) }
@@ -76,6 +75,7 @@ fun SeriesDto.toDocument() =
     }
     if (booksMetadata.releaseDate != null) add(TextField("release_date", DateTools.dateToString(booksMetadata.releaseDate.toDate(), DateTools.Resolution.YEAR), Field.Store.NO))
     add(TextField("deleted", deleted.toString(), Field.Store.NO))
+    add(TextField("oneshot", oneshot.toString(), Field.Store.NO))
     if (metadata.totalBookCount != null) add(TextField("complete", (metadata.totalBookCount == booksCount).toString(), Field.Store.NO))
 
     add(StringField(LuceneEntity.TYPE, LuceneEntity.Series.type, Field.Store.NO))
