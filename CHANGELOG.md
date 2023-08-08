@@ -1,3 +1,15 @@
+# [1.3.1](https://github.com/gotson/komga/compare/v1.3.0...v1.3.1) (2023-08-08)
+## 🐛 Fixes
+**docker**
+- change installation method for libjxl ([ad1d1da](https://github.com/gotson/komga/commits/ad1d1da))
+
+**unscoped**
+- series picker does not return any series in CBL import screen ([f8e65b0](https://github.com/gotson/komga/commits/f8e65b0)), closes [#1186](https://github.com/gotson/komga/issues/1186)
+
+## 🌐 Translation
+
+- translated using Weblate (Swedish) ([d47ae13](https://github.com/gotson/komga/commits/d47ae13))
+
 # [1.3.0](https://github.com/gotson/komga/compare/v1.2.1...v1.3.0) (2023-08-03)
 ## 🚀 Features
 **api**
