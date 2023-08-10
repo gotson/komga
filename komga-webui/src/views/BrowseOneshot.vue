@@ -171,11 +171,6 @@
                   {{ $t(`enums.reading_direction.${series.metadata.readingDirection}`) }}
                 </v-chip>
               </v-col>
-              <v-col class="py-1 pe-0" cols="auto" v-if="unavailable">
-                <v-chip label small color="error">
-                  {{ $t('common.unavailable') }}
-                </v-chip>
-              </v-col>
             </v-row>
 
             <v-row class="text-caption" align="center">
