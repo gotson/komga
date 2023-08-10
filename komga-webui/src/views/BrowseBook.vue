@@ -11,6 +11,7 @@
           </v-btn>
         </template>
         <span v-if="contextReadList">{{ $t('common.go_to_readlist') }}</span>
+        <span v-else-if="contextLibrary">{{ $t('common.go_to_library') }}</span>
         <span v-else>{{ $t('common.go_to_series') }}</span>
       </v-tooltip>
 
@@ -543,12 +544,17 @@ export default Vue.extend({
     contextReadList(): boolean {
       return this.context.origin === ContextOrigin.READLIST
     },
+    contextLibrary(): boolean {
+      return this.context.origin === ContextOrigin.LIBRARY
+    },
     mediaComment(): string {
       return convertErrorCodes(this.book.media.comment)
     },
     parentLocation(): RawLocation {
       if (this.contextReadList)
         return {name: 'browse-readlist', params: {readListId: this.context.id}}
+      else if (this.contextLibrary)
+        return {name: 'browse-libraries-by-book', params: {libraryId: this.context.id}}
       else
         return {name: 'browse-series', params: {seriesId: this.book.seriesId}}
     },
