@@ -24,6 +24,10 @@ plugins {
 
 group = "org.gotson"
 
+kotlin {
+  jvmToolchain(17)
+}
+
 val benchmarkSourceSet = sourceSets.create("benchmark") {
   java {
     compileClasspath += sourceSets.main.get().output
@@ -266,7 +270,7 @@ tasks.flywayMigrate {
 }
 
 jooq {
-  version.set("3.17.4")
+  version.set("3.18.4")
   configurations {
     create("main") {
       jooqConfiguration.apply {
