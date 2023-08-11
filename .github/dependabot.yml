@@ -12,6 +12,12 @@ updates:
     schedule:
       interval: "weekly"
 
+  - package-ecosystem: "gradle"
+    directory: "/komga-tray"
+    open-pull-requests-limit: 0
+    schedule:
+      interval: "weekly"
+
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
