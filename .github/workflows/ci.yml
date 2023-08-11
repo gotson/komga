@@ -27,15 +27,17 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java: [ 17, 19 ]
     name: Test JDK ${{ matrix.java }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-java@v3
         with:
-          java-version: ${{ matrix.java }}
+          java-version: 19
+          java-package: 'jdk'
+          distribution: 'temurin'
+      - uses: actions/setup-java@v3
+        with:
+          java-version: 17
           java-package: 'jdk'
           distribution: 'temurin'
       - name: Build
@@ -46,13 +48,13 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: test-results-jdk-${{ matrix.java }}
+          name: test-results
           path: komga/build/test-results/
       - name: Upload Unit Test Reports
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: test-reports-jdk-${{ matrix.java }}
+          name: test-reports
           path: komga/build/reports/tests/
 
   webui:
@@ -127,6 +129,12 @@ jobs:
             komga-webui/package-lock.json
       - uses: actions/setup-java@v3
         with:
+          java-version: '19'
+          java-package: 'jdk'
+          distribution: 'temurin'
+          cache: 'gradle'
+      - uses: actions/setup-java@v3
+        with:
           java-version: '17'
           java-package: 'jdk'
           distribution: 'temurin'
@@ -146,16 +154,36 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :komga:copyWebDist :komga:generateOpenApiDocs :komga:bootJar :komga-tray:jar
+      - name: Run Conveyor
+        uses: hydraulic-software/conveyor/actions/build@v10.1
+        with:
+          command: -f conveyor.ci.conf make site -o ./output/release
+          signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
+          agree_to_license: 1
+        env:
+          APPLE_ASP: ${{ secrets.APPLE_ASP }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+      - name: Adjust Conveyor output
+        run: |
+          mkdir ./output/site
+          mv ./output/release/download.html ./output/site/index.html
+          mv ./output/release/icon.svg ./output/site/
+      - name: Deploy download page to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./output/site
+          cname: download.komga.org
       - name: JReleaser full release
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: copyWebDist generateOpenApiDocs jreleaserFullRelease
+          arguments: jreleaserFullRelease
         env:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # workaround for https://github.com/jreleaser/jreleaser/issues/1232
-          JRELEASER_DOCKER_DEFAULT_PASSWORD: workaround
-          # workaround for https://github.com/jreleaser/jreleaser/discussions/1233
-          JRELEASER_DISTRIBUTIONS_KOMGA_DOCKER_REPOSITORY_ACTIVE: NEVER
       - name: JReleaser release output
         if: always()
         uses: actions/upload-artifact@v3
