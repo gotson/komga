@@ -16,9 +16,9 @@ import org.springframework.stereotype.Component
 @Profile("!test")
 @Component
 class TrayIconRunner(
-        @Value("#{servletContext.contextPath}") servletContextPath: String,
-        @Value("\${server.port}") serverPort: Int,
-        env: Environment,
+  @Value("#{servletContext.contextPath}") servletContextPath: String,
+  @Value("\${server.port}") serverPort: Int,
+  env: Environment,
 ) : ApplicationRunner {
 
   val komgaUrl = "http://localhost:$serverPort$servletContextPath"
@@ -30,11 +30,11 @@ class TrayIconRunner(
   private fun runTray() {
     application {
       Tray(
-              icon = loadSvgPainter(ClassPathResource("icons/$iconFileName").inputStream, LocalDensity.current),
-              menu = {
-                Item("Open Komga", onClick = { openUrl(komgaUrl) })
-                Item("Quit Komga", onClick = ::exitApplication)
-              },
+        icon = loadSvgPainter(ClassPathResource("icons/$iconFileName").inputStream, LocalDensity.current),
+        menu = {
+          Item("Open Komga", onClick = { openUrl(komgaUrl) })
+          Item("Quit Komga", onClick = ::exitApplication)
+        },
       )
     }
   }
