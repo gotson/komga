@@ -12,6 +12,7 @@ import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
+import org.gotson.komga.infrastructure.mediacontainer.CoverExtractor
 import org.gotson.komga.infrastructure.mediacontainer.MediaContainerExtractor
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -102,7 +103,20 @@ class BookAnalyzer(
     }
 
     val thumbnail = try {
-      supportedMediaTypes.getValue(book.media.mediaType!!).getEntryStream(book.book.path, book.media.pages.first().fileName).let { cover ->
+      val extractor = supportedMediaTypes.getValue(book.media.mediaType!!)
+      // try to get the cover from a CoverExtractor first
+      var coverBytes: ByteArray? = if (extractor is CoverExtractor) {
+        try {
+          extractor.getCoverStream(book.book.path)
+        } catch (e: Exception) {
+          logger.warn(e) { "Error while extracting cover. Falling back to first page. Book: $book" }
+          null
+        }
+      } else null
+      // if no cover could be found, get the first page
+      if (coverBytes == null) coverBytes = extractor.getEntryStream(book.book.path, book.media.pages.first().fileName)
+
+      coverBytes.let { cover ->
         imageConverter.resizeImage(cover, thumbnailFormat, thumbnailSize)
       }
     } catch (ex: Exception) {
