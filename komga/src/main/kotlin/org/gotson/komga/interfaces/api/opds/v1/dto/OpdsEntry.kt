@@ -1,4 +1,4 @@
-package org.gotson.komga.interfaces.api.opds.dto
+package org.gotson.komga.interfaces.api.opds.v1.dto
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper

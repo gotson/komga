@@ -1,4 +1,4 @@
-package org.gotson.komga.interfaces.api.opds.dto
+package org.gotson.komga.interfaces.api.opds.v1.dto
 
 const val ATOM = "http://www.w3.org/2005/Atom"
 const val OPDS_PSE = "http://vaemendis.net/opds-pse/ns"

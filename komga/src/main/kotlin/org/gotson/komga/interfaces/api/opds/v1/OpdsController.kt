@@ -1,4 +1,4 @@
-package org.gotson.komga.interfaces.api.opds
+package org.gotson.komga.interfaces.api.opds.v1
 
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
@@ -8,7 +8,6 @@ import jakarta.servlet.ServletContext
 import mu.KotlinLogging
 import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
-import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ReadList
@@ -24,26 +23,25 @@ import org.gotson.komga.domain.persistence.ReferentialRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.service.BookLifecycle
-import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageAsQueryParam
 import org.gotson.komga.interfaces.api.checkContentRestriction
-import org.gotson.komga.interfaces.api.opds.dto.OpdsAuthor
-import org.gotson.komga.interfaces.api.opds.dto.OpdsEntryAcquisition
-import org.gotson.komga.interfaces.api.opds.dto.OpdsEntryNavigation
-import org.gotson.komga.interfaces.api.opds.dto.OpdsFeed
-import org.gotson.komga.interfaces.api.opds.dto.OpdsFeedAcquisition
-import org.gotson.komga.interfaces.api.opds.dto.OpdsFeedNavigation
-import org.gotson.komga.interfaces.api.opds.dto.OpdsLink
-import org.gotson.komga.interfaces.api.opds.dto.OpdsLinkFeedNavigation
-import org.gotson.komga.interfaces.api.opds.dto.OpdsLinkFileAcquisition
-import org.gotson.komga.interfaces.api.opds.dto.OpdsLinkImage
-import org.gotson.komga.interfaces.api.opds.dto.OpdsLinkImageThumbnail
-import org.gotson.komga.interfaces.api.opds.dto.OpdsLinkPageStreaming
-import org.gotson.komga.interfaces.api.opds.dto.OpdsLinkRel
-import org.gotson.komga.interfaces.api.opds.dto.OpdsLinkSearch
-import org.gotson.komga.interfaces.api.opds.dto.OpenSearchDescription
+import org.gotson.komga.interfaces.api.dto.OpdsLinkRel
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsAuthor
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsEntryAcquisition
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsEntryNavigation
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsFeed
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsFeedAcquisition
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsFeedNavigation
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsLink
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsLinkFeedNavigation
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsLinkFileAcquisition
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsLinkImage
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsLinkImageThumbnail
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsLinkPageStreaming
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsLinkSearch
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpenSearchDescription
 import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.api.persistence.SeriesDtoRepository
 import org.gotson.komga.interfaces.api.rest.dto.BookDto
@@ -675,24 +673,6 @@ class OpdsController(
 
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
   @GetMapping(
-    value = ["books/{bookId}/thumbnail"],
-    produces = [MediaType.IMAGE_JPEG_VALUE],
-  )
-  fun getBookThumbnail(
-    @AuthenticationPrincipal principal: KomgaPrincipal,
-    @PathVariable bookId: String,
-  ): ByteArray {
-    principal.user.checkContentRestriction(bookId)
-    val thumbnail = bookLifecycle.getThumbnail(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    return if (thumbnail.type == ThumbnailBook.Type.GENERATED) {
-      bookLifecycle.getBookPage(bookRepository.findByIdOrNull(bookId)!!, 1, ImageType.JPEG).content
-    } else {
-      bookLifecycle.getThumbnailBytes(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    }
-  }
-
-  @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
-  @GetMapping(
     value = ["books/{bookId}/thumbnail/small"],
     produces = [MediaType.IMAGE_JPEG_VALUE],
   )
@@ -700,7 +680,7 @@ class OpdsController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
   ): ByteArray {
-    principal.user.checkContentRestriction(bookId)
+    principal.user.checkContentRestriction(bookId, bookRepository, seriesMetadataRepository)
     val thumbnail = bookLifecycle.getThumbnail(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return bookLifecycle.getThumbnailBytes(bookId, if (thumbnail.type == ThumbnailBook.Type.GENERATED) null else 300)
@@ -784,23 +764,4 @@ class OpdsController(
 
   private fun sanitize(fileName: String): String =
     fileName.replace(";", "")
-
-  /**
-   * Convenience function to check for content restriction.
-   * This will retrieve data from repositories if needed.
-   *
-   * @throws[ResponseStatusException] if the user cannot access the content
-   */
-  private fun KomgaUser.checkContentRestriction(bookId: String) {
-    if (!sharedAllLibraries) {
-      bookRepository.getLibraryIdOrNull(bookId)?.let {
-        if (!canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    }
-    if (restrictions.isRestricted) bookRepository.getSeriesIdOrNull(bookId)?.let { seriesId ->
-      seriesMetadataRepository.findById(seriesId).let {
-        if (!isContentAllowed(it.ageRating, it.sharingLabels)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-      }
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-  }
 }

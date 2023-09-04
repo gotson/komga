@@ -32,6 +32,7 @@ import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.domain.service.BookLifecycle
+import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
@@ -40,6 +41,12 @@ import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.infrastructure.web.getMediaTypeOrDefault
 import org.gotson.komga.infrastructure.web.setCachePrivate
+import org.gotson.komga.interfaces.api.checkContentRestriction
+import org.gotson.komga.interfaces.api.dto.MEDIATYPE_DIVINA_JSON
+import org.gotson.komga.interfaces.api.dto.MEDIATYPE_DIVINA_JSON_VALUE
+import org.gotson.komga.interfaces.api.dto.MEDIATYPE_WEBPUB_JSON_VALUE
+import org.gotson.komga.interfaces.api.dto.WPPublicationDto
+import org.gotson.komga.interfaces.api.dto.toWPPublicationDto
 import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.api.rest.dto.BookDto
 import org.gotson.komga.interfaces.api.rest.dto.BookImportBatchDto
@@ -104,6 +111,7 @@ class BookController(
   private val contentDetector: ContentDetector,
   private val eventPublisher: EventPublisher,
   private val thumbnailBookRepository: ThumbnailBookRepository,
+  private val imageConverter: ImageConverter,
 ) {
 
   @PageableAsQueryParam
@@ -233,7 +241,7 @@ class BookController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
   ): BookDto {
-    principal.user.checkContentRestriction(bookId)
+    principal.user.checkContentRestriction(bookId, bookRepository, seriesMetadataRepository)
 
     return bookDtoRepository.findPreviousInSeriesOrNull(bookId, principal.user.id)
       ?.restrictUrl(!principal.user.roleAdmin)
@@ -245,7 +253,7 @@ class BookController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
   ): BookDto {
-    principal.user.checkContentRestriction(bookId)
+    principal.user.checkContentRestriction(bookId, bookRepository, seriesMetadataRepository)
 
     return bookDtoRepository.findNextInSeriesOrNull(bookId, principal.user.id)
       ?.restrictUrl(!principal.user.roleAdmin)
@@ -257,7 +265,7 @@ class BookController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "bookId") bookId: String,
   ): List<ReadListDto> {
-    principal.user.checkContentRestriction(bookId)
+    principal.user.checkContentRestriction(bookId, bookRepository, seriesMetadataRepository)
 
     return readListRepository.findAllContainingBookId(bookId, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)
       .map { it.toDto() }
@@ -272,7 +280,7 @@ class BookController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
   ): ByteArray {
-    principal.user.checkContentRestriction(bookId)
+    principal.user.checkContentRestriction(bookId, bookRepository, seriesMetadataRepository)
 
     return bookLifecycle.getThumbnailBytes(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
@@ -284,7 +292,7 @@ class BookController(
     @PathVariable(name = "bookId") bookId: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ): ByteArray {
-    principal.user.checkContentRestriction(bookId)
+    principal.user.checkContentRestriction(bookId, bookRepository, seriesMetadataRepository)
 
     return bookLifecycle.getThumbnailBytesByThumbnailId(thumbnailId)
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -295,7 +303,7 @@ class BookController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "bookId") bookId: String,
   ): Collection<ThumbnailBookDto> {
-    principal.user.checkContentRestriction(bookId)
+    principal.user.checkContentRestriction(bookId, bookRepository, seriesMetadataRepository)
 
     return thumbnailBookRepository.findAllByBookId(bookId)
       .map { it.toDto() }
@@ -362,6 +370,7 @@ class BookController(
       "api/v1/books/{bookId}/file",
       "api/v1/books/{bookId}/file/*",
       "opds/v1.2/books/{bookId}/file/*",
+      "opds/v2/books/{bookId}/file",
     ],
     produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE],
   )
@@ -443,6 +452,7 @@ class BookController(
     value = [
       "api/v1/books/{bookId}/pages/{pageNumber}",
       "opds/v1.2/books/{bookId}/pages/{pageNumber}",
+      "opds/v2/books/{bookId}/pages/{pageNumber}",
     ],
     produces = [MediaType.ALL_VALUE],
   )
@@ -550,6 +560,31 @@ class BookController(
         throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  @GetMapping(
+    value = [
+      "api/v1/books/{bookId}/manifest",
+      "opds/v2/books/{bookId}/manifest",
+    ],
+    produces = [MEDIATYPE_WEBPUB_JSON_VALUE, MEDIATYPE_DIVINA_JSON_VALUE],
+  )
+  @PreAuthorize("hasRole('$ROLE_FILE_DOWNLOAD')")
+  fun getWebPubManifest(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: String,
+  ): ResponseEntity<WPPublicationDto> {
+    return bookDtoRepository.findByIdOrNull(bookId, principal.user.id)?.let { bookDto ->
+      principal.user.checkContentRestriction(bookDto)
+      val manifest = bookDto.toWPPublicationDto(
+        imageConverter::canConvertMediaType,
+        mediaRepository.findById(bookDto.id),
+        seriesMetadataRepository.findById(bookDto.seriesId),
+      )
+      ResponseEntity.ok()
+        .contentType(MEDIATYPE_DIVINA_JSON)
+        .body(manifest)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
 
   @PostMapping("api/v1/books/{bookId}/analyze")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
@@ -715,24 +750,5 @@ class BookController(
     if (restrictions.isRestricted) seriesMetadataRepository.findById(book.seriesId).let {
       if (!isContentAllowed(it.ageRating, it.sharingLabels)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     }
-  }
-
-  /**
-   * Convenience function to check for content restriction.
-   * This will retrieve data from repositories if needed.
-   *
-   * @throws[ResponseStatusException] if the user cannot access the content
-   */
-  private fun KomgaUser.checkContentRestriction(bookId: String) {
-    if (!sharedAllLibraries) {
-      bookRepository.getLibraryIdOrNull(bookId)?.let {
-        if (!canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    }
-    if (restrictions.isRestricted) bookRepository.getSeriesIdOrNull(bookId)?.let { seriesId ->
-      seriesMetadataRepository.findById(seriesId).let {
-        if (!isContentAllowed(it.ageRating, it.sharingLabels)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-      }
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 }
