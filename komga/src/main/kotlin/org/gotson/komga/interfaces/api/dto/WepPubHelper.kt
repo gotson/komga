@@ -20,6 +20,7 @@ import java.time.ZonedDateTime
 val MEDIATYPE_DIVINA_JSON = MediaType("application", "webpub+json")
 const val MEDIATYPE_WEBPUB_JSON_VALUE = "application/webpub+json"
 const val MEDIATYPE_DIVINA_JSON_VALUE = "application/divina+json"
+const val MEDIATYPE_OPDS_JSON_VALUE = "application/opds+json"
 const val PROFILE_DIVINA = "https://readium.org/webpub-manifest/profiles/divina"
 
 val wpKnownRoles = listOf(

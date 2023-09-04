@@ -26,6 +26,7 @@ import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageAsQueryParam
 import org.gotson.komga.interfaces.api.checkContentRestriction
+import org.gotson.komga.interfaces.api.dto.MEDIATYPE_OPDS_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.OpdsLinkRel
 import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsAuthor
 import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsEntryAcquisition
@@ -146,6 +147,7 @@ class OpdsController(
       OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder(ROUTE_CATALOG).toUriString()),
       linkStart(),
       OpdsLinkSearch(uriBuilder(ROUTE_SEARCH).toUriString()),
+      OpdsLink(MEDIATYPE_OPDS_JSON_VALUE, "alternate", href = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("opds", "v2", "catalog").toUriString()),
     ),
     entries = listOf(
       OpdsEntryNavigation(
