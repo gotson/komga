@@ -86,7 +86,7 @@ class Opds2Controller(
   )
 
   private fun uriBuilder(path: String) =
-    ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("opds", "v2", path)
+    ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("opds", "v2").path(path)
 
   private fun linkPage(uriBuilder: UriComponentsBuilder, page: Page<*>): List<WPLinkDto> {
     return listOfNotNull(
