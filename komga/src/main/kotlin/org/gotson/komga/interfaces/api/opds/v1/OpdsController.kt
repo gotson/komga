@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
-import jakarta.servlet.ServletContext
 import mu.KotlinLogging
 import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
@@ -61,6 +60,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import org.springframework.web.util.UriComponentsBuilder
 import org.springframework.web.util.UriUtils
 import java.net.URI
@@ -98,7 +98,6 @@ private const val ID_PUBLISHERS_ALL = "allPublishers"
 @RestController
 @RequestMapping(value = [ROUTE_BASE], produces = [MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE])
 class OpdsController(
-  servletContext: ServletContext,
   private val libraryRepository: LibraryRepository,
   private val collectionRepository: SeriesCollectionRepository,
   private val readListRepository: ReadListRepository,
@@ -111,19 +110,16 @@ class OpdsController(
   private val bookLifecycle: BookLifecycle,
 ) {
 
-  private val routeBase = "${servletContext.contextPath}$ROUTE_BASE"
-
   private val komgaAuthor = OpdsAuthor("Komga", URI("https://github.com/gotson/komga"))
 
   private val decimalFormat = DecimalFormat("0.#")
 
   private val opdsPseSupportedFormats = listOf("image/jpeg", "image/png", "image/gif")
 
-  private val linkStart = OpdsLinkFeedNavigation(OpdsLinkRel.START, uriBuilder(ROUTE_CATALOG).toUriString())
+  private fun linkStart() = OpdsLinkFeedNavigation(OpdsLinkRel.START, uriBuilder(ROUTE_CATALOG).toUriString())
 
   private fun uriBuilder(path: String) =
-    UriComponentsBuilder
-      .fromPath("$routeBase$path")
+    ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("opds", "v1.2").path(path)
 
   private fun <T> linkPage(uriBuilder: UriComponentsBuilder, page: Page<T>): List<OpdsLink> {
     return listOfNotNull(
@@ -148,7 +144,7 @@ class OpdsController(
     author = komgaAuthor,
     links = listOf(
       OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder(ROUTE_CATALOG).toUriString()),
-      linkStart,
+      linkStart(),
       OpdsLinkSearch(uriBuilder(ROUTE_SEARCH).toUriString()),
     ),
     entries = listOf(
@@ -222,7 +218,7 @@ class OpdsController(
   fun getSearch(): OpenSearchDescription = OpenSearchDescription(
     shortName = "Search",
     description = "Search for series",
-    url = OpenSearchDescription.OpenSearchUrl("$routeBase$ROUTE_SERIES_ALL?search={searchTerms}"),
+    url = OpenSearchDescription.OpenSearchUrl(uriBuilder(ROUTE_SERIES_ALL).toUriString() + "?search={searchTerms}"),
   )
 
   @PageAsQueryParam
@@ -248,7 +244,7 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, builder.toUriString()),
-        linkStart,
+        linkStart(),
         *linkPage(builder, bookPage).toTypedArray(),
       ),
       entries = bookPage.getEntriesWithSeriesTitle(userAgent),
@@ -287,7 +283,7 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, builder.toUriString()),
-        linkStart,
+        linkStart(),
         *linkPage(builder, bookPage).toTypedArray(),
       ),
       entries = bookPage.getEntriesWithSeriesTitle(userAgent),
@@ -327,7 +323,7 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, builder.toUriString()),
-        linkStart,
+        linkStart(),
         *linkPage(builder, seriesPage).toTypedArray(),
       ),
       entries = seriesPage.content.map { it.toOpdsEntry() },
@@ -364,7 +360,7 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-        linkStart,
+        linkStart(),
         *linkPage(uriBuilder, seriesPage).toTypedArray(),
       ),
       entries = entries,
@@ -396,7 +392,7 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-        linkStart,
+        linkStart(),
         *linkPage(uriBuilder, bookPage).toTypedArray(),
       ),
       entries = bookPage.getEntriesWithSeriesTitle(userAgent),
@@ -420,7 +416,7 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder(ROUTE_LIBRARIES_ALL).toUriString()),
-        linkStart,
+        linkStart(),
       ),
       entries = libraries.map { it.toOpdsEntry() },
     )
@@ -444,7 +440,7 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-        linkStart,
+        linkStart(),
         *linkPage(uriBuilder, collections).toTypedArray(),
       ),
       entries = collections.content.map { it.toOpdsEntry() },
@@ -469,7 +465,7 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-        linkStart,
+        linkStart(),
         *linkPage(uriBuilder, readLists).toTypedArray(),
       ),
       entries = readLists.content.map { it.toOpdsEntry() },
@@ -493,7 +489,7 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-        linkStart,
+        linkStart(),
         *linkPage(uriBuilder, publishers).toTypedArray(),
       ),
       entries = publishers.content.map { publisher ->
@@ -538,7 +534,7 @@ class OpdsController(
         author = komgaAuthor,
         links = listOf(
           OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-          linkStart,
+          linkStart(),
           *linkPage(uriBuilder, entries).toTypedArray(),
         ),
         entries = entries.content,
@@ -574,7 +570,7 @@ class OpdsController(
         author = komgaAuthor,
         links = listOf(
           OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-          linkStart,
+          linkStart(),
           *linkPage(uriBuilder, entries).toTypedArray(),
         ),
         entries = entries.content,
@@ -615,7 +611,7 @@ class OpdsController(
         author = komgaAuthor,
         links = listOf(
           OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-          linkStart,
+          linkStart(),
           *linkPage(uriBuilder, entries).toTypedArray(),
         ),
         entries = entries.content,
@@ -664,7 +660,7 @@ class OpdsController(
         author = komgaAuthor,
         links = listOf(
           OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-          linkStart,
+          linkStart(),
           *linkPage(uriBuilder, booksPage).toTypedArray(),
         ),
         entries = entries.content,
@@ -702,9 +698,9 @@ class OpdsController(
     val mediaTypes = media.pages.map { it.mediaType }.distinct()
 
     val opdsLinkPageStreaming = if (mediaTypes.size == 1 && mediaTypes.first() in opdsPseSupportedFormats) {
-      OpdsLinkPageStreaming(mediaTypes.first(), "${routeBase}books/$id/pages/{pageNumber}?zero_based=true", media.pages.size, readProgress?.page, readProgress?.readDate)
+      OpdsLinkPageStreaming(mediaTypes.first(), uriBuilder("books/$id/pages/").toUriString() + "{pageNumber}?zero_based=true", media.pages.size, readProgress?.page, readProgress?.readDate)
     } else {
-      OpdsLinkPageStreaming("image/jpeg", "${routeBase}books/$id/pages/{pageNumber}?convert=jpeg&zero_based=true", media.pages.size, readProgress?.page, readProgress?.readDate)
+      OpdsLinkPageStreaming("image/jpeg", uriBuilder("books/$id/pages/").toUriString() + "{pageNumber}?convert=jpeg&zero_based=true", media.pages.size, readProgress?.page, readProgress?.readDate)
     }
 
     return OpdsEntryAcquisition(
