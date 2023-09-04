@@ -18,6 +18,7 @@ import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataFromBookProvider
 import org.gotson.komga.infrastructure.metadata.comicrack.dto.ComicInfo
 import org.gotson.komga.infrastructure.metadata.comicrack.dto.Manga
+import org.gotson.komga.language.stripAccents
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.net.URI
@@ -131,7 +132,7 @@ class ComicInfoProvider(
 
       return SeriesMetadataPatch(
         title = series,
-        titleSort = series,
+        titleSort = series?.stripAccents(),
         status = null,
         summary = null,
         readingDirection = readingDirection,

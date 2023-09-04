@@ -2,7 +2,6 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
-import org.apache.commons.lang3.StringUtils
 import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.Book
@@ -150,7 +149,7 @@ class SeriesLifecycle(
       seriesMetadataRepository.insert(
         SeriesMetadata(
           title = series.name,
-          titleSort = StringUtils.stripAccents(series.name),
+          titleSort = series.name.stripAccents(),
           seriesId = series.id,
         ),
       )

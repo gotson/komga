@@ -11,6 +11,7 @@ import org.gotson.komga.domain.model.Sidecar
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
 import org.gotson.komga.infrastructure.metadata.mylar.dto.Status
 import org.gotson.komga.infrastructure.sidecar.SidecarSeriesConsumer
+import org.gotson.komga.language.stripAccents
 import org.springframework.stereotype.Service
 import kotlin.io.path.notExists
 import org.gotson.komga.infrastructure.metadata.mylar.dto.Series as MylarSeries
@@ -43,7 +44,7 @@ class MylarSeriesProvider(
 
       return SeriesMetadataPatch(
         title = title,
-        titleSort = title,
+        titleSort = title.stripAccents(),
         status = when (metadata.status) {
           Status.Ended -> SeriesMetadata.Status.ENDED
           Status.Continuing -> SeriesMetadata.Status.ONGOING
