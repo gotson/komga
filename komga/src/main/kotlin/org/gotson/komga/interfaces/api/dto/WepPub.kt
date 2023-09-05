@@ -31,7 +31,7 @@ data class WPPublicationDto(
   val context: String? = null,
   val metadata: WPMetadataDto,
   val links: List<WPLinkDto>,
-  val images: List<WPLinkDto>,
+  val images: List<WPLinkDto> = emptyList(),
   val readingOrder: List<WPLinkDto> = emptyList(),
   val resources: List<WPLinkDto> = emptyList(),
   val toc: List<WPLinkDto> = emptyList(),

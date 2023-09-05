@@ -34,25 +34,30 @@ val wpKnownRoles = listOf(
 
 val recommendedImageMediaTypes = listOf("image/jpeg", "image/png", "image/gif")
 
-fun BookDto.toOpdsPublicationDto(includeOpdsLinks: Boolean = false): WPPublicationDto {
+private fun BookDto.toBasePublicationDto(includeOpdsLinks: Boolean = false): WPPublicationDto {
   val uriBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("api", "v1")
   return WPPublicationDto(
     mediaType = MEDIATYPE_OPDS_PUBLICATION_JSON,
     context = "https://readium.org/webpub-manifest/context.jsonld",
     metadata = toWPMetadataDto(includeOpdsLinks).withAuthors(metadata.authors),
     links = toWPLinkDtos(uriBuilder),
-    images = listOf(
-      WPLinkDto(
-        href = uriBuilder.cloneBuilder().path("books/$id/thumbnail").toUriString(),
-        type = MediaType.IMAGE_JPEG_VALUE,
-      ),
-    ),
   )
 }
 
+fun BookDto.toOpdsPublicationDto(includeOpdsLinks: Boolean = false): WPPublicationDto {
+  return toBasePublicationDto(includeOpdsLinks).copy(images = buildThumbnailLinkDtos(id))
+}
+
+private fun buildThumbnailLinkDtos(bookId: String) = listOf(
+  WPLinkDto(
+    href = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("api", "v1").path("books/$bookId/thumbnail").toUriString(),
+    type = MediaType.IMAGE_JPEG_VALUE,
+  ),
+)
+
 fun BookDto.toManifestDivina(canConvertMediaType: (String, String) -> Boolean, media: Media, seriesMetadata: SeriesMetadata): WPPublicationDto {
   val uriBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("api", "v1")
-  return toOpdsPublicationDto().let {
+  return toBasePublicationDto().let {
     it.copy(
       mediaType = MEDIATYPE_DIVINA_JSON,
       metadata = it.metadata
@@ -74,13 +79,14 @@ fun BookDto.toManifestDivina(canConvertMediaType: (String, String) -> Boolean, m
           ) else emptyList(),
         )
       },
+      resources = buildThumbnailLinkDtos(id),
     )
   }
 }
 
 fun BookDto.toManifestPdf(media: Media, seriesMetadata: SeriesMetadata): WPPublicationDto {
   val uriBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("api", "v1")
-  return toOpdsPublicationDto().let {
+  return toBasePublicationDto().let {
     it.copy(
       mediaType = MEDIATYPE_WEBPUB_JSON,
       metadata = it.metadata
@@ -92,6 +98,7 @@ fun BookDto.toManifestPdf(media: Media, seriesMetadata: SeriesMetadata): WPPubli
           type = PDF.type,
         )
       },
+      resources = buildThumbnailLinkDtos(id),
     )
   }
 }
