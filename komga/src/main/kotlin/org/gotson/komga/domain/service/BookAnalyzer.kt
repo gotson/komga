@@ -3,6 +3,7 @@ package org.gotson.komga.domain.service
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookPage
+import org.gotson.komga.domain.model.BookPageContent
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
@@ -14,6 +15,7 @@ import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.mediacontainer.CoverExtractor
 import org.gotson.komga.infrastructure.mediacontainer.MediaContainerExtractor
+import org.gotson.komga.infrastructure.mediacontainer.MediaContainerRawExtractor
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.io.ByteArrayOutputStream
@@ -149,6 +151,29 @@ class BookAnalyzer(
     }
 
     return supportedMediaTypes.getValue(book.media.mediaType!!).getEntryStream(book.book.path, book.media.pages[number - 1].fileName)
+  }
+
+  @Throws(
+    MediaNotReadyException::class,
+    IndexOutOfBoundsException::class,
+  )
+  fun getPageContentRaw(book: BookWithMedia, number: Int): BookPageContent {
+    logger.debug { "Get raw page #$number for book: $book" }
+
+    if (book.media.status != Media.Status.READY) {
+      logger.warn { "Book media is not ready, cannot get pages" }
+      throw MediaNotReadyException()
+    }
+
+    if (number > book.media.pages.size || number <= 0) {
+      logger.error { "Page number #$number is out of bounds. Book has ${book.media.pages.size} pages" }
+      throw IndexOutOfBoundsException("Page $number does not exist")
+    }
+
+    val extractor = supportedMediaTypes.getValue(book.media.mediaType!!)
+    if (extractor !is MediaContainerRawExtractor) throw MediaUnsupportedException("Extractor does not support raw extraction of pages")
+
+    return extractor.getRawEntryStream(book.book.path, book.media.pages[number - 1].fileName)
   }
 
   @Throws(
