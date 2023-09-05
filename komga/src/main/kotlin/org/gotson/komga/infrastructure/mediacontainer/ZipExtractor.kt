@@ -20,7 +20,7 @@ class ZipExtractor(
 
   private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
 
-  override fun mediaTypes(): List<String> = listOf(MediaType.ZIP.value)
+  override fun mediaTypes(): List<String> = listOf(MediaType.ZIP.type)
 
   override fun getEntries(path: Path, analyzeDimensions: Boolean): List<MediaContainerEntry> =
     ZipFile(path.toFile()).use { zip ->

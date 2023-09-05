@@ -42,11 +42,9 @@ import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.infrastructure.web.getMediaTypeOrDefault
 import org.gotson.komga.infrastructure.web.setCachePrivate
 import org.gotson.komga.interfaces.api.checkContentRestriction
-import org.gotson.komga.interfaces.api.dto.MEDIATYPE_DIVINA_JSON
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_DIVINA_JSON_VALUE
-import org.gotson.komga.interfaces.api.dto.MEDIATYPE_WEBPUB_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.WPPublicationDto
-import org.gotson.komga.interfaces.api.dto.toWPPublicationDto
+import org.gotson.komga.interfaces.api.dto.toManifestDivina
 import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.api.rest.dto.BookDto
 import org.gotson.komga.interfaces.api.rest.dto.BookImportBatchDto
@@ -370,7 +368,6 @@ class BookController(
       "api/v1/books/{bookId}/file",
       "api/v1/books/{bookId}/file/*",
       "opds/v1.2/books/{bookId}/file/*",
-      "opds/v2/books/{bookId}/file",
     ],
     produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE],
   )
@@ -452,7 +449,6 @@ class BookController(
     value = [
       "api/v1/books/{bookId}/pages/{pageNumber}",
       "opds/v1.2/books/{bookId}/pages/{pageNumber}",
-      "opds/v2/books/{bookId}/pages/{pageNumber}",
     ],
     produces = [MediaType.ALL_VALUE],
   )
@@ -563,28 +559,26 @@ class BookController(
 
   @GetMapping(
     value = [
+      "api/v1/books/{bookId}/manifest/divina",
       "api/v1/books/{bookId}/manifest",
-      "opds/v2/books/{bookId}/manifest",
     ],
-    produces = [MEDIATYPE_WEBPUB_JSON_VALUE, MEDIATYPE_DIVINA_JSON_VALUE],
+    produces = [MEDIATYPE_DIVINA_JSON_VALUE],
   )
-  @PreAuthorize("hasRole('$ROLE_FILE_DOWNLOAD')")
-  fun getWebPubManifest(
+  fun getWebPubManifestDivina(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
-  ): ResponseEntity<WPPublicationDto> {
-    return bookDtoRepository.findByIdOrNull(bookId, principal.user.id)?.let { bookDto ->
+  ): ResponseEntity<WPPublicationDto> =
+    bookDtoRepository.findByIdOrNull(bookId, principal.user.id)?.let { bookDto ->
       principal.user.checkContentRestriction(bookDto)
-      val manifest = bookDto.toWPPublicationDto(
+      val manifest = bookDto.toManifestDivina(
         imageConverter::canConvertMediaType,
         mediaRepository.findById(bookDto.id),
         seriesMetadataRepository.findById(bookDto.seriesId),
       )
       ResponseEntity.ok()
-        .contentType(MEDIATYPE_DIVINA_JSON)
+        .contentType(manifest.mediaType)
         .body(manifest)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-  }
 
   @PostMapping("api/v1/books/{bookId}/analyze")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")

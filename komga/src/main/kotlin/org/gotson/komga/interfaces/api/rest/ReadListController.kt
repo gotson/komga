@@ -443,7 +443,7 @@ class ReadListController(
               .build()
           },
         )
-        .contentType(MediaType.parseMediaType(ZIP.value))
+        .contentType(MediaType.parseMediaType(ZIP.type))
         .body(streamingResponse)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }

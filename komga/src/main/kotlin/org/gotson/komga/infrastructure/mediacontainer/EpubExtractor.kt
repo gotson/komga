@@ -23,7 +23,7 @@ class EpubExtractor(
   private val imageAnalyzer: ImageAnalyzer,
 ) : MediaContainerExtractor, CoverExtractor {
 
-  override fun mediaTypes(): List<String> = listOf(MediaType.EPUB.value)
+  override fun mediaTypes(): List<String> = listOf(MediaType.EPUB.type)
 
   override fun getEntries(path: Path, analyzeDimensions: Boolean): List<MediaContainerEntry> {
     ZipFile(path.toFile()).use { zip ->

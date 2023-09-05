@@ -32,7 +32,7 @@ class PdfExtractor : MediaContainerExtractor {
     .evictionListener { _: Path?, pdf: PDDocument?, _ -> pdf?.close() }
     .build<Path, PDDocument>()
 
-  override fun mediaTypes(): List<String> = listOf(MediaType.PDF.value)
+  override fun mediaTypes(): List<String> = listOf(MediaType.PDF.type)
 
   override fun getEntries(path: Path, analyzeDimensions: Boolean): List<MediaContainerEntry> =
     PDDocument.load(path.toFile(), MemoryUsageSetting.setupTempFileOnly()).use { pdf ->

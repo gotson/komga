@@ -678,7 +678,7 @@ class SeriesController(
             .build()
         },
       )
-      .contentType(MediaType.parseMediaType(ZIP.value))
+      .contentType(MediaType.parseMediaType(ZIP.type))
       .body(streamingResponse)
   }
 

@@ -1,9 +1,11 @@
 package org.gotson.komga.interfaces.api.dto
 
 import com.fasterxml.jackson.annotation.JsonAlias
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.Positive
+import org.springframework.http.MediaType
 import java.time.LocalDate
 import java.time.ZonedDateTime
 
@@ -23,10 +25,14 @@ data class WPLinkDto(
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class WPPublicationDto(
+  @JsonIgnore
+  val mediaType: MediaType,
+  @JsonAlias("@context")
+  val context: String? = null,
   val metadata: WPMetadataDto,
   val links: List<WPLinkDto>,
   val images: List<WPLinkDto>,
-  val readingOrder: List<WPLinkDto>,
+  val readingOrder: List<WPLinkDto> = emptyList(),
   val resources: List<WPLinkDto> = emptyList(),
   val toc: List<WPLinkDto> = emptyList(),
 )
@@ -72,6 +78,7 @@ data class WPBelongsToDto(
 data class WPContributorDto(
   val name: String,
   val position: Float? = null,
+  val links: List<WPLinkDto> = emptyList(),
 )
 
 enum class WPReadingProgressionDto {

@@ -24,7 +24,7 @@ class PageHashLifecycle(
   private val komgaProperties: KomgaProperties,
 ) {
 
-  private val hashableMediaTypes = listOf(MediaType.ZIP.value)
+  private val hashableMediaTypes = listOf(MediaType.ZIP.type)
 
   /**
    * @return a Collection of Pair of BookId/SeriesId

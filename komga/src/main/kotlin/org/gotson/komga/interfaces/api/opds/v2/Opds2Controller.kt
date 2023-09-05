@@ -8,30 +8,25 @@ import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesCollection
-import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
 import org.gotson.komga.domain.persistence.LibraryRepository
-import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ReferentialRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
-import org.gotson.komga.domain.persistence.SeriesMetadataRepository
-import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageAsQueryParam
 import org.gotson.komga.interfaces.api.checkContentRestriction
+import org.gotson.komga.interfaces.api.dto.MEDIATYPE_OPDS_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.OpdsLinkRel
 import org.gotson.komga.interfaces.api.dto.WPLinkDto
-import org.gotson.komga.interfaces.api.dto.WPPublicationDto
-import org.gotson.komga.interfaces.api.dto.toWPPublicationDto
+import org.gotson.komga.interfaces.api.dto.toOpdsPublicationDto
 import org.gotson.komga.interfaces.api.opds.v2.dto.FacetDto
 import org.gotson.komga.interfaces.api.opds.v2.dto.FeedDto
 import org.gotson.komga.interfaces.api.opds.v2.dto.FeedGroupDto
 import org.gotson.komga.interfaces.api.opds.v2.dto.FeedMetadataDto
 import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.api.persistence.SeriesDtoRepository
-import org.gotson.komga.interfaces.api.rest.dto.BookDto
 import org.gotson.komga.interfaces.api.rest.dto.SeriesDto
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -50,37 +45,31 @@ import org.springframework.web.util.UriComponentsBuilder
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-private const val MEDIATYPE_OPDS_JSON = "application/opds+json"
-
-private const val ROUTE_BASE = "/opds/v2/"
 private const val ROUTE_CATALOG = "catalog"
 
 private const val RECOMMENDED_ITEMS_NUMBER = 5
 
 @RestController
-@RequestMapping(value = [ROUTE_BASE], produces = [MEDIATYPE_OPDS_JSON])
+@RequestMapping(value = ["/opds/v2/"], produces = [MEDIATYPE_OPDS_JSON_VALUE])
 class Opds2Controller(
-  private val imageConverter: ImageConverter,
   private val libraryRepository: LibraryRepository,
   private val collectionRepository: SeriesCollectionRepository,
   private val readListRepository: ReadListRepository,
   private val seriesDtoRepository: SeriesDtoRepository,
-  private val seriesMetadataRepository: SeriesMetadataRepository,
   private val bookDtoRepository: BookDtoRepository,
-  private val mediaRepository: MediaRepository,
   private val referentialRepository: ReferentialRepository,
 ) {
   private fun linkStart() = WPLinkDto(
     title = "Home",
     rel = OpdsLinkRel.START,
-    type = MEDIATYPE_OPDS_JSON,
+    type = MEDIATYPE_OPDS_JSON_VALUE,
     href = uriBuilder(ROUTE_CATALOG).toUriString(),
   )
 
   private fun linkSearch() = WPLinkDto(
     title = "Search",
     rel = OpdsLinkRel.SEARCH,
-    type = MEDIATYPE_OPDS_JSON,
+    type = MEDIATYPE_OPDS_JSON_VALUE,
     href = uriBuilder("search").toUriString() + "{?query}",
     templated = true,
   )
@@ -138,24 +127,14 @@ class Opds2Controller(
     val readLists = readListRepository.findAll(libraryId?.let { listOf(it) }, restrictions = user.restrictions, pageable = Pageable.ofSize(1))
 
     return listOfNotNull(
-      WPLinkDto("Recommended", OpdsLinkRel.SUBSECTION, href = uriBuilder.toUriString(), type = MEDIATYPE_OPDS_JSON),
-      WPLinkDto("Browse", OpdsLinkRel.SUBSECTION, href = uriBuilder.cloneBuilder().pathSegment("browse").toUriString(), type = MEDIATYPE_OPDS_JSON),
+      WPLinkDto("Recommended", OpdsLinkRel.SUBSECTION, href = uriBuilder.toUriString(), type = MEDIATYPE_OPDS_JSON_VALUE),
+      WPLinkDto("Browse", OpdsLinkRel.SUBSECTION, href = uriBuilder.cloneBuilder().pathSegment("browse").toUriString(), type = MEDIATYPE_OPDS_JSON_VALUE),
       if (collections.isEmpty) null
-      else WPLinkDto("Collections", OpdsLinkRel.SUBSECTION, href = uriBuilder.cloneBuilder().pathSegment("collections").toUriString(), type = MEDIATYPE_OPDS_JSON),
+      else WPLinkDto("Collections", OpdsLinkRel.SUBSECTION, href = uriBuilder.cloneBuilder().pathSegment("collections").toUriString(), type = MEDIATYPE_OPDS_JSON_VALUE),
       if (readLists.isEmpty) null
-      else WPLinkDto("Read lists", OpdsLinkRel.SUBSECTION, href = uriBuilder.cloneBuilder().pathSegment("readlists").toUriString(), type = MEDIATYPE_OPDS_JSON),
+      else WPLinkDto("Read lists", OpdsLinkRel.SUBSECTION, href = uriBuilder.cloneBuilder().pathSegment("readlists").toUriString(), type = MEDIATYPE_OPDS_JSON_VALUE),
     )
   }
-
-  private fun quickCache() = Pair(mutableMapOf<String, Media>(), mutableMapOf<String, SeriesMetadata>())
-
-  private fun mapBooks(page: Page<BookDto>, mediaCache: MutableMap<String, Media>, seriesCache: MutableMap<String, SeriesMetadata>): List<WPPublicationDto> =
-    page.content.map { bookDto ->
-      bookDto.toPublicationDto(
-        mediaCache.getOrPut(bookDto.id) { mediaRepository.findById(bookDto.id) },
-        seriesCache.getOrPut(bookDto.seriesId) { seriesMetadataRepository.findById(bookDto.seriesId) },
-      )
-    }
 
   @GetMapping(value = [ROUTE_CATALOG, "libraries", "libraries/{id}"])
   fun getLibrariesRecommended(
@@ -164,9 +143,6 @@ class Opds2Controller(
     @PathVariable(name = "id", required = false) libraryId: String?,
   ): FeedDto {
     val (library, authorizedLibraryIds) = checkLibraryAccess(libraryId, principal)
-
-    // quick memoization
-    val (mediaCache, seriesCache) = quickCache()
 
     val keepReading = bookDtoRepository.findAll(
       BookSearchWithReadProgress(
@@ -178,14 +154,14 @@ class Opds2Controller(
       principal.user.id,
       PageRequest.of(0, RECOMMENDED_ITEMS_NUMBER, Sort.by(Sort.Order.desc("readProgress.readDate"))),
       principal.user.restrictions,
-    )
+    ).map { it.toOpdsPublicationDto(true) }
 
     val onDeck = bookDtoRepository.findAllOnDeck(
       principal.user.id,
       authorizedLibraryIds,
       Pageable.ofSize(RECOMMENDED_ITEMS_NUMBER),
       principal.user.restrictions,
-    )
+    ).map { it.toOpdsPublicationDto(true) }
 
     val latestBooks = bookDtoRepository.findAll(
       BookSearchWithReadProgress(
@@ -196,7 +172,7 @@ class Opds2Controller(
       principal.user.id,
       PageRequest.of(0, RECOMMENDED_ITEMS_NUMBER, Sort.by(Sort.Order.desc("createdDate"))),
       principal.user.restrictions,
-    )
+    ).map { it.toOpdsPublicationDto(true) }
 
     val latestSeries = seriesDtoRepository.findAll(
       SeriesSearchWithReadProgress(
@@ -226,22 +202,22 @@ class Opds2Controller(
         if (library == null) getLibrariesFeedGroup(principal) else null,
         if (!keepReading.isEmpty) FeedGroupDto(
           FeedMetadataDto("Keep Reading", page = keepReading),
-          links = listOf(WPLinkDto("Keep Reading", OpdsLinkRel.SELF, uriBuilder.cloneBuilder().pathSegment("keep-reading").toUriString(), MEDIATYPE_OPDS_JSON)),
-          publications = mapBooks(keepReading, mediaCache, seriesCache),
+          links = listOf(WPLinkDto("Keep Reading", OpdsLinkRel.SELF, uriBuilder.cloneBuilder().pathSegment("keep-reading").toUriString(), MEDIATYPE_OPDS_JSON_VALUE)),
+          publications = keepReading.content,
         ) else null,
         if (!onDeck.isEmpty) FeedGroupDto(
           FeedMetadataDto("On Deck", page = onDeck),
-          links = listOf(WPLinkDto("On Deck", OpdsLinkRel.SELF, uriBuilder.cloneBuilder().pathSegment("on-deck").toUriString(), MEDIATYPE_OPDS_JSON)),
-          publications = mapBooks(onDeck, mediaCache, seriesCache),
+          links = listOf(WPLinkDto("On Deck", OpdsLinkRel.SELF, uriBuilder.cloneBuilder().pathSegment("on-deck").toUriString(), MEDIATYPE_OPDS_JSON_VALUE)),
+          publications = onDeck.content,
         ) else null,
         if (!latestBooks.isEmpty) FeedGroupDto(
           FeedMetadataDto("Latest Books", page = latestBooks),
-          links = listOf(WPLinkDto("Latest Books", OpdsLinkRel.SELF, uriBuilder.cloneBuilder().pathSegment("books", "latest").toUriString(), MEDIATYPE_OPDS_JSON)),
-          publications = mapBooks(latestBooks, mediaCache, seriesCache),
+          links = listOf(WPLinkDto("Latest Books", OpdsLinkRel.SELF, uriBuilder.cloneBuilder().pathSegment("books", "latest").toUriString(), MEDIATYPE_OPDS_JSON_VALUE)),
+          publications = latestBooks.content,
         ) else null,
         if (!latestSeries.isEmpty) FeedGroupDto(
           FeedMetadataDto("Latest Series", page = latestSeries),
-          links = listOf(WPLinkDto("Latest Series", OpdsLinkRel.SELF, uriBuilder.cloneBuilder().pathSegment("series", "latest").toUriString(), MEDIATYPE_OPDS_JSON)),
+          links = listOf(WPLinkDto("Latest Series", OpdsLinkRel.SELF, uriBuilder.cloneBuilder().pathSegment("series", "latest").toUriString(), MEDIATYPE_OPDS_JSON_VALUE)),
           navigation = latestSeries.content,
         ) else null,
       ),
@@ -258,9 +234,6 @@ class Opds2Controller(
   ): FeedDto {
     val (library, authorizedLibraryIds) = checkLibraryAccess(libraryId, principal)
 
-    // quick memoization
-    val (mediaCache, seriesCache) = quickCache()
-
     val entries = bookDtoRepository.findAll(
       BookSearchWithReadProgress(
         libraryIds = authorizedLibraryIds,
@@ -271,7 +244,7 @@ class Opds2Controller(
       principal.user.id,
       PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.desc("readProgress.readDate"))),
       principal.user.restrictions,
-    )
+    ).map { it.toOpdsPublicationDto(true) }
 
     val uriBuilder = uriBuilder("libraries${if (library != null) "/${library.id}" else ""}/keep-reading")
 
@@ -287,7 +260,7 @@ class Opds2Controller(
         linkSearch(),
         *linkPage(uriBuilder, entries).toTypedArray(),
       ),
-      publications = mapBooks(entries, mediaCache, seriesCache),
+      publications = entries.content,
     )
   }
 
@@ -301,15 +274,12 @@ class Opds2Controller(
   ): FeedDto {
     val (library, authorizedLibraryIds) = checkLibraryAccess(libraryId, principal)
 
-    // quick memoization
-    val (mediaCache, seriesCache) = quickCache()
-
     val entries = bookDtoRepository.findAllOnDeck(
       principal.user.id,
       authorizedLibraryIds,
       page,
       principal.user.restrictions,
-    )
+    ).map { it.toOpdsPublicationDto(true) }
 
     val uriBuilder = uriBuilder("libraries${if (library != null) "/${library.id}" else ""}/on-deck")
 
@@ -325,7 +295,7 @@ class Opds2Controller(
         linkSearch(),
         *linkPage(uriBuilder, entries).toTypedArray(),
       ),
-      publications = mapBooks(entries, mediaCache, seriesCache),
+      publications = entries.content,
     )
   }
 
@@ -339,9 +309,6 @@ class Opds2Controller(
   ): FeedDto {
     val (library, authorizedLibraryIds) = checkLibraryAccess(libraryId, principal)
 
-    // quick memoization
-    val (mediaCache, seriesCache) = quickCache()
-
     val entries = bookDtoRepository.findAll(
       BookSearchWithReadProgress(
         libraryIds = authorizedLibraryIds,
@@ -351,7 +318,7 @@ class Opds2Controller(
       principal.user.id,
       PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.desc("createdDate"))),
       principal.user.restrictions,
-    )
+    ).map { it.toOpdsPublicationDto(true) }
 
     val uriBuilder = uriBuilder("libraries${if (library != null) "/${library.id}" else ""}/books/latest")
 
@@ -367,7 +334,7 @@ class Opds2Controller(
         linkSearch(),
         *linkPage(uriBuilder, entries).toTypedArray(),
       ),
-      publications = mapBooks(entries, mediaCache, seriesCache),
+      publications = entries.content,
     )
   }
 
@@ -438,7 +405,7 @@ class Opds2Controller(
         WPLinkDto(
           title = it,
           href = uriBuilder.cloneBuilder().queryParam("publisher", it).toUriString(),
-          type = MEDIATYPE_OPDS_JSON,
+          type = MEDIATYPE_OPDS_JSON_VALUE,
         )
       }
 
@@ -603,14 +570,8 @@ class Opds2Controller(
         principal.user.restrictions,
       )
 
-      // quick memoization
-      val seriesCache = mutableMapOf<String, SeriesMetadata>()
-
       val entries = booksPage.map { bookDto ->
-        bookDto.toPublicationDto(
-          mediaRepository.findById(bookDto.id),
-          seriesCache.getOrPut(bookDto.seriesId) { seriesMetadataRepository.findById(bookDto.seriesId) },
-        )
+        bookDto.toOpdsPublicationDto(true)
       }
 
       val uriBuilder = uriBuilder("readlists/$id")
@@ -664,7 +625,7 @@ class Opds2Controller(
       val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.asc("metadata.numberSort")))
 
       val entries = bookDtoRepository.findAll(bookSearch, principal.user.id, pageable, principal.user.restrictions)
-        .map { bookDto -> bookDto.toPublicationDto(mediaRepository.findById(bookDto.id), series) }
+        .map { bookDto -> bookDto.toOpdsPublicationDto(true) }
 
       val uriBuilder = uriBuilder("series/$id")
 
@@ -673,7 +634,7 @@ class Opds2Controller(
           WPLinkDto(
             title = it,
             href = uriBuilder.cloneBuilder().queryParam("tag", it).toUriString(),
-            type = MEDIATYPE_OPDS_JSON,
+            type = MEDIATYPE_OPDS_JSON_VALUE,
             rel = if (it == tag) OpdsLinkRel.SELF else null,
           )
         }
@@ -700,13 +661,10 @@ class Opds2Controller(
 
   @GetMapping("search")
   fun getSearchResults(
-
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "query", required = false) query: String? = null,
   ): FeedDto {
     val pageable = PageRequest.of(0, 20, Sort.by("relevance"))
-
-    val (mediaCache, seriesCache) = quickCache()
 
     val resultsSeries = seriesDtoRepository
       .findAll(
@@ -732,7 +690,7 @@ class Opds2Controller(
         principal.user.id,
         pageable,
         principal.user.restrictions,
-      )
+      ).map { it.toOpdsPublicationDto(true) }
 
     val resultsCollections = collectionRepository.findAll(
       principal.user.getAuthorizedLibraryIds(null),
@@ -761,7 +719,7 @@ class Opds2Controller(
       ),
       groups = listOfNotNull(
         if (!resultsSeries.isEmpty) FeedGroupDto(FeedMetadataDto("Series"), navigation = resultsSeries.content) else null,
-        if (!resultsBooks.isEmpty) FeedGroupDto(FeedMetadataDto("Books"), publications = mapBooks(resultsBooks, mediaCache, seriesCache)) else null,
+        if (!resultsBooks.isEmpty) FeedGroupDto(FeedMetadataDto("Books"), publications = resultsBooks.content) else null,
         if (!resultsCollections.isEmpty) FeedGroupDto(FeedMetadataDto("Collections"), navigation = resultsCollections.content) else null,
         if (!resultsReadLists.isEmpty) FeedGroupDto(FeedMetadataDto("Read Lists"), navigation = resultsReadLists.content) else null,
       ),
@@ -772,33 +730,27 @@ class Opds2Controller(
     WPLinkDto(
       title = name,
       href = uriBuilder("libraries/$id").toUriString(),
-      type = MEDIATYPE_OPDS_JSON,
+      type = MEDIATYPE_OPDS_JSON_VALUE,
     )
 
   private fun SeriesDto.toWPLinkDto(): WPLinkDto =
     WPLinkDto(
       title = metadata.title,
       href = uriBuilder("series/$id").toUriString(),
-      type = MEDIATYPE_OPDS_JSON,
+      type = MEDIATYPE_OPDS_JSON_VALUE,
     )
 
   private fun SeriesCollection.toWPLinkDto(): WPLinkDto =
     WPLinkDto(
       title = name,
       href = uriBuilder("collections/$id").toUriString(),
-      type = MEDIATYPE_OPDS_JSON,
+      type = MEDIATYPE_OPDS_JSON_VALUE,
     )
 
   private fun ReadList.toWPLinkDto(): WPLinkDto =
     WPLinkDto(
       title = name,
       href = uriBuilder("readlists/$id").toUriString(),
-      type = MEDIATYPE_OPDS_JSON,
+      type = MEDIATYPE_OPDS_JSON_VALUE,
     )
-
-  private fun BookDto.toPublicationDto(media: Media, seriesMetadata: SeriesMetadata?): WPPublicationDto =
-    toWPPublicationDto(imageConverter::canConvertMediaType, media, seriesMetadata)
-
-  private fun BookDto.toPublicationDto(media: Media, seriesDto: SeriesDto?): WPPublicationDto =
-    toWPPublicationDto(imageConverter::canConvertMediaType, media, seriesDto = seriesDto)
 }
