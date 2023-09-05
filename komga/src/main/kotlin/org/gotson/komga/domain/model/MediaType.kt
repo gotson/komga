@@ -9,6 +9,6 @@ enum class MediaType(val type: String, val fileExtension: String, val exportType
   ;
 
   companion object {
-    fun fromMediaType(mediaType: String): MediaType? = values().firstOrNull { it.type == mediaType }
+    fun fromMediaType(mediaType: String?): MediaType? = values().firstOrNull { it.type == mediaType }
   }
 }

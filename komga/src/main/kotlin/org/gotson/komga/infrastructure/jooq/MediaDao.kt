@@ -29,6 +29,9 @@ class MediaDao(
   private val groupFields = arrayOf(*m.fields(), *p.fields())
 
   override fun findById(bookId: String): Media =
+    find(dsl, bookId)!!
+
+  override fun findByIdOrNull(bookId: String): Media? =
     find(dsl, bookId)
 
   override fun findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(libraryId: String, mediaTypes: Collection<String>, pageHashing: Int): Collection<Pair<String, String>> {
@@ -64,7 +67,7 @@ class MediaDao(
       .fetch()
       .map { Pair(it[m.BOOK_ID], it[m.PAGE_COUNT]) }
 
-  private fun find(dsl: DSLContext, bookId: String): Media =
+  private fun find(dsl: DSLContext, bookId: String): Media? =
     dsl.select(*groupFields)
       .from(m)
       .leftJoin(p).on(m.BOOK_ID.eq(p.BOOK_ID))
@@ -81,7 +84,7 @@ class MediaDao(
           .map { it.fileName }
 
         mr.toDomain(pr.filterNot { it.bookId == null }.map { it.toDomain() }, files)
-      }.first()
+      }.firstOrNull()
 
   @Transactional
   override fun insert(media: Media) {

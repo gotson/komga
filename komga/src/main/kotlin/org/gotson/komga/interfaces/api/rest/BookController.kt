@@ -21,6 +21,11 @@ import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
+import org.gotson.komga.domain.model.MediaType.EPUB
+import org.gotson.komga.domain.model.MediaType.PDF
+import org.gotson.komga.domain.model.MediaType.RAR_4
+import org.gotson.komga.domain.model.MediaType.RAR_GENERIC
+import org.gotson.komga.domain.model.MediaType.ZIP
 import org.gotson.komga.domain.model.MediaUnsupportedException
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
@@ -46,8 +51,10 @@ import org.gotson.komga.infrastructure.web.getMediaTypeOrDefault
 import org.gotson.komga.infrastructure.web.setCachePrivate
 import org.gotson.komga.interfaces.api.checkContentRestriction
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_DIVINA_JSON_VALUE
+import org.gotson.komga.interfaces.api.dto.MEDIATYPE_WEBPUB_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.WPPublicationDto
 import org.gotson.komga.interfaces.api.dto.toManifestDivina
+import org.gotson.komga.interfaces.api.dto.toManifestPdf
 import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.api.rest.dto.BookDto
 import org.gotson.komga.interfaces.api.rest.dto.BookImportBatchDto
@@ -95,6 +102,7 @@ import java.nio.file.NoSuchFileException
 import java.time.LocalDate
 import java.time.ZoneOffset
 import kotlin.io.path.name
+import org.gotson.komga.domain.model.MediaType as KomgaMediaType
 
 private val logger = KotlinLogging.logger {}
 
@@ -612,9 +620,47 @@ class BookController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping(
+    value = ["api/v1/books/{bookId}/manifest"],
+    produces = [MEDIATYPE_WEBPUB_JSON_VALUE, MEDIATYPE_DIVINA_JSON_VALUE],
+  )
+  fun getWebPubManifest(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: String,
+  ): ResponseEntity<WPPublicationDto> =
+    mediaRepository.findByIdOrNull(bookId)?.let { media ->
+      when (KomgaMediaType.fromMediaType(media.mediaType)) {
+        ZIP -> getWebPubManifestDivina(principal, bookId)
+        RAR_GENERIC -> getWebPubManifestDivina(principal, bookId)
+        RAR_4 -> getWebPubManifestDivina(principal, bookId)
+        EPUB -> getWebPubManifestDivina(principal, bookId)
+        PDF -> getWebPubManifestPdf(principal, bookId)
+        null -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
+      }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  @GetMapping(
+    value = ["api/v1/books/{bookId}/manifest/pdf"],
+    produces = [MEDIATYPE_WEBPUB_JSON_VALUE],
+  )
+  fun getWebPubManifestPdf(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: String,
+  ): ResponseEntity<WPPublicationDto> =
+    bookDtoRepository.findByIdOrNull(bookId, principal.user.id)?.let { bookDto ->
+      if (bookDto.media.mediaType != KomgaMediaType.PDF.type) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Book media type '${bookDto.media.mediaType}' not compatible with requested profile")
+      principal.user.checkContentRestriction(bookDto)
+      val manifest = bookDto.toManifestPdf(
+        mediaRepository.findById(bookDto.id),
+        seriesMetadataRepository.findById(bookDto.seriesId),
+      )
+      ResponseEntity.ok()
+        .contentType(manifest.mediaType)
+        .body(manifest)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  @GetMapping(
     value = [
       "api/v1/books/{bookId}/manifest/divina",
-      "api/v1/books/{bookId}/manifest",
     ],
     produces = [MEDIATYPE_DIVINA_JSON_VALUE],
   )

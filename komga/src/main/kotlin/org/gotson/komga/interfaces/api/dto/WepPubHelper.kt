@@ -2,6 +2,7 @@ package org.gotson.komga.interfaces.api.dto
 
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.MediaType.PDF
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT
 import org.gotson.komga.domain.model.SeriesMetadata.ReadingDirection.RIGHT_TO_LEFT
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import org.springframework.web.util.UriComponentsBuilder
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import org.gotson.komga.domain.model.MediaType as KMediaType
 import org.gotson.komga.domain.model.MediaType.Companion as KomgaMediaType
 
 val wpKnownRoles = listOf(
@@ -76,6 +78,24 @@ fun BookDto.toManifestDivina(canConvertMediaType: (String, String) -> Boolean, m
   }
 }
 
+fun BookDto.toManifestPdf(media: Media, seriesMetadata: SeriesMetadata): WPPublicationDto {
+  val uriBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("api", "v1")
+  return toOpdsPublicationDto().let {
+    it.copy(
+      mediaType = MEDIATYPE_WEBPUB_JSON,
+      metadata = it.metadata
+        .withSeriesMetadata(seriesMetadata)
+        .copy(conformsTo = PROFILE_PDF),
+      readingOrder = List(media.pages.size) { index: Int ->
+        WPLinkDto(
+          href = uriBuilder.cloneBuilder().path("books/$id/pages/${index + 1}/raw").toUriString(),
+          type = PDF.type,
+        )
+      },
+    )
+  }
+}
+
 private fun BookDto.toWPMetadataDto(includeOpdsLinks: Boolean = false) = WPMetadataDto(
   title = metadata.title,
   description = metadata.summary,
@@ -130,10 +150,26 @@ private fun WPMetadataDto.withAuthors(authors: List<AuthorDto>): WPMetadataDto {
 }
 
 private fun BookDto.toWPLinkDtos(uriBuilder: UriComponentsBuilder): List<WPLinkDto> {
+  val komgaMediaType = KomgaMediaType.fromMediaType(media.mediaType)
   val download = WPLinkDto(rel = OpdsLinkRel.ACQUISITION, type = media.mediaType, href = uriBuilder.cloneBuilder().path("books/$id/file").toUriString())
+
   return listOfNotNull(
-    WPLinkDto(rel = OpdsLinkRel.SELF, href = uriBuilder.cloneBuilder().path("books/$id/manifest/divina").toUriString(), type = MEDIATYPE_DIVINA_JSON_VALUE),
+    // most appropriate manifest
+    WPLinkDto(rel = OpdsLinkRel.SELF, href = uriBuilder.cloneBuilder().path("books/$id/manifest").toUriString(), type = mediaTypeToWebPub(komgaMediaType)),
+    // PDF is also available under the Divina profile
+    if (komgaMediaType == PDF) WPLinkDto(href = uriBuilder.cloneBuilder().path("books/$id/manifest/divina").toUriString(), type = MEDIATYPE_DIVINA_JSON_VALUE) else null,
+    // main acquisition link
     download,
-    KomgaMediaType.fromMediaType(media.mediaType)?.let { download.copy(type = it.exportType) },
+    // extra acquisition link with a different export type, useful for CBR/CBZ
+    komgaMediaType?.let { download.copy(type = it.exportType) },
   ).distinct()
+}
+
+private fun mediaTypeToWebPub(mediaType: KMediaType?): String = when (mediaType) {
+  KMediaType.ZIP -> MEDIATYPE_DIVINA_JSON_VALUE
+  KMediaType.RAR_GENERIC -> MEDIATYPE_DIVINA_JSON_VALUE
+  KMediaType.RAR_4 -> MEDIATYPE_DIVINA_JSON_VALUE
+  KMediaType.EPUB -> MEDIATYPE_DIVINA_JSON_VALUE
+  PDF -> MEDIATYPE_WEBPUB_JSON_VALUE
+  null -> MEDIATYPE_WEBPUB_JSON_VALUE
 }
