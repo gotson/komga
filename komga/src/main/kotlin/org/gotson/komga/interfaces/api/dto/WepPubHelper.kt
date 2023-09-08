@@ -158,18 +158,14 @@ private fun WPMetadataDto.withAuthors(authors: List<AuthorDto>): WPMetadataDto {
 
 private fun BookDto.toWPLinkDtos(uriBuilder: UriComponentsBuilder): List<WPLinkDto> {
   val komgaMediaType = KomgaMediaType.fromMediaType(media.mediaType)
-  val download = WPLinkDto(rel = OpdsLinkRel.ACQUISITION, type = media.mediaType, href = uriBuilder.cloneBuilder().path("books/$id/file").toUriString())
-
   return listOfNotNull(
     // most appropriate manifest
     WPLinkDto(rel = OpdsLinkRel.SELF, href = uriBuilder.cloneBuilder().path("books/$id/manifest").toUriString(), type = mediaTypeToWebPub(komgaMediaType)),
     // PDF is also available under the Divina profile
     if (komgaMediaType == PDF) WPLinkDto(href = uriBuilder.cloneBuilder().path("books/$id/manifest/divina").toUriString(), type = MEDIATYPE_DIVINA_JSON_VALUE) else null,
     // main acquisition link
-    download,
-    // extra acquisition link with a different export type, useful for CBR/CBZ
-    komgaMediaType?.let { download.copy(type = it.exportType) },
-  ).distinct()
+    WPLinkDto(rel = OpdsLinkRel.ACQUISITION, type = komgaMediaType?.exportType ?: media.mediaType, href = uriBuilder.cloneBuilder().path("books/$id/file").toUriString()),
+  )
 }
 
 private fun mediaTypeToWebPub(mediaType: KMediaType?): String = when (mediaType) {
