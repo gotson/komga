@@ -159,7 +159,7 @@ jobs:
         with:
           arguments: :komga:copyWebDist :komga:generateOpenApiDocs :komga:bootJar :komga-tray:jar
       - name: Run Conveyor
-        uses: hydraulic-software/conveyor/actions/build@v10.1
+        uses: hydraulic-software/conveyor/actions/build@v11.1
         with:
           command: -f conveyor.ci.conf make site -o ./output/release
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
