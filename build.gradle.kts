@@ -53,7 +53,6 @@ tasks.wrapper {
 }
 
 jreleaser {
-  dryrun.set(true)
   project {
     description.set("Media server for comics/mangas/BDs with API and OPDS support")
     copyright.set("Gauthier Roebroeck")
