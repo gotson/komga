@@ -190,8 +190,8 @@ jobs:
         with:
           name: jreleaser-release
           path: |
-            komga/build/jreleaser/trace.log
-            komga/build/jreleaser/output.properties
+            build/jreleaser/trace.log
+            build/jreleaser/output.properties
       - name: Release commit and push
         uses: EndBug/add-and-commit@v9
         with:
