@@ -313,5 +313,6 @@ configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
 project.afterEvaluate {
   tasks.named("forkedSpringBootRun") {
     mustRunAfter(tasks.bootJar)
+    mustRunAfter(tasks.jar)
   }
 }
