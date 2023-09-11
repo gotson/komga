@@ -207,6 +207,7 @@
     "disk_space": "使用容量",
     "dismiss": "却下",
     "download": "ダウンロード",
+    "drag_drop": "ドラッグ&ドロップ",
     "email": "メールアドレス",
     "filename": "ファイル名",
     "filter_no_matches": "フィルタに一致するものはありません",
@@ -260,10 +261,17 @@
     "book_series": "シリーズ: {name}",
     "button_import": "インポート",
     "comicrack_preambule_html": "既存のComicRackの読書リストを<code>.cbl</code>形式でインポートすることができます。<br>Komgaは指定されたシリーズと書籍番号を、あなたのライブラリにあるシリーズと本に一致させようとします。",
+    "dialog_confirmation": {
+      "body": "{total} 冊のうち {unmatched} 冊が一致しませんでした。",
+      "create": "生成を試みる",
+      "title": "数冊の書籍が一致しませんでした"
+    },
     "field_files_label": "ComicRack 読書リスト (.cbl)",
     "import_read_lists": "Read Listsのインポート",
     "imported_as": "{name}をインポートしました",
     "readlist_created": "読書リストが作成されました: {name}",
+    "requested_number": "要求された数",
+    "requested_series": "要求されたシリーズ",
     "results_preambule": "インポートの結果は以下の通りです。また、指定されたファイルごとにマッチしていない本を確認することができます。",
     "size_limit": "サイズは{size}MB以下にしてください",
     "tab_title": "データインポート"
@@ -302,6 +310,19 @@
       "button_confirm": "解析",
       "title": "ライブラリを解析"
     },
+    "book_picker": {
+      "filter": "冊数、タイトル又は発行日によるフィルタ",
+      "title": "書籍を選択"
+    },
+    "delete_book": {
+      "button_confirm": "削除",
+      "confirm_delete": "はい、書籍 {name} とそのファイルを削除します。",
+      "confirm_delete_multiple": "はい、 {count} 冊の書籍とファイルを削除します。",
+      "dialog_title": "書籍を削除",
+      "dialog_title_multiple": "書籍(複数)を削除",
+      "warning_html": "このサーバーの書籍 <b>{name}</b>と格納されているメディアファイルを削除します。この操作は<b>取り消しできません。</b>続けますか？",
+      "warning_multiple_html": "このサーバーの {count} 冊の書籍と格納されているメディアファイルを削除します。この操作は<b>取り消しできません。</b>続けますか？"
+    },
     "delete_collection": {
       "button_confirm": "削除",
       "confirm_delete": "はい、コレクション「{name}」を削除します",
@@ -325,6 +346,12 @@
       "dialog_title_multiple": "読書リストを削除",
       "warning_html": "読書リスト<b>{name}</b>はこのサーバから削除されます。メディアファイルには影響しません。削除はなかったことに<b>できません</b>。続けますか？",
       "warning_multiple_html": "{count}件の読書リストが削除されます。メディアファイルには影響しません。<b>取り消すことはできません</b>。よろしいですか？"
+    },
+    "delete_series": {
+      "button_confirm": "削除",
+      "confirm_delete": "はい、このシリーズ「{name}」とファイルを削除します。",
+      "confirm_delete_multiple": "はい、 {count} のシリーズとファイルを削除します。",
+      "dialog_title": "シリーズを削除"
     },
     "delete_user": {
       "button_confirm": "削除",
