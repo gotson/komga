@@ -197,3 +197,13 @@ jobs:
         with:
           message: 'chore(release): ${{ needs.version.outputs.version_next }} [skip ci]'
           default_author: github_actions
+      - name: Run Conveyor - Microsoft Store
+        uses: hydraulic-software/conveyor/actions/build@v11.1
+        with:
+          command: -f conveyor.msstore.ci.conf make site -o ./output/msstore
+          signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
+          agree_to_license: 1
+        env:
+          CONVEYOR_MSSTORE_CLIENT_ID: ${{ secrets.CONVEYOR_MSSTORE_CLIENT_ID }}
+          CONVEYOR_MSSTORE_CLIENT_SECRET: ${{ secrets.CONVEYOR_MSSTORE_CLIENT_SECRET }}
+          CONVEYOR_MSSTORE_TENANT_ID: ${{ secrets.CONVEYOR_MSSTORE_TENANT_ID }}
