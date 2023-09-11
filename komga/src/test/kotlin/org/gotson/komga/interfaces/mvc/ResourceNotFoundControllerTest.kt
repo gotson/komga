@@ -1,4 +1,4 @@
-package org.gotson.komga.infrastructure.web
+package org.gotson.komga.interfaces.mvc
 
 import org.gotson.komga.interfaces.api.rest.WithMockCustomUser
 import org.junit.jupiter.api.Test
