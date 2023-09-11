@@ -156,6 +156,11 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           arguments: :komga:copyWebDist :komga:generateOpenApiDocs :komga:bootJar :komga-tray:jar
+      - name: Release commit and push
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: 'chore(release): ${{ needs.version.outputs.version_next }} [skip ci]'
+          default_author: github_actions
       - name: Run Conveyor
         uses: hydraulic-software/conveyor/actions/build@v11.1
         with:
@@ -190,11 +195,6 @@ jobs:
           path: |
             build/jreleaser/trace.log
             build/jreleaser/output.properties
-      - name: Release commit and push
-        uses: EndBug/add-and-commit@v9
-        with:
-          message: 'chore(release): ${{ needs.version.outputs.version_next }} [skip ci]'
-          default_author: github_actions
       - name: Run Conveyor - Microsoft Store
         uses: hydraulic-software/conveyor/actions/build@v11.1
         with:
