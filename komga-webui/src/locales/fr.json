@@ -21,6 +21,11 @@
     "account_settings": "Paramètres du compte",
     "change_password": "Modifier le mot de passe"
   },
+  "announcements": {
+    "mark_all_read": "Marquer tous comme lus",
+    "mark_read": "Marquer comme lu",
+    "tab_title": "Annonces"
+  },
   "authentication_activity": {
     "datetime": "Date et heure",
     "email": "Adresse e-mail",
@@ -217,6 +222,7 @@
     "lock_all": "Tout verrouiller",
     "n_selected": "{count} sélectionné",
     "nothing_to_show": "Rien à afficher",
+    "oneshot": "One-shot",
     "outdated": "Obsolète",
     "page": "Page",
     "page_number": "Numéro de page",
@@ -244,7 +250,7 @@
     "year": "année"
   },
   "dashboard": {
-    "keep_reading": "Continuer la lecture",
+    "keep_reading": "Poursuivre la lecture",
     "on_deck": "En cours",
     "recently_added_books": "Livres ajoutés récemment",
     "recently_added_series": "Séries ajoutées récemment",
@@ -423,6 +429,7 @@
       "field_import_local_artwork": "Couverture locale",
       "field_import_mylar_series": "Métadonnées de la série",
       "field_name": "Nom",
+      "field_oneshotsdirectory": "Répertoire des One-shots",
       "field_repair_extensions": "Réparer automatiquement les extensions de fichier incorrectes",
       "field_root_folder": "Dossier racine",
       "field_scanner_empty_trash_after_scan": "Vider la corbeille automatiquement après chaque analyse",
@@ -442,6 +449,7 @@
       "tab_general": "Général",
       "tab_metadata": "Métadonnées",
       "tab_options": "Options",
+      "tooltip_oneshotsdirectory": "Laisser vider pour désactiver",
       "tooltip_scanner_force_modified_time": "Activez si la bibliothèque est stockée sur Google Drive",
       "tooltip_use_resources": "Peut utiliser un grand nombre de ressources avec de grandes bibliothèques ou un matériel lent"
     },
@@ -579,16 +587,23 @@
     }
   },
   "duplicate_pages": {
+    "action_auto_delete_remaining": "Auto suppression restantes ({count})",
     "action_delete_auto": "Suppression automatique",
     "action_delete_manual": "Suppression manuelle",
     "action_delete_matches": "Supprimer les correspondances",
     "action_ignore": "Ignorer",
+    "action_ignore_remaining": "À ignorer restants ({count})",
+    "action_manual_delete_remaining": "Suppressions manuelles restantes ({count})",
+    "confirm_auto_delete_remaining": "Tous les hash de pages restants sur cette page ({count}) seront marqués pour une suppression automatique.",
+    "confirm_manual_delete_remaining": "Tous les hash de pages restant sur cette page ({count}) seront marqués pour une suppression manuelle.",
     "delete_to_save": "Supprimer pour économiser {size}",
     "deleted_count": "Supprimé {count} fois",
+    "empty_title": "Aucune page dupliquée trouvée",
     "filter": {
       "count": "Nombre",
       "delete_count": "Compteur de suppression",
       "delete_size": "Espace économisé",
+      "match_count": "Nombre de concordances",
       "size": "Taille",
       "total_size": "Taille totale"
     },
@@ -675,7 +690,8 @@
     "ERR_1027": "Erreur de connexion OpenID Connect : Pas d'attribut email_verified",
     "ERR_1028": "Erreur de connexion OpenID Connect : Pas d'attribut email",
     "ERR_1029": "Le fichier ComicRack CBL ne contient aucun livre",
-    "ERR_1030": "La liste de livres ComicRack n'a pas de nom"
+    "ERR_1030": "La liste de livres ComicRack n'a pas de nom",
+    "ERR_1031": "il manque la série oule numéro à ComicRack CBL Book"
   },
   "filter": {
     "age_rating": "Âge minimal",
@@ -685,9 +701,11 @@
     "in_progress": "En cours",
     "language": "Langue",
     "library": "Bibliothèque",
+    "oneshot": "One-shot",
     "publisher": "Éditeur",
     "read": "Lu",
     "release_date": "Date de publication",
+    "sharing_label": "Étiquette commune",
     "status": "Statut",
     "tag": "Étiquette",
     "unread": "Non lu"
@@ -749,6 +767,7 @@
     "mark_unread": "Marquer comme non lu",
     "refresh_metadata": "Actualiser les métadonnées",
     "scan_library_files": "Scanner les fichiers de la bibliothèque",
+    "scan_library_files_deep": "Scanner les fichiers de la bibliothèque (profond)",
     "select_all": "Tout sélectionner"
   },
   "metrics": {
@@ -800,6 +819,7 @@
       "button_cancel_all_tasks": "Annuler toutes les tâches",
       "button_empty_trash": "Vider la corbeille pour toutes les bibliothèques",
       "button_scan_libraries": "Analyser toutes les bibliothèques",
+      "button_scan_libraries_deep": "Analyser toutes les bibliothèques (profond)",
       "button_shutdown": "Éteindre",
       "notification_tasks_cancelled": "Aucune tâche à annuler | Une tâche annulée | {count} tâches annulées",
       "section_title": "Gestion du serveur"
