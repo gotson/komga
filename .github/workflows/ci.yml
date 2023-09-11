@@ -132,13 +132,11 @@ jobs:
           java-version: '19'
           java-package: 'jdk'
           distribution: 'temurin'
-          cache: 'gradle'
       - uses: actions/setup-java@v3
         with:
           java-version: '17'
           java-package: 'jdk'
           distribution: 'temurin'
-          cache: 'gradle'
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
