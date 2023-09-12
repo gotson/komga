@@ -155,11 +155,20 @@ jobs:
       - name: Build
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: :komga:copyWebDist :komga:generateOpenApiDocs :komga:bootJar :komga-tray:jar
+          arguments: :komga:copyWebDist :komga:bootJar :komga-tray:jar
+      - name: Generate OpenAPI docs
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :komga:generateOpenApiDocs
+      - name: Generate Changelog append
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: jreleaserChangelog
       - name: Release commit and push
         uses: EndBug/add-and-commit@v9
         with:
           message: 'chore(release): ${{ needs.version.outputs.version_next }} [skip ci]'
+          tag: 'v${{ needs.version.outputs.version_next }}'
           default_author: github_actions
       - name: Run Conveyor
         uses: hydraulic-software/conveyor/actions/build@v11.1
