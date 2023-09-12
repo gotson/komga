@@ -1,3 +1,67 @@
+# [1.4.0](https://github.com/gotson/komga/compare/v1.3.1...v1.4.0) (2023-09-11)
+## 🚀 Features
+**api**
+- new endpoint to get pages in raw format ([2c33b3e](https://github.com/gotson/komga/commits/2c33b3e))
+
+**desktop**
+- new desktop application project ([4da12ae](https://github.com/gotson/komga/commits/4da12ae))
+
+**opds**
+- add alternate link to opds2 ([974bf30](https://github.com/gotson/komga/commits/974bf30))
+- links with absolute url ([f751e9b](https://github.com/gotson/komga/commits/f751e9b))
+- opds v2 support ([d1cb58b](https://github.com/gotson/komga/commits/d1cb58b))
+
+**opds2**
+- generate PDF profile webpub manifest ([7205b13](https://github.com/gotson/komga/commits/7205b13))
+
+## 🐛 Fixes
+**opds2**
+- fix some incorrect urls ([15da160](https://github.com/gotson/komga/commits/15da160))
+
+**webui**
+- duplicate unavailable indicator on One-Shot browse view ([afe3233](https://github.com/gotson/komga/commits/afe3233))
+
+**unscoped**
+- ensure database parent directory is always created ([fdd6fff](https://github.com/gotson/komga/commits/fdd6fff))
+- strip accents from series sort title in metadata providers ([e568dd0](https://github.com/gotson/komga/commits/e568dd0)), closes [#1199](https://github.com/gotson/komga/issues/1199)
+- use Epub cover for thumbnail ([8bdc4d8](https://github.com/gotson/komga/commits/8bdc4d8))
+- better handling of oneshot file deletion ([9b650cc](https://github.com/gotson/komga/commits/9b650cc)), closes [#1192](https://github.com/gotson/komga/issues/1192)
+
+## 🔄️ Changes
+**api**
+- provide thumbnails in resources instead of images for webpub manifest ([e50591f](https://github.com/gotson/komga/commits/e50591f))
+
+**opds2**
+- rework publication feed ([37e7d55](https://github.com/gotson/komga/commits/37e7d55))
+
+**webpub**
+- cleanup webpub manifest acquisition links ([32ef331](https://github.com/gotson/komga/commits/32ef331))
+
+**unscoped**
+- ktlint format ([92fce54](https://github.com/gotson/komga/commits/92fce54))
+- remove unused property number in BookPageContent ([cb5177d](https://github.com/gotson/komga/commits/cb5177d))
+
+## 🛠  Build
+**deps**
+- bump actions/checkout from 3 to 4 ([7544b8f](https://github.com/gotson/komga/commits/7544b8f))
+
+**desktop**
+- use conveyor to build the desktop apps ([96020fd](https://github.com/gotson/komga/commits/96020fd))
+
+**komga**
+- fix gradle task ordering ([8015965](https://github.com/gotson/komga/commits/8015965))
+
+**unscoped**
+- remove jreleaser dryrun flag ([5ea40c5](https://github.com/gotson/komga/commits/5ea40c5))
+- bump conveyor action to 11.1 ([8d29f4d](https://github.com/gotson/komga/commits/8d29f4d))
+- move jreleaser to root project ([9222d09](https://github.com/gotson/komga/commits/9222d09))
+- align jooq versions ([e2eff20](https://github.com/gotson/komga/commits/e2eff20))
+- add Conveyor ([903993e](https://github.com/gotson/komga/commits/903993e))
+
+## 📝 Documentation
+
+- add privacy policy ([099276c](https://github.com/gotson/komga/commits/099276c))
+
 # [1.3.1](https://github.com/gotson/komga/compare/v1.3.0...v1.3.1) (2023-08-08)
 ## 🐛 Fixes
 **docker**
