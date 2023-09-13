@@ -1,6 +1,7 @@
 
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.util.prefixIfNot
 
 plugins {
   run {
@@ -202,11 +203,24 @@ tasks {
     into("$projectDir/src/main/resources/public/")
   }
 
+  // modifies index.html to inject ThymeLeaf th: tags
+  register<Copy>("prepareThymeLeaf") {
+    group = "web"
+    dependsOn("copyWebDist")
+    from("$webui/dist/index.html")
+    into("$projectDir/src/main/resources/public/")
+    filter { line ->
+      line.replace("((?:src|content|href)=\")([\\w]*/.*?)(\")".toRegex()) {
+        it.groups[0]?.value + " th:" + it.groups[1]?.value + "@{" + it.groups[2]?.value?.prefixIfNot("/") + "}" + it.groups[3]?.value
+      }
+    }
+  }
+
   withType<ProcessResources> {
     filesMatching("application*.yml") {
       expand(project.properties)
     }
-    mustRunAfter(getByName("copyWebDist"))
+    mustRunAfter(getByName("prepareThymeLeaf"))
   }
 
   register<Test>("benchmark") {

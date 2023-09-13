@@ -40,7 +40,8 @@ The backend project uses `gradle` to run all the necessary tasks. If your IDE do
 
 Here is a list of useful tasks:
 - `bootRun`: run the application locally, useful for testing your changes.
-- `copyWebDist`: build the frontend, and copy the bundle to `/resources/public`. You need to run this manually if you want to test the latest frontend build hosted by Spring.
+- `prepareThymeLeaf`: build the frontend, and copy the bundle to `/resources/public`. You need to run this manually if
+  you want to test the latest frontend build hosted by Spring.
 - `test`: run automated tests. Always run this before committing.
 - `jooq-codegen-primary`: generates the jOOQ DSL.
 
@@ -67,6 +68,7 @@ Make sure you start the backend with the `dev` profile, else the frontend reques
 ## Docker
 
 To build the Docker image, you need to:
-- have the webui built and copied to `/resources/public`. To do so, run `./gradlew copyWebDist`
+
+- have the webui built and copied to `/resources/public`. To do so, run `./gradlew prepareThymeLeaf`
 - prepare the docker image via JReleaser. To do so, run `./gradlew jreleaserPackage`
 - the `Dockerfile` will be available in `komga/build/jreleaser/package/docker/`

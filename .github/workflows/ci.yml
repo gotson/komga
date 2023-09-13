@@ -155,7 +155,7 @@ jobs:
       - name: Build
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: :komga:copyWebDist :komga:bootJar :komga-tray:jar
+          arguments: :komga:prepareThymeLeaf :komga:bootJar :komga-tray:jar
       - name: Generate OpenAPI docs
         uses: gradle/gradle-build-action@v2
         with:
