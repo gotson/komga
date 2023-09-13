@@ -41,10 +41,12 @@ export const persistedModule: Module<any, any> = {
         // @ts-ignore
         const loc = new Intl.Locale(state.locale)
         try {
+          // @ts-ignore
           return loc.getWeekInfo().firstDay
         } catch (e) {
         }
         try {
+          // @ts-ignore
           return loc.weekInfo.firstDay
         } catch (e) {
         }
