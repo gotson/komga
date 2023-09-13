@@ -66,9 +66,7 @@ jobs:
         with:
           node-version: '16'
           cache: 'npm'
-          cache-dependency-path: |
-            package-lock.json
-            komga-webui/package-lock.json
+          cache-dependency-path: komga-webui/package-lock.json
       - name: npm install
         working-directory: komga-webui
         run: npm install
@@ -124,9 +122,7 @@ jobs:
         with:
           node-version: '16'
           cache: 'npm'
-          cache-dependency-path: |
-            package-lock.json
-            komga-webui/package-lock.json
+          cache-dependency-path: komga-webui/package-lock.json
       - uses: actions/setup-java@v3
         with:
           java-version: '19'
