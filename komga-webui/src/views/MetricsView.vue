@@ -103,7 +103,7 @@ import {MetricDto} from '@/types/komga-metrics'
 import {getFileSize} from '@/functions/file'
 
 export default Vue.extend({
-  name: 'Metrics',
+  name: 'MetricsView',
   data: () => ({
     getFileSize,
     tasks: undefined as unknown as MetricDto,

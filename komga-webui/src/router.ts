@@ -92,7 +92,7 @@ const router = new Router({
               path: '/settings/metrics',
               name: 'metrics',
               beforeEnter: adminGuard,
-              component: () => import(/* webpackChunkName: "metrics" */ './views/Metrics.vue'),
+              component: () => import(/* webpackChunkName: "metrics" */ './views/MetricsView.vue'),
             },
             {
               path: '/settings/announcements',
