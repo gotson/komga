@@ -49,6 +49,6 @@ class TransientBookLifecycle(
     val pageContent = bookAnalyzer.getPageContent(transientBook, number)
     val pageMediaType = transientBook.media.pages[number - 1].mediaType
 
-    return BookPageContent(number, pageContent, pageMediaType)
+    return BookPageContent(pageContent, pageMediaType)
   }
 }

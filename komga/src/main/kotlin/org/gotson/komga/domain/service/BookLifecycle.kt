@@ -239,7 +239,7 @@ class BookLifecycle(
   )
   fun getBookPage(book: Book, number: Int, convertTo: ImageType? = null, resizeTo: Int? = null): BookPageContent {
     val media = mediaRepository.findById(book.id)
-    val pageContent = bookAnalyzer.getPageContent(BookWithMedia(book, mediaRepository.findById(book.id)), number)
+    val pageContent = bookAnalyzer.getPageContent(BookWithMedia(book, media), number)
     val pageMediaType = media.pages[number - 1].mediaType
 
     if (resizeTo != null) {
@@ -249,7 +249,7 @@ class BookLifecycle(
         logger.error(e) { "Resize page #$number of book $book to $resizeTo: failed" }
         throw e
       }
-      return BookPageContent(number, convertedPage, resizeTargetFormat.mediaType)
+      return BookPageContent(convertedPage, resizeTargetFormat.mediaType)
     } else {
       convertTo?.let {
         val msg = "Convert page #$number of book $book from $pageMediaType to ${it.mediaType}"
@@ -271,10 +271,10 @@ class BookLifecycle(
           logger.error(e) { "$msg: conversion failed" }
           throw e
         }
-        return BookPageContent(number, convertedPage, it.mediaType)
+        return BookPageContent(convertedPage, it.mediaType)
       }
 
-      return BookPageContent(number, pageContent, pageMediaType)
+      return BookPageContent(pageContent, pageMediaType)
     }
   }
 

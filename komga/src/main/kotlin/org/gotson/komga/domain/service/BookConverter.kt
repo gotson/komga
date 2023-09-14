@@ -50,11 +50,11 @@ class BookConverter(
   private val historicalEventRepository: HistoricalEventRepository,
 ) {
 
-  private val convertibleTypes = listOf(MediaType.RAR_4.value)
+  private val convertibleTypes = listOf(MediaType.RAR_4.type)
 
   private val mediaTypeToExtension =
     listOf(MediaType.RAR_4, MediaType.ZIP, MediaType.PDF, MediaType.EPUB)
-      .associate { it.value to it.fileExtension }
+      .associate { it.type to it.fileExtension }
 
   private val failedConversions = mutableListOf<String>()
   private val skippedRepairs = mutableListOf<String>()
@@ -126,7 +126,7 @@ class BookConverter(
         convertedMedia.status != Media.Status.READY
         -> throw BookConversionException("Converted file could not be analyzed, aborting conversion")
 
-        convertedMedia.mediaType != MediaType.ZIP.value
+        convertedMedia.mediaType != MediaType.ZIP.type
         -> throw BookConversionException("Converted file is not a zip file, aborting conversion")
 
         !convertedMedia.pages.map { FilenameUtils.getName(it.fileName) to it.mediaType }

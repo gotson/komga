@@ -343,7 +343,7 @@ class ComicInfoProviderTest {
     @Test
     fun `given comicInfo when getting series metadata then metadata patch is valid`() {
       val comicInfo = ComicInfo().apply {
-        series = "series"
+        series = "séries"
         seriesGroup = "multiple,collections"
         publisher = "publisher"
         ageRating = AgeRating.MA_15
@@ -358,7 +358,7 @@ class ComicInfoProviderTest {
       val patch = comicInfoProvider.getSeriesMetadataFromBook(BookWithMedia(book, media), library)!!
 
       with(patch) {
-        assertThat(title).isEqualTo("series")
+        assertThat(title).isEqualTo("séries")
         assertThat(titleSort).isEqualTo("series")
         assertThat(status).isNull()
         assertThat(collections).containsExactlyInAnyOrder("collections", "multiple")

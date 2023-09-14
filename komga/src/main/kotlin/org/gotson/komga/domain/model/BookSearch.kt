@@ -9,7 +9,7 @@ open class BookSearch(
   val mediaStatus: Collection<Media.Status>? = null,
   val deleted: Boolean? = null,
   val releasedAfter: LocalDate? = null,
-  val seriesPrefix: String? = null
+  val seriesPrefix: String? = null,
 )
 
 class BookSearchWithReadProgress(
@@ -28,7 +28,7 @@ class BookSearchWithReadProgress(
   val genres: Collection<String>? = null,
   val ageRatings: Collection<Int?>? = null,
   val languages: Collection<String>? = null,
-  seriesPrefix: String? = null
+  seriesPrefix: String? = null,
 ) : BookSearch(
   libraryIds = libraryIds,
   seriesIds = seriesIds,

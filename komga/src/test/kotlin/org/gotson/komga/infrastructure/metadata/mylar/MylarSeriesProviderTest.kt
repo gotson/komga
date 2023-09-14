@@ -37,7 +37,7 @@ class MylarSeriesProviderTest {
       type = "comicSeries",
       publisher = "DC",
       imprint = "Vertigo",
-      name = "Sandman",
+      name = "Sàndman",
       comicid = "12345",
       year = 1990,
       descriptionText = "Sandman comics",
@@ -57,7 +57,7 @@ class MylarSeriesProviderTest {
     val patch = mylarSeriesProvider.getSeriesMetadata(series)!!
 
     with(patch) {
-      assertThat(title).isEqualTo("Sandman")
+      assertThat(title).isEqualTo("Sàndman")
       assertThat(titleSort).isEqualTo("Sandman")
       assertThat(status).isEqualTo(SeriesMetadata.Status.ENDED)
       assertThat(summary).isEqualTo("Sandman comics formatted")

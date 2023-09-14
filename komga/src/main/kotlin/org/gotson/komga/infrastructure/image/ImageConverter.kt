@@ -27,6 +27,9 @@ class ImageConverter {
 
   private val supportsTransparency = listOf("png")
 
+  fun canConvertMediaType(from: String, to: String) =
+    supportedReadMediaTypes.contains(from) && supportedWriteMediaTypes.contains(to)
+
   fun convertImage(imageBytes: ByteArray, format: String): ByteArray =
     ByteArrayOutputStream().use { baos ->
       val image = ImageIO.read(imageBytes.inputStream())

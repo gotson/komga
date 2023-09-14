@@ -211,12 +211,12 @@ class MediaDaoTest(
             mediaType = "image/jpeg",
           ),
         ),
-        mediaType = MediaType.ZIP.value,
+        mediaType = MediaType.ZIP.type,
         bookId = book.id,
       )
       mediaDao.insert(media)
 
-      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.value), komgaProperties.pageHashing)
+      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
 
       assertThat(found as Iterable<Pair<String, String>>)
         .hasSize(1)
@@ -233,12 +233,12 @@ class MediaDaoTest(
             mediaType = "image/jpeg",
           ),
         ),
-        mediaType = MediaType.RAR_4.value,
+        mediaType = MediaType.RAR_4.type,
         bookId = book.id,
       )
       mediaDao.insert(media)
 
-      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.value), komgaProperties.pageHashing)
+      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
 
       assertThat(found).isEmpty()
     }
@@ -253,12 +253,12 @@ class MediaDaoTest(
             mediaType = "image/jpeg",
           )
         },
-        mediaType = MediaType.ZIP.value,
+        mediaType = MediaType.ZIP.type,
         bookId = book.id,
       )
       mediaDao.insert(media)
 
-      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.value), komgaProperties.pageHashing)
+      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
 
       assertThat(found as Iterable<Pair<String, String>>)
         .hasSize(1)
@@ -276,12 +276,12 @@ class MediaDaoTest(
             fileHash = "hashed",
           ),
         ),
-        mediaType = MediaType.ZIP.value,
+        mediaType = MediaType.ZIP.type,
         bookId = book.id,
       )
       mediaDao.insert(media)
 
-      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.value), komgaProperties.pageHashing)
+      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
 
       assertThat(found).isEmpty()
     }
@@ -297,12 +297,12 @@ class MediaDaoTest(
             fileHash = if (it <= 3 || it >= 9) "hashed" else "",
           )
         },
-        mediaType = MediaType.ZIP.value,
+        mediaType = MediaType.ZIP.type,
         bookId = book.id,
       )
       mediaDao.insert(media)
 
-      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.value), komgaProperties.pageHashing)
+      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
 
       assertThat(found).isEmpty()
     }
@@ -318,12 +318,12 @@ class MediaDaoTest(
             fileHash = "hashed",
           )
         },
-        mediaType = MediaType.ZIP.value,
+        mediaType = MediaType.ZIP.type,
         bookId = book.id,
       )
       mediaDao.insert(media)
 
-      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.value), komgaProperties.pageHashing)
+      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
 
       assertThat(found).isEmpty()
     }

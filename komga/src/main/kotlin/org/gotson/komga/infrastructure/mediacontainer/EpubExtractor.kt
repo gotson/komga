@@ -8,6 +8,7 @@ import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.domain.model.MediaUnsupportedException
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import org.springframework.stereotype.Service
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -20,9 +21,9 @@ class EpubExtractor(
   private val zipExtractor: ZipExtractor,
   private val contentDetector: ContentDetector,
   private val imageAnalyzer: ImageAnalyzer,
-) : MediaContainerExtractor {
+) : MediaContainerExtractor, CoverExtractor {
 
-  override fun mediaTypes(): List<String> = listOf(MediaType.EPUB.value)
+  override fun mediaTypes(): List<String> = listOf(MediaType.EPUB.type)
 
   override fun getEntries(path: Path, analyzeDimensions: Boolean): List<MediaContainerEntry> {
     ZipFile(path.toFile()).use { zip ->
@@ -32,8 +33,7 @@ class EpubExtractor(
         val opfDoc = zip.getInputStream(zip.getEntry(opfFile)).use { Jsoup.parse(it, null, "") }
         val opfDir = Paths.get(opfFile).parent
 
-        val manifest = opfDoc.select("manifest > item")
-          .associate { it.attr("id") to ManifestItem(it.attr("id"), it.attr("href"), it.attr("media-type")) }
+        val manifest = opfDoc.getManifest()
 
         val pages = opfDoc.select("spine > itemref").map { it.attr("idref") }
           .mapNotNull { manifest[it] }
@@ -84,6 +84,17 @@ class EpubExtractor(
         ?: throw MediaUnsupportedException("META-INF/container.xml does not contain rootfile tag")
     }
 
+  private fun Document.getManifest() =
+    select("manifest > item")
+      .associate {
+        it.attr("id") to ManifestItem(
+          it.attr("id"),
+          it.attr("href"),
+          it.attr("media-type"),
+          it.attr("properties").split(" ").toSet(),
+        )
+      }
+
   fun getPackageFile(path: Path): String? =
     ZipFile(path.toFile()).use { zip ->
       try {
@@ -99,5 +110,28 @@ class EpubExtractor(
     val id: String,
     val href: String,
     val mediaType: String,
+    val properties: Set<String> = emptySet(),
   )
+
+  override fun getCoverStream(path: Path): ByteArray? {
+    ZipFile(path.toFile()).use { zip ->
+      val opfFile = getPackagePath(zip)
+
+      val opfDoc = zip.getInputStream(zip.getEntry(opfFile)).use { Jsoup.parse(it, null, "") }
+      val opfDir = Paths.get(opfFile).parent
+      val manifest = opfDoc.getManifest()
+
+      val coverManifestItem =
+        // EPUB 3 - try to get cover from manifest properties 'cover-image'
+        manifest.values.firstOrNull { it.properties.contains("cover-image") }
+          ?: // EPUB 2 - get cover from meta element with name="cover"
+          opfDoc.selectFirst("metadata > meta[name=cover]")?.attr("content")?.ifBlank { null }?.let { manifest[it] }
+
+      if (coverManifestItem != null) {
+        val href = coverManifestItem.href
+        val coverPath = opfDir?.resolve(href)?.normalize() ?: Paths.get(href)
+        return zip.getInputStream(zip.getEntry(coverPath.invariantSeparatorsPathString)).readAllBytes()
+      } else return null
+    }
+  }
 }

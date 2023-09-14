@@ -1,4 +1,4 @@
-package org.gotson.komga.interfaces.api.opds.dto
+package org.gotson.komga.interfaces.api.opds.v1.dto
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
@@ -76,15 +76,3 @@ class OpdsLinkPageStreaming(
   rel = "http://vaemendis.net/opds-pse/stream",
   href = href,
 )
-
-class OpdsLinkRel {
-  companion object {
-    const val SELF = "self"
-    const val START = "start"
-    const val PREVIOUS = "previous"
-    const val NEXT = "next"
-    const val SUBSECTION = "subsection"
-    const val SORT_NEW = "http://opds-spec.org/sort/new"
-    const val SORT_POPULAR = "http://opds-spec.org/sort/popular"
-  }
-}

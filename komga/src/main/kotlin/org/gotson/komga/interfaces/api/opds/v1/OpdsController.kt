@@ -1,14 +1,12 @@
-package org.gotson.komga.interfaces.api.opds
+package org.gotson.komga.interfaces.api.opds.v1
 
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
-import jakarta.servlet.ServletContext
 import mu.KotlinLogging
 import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
-import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ReadList
@@ -24,26 +22,26 @@ import org.gotson.komga.domain.persistence.ReferentialRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.service.BookLifecycle
-import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageAsQueryParam
 import org.gotson.komga.interfaces.api.checkContentRestriction
-import org.gotson.komga.interfaces.api.opds.dto.OpdsAuthor
-import org.gotson.komga.interfaces.api.opds.dto.OpdsEntryAcquisition
-import org.gotson.komga.interfaces.api.opds.dto.OpdsEntryNavigation
-import org.gotson.komga.interfaces.api.opds.dto.OpdsFeed
-import org.gotson.komga.interfaces.api.opds.dto.OpdsFeedAcquisition
-import org.gotson.komga.interfaces.api.opds.dto.OpdsFeedNavigation
-import org.gotson.komga.interfaces.api.opds.dto.OpdsLink
-import org.gotson.komga.interfaces.api.opds.dto.OpdsLinkFeedNavigation
-import org.gotson.komga.interfaces.api.opds.dto.OpdsLinkFileAcquisition
-import org.gotson.komga.interfaces.api.opds.dto.OpdsLinkImage
-import org.gotson.komga.interfaces.api.opds.dto.OpdsLinkImageThumbnail
-import org.gotson.komga.interfaces.api.opds.dto.OpdsLinkPageStreaming
-import org.gotson.komga.interfaces.api.opds.dto.OpdsLinkRel
-import org.gotson.komga.interfaces.api.opds.dto.OpdsLinkSearch
-import org.gotson.komga.interfaces.api.opds.dto.OpenSearchDescription
+import org.gotson.komga.interfaces.api.dto.MEDIATYPE_OPDS_JSON_VALUE
+import org.gotson.komga.interfaces.api.dto.OpdsLinkRel
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsAuthor
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsEntryAcquisition
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsEntryNavigation
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsFeed
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsFeedAcquisition
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsFeedNavigation
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsLink
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsLinkFeedNavigation
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsLinkFileAcquisition
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsLinkImage
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsLinkImageThumbnail
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsLinkPageStreaming
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsLinkSearch
+import org.gotson.komga.interfaces.api.opds.v1.dto.OpenSearchDescription
 import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.api.persistence.SeriesDtoRepository
 import org.gotson.komga.interfaces.api.rest.dto.BookDto
@@ -63,6 +61,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import org.springframework.web.util.UriComponentsBuilder
 import org.springframework.web.util.UriUtils
 import java.net.URI
@@ -100,7 +99,6 @@ private const val ID_PUBLISHERS_ALL = "allPublishers"
 @RestController
 @RequestMapping(value = [ROUTE_BASE], produces = [MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE])
 class OpdsController(
-  servletContext: ServletContext,
   private val libraryRepository: LibraryRepository,
   private val collectionRepository: SeriesCollectionRepository,
   private val readListRepository: ReadListRepository,
@@ -113,19 +111,16 @@ class OpdsController(
   private val bookLifecycle: BookLifecycle,
 ) {
 
-  private val routeBase = "${servletContext.contextPath}$ROUTE_BASE"
-
   private val komgaAuthor = OpdsAuthor("Komga", URI("https://github.com/gotson/komga"))
 
   private val decimalFormat = DecimalFormat("0.#")
 
   private val opdsPseSupportedFormats = listOf("image/jpeg", "image/png", "image/gif")
 
-  private val linkStart = OpdsLinkFeedNavigation(OpdsLinkRel.START, uriBuilder(ROUTE_CATALOG).toUriString())
+  private fun linkStart() = OpdsLinkFeedNavigation(OpdsLinkRel.START, uriBuilder(ROUTE_CATALOG).toUriString())
 
   private fun uriBuilder(path: String) =
-    UriComponentsBuilder
-      .fromPath("$routeBase$path")
+    ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("opds", "v1.2").path(path)
 
   private fun <T> linkPage(uriBuilder: UriComponentsBuilder, page: Page<T>): List<OpdsLink> {
     return listOfNotNull(
@@ -150,8 +145,9 @@ class OpdsController(
     author = komgaAuthor,
     links = listOf(
       OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder(ROUTE_CATALOG).toUriString()),
-      linkStart,
+      linkStart(),
       OpdsLinkSearch(uriBuilder(ROUTE_SEARCH).toUriString()),
+      OpdsLink(MEDIATYPE_OPDS_JSON_VALUE, "alternate", href = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("opds", "v2", "catalog").toUriString()),
     ),
     entries = listOf(
       OpdsEntryNavigation(
@@ -224,7 +220,7 @@ class OpdsController(
   fun getSearch(): OpenSearchDescription = OpenSearchDescription(
     shortName = "Search",
     description = "Search for series",
-    url = OpenSearchDescription.OpenSearchUrl("$routeBase$ROUTE_SERIES_ALL?search={searchTerms}"),
+    url = OpenSearchDescription.OpenSearchUrl(uriBuilder(ROUTE_SERIES_ALL).toUriString() + "?search={searchTerms}"),
   )
 
   @PageAsQueryParam
@@ -250,7 +246,7 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, builder.toUriString()),
-        linkStart,
+        linkStart(),
         *linkPage(builder, bookPage).toTypedArray(),
       ),
       entries = bookPage.getEntriesWithSeriesTitle(userAgent),
@@ -289,7 +285,7 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, builder.toUriString()),
-        linkStart,
+        linkStart(),
         *linkPage(builder, bookPage).toTypedArray(),
       ),
       entries = bookPage.getEntriesWithSeriesTitle(userAgent),
@@ -329,7 +325,7 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, builder.toUriString()),
-        linkStart,
+        linkStart(),
         *linkPage(builder, seriesPage).toTypedArray(),
       ),
       entries = seriesPage.content.map { it.toOpdsEntry() },
@@ -366,7 +362,7 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-        linkStart,
+        linkStart(),
         *linkPage(uriBuilder, seriesPage).toTypedArray(),
       ),
       entries = entries,
@@ -398,7 +394,7 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-        linkStart,
+        linkStart(),
         *linkPage(uriBuilder, bookPage).toTypedArray(),
       ),
       entries = bookPage.getEntriesWithSeriesTitle(userAgent),
@@ -422,7 +418,7 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder(ROUTE_LIBRARIES_ALL).toUriString()),
-        linkStart,
+        linkStart(),
       ),
       entries = libraries.map { it.toOpdsEntry() },
     )
@@ -446,7 +442,7 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-        linkStart,
+        linkStart(),
         *linkPage(uriBuilder, collections).toTypedArray(),
       ),
       entries = collections.content.map { it.toOpdsEntry() },
@@ -471,7 +467,7 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-        linkStart,
+        linkStart(),
         *linkPage(uriBuilder, readLists).toTypedArray(),
       ),
       entries = readLists.content.map { it.toOpdsEntry() },
@@ -495,7 +491,7 @@ class OpdsController(
       author = komgaAuthor,
       links = listOf(
         OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-        linkStart,
+        linkStart(),
         *linkPage(uriBuilder, publishers).toTypedArray(),
       ),
       entries = publishers.content.map { publisher ->
@@ -540,7 +536,7 @@ class OpdsController(
         author = komgaAuthor,
         links = listOf(
           OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-          linkStart,
+          linkStart(),
           *linkPage(uriBuilder, entries).toTypedArray(),
         ),
         entries = entries.content,
@@ -576,7 +572,7 @@ class OpdsController(
         author = komgaAuthor,
         links = listOf(
           OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-          linkStart,
+          linkStart(),
           *linkPage(uriBuilder, entries).toTypedArray(),
         ),
         entries = entries.content,
@@ -617,7 +613,7 @@ class OpdsController(
         author = komgaAuthor,
         links = listOf(
           OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-          linkStart,
+          linkStart(),
           *linkPage(uriBuilder, entries).toTypedArray(),
         ),
         entries = entries.content,
@@ -666,30 +662,12 @@ class OpdsController(
         author = komgaAuthor,
         links = listOf(
           OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
-          linkStart,
+          linkStart(),
           *linkPage(uriBuilder, booksPage).toTypedArray(),
         ),
         entries = entries.content,
       )
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-
-  @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
-  @GetMapping(
-    value = ["books/{bookId}/thumbnail"],
-    produces = [MediaType.IMAGE_JPEG_VALUE],
-  )
-  fun getBookThumbnail(
-    @AuthenticationPrincipal principal: KomgaPrincipal,
-    @PathVariable bookId: String,
-  ): ByteArray {
-    principal.user.checkContentRestriction(bookId)
-    val thumbnail = bookLifecycle.getThumbnail(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    return if (thumbnail.type == ThumbnailBook.Type.GENERATED) {
-      bookLifecycle.getBookPage(bookRepository.findByIdOrNull(bookId)!!, 1, ImageType.JPEG).content
-    } else {
-      bookLifecycle.getThumbnailBytes(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    }
-  }
 
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
   @GetMapping(
@@ -700,7 +678,7 @@ class OpdsController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
   ): ByteArray {
-    principal.user.checkContentRestriction(bookId)
+    principal.user.checkContentRestriction(bookId, bookRepository, seriesMetadataRepository)
     val thumbnail = bookLifecycle.getThumbnail(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return bookLifecycle.getThumbnailBytes(bookId, if (thumbnail.type == ThumbnailBook.Type.GENERATED) null else 300)
@@ -722,9 +700,9 @@ class OpdsController(
     val mediaTypes = media.pages.map { it.mediaType }.distinct()
 
     val opdsLinkPageStreaming = if (mediaTypes.size == 1 && mediaTypes.first() in opdsPseSupportedFormats) {
-      OpdsLinkPageStreaming(mediaTypes.first(), "${routeBase}books/$id/pages/{pageNumber}?zero_based=true", media.pages.size, readProgress?.page, readProgress?.readDate)
+      OpdsLinkPageStreaming(mediaTypes.first(), uriBuilder("books/$id/pages/").toUriString() + "{pageNumber}?zero_based=true", media.pages.size, readProgress?.page, readProgress?.readDate)
     } else {
-      OpdsLinkPageStreaming("image/jpeg", "${routeBase}books/$id/pages/{pageNumber}?convert=jpeg&zero_based=true", media.pages.size, readProgress?.page, readProgress?.readDate)
+      OpdsLinkPageStreaming("image/jpeg", uriBuilder("books/$id/pages/").toUriString() + "{pageNumber}?convert=jpeg&zero_based=true", media.pages.size, readProgress?.page, readProgress?.readDate)
     }
 
     return OpdsEntryAcquisition(
@@ -784,23 +762,4 @@ class OpdsController(
 
   private fun sanitize(fileName: String): String =
     fileName.replace(";", "")
-
-  /**
-   * Convenience function to check for content restriction.
-   * This will retrieve data from repositories if needed.
-   *
-   * @throws[ResponseStatusException] if the user cannot access the content
-   */
-  private fun KomgaUser.checkContentRestriction(bookId: String) {
-    if (!sharedAllLibraries) {
-      bookRepository.getLibraryIdOrNull(bookId)?.let {
-        if (!canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    }
-    if (restrictions.isRestricted) bookRepository.getSeriesIdOrNull(bookId)?.let { seriesId ->
-      seriesMetadataRepository.findById(seriesId).let {
-        if (!isContentAllowed(it.ageRating, it.sharingLabels)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-      }
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-  }
 }

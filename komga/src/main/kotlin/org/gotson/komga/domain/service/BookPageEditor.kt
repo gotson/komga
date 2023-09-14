@@ -48,7 +48,7 @@ class BookPageEditor(
   private val eventPublisher: EventPublisher,
   private val historicalEventRepository: HistoricalEventRepository,
 ) {
-  private val convertibleTypes = listOf(MediaType.ZIP.value)
+  private val convertibleTypes = listOf(MediaType.ZIP.type)
 
   private val failedPageRemoval = mutableListOf<String>()
 
@@ -124,7 +124,7 @@ class BookPageEditor(
         createdMedia.status != Media.Status.READY
         -> throw BookConversionException("Created file could not be analyzed, aborting page removal")
 
-        createdMedia.mediaType != MediaType.ZIP.value
+        createdMedia.mediaType != MediaType.ZIP.type
         -> throw BookConversionException("Created file is not a zip file, aborting page removal")
 
         !createdMedia.pages.map { FilenameUtils.getName(it.fileName) to it.mediaType }

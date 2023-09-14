@@ -4,6 +4,7 @@ import org.gotson.komga.domain.model.Media
 
 interface MediaRepository {
   fun findById(bookId: String): Media
+  fun findByIdOrNull(bookId: String): Media?
 
   fun findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(libraryId: String, mediaTypes: Collection<String>, pageHashing: Int): Collection<Pair<String, String>>
 

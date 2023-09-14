@@ -385,7 +385,7 @@ class BookDtoDao(
         .from(st)
         .innerJoin(b).on(b.SERIES_ID.eq(st.SERIES_ID))
         .where(b.ID.`in`(dsl.selectTempStrings()))
-          .groupBy({ it.value1().seriesId }, { it.value1().tag })
+        .groupBy({ it.value1().seriesId }, { it.value1().tag })
 
       seriesGenres = dsl.select(sg)
         .from(sg)
@@ -466,8 +466,16 @@ class BookDtoDao(
     return c
   }
 
-  private fun BookRecord.toDto(media: MediaDto, metadata: BookMetadataDto, readProgress: ReadProgressDto?, seriesTitle: String, publisher: String?,
-                               seriesTags: Set<String>?, seriesGenres: Set<String>?, seriesSharingLabels: Set<String>?) =
+  private fun BookRecord.toDto(
+    media: MediaDto,
+    metadata: BookMetadataDto,
+    readProgress: ReadProgressDto?,
+    seriesTitle: String,
+    publisher: String?,
+    seriesTags: Set<String>?,
+    seriesGenres: Set<String>?,
+    seriesSharingLabels: Set<String>?,
+  ) =
     BookDto(
       id = id,
       seriesId = seriesId,
